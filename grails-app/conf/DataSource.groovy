@@ -4,6 +4,7 @@ dataSource {
     username = "sa"
     password = ""
 }
+
 hibernate {
     cache.use_second_level_cache = true
     cache.use_query_cache = false
@@ -15,6 +16,10 @@ environments {
         dataSource {
             dbCreate = "create-drop" // one of 'create', 'create-drop', 'update', 'validate', ''
             url = "jdbc:h2:mem:devDb;MVCC=TRUE;LOCK_TIMEOUT=10000"
+        }
+        dataSource_cbd {
+            dbCreate = "create-drop"
+            url = "jdbc:h2:mem:devCbdDb;MVCC=TRUE;LOCK_TIMEOUT=10000"
         }
     }
     test {
