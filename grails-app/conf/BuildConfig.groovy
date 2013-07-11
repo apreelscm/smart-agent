@@ -42,6 +42,10 @@ grails.project.dependency.resolution = {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes e.g.
 
         // runtime 'mysql:mysql-connector-java:5.1.22'
+        runtime 'jdbc:ojdbc:6'
+        runtime 'cbd1:cbd-core-security:2.6-SNAPSHOT'
+        runtime 'cbd2:cbd-orm:2.6-SNAPSHOT'
+        runtime 'cbd3:cbd-orm-security:2.6-SNAPSHOT'
     }
 
     plugins {
