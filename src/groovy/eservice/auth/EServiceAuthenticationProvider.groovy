@@ -47,10 +47,10 @@ class EServiceAuthenticationProvider implements AuthenticationProvider {
 
 
         authorities = new ArrayList<GrantedAuthorityImpl>()
-        if(userDTO.uzyId){
+        if(userDTO.przId){
             authorities.add(new GrantedAuthorityImpl(PH_ROLE))
         }
-        else if (userDTO.przId){
+        else if (userDTO.uzyId){
             authorities.add(new GrantedAuthorityImpl(ADM_ROLE))
             /*authorities = userDTO.authorities.collect { new GrantedAuthorityImpl(it.authority) }*/
         }
