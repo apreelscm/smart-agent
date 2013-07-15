@@ -3,6 +3,9 @@ dataSource {
     driverClassName = "org.h2.Driver"
     username = "sa"
     password = ""
+    loggingSql = false
+    //hibernate.default_schema = "CBD_UMOWY"
+    //dialect = org.hibernate.dialect.Oracle10gDialect
 }
 
 hibernate {
@@ -15,11 +18,8 @@ environments {
     development {
         dataSource {
             dbCreate = "create-drop" // one of 'create', 'create-drop', 'update', 'validate', ''
-            url = "jdbc:h2:mem:devDb;MVCC=TRUE;LOCK_TIMEOUT=10000"
-        }
-        dataSource_cbd {
-            dbCreate = "create-drop"
-            url = "jdbc:h2:mem:devCbdDb;MVCC=TRUE;LOCK_TIMEOUT=10000"
+            //url = "jdbc:h2:mem:devDb;MVCC=TRUE;LOCK_TIMEOUT=10000"
+            url = "jdbc:h2:mem:CbdDb;MVCC=TRUE;LOCK_TIMEOUT=10000;INIT=CREATE SCHEMA IF NOT EXISTS CBD_ADM"
         }
     }
     test {

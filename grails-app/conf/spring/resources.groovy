@@ -2,10 +2,8 @@
 
 
 import eservice.auth.EServiceAuthenticationProvider
-import eservice.ui.EServiceFilter
 
 beans = {
-
 
     // custom authentication
     daoAuthenticationProvider(EServiceAuthenticationProvider) {

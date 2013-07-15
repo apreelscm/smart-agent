@@ -20,7 +20,7 @@
 
     <bean id="UserDAO" class="com.eservice.dao.emetrics.UserDAO">
         <property name="sessionFactory">
-            <ref bean="sessionFactory" />
+            <ref bean="sessionFactoryExt" />
         </property>
     </bean>
     <bean id="roleService" class="com.eservice.service.security.NoRoleService"/>
@@ -32,44 +32,20 @@
         <property name="userDAO">
             <ref bean="UserDAO" />
         </property>
-       <!-- <property name="passwordEncryptor" ref="passwordEncryptor" />-->
+        <property name="passwordEncryptor" ref="passwordEncryptor" />
         <property name="sessionFactory">
-            <ref bean="sessionFactory" />
+            <ref bean="sessionFactoryExt" />
         </property>
     </bean>
 
-
     <bean id="dataSourceExt" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="org.h2.Driver" />
-        <property name="url" value="jdbc:h2:mem:devCbdDb;MVCC=TRUE;LOCK_TIMEOUT=10000" />
+        <property name="url" value="jdbc:h2:mem:CbdDb;MVCC=TRUE;LOCK_TIMEOUT=10000" />
         <property name="username" value="sa" />
         <property name="password" value="" />
     </bean>
 
-
-<!--
-    <bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
-        <property name="dataSource">
-            <ref bean="dataSource" />
-        </property>
-        <property name="hibernateProperties">
-            <props>
-                <prop key="hibernate.dialect">org.hibernate.dialect.Oracle9Dialect</prop>
-                <prop key="hibernate.show_sql">false</prop>
-                <prop key="connection.provider_class">org.hibernate.connection.C3P0ConnectionProvider</prop>
-                <prop key="c3p0.max_size">10</prop>
-                <prop key="c3p0.min_size">5</prop>
-                <prop key="c3p0.idle_test_period">60</prop>
-                <prop key="c3p0.timeout">600</prop>
-                <prop key="c3p0.max_statements">20</prop>
-                <prop key="c3p0.acquire_increment">3</prop>
-                <prop key="myeclipse.connection.profile">oracle</prop>
-                <prop key="hibernate.jdbc.batch_size">0</prop>
-            </props>
-        </property>-->
-
-
-    <bean id="sessionFactory"
+    <bean id="sessionFactoryExt"
           class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
         <property name="dataSource">
             <ref bean="dataSourceExt" />
@@ -82,7 +58,7 @@
                 <prop key="hibernate.query.substitutions">true=1 false=0</prop>
                 <prop key="hibernate.bytecode.use_reflection_optimizer">false</prop>
                 <prop key="hibernate.show_sql">false</prop>
-                <prop key="hibernate.format_sql">false</prop>
+                <prop key="hibernate.format_sql">true</prop>
                 <prop key="hibernate.use_sql_comments">false</prop>
             </props>
         </property>

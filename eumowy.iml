@@ -3,7 +3,10 @@
   <component name="FacetManager">
     <facet type="Spring" name="Spring">
       <configuration>
-        <fileset id="Grails" name="Grails" removed="false" />
+        <fileset id="Grails" name="Grails" removed="false">
+          <file>file://$MODULE_DIR$/web-app/WEB-INF/applicationContext.xml</file>
+          <file>file://$MODULE_DIR$/grails-app/conf/spring/resources.xml</file>
+        </fileset>
       </configuration>
     </facet>
     <facet type="web" name="GrailsWeb">
@@ -49,6 +52,7 @@
           <root url="jar://$USER_HOME$/.grails/ivy-cache/cbd1/cbd-core-security/jars/cbd-core-security-2.6-SNAPSHOT.jar!/" />
           <root url="jar://$USER_HOME$/.grails/ivy-cache/cbd3/cbd-orm-security/jars/cbd-orm-security-2.6-SNAPSHOT.jar!/" />
           <root url="jar://$USER_HOME$/.grails/ivy-cache/cbd2/cbd-orm/jars/cbd-orm-2.6-SNAPSHOT.jar!/" />
+          <root url="jar://$USER_HOME$/.grails/ivy-cache/jdbc/ojdbc/jars/ojdbc-6.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
