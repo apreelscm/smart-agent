@@ -3,7 +3,6 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation=" http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
 
-
     <bean id="passwordEncryptor" class="org.jasypt.util.password.ConfigurablePasswordEncryptor">
         <property name="config" ref="SimpleDigesterConfig" />
         <property name="stringOutputType" value="base64" />
@@ -20,9 +19,10 @@
 
     <bean id="UserDAO" class="com.eservice.dao.emetrics.UserDAO">
         <property name="sessionFactory">
-            <ref bean="sessionFactoryExt" />
+            <ref bean="sessionFactory" />
         </property>
     </bean>
+
     <bean id="roleService" class="com.eservice.service.security.NoRoleService"/>
 
     <bean id="userService" class="com.eservice.service.security.UserService">
@@ -34,101 +34,15 @@
         </property>
         <property name="passwordEncryptor" ref="passwordEncryptor" />
         <property name="sessionFactory">
-            <ref bean="sessionFactoryExt" />
+            <ref bean="sessionFactory" />
         </property>
     </bean>
 
     <bean id="dataSourceExt" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="org.h2.Driver" />
-        <property name="url" value="jdbc:h2:mem:CbdDb;MVCC=TRUE;LOCK_TIMEOUT=10000" />
+        <property name="url" value="jdbc:h2:mem:CbdDb;MVCC=TRUE;LOCK_TIMEOUT=1;INIT=CREATE SCHEMA IF NOT EXISTS CBD_ADM" />
         <property name="username" value="sa" />
         <property name="password" value="" />
     </bean>
-
-    <bean id="sessionFactoryExt"
-          class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
-        <property name="dataSource">
-            <ref bean="dataSourceExt" />
-        </property>
-        <property name="hibernateProperties">
-            <props>
-                <prop key="hibernate.dialect">
-                    org.hibernate.dialect.Oracle10gDialect
-                </prop>
-                <prop key="hibernate.query.substitutions">true=1 false=0</prop>
-                <prop key="hibernate.bytecode.use_reflection_optimizer">false</prop>
-                <prop key="hibernate.show_sql">false</prop>
-                <prop key="hibernate.format_sql">true</prop>
-                <prop key="hibernate.use_sql_comments">false</prop>
-            </props>
-        </property>
-
-        <property name="mappingResources">
-            <list>
-                <value>com/eservice/orm/CbtSlTpsPrefix.hbm.xml</value>
-                <value>com/eservice/orm/CbtTerminalePos.hbm.xml</value>
-                <value>com/eservice/orm/CbtBanki.hbm.xml</value>
-                <value>com/eservice/orm/CbtTabeleWynagrodzen.hbm.xml</value>
-                <value>com/eservice/orm/CbtSlMccCms.hbm.xml</value>
-                <value>com/eservice/orm/CbtPorozumienia.hbm.xml</value>
-                <value>com/eservice/orm/CbtPrzedstawicieleh.hbm.xml</value>
-                <value>com/eservice/orm/CbtSlSygnaturyUmow.hbm.xml</value>
-                <value>com/eservice/orm/CbtAdresy.hbm.xml</value>
-                <value>com/eservice/orm/CbtUmowy.hbm.xml</value>
-                <value>com/eservice/orm/CbtPracownicy.hbm.xml</value>
-                <value>com/eservice/orm/CbtSlPowiaty.hbm.xml</value>
-                <value>com/eservice/orm/CbtSlKomunikacje.hbm.xml</value>
-                <value>com/eservice/orm/CbtWersjeAplikacji.hbm.xml</value>
-                <value>com/eservice/orm/CbtAplikacje.hbm.xml</value>
-                <value>com/eservice/orm/CbtStruktury.hbm.xml</value>
-                <value>com/eservice/orm/CbtCpSchematy.hbm.xml</value>
-                <value>com/eservice/orm/CbtSlKraje.hbm.xml</value>
-                <value>com/eservice/orm/CbtCpCardplany.hbm.xml</value>
-                <value>com/eservice/orm/CbtSlModeleTerminali.hbm.xml</value>
-                <value>com/eservice/orm/CbtSlWojewodztwa.hbm.xml</value>
-                <value>com/eservice/orm/CbtKlienci.hbm.xml</value>
-                <value>com/eservice/orm/CbtSlGminy.hbm.xml</value>
-                <value>com/eservice/orm/CbtSlOkresy.hbm.xml</value>
-                <value>com/eservice/orm/CbtWynagrodzenia.hbm.xml</value>
-                <value>com/eservice/orm/CbtSprawyHist.hbm.xml</value>
-                <value>com/eservice/orm/CbtDochodowosci.hbm.xml</value>
-                <value>com/eservice/orm/CbtFaktury.hbm.xml</value>
-                <value>com/eservice/orm/CbtSlRodzajeInterwSerwis.hbm.xml</value>
-                <value>com/eservice/orm/CbtSprawy.hbm.xml</value>
-                <value>com/eservice/orm/CbtSlRodzajeEtapowSpraw.hbm.xml</value>
-                <value>com/eservice/orm/CbtObroty.hbm.xml</value>
-                <value>com/eservice/orm/CbtSlRodzajeSpraw.hbm.xml</value>
-                <value>com/eservice/orm/CbtPrzedstawicielehInterw.hbm.xml</value>
-                <value>com/eservice/orm/CbtSlEtapyOpis.hbm.xml</value>
-                <value>com/eservice/orm/CgRefCodes.hbm.xml</value>
-                <value>com/eservice/orm/CbtTerminalePosPozycje.hbm.xml</value>
-                <value>com/eservice/orm/CbtTerminaleZestawy.hbm.xml</value>
-                <value>com/eservice/orm/CbtSlMcc.hbm.xml</value>
-                <value>com/eservice/orm/CbtDostawy.hbm.xml</value>
-                <value>com/eservice/orm/CbtPaczki.hbm.xml</value>
-                <value>com/eservice/orm/CbtPnSnZest.hbm.xml</value>
-                <value>com/eservice/orm/CbtZamowienia.hbm.xml</value>
-                <value>com/eservice/orm/CbtGwarancje.hbm.xml</value>
-                <value>com/eservice/orm/CbtUszkodzenia.hbm.xml</value>
-                <value>com/eservice/orm/CbtSerwisyPrzyslane.hbm.xml</value>
-                <value>com/eservice/orm/CbtSerwisyWyslane.hbm.xml</value>
-                <value>com/eservice/orm/CbtLgoLogoKlienta.hbm.xml</value>
-                <value>com/eservice/orm/CbtLgoKolekcjaLogo.hbm.xml</value>
-                <value>com/eservice/orm/CbtLgoSlownikAplikacji.hbm.xml</value>
-                <value>com/eservice/orm/CbtDokumenty.hbm.xml</value>
-
-                <value>com/eservice/orm/cbdweb/prepaid/CbtStrukturaPrePaid.hbm.xml</value>
-                <value>com/eservice/orm/cbdweb/prepaid/CbtObslugaPz.hbm.xml</value>
-
-                <!-- logowanie -->
-                <value>com/eservice/orm/AdmUzytkownicyWeb.hbm.xml </value>
-                <value>com/eservice/orm/AdmUzytkownicy.hbm.xml</value>
-                <value>com/eservice/orm/AdmPatche.hbm.xml</value>
-                <value>com/eservice/orm/AdmRole.hbm.xml</value>
-            </list>
-        </property>
-    </bean>
-
-
 
 </beans>

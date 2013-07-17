@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+    <class name="com.eservice.orm.AdmModuly" table="ADM_MODULY"
+           schema="CBD_ADM">
+        <id name="id" type="java.lang.Long">
+            <column name="MOD_ID" precision="10" scale="0" />
+            <generator class="sequence" />
+        </id>
+        <property name="nazwa" type="java.lang.String">
+            <column name="MOD_NAZWA" length="30" unique="true" />
+        </property>
+        <property name="rola" type="java.lang.String">
+            <column name="ROL_NAZWA" length="30" unique="true" />
+        </property>
+        <property name="typ" type="java.lang.String">
+            <column name="MOD_TYP" length="30" unique="true" />
+        </property>
+        <property name="aplId" type="java.lang.Long">
+            <column name="MOD_APL_ID" precision="10" scale="0" />
+        </property>
+    </class>
+
+</hibernate-mapping>

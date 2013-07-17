@@ -1,0 +1,77 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        '-//Hibernate/Hibernate Configuration DTD 3.0//EN'
+        'http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd'>
+
+<hibernate-configuration>
+
+    <session-factory>
+
+        <mapping resource='CbtSlTpsPrefix.hbm.xml'/>
+        <mapping resource='CbtTerminalePos.hbm.xml'/>
+        <mapping resource='CbtBanki.hbm.xml'/>
+        <mapping resource='CbtTabeleWynagrodzen.hbm.xml'/>
+        <mapping resource='CbtSlMccCms.hbm.xml'/>
+        <mapping resource='CbtPorozumienia.hbm.xml'/>
+
+        <mapping resource='CbtSlSygnaturyUmow.hbm.xml'/>
+        <mapping resource='CbtAdresy.hbm.xml'/>
+        <mapping resource='CbtUmowy.hbm.xml'/>
+
+        <mapping resource='CbtSlPowiaty.hbm.xml'/>
+        <mapping resource='CbtSlKomunikacje.hbm.xml'/>
+        <mapping resource='CbtWersjeAplikacji.hbm.xml'/>
+        <mapping resource='CbtAplikacje.hbm.xml'/>
+
+        <mapping resource='CbtPracownicy.hbm.xml'/>
+        <mapping resource='CbtPrzedstawicieleh.hbm.xml'/>
+
+        <mapping resource='CbtStruktury.hbm.xml'/>
+        <mapping resource='CbtKlienci.hbm.xml'/>
+        <mapping resource='CbtCpSchematy.hbm.xml'/>
+        <mapping resource='CbtSlKraje.hbm.xml'/>
+        <mapping resource='CbtCpCardplany.hbm.xml'/>
+        <mapping resource='CbtSlModeleTerminali.hbm.xml'/>
+        <mapping resource='CbtSlWojewodztwa.hbm.xml'/>
+
+        <mapping resource='CbtSlGminy.hbm.xml'/>
+        <mapping resource='CbtSlOkresy.hbm.xml'/>
+        <mapping resource='CbtWynagrodzenia.hbm.xml'/>
+        <mapping resource='CbtSprawyHist.hbm.xml'/>
+        <mapping resource='CbtDochodowosci.hbm.xml'/>
+        <mapping resource='CbtFaktury.hbm.xml'/>
+        <mapping resource='CbtSlRodzajeInterwSerwis.hbm.xml'/>
+        <mapping resource='CbtSprawy.hbm.xml'/>
+        <mapping resource='CbtSlRodzajeEtapowSpraw.hbm.xml'/>
+        <mapping resource='CbtObroty.hbm.xml'/>
+        <mapping resource='CbtSlRodzajeSpraw.hbm.xml'/>
+        <mapping resource='CbtPrzedstawicielehInterw.hbm.xml'/>
+        <mapping resource='CbtSlEtapyOpis.hbm.xml'/>
+        <mapping resource='CgRefCodes.hbm.xml'/>
+        <mapping resource='CbtTerminalePosPozycje.hbm.xml'/>
+        <mapping resource='CbtTerminaleZestawy.hbm.xml'/>
+        <mapping resource='CbtSlMcc.hbm.xml'/>
+        <mapping resource='CbtDostawy.hbm.xml'/>
+        <mapping resource='CbtPaczki.hbm.xml'/>
+        <mapping resource='CbtPnSnZest.hbm.xml'/>
+        <mapping resource='CbtZamowienia.hbm.xml'/>
+        <mapping resource='CbtGwarancje.hbm.xml'/>
+        <mapping resource='CbtUszkodzenia.hbm.xml'/>
+        <mapping resource='CbtSerwisyPrzyslane.hbm.xml'/>
+        <mapping resource='CbtSerwisyWyslane.hbm.xml'/>
+        <mapping resource='CbtLgoLogoKlienta.hbm.xml'/>
+        <mapping resource='CbtLgoKolekcjaLogo.hbm.xml'/>
+        <mapping resource='CbtLgoSlownikAplikacji.hbm.xml'/>
+        <mapping resource='CbtDokumenty.hbm.xml'/>
+
+        <mapping resource='CbtStrukturaPrePaid.hbm.xml'/>
+        <mapping resource='CbtObslugaPz.hbm.xml'/>
+
+        <mapping resource='AdmUzytkownicyWeb.hbm.xml'/>
+        <mapping resource='AdmUzytkownicy.hbm.xml'/>
+        <mapping resource='AdmPatche.hbm.xml'/>
+        <mapping resource='AdmRole.hbm.xml'/>
+
+    </session-factory>
+
+</hibernate-configuration>

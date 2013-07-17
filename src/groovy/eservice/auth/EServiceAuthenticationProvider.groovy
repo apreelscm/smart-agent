@@ -1,6 +1,5 @@
 package eservice.auth
 import com.eservice.dto.UserDTO
-import org.codehaus.groovy.grails.plugins.springsecurity.GrailsUser
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.security.authentication.AuthenticationProvider
@@ -28,7 +27,7 @@ class EServiceAuthenticationProvider implements AuthenticationProvider {
         String password = authentication.credentials
         String username = authentication.name
 
-        GrailsUser userDetails
+        EServiceUserDetails userDetails
         List<GrantedAuthorityImpl> authorities
 
         UserDTO userDTO
@@ -54,11 +53,11 @@ class EServiceAuthenticationProvider implements AuthenticationProvider {
             authorities.add(new GrantedAuthorityImpl(ADM_ROLE))
             /*authorities = userDTO.authorities.collect { new GrantedAuthorityImpl(it.authority) }*/
         }
-
         //authorities = authorities ?: GormUserDetailsService.NO_ROLES
 
-        userDetails = new GrailsUser(userDTO.getLogin(), "pass",
-                true, true, true, true, authorities, 1); //userDTO.getUzyId())
+        userDetails = new EServiceUserDetails(userDTO.getLogin(), "pass",
+                true, true, true, true, authorities, 1,
+                userDTO.getLastName()); //userDTO.getUzyId())
 
 
         preAuthenticationChecks.check userDetails

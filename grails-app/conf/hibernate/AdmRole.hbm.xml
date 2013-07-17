@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+    <class name="com.eservice.orm.AdmRole" table="ADM_ROLE"
+           schema="CBD_ADM">
+        <id name="id" type="java.lang.Long">
+            <column name="ROL_ID" precision="10" scale="0" />
+            <generator class="sequence" />
+        </id>
+
+        <property name="nazwa" type="java.lang.String">
+            <column name="ROL_NAZWA" length="30" unique="true" />
+        </property>
+        <property name="aplId" type="java.lang.Long">
+            <column name="ROL_APL_ID" precision="10" scale="0" />
+        </property>
+        <property name="readOnly" type="java.lang.Boolean">
+            <formula>
+                (select distinct(case WHEN  p.PRA_TYP = 'TO' THEN 1 else 0 end)
+                from ADM_PRAWA p, ADM_APLIKACJE  apl
+                WHERE p.PRA_TYP in ('PD','TO') and p.PRA_ROL_ID = ROL_ID and ROL_APL_ID = apl.APL_ID and apl.APL_KOD = 'WEB')
+            </formula>
+        </property>
+    </class>
+    
+</hibernate-mapping>

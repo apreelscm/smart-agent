@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+	<class name="com.eservice.orm.AdmUzytkownicyWeb" table="ADM_UZYTKOWNICY_WEB"
+		schema="CBD_ADM">
+		<id name="auwId" type="java.lang.Long">
+			<column name="AUW_ID" precision="10" scale="0" />
+			<generator class="sequence">
+				<param name="sequence">ADM_U_WEB_SEQ</param>
+			</generator>
+		</id>
+		<property name="firstName" type="java.lang.String">
+			<column name="AUW_IMIE" length="100" />
+		</property>
+		<property name="lastName" type="java.lang.String">
+			<column name="AUW_NAZWISKO" length="100" />
+		</property>
+		<property name="name" type="java.lang.String">
+			<column name="AUW_NAZWA" length="100" />
+		</property>
+		<property name="password" type="java.lang.String">
+			<column name="AUW_HASLO" length="100" />
+		</property>
+		<property name="login" type="java.lang.String">
+			<column name="AUW_LOGIN" length="100" />
+		</property>
+ 
+		<many-to-one name="cbtPrzedstawicieleh" class="com.eservice.orm.CbtPrzedstawicieleh"
+			fetch="join">
+			<column name="AUW_PRZ_ID" precision="10" scale="0" />
+		</many-to-one>
+		<many-to-one name="admUzytkownicy" class="com.eservice.orm.AdmUzytkownicy"
+			fetch="join">
+			<column name="AUW_UZY_ID" precision="10" scale="0" />
+		</many-to-one> 
+		<many-to-one name="cbtKlienci" class="com.eservice.orm.CbtKlienci"
+			fetch="join">
+			<column name="AUW_KLN_ID" precision="10" scale="0" />
+		</many-to-one>
+		<many-to-one name="cbtPracownicy" class="com.eservice.orm.CbtPracownicy"
+			fetch="join" lazy="false">
+			<column name="AUW_PRC_ID" precision="10" scale="0" />
+		</many-to-one> 
+	</class>
+
+    <sql-query name="findCbdUserRoles" callable="true" >
+        <return class="com.eservice.orm.AdmRole">
+            <return-property name="id" column="ROL_ID" />
+            <return-property name="nazwa" column="ROL_NAZWA" />
+            <return-property name="aplId" column="ROL_APL_ID" />
+            <return-property name="readOnly" column="READ_ONLY" />
+        </return>
+        { call Adm_WEB.FIND_ROLES (?, :username , :appcode) }
+    </sql-query>
+ 
+</hibernate-mapping>

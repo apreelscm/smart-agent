@@ -1,0 +1,123 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2011-12-28 10:14:59 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.eservice.orm.cbdweb.prepaid.CbtObslugaPz" table="CBT_OBSLUGA_PZ" schema="CBD_ADM">
+        <id name="opzId" type="java.lang.Long">
+            <column name="OPZ_ID" precision="10" scale="0" />
+            <generator class="sequence">
+                 <param name="sequence">OPZ_SEQ</param>
+             </generator>
+        </id>
+        <property name="opzDataRejestracji" type="java.util.Date">
+            <column name="OPZ_DATA_REJESTRACJI" length="7" not-null="true">
+                <comment>Data rejestracji PZ</comment>
+            </column>
+        </property>
+        <property name="opzKomentarz" type="java.lang.String">
+            <column name="OPZ_KOMENTARZ" length="3">
+                <comment>Komentarz do PZ</comment>
+            </column>
+        </property>
+        <property name="opzIdentyfikator" type="java.lang.String">
+            <column name="OPZ_IDENTYFIKATOR" length="20" not-null="true">
+                <comment>Identyfikator platnosci</comment>
+            </column>
+        </property>
+        <property name="opzDataWysylkiBph" type="java.util.Date">
+            <column name="OPZ_DATA_WYSYLKI_BPH" length="7">
+                <comment>Data eksportu pliku dla BPH</comment>
+            </column>
+        </property>
+        <property name="opzDataOdpowiedzi" type="java.util.Date">
+            <column name="OPZ_DATA_ODPOWIEDZI" length="7">
+                <comment>data odpowiedzi z BPH/MC</comment>
+            </column>
+        </property>
+        <property name="opzKodAutoryzacji" type="java.lang.String">
+            <column name="OPZ_KOD_AUTORYZACJI" length="2">
+                <comment>odpwiedz kod autoryzacji</comment>
+            </column>
+        </property>
+        <property name="opzDataZgodyDb" type="java.util.Date">
+            <column name="OPZ_DATA_ZGODY_DB" length="7">
+                <comment>Data zgody departamentu biznesu</comment>
+            </column>
+        </property>
+        <property name="opzZgodaDbUwagi" type="java.lang.String">
+            <column name="OPZ_ZGODA_DB_UWAGI" length="240">
+                <comment>Uwagi departamentu biznesu</comment>
+            </column>
+        </property>
+        <property name="opzRezygnacjaPz" type="java.lang.String">
+            <column name="OPZ_REZYGNACJA_PZ" length="1">
+                <comment>rezygnacja z PZ</comment>
+            </column>
+        </property>
+        <property name="opzDataRezygnacjiPz" type="java.util.Date">
+            <column name="OPZ_DATA_REZYGNACJI_PZ" length="7">
+                <comment>data rezygnacji z pz</comment>
+            </column>
+        </property>
+        <property name="opzKodAutoryzacjiInne" type="java.lang.String">
+            <column name="OPZ_KOD_AUTORYZACJI_INNE" length="80">
+                <comment>komentarz jesli kod autoryzacji ustawione na inne</comment>
+            </column>
+        </property>
+        <property name="opzKtoUtworzyl" type="java.lang.String">
+            <column name="OPZ_KTO_UTWORZYL" length="30" not-null="true" />
+        </property>
+        <property name="opzKiedyUtworzyl" type="java.util.Date">
+            <column name="OPZ_KIEDY_UTWORZYL" length="7" not-null="true" />
+        </property>
+        <property name="opzKtoModyfikowal" type="java.lang.String">
+            <column name="OPZ_KTO_MODYFIKOWAL" length="30" />
+        </property>
+        <property name="opzKiedyModyfikowal" type="java.util.Date">
+            <column name="OPZ_KIEDY_MODYFIKOWAL" length="7" />
+        </property>
+        <property name="opzKlnId" type="java.lang.Long">
+            <column name="OPZ_KLN_ID" precision="10" scale="0" not-null="true">
+                <comment>fk na cbt_klienci</comment>
+            </column>
+        </property>
+        <property name="opzBezAktywnegoPz" type="java.lang.String">
+            <column name="OPZ_BEZ_AKTYWNEGO_PZ" length="1" not-null="true">
+                <comment>Zgoda DB na kompensacje PP bez aktywnego PZ</comment>
+            </column>
+        </property>
+        <property name="opzZaakceptowanyPz" type="java.lang.String">
+            <column name="OPZ_ZAAKCEPTOWANY_PZ" length="1" not-null="true">
+                <comment>Zgoda DB na kompensacje PP bez PZ</comment>
+            </column>
+        </property>
+        <property name="opzWysylkaOdbiorca" type="java.lang.String">
+            <column name="OPZ_WYSYLKA_ODBIORCA" length="1" not-null="true">
+                <comment>B-bph, M-mc, R-brak</comment>
+            </column>
+        </property>
+        <property name="opzNrKontaBankowego" type="java.lang.String">
+            <column name="OPZ_NR_KONTA_BANKOWEGO" length="26" not-null="true">
+                <comment>nr konta do obslugi PZ</comment>
+            </column>
+        </property>
+        <property name="opzIban" type="java.lang.String">
+            <column name="OPZ_IBAN" length="1" not-null="true" />
+        </property>
+        <property name="opzNrb0" type="java.lang.String">
+            <column name="OPZ_NRB0" length="1" not-null="true" />
+        </property>
+        <property name="opzNiestd" type="java.lang.String">
+            <column name="OPZ_NIESTD" length="1" not-null="true" />
+        </property>
+        <property name="opzCzyAktywny" type="java.lang.String">
+            <column name="OPZ_CZY_AKTYWNY" length="1" not-null="true" />
+        </property>
+        <property name="opzPoprzKodAutoryzacji" type="java.lang.String">
+            <column name="OPZ_POPRZ_KOD_AUTORYZACJI" length="2">
+                <comment>poprzedni kod autoryzacji do automatycznej ponownej aktywacji</comment>
+            </column>
+        </property>
+    </class>
+</hibernate-mapping>

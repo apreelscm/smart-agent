@@ -1,3 +1,4 @@
+import com.eservice.eumowy.Process
 import groovy.sql.Sql
 
 class BootStrap {
@@ -7,7 +8,7 @@ class BootStrap {
     def init = { servletContext ->
 
         def sql = new Sql(dataSourceExt)
-        File directory = new File(this.class.getResource("/sql/").getFile())
+   /*     File directory = new File(this.class.getResource("/sql/").getFile())
 
         //wykonywanie polecen ze znalezionych  plikow sql w katalogu conf/sql
         directory.eachFileRecurse { sqlFile ->
@@ -16,7 +17,8 @@ class BootStrap {
                     sql.execute(it)
                 }
             }
-        }
+        }*/
+
 
         //dodawanie pustego admina i ph
         sql.executeUpdate('insert into CBD_ADM.adm_uzytkownicy (uzy_id) values(?)',[1]);
@@ -37,10 +39,9 @@ class BootStrap {
                 'insert into CBD_ADM.ADM_UZYTKOWNICY_WEB(AUW_ID,AUW_LOGIN,AUW_HASLO,AUW_PRZ_ID ) values(?, ?, ?, ?)',
                 [3,'ph', 'iEmqhY8YxduPVOg5Tgs9aca8M5coCILEFRmk8Q==',1])
 
+        sql.close();
 
-
-
-
-
+        new Process(id: 12,  phFirstName: "Jerzy").save();
+        new Process(id: 13,  phFirstName: "Wanda").save();
     }
 }

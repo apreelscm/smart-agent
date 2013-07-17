@@ -98,7 +98,7 @@ log4j = {
             'net.sf.ehcache.hibernate'
 
     //show sql values
-    //trace "org.hibernate.SQL", "org.hibernate.type"
+    warn "org.hibernate.SQL", "org.hibernate.type"
 
     appenders {
         console name: 'stdout', layout: pattern(conversionPattern: '%d{dd-MM-yyyy HH:mm:ss,SSS} %5p %c{1} - %m%n')
@@ -112,9 +112,9 @@ grails.plugins.springsecurity.userLookup.userDomainClassName = 'secure.SecUser'
 grails.plugins.springsecurity.userLookup.authorityJoinClassName = 'secure.SecUserSecRole'
 grails.plugins.springsecurity.authority.className = 'secure.SecRole'
 
-//grails.plugins.springsecurity.successHandler.defaultTargetUrl = '/home'
+grails.plugins.springsecurity.successHandler.defaultTargetUrl = '/process'
 
 grails.plugins.springsecurity.securityConfigType = SecurityConfigType.InterceptUrlMap
 grails.plugins.springsecurity.interceptUrlMap = [
-        '/': ['IS_AUTHENTICATED_FULLY']
+       // '/': ['IS_AUTHENTICATED_FULLY']
 ]

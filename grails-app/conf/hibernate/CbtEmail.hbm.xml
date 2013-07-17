@@ -1,0 +1,160 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2012-02-19 15:32:21 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.eservice.orm.CbtEmail" table="CBT_EMAIL" schema="CBD_ADM">
+        <id name="emlId" type="java.lang.Long">
+            <column name="EML_ID" precision="22" scale="0" />
+            <generator class="assigned" />
+        </id>
+        <property name="emlRodzaj" type="java.lang.String">
+            <column name="EML_RODZAJ" length="1" not-null="true" />
+        </property>
+        <property name="emlNadawca" type="java.lang.String">
+            <column name="EML_NADAWCA" length="240" not-null="true" />
+        </property>
+        <property name="emlOdbiorca" type="java.lang.String">
+            <column name="EML_ODBIORCA" length="240" not-null="true" />
+        </property>
+        <property name="emlTresc" type="java.lang.String">
+            <column name="EML_TRESC" length="4000" not-null="true" />
+        </property>
+        <property name="emlPhiNumer" type="java.lang.String">
+            <column name="EML_PHI_NUMER" length="10" />
+        </property>
+        <property name="emlOpisBledu" type="java.lang.String">
+            <column name="EML_OPIS_BLEDU" length="250" />
+        </property>
+        <property name="emlEmlId" type="java.lang.Long">
+            <column name="EML_EML_ID" precision="10" scale="0" />
+        </property>
+        <property name="emlStatus" type="java.lang.Long">
+            <column name="EML_STATUS" precision="1" scale="0" />
+        </property>
+        <property name="emlRodzajOdbiorcy" type="java.lang.String">
+            <column name="EML_RODZAJ_ODBIORCY" length="3" />
+        </property>
+        <property name="emlOdbiorcaPrzId" type="java.lang.Long">
+            <column name="EML_ODBIORCA_PRZ_ID" precision="10" scale="0" />
+        </property>
+        <property name="emlTyp" type="java.lang.String">
+            <column name="EML_TYP" length="1" not-null="true" />
+        </property>
+        <property name="emlOdpowiedz" type="java.lang.String">
+            <column name="EML_ODPOWIEDZ" length="250" />
+        </property>
+        <property name="emlSprId" type="java.lang.Long">
+            <column name="EML_SPR_ID" precision="10" scale="0" />
+        </property>
+        <property name="emlDataDoreczenia" type="java.util.Date">
+            <column name="EML_DATA_DORECZENIA" length="7" />
+        </property>
+        <property name="emlDataWyslania" type="java.util.Date">
+            <column name="EML_DATA_WYSLANIA" length="7" />
+        </property>
+        <property name="emlTryb" type="java.lang.Long">
+            <column name="EML_TRYB" precision="1" scale="0" />
+        </property>
+        <property name="emlSposobWysylki" type="java.lang.Long">
+            <column name="EML_SPOSOB_WYSYLKI" precision="1" scale="0" />
+        </property>
+        <property name="emlDataOdpowiedzi" type="java.util.Date">
+            <column name="EML_DATA_ODPOWIEDZI" length="7" />
+        </property>
+        <property name="emlShiId" type="java.lang.Long">
+            <column name="EML_SHI_ID" precision="10" scale="0" />
+        </property>
+        <property name="emlKtoUtworzyl" type="java.lang.String">
+            <column name="EML_KTO_UTWORZYL" length="30" not-null="true" />
+        </property>
+        <property name="emlKiedyUtworzyl" type="java.util.Date">
+            <column name="EML_KIEDY_UTWORZYL" length="7" not-null="true" />
+        </property>
+        <property name="emlKtoModyfikowal" type="java.lang.String">
+            <column name="EML_KTO_MODYFIKOWAL" length="30" />
+        </property>
+        <property name="emlKiedyModyfikowal" type="java.util.Date">
+            <column name="EML_KIEDY_MODYFIKOWAL" length="7" />
+        </property>
+        <property name="emlUidl" type="java.lang.String">
+            <column name="EML_UIDL" length="250" />
+        </property>
+        <property name="emlNo" type="java.lang.Long">
+            <column name="EML_NO" precision="10" scale="0" />
+        </property>
+        <property name="emlTemat" type="java.lang.String">
+            <column name="EML_TEMAT" length="500" />
+        </property>
+    </class>
+     <sql-query name="QUERY_NAME_FIND_EMAIL">
+		<return entity-name="com.eservice.orm.CbtEmail"/>
+SELECT   e.*
+    FROM   cbt_email e
+   WHERE   eml_id IN
+                 (SELECT   DISTINCT (eml_id)
+                    FROM   (SELECT   DISTINCT (eml_id)
+                              FROM   cbt_sprawy_hist a,
+                                     cbt_sprawy_hist b,
+                                     cbt_terminale_pos,
+                                     cbt_email e,
+                                     cbt_przedstawicieleh_interw
+                             WHERE       a.shi_tps_id = tps_id
+                                     AND b.shi_tps_id = tps_id
+                                     AND tps_numer_logiczny = :p_pos_id
+                                     AND a.shi_spr_id = b.shi_spr_id
+                                     AND phi_numer = eml_phi_numer
+                                     AND phi_shi_id = a.shi_id
+                                     AND eml_rodzaj = 'W'
+                            UNION ALL
+                            SELECT   DISTINCT (eml_id)
+                              FROM   cbt_sprawy_hist a,
+                                     cbt_sprawy_hist b,
+                                     cbt_terminale_pos,
+                                     cbt_email e
+                             WHERE       a.shi_tps_id = tps_id
+                                     AND b.shi_tps_id = tps_id
+                                     AND tps_numer_logiczny = :p_pos_id
+                                     AND a.shi_spr_id = b.shi_spr_id
+                                     AND eml_shi_id = b.shi_id
+                                     AND eml_rodzaj = 'W'
+                            UNION ALL
+                            SELECT   DISTINCT (eml_id)
+                              FROM   cbt_email e,
+                                     cbt_sprawy_hist a,
+                                     cbt_sprawy_hist b,
+                                     cbt_przedstawicieleh_interw
+                             WHERE   phi_shi_id = a.shi_id AND phi_numer = :p_phi_numer
+                                     AND (eml_phi_numer = phi_numer
+                                          OR eml_shi_id = b.shi_id)
+                                     AND a.shi_spr_id = b.shi_spr_id
+                                     AND (a.shi_tps_id IS NULL
+                                          OR (a.shi_tps_id IS NOT NULL
+                                              AND b.shi_tps_id = a.shi_tps_id))
+                                     AND eml_rodzaj = 'W'
+                            UNION ALL
+                            SELECT   DISTINCT (eml_id)
+                              FROM   cbt_email,
+                                     cbt_sprawy_hist a,
+                                     cbt_sprawy_hist b,
+                                     cbt_przedstawicieleh_interw
+                             WHERE       phi_shi_id = a.shi_id
+                                     AND a.shi_spr_id = b.shi_spr_id
+                                     AND a.shi_spr_id = :p_spr_id
+                                     AND b.shi_spr_id = :p_spr_id
+                                     AND (phi_numer = eml_phi_numer
+                                          OR eml_shi_id = b.shi_id)
+                                     AND eml_rodzaj = 'W'
+                            UNION ALL
+                            SELECT   DISTINCT (eml_id)
+                              FROM   cbt_email, cbt_przedstawicieleh_interw
+                             WHERE       phi_shi_id = :p_shi_id
+                                     AND eml_phi_numer = phi_numer
+                                     AND eml_rodzaj = 'W'
+                            UNION ALL
+                            SELECT   DISTINCT (eml_id)
+                              FROM   cbt_email
+                             WHERE   eml_shi_id = :p_shi_id AND eml_rodzaj = 'W'))
+ORDER BY   eml_id DESC
+			</sql-query>
+</hibernate-mapping>

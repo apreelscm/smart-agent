@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+ 
+<hibernate-mapping>
+    <class name="com.eservice.orm.CbtSlCennikiSerwisowe" table="CBT_SL_CENNIKI_SERWISOWE" schema="CBD_ADM">
+        <id name="scsId" type="java.lang.Long">
+            <column name="SCS_ID" precision="10" scale="0" />
+             <generator class="sequence">
+                 <param name="sequence">SCS_SEQ</param>
+             </generator>
+        </id> 
+        <property name="scsSegment" type="java.lang.String">
+            <column name="SCS_SEGMENT" length="80" />
+        </property>
+         <many-to-one name="cbtSlObciazenia" class="com.eservice.orm.CbtSlObciazenia" fetch="select">
+            <column name="SCS_SLO_ID" precision="10" scale="0" />
+        </many-to-one> 
+        <property name="scsKtoUtworzyl" type="java.lang.String">
+            <column name="SCS_KTO_UTWORZYL" length="30" />
+        </property>
+        <property name="scsKiedyUtworzyl" type="java.util.Date">
+            <column name="SCS_KIEDY_UTWORZYL" length="7" />
+        </property>
+        <property name="scsKtoModyfikowal" type="java.lang.String">
+            <column name="SCS_KTO_MODYFIKOWAL" length="30" />
+        </property>
+        <property name="scsKiedyModyfikowal" type="java.util.Date">
+            <column name="SCS_KIEDY_MODYFIKOWAL" length="7" />
+        </property>  
+         <property name="scsTyp" type="java.lang.String">
+            <column name="SCS_TYP" length="3" />
+        </property>
+            <property name="scsSrsId" type="java.lang.Long">
+            <column name="SCS_SRS_ID" precision="22" scale="0" />
+        </property>
+ 
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.eservice.orm.AdmUzytkownicy" table="ADM_UZYTKOWNICY" schema="CBD_ADM">
+        <id name="uzyId" type="java.lang.Long">
+            <column name="UZY_ID" precision="10" scale="0" />
+            <generator class="sequence" />
+        </id>
+        <many-to-one name="admPatche" class="com.eservice.orm.AdmPatche" fetch="select">
+            <column name="UZY_PAT_ID" precision="10" scale="0" />
+        </many-to-one>
+        <property name="uzyNazwa" type="java.lang.String">
+            <column name="UZY_NAZWA" length="30" unique="true" />
+        </property>
+        <property name="uzyNazwisko" type="java.lang.String">
+            <column name="UZY_NAZWISKO" length="40" />
+        </property>
+        <property name="uzyImie" type="java.lang.String">
+            <column name="UZY_IMIE" length="20" />
+        </property>
+        <property name="uzyTyp" type="java.lang.String">
+            <column name="UZY_TYP" length="4" />
+        </property>
+        <property name="uzyAktywny" type="java.lang.String">
+            <column name="UZY_AKTYWNY" length="1" />
+        </property>
+        <property name="uzyCzySledzicOperacje" type="java.lang.String">
+            <column name="UZY_CZY_SLEDZIC_OPERACJE" length="1" />
+        </property>
+        <property name="uzyUtworzyl" type="java.lang.String">
+            <column name="UZY_UTWORZYL" length="30" />
+        </property>
+        <property name="uzyDataUtworzenia" type="java.util.Date">
+            <column name="UZY_DATA_UTWORZENIA" length="7" />
+        </property>
+        <property name="uzyTelefon" type="java.lang.String">
+            <column name="UZY_TELEFON" length="20" />
+        </property>
+        <property name="uzyStanowisko" type="java.lang.String">
+            <column name="UZY_STANOWISKO" length="100" />
+        </property>
+        <property name="uzyHaslo" type="java.lang.String">
+            <column name="UZY_HASLO" length="30" />
+        </property>
+        <property name="uzyOpis" type="java.lang.String">
+            <column name="UZY_OPIS" length="2000" />
+        </property>
+        <property name="uzyModyfikowal" type="java.lang.String">
+            <column name="UZY_MODYFIKOWAL" length="30" />
+        </property>
+        <property name="uzyDataModyfikacji" type="java.util.Date">
+            <column name="UZY_DATA_MODYFIKACJI" length="7" />
+        </property>
+        <property name="uzyCzyAudyt" type="java.lang.String">
+            <column name="UZY_CZY_AUDYT" length="1" />
+        </property>
+    </class>
+</hibernate-mapping>
