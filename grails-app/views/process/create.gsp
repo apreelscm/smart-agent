@@ -10,8 +10,7 @@
 		<a href="#create-process" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
 		<div class="nav" role="navigation">
 			<ul>
-				<li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
-				<li><g:link class="list" action="list"><g:message code="default.list.label" args="[entityName]" /></g:link></li>
+				<li><g:link class="list" action="list"><g:message code="process.list.label" /></g:link></li>
 			</ul>
 		</div>
 		<div id="create-process" class="content scaffold-create" role="main">
@@ -31,14 +30,6 @@
 					<g:render template="form"/>
 				</fieldset>
 				<fieldset class="buttons">
-                    <gui:dialog
-                            form="true"
-                            controller="demo" action="confirmSomething"
-                            update="thingBeingUpdatedByResponse"
-                            triggers="[show:[type:'link', text:'Confirm', on:'click']]"
-                    >
-                        Are you sure?
-                    </gui:dialog>
 					<g:submitButton name="create" class="save" value="${message(code: 'default.button.create.label', default: 'Create')}" />
 				</fieldset>
 			</g:form>

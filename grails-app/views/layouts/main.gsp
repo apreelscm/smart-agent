@@ -18,9 +18,27 @@
 		<r:layoutResources />
 	</head>
 	<body>
-		<div id="grailsLogo" role="banner"><a href="http://grails.org"><img src="${resource(dir: 'images', file: 'grails_logo.png')}" alt="Grails"/></a></div>
-		<g:layoutBody/>
-		<div class="footer" role="contentinfo"></div>
+
+
+    <div class="container" >
+
+        <div id="header" >
+            <div id="eServiceLogo" role="banner">
+                <a href="http://www.eservice.com.pl" title="Centrum Elektronicznych Usług Płatniczych">
+                    <img src="${resource(dir: 'images', file: 'eService_logo.png')}" alt="Grails"/>
+                </a>
+            </div>
+        </div>
+
+        <div id="content" >
+            <g:layoutBody/>
+        </div>
+
+        <div class="footer" role="contentinfo">
+            Copyright &copy;<g:formatDate format="yyyy" date="${new Date()}"/> eService. All rights reserved.
+        </div>
+    </div>
+
 		<div id="spinner" class="spinner" style="display:none;"><g:message code="spinner.alt" default="Loading&hellip;"/></div>
 		<g:javascript library="application"/>
 		<r:layoutResources />
