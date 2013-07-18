@@ -41,7 +41,12 @@ class BootStrap {
 
         sql.close();
 
-        new Process(id: 12,  phFirstName: "Jerzy").save();
-        new Process(id: 13,  phFirstName: "Wanda").save();
+        new Process(id: 12,  phFirstName: "Jerzy", clientNip: "555344435",
+                clientName: 'nazwa1', saleSection: 'segment1', phNumber: '12345',
+                phSurname: 'Kowalski', calcNumber: '44444').save();
+
+        new Process(id: 13,  phFirstName: "Wanda", clientNip: "11241412",
+                clientName: 'nazwa2', saleSection: 'segment2', phNumber: '321',
+                phSurname: 'Iksińska',calcNumber: '33333').save();
     }
 }

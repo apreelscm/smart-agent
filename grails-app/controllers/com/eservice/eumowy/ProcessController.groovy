@@ -10,15 +10,18 @@ class ProcessController {
         redirect(action: "list", params: params)
     }
 
+    @Secured(['PH_ROLE','ADM_ROLE'])
     def list(Integer max) {
         params.max = Math.min(max ?: 10, 100)
         [processInstanceList: Process.list(params), processInstanceTotal: Process.count()]
     }
 
+    @Secured(['PH_ROLE'])
     def create() {
         [processInstance: new Process(params)]
     }
 
+    @Secured(['PH_ROLE'])
     def save() {
         //TODO implement
        /* def processInstance = new Process(params)
@@ -30,7 +33,7 @@ class ProcessController {
         flash.message = message(code: 'default.created.message', args: [message(code: 'process.label', default: 'Process'), processInstance.id])
         redirect(action: "show", id: processInstance.id)*/
     }
-
+    @Secured(['PH_ROLE','ADM_ROLE'])
     def show(Long id) {
         def processInstance = Process.get(id)
         if (!processInstance) {
@@ -42,6 +45,7 @@ class ProcessController {
         [processInstance: processInstance]
     }
 
+    @Secured(['PH_ROLE'])
     def edit(Long id) {
         def processInstance = Process.get(id)
         if (!processInstance) {
@@ -53,6 +57,7 @@ class ProcessController {
         [processInstance: processInstance]
     }
 
+    @Secured(['PH_ROLE'])
     def update(Long id, Long version) {
         //TODO implement
     }

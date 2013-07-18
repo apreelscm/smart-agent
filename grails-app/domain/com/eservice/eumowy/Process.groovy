@@ -26,6 +26,7 @@ class Process {
 
     String saleSection // TODO skad ?
 
+
     // TODO kolekcja czynnosci
 
     // TODO guid dokument, co to jest ?
@@ -36,7 +37,6 @@ class Process {
 
     static mapping = {
         table name: "process", schema: "CBD_UMOWY"
-    //    id column: 'ID', generator:'assigned', type: 'integer'
         autoTimestamp true
         version true
     }
