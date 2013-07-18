@@ -4,51 +4,50 @@
 <!--[if IE 8 ]>    <html lang="en" class="no-js ie8"> <![endif]-->
 <!--[if IE 9 ]>    <html lang="en" class="no-js ie9"> <![endif]-->
 <!--[if (gt IE 9)|!(IE)]><!--> <html lang="en" class="no-js"><!--<![endif]-->
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-		<title><g:layoutTitle default="Grails"/></title>
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<link rel="shortcut icon" href="${resource(dir: 'images', file: 'favicon.ico')}" type="image/x-icon">
-		<link rel="apple-touch-icon" href="${resource(dir: 'images', file: 'apple-touch-icon.png')}">
-		<link rel="apple-touch-icon" sizes="114x114" href="${resource(dir: 'images', file: 'apple-touch-icon-retina.png')}">
-		<link rel="stylesheet" href="${resource(dir: 'css', file: 'main.css')}" type="text/css">
-		<link rel="stylesheet" href="${resource(dir: 'css', file: 'mobile.css')}" type="text/css">
-		<g:layoutHead/>
-		<r:layoutResources />
-	</head>
-	<body>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title><g:layoutTitle default="Grails"/></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="${resource(dir: 'images', file: 'favicon.ico')}" type="image/x-icon">
+    <link rel="apple-touch-icon" href="${resource(dir: 'images', file: 'apple-touch-icon.png')}">
+    <link rel="apple-touch-icon" sizes="114x114" href="${resource(dir: 'images', file: 'apple-touch-icon-retina.png')}">
+    <link rel="stylesheet" href="${resource(dir: 'css', file: 'main.css')}" type="text/css">
+    <link rel="stylesheet" href="${resource(dir: 'css', file: 'mobile.css')}" type="text/css">
+    <g:javascript library="prototype" />
+    <g:javascript library="jquery" plugin="jquery" />
+    <g:layoutHead/>
+    <r:layoutResources />
+</head>
+<body>
 
 
-    <div class="container" >
+<div class="container" >
 
-        <div id="header" >
-            <div id="eServiceLogo" role="banner">
-                <a href="http://www.eservice.com.pl" title="Centrum Elektronicznych Usług Płatniczych">
-                    <img src="${resource(dir: 'images', file: 'eService_logo.png')}" alt="Grails"/>
-                </a>
+    <div id="header" style="position:relative;" >
+        <div id="eServiceLogo" role="banner">
+            <a href="http://www.eservice.com.pl" title="Centrum Elektronicznych Usług Płatniczych">
+                <img src="${resource(dir: 'images', file: 'eService_logo.png')}" alt="Grails"/>
+            </a>
+        </div>
+        <sec:ifLoggedIn>
+            <div style="position:absolute;bottom: 15px;right:20px;">
+                <g:link controller="logout">Wyloguj</g:link>
             </div>
-        </div>
-
-        <div id="content" >
-        		<div id="controller-list" role="navigation"><br/>
-				<h2>Available Controllers:</h2>
-				<ul>
-					<g:each var="c" in="${grailsApplication.controllerClasses.sort { it.fullName } }">
-						<li class="controller"><g:link controller="${c.logicalPropertyName}">${c.fullName}</g:link></li>
-					</g:each>
-				</ul><br/>
-			</div>
-            <g:layoutBody/>
-        </div>
-
-        <div class="footer" role="contentinfo">
-            Copyright &copy;<g:formatDate format="yyyy" date="${new Date()}"/> eService. All rights reserved.
-        </div>
+        </sec:ifLoggedIn>
     </div>
 
-		<div id="spinner" class="spinner" style="display:none;"><g:message code="spinner.alt" default="Loading&hellip;"/></div>
-		<g:javascript library="application"/>
-		<r:layoutResources />
-	</body>
+    <div id="content" >
+        <g:layoutBody/>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        Copyright &copy;<g:formatDate format="yyyy" date="${new Date()}"/> eService. All rights reserved.
+    </div>
+</div>
+
+<div id="spinner" class="spinner" style="display:none;"><g:message code="spinner.alt" default="Loading&hellip;"/></div>
+<g:javascript library="application"/>
+<r:layoutResources />
+</body>
 </html>

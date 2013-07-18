@@ -43,6 +43,7 @@ class Process {
 
     enum ProcessStatus {
         NEW("Nowy"),
+        REJECTED("Odrzucony"),
         ACCEPTED("Zaakceptowany");
 
         private final String text;

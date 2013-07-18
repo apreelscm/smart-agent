@@ -78,7 +78,7 @@ grails.gorm.default.constraints = {
 // log4j configuration
 log4j = {
 
-    info 'grails.app'
+    trace 'grails.app'
     info "grails.app.taglib"
 
     debug 'grails.app.controller'
