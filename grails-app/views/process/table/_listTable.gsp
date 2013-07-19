@@ -4,33 +4,29 @@
        style="table-layout: fixed; width: 100%">
     <thead>
     <tr>
-        <g:sortableColumn property="id" title="Id"/>
-        <g:sortableColumn property="lastUpdated" title="Data Akutalizacji" />
-        <g:sortableColumn property="x"  title="Rodziaj Działania"  />
-        <g:sortableColumn property="clientNip"  title="Nip Klienta" />
-        <g:sortableColumn property="clientName"  title="Nazwa Klienta" />
-        <g:sortableColumn property="saleSection"  title="Segment Sprzedażowy"/>
-        <g:sortableColumn property="phNumber"  title="Numer PH" />
-        <g:sortableColumn property="phFirstName"  title="Imię PH" />
-        <g:sortableColumn property="phSurname"  title="Naziwsko PH" />
-        <g:sortableColumn property="x"  title="Guid Dokumentu" />
-        <g:sortableColumn property="status"  title="Status" />
+        <util:remoteSortableColumn property="uid"  title="Uid"  update="tableBox" action="filter"/>
+        <util:remoteSortableColumn property="lastUpdated" title="Data Aktualizacji" update="tableBox" action="filter" />
+        <util:remoteSortableColumn property="clientNip"  title="Nip Klienta"  update="tableBox" action="filter"/>
+        <util:remoteSortableColumn property="clientName"  title="Nazwa Klienta"  update="tableBox" action="filter"/>
+        <util:remoteSortableColumn property="saleSection"  title="Segment Sprzedażowy" update="tableBox" action="filter"/>
+        <util:remoteSortableColumn property="phNumber"  title="Numer PH" update="tableBox" action="filter" />
+        <util:remoteSortableColumn property="phFirstName"  title="Imię PH" update="tableBox" action="filter" />
+        <util:remoteSortableColumn property="phSurname"  title="Naziwsko PH" update="tableBox" action="filter" />
+        <util:remoteSortableColumn property="status"  title="Status" update="tableBox" action="filter" />
     </tr>
     </thead>
     <tbody>
     <g:each in="${processInstanceList}" status="i" var="processInstance">
         <tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
-            <td ><g:link action="show" id="${processInstance.id}">${fieldValue(bean: processInstance, field: "id")}</g:link></td>
-            <td ><g:formatDate date="${processInstance.lastUpdated}" /></td>
-            <td >${fieldValue(bean: processInstance, field: "")}</td>
-            <td>${fieldValue(bean: processInstance, field: "clientNip")}</td>
-            <td>${fieldValue(bean: processInstance, field: "clientName")}</td>
-            <td >${fieldValue(bean: processInstance, field: "saleSection")}
-            <td>${fieldValue(bean: processInstance, field: "phNumber")}</td>
-            <td>${fieldValue(bean: processInstance, field: "phFirstName")}</td>
-            <td>${fieldValue(bean: processInstance, field: "phSurname")}</td>
-            <td>${fieldValue(bean: processInstance, field: "")}</td>
-            <td>${fieldValue(bean: processInstance, field: "status")}</td>
+            <td class="tableCell" style="word-wrap:break-word;"><g:link action="show" id="${processInstance.uid}">${fieldValue(bean: processInstance, field: "uid")}</g:link></td>
+            <td class="tableCell"><g:formatDate date="${processInstance.lastUpdated}" /></td>
+            <td class="tableCell">${fieldValue(bean: processInstance, field: "clientNip")}</td>
+            <td class="tableCell">${fieldValue(bean: processInstance, field: "clientName")}</td>
+            <td class="tableCell">${fieldValue(bean: processInstance, field: "saleSection")}
+            <td class="tableCell">${fieldValue(bean: processInstance, field: "phNumber")}</td>
+            <td class="tableCell">${fieldValue(bean: processInstance, field: "phFirstName")}</td>
+            <td class="tableCell">${fieldValue(bean: processInstance, field: "phSurname")}</td>
+            <td class="tableCell">${fieldValue(bean: processInstance, field: "status")}</td>
         </tr>
     </g:each>
     </tbody>

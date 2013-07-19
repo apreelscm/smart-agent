@@ -1,5 +1,4 @@
 package com.eservice.eumowy
-
 import grails.plugins.springsecurity.Secured
 
 class ProcessController {
@@ -13,12 +12,13 @@ class ProcessController {
     @Secured(['PH_ROLE','ADM_ROLE'])
     def list(Integer max) {
         params.max = Math.min(max ?: 10, 100)
+        log.info("Process.count() - " + Process.count());
         [processInstanceList: Process.list(params), processInstanceTotal: Process.count()]
     }
 
     //---------------------------------
-     // PH AVAILABLE
-     //---------------------------------
+    // PH AVAILABLE
+    //---------------------------------
 
     @Secured(['PH_ROLE'])
     def create() {
@@ -28,15 +28,8 @@ class ProcessController {
     @Secured(['PH_ROLE'])
     def save() {
         //TODO implement
-        /* def processInstance = new Process(params)
-         if (!processInstance.save(flush: true)) {
-             render(view: "create", model: [processInstance: processInstance])
-             return
-         }
-
-         flash.message = message(code: 'default.created.message', args: [message(code: 'process.label', default: 'Process'), processInstance.id])
-         redirect(action: "show", id: processInstance.id)*/
     }
+
     @Secured(['PH_ROLE'])
     def edit(Long id) {
         def processInstance = Process.get(id)
@@ -70,10 +63,10 @@ class ProcessController {
     //---------------------------------
 
     @Secured(['ADM_ROLE'])
-    def show(Long id) {
-        def processInstance = Process.get(id)
+    def show(String id) {
+        def processInstance = Process.findByUid(id)
         if (!processInstance) {
-            flash.message = message(code: 'default.not.found.message', args: [message(code: 'process.label', default: 'Process'), id])
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'process.label', default: 'proces'), id])
             redirect(action: "list")
             return
         }
@@ -82,18 +75,34 @@ class ProcessController {
     }
 
     @Secured(['ADM_ROLE'])
-    def reject(Long id) {
-        def processInstance = Process.get(id)
+    def reject(String uid) {
+        def processInstance =Process.findByUid(uid)
+
+        if (!processInstance) {
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'test.label', default: 'proces'), uid])
+            redirect(action: "list")
+            return
+        }
+
         processInstance.status = Process.ProcessStatus.REJECTED;
         processInstance.save(flush: true, validate: false)
+        flash.message = message(code: 'default.rejected.message', args: [message(code: 'test.label', default: 'proces'), processInstance.uid])
         redirect(action: "list")
     }
 
     @Secured(['ADM_ROLE'])
-    def accept(Long id) {
-        def processInstance = Process.get(id)
+    def accept(String uid) {
+        def processInstance = Process.findByUid(uid)
+
+        if (!processInstance) {
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'test.label', default: 'proces'), uid])
+            redirect(action: "list")
+            return
+        }
+
         processInstance.status = Process.ProcessStatus.ACCEPTED;
         processInstance.save(flush: true, validate: true)
+        flash.message = message(code: 'default.accepted.message', args: [message(code: 'test.label', default: 'Proces'), processInstance.uid])
         redirect(action: "list")
     }
 
@@ -107,7 +116,17 @@ class ProcessController {
      */
     def filterByStatus(String status) {
         def filteredProcesses = Process.findAllByStatus(status)
-        log.info(filteredProcesses + " " + filteredProcesses.size())
         render template: 'table/listTable', model: [processInstanceList: filteredProcesses, processInstanceTotal: filteredProcesses.size()]
+    }
+
+    def filter = {
+        params.max = Math.min(params.max ? params.int('max') : 10, 100)
+        render(template: 'table/listTable', model:  [processInstanceList: Process.list(params), processInstanceTotal: Process.count()])
+    }
+
+    def showPdfByDocumentId(String id){
+        log.info( "pdf document = " + id);
+        def documentfile = DocumentFile.get(id);
+        render(template: 'pdf/embedDocument', model:  [pdfDocument: resource(dir:'files', file:documentfile.filename)]);
     }
 }

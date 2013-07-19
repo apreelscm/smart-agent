@@ -6,17 +6,17 @@
     <g:set var="entityName" value="${message(code: 'process.label', default: 'Proces')}" />
     <title><g:message code="process.list.label"  /></title>
 </head>
-<body>
+<body class="processListPage">
+
 <a href="#list-process" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
 
-<div id="list-process" class="content scaffold-list" role="main">
+<section id="list-process" class="content scaffold-list" role="main">
     <h1><g:message code="process.list.label" /></h1>
     <g:if test="${flash.message}">
         <div class="message" role="status">${flash.message}</div>
     </g:if>
 
-
-    <div>
+    <div style="margin: 1em 0 1em 0">
         <label for="status">
             <g:message code="process.phFirstName.label" default="Status Dokumentu" />
         </label>
@@ -33,7 +33,7 @@
         <g:render template="table/listTable"/>
     </div>
 
-</div>
+</section>
 
 </body>
 </html>

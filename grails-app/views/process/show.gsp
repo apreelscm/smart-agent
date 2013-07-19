@@ -10,12 +10,12 @@
 
 </head>
 <body>
-<a href="#show-process" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
-<div class="nav" role="navigation">
+
+%{--<nav class="nav">
     <ul>
         <li><g:link class="list" action="list"><g:message code="process.list.label" /></g:link></li>
     </ul>
-</div>
+</nav>--}%
 
 <div id="show-process" role="main">
 
@@ -35,14 +35,6 @@
                 </label>
                 <g:textField name="clientNip" value="${processInstance?.clientNip}" disabled="disabled"/>
             </li>
-
-
-            <li  style="display:inline;" >
-                <label for="saleSection">
-                    <g:message code="process.saleSection.label" default="Rodzaj Działania" />
-                </label>
-            </li>
-
 
             <li  style="display:inline;" >
                 <label for="phNumber">
@@ -66,10 +58,12 @@
         <li style="display:inline;"><button>Pobierz Załączniki</button></li>
     </ul>
 
+    <div id="documentsBox">
+        <g:render template="table/documentsTable"/>
+    </div>
 
-    <div style="margin-left: 1em ; margin-right: 1em;margin-bottom: 1em">
-        <embed src="${resource(dir:'files', file:'pedef.pdf')}" type='application/pdf'
-               style="height: 1100px; width: 100%"/>
+    <div id="pdfBox">
+        %{--<g:render template="pdf/embedDocument"/>--}%
     </div>
 
 %{--
@@ -79,16 +73,20 @@
         download the PDF file.</a></p>
     </object>--}%
 
+
+
         <g:checkBox name="observe"/> Obserwuj
 
     <g:form style="${!isNewProcess ? 'display:none' : ''}">
         <fieldset class="buttons">
-            <g:hiddenField name="id" value="${processInstance?.id}" />
+            <g:hiddenField name="uid" value="${processInstance.uid}" />
+            <g:link  action="list" ><g:message code="default.button.back.label" default="Wróć" /></g:link>
             <g:actionSubmit class="save" action="accept" value="Zaakceptuj"
                             onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
             <g:actionSubmit class="delete" action="reject" value="Odrzuć"
                             formnovalidate=""
                             onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
+
         </fieldset>
     </g:form>
 </div>

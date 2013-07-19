@@ -54,6 +54,7 @@ grails.project.dependency.resolution = {
         runtime ":database-migration:1.3.2"
         runtime ":resources:1.2"
         runtime ":spring-security-core:1.2.7.3"
+        runtime ":modernizr:2.6.2"
         runtime ":prototype:1.0"
 
         // Uncomment these (or add new ones) to enable additional resources capabilities

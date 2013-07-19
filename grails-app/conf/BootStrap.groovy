@@ -1,3 +1,4 @@
+import com.eservice.eumowy.DocumentFile
 import com.eservice.eumowy.Process
 import groovy.sql.Sql
 
@@ -27,26 +28,33 @@ class BootStrap {
         //uzytkownik "user" bez ról
         sql.executeUpdate(
                 'insert into CBD_ADM.ADM_UZYTKOWNICY_WEB(AUW_ID,AUW_LOGIN,AUW_HASLO ) values(?, ?, ?)',
-                [1,'user', 'iEmqhY8YxduPVOg5Tgs9aca8M5coCILEFRmk8Q=='])
+                [123451,'user', 'iEmqhY8YxduPVOg5Tgs9aca8M5coCILEFRmk8Q=='])
 
         //uzytkownik "admin" z rola ADM_ROLE
         sql.executeUpdate(
-                'insert into CBD_ADM.ADM_UZYTKOWNICY_WEB(AUW_ID,AUW_LOGIN,AUW_HASLO,AUW_UZY_ID ) values(?, ?, ?, ?)',
-                [2,'admin', 'iEmqhY8YxduPVOg5Tgs9aca8M5coCILEFRmk8Q==',1])
+                'insert into CBD_ADM.ADM_UZYTKOWNICY_WEB(AUW_ID,AUW_LOGIN,AUW_HASLO,AUW_UZY_ID, AUW_IMIE, AUW_NAZWISKO  ) values(?, ?, ?, ?, ?, ?)',
+                [223415,'admin', 'iEmqhY8YxduPVOg5Tgs9aca8M5coCILEFRmk8Q==',1, 'Jan', 'Kowalski'])
 
         //uzytkownik "ph" z rola PH_ROLE
         sql.executeUpdate(
-                'insert into CBD_ADM.ADM_UZYTKOWNICY_WEB(AUW_ID,AUW_LOGIN,AUW_HASLO,AUW_PRZ_ID ) values(?, ?, ?, ?)',
-                [3,'ph', 'iEmqhY8YxduPVOg5Tgs9aca8M5coCILEFRmk8Q==',1])
+                'insert into CBD_ADM.ADM_UZYTKOWNICY_WEB(AUW_ID,AUW_LOGIN,AUW_HASLO,AUW_PRZ_ID, AUW_IMIE, AUW_NAZWISKO  ) values(?, ?, ?, ?, ?, ?)',
+                [312354,'ph', 'iEmqhY8YxduPVOg5Tgs9aca8M5coCILEFRmk8Q==',1, 'Jerzy',' Poniedziałek'])
 
         sql.close();
 
-        new Process(id: 12,  phFirstName: "Jerzy", clientNip: "555344435",
-                clientName: 'nazwa1', saleSection: 'segment1', phNumber: '12345',
-                phSurname: 'Kowalski', calcNumber: '44444').save();
 
-        new Process(id: 13,  phFirstName: "Wanda", clientNip: "11241412",
+        new Process(id: 1, phFirstName: "Jerzy", clientNip: "555344435",
+                clientName: 'nazwa1', saleSection: 'segment1', phNumber: '12345',
+                phSurname: 'Kowalski', calcNumber: '44444' )
+                .addToDocuments(new DocumentFile(filename: "pedef.pdf"))
+                .addToDocuments(new DocumentFile(filename: "pedef2.pdf")).save();
+
+
+        new Process(id: 2, phFirstName: "Wanda", clientNip: "11241412",
                 clientName: 'nazwa2', saleSection: 'segment2', phNumber: '321',
-                phSurname: 'Iksińska',calcNumber: '33333').save();
+                phSurname: 'Iksińska',calcNumber: '33333')
+                .addToDocuments(new DocumentFile(filename: "pedef.pdf"))
+                .addToDocuments(new DocumentFile(filename: "pedef2.pdf")).save();
+
     }
 }

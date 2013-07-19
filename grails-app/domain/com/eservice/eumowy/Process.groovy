@@ -1,10 +1,8 @@
 package com.eservice.eumowy
-
 import groovy.transform.ToString
 
 @ToString(includeNames = true,ignoreNulls = true)
 class Process {
-
 
     Date dateCreated
 
@@ -26,19 +24,32 @@ class Process {
 
     String saleSection // TODO skad ?
 
+    List<DocumentFile> documents // TODO skad ?
 
     // TODO kolekcja czynnosci
 
     // TODO guid dokument, co to jest ?
 
+    String uid
+
+    static hasMany = [documents:DocumentFile]
+
     static constraints = {
         id(unique:true,blank:false)
+        uid(unique: true)
     }
+
 
     static mapping = {
         table name: "process", schema: "CBD_UMOWY"
         autoTimestamp true
         version true
+    }
+
+    def beforeValidate() {
+        if (uid == null) {
+            uid = UUID.randomUUID().toString() // works
+        }
     }
 
     enum ProcessStatus {

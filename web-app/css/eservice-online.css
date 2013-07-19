@@ -1,0 +1,2668 @@
+.obrazekMaska {
+    position: absolute;
+    background: #ffffff;
+    filter: alpha(opacity=1);
+    -moz-opacity: 0.01;
+    opacity: 0.01;
+    width: 100%;
+    display: block
+}
+
+.Popup {
+    background-color: #FFFFFF;
+    border: 1px solid #C8D0CF
+}
+
+.Popup .ImageContainer {
+    padding: 5px;
+    height: 100%;
+    text-align: center
+}
+
+.Popup .Loader {
+    background-image: url(/szablony/eso/images/lightbox-ico-loading.gif);
+    background-repeat: no-repeat;
+    background-position: center center;
+    height: 100%;
+    border: 1px solid #C8D0CF
+}
+
+.Popup .Preview {
+    border: 1px solid #C8D0CF;
+    cursor: pointer
+}
+
+.Popup td.IcoClose {
+    text-align: left
+}
+
+.Popup div.IcoClose {
+    height: 26px;
+    width: 26px;
+    display: block;
+    cursor: pointer;
+    background: url(/szablony/eso/images/lightbox-btn-close.gif) no-repeat center center
+}
+
+.PopupOverlay {
+    width: 100%;
+    height: 500px;
+    background-color: #999999;
+    filter: alpha(opacity=60);
+    -moz-opacity: 0.6;
+    opacity: 0.6
+}
+
+#imgzoom-select {
+    display: block;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 100px;
+    height: 100px;
+    background: #FFFFFF;
+    border: 1px solid #CED6DA;
+    filter: alpha(opacity=60);
+    -moz-opacity: 0.6;
+    opacity: 0.6
+}
+
+#imgzoom-preview {
+    display: block;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 300px;
+    height: 300px;
+    margin: -4px 0px 0px 7px;
+    background: #FFFFFF;
+    border: 1px solid #CED6DA
+}
+
+#jquery-overlay {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 500px;
+    z-index: 90
+}
+
+#jquery-lightbox {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    z-index: 100;
+    text-align: center;
+    line-height: 0px
+}
+
+#jquery-lightbox a img {
+    border: none
+}
+
+#lightbox-container-image-box {
+    position: relative;
+    background-color: #fff;
+    width: 250px;
+    height: 250px;
+    margin: 0px auto
+}
+
+#lightbox-container-image {
+    padding: 10px
+}
+
+#lightbox-loading {
+    position: absolute;
+    top: 40%;
+    left: 0%;
+    height: 25%;
+    width: 100%;
+    text-align: center;
+    line-height: 0px
+}
+
+#lightbox-nav {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    height: 100%;
+    width: 100%;
+    z-index: 10
+}
+
+#lightbox-container-image-box > #lightbox-nav {
+    left: 0px
+}
+
+#lightbox-nav a {
+    outline: none
+}
+
+#lightbox-nav-btnPrev, #lightbox-nav-btnNext {
+    width: 49%;
+    height: 100%;
+    zoom: 1;
+    display: block
+}
+
+#lightbox-nav-btnPrev {
+    left: 0px;
+    float: left
+}
+
+#lightbox-nav-btnNext {
+    right: 0px;
+    float: right
+}
+
+#lightbox-container-image-data-box {
+    font: 10px Verdana, Helvetica, sans-serif;
+    background-color: #fff;
+    margin: 0px auto;
+    line-height: 1.4em;
+    overflow: auto;
+    width: 100%;
+    padding: 0px 10px 0px
+}
+
+#lightbox-container-image-data {
+    padding: 0px 10px;
+    color: #666
+}
+
+#lightbox-container-image-data #lightbox-image-details {
+    width: 70%;
+    float: left;
+    text-align: left
+}
+
+#lightbox-image-details-caption {
+    font-weight: bold
+}
+
+#lightbox-image-details-currentNumber {
+    display: block;
+    clear: left;
+    padding-bottom: 1.0em
+}
+
+#lightbox-secNav-btnClose {
+    width: 22px;
+    float: right;
+    padding-bottom: 0.7em
+}
+
+.jq_progress2 {
+    background: #ffffff url(/szablony/eso/images/lightbox-ico-loading.gif) no-repeat center center;
+    position: absolute;
+    filter: alpha(opacity=60);
+    -moz-opacity: 0.6;
+    opacity: 0.6;
+    z-index: 1000
+}
+
+.film {
+    background: url(/szablony/eso/images/pluginneeded.gif) no-repeat center center;
+    margin: auto
+}
+
+.sIFR-flash {
+    visibility: visible !important;
+    margin: 0 !important;
+    padding: 0 !important
+}
+
+.sIFR-replaced, .sIFR-ignore {
+    visibility: visible !important
+}
+
+.sIFR-alternate {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 0;
+    height: 0;
+    display: block;
+    overflow: hidden
+}
+
+.sIFR-active .sIFR {
+    visibility: hidden;
+    line-height: 1;
+    font-size: 20px;
+    font-weight: normal;
+    color: #ffffff;
+    text-decoration: none
+}
+
+.sIFR-active .sIFR-aktywny {
+    visibility: hidden;
+    line-height: 1;
+    font-size: 20px;
+    font-weight: normal;
+    color: #f6ad44;
+    text-decoration: none
+}
+
+.sIFR-active .sIFR1 {
+    visibility: hidden;
+    line-height: 1;
+    font-size: 12px;
+    font-weight: normal;
+    color: #ffffff;
+    text-decoration: none
+}
+
+.sIFR-active .sIFR1-aktywny {
+    visibility: hidden;
+    line-height: 1;
+    font-size: 12px;
+    font-weight: normal;
+    color: #f6ad44;
+    text-decoration: none
+}
+
+.sIFR-active .sIFR1 .sIFR-flash, .sIFR-active .sIFR1-aktywny .sIFR-flash {
+    margin: 0px 0px 0px 10px !important
+}
+
+body {
+    margin: 0px;
+    padding: 0px;
+    border-style: none;
+    background: url(/szablony/eso/images/tlo.jpg) no-repeat center top !important
+}
+
+body, td, th {
+    font-family: Tahoma, Georgia, Garamond, Verdana;
+    font-size: 13px;
+    font-weight: normal;
+    color: #50749b
+}
+
+td, th {
+    vertical-align: top
+}
+
+p {
+    margin: 0px;
+    padding: 0px;
+    line-height: 15px
+}
+
+img {
+    border-style: none
+}
+
+h1, h2, h3, h4, h5, h6, h7 {
+    margin: 0px;
+    padding: 0px
+}
+
+h1 {
+    font-size: 26px;
+    font-weight: normal;
+    color: #3d3d3d
+}
+
+h2, h1.ng {
+    font-size: 24px;
+    font-weight: normal;
+    color: #23426a
+}
+
+h1 a, h1 a:hover, h2 a, h2 a:hover {
+    color: #23426a
+}
+
+h3 {
+    margin: 0px 0px 20px 0px;
+    font-size: 15px;
+    font-weight: bold
+}
+
+h3 a, h3 a:hover {
+    font-weight: bold;
+    color: #50749b
+}
+
+.pliki h3 {
+    background: url(/szablony/eso/images/attachment.png) no-repeat scroll 0 0 transparent;
+    padding: 5px 0 0 30px;
+    height: 25px
+}
+
+a {
+    color: #f48923;
+    text-decoration: none
+}
+
+a:hover {
+    color: #f48923;
+    text-decoration: underline
+}
+
+ol, ul, li {
+    position: relative;
+    list-style-position: inside;
+    line-height: 20px
+}
+
+ol, ul {
+    margin: 10px 0px 20px 5px;
+    padding: 0px
+}
+
+ol ol, ul ul {
+    margin: 0px !important;
+    padding: 0px
+}
+
+ol li {
+    margin: 0px 0px 0px 5px;
+    padding: 0px
+}
+
+ul li {
+    margin: 0px 0px 0px 5px;
+    *margin: 0px 0px 0px -10px;
+    padding: 0px 0px 0px 15px;
+    background: url(/szablony/eso/images/punktor-niebieski.gif) no-repeat 0px 6px;
+    list-style: none;
+    list-style-position: inside;
+    zoom: 1
+}
+
+.clear {
+    clear: both;
+    *display: block !important;
+    *margin-top: -5px;
+    zoom: 1;
+    line-height: 1px
+}
+
+.fix {
+    overflow: hidden;
+    height: 1%  !ie fix
+}
+
+.display-inline {
+    display: inline
+}
+
+.display-block {
+    display: block
+}
+
+.display-none {
+    display: none
+}
+
+.float-left {
+    float: left
+}
+
+.float-right {
+    float: right
+}
+
+.float-center {
+    text-align: center
+}
+
+.rel {
+    position: relative
+}
+
+.print_hide {
+    display: none
+}
+
+object, a:active {
+    outline: none
+}
+
+object, a:focus {
+    -moz-outline-style: none
+}
+
+#strglowna .wewnatrz {
+    background: #ffffff url(/szablony/eso/images/tlo-strglowna.jpg) no-repeat 0px top
+}
+
+#strglowna #gora, #strglowna #gora .lewa, #strglowna #gora .srodek {
+    height: 386px;
+    overflow: hidden
+}
+
+#strglowna #flashcontent {
+    width: 542px;
+    height: 290px
+}
+
+#strglowna .gora-flash {
+    padding: 9px 0px 0px 120px
+}
+
+#strglowna #zawartosc {
+    min-height: 96px
+}
+
+#podstrona .wewnatrz {
+    background: #ffffff url(/szablony/eso/images/tlo-podstrona.jpg) no-repeat 0px top
+}
+
+#podstrona #gora, #podstrona #gora .lewa, #podstrona #gora .srodek {
+    height: 157px
+}
+
+#podstrona #zawartosc {
+    min-height: 325px
+}
+
+#podstrona #zawartosc .srodek {
+    margin-top: 29px
+}
+
+#tlo-lewa, #tlo-prawa {
+    position: absolute;
+    top: 0px;
+    width: 50%;
+    *width: 49% !important;
+    height: 620px
+}
+
+#tlo-lewa {
+    left: 0%;
+    background: url(/szablony/eso/images/tlo-lewa.jpg) repeat-x 0px 0px
+}
+
+#tlo-prawa {
+    left: 50%;
+    background: url(/szablony/eso/images/tlo-prawa.jpg) repeat-x 0px 0px
+}
+
+.wewnatrz {
+    position: relative;
+    overflow: hidden;
+    margin: 0px auto 0px auto;
+    width: 980px;
+    height: auto
+}
+
+#gora {
+    overflow: hidden;
+    width: 980px
+}
+
+.przycisk-zaloguj {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    width: 113px;
+    height: 37px;
+    border-style: none;
+    background: url(/szablony/eso/images/przyciski.gif) no-repeat 0px -102px;
+    cursor: pointer
+}
+
+#logo {
+    margin: 20px 0px 0px 30px;
+    width: 190px;
+    height: 85px;
+    background: url(/szablony/eso/images/logo.png) no-repeat 0px 0px
+}
+
+#logo a {
+    display: block;
+    width: 190px;
+    height: 85px
+}
+
+#logo span {
+    display: none
+}
+
+#zawartosc {
+    width: 980px
+}
+
+.aktywneregiony- .lewa {
+    float: left;
+    display: none;
+    width: 0px
+}
+
+.aktywneregiony- .srodek {
+    float: left;
+    width: 980px
+}
+
+.lewa, .aktywneregiony-4 .lewa {
+    float: left;
+    width: 260px
+}
+
+.srodek, .aktywneregiony-4 .srodek {
+    float: left;
+    width: 720px
+}
+
+#dol {
+    overflow: hidden;
+    width: 980px;
+    min-height: 170px;
+    border-top: solid 1px #366190
+}
+
+#dol p {
+    margin: 0px;
+    line-height: 20px
+}
+
+#dol .lewa {
+    margin: 10px 0px 10px 0px;
+    width: 420px;
+    height: 50px
+}
+
+#dol .srodek {
+    margin: 10px 0px 10px 0px;
+    width: 560px;
+    height: 50px
+}
+
+#dol .srodek p {
+    float: right;
+    text-align: right
+}
+
+#dol .srodek p span {
+    float: left;
+    margin: 0px 0px 0px 10px
+}
+
+#dol .srodek p .cms {
+    margin: 0px !important;
+    width: 52px
+}
+
+#dol .srodek p .cms a {
+    float: right;
+    margin: 0px 0px 0px 3px
+}
+
+#stopka {
+    width: 980px;
+    height: 70px;
+    border-top: solid 1px #b4c4d5
+}
+
+#stopka p {
+    font-size: 11px
+}
+
+#logo-stopka {
+    margin: 0px;
+    width: 400px;
+    height: 50px;
+    background: url(/szablony/eso/images/logo-stopka.gif) no-repeat 0px 0px
+}
+
+#stopka .pko-bp {
+    position: relative;
+    top: 0;
+    left: 10px;
+    height: 34px;
+    width: 380px
+}
+
+#stopka .pko-bp .pko {
+    float: left;
+    width: 110px;
+    height: 40px;
+    background: url(/szablony/eso/images/pko-bank-polski.jpg) no-repeat;
+    text-indent: -2000em;
+    outline: none;
+    display: none
+}
+
+#stopka .pko-bp .spolka {
+    float: left;
+    width: 180px;
+    height: 40px;
+    background: url(/szablony/eso/images/grupa.jpg) no-repeat;
+    text-indent: -2000em
+}
+
+.boks {
+    overflow: hidden;
+    height: auto
+}
+
+.boks-gora {
+    overflow: hidden;
+    padding: 0px 30px 20px 30px;
+    height: auto
+}
+
+.linia {
+    overflow: hidden;
+    padding: 0px 5px 12px 5px;
+    height: auto;
+    border-bottom: solid 1px #b7c6d6
+}
+
+.boks-wewnatrz {
+    overflow: hidden;
+    padding: 0px 30px 5px 30px;
+    height: auto
+}
+
+.boks-komunikat {
+    color: #ff0000 !important
+}
+
+.boks-komunikat p {
+    color: #ff0000 !important
+}
+
+.sciezka {
+    padding: 5px 0px 5px 0px
+}
+
+.sciezka a, .sciezka b {
+    margin: 0px 0px 0px 5px;
+    padding: 0px 0px 0px 13px;
+    background: url(/szablony/eso/images/punktor-pomaranczowy.gif) no-repeat 0px 3px;
+    font-size: 11px;
+    color: #23426a;
+    font-weight: normal
+}
+
+.sciezka b {
+    color: #50749b !important
+}
+
+.sciezka .glowna {
+    margin: 0px;
+    padding: 0px 0px 0px 20px;
+    background: url(/szablony/eso/images/strzalka.gif) no-repeat 0px 3px;
+    color: #50749b
+}
+
+.przycisk-drukuj {
+    margin: 15px 0px 0px 0px;
+    width: 80px;
+    height: 32px;
+    border-style: none;
+    background: url(/szablony/eso/images/przyciski.gif) no-repeat 0px -32px;
+    cursor: pointer
+}
+
+.przycisk-drukuj-formularz {
+    background: url("/szablony/eso/images/przyciski.gif") no-repeat scroll 0 -32px transparent;
+    border-style: none;
+    cursor: pointer;
+    height: 32px;
+    margin: 0 0 0 285px;
+    width: 80px;
+    float: right
+}
+
+.opis ul, .opis ol {
+    overflow: hidden;
+    height: auto
+}
+
+.opis, .opis p {
+    line-height: 20px
+}
+
+.opis td {
+    border: 1px solid #B4C4D5
+}
+
+.opis .krok {
+    float: left;
+    height: 96px;
+    text-align: center
+}
+
+.opis .krok a {
+    display: block
+}
+
+.ramka-zdjecia, .zdjecie img {
+    margin: 0px;
+    padding: 0px;
+    text-align: center
+}
+
+.wyroznienie, .wyroznienie a {
+    color: #f48923 !important
+}
+
+label {
+    margin: 0px;
+    font-size: 12px;
+    cursor: pointer
+}
+
+.label-pole {
+    margin: 5px 10px 0 20px;
+    width: auto
+}
+
+.label-zgoda {
+    margin: 0px 0px 0px 5px;
+    font-size: 11px
+}
+
+.label-wymagane {
+    margin: 15px 20px 0px 0px;
+    font-size: 11px
+}
+
+.formularz {
+    overflow: hidden;
+    height: auto
+}
+
+.formularz-label {
+    padding: 16px 10px 0px 0px;
+    width: 95px;
+    text-align: right;
+    vertical-align: top
+}
+
+.formularz-pole {
+    padding: 9px 0px 0px 0px;
+    text-align: left;
+    vertical-align: bottom
+}
+
+.formularz-pole .gwiazdka {
+    float: left
+}
+
+.formularz .gwiazdka {
+    margin: 0px 0px 0px 5px;
+    color: #f48923
+}
+
+.formularz .pole {
+    float: left;
+    display: block;
+    width: 333px;
+    height: 30px;
+    background: url(/szablony/eso/images/pole.gif) no-repeat 0px 0px
+}
+
+.formularz .pole .pole-prawa {
+    display: block;
+    width: 333px;
+    height: 30px;
+    background: url(/szablony/eso/images/pole.gif) no-repeat right -30px
+}
+
+.formularz .pole input {
+    padding: 7px 10px 7px 10px;
+    margin: 0px;
+    *margin: -2px 0px 0px 0px;
+    width: 313px;
+    height: 16px;
+    border-style: none;
+    background: none;
+    font-family: Tahoma, Georgia, Garamond, Verdana;
+    font-size: 12px;
+    font-weight: normal;
+    color: #50749b;
+    vertical-align: middle
+}
+
+.formularz .pole.sprzedaz1, .formularz .pole.sprzedaz1 .pole-prawa {
+    width: 890px
+}
+
+.formularz .pole.sprzedaz1 input {
+    width: 870px
+}
+
+.formularz .pole.sprzedaz2, .formularz .pole.sprzedaz2 .pole-prawa {
+    width: 480px
+}
+
+.formularz .pole.sprzedaz2 input {
+    width: 460px
+}
+
+.formularz .pole.sprzedaz3, .formularz .pole.sprzedaz3 .pole-prawa {
+    width: 380px
+}
+
+.formularz .pole.sprzedaz3 input {
+    width: 360px
+}
+
+.formularz .pole.sprzedaz4, .formularz .pole.sprzedaz4 .pole-prawa {
+    width: 70px
+}
+
+.formularz .pole.sprzedaz4 input {
+    width: 50px
+}
+
+.formularz .pole.sprzedaz5, .formularz .pole.sprzedaz5 .pole-prawa {
+    width: 550px
+}
+
+.formularz .pole.sprzedaz5 input {
+    width: 530px
+}
+
+.formularz .pole.sprzedaz6, .formularz .pole.sprzedaz6 .pole-prawa {
+    width: 328px
+}
+
+.formularz .pole.sprzedaz6 input {
+    width: 308px
+}
+
+.formularz .pole.sprzedaz7, .formularz .pole.sprzedaz7 .pole-prawa {
+    width: 60px
+}
+
+.formularz .pole.sprzedaz7 input {
+    width: 40px
+}
+
+.formularz .pole.sprzedaz8, .formularz .pole.sprzedaz8 .pole-prawa {
+    width: 80px
+}
+
+.formularz .pole.sprzedaz8 input {
+    width: 60px
+}
+
+.formularz .pole.sprzedaz9, .formularz .pole.sprzedaz9 .pole-prawa {
+    width: 428px
+}
+
+.formularz .pole.sprzedaz9 input {
+    width: 408px
+}
+
+.formularz .pole.sprzedaz10, .formularz .pole.sprzedaz10 .pole-prawa {
+    width: 310px
+}
+
+.formularz .pole.sprzedaz10 input {
+    width: 290px
+}
+
+.formularz .pole.sprzedaz11, .formularz .pole.sprzedaz11 .pole-prawa {
+    width: 210px
+}
+
+.formularz .pole.sprzedaz11 input {
+    width: 190px
+}
+
+.formularz .pole-duze {
+    float: left;
+    display: block;
+    width: 333px;
+    height: 186px;
+    background: url(/szablony/eso/images/pole-duze.gif) no-repeat 0px 0px
+}
+
+.formularz .pole-duze textarea {
+    padding: 7px 10px 7px 10px;
+    margin: 0px;
+    *margin: -2px 0px 0px 0px;
+    width: 313px;
+    height: 172px;
+    border-style: none;
+    background: none;
+    font-family: Tahoma, Georgia, Garamond, Verdana;
+    font-size: 12px;
+    font-weight: normal;
+    color: #50749b;
+    vertical-align: middle
+}
+
+.formularz .edytorek_, .formularz .edytorek_Array {
+    float: left
+}
+
+.formularz .edytorek_ iframe, .formularz .edytorek_Array iframe {
+    width: 333px !important
+}
+
+.formularz .pole-wyboru, .formularz .pole-plik {
+    float: left;
+    display: block;
+    width: 333px;
+    height: 30px;
+    background: url(/szablony/eso/images/pole.gif) no-repeat 0px 0px
+}
+
+.formularz .pole-wyboru .pole-prawa, .formularz .pole-plik .pole-prawa {
+    display: block;
+    width: 333px;
+    height: 30px;
+    background: url(/szablony/eso/images/pole.gif) no-repeat right -30px
+}
+
+.formularz .pole-wyboru select, .formularz .pole-plik input {
+    padding: 7px 5px 7px 5px;
+    margin: 0px;
+    *margin: 5px 0px 5px 0px;
+    width: 333px;
+    height: 30px;
+    border-style: none;
+    background: none;
+    font-family: Tahoma, Georgia, Garamond, Verdana;
+    font-size: 12px;
+    font-weight: normal;
+    color: #50749b;
+    vertical-align: middle
+}
+
+.formularz .pole-wyboru select option {
+    background: #ffffff
+}
+
+.formularz .pole-wyboru.sprzedaz6, .formularz .pole-wyboru.sprzedaz6 .pole-prawa {
+    width: 328px
+}
+
+.formularz .pole-wyboru.sprzedaz6 select {
+    width: 328px
+}
+
+.formularz .pole-wyboru.sprzedaz9, .formularz .pole-wyboru.sprzedaz9 .pole-prawa {
+    width: 428px
+}
+
+.formularz .pole-wyboru.sprzedaz9 select {
+    width: 428px
+}
+
+.formularz .pole-wyboru.sprzedaz11, .formularz .pole-wyboru.sprzedaz11 .pole-prawa {
+    width: 93px
+}
+
+.formularz .pole-wyboru.sprzedaz11 select {
+    width: 93px
+}
+
+.formularz .pole-zaznacz {
+    float: left;
+    margin: 0px 0px -1px 0px;
+    *margin: -1px 0px -1px 0px
+}
+
+.formularz .pole-zgoda {
+    float: left;
+    margin: 0px 0px -1px 0px;
+    *margin: -1px 0px -5px 0px
+}
+
+.captcha {
+    border-style: none
+}
+
+.formularz .pole input:focus, .formularz .pole-duze textarea:focus {
+    margin: -2px;
+    border: solid 2px #96acc4;
+    background: #eefaff
+}
+
+.formularz .pole-wyboru select:focus, .formularz .pole-plik input:focus {
+    padding: 5px 5px 5px 5px;
+    border: solid 2px #96acc4;
+    background: #eefaff
+}
+
+.errorClass {
+    margin: -2px;
+    border: solid 2px #fc0000 !important
+}
+
+.edytorek_errorClass iframe {
+    width: 351px !important;
+    margin: -2px;
+    border: solid 2px #fc0000 !important
+}
+
+.przyciski {
+    overflow: hidden;
+    margin: 20px 0px 0px 0px;
+    height: auto;
+    text-align: center
+}
+
+.przyciski-lewa {
+    float: left;
+    padding: 10px 0px 10px 0px;
+    width: 230px;
+    height: 30px;
+    text-align: center
+}
+
+.przyciski-prawa {
+    float: left;
+    padding: 10px 0px 10px 20px;
+    width: 600px;
+    height: 30px;
+    background: url(/szablony/eso/images/linia-pionowa.gif) repeat-y left 0px;
+    text-align: left
+}
+
+.przycisk {
+    margin: 0px 5px 0px 5px;
+    padding: 0px 0px 4px 0px;
+    padding: 0px 0px 2px 0px  \9;
+    width: 75px;
+    height: 32px;
+    border-style: none;
+    background: url(/szablony/eso/images/przyciski.gif) no-repeat 0px 0px;
+    font-family: Tahoma, Georgia, Garamond, Verdana;
+    font-size: 15px;
+    font-weight: bold;
+    color: #ffffff;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer
+}
+
+.przycisk_formularz {
+    margin: 0px 5px 0px 5px;
+    padding: 0px 0px 4px 0px;
+    padding: 0px 0px 2px 0px  \9;
+    width: 150px;
+    height: 32px;
+    border-style: none;
+    background: url(/szablony/eso/images/przyciski.gif) no-repeat 0px -139px;
+    font-family: Tahoma, Georgia, Garamond, Verdana;
+    font-size: 15px;
+    font-weight: bold;
+    color: #ffffff;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer
+}
+
+.pliki .plik {
+    margin: 0px 0px 20px 0px
+}
+
+.pliki .plik img {
+    margin: 0px 5px 0px 2px;
+    vertical-align: middle
+}
+
+.pliki .plik a {
+    vertical-align: middle
+}
+
+.pliki .plik p {
+    margin: 5px 0px 5px 0px
+}
+
+.blok, .blok p {
+    margin: 0px 0px 20px 0px
+}
+
+.blok-obrazek {
+    margin: 0px
+}
+
+.obrazek, .obrazek img {
+    text-align: center
+}
+
+.obrazek a {
+    display: block
+}
+
+.blok-kategorie-gora {
+    overflow: hidden;
+    margin: 55px 10px 12px 10px;
+    height: auto
+}
+
+.blok-kategorie-gora ul {
+    margin: 0px;
+    padding: 0px
+}
+
+.blok-kategorie-gora ul li {
+    display: inline-block;
+    *display: inline;
+    margin: 0px;
+    padding: 0px;
+    background: none;
+    line-height: 24px;
+    vertical-align: middle
+}
+
+.blok-kategorie-gora ul li a {
+    display: inline;
+    margin: 0px;
+    padding: 0px 15px 0px 15px;
+    font-size: 20px;
+    font-weight: normal;
+    color: #ffffff;
+    text-decoration: none
+}
+
+.blok-kategorie-gora ul li a:hover, .blok-kategorie-gora ul li a.aktywny {
+    color: #f6ad44;
+    text-decoration: none
+}
+
+.blok-kategorie-gora table td {
+    padding: 0px 15px 0px 0px;
+    white-space: nowrap
+}
+
+.blok-kategorie-dol {
+    overflow: hidden;
+    height: auto;
+    border-top: 1px solid #B4C4D5
+}
+
+.blok-kategorie-dol ul {
+    margin: 0px !important;
+    padding: 20px 0px 20px 235px
+}
+
+.blok-kategorie-dol ul li {
+    float: left;
+    margin: 0px 30px 0px 0px;
+    padding: 0px 20px 0px 0px;
+    border-right: 1px solid #B4C4D5;
+    background: none;
+    white-space: nowrap
+}
+
+.blok-kategorie-dol ul li.last {
+    border-right: 0px !important
+}
+
+.blok-kategorie-dol ul li a {
+    font-size: 11px;
+    color: #50749b;
+    text-decoration: none
+}
+
+.blok-kategorie-dol ul li a:hover, .blok-kategorie-dol ul li a.aktywny {
+    color: #f48923;
+    text-decoration: none
+}
+
+.blok-kategorie-lewa {
+    overflow: hidden;
+    background: url(/szablony/eso/images/kategorie-lewa.gif) no-repeat 0px 0px;
+    margin: 0px 0px 20px 0px
+}
+
+.menu-lewa {
+    padding: 17px 40px 39px 15px;
+    width: 175px;
+    min-height: 350px;
+    background: url(/szablony/eso/images/kategorie-lewa-dol.gif) no-repeat 0px bottom
+}
+
+.blok-kategorie-lewa ul {
+    margin: 0px;
+    padding: 0px
+}
+
+.blok-kategorie-lewa ul ul {
+    margin: 5px 0px 5px 10px !important;
+    padding: 0px
+}
+
+.blok-kategorie-lewa ul li {
+    margin: 0px 0px 5px 0px;
+    padding: 0px;
+    background: none;
+    line-height: 21px;
+    *line-height: 24px;
+    *list-style-position: outside
+}
+
+.blok-kategorie-lewa ul li a {
+    display: block;
+    margin: 0px;
+    padding: 0px;
+    font-size: 20px;
+    font-weight: normal;
+    color: #ffffff;
+    text-decoration: none
+}
+
+.blok-kategorie-lewa ul ul li {
+    line-height: 17px;
+    *line-height: 20px;
+    *list-style-position: outside
+}
+
+.blok-kategorie-lewa ul ul li a {
+    font-size: 16px;
+    font-weight: bold
+}
+
+.blok-kategorie-lewa ul li a:hover, .blok-kategorie-lewa ul li a.aktywny {
+    color: #f6ad44;
+    text-decoration: none
+}
+
+.partnerzy {
+    overflow: hidden;
+    padding: 20px 0px 20px 0px;
+    height: 60px !important
+}
+
+.partnerzy .partnerzy-napis {
+    float: left;
+    width: 180px;
+    height: 60px;
+    background: url(/szablony/eso/images/partnerzy.gif) no-repeat 0px 0px;
+    cursor: auto
+}
+
+.partnerzy ul {
+    float: left;
+    margin: 0px;
+    padding: 0px;
+    z-index: 0
+}
+
+.partnerzy .partner {
+    float: left;
+    margin: 0px 1px 0px 1px;
+    padding: 5px 0px 5px 0px;
+    width: 145px;
+    height: 50px;
+    background: none;
+    text-align: left;
+    z-index: 0
+}
+
+.partnerzy .partner-aktywny {
+    border: solid 1px #b4c4d5
+}
+
+.partnerzy .partner a {
+    display: block;
+    width: 145px;
+    height: 50px
+}
+
+.partnerzy .partnerzy-lewa, .partnerzy .partnerzy-prawa {
+    float: left;
+    width: 30px;
+    height: 60px;
+    cursor: auto
+}
+
+.partnerzy .partnerzy-lewa {
+    background: url(/szablony/eso/images/partnerzy.gif) no-repeat -180px 0px
+}
+
+.partnerzy .partnerzy-prawa {
+    background: url(/szablony/eso/images/partnerzy.gif) no-repeat -240px 0px
+}
+
+.partnerzy .lewa-akt {
+    background: url(/szablony/eso/images/partnerzy.gif) no-repeat -210px 0px;
+    cursor: pointer
+}
+
+.partnerzy .prawa-akt {
+    background: url(/szablony/eso/images/partnerzy.gif) no-repeat -270px 0px;
+    cursor: pointer
+}
+
+.modul, .modul p {
+    margin: 0px 0px 10px 0px
+}
+
+.mapa {
+    overflow: hidden;
+    height: auto
+}
+
+.mapa ul {
+    float: left;
+    overflow: visible;
+    margin: 0px
+}
+
+.mapa ul li {
+    margin: 0px 0px 0px -1px;
+    *margin: 0px 0px 0px -16px;
+    padding: 10px;
+    width: 130px;
+    background: url(/szablony/eso/images/linia-pionowa.gif) repeat-y left 0px;
+    line-height: 15px
+}
+
+.mapa ul li:hover a {
+    color: #23426a
+}
+
+.mapa ul li a {
+    display: block;
+    margin: 0px 0px 10px 0px;
+    background: none;
+    color: #50749b;
+    font-size: 13px;
+    font-weight: bold;
+    text-decoration: none
+}
+
+.mapa ul li a:hover {
+    color: #f48923 !important;
+    text-decoration: none
+}
+
+.mapa ul ul {
+    float: none;
+    overflow: visible
+}
+
+.mapa ul ul li {
+    margin: 0px;
+    padding: 0px;
+    width: auto;
+    height: auto;
+    background: none
+}
+
+.mapa ul ul li a {
+    padding: 0px 0px 0px 20px;
+    background: none;
+    color: #50749b;
+    font-size: 11px;
+    font-weight: normal;
+    text-decoration: none
+}
+
+.mapa ul ul li a:hover {
+    background: url(/szablony/eso/images/strzalka.gif) no-repeat 0px 3px;
+    color: #f48923 !important;
+    text-decoration: none
+}
+
+.zdjecie {
+    text-align: center;
+    font-size: 11px
+}
+
+.zdjecie a {
+    display: block
+}
+
+.szablon2 {
+    padding-left: 12px
+}
+
+.szablon3 {
+    padding-right: 12px
+}
+
+.szablon2 .zdjecie, .szablon3 .zdjecie, .szablon4 .zdjecie, .szablon5 .zdjecie {
+    padding: 0px 0px 2px 0px;
+    width: 187px
+}
+
+.szablon4 {
+    float: right;
+    margin: 2px 0px 0px 12px;
+    text-align: center
+}
+
+.szablon5, .miniaturka {
+    float: left;
+    margin: 2px 12px 0px 0px;
+    text-align: center
+}
+
+.miniaturka .zdjecie {
+    margin: 0px 0px 2px 0px;
+    width: 124px
+}
+
+.szablon4 .clear, .szablon5 .clear, .miniaturka .clear {
+    display: none
+}
+
+.blok .szablon7, .blok .galeria-zdjecie {
+    margin: 0px !important;
+    text-align: center
+}
+
+.blok .szablon7 .zdjecie, .blok .galeria-zdjecie .zdjecie {
+    float: left;
+    padding: 0px 4px 11px 4px !important;
+    width: 124px !important;
+    height: 94px !important
+}
+
+.modul .szablon7, .modul .galeria-zdjecie {
+    overflow: hidden;
+    margin: 0px 0px 0px 0px;
+    height: auto;
+    text-align: center
+}
+
+.modul .szablon7 .zdjecie, .modul .galeria-zdjecie .zdjecie {
+    float: left;
+    padding: 0px 18px 15px 18px;
+    width: 182px;
+    height: 139px
+}
+
+.blok .duze-zdjecie, .blok .video-zdjecie {
+    margin: 0px;
+    text-align: center
+}
+
+.blok .duze-zdjecie .zdjecie, .blok .video-zdjecie .zdjecie {
+    margin: 0px auto 0px auto;
+    padding: 0px !important;
+    width: 650px !important;
+    height: 361px !important
+}
+
+.opacity-window {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    opacity: 0.67;
+    filter: alpha(opacity=67);
+    -moz-opacity: 0.67;
+    width: 100%;
+    background: #b7c6d6;
+    z-index: 100
+}
+
+.opacity-form {
+    position: fixed;
+    top: 25%;
+    left: 50%;
+    margin: 0px 0px 0px -140px;
+    width: 280px;
+    z-index: 200
+}
+
+.opacity-form .boks {
+    background: url(/szablony/eso/images/komunikat.gif) repeat-y -280px 0px
+}
+
+.opacity-form .boks .boks-gora {
+    padding: 0px;
+    background: url(/szablony/eso/images/komunikat.gif) no-repeat 0px top
+}
+
+.opacity-form .boks .boks-dol {
+    overflow: hidden;
+    padding: 12px 12px 4px 12px;
+    height: auto;
+    background: url(/szablony/eso/images/komunikat.gif) no-repeat -560px bottom
+}
+
+.opacity-form .error {
+    padding: 30px 0px 0px;
+    min-height: 70px;
+    background: url(/szablony/eso/images/error.gif) no-repeat center 0px
+}
+
+.opacity-form .opis {
+    min-height: 70px;
+    font-family: Arial, Tahoma, Georgia, Garamond, Verdana;
+    font-size: 11px;
+    color: #3d74b1;
+    text-align: center
+}
+
+.opacity-form .opis b {
+    font-family: Arial, Tahoma, Georgia, Garamond, Verdana;
+    font-size: 14px;
+    color: #ff000c
+}
+
+.opacity-form .przycisk {
+    margin: 0px;
+    width: 90px;
+    height: 38px;
+    border-style: none;
+    background: url(/szablony/eso/images/przyciski.gif) no-repeat 0px -64px;
+    cursor: pointer
+}
+
+.blok-partnerzy .jcarousel-container {
+    float: left;
+    position: relative;
+    width: 735px;
+    height: 60px;
+    padding: 0px 30px 0px 30px
+}
+
+.blok-partnerzy .jcarousel-prev, .blok-partnerzy .jcarousel-prev:active, .blok-partnerzy .jcarousel-prev:hover {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    margin: 0px;
+    width: 30px;
+    height: 60px;
+    background: url(/szablony/eso/images/partnerzy.gif) no-repeat -210px 0px;
+    cursor: pointer
+}
+
+.blok-partnerzy .jcarousel-next, .blok-partnerzy .jcarousel-next:active, .blok-partnerzy .jcarousel-next:hover {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    margin: 0px;
+    width: 30px;
+    height: 60px;
+    background: url(/szablony/eso/images/partnerzy.gif) no-repeat -270px 0px;
+    cursor: pointer
+}
+
+.blok-partnerzy .jcarousel-prev-disabled, .blok-partnerzy .jcarousel-prev-disabled:active, .blok-partnerzy .jcarousel-prev-disabled:hover {
+    background: url(/szablony/eso/images/partnerzy.gif) no-repeat -180px 0px;
+    cursor: auto
+}
+
+.blok-partnerzy .jcarousel-next-disabled, .blok-partnerzy .jcarousel-next-disabled:active, .blok-partnerzy .jcarousel-next-disabled:hover {
+    background: url(/szablony/eso/images/partnerzy.gif) no-repeat -240px 0px;
+    cursor: auto
+}
+
+.blok-partnerzy .jcarousel-clip {
+    position: relative;
+    overflow: hidden;
+    width: 735px;
+    height: 60px;
+    z-index: 0
+}
+
+.bubbleInfo, .bubbleInfo1 {
+    position: relative
+}
+
+.trigger {
+    position: absolute;
+    left: 0px;
+    top: 0px
+}
+
+#stopka .trigger {
+    position: relative !important
+}
+
+.popup {
+    position: absolute;
+    display: none;
+    z-index: 50;
+    border-collapse: collapse
+}
+
+.popup td {
+    border: 0px !important
+}
+
+.popup td.corner {
+    height: 16px;
+    width: 16px
+}
+
+.popup td.topleft {
+    background: url(/szablony/eso/images/coda/bubble-1.gif) no-repeat 0px 0px;
+    line-height: 10px
+}
+
+.popup td.top {
+    height: 16px;
+    background: url(/szablony/eso/images/coda/bubble-2.gif) repeat-x 0px 0px;
+    line-height: 10px
+}
+
+.popup td.topright {
+    background: url(/szablony/eso/images/coda/bubble-3.gif) no-repeat 0px 0px;
+    line-height: 10px
+}
+
+.popup td.left {
+    background: url(/szablony/eso/images/coda/bubble-4.gif) repeat-y 0px 0px
+}
+
+.popup td.right {
+    background: url(/szablony/eso/images/coda/bubble-5.gif) repeat-y 0px 0px
+}
+
+.popup td.bottomleft {
+    background: url(/szablony/eso/images/coda/bubble-6.gif) no-repeat 0px 0px
+}
+
+.popup td.bottom {
+    background: url(/szablony/eso/images/coda/bubble-7.gif) repeat-x 0px 0px;
+    text-align: center
+}
+
+.popup td.bottom img {
+    display: block;
+    margin: 0 auto 0 auto
+}
+
+.popup td.bottomright {
+    background: url(/szablony/eso/images/coda/bubble-8.gif) no-repeat 0px 0px
+}
+
+.popup table.popup-contents {
+    background: url(/szablony/eso/images/coda/bubble-bg.gif) repeat-x 0px 0px
+}
+
+.popup table.popup-contents td {
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 20px;
+    color: #b8dbfa;
+    text-align: left
+}
+
+.checkbox {
+    margin: 0
+}
+
+.formularz-rejestracja ul.checkbox {
+    margin: 5px 0 5px 5px
+}
+
+.formularz-rejestracja {
+    overflow: hidden;
+    padding: 0px !important;
+    height: auto
+}
+
+.formularz-rejestracja .belka-glowna {
+    padding: 12px 20px 12px 20px;
+    width: 880px;
+    height: 16px;
+    background: url(/szablony/eso/images/sprzedaz-belka.jpg) no-repeat 0px 0px
+}
+
+.formularz-rejestracja .belka-glowna p {
+    margin: 0px;
+    font-size: 13px;
+    font-weight: bold;
+    color: #ffffff;
+    text-align: left
+}
+
+.formularz-rejestracja .belka-glowna b {
+    font-size: 11px;
+    font-weight: normal;
+    color: #50749b
+}
+
+.formularz-rejestracja ul {
+    margin: 20px 0 20px 5px
+}
+
+.formularz-rejestracja ul li {
+    *display: inline;
+    margin: 0px;
+    padding: 5px 10px;
+    background: none
+}
+
+.formularz-rejestracja input {
+    margin: 0px 0px 10px 10px;
+    *margin: 0px 0px 0px 10px;
+    padding-left: 3px;
+    border-top: 1px solid #BABABA;
+    border-left: 1px solid #BABABA;
+    border-bottom: 1px solid #F5F5F5;
+    border-right: 1px solid #F5F5F5;
+    background: #FAFAFA
+}
+
+.formularz-rejestracja label, .czas {
+    display: block;
+    clear: both;
+    position: relative
+}
+
+.formularz-rejestracja label span, .czas span {
+    display: block;
+    float: left;
+    width: 120px;
+    text-align: right
+}
+
+.formularz-rejestracja var, var.gwiazdka {
+    font-style: normal;
+    color: #f48923
+}
+
+.formularz-rejestracja label table input {
+    border: none
+}
+
+.formularz-rejestracja textarea {
+    margin: 0px 0px 10px 20px;
+    width: 90%;
+    border-top: 1px solid #BABABA;
+    border-left: 1px solid #BABABA;
+    border-bottom: 1px solid #F5F5F5;
+    border-right: 1px solid #F5F5F5;
+    background: #FAFAFA;
+    font-family: Tahoma;
+    font-size: 12px
+}
+
+.formularz-rejestracja input.radio {
+    margin: 0px 3px 0px 0px;
+    background: none;
+    vertical-align: middle
+}
+
+.formularz-rejestracja input.checkbox {
+    background: none;
+    border: 0px;
+    vertical-align: middle
+}
+
+.formularz-rejestracja select {
+    overflow: hidden;
+    margin: 0px 0px 10px 20px;
+    border-top: 1px solid #BABABA;
+    border-left: 1px solid #BABABA;
+    border-bottom: 1px solid #F5F5F5;
+    border-right: 1px solid #F5F5F5;
+    background: #FAFAFA
+}
+
+@media all and (-webkit-min-device-pixel-ratio:10000), not all and (-webkit-min-device-pixel-ratio:0) {
+    head~body .formularz-rejestracja .pole-wyboru {
+        margin: 0px 0px 10px 0px;
+        border-top: 1px solid #b7c6d6;
+        border-left: 1px solid #b7c6d6;
+        border-bottom: 1px solid #b7c6d6;
+        border-right: 1px solid #b7c6d6;
+        background: #ffffff
+    }
+}
+
+.formularz-stopka input {
+    margin-right: 20px
+}
+
+.formularz-rejestracja ul li.left {
+    display: inline-block;
+    *display: inline;
+    padding: 5px 12px
+}
+
+.formularz-rejestracja ul li.right {
+    float: right;
+    margin-right: 35px
+}
+
+.formularz-rejestracja .hidden {
+    display: none
+}
+
+.formularz-rejestracja div.tabelka {
+    float: left;
+    width: 33%;
+    text-align: center
+}
+
+.formularz-rejestracja p {
+    height: 20px
+}
+
+.formularz-rejestracja p.blue {
+    color: blue
+}
+
+.formularz-rejestracja p.bold {
+    font-weight: bold
+}
+
+ul.errorClass, li.errorClass {
+    margin: 20px 0px 20px 5px;
+    border: solid 2px #fc0000 !important
+}
+
+.formularz-rejestracja div.errorClass, .formularz-rejestracja p.errorClass {
+    border: solid 2px #fc0000 !important;
+    background: #FFFAFA;
+    font-weight: bold;
+    color: red
+}
+
+.wspolnicy-preloader {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    filter: alpha(opacity=50);
+    opacity: 0.5;
+    -moz-opacity: 0.5
+}
+
+.wspolnicy-img-preloader {
+    display: block;
+    margin: 20px auto 0px auto;
+    width: 32px;
+    height: 32px
+}
+
+.faq-list {
+    clear: both;
+    list-style-type: decimal
+}
+
+.faq-list h4 {
+    border-bottom: 1px solid #EBEBEB;
+    font-size: 12px;
+    line-height: 1.25;
+    margin-bottom: 1.25em;
+    padding-bottom: 0.5em;
+    margin-right: 20px
+}
+
+.faq-list h4 a {
+    color: #50749B !important;
+    border-bottom: 1px solid #ffffff !important;
+    font-weight: normal;
+    zoom: 1;
+    position: relative
+}
+
+.faq-list h4 a:hover {
+    color: #0000ff !important;
+    border-bottom: 1px solid #F48923 !important;
+    zoom: 1;
+    position: relative
+}
+
+.faq-content {
+    font-size: 11px;
+    padding: 0 15px 15px 0
+}
+
+.faq-list {
+    list-style-position: outside
+}
+
+.faq-list li {
+    margin-left: 30px
+}
+
+.faq-list li {
+    list-style-position: outside
+}
+
+.faq-list li h4, .faq-list li a {
+    cursor: pointer
+}
+
+.faq-list li a:hover {
+    text-decoration: none
+}
+
+.pager a, .pager b {
+    color: #646464;
+    display: inline;
+    margin-left: 10px
+}
+
+.bottom_prev {
+    background: url("/szablony/eso/images/partnerzy.gif") no-repeat scroll -211px 0 transparent;
+    cursor: pointer;
+    float: left;
+    height: 60px;
+    width: 29px
+}
+
+#jcarousel {
+    float: left
+}
+
+.bottom_next {
+    background: url("/szablony/eso/images/partnerzy.gif") no-repeat scroll -269px 0 transparent;
+    cursor: pointer;
+    float: left;
+    height: 60px;
+    width: 29px
+}
+
+.bottom_prev_hover {
+    background-position: -181px 0px
+}
+
+.bottom_next_hover {
+    background-position: -239px 0px
+}
+
+.formularz-rejestracyjny-print {
+    display: none
+}
+
+.lev3 {
+    margin-left: 10px
+}
+
+.aktualnosci-margines {
+    overflow: hidden;
+    margin-bottom: 30px;
+    padding: 0px 30px;
+    font-size: 12px;
+    font-weight: normal;
+    color: #50749b;
+    line-height: 20px
+}
+
+.aktualnosci-margines .miniaturka {
+    width: 187px;
+    height: 129px;
+    overflow: hidden;
+    foat: left
+}
+
+.aktualnosci-margines h3 {
+    font-size: 18px;
+    font-weight: normal;
+    margin: 0px
+}
+
+.aktualnosci-margines h3 a {
+    font-size: 18px;
+    font-weight: normal
+}
+
+.aktualnosci-margines h3 a:hover {
+    font-size: 18px;
+    font-weight: normal
+}
+
+.aktualnosci-margines .data {
+    font-size: 11px;
+    font-weight: normal;
+    color: #f3a331;
+    line-height: 15px;
+    margin: 7px 0px 10px
+}
+
+.aktualnosci-margines .glowna {
+    font-size: 12px;
+    font-weight: normal;
+    color: #f3a331;
+    margin: 0px;
+    padding: 0px 0px 0px 20px;
+    background: url(/szablony/eso/images/strzalka.gif) no-repeat 0px 3px
+}
+
+.akt_tresc {
+    line-height: 18px;
+    padding-left: 200px
+}
+
+.zobacz_pozostale_link {
+    width: 163px !important;
+    height: 32px !important;
+    border-style: none;
+    background: url(/szablony/eso/images/lista_akt_btn.gif) no-repeat 0px 0px;
+    cursor: pointer
+}
+
+.akt_tresc2 {
+    line-height: 18px;
+    padding-left: 0px
+}
+
+.aktualnosci-margines h3.brak_zdj {
+    padding-left: 0px;
+    font-size: 18px;
+    font-weight: normal;
+    margin: 0px
+}
+
+.aktualnosci-margines p {
+    margin-bottom: 10px
+}
+
+.aktualnosci-margines .szablon4 {
+    margin: -70px 0 0 12px
+}
+
+.aktualnosci-margines .szablon5 {
+    margin: -70px 12px 0 0px;
+    float: left;
+    height: 129px;
+    overflow: hidden;
+    width: 187px
+}
+
+.aktualnosci-margines .szablon7 {
+    float: left
+}
+
+.szablon7 .zdjecie {
+    float: left;
+    margin: 10px 10px;
+    color: #cdcdcd
+}
+
+.szablon4 .zdjecie {
+    margin-bottom: 10px;
+    color: #cdcdcd
+}
+
+.szablon5 .zdjecie {
+    color: #cdcdcd
+}
+
+.data_in {
+    max-width: 460px
+}
+
+.h3in {
+    max-width: 460px
+}
+
+.data_sz5 {
+    font-size: 11px;
+    font-weight: normal;
+    color: #f3a331;
+    line-height: 15px;
+    margin: 7px 0px 10px;
+    padding-left: 200px
+}
+
+.h3_sz5 {
+    padding-left: 200px
+}
+
+.szczeg_akt_stopka {
+    overflow: hidden;
+    padding: 0px 30px
+}
+
+.linia_akt_stopka {
+    padding: 20px 0;
+    overflow: hidden;
+    border-top: solid 1px #b7c6d6
+}
+
+.aktualnosci-margines .boks-wewnatrz {
+    padding: 0px
+}
+
+.aktualnosci-margines .boks-wewnatrz h3 {
+    margin: 0 0 20px
+}
+
+.sIFR {
+    font-weight: normal;
+    color: #ffffff;
+    font-size: 20px;
+    text-decoration: none
+}
+
+.sIFR a {
+    font-weight: normal;
+    color: #ffffff;
+    font-size: 20px;
+    text-decoration: none
+}
+
+.sIFR a:hover {
+    font-weight: normal;
+    color: #f6ad44;
+    text-decoration: none
+}
+
+.sIFR-aktywny {
+    font-weight: normal;
+    color: #f6ad44;
+    font-size: 20px;
+    text-decoration: none
+}
+
+.sIFR-aktywny a {
+    font-weight: normal;
+    color: #f6ad44;
+    font-size: 20px;
+    text-decoration: none
+}
+
+.sIFR-aktywny a:hover {
+    font-weight: normal;
+    color: #f6ad44;
+    text-decoration: none
+}
+
+.sIFR1 {
+    font-weight: normal;
+    color: #ffffff;
+    font-size: 12px;
+    text-decoration: none;
+    margin-left: 10px;
+    margin-top: -7px
+}
+
+.sIFR1 a {
+    font-weight: normal;
+    color: #ffffff;
+    font-size: 12px;
+    text-decoration: none
+}
+
+.sIFR1 a:hover {
+    font-weight: normal;
+    color: #f6ad44;
+    text-decoration: none
+}
+
+.sIFR1-aktywny {
+    font-weight: normal;
+    color: #f6ad44;
+    font-size: 12px;
+    text-decoration: none;
+    margin-left: 10px
+}
+
+.sIFR1-aktywny a {
+    font-weight: normal;
+    color: #f6ad44;
+    font-size: 12px;
+    text-decoration: none
+}
+
+.sIFR1-aktywny a:hover {
+    font-weight: normal;
+    color: #f6ad44;
+    text-decoration: none
+}
+
+.lev3 {
+    margin-left: 20px
+}
+
+.blok-kategorie-lewa span {
+    display: block;
+    margin-top: -6px
+}
+
+.typeface-js {
+    font-family: Myriad Pro
+}
+
+.blok-kategorie-lewa span:first-child {
+    margin-top: 0px
+}
+
+div.opis-linki {
+    background: none repeat scroll 0 0 #EEEEEE;
+    border: 1px solid #50749B;
+    padding: 5px 10px;
+    margin: 10px 0
+}
+
+div.opis-linki p {
+    margin: 0
+}
+
+div.reg7 {
+    float: left;
+    font-size: 11px;
+    margin: 10px 0 0 15px;
+    width: 600px
+}
+
+div.reg7 .opis, div.reg7 .opis p {
+    line-height: 16px;
+    margin: 0 0 5px
+}
+
+div.reg8 {
+    float: left;
+    margin: 0 0 0 10px;
+    font-size: 11px;
+    width: 355px
+}
+
+div.reg8 ul {
+    margin: 24px 0 20px 5px
+}
+
+.jcarousel-container {
+    position: relative
+}
+
+.jcarousel-clip {
+    z-index: 2;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+    position: relative
+}
+
+.jcarousel-list {
+    z-index: 1;
+    overflow: hidden;
+    position: relative;
+    top: 0;
+    left: 0;
+    margin: 0;
+    padding: 0
+}
+
+.jcarousel-list li, .jcarousel-item {
+    float: left;
+    list-style: none;
+    padding: 0px;
+    margin: 3px
+}
+
+.jcarousel-next {
+    z-index: 3;
+    display: none
+}
+
+.jcarousel-prev {
+    z-index: 3;
+    display: none
+}
+
+.jcarousel-skin-ie7 .jcarousel-container {
+    -moz-border-radius: 10px;
+    background: #D4D0C8;
+    border: 1px solid #808080;
+    position: relative
+}
+
+.jcarousel-skin-ie7 .jcarousel-container-horizontal {
+    padding: 4px 40px;
+    margin: 10px
+}
+
+.jcarousel-skin-ie7 .jcarousel-clip-horizontal {
+}
+
+.jcarousel-skin-ie7 .jcarousel-item:hover {
+    border-color: #808080
+}
+
+.jcarousel-skin-ie7 .jcarousel-item-placeholder {
+}
+
+.jcarousel-skin-ie7 .jcarousel-item {
+    background: #FFFFFF url(/szablony/eso/images/lightbox-ico-loading.gif) no-repeat center center
+}
+
+.jcarousel-skin-ie7 .jcarousel-next-horizontal {
+    position: absolute;
+    top: 30px;
+    right: 5px;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    background: transparent url(/szablony/eso/images/carousel/next-horizontal.gif) no-repeat 0 0
+}
+
+.jcarousel-skin-ie7 .jcarousel-next-horizontal:hover {
+    background-position: -32px 0
+}
+
+.jcarousel-skin-ie7 .jcarousel-next-horizontal:active {
+    background-position: -64px 0
+}
+
+.jcarousel-skin-ie7 .jcarousel-next-disabled-horizontal, .jcarousel-skin-ie7 .jcarousel-next-disabled-horizontal:hover, .jcarousel-skin-ie7 .jcarousel-next-disabled-horizontal:active {
+    cursor: default;
+    background-position: -96px 0
+}
+
+.jcarousel-skin-ie7 .jcarousel-prev-horizontal {
+    position: absolute;
+    top: 30px;
+    left: 5px;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    background: transparent url(/szablony/eso/images/carousel/prev-horizontal.gif) no-repeat 0 0
+}
+
+.jcarousel-skin-ie7 .jcarousel-prev-horizontal:hover {
+    background-position: -32px 0
+}
+
+.jcarousel-skin-ie7 .jcarousel-prev-horizontal:active {
+    background-position: -64px 0
+}
+
+.jcarousel-skin-ie7 .jcarousel-prev-disabled-horizontal, .jcarousel-skin-ie7 .jcarousel-prev-disabled-horizontal:hover, .jcarousel-skin-ie7 .jcarousel-prev-disabled-horizontal:active {
+    cursor: default;
+    background-position: -96px 0
+}
+
+body {
+    margin: 0px;
+    padding: 0px;
+    border-style: none;
+    background: #ffffff
+}
+
+body, td, th {
+    font-family: Tahoma, Georgia, Garamond, Verdana;
+    font-size: 13px;
+    font-weight: normal;
+    color: #50749b
+}
+
+td, th {
+    vertical-align: top
+}
+
+p {
+    margin: 0px;
+    padding: 0px;
+    line-height: 20px
+}
+
+img {
+    border-style: none
+}
+
+h1, h2, h3, h4, h5, h6, h7 {
+    margin: 0px;
+    padding: 0px
+}
+
+h1 {
+    font-size: 26px;
+    font-weight: normal;
+    color: #3d3d3d
+}
+
+h2 {
+    font-size: 24px;
+    font-weight: normal;
+    color: #23426a
+}
+
+h1 a, h1 a:hover, h2 a, h2 a:hover {
+    color: #23426a
+}
+
+h3 {
+    margin: 0px 0px 20px 0px;
+    font-size: 15px;
+    font-weight: bold
+}
+
+h3 a, h3 a:hover {
+    font-weight: bold;
+    color: #50749b
+}
+
+a {
+    color: #f48923;
+    text-decoration: none
+}
+
+a:hover {
+    color: #f48923;
+    text-decoration: underline
+}
+
+ol, ul, li {
+    position: relative;
+    list-style-position: inside;
+    line-height: 20px
+}
+
+ol, ul {
+    overflow: hidden;
+    margin: 10px 0px 20px 5px;
+    padding: 0px;
+    height: auto
+}
+
+ol ol, ul ul {
+    margin: 0px !important;
+    padding: 0px
+}
+
+ol li {
+    margin: 0px 0px 0px 5px;
+    padding: 0px
+}
+
+ul li {
+    margin: 0px 0px 0px 5px;
+    *margin: 0px 0px 0px -10px;
+    padding: 0px 0px 0px 15px;
+    background: url(/szablony/eso/images/punktor-niebieski.gif) no-repeat 0px 6px;
+    list-style: none;
+    list-style-position: inside;
+    zoom: 1
+}
+
+.clear {
+    clear: both;
+    *margin-top: -5px;
+    zoom: 1;
+    line-height: 1px
+}
+
+.fix {
+    overflow: hidden;
+    height: 1%  !ie fix
+}
+
+.display-inline {
+    display: inline
+}
+
+.display-block {
+    display: block
+}
+
+.display-none {
+    display: none
+}
+
+.float-left {
+    float: left
+}
+
+.float-right {
+    float: right
+}
+
+object, a:active {
+    outline: none
+}
+
+object, a:focus {
+    -moz-outline-style: none
+}
+
+.opis ul, .opis ol {
+    overflow: hidden;
+    height: auto
+}
+
+.opis, .opis p {
+    line-height: 20px
+}
+
+.opis td {
+    border: 1px solid #B4C4D5
+}
+
+.opis .regulamin td {
+    border: none
+}
+
+.krok {
+    float: left;
+    height: 96px;
+    text-align: center
+}
+
+.krok a {
+    display: block
+}
+
+.ramka-zdjecia, .zdjecie img {
+    margin: 0px;
+    padding: 0px;
+    text-align: center
+}
+
+.wyroznienie, .wyroznienie a {
+    color: #f48923 !important
+}
+
+.przyciski {
+    overflow: hidden;
+    margin: 20px 0px 0px 0px;
+    height: auto;
+    text-align: center
+}
+
+.przyciski-lewa {
+    float: left;
+    padding: 10px 0px 10px 0px;
+    width: 230px;
+    height: 30px;
+    text-align: center
+}
+
+.przyciski-prawa {
+    float: left;
+    padding: 10px 0px 10px 20px;
+    width: 600px;
+    height: 30px;
+    background: url(/szablony/eso/images/linia-pionowa.gif) repeat-y left 0px;
+    text-align: left
+}
+
+.przycisk {
+    margin: 0px 2px 0px 2px;
+    padding: 0px 0px 4px 0px;
+    padding: 0px 0px 2px 0px  \9;
+    width: 75px;
+    height: 32px;
+    border-style: none;
+    background: url(/szablony/eso/images/przyciski.gif) no-repeat 0px 0px;
+    font-family: Tahoma, Georgia, Garamond, Verdana;
+    font-size: 15px;
+    font-weight: bold;
+    color: #ffffff;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer
+}
+
+.zdjecie {
+    text-align: center;
+    font-size: 11px
+}
+
+.zdjecie a {
+    display: block
+}
+
+.szablon2 {
+    padding-left: 12px
+}
+
+.szablon3 {
+    padding-right: 12px
+}
+
+.szablon2 .zdjecie, .szablon3 .zdjecie, .szablon4 .zdjecie, .szablon5 .zdjecie {
+    padding: 0px 0px 2px 0px;
+    width: 187px
+}
+
+.szablon4 {
+    float: right;
+    margin: 2px 0px 0px 12px;
+    text-align: center
+}
+
+.szablon5, .miniaturka {
+    float: left;
+    margin: 2px 12px 0px 0px;
+    text-align: center
+}
+
+.miniaturka .zdjecie {
+    margin: 0px 0px 2px 0px;
+    width: 124px
+}
+
+.szablon4 .clear, .szablon5 .clear, .miniaturka .clear {
+    display: none
+}
+
+.blok .szablon7, .blok .galeria-zdjecie {
+    margin: 0px !important;
+    text-align: center
+}
+
+.blok .szablon7 .zdjecie, .blok .galeria-zdjecie .zdjecie {
+    float: left;
+    padding: 0px 4px 11px 4px !important;
+    width: 124px !important;
+    height: 94px !important
+}
+
+.modul .szablon7, .modul .galeria-zdjecie {
+    overflow: hidden;
+    margin: 0px 0px 0px 0px;
+    height: auto;
+    text-align: center
+}
+
+.modul .szablon7 .zdjecie, .modul .galeria-zdjecie .zdjecie {
+    float: left;
+    padding: 0px 18px 15px 18px;
+    width: 182px;
+    height: 139px
+}
+
+.blok .duze-zdjecie, .blok .video-zdjecie {
+    margin: 0px;
+    text-align: center
+}
+
+.blok .duze-zdjecie .zdjecie, .blok .video-zdjecie .zdjecie {
+    margin: 0px auto 0px auto;
+    padding: 0px !important;
+    width: 650px !important;
+    height: 361px !important
+}
