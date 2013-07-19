@@ -12,7 +12,7 @@
 	<p>js</p>
 	<div class="sigPad signed">
 		<div class="sigWrapper">
-			<canvas class="pad" width="500" height="500"></canvas>
+			<canvas class="pad" width="400" height="200"></canvas>
 		</div>
 	</div>
 	<p>png 200x100</p>

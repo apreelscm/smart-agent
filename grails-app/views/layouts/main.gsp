@@ -30,6 +30,10 @@
                 <img src="${resource(dir: 'images', file: 'eService_logo.png')}" alt="Grails"/>
             </a>
         </div>
+        <div style="position:absolute;bottom:15px;right:100px;">
+        	<g:link controller="email">Email</g:link>
+        	<g:link controller="signature">Signature</g:link>
+        </div>
         <sec:ifLoggedIn>
             <div style="position:absolute;bottom: 15px;right:20px;">
                 <g:link controller="logout">Wyloguj</g:link>
@@ -37,11 +41,11 @@
         </sec:ifLoggedIn>
     </div>
 
-    <div id="content" >
-        <g:layoutBody/>
-    </div>
+		<div id="content">
+			<g:layoutBody />
+		</div>
 
-    <div class="footer" role="contentinfo">
+		<div class="footer" role="contentinfo">
         Copyright &copy;<g:formatDate format="yyyy" date="${new Date()}"/> eService. All rights reserved.
     </div>
 </div>
