@@ -19,10 +19,10 @@ public class SignatureToImage {
     public static BufferedImage convertJsonToImage(String jsonString){
         Gson gson = new Gson();
         SignatureLine[] signatureLines = gson.fromJson(jsonString, SignatureLine[].class);
-        BufferedImage offscreenImage = new BufferedImage(500, 500, BufferedImage.TYPE_INT_RGB);
+        BufferedImage offscreenImage = new BufferedImage(400, 200, BufferedImage.TYPE_INT_RGB);
         Graphics2D g2 = offscreenImage.createGraphics();
         g2.setColor(Color.WHITE);
-        g2.fillRect(0,0,500,500);
+        g2.fillRect(0,0,400,200);
         g2.setPaint(Color.BLACK);
         g2.setStroke(new BasicStroke(5));
         for (SignatureLine line : signatureLines) {

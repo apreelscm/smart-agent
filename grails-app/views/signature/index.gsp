@@ -16,7 +16,7 @@
     </ul>
     <div class="sig sigWrapper">
       <div class="typed"></div>
-      <canvas class="pad" width="500" height="500"></canvas>
+      <canvas class="pad" width="400" height="200"></canvas>
       <input type="hidden" name="signature" class="output">
     </div>
     <button type="submit">Submit</button>
