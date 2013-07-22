@@ -1,6 +1,7 @@
 <%@ page import="com.eservice.eumowy.Process" %>
 
-<table border="0" align="center" cellpadding="3" cellspacing="1" class="table">
+<table border="0" align="center" cellpadding="3" cellspacing="1" class="table"
+style="table-layout: fixed;">
     <thead>
     <tr>
         <g:sortableColumn title="Dokument" action="list" property="#" />

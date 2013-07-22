@@ -21,8 +21,9 @@
 
 
     <link rel="stylesheet" href="${resource(dir: 'css', file: 'mobile/mobile.css')}" type="text/css">
+
     <r:require module="modernizr" />
-    <g:javascript library="prototype" />
+    %{--<g:javascript library="prototype" />--}%
     <g:javascript library="jquery" />
     <g:layoutHead/>
     <r:layoutResources />
@@ -178,7 +179,9 @@
       </footer>--}%
 
     <footer class="rel" id="stopka">
-        <div style="float: left;">
+
+
+    <div style="float: left;">
             <div class="pko-bp">
                 <a class="spolka" href="http://www.pkobp.pl/firmy-wspolnoty-spoldzielnie/firmy/" target="_blank" title="Spółka należy do Grupy Kapitałowej PKO Banku Polskiego">Spółka należy do Grupy Kapitałowej PKO Banku Polskiego</a>
             </div>

@@ -67,9 +67,9 @@ grails.project.dependency.resolution = {
 
         compile ':cache:1.0.1'
 
-       /* compile(":liquibase:1.9.3.6") {
-            exclude 'data-source'
-        }*/
+        /* compile(":liquibase:1.9.3.6") {
+             exclude 'data-source'
+         }*/
     }
 
 

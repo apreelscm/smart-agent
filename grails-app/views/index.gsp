@@ -65,17 +65,5 @@
 		</style>
 	</head>
 	<body>
-		<div id="page-body" role="main">
-            <g:set var="username" value="${sec.username()} - ${sec.loggedInUserInfo(field: 'name')}" />
-            <h1>Witaj ${username}</h1>
-
-            <sec:ifAnyGranted roles="PH_ROLE">
-                <p>ph role</p>
-            </sec:ifAnyGranted>
-            <sec:ifAnyGranted roles="ADM_ROLE">
-                <p>admin role</p>
-            </sec:ifAnyGranted>
-
-		</div>
 	</body>
 </html>
