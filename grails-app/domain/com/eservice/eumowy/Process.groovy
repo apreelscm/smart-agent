@@ -24,7 +24,8 @@ class Process {
 
     String saleSection // TODO skad ?
 
-    List<DocumentFile> documents // TODO skad ?
+    List<DocumentFile> documents
+    List<AttachmentFile> attachments
 
     // TODO kolekcja czynnosci
 
@@ -32,7 +33,7 @@ class Process {
 
     String uid
 
-    static hasMany = [documents:DocumentFile]
+    static hasMany = [documents:DocumentFile, attachments:AttachmentFile]
 
     static constraints = {
         id(unique:true,blank:false)

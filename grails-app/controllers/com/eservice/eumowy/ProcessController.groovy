@@ -115,7 +115,7 @@ class ProcessController {
      * @return listTable html
      */
     def filterByStatus(String status) {
-        def filteredProcesses = Process.findAllByStatus(status)
+        def filteredProcesses = status !="" ?  Process.findAllByStatus(status) : Process.list(params);
         render template: 'table/listTable', model: [processInstanceList: filteredProcesses, processInstanceTotal: filteredProcesses.size()]
     }
 
@@ -129,4 +129,43 @@ class ProcessController {
         def documentfile = DocumentFile.get(id);
         render(template: 'pdf/embedDocument', model:  [pdfDocument: resource(dir:'files', file:documentfile.filename)]);
     }
+
+    def downloadDoc(String id){
+        log.info "downloadDoc id = ${id}";
+        def document = DocumentFile.get(Integer.valueOf(id));
+
+        log.info "documentDoc name =  ${document.filename}";
+
+        def fileDoc = new File("web-app\\files\\${document.filename}");
+        log.info fileDoc.absolutePath;
+
+        if(fileDoc.exists()){
+            // force download
+            def fileName = fileDoc.getName();
+            response.setContentType("application/pdf")
+            response.setHeader "Content-disposition", "attachment; filename=\"${fileName}\"";
+            response.outputStream << fileDoc.newInputStream();
+            response.outputStream.flush();
+        }
+    }
+
+    def downloadAtt(String id){
+        log.info "downloadAtt id = ${id}";
+        def attachment = AttachmentFile.get(Integer.valueOf(id));
+
+        log.info "documentDoc name =  ${attachment.filename}";
+
+        def fileAtt = new File("web-app\\files\\${attachment.filename}");
+        log.info fileAtt.absolutePath;
+
+        if(fileAtt.exists()){
+            def fileName = fileAtt.getName();
+            response.setContentType("application/pdf")
+            response.setHeader "Content-disposition", "attachment; filename=\"${fileName}\"";
+            response.outputStream << fileAtt.newInputStream();
+            response.outputStream.flush();
+        }
+    }
+
+
 }

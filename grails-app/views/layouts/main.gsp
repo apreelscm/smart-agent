@@ -12,8 +12,15 @@
     <link rel="shortcut icon" href="${resource(dir: 'images', file: 'favicon.png')}" type="image/x-icon">
     <link rel="apple-touch-icon" href="${resource(dir: 'images', file: 'apple-touch-icon.png')}">
     <link rel="apple-touch-icon" sizes="114x114" href="${resource(dir: 'images', file: 'apple-touch-icon-retina.png')}">
+
+    <link rel="stylesheet" href="${resource(dir: 'css', file: 'default-properties.css')}" type="text/css">
+    <link rel="stylesheet" href="${resource(dir: 'css', file: 'font-properties.css')}" type="text/css">
+    <link rel="stylesheet" href="${resource(dir: 'css', file: 'layout-properties.css')}" type="text/css">
+    <link rel="stylesheet" href="${resource(dir: 'css', file: 'table-properties.css')}" type="text/css">
     <link rel="stylesheet" href="${resource(dir: 'css', file: 'eumowy.css')}" type="text/css">
-    <link rel="stylesheet" href="${resource(dir: 'css', file: 'mobile.css')}" type="text/css">
+
+
+    <link rel="stylesheet" href="${resource(dir: 'css', file: 'mobile/mobile.css')}" type="text/css">
     <r:require module="modernizr" />
     <g:javascript library="prototype" />
     <g:javascript library="jquery" />
@@ -29,35 +36,10 @@
 
     <header style="position:relative;" class="mainHeader">
 
-
-        %{--        <a href="http://www.eservice.com.pl" title="Centrum Elektronicznych Usług Płatniczych">
-                    <img src="${resource(dir: 'images', file: 'eService_logo.png')}" alt="Grails"/>
-                </a>--}%
-
-%{--
-        <h2 style="visibility: visible;" id="logo">
-            <a href="http://www.eserviceonline.pl" title="eService Online - Płatności internetowe" accesskey="1"><span>przelewy online</span></a>
-        </h2>--}%
-
-
-    %{--    <h2 id="logo">
-            <a href="http://www.eserviceonline.pl" title="eService Online - Płatności internetowe" accesskey="1"><span>przelewy online</span></a>
-        </h2>--}%
-
-
-    %{--   <div class="blok-kategorie-gora">
-           <table align="left" cellpadding="0" cellspacing="0">
-               <tbody>
-               <tr>
-                   <td><span style="visibility: visible;" class="sIFR typeface-js"><a style="display: inline-block;" href="/o-nas/" title="O nas"><span class="typeface-js-vector-container"><canvas style="margin-top: 0px; margin-bottom: 0px;" width="18" height="24"></canvas><span style="margin-left: -19px; letter-spacing: -1.5px; width: 18px;" class="typeface-js-selected-text">O </span><canvas style="margin-top: 0px; margin-bottom: 0px;" width="29" height="24"></canvas><span style="margin-left: -30px; letter-spacing: -1px; width: 29px;" class="typeface-js-selected-text">nas</span></span></a></span></td>
-                   <td><span style="visibility: visible;" class="sIFR typeface-js"><a style="display: inline-block;" href="/oferta/" title="Oferta"><span class="typeface-js-vector-container"><canvas style="margin-top: 0px; margin-bottom: 0px;" width="52" height="24"></canvas><span style="margin-left: -53px; letter-spacing: -0.666667px; width: 52px;" class="typeface-js-selected-text">Oferta</span></span></a></span></td>
-               </tr>
-               </tbody>
-           </table>
-       </div>--}%
+        <figure id="smallLogo"/>
 
         <sec:ifLoggedIn>
-            <div style="position:absolute;top: 6px;right:50px;">
+            <div class="userInfoBar">
                 %{--   <g:link controller="logout">Wyloguj</g:link>--}%
                 <g:set var="phFullName" value="${sec.loggedInUserInfo(field: 'name')}" />
                 <g:set var="phId" value="${sec.loggedInUserInfo(field: 'id')}" />
@@ -92,7 +74,8 @@
             width: 70px;
             color: #EAFFED;
             white-space: nowrap;
-            font-size: 14px;
+            font-size: 15px;
+
         }
 
         #jsddm li a:hover
@@ -194,7 +177,7 @@
           </div>
       </footer>--}%
 
-    <div id="stopka" class="rel">
+    <footer class="rel" id="stopka">
         <div style="float: left;">
             <div class="pko-bp">
                 <a class="spolka" href="http://www.pkobp.pl/firmy-wspolnoty-spoldzielnie/firmy/" target="_blank" title="Spółka należy do Grupy Kapitałowej PKO Banku Polskiego">Spółka należy do Grupy Kapitałowej PKO Banku Polskiego</a>
@@ -210,7 +193,7 @@
                 <span>Realizacja: <a href="http://www.apreel.pl/" target="_blank" title="apreel">apreel</a></span>
             </p>
         </div>
-    </div>
+    </footer>
 
     <div id="spinner" class="spinner" style="display:none;"><g:message code="spinner.alt" default="Loading&hellip;"/></div>
     <g:javascript library="application"/>

@@ -8,10 +8,8 @@
 </head>
 <body class="processListPage">
 
-<a href="#list-process" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
-
 <section id="list-process" class="content scaffold-list" role="main">
-    <h1><g:message code="process.list.label" /></h1>
+    <h1 class="ng"><g:message code="process.list.label" /></h1>
     <g:if test="${flash.message}">
         <div class="message" role="status">${flash.message}</div>
     </g:if>

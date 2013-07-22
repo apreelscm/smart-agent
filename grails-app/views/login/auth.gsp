@@ -104,8 +104,9 @@
 				<input type='password' class='text_' name='j_password' id='password'/>
 			</p>
 
-			<p>
-				<input type='submit' id="submit" value='${message(code: "springSecurity.login.button")}'/>
+			<p  style="margin-left: 1.5em">
+                <g:actionSubmit class="przycisk-submit" value='${message(code: "springSecurity.login.button")}'
+               />
 			</p>
 		</form>
 	</div>

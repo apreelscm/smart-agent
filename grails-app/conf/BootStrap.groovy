@@ -1,3 +1,4 @@
+import com.eservice.eumowy.AttachmentFile
 import com.eservice.eumowy.DocumentFile
 import com.eservice.eumowy.Process
 import groovy.sql.Sql
@@ -47,14 +48,18 @@ class BootStrap {
                 clientName: 'nazwa1', saleSection: 'segment1', phNumber: '12345',
                 phSurname: 'Kowalski', calcNumber: '44444' )
                 .addToDocuments(new DocumentFile(filename: "pedef.pdf"))
-                .addToDocuments(new DocumentFile(filename: "pedef2.pdf")).save();
+                .addToDocuments(new DocumentFile(filename: "pedef2.pdf"))
+                .addToAttachments(new AttachmentFile(filename: "pedef.pdf"))
+                .addToAttachments(new AttachmentFile(filename: "pedef2.pdf"))
+                .addToAttachments(new AttachmentFile(filename: "pedef3.pdf")).save();
 
 
         new Process(id: 2, phFirstName: "Wanda", clientNip: "11241412",
                 clientName: 'nazwa2', saleSection: 'segment2', phNumber: '321',
                 phSurname: 'Iksińska',calcNumber: '33333')
                 .addToDocuments(new DocumentFile(filename: "pedef.pdf"))
-                .addToDocuments(new DocumentFile(filename: "pedef2.pdf")).save();
+                .addToDocuments(new DocumentFile(filename: "pedef2.pdf"))
+                .addToAttachments(new AttachmentFile(filename: "pedef3.pdf")).save();
 
     }
 }

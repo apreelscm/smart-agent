@@ -6,7 +6,7 @@ package com.eservice.eumowy
  * Time: 15:20
  * To change this template use File | Settings | File Templates.
  */
-class DocumentFile {
+class AttachmentFile {
 
     Integer id
     String filename
@@ -21,7 +21,7 @@ class DocumentFile {
     }
 
     static mapping = {
-        table name: "DocumentFile", schema: "CBD_UMOWY"
+        table name: "AttachmentFile", schema: "CBD_UMOWY"
         autoTimestamp true
         version false
     }
