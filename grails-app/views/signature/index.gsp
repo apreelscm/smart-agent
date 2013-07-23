@@ -1,18 +1,19 @@
 <!DOCTYPE html>
 <head>
-  <title>Sign</title>
   <meta name="layout" content="main">
-  <link rel="stylesheet" href="${resource(dir: 'css', file: 'jquery.signaturepad.css')}">
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
-  <script src="${resource(dir: 'js', file: 'jquery.signaturepad.min.js')}"></script>
-  <script src="${resource(dir: 'js', file: 'json2.min.js')}"></script>
-  <script src="${resource(dir: 'js', file: 'flashcanvas.js')}"></script>
+  <link rel="stylesheet" href="${resource(dir: 'css', file: 'signaturepad.css')}" type="text/css">
+  <title>Sign</title>
+  <r:require module="signaturepad" />
 </head>
 <body>
+  <r:script>
+    jQuery(document).ready(function() {
+      jQuery('.sigPad').signaturePad();
+    });
+  </r:script>
   <form method="post" action="save" class="sigPad">
     <ul class="sigNav">
-      <li class="drawIt"><a href="#draw-it" class="current">Draw It</a></li>
-      <li class="clearButton"><a href="#clear">Clear</a></li>
+      <li class="clearButton"><a href="#clear">Wyczyść</a></li>
     </ul>
     <div class="sig sigWrapper">
       <div class="typed"></div>
@@ -21,10 +22,4 @@
     </div>
     <button type="submit">Submit</button>
   </form>
-  
-  <script>
-    $(document).ready(function() {
-      $('.sigPad').signaturePad();
-    });
-  </script>
 </body>

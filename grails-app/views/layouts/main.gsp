@@ -9,6 +9,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title><g:layoutTitle default="Grails"/></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
     <link rel="shortcut icon" href="${resource(dir: 'images', file: 'favicon.png')}" type="image/x-icon">
     <link rel="apple-touch-icon" href="${resource(dir: 'images', file: 'apple-touch-icon.png')}">
     <link rel="apple-touch-icon" sizes="114x114" href="${resource(dir: 'images', file: 'apple-touch-icon-retina.png')}">
@@ -18,15 +19,12 @@
     <link rel="stylesheet" href="${resource(dir: 'css', file: 'layout-properties.css')}" type="text/css">
     <link rel="stylesheet" href="${resource(dir: 'css', file: 'table-properties.css')}" type="text/css">
     <link rel="stylesheet" href="${resource(dir: 'css', file: 'eumowy.css')}" type="text/css">
-
-
     <link rel="stylesheet" href="${resource(dir: 'css', file: 'mobile/mobile.css')}" type="text/css">
-    <r:require module="modernizr" />
-    <g:javascript library="prototype" />
-    <g:javascript library="jquery" />
+    
+    <r:require module="jquery" />
+    
     <g:layoutHead/>
     <r:layoutResources />
-
 </head>
 
 
@@ -145,22 +143,24 @@
 
         </g:javascript>
 
-        <sec:ifLoggedIn>
-            <ul id="jsddm" style="position:relative;bottom: -5px;left:-10px;">
-                <li><a href="#">Menu</a>
-                    <ul>
-                        <li>
-                            <a href="${createLink(action: 'list')}">Zapisz</a>
-                        </li>
-                        <li>
-                            <a href="${createLink(controller: 'logout')}">Wyloguj</a>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-        </sec:ifLoggedIn>
+			<sec:ifLoggedIn>
+				<ul id="jsddm"
+					style="position: relative; bottom: -5px; left: -10px;">
+					<li><a href="#">Menu</a>
+						<ul>
+							<li><a href="${createLink(action: 'list')}">Zapisz</a></li>
+							<li><a href="${createLink(controller: 'logout')}">Wyloguj</a>
+							</li>
+						</ul></li>
+					<li><a href="#">development</a>
+						<ul>
+							<li><a href="${createLink(controller: 'email')}">Email</a></li>
+							<li><a href="${createLink(controller: 'signature')}">Podpis</a></li>
+						</ul></li>
+				</ul>
+			</sec:ifLoggedIn>
 
-    </header>
+		</header>
 
 
     <section class="mainContainer">
