@@ -12,7 +12,7 @@
 <body>
 
 <section id="show-process" class="content scaffold-list" role="main">
-    <h1 class="ng">${processInstance?.uid}</h1>
+    <h1 class="ng linia-bottom">${processInstance?.uid}</h1>
 
     <ul class="property-list" >
         <li style="margin:0em 0em 1em 0em;">

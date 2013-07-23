@@ -7,7 +7,7 @@ class ActivityController {
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
     def index() {
-        redirect(action: "create", params: params)
+        redirect(action: "create_defineActivity", params: params)
     }
 
     def list(Integer max) {
@@ -15,9 +15,14 @@ class ActivityController {
         [activityInstanceList: Activity.list(params), activityInstanceTotal: Activity.count()]
     }
 
-    def create() {
+    def create_defineActivity() {
         [activityInstance: new Activity(params)]
     }
+
+    def create_chooseCalc() {
+        [activityInstance: new Activity(params)]
+    }
+
 
     def save() {
         def activityInstance = new Activity(params)
@@ -98,5 +103,20 @@ class ActivityController {
             flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'activity.label', default: 'Activity'), id])
             redirect(action: "show", id: id)
         }
+    }
+
+
+    //OTHERS
+    def verifyClientNIP(String nipNumber) {
+        if(nipNumber == "1"){
+            flash.nipInfoMessage = message(code: 'todo', default: 'Znaleziono')
+            flash.calcErrorMessage = message(code: 'todo', default: 'Klient już istnieje / Istnieją niezaakcpetowane dokumenty')
+        }
+        else{
+            flash.nipErrorMessage = message(code: 'todo', default: 'Klient już istnieje / Istnieją niezaakcpetowane dokumenty')
+        }
+
+        log.info nipNumber
+        redirect(action: "create_chooseCalc", clientNip: nipNumber)
     }
 }

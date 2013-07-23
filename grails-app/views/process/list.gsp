@@ -9,7 +9,7 @@
 <body class="processListPage">
 
 <section id="list-process" class="content scaffold-list" role="main">
-    <h1 class="ng"><g:message code="process.list.label" /></h1>
+    <h1 class="ng linia-bottom"><g:message code="process.list.label" /></h1>
     <g:if test="${flash.message}">
         <div class="message" role="status">${flash.message}</div>
     </g:if>

@@ -19,15 +19,13 @@
     <link rel="stylesheet" href="${resource(dir: 'css', file: 'table-properties.css')}" type="text/css">
     <link rel="stylesheet" href="${resource(dir: 'css', file: 'eumowy.css')}" type="text/css">
 
-
     <link rel="stylesheet" href="${resource(dir: 'css', file: 'mobile/mobile.css')}" type="text/css">
 
     <r:require module="modernizr" />
     %{--<g:javascript library="prototype" />--}%
     <g:javascript library="jquery" />
-    <g:layoutHead/>
     <r:layoutResources />
-
+    <g:layoutHead/>
 </head>
 
 
@@ -76,7 +74,6 @@
             color: #EAFFED;
             white-space: nowrap;
             font-size: 15px;
-
         }
 
         #jsddm li a:hover
@@ -181,7 +178,7 @@
     <footer class="rel" id="stopka">
 
 
-    <div style="float: left;">
+  %{--  <div style="float: left;">
             <div class="pko-bp">
                 <a class="spolka" href="http://www.pkobp.pl/firmy-wspolnoty-spoldzielnie/firmy/" target="_blank" title="Spółka należy do Grupy Kapitałowej PKO Banku Polskiego">Spółka należy do Grupy Kapitałowej PKO Banku Polskiego</a>
             </div>
@@ -195,7 +192,8 @@
             <p style="float: right">
                 <span>Realizacja: <a href="http://www.apreel.pl/" target="_blank" title="apreel">apreel</a></span>
             </p>
-        </div>
+        </div>--}%
+
     </footer>
 
     <div id="spinner" class="spinner" style="display:none;"><g:message code="spinner.alt" default="Loading&hellip;"/></div>
