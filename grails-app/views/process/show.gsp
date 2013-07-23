@@ -72,7 +72,7 @@
         <g:checkBox name="observe"/> Obserwuj
     </p>
 
-    <section>
+    <nav>
         <g:form>
             <fieldset class="przyciski">
                 <g:hiddenField name="uid" value="${processInstance.uid}"/>
@@ -87,7 +87,7 @@
 
             </fieldset>
         </g:form>
-    </section>
+    </nav>
 
 </section>
 </body>
