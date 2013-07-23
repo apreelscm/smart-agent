@@ -2,7 +2,7 @@ package com.eservice.eumowy
 
 class EmailController {
 	
-	EmailService emailService
+	def emailService
 
     def index() { }
 	

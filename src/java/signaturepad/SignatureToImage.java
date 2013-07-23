@@ -24,7 +24,7 @@ public class SignatureToImage {
         g2.setColor(Color.WHITE);
         g2.fillRect(0,0,400,200);
         g2.setPaint(Color.BLACK);
-        g2.setStroke(new BasicStroke(5));
+        g2.setStroke(new BasicStroke(3));
         for (SignatureLine line : signatureLines) {
             g2.drawLine(line.lx, line.ly, line.mx, line.my);
         }
