@@ -153,12 +153,8 @@
 							<li><a href="${createLink(action: 'list')}">Zapisz</a></li>
 							<li><a href="${createLink(controller: 'logout')}">Wyloguj</a>
 							</li>
-						</ul></li>
-					<li><a href="#">development</a>
-						<ul>
-							<li><a href="${createLink(controller: 'email')}">Email</a></li>
-							<li><a href="${createLink(controller: 'signature')}">Podpis</a></li>
-						</ul></li>
+						</ul>
+					</li>
 				</ul>
 			</sec:ifLoggedIn>
 
