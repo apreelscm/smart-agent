@@ -1,4 +1,4 @@
-package secure
+package com.eservice.eumowy.secure
 
 import org.apache.commons.lang.builder.HashCodeBuilder
 

@@ -1,4 +1,4 @@
-package secure
+package com.eservice.eumowy.secure
 
 class SecUser {
 

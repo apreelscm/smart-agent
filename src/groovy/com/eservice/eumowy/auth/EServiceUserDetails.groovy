@@ -1,4 +1,4 @@
-package eservice.auth
+package com.eservice.eumowy.auth
 
 import org.codehaus.groovy.grails.plugins.springsecurity.GrailsUser
 import org.springframework.security.core.GrantedAuthority
