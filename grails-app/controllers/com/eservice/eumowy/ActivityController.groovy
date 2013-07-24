@@ -1,7 +1,5 @@
 package com.eservice.eumowy
 
-import org.springframework.dao.DataIntegrityViolationException
-
 class ActivityController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
@@ -23,100 +21,36 @@ class ActivityController {
         [activityInstance: new Activity(params)]
     }
 
+    def create_clientSignature() {
+        [activityInstance: new Activity(params)]
+    }
+
+    def create_chooseActivity() {
+        [activityInstance: new Activity(params)]
+    }
 
     def save() {
-        def activityInstance = new Activity(params)
-        if (!activityInstance.save(flush: true)) {
-            render(view: "create", model: [activityInstance: activityInstance])
-            return
-        }
-
-        flash.message = message(code: 'default.created.message', args: [message(code: 'activity.label', default: 'Activity'), activityInstance.id])
-        redirect(action: "show", id: activityInstance.id)
-    }
-
-    def show(Long id) {
-        def activityInstance = Activity.get(id)
-        if (!activityInstance) {
-            flash.message = message(code: 'default.not.found.message', args: [message(code: 'activity.label', default: 'Activity'), id])
-            redirect(action: "list")
-            return
-        }
-
-        [activityInstance: activityInstance]
-    }
-
-    def edit(Long id) {
-        def activityInstance = Activity.get(id)
-        if (!activityInstance) {
-            flash.message = message(code: 'default.not.found.message', args: [message(code: 'activity.label', default: 'Activity'), id])
-            redirect(action: "list")
-            return
-        }
-
-        [activityInstance: activityInstance]
-    }
-
-    def update(Long id, Long version) {
-        def activityInstance = Activity.get(id)
-        if (!activityInstance) {
-            flash.message = message(code: 'default.not.found.message', args: [message(code: 'activity.label', default: 'Activity'), id])
-            redirect(action: "list")
-            return
-        }
-
-        if (version != null) {
-            if (activityInstance.version > version) {
-                activityInstance.errors.rejectValue("version", "default.optimistic.locking.failure",
-                        [message(code: 'activity.label', default: 'Activity')] as Object[],
-                        "Another user has updated this Activity while you were editing")
-                render(view: "edit", model: [activityInstance: activityInstance])
-                return
-            }
-        }
-
-        activityInstance.properties = params
-
-        if (!activityInstance.save(flush: true)) {
-            render(view: "edit", model: [activityInstance: activityInstance])
-            return
-        }
-
-        flash.message = message(code: 'default.updated.message', args: [message(code: 'activity.label', default: 'Activity'), activityInstance.id])
-        redirect(action: "show", id: activityInstance.id)
-    }
-
-    def delete(Long id) {
-        def activityInstance = Activity.get(id)
-        if (!activityInstance) {
-            flash.message = message(code: 'default.not.found.message', args: [message(code: 'activity.label', default: 'Activity'), id])
-            redirect(action: "list")
-            return
-        }
-
-        try {
-            activityInstance.delete(flush: true)
-            flash.message = message(code: 'default.deleted.message', args: [message(code: 'activity.label', default: 'Activity'), id])
-            redirect(action: "list")
-        }
-        catch (DataIntegrityViolationException e) {
-            flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'activity.label', default: 'Activity'), id])
-            redirect(action: "show", id: id)
-        }
+        //TODO implement
     }
 
 
+     //--------------
     //OTHERS
+    //--------------
     def verifyClientNIP(String nipNumber) {
+        //TODO implement proper logic
+        flash.clientNip = nipNumber;
         if(nipNumber == "1"){
             flash.nipInfoMessage = message(code: 'todo', default: 'Znaleziono')
-            flash.calcErrorMessage = message(code: 'todo', default: 'Klient już istnieje / Istnieją niezaakcpetowane dokumenty')
+            flash.calcInfoMessage = message(code: 'todo', default: 'Znaleziono')
+            //flash.calcErrorMessage = message(code: 'todo', default: 'Klient już istnieje / Istnieją niezaakcpetowane dokumenty')
+
+            flash.clientCalcNumber = 123456
         }
         else{
             flash.nipErrorMessage = message(code: 'todo', default: 'Klient już istnieje / Istnieją niezaakcpetowane dokumenty')
         }
 
-        log.info nipNumber
-        redirect(action: "create_chooseCalc", clientNip: nipNumber)
+        redirect(action: "create_chooseCalc")
     }
 }

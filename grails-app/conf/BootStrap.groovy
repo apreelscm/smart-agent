@@ -61,5 +61,111 @@ class BootStrap {
                 .addToDocuments(new DocumentFile(filename: "pedef2.pdf"))
                 .addToAttachments(new AttachmentFile(filename: "pedef3.pdf")).save();
 
+       /* new Process( phFirstName: "Wanda", clientNip: "11241412",
+                clientName: 'nazwa2', saleSection: 'segment2', phNumber: '321',
+                phSurname: 'Iksińska',calcNumber: '33333')
+                .addToDocuments(new DocumentFile(filename: "pedef.pdf"))
+                .addToDocuments(new DocumentFile(filename: "pedef2.pdf"))
+                .addToAttachments(new AttachmentFile(filename: "pedef3.pdf")).save();
+
+
+        new Process( phFirstName: "Wanda", clientNip: "11241412",
+                clientName: 'nazwa2', saleSection: 'segment2', phNumber: '321',
+               phSurname: 'Iksińska',calcNumber: '33333').save();
+
+        new Process( phFirstName: "Wanda", clientNip: "11241412",
+                clientName: 'nazwa2', saleSection: 'segment2', phNumber: '321',
+                phSurname: 'Iksińska',calcNumber: '33333').save();
+
+        new Process( phFirstName: "Wanda", clientNip: "11241412",
+                clientName: 'nazwa2', saleSection: 'segment2', phNumber: '321',
+                phSurname: 'Iksińska',calcNumber: '33333').save();
+
+        new Process( phFirstName: "Wanda", clientNip: "11241412",
+                clientName: 'nazwa2', saleSection: 'segment2', phNumber: '321',
+                phSurname: 'Iksińska',calcNumber: '33333').save();
+
+        new Process( phFirstName: "Wanda", clientNip: "11241412",
+                clientName: 'nazwa2', saleSection: 'segment2', phNumber: '321',
+                phSurname: 'Iksińska',calcNumber: '33333').save();
+
+        new Process( phFirstName: "Wanda", clientNip: "11241412",
+                clientName: 'nazwa2', saleSection: 'segment2', phNumber: '321',
+                phSurname: 'Iksińska',calcNumber: '33333').save();
+
+        new Process( phFirstName: "Wanda", clientNip: "11241412",
+                clientName: 'nazwa2', saleSection: 'segment2', phNumber: '321',
+                phSurname: 'Iksińska',calcNumber: '33333').save();
+
+        new Process( phFirstName: "Wanda", clientNip: "11241412",
+                clientName: 'nazwa2', saleSection: 'segment2', phNumber: '321',
+                phSurname: 'Iksińska',calcNumber: '33333').save();
+
+        new Process( phFirstName: "Wanda", clientNip: "11241412",
+                clientName: 'nazwa2', saleSection: 'segment2', phNumber: '321',
+                phSurname: 'Iksińska',calcNumber: '33333').save();
+
+        new Process( phFirstName: "Wanda", clientNip: "11241412",
+                clientName: 'nazwa2', saleSection: 'segment2', phNumber: '321',
+                phSurname: 'Iksińska',calcNumber: '33333').save();
+
+        new Process( phFirstName: "Wanda", clientNip: "11241412",
+                clientName: 'nazwa2', saleSection: 'segment2', phNumber: '321',
+                phSurname: 'Iksińska',calcNumber: '33333').save();
+
+        new Process( phFirstName: "Wanda", clientNip: "11241412",
+                clientName: 'nazwa2', saleSection: 'segment2', phNumber: '321',
+                phSurname: 'Iksińska',calcNumber: '33333').save();
+
+        new Process( phFirstName: "Wanda", clientNip: "11241412",
+                clientName: 'nazwa2', saleSection: 'segment2', phNumber: '321',
+                phSurname: 'Iksińska',calcNumber: '33333').save();
+
+        new Process( phFirstName: "Wanda", clientNip: "11241412",
+                clientName: 'nazwa2', saleSection: 'segment2', phNumber: '321',
+                phSurname: 'Iksińska',calcNumber: '33333').save();
+
+        new Process( phFirstName: "Wanda", clientNip: "11241412",
+                clientName: 'nazwa2', saleSection: 'segment2', phNumber: '321',
+                phSurname: 'Iksińska',calcNumber: '33333').save();
+        new Process( phFirstName: "Wanda", clientNip: "11241412",
+                clientName: 'nazwa2', saleSection: 'segment2', phNumber: '321',
+                phSurname: 'Iksińska',calcNumber: '33333').save();
+
+
+        new Process( phFirstName: "Wanda", clientNip: "11241412",
+                clientName: 'nazwa2', saleSection: 'segment2', phNumber: '321',
+                phSurname: 'Iksińska',calcNumber: '33333').save();
+
+
+        new Process( phFirstName: "Wanda", clientNip: "11241412",
+                clientName: 'nazwa2', saleSection: 'segment2', phNumber: '321',
+                phSurname: 'Iksińska',calcNumber: '33333').save();
+
+        new Process( phFirstName: "Wanda", clientNip: "11241412",
+                clientName: 'nazwa2', saleSection: 'segment2', phNumber: '321',
+                phSurname: 'Iksińska',calcNumber: '33333').save();
+
+        new Process( phFirstName: "Wanda", clientNip: "11241412",
+                clientName: 'nazwa2', saleSection: 'segment2', phNumber: '321',
+                phSurname: 'Iksińska',calcNumber: '33333').save();
+
+
+        new Process( phFirstName: "Wanda", clientNip: "11241412",
+                clientName: 'nazwa2', saleSection: 'segment2', phNumber: '321',
+                phSurname: 'Iksińska',calcNumber: '33333').save();
+
+        new Process( phFirstName: "Wanda", clientNip: "11241412",
+                clientName: 'nazwa2', saleSection: 'segment2', phNumber: '321',
+                phSurname: 'Iksińska',calcNumber: '33333').save();
+
+        new Process( phFirstName: "Wanda", clientNip: "11241412",
+                clientName: 'nazwa2', saleSection: 'segment2', phNumber: '321',
+                phSurname: 'Iksińska',calcNumber: '33333').save();
+
+        new Process( phFirstName: "Wanda", clientNip: "11241412",
+                clientName: 'nazwa2', saleSection: 'segment2', phNumber: '321',
+                phSurname: 'Iksińska',calcNumber: '33333').save();*/
+
     }
 }

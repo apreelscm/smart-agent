@@ -72,6 +72,8 @@ fieldset {
     color: #b7c6d6;
 }
 
+
+/*fix buttona bo gdy nie wszystkie stany zdefiniowane to mruga*/
 .przycisk-action {
     padding: .3em .4em .3em .4em;
     text-align: center;
@@ -89,9 +91,48 @@ fieldset {
 
 .przycisk-action:hover {
     color: #b7c6d6;
+    padding: .3em .4em .3em .4em;
+    text-align: center;
+    vertical-align: middle;
+    height: auto;
+    border-style: none;
+    background-color: #4a6adb;
+    border-radius: 2px;
+    box-shadow: #b7c6d6 1px 1px;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
 }
 
+.przycisk-action:active {
+    padding: .3em .4em .3em .4em;
+    text-align: center;
+    vertical-align: middle;
+    height: auto;
+    border-style: none;
+    background-color: #4a6adb;
+    border-radius: 2px;
+    box-shadow: #b7c6d6 1px 1px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #ffffff;
+    cursor: pointer;
+}
 
+.przycisk-action:focus {
+    padding: .3em .4em .3em .4em;
+    text-align: center;
+    vertical-align: middle;
+    height: auto;
+    border-style: none;
+    background-color: #4a6adb;
+    border-radius: 2px;
+    box-shadow: #b7c6d6 1px 1px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #ffffff;
+    cursor: pointer;
+}
 /*
 .content {display:none;}
 */

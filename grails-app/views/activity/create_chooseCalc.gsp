@@ -5,29 +5,6 @@
     <meta name="layout" content="main">
     <g:set var="entityName" value="${message(code: 'activity.label', default: 'Activity')}"/>
     <title><g:message code="default.edit.label" args="[entityName]"/></title>
-
-
-    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.pack.js" language="javascript"></script>
-    <script type="text/javascript" language="javascript">
-        $( function() {
-
-            $( '.button' ).click(function() {
-                var postData = ''"; // you can send any data to ajax file.
-                $('#div_1 , #div_2').html('<img src="ajax-loader.gif" />'); // placeholder
-                $.ajax( {
-                    url : 'ajax_file.php', // your ajax file
-                    type : 'post',
-                    data : postData,
-                    success : function( resp ) {
-                        $('#div_1').html($('#inner_1' , resp).html());
-                        $('#div_2').html($('#inner_2' , resp).html());
-                    }
-                });
-                return false;
-            });
-        });
-    </script>
-
 </head>
 
 
@@ -45,7 +22,7 @@
             </label>
 
             <p class="display-inline" style="margin-top: 5px;">
-                <g:textField name="nipNumber" value="${params.clientNip}"
+                <g:textField name="nipNumber" value="${flash.clientNip}"
                              style="width: 180px"/>
             </p>
             <g:actionSubmit class="przycisk-action display-inline" action="verifyClientNIP"
@@ -64,11 +41,11 @@
 
         <div class="fieldcontain"  style="margin-top: 20px">
             <label for="calcNumber" style="white-space: nowrap; width:180px; text-align:center; display: block">
-                <g:message code="process.calcNumber.label" default="Ostatni zaakceptowany kalkulator" />
+                <g:message code="process.calcNumber.label" default="Ostatni zaakceptowany kalkulator"/>
             </label>
             <p style="margin-top: 5px;">
-                <g:textField name="calcNumber" value="${clientNip}"
-                    disabled="disabled"
+                <g:textField name="calcNumber" disabled="disabled"
+                             value="${flash.clientCalcNumber}"
                              style="width: 180px"/>
             </p>
         </div>
@@ -83,8 +60,8 @@
         </div>
 
         <fieldset  style="margin-top: 20px; left: -32px">
-            <g:actionSubmit class="przycisk-submit" value="Wstecz"/>
-            <g:actionSubmit class="przycisk-submit" value="Dalej" style="margin-left: 10px"/>
+            <g:actionSubmit class="przycisk-submit" action="create_defineActivity" value="Wstecz"/>
+            <g:actionSubmit class="przycisk-submit" value="Dalej"/>
         </fieldset>
     </g:form>
 

@@ -1,5 +1,17 @@
 <%@ page import="com.eservice.eumowy.Process" %>
 
+
+<g:javascript>
+
+    function showPdfBox(obj) {
+        var el = document.getElementById(obj);
+        if ( el.style.display == 'none' ) {
+            el.style.display = '';
+        }
+    }
+
+</g:javascript>
+
 <table border="0" align="center" cellpadding="3" cellspacing="1" class="table"
 style="table-layout: fixed;">
     <thead>
@@ -17,7 +29,9 @@ style="table-layout: fixed;">
             <td class="tableCellLeft" ><g:remoteLink action="showPdfByDocumentId"
                                                      title="${fieldValue(bean: document, field: "filename")}"
                                                      update="pdfBox"
+            onSuccess="showPdfBox('pdfBox')"
                                                      params="[id: document.id]">${fieldValue(bean: document, field: "filename")}</g:remoteLink></td>
+
             <td class="tableCell"><g:formatDate date="${document.lastUpdated}" /></td>
 
             <td class="tableCell">

@@ -50,7 +50,6 @@
     </ul>
 
 
-
     <div>
         <div id="documentsBox" class="float-left" style="width: 49%">
             <g:render template="table/documentsTable"/>
@@ -61,14 +60,13 @@
         </div>
     </div>
 
-
-    <div id="pdfBox">
-        %{--<g:render template="pdf/embedDocument"/>--}%
+    <div id="pdfBox" style="height: 500px; width: 100%; overflow: hidden;border: solid 1px; border-radius: 5px; display: none">
+        %{--tutaj zostanie render pdf template--}%
     </div>
 
     <div class="clear"/>
 
-    <p style="width: 100">
+    <p style="margin-top: 10px">
         <g:checkBox name="observe"/> Obserwuj
     </p>
 

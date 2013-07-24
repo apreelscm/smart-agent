@@ -127,7 +127,7 @@ class ProcessController {
     def showPdfByDocumentId(String id){
         log.info( "pdf document = " + id);
         def documentfile = DocumentFile.get(id);
-        render(template: 'pdf/embedDocument', model:  [pdfDocument: resource(dir:'files', file:documentfile.filename)]);
+        render(template: '../forms/pdf/embedDocument', model:  [pdfDocument: resource(dir:'files', file:documentfile.filename)]);
     }
 
     def downloadDoc(String id){

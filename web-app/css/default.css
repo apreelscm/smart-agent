@@ -2,16 +2,6 @@ html * {
     margin: 0;
 }
 
-html {
-    background-color: #ffffff;
-    height: 100%;
-    width: 100%;
-    /* change the box model to exclude the padding from the calculation of 100% height (IE8+) */
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-}
-
 .ie6 html {
     height: 100%;
 }
@@ -72,9 +62,10 @@ h1 a, h1 a:hover, h2 a, h2 a:hover {
 }
 
 h3 {
-    margin: 0px 0px 20px 0px;
-    font-size: 15px;
-    font-weight: bold
+    margin: 15px 0px 20px 0px;
+    text-align: center;
+    font-size: 16px;
+    font-weight: normal;
 }
 
 h3 a, h3 a:hover {
@@ -103,6 +94,10 @@ a:hover {
 
 .display-inline {
     display: inline
+}
+
+.display-inline-block {
+    display: inline-block;
 }
 
 .display-block {

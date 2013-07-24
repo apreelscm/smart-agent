@@ -157,10 +157,9 @@
 
 
     <nav  style="margin-top: 20px">
-        <g:form>
+        <g:form action="create_chooseCalc">
             <fieldset>
-                <g:actionSubmit class="przycisk-submit" value="Dalej"
-                action="create_chooseCalc"/>
+                <g:submitButton name="Dalej" class="przycisk-submit"/>
             </fieldset>
         </g:form>
     </nav>
