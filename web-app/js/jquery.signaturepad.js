@@ -570,7 +570,7 @@ function SignaturePad (selector, options) {
       onBeforeValidate.apply(self, onBeforeArguments)
     }
 
-    if (settings.drawOnly && output.length < 1) {
+    if (output.length < 1) {
       errors.drawInvalid = true
       valid = false
     }

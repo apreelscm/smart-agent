@@ -1,4 +1,4 @@
-package eumowy
+package com.eservice.eumowy
 
 import org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils
 
