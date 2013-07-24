@@ -12,4 +12,9 @@ modules = {
 		resource url: 'js/flashcanvas.js', disposition: 'head'
 		dependsOn 'jquery', 'json2'
 	}
+	
+	mask {
+		resource url: 'js/jquery.mask.min.js', disposition: 'head'
+		dependsOn 'jquery'
+	}
 }

@@ -151,3 +151,18 @@ fieldset {
 .checkBoxBlock > input[type="checkbox"]{
     margin-right: 4px;
 }
+
+.pad {
+	border: 1px solid #ccc;
+}
+
+.sigPad {
+	margin-left: auto;
+	margin-right: auto;
+	width: 400px;
+	text-align: center;
+}
+
+.error {
+	color: red;
+}
