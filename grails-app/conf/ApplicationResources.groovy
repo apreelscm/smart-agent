@@ -17,4 +17,14 @@ modules = {
 		resource url: 'js/jquery.mask.min.js', disposition: 'head'
 		dependsOn 'jquery'
 	}
+
+    expandable_menu {
+        resource url:'js/menu/expandable-menu.js'
+        dependsOn 'jquery'
+    }
+
+    expandable_tree {
+        resource url:'js/tree/expandable-tree.js'
+        dependsOn 'jquery'
+    }
 }
