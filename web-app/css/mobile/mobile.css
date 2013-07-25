@@ -80,7 +80,17 @@
 		margin-left: 0;
 	}
 	
+	/* POPRAWKI DLA MOBILE */
+	
 	#mainBody {
 		width: 800px;
+		font-size: 100%;
 	}
+	
+	.button {
+		padding: .5em 1em .5em 1em;
+		font-size: 16px;
+	}
+	
+	
 }
