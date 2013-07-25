@@ -41,16 +41,14 @@
     </sec:ifLoggedIn>
 
     <sec:ifLoggedIn>
-        <menu>
-            <ul id="mainMenu">
-                <li><a href="#" class="submit">Menu</a>
-                    <ul>
-                        <li><a href="${createLink(action: 'list')}">Zapisz</a></li>
-                        <li><a href="${createLink(controller: 'logout')}">Wyloguj</a>
-                        </li>
-                    </ul></li>
-            </ul>
-        </menu>
+        <ul id="mainMenu">
+            <li><a href="#" class="submit">Menu</a>
+                <ul>
+                    <li><a href="${createLink(action: 'list')}">Zapisz</a></li>
+                    <li><a href="${createLink(controller: 'logout')}">Wyloguj</a>
+                    </li>
+                </ul></li>
+        </ul>
     </sec:ifLoggedIn>
 
 </header>

@@ -811,7 +811,7 @@ input:invalid:focus, select:invalid:focus, textarea:invalid:focus {
 /* Menu
 ---------------------------------------------- */
 
-menu {
+#mainMenu {
     display: block;
     margin: 0;
     padding: 0;
@@ -821,14 +821,14 @@ menu {
     z-index: 99999
 }
 
-menu li {
+#mainMenu li {
     float: left;
     list-style: none;
     font: 12px Tahoma, Arial;
     text-align: center;
 }
 
-menu li a {
+#mainMenu li a {
     display: block;
     padding: 5px 12px;
     text-decoration: none;
@@ -837,7 +837,7 @@ menu li a {
     font-size: 15px;
 }
 
-menu li ul {
+#mainMenu li ul {
     margin: 0;
     padding: 0;
     position: absolute;
@@ -845,14 +845,14 @@ menu li ul {
     border-top: 1px solid white
 }
 
-menu li ul li {
+#mainMenu li ul li {
     width: 100px;
     margin-left: 10px;
     display: inline;
     text-align: center;
 }
 
-menu li ul li a {
+#mainMenu li ul li a {
     width: auto;
     color: #fef4e9;
     border: solid 1px #da7c0c;
@@ -860,7 +860,7 @@ menu li ul li a {
     font-size: 13px;
 }
 
-menu li ul li a:hover {
+#mainMenu li ul li a:hover {
     color: #fef4e9;
     background: #f47c20;
 }
