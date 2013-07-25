@@ -223,7 +223,7 @@ object, a:focus {
 -------------------------------------------------------------------*/
 body, td, th {
     font-family: Tahoma, Georgia, Garamond, Verdana;
-    font-size: 16px;
+    font-size: 13px;
     font-weight: normal;
     color: #50749b
 }
