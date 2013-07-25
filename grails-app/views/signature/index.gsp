@@ -21,10 +21,10 @@
 				<canvas class="pad" width="400" height="200"></canvas>
 				<input type="hidden" name="signature" class="output">
 			</div>
-			<button type="submit" class="przycisk-submit">
+			<button type="submit" class="button submit">
 				<g:message code="signature.save" />
 			</button>
-			<a href="#clear" class="przycisk-submit clearButton">
+			<a href="#clear" class="button submit clearButton">
 				<g:message code="signature.clear" />
 			</a>
 		</form>

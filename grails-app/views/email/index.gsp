@@ -14,6 +14,6 @@
   	<p>NIP</p>
   	<input name="nip" type="text" class="nip" required />
   	<textarea name="content"></textarea>
-    <button type="submit" class="przycisk-submit"><g:message code="email.send" /></button>
+    <button type="submit" class="button submit"><g:message code="email.send" /></button>
   </form>
 </body>

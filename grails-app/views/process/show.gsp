@@ -11,8 +11,9 @@
 </head>
 <body>
 
-<section id="show-process" class="content scaffold-list" role="main">
-    <h1 class="ng linia-bottom">${processInstance?.uid}</h1>
+<section id="show-process">
+    <h1 class="ng linia-bottom">Id procesu: ${processInstance?.uid}</h1>
+
 
     <ul class="property-list" >
         <li style="margin:0em 0em 1em 0em;">
@@ -74,11 +75,11 @@
         <g:form>
             <fieldset class="przyciski">
                 <g:hiddenField name="uid" value="${processInstance.uid}"/>
-                <g:actionSubmit class="przycisk-submit" value="Wróć" action="list" style="float: left" />
-                <g:actionSubmit class="przycisk-submit" action="accept" value="Zaakceptuj"
+                <g:actionSubmit class="button submit" value="Wróć" action="list" style="float: left" />
+                <g:actionSubmit class="button submit" action="accept" value="Zaakceptuj"
                                 style="float: right;display:${!isNewProcess ? 'none' : 'block'}"
                                 onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
-                <g:actionSubmit class="przycisk-submit" action="reject" value="Odrzuć"
+                <g:actionSubmit class="button submit" action="reject" value="Odrzuć"
                                 style="float: right;margin-right: 1em;display:${!isNewProcess ? 'none' : 'block'}"
                                 formnovalidate=""
                                 onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />

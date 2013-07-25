@@ -55,7 +55,7 @@
 
 
     <fieldset  style="margin-top: 20px;">
-        <g:actionSubmit class="przycisk-submit" value="Dalej"/>
+        <g:actionSubmit class="button submit" value="Dalej"/>
     </fieldset>
 
 </section>

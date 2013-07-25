@@ -24,7 +24,7 @@
             <fieldset>
                 <div class="float-left" style="width: 48%; text-align: left">
 
-                    <g:submitButton name="Brak akceptacji" class="przycisk-submit" style="width: 48%"/>
+                    <g:submitButton name="Brak akceptacji" class="button submit" style="width: 48%"/>
 
                     <g:select id="statusSelect" name="status" from="${com.eservice.eumowy.Activity$ClientType?.values()}"
                               keys="${com.eservice.eumowy.Activity$ClientType.values()*.name()}"
@@ -34,7 +34,7 @@
                     />
 
                     <g:submitButton name="Oczekiwanie na podpis w formie papierowej"
-                                    class="przycisk-submit display-block"
+                                    class="button submit display-block"
                                     style="margin-top: 19px; width: 100%"
                     />
 
@@ -42,7 +42,7 @@
 
                 <div class="float-right display-inline" style="width: 48%; text-align: left; margin-left: 10px">
 
-                    <g:submitButton name="Podpisz dokument" class="przycisk-submit float-left"
+                    <g:submitButton name="Podpisz dokument" class="button submit float-left"
                                     style="width: 48%"/>
 
                     <div class="float-right" style="margin-left:2%; width: 48%;">
@@ -57,14 +57,14 @@
                         </div>
                     </div>
 
-                    <g:submitButton name="Oczekiwanie na podpis w formie elektronicznej" class="przycisk-submit"
+                    <g:submitButton name="Oczekiwanie na podpis w formie elektronicznej" class="button submit"
                                     style="margin-top: 10px; width: 100%"/>
 
                 </div>
 
                 <div class="clear"/>
 
-                <g:submitButton name="Zakończ" class="przycisk-submit" style="margin-top: 19px; width: 100%"/>
+                <g:submitButton name="Zakończ" class="button submit" style="margin-top: 19px; width: 100%"/>
 
             </fieldset>
         </g:form>

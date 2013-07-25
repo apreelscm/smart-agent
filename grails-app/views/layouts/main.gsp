@@ -15,13 +15,6 @@
     <link rel="apple-touch-icon" sizes="114x114" href="${resource(dir: 'images', file: 'apple-touch-icon-retina.png')}">
 
     <link rel="stylesheet" href="${resource(dir: 'css', file: 'default.css')}" type="text/css">
-    <link rel="stylesheet" href="${resource(dir: 'css', file: 'font.css')}" type="text/css">
-    <link rel="stylesheet" href="${resource(dir: 'css', file: 'layout.css')}" type="text/css">
-    <link rel="stylesheet" href="${resource(dir: 'css', file: 'table.css')}" type="text/css">
-    <link rel="stylesheet" href="${resource(dir: 'css', file: 'eumowy.css')}" type="text/css">
-
-    <link rel="stylesheet" href="${resource(dir: 'css', file: 'custom/menu.css')}" type="text/css">
-
     <link rel="stylesheet" href="${resource(dir: 'css', file: 'mobile/mobile.css')}" type="text/css">
 
     <g:javascript library="jquery" />
@@ -48,13 +41,11 @@
         </div>
     </sec:ifLoggedIn>
 
-
     <sec:ifLoggedIn>
-        <ul id="jsddm" class="display-block"
-            style="position: relative; bottom: -5px; left: -10px;z-index: 99999">
-            <li><a href="#">Menu</a>
+        <ul id="mainMenu" class="menu">
+            <li><a href="#" class="submit">Menu</a>
                 <ul>
-                    <li><a href="${createLink(action: 'list')}">Zapisz</a></li>
+                    <li><a  href="${createLink(action: 'list')}">Zapisz</a></li>
                     <li><a href="${createLink(controller: 'logout')}">Wyloguj</a>
                     </li>
                 </ul></li>

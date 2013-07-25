@@ -32,8 +32,8 @@ function jsddm_canceltimer() {
 }
 
 $j(document).ready(function () {
-    $j('#jsddm > li').bind('mouseover', jsddm_open);
-    $j('#jsddm > li').bind('mouseout', jsddm_timer);
+    $j('#mainMenu > li').bind('mouseover', jsddm_open);
+    $j('#mainMenu > li').bind('mouseout', jsddm_timer);
 });
 
 document.onclick = jsddm_close;

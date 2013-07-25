@@ -147,7 +147,7 @@
     <nav  style="margin-top: 20px">
         <g:form action="create_chooseCalc">
             <fieldset>
-                <g:submitButton name="Dalej" class="przycisk-submit"/>
+                <g:submitButton name="Dalej" class="button submit"/>
             </fieldset>
         </g:form>
     </nav>

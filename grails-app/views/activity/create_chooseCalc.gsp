@@ -25,7 +25,7 @@
                 <g:textField name="nipNumber" value="${flash.clientNip}"
                              style="width: 180px"/>
             </p>
-            <g:actionSubmit class="przycisk-action display-inline" action="verifyClientNIP"
+            <g:actionSubmit class="button action display-inline" action="verifyClientNIP"
                             value="Wyszukaj" style="margin-left: 5px"/>
 
         </div>
@@ -60,8 +60,8 @@
         </div>
 
         <fieldset  style="margin-top: 20px; left: -32px">
-            <g:actionSubmit class="przycisk-submit" action="create_defineActivity" value="Wstecz"/>
-            <g:actionSubmit class="przycisk-submit" value="Dalej"/>
+            <g:actionSubmit class="button submit" action="create_defineActivity" value="Wstecz"/>
+            <g:actionSubmit class="button submit" value="Dalej"/>
         </fieldset>
     </g:form>
 
