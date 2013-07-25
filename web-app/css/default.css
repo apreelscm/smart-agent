@@ -126,7 +126,7 @@ html {
 #mainHeader {
     height: 40px;
     background: #ffffff url(../images/sprzedaz-belka.jpg) no-repeat 0px top;
-    background-size: 100% auto;;
+    background-size: 100% 40px;
 }
 
 #mainHeader #smallLogo {
@@ -1051,7 +1051,7 @@ input:invalid:focus, select:invalid:focus, textarea:invalid:focus {
 .sigPad {
     margin-left: auto;
     margin-right: auto;
-    width: 400px;
+    width: 600px;
     text-align: center;
 }
 
