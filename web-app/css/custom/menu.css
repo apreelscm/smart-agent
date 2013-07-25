@@ -1,0 +1,51 @@
+#jsddm {
+    margin: 0;
+    padding: 0;
+}
+
+#jsddm li {
+    float: left;
+    list-style: none;
+    font: 12px Tahoma, Arial;
+    text-align: center;
+}
+
+#jsddm li a {
+    display: block;
+    background: #db7b20;
+    padding: 5px 12px;
+    text-decoration: none;
+    border-right: 1px solid white;
+    width: 70px;
+    color: #EAFFED;
+    white-space: nowrap;
+    font-size: 15px;
+}
+
+#jsddm li a:hover {
+    background: #af631a
+}
+
+#jsddm li ul { margin: 0;
+    padding: 0;
+    position: absolute;
+    visibility: hidden;
+    border-top: 1px solid white}
+
+#jsddm li ul li {
+    width: 100px;
+    margin-left: 10px;
+    display: inline;
+    text-align: center;
+}
+
+#jsddm li ul li a {
+    width: auto;
+    color: #EAFFED;
+    background: #F48923;
+    font-size: 13px;
+}
+
+#jsddm li ul li a:hover {
+    background: #ff9024
+}

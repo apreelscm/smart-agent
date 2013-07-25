@@ -53,6 +53,11 @@
 
     </article>
 
+
+    <fieldset  style="margin-top: 20px;">
+        <g:actionSubmit class="przycisk-submit" value="Dalej"/>
+    </fieldset>
+
 </section>
 
 </body>

@@ -5,19 +5,8 @@
     <meta name="layout" content="main">
     <g:set var="entityName" value="${message(code: 'activity.label', default: 'Activity')}"/>
     <title><g:message code="default.edit.label" args="[entityName]"/></title>
-
-    <g:javascript src="simple-expand.js" />
-
-    <g:javascript>
-        var $j = jQuery.noConflict();
-
-        $j(document).ready(function () {
-            $j('.expander').simpleexpand();
-        });
-
-    </g:javascript>
+    <r:require module="expandable_tree" />
 </head>
-
 
 <body>
 
@@ -153,7 +142,6 @@
         <g:message code="todo" default="Uwagi dla COA:"/>
         <g:textArea name="myField" style="margin-left: 8px; height: 100px"/>
     </div>
-
 
 
     <nav  style="margin-top: 20px">
