@@ -1,6 +1,6 @@
 /* Styles for mobile devices */
 
-@media screen and (max-width: 480px) {
+@media (min-width: 768px) and (max-width: 850px) {
 	.nav {
 		padding: 0.5em;
 	}
@@ -78,5 +78,9 @@
 
 	.error ul {
 		margin-left: 0;
+	}
+	
+	#mainBody {
+		width: 800px;
 	}
 }

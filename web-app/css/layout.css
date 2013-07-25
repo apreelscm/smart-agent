@@ -21,25 +21,27 @@ html {
     -moz-box-sizing: border-box;
     box-sizing: border-box;
 }
+
 #mainBody {
-    background: #ffffff; /*url('../images/background-top.jpg') no-repeat 0px top;*/
+    width: 980px;
+	background: #ffffff; /*url('../images/background-top.jpg') no-repeat 0px top;*/
     overflow: hidden;
     margin: 0 auto 0 auto;
-    width: 980px;
     min-height: 450px;
     clear: both;
+    font-size: 16px;
 }
 
 #mainBody #mainHeader{
     height: 40px;
     background: #ffffff url(../images/sprzedaz-belka.jpg) no-repeat 0px top;
-    background-size: 100% auto;;
+    background-size: 100% 40px;
 }
 
 #mainHeader #smallLogo
 {
     background: url(../images/logo-small.png) no-repeat center center;
-    background-size: auto 70% ;
+    background-size: auto 70%;
     height: inherit;
 }
 

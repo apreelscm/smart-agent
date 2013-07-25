@@ -12,21 +12,21 @@
   </r:script>
 	<div id="index-signature" class="content">
 		<form method="post" action="save" class="sigPad">
-			<input type="text" name="nip">
+			<h3>REPREZENTANT</h3>
 			<p>
 				<g:message code="signature.agreement" />
 			</p>
 			<div class="sig sigWrapper">
 				<div class="typed"></div>
-				<canvas class="pad" width="400" height="200"></canvas>
+				<canvas class="pad" width="600" height="250"></canvas>
 				<input type="hidden" name="signature" class="output">
 			</div>
+			<a href="#clear" class="przycisk-action-big clearButton">
+				<g:message code="signature.clear" />
+			</a>
 			<button type="submit" class="przycisk-submit">
 				<g:message code="signature.save" />
 			</button>
-			<a href="#clear" class="przycisk-submit clearButton">
-				<g:message code="signature.clear" />
-			</a>
 		</form>
 	</div>
 </body>
