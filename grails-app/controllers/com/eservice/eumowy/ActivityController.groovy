@@ -21,13 +21,15 @@ class ActivityController {
         [activityInstance: new Activity(params)]
     }
 
+    def create_chooseActivity() {
+        [activityInstance: new Activity(params)]
+    }
+
     def create_clientSignature() {
         [activityInstance: new Activity(params)]
     }
 
-    def create_chooseActivity() {
-        [activityInstance: new Activity(params)]
-    }
+
 
     def save() {
         //TODO implement

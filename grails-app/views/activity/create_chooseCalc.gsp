@@ -61,7 +61,7 @@
 
         <fieldset  style="margin-top: 20px; left: -32px">
             <g:actionSubmit class="button submit" action="create_defineActivity" value="Wstecz"/>
-            <g:actionSubmit class="button submit" value="Dalej"/>
+            <g:actionSubmit class="button submit" action="create_chooseActivity" value="Dalej"/>
         </fieldset>
     </g:form>
 

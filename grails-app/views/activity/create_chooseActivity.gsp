@@ -53,10 +53,11 @@
 
     </article>
 
-
-    <fieldset  style="margin-top: 20px;">
-        <g:actionSubmit class="button submit" value="Dalej"/>
-    </fieldset>
+    <g:form>
+        <fieldset  style="margin-top: 20px;">
+            <g:actionSubmit class="button submit" value="Dalej" action="create_clientSignature"/>
+        </fieldset>
+    </g:form>
 
 </section>
 
