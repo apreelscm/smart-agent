@@ -44,7 +44,7 @@ class BootStrap {
         sql.close();
 
 
-        new Process(id: 1, phFirstName: "Jerzy", clientNip: "555344435",
+        new Process(id: "000001", phFirstName: "Jerzy", clientNip: "555344435",
                 clientName: 'nazwa1', saleSection: 'segment1', phNumber: '12345',
                 phSurname: 'Kowalski', calcNumber: '44444' )
                 .addToDocuments(new DocumentFile(filename: "pedef.pdf"))
@@ -54,7 +54,7 @@ class BootStrap {
                 .addToAttachments(new AttachmentFile(filename: "pedef3.pdf")).save();
 
 
-        new Process(id: 2, phFirstName: "Wanda", clientNip: "11241412",
+        new Process(id: "000002", phFirstName: "Wanda", clientNip: "11241412",
                 clientName: 'nazwa2', saleSection: 'segment2', phNumber: '321',
                 phSurname: 'Iksińska',calcNumber: '33333')
                 .addToDocuments(new DocumentFile(filename: "pedef.pdf"))

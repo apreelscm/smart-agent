@@ -17,10 +17,10 @@
     <link rel="stylesheet" href="${resource(dir: 'css', file: 'default.css')}" type="text/css">
     <link rel="stylesheet" href="${resource(dir: 'css', file: 'mobile/mobile.css')}" type="text/css">
 
-    <g:javascript library="jquery" />
-    <r:require module="modernizr" />
-    <r:require module="expandable_menu" />
-    <r:layoutResources />
+    <g:javascript library="jquery"/>
+    <r:require module="modernizr"/>
+    <r:require module="expandable_menu"/>
+    <r:layoutResources/>
     <g:layoutHead/>
 </head>
 
@@ -33,36 +33,35 @@
 
     <sec:ifLoggedIn>
         <div class="userInfoBar">
-            <g:set var="phFullName" value="${sec.loggedInUserInfo(field: 'name')}" />
-            <g:set var="phId" value="${sec.loggedInUserInfo(field: 'id')}" />
+            <g:set var="phFullName" value="${sec.loggedInUserInfo(field: 'name')}"/>
+            <g:set var="phId" value="${sec.loggedInUserInfo(field: 'id')}"/>
             <span id="userNameLabel">${phFullName}</span>
             <span id="userIdLabel">${phId}</span>
-
         </div>
     </sec:ifLoggedIn>
 
     <sec:ifLoggedIn>
-        <ul id="mainMenu" class="menu">
-            <li><a href="#" class="submit">Menu</a>
-                <ul>
-                    <li><a  href="${createLink(action: 'list')}">Zapisz</a></li>
-                    <li><a href="${createLink(controller: 'logout')}">Wyloguj</a>
-                    </li>
-                </ul></li>
-        </ul>
+        <menu>
+            <ul id="mainMenu">
+                <li><a href="#" class="submit">Menu</a>
+                    <ul>
+                        <li><a href="${createLink(action: 'list')}">Zapisz</a></li>
+                        <li><a href="${createLink(controller: 'logout')}">Wyloguj</a>
+                        </li>
+                    </ul></li>
+            </ul>
+        </menu>
     </sec:ifLoggedIn>
 
 </header>
 
-<section class="mainContainer">
-    <g:layoutBody/>
-</section>
+<g:layoutBody/>
 
 <footer class="rel" id="stopka"/>
 
 <div id="spinner" class="spinner" style="display:none;"><g:message code="spinner.alt" default="Loading&hellip;"/></div>
 <g:javascript library="application"/>
-<r:layoutResources />
+<r:layoutResources/>
 
 </body>
 </html>

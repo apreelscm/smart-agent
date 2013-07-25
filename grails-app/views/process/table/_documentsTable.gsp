@@ -21,7 +21,7 @@
     <tbody>
     <g:each in="${processInstance.documents}" status="i" var="document">
         <tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
-            <td class="tableCellLeft" ><g:remoteLink action="showPdfByDocumentId"  class="wrapped"
+            <td class="tableCellLeft"  class="wrapped"><g:remoteLink action="showPdfByDocumentId" class="wrapped"
                                                      title="${fieldValue(bean: document, field: "filename")}"
                                                      update="pdfBox"
                                                      onSuccess="showPdfBox('pdfBox')"

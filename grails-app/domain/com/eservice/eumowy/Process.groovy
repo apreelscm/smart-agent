@@ -4,6 +4,8 @@ import groovy.transform.ToString
 @ToString(includeNames = true,ignoreNulls = true)
 class Process {
 
+    String id;
+
     Date dateCreated
 
     Date lastUpdated
@@ -29,29 +31,21 @@ class Process {
 
     // TODO kolekcja czynnosci
 
-    // TODO guid dokument, co to jest ?
-
-    String uid
 
     static hasMany = [documents:DocumentFile, attachments:AttachmentFile]
 
     static constraints = {
         id(unique:true,blank:false)
-        uid(unique: true)
     }
-
 
     static mapping = {
         table name: "process", schema: "CBD_UMOWY"
         autoTimestamp true
         version true
+
+        sort id: "desc"
     }
 
-    def beforeValidate() {
-        if (uid == null) {
-            uid = UUID.randomUUID().toString() // works
-        }
-    }
 
     enum ProcessStatus {
         NEW("Nowy"),

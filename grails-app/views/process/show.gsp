@@ -12,7 +12,7 @@
 <body>
 
 <section id="show-process">
-    <h1 class="ng linia-bottom">Id procesu: ${processInstance?.uid}</h1>
+    <h1 class="ng linia-bottom">Id Procesu: ${processInstance?.id}</h1>
 
 
     <ul class="property-list" >
@@ -74,7 +74,7 @@
     <nav>
         <g:form>
             <fieldset class="przyciski">
-                <g:hiddenField name="uid" value="${processInstance.uid}"/>
+                <g:hiddenField name="id" value="${processInstance.id}"/>
                 <g:actionSubmit class="button submit" value="Wróć" action="list" style="float: left" />
                 <g:actionSubmit class="button submit" action="accept" value="Zaakceptuj"
                                 style="float: right;display:${!isNewProcess ? 'none' : 'block'}"

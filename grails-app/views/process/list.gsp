@@ -15,18 +15,28 @@
         <div class="message" role="status">${flash.message}</div>
     </g:if>
 
-    <div style="margin: 1em 0 1em 0">
-        <label for="status">
-            <g:message code="process.phFirstName.label" default="Status Dokumentu" />
-        </label>
-        <g:select id="statusSelect" name="status" from="${com.eservice.eumowy.Process$ProcessStatus?.values()}"
-                  keys="${com.eservice.eumowy.Process$ProcessStatus.values()*.name()}"
-                  noSelection="['': '']"
-                  onchange="${remoteFunction(action: 'filterByStatus',
-                          update: 'tableBox',
-                          params: '\'status=\' + this.value')}"
-        />
+    <div class="search-bar" style="margin: .8em .5em ">
+        <g:form action="list">
+            <div class="display-inline">
+                <label for="filterStatus"><g:message code="process.phFirstName.label" default="Status Procesu:" /></label>
+                <g:select name="filterStatus" from="${com.eservice.eumowy.Process$ProcessStatus?.values()}"
+                          keys="${com.eservice.eumowy.Process$ProcessStatus.values()*.name()}"
+                          noSelection="['': '']"
+                          value="${filterStatus}"/>
+                %{--onchange="${remoteFunction(action: 'filterByStatus', update: 'tableBox', params: '\'status=\' + this.value')}"--}%
+            </div>
+
+            <div class="display-inline" style="margin-left: .4em">
+                <label for="filterObserved"><g:message code="process.phFirstName.label" default="Obserwowany:" /></label>
+                <g:checkBox name="filterObserved" value="isObserved" checked="${filterObserved == 'isObserved'}" />
+            </div>
+
+            <g:actionSubmit class="button action display-inline" action="list" value="Pokaż"
+                            style="margin-left: .4em"/>
+        </g:form>
     </div>
+
+
 
     <div id="tableBox">
         <g:render template="table/listTable"/>

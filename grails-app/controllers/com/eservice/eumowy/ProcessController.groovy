@@ -10,10 +10,39 @@ class ProcessController {
     }
 
     @Secured(['PH_ROLE','ADM_ROLE'])
-    def list(Integer max) {
-        params.max = Math.min(max ?: 10, 100)
-        log.info("Process.count() - " + Process.count());
-        [processInstanceList: Process.list(params), processInstanceTotal: Process.count()]
+    def list() {
+        /*  params.max = Math.min(max ?: 10, 100)
+
+          log.info("params.status - " + params?.filterStatus);
+
+          [processInstanceList: findProcessListByStatus(params?.filterStatus),
+                  processInstanceTotal: Process.count(),
+                  filterStatus : Process.ProcessStatus.REJECTED.name()]*/
+
+
+        params.max = Math.min(params.max ? params.int('max') : 10, 100)
+
+
+        if(params.filterStatus == null){
+            params.filterStatus = Process.ProcessStatus.REJECTED.name()
+        }
+
+        if(params.filterStatus.equals("")){
+            [ filterStatus:"",
+                    filterObserved:"",
+                    processInstanceList: Process.list(params),
+                    processInstanceTotal: Process.count()]
+        }
+        else{
+
+            def processService = new ProcessService()
+            def processes = processService.searchProcessByFilters(params)
+
+            [ filterStatus:params.filterStatus,
+                    filterObserved: params.filterObserved ,
+                    processInstanceList: processes.searchResults ,
+                    processInstanceTotal: processes.searchResultSize]
+        }
     }
 
     //---------------------------------
@@ -21,41 +50,15 @@ class ProcessController {
     //---------------------------------
 
     @Secured(['PH_ROLE'])
-    def create() {
-        [processInstance: new Process(params)]
-    }
-
-    @Secured(['PH_ROLE'])
-    def save() {
-        //TODO implement
-    }
-
-    @Secured(['PH_ROLE'])
     def edit(Long id) {
         def processInstance = Process.get(id)
         if (!processInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'process.label', default: 'Process'), id])
-            redirect(action: "list")
+            redirect(action: "list" )
             return
         }
 
         [processInstance: processInstance]
-    }
-
-    @Secured(['PH_ROLE'])
-    def update(Long id, Long version) {
-        //TODO implement
-    }
-
-    @Secured(['PH_ROLE'])
-    def delete() {
-
-        def checkedBooks = params.list('selectedProcess')
-        def selectedProcesses = Process.getAll(checkedBooks)
-
-        Process.deleteAll(selectedProcesses)
-
-        redirect(action: "list")
     }
 
     //---------------------------------
@@ -64,7 +67,7 @@ class ProcessController {
 
     @Secured(['ADM_ROLE'])
     def show(String id) {
-        def processInstance = Process.findByUid(id)
+        def processInstance = Process.get(id)
         if (!processInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'process.label', default: 'proces'), id])
             redirect(action: "list")
@@ -75,34 +78,34 @@ class ProcessController {
     }
 
     @Secured(['ADM_ROLE'])
-    def reject(String uid) {
-        def processInstance =Process.findByUid(uid)
+    def reject(String id) {
+        def processInstance =Process.get(id)
 
         if (!processInstance) {
-            flash.message = message(code: 'default.not.found.message', args: [message(code: 'test.label', default: 'proces'), uid])
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'test.label', default: 'proces'), id])
             redirect(action: "list")
             return
         }
 
         processInstance.status = Process.ProcessStatus.REJECTED;
         processInstance.save(flush: true, validate: false)
-        flash.message = message(code: 'default.rejected.message', args: [message(code: 'test.label', default: 'proces'), processInstance.uid])
+        flash.message = message(code: 'default.rejected.message', args: [message(code: 'test.label', default: 'proces'), processInstance.id])
         redirect(action: "list")
     }
 
     @Secured(['ADM_ROLE'])
-    def accept(String uid) {
-        def processInstance = Process.findByUid(uid)
+    def accept(String id) {
+        def processInstance = Process.get(id)
 
         if (!processInstance) {
-            flash.message = message(code: 'default.not.found.message', args: [message(code: 'test.label', default: 'proces'), uid])
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'test.label', default: 'proces'), id])
             redirect(action: "list")
             return
         }
 
         processInstance.status = Process.ProcessStatus.ACCEPTED;
         processInstance.save(flush: true, validate: true)
-        flash.message = message(code: 'default.accepted.message', args: [message(code: 'test.label', default: 'Proces'), processInstance.uid])
+        flash.message = message(code: 'default.accepted.message', args: [message(code: 'test.label', default: 'Proces'), processInstance.id])
         redirect(action: "list")
     }
 
@@ -114,15 +117,16 @@ class ProcessController {
      * Filtrowanie procesów po wybranym statusie
      * @return listTable html
      */
-    def filterByStatus(String status) {
-        def filteredProcesses = status !="" ?  Process.findAllByStatus(status) : Process.list(params);
+ /*   def filterByStatus(String filterStatus) {
+        def filteredProcesses = findProcessListByStatus(filterStatus)
         render template: 'table/listTable', model: [processInstanceList: filteredProcesses, processInstanceTotal: filteredProcesses.size()]
-    }
-
+    }*/
+/*
     def filter = {
+        log.info("params.status - " + params?.filterStatus);
         params.max = Math.min(params.max ? params.int('max') : 10, 100)
         render(template: 'table/listTable', model:  [processInstanceList: Process.list(params), processInstanceTotal: Process.count()])
-    }
+    }*/
 
     def showPdfByDocumentId(String id){
         log.info( "pdf document = " + id);
