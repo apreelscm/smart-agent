@@ -15,7 +15,7 @@
     <h1 class="ng linia-bottom">Podpis Klienta</h1>
 
     <div id="pdfBox" style="height: 500px; width: 100%;  margin-top: 20px; overflow: hidden;border: solid 1px; border-radius: 5px;">
-        <g:render template="../forms/pdf/embedDocument"
+        <g:render template="../forms/pdf/embedDocument-mobile"
                   model="[pdfDocument: resource(dir:'files', file:'pedef.pdf')]"/>
     </div>
 
