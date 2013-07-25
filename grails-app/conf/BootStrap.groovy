@@ -46,7 +46,7 @@ class BootStrap {
 
         new Process(id: "000001", phFirstName: "Jerzy", clientNip: "555344435",
                 clientName: 'nazwa1', saleSection: 'segment1', phNumber: '12345',
-                phSurname: 'Kowalski', calcNumber: '44444' )
+                phSurname: 'Kowalski', calcNumber: '44444' , status: Process.ProcessStatus.REJECTED)
                 .addToDocuments(new DocumentFile(filename: "pedef.pdf"))
                 .addToDocuments(new DocumentFile(filename: "pedef2.pdf"))
                 .addToAttachments(new AttachmentFile(filename: "pedef.pdf"))
@@ -56,7 +56,7 @@ class BootStrap {
 
         new Process(id: "000002", phFirstName: "Wanda", clientNip: "11241412",
                 clientName: 'nazwa2', saleSection: 'segment2', phNumber: '321',
-                phSurname: 'Iksińska',calcNumber: '33333')
+                phSurname: 'Iksińska',calcNumber: '33333', status: Process.ProcessStatus.REJECTED)
                 .addToDocuments(new DocumentFile(filename: "pedef.pdf"))
                 .addToDocuments(new DocumentFile(filename: "pedef2.pdf"))
                 .addToAttachments(new AttachmentFile(filename: "pedef3.pdf")).save();
@@ -67,105 +67,105 @@ class BootStrap {
                 .addToDocuments(new DocumentFile(filename: "pedef.pdf"))
                 .addToDocuments(new DocumentFile(filename: "pedef2.pdf"))
                 .addToAttachments(new AttachmentFile(filename: "pedef3.pdf")).save();
+*/
+
+        new Process( phFirstName: "Wanda", clientNip: "11241412",
+                clientName: 'nazwa2', saleSection: 'segment2', phNumber: '321',
+               phSurname: 'Iksińska',calcNumber: '33333', status: Process.ProcessStatus.REJECTED).save();
+
+        new Process( phFirstName: "Wanda", clientNip: "11241412",
+                clientName: 'nazwa2', saleSection: 'segment2', phNumber: '321',
+                phSurname: 'Iksińska',calcNumber: '33333', status: Process.ProcessStatus.REJECTED).save();
+
+        new Process( phFirstName: "Wanda", clientNip: "11241412",
+                clientName: 'nazwa2', saleSection: 'segment2', phNumber: '321',
+                phSurname: 'Iksińska',calcNumber: '33333', status: Process.ProcessStatus.REJECTED).save();
+
+        new Process( phFirstName: "Wanda", clientNip: "11241412",
+                clientName: 'nazwa2', saleSection: 'segment2', phNumber: '321',
+                phSurname: 'Iksińska',calcNumber: '33333', status: Process.ProcessStatus.REJECTED).save();
+
+        new Process( phFirstName: "Wanda", clientNip: "11241412",
+                clientName: 'nazwa2', saleSection: 'segment2', phNumber: '321',
+                phSurname: 'Iksińska',calcNumber: '33333', status: Process.ProcessStatus.REJECTED).save();
+
+        new Process( phFirstName: "Wanda", clientNip: "11241412",
+                clientName: 'nazwa2', saleSection: 'segment2', phNumber: '321',
+                phSurname: 'Iksińska',calcNumber: '33333', status: Process.ProcessStatus.REJECTED).save();
+
+        new Process( phFirstName: "Wanda", clientNip: "11241412",
+                clientName: 'nazwa2', saleSection: 'segment2', phNumber: '321',
+                phSurname: 'Iksińska',calcNumber: '33333', status: Process.ProcessStatus.REJECTED).save();
+
+        new Process( phFirstName: "Wanda", clientNip: "11241412",
+                clientName: 'nazwa2', saleSection: 'segment2', phNumber: '321',
+                phSurname: 'Iksińska',calcNumber: '33333', status: Process.ProcessStatus.REJECTED).save();
+
+        new Process( phFirstName: "Wanda", clientNip: "11241412",
+                clientName: 'nazwa2', saleSection: 'segment2', phNumber: '321',
+                phSurname: 'Iksińska',calcNumber: '33333', status: Process.ProcessStatus.REJECTED).save();
+
+        new Process( phFirstName: "Wanda", clientNip: "11241412",
+                clientName: 'nazwa2', saleSection: 'segment2', phNumber: '321',
+                phSurname: 'Iksińska',calcNumber: '33333', status: Process.ProcessStatus.REJECTED).save();
+
+        new Process( phFirstName: "Wanda", clientNip: "11241412",
+                clientName: 'nazwa2', saleSection: 'segment2', phNumber: '321',
+                phSurname: 'Iksińska',calcNumber: '33333', status: Process.ProcessStatus.REJECTED).save();
+
+        new Process( phFirstName: "Wanda", clientNip: "11241412",
+                clientName: 'nazwa2', saleSection: 'segment2', phNumber: '321',
+                phSurname: 'Iksińska',calcNumber: '33333', status: Process.ProcessStatus.REJECTED).save();
+
+        new Process( phFirstName: "Wanda", clientNip: "11241412",
+                clientName: 'nazwa2', saleSection: 'segment2', phNumber: '321',
+                phSurname: 'Iksińska',calcNumber: '33333', status: Process.ProcessStatus.REJECTED).save();
+
+        new Process( phFirstName: "Wanda", clientNip: "11241412",
+                clientName: 'nazwa2', saleSection: 'segment2', phNumber: '321',
+                phSurname: 'Iksińska',calcNumber: '33333', status: Process.ProcessStatus.REJECTED).save();
+
+        new Process( phFirstName: "Wanda", clientNip: "11241412",
+                clientName: 'nazwa2', saleSection: 'segment2', phNumber: '321',
+                phSurname: 'Iksińska',calcNumber: '33333', status: Process.ProcessStatus.REJECTED).save();
+        new Process( phFirstName: "Wanda", clientNip: "11241412",
+                clientName: 'nazwa2', saleSection: 'segment2', phNumber: '321',
+                phSurname: 'Iksińska',calcNumber: '33333', status: Process.ProcessStatus.REJECTED).save();
 
 
         new Process( phFirstName: "Wanda", clientNip: "11241412",
                 clientName: 'nazwa2', saleSection: 'segment2', phNumber: '321',
-               phSurname: 'Iksińska',calcNumber: '33333').save();
-
-        new Process( phFirstName: "Wanda", clientNip: "11241412",
-                clientName: 'nazwa2', saleSection: 'segment2', phNumber: '321',
-                phSurname: 'Iksińska',calcNumber: '33333').save();
-
-        new Process( phFirstName: "Wanda", clientNip: "11241412",
-                clientName: 'nazwa2', saleSection: 'segment2', phNumber: '321',
-                phSurname: 'Iksińska',calcNumber: '33333').save();
-
-        new Process( phFirstName: "Wanda", clientNip: "11241412",
-                clientName: 'nazwa2', saleSection: 'segment2', phNumber: '321',
-                phSurname: 'Iksińska',calcNumber: '33333').save();
-
-        new Process( phFirstName: "Wanda", clientNip: "11241412",
-                clientName: 'nazwa2', saleSection: 'segment2', phNumber: '321',
-                phSurname: 'Iksińska',calcNumber: '33333').save();
-
-        new Process( phFirstName: "Wanda", clientNip: "11241412",
-                clientName: 'nazwa2', saleSection: 'segment2', phNumber: '321',
-                phSurname: 'Iksińska',calcNumber: '33333').save();
-
-        new Process( phFirstName: "Wanda", clientNip: "11241412",
-                clientName: 'nazwa2', saleSection: 'segment2', phNumber: '321',
-                phSurname: 'Iksińska',calcNumber: '33333').save();
-
-        new Process( phFirstName: "Wanda", clientNip: "11241412",
-                clientName: 'nazwa2', saleSection: 'segment2', phNumber: '321',
-                phSurname: 'Iksińska',calcNumber: '33333').save();
-
-        new Process( phFirstName: "Wanda", clientNip: "11241412",
-                clientName: 'nazwa2', saleSection: 'segment2', phNumber: '321',
-                phSurname: 'Iksińska',calcNumber: '33333').save();
-
-        new Process( phFirstName: "Wanda", clientNip: "11241412",
-                clientName: 'nazwa2', saleSection: 'segment2', phNumber: '321',
-                phSurname: 'Iksińska',calcNumber: '33333').save();
-
-        new Process( phFirstName: "Wanda", clientNip: "11241412",
-                clientName: 'nazwa2', saleSection: 'segment2', phNumber: '321',
-                phSurname: 'Iksińska',calcNumber: '33333').save();
-
-        new Process( phFirstName: "Wanda", clientNip: "11241412",
-                clientName: 'nazwa2', saleSection: 'segment2', phNumber: '321',
-                phSurname: 'Iksińska',calcNumber: '33333').save();
-
-        new Process( phFirstName: "Wanda", clientNip: "11241412",
-                clientName: 'nazwa2', saleSection: 'segment2', phNumber: '321',
-                phSurname: 'Iksińska',calcNumber: '33333').save();
-
-        new Process( phFirstName: "Wanda", clientNip: "11241412",
-                clientName: 'nazwa2', saleSection: 'segment2', phNumber: '321',
-                phSurname: 'Iksińska',calcNumber: '33333').save();
-
-        new Process( phFirstName: "Wanda", clientNip: "11241412",
-                clientName: 'nazwa2', saleSection: 'segment2', phNumber: '321',
-                phSurname: 'Iksińska',calcNumber: '33333').save();
-        new Process( phFirstName: "Wanda", clientNip: "11241412",
-                clientName: 'nazwa2', saleSection: 'segment2', phNumber: '321',
-                phSurname: 'Iksińska',calcNumber: '33333').save();
+                phSurname: 'Iksińska',calcNumber: '33333', status: Process.ProcessStatus.REJECTED).save();
 
 
         new Process( phFirstName: "Wanda", clientNip: "11241412",
                 clientName: 'nazwa2', saleSection: 'segment2', phNumber: '321',
-                phSurname: 'Iksińska',calcNumber: '33333').save();
+                phSurname: 'Iksińska',calcNumber: '33333', status: Process.ProcessStatus.REJECTED).save();
+
+        new Process( phFirstName: "Wanda", clientNip: "11241412",
+                clientName: 'nazwa2', saleSection: 'segment2', phNumber: '321',
+                phSurname: 'Iksińska',calcNumber: '33333', status: Process.ProcessStatus.REJECTED).save();
+
+        new Process( phFirstName: "Wanda", clientNip: "11241412",
+                clientName: 'nazwa2', saleSection: 'segment2', phNumber: '321',
+                phSurname: 'Iksińska',calcNumber: '33333', status: Process.ProcessStatus.REJECTED).save();
 
 
         new Process( phFirstName: "Wanda", clientNip: "11241412",
                 clientName: 'nazwa2', saleSection: 'segment2', phNumber: '321',
-                phSurname: 'Iksińska',calcNumber: '33333').save();
+                phSurname: 'Iksińska',calcNumber: '33333', status: Process.ProcessStatus.REJECTED).save();
 
         new Process( phFirstName: "Wanda", clientNip: "11241412",
                 clientName: 'nazwa2', saleSection: 'segment2', phNumber: '321',
-                phSurname: 'Iksińska',calcNumber: '33333').save();
+                phSurname: 'Iksińska',calcNumber: '33333', status: Process.ProcessStatus.REJECTED).save();
 
         new Process( phFirstName: "Wanda", clientNip: "11241412",
                 clientName: 'nazwa2', saleSection: 'segment2', phNumber: '321',
-                phSurname: 'Iksińska',calcNumber: '33333').save();
-
-
-        new Process( phFirstName: "Wanda", clientNip: "11241412",
-                clientName: 'nazwa2', saleSection: 'segment2', phNumber: '321',
-                phSurname: 'Iksińska',calcNumber: '33333').save();
+                phSurname: 'Iksińska',calcNumber: '33333', status: Process.ProcessStatus.REJECTED).save();
 
         new Process( phFirstName: "Wanda", clientNip: "11241412",
                 clientName: 'nazwa2', saleSection: 'segment2', phNumber: '321',
-                phSurname: 'Iksińska',calcNumber: '33333').save();
-
-        new Process( phFirstName: "Wanda", clientNip: "11241412",
-                clientName: 'nazwa2', saleSection: 'segment2', phNumber: '321',
-                phSurname: 'Iksińska',calcNumber: '33333').save();
-
-        new Process( phFirstName: "Wanda", clientNip: "11241412",
-                clientName: 'nazwa2', saleSection: 'segment2', phNumber: '321',
-                phSurname: 'Iksińska',calcNumber: '33333').save();*/
+                phSurname: 'Iksińska',calcNumber: '33333', status: Process.ProcessStatus.REJECTED).save();
 
     }
 }

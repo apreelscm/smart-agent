@@ -166,7 +166,7 @@ body {
 
 #mainBody {
     background: #ffffff; /*url('../images/background-top.jpg') no-repeat 0px top;*/
-    overflow: hidden;
+    /*overflow: hidden;*/
     margin: 0 auto;
     width: 980px;
     min-height: 450px;
@@ -406,8 +406,8 @@ th:hover, tr:hover {
 
 .pagination a:hover, .pagination a:focus,
 .pagination .currentStep {
-    background-color: #999999;
-    color: #ffffff;
+    background-color: #0095cd;
+    color: #d9eef7;
     outline: none;
     text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.8);
 }

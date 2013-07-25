@@ -5,6 +5,10 @@
  * Time: 16:45
  * To change this template use File | Settings | File Templates.
  */
+
+(function ($) {
+    "use strict";
+
 var timeout = 500;
 var closetimer = 0;
 var ddmenuitem = 0;
@@ -37,3 +41,5 @@ $j(document).ready(function () {
 });
 
 document.onclick = jsddm_close;
+
+}(jQuery));

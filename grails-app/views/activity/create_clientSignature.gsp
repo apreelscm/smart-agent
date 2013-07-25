@@ -1,4 +1,4 @@
-<%@ page import="com.eservice.eumowy.enums.ClientType; com.eservice.eumowy.Activity" %>
+<%@ page import="com.eservice.eumowy.Activity" %>
 <!DOCTYPE html>
 <html>
 <head>
