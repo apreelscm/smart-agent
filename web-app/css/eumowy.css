@@ -1,0 +1,209 @@
+#userNameLabel {
+    font-size: 1.2em;
+    text-decoration: none;
+    color: #ffffff;
+}
+
+#userIdLabel {
+    font-size: 1.2em;
+    text-decoration: none;
+    color: #f6ad44;
+    margin-left: 18px;
+}
+
+.przycisk-zaloguj {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    width: 113px;
+    height: 37px;
+    border-style: none;
+    background: url(../images/przyciski.gif) no-repeat 0px -102px;
+    cursor: pointer
+}
+
+.userInfoBar {
+    position: absolute;
+    top: 0.75em;
+    right: 4em;
+}
+
+fieldset {
+    margin: 0.7em 0 0 0;
+    padding: 0.7em 0 .5em 0;
+    position: relative;
+    zoom: 1;
+    overflow: hidden;
+    text-align: center;
+  border-style: none none none none;
+    /* border-top: 1px solid #b7c6d6;*/
+}
+
+.linia-top {
+    overflow: hidden;
+    padding: 10px 5px 12px 5px;
+    height: auto;
+    border-top: solid 1px #b7c6d6
+}
+
+.linia-bottom {
+    overflow: hidden;
+    padding: 0px 0px 8px 0px;
+    height: auto;
+    border-bottom: solid 1px #b7c6d6
+}
+
+
+.przycisk-submit {
+    padding: .3em .6em .3em .6em;
+    text-align: center;
+    vertical-align: middle;
+    border-style: none;
+    background-color: #e88917;
+    border-radius: 2px;
+    box-shadow: #b7c6d6 1px 1px;
+    font-size: 15px;
+    font-weight: bold;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+.przycisk-submit:hover {
+    color: #b7c6d6;
+}
+
+
+/*fix buttona bo gdy nie wszystkie stany zdefiniowane to mruga*/
+.przycisk-action {
+    padding: .3em .4em .3em .4em;
+    text-align: center;
+    vertical-align: middle;
+    height: auto;
+    border-style: none;
+    background-color: #4a6adb;
+    border-radius: 2px;
+    box-shadow: #b7c6d6 1px 1px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+.przycisk-action:hover {
+    color: #b7c6d6;
+    padding: .3em .4em .3em .4em;
+    text-align: center;
+    vertical-align: middle;
+    height: auto;
+    border-style: none;
+    background-color: #4a6adb;
+    border-radius: 2px;
+    box-shadow: #b7c6d6 1px 1px;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.przycisk-action:active {
+    padding: .3em .4em .3em .4em;
+    text-align: center;
+    vertical-align: middle;
+    height: auto;
+    border-style: none;
+    background-color: #4a6adb;
+    border-radius: 2px;
+    box-shadow: #b7c6d6 1px 1px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+.przycisk-action:focus {
+    padding: .3em .4em .3em .4em;
+    text-align: center;
+    vertical-align: middle;
+    height: auto;
+    border-style: none;
+    background-color: #4a6adb;
+    border-radius: 2px;
+    box-shadow: #b7c6d6 1px 1px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #ffffff;
+    cursor: pointer;
+}
+/*
+.content {display:none;}
+*/
+
+
+.expendable{
+    margin-top: 15px;
+}
+
+.expandHeader {
+    font-weight:bold;
+    font-size:125%;
+}
+
+.expander {
+}
+
+.expander.expanded {
+    padding-left: 13px;
+    background-position: left center;
+    background-repeat: no-repeat;
+    background-image: url(../images/expanded.gif);
+}
+
+.expander.collapsed {
+    padding-left: 13px;
+    background-position: left center;
+    background-repeat: no-repeat;
+    background-image: url(../images/collapsed.gif);
+}
+
+.expanderSub {
+    font-size:100%;
+    font-weight:normal;
+    margin-left: 6px;
+    color: #50749b;
+    text-decoration: none
+}
+
+.expanderSub:hover {
+    color: #50749b;
+    text-decoration: underline
+}
+
+.nesting-sub1 {
+    margin-left: 25px;
+}
+
+.nesting-sub2 {
+    margin-left: 35px;
+}
+
+.checkBoxBlock{
+    margin-top: 6px;
+}
+
+.checkBoxBlock > input[type="checkbox"]{
+    margin-right: 4px;
+}
+
+.pad {
+	border: 1px solid #ccc;
+}
+
+.sigPad {
+	margin-left: auto;
+	margin-right: auto;
+	width: 400px;
+	text-align: center;
+}
+
+.error {
+	color: red;
+}
