@@ -55,7 +55,7 @@
 
     <g:form>
         <fieldset  style="margin-top: 20px;">
-            <g:actionSubmit class="button submit" value="Dalej" action="create_clientSignature"/>
+            <g:actionSubmit class="button submit" value="Dalej" action="create_acceptanceInfo"/>
         </fieldset>
     </g:form>
 

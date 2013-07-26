@@ -1,4 +1,5 @@
 package com.eservice.eumowy
+
 import grails.plugins.springsecurity.Secured
 
 class ProcessController {
@@ -117,10 +118,10 @@ class ProcessController {
      * Filtrowanie procesów po wybranym statusie
      * @return listTable html
      */
- /*   def filterByStatus(String filterStatus) {
-        def filteredProcesses = findProcessListByStatus(filterStatus)
-        render template: 'table/listTable', model: [processInstanceList: filteredProcesses, processInstanceTotal: filteredProcesses.size()]
-    }*/
+    /*   def filterByStatus(String filterStatus) {
+           def filteredProcesses = findProcessListByStatus(filterStatus)
+           render template: 'table/listTable', model: [processInstanceList: filteredProcesses, processInstanceTotal: filteredProcesses.size()]
+       }*/
 /*
     def filter = {
         log.info("params.status - " + params?.filterStatus);
@@ -130,9 +131,16 @@ class ProcessController {
 
     def showPdfByDocumentId(String id){
         log.info( "pdf document = " + id);
+
+        //TEST start
+        PdfService service = PdfService();
+        service.generateImagesFormPDF();
+        //end
+
         def documentfile = DocumentFile.get(id);
         render(template: '../forms/pdf/embedDocument', model:  [pdfDocument: resource(dir:'files', file:documentfile.filename)]);
     }
+
 
     def downloadDoc(String id){
         log.info "downloadDoc id = ${id}";

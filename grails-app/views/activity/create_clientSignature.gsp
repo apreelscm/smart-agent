@@ -7,7 +7,6 @@
     <title><g:message code="default.edit.label" args="[entityName]"/></title>
 </head>
 
-
 <body>
 
 <section id="create_clientSignature" >
@@ -21,31 +20,32 @@
 
     <nav  style="margin-top: 20px" >
         <g:form action="#" >
-            <fieldset>
-                <div class="float-left" style="width: 48%; text-align: left">
 
-                    <g:submitButton name="Brak akceptacji" class="button submit" style="width: 48%"/>
+            <fieldset>
+                <div class="float-left" style="width: calc(50% - 10px); text-align: left">
+
+                    <g:submitButton name="Brak akceptacji" class="button submit" style="width: inherit; height: 50px"/>
 
                     <g:select id="statusSelect" name="status" from="${com.eservice.eumowy.Activity$ClientType?.values()}"
                               keys="${com.eservice.eumowy.Activity$ClientType.values()*.name()}"
                               value="${com.eservice.eumowy.Activity.ClientType.REPRESENTIVE.name()}"
                               noSelection="['': '']"
-                              style="margin-left:2%; width:48%"
+                              style="margin-left:2%; width:inherit"
                     />
 
                     <g:submitButton name="Oczekiwanie na podpis w formie papierowej"
                                     class="button submit display-block"
-                                    style="margin-top: 19px; width: 100%"
+                                    style="margin-top: 15px;width: 100%"
                     />
 
                 </div>
 
-                <div class="float-right display-inline" style="width: 48%; text-align: left; margin-left: 10px">
+                <div class="float-right display-inline" style="width: calc(50% - 10px); text-align: left;">
 
                     <g:submitButton name="Podpisz dokument" class="button submit float-left"
-                                    style="width: 48%"/>
+                                    style="width: inherit; height: 50px"/>
 
-                    <div class="float-right" style="margin-left:2%; width: 48%;">
+                    <div class="float-right" style="width: inherit">
                         <div >
                             <g:checkBox name="dodatkowyPunkt" />
                             <g:message code="todo" default="Żądanie wersji papierowej" />
@@ -58,7 +58,7 @@
                     </div>
 
                     <g:submitButton name="Oczekiwanie na podpis w formie elektronicznej" class="button submit"
-                                    style="margin-top: 10px; width: 100%"/>
+                                    style="margin-top: 15px; width: 100%"/>
 
                 </div>
 

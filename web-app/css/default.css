@@ -462,6 +462,40 @@ h3 a, h3 a:hover {
 /* Forms
 -------------------------------------------------------------------*/
 
+.panelForm{
+    margin: 0 auto;
+    width: 500px;
+}
+
+.panelForm > div{
+    margin-top: 2em;
+}
+
+.panelForm > div > div[class *= "display-inline"]:not(:first-child){
+    margin-left: 1em
+}
+
+.panelForm > div > label
+{
+    width: 92%;
+    text-align:center;
+    white-space: nowrap;
+}
+
+.panelForm > div > p {
+    width: 92%;
+    margin: 1em 0 0 0;
+}
+
+.panelForm > div > p > input[type=text]{
+    width: 92%;
+}
+
+.panelForm > fieldset[id = "buttons"]{
+    margin-top: 20px;
+}
+
+
 .property-list {
     border-style: none none solid none;
     border-color: #b7c6d6;
@@ -476,25 +510,6 @@ h3 a, h3 a:hover {
     overflow: hidden;
 }
 
-.fieldcontain {
-    margin-top: 1em;
-}
-
-.fieldcontain label,
-.fieldcontain .property-label {
-    color: #666666;
-    text-align: right;
-    width: 25%;
-}
-
-.fieldcontain .property-label {
-    float: left;
-}
-
-.fieldcontain .property-value {
-    display: block;
-    margin-left: 27%;
-}
 
 label {
     cursor: pointer;

@@ -7,3 +7,8 @@ if (typeof jQuery !== 'undefined') {
 		});
 	})(jQuery);
 }
+
+
+function allertError(msg) {
+    alert(msg);
+}

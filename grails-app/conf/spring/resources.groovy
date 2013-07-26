@@ -1,6 +1,7 @@
+import com.eservice.eumowy.auth.EServiceAuthenticationProvider
+
 // Place your Spring DSL code here
 
-import eservice.auth.EServiceAuthenticationProvider
 
 beans = {
     // custom authentication

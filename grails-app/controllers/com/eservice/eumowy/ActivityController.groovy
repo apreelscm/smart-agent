@@ -25,6 +25,11 @@ class ActivityController {
         [activityInstance: new Activity(params)]
     }
 
+
+    def create_acceptanceInfo() {
+        [activityInstance: new Activity(params)]
+    }
+
     def create_clientSignature() {
         [activityInstance: new Activity(params)]
     }

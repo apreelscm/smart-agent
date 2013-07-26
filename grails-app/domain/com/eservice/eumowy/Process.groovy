@@ -4,7 +4,7 @@ import groovy.transform.ToString
 @ToString(includeNames = true,ignoreNulls = true)
 class Process {
 
-    String id;
+    Integer id
 
     Date dateCreated
 
@@ -32,6 +32,12 @@ class Process {
     // TODO kolekcja czynnosci
 
 
+    String getStringId() {
+        return String.format('%06d',this.id)
+    }
+
+    static transients = ['stringId']
+
     static hasMany = [documents:DocumentFile, attachments:AttachmentFile]
 
     static constraints = {
@@ -42,7 +48,6 @@ class Process {
         table name: "process", schema: "CBD_UMOWY"
         autoTimestamp true
         version true
-
         sort id: "desc"
     }
 

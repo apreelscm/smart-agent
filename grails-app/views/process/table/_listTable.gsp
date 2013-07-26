@@ -4,7 +4,7 @@
        style="table-layout: fixed; width: 100%">
     <thead>
     <tr>
-        <util:remoteSortableColumn property="id"  title="Id Procesu"  update="tableBox" action="filter" params="[filterStatus:filterStatus,filterObserved:filterObserved]"/>
+        <util:remoteSortableColumn property="stringId"  title="Id Procesu"  update="tableBox" action="filter" params="[filterStatus:filterStatus,filterObserved:filterObserved]"/>
         <util:remoteSortableColumn property="lastUpdated" title="Data Aktualizacji" update="tableBox" action="filter" params="[filterStatus:filterStatus,filterObserved:filterObserved]"/>
         <util:remoteSortableColumn property="clientNip"  title="Nip Klienta"  update="tableBox" action="filter" params="[filterStatus:filterStatus,filterObserved:filterObserved]"/>
         <util:remoteSortableColumn property="clientName"  title="Nazwa Klienta"  update="tableBox" action="filter" params="[filterStatus:filterStatus,filterObserved:filterObserved]"/>
@@ -18,7 +18,7 @@
     <tbody>
     <g:each in="${processInstanceList}" status="i" var="processInstance">
         <tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
-            <td class="tableCell" style="word-wrap:break-word;"><g:link action="show" id="${processInstance.id}">${fieldValue(bean: processInstance, field: "id")}</g:link></td>
+            <td class="tableCell" style="word-wrap:break-word;"><g:link action="show" id="${processInstance.id}">${fieldValue(bean: processInstance, field: "stringId")}</g:link></td>
             <td class="tableCell"><g:formatDate date="${processInstance.lastUpdated}" /></td>
             <td class="tableCell">${fieldValue(bean: processInstance, field: "clientNip")}</td>
             <td class="tableCell">${fieldValue(bean: processInstance, field: "clientName")}</td>
