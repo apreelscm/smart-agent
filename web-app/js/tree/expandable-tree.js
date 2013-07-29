@@ -1,32 +1,32 @@
 /* 
-===============================================================
-jQuery plugin to expand/collapse a content element when a 
-expander element is clicked. When expanding/collapsing the plug-in 
-also toggles a class on the element.
-See https://github.com/redhotsly/simple-expand
-===============================================================
-Copyright (C) 2012 Sylvain Hamel
+ ===============================================================
+ jQuery plugin to expand/collapse a content element when a
+ expander element is clicked. When expanding/collapsing the plug-in
+ also toggles a class on the element.
+ See https://github.com/redhotsly/simple-expand
+ ===============================================================
+ Copyright (C) 2012 Sylvain Hamel
 
-Permission is hereby granted, free of charge, to any person
-obtaining a copy of this software and associated documentation
-files (the "Software"), to deal in the Software without restriction,
-including without limitation the rights to use, copy, modify,
-merge, publish, distribute, sublicense, and/or sell copies of the
-Software, and to permit persons to whom the Software is furnished 
-to do so, subject to the following conditions:
+ Permission is hereby granted, free of charge, to any person
+ obtaining a copy of this software and associated documentation
+ files (the "Software"), to deal in the Software without restriction,
+ including without limitation the rights to use, copy, modify,
+ merge, publish, distribute, sublicense, and/or sell copies of the
+ Software, and to permit persons to whom the Software is furnished
+ to do so, subject to the following conditions:
 
-The above copyright notice and this permission notice shall be 
-included in all copies or substantial portions of the Software.
+ The above copyright notice and this permission notice shall be
+ included in all copies or substantial portions of the Software.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, 
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
-OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR
-ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
-CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-===============================================================
-*/
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+ OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR
+ ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+ CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ ===============================================================
+ */
 /*globals $:false, window:false*/
 (function ($) {
     "use strict";
@@ -35,6 +35,35 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
     function SimpleExpand() {
 
         var that = this;
+
+        var restrictionsMap = {}
+        restrictionsMap["nowaUmowaCB"] = ["rozszerzenie", "zmianaWarunkow", "poprawDane", "odrzucDokumenty", "pakietSerwisowy"];
+
+        restrictionsMap["dodatkowyPunktCB"] = ["nowaUmowa","poprawDane","odrzucDokumenty"];
+        restrictionsMap["dodatkowyPosCB"] =  ["nowaUmowa","poprawDane","odrzucDokumenty"];
+
+        restrictionsMap["zmianaProwizjiCB"] =  ["nowaUmowa","poprawDane","odrzucDokumenty"];
+        restrictionsMap["zmianaWarunkowDccCB"] =  ["nowaUmowa","poprawDane","odrzucDokumenty"];
+        restrictionsMap["wymianaUmowyNajmuCB"] =  ["nowaUmowa","poprawDane","odrzucDokumenty"];
+        restrictionsMap["aneksCB"] =  ["nowaUmowa","poprawDane","odrzucDokumenty"];
+        restrictionsMap["zmianaTabeliOplatDodatkowychCB"] =  ["nowaUmowa","poprawDane","odrzucDokumenty"];
+        restrictionsMap["zmianaWarunkowPrepaidCB"] =  ["nowaUmowa","poprawDane","odrzucDokumenty"];
+        restrictionsMap["zmianaOkresuLojalnosciowegoCB"] =  ["nowaUmowa","poprawDane","odrzucDokumenty"];
+        restrictionsMap["promocyjneObnizenieNajmuCB"] =  ["nowaUmowa","poprawDane","odrzucDokumenty"];
+
+        restrictionsMap["dodaniePrepaidCB"] =  ["poprawDane","odrzucDokumenty"];
+        restrictionsMap["dodanieDccCB"] =  ["poprawDane","odrzucDokumenty"];
+        restrictionsMap["dodanieCashBackCB"] =  ["poprawDane","odrzucDokumenty"];
+        restrictionsMap["dodanieIkoCB"] =  ["poprawDane","odrzucDokumenty"];
+
+        restrictionsMap["ekonomicznyCB"] =  ["nowaUmowa"];
+        restrictionsMap["komfortCB"] =  ["nowaUmowa"];
+        restrictionsMap["prestizCB"] =  ["nowaUmowa"];
+
+        restrictionsMap["poprawDaneCB"] = ["nowaUmowa", "rozszerzenie", "zmianaWarunkow", "odrzucDokumenty", "pakietSerwisowy", "dodatkoweFuncjonalnosci"];
+        restrictionsMap["odrzucDokumentyCB"] = ["nowaUmowa","rozszerzenie", "zmianaWarunkow", "poprawDane", "pakietSerwisowy", "dodatkoweFuncjonalnosci"];
+
+        var restrictions = new Array();
 
         that.defaults = {
 
@@ -132,7 +161,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
                 expander.removeClass("expanded").addClass("collapsed");
                 that.hide(targets);
             }
-        };        
+        };
 
         that.hide = function (targets) {
             if (that.settings.hideMode === "fadeToggle") {
@@ -244,7 +273,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             }
             else if (searchMode === "parent") {
 
-                    // Search the expander's parents recursively until targets are found.
+                // Search the expander's parents recursively until targets are found.
                 var parent = expander.parent();
                 do {
                     targets = that.findLevelOneDeep(parent, targetSelector, targetSelector);
@@ -290,17 +319,107 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
                 that.setInitialState(expander, targets);
 
                 // hook the click on the expander
-                expander.click(function () {
+                expander.click(function (event) {
                     return that.toggle(expander, targets);
                 });
+
+
+                var checkboxes = targets.find("input:checkbox");
+
+                $j.each(checkboxes,function(index, value){
+                    value.addEventListener("change", changeActivity, false);
+                })
+
             });
+
+            $('#nowaUmowaCB').change(changeActivity);
+            $('#poprawDane').change(changeActivity);
+            $('#odrzucDokumenty').change(changeActivity);
+
         };
+
+
+        function changeActivity (e) {
+            var target = e.target;
+            var elements = restrictionsMap[target.id]
+
+            if(target.checked){
+                $j.each(elements,function(index, value){
+                    if(restrictions.indexOf(value) == -1){
+                        disableItem(value)
+                    }
+                    restrictions.push(value);
+                })
+
+            }
+            else{
+                $j.each(elements,function(index, value){
+                    var itemIndex = restrictions.indexOf(value);
+                    if(itemIndex >= 0){
+                        restrictions.splice(itemIndex,1);
+
+                        if(restrictions.indexOf(value) == -1){
+                            enableItem(value)
+                        }
+                    }
+                })
+            }
+        }
+
+        function disableItem (itemId) {
+            var item = $j('#'+itemId);
+            item.addClass("disabled");
+
+            var disabledExpander = item.children("a[class*='expander']:first");
+            if(disabledExpander){
+                var targetSelector = disabledExpander.attr("data-expander-target") || that.settings.defaultTarget;
+                var searchMode = disabledExpander.attr("data-expander-target-search") || that.settings.defaultSearchMode;
+                var targets = that.findTargets(disabledExpander, searchMode, targetSelector);
+
+                if(disabledExpander.hasClass("expanded")){
+                    that.toggle(disabledExpander, targets);
+                }
+
+                var checkboxes = item.find("input:checkbox");//.removeAttr("checked","");
+
+                $j.each(checkboxes,function(index, value){
+
+                    if($(value).attr('checked') !== undefined){
+
+                        var elements = restrictionsMap[value.id]
+
+                        $j.each(elements,function(index, value){
+                            var itemIndex = restrictions.indexOf(value);
+                            if(itemIndex >= 0){
+                                restrictions.splice(itemIndex,1);
+                                if(restrictions.indexOf(value) == -1){
+                                    enableItem(value)
+                                }
+                            }
+                        })
+
+                        $(value).removeAttr("checked");
+                    }
+
+                    value.addEventListener("change", changeActivity, false);
+                })
+
+
+            }
+        }
+
+        function enableItem (itemId) {
+            var item = $j('#'+itemId);
+            item.removeClass("disabled");
+        }
     }
 
-    // export SimpleExpand
+
+
+// export SimpleExpand
     window.SimpleExpand = SimpleExpand;
 
-    // expose SimpleExpand as a jQuery plugin
+// expose SimpleExpand as a jQuery plugin
     $.fn.simpleexpand = function (options) {
         var instance = new SimpleExpand();
         instance.activate(this, options);
