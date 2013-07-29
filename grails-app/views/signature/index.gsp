@@ -18,13 +18,13 @@
 			</p>
 			<div class="sig sigWrapper">
 				<div class="typed"></div>
-				<canvas class="pad" width="600" height="250"></canvas>
+				<canvas id="pad" class="pad" width="600" height="250"></canvas>
 				<input type="hidden" name="signature" class="output">
 			</div>
-			<a href="#clear" class="przycisk-action-big clearButton">
+			<a href="#clear" class="button action clearButton">
 				<g:message code="signature.clear" />
 			</a>
-			<button type="submit" class="przycisk-submit">
+			<button type="submit" class="button submit">
 				<g:message code="signature.save" />
 			</button>
 		</form>
