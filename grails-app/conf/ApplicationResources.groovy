@@ -27,4 +27,8 @@ modules = {
         resource url:'js/tree/expandable-tree.js'
         dependsOn 'jquery'
     }
+	
+	session_utils {
+		resource url:'js/session_utils.js'
+	}
 }
