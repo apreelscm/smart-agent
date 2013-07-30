@@ -184,12 +184,25 @@
             </div>
         </div>
 
+        %{--100 000 -> 100kb--}%
+        %{--<uploader:uploader id="uploader" sizeLimit="100000" />--}%
+
+        <g:link controller="attachment">Dodaj załącznik</g:link>
+
         <nav style="margin-top: 20px">
             <fieldset>
-                <g:submitButton name="Dalej" class="button submit" />
+                <g:submitButton name="Dalej" class="button submit" formmethod="post" />
             </fieldset>
         </nav>
     </g:form>
+
+
+    %{--<fileuploader:form	upload="attachments"
+                          successAction="success"
+                          successController="test"
+                          errorAction="error"
+                          errorController="test"
+                          id="uploaderForm"/>--}%
 
 </section>
 

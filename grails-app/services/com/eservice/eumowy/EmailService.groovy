@@ -23,7 +23,7 @@ class EmailService {
                 " to " + smm.getTo() +
                 " with subject " + smm.getSubject())
 
-        mailSender.send(smm);
+            mailSender.send(smm);
     }
 
 
@@ -42,6 +42,11 @@ class EmailService {
                 " to " + message.getTo() +
                 " with subject " + message.getSubject())
 
-        mailSender.send(message);
+        if(mailSender){
+            mailSender.send(message);
+        }
+        /* else {
+             throw new MailException("internal error") {}
+         }*/
     }
 }

@@ -142,3 +142,11 @@ grails {
 	}
  }
 trustAll = true
+
+fileuploader {
+    attachments {
+        maxSize =  1 * FileUploaderTagLib._mbyte;
+        allowedExtensions = ["pdf"]
+        path = "/tmp/attachment/"
+    }
+}
