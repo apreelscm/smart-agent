@@ -25,7 +25,7 @@
 
     <h1 class="ng linia-bottom">Wybierz działanie</h1>
 
-    <g:form action="validate_create_defineActivity" method="post">
+    <g:form>
         <div class="activityTree" style="margin: 10px auto 0 auto;display: table;">
 
             <div id="nowaUmowa" class="expendable">
@@ -41,12 +41,12 @@
                 <div class="content nesting-sub1" style="display: block;">
                     <div class="checkBoxBlock">
                         <g:checkBox id="dodatkowyPunktCB" name="dodatkowyPunkt" class="_nowaUmowa _zmianaWarunkow" />
-                        <g:message code="todo" default="Dodatkowy Punkt"/>
+                        <label for="dodatkowyPunktCB"><g:message code="todo" default="Dodatkowy Punkt"/></label>
                     </div>
 
                     <div class="checkBoxBlock">
                         <g:checkBox id="dodatkowyPosCB" name="dodatkowyPos"/>
-                        <g:message code="todo" default="Dodatkowy Pos"/>
+                        <label for="dodatkowyPosCB"><g:message code="todo" default="Dodatkowy Pos"/></label>
                     </div>
                 </div>
             </div>
@@ -58,12 +58,12 @@
 
                     <div class="checkBoxBlock">
                         <g:checkBox id="zmianaProwizjiCB" name="zmianaProwizji"/>
-                        <g:message code="todo" default="Zmiana prowizji"/>
+                        <label for="zmianaProwizjiCB"><g:message code="todo" default="Zmiana prowizji"/></label>
                     </div>
 
                     <div class="checkBoxBlock">
                         <g:checkBox id="zmianaWarunkowDccCB" name="zmianaWarunkowDcc"/>
-                        <g:message code="todo" default="Zmiana warunków DCC"/>
+                        <label for="zmianaWarunkowDccCB"><g:message code="todo" default="Zmiana warunków DCC"/></label>
                     </div>
 
                     <div class="checkBoxBlock">
@@ -73,38 +73,37 @@
                         <div class="content nesting-sub2" style="display: block;">
                             <div class="checkBoxBlock">
                                 <g:checkBox id="wymianaUmowyNajmuCB" name="wymianaUmowyNajmu" />
-                                <g:message code="todo" default="Wymiana umowy najmu"/>
+                                <label for="wymianaUmowyNajmuCB"><g:message code="todo" default="Wymiana umowy najmu"/></label>
                             </div>
 
                             <div class="checkBoxBlock">
                                 <g:checkBox id="aneksCB" name="aneks"/>
-                                <g:message code="todo" default="Aneks"/>
+                                <label for="aneksCB"> <g:message code="todo" default="Aneks"/></label>
                             </div>
                         </div>
                     </div>
 
                     <div class="checkBoxBlock">
                         <g:checkBox id="zmianaTabeliOplatDodatkowychCB" name="zmianaTabeliOplatDodatkowych"/>
-                        <g:message code="todo" default="Zmiana tabeli opłat dodatkowych"/>
+                        <label for="zmianaTabeliOplatDodatkowychCB"><g:message code="todo" default="Zmiana tabeli opłat dodatkowych"/></label>
                     </div>
 
                     <div class="checkBoxBlock">
                         <g:checkBox id="zmianaWarunkowPrepaidCB" name="zmianaWarunkowPrepaid"/>
-                        <g:message code="todo" default="Zmiana warunków prepaid"/>
+                        <label for="zmianaWarunkowPrepaidCB"><g:message code="todo" default="Zmiana warunków prepaid"/></label>
                     </div>
 
                     <div class="checkBoxBlock">
                         <g:checkBox id="zmianaOkresuLojalnosciowegoCB" name="zmianaOkresuLojalnosciowego"/>
-                        <g:message code="todo" default="Zmiana okresu Lojalnościowego"/>
+                        <label for="zmianaOkresuLojalnosciowegoCB"><g:message code="todo" default="Zmiana okresu Lojalnościowego"/></label>
                     </div>
 
                     <div class="checkBoxBlock">
                         <g:checkBox id="promocyjneObnizenieNajmuCB" name="promocyjneObnizenieNajmu"/>
-                        <g:message code="todo" default="Promocyjne obniżenie najmu"/>
+                        <label for="promocyjneObnizenieNajmuCB"> <g:message code="todo" default="Promocyjne obniżenie najmu"/></label>
                     </div>
                 </div>
             </div>
-
 
             <div id="dodatkoweFuncjonalnosci" class="expendable">
                 <a class="expander expandHeader expanded" href="#">Dodatkowe funkcjonalności</a>
@@ -113,22 +112,22 @@
 
                     <div class="checkBoxBlock">
                         <g:checkBox id="dodaniePrepaidCB" name="dodaniePrepaid"/>
-                        <g:message code="todo" default="Dodanie Prepaid"/>
+                        <label for="dodaniePrepaidCB"><g:message code="todo" default="Dodanie Prepaid"/></label>
                     </div>
 
                     <div class="checkBoxBlock">
                         <g:checkBox id="dodanieDccCB" name="dodanieDcc"/>
-                        <g:message code="todo" default="Dodanie DCC"/>
+                        <label for="dodanieDccCB"><g:message code="todo" default="Dodanie DCC"/></label>
                     </div>
 
                     <div class="checkBoxBlock">
                         <g:checkBox id="dodanieCashBackCB" name="dodanieCashBack"/>
-                        <g:message code="todo" default="Dodanie CashBack"/>
+                        <label for="dodanieCashBackCB"><g:message code="todo" default="Dodanie CashBack"/></label>
                     </div>
 
                     <div class="checkBoxBlock">
-                        <g:checkBox id="dodanieIkoCB" name="DodanieIko"/>
-                        <g:message code="todo" default="Dodanie IKO"/>
+                        <g:checkBox id="dodanieIkoCB" name="dodanieIko"/>
+                        <label for="dodanieIkoCB"><g:message code="todo" default="Dodanie IKO"/></label>
                     </div>
 
 
@@ -138,17 +137,17 @@
                         <div class="content nesting-sub2" style="display: block;">
                             <div class="checkBoxBlock">
                                 <g:checkBox id="ekonomicznyCB" name="ekonomiczny"/>
-                                <g:message code="todo" default="Ekonomiczny"/>
+                                <label for="ekonomicznyCB"><g:message code="todo" default="Ekonomiczny"/></label>
                             </div>
 
                             <div class="checkBoxBlock">
                                 <g:checkBox id="komfortCB" name="komfort"/>
-                                <g:message code="todo" default="Komfort"/>
+                                <label for="komfortCB"><g:message code="todo" default="Komfort"/></label>
                             </div>
 
                             <div class="checkBoxBlock">
                                 <g:checkBox id="prestizCB" name="prestiz"/>
-                                <g:message code="todo" default="Prestiż"/>
+                                <label for="prestizCB"><g:message code="todo" default="Prestiż"/></label>
                             </div>
                         </div>
                     </div>
@@ -158,7 +157,7 @@
             <div id="poprawDane" class="expendable">
                 <div class="checkBoxBlock">
                     <g:checkBox id="poprawDaneCB" name="poprawDane"/>
-                    <a class="expandHeader expanded" href="#">Popraw już wprowadzone dane</a>
+                   <a class="expandHeader expanded" href="#">Popraw już wprowadzone dane</a>
                 </div>
             </div>
 
@@ -184,25 +183,14 @@
             </div>
         </div>
 
-        %{--100 000 -> 100kb--}%
-        %{--<uploader:uploader id="uploader" sizeLimit="100000" />--}%
-
-        <g:link controller="attachment">Dodaj załącznik</g:link>
+      %{--  <g:link controller="attachment">Dodaj załącznik</g:link>--}%
 
         <nav style="margin-top: 20px">
             <fieldset>
-                <g:submitButton name="Dalej" class="button submit" formmethod="post" />
+                <g:submitButton name="continue" class="button submit" value="Dalej" />
             </fieldset>
         </nav>
     </g:form>
-
-
-    %{--<fileuploader:form	upload="attachments"
-                          successAction="success"
-                          successController="test"
-                          errorAction="error"
-                          errorController="test"
-                          id="uploaderForm"/>--}%
 
 </section>
 

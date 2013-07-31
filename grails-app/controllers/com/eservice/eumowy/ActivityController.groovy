@@ -3,6 +3,8 @@ package com.eservice.eumowy
 import com.eservice.eumowy.activity.ActivityTree
 import org.springframework.mail.MailException
 
+import java.awt.print.Book
+
 class ActivityController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
@@ -10,7 +12,7 @@ class ActivityController {
     def emailService
 
     def index() {
-        redirect(action: "create_defineActivity", params: params)
+        redirect(action: "createProcess", params: params)
     }
 
     def list(Integer max) {
@@ -18,47 +20,71 @@ class ActivityController {
         [activityInstanceList: Activity.list(params), activityInstanceTotal: Activity.count()]
     }
 
-    def create_defineActivity() {
-        [activityInstance: new Activity(params)]
-    }
+    def createProcessFlow = {
+        defineActivity{
+            on("continue") {
+                //TODO MOVE TO CMD OBJECT
+                def activityTree = new ActivityTree(); bindData(activityTree, params)
+                def selectedItems = activityTree.properties.findResults { it.value == "on" ? it.key : null };
+                def selectedActivities = Activity.findAllByCodeInList(selectedItems);
+                def notes = params.notes;
 
-    def validate_create_defineActivity() {
-        //populate activityTree props from params
-        def activityTree = new ActivityTree(); bindData(activityTree, params)
-        def selectedActivities = activityTree.properties.findResults { it.value == "on" ? it.key : null };
-        def notes = params.notes;
+                //validate controls
+                if(selectedActivities?.size() == 0 && notes?.length() == 0){
+                    flash.errorMessage = "Należy wybrać aktywności i/lub wypełnić uwagi do COA."
+                    return error()
+                }
 
-        //validate selected checkboxes
-        if(selectedActivities?.size() == 0 && notes?.length() == 0){
-            flash.errorMessage = "Należy wybrać aktywności i/lub wypełnić uwagi do COA."
-            redirect(action: "create_defineActivity", params: params)
-            return;
+                //only send notes email
+                if(selectedActivities?.size() == 0){
+                    _sendNotesToCOA(notes);
+                    return emailOnly()
+                }
+
+                //additional sending email
+                if(notes){
+                   if(!_sendNotesToCOA(notes)){
+                       return error()
+                   }
+                }
+
+               [processInstance: new Process(activities: selectedActivities)]
+
+            }.to "chooseCalc"
+            on("error").to "defineActivity"
+            on("emailOnly").to "defineActivity"
         }
 
-        //sending notes
-        if(notes && !_sendNotesToCOA(notes)){
-            redirect(action: "create_defineActivity", params: params)
-            return;
+        chooseCalc{
+            on("continue").to "chooseActivity"
+            on("back").to "defineActivity"
         }
 
-        //OK -> move on to create_chooseCalc
-        redirect(action: "create_chooseCalc")
-    }
+        listBooks {
+            action {
+                [bookList: Book.list()]
+            }
+            on("success").to "showCatalogue"
+            on(Exception).to "handleError"
+        }
 
-    def create_chooseCalc() {
-        [activityInstance: new Activity(params)]
-    }
 
-    def create_chooseActivity() {
-        [activityInstance: new Activity(params)]
-    }
+        chooseActivity{
+            on("continue").to "acceptanceInfo"
+            on("back").to "chooseCalc"
+        }
 
-    def create_acceptanceInfo() {
-        [activityInstance: new Activity(params)]
-    }
+        acceptanceInfo{
+            on("continue").to "clientSignature"
+            on("back").to "chooseActivity"
+        }
 
-    def create_clientSignature() {
-        [activityInstance: new Activity(params)]
+        clientSignature{
+            on("continue").to "clientSignature"
+            on("back").to "acceptanceInfo"
+            on("subscribe").to "clientSignature"
+            on("noaccept").to "clientSignature"
+        }
     }
 
     //--------------
@@ -78,7 +104,7 @@ class ActivityController {
             flash.nipErrorMessage = message(code: 'todo', default: 'Klient już istnieje / Istnieją niezaakcpetowane dokumenty')
         }
 
-        redirect(action: "create_chooseCalc")
+        redirect(action: "chooseCalc")
     }
 
     //--------------

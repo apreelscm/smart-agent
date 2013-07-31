@@ -94,13 +94,13 @@ log4j = {
             'org.codehaus.groovy.grails.web.mapping',        // URL mapping
             'org.codehaus.groovy.grails.commons',            // core / classloading
             'org.codehaus.groovy.grails.plugins',            // plugins
-            'org.codehaus.groovy.grails.orm.hibernate',      // hibernate integration
+            '/*org.codehaus.groovy.grails.orm.hibernate',      // hibernate integration*/
             'org.springframework',
             'org.hibernate',
             'net.sf.ehcache.hibernate'
 
     //show sql values
-    warn "org.hibernate.SQL", "org.hibernate.type"
+    trace "org.hibernate.SQL", "org.hibernate.type", "org.codehaus.groovy.grails.orm.hibernate"
 
     appenders {
         console name: 'stdout', layout: pattern(conversionPattern: '%d{dd-MM-yyyy HH:mm:ss,SSS} %5p %c{1} - %m%n')

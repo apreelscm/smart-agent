@@ -38,7 +38,8 @@
 
 
         <fieldset id="buttons">
-            <g:actionSubmit class="button submit" action="create_clientSignature" value="Dalej"/>
+            <g:submitButton name="back" class="button submit" value="Wstecz" />
+            <g:submitButton name="continue" class="button submit" value="Dalej" />
         </fieldset>
     </g:form>
 

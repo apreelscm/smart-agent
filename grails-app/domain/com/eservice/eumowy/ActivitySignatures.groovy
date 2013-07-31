@@ -1,15 +1,24 @@
 package com.eservice.eumowy
 
-class ActivitySignatures {
+class ActivitySignatures implements Serializable {
 
-    Activity activity
+    Signature signature;
 
-    Signature signature
+    Boolean mandatory = false // not shown on any of list
 
-    boolean mandatory // not shown on any of list
+    Integer numberOfList = 0;
 
-    Integer numberOfList
+    static belongsTo = [activity:Activity]
 
     static constraints = {
     }
+
+    static mapping = {
+        table name: "activitysignatures", schema: "CBD_UMOWY"
+    }
+
+    String toString(){
+        return signature.name;
+    }
+
 }

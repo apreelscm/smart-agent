@@ -2,7 +2,7 @@ package com.eservice.eumowy
 import groovy.transform.ToString
 
 @ToString(includeNames = true,ignoreNulls = true)
-class Process {
+class Process implements Serializable {
 
     Integer id
 
@@ -28,6 +28,9 @@ class Process {
 
     List<DocumentFile> documents
     List<AttachmentFile> attachments
+    List<Activity> activities
+    List<Signature> signatures
+    //List<Subscription> subscriptions
 
     // TODO kolekcja czynnosci
 
@@ -38,7 +41,12 @@ class Process {
 
     static transients = ['stringId']
 
-    static hasMany = [documents:DocumentFile, attachments:AttachmentFile]
+    static hasMany = [
+            documents:DocumentFile,
+            attachments:AttachmentFile,
+            activities:Activity,
+            signatures:Signature
+    ]
 
     static constraints = {
         id(unique:true,blank:false)

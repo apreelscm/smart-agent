@@ -1,9 +1,22 @@
 package com.eservice.eumowy
 
-class Activity {
+class Activity implements Serializable {
+
+    String code;
+    Integer numerPozycji;
 
     static constraints = {
+        code(unique:true,blank:false)
+        numerPozycji(unique:true,blank:false)
     }
+
+    static mapping = {
+        table name: "activity", schema: "CBD_UMOWY"
+    }
+
+    static hasMany = [
+            activitySignatures:ActivitySignatures
+    ]
 
     enum ClientType {
         REPRESENTIVE("Reprezentant"),

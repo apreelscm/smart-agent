@@ -1,13 +1,14 @@
 package com.eservice.eumowy
 
-class Signature {
-	String signature
+class Signature implements Serializable {
+
+    String name;
 
     static constraints = {
-		signature(blank: false)
+        name(unique:true,blank:false)
     }
-	
-	static mapping = {
-		signature type: 'text'
-	}
+
+    static mapping = {
+        table name: "signature", schema: "CBD_UMOWY"
+    }
 }

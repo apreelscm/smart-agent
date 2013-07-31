@@ -1,23 +1,21 @@
 package com.eservice.eumowy
 
-import java.awt.image.BufferedImage
-
-import javax.imageio.ImageIO
-
 import signaturepad.SignatureToImage
 
+import javax.imageio.ImageIO
+import java.awt.image.BufferedImage
 
-class SignatureController {
+class SubscriptionController {
 	
-	def signatureService
+	def subscriptionService
 
     def index() {
 		
 	}
 	
 	def save() {
-		Signature signature = new Signature(signature: params.signature)
-		signatureService.save(signature)
+		Subscription signature = new Subscription(signature: params.signature)
+		subscriptionService.save(signature)
 		BufferedImage img = SignatureToImage.convertJsonToImage(signature.signature)
 		File outputfile = new File("web-app/images/sign.png");
 		ImageIO.write(img, "png", outputfile)
@@ -25,7 +23,7 @@ class SignatureController {
 	}
 	
 	def preview() {
-		Signature sign = signatureService.getLast()
+		Subscription sign = subscriptionService.getLast()
 		render(view: "preview", model: [signature: sign])
 	}
 }
