@@ -72,7 +72,6 @@ class ActivityController {
                 processInstance.signatures = signatures
 
                 flow.processInstance = processInstance
-                return error()
             }.to "chooseCalc"
         }
 
