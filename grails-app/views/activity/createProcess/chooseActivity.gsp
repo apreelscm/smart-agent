@@ -8,7 +8,7 @@
 
     <style>
     .signature-article {
-        width: 450px;
+        width: 500px;
         margin: 25px auto 0;
         padding: 15px 20px 20px;
     }
@@ -22,22 +22,34 @@
         border-radius: 3px;
         background-color: #f7f8f6;
     }
+    .border-article.article-error {
+        border: red solid thin;
+    }
 
-    .signature-article > .requiredField {
-        margin: 15px 0 0 35px;
+    .signature-article > div {
+        margin: 0 auto;
+        width: 440px;
+        text-align: left
+    }
+
+    .signature-article > div > .requiredField:not(:first-child) {
+        margin: 15px 0 0 0px;
         text-align: center;
     }
 
+    a.submit{
+        line-height: 17px;
+    }
 
     </style>
-
 
     <g:javascript>
 
         var $j = jQuery.noConflict();
 
-        $j(function () {
+        var signatureExceptions = ["zmianaWarunkowDcc"]
 
+        $j(function () {
             $j('form').submit(function (e) {
                 e.preventDefault()
                 var self = this;
@@ -50,13 +62,10 @@
                 }
             });
 
-
-            function validateArticle(event) {
-
+            function validateArticle() {
                 var isValid = true;
-
-                $j("article").each(function (index) {
-                    var article = $j(this);
+                $j("article").each(function () {
+                    var article = this;
                     var selects = $j(article).find("select")
 
                     if (selects.length > 0) {
@@ -71,12 +80,25 @@
                         else if (selects.length == 2) {
                             var select2 = selects[1];
 
-                            if (select1.value == "null" || select2.value == "null") {
-                                isValid = false;
-                            }
+                            if (signatureExceptions.indexOf(article.id) != -1){
 
-                            select1.value == "null" ? makeInvalid(select1) : makeValid(select1);
-                            select2.value == "null" ? makeInvalid(select2) : makeValid(select2);
+                                if(select1.value == "null" && select2.value == "null"){
+                                    isValid = false;
+                                    makeArticleInvalid(article);
+                                }
+                                else{
+                                    makeArticleValid(article)
+                                }
+                            }
+                            else{
+
+                                if (select1.value == "null" || select2.value == "null"){
+                                    isValid = false;
+                                }
+
+                                select1.value == "null" ? makeInvalid(select1) : makeValid(select1);
+                                select2.value == "null" ? makeInvalid(select2) : makeValid(select2);
+                            }
                         }
                     }
                 })
@@ -92,39 +114,51 @@
                 $j(obj).parent().removeClass("error");
                 $j(obj).parent().find("img").addClass("display-none");
             }
-        });
 
+            function makeArticleInvalid(obj) {
+                $j(obj).addClass("article-error");
+            }
+            function makeArticleValid(obj) {
+                $j(obj).removeClass("article-error");
+            }
+        });
 
     </g:javascript>
 </head>
 
 <body>
 
-<section id="create_chooseActivity" style="width: 100%">
+<section id="create_chooseActivity">
     <h1 class="ng linia-bottom">Wybór działania</h1>
 
     <g:form id="signaturesFormId">
         <g:each var="activity" in="${processInstance.activities}">
-            <article class="border-article signature-article">
-                <g:set var="signaturesList1" value="${activity?.activitySignatures?.findAll { it.numberOfList == 1 }}"/>
-                <g:set var="signaturesList2" value="${activity?.activitySignatures?.findAll { it.numberOfList == 2 }}"/>
+            <article id="${activity.code}" class="border-article signature-article">
+                <g:set var="list1" value="${activity?.activitySignatures?.findAll { it.numberOfList == 1 }}"/>
+                <g:set var="list2" value="${activity?.activitySignatures?.findAll { it.numberOfList == 2 }}"/>
+                <g:set var="listM" value="${activity?.activitySignatures?.findAll { it.mandatory == true }}"/>
 
                 <h3 class="linia-bottom"><g:message code="activity.${activity.code}.name"/></h3>
-                <apreel:selectField id="act_${activity.id}_sig1" name="activitySignature${activity.id}"
-                                    title="Sygnatura Dokumentu"
-                                    from="${signaturesList1}"
-                                    optionKey="id"
-                                    optionValue="signature"
-                                    noSelection="[null: '']"/>
 
-                <g:if test="${signaturesList2?.size() > 0}">
-                    <apreel:selectField id="act_${activity.id}_sig2" name="documentSignature2"
+                <div>
+                    <g:hiddenField name="activitySignature_${activity.id}" value="${listM*.id}" />
+
+                    <apreel:selectField id="act_${activity.id}_sig1" name="activitySignature_${activity.id}"
                                         title="Sygnatura Dokumentu"
-                                        from="${signaturesList2}"
+                                        from="${list1}"
                                         optionKey="id"
                                         optionValue="signature"
                                         noSelection="[null: '']"/>
-                </g:if>
+
+                    <g:if test="${list2?.size() > 0}">
+                        <apreel:selectField id="act_${activity.id}_sig2"  name="activitySignature_${activity.id}"
+                                            title="Sygnatura Dokumentu"
+                                            from="${list2}"
+                                            optionKey="id"
+                                            optionValue="signature"
+                                            noSelection="[null: '']"/>
+                    </g:if>
+                </div>
 
             </article>
         </g:each>

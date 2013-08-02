@@ -4,7 +4,7 @@ class ActivitySignatures implements Serializable {
 
     Signature signature;
 
-    Boolean mandatory = false // not shown on any of list
+    boolean mandatory // not shown on any of list
 
     Integer numberOfList = 0;
 

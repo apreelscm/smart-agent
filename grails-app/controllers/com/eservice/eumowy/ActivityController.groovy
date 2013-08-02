@@ -1,5 +1,4 @@
 package com.eservice.eumowy
-
 import com.eservice.eumowy.process.DefineActivityCommand
 import org.springframework.mail.MailException
 
@@ -46,10 +45,34 @@ class ActivityController {
         chooseActivity{
             on("back").to "defineActivity"
             on("error").to "chooseActivity"
+
+
             on("continue"){
                 def processInstance = flow.processInstance
-                //processInstance.child = new Child(params)
+
+                def signatures = []
+
+                processInstance.activities.each() { activity ->
+                    def activitySignatureParam = params["activitySignature_${activity.id}"]
+
+                    if(activitySignatureParam != null){
+
+                        def activitySignaturesIds  = ([activitySignatureParam].flatten().findAll{ it != "null" && it!="[]" }.findResults {new Long(it)})
+
+                        def activitySignatures = ActivitySignatures.findAllByIdInList(activitySignaturesIds);
+
+                        if(!signatures.contains(activitySignatures*.signature)){
+                            signatures.addAll(activitySignatures.signature)
+                        }
+
+                        activity.activitySignatures = activitySignatures;
+                    }
+                }
+
+                processInstance.signatures = signatures
+
                 flow.processInstance = processInstance
+                return error()
             }.to "chooseCalc"
         }
 
@@ -90,9 +113,9 @@ class ActivityController {
         }
     }
 
-    //--------------
-    //OTHERS
-    //--------------
+//--------------
+//OTHERS
+//--------------
     def verifyClientNIP(String nipNumber) {
         //TODO implement proper logic
         flash.clientNip = nipNumber;
@@ -110,9 +133,11 @@ class ActivityController {
         redirect(action: "chooseCalc")
     }
 
-    //--------------
-    //PRIVATE METHODS
-    //--------------
+//--------------
+//PRIVATE METHODS
+//--------------
+
+
 
     def _sendNotesToCOA(notes) {
         assert notes != null;
