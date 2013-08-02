@@ -80,12 +80,13 @@ grails.gorm.default.constraints = {
 // log4j configuration
 log4j = {
 
-    trace 'grails.app'
+
+    debug 'grails.app'
     info "grails.app.taglib"
 
     debug 'grails.app.controller'
     debug 'grails.app.service'
-    debug "grails.app.domain"
+    debug 'grails.app.domain'
 
     error  'org.codehaus.groovy.grails.web.servlet',        // controllers
             'org.codehaus.groovy.grails.web.pages',          // GSP
@@ -100,7 +101,9 @@ log4j = {
             'net.sf.ehcache.hibernate'
 
     //show sql values
-    trace "org.hibernate.SQL", "org.hibernate.type", "org.codehaus.groovy.grails.orm.hibernate"
+    info "org.hibernate.SQL", "org.hibernate.type", "org.codehaus.groovy.grails.orm.hibernate"
+
+    debug "com.eservice.eumowy"
 
     appenders {
         console name: 'stdout', layout: pattern(conversionPattern: '%d{dd-MM-yyyy HH:mm:ss,SSS} %5p %c{1} - %m%n')

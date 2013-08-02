@@ -16,21 +16,21 @@
 
     <g:form class="panelForm">
 
-        <apreel:requiredField name="acceptanceName" direction="vertical" isError="true"
+        <apreel:textField name="acceptanceName" direction="vertical" isError="true"
                               title="Oficjalna nazwa Akceptanta (Do druku na fakturze VAT)"
                               errorMessage="Wymagane Pole (test)"/>
 
-        <apreel:requiredField name="acceptanceWebName" direction="vertical"
+        <apreel:textField name="acceptanceWebName" direction="vertical"
                               title="Nazwa sieciowa akceptanta"
                               errorMessage="Wymagane Pole (test2)"/>
 
         <div>
 
-            <apreel:requiredField name="acceptanceNip"  direction="horizontal" isError="true"
+            <apreel:textField name="acceptanceNip"  direction="horizontal" isError="true"
                                   title="NIP"
                                   errorMessage="Wymagane Pole (test3)"/>
 
-            <apreel:requiredField name="acceptanceRegon" direction="horizontal"
+            <apreel:textField name="acceptanceRegon" direction="horizontal"
                                   title="REGON"
                                   errorMessage="Wymagane Pole (test4)"/>
 

@@ -60,6 +60,7 @@
 
 <footer class="rel" id="stopka"/>
 
+%{--
 <g:if test="${params.controller != 'login'}">
 	<p id="clock"></p>
 	<r:script>
@@ -67,6 +68,7 @@
 		new KeepSession("${createLink(controller: 'logout')}", 51);
 	</r:script>
 </g:if>
+--}%
 
 <div id="spinner" class="spinner" style="display:none;"><g:message code="spinner.alt" default="Loading&hellip;"/></div>
 <g:javascript library="application"/>

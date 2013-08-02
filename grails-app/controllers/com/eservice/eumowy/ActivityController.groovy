@@ -1,9 +1,7 @@
 package com.eservice.eumowy
 
-import com.eservice.eumowy.activity.ActivityTree
+import com.eservice.eumowy.process.DefineActivityCommand
 import org.springframework.mail.MailException
-
-import java.awt.print.Book
 
 class ActivityController {
 
@@ -22,68 +20,73 @@ class ActivityController {
 
     def createProcessFlow = {
         defineActivity{
-            on("continue") {
-                //TODO MOVE TO CMD OBJECT
-                def activityTree = new ActivityTree(); bindData(activityTree, params)
-                def selectedItems = activityTree.properties.findResults { it.value == "on" ? it.key : null };
-                def selectedActivities = Activity.findAllByCodeInList(selectedItems);
-                def notes = params.notes;
+            on("continue") { DefineActivityCommand cmd ->
 
-                //validate controls
-                if(selectedActivities?.size() == 0 && notes?.length() == 0){
-                    flash.errorMessage = "Należy wybrać aktywności i/lub wypełnić uwagi do COA."
-                    return error()
+                if(cmd?.hasErrors()){
+                    flow.errorMessage= message(code: cmd.errors?.getFieldError("selectedActivities").code);
+                    return error();
+                }else{
+                    flow.errorMessage = null;
+                    def selectedActivities = Activity.findAllByCodeInList(cmd.selectedActivities);
+
+                    //additional sending email
+                    if(cmd.notes){
+                        if(!_sendNotesToCOA(cmd.notes)) return error()
+                    }
+
+                    if(selectedActivities?.size() == 0) return emailOnly()
+
+                    flow.processInstance = new Process(activities: selectedActivities)
                 }
-
-                //only send notes email
-                if(selectedActivities?.size() == 0){
-                    _sendNotesToCOA(notes);
-                    return emailOnly()
-                }
-
-                //additional sending email
-                if(notes){
-                   if(!_sendNotesToCOA(notes)){
-                       return error()
-                   }
-                }
-
-               [processInstance: new Process(activities: selectedActivities)]
-
-            }.to "chooseCalc"
+            }.to "chooseActivity"
             on("error").to "defineActivity"
             on("emailOnly").to "defineActivity"
         }
 
-        chooseCalc{
-            on("continue").to "chooseActivity"
-            on("back").to "defineActivity"
-        }
-
-        listBooks {
-            action {
-                [bookList: Book.list()]
-            }
-            on("success").to "showCatalogue"
-            on(Exception).to "handleError"
-        }
-
-
         chooseActivity{
-            on("continue").to "acceptanceInfo"
-            on("back").to "chooseCalc"
+            on("back").to "defineActivity"
+            on("error").to "chooseActivity"
+            on("continue"){
+                def processInstance = flow.processInstance
+                //processInstance.child = new Child(params)
+                flow.processInstance = processInstance
+            }.to "chooseCalc"
+        }
+
+        chooseCalc{
+            on("back").to "chooseActivity"
+            on("continue"){
+                def processInstance = flow.processInstance
+                //processInstance.child = new Child(params)
+                flow.processInstance = processInstance
+            }.to "acceptanceInfo"
         }
 
         acceptanceInfo{
-            on("continue").to "clientSignature"
-            on("back").to "chooseActivity"
+            on("back").to "chooseCalc"
+            on("continue"){
+                def processInstance = flow.processInstance
+                //processInstance.child = new Child(params)
+                flow.processInstance = processInstance
+            }.to "clientSignature"
         }
 
+
         clientSignature{
-            on("continue").to "clientSignature"
             on("back").to "acceptanceInfo"
+            on("continue"){
+                def processInstance = flow.processInstance
+                //processInstance.child = new Child(params)
+                flow.processInstance = processInstance
+            }.to "finish"
             on("subscribe").to "clientSignature"
             on("noaccept").to "clientSignature"
+        }
+
+        finish{
+            action{
+                flow.processInstance.save()
+            }
         }
     }
 

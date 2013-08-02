@@ -17,8 +17,4 @@ class ActivitySignatures implements Serializable {
         table name: "activitysignatures", schema: "CBD_UMOWY"
     }
 
-    String toString(){
-        return signature.name;
-    }
-
 }
