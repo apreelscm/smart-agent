@@ -1112,7 +1112,22 @@ input:invalid:focus, select:invalid:focus, textarea:invalid:focus {
     display: none
 }
 
+.belka-glowna {
+    padding: 12px 20px 12px 20px;
+    width: 980px;
+    /*width: 100%;*/
+    height: 16px;
+    background: url(../images/sprzedaz-belka.jpg) no-repeat 0px 0px;
+    /**text**/
+    margin: 0px;
+    font-size: 13px;
+    font-weight: bold;
+    color: #ffffff;
+    text-align: left;
+}
 
-
-
-
+.centre {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}

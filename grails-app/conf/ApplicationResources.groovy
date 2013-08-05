@@ -31,4 +31,10 @@ modules = {
 	session_utils {
 		resource url:'js/session_utils.js'
 	}
+
+    jquery_ui {
+        resource url: 'js/jquery-ui/jquery-ui-1.10.3.custom.min.js', disposition: 'head'
+        resource url: 'css/jquery-ui/jquery-ui-1.10.3.custom.min.css', disposition: 'head'
+        dependsOn 'jquery'
+    }
 }
