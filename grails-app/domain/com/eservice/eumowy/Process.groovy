@@ -30,6 +30,7 @@ class Process implements Serializable {
     List<AttachmentFile> attachments
     List<Activity> activities
     List<Signature> signatures
+    List<Panel> panels
     //List<Subscription> subscriptions
 
     // TODO kolekcja czynnosci

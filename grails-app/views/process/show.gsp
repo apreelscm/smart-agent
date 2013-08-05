@@ -14,7 +14,6 @@
 <section id="show-process">
     <h1 class="ng linia-bottom">Id Procesu: ${processInstance?.id}</h1>
 
-
     <ul class="property-list" >
         <li style="margin:0em 0em 1em 0em;">
             <label for="clientName" style="display: inline ">
@@ -50,7 +49,6 @@
         </li>
     </ul>
 
-
     <div>
         <div id="documentsBox" class="float-left" style="width: 49%">
             <g:render template="table/documentsTable"/>
@@ -61,32 +59,45 @@
         </div>
     </div>
 
-    <div id="pdfBox" style="height: 500px; width: 100%; overflow: hidden;border: solid 1px; border-radius: 5px; display: none">
+    <div id="pdfBox" class="display-block"
+         style="height: 500px; width: 98% ;overflow: hidden;border: solid 1px; border-radius: 5px; display: none; margin: 20px auto">
         %{--tutaj zostanie render pdf template--}%
     </div>
 
     <div class="clear"/>
 
-    <p style="margin-top: 10px">
-        <g:checkBox name="observe"/> Obserwuj
-    </p>
+    <g:form >
+        <div style="margin: 0 auto; width: 600px">
+            <div>
+                <label style="width: 70px; text-align: right">
+                    <g:message code="todo" default="Obserwuj:"/>
+                </label>
+                <g:checkBox name="observe" style="position: relative; top: 3px; left: 3px"/>
+            </div>
 
-    <nav>
-        <g:form>
+            <div style="margin-top: 15px">
+                <label style="width: 70px; text-align: right">
+                    <g:message code="todo" default="Uwagi:"/>
+                </label>
+                <g:textArea name="notes" style="margin-left: 8px; height: 100px; min-width: 400px"
+                maxlength="300"/>
+            </div>
+        </div>
+
+        <nav>
             <fieldset class="przyciski">
                 <g:hiddenField name="id" value="${processInstance.id}"/>
                 <g:actionSubmit class="button submit" value="Wróć" action="list" style="float: left" />
                 <g:actionSubmit class="button submit" action="accept" value="Zaakceptuj"
-                                style="float: right;display:${!isNewProcess ? 'none' : 'block'}"
+                                style="float: right;display:${!isNewProcess ? 'block' : 'block'}"
                                 onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
                 <g:actionSubmit class="button submit" action="reject" value="Odrzuć"
-                                style="float: right;margin-right: 1em;display:${!isNewProcess ? 'none' : 'block'}"
+                                style="float: right;margin-right: 1em;display:${!isNewProcess ? 'block' : 'block'}"
                                 formnovalidate=""
                                 onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
-
             </fieldset>
-        </g:form>
-    </nav>
+        </nav>
+    </g:form>
 
 </section>
 </body>

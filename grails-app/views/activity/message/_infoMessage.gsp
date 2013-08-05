@@ -1,5 +1,5 @@
-<ul class="message" role="alert" style="left: -3px">
+<ul class="message" role="alert" style="left: -4px">
     <li style="width: 220px">
-        <div role="status">${message}</div
+        <g:message code="todo" default="${message}"/>
     </li>
 </ul>

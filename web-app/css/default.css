@@ -488,6 +488,13 @@ h3 a, h3 a:hover {
     margin-top: 20px;
 }
 
+.visibility-hidden{
+    visibility: hidden;
+}
+
+.visibility-visible{
+    visibility: visible;
+}
 
 .property-list {
     border-style: none none solid none;
@@ -615,7 +622,7 @@ fieldset.embedded legend {
     padding: 0;
 }
 
-.errors li {
+.errors li, .message li {
     list-style: none;
     margin-left: 0px;
     /*   background: transparent url(../images/skin/exclamation.png) 0.5em 50% no-repeat;
@@ -624,7 +631,7 @@ fieldset.embedded legend {
 
 .message {
     /* background: transparent url(../images/skin/information.png) 0.5em 50% no-repeat;*/
-    text-indent: 2em;
+    /*text-indent: 2em;*/
 }
 
 /* form fields with errors */

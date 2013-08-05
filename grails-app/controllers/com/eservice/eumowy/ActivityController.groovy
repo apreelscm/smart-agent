@@ -7,6 +7,7 @@ class ActivityController {
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
     def emailService
+    def cbdService
 
     def index() {
         redirect(action: "createProcess", params: params)
@@ -45,31 +46,23 @@ class ActivityController {
         chooseActivity{
             on("back").to "defineActivity"
             on("error").to "chooseActivity"
-
-
             on("continue"){
                 def processInstance = flow.processInstance
 
-                def signatures = []
+                log.info("activities:"+ processInstance.activities)
+                log.info("params:"+ params)
 
-                processInstance.activities.each() { activity ->
-                    def activitySignatureParam = params["activitySignature_${activity.id}"]
-
-                    if(activitySignatureParam != null){
-
-                        def activitySignaturesIds  = ([activitySignatureParam].flatten().findAll{ it != "null" && it!="[]" }.findResults {new Long(it)})
-
-                        def activitySignatures = ActivitySignatures.findAllByIdInList(activitySignaturesIds);
-
-                        if(!signatures.contains(activitySignatures*.signature)){
-                            signatures.addAll(activitySignatures.signature)
-                        }
-
-                        activity.activitySignatures = activitySignatures;
-                    }
-                }
-
+                //SIGNATURES
+                def signatures =  _getSignatures(processInstance.activities)
                 processInstance.signatures = signatures
+
+                //ACTIVE PANELS
+                TreeSet activePanels = _getActivePanels(signatures)
+                processInstance.panels = activePanels.toList();
+
+                log.info("signatures:"+signatures)
+                log.info("code:"+signatures*.panels)
+                log.info("activePanels:"+activePanels)
 
                 flow.processInstance = processInstance
             }.to "chooseCalc"
@@ -77,11 +70,48 @@ class ActivityController {
 
         chooseCalc{
             on("back").to "chooseActivity"
+            on("getCalculator").to "getCalculator"
             on("continue"){
                 def processInstance = flow.processInstance
                 //processInstance.child = new Child(params)
                 flow.processInstance = processInstance
             }.to "acceptanceInfo"
+        }
+
+        getCalculator {
+            action {
+
+                def processInstance = flow.processInstance
+                flow.nip = params.nip;
+
+                def kln_id = cbdService.findClientIdByNip(params.nip);
+
+                if( kln_id == null){
+                    flash.nipErrorMessage = "Brak klienta";
+                    return error();
+                }
+
+                flash.nipInfoMessage = "Znaleziono"
+
+                def calc = cbdService.findCalculatorByClientId(kln_id)
+
+                if(calc == null){
+                    flash.calcErrorMessage = "Kalkulator nie istnieje"
+                    return error();
+                }
+
+                //TODO [mock] implement this!
+                flash.calcNumber = "cal123456";
+
+                if(!cbdService.isCalcValid(calc,processInstance.signatures)){
+                    flash.calcErrorMessage = "Kalkulator nie pozwala na wykonanie wszystkich zaznaczonych czynności."
+                    return error();
+                }
+
+                flash.calcInfoMessage = "Znaleziono"
+            }
+            on("success").to "chooseCalc"
+            on("error").to "chooseCalc"
         }
 
         acceptanceInfo{
@@ -92,7 +122,6 @@ class ActivityController {
                 flow.processInstance = processInstance
             }.to "clientSignature"
         }
-
 
         clientSignature{
             on("back").to "acceptanceInfo"
@@ -112,31 +141,52 @@ class ActivityController {
         }
     }
 
-//--------------
-//OTHERS
-//--------------
-    def verifyClientNIP(String nipNumber) {
-        //TODO implement proper logic
-        flash.clientNip = nipNumber;
-        if(nipNumber == "1"){
-            flash.nipInfoMessage = message(code: 'todo', default: 'Znaleziono')
-            flash.calcInfoMessage = message(code: 'todo', default: 'Znaleziono')
-            //flash.calcErrorMessage = message(code: 'todo', default: 'Klient już istnieje / Istnieją niezaakcpetowane dokumenty')
 
-            flash.clientCalcNumber = 123456
-        }
-        else{
-            flash.nipErrorMessage = message(code: 'todo', default: 'Klient już istnieje / Istnieją niezaakcpetowane dokumenty')
-        }
-
-        redirect(action: "chooseCalc")
-    }
 
 //--------------
 //PRIVATE METHODS
 //--------------
 
+    def  _getActivePanels(def signatures) {
+        def orderComparator = [
+                compare: { Panel a, Panel b -> a.orderNo <=> b.orderNo }
+        ] as Comparator
 
+        def activePanels = new TreeSet(orderComparator)
+        activePanels.addAll(signatures*.panels.flatten().findAll({ it != "null" && it != "[]" }));
+        return activePanels;
+    }
+
+    def _getSignatures(def activities) {
+        def signatures = []
+        activities.each() { activity ->
+            def activitySignatureParam = params["activitySignature_${activity.id}"]
+
+            if (activitySignatureParam != null) {
+
+                def activitySignaturesIdsMap = ([activitySignatureParam].flatten().findAll { it != "null" && it != "[]" })
+
+                def activitySignaturesIdsList = [];
+                activitySignaturesIdsMap.each { item ->
+                    def evalItem = Eval.me(item);
+                    if (evalItem instanceof ArrayList) {
+                        activitySignaturesIdsList.addAll(evalItem)
+                    } else {
+                        activitySignaturesIdsList.add(evalItem)
+                    }
+                }
+
+                def activitySignatures = ActivitySignatures.findAllByIdInList(activitySignaturesIdsList.findResults { new Long(it) });
+
+                if (!signatures.contains(activitySignatures*.signature)) {
+                    signatures.addAll(activitySignatures.signature)
+                }
+
+                activity.activitySignatures = activitySignatures;
+            }
+        }
+        return signatures;
+    }
 
     def _sendNotesToCOA(notes) {
         assert notes != null;

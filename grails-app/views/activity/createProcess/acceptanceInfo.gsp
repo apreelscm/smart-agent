@@ -3,9 +3,9 @@
 <html>
 <head>
     <meta name="layout" content="main">
-    <g:set var="entityName" value="${message(code: 'activity.label', default: 'Activity')}"/>
-    <title><g:message code="default.edit.label" args="[entityName]"/></title>
-    <r:require module="expandable_tree" />
+<g:set var="entityName" value="${message(code: 'activity.label', default: 'Activity')}"/>
+<title><g:message code="default.edit.label" args="[entityName]"/></title>
+
 
 </head>
 
@@ -16,34 +16,34 @@
 
     <g:form class="panelForm">
 
-        <apreel:textField name="acceptanceName" direction="vertical" isError="true"
-                              title="Oficjalna nazwa Akceptanta (Do druku na fakturze VAT)"
-                              errorMessage="Wymagane Pole (test)"/>
+    <apreel:textField name="acceptanceName" direction="vertical" isError="true"
+                      title="Oficjalna nazwa Akceptanta (Do druku na fakturze VAT)"
+                      errorMessage="Wymagane Pole (test)"/>
 
-        <apreel:textField name="acceptanceWebName" direction="vertical"
-                              title="Nazwa sieciowa akceptanta"
-                              errorMessage="Wymagane Pole (test2)"/>
+    <apreel:textField name="acceptanceWebName" direction="vertical"
+                      title="Nazwa sieciowa akceptanta"
+                      errorMessage="Wymagane Pole (test2)"/>
 
-        <div>
+    <div>
 
-            <apreel:textField name="acceptanceNip"  direction="horizontal" isError="true"
-                                  title="NIP"
-                                  errorMessage="Wymagane Pole (test3)"/>
+        <apreel:textField name="acceptanceNip"  direction="horizontal" isError="true"
+                          title="NIP"
+                          errorMessage="Wymagane Pole (test3)"/>
 
-            <apreel:textField name="acceptanceRegon" direction="horizontal"
-                                  title="REGON"
-                                  errorMessage="Wymagane Pole (test4)"/>
+        <apreel:textField name="acceptanceRegon" direction="horizontal"
+                          title="REGON"
+                          errorMessage="Wymagane Pole (test4)"/>
 
-        </div>
+    </div>
 
 
-        <fieldset id="buttons">
-            <g:submitButton name="back" class="button submit" value="Wstecz" />
-            <g:submitButton name="continue" class="button submit" value="Dalej" />
-        </fieldset>
-    </g:form>
+    <fieldset id="buttons">
+        <g:submitButton name="back" class="button submit" value="Wstecz" />
+        <g:submitButton name="continue" class="button submit" value="Dalej" />
+    </fieldset>
+</g:form>
 
-</section>
+    </section>
 
-</body>
-</html>
+    </body>
+    </html>

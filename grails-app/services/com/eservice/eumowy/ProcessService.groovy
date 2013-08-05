@@ -5,6 +5,7 @@ class ProcessService {
     def searchProcessByFilters(def params) {
         def filterObserved = params.filterObserved
         def filterStatus = params.filterStatus
+        def filterNip = params.filterNip
 
         log.info(filterObserved + " --- " + filterStatus);
 
@@ -16,6 +17,9 @@ class ProcessService {
             /*eq("status", "${Process.ProcessStatus.valueOf(filterStatus)}")*/
             eq("status", Process.ProcessStatus.valueOf(filterStatus))
 
+            if(filterNip && filterNip != "") {
+                eq('clientNip',filterNip)
+            }
         }
         [searchResults: searchResults, searchResultSize: searchResults.getTotalCount()]
     }

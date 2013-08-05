@@ -27,12 +27,18 @@
             </div>
 
             <div class="display-inline" style="margin-left: .4em">
+                <label for="filterNip"><g:message code="process.phFirstName.label" default="NIP:" /></label>
+                <g:textField name="filterNip" style="width: 80px" value="${filterNip}"/>
+            </div>
+
+            <div class="display-inline" style="margin-left: .4em;">
                 <label for="filterObserved"><g:message code="process.phFirstName.label" default="Obserwowany:" /></label>
-                <g:checkBox name="filterObserved" value="isObserved" checked="${filterObserved == 'isObserved'}" />
+                <g:checkBox name="filterObserved" value="isObserved" checked="${filterObserved == 'isObserved'}"
+                style="position:relative;top: 3px"/>
             </div>
 
             <g:actionSubmit class="button action display-inline" action="list" value="Pokaż"
-                            style="margin-left: .4em"/>
+                            style="margin-left: 1em"/>
         </g:form>
     </div>
 

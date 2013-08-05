@@ -28,19 +28,22 @@ class ProcessController {
             params.filterStatus = Process.ProcessStatus.REJECTED.name()
         }
 
-        if(params.filterStatus.equals("")){
-            [ filterStatus:"",
-                    filterObserved:"",
-                    processInstanceList: Process.list(params),
-                    processInstanceTotal: Process.count()]
-        }
+        if(params.filterStatus.equals("")) [
+                filterStatus:"",
+                filterObserved:"",
+                filterNip:"",
+                processInstanceList: Process.list(params),
+                processInstanceTotal: Process.count()]
         else{
 
             def processService = new ProcessService()
+            println params;
+
             def processes = processService.searchProcessByFilters(params)
 
             [ filterStatus:params.filterStatus,
-                    filterObserved: params.filterObserved ,
+                    filterObserved: params.filterObserved,
+                    filterNip:params.filterNip,
                     processInstanceList: processes.searchResults ,
                     processInstanceTotal: processes.searchResultSize]
         }
@@ -131,11 +134,6 @@ class ProcessController {
 
     def showPdfByDocumentId(String id){
         log.info( "pdf document = " + id);
-
-        //TEST start
-        PdfService service = PdfService();
-        service.generateImagesFormPDF();
-        //end
 
         def documentfile = DocumentFile.get(id);
         render(template: '../forms/pdf/embedDocument', model:  [pdfDocument: resource(dir:'files', file:documentfile.filename)]);

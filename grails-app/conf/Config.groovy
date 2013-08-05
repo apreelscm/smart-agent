@@ -80,13 +80,13 @@ grails.gorm.default.constraints = {
 // log4j configuration
 log4j = {
 
-
-    debug 'grails.app'
-    info "grails.app.taglib"
-
-    debug 'grails.app.controller'
-    debug 'grails.app.service'
-    debug 'grails.app.domain'
+// Set level for all application artefacts
+    info "grails.app"
+    debug "grails.app.controller.com.eservice.umowy.activity"
+    debug "grails.app.controller.com.eservice.umowy"
+    debug "grails.app.controller.process"
+    info "grails.app.domain"
+    info "grails.app.tagLib"
 
     error  'org.codehaus.groovy.grails.web.servlet',        // controllers
             'org.codehaus.groovy.grails.web.pages',          // GSP
@@ -95,15 +95,13 @@ log4j = {
             'org.codehaus.groovy.grails.web.mapping',        // URL mapping
             'org.codehaus.groovy.grails.commons',            // core / classloading
             'org.codehaus.groovy.grails.plugins',            // plugins
-            '/*org.codehaus.groovy.grails.orm.hibernate',      // hibernate integration*/
+            'org.codehaus.groovy.grails.orm.hibernate',      // hibernate integration*//*
             'org.springframework',
             'org.hibernate',
             'net.sf.ehcache.hibernate'
 
     //show sql values
     info "org.hibernate.SQL", "org.hibernate.type", "org.codehaus.groovy.grails.orm.hibernate"
-
-    debug "com.eservice.eumowy"
 
     appenders {
         console name: 'stdout', layout: pattern(conversionPattern: '%d{dd-MM-yyyy HH:mm:ss,SSS} %5p %c{1} - %m%n')

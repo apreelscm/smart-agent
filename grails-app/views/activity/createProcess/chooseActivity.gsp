@@ -107,13 +107,14 @@
 
             function makeInvalid(obj) {
                 $j(obj).parent().addClass("error");
-                $j(obj).parent().find("img").removeClass("display-none");
+                $j(obj).parent().find("img").removeClass("visibility-hidden");
             }
 
             function makeValid(obj) {
                 $j(obj).parent().removeClass("error");
-                $j(obj).parent().find("img").addClass("display-none");
+                $j(obj).parent().find("img").addClass("visibility-hidden");
             }
+
 
             function makeArticleInvalid(obj) {
                 $j(obj).addClass("article-error");
