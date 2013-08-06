@@ -21,15 +21,15 @@
                     <div style="display: inline-block; padding-left: 20px">
                             <div>
                                 <div style="display:inline-block; ">stawka płaska</div>
-                                <div style="display:inline-block; "><g:textField name="visaPLN" style="width: 70px;"/> zł</div>
+                                <div style="display:inline-block; "><g:textField name="visaPLN" style="width: 70px;"/> <g:message code="panel.polish.currency"/></div>
                             </div>
                             <div>
                                 <div style="display:inline-block; ">stawka płaska</div>
-                                <div style="display:inline-block; "><g:textField name="masterCardPLN" style="width: 70px;"/> zł</div>
+                                <div style="display:inline-block; "><g:textField name="masterCardPLN" style="width: 70px;"/> <g:message code="panel.polish.currency"/></div>
                             </div>
                             <div>
                                 <div style="display:inline-block; ">stawka płaska</div>
-                                <div style="display:inline-block; "><g:textField name="maestroPLN" style="width: 70px;"/> zł</div>
+                                <div style="display:inline-block; "><g:textField name="maestroPLN" style="width: 70px;"/> <g:message code="panel.polish.currency"/></div>
                             </div>
                     </div>
                 </div>

@@ -1,43 +1,39 @@
 <div id="scoringPanel">
-    <div class="belka-glowna">Scoring</div>
+    <div class="belka-glowna"><g:message code="panel.scoring.title"/></div>
         <div class="centre" style="text-align: center; padding-top: 20px; width: 400px">
         <fieldset class="border">
-            <legend>Rodzaj działaności</legend>
+            <legend><g:message code="panel.activity.title"/></legend>
             <div style="text-align: left">
-                <p><input type="radio" name="" id="aaa" /> handel</p>
-                <p><input type="radio" name="" id="bbb" /> usługi</p>
+                <p><input type="radio" name="activity" /> <g:message code="panel.activity.trade"/></p>
+                <p><input type="radio" name="activity" /> <g:message code="panel.activity.services"/></p>
             </div>
         </fieldset>
         <fieldset class="border">
-            <legend>Forma własności</legend>
+            <legend><g:message code="panel.ownership.title"/></legend>
             <div style="text-align: left">
-                <p><input type="radio" name="" id="" /> własność</p>
-                <p><input type="radio" name="" id="" /> wynajem/dzierżawa</p>
+                <p><input type="radio" name="ownership" /> <g:message code="panel.ownership.ownership"/></p>
+                <p><input type="radio" name="ownership" /> <g:message code="panel.ownership.rent"/></p>
             </div>
         </fieldset>
         <fieldset class="border">
-            <legend>Działalność firmy</legend>
+            <legend><g:message code="panel.activity.time.title"/></legend>
             <div style="text-align: left">
-                <p><input type="radio" name="" id="" /> Powyżej 5 lat</p>
-                <p><input type="radio" name="" id="" /> 1-5 lat</p>
-                <p><input type="radio" name="" id="" /> Poniżej roku</p>
+                <p><input type="radio" name="activityTime" /> <g:message code="panel.activity.time.more.than.five.years"/></p>
+                <p><input type="radio" name="activityTime" /> <g:message code="panel.activity.time.between.one.and.five.years"/></p>
+                <p><input type="radio" name="activityTime" /> <g:message code="panel.activity.time.less.than.one.year"/></p>
             </div>
         </fieldset>
         <fieldset class="border">
-            <legend>Koncesja</legend>
+            <legend><g:message code="panel.concession.title"/></legend>
             <div style="text-align: left">
                 <p>Czy działaność firmy wymaga koncesji, licencji lub pozwolenia?</p>
-                <p><input type="radio" name="" id="" /> Tak</p>
-                <p><input type="radio" name="" id="" /> Nie</p>
+                <p><input type="radio" name="" id="" /> <g:message code="panel.yes"/></p>
+                <p><input type="radio" name="" id="" /> <g:message code="panel.no"/></p>
                 <p>Rodzaj zezwolenia (jeśli wymagany) <g:textField name="scoringTODO"/></p>
             </div>
         </fieldset>
-
-
-
-
         <fieldset class="border">
-            <legend>Charakterystyka punktu</legend>
+            <legend><g:message code="panel.point.characteristic.title"/></legend>
             <div style="text-align: left">
                 <p><input type="radio" name="" id="" /> salon</p>
                 <p><input type="radio" name="" id="" /> sklep</p>
@@ -47,7 +43,7 @@
             </div>
         </fieldset>
         <fieldset class="border">
-            <legend>Wielkość punktu</legend>
+            <legend><g:message code="panel.point.size.title"/></legend>
             <div style="text-align: left">
                 <p><input type="radio" name="" id="" /> Powyżej 400m^2</p>
                 <p><input type="radio" name="" id="" /> 50-400m^2</p>
@@ -55,23 +51,23 @@
             </div>
         </fieldset>
         <fieldset class="border">
-            <legend>Akceptacja</legend>
+            <legend><g:message code="panel.acceptance.title"/></legend>
             <div style="text-align: left">
                 <p>Czy wcześniej prowadzono w firmie akceptację kart płatniczych?</p>
-                <p><input type="radio" name="" id="" /> Tak</p>
-                <p><input type="radio" name="" id="" /> Nie</p>
+                <p><input type="radio" name="" id="" /> <g:message code="panel.yes"/></p>
+                <p><input type="radio" name="" id="" /> <g:message code="panel.no"/></p>
             </div>
         </fieldset>
         <fieldset class="border">
-            <legend>Monitoring</legend>
+            <legend><g:message code="panel.monitoring.title"/></legend>
             <div style="text-align: left">
                 <p>Czy w punkcie jest zainstalowany monitoring?</p>
-                <p><input type="radio" name="" id="" /> Tak</p>
-                <p><input type="radio" name="" id="" /> Nie</p>
+                <p><input type="radio" name="" id="" /> <g:message code="panel.yes"/></p>
+                <p><input type="radio" name="" id="" /> <g:message code="panel.no"/></p>
             </div>
         </fieldset>
         <fieldset class="border">
-            <legend>Lokalizacja punktu</legend>
+            <legend><g:message code="panel.point.localization.title"/></legend>
             <div class="border" style="text-align: left; margin: 20px">
                 <p><input type="radio" name="" id="" /> trasa przelotowa</p>
                 <p><input type="radio" name="" id="" /> centrum miasta</p>
@@ -86,11 +82,8 @@
                 <p><input type="radio" name="" id="" /> inny <g:textField name="scoringTODO"/></p>
             </div>
         </fieldset>
-
-
-
         <fieldset class="border">
-            <legend>Rodzaj miejscowości</legend>
+            <legend><g:message code="panel.point.place.size.title"/></legend>
             <div style="text-align: left">
                 <p><input type="radio" name="" id="" /> miasto ponad 500 tys. mieszkańców</p>
                 <p><input type="radio" name="" id="" /> miasto 100-500 tys. mieszkańców</p>
@@ -100,7 +93,7 @@
             </div>
         </fieldset>
         <fieldset class="border">
-            <legend>Podczas wizyty stwierdzono</legend>
+            <legend><g:message code="panel.visit conclusion.title"/></legend>
             <div style="text-align: left">
                 <p>Punkty były: </p>
                 <p><input type="radio" name="" id="" /> czynne</p>
@@ -109,7 +102,7 @@
             </div>
         </fieldset>
         <fieldset class="border">
-            <legend>Inne istotne dane</legend>
+            <legend><g:message code="panel.important.data.title"/></legend>
             <div style="text-align: left">
                 <p><input type="checkbox" name="" id="" /> sprzedaż towarów luksusowych</p>
                 <p><input type="checkbox" name="" id="" /> >50% w nocy</p>
@@ -118,32 +111,31 @@
             </div>
         </fieldset>
         <fieldset class="border">
-            <legend>Częstość dokonywania transakcji kartami płatniczymi</legend>
+            <legend><g:message code="panel.transaction.frequency.title"/></legend>
             <div style="text-align: left">
-                <p><input type="radio" name="" id="" /> kilka razy w miesiącu</p>
-                <p><input type="radio" name="" id="" /> kilka razy w tygodniu</p>
-                <p><input type="radio" name="" id="" /> co drugi dzień</p>
-                <p><input type="radio" name="" id="" /> codziennie</p>
+                <p><input type="radio" name="" /> kilka razy w miesiącu</p>
+                <p><input type="radio" name="" /> kilka razy w tygodniu</p>
+                <p><input type="radio" name="" /> co drugi dzień</p>
+                <p><input type="radio" name="" /> codziennie</p>
             </div>
         </fieldset>
         <fieldset class="border">
-            <legend>Liczba dokonywanych dziennie transakcji</legend>
+            <legend><g:message code="panel.transaction.count.title"/></legend>
             <div style="text-align: left">
-                <p><input type="radio" name="" id="" /> 0-4</p>
-                <p><input type="radio" name="" id="" /> 5-10</p>
-                <p><input type="radio" name="" id="" /> >10</p>
+                <p><input type="radio" name=""/> 0-4</p>
+                <p><input type="radio" name=""/> 5-10</p>
+                <p><input type="radio" name=""/> >10</p>
             </div>
         </fieldset>
 
         <fieldset class="border">
-            <legend>Dochodowość</legend>
+            <legend><g:message code="panel.profitability.title"/></legend>
             <div style="text-align: left">
-                %{--<p>Dochodowość/POS (kalkulator) <g:textField name="scoringTODO"/> zł</p>--}%
                 <div style="display: inline-block; float: left; text-align: left">
                     <p>Dochodowość/POS (kalkulator)</p>
                 </div>
                 <div style="display: inline-block; float: right">
-                    <div><g:textField name="scoringTODO"/> zł</div>
+                    <div><g:textField name="scoringTODO"/> <g:message code="panel.polish.currency"/></div>
                 </div>
             </div>
         </fieldset>
@@ -156,10 +148,10 @@
                 <p>średnia wartość transakcji</p>
             </div>
             <div style="display: inline-block; float: right">
-                <div><g:textField name="scoringTODO"/> zł</div>
-                <div><g:textField name="scoringTODO"/> zł</div>
-                <div><g:textField name="scoringTODO"/> zł</div>
-                <div><g:textField name="scoringTODO"/> zł</div>
+                <div><g:textField name="scoringTODO"/> <g:message code="panel.polish.currency"/></div>
+                <div><g:textField name="scoringTODO"/> <g:message code="panel.polish.currency"/></div>
+                <div><g:textField name="scoringTODO"/> <g:message code="panel.polish.currency"/></div>
+                <div><g:textField name="scoringTODO"/> <g:message code="panel.polish.currency"/></div>
             </div>
         </fieldset>
         </div>
@@ -168,6 +160,10 @@
 <r:require module="jquery_ui"/>
 
 <r:script>
+
+    //TODO - zrobic aktywacje pol!!!!!
+
+
     jQuery(document).ready(function() {
         var aggDates = jQuery('#aggrementDates');
         aggDates.hide();

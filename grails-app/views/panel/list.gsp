@@ -7,7 +7,10 @@
     <title><g:message code="process.list.label"  /></title>
 </head>
 <body>
-<g:render template="../panels/additionalServices"/>
+<g:render template="../panels/serviceEconomic"/>
+<g:render template="../panels/servicePrestige"/>
+<g:render template="../panels/serviceComfort"/>
+%{--<g:render template="../panels/additionalServices"/>--}%
 <g:render template="../panels/service"/>
 <g:render template="../panels/scoring"/>
 <g:render template="../panels/personToContact"/>
