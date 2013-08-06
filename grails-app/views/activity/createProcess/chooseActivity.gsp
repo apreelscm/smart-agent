@@ -3,48 +3,9 @@
 <html>
 <head>
     <meta name="layout" content="main">
-    <g:set var="entityName" value="${message(code: 'activity.label', default: 'Activity')}"/>
-    <title><g:message code="default.edit.label" args="[entityName]"/></title>
-
-    <style>
-    .signature-article {
-        width: 500px;
-        margin: 25px auto 0;
-        padding: 15px 20px 20px;
-    }
-
-    .signature-article select {
-        width: 250px;
-    }
-
-    .border-article {
-        border: #c5c5c5 solid thin;
-        border-radius: 3px;
-        background-color: #f7f8f6;
-    }
-    .border-article.article-error {
-        border: red solid thin;
-    }
-
-    .signature-article > div {
-        margin: 0 auto;
-        width: 440px;
-        text-align: left
-    }
-
-    .signature-article > div > .requiredField:not(:first-child) {
-        margin: 15px 0 0 0px;
-        text-align: center;
-    }
-
-    a.submit{
-        line-height: 17px;
-    }
-
-    </style>
+    <title><g:message code="chooseActivity.header.title" default="Wybór działania"/></title>
 
     <g:javascript>
-
         var $j = jQuery.noConflict();
 
         var signatureExceptions = ["zmianaWarunkowDcc"]
@@ -130,7 +91,7 @@
 <body>
 
 <section id="create_chooseActivity">
-    <h1 class="ng linia-bottom">Wybór działania</h1>
+    <h1 class="ng linia-bottom"><g:message code="chooseActivity.header.title" default="Wybór działania"/></h1>
 
     <g:form id="signaturesFormId">
         <g:each var="activity" in="${processInstance.activities}">
@@ -145,7 +106,7 @@
                     <g:hiddenField name="activitySignature_${activity.id}" value="${listM*.id}" />
 
                     <apreel:selectField id="act_${activity.id}_sig1" name="activitySignature_${activity.id}"
-                                        title="Sygnatura Dokumentu"
+                                        title="${message(code:'signature.sygnaturaDokumentu.name', default:'Sygnatura Dokumentu')}"
                                         from="${list1}"
                                         optionKey="id"
                                         optionValue="signature"
@@ -153,7 +114,7 @@
 
                     <g:if test="${list2?.size() > 0}">
                         <apreel:selectField id="act_${activity.id}_sig2"  name="activitySignature_${activity.id}"
-                                            title="Sygnatura Dokumentu"
+                                            title="${message(code:'signature.sygnaturaDokumentu.name', default:'Sygnatura Dokumentu')}"
                                             from="${list2}"
                                             optionKey="id"
                                             optionValue="signature"
@@ -164,8 +125,9 @@
             </article>
         </g:each>
         <fieldset style="margin-top: 20px;">
-            <g:link event="back" class="button submit">Wstecz</g:link>
-            <g:submitButton id="conitnueButton" name="continue" class="button submit" value="Dalej"/>
+            <g:link event="back" class="button submit">${message(code:'default.navigation.button.prev', default: 'Wstecz')}</g:link>
+            <g:submitButton id="conitnueButton" name="continue" class="button submit"
+                            value="${message(code:'default.navigation.button.next', default: 'Dalej')}"/>
         </fieldset>
     </g:form>
 </section>

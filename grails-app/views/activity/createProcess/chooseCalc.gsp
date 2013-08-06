@@ -3,14 +3,10 @@
 <html>
 <head>
     <meta name="layout" content="main">
-    <g:set var="entityName" value="${message(code: 'activity.label', default: 'Activity')}"/>
-    <title><g:message code="default.edit.label" args="[entityName]"/></title>
-    <g:javascript library="jquery" />
+    <title> <g:message code="chooseCalc.header.title" default="Wybierz klienta"/></title>
 
     <g:javascript>
         var $j = jQuery.noConflict();
-
-        var signatureExceptions = ["zmianaWarunkowDcc"]
 
         $j(function () {
             $j('form').submit(function (e) {
@@ -21,7 +17,7 @@
                 var isValid = true;
                 var nipInput = $j("#nipField input[type='text']")
 
-                if( nipInput.val() == ""){
+                if(!validateNip(nipInput.val())){
                     isValid = false;
                     makeInvalid(nipInput)
                 }
@@ -31,6 +27,19 @@
                 return isValid;
             }
 
+           function validateNip(nip){
+                var weights = [6, 5, 7, 2, 3, 4, 5, 6, 7];
+                nip = nip.replace(/[\s-]/g, '');
+
+                if (nip.length == 10 && parseInt(nip, 10) > 0) {
+                    var sum = 0;
+                    for (var i = 0; i < 9; i++) {
+                        sum += nip[i] * weights[i];
+                    }
+                    return (sum % 11) == nip[9];
+                }
+                return false;
+            }
 
             function makeInvalid(obj) {
                 $j(obj).parent().addClass("error");
@@ -48,51 +57,23 @@
         }
     </g:javascript>
 
-    <style>
-
-
-    #create_chooseCalc > form {
-        width: 340px;
-        margin: 20px auto 0;
-    }
-
-
-    .requiredField{
-        width: 240px;
-    }
-
-    .requiredField input[type='text']{
-        width: 200px;
-    }
-
-    .requiredField label{
-        width: 210px;
-        text-align: center;
-    }
-
-    form > div:not(:first-child) {
-        margin: 15px 0 0 0px;
-    }
-
-
-    </style>
 </head>
 <body>
 
 <section id="create_chooseCalc">
-    <h1 class="ng linia-bottom">Wybierz klienta</h1>
+    <h1 class="ng linia-bottom"><g:message code="chooseCalc.header.title" default="Wybierz klienta"/></h1>
 
     <g:form>
         <div>
             <div class="display-inline-block">
                 <apreel:textField  id="nipField" name="nip"
-                                   title="${message(code:'todo', default:'Wprowadź NIP klienta')}"
+                                   title="${message(code:'client.nip.label', default:'Wprowadź NIP klienta')}"
                                    value="${nip}" direction="vertical" errorMessage="Wprowadzono niepoprawny NIP"
                 />
             </div>
 
-            <g:submitButton id="searchButton" name="getCalculator" value="Wyszukaj" class="button action display-inline"/>
-
+            <g:submitButton name="getCalculator" class="button action display-inline"
+                            value="${message(code:'default.search.button.name', default: 'Wyszukaj')}"/>
 
             <div id="nipMessageBox">
                  <g:if test="${nipInfoMessage}">
@@ -105,9 +86,8 @@
         </div>
 
         <div>
-            <apreel:textField  name="calc" title="${message(code:'todo', default:'Ostatni zaakceptowany kalkulator')}"
+            <apreel:textField  name="calc" title="${message(code:'client.lastAcceptedCalc.label', default:'Ostatni zaakceptowany kalkulator')}"
                                direction="vertical"  disabled="true" value="${calcNumber}"/>
-
             <div id="calcMessageBox">
                  <g:if test="${calcInfoMessage}">
                      <g:render template="message/infoMessage" model="[message: calcInfoMessage]"/>
@@ -118,12 +98,10 @@
             </div>
         </div>
 
-        <fieldset  style="margin-top: 20px; left: -32px">
-            <g:link event="back" class="button submit">Wstecz</g:link>
-            <g:if test="${calcInfoMessage}">
-                <g:submitButton name="continue" class="button submit" value="Dalej" />
-            </g:if>
-
+        <fieldset style="margin-top: 20px; left: -32px">
+            <g:link event="back" class="button submit">${message(code:'default.navigation.button.prev', default: 'Wstecz')}</g:link>
+            <g:submitButton id="conitnueButton" name="continue" class="button submit"
+                            value="${message(code:'default.navigation.button.next', default: 'Dalej')}"/>
         </fieldset>
     </g:form>
 

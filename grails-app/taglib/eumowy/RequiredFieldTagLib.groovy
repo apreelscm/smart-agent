@@ -8,7 +8,6 @@ class RequiredFieldTagLib {
 
     static namespace = "apreel"
 
-    final def DEFAULT_MESSAGE = "Wymagane Pole"
 
     final def H_DIRECTION = "horizontal"
     final def V_DIRECTION = "vertical"
@@ -41,7 +40,7 @@ class RequiredFieldTagLib {
 
         //error icon
         def isError = attrs.isError ?: false;
-        def message = attrs.errorMessage ?: DEFAULT_MESSAGE;
+        def message = attrs.errorMessage ?: message(code:'default.validation.required.error', default: 'Pole Wymagane');
         def icon = g.resource(dir: "images/skin", file: "exclamation.png");
         def imgBody = """<img src="${icon}" onclick="allertError('${message}')" class="visibility-hidden" style="cursor:pointer;"/>"""
 

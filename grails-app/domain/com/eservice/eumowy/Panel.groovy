@@ -6,14 +6,11 @@ import groovy.transform.ToString
 class Panel implements Serializable{
 
     String name;
-    String view;
     Integer orderNo;
 
-    static belongsTo = [signature:Signature]
 
     static constraints = {
         name(unique:true,blank:false)
-        view(blank:false)
     }
 
     static mapping = {

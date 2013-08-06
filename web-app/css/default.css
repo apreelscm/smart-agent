@@ -1138,3 +1138,72 @@ input:invalid:focus, select:invalid:focus, textarea:invalid:focus {
     margin-left: auto;
     margin-right: auto;
 }
+
+/*defineActivity*/
+div.disabled{
+    pointer-events: none;
+}
+
+div.disabled a{
+    color: #a7a7a7;
+    text-decoration-line: line-through;
+}
+
+/* chooseActivity*/
+.signature-article {
+    width: 500px;
+    margin: 25px auto 0;
+    padding: 15px 20px 20px;
+}
+
+.signature-article select {
+    width: 250px;
+}
+
+.border-article {
+    border: #c5c5c5 solid thin;
+    border-radius: 3px;
+    background-color: #f7f8f6;
+}
+.border-article.article-error {
+    border: red solid thin;
+}
+
+.signature-article > div {
+    margin: 0 auto;
+    width: 440px;
+    text-align: left
+}
+
+.signature-article > div > .requiredField:not(:first-child) {
+    margin: 15px 0 0 0px;
+    text-align: center;
+}
+
+a.submit{
+    line-height: 17px;
+}
+
+/*chooseCalc*/
+#create_chooseCalc > form {
+    width: 340px;
+    margin: 20px auto 0;
+}
+
+#create_chooseCalc form > div:not(:first-child) {
+    margin: 15px 0 0 0px;
+}
+
+#create_chooseCalc .requiredField{
+    width: 240px;
+}
+
+#create_chooseCalc .requiredField input[type='text']{
+    width: 200px;
+}
+
+#create_chooseCalc .requiredField label{
+    width: 210px;
+    text-align: center;
+}
+

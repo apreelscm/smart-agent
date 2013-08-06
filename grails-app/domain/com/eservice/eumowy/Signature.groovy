@@ -8,7 +8,7 @@ class Signature implements Serializable {
 
     static hasMany = [
             calcFieldsSignature:CalcFieldSignature,
-            panels:Panel
+            panelsSignature:SignaturePanel
     ]
 
     static constraints = {

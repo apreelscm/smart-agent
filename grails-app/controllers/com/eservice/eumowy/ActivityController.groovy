@@ -6,7 +6,8 @@ class ActivityController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
-    def emailService
+    //def emailService
+    def mailService
     def cbdService
 
     def index() {
@@ -23,19 +24,18 @@ class ActivityController {
             on("continue") { DefineActivityCommand cmd ->
 
                 if(cmd?.hasErrors()){
-                    flow.errorMessage= message(code: cmd.errors?.getFieldError("selectedActivities").code);
+                    flash.errorMessage= message(code: cmd.errors?.getFieldError("selectedActivities").code);
                     return error();
                 }else{
-                    flow.errorMessage = null;
                     def selectedActivities = Activity.findAllByCodeInList(cmd.selectedActivities);
 
-                    //additional sending email
-                    if(cmd.notes){
-                        if(!_sendNotesToCOA(cmd.notes)) return error()
+                    //sending email
+                    if(selectedActivities?.size() == 0){
+                        _sendNotesToCOA(cmd.notes)
+                        return emailOnly();
                     }
 
-                    if(selectedActivities?.size() == 0) return emailOnly()
-
+                    flow.notesToCOA = cmd.notes;
                     flow.processInstance = new Process(activities: selectedActivities)
                 }
             }.to "chooseActivity"
@@ -43,14 +43,12 @@ class ActivityController {
             on("emailOnly").to "defineActivity"
         }
 
+
         chooseActivity{
             on("back").to "defineActivity"
             on("error").to "chooseActivity"
             on("continue"){
                 def processInstance = flow.processInstance
-
-                log.info("activities:"+ processInstance.activities)
-                log.info("params:"+ params)
 
                 //SIGNATURES
                 def signatures =  _getSignatures(processInstance.activities)
@@ -60,9 +58,12 @@ class ActivityController {
                 TreeSet activePanels = _getActivePanels(signatures)
                 processInstance.panels = activePanels.toList();
 
-                log.info("signatures:"+signatures)
-                log.info("code:"+signatures*.panels)
-                log.info("activePanels:"+activePanels)
+                /** dev logs*/
+                /*log.info("activities:"+ processInstance.activities)
+                 log.info("params:"+ params)
+                 log.info("signatures:"+signatures)
+                 log.info("code:"+signatures*.panelsSignature)
+                 log.info("activePanels:"+activePanels)*/
 
                 flow.processInstance = processInstance
             }.to "chooseCalc"
@@ -75,7 +76,7 @@ class ActivityController {
                 def processInstance = flow.processInstance
                 //processInstance.child = new Child(params)
                 flow.processInstance = processInstance
-            }.to "acceptanceInfo"
+            }.to "selectedPanels"
         }
 
         getCalculator {
@@ -87,16 +88,16 @@ class ActivityController {
                 def kln_id = cbdService.findClientIdByNip(params.nip);
 
                 if( kln_id == null){
-                    flash.nipErrorMessage = "Brak klienta";
+                    flash.nipErrorMessage = message(code:"client.notFound.error", default:"Brak klienta");
                     return error();
                 }
 
-                flash.nipInfoMessage = "Znaleziono"
+                flash.nipInfoMessage =  message(code:"client.found.info", default:"Znaleziono");
 
                 def calc = cbdService.findCalculatorByClientId(kln_id)
 
                 if(calc == null){
-                    flash.calcErrorMessage = "Kalkulator nie istnieje"
+                    flash.calcErrorMessage = message(code:"calc.notFound.error", default:"Kalkulator nie istnieje");
                     return error();
                 }
 
@@ -104,17 +105,17 @@ class ActivityController {
                 flash.calcNumber = "cal123456";
 
                 if(!cbdService.isCalcValid(calc,processInstance.signatures)){
-                    flash.calcErrorMessage = "Kalkulator nie pozwala na wykonanie wszystkich zaznaczonych czynności."
+                    flash.calcErrorMessage =  message(code:"calc.notEnough.error", default:"Kalkulator nie pozwala na wykonanie wszystkich zaznaczonych czynności");
                     return error();
                 }
 
-                flash.calcInfoMessage = "Znaleziono"
+                flash.calcInfoMessage = message(code:"calc.found.info", default:"Znaleziono");
             }
             on("success").to "chooseCalc"
             on("error").to "chooseCalc"
         }
 
-        acceptanceInfo{
+        selectedPanels{
             on("back").to "chooseCalc"
             on("continue"){
                 def processInstance = flow.processInstance
@@ -124,7 +125,7 @@ class ActivityController {
         }
 
         clientSignature{
-            on("back").to "acceptanceInfo"
+            on("back").to "selectedPanels"
             on("continue"){
                 def processInstance = flow.processInstance
                 //processInstance.child = new Child(params)
@@ -153,7 +154,10 @@ class ActivityController {
         ] as Comparator
 
         def activePanels = new TreeSet(orderComparator)
-        activePanels.addAll(signatures*.panels.flatten().findAll({ it != "null" && it != "[]" }));
+        activePanels.addAll(signatures*.panelsSignature.flatten().findResults {
+            it != "null" && it != "[]" ? it.panel : null
+        })
+
         return activePanels;
     }
 
@@ -191,22 +195,22 @@ class ActivityController {
     def _sendNotesToCOA(notes) {
         assert notes != null;
 
-        def email = [
-                subject: message(code:'notesToCOA.email.subject'),
-                text: notes
-        ]
+        log.info("wysyłanie wiadomości email z uwagami do COA [notes: ${notes}]")
+        log.info(g.render(template:"myMailTemplate", model:[text : notes]));
 
         try{
-            emailService.sendSimpleMail(email)
-            flash.infoMessage = "Wiadomość została wysłana."
+            mailService.sendMail {
+                to "apreel.eUmowy@gmail.com"
+                from "apreel.eUmowy@gmail.com"
+                subject message(code:'notesToCOA.email.subject')
+                html g.render(template:"myMailTemplate", model:[text : notes])
+            }
+            flash.infoMessage = message(code:"email.notesToCOA.send.complete", default:"Wysłano wiadomość z uwagami do COA");
             return true;
         }catch (MailException error){
-            flash.errorMessage = "Wystąpił błąd podczas wysyłania wiadomości."
-            log.error(flash.errorMessage + ": " + error.message)
+            flash.errorMessage = message(code:"email.send.error", default:"Wystąpił błąd podczas wysyłania wiadomości");
             error.printStackTrace();
             return false;
         }
     }
-
-
 }

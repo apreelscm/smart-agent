@@ -3,7 +3,9 @@ dataSource {
     driverClassName = "org.h2.Driver"
     username = "sa"
     password = ""
-    loggingSql = false
+    loggingSql = true
+    logSql= true
+    formatSql = false
    // hibernate.default_schema = "CBD_UMOWY"
     //dialect = org.hibernate.dialect.Oracle10gDialect
 }

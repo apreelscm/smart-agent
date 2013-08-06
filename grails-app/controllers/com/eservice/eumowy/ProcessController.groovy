@@ -57,7 +57,7 @@ class ProcessController {
     def edit(Long id) {
         def processInstance = Process.get(id)
         if (!processInstance) {
-            flash.message = message(code: 'default.not.found.message', args: [message(code: 'process.label', default: 'Process'), id])
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'process.label', default: 'proces'), id])
             redirect(action: "list" )
             return
         }
@@ -73,7 +73,7 @@ class ProcessController {
     def show(String id) {
         def processInstance = Process.get(id)
         if (!processInstance) {
-            flash.message = message(code: 'default.not.found.message', args: [message(code: 'process.label', default: 'proces'), id])
+            flash.message = message(code: 'default.not.found.message', args:[ message(code: 'process.label', default: 'proces'), id])
             redirect(action: "list")
             return
         }
@@ -86,14 +86,14 @@ class ProcessController {
         def processInstance =Process.get(id)
 
         if (!processInstance) {
-            flash.message = message(code: 'default.not.found.message', args: [message(code: 'test.label', default: 'proces'), id])
+            flash.message = message(code: 'default.not.found.message', args:[ message(code: 'process.label', default: 'proces'), id])
             redirect(action: "list")
             return
         }
 
         processInstance.status = Process.ProcessStatus.REJECTED;
         processInstance.save(flush: true, validate: false)
-        flash.message = message(code: 'default.rejected.message', args: [message(code: 'test.label', default: 'proces'), processInstance.id])
+        flash.message = message(code: 'default.rejected.message', args:[ message(code: 'process.label', default: 'proces'), processInstance.id])
         redirect(action: "list")
     }
 
@@ -102,14 +102,14 @@ class ProcessController {
         def processInstance = Process.get(id)
 
         if (!processInstance) {
-            flash.message = message(code: 'default.not.found.message', args: [message(code: 'test.label', default: 'proces'), id])
+            flash.message = message(code: 'default.not.found.message', args:[ message(code: 'process.label', default: 'proces'), id])
             redirect(action: "list")
             return
         }
 
         processInstance.status = Process.ProcessStatus.ACCEPTED;
         processInstance.save(flush: true, validate: true)
-        flash.message = message(code: 'default.accepted.message', args: [message(code: 'test.label', default: 'Proces'), processInstance.id])
+        flash.message = message(code: 'default.accepted.message', args:[ message(code: 'process.label', default: 'proces'), processInstance.id])
         redirect(action: "list")
     }
 
@@ -134,7 +134,6 @@ class ProcessController {
 
     def showPdfByDocumentId(String id){
         log.info( "pdf document = " + id);
-
         def documentfile = DocumentFile.get(id);
         render(template: '../forms/pdf/embedDocument', model:  [pdfDocument: resource(dir:'files', file:documentfile.filename)]);
     }

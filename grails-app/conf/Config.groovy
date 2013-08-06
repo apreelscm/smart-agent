@@ -101,7 +101,10 @@ log4j = {
             'net.sf.ehcache.hibernate'
 
     //show sql values
-    info "org.hibernate.SQL", "org.hibernate.type", "org.codehaus.groovy.grails.orm.hibernate"
+    /*info "org.hibernate.SQL", "org.hibernate.type", "org.codehaus.groovy.grails.orm.hibernate"*/
+
+    /*trace 'org.hibernate.type'
+    debug 'org.hibernate.SQL'*/
 
     appenders {
         console name: 'stdout', layout: pattern(conversionPattern: '%d{dd-MM-yyyy HH:mm:ss,SSS} %5p %c{1} - %m%n')
@@ -130,18 +133,18 @@ grails.plugins.springsecurity.interceptUrlMap = [
 
 // mail config
 grails {
-	mail {
-	  host = "smtp.gmail.com"
-	  port = 465
-	  username = "apreel.eUmowy@gmail.com"
-	  password = "apreel1234"
-	  props = ["mail.smtp.auth": "true",
-			   "mail.smtp.socketFactory.port": "465",
-			   "mail.smtp.socketFactory.class": "javax.net.ssl.SSLSocketFactory",
-			   "mail.smtp.socketFactory.fallback": "false",
-			   "mail.smtp.ssl.trust": "*"]
-	}
- }
+    mail {
+        host = "smtp.gmail.com"
+        port = 465
+        username = "apreel.eUmowy@gmail.com"
+        password = "apreel1234"
+        props = ["mail.smtp.auth": "true",
+                "mail.smtp.socketFactory.port": "465",
+                "mail.smtp.socketFactory.class": "javax.net.ssl.SSLSocketFactory",
+                "mail.smtp.socketFactory.fallback": "false",
+                "mail.smtp.ssl.trust": "*"]
+    }
+}
 trustAll = true
 
 fileuploader {
@@ -151,3 +154,4 @@ fileuploader {
         path = "/tmp/attachment/"
     }
 }
+

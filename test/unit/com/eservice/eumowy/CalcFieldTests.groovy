@@ -28,13 +28,13 @@ class CalcFieldTests {
                 // use comma as separator
                 String[] country = line.split(cvsSplitBy);
 
-                String entry = country[1] + "===" + country[2];
+                String entry = country[0] + "===" + country[1];
                 if(!list.contains(entry)){
                     list.add(entry);
                 }
 
 
-                String entry1 = country[2];
+                String entry1 = country[1];
                 if(!listValue.contains(entry1)){
                     listValue.add(entry1);
                 }
@@ -56,10 +56,11 @@ class CalcFieldTests {
                println( """new CalcFieldSignature(signature:Signature.findByName("${arr[0]}"), calcField: CalcField.findByName(${arr[1]})).save();""")
             }*/
 
-            for (String entr2y in listValue) {
+            for (String entr2y in list) {
                 def arr = entr2y.split("===");
-                println( """new CalcField(name:"${entr2y}").save()""")
+                println( """insert into CBD_UMOWY.PANEL (id, version, name, order_no) values (null, 0, '${arr[0]}','${arr[1]}')""")
             }
+
 
 
         } catch (FileNotFoundException e) {

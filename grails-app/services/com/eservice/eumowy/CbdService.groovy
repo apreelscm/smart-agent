@@ -2,25 +2,22 @@ package com.eservice.eumowy
 
 class CbdService {
 
-/*    def kln_id
-    def kln_nip
-    def kln_nazwa*/
-
     def findClientIdByNip(def nip) {
         def kln_id;
 
-        if(nip == "1"){
+        if(nip == "1234567819"){
             kln_id = "11";
         }
 
-        if(nip == "2"){
+        if(nip == "8946001495"){
             kln_id = "22";
         }
 
-        if(nip == "3"){
+        if(nip == "7343597142"){
             kln_id = "33";
         }
 
+        //3558335706
         return kln_id;
     }
 
@@ -42,6 +39,8 @@ class CbdService {
             calc.add("STAWKA_PP_PLUS");
             calc.add("STAWKA_PP_GALENA");
             calc.add("DEKLARACJA_SPRZEDAZY_PP");
+            calc.add("OPLATA_DCC");
+            calc.add("NULL");
         }
         else if(kln_id == "22"){
             calc = []
@@ -57,7 +56,7 @@ class CbdService {
 
         Set signaturesCalcNames = []
         signatures.each{signature ->
-            signaturesCalcNames.addAll(signature.calcFieldsSignature*.calcField.name);
+            signaturesCalcNames.addAll(signature.calcFieldsSignature*.calcField);
         }
 
         println("calc:"+calc)

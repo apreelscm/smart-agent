@@ -3,15 +3,19 @@
 <html>
 <head>
     <meta name="layout" content="main">
-    <g:set var="entityName" value="${message(code: 'activity.label', default: 'Activity')}"/>
-    <title><g:message code="default.edit.label" args="[entityName]"/></title>
+    <title><g:message code="clientSignature.header.title" default="Podpis Klienta"/></title>
+
+    <style>
+    .navButtons td {padding:5px;vertical-align:middle;}
+    </style>
+
 </head>
 
 <body>
 
 <section id="create_clientSignature" >
 
-    <h1 class="ng linia-bottom">Podpis Klienta</h1>
+    <h1 class="ng linia-bottom"><g:message code="clientSignature.header.title" default="Podpis Klienta"/></h1>
 
     <div id="pdfBox" style="height: 500px; overflow: hidden;border: solid 1px; border-radius: 5px;  margin: 20px 15px 0">
         <g:render template="../forms/pdf/embedDocument-mobile"
@@ -19,43 +23,56 @@
     </div>
 
     <nav>
-
         <g:form >
-            <fieldset >
-                    <g:submitButton name="noaccept" value="Brak akceptacji" class="button submit display-inline" style="height: 45px; width: 23%"/>
 
-                    <g:select id="statusSelect" name="status" from="${com.eservice.eumowy.Activity$ClientType?.values()}"
-                              keys="${com.eservice.eumowy.Activity$ClientType.values()*.name()}"
-                              value="${com.eservice.eumowy.Activity.ClientType.REPRESENTIVE.name()}"
-                              noSelection="['': '']"
-                              class="display-inline"
-                        style="width:20%; margin-right: 5px"
-                    />
+            <fieldset class="navButtons" >
+                <table id="signatureNavTable">
+                    <colgroup>
+                        <col style="width: 25%;" />
+                        <col style="width: 25%" />
+                        <col style="width: 25%" />
+                        <col style="width: 25%" />
+                    </colgroup>
+                    <tr>
+                        <td>
+                            <g:submitButton name="noaccept" class="button submit display-inline" style="height: 45px; width: 100%"
+                                            value="${message(code: 'clientSignature.noAcceptance.button', default:'Brak akceptacji')}"/>
+                        </td>
+                        <td>
+                            <g:select id="statusSelect" name="status" from="${com.eservice.eumowy.Activity$ClientType?.values()}"
+                                      keys="${com.eservice.eumowy.Activity$ClientType.values()*.name()}"
+                                      value="${com.eservice.eumowy.Activity.ClientType.REPRESENTIVE.name()}"
+                                      noSelection="['': '']"
+                                      class="display-inline"
+                                      style="width: 100%"
+                            />
+                        </td>
+                        <td>
+                            <g:submitButton name="subscribe" class="button submit display-inline" style=" height: 45px;width: 100%;"
+                                            value="${message(code: 'clientSignature.signDocument.button', default:'Podpisz dokument')}"/>
+                        </td>
+                        <td>
+                            <div class="display-inline-block" style="width: 100%;" >
+                                <div style="text-align: left">
+                                    <label>
+                                        <g:radio name="requestVersion" value="electronical" checked="on"/>
+                                        <g:message code="clientSignature.electronicalVersion.radio" default="Żądanie wersji elektronicznej" />
+                                    </label>
+                                </div>
+                                <div style="text-align: left">
+                                    <label>
+                                        <g:radio name="requestVersion" value="paper"/>
+                                        <g:message code="clientSignature.paperVersion.radio" default="Żądanie wersji papierowej" />
+                                    </label>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
 
-                    <g:submitButton name="subscribe" value="Podpisz dokument" class="button submit display-inline"
-                                    style=" height: 45px;width: 23%;"/>
+                <g:link event="back" class="button submit">${message(code:'default.navigation.button.prev', default: 'Wstecz')}</g:link>
+                <g:submitButton id="conitnueButton" name="submit" class="button submit" value="${message(code: 'default.navigation.button.finish', default: 'Zakończ')}"/>
 
-                    <div class="display-inline-block" style="width: 31%; position: relative; top: 10px" >
-                        <div style="text-align: left">
-                            <label>
-                                <g:radio name="requestVersion" value="electronical" checked="on"/>
-                                <g:message code="todo" default="Żądanie wersji elektronicznej" />
-                            </label>
-                        </div>
-
-                        <div style="text-align: left">
-                            <label>
-                                <g:radio name="requestVersion" value="paper"/>
-                                <g:message code="todo" default="Żądanie wersji papierowej" />
-                            </label>
-                        </div>
-                    </div>
-
-  %{--              <g:submitButton name="submit" class="button submit display-block" value="Zakończ"
-                                style="margin: 19px auto 0 auto; width: 100px"/>--}%
-
-                <g:submitButton name="back" class="button submit" value="Wstecz" style="margin-top: 15px" />
-                <g:submitButton name="submit" class="button submit" value="Zakończ" />
             </fieldset>
         </g:form>
     </nav>

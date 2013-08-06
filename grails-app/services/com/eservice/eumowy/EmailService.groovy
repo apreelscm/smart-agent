@@ -35,7 +35,6 @@ class EmailService {
         message.setFrom(emailProperties.from?:DEFAULT_FROM_ADDRESS)
         message.setTo(emailProperties.to?:DEFAULT_TO_ADDRESS)
         message.setSubject(emailProperties.subject)
-
         message.setText(emailProperties.text)
 
         log.info("Sending email from " + message.getFrom() +
@@ -45,8 +44,5 @@ class EmailService {
         if(mailSender){
             mailSender.send(message);
         }
-        /* else {
-             throw new MailException("internal error") {}
-         }*/
     }
 }
