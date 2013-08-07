@@ -165,8 +165,8 @@
                 <g:if test="${flash.infoMessage}">
                     <g:render template="message/infoMessage" model="[message: flash.infoMessage]"/>
                 </g:if>
-                <g:if test="${errorMessage}">
-                    <g:render template="message/errorMessage" model="[message: errorMessage]"/>
+                <g:if test="${flash.errorMessage}">
+                    <g:render template="message/errorMessage" model="[message: flash.errorMessage]"/>
                 </g:if>
             </div>
         </div>

@@ -159,6 +159,7 @@ class ActivityController {
         }catch (Exception error){
             flash.errorMessage = message(code:"email.send.error", default:"Wystąpił błąd podczas wysyłania wiadomości");
             log.error(error.message)
+            error.printStackTrace();
         }
     }
 

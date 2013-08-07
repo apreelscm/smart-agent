@@ -8,8 +8,8 @@ class EmailService {
     def messageSource
 
     def sendNotesToCOA(notes) {
-
         final def templateType = EmailTemplates.EmailTemplateType.NOTES_TO_COA;
+
         def emailTemplate = EmailTemplates.findByName(templateType)
 
         mailService.sendMail{
