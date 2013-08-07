@@ -11,6 +11,10 @@
 
     <h1 class="ng linia-bottom"><g:message code="selectedPanels.header.title" default="todo"/></h1>
 
+    <g:each var="panel" in="${processInstance.panels}" status="i">
+        <g:render template="/panels/${panel.name}"/>
+    </g:each>
+
     <g:form>
         <nav style="margin-top: 20px">
             <fieldset>

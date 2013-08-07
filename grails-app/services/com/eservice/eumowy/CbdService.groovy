@@ -17,6 +17,10 @@ class CbdService {
             kln_id = "33";
         }
 
+        if(nip == "123"){
+            kln_id = "44";
+        }
+
         //3558335706
         return kln_id;
     }
@@ -49,6 +53,10 @@ class CbdService {
             calc.add("DEKLARACJA_SPRZEDAZY_PP");
         }
 
+        else if(kln_id == "33"){
+            calc =  CalcField.findAll();
+        }
+
         return calc;
     }
 
@@ -61,7 +69,7 @@ class CbdService {
 
         println("calc:"+calc)
         println("calcNames:"+signaturesCalcNames)
-        println("containsAll:"+signaturesCalcNames.every { calc.contains(it) });
+        println("containsAll:"+signaturesCalcNames.every {calc.contains(it) });
 
         return signaturesCalcNames.every { calc.contains(it) };
     }

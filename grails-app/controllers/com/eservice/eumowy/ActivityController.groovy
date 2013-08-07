@@ -74,6 +74,10 @@ class ActivityController {
             on("continue"){
                 def processInstance = flow.processInstance
                 //processInstance.child = new Child(params)
+
+
+                ((Process)processInstance).save();
+
                 flow.processInstance = processInstance
             }.to "selectedPanels"
         }
@@ -100,8 +104,6 @@ class ActivityController {
                     return error();
                 }
 
-                //TODO [mock] implement this!
-                flash.calcNumber = "cal123456";
 
                 if(!cbdService.isCalcValid(calc,processInstance.signatures)){
                     flash.calcErrorMessage =  message(code:"calc.notEnough.error", default:"Kalkulator nie pozwala na wykonanie wszystkich zaznaczonych czynności");
@@ -109,6 +111,11 @@ class ActivityController {
                 }
 
                 flash.calcInfoMessage = message(code:"calc.found.info", default:"Znaleziono");
+
+                processInstance.client = new Client(name: Math.random()+'testName', nip:  params.nip)
+                processInstance.calcNumber =  "cal123456";
+
+                flow.processInstance = processInstance
             }
             on("success").to "chooseCalc"
             on("error").to "chooseCalc"

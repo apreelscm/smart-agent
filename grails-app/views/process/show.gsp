@@ -19,7 +19,7 @@
             <label for="clientName" style="display: inline ">
                 <g:message code="process.clientName.label" default="Nazwa Klienta" />
             </label>
-            <g:textField name="clientName" value="${processInstance?.clientName}" disabled="disabled"
+            <g:textField name="clientName" value="${processInstance?.client?.name}" disabled="disabled"
                          style="width: 89%;display: inline"/>
         </li>
 
@@ -29,7 +29,7 @@
                 <g:message code="process.clientNip.label" default="NIP" />
 
             </label>
-            <g:textField name="clientNip" value="${processInstance?.clientNip}" disabled="disabled"/>
+            <g:textField name="clientNip" value="${processInstance?.client?.nip}" disabled="disabled"/>
         </li>
 
         <li style="margin:0em 0em 0em 0em;display:inline;">

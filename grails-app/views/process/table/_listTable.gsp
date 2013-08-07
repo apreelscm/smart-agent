@@ -6,8 +6,8 @@
     <tr>
         <util:remoteSortableColumn property="stringId"  title="Id Procesu"  update="tableBox" action="filter" params="[filterStatus:filterStatus,filterObserved:filterObserved]"/>
         <util:remoteSortableColumn property="lastUpdated" title="Data Aktualizacji" update="tableBox" action="filter" params="[filterStatus:filterStatus,filterObserved:filterObserved]"/>
-        <util:remoteSortableColumn property="clientNip"  title="Nip Klienta"  update="tableBox" action="filter" params="[filterStatus:filterStatus,filterObserved:filterObserved]"/>
-        <util:remoteSortableColumn property="clientName"  title="Nazwa Klienta"  update="tableBox" action="filter" params="[filterStatus:filterStatus,filterObserved:filterObserved]"/>
+        <util:remoteSortableColumn property="client.nip"  title="Nip Klienta"  update="tableBox" action="filter" params="[filterStatus:filterStatus,filterObserved:filterObserved]"/>
+        <util:remoteSortableColumn property="client.name"  title="Nazwa Klienta"  update="tableBox" action="filter" params="[filterStatus:filterStatus,filterObserved:filterObserved]"/>
         <util:remoteSortableColumn property="saleSection"  title="Segment Sprzedażowy" update="tableBox" action="filter" params="[filterStatus:filterStatus,filterObserved:filterObserved]"/>
         <util:remoteSortableColumn property="phNumber"  title="Numer PH" update="tableBox" action="filter" params="[filterStatus:filterStatus,filterObserved:filterObserved]"/>
         <util:remoteSortableColumn property="phFirstName"  title="Imię PH" update="tableBox" action="filter" params="[filterStatus:filterStatus,filterObserved:filterObserved]"/>
@@ -20,8 +20,8 @@
         <tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
             <td class="tableCell" style="word-wrap:break-word;"><g:link action="show" id="${processInstance.id}">${fieldValue(bean: processInstance, field: "stringId")}</g:link></td>
             <td class="tableCell"><g:formatDate date="${processInstance.lastUpdated}" /></td>
-            <td class="tableCell">${fieldValue(bean: processInstance, field: "clientNip")}</td>
-            <td class="tableCell">${fieldValue(bean: processInstance, field: "clientName")}</td>
+            <td class="tableCell">${fieldValue(bean: processInstance.client, field: "nip")}</td>
+            <td class="tableCell">${fieldValue(bean: processInstance.client, field: "name")}</td>
             <td class="tableCell">${fieldValue(bean: processInstance, field: "saleSection")}
             <td class="tableCell">${fieldValue(bean: processInstance, field: "phNumber")}</td>
             <td class="tableCell">${fieldValue(bean: processInstance, field: "phFirstName")}</td>

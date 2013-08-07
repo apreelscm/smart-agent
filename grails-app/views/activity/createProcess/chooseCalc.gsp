@@ -87,7 +87,7 @@
 
         <div>
             <apreel:textField  name="calc" title="${message(code:'client.lastAcceptedCalc.label', default:'Ostatni zaakceptowany kalkulator')}"
-                               direction="vertical"  disabled="true" value="${calcNumber}"/>
+                               direction="vertical"  disabled="true" value="${processInstance.calcNumber}"/>
             <div id="calcMessageBox">
                  <g:if test="${calcInfoMessage}">
                      <g:render template="message/infoMessage" model="[message: calcInfoMessage]"/>

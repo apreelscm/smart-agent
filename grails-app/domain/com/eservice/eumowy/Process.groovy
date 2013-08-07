@@ -18,13 +18,11 @@ class Process implements Serializable {
 
     String phSurname
 
-    String clientNip
-
-    String clientName
-
     String calcNumber
 
     String saleSection // TODO skad ?
+
+    Client client;
 
     List<DocumentFile> documents
     List<AttachmentFile> attachments
@@ -58,6 +56,7 @@ class Process implements Serializable {
         autoTimestamp true
         version true
         sort id: "desc"
+        client cascade: 'save-update'
     }
 
 

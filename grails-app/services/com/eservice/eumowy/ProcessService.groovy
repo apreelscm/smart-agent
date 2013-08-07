@@ -18,7 +18,9 @@ class ProcessService {
             eq("status", Process.ProcessStatus.valueOf(filterStatus))
 
             if(filterNip && filterNip != "") {
-                eq('clientNip',filterNip)
+                client {
+                    eq("nip", filterNip)
+                }
             }
         }
         [searchResults: searchResults, searchResultSize: searchResults.getTotalCount()]

@@ -1,7 +1,4 @@
-import com.eservice.eumowy.AttachmentFile
-import com.eservice.eumowy.DocumentFile
-import com.eservice.eumowy.EmailTemplates
-import com.eservice.eumowy.Process
+import com.eservice.eumowy.*
 import groovy.sql.Sql
 
 class BootStrap {
@@ -42,20 +39,24 @@ class BootStrap {
         sql.close();
 
 
+        new Client(name: 'clientName1', nip: "555344435").save();
+        new Client(name: 'clientName2', nip: "11241412").save(flush:true);
+
         //przykladowe procesy
-        new Process(id: "000001", phFirstName: "Jerzy", clientNip: "555344435",
-                clientName: 'nazwa1', saleSection: 'segment1', phNumber: '12345',
-                phSurname: 'Kowalski', calcNumber: '44444' , status: Process.ProcessStatus.REJECTED)
+        new Process(id: "000001", phFirstName: "Jerzy",
+                saleSection: 'segment1', phNumber: '12345',
+                phSurname: 'Kowalski', calcNumber: '44444' , status: Process.ProcessStatus.REJECTED,
+                client: Client.findByName("clientName1"))
                 .addToDocuments(new DocumentFile(filename: "pedef.pdf"))
                 .addToDocuments(new DocumentFile(filename: "pedef2.pdf"))
                 .addToAttachments(new AttachmentFile(filename: "pedef.pdf"))
                 .addToAttachments(new AttachmentFile(filename: "pedef2.pdf"))
                 .addToAttachments(new AttachmentFile(filename: "pedef3.pdf")).save();
 
-
-        new Process(id: "000002", phFirstName: "Wanda", clientNip: "11241412",
-                clientName: 'nazwa2', saleSection: 'segment2', phNumber: '321',
-                phSurname: 'Iksińska',calcNumber: '33333', status: Process.ProcessStatus.REJECTED)
+        new Process(id: "000002", phFirstName: "Wanda",
+                saleSection: 'segment2', phNumber: '321',
+                phSurname: 'Iksińska',calcNumber: '33333', status: Process.ProcessStatus.REJECTED,
+                client:  Client.findByName("clientName2"))
                 .addToDocuments(new DocumentFile(filename: "pedef.pdf"))
                 .addToDocuments(new DocumentFile(filename: "pedef2.pdf"))
                 .addToAttachments(new AttachmentFile(filename: "pedef3.pdf")).save();
