@@ -1,6 +1,6 @@
 <div id="acceptorsPanel" style="margin: 0">
     <fieldset>
-        <div class="belka-glowna">Osoba uprawniona do podpisania umowy</div>
+        <div class="belka-glowna"><g:message code="panel.acceptor.title"/></div>
         <div class="centre" style="text-align: center; padding-top: 20px; width: 750px">
             <div style="display:inline-block">
                 <select name="firstAcceptorTitle">
@@ -8,9 +8,9 @@
                     <option value="pani">Pani</option>
                 </select>
             </div>
-            <div style="display:inline-block">Imię: </div>
+            <div style="display:inline-block"><g:message code="panel.first.name"/>: </div>
             <div style="display:inline-block"><g:textField name="firstAcceptorFirstName"  style="width: 120px"/></div>
-            <div style="display:inline-block">Nazwisko: </div>
+            <div style="display:inline-block"><g:message code="panel.last.name"/>: </div>
             <div style="display:inline-block"><g:textField name="firstAcceptorLastName"/></div>
 
             <div style="clear: both;"/>
@@ -21,11 +21,10 @@
                     <option value="pani">Pani</option>
                 </select>
             </div>
-            <div style="display:inline-block">Imię: </div>
+            <div style="display:inline-block"><g:message code="panel.first.name"/>: </div>
             <div style="display:inline-block"><g:textField name="secondAcceptorFirstName"  style="width: 120px"/></div>
-            <div style="display:inline-block">Nazwisko: </div>
+            <div style="display:inline-block"><g:message code="panel.last.name"/>: </div>
             <div style="display:inline-block"><g:textField name="secondAcceptorLastName"/></div>
-
         </div>
     </fieldset>
 </div>

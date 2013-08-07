@@ -1,23 +1,23 @@
 <div id="dccRangePanel">
     <fieldset>
-        <div class="belka-glowna">DCC - Zakres uruchomienia</div>
+        <div class="belka-glowna"><g:message code="panel.dcc.range.title"/> </div>
         <div class="centre" style="text-align: center; padding-top: 20px; width: 600px">
             <div style="text-align: left">
-                <p><input type="radio" name="dccRange" id="currentAndNew" /> na wszystkich Zestawach POZ aktualnie zainstalowanych u Akceptanta i wszystkich nowych</p>
-                <p><input type="radio" name="dccRange" id="current" /> na wszystkich Zestawach POZ aktualnie zainstalowanych u Akceptanta</p>
-                <p><input type="radio" name="dccRange" id="direct" /> w urządzeniach akceptujących karty w punktach handlowo usługowych w lokalizacjach:</p>
+                <p><input type="radio" name="dccRange" id="currentAndNew" /> <g:message code="panel.dcc.range.current.and.new"/> </p>
+                <p><input type="radio" name="dccRange" id="current" /> <g:message code="panel.dcc.range.current"/></p>
+                <p><input type="radio" name="dccRange" id="direct" /> <g:message code="panel.dcc.range.direct"/></p>
             </div>
         </div>
         <div class="centre" style="text-align: center; padding-top: 20px; width: 800px; max-width: 950px">
             <table class="t">
                 <thead>
                 <tr>
-                    <td>Pełna Nazwa Punktu</td>
-                    <td>Ulica</td>
-                    <td>Miasto</td>
-                    <td>Numer<br>domu</td>
-                    <td>Kod</td>
-                    <td>Liczba<br>POZ</td>
+                    <td><g:message code="panel.dcc.table.full.name"/></td>
+                    <td><g:message code="panel.dcc.table.street"/></td>
+                    <td><g:message code="panel.dcc.table.city"/></td>
+                    <td><g:message code="panel.dcc.table.house.number"/></td>
+                    <td><g:message code="panel.dcc.table.code"/></td>
+                    <td><g:message code="panel.dcc.table.poz.count"/></td>
                     <td>&nbsp;</td>
                 </tr>
                 </thead>

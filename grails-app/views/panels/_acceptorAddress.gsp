@@ -5,7 +5,7 @@
                 <div style="width: 700px" class="centre">
                     <div style="display: inline-block; text-align: left">
                            <div>
-                               <div style="display:inline-block; width: 50px">Ulica</div>
+                               <div style="display:inline-block; width: 50px"><g:message code="panel.street"/></div>
                                <div style="display:inline-block; " name="addressStreetTitle">
                                    <select>
                                        <option value="ulica">ulica</option>

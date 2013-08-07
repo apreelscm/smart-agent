@@ -1,11 +1,11 @@
 <div id="additionalInformationPanel">
     <fieldset>
-        <div class="belka-glowna">Informacje dodatkowe</div>
+        <div class="belka-glowna"><g:message code="panel.additional.information.title"/> </div>
             <div style="text-align: center; padding-top: 20px" class="centre">
                 <div>
                     <div style="display: inline-block; text-align: right">
                            <div>
-                               <div style="display:inline-block; ;">Forma prawna</div>
+                               <div style="display:inline-block; "><g:message code="panel.legal.form"/></div>
                                <select name="legalForm" id="legalForm" style="width: 200px;">
                                    <option value="lfEmpty"></option>
                                    <option value="lfSa">Spółka akcyjna</option>
@@ -16,7 +16,7 @@
                                </select>
                            </div>
                            <div>
-                               <div style="display:inline-block; ">Dokument</div>
+                               <div style="display:inline-block; "><g:message code="panel.document"/></div>
                                <select name="aIDocument" id="aIDocument" style="width: 200px;" disabled="disabled">
                                    <option value="docEmpty"></option>
                                    <option value="docKRS">KRS</option>
@@ -26,11 +26,11 @@
                     </div>
                     <div style="display: inline-block; padding-left: 20px">
                             <div>
-                                <div style="display:inline-block; ">Inne</div>
+                                <div style="display:inline-block; "><g:message code="panel.other"/></div>
                                 <div style="display:inline-block; "><g:textField name="legalFormOther" style="width: 70px;"/></div>
                             </div>
                             <div>
-                                <div style="display:inline-block; ">Inne</div>
+                                <div style="display:inline-block; "><g:message code="panel.other"/></div>
                                 <div style="display:inline-block; "><g:textField name="docOther" style="width: 70px;"/></div>
                             </div>
                     </div>
