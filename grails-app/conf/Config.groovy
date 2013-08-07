@@ -100,14 +100,21 @@ log4j = {
             'org.hibernate',
             'net.sf.ehcache.hibernate'
 
+    trace 'grails.plugin.mail'
+
     //show sql values
     /*info "org.hibernate.SQL", "org.hibernate.type", "org.codehaus.groovy.grails.orm.hibernate"*/
 
     /*trace 'org.hibernate.type'
     debug 'org.hibernate.SQL'*/
 
+    root {
+        additivity = true
+        info();
+    }
+
     appenders {
-        console name: 'stdout', layout: pattern(conversionPattern: '%d{dd-MM-yyyy HH:mm:ss,SSS} %5p %c{1} - %m%n')
+        console name: 'stdout', layout: pattern(conversionPattern: '%d{dd-MM-yyyy HH:mm:ss,SSS} %5p %c - %m%n')
     }
 
 

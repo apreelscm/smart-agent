@@ -1,13 +1,12 @@
 package com.eservice.eumowy
 import com.eservice.eumowy.process.DefineActivityCommand
-import org.springframework.mail.MailException
 
 class ActivityController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
     //def emailService
-    def mailService
+    def emailService
     def cbdService
 
     def index() {
@@ -148,6 +147,21 @@ class ActivityController {
 //PRIVATE METHODS
 //--------------
 
+
+    def _sendNotesToCOA(notes) {
+
+        log.info("wysyłanie wiadomości email z uwagami do COA [notes: ${notes}]")
+        assert notes != null;
+
+        try{
+            emailService.sendNotesToCOA(notes)
+            flash.infoMessage = message(code:"email.notesToCOA.send.complete", default:"Wysłano wiadomość z uwagami do COA");
+        }catch (Exception error){
+            flash.errorMessage = message(code:"email.send.error", default:"Wystąpił błąd podczas wysyłania wiadomości");
+            log.error(error.message)
+        }
+    }
+
     def  _getActivePanels(def signatures) {
         def orderComparator = [
                 compare: { Panel a, Panel b -> a.orderNo <=> b.orderNo }
@@ -192,25 +206,5 @@ class ActivityController {
         return signatures;
     }
 
-    def _sendNotesToCOA(notes) {
-        assert notes != null;
 
-        log.info("wysyłanie wiadomości email z uwagami do COA [notes: ${notes}]")
-        log.info(g.render(template:"myMailTemplate", model:[text : notes]));
-
-        try{
-            mailService.sendMail {
-                to "apreel.eUmowy@gmail.com"
-                from "apreel.eUmowy@gmail.com"
-                subject message(code:'notesToCOA.email.subject')
-                html g.render(template:"myMailTemplate", model:[text : notes])
-            }
-            flash.infoMessage = message(code:"email.notesToCOA.send.complete", default:"Wysłano wiadomość z uwagami do COA");
-            return true;
-        }catch (MailException error){
-            flash.errorMessage = message(code:"email.send.error", default:"Wystąpił błąd podczas wysyłania wiadomości");
-            error.printStackTrace();
-            return false;
-        }
-    }
 }
