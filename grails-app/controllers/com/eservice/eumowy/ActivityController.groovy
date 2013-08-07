@@ -1,5 +1,6 @@
 package com.eservice.eumowy
 import com.eservice.eumowy.process.DefineActivityCommand
+import com.eservice.eumowy.process.GetCalculatorCommand
 
 class ActivityController {
 
@@ -25,18 +26,18 @@ class ActivityController {
                 if(cmd?.hasErrors()){
                     flash.errorMessage= message(code: cmd.errors?.getFieldError("selectedActivities").code);
                     return error();
-                }else{
-                    def selectedActivities = Activity.findAllByCodeInList(cmd.selectedActivities);
-
-                    //sending email
-                    if(selectedActivities?.size() == 0){
-                        _sendNotesToCOA(cmd.notes)
-                        return emailOnly();
-                    }
-
-                    flow.notesToCOA = cmd.notes;
-                    flow.processInstance = new Process(activities: selectedActivities)
                 }
+
+                def selectedActivities = Activity.findAllByCodeInList(cmd.selectedActivities);
+
+                //sending email
+                if(selectedActivities?.size() == 0){
+                    _sendNotesToCOA(cmd.notes)
+                    return emailOnly();
+                }
+
+                flow.notesToCOA = cmd.notes;
+                flow.processInstance = new Process(activities: selectedActivities)
             }.to "chooseActivity"
             on("error").to "defineActivity"
             on("emailOnly").to "defineActivity"
@@ -75,6 +76,8 @@ class ActivityController {
                 def processInstance = flow.processInstance
                 //processInstance.child = new Child(params)
 
+                processInstance.calcNumber =  flow.calcNumber
+                processInstance.client =  flow.client
 
                 ((Process)processInstance).save();
 
@@ -83,41 +86,90 @@ class ActivityController {
         }
 
         getCalculator {
-            action {
+            action {  GetCalculatorCommand cmd ->
 
-                def processInstance = flow.processInstance
-                flow.nip = params.nip;
+                flow.nip = cmd.nip;
+                flow.calcNumber = null
+                flow.client = null
 
-                def kln_id = cbdService.findClientIdByNip(params.nip);
+                Process processInstance = flow.processInstance
 
-                if( kln_id == null){
-                    flash.nipErrorMessage = message(code:"client.notFound.error", default:"Brak klienta");
+                /**
+                 * sprawdzanie poprawnosci numeru nip
+                 * */
+                if(cmd.hasErrors()){
+                    flash.nipErrorMessage= message(code: cmd.errors?.getFieldError("nip").code);
                     return error();
                 }
 
-                flash.nipInfoMessage =  message(code:"client.found.info", default:"Znaleziono");
+                /** pobieranie informacji o kliencie na podstawie numeru nip */
+                def client = cbdService.findClientIdByNip(cmd.nip);
 
-                def calc = cbdService.findCalculatorByClientId(kln_id)
-
-                if(calc == null){
-                    flash.calcErrorMessage = message(code:"calc.notFound.error", default:"Kalkulator nie istnieje");
-                    return error();
+                /**
+                 * sprawdzanie, czy to nie jest nowa umowa
+                 * */
+                def hasNowaUmowa = processInstance.activities.any{it.code.equals("nowaUmowa")};
+                if(client == null){
+                    if(!hasNowaUmowa){
+                        flash.nipErrorMessage = message(code:"client.notFound.error", default:"Brak klienta");
+                        return error();
+                    }
+                    else{
+                        flash.nipInfoMessage =  message(code:"client.new.info", default:"Now klient");
+                        client = new Client(nip:cmd.nip)
+                    }
+                }
+                else{
+                    flash.nipInfoMessage =  message(code:"client.found.info", default:"Znaleziono");
                 }
 
+                flow.client = client;
 
-                if(!cbdService.isCalcValid(calc,processInstance.signatures)){
-                    flash.calcErrorMessage =  message(code:"calc.notEnough.error", default:"Kalkulator nie pozwala na wykonanie wszystkich zaznaczonych czynności");
-                    return error();
+                /**
+                 * sprawdzanie, czy w eUmowy istnieje dla danego Akceptanta niezakończony Proces
+                 **/
+                println("client:"+client);
+                if(client.id != null && Process.findByClientAndStatusInList(client,
+                        [Process.ProcessStatus.WAITING,Process.ProcessStatus.WAIT_FOR_SUBSRIPTION,Process.ProcessStatus.EDIT]))
+                {
+                    flash.nipErrorMessage = message(code:"client.unfinishedProcess.error", default:"Dla Akceptanta istnieje niezakończony Proces");
                 }
 
-                flash.calcInfoMessage = message(code:"calc.found.info", default:"Znaleziono");
+                /**
+                 * sprawdzanie czy wybrano aktywnosc popraw dane oraz istnieja zapisane podpisy akceptanta
+                 **/
+                def hasPoprawDane = processInstance.activities.any{it.code.equals("poprawDane")};
+                def hasSubscriptions = processInstance.subscriptions?.size() > 0;
+                if(hasPoprawDane && hasSubscriptions){
+                    return goToClientSignature();
+                }
 
-                processInstance.client = new Client(name: Math.random()+'testName', nip:  params.nip)
-                processInstance.calcNumber =  "cal123456";
+                /**
+                 * pobieranie danych o kalkulatorze
+                 * */
+                if(client.id != null || client.cbdId != null){
+                    def calc = cbdService.findCalculatorByClientId(client.nip)
+
+                    if(calc == null){
+                        flash.calcErrorMessage = message(code:"calc.notFound.error", default:"Kalkulator nie istnieje");
+                        return error();
+                    }
+
+                    if(!cbdService.isCalcValid(calc,processInstance.signatures)){
+                        flash.calcErrorMessage =  message(code:"calc.notEnough.error", default:"Kalkulator nie pozwala na wykonanie wszystkich zaznaczonych czynności");
+                        return error();
+                    }
+
+                    flow.calcNumber =  "cal123456";
+                    flash.calcInfoMessage = message(code:"calc.found.info", default:"Znaleziono");
+                }
+
 
                 flow.processInstance = processInstance
+                flash.isContinueEnabled = true;
             }
             on("success").to "chooseCalc"
+            on("goToClientSignature").to "clientSignature"
             on("error").to "chooseCalc"
         }
 
@@ -148,12 +200,9 @@ class ActivityController {
         }
     }
 
-
-
 //--------------
 //PRIVATE METHODS
 //--------------
-
 
     def _sendNotesToCOA(notes) {
 

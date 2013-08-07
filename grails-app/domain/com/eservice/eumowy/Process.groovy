@@ -5,21 +5,15 @@ import groovy.transform.ToString
 class Process implements Serializable {
 
     Integer id
-
     Date dateCreated
-
     Date lastUpdated
 
     ProcessStatus status = ProcessStatus.NEW
 
     String phNumber
-
     String phFirstName
-
     String phSurname
-
     String calcNumber
-
     String saleSection // TODO skad ?
 
     Client client;
@@ -29,7 +23,7 @@ class Process implements Serializable {
     List<Activity> activities
     List<Signature> signatures
     List<Panel> panels
-    //List<Subscription> subscriptions
+    List<Subscription> subscriptions
 
     // TODO kolekcja czynnosci
 
@@ -44,7 +38,8 @@ class Process implements Serializable {
             documents:DocumentFile,
             attachments:AttachmentFile,
             activities:Activity,
-            signatures:Signature
+            signatures:Signature,
+            subscriptions:Subscription
     ]
 
     static constraints = {
@@ -63,6 +58,9 @@ class Process implements Serializable {
     enum ProcessStatus {
         NEW("Nowy"),
         REJECTED("Odrzucony"),
+        WAIT_FOR_SUBSRIPTION("Oczekiwanie na podpis"),
+        WAITING("Oczekujący"),
+        EDIT("Edycja"),
         ACCEPTED("Zaakceptowany");
 
         private final String text;

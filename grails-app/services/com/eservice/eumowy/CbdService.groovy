@@ -2,33 +2,48 @@ package com.eservice.eumowy
 
 class CbdService {
 
-    def findClientIdByNip(def nip) {
-        def kln_id;
+    boolean transactional = false
+
+    def findClientIdByNip(String nip) {
+
+        def cbdId;
 
         if(nip == "1234567819"){
-            kln_id = "11";
+            cbdId = "11";
         }
 
         if(nip == "8946001495"){
-            kln_id = "22";
+            cbdId = "22";
         }
 
         if(nip == "7343597142"){
-            kln_id = "33";
+            cbdId = "33";
         }
 
-        if(nip == "123"){
-            kln_id = "44";
+        if(nip == "3558335706"){
+            cbdId = "44";
         }
 
-        //3558335706
-        return kln_id;
+        //2258064349
+
+        def client = Client.findByNip(nip);
+
+        if(client == null && cbdId != null){
+            client = new Client(cbdId: cbdId, nip: nip, name: Math.random()+"testName" );
+        }
+
+        println("cbdId:"+cbdId)
+        println("cl:"+client)
+        println("cl1:"+(client == null ))
+        println("cl2:"+(cbdId != null))
+
+        return client;
     }
 
     def findCalculatorByClientId(def kln_id) {
         def calc;
 
-        if(kln_id == "11"){
+        if(kln_id == "1234567819"){
             calc = []
             calc.add("STAWKA_PP_ORANGE");
             calc.add("OPLATA_ZA_APL_PP");
@@ -46,14 +61,14 @@ class CbdService {
             calc.add("OPLATA_DCC");
             calc.add("NULL");
         }
-        else if(kln_id == "22"){
+        else if(kln_id == "8946001495"){
             calc = []
             calc.add("STAWKA_PP_PLUS");
             calc.add("STAWKA_PP_GALENA");
             calc.add("DEKLARACJA_SPRZEDAZY_PP");
         }
 
-        else if(kln_id == "33"){
+        else if(kln_id == "7343597142"){
             calc =  CalcField.findAll();
         }
 

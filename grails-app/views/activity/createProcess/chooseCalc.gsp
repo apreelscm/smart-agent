@@ -6,7 +6,7 @@
     <title> <g:message code="chooseCalc.header.title" default="Wybierz klienta"/></title>
 
     <g:javascript>
-        var $j = jQuery.noConflict();
+   /*     var $j = jQuery.noConflict();
 
         $j(function () {
             $j('form').submit(function (e) {
@@ -27,19 +27,7 @@
                 return isValid;
             }
 
-           function validateNip(nip){
-                var weights = [6, 5, 7, 2, 3, 4, 5, 6, 7];
-                nip = nip.replace(/[\s-]/g, '');
 
-                if (nip.length == 10 && parseInt(nip, 10) > 0) {
-                    var sum = 0;
-                    for (var i = 0; i < 9; i++) {
-                        sum += nip[i] * weights[i];
-                    }
-                    return (sum % 11) == nip[9];
-                }
-                return false;
-            }
 
             function makeInvalid(obj) {
                 $j(obj).parent().addClass("error");
@@ -54,7 +42,7 @@
 
         function verifyClientNIP_success(){
             alert('success');
-        }
+        }*/
     </g:javascript>
 
 </head>
@@ -68,7 +56,7 @@
             <div class="display-inline-block">
                 <apreel:textField  id="nipField" name="nip"
                                    title="${message(code:'client.nip.label', default:'Wprowadź NIP klienta')}"
-                                   value="${nip}" direction="vertical" errorMessage="Wprowadzono niepoprawny NIP"
+                                   value="${nip}" direction="vertical"
                 />
             </div>
 
@@ -87,7 +75,7 @@
 
         <div>
             <apreel:textField  name="calc" title="${message(code:'client.lastAcceptedCalc.label', default:'Ostatni zaakceptowany kalkulator')}"
-                               direction="vertical"  disabled="true" value="${processInstance.calcNumber}"/>
+                               direction="vertical"  disabled="true" value="${calcNumber}"/>
             <div id="calcMessageBox">
                  <g:if test="${calcInfoMessage}">
                      <g:render template="message/infoMessage" model="[message: calcInfoMessage]"/>
@@ -100,8 +88,10 @@
 
         <fieldset style="margin-top: 20px; left: -32px">
             <g:link event="back" class="button submit">${message(code:'default.navigation.button.prev', default: 'Wstecz')}</g:link>
+            <g:if test="${isContinueEnabled}">
             <g:submitButton id="conitnueButton" name="continue" class="button submit"
                             value="${message(code:'default.navigation.button.next', default: 'Dalej')}"/>
+            </g:if>
         </fieldset>
     </g:form>
 
