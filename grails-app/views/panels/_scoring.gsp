@@ -144,6 +144,12 @@
         </fieldset>
         <fieldset class="border">
             <legend>TODO - TODO - zmiana tytulu!!</legend>
+            <div style="text-align: left">
+                <p>
+                    <div style="display: inline; padding-left: 8px"><input type="radio" name="financialDeclaration"/> <g:message code="panel.actual"/></div>
+                    <div style="display: inline; padding-left: 8px"><input type="radio" name="financialDeclaration"/> <g:message code="panel.declared"/></div>
+                </p>
+            </div>
             <div style="display: inline-block; float: left; text-align: left">
                 <p><g:message code="panel.monthly.circulation.overall"/></p>
                 <p><g:message code="panel.monthly.circulation.cards"/></p>
