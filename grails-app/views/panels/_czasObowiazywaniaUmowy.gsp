@@ -3,8 +3,8 @@
         <div class="belka-glowna"><g:message code="panel.aggrement.time.title"/> </div>
         <div class="centre" style="text-align: center; padding-top: 20px; width: 400px">
             <div style="text-align: left">
-                <p><input type="radio" name="aggrementTime" id="notSpecified" /><g:message code="panel.aggrement.time.not.defined"/> </p>
-                <p><input type="radio" name="aggrementTime" id="specified" /><g:message code="panel.aggrement.time.defined"/> </p>
+                <p><label><input type="radio" name="aggrementTime" id="notSpecified" /><g:message code="panel.aggrement.time.not.defined"/></label></p>
+                <p><label><input type="radio" name="aggrementTime" id="specified" /><g:message code="panel.aggrement.time.defined"/></label></p>
             </div>
             <div id="aggrementDates">
                 <div style="display:inline-block"><g:message code="panel.from"/> </div>

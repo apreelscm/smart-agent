@@ -4,7 +4,7 @@
             <div style="text-align: center; padding-top: 20px;" class="centre">
 
                 <div style="width: 700px; text-align: left; padding-bottom: 20px" class="centre">
-                    <input type="checkbox" name="merchantAddress" value="1" /><g:message code="panel.as.merchant"/>
+                    <label><input type="checkbox" name="merchantAddress" value="1" /><g:message code="panel.as.merchant"/></label>
                 </div>
 
                 <div style="width: 700px" class="centre">
