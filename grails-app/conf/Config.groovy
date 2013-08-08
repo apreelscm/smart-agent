@@ -1,3 +1,5 @@
+import grails.plugins.springsecurity.SecurityConfigType
+
 // locations to search for config files that get merged into the main config;
 // config files can be ConfigSlurper scripts, Java properties files, or classes
 // in the classpath in ConfigSlurper format
@@ -124,16 +126,16 @@ grails.plugins.springsecurity.userLookup.authorityJoinClassName = 'secure.SecUse
 grails.plugins.springsecurity.authority.className = 'secure.SecRole'
 
 
-//grails.plugins.springsecurity.securityConfigType = SecurityConfigType.InterceptUrlMap
-//grails.plugins.springsecurity.interceptUrlMap = [
-//        '/login/**':                 ['IS_AUTHENTICATED_ANONYMOUSLY'],
-//        '/logout/**':              ['IS_AUTHENTICATED_ANONYMOUSLY'], // leave the page open
-//        '/images*/**': ['IS_AUTHENTICATED_ANONYMOUSLY'],
-//        '/css*/**': ['IS_AUTHENTICATED_ANONYMOUSLY'],
-//        '/fonts*/**': ['IS_AUTHENTICATED_ANONYMOUSLY'],
-//        '/js*/**': ['IS_AUTHENTICATED_ANONYMOUSLY'],
-//        '/**': ['IS_AUTHENTICATED_FULLY']
-//]
+grails.plugins.springsecurity.securityConfigType = SecurityConfigType.InterceptUrlMap
+grails.plugins.springsecurity.interceptUrlMap = [
+        '/login/**':                 ['IS_AUTHENTICATED_ANONYMOUSLY'],
+        '/logout/**':              ['IS_AUTHENTICATED_ANONYMOUSLY'],  //leave the page open
+        '/images*/**': ['IS_AUTHENTICATED_ANONYMOUSLY'],
+        '/css*/**': ['IS_AUTHENTICATED_ANONYMOUSLY'],
+        '/fonts*/**': ['IS_AUTHENTICATED_ANONYMOUSLY'],
+        '/js*/**': ['IS_AUTHENTICATED_ANONYMOUSLY'],
+        '/**': ['IS_AUTHENTICATED_FULLY']
+]
 
 // mail config
 grails {

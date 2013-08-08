@@ -1,6 +1,6 @@
 <div id="additionalServicesPanel">
     <fieldset>
-        <div class="belka-glowna">Dodatkowe usługi</div>
+        <div class="belka-glowna"><g:message code="panel.additional.services.title"/></div>
         <div class="centre" style="text-align: center; padding-top: 20px; width: 700px">
             <table>
                 <tr>
