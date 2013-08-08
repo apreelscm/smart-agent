@@ -36,14 +36,3 @@ function Clock(bodyId, clockId, redirectPage, time) {
 		return m + ":" + s;
 	}
 }
-
-function KeepSession(redirectPage, time) {
-	
-	function keepSessionAlive() {
-		jQuery.post(redirectPage);
-	}
-
-	jQuery(function() {
-		window.setInterval("keepSessionAlive()", time);
-	});
-}
