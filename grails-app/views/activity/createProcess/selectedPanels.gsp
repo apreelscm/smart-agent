@@ -3,13 +3,13 @@
 <html>
 <head>
     <meta name="layout" content="main">
-    <title><g:message code="selectedPanels.header.title" default="todo"/></title>
+    <title><g:message code="selectedPanels.header.title" default="Lista paneli"/></title>
 </head>
 <body>
 
 <section id="create-activity">
 
-    <h1 class="ng linia-bottom"><g:message code="selectedPanels.header.title" default="todo"/></h1>
+    <h1 class="ng linia-bottom"><g:message code="selectedPanels.header.title" default="Lista paneli"/></h1>
 
     <g:each var="panel" in="${processInstance.panels}" status="i">
         <g:render template="/panels/${panel.name}"/>

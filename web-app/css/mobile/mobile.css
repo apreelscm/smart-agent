@@ -119,4 +119,26 @@
 
 
 
+
+    /*chooseCalc*/
+    #create_chooseCalc > form {
+        width: 420px;
+    }
+
+    #create_chooseCalc .requiredField{
+        width: 300px;
+    }
+
+    #create_chooseCalc .requiredField input[type='text']{
+        width: 280px;
+    }
+
+    #create_chooseCalc .requiredField label{
+        width: 280px;
+        text-align: center;
+    }
+
+
+
+
 }

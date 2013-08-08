@@ -11,7 +11,6 @@
 
 
 <section id="create-activity">
-
     <h1 class="ng linia-bottom"><g:message code="defineActivity.header.title" default="Wybierz działanie"/></h1>
 
     <g:form>
@@ -20,7 +19,7 @@
             <div id="nowaUmowa" class="expendable">
                 <div class="checkBoxBlock">
                     <g:checkBox id="nowaUmowaCB" name="nowaUmowa"/>
-                    <a class="expandHeader expanded" href="#"><g:message code="activity.nowaUmowa.name" default="Nowa umowa"/></a>
+                    <a class="expandHeader expanded" href="#"><label for="nowaUmowaCB"><g:message code="activity.nowaUmowa.name" default="Nowa umowa"/> </label></a>
                 </div>
             </div>
 
@@ -145,22 +144,22 @@
 
             <div id="poprawDane" class="expendable">
                 <div class="checkBoxBlock">
-                    <g:checkBox id="poprawDaneCB" name="poprawDane"/>
-                   <a class="expandHeader expanded" href="#"><g:message code="activity.poprawDane.name" default="Popraw już wprowadzone dane"/></a>
+                        <g:checkBox id="poprawDaneCB" name="poprawDane"/>
+                        <a class="expandHeader expanded" href="#">  <label for="poprawDaneCB"><g:message code="activity.poprawDane.name" default="Popraw już wprowadzone dane"/> </label></a>
                 </div>
             </div>
 
             <div id="odrzucDokumenty" class="expendable">
                 <div class="checkBoxBlock">
                     <g:checkBox id="odrzucDokumentyCB" name="odrzucDokumenty"/>
-                    <a class="expandHeader expanded" href="#"><g:message code="activity.odrzucDokumenty.name" default="Odrzuć jeszcze niezaakceptowane dokumenty"/></a>
+                    <a class="expandHeader expanded" href="#"><label for="odrzucDokumentyCB"><g:message code="activity.odrzucDokumenty.name" default="Odrzuć jeszcze niezaakceptowane dokumenty"/> </label></a>
                 </div>
             </div>
         </div>
 
-        <div style="margin:25px auto 0 auto;display: table;position: relative;left: -40px">
+        <div style="margin:30px auto 0 auto;display: table;">
             <g:message code="defineActivity.uwagiDoCoa.name" default="Uwagi dla COA"/>
-            <g:textArea name="notes" style="margin-left: 8px; height: 100px"/>
+            <g:textArea name="notes" style="height: 100px; display: block; min-width: 380px"/>
             <div id="notesMessageBox">
                 <g:if test="${flash.infoMessage}">
                     <g:render template="message/infoMessage" model="[message: flash.infoMessage]"/>
