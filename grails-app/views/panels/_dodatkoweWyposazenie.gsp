@@ -1,0 +1,14 @@
+<div class="subpanel">
+                	<h4><g:message code="panel.newpoint.additionalequipment.title" /></h4>
+                	<div>
+                		<label><g:checkBox name="sameForEveryPoint" /><g:message code="panel.sameforeverypoint" /></label>
+                		<table class="vertical-center" >
+                			<tbody>
+                				<tr><td><g:message code="panel.newpoint.additionalequipment.pinpad" /></td><td>typ <select style="width: 50px"></select></td><td><g:textField name="pinPadCount" style="width: 50px"/> szt.</td><td><g:textField name="contactEmail" style="width: 50px"/> <g:message code="panel.price" /></td></tr>
+                				<tr><td><g:message code="panel.newpoint.additionalequipment.router" /></td><td>typ <select style="width: 50px"></select></td><td><g:textField name="routerCount" style="width: 50px"/> szt.</td><td><g:textField name="contactEmail" style="width: 50px"/> <g:message code="panel.price" /></td></tr>
+                				<tr><td><g:message code="panel.newpoint.additionalequipment.cardreader" /></td><td>typ <select style="width: 50px"></select></td><td><g:textField name="cardReaderCount" style="width: 50px"/> szt.</td><td><g:textField name="contactEmail" style="width: 50px"/> <g:message code="panel.price" /></td></tr>
+                				<tr><td><g:message code="panel.newpoint.additionalequipment.other" /> <g:textField name="otherAdditionalDevice" style="width: 150px;" /> <label><g:checkBox name="otherAdditionalDeviceSsl" /><g:message code="panel.ssl" /></label> <label><g:checkBox name="otherAdditionalDeviceGprs" /><g:message code="panel.gprs" /></label></td><td>typ <select name="otherAdditionalDeviceType" style="width: 50px"></select></td><td><g:textField name="otherAdditionalDeviceCount" style="width: 50px"/> szt.</td><td><g:textField name="otherAdditionalDevicePrice" style="width: 50px"/> <g:message code="panel.price" /></td></tr>
+                			</tbody>
+                		</table>
+                	</div>
+                </div>
