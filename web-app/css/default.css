@@ -1221,6 +1221,74 @@ a.submit{
     border: 1px #50749b solid;
 }
 
+.max-width-10px {
+    max-width: 10px;
+}
+
+.min-width-20px {
+    min-width: 20px;
+}
+
 /*div {*/
 /*border:2px solid;*/
 /*}*/
+
+.subpanel {
+	border: 1px #B8D5FF solid;
+	padding: 0.7em;
+	margin-left: 1em;
+	width: 95%;
+	float: left;
+	text-align: left;
+	margin-bottom: 1em;
+	
+}
+
+.subpanel h4 {
+	text-align: left;
+	padding-bottom: 1em;
+}
+
+.table-list {
+	display: table;
+	width: auto;
+}
+
+.table-list li {
+	display: table-row;
+}
+
+.table-list li span {
+	display: table-cell;
+	padding-right: 1em;
+	padding-bottom: 1em;
+}
+
+.align-right {
+	text-align: right;
+}
+
+.align-left {
+	text-align: left;
+}
+
+.align-center {
+	text-align: center;
+}
+
+.vertical-center {
+	vertical-align: middle;
+}
+
+.vertical-center li {
+	vertical-align: middle;
+}
+
+.vertical-center li span {
+	vertical-align: middle;
+}
+
+.bold {
+	font-weight: bold;
+}
+
