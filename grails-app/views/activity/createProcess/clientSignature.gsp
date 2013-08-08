@@ -6,7 +6,24 @@
     <title><g:message code="clientSignature.header.title" default="Podpis Klienta"/></title>
 
     <style>
-    .navButtons td {padding:5px;vertical-align:middle;}
+
+    .navButtons{
+        margin-top: 15px;
+    }
+
+    .navButtons td
+    {
+        padding:5px;
+        vertical-align:middle;
+    }
+
+    #signatureNavTable{
+        border: none;
+    }
+
+    #signatureNavTable tbody tr:hover, #signatureNavTable tbody tr td.highlighted {
+        background-color: white;
+    }
     </style>
 
 </head>
@@ -23,16 +40,16 @@
     </div>
 
     <nav>
-        <g:form >
-
+        <g:form>
             <fieldset class="navButtons" >
                 <table id="signatureNavTable">
                     <colgroup>
                         <col style="width: 25%;" />
+                        <col style="width: 20%" />
                         <col style="width: 25%" />
-                        <col style="width: 25%" />
-                        <col style="width: 25%" />
+                        <col style="width: 30%" />
                     </colgroup>
+                    <tbody>
                     <tr>
                         <td>
                             <g:submitButton name="noaccept" class="button submit display-inline" style="height: 45px; width: 100%"
@@ -68,6 +85,7 @@
                             </div>
                         </td>
                     </tr>
+                    </tbody>
                 </table>
 
                 <g:link event="back" class="button submit">${message(code:'default.navigation.button.prev', default: 'Wstecz')}</g:link>

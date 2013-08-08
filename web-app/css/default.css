@@ -1000,7 +1000,7 @@ input:invalid:focus, select:invalid:focus, textarea:invalid:focus {
 /* Expandable tree
 -------------------------------------------------------------------*/
 .expendable {
-    margin-top: 15px;
+    margin-top: 1.5em;
 }
 
 .expandHeader {
@@ -1009,17 +1009,22 @@ input:invalid:focus, select:invalid:focus, textarea:invalid:focus {
 }
 
 .expander {
+    margin-left: 8px
+}
+
+.expendable .checkBoxBlock {
+    margin-top: 1em;
 }
 
 .expander.expanded {
-    padding-left: 13px;
+    padding-left: 20px;
     background-position: left center;
     background-repeat: no-repeat;
     background-image: url(../images/expanded.gif);
 }
 
 .expander.collapsed {
-    padding-left: 13px;
+    padding-left: 20px;
     background-position: left center;
     background-repeat: no-repeat;
     background-image: url(../images/collapsed.gif);
@@ -1046,9 +1051,9 @@ input:invalid:focus, select:invalid:focus, textarea:invalid:focus {
     margin-left: 35px;
 }
 
-.checkBoxBlock {
+/*.checkBoxBlock {
     margin-top: 6px;
-}
+}*/
 
 .checkBoxBlock > input[type="checkbox"] {
     margin-right: 4px;
@@ -1188,11 +1193,11 @@ a.submit{
 /*chooseCalc*/
 #create_chooseCalc > form {
     width: 340px;
-    margin: 20px auto 0;
+    margin: 30px auto 0;
 }
 
 #create_chooseCalc form > div:not(:first-child) {
-    margin: 15px 0 0 0px;
+    margin: 30px 0 0 0px;
 }
 
 #create_chooseCalc .requiredField{
