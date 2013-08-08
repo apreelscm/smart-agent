@@ -1,20 +1,20 @@
 <div id="paymentCardPointsPanel">
     <fieldset>
-        <div class="belka-glowna">Wykaz punktów akceptujących karty płatnicze</div>
+        <div class="belka-glowna"><g:message code="panel.payment.card.points.title"/></div>
         <div class="centre" style="text-align: center; padding-top: 20px; width: 700px">
             <table class="t">
                 <thead>
                     <tr>
-                        <td>Nr</td>
-                        <td>Pełna nazwa punktu</td>
-                        <td>Ulica</td>
-                        <td>Miasto</td>
-                        <td>Nr Domu</td>
-                        <td class="min-width-20px">Kod</td>
-                        <td class="max-width-10px">Tyt. plat.</td>
-                        <td class="max-width-10px">Sys. kas.</td>
-                        <td class="max-width-10px">UTA</td>
-                        <td>Wybrany</td>
+                        <td><g:message code="panel.label.number"/></td>
+                        <td><g:message code="panel.label.full.name"/></td>
+                        <td><g:message code="panel.label.street"/></td>
+                        <td><g:message code="panel.label.city"/></td>
+                        <td><g:message code="panel.label.house.number"/></td>
+                        <td class="min-width-20px"><g:message code="panel.label.code"/></td>
+                        <td class="max-width-10px"><g:message code="panel.label.payment.title"/></td>
+                        <td class="max-width-10px"><g:message code="panel.label.sys.kas"/></td>
+                        <td class="max-width-10px"><g:message code="panel.label.uta"/></td>
+                        <td><g:message code="panel.label.choosen"/></td>
                     </tr>
                 </thead>
                 <tbody>

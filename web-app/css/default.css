@@ -1013,7 +1013,7 @@ input:invalid:focus, select:invalid:focus, textarea:invalid:focus {
 }
 
 .expendable .checkBoxBlock {
-    margin-top: 1em;
+    margin-top: 0.9em;
 }
 
 .expander.expanded {

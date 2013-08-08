@@ -3,9 +3,9 @@
         <div class="belka-glowna"><g:message code="panel.dcc.range.title"/> </div>
         <div class="centre" style="text-align: center; padding-top: 20px; width: 600px">
             <div style="text-align: left">
-                <p><input type="radio" name="dccRange" id="currentAndNew" /> <g:message code="panel.dcc.range.current.and.new"/> </p>
-                <p><input type="radio" name="dccRange" id="current" /> <g:message code="panel.dcc.range.current"/></p>
-                <p><input type="radio" name="dccRange" id="direct" /> <g:message code="panel.dcc.range.direct"/></p>
+                <p><label><input type="radio" name="dccRange" id="currentAndNew" /> <g:message code="panel.dcc.range.current.and.new"/></label></p>
+                <p><label><input type="radio" name="dccRange" id="current" /> <g:message code="panel.dcc.range.current"/></label></p>
+                <p><label><input type="radio" name="dccRange" id="direct" /> <g:message code="panel.dcc.range.direct"/></label></p>
             </div>
         </div>
         <div class="centre" style="text-align: center; padding-top: 20px; width: 800px; max-width: 950px">

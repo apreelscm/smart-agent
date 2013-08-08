@@ -5,8 +5,8 @@
             <div style="text-align: center">
                 <div><g:message code="panel.acceptor.declaration.text"/></div>
                 <div style="padding-top: 10px">
-                    <div style="display: inline; padding-left: 8px"><input type="radio" name="financialDeclaration"/> <g:message code="panel.agree"/></div>
-                    <div style="display: inline; padding-left: 8px"><input type="radio" name="financialDeclaration"/> <g:message code="panel.dont.agree"/></div>
+                    <div style="display: inline; padding-left: 8px"><label><input type="radio" name="financialDeclaration"/> <g:message code="panel.agree"/></label></div>
+                    <div style="display: inline; padding-left: 8px"><label><input type="radio" name="financialDeclaration"/> <g:message code="panel.dont.agree"/></label></div>
                 </div>
             </div>
         </div>

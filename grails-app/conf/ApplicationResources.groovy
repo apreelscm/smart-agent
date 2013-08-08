@@ -30,7 +30,13 @@ modules = {
 	
 	session_utils {
 		resource url:'js/session_utils.js'
+        dependsOn 'jquery'
 	}
+
+    chooseActivity {
+        resource url:'js/createProcess/chooseActivity.js'
+        dependsOn 'jquery'
+    }
 
     jquery_ui {
         resource url: 'js/jquery-ui/jquery-ui-1.10.3.custom.min.js', disposition: 'head'

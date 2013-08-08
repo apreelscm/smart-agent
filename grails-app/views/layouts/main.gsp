@@ -17,10 +17,10 @@
     <link rel="stylesheet" href="${resource(dir: 'css', file: 'default.css')}" type="text/css">
     <link rel="stylesheet" href="${resource(dir: 'css', file: 'mobile/mobile.css')}" type="text/css">
 
-    <g:javascript library="jquery"/>
+    <g:javascript library="jquery" plugin="jquery"/>
     <r:require module="modernizr"/>
     <g:if test="${params.controller != 'login'}">
-    	<r:require module="session_utils"/>
+        <r:require module="session_utils"/>
     </g:if>
     <r:require module="expandable_menu"/>
     <r:layoutResources/>
@@ -61,18 +61,7 @@
 <footer class="rel" id="stopka"/>
 
 <g:if test="${params.controller != 'login'}">
-	<p id="clock"></p>
-	<r:script>
-		new Clock("mainBody", "clock", "${createLink(controller: 'logout')}", 600);
-		
-		function keepSessionAlive() {
-			jQuery.post("${createLink(uri:'/ping')}");
-		}
-
-		jQuery(function() {
-			window.setInterval("keepSessionAlive()", 51000);
-		});
-	</r:script>
+    <p id="clock"/>
 </g:if>
 
 <div id="spinner" class="spinner" style="display:none;"><g:message code="spinner.alt" default="Loading&hellip;"/></div>

@@ -3,9 +3,9 @@
         <div class="belka-glowna"><g:message code="panel.service.title"/></div>
         <div class="centre" style="text-align: center; padding-top: 20px; width: 400px">
             <div style="text-align: left">
-                <p><input type="radio" name="serviceType" id="prestige" /> <g:message code="panel.service.prestige.name"/></p>
-                <p><input type="radio" name="serviceType" id="comfort" /> <g:message code="panel.service.comfort.name"/></p>
-                <p><input type="radio" name="serviceType" id="economic" /> <g:message code="panel.service.economic.name"/></p>
+                <p><label><input type="radio" name="serviceType" id="prestige" /> <g:message code="panel.service.prestige.name"/></label></p>
+                <p><label><input type="radio" name="serviceType" id="comfort" /> <g:message code="panel.service.comfort.name"/></label></p>
+                <p><label><input type="radio" name="serviceType" id="economic" /> <g:message code="panel.service.economic.name"/></label></p>
             </div>
             <div id="servicePayment">
                 <div style="display:inline-block"><g:message code="panel.monthly.payment"/> </div>
