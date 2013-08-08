@@ -14,12 +14,36 @@
     var ddmenuitem = 0;
     var $j = jQuery.noConflict();
 
+    var touchStarted = false
+    var currX = 0
+    var currY = 0
+    var cachedX = 0
+    var cachedY = 0;
+
     $j(document).ready(function () {
-        $j('#mainMenu > li').bind('mouseover', jsddm_open);
-        $j('#mainMenu > li').bind('mouseout', jsddm_timer);
+        $j('#mainMenu > li').bind('onclick', jsddm_open);
+        $j('#mainMenu > li').bind('touchend', jsddm_timer);
+
+      /*  $j('#mainMenu > li').bind('mouseover', jsddm_open);
+        $j('#mainMenu > li').bind('mouseout', jsddm_timer);*/
     });
 
-    function jsddm_open() {
+    function jsddm_open(e) {
+
+        var cachedX = e.pageX;
+        cachedY = e.pageY;
+        touchStarted = true;
+
+        console.log("cachedX:"+cachedX+" cachedY:"+cachedY)
+        setTimeout(function (){
+            currX = e.pageX;
+            currY = e.pageY;
+            if ((cachedX === currX) && !touchStarted && (cachedY === currY)) {
+                // Here you get the Tap event
+                $touchArea.text('Tap');
+            }
+        },200);
+
         jsddm_canceltimer();
         jsddm_close();
         ddmenuitem = $j(this).find('ul').eq(0).css('visibility', 'visible');
@@ -39,8 +63,6 @@
             closetimer = null;
         }
     }
-
-
 
     document.onclick = jsddm_close;
 
