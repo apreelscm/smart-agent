@@ -33,6 +33,11 @@ modules = {
         dependsOn 'jquery'
 	}
 
+    chooseActivity {
+        resource url:'js/createProcess/chooseActivity.js'
+        dependsOn 'jquery'
+    }
+
     jquery_ui {
         resource url: 'js/jquery-ui/jquery-ui-1.10.3.custom.min.js', disposition: 'head'
         resource url: 'css/jquery-ui/jquery-ui-1.10.3.custom.min.css', disposition: 'head'

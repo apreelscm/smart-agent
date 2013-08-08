@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="${resource(dir: 'css', file: 'default.css')}" type="text/css">
     <link rel="stylesheet" href="${resource(dir: 'css', file: 'mobile/mobile.css')}" type="text/css">
 
-    <g:javascript library="jquery"/>
+    <g:javascript library="jquery" plugin="jquery"/>
     <r:require module="modernizr"/>
     <g:if test="${params.controller != 'login'}">
         <r:require module="session_utils"/>

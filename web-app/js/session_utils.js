@@ -1,7 +1,6 @@
 
 (function ($) {
 
-
     function Clock(bodyId, clockId, redirectPage, time) {
 
         var body = document.getElementById(bodyId);
@@ -41,7 +40,6 @@
         }
     }
 
-
 // expose Clock as a jQuery plugin
     $.fn.clock = function (options) {
         var instance = new Clock();
@@ -54,7 +52,7 @@
     $j(document).ready(function () {
         new Clock("mainBody", "clock", "/eumowy/logout", 600);
         window.setInterval(function () {
-            jQuery.post("${createLink(uri:'/ping')}")
+            jQuery.post("/eumowy/ping")
                 .fail(function() {
                     var message = "Brak połączenia z serwerem";
                     alert(message);
