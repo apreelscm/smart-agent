@@ -7,6 +7,7 @@
     <title><g:message code="process.list.label"  /></title>
 </head>
 <body>
+
 <g:render template="../panels/uwagi"/>
 <g:render template="../panels/serwis"/>
 <g:render template="../panels/serwisEkonomiczny"/>
@@ -27,6 +28,8 @@
 <g:render template="../panels/daneAkceptanta"/>
 <g:render template="../panels/czasObowiazywaniaUmowy"/>
 <g:render template="../panels/aneksDoUmowyPrepaid"/>
+<g:render template="../panels/dodajPunkt" />
+<g:render template="../panels/danePunktu" />
 
 </body>
 </html>
