@@ -1221,6 +1221,14 @@ a.submit{
     border: 1px #50749b solid;
 }
 
+.max-width-10px {
+    max-width: 10px;
+}
+
+.min-width-20px {
+    min-width: 20px;
+}
+
 /*div {*/
 /*border:2px solid;*/
 /*}*/

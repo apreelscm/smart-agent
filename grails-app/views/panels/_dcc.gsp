@@ -2,7 +2,6 @@
     <fieldset>
         <div class="belka-glowna"><g:message code="panel.dcc.title"/> </div>
             <div style="text-align: center; padding-top: 20px" class="centre">
-
                 <div>
                     <div style="display: inline-block; text-align: right">
                            <div>
