@@ -1,9 +1,12 @@
 <div id="addNewPointPanel">
     <fieldset style="text-align: center">
         <div class="belka-glowna"><g:message code="panel.addnewpoint.title"/> </div>
-            <div style="text-align: center; padding-top: 20px; width: 350px" class="centre">
-                <div style="display:inline-block;"><g:submitButton id="addNewPointButton" name="addNewPoint" class="button submit" value="Dodaj kolejny punkt"/></div>
-            </div>
+        <div style="text-align: center; padding-top: 20px; width: 350px" class="centre">
+            <div style="display:inline-block;"><g:submitButton id="addNewPointButton" name="addNewPoint" class="button submit" value="Dodaj kolejny punkt"/></div>
+        </div>
+        <div>
+        	<g:hiddenField name="newPointPanelCount" value="0"/>
+        </div>
     </fieldset>
 </div>
 <div id="hiddenPanel" style="display: none;">
@@ -22,6 +25,7 @@
 			jQuery("#addNewPointPanel").prepend(data);
 			setupNewPointPanelHandlers("-point"+panelCount);
 			panelCount++;
+			jQuery("#newPointPanelCount").val(panelCount);
 		});
 		
 		jQuery("body").on("click", "#removePointButton", function(e) {
