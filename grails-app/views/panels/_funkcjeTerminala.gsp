@@ -1,42 +1,42 @@
 <div class="subpanel">
 	<h4><g:message code="panel.newpoint.terminaloptions.title" /></h4>
 	<div>
-		<p><label for="terminaloptions-sameForEveryPoint"><g:checkBox name="terminaloptions-sameForEveryPoint" /><g:message code="panel.sameforeverypoint" /></label></p>
+		<p><label for="terminaloptions-sameForEveryPoint%ID%"><g:checkBox name="terminaloptions-sameForEveryPoint%ID%" /><g:message code="panel.sameforeverypoint" /></label></p>
 		
 		<div style="float: left; padding-right: 2em;" >
 			<p class="bold" ><g:message code="panel.newpoint.terminaloptions.paymentoptions" /></p>
 			<ul class="table-list vertical-center">
-				<li><label for="preauthorization"><g:checkBox name="preauthorization" /><g:message code="panel.newpoint.terminaloptions.paymentoptions.preauthorization" /></label></li>
-				<li><label for="noreturnfunction"><g:checkBox name="noreturnfunction" /><g:message code="panel.newpoint.terminaloptions.paymentoptions.noreturnfunction" /></label></li>
-				<li><label for="returnWithPassword"><g:checkBox name="returnWithPassword" /><g:message code="panel.newpoint.terminaloptions.paymentoptions.returnwithpassword" /></label></li>
-				<li><label for="setAnalysis"><g:checkBox name="setAnalysis" /><g:message code="panel.newpoint.terminaloptions.paymentoptions.setanalysis" /></label></li>
-				<li><label for="cashMachineSystemIntegration"><g:checkBox name="cashMachineSystemIntegration" /><g:message code="panel.newpoint.terminaloptions.paymentoptions.cashmachinesystemintegration" /></label></li>
-				<li><label for="returnIKO"><g:checkBox name="returnIKO" /><g:message code="panel.newpoint.terminaloptions.paymentoptions.returniko" /></label></li>
+				<li><label for="preauthorization%ID%"><g:checkBox name="preauthorization%ID%" /><g:message code="panel.newpoint.terminaloptions.paymentoptions.preauthorization" /></label></li>
+				<li><label for="noreturnfunction%ID%"><g:checkBox name="noreturnfunction%ID%" /><g:message code="panel.newpoint.terminaloptions.paymentoptions.noreturnfunction" /></label></li>
+				<li><label for="returnWithPassword%ID%"><g:checkBox name="returnWithPassword%ID%" /><g:message code="panel.newpoint.terminaloptions.paymentoptions.returnwithpassword" /></label></li>
+				<li><label for="setAnalysis%ID%"><g:checkBox name="setAnalysis%ID%" /><g:message code="panel.newpoint.terminaloptions.paymentoptions.setanalysis" /></label></li>
+				<li><label for="cashMachineSystemIntegration%ID%"><g:checkBox name="cashMachineSystemIntegration%ID%" /><g:message code="panel.newpoint.terminaloptions.paymentoptions.cashmachinesystemintegration" /></label></li>
+				<li><label for="returnIKO%ID%"><g:checkBox name="returnIKO%ID%" /><g:message code="panel.newpoint.terminaloptions.paymentoptions.returniko" /></label></li>
 			</ul>
 		</div>
 		<div style="float: left;  padding-right: 2em; height: 200px;" >
 			<div>
 			<p class="bold" ><g:message code="panel.newpoint.terminaloptions.cashierlogging" /></p>
 			<ul class="table-list vertical-center">
-				<li><label for="loggingBeforeEveryTransaction"><g:checkBox name="loggingBeforeEveryTransaction" /><g:message code="panel.newpoint.terminaloptions.cashierlogging.beforeeverytransaction" /></label></li>
-				<li><label for="logginEveryChange"><g:checkBox name="logginEveryChange" /><g:message code="panel.newpoint.terminaloptions.cashierlogging.everychange" /></label></li>
+				<li><label for="loggingBeforeEveryTransaction%ID%"><g:checkBox name="loggingBeforeEveryTransaction%ID%" /><g:message code="panel.newpoint.terminaloptions.cashierlogging.beforeeverytransaction" /></label></li>
+				<li><label for="logginEveryChange%ID%"><g:checkBox name="logginEveryChange%ID%" /><g:message code="panel.newpoint.terminaloptions.cashierlogging.everychange" /></label></li>
 			</ul>
 			</div>
 			<div>
 				<p class="bold" ><g:message code="panel.newpoint.terminaloptions.tipssupport" /></p>
-				<p><label for="tip1"><g:checkBox name="tip1" /><g:message code="panel.newpoint.terminaloptions.tipssupport.tip1" /></label></p>
+				<p><label for="tip1%ID%"><g:checkBox name="tip1%ID%" /><g:message code="panel.newpoint.terminaloptions.tipssupport.tip1" /></label></p>
 			</div>
 		</div>
 		<div>
 			<div>
  			<p class="bold" ><g:message code="panel.newpoint.terminaloptions.phonecreditsrecharge" /></p>
  			<ul class="table-list vertical-center">
- 				<li><span><label for="telePompka"><g:checkBox name="telePompka" /><g:message code="panel.newpoint.terminaloptions.phonecreditsrecharge.telepompka" /></label></span> <span style="padding-left: 6em;"><label><g:message code="panel.newpoint.terminaloptions.phonecreditsrecharge.terminalcount" /> <g:textField name="terminalCount" style="width: 50px;"/></label></span></li>
- 				<li><label for="teleKodzik"><g:checkBox name="teleKodzik" /><g:message code="panel.newpoint.terminaloptions.phonecreditsrecharge.telekodzik" /></label></li>
+ 				<li><span><label for="telePompka%ID%"><g:checkBox name="telePompka%ID%" /><g:message code="panel.newpoint.terminaloptions.phonecreditsrecharge.telepompka" /></label></span> <span style="padding-left: 6em;"><label><g:message code="panel.newpoint.terminaloptions.phonecreditsrecharge.terminalcount" /> <g:textField name="terminalCount%ID%" style="width: 50px;"/></label></span></li>
+ 				<li><label for="teleKodzik%ID%"><g:checkBox name="teleKodzik%ID%" /><g:message code="panel.newpoint.terminaloptions.phonecreditsrecharge.telekodzik" /></label></li>
  			</ul>
  			<div>
  			<p class="bold" ><g:message code="panel.newpoint.terminaloptions.marketingproducts" /></p>
-				<p><label for="giftCard"><g:checkBox name="giftCard" /><g:message code="panel.newpoint.terminaloptions.marketingproducts.giftcard" /></label></p>
+				<p><label for="giftCard%ID%"><g:checkBox name="giftCard%ID%" /><g:message code="panel.newpoint.terminaloptions.marketingproducts.giftcard" /></label></p>
 				</div>
 			</div>
 			

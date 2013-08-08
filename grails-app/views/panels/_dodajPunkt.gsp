@@ -6,5 +6,29 @@
             </div>
     </fieldset>
 </div>
-
+<div id="hiddenPanel" style="display: none;">
+	<g:render template="../panels/danePunktu" />
+</div>
 <r:require module="jquery_ui"/>
+	
+<r:script>
+	jQuery(document).ready(function() {
+		var panelTemplate = jQuery("#hiddenPanel").html();
+		var panelCount = 0;
+		jQuery("#hiddenPanel").remove();
+			
+		jQuery("#addNewPointButton").on("click", function() {
+			var data = panelTemplate.replace(/%ID%/gm, "-point" + panelCount);
+			jQuery("#addNewPointPanel").prepend(data);
+			setupNewPointPanelHandlers("-point"+panelCount);
+			panelCount++;
+		});
+		
+		jQuery("body").on("click", "#removePointButton", function(e) {
+			jQuery(e.target).closest("#newPointPanel").remove();
+			
+			return false;
+		});
+		
+	});
+</r:script>
