@@ -1,7 +1,7 @@
 <div id="additionalServicesPanel">
     <fieldset>
         <div class="belka-glowna"><g:message code="panel.additional.services.title"/></div>
-        <div class="centre" style="text-align: center; padding-top: 20px; width: 700px">
+        <div class="centre" style="text-align: center; padding-top: 20px; width: 750px">
             <table>
                 <tr>
                     <td><g:message code="panel.payment.daily.transaction.report"/></td>
