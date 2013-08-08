@@ -7,127 +7,127 @@
             <fieldset class="border">
             <legend><g:message code="panel.activity.title"/></legend>
             <div style="text-align: left">
-                <p><input type="radio" name="activity" /> <g:message code="panel.activity.trade"/></p>
-                <p><input type="radio" name="activity" /> <g:message code="panel.activity.services"/></p>
+                <p><label><input type="radio" name="activity" /> <g:message code="panel.activity.trade"/></label></p>
+                <p><label><input type="radio" name="activity" /> <g:message code="panel.activity.services"/></label></p>
             </div>
         </fieldset>
         <fieldset class="border">
             <legend><g:message code="panel.ownership.title"/></legend>
             <div style="text-align: left">
-                <p><input type="radio" name="ownership" /> <g:message code="panel.ownership.ownership"/></p>
-                <p><input type="radio" name="ownership" /> <g:message code="panel.ownership.rent"/></p>
+                <p><label><input type="radio" name="ownership" /> <g:message code="panel.ownership.ownership"/></label></p>
+                <p><label><input type="radio" name="ownership" /> <g:message code="panel.ownership.rent"/></label></p>
             </div>
         </fieldset>
         <fieldset class="border">
             <legend><g:message code="panel.activity.time.title"/></legend>
             <div style="text-align: left">
-                <p><input type="radio" name="activityTime" /> <g:message code="panel.activity.time.more.than.five.years"/></p>
-                <p><input type="radio" name="activityTime" /> <g:message code="panel.activity.time.between.one.and.five.years"/></p>
-                <p><input type="radio" name="activityTime" /> <g:message code="panel.activity.time.less.than.one.year"/></p>
+                <p><label><input type="radio" name="activityTime" /> <g:message code="panel.activity.time.more.than.five.years"/></label></p>
+                <p><label><input type="radio" name="activityTime" /> <g:message code="panel.activity.time.between.one.and.five.years"/></label></p>
+                <p><label><input type="radio" name="activityTime" /> <g:message code="panel.activity.time.less.than.one.year"/></label></p>
             </div>
         </fieldset>
         <fieldset class="border">
             <legend><g:message code="panel.concession.title"/></legend>
             <div style="text-align: left">
                 <p><g:message code="panel.concession.needed"/></p>
-                <p><input type="radio" name="" id="" /> <g:message code="panel.yes"/></p>
-                <p><input type="radio" name="" id="" /> <g:message code="panel.no"/></p>
+                <p><label><input type="radio" name="" id="" /> <g:message code="panel.yes"/></label></p>
+                <p><label><input type="radio" name="" id="" /> <g:message code="panel.no"/></label></p>
                 <p><g:message code="panel.concession.kind"/> <g:textField name="scoringTODO"/></p>
             </div>
         </fieldset>
         <fieldset class="border">
             <legend><g:message code="panel.point.characteristic.title"/></legend>
             <div style="text-align: left">
-                <p><input type="radio" name="" id="" /> <g:message code="panel.point.characteristic.salon"/></p>
-                <p><input type="radio" name="" id="" /> <g:message code="panel.point.characteristic.shop"/></p>
-                <p><input type="radio" name="" id="" /> <g:message code="panel.point.characteristic.stand"/></p>
-                <p><input type="radio" name="" id="" /> <g:message code="panel.point.characteristic.petrol.station"/></p>
-                <p><input type="radio" name="" id="" /> <g:message code="panel.point.characteristic.other"/> <g:textField name="scoringTODO" style="width: 300px"/></p>
+                <p><label><input type="radio" name="" id="" /> <g:message code="panel.point.characteristic.salon"/></label></p>
+                <p><label><input type="radio" name="" id="" /> <g:message code="panel.point.characteristic.shop"/></label></p>
+                <p><label><input type="radio" name="" id="" /> <g:message code="panel.point.characteristic.stand"/></label></p>
+                <p><label><input type="radio" name="" id="" /> <g:message code="panel.point.characteristic.petrol.station"/></label></p>
+                <p><label><input type="radio" name="" id="" /> <g:message code="panel.point.characteristic.other"/> </label><g:textField name="scoringTODO" style="width: 300px"/></p>
             </div>
         </fieldset>
         <fieldset class="border">
             <legend><g:message code="panel.point.size.title"/></legend>
             <div style="text-align: left">
-                <p><input type="radio" name="" id="" /> <g:message code="panel.point.size.more.than.400"/></p>
-                <p><input type="radio" name="" id="" /> <g:message code="panel.point.size.between.50.and.400"/></p>
-                <p><input type="radio" name="" id="" /> <g:message code="panel.point.size.less.than.50"/></p>
+                <p><label><input type="radio" name="" id="" /> <g:message code="panel.point.size.more.than.400"/></label></p>
+                <p><label><input type="radio" name="" id="" /> <g:message code="panel.point.size.between.50.and.400"/></label></p>
+                <p><label><input type="radio" name="" id="" /> <g:message code="panel.point.size.less.than.50"/></label></p>
             </div>
         </fieldset>
         <fieldset class="border">
             <legend><g:message code="panel.acceptance.title"/></legend>
             <div style="text-align: left">
                 <p><g:message code="panel.acceptance.question"/></p>
-                <p><input type="radio" name="" id="" /> <g:message code="panel.yes"/></p>
-                <p><input type="radio" name="" id="" /> <g:message code="panel.no"/></p>
+                <p><label><input type="radio" name="" id="" /> <g:message code="panel.yes"/></label></p>
+                <p><label><input type="radio" name="" id="" /> <g:message code="panel.no"/></label></p>
             </div>
         </fieldset>
         <fieldset class="border">
             <legend><g:message code="panel.monitoring.title"/></legend>
             <div style="text-align: left">
                 <p><g:message code="panel.monitoring.question"/></p>
-                <p><input type="radio" name="" id="" /> <g:message code="panel.yes"/></p>
-                <p><input type="radio" name="" id="" /> <g:message code="panel.no"/></p>
+                <p><label><input type="radio" name="" id="" /> <g:message code="panel.yes"/></label></p>
+                <p><label><input type="radio" name="" id="" /> <g:message code="panel.no"/></label></p>
             </div>
         </fieldset>
         <fieldset class="border">
             <legend><g:message code="panel.point.localization.title"/></legend>
             <div class="border" style="text-align: left; margin: 20px">
-                <p><input type="radio" name="" id="" /> <g:message code="panel.point.localization.cruising.route"/></p>
-                <p><input type="radio" name="" id="" /> <g:message code="panel.point.localization.town"/></p>
-                <p><input type="radio" name="" id="" /> <g:message code="panel.point.localization.periphery"/></p>
+                <p><label><input type="radio" name="" id="" /> <g:message code="panel.point.localization.cruising.route"/></label></p>
+                <p><label><input type="radio" name="" id="" /> <g:message code="panel.point.localization.town"/></label></p>
+                <p><label><input type="radio" name="" id="" /> <g:message code="panel.point.localization.periphery"/></label></p>
             </div>
             <div class="border" style="text-align: left; margin: 20px">
-                <p><input type="radio" name="" id="" /> <g:message code="panel.shopping.center"/></p>
-                <p><input type="radio" name="" id="" /> <g:message code="panel.commercial.pavilions"/></p>
-                <p><input type="radio" name="" id="" /> <g:message code="panel.commercial.building"/></p>
-                <p><input type="radio" name="" id="" /> <g:message code="panel.settlement"/></p>
-                <p><input type="radio" name="" id="" /> <g:message code="panel.market"/></p>
-                <p><input type="radio" name="" id="" /> <g:message code="panel.point.characteristic.other"/> <g:textField name="scoringTODO" style="width: 300px"/></p>
+                <p><label><input type="radio" name="" id="" /> <g:message code="panel.shopping.center"/></label></p>
+                <p><label><input type="radio" name="" id="" /> <g:message code="panel.commercial.pavilions"/></label></p>
+                <p><label><input type="radio" name="" id="" /> <g:message code="panel.commercial.building"/></label></p>
+                <p><label><input type="radio" name="" id="" /> <g:message code="panel.settlement"/></label></p>
+                <p><label><input type="radio" name="" id="" /> <g:message code="panel.market"/></label></p>
+                <p><label><input type="radio" name="" id="" /> <g:message code="panel.point.characteristic.other"/></label> <g:textField name="scoringTODO" style="width: 300px"/></p>
             </div>
         </fieldset>
         <fieldset class="border">
             <legend><g:message code="panel.point.place.size.title"/></legend>
             <div style="text-align: left">
-                <p><input type="radio" name="" id="" /> <g:message code="panel.city.size.more.than.500"/></p>
-                <p><input type="radio" name="" id="" /> <g:message code="panel.city.size.between.100.and.500"/></p>
-                <p><input type="radio" name="" id="" /> <g:message code="panel.city.size.between.50.and.99"/></p>
-                <p><input type="radio" name="" id="" /> <g:message code="panel.city.size.less.than.50"/></p>
-                <p><input type="radio" name="" id="" /> <g:message code="panel.city.size.village"/></p>
+                <p><label><input type="radio" name="" id="" /> <g:message code="panel.city.size.more.than.500"/></label></p>
+                <p><label><input type="radio" name="" id="" /> <g:message code="panel.city.size.between.100.and.500"/></label></p>
+                <p><label><input type="radio" name="" id="" /> <g:message code="panel.city.size.between.50.and.99"/></label></p>
+                <p><label><input type="radio" name="" id="" /> <g:message code="panel.city.size.less.than.50"/></label></p>
+                <p><label><input type="radio" name="" id="" /> <g:message code="panel.city.size.village"/></label></p>
             </div>
         </fieldset>
         <fieldset class="border">
             <legend><g:message code="panel.visit conclusion.title"/></legend>
             <div style="text-align: left">
                 <p>Punkty były: </p>
-                <p><input type="radio" name="" id="" /> <g:message code="panel.open"/></p>
-                <p><input type="radio" name="" id="" /> <g:message code="panel.close"/></p>
-                <p><input type="checkbox" name=""/> <g:message code="panel.maintained"/></p>
+                <p><label><input type="radio" name="" id="" /> <g:message code="panel.open"/></label></p>
+                <p><label><input type="radio" name="" id="" /> <g:message code="panel.close"/></label></p>
+                <p><label><input type="checkbox" name=""/> <g:message code="panel.maintained"/></label></p>
             </div>
         </fieldset>
         <fieldset class="border">
             <legend><g:message code="panel.important.data.title"/></legend>
             <div style="text-align: left">
-                <p><input type="checkbox" name="" id="" /> <g:message code="panel.luxury.goods"/></p>
-                <p><input type="checkbox" name="" id="" /> <g:message code="panel.nightly.sell"/></p>
-                <p><input type="checkbox" name="" id="" /> <g:message code="panel.tourism"/></p>
-                <p><input type="checkbox" name="" id="" /> <g:message code="panel.instalment"/></p>
+                <p><label><input type="checkbox" name="" id="" /> <g:message code="panel.luxury.goods"/></label></p>
+                <p><label><input type="checkbox" name="" id="" /> <g:message code="panel.nightly.sell"/></label></p>
+                <p><label><input type="checkbox" name="" id="" /> <g:message code="panel.tourism"/></label></p>
+                <p><label><input type="checkbox" name="" id="" /> <g:message code="panel.instalment"/></label></p>
             </div>
         </fieldset>
         <fieldset class="border">
             <legend><g:message code="panel.transaction.frequency.title"/></legend>
             <div style="text-align: left">
-                <p><input type="radio" name="" /> <g:message code="panel.few.in.month"/></p>
-                <p><input type="radio" name="" /> <g:message code="panel.few.in.week"/></p>
-                <p><input type="radio" name="" /> <g:message code="panel.every.other.day"/></p>
-                <p><input type="radio" name="" /> <g:message code="panel.every.day"/></p>
+                <p><label><input type="radio" name="" /> <g:message code="panel.few.in.month"/></label></p>
+                <p><label><input type="radio" name="" /> <g:message code="panel.few.in.week"/></label></p>
+                <p><label><input type="radio" name="" /> <g:message code="panel.every.other.day"/></label></p>
+                <p><label><input type="radio" name="" /> <g:message code="panel.every.day"/></label></p>
             </div>
         </fieldset>
         <fieldset class="border">
             <legend><g:message code="panel.transaction.count.title"/></legend>
             <div style="text-align: left">
-                <p><input type="radio" name=""/> <g:message code="panel.transaction.count.between.0.and.4"/></p>
-                <p><input type="radio" name=""/> <g:message code="panel.transaction.count.between.5.and.10"/></p>
-                <p><input type="radio" name=""/> <g:message code="panel.transaction.count.more.than.10"/></p>
+                <p><label><input type="radio" name=""/> <g:message code="panel.transaction.count.between.0.and.4"/></label></p>
+                <p><label><input type="radio" name=""/> <g:message code="panel.transaction.count.between.5.and.10"/></label></p>
+                <p><label><input type="radio" name=""/> <g:message code="panel.transaction.count.more.than.10"/></label></p>
             </div>
         </fieldset>
 
@@ -146,8 +146,8 @@
             <legend>TODO - TODO - zmiana tytulu!!</legend>
             <div style="text-align: left">
                 <p>
-                    <div style="display: inline; padding-left: 8px"><input type="radio" name="financialDeclaration"/> <g:message code="panel.actual"/></div>
-                    <div style="display: inline; padding-left: 8px"><input type="radio" name="financialDeclaration"/> <g:message code="panel.declared"/></div>
+                    <div style="display: inline; padding-left: 8px"><label><input type="radio" name="financialDeclaration"/> <g:message code="panel.actual"/></label></div>
+                    <div style="display: inline; padding-left: 8px"><label><input type="radio" name="financialDeclaration"/> <g:message code="panel.declared"/></label></div>
                 </p>
             </div>
             <div style="display: inline-block; float: left; text-align: left">

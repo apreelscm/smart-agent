@@ -8,8 +8,9 @@
 </head>
 <body>
 
+<r:require module="newpoint_panel_setup"/>
+
 <g:render template="../panels/zestawPosOdplatneUzywanie"/>
-<g:render template="../panels/wykazPunktowAkceptujacychKartyPlatnicze"/>
 <g:render template="../panels/rachunekBankowyKlienta"/>
 <g:render template="../panels/promocyjneObnizenieOplatyZaZestawPos"/>
 <g:render template="../panels/poziomOplatIWarunkiPlatnosciPP"/>
