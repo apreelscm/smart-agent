@@ -30,6 +30,7 @@ modules = {
 	
 	session_utils {
 		resource url:'js/session_utils.js'
+        dependsOn 'jquery'
 	}
 
     jquery_ui {
