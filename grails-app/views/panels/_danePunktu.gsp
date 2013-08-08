@@ -1,8 +1,7 @@
 <div id="newPointPanel">
     <fieldset style="text-align: center">
-        <div class="belka-glowna">Dane punktu</div>
+        <div class="belka-glowna"><g:message code="panel.newpoint.pointdata.title" /></div>
             <div style="text-align: center; padding-top: 20px;" class="centre">
-            
                 <div class="subpanel">
                 	<h4><g:message code="panel.newpoint.care.title"/> </h4>
                 	<ul class="table-list vertical-center">
@@ -20,7 +19,7 @@
                 	<div>
                 		<ul class="table-list vertical-center">
                 			<li><span class="align-right"><g:message code="panel.nip" /></span> <span><g:textField name="nip"/></span></li>
-                			<li><span class="align-right"><g:message code="panel.mcccode" /></span> <span><g:textField name="mccCode"/></span> <span><label><g:checkBox name="sameForEveryPoint" /><g:message code="panel.sameforeverypoint" /></label></span></li>
+                			<li><span class="align-right"><g:message code="panel.mcccode" /></span> <span><g:textField name="mccCode"/></span> <span><label for="sameForEveryPoint"><g:checkBox name="sameForEveryPoint" /><g:message code="panel.sameforeverypoint" /></label></span></li>
                 			<li><span class="align-right"><g:message code="panel.bussinesstypeinpractice" /></span> <span><g:textField name="bussinessTypeInPractice"/></span></li>
                 			<li><span class="align-right"><g:message code="panel.bankaccountnumber" /></span> <span><g:textField name="bankAccountNumber"/></span></li>
                 			<li><span class="align-right"><g:message code="panel.bankname" /></span> <span><select name="bankName"></select></span></li>
@@ -32,9 +31,9 @@
                 	<div style="width: 700px" class="centre">
                 		<p><g:message code="panel.newpoint.pointnameforprintingfromposterminal" /></p>
                 		<p><g:textField name="pointNameForPrintingFromPOSTerminal"/></p>
-                		<p><g:message code="panel.newpoint.pointnameforsearchengine" /> <label><g:checkBox name="asAbove" /><g:message code="panel.as.above" /></label></p>
+                		<p><g:message code="panel.newpoint.pointnameforsearchengine" /> <label for="dataforprinting-asAbove"><g:checkBox name="dataforprinting-asAbove" /><g:message code="panel.as.above" /></label></p>
                 		<p><g:textField name="pointNameForSearchEngine"/></p>
-                		<p><label><g:checkBox name="asForMerchant" /><g:message code="panel.as.merchant" /></label></p>
+                		<p><label for="dataforprinting-asForMerchant"><g:checkBox name="dataforprinting-asForMerchant" /><g:message code="panel.as.merchant" /></label></p>
 		                <ul class="table-list">
 		                	<li>
 		                		<span><g:message code="panel.street" /></span>
@@ -45,23 +44,23 @@
                                        <option value="aleja">aleja</option>
                                        <option value="plac">plac</option>
                                    </select>
-                                   <g:textField name="addressStreet" style="width: 200px"/>
+                                   <g:textField name="dataforprinting-addressStreet" style="width: 200px"/>
                                 </span>
                                 <span>
-                                	<span><g:message code="panel.house.number" /></span> <span><g:textField name="addressHomeNumber" style="width: 50px"/></span>
-                                	<span><g:message code="panel.flat.number" /></span> <span><g:textField name="addressFlatNumber" style="width: 50px"/></span>
+                                	<span><g:message code="panel.house.number" /></span> <span><g:textField name="dataforprinting-addressHomeNumber" style="width: 50px"/></span>
+                                	<span><g:message code="panel.flat.number" /></span> <span><g:textField name="dataforprinting-addressFlatNumber" style="width: 50px"/></span>
                                 </span>
                             </li>
 		                	<li>
 		                		<span><g:message code="panel.city" /></span>
-		                		<span><g:textField name="addressCity" style="width: 280px;"/></span>
+		                		<span><g:textField name="dataforprinting-addressCity" style="width: 280px;"/></span>
 		                		<span>
-		                			<span><g:message code="panel.postal.code" /></span> <span><g:textField name="addressPostalCode" style="width: 50px"/></span>
+		                			<span><g:message code="panel.postal.code" /></span> <span><g:textField name="dataforprinting-addressPostalCode" style="width: 50px"/></span>
 		                		</span>
 		                	</li>
 		                	<li>
 		                		<span><g:message code="panel.postal" /></span>
-		                		<span><g:textField name="addressPostOffice" style="width: 280px;"/></span>
+		                		<span><g:textField name="dataforprinting-addressPostOffice" style="width: 280px;"/></span>
 		                	</li>
 		                </ul>
                 		<p><g:message code="panel.newpoint.otherdataforprintingfromterminal" /></p>
@@ -74,7 +73,7 @@
                 <div class="subpanel">
                 	<h4><g:message code="panel.newpoint.posset.for.selected.point.title" /></h4>
                 	<div>
-                		<label><g:checkBox name="sameForEveryPoint" /><g:message code="panel.sameforeverypoint" /></label>
+                		<label for="possetforselectedpoint-sameForEveryPoint"><g:checkBox name="possetforselectedpoint-sameForEveryPoint" /><g:message code="panel.sameforeverypoint" /></label>
                 		<table class="vertical-center" >
                 			<thead>
                 				<tr><td></td><td></td><td></td><td></td><td colspan="2"  style="text-align: center;">Cena</td></tr>
