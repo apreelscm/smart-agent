@@ -75,3 +75,11 @@ function setupNewPointPanelHandlers(panelId) {
     });
 	
 }
+
+function setupNewPosPanelHandlers(panelId) {
+	
+	jQuery(document).ready(function() {
+        //TODO
+    });
+	
+}

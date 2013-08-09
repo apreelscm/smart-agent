@@ -1,5 +1,5 @@
-<div class="subpanel">
-	<h4><g:message code="panel.newpoint.contactaddress" /></h4>
+<fieldset class="border">
+	<legend><g:message code="panel.newpoint.contactaddress" /></legend>
 	<div>
 		<label for="contactAddress-asForMerchant%ID%"><g:radio name="contactAddress-asForMerchantOrPrint%ID%" id="contactAddress-asForMerchant%ID%" value=""/><g:message code="panel.as.merchant" /></label>
 		<label for="contactAddress-asOnPrint%ID%"><g:radio name="contactAddress-asForMerchantOrPrint%ID%" id="contactAddress-asOnPrint%ID%" value=""/><g:message code="panel.as.on.print" /></label>
@@ -33,4 +33,4 @@
   	</li>
   </ul>
 	</div>
-</div>
+</fieldset>

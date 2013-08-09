@@ -1,5 +1,5 @@
-<div class="subpanel">
-	<h4><g:message code="panel.newpoint.staticaddressdata.title" /></h4>
+<fieldset class="border">
+	<legend><g:message code="panel.newpoint.staticaddressdata.title" /></legend>
 	<div>
 		<ul class="table-list vertical-center" >
 			<li><span class="align-right" ><g:message code="panel.mask" /></span><span><g:textField name="staticDeviceMask%ID%" /></span></li>
@@ -10,9 +10,9 @@
 			<li><span class="align-right" ><g:message code="panel.last.name" /></span><span><g:textField name="staticDeviceSupportContactSurname%ID%" /></span></li>
 		</ul>
 	</div>
-</div>
-<div class="subpanel">
-	<h4><g:message code="panel.newpoint.dynamicaddressdata.title" /></h4>
+</fieldset>
+<fieldset class="border">
+	<legend><g:message code="panel.newpoint.dynamicaddressdata.title" /></legend>
 	<div>
 		<ul class="table-list vertical-center" >
 			<li><span class="align-right" ><g:message code="panel.techniciancontact" /></span><span><g:textField name="dynamicDeviceSupportContact%ID%" /></span></li>
@@ -20,4 +20,4 @@
 			<li><span class="align-right" ><g:message code="panel.last.name" /></span><span><g:textField name="dynamicDeviceSupportSurname%ID%" /></span></li>
 		</ul>
 	</div>
-</div>
+</fieldset>

@@ -1,5 +1,5 @@
-<div class="subpanel">
-	<h4><g:message code="panel.newpoint.terminaloptions.title" /></h4>
+<fieldset class="border">
+	<legend><g:message code="panel.newpoint.terminaloptions.title" /></legend>
 	<div>
 		<p><label for="terminaloptions-sameForEveryPoint%ID%"><g:checkBox name="terminaloptions-sameForEveryPoint%ID%" /><g:message code="panel.sameforeverypoint" /></label></p>
 		
@@ -42,4 +42,4 @@
 			
 		</div>
 	</div>
-</div>
+</fieldset>

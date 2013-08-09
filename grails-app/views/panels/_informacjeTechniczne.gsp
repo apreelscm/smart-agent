@@ -1,5 +1,5 @@
-<div class="subpanel">
-	<h4><g:message code="panel.newpoint.technicalinformation.title" /></h4>
+<fieldset class="border">
+	<legend><g:message code="panel.newpoint.technicalinformation.title" /></legend>
 	<div>
 		<label for="technicalinformation-sameForEveryPoint%ID%"><g:checkBox name="technicalinformation-sameForEveryPoint%ID%" /><g:message code="panel.sameforeverypoint" /></label>
 		<p><g:message code="panel.newpoint.technicalinformation.dayclose" /></p>
@@ -7,4 +7,4 @@
 		<p><g:message code="panel.additionalnotes" /></p>
 		<p><g:textField name="additionalNotes%ID%"/></p>
 	</div>
-</div>
+</fieldset>

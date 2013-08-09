@@ -5,8 +5,8 @@
             	<div style="float: right;">
             		<g:submitButton id="removePointButton" name="removePointButton" class="button submit" value="Usuń punkt" style="margin-right: 2em; margin-bottom: 1em;"/>
             	</div>
-                <div class="subpanel">
-                	<h4><g:message code="panel.newpoint.care.title"/> </h4>
+                <fieldset class="border" style="clear: both;">
+                	<legend><g:message code="panel.newpoint.care.title"/></legend>
                 	<ul class="table-list vertical-center">
                 		<li>
 	                		<span class="align-right"><g:message code="panel.newpoint.care.phgain"/></span><span><g:textField style="width: 45px;" name="phGain%ID%"/></span>
@@ -16,9 +16,9 @@
 	               			<span class="align-right"><g:message code="panel.newpoint.care.servicecare" /></span><span><g:textField style="width: 45px;" name="serviceCare3%ID%"/></span>
                			</li>
                 	</ul>
-                </div>
-                <div class="subpanel">
-                	<h4><g:message code="panel.newpoint.pointdata.title" /></h4>
+                </fieldset>
+                <fieldset class="border">
+                	<legend><g:message code="panel.newpoint.pointdata.title" /></legend>
                 	<div>
                 		<ul class="table-list vertical-center">
                 			<li><span class="align-right"><g:message code="panel.nip" /></span> <span><g:textField name="nip%ID%"/></span></li>
@@ -28,9 +28,9 @@
                 			<li><span class="align-right"><g:message code="panel.bankname" /></span> <span><select name="bankName%ID%"></select></span></li>
                 		</ul>
                 	</div>
-                </div>
-                <div class="subpanel">
-                	<h4><g:message code="panel.newpoint.dataforprinting" /></h4>
+                </fieldset>
+                <fieldset class="border">
+                	<legend><g:message code="panel.newpoint.dataforprinting" /></legend>
                 	<div style="width: 700px" class="centre">
                 		<p><g:message code="panel.newpoint.pointnameforprintingfromposterminal" /></p>
                 		<p><g:textField name="pointNameForPrintingFromPOSTerminal%ID%" id="pointNameForPrintingFromPOSTerminal%ID%"/></p>
@@ -70,11 +70,11 @@
                			<p><g:message code="panel.line1" /> <g:textField name="otherDataForPrintingFromTerminal1%ID%" style="width: 90%;" /></p>
                			<p><g:message code="panel.line2" /> <g:textField name="otherDataForPrintingFromTerminal2%ID%" style="width: 90%;" /></p>
                 	</div>
-                </div>
+                </fieldset>
                 <g:render template="../panels/adresDoKorespondencjiPunktu" />
                 <g:render template="../panels/osobaDoKontaktuWPunkcie" />
-                <div class="subpanel">
-                	<h4><g:message code="panel.newpoint.posset.for.selected.point.title" /></h4>
+                <fieldset class="border">
+                	<legend><g:message code="panel.newpoint.posset.for.selected.point.title" /></legend>
                 	<div>
                 		<label for="possetforselectedpoint-sameForEveryPoint%ID%"><g:checkBox name="possetforselectedpoint-sameForEveryPoint%ID%" /><g:message code="panel.sameforeverypoint" /></label>
                 		<table class="vertical-center" >
@@ -92,7 +92,7 @@
                				</tbody>
                 		</table>
                 	</div>
-                </div>
+                </fieldset>
                 <g:render template="../panels/informacjeTechniczne" />
                 <g:render template="../panels/funkcjeTerminala" />
                 <g:render template="../panels/dodatkoweWyposazenie" />

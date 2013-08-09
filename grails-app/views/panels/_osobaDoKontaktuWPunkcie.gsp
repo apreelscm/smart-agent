@@ -1,5 +1,5 @@
-<div class="subpanel">
-   	<h4><g:message code="panel.newpoint.persontocontact.title" /></h4>
+<fieldset class="border">
+   	<legend><g:message code="panel.newpoint.persontocontact.title" /></legend>
 	<div>
 		<label for="persontocontact-asForMerchant%ID%"><g:checkBox name="persontocontact-asForMerchant%ID%" value=""/><g:message code="panel.as.merchant" /></label>
 		<ul class="table-list vertical-center">
@@ -15,4 +15,4 @@
 			</li>
 		</ul>
 	</div>
-</div>
+</fieldset>

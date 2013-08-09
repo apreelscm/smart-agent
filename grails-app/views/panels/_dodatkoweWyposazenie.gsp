@@ -1,5 +1,5 @@
-<div class="subpanel">
-	<h4><g:message code="panel.newpoint.additionalequipment.title" /></h4>
+<fieldset class="border">
+	<legend><g:message code="panel.newpoint.additionalequipment.title" /></legend>
 	<div>
 		<label for="additionalequipment-sameForEveryPoint%ID%"><g:checkBox name="additionalequipment-sameForEveryPoint%ID%" /><g:message code="panel.sameforeverypoint" /></label>
 		<table class="vertical-center" >
@@ -11,4 +11,4 @@
 			</tbody>
 		</table>
 	</div>
-</div>
+</fieldset>

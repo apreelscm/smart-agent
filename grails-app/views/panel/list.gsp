@@ -48,7 +48,7 @@
 <g:render template="../panels/czasObowiazywaniaUmowy"/>
 <g:render template="../panels/aneksDoUmowyPrepaid"/>
 <g:render template="../panels/dodajPunkt" />
-<g:render template="../panels/danePunktu" />
+<g:render template="../panels/dodajPos" />
 
 </body>
 </html>
