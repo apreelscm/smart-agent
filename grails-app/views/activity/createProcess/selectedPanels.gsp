@@ -4,6 +4,41 @@
 <head>
     <meta name="layout" content="main">
     <title><g:message code="selectedPanels.header.title" default="Lista paneli"/></title>
+
+    <g:javascript>
+        var $j = jQuery.noConflict();
+
+        $j(function() {
+            $j("#fileUploadInput").change(function (){
+                $j('#uploadForm').submit();
+            });
+        });
+    </g:javascript>
+
+    <style>
+#uploads {
+    margin: 6px 0;
+    padding: 0 0 9px;
+    position: relative;
+    width: 310px;
+}
+#uploads div.fakeupload {
+    background: #FF0000 no-repeat scroll 100% 50% transparent;
+    cursor: pointer;
+}
+#uploads div.fakeupload input {
+    width: 219px;
+    height: 29px;
+}
+#uploads input.realupload {
+    opacity: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 310px;
+    z-index: 2;
+}
+    </style>
 </head>
 <body>
 
@@ -14,6 +49,8 @@
     <g:each var="panel" in="${processInstance.panels}" status="i">
         <g:render template="/panels/${panel.name}"/>
     </g:each>
+
+    <g:render template="/panels/uwagi"/>
 
     <g:form>
         <nav style="margin-top: 20px">
