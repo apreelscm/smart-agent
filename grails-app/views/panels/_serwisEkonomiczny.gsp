@@ -1,11 +1,15 @@
 <div id="serviceEconomicPanel">
     <fieldset>
         <div class="belka-glowna"><g:message code="panel.service.economic.title"/></div>
-        <div class="centre" style="text-align: center; padding-top: 20px; width: 400px">
-            <div style="text-align: left">
-                <div style="padding-bottom: 10px"><g:message code="panel.service.economic"/></div>
-                <div><g:message code="panel.monthly.payment"/> <g:textField name="economicMonthlyPayment" style="width: 100px;" /> <g:message code="panel.polish.currency"/></div>
-            </div>
+        <div class="centre" style="text-align: center; padding-top: 20px; width: 750px">
+            <ul class="table-list">
+                <li>
+                    <span class="align-left"><g:message code="panel.service.economic"/></span>
+                </li>
+                <li>
+                    <span class="align-left"><g:message code="panel.monthly.payment"/> <g:textField name="economicMonthlyPayment" style="width: 100px;" /></span>
+                </li>
+            </ul>
         </div>
     </fieldset>
 </div>

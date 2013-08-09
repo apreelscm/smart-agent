@@ -1,17 +1,23 @@
 <div id="servicePanel">
     <fieldset>
         <div class="belka-glowna"><g:message code="panel.service.title"/></div>
-        <div class="centre" style="text-align: center; padding-top: 20px; width: 400px">
-            <div style="text-align: left">
-                <p><label><input type="radio" name="serviceType" id="prestige" /> <g:message code="panel.service.prestige.name"/></label></p>
-                <p><label><input type="radio" name="serviceType" id="comfort" /> <g:message code="panel.service.comfort.name"/></label></p>
-                <p><label><input type="radio" name="serviceType" id="economic" /> <g:message code="panel.service.economic.name"/></label></p>
-            </div>
-            <div id="servicePayment">
-                <div style="display:inline-block"><g:message code="panel.monthly.payment"/> </div>
-                <div style="display:inline-block"><g:textField name="serviceEconomicPrice" /></div>
-                <div style="display:inline-block"> <g:message code="panel.polish.currency"/></div>
-            </div>
+        <div class="centre" style="text-align: center; padding-top: 20px; width: 750px">
+            <ul class="table-list">
+                <li>
+                    <span class="align-left"><label><input type="radio" name="serviceType" id="prestige" /> <g:message code="panel.service.prestige.name"/></label></span>
+                </li>
+                <li>
+                    <span class="align-left"><label><input type="radio" name="serviceType" id="comfort" /> <g:message code="panel.service.comfort.name"/></label></span>
+                </li>
+                <li>
+                    <span class="align-left"><label><input type="radio" name="serviceType" id="economic" /> <g:message code="panel.service.economic.name"/></label></span>
+                </li>
+                <li id="servicePayment">
+                    <span>
+                        <span><g:message code="panel.monthly.payment"/><g:textField name="serviceEconomicPrice" /><g:message code="panel.polish.currency"/></span>
+                    </span>
+                </li>
+            </ul>
         </div>
     </fieldset>
 </div>
