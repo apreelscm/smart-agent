@@ -1,3 +1,6 @@
+var globalPanelCount = 0;
+var globalPanelPosCount = 0;
+
 function getGlobalPanelCount(prefix) {
 	if (prefix == "-point") {
 		return globalPanelCount;
