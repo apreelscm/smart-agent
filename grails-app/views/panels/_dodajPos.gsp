@@ -15,7 +15,7 @@
 <r:require module="jquery_ui"/>
 	
 <r:script>
-	var globalPanelPosCount = 0;
+	
 	jQuery(document).ready(function() {
 		var panelPosTemplate = jQuery("#hiddenPosPanel").html();
 		var panelPosCount = 0;
