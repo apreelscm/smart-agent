@@ -15,6 +15,7 @@
 <r:require module="jquery_ui"/>
 	
 <r:script>
+	var globalPanelPosCount = 0;
 	jQuery(document).ready(function() {
 		var panelPosTemplate = jQuery("#hiddenPosPanel").html();
 		var panelPosCount = 0;
@@ -23,8 +24,10 @@
 		jQuery("#addNewPosButton").on("click", function() {
 			var data = panelPosTemplate.replace(/%ID%/gm, "-pos" + panelPosCount);
 			jQuery("#addNewPosPanel").prepend(data);
-			setupNewPosPanelHandlers("-pos"+panelPosCount);
+			setupNewPosPanelHandlers(panelPosCount-1, panelPosCount, "-pos");
+			setupNewPointPanelData("-pos"+(panelPosCount-1), "-pos"+panelPosCount);
 			panelPosCount++;
+			globalPanelPosCount++;
 			jQuery("#newPosPanelCount").val(panelPosCount);
 		});
 		

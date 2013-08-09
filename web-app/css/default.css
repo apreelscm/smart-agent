@@ -10,7 +10,7 @@ Version: 1.0
 Last change: 25/07/2013
 Author: mkaczkowsk (apreel)
 
-Desciption: Default styles to be applied to all pages in the site
+Desciption: Default styles to be applied to all pages in the sitebor
 
 ## TOC
 
@@ -1252,6 +1252,17 @@ a.submit{
 .subpanel h4 {
 	text-align: left;
 	padding-bottom: 1em;
+}
+
+.subpanel-fieldset {
+	text-align: left;
+	border: 1px #50749b solid;
+}
+
+.subpanel-fieldset-centercontent {
+	display: block;
+	margin: 0 auto;
+	width: 750px;
 }
 
 .table-list {
