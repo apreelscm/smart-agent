@@ -1,10 +1,5 @@
 package eservice.docx.converter
 
-import com.lowagie.text.Document
-import com.lowagie.text.Image
-import com.lowagie.text.PageSize
-import com.lowagie.text.pdf.PdfWriter
-import com.qoppa.word.WordDocument
 import eservice.docx.converter.domain.Dokument
 import fr.opensagres.xdocreport.document.IXDocReport
 import fr.opensagres.xdocreport.document.registry.XDocReportRegistry
@@ -18,12 +13,6 @@ import org.apache.poi.xwpf.usermodel.XWPFDocument
 import org.apache.velocity.VelocityContext
 import org.apache.velocity.app.event.EventCartridge
 import org.apache.velocity.app.event.ReferenceInsertionEventHandler
-import org.docx4j.convert.out.pdf.PdfConversion
-import org.docx4j.convert.out.pdf.viaXSLFO.Conversion
-import org.docx4j.convert.out.pdf.viaXSLFO.PdfSettings
-import org.docx4j.openpackaging.packages.WordprocessingMLPackage
-
-
 
 /**
  * Created with IntelliJ IDEA.
