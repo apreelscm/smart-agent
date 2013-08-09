@@ -1,6 +1,6 @@
-<fieldset class="border">
+<fieldset class="subpanel-fieldset">
    	<legend><g:message code="panel.newpoint.persontocontact.title" /></legend>
-	<div>
+	<div class="subpanel-fieldset-centercontent" >
 		<label for="persontocontact-asForMerchant%ID%"><g:checkBox name="persontocontact-asForMerchant%ID%" value=""/><g:message code="panel.as.merchant" /></label>
 		<ul class="table-list vertical-center">
 			<li>

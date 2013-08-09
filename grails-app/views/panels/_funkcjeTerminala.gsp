@@ -1,6 +1,6 @@
-<fieldset class="border">
+<fieldset class="subpanel-fieldset">
 	<legend><g:message code="panel.newpoint.terminaloptions.title" /></legend>
-	<div>
+	<div class="subpanel-fieldset-centercontent" >
 		<p><label for="terminaloptions-sameForEveryPoint%ID%"><g:checkBox name="terminaloptions-sameForEveryPoint%ID%" /><g:message code="panel.sameforeverypoint" /></label></p>
 		
 		<div style="float: left; padding-right: 2em;" >

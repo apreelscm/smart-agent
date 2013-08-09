@@ -5,22 +5,23 @@
             	<div style="float: right;">
             		<g:submitButton id="removePointButton" name="removePointButton" class="button submit" value="Usuń punkt" style="margin-right: 2em; margin-bottom: 1em;"/>
             	</div>
+            	<div style="clear: both;"></div>
                 <g:render template="../panels/opieka" />
-                <fieldset class="border">
+                <fieldset class="subpanel-fieldset">
                 	<legend><g:message code="panel.newpoint.pointdata.title" /></legend>
-                	<div>
+                	<div class="subpanel-fieldset-centercontent" >
                 		<ul class="table-list vertical-center">
                 			<li><span class="align-right"><g:message code="panel.nip" /></span> <span><g:textField name="nip%ID%"/></span></li>
-                			<li><span class="align-right"><g:message code="panel.mcccode" /></span> <span><g:textField name="mccCode%ID%"/></span> <span><label for="sameForEveryPoint"><g:checkBox name="sameForEveryPoint%ID%" /><g:message code="panel.sameforeverypoint" /></label></span></li>
+                			<li><span class="align-right"><g:message code="panel.mcccode" /></span> <span><g:textField name="mccCode%ID%"/></span> <span><label for="sameForEveryPoint%ID%"><g:checkBox name="sameForEveryPoint%ID%" /><g:message code="panel.sameforeverypoint" /></label></span></li>
                 			<li><span class="align-right"><g:message code="panel.bussinesstypeinpractice" /></span> <span><g:textField name="bussinessTypeInPractice%ID%"/></span></li>
                 			<li><span class="align-right"><g:message code="panel.bankaccountnumber" /></span> <span><g:textField name="bankAccountNumber%ID%"/></span></li>
                 			<li><span class="align-right"><g:message code="panel.bankname" /></span> <span><select name="bankName%ID%"></select></span></li>
                 		</ul>
                 	</div>
                 </fieldset>
-                <fieldset class="border">
+                <fieldset class="subpanel-fieldset">
                 	<legend><g:message code="panel.newpoint.dataforprinting" /></legend>
-                	<div style="width: 700px" class="centre">
+                	<div class="subpanel-fieldset-centercontent" >
                 		<p><g:message code="panel.newpoint.pointnameforprintingfromposterminal" /></p>
                 		<p><g:textField name="pointNameForPrintingFromPOSTerminal%ID%" id="pointNameForPrintingFromPOSTerminal%ID%"/></p>
                 		<p><g:message code="panel.newpoint.pointnameforsearchengine" /> <label for="dataforprinting-asAbove"><g:checkBox name="dataforprinting-asAbove%ID%" id="dataforprinting-asAbove%ID%" /><g:message code="panel.as.above" /></label></p>
@@ -62,9 +63,9 @@
                 </fieldset>
                 <g:render template="../panels/adresDoKorespondencjiPunktu" />
                 <g:render template="../panels/osobaDoKontaktuWPunkcie" />
-                <fieldset class="border">
+                <fieldset class="subpanel-fieldset">
                 	<legend><g:message code="panel.newpoint.posset.for.selected.point.title" /></legend>
-                	<div>
+                	<div class="subpanel-fieldset-centercontent" >
                 		<label for="possetforselectedpoint-sameForEveryPoint%ID%"><g:checkBox name="possetforselectedpoint-sameForEveryPoint%ID%" /><g:message code="panel.sameforeverypoint" /></label>
                 		<table class="vertical-center" >
                 			<thead>

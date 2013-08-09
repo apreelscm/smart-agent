@@ -23,7 +23,8 @@
 		jQuery("#addNewPointButton").on("click", function() {
 			var data = panelTemplate.replace(/%ID%/gm, "-point" + panelCount);
 			jQuery("#addNewPointPanel").prepend(data);
-			setupNewPointPanelHandlers("-point"+panelCount);
+			setupNewPointPanelHandlers(panelCount-1, panelCount, "-point");
+			setupNewPointPanelData("-point"+(panelCount-1), "-point"+panelCount);
 			panelCount++;
 			jQuery("#newPointPanelCount").val(panelCount);
 		});
