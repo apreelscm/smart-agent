@@ -2,9 +2,11 @@
     <fieldset>
         <div class="belka-glowna"><g:message code="panel.aggrement.time.title"/> </div>
         <div class="centre" style="text-align: center; padding-top: 20px; width: 750px">
-            <ul class="table-list">
+            <ul class="table-list centre">
                 <li><span class="align-left"><label><input type="radio" name="aggrementTime" id="notSpecified" /><g:message code="panel.aggrement.time.not.defined"/></label></span></li>
                 <li><span class="align-left"><label><input type="radio" name="aggrementTime" id="specified" /><g:message code="panel.aggrement.time.defined"/></label></span></li>
+            </ul>
+            <ul>
                 <li id="aggrementDates">
                     <span>
                         <span><g:message code="panel.from"/></span>

@@ -2,7 +2,7 @@
     <fieldset>
         <div class="belka-glowna"><g:message code="panel.acceptor.correspondence.addres.title"/></div>
         <div style="text-align: center; padding-top: 20px; width: 750px" class="centre">
-            <ul class="table-list">
+            <ul class="table-list centre">
                 <li>
                     <span><label><input type="checkbox" name="merchantAddress" value="1" /><g:message code="panel.as.merchant"/></label></span>
                 </li>

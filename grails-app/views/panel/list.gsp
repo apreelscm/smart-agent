@@ -26,7 +26,6 @@
 <g:render template="../panels/deklaracjeAkceptanta"/>
 <g:render template="../panels/daneDoWydruku"/>
 <g:render template="../panels/wykazPunktowAkceptujacychKartyPlatnicze"/>
-<g:render template="../panels/deklaracjeAkceptanta"/>
 <g:render template="../panels/uwagi"/>
 <g:render template="../panels/serwis"/>
 <g:render template="../panels/serwisEkonomiczny"/>

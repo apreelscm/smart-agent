@@ -2,7 +2,7 @@
     <fieldset>
         <div class="belka-glowna"><g:message code="panel.acceptor.title"/></div>
         <div class="centre" style="text-align: center; padding-top: 20px; width: 750px">
-            <ul class="table-list">
+            <ul class="table-list centre">
                 <li>
                     <span>
                         <span>

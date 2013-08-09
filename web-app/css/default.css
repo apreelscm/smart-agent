@@ -1308,3 +1308,6 @@ a.submit{
 	font-weight: bold;
 }
 
+.cardPaymentPanel-padding {
+    padding-left: 30px !important;
+}
