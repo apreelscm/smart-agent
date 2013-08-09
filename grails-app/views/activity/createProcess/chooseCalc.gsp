@@ -4,47 +4,6 @@
 <head>
     <meta name="layout" content="main">
     <title> <g:message code="chooseCalc.header.title" default="Wybierz klienta"/></title>
-
-    <g:javascript>
-   /*     var $j = jQuery.noConflict();
-
-        $j(function () {
-            $j('form').submit(function (e) {
-                return validateForm();
-            });
-
-            function validateForm() {
-                var isValid = true;
-                var nipInput = $j("#nipField input[type='text']")
-
-                if(!validateNip(nipInput.val())){
-                    isValid = false;
-                    makeInvalid(nipInput)
-                }
-                else{
-                    makeValid(nipInput);
-                }
-                return isValid;
-            }
-
-
-
-            function makeInvalid(obj) {
-                $j(obj).parent().addClass("error");
-                $j(obj).parent().find("img").removeClass("visibility-hidden");
-            }
-
-            function makeValid(obj) {
-                $j(obj).parent().removeClass("error");
-                $j(obj).parent().find("img").addClass("visibility-hidden");
-            }
-        });
-
-        function verifyClientNIP_success(){
-            alert('success');
-        }*/
-    </g:javascript>
-
 </head>
 <body>
 

@@ -24,15 +24,16 @@ class DocxServiceTests {
     static Dokument dokument
     static Random random = new Random()
 
-    static String templatePath = "web-app/files/docx_templates" +File.separator
-    static String outPath = "web-app/files/docx_out" +File.separator
+    static String templatePath = "web-app" +File.separator+ "files" +File.separator+"docx_templates" + File.separator
+    static String outPath = "web-app"+File.separator+"files"+File.separator+"docx_out" + File.separator
+    static String signaturePath = "web-app"+File.separator+"files"+ File.separator
 
     @BeforeClass
     static void init(){
 
         List firstNames = ["Zenon", "Jan", "Henryk", "Marian", "Kazimierz", "Henryka", "Apolonia"];
         List lastNames = ["Nowak", "Strus", "Dziurek", "Soltys", "Boruc", "Wojak", "Bluszcz"];
-        List signatures = ["signature1.jpg", "signature2.jpg", "signature3.jpg"];
+        List signatures = [signaturePath + "signature1.jpg", signaturePath + "signature2.jpg", signaturePath + "signature3.jpg"];
         List names = ["Arabic Oil", "UltraSoft", "Sports Foot", "Toys & Fun", "\"Vendinsor\" - Chemical Enterprise",
                 "German Insurance Company", "International Developer \"Investor\""];
         List address = ["3610 Upton Street, NW", " Placu Trzech Krzyży 4/5", "5 Aleja w Nowym Yorku", "Causeway Bay w Hong Kong", "CampNou", "Traffalgar Square 3", "Marszalkowska 44 m. 78"];

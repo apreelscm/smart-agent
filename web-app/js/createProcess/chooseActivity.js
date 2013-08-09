@@ -2,11 +2,11 @@
 
     var signatureExceptions = ["zmianaWarunkowDcc"]
 
-    $(document).ready(function () {
+    $(function() {
         $('form').submit(function (e) {
             return validateArticle();
         });
-    });
+    }); //end ready
 
     function validateArticle() {
         var isValid = true;

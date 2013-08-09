@@ -9,7 +9,6 @@
 </head>
 <body>
 
-
 <section id="create-activity">
     <h1 class="ng linia-bottom"><g:message code="defineActivity.header.title" default="Wybierz działanie"/></h1>
 
@@ -144,8 +143,8 @@
 
             <div id="poprawDane" class="expendable">
                 <div class="checkBoxBlock">
-                        <g:checkBox id="poprawDaneCB" name="poprawDane"/>
-                        <a class="expandHeader expanded" href="#">  <label for="poprawDaneCB"><g:message code="activity.poprawDane.name" default="Popraw już wprowadzone dane"/> </label></a>
+                    <g:checkBox id="poprawDaneCB" name="poprawDane"/>
+                    <a class="expandHeader expanded" href="#">  <label for="poprawDaneCB"><g:message code="activity.poprawDane.name" default="Popraw już wprowadzone dane"/> </label></a>
                 </div>
             </div>
 
@@ -172,8 +171,7 @@
 
         <nav style="margin-top: 20px">
             <fieldset>
-                <g:submitButton name="continue" class="button submit"
-                                value="${message(code:'default.navigation.button.next', default: 'Dalej')}"/>
+                <g:submitButton name="continue" class="button submit" value="${message(code: 'default.navigation.button.next', default: 'Dalej')}"/>
             </fieldset>
         </nav>
     </g:form>
