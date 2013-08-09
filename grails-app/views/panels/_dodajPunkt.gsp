@@ -15,6 +15,7 @@
 <r:require module="jquery_ui"/>
 	
 <r:script>
+	var globalPanelCount = 0;
 	jQuery(document).ready(function() {
 		var panelTemplate = jQuery("#hiddenPanel").html();
 		var panelCount = 0;
@@ -26,6 +27,7 @@
 			setupNewPointPanelHandlers(panelCount-1, panelCount, "-point");
 			setupNewPointPanelData("-point"+(panelCount-1), "-point"+panelCount);
 			panelCount++;
+			globalPanelCount++;
 			jQuery("#newPointPanelCount").val(panelCount);
 		});
 		
