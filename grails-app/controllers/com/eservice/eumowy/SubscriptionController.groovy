@@ -7,23 +7,22 @@ import java.awt.image.BufferedImage
 
 class SubscriptionController {
 	
-	def subscriptionService
-
     def index() {
 		
 	}
 	
-	def save() {
-		Subscription signature = new Subscription(signature: params.signature)
-		subscriptionService.save(signature)
-		BufferedImage img = SignatureToImage.convertJsonToImage(signature.signature)
+	def saveSubscription() {
+		def subscription = new Subscription(params).save();
+
+        BufferedImage img = SignatureToImage.convertJsonToImage(subscription.content)
+
 		File outputfile = new File("web-app/images/sign.png");
 		ImageIO.write(img, "png", outputfile)
 		redirect(action: "preview")
 	}
 	
 	def preview() {
-		Subscription sign = subscriptionService.getLast()
+		Subscription sign = Subscription.last()
 		render(view: "preview", model: [signature: sign])
 	}
 }

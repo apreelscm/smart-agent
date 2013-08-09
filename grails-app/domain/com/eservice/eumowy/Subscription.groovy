@@ -1,10 +1,10 @@
 package com.eservice.eumowy
 
-class Subscription implements Serializable {
+class Subscription {
 
-    def signature
+    String content;
 
-    static mapping = {
-        table name: "subscription", schema: "CBD_UMOWY"
+    static constraints = {
+        content(maxSize: 10000)
     }
 }
