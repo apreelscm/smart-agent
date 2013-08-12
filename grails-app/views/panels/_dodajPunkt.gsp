@@ -15,7 +15,7 @@
 <r:require module="jquery_ui"/>
 	
 <r:script>
-	var globalPanelCount = 0;
+	
 	jQuery(document).ready(function() {
 		var panelTemplate = jQuery("#hiddenPanel").html();
 		var panelCount = 0;
