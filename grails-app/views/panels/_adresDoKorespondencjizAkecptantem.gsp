@@ -4,12 +4,12 @@
         <div style="text-align: center; padding-top: 20px; width: 750px" class="centre">
             <ul class="table-list centre">
                 <li>
-                    <span><label><input type="checkbox" name="merchantAddress" value="1" /><g:message code="panel.as.merchant"/></label></span>
+                    <span><label><g:checkBox name="correspondenceAsMerchant"/><g:message code="panel.as.merchant"/></label></span>
                 </li>
                 <li>
                     <span><g:message code="panel.street" /></span>
                     <span>
-                        <select name="correspondenceAddressStreetTitle">
+                        <select name="correspondenceAddressStreetTitle" id="correspondenceAddressStreetTitle">
                             <option value="ulica">ulica</option>
                             <option value="osiedle">osiedle</option>
                             <option value="aleja">aleja</option>
@@ -37,3 +37,26 @@
         </div>
     </fieldset>
 </div>
+
+
+<r:script>
+    jQuery(document).ready(function() {
+
+        jQuery("#correspondenceAsMerchant").click(function() {
+            if(this.checked) {
+                var selectedValue = jQuery('#addressStreetTitle').val();
+                jQuery("#correspondenceAddressStreetTitle").filter(function() {
+                    return jQuery(this).val() == selectedValue;
+                }).prop('selected', true);
+
+                jQuery('#correspondenceAddressStreetTitle').val(jQuery('#addressStreetTitle').val());
+                jQuery('#correspondenceAddressStreet').val(jQuery('#addressStreet').val());
+                jQuery('#correspondenceAddressHomeNumber').val(jQuery('#addressHomeNumber').val());
+                jQuery('#correspondenceAddressFlatNumber').val(jQuery('#addressFlatNumber').val());
+                jQuery('#correspondenceAddressCity').val(jQuery('#addressCity').val());
+                jQuery('#correspondenceAddressPostalCode').val(jQuery('#addressPostalCode').val());
+                jQuery('#correspondenceAddressPostal').val(jQuery('#addressPostal').val());
+            }
+        });
+    });
+</r:script>
