@@ -7,7 +7,7 @@
                     <span>
                     <span><g:message code="panel.street" /></span>
                     <span>
-                        <select name="addressStreetTitle">
+                        <select name="addressStreetTitle" id="addressStreetTitle">
                             <option value="ulica">ulica</option>
                             <option value="osiedle">osiedle</option>
                             <option value="aleja">aleja</option>
