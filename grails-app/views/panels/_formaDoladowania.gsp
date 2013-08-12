@@ -2,8 +2,8 @@
     <fieldset style="text-align: center">
         <div class="belka-glowna"><g:message code="panel.recharge.title"/></div>
         <div style="text-align: center; padding-top: 20px; width: 600px" class="centre">
-            <div style="display: inline"><label><input type="checkbox" name=""/> <g:message code="panel.maintained"/></label></div>
-            <div style="display: inline"><label><input type="checkbox" name=""/> <g:message code="panel.maintained"/></label></div>
+            <div style="display: inline"><label><input type="checkbox" name=""/> <g:message code="panel.newpoint.terminaloptions.phonecreditsrecharge.telepompka"/></label></div>
+            <div style="display: inline"><label><input type="checkbox" name=""/> <g:message code="panel.newpoint.terminaloptions.phonecreditsrecharge.telekodzik"/></label></div>
 
             <div class="align-center" style="padding-top: 10px"><g:message code="panel.declared.selling.electronic.recharch"/></div>
             <table style="padding-top: 10px">
