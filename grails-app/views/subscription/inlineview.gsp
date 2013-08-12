@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <head>
-    <meta name="layout" content="main">
+    <meta name="layout" content="blank">
     <title><g:message code="subscription.title" /></title>
     <r:require module="signaturepad" />
     <r:require module="jquery_ui" />
@@ -10,21 +10,27 @@
 
     jQuery(document).ready(function() {
       jQuery('.sigPad').signaturePad({errorMessageDraw: '<g:message code="subscription.error" />'});
-      jQuery('#dialog').dialog({
-      	modal: true,
-      	width: 750
+      
+      jQuery('form').on("submit", function(e) {
+      	e.preventDefault();
+      	
+      	jQuery.post("/eumowy/subscription/saveSubscription", $(this).serialize(), function(data) {
+      		jQuery('#dialog').html(data);
+      	});
+      	
+      	return false;
       });
+      
     });
 
 </r:script>
-
 <div id="dialog">
 <section id="index-subscription">
     <h1 class="ng linia-bottom">Podpis</h1>
 
     <h3 style="margin-top: 20px">REPREZENTANT</h3>
 
-    <g:form  action="saveSubscription" class="sigPad">
+    <g:form  id="subscriptionForm" action="saveSubscription" class="sigPad">
         <p>
             <g:checkBox name="agreement"/>
             <label for="agreement">
@@ -41,7 +47,7 @@
 
         <fieldset style="margin-top: 20px;">
             <a href="#clear" class="button action clearButton"><g:message code="subscription.clear" /></a>
-            <g:submitButton name="Złożono podpis" class="button submit"/>
+            <g:submitButton id="submitSubscription" name="Złożono podpis" class="button submit"/>
         </fieldset>
 
     </g:form>

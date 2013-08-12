@@ -1308,3 +1308,28 @@ a.submit{
 	font-weight: bold;
 }
 
+.cardPaymentPanel-padding {
+    padding-left: 30px !important;
+}
+
+.big-link {
+	font-size: large;
+}
+
+#clientSignatureBackButton {
+}
+
+#clientSignaturePersons {
+	float: left;
+	margin-left: 1em;
+	margin-right: 1em;
+	height: 165px;
+	width: 70%;
+}
+
+#clientSignatureDocType {
+	float: left;
+	margin-right: 1em;
+	height: 165px;
+	width: 25%;
+}

@@ -1,9 +1,11 @@
 package signaturepad;
 
-import com.google.gson.Gson;
-
-import java.awt.*;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+
+import com.google.gson.Gson;
 
 /**
  *	Signature to Image: A supplemental script for Signature Pad that

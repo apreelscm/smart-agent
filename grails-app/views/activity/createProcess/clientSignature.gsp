@@ -25,7 +25,35 @@
         background-color: white;
     }
     </style>
-
+	<r:require module="jquery_ui" />
+	<r:script>
+		jQuery(document).ready(function(){
+			
+			<g:each in="${com.eservice.eumowy.Activity$ClientType?.values()}">
+			jQuery("#subscribe-${it.name()}").on('click', function(e) {
+				e.preventDefault();
+				
+				var dialog = jQuery('#subscriptionDialog');
+				if (jQuery('#subscriptionDialog').length == 0) {
+					dialog = jQuery('<div id="subscriptionDialog" style="display:hidden"></div>').appendTo('body');
+				}
+				
+				dialog.load(
+		            "/eumowy/subscription/inlineview",
+		            {},
+		            function(responseText, textStatus, XMLHttpRequest) {
+		                dialog.dialog({
+		                	modal: true,
+      						width: 750
+		                });
+		            }
+		        );
+		        
+				return false;
+			});
+			</g:each>
+		});
+	</r:script>
 </head>
 
 <body>
@@ -41,56 +69,60 @@
 
     <nav>
         <g:form>
-            <fieldset class="navButtons" >
+        	<fieldset id="clientSignaturePersons" class="subpanel-fieldset">
+        		<legend><g:message code="clientSignature.signing.people" default="Osoby podpisujące" /></legend>
+        		<ul class="table-list">
+        			<g:each in="${com.eservice.eumowy.Activity$ClientType?.values()}" >
+						<li><span><a class="big-link" href="#" id="subscribe-${it.name()}">${it}</a></span></li>
+					</g:each>
+        		</ul>
+        	</fieldset>
+        	<fieldset class="subpanel-fieldset" id="clientSignatureDocType">
+        		<legend><g:message code="clientSignature.version.title" default="Forma" /></legend>
+        		<ul class="table-list">
+        			<li>
+        				<span>
+        					<label>
+        						<g:radio name="requestVersion" value="electronical" checked="on"/>
+        						<g:message code="clientSignature.electronicalVersion.radio" default="Elektroniczna" />
+                            </label>
+                        </span>
+                    </li>
+                    <li>
+                    	<span>
+                    		<label>
+                                <g:radio name="requestVersion" value="paper"/>
+                                <g:message code="clientSignature.paperVersion.radio" default="Papierowa" />
+                            </label>
+                    	</span>
+                  	</li>
+                  	<li>
+                  		<span>
+                  			<label>
+                  				<g:radio name="requestVersion" value="templates" />
+                  				<g:message code="clientSignature.templatesVersion.radio" default="Żądanie wzorów dokumentów" />
+                  			</label>
+                  		</span>
+                  	</li>
+        		</ul>
+        	</fieldset>
+            <fieldset class="navButtons" style="clear: both;">
                 <table id="signatureNavTable">
-                    <colgroup>
-                        <col style="width: 25%;" />
-                        <col style="width: 20%" />
-                        <col style="width: 25%" />
-                        <col style="width: 30%" />
-                    </colgroup>
                     <tbody>
                     <tr>
-                        <td>
-                            <g:submitButton name="noaccept" class="button submit display-inline" style="height: 45px; width: 100%"
+                    	<td id="clientSignatureBackButton">
+                            <g:link style="width: 100%" event="back" class="button submit">${message(code:'default.navigation.button.prev', default: 'Wstecz')}</g:link>
+                        </td>
+                        <td style="text-align: right;">
+                            <g:submitButton name="noaccept" class="button submit display-inline" style="width: 90%"
                                             value="${message(code: 'clientSignature.noAcceptance.button', default:'Brak akceptacji')}"/>
                         </td>
                         <td>
-                            <g:select id="statusSelect" name="status" from="${com.eservice.eumowy.Activity$ClientType?.values()}"
-                                      keys="${com.eservice.eumowy.Activity$ClientType.values()*.name()}"
-                                      value="${com.eservice.eumowy.Activity.ClientType.REPRESENTIVE.name()}"
-                                      noSelection="['': '']"
-                                      class="display-inline"
-                                      style="width: 100%"
-                            />
-                        </td>
-                        <td>
-                            <g:submitButton name="subscribe" class="button submit display-inline" style=" height: 45px;width: 100%;"
-                                            value="${message(code: 'clientSignature.signDocument.button', default:'Podpisz dokument')}"/>
-                        </td>
-                        <td>
-                            <div class="display-inline-block" style="width: 100%;" >
-                                <div style="text-align: left">
-                                    <label>
-                                        <g:radio name="requestVersion" value="electronical" checked="on"/>
-                                        <g:message code="clientSignature.electronicalVersion.radio" default="Żądanie wersji elektronicznej" />
-                                    </label>
-                                </div>
-                                <div style="text-align: left">
-                                    <label>
-                                        <g:radio name="requestVersion" value="paper"/>
-                                        <g:message code="clientSignature.paperVersion.radio" default="Żądanie wersji papierowej" />
-                                    </label>
-                                </div>
-                            </div>
+                            <g:submitButton style="width: 100%" id="conitnueButton" name="submit" class="button submit" value="${message(code: 'default.navigation.button.finish', default: 'Zakończ')}"/>
                         </td>
                     </tr>
                     </tbody>
                 </table>
-
-                <g:link event="back" class="button submit">${message(code:'default.navigation.button.prev', default: 'Wstecz')}</g:link>
-                <g:submitButton id="conitnueButton" name="submit" class="button submit" value="${message(code: 'default.navigation.button.finish', default: 'Zakończ')}"/>
-
             </fieldset>
         </g:form>
     </nav>
