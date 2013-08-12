@@ -1,15 +1,8 @@
 package com.eservice.eumowy
 
-import eservice.docx.converter.domain.Acceptor
-import eservice.docx.converter.domain.AggreementTime
-import eservice.docx.converter.domain.Dokument
-import eservice.docx.converter.domain.PH
-import eservice.docx.converter.domain.POMPoint
-import eservice.docx.converter.domain.POS
-import eservice.docx.converter.domain.POSPayment
-import eservice.docx.converter.domain.Representant
-import grails.test.mixin.*
-import org.junit.*
+import eservice.docx.converter.domain.*
+import grails.test.mixin.TestFor
+import org.junit.BeforeClass
 
 import java.text.DateFormat
 import java.text.DecimalFormat

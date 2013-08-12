@@ -17,7 +17,8 @@ import java.awt.image.BufferedImage;
 public class SignatureToImage {
 
     public static BufferedImage convertJsonToImage(String jsonString){
-        Gson gson = new Gson();
+        System.out.println( "convertJsonToImage:"+jsonString);
+                Gson gson = new Gson();
         SignatureLine[] signatureLines = gson.fromJson(jsonString, SignatureLine[].class);
         BufferedImage offscreenImage = new BufferedImage(600, 250, BufferedImage.TYPE_INT_RGB);
         Graphics2D g2 = offscreenImage.createGraphics();

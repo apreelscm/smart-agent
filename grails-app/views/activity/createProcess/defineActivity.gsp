@@ -54,8 +54,15 @@
                     </div>
 
                     <div class="checkBoxBlock">
+                        <g:checkBox id="dodanieAneksuKosztyPlusCB" name="dodanieAneksuKosztyPlus"/>
+                        <label for="dodanieAneksuKosztyPlusCB"><g:message code="activity.dodanieAneksuKosztyPlus.name" default="Dodanie aneksu Koszty +"/></label>
+                    </div>
 
-                        <a class="expander expanderSub expanded" href="#"><g:message code="activity.dodanieAneksuKosztyPlus.name" default="Dodanie aneksu Koszty +"/></a>
+
+
+                    <div class="checkBoxBlock">
+
+                        <a class="expander expanderSub expanded" href="#"><g:message code="activity.zmianaOplatyZaNajemIDodFunkc.name" default="Zmiana opłaty za najem i dod.Funkc."/></a>
 
                         <div class="content nesting-sub2" style="display: block;">
                             <div class="checkBoxBlock">
@@ -152,6 +159,13 @@
                 <div class="checkBoxBlock">
                     <g:checkBox id="odrzucDokumentyCB" name="odrzucDokumenty"/>
                     <a class="expandHeader expanded" href="#"><label for="odrzucDokumentyCB"><g:message code="activity.odrzucDokumenty.name" default="Odrzuć jeszcze niezaakceptowane dokumenty"/> </label></a>
+                </div>
+            </div>
+
+            <div id="uzupelnijPodpisy" class="expendable">
+                <div class="checkBoxBlock">
+                    <g:checkBox id="uzupelnijPodpisyCB" name="uzupelnijPodpisy"/>
+                    <a class="expandHeader expanded" href="#"><label for="uzupelnijPodpisyCB"><g:message code="activity.uzupelnijPodpisy.name" default="Uzupełnij podpisy"/> </label></a>
                 </div>
             </div>
         </div>

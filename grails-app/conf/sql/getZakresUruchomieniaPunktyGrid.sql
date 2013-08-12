@@ -15,7 +15,7 @@ SELECT   k.kln_nazwa,
                (SELECT   kln_id
                   FROM   cbt_klienci m
                  WHERE       kln_poziom = 'MRC'
-                         AND kln_nip = '5940001297'
+                         AND kln_nip =:nip
                          AND kln_status NOT IN ('N', 'O')
                          AND kln_qcards_nr = 1
                          AND EXISTS

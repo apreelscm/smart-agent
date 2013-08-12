@@ -87,14 +87,15 @@
         <nav>
             <fieldset class="przyciski">
                 <g:hiddenField name="id" value="${processInstance.id}"/>
-                <g:actionSubmit class="button submit" value="Wróć" action="list" style="float: left" />
+                <g:actionSubmit class="button submit float-left" value="Wróć" action="list"  />
+                <g:actionSubmit class="button submit" action="reject" value="Odrzuć"
+                                style="float: left;margin-right: 1em;display:${!isNewProcess ? 'block' : 'block'}"
+                                formnovalidate=""
+                                onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
                 <g:actionSubmit class="button submit" action="accept" value="Zaakceptuj"
                                 style="float: right;display:${!isNewProcess ? 'block' : 'block'}"
                                 onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
-                <g:actionSubmit class="button submit" action="reject" value="Odrzuć"
-                                style="float: right;margin-right: 1em;display:${!isNewProcess ? 'block' : 'block'}"
-                                formnovalidate=""
-                                onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
+
             </fieldset>
         </nav>
     </g:form>

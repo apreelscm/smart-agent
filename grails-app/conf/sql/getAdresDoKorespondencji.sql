@@ -1,7 +1,7 @@
-SELECT VALUE FROM (SELECT RV_LOW_VALUE VALUE,RV_MEANING   MEANING FROM CG_REF_CODES WHERE RV_DOMAIN = 'LW_TYP_ULICY')
-
--- i dodatkowo wartość z bazy
-SELECT adr_typ_ulicy from cbt_adresy a
+SELECT a.adr_ulica as ulica, a.adr_nr_lokal as nr_lokal,
+ a.adr_nr_budynku as nr_budynku, a.adr_miejscowosc as miejscowosc,
+  a.adr_kod_pocztowy as kod_pocztowy, a.adr_miejscowosc as poczta ,a.adr_typ_ulicy as typ_ulicy
+  from cbt_adresy a
 join cbt_klienci k on a.adr_kln_id=k.kln_id
 where k.kln_kln_id in
 (

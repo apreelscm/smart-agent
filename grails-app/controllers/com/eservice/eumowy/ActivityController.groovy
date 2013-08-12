@@ -10,6 +10,7 @@ class ActivityController {
     //def emailService
     def emailService
     def cbdService
+    def attachmentService
 
     def index() {
         redirect(action: "createProcess", params: params)
@@ -82,8 +83,9 @@ class ActivityController {
                 ((Process)processInstance).save();
 
                 flow.processInstance = processInstance
-            }.to "selectedPanels"
+            }.to "preparePanels"
         }
+
 
         getCalculator {
             action {  GetCalculatorCommand cmd ->
@@ -173,6 +175,13 @@ class ActivityController {
             on("error").to "chooseCalc"
         }
 
+        preparePanels {
+            action {
+                flow.files = attachmentService.getList();
+            }
+            on("success").to "selectedPanels"
+        }
+
         selectedPanels{
             on("back").to "chooseCalc"
             on("continue"){
@@ -181,7 +190,21 @@ class ActivityController {
                 flow.processInstance = processInstance
             }.to "clientSignature"
             on("uploadFile").to "uploadFile"
+            on("deleteFile").to "deleteFile"
         }
+
+
+      /*  def index = {
+            log.debug "Uploaded file with id=${params.ufileId}"
+            [files: UFile.list(), params:params]
+        }
+
+
+        def delete = {
+            def ufile = UFile.get(params.id)
+            ufile.delete()
+            redirect(action: "index")
+        }*/
 
         uploadFile{
             action {
@@ -267,7 +290,17 @@ class ActivityController {
 
                 println "params.successController:"+params.successController
                 flash.uploadInfoMessage = "Załącznik został dodany"
-                //  redirect controller: params.successController, action: params.successAction, params:[ufileId:ufile.id, id: params.id]
+                flow.files =  attachmentService.getList();
+            }
+            on("success").to "selectedPanels"
+            on("error").to "selectedPanels"
+        }
+
+
+        deleteFile{
+            action {
+                attachmentService.deleteFile(params.id);
+                flow.files = attachmentService.getList();
             }
             on("success").to "selectedPanels"
             on("error").to "selectedPanels"

@@ -61,6 +61,8 @@ class BootStrap {
                 .addToDocuments(new DocumentFile(filename: "pedef2.pdf"))
                 .addToAttachments(new AttachmentFile(filename: "pedef3.pdf")).save();
 
+
+
         new EmailTemplates(name: EmailTemplates.EmailTemplateType.NOTES_TO_COA,
                 sender: "apreel.eUmowy@gmail.com",
                 recipent: "apreel.eUmowy@gmail.com").save();

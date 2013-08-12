@@ -52,6 +52,8 @@
 
     <g:render template="/panels/uwagi"/>
 
+    <g:render template="/panels/zalaczniki"/>
+
     <g:form>
         <nav style="margin-top: 20px">
             <fieldset>

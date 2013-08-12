@@ -32,6 +32,9 @@ class ProcessController {
                 filterStatus:"",
                 filterObserved:"",
                 filterNip:"",
+                filterPhNo:"",
+                filterDateFromDF:"",
+                filterDateToDF:"",
                 processInstanceList: Process.list(params),
                 processInstanceTotal: Process.count()]
         else{
@@ -44,6 +47,9 @@ class ProcessController {
             [ filterStatus:params.filterStatus,
                     filterObserved: params.filterObserved,
                     filterNip:params.filterNip,
+                    filterPhNo:params.filterPhNo,
+                    filterDateFromDF:params.filterDateFromDF,
+                    filterDateToDF:params.filterDateToDF,
                     processInstanceList: processes.searchResults ,
                     processInstanceTotal: processes.searchResultSize]
         }

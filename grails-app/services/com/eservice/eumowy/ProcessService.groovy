@@ -7,6 +7,11 @@ class ProcessService {
         def filterStatus = params.filterStatus
         def filterNip = params.filterNip
 
+        def filterPhNo = params.filterPhNo
+        def filterDateFromDF = params.filterDateFromDF
+        def filterDateToDF = params.filterDateToDF
+
+
         log.info(filterObserved + " --- " + filterStatus);
 
         def clientCriteria = Process.createCriteria()
@@ -22,6 +27,15 @@ class ProcessService {
                     eq("nip", filterNip)
                 }
             }
+
+            if(filterPhNo && filterPhNo != "") {
+                eq("phNumber", filterPhNo)
+            }
+
+            if(filterDateFromDF != null && filterDateToDF != null) {
+                between("dateCreated",filterDateFromDF,filterDateToDF)
+            }
+
         }
         [searchResults: searchResults, searchResultSize: searchResults.getTotalCount()]
     }

@@ -60,8 +60,9 @@
         restrictionsMap["komfortCB"] =  ["nowaUmowa"];
         restrictionsMap["prestizCB"] =  ["nowaUmowa"];
 
-        restrictionsMap["poprawDaneCB"] = ["nowaUmowa", "rozszerzenie", "zmianaWarunkow", "odrzucDokumenty", "pakietSerwisowy", "dodatkoweFuncjonalnosci"];
-        restrictionsMap["odrzucDokumentyCB"] = ["nowaUmowa","rozszerzenie", "zmianaWarunkow", "poprawDane", "pakietSerwisowy", "dodatkoweFuncjonalnosci"];
+        restrictionsMap["poprawDaneCB"] = ["nowaUmowa", "rozszerzenie", "zmianaWarunkow", "odrzucDokumenty","uzupelnijPodpisy", "pakietSerwisowy", "dodatkoweFuncjonalnosci"];
+        restrictionsMap["odrzucDokumentyCB"] = ["nowaUmowa","rozszerzenie", "zmianaWarunkow", "poprawDane", "pakietSerwisowy","uzupelnijPodpisy", "dodatkoweFuncjonalnosci"];
+        restrictionsMap["uzupelnijPodpisyCB"] = ["nowaUmowa","rozszerzenie", "zmianaWarunkow", "poprawDane","odrzucDokumenty", "pakietSerwisowy", "dodatkoweFuncjonalnosci"];
 
         var restrictions = new Array();
 

@@ -73,15 +73,11 @@ grails.project.dependency.resolution = {
         //runtime ":cached-resources:1.0"
         //runtime ":yui-minify-resources:0.1.5"
 
-
         build ":tomcat:$grailsVersion"
 
         compile ':cache:1.0.1'
         compile ':webflow:2.0.8.1'
-
-        /* compile(":liquibase:1.9.3.6") {
-             exclude 'data-source'
-         }*/
+      //  compile ":springcache:1.3.2-SNAPSHOT"
     }
 
 }
