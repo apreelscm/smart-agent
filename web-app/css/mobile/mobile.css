@@ -139,6 +139,24 @@
     }
 
 
-
+	#clientSignatureBackButton {
+		padding-left: 0;
+		padding-right: 1.5em;
+	}
+	
+	#clientSignaturePersons {
+		float: left;
+		margin-left: 1em;
+		margin-right: 1em;
+		height: 165px;
+		width: 60%;
+	}
+	
+	#clientSignatureDocType {
+		float: left;
+		margin-right: 1em;
+		height: 165px;
+		width: 25%;
+	}
 
 }

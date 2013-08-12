@@ -11,6 +11,10 @@ class SubscriptionController {
 		
 	}
 	
+	def inlineview() {
+		
+	}
+	
 	def saveSubscription() {
 		def subscription = new Subscription(params).save();
 
