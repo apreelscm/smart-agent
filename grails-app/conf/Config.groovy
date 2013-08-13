@@ -155,8 +155,8 @@ trustAll = true
 
 fileuploader {
     attachments {
-        maxSize =  1 * FileUploaderTagLib._mbyte;
-        allowedExtensions = ["pdf"]
+        maxSize =  10 * FileUploaderTagLib._mbyte;
+        allowedExtensions = ["jpg", "tiff", "pdf", "gif"]
         path = "/tmp/attachment/"
     }
 }
