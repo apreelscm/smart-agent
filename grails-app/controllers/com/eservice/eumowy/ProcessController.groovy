@@ -2,6 +2,8 @@ package com.eservice.eumowy
 
 import grails.plugins.springsecurity.Secured
 
+import java.sql.Blob
+
 class ProcessController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
@@ -179,6 +181,36 @@ class ProcessController {
             response.setHeader "Content-disposition", "attachment; filename=\"${fileName}\"";
             response.outputStream << fileAtt.newInputStream();
             response.outputStream.flush();
+        }
+    }
+
+    def downloadAttachment(){
+
+        AttachmentFile ufile =  AttachmentFile.get(params.id)
+       /* if (!ufile) {
+            def msg = messageSource.getMessage("fileupload.download.nofile", [params.id] as Object[], request.locale)
+            log.debug msg
+            flash.message = msg
+            redirect controller: params.errorController, action: params.errorAction
+            return
+        }*/
+
+        Blob file = ufile?.file?.content;
+
+        if (file != null) {
+            log.debug "Serving file id=[${ufile.id}] for the ${ufile.downloads} to ${request.remoteAddr}"
+            ufile.downloads++
+            ufile.save()
+            response.setContentType("application/octet-stream")
+            response.setHeader("Content-disposition", "${params.contentDisposition}; filename=${file.name}")
+            response.outputStream << file.binaryStream
+            return
+        } else {
+        //    def msg = messageSource.getMessage("fileupload.download.filenotfound", [ufile.name] as Object[], request.locale)
+            log.error msg
+            flash.message = msg
+            redirect controller: params.errorController, action: params.errorAction
+            return
         }
     }
 

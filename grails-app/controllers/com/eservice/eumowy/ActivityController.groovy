@@ -221,9 +221,7 @@ class ActivityController {
 
         def msg = attachmentService.uploadFile(upload,config,request, messageSource);
 
-
         if(msg.equals(true)){
-            //render(template:"message/infoMessage", model:[message:"Załącznik został dodany"]);
             render "";
         }
         else{
@@ -232,7 +230,6 @@ class ActivityController {
     }
 
     def deleteFile(){
-        println("deleteFile:"+params);
         attachmentService.deleteFile(params.id);
         getAttachmentList()
     }

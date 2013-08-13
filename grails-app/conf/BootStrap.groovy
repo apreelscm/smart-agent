@@ -49,19 +49,19 @@ class BootStrap {
                         saleSection: 'segment1', phNumber: '12345',
                         phSurname: 'Kowalski', calcNumber: '44444' , status: Process.ProcessStatus.REJECTED,
                         client: Client.findByName("clientName1"))
-                        .addToDocuments(new DocumentFile(filename: "pedef.pdf"))
-                        .addToDocuments(new DocumentFile(filename: "pedef2.pdf"))
-                        .addToAttachments(new AttachmentFile(filename: "pedef.pdf"))
-                        .addToAttachments(new AttachmentFile(filename: "pedef2.pdf"))
-                        .addToAttachments(new AttachmentFile(filename: "pedef3.pdf")).save();
+                        .addToDocuments(new DocumentFile(name: "pedef.pdf"))
+                        .addToDocuments(new DocumentFile(name: "pedef2.pdf"))
+                        .addToAttachments(new AttachmentFile(name: "pedef.pdf"))
+                        .addToAttachments(new AttachmentFile(name: "pedef2.pdf"))
+                        .addToAttachments(new AttachmentFile(name: "pedef3.pdf")).save();
 
                 new Process(id: "000002", phFirstName: "Wanda",
                         saleSection: 'segment2', phNumber: '321',
                         phSurname: 'Iksińska',calcNumber: '33333', status: Process.ProcessStatus.REJECTED,
                         client:  Client.findByName("clientName2"))
-                        .addToDocuments(new DocumentFile(filename: "pedef.pdf"))
-                        .addToDocuments(new DocumentFile(filename: "pedef2.pdf"))
-                        .addToAttachments(new AttachmentFile(filename: "pedef3.pdf")).save();
+                        .addToDocuments(new DocumentFile(name: "pedef.pdf"))
+                        .addToDocuments(new DocumentFile(name: "pedef2.pdf"))
+                        .addToAttachments(new AttachmentFile(name: "pedef3.pdf")).save();
 
 
 

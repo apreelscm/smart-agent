@@ -9,7 +9,7 @@ package com.eservice.eumowy
 class DocumentFile {
 
     Integer id
-    String filename
+    String name
     Date dateCreated
     Date lastUpdated
 
@@ -17,7 +17,7 @@ class DocumentFile {
 
     static constraints = {
         id(unique:true,blank:false)
-        filename(unique:false,blank:false)
+        name(unique:false,blank:false)
     }
 
     static mapping = {

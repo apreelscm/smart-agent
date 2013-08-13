@@ -1,6 +1,10 @@
 package com.eservice.eumowy
 
-import com.lucastex.grails.fileuploader.UFile
+import org.springframework.web.multipart.commons.CommonsMultipartFile
+
+import javax.sql.rowset.serial.SerialBlob
+import java.sql.Blob
+
 
 class AttachmentService {
 
@@ -9,19 +13,18 @@ class AttachmentService {
 
         println("fileId"+id)
         def fileId = java.lang.Integer.valueOf(id);
-        UFile ufile = UFile.get(fileId);
+        AttachmentFile ufile = AttachmentFile.get(fileId);
         ufile.delete()
     }
 
     def getList() {
-        println("params"+ UFile.list())
-        UFile.list()
+        println("params"+ AttachmentFile.list())
+        AttachmentFile.list()
     }
-
 
     def uploadFile(def upload, def config, def request, def messageSource) {
 
-        def file = request.getFile("file")
+        CommonsMultipartFile file = request.getFile("file")
 
         //base path to save file
         def path = config.path
@@ -65,25 +68,35 @@ class AttachmentService {
         //plugin will accept any size of files).
 
         //sets new path
-        def currentTime = System.currentTimeMillis()
-        path = path + currentTime + "/"
+
+       /* path = path + currentTime + "/"
         if (!new File(path).mkdirs())
             log.error "FileUploader plugin couldn't create directories: [${path}]"
         path = path + file.originalFilename
 
         //move file
         log.info "FileUploader plugin received a ${file.size}b file. Moving to ${new File(path).absolutePath}"
-        file.transferTo(new File(path))
+        file.transferTo(new File(path))*/
 
         //save it on the database
-        def ufile = new UFile()
+        def currentTime = System.currentTimeMillis()
+        def ufile = new AttachmentFile()
         ufile.name = file.originalFilename
-        ufile.size = file.size
+        ufile.fileSize = file.size
         ufile.extension = fileExtension
         ufile.dateUploaded = new Date(currentTime)
         ufile.path = path
         ufile.downloads = 0
-        ufile.save()
+        ufile.save(flush:true)
+
+        byte[] byteArray = file.bytes;
+        Blob blob = new SerialBlob(byteArray);
+
+        def attContent = new AttachmentContent()
+        attContent.attachment = ufile;
+        attContent.content =  blob;
+        println("aaa:"+attContent)
+        attContent.save(flush:true);
 
         return true;
     }

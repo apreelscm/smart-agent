@@ -117,7 +117,6 @@ log4j = {
         console name: 'stdout', layout: pattern(conversionPattern: '%d{dd-MM-yyyy HH:mm:ss,SSS} %5p %c - %m%n')
     }
 
-
 }
 
 // Added by the Spring Security Core plugin:

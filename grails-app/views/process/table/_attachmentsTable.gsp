@@ -12,9 +12,9 @@
     <g:each in="${processInstance.attachments}" status="i" var="attachment">
         <tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
             <td class="tableCellLeft" ><g:remoteLink action="showPdfByDocumentId" class="wrapped"
-                                                     title="${fieldValue(bean: attachment, field: "filename")}"
+                                                     title="${fieldValue(bean: attachment, field: "name")}"
                                                      update="pdfBox"
-                                                     params="[id: attachment.id]">${fieldValue(bean: attachment, field: "filename")}</g:remoteLink></td>
+                                                     params="[id: attachment.id]">${fieldValue(bean: attachment, field: "name")}</g:remoteLink></td>
             <td class="tableCell"><g:formatDate date="${attachment.lastUpdated}" /></td>
 
             <td class="tableCell">

@@ -65,7 +65,13 @@
     <p id="clock"/>
 </g:if>
 
-<div id="spinner" class="spinner" style="display:none;"><g:message code="spinner.alt" default="Loading&hellip;"/></div>
+
+
+%{--    <div id="spinner" class="spinner" >
+        <g:message code="spinner.alt" default="Proszę czekać..."/>
+    </div>--}%
+
+
 <g:javascript library="application"/>
 <r:layoutResources/>
 

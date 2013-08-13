@@ -22,7 +22,7 @@
     <g:each in="${processInstance.documents}" status="i" var="document">
         <tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
             <td class="tableCellLeft"  class="wrapped"><g:remoteLink action="showPdfByDocumentId" class="wrapped"
-                                                     title="${fieldValue(bean: document, field: "filename")}"
+                                                     title="${fieldValue(bean: document, field: "name")}"
                                                      update="pdfBox"
                                                      onSuccess="showPdfBox('pdfBox')"
                                                      params="[id: document.id]">
