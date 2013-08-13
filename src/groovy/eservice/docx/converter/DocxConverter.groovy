@@ -56,6 +56,8 @@ class DocxConverter {
 
         context.put(DOCUMENT_OBJECT_NAME, dokument);
         context.put("zestawyPOM", dokument.pomPoints);
+        context.put("dccZestawyPOM", dokument.dccPomPoints);
+        context.put("cardPomPoints", dokument.cardPomPoints);
         context.put("platnosciPOS", dokument.platnosciPOS);
         context.put("oplatyPOS", dokument.oplatyZaPOS);
         context.put("prefrencyjneOplatyPOS", dokument.preferencyjneOplatyZaPOS);
@@ -65,7 +67,7 @@ class DocxConverter {
         OutputStream outputStream = new FileOutputStream(new File(outputFileName));
         report.process( context, outputStream );
 
-        convertToPDFWithXWPDF(outputFileName);
+//        convertToPDFWithXWPDF(outputFileName);
     }
 
     def static convertToPDFWithXWPDF(fileName){
