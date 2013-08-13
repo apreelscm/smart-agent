@@ -24,8 +24,10 @@
                        data-classButton="button action"
                        data-buttonText="Dodaj plik"
                        data-input="false"/>
-            </g:form>
 
+                <div id="spinner2" class="spinner-big display-inline-block display-none" style="margin-left: 5px" ></div>
+
+            </g:form>
 
         </div>
 </fieldset>

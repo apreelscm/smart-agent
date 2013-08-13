@@ -15,24 +15,29 @@
 
             <g:remoteFunction action="getAttachmentList" update="attachmentsBox"/>
 
-           $j("#fileUploadInput").change(function (){
-                    $j('#uploadForm').submit();
-                //$j( "label[for='fileUploadInput']" ).html( "Hot Fuzz3" );
-                });
+        $j("#fileUploadInput").change(function (){
+                 $j('#spinner2').removeClass("display-none");
+                 $j('#uploadForm').submit();
+             });
 
-            $j("#hidden-upload-frame").load(function(){
-               var content = this.contentDocument.body.innerHTML
+         $j("#hidden-upload-frame").load(function(){
 
-                //resetting file input
-                $j('#uploadForm').each(function(){
-                    this.reset();
-                });
+          $j('#spinner2').addClass("display-none");
+          fileUploadInput
 
-                $j('#statusBox').html(content);
+            var content = this.contentDocument.body.innerHTML
 
-                var isError = $j('#statusBox ul').hasClass("errors")
-                if(!isError){
-                    <g:remoteFunction action="getAttachmentList" update="attachmentsBox"/>
+             //resetting file input
+             $j('#uploadForm').each(function(){
+                 this.reset();
+             });
+
+
+             $j('#statusBox').html(content);
+
+             var isError = $j('#statusBox ul').hasClass("errors")
+             if(!isError){
+        <g:remoteFunction action="getAttachmentList" update="attachmentsBox"/>
         }
 
     });
@@ -41,28 +46,28 @@
     </g:javascript>
 
     <style>
-#uploads {
-    margin: 6px 0;
-    padding: 0 0 9px;
-    position: relative;
-    width: 310px;
-}
-#uploads div.fakeupload {
-    background: #FF0000 no-repeat scroll 100% 50% transparent;
-    cursor: pointer;
-}
-#uploads div.fakeupload input {
-    width: 219px;
-    height: 29px;
-}
-#uploads input.realupload {
-    opacity: 0;
-    position: absolute;
-    right: 0;
-    top: 0;
-    width: 310px;
-    z-index: 2;
-}
+    #uploads {
+        margin: 6px 0;
+        padding: 0 0 9px;
+        position: relative;
+        width: 310px;
+    }
+    #uploads div.fakeupload {
+        background: #FF0000 no-repeat scroll 100% 50% transparent;
+        cursor: pointer;
+    }
+    #uploads div.fakeupload input {
+        width: 219px;
+        height: 29px;
+    }
+    #uploads input.realupload {
+        opacity: 0;
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 310px;
+        z-index: 2;
+    }
     </style>
 </head>
 <body>

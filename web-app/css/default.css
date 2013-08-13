@@ -216,6 +216,18 @@ object, a:focus {
     text-indent: -9999px;
 }
 
+
+.spinner-big {
+    background: url(../images/spinner-big.gif) center center no-repeat transparent ;
+    height: 24px;
+    width: 24px;
+    background-size: cover;
+    position: relative;
+    top: 6px;
+
+}
+
+
 /* Table
 -------------------------------------------------------------------*/
 body, td, th {
@@ -1332,4 +1344,11 @@ a.submit{
 	margin-right: 1em;
 	height: 165px;
 	width: 25%;
+}
+
+.no-close .ui-dialog-titlebar {
+    display: none;
+}
+
+.ui-widget-overlay{
 }
