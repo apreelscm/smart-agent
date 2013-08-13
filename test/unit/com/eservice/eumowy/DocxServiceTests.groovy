@@ -1,8 +1,17 @@
 package com.eservice.eumowy
 
-import eservice.docx.converter.domain.*
-import grails.test.mixin.TestFor
-import org.junit.BeforeClass
+import eservice.docx.converter.domain.Acceptor
+import eservice.docx.converter.domain.AggreementTime
+import eservice.docx.converter.domain.CardPOMPoint
+import eservice.docx.converter.domain.DccPOMPoint
+import eservice.docx.converter.domain.Dokument
+import eservice.docx.converter.domain.PH
+import eservice.docx.converter.domain.POMPoint
+import eservice.docx.converter.domain.POS
+import eservice.docx.converter.domain.POSPayment
+import eservice.docx.converter.domain.Representant
+import grails.test.mixin.*
+import org.junit.*
 
 import java.text.DateFormat
 import java.text.DecimalFormat
@@ -54,10 +63,31 @@ class DocxServiceTests {
                     pelnaNazwaPunktu: getRandom(type) + " \"" + getRandom(name) + "\"",
                     ulicaINumerDomu: getRandom(streets) + " 4/6",
                     miejscowosc: getRandom(cities),
+                    kodPocztowy: "09-123"))
+        }
+
+        List DCCPOMPoints = []
+        for ( i in 0..random.nextInt(20)) {
+            DCCPOMPoints.add(new DccPOMPoint(
+                    pelnaNazwaPunktu: getRandom(type) + " \"" + getRandom(name) + "\"",
+                    ulicaINumerDomu: getRandom(streets) + " 4/6",
+                    miejscowosc: getRandom(cities),
                     kodPocztowy: "09-123",
                     liczbaZestawowZUslugaDCC: getRandomFormattedInt(10)))
         }
 
+        List cardPomPoints = []
+        for ( i in 0..random.nextInt(15)) {
+            cardPomPoints.add(new CardPOMPoint(
+                    pelnaNazwaPunktu: getRandom(type) + " \"" + getRandom(name) + "\"",
+                    ulicaINumerDomu: getRandom(streets) + " 4/6",
+                    miejscowosc: getRandom(cities),
+                    kodPocztowy: "09-123",
+                    tytulPlatnosci: getRandomBoolean(),
+                    uta: getRandomBoolean(),
+                    systemKasowy: getRandomBoolean()
+            ))
+        }
 
         List POSPayments = []
         for ( i in 0..random.nextInt(5)) {
@@ -83,11 +113,59 @@ class DocxServiceTests {
             ));
         }
 
+
+
+        String pp_orange_tk
+        String pp_orange_tp
+        String pp_plus_tk
+        String pp_plus_tp
+        String pp_tmobile_tk
+        String pp_tmobile_tp
+        String pp_heyah_tk
+        String pp_heyah_tp
+        String pp_play_tk
+        String pp_play_tp
+        String pp_telegrosik_tk
+        String pp_virginmobile_tk
+        String pp_lycamobile_tk
+        String pp_gtmobile_tk
+        String pp_vectonemobile_tk
+        String pp_delightmobile_tk
+
+
+        Boolean telePOMPKA = new Boolean(false);
+        Boolean teleKODZIK = new Boolean(true);
+
+
+
+        if (telePOMPKA){
+            pp_orange_tp =  getRandomFormattedDouble(2)
+            pp_plus_tp = getRandomFormattedDouble(2)
+            pp_tmobile_tp = getRandomFormattedDouble(2)
+            pp_heyah_tp = getRandomFormattedDouble(2)
+            pp_play_tp = getRandomFormattedDouble(2)
+        }
+
+        if (teleKODZIK){
+            pp_orange_tk = getRandomFormattedDouble(2)
+            pp_plus_tk = getRandomFormattedDouble(2)
+            pp_tmobile_tk = getRandomFormattedDouble(2)
+            pp_heyah_tk = getRandomFormattedDouble(2)
+            pp_play_tk = getRandomFormattedDouble(2)
+            pp_telegrosik_tk = getRandomFormattedDouble(2)
+            pp_virginmobile_tk = getRandomFormattedDouble(2)
+            pp_lycamobile_tk = getRandomFormattedDouble(2)
+            pp_gtmobile_tk = getRandomFormattedDouble(2)
+            pp_vectonemobile_tk = getRandomFormattedDouble(2)
+            pp_delightmobile_tk = getRandomFormattedDouble(2)
+        }
+
         dokument = new Dokument(
                 ph: ph,
                 akceptant: acceptor,
                 dataPodpisaniaUmowy: getRandomFormattedDate(),
-                dataPodpisaniaAneksu: getRandomFormattedDate(),
+                dataPodpisaniaAneksuPOZ: getRandomFormattedDate(),
+                dataPodpisaniaAneksuPrepaid: getRandomFormattedDate(),
                 oplataZaTransakcjeInternetowe: getRandomFormattedDouble(200),
                 oplataZaPrzyjmowanieZaplatyKartamiWObcejWalucie: getRandomFormattedDouble(200),
                 oplataZaUruchomieniePrzyjmowaniaZaplatyKartamiWObcejWalucie: getRandomFormattedDouble(200),
@@ -111,6 +189,8 @@ class DocxServiceTests {
                 zgodaNaOtrzymywanieInformacjiHandlowych: new Boolean(false),
 
                 pomPoints: POMPoints,
+                dccPomPoints: DCCPOMPoints,
+                cardPomPoints: cardPomPoints,
 
                 czasUmowy: new AggreementTime(czasOkreslony: new Boolean(false), poczatek: getRandomFormattedDate(), koniec: getRandomFormattedDate()),
 
@@ -157,9 +237,53 @@ class DocxServiceTests {
                 oplataZaDostarczeniePapieru: getRandomFormattedDouble(40),
                 oplataZaInstalacjePOS: getRandomFormattedDouble(30),
                 oplataZaInstalacjeGPRS: getRandomFormattedDouble(10),
-                oplataZaZmianeGrafiki: getRandomFormattedDouble(15)
+                oplataZaZmianeGrafiki: getRandomFormattedDouble(15),
+
+                teleKODZIK: teleKODZIK,
+                telePOMPKA: telePOMPKA,
+
+                pp_orange_tk: pp_orange_tk,
+                pp_orange_tp: pp_orange_tp,
+                pp_plus_tk: pp_plus_tk,
+                pp_plus_tp: pp_plus_tp,
+                pp_tmobile_tk: pp_tmobile_tk,
+                pp_tmobile_tp: pp_tmobile_tp,
+                pp_heyah_tk: pp_heyah_tk,
+                pp_heyah_tp: pp_heyah_tp,
+                pp_play_tk: pp_play_tk,
+                pp_play_tp: pp_play_tp,
+                pp_telegrosik_tk: pp_telegrosik_tk,
+                pp_virginmobile_tk: pp_virginmobile_tk,
+                pp_lycamobile_tk: pp_lycamobile_tk,
+                pp_gtmobile_tk: pp_gtmobile_tk,
+                pp_vectonemobile_tk: pp_vectonemobile_tk,
+                pp_delightmobile_tk: pp_delightmobile_tk,
+
+                deklarowanaSprzedazDoladowan: "123",
+                deklarowanaSprzedazDoladowanSlownie: "sto dwadzieścia trzy",
+
+                card_p_54: getRandomFormattedDouble(3),
+                card_f_54: getRandomFormattedDouble(2),
+                card_p_841: getRandomFormattedDouble(4),
+                card_f_841: getRandomFormattedDouble(1),
+
+                oplataZaOprogramowanieDoDoladowan: getRandomFormattedDouble(40)
+
         );
     }
+
+//
+//    String pp_orange_tk, pp_orange_tp;
+//    String pp_plus_tk, pp_plus_tp;
+//    String pp_tmobile_tk, pp_tmobile_tp;
+//    String pp_heyah_tk, pp_heyah_tp;
+//    String pp_play_tk, pp_play_tp;
+//    String pp_telegrosik_tk
+//    String pp_virginmobile_tk
+//    String pp_lycamobile_tk
+//    String pp_gtmobile_tk
+//    String pp_vectonemobile_tk
+//    String pp_delightmobile_tk
 
 
     void testAPUPZBS2SMALLTemplate() {
@@ -305,5 +429,9 @@ class DocxServiceTests {
 
     static String getRandomFormattedInt(int max){
         return ""+random.nextInt(max);
+    }
+
+    static Boolean getRandomBoolean(){
+        return random.nextInt(2)%2==0;
     }
 }
