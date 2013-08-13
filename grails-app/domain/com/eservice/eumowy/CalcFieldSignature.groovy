@@ -10,7 +10,7 @@ class CalcFieldSignature implements Serializable {
     }
 
     static mapping = {
-        table name: "calcfield_signature", schema: "CBD_UMOWY"
+        table name: "CALCFIELD_SIGNATURE", schema: DomainConsts.SHEMA_NAME
     }
 
 }

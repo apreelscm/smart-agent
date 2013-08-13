@@ -7,7 +7,7 @@ class EmailTemplates implements Serializable {
     String sender;
 
     static mapping = {
-        table name: "emailtemplates", schema: "CBD_UMOWY"
+        table name: "EMAIL_TEMPLATES", schema: DomainConsts.SHEMA_NAME
     }
 
     static constraints = {

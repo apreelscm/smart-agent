@@ -14,7 +14,7 @@ class ActivitySignatures implements Serializable {
     }
 
     static mapping = {
-        table name: "activitysignatures", schema: "CBD_UMOWY"
+        table name: "ACTIVITY_SIGNATURES", schema: DomainConsts.SHEMA_NAME
     }
 
 }

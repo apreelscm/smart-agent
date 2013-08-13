@@ -16,7 +16,7 @@ class Signature implements Serializable {
     }
 
     static mapping = {
-        table name: "signature", schema: "CBD_UMOWY"
+        table name: "SIGNATURE", schema: DomainConsts.SHEMA_NAME
     }
 
     String toString(){

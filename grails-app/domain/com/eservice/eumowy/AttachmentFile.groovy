@@ -27,7 +27,7 @@ class AttachmentFile implements Serializable{
     }
 
     static mapping = {
-        table name: "AttachmentFile", schema: "CBD_UMOWY"
+        table name: "ATTACHMENT", schema: DomainConsts.SHEMA_NAME
         file cascade:"all"
     }
 

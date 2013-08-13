@@ -9,7 +9,7 @@ class CalcField implements Serializable {
     }
 
     static mapping = {
-        table name: "calcfield", schema: "CBD_UMOWY"
+        table name: "CALCFIELD", schema: DomainConsts.SHEMA_NAME
     }
 
     String toString(){

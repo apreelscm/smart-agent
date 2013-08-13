@@ -8,7 +8,6 @@ package com.eservice.eumowy
  */
 class DocumentFile {
 
-    Integer id
     String name
     Date dateCreated
     Date lastUpdated
@@ -16,12 +15,11 @@ class DocumentFile {
     static belongsTo = [process:Process]
 
     static constraints = {
-        id(unique:true,blank:false)
         name(unique:false,blank:false)
     }
 
     static mapping = {
-        table name: "DocumentFile", schema: "CBD_UMOWY"
+        table name: "DOCUMENT", DomainConsts.SHEMA_NAME
         autoTimestamp true
         version false
     }

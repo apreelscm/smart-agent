@@ -21,17 +21,17 @@ environments {
             username = "sa"
             password = ""
             dbCreate = "create-drop" // one of 'create', 'create-drop', 'update', 'validate', ''
-            url = "jdbc:h2:mem:CbdDb;MVCC=TRUE;LOCK_TIMEOUT=10000;INIT=CREATE SCHEMA IF NOT EXISTS CBD_ADM\\;CREATE SCHEMA IF NOT EXISTS CBD_UMOWY"
+            url = "jdbc:h2:mem:CbdDb;MVCC=TRUE;LOCK_TIMEOUT=10000;INIT=CREATE SCHEMA IF NOT EXISTS CBD_ADM\\;CREATE SCHEMA IF NOT EXISTS EUMOWY"
         }
     }
     test {
         dataSource {
             driverClassName = "oracle.jdbc.driver.OracleDriver"
             dialect = "org.hibernate.dialect.Oracle10gDialect"
-            username = "cbd_adm"
-            password = "H9MgTNdAPX"
-            dbCreate = "update"
-            url = "jdbc:oracle:thin:@192.168.190.2:1521:cbd01out"
+            username = "eumowy_app"
+            password = "eumowy_app"
+            dbCreate = "" // TODO change later for validate
+            url = "jdbc:oracle:thin:@db-eservice.apreel.lan:1521:cbd01out"
         }
     }
     production {

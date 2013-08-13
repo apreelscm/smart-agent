@@ -4,7 +4,6 @@ import groovy.transform.ToString
 @ToString(includeNames = true,ignoreNulls = true)
 class Process implements Serializable {
 
-    Integer id
     Date dateCreated
     Date lastUpdated
 
@@ -43,11 +42,10 @@ class Process implements Serializable {
     ]
 
     static constraints = {
-        id(unique:true,blank:false)
     }
 
     static mapping = {
-        table name: "process", schema: "CBD_UMOWY"
+        table name: "PROCESS", schema: DomainConsts.SHEMA_NAME
         autoTimestamp true
         version true
         sort id: "desc"

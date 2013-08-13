@@ -12,7 +12,7 @@ class AttachmentContent implements Serializable{
     }
 
     static mapping = {
-        table name: "AttachmentContent", schema: "CBD_UMOWY"
+        table name: "AttachmentContent", DomainConsts.SHEMA_NAME
         columns {
             content type:'blob'
         }

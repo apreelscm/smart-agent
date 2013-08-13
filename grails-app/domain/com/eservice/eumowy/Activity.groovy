@@ -7,11 +7,11 @@ class Activity implements Serializable {
 
     static constraints = {
         code(unique:true,blank:false)
-        numerPozycji(unique:true,blank:false)
+        numerPozycji(unique:true,nullable: false)
     }
 
     static mapping = {
-        table name: "activity", schema: "CBD_UMOWY"
+        table name: "ACTIVITY", schema: DomainConsts.SHEMA_NAME
     }
 
     static hasMany = [

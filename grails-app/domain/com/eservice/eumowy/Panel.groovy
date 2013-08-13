@@ -14,7 +14,7 @@ class Panel implements Serializable{
     }
 
     static mapping = {
-        table name: "panel", schema: "CBD_UMOWY"
+        table name: "PANEL", schema: DomainConsts.SHEMA_NAME
     }
 
 }

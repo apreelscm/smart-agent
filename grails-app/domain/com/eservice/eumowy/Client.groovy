@@ -16,6 +16,6 @@ class Client implements Serializable{
     }
 
     static mapping = {
-        table name: "client", schema: "CBD_UMOWY"
+        table name: "CLIENT", schema: DomainConsts.SHEMA_NAME
     }
 }

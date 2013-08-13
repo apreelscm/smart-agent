@@ -10,6 +10,6 @@ class SignaturePanel implements Serializable {
     }
 
     static mapping = {
-        table name: "signaturepanel", schema: "CBD_UMOWY"
+        table name: "SIGNATURE_PANEL", schema: DomainConsts.SHEMA_NAME
     }
 }
