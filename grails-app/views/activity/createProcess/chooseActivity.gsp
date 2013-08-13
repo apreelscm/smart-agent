@@ -44,9 +44,10 @@
             </article>
         </g:each>
         <fieldset style="margin-top: 20px;">
-            <g:link event="back" class="button submit">${message(code:'default.navigation.button.prev', default: 'Wstecz')}</g:link>
-            <g:submitButton id="conitnueButton" name="continue" class="button submit"
+            <g:link event="back" class="button submit float-left">${message(code:'default.navigation.button.prev', default: 'Wstecz')}</g:link>
+            <g:submitButton id="conitnueButton" name="continue" class="button submit float-right"
                             value="${message(code:'default.navigation.button.next', default: 'Dalej')}"/>
+
         </fieldset>
     </g:form>
 </section>

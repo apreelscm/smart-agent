@@ -4,15 +4,40 @@
 <head>
     <meta name="layout" content="main">
     <title><g:message code="selectedPanels.header.title" default="Lista paneli"/></title>
+    <r:require module="filestyle"/>
 
     <g:javascript>
+
         var $j = jQuery.noConflict();
 
-        $j(function() {
-            $j("#fileUploadInput").change(function (){
-                $j('#uploadForm').submit();
-            });
-        });
+        $j(function(){ //this is regular jQuery code. It waits for the dom to load fully the first time you open the page.
+
+
+            <g:remoteFunction action="getAttachmentList" update="attachmentsBox"/>
+
+           $j("#fileUploadInput").change(function (){
+                    $j('#uploadForm').submit();
+                //$j( "label[for='fileUploadInput']" ).html( "Hot Fuzz3" );
+                });
+
+            $j("#hidden-upload-frame").load(function(){
+               var content = this.contentDocument.body.innerHTML
+
+                //resetting file input
+                $j('#uploadForm').each(function(){
+                    this.reset();
+                });
+
+                $j('#statusBox').html(content);
+
+                var isError = $j('#statusBox ul').hasClass("errors")
+                if(!isError){
+                    <g:remoteFunction action="getAttachmentList" update="attachmentsBox"/>
+        }
+
+    });
+});
+
     </g:javascript>
 
     <style>
@@ -57,8 +82,8 @@
     <g:form>
         <nav style="margin-top: 20px">
             <fieldset>
-                <g:link event="back" class="button submit">${message(code:'default.navigation.button.prev', default: 'Wstecz')}</g:link>
-                <g:submitButton id="conitnueButton" name="continue" class="button submit"
+                <g:link event="back" class="button submit float-left">${message(code:'default.navigation.button.prev', default: 'Wstecz')}</g:link>
+                <g:submitButton id="conitnueButton" name="continue" class="button submit float-right"
                                 value="${message(code:'default.navigation.button.next', default: 'Dalej')}"/>
             </fieldset>
         </nav>

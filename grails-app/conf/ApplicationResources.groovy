@@ -48,6 +48,17 @@ modules = {
         resource url: 'css/jquery-ui/jquery-ui-1.10.3.custom.min.css', disposition: 'head'
         dependsOn 'jquery'
     }
+
+    bootstrap {
+        resource url: 'js/bootstrap.min.js'
+        dependsOn 'jquery'
+    }
+
+    filestyle {
+        resource url: 'js/filestyle.min.js'
+        dependsOn 'jquery'
+        dependsOn 'bootstrap'
+    }
 	
 	newpoint_panel_setup {
 		resource url: 'js/setup.newpoint.panel.js'

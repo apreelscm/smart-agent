@@ -1,7 +1,7 @@
 package com.eservice.eumowy
+
 import com.eservice.eumowy.process.DefineActivityCommand
 import com.eservice.eumowy.process.GetCalculatorCommand
-import com.lucastex.grails.fileuploader.UFile
 
 class ActivityController {
 
@@ -11,6 +11,7 @@ class ActivityController {
     def emailService
     def cbdService
     def attachmentService
+    def messageSource
 
     def index() {
         redirect(action: "createProcess", params: params)
@@ -83,7 +84,7 @@ class ActivityController {
                 ((Process)processInstance).save();
 
                 flow.processInstance = processInstance
-            }.to "preparePanels"
+            }.to "selectedPanels"
         }
 
 
@@ -175,12 +176,12 @@ class ActivityController {
             on("error").to "chooseCalc"
         }
 
-        preparePanels {
+     /*   preparePanels {
             action {
                 flow.files = attachmentService.getList();
             }
             on("success").to "selectedPanels"
-        }
+        }*/
 
         selectedPanels{
             on("back").to "chooseCalc"
@@ -189,122 +190,8 @@ class ActivityController {
                 //processInstance.child = new Child(params)
                 flow.processInstance = processInstance
             }.to "clientSignature"
-            on("uploadFile").to "uploadFile"
-            on("deleteFile").to "deleteFile"
         }
 
-
-      /*  def index = {
-            log.debug "Uploaded file with id=${params.ufileId}"
-            [files: UFile.list(), params:params]
-        }
-
-
-        def delete = {
-            def ufile = UFile.get(params.id)
-            ufile.delete()
-            redirect(action: "index")
-        }*/
-
-        uploadFile{
-            action {
-                //upload group
-                def upload = params.upload
-
-                //config handler
-                def config = grailsApplication.config.fileuploader[upload]
-
-                //request file
-                def file = request.getFile("file")
-
-                //base path to save file
-                def path = config.path
-                if (!path.endsWith('/'))
-                    path = path+"/"
-
-                /**************************
-                 check if file exists
-                 **************************/
-                if (file.size == 0) {
-                    def msg = messageSource.getMessage("fileupload.upload.nofile", null, request.locale)
-                    log.warn msg
-                    flash.uploadErrorMessage = msg
-                    redirect controller: params.errorController, action: params.errorAction, id: params.id
-                    return error()
-                }
-
-                /***********************
-                 check extensions
-                 ************************/
-
-                println "extensions start - allowedExtensions:"+config.allowedExtensions
-                def fileExtension = file.originalFilename.substring(file.originalFilename.lastIndexOf('.')+1)
-                if (!config.allowedExtensions[0].equals("*")) {
-                    if (!config.allowedExtensions.contains(fileExtension)) {
-                        def msg = messageSource.getMessage("fileupload.upload.unauthorizedExtension", [fileExtension, config.allowedExtensions] as Object[], request.locale)
-                        log.warn msg
-                        flash.uploadErrorMessage = msg
-                        redirect controller: params.errorController, action: params.errorAction, id: params.id
-                        println "extensions end"
-                        return error()
-                    }
-                }
-                println "extensions end"
-
-                /*********************
-                 check file size
-                 **********************/
-                if (config.maxSize) { //if maxSize config exists
-                    def maxSizeInKb = ((int) (config.maxSize/1024))
-                    if (file.size > config.maxSize) { //if filesize is bigger than allowed
-                        log.warn "FileUploader plugin received a file bigger than allowed. Max file size is ${maxSizeInKb} kb"
-                        flash.uploadErrorMessage = messageSource.getMessage("fileupload.upload.fileBiggerThanAllowed", [maxSizeInKb] as Object[], request.locale)
-                        redirect controller: params.errorController, action: params.errorAction, id: params.id
-                        return error()
-                    }
-                }
-
-                //reaches here if file.size is smaller or equal config.maxSize or if config.maxSize ain't configured (in this case
-                //plugin will accept any size of files).
-
-                //sets new path
-                def currentTime = System.currentTimeMillis()
-                path = path+currentTime+"/"
-                if (!new File(path).mkdirs())
-                    log.error "FileUploader plugin couldn't create directories: [${path}]"
-                path = path+file.originalFilename
-
-                //move file
-                log.info "FileUploader plugin received a ${file.size}b file. Moving to ${new File(path).absolutePath}"
-                file.transferTo(new File(path))
-
-                //save it on the database
-                def ufile = new UFile()
-                ufile.name = file.originalFilename
-                ufile.size = file.size
-                ufile.extension = fileExtension
-                ufile.dateUploaded = new Date(currentTime)
-                ufile.path = path
-                ufile.downloads = 0
-                ufile.save()
-
-                println "params.successController:"+params.successController
-                flash.uploadInfoMessage = "Załącznik został dodany"
-                flow.files =  attachmentService.getList();
-            }
-            on("success").to "selectedPanels"
-            on("error").to "selectedPanels"
-        }
-
-
-        deleteFile{
-            action {
-                attachmentService.deleteFile(params.id);
-                flow.files = attachmentService.getList();
-            }
-            on("success").to "selectedPanels"
-            on("error").to "selectedPanels"
-        }
 
         clientSignature{
             on("back").to "selectedPanels"
@@ -325,9 +212,38 @@ class ActivityController {
     }
 
 //--------------
-//PRIVATE METHODS
+//REMOTE METHODS
 //--------------
 
+    def upload() {
+        def upload = params.upload
+        def config = grailsApplication.config.fileuploader[upload]
+
+        def msg = attachmentService.uploadFile(upload,config,request, messageSource);
+
+
+        if(msg.equals(true)){
+            //render(template:"message/infoMessage", model:[message:"Załącznik został dodany"]);
+            render "";
+        }
+        else{
+            render(template:"message/errorMessage", model:[message:msg]);
+        }
+    }
+
+    def deleteFile(){
+        println("deleteFile:"+params);
+        attachmentService.deleteFile(params.id);
+        getAttachmentList()
+    }
+
+    def getAttachmentList(){
+        render(template:"../attachment/list", model:[files:attachmentService.getList()]);
+    }
+
+    //--------------
+    //PRIVATE METHODS
+    //--------------
     def _sendNotesToCOA(notes) {
 
         log.info("wysyłanie wiadomości email z uwagami do COA [notes: ${notes}]")
