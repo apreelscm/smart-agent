@@ -1,10 +1,8 @@
 package com.eservice.eumowy
 
-import java.sql.Blob
-
 class AttachmentContent implements Serializable{
 
-    Blob content
+    byte[] content
 
     static belongsTo = [attachment:AttachmentFile]
 
@@ -13,9 +11,7 @@ class AttachmentContent implements Serializable{
 
     static mapping = {
         table name: "AttachmentContent", DomainConsts.SHEMA_NAME
-        columns {
-            content type:'blob'
-        }
+        content  sqlType: "blob"
     }
 
 }
