@@ -26,7 +26,7 @@
                                                      update="pdfBox"
                                                      onSuccess="showPdfBox('pdfBox')"
                                                      params="[id: document.id]">
-                ${fieldValue(bean: document, field: "filename")}
+                ${fieldValue(bean: document, field: "name")}
             </g:remoteLink></td>
 
             <td class="tableCell"><g:formatDate date="${document.lastUpdated}" /></td>

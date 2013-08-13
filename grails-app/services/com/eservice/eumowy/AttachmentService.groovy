@@ -70,5 +70,27 @@ class AttachmentService {
         return true;
     }
 
+    def downloadFile(def id, def request, def messageSource) {
+
+        AttachmentFile ufile =  AttachmentFile.get(id)
+
+        if (!ufile) {
+            def msg = messageSource.getMessage("fileupload.download.nofile", [id] as Object[], request.locale)
+            log.warn msg
+            return
+        }
+
+        if (ufile != null) {
+            log.info "Serving file id=[${ufile.id}] for the ${ufile.downloads}"
+            ufile.downloads = ufile.downloads ?:  0
+            ufile.downloads++
+            ufile.save()
+        } else {
+            def msg = messageSource.getMessage("fileupload.download.filenotfound", [ufile.name] as Object[], request.locale)
+            log.error msg
+        }
+
+        ufile
+    }
 
 }
