@@ -1,11 +1,11 @@
 package com.eservice.eumowy
 
+import grails.plugin.cache.Cacheable
 import org.springframework.transaction.annotation.Isolation
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
 
 class DictionaryService {
-
     def cbdSqlService
 
     def dictionary
@@ -14,7 +14,7 @@ class DictionaryService {
     private static final def GET_ULICA_COMBOBOX = "getUlicaComboBox"
     private static final def GET_PAN_PANI = "getPanPaniComboBox"
 
-    //@Cacheable(value="getUlicaComboBox")
+    @Cacheable(value="getUlicaComboBox")
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
     def getUlicaComboBox() {
         if( dictionary[GET_ULICA_COMBOBOX]){
@@ -25,7 +25,7 @@ class DictionaryService {
         dictionary[GET_ULICA_COMBOBOX] = result
     }
 
-    //@Cacheable(value="getPanPaniComboBox")
+    @Cacheable(value="getPanPaniComboBox")
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
     def getPanPaniComboBox() {
         if( dictionary[GET_PAN_PANI]){
@@ -35,5 +35,4 @@ class DictionaryService {
         def result =  cbdSqlService.selectMany(DICTIONARY_PATH + GET_PAN_PANI);
         dictionary[GET_PAN_PANI] = result
     }
-
 }

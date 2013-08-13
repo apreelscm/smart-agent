@@ -1,8 +1,5 @@
 dataSource {
     pooled = true
-    driverClassName = "org.h2.Driver"
-    username = "sa"
-    password = ""
     loggingSql = true
     logSql= true
     formatSql = false
@@ -15,18 +12,26 @@ hibernate {
     cache.use_query_cache = false
    /* cache.region.factory_class = 'net.sf.ehcache.hibernate.EhCacheRegionFactory'*/
 }
+
 // environment specific settings
 environments {
     development {
         dataSource {
+            driverClassName = "org.h2.Driver"
+            username = "sa"
+            password = ""
             dbCreate = "create-drop" // one of 'create', 'create-drop', 'update', 'validate', ''
             url = "jdbc:h2:mem:CbdDb;MVCC=TRUE;LOCK_TIMEOUT=10000;INIT=CREATE SCHEMA IF NOT EXISTS CBD_ADM\\;CREATE SCHEMA IF NOT EXISTS CBD_UMOWY"
         }
     }
     test {
         dataSource {
+            driverClassName = "oracle.jdbc.driver.OracleDriver"
+            dialect = "org.hibernate.dialect.Oracle10gDialect"
+            username = "cbd_adm"
+            password = "H9MgTNdAPX"
             dbCreate = "update"
-            url = "jdbc:h2:mem:CbdDb;MVCC=TRUE;LOCK_TIMEOUT=10000"
+            url = "jdbc:oracle:thin:@192.168.190.2:1521:cbd01out"
         }
     }
     production {

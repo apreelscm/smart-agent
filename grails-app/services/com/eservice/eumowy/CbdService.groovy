@@ -1,5 +1,6 @@
 package com.eservice.eumowy
 
+import grails.plugin.cache.Cacheable
 import org.springframework.transaction.annotation.Isolation
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
@@ -23,85 +24,85 @@ class CbdService {
     private static final def GET_ZAKRES_URUCHOMIENIA_PUNKTY_GRID = "getZakresUruchomieniaPunktyGrid"
 
 
-    //@Cacheable(value="getAdresDaneDoWydruku", key="#clientNip")
+    @Cacheable(value="getAdresDaneDoWydruku")
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
     def  getAdresDaneDoWydruku(def clientNip) {
         return cbdSqlService.selectOne(GET_ADRES_DANE_DO_WYDRUKU,[nip:clientNip])
     }
 
-    //@Cacheable(value="getAdresDoKorespondencji", key="#clientNip")
+    @Cacheable(value="getAdresDoKorespondencji")
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
     def getAdresDoKorespondencji(def clientNip) {
         return cbdSqlService.selectOne(GET_ADRES_DO_KORESPONDENCJI,[nip:clientNip])
     }
 
-    //@Cacheable(value="getAdresDoKorespondencjizAkceptantem", key="#clientNip")
+    @Cacheable(value="getAdresDoKorespondencjizAkceptantem")
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
     def getAdresDoKorespondencjizAkceptantem(def clientNip) {
         return cbdSqlService.selectOne(GET_ADRES_DO_KORESPONDENCJIZ_AKCEPTANTEM,[nip:clientNip])
     }
 
-    //@Cacheable(value="getDaneAkceptanta", key="#clientNip")
+    @Cacheable(value="getDaneAkceptanta")
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
     def getDaneAkceptanta(def clientNip) {
         return cbdSqlService.selectOne(GET_DANE_AKCEPTANTA,[nip:clientNip])
     }
 
-    //@Cacheable(value="getNazwaBanku", key="#clientNip")
+    @Cacheable(value="getNazwaBanku")
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
     def getNazwaBanku(def clientNip) {
         return cbdSqlService.selectOne(GET_NAZWA_BANKU,[nip:clientNip])
     }
 
-    //@Cacheable(value="getNumerRachunkuBankowego", key="#clientNip")
+    @Cacheable(value="getNumerRachunkuBankowego")
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
     def getNumerRachunkuBankowego(def clientNip) {
         return cbdSqlService.selectOne(GET_NUMER_RACHUNKU_BANKOWEGO,[nip:clientNip])
     }
 
-    //@Cacheable(value="getOsoba1UprawnionaDoPodpisaniaUmowy", key="#clientNip")
+    @Cacheable(value="getOsoba1UprawnionaDoPodpisaniaUmowy")
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
     def getOsoba1UprawnionaDoPodpisaniaUmowy(def clientNip) {
         return cbdSqlService.selectOne(GET_OSOBA1_UPRAWNIONA_DO_PODPISANIA_UMOWY,[nip:clientNip])
     }
 
-    //@Cacheable(value="getOsoba2UprawnionaDoPodpisaniaUmowy", key="#clientNip")
+    @Cacheable(value="getOsoba2UprawnionaDoPodpisaniaUmowy")
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
     def getOsoba2UprawnionaDoPodpisaniaUmowy(def clientNip) {
         return cbdSqlService.selectOne(GET_OSOBA2_UPRAWNIONA_DO_PODPISANIA_UMOWY,[nip:clientNip])
     }
 
-    //@Cacheable(value="getOsobaDoKontaktu", key="#clientNip")
+    @Cacheable(value="getOsobaDoKontaktu")
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
     def getOsobaDoKontaktu(def clientNip) {
         return cbdSqlService.selectOne(GET_OSOBA_DO_KONTAKTU,[nip:clientNip])
     }
 
-    //@Cacheable(value="getOsobaKtoraPozyskalaAkceptanta", key="#clientNip")
+    @Cacheable(value="getOsobaKtoraPozyskalaAkceptanta")
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
     def getOsobaKtoraPozyskalaAkceptanta(def clientNip) {
         return cbdSqlService.selectOne(GET_OSOBA_KTORA_POZYSKALA_AKCEPTANTA,[nip:clientNip])
     }
 
-    //@Cacheable(value="getPromocyjneObinzenieOplatGrid", key="#clientNip")
+    @Cacheable(value="getPromocyjneObinzenieOplatGrid")
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
     def getPromocyjneObinzenieOplatGrid(def clientNip) {
         return cbdSqlService.selectOne(GET_PROMOCYJNE_OBINZENIE_OPLAT_GRID,[nip:clientNip])
     }
 
-    //@Cacheable(value="getSiedzibaAkceptanta", key="#clientNip")
+    @Cacheable(value="getSiedzibaAkceptanta")
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
     def getSiedzibaAkceptanta(def clientNip) {
         return cbdSqlService.selectOne(GET_ADRES_DO_KORESPONDENCJIZ_AKCEPTANTEM,[nip:clientNip])
     }
 
-    //@Cacheable(value="getWykazPunktowGrid", key="#clientNip")
+    @Cacheable(value="getWykazPunktowGrid")
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
     def getWykazPunktowGrid(def clientNip) {
         return cbdSqlService.selectOne(GET_WYKAZ_PUNKTOW_GRID,[nip:clientNip])
     }
 
-   //@Cacheable(value="getZakresUruchomieniaPunktyGrid", key="#clientNip")
+   @Cacheable(value="getZakresUruchomieniaPunktyGrid")
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
     def getZakresUruchomieniaPunktyGrid(def clientNip) {
         return cbdSqlService.selectOne(GET_ZAKRES_URUCHOMIENIA_PUNKTY_GRID,[nip:clientNip])
