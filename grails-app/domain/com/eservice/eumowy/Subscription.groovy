@@ -10,5 +10,6 @@ class Subscription {
 
     static mapping = {
         table name: "SUBSCRIPTION", schema: DomainConsts.SHEMA_NAME
+        id generator:'sequence', params:[sequence:'SUBSCRIPTION_SEQ']
     }
 }

@@ -17,6 +17,7 @@ class Signature implements Serializable {
 
     static mapping = {
         table name: "SIGNATURE", schema: DomainConsts.SHEMA_NAME
+        id generator:'sequence', params:[sequence:'SIGNATURE_SEQ']
     }
 
     String toString(){
