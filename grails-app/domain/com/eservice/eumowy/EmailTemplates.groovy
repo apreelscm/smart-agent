@@ -6,14 +6,15 @@ class EmailTemplates implements Serializable {
     String recipent;
     String sender;
 
-    static mapping = {
-        table name: "EMAIL_TEMPLATES", schema: DomainConsts.SHEMA_NAME
-    }
-
     static constraints = {
         name(unique:true,blank:false)
         recipent(blank:false, email: true)
         sender(blank:false, email: true)
+    }
+
+    static mapping = {
+        table name: "EMAIL_TEMPLATES", schema: DomainConsts.SHEMA_NAME
+        id generator:'sequence', params:[sequence:'EMAIL_TEMPLATES_SEQ']
     }
 
     enum EmailTemplateType {

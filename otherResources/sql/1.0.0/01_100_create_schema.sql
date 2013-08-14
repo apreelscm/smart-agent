@@ -1,3 +1,4 @@
+-- CREATE TABLES
 create table EUMOWY.ACTIVITY (id number(19,0) not null, version number(19,0) not null, code varchar2(255 char) unique, numer_pozycji number(10,0) unique, primary key (id));
 create table EUMOWY.ACTIVITY_SIGNATURES (id number(19,0) not null, version number(19,0) not null, activity_id number(19,0), mandatory number(1,0) not null, number_of_list number(10,0), signature_id number(19,0), primary key (id));
 create table EUMOWY.ATTACHMENT (id number(19,0) not null, date_created timestamp not null, filename varchar2(255 char), last_updated timestamp not null, process_id number(19,0), attachments_idx number(10,0), primary key (id));
@@ -18,6 +19,7 @@ create table sec_role (id number(19,0) not null, version number(19,0) not null, 
 create table sec_user (id number(19,0) not null, version number(19,0) not null, account_expired number(1,0) not null, account_locked number(1,0) not null, enabled number(1,0) not null, name varchar2(255 char), "password" varchar2(255 char), password_expired number(1,0) not null, username varchar2(255 char) unique, primary key (id));
 create table sec_user_sec_role (sec_role_id number(19,0), sec_user_id number(19,0), primary key (sec_role_id, sec_user_id));
 
+-- CONSTRAINTS
 -- TODO do poprawy nazwy FK
 alter table EUMOWY.ACTIVITY_SIGNATURES add constraint FK19F8ADEBC1A12403 foreign key (activity_id) references EUMOWY.ACTIVITY;
 alter table EUMOWY.ACTIVITY_SIGNATURES add constraint FK19F8ADEBED846B31 foreign key (signature_id) references EUMOWY.SIGNATURE;
@@ -33,3 +35,20 @@ alter table EUMOWY.process_signature add constraint FKD76A742EED846B31 foreign k
 alter table EUMOWY.process_subscription add constraint FK992D41E74E3344C3 foreign key (subscription_id) references EUMOWY.SUBSCRIPTION;
 alter table EUMOWY.SEC_USER_SEC_ROLE add constraint FKC78D322AA9AFAA0F foreign key (sec_user_id) references EUMOWY.SEC_USER;
 alter table EUMOWY.SEC_USER_SEC_ROLE add constraint FKC78D322A484E62F foreign key (sec_role_id) references EUMOWY.SEC_ROLE;
+
+-- SEQUENCES
+create sequence ACTIVITY_SEQ;
+create sequence ACTIVITY_SIGNATURES_SEQ;
+create sequence ADM_U_WEB_SEQ;
+create sequence ATTACHMENT_CONTENT_SEQ;
+create sequence ATTACHMENT_SEQ;
+create sequence CALCFIELD_SEQ;
+create sequence CALCFIELD_SIGNATURE_SEQ;
+create sequence CLIENT_SEQ;
+create sequence DOCUMENT_SEQ;
+create sequence EMAIL_TEMPLATES_SEQ;
+create sequence PANEL_SEQ;
+create sequence PROCESS_SEQ;
+create sequence SIGNATURE_PANEL_SEQ;
+create sequence SIGNATURE_SEQ;
+create sequence SUBSCRIPTION_SEQ;

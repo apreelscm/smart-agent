@@ -10,6 +10,7 @@ class CalcField implements Serializable {
 
     static mapping = {
         table name: "CALCFIELD", schema: DomainConsts.SHEMA_NAME
+        id generator:'sequence', params:[sequence:'CALCFIELD_SEQ']
     }
 
     String toString(){

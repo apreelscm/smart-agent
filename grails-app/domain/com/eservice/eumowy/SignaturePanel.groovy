@@ -11,5 +11,6 @@ class SignaturePanel implements Serializable {
 
     static mapping = {
         table name: "SIGNATURE_PANEL", schema: DomainConsts.SHEMA_NAME
+        id generator:'sequence', params:[sequence:'SIGNATURE_PANEL_SEQ']
     }
 }

@@ -20,7 +20,6 @@ class DocumentFile {
 
     static mapping = {
         table name: "DOCUMENT", DomainConsts.SHEMA_NAME
-        autoTimestamp true
-        version false
+        id generator:'sequence', params:[sequence:'DOCUMENT_SEQ']
     }
 }
