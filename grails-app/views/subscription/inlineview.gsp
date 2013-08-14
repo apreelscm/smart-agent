@@ -28,7 +28,7 @@
 <section id="index-subscription">
     <h1 class="ng linia-bottom">Podpis</h1>
 
-    <h3 style="margin-top: 20px">REPREZENTANT</h3>
+    <h3 style="margin-top: 20px">Andrzej Kmicic - Reprezentant</h3>
 
     <g:form  id="subscriptionForm" action="saveSubscription" class="sigPad">
         <p>
