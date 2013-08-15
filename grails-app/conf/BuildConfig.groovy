@@ -42,21 +42,22 @@ grails.project.dependency.resolution = {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes e.g.
 
         // runtime 'mysql:mysql-connector-java:5.1.22'
-        runtime 'jdbc:ojdbc:6'
+        provided 'jdbc:ojdbc:6'
         runtime 'cbd1:cbd-core-security:2.6-SNAPSHOT'
         runtime 'cbd2:cbd-orm:2.6-SNAPSHOT'
         runtime 'cbd3:cbd-orm-security:2.6-SNAPSHOT'
         runtime 'PDFRenderer:PDFRenderer:0.9.1'
-        runtime 'fr.opensagres.xdocreport:fr.opensagres.xdocreport.core:1.0.2'
-        runtime 'fr.opensagres.xdocreport:fr.opensagres.xdocreport.converter:1.0.2'
-        runtime 'fr.opensagres.xdocreport:fr.opensagres.xdocreport.template:1.0.2'
-        runtime 'fr.opensagres.xdocreport:fr.opensagres.xdocreport.template.velocity:1.0.2'
-        runtime 'fr.opensagres.xdocreport:fr.opensagres.xdocreport.document:1.0.2'
-        runtime 'fr.opensagres.xdocreport:fr.opensagres.xdocreport.document.docx:1.0.2'
-        runtime 'fr.opensagres.xdocreport:fr.opensagres.xdocreport.converter.docx.xwpf:1.0.2'
-        runtime 'fr.opensagres.xdocreport:fr.opensagres.xdocreport.itext.extension:1.0.2'
-        runtime 'org.docx4j:docx4j:2.8.1'
+        //runtime 'fr.opensagres.xdocreport:fr.opensagres.xdocreport.core:1.0.2'
+        //runtime 'fr.opensagres.xdocreport:fr.opensagres.xdocreport.converter:1.0.2'
+        //runtime 'fr.opensagres.xdocreport:fr.opensagres.xdocreport.template:1.0.2'
+        //runtime 'fr.opensagres.xdocreport:fr.opensagres.xdocreport.template.velocity:1.0.2'
+        //runtime 'fr.opensagres.xdocreport:fr.opensagres.xdocreport.document:1.0.2'
+        //runtime 'fr.opensagres.xdocreport:fr.opensagres.xdocreport.document.docx:1.0.2'
+        //runtime 'fr.opensagres.xdocreport:fr.opensagres.xdocreport.converter.docx.xwpf:1.0.2'
+        //runtime 'fr.opensagres.xdocreport:fr.opensagres.xdocreport.itext.extension:1.0.2'
+        //runtime 'org.docx4j:docx4j:2.8.1'
         runtime 'com.google.code.gson:gson:2.2.4'
+		runtime 'com.lowagie:itext:2.1.7'
     }
 
     plugins {

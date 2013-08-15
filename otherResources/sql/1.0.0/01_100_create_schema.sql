@@ -1,4 +1,5 @@
 -- CREATE TABLES
+create table EUMOWY.APP_PARAMETERS (id number(19,0) not null, name varchar2(255 char) unique, value varchar2(512 char), primary key (id));
 create table EUMOWY.ACTIVITY (id number(19,0) not null, version number(19,0) not null, code varchar2(255 char) unique, numer_pozycji number(10,0) unique, primary key (id));
 create table EUMOWY.ACTIVITY_SIGNATURES (id number(19,0) not null, version number(19,0) not null, activity_id number(19,0), mandatory number(1,0) not null, number_of_list number(10,0), signature_id number(19,0), primary key (id));
 create table EUMOWY.ATTACHMENT (id number(19,0) not null, date_created timestamp not null, filename varchar2(255 char), last_updated timestamp not null, process_id number(19,0), attachments_idx number(10,0), primary key (id));
@@ -52,3 +53,4 @@ create sequence PROCESS_SEQ;
 create sequence SIGNATURE_PANEL_SEQ;
 create sequence SIGNATURE_SEQ;
 create sequence SUBSCRIPTION_SEQ;
+create sequence APP_PARAMETERS_SEQ;

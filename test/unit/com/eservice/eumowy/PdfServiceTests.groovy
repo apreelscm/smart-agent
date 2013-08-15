@@ -63,12 +63,72 @@ class PdfServiceTests {
         result.put("dataPodpisaniaAneksuPOZ", ["23.04.2013"] as String[]);
         return result;
     }
+	
+	static HashMap<String, String[]> generateFormularzAplikacyjnyFields() {
+		HashMap<String, String[]> result = new HashMap<String, String[]>();
+		
+		result.put("NrMerchanta1", ["98765"] as String[]);
+		result.put("NrMerchanta2", ["12345"] as String[]);
+		result.put("NrMerchanta3", ["66"] as String[]);
+		result.put("NrMerchanta4", ["44"] as String[]);
+		result.put("SprawaNr1", ["123"] as String[]);
+		result.put("SprawaNr2", ["8906"] as String[]);
+		result.put("SprawaNr3", ["0"] as String[]);
+		result.put("OsobaPozyskalaAkceptantaNr", ["12345"] as String[]);
+		result.put("OsobaPodpisalaUmoweNr", ["67890"] as String[]);
+		result.put("NrUmowy1", ["7890"] as String[]);
+		result.put("NrUmowy2", ["1"] as String[]);
+		result.put("OficjalnaNazwaAkceptanta1", ["To jest oficjalna nazwa akceptanta"] as String[]);
+		result.put("OficjalnaNazwaAkceptanta2", ["To jest druga linia z nazwą akceptanta"] as String[]);
+		result.put("NazwaSieciowaAkceptanta", ["This is the end"] as String[]);
+		result.put("podpis", [new File("/Repos/eumowy/web-app/files/signature1.jpg").toURI().toURL(), "", "signature", "1", "435", "15", "74", "43"] as String[]);
+		
+		return result;
+	}
+	
+	static HashMap<String, String[]> generateFormularzDanychPunktuFields() {
+		HashMap<String, String[]> result = new HashMap<String, String[]>();
+
+		result.put("PHpozysk", [""] as String[]);
+		result.put("OpiekaBiznesowa", [""] as String[]);
+		result.put("OpiekaSerwisowaI", [""] as String[]);
+		result.put("OpiekaSerwisowaII", [""] as String[]);
+		result.put("Instalujacy", [""] as String[]);
+		result.put("DoladowanieTel", [""] as String[]);
+		result.put("RozszerzenieOPunkt", [""] as String[]);
+		result.put("Linia1", ["Linia na uwagi?"] as String[]);
+		result.put("Linia2", ["Linia na uwagiii :)"] as String[]);
+		result.put("ImieINazwisko", ["Dominik Walczak, Michał Knieć, Paweł Szkup"] as String[]);
+		result.put("Pan", ["true", "", "checkbox"] as String[]);
+		result.put("Pani", ["false", "", "checkbox"] as String[]);
+		result.put("email", ["mkniec@apreel.com"] as String[]);
+		result.put("NazwaDoWyszukiwarki", ["To jest jakaś nazwa"] as String[]);
+		
+		return result;
+	}
+	
+	static HashMap<String, String[]> generateFormularzScoringowyFields() {
+		HashMap<String, String[]> result = new HashMap<String, String[]>();
+
+		result.put("MCC", ["4763"] as String[]);
+		result.put("rodzajZezwolenia", ["Od prezydenta USA - VIP"] as String[]);
+		result.put("centrumHandlowe", ["true"] as String[]);
+		result.put("trasaPrzelotowa", ["true"] as String[]);
+		result.put("dochodowosc", ["10000"] as String[]);
+		result.put("sredniaWartoscTransakcji", ["1 milion złotych"] as String[]);
+		result.put("innaLokalizacja", ["Wieża Eiffla"] as String[]);
+		
+		return result;
+	}
 
     static String getRandomFormattedDouble(int max){
         return new DecimalFormat("0.00").format(random.nextInt(max) + random.nextDouble());
     }
 
     void testAPUNTSS() {
+		HashMap<String, String[]> data = new HashMap<String, String[]>();
+		data.putAll(this.data);
+		data.put("podpis", [new File("/Repos/eumowy/web-app/files/signature1.jpg").toURI().toURL(), "", "signature", "4", "65", "150", "74", "43"] as String[]);
         process("APUNTSS1.00312-01-16.pdf", "APUNTSS1.00312-01-16_out.pdf", data)
     }
 
@@ -124,6 +184,18 @@ class PdfServiceTests {
     void testAPUNTZ() {
         process("APUNTZ2.00312-01-16.pdf", "APUNTZ2.00312-01-16_out.pdf", data)
     }
+	
+	void testFormularzAplikacyjny() {
+		process("Formularz aplikacyjny_po_zmianach_18.01.2012.pdf", "Formularz aplikacyjny_po_zmianach_18.01.2012_out.pdf", generateFormularzAplikacyjnyFields());
+	}
+	
+	void testFormularzDanychPunktu() {
+		process("Formularz danych punktu_zmiany_15.05.2013_edited.pdf", "Formularz danych punktu_zmiany_15.05.2013_edited_out.pdf", generateFormularzDanychPunktuFields());
+	}
+	
+	void testFormularzScoringowy() {
+		process("Formularz Scoringowy (oryginal).pdf", "Formularz Scoringowy (oryginal)_out.pdf", generateFormularzScoringowyFields());
+	}
 
 
     void process(templateName, outName, data){

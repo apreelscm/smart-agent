@@ -1,8 +1,8 @@
 package com.eservice.eumowy
 
 class AppParameters {
-	def name
-	def value
+	String name
+	String value
 	
     static constraints = {
 		name(unique: true, blank: false)

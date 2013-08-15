@@ -2,6 +2,8 @@ package pdfgenerator;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -9,8 +11,10 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 
 import com.lowagie.text.DocumentException;
+import com.lowagie.text.Image;
 import com.lowagie.text.pdf.AcroFields;
 import com.lowagie.text.pdf.BaseFont;
+import com.lowagie.text.pdf.PdfContentByte;
 import com.lowagie.text.pdf.PdfReader;
 import com.lowagie.text.pdf.PdfStamper;
 
@@ -73,7 +77,7 @@ public class PdfGenerator {
 			AcroFields form = stamp.getAcroFields();
 			for (Map.Entry<String, String[]> dataEntry : dataMap.entrySet()){
 				
-				if (dataEntry.getValue().length > 1){
+				if (dataEntry.getValue().length > 1 && dataEntry.getValue()[1].isEmpty() == false){
 					form.setFieldProperty(dataEntry.getKey(), "textsize", Float.valueOf(dataEntry.getValue()[1]), null);
 				}
 				
@@ -84,8 +88,37 @@ public class PdfGenerator {
 					form.addSubstitutionFont(bf);
 					
 				}
-
-				form.setField(dataEntry.getKey(),dataEntry.getValue()[0]);
+				
+				if (dataEntry.getValue().length > 2) {
+					
+					if (dataEntry.getValue()[2].equals("checkbox")) {
+						String[] states = form.getAppearanceStates(dataEntry.getKey());
+	
+						if ("false".equals(dataEntry.getValue()[0])) {
+							form.setField(dataEntry.getKey(), states[0]);
+						}
+						else {
+							form.setField(dataEntry.getKey(), states[1]);
+						}
+					}
+					else if (dataEntry.getValue()[2].equals("signature")) {
+						Integer pageNo = Integer.valueOf(dataEntry.getValue()[3]);
+						Integer x = Integer.valueOf(dataEntry.getValue()[4]);
+						Integer y = Integer.valueOf(dataEntry.getValue()[5]);
+						Integer xScale = Integer.valueOf(dataEntry.getValue()[6]);
+						Integer yScale = Integer.valueOf(dataEntry.getValue()[7]);
+						Image img = Image.getInstance(new URL(dataEntry.getValue()[0]));
+						
+						PdfContentByte content = stamp.getOverContent(pageNo);
+						
+						img.setAbsolutePosition(x,y);
+						img.scaleAbsolute(xScale,yScale);
+						content.addImage(img);
+					}
+				}
+				else {
+					form.setField(dataEntry.getKey(),dataEntry.getValue()[0]);
+				}
 
 			}
 
@@ -139,7 +172,7 @@ public class PdfGenerator {
 			AcroFields form = stamp.getAcroFields();
 			for (Map.Entry<String, String[]> dataEntry : dataMap.entrySet()){
 				
-				if (dataEntry.getValue().length > 1){
+				if (dataEntry.getValue().length > 1 && dataEntry.getValue()[1].isEmpty() == false){
 					form.setFieldProperty(dataEntry.getKey(), "textsize", Float.valueOf(dataEntry.getValue()[1]), null);
 				}
 				
@@ -150,8 +183,37 @@ public class PdfGenerator {
 					form.addSubstitutionFont(bf);
 					
 				}
-
-				form.setField(dataEntry.getKey(),dataEntry.getValue()[0]);
+				
+				if (dataEntry.getValue().length > 2) {
+					
+					if (dataEntry.getValue()[2].equals("checkbox")) {
+						String[] states = form.getAppearanceStates(dataEntry.getKey());
+	
+						if ("false".equals(dataEntry.getValue()[0])) {
+							form.setField(dataEntry.getKey(), states[0]);
+						}
+						else {
+							form.setField(dataEntry.getKey(), states[1]);
+						}
+					}
+					else if (dataEntry.getValue()[2].equals("signature")) {
+						Integer pageNo = Integer.valueOf(dataEntry.getValue()[3]);
+						Integer x = Integer.valueOf(dataEntry.getValue()[4]);
+						Integer y = Integer.valueOf(dataEntry.getValue()[5]);
+						Integer xScale = Integer.valueOf(dataEntry.getValue()[6]);
+						Integer yScale = Integer.valueOf(dataEntry.getValue()[7]);
+						Image img = Image.getInstance(new URL(dataEntry.getValue()[0]));
+						
+						PdfContentByte content = stamp.getOverContent(pageNo);
+						
+						img.setAbsolutePosition(x,y);
+						img.scaleAbsolute(xScale,yScale);
+						content.addImage(img);
+					}
+				}
+				else {
+					form.setField(dataEntry.getKey(),dataEntry.getValue()[0]);
+				}
 
 			}
 
