@@ -15,6 +15,8 @@ class AttachmentFile implements Serializable{
     Date dateUploaded
     Integer downloads
 
+    Process process
+
     static belongsTo = [process:Process]
 
     static hasOne = [file:AttachmentContent]
@@ -31,10 +33,9 @@ class AttachmentFile implements Serializable{
     static mapping = {
         table name: "ATTACHMENT", schema: DomainConsts.SHEMA_NAME
         id generator:'sequence', params:[sequence:DomainConsts.SHEMA_NAME+'.ATTACHMENT_SEQ']
-        file cascade:"all-delete-orphan"
 
         process nullable:false;
-        file nullable:false;
+        file cascade:"all-delete-orphan"
     }
 
 
@@ -47,7 +48,7 @@ class AttachmentFile implements Serializable{
                 log.error "could not delete file: ${file}"
             }
         } catch (Exception exp) {
-            log.error "Error deleting file: ${e.message}"
+            log.error "Error deleting file: ${exp.message}"
             log.error exp
         }
     }

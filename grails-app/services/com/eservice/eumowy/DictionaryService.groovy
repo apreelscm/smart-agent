@@ -6,7 +6,7 @@ import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
 
 class DictionaryService {
-    def cbdSqlService
+    def cbdDAO
 
     def dictionary
 
@@ -21,7 +21,7 @@ class DictionaryService {
             return
         }
 
-        def result =  cbdSqlService.selectMany(DICTIONARY_PATH + GET_ULICA_COMBOBOX);
+        def result =  cbdDAO.selectMany(DICTIONARY_PATH + GET_ULICA_COMBOBOX);
         dictionary[GET_ULICA_COMBOBOX] = result
     }
 
@@ -32,7 +32,7 @@ class DictionaryService {
             return
         }
 
-        def result =  cbdSqlService.selectMany(DICTIONARY_PATH + GET_PAN_PANI);
+        def result =  cbdDAO.selectMany(DICTIONARY_PATH + GET_PAN_PANI);
         dictionary[GET_PAN_PANI] = result
     }
 }

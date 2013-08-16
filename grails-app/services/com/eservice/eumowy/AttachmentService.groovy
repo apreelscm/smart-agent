@@ -10,27 +10,26 @@ class AttachmentService {
     }
 
     def getListByProcessId(def id) {
+        assert id != null
+
         def attachmentCriteria = AttachmentFile.createCriteria()
-        def searchResult = attachmentCriteria.get{
+        def searchResult = attachmentCriteria.list{
             process {
-                eq("id", id)
+                eq("id", Long.valueOf(id))
             }
         }
         searchResult
     }
 
-    def uploadFile(def processId, def config, def request, def messageSource) {
-
-
-        log.info("uploadFile - processId : ${processId}")
+    def uploadFile( def config, def request, def messageSource) {
         def file = request.getFile("file")
-
 
         /**************************
          check if file exists
          ************************* */
         if (file.size == 0) {
             def msg = messageSource.getMessage("fileupload.upload.nofile", null, request.locale)
+            log.warn(msg)
             return msg;
         }
 
@@ -43,6 +42,7 @@ class AttachmentService {
         if (!config.allowedExtensions[0].equals("*")) {
             if (!config.allowedExtensions.contains(fileExtension)) {
                 def msg = messageSource.getMessage("fileupload.upload.unauthorizedExtension", [fileExtension, config.allowedExtensions] as Object[], request.locale)
+                log.warn(msg)
                 return msg
             }
         }
@@ -55,6 +55,7 @@ class AttachmentService {
             def maxSizeInKb = ((int) (config.maxSize / 1024))
             if (file.size > config.maxSize) { //if filesize is bigger than allowed
                 def msg = messageSource.getMessage("fileupload.upload.fileBiggerThanAllowed", [maxSizeInKb] as Object[], request.locale)
+                log.warn(msg)
                 return msg;
             }
         }
@@ -67,11 +68,9 @@ class AttachmentService {
         ufile.extension = fileExtension
         ufile.dateUploaded = new Date(currentTime)
         ufile.downloads = 0
-        ufile.file = new AttachmentContent(content:file.bytes)
-        ufile.process = Process.get(Integer.valueOf(processId));
-        ufile.save(flush:true)
+        ufile.file = new AttachmentContent(attachment:ufile,  content:file.bytes)
 
-        return true;
+        return ufile;
     }
 
     def downloadFile(def id, def request, def messageSource) {

@@ -7,6 +7,7 @@ class AttachmentContent implements Serializable{
     static belongsTo = [attachment:AttachmentFile]
 
     static constraints = {
+        content nullable:false;
     }
 
     static mapping = {

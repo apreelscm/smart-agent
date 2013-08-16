@@ -1,3 +1,5 @@
+<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page import="com.eservice.eumowy.Activity" %>
 <table style="margin-top: 10px" class="t">
     <colgroup>
         <col style="width: calc(100% - 40px)" />
@@ -14,7 +16,7 @@
         <tr>
             <td>${fieldValue(bean: file, field: "name")}
             <td>
-                <g:remoteLink  class="button small action" action="deleteFile" params="[id:file.id]"
+                <g:remoteLink  class="button small action" action="deleteFile" params="[id:file.id, processId:processId]"
                               update="attachmentsBox">Usuń</g:remoteLink>
             </td>
         </tr>
