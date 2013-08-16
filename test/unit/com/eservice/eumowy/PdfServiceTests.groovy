@@ -115,6 +115,7 @@ class PdfServiceTests {
 		result.put("Pan", ["true", "", "checkbox"] as String[]);
 		result.put("Pani", ["false", "", "checkbox"] as String[]);
 		result.put("email", ["mkniec@apreel.com"] as String[]);
+		result.put("NazwaDoWydrukuZTerminalaPos", ["To jest jakaś nazwa trochę inna"] as String[]);
 		result.put("NazwaDoWyszukiwarki", ["To jest jakaś nazwa"] as String[]);
 		
 		return result;
@@ -212,7 +213,7 @@ class PdfServiceTests {
 
 
     void process(templateName, outName, data){
-        byte[] pdf = service.fillPdfFormFromFile(getTemplatePath()+templateName, data)
+        byte[] pdf = service.fillPdfFormFromFile(getTemplatePath()+templateName, data, PdfService.FontType.ARIAL)
 
         assert pdf != null
 

@@ -1,6 +1,7 @@
 package pdfgenerator;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -20,6 +21,9 @@ import com.lowagie.text.pdf.PdfStamper;
 
 public class PdfGenerator {
 	private static Logger LOG = Logger.getLogger(PdfGenerator.class);
+	
+	private static String ARIAL_FONT_PATH = "web-app"+File.separator+"fonts"+File.separator+"arial.ttf";
+	private static String ARIALBOLD_FONT_PATH = "web-app"+File.separator+"fonts"+File.separator+"arialbd.ttf";
 	
 	/**
 	 * 
@@ -82,7 +86,19 @@ public class PdfGenerator {
 				}
 				
 				if (fontsPathMap != null && fontsPathMap.containsKey(dataEntry.getKey())){
-					BaseFont bf = BaseFont.createFont(fontsPathMap.get(dataEntry.getKey()), BaseFont.CP1250, BaseFont.EMBEDDED);
+					BaseFont bf = null;
+					if("HELVETICA".equals(fontsPathMap.get(dataEntry.getKey()))) {
+						bf = BaseFont.createFont(BaseFont.TIMES_ROMAN, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+					}
+					else if ("ARIAL".equals(fontsPathMap.get(dataEntry.getKey()))) {
+						bf = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.EMBEDDED);
+					}
+					else if ("ARIALBOLD".equals(fontsPathMap.get(dataEntry.getKey()))) {
+						bf = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.EMBEDDED);
+					}
+					else {
+						bf = BaseFont.createFont(fontsPathMap.get(dataEntry.getKey()), BaseFont.CP1250, BaseFont.EMBEDDED);
+					}
 					
 					form.setFieldProperty(dataEntry.getKey(), "textfont", bf, null);	
 					form.addSubstitutionFont(bf);
@@ -177,7 +193,19 @@ public class PdfGenerator {
 				}
 				
 				if (fontsPathMap != null && fontsPathMap.containsKey(dataEntry.getKey())){
-					BaseFont bf = BaseFont.createFont(fontsPathMap.get(dataEntry.getKey()), BaseFont.CP1250, BaseFont.EMBEDDED);
+					BaseFont bf = null;
+					if("HELVETICA".equals(fontsPathMap.get(dataEntry.getKey()))) {
+						bf = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.EMBEDDED);
+					}
+					else if ("ARIAL".equals(fontsPathMap.get(dataEntry.getKey()))) {
+						bf = BaseFont.createFont(ARIAL_FONT_PATH, BaseFont.CP1250, BaseFont.EMBEDDED);
+					}
+					else if ("ARIALBOLD".equals(fontsPathMap.get(dataEntry.getKey()))) {
+						bf = BaseFont.createFont(ARIALBOLD_FONT_PATH, BaseFont.CP1250, BaseFont.EMBEDDED);
+					}
+					else {
+						bf = BaseFont.createFont(fontsPathMap.get(dataEntry.getKey()), BaseFont.CP1250, BaseFont.EMBEDDED);
+					}
 					
 					form.setFieldProperty(dataEntry.getKey(), "textfont", bf, null);	
 					form.addSubstitutionFont(bf);
