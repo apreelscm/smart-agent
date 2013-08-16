@@ -62,7 +62,7 @@
 
     <h1 class="ng linia-bottom"><g:message code="clientSignature.header.title" default="Podpis Klienta"/></h1>
 
-    <div id="pdfBox" style="height: 500px; overflow: hidden;border: solid 1px; border-radius: 5px;  margin: 20px 15px 0">
+    <div id="pdfBox" style="height: 680px; overflow: hidden;border: solid 1px; border-radius: 5px;  margin: 20px 15px 0">
         <g:render template="../forms/pdf/embedDocument-mobile"
                   model="[pdfDocument: resource(dir:'files', file:'pedef.pdf')]"/>
     </div>
@@ -75,6 +75,9 @@
         			<g:each in="${com.eservice.eumowy.Activity$ClientType?.values()}" >
 						<li><span><a class="big-link" href="#" id="subscribe-${it.name()}">${it}</a></span></li>
 					</g:each>
+					<!-- <li><span><a class="big-link" id="subscribe-OTHER" href="#">Andrzej Kmicic - Reprezentant</a></span></li>
+					<li><span><a class="big-link" href="#">Stanisław Wokólski - Reprezentant</a></span></li>
+					<li><span><a class="big-link" href="#">Jacek Soplica - Pracownik eService</a></span></li> -->
         		</ul>
         	</fieldset>
         	<fieldset class="subpanel-fieldset" id="clientSignatureDocType">

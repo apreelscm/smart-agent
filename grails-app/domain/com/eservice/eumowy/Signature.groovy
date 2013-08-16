@@ -5,6 +5,12 @@ class Signature implements Serializable {
 
     String name;
     Boolean active = true;
+	
+	Integer subscriptionX;
+	Integer subscriptionY;
+	Integer subscriptionXScale;
+	Integer subscriptionYScale;
+	Integer subscriptionPageNumber;
 
     static hasMany = [
             calcFieldsSignature:CalcFieldSignature,

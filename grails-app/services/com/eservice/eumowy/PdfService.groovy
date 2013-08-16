@@ -1,16 +1,30 @@
 package com.eservice.eumowy
 
-import com.sun.pdfview.PDFFile
-import com.sun.pdfview.PDFPage
-
-import javax.imageio.ImageIO
 import java.awt.*
 import java.awt.image.BufferedImage
 import java.nio.ByteBuffer
 import java.nio.channels.FileChannel
 
-class PdfService {
+import javax.imageio.ImageIO
 
+import org.springframework.context.ApplicationContext
+
+import pdfgenerator.PdfGenerator
+
+import com.lowagie.text.pdf.BaseFont
+import com.sun.pdfview.PDFFile
+import com.sun.pdfview.PDFPage
+
+class PdfService {
+	
+	public static enum FontType {
+		HELVETICA,
+		ARIAL,
+		ARIALBOLD
+	}
+	
+	ApplicationContext applicationContext
+	
     def generateImagesFormPDF(){
 
         def file = new File("web-app\\files\\1.pdf.pdf");
@@ -64,4 +78,33 @@ class PdfService {
             file = null;
         }
     }
+	
+	public byte [] getPdfTemplate(String name) {
+		return applicationContext.getResource("web-app" +File.separator+ "files" +File.separator+"pdf_templates" + File.separator + name).getFile().getBytes()	
+    }
+	
+	def fillPdfFormFromURI(String urlTemplatePath, Map<String,String[]> dataMap, FontType fontType) {
+		BaseFont f = null
+		
+		switch(fontType) {
+			case FontType.HELVETICA:
+				f = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.EMBEDDED);
+				break;
+				
+			case FontType.ARIAL:
+				f = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.EMBEDDED)
+				break;
+			
+			case FontType.ARIALBOLD:
+				f = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.EMBEDDED)
+				break;
+			
+		}
+		//TODO Dokonczyc fontowanie
+		return PdfGenerator.generatePdfContentFromURI(urlTemplatePath, dataMap, null)
+	}
+	
+	def fillPdfFormFromFile(String fileTemplatePath, Map<String,String[]> dataMap) {
+		return PdfGenerator.generatePdfContentFromFile(fileTemplatePath, dataMap, null)
+	}
 }
