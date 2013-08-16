@@ -1,14 +1,17 @@
 package com.eservice.eumowy
 
+import com.eservice.eumowy.dao.CbdDAO
 import grails.plugin.cache.Cacheable
+import grails.util.Environment
 import org.springframework.transaction.annotation.Isolation
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
 
 class CbdService {
 
-    def cbdDAO
+    CbdDAO cbdDAO
 
+    private static final def FIND_CLIENT_ID_BY_NIP = "findClientIdByNip"
     private static final def GET_ADRES_DANE_DO_WYDRUKU = "getAdresDaneDoWydruku"
     private static final def GET_ADRES_DO_KORESPONDENCJI = "getAdresDoKorespondencji"
     private static final def GET_ADRES_DO_KORESPONDENCJIZ_AKCEPTANTEM = "getAdresDoKorespondencjizAkceptantem"
@@ -23,6 +26,17 @@ class CbdService {
     private static final def GET_WYKAZ_PUNKTOW_GRID = "getWykazPunktowGrid"
     private static final def GET_ZAKRES_URUCHOMIENIA_PUNKTY_GRID = "getZakresUruchomieniaPunktyGrid"
 
+    @Cacheable(value="getAdresDaneDoWydruku")
+    @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
+    def findClientIdByNip(def clientNip) {
+        switch (Environment.getCurrent()) {
+            case Environment.DEVELOPMENT:
+               findClientIdByNipMock(clientNip);
+            case Environment.TEST:
+                def rowResult = cbdDAO.selectOne(FIND_CLIENT_ID_BY_NIP,[nip:clientNip])
+                return new Client(rowResult)
+        }
+    }
 
     @Cacheable(value="getAdresDaneDoWydruku")
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
@@ -111,7 +125,7 @@ class CbdService {
     /**
      * MOCK
      * */
-    def findClientIdByNip(String nip) {
+    def findClientIdByNipMock(String nip) {
         def cbdId;
 
         if(nip == "1234567819"){
@@ -142,6 +156,9 @@ class CbdService {
         println("cl:"+client)
         println("cl1:"+(client == null ))
         println("cl2:"+(cbdId != null))
+
+
+
 
         return client;
     }

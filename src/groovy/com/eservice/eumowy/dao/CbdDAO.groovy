@@ -8,7 +8,7 @@ class CbdDAO {
 
     def dataSource
 
-    def selectOne(String sqlName ,def paramers){
+    def selectOne(String sqlName ,def paramers = []){
         def row
         try {
             def sql = new Sql(dataSource)
@@ -21,16 +21,15 @@ class CbdDAO {
         row
     }
 
-    def selectMany(String sqlName ,def paramers){
+    def selectMany(String sqlName ,def paramers = []){
 
         def rows = []
+
         try {
-            def sql = Sql(dataSource)
+            def sql = new Sql(dataSource)
             sql.eachRow(getSqlText(sqlName),paramers) {
-                rows.add(it.toRowResult())
+                rows.add(it.toRowResult().value)
             }
-
-
         }
         catch (SQLException ex) {
             log.error ex.message, ex

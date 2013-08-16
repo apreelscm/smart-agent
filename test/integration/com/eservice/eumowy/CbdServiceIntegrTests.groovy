@@ -10,7 +10,7 @@ class  CbdServiceIntegrTests {
     Logger log = LoggerFactory.getLogger(CbdServiceIntegrTests)
     def cbdService
 
-    def nip = '1022034800';
+    def nip = '8356944170';
     
     @Before
     void setUp() {
@@ -24,11 +24,16 @@ class  CbdServiceIntegrTests {
     }
 
     @Test
+    void findClientIdByNip() {
+        def result = cbdService.findClientIdByNip(nip)
+        assert result != null
+    }
+
+    @Test
     void getAdresDaneDoWydrukuTest() {
         def result = cbdService.getAdresDaneDoWydruku(nip)
         assert result != null
     }
-
 
      @Test
     void getAdresDoKorespondencjiTest() {

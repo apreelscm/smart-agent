@@ -87,7 +87,6 @@ class ActivityController {
             }.to "selectedPanels"
         }
 
-
         getCalculator {
             action {  GetCalculatorCommand cmd ->
 
@@ -112,19 +111,18 @@ class ActivityController {
                  * sprawdzanie, czy to nie jest nowa umowa
                  * */
                 def hasNowaUmowa = processInstance.activities.any{it.code.equals("nowaUmowa")};
-                if(client == null){
-                    if(!hasNowaUmowa){
-                        flash.nipErrorMessage = message(code:"client.notFound.error", default:"Brak klienta");
-                        return error();
-                    }
-                    else{
-                        flash.nipInfoMessage =  message(code:"client.new.info", default:"Now klient");
-                        client = new Client(nip:cmd.nip)
-                    }
-                }
-                else{
+
+
+                if(client?.id != null || client?.cbdId != null){
                     flash.nipInfoMessage =  message(code:"client.found.info", default:"Znaleziono");
+                }else if(hasNowaUmowa){
+                    flash.nipInfoMessage =  message(code:"client.new.info", default:"Nowy klient");
+                    client = new Client(nip:cmd.nip)
+                }else{
+                    flash.nipErrorMessage = message(code:"client.notFound.error", default:"Brak klienta");
+                    return error();
                 }
+
 
                 flow.client = client;
 
@@ -176,12 +174,12 @@ class ActivityController {
             on("error").to "chooseCalc"
         }
 
-     /*   preparePanels {
-            action {
-                flow.files = attachmentService.getList();
-            }
-            on("success").to "selectedPanels"
-        }*/
+        /*   preparePanels {
+               action {
+                   flow.files = attachmentService.getList();
+               }
+               on("success").to "selectedPanels"
+           }*/
 
         selectedPanels{
             on("back").to "chooseCalc"
