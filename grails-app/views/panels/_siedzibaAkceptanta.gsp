@@ -7,12 +7,17 @@
                     <span>
                     <span><g:message code="panel.street" /></span>
                     <span>
-                        <select name="addressStreetTitle" id="addressStreetTitle">
+                      %{--  <select name="addressStreetTitle" >
                             <option value="ulica">ulica</option>
                             <option value="osiedle">osiedle</option>
                             <option value="aleja">aleja</option>
                             <option value="plac">plac</option>
-                        </select>
+                        </select>--}%
+                        <dict:streetSelect name="addressStreetTitle" />
+                      %{--  <g:select name="filterStatus" from="${com.eservice.eumowy.Process$ProcessStatus?.values()}"
+                                  keys="${com.eservice.eumowy.Process$ProcessStatus.values()*.name()}"
+                                  noSelection="['': '']"
+                                  value="${filterStatus}"/>--}%
                         <g:textField name="addressStreet" style="width: 200px"/>
                     </span>
                     <span>

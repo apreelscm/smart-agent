@@ -20,8 +20,7 @@ class GetCalculatorCommand {
     }
 
     def isNIPValid(String nip) {
-        println("isNIPValid nip:"+nip);
-        if (nip.length() == 13) {
+      /*  if (nip.length() == 13) {
             nip = nip.replaceAll("-", "");
         }
         if (nip.length() != 10) return false;
@@ -35,6 +34,7 @@ class GetCalculatorCommand {
             return (sum % 11) == Integer.parseInt(aNip[10]);
         } catch (NumberFormatException e) {
             return false;
-        }
+        }*/
+        return true
     }
 }

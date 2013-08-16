@@ -6,7 +6,7 @@ import groovy.transform.ToString
 class Client implements Serializable{
 
     String name
-    String cbdId
+    Long cbdId
     String nip
 
     static constraints = {
