@@ -28,8 +28,8 @@ class AttachmentFile implements Serializable{
 
     static mapping = {
         table name: "ATTACHMENT", schema: DomainConsts.SHEMA_NAME
-        id generator:'sequence', params:[sequence:'ATTACHMENT_SEQ']
-        file cascade:"all"
+        id generator:'sequence', params:[sequence:DomainConsts.SHEMA_NAME+'.ATTACHMENT_SEQ']
+        file cascade:"all-delete-orphan"
     }
 
 

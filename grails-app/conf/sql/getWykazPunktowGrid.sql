@@ -3,20 +3,20 @@ SELECT   k.kln_nazwa,
          a.adr_miejscowosc,
          a.adr_nr_budynku,
          adr_kod_pocztowy
-  FROM      cbt_adresy a
+  FROM      CBD_ADM.cbt_adresy a
          JOIN
-            cbt_klienci k
+            CBD_ADM.cbt_klienci k
          ON a.adr_kln_id = k.kln_id
  WHERE   k.kln_kln_id IN
                (SELECT   kln_id
-                  FROM   cbt_klienci m
+                  FROM   CBD_ADM.cbt_klienci m
                  WHERE       kln_poziom = 'MRC'
-                         AND kln_nip = '7292351080'
+                         AND kln_nip = :nip
                          AND kln_status NOT IN ('N', 'O')
                          AND kln_qcards_nr = 1
                          AND EXISTS
                                (SELECT   1
-                                  FROM   cbt_klienci o, cbt_terminale_pos
+                                  FROM   CBD_ADM.cbt_klienci o, CBD_ADM.cbt_terminale_pos
                                  WHERE       o.kln_kln_id = m.kln_id
                                          AND o.kln_id = tps_kln_id
                                          AND tps_status NOT IN ('N', 'C')))

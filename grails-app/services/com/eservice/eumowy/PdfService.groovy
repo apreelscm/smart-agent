@@ -17,7 +17,7 @@ import com.sun.pdfview.PDFPage
 
 class PdfService {
 	
-	enum FontType {
+	public static enum FontType {
 		HELVETICA,
 		ARIAL,
 		ARIALBOLD

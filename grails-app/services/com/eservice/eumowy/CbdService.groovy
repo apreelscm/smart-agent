@@ -111,7 +111,6 @@ class CbdService {
     /**
      * MOCK
      * */
-
     def findClientIdByNip(String nip) {
         def cbdId;
 

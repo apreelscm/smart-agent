@@ -75,13 +75,13 @@ class ActivityController {
             on("back").to "chooseActivity"
             on("getCalculator").to "getCalculator"
             on("continue"){
-                def processInstance = flow.processInstance
+                Process processInstance = flow.processInstance
                 //processInstance.child = new Child(params)
 
                 processInstance.calcNumber =  flow.calcNumber
                 processInstance.client =  flow.client
 
-                ((Process)processInstance).save();
+                processInstance.save(flush:true);
 
                 flow.processInstance = processInstance
             }.to "selectedPanels"
@@ -234,8 +234,15 @@ class ActivityController {
         getAttachmentList()
     }
 
+
+
     def getAttachmentList(){
         render(template:"../attachment/list", model:[files:attachmentService.getList()]);
+    }
+
+    def testSql(){
+        def result = cbdService.getAdresDaneDoWydruku("2354242")
+        log.info("getAdresDaneDoWydrukuTest result:"+result)
     }
 
     //--------------

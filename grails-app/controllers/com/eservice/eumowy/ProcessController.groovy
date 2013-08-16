@@ -168,6 +168,11 @@ class ProcessController {
 
     def downloadAttachment(){
         AttachmentFile ufile = attachmentService.downloadFile( params.id, request , messageSource)
+
+        if(ufile?.file?.content){
+            return;
+        }
+
         response.setContentType("application/octet-stream")
         response.setHeader("Content-disposition", "${params.contentDisposition}; filename=${ufile.name}")
         response.outputStream << ufile.file.content

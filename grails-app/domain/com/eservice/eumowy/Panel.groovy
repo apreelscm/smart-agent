@@ -15,7 +15,7 @@ class Panel implements Serializable{
 
     static mapping = {
         table name: "PANEL", schema: DomainConsts.SHEMA_NAME
-        id generator:'sequence', params:[sequence:'PANEL_SEQ']
+        id generator:'sequence', params:[sequence:DomainConsts.SHEMA_NAME+'.PANEL_SEQ']
     }
 
 }

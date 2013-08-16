@@ -3,6 +3,7 @@ create table EUMOWY.APP_PARAMETERS (id number(19,0) not null, name varchar2(255 
 create table EUMOWY.ACTIVITY (id number(19,0) not null, version number(19,0) not null, code varchar2(255 char) unique, numer_pozycji number(10,0) unique, primary key (id));
 create table EUMOWY.ACTIVITY_SIGNATURES (id number(19,0) not null, version number(19,0) not null, activity_id number(19,0), mandatory number(1,0) not null, number_of_list number(10,0), signature_id number(19,0), primary key (id));
 create table EUMOWY.ATTACHMENT (id number(19,0) not null, date_created timestamp not null, filename varchar2(255 char), last_updated timestamp not null, process_id number(19,0), attachments_idx number(10,0), primary key (id));
+create table EUMOWY.ATTACHMENT_CONTENT (id integer not null, version integer not null, attachment_id integer not null unique, content BLOB not null, primary key (id));
 create table EUMOWY.CALCFIELD (id number(19,0) not null, version number(19,0) not null, name varchar2(255 char) unique, primary key (id));
 create table EUMOWY.CALCFIELD_SIGNATURE (id number(19,0) not null, version number(19,0) not null, calc_field_id number(19,0), signature_id number(19,0), primary key (id));
 create table EUMOWY.CLIENT (id number(19,0) not null, version number(19,0) not null, cbd_id varchar2(255 char) unique, name varchar2(255 char) unique, nip varchar2(255 char) unique, primary key (id));

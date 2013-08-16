@@ -220,6 +220,10 @@
      <nav style="margin-top: 20px">
          <fieldset>
              <g:submitButton name="continue" class="button submit" value="${message(code: 'default.navigation.button.next', default: 'Dalej')}"/>
+
+%{--
+             <g:remoteLink  class="button small action" action="testSql"
+                            update="attachmentsBox">TEST</g:remoteLink>--}%
          </fieldset>
      </nav>
  </g:form>

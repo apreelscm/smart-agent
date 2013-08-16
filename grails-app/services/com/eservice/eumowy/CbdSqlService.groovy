@@ -2,17 +2,17 @@ package com.eservice.eumowy
 
 import groovy.sql.Sql
 
-import java.sql.SQLException;
+import java.sql.SQLException
 
 class CbdSqlService {
 
-    def dataSourceExt
+    def dataSource
 
     def selectOne(String sqlName ,def paramers){
         def row
         try {
-            def sql = Sql(dataSourceExt)
-            row = sql.firstRow(getSqlText(sqlName), paramers)
+            def sql = new Sql(dataSource)
+            row = sql.firstRow(getSqlText(sqlName),paramers)
         }
         catch (SQLException ex) {
             log.error ex.message, ex
@@ -25,10 +25,12 @@ class CbdSqlService {
 
         def rows = []
         try {
-            def sql = Sql(dataSourceExt)
+            def sql = Sql(dataSource)
             sql.eachRow(getSqlText(sqlName),paramers) {
                 rows.add(it.toRowResult())
             }
+
+
         }
         catch (SQLException ex) {
             log.error ex.message, ex
@@ -38,13 +40,22 @@ class CbdSqlService {
     }
 
     def getSqlText(String sqlName){
+        File sqlFile
         try {
-            File sqlFile = new File(this.class.getResource("/sql/${sqlName}.sql").getFile())
-            return sqlFile.text;
+             sqlFile = new File(this.class.getResource("/sql/${sqlName}.sql").getFile())
         } catch (IOException ex) {
             log.error ex.message, ex
             throw ex
         }
+
+        StringBuilder buf = new StringBuilder();
+        sqlFile.eachLine {
+            buf.append(it).append(" ")
+        }
+
+        println(" buf.toString():"+ buf.toString())
+        buf.toString()
+
     }
 
 }

@@ -13,10 +13,23 @@ import java.text.DecimalFormat;
 class PdfServiceTests {
 
     static Random random = new Random()
-
-	static String fileTemplatePath = "web-app" +File.separator+ "files" +File.separator+"pdf_templates" + File.separator;
-	static String fileTemplateOutPath = "web-app" +File.separator+ "files" +File.separator+"pdf_out" + File.separator;
+	
+	static URL url = new PdfServiceTests().getClass().getResource("PdfServiceTests.class");
+	static String fileTemplatePath = File.separator+"otherResources" +File.separator+"pdf_templates" + File.separator;
+	static String fileTemplateOutPath = File.separator+"otherResources" +File.separator+ "pdf_out" + File.separator;
 	static Map<String, String[]> data;
+	
+	private static String getProjectPath() {  
+		return url.toString().substring(0,url.toString().indexOf('target')).replace("file:/", "");
+    }
+	
+	public static String getTemplatePath(){
+		return getProjectPath() + fileTemplatePath;
+	}
+	
+	public static String getTemplateOutPath(){
+		return getProjectPath() + fileTemplateOutPath;
+	}
 	
 	@BeforeClass
 	static void init() {
@@ -81,7 +94,7 @@ class PdfServiceTests {
 		result.put("OficjalnaNazwaAkceptanta1", ["To jest oficjalna nazwa akceptanta"] as String[]);
 		result.put("OficjalnaNazwaAkceptanta2", ["To jest druga linia z nazwą akceptanta"] as String[]);
 		result.put("NazwaSieciowaAkceptanta", ["This is the end"] as String[]);
-		result.put("podpis", [new File("/Repos/eumowy/web-app/files/signature1.jpg").toURI().toURL(), "", "signature", "1", "435", "15", "74", "43"] as String[]);
+		result.put("podpis", [new File(getTemplatePath()+"signature1.jpg").toURI().toURL(), "", "signature", "1", "435", "15", "74", "43"] as String[]);
 		
 		return result;
 	}
@@ -128,7 +141,7 @@ class PdfServiceTests {
     void testAPUNTSS() {
 		HashMap<String, String[]> data = new HashMap<String, String[]>();
 		data.putAll(this.data);
-		data.put("podpis", [new File("/Repos/eumowy/web-app/files/signature1.jpg").toURI().toURL(), "", "signature", "4", "65", "150", "74", "43"] as String[]);
+		data.put("podpis", [new File(getTemplatePath()+"signature1.jpg").toURI().toURL(), "", "signature", "4", "65", "150", "74", "43"] as String[]);
         process("APUNTSS1.00312-01-16.pdf", "APUNTSS1.00312-01-16_out.pdf", data)
     }
 
@@ -199,11 +212,11 @@ class PdfServiceTests {
 
 
     void process(templateName, outName, data){
-        byte[] pdf = service.fillPdfFormFromFile(fileTemplatePath+templateName, data)
+        byte[] pdf = service.fillPdfFormFromFile(getTemplatePath()+templateName, data)
 
         assert pdf != null
 
-        new File(fileTemplateOutPath+outName).withOutputStream {
+        new File(getTemplateOutPath()+outName).withOutputStream {
             it.write pdf
         }
     }
