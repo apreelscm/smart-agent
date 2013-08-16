@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory
 class  CbdServiceIntegrTests {
 
     Logger log = LoggerFactory.getLogger(CbdServiceIntegrTests)
-    def cbdDAOService
+    def cbdService
 
     def nip = '1022034800';
     
@@ -25,86 +25,86 @@ class  CbdServiceIntegrTests {
 
     @Test
     void getAdresDaneDoWydrukuTest() {
-        def result = cbdDAOService.getAdresDaneDoWydruku(nip)
+        def result = cbdService.getAdresDaneDoWydruku(nip)
         assert result != null
     }
 
 
      @Test
     void getAdresDoKorespondencjiTest() {
-        def result = cbdDAOService.getAdresDoKorespondencji(nip)
+        def result = cbdService.getAdresDoKorespondencji(nip)
         assert result != null
     }
 
     @Test
     void getAdresDoKorespondencjizAkceptantemTest() {
-        def result = cbdDAOService.getAdresDoKorespondencjizAkceptantem(nip)
+        def result = cbdService.getAdresDoKorespondencjizAkceptantem(nip)
         assert result != null
     }
 
 
    @Test
     void getDaneAkceptantaTest() {
-        def result = cbdDAOService.getDaneAkceptanta(nip)
+        def result = cbdService.getDaneAkceptanta(nip)
         assert result != null
     }
 
 
    @Test
     void getNazwaBankuTest() {
-        def result = cbdDAOService.getNazwaBanku(nip)
+        def result = cbdService.getNazwaBanku(nip)
         assert result != null
     }
 
 
    @Test
     void getNumerRachunkuBankowegoTest() {
-        def result = cbdDAOService.getNumerRachunkuBankowego(nip)
+        def result = cbdService.getNumerRachunkuBankowego(nip)
         assert result != null
     }
 
 
    @Test
     void getOsoba1UprawnionaDoPodpisaniaUmowyTest() {
-        def result = cbdDAOService.getOsoba1UprawnionaDoPodpisaniaUmowy(nip)
+        def result = cbdService.getOsoba1UprawnionaDoPodpisaniaUmowy(nip)
         assert result != null
     }
 
 
    @Test
     void getOsoba2UprawnionaDoPodpisaniaUmowyTest() {
-        def result = cbdDAOService.getOsoba2UprawnionaDoPodpisaniaUmowy(nip)
+        def result = cbdService.getOsoba2UprawnionaDoPodpisaniaUmowy(nip)
         assert result != null
     }
 
 
    @Test
     void getOsobaKtoraPozyskalaAkceptantaTest() {
-        def result = cbdDAOService.getOsobaKtoraPozyskalaAkceptanta(nip)
+        def result = cbdService.getOsobaKtoraPozyskalaAkceptanta(nip)
         assert result != null
     }
 
    @Test
     void getPromocyjneObinzenieOplatGridTest() {
-        def result = cbdDAOService.getPromocyjneObinzenieOplatGrid(nip)
+        def result = cbdService.getPromocyjneObinzenieOplatGrid(nip)
         assert result != null
     }
 
    @Test
     void getOsobaDoKontaktuTest() {
-        def result = cbdDAOService.getOsobaDoKontaktu(nip)
+        def result = cbdService.getOsobaDoKontaktu(nip)
         assert result != null
     }
 
    @Test
     void getWykazPunktowGridTest() {
-        def result = cbdDAOService.getWykazPunktowGrid(nip)
+        def result = cbdService.getWykazPunktowGrid(nip)
         assert result != null
     }
 
    @Test
     void getZakresUruchomieniaPunktyGridTest() {
-        def result = cbdDAOService.getZakresUruchomieniaPunktyGrid(nip)
+        def result = cbdService.getZakresUruchomieniaPunktyGrid(nip)
         assert result != null
     }
 }

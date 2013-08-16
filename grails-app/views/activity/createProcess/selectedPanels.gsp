@@ -8,12 +8,11 @@
 	<r:require module="newpoint_panel_setup"/>
     <g:javascript>
 
-        var $j = jQuery.noConflict();
+    var $j = jQuery.noConflict();
 
-        $j(function(){ //this is regular jQuery code. It waits for the dom to load fully the first time you open the page.
+    $j(function(){
 
-
-            <g:remoteFunction action="getAttachmentList" update="attachmentsBox"/>
+        refreshAttachmentList()
 
         $j("#fileUploadInput").change(function (){
                  $j('#spinner2').removeClass("display-none");
@@ -22,25 +21,30 @@
 
          $j("#hidden-upload-frame").load(function(){
 
-          $j('#spinner2').addClass("display-none");
-          fileUploadInput
+         $j('#spinner2').addClass("display-none");
 
-            var content = this.contentDocument.body.innerHTML
+         var content = this.contentDocument.body.innerHTML
 
-             //resetting file input
-             $j('#uploadForm').each(function(){
-                 this.reset();
-             });
+         //resetting file input
+         $j('#uploadForm').each(function(){
+             this.reset();
+         });
 
 
-             $j('#statusBox').html(content);
+         $j('#statusBox').html(content);
 
-             var isError = $j('#statusBox ul').hasClass("errors")
-             if(!isError){
-        <g:remoteFunction action="getAttachmentList" update="attachmentsBox"/>
-        }
-
+         var isError = $j('#statusBox ul').hasClass("errors")
+         if(!isError){
+              refreshAttachmentList()
+         }
     });
+
+        function refreshAttachmentList(){
+            ${remoteFunction(
+                    action:'getAttachmentList',
+                    update:'attachmentsBox',
+                    params: [processId: processInstance.id])}
+        }
 });
 
     </g:javascript>

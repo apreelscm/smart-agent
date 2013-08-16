@@ -9,7 +9,7 @@ class ActivityController {
 
     //def emailService
     def emailService
-    def cbdDAOService
+    def cbdService
     def attachmentService
     def messageSource
 
@@ -106,7 +106,7 @@ class ActivityController {
                 }
 
                 /** pobieranie informacji o kliencie na podstawie numeru nip */
-                def client = cbdDAOService.findClientIdByNip(cmd.nip);
+                def client = cbdService.findClientIdByNip(cmd.nip);
 
                 /**
                  * sprawdzanie, czy to nie jest nowa umowa
@@ -151,14 +151,14 @@ class ActivityController {
                  * pobieranie danych o kalkulatorze
                  * */
                 if(client.id != null || client.cbdId != null){
-                    def calc = cbdDAOService.findCalculatorByClientId(client.nip)
+                    def calc = cbdService.findCalculatorByClientId(client.nip)
 
                     if(calc == null){
                         flash.calcErrorMessage = message(code:"calc.notFound.error", default:"Kalkulator nie istnieje");
                         return error();
                     }
 
-                    if(!cbdDAOService.isCalcValid(calc,processInstance.signatures)){
+                    if(!cbdService.isCalcValid(calc,processInstance.signatures)){
                         flash.calcErrorMessage =  message(code:"calc.notEnough.error", default:"Kalkulator nie pozwala na wykonanie wszystkich zaznaczonych czynności");
                         return error();
                     }
@@ -218,11 +218,12 @@ class ActivityController {
     def upload() {
 
         def config = grailsApplication.config.fileuploader[params.upload]
-        def processId = params.processId
 
-        def msg = attachmentService.uploadFile(processId,config,request, messageSource);
+        def msg = attachmentService.uploadFile(config,request, messageSource);
 
-        if(msg.equals(true)){
+        if(msg instanceof AttachmentFile){
+            def process = Process.get(Integer.valueOf(params.processId));
+            process.addToAttachments(msg as AttachmentFile);
             render "";
         }
         else{
@@ -237,11 +238,11 @@ class ActivityController {
 
 
     def getAttachmentList(){
-        render(template:"../attachment/list", model:[files:attachmentService.getListByProcessId(params.id)]);
+        render(template:"../attachment/list", model:[files:attachmentService.getListByProcessId(params.processId), processId: params.processId]);
     }
 
     def testSql(){
-        def result = cbdDAOService.getAdresDaneDoWydruku("2354242")
+        def result = cbdService.getAdresDaneDoWydruku("2354242")
         log.info("getAdresDaneDoWydrukuTest result:"+result)
     }
 

@@ -1,10 +1,10 @@
-package com.eservice.eumowy
+package com.eservice.eumowy.dao
 
 import groovy.sql.Sql
 
 import java.sql.SQLException
 
-class CbdSqlService {
+class CbdDAO {
 
     def dataSource
 
