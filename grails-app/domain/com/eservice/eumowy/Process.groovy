@@ -49,6 +49,9 @@ class Process implements Serializable {
         id generator:'sequence', params:[sequence:DomainConsts.SHEMA_NAME+'.PROCESS_SEQ']
         sort id: "desc"
         client cascade: 'save-update'
+        subscriptions cascade:"all-delete-orphan"
+        attachments cascade:"all-delete-orphan"
+        documents cascade:"all-delete-orphan"
     }
 
 

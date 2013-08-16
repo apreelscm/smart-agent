@@ -34,19 +34,19 @@ alter table EUMOWY.process_signature add constraint FKD76A742EED846B31 foreign k
 alter table EUMOWY.process_subscription add constraint FK992D41E74E3344C3 foreign key (subscription_id) references EUMOWY.SUBSCRIPTION;
 
 -- SEQUENCES
-create sequence ACTIVITY_SEQ;
-create sequence ACTIVITY_SIGNATURES_SEQ;
-create sequence ADM_U_WEB_SEQ;
-create sequence ATTACHMENT_CONTENT_SEQ;
-create sequence ATTACHMENT_SEQ;
-create sequence CALCFIELD_SEQ;
-create sequence CALCFIELD_SIGNATURE_SEQ;
-create sequence CLIENT_SEQ;
-create sequence DOCUMENT_SEQ;
-create sequence EMAIL_TEMPLATES_SEQ;
-create sequence PANEL_SEQ;
-create sequence PROCESS_SEQ;
-create sequence SIGNATURE_PANEL_SEQ;
-create sequence SIGNATURE_SEQ;
-create sequence SUBSCRIPTION_SEQ;
-create sequence APP_PARAMETERS_SEQ;
+create sequence EUMOWY.ACTIVITY_SEQ;
+create sequence EUMOWY.ACTIVITY_SIGNATURES_SEQ;
+create sequence EUMOWY.ADM_U_WEB_SEQ;
+create sequence EUMOWY.ATTACHMENT_CONTENT_SEQ;
+create sequence EUMOWY.ATTACHMENT_SEQ;
+create sequence EUMOWY.CALCFIELD_SEQ;
+create sequence EUMOWY.CALCFIELD_SIGNATURE_SEQ;
+create sequence EUMOWY.CLIENT_SEQ;
+create sequence EUMOWY.DOCUMENT_SEQ;
+create sequence EUMOWY.EMAIL_TEMPLATES_SEQ;
+create sequence EUMOWY.PANEL_SEQ;
+create sequence EUMOWY.PROCESS_SEQ;
+create sequence EUMOWY.SIGNATURE_PANEL_SEQ;
+create sequence EUMOWY.SIGNATURE_SEQ;
+create sequence EUMOWY.SUBSCRIPTION_SEQ;
+create sequence EUMOWY.APP_PARAMETERS_SEQ;

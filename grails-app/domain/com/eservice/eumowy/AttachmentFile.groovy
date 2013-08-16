@@ -15,6 +15,8 @@ class AttachmentFile implements Serializable{
     Date dateUploaded
     Integer downloads
 
+    static belongsTo = [process:Process]
+
     static hasOne = [file:AttachmentContent]
 
     static constraints = {
@@ -30,6 +32,9 @@ class AttachmentFile implements Serializable{
         table name: "ATTACHMENT", schema: DomainConsts.SHEMA_NAME
         id generator:'sequence', params:[sequence:DomainConsts.SHEMA_NAME+'.ATTACHMENT_SEQ']
         file cascade:"all-delete-orphan"
+
+        process nullable:false;
+        file nullable:false;
     }
 
 

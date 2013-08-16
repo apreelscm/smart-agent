@@ -4,6 +4,8 @@ class Subscription {
 
     String content;
 
+    static belongsTo = [process:Process]
+
     static constraints = {
         content(maxSize: 10000)
     }
