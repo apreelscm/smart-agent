@@ -83,28 +83,32 @@ class PdfService {
 		return applicationContext.getResource("web-app" +File.separator+ "files" +File.separator+"pdf_templates" + File.separator + name).getFile().getBytes()	
     }
 	
-	def fillPdfFormFromURI(String urlTemplatePath, Map<String,String[]> dataMap, FontType fontType) {
-		BaseFont f = null
+	private String getFont(FontType fontType) {
+		String f = null;
 		
 		switch(fontType) {
 			case FontType.HELVETICA:
-				f = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.EMBEDDED);
+				f = "HELVETICA";
 				break;
 				
 			case FontType.ARIAL:
-				f = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.EMBEDDED)
+				f = "ARIAL";
 				break;
 			
 			case FontType.ARIALBOLD:
-				f = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.EMBEDDED)
+				f = "ARIALBOLD";
 				break;
 			
 		}
-		//TODO Dokonczyc fontowanie
-		return PdfGenerator.generatePdfContentFromURI(urlTemplatePath, dataMap, null)
+		
+		return f;
 	}
 	
-	def fillPdfFormFromFile(String fileTemplatePath, Map<String,String[]> dataMap) {
-		return PdfGenerator.generatePdfContentFromFile(fileTemplatePath, dataMap, null)
+	def fillPdfFormFromURI(String urlTemplatePath, Map<String,String[]> dataMap, FontType fontType) {
+		return PdfGenerator.generatePdfContentFromURI(urlTemplatePath, dataMap, getFont(fontType))
+	}
+	
+	def fillPdfFormFromFile(String fileTemplatePath, Map<String,String[]> dataMap, FontType fontType) {
+		return PdfGenerator.generatePdfContentFromFile(fileTemplatePath, dataMap, getFont(fontType))
 	}
 }

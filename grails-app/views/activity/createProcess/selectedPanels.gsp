@@ -5,7 +5,7 @@
     <meta name="layout" content="main">
     <title><g:message code="selectedPanels.header.title" default="Lista paneli"/></title>
     <r:require module="filestyle"/>
-
+	<r:require module="newpoint_panel_setup"/>
     <g:javascript>
 
         var $j = jQuery.noConflict();
