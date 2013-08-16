@@ -4,7 +4,7 @@ dataSource {
     logSql= true
     formatSql = false
    // hibernate.default_schema = "CBD_UMOWY"
-    //dialect = org.hibernate.dialect.Oracle10gDialect
+
 }
 
 hibernate {
@@ -18,10 +18,11 @@ environments {
     development {
         dataSource {
             driverClassName = "org.h2.Driver"
+            dialect = "org.hibernate.dialect.H2Dialect"
             username = "sa"
             password = ""
             dbCreate = "create-drop" // one of 'create', 'create-drop', 'update', 'validate', ''
-            url = "jdbc:h2:mem:CbdDb;MVCC=TRUE;LOCK_TIMEOUT=10000;INIT=CREATE SCHEMA IF NOT EXISTS CBD_ADM\\;CREATE SCHEMA IF NOT EXISTS EUMOWY"
+            url = "jdbc:h2:mem:CbdDb;MODE=Oracle;MVCC=TRUE;LOCK_TIMEOUT=10000;INIT=CREATE SCHEMA IF NOT EXISTS CBD_ADM\\;CREATE SCHEMA IF NOT EXISTS EUMOWY"
         }
     }
     test {

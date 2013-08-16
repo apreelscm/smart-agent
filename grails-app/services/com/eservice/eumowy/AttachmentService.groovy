@@ -9,18 +9,22 @@ class AttachmentService {
         ufile.delete()
     }
 
-    def getList() {
-        AttachmentFile.list()
+    def getListByProcessId(def id) {
+        def attachmentCriteria = AttachmentFile.createCriteria()
+        def searchResult = attachmentCriteria.get{
+            process {
+                eq("id", id)
+            }
+        }
+        searchResult
     }
 
-    def uploadFile(def upload, def config, def request, def messageSource) {
+    def uploadFile(def processId, def config, def request, def messageSource) {
 
+
+        log.info("uploadFile - processId : ${processId}")
         def file = request.getFile("file")
 
-        //base path to save file
-        def path = config.path
-        if (!path.endsWith('/'))
-            path = path + "/"
 
         /**************************
          check if file exists
@@ -62,9 +66,9 @@ class AttachmentService {
         ufile.fileSize = file.size
         ufile.extension = fileExtension
         ufile.dateUploaded = new Date(currentTime)
-        ufile.path = path
         ufile.downloads = 0
         ufile.file = new AttachmentContent(content:file.bytes)
+        ufile.process = Process.get(Integer.valueOf(processId));
         ufile.save(flush:true)
 
         return true;

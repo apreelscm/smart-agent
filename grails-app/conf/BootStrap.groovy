@@ -6,7 +6,7 @@ import java.sql.SQLException
 
 class BootStrap {
 
-    def dataSourceExt
+    def dataSource
 
     def init = { servletContext ->
 
@@ -19,7 +19,6 @@ class BootStrap {
                 createCBDDataForDevProfile();
 
                 createTestDomains()
-
 
                 break;
 
@@ -69,7 +68,7 @@ class BootStrap {
 
     def createCBDDataForDevProfile(){
 
-        def sql = new Sql(dataSourceExt)
+        def sql = new Sql(dataSource)
 
         //dodawanie pustego admina i ph
         sql.executeUpdate('insert into CBD_ADM.adm_uzytkownicy (uzy_id) values(?)',[1]);
@@ -95,14 +94,12 @@ class BootStrap {
     }
 
     def executeSqlScript(String scriptPath){
-        def sql = new Sql(dataSourceExt)
+        def sql = new Sql(dataSource)
         File sqlFile = new File(this.class.getResource(scriptPath).getFile())
 
         try{
-            if(sqlFile.isFile()) {
-                sqlFile.eachLine {
-                    sql.execute(it)
-                }
+            sqlFile.eachLine {
+                sql.executeInsert(it)
             }
         }
         catch (SQLException e) {
