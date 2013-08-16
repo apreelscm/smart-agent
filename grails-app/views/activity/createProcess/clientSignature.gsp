@@ -52,6 +52,16 @@
 				return false;
 			});
 			</g:each>
+			
+			jQuery("#requestVersionTemplates").on("change", function(e) {
+				if (e.checked) {
+					jQuery("#noaccept").disable();
+					
+					<g:each in="${com.eservice.eumowy.Activity$ClientType?.values()}">
+					jQuery("#subscribe-${it.name()}").disable();
+					</g:each>
+				}
+			});
 		});
 	</r:script>
 </head>
@@ -102,7 +112,7 @@
                   	<li>
                   		<span>
                   			<label>
-                  				<g:radio name="requestVersion" value="templates" />
+                  				<g:radio id="requestVersionTemplates" name="requestVersion" value="templates" />
                   				<g:message code="clientSignature.templatesVersion.radio" default="Żądanie wzorów dokumentów" />
                   			</label>
                   		</span>
