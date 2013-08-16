@@ -17,6 +17,6 @@ class Client implements Serializable{
 
     static mapping = {
         table name: "CLIENT", schema: DomainConsts.SHEMA_NAME
-        id generator:'sequence', params:[sequence:'CLIENT_SEQ']
+        id generator:'sequence', params:[sequence:DomainConsts.SHEMA_NAME+'.CLIENT_SEQ']
     }
 }

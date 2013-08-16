@@ -46,7 +46,7 @@ class Process implements Serializable {
 
     static mapping = {
         table name: "PROCESS", schema: DomainConsts.SHEMA_NAME
-        id generator:'sequence', params:[sequence:'PROCESS_SEQ']
+        id generator:'sequence', params:[sequence:DomainConsts.SHEMA_NAME+'.PROCESS_SEQ']
         sort id: "desc"
         client cascade: 'save-update'
     }

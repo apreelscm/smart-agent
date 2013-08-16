@@ -10,8 +10,8 @@ class AttachmentContent implements Serializable{
     }
 
     static mapping = {
-        table name: "ATTACHMENT_CONTENT", DomainConsts.SHEMA_NAME
-        id generator:'sequence', params:[sequence:'ATTACHMENT_CONTENT_SEQ']
+        table name: "ATTACHMENT_CONTENT", schema:DomainConsts.SHEMA_NAME
+        id generator:'sequence', params:[sequence:DomainConsts.SHEMA_NAME+'.ATTACHMENT_CONTENT_SEQ']
         content  sqlType: "blob"
     }
 

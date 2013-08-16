@@ -1,6 +1,7 @@
 grant select, insert, update, delete on ACTIVITY to EUMOWY_APP;
 grant select, insert, update, delete on ACTIVITY_SIGNATURES to EUMOWY_APP;
 grant select, insert, update, delete on ATTACHMENT to EUMOWY_APP;
+grant select, insert, update, delete on ATTACHMENT_CONTENT to EUMOWY_APP;
 grant select, insert, update, delete on CALCFIELD to EUMOWY_APP;
 grant select, insert, update, delete on CALCFIELD_SIGNATURE to EUMOWY_APP;
 grant select, insert, update, delete on CLIENT to EUMOWY_APP;
@@ -17,3 +18,21 @@ grant select, insert, update, delete on process_subscription to EUMOWY_APP;
 grant select, insert, update, delete on sec_role to EUMOWY_APP;
 grant select, insert, update, delete on sec_user to EUMOWY_APP;
 grant select, insert, update, delete on sec_user_sec_role to EUMOWY_APP;
+
+
+grant select on  dual to EUMOWY_APP
+grant select on  ACTIVITY_SEQ to EUMOWY_APP;
+grant select on  ACTIVITY_SIGNATURES_SEQ to EUMOWY_APP;
+grant select on  ADM_U_WEB_SEQ to EUMOWY_APP;
+grant select on  ATTACHMENT_CONTENT_SEQ to EUMOWY_APP;
+grant select on  ATTACHMENT_SEQ to EUMOWY_APP;
+grant select on  CALCFIELD_SEQ to EUMOWY_APP;
+grant select on  CALCFIELD_SIGNATURE_SEQ to EUMOWY_APP;
+grant select on  CLIENT_SEQ to EUMOWY_APP;
+grant select on  DOCUMENT_SEQ to EUMOWY_APP;
+grant select on  EMAIL_TEMPLATES_SEQ to EUMOWY_APP;
+grant select on  PANEL_SEQ to EUMOWY_APP;
+grant select on  PROCESS_SEQ to EUMOWY_APP;
+grant select on  SIGNATURE_PANEL_SEQ to EUMOWY_APP;
+grant select on  SIGNATURE_SEQ to EUMOWY_APP;
+grant select on  SUBSCRIPTION_SEQ to EUMOWY_APP;

@@ -20,6 +20,6 @@ class DocumentFile {
 
     static mapping = {
         table name: "DOCUMENT", DomainConsts.SHEMA_NAME
-        id generator:'sequence', params:[sequence:'DOCUMENT_SEQ']
+        id generator:'sequence', params:[sequence:DomainConsts.SHEMA_NAME+'.DOCUMENT_SEQ']
     }
 }

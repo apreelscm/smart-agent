@@ -11,6 +11,9 @@ grant select on cbt_adresy to EUMOWY_APP;
 grant select on cbt_terminale_pos to EUMOWY_APP;
 grant select on cbt_terminale_pos_pozycje to EUMOWY_APP;
 grant select on cbt_terminale_zestawy to EUMOWY_APP;
+grant select on cbt_banki to EUMOWY_APP;
+grant select on cbt_konta_bankowe to EUMOWY_APP;
+grant select on cbt_osoby to EUMOWY_APP;
 
 --grant select on adm_patche to EUMOWY_APP;
 --grant select on cbt_aplikacje to EUMOWY_APP;

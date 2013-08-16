@@ -12,7 +12,7 @@ class Activity implements Serializable {
 
     static mapping = {
         table name: "ACTIVITY", schema: DomainConsts.SHEMA_NAME
-        id generator:'sequence', params:[sequence:'ACTIVITY_SEQ']
+        id generator:'sequence', params:[sequence:DomainConsts.SHEMA_NAME+'.ACTIVITY_SEQ']
     }
 
     static hasMany = [

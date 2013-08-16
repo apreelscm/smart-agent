@@ -8,7 +8,7 @@
             <iframe id="hidden-upload-frame" name="hidden-upload-frame" style="display: none"></iframe>
 
             <div id="attachmentsBox">
-                <g:render template="../attachment/list" model="[files: files]"/>
+                <g:render template="/attachment/list" model="[files: files]"/>
             </div>
 
             <div id="statusBox">
