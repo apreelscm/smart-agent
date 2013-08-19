@@ -174,13 +174,6 @@ class ActivityController {
             on("error").to "chooseCalc"
         }
 
-        /*   preparePanels {
-               action {
-                   flow.files = attachmentService.getList();
-               }
-               on("success").to "selectedPanels"
-           }*/
-
         selectedPanels{
             on("back").to "chooseCalc"
             on("continue"){

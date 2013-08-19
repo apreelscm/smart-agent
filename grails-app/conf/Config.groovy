@@ -124,7 +124,7 @@ log4j = {
                         user: "sa",
                         password: "",
                         driver: "org.h2.Driver",
-                        sql: "INSERT INTO AUDIT (login, log_date, log_message) VALUES ('%X{sessionUserName}','%d{yyyy.MM.dd HH:mm:ss}', '%m');",
+                        sql: "INSERT INTO EUMOWY.LOGS (login, log_date, log_message) VALUES ('%X{sessionUserName}','%d{yyyy.MM.dd HH:mm:ss}', '%m');",
                         threshold: org.apache.log4j.Level.INFO
                 )//
             }
@@ -135,7 +135,7 @@ log4j = {
                         user: "eumowy_app",
                         password: "eumowy_app",
                         driver: "oracle.jdbc.driver.OracleDriver",
-                        sql: "INSERT INTO AUDIT (login, log_date, log_message) VALUES ('%X{sessionUserName}','%d{yyyy.MM.dd HH:mm:ss}', '%m');",
+                        sql: "INSERT INTO EUMOWY.LOGS (login, log_date, log_message) VALUES ('%X{sessionUserName}','%d{yyyy.MM.dd HH:mm:ss}', '%m');",
                         threshold: org.apache.log4j.Level.INFO
                 )//
             }
