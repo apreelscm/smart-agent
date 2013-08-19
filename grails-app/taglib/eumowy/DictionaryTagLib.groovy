@@ -7,7 +7,7 @@ class DictionaryTagLib {
     def dictionaryService;
 
     Closure streetSelect = { attrs ->
-        attrs.from = dictionaryService.getUlicaComboBox()
+        attrs.from = dictionaryService.getUlicaComboBox()*.value
         fieldImpl(out, attrs)
     }
 
