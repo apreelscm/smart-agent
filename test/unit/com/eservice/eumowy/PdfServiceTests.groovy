@@ -19,8 +19,13 @@ class PdfServiceTests {
 	static String fileTemplateOutPath = File.separator+"otherResources" +File.separator+ "pdf_out" + File.separator;
 	static Map<String, String[]> data;
 	
-	private static String getProjectPath() {  
-		return url.toString().substring(0,url.toString().indexOf('target')).replace("file:/", "");
+	private static String getProjectPath() {
+        String urlString = url.toString();
+        if (urlString.contains("target")){
+            return urlString.substring(0,urlString.indexOf("target")).replace("file:/", "");
+        } else {
+            return urlString.substring(0,urlString.indexOf("out")).replace("file:/", "");
+        }
     }
 	
 	public static String getTemplatePath(){
@@ -196,9 +201,25 @@ class PdfServiceTests {
     }
 
     void testAPUNTZ() {
-        process("APUNTZ2.00312-01-16.pdf", "APUNTZ2.00312-01-16_out.pdf", data)
+        HashMap<String, String[]> result = new HashMap<String, String[]>();
+        result.put("podpis", [new File(getTemplatePath()+"signature1.jpg").toURI().toURL(), "", "signature", "1", "435", "15", "74", "43"] as String[]);
+        process("APUNTZ2.00312-01-16.pdf", "APUNTZ2.00312-01-16_out.pdf", result)
     }
-	
+
+    void testATUSUFDU() {
+        HashMap<String, String[]> result = new HashMap<String, String[]>();
+        result.put("reprezentant1_podpis", [new File(getTemplatePath()+"signature1.jpg").toURI().toURL(), "", "signature", "2", "435", "15", "74", "43"] as String[]);
+        result.put("reprezentant2_podpis", [new File(getTemplatePath()+"signature1.jpg").toURI().toURL(), "", "signature", "2", "435", "15", "74", "43"] as String[]);
+        process("ATUSUFDU4.004.130522.pdf", "ATUSUFDU4.004.130522_out.pdf", result)
+    }
+
+    void testAPUPZBSAIKO() {
+        HashMap<String, String[]> result = new HashMap<String, String[]>();
+        result.put("reprezentant1_podpis", [new File(getTemplatePath()+"signature1.jpg").toURI().toURL(), "", "signature", "1", "700", "150", "74", "43"] as String[]);
+//        result.put("reprezentant2_podpis", [new File(getTemplatePath()+"signature1.jpg").toURI().toURL(), "", "signature", "1", "200", "", "74", "43"] as String[]);
+        process("APUPZBSAIKO1.00013-03-25 - Aneks IKO.pdf", "APUPZBSAIKO1.00013-03-25 - Aneks IKO_out.pdf", result)
+    }
+
 	void testFormularzAplikacyjny() {
 		process("Formularz aplikacyjny_po_zmianach_18.01.2012.pdf", "Formularz aplikacyjny_po_zmianach_18.01.2012_out.pdf", generateFormularzAplikacyjnyFields());
 	}
