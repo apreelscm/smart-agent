@@ -15,7 +15,14 @@
       	e.preventDefault();
       	
       	jQuery.post("/eumowy/subscription/saveSubscription", $(this).serialize(), function(data) {
-      		jQuery('#dialog').html(data);
+      		if (data == "OK") {
+      			jQuery("#dialog").html('<h2 class="align-center">Pomyślnie zapisano podpis!</h2>');
+      			updateSubscriptionStatus("OK", "${params.linkid}");
+      		}
+      		else {
+      			jQuery("#dialog").html(data);
+      		}
+     		
       	});
       	
       	return false;
@@ -28,7 +35,7 @@
 <section id="index-subscription">
     <h1 class="ng linia-bottom">Podpis</h1>
 
-    <h3 style="margin-top: 20px">Andrzej Kmicic - Reprezentant</h3>
+    <h3 style="margin-top: 20px">${params.signername}</h3>
 
     <g:form  id="subscriptionForm" action="saveSubscription" class="sigPad">
         <p>
