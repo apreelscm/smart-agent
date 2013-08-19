@@ -22,12 +22,14 @@ public class SignatureToImage {
         System.out.println( "convertJsonToImage:"+jsonString);
                 Gson gson = new Gson();
         SignatureLine[] signatureLines = gson.fromJson(jsonString, SignatureLine[].class);
+        
         BufferedImage offscreenImage = new BufferedImage(600, 250, BufferedImage.TYPE_INT_RGB);
         Graphics2D g2 = offscreenImage.createGraphics();
         g2.setColor(Color.WHITE);
         g2.fillRect(0,0,600,250);
         g2.setPaint(Color.BLACK);
         g2.setStroke(new BasicStroke(3));
+        
         for (SignatureLine line : signatureLines) {
             g2.drawLine(line.lx, line.ly, line.mx, line.my);
         }
