@@ -12,12 +12,7 @@
                     <li>
                         <span><g:message code="panel.street" /></span>
                         <span>
-                            <select name="printAddressStreetTitle" id="printAddressStreetTitle">
-                                <option value="ulica">ulica</option>
-                                <option value="osiedle">osiedle</option>
-                                <option value="aleja">aleja</option>
-                                <option value="plac">plac</option>
-                            </select>
+                            <dict:streetSelect id="printAddressStreetTitle" name="printAddressStreetTitle" />
                             <g:textField name="printAddressStreet" id="printAddressStreet" style="width: 200px"/>
                         </span>
                         <span>

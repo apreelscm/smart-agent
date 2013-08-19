@@ -1,18 +1,22 @@
 package com.eservice.eumowy
+
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 class DictionaryServiceIntegrTests {
 
     def dictionaryService
 
-    private static final def GET_ULICA_COMBOBOX = "getUlicaComboBox"
-    private static final def GET_PAN_PANI = "getPanPaniComboBox"
+    Logger log = LoggerFactory.getLogger(DictionaryServiceIntegrTests)
 
     @Before
     void setUp() {
-        // Setup logic here
+      /*  def cbdDAO = new CbdDAO()
+        cbdDAO.dataSource = dataSource;
+        dictionaryService.cbdDAO = cbdDAO;*/
     }
 
     @After

@@ -1,9 +1,5 @@
 package eumowy
 
-import grails.artefact.Artefact
-
-
-@Artefact("TagLibrary")
 class RequiredFieldTagLib {
 
     static namespace = "apreel"

@@ -9,12 +9,7 @@
                 <li>
                     <span><g:message code="panel.street" /></span>
                     <span>
-                        <select name="correspondenceAddressStreetTitle" id="correspondenceAddressStreetTitle">
-                            <option value="ulica">ulica</option>
-                            <option value="osiedle">osiedle</option>
-                            <option value="aleja">aleja</option>
-                            <option value="plac">plac</option>
-                        </select>
+                         <dict:streetSelect id="correspondenceAddressStreetTitle" name="correspondenceAddressStreetTitle" />
                         <g:textField name="correspondenceAddressStreet" style="width: 200px"/>
                     </span>
                     <span>
