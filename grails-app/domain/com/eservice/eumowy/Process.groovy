@@ -70,6 +70,8 @@ class Process implements Serializable {
         NEW("Nowy"),
         REJECTED("Odrzucony"),
         WAIT_FOR_SUBSRIPTION("Oczekiwanie na podpis"),
+		WAIT_FOR_SUBSCRIPTION_PAPER_VERSION("Oczekiwanie na podpis w wersji papierowej"),
+		SUBSCRIPTIONS_DONE("Złożono podpisy"),
         WAITING("Oczekujący"),
         EDIT("Edycja"),
         ACCEPTED("Zaakceptowany");

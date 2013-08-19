@@ -27,7 +27,83 @@
     </style>
 	<r:require module="jquery_ui" />
 	<r:script>
+		var updateSubscriptionStatusCount = 0;
+		var isSubscriptionDone = {};
+		function updateSubscriptionStatus(status, linkid) {
+			if (status == "OK") {
+				updateSubscriptionStatusCount++;
+				//jQuery('#subscriptionDialog').dialog("close");
+				jQuery("#"+linkid).parent().addClass("disabled");
+				isSubscriptionDone[linkid] = true;
+				
+				if (updateSubscriptionStatusCount == 1) {
+					jQuery.post("/eumowy/activity/updateProcessStatus", {processId: "${processInstance.id}", processStatus:"WAIT_FOR_SUBSRIPTION"}, function(data) {
+						
+					});
+				}
+				
+				if (updateSubscriptionStatusCount == 2) { // JUST FOR NOW IT's 2! CHANGE IT!
+					jQuery.post("/eumowy/activity/updateProcessStatus", {processId: "${processInstance.id}", processStatus:"SUBSCRIPTIONS_DONE"}, function(data) {
+						
+					});
+				}
+			}
+		}
 		jQuery(document).ready(function(){
+			
+			jQuery("#noaccept").on("click", function(e) {
+				e.preventDefault();
+				
+				jQuery("#confirm-noaccept-dialog").dialog({
+					resizable: true,
+					height:200,
+					width: 450,
+					modal: true,
+					buttons: 
+						{
+							"Tak": function() {
+								jQuery( this ).dialog( "close" );
+								jQuery.post("/eumowy/activity/updateProcessStatus", {processId: "${processInstance.id}", processStatus:"REJECTED"}, function(data) {
+									window.location = "/eumowy";
+								});
+							},
+							"Nie": function() {
+								jQuery( this ).dialog( "close" );
+							}
+						}
+				});
+				
+				return false;
+			});
+			
+			jQuery("#conitnueButton").on("click", function(e) {
+				var result = true;
+				if (updateSubscriptionStatusCount != 2) {
+					result = false;
+					jQuery("#confirm-submit-without-subscription-dialog").dialog({
+						resizable: true,
+						height:200,
+						width: 450,
+						modal: true,
+						buttons: 
+							{
+								"Tak": function() {
+									jQuery( this ).dialog( "close" );
+									jQuery.post("/eumowy/activity/updateProcessStatus", {processId: "${processInstance.id}", processStatus:"WAIT_FOR_SUBSRIPTION"}, function(data) {
+									});
+									result = true;
+								},
+								"Nie": function() {
+									jQuery( this ).dialog( "close" );
+									e.preventDefault();
+									result = false;
+								}
+							}
+					});
+				}
+				
+				return result;
+			});
 			
 			<g:each in="${com.eservice.eumowy.Activity$ClientType?.values()}">
 			jQuery("#subscribe-${it.name()}").on('click', function(e) {
@@ -39,7 +115,7 @@
 				}
 				
 				dialog.load(
-		            "/eumowy/subscription/inlineview",
+		            "/eumowy/subscription/inlineview?signername=${it.encodeAsURL()}&linkid=subscribe-${it.name()}",
 		            {},
 		            function(responseText, textStatus, XMLHttpRequest) {
 		                dialog.dialog({
@@ -53,21 +129,39 @@
 			});
 			</g:each>
 			
-			jQuery("#requestVersionTemplates").on("change", function(e) {
-				if (e.checked) {
-					jQuery("#noaccept").disable();
+			jQuery("#requestVersionTemplates, #requestVersionPaper").on("change", function(e) {
+				if (jQuery(e.target).is(":checked")) {
+					jQuery("#noaccept").prop("disabled", true);
 					
 					<g:each in="${com.eservice.eumowy.Activity$ClientType?.values()}">
-					jQuery("#subscribe-${it.name()}").disable();
+					jQuery("#subscribe-${it.name()}").parent().addClass("disabled");
 					</g:each>
 				}
 			});
+			
+			jQuery("#requestVersionElectronical").on("change", function(e) {
+				if (jQuery(e.target).is(":checked")) {
+					jQuery("#noaccept").prop("disabled", false);
+					
+					<g:each in="${com.eservice.eumowy.Activity$ClientType?.values()}">
+						if (isSubscriptionDone["subscribe-${it.name()}"] != true) {
+							jQuery("#subscribe-${it.name()}").parent().removeClass("disabled");
+						}
+					</g:each>
+				}
+			});
+			
 		});
 	</r:script>
 </head>
 
 <body>
-
+<div id="confirm-noaccept-dialog" style="display: none;">
+	<p><g:message code="process.subscriptions.noaccept.confirm" /></p>
+</div>
+<div id="confirm-submit-without-subscription-dialog"  style="display: none;">
+	<p><g:message code="process.subscriptions.submit.without.subscription.confirm" /></p>
+</div>
 <section id="create_clientSignature" >
 
     <h1 class="ng linia-bottom"><g:message code="clientSignature.header.title" default="Podpis Klienta"/></h1>
@@ -96,7 +190,7 @@
         			<li>
         				<span>
         					<label>
-        						<g:radio name="requestVersion" value="electronical" checked="on"/>
+        						<g:radio id="requestVersionElectronical" name="requestVersion" value="electronical" checked="on"/>
         						<g:message code="clientSignature.electronicalVersion.radio" default="Elektroniczna" />
                             </label>
                         </span>
@@ -104,7 +198,7 @@
                     <li>
                     	<span>
                     		<label>
-                                <g:radio name="requestVersion" value="paper"/>
+                                <g:radio id="requestVersionPaper" name="requestVersion" value="paper"/>
                                 <g:message code="clientSignature.paperVersion.radio" default="Papierowa" />
                             </label>
                     	</span>
@@ -127,7 +221,7 @@
                             <g:link style="width: 100%" event="back" class="button submit">${message(code:'default.navigation.button.prev', default: 'Wstecz')}</g:link>
                         </td>
                         <td style="text-align: right;">
-                            <g:submitButton name="noaccept" class="button submit display-inline" style="width: 90%"
+                            <g:submitButton id="noaccept" name="noaccept" class="button submit display-inline" style="width: 90%"
                                             value="${message(code: 'clientSignature.noAcceptance.button', default:'Brak akceptacji')}"/>
                         </td>
                         <td>

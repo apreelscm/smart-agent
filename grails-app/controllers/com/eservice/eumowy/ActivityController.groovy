@@ -200,12 +200,22 @@ class ActivityController {
             }.to "finish"
             on("subscribe").to "clientSignature"
             on("noaccept").to "clientSignature"
-        }
-
+			on("submit") {
+				// GENERATE DOCUMENTS
+				// SEND EMAILS
+				// IF NOTES FOR COA - SEND THEM
+				
+				flow.processInstance.status = Process.ProcessStatus.WAITING
+				
+				
+			}.to "finish"
+		}
+			
         finish{
             action{
                 flow.processInstance.save()
             }
+			on("success").to "defineActivity"
         }
     }
 
@@ -238,6 +248,24 @@ class ActivityController {
     def getAttachmentList(){
         render(template:"../attachment/list", model:[files:attachmentService.getListByProcessId(params.processId), processId: params.processId]);
     }
+	
+	def updateProcessStatus() {
+		log.info "I WAS TRIGGERED"
+		def process = Process.get(Integer.valueOf(params.processId));
+		if (params.processStatus.equals("WAIT_FOR_SUBSRIPTION")) {
+			process.status = Process.ProcessStatus.WAIT_FOR_SUBSRIPTION
+			render(text: "OK_WAIT_FOR_SUBSRIPTION")
+		}
+		else if (params.processStatus.equals("SUBSCRIPTIONS_DONE")) {
+			process.status = Process.ProcessStatus.SUBSCRIPTIONS_DONE
+			render(text: "OK_SUBSCRIPTIONS_DONE")
+		}
+		else if (params.processStatus.equals("REJECTED")) {
+			process.status = Process.ProcessStatus.REJECTED
+			//TODO
+			render(text: "OK_REJECTED")
+		}
+	}
 
     def testSql(){
      /*   def result = cbdService.findCalculatorByNip("1570321560")
@@ -249,6 +277,7 @@ class ActivityController {
         process.status = Process.ProcessStatus.EDIT;
         process.save(flush:true)
     }
+	
 
     //--------------
     //PRIVATE METHODS

@@ -17,12 +17,13 @@ class SubscriptionController {
 	
 	def saveSubscription() {
 		def subscription = new Subscription(params).save();
-
+		
         BufferedImage img = SignatureToImage.convertJsonToImage(subscription.content)
 
 		File outputfile = new File("web-app/images/sign.png");
 		ImageIO.write(img, "png", outputfile)
-		redirect(action: "preview")
+		//redirect(action: "preview")
+		render(text: "OK")
 	}
 	
 	def preview() {
