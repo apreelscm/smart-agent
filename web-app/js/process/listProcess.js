@@ -5,12 +5,8 @@
         var dateFrom =  $("#filterDateFromDF");
         var dateTo =  $("#filterDateToDF");
 
-        dateFrom.datepicker({ dateFormat: 'dd-mm-yy'});
-        dateTo.datepicker({ dateFormat: 'dd-mm-yy'});
-
-        dateFrom.datepicker( "setDate", "-30" );
-        dateTo.datepicker( "setDate", new Date() );
-
+        dateFrom.datepicker({ dateFormat: 'dd-mm-yy', maxDate: new Date()});
+        dateTo.datepicker({ dateFormat: 'dd-mm-yy', maxDate: new Date()});
 
         dateTo.bind('input change',function(e){
             dateFrom.datepicker( "option", "maxDate", $(this).datepicker( "getDate" ) );

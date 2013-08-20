@@ -14,47 +14,24 @@ class ProcessController {
 
     @Secured(['PH_ROLE','ADM_ROLE'])
     def list() {
-        /*  params.max = Math.min(max ?: 10, 100)
-
-          log.info("params.status - " + params?.filterStatus);
-
-          [processInstanceList: findProcessListByStatus(params?.filterStatus),
-                  processInstanceTotal: Process.count(),
-                  filterStatus : Process.ProcessStatus.REJECTED.name()]*/
-
-
         params.max = Math.min(params.max ? params.int('max') : 10, 100)
 
+//        log.info("PSZKUP in Controller --> filterPhNo: " + params.filterPhNo + "; filterDateFrom: " + params.filterDateFrom + "; filterDateTo: " + params.filterDateTo)
 
         if(params.filterStatus == null){
             params.filterStatus = Process.ProcessStatus.REJECTED.name()
         }
 
-        if(params.filterStatus.equals("")) [
-                filterStatus:"",
-                filterObserved:"",
-                filterNip:"",
-                filterPhNo:"",
-                filterDateFromDF:"",
-                filterDateToDF:"",
-                processInstanceList: Process.list(params),
-                processInstanceTotal: Process.count()]
-        else{
+        def processes = new ProcessService().searchProcessByFilters(params)
 
-            def processService = new ProcessService()
-            println params;
-
-            def processes = processService.searchProcessByFilters(params)
-
-            [ filterStatus:params.filterStatus,
-                    filterObserved: params.filterObserved,
-                    filterNip:params.filterNip,
-                    filterPhNo:params.filterPhNo,
-                    filterDateFromDF:params.filterDateFromDF,
-                    filterDateToDF:params.filterDateToDF,
-                    processInstanceList: processes.searchResults ,
-                    processInstanceTotal: processes.searchResultSize]
-        }
+        [   filterStatus: params.filterStatus,
+            filterObserved:params.filterObserved,
+            filterNip:params.filterNip,
+            filterPhNo:params.filterPhNo,
+            filterDateFrom: params.filterDateFrom?params.filterDateFrom: ProcessService.formatDate(ProcessService.addDays(new Date(), -30)),
+            filterDateTo: params.filterDateTo?params.filterDateTo: ProcessService.formatDate(new Date()),
+            processInstanceList: processes.searchResults,
+            processInstanceTotal: processes.searchResultSize]
     }
 
     //---------------------------------

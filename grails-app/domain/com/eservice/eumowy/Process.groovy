@@ -12,11 +12,13 @@ class Process implements Serializable {
 
     ProcessStatus status;
 
-    String phNumber
+    Integer phNumber
     String phFirstName
     String phSurname
     String calcNumber
     String saleSection // TODO skad ?
+
+    Boolean observed
 
     Client client;
 
@@ -26,6 +28,17 @@ class Process implements Serializable {
     List<Signature> signatures
     List<Panel> panels
     List<Subscription> subscriptions
+
+
+    String getStringId() {
+        return String.format('%06d',this.id)
+    }
+    
+    String getStringPhNumber(){
+        return Integer.toString(this.phNumber);
+    }
+
+    static transients = ['stringId']
 
     static hasMany = [
             documents:DocumentFile,
@@ -47,11 +60,6 @@ class Process implements Serializable {
         documents cascade:"all-delete-orphan"
     }
 
-    static transients = ['stringId']
-
-    String getStringId() {
-        return String.format('%06d',this.id)
-    }
 
     def beforeInsert() {
         status = ProcessStatus.NEW;
