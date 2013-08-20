@@ -12,6 +12,7 @@ class CbdService {
     CbdDAO cbdDAO
 
     private static final def FIND_CLIENT_ID_BY_NIP = "findClientIdByNip"
+    private static final def FIND_CALC_ID_BY_NIP = "findCalcIdByNip"
     private static final def FIND_CALC_BY_NIP = "findCalcByNip"
     private static final def GET_ADRES_DANE_DO_WYDRUKU = "getAdresDaneDoWydruku"
     private static final def GET_ADRES_DO_KORESPONDENCJI = "getAdresDoKorespondencji"
@@ -27,23 +28,34 @@ class CbdService {
     private static final def GET_WYKAZ_PUNKTOW_GRID = "getWykazPunktowGrid"
     private static final def GET_ZAKRES_URUCHOMIENIA_PUNKTY_GRID = "getZakresUruchomieniaPunktyGrid"
 
-    //@Cacheable(value="findCalculator")
+    //@Cacheable(value="findCalculatorByNip")
     //@Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
     def findCalculatorByNip(def clientNip) {
         switch (Environment.getCurrent()) {
             case Environment.DEVELOPMENT:
-                findCalculatorByNipMock(clientNip);
+                return findCalculatorByNipMock(clientNip);
             case Environment.TEST:
                 return cbdDAO.selectMany(FIND_CALC_BY_NIP,[nip:clientNip])*.POLEAPREEL
         }
     }
 
-    @Cacheable(value="getAdresDaneDoWydruku")
-    @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
+    //@Cacheable(value="findCalculatorIdByNip")
+    //@Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
+    def findCalculatorIdByNip(def clientNip) {
+        switch (Environment.getCurrent()) {
+            case Environment.DEVELOPMENT:
+                return findCalculatorIdByNipMock(clientNip);
+            case Environment.TEST:
+                return cbdDAO.selectOne(FIND_CALC_ID_BY_NIP,[nip:clientNip])?.get("KAK_ID")
+        }
+    }
+
+    //@Cacheable(value="getAdresDaneDoWydruku")
+    //@Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
     def findClientIdByNip(def clientNip) {
         switch (Environment.getCurrent()) {
             case Environment.DEVELOPMENT:
-               findClientIdByNipMock(clientNip);
+               return findClientIdByNipMock(clientNip);
             case Environment.TEST:
                 def rowResult = cbdDAO.selectOne(FIND_CLIENT_ID_BY_NIP,[nip:clientNip])
                 return new Client(rowResult)
@@ -128,7 +140,7 @@ class CbdService {
         return cbdDAO.selectOne(GET_WYKAZ_PUNKTOW_GRID,[nip:clientNip])
     }
 
-   @Cacheable(value="getZakresUruchomieniaPunktyGrid")
+    @Cacheable(value="getZakresUruchomieniaPunktyGrid")
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
     def getZakresUruchomieniaPunktyGrid(def clientNip) {
         return cbdDAO.selectOne(GET_ZAKRES_URUCHOMIENIA_PUNKTY_GRID,[nip:clientNip])
@@ -140,19 +152,16 @@ class CbdService {
     def findClientIdByNipMock(String nip) {
         def cbdId;
 
-        if(nip == "1234567819"){
+        if(nip.equals("1234567819")){
             cbdId = "11";
         }
-
-        if(nip == "8946001495"){
+        else if(nip.equals( "8946001495")){
             cbdId = "22";
         }
-
-        if(nip == "7343597142"){
+        else if(nip.equals( "7343597142")){
             cbdId = "33";
         }
-
-        if(nip == "3558335706"){
+        else if(nip.equals( "3558335706")){
             cbdId = "44";
         }
 
@@ -169,6 +178,18 @@ class CbdService {
         println("cl2:"+(cbdId != null))
 
         return client;
+    }
+
+    def findCalculatorIdByNipMock(def kln_id) {
+        if(kln_id == "1234567819"){
+            return "11111";
+        }
+        else if(kln_id == "8946001495"){
+            return "88888";
+        }
+        else if(kln_id == "7343597142"){
+            return "77777";
+        }
     }
 
     def findCalculatorByNipMock(def kln_id) {

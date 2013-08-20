@@ -13,7 +13,7 @@
     <h1 class="ng linia-bottom"><g:message code="chooseActivity.header.title" default="Wybór działania"/></h1>
 
     <g:form id="signaturesFormId">
-        <g:each var="activity" in="${processInstance.activities}">
+        <g:each var="activity" in="${processInstance?.activities}">
             <article id="${activity.code}" class="border-article signature-article">
                 <g:set var="list1" value="${activity?.activitySignatures?.findAll { it.numberOfList == 1 }}"/>
                 <g:set var="list2" value="${activity?.activitySignatures?.findAll { it.numberOfList == 2 }}"/>

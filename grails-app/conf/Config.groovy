@@ -1,9 +1,6 @@
 import grails.plugins.springsecurity.SecurityConfigType
 import org.apache.log4j.jdbc.JDBCAppender
 
-
-def springSecurityService
-
 // locations to search for config files that get merged into the main config;
 // config files can be ConfigSlurper scripts, Java properties files, or classes
 // in the classpath in ConfigSlurper format
@@ -107,14 +104,11 @@ log4j = {
     trace 'grails.plugin.mail'
 
     //show sql values
-    /*info "org.hibernate.SQL", "org.hibernate.type", "org.codehaus.groovy.grails.orm.hibernate"*/
-
-    /*trace 'org.hibernate.type'
-    debug 'org.hibernate.SQL'*/
+  /*  info "org.hibernate.SQL", "org.hibernate.type", "org.codehaus.groovy.grails.orm.hibernate"
+    trace 'org.hibernate.type' debug 'org.hibernate.SQL'*/
 
     appenders {
-
-        console name: 'console', layout: pattern(conversionPattern: '%d{dd-MM-yyyy HH:mm:ss,SSS} %5p %c - %m%n')
+       console name: 'console', layout: pattern(conversionPattern: '%d{dd-MM-yyyy HH:mm:ss,SSS} %5p %c - %m%n')
 
         environments {
             development {
@@ -126,7 +120,7 @@ log4j = {
                         driver: "org.h2.Driver",
                         sql: "INSERT INTO EUMOWY.LOGS (login, log_date, log_message) VALUES ('%X{sessionUserName}','%d{yyyy.MM.dd HH:mm:ss}', '%m');",
                         threshold: org.apache.log4j.Level.INFO
-                )//
+                )
             }
             test {
                 appender new JDBCAppender(
@@ -135,9 +129,9 @@ log4j = {
                         user: "eumowy_app",
                         password: "eumowy_app",
                         driver: "oracle.jdbc.driver.OracleDriver",
-                        sql: "INSERT INTO EUMOWY.LOGS (login, log_date, log_message) VALUES ('%X{sessionUserName}','%d{yyyy.MM.dd HH:mm:ss}', '%m');",
+                        sql: "INSERT INTO EUMOWY.LOGS (login, log_date, log_message) VALUES ('%X{sessionUserName}','%d{yyyy.MM.dd HH:mm:ss}', '%m')",
                         threshold: org.apache.log4j.Level.INFO
-                )//
+                )
             }
         }
     }
@@ -147,7 +141,7 @@ log4j = {
         info 'console'
     }
 
-    info database: ["grails.app.domain", "com.eservice.eumowy.auth"]
+    info database: ["audit"]
     additivity: false
 }
 

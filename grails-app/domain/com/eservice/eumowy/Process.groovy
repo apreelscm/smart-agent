@@ -1,8 +1,11 @@
 package com.eservice.eumowy
 import groovy.transform.ToString
+import org.apache.commons.logging.LogFactory
 
 @ToString(includeNames = true,ignoreNulls = true)
 class Process implements Serializable {
+
+    private static final auditLogger = LogFactory.getLog("audit");
 
     Date dateCreated
     Date lastUpdated
@@ -24,14 +27,6 @@ class Process implements Serializable {
     List<Panel> panels
     List<Subscription> subscriptions
 
-
-    String getStringId() {
-        return String.format('%06d',this.id)
-    }
-
-
-    static transients = ['stringId']
-
     static hasMany = [
             documents:DocumentFile,
             attachments:AttachmentFile,
@@ -40,8 +35,7 @@ class Process implements Serializable {
             subscriptions:Subscription
     ]
 
-    static constraints = {
-    }
+    static constraints = {}
 
     static mapping = {
         table name: "PROCESS", schema: DomainConsts.SHEMA_NAME
@@ -53,17 +47,23 @@ class Process implements Serializable {
         documents cascade:"all-delete-orphan"
     }
 
+    static transients = ['stringId']
+
+    String getStringId() {
+        return String.format('%06d',this.id)
+    }
 
     def beforeInsert() {
         status = ProcessStatus.NEW;
     }
 
     def afterInsert() {
-        log.info("Utworzono proces [id:${id}]")
+        auditLogger.info("Utworzono proces [id:${id}]")
+        log.info("[zwykly logger]");
     }
 
     def afterUpdate() {
-        log.info("Aktualizacja procesu [id:${id}, status:${status}]")
+        auditLogger.info("Aktualizacja procesu [id:${id}, status:${status}]")
     }
 
     enum ProcessStatus {
