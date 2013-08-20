@@ -9,11 +9,13 @@ class Process implements Serializable {
 
     ProcessStatus status;
 
-    String phNumber
+    Integer phNumber
     String phFirstName
     String phSurname
     String calcNumber
     String saleSection // TODO skad ?
+
+    Boolean observed
 
     Client client;
 
@@ -29,6 +31,9 @@ class Process implements Serializable {
         return String.format('%06d',this.id)
     }
 
+    String getStringPhNumber(){
+        return Integer.toString(this.phNumber);
+    }
 
     static transients = ['stringId']
 
