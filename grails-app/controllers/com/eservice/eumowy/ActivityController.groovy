@@ -1,8 +1,7 @@
 package com.eservice.eumowy
 
-import com.eservice.eumowy.process.DefineActivityCommand
-import com.eservice.eumowy.process.GetCalculatorCommand
 import com.eservice.eumowy.command.ProcessCommand
+import com.eservice.eumowy.process.DefineActivityCommand
 
 class ActivityController {
 
@@ -11,6 +10,9 @@ class ActivityController {
     def emailService
     def cbdService
     def attachmentService
+    def clientService
+    def processService
+    def calculatorService
     def messageSource
 
     def index() {
@@ -22,6 +24,9 @@ class ActivityController {
         [activityInstanceList: Activity.list(params), activityInstanceTotal: Activity.count()]
     }
 
+    /**
+     * MAIN PROCESS FLOW
+     * */
     def createProcessFlow = {
         defineActivity{
             on("continue") { DefineActivityCommand cmd ->
@@ -59,7 +64,7 @@ class ActivityController {
             on("emailOnly").to "emailOnly"
         }
 
-        //SUBFLOWS start
+        /** default full subflow */
         normal {
             subflow(action: "normal", input: [processInstance : { flow.processInstance }])
             on("backToStart").to "defineActivity"
@@ -68,6 +73,7 @@ class ActivityController {
             }.to "finish"
         }
 
+        /** uzupelnij podpisy subflow */
         uzupelnijPodpisy {
             subflow(action: "uzupelnijPodpisy", input: [processInstance : { flow.processInstance }])
             on("backToStart").to "defineActivity"
@@ -76,6 +82,7 @@ class ActivityController {
             }.to "finish"
         }
 
+        /** send email only subflow*/
         emailOnly {
             action{
                 def notes = flow.notes
@@ -92,16 +99,25 @@ class ActivityController {
             }
             on("success").to "defineActivity"
         }
-        //SUBFLOWS end
 
+        /** final operations and process save*/
         finish{
             action{
-                flow.processInstance.save()
+                //flow.processInstance.save()
             }
-            on("success").to "defineActivity"
+            on("success").to "newFlow"
+        }
+
+        newFlow{
+            action{
+                redirect(action: "createProcess")
+            }
         }
     }
 
+    /**
+     * DEFAULT FULL SUBFLOW
+     * */
     def normalFlow = {
         input {
             processInstance()
@@ -140,60 +156,48 @@ class ActivityController {
                 processInstance.save(flush:true);
 
                 flow.processInstance = processInstance
-            }.to "initializePanels"
+            }.to "selectedPanels"
         }
 
         getCalculator {
-            action {  GetCalculatorCommand cmd ->
-
-                flow.nip = cmd.nip;
+            action {
+                flow.nip = params.nip;
                 flow.calcNumber = null
                 flow.client = null
 
-                Process processInstance = flow.processInstance
+                def processInstance = flow.processInstance
 
-                /**
-                 * sprawdzanie poprawnosci numeru nip
-                 * */
-                if(cmd.hasErrors()){
-                    flash.nipErrorMessage= message(code: cmd.errors?.getFieldError("nip").code);
+                if(!clientService.isClientNipValid(params.nip)){
+                    flash.nipErrorMessage= message(code: 'GetCalculatorCommand.nip.validator.invalid');
                     return error();
                 }
 
-                /** pobieranie informacji o kliencie na podstawie numeru nip */
                 def client = cbdService.findClientIdByNip(flow.nip);
 
-                /**
-                 * sprawdzanie, czy to nie jest nowa umowa
-                 * */
-                def hasNowaUmowa = processInstance.activities.any{it.code.equals("nowaUmowa")};
-
-
-                if(client?.id != null || client?.cbdId != null){
+                if(clientService.clientExists(client)){
                     flash.nipInfoMessage =  message(code:"client.found.info", default:"Znaleziono");
-                }else if(hasNowaUmowa){
-                    flash.nipInfoMessage =  message(code:"client.new.info", default:"Nowy klient");
-                    client = new Client(nip:cmd.nip)
-                }else{
-                    flash.nipErrorMessage = message(code:"client.notFound.error", default:"Brak klienta");
-                    return error();
+                }else {
+                    /** sprawdzanie, czy to nie jest nowa umowa */
+                    def hasNowaUmowa = processService.containsActivity(processInstance.activities,"nowaUmowa")
+                    if(hasNowaUmowa){
+                        flash.nipInfoMessage =  message(code:"client.new.info", default:"Nowy klient");
+                        client = new Client(nip:params.nip)
+                    }else{
+                        flash.nipErrorMessage = message(code:"client.notFound.error", default:"Brak klienta");
+                        return error();
+                    }
                 }
 
                 flow.client = client;
 
-                /**
-                 * sprawdzanie, czy w eUmowy istnieje dla danego Akceptanta niezakończony Proces
-                 **/
-                if(client.id != null && Process.findByClientAndStatusInList(client,
-                        [Process.ProcessStatus.WAITING,Process.ProcessStatus.WAIT_FOR_SUBSRIPTION,Process.ProcessStatus.EDIT]))
-                {
+                /** sprawdzanie, czy w eUmowy istnieje dla danego Akceptanta niezakończony Proces */
+                if(processService.hasIncompleteProcessForClient(client)){
                     flash.nipErrorMessage = message(code:"client.unfinishedProcess.error", default:"Dla Akceptanta istnieje niezakończony Proces");
+                    return error();
                 }
 
-                /**
-                 * pobieranie danych o kalkulatorze
-                 * */
-                if(client.id != null || client.cbdId != null){
+                /** pobieranie danych o kalkulatorze */
+                if(clientService.clientExists(client)){
                     def calcId = cbdService.findCalculatorIdByNip(client.nip)
 
                     if(calcId == null){
@@ -203,12 +207,11 @@ class ActivityController {
 
                     def calc = cbdService.findCalculatorByNip(client.nip)
 
-                    if(!cbdService.isCalcValid(calc,processInstance.signatures)){
+                    if(!calculatorService.isCalcValid(calc,processInstance.signatures)){
                         flash.calcErrorMessage =  message(code:"calc.notEnough.error", default:"Kalkulator nie pozwala na wykonanie wszystkich zaznaczonych czynności");
                         return error();
                     }
 
-                    //TODO
                     flow.calcNumber =  calcId;
                     flash.calcInfoMessage = message(code:"calc.found.info", default:"Znaleziono");
                 }
@@ -220,28 +223,21 @@ class ActivityController {
             on("error").to "chooseCalc"
         }
 
-           initializePanels {
-               action {
-                   ProcessCommand cmd ->
-
-                   flow.cmd = cmd
-                   cmd.initialize(flow.processInstance)
-               }
-               on("success").to "selectedPanels"
-           }
-
         selectedPanels{
+            onEntry {  ProcessCommand cmd ->
+                println "selectedPanels enterview"
+                flow.cmd = cmd
+                cmd.initialize(flow.processInstance)
+            }
             render(view: "../createProcess/selectedPanels")
             on("back").to "chooseCalc"
             on("continue"){
                 def processInstance = flow.processInstance
                 //processInstance.child = new Child(params)
-
                 /* http://grails.org/doc/2.2.0/guide/single.html#dataBinding
                    http://grails.org/doc/2.2.0/ref/Controllers/bindData.html
                 */
                 //bindData(processInstance, params)
-
                 //processInstance.save(flush:true);
 
                 flow.processInstance = processInstance
@@ -276,6 +272,7 @@ class ActivityController {
         backToStart()
     }
 
+    /** UZUPELNIJ PODPISY SUBFLOW */
     def uzupelnijPodpisyFlow = {
         input {
             processInstance()
@@ -286,11 +283,9 @@ class ActivityController {
             on("getCalculator").to "getCalculator"
             on("continue"){
                 Process processInstance = flow.processInstance
-                //processInstance.child = new Child(params)
 
                 processInstance.calcNumber =  flow.calcNumber
                 processInstance.client =  flow.client
-
                 processInstance.save(flush:true);
 
                 flow.processInstance = processInstance
@@ -298,55 +293,42 @@ class ActivityController {
         }
 
         getCalculator {
-            action {  GetCalculatorCommand cmd ->
-
-                flow.nip = cmd.nip;
+            action {
+                flow.nip = params.nip;
                 flow.calcNumber = null
                 flow.client = null
 
-                Process processInstance = flow.processInstance
+                def processInstance = flow.processInstance
 
-                /**
-                 * sprawdzanie poprawnosci numeru nip
-                 * */
-                if(cmd.hasErrors()){
-                    flash.nipErrorMessage= message(code: cmd.errors?.getFieldError("nip").code);
+                if(!clientService.isClientNipValid(params.nip)){
+                    flash.nipErrorMessage= message(code: 'GetCalculatorCommand.nip.validator.invalid');
                     return error();
                 }
 
-                /** pobieranie informacji o kliencie na podstawie numeru nip */
-                def client = cbdService.findClientIdByNip(cmd.nip);
+                def client = cbdService.findClientIdByNip(flow.nip);
 
-                /**
-                 * sprawdzanie, czy to nie jest nowa umowa
-                 * */
-                def hasNowaUmowa = processInstance.activities.any{it.code.equals("nowaUmowa")};
-
-
-                if(client?.id != null || client?.cbdId != null){
+                if(clientService.clientExists(client)){
                     flash.nipInfoMessage =  message(code:"client.found.info", default:"Znaleziono");
-                }else if(hasNowaUmowa){
-                    flash.nipInfoMessage =  message(code:"client.new.info", default:"Nowy klient");
-                    client = new Client(nip:cmd.nip)
-                }else{
-                    flash.nipErrorMessage = message(code:"client.notFound.error", default:"Brak klienta");
-                    return error();
+                }else {
+                    /** sprawdzanie, czy to nie jest nowa umowa */
+                    def hasNowaUmowa = processService.containsActivity(processInstance,"nowaUmowa")
+                    if(hasNowaUmowa){
+                        flash.nipInfoMessage =  message(code:"client.new.info", default:"Nowy klient");
+                        client = new Client(nip: params.nip)
+                    }else{
+                        flash.nipErrorMessage = message(code:"client.notFound.error", default:"Brak klienta");
+                        return error();
+                    }
                 }
 
                 flow.client = client;
 
-                /**
-                 * sprawdzanie, czy w eUmowy istnieje dla danego Akceptanta niezakończony Proces
-                 **/
-                println("client:"+client);
-                if(client.id != null && Process.findByClientAndStatusInList(client,
-                        [Process.ProcessStatus.WAITING,Process.ProcessStatus.WAIT_FOR_SUBSRIPTION,Process.ProcessStatus.EDIT]))
-                {
+                /** sprawdzanie, czy w eUmowy istnieje dla danego Akceptanta niezakończony Proces */
+                if(processService.hasIncompleteProcessForClient(client)){
                     flash.nipErrorMessage = message(code:"client.unfinishedProcess.error", default:"Dla Akceptanta istnieje niezakończony Proces");
                     return error();
                 }
 
-                flow.processInstance = processInstance
                 flash.isContinueEnabled = true;
             }
             on("success").to "clientSignature"
@@ -368,6 +350,7 @@ class ActivityController {
                 // SEND EMAILS
                 // IF NOTES FOR COA - SEND THEM
 
+                println("clientSignature submit")
                 flow.processInstance.status = Process.ProcessStatus.WAITING
             }.to "finish"
         }
