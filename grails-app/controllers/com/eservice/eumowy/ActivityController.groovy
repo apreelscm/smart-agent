@@ -2,6 +2,7 @@ package com.eservice.eumowy
 
 import com.eservice.eumowy.process.DefineActivityCommand
 import com.eservice.eumowy.process.GetCalculatorCommand
+import com.eservice.eumowy.command.ProcessCommand
 
 class ActivityController {
 
@@ -84,7 +85,7 @@ class ActivityController {
                 processInstance.save(flush:true);
 
                 flow.processInstance = processInstance
-            }.to "selectedPanels"
+            }.to "initializePanels"
         }
 
         getCalculator {
@@ -174,18 +175,29 @@ class ActivityController {
             on("error").to "chooseCalc"
         }
 
-        /*   preparePanels {
+           initializePanels {
                action {
-                   flow.files = attachmentService.getList();
+                   ProcessCommand cmd ->
+
+                   flow.cmd = cmd
+                   cmd.initialize(flow.processInstance)
                }
                on("success").to "selectedPanels"
-           }*/
+           }
 
         selectedPanels{
             on("back").to "chooseCalc"
             on("continue"){
                 def processInstance = flow.processInstance
                 //processInstance.child = new Child(params)
+
+                /* http://grails.org/doc/2.2.0/guide/single.html#dataBinding
+                   http://grails.org/doc/2.2.0/ref/Controllers/bindData.html
+                */
+                //bindData(processInstance, params)
+
+                //processInstance.save(flush:true);
+
                 flow.processInstance = processInstance
             }.to "clientSignature"
         }

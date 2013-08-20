@@ -10,7 +10,7 @@
                 <li>
                     <span>
                         <span><g:message code="panel.acceptor.nip"/></span>
-                        <span><g:textField name="nip" /></span>
+                        <span><g:textField name="nip" value="${nip}"/></span>
                         <span><g:message code="panel.acceptor.regon"/></span>
                         <span><g:textField name="regon" /></span>
                     </span>
