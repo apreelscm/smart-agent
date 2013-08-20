@@ -5,39 +5,6 @@
     <meta name="layout" content="main">
     <title><g:message code="defineActivity.header.title" default="Wybierz działanie"/></title>
     <r:require module="expandable_tree"/>
-  %{--  <r:require module="filestyle"/>
-
-    <g:javascript>
-
-        var $j = jQuery.noConflict();
-
-        $j(function(){ //this is regular jQuery code. It waits for the dom to load fully the first time you open the page.
-
-           $j("#fileUploadInput").change(function (){
-                    $j('#uploadForm').submit();
-                //$j( "label[for='fileUploadInput']" ).html( "Hot Fuzz3" );
-                });
-
-            $j("#hidden-upload-frame").load(function(){
-               var content = this.contentDocument.body.innerHTML
-
-                //resetting file input
-                $j('#uploadForm').each(function(){
-                    this.reset();
-                });
-
-                $j('#statusBox').html(content);
-
-                var isError = $j('#statusBox ul').hasClass("errors")
-                if(!isError){
-                    <g:remoteFunction action="getAttachmentList" update="attachmentsBox"/>
-        }
-
-    });
-});
-
-    </g:javascript>--}%
-
 </head>
 
 <body>
@@ -208,22 +175,26 @@
          <g:message code="defineActivity.uwagiDoCoa.name" default="Uwagi dla COA"/>
          <g:textArea name="notes" style="height: 100px; display: block; min-width: 380px"/>
          <div id="notesMessageBox">
-             <g:if test="${flash.infoMessage}">
-                 <g:render template="message/infoMessage" model="[message: flash.infoMessage]"/>
+             <g:if test="${infoMessage}">
+                 <g:render template="message/infoMessage" model="[message: infoMessage]"/>
              </g:if>
-             <g:if test="${flash.errorMessage}">
-                 <g:render template="message/errorMessage" model="[message: flash.errorMessage]"/>
+             <g:if test="${errorMessage}">
+                 <g:render template="message/errorMessage" model="[message: errorMessage]"/>
              </g:if>
          </div>
      </div>
+
 
      <nav style="margin-top: 20px">
          <fieldset>
              <g:submitButton name="continue" class="button submit" value="${message(code: 'default.navigation.button.next', default: 'Dalej')}"/>
 
+           %{--  <g:submitButton name="skipChooseActivity" class="button submit" value="skip"/>--}%
 %{--
              <g:remoteLink  class="button small action" action="testSql"
                             update="attachmentsBox">TEST</g:remoteLink>--}%
+
+
          </fieldset>
      </nav>
  </g:form>

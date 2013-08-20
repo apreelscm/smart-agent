@@ -25,7 +25,8 @@
                 <g:select name="filterStatus" from="${com.eservice.eumowy.Process$ProcessStatus?.values()}"
                           keys="${com.eservice.eumowy.Process$ProcessStatus.values()*.name()}"
                           noSelection="['': '']"
-                          value="${filterStatus}"/>
+                          value="${filterStatus}"
+                          style="width:200px;"/>
                 %{--onchange="${remoteFunction(action: 'filterByStatus', update: 'tableBox', params: '\'status=\' + this.value')}"--}%
             </div>
 

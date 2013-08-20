@@ -3,15 +3,12 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Ignore
 import org.junit.Test
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 
 class  CbdServiceIntegrTests {
 
-    Logger log = LoggerFactory.getLogger(CbdServiceIntegrTests)
     def cbdService
 
-    def nip = '8356944170';
+    def nip = '4457490660';
     
     @Before
     void setUp() {
@@ -25,12 +22,18 @@ class  CbdServiceIntegrTests {
     }
 
     @Test
-    void findCalcByNip() {
-        def result = cbdService.findCalculatorByNip(nip)
+    void findCalcIdByNipTest() {
+        def result = cbdService.findCalculatorIdByNip(nip)
         assert result != null
     }
 
-    @Ignore
+    @Test
+    void findCalculatorIdByNipTest() {
+        def result = cbdService.findCalculatorIdByNip(nip)
+        assert result != null
+    }
+
+    @Test
     void findClientIdByNip() {
         def result = cbdService.findClientIdByNip(nip)
         assert result != null
