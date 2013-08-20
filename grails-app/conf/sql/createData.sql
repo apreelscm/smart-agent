@@ -1,0 +1,1 @@
+create table audit (login varchar2(255 char), log_date varchar2(255 char), log_message varchar2(255 char));

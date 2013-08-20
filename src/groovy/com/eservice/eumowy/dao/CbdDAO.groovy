@@ -28,20 +28,22 @@ class CbdDAO {
         try {
             def sql = new Sql(dataSource)
             sql.eachRow(getSqlText(sqlName),paramers) {
-                rows.add(it.toRowResult().value)
+                rows.add(it.toRowResult())
             }
         }
         catch (SQLException ex) {
             log.error ex.message, ex
             throw ex
         }
-        rows
+        finally{
+            return rows;
+        }
     }
 
     def getSqlText(String sqlName){
         File sqlFile
         try {
-             sqlFile = new File(this.class.getResource("/sql/${sqlName}.sql").getFile())
+            sqlFile = new File(this.class.getResource("/sql/${sqlName}.sql").getFile())
         } catch (IOException ex) {
             log.error ex.message, ex
             throw ex
@@ -52,9 +54,6 @@ class CbdDAO {
             buf.append(it).append(" ")
         }
 
-        println(" buf.toString():"+ buf.toString())
         buf.toString()
-
     }
-
 }

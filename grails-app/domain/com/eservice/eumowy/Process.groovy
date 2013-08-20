@@ -7,7 +7,7 @@ class Process implements Serializable {
     Date dateCreated
     Date lastUpdated
 
-    ProcessStatus status = ProcessStatus.NEW
+    ProcessStatus status;
 
     String phNumber
     String phFirstName
@@ -24,12 +24,11 @@ class Process implements Serializable {
     List<Panel> panels
     List<Subscription> subscriptions
 
-    // TODO kolekcja czynnosci
-
 
     String getStringId() {
         return String.format('%06d',this.id)
     }
+
 
     static transients = ['stringId']
 
@@ -54,6 +53,18 @@ class Process implements Serializable {
         documents cascade:"all-delete-orphan"
     }
 
+
+    def beforeInsert() {
+        status = ProcessStatus.NEW;
+    }
+
+    def afterInsert() {
+        log.info("Utworzono proces [id:${id}]")
+    }
+
+    def afterUpdate() {
+        log.info("Aktualizacja procesu [id:${id}, status:${status}]")
+    }
 
     enum ProcessStatus {
         NEW("Nowy"),

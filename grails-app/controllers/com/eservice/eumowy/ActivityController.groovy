@@ -149,7 +149,7 @@ class ActivityController {
                  * pobieranie danych o kalkulatorze
                  * */
                 if(client.id != null || client.cbdId != null){
-                    def calc = cbdService.findCalculatorByClientId(client.nip)
+                    def calc = cbdService.findCalculatorByNip(client.nip)
 
                     if(calc == null){
                         flash.calcErrorMessage = message(code:"calc.notFound.error", default:"Kalkulator nie istnieje");
@@ -161,10 +161,10 @@ class ActivityController {
                         return error();
                     }
 
+                    //TODO
                     flow.calcNumber =  "cal123456";
                     flash.calcInfoMessage = message(code:"calc.found.info", default:"Znaleziono");
                 }
-
 
                 flow.processInstance = processInstance
                 flash.isContinueEnabled = true;
@@ -268,8 +268,14 @@ class ActivityController {
 	}
 
     def testSql(){
-        def result = cbdService.getAdresDaneDoWydruku("2354242")
-        log.info("getAdresDaneDoWydrukuTest result:"+result)
+     /*   def result = cbdService.findCalculatorByNip("1570321560")
+        log.info("findCalculatorByNip result:"+result)*/
+
+        def process = new Process()
+        process.save(flush:true)
+
+        process.status = Process.ProcessStatus.EDIT;
+        process.save(flush:true)
     }
 	
 

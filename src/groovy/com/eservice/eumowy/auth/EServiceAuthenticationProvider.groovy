@@ -1,5 +1,6 @@
 package com.eservice.eumowy.auth
 import com.eservice.dto.UserDTO
+import org.apache.log4j.MDC
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.security.authentication.AuthenticationProvider
@@ -62,6 +63,11 @@ class EServiceAuthenticationProvider implements AuthenticationProvider {
 
         preAuthenticationChecks.check userDetails
         postAuthenticationChecks.check userDetails
+
+        MDC.clear()
+        MDC.put("sessionUserName", userDetails.username);
+
+        log.info("Poprawne logowanie do eUmowy")
 
         def result = new UsernamePasswordAuthenticationToken(userDetails, authentication.credentials, authorities)
         result.details = authentication.details

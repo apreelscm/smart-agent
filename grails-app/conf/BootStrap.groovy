@@ -14,6 +14,8 @@ class BootStrap {
             case Environment.DEVELOPMENT:
 
                 // Wykonywanie inicjacyjnych zapytan sql z pliku insertData.sql
+                executeSqlScript("/sql/createData.sql")
+
                 executeSqlScript("/sql/insertData.sql")
 
                 createCBDDataForDevProfile();
