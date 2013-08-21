@@ -82,4 +82,20 @@ class ProcessService {
         new Date(date.getTime()+days*86400000L)
     }
 
+
+    /**
+     * sprawdzanie, czy w eUmowy istnieje dla danego Akceptanta niezakończony Proces
+     **/
+    def hasIncompleteProcessForClient(Client client) {
+        return client.id != null && Process.findByClientAndStatusInList(client, [
+                Process.ProcessStatus.WAITING,Process.
+                ProcessStatus.WAIT_FOR_SUBSRIPTION,
+                Process.ProcessStatus.EDIT]
+        )
+    }
+
+    def containsActivity(def activities, def activityCode) {
+        return activities?.any{it.code.equals(activityCode)};
+    }
+
 }

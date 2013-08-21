@@ -1,9 +1,6 @@
 package com.eservice.eumowy.command
-
 import com.eservice.eumowy.Panel
 import com.eservice.eumowy.Process
-import com.eservice.eumowy.command.PointCommand
-
 /**
  * User: Dominik Walczak
  * Date: 20.08.13 Time: 10:22
@@ -14,8 +11,6 @@ class ProcessCommand implements Serializable{
     def transient cbdService
 
     String nip
-
-
 
     transient Process process
 

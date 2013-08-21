@@ -3,6 +3,45 @@ package com.eservice.eumowy
 class Subscription {
 
     String content;
+	
+	String name;
+	String surname;
+	
+	PersonType personType;
+	PersonRole personRole;
+	
+	public enum PersonType {
+		MR("Pan"),
+		MRS("Pani")
+		
+		private final String text;
+		
+		private PersonType(final String text) {
+			this.text = text;
+		}
+
+		@Override
+		public String toString() {
+			return text;
+		}
+	}
+	
+	public enum PersonRole {
+		ACCEPTANT1("Akceptant 1"),
+		ACCEPTANT2("Akceptant 2"),
+		PH("PH")
+		
+		private final String text;
+		
+		private PersonRole(final String text) {
+			this.text = text;
+		}
+
+		@Override
+		public String toString() {
+			return text;
+		}
+	}
 
     static belongsTo = [process:Process]
 

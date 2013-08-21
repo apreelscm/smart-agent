@@ -18,7 +18,7 @@ class Process implements Serializable {
     String calcNumber
     String saleSection // TODO skad ?
 
-    Boolean observed
+    boolean observed = false;
 
     Client client;
 
@@ -70,7 +70,6 @@ class Process implements Serializable {
 
     def afterInsert() {
         auditLogger.info("Utworzono proces [id:${id}]")
-        log.info("[zwykly logger]");
     }
 
     def afterUpdate() {

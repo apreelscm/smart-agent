@@ -11,8 +11,11 @@ class DocumentFile {
     String name
     Date dateCreated
     Date lastUpdated
+	Integer pagesCount
 
     static belongsTo = [process:Process]
+	
+	static hasOne = [content:DocumentContent]
 
     static constraints = {
         name(unique:false,blank:false)

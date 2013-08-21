@@ -11,7 +11,15 @@ import org.junit.*
 @TestFor(AppParameters)
 class AppParametersTests {
 
-    void testSomething() {
-       fail "Implement me"
-    }
+    void testGetByNameResultNull() {
+		def param = AppParameters.findByName("TEMP_STORAGE_PATH")
+		assert param == null
+	}
+	
+	void testGetByNameResultNotNull() {
+		def param = AppParameters.findByName("TEST_PARAM")
+		assert param != null
+		assert param.name == "TEST_PARAM"
+		assert param.value == "TEST_VALUE"
+	}
 }
