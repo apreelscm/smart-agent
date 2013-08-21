@@ -13,7 +13,7 @@ class AppParametersService {
 	def getPdfImagePath() {
 		String tmpPath = AppParameters.findByName("TEMP_STORAGE_PATH")
 		
-		if (tmpPath.isEmpty()) {
+		if (tmpPath == null || tmpPath.isEmpty()) {
 			tmpPath = System.getProperty("java.io.tmpdir")
 		}
 		
@@ -23,7 +23,7 @@ class AppParametersService {
 	def getPdfTemplatePath() {
 		String path = AppParameters.findByName("PDF_TEMPLATE_PATH")
 		
-		if (path.isEmpty()) {
+		if (path == null || path.isEmpty()) {
 			path = System.getProperty("base.dir") + File.separator + "otherResources" + File.separator + "pdf_templates" + File.separator
 		}
 		
@@ -33,7 +33,7 @@ class AppParametersService {
 	def getSubscriptionsPath() {
 		String path = AppParameters.findByName("SUBSCRIPTIONS_PATH")
 		
-		if (path.isEmpty()) {
+		if (path == null || path.isEmpty()) {
 			path = "web-app" + File.separator + "files" + File.separator 
 		}
 		
@@ -43,7 +43,7 @@ class AppParametersService {
 	def getSubscriptionsBlackPath() {
 		String path = AppParameters.findByName("SUBSCRIPTIONS_BLACK_PATH")
 		
-		if (path.isEmpty()) {
+		if (path == null || path.isEmpty()) {
 			path = "web-app" + File.separator + "files" + File.separator
 		}
 		

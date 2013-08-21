@@ -494,23 +494,23 @@ class ActivityController {
 		process.signatures.each { sig ->
 			log.info "SIGNATURE NAME: " + sig.name + " PDF TEMPLATE PATH: " + sig.templatePath
 			Process.ProcessStatus newStatus;
-			
+			byte[] documentData = null;
 			if ("electronical".equals(requestVersion)) {
 				newStatus = Process.ProcessStatus.WAITING
-				byte[] documentData = pdfService.fillPdfFormFromURIWithFaksymile(sig, PdfService.FontType.ARIAL)
+				documentData = pdfService.fillPdfFormFromURIWithFaksymile(sig, PdfService.FontType.ARIAL)
 			}
 			else if ("paper".equals(requestVersion)) {
 				newStatus = Process.ProcessStatus.WAIT_FOR_SUBSCRIPTION_PAPER_VERSION
-				byte[] documentData = pdfService.fillPdfFormFromURIWithBlackFaksymile(sig, PdfService.FontType.ARIAL)
+				documentData = pdfService.fillPdfFormFromURIWithBlackFaksymile(sig, PdfService.FontType.ARIAL)
 			}
 			else if ("templates".equals(requestVersion)) {
 				newStatus = Process.ProcessStatus.WAIT_FOR_SUBSRIPTION
-				byte[] documentData = pdfService.fillPdfFormFromURIWithoutFaksymile(sig, PdfService.FontType.ARIAL)
+				documentData = pdfService.fillPdfFormFromURIWithoutFaksymile(sig, PdfService.FontType.ARIAL)
 			}
 			
 			int pc = pdfService.getPageCountFromPdf(documentData)
 			DocumentFile df = new DocumentFile(name: sig.name, dateCreated: new Date(), lastUpdated: new Date(), pagesCount: pc)
-			df.content = documentData
+			df.content = new DocumentContent(content: documentData)
 			df.save()
 			
 			process.status = newStatus
