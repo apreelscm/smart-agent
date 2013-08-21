@@ -5,17 +5,17 @@
             <ul class="table-list centre">
                 <li>
                     <span>
-                        <select>
+                        <select name="pozyskujacyTytul">
                             <option value="pan">Pan</option>
                             <option value="pani">Pani</option>
                         </select>
                     </span>
                     <span><g:message code="panel.first.name"/>: </span>
-                    <span><g:textField name="canvasserFirstName"  style="width: 120px"/></span>
+                    <span><g:textField name="pozyskujacyImie"  style="width: 120px"/></span>
                     <span><g:message code="panel.last.name"/>: </span>
-                    <span><g:textField name="canvasserLastName"/></span>
+                    <span><g:textField name="pozyskujacyNazwisko"/></span>
                     <span><g:message code="panel.number"/>: </span>
-                    <span><g:textField name="canvasserNumber" style="width: 100px"/></span>
+                    <span><g:textField name="pozyskujacyNumer" style="width: 100px"/></span>
                 </li>
             </ul>
         </div>

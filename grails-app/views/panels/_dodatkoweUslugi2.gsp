@@ -6,25 +6,25 @@
                 <li>
                     <span class="align-left"><g:message code="panel.payment.logo"/></span>
                     <span class="align-left">
-                        <g:textField name="paymentForLogo" style="width: 100px"/> <g:message code="panel.polish.currency"/>
+                        <g:textField name="wydrukGrafikiCena" style="width: 100px"/> <g:message code="panel.polish.currency"/>
                     </span>
                 </li>
                 <li>
                     <span class="align-left"><g:message code="panel.payment.calc"/></span>
                     <span class="align-left">
-                        <g:textField name="paymentForCalc" style="width: 100px"/> <g:message code="panel.polish.currency"/>
+                        <g:textField name="dzialaniaMatematyczneCena" style="width: 100px"/> <g:message code="panel.polish.currency"/>
                     </span>
                 </li>
                 <li>
                     <span class="align-left"><g:message code="panel.payment.title.payment"/></span>
                     <span class="align-left">
-                        <g:textField name="paymentForTitleOfPayment" style="width: 100px"/> <g:message code="panel.polish.currency"/>
+                        <g:textField name="tytulPlatnosciCena" style="width: 100px"/> <g:message code="panel.polish.currency"/>
                     </span>
                 </li>
                 <li>
                     <span class="align-left"><g:message code="panel.payment.first.session"/></span>
                     <span class="align-left">
-                        <g:textField name="paymentForFirstSession" style="width: 100px"/> <g:message code="panel.polish.currency"/>
+                        <g:textField name="pierwszaSesjaCena" style="width: 100px"/> <g:message code="panel.polish.currency"/>
                     </span>
                 </li>
             </ul>

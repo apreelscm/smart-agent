@@ -12,14 +12,32 @@ class ProcessCommand implements Serializable{
 
 //    adresacjaSeciowa
 //    adresDoKorespondencjiPunktu
-//    adresDoKorespondencjizAkecptantem
+//    adresDoKorespondencjizAkecptantem - FINISH
+    String korespondencjaUlicaTytul
+    String korespondencjaUlica
+    String korespondencjaNrDomu
+    String korespondencjaNrMieszkania
+
+    String korespondencjaMiasto
+    String korespondencjaKodPocztowy
+    String korespondencjaPoczta
 
 //    aneksDoUmowyNajmuZestawuPos - FINISH
     Date dataPodpisaniaAneksuPOZ
 
 //    aneksDoUmowyPrepaid
-//    czasObowiazywaniaUmowy
+
+//    czasObowiazywaniaUmowy - FINISH
+    String umowaCzas
+    Date umowaPoczatek
+    Date umowaKoniec
+
 //    daneAkceptanta
+    String akceptantNazwaOficjalna
+    String akceptantNazwaSieciowa
+    String akceptantNip
+    String akceptantRegon
+
 //    daneDoWydruku
 //    danePunktu
 //    dcc
@@ -42,12 +60,19 @@ class ProcessCommand implements Serializable{
     Double oplataZaInstalacjeGPRS
     Double oplataZaUruchomienieWalutyObcej
 
-//    dodatkoweUslugi2
+//    dodatkoweUslugi2 - FINISH (ale trzeba jeszcze daty startu pobrac)
+    Double wydrukGrafikiCena
+    Double dzialaniaMatematyczneCena
+    Double tytulPlatnosciCena
+    Double pierwszaSesjaCena
 
 //    dodatkoweUslugiMud - FINISH
     Double mudCena
 
-//    dodatkoweUslugiUTAIntegracja
+//    dodatkoweUslugiUTAIntegracja - FINISH (ale trzeba jeszcze daty startu pobrac)
+    Double weryfikacjaPINCena
+    Double systemKasowyCena
+
 //    dodatkoweWyposazenie
 //    formaDoladowania - FINISH
     Boolean doladowania_tp
@@ -59,12 +84,28 @@ class ProcessCommand implements Serializable{
 //    ifplus
 //    informacjeDodatkowe
 //    informacjeTechniczne
+
 //    okresLojalnosciowy
+    Integer okresLojalnosciowy
+
 //    opieka
 //    oplatyDCC
 //    osobaDoKontaktu
+    String kontaktTytul
+    String kontaktImie
+    String kontaktNazwisko
+    String kontaktTelStacjonarny
+    String kontaktTelKomorkowy
+    String kontaktEmail
+
 //    osobaDoKontaktuWPunkcie
-//    osobaKtoraPozyskalaAkceptanta
+
+//    osobaKtoraPozyskalaAkceptanta  - FINISH (nie wystepuje w pdfach)
+    String pozyskujacyTytul
+    String pozyskujacyImie
+    String pozyskujacyNazwisko
+    String pozyskujacyNumer
+
 
 //    osobaUprawnionaDoPodpisaniaUmowy - FINISH
     String reprezentant1Tytul
