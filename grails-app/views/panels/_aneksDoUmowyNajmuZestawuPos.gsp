@@ -5,7 +5,7 @@
             <ul class="table-list centre">
                 <li>
                     <span class="align-right"><g:message code="panel.aggrement.annex.day"/></span>
-                    <span><g:textField name="aggrementPOSDate" readonly="true" style="width: 120px;"/></span>
+                    <span><g:textField name="dataPodpisaniaAneksuPOZ" readonly="true" style="width: 120px;"/></span>
                 </li>
             </ul>
         </div>
@@ -16,6 +16,6 @@
 
 <r:script>
     jQuery(document).ready(function() {
-        jQuery("#aggrementPOSDate").datepicker({ dateFormat: 'yy-mm-dd', maxDate: new Date() });
+        jQuery("#dataPodpisaniaAneksuPOZ").datepicker({ dateFormat: 'yy-mm-dd', maxDate: new Date() });
     });
 </r:script>
