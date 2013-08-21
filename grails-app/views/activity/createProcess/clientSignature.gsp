@@ -26,6 +26,8 @@
     }
     </style>
 	<r:require module="jquery_ui" />
+	<r:require module="panzoom" />
+	
 	<r:script>
 		var updateSubscriptionStatusCount = 0;
 		var isSubscriptionDone = {};
@@ -50,7 +52,76 @@
 			}
 		}
 		jQuery(document).ready(function(){
+			var pageNum = 2;
+			var documentPages = [];
 			
+			jQuery("#pdfPage").panzoom({
+				$zoomIn: jQuery("#zoomInPdfPage"),
+				$zoomOut: jQuery("#zoomOutPdfPage"),
+				contain: 'invert'
+			});
+			
+	    	jQuery("#prevPdfPage").on("click", function(e) {
+	    		e.preventDefault();
+	    		if (pageNum <= 1)
+	    			return false;
+	    			
+	    		pageNum--;
+	    		
+	    		jQuery("img#pdfPage").css("display", "none");
+	    		jQuery("#pdfBox-content-loading").show();
+	    		
+	    		if (documentPages[pageNum] == null || documentPages[pageNum] == undefined) {
+	    		
+			     	jQuery.get("/eumowy/activity/getDocumentPage", {pageNumber: pageNum}, function(data) {
+			     		jQuery("#pdfBox-content-loading").hide();
+			     		documentPages[pageNum] = data;
+			     		jQuery("img#pdfPage").attr("src", data).css("display", "block");
+			     	});
+		     	
+		     	}
+		     	else {
+		     		jQuery("#pdfBox-content-loading").hide();
+		     		jQuery("img#pdfPage").attr("src", documentPages[pageNum]).css("display", "block");
+		     	}
+		     	
+		     	jQuery("#page_num").html(pageNum);
+		     	
+		     	return false;
+	    	
+	    	});
+	    	
+	    	jQuery("#nextPdfPage").on("click", function(e) {
+	    		e.preventDefault();
+	    	
+	    		e.preventDefault();
+	    		if (pageNum >= 10)
+	    			return false;
+	    			
+	    		pageNum++;
+	    		
+	    		jQuery("img#pdfPage").css("display", "none");
+	    		jQuery("#pdfBox-content-loading").show();
+	    		
+	    		if (documentPages[pageNum] == null || documentPages[pageNum] == undefined) {
+	    		
+			     	jQuery.get("/eumowy/activity/getDocumentPage", {pageNumber: pageNum}, function(data) {
+			     		jQuery("#pdfBox-content-loading").hide();
+			     		documentPages[pageNum] = data;
+			     		jQuery("img#pdfPage").attr("src", data).css("display", "block");
+			     	});
+		     	
+		     	}
+		     	else {
+		     		jQuery("#pdfBox-content-loading").hide();
+		     		jQuery("img#pdfPage").attr("src", documentPages[pageNum]).css("display", "block");
+		     	}
+		     	
+		     	jQuery("#page_num").html(pageNum);
+		     	
+		     	return false;
+	    	});
+	    	
 			jQuery("#noaccept").on("click", function(e) {
 				e.preventDefault();
 				
@@ -63,8 +134,8 @@
 						{
 							"Tak": function() {
 								jQuery( this ).dialog( "close" );
-								jQuery.post("/eumowy/activity/updateProcessStatus", {processId: "${processInstance.id}", processStatus:"REJECTED"}, function(data) {
-									window.location = "/eumowy";
+								
+								jQuery.post(jQuery(location).attr('href'), {_eventId_noaccept:""}, function(data) {
 								});
 							},
 							"Nie": function() {
@@ -89,8 +160,12 @@
 							{
 								"Tak": function() {
 									jQuery( this ).dialog( "close" );
-									jQuery.post("/eumowy/activity/updateProcessStatus", {processId: "${processInstance.id}", processStatus:"WAIT_FOR_SUBSRIPTION"}, function(data) {
+									//jQuery.post("/eumowy/activity/updateProcessStatus", {processId: "${processInstance.id}", processStatus:"WAIT_FOR_SUBSRIPTION"}, function(data) {
+									//});
+									
+									jQuery.post(jQuery(location).attr('href'), {_eventId_submit:"",requestVersion: jQuery("input[name=requestVersion]").val(), numberOfSubscriptions: updateSubscriptionStatusCount}, function(data) {
 									});
+									
 									result = true;
 								},
 								"Nie": function() {
@@ -165,10 +240,25 @@
 <section id="create_clientSignature" >
 
     <h1 class="ng linia-bottom"><g:message code="clientSignature.header.title" default="Podpis Klienta"/></h1>
-
-    <div id="pdfBox" style="height: 680px; overflow: hidden;border: solid 1px; border-radius: 5px;  margin: 20px 15px 0">
-        <g:render template="../forms/pdf/embedDocument-mobile"
-                  model="[pdfDocument: resource(dir:'files', file:'pedef.pdf')]"/>
+	
+    <div id="pdfBox" style="background-color: #F2F2F2; height: 680px; overflow: auto;border: solid 1px; border-radius: 5px;  margin: 20px 15px 0">
+    	<div id="pdfBox-nav" style="padding: 1em; border-bottom: solid 1px;">
+    		<a id="prevPdfPage" class="button submit">Previous</a>
+    		<a id="nextPdfPage" class="button submit">Next</a>
+    		
+    		<a id="zoomInPdfPage" class="button submit">+</a>
+    		<a id="zoomOutPdfPage" class="button submit">-</a>
+    		
+    		<span>Page: <span id="page_num"></span> / <span id="page_count"></span></span>
+    	</div>
+    	<div id="pdfBox-content" style="margin: 1em;">
+    		<div id="pdfBox-content-loading" style="text-align: center; width: 200px; display: block; margin: 0 auto;">
+    			<h2 style="padding-top: 100px;">Wczytywanie...</h2>
+    			<img style="width: 40px;" src="/eumowy/images/document-loading.gif" />
+    		</div>
+    		
+            <img id="pdfPage" style="border:1px solid gray; display: none; width: 440px; height: 570px; display: none; margin-left: auto; margin-right: auto; vertical-align: middle; text-align: center;"/>
+    	</div>
     </div>
 
     <nav>

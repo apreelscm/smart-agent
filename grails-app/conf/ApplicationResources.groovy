@@ -65,4 +65,9 @@ modules = {
 		dependsOn 'jquery'
 	}
 	
+	panzoom {
+		resource url: 'js/jquery.panzoom.min.js'
+		dependsOn 'jquery'
+	}
+	
 }

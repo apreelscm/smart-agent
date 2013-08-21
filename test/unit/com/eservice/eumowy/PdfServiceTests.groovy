@@ -231,6 +231,10 @@ class PdfServiceTests {
 	void testFormularzScoringowy() {
 		process("Formularz Scoringowy (oryginal).pdf", "Formularz Scoringowy (oryginal)_out.pdf", generateFormularzScoringowyFields());
 	}
+	
+	void testPdfToImage() {
+		service.generateImageFromPDF(getTemplateOutPath(), "APUPZBSAIKO1.00013-03-25 - Aneks IKO_out.pdf", "procABCDEF", 1);
+	}
 
 
     void process(templateName, outName, data){

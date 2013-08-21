@@ -59,6 +59,7 @@ grails.project.dependency.resolution = {
         //runtime 'org.docx4j:docx4j:2.8.1'
         runtime 'com.google.code.gson:gson:2.2.4'
 		runtime 'com.lowagie:itext:2.1.7'
+		runtime 'org.apache.pdfbox:pdfbox:1.7.0'
     }
 
     plugins {

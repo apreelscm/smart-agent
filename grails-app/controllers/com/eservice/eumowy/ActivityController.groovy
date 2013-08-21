@@ -1,5 +1,7 @@
 package com.eservice.eumowy
 
+import java.awt.FlowLayout;
+
 import com.eservice.eumowy.process.DefineActivityCommand
 import com.eservice.eumowy.process.GetCalculatorCommand
 
@@ -12,6 +14,8 @@ class ActivityController {
     def cbdService
     def attachmentService
     def messageSource
+	def appParameters
+	def pdfService
 
     def index() {
         redirect(action: "createProcess", params: params)
@@ -199,14 +203,48 @@ class ActivityController {
                 flow.processInstance = processInstance
             }.to "finish"
             on("subscribe").to "clientSignature"
-            on("noaccept").to "clientSignature"
+            on("noaccept") {
+				flow.processInstance.status = Process.ProcessStatus.REJECTED
+            }.to "finish"
 			on("submit") {
-				// GENERATE DOCUMENTS
+				log.info "PARAMS: " + params
+				
+				if ("electronical".equals(params.requestVersion)) {
+					flow.processInstance.signatures.each { sig ->
+						log.info "SIGNATURE NAME: " + sig.name + " PDF TEMPLATE PATH: " + sig.templatePath
+						byte[] documentData = pdfService.fillPdfFormFromURIWithFaksymile(sig, PdfService.FontType.ARIAL)
+						int pc = pdfService.getPageCountFromPdf(documentData)
+						DocumentFile df = new DocumentFile(name: sig.name, dateCreated: new Date(), lastUpdated: new Date(), pagesCount: pc)
+						df.content = documentData
+						df.save()
+					}
+					
+					flow.processInstance.status = Process.ProcessStatus.WAITING
+				}
+				else if ("paper".equals(params.requestVersion)) {
+					flow.processInstance.signatures.each { sig ->
+						byte[] documentData = pdfService.fillPdfFormFromURIWithBlackFaksymile(sig, PdfService.FontType.ARIAL)
+						int pc = pdfService.getPageCountFromPdf(documentData)
+						DocumentFile df = new DocumentFile(name: sig.name, dateCreated: new Date(), lastUpdated: new Date(), pagesCount: pc)
+						df.content = documentData
+						df.save()
+					}
+					
+					flow.processInstance.status = Process.ProcessStatus.WAIT_FOR_SUBSCRIPTION_PAPER_VERSION
+				}
+				else if ("templates".equals(params.requestVersion)) {
+					flow.processInstance.signatures.each { sig ->
+						byte[] documentData = pdfService.fillPdfFormFromURIWithBlackFaksymile(sig, PdfService.FontType.ARIAL);
+						int pc = pdfService.getPageCountFromPdf(documentData)
+						DocumentFile df = new DocumentFile(name: sig.name, dateCreated: new Date(), lastUpdated: new Date(), pagesCount: pc)
+						df.content = documentData
+						df.save()
+					}
+					
+					flow.processInstance.status = Process.ProcessStatus.WAIT_FOR_SUBSRIPTION
+				}
 				// SEND EMAILS
 				// IF NOTES FOR COA - SEND THEM
-				
-				flow.processInstance.status = Process.ProcessStatus.WAITING
-				
 				
 			}.to "finish"
 		}
@@ -265,6 +303,14 @@ class ActivityController {
 			//TODO
 			render(text: "OK_REJECTED")
 		}
+	}
+	
+	def getDocumentPage() {
+		log.info "I WAS TRIGGERED"
+		def process = Process.get(Integer.valueOf(params.processId));
+		
+		String path = pdfService.generateImagesFromPDF(process.documents, params.processId, Integer.valueOf(params.pageNumber));
+		render(text: path)
 	}
 
     def testSql(){
