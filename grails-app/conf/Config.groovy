@@ -146,9 +146,9 @@ log4j = {
 }
 
 // Added by the Spring Security Core plugin:
-grails.plugins.springsecurity.userLookup.userDomainClassName = 'secure.SecUser'
-grails.plugins.springsecurity.userLookup.authorityJoinClassName = 'secure.SecUserSecRole'
-grails.plugins.springsecurity.authority.className = 'secure.SecRole'
+grails.plugins.springsecurity.userLookup.userDomainClassName = 'com.eservice.eumowy.secure.SecUser'
+grails.plugins.springsecurity.userLookup.authorityJoinClassName = 'com.eservice.eumowy.secure.SecUserSecRole'
+grails.plugins.springsecurity.authority.className = 'com.eservice.eumowy.secure.SecRole'
 
 
 grails.plugins.springsecurity.securityConfigType = SecurityConfigType.InterceptUrlMap
@@ -182,7 +182,7 @@ fileuploader {
     attachments {
         maxSize =  10 * FileUploaderTagLib._mbyte;
         allowedExtensions = ["jpg", "tiff", "pdf", "gif"]
-        path = "/tmp/attachment/"
+        //path = "/tmp/attachment/"
     }
 }
 
