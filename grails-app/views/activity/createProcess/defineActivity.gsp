@@ -5,6 +5,12 @@
     <meta name="layout" content="main">
     <title><g:message code="defineActivity.header.title" default="Wybierz działanie"/></title>
     <r:require module="expandable_tree"/>
+
+
+    <r:script>
+
+
+    </r:script>
 </head>
 
 <body>
@@ -18,7 +24,7 @@
 
          <div id="nowaUmowa" class="expendable">
              <div class="checkBoxBlock">
-                 <g:checkBox id="nowaUmowaCB" name="nowaUmowa"/>
+                 <g:checkBox id="nowaUmowaCB" name="nowaUmowa" data-selected="${(processInstance?.activities*.code)?.contains('nowaUmowa')}"/>
                  <a class="expandHeader expanded" href="#"><label for="nowaUmowaCB"><g:message code="activity.nowaUmowa.name" default="Nowa umowa"/> </label></a>
              </div>
          </div>
@@ -28,12 +34,12 @@
 
              <div class="content nesting-sub1" style="display: block;">
                  <div class="checkBoxBlock">
-                     <g:checkBox id="dodatkowyPunktCB" name="dodatkowyPunkt" />
+                     <g:checkBox id="dodatkowyPunktCB" name="dodatkowyPunkt" data-selected="${(processInstance?.activities*.code)?.contains('dodatkowyPunkt')}"/>
                      <label for="dodatkowyPunktCB"><g:message code="activity.dodatkowyPunkt.name" default="Dodatkowy Punkt"/></label>
                  </div>
 
                  <div class="checkBoxBlock">
-                     <g:checkBox id="dodatkowyPosCB" name="dodatkowyPos"/>
+                     <g:checkBox id="dodatkowyPosCB" name="dodatkowyPos" data-selected="${(processInstance?.activities*.code)?.contains('dodatkowyPos')}"/>
                      <label for="dodatkowyPosCB"><g:message code="activity.dodatkowyPos.name" default="Dodatkowy Pos"/></label>
                  </div>
              </div>
@@ -45,20 +51,19 @@
              <div class="content nesting-sub1" style="display: block;">
 
                  <div class="checkBoxBlock">
-                     <g:checkBox id="zmianaProwizjiCB" name="zmianaProwizji"/>
+                     <g:checkBox id="zmianaProwizjiCB" name="zmianaProwizji" data-selected="${(processInstance?.activities*.code)?.contains('zmianaProwizji')}"/>
                      <label for="zmianaProwizjiCB"><g:message code="activity.zmianaProwizji.name" default="Zmiana prowizji"/></label>
                  </div>
 
                  <div class="checkBoxBlock">
-                     <g:checkBox id="zmianaWarunkowDccCB" name="zmianaWarunkowDcc"/>
+                     <g:checkBox id="zmianaWarunkowDccCB" name="zmianaWarunkowDcc" data-selected="${(processInstance?.activities*.code)?.contains('zmianaWarunkowDcc')}"/>
                      <label for="zmianaWarunkowDccCB"><g:message code="activity.zmianaWarunkowDcc.name" default="Zmiana warunków DCC"/></label>
                  </div>
 
                  <div class="checkBoxBlock">
-                     <g:checkBox id="dodanieAneksuKosztyPlusCB" name="dodanieAneksuKosztyPlus"/>
+                     <g:checkBox id="dodanieAneksuKosztyPlusCB" name="dodanieAneksuKosztyPlus" data-selected="${(processInstance?.activities*.code)?.contains('dodanieAneksuKosztyPlus')}"/>
                      <label for="dodanieAneksuKosztyPlusCB"><g:message code="activity.dodanieAneksuKosztyPlus.name" default="Dodanie aneksu Koszty +"/></label>
                  </div>
-
 
 
                  <div class="checkBoxBlock">
@@ -67,34 +72,34 @@
 
                      <div class="content nesting-sub2" style="display: block;">
                          <div class="checkBoxBlock">
-                             <g:checkBox id="wymianaUmowyNajmuCB" name="wymianaUmowyNajmu" />
+                             <g:checkBox id="wymianaUmowyNajmuCB" name="wymianaUmowyNajmu" data-selected="${(processInstance?.activities*.code)?.contains('wymianaUmowyNajmu')}"/>
                              <label for="wymianaUmowyNajmuCB"><g:message code="activity.wymianaUmowyNajmu.name" default="Wymiana umowy najmu"/></label>
                          </div>
 
                          <div class="checkBoxBlock">
-                             <g:checkBox id="aneksCB" name="aneks"/>
+                             <g:checkBox id="aneksCB" name="aneks" data-selected="${(processInstance?.activities*.code)?.contains('aneks')}"/>
                              <label for="aneksCB"> <g:message code="activity.aneks.name" default="Aneks"/></label>
                          </div>
                      </div>
                  </div>
 
                  <div class="checkBoxBlock">
-                     <g:checkBox id="zmianaTabeliOplatDodatkowychCB" name="zmianaTabeliOplatDodatkowych"/>
+                     <g:checkBox id="zmianaTabeliOplatDodatkowychCB" name="zmianaTabeliOplatDodatkowych" data-selected="${(processInstance?.activities*.code)?.contains('zmianaTabeliOplatDodatkowych')}"/>
                      <label for="zmianaTabeliOplatDodatkowychCB"><g:message code="activity.zmianaTabeliOplatDodatkowych.name" default="Zmiana tabeli opłat dodatkowych"/></label>
                  </div>
 
                  <div class="checkBoxBlock">
-                     <g:checkBox id="zmianaWarunkowPrepaidCB" name="zmianaWarunkowPrepaid"/>
+                     <g:checkBox id="zmianaWarunkowPrepaidCB" name="zmianaWarunkowPrepaid" data-selected="${(processInstance?.activities*.code)?.contains('zmianaWarunkowPrepaid')}"/>
                      <label for="zmianaWarunkowPrepaidCB"><g:message code="activity.zmianaWarunkowPrepaid.name" default="Zmiana warunków prepaid"/></label>
                  </div>
 
                  <div class="checkBoxBlock">
-                     <g:checkBox id="zmianaOkresuLojalnosciowegoCB" name="zmianaOkresuLojalnosciowego"/>
+                     <g:checkBox id="zmianaOkresuLojalnosciowegoCB" name="zmianaOkresuLojalnosciowego" data-selected="${(processInstance?.activities*.code)?.contains('zmianaOkresuLojalnosciowego')}"/>
                      <label for="zmianaOkresuLojalnosciowegoCB"><g:message code="activity.zmianaOkresuLojalnosciowego.name" default="Zmiana okresu Lojalnościowego"/></label>
                  </div>
 
                  <div class="checkBoxBlock">
-                     <g:checkBox id="promocyjneObnizenieNajmuCB" name="promocyjneObnizenieNajmu"/>
+                     <g:checkBox id="promocyjneObnizenieNajmuCB" name="promocyjneObnizenieNajmu" data-selected="${(processInstance?.activities*.code)?.contains('promocyjneObnizenieNajmu')}"/>
                      <label for="promocyjneObnizenieNajmuCB"> <g:message code="activity.promocyjneObnizenieNajmu.name" default="Promocyjne obniżenie najmu"/></label>
                  </div>
              </div>
@@ -106,22 +111,22 @@
              <div class="content nesting-sub1" style="display: block;">
 
                  <div class="checkBoxBlock">
-                     <g:checkBox id="dodaniePrepaidCB" name="dodaniePrepaid"/>
+                     <g:checkBox id="dodaniePrepaidCB" name="dodaniePrepaid" data-selected="${(processInstance?.activities*.code)?.contains('dodaniePrepaid')}"/>
                      <label for="dodaniePrepaidCB"><g:message code="activity.dodaniePrepaid.name" default="Dodanie Prepaid"/></label>
                  </div>
 
                  <div class="checkBoxBlock">
-                     <g:checkBox id="dodanieDccCB" name="dodanieDcc"/>
+                     <g:checkBox id="dodanieDccCB" name="dodanieDcc" data-selected="${(processInstance?.activities*.code)?.contains('dodanieDcc')}"/>
                      <label for="dodanieDccCB"><g:message code="activity.dodanieDcc.name" default="Dodanie DCC"/></label>
                  </div>
 
                  <div class="checkBoxBlock">
-                     <g:checkBox id="dodanieCashBackCB" name="dodanieCashBack"/>
+                     <g:checkBox id="dodanieCashBackCB" name="dodanieCashBack" data-selected="${(processInstance?.activities*.code)?.contains('dodanieCashBack')}"/>
                      <label for="dodanieCashBackCB"><g:message code="activity.dodanieCashBack.name" default="Dodanie CashBack"/></label>
                  </div>
 
                  <div class="checkBoxBlock">
-                     <g:checkBox id="dodanieIkoCB" name="dodanieIko"/>
+                     <g:checkBox id="dodanieIkoCB" name="dodanieIko" data-selected="${(processInstance?.activities*.code)?.contains('dodanieIko')}"/>
                      <label for="dodanieIkoCB"><g:message code="activity.dodanieIko.name" default="Dodanie IKO"/></label>
                  </div>
 
@@ -131,17 +136,17 @@
 
                      <div class="content nesting-sub2" style="display: block;">
                          <div class="checkBoxBlock">
-                             <g:checkBox id="ekonomicznyCB" name="ekonomiczny"/>
+                             <g:checkBox id="ekonomicznyCB" name="ekonomiczny" data-selected="${(processInstance?.activities*.code)?.contains('ekonomiczny')}"/>
                              <label for="ekonomicznyCB"><g:message code="activity.ekonomiczny.name" default="Ekonomiczny"/></label>
                          </div>
 
                          <div class="checkBoxBlock">
-                             <g:checkBox id="komfortCB" name="komfort"/>
+                             <g:checkBox id="komfortCB" name="komfort" data-selected="${(processInstance?.activities*.code)?.contains('komfort')}"/>
                              <label for="komfortCB"><g:message code="activity.komfort.name" default="Komfort"/></label>
                          </div>
 
                          <div class="checkBoxBlock">
-                             <g:checkBox id="prestizCB" name="prestiz"/>
+                             <g:checkBox id="prestizCB" name="prestiz" data-selected="${(processInstance?.activities*.code)?.contains('prestiz')}"/>
                              <label for="prestizCB"><g:message code="activity.prestiz.name" default="Prestiż"/></label>
                          </div>
                      </div>
@@ -151,21 +156,21 @@
 
          <div id="poprawDane" class="expendable">
              <div class="checkBoxBlock">
-                 <g:checkBox id="poprawDaneCB" name="poprawDane"/>
+                 <g:checkBox id="poprawDaneCB" name="poprawDane" data-selected="${(processInstance?.activities*.code)?.contains('poprawDane')}"/>
                  <a class="expandHeader expanded" href="#">  <label for="poprawDaneCB"><g:message code="activity.poprawDane.name" default="Popraw już wprowadzone dane"/> </label></a>
              </div>
          </div>
 
          <div id="odrzucDokumenty" class="expendable">
              <div class="checkBoxBlock">
-                 <g:checkBox id="odrzucDokumentyCB" name="odrzucDokumenty"/>
+                 <g:checkBox id="odrzucDokumentyCB" name="odrzucDokumenty" data-selected="${(processInstance?.activities*.code)?.contains('odrzucDokumenty')}"/>
                  <a class="expandHeader expanded" href="#"><label for="odrzucDokumentyCB"><g:message code="activity.odrzucDokumenty.name" default="Odrzuć jeszcze niezaakceptowane dokumenty"/> </label></a>
              </div>
          </div>
 
          <div id="uzupelnijPodpisy" class="expendable">
              <div class="checkBoxBlock">
-                 <g:checkBox id="uzupelnijPodpisyCB" name="uzupelnijPodpisy"/>
+                 <g:checkBox id="uzupelnijPodpisyCB" name="uzupelnijPodpisy" data-selected="${(processInstance?.activities*.code)?.contains('uzupelnijPodpisy')}"/>
                  <a class="expandHeader expanded" href="#"><label for="uzupelnijPodpisyCB"><g:message code="activity.uzupelnijPodpisy.name" default="Uzupełnij podpisy"/> </label></a>
              </div>
          </div>
@@ -173,7 +178,7 @@
 
      <div style="margin:30px auto 0 auto;display: table;">
          <g:message code="defineActivity.uwagiDoCoa.name" default="Uwagi dla COA"/>
-         <g:textArea name="notes" style="height: 100px; display: block; min-width: 380px"/>
+         <g:textArea name="notes" style="height: 100px; display: block; min-width: 380px" value="${notesToCOA}"/>
          <div id="notesMessageBox">
              <g:if test="${infoMessage}">
                  <g:render template="message/infoMessage" model="[message: infoMessage]"/>

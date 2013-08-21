@@ -13,6 +13,8 @@ class DocumentFile {
     Date lastUpdated
 	Integer pagesCount
 
+    Process process
+
     static belongsTo = [process:Process]
 	
 	static hasOne = [content:DocumentContent]
@@ -22,7 +24,7 @@ class DocumentFile {
     }
 
     static mapping = {
-        table name: "DOCUMENT", DomainConsts.SHEMA_NAME
+        table name: "DOCUMENT", schema:DomainConsts.SHEMA_NAME
         id generator:'sequence', params:[sequence:DomainConsts.SHEMA_NAME+'.DOCUMENT_SEQ']
     }
 }

@@ -1,6 +1,5 @@
 package com.eservice.eumowy
 
-import java.awt.FlowLayout;
 import com.eservice.eumowy.command.ProcessCommand
 import com.eservice.eumowy.process.DefineActivityCommand
 
@@ -31,16 +30,25 @@ class ActivityController {
      * MAIN PROCESS FLOW
      * */
     def createProcessFlow = {
+
         defineActivity{
+            onEntry{
+                flow.processInstance = flow.processInstance ?: new Process();
+                println(" flow.processInstance: "+ flow.processInstance)
+            }
             on("continue") { DefineActivityCommand cmd ->
+                def processInstance = flow.processInstance
 
                 if(cmd?.hasErrors()){
                     flash.errorMessage= message(code: cmd.errors?.getFieldError("selectedActivities").code);
                     return error();
                 }
 
-                flow.processInstance =  new Process(activities: Activity.findAllByCodeInList(cmd.selectedActivities));
+                processInstance.activities = Activity.findAllByCodeInList(cmd.selectedActivities);
+                processInstance.activities*.selectedActivitySignatures = null;
+
                 flow.notesToCOA = cmd.notes;
+                flow.processInstance = processInstance
             }.to "chooseSubFlow"
             on("error").to "defineActivity"
             on("emailOnly").to "defineActivity"
@@ -106,13 +114,14 @@ class ActivityController {
         /** final operations and process save*/
         finish{
             action{
-                //flow.processInstance.save()
+                flow.processInstance.save()
             }
             on("success").to "newFlow"
         }
 
         newFlow{
             action{
+                flow.processInstance = null;
                 redirect(action: "createProcess")
             }
         }
@@ -126,6 +135,9 @@ class ActivityController {
             processInstance()
         }
         chooseActivity{
+            onEntry{
+                println  flow.processInstance.activities*.activitySignatures;
+            }
             render(view: "../createProcess/chooseActivity")
             on("continue"){
                 def processInstance = flow.processInstance
@@ -167,6 +179,7 @@ class ActivityController {
                 flow.nip = params.nip;
                 flow.calcNumber = null
                 flow.client = null
+                flow.isContinueEnabled = false;
 
                 def processInstance = flow.processInstance
 
@@ -219,8 +232,7 @@ class ActivityController {
                     flash.calcInfoMessage = message(code:"calc.found.info", default:"Znaleziono");
                 }
 
-                flow.processInstance = processInstance
-                flash.isContinueEnabled = true;
+                flow.isContinueEnabled = true;
             }
             on("success").to "chooseCalc"
             on("error").to "chooseCalc"
@@ -522,7 +534,8 @@ class ActivityController {
     def _getSignatures(def activities) {
         def signatures = []
         activities.each() { activity ->
-            def activitySignatureParam = params["activitySignature_${activity.id}"]
+
+            def activitySignatureParam = params["activitySignature_${activity.id}"];
 
             if (activitySignatureParam != null) {
 
@@ -544,11 +557,9 @@ class ActivityController {
                     signatures.addAll(activitySignatures.signature)
                 }
 
-                activity.activitySignatures = activitySignatures;
+                activity.selectedActivitySignatures = activitySignatures;
             }
         }
         return signatures;
     }
-
-
 }
