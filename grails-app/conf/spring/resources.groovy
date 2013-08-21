@@ -5,6 +5,9 @@ import com.eservice.eumowy.dao.CbdDAO
 
 
 beans = {
+
+    customPropertyEditorRegistrar(CustomPropertyEditorRegistrar){}
+
     // custom authentication
     daoAuthenticationProvider(EServiceAuthenticationProvider) {
         preAuthenticationChecks = ref('preAuthenticationChecks')
