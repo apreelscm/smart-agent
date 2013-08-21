@@ -75,7 +75,13 @@ public class PdfGenerator {
 		PdfReader templateReader = null;
 		PdfStamper stamp = null;
 		try {
-			URL url = new URL(urlTemplatePath);
+			
+			URL url;
+			try {
+				url = new URL(urlTemplatePath);
+			} catch (Exception e) {
+				url = new File(urlTemplatePath).toURI().toURL();
+			}
 			templateReader = new PdfReader(url);
 			stamp = new PdfStamper(templateReader, baos);
 			AcroFields form = stamp.getAcroFields();

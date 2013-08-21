@@ -39,11 +39,11 @@
 				isSubscriptionDone[linkid] = true;
 				
 				if (updateSubscriptionStatusCount == 1) {
-				    ${remoteFunction(action: 'updateProcessStatus', params: [processId: processInstance.id, processStatus: "WAIT_FOR_SUBSRIPTION"])}
+		    		jQuery.post($(location).attr("href"), {_eventId_updateProcessStatus: "", processStatus: "WAIT_FOR_SUBSCRIPTION"}, function(data){});
 				}
 				
 				if (updateSubscriptionStatusCount == 2) { // JUST FOR NOW IT's 2! CHANGE IT!
-                     ${remoteFunction(action: 'updateProcessStatus', params: [processId: processInstance.id, processStatus: "SUBSCRIPTIONS_DONE"])}
+                	jQuery.post($(location).attr("href"), {_eventId_updateProcessStatus: "", processStatus: "SUBSCRIPTIONS_DONE"}, function(data){});
 				}
 			}
 		}

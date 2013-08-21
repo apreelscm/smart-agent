@@ -13,8 +13,8 @@ class Signature implements Serializable {
 	Integer subscriptionYScale;
 	Integer subscriptionPageNumber;
 	
-	String subscriptionManagement1;
-	String subscriptionManagement2;
+	String managementSubscription1;
+	String managementSubscription2;
 
     static hasMany = [
             calcFieldsSignature:CalcFieldSignature,
