@@ -19,6 +19,7 @@ insert into EUMOWY.activity (id, version, code, numer_pozycji) values (18,0,'kom
 insert into EUMOWY.activity (id, version, code, numer_pozycji) values (19,0,'prestiz',19);
 insert into EUMOWY.activity (id, version, code, numer_pozycji) values (20,0,'poprawDane',20);
 insert into EUMOWY.activity (id, version, code, numer_pozycji) values (21,0,'odrzucDokumenty',21);
+insert into EUMOWY.activity (id, version, code, numer_pozycji) values (22,0,'uzupelnijPodpisy',22);
 
 insert into EUMOWY.SIGNATURE (id, version, active, name, template_path) values (1, 0,1,'AP-AG/F/DF/2.003/12-02-06', 'Testowa sciezka do pliku');
 insert into EUMOWY.SIGNATURE (id, version, active, name, template_path) values (2, 0,1,'AP-AG/F/DP/2.003/13-05-10', 'Testowa sciezka do pliku');

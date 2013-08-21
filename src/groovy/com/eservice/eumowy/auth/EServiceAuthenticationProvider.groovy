@@ -1,7 +1,7 @@
 package com.eservice.eumowy.auth
 import com.eservice.dto.UserDTO
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
+import org.apache.commons.logging.LogFactory
+import org.apache.log4j.MDC
 import org.springframework.security.authentication.AuthenticationProvider
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
@@ -12,7 +12,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException
 
 class EServiceAuthenticationProvider implements AuthenticationProvider {
 
-    protected final Logger log = LoggerFactory.getLogger(getClass())
+    private static final auditLogger = LogFactory.getLog("audit");
 
     public static final String PH_ROLE = "PH_ROLE";
     public static final String ADM_ROLE = "ADM_ROLE";
@@ -40,10 +40,9 @@ class EServiceAuthenticationProvider implements AuthenticationProvider {
 
         if (!userDTO) {
             // TODO customize 'springSecurity.errors.login.fail' i18n message in app's messages.properties with org name
-            log.warn "User not found: $username"
+            auditLogger.info("Nie znaleziono użytkownika [login:${username}]")
             throw new UsernameNotFoundException('User not found', username)
         }
-
 
         authorities = new ArrayList<GrantedAuthorityImpl>()
         if(userDTO.przId){
@@ -62,6 +61,11 @@ class EServiceAuthenticationProvider implements AuthenticationProvider {
 
         preAuthenticationChecks.check userDetails
         postAuthenticationChecks.check userDetails
+
+        MDC.clear()
+        MDC.put("sessionUserName", userDetails.username);
+
+        auditLogger.info("Poprawne logowanie")
 
         def result = new UsernamePasswordAuthenticationToken(userDetails, authentication.credentials, authorities)
         result.details = authentication.details

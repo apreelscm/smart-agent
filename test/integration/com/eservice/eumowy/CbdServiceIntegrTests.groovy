@@ -1,16 +1,14 @@
 package com.eservice.eumowy
 import org.junit.After
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Test
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 
 class  CbdServiceIntegrTests {
 
-    Logger log = LoggerFactory.getLogger(CbdServiceIntegrTests)
     def cbdService
 
-    def nip = '8356944170';
+    def nip = '4457490660';
     
     @Before
     void setUp() {
@@ -24,90 +22,102 @@ class  CbdServiceIntegrTests {
     }
 
     @Test
+    void findCalcIdByNipTest() {
+        def result = cbdService.findCalculatorIdByNip(nip)
+        assert result != null
+    }
+
+    @Test
+    void findCalculatorIdByNipTest() {
+        def result = cbdService.findCalculatorIdByNip(nip)
+        assert result != null
+    }
+
+    @Test
     void findClientIdByNip() {
         def result = cbdService.findClientIdByNip(nip)
         assert result != null
     }
 
-    @Test
+    @Ignore
     void getAdresDaneDoWydrukuTest() {
         def result = cbdService.getAdresDaneDoWydruku(nip)
         assert result != null
     }
 
-     @Test
+     @Ignore
     void getAdresDoKorespondencjiTest() {
         def result = cbdService.getAdresDoKorespondencji(nip)
         assert result != null
     }
 
-    @Test
+    @Ignore
     void getAdresDoKorespondencjizAkceptantemTest() {
         def result = cbdService.getAdresDoKorespondencjizAkceptantem(nip)
         assert result != null
     }
 
 
-   @Test
+   @Ignore
     void getDaneAkceptantaTest() {
         def result = cbdService.getDaneAkceptanta(nip)
         assert result != null
     }
 
 
-   @Test
+   @Ignore
     void getNazwaBankuTest() {
         def result = cbdService.getNazwaBanku(nip)
         assert result != null
     }
 
 
-   @Test
+   @Ignore
     void getNumerRachunkuBankowegoTest() {
         def result = cbdService.getNumerRachunkuBankowego(nip)
         assert result != null
     }
 
 
-   @Test
+   @Ignore
     void getOsoba1UprawnionaDoPodpisaniaUmowyTest() {
         def result = cbdService.getOsoba1UprawnionaDoPodpisaniaUmowy(nip)
         assert result != null
     }
 
 
-   @Test
+   @Ignore
     void getOsoba2UprawnionaDoPodpisaniaUmowyTest() {
         def result = cbdService.getOsoba2UprawnionaDoPodpisaniaUmowy(nip)
         assert result != null
     }
 
 
-   @Test
+   @Ignore
     void getOsobaKtoraPozyskalaAkceptantaTest() {
         def result = cbdService.getOsobaKtoraPozyskalaAkceptanta(nip)
         assert result != null
     }
 
-   @Test
+   @Ignore
     void getPromocyjneObinzenieOplatGridTest() {
         def result = cbdService.getPromocyjneObinzenieOplatGrid(nip)
         assert result != null
     }
 
-   @Test
+   @Ignore
     void getOsobaDoKontaktuTest() {
         def result = cbdService.getOsobaDoKontaktu(nip)
         assert result != null
     }
 
-   @Test
+   @Ignore
     void getWykazPunktowGridTest() {
         def result = cbdService.getWykazPunktowGrid(nip)
         assert result != null
     }
 
-   @Test
+   @Ignore
     void getZakresUruchomieniaPunktyGridTest() {
         def result = cbdService.getZakresUruchomieniaPunktyGrid(nip)
         assert result != null

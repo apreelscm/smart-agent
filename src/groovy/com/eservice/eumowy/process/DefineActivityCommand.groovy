@@ -30,6 +30,7 @@ class DefineActivityCommand {
     def prestiz
     def promocyjneObnizenieNajmu
     def odrzucDokumenty
+    def uzupelnijPodpisy
     def komfort
     def aneks
     def ekonomiczny

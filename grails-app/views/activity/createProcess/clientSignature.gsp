@@ -39,15 +39,11 @@
 				isSubscriptionDone[linkid] = true;
 				
 				if (updateSubscriptionStatusCount == 1) {
-					jQuery.post("/eumowy/activity/updateProcessStatus", {processId: "${processInstance.id}", processStatus:"WAIT_FOR_SUBSRIPTION"}, function(data) {
-						
-					});
+				    ${remoteFunction(action: 'updateProcessStatus', params: [processId: processInstance.id, processStatus: "WAIT_FOR_SUBSRIPTION"])}
 				}
 				
 				if (updateSubscriptionStatusCount == 2) { // JUST FOR NOW IT's 2! CHANGE IT!
-					jQuery.post("/eumowy/activity/updateProcessStatus", {processId: "${processInstance.id}", processStatus:"SUBSCRIPTIONS_DONE"}, function(data) {
-						
-					});
+                     ${remoteFunction(action: 'updateProcessStatus', params: [processId: processInstance.id, processStatus: "SUBSCRIPTIONS_DONE"])}
 				}
 			}
 		}
@@ -160,9 +156,6 @@
 							{
 								"Tak": function() {
 									jQuery( this ).dialog( "close" );
-									//jQuery.post("/eumowy/activity/updateProcessStatus", {processId: "${processInstance.id}", processStatus:"WAIT_FOR_SUBSRIPTION"}, function(data) {
-									//});
-									
 									jQuery.post(jQuery(location).attr('href'), {_eventId_submit:"",requestVersion: jQuery("input[name=requestVersion]").val(), numberOfSubscriptions: updateSubscriptionStatusCount}, function(data) {
 									});
 									

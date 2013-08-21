@@ -1,4 +1,5 @@
 import grails.plugins.springsecurity.SecurityConfigType
+import org.apache.log4j.jdbc.JDBCAppender
 
 // locations to search for config files that get merged into the main config;
 // config files can be ConfigSlurper scripts, Java properties files, or classes
@@ -103,20 +104,45 @@ log4j = {
     trace 'grails.plugin.mail'
 
     //show sql values
-    /*info "org.hibernate.SQL", "org.hibernate.type", "org.codehaus.groovy.grails.orm.hibernate"*/
-
-    /*trace 'org.hibernate.type'
-    debug 'org.hibernate.SQL'*/
-
-    root {
-        additivity = true
-        info();
-    }
+  /*  info "org.hibernate.SQL", "org.hibernate.type", "org.codehaus.groovy.grails.orm.hibernate"
+    trace 'org.hibernate.type' debug 'org.hibernate.SQL'*/
 
     appenders {
-        console name: 'stdout', layout: pattern(conversionPattern: '%d{dd-MM-yyyy HH:mm:ss,SSS} %5p %c - %m%n')
+       console name: 'console', layout: pattern(conversionPattern: '%d{dd-MM-yyyy HH:mm:ss,SSS} %5p %c - %m%n')
+
+        environments {
+            development {
+                appender new JDBCAppender(
+                        name: "database",
+                        URL: "jdbc:h2:mem:CbdDb;MODE=Oracle;MVCC=TRUE",
+                        user: "sa",
+                        password: "",
+                        driver: "org.h2.Driver",
+                        sql: "INSERT INTO EUMOWY.LOGS (login, log_date, log_message) VALUES ('%X{sessionUserName}','%d{yyyy.MM.dd HH:mm:ss}', '%m');",
+                        threshold: org.apache.log4j.Level.INFO
+                )
+            }
+            test {
+                appender new JDBCAppender(
+                        name: "database",
+                        URL: "jdbc:oracle:thin:@db-eservice.apreel.lan:1521:cbd01out",
+                        user: "eumowy_app",
+                        password: "eumowy_app",
+                        driver: "oracle.jdbc.driver.OracleDriver",
+                        sql: "INSERT INTO EUMOWY.LOGS (login, log_date, log_message) VALUES ('%X{sessionUserName}','%d{yyyy.MM.dd HH:mm:ss}', '%m')",
+                        threshold: org.apache.log4j.Level.INFO
+                )
+            }
+        }
     }
 
+    root {
+        additivity: false
+        info 'console'
+    }
+
+    info database: ["audit"]
+    additivity: false
 }
 
 // Added by the Spring Security Core plugin:

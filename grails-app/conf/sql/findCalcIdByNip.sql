@@ -1,0 +1,1 @@
+Select max(kak_id) as kak_id from CBD_ADM.cbt_kalk where kak_nip=:nip and kak_status='Zaakceptowany'

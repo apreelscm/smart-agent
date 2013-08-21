@@ -17,9 +17,6 @@ create table EUMOWY.SUBSCRIPTION (id number(19,0) not null, version number(19,0)
 create table EUMOWY.process_activity (process_activities_id number(19,0), activity_id number(19,0), activities_idx number(10,0));
 create table EUMOWY.process_signature (process_signatures_id number(19,0), signature_id number(19,0), signatures_idx number(10,0));
 create table EUMOWY.process_subscription (process_subscriptions_id number(19,0), subscription_id number(19,0), subscriptions_idx number(10,0));
-create table sec_role (id number(19,0) not null, version number(19,0) not null, authority varchar2(255 char) unique, primary key (id));
-create table sec_user (id number(19,0) not null, version number(19,0) not null, account_expired number(1,0) not null, account_locked number(1,0) not null, enabled number(1,0) not null, name varchar2(255 char), "password" varchar2(255 char), password_expired number(1,0) not null, username varchar2(255 char) unique, primary key (id));
-create table sec_user_sec_role (sec_role_id number(19,0), sec_user_id number(19,0), primary key (sec_role_id, sec_user_id));
 
 -- CONSTRAINTS
 -- TODO do poprawy nazwy FK
@@ -35,8 +32,6 @@ alter table EUMOWY.SIGNATURE_PANEL add constraint FK688D4B7DED846B31 foreign key
 alter table EUMOWY.process_activity add constraint FKD3BAD0D9C1A12403 foreign key (activity_id) references EUMOWY.ACTIVITY;
 alter table EUMOWY.process_signature add constraint FKD76A742EED846B31 foreign key (signature_id) references EUMOWY.SIGNATURE;
 alter table EUMOWY.process_subscription add constraint FK992D41E74E3344C3 foreign key (subscription_id) references EUMOWY.SUBSCRIPTION;
-alter table EUMOWY.SEC_USER_SEC_ROLE add constraint FKC78D322AA9AFAA0F foreign key (sec_user_id) references EUMOWY.SEC_USER;
-alter table EUMOWY.SEC_USER_SEC_ROLE add constraint FKC78D322A484E62F foreign key (sec_role_id) references EUMOWY.SEC_ROLE;
 
 -- SEQUENCES
 create sequence EUMOWY.ACTIVITY_SEQ;
