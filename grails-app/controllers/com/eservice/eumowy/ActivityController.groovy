@@ -1,6 +1,5 @@
 package com.eservice.eumowy
 
-import java.awt.FlowLayout;
 import com.eservice.eumowy.command.ProcessCommand
 import com.eservice.eumowy.process.DefineActivityCommand
 
@@ -15,7 +14,6 @@ class ActivityController {
     def processService
     def calculatorService
     def messageSource
-	def appParameters
 	def pdfService
 
     def index() {
@@ -266,48 +264,28 @@ class ActivityController {
                 flow.processInstance = processInstance
             }.to "finish"
             on("subscribe").to "clientSignature"
+            on("updateProcessStatus") {
+                if (params.processStatus.equals("WAIT_FOR_SUBSCRIPTION")) {
+                    flow.processInstance.status = Process.ProcessStatus.WAIT_FOR_SUBSRIPTION
+                }
+                else if (params.processStatus.equals("SUBSCRIPTIONS_DONE")) {
+                    flow.processInstance.status = Process.ProcessStatus.SUBSCRIPTIONS_DONE
+                }
+                else if (params.processStatus.equals("REJECTED")) {
+                    flow.processInstance.status = Process.ProcessStatus.REJECTED
+                    //TODO
+                }
+            }.to "clientSignature"
             on("noaccept") {
 				flow.processInstance.status = Process.ProcessStatus.REJECTED
             }.to "finish"
 			on("submit") {
-				log.info "PARAMS: " + params
-				
-				if ("electronical".equals(params.requestVersion)) {
-					flow.processInstance.signatures.each { sig ->
-						log.info "SIGNATURE NAME: " + sig.name + " PDF TEMPLATE PATH: " + sig.templatePath
-						byte[] documentData = pdfService.fillPdfFormFromURIWithFaksymile(sig, PdfService.FontType.ARIAL)
-						int pc = pdfService.getPageCountFromPdf(documentData)
-						DocumentFile df = new DocumentFile(name: sig.name, dateCreated: new Date(), lastUpdated: new Date(), pagesCount: pc)
-						df.content = documentData
-						df.save()
-					}
-					
-					flow.processInstance.status = Process.ProcessStatus.WAITING
-				}
-				else if ("paper".equals(params.requestVersion)) {
-					flow.processInstance.signatures.each { sig ->
-						byte[] documentData = pdfService.fillPdfFormFromURIWithBlackFaksymile(sig, PdfService.FontType.ARIAL)
-						int pc = pdfService.getPageCountFromPdf(documentData)
-						DocumentFile df = new DocumentFile(name: sig.name, dateCreated: new Date(), lastUpdated: new Date(), pagesCount: pc)
-						df.content = documentData
-						df.save()
-					}
-					
-					flow.processInstance.status = Process.ProcessStatus.WAIT_FOR_SUBSCRIPTION_PAPER_VERSION
-				}
-				else if ("templates".equals(params.requestVersion)) {
-					flow.processInstance.signatures.each { sig ->
-						byte[] documentData = pdfService.fillPdfFormFromURIWithBlackFaksymile(sig, PdfService.FontType.ARIAL);
-						int pc = pdfService.getPageCountFromPdf(documentData)
-						DocumentFile df = new DocumentFile(name: sig.name, dateCreated: new Date(), lastUpdated: new Date(), pagesCount: pc)
-						df.content = documentData
-						df.save()
-					}
-					
-					flow.processInstance.status = Process.ProcessStatus.WAIT_FOR_SUBSRIPTION
-				}
-				// SEND EMAILS
-				// IF NOTES FOR COA - SEND THEM
+                log.info "PARAMS: " + params
+                _processDocumentCreation(flow.processInstance, params.requestVersion)
+                // SEND EMAILS
+                // IF NOTES FOR COA - SEND THEM
+
+                flow.processInstance.status = Process.ProcessStatus.WAITING
 				
 			}.to "finish"
         }
