@@ -16,6 +16,7 @@ class ActivitySignatures implements Serializable {
     static mapping = {
         table name: "ACTIVITY_SIGNATURES", schema: DomainConsts.SHEMA_NAME
         id generator:'sequence', params:[sequence:DomainConsts.SHEMA_NAME+'.ACTIVITY_SIGNATURES_SEQ']
+        sort id: "desc"
     }
 
 }

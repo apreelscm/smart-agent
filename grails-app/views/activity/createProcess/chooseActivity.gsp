@@ -5,6 +5,10 @@
     <meta name="layout" content="main">
     <title><g:message code="chooseActivity.header.title" default="Wybór działania"/></title>
     <r:require module="chooseActivity"/>
+
+    <r:script>
+    </r:script>
+
 </head>
 
 <body>
@@ -19,8 +23,10 @@
                 <g:set var="list2" value="${activity?.activitySignatures?.findAll { it.numberOfList == 2 }}"/>
                 <g:set var="listM" value="${activity?.activitySignatures?.findAll { it.mandatory == true }}"/>
 
-                <h3 class="linia-bottom"><g:message code="activity.${activity.code}.name"/></h3>
+                <g:set var="selectedValue1" value="${activity?.selectedActivitySignatures?.find { it.numberOfList == 1 }}"/>
+                <g:set var="selectedValue2" value="${activity?.selectedActivitySignatures?.find { it.numberOfList == 2 }}"/>
 
+                <h3 class="linia-bottom"><g:message code="activity.${activity.code}.name"/></h3>
                 <div>
                     <g:hiddenField name="activitySignature_${activity.id}" value="${listM*.id}" />
 
@@ -29,6 +35,7 @@
                                         from="${list1}"
                                         optionKey="id"
                                         optionValue="signature"
+                                        value="${selectedValue1?.id}"
                                         noSelection="[null: '']"/>
 
                     <g:if test="${list2?.size() > 0}">
@@ -37,6 +44,7 @@
                                             from="${list2}"
                                             optionKey="id"
                                             optionValue="signature"
+                                            value="${selectedValue2?.id}"
                                             noSelection="[null: '']"/>
                     </g:if>
                 </div>

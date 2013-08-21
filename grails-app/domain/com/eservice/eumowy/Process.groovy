@@ -24,7 +24,7 @@ class Process implements Serializable {
 
     List<DocumentFile> documents
     List<AttachmentFile> attachments
-    List<Activity> activities
+    List<Activity> activities = [];
     List<Signature> signatures
     List<Panel> panels
     List<Subscription> subscriptions

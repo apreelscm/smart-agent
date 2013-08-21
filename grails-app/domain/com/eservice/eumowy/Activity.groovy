@@ -5,6 +5,14 @@ class Activity implements Serializable {
     String code;
     Integer numerPozycji;
 
+    List<ActivitySignatures> selectedActivitySignatures
+
+    static transients = ['selectedActivitySignatures']
+
+    static hasMany = [
+            activitySignatures:ActivitySignatures
+    ]
+
     static constraints = {
         code(unique:true,blank:false)
         numerPozycji(unique:true,nullable: false)
@@ -14,10 +22,6 @@ class Activity implements Serializable {
         table name: "ACTIVITY", schema: DomainConsts.SHEMA_NAME
         id generator:'sequence', params:[sequence:DomainConsts.SHEMA_NAME+'.ACTIVITY_SEQ']
     }
-
-    static hasMany = [
-            activitySignatures:ActivitySignatures
-    ]
 
     enum ClientType {
         REPRESENTIVE("Reprezentant"),
@@ -32,6 +36,7 @@ class Activity implements Serializable {
         @Override
         public String toString() {
             return text;
+
         }
     }
 }

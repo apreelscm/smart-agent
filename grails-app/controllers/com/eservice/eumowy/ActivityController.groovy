@@ -1,6 +1,5 @@
 package com.eservice.eumowy
 
-import java.awt.FlowLayout;
 import com.eservice.eumowy.command.ProcessCommand
 import com.eservice.eumowy.process.DefineActivityCommand
 
@@ -15,7 +14,6 @@ class ActivityController {
     def processService
     def calculatorService
     def messageSource
-	def appParameters
 	def pdfService
 
     def index() {
@@ -31,16 +29,25 @@ class ActivityController {
      * MAIN PROCESS FLOW
      * */
     def createProcessFlow = {
+
         defineActivity{
+            onEntry{
+                flow.processInstance = flow.processInstance ?: new Process();
+                println(" flow.processInstance: "+ flow.processInstance)
+            }
             on("continue") { DefineActivityCommand cmd ->
+                def processInstance = flow.processInstance
 
                 if(cmd?.hasErrors()){
                     flash.errorMessage= message(code: cmd.errors?.getFieldError("selectedActivities").code);
                     return error();
                 }
 
-                flow.processInstance =  new Process(activities: Activity.findAllByCodeInList(cmd.selectedActivities));
+                processInstance.activities = Activity.findAllByCodeInList(cmd.selectedActivities);
+                processInstance.activities*.selectedActivitySignatures = null;
+
                 flow.notesToCOA = cmd.notes;
+                flow.processInstance = processInstance
             }.to "chooseSubFlow"
             on("error").to "defineActivity"
             on("emailOnly").to "defineActivity"
@@ -106,13 +113,14 @@ class ActivityController {
         /** final operations and process save*/
         finish{
             action{
-                //flow.processInstance.save()
+                flow.processInstance.save()
             }
             on("success").to "newFlow"
         }
 
         newFlow{
             action{
+                flow.processInstance = null;
                 redirect(action: "createProcess")
             }
         }
@@ -167,6 +175,7 @@ class ActivityController {
                 flow.nip = params.nip;
                 flow.calcNumber = null
                 flow.client = null
+                flow.isContinueEnabled = false;
 
                 def processInstance = flow.processInstance
 
@@ -219,8 +228,7 @@ class ActivityController {
                     flash.calcInfoMessage = message(code:"calc.found.info", default:"Znaleziono");
                 }
 
-                flow.processInstance = processInstance
-                flash.isContinueEnabled = true;
+                flow.isContinueEnabled = true;
             }
             on("success").to "chooseCalc"
             on("error").to "chooseCalc"
@@ -256,26 +264,28 @@ class ActivityController {
                 flow.processInstance = processInstance
             }.to "finish"
             on("subscribe").to "clientSignature"
-			on("updateProcessStatus") {
-				if (params.processStatus.equals("WAIT_FOR_SUBSCRIPTION")) {
-					flow.processInstance.status = Process.ProcessStatus.WAIT_FOR_SUBSRIPTION
-				}
-				else if (params.processStatus.equals("SUBSCRIPTIONS_DONE")) {
-					flow.processInstance.status = Process.ProcessStatus.SUBSCRIPTIONS_DONE
-				}
-				else if (params.processStatus.equals("REJECTED")) {
-					flow.processInstance.status = Process.ProcessStatus.REJECTED
-					//TODO
-				}
-			}.to "clientSignature"
+            on("updateProcessStatus") {
+                if (params.processStatus.equals("WAIT_FOR_SUBSCRIPTION")) {
+                    flow.processInstance.status = Process.ProcessStatus.WAIT_FOR_SUBSRIPTION
+                }
+                else if (params.processStatus.equals("SUBSCRIPTIONS_DONE")) {
+                    flow.processInstance.status = Process.ProcessStatus.SUBSCRIPTIONS_DONE
+                }
+                else if (params.processStatus.equals("REJECTED")) {
+                    flow.processInstance.status = Process.ProcessStatus.REJECTED
+                    //TODO
+                }
+            }.to "clientSignature"
             on("noaccept") {
 				flow.processInstance.status = Process.ProcessStatus.REJECTED
             }.to "finish"
 			on("submit") {
-				log.info "PARAMS: " + params
-				_processDocumentCreation(flow.processInstance, params.requestVersion)
-				// SEND EMAILS
-				// IF NOTES FOR COA - SEND THEM
+                log.info "PARAMS: " + params
+                _processDocumentCreation(flow.processInstance, params.requestVersion)
+                // SEND EMAILS
+                // IF NOTES FOR COA - SEND THEM
+
+                flow.processInstance.status = Process.ProcessStatus.WAITING
 				
 			}.to "finish"
         }
@@ -462,7 +472,8 @@ class ActivityController {
     def _getSignatures(def activities) {
         def signatures = []
         activities.each() { activity ->
-            def activitySignatureParam = params["activitySignature_${activity.id}"]
+
+            def activitySignatureParam = params["activitySignature_${activity.id}"];
 
             if (activitySignatureParam != null) {
 
@@ -484,7 +495,7 @@ class ActivityController {
                     signatures.addAll(activitySignatures.signature)
                 }
 
-                activity.activitySignatures = activitySignatures;
+                activity.selectedActivitySignatures = activitySignatures;
             }
         }
         return signatures;
