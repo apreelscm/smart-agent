@@ -1,5 +1,6 @@
 import com.eservice.eumowy.auth.EServiceAuthenticationProvider
 import com.eservice.eumowy.dao.CbdDAO
+import com.eservice.eumowy.propEditors.CustomPropertyEditorRegistrar
 
 // Place your Spring DSL code here
 
