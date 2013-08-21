@@ -256,46 +256,24 @@ class ActivityController {
                 flow.processInstance = processInstance
             }.to "finish"
             on("subscribe").to "clientSignature"
+			on("updateProcessStatus") {
+				if (params.processStatus.equals("WAIT_FOR_SUBSCRIPTION")) {
+					flow.processInstance.status = Process.ProcessStatus.WAIT_FOR_SUBSRIPTION
+				}
+				else if (params.processStatus.equals("SUBSCRIPTIONS_DONE")) {
+					flow.processInstance.status = Process.ProcessStatus.SUBSCRIPTIONS_DONE
+				}
+				else if (params.processStatus.equals("REJECTED")) {
+					flow.processInstance.status = Process.ProcessStatus.REJECTED
+					//TODO
+				}
+			}.to "clientSignature"
             on("noaccept") {
 				flow.processInstance.status = Process.ProcessStatus.REJECTED
             }.to "finish"
 			on("submit") {
 				log.info "PARAMS: " + params
-				
-				if ("electronical".equals(params.requestVersion)) {
-					flow.processInstance.signatures.each { sig ->
-						log.info "SIGNATURE NAME: " + sig.name + " PDF TEMPLATE PATH: " + sig.templatePath
-						byte[] documentData = pdfService.fillPdfFormFromURIWithFaksymile(sig, PdfService.FontType.ARIAL)
-						int pc = pdfService.getPageCountFromPdf(documentData)
-						DocumentFile df = new DocumentFile(name: sig.name, dateCreated: new Date(), lastUpdated: new Date(), pagesCount: pc)
-						df.content = documentData
-						df.save()
-					}
-					
-					flow.processInstance.status = Process.ProcessStatus.WAITING
-				}
-				else if ("paper".equals(params.requestVersion)) {
-					flow.processInstance.signatures.each { sig ->
-						byte[] documentData = pdfService.fillPdfFormFromURIWithBlackFaksymile(sig, PdfService.FontType.ARIAL)
-						int pc = pdfService.getPageCountFromPdf(documentData)
-						DocumentFile df = new DocumentFile(name: sig.name, dateCreated: new Date(), lastUpdated: new Date(), pagesCount: pc)
-						df.content = documentData
-						df.save()
-					}
-					
-					flow.processInstance.status = Process.ProcessStatus.WAIT_FOR_SUBSCRIPTION_PAPER_VERSION
-				}
-				else if ("templates".equals(params.requestVersion)) {
-					flow.processInstance.signatures.each { sig ->
-						byte[] documentData = pdfService.fillPdfFormFromURIWithBlackFaksymile(sig, PdfService.FontType.ARIAL);
-						int pc = pdfService.getPageCountFromPdf(documentData)
-						DocumentFile df = new DocumentFile(name: sig.name, dateCreated: new Date(), lastUpdated: new Date(), pagesCount: pc)
-						df.content = documentData
-						df.save()
-					}
-					
-					flow.processInstance.status = Process.ProcessStatus.WAIT_FOR_SUBSRIPTION
-				}
+				_processDocumentCreation(flow.processInstance, params.requestVersion)
 				// SEND EMAILS
 				// IF NOTES FOR COA - SEND THEM
 				
@@ -383,46 +361,24 @@ class ActivityController {
                 flow.processInstance = processInstance
             }.to "finish"
             on("subscribe").to "clientSignature"
+			on("updateProcessStatus") {
+				if (params.processStatus.equals("WAIT_FOR_SUBSCRIPTION")) {
+					flow.processInstance.status = Process.ProcessStatus.WAIT_FOR_SUBSRIPTION
+				}
+				else if (params.processStatus.equals("SUBSCRIPTIONS_DONE")) {
+					flow.processInstance.status = Process.ProcessStatus.SUBSCRIPTIONS_DONE
+				}
+				else if (params.processStatus.equals("REJECTED")) {
+					flow.processInstance.status = Process.ProcessStatus.REJECTED
+					//TODO
+				}
+			}.to "clientSignature"
             on("noaccept") {
 				flow.processInstance.status = Process.ProcessStatus.REJECTED
             }.to "clientSignature"
             on("submit") {
                 log.info "PARAMS: " + params
-				
-				if ("electronical".equals(params.requestVersion)) {
-					flow.processInstance.signatures.each { sig ->
-						log.info "SIGNATURE NAME: " + sig.name + " PDF TEMPLATE PATH: " + sig.templatePath
-						byte[] documentData = pdfService.fillPdfFormFromURIWithFaksymile(sig, PdfService.FontType.ARIAL)
-						int pc = pdfService.getPageCountFromPdf(documentData)
-						DocumentFile df = new DocumentFile(name: sig.name, dateCreated: new Date(), lastUpdated: new Date(), pagesCount: pc)
-						df.content = documentData
-						df.save()
-					}
-					
-					flow.processInstance.status = Process.ProcessStatus.WAITING
-				}
-				else if ("paper".equals(params.requestVersion)) {
-					flow.processInstance.signatures.each { sig ->
-						byte[] documentData = pdfService.fillPdfFormFromURIWithBlackFaksymile(sig, PdfService.FontType.ARIAL)
-						int pc = pdfService.getPageCountFromPdf(documentData)
-						DocumentFile df = new DocumentFile(name: sig.name, dateCreated: new Date(), lastUpdated: new Date(), pagesCount: pc)
-						df.content = documentData
-						df.save()
-					}
-					
-					flow.processInstance.status = Process.ProcessStatus.WAIT_FOR_SUBSCRIPTION_PAPER_VERSION
-				}
-				else if ("templates".equals(params.requestVersion)) {
-					flow.processInstance.signatures.each { sig ->
-						byte[] documentData = pdfService.fillPdfFormFromURIWithBlackFaksymile(sig, PdfService.FontType.ARIAL);
-						int pc = pdfService.getPageCountFromPdf(documentData)
-						DocumentFile df = new DocumentFile(name: sig.name, dateCreated: new Date(), lastUpdated: new Date(), pagesCount: pc)
-						df.content = documentData
-						df.save()
-					}
-					
-					flow.processInstance.status = Process.ProcessStatus.WAIT_FOR_SUBSRIPTION
-				}
+				_processDocumentCreation(flow.processInstance, params.requestVersion)
 				// SEND EMAILS
 				// IF NOTES FOR COA - SEND THEM
 				
@@ -462,25 +418,9 @@ class ActivityController {
         getAttachmentList()
     }
 
-
     def getAttachmentList(){
         render(template:"../attachment/list", model:[files:attachmentService.getListByProcessId(params.processId), processId: params.processId]);
     }
-	
-	def updateProcessStatus() {
-		log.info "I WAS TRIGGERED"
-		def process = Process.get(Integer.valueOf(params.processId));
-		if (params.processStatus.equals("WAIT_FOR_SUBSRIPTION")) {
-			process.status = Process.ProcessStatus.WAIT_FOR_SUBSRIPTION
-		}
-		else if (params.processStatus.equals("SUBSCRIPTIONS_DONE")) {
-			process.status = Process.ProcessStatus.SUBSCRIPTIONS_DONE
-		}
-		else if (params.processStatus.equals("REJECTED")) {
-			process.status = Process.ProcessStatus.REJECTED
-			//TODO
-		}
-	}
 	
 	def getDocumentPage() {
 		log.info "I WAS TRIGGERED"
@@ -549,6 +489,33 @@ class ActivityController {
         }
         return signatures;
     }
+	
+	def _processDocumentCreation(Process process, String requestVersion)	{
+		process.signatures.each { sig ->
+			log.info "SIGNATURE NAME: " + sig.name + " PDF TEMPLATE PATH: " + sig.templatePath
+			Process.ProcessStatus newStatus;
+			
+			if ("electronical".equals(requestVersion)) {
+				newStatus = Process.ProcessStatus.WAITING
+				byte[] documentData = pdfService.fillPdfFormFromURIWithFaksymile(sig, PdfService.FontType.ARIAL)
+			}
+			else if ("paper".equals(requestVersion)) {
+				newStatus = Process.ProcessStatus.WAIT_FOR_SUBSCRIPTION_PAPER_VERSION
+				byte[] documentData = pdfService.fillPdfFormFromURIWithBlackFaksymile(sig, PdfService.FontType.ARIAL)
+			}
+			else if ("templates".equals(requestVersion)) {
+				newStatus = Process.ProcessStatus.WAIT_FOR_SUBSRIPTION
+				byte[] documentData = pdfService.fillPdfFormFromURIWithoutFaksymile(sig, PdfService.FontType.ARIAL)
+			}
+			
+			int pc = pdfService.getPageCountFromPdf(documentData)
+			DocumentFile df = new DocumentFile(name: sig.name, dateCreated: new Date(), lastUpdated: new Date(), pagesCount: pc)
+			df.content = documentData
+			df.save()
+			
+			process.status = newStatus
+		}
+	}
 
 
 }
