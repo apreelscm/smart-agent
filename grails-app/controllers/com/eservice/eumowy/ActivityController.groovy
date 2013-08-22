@@ -14,7 +14,7 @@ class ActivityController {
     def processService
     def calculatorService
     def messageSource
-	def pdfService
+    def pdfService
 
     def index() {
         redirect(action: "createProcess", params: params)
@@ -158,15 +158,14 @@ class ActivityController {
             on("back").to "chooseActivity"
             on("getCalculator").to "getCalculator"
             on("continue"){
-                Process processInstance = flow.processInstance
+                def processInstance = flow.processInstance
                 //processInstance.child = new Child(params)
 
                 processInstance.calcNumber =  flow.calcNumber
                 processInstance.client =  flow.client
 
-                processInstance.save(flush:true);
-
-                flow.processInstance = processInstance
+                //TODO zapis procesu
+              //  flow.processInstance = processInstance.save(flush:true)
             }.to "selectedPanels"
         }
 
@@ -235,22 +234,20 @@ class ActivityController {
         }
 
         selectedPanels{
-            onEntry {  ProcessCommand cmd ->
+            onEntry {
                 println "selectedPanels enterview"
-                flow.cmd = cmd
-                cmd.initialize(flow.processInstance)
+                def processInstance = flow.processInstance
+                def processCmd =  processService.getDataForPanels(processInstance)
+                flow.data = processCmd
             }
             render(view: "../createProcess/selectedPanels")
             on("back").to "chooseCalc"
-            on("continue"){
+            on("continue"){ ProcessCommand cmd ->
                 def processInstance = flow.processInstance
-                //processInstance.child = new Child(params)
-                /* http://grails.org/doc/2.2.0/guide/single.html#dataBinding
-                   http://grails.org/doc/2.2.0/ref/Controllers/bindData.html
-                */
-                //bindData(processInstance, params)
-                //processInstance.save(flush:true);
+                def processDataList = processService.getDataFromPanels(cmd)
 
+                processInstance.data = processDataList;
+                processInstance.save(flush:true);
                 flow.processInstance = processInstance
             }.to "clientSignature"
         }
@@ -285,17 +282,17 @@ class ActivityController {
                 }
             }.to "clientSignature"
             on("noaccept") {
-				flow.processInstance.status = Process.ProcessStatus.REJECTED
+                flow.processInstance.status = Process.ProcessStatus.REJECTED
             }.to "finish"
-			on("submit") {
+            on("submit") {
                 log.info "PARAMS: " + params
                 _processDocumentCreation(flow.processInstance, params.requestVersion)
                 // SEND EMAILS
                 // IF NOTES FOR COA - SEND THEM
 
                 flow.processInstance.status = Process.ProcessStatus.WAITING
-				
-			}.to "finish"
+
+            }.to "finish"
         }
 
         finish {
@@ -306,6 +303,7 @@ class ActivityController {
 
         backToStart()
     }
+
 
     /** UZUPELNIJ PODPISY SUBFLOW */
     def uzupelnijPodpisyFlow = {
@@ -318,7 +316,6 @@ class ActivityController {
             on("getCalculator").to "getCalculator"
             on("continue"){
                 Process processInstance = flow.processInstance
-
                 processInstance.calcNumber =  flow.calcNumber
                 processInstance.client =  flow.client
                 processInstance.save(flush:true);
@@ -379,27 +376,27 @@ class ActivityController {
                 flow.processInstance = processInstance
             }.to "finish"
             on("subscribe").to "clientSignature"
-			on("updateProcessStatus") {
-				if (params.processStatus.equals("WAIT_FOR_SUBSCRIPTION")) {
-					flow.processInstance.status = Process.ProcessStatus.WAIT_FOR_SUBSRIPTION
-				}
-				else if (params.processStatus.equals("SUBSCRIPTIONS_DONE")) {
-					flow.processInstance.status = Process.ProcessStatus.SUBSCRIPTIONS_DONE
-				}
-				else if (params.processStatus.equals("REJECTED")) {
-					flow.processInstance.status = Process.ProcessStatus.REJECTED
-					//TODO
-				}
-			}.to "clientSignature"
+            on("updateProcessStatus") {
+                if (params.processStatus.equals("WAIT_FOR_SUBSCRIPTION")) {
+                    flow.processInstance.status = Process.ProcessStatus.WAIT_FOR_SUBSRIPTION
+                }
+                else if (params.processStatus.equals("SUBSCRIPTIONS_DONE")) {
+                    flow.processInstance.status = Process.ProcessStatus.SUBSCRIPTIONS_DONE
+                }
+                else if (params.processStatus.equals("REJECTED")) {
+                    flow.processInstance.status = Process.ProcessStatus.REJECTED
+                    //TODO
+                }
+            }.to "clientSignature"
             on("noaccept") {
 				flow.processInstance.status = Process.ProcessStatus.REJECTED
             }.to "finish"
             on("submit") {
                 log.info "PARAMS: " + params
-				_processDocumentCreation(flow.processInstance, params.requestVersion)
-				// SEND EMAILS
-				// IF NOTES FOR COA - SEND THEM
-				
+                _processDocumentCreation(flow.processInstance, params.requestVersion)
+                // SEND EMAILS
+                // IF NOTES FOR COA - SEND THEM
+
                 flow.processInstance.status = Process.ProcessStatus.WAITING
             }.to "finish"
         }

@@ -1,7 +1,6 @@
 package com.eservice.eumowy
 import org.junit.After
 import org.junit.Before
-import org.junit.Ignore
 import org.junit.Test
 
 class  CbdServiceIntegrTests {
@@ -39,85 +38,85 @@ class  CbdServiceIntegrTests {
         assert result != null
     }
 
-    @Ignore
+    @Test
     void getAdresDaneDoWydrukuTest() {
         def result = cbdService.getAdresDaneDoWydruku(nip)
         assert result != null
     }
 
-     @Ignore
+     @Test
     void getAdresDoKorespondencjiTest() {
         def result = cbdService.getAdresDoKorespondencji(nip)
         assert result != null
     }
 
-    @Ignore
+    @Test
     void getAdresDoKorespondencjizAkceptantemTest() {
         def result = cbdService.getAdresDoKorespondencjizAkceptantem(nip)
         assert result != null
     }
 
 
-   @Ignore
+   @Test
     void getDaneAkceptantaTest() {
         def result = cbdService.getDaneAkceptanta(nip)
         assert result != null
     }
 
 
-   @Ignore
+   @Test
     void getNazwaBankuTest() {
         def result = cbdService.getNazwaBanku(nip)
         assert result != null
     }
 
 
-   @Ignore
+   @Test
     void getNumerRachunkuBankowegoTest() {
         def result = cbdService.getNumerRachunkuBankowego(nip)
         assert result != null
     }
 
 
-   @Ignore
+   @Test
     void getOsoba1UprawnionaDoPodpisaniaUmowyTest() {
         def result = cbdService.getOsoba1UprawnionaDoPodpisaniaUmowy(nip)
         assert result != null
     }
 
 
-   @Ignore
+   @Test
     void getOsoba2UprawnionaDoPodpisaniaUmowyTest() {
         def result = cbdService.getOsoba2UprawnionaDoPodpisaniaUmowy(nip)
         assert result != null
     }
 
 
-   @Ignore
+   @Test
     void getOsobaKtoraPozyskalaAkceptantaTest() {
         def result = cbdService.getOsobaKtoraPozyskalaAkceptanta(nip)
         assert result != null
     }
 
-   @Ignore
+   @Test
     void getPromocyjneObinzenieOplatGridTest() {
         def result = cbdService.getPromocyjneObinzenieOplatGrid(nip)
         assert result != null
     }
 
-   @Ignore
+   @Test
     void getOsobaDoKontaktuTest() {
         def result = cbdService.getOsobaDoKontaktu(nip)
         assert result != null
     }
 
-   @Ignore
+   @Test
     void getWykazPunktowGridTest() {
         def result = cbdService.getWykazPunktowGrid(nip)
         assert result != null
     }
 
-   @Ignore
+   @Test
     void getZakresUruchomieniaPunktyGridTest() {
         def result = cbdService.getZakresUruchomieniaPunktyGrid(nip)
         assert result != null

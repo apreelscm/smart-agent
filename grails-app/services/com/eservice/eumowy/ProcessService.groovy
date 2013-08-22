@@ -1,10 +1,17 @@
 package com.eservice.eumowy
 
+import com.eservice.eumowy.command.ProcessCommand
+import grails.util.Environment
+import org.apache.commons.lang.WordUtils
+
 import java.text.SimpleDateFormat
 
 class ProcessService {
 
     static final def DATE_FORMAT = "dd-MM-yyyy";
+
+    def panelService
+    def panelMockService
 
     def searchProcessByFilters(def params) {
         def filterObserved = params.filterObserved
@@ -82,7 +89,6 @@ class ProcessService {
         new Date(date.getTime()+days*86400000L)
     }
 
-
     /**
      * sprawdzanie, czy w eUmowy istnieje dla danego Akceptanta niezakończony Proces
      **/
@@ -98,4 +104,39 @@ class ProcessService {
         return activities?.any{it.code.equals(activityCode)};
     }
 
+    def getDataForPanels(final def process) {
+        def exclusions = ["getWyborDzialania","getLiczbaMiesiecyZwolnieniaZNajmu"]
+
+        def cmd = new ProcessCommand();
+        cmd.process = process
+        cmd.nip = process.client.nip
+
+        process.panels.each { Panel panel ->
+            String panelFunctionName = "get${WordUtils.capitalize(panel.name)}"
+            log.info("invokin ${panelFunctionName} on panelService")
+
+            if(panelFunctionName in exclusions){ return }
+
+            switch (Environment.getCurrent()) {
+                case Environment.DEVELOPMENT:
+                    panelMockService."${panelFunctionName}"(cmd)
+                    break;
+                case Environment.TEST:
+                    panelService."${panelFunctionName}"(cmd)
+                    break;
+            }
+        }
+        cmd
+    }
+
+    def getDataFromPanels(def cmd) {
+        def processDataList = [];
+        cmd.properties.each { key, value ->
+            if (!["class", "cbdService", "errors"].contains(key)) {//} && value){
+                println("${key} : ${value}");
+                processDataList.add(new ProcessData(name: key, value: value));
+            }
+        }
+        processDataList
+    }
 }

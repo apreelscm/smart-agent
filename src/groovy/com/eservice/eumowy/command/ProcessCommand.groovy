@@ -1,14 +1,13 @@
 package com.eservice.eumowy.command
-import com.eservice.eumowy.Panel
+
 import com.eservice.eumowy.Process
+
 /**
  * User: Dominik Walczak
  * Date: 20.08.13 Time: 10:22
  *
  */
 class ProcessCommand implements Serializable{
-
-    def transient cbdService
 
 //    adresacjaSeciowa
 //    adresDoKorespondencjiPunktu
@@ -46,7 +45,6 @@ class ProcessCommand implements Serializable{
 //    deklaracjeAkceptanta - FINISH
     String informacjaHandlowa
     //TODO - w pdf wykorzystujemy informacjaHandlowaTak i informacjaHandlowaNie (checkboxy)
-
 
 
 //    dodajPunkt
@@ -201,8 +199,6 @@ class ProcessCommand implements Serializable{
     Double scoringDeklaracjaFinansowaSredniObrot
     Double scoringDeklaracjaFinansowaSredniaTransakcja
 
-
-
 //    serwisEkonomiczny - FINISH
 //    serwisKomfort - FINISH
 //    serwisPrzestiz - FINISH
@@ -248,18 +244,27 @@ class ProcessCommand implements Serializable{
 
     List<PointCommand> points = [] //  points[n].someProperty
 
-    def initialize(Process process){
+    /*def initialize(Process process){
+
         this.process = process
         this.nip = process.client.nip
 
-        // pobranie danych dla wybranych paneli
-        for (Panel panel : process.panels){
+        *//* process.data.each { ProcessData field ->
+             properties.hasProperty(field.name){
+                 properties[field.name] = field.value;
+             }
+         }*//*
 
+        // pobranie danych dla wybranych paneli
+
+        process.panels.each { panel ->
+
+            def functionName = "get" + WordUtils.capitalize(panel.name);
+            println("functionName:"+functionName)
+         //   cbdService."$functionName"()
         }
+
         int i = 1
         //def adresDoKorespondencji = cbdService.getAdresDoKorespondencji(process.client.nip);
-    }
-
-
-
+    }*/
 }

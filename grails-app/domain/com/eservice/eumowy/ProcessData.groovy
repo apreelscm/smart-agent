@@ -7,8 +7,8 @@ import groovy.transform.ToString
  * Date: 20.08.13 Time: 11:47
  *
  */
-@ToString(includeNames = true,ignoreNulls = true)
-class ProcessData {
+@ToString
+class ProcessData implements Serializable{
 
     String name
     String value
@@ -18,6 +18,10 @@ class ProcessData {
     static mapping = {
         table name: "PROCESS_DATA", schema: DomainConsts.SHEMA_NAME
         id generator:'sequence', params:[sequence:DomainConsts.SHEMA_NAME+'.PROCESS_DATA_SEQ']
+    }
+
+    def afterInsert() {
+        log.info("Utworzono ProcessData [name:${name}]")
     }
 
 }

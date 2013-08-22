@@ -246,9 +246,7 @@ class BootStrap {
 
     }
 
-
     def createCBDDataForDevProfile(){
-
         def sql = new Sql(dataSource)
 
         //dodawanie pustego admina i ph
@@ -271,7 +269,6 @@ class BootStrap {
                 [312354,'ph', 'iEmqhY8YxduPVOg5Tgs9aca8M5coCILEFRmk8Q==',1, 'Jerzy',' Poniedziałek'])
 
         sql.close()
-
     }
 
     def executeSqlScript(String scriptPath){
