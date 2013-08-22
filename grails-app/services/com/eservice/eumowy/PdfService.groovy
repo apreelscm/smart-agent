@@ -76,7 +76,7 @@ class PdfService {
 		Integer pagesCount = 0
 		
 		for(DocumentFile doc : documents) {
-			log.info "Document: " + doc
+			log.info "Document: " + doc + " PageCount: " + doc.pagesCount
 			if (pageNumber >= pagesCount && pageNumber <= pagesCount + doc.pagesCount) {
 				return [document: doc, page: pageNumber - pagesCount]
 			}

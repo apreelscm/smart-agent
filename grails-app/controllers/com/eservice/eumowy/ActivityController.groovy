@@ -268,10 +268,15 @@ class ActivityController {
             }.to "finish"
             on("subscribe").to "clientSignature"
             on("updateProcessStatus") {
+				log.info params
                 if (params.processStatus.equals("WAIT_FOR_SUBSCRIPTION")) {
+					Subscription sub = Subscription.get(params.subscriptionId)
+					flow.processInstance.addToSubscriptions(sub)
                     flow.processInstance.status = Process.ProcessStatus.WAIT_FOR_SUBSRIPTION
                 }
                 else if (params.processStatus.equals("SUBSCRIPTIONS_DONE")) {
+					Subscription sub = Subscription.get(params.subscriptionId)
+					flow.processInstance.addToSubscriptions(sub)
                     flow.processInstance.status = Process.ProcessStatus.SUBSCRIPTIONS_DONE
                 }
                 else if (params.processStatus.equals("REJECTED")) {
@@ -388,7 +393,7 @@ class ActivityController {
 			}.to "clientSignature"
             on("noaccept") {
 				flow.processInstance.status = Process.ProcessStatus.REJECTED
-            }.to "clientSignature"
+            }.to "finish"
             on("submit") {
                 log.info "PARAMS: " + params
 				_processDocumentCreation(flow.processInstance, params.requestVersion)
@@ -525,9 +530,11 @@ class ActivityController {
 			totalPagesCount += pc
 			DocumentFile df = new DocumentFile(name: sig.templatePath, dateCreated: new Date(), lastUpdated: new Date(), pagesCount: pc)
 			df.setContent(new DocumentContent(content: documentData))
-			df.save()
+			df.save(flush: true)
+			log.info "DF id: " + df.id + " PageCount: " + df.pagesCount
 			process.addToDocuments(df);
 			process.status = newStatus
+			process.save(flush: true)
 		}
 		
 		return totalPagesCount

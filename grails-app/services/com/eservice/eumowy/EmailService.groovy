@@ -19,4 +19,20 @@ class EmailService {
             body( view:"/email/template/${emailTemplate.name}", model: [body: notes])
         }
     }
+	
+	def sendDocuments(List<DocumentFile> documents) {
+		def emailTemplate = EmailTemplates.findByName(EmailTemplates.EmailTemplateType.DOCUMENTS_PAPER_VERSION)
+		
+		mailService.sendMail {
+			multipart true
+			to emailTemplate.recipent
+			from emailTemplate.sender
+			subject ""
+			body( view: "/email/template/${emailTemplate.name}")
+			
+			documents.each { doc ->
+				attach doc.name, doc.content.content 
+			}
+		}
+	}
 }

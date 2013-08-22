@@ -9,4 +9,8 @@ class SubscriptionService {
 	Subscription getLast() {
 		Subscription.last()
 	}
+	
+	def getFileName(name, surname, subid) {
+		return "sign-" + name + "-" + surname + "-" + subid + ".png"
+	}
 }

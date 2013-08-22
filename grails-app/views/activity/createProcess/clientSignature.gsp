@@ -31,7 +31,7 @@
 	<r:script>
 		var updateSubscriptionStatusCount = 0;
 		var isSubscriptionDone = {};
-		function updateSubscriptionStatus(status, linkid) {
+		function updateSubscriptionStatus(status, linkid, subId) {
 			if (status == "OK") {
 				updateSubscriptionStatusCount++;
 
@@ -39,11 +39,11 @@
 				isSubscriptionDone[linkid] = true;
 				
 				if (updateSubscriptionStatusCount == 1) {
-		    		jQuery.post($(location).attr("href"), {_eventId_updateProcessStatus: "", processStatus: "WAIT_FOR_SUBSCRIPTION"}, function(data){});
+		    		jQuery.post($(location).attr("href"), {_eventId_updateProcessStatus: "", processStatus: "WAIT_FOR_SUBSCRIPTION", subscriptionId: subId}, function(data){});
 				}
 				
 				if (updateSubscriptionStatusCount == 2) { // JUST FOR NOW IT's 2! CHANGE IT!
-                	jQuery.post($(location).attr("href"), {_eventId_updateProcessStatus: "", processStatus: "SUBSCRIPTIONS_DONE"}, function(data){});
+                	jQuery.post($(location).attr("href"), {_eventId_updateProcessStatus: "", processStatus: "SUBSCRIPTIONS_DONE", subscriptionId: subId}, function(data){});
 				}
 			}
 		}
@@ -52,6 +52,7 @@
 			var documentPages = [];
 			
 			function refreshPdfPageView(pageNum, pid) {
+				console.log("PageNum: " + pageNum + " PID: " + pid)
 				if (documentPages[pageNum] == null || documentPages[pageNum] == undefined) {
 			     	jQuery.get("/eumowy/activity/getDocumentPage", {processId: pid, pageNumber: pageNum}, function(data) {
 			     		jQuery("#pdfBox-content-loading").hide();

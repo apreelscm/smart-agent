@@ -1,6 +1,6 @@
 package com.eservice.eumowy
 
-class Subscription {
+class Subscription implements Serializable {
 
     String content;
 	

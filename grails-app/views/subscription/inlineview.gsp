@@ -15,12 +15,13 @@
       	e.preventDefault();
       	
       	jQuery.post("/eumowy/subscription/saveSubscription", $(this).serialize(), function(data) {
-      		if (data == "OK") {
+      		var result = JSON.parse(data);
+      		if (result.status == "OK") {
       			jQuery("#dialog").html('<h2 class="align-center">Pomyślnie zapisano podpis!</h2>');
-      			updateSubscriptionStatus("OK", "${params.linkid}");
+      			updateSubscriptionStatus("OK", "${params.linkid}", result.subscriptionId);
       		}
       		else {
-      			jQuery("#dialog").html(data);
+      			jQuery("#dialog").html(result.status);
       		}
      		
       	});
@@ -47,7 +48,7 @@
 
         <div class="sig sigWrapper" style="margin-top: 20px">
             <div class="typed"></div>
-            <canvas id="pad" class="pad" width="600" height="250"></canvas>
+            <canvas id="pad" class="pad" width="700" height="300"></canvas>
             <input type="hidden" name="content" class="output">
         </div>
 
