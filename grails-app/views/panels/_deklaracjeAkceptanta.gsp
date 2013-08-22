@@ -9,8 +9,8 @@
                 <ul class="table-list centre">
                     <li>
                         <span>
-                            <span class="align-left"><label><input type="radio" name="financialDeclaration"/> <g:message code="panel.agree"/></label></span>
-                            <span class="align-left"><label><input type="radio" name="financialDeclaration"/> <g:message code="panel.dont.agree"/></label></span>
+                            <span class="align-left"><label><input type="radio" name="informacjaHandlowa"/> <g:message code="panel.agree"/></label></span>
+                            <span class="align-left"><label><input type="radio" name="informacjaHandlowa"/> <g:message code="panel.dont.agree"/></label></span>
                         </span>
                     </li>
                 </ul>

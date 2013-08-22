@@ -5,9 +5,9 @@
             <ul class="table-list centre">
                 <li>
                     <span><g:message code="panel.aggrement.place"/>: </span>
-                    <span><g:textField name="aggrementPlace"/></span>
+                    <span><g:textField name="miejsceUmowy"/></span>
                     <span><g:message code="panel.aggrement.date"/>: </span>
-                    <span><g:textField name="aggrementDate" style="width: 120px;" readonly="true"/></span>
+                    <span><g:textField name="dataUmowy" style="width: 120px;" readonly="true"/></span>
                 </li>
             </ul>
         </div>

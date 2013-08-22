@@ -85,7 +85,7 @@
             //                expanded: true if expanding; false if collapsing
             //
             // If un an unknown value is specified, the plug-in reverts to "css".
-            'hideMode': 'fadeToggle',
+            'hideMode': 'basic',
 
             // searchMode
             // -----------
@@ -327,25 +327,44 @@
 
                 var checkboxes = targets.find("input:checkbox");
 
-                $j.each(checkboxes,function(index, value){
-                    value.addEventListener("change", changeActivity, false);
+                $.each(checkboxes,function(index, value){
+                    value.addEventListener("change", changeActivityEvent, false);
                 })
 
             });
 
-            $('#nowaUmowaCB').change(changeActivity);
-            $('#poprawDane').change(changeActivity);
-            $('#odrzucDokumenty').change(changeActivity);
+            $('#nowaUmowaCB').change(changeActivityEvent);
+            $('#poprawDane').change(changeActivityEvent);
+            $('#odrzucDokumenty').change(changeActivityEvent);
+
+            $('input:checkbox[data-selected="true"]').each(function( index ) {
+                $(this).attr('checked', true);
+                changeActivity(this);
+                var expander = $(this).closest( ".expendable").find(".expander")
+                if(!$(expander).hasClass("expanded")){
+                    toggleExpander(expander)
+                }
+             })
 
         };
 
+        function toggleExpander(expanderTmp){
+            var targetSelector1 = expanderTmp.attr("data-expander-target") || that.settings.defaultTarget;
+            var searchMode1 = expanderTmp.attr("data-expander-target-search") || that.settings.defaultSearchMode;
+            var targets1 = that.findTargets(expanderTmp, searchMode1, targetSelector1);
+            that.toggle(expanderTmp, targets1)
+        }
 
-        function changeActivity (e) {
-            var target = e.target;
+
+        function changeActivityEvent (e) {
+            changeActivity( e.target);
+        }
+
+        function changeActivity (target) {
             var elements = restrictionsMap[target.id]
 
             if(target.checked){
-                $j.each(elements,function(index, value){
+                $.each(elements,function(index, value){
                     if(restrictions.indexOf(value) == -1){
                         disableItem(value)
                     }
@@ -354,7 +373,7 @@
 
             }
             else{
-                $j.each(elements,function(index, value){
+                $.each(elements,function(index, value){
                     var itemIndex = restrictions.indexOf(value);
                     if(itemIndex >= 0){
                         restrictions.splice(itemIndex,1);
@@ -368,7 +387,7 @@
         }
 
         function disableItem (itemId) {
-            var item = $j('#'+itemId);
+            var item = $('#'+itemId);
             item.addClass("disabled");
 
             var disabledExpander = item.children("a[class*='expander']:first");
@@ -383,13 +402,13 @@
 
                 var checkboxes = item.find("input:checkbox");//.removeAttr("checked","");
 
-                $j.each(checkboxes,function(index, value){
+                $.each(checkboxes,function(index, value){
 
                     if($(value).attr('checked') !== undefined){
 
                         var elements = restrictionsMap[value.id]
 
-                        $j.each(elements,function(index, value){
+                        $.each(elements,function(index, value){
                             var itemIndex = restrictions.indexOf(value);
                             if(itemIndex >= 0){
                                 restrictions.splice(itemIndex,1);
@@ -402,7 +421,7 @@
                         $(value).removeAttr("checked");
                     }
 
-                    value.addEventListener("change", changeActivity, false);
+                    value.addEventListener("change", changeActivityEvent, false);
                 })
 
 
@@ -410,7 +429,7 @@
         }
 
         function enableItem (itemId) {
-            var item = $j('#'+itemId);
+            var item = $('#'+itemId);
             item.removeClass("disabled");
         }
     }
@@ -427,11 +446,9 @@
         return this;
     };
 
-    var $j = jQuery.noConflict();
 
-    $j(document).ready(function () {
-        $j('.expander').simpleexpand();
+    $(document).ready(function () {
+        $('.expander').simpleexpand();
     });
-
 
 }(jQuery));

@@ -12,6 +12,7 @@ create table EUMOWY.DOCUMENT_CONTENT (id number(19,0) not null, version number(1
 create table EUMOWY.EMAIL_TEMPLATES (id number(19,0) not null, version number(19,0) not null, name varchar2(255 char), recipent varchar2(255 char), sender varchar2(255 char), primary key (id));
 create table EUMOWY.PANEL (id number(19,0) not null, version number(19,0) not null, name varchar2(255 char) unique, order_no number(10,0), primary key (id));
 create table EUMOWY.PROCESS (id number(19,0) not null, version number(19,0) not null, calc_number varchar2(255 char), client_id number(19,0), date_created timestamp not null, last_updated timestamp not null, ph_first_name varchar2(255 char), ph_number varchar2(255 char), ph_surname varchar2(255 char), sale_section varchar2(255 char), status varchar2(255 char), primary key (id));
+create table EUMOWY.PROCESS_DATA (id number(19,0) not null, version number(19,0) not null, name varchar2(255 char), process_id number(19,0), value varchar2(255 char), data_idx number(10,0), primary key (id));
 create table EUMOWY.SIGNATURE (id number(19,0) not null, version number(19,0) not null, active number(1,0), management_subscription1 varchar(255), management_subscription2 varchar(255), subscription_page_number integer, subscriptionx integer, subscriptionxscale integer, subscriptiony integer, subscriptionyscale integer, template_path varchar(255), name varchar2(255 char) unique, primary key (id));
 create table EUMOWY.SIGNATURE_PANEL (id number(19,0) not null, version number(19,0) not null, panel_id number(19,0), signature_id number(19,0), primary key (id));
 create table EUMOWY.SUBSCRIPTION (id number(19,0) not null, version number(19,0) not null, content long, primary key (id));
@@ -29,6 +30,7 @@ alter table EUMOWY.CALCFIELD_SIGNATURE add constraint FK5E9E7C7EED846B31 foreign
 alter table EUMOWY.DOCUMENT add constraint FK6202C11BC7962D91 foreign key (process_id) references EUMOWY.PROCESS;
 alter table EUMOWY.DOCUMENT_CONTENT add constraint FK6AFBDD3553CCC01F foreign key (document_id) references EUMOWY.DOCUMENT;
 alter table EUMOWY.PROCESS add constraint FK1858AA4FD030B0C3 foreign key (client_id) references EUMOWY.CLIENT;
+alter table EUMOWY.PROCESS_DATA add constraint FK2AB0F9AC7962D91 foreign key (process_id) references EUMOWY.PROCESS;
 alter table EUMOWY.SIGNATURE_PANEL add constraint FK688D4B7D84182B31 foreign key (panel_id) references EUMOWY.PANEL;
 alter table EUMOWY.SIGNATURE_PANEL add constraint FK688D4B7DED846B31 foreign key (signature_id) references EUMOWY.SIGNATURE;
 alter table EUMOWY.process_activity add constraint FKD3BAD0D9C1A12403 foreign key (activity_id) references EUMOWY.ACTIVITY;
@@ -49,6 +51,7 @@ create sequence EUMOWY.DOCUMENT_CONTENT_SEQ;
 create sequence EUMOWY.EMAIL_TEMPLATES_SEQ;
 create sequence EUMOWY.PANEL_SEQ;
 create sequence EUMOWY.PROCESS_SEQ;
+create sequence EUMOWY.PROCESS_DATA_SEQ;
 create sequence EUMOWY.SIGNATURE_PANEL_SEQ;
 create sequence EUMOWY.SIGNATURE_SEQ;
 create sequence EUMOWY.SUBSCRIPTION_SEQ;

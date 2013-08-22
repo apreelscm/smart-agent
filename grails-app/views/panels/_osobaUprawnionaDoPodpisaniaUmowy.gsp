@@ -6,33 +6,33 @@
                 <li>
                     <span>
                         <span>
-                            <select name="firstAcceptorTitle">
+                            <select name="reprezentant1Tytul">
                                 <option value="pan">Pan</option>
                                 <option value="pani">Pani</option>
                             </select>
                         </span>
                         <span><g:message code="panel.first.name"/>: </span>
-                        <span><g:textField name="firstAcceptorFirstName"/></span>
+                        <span><g:textField name="reprezentant1Imie"/></span>
                     </span>
                     <span>
                         <span><g:message code="panel.last.name"/>: </span>
-                        <span><g:textField name="firstAcceptorLastName"/></span>
+                        <span><g:textField name="reprezentant1Nazwisko"/></span>
                     </span>
                 </li>
                 <li>
                     <span>
                         <span>
-                            <select name="secondAcceptorTitle">
+                            <select name="reprezentant2Tytul">
                                 <option value="pan">Pan</option>
                                 <option value="pani">Pani</option>
                             </select>
                         </span>
                         <span><g:message code="panel.first.name"/>: </span>
-                        <span><g:textField name="secondAcceptorFirstName"/></span>
+                        <span><g:textField name="reprezentant2Imie"/></span>
                     </span>
                     <span>
                         <span><g:message code="panel.last.name"/>: </span>
-                        <span><g:textField name="secondAcceptorLastName"/></span>
+                        <span><g:textField name="reprezentant2Nazwisko"/></span>
                     </span>
                 </li>
             </ul>

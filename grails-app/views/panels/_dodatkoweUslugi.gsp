@@ -5,42 +5,42 @@
             <table>
                 <tr>
                     <td><g:message code="panel.payment.daily.transaction.report"/></td>
-                    <td><g:textField name="a"/></td>
+                    <td><g:textField name="oplataZaDzienneZestawienieTransakcji"/></td>
                     <td><g:message code="panel.polish.currency"/></td>
                 </tr>
                 <tr>
                     <td><g:message code="panel.payment.monthly.transaction.report"/></td>
-                    <td><g:textField name="b"/></td>
+                    <td><g:textField name="oplataZaMiesieczneZestawienieTransakcji"/></td>
                     <td><g:message code="panel.polish.currency"/></td>
                 </tr>
                 <tr>
                     <td><g:message code="panel.payment.confirmation.payment"/></td>
-                    <td><g:textField name="c"/></td>
+                    <td><g:textField name="oplataZaPotwierdzenieWykonaniaPrzelewu"/></td>
                     <td><g:message code="panel.polish.currency"/></td>
                 </tr>
                 <tr>
                     <td><g:message code="panel.payment.paper"/></td>
-                    <td><g:textField name="d"/></td>
+                    <td><g:textField name="oplataZaDostarczeniePapieru"/></td>
                     <td><g:message code="panel.polish.currency"/></td>
                 </tr>
                 <tr>
                     <td><g:message code="panel.payment.graphics"/></td>
-                    <td><g:textField name="e"/></td>
+                    <td><g:textField name="oplataZaZmianeGrafiki"/></td>
                     <td><g:message code="panel.polish.currency"/></td>
                 </tr>
                 <tr>
                     <td><g:message code="panel.payment.instalation"/></td>
-                    <td><g:textField name="f"/></td>
+                    <td><g:textField name="oplataZaInstalacjePOS"/></td>
                     <td><g:message code="panel.polish.currency"/></td>
                 </tr>
                 <tr>
                     <td><g:message code="panel.payment.gprs"/></td>
-                    <td><g:textField name="g"/></td>
+                    <td><g:textField name="oplataZaInstalacjeGPRS"/></td>
                     <td><g:message code="panel.polish.currency"/></td>
                 </tr>
                 <tr>
                     <td><g:message code="panel.payment.foreing.currency"/></td>
-                    <td><g:textField name="h"/></td>
+                    <td><g:textField name="oplataZaUruchomienieWalutyObcej"/></td>
                     <td><g:message code="panel.polish.currency"/></td>
                 </tr>
             </table>

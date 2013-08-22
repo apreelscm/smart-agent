@@ -1162,6 +1162,10 @@ input:invalid:focus, select:invalid:focus, textarea:invalid:focus {
     pointer-events: none;
 }
 
+.disabled input{
+    color: #a7a7a7;
+}
+
 .disabled a{
     color: #a7a7a7;
     text-decoration-line: line-through;

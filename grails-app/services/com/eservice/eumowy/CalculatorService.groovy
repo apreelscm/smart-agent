@@ -1,10 +1,14 @@
 package com.eservice.eumowy
 
+import grails.util.Environment
+
 class CalculatorService {
 
     static transactional = false
 
     def isCalcValid(def calc, def signatures) {
+
+        if(!Environment.isDevelopmentMode()){ return true }
 
         Set signaturesCalcNames = []
         signatures.each{signature ->
