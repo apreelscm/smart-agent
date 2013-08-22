@@ -113,7 +113,9 @@ class ActivityController {
         /** final operations and process save*/
         finish{
             action{
-                flow.processInstance.save()
+                def processInstance = flow.processInstance
+                processInstance.save(flush:true)
+                flow.processInstance = processInstance
             }
             on("success").to "newFlow"
         }
@@ -146,7 +148,6 @@ class ActivityController {
                 TreeSet activePanels = _getActivePanels(signatures)
                 processInstance.panels = activePanels.toList();
 
-
                 flow.processInstance = processInstance
             }.to "chooseCalc"
             on("back").to "backToStart"
@@ -164,8 +165,7 @@ class ActivityController {
                 processInstance.calcNumber =  flow.calcNumber
                 processInstance.client =  flow.client
 
-                //TODO zapis procesu
-              //  flow.processInstance = processInstance.save(flush:true)
+                flow.processInstance = processInstance.save()
             }.to "selectedPanels"
         }
 
@@ -178,11 +178,12 @@ class ActivityController {
 
                 def processInstance = flow.processInstance
 
-                if(!clientService.isClientNipValid(params.nip)){
+                if(!clientService.isClientNipValid(flow.nip)){
                     flash.nipErrorMessage= message(code: 'GetCalculatorCommand.nip.validator.invalid');
                     return error();
                 }
 
+                println(" findClientIdByNip.nip:"+ flow.nip)
                 def client = cbdService.findClientIdByNip(flow.nip);
 
                 if(clientService.clientExists(client)){
@@ -236,26 +237,39 @@ class ActivityController {
         selectedPanels{
             onEntry {
                 println "selectedPanels enterview"
-                def processInstance = flow.processInstance
+                def processInstance = flow.processInstance;
                 def processCmd =  processService.getDataForPanels(processInstance)
+                log.info("notes:"+processCmd.notes);
                 flow.data = processCmd
             }
             render(view: "../createProcess/selectedPanels")
             on("back").to "chooseCalc"
             on("continue"){ ProcessCommand cmd ->
+
+                if(cmd?.hasErrors()){
+                    log.info(params)
+                    return error();
+                }
+
                 def processInstance = flow.processInstance
                 def processDataList = processService.getDataFromPanels(cmd)
 
-                processInstance.data = processDataList;
-                processInstance.save(flush:true);
+                //TODO optymalizacja
+                processInstance.processData?.clear()
+                processDataList.each { data ->
+                    processInstance.addToProcessData(data)
+                    processInstance.discard();
+                }
+
+                processInstance.save();
                 flow.processInstance = processInstance
             }.to "clientSignature"
         }
 
         clientSignature{
-			onEntry {
-				flow.totalPagesCount = _processDocumentCreation(flow.processInstance, "electronical")
-			}
+            onEntry {
+                flow.totalPagesCount = _processDocumentCreation(flow.processInstance, "electronical")
+            }
             render(view: "../createProcess/clientSignature", model: [processInstance: flow.processInstance, totalPagesCount: flow.totalPagesCount])
             on("back").to "selectedPanels"
             on("continue"){
@@ -265,15 +279,15 @@ class ActivityController {
             }.to "finish"
             on("subscribe").to "clientSignature"
             on("updateProcessStatus") {
-				log.info params
+                log.info params
                 if (params.processStatus.equals("WAIT_FOR_SUBSCRIPTION")) {
-					Subscription sub = Subscription.get(params.subscriptionId)
-					flow.processInstance.addToSubscriptions(sub)
+                    Subscription sub = Subscription.get(params.subscriptionId)
+                    flow.processInstance.addToSubscriptions(sub)
                     flow.processInstance.status = Process.ProcessStatus.WAIT_FOR_SUBSRIPTION
                 }
                 else if (params.processStatus.equals("SUBSCRIPTIONS_DONE")) {
-					Subscription sub = Subscription.get(params.subscriptionId)
-					flow.processInstance.addToSubscriptions(sub)
+                    Subscription sub = Subscription.get(params.subscriptionId)
+                    flow.processInstance.addToSubscriptions(sub)
                     flow.processInstance.status = Process.ProcessStatus.SUBSCRIPTIONS_DONE
                 }
                 else if (params.processStatus.equals("REJECTED")) {
@@ -300,10 +314,8 @@ class ActivityController {
                 process {flow.processInstance}
             }
         }
-
         backToStart()
     }
-
 
     /** UZUPELNIJ PODPISY SUBFLOW */
     def uzupelnijPodpisyFlow = {
@@ -318,7 +330,7 @@ class ActivityController {
                 Process processInstance = flow.processInstance
                 processInstance.calcNumber =  flow.calcNumber
                 processInstance.client =  flow.client
-                processInstance.save(flush:true);
+                processInstance.save();
 
                 flow.processInstance = processInstance
             }.to "selectedPanels"
@@ -389,7 +401,7 @@ class ActivityController {
                 }
             }.to "clientSignature"
             on("noaccept") {
-				flow.processInstance.status = Process.ProcessStatus.REJECTED
+                flow.processInstance.status = Process.ProcessStatus.REJECTED
             }.to "finish"
             on("submit") {
                 log.info "PARAMS: " + params
@@ -436,12 +448,12 @@ class ActivityController {
     def getAttachmentList(){
         render(template:"../attachment/list", model:[files:attachmentService.getListByProcessId(params.processId), processId: params.processId]);
     }
-	
-	def getDocumentPage() {
-		def process = Process.get(Integer.valueOf(params.processId));
-		String path = pdfService.generateImageFromPDFDocumentFile(process.documents, params.processId as String, Integer.valueOf(params.pageNumber) as Integer);
-		render(text: path)
-	}
+
+    def getDocumentPage() {
+        def process = Process.get(Integer.valueOf(params.processId));
+        String path = pdfService.generateImageFromPDFDocumentFile(process.documents, params.processId as String, Integer.valueOf(params.pageNumber) as Integer);
+        render(text: path)
+    }
 
     def testSql(){
         /*   def result = cbdService.findCalculatorByNip("1570321560")
@@ -503,39 +515,39 @@ class ActivityController {
         }
         return signatures;
     }
-	
-	def _processDocumentCreation(Process process, String requestVersion)	{
-		int totalPagesCount = 0
-		process.signatures.each { sig ->
-			log.info "SIGNATURE NAME: " + sig.name + " PDF TEMPLATE PATH: " + sig.templatePath
-			Process.ProcessStatus newStatus;
-			byte[] documentData = null;
-			if ("electronical".equals(requestVersion)) {
-				newStatus = Process.ProcessStatus.WAITING
-				documentData = pdfService.fillPdfFormFromURIWithFaksymile(sig, PdfService.FontType.ARIAL)
-			}
-			else if ("paper".equals(requestVersion)) {
-				newStatus = Process.ProcessStatus.WAIT_FOR_SUBSCRIPTION_PAPER_VERSION
-				documentData = pdfService.fillPdfFormFromURIWithBlackFaksymile(sig, PdfService.FontType.ARIAL)
-			}
-			else if ("templates".equals(requestVersion)) {
-				newStatus = Process.ProcessStatus.WAIT_FOR_SUBSRIPTION
-				documentData = pdfService.fillPdfFormFromURIWithoutFaksymile(sig, PdfService.FontType.ARIAL)
-			}
-			
-			int pc = pdfService.getPageCountFromPdf(documentData)
-			totalPagesCount += pc
-			DocumentFile df = new DocumentFile(name: sig.templatePath, dateCreated: new Date(), lastUpdated: new Date(), pagesCount: pc)
-			df.setContent(new DocumentContent(content: documentData))
-			df.save(flush: true)
-			log.info "DF id: " + df.id + " PageCount: " + df.pagesCount
-			process.addToDocuments(df);
-			process.status = newStatus
-			process.save(flush: true)
-		}
-		
-		return totalPagesCount
-	}
+
+    def _processDocumentCreation(Process process, String requestVersion)	{
+        int totalPagesCount = 0
+        process.signatures.each { sig ->
+            log.info "SIGNATURE NAME: " + sig.name + " PDF TEMPLATE PATH: " + sig.templatePath
+            Process.ProcessStatus newStatus;
+            byte[] documentData = null;
+            if ("electronical".equals(requestVersion)) {
+                newStatus = Process.ProcessStatus.WAITING
+                documentData = pdfService.fillPdfFormFromURIWithFaksymile(sig, PdfService.FontType.ARIAL)
+            }
+            else if ("paper".equals(requestVersion)) {
+                newStatus = Process.ProcessStatus.WAIT_FOR_SUBSCRIPTION_PAPER_VERSION
+                documentData = pdfService.fillPdfFormFromURIWithBlackFaksymile(sig, PdfService.FontType.ARIAL)
+            }
+            else if ("templates".equals(requestVersion)) {
+                newStatus = Process.ProcessStatus.WAIT_FOR_SUBSRIPTION
+                documentData = pdfService.fillPdfFormFromURIWithoutFaksymile(sig, PdfService.FontType.ARIAL)
+            }
+
+            int pc = pdfService.getPageCountFromPdf(documentData)
+            totalPagesCount += pc
+            DocumentFile df = new DocumentFile(name: sig.templatePath, dateCreated: new Date(), lastUpdated: new Date(), pagesCount: pc)
+            df.setContent(new DocumentContent(content: documentData))
+            df.save(flush: true)
+            log.info "DF id: " + df.id + " PageCount: " + df.pagesCount
+            process.addToDocuments(df);
+            process.status = newStatus
+            process.save(flush: true)
+        }
+
+        return totalPagesCount
+    }
 
 
 }

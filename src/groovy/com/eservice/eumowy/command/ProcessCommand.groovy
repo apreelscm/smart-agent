@@ -1,12 +1,15 @@
 package com.eservice.eumowy.command
 
 import com.eservice.eumowy.Process
+import grails.validation.Validateable
 
 /**
  * User: Dominik Walczak
  * Date: 20.08.13 Time: 10:22
  *
  */
+
+@Validateable
 class ProcessCommand implements Serializable{
 
 //    adresacjaSeciowa
@@ -239,10 +242,15 @@ class ProcessCommand implements Serializable{
 //    liczbaMiesiecyZwolnieniaZNajmu
 
     String nip
+    String notes
 
     transient Process process
 
     List<PointCommand> points = [] //  points[n].someProperty
+
+    static constraints = {
+        notes(nullable: false, blank: true)
+    }
 
     /*def initialize(Process process){
 

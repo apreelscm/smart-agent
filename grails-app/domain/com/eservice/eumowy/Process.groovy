@@ -28,8 +28,7 @@ class Process implements Serializable {
     List<Signature> signatures
     List<Panel> panels
     List<Subscription> subscriptions
-    List<ProcessData> data
-
+    List<ProcessData> processData
 
     String getStringId() {
         return String.format('%06d',this.id)
@@ -47,7 +46,7 @@ class Process implements Serializable {
             activities:Activity,
             signatures:Signature,
             subscriptions:Subscription,
-            data : ProcessData
+            processData:ProcessData,
     ]
 
     static constraints = {}
@@ -60,7 +59,7 @@ class Process implements Serializable {
         subscriptions cascade:"all-delete-orphan"
         attachments cascade:"all-delete-orphan"
         documents cascade:"all-delete-orphan"
-        data cascade:"all-delete-orphan"
+        processData cascade:"all-delete-orphan"
     }
 
 

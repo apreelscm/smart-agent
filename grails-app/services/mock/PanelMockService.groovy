@@ -180,7 +180,7 @@ class PanelMockService {
     }
 
     def getUwagi(ProcessCommand cmd) {
-
+        cmd.notes = "";
     }
 
     def getWykazPunktowAkceptujacychKartyPlatnicze(ProcessCommand cmd) {

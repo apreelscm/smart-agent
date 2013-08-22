@@ -20,6 +20,7 @@ grant select, insert, update, delete on sec_role to EUMOWY_APP;
 grant select, insert, update, delete on sec_user to EUMOWY_APP;
 grant select, insert, update, delete on sec_user_sec_role to EUMOWY_APP;
 grant select, insert, update, delete on LOGS to EUMOWY_APP;
+grant select, insert, update, delete on APP_PARAMETERS to EUMOWY_APP;
 
 grant select on  dual to EUMOWY_APP
 grant select on  ACTIVITY_SEQ to EUMOWY_APP;
@@ -37,7 +38,7 @@ grant select on  PROCESS_SEQ to EUMOWY_APP;
 grant select on  PROCESS_DATA_SEQ to EUMOWY_APP;
 grant select on  SIGNATURE_PANEL_SEQ to EUMOWY_APP;
 grant select on  SIGNATURE_SEQ to EUMOWY_APP;
-grant select on  SUBSCRIPTION_SEQ to EUMOWY_APP;
+grant select on  DOCUMENT_CONTENT_SEQ to EUMOWY_APP;
 
 grant select on mapowaniekalkulatora to EUMOWY_APP;
 grant execute on GetKalkulatorSerwis to EUMOWY_APP;
