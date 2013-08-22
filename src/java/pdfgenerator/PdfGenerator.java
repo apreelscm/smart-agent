@@ -3,8 +3,6 @@ package pdfgenerator;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -82,6 +80,7 @@ public class PdfGenerator {
 			} catch (Exception e) {
 				url = new File(urlTemplatePath).toURI().toURL();
 			}
+			LOG.info("URL to PDF file: " + url);
 			templateReader = new PdfReader(url);
 			stamp = new PdfStamper(templateReader, baos);
 			AcroFields form = stamp.getAcroFields();
@@ -151,10 +150,10 @@ public class PdfGenerator {
 
 
 		} catch (DocumentException e) {
-			throw new RuntimeException(e);
+			//throw new RuntimeException(e);
 		} 
-			catch (IOException e) {
-			throw new RuntimeException(e);
+		catch (IOException e) {
+			//throw new RuntimeException(e);
 		}
 		finally {
 			if (stamp != null){

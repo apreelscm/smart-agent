@@ -248,7 +248,10 @@ class ActivityController {
         }
 
         clientSignature{
-            render(view: "../createProcess/clientSignature")
+			onEntry {
+				flow.totalPagesCount = _processDocumentCreation(flow.processInstance, "electronical")
+			}
+            render(view: "../createProcess/clientSignature", model: [processInstance: flow.processInstance, totalPagesCount: flow.totalPagesCount])
             on("back").to "selectedPanels"
             on("continue"){
                 def processInstance = flow.processInstance
@@ -423,10 +426,8 @@ class ActivityController {
     }
 	
 	def getDocumentPage() {
-		log.info "I WAS TRIGGERED"
 		def process = Process.get(Integer.valueOf(params.processId));
-		
-		String path = pdfService.generateImagesFromPDF(process.documents, params.processId, Integer.valueOf(params.pageNumber));
+		String path = pdfService.generateImageFromPDFDocumentFile(process.documents, params.processId as String, Integer.valueOf(params.pageNumber) as Integer);
 		render(text: path)
 	}
 
@@ -491,6 +492,7 @@ class ActivityController {
     }
 	
 	def _processDocumentCreation(Process process, String requestVersion)	{
+		int totalPagesCount = 0
 		process.signatures.each { sig ->
 			log.info "SIGNATURE NAME: " + sig.name + " PDF TEMPLATE PATH: " + sig.templatePath
 			Process.ProcessStatus newStatus;
@@ -509,12 +511,15 @@ class ActivityController {
 			}
 			
 			int pc = pdfService.getPageCountFromPdf(documentData)
-			DocumentFile df = new DocumentFile(name: sig.name, dateCreated: new Date(), lastUpdated: new Date(), pagesCount: pc)
-			df.content = new DocumentContent(content: documentData)
+			totalPagesCount += pc
+			DocumentFile df = new DocumentFile(name: sig.templatePath, dateCreated: new Date(), lastUpdated: new Date(), pagesCount: pc)
+			df.setContent(new DocumentContent(content: documentData))
 			df.save()
-			
+			process.addToDocuments(df);
 			process.status = newStatus
 		}
+		
+		return totalPagesCount
 	}
 
 

@@ -19,9 +19,19 @@ class PdfService {
 	
 	ApplicationContext applicationContext
 	
-	def generateImageFromPDF(List<DocumentFile> documents, String processId, Integer pageNumber) {
+	def generateImageFromPDFDocumentFile(List<DocumentFile> documents, String processId, Integer pageNumber) {
+		String result = ""
+		log.info documents
 		def data = getDocumentAndPageCountFromGlobalPageNumber(documents, pageNumber)
-		return generateImageFromPDF(data.document.content, data.document.name, processId, data.page)
+		if (data.document != null) {
+			result = generateImageFromPDF(data.document.content.content, data.document.name, processId, data.page)
+		}
+		else {
+			log.warn "generateImageFromPDFDocumentFile - document == null"
+			result = ""
+		}
+		
+		return result
 	}
 	
 	def generateImageFromPDF(byte[] pdf, String pdfName, String processId, Integer pageNumber) {
@@ -29,7 +39,7 @@ class PdfService {
 		ByteArrayInputStream bis = new ByteArrayInputStream(pdf)
 		document = PDDocument.load(bis)
 		int resolution = 300
-		
+		log.info document
 		PDFImageWriter imageWriter = new PDFImageWriter()
 		
 		boolean success = imageWriter.writeImage(document, "png", "",
@@ -39,7 +49,9 @@ class PdfService {
 			log.error "No writer found for PNG image format"
 		}
 		
-		return new File(appParametersService.getPdfImagePath()+pdfName+"-"+processId+"-"+pageNumber).toURI().toURL().toString()
+		document.close()
+		
+		return appParametersService.getPdfImageUri()+pdfName+"-"+processId+"-"+pageNumber+".png"
 	}
 	
 	def generateImageFromPDF(String pdfPath, String pdfName, String processId, Integer pageNumber) {
@@ -55,27 +67,41 @@ class PdfService {
 			log.error "No writer found for PNG image format"
 		}
 		
-		return new File(appParametersService.getPdfImagePath()+pdfName+"-"+processId+"-"+pageNumber).toURI().toURL().toString()
+		document.close()
+		
+		return appParametersService.getPdfImageUri()+pdfName+"-"+processId+"-"+pageNumber+".png"
 	}
 	
 	def getDocumentAndPageCountFromGlobalPageNumber(List<DocumentFile> documents, Integer pageNumber) {
 		Integer pagesCount = 0
 		
 		for(DocumentFile doc : documents) {
+			log.info "Document: " + doc
 			if (pageNumber >= pagesCount && pageNumber <= pagesCount + doc.pagesCount) {
 				return [document: doc, page: pageNumber - pagesCount]
 			}
 				
 			pagesCount += doc.pagesCount		
 		}
+		
+		return [document: null, page: 0]
 	}
 	
 	def getPageCountFromPdf(byte[] pdf) {
-		PDDocument document = null
-		ByteArrayInputStream bis = new ByteArrayInputStream(pdf)
-		document = PDDocument.load(bis)
+		int numberOfPages = 0
+		try {
+			PDDocument document = null
+			ByteArrayInputStream bis = new ByteArrayInputStream(pdf)
+			document = PDDocument.load(bis)
+			numberOfPages = document.getNumberOfPages()
+			document.close()
+		}
+		catch (Exception e) {
+			log.warn "getPageCountFromPdf - Error while loading PDF file from byte array"
+			e.printStackTrace()
+		}
 		
-		return document.getNumberOfPages()
+		return numberOfPages
 	}
 	
 	private String getFont(FontType fontType) {
@@ -115,8 +141,9 @@ class PdfService {
 		
 		Map<String,String[]> dataMap = new HashMap<String, String[]>()
 		
-		dataMap.put("managementSubscription1", [new File(subscriptionsPath+sig.managementSubscription1).toURI().toURL(), "", "signature", sig.subscriptionPageNumber, sig.subscriptionX, sig.subscriptionY, sig.subscriptionXScale, sig.subscriptionYScale] as String[])
-		dataMap.put("managementSubscription2", [new File(subscriptionsPath+sig.managementSubscription2).toURI().toURL(), "", "signature", sig.subscriptionPageNumber, sig.subscriptionX+subscriptionDeltaX, sig.subscriptionY+subscriptionDeltaY, sig.subscriptionXScale, sig.subscriptionYScale] as String[])
+		dataMap.put("managementSubscription1", [new File(subscriptionsPath+sig.managementSubscription1).toURI().toURL(), "", "signature", sig.subscriptionPageNumber.toString(), sig.subscriptionX.toString(), sig.subscriptionY.toString(), sig.subscriptionXScale.toString(), sig.subscriptionYScale.toString()] as String[])
+		dataMap.put("managementSubscription2", [new File(subscriptionsPath+sig.managementSubscription2).toURI().toURL(), "", "signature", sig.subscriptionPageNumber.toString(), sig.subscriptionX+subscriptionDeltaX.toString(), sig.subscriptionY+subscriptionDeltaY.toString(), sig.subscriptionXScale.toString(), sig.subscriptionYScale.toString()] as String[])
+		dataMap.put("akceptantNazwa", ["Nazwa Akceptanta Teeest :)"] as String[])
 		
 		String pdfTemplatePath = appParametersService.getPdfTemplatePath() + sig.templatePath
 		
@@ -126,7 +153,9 @@ class PdfService {
 	def fillPdfFormFromURIWithoutFaksymile(Signature sig, FontType fontType) {
 		Map<String,String[]> dataMap = new HashMap<String, String[]>()
 		
-		return PdfGenerator.generatePdfContentFromURI(sig.getTemplatePath(), dataMap, getFont(fontType))
+		String pdfTemplatePath = appParametersService.getPdfTemplatePath() + sig.templatePath
+		
+		return PdfGenerator.generatePdfContentFromURI(pdfTemplatePath, dataMap, getFont(fontType))
 	}
 	
 	def fillPdfFormFromURIWithBlackFaksymile(Signature sig, FontType fontType) {
@@ -140,6 +169,8 @@ class PdfService {
 		dataMap.put("managementSubscription1", [new File(subscriptionsPath+sig.managementSubscription1).toURI().toURL(), "", "signature", sig.subscriptionPageNumber, sig.subscriptionX, sig.subscriptionY, sig.subscriptionXScale, sig.subscriptionYScale] as String[])
 		dataMap.put("managementSubscription2", [new File(subscriptionsPath+sig.managementSubscription2).toURI().toURL(), "", "signature", sig.subscriptionPageNumber, sig.subscriptionX+subscriptionDeltaX, sig.subscriptionY+subscriptionDeltaY, sig.subscriptionXScale, sig.subscriptionYScale] as String[])
 		
-		return PdfGenerator.generatePdfContentFromURI(sig.getTemplatePath(), dataMap, getFont(fontType))
+		String pdfTemplatePath = appParametersService.getPdfTemplatePath() + sig.templatePath
+		
+		return PdfGenerator.generatePdfContentFromURI(pdfTemplatePath, dataMap, getFont(fontType))
 	}
 }

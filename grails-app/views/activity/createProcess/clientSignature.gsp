@@ -34,7 +34,7 @@
 		function updateSubscriptionStatus(status, linkid) {
 			if (status == "OK") {
 				updateSubscriptionStatusCount++;
-				//jQuery('#subscriptionDialog').dialog("close");
+
 				jQuery("#"+linkid).parent().addClass("disabled");
 				isSubscriptionDone[linkid] = true;
 				
@@ -48,8 +48,44 @@
 			}
 		}
 		jQuery(document).ready(function(){
-			var pageNum = 2;
+			var pageNum = 1;
 			var documentPages = [];
+			
+			function refreshPdfPageView(pageNum, pid) {
+				if (documentPages[pageNum] == null || documentPages[pageNum] == undefined) {
+			     	jQuery.get("/eumowy/activity/getDocumentPage", {processId: pid, pageNumber: pageNum}, function(data) {
+			     		jQuery("#pdfBox-content-loading").hide();
+			     		documentPages[pageNum] = data;
+			     		jQuery("img#pdfPage").attr("src", data).css("display", "block");
+			     	}); 
+		     	}
+		     	else {
+		     		jQuery("#pdfBox-content-loading").hide();
+		     		jQuery("img#pdfPage").attr("src", documentPages[pageNum]).css("display", "block");
+		     	}
+			}
+			
+			function navigatePdfPageView(direction, totalPagesCount) {
+				if (direction == "prev") {
+					if (pageNum <= 1)
+						return;
+	    			pageNum--;
+				}
+				else if (direction == "next") {
+					if (pageNum >= totalPagesCount)
+	    				return;
+	    			pageNum++;
+				}
+				
+				jQuery("img#pdfPage").css("display", "none");
+	    		jQuery("#pdfBox-content-loading").show();
+	    		
+	    		refreshPdfPageView(pageNum, "${processInstance.id}");
+		     	
+		     	jQuery("#page_num").html(pageNum);
+			}
+			
+			jQuery("#page_num").html(pageNum);
 			
 			jQuery("#pdfPage").panzoom({
 				$zoomIn: jQuery("#zoomInPdfPage"),
@@ -57,70 +93,22 @@
 				contain: 'invert'
 			});
 			
+			refreshPdfPageView(pageNum, "${processInstance.id}");
+			
 	    	jQuery("#prevPdfPage").on("click", function(e) {
 	    		e.preventDefault();
-	    		if (pageNum <= 1)
-	    			return false;
-	    			
-	    		pageNum--;
-	    		
-	    		jQuery("img#pdfPage").css("display", "none");
-	    		jQuery("#pdfBox-content-loading").show();
-	    		
-	    		if (documentPages[pageNum] == null || documentPages[pageNum] == undefined) {
-	    		
-			     	jQuery.get("/eumowy/activity/getDocumentPage", {pageNumber: pageNum}, function(data) {
-			     		jQuery("#pdfBox-content-loading").hide();
-			     		documentPages[pageNum] = data;
-			     		jQuery("img#pdfPage").attr("src", data).css("display", "block");
-			     	});
-		     	
-		     	}
-		     	else {
-		     		jQuery("#pdfBox-content-loading").hide();
-		     		jQuery("img#pdfPage").attr("src", documentPages[pageNum]).css("display", "block");
-		     	}
-		     	
-		     	jQuery("#page_num").html(pageNum);
-		     	
+	    		navigatePdfPageView("prev", ${totalPagesCount});
 		     	return false;
-	    	
 	    	});
 	    	
 	    	jQuery("#nextPdfPage").on("click", function(e) {
 	    		e.preventDefault();
-	    	
-	    		e.preventDefault();
-	    		if (pageNum >= 10)
-	    			return false;
-	    			
-	    		pageNum++;
-	    		
-	    		jQuery("img#pdfPage").css("display", "none");
-	    		jQuery("#pdfBox-content-loading").show();
-	    		
-	    		if (documentPages[pageNum] == null || documentPages[pageNum] == undefined) {
-	    		
-			     	jQuery.get("/eumowy/activity/getDocumentPage", {pageNumber: pageNum}, function(data) {
-			     		jQuery("#pdfBox-content-loading").hide();
-			     		documentPages[pageNum] = data;
-			     		jQuery("img#pdfPage").attr("src", data).css("display", "block");
-			     	});
-		     	
-		     	}
-		     	else {
-		     		jQuery("#pdfBox-content-loading").hide();
-		     		jQuery("img#pdfPage").attr("src", documentPages[pageNum]).css("display", "block");
-		     	}
-		     	
-		     	jQuery("#page_num").html(pageNum);
-		     	
+	    		navigatePdfPageView("next", ${totalPagesCount});
 		     	return false;
 	    	});
 	    	
 			jQuery("#noaccept").on("click", function(e) {
 				e.preventDefault();
-				
 				jQuery("#confirm-noaccept-dialog").dialog({
 					resizable: true,
 					height:200,
@@ -130,7 +118,6 @@
 						{
 							"Tak": function() {
 								jQuery( this ).dialog( "close" );
-								
 								jQuery.post(jQuery(location).attr('href'), {_eventId_noaccept:""}, function(data) {
 								});
 							},
@@ -144,7 +131,7 @@
 			});
 			
 			jQuery("#conitnueButton").on("click", function(e) {
-				var result = true;
+				e.preventDefault();
 				if (updateSubscriptionStatusCount != 2) {
 					result = false;
 					jQuery("#confirm-submit-without-subscription-dialog").dialog({
@@ -163,14 +150,12 @@
 								},
 								"Nie": function() {
 									jQuery( this ).dialog( "close" );
-									e.preventDefault();
-									result = false;
 								}
 							}
 					});
 				}
 				
-				return result;
+				return false;
 			});
 			
 			<g:each in="${com.eservice.eumowy.Activity$ClientType?.values()}">
@@ -236,17 +221,15 @@
 	
     <div id="pdfBox" style="background-color: #F2F2F2; height: 680px; overflow: auto;border: solid 1px; border-radius: 5px;  margin: 20px 15px 0">
     	<div id="pdfBox-nav" style="padding: 1em; border-bottom: solid 1px;">
-    		<a id="prevPdfPage" class="button submit">Previous</a>
-    		<a id="nextPdfPage" class="button submit">Next</a>
-    		
-    		<a id="zoomInPdfPage" class="button submit">+</a>
+    		<a id="nextPdfPage" class="button submit" style="float: right;"><g:message code="process.subscriptions.nextPage" /></a>
+    		<a id="prevPdfPage" class="button submit" style="float: right;"><g:message code="process.subscriptions.previousPage" /></a>
     		<a id="zoomOutPdfPage" class="button submit">-</a>
-    		
-    		<span>Page: <span id="page_num"></span> / <span id="page_count"></span></span>
+    		<a id="zoomInPdfPage" class="button submit">+</a>
+    		<span style="margin-left: 330px; font-weight: bold"><g:message code="process.subscriptions.page" />: <span id="page_num"></span> / <span id="page_count">${totalPagesCount}</span></span>
     	</div>
     	<div id="pdfBox-content" style="margin: 1em;">
     		<div id="pdfBox-content-loading" style="text-align: center; width: 200px; display: block; margin: 0 auto;">
-    			<h2 style="padding-top: 100px;">Wczytywanie...</h2>
+    			<h2 style="padding-top: 100px;"><g:message code="process.subscriptions.loadingPage" /></h2>
     			<img style="width: 40px;" src="/eumowy/images/document-loading.gif" />
     		</div>
     		

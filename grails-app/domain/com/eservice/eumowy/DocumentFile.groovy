@@ -6,7 +6,7 @@ package com.eservice.eumowy
  * Time: 15:20
  * To change this template use File | Settings | File Templates.
  */
-class DocumentFile {
+class DocumentFile implements Serializable {
 
     String name
     Date dateCreated

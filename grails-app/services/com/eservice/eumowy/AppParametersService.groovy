@@ -11,10 +11,20 @@ class AppParametersService {
 	}
 	
 	def getPdfImagePath() {
-		String tmpPath = AppParameters.findByName("TEMP_STORAGE_PATH")
+		String tmpPath = AppParameters.findByName("TEMP_PDFIMAGE_STORAGE_PATH")
 		
 		if (tmpPath == null || tmpPath.isEmpty()) {
-			tmpPath = System.getProperty("java.io.tmpdir")
+			tmpPath = "web-app" + File.separator + "files" + File.separator + "pdf_images" + File.separator
+		}
+		
+		return tmpPath
+	}
+	
+	def getPdfImageUri() {
+		String tmpPath = AppParameters.findByName("TEMP_PDFIMAGE_STORAGE_URI")
+		
+		if (tmpPath == null || tmpPath.isEmpty()) {
+			tmpPath = "/eumowy/files/pdf_images/"
 		}
 		
 		return tmpPath

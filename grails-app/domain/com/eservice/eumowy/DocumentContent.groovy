@@ -1,6 +1,6 @@
 package com.eservice.eumowy
 
-class DocumentContent {
+class DocumentContent implements Serializable {
 
     byte[] content
 	
