@@ -302,7 +302,12 @@ class ActivityController {
                 log.info "PARAMS: " + params
                 def processInstance = flow.processInstance
                 _processDocumentCreation(processInstance, params.requestVersion)
-                //TODO IF NOTES FOR COA - SEND THEM
+                
+				ProcessData notesToCoa = flow.processInstance.processDataList.findByName("notes")
+				if (notesToCoa?.value != null) {
+					emailService.sendNotesToCOA(notesToCoa.value)
+				}
+				
                 processInstance.status = Process.ProcessStatus.WAITING
                 flow.processInstance = processInstance
 
@@ -410,7 +415,10 @@ class ActivityController {
                 log.info "PARAMS: " + params
                 _processDocumentCreation(flow.processInstance, params.requestVersion)
 
-                //TODO IF NOTES FOR COA - SEND THEM
+				ProcessData notesToCoa = flow.processInstance.processDataList.findByName("notes")
+				if (notesToCoa?.value != null) {
+					emailService.sendNotesToCOA(notesToCoa.value)
+				}
 
                 flow.processInstance.status = Process.ProcessStatus.WAITING
             }.to "finish"

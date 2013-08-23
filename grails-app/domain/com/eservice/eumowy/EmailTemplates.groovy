@@ -20,7 +20,8 @@ class EmailTemplates implements Serializable {
     enum EmailTemplateType {
         NOTES_TO_COA("notesToCOA"),
 		DOCUMENTS_PAPER_VERSION("documentsPaperVersion"),
-		DOCUMENTS_ELECTRONICAL_VERSION("documentsElectronicalVersion")
+		DOCUMENTS_TEMPLATE_VERSION("documentsTemplateVersion"),
+		DOCUMENTS_ACCEPTED("documentsAccepted")
 		
 
         private final String text;
