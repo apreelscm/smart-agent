@@ -1,69 +1,40 @@
+<form action="" method="post">
 <div id="dccRangePanel">
     <fieldset>
         <div class="belka-glowna"><g:message code="panel.dcc.range.title"/> </div>
         <div class="centre" style="text-align: center; padding-top: 20px; width: 600px">
             <div style="text-align: left">
-                <p><label><input type="radio" name="dccRange" id="currentAndNew" /> <g:message code="panel.dcc.range.current.and.new"/></label></p>
-                <p><label><input type="radio" name="dccRange" id="current" /> <g:message code="panel.dcc.range.current"/></label></p>
-                <p><label><input type="radio" name="dccRange" id="direct" /> <g:message code="panel.dcc.range.direct"/></label></p>
+                <g:radioGroup name="dccZakresUruchomienia"
+                              labels="['panel.dcc.range.current.and.new','panel.dcc.range.current', 'panel.dcc.range.direct']"
+                              values="['obecne_i_nowe', 'obecne', 'wskazane']"
+                              value="${data.dccZakresUruchomienia}">
+                    <p><label> ${it.radio} <g:message code="${it.label}"/></label></p>
+                </g:radioGroup>
             </div>
         </div>
         <div class="centre" style="text-align: center; padding-top: 20px; width: 800px; max-width: 950px">
-            <table class="t">
-                <thead>
-                <tr>
-                    <td><g:message code="panel.dcc.table.full.name"/></td>
-                    <td><g:message code="panel.dcc.table.street"/></td>
-                    <td><g:message code="panel.dcc.table.city"/></td>
-                    <td><g:message code="panel.dcc.table.house.number"/></td>
-                    <td><g:message code="panel.dcc.table.code"/></td>
-                    <td><g:message code="panel.dcc.table.poz.count"/></td>
-                    <td>&nbsp;</td>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>Skleb wielobranżowy "Jacek i Agatka"</td>
-                    <td>Zielona</td>
-                    <td>Warszawa</td>
-                    <td>34</td>
-                    <td>09-876</td>
-                    <td>2</td>
-                    <td><input type="checkbox" name="dccRangePOS" value="1" id="r_1"/> </td>
-                </tr>
-                <tr>
-                    <td>Kwiaciarnia "U Zosi"</td>
-                    <td>Zielona</td>
-                    <td>Siedlce</td>
-                    <td>34</td>
-                    <td>09-876</td>
-                    <td>2</td>
-                    <td><input type="checkbox" name="dccRangePOS" value="2" id="r_2"/> </td>
-                </tr>
-                <tr>
-                    <td>PHU "Kluczyk"</td>
-                    <td>Jasia i Małgosi</td>
-                    <td>Szczecin</td>
-                    <td>34</td>
-                    <td>11-112</td>
-                    <td>2</td>
-                    <td><input type="checkbox" name="dccRangePOS" value="3" id="r_3"/> </td>
-                </tr>
-                </tbody>
-            </table>
+            <cbd:dccRange nip="${data.nip}" selectedValues="[1,3]"/>
+        </div>
+        <div>
+            <input type="submit">
         </div>
     </fieldset>
 </div>
+</form>
 
 <r:require module="jquery_ui"/>
 
 <r:script>
-
     jQuery(document).ready(function() {
-        jQuery('input[name="dccRange"]').change(function(){
-            if (jQuery("#currentAndNew").attr("checked")){
+
+        if (jQuery('input[name="dccZakresUruchomienia"]:checked').val() != 'wskazane'){
+            enableCheckbox(false);
+        }
+
+        jQuery('input[name="dccZakresUruchomienia"]').change(function(e){
+            if (e.target.value == 'obecne_i_nowe'){
                 enableCheckbox(false);
-            } else if (jQuery("#current").attr("checked")){
+            } else if (e.target.value == 'obecne'){
                 enableCheckbox(false);
             } else {
                 enableCheckbox(true);

@@ -74,7 +74,7 @@ class ProcessCommand implements Serializable{
     BigDecimal oplataMasteroPr
 
 //    dccZakresUruchomienia
-
+    String dccZakresUruchomienia
 
 //    deklaracjeAkceptanta - FINISH
     String informacjaHandlowa

@@ -78,7 +78,7 @@ class PanelMockService {
     }
 
     def getDccZakresUruchomienia(ProcessCommand cmd) {
-
+        cmd.dccZakresUruchomienia = "wskazane"
     }
 
     def getDeklaracjeAkceptanta(ProcessCommand cmd) {
