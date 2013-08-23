@@ -22,10 +22,10 @@
 		jQuery("#hiddenPanel").remove();
 			
 		jQuery("#addNewPointButton").on("click", function() {
-			var data = panelTemplate.replace(/%ID%/gm, "-point" + panelCount);
+			var data = panelTemplate.replace(/%ID%/gm, "points[" + panelCount + "].");
 			jQuery("#addNewPointPanel").prepend(data);
-			setupNewPointPanelHandlers(panelCount-1, panelCount, "-point");
-			setupNewPointPanelData("-point"+(panelCount-1), "-point"+panelCount);
+			setupNewPointPanelHandlers(panelCount-1, panelCount, "points");
+			setupNewPointPanelData("points["+(panelCount-1)+"].", "points["+panelCount+"].");
 			panelCount++;
 			globalPanelCount++;
 			jQuery("#newPointPanelCount").val(panelCount);

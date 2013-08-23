@@ -97,8 +97,8 @@ class PdfService {
 			document.close()
 		}
 		catch (Exception e) {
-			log.warn "getPageCountFromPdf - Error while loading PDF file from byte array"
-			e.printStackTrace()
+			log.warn "getPageCountFromPdf - Error while loading PDF file from byte array: " + e
+			//e.printStackTrace()
 		}
 		
 		return numberOfPages

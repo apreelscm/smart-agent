@@ -11,11 +11,11 @@
                 	<legend><g:message code="panel.newpoint.pointdata.title" /></legend>
                 	<div class="subpanel-fieldset-centercontent" >
                 		<ul class="table-list vertical-center">
-                			<li><span class="align-right"><g:message code="panel.nip" /></span> <span><g:textField name="nip%ID%"/></span></li>
-                			<li><span class="align-right"><g:message code="panel.mcccode" /></span> <span><g:textField name="mccCode%ID%"/></span> <span><label for="sameForEveryPoint%ID%"><g:checkBox name="sameForEveryPoint%ID%" /><g:message code="panel.sameforeverypoint" /></label></span></li>
-                			<li><span class="align-right"><g:message code="panel.bussinesstypeinpractice" /></span> <span><g:textField name="bussinessTypeInPractice%ID%"/></span></li>
-                			<li><span class="align-right"><g:message code="panel.bankaccountnumber" /></span> <span><g:textField name="bankAccountNumber%ID%"/></span></li>
-                			<li><span class="align-right"><g:message code="panel.bankname" /></span> <span><select name="bankName%ID%"></select></span></li>
+                			<li><span class="align-right"><g:message code="panel.nip" /></span> <span><g:textField name="%ID%nip"/></span></li>
+                			<li><span class="align-right"><g:message code="panel.mcccode" /></span> <span><g:textField name="%ID%mccCode"/></span> <span><label for="%ID%sameForEveryPoint"><g:checkBox name="%ID%sameForEveryPoint" /><g:message code="panel.sameforeverypoint" /></label></span></li>
+                			<li><span class="align-right"><g:message code="panel.bussinesstypeinpractice" /></span> <span><g:textField name="%ID%bussinessTypeInPractice"/></span></li>
+                			<li><span class="align-right"><g:message code="panel.bankaccountnumber" /></span> <span><g:textField name="%ID%bankAccountNumber"/></span></li>
+                			<li><span class="align-right"><g:message code="panel.bankname" /></span> <span><select name="%ID%bankName"></select></span></li>
                 		</ul>
                 	</div>
                 </fieldset>
@@ -23,42 +23,42 @@
                 	<legend><g:message code="panel.newpoint.dataforprinting" /></legend>
                 	<div class="subpanel-fieldset-centercontent" >
                 		<p><g:message code="panel.newpoint.pointnameforprintingfromposterminal" /></p>
-                		<p><g:textField name="pointNameForPrintingFromPOSTerminal%ID%" id="pointNameForPrintingFromPOSTerminal%ID%"/></p>
-                		<p><g:message code="panel.newpoint.pointnameforsearchengine" /> <label for="dataforprinting-asAbove"><g:checkBox name="dataforprinting-asAbove%ID%" id="dataforprinting-asAbove%ID%" /><g:message code="panel.as.above" /></label></p>
-                		<p><g:textField name="pointNameForSearchEngine%ID%" id="pointNameForSearchEngine%ID%"/></p>
-                		<p><label for="dataforprinting-asForMerchant"><g:checkBox name="dataforprinting-asForMerchant%ID%" id="dataforprinting-asForMerchant%ID%"/><g:message code="panel.as.merchant" /></label></p>
+                		<p><g:textField name="%ID%pointNameForPrintingFromPOSTerminal" id="%ID%pointNameForPrintingFromPOSTerminal"/></p>
+                		<p><g:message code="panel.newpoint.pointnameforsearchengine" /> <label for="%ID%dataforprintingAsAbove"><g:checkBox name="%ID%dataforprinting-asAbove" id="%ID%dataforprintingAsAbove" /><g:message code="panel.as.above" /></label></p>
+                		<p><g:textField name="%ID%pointNameForSearchEngine" id="%ID%pointNameForSearchEngine"/></p>
+                		<p><label for="%ID%dataforprintingAsForMerchant"><g:checkBox name="%ID%dataforprintingAsForMerchant" id="%ID%dataforprintingAsForMerchant"/><g:message code="panel.as.merchant" /></label></p>
 		                <ul class="table-list">
 		                	<li>
 		                		<span><g:message code="panel.street" /></span>
 		                		<span>
-		                			<select name="dataforprinting-streetType%ID%">
+		                			<select name="%ID%dataforprintingStreetType">
                                        <option value="ulica">ulica</option>
                                        <option value="osiedle">osiedle</option>
                                        <option value="aleja">aleja</option>
                                        <option value="plac">plac</option>
                                    </select>
-                                   <g:textField name="dataforprinting-addressStreet%ID%" id="dataforprinting-addressStreet%ID%" style="width: 200px"/>
+                                   <g:textField name="%ID%dataforprintingAddressStreet" id="%ID%dataforprintingAddressStreet" style="width: 200px"/>
                                 </span>
                                 <span>
-                                	<span><g:message code="panel.house.number" /></span> <span><g:textField name="dataforprinting-addressHomeNumber%ID%" style="width: 50px"/></span>
-                                	<span><g:message code="panel.flat.number" /></span> <span><g:textField name="dataforprinting-addressFlatNumber%ID%" style="width: 50px"/></span>
+                                	<span><g:message code="panel.house.number" /></span> <span><g:textField name="%ID%dataforprintingAddressHomeNumber" style="width: 50px"/></span>
+                                	<span><g:message code="panel.flat.number" /></span> <span><g:textField name="%ID%dataforprintingAddressFlatNumber" style="width: 50px"/></span>
                                 </span>
                             </li>
 		                	<li>
 		                		<span><g:message code="panel.city" /></span>
-		                		<span><g:textField name="dataforprinting-addressCity%ID%" style="width: 280px;"/></span>
+		                		<span><g:textField name="%ID%dataforprintingAddressCity" style="width: 280px;"/></span>
 		                		<span>
-		                			<span><g:message code="panel.postal.code" /></span> <span><g:textField name="dataforprinting-addressPostalCode%ID%" style="width: 50px"/></span>
+		                			<span><g:message code="panel.postal.code" /></span> <span><g:textField name="%ID%dataforprintingAddressPostalCode" style="width: 50px"/></span>
 		                		</span>
 		                	</li>
 		                	<li>
 		                		<span><g:message code="panel.postal" /></span>
-		                		<span><g:textField name="dataforprinting-addressPostOffice%ID%" style="width: 280px;"/></span>
+		                		<span><g:textField name="%ID%dataforprintingAddressPostOffice" style="width: 280px;"/></span>
 		                	</li>
 		                </ul>
                 		<p><g:message code="panel.newpoint.otherdataforprintingfromterminal" /></p>
-               			<p><g:message code="panel.line1" /> <g:textField name="otherDataForPrintingFromTerminal1%ID%" style="width: 90%;" /></p>
-               			<p><g:message code="panel.line2" /> <g:textField name="otherDataForPrintingFromTerminal2%ID%" style="width: 90%;" /></p>
+               			<p><g:message code="panel.line1" /> <g:textField name="%ID%otherDataForPrintingFromTerminal1" style="width: 90%;" /></p>
+               			<p><g:message code="panel.line2" /> <g:textField name="%ID%otherDataForPrintingFromTerminal2" style="width: 90%;" /></p>
                 	</div>
                 </fieldset>
                 <g:render template="../panels/adresDoKorespondencjiPunktu" />
@@ -66,19 +66,19 @@
                 <fieldset class="subpanel-fieldset">
                 	<legend><g:message code="panel.newpoint.posset.for.selected.point.title" /></legend>
                 	<div class="subpanel-fieldset-centercontent" >
-                		<label for="possetforselectedpoint-sameForEveryPoint%ID%"><g:checkBox name="possetforselectedpoint-sameForEveryPoint%ID%" /><g:message code="panel.sameforeverypoint" /></label>
+                		<label for="possetforselectedpointSameForEveryPoint"><g:checkBox name="possetforselectedpointSameForEveryPoint" /><g:message code="panel.sameforeverypoint" /></label>
                 		<table class="vertical-center" >
                 			<thead>
                 				<tr><td></td><td></td><td></td><td></td><td colspan="2"  style="text-align: center;">Cena</td></tr>
                 				<tr><td></td><td></td><td></td><td></td><td>Term./mies</td><td>PP./mies.</td></tr>
                				</thead>
                				<tbody>
-               					<tr><td>typ <select name="possetforselectedpoint-dialupType%ID%" style="width: 50px"></select></td><td style="text-align: right;"><g:message code="panel.dialup" /></td><td><g:textField name="dialupCount%ID%" style="width: 50px"/> szt.</td><td><g:textField name="dialupPPCount%ID%" style="width: 50px"/> PP. szt.</td><td><g:textField name="dialupPrice%ID%" style="width: 50px"/> zł.</td><td><g:textField name="dialupPPPrice%ID%" style="width: 50px"/> zł.</td></tr>
-                				<tr><td>typ <select name="possetforselectedpoint-vpnType%ID%" style="width: 50px"></select></td><td style="text-align: right;"><g:message code="panel.vpn" /></td><td><g:textField name="vpnCount%ID%" style="width: 50px"/> szt.</td><td><g:textField name="vpnPPCount%ID%" style="width: 50px"/> PP. szt.</td><td><g:textField name="vpnPrice%ID%" style="width: 50px"/> zł.</td><td><g:textField name="vpnPPPrice%ID%" style="width: 50px"/> zł.</td></tr>
-                				<tr><td>typ <select name="possetforselectedpoint-sslType%ID%" style="width: 50px"></select></td><td style="text-align: right;"><g:message code="panel.ssl" /></td><td><g:textField name="sslCount%ID%" style="width: 50px"/> szt.</td><td><g:textField name="sslPPCount%ID%" style="width: 50px"/> PP. szt.</td><td><g:textField name="sslPrice%ID%" style="width: 50px"/> zł.</td><td><g:textField name="sslPPPrice%ID%" style="width: 50px"/> zł.</td></tr>
-                				<tr><td>typ <select name="possetforselectedpoint-wifiType%ID%" style="width: 50px"></select></td><td style="text-align: right;"><g:message code="panel.wifi" /></td><td><g:textField name="wifiCount%ID%" style="width: 50px"/> szt.</td><td><g:textField name="wifiPPCount%ID%" style="width: 50px"/> PP. szt.</td><td><g:textField name="wifiPrice%ID%" style="width: 50px"/> zł.</td><td><g:textField name="wifiPPPrice%ID%" style="width: 50px"/> zł.</td></tr>
-                				<tr><td>typ <select name="possetforselectedpoint-gprsType%ID%" style="width: 50px"></select></td><td style="text-align: right;"><g:message code="panel.gprs" /></td><td><g:textField name="gprsCount%ID%" style="width: 50px"/> szt.</td><td><g:textField name="gprsPPCount%ID%" style="width: 50px"/> PP. szt.</td><td><g:textField name="gprsPrice%ID%" style="width: 50px"/> zł.</td><td><g:textField name="gprsPPPrice%ID%" style="width: 50px"/> zł.</td></tr>
-                				<tr><td></td><td style="text-align: right;"><g:message code="panel.base" /></td><td><g:textField name="baseCount%ID%" style="width: 50px"/> szt.</td><td></td><td></td><td></td></tr>
+               					<tr><td>typ <select name="%ID%possetforselectedpointDialupType" style="width: 50px"></select></td><td style="text-align: right;"><g:message code="panel.dialup" /></td><td><g:textField name="%ID%dialupCount" style="width: 50px"/> szt.</td><td><g:textField name="%ID%dialupPPCount" style="width: 50px"/> PP. szt.</td><td><g:textField name="%ID%dialupPrice" style="width: 50px"/> zł.</td><td><g:textField name="%ID%dialupPPPrice" style="width: 50px"/> zł.</td></tr>
+                				<tr><td>typ <select name="%ID%possetforselectedpointVpnType" style="width: 50px"></select></td><td style="text-align: right;"><g:message code="panel.vpn" /></td><td><g:textField name="%ID%vpnCount" style="width: 50px"/> szt.</td><td><g:textField name="%ID%vpnPPCount" style="width: 50px"/> PP. szt.</td><td><g:textField name="%ID%vpnPrice" style="width: 50px"/> zł.</td><td><g:textField name="%ID%vpnPPPrice" style="width: 50px"/> zł.</td></tr>
+                				<tr><td>typ <select name="%ID%possetforselectedpointSslType" style="width: 50px"></select></td><td style="text-align: right;"><g:message code="panel.ssl" /></td><td><g:textField name="%ID%sslCount" style="width: 50px"/> szt.</td><td><g:textField name="%ID%sslPPCount" style="width: 50px"/> PP. szt.</td><td><g:textField name="%ID%sslPrice" style="width: 50px"/> zł.</td><td><g:textField name="%ID%sslPPPrice" style="width: 50px"/> zł.</td></tr>
+                				<tr><td>typ <select name="%ID%possetforselectedpointWifiType" style="width: 50px"></select></td><td style="text-align: right;"><g:message code="panel.wifi" /></td><td><g:textField name="%ID%wifiCount" style="width: 50px"/> szt.</td><td><g:textField name="%ID%wifiPPCount" style="width: 50px"/> PP. szt.</td><td><g:textField name="%ID%wifiPrice" style="width: 50px"/> zł.</td><td><g:textField name="%ID%wifiPPPrice" style="width: 50px"/> zł.</td></tr>
+                				<tr><td>typ <select name="%ID%possetforselectedpointGprsType" style="width: 50px"></select></td><td style="text-align: right;"><g:message code="panel.gprs" /></td><td><g:textField name="%ID%gprsCount" style="width: 50px"/> szt.</td><td><g:textField name="%ID%gprsPPCount" style="width: 50px"/> PP. szt.</td><td><g:textField name="%ID%gprsPrice" style="width: 50px"/> zł.</td><td><g:textField name="%ID%gprsPPPrice" style="width: 50px"/> zł.</td></tr>
+                				<tr><td></td><td style="text-align: right;"><g:message code="panel.base" /></td><td><g:textField name="%ID%baseCount" style="width: 50px"/> szt.</td><td></td><td></td><td></td></tr>
                				</tbody>
                 		</table>
                 	</div>

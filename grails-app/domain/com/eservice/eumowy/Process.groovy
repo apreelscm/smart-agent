@@ -1,5 +1,6 @@
 package com.eservice.eumowy
 import groovy.transform.ToString
+
 import org.apache.commons.logging.LogFactory
 
 @ToString(includeNames = true,ignoreNulls = true)
@@ -29,6 +30,8 @@ class Process implements Serializable {
     List<Panel> panels
     List<Subscription> subscriptions
     List<ProcessData> data
+	List<PointData> points
+	List<PosData> poses
 
 
     String getStringId() {
@@ -47,7 +50,9 @@ class Process implements Serializable {
             activities:Activity,
             signatures:Signature,
             subscriptions:Subscription,
-            data : ProcessData
+            data : ProcessData,
+			points: PointData,
+			poses: PosData
     ]
 
     static constraints = {}
@@ -61,6 +66,8 @@ class Process implements Serializable {
         attachments cascade:"all-delete-orphan"
         documents cascade:"all-delete-orphan"
         data cascade:"all-delete-orphan"
+		points cascade:"all-delete-orphan"
+		poses cascade:"all-delete-orphan"
     }
 
 

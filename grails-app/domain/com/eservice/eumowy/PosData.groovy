@@ -1,53 +1,7 @@
-package com.eservice.eumowy.command
+package com.eservice.eumowy
 
-/**
- * User: Dominik Walczak
- * Date: 20.08.13 Time: 10:28
- *
- */
-class PointCommand {
-	
-	BigDecimal phGain
-	BigDecimal businessCare
-	BigDecimal serviceCare1
-	BigDecimal serviceCare2
-	BigDecimal serviceCare3
-	
-	String nip
-	String mccCode
-	String bussinessTypeInPractice
-	String bankAccountNumber
-	String bankName
-	
-	String pointNameForPrintingFromPOSTerminal
-	String pointNameForSearchEngine
-	
-	String dataforprintingAddressStreetType
-	String dataforprintingAddressStreet
-	Integer dataforprintingAddressHomeNumber
-	Integer dataforprintingAddressFlatNumber
-	String dataforprintingAddressCity
-	String dataforprintingAddressPostalCode
-	String dataforprintingAddressPostOffice
-	
-	String otherDataForPrintingFromTerminal1
-	String otherDataForPrintingFromTerminal2
-	
-	String contactAddressStreetType
-	String contactAddressAddressStreet
-	Integer contactAddressAddressHomeNumber
-	Integer contactAddressAddressFlatNumber
-	String contactAddressAddressCity
-	String contactAddressAddressPostalCode
-	String contactAddressAddressPostOffice
-	
-	String contactAtPointFirstName
-	String contactAtPointLastName
-	String contactAtPointFax
-	String contactAtPointPhone
-	String contactAtPointMobilePhone
-	String contactAtPointEmail
-	
+class PosData {
+
 	Integer cbdId
 	
 	String dialupType
@@ -126,4 +80,13 @@ class PointCommand {
 	String dynamicDeviceSupportName
 	String dynamicDeviceSupportSurname
 	
+	static belongsTo = [process: Process, point: PointData]
+	
+	static mapping = {
+		table name: "POS", schema:DomainConsts.SHEMA_NAME
+		id generator:'sequence', params:[sequence:DomainConsts.SHEMA_NAME+'.POS_SEQ']
+	}
+	
+    static constraints = {
+    }
 }

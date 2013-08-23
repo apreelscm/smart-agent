@@ -1,5 +1,6 @@
 package com.eservice.eumowy
 
+import com.eservice.eumowy.command.PointCommand
 import com.eservice.eumowy.command.ProcessCommand
 import com.eservice.eumowy.process.DefineActivityCommand
 
@@ -248,6 +249,12 @@ class ActivityController {
 
                 processInstance.data = processDataList;
                 processInstance.save(flush:true);
+
+				//_createPointDatas(flow.processInstance)
+				//_createPosDatas(flow.processInstance)
+				PointCommand pcmd = new PointCommand(params)
+				log.info pcmd
+				
                 flow.processInstance = processInstance
             }.to "clientSignature"
         }
@@ -376,18 +383,22 @@ class ActivityController {
                 flow.processInstance = processInstance
             }.to "finish"
             on("subscribe").to "clientSignature"
-            on("updateProcessStatus") {
-                if (params.processStatus.equals("WAIT_FOR_SUBSCRIPTION")) {
-                    flow.processInstance.status = Process.ProcessStatus.WAIT_FOR_SUBSRIPTION
-                }
-                else if (params.processStatus.equals("SUBSCRIPTIONS_DONE")) {
-                    flow.processInstance.status = Process.ProcessStatus.SUBSCRIPTIONS_DONE
-                }
-                else if (params.processStatus.equals("REJECTED")) {
-                    flow.processInstance.status = Process.ProcessStatus.REJECTED
-                    //TODO
-                }
-            }.to "clientSignature"
+			on("updateProcessStatus") {
+				if (params.processStatus.equals("WAIT_FOR_SUBSCRIPTION")) {
+					Subscription sub = Subscription.get(params.subscriptionId)
+					flow.processInstance.addToSubscriptions(sub)
+					flow.processInstance.status = Process.ProcessStatus.WAIT_FOR_SUBSRIPTION
+				}
+				else if (params.processStatus.equals("SUBSCRIPTIONS_DONE")) {
+					Subscription sub = Subscription.get(params.subscriptionId)
+					flow.processInstance.addToSubscriptions(sub)
+					flow.processInstance.status = Process.ProcessStatus.SUBSCRIPTIONS_DONE
+				}
+				else if (params.processStatus.equals("REJECTED")) {
+					flow.processInstance.status = Process.ProcessStatus.REJECTED
+					//TODO
+				}
+			}.to "clientSignature"
             on("noaccept") {
 				flow.processInstance.status = Process.ProcessStatus.REJECTED
             }.to "finish"
@@ -535,6 +546,22 @@ class ActivityController {
 		}
 		
 		return totalPagesCount
+	}
+	
+	def _createPointDatas(Process process) {
+		
+		Integer pointsCount = params.newPointPanelCount
+		
+		for(int i = 0; i < pointsCount; i++) {
+			PointData pd = new PointData()
+			
+			// Fill me in
+			
+			pd.save()
+			process.addToPoints(pd)
+		}
+		
+		process.save()
 	}
 
 
