@@ -7,7 +7,7 @@
 
                 <div style="padding-bottom: 10px"><g:message code="panel.notes"/></div>
 
-                <g:textArea name="note" style="width: 100%"/>
+                <g:textArea name="notes" style="width: 100%" value="${data.notes}"/>
 
     </fieldset>
 </div>

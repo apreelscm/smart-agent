@@ -5,7 +5,7 @@
     <meta name="layout" content="main">
     <title><g:message code="selectedPanels.header.title" default="Lista paneli"/></title>
     <r:require module="filestyle"/>
-	<r:require module="newpoint_panel_setup"/>
+    <r:require module="newpoint_panel_setup"/>
     <g:javascript>
 
     var $j = jQuery.noConflict();
@@ -41,9 +41,9 @@
 
         function refreshAttachmentList(){
             ${remoteFunction(
-                    action:'getAttachmentList',
-                    update:'attachmentsBox',
-                    params: [processId: processInstance.id])}
+            action:'getAttachmentList',
+            update:'attachmentsBox',
+            params: [processId: processInstance.id])}
         }
 });
 
@@ -80,23 +80,23 @@
 
     <h1 class="ng linia-bottom"><g:message code="selectedPanels.header.title" default="Lista paneli"/></h1>
 
-    <g:each var="panel" in="${processInstance.panels}" status="i">
-        <g:render template="/panels/${panel.name}"/>
-    </g:each>
+    <g:form id="panelsForm">
+        <g:hiddenField name="_eventId_continue" value=""/>
+        <g:each var="panel" in="${processInstance.panels}" status="i">
+            <g:render template="/panels/${panel.name}"/>
+        </g:each>
 
-    <g:render template="/panels/uwagi"/>
+        <g:render template="/panels/uwagi"/>
+    </g:form>
 
     <g:render template="/panels/zalaczniki"/>
 
-    <g:form>
-        <nav style="margin-top: 20px">
-            <fieldset>
-                <g:link event="back" class="button submit float-left">${message(code:'default.navigation.button.prev', default: 'Wstecz')}</g:link>
-                <g:submitButton id="conitnueButton" name="continue" class="button submit float-right"
-                                value="${message(code:'default.navigation.button.next', default: 'Dalej')}"/>
-            </fieldset>
-        </nav>
-    </g:form>
+    <nav style="margin-top: 20px">
+        <fieldset>
+            <g:link event="back" class="button submit float-left">${message(code:'default.navigation.button.prev', default: 'Wstecz')}</g:link>
+            <button id="conitnueButton" onclick="document.forms[0].submit()" class="button submit float-right">${message(code:'default.navigation.button.next', default: 'Dalej')}</button>
+        </fieldset>
+    </nav>
 
 </section>
 

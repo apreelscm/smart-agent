@@ -30,6 +30,9 @@ class PanelService {
 
     def getDaneAkceptanta(ProcessCommand cmd) {
         def result = cbdService.getDaneAkceptanta(cmd.nip);
+
+        if(!result) throw NoSuchElementException("getDaneAkceptanta")
+
         cmd.akceptantNazwaOficjalna= result["nazwa"]
         cmd.akceptantRegon = result["regon"]
     }

@@ -10,9 +10,9 @@
                 <li id="aggrementDates">
                     <span>
                         <span><g:message code="panel.from"/></span>
-                        <span><g:textField name="umowaPoczatek" readonly="true" style="width: 120px;"/></span>
+                        <span><g:textField name="umowaOznOd" readonly="true" style="width: 120px;"/></span>
                         <span><g:message code="panel.to"/></span>
-                        <span><g:textField name="umowaKoniec" readonly="true" style="width: 120px;"/></span>
+                        <span><g:textField name="umowaOznDo" readonly="true" style="width: 120px;"/></span>
                     </span>
                 </li>
             </ul>
@@ -26,7 +26,7 @@
     jQuery(document).ready(function() {
         var aggDates = jQuery('#aggrementDates');
         aggDates.hide();
-        jQuery('input[name="umowaTyp"]').change(function(){
+        jQuery('input[name="umowaCzas"]').change(function(){
             if (jQuery("#nieoznaczony").attr("checked")){
                 aggDates.hide();
             } else {
@@ -35,8 +35,8 @@
         });
 
 
-        var _aggrementStart = jQuery("#umowaPoczatek");
-        var _aggrementEnd = jQuery("#umowaKoniec");
+        var _aggrementStart = jQuery("#umowaOznOd");
+        var _aggrementEnd = jQuery("#umowaOznDo");
 
         _aggrementStart.datepicker({ dateFormat: 'yy-mm-dd', minDate: new Date() });
         _aggrementEnd.datepicker({ dateFormat: 'yy-mm-dd', minDate: new Date() });

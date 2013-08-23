@@ -1,19 +1,22 @@
 package com.eservice.eumowy
-
-import groovy.transform.ToString
-
 /**
  * User: Dominik Walczak
  * Date: 20.08.13 Time: 11:47
  *
  */
-@ToString
-class ProcessData implements Serializable{
+class ProcessData implements Serializable {
 
     String name
     String value
 
-    static belongsTo = [ process : Process ]
+    Process process
+
+    static belongsTo = [process:Process]
+
+    static constraints = {
+        name(unique:false,blank:false)
+        value(nullable: false,blank:true)
+    }
 
     static mapping = {
         table name: "PROCESS_DATA", schema: DomainConsts.SHEMA_NAME
@@ -21,7 +24,11 @@ class ProcessData implements Serializable{
     }
 
     def afterInsert() {
-        log.info("Utworzono ProcessData [name:${name}]")
+        log.info("Utworzono ProcessData [name:${name}, value:${value}]")
+    }
+
+    def afterUpdate() {
+        log.info("Zaktualizowano ProcessData [name:${name}, value:${value}]")
     }
 
 }

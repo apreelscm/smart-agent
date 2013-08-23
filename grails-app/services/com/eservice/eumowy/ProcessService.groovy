@@ -104,12 +104,13 @@ class ProcessService {
         return activities?.any{it.code.equals(activityCode)};
     }
 
-    def getDataForPanels(final def process) {
+    def getDataForPanels(def process) {
         def exclusions = ["getWyborDzialania","getLiczbaMiesiecyZwolnieniaZNajmu"]
 
         def cmd = new ProcessCommand();
         cmd.process = process
         cmd.nip = process.client.nip
+        cmd.notes = "";
 
         process.panels.each { Panel panel ->
             String panelFunctionName = "get${WordUtils.capitalize(panel.name)}"
@@ -122,8 +123,10 @@ class ProcessService {
                     panelMockService."${panelFunctionName}"(cmd)
                     break;
                 case Environment.TEST:
-                    panelService."${panelFunctionName}"(cmd)
+                    panelMockService."${panelFunctionName}"(cmd)
                     break;
+                default:
+                    panelService."${panelFunctionName}"(cmd)
             }
         }
         cmd
@@ -132,10 +135,17 @@ class ProcessService {
     def getDataFromPanels(def cmd) {
         def processDataList = [];
         cmd.properties.each { key, value ->
-            if (!["class", "cbdService", "errors"].contains(key)) {//} && value){
-                println("${key} : ${value}");
-                processDataList.add(new ProcessData(name: key, value: value));
+           // println("getDataFromPanels start: ${key} : ${value}");
+            if (["class", "cbdService", "errors", "constraints"].contains(key) || value == null){
+                return
             }
+
+            if(["points"].contains(key)){
+                //TODO implementacja logiki dla punktow
+                return;
+            }
+
+            processDataList.add(new ProcessData(name: "${key}", value:"${value ?: ''}"));
         }
         processDataList
     }

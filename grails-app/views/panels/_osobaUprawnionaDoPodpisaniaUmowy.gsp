@@ -5,34 +5,24 @@
             <ul class="table-list centre">
                 <li>
                     <span>
-                        <span>
-                            <select name="reprezentant1Tytul">
-                                <option value="pan">Pan</option>
-                                <option value="pani">Pani</option>
-                            </select>
-                        </span>
+                        <span><g:select name="reprezentant1Tytul" from="['Pan','Pani']" valueMessagePrefix="person.title" value="${data.reprezentant1Tytul}"/></span>
                         <span><g:message code="panel.first.name"/>: </span>
-                        <span><g:textField name="reprezentant1Imie"/></span>
+                        <span><g:textField name="reprezentant1Imie" value="${data.reprezentant1Imie}"/></span>
                     </span>
                     <span>
                         <span><g:message code="panel.last.name"/>: </span>
-                        <span><g:textField name="reprezentant1Nazwisko"/></span>
+                        <span><g:textField name="reprezentant1Nazwisko" value="${data.reprezentant1Nazwisko}"/></span>
                     </span>
                 </li>
                 <li>
                     <span>
-                        <span>
-                            <select name="reprezentant2Tytul">
-                                <option value="pan">Pan</option>
-                                <option value="pani">Pani</option>
-                            </select>
-                        </span>
+                        <span><g:select name="reprezentant2Tytul" from="['Pan','Pani']" valueMessagePrefix="person.title" value="${data.reprezentant2Tytul}"/></span>
                         <span><g:message code="panel.first.name"/>: </span>
-                        <span><g:textField name="reprezentant2Imie"/></span>
+                        <span><g:textField name="reprezentant2Imie" value="${data.reprezentant2Imie}" /></span>
                     </span>
                     <span>
                         <span><g:message code="panel.last.name"/>: </span>
-                        <span><g:textField name="reprezentant2Nazwisko"/></span>
+                        <span><g:textField name="reprezentant2Nazwisko" value="${data.reprezentant2Nazwisko}" /></span>
                     </span>
                 </li>
             </ul>

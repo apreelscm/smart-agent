@@ -4,18 +4,13 @@
         <div class="centre" style="text-align: center; padding-top: 20px; width: 750px">
             <ul class="table-list centre">
                 <li>
-                    <span>
-                        <select name="pozyskujacyTytul">
-                            <option value="pan">Pan</option>
-                            <option value="pani">Pani</option>
-                        </select>
-                    </span>
+                    <span><g:select name="pozyskujacyTytul" from="['Pan','Pani']" valueMessagePrefix="person.title" value="${data.pozyskujacyTytul}"/></span>
                     <span><g:message code="panel.first.name"/>: </span>
-                    <span><g:textField name="pozyskujacyImie"  style="width: 120px"/></span>
+                    <span><g:textField name="pozyskujacyImie" value="${data.pozyskujacyImie}" style="width: 120px"/></span>
                     <span><g:message code="panel.last.name"/>: </span>
-                    <span><g:textField name="pozyskujacyNazwisko"/></span>
+                    <span><g:textField name="pozyskujacyNazwisko" value="${data.pozyskujacyNazwisko}"/></span>
                     <span><g:message code="panel.number"/>: </span>
-                    <span><g:textField name="pozyskujacyNumer" style="width: 100px"/></span>
+                    <span><g:textField name="pozyskujacyNumer" value="${data.pozyskujacyNumer}" style="width: 100px"/></span>
                 </li>
             </ul>
         </div>
