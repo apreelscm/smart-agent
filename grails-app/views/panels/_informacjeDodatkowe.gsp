@@ -6,29 +6,27 @@
                     <li>
                         <span class="align-left"><g:message code="panel.legal.form"/></span>
                         <span>
-                            <select name="legalForm" id="legalForm" style="width: 200px;">
-                                <option value="lfEmpty"></option>
-                                <option value="lfSa">Spółka akcyjna</option>
-                                <option value="lfSzoo">Spółka z o.o.</option>
-                                <option value="lfSc">Spółka cywilna</option>
-                                <option value="lfOf">Osoba fizyczna</option>
-                                <option value="lfSk">Spółka komandytowa</option>
-                            </select>
+                            <g:select name="dzialalnoscForma"
+                                      from="['', 'Spółka akcyjna', 'Spółka z o.o.', 'Spółka cywilna', 'Osoba fizyczna', 'Spółka komandytowa']"
+                                      keys="['', 'spolka_akcyjna', 'spolka_zoo', 'spolka_cywilna', 'osoba_fizyczna', 'spolka_komandytowa']"
+                                      value="${data.dzialalnoscForma}"
+                                      style="width: 200px;"/>
                         </span>
                         <span><g:message code="panel.other"/></span>
-                        <span class="align-right"><g:textField name="legalFormOther" style="width: 70px;"/></span>
+                        <span class="align-right"><g:textField name="dzialalnoscFormaInna" value="${data.dzialalnoscFormaInna}" style="width: 70px;"/></span>
                     </li>
                     <li>
                         <span class="align-left"><g:message code="panel.document"/></span>
                         <span>
-                            <select name="aIDocument" id="aIDocument" style="width: 200px;" disabled="disabled">
-                                <option value="docEmpty"></option>
-                                <option value="docKRS">KRS</option>
-                                <option value="docEwidencja">Wpis do ewidencji</option>
-                            </select>
+                            <g:select name="dzialalnoscDokument"
+                                      from="['', 'KRS', 'Wpis do ewidencji']"
+                                      keys="['', 'krs', 'ewidencja']"
+                                      value="${data.dzialalnoscDokument}"
+                                      style="width: 200px;"
+                                      disabled="disabled"/>
                         </span>
                         <span><g:message code="panel.other"/></span>
-                        <span class="align-right"><g:textField name="docOther" style="width: 70px;"/></span>
+                        <span class="align-right"><g:textField name="dzialalnoscDokumentInny" value="${data.dzialalnoscDokumentInny}" style="width: 70px;"/></span>
                     </li>
                 </ul>
             </div>
@@ -37,45 +35,45 @@
 
 <r:script>
     jQuery(document).ready(function() {
-        jQuery('#legalForm').change(function(){
+        jQuery('#dzialalnoscForma').change(function(){
 
-            var result = jQuery("#legalForm option:selected").val();
+            var result = jQuery("#dzialalnoscForma option:selected").val();
             switch(result){
-                case 'lfEmpty':
-                    selectDoc('docEmpty');
+                case '':
+                    selectDoc('');
                     clearAndDisableOtherFields(false, false);
                     break;
-                case 'lfSa':
-                    selectDoc('docKRS');
+                case 'spolka_akcyjna':
+                    selectDoc('krs');
                     clearAndDisableOtherFields(true, true);
                     break;
-                case 'lfSzoo':
-                    selectDoc('docKRS');
+                case 'spolka_zoo':
+                    selectDoc('krs');
                     clearAndDisableOtherFields(true, true);
                     break;
-                case 'lfSc':
-                    selectDoc('docKRS');
+                case 'spolka_cywilna':
+                    selectDoc('krs');
                     clearAndDisableOtherFields(true, true);
                     break;
-                case 'lfOf':
-                    selectDoc('docEwidencja');
+                case 'osoba_fizyczna':
+                    selectDoc('ewidencja');
                     clearAndDisableOtherFields(true, true);
                     break;
-                case 'lfSk':
-                    selectDoc('docKRS');
+                case 'spolka_komandytowa':
+                    selectDoc('krs');
                     clearAndDisableOtherFields();
                     break;
             }
 
             function selectDoc(value){
-                jQuery('[name=aIDocument] option').filter(function() {
+                jQuery('[name=dzialalnoscDokument] option').filter(function() {
                     return (jQuery(this).val() == value);
                 }).prop('selected', true);
             }
 
             function clearAndDisableOtherFields(clear, disable){
-                var f = jQuery("#legalFormOther");
-                var d = jQuery("#docOther");
+                var f = jQuery("#dzialalnoscFormaInna");
+                var d = jQuery("#dzialalnoscDokumentInny");
                 if (clear){
                     f.val("");
                     d.val("");

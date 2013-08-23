@@ -3,20 +3,17 @@
         <div class="belka-glowna"><g:message code="panel.service.title"/></div>
         <div class="centre" style="text-align: center; padding-top: 20px; width: 750px">
             <ul class="table-list centre">
-                <li>
-                    <span class="align-left"><label><input type="radio" name="obslugaTyp" id="prestige" /> <g:message code="panel.service.prestige.name"/></label></span>
-                </li>
-                <li>
-                    <span class="align-left"><label><input type="radio" name="obslugaTyp" id="comfort" /> <g:message code="panel.service.comfort.name"/></label></span>
-                </li>
-                <li>
-                    <span class="align-left"><label><input type="radio" name="obslugaTyp" id="economic" /> <g:message code="panel.service.economic.name"/></label></span>
-                </li>
+                <g:radioGroup name="obslugaTyp"
+                              labels="['panel.service.prestige.name','panel.service.comfort.name', 'panel.service.economic.name']"
+                              values="['prestige', 'comfort', 'economic']"
+                              value="${data.obslugaTyp}">
+                    <li><span class="align-left"><label> ${it.radio} <g:message code="${it.label}"/></label></span></li>
+                </g:radioGroup>
             </ul>
             <ul table-list>
                 <li id="servicePayment">
                     <span>
-                        <span><g:message code="panel.monthly.payment"/> <g:textField name="obslugaEkonomicznyCena" style="width: 150px"/> <g:message code="panel.polish.currency"/></span>
+                        <span><g:message code="panel.monthly.payment"/> <g:textField name="obslugaEkonomicznyCena" value="${data.obslugaEkonomicznyCena}" style="width: 150px"/> <g:message code="panel.polish.currency"/></span>
                     </span>
                 </li>
             </ul>
@@ -29,11 +26,15 @@
 <r:script>
     jQuery(document).ready(function() {
         var servicePayment = jQuery('#servicePayment');
-        servicePayment.hide();
-        jQuery('input[name="obslugaTyp"]').change(function(){
-            if (jQuery("#prestige").attr("checked")){
+
+        if (jQuery('input[name="obslugaTyp"]:checked').val() != 'economic'){
+            servicePayment.hide();
+        };
+
+        jQuery('input[name="obslugaTyp"]').change(function(e){
+            if (e.target.value == 'prestige'){
                 servicePayment.hide();
-            } else if (jQuery("#comfort").attr("checked")){
+            } else if (e.target.value == 'comfort'){
                 servicePayment.hide();
             } else {
                 servicePayment.show();

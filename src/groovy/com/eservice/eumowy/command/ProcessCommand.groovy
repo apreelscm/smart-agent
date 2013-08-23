@@ -28,7 +28,8 @@ class ProcessCommand implements Serializable{
 //    aneksDoUmowyNajmuZestawuPos - FINISH
     Date dataPodpisaniaAneksuPOZ
 
-//    aneksDoUmowyPrepaid
+//    aneksDoUmowyPrepaid - FINISH (ale trzeba zobaczyc w dokumentach czy jest dobrze wpisany)
+    Date dataPodpisaniaAneksuPrepaid
 
 //    czasObowiazywaniaUmowy - FINISH
     String umowaCzas //TODO -  MOZLIWE, ze pdfach jest to umowaOzn, umowaNieOzn
@@ -44,6 +45,25 @@ class ProcessCommand implements Serializable{
     String akceptantRegon
 
 //    daneDoWydruku
+    String wydrukNazwaPunktu
+    String wydrukNazwaDoWyszukwarki
+
+    String wydrukUlicaTytul
+    String wydrukUlica
+    String wydrukNrDomu
+    String wydrukNrMieszkania
+
+    String wydrukMiasto
+    String wydrukKodPocztowy
+    String wydrukPoczta
+
+    String wydrukLinia1
+    String wydrukLinia2
+
+
+
+
+
 //    danePunktu
 //    dcc - FINISH
     BigDecimal oplataVISA
@@ -54,6 +74,7 @@ class ProcessCommand implements Serializable{
     BigDecimal oplataMasteroPr
 
 //    dccZakresUruchomienia
+
 
 //    deklaracjeAkceptanta - FINISH
     String informacjaHandlowa
@@ -93,13 +114,18 @@ class ProcessCommand implements Serializable{
 
 //    funkcjeTerminala
 //    ifplus - FINISH (ale zmiany w dokumentach)
-    Double ifOplataVISA
-    Double ifOplataMasterCard
-    Double ifOplataDinersClub
-    Double ifOplataIKO
-    Double ifOplataPKOPB
+    BigDecimal ifOplataVISA
+    BigDecimal ifOplataMasterCard
+    BigDecimal ifOplataDinersClub
+    BigDecimal ifOplataIKO
+    BigDecimal ifOplataPKOPB
 
-//    informacjeDodatkowe
+//    informacjeDodatkowe - FINISH
+    String dzialalnoscForma
+    String dzialalnoscFormaInna
+    String dzialalnoscDokument
+    String dzialalnoscDokumentInny
+
 //    informacjeTechniczne
 
 //    okresLojalnosciowy
@@ -107,6 +133,7 @@ class ProcessCommand implements Serializable{
 
 //    opieka
 //    oplatyDCC
+    BigDecimal oplataZaPlatnoscWInnejWalucie
 //    osobaDoKontaktu
     String kontaktTytul
     String kontaktImie
@@ -258,8 +285,7 @@ class ProcessCommand implements Serializable{
 //    TODO - w pdf uzywamy pol: handel, uslugi (checkboxy)
 //    TODO - co to sa za pola: MCC, szczegolowyRodzajDzialalnosciWPraktyce ??
 
-    String scoringWlasnosc
-    ScoringDictionary.Ownership scoringWlasnoscEn = ScoringDictionary.Ownership.RENT
+    String scoringWlasnosc = "1"
 
 //    TODO - w pdf uzywamy pol: wlasnosc, wynajem (checkboxy)
 
@@ -298,7 +324,10 @@ class ProcessCommand implements Serializable{
     Boolean scoringStanZadbany
 //    TODO - w pdf stanZadbany
 
-    List<String> scoringWazneDane
+    Boolean scoringSprzedazTowarowEkskluzywnych
+    Boolean scoringPonad50ProcentObrotowWNocy
+    Boolean scoringRuchTurystycznyPrzygraniczny
+    Boolean scoringUslugiPlatneZGory
 //    TODO - w pdf sprzedazTowarowEkskluzywnych, ponad50ProcentObrotowWNocy, ruchTurystycznyPrzygraniczny, uslugiPlatneZGory
 
     String scoringCzestoscTransakcji
@@ -307,14 +336,14 @@ class ProcessCommand implements Serializable{
     String scoringIloscTransakcji
 //    TODO - w pdf od0do4, od5do10, powyzej10
 
-    String scoringDochodowosc
+    BigDecimal scoringDochodowosc
     String scoringDeklaracjaFinansowa
 //    TODO - w pdf wartosciWlasciwe, wartosciDeklarowane
 
-    Double scoringDeklaracjaFinansowaObrotOgolem
-    Double scoringDeklaracjaFinansowaObrotNaKarty
-    Double scoringDeklaracjaFinansowaSredniObrot
-    Double scoringDeklaracjaFinansowaSredniaTransakcja
+    BigDecimal scoringDeklaracjaFinansowaObrotOgolem
+    BigDecimal scoringDeklaracjaFinansowaObrotNaKarty
+    BigDecimal scoringDeklaracjaFinansowaSredniObrot
+    BigDecimal scoringDeklaracjaFinansowaSredniaTransakcja
 
 //    serwisEkonomiczny - FINISH
 //    serwisKomfort - FINISH
@@ -339,7 +368,6 @@ class ProcessCommand implements Serializable{
     Date dataUmowy
     String miejsceUmowy //nie uzywane w pdf
 
-//    uwagi
 //    wyborDzialania
 //    wykazPunktowAkceptujacychKartyPlatnicze
 //    zestawPos
@@ -348,17 +376,22 @@ class ProcessCommand implements Serializable{
 
 //    serwis - FINISH
     String obslugaTyp
-    Double obslugaEkonomicznyCena
+    BigDecimal obslugaEkonomicznyCena
     //TODO - w pdf wykorzystujemy obsugaPrestiz, obslugaKomfort, obslugaEkonomiczny (checkboxy)
 
 //    rachunekBankowyKlienta
     String numerRachunkuBankowego
-    String nazwaBanku
+    String bank
 
 //    oplataDCCZaUruchomienie
+    //TODO - to w pdfach sie nazywa inaczej - nie wiem jak...
+    BigDecimal oplataZaUruchomienieDCC
+
 //    liczbaMiesiecyZwolnieniaZNajmu
 
     String nip
+
+//    uwagi
     String notes
 
     transient Process process

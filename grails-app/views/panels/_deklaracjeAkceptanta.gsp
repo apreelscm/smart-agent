@@ -9,8 +9,12 @@
                 <ul class="table-list centre">
                     <li>
                         <span>
-                            <span class="align-left"><label><input type="radio" name="informacjaHandlowa"/> <g:message code="panel.agree"/></label></span>
-                            <span class="align-left"><label><input type="radio" name="informacjaHandlowa"/> <g:message code="panel.dont.agree"/></label></span>
+                            <g:radioGroup name="informacjaHandlowa"
+                                          labels="['panel.agree','panel.dont.agree']"
+                                          values="['tak', 'nie']"
+                                          value="${data.informacjaHandlowa}">
+                                <span class="align-left"><label> ${it.radio} <g:message code="${it.label}"/></label></span>
+                            </g:radioGroup>
                         </span>
                     </li>
                 </ul>

@@ -27,10 +27,13 @@ class PanelMockService {
     }
 
     def getAneksDoUmowyPrepaid(ProcessCommand cmd) {
-
+        cmd.dataPodpisaniaAneksuPrepaid = new Date()
     }
 
     def getCzasObowiazywaniaUmowy(ProcessCommand cmd) {
+        cmd.umowaCzas =  "nieoznaczony" //TODO -  MOZLIWE, ze pdfach jest to umowaOzn, umowaNieOzn
+        cmd.umowaOznOd = new Date()
+        cmd.umowaOznDo = new Date()
 
     }
 
@@ -41,7 +44,20 @@ class PanelMockService {
     }
 
     def getDaneDoWydruku(ProcessCommand cmd) {
+        cmd.wydrukNazwaPunktu = "PHU \"U Basi\""
+        cmd.wydrukNazwaDoWyszukwarki = "U Basi"
 
+        cmd.wydrukUlicaTytul = "Ulica"
+        cmd.wydrukUlica = "Kwiatowa"
+        cmd.wydrukNrDomu = "34"
+        cmd.wydrukNrMieszkania = "123b"
+
+        cmd.wydrukMiasto = "Płock"
+        cmd.wydrukKodPocztowy = "02-024"
+        cmd.wydrukPoczta = "Olsztyn"
+
+        cmd.wydrukLinia1 = "Dziekujemy za zakupy"
+        cmd.wydrukLinia2 = "Zapraszamy ponownie"
     }
 
     def getDanePos(ProcessCommand cmd) {
@@ -66,7 +82,7 @@ class PanelMockService {
     }
 
     def getDeklaracjeAkceptanta(ProcessCommand cmd) {
-
+        cmd.informacjaHandlowa = "nie"
     }
 
     def getDodajPos(ProcessCommand cmd) {
@@ -109,7 +125,10 @@ class PanelMockService {
     }
 
     def getFormaDoladowania(ProcessCommand cmd) {
-
+        cmd.doladowania_tp = true
+        cmd.doladowania_tk = false
+        cmd.srednia_sprzedaz_doladowan = 123
+        cmd.srednia_sprzedaz_doladowan_slownie = "sto dwadzieścia trzy"
     }
 
     def getFunkcjeTerminala(ProcessCommand cmd) {
@@ -117,15 +136,18 @@ class PanelMockService {
     }
 
     def getIfplus(ProcessCommand cmd) {
-        cmd.ifOplataVISA = 0.34
-        cmd.ifOplataMasterCard = 1.34
-        cmd.ifOplataDinersClub = 2.34
-        cmd.ifOplataIKO = 3.34
-        cmd.ifOplataPKOPB = 4.43
+        cmd.ifOplataVISA = new BigDecimal("0.34")
+        cmd.ifOplataMasterCard = new BigDecimal("1.34")
+        cmd.ifOplataDinersClub = new BigDecimal("2.34")
+        cmd.ifOplataIKO = new BigDecimal("3.34")
+        cmd.ifOplataPKOPB = new BigDecimal("4.43")
     }
 
     def getInformacjeDodatkowe(ProcessCommand cmd) {
-
+        cmd.dzialalnoscForma = "spolka_zoo"
+        cmd.dzialalnoscFormaInna = "Na czarno"
+        cmd.dzialalnoscDokument = "krs"
+        cmd.dzialalnoscDokumentInny = "lewe papiery"
     }
 
     def getInformacjeTechniczne(ProcessCommand cmd) {
@@ -141,11 +163,11 @@ class PanelMockService {
     }
 
     def getOplataDCCZaUruchomienie(ProcessCommand cmd) {
-
+        cmd.oplataZaUruchomienieDCC = new BigDecimal("25.78")
     }
 
     def getOplatyDCC(ProcessCommand cmd) {
-
+        cmd.oplataZaPlatnoscWInnejWalucie = new BigDecimal("345.67")
     }
 
     def getOsobaDoKontaktu(ProcessCommand cmd) {
@@ -301,27 +323,75 @@ class PanelMockService {
     }
 
     def getRachunekBankowyKlienta(ProcessCommand cmd) {
-
+        cmd.numerRachunkuBankowego = "11 1160 2202 0000 0001 9389 8247"
+        cmd.bank = "3"
     }
 
     def getScoring(ProcessCommand cmd) {
 
+        cmd.scoringDzialalnosc = "1"
+
+        cmd.scoringIloscTransakcji = 2
+
+        cmd.scoringCzestoscTransakcji = 4
+
+        cmd.scoringOtwartyZamkniety = "nieczynne"
+        cmd.scoringStanZadbany = true
+
+        cmd.scoringWielkoscMiejscowosci = "4"
+
+        cmd.scoringLokalizacjaPunktu = "centrum_miasta"
+        cmd.scoringTypPunktu = "inny"
+        cmd.scoringTypPunktuInny = "butik"
+
+        cmd.scoringWielkoscPunktu = "3"
+
+        cmd.scoringAkceptacja = "tak"
+
+        cmd.scoringMonitoring = "tak"
+
+        cmd.scoringDzialalnoscCzas = "2"
+
+        cmd.scoringCharakterystyka = "inny"
+        cmd.scoringCharakterystykaInna = "kwiaciarnia"
+
+        cmd.scoringKoncesja = "tak"
+        cmd.rodzajZezwolenia = "Produkcja bimbru"
+
+        cmd.scoringWlasnosc = "1"
+
+        cmd.scoringDzialalnoscCzas = "2"
+
+        cmd.scoringSprzedazTowarowEkskluzywnych = true
+        cmd.scoringPonad50ProcentObrotowWNocy = true
+        cmd.scoringRuchTurystycznyPrzygraniczny = true
+        cmd.scoringUslugiPlatneZGory = true
+
+        cmd.scoringDochodowosc = new BigDecimal("500")
+
+        cmd.scoringDeklaracjaFinansowa = "wlasciwe"
+        cmd.scoringDeklaracjaFinansowaObrotOgolem = new BigDecimal("23.50")
+        cmd.scoringDeklaracjaFinansowaObrotNaKarty = new BigDecimal("12.45")
+        cmd.scoringDeklaracjaFinansowaSredniObrot = new BigDecimal("10.45")
+        cmd.scoringDeklaracjaFinansowaSredniaTransakcja = new BigDecimal("3.45")
+
     }
 
     def getSerwis(ProcessCommand cmd) {
-
+        cmd.obslugaTyp = "economic"
+        cmd.obslugaEkonomicznyCena = new BigDecimal("123.50")
     }
 
     def getSerwisEkonomiczny(ProcessCommand cmd) {
-
+        //korzysta z pola cmd.obslugaEkonomicznyCena z getSerwis
     }
 
     def getSerwisKomfort(ProcessCommand cmd) {
-
+        //puste
     }
 
     def getSerwisPrzestiz(ProcessCommand cmd) {
-
+        //puste
     }
 
     def getSiedzibaAkceptanta(ProcessCommand cmd) {
@@ -345,7 +415,7 @@ class PanelMockService {
     }
 
     def getUwagi(ProcessCommand cmd) {
-        cmd.notes = "";
+        cmd.notes = "Ala ma kota";
     }
 
     def getWykazPunktowAkceptujacychKartyPlatnicze(ProcessCommand cmd) {

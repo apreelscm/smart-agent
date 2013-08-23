@@ -15,6 +15,7 @@ class DictionaryService {
 
     public static final def GET_ULICA_COMBOBOX = "getUlicaComboBox"
     public static final def GET_PAN_PANI = "getPanPaniComboBox"
+    public static final def GET_BANK = "getBank"
 
     @Cacheable(value="getUlicaComboBox")
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_UNCOMMITTED, readOnly = true)
@@ -29,4 +30,17 @@ class DictionaryService {
         dictionary.put(GET_PAN_PANI, cbdDAO.selectMany(DICTIONARY_PATH + GET_PAN_PANI));
         return dictionary[GET_PAN_PANI]
     }
+
+//    @Cacheable(value="getBank")
+//    @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_UNCOMMITTED, readOnly = true)
+//    def getBankComboBox() {
+//        dictionary.put(GET_BANK, cbdDAO.selectMany(DICTIONARY_PATH + GET_BANK));
+//        return dictionary[GET_BANK]
+//    }
+
+    def getBankComboBox() {
+        //dictionary.put(GET_BANK, cbdDAO.selectMany(DICTIONARY_PATH + GET_BANK));
+        return [[klucz: "1", wartosc: "PKO PB"], [klucz: "2", wartosc: "Alior Bank"], [klucz: "3", wartosc: "Millenium Bank"], [klucz: "4", wartosc: "GE Bank"]]
+    }
+
 }

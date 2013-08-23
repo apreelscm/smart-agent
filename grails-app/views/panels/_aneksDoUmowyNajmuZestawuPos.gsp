@@ -5,7 +5,7 @@
             <ul class="table-list centre">
                 <li>
                     <span class="align-right"><g:message code="panel.aggrement.annex.day"/></span>
-                    <span><g:textField name="dataPodpisaniaAneksuPOZ" value="${data.dataPodpisaniaAneksuPOZ}" readonly="true" style="width: 120px;"/></span>
+                    <span><g:textField name="dataPodpisaniaAneksuPOZ" value="${formatDate(format:'yyyy-MM-dd',date:data.dataPodpisaniaAneksuPOZ)}" readonly="true" style="width: 120px;"/></span>
                 </li>
             </ul>
         </div>

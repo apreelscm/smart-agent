@@ -49,7 +49,7 @@
                               value="${data.scoringKoncesja}">
                     <p><label> ${it.radio} <g:message code="${it.label}"/></label></p>
                 </g:radioGroup>
-                <p><g:message code="panel.concession.kind"/> <g:textField name="rodzajZezwolenia" disabled=""/></p>
+                <p><g:message code="panel.concession.kind"/> <g:textField name="rodzajZezwolenia" value="${data.rodzajZezwolenia}"disabled=""/></p>
             </div>
         </fieldset>
         <fieldset class="border">
@@ -64,7 +64,7 @@
                               labels="['panel.point.characteristic.salon','panel.point.characteristic.shop', 'panel.point.characteristic.stand', 'panel.point.characteristic.petrol.station', 'panel.point.characteristic.other']"
                               values="['salon', 'sklep', 'stoisko', 'stacja_paliw', 'inny']"
                               value="${data.scoringCharakterystyka}">
-                    <p><label> ${it.radio} <g:message code="${it.label}"/></label><g:if test="${it.label == 'panel.point.characteristic.other'}"><g:textField name="scoringCharakterystykaInna" style="width: 300px" disabled=""/></g:if></p>
+                    <p><label> ${it.radio} <g:message code="${it.label}"/></label><g:if test="${it.label == 'panel.point.characteristic.other'}"><g:textField name="scoringCharakterystykaInna" value="${data.scoringCharakterystykaInna}" style="width: 300px" disabled=""/></g:if></p>
                 </g:radioGroup>
             </div>
         </fieldset>
@@ -118,7 +118,7 @@
                 %{--<p><label><input type="radio" name="scoringLokalizacjaPunktu" value="peryferia miasta"/> <g:message code="panel.point.localization.periphery"/></label></p>--}%
                 <g:radioGroup name="scoringLokalizacjaPunktu"
                               labels="['panel.point.localization.cruising.route','panel.point.localization.town', 'panel.point.localization.periphery']"
-                              values="['trasa_rzelotowa', 'centrum_miasta', 'peryferia_miasta']"
+                              values="['trasa_przelotowa', 'centrum_miasta', 'peryferia_miasta']"
                               value="${data.scoringLokalizacjaPunktu}">
                     <p><label> ${it.radio} <g:message code="${it.label}"/></label></p>
                 </g:radioGroup>
@@ -134,7 +134,7 @@
                               labels="['panel.shopping.center','panel.commercial.pavilions', 'panel.commercial.building', 'panel.settlement', 'panel.market', 'panel.point.characteristic.other']"
                               values="['centrum_handlowe', 'pawilony_handlowe', 'budynek_wolnostojacy', 'osiedle_mieszkaniowe', 'targowisko', 'inny']"
                               value="${data.scoringTypPunktu}">
-                    <p><label> ${it.radio} <g:message code="${it.label}"/></label><g:if test="${it.label == 'panel.point.characteristic.other'}"> <g:textField name="scoringTypPunktuInny" style="width: 300px" disabled=""/></g:if></p>
+                    <p><label> ${it.radio} <g:message code="${it.label}"/></label><g:if test="${it.label == 'panel.point.characteristic.other'}"> <g:textField name="scoringTypPunktuInny" value="${data.scoringTypPunktuInny}" style="width: 300px" disabled=""/></g:if></p>
                 </g:radioGroup>
             </div>
         </fieldset>
@@ -167,16 +167,16 @@
                               value="${data.scoringOtwartyZamkniety}">
                     <p><label> ${it.radio} <g:message code="${it.label}"/></label></p>
                 </g:radioGroup>
-                <p><label><input type="checkbox" name="scoringStanZadbany" value="stan zadbany"/> <g:message code="panel.maintained"/></label></p>
+                <p><label><g:checkBox name="scoringStanZadbany" value="${data.scoringStanZadbany}" /> <g:message code="panel.maintained"/></label></p>
             </div>
         </fieldset>
         <fieldset class="border">
             <legend><g:message code="panel.important.data.title"/></legend>
             <div style="text-align: left">
-                <p><label><input type="checkbox" name="scoringWazneDane" value="sprzedaż towarów luksusowych" /> <g:message code="panel.luxury.goods"/></label></p>
-                <p><label><input type="checkbox" name="scoringWazneDane" value=">50% w nocy" /> <g:message code="panel.nightly.sell"/></label></p>
-                <p><label><input type="checkbox" name="scoringWazneDane" value="ruch turystyczny lub przygraniczny" /> <g:message code="panel.tourism"/></label></p>
-                <p><label><input type="checkbox" name="scoringWazneDane" value="usługi płatne z góry (zaliczki)" /> <g:message code="panel.instalment"/></label></p>
+                <p><label><g:checkBox name="scoringSprzedazTowarowEkskluzywnych" value="${data.scoringSprzedazTowarowEkskluzywnych}" /> <g:message code="panel.luxury.goods"/></label></p>
+                <p><label><g:checkBox name="scoringPonad50ProcentObrotowWNocy" value="${data.scoringPonad50ProcentObrotowWNocy}" /> <g:message code="panel.nightly.sell"/></label></p>
+                <p><label><g:checkBox name="scoringRuchTurystycznyPrzygraniczny" value="${data.scoringRuchTurystycznyPrzygraniczny}" /> <g:message code="panel.tourism"/></label></p>
+                <p><label><g:checkBox name="scoringUslugiPlatneZGory" value="${data.scoringUslugiPlatneZGory}" /> <g:message code="panel.instalment"/></label></p>
             </div>
         </fieldset>
         <fieldset class="border">
@@ -214,7 +214,7 @@
             <ul class="table-list">
                 <li>
                     <span><g:message code="panel.profitability.calc"/></span>
-                    <span><g:textField name="scoringDochodowosc" style="width: 100px"/> <g:message code="panel.polish.currency"/></span>
+                    <span><g:textField name="scoringDochodowosc" value="${data.scoringDochodowosc}" style="width: 100px"/> <g:message code="panel.polish.currency"/></span>
                 </li>
             </ul>
         </fieldset>
@@ -233,19 +233,19 @@
                 </li>
                 <li>
                     <span class="align-left"><g:message code="panel.monthly.circulation.overall"/></span>
-                    <span><g:textField name="scoringDeklaracjaFinansowaObrotOgolem" style="width: 100px"/> <g:message code="panel.polish.currency"/></span>
+                    <span><g:textField name="scoringDeklaracjaFinansowaObrotOgolem" value="${data.scoringDeklaracjaFinansowaObrotOgolem}" style="width: 100px"/> <g:message code="panel.polish.currency"/></span>
                 </li>
                 <li>
                     <span class="align-left"><g:message code="panel.monthly.circulation.cards"/></span>
-                    <span><g:textField name="scoringDeklaracjaFinansowaObrotNaKarty" style="width: 100px"/> <g:message code="panel.polish.currency"/></span>
+                    <span><g:textField name="scoringDeklaracjaFinansowaObrotNaKarty" value="${data.scoringDeklaracjaFinansowaObrotNaKarty}" style="width: 100px"/> <g:message code="panel.polish.currency"/></span>
                 </li>
                 <li>
                     <span class="align-left"><g:message code="panel.average.monthly.circulation.per.point"/></span>
-                    <span><g:textField name="scoringDeklaracjaFinansowaSredniObrot" style="width: 100px"/> <g:message code="panel.polish.currency"/></span>
+                    <span><g:textField name="scoringDeklaracjaFinansowaSredniObrot" value="${data.scoringDeklaracjaFinansowaSredniObrot}"style="width: 100px"/> <g:message code="panel.polish.currency"/></span>
                 </li>
                 <li>
                     <span class="align-left"><g:message code="panel.average.transaction.count"/></span>
-                    <span><g:textField name="scoringDeklaracjaFinansowaSredniaTransakcja" style="width: 100px"/> <g:message code="panel.polish.currency"/></span>
+                    <span><g:textField name="scoringDeklaracjaFinansowaSredniaTransakcja" value="${data.scoringDeklaracjaFinansowaSredniaTransakcja}" style="width: 100px"/> <g:message code="panel.polish.currency"/></span>
                 </li>
             </ul>
         </fieldset>
