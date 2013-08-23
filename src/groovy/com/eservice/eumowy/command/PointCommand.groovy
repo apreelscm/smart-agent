@@ -5,7 +5,7 @@ package com.eservice.eumowy.command
  * Date: 20.08.13 Time: 10:28
  *
  */
-class PointCommand {
+class PointCommand implements Serializable {
 	
 	BigDecimal phGain
 	BigDecimal businessCare

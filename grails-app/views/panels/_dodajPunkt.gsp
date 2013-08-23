@@ -19,20 +19,40 @@
 	jQuery(document).ready(function() {
 		var panelTemplate = jQuery("#hiddenPanel").html();
 		var panelCount = 0;
+		var panelInternalCount = 1;
+		
 		jQuery("#hiddenPanel").remove();
 			
-		jQuery("#addNewPointButton").on("click", function() {
-			var data = panelTemplate.replace(/%ID%/gm, "points[" + panelCount + "].");
-			jQuery("#addNewPointPanel").prepend(data);
-			setupNewPointPanelHandlers(panelCount-1, panelCount, "points");
-			setupNewPointPanelData("points["+(panelCount-1)+"].", "points["+panelCount+"].");
-			panelCount++;
-			globalPanelCount++;
-			jQuery("#newPointPanelCount").val(panelCount);
+		jQuery("#addNewPointButton").on("click", function(e) {
+			e.preventDefault();
+			
+			if (panelInternalCount < 10) {
+				var data = panelTemplate.replace(/%ID%/gm, "points[" + panelCount + "].");
+				jQuery("#addNewPointPanel").prepend(data);
+				setupNewPointPanelHandlers(panelCount-1, panelCount, "points");
+				setupNewPointPanelData("points["+(panelCount-1)+"].", "points["+panelCount+"].");
+				panelCount++;
+				panelInternalCount++;
+				globalPanelCount++;
+				jQuery("#newPointPanelCount").val(panelCount);
+			}
+			
+			if (panelInternalCount == 10) {
+				jQuery(e.target).prop("disabled", true);
+			}
+			
+			return false;
 		});
 		
 		jQuery("body").on("click", "#removePointButton", function(e) {
+			e.preventDefault();
+			
 			jQuery(e.target).closest("#newPointPanel").remove();
+			panelInternalCount--;
+			
+			if (panelInternalCount < 10) {
+				jQuery("#addNewPointButton").prop("disabled", false);
+			}
 			
 			return false;
 		});

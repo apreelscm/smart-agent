@@ -368,6 +368,12 @@ class ProcessCommand implements Serializable{
     static constraints = {
         notes(nullable: false, blank: true)
     }
+	
+	ProcessCommand() {
+		for(int i = 0; i < 10; i++) {
+			points.add(new PointCommand())
+		}
+	}
 
     /*def initialize(Process process){
 

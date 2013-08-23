@@ -270,7 +270,7 @@ class ActivityController {
         clientSignature{
             onEntry {
                 def processInstance = flow.processInstance
-                flow.totalPagesCount = _processDocumentCreation(processInstance, "electronical")
+                flow.totalPagesCount = _createDocuments(processInstance)
                 processInstance.save(flush: true)
                 flow.processInstance = processInstance
             }
@@ -291,7 +291,6 @@ class ActivityController {
                 }
                 else if (params.processStatus.equals("REJECTED")) {
                     flow.processInstance.status = Process.ProcessStatus.REJECTED
-                    //TODO
                 }
             }.to "clientSignature"
             on("noaccept") {
@@ -303,8 +302,7 @@ class ActivityController {
                 log.info "PARAMS: " + params
                 def processInstance = flow.processInstance
                 _processDocumentCreation(processInstance, params.requestVersion)
-                // SEND EMAILS
-                // IF NOTES FOR COA - SEND THEM
+                //TODO IF NOTES FOR COA - SEND THEM
                 processInstance.status = Process.ProcessStatus.WAITING
                 flow.processInstance = processInstance
 
@@ -403,7 +401,6 @@ class ActivityController {
 				}
 				else if (params.processStatus.equals("REJECTED")) {
 					flow.processInstance.status = Process.ProcessStatus.REJECTED
-					//TODO
 				}
 			}.to "clientSignature"
             on("noaccept") {
@@ -412,8 +409,8 @@ class ActivityController {
             on("submit") {
                 log.info "PARAMS: " + params
                 _processDocumentCreation(flow.processInstance, params.requestVersion)
-                // SEND EMAILS
-                // IF NOTES FOR COA - SEND THEM
+
+                //TODO IF NOTES FOR COA - SEND THEM
 
                 flow.processInstance.status = Process.ProcessStatus.WAITING
             }.to "finish"
@@ -522,24 +519,11 @@ class ActivityController {
         return signatures;
     }
 	
-	def _processDocumentCreation(Process process, String requestVersion)	{
+	def _createDocuments(Process process) {
 		int totalPagesCount = 0
 		process.signatures.each { sig ->
 			log.info "SIGNATURE NAME: " + sig.name + " PDF TEMPLATE PATH: " + sig.templatePath
-			Process.ProcessStatus newStatus;
-			byte[] documentData = null;
-			if ("electronical".equals(requestVersion)) {
-				newStatus = Process.ProcessStatus.WAITING
-				documentData = pdfService.fillPdfFormFromURIWithFaksymile(sig, PdfService.FontType.ARIAL)
-			}
-			else if ("paper".equals(requestVersion)) {
-				newStatus = Process.ProcessStatus.WAIT_FOR_SUBSCRIPTION_PAPER_VERSION
-				documentData = pdfService.fillPdfFormFromURIWithBlackFaksymile(sig, PdfService.FontType.ARIAL)
-			}
-			else if ("templates".equals(requestVersion)) {
-				newStatus = Process.ProcessStatus.WAIT_FOR_SUBSRIPTION
-				documentData = pdfService.fillPdfFormFromURIWithoutFaksymile(sig, PdfService.FontType.ARIAL)
-			}
+			byte[] documentData = pdfService.fillPdfFormFromURIWithFaksymile(sig, PdfService.FontType.ARIAL)
 			
 			int pc = pdfService.getPageCountFromPdf(documentData)
 			totalPagesCount += pc
@@ -549,10 +533,55 @@ class ActivityController {
 			df.save(flush: true)
 			log.info "DF id: " + df.id + " PageCount: " + df.pagesCount
 			process.addToDocuments(df);
-            process.discard();
-			process.status = newStatus
+			process.discard();
 		}
-		
 		return totalPagesCount
+	}
+	
+	def _processDocumentCreation(Process process, String requestVersion)	{
+		
+		Process.ProcessStatus newStatus;
+		if ("electronical".equals(requestVersion)) {
+			//TODO Check signatures and update documents in DB
+			newStatus = Process.ProcessStatus.WAITING
+			
+			process.documents.each { doc ->
+				//TODO Update document content from Data Map
+			}
+			
+			//TODO Send emails
+			
+		}
+		else if ("paper".equals(requestVersion)) {
+			//Documents are already in DB
+			newStatus = Process.ProcessStatus.WAIT_FOR_SUBSCRIPTION_PAPER_VERSION
+			
+			//TODO Send emails
+		}
+		else if ("templates".equals(requestVersion)) {
+			//TODO Documents are already in DB
+			newStatus = Process.ProcessStatus.WAIT_FOR_SUBSRIPTION
+			List<DocumentFile> documentFilesWithBlackFaksymileList = new ArrayList<DocumentFile>()
+			List<DocumentFile> documentFilesWithoutFaksymileList = new ArrayList<DocumentFile>()
+			
+			process.signatures.each { sig ->
+				byte[] documentDataWithBlackFaksymile = pdfService.fillPdfFormFromURIWithBlackFaksymile(sig, PdfService.FontType.ARIAL)
+				byte[] documentDataWithoutFaksymile = pdfService.fillPdfFormFromURIWithoutFaksymile(sig, PdfService.FontType.ARIAL)
+				
+				// Generate documents with black faksymile for PH
+				DocumentFile dfwbf = new DocumentFile(name: sig.templatePath, dateCreated: new Date(), lastUpdated: new Date(), pagesCount: 0)
+				dfwbf.setContent(new DocumentContent(content: documentDataWithBlackFaksymile))
+				dfwbf.discard()
+				documentFilesWithBlackFaksymileList.add(dfwbf)
+				
+				// Generate documents without faksymile for acceptant
+				DocumentFile dfwof = new DocumentFile(name: sig.templatePath, dateCreated: new Date(), lastUpdated: new Date(), pagesCount: 0)
+				dfwof.setContent(new DocumentContent(content: documentDataWithBlackFaksymile))
+				dfwof.discard()
+				documentFilesWithoutFaksymileList.add(dfwof)
+			}
+			
+			//TODO Send emails
+		}
 	}
 }
