@@ -1,6 +1,5 @@
 package com.eservice.eumowy
 
-import com.eservice.eumowy.command.PointCommand
 import com.eservice.eumowy.command.ProcessCommand
 import com.eservice.eumowy.process.DefineActivityCommand
 
@@ -116,16 +115,13 @@ class ActivityController {
             action{
                 def processInstance = flow.processInstance
                 processInstance.save(flush:true)
-                flow.processInstance = processInstance
+                flow.processInstance = null;
             }
-            on("success").to "newFlow"
+            on("success").to "startNewFlow"
         }
 
-        newFlow{
-            action{
-                flow.processInstance = null;
-                redirect(action: "createProcess")
-            }
+        startNewFlow{
+            redirect(action: "createProcess")
         }
     }
 
@@ -152,7 +148,6 @@ class ActivityController {
                 flow.processInstance = processInstance
             }.to "chooseCalc"
             on("back").to "backToStart"
-            on("continue").to "chooseCalc"
         }
 
         chooseCalc{
@@ -253,14 +248,12 @@ class ActivityController {
                 }
 
                 def processInstance = flow.processInstance
+
+                //_createPointDatas(flow.processInstance)
+                //_createPosDatas(flow.processInstance)
+
                 def processDataList = processService.getDataFromPanels(cmd)
 
-                processInstance.data = processDataList;
-                processInstance.save(flush:true);
-
-				//_createPointDatas(flow.processInstance)
-				//_createPosDatas(flow.processInstance)
-				
                 //TODO optymalizacja
                 processInstance.processData?.clear()
                 processDataList.each { data ->
@@ -270,24 +263,19 @@ class ActivityController {
 
                 processInstance.save();
 
-				PointCommand pcmd = new PointCommand(params)
-				log.info pcmd
-				
                 flow.processInstance = processInstance
             }.to "clientSignature"
         }
 
         clientSignature{
             onEntry {
-                flow.totalPagesCount = _processDocumentCreation(flow.processInstance, "electronical")
+                def processInstance = flow.processInstance
+                flow.totalPagesCount = _processDocumentCreation(processInstance, "electronical")
+                processInstance.save(flush: true)
+                flow.processInstance = processInstance
             }
             render(view: "../createProcess/clientSignature", model: [processInstance: flow.processInstance, totalPagesCount: flow.totalPagesCount])
             on("back").to "selectedPanels"
-            on("continue"){
-                def processInstance = flow.processInstance
-                //processInstance.child = new Child(params)
-                flow.processInstance = processInstance
-            }.to "finish"
             on("subscribe").to "clientSignature"
             on("updateProcessStatus") {
                 log.info params
@@ -307,15 +295,18 @@ class ActivityController {
                 }
             }.to "clientSignature"
             on("noaccept") {
-                flow.processInstance.status = Process.ProcessStatus.REJECTED
+                def processInstance = flow.processInstance
+                processInstance.status = Process.ProcessStatus.REJECTED
+                flow.processInstance = processInstance
             }.to "finish"
             on("submit") {
                 log.info "PARAMS: " + params
-                _processDocumentCreation(flow.processInstance, params.requestVersion)
+                def processInstance = flow.processInstance
+                _processDocumentCreation(processInstance, params.requestVersion)
                 // SEND EMAILS
                 // IF NOTES FOR COA - SEND THEM
-
-                flow.processInstance.status = Process.ProcessStatus.WAITING
+                processInstance.status = Process.ProcessStatus.WAITING
+                flow.processInstance = processInstance
 
             }.to "finish"
         }
@@ -552,13 +543,14 @@ class ActivityController {
 			
 			int pc = pdfService.getPageCountFromPdf(documentData)
 			totalPagesCount += pc
+
 			DocumentFile df = new DocumentFile(name: sig.templatePath, dateCreated: new Date(), lastUpdated: new Date(), pagesCount: pc)
 			df.setContent(new DocumentContent(content: documentData))
 			df.save(flush: true)
 			log.info "DF id: " + df.id + " PageCount: " + df.pagesCount
 			process.addToDocuments(df);
+            process.discard();
 			process.status = newStatus
-			process.save(flush: true)
 		}
 		
 		return totalPagesCount
