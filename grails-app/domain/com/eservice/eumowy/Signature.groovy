@@ -22,7 +22,15 @@ class Signature implements Serializable {
     ]
 
     static constraints = {
-        name(unique:true,blank:false)
+       name(unique:true,blank:false)
+       templatePath()
+       subscriptionX()
+       subscriptionY()
+       subscriptionXScale()
+       subscriptionYScale()
+       subscriptionPageNumber()
+       managementSubscription1()
+       managementSubscription2()
     }
 
     static mapping = {

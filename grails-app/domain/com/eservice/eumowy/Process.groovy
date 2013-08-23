@@ -1,6 +1,6 @@
 package com.eservice.eumowy
-import groovy.transform.ToString
 
+import groovy.transform.ToString
 import org.apache.commons.logging.LogFactory
 
 @ToString(includeNames = true,ignoreNulls = true)
@@ -18,28 +18,19 @@ class Process implements Serializable {
     String phSurname
     String calcNumber
     String saleSection // TODO skad ?
+    String notesToCoa
+    String notesToZrd
 
     boolean observed = false;
 
     Client client;
 
-    List<DocumentFile> documents
-    List<AttachmentFile> attachments
-    List<Activity> activities = [];
-    List<Signature> signatures
-    List<Panel> panels
-    List<Subscription> subscriptions
-	List<PointData> points
-	List<PosData> poses
-    List<ProcessData> processData
-
-
     String getStringId() {
         return String.format('%06d',this.id)
     }
-    
+
     String getStringPhNumber(){
-        return Integer.toString(this.phNumber);
+        return phNumber ? Integer.toString(this.phNumber) : '';
     }
 
     static transients = ['stringId']
@@ -49,13 +40,34 @@ class Process implements Serializable {
             attachments:AttachmentFile,
             activities:Activity,
             signatures:Signature,
+            panels: Panel,
             subscriptions:Subscription,
-			points: PointData,
-			poses: PosData,
+            points: PointData,
+            poses: PosData,
             processData: ProcessData
     ]
 
-    static constraints = {}
+    static constraints = {
+        dateCreated(nullable: true)
+        lastUpdated(nullable: true)
+        status(blank:false)
+        phNumber(blank:false)
+        phFirstName(blank:false)
+        phSurname(blank:false)
+        calcNumber(blank:false)
+        saleSection(nullable: true)
+        observed()
+        client()
+        documents(nullable: true)
+        attachments(nullable: true)
+        panels(nullable: true)
+        subscriptions(nullable: true)
+        points(nullable: true)
+        poses(nullable: true)
+        processData(nullable: true)
+        notesToCoa(nullable: true)
+        notesToZrd(nullable: true)
+    }
 
     static mapping = {
         table name: "PROCESS", schema: DomainConsts.SHEMA_NAME
@@ -65,15 +77,14 @@ class Process implements Serializable {
         subscriptions cascade:"all-delete-orphan"
         attachments cascade:"all-delete-orphan"
         documents cascade:"all-delete-orphan"
-		points cascade:"all-delete-orphan"
-		poses cascade:"all-delete-orphan"
+        points cascade:"all-delete-orphan"
+        poses cascade:"all-delete-orphan"
         processData cascade:"all-delete-orphan"
-
     }
 
 
     def beforeInsert() {
-        status = ProcessStatus.NEW;
+        auditLogger.info("Tworzenie procesu [id:${id}]")
     }
 
     def afterInsert() {
@@ -88,8 +99,8 @@ class Process implements Serializable {
         NEW("Nowy"),
         REJECTED("Odrzucony"),
         WAIT_FOR_SUBSRIPTION("Oczekiwanie na podpis"),
-		WAIT_FOR_SUBSCRIPTION_PAPER_VERSION("Oczekiwanie na podpis w wersji papierowej"),
-		SUBSCRIPTIONS_DONE("Złożono podpisy"),
+        WAIT_FOR_SUBSCRIPTION_PAPER_VERSION("Oczekiwanie na podpis w wersji papierowej"),
+        SUBSCRIPTIONS_DONE("Złożono podpisy"),
         WAITING("Oczekujący"),
         EDIT("Edycja"),
         ACCEPTED("Zaakceptowany");

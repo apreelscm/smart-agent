@@ -8,6 +8,7 @@ class DocumentContent implements Serializable {
 	
 	static constraints = {
 		content nullable:false;
+        document()
 	}
 
 	static mapping = {

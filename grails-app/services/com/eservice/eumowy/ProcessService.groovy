@@ -45,7 +45,7 @@ class ProcessService {
             }
 
             if(isNumber(filterPhNo)) {
-                eq("phNumber", Long.valueOf(filterPhNo));
+                eq("phNumber", Integer.valueOf(filterPhNo));
             }
 
             if(isDate(filterDateFrom) && isDate(filterDateTo)) {
@@ -61,12 +61,8 @@ class ProcessService {
     }
 
 
-    static def boolean isNumber(number){
-        try {
-            number && !"".equals(number) && Long.valueOf(number)
-        } catch(Exception e){
-            false
-        }
+    static def boolean isNumber(value){
+        return value?.toString()?.isNumber()
     }
 
     static def boolean isDate(date){
@@ -110,7 +106,7 @@ class ProcessService {
         def cmd = new ProcessCommand();
         cmd.process = process
         cmd.nip = process.client.nip
-        cmd.notes = "";
+        cmd.notes = process.notesToCoa ?: "";
 
         process.panels.each { Panel panel ->
             String panelFunctionName = "get${WordUtils.capitalize(panel.name)}"
@@ -136,11 +132,11 @@ class ProcessService {
         def processDataList = [];
         cmd.properties.each { key, value ->
            // println("getDataFromPanels start: ${key} : ${value}");
-            if (["class", "cbdService", "errors", "constraints"].contains(key) || value == null){
+            if (["class", "cbdService", "errors", "constraints", "notes"].contains(key) || value == null){
                 return
             }
 
-            if(["points"].contains(key)){
+            if(key == "points"){
                 //TODO implementacja logiki dla punktow
                 return;
             }

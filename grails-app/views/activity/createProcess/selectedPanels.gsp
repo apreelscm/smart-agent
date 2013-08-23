@@ -79,8 +79,7 @@
 <section id="create-activity">
 
     <h1 class="ng linia-bottom"><g:message code="selectedPanels.header.title" default="Lista paneli"/></h1>
-
-    <g:form id="panelsForm">
+    <g:form>
         <g:hiddenField name="_eventId_continue" value=""/>
         <g:each var="panel" in="${processInstance.panels}" status="i">
             <g:render template="/panels/${panel.name}"/>

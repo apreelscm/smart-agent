@@ -12,7 +12,7 @@ class Client implements Serializable{
     static constraints = {
         name(unique:true,blank:false)
         nip(unique:true,blank:false)
-        cbdId(unique:true,blank:true)
+        cbdId(unique:true,nullable: true,blank:true)
     }
 
     static mapping = {

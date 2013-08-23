@@ -88,5 +88,7 @@ class PosData {
 	}
 	
     static constraints = {
+        process(nullable:true)
+        point(nullable:true)
     }
 }

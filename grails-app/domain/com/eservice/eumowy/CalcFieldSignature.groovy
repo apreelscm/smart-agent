@@ -7,6 +7,7 @@ class CalcFieldSignature implements Serializable {
     static belongsTo = [signature:Signature]
 
     static constraints = {
+        calcField()
     }
 
     static mapping = {

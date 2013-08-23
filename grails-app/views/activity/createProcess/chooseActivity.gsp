@@ -13,7 +13,7 @@
 
 <body>
 
-<section id="create_chooseActivity">
+<section>
     <h1 class="ng linia-bottom"><g:message code="chooseActivity.header.title" default="Wybór działania"/></h1>
 
     <g:form id="signaturesFormId">
@@ -55,7 +55,6 @@
             <g:link event="back" class="button submit float-left">${message(code:'default.navigation.button.prev', default: 'Wstecz')}</g:link>
             <g:submitButton id="conitnueButton" name="continue" class="button submit float-right"
                             value="${message(code:'default.navigation.button.next', default: 'Dalej')}"/>
-
         </fieldset>
     </g:form>
 </section>

@@ -57,5 +57,6 @@ class PointData {
 	}
 	
     static constraints = {
+        process(nullable:true)
     }
 }

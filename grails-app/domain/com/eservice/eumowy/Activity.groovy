@@ -16,6 +16,7 @@ class Activity implements Serializable {
     static constraints = {
         code(unique:true,blank:false)
         numerPozycji(unique:true,nullable: false)
+        activitySignatures()
     }
 
     static mapping = {

@@ -182,13 +182,13 @@ class CbdService {
 
     def findCalculatorIdByNipMock(def kln_id) {
         if(kln_id == "1234567819"){
-            return "11111";
+            return "1111111111111111111";
         }
         else if(kln_id == "8946001495"){
-            return "88888";
+            return "2222222222222222222";
         }
         else if(kln_id == "7343597142"){
-            return "77777";
+            return "1234567890123456789";
         }
     }
 

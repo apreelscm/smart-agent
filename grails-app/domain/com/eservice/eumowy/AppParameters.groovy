@@ -6,6 +6,7 @@ class AppParameters {
 	
     static constraints = {
 		name(unique: true, blank: false)
+        value(nullable: true)
     }
 	
 	static mapping = {

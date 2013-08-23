@@ -1,7 +1,6 @@
 package com.eservice.eumowy.command
 
 import com.eservice.eumowy.Process
-import com.eservice.eumowy.dictionary.ScoringDictionary
 import grails.validation.Validateable
 
 /**
@@ -399,7 +398,7 @@ class ProcessCommand implements Serializable{
     List<PointCommand> points = [] //  points[n].someProperty
 
     static constraints = {
-        notes(nullable: false, blank: true)
+        notes()
     }
 	
 	ProcessCommand() {

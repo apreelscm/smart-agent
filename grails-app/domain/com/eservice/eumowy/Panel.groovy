@@ -8,9 +8,9 @@ class Panel implements Serializable{
     String name;
     Integer orderNo;
 
-
     static constraints = {
         name(unique:true,blank:false)
+        orderNo()
     }
 
     static mapping = {

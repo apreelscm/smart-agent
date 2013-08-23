@@ -20,7 +20,7 @@ class PanelController {
 
         println("process.panels:"+ process.panels)
 
-        def processCmd =  processService.getDataForPanels(process)
+        def processCmd =  processService.getDataForPanels(process, "notes tmp")
         params.max = Math.min(max ?: 10, 100)
         [panelInstanceList: Panel.list(params), panelInstanceTotal: Panel.count(), data: processCmd]
     }

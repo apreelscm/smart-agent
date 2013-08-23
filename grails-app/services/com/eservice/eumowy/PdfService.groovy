@@ -1,12 +1,11 @@
 package com.eservice.eumowy
 
-import java.awt.image.BufferedImage
-
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.util.PDFImageWriter
 import org.springframework.context.ApplicationContext
-
 import pdfgenerator.PdfGenerator
+
+import java.awt.image.BufferedImage
 
 class PdfService {
 	def appParametersService
@@ -19,7 +18,7 @@ class PdfService {
 	
 	ApplicationContext applicationContext
 	
-	def generateImageFromPDFDocumentFile(List<DocumentFile> documents, String processId, Integer pageNumber) {
+	def generateImageFromPDFDocumentFile(Set<DocumentFile> documents, String processId, Integer pageNumber) {
 		String result = ""
 		log.info documents
 		def data = getDocumentAndPageCountFromGlobalPageNumber(documents, pageNumber)
@@ -72,7 +71,7 @@ class PdfService {
 		return appParametersService.getPdfImageUri()+pdfName+"-"+processId+"-"+pageNumber+".png"
 	}
 	
-	def getDocumentAndPageCountFromGlobalPageNumber(List<DocumentFile> documents, Integer pageNumber) {
+	def getDocumentAndPageCountFromGlobalPageNumber(Set<DocumentFile> documents, Integer pageNumber) {
 		Integer pagesCount = 0
 		
 		for(DocumentFile doc : documents) {

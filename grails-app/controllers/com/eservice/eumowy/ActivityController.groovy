@@ -45,8 +45,7 @@ class ActivityController {
 
                 processInstance.activities = Activity.findAllByCodeInList(cmd.selectedActivities);
                 processInstance.activities*.selectedActivitySignatures = null;
-
-                flow.notesToCOA = cmd.notes;
+                processInstance.notesToCoa = cmd.notes;
                 flow.processInstance = processInstance
             }.to "chooseSubFlow"
             on("error").to "defineActivity"
@@ -95,7 +94,7 @@ class ActivityController {
         /** send email only subflow*/
         emailOnly {
             action{
-                def notes = flow.notes
+                def notes = process.notesToCoa
                 log.info("wysyłanie wiadomości email z uwagami do COA [notes: ${notes}]")
                 try{
                     emailService.sendNotesToCOA(notes)
@@ -113,16 +112,33 @@ class ActivityController {
         /** final operations and process save*/
         finish{
             action{
-                def processInstance = flow.processInstance
-                processInstance.save(flush:true)
+                Process processInstance = flow.processInstance
+
+                if (!processInstance.save(flush:true)){
+                    processInstance.errors.each {
+                        println it
+                    }
+                    return "error"
+                }
+
+                if (processInstance.notesToCoa) {
+                    log.info("wysyłanie wiadomości email z uwagami do COA [notes: ${processInstance.notesToCoa}]")
+                    emailService.sendNotesToCOA(processInstance.notesToCoa)
+                }
+
                 flow.processInstance = null;
             }
-            on("success").to "startNewFlow"
+            on("success").to "beforeRestart"
         }
 
-        startNewFlow{
-            redirect(action: "createProcess")
+        beforeRestart{
+            action {
+                redirect action: "createProcess", controller: "activity"
+            }
+            on("success").to "restartFlow"
         }
+
+        restartFlow()
     }
 
     /**
@@ -130,7 +146,7 @@ class ActivityController {
      * */
     def normalFlow = {
         input {
-            processInstance()
+            processInstance(required: true)
         }
         chooseActivity{
             render(view: "../createProcess/chooseActivity")
@@ -140,10 +156,6 @@ class ActivityController {
                 //SIGNATURES
                 def signatures =  _getSignatures(processInstance.activities)
                 processInstance.signatures = signatures
-
-                //ACTIVE PANELS
-                TreeSet activePanels = _getActivePanels(signatures)
-                processInstance.panels = activePanels.toList();
 
                 flow.processInstance = processInstance
             }.to "chooseCalc"
@@ -155,14 +167,26 @@ class ActivityController {
             on("back").to "chooseActivity"
             on("getCalculator").to "getCalculator"
             on("continue"){
-                def processInstance = flow.processInstance
-                //processInstance.child = new Child(params)
-
+                Process processInstance = flow.processInstance
                 processInstance.calcNumber =  flow.calcNumber
                 processInstance.client =  flow.client
+                processInstance.phNumber = 123456
+                processInstance.phFirstName = "phFirstName"
+                processInstance.phSurname = "phSurname"
+                processInstance.status = Process.ProcessStatus.NEW
 
-                flow.processInstance = processInstance.save()
+                if (!processInstance.save(flush:true)){
+                    println 'stock instance has errors'
+                    processInstance.errors.each {
+                        println it
+                    }
+                    return "error"
+                }
+
+                flow.processInstance = processInstance
+
             }.to "selectedPanels"
+            on("error").to "chooseCalc"
         }
 
         getCalculator {
@@ -234,8 +258,13 @@ class ActivityController {
             onEntry {
                 println "selectedPanels enterview"
                 def processInstance = flow.processInstance;
+
+                //ACTIVE PANELS
+                TreeSet activePanels = _getActivePanels(processInstance.signatures)
+                processInstance.panels = activePanels.toList();
+
                 def processCmd =  processService.getDataForPanels(processInstance)
-                log.info("notes:"+processCmd.notes);
+
                 flow.data = processCmd
             }
             render(view: "../createProcess/selectedPanels")
@@ -248,6 +277,7 @@ class ActivityController {
                 }
 
                 def processInstance = flow.processInstance
+                processInstance.notesToCoa = cmd.notes;
 
                 //_createPointDatas(flow.processInstance)
                 //_createPosDatas(flow.processInstance)
@@ -261,7 +291,7 @@ class ActivityController {
                     processInstance.discard();
                 }
 
-                processInstance.save();
+                //processInstance.save();
 
                 flow.processInstance = processInstance
             }.to "clientSignature"
@@ -270,8 +300,26 @@ class ActivityController {
         clientSignature{
             onEntry {
                 def processInstance = flow.processInstance
-                flow.totalPagesCount = _createDocuments(processInstance)
-                processInstance.save(flush: true)
+
+                def totalPagesCount = 0
+                processInstance.signatures.each { sig ->
+                    log.info "SIGNATURE NAME: " + sig.name + " PDF TEMPLATE PATH: " + sig.templatePath
+                    byte[] documentData = pdfService.fillPdfFormFromURIWithFaksymile(sig, PdfService.FontType.ARIAL)
+
+                    int pc = pdfService.getPageCountFromPdf(documentData)
+                    totalPagesCount += pc
+
+                    DocumentFile df = new DocumentFile(name: sig.templatePath, dateCreated: new Date(), lastUpdated: new Date(), pagesCount: pc)
+                    df.setContent(new DocumentContent(content: documentData))
+                    df.save(flush: true)
+                    log.info "DF id: " + df.id + " PageCount: " + df.pagesCount
+                    processInstance.addToDocuments(df);
+                    processInstance.discard();
+                }
+
+                flow.totalPagesCount = totalPagesCount;
+
+                processInstance.save(flush:true)
                 flow.processInstance = processInstance
             }
             render(view: "../createProcess/clientSignature", model: [processInstance: flow.processInstance, totalPagesCount: flow.totalPagesCount])
@@ -302,12 +350,8 @@ class ActivityController {
                 log.info "PARAMS: " + params
                 def processInstance = flow.processInstance
                 _processDocumentCreation(processInstance, params.requestVersion)
-                
-				ProcessData notesToCoa = flow.processInstance.processDataList.findByName("notes")
-				if (notesToCoa?.value != null) {
-					emailService.sendNotesToCOA(notesToCoa.value)
-				}
-				
+
+
                 processInstance.status = Process.ProcessStatus.WAITING
                 flow.processInstance = processInstance
 
@@ -322,7 +366,7 @@ class ActivityController {
         backToStart()
     }
 
-    /** UZUPELNIJ PODPISY SUBFLOW */
+/** UZUPELNIJ PODPISY SUBFLOW */
     def uzupelnijPodpisyFlow = {
         input {
             processInstance()
@@ -414,12 +458,6 @@ class ActivityController {
             on("submit") {
                 log.info "PARAMS: " + params
                 _processDocumentCreation(flow.processInstance, params.requestVersion)
-
-				ProcessData notesToCoa = flow.processInstance.processDataList.findByName("notes")
-				if (notesToCoa?.value != null) {
-					emailService.sendNotesToCOA(notesToCoa.value)
-				}
-
                 flow.processInstance.status = Process.ProcessStatus.WAITING
             }.to "finish"
         }
@@ -462,7 +500,9 @@ class ActivityController {
 
     def getDocumentPage() {
         def process = Process.get(Integer.valueOf(params.processId));
-        String path = pdfService.generateImageFromPDFDocumentFile(process.documents, params.processId as String, Integer.valueOf(params.pageNumber) as Integer);
+        String path = pdfService.generateImageFromPDFDocumentFile(process.documents,
+                params.processId as String,
+                Integer.valueOf(params.pageNumber) as Integer);
         render(text: path)
     }
 
@@ -478,9 +518,9 @@ class ActivityController {
     }
 
 
-    //--------------
-    //PRIVATE METHODS
-    //--------------
+//--------------
+//PRIVATE METHODS
+//--------------
 
     def  _getActivePanels(def signatures) {
         def orderComparator = [
@@ -526,44 +566,25 @@ class ActivityController {
         }
         return signatures;
     }
-	
-	def _createDocuments(Process process) {
-		int totalPagesCount = 0
-		process.signatures.each { sig ->
-			log.info "SIGNATURE NAME: " + sig.name + " PDF TEMPLATE PATH: " + sig.templatePath
-			byte[] documentData = pdfService.fillPdfFormFromURIWithFaksymile(sig, PdfService.FontType.ARIAL)
-			
-			int pc = pdfService.getPageCountFromPdf(documentData)
-			totalPagesCount += pc
 
-			DocumentFile df = new DocumentFile(name: sig.templatePath, dateCreated: new Date(), lastUpdated: new Date(), pagesCount: pc)
-			df.setContent(new DocumentContent(content: documentData))
-			df.save(flush: true)
-			log.info "DF id: " + df.id + " PageCount: " + df.pagesCount
-			process.addToDocuments(df);
-			process.discard();
-		}
-		return totalPagesCount
-	}
-	
 	def _processDocumentCreation(Process process, String requestVersion)	{
-		
+
 		Process.ProcessStatus newStatus;
 		if ("electronical".equals(requestVersion)) {
 			//TODO Check signatures and update documents in DB
 			newStatus = Process.ProcessStatus.WAITING
-			
+
 			process.documents.each { doc ->
 				//TODO Update document content from Data Map
 			}
-			
+
 			//TODO Send emails
-			
+
 		}
 		else if ("paper".equals(requestVersion)) {
 			//Documents are already in DB
 			newStatus = Process.ProcessStatus.WAIT_FOR_SUBSCRIPTION_PAPER_VERSION
-			
+
 			//TODO Send emails
 		}
 		else if ("templates".equals(requestVersion)) {
@@ -571,24 +592,24 @@ class ActivityController {
 			newStatus = Process.ProcessStatus.WAIT_FOR_SUBSRIPTION
 			List<DocumentFile> documentFilesWithBlackFaksymileList = new ArrayList<DocumentFile>()
 			List<DocumentFile> documentFilesWithoutFaksymileList = new ArrayList<DocumentFile>()
-			
+
 			process.signatures.each { sig ->
 				byte[] documentDataWithBlackFaksymile = pdfService.fillPdfFormFromURIWithBlackFaksymile(sig, PdfService.FontType.ARIAL)
 				byte[] documentDataWithoutFaksymile = pdfService.fillPdfFormFromURIWithoutFaksymile(sig, PdfService.FontType.ARIAL)
-				
+
 				// Generate documents with black faksymile for PH
 				DocumentFile dfwbf = new DocumentFile(name: sig.templatePath, dateCreated: new Date(), lastUpdated: new Date(), pagesCount: 0)
 				dfwbf.setContent(new DocumentContent(content: documentDataWithBlackFaksymile))
 				dfwbf.discard()
 				documentFilesWithBlackFaksymileList.add(dfwbf)
-				
+
 				// Generate documents without faksymile for acceptant
 				DocumentFile dfwof = new DocumentFile(name: sig.templatePath, dateCreated: new Date(), lastUpdated: new Date(), pagesCount: 0)
 				dfwof.setContent(new DocumentContent(content: documentDataWithBlackFaksymile))
 				dfwof.discard()
 				documentFilesWithoutFaksymileList.add(dfwof)
 			}
-			
+
 			//TODO Send emails
 		}
 	}

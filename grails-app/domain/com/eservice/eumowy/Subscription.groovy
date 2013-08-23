@@ -46,7 +46,9 @@ class Subscription implements Serializable {
     static belongsTo = [process:Process]
 
     static constraints = {
-        content(maxSize: 10000)
+        content(blank:false)
+        name(blank:false)
+        surname(blank:false)
     }
 
     static mapping = {

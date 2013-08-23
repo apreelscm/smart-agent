@@ -7,7 +7,7 @@ class AttachmentContent implements Serializable{
     static belongsTo = [attachment:AttachmentFile]
 
     static constraints = {
-        content nullable:false;
+        content nullable:false, blank:false;
     }
 
     static mapping = {
@@ -15,5 +15,4 @@ class AttachmentContent implements Serializable{
         id generator:'sequence', params:[sequence:DomainConsts.SHEMA_NAME+'.ATTACHMENT_CONTENT_SEQ']
         content  sqlType: "blob"
     }
-
 }

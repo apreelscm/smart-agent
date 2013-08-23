@@ -293,6 +293,9 @@
                         </td>
                         <td>
                             <g:submitButton style="width: 100%" id="conitnueButton" name="submit" class="button submit" value="${message(code: 'default.navigation.button.finish', default: 'Zakończ')}"/>
+                        %{-- <g:form>
+                                <g:submitButton style="width: 100%" name="submit" class="button submit" value="test2"/>
+                            </g:form>--}%
                         </td>
                     </tr>
                     </tbody>

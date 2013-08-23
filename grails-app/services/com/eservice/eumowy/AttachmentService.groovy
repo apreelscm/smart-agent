@@ -10,8 +10,6 @@ class AttachmentService {
     }
 
     def getListByProcessId(def id) {
-        assert id != null
-
         def attachmentCriteria = AttachmentFile.createCriteria()
         def searchResult = attachmentCriteria.list{
             process {
@@ -68,12 +66,12 @@ class AttachmentService {
         ufile.extension = fileExtension
         ufile.dateUploaded = new Date(currentTime)
         ufile.downloads = 0
-        ufile.file = new AttachmentContent(attachment:ufile,  content:file.bytes)
+        ufile.file = new AttachmentContent(content:file.bytes)
 
         return ufile;
     }
 
-    def downloadFile(def id, def request, def messageSource) {
+    def download(def id, def request, def messageSource) {
 
         AttachmentFile ufile =  AttachmentFile.get(id)
 

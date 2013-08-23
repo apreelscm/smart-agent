@@ -5,6 +5,7 @@ class ProcessController {
 
     def messageSource
     def attachmentService
+    def documentService
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
@@ -123,36 +124,27 @@ class ProcessController {
         render(template: '../forms/pdf/embedDocument', model:  [pdfDocument: resource(dir:'files', file:documentfile.filename)]);
     }
 
+    def downloadDoc(){
+        DocumentFile file = documentService.download(params.id)
 
-    def downloadDoc(String id){
-        log.info "downloadDoc id = ${id}";
-        def document = DocumentFile.get(Integer.valueOf(id));
-
-        log.info "documentDoc name =  ${document.filename}";
-
-        def fileDoc = new File("web-app\\files\\${document.filename}");
-        log.info fileDoc.absolutePath;
-
-        if(fileDoc.exists()){
-            // force download
-            def fileName = fileDoc.getName();
-            response.setContentType("application/pdf")
-            response.setHeader "Content-disposition", "attachment; filename=\"${fileName}\"";
-            response.outputStream << fileDoc.newInputStream();
-            response.outputStream.flush();
-        }
-    }
-
-    def downloadAttachment(){
-        AttachmentFile ufile = attachmentService.downloadFile( params.id, request , messageSource)
-
-        if(ufile?.file?.content){
+        if(!file?.content?.content){
             return;
         }
 
         response.setContentType("application/octet-stream")
-        response.setHeader("Content-disposition", "${params.contentDisposition}; filename=${ufile.name}")
-        response.outputStream << ufile.file.content
+        response.setHeader("Content-disposition", "${params.contentDisposition}; filename=${file.name}.pdf")
+        response.outputStream << file.content.content
     }
 
+    def downloadAttachment(){
+        AttachmentFile file = attachmentService.download( params.id, request , messageSource)
+
+        if(file?.file?.content){
+            return;
+        }
+
+        response.setContentType("application/octet-stream")
+        response.setHeader("Content-disposition", "${params.contentDisposition}; filename=${file.name}")
+        response.outputStream << file.file.content
+    }
 }

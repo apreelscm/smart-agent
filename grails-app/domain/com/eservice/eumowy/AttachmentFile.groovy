@@ -9,13 +9,10 @@ package com.eservice.eumowy
 class AttachmentFile implements Serializable{
 
     Long fileSize
-    String path
     String name
     String extension
     Date dateUploaded
     Integer downloads
-
-    Process process
 
     static belongsTo = [process:Process]
 
@@ -23,33 +20,18 @@ class AttachmentFile implements Serializable{
 
     static constraints = {
         fileSize(min:0L)
-        path()
         name()
         extension()
-        dateUploaded()
-        downloads()
+        dateUploaded(nullable:true)
+        downloads(nullable: true)
+        process(nullable: true)
+        file()
     }
 
     static mapping = {
         table name: "ATTACHMENT", schema: DomainConsts.SHEMA_NAME
         id generator:'sequence', params:[sequence:DomainConsts.SHEMA_NAME+'.ATTACHMENT_SEQ']
-
         process nullable:false;
         file cascade:"all-delete-orphan"
-    }
-
-
-    def afterDelete() {
-        try {
-            File f = new File(path)
-            if (f.delete()) {
-                log.debug "file [${path}] deleted"
-            } else {
-                log.error "could not delete file: ${file}"
-            }
-        } catch (Exception exp) {
-            log.error "Error deleting file: ${exp.message}"
-            log.error exp
-        }
     }
 }

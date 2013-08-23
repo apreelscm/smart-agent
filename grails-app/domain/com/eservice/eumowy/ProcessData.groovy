@@ -9,13 +9,12 @@ class ProcessData implements Serializable {
     String name
     String value
 
-    Process process
-
     static belongsTo = [process:Process]
 
     static constraints = {
         name(unique:false,blank:false)
-        value(nullable: false,blank:true)
+        value(nullable: true)
+        process(nullable:true)
     }
 
     static mapping = {

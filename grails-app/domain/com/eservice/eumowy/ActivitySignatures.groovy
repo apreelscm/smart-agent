@@ -11,6 +11,9 @@ class ActivitySignatures implements Serializable {
     static belongsTo = [activity:Activity]
 
     static constraints = {
+        mandatory()
+        numberOfList(range: 1..2)
+        signature()
     }
 
     static mapping = {

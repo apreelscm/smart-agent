@@ -51,9 +51,7 @@
                     <label for="filterDateToDF"><g:message code="process.dateTo.label" default="Data do:" /></label>
                     <g:textField id="filterDateToDF" name="filterDateTo" readonly="true" style="width: 70px;" value="${filterDateTo}"/>
                 </div>
-
             </div>
-
 
             <div class="display-inline" style="margin-left: .4em;">
                 <label for="filterObserved"><g:message code="process.observed.label" default="Obserwowany:" /></label>

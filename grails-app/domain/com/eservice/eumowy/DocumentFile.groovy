@@ -13,14 +13,17 @@ class DocumentFile implements Serializable {
     Date lastUpdated
 	Integer pagesCount
 
-    Process process
-
     static belongsTo = [process:Process]
 	
 	static hasOne = [content:DocumentContent]
 
     static constraints = {
         name(unique:false,blank:false)
+        dateCreated(nullable:true)
+        lastUpdated(nullable:true)
+        pagesCount()
+        content()
+        process(nullable:true)
     }
 
     static mapping = {

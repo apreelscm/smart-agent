@@ -75,7 +75,7 @@ environments {
 }
 
 grails.gorm.default.constraints = {
-    '*'(nullable: true)
+    '*'(nullable: false, blank:true)
 }
 
 // log4j configuration
@@ -106,6 +106,10 @@ log4j = {
     //show sql values
   /*  info "org.hibernate.SQL", "org.hibernate.type", "org.codehaus.groovy.grails.orm.hibernate"
     trace 'org.hibernate.type' debug 'org.hibernate.SQL'*/
+
+  //  trace 'org.hibernate.type'
+    info 'org.hibernate.SQL'
+
 
     appenders {
        console name: 'console', layout: pattern(conversionPattern: '%d{dd-MM-yyyy HH:mm:ss,SSS} %5p %c - %m%n')
