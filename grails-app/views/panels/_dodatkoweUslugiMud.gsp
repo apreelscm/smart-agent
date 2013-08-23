@@ -6,7 +6,7 @@
                 <li>
                     <span class="align-left"><g:message code="panel.payment.mud"/></span>
                     <span class="align-left">
-                        <g:textField name="mudCena" style="width: 100px"/> <g:message code="panel.polish.currency"/>
+                        <g:textField name="mudCena" value="${data.mudCena}" style="width: 100px"/> <g:message code="panel.polish.currency"/>
                     </span>
                 </li>
             </ul>

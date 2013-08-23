@@ -6,13 +6,13 @@
                 <li>
                     <span class="align-right"><g:message code="panel.bank.account.number"/></span>
                     <span class="align-left">
-                        <g:textField name="bankAccountNr" style="width: 250px"/>
+                        <g:textField name="numerRachunkuBankowego" style="width: 250px"/>
                     </span>
                 </li>
                 <li>
                     <span class="align-right"><g:message code="panel.bank.name"/></span>
                     <span class="align-left">
-                        <select name="bank" style="width: 250px">
+                        <select name="nazwaBanku" style="width: 250px">
                             <option>BRE Bank</option>
                             <option>Alior Bank</option>
                         </select>

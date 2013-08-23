@@ -1,6 +1,7 @@
 package com.eservice.eumowy.command
 
 import com.eservice.eumowy.Process
+import com.eservice.eumowy.dictionary.ScoringDictionary
 import grails.validation.Validateable
 
 /**
@@ -30,19 +31,28 @@ class ProcessCommand implements Serializable{
 //    aneksDoUmowyPrepaid
 
 //    czasObowiazywaniaUmowy - FINISH
-    String umowaCzas
-    Date umowaPoczatek
-    Date umowaKoniec
+    String umowaCzas //TODO -  MOZLIWE, ze pdfach jest to umowaOzn, umowaNieOzn
+    Date umowaOznOd
+    Date umowaOznDo
+
+
 
 //    daneAkceptanta
     String akceptantNazwaOficjalna
     String akceptantNazwaSieciowa
-    String akceptantNip
+    //String akceptantNip - trzymane we wspolnym polu nip
     String akceptantRegon
 
 //    daneDoWydruku
 //    danePunktu
-//    dcc
+//    dcc - FINISH
+    BigDecimal oplataVISA
+    BigDecimal oplataVISAPr
+    BigDecimal oplataMasterCard
+    BigDecimal oplataMasterCardPr
+    BigDecimal oplataMaestro
+    BigDecimal oplataMasteroPr
+
 //    dccZakresUruchomienia
 
 //    deklaracjeAkceptanta - FINISH
@@ -52,27 +62,27 @@ class ProcessCommand implements Serializable{
 
 //    dodajPunkt
 //    dodatkoweUslugi - FINISH
-    Double oplataZaDzienneZestawienieTransakcji
-    Double oplataZaMiesieczneZestawienieTransakcji
-    Double oplataZaPotwierdzenieWykonaniaPrzelewu
-    Double oplataZaDostarczeniePapieru
-    Double oplataZaZmianeGrafiki
-    Double oplataZaInstalacjePOS
-    Double oplataZaInstalacjeGPRS
-    Double oplataZaUruchomienieWalutyObcej
+    BigDecimal oplataZaDzienneZestawienieTransakcji
+    BigDecimal oplataZaMiesieczneZestawienieTransakcji
+    BigDecimal oplataZaPotwierdzenieWykonaniaPrzelewu
+    BigDecimal oplataZaDostarczeniePapieru
+    BigDecimal oplataZaZmianeGrafiki
+    BigDecimal oplataZaInstalacjePOS
+    BigDecimal oplataZaInstalacjeGPRS
+    BigDecimal oplataZaUruchomienieWalutyObcej
 
 //    dodatkoweUslugi2 - FINISH (ale trzeba jeszcze daty startu pobrac)
-    Double wydrukGrafikiCena
-    Double dzialaniaMatematyczneCena
-    Double tytulPlatnosciCena
-    Double pierwszaSesjaCena
+    BigDecimal wydrukGrafikiCena
+    BigDecimal dzialaniaMatematyczneCena
+    BigDecimal tytulPlatnosciCena
+    BigDecimal pierwszaSesjaCena
 
 //    dodatkoweUslugiMud - FINISH
-    Double mudCena
+    BigDecimal mudCena
 
 //    dodatkoweUslugiUTAIntegracja - FINISH (ale trzeba jeszcze daty startu pobrac)
-    Double weryfikacjaPINCena
-    Double systemKasowyCena
+    BigDecimal weryfikacjaPINCena
+    BigDecimal systemKasowyCena
 
 //    dodatkoweWyposazenie
 //    formaDoladowania - FINISH
@@ -82,12 +92,18 @@ class ProcessCommand implements Serializable{
     String srednia_sprzedaz_doladowan_slownie
 
 //    funkcjeTerminala
-//    ifplus
+//    ifplus - FINISH (ale zmiany w dokumentach)
+    Double ifOplataVISA
+    Double ifOplataMasterCard
+    Double ifOplataDinersClub
+    Double ifOplataIKO
+    Double ifOplataPKOPB
+
 //    informacjeDodatkowe
 //    informacjeTechniczne
 
 //    okresLojalnosciowy
-    Integer okresLojalnosciowy
+    Integer okresLojalnosciowy  //  TODO - czy to jest dobrze????
 
 //    opieka
 //    oplatyDCC
@@ -117,7 +133,103 @@ class ProcessCommand implements Serializable{
     String reprezentant2Nazwisko
     //TODO - w pdf wykorzystujemy reprezentant1 i reprezentant2 przechowujace imie i nazwisko
 
-//    poziomOplatiWarunkiPlatnosciKarty
+//    poziomOplatiWarunkiPlatnosciKarty - FINISH
+    Double card_p_1_1
+    BigDecimal card_f_1_1
+    Double card_p_1_2
+    BigDecimal card_f_1_2
+    Double card_p_1_3
+    BigDecimal card_f_1_3
+
+    Double card_p_2_1
+    BigDecimal card_f_2_1
+    Double card_p_2_2
+    BigDecimal card_f_2_2
+    Double card_p_2_3
+    BigDecimal card_f_2_3
+
+    Double card_p_3_1_1
+    BigDecimal card_f_3_1_1
+    Double card_p_3_1_2
+    BigDecimal card_f_3_1_2
+    Double card_p_3_2_1
+    BigDecimal card_f_3_2_1
+    Double card_p_3_2_2
+    BigDecimal card_f_3_2_2
+
+    Double card_p_4_1
+    BigDecimal card_f_4_1
+    Double card_p_4_2
+    BigDecimal card_f_4_2
+    Double card_p_4_3
+    BigDecimal card_f_4_3
+    Double card_p_4_4
+    BigDecimal card_f_4_4
+
+    Double card_p_5_1
+    BigDecimal card_f_5_1
+    Double card_p_5_2
+    BigDecimal card_f_5_2
+    Double card_p_5_3
+    BigDecimal card_f_5_3
+    Double card_p_5_4
+    BigDecimal card_f_5_4
+
+    Double card_p_6_1_1
+    BigDecimal card_f_6_1_1
+    Double card_p_6_1_2
+    BigDecimal card_f_6_1_2
+    Double card_p_6_1_3
+    BigDecimal card_f_6_1_3
+    Double card_p_6_2_1
+    BigDecimal card_f_6_2_1
+    Double card_p_6_2_2
+    BigDecimal card_f_6_2_2
+    Double card_p_6_2_3
+    BigDecimal card_f_6_2_3
+    Double card_p_6_4_1
+    BigDecimal card_f_6_4_1
+    Double card_p_6_4_2
+    BigDecimal card_f_6_4_2
+    Double card_p_6_4_3
+    BigDecimal card_f_6_4_3
+
+    Double card_p_7_1_1
+    BigDecimal card_f_7_1_1
+    Double card_p_7_1_2
+    BigDecimal card_f_7_1_2
+    Double card_p_7_2_1
+    BigDecimal card_f_7_2_1
+    Double card_p_7_2_2
+    BigDecimal card_f_7_2_2
+    Double card_p_7_3
+    BigDecimal card_f_7_3
+
+    Double card_p_8_1_1
+    BigDecimal card_f_8_1_1
+    Double card_p_8_1_2
+    BigDecimal card_f_8_1_2
+    Double card_p_8_1_3
+    BigDecimal card_f_8_1_3
+    Double card_p_8_2_1
+    BigDecimal card_f_8_2_1
+    Double card_p_8_2_2
+    BigDecimal card_f_8_2_2
+    Double card_p_8_2_3
+    BigDecimal card_f_8_2_3
+    Double card_p_8_3
+    BigDecimal card_f_8_3
+    Double card_p_8_4_1
+    BigDecimal card_f_8_4_1
+    Double card_p_8_4_2
+    BigDecimal card_f_8_4_2
+    Double card_p_8_4_3
+    BigDecimal card_f_8_4_3
+    Double card_p_9
+    BigDecimal card_f_9
+    Double card_p_10
+    BigDecimal card_f_10
+
 //    poziomOplatIWarunkiPlatnosciPP - FINISH
     Double pp_orange_tk
     Double pp_orange_tp
@@ -135,7 +247,7 @@ class ProcessCommand implements Serializable{
     Double pp_gtmobile_tk
     Double pp_vectonemobile_tk
     Double pp_delightmobile_tk
-    Double oplataZaOprogramowanieDoDoladowan
+    BigDecimal oplataZaOprogramowanieDoDoladowan
 
 //    promocyjneObnizenieOplatyZaZestawPos
 //    scoring
@@ -147,6 +259,8 @@ class ProcessCommand implements Serializable{
 //    TODO - co to sa za pola: MCC, szczegolowyRodzajDzialalnosciWPraktyce ??
 
     String scoringWlasnosc
+    ScoringDictionary.Ownership scoringWlasnoscEn = ScoringDictionary.Ownership.RENT
+
 //    TODO - w pdf uzywamy pol: wlasnosc, wynajem (checkboxy)
 
     String scoringDzialalnoscCzas
@@ -238,6 +352,9 @@ class ProcessCommand implements Serializable{
     //TODO - w pdf wykorzystujemy obsugaPrestiz, obslugaKomfort, obslugaEkonomiczny (checkboxy)
 
 //    rachunekBankowyKlienta
+    String numerRachunkuBankowego
+    String nazwaBanku
+
 //    oplataDCCZaUruchomienie
 //    liczbaMiesiecyZwolnieniaZNajmu
 
