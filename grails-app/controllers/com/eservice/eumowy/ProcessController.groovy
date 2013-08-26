@@ -1,5 +1,6 @@
 package com.eservice.eumowy
 import grails.plugins.springsecurity.Secured
+import org.codehaus.groovy.grails.commons.ApplicationHolder
 
 class ProcessController {
 
@@ -103,25 +104,21 @@ class ProcessController {
     // REMOTE CALLS
     //---------------------------------
 
-    /**
-     * Filtrowanie procesów po wybranym statusie
-     * @return listTable html
-     */
-    /*   def filterByStatus(String filterStatus) {
-           def filteredProcesses = findProcessListByStatus(filterStatus)
-           render template: 'table/listTable', model: [processInstanceList: filteredProcesses, processInstanceTotal: filteredProcesses.size()]
-       }*/
-/*
-    def filter = {
-        log.info("params.status - " + params?.filterStatus);
-        params.max = Math.min(params.max ? params.int('max') : 10, 100)
-        render(template: 'table/listTable', model:  [processInstanceList: Process.list(params), processInstanceTotal: Process.count()])
-    }*/
-
     def showPdfByDocumentId(String id){
         log.info( "pdf document = " + id);
-        def documentfile = DocumentFile.get(id);
-        render(template: '../forms/pdf/embedDocument', model:  [pdfDocument: resource(dir:'files', file:documentfile.filename)]);
+        def documentFile = DocumentFile.get(id);
+
+        def dir = "tmp"
+        def fileName = "${id}_${documentFile.version}_${documentFile.name}"
+        def tmpPdf = ApplicationHolder.getApplication().getParentContext().getResource("${dir}/${fileName}").getFile()
+
+        if(!tmpPdf.exists()){
+            tmpPdf.withOutputStream { s ->
+                s << documentFile.content.content
+            }
+        }
+
+        render(template: '../forms/pdf/embedDocument', model:  [pdfDocument: resource(dir:dir, file:fileName)]);
     }
 
     def downloadDoc(){

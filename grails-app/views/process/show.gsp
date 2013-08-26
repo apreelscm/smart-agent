@@ -45,7 +45,7 @@
                 <g:message code="process.phFirstName.label" default="Imię i Naziwsko" />
             </label>
             <g:textField name="phFirstName" value="${processInstance?.phFirstName + " " + processInstance?.phSurname}"
-                         disabled="disabled"/>
+                         disabled="disabled" style="width: 250px"/>
         </li>
     </ul>
 

@@ -28,8 +28,6 @@ class ClientService {
         return true
     }
 
-
-
     def clientExists(Client client) {
         return client?.id != null || client?.cbdId != null
     }

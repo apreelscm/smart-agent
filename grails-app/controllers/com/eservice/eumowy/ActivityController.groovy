@@ -229,24 +229,22 @@ class ActivityController {
                 }
 
                 /** pobieranie danych o kalkulatorze */
-                if(clientService.clientExists(client)){
-                    def calcId = cbdService.findCalculatorIdByNip(client.nip)
+                def calcId = cbdService.findCalculatorIdByNip(client.nip)
 
-                    if(calcId == null){
-                        flash.calcErrorMessage = message(code:"calc.notFound.error", default:"Kalkulator nie istnieje");
-                        return error();
-                    }
-
-                    def calc = cbdService.findCalculatorByNip(client.nip)
-
-                    if(!calculatorService.isCalcValid(calc,processInstance.signatures)){
-                        flash.calcErrorMessage =  message(code:"calc.notEnough.error", default:"Kalkulator nie pozwala na wykonanie wszystkich zaznaczonych czynności");
-                        return error();
-                    }
-
-                    flow.calcNumber =  calcId;
-                    flash.calcInfoMessage = message(code:"calc.found.info", default:"Znaleziono");
+                if(!calcId){
+                    flash.calcErrorMessage = message(code:"calc.notFound.error", default:"Kalkulator nie istnieje");
+                    return error();
                 }
+
+                def calc = cbdService.findCalculatorByNip(client.nip)
+
+                if(!calculatorService.isCalcValid(calc,processInstance.signatures)){
+                    flash.calcErrorMessage =  message(code:"calc.notEnough.error", default:"Kalkulator nie pozwala na wykonanie wszystkich zaznaczonych czynności");
+                    return error();
+                }
+
+                flow.calcNumber =  calcId;
+                flash.calcInfoMessage = message(code:"calc.found.info", default:"Znaleziono");
 
                 flow.isContinueEnabled = true;
             }
@@ -437,21 +435,21 @@ class ActivityController {
                 flow.processInstance = processInstance
             }.to "finish"
             on("subscribe").to "clientSignature"
-			on("updateProcessStatus") {
-				if (params.processStatus.equals("WAIT_FOR_SUBSCRIPTION")) {
-					Subscription sub = Subscription.get(params.subscriptionId)
-					flow.processInstance.addToSubscriptions(sub)
-					flow.processInstance.status = Process.ProcessStatus.WAIT_FOR_SUBSRIPTION
-				}
-				else if (params.processStatus.equals("SUBSCRIPTIONS_DONE")) {
-					Subscription sub = Subscription.get(params.subscriptionId)
-					flow.processInstance.addToSubscriptions(sub)
-					flow.processInstance.status = Process.ProcessStatus.SUBSCRIPTIONS_DONE
-				}
-				else if (params.processStatus.equals("REJECTED")) {
-					flow.processInstance.status = Process.ProcessStatus.REJECTED
-				}
-			}.to "clientSignature"
+            on("updateProcessStatus") {
+                if (params.processStatus.equals("WAIT_FOR_SUBSCRIPTION")) {
+                    Subscription sub = Subscription.get(params.subscriptionId)
+                    flow.processInstance.addToSubscriptions(sub)
+                    flow.processInstance.status = Process.ProcessStatus.WAIT_FOR_SUBSRIPTION
+                }
+                else if (params.processStatus.equals("SUBSCRIPTIONS_DONE")) {
+                    Subscription sub = Subscription.get(params.subscriptionId)
+                    flow.processInstance.addToSubscriptions(sub)
+                    flow.processInstance.status = Process.ProcessStatus.SUBSCRIPTIONS_DONE
+                }
+                else if (params.processStatus.equals("REJECTED")) {
+                    flow.processInstance.status = Process.ProcessStatus.REJECTED
+                }
+            }.to "clientSignature"
             on("noaccept") {
                 flow.processInstance.status = Process.ProcessStatus.REJECTED
             }.to "finish"
@@ -567,50 +565,50 @@ class ActivityController {
         return signatures;
     }
 
-	def _processDocumentCreation(Process process, String requestVersion)	{
+    def _processDocumentCreation(Process process, String requestVersion)	{
 
-		Process.ProcessStatus newStatus;
-		if ("electronical".equals(requestVersion)) {
-			//TODO Check signatures and update documents in DB
-			newStatus = Process.ProcessStatus.WAITING
+        Process.ProcessStatus newStatus;
+        if ("electronical".equals(requestVersion)) {
+            //TODO Check signatures and update documents in DB
+            newStatus = Process.ProcessStatus.WAITING
 
-			process.documents.each { doc ->
-				//TODO Update document content from Data Map
-			}
+            process.documents.each { doc ->
+                //TODO Update document content from Data Map
+            }
 
-			//TODO Send emails
+            //TODO Send emails
 
-		}
-		else if ("paper".equals(requestVersion)) {
-			//Documents are already in DB
-			newStatus = Process.ProcessStatus.WAIT_FOR_SUBSCRIPTION_PAPER_VERSION
+        }
+        else if ("paper".equals(requestVersion)) {
+            //Documents are already in DB
+            newStatus = Process.ProcessStatus.WAIT_FOR_SUBSCRIPTION_PAPER_VERSION
 
-			//TODO Send emails
-		}
-		else if ("templates".equals(requestVersion)) {
-			//TODO Documents are already in DB
-			newStatus = Process.ProcessStatus.WAIT_FOR_SUBSRIPTION
-			List<DocumentFile> documentFilesWithBlackFaksymileList = new ArrayList<DocumentFile>()
-			List<DocumentFile> documentFilesWithoutFaksymileList = new ArrayList<DocumentFile>()
+            //TODO Send emails
+        }
+        else if ("templates".equals(requestVersion)) {
+            //TODO Documents are already in DB
+            newStatus = Process.ProcessStatus.WAIT_FOR_SUBSRIPTION
+            List<DocumentFile> documentFilesWithBlackFaksymileList = new ArrayList<DocumentFile>()
+            List<DocumentFile> documentFilesWithoutFaksymileList = new ArrayList<DocumentFile>()
 
-			process.signatures.each { sig ->
-				byte[] documentDataWithBlackFaksymile = pdfService.fillPdfFormFromURIWithBlackFaksymile(sig, PdfService.FontType.ARIAL)
-				byte[] documentDataWithoutFaksymile = pdfService.fillPdfFormFromURIWithoutFaksymile(sig, PdfService.FontType.ARIAL)
+            process.signatures.each { sig ->
+                byte[] documentDataWithBlackFaksymile = pdfService.fillPdfFormFromURIWithBlackFaksymile(sig, PdfService.FontType.ARIAL)
+                byte[] documentDataWithoutFaksymile = pdfService.fillPdfFormFromURIWithoutFaksymile(sig, PdfService.FontType.ARIAL)
 
-				// Generate documents with black faksymile for PH
-				DocumentFile dfwbf = new DocumentFile(name: sig.templatePath, dateCreated: new Date(), lastUpdated: new Date(), pagesCount: 0)
-				dfwbf.setContent(new DocumentContent(content: documentDataWithBlackFaksymile))
-				dfwbf.discard()
-				documentFilesWithBlackFaksymileList.add(dfwbf)
+                // Generate documents with black faksymile for PH
+                DocumentFile dfwbf = new DocumentFile(name: sig.templatePath, dateCreated: new Date(), lastUpdated: new Date(), pagesCount: 0)
+                dfwbf.setContent(new DocumentContent(content: documentDataWithBlackFaksymile))
+                dfwbf.discard()
+                documentFilesWithBlackFaksymileList.add(dfwbf)
 
-				// Generate documents without faksymile for acceptant
-				DocumentFile dfwof = new DocumentFile(name: sig.templatePath, dateCreated: new Date(), lastUpdated: new Date(), pagesCount: 0)
-				dfwof.setContent(new DocumentContent(content: documentDataWithBlackFaksymile))
-				dfwof.discard()
-				documentFilesWithoutFaksymileList.add(dfwof)
-			}
+                // Generate documents without faksymile for acceptant
+                DocumentFile dfwof = new DocumentFile(name: sig.templatePath, dateCreated: new Date(), lastUpdated: new Date(), pagesCount: 0)
+                dfwof.setContent(new DocumentContent(content: documentDataWithBlackFaksymile))
+                dfwof.discard()
+                documentFilesWithoutFaksymileList.add(dfwof)
+            }
 
-			//TODO Send emails
-		}
-	}
+            //TODO Send emails
+        }
+    }
 }
