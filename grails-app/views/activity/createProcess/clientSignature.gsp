@@ -120,6 +120,7 @@
 							"Tak": function() {
 								jQuery( this ).dialog( "close" );
 								jQuery.post(jQuery(location).attr('href'), {_eventId_noaccept:""}, function(data) {
+									window.location.reload();
 								});
 							},
 							"Nie": function() {
@@ -144,7 +145,8 @@
 							{
 								"Tak": function() {
 									jQuery( this ).dialog( "close" );
-									jQuery.post(jQuery(location).attr('href'), {_eventId_submit:"",requestVersion: jQuery("input[name=requestVersion]").val(), numberOfSubscriptions: updateSubscriptionStatusCount}, function(data) {
+									jQuery.post(jQuery(location).attr('href'), {_eventId_submit:"",requestVersion: jQuery("input[name=requestVersion]").val(), numberOfSubscriptions: updateSubscriptionStatusCount}, function(data, textStatus, jqXHR) {
+										window.location.reload();
 									});
 									
 									result = true;

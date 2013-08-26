@@ -4,12 +4,39 @@ import com.eservice.eumowy.PointData;
 
 class PdfMapper {
 
+	static mapPointAndPosDataToPDFData(def pd) {
+		def pointDataMap = mapPointDataToPDFData(pd)
+		def posDataMap = mapPosDataToPDFData(pd.posDatas)
+		pointDataMap.putAll(posDataMap)
+		return pointDataMap
+	}
+	
 	static mapPointDataToPDFData(def pd) {
 		Map<String, String[]> data = new HashMap<String, String[]>()
 		
 		pd.properties.each { key, value ->
 			log.info "Key: " + key
 			if (["class", "posDatas", "errors", "constraints", "", "", ""].contains(key) || value == null){
+				return
+			}
+			
+			if (PdfMapper.metaClass.respondsTo(PdfMapper, "map" + key.capitalize())) {
+				PdfMapper."map${key.capitalize()}"(data, pd, key, value)
+				return
+			}
+			
+			data.put(key, [value] as String[]);
+		}
+		
+		return data
+	}
+	
+	static mapPosDataToPDFData(def pd) {
+		Map<String, String[]> data = new HashMap<String, String[]>()
+		
+		pd.properties.each { key, value ->
+			log.info "Key: " + key
+			if (["class", "cbdId", "process", "point", "errors", "constraints", "", "", ""].contains(key) || value == null){
 				return
 			}
 			

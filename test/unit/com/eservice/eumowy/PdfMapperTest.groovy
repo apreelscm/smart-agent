@@ -2,7 +2,9 @@
 
 package com.eservice.eumowy;
 
-import com.eservice.eumowy.pdfmapper.PdfMapper;
+import grails.test.mixin.*
+
+import com.eservice.eumowy.pdfmapper.PdfMapper
 
 class PdfMapperTest {
 

@@ -6,7 +6,7 @@ import org.apache.commons.logging.LogFactory
 @ToString(includeNames = true,ignoreNulls = true)
 class Process implements Serializable {
 
-    private static final auditLogger = LogFactory.getLog("audit");
+    private static final auditLogger = LogFactory.getLog("audit")
 
     Date dateCreated
     Date lastUpdated
@@ -21,16 +21,18 @@ class Process implements Serializable {
     String notesToCoa
     String notesToZrd
 
-    boolean observed = false;
+    boolean observed = false
 
-    Client client;
+    Client client
+	
+	List<Panel> panels
 
     String getStringId() {
         return String.format('%06d',this.id)
     }
 
     String getStringPhNumber(){
-        return phNumber ? Integer.toString(this.phNumber) : '';
+        return phNumber ? Integer.toString(this.phNumber) : ''
     }
 
     static transients = ['stringId']
