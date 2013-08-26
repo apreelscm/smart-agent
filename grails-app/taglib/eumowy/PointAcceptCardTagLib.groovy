@@ -15,9 +15,9 @@ class PointAcceptCardTagLib {
         log.info("NIP z atrybutow: " + attrs.nip)
 
         def points = [
-                [id: 1, nazwa: 'Sklep spozywczy', ulica: 'Zielona', miejscowosc: 'Lubartów', nr_budynku: '5A', kod_pocztowy: '02-123', liczba_pos: '23'],
-                [id: 2, nazwa: 'Kwiaciarnia Róża', ulica: 'Zielona', miejscowosc: 'Lubartów', nr_budynku: '12', kod_pocztowy: '02-123', liczba_pos: '6'],
-                [id: 3, nazwa: 'Kino Femina', ulica: 'Zielona', miejscowosc: 'Lubartów', nr_budynku: '93', kod_pocztowy: '02-123', liczba_pos: '2']
+                [id: 1, nazwa: 'Sklep spozywczy', ulica: 'Zielona', miejscowosc: 'Lubartów', nr_budynku: '5A', kod_pocztowy: '02-123'],
+                [id: 2, nazwa: 'Kwiaciarnia Róża', ulica: 'Zielona', miejscowosc: 'Lubartów', nr_budynku: '12', kod_pocztowy: '02-123'],
+                [id: 3, nazwa: 'Kino Femina', ulica: 'Zielona', miejscowosc: 'Lubartów', nr_budynku: '93', kod_pocztowy: '02-123']
         ]
 
         out << '<table class="t"><thead><tr>'
