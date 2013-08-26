@@ -1,5 +1,5 @@
 package com.eservice.eumowy.command
-// polskie nazwy zmiennych
+// polskie nazwy zmiennych.
 /**
  * User: Dominik Walczak
  * Date: 20.08.13 Time: 10:28
