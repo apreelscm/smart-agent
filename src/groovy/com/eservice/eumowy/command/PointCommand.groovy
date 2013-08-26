@@ -6,124 +6,123 @@ package com.eservice.eumowy.command
  *
  */
 class PointCommand implements Serializable {
-	
-	BigDecimal phGain
-	BigDecimal businessCare
-	BigDecimal serviceCare1
-	BigDecimal serviceCare2
-	BigDecimal serviceCare3
-	
-	String nip
-	String mccCode
-	String bussinessTypeInPractice
-	String bankAccountNumber
-	String bankName
-	
-	String pointNameForPrintingFromPOSTerminal
-	String pointNameForSearchEngine
-	
+		
+	BigDecimal phPozysk
+	BigDecimal opiekaBiznesowa
+	BigDecimal opiekaSerwisowaI
+	BigDecimal opiekaSerwisowaII
+	BigDecimal opiekaSerwisowaIII
+
+	String nipPunktu
+	String kodMCC
+	String rodzProwadzDzialalWPraktyce
+	String kontoBankNumer
+	String nazwaBanku
+				 
+	String nazwaDoWydrukuZTerminalaPos
+	String nazwaDoWyszukiwarki
+	 
 	String dataforprintingAddressStreetType
-	String dataforprintingAddressStreet
-	Integer dataforprintingAddressHomeNumber
-	Integer dataforprintingAddressFlatNumber
-	String dataforprintingAddressCity
-	String dataforprintingAddressPostalCode
-	String dataforprintingAddressPostOffice
-	
-	String otherDataForPrintingFromTerminal1
-	String otherDataForPrintingFromTerminal2
-	
+	String ulica
+	Integer nrDomu
+	Integer nrLokalu
+	String miasto
+	String kodPocztowy
+	String poczta
+	 
+	String linia1
+	String linia2
+ 	
 	String contactAddressStreetType
-	String contactAddressAddressStreet
-	Integer contactAddressAddressHomeNumber
-	Integer contactAddressAddressFlatNumber
-	String contactAddressAddressCity
-	String contactAddressAddressPostalCode
-	String contactAddressAddressPostOffice
-	
-	String contactAtPointFirstName
-	String contactAtPointLastName
-	String contactAtPointFax
-	String contactAtPointPhone
-	String contactAtPointMobilePhone
-	String contactAtPointEmail
+	String ulicaDoKorespondencji
+	Integer nrDomuDoKorespondencji
+	Integer nrLokaluDoKorespondencji
+	String miastoDoKorespondencji
+	String kodPocztowyDoKorespondencji
+	String pocztaDoKorespondencji
+		
+	String imie
+	String nazwisko
+	String nrFaksu
+	String stacjonarny
+	String komorka
+	String email
 	
 	Integer cbdId
 	
-	String dialupType
-	Integer dialupCount
-	Integer dialupPPCount
-	BigDecimal dialupPrice
-	BigDecimal dialupPPPrice
-	String vpnType
-	Integer vpnCount
-	Integer vpnPPCount
-	BigDecimal vpnPrice
-	BigDecimal vpnPPPrice
-	String sslType
-	Integer sslCount
-	Integer sslPPCount
-	BigDecimal sslPrice
-	BigDecimal sslPPPrice
-	String wifiType
-	Integer wifiCount
-	Integer wifiPPCount
-	BigDecimal wifiPrice
-	BigDecimal wifiPPPrice
-	String gprsType
-	Integer gprsCount
-	Integer gprsPPCount
-	BigDecimal gprsPrice
-	BigDecimal gprsPPPrice
-	Integer baseCount
+	String dialupTyp
+	Integer dialupIloscc
+	Integer dialupPPIlosc
+	BigDecimal dialupCena
+	BigDecimal dialupPPCena
+	String vpnTyp
+	Integer vpnIlosc
+	Integer vpnPPIlosc
+	BigDecimal vpnCena
+	BigDecimal vpnPPCena
+	String sslTyp
+	Integer sslIlosc
+	Integer sslPPIlosc
+	BigDecimal sslCena
+	BigDecimal sslPPCena
+	String wifiTyp
+	Integer wifiIlosc
+	Integer wifiPPIlosc
+	BigDecimal wifiCena
+	BigDecimal wifiPPCena
+	String gprsTyp
+	Integer gprsIlosc
+	Integer gprsPPIlosc
+	BigDecimal gprsCena
+	BigDecimal gprsPPCena
+	Integer bazaIlosc
 	
-	Date dayCloseFrom
-	Date dayCloseTo
-	Date plannedInstallationDate
-	String additionalNotes
+	Date zamkniecieDniaOd
+	Date zamkniecieDniaDo
+	Date planowanaDataInstalacji
+	String uwagiDodatkowe
 	
-	Boolean preauthorization
-	Boolean noreturnfunction
-	Boolean returnWithPassword
-	Boolean setAnalysis
-	Boolean cashMachineSystemIntegration
-	Boolean returnIKO
+	Boolean preautoryzacja
+	Boolean brakFunkcjiZwrotu
+	Boolean zwrotNaHaslo
+	Boolean analizaZbioru
+	Boolean integracjaZSysKas
+	Boolean zwrotyIKO
 	
-	Boolean loggingBeforeEveryTransaction
-	Boolean logginEveryChange
+	Boolean logowaniePrzedKazdaTransakcja
+	Boolean logowanieZmianowe
 	
-	Boolean tip1
+	Boolean napiwek1
 	Boolean telePompka
 	Boolean teleKodzik
 	
-	Boolean giftCard
+	Boolean kartaPodarunkowa
 	
-	String pinPadType
-	Integer pinPadCount
-	BigDecimal pinPadPrice
-	String routerType
-	Integer routerCount
-	BigDecimal routerPrice
-	String cardReaderType
-	Integer cardReaderCount
-	BigDecimal cardReaderPrice
+	String pinPadTyp
+	Integer pinPadIlosc
+	BigDecimal pinPadCena
+	String routerTyp
+	Integer routerIlosc
+	BigDecimal routerCena
+	String czytnikKartTyp
+	Integer czytnikKartIlosc
+	BigDecimal czytnikKartCena
 	
-	String otherAdditionalDevice
-	Boolean otherAdditionalDeviceSsl
-	Boolean otherAdditionalDeviceGprs
-	String otherAdditionalDeviceType
-	Integer otherAdditionalDeviceCount
-	BigDecimal otherAdditionalDevicePrice
+	String inneWyposazenie
+	Boolean inneWyposazenieSsl
+	Boolean inneWyposazenieGprs
+	String inneWyposazenieTyp
+	Integer inneWyposazenieIlosc
+	BigDecimal inneWyposazenieCena
 	
-	String staticDeviceMask
-	String staticDeviceGateway
-	String staticDeviceIp
-	String staticDeviceSupportContact
-	String staticDeviceSupportContactName
-	String staticDeviceSupportContactSurname
+	String maska
+	String bramka
+	String adresIp
+	String kontaktInformatykStatyczna
+	String imieInformatykStatyczna
+	String nazwiskoInformatykStatyczna
 	
-	String dynamicDeviceSupportContact
-	String dynamicDeviceSupportName
-	String dynamicDeviceSupportSurname
-	
+	String kontaktInformatykDynamiczna
+	String imieInformatykDynamiczna
+	String nazwiskoInformatykDynamiczna	
 }
