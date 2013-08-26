@@ -97,7 +97,7 @@ class PointCommand implements Serializable {
 	Boolean teleKodzik
 	
 	Boolean kartaPodarunkowa
-	
+	// polskie nazwy
 	String pinPadTyp
 	Integer pinPadIlosc
 	BigDecimal pinPadCena
