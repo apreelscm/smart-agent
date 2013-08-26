@@ -25,8 +25,6 @@ class Process implements Serializable {
 
     Client client
 	
-	List<Panel> panels
-
     List<Panel> panels
     List<AttachmentFile> attachments
     List<DocumentFile> documents
