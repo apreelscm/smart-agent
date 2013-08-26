@@ -39,7 +39,7 @@ class DCCRangeTagLib {
                 out << '<td>' + point.nr_budynku + '</td>'
                 out << '<td>' + point.kod_pocztowy + '</td>'
                 out << '<td>' + point.liczba_pos + '</td>'
-                out << '<td>' + checkBox(name: 'dccRangePOS', value: point.id, checked: attrs.selectedValues.contains(point.id)) + '</td>'
+                out << '<td>' + checkBox(name: 'dccRangePOS', value: point.id, checked: attrs.accepted.contains(point.id)) + '</td>'
                 out << '</tr>'
         }
         out << '</tbody></table>'

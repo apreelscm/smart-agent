@@ -1,8 +1,10 @@
-SELECT   k.kln_nazwa,
-         a.adr_ulica,
-         a.adr_miejscowosc,
-         a.adr_nr_budynku,
-         adr_kod_pocztowy
+SELECT
+         k.kln_id as "id",
+         k.kln_nazwa as "nazwa",
+         a.adr_ulica as "ulica",
+         a.adr_miejscowosc as "miejscowosc",
+         a.adr_nr_budynku as "nr_budynku",
+         adr_kod_pocztowy as "kod_pocztowy"
   FROM      CBD_ADM.cbt_adresy a
          JOIN
             CBD_ADM.cbt_klienci k

@@ -6,31 +6,31 @@
                 <li>
                     <span class="align-left"><g:message code="panel.visa"/></span>
                     <span class="align-left">
-                        <g:textField name="ifOplataVISA" value="${data.ifOplataVISA}" style="width: 100px"/> <g:message code="panel.polish.currency"/>
+                        <g:textField name="ifOplataVISA" value="${data.ifOplataVISA}" readonly="true" style="width: 100px"/> <g:message code="panel.polish.currency"/>
                     </span>
                 </li>
                 <li>
                     <span class="align-left"><g:message code="panel.mastercard"/></span>
                     <span class="align-left">
-                        <g:textField name="ifOplataMasterCard" value="${data.ifOplataMasterCard}" style="width: 100px"/> <g:message code="panel.polish.currency"/>
+                        <g:textField name="ifOplataMasterCard" value="${data.ifOplataMasterCard}" readonly="true" style="width: 100px"/> <g:message code="panel.polish.currency"/>
                     </span>
                 </li>
                 <li>
                     <span class="align-left"><g:message code="panel.dinersclub"/></span>
                     <span class="align-left">
-                        <g:textField name="ifOplataDinersClub" value="${data.ifOplataDinersClub}" style="width: 100px"/> <g:message code="panel.polish.currency"/>
+                        <g:textField name="ifOplataDinersClub" value="${data.ifOplataDinersClub}" readonly="true" style="width: 100px"/> <g:message code="panel.polish.currency"/>
                     </span>
                 </li>
                 <li>
                     <span class="align-left"><g:message code="panel.iko"/> </span>
                     <span class="align-left">
-                        <g:textField name="ifOplataIKO" value="${data.ifOplataIKO}" style="width: 100px"/> <g:message code="panel.polish.currency"/>
+                        <g:textField name="ifOplataIKO" value="${data.ifOplataIKO}" readonly="true" style="width: 100px"/> <g:message code="panel.polish.currency"/>
                     </span>
                 </li>
                 <li>
                     <span class="align-right"><g:message code="panel.payment.for.pkopb"/></span>
                     <span class="align-left">
-                        <g:textField name="ifOplataPKOPB" value="${data.ifOplataPKOPB}" style="width: 100px"/> <g:message code="panel.polish.currency"/>
+                        <g:textField name="ifOplataPKOPB" value="${data.ifOplataPKOPB}" readonly="true" style="width: 100px"/> <g:message code="panel.polish.currency"/>
                     </span>
                 </li>
             </ul>

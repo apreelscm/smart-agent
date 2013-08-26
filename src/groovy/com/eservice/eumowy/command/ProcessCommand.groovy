@@ -25,10 +25,10 @@ class ProcessCommand implements Serializable{
     String korespondencjaPoczta
 
 //    aneksDoUmowyNajmuZestawuPos - FINISH
-    Date dataPodpisaniaAneksuPOZ
+    Date dataAneksowanejUmowyPos
 
 //    aneksDoUmowyPrepaid - FINISH (ale trzeba zobaczyc w dokumentach czy jest dobrze wpisany)
-    Date dataPodpisaniaAneksuPrepaid
+    Date dataAneksowanejUmowyPrepaid
 
 //    czasObowiazywaniaUmowy - FINISH
     String umowaCzas //TODO -  MOZLIWE, ze pdfach jest to umowaOzn, umowaNieOzn
@@ -182,6 +182,8 @@ class ProcessCommand implements Serializable{
     BigDecimal card_f_3_2_1
     Double card_p_3_2_2
     BigDecimal card_f_3_2_2
+    Double card_p_3_3
+    BigDecimal card_f_3_3
 
     Double card_p_4_1
     BigDecimal card_f_4_1
@@ -252,9 +254,7 @@ class ProcessCommand implements Serializable{
     Double card_p_8_4_3
     BigDecimal card_f_8_4_3
     Double card_p_9
-    BigDecimal card_f_9
     Double card_p_10
-    BigDecimal card_f_10
 
 //    poziomOplatIWarunkiPlatnosciPP - FINISH
     Double pp_orange_tk
@@ -371,6 +371,49 @@ class ProcessCommand implements Serializable{
 //    wykazPunktowAkceptujacychKartyPlatnicze
 //    zestawPos
 //    zestawPosOdplatneUzywanie
+    String oplPOSDialUpTyp
+    Integer oplPOSDialUpIlosc
+    Integer oplPOSDialUpIloscPP
+    BigDecimal oplPOSDialUpNormalneMies
+    BigDecimal oplPOSDialUpNormalnePP
+    BigDecimal oplPOSDialUpPreferencyjneMies
+    BigDecimal oplPOSDialUpPreferencyjnePP
+
+    String oplPOSVPNTyp
+    Integer oplPOSVPNIlosc
+    Integer oplPOSVPNIloscPP
+    BigDecimal oplPOSVPNNormalneMies
+    BigDecimal oplPOSVPNNormalnePP
+    BigDecimal oplPOSVPNPreferencyjneMies
+    BigDecimal oplPOSVPNPreferencyjnePP
+
+    String oplPOSSSLTyp
+    Integer oplPOSSSLIlosc
+    Integer oplPOSSSLIloscPP
+    BigDecimal oplPOSSSLNormalneMies
+    BigDecimal oplPOSSSLNormalnePP
+    BigDecimal oplPOSSSLPreferencyjneMies
+    BigDecimal oplPOSSSLPreferencyjnePP
+
+    String oplPOSWiFiTyp
+    Integer oplPOSWiFiIlosc
+    Integer oplPOSWiFiIloscPP
+    BigDecimal oplPOSWiFiNormalneMies
+    BigDecimal oplPOSWiFiNormalnePP
+    BigDecimal oplPOSWiFiPreferencyjneMies
+    BigDecimal oplPOSWiFiPreferencyjnePP
+
+    String oplPOSGPRSTyp
+    Integer oplPOSGPRSIlosc
+    Integer oplPOSGPRSIloscPP
+    BigDecimal oplPOSGPRSNormalneMies
+    BigDecimal oplPOSGPRSNormalnePP
+    BigDecimal oplPOSGPRSPreferencyjneMies
+    BigDecimal oplPOSGPRSPreferencyjnePP
+
+    Integer oplPOSBaza
+
+
 //    zestawPosStawkiPreferencyjne
 
 //    serwis - FINISH

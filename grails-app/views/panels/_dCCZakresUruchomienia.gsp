@@ -13,7 +13,7 @@
             </div>
         </div>
         <div class="centre" style="text-align: center; padding-top: 20px; width: 800px; max-width: 950px">
-            <cbd:dccRange nip="${data.nip}" selectedValues="[1,3]"/>
+            <cbd:dccRange nip="${data.nip}" accepted="[1,3]"/>
         </div>
         <div>
             <input type="submit">

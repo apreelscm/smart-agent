@@ -23,11 +23,11 @@ class PanelMockService {
     }
 
     def getAneksDoUmowyNajmuZestawuPos(ProcessCommand cmd) {
-        cmd.dataPodpisaniaAneksuPOZ = new Date()
+        cmd.dataAneksowanejUmowyPos = new Date()
     }
 
     def getAneksDoUmowyPrepaid(ProcessCommand cmd) {
-        cmd.dataPodpisaniaAneksuPrepaid = new Date()
+        cmd.dataAneksowanejUmowyPrepaid = new Date()
     }
 
     def getCzasObowiazywaniaUmowy(ProcessCommand cmd) {
@@ -223,6 +223,8 @@ class PanelMockService {
         cmd.card_f_3_2_1 = new BigDecimal("2.30")
         cmd.card_p_3_2_2 = 0.02
         cmd.card_f_3_2_2 = new BigDecimal("2.30")
+        cmd.card_p_3_3 = 0.03
+        cmd.card_f_3_3 = new BigDecimal("2.33")
 
         cmd.card_p_4_1 = 0.02
         cmd.card_f_4_1 = new BigDecimal("2.30")
@@ -293,9 +295,7 @@ class PanelMockService {
         cmd.card_p_8_4_3 = 0.02
         cmd.card_f_8_4_3 = new BigDecimal("2.30")
         cmd.card_p_9 = 0.02
-        cmd.card_f_9 = new BigDecimal("2.30")
         cmd.card_p_10 = 0.02
-        cmd.card_f_10 = new BigDecimal("2.30")
     }
 
     def getPoziomOplatIWarunkiPlatnosciPP(ProcessCommand cmd) {
@@ -410,7 +410,6 @@ class PanelMockService {
     }
 
     def getUmowa2(ProcessCommand cmd) {
-        cmd.dataUmowy = new Date()
         cmd.miejsceUmowy = "Warszawa"
     }
 
@@ -431,7 +430,47 @@ class PanelMockService {
     }
 
     def getZestawPosOdplatneUzywanie(ProcessCommand cmd) {
+        cmd.oplPOSDialUpTyp = ''
+        cmd.oplPOSDialUpIlosc = 12
+        cmd.oplPOSDialUpIloscPP = 23
+        cmd.oplPOSDialUpNormalneMies = 1.23
+        cmd.oplPOSDialUpNormalnePP = 1.24
+        cmd.oplPOSDialUpPreferencyjneMies = 1.25
+        cmd.oplPOSDialUpPreferencyjnePP = 1.26
 
+        cmd.oplPOSVPNTyp = ''
+        cmd.oplPOSVPNIlosc = 43
+        cmd.oplPOSVPNIloscPP = 56
+        cmd.oplPOSVPNNormalneMies = 2.23
+        cmd.oplPOSVPNNormalnePP = 2.24
+        cmd.oplPOSVPNPreferencyjneMies = 2.25
+        cmd.oplPOSVPNPreferencyjnePP = 2.26
+
+        cmd.oplPOSSSLTyp = ''
+        cmd.oplPOSSSLIlosc = 67
+        cmd.oplPOSSSLIloscPP = 91
+        cmd.oplPOSSSLNormalneMies = 3.23
+        cmd.oplPOSSSLNormalnePP = 3.24
+        cmd.oplPOSSSLPreferencyjneMies = 3.25
+        cmd.oplPOSSSLPreferencyjnePP = 3.26
+
+        cmd.oplPOSWiFiTyp = ''
+        cmd.oplPOSWiFiIlosc = 81
+        cmd.oplPOSWiFiIloscPP = 52
+        cmd.oplPOSWiFiNormalneMies = 4.23
+        cmd.oplPOSWiFiNormalnePP = 4.24
+        cmd.oplPOSWiFiPreferencyjneMies = 4.25
+        cmd.oplPOSWiFiPreferencyjnePP = 4.26
+
+        cmd.oplPOSGPRSTyp = ''
+        cmd.oplPOSGPRSIlosc = 10
+        cmd.oplPOSGPRSIloscPP = 12
+        cmd.oplPOSGPRSNormalneMies = 5.23
+        cmd.oplPOSGPRSNormalnePP = 5.24
+        cmd.oplPOSGPRSPreferencyjneMies = 5.25
+        cmd.oplPOSGPRSPreferencyjnePP = 5.26
+
+        cmd.oplPOSBaza = 21
     }
 
     def getZestawPosStawkiPreferencyjne(ProcessCommand cmd) {

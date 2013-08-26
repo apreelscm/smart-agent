@@ -1,5 +1,5 @@
 SELECT
-         k.kln_id as "id"
+         k.kln_id as "id",
          k.kln_nazwa as "nazwa",
          a.adr_ulica as "ulica",
          a.adr_miejscowosc as "miejscowosc",
