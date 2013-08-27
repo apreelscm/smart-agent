@@ -15,11 +15,3 @@
         </div>
     </fieldset>
 </div>
-
-<r:require module="mask"/>
-
-<r:script>
-    jQuery(document).ready(function() {
-        jQuery(".bank-account").mask('99 9999 9999 9999 9999 9999 9999');
-    });
-</r:script>

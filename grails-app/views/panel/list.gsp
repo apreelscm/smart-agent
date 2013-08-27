@@ -9,6 +9,7 @@
 <body>
 
 <r:require module="newpoint_panel_setup"/>
+<r:require module="mask"/>
 
 <g:render template="../panels/osobaKtoraPozyskalaAkceptanta"/>
 <g:render template="../panels/umowa2"/>

@@ -12,7 +12,6 @@
                     <li>
                         <span><g:message code="panel.street" /></span>
                         <span>
-                            %{--id="printAddressStreetTitle"--}%
                             <dict:streetSelect name="wydrukUlicaTytul" />
                             <g:textField name="wydrukUlica" value="${data.wydrukUlica}" style="width: 200px"/>
                         </span>
@@ -25,7 +24,7 @@
                         <span><g:message code="panel.city" /></span>
                         <span><g:textField name="wydrukMiasto" value="${data.wydrukMiasto}" style="width: 280px;"/></span>
                         <span>
-                            <span><g:message code="panel.postal.code" /></span> <span><g:textField name="wydrukKodPocztowy" value="${data.wydrukKodPocztowy}" style="width: 50px"/></span>
+                            <span><g:message code="panel.postal.code" /></span> <span><g:textField class="postal-code" name="wydrukKodPocztowy" value="${data.wydrukKodPocztowy}" style="width: 50px"/></span>
                         </span>
                     </li>
                     <li>
