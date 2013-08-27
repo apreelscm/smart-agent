@@ -15,7 +15,7 @@ public class EServiceUserDetails extends GrailsUser {
     final String typOsoby;
     final String imie;
     final String nazwisko;
-    final Long nr;
+    final Integer nr;
 
     EServiceUserDetails(String username,
                         String password,
@@ -32,10 +32,10 @@ public class EServiceUserDetails extends GrailsUser {
 
         super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities, id);
 
-        this.typOsoby = typOsoby;
-        this.imie = imie;
-        this.nazwisko = nazwisko;
-        this.nr = nr;
-        this.name = imie +" "+nazwisko;
+        this.typOsoby = typOsoby
+        this.imie = imie
+        this.nazwisko = nazwisko
+        this.nr = nr.intValue()
+        this.name = imie +" "+nazwisko
     }
 }
