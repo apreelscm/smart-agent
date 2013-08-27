@@ -18,7 +18,7 @@ class PdfService {
 	
 	ApplicationContext applicationContext
 	
-	def generateImageFromPDFDocumentFile(Set<DocumentFile> documents, String processId, Integer pageNumber) {
+	def generateImageFromPDFDocumentFile(List<DocumentFile> documents, String processId, Integer pageNumber) {
 		String result = ""
 		log.info documents
 		def data = getDocumentAndPageCountFromGlobalPageNumber(documents, pageNumber)
@@ -71,7 +71,7 @@ class PdfService {
 		return appParametersService.getPdfImageUri()+pdfName+"-"+processId+"-"+pageNumber+".png"
 	}
 	
-	def getDocumentAndPageCountFromGlobalPageNumber(Set<DocumentFile> documents, Integer pageNumber) {
+	def getDocumentAndPageCountFromGlobalPageNumber(List<DocumentFile> documents, Integer pageNumber) {
 		Integer pagesCount = 0
 		
 		for(DocumentFile doc : documents) {

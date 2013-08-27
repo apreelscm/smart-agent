@@ -101,13 +101,6 @@ class ProcessService {
         return activities?.any{it.code.equals(activityCode)};
     }
 
-
-	def initDataForPanels(def process) {
-		for(int i = 0; i < 10; i++) {
-			process.points.add(new PointCommand())
-		}
-	}
-	
     def getDataForPanel(def process, def calc) {
         def exclusions = ["getWyborDzialania","getLiczbaMiesiecyZwolnieniaZNajmu"]
 
@@ -115,7 +108,7 @@ class ProcessService {
         cmd.process = process
         cmd.nip = process.client.nip
         cmd.notes = process.notesToCoa ?: "";
-
+		
         process.panels.each { Panel panel ->
             String panelFunctionName = "get${WordUtils.capitalize(panel.name)}"
             log.info("invokin ${panelFunctionName} on panelService")

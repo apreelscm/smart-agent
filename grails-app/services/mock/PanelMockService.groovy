@@ -440,21 +440,24 @@ class PanelMockService {
 		p1.miejscowosc = 'Lubartów'
 		p1.nrBudynku = '5A'
 		p1.kodPocztowy = '02-123'
+		p1.czyWybrany = true
         p2.id = 2
 		p2.nazwa = 'Kwiaciarnia Róża'
 		p2.ulica = 'Zielona'
 		p2.miejscowosc = 'Lubartów'
 		p2.nrBudynku = '12'
 		p2.kodPocztowy = '02-123'
+		p2.uta = true
         p3.id = 3
 		p3.nazwa = 'Kino Femina'
 		p3.ulica = 'Zielona'
 		p3.miejscowosc = 'Lubartów'
 		p3.nrBudynku = '93'
 		p3.kodPocztowy = '02-123'
+		p3.systemKasowy = true
 		
 		cmd.allPoints = [p1, p2, p3]
-		
+		log.info "Punkty: " + cmd.allPoints
     }
 
     def getZalaczniki(ProcessCommand cmd) {

@@ -19,20 +19,20 @@
             		</tr>
            		</thead>
            		<tbody>
-           			%{--<g:each in="${data.allPoints}">
+           			<g:each status="i" var="point" in="${data.allPoints}">
            				<tr>
-							<td>${it.id}</td>
-							<td>${it.nazwa}</td>
-							<td>${it.ulica}</td>
-							<td>${it.miejscowosc}</td>
-							<td>${it.nrBudynku}</td>
-							<td>${it.kodPocztowy}</td>
-							<td><g:checkBox name="punktyTytulPlatnosci" value="${point.id}" checked="${it.tytulPlatnosci}" /></td>
-							<td><g:checkBox name="punktySystemKasowy" value="${point.id}" checked="${it.systemKasowy}" /></td>
-							<td><g:checkBox name="punktyUta" value="${point.id}" checked="${it.uta}" /></td>
-							<td><g:checkBox name="punktyWybrane" value="${point.id}" checked="${it.czyWybrany}" /></td>
+							<td>${point.id}</td>
+							<td>${point.nazwa}</td>
+							<td>${point.ulica}</td>
+							<td>${point.miejscowosc}</td>
+							<td>${point.nrBudynku}</td>
+							<td>${point.kodPocztowy}</td>
+							<td><g:checkBox name="allPoints[${i}].tytulPlatnosci" checked="${point.tytulPlatnosci}" /></td>
+							<td><g:checkBox name="allPoints[${i}].systemKasowy" checked="${point.systemKasowy}" /></td>
+							<td><g:checkBox name="allPoints[${i}].uta" checked="${point.uta}" /></td>
+							<td><g:checkBox name="allPoints[${i}].czyWybrany" checked="${point.czyWybrany}" /></td>
 						</tr>
-           			</g:each>--}%
+           			</g:each>
            		</tbody>
        		</table>
         </div>

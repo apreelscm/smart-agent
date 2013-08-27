@@ -2,6 +2,9 @@ package com.eservice.eumowy.command
 
 import grails.validation.Validateable
 
+import org.apache.commons.collections.FactoryUtils
+import org.apache.commons.collections.ListUtils
+
 import com.eservice.eumowy.Process
 
 /**
@@ -449,9 +452,9 @@ class ProcessCommand implements Serializable{
 
     transient Process process
 
-    List<PointCommand> points = [] //  points[n].someProperty
-	List<AllPointsCommand> allPoints = []
-	List<AllPosCommand> allPoses = []
+    List<PointCommand> points = ListUtils.lazyList([], FactoryUtils.instantiateFactory(PointCommand))
+	List<AllPointsCommand> allPoints = ListUtils.lazyList([], FactoryUtils.instantiateFactory(AllPointsCommand)) 
+	List<AllPosCommand> allPoses = ListUtils.lazyList([], FactoryUtils.instantiateFactory(AllPosCommand))
 	
     static constraints = {
         notes()
