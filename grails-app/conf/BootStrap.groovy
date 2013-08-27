@@ -1,4 +1,5 @@
 import com.eservice.eumowy.*
+import grails.util.Environment
 import groovy.sql.Sql
 
 import java.sql.SQLException
@@ -9,7 +10,7 @@ class BootStrap {
 
     def init = { servletContext ->
 
-       /* switch (Environment.getCurrent()) {
+        switch (Environment.getCurrent()) {
             case Environment.DEVELOPMENT:
                 // Wykonywanie inicjacyjnych zapytan sql z pliku insertData.sql
                 executeSqlScript("/sql/createData.sql")
@@ -20,15 +21,15 @@ class BootStrap {
             case Environment.TEST:
                 //createTestDomains()
                 break;
-        }*/
+        }
+
     }
 
-    def createTestDomains(){
 
+    def createTestDomains(){
         // klienci
         Client.findByName('clientName1') ?: new Client(name: 'clientName1', nip: "555344435").save(flush:true);
         Client.findByName('clientName2') ?: new Client(name: 'clientName2', nip: "11241412").save(flush:true);
-
 
         //przykladowe procesy
         Process.get(1) ?: new Process(id: 1, phFirstName: "Jerzy",
@@ -229,7 +230,6 @@ class BootStrap {
         EmailTemplates.findByName(EmailTemplates.EmailTemplateType.NOTES_TO_COA) ?: new EmailTemplates(name: EmailTemplates.EmailTemplateType.NOTES_TO_COA,
                 sender: "apreel.eUmowy@gmail.com",
                 recipent: "apreel.eUmowy@gmail.com").save(flush:true);
-
     }
 
     def createCBDDataForDevProfile(){
@@ -272,7 +272,5 @@ class BootStrap {
         finally {
             sql.close()
         }
-
-
     }
 }
