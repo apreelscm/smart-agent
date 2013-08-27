@@ -36,7 +36,7 @@ class CbdService {
             case Environment.DEVELOPMENT:
                 return findCalculatorByNipMock(clientNip);
             case Environment.TEST:
-                return cbdDAO.selectMany(FIND_CALC_BY_NIP,[nip:clientNip])//*.POLEAPREEL
+                return cbdDAO.selectMany(FIND_CALC_BY_NIP,[nip:clientNip]).collect{ [POLEAPREEL:it.POLEAPREEL,WARTOSCAPREEL:it.WARTOSCAPREEL]}//*.POLEAPREEL
         }
     }
 
@@ -198,31 +198,32 @@ class CbdService {
 
         if(kln_id == "1234567819"){
             calc = []
-            calc.add("STAWKA_PP_ORANGE");
-            calc.add("OPLATA_ZA_APL_PP");
-            calc.add("NIP");
-            calc.add("CZY_TELEPOMPKA");
-            calc.add("OPLATA_IFPLUS_DINERSCLUB");
-            calc.add("STAWKA_PP_MUNDIO");
-            calc.add("STAWKA_PP_LYCA");
-            calc.add("STAWKA_PP_T_MOBILE");
-            calc.add("STAWKA_PP_VIRGIN");
-            calc.add("STAWKA_PP_PLAY");
-            calc.add("STAWKA_PP_PLUS");
-            calc.add("STAWKA_PP_GALENA");
-            calc.add("DEKLARACJA_SPRZEDAZY_PP");
-            calc.add("OPLATA_DCC");
-            calc.add("NULL");
+            calc.add([POLEAPREEL:"STAWKA_PP_ORANGE",WARTOSCAPREEL:"BRAK"]);
+            calc.add([POLEAPREEL:"OPLATA_ZA_APL_PP",WARTOSCAPREEL:"BRAK"]);
+            calc.add([POLEAPREEL:"NIP",WARTOSCAPREEL:"BRAK"]);
+            calc.add([POLEAPREEL:"CZY_TELEPOMPKA",WARTOSCAPREEL:"BRAK"]);
+            calc.add([POLEAPREEL:"OPLATA_IFPLUS_DINERSCLUB",WARTOSCAPREEL:"BRAK"]);
+            calc.add([POLEAPREEL:"STAWKA_PP_MUNDIO",WARTOSCAPREEL:"BRAK"]);
+            calc.add([POLEAPREEL:"STAWKA_PP_LYCA",WARTOSCAPREEL:"BRAK"]);
+            calc.add([POLEAPREEL:"STAWKA_PP_T_MOBILE",WARTOSCAPREEL:"BRAK"]);
+            calc.add([POLEAPREEL:"STAWKA_PP_VIRGIN",WARTOSCAPREEL:"BRAK"]);
+            calc.add([POLEAPREEL:"STAWKA_PP_PLAY",WARTOSCAPREEL:"BRAK"]);
+            calc.add([POLEAPREEL:"STAWKA_PP_PLUS",WARTOSCAPREEL:"BRAK"]);
+            calc.add([POLEAPREEL:"STAWKA_PP_GALENA",WARTOSCAPREEL:"BRAK"]);
+            calc.add([POLEAPREEL:"DEKLARACJA_SPRZEDAZY_PP",WARTOSCAPREEL:"BRAK"]);
+            calc.add([POLEAPREEL:"OPLATA_DCC",WARTOSCAPREEL:"BRAK"]);
+            calc.add([POLEAPREEL:"NULL",WARTOSCAPREEL:"BRAK"]);
         }
         else if(kln_id == "8946001495"){
             calc = []
-            calc.add("STAWKA_PP_PLUS");
-            calc.add("STAWKA_PP_GALENA");
-            calc.add("DEKLARACJA_SPRZEDAZY_PP");
+            calc.add([POLEAPREEL:"STAWKA_PP_PLUS",WARTOSCAPREEL:"BRAK"]);
+            calc.add([POLEAPREEL:"STAWKA_PP_GALENA",WARTOSCAPREEL:"BRAK"]);
+            calc.add([POLEAPREEL:"DEKLARACJA_SPRZEDAZY_PP",WARTOSCAPREEL:"BRAK"]);
         }
 
         else if(kln_id == "7343597142"){
-            calc =  CalcField.findAll();
+            def calcFields =  CalcField.findAll();
+            calc = calcFields.collect{[POLEAPREEL:it,WARTOSCAPREEL:"BRAK"]}
         }
 
         return calc;

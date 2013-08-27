@@ -1,8 +1,6 @@
 package com.eservice.eumowy
-
 import com.eservice.eumowy.command.ProcessCommand
 import com.eservice.eumowy.process.DefineActivityCommand
-import com.eservice.eumowy.secure.SecUser
 
 class ActivityController {
 
@@ -175,12 +173,10 @@ class ActivityController {
                 processInstance.client =  flow.client
                 processInstance.status = Process.ProcessStatus.NEW
 
-                SecUser user = springSecurityService.principal
-
-                processInstance.phNumber = user.nr
-                processInstance.phFirstName = user.imie
-                processInstance.phSurname = user.nazwisko
-
+              /*  def user = springSecurityService.principal
+                processInstance.phNumber = sec.loggedInUserInfo(field: 'nr')
+                processInstance.phFirstName = sec.loggedInUserInfo(field: 'imie')
+                processInstance.phSurname = sec.loggedInUserInfo(field: 'nazwisko')*/
 
                 if (!processInstance.save(flush:true)){
                     println 'stock instance has errors'

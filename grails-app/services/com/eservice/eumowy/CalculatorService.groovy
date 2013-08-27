@@ -15,6 +15,7 @@ class CalculatorService {
             signaturesCalcNames.addAll(signature.calcFieldsSignature*.calcField);
         }
 
+        println(calc)
         def calcKeyList = calc.collect { it.POLEAPREEL };
 
         println("calc:"+calc)
