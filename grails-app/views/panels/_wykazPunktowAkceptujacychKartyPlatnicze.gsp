@@ -2,7 +2,7 @@
     <fieldset>
         <div class="belka-glowna"><g:message code="panel.payment.card.points.title"/></div>
         <div class="centre" style="text-align: center; padding-top: 20px; width: 700px">
-            <cbd:dccPointsAcceptedCards nip="${data.nip}" tytulPlatnosci="[1,2]" systemKasowy="[2,3]" uta="[1,2,3]" accepted="[1,3]"/>
+            <cbd:dccPointsAcceptedCards nip="${data.nip}" tytulPlatnosci="${data.punktyTytulPlatnosci}" systemKasowy="${data.punktySystemKasowy}" uta="${data.punktyUta}" accepted="${data.punktyWybrane}"/>
         </div>
     </fieldset>
 </div>

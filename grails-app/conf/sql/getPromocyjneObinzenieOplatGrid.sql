@@ -1,4 +1,4 @@
-SELECT   tps_numer_logiczny
+SELECT   tps_numer_logiczny as "numer_logiczny"
   FROM CBD_ADM.cbt_klienci m
             JOIN
                CBD_ADM.cbt_klienci k
