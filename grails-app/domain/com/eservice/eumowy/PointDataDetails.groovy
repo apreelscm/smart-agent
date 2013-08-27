@@ -5,52 +5,86 @@ import java.util.List;
 class PointDataDetails {
 	List<PosData> posDatas
 	
-	BigDecimal phGain
-	BigDecimal businessCare
-	BigDecimal serviceCare1
-	BigDecimal serviceCare2
-	BigDecimal serviceCare3
+	BigDecimal phPozysk
+	BigDecimal opiekaBiznesowa
+	BigDecimal opiekaSerwisowaI
+	BigDecimal opiekaSerwisowaII
+	BigDecimal opiekaSerwisowaIII
+
+	String nipPunktu
+	String kodMCC
+	String rodzProwadzDzialalWPraktyce
+	String kontoBankNumer
+	String nazwaBanku
 	
-	String nip
-	String mccCode
-	String bussinessTypeInPractice
-	String bankAccountNumber
-	String bankName
-	
-	String pointNameForPrintingFromPOSTerminal
-	String pointNameForSearchEngine
-	
+	String nazwaDoWydrukuZTerminalaPos
+	String nazwaDoWyszukiwarki
+	 
 	String dataforprintingAddressStreetType
-	String dataforprintingAddressStreet
-	Integer dataforprintingAddressHomeNumber
-	Integer dataforprintingAddressFlatNumber
-	String dataforprintingAddressCity
-	String dataforprintingAddressPostalCode
-	String dataforprintingAddressPostOffice
-	
-	String otherDataForPrintingFromTerminal1
-	String otherDataForPrintingFromTerminal2
+	String wydrukUlica
+	Integer wydrukNrDomu
+	Integer wydrukNrLokalu
+	String wydrukMiasto
+	String wydrukKodPocztowy
+	String wydrukPoczta
+	 
+	String wydrukLinia1
+	String wydrukLinia2
 	
 	String contactAddressStreetType
-	String contactAddressAddressStreet
-	Integer contactAddressAddressHomeNumber
-	Integer contactAddressAddressFlatNumber
-	String contactAddressAddressCity
-	String contactAddressAddressPostalCode
-	String contactAddressAddressPostOffice
+	String korespondencjaUlica
+	Integer korespondencjaNrDomu
+	Integer korespondencjaNrLokalu
+	String koresponedencjaMiasto
+	String korespondencjaKodPocztowy
+	String korespondencjaPoczta
 	
-	String contactAtPointFirstName
-	String contactAtPointLastName
-	String contactAtPointFax
-	String contactAtPointPhone
-	String contactAtPointMobilePhone
-	String contactAtPointEmail
+	String imie
+	String nazwisko
+	String nrFaksu
+	String stacjonarny
+	String komorka
+	String email
 	
 	static belongsTo = [point: PointData]
 	
 	static mapping = {
 		table name: "POINT_DETAILS", schema:DomainConsts.SHEMA_NAME
 		id generator:'sequence', params:[sequence:DomainConsts.SHEMA_NAME+'.POINT_DETAILS_SEQ']
+		phPozysk column: "phGain"
+		opiekaBiznesowa column: "businessCare"
+		opiekaSerwisowaI column: "serviceCare1"
+		opiekaSerwisowaII column: "serviceCare2"
+		opiekaSerwisowaIII column: "serviceCare3"
+		nipPunktu column: "nip"
+		kodMCC column: "mccCode"
+		rodzProwadzDzialalWPraktyce column: "bussinessTypeInPractice"
+		kontoBankNumer column: "bankAccountNumber"
+		nazwaBanku column: "bankName"
+		nazwaDoWydrukuZTerminalaPos column: "pointNameForPrintingFromPOSTerminal"
+		nazwaDoWyszukiwarki column: "pointNameForSearchEngine"
+		dataforprintingAddressStreetType column: "dataforprintingAddressStreetType"
+		wydrukUlica column: "dataforprintingAddressStreet"
+		wydrukNrDomu column: "dataforprintingAddressHomeNumber"
+		wydrukNrLokalu column: "dataforprintingAddressFlatNumber"
+		wydrukMiasto column: "dataforprintingAddressCity"
+		wydrukKodPocztowy column: "dataforprintingAddressPostalCode"
+		wydrukPoczta column: "dataforprintingAddressPostOffice"
+		wydrukLinia1 column: "otherDataForPrintingFromTerminal1"
+		wydrukLinia2 column: "otherDataForPrintingFromTerminal2"
+		contactAddressStreetType column: "contactAddressStreetType"
+		korespondencjaUlica column: "contactAddressAddressStreet"
+		korespondencjaNrDomu column: "contactAddressAddressHomeNumber"
+		korespondencjaNrLokalu column: "contactAddressAddressFlatNumber"
+		koresponedencjaMiasto column: "contactAddressAddressCity"
+		korespondencjaKodPocztowy column: "contactAddressAddressPostalCode"
+		korespondencjaPoczta column: "contactAddressAddressPostOffice"
+		imie column: "contactAtPointFirstName"
+		nazwisko column: "contactAtPointLastName"
+		nrFaksu column: "contactAtPointFax"
+		stacjonarny column: "contactAtPointPhone"
+		komorka column: "contactAtPointMobilePhone"
+		email column: "contactAtPointEmail"
 	}
 	
 	static constraints = {
