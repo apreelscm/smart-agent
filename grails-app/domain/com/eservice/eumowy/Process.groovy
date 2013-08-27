@@ -47,7 +47,6 @@ class Process implements Serializable {
             panels: Panel,
             subscriptions:Subscription,
             points: PointData,
-            poses: PosData,
             processData: ProcessData
     ]
 
@@ -67,7 +66,6 @@ class Process implements Serializable {
         panels(nullable: true)
         subscriptions(nullable: true)
         points(nullable: true)
-        poses(nullable: true)
         processData(nullable: true)
         notesToCoa(nullable: true)
         notesToZrd(nullable: true)
@@ -82,7 +80,6 @@ class Process implements Serializable {
         attachments cascade:"all-delete-orphan"
         documents cascade:"all-delete-orphan"
         points cascade:"all-delete-orphan"
-        poses cascade:"all-delete-orphan"
         processData cascade:"all-delete-orphan"
     }
 

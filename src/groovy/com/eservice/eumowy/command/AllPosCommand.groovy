@@ -1,10 +1,10 @@
 package com.eservice.eumowy.command
 
-class AllPosCommand {
-	def czyCbd
-	def numerZestawuPos
-	def dataOd
-	def dataDo
-	def wysokoscOplaty
-	def czyWybrany
+class AllPosCommand implements Serializable {
+	String czyCbd
+	String numerZestawuPos
+	String dataOd
+	String dataDo
+	String wysokoscOplaty
+	String czyWybrany
 }

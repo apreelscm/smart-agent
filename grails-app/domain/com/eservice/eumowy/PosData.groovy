@@ -78,7 +78,7 @@ class PosData {
 	String dynamicDeviceSupportName
 	String dynamicDeviceSupportSurname
 	
-	static belongsTo = [process: Process, point: PointData]
+	static belongsTo = [point: PointData]
 	
 	static mapping = {
 		table name: "POS", schema:DomainConsts.SHEMA_NAME
@@ -86,7 +86,6 @@ class PosData {
 	}
 	
     static constraints = {
-        process(nullable:true)
         point(nullable:true)
     }
 }
