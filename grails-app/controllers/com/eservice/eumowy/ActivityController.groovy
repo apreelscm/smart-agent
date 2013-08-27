@@ -276,6 +276,11 @@ class ActivityController {
             }
             render(view: "../createProcess/selectedPanels")
             on("back").to "chooseCalc"
+			on("acceptPointsButton") {
+				log.info "acceptPointsButton TRIGGERED"
+				
+				
+			}.to "selectedPanels"
             on("continue"){ ProcessCommand cmd ->
 
                 if(cmd?.hasErrors()){
@@ -586,13 +591,14 @@ class ActivityController {
             }
 
             //TODO Send emails
+			emailService.sendDocumentsElectronicalVersion(process.documents)
 
         }
         else if ("paper".equals(requestVersion)) {
             //Documents are already in DB
             newStatus = Process.ProcessStatus.WAIT_FOR_SUBSCRIPTION_PAPER_VERSION
 
-            //TODO Send emails
+			emailService.sendDocumentsPaperVersion(process.documents)
         }
         else if ("templates".equals(requestVersion)) {
             //TODO Documents are already in DB
@@ -617,7 +623,8 @@ class ActivityController {
                 documentFilesWithoutFaksymileList.add(dfwof)
             }
 
-            //TODO Send emails
+			emailService.sendDocumentsTemplateVersionWithBlackFaksymile(documentFilesWithBlackFaksymileList)
+			emailService.sendDocumentsTemplateVersionWithoutFaksymile(documentFilesWithoutFaksymileList)
         }
     }
 }

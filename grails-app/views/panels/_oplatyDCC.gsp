@@ -6,7 +6,7 @@
                 <li class="align-center">
                     <span class="align-right"><g:message code="panel.payment.foreing.currency2"/></span>
                     <span class="align-left">
-                        <g:textField name="oplataZaPlatnoscWInnejWalucie" value="${data.oplataZaPlatnoscWInnejWalucie}" style="width: 100px"/> <g:message code="panel.polish.currency"/>
+                        <g:field type="number" step="any"  name="oplataZaPlatnoscWInnejWalucie" value="${data.oplataZaPlatnoscWInnejWalucie}" style="width: 100px"/> <g:message code="panel.polish.currency"/>
                     </span>
                 </li>
             </ul>

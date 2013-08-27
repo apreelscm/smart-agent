@@ -6,7 +6,7 @@
                 <li>
                     <span class="align-right"><g:message code="panel.loyality.period"/></span>
                     <span class="align-left">
-                        <g:textField name="okresLojalnosciowy" style="width: 100px" value="${data.okresLojalnosciowy}"/> <g:message code="panel.months"/>
+                        <g:field type="number" step="any" name="okresLojalnosciowy" readonly="true" style="width: 100px"/> <g:message code="panel.months"/>
                     </span>
                 </li>
             </ul>

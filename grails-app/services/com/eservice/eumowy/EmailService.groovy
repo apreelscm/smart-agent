@@ -20,7 +20,7 @@ class EmailService {
         }
     }
 	
-	def sendDocuments(List<DocumentFile> documents) {
+	def sendDocumentsPaperVersion(List<DocumentFile> documents) {
 		def emailTemplate = EmailTemplates.findByName(EmailTemplates.EmailTemplateType.DOCUMENTS_PAPER_VERSION)
 		
 		mailService.sendMail {
@@ -35,4 +35,69 @@ class EmailService {
 			}
 		}
 	}
+	
+	def sendDocumentsTemplateVersionWithBlackFaksymile(List<DocumentFile> documents) {
+		def emailTemplate = EmailTemplates.findByName(EmailTemplates.EmailTemplateType.DOCUMENTS_TEMPLATE_VERSION)
+		
+		mailService.sendMail {
+			multipart true
+			to emailTemplate.recipent
+			from emailTemplate.sender
+			subject ""
+			body( view: "/email/template/${emailTemplate.name}")
+			
+			documents.each { doc ->
+				attach doc.name, doc.content.content
+			}
+		}
+	}
+	
+	def sendDocumentsTemplateVersionWithoutFaksymile(List<DocumentFile> documents) {
+		def emailTemplate = EmailTemplates.findByName(EmailTemplates.EmailTemplateType.DOCUMENTS_TEMPLATE_VERSION)
+		
+		mailService.sendMail {
+			multipart true
+			to emailTemplate.recipent
+			from emailTemplate.sender
+			subject ""
+			body( view: "/email/template/${emailTemplate.name}")
+			
+			documents.each { doc ->
+				attach doc.name, doc.content.content
+			}
+		}
+	}
+	
+	def sendDocumentsElectronicalVersion(List<DocumentFile> documents) {
+		def emailTemplate = EmailTemplates.findByName(EmailTemplates.EmailTemplateType.DOCUMENTS_ELECTRONICAL_VERSION)
+		
+		mailService.sendMail {
+			multipart true
+			to emailTemplate.recipent
+			from emailTemplate.sender
+			subject ""
+			body( view: "/email/template/${emailTemplate.name}")
+			
+			documents.each { doc ->
+				attach doc.name, doc.content.content
+			}
+		}
+	}
+	
+	def sendDocumentsAccepted(List<DocumentFile> documents) {
+		def emailTemplate = EmailTemplates.findByName(EmailTemplates.EmailTemplateType.DOCUMENTS_ACCEPTED)
+		
+		mailService.sendMail {
+			multipart true
+			to emailTemplate.recipent
+			from emailTemplate.sender
+			subject ""
+			body( view: "/email/template/${emailTemplate.name}")
+			
+			documents.each { doc ->
+				attach doc.name, doc.content.content
+			}
+		}
+	}
 }
+

@@ -2,50 +2,19 @@ package com.eservice.eumowy
 
 class PointData {
 	
-	List<PosData> posDatas
-	
-	BigDecimal phGain
-	BigDecimal businessCare
-	BigDecimal serviceCare1
-	BigDecimal serviceCare2
-	BigDecimal serviceCare3
+	Integer cbdId
 	
 	String nip
-	String mccCode
-	String bussinessTypeInPractice
-	String bankAccountNumber
-	String bankName
-	
-	String pointNameForPrintingFromPOSTerminal
-	String pointNameForSearchEngine
-	
-	String dataforprintingAddressStreetType
-	String dataforprintingAddressStreet
-	Integer dataforprintingAddressHomeNumber
-	Integer dataforprintingAddressFlatNumber
-	String dataforprintingAddressCity
-	String dataforprintingAddressPostalCode
-	String dataforprintingAddressPostOffice
-	
-	String otherDataForPrintingFromTerminal1
-	String otherDataForPrintingFromTerminal2
-	
-	String contactAddressStreetType
-	String contactAddressAddressStreet
-	Integer contactAddressAddressHomeNumber
-	Integer contactAddressAddressFlatNumber
-	String contactAddressAddressCity
-	String contactAddressAddressPostalCode
-	String contactAddressAddressPostOffice
-	
-	String contactAtPointFirstName
-	String contactAtPointLastName
-	String contactAtPointFax
-	String contactAtPointPhone
-	String contactAtPointMobilePhone
-	String contactAtPointEmail
+	String ulica
+	Integer nrLokalu
+	Integer nrBudynku
+	String miejscowosc
+	String kodPocztowy
+	String poczta
 	
 	static belongsTo = [process: Process]
+	
+	static hasOne = [pointDetails: PointDataDetails]
 	
 	static hasMany = {
 		posDatas: PosData
@@ -56,7 +25,7 @@ class PointData {
 		id generator:'sequence', params:[sequence:DomainConsts.SHEMA_NAME+'.POINT_SEQ']
 	}
 	
-    static constraints = {
-        process(nullable:true)
-    }
+	static constraints = {
+		process(nullable:true)
+	}
 }

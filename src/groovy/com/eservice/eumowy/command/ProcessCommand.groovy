@@ -5,7 +5,7 @@ import grails.validation.Validateable
 
 /**
  * User: Dominik Walczak
- * String: 20.08.13 Time: 10:22
+ * Date: 20.08.13 Time: 10:22
  *
  */
 
@@ -35,6 +35,8 @@ class ProcessCommand implements Serializable{
     String umowaOznOd
     String umowaOznDo
 
+
+
 //    daneAkceptanta
     String akceptantNazwaOficjalna
     String akceptantNazwaSieciowa
@@ -56,6 +58,10 @@ class ProcessCommand implements Serializable{
 
     String wydrukLinia1
     String wydrukLinia2
+
+
+
+
 
 //    danePunktu
 //    dcc - FINISH
@@ -363,6 +369,15 @@ class ProcessCommand implements Serializable{
 
 //    wyborDzialania
 //    wykazPunktowAkceptujacychKartyPlatnicze
+    //TODO - to zmiany
+    List punktyTytulPlatnosci
+    //TODO - to zmiany
+    List punktySystemKasowy
+    //TODO - to zmiany
+    List punktyUta
+    //TODO - to zmiany
+    List punktyWybrane
+
 //    zestawPos
 //    zestawPosOdplatneUzywanie
     String oplPOSDialUpTyp
@@ -433,7 +448,9 @@ class ProcessCommand implements Serializable{
     transient Process process
 
     List<PointCommand> points = [] //  points[n].someProperty
-
+	List<AllPointsCommand> allPoints = []
+	List<AllPosCommand> allPoses = []
+	
     static constraints = {
         notes()
     }

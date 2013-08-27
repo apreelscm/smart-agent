@@ -13,7 +13,7 @@
             <ul table-list>
                 <li id="servicePayment">
                     <span>
-                        <span><g:message code="panel.monthly.payment"/> <g:textField name="obslugaEkonomicznyCena" value="${data.obslugaEkonomicznyCena}" style="width: 150px"/> <g:message code="panel.polish.currency"/></span>
+                        <span><g:message code="panel.monthly.payment"/> <g:field type="number" step="any" name="obslugaEkonomicznyCena" value="${data.obslugaEkonomicznyCena}" style="width: 150px"/> <g:message code="panel.polish.currency"/></span>
                     </span>
                 </li>
             </ul>

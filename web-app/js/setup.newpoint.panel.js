@@ -36,13 +36,14 @@ function setupNewPointPanelHandlers(prevPanelId, panelId, prefix) {
         });
         
         jQuery("#"+prefix+"\\["+panelId+"\\]\\.dataforprintingAsForMerchant").on("click", function(e) { 
+        	console.log("clicked");
         	if(e.target.checked) {
-        		jQuery("#"+prefix+"\\["+panelId+"\\]\\.dataforprintingAddressStreet").val(jQuery("#addressStreet").val());
-        		jQuery("#"+prefix+"\\["+panelId+"\\]\\.dataforprintingAddressHomeNumber").val(jQuery("#addressHomeNumber").val());
-        		jQuery("#"+prefix+"\\["+panelId+"\\]\\.dataforprintingAddressFlatNumber").val(jQuery("#addressFlatNumber").val());
-        		jQuery("#"+prefix+"\\["+panelId+"\\]\\.dataforprintingAddressCity").val(jQuery("#addressCity").val());
-        		jQuery("#"+prefix+"\\["+panelId+"\\]\\.dataforprintingAddressPostalCode").val(jQuery("#addressPostalCode").val());
-        		jQuery("#"+prefix+"\\["+panelId+"\\]\\.dataforprintingAddressPostOffice").val(jQuery("#addressPostal").val());
+        		jQuery("#"+prefix+"\\["+panelId+"\\]\\.dataforprintingAddressStreet").val(jQuery("#akceptantUlica").val());
+        		jQuery("#"+prefix+"\\["+panelId+"\\]\\.dataforprintingAddressHomeNumber").val(jQuery("#akceptantNrDomu").val());
+        		jQuery("#"+prefix+"\\["+panelId+"\\]\\.dataforprintingAddressFlatNumber").val(jQuery("#akceptantNrMieszkania").val());
+        		jQuery("#"+prefix+"\\["+panelId+"\\]\\.dataforprintingAddressCity").val(jQuery("#akceptantMiasto").val());
+        		jQuery("#"+prefix+"\\["+panelId+"\\]\\.dataforprintingAddressPostalCode").val(jQuery("#akceptantKodPocztowy").val());
+        		jQuery("#"+prefix+"\\["+panelId+"\\]\\.dataforprintingAddressPostOffice").val(jQuery("#akceptantPoczta").val());
         	} else {
         		jQuery("#"+prefix+"\\["+panelId+"\\]\\.dataforprintingAddressStreet").val("");
         		jQuery("#"+prefix+"\\["+panelId+"\\]\\.dataforprintingAddressHomeNumber").val("");
@@ -54,28 +55,28 @@ function setupNewPointPanelHandlers(prevPanelId, panelId, prefix) {
         });
         
         jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAddressAsForMerchant").on("change", function(e) {
-       		jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAddressAddressStreet").val(jQuery("#addressStreet").val());
-       		jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAddressAddressHomeNumber").val(jQuery("#addressHomeNumber").val());
-       		jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAddressAddressFlatNumber").val(jQuery("#addressFlatNumber").val());
-       		jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAddressAddressCity").val(jQuery("#addressCity").val());
-       		jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAddressAddressPostalCode").val(jQuery("#addressPostalCode").val());
-       		jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAddressAddressPostOffice").val(jQuery("#addressPostal").val());
+       		jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAddressAddressStreet").val(jQuery("#akceptantUlica").val());
+       		jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAddressAddressHomeNumber").val(jQuery("#akceptantNrDomu").val());
+       		jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAddressAddressFlatNumber").val(jQuery("#akceptantNrMieszkania").val());
+       		jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAddressAddressCity").val(jQuery("#akceptantMiasto").val());
+       		jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAddressAddressPostalCode").val(jQuery("#akceptantKodPocztowy").val());
+       		jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAddressAddressPostOffice").val(jQuery("#akceptantPoczta").val());
         });
         
         jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAddressAsOnPrint").on("change", function(e) {
-       		jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAddressAddressStreet").val(jQuery("#"+prefix+"\\["+panelId+"\\]\\.dataforprinting-addressStreet").val());
-       		jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAddressAddressHomeNumber").val(jQuery("#"+prefix+"\\["+panelId+"\\]\\.dataforprinting-addressHomeNumber").val());
-       		jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAddressAddressFlatNumber").val(jQuery("#"+prefix+"\\["+panelId+"\\]\\.dataforprinting-addressFlatNumber").val());
-       		jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAddressAddressCity").val(jQuery("#"+prefix+"["+panelId+"\\].dataforprinting-addressCity").val());
-       		jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAddressAddressPostalCode").val(jQuery("#"+prefix+"\\["+panelId+"\\]\\.dataforprinting-addressPostalCode").val());
-       		jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAddressAddressPostOffice").val(jQuery("#"+prefix+"\\["+panelId+"\\]\\.dataforprinting-addressPostOffice").val());
+       		jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAddressAddressStreet").val(jQuery("#"+prefix+"\\["+panelId+"\\]\\.dataforprintingAddressStreet").val());
+       		jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAddressAddressHomeNumber").val(jQuery("#"+prefix+"\\["+panelId+"\\]\\.dataforprintingAddressHomeNumber").val());
+       		jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAddressAddressFlatNumber").val(jQuery("#"+prefix+"\\["+panelId+"\\]\\.dataforprintingAddressFlatNumber").val());
+       		jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAddressAddressCity").val(jQuery("#"+prefix+"\\["+panelId+"\\]\\.dataforprintingAddressCity").val());
+       		jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAddressAddressPostalCode").val(jQuery("#"+prefix+"\\["+panelId+"\\]\\.dataforprintingAddressPostalCode").val());
+       		jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAddressAddressPostOffice").val(jQuery("#"+prefix+"\\["+panelId+"\\]\\.dataforprintingAddressPostOffice").val());
         });
         
         jQuery("#"+prefix+"\\["+panelId+"\\]\\.persontocontactAsForMerchant").on("click", function(e) {
         	if (e.target.checked) {
-        		jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAtPointFax").val(jQuery("#").val());
-        		jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAtPointPhone").val(jQuery("#").val());
-        		jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAtPointMobilePhone").val(jQuery("#").val());
+        		jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAtPointFax").val(jQuery("#akceptantFax").val());
+        		jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAtPointPhone").val(jQuery("#akceptantTelStacjonarny").val());
+        		jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAtPointMobilePhone").val(jQuery("#akceptantTelKomorkowy").val());
         		jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAtPointEmail").val(jQuery("#").val());
         	} else {
         		jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAtPointFax").val("");
@@ -261,7 +262,7 @@ function setupNewPointPanelData(prevPanelId, panelId) {
 				jQuery("#"+panelId+"sameForEveryPoint").prop("checked", true);
 			}
 			
-			if (jQuery("#possetforselectedpoint-sameForEveryPoint").is(':checked')) {
+			if (jQuery("#possetforselectedpointSameForEveryPoint").is(':checked')) {
 				jQuery("#"+panelId+"dialupCount").val(possetforselectedpoint['dialupCount']);
 				jQuery("#"+panelId+"dialupPPCount").val(possetforselectedpoint['dialupPPCount']);
 				jQuery("#"+panelId+"dialupPrice").val(possetforselectedpoint['dialupPrice']);
@@ -283,7 +284,7 @@ function setupNewPointPanelData(prevPanelId, panelId) {
 				jQuery("#"+panelId+"gprsPrice").val(possetforselectedpoint['gprsPrice']);
 				jQuery("#"+panelId+"gprsPPPrice").val(possetforselectedpoint['gprsPPPrice']);
 				jQuery("#"+panelId+"baseCount").val(possetforselectedpoint['baseCount']);
-				jQuery("#"+panelId+"possetforselectedpoint-sameForEveryPoint").prop("checked", true);
+				jQuery("#"+panelId+"possetforselectedpointSameForEveryPoint").prop("checked", true);
 			}
 			
 			if (jQuery("#"+prevPanelId+"technicalinformationSameForEveryPoint").is(':checked')) {
