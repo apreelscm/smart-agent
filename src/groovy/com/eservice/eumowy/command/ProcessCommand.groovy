@@ -439,7 +439,9 @@ class ProcessCommand implements Serializable{
     transient Process process
 
     List<PointCommand> points = [] //  points[n].someProperty
-
+	List<AllPointsCommand> allPoints = []
+	List<AllPosCommand> allPoses = []
+	
     static constraints = {
         notes()
     }

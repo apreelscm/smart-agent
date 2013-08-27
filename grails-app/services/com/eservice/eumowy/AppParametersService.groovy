@@ -59,4 +59,24 @@ class AppParametersService {
 		
 		return path
 	}
+	
+	def getTemplateNameForNewPoint() {
+		String name = AppParameters.findByName("TEMPLATE_NAME_FOR_NEW_POINT")
+		
+		if (name == null || name.isEmpty()) {
+			name = "BRAK TEMPLATE DLA NOWEGO PUNKTU"
+		}
+		
+		return name
+	}
+	
+	def getTemplateNameForNewPos() {
+		String name = AppParameters.findByName("TEMPLATE_NAME_FOR_NEW_POS")
+		
+		if (name == null || name.isEmpty()) {
+			name = "BRAK TEMPLATE DLA NOWEGO POS"
+		}
+		
+		return name
+	}
 }

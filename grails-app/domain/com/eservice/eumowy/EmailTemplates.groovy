@@ -21,6 +21,7 @@ class EmailTemplates implements Serializable {
         NOTES_TO_COA("notesToCOA"),
 		DOCUMENTS_PAPER_VERSION("documentsPaperVersion"),
 		DOCUMENTS_TEMPLATE_VERSION("documentsTemplateVersion"),
+		DOCUMENTS_ELECTRONICAL_VERSION("documentsElectronicalVersion"),
 		DOCUMENTS_ACCEPTED("documentsAccepted")
 		
 

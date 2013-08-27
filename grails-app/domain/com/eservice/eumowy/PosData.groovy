@@ -2,8 +2,6 @@ package com.eservice.eumowy
 
 class PosData {
 
-	Integer cbdId
-	
 	String dialupType
 	Integer dialupCount
 	Integer dialupPPCount
