@@ -25,15 +25,15 @@ class ProcessCommand implements Serializable{
     String korespondencjaPoczta
 
 //    aneksDoUmowyNajmuZestawuPos - FINISH
-    Date dataAneksowanejUmowyPos
+    String dataAneksowanejUmowyPos
 
 //    aneksDoUmowyPrepaid - FINISH (ale trzeba zobaczyc w dokumentach czy jest dobrze wpisany)
-    Date dataAneksowanejUmowyPrepaid
+    String dataAneksowanejUmowyPrepaid
 
 //    czasObowiazywaniaUmowy - FINISH
     String umowaCzas //TODO -  MOZLIWE, ze pdfach jest to umowaOzn, umowaNieOzn
-    Date umowaOznOd
-    Date umowaOznDo
+    String umowaOznOd
+    String umowaOznDo
 
 
 
@@ -65,12 +65,12 @@ class ProcessCommand implements Serializable{
 
 //    danePunktu
 //    dcc - FINISH
-    BigDecimal oplataVISA
-    BigDecimal oplataVISAPr
-    BigDecimal oplataMasterCard
-    BigDecimal oplataMasterCardPr
-    BigDecimal oplataMaestro
-    BigDecimal oplataMasteroPr
+    String oplataVISA
+    String oplataVISAPr
+    String oplataMasterCard
+    String oplataMasterCardPr
+    String oplataMaestro
+    String oplataMasteroPr
 
 //    dccZakresUruchomienia
     String dccZakresUruchomienia
@@ -82,42 +82,42 @@ class ProcessCommand implements Serializable{
 
 //    dodajPunkt
 //    dodatkoweUslugi - FINISH
-    BigDecimal oplataZaDzienneZestawienieTransakcji
-    BigDecimal oplataZaMiesieczneZestawienieTransakcji
-    BigDecimal oplataZaPotwierdzenieWykonaniaPrzelewu
-    BigDecimal oplataZaDostarczeniePapieru
-    BigDecimal oplataZaZmianeGrafiki
-    BigDecimal oplataZaInstalacjePOS
-    BigDecimal oplataZaInstalacjeGPRS
-    BigDecimal oplataZaUruchomienieWalutyObcej
+    String oplataZaDzienneZestawienieTransakcji
+    String oplataZaMiesieczneZestawienieTransakcji
+    String oplataZaPotwierdzenieWykonaniaPrzelewu
+    String oplataZaDostarczeniePapieru
+    String oplataZaZmianeGrafiki
+    String oplataZaInstalacjePOS
+    String oplataZaInstalacjeGPRS
+    String oplataZaUruchomienieWalutyObcej
 
 //    dodatkoweUslugi2 - FINISH (ale trzeba jeszcze daty startu pobrac)
-    BigDecimal wydrukGrafikiCena
-    BigDecimal dzialaniaMatematyczneCena
-    BigDecimal tytulPlatnosciCena
-    BigDecimal pierwszaSesjaCena
+    String wydrukGrafikiCena
+    String dzialaniaMatematyczneCena
+    String tytulPlatnosciCena
+    String pierwszaSesjaCena
 
 //    dodatkoweUslugiMud - FINISH
-    BigDecimal mudCena
+    String mudCena
 
 //    dodatkoweUslugiUTAIntegracja - FINISH (ale trzeba jeszcze daty startu pobrac)
-    BigDecimal weryfikacjaPINCena
-    BigDecimal systemKasowyCena
+    String weryfikacjaPINCena
+    String systemKasowyCena
 
 //    dodatkoweWyposazenie
 //    formaDoladowania - FINISH
-    Boolean doladowania_tp
-    Boolean doladowania_tk
-    Double srednia_sprzedaz_doladowan
+    String doladowania_tp
+    String doladowania_tk
+    String srednia_sprzedaz_doladowan
     String srednia_sprzedaz_doladowan_slownie
 
 //    funkcjeTerminala
 //    ifplus - FINISH (ale zmiany w dokumentach)
-    BigDecimal ifOplataVISA
-    BigDecimal ifOplataMasterCard
-    BigDecimal ifOplataDinersClub
-    BigDecimal ifOplataIKO
-    BigDecimal ifOplataPKOPB
+    String ifOplataVISA
+    String ifOplataMasterCard
+    String ifOplataDinersClub
+    String ifOplataIKO
+    String ifOplataPKOPB
 
 //    informacjeDodatkowe - FINISH
     String dzialalnoscForma
@@ -128,11 +128,11 @@ class ProcessCommand implements Serializable{
 //    informacjeTechniczne
 
 //    okresLojalnosciowy
-    Integer okresLojalnosciowy  //  TODO - czy to jest dobrze????
+    String okresLojalnosciowy  //  TODO - czy to jest dobrze????
 
 //    opieka
 //    oplatyDCC
-    BigDecimal oplataZaPlatnoscWInnejWalucie
+    String oplataZaPlatnoscWInnejWalucie
 //    osobaDoKontaktu
     String kontaktTytul
     String kontaktImie
@@ -160,120 +160,120 @@ class ProcessCommand implements Serializable{
     //TODO - w pdf wykorzystujemy reprezentant1 i reprezentant2 przechowujace imie i nazwisko
 
 //    poziomOplatiWarunkiPlatnosciKarty - FINISH
-    Double card_p_1_1
-    BigDecimal card_f_1_1
-    Double card_p_1_2
-    BigDecimal card_f_1_2
-    Double card_p_1_3
-    BigDecimal card_f_1_3
+    String card_p_1_1
+    String card_f_1_1
+    String card_p_1_2
+    String card_f_1_2
+    String card_p_1_3
+    String card_f_1_3
 
-    Double card_p_2_1
-    BigDecimal card_f_2_1
-    Double card_p_2_2
-    BigDecimal card_f_2_2
-    Double card_p_2_3
-    BigDecimal card_f_2_3
+    String card_p_2_1
+    String card_f_2_1
+    String card_p_2_2
+    String card_f_2_2
+    String card_p_2_3
+    String card_f_2_3
 
-    Double card_p_3_1_1
-    BigDecimal card_f_3_1_1
-    Double card_p_3_1_2
-    BigDecimal card_f_3_1_2
-    Double card_p_3_2_1
-    BigDecimal card_f_3_2_1
-    Double card_p_3_2_2
-    BigDecimal card_f_3_2_2
-    Double card_p_3_3
-    BigDecimal card_f_3_3
+    String card_p_3_1_1
+    String card_f_3_1_1
+    String card_p_3_1_2
+    String card_f_3_1_2
+    String card_p_3_2_1
+    String card_f_3_2_1
+    String card_p_3_2_2
+    String card_f_3_2_2
+    String card_p_3_3
+    String card_f_3_3
 
-    Double card_p_4_1
-    BigDecimal card_f_4_1
-    Double card_p_4_2
-    BigDecimal card_f_4_2
-    Double card_p_4_3
-    BigDecimal card_f_4_3
-    Double card_p_4_4
-    BigDecimal card_f_4_4
+    String card_p_4_1
+    String card_f_4_1
+    String card_p_4_2
+    String card_f_4_2
+    String card_p_4_3
+    String card_f_4_3
+    String card_p_4_4
+    String card_f_4_4
 
-    Double card_p_5_1
-    BigDecimal card_f_5_1
-    Double card_p_5_2
-    BigDecimal card_f_5_2
-    Double card_p_5_3
-    BigDecimal card_f_5_3
-    Double card_p_5_4
-    BigDecimal card_f_5_4
+    String card_p_5_1
+    String card_f_5_1
+    String card_p_5_2
+    String card_f_5_2
+    String card_p_5_3
+    String card_f_5_3
+    String card_p_5_4
+    String card_f_5_4
 
-    Double card_p_6_1_1
-    BigDecimal card_f_6_1_1
-    Double card_p_6_1_2
-    BigDecimal card_f_6_1_2
-    Double card_p_6_1_3
-    BigDecimal card_f_6_1_3
-    Double card_p_6_2_1
-    BigDecimal card_f_6_2_1
-    Double card_p_6_2_2
-    BigDecimal card_f_6_2_2
-    Double card_p_6_2_3
-    BigDecimal card_f_6_2_3
-    Double card_p_6_4_1
-    BigDecimal card_f_6_4_1
-    Double card_p_6_4_2
-    BigDecimal card_f_6_4_2
-    Double card_p_6_4_3
-    BigDecimal card_f_6_4_3
+    String card_p_6_1_1
+    String card_f_6_1_1
+    String card_p_6_1_2
+    String card_f_6_1_2
+    String card_p_6_1_3
+    String card_f_6_1_3
+    String card_p_6_2_1
+    String card_f_6_2_1
+    String card_p_6_2_2
+    String card_f_6_2_2
+    String card_p_6_2_3
+    String card_f_6_2_3
+    String card_p_6_4_1
+    String card_f_6_4_1
+    String card_p_6_4_2
+    String card_f_6_4_2
+    String card_p_6_4_3
+    String card_f_6_4_3
 
-    Double card_p_7_1_1
-    BigDecimal card_f_7_1_1
-    Double card_p_7_1_2
-    BigDecimal card_f_7_1_2
-    Double card_p_7_2_1
-    BigDecimal card_f_7_2_1
-    Double card_p_7_2_2
-    BigDecimal card_f_7_2_2
-    Double card_p_7_3
-    BigDecimal card_f_7_3
+    String card_p_7_1_1
+    String card_f_7_1_1
+    String card_p_7_1_2
+    String card_f_7_1_2
+    String card_p_7_2_1
+    String card_f_7_2_1
+    String card_p_7_2_2
+    String card_f_7_2_2
+    String card_p_7_3
+    String card_f_7_3
 
-    Double card_p_8_1_1
-    BigDecimal card_f_8_1_1
-    Double card_p_8_1_2
-    BigDecimal card_f_8_1_2
-    Double card_p_8_1_3
-    BigDecimal card_f_8_1_3
-    Double card_p_8_2_1
-    BigDecimal card_f_8_2_1
-    Double card_p_8_2_2
-    BigDecimal card_f_8_2_2
-    Double card_p_8_2_3
-    BigDecimal card_f_8_2_3
-    Double card_p_8_3
-    BigDecimal card_f_8_3
-    Double card_p_8_4_1
-    BigDecimal card_f_8_4_1
-    Double card_p_8_4_2
-    BigDecimal card_f_8_4_2
-    Double card_p_8_4_3
-    BigDecimal card_f_8_4_3
-    Double card_p_9
-    Double card_p_10
+    String card_p_8_1_1
+    String card_f_8_1_1
+    String card_p_8_1_2
+    String card_f_8_1_2
+    String card_p_8_1_3
+    String card_f_8_1_3
+    String card_p_8_2_1
+    String card_f_8_2_1
+    String card_p_8_2_2
+    String card_f_8_2_2
+    String card_p_8_2_3
+    String card_f_8_2_3
+    String card_p_8_3
+    String card_f_8_3
+    String card_p_8_4_1
+    String card_f_8_4_1
+    String card_p_8_4_2
+    String card_f_8_4_2
+    String card_p_8_4_3
+    String card_f_8_4_3
+    String card_p_9
+    String card_p_10
 
 //    poziomOplatIWarunkiPlatnosciPP - FINISH
-    Double pp_orange_tk
-    Double pp_orange_tp
-    Double pp_plus_tk
-    Double pp_plus_tp
-    Double pp_tmobile_tk
-    Double pp_tmobile_tp
-    Double pp_heyah_tk
-    Double pp_heyah_tp
-    Double pp_play_tk
-    Double pp_play_tp
-    Double pp_telegrosik_tk
-    Double pp_virginmobile_tk
-    Double pp_lycamobile_tk
-    Double pp_gtmobile_tk
-    Double pp_vectonemobile_tk
-    Double pp_delightmobile_tk
-    BigDecimal oplataZaOprogramowanieDoDoladowan
+    String pp_orange_tk
+    String pp_orange_tp
+    String pp_plus_tk
+    String pp_plus_tp
+    String pp_tmobile_tk
+    String pp_tmobile_tp
+    String pp_heyah_tk
+    String pp_heyah_tp
+    String pp_play_tk
+    String pp_play_tp
+    String pp_telegrosik_tk
+    String pp_virginmobile_tk
+    String pp_lycamobile_tk
+    String pp_gtmobile_tk
+    String pp_vectonemobile_tk
+    String pp_delightmobile_tk
+    String oplataZaOprogramowanieDoDoladowan
 
 //    promocyjneObnizenieOplatyZaZestawPos
 //    scoring
@@ -320,13 +320,13 @@ class ProcessCommand implements Serializable{
     String scoringOtwartyZamkniety
 //    TODO - w pdf czynne, nieczynne
 
-    Boolean scoringStanZadbany
+    String scoringStanZadbany
 //    TODO - w pdf stanZadbany
 
-    Boolean scoringSprzedazTowarowEkskluzywnych
-    Boolean scoringPonad50ProcentObrotowWNocy
-    Boolean scoringRuchTurystycznyPrzygraniczny
-    Boolean scoringUslugiPlatneZGory
+    String scoringSprzedazTowarowEkskluzywnych
+    String scoringPonad50ProcentObrotowWNocy
+    String scoringRuchTurystycznyPrzygraniczny
+    String scoringUslugiPlatneZGory
 //    TODO - w pdf sprzedazTowarowEkskluzywnych, ponad50ProcentObrotowWNocy, ruchTurystycznyPrzygraniczny, uslugiPlatneZGory
 
     String scoringCzestoscTransakcji
@@ -335,14 +335,14 @@ class ProcessCommand implements Serializable{
     String scoringIloscTransakcji
 //    TODO - w pdf od0do4, od5do10, powyzej10
 
-    BigDecimal scoringDochodowosc
+    String scoringDochodowosc
     String scoringDeklaracjaFinansowa
 //    TODO - w pdf wartosciWlasciwe, wartosciDeklarowane
 
-    BigDecimal scoringDeklaracjaFinansowaObrotOgolem
-    BigDecimal scoringDeklaracjaFinansowaObrotNaKarty
-    BigDecimal scoringDeklaracjaFinansowaSredniObrot
-    BigDecimal scoringDeklaracjaFinansowaSredniaTransakcja
+    String scoringDeklaracjaFinansowaObrotOgolem
+    String scoringDeklaracjaFinansowaObrotNaKarty
+    String scoringDeklaracjaFinansowaSredniObrot
+    String scoringDeklaracjaFinansowaSredniaTransakcja
 
 //    serwisEkonomiczny - FINISH
 //    serwisKomfort - FINISH
@@ -369,56 +369,65 @@ class ProcessCommand implements Serializable{
 
 //    wyborDzialania
 //    wykazPunktowAkceptujacychKartyPlatnicze
+    //TODO - to zmiany
+    List punktyTytulPlatnosci
+    //TODO - to zmiany
+    List punktySystemKasowy
+    //TODO - to zmiany
+    List punktyUta
+    //TODO - to zmiany
+    List punktyWybrane
+
 //    zestawPos
 //    zestawPosOdplatneUzywanie
     String oplPOSDialUpTyp
-    Integer oplPOSDialUpIlosc
-    Integer oplPOSDialUpIloscPP
-    BigDecimal oplPOSDialUpNormalneMies
-    BigDecimal oplPOSDialUpNormalnePP
-    BigDecimal oplPOSDialUpPreferencyjneMies
-    BigDecimal oplPOSDialUpPreferencyjnePP
+    String oplPOSDialUpIlosc
+    String oplPOSDialUpIloscPP
+    String oplPOSDialUpNormalneMies
+    String oplPOSDialUpNormalnePP
+    String oplPOSDialUpPreferencyjneMies
+    String oplPOSDialUpPreferencyjnePP
 
     String oplPOSVPNTyp
-    Integer oplPOSVPNIlosc
-    Integer oplPOSVPNIloscPP
-    BigDecimal oplPOSVPNNormalneMies
-    BigDecimal oplPOSVPNNormalnePP
-    BigDecimal oplPOSVPNPreferencyjneMies
-    BigDecimal oplPOSVPNPreferencyjnePP
+    String oplPOSVPNIlosc
+    String oplPOSVPNIloscPP
+    String oplPOSVPNNormalneMies
+    String oplPOSVPNNormalnePP
+    String oplPOSVPNPreferencyjneMies
+    String oplPOSVPNPreferencyjnePP
 
     String oplPOSSSLTyp
-    Integer oplPOSSSLIlosc
-    Integer oplPOSSSLIloscPP
-    BigDecimal oplPOSSSLNormalneMies
-    BigDecimal oplPOSSSLNormalnePP
-    BigDecimal oplPOSSSLPreferencyjneMies
-    BigDecimal oplPOSSSLPreferencyjnePP
+    String oplPOSSSLIlosc
+    String oplPOSSSLIloscPP
+    String oplPOSSSLNormalneMies
+    String oplPOSSSLNormalnePP
+    String oplPOSSSLPreferencyjneMies
+    String oplPOSSSLPreferencyjnePP
 
     String oplPOSWiFiTyp
-    Integer oplPOSWiFiIlosc
-    Integer oplPOSWiFiIloscPP
-    BigDecimal oplPOSWiFiNormalneMies
-    BigDecimal oplPOSWiFiNormalnePP
-    BigDecimal oplPOSWiFiPreferencyjneMies
-    BigDecimal oplPOSWiFiPreferencyjnePP
+    String oplPOSWiFiIlosc
+    String oplPOSWiFiIloscPP
+    String oplPOSWiFiNormalneMies
+    String oplPOSWiFiNormalnePP
+    String oplPOSWiFiPreferencyjneMies
+    String oplPOSWiFiPreferencyjnePP
 
     String oplPOSGPRSTyp
-    Integer oplPOSGPRSIlosc
-    Integer oplPOSGPRSIloscPP
-    BigDecimal oplPOSGPRSNormalneMies
-    BigDecimal oplPOSGPRSNormalnePP
-    BigDecimal oplPOSGPRSPreferencyjneMies
-    BigDecimal oplPOSGPRSPreferencyjnePP
+    String oplPOSGPRSIlosc
+    String oplPOSGPRSIloscPP
+    String oplPOSGPRSNormalneMies
+    String oplPOSGPRSNormalnePP
+    String oplPOSGPRSPreferencyjneMies
+    String oplPOSGPRSPreferencyjnePP
 
-    Integer oplPOSBaza
+    String oplPOSBaza
 
 
 //    zestawPosStawkiPreferencyjne
 
 //    serwis - FINISH
     String obslugaTyp
-    BigDecimal obslugaEkonomicznyCena
+    String obslugaEkonomicznyCena
     //TODO - w pdf wykorzystujemy obsugaPrestiz, obslugaKomfort, obslugaEkonomiczny (checkboxy)
 
 //    rachunekBankowyKlienta
@@ -427,7 +436,7 @@ class ProcessCommand implements Serializable{
 
 //    oplataDCCZaUruchomienie
     //TODO - to w pdfach sie nazywa inaczej - nie wiem jak...
-    BigDecimal oplataZaUruchomienieDCC
+    String oplataZaUruchomienieDCC
 
 //    liczbaMiesiecyZwolnieniaZNajmu
 

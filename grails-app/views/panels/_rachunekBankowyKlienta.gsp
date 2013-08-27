@@ -5,7 +5,7 @@
             <ul class="table-list">
                 <li>
                     <span class="align-right"><g:message code="panel.bank.account.number"/></span>
-                    <span class="align-left"><g:textField name="numerRachunkuBankowego" value="${data.numerRachunkuBankowego}" style="width: 250px"/></span>
+                    <span class="align-left"><g:textField name="numerRachunkuBankowego" class="bank-account" value="${data.numerRachunkuBankowego}" style="width: 250px"/></span>
                 </li>
                 <li>
                     <span class="align-right"><g:message code="panel.bank.name"/></span>
@@ -15,3 +15,11 @@
         </div>
     </fieldset>
 </div>
+
+<r:require module="mask"/>
+
+<r:script>
+    jQuery(document).ready(function() {
+        jQuery(".bank-account").mask('99 9999 9999 9999 9999 9999 9999');
+    });
+</r:script>
