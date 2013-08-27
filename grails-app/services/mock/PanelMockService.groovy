@@ -16,14 +16,14 @@ class PanelMockService {
     }
 
     def getAdresDoKorespondencjizAkecptantem(ProcessCommand cmd) {
-        cmd.korespondencjaUlicaTytul = "Ulica"
-        cmd.korespondencjaUlica = "Zielona"
-        cmd.korespondencjaNrDomu = "23A"
-        cmd.korespondencjaNrMieszkania = "1"
+        cmd.akceptantKontaktUlicaTytul = "Ulica"
+        cmd.akceptantKontaktUlica = "Zielona"
+        cmd.akceptantKontaktNrDomu = "23A"
+        cmd.akceptantKontaktNrMieszkania = "1"
 
-        cmd.korespondencjaMiasto = "Cieszyn"
-        cmd.korespondencjaKodPocztowy = "12-234"
-        cmd.korespondencjaPoczta = "Kraków"
+        cmd.akceptantKontaktMiasto = "Cieszyn"
+        cmd.akceptantKontaktKodPocztowy = "12-234"
+        cmd.akceptantKontaktPoczta = "Kraków"
     }
 
     def getAneksDoUmowyNajmuZestawuPos(ProcessCommand cmd) {

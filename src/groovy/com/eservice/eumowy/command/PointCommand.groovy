@@ -23,23 +23,23 @@ class PointCommand implements Serializable {
 	String nazwaDoWyszukiwarki
 	 
 	String dataforprintingAddressStreetType
-	String ulica
-	Integer nrDomu
-	Integer nrLokalu
-	String miasto
-	String kodPocztowy
-	String poczta
+	String wydrukUlica
+	Integer wydrukNrDomu
+	Integer wydrukNrLokalu
+	String wydrukMiasto
+	String wydrukKodPocztowy
+	String WydrukPoczta
 	 
-	String linia1
-	String linia2
- 	
+	String wydrukLinia1
+	String wydrukLinia2
+	
 	String contactAddressStreetType
-	String ulicaDoKorespondencji
-	Integer nrDomuDoKorespondencji
-	Integer nrLokaluDoKorespondencji
-	String miastoDoKorespondencji
-	String kodPocztowyDoKorespondencji
-	String pocztaDoKorespondencji
+	String korespondencjaUlica
+	Integer korespondencjaNrDomu
+	Integer korespondencjaNrLokalu
+	String koresponedencjaMiasto
+	String korespondencjaKodPocztowy
+	String korespondencjaPoczta
 		
 	String imie
 	String nazwisko
