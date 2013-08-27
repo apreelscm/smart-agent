@@ -29,8 +29,9 @@ class PdfMapper {
 				return
 			}
 			
-			if (PdfMapper.metaClass.respondsTo(PdfMapper, "map" + key.capitalize())) {
-				PdfMapper."map${key.capitalize()}"(data, pd, key, value)
+			def methodName = "map" + key.capitalize()
+			if (PdfMapper.metaClass.respondsTo(PdfMapper, methodName)) {
+				PdfMapper."${methodName}"(data, pd, key, value)
 				return
 			}
 			
@@ -49,8 +50,9 @@ class PdfMapper {
 				return
 			}
 			
-			if (PdfMapper.metaClass.respondsTo(PdfMapper, "map" + key.capitalize())) {
-				PdfMapper."map${key.capitalize()}"(data, pd, key, value)
+			def methodName = "map" + key.capitalize()
+			if (PdfMapper.metaClass.respondsTo(PdfMapper, methodName)) {
+				PdfMapper."${methodName}"(data, pd, key, value)
 				return
 			}
 			
@@ -65,8 +67,9 @@ class PdfMapper {
 		
 		pd.each { processData ->
 			
-			if (PdfMapper.metaClass.respondsTo(PdfMapper, "map" + processData.name.capitalize())) {
-				PdfMapper."map{$processData.name.capitalize()}"(data, processData, processData.name, processData.value)
+			def methodName = "map" + processData.name.capitalize()
+			if (PdfMapper.metaClass.respondsTo(PdfMapper, methodName)) {
+				PdfMapper."${methodName}"(data, processData, processData.name, processData.value)
 				return
 			}
 			
@@ -76,6 +79,10 @@ class PdfMapper {
 			else {
 				data.put(processData.name, [processData.value] as String[])
 			}
+		}
+		
+		data.each { key, value ->
+			log.info "Mapping < " + key + " : " + value + " >"
 		}
 		
 		return data
@@ -93,4 +100,8 @@ class PdfMapper {
 	}
 	
 	private static mapUlicaDoKorespondencjiTyp(def data, def pd, def key, def value) {}
+	
+	private static mapScoringDochodowosc(def data, def pd, def key, def value) {
+		data.put("dochodowosc", [value] as String[])
+	}
 }

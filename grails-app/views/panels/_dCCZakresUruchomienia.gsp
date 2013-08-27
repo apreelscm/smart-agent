@@ -12,7 +12,32 @@
             </div>
         </div>
         <div id="dccRange" class="centre" style="text-align: center; padding-top: 20px; width: 800px; max-width: 950px">
-            <cbd:dccRange nip="${data.nip}" accepted="[1,3]"/>
+            <table class="t">
+	            <thead>
+		            <tr>
+				        <td><g:message code="panel.dcc.table.full.name" /></td>
+				        <td><g:message code="panel.dcc.table.street" /></td>
+				        <td><g:message code="panel.dcc.table.city" /></td>
+				        <td><g:message code="panel.dcc.table.house.number" /></td>
+				        <td><g:message code="panel.dcc.table.code" /></td>
+				        <td><g:message code="panel.dcc.table.poz.count" /></td>
+			        	<td>&nbsp;</td>
+			        </tr>
+	        	</thead>
+        		<tbody>
+        			<g:each status="i" var="point" in="${data.allPoints}">
+	        		<tr>
+		                <td>${point.nazwa}</td>
+		                <td>${point.ulica}</td>
+		                <td>${point.miejscowosc}</td>
+		                <td>${point.nrBudynku}</td>
+		                <td>${point.kodPocztowy}</td>
+		                <td>${point.liczbaPos}</td>
+		                <td><g:checkBox name="allPoints[${i}].czyWybrany" checked="${point.czyWybrany}" /></td>
+	                </tr>
+	                </g:each>
+        		</tbody>
+       		</table>
         </div>
     </fieldset>
 </div>

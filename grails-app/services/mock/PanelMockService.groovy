@@ -3,6 +3,7 @@ package mock
 
 
 import com.eservice.eumowy.command.AllPointsCommand
+import com.eservice.eumowy.command.AllPosCommand
 import com.eservice.eumowy.command.ProcessCommand
 import com.eservice.eumowy.util.DateUtils
 
@@ -82,6 +83,34 @@ class PanelMockService {
 
     def getDccZakresUruchomienia(ProcessCommand cmd) {
         cmd.dccZakresUruchomienia = "obecne_i_nowe"
+		
+		def p1 = new AllPointsCommand()
+		def p2 = new AllPointsCommand()
+		def p3 = new AllPointsCommand()
+		
+		p1.id = 1
+		p1.nazwa = 'Sklep spozywczy'
+		p1.ulica = 'Zielona'
+		p1.miejscowosc = 'Lubartów'
+		p1.nrBudynku = 12
+		p1.kodPocztowy = '02-123'
+		p1.liczbaPos = '23'
+		p2.id = 2
+		p2.nazwa = 'Kwiaciarnia Róża'
+		p2.ulica = 'Zielona'
+		p2.miejscowosc = 'Lubartów'
+		p2.nrBudynku = 12
+		p2.kodPocztowy = '02-123'
+		p2.liczbaPos = '6'
+		p3.id = 3
+		p3.nazwa = 'Kino Femina'
+		p3.ulica = 'Zielona'
+		p3.miejscowosc = 'Lubartów'
+		p3.nrBudynku = 12
+		p3.kodPocztowy = '02-123'
+		p3.liczbaPos = '2'
+		
+		cmd.allPoints = [p1, p2, p3]
     }
 
     def getDeklaracjeAkceptanta(ProcessCommand cmd) {
@@ -322,7 +351,33 @@ class PanelMockService {
     }
 
     def getPromocyjneObnizenieOplatyZaZestawPos(ProcessCommand cmd) {
-
+		
+		def p1 = new AllPosCommand()
+		def p2 = new AllPosCommand()
+		def p3 = new AllPosCommand()
+		
+		p1.id = 1
+		p1.numerZestawuPos = '234'
+		p1.dataOd = '2011-05-21'
+		p1.dataDo = '2012-05-20'
+		p1.wysokoscOplaty = '12.25'
+		p1.czyWybrany = true
+		
+		p2.id = 2
+		p2.numerZestawuPos = '567'
+		p2.dataOd = '2012-05-21'
+		p2.dataDo = '2013-05-20'
+		p2.wysokoscOplaty = '15.99'
+		p2.czyWybrany = true
+		
+		p3.id = 3
+		p3.numerZestawuPos = '154'
+		p3.dataOd = '2013-05-21'
+		p3.dataDo = '2014-05-20'
+		p3.wysokoscOplaty = '23.40'
+		p3.czyWybrany = true
+		
+		cmd.allPoses = [p1, p2, p3]
     }
 
     def getRachunekBankowyKlienta(ProcessCommand cmd) {

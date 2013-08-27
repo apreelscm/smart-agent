@@ -132,7 +132,7 @@ class PdfService {
 		return PdfGenerator.generatePdfContentFromFile(fileTemplatePath, dataMap, getFont(fontType))
 	}
 	
-	def fillPdfFormFromURIWithFaksymile(Signature sig, FontType fontType) {
+	def fillPdfFormFromURIWithFaksymile(Signature sig, Map<String,String[]> panelData, FontType fontType) {
 		int subscriptionDeltaX = 50
 		int subscriptionDeltaY = 0
 		
@@ -142,22 +142,29 @@ class PdfService {
 		
 		dataMap.put("managementSubscription1", [new File(subscriptionsPath+sig.managementSubscription1).toURI().toURL(), "", "signature", sig.subscriptionPageNumber.toString(), sig.subscriptionX.toString(), sig.subscriptionY.toString(), sig.subscriptionXScale.toString(), sig.subscriptionYScale.toString()] as String[])
 		dataMap.put("managementSubscription2", [new File(subscriptionsPath+sig.managementSubscription2).toURI().toURL(), "", "signature", sig.subscriptionPageNumber.toString(), sig.subscriptionX+subscriptionDeltaX.toString(), sig.subscriptionY+subscriptionDeltaY.toString(), sig.subscriptionXScale.toString(), sig.subscriptionYScale.toString()] as String[])
-		dataMap.put("akceptantNazwa", ["Nazwa Akceptanta Teeest :)"] as String[])
+		
+		if (panelData != null) {
+			dataMap.putAll(panelData)
+		}
 		
 		String pdfTemplatePath = appParametersService.getPdfTemplatePath() + sig.templatePath
 		
 		return PdfGenerator.generatePdfContentFromURI(pdfTemplatePath, dataMap, getFont(fontType))
 	}
 	
-	def fillPdfFormFromURIWithoutFaksymile(Signature sig, FontType fontType) {
+	def fillPdfFormFromURIWithoutFaksymile(Signature sig, Map<String,String[]> panelData, FontType fontType) {
 		Map<String,String[]> dataMap = new HashMap<String, String[]>()
 		
+		if (panelData != null) {
+			dataMap.putAll(panelData)
+		}
+		
 		String pdfTemplatePath = appParametersService.getPdfTemplatePath() + sig.templatePath
 		
 		return PdfGenerator.generatePdfContentFromURI(pdfTemplatePath, dataMap, getFont(fontType))
 	}
 	
-	def fillPdfFormFromURIWithBlackFaksymile(Signature sig, FontType fontType) {
+	def fillPdfFormFromURIWithBlackFaksymile(Signature sig, Map<String,String[]> panelData, FontType fontType) {
 		int subscriptionDeltaX = 50
 		int subscriptionDeltaY = 0
 		
@@ -167,6 +174,10 @@ class PdfService {
 		
 		dataMap.put("managementSubscription1", [new File(subscriptionsPath+sig.managementSubscription1).toURI().toURL(), "", "signature", sig.subscriptionPageNumber, sig.subscriptionX, sig.subscriptionY, sig.subscriptionXScale, sig.subscriptionYScale] as String[])
 		dataMap.put("managementSubscription2", [new File(subscriptionsPath+sig.managementSubscription2).toURI().toURL(), "", "signature", sig.subscriptionPageNumber, sig.subscriptionX+subscriptionDeltaX, sig.subscriptionY+subscriptionDeltaY, sig.subscriptionXScale, sig.subscriptionYScale] as String[])
+		
+		if (panelData != null) {
+			dataMap.putAll(panelData)
+		}
 		
 		String pdfTemplatePath = appParametersService.getPdfTemplatePath() + sig.templatePath
 		

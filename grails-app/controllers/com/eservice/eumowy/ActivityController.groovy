@@ -1,5 +1,6 @@
 package com.eservice.eumowy
 import com.eservice.eumowy.command.ProcessCommand
+import com.eservice.eumowy.pdfmapper.PdfMapper;
 import com.eservice.eumowy.process.DefineActivityCommand
 
 class ActivityController {
@@ -298,6 +299,8 @@ class ActivityController {
                     processInstance.addToProcessData(data)
                     processInstance.discard();
                 }
+				
+				//TODO Save cmd.points to PointData, PointDataDetails, PosData
 
                 //processInstance.save();
 
@@ -305,14 +308,16 @@ class ActivityController {
             }.to "clientSignature"
         }
 
-        clientSignature{
+        clientSignature {
             onEntry {
                 def processInstance = flow.processInstance
 
                 def totalPagesCount = 0
                 processInstance.signatures.each { sig ->
                     log.info "SIGNATURE NAME: " + sig.name + " PDF TEMPLATE PATH: " + sig.templatePath
-                    byte[] documentData = pdfService.fillPdfFormFromURIWithFaksymile(sig, PdfService.FontType.ARIAL)
+					
+					def data = PdfMapper.mapProcessDataToPDFData(processInstance.processData)
+                    byte[] documentData = pdfService.fillPdfFormFromURIWithFaksymile(sig, data, PdfService.FontType.ARIAL)
 
                     int pc = pdfService.getPageCountFromPdf(documentData)
                     totalPagesCount += pc
@@ -606,8 +611,8 @@ class ActivityController {
             List<DocumentFile> documentFilesWithoutFaksymileList = new ArrayList<DocumentFile>()
 
             process.signatures.each { sig ->
-                byte[] documentDataWithBlackFaksymile = pdfService.fillPdfFormFromURIWithBlackFaksymile(sig, PdfService.FontType.ARIAL)
-                byte[] documentDataWithoutFaksymile = pdfService.fillPdfFormFromURIWithoutFaksymile(sig, PdfService.FontType.ARIAL)
+                byte[] documentDataWithBlackFaksymile = pdfService.fillPdfFormFromURIWithBlackFaksymile(sig, null, PdfService.FontType.ARIAL)
+                byte[] documentDataWithoutFaksymile = pdfService.fillPdfFormFromURIWithoutFaksymile(sig, null, PdfService.FontType.ARIAL)
 
                 // Generate documents with black faksymile for PH
                 DocumentFile dfwbf = new DocumentFile(name: sig.templatePath, dateCreated: new Date(), lastUpdated: new Date(), pagesCount: 0)
