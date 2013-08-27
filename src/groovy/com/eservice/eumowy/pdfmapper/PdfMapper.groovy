@@ -4,10 +4,19 @@ import com.eservice.eumowy.PointData;
 
 class PdfMapper {
 
+	static mapAllDataToPDFData(def process, def pd) {
+		def pointsAndPosDataMap = mapPointAndPosDataToPDFData(pd)
+		def processDataMap = mapProcessDataToPDFData(process)
+		pointsAndPosDataMap.putAll(processDataMap)
+		
+		return pointsAndPosDataMap
+	}
+	
 	static mapPointAndPosDataToPDFData(def pd) {
 		def pointDataMap = mapPointDataToPDFData(pd)
 		def posDataMap = mapPosDataToPDFData(pd.posDatas)
 		pointDataMap.putAll(posDataMap)
+		
 		return pointDataMap
 	}
 	
@@ -46,6 +55,16 @@ class PdfMapper {
 			}
 			
 			data.put(key, [value] as String[]);
+		}
+		
+		return data
+	}
+	
+	static mapProcessDataToPDFData(def pd) {
+		Map<String, String[]> data = new HashMap<String, String[]>()
+		
+		pd.each { processData ->
+			data.put(processData.name, [processData.value] as String[])
 		}
 		
 		return data
