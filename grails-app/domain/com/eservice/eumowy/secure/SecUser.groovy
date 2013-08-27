@@ -4,9 +4,14 @@ class SecUser {
 
 	transient springSecurityService
 
-	String username
-	String password
-	String name
+	String imie
+    String typOsoby
+    String nazwisko
+    String nr
+    String name
+
+    String username
+    String password
 	boolean enabled
 	boolean accountExpired
 	boolean accountLocked

@@ -1,6 +1,7 @@
 package mock
 
 
+
 import com.eservice.eumowy.command.AllPointsCommand
 import com.eservice.eumowy.command.ProcessCommand
 import com.eservice.eumowy.util.DateUtils
@@ -331,7 +332,9 @@ class PanelMockService {
 
     def getScoring(ProcessCommand cmd) {
 
+        cmd.scoringMcc = "1234"
         cmd.scoringDzialalnosc = "1"
+        cmd.scoringSzczegolyDzialalnosci = "Handel zywym towarem"
 
         cmd.scoringIloscTransakcji = "2"
 
@@ -386,6 +389,7 @@ class PanelMockService {
 
     def getSerwisEkonomiczny(ProcessCommand cmd) {
         //korzysta z pola cmd.obslugaEkonomicznyCena z getSerwis
+        cmd.obslugaEkonomicznyCena = "-"
     }
 
     def getSerwisKomfort(ProcessCommand cmd) {
@@ -413,6 +417,7 @@ class PanelMockService {
 
     def getUmowa2(ProcessCommand cmd) {
         cmd.miejsceUmowy = "Warszawa"
+        cmd.dataUmowy = new Date().format("yyyy-MM-dd")
     }
 
     def getUwagi(ProcessCommand cmd) {

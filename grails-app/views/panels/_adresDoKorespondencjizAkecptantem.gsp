@@ -9,7 +9,7 @@
                 <li>
                     <span><g:message code="panel.street" /></span>
                     <span>
-                        <dict:streetSelect id="korespondencjaUlicaTytul" name="korespondencjaUlicaTytul" />
+                        <dict:streetSelect id="korespondencjaUlicaTytul" name="korespondencjaUlicaTytul" value="${data.korespondencjaUlicaTytul}" />
                         <g:textField name="korespondencjaUlica" style="width: 200px" value="${data.korespondencjaUlica}"/>
                     </span>
                     <span>

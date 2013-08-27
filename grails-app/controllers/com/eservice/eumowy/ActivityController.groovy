@@ -2,6 +2,7 @@ package com.eservice.eumowy
 
 import com.eservice.eumowy.command.ProcessCommand
 import com.eservice.eumowy.process.DefineActivityCommand
+import com.eservice.eumowy.secure.SecUser
 
 class ActivityController {
 
@@ -15,6 +16,8 @@ class ActivityController {
     def calculatorService
     def messageSource
     def pdfService
+
+    def springSecurityService
 
     def index() {
         redirect(action: "createProcess", params: params)
@@ -37,7 +40,6 @@ class ActivityController {
             }
             on("continue") { DefineActivityCommand cmd ->
                 def processInstance = flow.processInstance
-
                 if(cmd?.hasErrors()){
                     flash.errorMessage= message(code: cmd.errors?.getFieldError("selectedActivities").code);
                     return error();
@@ -167,13 +169,18 @@ class ActivityController {
             on("back").to "chooseActivity"
             on("getCalculator").to "getCalculator"
             on("continue"){
+
                 Process processInstance = flow.processInstance
                 processInstance.calcNumber =  flow.calcNumber
                 processInstance.client =  flow.client
-                processInstance.phNumber = 123456
-                processInstance.phFirstName = "phFirstName"
-                processInstance.phSurname = "phSurname"
                 processInstance.status = Process.ProcessStatus.NEW
+
+                SecUser user = springSecurityService.principal
+
+                processInstance.phNumber = user.nr
+                processInstance.phFirstName = user.imie
+                processInstance.phSurname = user.nazwisko
+
 
                 if (!processInstance.save(flush:true)){
                     println 'stock instance has errors'
@@ -243,6 +250,7 @@ class ActivityController {
                     return error();
                 }
 
+                flow.calc = calc;
                 flow.calcNumber =  calcId;
                 flash.calcInfoMessage = message(code:"calc.found.info", default:"Znaleziono");
 
@@ -256,12 +264,13 @@ class ActivityController {
             onEntry {
                 println "selectedPanels enterview"
                 def processInstance = flow.processInstance;
+                def calc = flow.calc;
 
                 //ACTIVE PANELS
                 TreeSet activePanels = _getActivePanels(processInstance.signatures)
                 processInstance.panels = activePanels.toList();
 
-                def processCmd =  processService.getDataForPanels(processInstance)
+                def processCmd =  processService.getDataForPanel(processInstance,calc)
 
                 flow.data = processCmd
             }

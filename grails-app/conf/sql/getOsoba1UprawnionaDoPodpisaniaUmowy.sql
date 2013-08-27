@@ -1,4 +1,4 @@
-select osb_imie as imie,osb_nazwisko as nazwisko, OSB_TYTUL as tytul  from CBD_ADM.cbt_klienci m
+select osb_imie as "imie",osb_nazwisko as "nazwisko", OSB_TYTUL as "tytul"  from CBD_ADM.cbt_klienci m
 join CBD_ADM.cbt_osoby a on a.osb_kln_id=m.kln_id
 WHERE m.kln_poziom = 'MRC'
 AND m.kln_nip = :nip

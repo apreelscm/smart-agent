@@ -190,3 +190,5 @@ fileuploader {
     }
 }
 
+grails.gsp.reload.enable = true
+

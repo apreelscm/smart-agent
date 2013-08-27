@@ -46,7 +46,6 @@
             params: [processId: processInstance.id])}
         }
 });
-
     </g:javascript>
 
     <style>
@@ -89,6 +88,7 @@
 
         <g:render template="/panels/uwagi"/>
     </g:form>
+
 
     <g:render template="/panels/zalaczniki"/>
 

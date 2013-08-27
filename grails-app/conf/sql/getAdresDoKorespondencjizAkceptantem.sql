@@ -1,6 +1,6 @@
-SELECT a.adr_ulica as ulica, a.adr_nr_lokalu as nr_lokal,
-a.adr_nr_budynku as nr_budynku, a.adr_miejscowosc as miejscowosc,
-a.adr_kod_pocztowy as kod_pocztowy, a.adr_miejscowosc as poczta , a.adr_typ_ulicy as typ_ulicy
+SELECT a.adr_ulica as "ulica", a.adr_nr_lokalu as "nr_lokal",
+a.adr_nr_budynku as "nr_budynku", a.adr_miejscowosc as "miejscowosc",
+a.adr_kod_pocztowy as "kod_pocztowy", a.adr_miejscowosc as "poczta" , a.adr_typ_ulicy as "typ_ulicy"
 FROM CBD_ADM.cbt_adresy a
 join CBD_ADM.cbt_klienci m on a.adr_kln_id=m.kln_id
 WHERE kln_poziom = 'MRC'

@@ -7,6 +7,7 @@ class PanelController {
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
     def processService
+    def cbdService
 
     def index() {
         redirect(action: "list", params: params)
@@ -16,11 +17,13 @@ class PanelController {
 
         def process = new Process();
         process.panels = Panel.list();
-        process.client = new Client(nip: '334455667')
+        process.client = new Client(nip: '4457490660')
+
+        def calc = cbdService.findCalculatorByNip('4457490660')
 
         println("process.panels:"+ process.panels)
 
-        def processCmd =  processService.getDataForPanels(process, "notes tmp")
+        def processCmd =  processService.getDataForPanel(process,calc)
         params.max = Math.min(max ?: 10, 100)
         [panelInstanceList: Panel.list(params), panelInstanceTotal: Panel.count(), data: processCmd]
     }

@@ -101,13 +101,14 @@ class ProcessService {
         return activities?.any{it.code.equals(activityCode)};
     }
 
+
 	def initDataForPanels(def process) {
 		for(int i = 0; i < 10; i++) {
 			process.points.add(new PointCommand())
 		}
 	}
 	
-    def getDataForPanels(def process) {
+    def getDataForPanel(def process, def calc) {
         def exclusions = ["getWyborDzialania","getLiczbaMiesiecyZwolnieniaZNajmu"]
 
         def cmd = new ProcessCommand();
@@ -126,10 +127,10 @@ class ProcessService {
                     panelMockService."${panelFunctionName}"(cmd)
                     break;
                 case Environment.TEST:
-                    panelMockService."${panelFunctionName}"(cmd)
+                    panelService."${panelFunctionName}"(cmd,calc)
                     break;
                 default:
-                    panelService."${panelFunctionName}"(cmd)
+                    panelService."${panelFunctionName}"(cmd,calc)
             }
         }
         cmd
