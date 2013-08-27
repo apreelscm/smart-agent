@@ -472,7 +472,6 @@ class PanelMockService {
 
     def getUmowa2(ProcessCommand cmd) {
         cmd.miejsceUmowy = "Warszawa"
-        cmd.dataUmowy = new Date().format("yyyy-MM-dd")
     }
 
     def getUwagi(ProcessCommand cmd) {
