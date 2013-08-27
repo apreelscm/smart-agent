@@ -46,6 +46,8 @@ class PointDataDetails {
 	String contactAtPointMobilePhone
 	String contactAtPointEmail
 	
+	static belongsTo = [point: PointData]
+	
 	static mapping = {
 		table name: "POINT_DETAILS", schema:DomainConsts.SHEMA_NAME
 		id generator:'sequence', params:[sequence:DomainConsts.SHEMA_NAME+'.POINT_DETAILS_SEQ']

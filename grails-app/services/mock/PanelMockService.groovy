@@ -1,7 +1,7 @@
 package mock
 
+import org.apache.commons.lang.time.DateUtils
 import com.eservice.eumowy.command.ProcessCommand
-import com.eservice.eumowy.util.DateUtils
 
 class PanelMockService {
 

@@ -9,4 +9,8 @@ class AllPointsCommand {
 	def nrBudynku
 	def kodPocztowy
 	def liczbaPos
+	def tytulPlatnosci
+	def sysKas
+	def uta
+	def czyWybrany
 }
