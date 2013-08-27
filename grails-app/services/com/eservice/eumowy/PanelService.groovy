@@ -349,8 +349,8 @@ class PanelService {
     }
 
     def getScoring(ProcessCommand cmd ,def calc) {
-
-        //TODO cmd.scoringDzialalnosc = "1"
+        cmd.scoringMcc = calculatorService.getCalcProperty(calc,"MCC")
+        cmd.scoringDzialalnosc = ""
         cmd.scoringIloscTransakcji = ""
         cmd.scoringCzestoscTransakcji = ""
         cmd.scoringOtwartyZamkniety = ""
@@ -378,7 +378,6 @@ class PanelService {
         cmd.scoringDeklaracjaFinansowaObrotNaKarty = ""
         cmd.scoringDeklaracjaFinansowaSredniObrot = ""
         cmd.scoringDeklaracjaFinansowaSredniaTransakcja = ""
-
     }
 
     def getSerwis(ProcessCommand cmd ,def calc) {
@@ -435,7 +434,10 @@ class PanelService {
     }
 
     def getWykazPunktowAkceptujacychKartyPlatnicze(ProcessCommand cmd ,def calc) {
-
+        cmd.punktyTytulPlatnosci= []
+        cmd.punktySystemKasowy = []
+        cmd.punktyUta = []
+        cmd.punktyWybrane = []
     }
 
     def getZalaczniki(ProcessCommand cmd ,def calc) {

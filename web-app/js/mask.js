@@ -7,7 +7,6 @@
  */
 
 jQuery(document).ready(function() {
-
     jQuery(".bank-account").mask('99 9999 9999 9999 9999 9999 9999');
     jQuery(".nip").mask('9999999999');
     jQuery(".regon").mask('999999999');

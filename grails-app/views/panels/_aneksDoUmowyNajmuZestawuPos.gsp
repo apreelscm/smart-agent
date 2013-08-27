@@ -5,17 +5,9 @@
             <ul class="table-list centre">
                 <li>
                     <span class="align-right"><g:message code="panel.aggrement.annex.day"/></span>
-                    <span><g:textField name="dataAneksowanejUmowyPos" value="${formatDate(format:'yyyy-MM-dd',date:data.dataAneksowanejUmowyPos)}" readonly="true" style="width: 120px;"/></span>
+                    <span><g:textField name="dataAneksowanejUmowyPos" value="${data.dataAneksowanejUmowyPos}" readonly="true" style="width: 120px;"/></span>
                 </li>
             </ul>
         </div>
     </fieldset>
 </div>
-
-<r:require module="jquery_ui"/>
-
-<r:script>
-    jQuery(document).ready(function() {
-        jQuery("#dataAneksowanejUmowyPos").datepicker({ dateFormat: 'yy-mm-dd', maxDate: new Date() });
-    });
-</r:script>

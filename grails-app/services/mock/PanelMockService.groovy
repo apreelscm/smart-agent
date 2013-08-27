@@ -426,7 +426,6 @@ class PanelMockService {
         cmd.punktySystemKasowy = [1, 3]
         cmd.punktyUta = [1]
         cmd.punktyWybrane = [2]
-
     }
 
     def getZalaczniki(ProcessCommand cmd) {
