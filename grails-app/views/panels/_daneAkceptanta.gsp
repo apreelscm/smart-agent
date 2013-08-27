@@ -10,9 +10,9 @@
                 <li>
                     <span>
                         <span><g:message code="panel.acceptor.nip"/></span>
-                        <span><g:textField name="akceptantNip" value="${data.nip}" readonly="true"/></span>
+                        <span><g:textField class="nip" name="akceptantNip" value="${data.nip}" readonly="true"/></span>
                         <span><g:message code="panel.acceptor.regon"/></span>
-                        <span><g:textField name="akceptantRegon" value="${data.akceptantRegon}"/></span>
+                        <span><g:textField class="regon" name="akceptantRegon" value="${data.akceptantRegon}"/></span>
                     </span>
                 </li>
             </ul>

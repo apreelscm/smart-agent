@@ -17,15 +17,15 @@
                 <li>
                     <span>
                         <span><g:message code="panel.landline.phone.number"/></span>
-                        <span><g:textField name="kontaktTelStacjonarny" value="${data.kontaktTelStacjonarny}" style="width: 100px;"/></span>
+                        <span><g:textField class="phone" name="kontaktTelStacjonarny" value="${data.kontaktTelStacjonarny}" style="width: 100px;"/></span>
                     </span>
                     <span>
                         <span><g:message code="panel.mobile.phone.number"/></span>
-                        <span><g:textField name="kontaktTelKomorkowy" value="${data.kontaktTelKomorkowy}" style="width: 100px"/></span>
+                        <span><g:textField class="mobile-phone" name="kontaktTelKomorkowy" value="${data.kontaktTelKomorkowy}" style="width: 100px"/></span>
                     </span>
                     <span>
                         <span><g:message code="panel.email"/></span>
-                        <span><g:textField name="kontaktEmail" value="${data.kontaktEmail}" style="width: 150px"/></span>
+                        <span><g:textField class="" name="kontaktEmail" value="${data.kontaktEmail}" style="width: 150px"/></span>
                     </span>
                 </li>
             </ul>

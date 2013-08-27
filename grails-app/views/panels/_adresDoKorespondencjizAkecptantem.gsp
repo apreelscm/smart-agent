@@ -21,7 +21,7 @@
                     <span><g:message code="panel.city" /></span>
                     <span><g:textField name="korespondencjaMiasto" value="${data.korespondencjaMiasto}" style="width: 280px;"/></span>
                     <span>
-                        <span><g:message code="panel.postal.code" /></span> <span><g:textField name="korespondencjaKodPocztowy" value="${data.korespondencjaKodPocztowy}" style="width: 50px"/></span>
+                        <span><g:message code="panel.postal.code" /></span> <span><g:textField class="postal-code" name="korespondencjaKodPocztowy" value="${data.korespondencjaKodPocztowy}" style="width: 50px"/></span>
                     </span>
                 </li>
                 <li>

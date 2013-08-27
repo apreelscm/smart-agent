@@ -6,14 +6,31 @@
     <div class="centre" style="text-align: center; padding-top: 20px; width: 500px">
             <fieldset class="border">
             <legend><g:message code="panel.activity.title"/></legend>
-            <div style="text-align: left">
+                <div style="text-align: center">
+                    <ul>
+                        <li>
+                            <span><g:message code="panel.mcc"/></span>
+                            <span> <g:textField name="scoringMcc" value="${data.scoringMcc}" disabled=""/></span>
+                        </li>
+                    </ul>
+                </div>
+                <div style="text-align: left">
                 <g:radioGroup name="scoringDzialalnosc"
                               labels="['panel.activity.trade','panel.activity.services']"
                               values="['1','2']"
                               value="${data.scoringDzialalnosc}">
                     <p><label> ${it.radio} <g:message code="${it.label}"/></label></p>
                 </g:radioGroup>
-            </div>
+                </div>
+                <div style="text-align: center">
+                <ul>
+                    <li>
+                        <span><g:message code="panel.activity.details"/></span>
+                        <span> <g:textField name="scoringSzczegolyDzialalnosci" value="${data.scoringSzczegolyDzialalnosci}"/></span>
+                    </li>
+                </ul>
+                </div>
+
         </fieldset>
         <fieldset class="border">
             <legend><g:message code="panel.ownership.title"/></legend>

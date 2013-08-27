@@ -76,6 +76,8 @@
 </head>
 <body>
 
+<r:require module="mask"/>
+
 <section id="create-activity">
 
     <h1 class="ng linia-bottom"><g:message code="selectedPanels.header.title" default="Lista paneli"/></h1>

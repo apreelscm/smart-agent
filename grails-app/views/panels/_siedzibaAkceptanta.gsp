@@ -21,7 +21,7 @@
                     <span><g:message code="panel.city" /></span>
                     <span><g:textField name="akceptantMiasto" value="${data.akceptantMiasto}" style="width: 280px;"/></span>
                     <span>
-                        <span><g:message code="panel.postal.code" /></span> <span><g:textField name="akceptantKodPocztowy" value="${data.akceptantKodPocztowy}" style="width: 50px"/></span>
+                        <span><g:message code="panel.postal.code" /></span> <span><g:textField class="postal-code" name="akceptantKodPocztowy" value="${data.akceptantKodPocztowy}" style="width: 50px"/></span>
                     </span>
                     </span>
                 </li>
@@ -34,11 +34,11 @@
                 <li>
                     <span>
                         <span><g:message code="panel.landline.phone.number"/></span>
-                        <span><g:textField name="akceptantTelStacjonarny" value="${data.akceptantTelStacjonarny}" style="width: 100px;"/></span>
+                        <span><g:textField class="phone" name="akceptantTelStacjonarny" value="${data.akceptantTelStacjonarny}" style="width: 100px;"/></span>
                         <span><g:message code="panel.fax"/></span>
-                        <span><g:textField name="akceptantFax" value="${data.akceptantFax}" style="width: 100px"/></span>
+                        <span><g:textField class="fax" name="akceptantFax" value="${data.akceptantFax}" style="width: 100px"/></span>
                         <span><g:message code="panel.mobile.phone.number"/></span>
-                        <span><g:textField name="akceptantTelKomorkowy" value="${data.akceptantTelKomorkowy}" style="width: 100px"/></span>
+                        <span><g:textField class="mobile-phone" name="akceptantTelKomorkowy" value="${data.akceptantTelKomorkowy}" style="width: 100px"/></span>
                     </span>
                 </li>
             </ul>
