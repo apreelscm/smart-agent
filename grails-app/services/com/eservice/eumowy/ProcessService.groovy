@@ -1,5 +1,6 @@
 package com.eservice.eumowy
 
+import com.eservice.eumowy.command.PointCommand
 import com.eservice.eumowy.command.ProcessCommand
 import grails.util.Environment
 import org.apache.commons.lang.WordUtils
@@ -100,6 +101,12 @@ class ProcessService {
         return activities?.any{it.code.equals(activityCode)};
     }
 
+	def initDataForPanels(def process) {
+		for(int i = 0; i < 10; i++) {
+			process.points.add(new PointCommand())
+		}
+	}
+	
     def getDataForPanels(def process) {
         def exclusions = ["getWyborDzialania","getLiczbaMiesiecyZwolnieniaZNajmu"]
 

@@ -1,7 +1,9 @@
 package mock
 
-import org.apache.commons.lang.time.DateUtils
+
+import com.eservice.eumowy.command.AllPointsCommand
 import com.eservice.eumowy.command.ProcessCommand
+import com.eservice.eumowy.util.DateUtils
 
 class PanelMockService {
 
@@ -418,11 +420,36 @@ class PanelMockService {
     }
 
     def getWykazPunktowAkceptujacychKartyPlatnicze(ProcessCommand cmd) {
-        cmd.punktyTytulPlatnosci= [1,2,3]
+        /*cmd.punktyTytulPlatnosci= [1,2,3]
         cmd.punktySystemKasowy = [1, 3]
         cmd.punktyUta = [1]
-        cmd.punktyWybrane = [2]
-
+        cmd.punktyWybrane = [2]*/
+		
+		def p1 = new AllPointsCommand()
+		def p2 = new AllPointsCommand()
+		def p3 = new AllPointsCommand()
+		
+        p1.id = 1 
+		p1.nazwa = 'Sklep spozywczy'
+		p1.ulica = 'Zielona'
+		p1.miejscowosc = 'Lubartów'
+		p1.nrBudynku = '5A'
+		p1.kodPocztowy = '02-123'
+        p2.id = 2
+		p2.nazwa = 'Kwiaciarnia Róża'
+		p2.ulica = 'Zielona'
+		p2.miejscowosc = 'Lubartów'
+		p2.nrBudynku = '12'
+		p2.kodPocztowy = '02-123'
+        p3.id = 3
+		p3.nazwa = 'Kino Femina'
+		p3.ulica = 'Zielona'
+		p3.miejscowosc = 'Lubartów'
+		p3.nrBudynku = '93'
+		p3.kodPocztowy = '02-123'
+		
+		cmd.allPoints = [p1, p2, p3]
+		
     }
 
     def getZalaczniki(ProcessCommand cmd) {

@@ -1,7 +1,8 @@
 package com.eservice.eumowy.command
 
-import com.eservice.eumowy.Process
 import grails.validation.Validateable
+
+import com.eservice.eumowy.Process
 
 /**
  * User: Dominik Walczak
@@ -456,9 +457,6 @@ class ProcessCommand implements Serializable{
     }
 	
 	ProcessCommand() {
-		for(int i = 0; i < 10; i++) {
-			points.add(new PointCommand())
-		}
 	}
 
     /*def initialize(Process process){
