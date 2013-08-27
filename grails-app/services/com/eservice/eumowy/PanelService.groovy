@@ -192,10 +192,12 @@ class PanelService {
     }
 
     def getOsobaKtoraPozyskalaAkceptanta(ProcessCommand cmd ,def calc) {
-        cmd.pozyskujacyTytul =  "-"
-        cmd.pozyskujacyImie =  "-"
-        cmd.pozyskujacyNazwisko =  "-"
-        cmd.pozyskujacyNumer =  "-"
+        def user = springSecurityService.principal;
+
+        cmd.pozyskujacyTytul =  user.typOsoby
+        cmd.pozyskujacyImie =  user.imie
+        cmd.pozyskujacyNazwisko =  user.nazwisko
+        cmd.pozyskujacyNumer =  user.nr
     }
 
     def getOsobaUprawnionaDoPodpisaniaUmowy(ProcessCommand cmd ,def calc){

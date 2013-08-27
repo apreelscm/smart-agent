@@ -12,9 +12,7 @@ class AttachmentService {
     def getListByProcessId(def id) {
         def attachmentCriteria = AttachmentFile.createCriteria()
         def searchResult = attachmentCriteria.list{
-            process {
-                eq("id", Long.valueOf(id))
-            }
+            eq("processId", Long.valueOf(id))
         }
         searchResult
     }
@@ -72,7 +70,6 @@ class AttachmentService {
     }
 
     def download(def id, def request, def messageSource) {
-
         AttachmentFile ufile =  AttachmentFile.get(id)
 
         if (!ufile) {
@@ -90,8 +87,6 @@ class AttachmentService {
             def msg = messageSource.getMessage("fileupload.download.filenotfound", [ufile.name] as Object[], request.locale)
             log.error msg
         }
-
         ufile
     }
-
 }

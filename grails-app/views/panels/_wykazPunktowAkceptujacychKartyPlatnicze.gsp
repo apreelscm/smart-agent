@@ -19,7 +19,7 @@
             		</tr>
            		</thead>
            		<tbody>
-           			<g:each in="${data.allPoints}">
+           			%{--<g:each in="${data.allPoints}">
            				<tr>
 							<td>${it.id}</td>
 							<td>${it.nazwa}</td>
@@ -32,7 +32,7 @@
 							<td><g:checkBox name="punktyUta" value="${point.id}" checked="${it.uta}" /></td>
 							<td><g:checkBox name="punktyWybrane" value="${point.id}" checked="${it.czyWybrany}" /></td>
 						</tr>
-           			</g:each>
+           			</g:each>--}%
            		</tbody>
        		</table>
         </div>

@@ -14,7 +14,7 @@ class AttachmentFile implements Serializable{
     Date dateUploaded
     Integer downloads
 
-    static belongsTo = [process:Process]
+    Long processId
 
     static hasOne = [file:AttachmentContent]
 
@@ -24,7 +24,7 @@ class AttachmentFile implements Serializable{
         extension()
         dateUploaded(nullable:true)
         downloads(nullable: true)
-        process(nullable: true)
+        processId(nullable: false)
         file()
     }
 

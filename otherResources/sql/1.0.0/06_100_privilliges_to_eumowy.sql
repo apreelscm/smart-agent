@@ -16,6 +16,7 @@ grant select, insert, update, delete on SUBSCRIPTION to EUMOWY_APP;
 grant select, insert, update, delete on process_activity to EUMOWY_APP;
 grant select, insert, update, delete on process_signature to EUMOWY_APP;
 grant select, insert, update, delete on process_subscription to EUMOWY_APP;
+grant select, insert, update, delete on process_panel to EUMOWY_APP;
 grant select, insert, update, delete on sec_role to EUMOWY_APP;
 grant select, insert, update, delete on sec_user to EUMOWY_APP;
 grant select, insert, update, delete on sec_user_sec_role to EUMOWY_APP;

@@ -173,15 +173,15 @@ class ActivityController {
                 processInstance.client =  flow.client
                 processInstance.status = Process.ProcessStatus.NEW
 
-              /*  def user = springSecurityService.principal
-                processInstance.phNumber = sec.loggedInUserInfo(field: 'nr')
-                processInstance.phFirstName = sec.loggedInUserInfo(field: 'imie')
-                processInstance.phSurname = sec.loggedInUserInfo(field: 'nazwisko')*/
+               def user = springSecurityService.principal
+                processInstance.phNumber = user.nr//sec.loggedInUserInfo(field: 'nr')
+                processInstance.phFirstName = user.imie// sec.loggedInUserInfo(field: 'imie')
+                processInstance.phSurname = user.nazwisko//sec.loggedInUserInfo(field: 'nazwisko')
 
                 if (!processInstance.save(flush:true)){
                     println 'stock instance has errors'
                     processInstance.errors.each {
-                        println it
+                        log.error(it)
                     }
                     return "error"
                 }
@@ -488,8 +488,10 @@ class ActivityController {
         def msg = attachmentService.uploadFile(config,request, messageSource);
 
         if(msg instanceof AttachmentFile){
-            def process = Process.get(Integer.valueOf(params.processId));
-            process.addToAttachments(msg as AttachmentFile);
+            def attachment = msg as AttachmentFile
+            attachment.processId = Long.valueOf(params.processId)
+            println("attachment.processId : ${attachment.processId}")
+            attachment.save(flush:true)
             render "";
         }
         else{
@@ -503,6 +505,7 @@ class ActivityController {
     }
 
     def getAttachmentList(){
+        println(params)
         render(template:"../attachment/list", model:[files:attachmentService.getListByProcessId(params.processId), processId: params.processId]);
     }
 
@@ -510,7 +513,7 @@ class ActivityController {
         def process = Process.get(Integer.valueOf(params.processId));
         String path = pdfService.generateImageFromPDFDocumentFile(process.documents,
                 params.processId as String,
-                Integer.valueOf(params.pageNumber) as Integer);
+                Integer.valueOf(params.pageNumber));
         render(text: path)
     }
 
