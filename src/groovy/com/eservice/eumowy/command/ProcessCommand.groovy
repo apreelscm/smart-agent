@@ -369,8 +369,7 @@ class ProcessCommand implements Serializable{
     //TODO - w pdf wykorzystujemy pole akceptantSiedziba, w ktore wsadzamy to co potrzeba.
 
 //    umowa2 - FINISH
-    String dataUmowy
-    String miejsceUmowy //nie uzywane w pdf
+    String miejsceUmowy //nie jest uzywane w pdf
 
 //    wyborDzialania
 //    wykazPunktowAkceptujacychKartyPlatnicze
