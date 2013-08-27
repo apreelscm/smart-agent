@@ -1,7 +1,7 @@
 package mock
 
-import org.apache.commons.lang.time.DateUtils
 import com.eservice.eumowy.command.ProcessCommand
+import com.eservice.eumowy.util.DateUtils
 
 class PanelMockService {
 
@@ -329,7 +329,9 @@ class PanelMockService {
 
     def getScoring(ProcessCommand cmd) {
 
+        cmd.scoringMcc = "1234"
         cmd.scoringDzialalnosc = "1"
+        cmd.scoringSzczegolyDzialalnosci = "Handel zywym towarem"
 
         cmd.scoringIloscTransakcji = "2"
 

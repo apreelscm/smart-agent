@@ -279,8 +279,9 @@ class ProcessCommand implements Serializable{
 //    scoring
 //    TODO - co wpisac w scoringMidFirmy i scoringNrUmowy????
 
-
+    String scoringMcc
     String scoringDzialalnosc
+    String scoringSzczegolyDzialalnosci
 //    TODO - w pdf uzywamy pol: handel, uslugi (checkboxy)
 //    TODO - co to sa za pola: MCC, szczegolowyRodzajDzialalnosciWPraktyce ??
 
