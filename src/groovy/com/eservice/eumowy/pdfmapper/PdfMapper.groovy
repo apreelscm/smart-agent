@@ -64,7 +64,12 @@ class PdfMapper {
 		Map<String, String[]> data = new HashMap<String, String[]>()
 		
 		pd.each { processData ->
-			data.put(processData.name, [processData.value] as String[])
+			if ("true".equals(processData.value) == true || "false".equals(processData.value) == true) {
+				data.put(processData.name, [processData.value, "", "checkbox"] as String[])
+			}
+			else {
+				data.put(processData.name, [processData.value] as String[])
+			}
 		}
 		
 		return data
