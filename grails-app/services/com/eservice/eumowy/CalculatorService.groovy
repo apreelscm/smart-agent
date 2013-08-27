@@ -15,10 +15,24 @@ class CalculatorService {
             signaturesCalcNames.addAll(signature.calcFieldsSignature*.calcField);
         }
 
+        def calcKeyList = calc.collect { it.POLEAPREEL };
+
         println("calc:"+calc)
         println("calcNames:"+signaturesCalcNames)
-        println("containsAll:"+signaturesCalcNames.every {calc.contains(it) });
+        println("containsAll:"+signaturesCalcNames.every {calcKeyList.contains(it) });
 
-        return signaturesCalcNames.every { calc.contains(it) };
+        return signaturesCalcNames.every { calcKeyList.contains(it) };
     }
+
+    def hasCalcProperty(def calc, def key, def value){
+        //println("has ${key} = ${ calc.contains([POLEAPREEL:key, WARTOSCAPREEL:value])}")
+        calc.contains([POLEAPREEL:key, WARTOSCAPREEL:value])
+    }
+
+
+    def getCalcProperty(def calc, def key){
+        //println("has ${key} = ${ calc.contains([POLEAPREEL:key, WARTOSCAPREEL:value])}")
+        calc.findResult{ it.POLEAPREEL == key ? it.WARTOSCAPREEL : null }
+    }
+
 }

@@ -17,6 +17,7 @@ class CbdService {
     private static final def GET_ADRES_DANE_DO_WYDRUKU = "getAdresDaneDoWydruku"
     private static final def GET_ADRES_DO_KORESPONDENCJI = "getAdresDoKorespondencji"
     private static final def GET_ADRES_DO_KORESPONDENCJIZ_AKCEPTANTEM = "getAdresDoKorespondencjizAkceptantem"
+    private static final def GET_SIEDZIBA_AKCEPTANTA = "getSiedzibaAkceptanta"
     private static final def GET_DANE_AKCEPTANTA = "getDaneAkceptanta"
     private static final def GET_NAZWA_BANKU = "getNazwaBanku"
     private static final def GET_NUMER_RACHUNKU_BANKOWEGO = "getNumerRachunkuBankowego"
@@ -35,7 +36,7 @@ class CbdService {
             case Environment.DEVELOPMENT:
                 return findCalculatorByNipMock(clientNip);
             case Environment.TEST:
-                return cbdDAO.selectMany(FIND_CALC_BY_NIP,[nip:clientNip])*.POLEAPREEL
+                return cbdDAO.selectMany(FIND_CALC_BY_NIP,[nip:clientNip])//*.POLEAPREEL
         }
     }
 
@@ -128,10 +129,10 @@ class CbdService {
         return cbdDAO.selectOne(GET_PROMOCYJNE_OBINZENIE_OPLAT_GRID,[nip:clientNip])
     }
 
-    @Cacheable(value="getSiedzibaAkceptanta")
+  //  @Cacheable(value="getSiedzibaAkceptanta")
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
     def getSiedzibaAkceptanta(def clientNip) {
-        return cbdDAO.selectOne(GET_ADRES_DO_KORESPONDENCJIZ_AKCEPTANTEM,[nip:clientNip])
+        return cbdDAO.selectOne(GET_SIEDZIBA_AKCEPTANTA,[nip:clientNip])
     }
 
     @Cacheable(value="getWykazPunktowGrid")

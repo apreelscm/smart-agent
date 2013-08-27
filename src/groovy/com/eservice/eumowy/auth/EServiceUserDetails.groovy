@@ -12,6 +12,10 @@ import org.springframework.security.core.GrantedAuthority
 public class EServiceUserDetails extends GrailsUser {
 
     final String name;
+    final String typOsoby;
+    final String imie;
+    final String nazwisko;
+    final Long nr;
 
     EServiceUserDetails(String username,
                         String password,
@@ -21,9 +25,17 @@ public class EServiceUserDetails extends GrailsUser {
                         boolean accountNonLocked,
                         Collection<GrantedAuthority> authorities,
                         long id,
-                        String displayName) {
+                        String typOsoby,
+                        String imie,
+                        String nazwisko,
+                        Long nr) {
 
         super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities, id);
-        this.name = displayName;
+
+        this.typOsoby = typOsoby;
+        this.imie = imie;
+        this.nazwisko = nazwisko;
+        this.nr = nr;
+        this.name = imie +" "+nazwisko;
     }
 }

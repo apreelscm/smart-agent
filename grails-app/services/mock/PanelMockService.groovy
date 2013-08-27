@@ -1,7 +1,5 @@
 package mock
-
 import com.eservice.eumowy.command.ProcessCommand
-import com.eservice.eumowy.dictionary.ScoringDictionary
 
 class PanelMockService {
 
@@ -23,17 +21,17 @@ class PanelMockService {
     }
 
     def getAneksDoUmowyNajmuZestawuPos(ProcessCommand cmd) {
-        cmd.dataAneksowanejUmowyPos = new Date()
+        cmd.dataAneksowanejUmowyPos = new Date().format("yyyy-MM-dd")
     }
 
     def getAneksDoUmowyPrepaid(ProcessCommand cmd) {
-        cmd.dataAneksowanejUmowyPrepaid = new Date()
+        cmd.dataAneksowanejUmowyPrepaid = new Date().format("yyyy-MM-dd")
     }
 
     def getCzasObowiazywaniaUmowy(ProcessCommand cmd) {
         cmd.umowaCzas =  "nieoznaczony" //TODO -  MOZLIWE, ze pdfach jest to umowaOzn, umowaNieOzn
-        cmd.umowaOznOd = new Date()
-        cmd.umowaOznDo = new Date()
+        cmd.umowaOznOd = new Date().format("yyyy-MM-dd")
+        cmd.umowaOznDo = new Date().format("yyyy-MM-dd")
 
     }
 
@@ -350,7 +348,6 @@ class PanelMockService {
 
         cmd.scoringMonitoring = "tak"
 
-        cmd.scoringDzialalnoscCzas = "2"
 
         cmd.scoringCharakterystyka = "inny"
         cmd.scoringCharakterystykaInna = "kwiaciarnia"
@@ -368,7 +365,6 @@ class PanelMockService {
         cmd.scoringUslugiPlatneZGory = true
 
         cmd.scoringDochodowosc = new BigDecimal("500")
-
         cmd.scoringDeklaracjaFinansowa = "wlasciwe"
         cmd.scoringDeklaracjaFinansowaObrotOgolem = new BigDecimal("23.50")
         cmd.scoringDeklaracjaFinansowaObrotNaKarty = new BigDecimal("12.45")
@@ -379,11 +375,12 @@ class PanelMockService {
 
     def getSerwis(ProcessCommand cmd) {
         cmd.obslugaTyp = "economic"
-        cmd.obslugaEkonomicznyCena = new BigDecimal("123.50")
+        cmd.obslugaEkonomicznyCena = "-"
     }
 
     def getSerwisEkonomiczny(ProcessCommand cmd) {
         //korzysta z pola cmd.obslugaEkonomicznyCena z getSerwis
+        cmd.obslugaEkonomicznyCena = "-"
     }
 
     def getSerwisKomfort(ProcessCommand cmd) {
@@ -411,6 +408,7 @@ class PanelMockService {
 
     def getUmowa2(ProcessCommand cmd) {
         cmd.miejsceUmowy = "Warszawa"
+        cmd.dataUmowy = new Date().format("yyyy-MM-dd")
     }
 
     def getUwagi(ProcessCommand cmd) {

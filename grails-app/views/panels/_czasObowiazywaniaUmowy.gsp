@@ -17,13 +17,14 @@
                 <li id="aggrementDates">
                     <span>
                         <span><g:message code="panel.from"/></span>
-                        <span><g:textField name="umowaOznOd" value="${formatDate(format:'yyyy-MM-dd',date:data.umowaOznOd)}" readonly="true" style="width: 120px;"/></span>
+                        <span><g:textField name="umowaOznOd" value="${data.umowaOznOd ? Date.parse('yyyy-MM-dd',data.umowaOznOd):''}" readonly="true" style="width: 120px;"/></span>
                         <span><g:message code="panel.to"/></span>
-                        <span><g:textField name="umowaOznDo" value="${formatDate(format:'yyyy-MM-dd',date:data.umowaOznDo)}" readonly="true" style="width: 120px;"/></span>
+                        <span><g:textField name="umowaOznDo" value="${data.umowaOznDo ? Date.parse('yyyy-MM-dd',data.umowaOznDo):''}" readonly="true" style="width: 120px;"/></span>
                     </span>
                 </li>
             </ul>
         </div>
+
     </fieldset>
 </div>
 

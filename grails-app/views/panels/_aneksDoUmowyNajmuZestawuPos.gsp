@@ -5,7 +5,8 @@
             <ul class="table-list centre">
                 <li>
                     <span class="align-right"><g:message code="panel.aggrement.annex.day"/></span>
-                    <span><g:textField name="dataAneksowanejUmowyPos" value="${formatDate(format:'yyyy-MM-dd',date:data.dataAneksowanejUmowyPos)}" readonly="true" style="width: 120px;"/></span>
+                    <span><g:textField name="dataAneksowanejUmowyPos" value="${data.dataAneksowanejUmowyPos ? Date.parse('yyyy-MM-dd',data.dataAneksowanejUmowyPos):''}"
+                                       style="width: 120px;" readonly="true"/></span>
                 </li>
             </ul>
         </div>

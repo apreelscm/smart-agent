@@ -54,9 +54,17 @@ class EServiceAuthenticationProvider implements AuthenticationProvider {
         }
         //authorities = authorities ?: GormUserDetailsService.NO_ROLES
 
+
+        //TEST mock start
+        userDTO.firstName = "Marian"
+        userDTO.lastName = "Kowalski"
+        userDTO.auwId = new Long(123456)
+        //mock end
+
         userDetails = new EServiceUserDetails(userDTO.getLogin(), "pass",
                 true, true, true, true, authorities, 1,
-                userDTO.getFirstName() + ' ' +userDTO.getLastName()); //userDTO.getUzyId())
+                "Pan", userDTO.getFirstName(), userDTO.getLastName(),userDTO.getAuwId()); //userDTO.getUzyId())
+
 
 
         preAuthenticationChecks.check userDetails

@@ -1,5 +1,4 @@
 import com.eservice.eumowy.*
-import grails.util.Environment
 import groovy.sql.Sql
 
 import java.sql.SQLException
@@ -10,27 +9,18 @@ class BootStrap {
 
     def init = { servletContext ->
 
-        switch (Environment.getCurrent()) {
+       /* switch (Environment.getCurrent()) {
             case Environment.DEVELOPMENT:
-
                 // Wykonywanie inicjacyjnych zapytan sql z pliku insertData.sql
                 executeSqlScript("/sql/createData.sql")
-
                 executeSqlScript("/sql/insertData.sql")
-
                 createCBDDataForDevProfile();
-
                 createTestDomains()
-
                 break;
-
             case Environment.TEST:
-
                 //createTestDomains()
-
                 break;
-        }
-
+        }*/
     }
 
     def createTestDomains(){
