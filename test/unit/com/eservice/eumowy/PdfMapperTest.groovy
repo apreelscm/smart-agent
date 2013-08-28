@@ -1,8 +1,9 @@
 package com.eservice.eumowy;
 
-import grails.test.mixin.*
+//import grails.test.mixin.*
 
 import com.eservice.eumowy.pdfmapper.PdfMapper
+import org.junit.Test
 
 class PdfMapperTest {
 
@@ -55,4 +56,41 @@ class PdfMapperTest {
 		}
 	}
 
+    @Test
+    public void testReprezentant() {
+
+        println "Test reprezentanta - begin"
+
+        def objList = [
+                new Expando(['name': 'reprezentant1Tytul', 'value': 'Pani']),
+                new Expando(['name':'reprezentant1Imie', 'value': 'Zofia']),
+                new Expando(['name':'reprezentant1Nazwisko', 'value': 'Nowak']),
+                new Expando(['name':'reprezentant2Tytul', 'value': 'Pan']),
+                new Expando(['name':'reprezentant2Imie', 'value': 'Adam']),
+                new Expando(['name':'reprezentant2Nazwisko', 'value': 'Michnik']),
+        ]
+
+        def data = PdfMapper.mapProcessDataToPDFData(objList)
+
+        data.each { key, value ->
+            println key + " : " + value
+        }
+        println "Test reprezentanta - end"
+    }
+
+    @Test
+    public void testNazwaOficjalna() {
+        println "testNazwaOficjalna - begin"
+
+        def objList = [
+                new Expando(['name': 'akceptantNazwaOficjalna', 'value': 'KGHM Polska Miedź S.A.']),
+        ]
+
+        def data = PdfMapper.mapProcessDataToPDFData(objList)
+
+        data.each { key, value ->
+            println key + " : " + value
+        }
+        println "testNazwaOficjalna - end"
+    }
 }
