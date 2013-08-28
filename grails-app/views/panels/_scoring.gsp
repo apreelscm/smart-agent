@@ -58,9 +58,7 @@
             <legend><g:message code="panel.concession.title"/></legend>
             <div style="text-align: left">
                 <p><g:message code="panel.concession.needed"/></p>
-                %{--<p><label><input type="radio" name="scoringKoncesja" value="tak"/> <g:message code="panel.yes"/></label></p>--}%
-                %{--<p><label><input type="radio" name="scoringKoncesja" value="nie"/> <g:message code="panel.no"/></label></p>--}%
-                <g:radioGroup name="scoringDzialalnoscCzas"
+                <g:radioGroup name="scoringKoncesja"
                               labels="['panel.yes','panel.no']"
                               values="['tak', 'nie']"
                               value="${data.scoringKoncesja}">
