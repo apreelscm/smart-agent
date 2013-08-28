@@ -47,6 +47,10 @@ class ProcessCommand implements Serializable{
     //String akceptantNip - trzymane we wspolnym polu nip
     String akceptantRegon
 
+    String akceptantNazwaOficjalnaCbd
+    String akceptantNazwaSieciowaCbd
+    String akceptantRegonCbd
+
 //    daneDoWydruku
     String wydrukNazwaPunktu
     String wydrukNazwaDoWyszukwarki
@@ -366,6 +370,20 @@ class ProcessCommand implements Serializable{
     String akceptantTelStacjonarny
     String akceptantFax
     String akceptantTelKomorkowy
+
+    String akceptantUlicaTytulCbd
+    String akceptantUlicaCbd
+    String akceptantNrDomuCbd
+    String akceptantNrMieszkaniaCbd
+
+    String akceptantMiastoCbd
+    String akceptantKodPocztowyCbd
+    String akceptantPocztaCbd
+
+    String akceptantTelStacjonarnyCbd
+    String akceptantFaxCbd
+    String akceptantTelKomorkowyCbd
+
     //TODO - w pdf wykorzystujemy pole akceptantSiedziba, w ktore wsadzamy to co potrzeba.
 
 //    umowa2 - FINISH
@@ -458,7 +476,16 @@ class ProcessCommand implements Serializable{
     static constraints = {
         notes()
     }
-	
+
+    def isFromCbd(def property){
+        def cbdName = property+"Cbd"
+        if (this.metaClass.hasProperty(this, cbdName) && this."$cbdName"?.trim()){
+            true
+        } else {
+            false
+        }
+    }
+
 	ProcessCommand() {
 	}
 
