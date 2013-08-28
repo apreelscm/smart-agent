@@ -19,7 +19,7 @@
                 </li>
                 <li>
                     <span><g:message code="panel.city" /></span>
-                    <span><g:textField name="korespondencjaMiasto" value="${data.korespondencjaMiasto}" style="width: 280px;"/></span>
+                    <span><g:textField name="akceptantKontaktMiasto" value="${data.akceptantKontaktMiasto}" style="width: 280px;"/></span>
                     <span>
                         <span><g:message code="panel.postal.code" /></span> <span><g:textField class="postal-code" name="akceptantKontaktKodPocztowy" value="${data.akceptantKontaktKodPocztowy}" style="width: 50px"/></span>
                     </span>
