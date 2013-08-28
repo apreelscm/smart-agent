@@ -64,12 +64,13 @@ class PdfMapper {
 	
 	static mapProcessDataToPDFData(def pd) {
 		Map<String, String[]> data = new HashMap<String, String[]>()
-		
+
 		pd.each { processData ->
 			
-			def methodName = "map" + processData.name.capitalize()
+			def methodName = "map" + processData.name.capitalize()+"Process"
+
 			if (PdfMapper.metaClass.respondsTo(PdfMapper, methodName)) {
-				PdfMapper."${methodName}"(data, processData, processData.name, processData.value)
+				PdfMapper."${methodName}"(data, pd, processData.name, processData.value)
 				return
 			}
 			
@@ -101,7 +102,28 @@ class PdfMapper {
 	
 	private static mapUlicaDoKorespondencjiTyp(def data, def pd, def key, def value) {}
 	
-	private static mapScoringDochodowosc(def data, def pd, def key, def value) {
+	private static mapScoringDochodowoscProcess(def data, def pd, def key, def value) {
 		data.put("dochodowosc", [value] as String[])
 	}
+
+    private static mapReprezentant1ImieProcess(def data, def pd, def key, def value) {
+        data.put("reprezentant1", [value + " " + getFromPointDataSet(pd, 'reprezentant1Nazwisko')] as String[])
+    }
+
+    private static mapReprezentant2ImieProcess(def data, def pd, def key, def value) {
+        data.put("reprezentant2", [value + " " + getFromPointDataSet(pd, 'reprezentant2Nazwisko')] as String[])
+    }
+
+    private static mapAkceptantUlicaProcess(def data, def pd, def key, def value) {
+        data.put("akceptantSiedziba", [getFromPointDataSet(pd, 'akceptantUlicaTytul') + " " + value + " " + getFromPointDataSet(pd, 'akceptantNrDomu') + "/" + getFromPointDataSet(pd, 'akceptantNrMieszkania') + " " + getFromPointDataSet(pd, 'akceptantMiasto')] as String[])
+    }
+
+    private static mapAkceptantNazwaOficjalnaProcess(def data, def pd, def key, def value) {
+        data.put("akceptantNazwa", [value] as String[])
+    }
+
+    private static getFromPointDataSet(def pd, def key){
+        def result = pd.find{ processData -> processData.name.equals(key)}
+        (result && result?.value)?result?.value:""
+    }
 }
