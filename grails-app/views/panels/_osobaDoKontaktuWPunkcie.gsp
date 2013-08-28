@@ -4,7 +4,7 @@
 		<label for="%ID%persontocontactAsForMerchant"><g:checkBox name="%ID%persontocontactAsForMerchant" value=""/><g:message code="panel.as.merchant" /></label>
 		<ul class="table-list vertical-center">
 			<li>
-				<span><g:message code="panel.first.name" />:</span><span><g:textField name="%ID%kontaktWPunkcieImie" name="%ID%contactAtPointFirstName" style="width: 120px"/></span>
+				<span><g:message code="panel.first.name" />:</span><span><g:textField name="%ID%kontaktWPunkcieImie" id="%ID%contactAtPointFirstName" style="width: 120px"/></span>
 				<span><g:message code="panel.last.name" />:</span><span><g:textField name="%ID%kontaktWPunkcieNazwisko" id="%ID%contactAtPointLastName"  style="width: 120px"/></span>
 				<span><g:message code="panel.fax" />:</span><span><g:textField name="%ID%kontaktWPunkcieFax" id="%ID%contactAtPointFax" style="width: 120px"/></span>
 			</li>
