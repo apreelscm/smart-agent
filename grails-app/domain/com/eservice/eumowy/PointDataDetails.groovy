@@ -46,6 +46,8 @@ class PointDataDetails implements Serializable {
 	String kontaktWPunkcieTelKomorkowy
 	String kontaktWPunkcieEmail
 	
+	Integer terminalIlosc
+	
 	static belongsTo = [point: PointData]
 	
 	static mapping = {
