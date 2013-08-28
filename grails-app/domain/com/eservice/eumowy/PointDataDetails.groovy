@@ -14,8 +14,8 @@ class PointDataDetails implements Serializable {
 	String nipPunktu
 	String kodMCC
 	String rodzProwadzDzialalWPraktyce
-	String kontoBankNumer
-	String nazwaBanku
+	String numerRachunkuBankowego
+    String bank
 	
 	String nazwaDoWydrukuZTerminalaPos
 	String nazwaDoWyszukiwarki
@@ -60,8 +60,8 @@ class PointDataDetails implements Serializable {
 		nipPunktu column: "nip"
 		kodMCC column: "mcc_code"
 		rodzProwadzDzialalWPraktyce column: "bussiness_type_in_practice"
-		kontoBankNumer column: "bank_account_number"
-		nazwaBanku column: "bank_name"
+		numerRachunkuBankowego column: "bank_account_number"
+		bank column: "bank_name"
 		nazwaDoWydrukuZTerminalaPos column: "name_print_posterminal"
 		nazwaDoWyszukiwarki column: "name_search_engine"
 		wydrukUlicaTytul column: "print_addressstreet_type"
