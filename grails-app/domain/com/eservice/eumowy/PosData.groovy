@@ -17,6 +17,11 @@ class PosData implements Serializable {
 	static mapping = {
 		table name: "POS", schema:DomainConsts.SHEMA_NAME
 		id generator:'sequence', params:[sequence:DomainConsts.SHEMA_NAME+'.POS_SEQ']
+		numerZestawuPos column: "pos_set_number"
+		dataOd column: "date_from"
+		dataDo column: "date_to"
+		wysokoscOplaty column: "price_count"
+		czyWybrany column: "is_selected"
 	}
 	
 	static constraints = {
