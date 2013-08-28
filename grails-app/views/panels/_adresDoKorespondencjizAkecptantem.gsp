@@ -9,24 +9,24 @@
                 <li>
                     <span><g:message code="panel.street" /></span>
                     <span>
-                        <dict:streetSelect id="korespondencjaUlicaTytul" name="korespondencjaUlicaTytul" value="${data.korespondencjaUlicaTytul}" />
-                        <g:textField name="korespondencjaUlica" style="width: 200px" value="${data.korespondencjaUlica}"/>
+                        <dict:streetSelect id="akceptantKontaktUlicaTytul" name="korespondencjaUlicaTytul" value="${data.akceptantKontaktUlicaTytul}" />
+                        <g:textField name="akceptantKontaktUlica" style="width: 200px" value="${data.akceptantKontaktUlica}"/>
                     </span>
                     <span>
-                        <span><g:message code="panel.house.number" /></span> <span><g:textField name="korespondencjaNrDomu" value="${data.korespondencjaNrDomu}" style="width: 50px"/></span>
-                        <span><g:message code="panel.flat.number" /></span> <span><g:textField name="korespondencjaNrMieszkania" value="${data.korespondencjaNrMieszkania}" style="width: 50px"/></span>
+                        <span><g:message code="panel.house.number" /></span> <span><g:textField name="akceptantKontaktNrDomu" value="${data.akceptantKontaktNrDomu}" style="width: 50px"/></span>
+                        <span><g:message code="panel.flat.number" /></span> <span><g:textField name="akceptantKontaktNrMieszkania" value="${data.akceptantKontaktNrMieszkania}" style="width: 50px"/></span>
                     </span>
                 </li>
                 <li>
                     <span><g:message code="panel.city" /></span>
-                    <span><g:textField name="korespondencjaMiasto" value="${data.korespondencjaMiasto}" style="width: 280px;"/></span>
+                    <span><g:textField name="akceptantKontaktMiasto" value="${data.akceptantKontaktMiasto}" style="width: 280px;"/></span>
                     <span>
-                        <span><g:message code="panel.postal.code" /></span> <span><g:textField class="postal-code" name="korespondencjaKodPocztowy" value="${data.korespondencjaKodPocztowy}" style="width: 50px"/></span>
+                        <span><g:message code="panel.postal.code" /></span> <span><g:textField class="postal-code" name="akceptantKontaktKodPocztowy" value="${data.akceptantKontaktKodPocztowy}" style="width: 50px"/></span>
                     </span>
                 </li>
                 <li>
                     <span><g:message code="panel.postal" /></span>
-                    <span><g:textField name="korespondencjaPoczta" value="${data.korespondencjaPoczta}" style="width: 280px;"/></span>
+                    <span><g:textField name="akceptantKontaktPoczta" value="${data.akceptantKontaktPoczta}" style="width: 280px;"/></span>
                 </li>
             </ul>
         </div>
@@ -44,13 +44,13 @@
                     return jQuery(this).val() == selectedValue;
                 }).prop('selected', true);
 
-                jQuery('#korespondencjaUlicaTytul').val(jQuery('#akceptantUlicaTytul').val());
-                jQuery('#korespondencjaUlica').val(jQuery('#akceptantUlica').val());
-                jQuery('#korespondencjaNrDomu').val(jQuery('#akceptantNrDomu').val());
-                jQuery('#korespondencjaNrMieszkania').val(jQuery('#akceptantNrMieszkania').val());
-                jQuery('#korespondencjaMiasto').val(jQuery('#akceptantMiasto').val());
-                jQuery('#korespondencjaKodPocztowy').val(jQuery('#akceptantKodPocztowy').val());
-                jQuery('#korespondencjaPoczta').val(jQuery('#akceptantPoczta').val());
+                jQuery('#akceptantKontaktUlicaTytul').val(jQuery('#akceptantUlicaTytul').val());
+                jQuery('#akceptantKontaktUlica').val(jQuery('#akceptantUlica').val());
+                jQuery('#akceptantKontaktNrDomu').val(jQuery('#akceptantNrDomu').val());
+                jQuery('#akceptantKontaktNrMieszkania').val(jQuery('#akceptantNrMieszkania').val());
+                jQuery('#akceptantKontaktMiasto').val(jQuery('#akceptantMiasto').val());
+                jQuery('#akceptantKontaktKodPocztowy').val(jQuery('#akceptantKodPocztowy').val());
+                jQuery('#akceptantKontaktPoczta').val(jQuery('#akceptantPoczta').val());
             }
         });
     });

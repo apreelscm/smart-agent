@@ -19,14 +19,14 @@ class ProcessCommand implements Serializable{
 //    adresacjaSeciowa
 //    adresDoKorespondencjiPunktu
 //    adresDoKorespondencjizAkecptantem - FINISH
-    String korespondencjaUlicaTytul
-    String korespondencjaUlica
-    String korespondencjaNrDomu
-    String korespondencjaNrMieszkania
+    String akceptantKontaktUlicaTytul
+    String akceptantKontaktUlica
+    String akceptantKontaktNrDomu
+    String akceptantKontaktNrMieszkania
 
-    String korespondencjaMiasto
-    String korespondencjaKodPocztowy
-    String korespondencjaPoczta
+    String akceptantKontaktMiasto
+    String akceptantKontaktKodPocztowy
+    String akceptantKontaktPoczta
 
 //    aneksDoUmowyNajmuZestawuPos - FINISH
     String dataAneksowanejUmowyPos
@@ -145,7 +145,7 @@ class ProcessCommand implements Serializable{
     String kontaktTelKomorkowy
     String kontaktEmail
 
-//    osobaDoKontaktuWPunkcie
+//    osobaDoKontaktuWPunkcie - FINISH (chyba nie wystêpuje w PDFach)
 
 //    osobaKtoraPozyskalaAkceptanta  - FINISH (nie wystepuje w pdfach)
     String pozyskujacyTytul

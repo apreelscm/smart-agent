@@ -11,7 +11,7 @@
                 	<legend><g:message code="panel.newpoint.pointdata.title" /></legend>
                 	<div class="subpanel-fieldset-centercontent" >
                 		<ul class="table-list vertical-center">
-                			<li><span class="align-right"><g:message code="panel.nip" /></span> <span><g:textField name="%ID%nip" id="%ID%nip"/></span></li>
+                			<li><span class="align-right"><g:message code="panel.nip" /></span> <span><g:textField name="%ID%nipPunktu" id="%ID%nip"/></span></li>
                 			<li><span class="align-right"><g:message code="panel.mcccode" /></span> <span><g:textField name="%ID%kodMCC" id="%ID%mccCode"/></span> <span><label for="%ID%sameForEveryPoint"><g:checkBox id="%ID%sameForEveryPoint" /><g:message code="panel.sameforeverypoint" /></label></span></li>
                 			<li><span class="align-right"><g:message code="panel.bussinesstypeinpractice" /></span> <span><g:textField name="%ID%rodzProwadzDzialalWPraktyce" id="%ID%bussinessTypeInPractice"/></span></li>
                 			<li><span class="align-right"><g:message code="panel.bankaccountnumber" /></span> <span><g:textField name="%ID%kontoBankNumer" id="%ID%bankAccountNumber"/></span></li>
@@ -37,28 +37,28 @@
                                        <option value="aleja">aleja</option>
                                        <option value="plac">plac</option>
                                    </select>
-                                   <g:textField name="%ID%ulica" id="%ID%dataforprintingAddressStreet" style="width: 200px"/>
+                                   <g:textField name="%ID%wydrukUlica" id="%ID%dataforprintingAddressStreet" style="width: 200px"/>
                                 </span>
                                 <span>
-                                	<span><g:message code="panel.house.number" /></span> <span><g:textField name="%ID%nrDomu" id="%ID%dataforprintingAddressHomeNumber" style="width: 50px"/></span>
-                                	<span><g:message code="panel.flat.number" /></span> <span><g:textField name="%ID%nrLokalu" id="%ID%dataforprintingAddressFlatNumber" style="width: 50px"/></span>
+                                	<span><g:message code="panel.house.number" /></span> <span><g:textField name="%ID%wydrukNrDomu" id="%ID%dataforprintingAddressHomeNumber" style="width: 50px"/></span>
+                                	<span><g:message code="panel.flat.number" /></span> <span><g:textField name="%ID%wydrukNrMieszkania" id="%ID%dataforprintingAddressFlatNumber" style="width: 50px"/></span>
                                 </span>
                             </li>
 		                	<li>
 		                		<span><g:message code="panel.city" /></span>
-		                		<span><g:textField name="%ID%miasto" id="%ID%dataforprintingAddressCity"  style="width: 280px;"/></span>
+		                		<span><g:textField name="%ID%wydrukMiasto" id="%ID%dataforprintingAddressCity"  style="width: 280px;"/></span>
 		                		<span>
-		                			<span><g:message code="panel.postal.code" /></span> <span><g:textField name="%ID%kodPocztowy" id="%ID%dataforprintingAddressPostalCode" style="width: 50px"/></span>
+		                			<span><g:message code="panel.postal.code" /></span> <span><g:textField name="%ID%wydrukKodPocztowy" id="%ID%dataforprintingAddressPostalCode" style="width: 50px"/></span>
 		                		</span>
 		                	</li>
 		                	<li>
 		                		<span><g:message code="panel.postal" /></span>
-		                		<span><g:textField name="%ID%poczta" id="%ID%dataforprintingAddressPostOffice" style="width: 280px;"/></span>
+		                		<span><g:textField name="%ID%wydrukPoczta" id="%ID%dataforprintingAddressPostOffice" style="width: 280px;"/></span>
 		                	</li>
 		                </ul>
                 		<p><g:message code="panel.newpoint.otherdataforprintingfromterminal" /></p>
-               			<p><g:message code="panel.line1" /> <g:textField name="%ID%linia1" id="%ID%otherDataForPrintingFromTerminal1" style="width: 90%;" /></p>
-               			<p><g:message code="panel.line2" /> <g:textField name="%ID%linia2" id="%ID%otherDataForPrintingFromTerminal1" style="width: 90%;" /></p>
+               			<p><g:message code="panel.line1" /> <g:textField name="%ID%wydrukLinia1" id="%ID%otherDataForPrintingFromTerminal1" style="width: 90%;" /></p>
+               			<p><g:message code="panel.line2" /> <g:textField name="%ID%wydrukLinia2" id="%ID%otherDataForPrintingFromTerminal1" style="width: 90%;" /></p>
                 	</div>
                 </fieldset>
                 <g:render template="../panels/adresDoKorespondencjiPunktu" />

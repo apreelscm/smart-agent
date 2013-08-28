@@ -39,12 +39,12 @@ class PointDataDetails {
 	String korespondencjaKodPocztowy
 	String korespondencjaPoczta
 	
-	String imie
-	String nazwisko
-	String nrFaksu
-	String stacjonarny
-	String komorka
-	String email
+	String kontaktWPunkcieImie
+	String kontaktWPunkcieNazwisko
+	String kontaktWPunkcieFax
+	String kontaktWPunkcieTelStacjonarny
+	String kontaktWPunkcieTelKomorkowy
+	String kontaktWPunkcieEmail
 	
 	static belongsTo = [point: PointData]
 	
@@ -79,12 +79,12 @@ class PointDataDetails {
 		koresponedencjaMiasto column: "contactAddressAddressCity"
 		korespondencjaKodPocztowy column: "contactAddressAddressPostalCode"
 		korespondencjaPoczta column: "contactAddressAddressPostOffice"
-		imie column: "contactAtPointFirstName"
-		nazwisko column: "contactAtPointLastName"
-		nrFaksu column: "contactAtPointFax"
-		stacjonarny column: "contactAtPointPhone"
-		komorka column: "contactAtPointMobilePhone"
-		email column: "contactAtPointEmail"
+		kontaktWPunkcieImie column: "contactAtPointFirstName"
+		kontaktWPunkcieNazwisko column: "contactAtPointLastName"
+		kontaktWPunkcieFax column: "contactAtPointFax"
+		kontaktWPunkcieTelStacjonarny column: "contactAtPointPhone"
+		kontaktWPunkcieTelKomorkowy column: "contactAtPointMobilePhone"
+		kontaktWPunkcieEmail column: "contactAtPointEmail"
 	}
 	
 	static constraints = {
