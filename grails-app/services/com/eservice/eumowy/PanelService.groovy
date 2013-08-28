@@ -49,6 +49,10 @@ class PanelService {
         cmd.akceptantNazwaOficjalna= result?.nazwa ?: "-"
         cmd.akceptantNazwaSieciowa= cmd.akceptantNazwaSieciowa ?: "-" //TODO
         cmd.akceptantRegon = result?.regon ?: "-"
+
+        cmd.akceptantNazwaOficjalnaCbd= cmd.akceptantNazwaOficjalna
+        cmd.akceptantNazwaSieciowaCbd= cmd.akceptantNazwaSieciowa
+        cmd.akceptantRegonCbd = cmd.akceptantRegon
     }
 
     def getDaneDoWydruku(ProcessCommand cmd ,def calc) {
@@ -421,6 +425,17 @@ class PanelService {
         cmd.akceptantTelStacjonarny = result?.telStac ?: "-"
         cmd.akceptantFax = result?.faks ?: "-"
         cmd.akceptantTelKomorkowy = result?.telKom ?: "-"
+
+        cmd.akceptantUlicaTytulCbd = cmd.akceptantUlicaTytul
+        cmd.akceptantUlicaCbd = cmd.akceptantUlica
+        cmd.akceptantNrDomuCbd = cmd.akceptantNrDomu
+        cmd.akceptantNrMieszkaniaCbd = cmd.akceptantNrMieszkania
+        cmd.akceptantMiastoCbd = cmd.akceptantMiasto
+        cmd.akceptantKodPocztowyCbd = cmd.akceptantKodPocztowy
+        cmd.akceptantPocztaCbd = cmd.akceptantPoczta
+        cmd.akceptantTelStacjonarnyCbd = cmd.akceptantTelStacjonarny
+        cmd.akceptantFaxCbd = cmd.akceptantFax
+        cmd.akceptantTelKomorkowyCbd = cmd.akceptantTelKomorkowy
     }
 
     def getUmowa2(ProcessCommand cmd ,def calc) {

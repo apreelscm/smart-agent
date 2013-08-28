@@ -4,15 +4,24 @@
         <div class="centre" style="text-align: center; padding-top: 20px; width: 750px">
             <ul class="table-list centre">
                 <li><span><g:message code="panel.acceptor.full.name"/></span></li>
-                <li><span><g:textField name="akceptantNazwaOficjalna" value="${data.akceptantNazwaOficjalna}" style="width: 400px"/></span></li>
+                <li>
+                    <span><g:textField name="akceptantNazwaOficjalna" value="${data.akceptantNazwaOficjalna}" readonly="${data.isFromCbd('akceptantNazwaOficjalna')}" style="width: 400px"/></span>
+                    <g:hiddenField name="akceptantNazwaOficjalnaCbd" value="${data.akceptantNazwaOficjalnaCbd}"/>
+                </li>
                 <li><span><g:message code="panel.acceptor.network.name"/></span></li>
-                <li><span><g:textField name="akceptantNazwaSieciowa" value="${data.akceptantNazwaSieciowa}" style="width: 400px;"/></span></li>
+                <li>
+                    <span><g:textField name="akceptantNazwaSieciowa" value="${data.akceptantNazwaSieciowa}" readonly="${data.isFromCbd('akceptantNazwaSieciowa')}" style="width: 400px;"/></span>
+                    <g:hiddenField name="akceptantNazwaSieciowaCbd" value="${data.akceptantNazwaSieciowaCbd}"/>
+                </li>
                 <li>
                     <span>
                         <span><g:message code="panel.acceptor.nip"/></span>
                         <span><g:textField class="nip" name="akceptantNip" value="${data.nip}" readonly="true"/></span>
                         <span><g:message code="panel.acceptor.regon"/></span>
-                        <span><g:textField class="regon" name="akceptantRegon" value="${data.akceptantRegon}"/></span>
+                        <span>
+                            <g:textField class="regon" name="akceptantRegon" value="${data.akceptantRegon}" readonly="${data.isFromCbd('akceptantRegon')}"/>
+                            <g:hiddenField name="akceptantRegonCbd" value="${data.akceptantRegonCbd}"/>
+                        </span>
                     </span>
                 </li>
             </ul>
