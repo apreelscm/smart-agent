@@ -17,7 +17,7 @@
                         </span>
                         <span>
                             <span><g:message code="panel.house.number" /></span> <span><g:textField name="wydrukNrDomu" value="${data.wydrukNrDomu}" style="width: 50px"/></span>
-                            <span><g:message code="panel.flat.number" /></span> <span><g:textField name="wydrukNrLokalu" value="${data.wydrukNrMieszkania}" style="width: 50px"/></span>
+                            <span><g:message code="panel.flat.number" /></span> <span><g:textField name="wydrukNrMieszkania" value="${data.wydrukNrMieszkania}" style="width: 50px"/></span>
                         </span>
                     </li>
                     <li>
