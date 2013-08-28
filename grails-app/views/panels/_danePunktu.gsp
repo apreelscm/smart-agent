@@ -14,8 +14,8 @@
                 			<li><span class="align-right"><g:message code="panel.nip" /></span> <span><g:textField name="%ID%nipPunktu" id="%ID%nip"/></span></li>
                 			<li><span class="align-right"><g:message code="panel.mcccode" /></span> <span><g:textField name="%ID%kodMCC" id="%ID%mccCode"/></span> <span><label for="%ID%sameForEveryPoint"><g:checkBox id="%ID%sameForEveryPoint" /><g:message code="panel.sameforeverypoint" /></label></span></li>
                 			<li><span class="align-right"><g:message code="panel.bussinesstypeinpractice" /></span> <span><g:textField name="%ID%rodzProwadzDzialalWPraktyce" id="%ID%bussinessTypeInPractice"/></span></li>
-                			<li><span class="align-right"><g:message code="panel.bankaccountnumber" /></span> <span><g:textField name="%ID%kontoBankNumer" id="%ID%bankAccountNumber"/></span></li>
-                			<li><span class="align-right"><g:message code="panel.bankname" /></span> <span><select name="%ID%nazwaBanku" id="%ID%bankName"></select></span></li>
+                			<li><span class="align-right"><g:message code="panel.bankaccountnumber" /></span> <span><g:textField name="%ID%numerRachunkuBankowego" id="%ID%bankAccountNumber"/></span></li>
+                			<li><span class="align-right"><g:message code="panel.bankname" /></span> <span><select name="%ID%bank" id="%ID%bankName"></select></span></li>
                 		</ul>
                 	</div>
                 </fieldset>
