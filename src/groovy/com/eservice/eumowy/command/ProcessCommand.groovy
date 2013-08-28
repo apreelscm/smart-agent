@@ -53,7 +53,7 @@ class ProcessCommand implements Serializable{
 
     String wydrukUlicaTytul
     String wydrukUlica
-    String wydrukNrDomu
+    String wydrukNrLokalu
     String wydrukNrMieszkania
 
     String wydrukMiasto
