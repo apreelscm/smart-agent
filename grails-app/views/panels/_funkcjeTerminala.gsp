@@ -31,7 +31,7 @@
 			<div>
  			<p class="bold" ><g:message code="panel.newpoint.terminaloptions.phonecreditsrecharge" /></p>
  			<ul class="table-list vertical-center">
- 				<li><span><label for="%ID%telePompka"><g:checkBox name="%ID%telePompka" /><g:message code="panel.newpoint.terminaloptions.phonecreditsrecharge.telepompka" /></label></span> <span style="padding-left: 6em;"><label><g:message code="panel.newpoint.terminaloptions.phonecreditsrecharge.terminalcount" /> <g:textField name="%ID%terminalCount" style="width: 50px;"/></label></span></li>
+ 				<li><span><label for="%ID%telePompka"><g:checkBox name="%ID%telePompka" /><g:message code="panel.newpoint.terminaloptions.phonecreditsrecharge.telepompka" /></label></span> <span style="padding-left: 6em;"><label><g:message code="panel.newpoint.terminaloptions.phonecreditsrecharge.terminalcount" /> <g:textField name="%ID%terminalIlosc" id="%ID%terminalCount" style="width: 50px;"/></label></span></li>
  				<li><label for="%ID%teleKodzik"><g:checkBox name="%ID%teleKodzik" /><g:message code="panel.newpoint.terminaloptions.phonecreditsrecharge.telekodzik" /></label></li>
  			</ul>
  			<div>
