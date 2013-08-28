@@ -145,7 +145,7 @@ class ProcessCommand implements Serializable{
     String kontaktTelKomorkowy
     String kontaktEmail
 
-//    osobaDoKontaktuWPunkcie
+//    osobaDoKontaktuWPunkcie - FINISH (chyba nie wystêpuje w PDFach)
 	String kontaktWPunkcieTytul
 	String kontaktWPunkcieImie
 	String kontaktWPunkcieNazwisko
