@@ -1,11 +1,9 @@
 package com.eservice.eumowy.command
 
+import com.eservice.eumowy.Process
 import grails.validation.Validateable
-
 import org.apache.commons.collections.FactoryUtils
 import org.apache.commons.collections.ListUtils
-
-import com.eservice.eumowy.Process
 
 /**
  * User: Dominik Walczak
@@ -149,7 +147,7 @@ class ProcessCommand implements Serializable{
     String kontaktTelKomorkowy
     String kontaktEmail
 
-//    osobaDoKontaktuWPunkcie - FINISH (chyba nie wystêpuje w PDFach)
+//    osobaDoKontaktuWPunkcie - FINISH (chyba nie wystï¿½puje w PDFach)
 
 //    osobaKtoraPozyskalaAkceptanta  - FINISH (nie wystepuje w pdfach)
     String pozyskujacyTytul
