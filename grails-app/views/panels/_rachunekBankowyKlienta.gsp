@@ -5,11 +5,11 @@
             <ul class="table-list">
                 <li>
                     <span class="align-right"><g:message code="panel.bank.account.number"/></span>
-                    <span class="align-left"><g:textField name="numerRachunkuBankowego" class="bank-account" value="${data.numerRachunkuBankowego}" style="width: 250px"/></span>
+                    <span class="align-left"><g:textField name="kontoBankNumer" class="bank-account" value="${data.kontoBankNumer}" style="width: 250px"/></span>
                 </li>
                 <li>
                     <span class="align-right"><g:message code="panel.bank.name"/></span>
-                    <span class="align-left"><dict:bankSelect name="bank" style="width: 250px" value="${data.bank}"/></span>
+                    <span class="align-left"><dict:bankSelect name="nazwaBanku" style="width: 250px" value="${data.nazwaBanku}"/></span>
                 </li>
             </ul>
         </div>

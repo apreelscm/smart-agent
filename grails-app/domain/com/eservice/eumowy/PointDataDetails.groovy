@@ -20,7 +20,7 @@ class PointDataDetails implements Serializable {
 	String nazwaDoWydrukuZTerminalaPos
 	String nazwaDoWyszukiwarki
 	 
-	String dataforprintingAddressStreetType
+	String wydrukUlicaTytul
 	String wydrukUlica
 	Integer wydrukNrDomu
 	Integer wydrukNrLokalu
@@ -63,7 +63,7 @@ class PointDataDetails implements Serializable {
 		nazwaBanku column: "bank_name"
 		nazwaDoWydrukuZTerminalaPos column: "point_name_for_printing_from_POS_terminal"
 		nazwaDoWyszukiwarki column: "point_name_for_search_engine"
-		dataforprintingAddressStreetType column: "dataforprinting_address_street_type"
+		wydrukUlicaTytul column: "dataforprinting_address_street_type"
 		wydrukUlica column: "dataforprinting_address_street"
 		wydrukNrDomu column: "dataforprinting_address_home_number"
 		wydrukNrLokalu column: "dataforprinting_address_flat_number"
@@ -85,6 +85,7 @@ class PointDataDetails implements Serializable {
 		kontaktWPunkcieTelStacjonarny column: "contact_at_point_phone"
 		kontaktWPunkcieTelKomorkowy column: "contact_at_point_mobile_phone"
 		kontaktWPunkcieEmail column: "contact_at_point_email"
+
 	}
 	
 	static constraints = {
