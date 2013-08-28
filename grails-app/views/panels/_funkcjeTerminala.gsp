@@ -36,7 +36,7 @@
  			</ul>
  			<div>
  			<p class="bold" ><g:message code="panel.newpoint.terminaloptions.marketingproducts" /></p>
-				<p><label for="%ID%giftCard"><g:checkBox name="%ID%kartaPodarunkowa" name="%ID%giftCard" /><g:message code="panel.newpoint.terminaloptions.marketingproducts.giftcard" /></label></p>
+				<p><label for="%ID%giftCard"><g:checkBox name="%ID%kartaPodarunkowa" id="%ID%giftCard" /><g:message code="panel.newpoint.terminaloptions.marketingproducts.giftcard" /></label></p>
 				</div>
 			</div>
 			
