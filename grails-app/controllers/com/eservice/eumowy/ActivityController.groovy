@@ -83,9 +83,9 @@ class ActivityController {
         normal {
             subflow(action: "normal", input: [processInstance : { flow.processInstance }])
             on("backToStart").to "defineActivity"
-            on("finish") {
+            on("clientSignature") {
                 flow.processInstance = currentEvent.attributes.process
-            }.to "finish"
+            }.to "clientSignature"
         }
 
         /** popraw dane subflow */
@@ -106,8 +106,6 @@ class ActivityController {
             }.to "finish"
         }
 
-
-
         /** send email only subflow*/
         emailOnly {
             action{
@@ -124,6 +122,68 @@ class ActivityController {
                 }
             }
             on("success").to "defineActivity"
+        }
+
+        clientSignature {
+            onEntry {
+                def processInstance = flow.processInstance
+                def totalPagesCount = 0
+                processInstance.signatures.each { sig ->
+                    log.info "SIGNATURE NAME: " + sig.name + " PDF TEMPLATE PATH: " + sig.templatePath
+
+                    def data = PdfMapper.mapProcessDataToPDFData(processInstance.processData)
+                    byte[] documentData = pdfService.fillPdfFormFromURIWithFaksymile(sig, data, PdfService.FontType.ARIAL)
+
+                    if(!documentData) return
+
+                    int pc = pdfService.getPageCountFromPdf(documentData)
+                    totalPagesCount += pc
+
+                    DocumentFile df = new DocumentFile(name: sig.templatePath, dateCreated: new Date(), lastUpdated: new Date(), pagesCount: pc)
+                    df.setContent(new DocumentContent(content: documentData))
+                    df.save(flush: true)
+                    log.info "DF id: " + df.id + " PageCount: " + df.pagesCount
+                    processInstance.addToDocuments(df);
+                    processInstance.discard();
+                }
+
+                flow.totalPagesCount = totalPagesCount;
+                processInstance.save(flush:true)
+                flow.processInstance = processInstance
+            }
+            render(view: "../createProcess/clientSignature", model: [processInstance: flow.processInstance, totalPagesCount: flow.totalPagesCount])
+            on("back").to "selectedPanels"
+            on("subscribe").to "clientSignature"
+            on("updateProcessStatus") {
+                log.info params
+                if (params.processStatus.equals("WAIT_FOR_SUBSCRIPTION")) {
+                    Subscription sub = Subscription.get(params.subscriptionId)
+                    flow.processInstance.addToSubscriptions(sub)
+                    flow.processInstance.status = Process.ProcessStatus.WAIT_FOR_SUBSRIPTION
+                }
+                else if (params.processStatus.equals("SUBSCRIPTIONS_DONE")) {
+                    Subscription sub = Subscription.get(params.subscriptionId)
+                    flow.processInstance.addToSubscriptions(sub)
+                    flow.processInstance.status = Process.ProcessStatus.SUBSCRIPTIONS_DONE
+                }
+                else if (params.processStatus.equals("REJECTED")) {
+                    flow.processInstance.status = Process.ProcessStatus.REJECTED
+                }
+            }.to "clientSignature"
+            on("noaccept") {
+                def processInstance = flow.processInstance
+                processInstance.status = Process.ProcessStatus.REJECTED
+                flow.processInstance = processInstance
+            }.to "finish"
+            on("submit") {
+                log.info "PARAMS: " + params
+                def processInstance = flow.processInstance
+                _processDocumentCreation(processInstance, params.requestVersion)
+
+                processInstance.status = Process.ProcessStatus.WAITING
+                flow.processInstance = processInstance
+
+            }.to "finish"
         }
 
         /** final operations and process save*/
@@ -282,24 +342,47 @@ class ActivityController {
         selectedPanels{
             onEntry {
                 println "selectedPanels enterview"
-                def processInstance = flow.processInstance;
-                def calc = flow.calc;
 
-                //ACTIVE PANELS
-                TreeSet activePanels = _getActivePanels(processInstance.signatures)
-                processInstance.panels = activePanels.toList();
+                if(!flow.slipPanelsInit){
+                    log.info("slipPanelsInit - false")
+                    def processInstance = flow.processInstance;
+                    def calc = flow.calc;
 
-                def processCmd = processService.createNewProcessCommand(processInstance,calc)
+                    //ACTIVE PANELS
+                    TreeSet activePanels = _getActivePanels(processInstance.signatures)
+                    processInstance.panels = activePanels.toList();
 
-                flow.data = processCmd
+                    def processCmd = processService.createNewProcessCommand(processInstance,calc)
+                    flow.data = processCmd
+                }
+                else{
+                    log.info("slipPanelsInit - true")
+                    flow.slipPanelsInit = false
+                }
+
             }
             render(view: "../createProcess/selectedPanels")
             on("back").to "chooseCalc"
             on("acceptPointsButton") {
                 log.info "acceptPointsButton TRIGGERED"
-
-
             }.to "selectedPanels"
+            on("saveOnly"){ ProcessCommand cmd ->
+                def processInstance = flow.processInstance
+                def processDataList = processService.getDataFromPanels(cmd)
+
+                processInstance.processData?.clear()
+                processDataList.each { data ->
+                    processInstance.addToProcessData(data)
+                    processInstance.discard();
+                }
+
+                //TODO Save cmd.points to PointData, PointDataDetails, PosData
+                processInstance.save();
+
+                flow.processInstance = processInstance
+                flow.data = cmd
+                flow.slipPanelsInit = true;
+            }to "selectedPanels"
             on("continue"){ ProcessCommand cmd ->
 
                 if(cmd?.hasErrors()){
@@ -309,10 +392,6 @@ class ActivityController {
 
                 def processInstance = flow.processInstance
                 processInstance.notesToCoa = cmd.notes;
-
-                //_createPointDatas(flow.processInstance)
-                //_createPosDatas(flow.processInstance)
-
                 def processDataList = processService.getDataFromPanels(cmd)
 
                 processInstance.processData?.clear()
@@ -321,10 +400,7 @@ class ActivityController {
                     processInstance.discard();
                 }
 
-                log.info("processData:"+processInstance.processData)
-				
-				//TODO Save cmd.points to PointData, PointDataDetails, PosData
-
+                //TODO Save cmd.points to PointData, PointDataDetails, PosData
                 processInstance.save();
 
                 flow.processInstance = processInstance
@@ -332,71 +408,6 @@ class ActivityController {
         }
 
         clientSignature {
-            onEntry {
-                def processInstance = flow.processInstance
-
-                def totalPagesCount = 0
-                processInstance.signatures.each { sig ->
-                    log.info "SIGNATURE NAME: " + sig.name + " PDF TEMPLATE PATH: " + sig.templatePath
-					
-					def data = PdfMapper.mapProcessDataToPDFData(processInstance.processData)
-                    byte[] documentData = pdfService.fillPdfFormFromURIWithFaksymile(sig, data, PdfService.FontType.ARIAL)
-
-                    if(!documentData) return
-
-                    int pc = pdfService.getPageCountFromPdf(documentData)
-                    totalPagesCount += pc
-
-                    DocumentFile df = new DocumentFile(name: sig.templatePath, dateCreated: new Date(), lastUpdated: new Date(), pagesCount: pc)
-                    df.setContent(new DocumentContent(content: documentData))
-                    df.save(flush: true)
-                    log.info "DF id: " + df.id + " PageCount: " + df.pagesCount
-                    processInstance.addToDocuments(df);
-                    processInstance.discard();
-                }
-
-                flow.totalPagesCount = totalPagesCount;
-
-                processInstance.save(flush:true)
-                flow.processInstance = processInstance
-            }
-            render(view: "../createProcess/clientSignature", model: [processInstance: flow.processInstance, totalPagesCount: flow.totalPagesCount])
-            on("back").to "selectedPanels"
-            on("subscribe").to "clientSignature"
-            on("updateProcessStatus") {
-                log.info params
-                if (params.processStatus.equals("WAIT_FOR_SUBSCRIPTION")) {
-                    Subscription sub = Subscription.get(params.subscriptionId)
-                    flow.processInstance.addToSubscriptions(sub)
-                    flow.processInstance.status = Process.ProcessStatus.WAIT_FOR_SUBSRIPTION
-                }
-                else if (params.processStatus.equals("SUBSCRIPTIONS_DONE")) {
-                    Subscription sub = Subscription.get(params.subscriptionId)
-                    flow.processInstance.addToSubscriptions(sub)
-                    flow.processInstance.status = Process.ProcessStatus.SUBSCRIPTIONS_DONE
-                }
-                else if (params.processStatus.equals("REJECTED")) {
-                    flow.processInstance.status = Process.ProcessStatus.REJECTED
-                }
-            }.to "clientSignature"
-            on("noaccept") {
-                def processInstance = flow.processInstance
-                processInstance.status = Process.ProcessStatus.REJECTED
-                flow.processInstance = processInstance
-            }.to "finish"
-            on("submit") {
-                log.info "PARAMS: " + params
-                def processInstance = flow.processInstance
-                _processDocumentCreation(processInstance, params.requestVersion)
-
-
-                processInstance.status = Process.ProcessStatus.WAITING
-                flow.processInstance = processInstance
-
-            }.to "finish"
-        }
-
-        finish {
             output {
                 process {flow.processInstance}
             }
@@ -428,7 +439,7 @@ class ActivityController {
             action {
                 flow.nip = params.nip;
                 flow.calcNumber = null
-              //  flow.client = null
+                //  flow.client = null
                 flow.isContinueEnabled = false;
 
                 if(!clientService.isClientNipValid(flow.nip)){
@@ -525,73 +536,8 @@ class ActivityController {
             }.to "clientSignature"
         }
 
+
         clientSignature {
-            onEntry {
-                def processInstance = flow.processInstance
-
-                def totalPagesCount = 0
-                processInstance.signatures.each { sig ->
-                    log.info "SIGNATURE NAME: " + sig.name + " PDF TEMPLATE PATH: " + sig.templatePath
-
-                    def data = PdfMapper.mapProcessDataToPDFData(processInstance.processData)
-                    byte[] documentData = pdfService.fillPdfFormFromURIWithFaksymile(sig, data, PdfService.FontType.ARIAL)
-
-                    if(!documentData) return
-
-                    int pc = pdfService.getPageCountFromPdf(documentData)
-                    totalPagesCount += pc
-
-                    DocumentFile df = new DocumentFile(name: sig.templatePath, dateCreated: new Date(), lastUpdated: new Date(), pagesCount: pc)
-                    df.setContent(new DocumentContent(content: documentData))
-                    df.save(flush: true)
-                    log.info "DF id: " + df.id + " PageCount: " + df.pagesCount
-
-                    processInstance.addToDocuments(df)
-                    processInstance.discard()
-                }
-
-                flow.totalPagesCount = totalPagesCount;
-
-                processInstance.save(flush:true)
-                flow.processInstance = processInstance
-            }
-            render(view: "../createProcess/clientSignature", model: [processInstance: flow.processInstance, totalPagesCount: flow.totalPagesCount])
-            on("back").to "selectedPanels"
-            on("subscribe").to "clientSignature"
-            on("updateProcessStatus") {
-                log.info params
-                if (params.processStatus.equals("WAIT_FOR_SUBSCRIPTION")) {
-                    Subscription sub = Subscription.get(params.subscriptionId)
-                    flow.processInstance.addToSubscriptions(sub)
-                    flow.processInstance.status = Process.ProcessStatus.WAIT_FOR_SUBSRIPTION
-                }
-                else if (params.processStatus.equals("SUBSCRIPTIONS_DONE")) {
-                    Subscription sub = Subscription.get(params.subscriptionId)
-                    flow.processInstance.addToSubscriptions(sub)
-                    flow.processInstance.status = Process.ProcessStatus.SUBSCRIPTIONS_DONE
-                }
-                else if (params.processStatus.equals("REJECTED")) {
-                    flow.processInstance.status = Process.ProcessStatus.REJECTED
-                }
-            }.to "clientSignature"
-            on("noaccept") {
-                def processInstance = flow.processInstance
-                processInstance.status = Process.ProcessStatus.REJECTED
-                flow.processInstance = processInstance
-            }.to "finish"
-            on("submit") {
-                log.info "PARAMS: " + params
-                def processInstance = flow.processInstance
-                _processDocumentCreation(processInstance, params.requestVersion)
-
-
-                processInstance.status = Process.ProcessStatus.WAITING
-                flow.processInstance = processInstance
-
-            }.to "finish"
-        }
-
-        finish {
             output {
                 process {flow.processInstance}
             }
@@ -663,41 +609,7 @@ class ActivityController {
             on("error").to "chooseCalc"
         }
 
-        clientSignature{
-            render(view: "../createProcess/clientSignature")
-            on("back").to "chooseCalc"
-            on("continue"){
-                def processInstance = flow.processInstance
-                //TODO implement logic
-                flow.processInstance = processInstance
-            }.to "finish"
-            on("subscribe").to "clientSignature"
-            on("updateProcessStatus") {
-                if (params.processStatus.equals("WAIT_FOR_SUBSCRIPTION")) {
-                    Subscription sub = Subscription.get(params.subscriptionId)
-                    flow.processInstance.addToSubscriptions(sub)
-                    flow.processInstance.status = Process.ProcessStatus.WAIT_FOR_SUBSRIPTION
-                }
-                else if (params.processStatus.equals("SUBSCRIPTIONS_DONE")) {
-                    Subscription sub = Subscription.get(params.subscriptionId)
-                    flow.processInstance.addToSubscriptions(sub)
-                    flow.processInstance.status = Process.ProcessStatus.SUBSCRIPTIONS_DONE
-                }
-                else if (params.processStatus.equals("REJECTED")) {
-                    flow.processInstance.status = Process.ProcessStatus.REJECTED
-                }
-            }.to "clientSignature"
-            on("noaccept") {
-                flow.processInstance.status = Process.ProcessStatus.REJECTED
-            }.to "finish"
-            on("submit") {
-                log.info "PARAMS: " + params
-                _processDocumentCreation(flow.processInstance, params.requestVersion)
-                flow.processInstance.status = Process.ProcessStatus.WAITING
-            }.to "finish"
-        }
-
-        finish {
+        clientSignature {
             output {
                 process {flow.processInstance}
             }

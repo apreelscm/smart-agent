@@ -48,7 +48,8 @@
         <ul id="mainMenu">
             <li><a href="#" class="submit">Menu</a>
                 <ul>
-                    <li><a href="${createLink(action: 'list')}">Zapisz</a></li>
+                    <li><a id="saveProcessLink" href="#" style="display: ${params.controller == 'activity' ? '' : 'none'}">Zapisz2</a></li>
+                    %{--<li><a id="saveProcessLink" href="#">Zapisz</a></li>--}%
                     <li><a href="${createLink(controller: 'logout')}">Wyloguj</a>
                     </li>
                 </ul></li>

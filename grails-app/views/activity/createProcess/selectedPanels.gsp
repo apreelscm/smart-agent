@@ -12,6 +12,18 @@
 
     $j(function(){
 
+      $j("#saveProcessLink").click(function() {
+                var input = $j("<input>").attr("type", "hidden").attr("name", "_eventId_saveOnly").val("");
+                $j('.panelsForm').append($j(input)).submit()
+                false
+            });
+
+        $j("#conitnueButton").click(function() {
+                var input = $j("<input>").attr("type", "hidden").attr("name", "_eventId_continue").val("");
+                $j('.panelsForm').append($j(input)).submit()
+                false
+            });
+
         refreshAttachmentList()
 
         $j("#fileUploadInput").change(function (){
@@ -48,6 +60,13 @@
 });
     </g:javascript>
 
+
+    <r:script>
+        jQuery(document).ready(function(){
+
+        });
+    </r:script>
+
     <style>
     #uploads {
         margin: 6px 0;
@@ -79,8 +98,7 @@
 
 <section id="create-activity">
     <h1 class="ng linia-bottom"><g:message code="selectedPanels.header.title" default="Lista paneli"/></h1>
-    <g:form>
-        <g:hiddenField name="_eventId_continue" value=""/>
+    <g:form class="panelsForm">
         <g:each var="panel" in="${processInstance.panels}" status="i">
             <g:render template="/panels/${panel.name}"/>
         </g:each>
@@ -94,7 +112,7 @@
     <nav style="margin-top: 20px">
         <fieldset>
             <g:link event="back" class="button submit float-left">${message(code:'default.navigation.button.prev', default: 'Wstecz')}</g:link>
-            <button id="conitnueButton" onclick="document.forms[0].submit()" class="button submit float-right">${message(code:'default.navigation.button.next', default: 'Dalej')}</button>
+            <button id="conitnueButton"  class="button submit float-right">${message(code:'default.navigation.button.next', default: 'Dalej')}</button>
         </fieldset>
     </nav>
 

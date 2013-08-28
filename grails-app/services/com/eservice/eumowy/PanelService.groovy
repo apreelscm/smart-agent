@@ -20,13 +20,13 @@ class PanelService {
     def getAdresDoKorespondencjizAkecptantem(ProcessCommand cmd ,def calc) {
         def result = cbdService.getAdresDoKorespondencjizAkceptantem(cmd.nip);
 
-        cmd.korespondencjaUlicaTytul = result?.typ_ulicy ?:  "-"
-        cmd.korespondencjaUlica = result?.ulica  ?: "-"
-        cmd.korespondencjaNrDomu = result?.nr_budynku ?: "-"
-        cmd.korespondencjaNrMieszkania = result?.nr_lokal ?: "-"
-        cmd.korespondencjaMiasto = result?.miejscowosc ?: "-"
-        cmd.korespondencjaKodPocztowy = result?.kod_pocztowy ?: "-"
-        cmd.korespondencjaPoczta = result?.poczta ?: "-"
+        cmd.akceptantKontaktUlicaTytul = result?.typ_ulicy ?:  "-"
+        cmd.akceptantKontaktUlica = result?.ulica  ?: "-"
+        cmd.akceptantKontaktNrDomu = result?.nr_budynku ?: "-"
+        cmd.akceptantKontaktNrMieszkania = result?.nr_lokal ?: "-"
+        cmd.akceptantKontaktMiasto = result?.miejscowosc ?: "-"
+        cmd.akceptantKontaktKodPocztowy = result?.kod_pocztowy ?: "-"
+        cmd.akceptantKontaktPoczta = result?.poczta ?: "-"
     }
 
     def getAneksDoUmowyNajmuZestawuPos(ProcessCommand cmd,def calc) {
