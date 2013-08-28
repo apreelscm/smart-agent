@@ -12,6 +12,8 @@ class EmailService {
 
         def emailTemplate = EmailTemplates.findByName(templateType)
 
+        if(!emailTemplate) return;
+
         mailService.sendMail{
             to emailTemplate.recipent
             from emailTemplate.sender
@@ -22,7 +24,9 @@ class EmailService {
 	
 	def sendDocumentsPaperVersion(List<DocumentFile> documents) {
 		def emailTemplate = EmailTemplates.findByName(EmailTemplates.EmailTemplateType.DOCUMENTS_PAPER_VERSION)
-		
+
+        if(!emailTemplate) return;
+
 		mailService.sendMail {
 			multipart true
 			to emailTemplate.recipent
@@ -38,7 +42,9 @@ class EmailService {
 	
 	def sendDocumentsTemplateVersionWithBlackFaksymile(List<DocumentFile> documents) {
 		def emailTemplate = EmailTemplates.findByName(EmailTemplates.EmailTemplateType.DOCUMENTS_TEMPLATE_VERSION)
-		
+
+        if(!emailTemplate) return;
+
 		mailService.sendMail {
 			multipart true
 			to emailTemplate.recipent
@@ -54,7 +60,9 @@ class EmailService {
 	
 	def sendDocumentsTemplateVersionWithoutFaksymile(List<DocumentFile> documents) {
 		def emailTemplate = EmailTemplates.findByName(EmailTemplates.EmailTemplateType.DOCUMENTS_TEMPLATE_VERSION)
-		
+
+        if(!emailTemplate) return;
+
 		mailService.sendMail {
 			multipart true
 			to emailTemplate.recipent
@@ -70,7 +78,9 @@ class EmailService {
 	
 	def sendDocumentsElectronicalVersion(List<DocumentFile> documents) {
 		def emailTemplate = EmailTemplates.findByName(EmailTemplates.EmailTemplateType.DOCUMENTS_ELECTRONICAL_VERSION)
-		
+
+        if(!emailTemplate) return;
+
 		mailService.sendMail {
 			multipart true
 			to emailTemplate.recipent
@@ -86,7 +96,9 @@ class EmailService {
 	
 	def sendDocumentsAccepted(List<DocumentFile> documents) {
 		def emailTemplate = EmailTemplates.findByName(EmailTemplates.EmailTemplateType.DOCUMENTS_ACCEPTED)
-		
+
+        if(!emailTemplate) return;
+
 		mailService.sendMail {
 			multipart true
 			to emailTemplate.recipent

@@ -1,6 +1,6 @@
 package com.eservice.eumowy
 
-class PointData {
+class PointData implements Serializable {
 	
 	Integer cbdId
 	
@@ -11,6 +11,8 @@ class PointData {
 	String miejscowosc
 	String kodPocztowy
 	String poczta
+	
+	List<PosData> posDatas
 	
 	static belongsTo = [process: Process]
 	

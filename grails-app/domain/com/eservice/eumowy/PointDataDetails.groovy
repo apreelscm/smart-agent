@@ -2,7 +2,7 @@ package com.eservice.eumowy
 
 import java.util.List;
 
-class PointDataDetails {
+class PointDataDetails implements Serializable {
 	List<PosData> posDatas
 	
 	BigDecimal phPozysk
@@ -90,3 +90,4 @@ class PointDataDetails {
 	static constraints = {
 	}
 }
+

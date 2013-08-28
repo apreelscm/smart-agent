@@ -53,13 +53,17 @@ class CbdService {
 
     //@Cacheable(value="getAdresDaneDoWydruku")
     //@Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
-    def findClientIdByNip(def clientNip) {
+    def findClientByNip(def clientNip) {
         switch (Environment.getCurrent()) {
             case Environment.DEVELOPMENT:
                return findClientIdByNipMock(clientNip);
             case Environment.TEST:
                 def rowResult = cbdDAO.selectOne(FIND_CLIENT_ID_BY_NIP,[nip:clientNip])
-                return new Client(rowResult)
+                def cbdClient = new Client(rowResult)
+                def eumowyClient = cbdClient.cbdId ? (Client.findByCbdId(cbdClient.cbdId) ?: cbdClient) :null
+                println("e:"+Client.findByCbdId(cbdClient.cbdId))
+                println(eumowyClient)
+               return eumowyClient
         }
     }
 

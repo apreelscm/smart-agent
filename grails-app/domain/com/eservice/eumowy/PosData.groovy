@@ -1,91 +1,25 @@
 package com.eservice.eumowy
 
-class PosData {
+import java.io.Serializable;
 
-	String dialupType
-	Integer dialupCount
-	Integer dialupPPCount
-	BigDecimal dialupPrice
-	BigDecimal dialupPPPrice
-	String vpnType
-	Integer vpnCount
-	Integer vpnPPCount
-	BigDecimal vpnPrice
-	BigDecimal vpnPPPrice
-	String sslType
-	Integer sslCount
-	Integer sslPPCount
-	BigDecimal sslPrice
-	BigDecimal sslPPPrice
-	String wifiType
-	Integer wifiCount
-	Integer wifiPPCount
-	BigDecimal wifiPrice
-	BigDecimal wifiPPPrice
-	String gprsType
-	Integer gprsCount
-	Integer gprsPPCount
-	BigDecimal gprsPrice
-	BigDecimal gprsPPPrice
-	Integer baseCount
+class PosData implements Serializable {
 	
-	Date dayCloseFrom
-	Date dayCloseTo
-	Date plannedInstallationDate
-	String additionalNotes
-	
-	Boolean preauthorization
-	Boolean noreturnfunction
-	Boolean returnWithPassword
-	Boolean setAnalysis
-	Boolean cashMachineSystemIntegration
-	Boolean returnIKO
-	
-	Boolean loggingBeforeEveryTransaction
-	Boolean logginEveryChange
-	
-	Boolean tip1
-	Boolean telePompka
-	Boolean teleKodzik
-	
-	Boolean giftCard
-	
-	String pinPadType
-	Integer pinPadCount
-	BigDecimal pinPadPrice
-	String routerType
-	Integer routerCount
-	BigDecimal routerPrice
-	String cardReaderType
-	Integer cardReaderCount
-	BigDecimal cardReaderPrice
-	
-	String otherAdditionalDevice
-	Boolean otherAdditionalDeviceSsl
-	Boolean otherAdditionalDeviceGprs
-	String otherAdditionalDeviceType
-	Integer otherAdditionalDeviceCount
-	BigDecimal otherAdditionalDevicePrice
-	
-	String staticDeviceMask
-	String staticDeviceGateway
-	String staticDeviceIp
-	String staticDeviceSupportContact
-	String staticDeviceSupportContactName
-	String staticDeviceSupportContactSurname
-	
-	String dynamicDeviceSupportContact
-	String dynamicDeviceSupportName
-	String dynamicDeviceSupportSurname
+	//TODO Add things needed for New POS/Point documents, like point name etc.
+	Integer numerZestawuPos
+	Date dataOd
+	Date dataDo
+	BigDecimal wysokoscOplaty
+	Boolean czyWybrany
 	
 	static belongsTo = [point: PointData]
+	static hasOne = [posDetails: PosDataDetails]
 	
 	static mapping = {
 		table name: "POS", schema:DomainConsts.SHEMA_NAME
 		id generator:'sequence', params:[sequence:DomainConsts.SHEMA_NAME+'.POS_SEQ']
 	}
 	
-    static constraints = {
-        point(nullable:true)
-    }
+	static constraints = {
+		point(nullable:true)
+	}
 }

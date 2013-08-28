@@ -1,15 +1,21 @@
 package com.eservice.eumowy.pdfmapper
 
-import com.eservice.eumowy.PointData;
+import org.apache.log4j.Logger
+
 
 class PdfMapper {
-
-	static mapAllDataToPDFData(def process, def pd) {
-		def pointsAndPosDataMap = mapPointAndPosDataToPDFData(pd)
-		def processDataMap = mapProcessDataToPDFData(process)
-		pointsAndPosDataMap.putAll(processDataMap)
+	static Logger LOG = Logger.getLogger(PdfMapper.class)
+	
+	static mapAllDataToPDFData(def process, def points) {
+		HashMap<String, String[]> dataMap = new HashMap<String, String[]>()
 		
-		return pointsAndPosDataMap
+		points?.each { point ->
+			dataMap.putAll(mapPointAndPosDataToPDFData(point))
+		}
+		
+		dataMap.putAll(mapProcessDataToPDFData(process))
+		
+		return dataMap
 	}
 	
 	static mapPointAndPosDataToPDFData(def pd) {
@@ -24,8 +30,8 @@ class PdfMapper {
 		Map<String, String[]> data = new HashMap<String, String[]>()
 		
 		pd.properties.each { key, value ->
-			log.info "Key: " + key
-			if (["class", "posDatas", "errors", "constraints", "", "", ""].contains(key) || value == null){
+			log.info "PointData Key: " + key
+			if (["class", "posDatas", "errors", "constraints", "processId", "cbdId", "pointDetailsId", "empty"].contains(key) || value == null){
 				return
 			}
 			
@@ -35,7 +41,22 @@ class PdfMapper {
 				return
 			}
 			
-			data.put(key, [value] as String[]);
+			data.put(key, [value] as String[])
+		}
+		
+		pd.pointDetails?.properties.each { key, value ->
+			log.info "PointDataDetails Key: " + key
+			if (["class", "posDatas", "errors", "constraints", "processId", "cbdId", "pointDetailsId", "empty"].contains(key) || value == null){
+				return
+			}
+			
+			def methodName = "map" + key.capitalize()
+			if (PdfMapper.metaClass.respondsTo(PdfMapper, methodName)) {
+				PdfMapper."${methodName}"(data, pd, key, value)
+				return
+			}
+			
+			data.put(key, [value] as String[])
 		}
 		
 		return data
@@ -45,8 +66,8 @@ class PdfMapper {
 		Map<String, String[]> data = new HashMap<String, String[]>()
 		
 		pd.properties.each { key, value ->
-			log.info "Key: " + key
-			if (["class", "cbdId", "process", "point", "errors", "constraints", "", "", ""].contains(key) || value == null){
+			log.info "PosData Key: " + key
+			if (["class", "cbdId", "process", "point", "errors", "constraints", "empty", "", ""].contains(key) || value == null){
 				return
 			}
 			
@@ -56,7 +77,22 @@ class PdfMapper {
 				return
 			}
 			
-			data.put(key, [value] as String[]);
+			data.put(key, [value] as String[])
+		}
+		
+		pd.posDetails?.properties.each { key, value ->
+			log.info "PosDataDetails Key: " + key
+			if (["class", "cbdId", "process", "point", "errors", "constraints", "empty", "", ""].contains(key) || value == null){
+				return
+			}
+			
+			def methodName = "map" + key.capitalize()
+			if (PdfMapper.metaClass.respondsTo(PdfMapper, methodName)) {
+				PdfMapper."${methodName}"(data, pd, key, value)
+				return
+			}
+			
+			data.put(key, [value] as String[])
 		}
 		
 		return data
