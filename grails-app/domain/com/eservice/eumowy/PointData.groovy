@@ -25,6 +25,13 @@ class PointData implements Serializable {
 	static mapping = {
 		table name: "POINT", schema:DomainConsts.SHEMA_NAME
 		id generator:'sequence', params:[sequence:DomainConsts.SHEMA_NAME+'.POINT_SEQ']
+		nip column: "nip"
+		ulica column: "street"
+		nrLokalu column: "flat_number"
+		nrBudynku column: "home_number"
+		miejscowosc column: "city"
+		kodPocztowy column: "postal_code"
+		poczta column: "post_office"
 	}
 	
 	static constraints = {
