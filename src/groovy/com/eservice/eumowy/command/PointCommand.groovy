@@ -22,7 +22,7 @@ class PointCommand implements Serializable {
 	String nazwaDoWydrukuZTerminalaPos
 	String nazwaDoWyszukiwarki
 	 
-	String dataforprintingAddressStreetType
+	String wydrukUlicaTytul
 	String wydrukUlica
 	Integer wydrukNrDomu
 	Integer wydrukNrLokalu
@@ -97,6 +97,8 @@ class PointCommand implements Serializable {
 	Boolean teleKodzik
 	
 	Boolean kartaPodarunkowa
+	Integer terminalIlosc
+	
 	// polskie nazwy
 	String pinPadTyp
 	Integer pinPadIlosc

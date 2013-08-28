@@ -43,8 +43,12 @@ class PanelMockService {
 
     def getDaneAkceptanta(ProcessCommand cmd) {
         cmd.akceptantNazwaOficjalna= "KGHM Polska Miedź S.A."
-        cmd.akceptantNazwaSieciowa= "KGHM nazwa sieciowa"
+//        cmd.akceptantNazwaSieciowa= "KGHM nazwa sieciowa"
         cmd.akceptantRegon = "1234567895"
+
+        cmd.akceptantNazwaOficjalnaCbd= cmd.akceptantNazwaOficjalna
+        cmd.akceptantNazwaSieciowaCbd= cmd.akceptantNazwaSieciowa
+        cmd.akceptantRegonCbd = cmd.akceptantRegon
     }
 
     def getDaneDoWydruku(ProcessCommand cmd) {
@@ -458,8 +462,8 @@ class PanelMockService {
     def getSiedzibaAkceptanta(ProcessCommand cmd) {
         cmd.akceptantUlicaTytul = "Plac"
         cmd.akceptantUlica = "Wilsona"
-        cmd.akceptantNrDomu = "2"
-        cmd.akceptantNrMieszkania = "2b"
+        cmd.akceptantNrDomu = ""
+        cmd.akceptantNrMieszkania = null
 
         cmd.akceptantMiasto = "Warszawa"
         cmd.akceptantKodPocztowy = "98-765"
@@ -468,6 +472,19 @@ class PanelMockService {
         cmd.akceptantTelStacjonarny = "(22)4556789"
         cmd.akceptantFax = "1234567"
         cmd.akceptantTelKomorkowy ="509876543"
+
+        cmd.akceptantUlicaTytulCbd = cmd.akceptantUlicaTytul
+        cmd.akceptantUlicaCbd = cmd.akceptantUlica
+        cmd.akceptantNrDomuCbd = cmd.akceptantNrDomu
+        cmd.akceptantNrMieszkaniaCbd = cmd.akceptantNrMieszkania
+
+        cmd.akceptantMiastoCbd = cmd.akceptantMiasto
+        cmd.akceptantKodPocztowyCbd = cmd.akceptantKodPocztowy
+        cmd.akceptantPocztaCbd = cmd.akceptantPoczta
+
+        cmd.akceptantTelStacjonarnyCbd = cmd.akceptantTelStacjonarny
+        cmd.akceptantFaxCbd = cmd.akceptantFax
+        cmd.akceptantTelKomorkowyCbd = cmd.akceptantTelKomorkowy
     }
 
     def getUmowa2(ProcessCommand cmd) {

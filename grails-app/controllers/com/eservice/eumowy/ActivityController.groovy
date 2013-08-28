@@ -128,10 +128,11 @@ class ActivityController {
             onEntry {
                 def processInstance = flow.processInstance
                 def totalPagesCount = 0
+                def data = PdfMapper.mapAllDataToPDFData(processInstance.processData, processInstance.points)
+
                 processInstance.signatures.each { sig ->
                     log.info "SIGNATURE NAME: " + sig.name + " PDF TEMPLATE PATH: " + sig.templatePath
 
-                    def data = PdfMapper.mapProcessDataToPDFData(processInstance.processData)
                     byte[] documentData = pdfService.fillPdfFormFromURIWithFaksymile(sig, data, PdfService.FontType.ARIAL)
 
                     if(!documentData) return
@@ -143,7 +144,7 @@ class ActivityController {
                     df.setContent(new DocumentContent(content: documentData))
                     df.save(flush: true)
                     log.info "DF id: " + df.id + " PageCount: " + df.pagesCount
-                    processInstance.addToDocuments(df);
+                    processInstance.addToDocuments(df)
                     processInstance.discard();
                 }
 
@@ -179,6 +180,7 @@ class ActivityController {
                 log.info "PARAMS: " + params
                 def processInstance = flow.processInstance
                 _processDocumentCreation(processInstance, params.requestVersion)
+
 
                 processInstance.status = Process.ProcessStatus.WAITING
                 flow.processInstance = processInstance
@@ -393,14 +395,20 @@ class ActivityController {
                 def processInstance = flow.processInstance
                 processInstance.notesToCoa = cmd.notes;
                 def processDataList = processService.getDataFromPanels(cmd)
+				def pointsDataList = processService.getPointAndPosData(cmd)
 
                 processInstance.processData?.clear()
                 processDataList.each { data ->
                     processInstance.addToProcessData(data)
-                    processInstance.discard();
+                    processInstance.discard()
                 }
 
-                //TODO Save cmd.points to PointData, PointDataDetails, PosData
+				processInstance.points?.clear()
+				pointsDataList.each { data ->
+					processInstance.addToPoints(data)
+					processInstance.discard()
+				}
+				
                 processInstance.save();
 
                 flow.processInstance = processInstance

@@ -215,4 +215,48 @@ class ProcessService {
         processDataList
     }
 
+	def getPointAndPosData(def cmd) {
+		def pointsList = []
+		cmd.points.each { PointCommand pc ->
+			ArrayList<PosData> pdList = new ArrayList<PosData>()
+			PointData pointData = new PointData()
+			PointDataDetails pointDataDetails = new PointDataDetails()
+			PosData posData = new PosData()
+			PosDataDetails posDataDetails = new PosDataDetails()
+			
+			pc.properties.each { key, value ->
+				if (PointData.metaClass.respondsTo(PointData, "set" + key.capitalize())) {
+					pointData."set${key.capitalize()}"(value)
+				}
+				
+				if (PointDataDetails.metaClass.respondsTo(PointDataDetails, "set" + key.capitalize())) {
+					pointDataDetails."set${key.capitalize()}"(value)
+				}
+				
+				if (PosData.metaClass.respondsTo(PosData, "set" + key.capitalize())) {
+					posData."set${key.capitalize()}"(value)
+				}
+				
+				if (PosDataDetails.metaClass.respondsTo(PosDataDetails, "set" + key.capitalize())) {
+					posDataDetails."set${key.capitalize()}"(value)
+				}
+			}
+			
+			pdList.add(posData)
+			
+			pointsList.add(pointData)
+			
+			posData.setPosDetails(posDataDetails)
+			posData.setPoint(pointData)
+			
+			pointData.setPointDetails(pointDataDetails)
+			pointData.setPosDatas(pdList)
+			
+			posDataDetails.setPos(posData)
+			pointDataDetails.setPoint(pointData)
+		}
+		
+		return pointsList
+	}
+
 }

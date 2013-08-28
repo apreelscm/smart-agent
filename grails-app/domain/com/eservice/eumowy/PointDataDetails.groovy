@@ -2,7 +2,7 @@ package com.eservice.eumowy
 
 import java.util.List;
 
-class PointDataDetails {
+class PointDataDetails implements Serializable {
 	List<PosData> posDatas
 	
 	BigDecimal phPozysk
@@ -14,13 +14,13 @@ class PointDataDetails {
 	String nipPunktu
 	String kodMCC
 	String rodzProwadzDzialalWPraktyce
-	String kontoBankNumer
-	String nazwaBanku
+	String numerRachunkuBankowego
+    String bank
 	
 	String nazwaDoWydrukuZTerminalaPos
 	String nazwaDoWyszukiwarki
 	 
-	String dataforprintingAddressStreetType
+	String wydrukUlicaTytul
 	String wydrukUlica
 	Integer wydrukNrDomu
 	Integer wydrukNrLokalu
@@ -45,48 +45,51 @@ class PointDataDetails {
 	String kontaktWPunkcieTelStacjonarny
 	String kontaktWPunkcieTelKomorkowy
 	String kontaktWPunkcieEmail
+	Integer terminalIlosc
 	
 	static belongsTo = [point: PointData]
 	
 	static mapping = {
 		table name: "POINT_DETAILS", schema:DomainConsts.SHEMA_NAME
 		id generator:'sequence', params:[sequence:DomainConsts.SHEMA_NAME+'.POINT_DETAILS_SEQ']
-		phPozysk column: "phGain"
-		opiekaBiznesowa column: "businessCare"
-		opiekaSerwisowaI column: "serviceCare1"
-		opiekaSerwisowaII column: "serviceCare2"
-		opiekaSerwisowaIII column: "serviceCare3"
+		phPozysk column: "ph_gain"
+		opiekaBiznesowa column: "business_care"
+		opiekaSerwisowaI column: "service_care1"
+		opiekaSerwisowaII column: "service_care2"
+		opiekaSerwisowaIII column: "service_care3"
 		nipPunktu column: "nip"
-		kodMCC column: "mccCode"
-		rodzProwadzDzialalWPraktyce column: "bussinessTypeInPractice"
-		kontoBankNumer column: "bankAccountNumber"
-		nazwaBanku column: "bankName"
-		nazwaDoWydrukuZTerminalaPos column: "pointNameForPrintingFromPOSTerminal"
-		nazwaDoWyszukiwarki column: "pointNameForSearchEngine"
-		dataforprintingAddressStreetType column: "dataforprintingAddressStreetType"
-		wydrukUlica column: "dataforprintingAddressStreet"
-		wydrukNrDomu column: "dataforprintingAddressHomeNumber"
-		wydrukNrLokalu column: "dataforprintingAddressFlatNumber"
-		wydrukMiasto column: "dataforprintingAddressCity"
-		wydrukKodPocztowy column: "dataforprintingAddressPostalCode"
-		wydrukPoczta column: "dataforprintingAddressPostOffice"
-		wydrukLinia1 column: "otherDataForPrintingFromTerminal1"
-		wydrukLinia2 column: "otherDataForPrintingFromTerminal2"
-		contactAddressStreetType column: "contactAddressStreetType"
-		korespondencjaUlica column: "contactAddressAddressStreet"
-		korespondencjaNrDomu column: "contactAddressAddressHomeNumber"
-		korespondencjaNrLokalu column: "contactAddressAddressFlatNumber"
-		koresponedencjaMiasto column: "contactAddressAddressCity"
-		korespondencjaKodPocztowy column: "contactAddressAddressPostalCode"
-		korespondencjaPoczta column: "contactAddressAddressPostOffice"
-		kontaktWPunkcieImie column: "contactAtPointFirstName"
-		kontaktWPunkcieNazwisko column: "contactAtPointLastName"
-		kontaktWPunkcieFax column: "contactAtPointFax"
-		kontaktWPunkcieTelStacjonarny column: "contactAtPointPhone"
-		kontaktWPunkcieTelKomorkowy column: "contactAtPointMobilePhone"
-		kontaktWPunkcieEmail column: "contactAtPointEmail"
+		kodMCC column: "mcc_code"
+		rodzProwadzDzialalWPraktyce column: "bussiness_type_in_practice"
+		numerRachunkuBankowego column: "bank_account_number"
+		bank column: "bank_name"
+		nazwaDoWydrukuZTerminalaPos column: "name_print_posterminal"
+		nazwaDoWyszukiwarki column: "name_search_engine"
+		wydrukUlicaTytul column: "print_addressstreet_type"
+		wydrukUlica column: "print_addr_street"
+		wydrukNrDomu column: "print_addr_home_number"
+		wydrukNrLokalu column: "print_addr_flat_number"
+		wydrukMiasto column: "print_addr_city"
+		wydrukKodPocztowy column: "print_addr_postal_code"
+		wydrukPoczta column: "print_addr_post_office"
+		wydrukLinia1 column: "print_otherdata_terminal1"
+		wydrukLinia2 column: "print_otherdata_terminal2"
+		contactAddressStreetType column: "contact_addr_streettype"
+		korespondencjaUlica column: "contact_addr_street"
+		korespondencjaNrDomu column: "contact_addr_home_number"
+		korespondencjaNrLokalu column: "contact_addr_flat_number"
+		koresponedencjaMiasto column: "contact_addr_city"
+		korespondencjaKodPocztowy column: "contact_addr_postalcode"
+		korespondencjaPoczta column: "contact_addr_post_office"
+		kontaktWPunkcieImie column: "contact_at_point_firstname"
+		kontaktWPunkcieNazwisko column: "contact_at_point_lastname"
+		kontaktWPunkcieFax column: "contact_at_point_fax"
+		kontaktWPunkcieTelStacjonarny column: "contact_at_point_phone"
+		kontaktWPunkcieTelKomorkowy column: "contact_at_point_mobilephone"
+		kontaktWPunkcieEmail column: "contact_at_point_email"
+
 	}
 	
 	static constraints = {
 	}
 }
+
