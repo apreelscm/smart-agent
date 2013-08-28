@@ -11,6 +11,15 @@ class PanelController {
 
     def index() {
         redirect(action: "list", params: params)
+
+        def process =new Process(phFirstName: "Jerzy",
+                saleSection: 'segment1', phNumber: 12345, observed: true,
+                phSurname: 'Kowalski', calcNumber: '44444' , status: Process.ProcessStatus.WAITING,
+                client: Client.findByName("clientName1"))
+
+
+        process.save(flush: true);
+        println("errors:"+process.errors)
     }
 
     def list(Integer max) {
@@ -23,7 +32,7 @@ class PanelController {
 
         println("process.panels:"+ process.panels)
 
-        def processCmd =  processService.getDataForPanel(process,calc)
+        def processCmd =  processService.createSavedProcessCommand(process,calc)
         params.max = Math.min(max ?: 10, 100)
         [panelInstanceList: Panel.list(params), panelInstanceTotal: Panel.count(), data: processCmd]
     }

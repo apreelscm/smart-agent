@@ -61,6 +61,8 @@ class Process implements Serializable {
         saleSection(nullable: true)
         observed()
         client()
+        activities(nullable: true)
+        signatures(nullable: true)
         documents(nullable: true)
         attachments(nullable: true)
         panels(nullable: true)
@@ -75,7 +77,7 @@ class Process implements Serializable {
         table name: "PROCESS", schema: DomainConsts.SHEMA_NAME
         id generator:'sequence', params:[sequence:DomainConsts.SHEMA_NAME+'.PROCESS_SEQ']
         sort id: "desc"
-        client cascade: 'save-update'
+       // client cascade: 'save-update'
         subscriptions cascade:"all-delete-orphan"
         attachments cascade:"all-delete-orphan"
         documents cascade:"all-delete-orphan"

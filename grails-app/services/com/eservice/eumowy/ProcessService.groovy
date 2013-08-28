@@ -1,8 +1,12 @@
 package com.eservice.eumowy
 
+import com.eservice.eumowy.command.AllPointsCommand
+import com.eservice.eumowy.command.AllPosCommand
 import com.eservice.eumowy.command.PointCommand
 import com.eservice.eumowy.command.ProcessCommand
 import grails.util.Environment
+import org.apache.commons.collections.FactoryUtils
+import org.apache.commons.collections.ListUtils
 import org.apache.commons.lang.WordUtils
 
 import java.text.SimpleDateFormat
@@ -91,29 +95,65 @@ class ProcessService {
      **/
     def hasIncompleteProcessForClient(Client client) {
         return client.id != null && Process.findByClientAndStatusInList(client, [
-                Process.ProcessStatus.WAITING,Process.
-                ProcessStatus.WAIT_FOR_SUBSRIPTION,
+                Process.ProcessStatus.NEW,
+                Process.ProcessStatus.WAITING,
+                Process.ProcessStatus.WAIT_FOR_SUBSRIPTION,
                 Process.ProcessStatus.EDIT]
         )
+    }
+
+    def getLastIfIncompleteProcessForClientNip(String nip) {
+        def result = Process.findByClient(Client.findByNip(nip),[sort: "id", order: "desc"])
+
+        log.info("getLastIfIncompleteProcessForClient - client.nip = ${nip} , id = ${result?.id} status = ${result?.status}")
+
+        return result?.status in [
+                Process.ProcessStatus.NEW,
+                Process.ProcessStatus.WAITING,
+                Process.ProcessStatus.WAIT_FOR_SUBSRIPTION,
+                Process.ProcessStatus.EDIT] ? result.id : null
     }
 
     def containsActivity(def activities, def activityCode) {
         return activities?.any{it.code.equals(activityCode)};
     }
 
-    def getDataForPanel(def process, def calc) {
-        def exclusions = ["getWyborDzialania","getLiczbaMiesiecyZwolnieniaZNajmu"]
+    def createNewProcessCommand(def process, def calc){
+        log.info("createNewProcessCommand processId = ${process.id}")
+        def cmd = initProcessCommand(process)
+        prepareProcessCommand(cmd, calc)
+    }
 
+    def createSavedProcessCommand(def process, def calc){
+        log.info("createSavedProcessCommand processId = ${process.id}")
+        def cmd = initProcessCommand(process)
+        loadProcessData(process,cmd)
+     //   prepareProcessCommand(cmd, calc, cbdMethods)
+    }
+
+    /**
+     *  init data
+     * */
+
+    def initProcessCommand(def process) {
         def cmd = new ProcessCommand();
         cmd.process = process
         cmd.nip = process.client.nip
         cmd.notes = process.notesToCoa ?: "";
-		
-        process.panels.each { Panel panel ->
-            String panelFunctionName = "get${WordUtils.capitalize(panel.name)}"
-            log.info("invokin ${panelFunctionName} on panelService")
+        cmd
+    }
 
+    def defaultMethods = ["getWyborDzialania","getLiczbaMiesiecyZwolnieniaZNajmu"]
+    def cbdMethods = ["getAdresDoKorespondencjizAkecptantem","getDaneAkceptanta","getSiedzibaAkceptanta","getSerwis"]
+
+    def prepareProcessCommand(def cmd, def calc, def restrictedMethods = []) {
+        def exclusions = defaultMethods + restrictedMethods
+
+        cmd.process.panels.each { Panel panel ->
+            String panelFunctionName = "get${WordUtils.capitalize(panel.name)}"
             if(panelFunctionName in exclusions){ return }
+
+            log.info("invokin ${panelFunctionName} on panelService")
 
             switch (Environment.getCurrent()) {
                 case Environment.DEVELOPMENT:
@@ -129,22 +169,50 @@ class ProcessService {
         cmd
     }
 
+    /**
+     *  create data
+     * */
+    def loadProcessData(def process,  def cmd) {
+        log.info("loadProcessData - processData: ${process.processData}");
+        process.processData.each {ProcessData data ->
+            if(!cmd.hasProperty(data.name)){
+                throw new NoSuchFieldException(data.name)
+            }
+            println("${data.name} => ${data.value}" )
+
+            if(data.name in ["allPoses", "allPoints", "points"]){
+                //TODO implement
+            }
+            else{
+                cmd[data.name] = data.value ?: ""
+            }
+        }
+        cmd
+    }
+
+    /**
+     *  save data
+     * */
+    List<PointCommand> points = ListUtils.lazyList([], FactoryUtils.instantiateFactory(PointCommand))
+    List<AllPointsCommand> allPoints = ListUtils.lazyList([], FactoryUtils.instantiateFactory(AllPointsCommand))
+    List<AllPosCommand> allPoses = ListUtils.lazyList([], FactoryUtils.instantiateFactory(AllPosCommand))
     def getDataFromPanels(def cmd) {
         def processDataList = [];
         cmd.properties.each { key, value ->
-           // println("getDataFromPanels start: ${key} : ${value}");
-            if (["class", "cbdService", "errors", "constraints", "notes"].contains(key) || value == null){
+            // println("getDataFromPanels start: ${key} : ${value}");
+            if (["class","process", "cbdService", "errors", "constraints", "notes"].contains(key) || value == null){
                 return
             }
 
-            if(key == "points"){
+            if(["allPoses", "allPoints", "points"].contains(key)){
                 //TODO implementacja logiki dla punktow
                 return;
             }
 
             processDataList.add(new ProcessData(name: "${key}", value:"${value ?: ''}"));
         }
+
         processDataList
     }
-	
+
 }

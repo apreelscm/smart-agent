@@ -34,7 +34,7 @@ class  CbdServiceIntegrTests {
 
     @Test
     void findClientIdByNip() {
-        def result = cbdService.findClientIdByNip(nip)
+        def result = cbdService.findClientByNip(nip)
         assert result != null
     }
 
