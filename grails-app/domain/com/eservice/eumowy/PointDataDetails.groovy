@@ -45,6 +45,7 @@ class PointDataDetails implements Serializable {
 	String kontaktWPunkcieTelStacjonarny
 	String kontaktWPunkcieTelKomorkowy
 	String kontaktWPunkcieEmail
+	
 	Integer terminalIlosc
 	
 	static belongsTo = [point: PointData]
@@ -86,6 +87,7 @@ class PointDataDetails implements Serializable {
 		kontaktWPunkcieTelStacjonarny column: "contact_at_point_phone"
 		kontaktWPunkcieTelKomorkowy column: "contact_at_point_mobilephone"
 		kontaktWPunkcieEmail column: "contact_at_point_email"
+		terminalIlosc column: "terminal_count"
 
 	}
 	
