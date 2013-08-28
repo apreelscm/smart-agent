@@ -1,5 +1,6 @@
 package com.eservice.eumowy
 
+import com.eservice.eumowy.command.PointCommand
 import com.eservice.eumowy.command.ProcessCommand
 import com.eservice.eumowy.pdfmapper.PdfMapper
 import com.eservice.eumowy.process.DefineActivityCommand
@@ -314,17 +315,22 @@ class ActivityController {
                 //_createPosDatas(flow.processInstance)
 
                 def processDataList = processService.getDataFromPanels(cmd)
+				def pointsDataList = processService.getPointAndPosData(cmd)
 
                 processInstance.processData?.clear()
                 processDataList.each { data ->
                     processInstance.addToProcessData(data)
-                    processInstance.discard();
+                    processInstance.discard()
                 }
 
                 log.info("processData:"+processInstance.processData)
 				
-				//TODO Save cmd.points to PointData, PointDataDetails, PosData
-
+				processInstance.points?.clear()
+				pointsDataList.each { data ->
+					processInstance.addToPoints(data)
+					processInstance.discard()
+				}
+				
                 processInstance.save();
 
                 flow.processInstance = processInstance
@@ -336,22 +342,23 @@ class ActivityController {
                 def processInstance = flow.processInstance
 
                 def totalPagesCount = 0
+				def data = PdfMapper.mapAllDataToPDFData(processInstance.processData, processInstance.points)
+				
                 processInstance.signatures.each { sig ->
                     log.info "SIGNATURE NAME: " + sig.name + " PDF TEMPLATE PATH: " + sig.templatePath
 					
-					def data = PdfMapper.mapProcessDataToPDFData(processInstance.processData)
-                    byte[] documentData = pdfService.fillPdfFormFromURIWithFaksymile(sig, data, PdfService.FontType.ARIAL)
-
-                    if(!documentData) return
-
-                    int pc = pdfService.getPageCountFromPdf(documentData)
+					byte[] documentData = pdfService.fillPdfFormFromURIWithFaksymile(sig, data, PdfService.FontType.ARIAL)
+                    
+					if(!documentData) return
+					
+					int pc = pdfService.getPageCountFromPdf(documentData)
                     totalPagesCount += pc
 
                     DocumentFile df = new DocumentFile(name: sig.templatePath, dateCreated: new Date(), lastUpdated: new Date(), pagesCount: pc)
                     df.setContent(new DocumentContent(content: documentData))
                     df.save(flush: true)
                     log.info "DF id: " + df.id + " PageCount: " + df.pagesCount
-                    processInstance.addToDocuments(df);
+                    processInstance.addToDocuments(df)
                     processInstance.discard();
                 }
 
