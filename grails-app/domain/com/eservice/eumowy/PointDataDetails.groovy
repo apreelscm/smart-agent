@@ -20,7 +20,7 @@ class PointDataDetails implements Serializable {
 	String nazwaDoWydrukuZTerminalaPos
 	String nazwaDoWyszukiwarki
 	 
-	String dataforprintingAddressStreetType
+	String wydrukUlicaTytul
 	String wydrukUlica
 	Integer wydrukNrDomu
 	Integer wydrukNrLokalu
@@ -63,7 +63,7 @@ class PointDataDetails implements Serializable {
 		nazwaBanku column: "bankName"
 		nazwaDoWydrukuZTerminalaPos column: "pointNameForPrintingFromPOSTerminal"
 		nazwaDoWyszukiwarki column: "pointNameForSearchEngine"
-		dataforprintingAddressStreetType column: "dataforprintingAddressStreetType"
+		wydrukUlicaTytul column: "dataforprintingAddressStreetType"
 		wydrukUlica column: "dataforprintingAddressStreet"
 		wydrukNrDomu column: "dataforprintingAddressHomeNumber"
 		wydrukNrLokalu column: "dataforprintingAddressFlatNumber"
