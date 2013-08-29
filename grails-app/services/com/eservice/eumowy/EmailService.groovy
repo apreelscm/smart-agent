@@ -59,6 +59,8 @@ class EmailService {
 
     private def sendMail(def emailTemplate, def sender, def recipient, def subjectParams, def bodyParams, def documents){
 
+        println 'Sending: ' + emailTemplate + ', to: ' + recipient + ', subjectParams: ' + subjectParams + ', bodyParams: ' + bodyParams + ', documents count: ' + documents?.size()
+
         mailService.sendMail {
             if (documents){
                 multipart true
@@ -70,7 +72,7 @@ class EmailService {
 
             if (documents){
                 documents.each { doc ->
-                    attach doc.name, doc.content.content
+                    attachBytes doc.name, 'application/pdf', doc.content.content
                 }
             }
         }
