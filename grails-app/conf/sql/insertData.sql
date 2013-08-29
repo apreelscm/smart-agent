@@ -1131,3 +1131,11 @@ INSERT INTO EUMOWY.SIGNATURE_PANEL(id, version, signature_id,  panel_id) SELECT 
 INSERT INTO EUMOWY.SIGNATURE_PANEL(id, version, signature_id,  panel_id) SELECT EUMOWY.SIGNATURE_PANEL_SEQ.NEXTVAL, 0, id, 46 FROM EUMOWY.SIGNATURE where name = 'AP/UNTZ/2.003/12-01-16';
 INSERT INTO EUMOWY.SIGNATURE_PANEL(id, version, signature_id,  panel_id) SELECT EUMOWY.SIGNATURE_PANEL_SEQ.NEXTVAL, 0, id, 46 FROM EUMOWY.SIGNATURE where name = 'x8';
 INSERT INTO EUMOWY.SIGNATURE_PANEL(id, version, signature_id,  panel_id) SELECT EUMOWY.SIGNATURE_PANEL_SEQ.NEXTVAL, 0, id, 46 FROM EUMOWY.SIGNATURE where name = 'x9';
+
+insert into EUMOWY.EMAIL_TEMPLATES (id, version, name, recipient, sender) values (EUMOWY.EMAIL_TEMPLATES_SEQ.NEXTVAL, 0, 'NOTES_TO_COA', 'apreel.eUmowy@gmail.com', 'apreel.eUmowy@gmail.com'); --coa@eservice.com.pl
+insert into EUMOWY.EMAIL_TEMPLATES (id, version, name, recipient, sender) values (EUMOWY.EMAIL_TEMPLATES_SEQ.NEXTVAL, 0, 'DOCUMENTS_PAPER_VERSION', '', 'apreel.eUmowy@gmail.com'); --phEmail
+insert into EUMOWY.EMAIL_TEMPLATES (id, version, name, recipient, sender) values (EUMOWY.EMAIL_TEMPLATES_SEQ.NEXTVAL, 0, 'DOCUMENTS_TEMPLATE_VERSION', '', 'apreel.eUmowy@gmail.com'); --userEmail
+insert into EUMOWY.EMAIL_TEMPLATES (id, version, name, recipient, sender) values (EUMOWY.EMAIL_TEMPLATES_SEQ.NEXTVAL, 0, 'DOCUMENTS_ELECTRONICAL_VERSION', '', 'apreel.eUmowy@gmail.com'); --userEmail
+insert into EUMOWY.EMAIL_TEMPLATES (id, version, name, recipient, sender) values (EUMOWY.EMAIL_TEMPLATES_SEQ.NEXTVAL, 0, 'DOCUMENTS_ACCEPTED', '', 'apreel.eUmowy@gmail.com'); --phEmail
+insert into EUMOWY.EMAIL_TEMPLATES (id, version, name, recipient, sender) values (EUMOWY.EMAIL_TEMPLATES_SEQ.NEXTVAL, 0, 'DOCUMENTS_REJECTED', '', 'apreel.eUmowy@gmail.com'); --phEmail
+insert into EUMOWY.EMAIL_TEMPLATES (id, version, name, recipient, sender) values (EUMOWY.EMAIL_TEMPLATES_SEQ.NEXTVAL, 0, 'DOCUMENTS_MISSING_MAIL', 'apreel.eUmowy@gmail.com', 'apreel.eUmowy@gmail.com'); --coa@eservice.com.pl
