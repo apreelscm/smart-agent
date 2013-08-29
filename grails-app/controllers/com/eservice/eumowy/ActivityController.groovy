@@ -117,7 +117,8 @@ class ActivityController {
                 def notes = processInstance.notesToCoa
                 log.info("wysyłanie wiadomości email z uwagami do COA [notes: ${notes}]")
                 try{
-                    emailService.sendNotesToCOA(notes)
+                    def user = springSecurityService.principal
+                    emailService.sendNotesToCOA(notes, user.nr, user.imie + ' ' + user.nazwisko)
                     flash.infoMessage = message(code:"email.notesToCOA.send.complete", default:"Wysłano wiadomość z uwagami do COA");
                     log.info(flash.infoMessage)
                 }catch (Exception error){
@@ -210,7 +211,8 @@ class ActivityController {
 
                 if (processInstance.notesToCoa) {
                     log.info("wysyłanie wiadomości email z uwagami do COA [notes: ${processInstance.notesToCoa}]")
-                    emailService.sendNotesToCOA(processInstance.notesToCoa)
+                    def user = springSecurityService.principal
+                    emailService.sendNotesToCOA(processInstance.notesToCoa, user.nr, user.imie + ' ' + user.nazwisko)
                 }
 
                 flow.processInstance = null;
@@ -554,29 +556,6 @@ class ActivityController {
                 flow.data = processCmd
             }
 
-            onEntry {
-                println "selectedPanels enterview"
-                def processInstance = flow.processInstance;
-                def calc = flow.calc;
-
-                def processCmd
-                if(!flow.skipPanelsInit){
-                    log.info("skipPanelsInit - false")
-                    //ACTIVE PANELS
-                    TreeSet activePanels = _getActivePanels(processInstance.signatures)
-                    processInstance.panels = activePanels.toList();
-
-                    processCmd = processService.getNewProcessCommand(processInstance,calc)
-                }
-                else{
-                    log.info("skipPanelsInit - true")
-                    flow.skipPanelsInit = false
-                    processCmd = processService.getSavedProcessCommand(processInstance,calc)
-                }
-
-                flow.data = processCmd
-            }
-
             render(view: "../createProcess/selectedPanels")
             on("back").to "chooseCalc"
             on("acceptPointsButton") {
@@ -803,14 +782,19 @@ class ActivityController {
             }
 
             //TODO Send emails
-            emailService.sendDocumentsElectronicalVersion(process.documents)
+            def recipient = getFromProcessData(process, 'kontaktEmail');
+            emailService.sendDocumentsElectronicalVersion(recipient, process.documents)
 
         }
         else if ("paper".equals(requestVersion)) {
             //Documents are already in DB
             newStatus = Process.ProcessStatus.WAIT_FOR_SUBSCRIPTION_PAPER_VERSION
 
-            emailService.sendDocumentsPaperVersion(process.documents)
+            def merchantName = getFromProcessData(process, 'akceptantNazwaOficjalna');
+
+            //TODO PSZKUP - phEmail
+            def recipientPh = "szkup.pawel@gmail.com"
+            emailService.sendDocumentsPaperVersion(recipientPh, process.documents, merchantName)
         }
         else if ("templates".equals(requestVersion)) {
             //TODO Documents are already in DB
@@ -830,13 +814,25 @@ class ActivityController {
 
                 // Generate documents without faksymile for acceptant
                 DocumentFile dfwof = new DocumentFile(name: sig.templatePath, dateCreated: new Date(), lastUpdated: new Date(), pagesCount: 0)
-                dfwof.setContent(new DocumentContent(content: documentDataWithBlackFaksymile))
+                dfwof.setContent(new DocumentContent(content: documentDataWithoutFaksymile))
                 dfwof.discard()
                 documentFilesWithoutFaksymileList.add(dfwof)
             }
 
-            emailService.sendDocumentsTemplateVersionWithBlackFaksymile(documentFilesWithBlackFaksymileList)
-            emailService.sendDocumentsTemplateVersionWithoutFaksymile(documentFilesWithoutFaksymileList)
+            //for ph
+            //TODO - dodac recipient ph
+            def recipientPh = "szkup.pawel@gmail.com"
+            emailService.sendDocumentsTemplateVersion(recipientPh, documentFilesWithBlackFaksymileList)
+
+            //for acceptant
+            def recipientUser = getFromProcessData(process, 'kontaktEmail');
+            emailService.sendDocumentsTemplateVersion(recipientUser, documentFilesWithoutFaksymileList)
         }
+    }
+
+
+    def getFromProcessData(def process, def key){
+        def result = process.processData.find{ pd -> pd.name.equals(key)}
+        return (result && result?.value)?result?.value:""
     }
 }
