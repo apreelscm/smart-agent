@@ -272,7 +272,7 @@
         
     </class>
     
-         <sql-query name="QUERY_NAME_FIND_STRUKTURA_KLIENTA">
+      <!--   <sql-query name="QUERY_NAME_FIND_STRUKTURA_KLIENTA">
 		<return entity-name="com.eservice.orm.cbdweb.prepaid.CbtStrukturaKlienta"/>
     SELECT   KLN_ID,
              KLN_KLN_ID,
@@ -291,7 +291,7 @@
                 AS KLN_POZIOM_LW
       FROM   cbt_klienci
 START WITH   kln_id IN
-                   ( -- kln_id merchantow, ktorzy maja w sobie punkty, spelniajace warunek
+                   ( - kln_id merchantow, ktorzy maja w sobie punkty, spelniajace warunek
                     SELECT       kln_id
                           FROM   cbt_klienci b
                          WHERE   b.kln_poziom = 'MRC'
@@ -338,7 +338,7 @@ SELECT   tps_id,
                       FROM   cbt_klienci
                      WHERE   kln_poziom = 'OUT'
                 START WITH   kln_id IN
-                                   ( -- kln_id merchantow, ktorzy maja w sobie punkty, spelniajace warunek
+                                   ( - kln_id merchantow, ktorzy maja w sobie punkty, spelniajace warunek
                                     SELECT       kln_id
                                           FROM   cbt_klienci b
                                          WHERE   kln_poziom = 'MRC'
@@ -370,5 +370,5 @@ SELECT   tps_id,
                                     START WITH   kln_kln_id IS NULL
                                     CONNECT BY   PRIOR kln_kln_id = kln_id)
                 CONNECT BY   PRIOR kln_id = kln_kln_id)
-	</sql-query>
+	</sql-query>-->
 </hibernate-mapping>
