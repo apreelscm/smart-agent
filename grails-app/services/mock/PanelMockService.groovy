@@ -52,7 +52,7 @@ class PanelMockService {
     }
 
     def getDaneDoWydruku(ProcessCommand cmd) {
-        cmd.wydrukNazwaPunktu = "PHU \"U Basi\""
+        cmd.nazwaDoWydrukuZTerminalaPos = "PHU \"U Basi\""
         cmd.wydrukNazwaDoWyszukwarki = "U Basi"
 
         cmd.wydrukUlicaTytul = "Ulica"
