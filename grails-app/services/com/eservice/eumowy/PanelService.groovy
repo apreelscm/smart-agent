@@ -56,7 +56,7 @@ class PanelService {
     }
 
     def getDaneDoWydruku(ProcessCommand cmd ,def calc) {
-        cmd.wydrukNazwaPunktu = cmd.wydrukNazwaPunktu ?: "-"
+        cmd.nazwaDoWydrukuZTerminalaPos = cmd.nazwaDoWydrukuZTerminalaPos ?: "-"
         cmd.wydrukNazwaDoWyszukwarki =cmd.wydrukNazwaDoWyszukwarki ?: "-"
         cmd.wydrukUlicaTytul =cmd.wydrukUlicaTytul ?: "-"
         cmd.wydrukUlica =cmd.wydrukUlica ?: "-"
