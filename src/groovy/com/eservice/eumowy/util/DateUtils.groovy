@@ -11,7 +11,9 @@ import java.text.SimpleDateFormat
  */
 public class DateUtils {
 
-    static DATE_FORMAT = "yyyy-MM-dd"
+    static YYYY_MM_DD = "yyyy-MM-dd"
+    static DD_MM_YYYY = "dd-MM-yyyy"
+    static DEFAULT_DATE_FORMAT = YYYY_MM_DD
 
 
     def static Date getCurrentDate(){
@@ -19,11 +21,34 @@ public class DateUtils {
     }
 
     def static String getCurrentFormattedDate(){
-        getFormattedDate(getCurrentDate())
+        getFormattedDate(getCurrentDate(), DEFAULT_DATE_FORMAT)
     }
 
-    def static String getFormattedDate(def date){
-        new SimpleDateFormat(DATE_FORMAT).format(date)
+    def static String getCurrentFormattedDate(def dateFormat){
+        getFormattedDate(getCurrentDate(), dateFormat)
     }
 
+    def static String getFormattedDate(def date, def dateFormat){
+        new SimpleDateFormat(dateFormat).format(date)
+    }
+
+    static def Date parseDate(def dateStr, def dateFormat){
+        new SimpleDateFormat(dateFormat).parse(dateStr)
+    }
+
+    static def Date parseDate(def dateStr){
+        parseDate(dateStr, DEFAULT_DATE_FORMAT)
+    }
+
+    static def Date addDays(date, days){
+        new Date(date.getTime()+days*86400000L)
+    }
+
+    static def boolean isDate(def date, def dateFormat){
+        try {
+            date != null && !"".equals(date) && parseDate(date, dateFormat)
+        } catch (Exception e){
+            false
+        }
+    }
 }

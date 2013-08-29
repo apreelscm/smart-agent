@@ -14,7 +14,7 @@ modules = {
 	}
 	
 	mask {
-        resource url: 'js/jquery.mask.min.js', disposition: 'head'
+        resource url: 'js/jquery.mask.js', disposition: 'head'
         resource url: 'js/mask.js', disposition: 'head'
 		dependsOn 'jquery'
 	}

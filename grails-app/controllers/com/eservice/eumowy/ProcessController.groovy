@@ -1,4 +1,6 @@
 package com.eservice.eumowy
+
+import com.eservice.eumowy.util.DateUtils
 import grails.plugins.springsecurity.Secured
 import org.codehaus.groovy.grails.commons.ApplicationHolder
 
@@ -30,8 +32,8 @@ class ProcessController {
             filterObserved:params.filterObserved,
             filterNip:params.filterNip,
             filterPhNo:params.filterPhNo,
-            filterDateFrom: params.filterDateFrom?params.filterDateFrom: ProcessService.formatDate(ProcessService.addDays(new Date(), -30)),
-            filterDateTo: params.filterDateTo?params.filterDateTo: ProcessService.formatDate(new Date()),
+            filterDateFrom: params.filterDateFrom?params.filterDateFrom: DateUtils.getFormattedDate(DateUtils.addDays(new Date(), -30), DateUtils.DD_MM_YYYY),
+            filterDateTo: params.filterDateTo?params.filterDateTo: DateUtils.getFormattedDate(new Date(), DateUtils.DD_MM_YYYY),
             processInstanceList: processes.searchResults,
             processInstanceTotal: processes.searchResultSize]
     }

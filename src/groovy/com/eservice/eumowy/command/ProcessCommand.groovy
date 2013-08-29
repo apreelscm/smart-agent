@@ -15,7 +15,6 @@ import org.apache.commons.collections.ListUtils
 class ProcessCommand implements Serializable{
 
 //    adresacjaSeciowa
-//    adresDoKorespondencjiPunktu
 //    adresDoKorespondencjizAkecptantem - FINISH
     String akceptantKontaktUlicaTytul
     String akceptantKontaktUlica
@@ -110,14 +109,12 @@ class ProcessCommand implements Serializable{
     String weryfikacjaPINCena
     String systemKasowyCena
 
-//    dodatkoweWyposazenie
 //    formaDoladowania - FINISH
     String doladowania_tp
     String doladowania_tk
     String srednia_sprzedaz_doladowan
     String srednia_sprzedaz_doladowan_slownie
 
-//    funkcjeTerminala
 //    ifplus - FINISH (ale zmiany w dokumentach)
     String ifOplataVISA
     String ifOplataMasterCard
@@ -131,12 +128,9 @@ class ProcessCommand implements Serializable{
     String dzialalnoscDokument
     String dzialalnoscDokumentInny
 
-//    informacjeTechniczne
-
 //    okresLojalnosciowy
     String okresLojalnosciowy  //  TODO - czy to jest dobrze????
 
-//    opieka
 //    oplatyDCC
     String oplataZaPlatnoscWInnejWalucie
 //    osobaDoKontaktu
@@ -146,8 +140,6 @@ class ProcessCommand implements Serializable{
     String kontaktTelStacjonarny
     String kontaktTelKomorkowy
     String kontaktEmail
-
-//    osobaDoKontaktuWPunkcie - FINISH (chyba nie wyst�puje w PDFach)
 
 //    osobaKtoraPozyskalaAkceptanta  - FINISH (nie wystepuje w pdfach)
     String pozyskujacyTytul
@@ -387,7 +379,6 @@ class ProcessCommand implements Serializable{
 //    umowa2 - FINISH
     String miejsceUmowy //nie jest uzywane w pdf
 
-//    wyborDzialania
 //    wykazPunktowAkceptujacychKartyPlatnicze
     //TODO - to zmiany
     List punktyTytulPlatnosci
@@ -398,7 +389,6 @@ class ProcessCommand implements Serializable{
     //TODO - to zmiany
     List punktyWybrane
 
-//    zestawPos
 //    zestawPosOdplatneUzywanie
     String oplPOSDialUpTyp
     String oplPOSDialUpIlosc
@@ -441,9 +431,6 @@ class ProcessCommand implements Serializable{
     String oplPOSGPRSPreferencyjnePP
 
     String oplPOSBaza
-
-
-//    zestawPosStawkiPreferencyjne
 
 //    serwis - FINISH
     String obslugaTyp
