@@ -349,8 +349,8 @@ class PanelService {
     }
 
     def getRachunekBankowyKlienta(ProcessCommand cmd ,def calc) {
-        cmd.numerRachunkuBankowego =cmd.numerRachunkuBankowego ?: "-"
-        cmd.bank = cmd.bank ?: ""
+        cmd.numerRachunkuBankowegoKlienta =cmd.numerRachunkuBankowegoKlienta ?: "-"
+        cmd.bankKlienta = cmd.bankKlienta ?: ""
     }
 
     def getScoring(ProcessCommand cmd ,def calc) {
