@@ -311,6 +311,7 @@ class ActivityController {
                 flow.client = client;
 
                 /** sprawdzanie, czy w eUmowy istnieje dla danego Akceptanta niezakończony Proces */
+				//TODO Odkomentowac to pozniej
               /*  if(processService.hasIncompleteProcessForClient(client)){
                     flash.nipErrorMessage = message(code:"client.unfinishedProcess.error", default:"Dla Akceptanta istnieje niezakończony Proces");
                     return error();
@@ -419,7 +420,7 @@ class ActivityController {
 
 
                 flow.processInstance = processInstance
-            }.to "selectedPanels"
+            }.to "clientSignature"
         }
 
         clientSignature {
