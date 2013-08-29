@@ -49,7 +49,7 @@ class ProcessCommand implements Serializable{
     String akceptantRegonCbd
 
 //    daneDoWydruku
-    String wydrukNazwaPunktu
+    String nazwaDoWydrukuZTerminalaPos
     String wydrukNazwaDoWyszukwarki
 
     String wydrukUlicaTytul
@@ -63,9 +63,6 @@ class ProcessCommand implements Serializable{
 
     String wydrukLinia1
     String wydrukLinia2
-
-
-
 
 
 //    danePunktu

@@ -265,7 +265,6 @@ class ActivityController {
                 processInstance.phSurname = user.nazwisko//sec.loggedInUserInfo(field: 'nazwisko')
 
                 if (!processInstance.save(flush:true)){
-                    println 'stock instance has errors'
                     processInstance.errors.each {
                         log.error(it)
                     }
@@ -311,10 +310,10 @@ class ActivityController {
                 flow.client = client;
 
                 /** sprawdzanie, czy w eUmowy istnieje dla danego Akceptanta niezakończony Proces */
-                if(processService.hasIncompleteProcessForClient(client)){
+              /*  if(processService.hasIncompleteProcessForClient(client)){
                     flash.nipErrorMessage = message(code:"client.unfinishedProcess.error", default:"Dla Akceptanta istnieje niezakończony Proces");
                     return error();
-                }
+                }*/
 
                 /** pobieranie danych o kalkulatorze */
                 def calcId = cbdService.findCalculatorIdByNip(client.nip)
@@ -365,6 +364,7 @@ class ActivityController {
             }
             render(view: "../createProcess/selectedPanels")
             on("back").to "chooseCalc"
+            on("error").to "selectedPanels"
             on("acceptPointsButton") {
                 log.info "acceptPointsButton TRIGGERED"
             }.to "selectedPanels"
@@ -409,10 +409,16 @@ class ActivityController {
 					processInstance.discard()
 				}
 				
-                processInstance.save();
+                if (!processInstance.save()){
+                    processInstance.errors.each {
+                        log.error(it)
+                    }
+                    return error();
+                }
+
 
                 flow.processInstance = processInstance
-            }.to "clientSignature"
+            }.to "selectedPanels"
         }
 
         clientSignature {
