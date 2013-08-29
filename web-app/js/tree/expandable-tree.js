@@ -37,7 +37,7 @@
         var that = this;
 
         var restrictionsMap = {}
-        restrictionsMap["nowaUmowaCB"] = ["rozszerzenie", "zmianaWarunkow", "poprawDane", "odrzucDokumenty", "pakietSerwisowy"];
+        restrictionsMap["nowaUmowaCB"] = ["rozszerzenie", "zmianaWarunkow", "poprawDane", "odrzucDokumenty","uzupelnijPodpisy", "pakietSerwisowy"];
 
         restrictionsMap["dodatkowyPunktCB"] = ["nowaUmowa","poprawDane","odrzucDokumenty"];
         restrictionsMap["dodatkowyPosCB"] =  ["nowaUmowa","poprawDane","odrzucDokumenty"];
@@ -336,6 +336,7 @@
             $('#nowaUmowaCB').change(changeActivityEvent);
             $('#poprawDane').change(changeActivityEvent);
             $('#odrzucDokumenty').change(changeActivityEvent);
+            $('#uzupelnijPodpisyCB').change(changeActivityEvent);
 
             $('input:checkbox[data-selected="true"]').each(function( index ) {
                 $(this).attr('checked', true);
