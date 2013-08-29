@@ -45,7 +45,7 @@
 
         jQuery("#wydrukJakWyzej").click(function() {
             if(this.checked) {
-                jQuery('#wydrukNazwaDoWyszukwarki').val(jQuery('#wydrukNazwaPunktu').val());
+                jQuery('#wydrukNazwaDoWyszukwarki').val(jQuery('#nazwaDoWydrukuZTerminalaPos').val());
             }
         });
 
