@@ -35,10 +35,13 @@ class EServiceAuthenticationProvider implements AuthenticationProvider {
             userDTO = userService.loginToEUmowy(username,password);
         }catch(Exception e)
         {
+            log.error(e.message)
             e.printStackTrace();
         }
 
         authorities = new ArrayList<GrantedAuthorityImpl>()
+
+        println(userDTO.getRoles())
 
         if (!userDTO) {
             auditLogger.info("Nie znaleziono użytkownika [login:${username}]")
