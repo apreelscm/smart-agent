@@ -149,6 +149,7 @@ class ActivityController {
                     df.setContent(new DocumentContent(content: documentData))
                     df.save(flush: true)
                     log.info "DF id: " + df.id + " PageCount: " + df.pagesCount
+					log.info "Process ID: " + processInstance.id
                     processInstance.addToDocuments(df)
                     processInstance.discard();
                 }
@@ -330,6 +331,7 @@ class ActivityController {
                 flow.client = client;
 
                 /** sprawdzanie, czy w eUmowy istnieje dla danego Akceptanta niezakończony Proces */
+				//TODO Odkomentowac to pozniej
               /*  if(processService.hasIncompleteProcessForClient(client)){
                     flash.nipErrorMessage = message(code:"client.unfinishedProcess.error", default:"Dla Akceptanta istnieje niezakończony Proces");
                     return error();
