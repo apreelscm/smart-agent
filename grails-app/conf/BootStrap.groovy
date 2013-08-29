@@ -38,6 +38,7 @@ class BootStrap {
                 client: Client.findByName("clientName1"))
                 .addToDocuments(new DocumentFile(name: "pedef.pdf", pagesCount: 1, content: new DocumentContent(content:[95, 96] as byte[]))).save(flush: true);
 
+/*
         Process.get(2) ?: new Process(id: 2, phFirstName: "Wanda",
                 saleSection: 'segment2', phNumber: 321, observed: true,
                 phSurname: 'Iksińska',calcNumber: '33333', status: Process.ProcessStatus.ACCEPTED,
@@ -225,6 +226,7 @@ class BootStrap {
                 .addToDocuments(new DocumentFile(name: "pedef.pdf"))
                 .addToDocuments(new DocumentFile(name: "pedef2.pdf"))
                 .addToAttachments(new AttachmentFile(name: "pedef3.pdf")).save(flush:true);
+*/
 
         // szablony maili
         EmailTemplates.findByName(EmailTemplates.EmailTemplateType.NOTES_TO_COA) ?: new EmailTemplates(name: EmailTemplates.EmailTemplateType.NOTES_TO_COA,

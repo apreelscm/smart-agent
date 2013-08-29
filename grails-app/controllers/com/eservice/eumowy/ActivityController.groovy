@@ -365,24 +365,25 @@ class ActivityController {
         selectedPanels{
             onEntry {
                 println "selectedPanels enterview"
+                def processInstance = flow.processInstance;
+                def calc = flow.calc;
 
+                def processCmd
                 if(!flow.skipPanelsInit){
                     log.info("skipPanelsInit - false")
-                    def processInstance = flow.processInstance;
-                    def calc = flow.calc;
-
                     //ACTIVE PANELS
                     TreeSet activePanels = _getActivePanels(processInstance.signatures)
                     processInstance.panels = activePanels.toList();
 
-                    def processCmd = processService.createNewProcessCommand(processInstance,calc)
-                    flow.data = processCmd
+                    processCmd = processService.getNewProcessCommand(processInstance,calc)
                 }
                 else{
                     log.info("skipPanelsInit - true")
                     flow.skipPanelsInit = false
+                    processCmd = processService.getSavedProcessCommand(processInstance,calc)
                 }
 
+                flow.data = processCmd
             }
             render(view: "../createProcess/selectedPanels")
             on("back").to "chooseCalc"
@@ -549,9 +550,33 @@ class ActivityController {
             onEntry {
                 def processInstance = flow.processInstance;
                 def calc = flow.calc;
-                def processCmd = processService.createSavedProcessCommand(processInstance,calc);
+                def processCmd = processService.getSavedProcessCommand(processInstance,calc);
                 flow.data = processCmd
             }
+
+            onEntry {
+                println "selectedPanels enterview"
+                def processInstance = flow.processInstance;
+                def calc = flow.calc;
+
+                def processCmd
+                if(!flow.skipPanelsInit){
+                    log.info("skipPanelsInit - false")
+                    //ACTIVE PANELS
+                    TreeSet activePanels = _getActivePanels(processInstance.signatures)
+                    processInstance.panels = activePanels.toList();
+
+                    processCmd = processService.getNewProcessCommand(processInstance,calc)
+                }
+                else{
+                    log.info("skipPanelsInit - true")
+                    flow.skipPanelsInit = false
+                    processCmd = processService.getSavedProcessCommand(processInstance,calc)
+                }
+
+                flow.data = processCmd
+            }
+
             render(view: "../createProcess/selectedPanels")
             on("back").to "chooseCalc"
             on("acceptPointsButton") {

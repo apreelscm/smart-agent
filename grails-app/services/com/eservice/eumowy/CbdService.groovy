@@ -29,8 +29,8 @@ class CbdService {
     private static final def GET_WYKAZ_PUNKTOW_GRID = "getWykazPunktowGrid"
     private static final def GET_ZAKRES_URUCHOMIENIA_PUNKTY_GRID = "getZakresUruchomieniaPunktyGrid"
 
-    //@Cacheable(value="findCalculatorByNip")
-    //@Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
+    @Cacheable(value="findCalculatorByNip")
+    @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
     def findCalculatorByNip(def clientNip) {
         switch (Environment.getCurrent()) {
             case Environment.DEVELOPMENT:
@@ -40,8 +40,8 @@ class CbdService {
         }
     }
 
-    //@Cacheable(value="findCalculatorIdByNip")
-    //@Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
+    @Cacheable(value="findCalculatorIdByNip")
+    @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
     def findCalculatorIdByNip(def clientNip) {
         switch (Environment.getCurrent()) {
             case Environment.DEVELOPMENT:
@@ -51,8 +51,8 @@ class CbdService {
         }
     }
 
-    //@Cacheable(value="getAdresDaneDoWydruku")
-    //@Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
+    @Cacheable(value="getAdresDaneDoWydruku")
+    @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
     def findClientByNip(def clientNip) {
         switch (Environment.getCurrent()) {
             case Environment.DEVELOPMENT:

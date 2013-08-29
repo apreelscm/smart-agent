@@ -31,45 +31,41 @@ class EServiceAuthenticationProvider implements AuthenticationProvider {
         List<GrantedAuthorityImpl> authorities
 
         def userDTO
-          try{
-              userDTO = userService.loginToEUmowy(username,password);
-          }catch(Exception e)
-          {
-              e.printStackTrace();
-          }
-
+        try{
+            userDTO = userService.loginToEUmowy(username,password);
+        }catch(Exception e)
+        {
+            e.printStackTrace();
+        }
 
         authorities = new ArrayList<GrantedAuthorityImpl>()
 
-        //TEST
-      /*  if(username == "ph"){
-            authorities.add(new GrantedAuthorityImpl(EUM_PH_BZOS))
-            userDetails = new EServiceUserDetails("ph", "admin",
-                    true, true, true, true, authorities, 1, "MarianPH", "Kowalski", 321);
+        if (!userDTO) {
+            auditLogger.info("Nie znaleziono użytkownika [login:${username}]")
+            throw new UsernameNotFoundException('User not found', username)
         }
-        if(username == "admin"){
-            authorities.add(new GrantedAuthorityImpl(EUM_ZRD))
-            userDetails = new EServiceUserDetails("admin", "admin",
-                    true, true, true, true, authorities, 1, "MarianAdm", "Kowalski", 123);
+
+    //    switch (Environment.getCurrent()) {
+        //    case Environment.DEVELOPMENT:
+                if(username == "ph"){
+                    authorities.add(new GrantedAuthorityImpl(EUM_PH_BZOS))
+                }
+                if(username == "admin"){
+                    authorities.add(new GrantedAuthorityImpl(EUM_ZRD))
+                }
+              /*  break;
+            case Environment.TEST:
+                if(userDTO.roles.any{ it.name == EUM_ZRD }){
+                    authorities.add(new GrantedAuthorityImpl(EUM_ZRD))
+                }
+                else  if(userDTO.roles.any{ it.name == EUM_PH_BZOS }){
+                    authorities.add(new GrantedAuthorityImpl(EUM_PH_BZOS))
+                }
+                break;
         }*/
-        //TEST end
 
-           if (!userDTO) {
-              auditLogger.info("Nie znaleziono użytkownika [login:${username}]")
-              throw new UsernameNotFoundException('User not found', username)
-          }
-
-         if(userDTO.roles.any{ it.name == EUM_ZRD }){
-              authorities.add(new GrantedAuthorityImpl(EUM_ZRD))
-          }
-          else  if(userDTO.roles.any{ it.name == EUM_PH_BZOS }){
-              authorities.add(new GrantedAuthorityImpl(EUM_PH_BZOS))
-          }
-
-          userDetails = new EServiceUserDetails(userDTO.getLogin(), "pass",
-                  true, true, true, true, authorities, 1,
-                  "Pan", userDTO.getFirstName(), userDTO.getLastName(),userDTO.getAuwId()); //userDTO.getUzyId())
-
+        userDetails = new EServiceUserDetails(userDTO.getLogin(), "pass",
+                true, true, true, true, authorities, 1, userDTO.getFirstName(), userDTO.getLastName(),userDTO.getAuwId()); //userDTO.getUzyId())
 
         preAuthenticationChecks.check userDetails
         postAuthenticationChecks.check userDetails
