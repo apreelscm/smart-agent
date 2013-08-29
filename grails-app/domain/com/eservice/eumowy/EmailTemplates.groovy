@@ -3,12 +3,12 @@ package com.eservice.eumowy
 class EmailTemplates implements Serializable {
 
     EmailTemplateType name;
-    String recipent;
+    String recipient;
     String sender;
 
     static constraints = {
         name(unique:true,blank:false)
-        recipent(blank:false, email: true)
+        recipient(blank:false, email: true)
         sender(blank:false, email: true)
     }
 
@@ -22,8 +22,9 @@ class EmailTemplates implements Serializable {
 		DOCUMENTS_PAPER_VERSION("documentsPaperVersion"),
 		DOCUMENTS_TEMPLATE_VERSION("documentsTemplateVersion"),
 		DOCUMENTS_ELECTRONICAL_VERSION("documentsElectronicalVersion"),
-		DOCUMENTS_ACCEPTED("documentsAccepted")
-		
+		DOCUMENTS_ACCEPTED("documentsAccepted"),
+        DOCUMENTS_REJECTED("documentsRejected"),
+        DOCUMENTS_MISSING_MAIL("documentsMissingMail")
 
         private final String text;
 
