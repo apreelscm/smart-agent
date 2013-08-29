@@ -144,6 +144,7 @@ class ActivityController {
                     df.setContent(new DocumentContent(content: documentData))
                     df.save(flush: true)
                     log.info "DF id: " + df.id + " PageCount: " + df.pagesCount
+					log.info "Process ID: " + processInstance.id
                     processInstance.addToDocuments(df)
                     processInstance.discard();
                 }

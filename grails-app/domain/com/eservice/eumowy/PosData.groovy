@@ -26,5 +26,11 @@ class PosData implements Serializable {
 	
 	static constraints = {
 		point(nullable:true)
+		posDetails(nullable:true)
+		numerZestawuPos(nullable:true)
+		dataOd(nullable:true)
+		dataDo(nullable:true)
+		wysokoscOplaty(nullable:true)
+		czyWybrany(nullable:true)
 	}
 }

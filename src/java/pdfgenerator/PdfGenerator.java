@@ -112,7 +112,7 @@ public class PdfGenerator {
 				
 				if (dataEntry.getValue().length > 2) {
 					
-					if (dataEntry.getValue()[2].equals("checkbox")) {
+					if ("checkbox".equals(dataEntry.getValue()[2])) {
 						String[] states = form.getAppearanceStates(dataEntry.getKey());
 	
 						if ("false".equals(dataEntry.getValue()[0])) {
@@ -122,7 +122,7 @@ public class PdfGenerator {
 							form.setField(dataEntry.getKey(), states[1]);
 						}
 					}
-					else if (dataEntry.getValue()[2].equals("signature")) {
+					else if ("signature".equals(dataEntry.getValue()[2])) {
 						Integer pageNo = Integer.valueOf(dataEntry.getValue()[3]);
 						Integer x = Integer.valueOf(dataEntry.getValue()[4]);
 						Integer y = Integer.valueOf(dataEntry.getValue()[5]);
@@ -138,7 +138,9 @@ public class PdfGenerator {
 					}
 				}
 				else {
-					form.setField(dataEntry.getKey(),dataEntry.getValue()[0]);
+					if (dataEntry.getValue() != null && dataEntry.getValue().length > 0 && dataEntry.getValue()[0] != null) {
+						form.setField(dataEntry.getKey(),dataEntry.getValue()[0]);
+					}
 				}
 
 			}
