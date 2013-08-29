@@ -385,8 +385,8 @@ class PanelMockService {
     }
 
     def getRachunekBankowyKlienta(ProcessCommand cmd) {
-        cmd.numerRachunkuBankowego = "11 1160 2202 0000 0001 9389 8247"
-        cmd.bank = "3"
+        cmd.numerRachunkuBankowegoKlienta = "11 1160 2202 0000 0001 9389 8247"
+        cmd.bankKlienta = "3"
     }
 
     def getScoring(ProcessCommand cmd) {
