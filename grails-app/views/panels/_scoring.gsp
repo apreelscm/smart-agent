@@ -241,7 +241,7 @@
                     %{--<span><label><input type="radio" name="scoringDeklaracjaFinansowa" value="declared" /> <g:message code="panel.declared"/></label></span>--}%
                     <g:radioGroup name="scoringDeklaracjaFinansowa"
                                   labels="['panel.actual','panel.declared']"
-                                  values="['wlasciwe', 'deklarowane']"
+                                  values="['w', 'd']"
                                   value="${data.scoringDeklaracjaFinansowa}">
                         <span><label> ${it.radio} <g:message code="${it.label}"/></label></span>
                     </g:radioGroup>

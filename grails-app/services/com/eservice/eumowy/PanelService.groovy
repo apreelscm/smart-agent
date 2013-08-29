@@ -46,8 +46,8 @@ class PanelService {
     def getDaneAkceptanta(ProcessCommand cmd ,def calc) {
         def result = cbdService.getDaneAkceptanta(cmd.nip);
 
-        cmd.akceptantNazwaOficjalna= result?.nazwa ?: "-"
-        cmd.akceptantNazwaSieciowa= cmd.akceptantNazwaSieciowa ?: "-" //TODO
+        cmd.akceptantNazwaOficjalna = result?.nazwa ?: "-"
+        cmd.akceptantNazwaSieciowa = cmd.akceptantNazwaSieciowa ?: "-" //TODO
         cmd.akceptantRegon = result?.regon ?: "-"
 
         cmd.akceptantNazwaOficjalnaCbd= cmd.akceptantNazwaOficjalna
@@ -56,7 +56,7 @@ class PanelService {
     }
 
     def getDaneDoWydruku(ProcessCommand cmd ,def calc) {
-        cmd.wydrukNazwaPunktu = cmd.wydrukNazwaPunktu ?: "-"
+        cmd.nazwaDoWydrukuZTerminalaPos = cmd.nazwaDoWydrukuZTerminalaPos ?: "-"
         cmd.wydrukNazwaDoWyszukwarki =cmd.wydrukNazwaDoWyszukwarki ?: "-"
         cmd.wydrukUlicaTytul =cmd.wydrukUlicaTytul ?: "-"
         cmd.wydrukUlica =cmd.wydrukUlica ?: "-"
@@ -349,8 +349,8 @@ class PanelService {
     }
 
     def getRachunekBankowyKlienta(ProcessCommand cmd ,def calc) {
-        cmd.numerRachunkuBankowego =cmd.numerRachunkuBankowego ?: "-"
-        cmd.bank = cmd.bank ?: ""
+        cmd.numerRachunkuBankowegoKlienta =cmd.numerRachunkuBankowegoKlienta ?: "-"
+        cmd.bankKlienta = cmd.bankKlienta ?: ""
     }
 
     def getScoring(ProcessCommand cmd ,def calc) {

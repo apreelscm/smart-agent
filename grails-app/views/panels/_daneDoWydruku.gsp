@@ -4,7 +4,7 @@
         <div style="text-align: center; padding-top: 20px; width: 750px" class="centre">
             <div class="align-left">
                 <p><g:message code="panel.newpoint.pointnameforprintingfromposterminal" /></p>
-                <p><g:textField name="wydrukNazwaPunktu" value="${data.wydrukNazwaPunktu}"/></p>
+                <p><g:textField name="nazwaDoWydrukuZTerminalaPos" value="${data.nazwaDoWydrukuZTerminalaPos}"/></p>
                 <p><g:message code="panel.newpoint.pointnameforsearchengine" /> <label for="wydrukJakWyzej"><g:checkBox name="wydrukJakWyzej" id="wydrukJakWyzej" /><g:message code="panel.as.above" /></label></p>
                 <p><g:textField name="wydrukNazwaDoWyszukwarki" value="${data.wydrukNazwaDoWyszukwarki}"/></p>
                 <p><label for="wydrukJakMerchant"><g:checkBox name="wydrukJakMerchant"/><g:message code="panel.as.merchant" /></label></p>
@@ -45,7 +45,7 @@
 
         jQuery("#wydrukJakWyzej").click(function() {
             if(this.checked) {
-                jQuery('#wydrukNazwaDoWyszukwarki').val(jQuery('#wydrukNazwaPunktu').val());
+                jQuery('#wydrukNazwaDoWyszukwarki').val(jQuery('#nazwaDoWydrukuZTerminalaPos').val());
             }
         });
 

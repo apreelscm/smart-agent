@@ -52,7 +52,7 @@ class PanelMockService {
     }
 
     def getDaneDoWydruku(ProcessCommand cmd) {
-        cmd.wydrukNazwaPunktu = "PHU \"U Basi\""
+        cmd.nazwaDoWydrukuZTerminalaPos = "PHU \"U Basi\""
         cmd.wydrukNazwaDoWyszukwarki = "U Basi"
 
         cmd.wydrukUlicaTytul = "Ulica"
@@ -385,8 +385,8 @@ class PanelMockService {
     }
 
     def getRachunekBankowyKlienta(ProcessCommand cmd) {
-        cmd.numerRachunkuBankowego = "11 1160 2202 0000 0001 9389 8247"
-        cmd.bank = "3"
+        cmd.numerRachunkuBankowegoKlienta = "11 1160 2202 0000 0001 9389 8247"
+        cmd.bankKlienta = "3"
     }
 
     def getScoring(ProcessCommand cmd) {
@@ -433,7 +433,7 @@ class PanelMockService {
 
         cmd.scoringDochodowosc = "500"
 
-        cmd.scoringDeklaracjaFinansowa = "wlasciwe"
+        cmd.scoringDeklaracjaFinansowa = "w"
         cmd.scoringDeklaracjaFinansowaObrotOgolem = "23.50"
         cmd.scoringDeklaracjaFinansowaObrotNaKarty = "12.45"
         cmd.scoringDeklaracjaFinansowaSredniObrot = "10.45"

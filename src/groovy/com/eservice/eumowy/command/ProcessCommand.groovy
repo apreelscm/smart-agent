@@ -49,7 +49,7 @@ class ProcessCommand implements Serializable{
     String akceptantRegonCbd
 
 //    daneDoWydruku
-    String wydrukNazwaPunktu
+    String nazwaDoWydrukuZTerminalaPos
     String wydrukNazwaDoWyszukwarki
 
     String wydrukUlicaTytul
@@ -63,9 +63,6 @@ class ProcessCommand implements Serializable{
 
     String wydrukLinia1
     String wydrukLinia2
-
-
-
 
 
 //    danePunktu
@@ -438,8 +435,8 @@ class ProcessCommand implements Serializable{
     //TODO - w pdf wykorzystujemy obsugaPrestiz, obslugaKomfort, obslugaEkonomiczny (checkboxy)
 
 //    rachunekBankowyKlienta
-    String numerRachunkuBankowego
-    String bank
+    String numerRachunkuBankowegoKlienta
+    String bankKlienta
 
 //    oplataDCCZaUruchomienie
     //TODO - to w pdfach sie nazywa inaczej - nie wiem jak...
