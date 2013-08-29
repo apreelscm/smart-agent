@@ -9,8 +9,6 @@ class Signature implements Serializable {
 	
 	Integer subscriptionX;
 	Integer subscriptionY;
-	Integer subscriptionXScale;
-	Integer subscriptionYScale;
 	Integer subscriptionPageNumber;
 	
 	String managementSubscription1;
@@ -26,8 +24,6 @@ class Signature implements Serializable {
        templatePath()
        subscriptionX()
        subscriptionY()
-       subscriptionXScale()
-       subscriptionYScale()
        subscriptionPageNumber()
        managementSubscription1()
        managementSubscription2()

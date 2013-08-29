@@ -79,4 +79,44 @@ class AppParametersService {
 		
 		return name
 	}
+	
+	def getManagementSubscriptionFirstScaleX() {
+		String scaleXString = AppParameters.findByName("MANAGEMENT_SUBSCRIPTION1_SCALE_X")
+		
+		if (scaleXString == null || scaleXString.isEmpty()) {
+			scaleXString = "85"
+		}
+		
+		return scaleXString
+	}
+	
+	def getManagementSubscriptionFirstScaleY() {
+		String scaleYString = AppParameters.findByName("MANAGEMENT_SUBSCRIPTION1_SCALE_Y")
+		
+		if (scaleYString == null || scaleYString.isEmpty()) {
+			scaleYString = "58"
+		}
+		
+		return scaleYString
+	}
+	
+	def getManagementSubscriptionSecondScaleX() {
+		String scaleXString = AppParameters.findByName("MANAGEMENT_SUBSCRIPTION2_SCALE_X")
+		
+		if (scaleXString == null || scaleXString.isEmpty()) {
+			scaleXString = "56"
+		}
+		
+		return scaleXString
+	}
+	
+	def getManagementSubscriptionSecondScaleY() {
+		String scaleYString = AppParameters.findByName("MANAGEMENT_SUBSCRIPTION2_SCALE_Y")
+		
+		if (scaleYString == null || scaleYString.isEmpty()) {
+			scaleYString = "59"
+		}
+		
+		return scaleYString
+	}
 }
