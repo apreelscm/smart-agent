@@ -35,7 +35,11 @@ class ActivityController {
 
         defineActivity{
             onEntry{
-                flow.processInstance = flow.processInstance ?: new Process();
+                if(!flow.processInstance){
+                    flow.newProcessFlow = true
+                    flow.processInstance =  new Process();
+                }
+
                 println(" flow.processInstance: "+ flow.processInstance)
             }
             on("continue") { DefineActivityCommand cmd ->
@@ -81,7 +85,7 @@ class ActivityController {
 
         /** default full subflow */
         normal {
-            subflow(action: "normal", input: [processInstance : { flow.processInstance }])
+            subflow(action: "normal", input: [processInstance : { flow.processInstance }, newProcessFlow : {flow.newProcessFlow}])
             on("backToStart").to "defineActivity"
             on("clientSignature") {
                 flow.processInstance = currentEvent.attributes.process
@@ -90,7 +94,7 @@ class ActivityController {
 
         /** popraw dane subflow */
         poprawDane {
-            subflow(action: "poprawDane", input: [processInstance : { flow.processInstance }])
+            subflow(action: "poprawDane", input: [processInstance : { flow.processInstance }, newProcessFlow : {flow.newProcessFlow}])
             on("backToStart").to "defineActivity"
             on("finish") {
                 flow.processInstance = currentEvent.attributes.process
@@ -99,7 +103,7 @@ class ActivityController {
 
         /** uzupelnij podpisy subflow */
         uzupelnijPodpisy {
-            subflow(action: "uzupelnijPodpisy", input: [processInstance : { flow.processInstance }])
+            subflow(action: "uzupelnijPodpisy", input: [processInstance : { flow.processInstance }, newProcessFlow : {flow.newProcessFlow}])
             on("backToStart").to "defineActivity"
             on("finish") {
                 flow.processInstance = currentEvent.attributes.process
@@ -109,7 +113,8 @@ class ActivityController {
         /** send email only subflow*/
         emailOnly {
             action{
-                def notes = process.notesToCoa
+                def processInstance = flow.processInstance
+                def notes = processInstance.notesToCoa
                 log.info("wysyłanie wiadomości email z uwagami do COA [notes: ${notes}]")
                 try{
                     emailService.sendNotesToCOA(notes)
@@ -153,7 +158,9 @@ class ActivityController {
                 flow.processInstance = processInstance
             }
             render(view: "../createProcess/clientSignature", model: [processInstance: flow.processInstance, totalPagesCount: flow.totalPagesCount])
-            on("back").to "selectedPanels"
+            on("back"){
+                flow.newProcessFlow = false
+            }to "chooseSubFlow"
             on("subscribe").to "clientSignature"
             on("updateProcessStatus") {
                 log.info params
@@ -226,7 +233,20 @@ class ActivityController {
     def normalFlow = {
         input {
             processInstance(required: true)
+            newProcessFlow(required: true)
         }
+
+        init {
+            action {
+                log.info("init - normalFlow - newProcessFlow : ${flow.newProcessFlow}" )
+               flow.newProcessFlow ? chooseActivity() : selectedPanels()
+            }
+            on("chooseActivity").to "chooseActivity"
+            on("selectedPanels"){
+                flow.skipPanelsInit = true;
+            }.to "selectedPanels"
+        }
+
         chooseActivity{
             render(view: "../createProcess/chooseActivity")
             on("continue"){
@@ -344,8 +364,8 @@ class ActivityController {
             onEntry {
                 println "selectedPanels enterview"
 
-                if(!flow.slipPanelsInit){
-                    log.info("slipPanelsInit - false")
+                if(!flow.skipPanelsInit){
+                    log.info("skipPanelsInit - false")
                     def processInstance = flow.processInstance;
                     def calc = flow.calc;
 
@@ -357,8 +377,8 @@ class ActivityController {
                     flow.data = processCmd
                 }
                 else{
-                    log.info("slipPanelsInit - true")
-                    flow.slipPanelsInit = false
+                    log.info("skipPanelsInit - true")
+                    flow.skipPanelsInit = false
                 }
 
             }
@@ -383,7 +403,7 @@ class ActivityController {
 
                 flow.processInstance = processInstance
                 flow.data = cmd
-                flow.slipPanelsInit = true;
+                flow.skipPanelsInit = true;
             }to "selectedPanels"
             on("continue"){ ProcessCommand cmd ->
 
@@ -408,7 +428,7 @@ class ActivityController {
 					processInstance.addToPoints(data)
 					processInstance.discard()
 				}
-				
+
                 if (!processInstance.save()){
                     processInstance.errors.each {
                         log.error(it)
@@ -418,7 +438,7 @@ class ActivityController {
 
 
                 flow.processInstance = processInstance
-            }.to "selectedPanels"
+            }.to "clientSignature"
         }
 
         clientSignature {
@@ -436,7 +456,20 @@ class ActivityController {
     def poprawDaneFlow = {
         input {
             processInstance(required: true)
+            newProcessFlow(required: true)
         }
+
+        init {
+            action {
+                log.info("init - normalFlow - newProcessFlow : ${newProcessFlow}" )
+                newProcessFlow ? chooseCalc() : selectedPanels()
+            }
+            on("chooseCalc").to "chooseCalc"
+            on("selectedPanels"){
+                flow.skipPanelsInit = true;
+            }.to "selectedPanels"
+        }
+
         chooseCalc{
             render(view: "../createProcess/chooseCalc")
             on("back").to "chooseActivity"

@@ -47,6 +47,7 @@ grails.project.dependency.resolution = {
         runtime 'cbd1:cbd-core-security:2.6-SNAPSHOT'
         runtime 'cbd2:cbd-orm:2.6-SNAPSHOT'
         runtime 'cbd3:cbd-orm-security:2.6-SNAPSHOT'
+        runtime 'cbd-orm-e-kalkulator:2.6-SNAPSHOT'
         runtime 'PDFRenderer:PDFRenderer:0.9.1'
         //runtime 'fr.opensagres.xdocreport:fr.opensagres.xdocreport.core:1.0.2'
         //runtime 'fr.opensagres.xdocreport:fr.opensagres.xdocreport.converter:1.0.2'

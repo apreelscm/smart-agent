@@ -15,7 +15,7 @@ class BootStrap {
                 // Wykonywanie inicjacyjnych zapytan sql z pliku insertData.sql
                 executeSqlScript("/sql/createData.sql")
                 executeSqlScript("/sql/insertData.sql")
-                createCBDDataForDevProfile();
+                //createCBDDataForDevProfile();
                 createTestDomains()
                 break;
             case Environment.TEST:
@@ -244,12 +244,12 @@ class BootStrap {
                 'insert into CBD_ADM.ADM_UZYTKOWNICY_WEB(AUW_ID,AUW_LOGIN,AUW_HASLO ) values(?, ?, ?)',
                 [123451,'user', 'iEmqhY8YxduPVOg5Tgs9aca8M5coCILEFRmk8Q=='])
 
-        //uzytkownik "admin" z rola ADM_ROLE
+        //uzytkownik "admin" z rola EUM_ZRD
         sql.executeUpdate(
                 'insert into CBD_ADM.ADM_UZYTKOWNICY_WEB(AUW_ID,AUW_LOGIN,AUW_HASLO,AUW_UZY_ID, AUW_IMIE, AUW_NAZWISKO  ) values(?, ?, ?, ?, ?, ?)',
                 [223415,'admin', 'iEmqhY8YxduPVOg5Tgs9aca8M5coCILEFRmk8Q==',1, 'Jan', 'Kowalski'])
 
-        //uzytkownik "ph" z rola PH_ROLE
+        //uzytkownik "ph" z rola EUM_PH_BZOS
         sql.executeUpdate(
                 'insert into CBD_ADM.ADM_UZYTKOWNICY_WEB(AUW_ID,AUW_LOGIN,AUW_HASLO,AUW_PRZ_ID, AUW_IMIE, AUW_NAZWISKO  ) values(?, ?, ?, ?, ?, ?)',
                 [312354,'ph', 'iEmqhY8YxduPVOg5Tgs9aca8M5coCILEFRmk8Q==',1, 'Jerzy',' Poniedziałek'])

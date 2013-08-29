@@ -1,5 +1,5 @@
 package com.eservice.eumowy.auth
-import com.eservice.dto.UserDTO
+
 import org.apache.commons.logging.LogFactory
 import org.apache.log4j.MDC
 import org.springframework.security.authentication.AuthenticationProvider
@@ -14,8 +14,8 @@ class EServiceAuthenticationProvider implements AuthenticationProvider {
 
     private static final auditLogger = LogFactory.getLog("audit");
 
-    public static final String PH_ROLE = "PH_ROLE";
-    public static final String ADM_ROLE = "ADM_ROLE";
+    public static final String EUM_PH_BZOS = "EUM_PH_BZOS";
+    public static final String EUM_ZRD = "EUM_ZRD";
 
     UserDetailsChecker preAuthenticationChecks
     UserDetailsChecker postAuthenticationChecks
@@ -30,41 +30,45 @@ class EServiceAuthenticationProvider implements AuthenticationProvider {
         EServiceUserDetails userDetails
         List<GrantedAuthorityImpl> authorities
 
-        UserDTO userDTO
-        try{
-            userDTO = userService.login(username,password);
-        }catch(Exception e)
-        {
-            e.printStackTrace();
-        }
+        def userDTO
+          try{
+              userDTO = userService.loginToEUmowy(username,password);
+          }catch(Exception e)
+          {
+              e.printStackTrace();
+          }
 
-        if (!userDTO) {
-            // TODO customize 'springSecurity.errors.login.fail' i18n message in app's messages.properties with org name
-            auditLogger.info("Nie znaleziono użytkownika [login:${username}]")
-            throw new UsernameNotFoundException('User not found', username)
-        }
 
         authorities = new ArrayList<GrantedAuthorityImpl>()
-        if(userDTO.przId){
-            authorities.add(new GrantedAuthorityImpl(PH_ROLE))
+
+        //TEST
+      /*  if(username == "ph"){
+            authorities.add(new GrantedAuthorityImpl(EUM_PH_BZOS))
+            userDetails = new EServiceUserDetails("ph", "admin",
+                    true, true, true, true, authorities, 1, "MarianPH", "Kowalski", 321);
         }
-        else if (userDTO.uzyId){
-            authorities.add(new GrantedAuthorityImpl(ADM_ROLE))
-            /*authorities = userDTO.authorities.collect { new GrantedAuthorityImpl(it.authority) }*/
-        }
-        //authorities = authorities ?: GormUserDetailsService.NO_ROLES
+        if(username == "admin"){
+            authorities.add(new GrantedAuthorityImpl(EUM_ZRD))
+            userDetails = new EServiceUserDetails("admin", "admin",
+                    true, true, true, true, authorities, 1, "MarianAdm", "Kowalski", 123);
+        }*/
+        //TEST end
 
+           if (!userDTO) {
+              auditLogger.info("Nie znaleziono użytkownika [login:${username}]")
+              throw new UsernameNotFoundException('User not found', username)
+          }
 
-        //TEST mock start
-        userDTO.firstName = "Marian"
-        userDTO.lastName = "Kowalski"
-        userDTO.auwId = new Long(123456)
-        //mock end
+         if(userDTO.roles.any{ it.name == EUM_ZRD }){
+              authorities.add(new GrantedAuthorityImpl(EUM_ZRD))
+          }
+          else  if(userDTO.roles.any{ it.name == EUM_PH_BZOS }){
+              authorities.add(new GrantedAuthorityImpl(EUM_PH_BZOS))
+          }
 
-        userDetails = new EServiceUserDetails(userDTO.getLogin(), "pass",
-                true, true, true, true, authorities, 1,
-                "Pan", userDTO.getFirstName(), userDTO.getLastName(),userDTO.getAuwId()); //userDTO.getUzyId())
-
+          userDetails = new EServiceUserDetails(userDTO.getLogin(), "pass",
+                  true, true, true, true, authorities, 1,
+                  "Pan", userDTO.getFirstName(), userDTO.getLastName(),userDTO.getAuwId()); //userDTO.getUzyId())
 
 
         preAuthenticationChecks.check userDetails
