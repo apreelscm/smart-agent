@@ -280,6 +280,8 @@ class PanelService {
         cmd.mastercardPolskaKD2St = calculatorService.getCalcProperty(calc,"OPLATA_MSC_622_ZL")
         cmd.mastercardPolskaKD3Pr = calculatorService.getCalcProperty(calc,"OPLATA_MSC_623_PROCENT")
         cmd.mastercardPolskaKD3St = calculatorService.getCalcProperty(calc,"OPLATA_MSC_623_ZL")
+		cmd.mastercardPolskaKBPr = calculatorService.getCalcProperty(calc,"OPLATA_MSC_625_PROCENT")
+		cmd.mastercardPolskaKBSt = calculatorService.getCalcProperty(calc,"OPLATA_MSC_625_ZL")
         cmd.mastercardPolskaM1Pr = calculatorService.getCalcProperty(calc,"OPLATA_MSC_641_PROCENT")
         cmd.mastercardPolskaM1St = calculatorService.getCalcProperty(calc,"OPLATA_MSC_641_ZL")
         cmd.mastercardPolskaM2Pr = calculatorService.getCalcProperty(calc,"OPLATA_MSC_642_PROCENT")
