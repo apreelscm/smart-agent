@@ -433,7 +433,7 @@ class PanelMockService {
 
         cmd.scoringDochodowosc = "500"
 
-        cmd.scoringDeklaracjaFinansowa = "wlasciwe"
+        cmd.scoringDeklaracjaFinansowa = "w"
         cmd.scoringDeklaracjaFinansowaObrotOgolem = "23.50"
         cmd.scoringDeklaracjaFinansowaObrotNaKarty = "12.45"
         cmd.scoringDeklaracjaFinansowaSredniObrot = "10.45"
