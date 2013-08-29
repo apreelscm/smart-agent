@@ -1,5 +1,4 @@
 <div id="acceptorAddressPanel">
-    <form action="">
     <fieldset>
         <div class="belka-glowna"><g:message code="panel.acceptor.address.title"/> </div>
         <div style="text-align: center; padding-top: 20px; width: 750px" class="centre">
@@ -71,6 +70,4 @@
             </ul>
         </div>
     </fieldset>
-        <input type="submit"/>
-    </form>
 </div>
