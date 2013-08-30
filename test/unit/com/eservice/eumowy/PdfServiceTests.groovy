@@ -54,10 +54,10 @@ class PdfServiceTests {
 	static HashMap<String, String[]> generateCommonFields(){
 		HashMap<String, String[]> result = new HashMap<String, String[]>();
 		result.put("dataUmowy", ["21.03.2013"] as String[]);
-		result.put("akceptantNazwa", ["Firma Handlowo Us³ugowa 'HandUs'"] as String[]);
-		result.put("akceptantSiedziba", ["ul. Marsza³kowska 3/4; 01-234 Warszawa"] as String[]);
+		result.put("akceptantNazwa", ["Firma Handlowo Usï¿½ugowa 'HandUs'"] as String[]);
+		result.put("akceptantSiedziba", ["ul. Marszaï¿½kowska 3/4; 01-234 Warszawa"] as String[]);
 		result.put("reprezentant1", ["Jan Nowak"] as String[]);
-		result.put("reprezentant2", ["Gra¿yna Prymek"] as String[]);
+		result.put("reprezentant2", ["Graï¿½yna Prymek"] as String[]);
 		result.put("phNumer", ["12345"] as String[]);
 		return result;
 	}
@@ -107,7 +107,7 @@ class PdfServiceTests {
 		result.put("NrUmowy1", ["7890"] as String[]);
 		result.put("NrUmowy2", ["1"] as String[]);
 		result.put("OficjalnaNazwaAkceptanta1", ["To jest oficjalna nazwa akceptanta"] as String[]);
-		result.put("OficjalnaNazwaAkceptanta2", ["To jest druga linia z nazw¹ akceptanta"] as String[]);
+		result.put("OficjalnaNazwaAkceptanta2", ["To jest druga linia z nazwï¿½ akceptanta"] as String[]);
 		result.put("NazwaSieciowaAkceptanta", ["This is the end"] as String[]);
 		result.put("podpis", [new File(getTemplatePath()+"signature1.jpg").toURI().toURL(), "", "signature", "1", "435", "15", "74", "43"] as String[]);
 		
@@ -126,12 +126,12 @@ class PdfServiceTests {
 		result.put("rozszerzenieOPunkt", [""] as String[]);
 		result.put("linia1", ["Linia na uwagi?"] as String[]);
 		result.put("linia2", ["Linia na uwagiii :)"] as String[]);
-		result.put("imieINazwisko", ["Dominik Walczak, Micha³ Knieæ, Pawe³ Szkup"] as String[]);
+		result.put("imieINazwisko", ["Dominik Walczak, Michaï¿½ Knieï¿½, Paweï¿½ Szkup"] as String[]);
 		result.put("pan", ["true", "", "checkbox"] as String[]);
 		result.put("pani", ["false", "", "checkbox"] as String[]);
 		result.put("email", ["mkniec@apreel.com"] as String[]);
-		result.put("nazwaDoWydrukuZTerminalaPos", ["To jest jakaœ nazwa trochê inna"] as String[]);
-		result.put("nazwaDoWyszukiwarki", ["To jest jakaœ nazwa"] as String[]);
+		result.put("nazwaDoWydrukuZTerminalaPos", ["To jest jakaï¿½ nazwa trochï¿½ inna"] as String[]);
+		result.put("nazwaDoWyszukiwarki", ["To jest jakaï¿½ nazwa"] as String[]);
 		
 		return result;
 	}
@@ -144,12 +144,24 @@ class PdfServiceTests {
 		result.put("centrumHandlowe", ["true"] as String[]);
 		result.put("trasaPrzelotowa", ["true"] as String[]);
 		result.put("dochodowosc", ["10000"] as String[]);
-		result.put("sredniaWartoscTransakcji", ["1 milion z³otych"] as String[]);
-		result.put("innaLokalizacja", ["Wie¿a Eiffla"] as String[]);
-		result.put("podpis", [new File(getTemplatePath()+"signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "20", "58", "59"] as String[]);
+		result.put("sredniaWartoscTransakcji", ["1 milion zï¿½otych"] as String[]);
+		result.put("innaLokalizacja", ["Wieï¿½a Eiffla"] as String[]);
+//        result.put("handel", ["false", "", "checkbox"] as String[]);
+//        result.put("uslugi", ["true", "", "checkbox"] as String[]);
+
+        addCheckboxes(result, ["handel":"handel", "uslugi":"uslugi"], "uslugi")
+        addCheckbox(result, "stanZadbany", "true", "true")
+        addCheckbox(result, "uslugiPlatneZGory", "true", "true")
+        addCheckbox(result, "ruchTurystycznyPrzygraniczny", "true", "false")
+
+        result.put("podpis", [new File(getTemplatePath()+"signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "20", "58", "59"] as String[]);
 		
 		return result;
 	}
+
+    private static addCheckbox(def data, def pdfName, def fieldValue, def value){
+        data.put(pdfName, [fieldValue.equals(value), "", "checkbox"] as String[])
+    }
 
 	static String getRandomFormattedDouble(int max){
 		return new DecimalFormat("0.00").format(random.nextInt(max) + random.nextDouble());
@@ -207,7 +219,7 @@ class PdfServiceTests {
 		HashMap<String, String[]> data = new HashMap<String, String[]>();
 		data.putAll(this.data);
 		data.putAll(insertSignatures(1, 85, 260, 74, 43))
-		process("APUNTSZDCCZ1 00112-10-05_Aneks do UN_DCC zmiana warunków.pdf", "APUNTSZDCCZ1 00112-10-05_Aneks do UN_DCC zmiana warunków_out.pdf", data)
+		process("APUNTSZDCCZ1 00112-10-05_Aneks do UN_DCC zmiana warunkï¿½w.pdf", "APUNTSZDCCZ1 00112-10-05_Aneks do UN_DCC zmiana warunkï¿½w_out.pdf", data)
 	}
 
 	void testAPUNTSZOKOD() {
@@ -245,7 +257,7 @@ class PdfServiceTests {
 		
 		data.putAll(this.data);
 		data.putAll(insertSignatures(1, 85, 225, 74, 43))
-		process("APUNTWANOD1.00312-01-16_Aneks do UN_zmiana Tabeli Op³at.pdf", "APUNTWANOD1.00312-01-16_Aneks do UN_zmiana Tabeli Op³at_out.pdf", data)
+		process("APUNTWANOD1.00312-01-16_Aneks do UN_zmiana Tabeli Opï¿½at.pdf", "APUNTWANOD1.00312-01-16_Aneks do UN_zmiana Tabeli Opï¿½at_out.pdf", data)
 	}
 
 	void testAPUNTZ() {
@@ -296,28 +308,28 @@ class PdfServiceTests {
 		HashMap<String, String[]> data = new HashMap<String, String[]>();
 		data.putAll(this.data);
 		data.putAll(insertSignatures(2, 85, 220, 74, 43))
-		process("APUPZACB2.00313-02-15 - Aneks do Umowy o przyjm zap³ (dod Cashback).pdf", "APUPZACB2.00313-02-15 - Aneks do Umowy o przyjm zap³ (dod Cashback)_out.pdf", data)
+		process("APUPZACB2.00313-02-15 - Aneks do Umowy o przyjm zapï¿½ (dod Cashback).pdf", "APUPZACB2.00313-02-15 - Aneks do Umowy o przyjm zapï¿½ (dod Cashback)_out.pdf", data)
 	}
 	
 	void testAPUPZAWNZBS() {
 		HashMap<String, String[]> data = new HashMap<String, String[]>();
 		data.putAll(this.data);
 		data.putAll(insertSignatures(1, 85, 180, 74, 43))
-		process("APUPZAWNZBS1.00013-01-25 - Aneks do umowy o przyjm zap³ (bez stawek p³askich).pdf", "APUPZAWNZBS1.00013-01-25 - Aneks do umowy o przyjm zap³ (bez stawek p³askich)_out.pdf", data)
+		process("APUPZAWNZBS1.00013-01-25 - Aneks do umowy o przyjm zapï¿½ (bez stawek pï¿½askich).pdf", "APUPZAWNZBS1.00013-01-25 - Aneks do umowy o przyjm zapï¿½ (bez stawek pï¿½askich)_out.pdf", data)
 	}
 	
 	void testAPUPZAWNZS() {
 		HashMap<String, String[]> data = new HashMap<String, String[]>();
 		data.putAll(this.data);
 		data.putAll(insertSignatures(1, 80, 180, 74, 43))
-		process("APUPZAWNZS1.00013-01-25 - Aneks do umowy o przyjm zap³ (narzucone stawki p³askie).pdf", "APUPZAWNZS1.00013-01-25 - Aneks do umowy o przyjm zap³ (narzucone stawki p³askie)_out.pdf", data)
+		process("APUPZAWNZS1.00013-01-25 - Aneks do umowy o przyjm zapï¿½ (narzucone stawki pï¿½askie).pdf", "APUPZAWNZS1.00013-01-25 - Aneks do umowy o przyjm zapï¿½ (narzucone stawki pï¿½askie)_out.pdf", data)
 	}
 	
 	void testAPUPZBS() {
 		HashMap<String, String[]> data = new HashMap<String, String[]>();
 		data.putAll(this.data);
 		data.putAll(insertSignatures(4, 80, 320, 74, 43))
-		process("APUPZBS2.00013-01-25 - Umowa o przyjmowanie zap³aty (wersja bez stawek p³askich)_do druku.pdf", "APUPZBS2.00013-01-25 - Umowa o przyjmowanie zap³aty (wersja bez stawek p³askich)_do druku_out.pdf", data)
+		process("APUPZBS2.00013-01-25 - Umowa o przyjmowanie zapï¿½aty (wersja bez stawek pï¿½askich)_do druku.pdf", "APUPZBS2.00013-01-25 - Umowa o przyjmowanie zapï¿½aty (wersja bez stawek pï¿½askich)_do druku_out.pdf", data)
 	}
 
 	void testATUSU() {
@@ -338,28 +350,28 @@ class PdfServiceTests {
 		HashMap<String, String[]> data = new HashMap<String, String[]>();
 		data.putAll(this.data);
 		data.putAll(insertSignatures(4, 80, 305, 74, 43))
-		process("APUPZIF2.00013-03-26 - Umowa o przyjmowanie zap³aty IF+_2013.pdf", "APUPZIF2.00013-03-26 - Umowa o przyjmowanie zap³aty IF+_2013_out.pdf", data)
+		process("APUPZIF2.00013-03-26 - Umowa o przyjmowanie zapï¿½aty IF+_2013.pdf", "APUPZIF2.00013-03-26 - Umowa o przyjmowanie zapï¿½aty IF+_2013_out.pdf", data)
 	}
 	
 	void testAPUPZDCC() {
 		HashMap<String, String[]> data = new HashMap<String, String[]>();
 		data.putAll(this.data);
 		data.putAll(insertSignatures(1, 80, 240, 74, 43))
-		process("APUPZDCC2.00313-02-15 - Aneks do Umowy o przyjm zap³ (wprow DCC).pdf", "APUPZDCC2.00313-02-15 - Aneks do Umowy o przyjm zap³ (wprow DCC)_out.pdf", data)
+		process("APUPZDCC2.00313-02-15 - Aneks do Umowy o przyjm zapï¿½ (wprow DCC).pdf", "APUPZDCC2.00313-02-15 - Aneks do Umowy o przyjm zapï¿½ (wprow DCC)_out.pdf", data)
 	}
 	
 	void testAPUPZDCCZ() {
 		HashMap<String, String[]> data = new HashMap<String, String[]>();
 		data.putAll(this.data);
 		data.putAll(insertSignatures(1, 85, 185, 74, 43))
-		process("APUPZDCCZ1.00213-02-15 - Aneks do Umowy o przyjm zap³. (zm. war. DCC).pdf", "APUPZDCCZ1.00213-02-15 - Aneks do Umowy o przyjm zap³. (zm. war. DCC)_out.pdf", data)
+		process("APUPZDCCZ1.00213-02-15 - Aneks do Umowy o przyjm zapï¿½. (zm. war. DCC).pdf", "APUPZDCCZ1.00213-02-15 - Aneks do Umowy o przyjm zapï¿½. (zm. war. DCC)_out.pdf", data)
 	}
 	
 	void testAPUPZ() {
 		HashMap<String, String[]> data = new HashMap<String, String[]>();
 		data.putAll(this.data);
 		data.putAll(insertSignatures(4, 90, 308, 74, 43))
-		process("APUPZ2.00013-01-03 - Umowa o przyjmowanie zap³aty v. 2.000_z faksymile.pdf", "APUPZ2.00013-01-03 - Umowa o przyjmowanie zap³aty v. 2.000_z faksymile_out.pdf", data)
+		process("APUPZ2.00013-01-03 - Umowa o przyjmowanie zapï¿½aty v. 2.000_z faksymile.pdf", "APUPZ2.00013-01-03 - Umowa o przyjmowanie zapï¿½aty v. 2.000_z faksymile_out.pdf", data)
 	}
 	
 	// ---------------------------------------------------------------------------------------
@@ -395,4 +407,8 @@ class PdfServiceTests {
 		result.put("zarzad2_podpis", [new File(getTemplatePath()+"signature5.jpg").toURI().toURL(), "", "signature", pageNo, x+380, y, BOARD_MEMBER_2_X, BOARD_MEMBER_2_Y] as String[]);
 		return result;
 	}
+
+    private static addCheckboxes(def data, def pdfKeyValue, def value){
+        pdfKeyValue.each{ k, v ->  data.put(k, [v.equals(value), "", "checkbox"] as String[])}
+    }
 }

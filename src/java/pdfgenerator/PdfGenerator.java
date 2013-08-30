@@ -105,7 +105,7 @@ public class PdfGenerator {
 						bf = BaseFont.createFont(fontsPathMap.get(dataEntry.getKey()), BaseFont.CP1250, BaseFont.EMBEDDED);
 					}
 					
-					form.setFieldProperty(dataEntry.getKey(), "textfont", bf, null);	
+					form.setFieldProperty(dataEntry.getKey(), "textfont", bf, null);
 					form.addSubstitutionFont(bf);
 					
 				}
@@ -114,13 +114,14 @@ public class PdfGenerator {
 					
 					if ("checkbox".equals(dataEntry.getValue()[2])) {
 						String[] states = form.getAppearanceStates(dataEntry.getKey());
-	
-						if ("false".equals(dataEntry.getValue()[0])) {
-							form.setField(dataEntry.getKey(), states[0]);
-						}
-						else {
-							form.setField(dataEntry.getKey(), states[1]);
-						}
+
+                        if (states != null){
+                            if ("false".equals(dataEntry.getValue()[0])) {
+                                form.setField(dataEntry.getKey(), states[0]);
+                            } else {
+                                form.setField(dataEntry.getKey(), states[1]);
+                            }
+                        }
 					}
 					else if ("signature".equals(dataEntry.getValue()[2])) {
 						Integer pageNo = Integer.valueOf(dataEntry.getValue()[3]);
