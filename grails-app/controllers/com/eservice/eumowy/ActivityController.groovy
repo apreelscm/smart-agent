@@ -492,8 +492,8 @@ class ActivityController {
 
         init {
             action {
-                log.info("init - normalFlow - newProcessFlow : ${newProcessFlow}" )
-                newProcessFlow ? chooseCalc() : selectedPanels()
+                log.info("init - normalFlow - newProcessFlow : ${flow.newProcessFlow}" )
+                flow.newProcessFlow ? chooseCalc() : selectedPanels()
             }
             on("chooseCalc").to "chooseCalc"
             on("selectedPanels"){
@@ -502,12 +502,31 @@ class ActivityController {
         }
 
         chooseCalc{
+            onEntry{
+                if(!flow.getCalculatorSucces){
+                    flow.isContinueEnabled = false;
+                    flow.calcNumber = null
+                    flow.client = null
+                }else{
+                    flow.getCalculatorSucces = false
+                }
+            }
             render(view: "../createProcess/chooseCalc")
-            on("back").to "chooseActivity"
+            on("back").to "backToStart"
             on("getCalculator").to "getCalculator"
             on("continue"){
-                def processInstance = flow.processInstance
+                def processInstance = flow.savedProcess
+
+                def user = springSecurityService.principal
+                processInstance.phNumber = user.nr
+                processInstance.phFirstName = user.imie
+                processInstance.phSurname = user.nazwisko
                 processInstance.calcNumber =  flow.calcNumber
+                if (!processInstance.save(flush:true)){
+                    processInstance.errors.each { log.error(it) }
+                    return "error"
+                }
+
                 flow.processInstance = processInstance
             }.to "selectedPanels"
             on("error").to "chooseCalc"
@@ -516,9 +535,6 @@ class ActivityController {
         getCalculator {
             action {
                 flow.nip = params.nip;
-                flow.calcNumber = null
-                //  flow.client = null
-                flow.isContinueEnabled = false;
 
                 if(!clientService.isClientNipValid(flow.nip)){
                     flash.nipErrorMessage= message(code: 'GetCalculatorCommand.nip.validator.invalid');
@@ -535,10 +551,9 @@ class ActivityController {
                     return error()
                 }
 
-                //flow.client = client;
+                flow.client = client;
 
                 /** sprawdzanie, czy w eUmowy istnieje dla danego Akceptanta niezakończony Proces */
-
                 def lastProcessId = processService.getLastIfIncompleteProcessForClientNip(client.nip)
                 if(!lastProcessId){
                     flash.nipErrorMessage = message(code:"client.todo.error",
@@ -565,31 +580,35 @@ class ActivityController {
 
                 flow.calc = calc;
                 flow.calcNumber =  calcId;
-                flow.processInstance = lastProcess
+                flow.savedProcess = lastProcess
                 flash.calcInfoMessage = message(code:"calc.found.info", default:"Znaleziono");
-
-                flow.isContinueEnabled = true;
             }
-            on("success").to "chooseCalc"
-            on("error").to "chooseCalc"
+            on("success"){
+                flow.isContinueEnabled = true
+                flow.getCalculatorSucces = true
+            }.to "chooseCalc"
+            on("error"){
+                flow.getCalculatorSucces = false;
+            }.to "chooseCalc"
         }
+
 
         selectedPanels{
             onEntry {
-				log.info "SkipPanelsInit: " + flow.skipPanelsInit
+                log.info "SkipPanelsInit: " + flow.skipPanelsInit
                 def processInstance = flow.processInstance;
                 def calc = flow.calc;
                 def processCmd = processService.getSavedProcessCommand(processInstance,calc);
                 flow.data = processCmd
             }
-
             render(view: "../createProcess/selectedPanels")
             on("back").to "chooseCalc"
+            on("error").to "selectedPanels"
             on("acceptPointsButton") {
                 log.info "acceptPointsButton TRIGGERED"
             }.to "selectedPanels"
             on("saveOnly"){ ProcessCommand cmd ->
-                def processInstance = processService.populateProcessWithData(flow.processInstance,cmd)
+                Process processInstance = processService.populateProcessWithData(flow.processInstance,cmd)
 
                 if (!processInstance.save()){
                     processInstance.errors.each {
@@ -609,8 +628,11 @@ class ActivityController {
                     return error();
                 }
 
-                def processInstance = populateProcessWithData(flow.processInstance,cmd)
+                Process processInstance = processService.populateProcessWithData(flow.processInstance,cmd)
                 processInstance.notesToCoa = cmd.notes;
+
+                flow.representative1 = cmd.reprezentant1Tytul + " " + cmd.reprezentant1Imie + " " + cmd.reprezentant1Nazwisko
+                flow.representative2 = cmd.reprezentant2Tytul + " " + cmd.reprezentant2Imie + " " + cmd.reprezentant2Nazwisko
 
                 if (!processInstance.save()){
                     processInstance.errors.each {
@@ -620,9 +642,9 @@ class ActivityController {
                 }
 
                 flow.processInstance = processInstance
+
             }.to "clientSignature"
         }
-
 
         clientSignature {
             output {
@@ -638,27 +660,43 @@ class ActivityController {
 /** UZUPELNIJ PODPISY SUBFLOW */
     def uzupelnijPodpisyFlow = {
         input {
-            processInstance()
+            processInstance(required: true)
+            newProcessFlow(required: true)
         }
+
+        init {
+            action {
+                log.info("init - uzupelnijPodpisyFlow - newProcessFlow : ${flow.newProcessFlow}" )
+                chooseCalc()
+            }
+            on("chooseCalc").to "chooseCalc"
+        }
+
         chooseCalc{
+            onEntry{
+                if(!flow.getCalculatorSucces){
+                    flow.isContinueEnabled = false;
+                    flow.calcNumber = null
+                    flow.client = null
+                }else{
+                    flow.getCalculatorSucces = false
+                }
+            }
             render(view: "../createProcess/chooseCalc")
             on("back").to "backToStart"
             on("getCalculator").to "getCalculator"
             on("continue"){
-                Process processInstance = flow.processInstance
+                Process processInstance = flow.savedProcess
                 processInstance.calcNumber =  flow.calcNumber
                 processInstance.client =  flow.client
                 processInstance.save();
-
                 flow.processInstance = processInstance
-            }.to "selectedPanels"
+            }.to "clientSignature"
         }
 
         getCalculator {
             action {
                 flow.nip = params.nip;
-                flow.calcNumber = null
-                flow.client = null
 
                 def processInstance = flow.processInstance
 
@@ -672,30 +710,30 @@ class ActivityController {
                 if(clientService.clientExists(client)){
                     flash.nipInfoMessage =  message(code:"client.found.info", default:"Znaleziono");
                 }else {
-                    /** sprawdzanie, czy to nie jest nowa umowa */
-                    def hasNowaUmowa = processService.containsActivity(processInstance.activities,"nowaUmowa")
-                    if(hasNowaUmowa){
-                        flash.nipInfoMessage =  message(code:"client.new.info", default:"Nowy klient");
-                        client = new Client(nip: params.nip)
-                    }else{
-                        flash.nipErrorMessage = message(code:"client.notFound.error", default:"Brak klienta");
-                        return error();
-                    }
+                    flash.nipErrorMessage = message(code:"client.notFound.error", default:"Brak klienta");
+                    return error()
                 }
 
                 flow.client = client;
-
                 /** sprawdzanie, czy w eUmowy istnieje dla danego Akceptanta niezakończony Proces */
-
-                if(processService.hasIncompleteProcessForClient(client)){
-                    flash.nipErrorMessage = message(code:"client.unfinishedProcess.error", default:"Dla Akceptanta istnieje niezakończony Proces");
-                    return error();
+                def lastProcessId = processService.getLastIfIncompleteProcessForClientNip(client.nip)
+                if(!lastProcessId){
+                    flash.nipErrorMessage = message(code:"client.todo.error",
+                            default:"Brak możliwości poprawy danych, istnieją inne nowsze zaakceptowane procesy dla tego Akceptanta");
+                    return error()
                 }
 
-                flash.isContinueEnabled = true;
+                def lastProcess = Process.get(lastProcessId)
+                flow.savedProcess = lastProcess
             }
-            on("success").to "clientSignature"
-            on("error").to "chooseCalc"
+            on("success"){
+                flash.calcInfoMessage = message(code:"calc.todo.info", default:"Pomijanie kalkulatora");
+                flow.isContinueEnabled = true
+                flow.getCalculatorSucces = true
+            }.to "chooseCalc"
+            on("error"){
+                flow.getCalculatorSucces = false;
+            }.to "chooseCalc"
         }
 
         clientSignature {
