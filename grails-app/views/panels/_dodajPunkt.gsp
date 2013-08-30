@@ -33,7 +33,7 @@
 				var data = panelTemplate.replace(/%ID%/gm, panelCount);
 				jQuery("#addNewPointPanel").prepend(data);
 				setupNewPointPanelHandlers(panelCount-1, panelCount, "points");
-				setupNewPointPanelData("points["+(panelCount-1)+"].", "points["+panelCount+"].");
+				setupNewPointPanelData("points\\["+(panelCount-1)+"\\]\\.", "points\\["+panelCount+"\\]\\.");
 				panelCount++;
 				panelInternalCount++;
 				globalPanelCount++;

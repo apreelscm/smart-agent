@@ -101,8 +101,13 @@
     <g:form class="panelsForm">
         <g:each var="panel" in="${processInstance.panels}" status="i">
             <g:render template="/panels/${panel.name}"/>
+            <g:if test="${panel.name == 'scoring' && slipPanelsInit == true}">
+            	<g:each var="point" in="${data.points}" status="j">
+            		<g:render template="/panels/danePunktu" model="[id: j, data: point]" />
+            	</g:each>
+            </g:if>
         </g:each>
-
+		
         <g:render template="/panels/uwagi"/>
     </g:form>
 
