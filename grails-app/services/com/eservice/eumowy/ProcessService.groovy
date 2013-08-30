@@ -1,18 +1,15 @@
 package com.eservice.eumowy
 
-import grails.util.Environment
-
-import org.apache.commons.collections.FactoryUtils
-import org.apache.commons.collections.ListUtils
-import org.apache.commons.lang.SerializationUtils
-import org.apache.commons.lang.WordUtils
-
 import com.eservice.eumowy.command.AllPointsCommand
 import com.eservice.eumowy.command.AllPosCommand
 import com.eservice.eumowy.command.PointCommand
 import com.eservice.eumowy.command.ProcessCommand
 import com.eservice.eumowy.util.DateUtils
-
+import grails.util.Environment
+import org.apache.commons.collections.FactoryUtils
+import org.apache.commons.collections.ListUtils
+import org.apache.commons.lang.SerializationUtils
+import org.apache.commons.lang.WordUtils
 
 class ProcessService {
 
@@ -176,7 +173,26 @@ class ProcessService {
     /**
      *  save data
      * */
-    List<PointCommand> points = ListUtils.lazyList([], FactoryUtils.instantiateFactory(PointCommand))
+
+
+    def populateProcessWithData(def process, def cmd){
+        def processDataList = getDataFromPanels(cmd)
+        process.processData?.clear()
+        processDataList.each { data ->
+            process.addToProcessData(data)
+            process.discard();
+        }
+
+        def pointsDataList = getPointAndPosData(cmd)
+        process.points?.clear()
+        pointsDataList.each { data ->
+            process.addToPoints(data)
+            process.discard()
+        }
+        process
+    }
+
+     List<PointCommand> points = ListUtils.lazyList([], FactoryUtils.instantiateFactory(PointCommand))
     List<AllPointsCommand> allPoints = ListUtils.lazyList([], FactoryUtils.instantiateFactory(AllPointsCommand))
     List<AllPosCommand> allPoses = ListUtils.lazyList([], FactoryUtils.instantiateFactory(AllPosCommand))
     def getDataFromPanels(def cmd) {
@@ -257,6 +273,17 @@ class ProcessService {
 		}
 		
 		return pointsList
+	}
+	
+	def findDocumentByName(def documents, def name) {
+		if (documents != null) {
+			for(DocumentFile df : documents) {
+				if (df.name.equals(name))
+					return df
+			}
+		}
+		
+		return null
 	}
 
 }

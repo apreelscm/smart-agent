@@ -12,7 +12,6 @@ import org.jasypt.util.password.ConfigurablePasswordEncryptor
 
 // Place your Spring DSL code here
 
-
 beans = {
 
     /**
@@ -57,7 +56,6 @@ beans = {
     /**
      * LOGIN BEANS
      * */
-
     customPropertyEditorRegistrar(CustomPropertyEditorRegistrar){}
 
     // custom authentication
