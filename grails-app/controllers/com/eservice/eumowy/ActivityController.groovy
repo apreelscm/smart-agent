@@ -33,11 +33,20 @@ class ActivityController {
      * */
     def createProcessFlow = {
 
+        init{
+            action{
+                log.info("init new flow")
+                flow.isGoBack = false;
+            }
+            on("success").to "defineActivity"
+        }
+
         defineActivity{
             onEntry{
-                if(!flow.processInstance){
-                    flow.newProcessFlow = true
+                if(flow.isGoBack == false){
+                    log.info("start new flow")
                     flow.processInstance =  new Process();
+                    flow.newProcessFlow = true
                 }
 
                 println(" flow.processInstance: "+ flow.processInstance)
@@ -86,7 +95,9 @@ class ActivityController {
         /** default full subflow */
         normal {
             subflow(action: "normal", input: [processInstance : { flow.processInstance }, newProcessFlow : {flow.newProcessFlow}])
-            on("backToStart").to "defineActivity"
+            on("backToStart"){
+                flow.isGoBack = true;
+            }to "defineActivity"
             on("clientSignature") {
                 flow.processInstance = currentEvent.attributes.process
 				flow.representative1 = currentEvent.attributes.representative1
@@ -97,7 +108,9 @@ class ActivityController {
         /** popraw dane subflow */
         poprawDane {
             subflow(action: "poprawDane", input: [processInstance : { flow.processInstance }, newProcessFlow : {flow.newProcessFlow}])
-            on("backToStart").to "defineActivity"
+            on("backToStart"){
+                flow.isGoBack = true;
+            }to "defineActivity"
             on("finish") {
                 flow.processInstance = currentEvent.attributes.process
             }.to "finish"
@@ -106,7 +119,9 @@ class ActivityController {
         /** uzupelnij podpisy subflow */
         uzupelnijPodpisy {
             subflow(action: "uzupelnijPodpisy", input: [processInstance : { flow.processInstance }, newProcessFlow : {flow.newProcessFlow}])
-            on("backToStart").to "defineActivity"
+            on("backToStart"){
+                flow.isGoBack = true;
+            }to "defineActivity"
             on("finish") {
                 flow.processInstance = currentEvent.attributes.process
             }.to "finish"

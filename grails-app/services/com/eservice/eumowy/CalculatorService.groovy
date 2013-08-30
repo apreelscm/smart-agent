@@ -22,16 +22,6 @@ class CalculatorService {
         println("calcNames:"+signaturesCalcNames+ " size:"+signaturesCalcNames.size())
         println("contains ALL:"+calcKeyList.containsAll(signaturesCalcNames))
 
-      /*  println("containsAll:"+signaturesCalcNames.every {
-           if(calcKeyList.con(it)){
-               log.debug(it.name)
-               return true;
-           }
-            else{
-               log.warn(it)
-               return false;
-           }
-        });*/
 
         return calcKeyList.containsAll(signaturesCalcNames)
     }
