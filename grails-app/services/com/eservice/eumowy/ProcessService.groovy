@@ -1,15 +1,17 @@
 package com.eservice.eumowy
 
+import grails.util.Environment
+
+import org.apache.commons.collections.FactoryUtils
+import org.apache.commons.collections.ListUtils
+import org.apache.commons.lang.SerializationUtils
+import org.apache.commons.lang.WordUtils
+
 import com.eservice.eumowy.command.AllPointsCommand
 import com.eservice.eumowy.command.AllPosCommand
 import com.eservice.eumowy.command.PointCommand
 import com.eservice.eumowy.command.ProcessCommand
 import com.eservice.eumowy.util.DateUtils
-import grails.util.Environment
-import org.apache.commons.collections.FactoryUtils
-import org.apache.commons.collections.ListUtils
-import org.apache.commons.lang.SerializationUtils
-import org.apache.commons.lang.WordUtils
 
 class ProcessService {
 
@@ -106,7 +108,7 @@ class ProcessService {
         log.info("getSavedProcessCommand processId = ${process.id}")
         def cmd = initProcessCommand(process)
         loadProcessData(process,cmd)
-       // loadPoints()
+		loadPoints(process, cmd)
        // loadPoses()
         prepareProcessCommand(cmd, calc, cbdMethods)
     }
@@ -169,14 +171,72 @@ class ProcessService {
         }
         cmd
     }
-
+	
+	def loadPoints(def process, def cmd) {
+		log.info "loadPoints"
+		process.points.each { PointData point ->
+			PointCommand pc = new PointCommand()
+			
+			point.properties.each { key, value ->
+				log.info "PointData Key: " + key
+				if (["class", "posDatas", "errors", "constraints", "processId", "cbdId", "pointDetailsId", "empty"].contains(key) || value == null){
+					return
+				}
+				
+				if (PointCommand.metaClass.respondsTo(PointCommand, "set"+key.capitalize())) {
+					pc."set${key.capitalize()}"(value)
+				}
+			}
+			
+			point.pointDetails?.properties.each { key, value ->
+				log.info "PointDataDetails Key: " + key
+				if (["class", "posDatas", "errors", "constraints", "processId", "cbdId", "pointDetailsId", "empty"].contains(key) || value == null){
+					return
+				}
+				
+				if (PointCommand.metaClass.respondsTo(PointCommand, "set"+key.capitalize())) {
+					pc."set${key.capitalize()}"(value)
+				}
+			}
+			
+			def posData = point.posDatas != null && point.posDatas.size() > 0 ? point.posDatas[0] : null 
+			
+			posData?.properties.each { key, value ->
+				log.info "PosData Key: " + key
+				if (["class", "cbdId", "process", "point", "errors", "constraints", "empty", "", ""].contains(key) || value == null){
+					return
+				}
+				
+				if (PointCommand.metaClass.respondsTo(PointCommand, "set"+key.capitalize())) {
+					pc."set${key.capitalize()}"(value)
+				}
+			}
+			
+			posData?.posDetails?.properties.each { key, value ->
+				log.info "PosDataDetails Key: " + key
+				if (["class", "cbdId", "process", "point", "errors", "constraints", "empty", "", ""].contains(key) || value == null){
+					return
+				}
+				
+				if (PointCommand.metaClass.respondsTo(PointCommand, "set"+key.capitalize())) {
+					pc."set${key.capitalize()}"(value)
+				}
+			}
+			
+			cmd.points.add(pc)
+		}
+	}
+	
     /**
      *  save data
      * */
 
-
     def populateProcessWithData(def process, def cmd){
         def processDataList = getDataFromPanels(cmd)
+
+        //zapis obecnej daty na potrzeby dokumentow
+        addCurrentDate(processDataList);
+
         process.processData?.clear()
         processDataList.each { data ->
             process.addToProcessData(data)
@@ -192,7 +252,11 @@ class ProcessService {
         process
     }
 
-     List<PointCommand> points = ListUtils.lazyList([], FactoryUtils.instantiateFactory(PointCommand))
+    def addCurrentDate(def processDataList){
+        processDataList.add(new ProcessData([name: 'dataUmowy', value: DateUtils.getCurrentFormattedDate()]))
+    }
+
+    List<PointCommand> points = ListUtils.lazyList([], FactoryUtils.instantiateFactory(PointCommand))
     List<AllPointsCommand> allPoints = ListUtils.lazyList([], FactoryUtils.instantiateFactory(AllPointsCommand))
     List<AllPosCommand> allPoses = ListUtils.lazyList([], FactoryUtils.instantiateFactory(AllPosCommand))
     def getDataFromPanels(def cmd) {

@@ -20,17 +20,23 @@ class SubscriptionController {
 	def saveSubscription() {
 
         //TODO
-        params.name = "testName";
-        params.surname =  "testSurname";
+        params.name = "testName"
+        params.surname =  "testSurname"
 
-		def subscription = new Subscription(params).save();
+		def subscription = new Subscription(params)
+		subscription.save(flush: true)
 		
         BufferedImage img = SignatureToImage.convertJsonToImage(subscription.content)
 
 		File outputfile = new File(appParametersService.getSubscriptionsPath()+"sign-"+subscription.name+"-"+subscription.surname+"-"+subscription.id+".png")
 		ImageIO.write(img, "png", outputfile)
 		//redirect(action: "preview")
-		render(text: "{\"status\": \"OK\", \"subscriptionId\": " + subscription.id + "}")
+		if (subscription?.id != null) {
+			render(text: "{\"status\": \"OK\", \"subscriptionId\": " + subscription.id + "}")
+		}
+		else {
+			render(text: "{\"status\": \"FAIL\", \"text\": \"Nie udało się zapisać podpisu do bazy!\"}")
+		}
 	}
 	
 	def preview() {
