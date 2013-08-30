@@ -821,7 +821,15 @@ class ActivityController {
 
             //TODO Send emails
             def recipient = getFromProcessData(process, 'kontaktEmail');
-            emailService.sendDocumentsElectronicalVersion(recipient, process.documents)
+            if (recipient){
+                emailService.sendDocumentsElectronicalVersion(recipient, process.documents)
+            } else {
+                def merchantName = getFromProcessData(process, 'akceptantNazwaOficjalna');
+                def merchantNip = getFromProcessData(process, 'nip');
+                emailService.sendDocumentsAcceptedToPostSend(null, process.documents, merchantName, merchantNip)
+            }
+
+
 
         }
         else if ("paper".equals(requestVersion)) {
