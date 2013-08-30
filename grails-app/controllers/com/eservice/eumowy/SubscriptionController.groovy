@@ -20,10 +20,11 @@ class SubscriptionController {
 	def saveSubscription() {
 
         //TODO
-        params.name = "testName";
-        params.surname =  "testSurname";
+        params.name = "testName"
+        params.surname =  "testSurname"
 
-		def subscription = new Subscription(params).save();
+		def subscription = new Subscription(params)
+		subscription.save(flush: true)
 		
         BufferedImage img = SignatureToImage.convertJsonToImage(subscription.content)
 

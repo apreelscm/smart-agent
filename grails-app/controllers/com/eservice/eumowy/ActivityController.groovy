@@ -546,6 +546,7 @@ class ActivityController {
 
         selectedPanels{
             onEntry {
+				log.info "SkipPanelsInit: " + flow.skipPanelsInit
                 def processInstance = flow.processInstance;
                 def calc = flow.calc;
                 def processCmd = processService.getSavedProcessCommand(processInstance,calc);

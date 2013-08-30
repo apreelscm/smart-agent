@@ -73,10 +73,12 @@ class PosDataDetails implements Serializable {
 	String maska
 	String bramka
 	String adresIp
+	String tytulInformatykStatyczna
 	String kontaktInformatykStatyczna
 	String imieInformatykStatyczna
 	String nazwiskoInformatykStatyczna
 	
+	String tytulInformatykDynamiczna
 	String kontaktInformatykDynamiczna
 	String imieInformatykDynamiczna
 	String nazwiskoInformatykDynamiczna	
@@ -146,9 +148,11 @@ class PosDataDetails implements Serializable {
 		maska column: "statdevice_mask"
 		bramka column: "statdevice_gateway"
 		adresIp column: "statdevice_ip"
+		tytulInformatykStatyczna column: "statdevicesupp_title"
 		kontaktInformatykStatyczna column: "statdevicesupp_contact"
 		imieInformatykStatyczna column: "statdevicesupp_contactname"
 		nazwiskoInformatykStatyczna column: "statdevicesupp_contactsurname"
+		tytulInformatykDynamiczna column: "dynamicdevicesupp_title"
 		kontaktInformatykDynamiczna column: "dynamicdevicesupp_contact"
 		imieInformatykDynamiczna column: "dynamicdevicesupp_name"
 		nazwiskoInformatykDynamiczna column: "dynamicdevicesupp_surname"

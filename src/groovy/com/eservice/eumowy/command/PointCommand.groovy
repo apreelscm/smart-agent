@@ -33,11 +33,12 @@ class PointCommand implements Serializable {
 	String wydrukLinia1
 	String wydrukLinia2
 	
-	String contactAddressStreetType
+	String korespondencjaJakDlaMerchantaLubWydruku
+	String korespondencjaUlicaTytul
 	String korespondencjaUlica
 	Integer korespondencjaNrDomu
 	Integer korespondencjaNrLokalu
-	String koresponedencjaMiasto
+	String korespondencjaMiasto
 	String korespondencjaKodPocztowy
 	String korespondencjaPoczta
 		
@@ -51,7 +52,7 @@ class PointCommand implements Serializable {
 	Integer cbdId
 	
 	String dialupTyp
-	Integer dialupIloscc
+	Integer dialupIlosc
 	Integer dialupPPIlosc
 	BigDecimal dialupCena
 	BigDecimal dialupPPCena
@@ -120,11 +121,23 @@ class PointCommand implements Serializable {
 	String maska
 	String bramka
 	String adresIp
+	String tytulInformatykStatyczna
 	String kontaktInformatykStatyczna
 	String imieInformatykStatyczna
 	String nazwiskoInformatykStatyczna
 	
+	String tytulInformatykDynamiczna
 	String kontaktInformatykDynamiczna
 	String imieInformatykDynamiczna
 	String nazwiskoInformatykDynamiczna	
+	
+	/* Not Saved To DB - only GUI */
+	Boolean takSamoDlaWszystkichPunktow
+	Boolean zestawPosTakSamoDlaWszystkichPunktow
+	Boolean wydrukJakDlaMerchanta
+	Boolean wydrukJakPowyzej
+	Boolean dodatkoweWyposazenieTakSamoDlaWszystkichPunktow
+	Boolean funkcjeTerminalaTakSamoDlaWszystkichPunktow
+	Boolean informacjeTechniczneTakSamoDlaWszystkichPunktow
+	Boolean kontaktWPunkcieJakDlaMerchanta
 }
