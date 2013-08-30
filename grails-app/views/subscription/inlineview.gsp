@@ -21,7 +21,7 @@
       			updateSubscriptionStatus("OK", "${params.linkid}", result.subscriptionId);
       		}
       		else {
-      			jQuery("#dialog").html(result.status);
+      			jQuery("#dialog").html(result.text);
       		}
      		
       	});

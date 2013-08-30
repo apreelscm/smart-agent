@@ -2,13 +2,11 @@ package com.eservice.eumowy
 
 class Subscription implements Serializable {
 
-    String content;
-	
-	String name;
-	String surname;
-	
-	PersonType personType;
-	PersonRole personRole;
+    String content
+	String name
+	String surname
+	PersonType personType
+	PersonRole personRole
 	
 	public enum PersonType {
 		MR("Pan"),
@@ -17,12 +15,12 @@ class Subscription implements Serializable {
 		private final String text;
 		
 		private PersonType(final String text) {
-			this.text = text;
+			this.text = text
 		}
 
 		@Override
 		public String toString() {
-			return text;
+			return text
 		}
 	}
 	
@@ -31,22 +29,22 @@ class Subscription implements Serializable {
 		ACCEPTANT2("Akceptant 2"),
 		PH("PH")
 		
-		private final String text;
+		private final String text
 		
 		private PersonRole(final String text) {
-			this.text = text;
+			this.text = text
 		}
 
 		@Override
 		public String toString() {
-			return text;
+			return text
 		}
 	}
 
     static belongsTo = [process:Process]
 
     static constraints = {
-        content(blank:false)
+        content(blank:false, maxlength: 10000)
         name(blank:false)
         surname(blank:false)
 		personType(nullable:true)
