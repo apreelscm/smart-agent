@@ -24,6 +24,7 @@ class SubscriptionController {
         params.surname =  "testSurname"
 
 		def subscription = new Subscription(params)
+		subscription.signDate = new Date()
 		subscription.save(flush: true)
 		
         BufferedImage img = SignatureToImage.convertJsonToImage(subscription.content)

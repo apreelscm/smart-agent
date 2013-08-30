@@ -5,6 +5,7 @@ class Subscription implements Serializable {
     String content
 	String name
 	String surname
+	Date signDate
 	PersonType personType
 	PersonRole personRole
 	
@@ -44,9 +45,10 @@ class Subscription implements Serializable {
     static belongsTo = [process:Process]
 
     static constraints = {
-        content(blank:false, maxlength: 10000)
-        name(blank:false)
-        surname(blank:false)
+        process(nullable:true)
+		content(blank:false, maxSize: 10000)
+        name(blank: false)
+        surname(blank: false)
 		personType(nullable:true)
 		personRole(nullable:true)
     }
