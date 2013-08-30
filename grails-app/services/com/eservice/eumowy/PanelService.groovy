@@ -442,7 +442,6 @@ class PanelService {
 
     def getUmowa2(ProcessCommand cmd ,def calc) {
         cmd.miejsceUmowy= cmd.miejsceUmowy ?: "-"
-        cmd.dataUmowy = cmd.dataUmowy ?: new Date().format("yyyy-MM-dd")
     }
 
     def getUwagi(ProcessCommand cmd ,def calc) {

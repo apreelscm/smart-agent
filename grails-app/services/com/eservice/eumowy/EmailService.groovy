@@ -42,7 +42,7 @@ class EmailService {
         sendMail(emailTemplate, emailTemplate.sender, recipient, null, [merchantName: merchantName], documents)
 	}
 
-    def sendDocumentsAcceptedToPostSend(List<DocumentFile> documents, def merchantName, def merchantNip) {
+    def sendDocumentsAcceptedToPostSend(def recipient, List<DocumentFile> documents, def merchantName, def merchantNip) {
         def emailTemplate = EmailTemplates.findByName(EmailTemplates.EmailTemplateType.DOCUMENTS_MISSING_MAIL)
         if(!emailTemplate) return;
 
