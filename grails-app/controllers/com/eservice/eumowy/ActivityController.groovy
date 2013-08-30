@@ -89,6 +89,8 @@ class ActivityController {
             on("backToStart").to "defineActivity"
             on("clientSignature") {
                 flow.processInstance = currentEvent.attributes.process
+				flow.representative1 = currentEvent.attributes.representative1
+				flow.representative2 = currentEvent.attributes.representative2
             }.to "clientSignature"
         }
 
@@ -159,7 +161,7 @@ class ActivityController {
                 processInstance.save(flush:true)
                 flow.processInstance = processInstance
             }
-            render(view: "../createProcess/clientSignature", model: [processInstance: flow.processInstance, totalPagesCount: flow.totalPagesCount])
+            render(view: "../createProcess/clientSignature", model: [processInstance: flow.processInstance, totalPagesCount: flow.totalPagesCount, representative1: flow.representative1, representative2: flow.representative2])
             on("back"){
                 flow.newProcessFlow = false
             }to "chooseSubFlow"
@@ -421,7 +423,10 @@ class ActivityController {
                 processInstance.notesToCoa = cmd.notes;
                 def processDataList = processService.getDataFromPanels(cmd)
 				def pointsDataList = processService.getPointAndPosData(cmd)
-
+				
+				flow.representative1 = cmd.reprezentant1Tytul + " " + cmd.reprezentant1Imie + " " + cmd.reprezentant1Nazwisko
+				flow.representative2 = cmd.reprezentant2Tytul + " " + cmd.reprezentant2Imie + " " + cmd.reprezentant2Nazwisko
+				
                 processInstance.processData?.clear()
                 processDataList.each { data ->
                     processInstance.addToProcessData(data)
@@ -443,12 +448,15 @@ class ActivityController {
 
 
                 flow.processInstance = processInstance
+				
             }.to "clientSignature"
         }
 
         clientSignature {
             output {
                 process {flow.processInstance}
+				representative1 { flow.representative1 }
+				representative2 { flow.representative2 }
             }
         }
         backToStart()
