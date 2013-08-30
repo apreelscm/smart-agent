@@ -13,7 +13,7 @@
     </fieldset>
 </div>
 <div id="hiddenPanel" style="display: none;">
-	<g:render template="../panels/danePunktu" model="[id:'%ID%']"/>
+	<g:render template="../panels/danePunktu" model="[id:'%ID%', panelType: 'points']"/>
 </div>
 <r:require module="jquery_ui"/>
 	

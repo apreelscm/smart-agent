@@ -10,7 +10,7 @@
     </fieldset>
 </div>
 <div id="hiddenPosPanel" style="display: none;">
-	<g:render template="../panels/danePos" />
+	<g:render template="../panels/danePos" model="[id:'%ID%', panelType: 'poses']"/>
 </div>
 <r:require module="jquery_ui"/>
 	
@@ -22,10 +22,10 @@
 		jQuery("#hiddenPosPanel").remove();
 			
 		jQuery("#addNewPosButton").on("click", function() {
-			var data = panelPosTemplate.replace(/%ID%/gm, "-pos" + panelPosCount);
+			var data = panelPosTemplate.replace(/%ID%/gm, panelPosCount);
 			jQuery("#addNewPosPanel").prepend(data);
-			setupNewPosPanelHandlers(panelPosCount-1, panelPosCount, "-pos");
-			setupNewPointPanelData("-pos"+(panelPosCount-1), "-pos"+panelPosCount);
+			setupNewPosPanelHandlers(panelPosCount-1, panelPosCount, "poses");
+			setupNewPointPanelData("poses\\["+(panelCount-1)+"\\]\\.", "poses\\["+panelCount+"\\]\\.");
 			panelPosCount++;
 			globalPanelPosCount++;
 			jQuery("#newPosPanelCount").val(panelPosCount);
