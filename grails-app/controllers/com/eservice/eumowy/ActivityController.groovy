@@ -48,8 +48,6 @@ class ActivityController {
                     flow.processInstance =  new Process();
                     flow.newProcessFlow = true
                 }
-
-                println(" flow.processInstance: "+ flow.processInstance)
             }
             on("continue") { DefineActivityCommand cmd ->
                 def processInstance = flow.processInstance
@@ -111,9 +109,11 @@ class ActivityController {
             on("backToStart"){
                 flow.isGoBack = true;
             }to "defineActivity"
-            on("finish") {
+            on("clientSignature") {
                 flow.processInstance = currentEvent.attributes.process
-            }.to "finish"
+                flow.representative1 = currentEvent.attributes.representative1
+                flow.representative2 = currentEvent.attributes.representative2
+            }.to "clientSignature"
         }
 
         /** uzupelnij podpisy subflow */
@@ -122,9 +122,11 @@ class ActivityController {
             on("backToStart"){
                 flow.isGoBack = true;
             }to "defineActivity"
-            on("finish") {
+            on("clientSignature") {
                 flow.processInstance = currentEvent.attributes.process
-            }.to "finish"
+                flow.representative1 = currentEvent.attributes.representative1
+                flow.representative2 = currentEvent.attributes.representative2
+            }.to "clientSignature"
         }
 
         /** send email only subflow*/
@@ -185,7 +187,11 @@ class ActivityController {
                 processInstance.save(flush:true)
                 flow.processInstance = processInstance
             }
-            render(view: "../createProcess/clientSignature", model: [processInstance: flow.processInstance, totalPagesCount: flow.totalPagesCount, representative1: flow.representative1, representative2: flow.representative2])
+            render(view: "../createProcess/clientSignature", model: [
+                    processInstance: flow.processInstance,
+                    totalPagesCount: flow.totalPagesCount,
+                    representative1: flow.representative1,
+                    representative2: flow.representative2])
             on("back"){
                 flow.newProcessFlow = false
             }to "chooseSubFlow"
@@ -215,7 +221,6 @@ class ActivityController {
                 log.info "PARAMS: " + params
                 def processInstance = flow.processInstance
                 _processDocumentCreation(processInstance, params.requestVersion)
-
 
                 processInstance.status = Process.ProcessStatus.WAITING
                 flow.processInstance = processInstance
@@ -312,19 +317,18 @@ class ActivityController {
                 processInstance.calcNumber =  flow.calcNumber
 
                 Client client = flow.client
-                log.info("client id:"+client)
+                log.info("flow client id:"+client)
                 if (!client.id && !client.save(flush:true)){
                     client.errors.each { log.error(it) }
                     return "error"
                 }
 
+                def user = springSecurityService.principal
+                processInstance.phNumber = user.nr
+                processInstance.phFirstName = user.imie
+                processInstance.phSurname = user.nazwisko
                 processInstance.client =  client
                 processInstance.status = Process.ProcessStatus.NEW
-
-                def user = springSecurityService.principal
-                processInstance.phNumber = user.nr//sec.loggedInUserInfo(field: 'nr')
-                processInstance.phFirstName = user.imie// sec.loggedInUserInfo(field: 'imie')
-                processInstance.phSurname = user.nazwisko//sec.loggedInUserInfo(field: 'nazwisko')
 
                 if (!processInstance.save(flush:true)){
                     processInstance.errors.each { log.error(it) }
@@ -622,6 +626,8 @@ class ActivityController {
         clientSignature {
             output {
                 process {flow.processInstance}
+                representative1 { flow.representative1 }
+                representative2 { flow.representative2 }
             }
         }
         backToStart()
@@ -694,6 +700,8 @@ class ActivityController {
         clientSignature {
             output {
                 process {flow.processInstance}
+                representative1 { flow.representative1 }
+                representative2 { flow.representative2 }
             }
         }
 
