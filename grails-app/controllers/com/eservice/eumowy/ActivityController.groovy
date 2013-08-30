@@ -100,8 +100,8 @@ class ActivityController {
             }to "defineActivity"
             on("clientSignature") {
                 flow.processInstance = currentEvent.attributes.process
-				flow.representative1 = currentEvent.attributes.representative1
-				flow.representative2 = currentEvent.attributes.representative2
+                flow.representative1 = currentEvent.attributes.representative1
+                flow.representative2 = currentEvent.attributes.representative2
             }.to "clientSignature"
         }
 
@@ -163,22 +163,22 @@ class ActivityController {
                     int pc = pdfService.getPageCountFromPdf(documentData)
                     totalPagesCount += pc
 
-					if (processService.findDocumentByName(processInstance.documents, sig.templatePath) == null) {
-						log.info "Creating new document [${sig.templatePath}]"
-						DocumentFile df = new DocumentFile(name: sig.templatePath, dateCreated: new Date(), lastUpdated: new Date(), pagesCount: pc)
-						df.setContent(new DocumentContent(content: documentData))
-						df.save(flush: true)
-						log.info "DF id: " + df.id + " PageCount: " + df.pagesCount
-						log.info "Process ID: " + processInstance.id
-						processInstance.addToDocuments(df)
-						processInstance.discard();
-					}
-					else {
-						log.info "Updating existing document [${sig.templatePath}]"
-						DocumentFile df = processService.findDocumentByName(processInstance.documents, sig.templatePath)
-						df.content.setContent(documentData)
-						df.save(flush: true)
-					}
+                    if (processService.findDocumentByName(processInstance.documents, sig.templatePath) == null) {
+                        log.info "Creating new document [${sig.templatePath}]"
+                        DocumentFile df = new DocumentFile(name: sig.templatePath, dateCreated: new Date(), lastUpdated: new Date(), pagesCount: pc)
+                        df.setContent(new DocumentContent(content: documentData))
+                        df.save(flush: true)
+                        log.info "DF id: " + df.id + " PageCount: " + df.pagesCount
+                        log.info "Process ID: " + processInstance.id
+                        processInstance.addToDocuments(df)
+                        processInstance.discard();
+                    }
+                    else {
+                        log.info "Updating existing document [${sig.templatePath}]"
+                        DocumentFile df = processService.findDocumentByName(processInstance.documents, sig.templatePath)
+                        df.content.setContent(documentData)
+                        df.save(flush: true)
+                    }
                 }
 
                 flow.totalPagesCount = totalPagesCount;
@@ -268,7 +268,7 @@ class ActivityController {
         init {
             action {
                 log.info("init - normalFlow - newProcessFlow : ${flow.newProcessFlow}" )
-               flow.newProcessFlow ? chooseActivity() : selectedPanels()
+                flow.newProcessFlow ? chooseActivity() : selectedPanels()
             }
             on("chooseActivity").to "chooseActivity"
             on("selectedPanels"){
@@ -294,6 +294,15 @@ class ActivityController {
         }
 
         chooseCalc{
+            onEntry{
+                if(!flow.getCalculatorSucces){
+                    flow.isContinueEnabled = false;
+                    flow.calcNumber = null
+                    flow.client = null
+                }else{
+                    flow.getCalculatorSucces = false
+                }
+            }
             render(view: "../createProcess/chooseCalc")
             on("back").to "chooseActivity"
             on("getCalculator").to "getCalculator"
@@ -304,9 +313,10 @@ class ActivityController {
 
                 Client client = flow.client
                 log.info("client id:"+client)
-                client.save(flush:true);
-
-                println("err:"+client.errors)
+                if (!client.id && !client.save(flush:true)){
+                    client.errors.each { log.error(it) }
+                    return "error"
+                }
 
                 processInstance.client =  client
                 processInstance.status = Process.ProcessStatus.NEW
@@ -317,9 +327,7 @@ class ActivityController {
                 processInstance.phSurname = user.nazwisko//sec.loggedInUserInfo(field: 'nazwisko')
 
                 if (!processInstance.save(flush:true)){
-                    processInstance.errors.each {
-                        log.error(it)
-                    }
+                    processInstance.errors.each { log.error(it) }
                     return "error"
                 }
 
@@ -332,9 +340,6 @@ class ActivityController {
         getCalculator {
             action {
                 flow.nip = params.nip;
-                flow.calcNumber = null
-                flow.client = null
-                flow.isContinueEnabled = false;
 
                 def processInstance = flow.processInstance
 
@@ -385,11 +390,14 @@ class ActivityController {
                 flow.calc = calc;
                 flow.calcNumber =  calcId;
                 flash.calcInfoMessage = message(code:"calc.found.info", default:"Znaleziono");
-
-                flow.isContinueEnabled = true;
             }
-            on("success").to "chooseCalc"
-            on("error").to "chooseCalc"
+            on("success"){
+                flow.isContinueEnabled = true
+                flow.getCalculatorSucces = true
+            }.to "chooseCalc"
+            on("error"){
+                flow.getCalculatorSucces = false;
+            }.to "chooseCalc"
         }
 
         selectedPanels{
@@ -443,8 +451,8 @@ class ActivityController {
                 Process processInstance = processService.populateProcessWithData(flow.processInstance,cmd)
                 processInstance.notesToCoa = cmd.notes;
 
-				flow.representative1 = cmd.reprezentant1Tytul + " " + cmd.reprezentant1Imie + " " + cmd.reprezentant1Nazwisko
-				flow.representative2 = cmd.reprezentant2Tytul + " " + cmd.reprezentant2Imie + " " + cmd.reprezentant2Nazwisko
+                flow.representative1 = cmd.reprezentant1Tytul + " " + cmd.reprezentant1Imie + " " + cmd.reprezentant1Nazwisko
+                flow.representative2 = cmd.reprezentant2Tytul + " " + cmd.reprezentant2Imie + " " + cmd.reprezentant2Nazwisko
 
                 if (!processInstance.save()){
                     processInstance.errors.each {
@@ -454,15 +462,15 @@ class ActivityController {
                 }
 
                 flow.processInstance = processInstance
-				
+
             }.to "clientSignature"
         }
 
         clientSignature {
             output {
                 process {flow.processInstance}
-				representative1 { flow.representative1 }
-				representative2 { flow.representative2 }
+                representative1 { flow.representative1 }
+                representative2 { flow.representative2 }
             }
         }
         backToStart()
