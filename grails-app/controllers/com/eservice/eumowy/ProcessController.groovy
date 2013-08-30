@@ -16,7 +16,7 @@ class ProcessController {
         redirect(action: "list", params: params)
     }
 
-    @Secured(['PH_ROLE','ADM_ROLE'])
+    @Secured(['EUM_PH_BZOS','EUM_ZRD'])
     def list() {
         params.max = Math.min(params.max ? params.int('max') : 10, 100)
 
@@ -42,7 +42,7 @@ class ProcessController {
     // PH AVAILABLE
     //---------------------------------
 
-    @Secured(['PH_ROLE'])
+    @Secured(['EUM_PH_BZOS'])
     def edit(Long id) {
         def processInstance = Process.get(id)
         if (!processInstance) {
@@ -58,7 +58,7 @@ class ProcessController {
     // ADMIN AVAILABLE
     //---------------------------------
 
-    @Secured(['ADM_ROLE'])
+    @Secured(['EUM_ZRD'])
     def show(String id) {
         def processInstance = Process.get(id)
         if (!processInstance) {
@@ -70,7 +70,7 @@ class ProcessController {
         [processInstance: processInstance]
     }
 
-    @Secured(['ADM_ROLE'])
+    @Secured(['EUM_ZRD'])
     def reject(String id) {
         def processInstance =Process.get(id)
 
@@ -86,7 +86,7 @@ class ProcessController {
         redirect(action: "list")
     }
 
-    @Secured(['ADM_ROLE'])
+    @Secured(['EUM_ZRD'])
     def accept(String id) {
         def processInstance = Process.get(id)
 

@@ -99,17 +99,19 @@ class ProcessService {
         return activities?.any{it.code.equals(activityCode)};
     }
 
-    def createNewProcessCommand(def process, def calc){
-        log.info("createNewProcessCommand processId = ${process.id}")
+    def getNewProcessCommand(def process, def calc){
+        log.info("getNewProcessCommand processId = ${process.id}")
         def cmd = initProcessCommand(process)
         prepareProcessCommand(cmd, calc)
     }
 
-    def createSavedProcessCommand(def process, def calc){
-        log.info("createSavedProcessCommand processId = ${process.id}")
+    def getSavedProcessCommand(def process, def calc){
+        log.info("getSavedProcessCommand processId = ${process.id}")
         def cmd = initProcessCommand(process)
         loadProcessData(process,cmd)
-     //   prepareProcessCommand(cmd, calc, cbdMethods)
+       // loadPoints()
+       // loadPoses()
+        prepareProcessCommand(cmd, calc, cbdMethods)
     }
 
     /**

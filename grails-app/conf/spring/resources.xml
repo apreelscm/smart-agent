@@ -2,7 +2,7 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation=" http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
-
+<!--
     <bean id="passwordEncryptor" class="org.jasypt.util.password.ConfigurablePasswordEncryptor">
         <property name="config" ref="SimpleDigesterConfig" />
         <property name="stringOutputType" value="base64" />
@@ -23,7 +23,7 @@
         </property>
     </bean>
 
-    <bean id="roleService" class="com.eservice.service.security.NoRoleService"/>
+    <bean id="roleService" class="com.eservice.service.security.ECbdRoleService"/>
 
     <bean id="userService" class="com.eservice.service.security.UserService">
         <property name="roleService">
@@ -36,13 +36,13 @@
         <property name="sessionFactory">
             <ref bean="sessionFactory" />
         </property>
-    </bean>
+    </bean>-->
 
-    <bean id="dataSourceExt" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+ <!--   <bean id="dataSourceExt" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="org.h2.Driver" />
         <property name="url" value="jdbc:h2:mem:CbdDb;MVCC=TRUE;LOCK_TIMEOUT=1;INIT=CREATE SCHEMA IF NOT EXISTS CBD_ADM" />
         <property name="username" value="sa" />
         <property name="password" value="" />
-    </bean>
+    </bean>-->
 
 </beans>

@@ -6,8 +6,8 @@ class HomeController {
 
     def index() {
 
-        boolean hasPH = SpringSecurityUtils.ifAllGranted("PH_ROLE");
-        boolean hasAdmin = SpringSecurityUtils.ifAllGranted("ADM_ROLE");
+        boolean hasPH = SpringSecurityUtils.ifAllGranted("EUM_PH_BZOS");
+        boolean hasAdmin = SpringSecurityUtils.ifAllGranted("EUM_ZRD");
 
         if(hasAdmin){
             redirect(controller: "process")

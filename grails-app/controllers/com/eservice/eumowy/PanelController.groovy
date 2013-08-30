@@ -32,7 +32,7 @@ class PanelController {
 
         println("process.panels:"+ process.panels)
 
-        def processCmd =  processService.createSavedProcessCommand(process,calc)
+        def processCmd =  processService.getSavedProcessCommand(process,calc)
         params.max = Math.min(max ?: 10, 100)
         [panelInstanceList: Panel.list(params), panelInstanceTotal: Panel.count(), data: processCmd]
     }

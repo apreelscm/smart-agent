@@ -1,6 +1,6 @@
 package com.eservice.eumowy
 import com.eservice.eumowy.dao.CbdDAO
-import grails.plugin.cache.Cacheable
+import grails.util.Environment
 import org.springframework.transaction.annotation.Isolation
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
@@ -17,18 +17,17 @@ class DictionaryService {
     public static final def GET_PAN_PANI = "getPanPaniComboBox"
     public static final def GET_BANK = "getBank"
 
-    @Cacheable(value="getUlicaComboBox")
+    //@Cacheable(value="getUlicaComboBox")
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_UNCOMMITTED, readOnly = true)
     def getUlicaComboBox() {
-        dictionary.put(GET_ULICA_COMBOBOX, cbdDAO.selectMany(DICTIONARY_PATH + GET_ULICA_COMBOBOX));
-        return dictionary[GET_ULICA_COMBOBOX]
-    }
+        switch (Environment.getCurrent()) {
+            case Environment.DEVELOPMENT:
+                return []
+            case Environment.TEST:
+                dictionary.put(GET_ULICA_COMBOBOX, cbdDAO.selectMany(DICTIONARY_PATH + GET_ULICA_COMBOBOX));
+                return dictionary[GET_ULICA_COMBOBOX]
+        }
 
-    @Cacheable(value="getPanPaniComboBox")
-    @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_UNCOMMITTED, readOnly = true)
-    def getPanPaniComboBox() {
-        dictionary.put(GET_PAN_PANI, cbdDAO.selectMany(DICTIONARY_PATH + GET_PAN_PANI));
-        return dictionary[GET_PAN_PANI]
     }
 
 //    @Cacheable(value="getBank")
