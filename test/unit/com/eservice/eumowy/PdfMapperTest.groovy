@@ -1,4 +1,6 @@
-package com.eservice.eumowy;
+package com.eservice.eumowy
+
+import com.eservice.eumowy.command.ProcessCommand;
 
 //import grails.test.mixin.*
 
@@ -84,6 +86,8 @@ class PdfMapperTest {
 
         def objList = [
                 new Expando(['name': 'akceptantNazwaOficjalna', 'value': 'KGHM Polska Miedź S.A.']),
+                new Expando(['name': 'stanZadbany', 'value': 'true']),
+                new Expando(['name': 'uslugiPlatneZGory', 'value': 'false'])
         ]
 
         def data = PdfMapper.mapProcessDataToPDFData(objList)
@@ -92,5 +96,51 @@ class PdfMapperTest {
             println key + " : " + value
         }
         println "testNazwaOficjalna - end"
+    }
+
+    @Test
+    public void testStringNull() {
+
+        def a = null;
+        def b
+        def c = ''
+        def d = ''
+
+        println 'a: ' + (a?.trim())?a?.trim():"NOT"
+        println 'b: ' + (b?.trim())?b?.trim():"NOT"
+        println 'c: ' + (c?.trim())?c?.trim():"NOT"
+        println 'd: ' + (d?.trim())?d?.trim():"NOT"
+
+
+        def result = (''?.trim())?true:false
+
+        println 'result: ' + result
+
+        boolean ala
+
+        println "empty boolean" + ala
+
+    }
+
+    @Test
+    public void testProcessCommand() {
+
+        def pc = new ProcessCommand();
+        pc.akceptantNazwaOficjalna = 'KGHM POLSKA MIEDZ SA'
+        pc.akceptantNazwaOficjalnaCbd = 'KGHM POLSKA MIEDZ'
+
+        pc.akceptantFax = ''
+        pc.akceptantFaxCbd = ''
+
+        pc.akceptantMiasto = null
+        pc.akceptantMiastoCbd = null
+
+        assert pc.isFromCbd('akceptantNazwaOficjalna')
+        assert !pc.isFromCbd('akceptantFax')
+        assert !pc.isFromCbd('akceptantMiasto')
+        assert !pc.isFromCbd('dupaBlada')
+        assert !pc.isFromCbd('nip')
+
+
     }
 }

@@ -1,5 +1,6 @@
 package com.eservice.eumowy.auth
 
+import grails.util.Environment
 import org.apache.commons.logging.LogFactory
 import org.apache.log4j.MDC
 import org.springframework.security.authentication.AuthenticationProvider
@@ -16,6 +17,7 @@ class EServiceAuthenticationProvider implements AuthenticationProvider {
 
     public static final String EUM_PH_BZOS = "EUM_PH_BZOS";
     public static final String EUM_ZRD = "EUM_ZRD";
+    public static final String EUM_ADMINISTRATOR = "EUM_ADMINISTRATOR";
 
     UserDetailsChecker preAuthenticationChecks
     UserDetailsChecker postAuthenticationChecks
@@ -48,24 +50,32 @@ class EServiceAuthenticationProvider implements AuthenticationProvider {
             throw new UsernameNotFoundException('User not found', username)
         }
 
-    //    switch (Environment.getCurrent()) {
-        //    case Environment.DEVELOPMENT:
+        switch (Environment.getCurrent()) {
+            case Environment.DEVELOPMENT:
                 if(username == "ph"){
                     authorities.add(new GrantedAuthorityImpl(EUM_PH_BZOS))
                 }
+
                 if(username == "admin"){
                     authorities.add(new GrantedAuthorityImpl(EUM_ZRD))
                 }
-              /*  break;
+
+                if(username == "admin"){
+                    authorities.add(new GrantedAuthorityImpl(EUM_ADMINISTRATOR))
+                }
+                break;
             case Environment.TEST:
+                if(userDTO.roles.any{ it.name == EUM_ADMINISTRATOR }){
+                    authorities.add(new GrantedAuthorityImpl(EUM_ADMINISTRATOR))
+                }
                 if(userDTO.roles.any{ it.name == EUM_ZRD }){
                     authorities.add(new GrantedAuthorityImpl(EUM_ZRD))
                 }
-                else  if(userDTO.roles.any{ it.name == EUM_PH_BZOS }){
+                if(userDTO.roles.any{ it.name == EUM_PH_BZOS }){
                     authorities.add(new GrantedAuthorityImpl(EUM_PH_BZOS))
                 }
                 break;
-        }*/
+        }
 
         userDetails = new EServiceUserDetails(userDTO.getLogin(), "pass",
                 true, true, true, true, authorities, 1, userDTO.getFirstName(), userDTO.getLastName(),userDTO.getAuwId()); //userDTO.getUzyId())

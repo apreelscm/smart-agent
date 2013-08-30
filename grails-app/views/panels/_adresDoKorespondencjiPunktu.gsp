@@ -8,23 +8,23 @@
 		  		<span><g:message code="panel.street" /></span>
 		  		<span>
 		  			<dict:streetSelect name="points[${id}].korespondencjaUlicaTytul" id="points[${id}].contactAddressAddressStreetType" value="${pointData?.korespondencjaUlicaTytul}"/>
-                	<g:textField name="points[${id}].korespondencjaUlica" id="points[${id}].contactAddressAddressStreet" value="${pointData?.korespondencjaUlica}" style="width: 200px"/>
+                	<g:textField name="points[${id}].korespondencjaUlica" id="points[${id}].contactAddressAddressStreet" value="${pointData?.korespondencjaUlica}" style="width: 200px" maxlength="19"/>
                 </span>
                 <span>
-                	<span><g:message code="panel.house.number" /></span> <span><g:textField name="points[${id}].korespondencjaNrDomu" id="points[${id}].contactAddressAddressHomeNumber" value="${pointData?.korespondencjaNrDomu}" style="width: 50px"/></span>
-                	<span><g:message code="panel.flat.number" /></span> <span><g:textField name="points[${id}].korespondencjaNrLokalu" id="points[${id}].contactAddressAddressFlatNumber" value="${pointData?.korespondencjaNrLokalu}" style="width: 50px"/></span>
+                	<span><g:message code="panel.house.number" /></span> <span><g:textField name="points[${id}].korespondencjaNrDomu" id="points[${id}].contactAddressAddressHomeNumber" value="${pointData?.korespondencjaNrDomu}" style="width: 50px" maxlength="4"/></span>
+                	<span><g:message code="panel.flat.number" /></span> <span><g:textField name="points[${id}].korespondencjaNrLokalu" id="points[${id}].contactAddressAddressFlatNumber" value="${pointData?.korespondencjaNrLokalu}" style="width: 50px" maxlength="4"/></span>
                 </span>
             </li>
 		  	<li>
 		  		<span><g:message code="panel.city" /></span>
-		  		<span><g:textField name="points[${id}].korespondencjaMiasto" id="points[${id}].contactAddressAddressCity" value="${pointData?.korespondencjaMiasto}" style="width: 280px;"/></span>
+		  		<span><g:textField name="points[${id}].korespondencjaMiasto" id="points[${id}].contactAddressAddressCity" value="${pointData?.korespondencjaMiasto}" style="width: 280px;" maxlength="19"/></span>
 		  		<span>
-		  			<span><g:message code="panel.postal.code" /></span> <span><g:textField name="points[${id}].korespondencjaKodPocztowy" id="points[${id}].contactAddressAddressPostalCode" value="${pointData?.korespondencjaKodPocztowy}" style="width: 50px"/></span>
+		  			<span><g:message code="panel.postal.code" /></span> <span><g:textField name="points[${id}].korespondencjaKodPocztowy" id="points[${id}].contactAddressAddressPostalCode" value="${pointData?.korespondencjaKodPocztowy}" style="width: 50px" maxlength="5" /></span>
 		  		</span>
 		  	</li>
 		  	<li>
 		  		<span><g:message code="panel.postal" /></span>
-		  		<span><g:textField name="points[${id}].korespondencjaPoczta" id="points[${id}].contactAddressAddressPostOffice" value="${pointData?.korespondencjaPoczta}" style="width: 280px;"/></span>
+		  		<span><g:textField name="points[${id}].korespondencjaPoczta" id="points[${id}].contactAddressAddressPostOffice" value="${pointData?.korespondencjaPoczta}" style="width: 280px;" maxlength="19"/></span>
 		  	</li>
 	  	</ul>
 	</div>

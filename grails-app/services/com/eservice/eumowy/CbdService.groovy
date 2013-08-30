@@ -227,7 +227,7 @@ class CbdService {
 
         else if(kln_id == "7343597142"){
             def calcFields =  CalcField.findAll();
-            calc = calcFields.collect{[POLEAPREEL:it,WARTOSCAPREEL:"BRAK"]}
+            calc = calcFields.collect{[POLEAPREEL:it.name,WARTOSCAPREEL:"BRAK"]}
         }
 
         return calc;

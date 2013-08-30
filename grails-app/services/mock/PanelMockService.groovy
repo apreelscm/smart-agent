@@ -213,7 +213,7 @@ class PanelMockService {
         cmd.kontaktNazwisko = "Krawczyk"
         cmd.kontaktTelStacjonarny = "(22) 1234567"
         cmd.kontaktTelKomorkowy = "509123456"
-        cmd.kontaktEmail = "ala.ma.kota@gmail.com"
+        cmd.kontaktEmail = "szkup.pawel@gmail.com"
     }
 
     def getOsobaDoKontaktuWPunkcie(ProcessCommand cmd) {
@@ -394,44 +394,44 @@ class PanelMockService {
     def getScoring(ProcessCommand cmd) {
 
         cmd.scoringMcc = "1234"
-        cmd.scoringDzialalnosc = "1"
+        cmd.scoringDzialalnosc = "uslugi"
         cmd.scoringSzczegolyDzialalnosci = "Handel zywym towarem"
 
-        cmd.scoringIloscTransakcji = "2"
+        cmd.scoringIloscTransakcji = "5-10"
 
-        cmd.scoringCzestoscTransakcji = "4"
+        cmd.scoringCzestoscTransakcji = "kilka_tygodniowo"
 
         cmd.scoringOtwartyZamkniety = "nieczynne"
-        cmd.scoringStanZadbany = "tak"
+        cmd.scoringStanZadbany = "true"
 
-        cmd.scoringWielkoscMiejscowosci = "4"
+        cmd.scoringWielkoscMiejscowosci = "100-500"
 
         cmd.scoringLokalizacjaPunktu = "centrum_miasta"
-        cmd.scoringTypPunktu = "inny"
+        cmd.scoringTypPunktu = "centrum_handlowe"
         cmd.scoringTypPunktuInny = "butik"
 
-        cmd.scoringWielkoscPunktu = "3"
+        cmd.scoringWielkoscPunktu = "400<"
 
-        cmd.scoringAkceptacja = "tak"
+        cmd.scoringAkceptacja = "true"
 
-        cmd.scoringMonitoring = "tak"
+        cmd.scoringMonitoring = "false"
 
-        cmd.scoringDzialalnoscCzas = "2"
+        cmd.scoringDzialalnoscCzas = "5<"
 
         cmd.scoringCharakterystyka = "inny"
         cmd.scoringCharakterystykaInna = "kwiaciarnia"
 
-        cmd.scoringKoncesja = "tak"
+        cmd.scoringKoncesja = "true"
         cmd.rodzajZezwolenia = "Produkcja bimbru"
 
-        cmd.scoringWlasnosc = "1"
+        cmd.scoringWlasnosc = "wlasnosc"
 
-        cmd.scoringDzialalnoscCzas = "2"
+        cmd.scoringDzialalnoscCzas = "<1"
 
-        cmd.scoringSprzedazTowarowEkskluzywnych = "tak"
-        cmd.scoringPonad50ProcentObrotowWNocy = "tak"
-        cmd.scoringRuchTurystycznyPrzygraniczny = "tak"
-        cmd.scoringUslugiPlatneZGory = "tak"
+        cmd.scoringSprzedazTowarowEkskluzywnych = "true"
+        cmd.scoringPonad50ProcentObrotowWNocy = "false"
+        cmd.scoringRuchTurystycznyPrzygraniczny = "true"
+        cmd.scoringUslugiPlatneZGory = "false"
 
         cmd.scoringDochodowosc = "500"
 

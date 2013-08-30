@@ -12,17 +12,18 @@ class CalculatorService {
 
         Set signaturesCalcNames = []
         signatures.each{signature ->
-            signaturesCalcNames.addAll(signature.calcFieldsSignature*.calcField);
+            signaturesCalcNames.addAll(signature.calcFieldsSignature?.collect{it.calcField.name});
         }
 
         println(calc)
-        def calcKeyList = calc.collect { it.POLEAPREEL };
+        def calcKeyList = calc.collect { it.POLEAPREEL }
 
-        println("calc:"+calc)
-        println("calcNames:"+signaturesCalcNames)
-        println("containsAll:"+signaturesCalcNames.every {calcKeyList.contains(it) });
+        println("calcKeyList:"+calcKeyList+ " size:"+calcKeyList.size())
+        println("calcNames:"+signaturesCalcNames+ " size:"+signaturesCalcNames.size())
+        println("contains ALL:"+calcKeyList.containsAll(signaturesCalcNames))
 
-        return signaturesCalcNames.every { calcKeyList.contains(it) };
+
+        return calcKeyList.containsAll(signaturesCalcNames)
     }
 
     def hasCalcProperty(def calc, def key, def value){
@@ -35,5 +36,4 @@ class CalculatorService {
         //println("has ${key} = ${ calc.contains([POLEAPREEL:key, WARTOSCAPREEL:value])}")
         calc.findResult{ it.POLEAPREEL == key ? it.WARTOSCAPREEL : null }
     }
-
 }
