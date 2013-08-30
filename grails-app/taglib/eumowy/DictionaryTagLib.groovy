@@ -12,7 +12,6 @@ class DictionaryTagLib {
     }
 
     def fieldImpl(out, attrs) {
-        log.info("attrs: "+attrs);
         out << g.select(attrs)
     }
 
