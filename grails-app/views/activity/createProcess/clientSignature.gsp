@@ -34,7 +34,6 @@
 		function updateSubscriptionStatus(status, linkid, subId) {
 			if (status == "OK") {
 				updateSubscriptionStatusCount++;
-
 				jQuery("#clientSignatureBackButton").addClass("disabled");
 
 				jQuery("#"+linkid).parent().addClass("disabled");
@@ -263,9 +262,9 @@
 				if (jQuery(e.target).is(":checked")) {
 					jQuery("#noaccept").prop("disabled", true);
 					
-					<g:each in="${com.eservice.eumowy.Activity$ClientType?.values()}">
-					jQuery("#subscribe-${it.name()}").parent().addClass("disabled");
-					</g:each>
+					jQuery("#subscribe-REPRESENTATIVE1").parent().addClass("disabled");
+					jQuery("#subscribe-REPRESENTATIVE2").parent().addClass("disabled");
+					jQuery("#subscribe-PH").parent().addClass("disabled");
 				}
 			});
 			
@@ -273,11 +272,17 @@
 				if (jQuery(e.target).is(":checked")) {
 					jQuery("#noaccept").prop("disabled", false);
 					
-					<g:each in="${com.eservice.eumowy.Activity$ClientType?.values()}">
-						if (isSubscriptionDone["subscribe-${it.name()}"] != true) {
-							jQuery("#subscribe-${it.name()}").parent().removeClass("disabled");
-						}
-					</g:each>
+					if (isSubscriptionDone["subscribe-REPRESENTATIVE1"] != true) {
+						jQuery("#subscribe-REPRESENTATIVE1").parent().removeClass("disabled");
+					}
+					
+					if (isSubscriptionDone["subscribe-REPRESENTATIVE2"] != true) {
+						jQuery("#subscribe-REPRESENTATIVE2").parent().removeClass("disabled");
+					}
+					
+					if (isSubscriptionDone["subscribe-PH"] != true) {
+						jQuery("#subscribe-PH").parent().removeClass("disabled");
+					}
 				}
 			});
 			

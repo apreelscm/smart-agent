@@ -31,7 +31,12 @@ class SubscriptionController {
 		File outputfile = new File(appParametersService.getSubscriptionsPath()+"sign-"+subscription.name+"-"+subscription.surname+"-"+subscription.id+".png")
 		ImageIO.write(img, "png", outputfile)
 		//redirect(action: "preview")
-		render(text: "{\"status\": \"OK\", \"subscriptionId\": " + subscription.id + "}")
+		if (subscription?.id != null) {
+			render(text: "{\"status\": \"OK\", \"subscriptionId\": " + subscription.id + "}")
+		}
+		else {
+			render(text: "{\"status\": \"FAIL\", \"text\": \"Nie udało się zapisać podpisu do bazy!\"}")
+		}
 	}
 	
 	def preview() {
