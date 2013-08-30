@@ -231,9 +231,12 @@ class ProcessService {
      *  save data
      * */
 
-
     def populateProcessWithData(def process, def cmd){
         def processDataList = getDataFromPanels(cmd)
+
+        //zapis obecnej daty na potrzeby dokumentow
+        addCurrentDate(processDataList);
+
         process.processData?.clear()
         processDataList.each { data ->
             process.addToProcessData(data)
@@ -249,7 +252,11 @@ class ProcessService {
         process
     }
 
-     List<PointCommand> points = ListUtils.lazyList([], FactoryUtils.instantiateFactory(PointCommand))
+    def addCurrentDate(def processDataList){
+        processDataList.add(new ProcessData([name: 'dataUmowy', value: DateUtils.getCurrentFormattedDate()]))
+    }
+
+    List<PointCommand> points = ListUtils.lazyList([], FactoryUtils.instantiateFactory(PointCommand))
     List<AllPointsCommand> allPoints = ListUtils.lazyList([], FactoryUtils.instantiateFactory(AllPointsCommand))
     List<AllPosCommand> allPoses = ListUtils.lazyList([], FactoryUtils.instantiateFactory(AllPosCommand))
     def getDataFromPanels(def cmd) {
