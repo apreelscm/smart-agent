@@ -11,11 +11,11 @@
                 	<legend><g:message code="panel.newpoint.pointdata.title" /></legend>
                 	<div class="subpanel-fieldset-centercontent" >
                 		<ul class="table-list vertical-center">
-                			<li><span class="align-right"><g:message code="panel.nip" /></span> <span><g:textField name="points[${id}].nipPunktu" id="points[${id}].nip"/></span></li>
-                			<li><span class="align-right"><g:message code="panel.mcccode" /></span> <span><g:textField name="points[${id}].kodMCC" id="points[${id}].mccCode"/></span> <span><label for="points[${id}].sameForEveryPoint"><g:checkBox id="points[${id}].sameForEveryPoint" /><g:message code="panel.sameforeverypoint" /></label></span></li>
-                			<li><span class="align-right"><g:message code="panel.bussinesstypeinpractice" /></span> <span><g:textField name="points[${id}].rodzProwadzDzialalWPraktyce" id="points[${id}].bussinessTypeInPractice"/></span></li>
-                			<li><span class="align-right"><g:message code="panel.bankaccountnumber" /></span> <span><g:textField name="points[${id}].numerRachunkuBankowego" id="points[${id}].bankAccountNumber"/></span></li>
-                			<li><span class="align-right"><g:message code="panel.bankname" /></span> <span><select name="points[${id}].bank" id="points[${id}].bankName"></select></span></li>
+                			<li><span class="align-right"><g:message code="panel.nip" /></span> <span><g:textField name="points[${id}].nipPunktu" id="points[${id}].nip" maxlength="10"/></span></li>
+                			<li><span class="align-right"><g:message code="panel.mcccode" /></span> <span><g:textField name="points[${id}].kodMCC" id="points[${id}].mccCode" maxlength="4"/></span> <span><label for="points[${id}].sameForEveryPoint"><g:checkBox id="points[${id}].sameForEveryPoint" /><g:message code="panel.sameforeverypoint" /></label></span></li>
+                			<li><span class="align-right"><g:message code="panel.bussinesstypeinpractice" /></span> <span><g:textField name="points[${id}].rodzProwadzDzialalWPraktyce" id="points[${id}].bussinessTypeInPractice"/ maxlength=60""></span></li>
+                			<li><span class="align-right"><g:message code="panel.bankaccountnumber" /></span> <span><g:textField name="points[${id}].numerRachunkuBankowego" id="points[${id}].bankAccountNumber" maxlength="26"/></span></li>
+                			<li><span class="align-right"><g:message code="panel.bankname" /></span> <span><select name="points[${id}].bank" id="points[${id}].bankName" maxlength="50"></select></span></li>
                 		</ul>
                 	</div>
                 </fieldset>
