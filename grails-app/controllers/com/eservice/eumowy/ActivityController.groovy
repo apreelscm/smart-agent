@@ -268,6 +268,9 @@ class ActivityController {
 
                 //SIGNATURES
                 def signatures =  _getSignatures(processInstance.activities)
+
+                log.info("signatures:"+signatures);
+
                 processInstance.signatures = signatures
 
                 flow.processInstance = processInstance

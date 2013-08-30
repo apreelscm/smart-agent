@@ -12,8 +12,4 @@ class CalcField implements Serializable {
         table name: "CALCFIELD", schema: DomainConsts.SHEMA_NAME
         id generator:'sequence', params:[sequence:DomainConsts.SHEMA_NAME+'.CALCFIELD_SEQ']
     }
-
-    String toString(){
-        return name;
-    }
 }
