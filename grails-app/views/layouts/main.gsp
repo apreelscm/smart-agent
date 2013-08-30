@@ -48,8 +48,8 @@
         <ul id="mainMenu">
             <li><a href="#" class="submit">Menu</a>
                 <ul>
-                    <li><a id="saveProcessLink" href="#" style="display: ${params.controller == 'activity' ? '' : 'none'}">Zapisz2</a></li>
-                    %{--<li><a id="saveProcessLink" href="#">Zapisz</a></li>--}%
+                    <li><a id="saveProcessLink" href="#"
+                           style="display: ${params.controller == 'activity' ? '' : 'none'}">Zapisz</a></li>
                     <li><a href="${createLink(controller: 'logout')}">Wyloguj</a>
                     </li>
                 </ul></li>
@@ -66,12 +66,9 @@
     <p id="clock"/>
 </g:if>
 
-
-
-%{--    <div id="spinner" class="spinner" >
-        <g:message code="spinner.alt" default="Proszę czekać..."/>
-    </div>--}%
-
+%{--<div id="spinner" class="spinner">
+    <g:message code="spinner.alt" default="Proszę czekać..."/>
+</div>--}%
 
 <g:javascript library="application"/>
 <r:layoutResources/>

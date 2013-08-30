@@ -3,8 +3,7 @@ package com.eservice.eumowy
 import java.util.List;
 
 class PointDataDetails implements Serializable {
-	List<PosData> posDatas
-	
+
 	BigDecimal phPozysk
 	BigDecimal opiekaBiznesowa
 	BigDecimal opiekaSerwisowaI
@@ -92,6 +91,42 @@ class PointDataDetails implements Serializable {
 	}
 	
 	static constraints = {
+		point(nullable:true)
+		phPozysk(nullable:true)
+		opiekaBiznesowa(nullable:true)
+		opiekaSerwisowaI(nullable:true)
+		opiekaSerwisowaII(nullable:true)
+		opiekaSerwisowaIII(nullable:true)
+		nipPunktu(nullable:true)
+		kodMCC(nullable:true)
+		rodzProwadzDzialalWPraktyce(nullable:true)
+		numerRachunkuBankowego(nullable:true)
+		bank(nullable:true)
+		nazwaDoWydrukuZTerminalaPos(nullable:true)
+		nazwaDoWyszukiwarki(nullable:true)
+		wydrukUlicaTytul(nullable:true)
+		wydrukUlica(nullable:true)
+		wydrukNrDomu(nullable:true)
+		wydrukNrLokalu(nullable:true)
+		wydrukMiasto(nullable:true)
+		wydrukKodPocztowy(nullable:true)
+		wydrukPoczta(nullable:true)
+		wydrukLinia1(nullable:true)
+		wydrukLinia2(nullable:true)
+		contactAddressStreetType(nullable:true)
+		korespondencjaUlica(nullable:true)
+		korespondencjaNrDomu(nullable:true)
+		korespondencjaNrLokalu(nullable:true)
+		koresponedencjaMiasto(nullable:true)
+		korespondencjaKodPocztowy(nullable:true)
+		korespondencjaPoczta(nullable:true)
+		kontaktWPunkcieImie(nullable:true)
+		kontaktWPunkcieNazwisko(nullable:true)
+		kontaktWPunkcieFax(nullable:true)
+		kontaktWPunkcieTelStacjonarny(nullable:true)
+		kontaktWPunkcieTelKomorkowy(nullable:true)
+		kontaktWPunkcieEmail(nullable:true)
+		terminalIlosc(nullable:true)
 	}
 }
 

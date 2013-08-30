@@ -13,7 +13,7 @@
     </fieldset>
 </div>
 <div id="hiddenPanel" style="display: none;">
-	<g:render template="../panels/danePunktu" />
+	<g:render template="../panels/danePunktu" model="[id:'%ID%']"/>
 </div>
 <r:require module="jquery_ui"/>
 	
@@ -30,10 +30,10 @@
 			e.preventDefault();
 			
 			if (panelInternalCount < 10) {
-				var data = panelTemplate.replace(/%ID%/gm, "points[" + panelCount + "].");
+				var data = panelTemplate.replace(/%ID%/gm, panelCount);
 				jQuery("#addNewPointPanel").prepend(data);
 				setupNewPointPanelHandlers(panelCount-1, panelCount, "points");
-				setupNewPointPanelData("points["+(panelCount-1)+"].", "points["+panelCount+"].");
+				setupNewPointPanelData("points\\["+(panelCount-1)+"\\]\\.", "points\\["+panelCount+"\\]\\.");
 				panelCount++;
 				panelInternalCount++;
 				globalPanelCount++;

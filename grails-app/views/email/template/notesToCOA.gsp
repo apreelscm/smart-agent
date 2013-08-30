@@ -1,5 +1,12 @@
 <%@ page contentType="text/html"%>
 <!DOCTYPE html>
 <body>
-<span>${body}</span>
+    <p>
+        ${notes}
+        <br><br>
+        ${phNumber}
+        <br>
+        ${phName}
+    </p>
 </body>
+

@@ -12,7 +12,6 @@ import org.springframework.security.core.GrantedAuthority
 public class EServiceUserDetails extends GrailsUser {
 
     final String name;
-    final String typOsoby;
     final String imie;
     final String nazwisko;
     final Integer nr;
@@ -25,14 +24,12 @@ public class EServiceUserDetails extends GrailsUser {
                         boolean accountNonLocked,
                         Collection<GrantedAuthority> authorities,
                         long id,
-                        String typOsoby,
                         String imie,
                         String nazwisko,
                         Long nr) {
 
         super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities, id);
 
-        this.typOsoby = typOsoby
         this.imie = imie
         this.nazwisko = nazwisko
         this.nr = nr.intValue()

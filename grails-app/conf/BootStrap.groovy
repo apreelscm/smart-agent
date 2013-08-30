@@ -38,6 +38,7 @@ class BootStrap {
                 client: Client.findByName("clientName1"))
                 .addToDocuments(new DocumentFile(name: "pedef.pdf", pagesCount: 1, content: new DocumentContent(content:[95, 96] as byte[]))).save(flush: true);
 
+/*
         Process.get(2) ?: new Process(id: 2, phFirstName: "Wanda",
                 saleSection: 'segment2', phNumber: 321, observed: true,
                 phSurname: 'Iksińska',calcNumber: '33333', status: Process.ProcessStatus.ACCEPTED,
@@ -225,6 +226,7 @@ class BootStrap {
                 .addToDocuments(new DocumentFile(name: "pedef.pdf"))
                 .addToDocuments(new DocumentFile(name: "pedef2.pdf"))
                 .addToAttachments(new AttachmentFile(name: "pedef3.pdf")).save(flush:true);
+*/
 
         // szablony maili
         EmailTemplates.findByName(EmailTemplates.EmailTemplateType.NOTES_TO_COA) ?: new EmailTemplates(name: EmailTemplates.EmailTemplateType.NOTES_TO_COA,
@@ -244,12 +246,12 @@ class BootStrap {
                 'insert into CBD_ADM.ADM_UZYTKOWNICY_WEB(AUW_ID,AUW_LOGIN,AUW_HASLO ) values(?, ?, ?)',
                 [123451,'user', 'iEmqhY8YxduPVOg5Tgs9aca8M5coCILEFRmk8Q=='])
 
-        //uzytkownik "admin" z rola ADM_ROLE
+        //uzytkownik "admin" z rola EUM_ZRD
         sql.executeUpdate(
                 'insert into CBD_ADM.ADM_UZYTKOWNICY_WEB(AUW_ID,AUW_LOGIN,AUW_HASLO,AUW_UZY_ID, AUW_IMIE, AUW_NAZWISKO  ) values(?, ?, ?, ?, ?, ?)',
                 [223415,'admin', 'iEmqhY8YxduPVOg5Tgs9aca8M5coCILEFRmk8Q==',1, 'Jan', 'Kowalski'])
 
-        //uzytkownik "ph" z rola PH_ROLE
+        //uzytkownik "ph" z rola EUM_PH_BZOS
         sql.executeUpdate(
                 'insert into CBD_ADM.ADM_UZYTKOWNICY_WEB(AUW_ID,AUW_LOGIN,AUW_HASLO,AUW_PRZ_ID, AUW_IMIE, AUW_NAZWISKO  ) values(?, ?, ?, ?, ?, ?)',
                 [312354,'ph', 'iEmqhY8YxduPVOg5Tgs9aca8M5coCILEFRmk8Q==',1, 'Jerzy',' Poniedziałek'])

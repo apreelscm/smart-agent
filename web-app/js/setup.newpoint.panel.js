@@ -260,6 +260,7 @@ function setupNewPointPanelData(prevPanelId, panelId) {
 				jQuery("#"+panelId+"bankAccountNumber").val(pointdata['bankAccountNumber']);
 				jQuery("#"+panelId+"bankName").val(pointdata['bankName']);
 				jQuery("#"+panelId+"sameForEveryPoint").prop("checked", true);
+				jQuery("#"+panelId+"sameForEveryPoint").prop("disabled", true);
 			}
 			
 			if (jQuery("#possetforselectedpointSameForEveryPoint").is(':checked')) {
@@ -285,6 +286,7 @@ function setupNewPointPanelData(prevPanelId, panelId) {
 				jQuery("#"+panelId+"gprsPPPrice").val(possetforselectedpoint['gprsPPPrice']);
 				jQuery("#"+panelId+"baseCount").val(possetforselectedpoint['baseCount']);
 				jQuery("#"+panelId+"possetforselectedpointSameForEveryPoint").prop("checked", true);
+				jQuery("#"+panelId+"possetforselectedpointSameForEveryPoint").prop("disabled", true);
 			}
 			
 			if (jQuery("#"+prevPanelId+"technicalinformationSameForEveryPoint").is(':checked')) {
@@ -293,6 +295,7 @@ function setupNewPointPanelData(prevPanelId, panelId) {
 				jQuery("#"+panelId+"plannedInstallationDate"+panelId).val(technicalinformation['plannedInstallationDate']);
 				jQuery("#"+panelId+"additionalNotes"+panelId).val(technicalinformation['additionalNotes']);
 				jQuery("#"+panelId+"technicalinformationSameForEveryPoint"+panelId).prop("checked", true);
+				jQuery("#"+panelId+"technicalinformationSameForEveryPoint"+panelId).prop("disabled", true);
 			}
 
 			if (jQuery("#"+prevPanelId+"terminaloptionsSameForEveryPoint").is(':checked')) {
@@ -310,6 +313,7 @@ function setupNewPointPanelData(prevPanelId, panelId) {
 				jQuery("#"+panelId+"giftCard").prop("checked", terminaloptions['giftCard']);
 				jQuery("#"+panelId+"terminalCount").val(terminaloptions['terminalCount']);
 				jQuery("#"+panelId+"terminaloptionsSameForEveryPoint").prop("checked", true);
+				jQuery("#"+panelId+"terminaloptionsSameForEveryPoint").prop("disabled", true);
 			}
 			
 			if (jQuery("#"+prevPanelId+"additionalequipmentSameForEveryPoint").is(':checked')) {
@@ -325,6 +329,7 @@ function setupNewPointPanelData(prevPanelId, panelId) {
 				jQuery("#"+panelId+"otherAdditionalDeviceCount").val(additionalequipment['otherAdditionalDeviceCount']);
 				jQuery("#"+panelId+"otherAdditionalDevicePrice").val(additionalequipment['otherAdditionalDevicePrice']);
 				jQuery("#"+panelId+"additionalequipmentSameForEveryPoint").prop("checked", true);
+				jQuery("#"+panelId+"additionalequipmentSameForEveryPoint").prop("disabled", true);
 			}
 		}
 	//});
@@ -340,6 +345,7 @@ function clearNewPointData(prevPanelId, panelId) {
 				jQuery("#"+panelId+"bankAccountNumber").val("");
 				jQuery("#"+panelId+"bankName").val("");
 				jQuery("#"+panelId+"sameForEveryPoint").prop("checked", false);
+				jQuery("#"+panelId+"sameForEveryPoint").prop("disabled", false);
 			}
 			
 			if (jQuery("#"+prevPanelId+"possetforselectedpointSameForEveryPoint"+prevPanelId).is(':checked') == false) {
@@ -365,6 +371,7 @@ function clearNewPointData(prevPanelId, panelId) {
 				jQuery("#"+panelId+"gprsPPPrice").val("");
 				jQuery("#"+panelId+"baseCount").val("");
 				jQuery("#"+panelId+"possetforselectedpointSameForEveryPoint").prop("checked", false);
+				jQuery("#"+panelId+"possetforselectedpointSameForEveryPoint").prop("disabled", false);
 			}
 			
 			if (jQuery("#"+prevPanelId+"technicalinformationSameForEveryPoint").is(':checked') == false) {
@@ -373,6 +380,7 @@ function clearNewPointData(prevPanelId, panelId) {
 				jQuery("#"+panelId+"plannedInstallationDate").val("");
 				jQuery("#"+panelId+"additionalNotes").val("");
 				jQuery("#"+panelId+"technicalinformationSameForEveryPoint").prop("checked", false);
+				jQuery("#"+panelId+"technicalinformationSameForEveryPoint").prop("disabled", false);
 			}
 	
 			if (jQuery("#"+prevPanelId+"terminaloptionsSameForEveryPoint").is(':checked') == false) {
@@ -390,6 +398,7 @@ function clearNewPointData(prevPanelId, panelId) {
 				jQuery("#"+panelId+"giftCard").prop("checked", false);
 				jQuery("#"+panelId+"terminalCount").val("");
 				jQuery("#"+panelId+"terminaloptionsSameForEveryPoint").prop("checked", false);
+				jQuery("#"+panelId+"terminaloptionsSameForEveryPoint").prop("disabled", false);
 			}
 			
 			if (jQuery("#"+prevPanelId+"additionalequipmentSameForEveryPoint").is(':checked') == false) {
@@ -405,6 +414,7 @@ function clearNewPointData(prevPanelId, panelId) {
 				jQuery("#"+panelId+"otherAdditionalDeviceCount").val("");
 				jQuery("#"+panelId+"otherAdditionalDevicePrice").val("");
 				jQuery("#"+panelId+"additionalequipmentSameForEveryPoint").prop("checked", false);
+				jQuery("#"+panelId+"additionalequipmentSameForEveryPoint").prop("disabled", false);
 			}
 		}
 	//});

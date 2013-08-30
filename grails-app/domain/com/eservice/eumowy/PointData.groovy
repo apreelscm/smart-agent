@@ -1,6 +1,10 @@
 package com.eservice.eumowy
 
+import org.apache.log4j.Logger
+
 class PointData implements Serializable {
+	
+	private static Logger log = Logger.getLogger(PointData.class)
 	
 	Integer cbdId
 	
@@ -36,5 +40,27 @@ class PointData implements Serializable {
 	
 	static constraints = {
 		process(nullable:true)
+		nip(nullable:true)
+		ulica(nullable:true)
+		nrLokalu(nullable:true)
+		nrBudynku(nullable:true)
+		miejscowosc(nullable:true)
+		kodPocztowy(nullable:true)
+		poczta(nullable:true)
+		pointDetails(nullable:true)
+		posDatas(nullable:true)
+		cbdId(nullable:true)
+	}
+	
+	def beforeInsert() {
+		log.info("Tworzenie punktu [id:${id}]")
+	}
+
+	def afterInsert() {
+		log.info("Utworzono punkt [id:${id}]")
+	}
+
+	def afterUpdate() {
+		log.info("Aktualizacja punktu [id:${id}]")
 	}
 }

@@ -1,4 +1,6 @@
 package com.eservice.eumowy
+
+import com.eservice.eumowy.util.DateUtils
 import grails.plugins.springsecurity.Secured
 import org.codehaus.groovy.grails.commons.ApplicationHolder
 
@@ -14,7 +16,7 @@ class ProcessController {
         redirect(action: "list", params: params)
     }
 
-    @Secured(['PH_ROLE','ADM_ROLE'])
+    @Secured(['EUM_PH_BZOS','EUM_ZRD'])
     def list() {
         params.max = Math.min(params.max ? params.int('max') : 10, 100)
 
@@ -30,8 +32,8 @@ class ProcessController {
             filterObserved:params.filterObserved,
             filterNip:params.filterNip,
             filterPhNo:params.filterPhNo,
-            filterDateFrom: params.filterDateFrom?params.filterDateFrom: ProcessService.formatDate(ProcessService.addDays(new Date(), -30)),
-            filterDateTo: params.filterDateTo?params.filterDateTo: ProcessService.formatDate(new Date()),
+            filterDateFrom: params.filterDateFrom?params.filterDateFrom: DateUtils.getFormattedDate(DateUtils.addDays(new Date(), -30), DateUtils.DD_MM_YYYY),
+            filterDateTo: params.filterDateTo?params.filterDateTo: DateUtils.getFormattedDate(new Date(), DateUtils.DD_MM_YYYY),
             processInstanceList: processes.searchResults,
             processInstanceTotal: processes.searchResultSize]
     }
@@ -40,7 +42,7 @@ class ProcessController {
     // PH AVAILABLE
     //---------------------------------
 
-    @Secured(['PH_ROLE'])
+    @Secured(['EUM_PH_BZOS'])
     def edit(Long id) {
         def processInstance = Process.get(id)
         if (!processInstance) {
@@ -56,7 +58,7 @@ class ProcessController {
     // ADMIN AVAILABLE
     //---------------------------------
 
-    @Secured(['ADM_ROLE'])
+    @Secured(['EUM_ZRD'])
     def show(String id) {
         def processInstance = Process.get(id)
         if (!processInstance) {
@@ -68,7 +70,7 @@ class ProcessController {
         [processInstance: processInstance]
     }
 
-    @Secured(['ADM_ROLE'])
+    @Secured(['EUM_ZRD'])
     def reject(String id) {
         def processInstance =Process.get(id)
 
@@ -84,7 +86,7 @@ class ProcessController {
         redirect(action: "list")
     }
 
-    @Secured(['ADM_ROLE'])
+    @Secured(['EUM_ZRD'])
     def accept(String id) {
         def processInstance = Process.get(id)
 

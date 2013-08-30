@@ -146,6 +146,7 @@ class PdfServiceTests {
 		result.put("dochodowosc", ["10000"] as String[]);
 		result.put("sredniaWartoscTransakcji", ["1 milion z³otych"] as String[]);
 		result.put("innaLokalizacja", ["Wie¿a Eiffla"] as String[]);
+		result.put("podpis", [new File(getTemplatePath()+"signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "20", "58", "59"] as String[]);
 		
 		return result;
 	}
@@ -352,6 +353,13 @@ class PdfServiceTests {
 		data.putAll(this.data);
 		data.putAll(insertSignatures(1, 85, 185, 74, 43))
 		process("APUPZDCCZ1.00213-02-15 - Aneks do Umowy o przyjm zap³. (zm. war. DCC).pdf", "APUPZDCCZ1.00213-02-15 - Aneks do Umowy o przyjm zap³. (zm. war. DCC)_out.pdf", data)
+	}
+	
+	void testAPUPZ() {
+		HashMap<String, String[]> data = new HashMap<String, String[]>();
+		data.putAll(this.data);
+		data.putAll(insertSignatures(4, 90, 308, 74, 43))
+		process("APUPZ2.00013-01-03 - Umowa o przyjmowanie zap³aty v. 2.000_z faksymile.pdf", "APUPZ2.00013-01-03 - Umowa o przyjmowanie zap³aty v. 2.000_z faksymile_out.pdf", data)
 	}
 	
 	// ---------------------------------------------------------------------------------------

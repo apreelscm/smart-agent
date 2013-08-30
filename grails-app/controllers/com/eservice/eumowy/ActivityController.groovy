@@ -35,7 +35,11 @@ class ActivityController {
 
         defineActivity{
             onEntry{
-                flow.processInstance = flow.processInstance ?: new Process();
+                if(!flow.processInstance){
+                    flow.newProcessFlow = true
+                    flow.processInstance =  new Process();
+                }
+
                 println(" flow.processInstance: "+ flow.processInstance)
             }
             on("continue") { DefineActivityCommand cmd ->
@@ -81,16 +85,18 @@ class ActivityController {
 
         /** default full subflow */
         normal {
-            subflow(action: "normal", input: [processInstance : { flow.processInstance }])
+            subflow(action: "normal", input: [processInstance : { flow.processInstance }, newProcessFlow : {flow.newProcessFlow}])
             on("backToStart").to "defineActivity"
             on("clientSignature") {
                 flow.processInstance = currentEvent.attributes.process
+				flow.representative1 = currentEvent.attributes.representative1
+				flow.representative2 = currentEvent.attributes.representative2
             }.to "clientSignature"
         }
 
         /** popraw dane subflow */
         poprawDane {
-            subflow(action: "poprawDane", input: [processInstance : { flow.processInstance }])
+            subflow(action: "poprawDane", input: [processInstance : { flow.processInstance }, newProcessFlow : {flow.newProcessFlow}])
             on("backToStart").to "defineActivity"
             on("finish") {
                 flow.processInstance = currentEvent.attributes.process
@@ -99,7 +105,7 @@ class ActivityController {
 
         /** uzupelnij podpisy subflow */
         uzupelnijPodpisy {
-            subflow(action: "uzupelnijPodpisy", input: [processInstance : { flow.processInstance }])
+            subflow(action: "uzupelnijPodpisy", input: [processInstance : { flow.processInstance }, newProcessFlow : {flow.newProcessFlow}])
             on("backToStart").to "defineActivity"
             on("finish") {
                 flow.processInstance = currentEvent.attributes.process
@@ -109,10 +115,12 @@ class ActivityController {
         /** send email only subflow*/
         emailOnly {
             action{
-                def notes = process.notesToCoa
+                def processInstance = flow.processInstance
+                def notes = processInstance.notesToCoa
                 log.info("wysyłanie wiadomości email z uwagami do COA [notes: ${notes}]")
                 try{
-                    emailService.sendNotesToCOA(notes)
+                    def user = springSecurityService.principal
+                    emailService.sendNotesToCOA(notes, user.nr, user.imie + ' ' + user.nazwisko)
                     flash.infoMessage = message(code:"email.notesToCOA.send.complete", default:"Wysłano wiadomość z uwagami do COA");
                     log.info(flash.infoMessage)
                 }catch (Exception error){
@@ -140,20 +148,32 @@ class ActivityController {
                     int pc = pdfService.getPageCountFromPdf(documentData)
                     totalPagesCount += pc
 
-                    DocumentFile df = new DocumentFile(name: sig.templatePath, dateCreated: new Date(), lastUpdated: new Date(), pagesCount: pc)
-                    df.setContent(new DocumentContent(content: documentData))
-                    df.save(flush: true)
-                    log.info "DF id: " + df.id + " PageCount: " + df.pagesCount
-                    processInstance.addToDocuments(df)
-                    processInstance.discard();
+					if (processService.findDocumentByName(processInstance.documents, sig.templatePath) == null) {
+						log.info "Creating new document [${sig.templatePath}]"
+						DocumentFile df = new DocumentFile(name: sig.templatePath, dateCreated: new Date(), lastUpdated: new Date(), pagesCount: pc)
+						df.setContent(new DocumentContent(content: documentData))
+						df.save(flush: true)
+						log.info "DF id: " + df.id + " PageCount: " + df.pagesCount
+						log.info "Process ID: " + processInstance.id
+						processInstance.addToDocuments(df)
+						processInstance.discard();
+					}
+					else {
+						log.info "Updating existing document [${sig.templatePath}]"
+						DocumentFile df = processService.findDocumentByName(processInstance.documents, sig.templatePath)
+						df.content.setContent(documentData)
+						df.save(flush: true)
+					}
                 }
 
                 flow.totalPagesCount = totalPagesCount;
                 processInstance.save(flush:true)
                 flow.processInstance = processInstance
             }
-            render(view: "../createProcess/clientSignature", model: [processInstance: flow.processInstance, totalPagesCount: flow.totalPagesCount])
-            on("back").to "selectedPanels"
+            render(view: "../createProcess/clientSignature", model: [processInstance: flow.processInstance, totalPagesCount: flow.totalPagesCount, representative1: flow.representative1, representative2: flow.representative2])
+            on("back"){
+                flow.newProcessFlow = false
+            }to "chooseSubFlow"
             on("subscribe").to "clientSignature"
             on("updateProcessStatus") {
                 log.info params
@@ -202,7 +222,8 @@ class ActivityController {
 
                 if (processInstance.notesToCoa) {
                     log.info("wysyłanie wiadomości email z uwagami do COA [notes: ${processInstance.notesToCoa}]")
-                    emailService.sendNotesToCOA(processInstance.notesToCoa)
+                    def user = springSecurityService.principal
+                    emailService.sendNotesToCOA(processInstance.notesToCoa, user.nr, user.imie + ' ' + user.nazwisko)
                 }
 
                 flow.processInstance = null;
@@ -226,7 +247,20 @@ class ActivityController {
     def normalFlow = {
         input {
             processInstance(required: true)
+            newProcessFlow(required: true)
         }
+
+        init {
+            action {
+                log.info("init - normalFlow - newProcessFlow : ${flow.newProcessFlow}" )
+               flow.newProcessFlow ? chooseActivity() : selectedPanels()
+            }
+            on("chooseActivity").to "chooseActivity"
+            on("selectedPanels"){
+                flow.skipPanelsInit = true;
+            }.to "selectedPanels"
+        }
+
         chooseActivity{
             render(view: "../createProcess/chooseActivity")
             on("continue"){
@@ -265,7 +299,6 @@ class ActivityController {
                 processInstance.phSurname = user.nazwisko//sec.loggedInUserInfo(field: 'nazwisko')
 
                 if (!processInstance.save(flush:true)){
-                    println 'stock instance has errors'
                     processInstance.errors.each {
                         log.error(it)
                     }
@@ -344,46 +377,43 @@ class ActivityController {
         selectedPanels{
             onEntry {
                 println "selectedPanels enterview"
+                def processInstance = flow.processInstance;
+                def calc = flow.calc;
 
-                if(!flow.slipPanelsInit){
-                    log.info("slipPanelsInit - false")
-                    def processInstance = flow.processInstance;
-                    def calc = flow.calc;
-
-                    //ACTIVE PANELS
+                def processCmd
+                if(!flow.skipPanelsInit){
+                    log.info("skipPanelsInit - false")
                     TreeSet activePanels = _getActivePanels(processInstance.signatures)
                     processInstance.panels = activePanels.toList();
-
-                    def processCmd = processService.createNewProcessCommand(processInstance,calc)
-                    flow.data = processCmd
+                    processCmd = processService.getNewProcessCommand(processInstance,calc)
                 }
                 else{
-                    log.info("slipPanelsInit - true")
-                    flow.slipPanelsInit = false
+                    log.info("skipPanelsInit - true")
+                    flow.skipPanelsInit = false
+                    processCmd = processService.getSavedProcessCommand(processInstance,calc)
                 }
 
+                flow.data = processCmd
             }
             render(view: "../createProcess/selectedPanels")
             on("back").to "chooseCalc"
+            on("error").to "selectedPanels"
             on("acceptPointsButton") {
                 log.info "acceptPointsButton TRIGGERED"
             }.to "selectedPanels"
             on("saveOnly"){ ProcessCommand cmd ->
-                def processInstance = flow.processInstance
-                def processDataList = processService.getDataFromPanels(cmd)
+                Process processInstance = processService.populateProcessWithData(flow.processInstance,cmd)
 
-                processInstance.processData?.clear()
-                processDataList.each { data ->
-                    processInstance.addToProcessData(data)
-                    processInstance.discard();
+                if (!processInstance.save()){
+                    processInstance.errors.each {
+                        log.error(it)
+                    }
+                    return error();
                 }
-
-                //TODO Save cmd.points to PointData, PointDataDetails, PosData
-                processInstance.save();
 
                 flow.processInstance = processInstance
                 flow.data = cmd
-                flow.slipPanelsInit = true;
+                flow.skipPanelsInit = true;
             }to "selectedPanels"
             on("continue"){ ProcessCommand cmd ->
 
@@ -392,32 +422,29 @@ class ActivityController {
                     return error();
                 }
 
-                def processInstance = flow.processInstance
+                Process processInstance = processService.populateProcessWithData(flow.processInstance,cmd)
                 processInstance.notesToCoa = cmd.notes;
-                def processDataList = processService.getDataFromPanels(cmd)
-				def pointsDataList = processService.getPointAndPosData(cmd)
 
-                processInstance.processData?.clear()
-                processDataList.each { data ->
-                    processInstance.addToProcessData(data)
-                    processInstance.discard()
+				flow.representative1 = cmd.reprezentant1Tytul + " " + cmd.reprezentant1Imie + " " + cmd.reprezentant1Nazwisko
+				flow.representative2 = cmd.reprezentant2Tytul + " " + cmd.reprezentant2Imie + " " + cmd.reprezentant2Nazwisko
+
+                if (!processInstance.save()){
+                    processInstance.errors.each {
+                        log.error(it)
+                    }
+                    return error();
                 }
 
-				processInstance.points?.clear()
-				pointsDataList.each { data ->
-					processInstance.addToPoints(data)
-					processInstance.discard()
-				}
-				
-                processInstance.save();
-
                 flow.processInstance = processInstance
+				
             }.to "clientSignature"
         }
 
         clientSignature {
             output {
                 process {flow.processInstance}
+				representative1 { flow.representative1 }
+				representative2 { flow.representative2 }
             }
         }
         backToStart()
@@ -430,7 +457,20 @@ class ActivityController {
     def poprawDaneFlow = {
         input {
             processInstance(required: true)
+            newProcessFlow(required: true)
         }
+
+        init {
+            action {
+                log.info("init - normalFlow - newProcessFlow : ${newProcessFlow}" )
+                newProcessFlow ? chooseCalc() : selectedPanels()
+            }
+            on("chooseCalc").to "chooseCalc"
+            on("selectedPanels"){
+                flow.skipPanelsInit = true;
+            }.to "selectedPanels"
+        }
+
         chooseCalc{
             render(view: "../createProcess/chooseCalc")
             on("back").to "chooseActivity"
@@ -508,14 +548,29 @@ class ActivityController {
             onEntry {
                 def processInstance = flow.processInstance;
                 def calc = flow.calc;
-                def processCmd = processService.createSavedProcessCommand(processInstance,calc);
+                def processCmd = processService.getSavedProcessCommand(processInstance,calc);
                 flow.data = processCmd
             }
+
             render(view: "../createProcess/selectedPanels")
             on("back").to "chooseCalc"
             on("acceptPointsButton") {
                 log.info "acceptPointsButton TRIGGERED"
             }.to "selectedPanels"
+            on("saveOnly"){ ProcessCommand cmd ->
+                def processInstance = processService.populateProcessWithData(flow.processInstance,cmd)
+
+                if (!processInstance.save()){
+                    processInstance.errors.each {
+                        log.error(it)
+                    }
+                    return error();
+                }
+
+                flow.processInstance = processInstance
+                flow.data = cmd
+                flow.skipPanelsInit = true;
+            }to "selectedPanels"
             on("continue"){ ProcessCommand cmd ->
 
                 if(cmd?.hasErrors()){
@@ -523,22 +578,15 @@ class ActivityController {
                     return error();
                 }
 
-                def processInstance = flow.processInstance
+                def processInstance = populateProcessWithData(flow.processInstance,cmd)
                 processInstance.notesToCoa = cmd.notes;
 
-                //_createPointDatas(flow.processInstance)
-                //_createPosDatas(flow.processInstance)
-
-                def processDataList = processService.getDataFromPanels(cmd)
-
-                //TODO optymalizacja
-                processInstance.processData?.clear()
-                processDataList.each { data ->
-                    processInstance.addToProcessData(data)
-                    processInstance.discard();
+                if (!processInstance.save()){
+                    processInstance.errors.each {
+                        log.error(it)
+                    }
+                    return error();
                 }
-
-                processInstance.save();
 
                 flow.processInstance = processInstance
             }.to "clientSignature"
@@ -737,14 +785,19 @@ class ActivityController {
             }
 
             //TODO Send emails
-            emailService.sendDocumentsElectronicalVersion(process.documents)
+            def recipient = getFromProcessData(process, 'kontaktEmail');
+            emailService.sendDocumentsElectronicalVersion(recipient, process.documents)
 
         }
         else if ("paper".equals(requestVersion)) {
             //Documents are already in DB
             newStatus = Process.ProcessStatus.WAIT_FOR_SUBSCRIPTION_PAPER_VERSION
 
-            emailService.sendDocumentsPaperVersion(process.documents)
+            def merchantName = getFromProcessData(process, 'akceptantNazwaOficjalna');
+
+            //TODO PSZKUP - phEmail
+            def recipientPh = "szkup.pawel@gmail.com"
+            emailService.sendDocumentsPaperVersion(recipientPh, process.documents, merchantName)
         }
         else if ("templates".equals(requestVersion)) {
             //TODO Documents are already in DB
@@ -764,13 +817,25 @@ class ActivityController {
 
                 // Generate documents without faksymile for acceptant
                 DocumentFile dfwof = new DocumentFile(name: sig.templatePath, dateCreated: new Date(), lastUpdated: new Date(), pagesCount: 0)
-                dfwof.setContent(new DocumentContent(content: documentDataWithBlackFaksymile))
+                dfwof.setContent(new DocumentContent(content: documentDataWithoutFaksymile))
                 dfwof.discard()
                 documentFilesWithoutFaksymileList.add(dfwof)
             }
 
-            emailService.sendDocumentsTemplateVersionWithBlackFaksymile(documentFilesWithBlackFaksymileList)
-            emailService.sendDocumentsTemplateVersionWithoutFaksymile(documentFilesWithoutFaksymileList)
+            //for ph
+            //TODO - dodac recipient ph
+            def recipientPh = "szkup.pawel@gmail.com"
+            emailService.sendDocumentsTemplateVersion(recipientPh, documentFilesWithBlackFaksymileList)
+
+            //for acceptant
+            def recipientUser = getFromProcessData(process, 'kontaktEmail');
+            emailService.sendDocumentsTemplateVersion(recipientUser, documentFilesWithoutFaksymileList)
         }
+    }
+
+
+    def getFromProcessData(def process, def key){
+        def result = process.processData.find{ pd -> pd.name.equals(key)}
+        return (result && result?.value)?result?.value:""
     }
 }

@@ -46,8 +46,8 @@ class PanelService {
     def getDaneAkceptanta(ProcessCommand cmd ,def calc) {
         def result = cbdService.getDaneAkceptanta(cmd.nip);
 
-        cmd.akceptantNazwaOficjalna= result?.nazwa ?: "-"
-        cmd.akceptantNazwaSieciowa= cmd.akceptantNazwaSieciowa ?: "-" //TODO
+        cmd.akceptantNazwaOficjalna = result?.nazwa ?: "-"
+        cmd.akceptantNazwaSieciowa = cmd.akceptantNazwaSieciowa ?: "-" //TODO
         cmd.akceptantRegon = result?.regon ?: "-"
 
         cmd.akceptantNazwaOficjalnaCbd= cmd.akceptantNazwaOficjalna
@@ -56,7 +56,7 @@ class PanelService {
     }
 
     def getDaneDoWydruku(ProcessCommand cmd ,def calc) {
-        cmd.wydrukNazwaPunktu = cmd.wydrukNazwaPunktu ?: "-"
+        cmd.nazwaDoWydrukuZTerminalaPos = cmd.nazwaDoWydrukuZTerminalaPos ?: "-"
         cmd.wydrukNazwaDoWyszukwarki =cmd.wydrukNazwaDoWyszukwarki ?: "-"
         cmd.wydrukUlicaTytul =cmd.wydrukUlicaTytul ?: "-"
         cmd.wydrukUlica =cmd.wydrukUlica ?: "-"
@@ -225,103 +225,105 @@ class PanelService {
     }
 
     def getPoziomOplatiWarunkiPlatnosciKarty(ProcessCommand cmd ,def calc) {
-        cmd.card_p_1_1 = calculatorService.getCalcProperty(calc,"OPLATA_MSC_11_ZL")
-        cmd.card_f_1_1 = calculatorService.getCalcProperty(calc,"OPLATA_MSC_11_PROCENT")
-        cmd.card_p_1_2 = calculatorService.getCalcProperty(calc,"OPLATA_MSC_12_PROCENT")
-        cmd.card_f_1_2 = calculatorService.getCalcProperty(calc,"OPLATA_MSC_12_ZL")
-        cmd.card_p_1_3 = calculatorService.getCalcProperty(calc,"OPLATA_MSC_13_PROCENT")
-        cmd.card_f_1_3 = calculatorService.getCalcProperty(calc,"OPLATA_MSC_13_ZL")
+        cmd.visaEUKKOPr = calculatorService.getCalcProperty(calc,"OPLATA_MSC_11_ZL")
+        cmd.visaEUKKOSt = calculatorService.getCalcProperty(calc,"OPLATA_MSC_11_PROCENT")
+        cmd.visaEUKDPr = calculatorService.getCalcProperty(calc,"OPLATA_MSC_12_PROCENT")
+        cmd.visaEUKDSt = calculatorService.getCalcProperty(calc,"OPLATA_MSC_12_ZL")
+        cmd.visaEUKBPr = calculatorService.getCalcProperty(calc,"OPLATA_MSC_13_PROCENT")
+        cmd.visaEUKBSt = calculatorService.getCalcProperty(calc,"OPLATA_MSC_13_ZL")
 
-        cmd.card_p_2_1 = calculatorService.getCalcProperty(calc,"OPLATA_MSC_21_PROCENT")
-        cmd.card_f_2_1 = calculatorService.getCalcProperty(calc,"OPLATA_MSC_21_ZL")
-        cmd.card_p_2_2 = calculatorService.getCalcProperty(calc,"OPLATA_MSC_22_PROCENT")
-        cmd.card_f_2_2 = calculatorService.getCalcProperty(calc,"OPLATA_MSC_22_ZL")
-        cmd.card_p_2_3 = calculatorService.getCalcProperty(calc,"OPLATA_MSC_23_PROCENT")
-        cmd.card_f_2_3 = calculatorService.getCalcProperty(calc,"OPLATA_MSC_23_ZL")
+        cmd.visaOutEUKKOPr = calculatorService.getCalcProperty(calc,"OPLATA_MSC_21_PROCENT")
+        cmd.visaOutEUKKOSt = calculatorService.getCalcProperty(calc,"OPLATA_MSC_21_ZL")
+        cmd.visaOutEUKDPr = calculatorService.getCalcProperty(calc,"OPLATA_MSC_22_PROCENT")
+        cmd.visaOutEUKDSt = calculatorService.getCalcProperty(calc,"OPLATA_MSC_22_ZL")
+        cmd.visaOutEUKBPr = calculatorService.getCalcProperty(calc,"OPLATA_MSC_23_PROCENT")
+        cmd.visaOutEUKBSt = calculatorService.getCalcProperty(calc,"OPLATA_MSC_23_ZL")
 
-        cmd.card_p_3_1_1 = calculatorService.getCalcProperty(calc,"OPLATA_MSC_311_PROCENT")
-        cmd.card_f_3_1_1 = calculatorService.getCalcProperty(calc,"OPLATA_MSC_311_ZL")
-        cmd.card_p_3_1_2 = calculatorService.getCalcProperty(calc,"OPLATA_MSC_312_PROCENT")
-        cmd.card_f_3_1_2 = calculatorService.getCalcProperty(calc,"OPLATA_MSC_312_ZL")
-        cmd.card_p_3_2_1 = calculatorService.getCalcProperty(calc,"OPLATA_MSC_321_PROCENT")
-        cmd.card_f_3_2_1 = calculatorService.getCalcProperty(calc,"OPLATA_MSC_321_ZL")
-        cmd.card_p_3_2_2 = calculatorService.getCalcProperty(calc,"OPLATA_MSC_322_PROCENT")
-        cmd.card_f_3_2_2 = calculatorService.getCalcProperty(calc,"OPLATA_MSC_322_ZL")
-        cmd.card_p_3_3 = calculatorService.getCalcProperty(calc,"OPLATA_MSC_33_PROCENT")
-        cmd.card_f_3_3 = calculatorService.getCalcProperty(calc,"OPLATA_MSC_33_ZL")
+        cmd.visaPolskaKKO1Pr = calculatorService.getCalcProperty(calc,"OPLATA_MSC_311_PROCENT")
+        cmd.visaPolskaKKO1St = calculatorService.getCalcProperty(calc,"OPLATA_MSC_311_ZL")
+        cmd.visaPolskaKKO2Pr = calculatorService.getCalcProperty(calc,"OPLATA_MSC_312_PROCENT")
+        cmd.visaPolskaKKO2St = calculatorService.getCalcProperty(calc,"OPLATA_MSC_312_ZL")
+        cmd.visaPolskaKD1Pr = calculatorService.getCalcProperty(calc,"OPLATA_MSC_321_PROCENT")
+        cmd.visaPolskaKD1St = calculatorService.getCalcProperty(calc,"OPLATA_MSC_321_ZL")
+        cmd.visaPolskaKD2Pr = calculatorService.getCalcProperty(calc,"OPLATA_MSC_322_PROCENT")
+        cmd.visaPolskaKD2St = calculatorService.getCalcProperty(calc,"OPLATA_MSC_322_ZL")
+        cmd.visaPolskaKBPr = calculatorService.getCalcProperty(calc,"OPLATA_MSC_33_PROCENT")
+        cmd.visaPolskaKBSt = calculatorService.getCalcProperty(calc,"OPLATA_MSC_33_ZL")
 
-        cmd.card_p_4_1 = calculatorService.getCalcProperty(calc,"OPLATA_MSC_41_PROCENT")
-        cmd.card_f_4_1 = calculatorService.getCalcProperty(calc,"OPLATA_MSC_41_ZL")
-        cmd.card_p_4_2 = calculatorService.getCalcProperty(calc,"OPLATA_MSC_42_PROCENT")
-        cmd.card_f_4_2 = calculatorService.getCalcProperty(calc,"OPLATA_MSC_42_ZL")
-        cmd.card_p_4_3 = calculatorService.getCalcProperty(calc,"OPLATA_MSC_43_PROCENT")
-        cmd.card_f_4_3 = calculatorService.getCalcProperty(calc,"OPLATA_MSC_43_ZL")
-        cmd.card_p_4_4 = calculatorService.getCalcProperty(calc,"OPLATA_MSC_44_PROCENT")
-        cmd.card_f_4_4 = calculatorService.getCalcProperty(calc,"OPLATA_MSC_44_ZL")
+        cmd.mastercardEUKKPr = calculatorService.getCalcProperty(calc,"OPLATA_MSC_41_PROCENT")
+        cmd.mastercardEUKKSt = calculatorService.getCalcProperty(calc,"OPLATA_MSC_41_ZL")
+        cmd.mastercardEUKDPr = calculatorService.getCalcProperty(calc,"OPLATA_MSC_42_PROCENT")
+        cmd.mastercardEUKDSt = calculatorService.getCalcProperty(calc,"OPLATA_MSC_42_ZL")
+        cmd.mastercardEUKBLPr = calculatorService.getCalcProperty(calc,"OPLATA_MSC_43_PROCENT")
+        cmd.mastercardEUKBLSt = calculatorService.getCalcProperty(calc,"OPLATA_MSC_43_ZL")
+        cmd.mastercardEUMPr = calculatorService.getCalcProperty(calc,"OPLATA_MSC_44_PROCENT")
+        cmd.mastercardEUMSt = calculatorService.getCalcProperty(calc,"OPLATA_MSC_44_ZL")
 
-        cmd.card_p_5_1 = calculatorService.getCalcProperty(calc,"OPLATA_MSC_51_PROCENT")
-        cmd.card_f_5_1 = calculatorService.getCalcProperty(calc,"OPLATA_MSC_51_ZL")
-        cmd.card_p_5_2 = calculatorService.getCalcProperty(calc,"OPLATA_MSC_52_PROCENT")
-        cmd.card_f_5_2 = calculatorService.getCalcProperty(calc,"OPLATA_MSC_52_ZL")
-        cmd.card_p_5_3 = calculatorService.getCalcProperty(calc,"OPLATA_MSC_53_PROCENT")
-        cmd.card_f_5_3 = calculatorService.getCalcProperty(calc,"OPLATA_MSC_53_ZL")
-        cmd.card_p_5_4 = calculatorService.getCalcProperty(calc,"OPLATA_MSC_54_PROCENT")
-        cmd.card_f_5_4 = calculatorService.getCalcProperty(calc,"OPLATA_MSC_54_ZL")
+        cmd.mastercardOutEUKKPr = calculatorService.getCalcProperty(calc,"OPLATA_MSC_51_PROCENT")
+        cmd.mastercardOutEUKKSt = calculatorService.getCalcProperty(calc,"OPLATA_MSC_51_ZL")
+        cmd.mastercardOutEUKDPr = calculatorService.getCalcProperty(calc,"OPLATA_MSC_52_PROCENT")
+        cmd.mastercardOutEUKDSt = calculatorService.getCalcProperty(calc,"OPLATA_MSC_52_ZL")
+        cmd.mastercardOutEUKBPr = calculatorService.getCalcProperty(calc,"OPLATA_MSC_53_PROCENT")
+        cmd.mastercardOutEUKBSt = calculatorService.getCalcProperty(calc,"OPLATA_MSC_53_ZL")
+        cmd.mastercardOutEUMPr = calculatorService.getCalcProperty(calc,"OPLATA_MSC_54_PROCENT")
+        cmd.mastercardOutEUMSt = calculatorService.getCalcProperty(calc,"OPLATA_MSC_54_ZL")
 
-        cmd.card_p_6_1_1 = calculatorService.getCalcProperty(calc,"OPLATA_MSC_611_PROCENT")
-        cmd.card_f_6_1_1 = calculatorService.getCalcProperty(calc,"OPLATA_MSC_611_ZL")
-        cmd.card_p_6_1_2 = calculatorService.getCalcProperty(calc,"OPLATA_MSC_612_PROCENT")
-        cmd.card_f_6_1_2 = calculatorService.getCalcProperty(calc,"OPLATA_MSC_612_ZL")
-        cmd.card_p_6_1_3 = calculatorService.getCalcProperty(calc,"OPLATA_MSC_613_PROCENT")
-        cmd.card_f_6_1_3 = calculatorService.getCalcProperty(calc,"OPLATA_MSC_613_ZL")
-        cmd.card_p_6_2_1 = calculatorService.getCalcProperty(calc,"OPLATA_MSC_621_PROCENT")
-        cmd.card_f_6_2_1 = calculatorService.getCalcProperty(calc,"OPLATA_MSC_621_ZL")
-        cmd.card_p_6_2_2 = calculatorService.getCalcProperty(calc,"OPLATA_MSC_622_PROCENT")
-        cmd.card_f_6_2_2 = calculatorService.getCalcProperty(calc,"OPLATA_MSC_622_ZL")
-        cmd.card_p_6_2_3 = calculatorService.getCalcProperty(calc,"OPLATA_MSC_623_PROCENT")
-        cmd.card_f_6_2_3 = calculatorService.getCalcProperty(calc,"OPLATA_MSC_623_ZL")
-        cmd.card_p_6_4_1 = calculatorService.getCalcProperty(calc,"OPLATA_MSC_641_PROCENT")
-        cmd.card_f_6_4_1 = calculatorService.getCalcProperty(calc,"OPLATA_MSC_641_ZL")
-        cmd.card_p_6_4_2 = calculatorService.getCalcProperty(calc,"OPLATA_MSC_642_PROCENT")
-        cmd.card_f_6_4_2 = calculatorService.getCalcProperty(calc,"OPLATA_MSC_642_ZL")
-        cmd.card_p_6_4_3 = calculatorService.getCalcProperty(calc,"OPLATA_MSC_643_PROCENT")
-        cmd.card_f_6_4_3 = calculatorService.getCalcProperty(calc,"OPLATA_MSC_643_ZL")
+        cmd.mastercardPolskaKK1Pr = calculatorService.getCalcProperty(calc,"OPLATA_MSC_611_PROCENT")
+        cmd.mastercardPolskaKK1St = calculatorService.getCalcProperty(calc,"OPLATA_MSC_611_ZL")
+        cmd.mastercardPolskaKK2Pr = calculatorService.getCalcProperty(calc,"OPLATA_MSC_612_PROCENT")
+        cmd.mastercardPolskaKK2St = calculatorService.getCalcProperty(calc,"OPLATA_MSC_612_ZL")
+        cmd.mastercardPolskaKK3Pr = calculatorService.getCalcProperty(calc,"OPLATA_MSC_613_PROCENT")
+        cmd.mastercardPolskaKK3St = calculatorService.getCalcProperty(calc,"OPLATA_MSC_613_ZL")
+        cmd.mastercardPolskaKD1Pr = calculatorService.getCalcProperty(calc,"OPLATA_MSC_621_PROCENT")
+        cmd.mastercardPolskaKD1St = calculatorService.getCalcProperty(calc,"OPLATA_MSC_621_ZL")
+        cmd.mastercardPolskaKD2Pr = calculatorService.getCalcProperty(calc,"OPLATA_MSC_622_PROCENT")
+        cmd.mastercardPolskaKD2St = calculatorService.getCalcProperty(calc,"OPLATA_MSC_622_ZL")
+        cmd.mastercardPolskaKD3Pr = calculatorService.getCalcProperty(calc,"OPLATA_MSC_623_PROCENT")
+        cmd.mastercardPolskaKD3St = calculatorService.getCalcProperty(calc,"OPLATA_MSC_623_ZL")
+		cmd.mastercardPolskaKBPr = calculatorService.getCalcProperty(calc,"OPLATA_MSC_625_PROCENT")
+		cmd.mastercardPolskaKBSt = calculatorService.getCalcProperty(calc,"OPLATA_MSC_625_ZL")
+        cmd.mastercardPolskaM1Pr = calculatorService.getCalcProperty(calc,"OPLATA_MSC_641_PROCENT")
+        cmd.mastercardPolskaM1St = calculatorService.getCalcProperty(calc,"OPLATA_MSC_641_ZL")
+        cmd.mastercardPolskaM2Pr = calculatorService.getCalcProperty(calc,"OPLATA_MSC_642_PROCENT")
+        cmd.mastercardPolskaM2St = calculatorService.getCalcProperty(calc,"OPLATA_MSC_642_ZL")
+        cmd.mastercardPolskaM3Pr = calculatorService.getCalcProperty(calc,"OPLATA_MSC_643_PROCENT")
+        cmd.mastercardPolskaM3St = calculatorService.getCalcProperty(calc,"OPLATA_MSC_643_ZL")
 
-        cmd.card_p_7_1_1 = calculatorService.getCalcProperty(calc,"OPLATA_MSC_711_PROCENT")
-        cmd.card_f_7_1_1 = calculatorService.getCalcProperty(calc,"OPLATA_MSC_711_ZL")
-        cmd.card_p_7_1_2 = calculatorService.getCalcProperty(calc,"OPLATA_MSC_712_PROCENT")
-        cmd.card_f_7_1_2 = calculatorService.getCalcProperty(calc,"OPLATA_MSC_712_ZL")
-        cmd.card_p_7_2_1 = calculatorService.getCalcProperty(calc,"OPLATA_MSC_721_PROCENT")
-        cmd.card_f_7_2_1 = calculatorService.getCalcProperty(calc,"OPLATA_MSC_721_ZL")
-        cmd.card_p_7_2_2 = calculatorService.getCalcProperty(calc,"OPLATA_MSC_722_PROCENT")
-        cmd.card_f_7_2_2 = calculatorService.getCalcProperty(calc,"OPLATA_MSC_722_ZL")
-        cmd.card_p_7_3 = calculatorService.getCalcProperty(calc,"OPLATA_MSC_73_PROCENT")
-        cmd.card_f_7_3 = calculatorService.getCalcProperty(calc,"OPLATA_MSC_73_ZL")
+        cmd.visaPKOBPKKO1Pr = calculatorService.getCalcProperty(calc,"OPLATA_MSC_711_PROCENT")
+        cmd.visaPKOBPKKO1St = calculatorService.getCalcProperty(calc,"OPLATA_MSC_711_ZL")
+        cmd.visaPKOBPKKO2Pr = calculatorService.getCalcProperty(calc,"OPLATA_MSC_712_PROCENT")
+        cmd.visaPKOBPKKO2St = calculatorService.getCalcProperty(calc,"OPLATA_MSC_712_ZL")
+        cmd.visaPKOBPKD1Pr = calculatorService.getCalcProperty(calc,"OPLATA_MSC_721_PROCENT")
+        cmd.visaPKOBPKD1St = calculatorService.getCalcProperty(calc,"OPLATA_MSC_721_ZL")
+        cmd.visaPKOBPKD2Pr = calculatorService.getCalcProperty(calc,"OPLATA_MSC_722_PROCENT")
+        cmd.visaPKOBPKD2St = calculatorService.getCalcProperty(calc,"OPLATA_MSC_722_ZL")
+        cmd.visaPKOBPKB3Pr = calculatorService.getCalcProperty(calc,"OPLATA_MSC_73_PROCENT")
+        cmd.visaPKOBPKB3St = calculatorService.getCalcProperty(calc,"OPLATA_MSC_73_ZL")
 
-        cmd.card_p_8_1_1 = calculatorService.getCalcProperty(calc,"OPLATA_MSC_811_PROCENT")
-        cmd.card_f_8_1_1 = calculatorService.getCalcProperty(calc,"OPLATA_MSC_811_ZL")
-        cmd.card_p_8_1_2 = calculatorService.getCalcProperty(calc,"OPLATA_MSC_812_PROCENT")
-        cmd.card_f_8_1_2 = calculatorService.getCalcProperty(calc,"OPLATA_MSC_812_ZL")
-        cmd.card_p_8_1_3 = calculatorService.getCalcProperty(calc,"OPLATA_MSC_813_PROCENT")
-        cmd.card_f_8_1_3 = calculatorService.getCalcProperty(calc,"OPLATA_MSC_813_ZL")
-        cmd.card_p_8_2_1 = calculatorService.getCalcProperty(calc,"OPLATA_MSC_821_PROCENT")
-        cmd.card_f_8_2_1 = calculatorService.getCalcProperty(calc,"OPLATA_MSC_821_ZL")
-        cmd.card_p_8_2_2 = calculatorService.getCalcProperty(calc,"OPLATA_MSC_822_PROCENT")
-        cmd.card_f_8_2_2 = calculatorService.getCalcProperty(calc,"OPLATA_MSC_822_ZL")
-        cmd.card_p_8_2_3 = calculatorService.getCalcProperty(calc,"OPLATA_MSC_823_PROCENT")
-        cmd.card_f_8_2_3 = calculatorService.getCalcProperty(calc,"OPLATA_MSC_823_ZL")
-        cmd.card_p_8_3   = calculatorService.getCalcProperty(calc,"OPLATA_MSC_83_PROCENT")
-        cmd.card_f_8_3   = calculatorService.getCalcProperty(calc,"OPLATA_MSC_83_ZL")
-        cmd.card_p_8_4_1 = calculatorService.getCalcProperty(calc,"OPLATA_MSC_841_PROCENT")
-        cmd.card_f_8_4_1 = calculatorService.getCalcProperty(calc,"OPLATA_MSC_841_ZL")
-        cmd.card_p_8_4_2 = calculatorService.getCalcProperty(calc,"OPLATA_MSC_842_PROCENT")
-        cmd.card_f_8_4_2 = calculatorService.getCalcProperty(calc,"OPLATA_MSC_842_ZL")
-        cmd.card_p_8_4_3 = calculatorService.getCalcProperty(calc,"OPLATA_MSC_843_PROCENT")
-        cmd.card_f_8_4_3 = calculatorService.getCalcProperty(calc,"OPLATA_MSC_843_ZL")
+        cmd.mastercardPKOBPKK1Pr = calculatorService.getCalcProperty(calc,"OPLATA_MSC_811_PROCENT")
+        cmd.mastercardPKOBPKK1St = calculatorService.getCalcProperty(calc,"OPLATA_MSC_811_ZL")
+        cmd.mastercardPKOBPKK2Pr = calculatorService.getCalcProperty(calc,"OPLATA_MSC_812_PROCENT")
+        cmd.mastercardPKOBPKK2St = calculatorService.getCalcProperty(calc,"OPLATA_MSC_812_ZL")
+        cmd.mastercardPKOBPKK3Pr = calculatorService.getCalcProperty(calc,"OPLATA_MSC_813_PROCENT")
+        cmd.mastercardPKOBPKK3St = calculatorService.getCalcProperty(calc,"OPLATA_MSC_813_ZL")
+        cmd.mastercardPKOBPKD1Pr = calculatorService.getCalcProperty(calc,"OPLATA_MSC_821_PROCENT")
+        cmd.mastercardPKOBPKD1St = calculatorService.getCalcProperty(calc,"OPLATA_MSC_821_ZL")
+        cmd.mastercardPKOBPKD2LPr = calculatorService.getCalcProperty(calc,"OPLATA_MSC_822_PROCENT")
+        cmd.mastercardPKOBPKD2LSt = calculatorService.getCalcProperty(calc,"OPLATA_MSC_822_ZL")
+        cmd.mastercardPKOBPKD3Pr = calculatorService.getCalcProperty(calc,"OPLATA_MSC_823_PROCENT")
+        cmd.mastercardPKOBPKD3St = calculatorService.getCalcProperty(calc,"OPLATA_MSC_823_ZL")
+        cmd.mastercardPKOBPKBPr   = calculatorService.getCalcProperty(calc,"OPLATA_MSC_83_PROCENT")
+        cmd.mastercardPKOBPKBSt   = calculatorService.getCalcProperty(calc,"OPLATA_MSC_83_ZL")
+        cmd.mastercardPKOBPM1Pr = calculatorService.getCalcProperty(calc,"OPLATA_MSC_841_PROCENT")
+        cmd.mastercardPKOBPM1St = calculatorService.getCalcProperty(calc,"OPLATA_MSC_841_ZL")
+        cmd.mastercardPKOBPM2Pr = calculatorService.getCalcProperty(calc,"OPLATA_MSC_842_PROCENT")
+        cmd.mastercardPKOBPM2St = calculatorService.getCalcProperty(calc,"OPLATA_MSC_842_ZL")
+        cmd.mastercardPKOBPM3Pr = calculatorService.getCalcProperty(calc,"OPLATA_MSC_843_PROCENT")
+        cmd.mastercardPKOBPM3St = calculatorService.getCalcProperty(calc,"OPLATA_MSC_843_ZL")
 
-        cmd.card_p_9 = calculatorService.getCalcProperty(calc,"OPLATA_MSC_9_PROCENT")
+        cmd.dinersClubPr = calculatorService.getCalcProperty(calc,"OPLATA_MSC_9_PROCENT")
 
-        cmd.card_p_10 = calculatorService.getCalcProperty(calc,"OPLATA_MSC_10_PROCENT")
+        cmd.ikoSt = calculatorService.getCalcProperty(calc,"OPLATA_MSC_10_PROCENT")
     }
 
     def getPoziomOplatIWarunkiPlatnosciPP(ProcessCommand cmd ,def calc) {
@@ -349,8 +351,8 @@ class PanelService {
     }
 
     def getRachunekBankowyKlienta(ProcessCommand cmd ,def calc) {
-        cmd.numerRachunkuBankowego =cmd.numerRachunkuBankowego ?: "-"
-        cmd.bank = cmd.bank ?: ""
+        cmd.numerRachunkuBankowegoKlienta =cmd.numerRachunkuBankowegoKlienta ?: "-"
+        cmd.bankKlienta = cmd.bankKlienta ?: ""
     }
 
     def getScoring(ProcessCommand cmd ,def calc) {

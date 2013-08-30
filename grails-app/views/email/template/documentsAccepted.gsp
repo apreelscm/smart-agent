@@ -2,11 +2,11 @@
 <!DOCTYPE html>
 <body>
 	<p>
-		Witaj, 
-		
-		Umowa z Klientem – Nazwa Klienta została zaakceptowana. 
+		Witaj,
+        <br><br>
+		Umowa z Klientem – ${merchantName} została zaakceptowana.
 		Skontaktuj się z Klientem i poinformuj o dalszych krokach.
-		 
+        <br><br>
 		Pozdrawiamy, 
 		Zespół Wsparcia Sprzedaży 
 	</p>

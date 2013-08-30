@@ -4,16 +4,14 @@ import com.eservice.eumowy.command.AllPointsCommand
 import com.eservice.eumowy.command.AllPosCommand
 import com.eservice.eumowy.command.PointCommand
 import com.eservice.eumowy.command.ProcessCommand
+import com.eservice.eumowy.util.DateUtils
 import grails.util.Environment
 import org.apache.commons.collections.FactoryUtils
 import org.apache.commons.collections.ListUtils
+import org.apache.commons.lang.SerializationUtils
 import org.apache.commons.lang.WordUtils
 
-import java.text.SimpleDateFormat
-
 class ProcessService {
-
-    static final def DATE_FORMAT = "dd-MM-yyyy";
 
     def panelService
     def panelMockService
@@ -53,9 +51,9 @@ class ProcessService {
                 eq("phNumber", Integer.valueOf(filterPhNo));
             }
 
-            if(isDate(filterDateFrom) && isDate(filterDateTo)) {
-                ge("dateCreated", parseDate(filterDateFrom))
-                le("dateCreated", addDays(parseDate(filterDateTo), 1))
+            if(DateUtils.isDate(filterDateFrom, DateUtils.DD_MM_YYYY) && DateUtils.isDate(filterDateTo, DateUtils.DD_MM_YYYY)) {
+                ge("dateCreated", DateUtils.parseDate(filterDateFrom, DateUtils.DD_MM_YYYY))
+                le("dateCreated", DateUtils.addDays(DateUtils.parseDate(filterDateTo, DateUtils.DD_MM_YYYY), 1))
             }
 
             if ("isObserved".equals(filterObserved)){
@@ -68,26 +66,6 @@ class ProcessService {
 
     static def boolean isNumber(value){
         return value?.toString()?.isNumber()
-    }
-
-    static def boolean isDate(date){
-        try {
-            date != null && !"".equals(date) && parseDate(date)
-        } catch (Exception e){
-            false
-        }
-    }
-
-    static def Date parseDate(dateStr){
-        new SimpleDateFormat(DATE_FORMAT).parse(dateStr)
-    }
-
-    static def String formatDate(date){
-        new SimpleDateFormat(DATE_FORMAT).format(date)
-    }
-
-    static def Date addDays(date, days){
-        new Date(date.getTime()+days*86400000L)
     }
 
     /**
@@ -118,17 +96,19 @@ class ProcessService {
         return activities?.any{it.code.equals(activityCode)};
     }
 
-    def createNewProcessCommand(def process, def calc){
-        log.info("createNewProcessCommand processId = ${process.id}")
+    def getNewProcessCommand(def process, def calc){
+        log.info("getNewProcessCommand processId = ${process.id}")
         def cmd = initProcessCommand(process)
         prepareProcessCommand(cmd, calc)
     }
 
-    def createSavedProcessCommand(def process, def calc){
-        log.info("createSavedProcessCommand processId = ${process.id}")
+    def getSavedProcessCommand(def process, def calc){
+        log.info("getSavedProcessCommand processId = ${process.id}")
         def cmd = initProcessCommand(process)
         loadProcessData(process,cmd)
-     //   prepareProcessCommand(cmd, calc, cbdMethods)
+       // loadPoints()
+       // loadPoses()
+        prepareProcessCommand(cmd, calc, cbdMethods)
     }
 
     /**
@@ -193,7 +173,26 @@ class ProcessService {
     /**
      *  save data
      * */
-    List<PointCommand> points = ListUtils.lazyList([], FactoryUtils.instantiateFactory(PointCommand))
+
+
+    def populateProcessWithData(def process, def cmd){
+        def processDataList = getDataFromPanels(cmd)
+        process.processData?.clear()
+        processDataList.each { data ->
+            process.addToProcessData(data)
+            process.discard();
+        }
+
+        def pointsDataList = getPointAndPosData(cmd)
+        process.points?.clear()
+        pointsDataList.each { data ->
+            process.addToPoints(data)
+            process.discard()
+        }
+        process
+    }
+
+     List<PointCommand> points = ListUtils.lazyList([], FactoryUtils.instantiateFactory(PointCommand))
     List<AllPointsCommand> allPoints = ListUtils.lazyList([], FactoryUtils.instantiateFactory(AllPointsCommand))
     List<AllPosCommand> allPoses = ListUtils.lazyList([], FactoryUtils.instantiateFactory(AllPosCommand))
     def getDataFromPanels(def cmd) {
@@ -244,6 +243,23 @@ class ProcessService {
 			
 			pdList.add(posData)
 			
+			// Create POSes with same values
+			if (pc.terminalIlosc != null && pc.terminalIlosc > 1) {
+				for (int i = 0; i < pc.terminalIlosc; i++) {
+					PosData posDataNew
+					PosDataDetails posDataDetailsNew
+					
+					posDataNew = SerializationUtils.clone(posData)
+					posDataDetailsNew = SerializationUtils.clone(posDataDetails)
+					
+					posDataNew.setPosDetails(posDataDetailsNew)
+					posDataNew.setPoint(pointData)
+					posDataDetailsNew.setPos(posDataNew)
+					
+					pdList.add(posDataNew)
+				}
+			}
+			
 			pointsList.add(pointData)
 			
 			posData.setPosDetails(posDataDetails)
@@ -257,6 +273,17 @@ class ProcessService {
 		}
 		
 		return pointsList
+	}
+	
+	def findDocumentByName(def documents, def name) {
+		if (documents != null) {
+			for(DocumentFile df : documents) {
+				if (df.name.equals(name))
+					return df
+			}
+		}
+		
+		return null
 	}
 
 }

@@ -21,18 +21,11 @@
 <g:render template="../panels/informacjeDodatkowe"/>
 <g:render template="../panels/osobaDoKontaktu"/>
 <g:render template="../panels/scoring"/>
-%{--<g:render template="../panels/opieka" />--}%
 <g:render template="../panels/danePunktu" />
 <g:render template="../panels/daneDoWydruku"/>
-%{--<g:render template="../panels/adresDoKorespondencjiPunktu" />--}%
-%{--<g:render template="../panels/osobaDoKontaktuWPunkcie" />--}%
-%{--<g:render template="../panels/zestawPos" />--}%
-%{--<g:render template="../panels/informacjeTechniczne" />--}%
-%{--<g:render template="../panels/funkcjeTerminala" />--}%
 <g:render template="../panels/zestawPosOdplatneUzywanie"/>
 <g:render template="../panels/zestawPosStawkiPreferencyjne"/>
-%{--<g:render template="../panels/dodatkoweWyposazenie" />--}%
-%{--<g:render template="../panels/adresacjaSeciowa" />--}%
+
 <g:render template="../panels/dodajPunkt" />
 <g:render template="../panels/dodatkoweUslugi2"/>
 <g:render template="../panels/serwis"/>

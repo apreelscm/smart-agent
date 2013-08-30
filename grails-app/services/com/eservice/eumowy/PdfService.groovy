@@ -133,15 +133,22 @@ class PdfService {
 	}
 	
 	def fillPdfFormFromURIWithFaksymile(Signature sig, Map<String,String[]> panelData, FontType fontType) {
-		int subscriptionDeltaX = 50
-		int subscriptionDeltaY = 0
+		int subscriptionDeltaX1 = 250
+		int subscriptionDeltaX2 = 380
 		
 		String subscriptionsPath = appParametersService.getSubscriptionsPath()
 		
 		Map<String,String[]> dataMap = new HashMap<String, String[]>()
 		
-		dataMap.put("managementSubscription1", [new File(subscriptionsPath+sig.managementSubscription1).toURI().toURL(), "", "signature", sig.subscriptionPageNumber.toString(), sig.subscriptionX.toString(), sig.subscriptionY.toString(), sig.subscriptionXScale.toString(), sig.subscriptionYScale.toString()] as String[])
-		dataMap.put("managementSubscription2", [new File(subscriptionsPath+sig.managementSubscription2).toURI().toURL(), "", "signature", sig.subscriptionPageNumber.toString(), sig.subscriptionX+subscriptionDeltaX.toString(), sig.subscriptionY+subscriptionDeltaY.toString(), sig.subscriptionXScale.toString(), sig.subscriptionYScale.toString()] as String[])
+		String subscriptionXScale1 = appParametersService.getManagementSubscriptionFirstScaleX()
+		String subscriptionXScale2 = appParametersService.getManagementSubscriptionSecondScaleX()
+		String subscriptionYScale1 = appParametersService.getManagementSubscriptionFirstScaleY()
+		String subscriptionYScale2 = appParametersService.getManagementSubscriptionSecondScaleY()
+		
+		if (sig.subscriptionPageNumber > -1) {
+			dataMap.put("managementSubscription1", [new File(subscriptionsPath+sig.managementSubscription1).toURI().toURL(), "", "signature", sig.subscriptionPageNumber.toString(), (sig.subscriptionX+subscriptionDeltaX1).toString(), sig.subscriptionY.toString(), subscriptionXScale1, subscriptionYScale1] as String[])
+			dataMap.put("managementSubscription2", [new File(subscriptionsPath+sig.managementSubscription2).toURI().toURL(), "", "signature", sig.subscriptionPageNumber.toString(), (sig.subscriptionX+subscriptionDeltaX2).toString(), sig.subscriptionY.toString(), subscriptionXScale2, subscriptionYScale2] as String[])
+		}
 		
 		if (panelData != null) {
 			dataMap.putAll(panelData)
@@ -165,15 +172,22 @@ class PdfService {
 	}
 	
 	def fillPdfFormFromURIWithBlackFaksymile(Signature sig, Map<String,String[]> panelData, FontType fontType) {
-		int subscriptionDeltaX = 50
-		int subscriptionDeltaY = 0
+		int subscriptionDeltaX1 = 250
+		int subscriptionDeltaX2 = 380
 		
 		String subscriptionsPath = appParametersService.getSubscriptionsBlackPath()
 		
-		Map<String,String[]> dataMap = new HashMap<String, String[]>();
+		Map<String,String[]> dataMap = new HashMap<String, String[]>()
 		
-		dataMap.put("managementSubscription1", [new File(subscriptionsPath+sig.managementSubscription1).toURI().toURL(), "", "signature", sig.subscriptionPageNumber, sig.subscriptionX, sig.subscriptionY, sig.subscriptionXScale, sig.subscriptionYScale] as String[])
-		dataMap.put("managementSubscription2", [new File(subscriptionsPath+sig.managementSubscription2).toURI().toURL(), "", "signature", sig.subscriptionPageNumber, sig.subscriptionX+subscriptionDeltaX, sig.subscriptionY+subscriptionDeltaY, sig.subscriptionXScale, sig.subscriptionYScale] as String[])
+		String subscriptionXScale1 = appParametersService.getManagementSubscriptionFirstScaleX()
+		String subscriptionXScale2 = appParametersService.getManagementSubscriptionSecondScaleX()
+		String subscriptionYScale1 = appParametersService.getManagementSubscriptionFirstScaleY()
+		String subscriptionYScale2 = appParametersService.getManagementSubscriptionSecondScaleY()
+		
+		if (sig.subscriptionPageNumber > -1) {
+			dataMap.put("managementSubscription1", [new File(subscriptionsPath+sig.managementSubscription1).toURI().toURL(), "", "signature", sig.subscriptionPageNumber.toString(), (sig.subscriptionX+subscriptionDeltaX1).toString(), sig.subscriptionY.toString(), subscriptionXScale1, subscriptionYScale1] as String[])
+			dataMap.put("managementSubscription2", [new File(subscriptionsPath+sig.managementSubscription2).toURI().toURL(), "", "signature", sig.subscriptionPageNumber.toString(), (sig.subscriptionX+subscriptionDeltaX2).toString(), sig.subscriptionY.toString(), subscriptionXScale2, subscriptionYScale2] as String[])
+		}
 		
 		if (panelData != null) {
 			dataMap.putAll(panelData)

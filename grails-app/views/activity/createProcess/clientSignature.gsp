@@ -161,7 +161,7 @@
 				return false;
 			});
 			
-			<g:each in="${com.eservice.eumowy.Activity$ClientType?.values()}">
+			%{--<g:each in="${com.eservice.eumowy.Activity$ClientType?.values()}">
 			jQuery("#subscribe-${it.name()}").on('click', function(e) {
 				e.preventDefault();
 				
@@ -183,7 +183,79 @@
 		        
 				return false;
 			});
-			</g:each>
+			</g:each>--}%
+			
+			jQuery("#subscribe-REPRESENTATIVE1").on('click', function(e) {
+				e.preventDefault();
+				
+				var signerName = jQuery(e.target).text();
+				
+				var dialog = jQuery('#subscriptionDialog');
+				if (jQuery('#subscriptionDialog').length == 0) {
+					dialog = jQuery('<div id="subscriptionDialog" style="display:hidden"></div>').appendTo('body');
+				}
+				
+				dialog.load(
+		            "/eumowy/subscription/inlineview?signername="+encodeURI(signerName)+"&linkid=subscribe-REPRESENTATIVE1",
+		            {},
+		            function(responseText, textStatus, XMLHttpRequest) {
+		                dialog.dialog({
+		                	modal: true,
+      						width: 750
+		                });
+		            }
+		        );
+		        
+				return false;
+			});
+			
+			jQuery("#subscribe-REPRESENTATIVE2").on('click', function(e) {
+				e.preventDefault();
+				
+				var signerName = jQuery(e.target).text();
+				
+				var dialog = jQuery('#subscriptionDialog');
+				if (jQuery('#subscriptionDialog').length == 0) {
+					dialog = jQuery('<div id="subscriptionDialog" style="display:hidden"></div>').appendTo('body');
+				}
+				
+				dialog.load(
+		            "/eumowy/subscription/inlineview?signername="+encodeURI(signerName)+"&linkid=subscribe-REPRESENTATIVE2",
+		            {},
+		            function(responseText, textStatus, XMLHttpRequest) {
+		                dialog.dialog({
+		                	modal: true,
+      						width: 750
+		                });
+		            }
+		        );
+		        
+				return false;
+			});
+			
+			jQuery("#subscribe-PH").on('click', function(e) {
+				e.preventDefault();
+				
+				var signerName = jQuery(e.target).text();
+				console.log("Name: " + signerName);
+				var dialog = jQuery('#subscriptionDialog');
+				if (jQuery('#subscriptionDialog').length == 0) {
+					dialog = jQuery('<div id="subscriptionDialog" style="display:hidden"></div>').appendTo('body');
+				}
+				
+				dialog.load(
+		            "/eumowy/subscription/inlineview?signername="+encodeURI(signerName)+"&linkid=subscribe-PH",
+		            {},
+		            function(responseText, textStatus, XMLHttpRequest) {
+		                dialog.dialog({
+		                	modal: true,
+      						width: 750
+		                });
+		            }
+		        );
+		        
+				return false;
+			});
 			
 			jQuery("#requestVersionTemplates, #requestVersionPaper").on("change", function(e) {
 				if (jQuery(e.target).is(":checked")) {
@@ -245,12 +317,9 @@
         	<fieldset id="clientSignaturePersons" class="subpanel-fieldset">
         		<legend><g:message code="clientSignature.signing.people" default="Osoby podpisujące" /></legend>
         		<ul class="table-list">
-        			<g:each in="${com.eservice.eumowy.Activity$ClientType?.values()}" >
-						<li><span><a class="big-link" href="#" id="subscribe-${it.name()}">${it}</a></span></li>
-					</g:each>
-					<!-- <li><span><a class="big-link" id="subscribe-OTHER" href="#">Andrzej Kmicic - Reprezentant</a></span></li>
-					<li><span><a class="big-link" href="#">Stanisław Wokólski - Reprezentant</a></span></li>
-					<li><span><a class="big-link" href="#">Jacek Soplica - Pracownik eService</a></span></li> -->
+					<li><span><a class="big-link" id="subscribe-REPRESENTATIVE1" href="#">${representative1} - Reprezentant</a></span></li>
+					<li><span><a class="big-link" id="subscribe-REPRESENTATIVE2" href="#">${representative2} - Reprezentant</a></span></li>
+					<li><span><a class="big-link" id="subscribe-PH" href="#">${processInstance.phFirstName} ${processInstance.phSurname} - Pracownik eService</a></span></li>
         		</ul>
         	</fieldset>
         	<fieldset class="subpanel-fieldset" id="clientSignatureDocType">
