@@ -333,11 +333,10 @@ class ActivityController {
                 flow.client = client;
 
                 /** sprawdzanie, czy w eUmowy istnieje dla danego Akceptanta niezakończony Proces */
-				//TODO Odkomentowac to pozniej
-              /*  if(processService.hasIncompleteProcessForClient(client)){
+                if(processService.hasIncompleteProcessForClient(client)){
                     flash.nipErrorMessage = message(code:"client.unfinishedProcess.error", default:"Dla Akceptanta istnieje niezakończony Proces");
                     return error();
-                }*/
+                }
 
                 /** pobieranie danych o kalkulatorze */
                 def calcId = cbdService.findCalculatorIdByNip(client.nip)
@@ -373,10 +372,8 @@ class ActivityController {
                 def processCmd
                 if(!flow.skipPanelsInit){
                     log.info("skipPanelsInit - false")
-                    //ACTIVE PANELS
                     TreeSet activePanels = _getActivePanels(processInstance.signatures)
                     processInstance.panels = activePanels.toList();
-
                     processCmd = processService.getNewProcessCommand(processInstance,calc)
                 }
                 else{
@@ -394,17 +391,14 @@ class ActivityController {
                 log.info "acceptPointsButton TRIGGERED"
             }.to "selectedPanels"
             on("saveOnly"){ ProcessCommand cmd ->
-                def processInstance = flow.processInstance
-                def processDataList = processService.getDataFromPanels(cmd)
+                Process processInstance = processService.populateProcessWithData(flow.processInstance,cmd)
 
-                processInstance.processData?.clear()
-                processDataList.each { data ->
-                    processInstance.addToProcessData(data)
-                    processInstance.discard();
+                if (!processInstance.save()){
+                    processInstance.errors.each {
+                        log.error(it)
+                    }
+                    return error();
                 }
-
-                //TODO Save cmd.points to PointData, PointDataDetails, PosData
-                processInstance.save();
 
                 flow.processInstance = processInstance
                 flow.data = cmd
@@ -417,22 +411,8 @@ class ActivityController {
                     return error();
                 }
 
-                def processInstance = flow.processInstance
+                Process processInstance = processService.populateProcessWithData(flow.processInstance,cmd)
                 processInstance.notesToCoa = cmd.notes;
-                def processDataList = processService.getDataFromPanels(cmd)
-				def pointsDataList = processService.getPointAndPosData(cmd)
-
-                processInstance.processData?.clear()
-                processDataList.each { data ->
-                    processInstance.addToProcessData(data)
-                    processInstance.discard()
-                }
-
-				processInstance.points?.clear()
-				pointsDataList.each { data ->
-					processInstance.addToPoints(data)
-					processInstance.discard()
-				}
 
                 if (!processInstance.save()){
                     processInstance.errors.each {
@@ -440,7 +420,6 @@ class ActivityController {
                     }
                     return error();
                 }
-
 
                 flow.processInstance = processInstance
             }.to "clientSignature"
@@ -561,6 +540,20 @@ class ActivityController {
             on("acceptPointsButton") {
                 log.info "acceptPointsButton TRIGGERED"
             }.to "selectedPanels"
+            on("saveOnly"){ ProcessCommand cmd ->
+                def processInstance = processService.populateProcessWithData(flow.processInstance,cmd)
+
+                if (!processInstance.save()){
+                    processInstance.errors.each {
+                        log.error(it)
+                    }
+                    return error();
+                }
+
+                flow.processInstance = processInstance
+                flow.data = cmd
+                flow.skipPanelsInit = true;
+            }to "selectedPanels"
             on("continue"){ ProcessCommand cmd ->
 
                 if(cmd?.hasErrors()){
@@ -568,22 +561,15 @@ class ActivityController {
                     return error();
                 }
 
-                def processInstance = flow.processInstance
+                def processInstance = populateProcessWithData(flow.processInstance,cmd)
                 processInstance.notesToCoa = cmd.notes;
 
-                //_createPointDatas(flow.processInstance)
-                //_createPosDatas(flow.processInstance)
-
-                def processDataList = processService.getDataFromPanels(cmd)
-
-                //TODO optymalizacja
-                processInstance.processData?.clear()
-                processDataList.each { data ->
-                    processInstance.addToProcessData(data)
-                    processInstance.discard();
+                if (!processInstance.save()){
+                    processInstance.errors.each {
+                        log.error(it)
+                    }
+                    return error();
                 }
-
-                processInstance.save();
 
                 flow.processInstance = processInstance
             }.to "clientSignature"
