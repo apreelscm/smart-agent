@@ -1,17 +1,15 @@
 package com.eservice.eumowy
 
-import grails.util.Environment
-
-import org.apache.commons.collections.FactoryUtils
-import org.apache.commons.collections.ListUtils
-import org.apache.commons.lang.SerializationUtils
-import org.apache.commons.lang.WordUtils
-
 import com.eservice.eumowy.command.AllPointsCommand
 import com.eservice.eumowy.command.AllPosCommand
 import com.eservice.eumowy.command.PointCommand
 import com.eservice.eumowy.command.ProcessCommand
 import com.eservice.eumowy.util.DateUtils
+import grails.util.Environment
+import org.apache.commons.collections.FactoryUtils
+import org.apache.commons.collections.ListUtils
+import org.apache.commons.lang.SerializationUtils
+import org.apache.commons.lang.WordUtils
 
 class ProcessService {
 
@@ -154,12 +152,18 @@ class ProcessService {
     /**
      *  create data
      * */
-    def loadProcessData(def process,  def cmd) {
+     def loadProcessData(def process,  def cmd) {
         log.info("loadProcessData - processData: ${process.processData}");
         process.processData.each {ProcessData data ->
+
+            if(data.name in ["dataUmowy"]){
+                return
+            }
+
             if(!cmd.hasProperty(data.name)){
                 throw new NoSuchFieldException(data.name)
             }
+
             println("${data.name} => ${data.value}" )
 
             if(data.name in ["allPoses", "allPoints", "points"]){
@@ -272,8 +276,13 @@ class ProcessService {
                 return;
             }
 
+            println(key+"()")
+
             processDataList.add(new ProcessData(name: "${key}", value:"${value ?: ''}"));
         }
+
+
+
 
         processDataList
     }

@@ -5,12 +5,16 @@
             <ul class="table-list centre">
                 <li><span><g:message code="panel.acceptor.full.name"/></span></li>
                 <li>
-                    <span><g:textField name="akceptantNazwaOficjalna" value="${data.akceptantNazwaOficjalna}" readonly="${data.isFromCbd('akceptantNazwaOficjalna')}" style="width: 400px" maxlength ="80"/></span>
+                    <span>
+                    %{--<g:textField name="akceptantNazwaOficjalna" value="${data.akceptantNazwaOficjalna}" readonly="${data.isFromCbd('akceptantNazwaOficjalna')}" style="width: 400px" maxlength ="80"/>--}%
+                    <eumowy:textField name="akceptantNazwaOficjalna" value="${data.akceptantNazwaOficjalna}" bean="${data}" mandatory="true" readonly="${data.isFromCbd('akceptantNazwaOficjalna')}" style="width: 400px" maxlength ="80"/>
+                    </span>
                     <g:hiddenField name="akceptantNazwaOficjalnaCbd" value="${data.akceptantNazwaOficjalnaCbd}"/>
+
                 </li>
                 <li><span><g:message code="panel.acceptor.network.name"/></span></li>
                 <li>
-                    <span><g:textField name="akceptantNazwaSieciowa" value="${data.akceptantNazwaSieciowa}" readonly="${data.isFromCbd('akceptantNazwaSieciowa')}" style="width: 400px;" maxlength ="22"/></span>
+                    <span><eumowy:textField name="akceptantNazwaSieciowa" value="${data.akceptantNazwaSieciowa}" bean="${data}" mandatory="true" readonly="${data.isFromCbd('akceptantNazwaSieciowa')}" style="width: 400px;" maxlength ="22"/></span>
                     <g:hiddenField name="akceptantNazwaSieciowaCbd" value="${data.akceptantNazwaSieciowaCbd}"/>
                 </li>
                 <li>

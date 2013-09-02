@@ -1086,7 +1086,8 @@ input:invalid:focus, select:invalid:focus, textarea:invalid:focus {
 }
 
 .error {
-    color: red;
+    /*color: red;*/
+    border-color: red;
 }
 
 /* Other classes
