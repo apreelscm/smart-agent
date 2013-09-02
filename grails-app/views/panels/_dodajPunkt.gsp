@@ -22,7 +22,7 @@
 	jQuery(document).ready(function() {
 		var panelTemplate = jQuery("#hiddenPanel").html();
 		var panelCount = ${data.points.size()};
-		var panelInternalCount = ${data.points.size()}+1;
+		var panelInternalCount = ${data.points.size()};
 		
 		jQuery("#hiddenPanel").remove();
 			
@@ -44,6 +44,10 @@
 				jQuery(e.target).prop("disabled", true);
 			}
 			
+			if (panelInternalCount > 0) {
+				jQuery("#conitnueButton").prop("disabled", false);
+			}
+			
 			return false;
 		});
 		
@@ -55,6 +59,10 @@
 			
 			if (panelInternalCount < 10) {
 				jQuery("#addNewPointButton").prop("disabled", false);
+			}
+			
+			if (panelInternalCount == 0) {
+				jQuery("#conitnueButton").prop("disabled", true);
 			}
 			
 			return false;

@@ -134,7 +134,7 @@
     <nav style="margin-top: 20px">
         <fieldset>
             <g:link event="back" class="button submit float-left">${message(code:'default.navigation.button.prev', default: 'Wstecz')}</g:link>
-            <button id="conitnueButton"  class="button submit float-right">${message(code:'default.navigation.button.next', default: 'Dalej')}</button>
+            <button id="conitnueButton" class="button submit float-right" disabled>${message(code:'default.navigation.button.next', default: 'Dalej')}</button>
         </fieldset>
     </nav>
 

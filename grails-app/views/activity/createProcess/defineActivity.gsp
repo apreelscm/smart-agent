@@ -135,17 +135,17 @@
                      <a class="expander expanderSub expanded" href="#"><g:message code="activity.pakietSerwisowy.name" default="Pakiet serwisowy"/></a>
 
                      <div class="content nesting-sub2" style="display: block;">
-                         <div class="checkBoxBlock">
+                         <div class="checkBoxBlock" id="ekonomiczny">
                              <g:checkBox id="ekonomicznyCB" name="ekonomiczny" data-selected="${(processInstance?.activities*.code)?.contains('ekonomiczny')}"/>
                              <label for="ekonomicznyCB"><g:message code="activity.ekonomiczny.name" default="Ekonomiczny"/></label>
                          </div>
 
-                         <div class="checkBoxBlock">
+                         <div class="checkBoxBlock" id="komfort">
                              <g:checkBox id="komfortCB" name="komfort" data-selected="${(processInstance?.activities*.code)?.contains('komfort')}"/>
                              <label for="komfortCB"><g:message code="activity.komfort.name" default="Komfort"/></label>
                          </div>
 
-                         <div class="checkBoxBlock">
+                         <div class="checkBoxBlock" id="prestiz">
                              <g:checkBox id="prestizCB" name="prestiz" data-selected="${(processInstance?.activities*.code)?.contains('prestiz')}"/>
                              <label for="prestizCB"><g:message code="activity.prestiz.name" default="Prestiż"/></label>
                          </div>
