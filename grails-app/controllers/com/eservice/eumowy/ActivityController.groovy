@@ -48,6 +48,7 @@ class ActivityController {
                     flow.processInstance =  new Process();
                     flow.newProcessFlow = true
                 }
+
             }
             on("continue") { DefineActivityCommand cmd ->
                 def processInstance = flow.processInstance
@@ -69,6 +70,7 @@ class ActivityController {
                 def processInstance = flow.processInstance
                 def hasPoprawDane = processService.containsActivity(processInstance.activities,"poprawDane")
                 def hasUzupelnijPodpisy = processService.containsActivity(processInstance.activities,"uzupelnijPodpisy")
+                def hasOdrzucDokumenty = processService.containsActivity(processInstance.activities,"odrzucDokumenty")
 
                 if(processInstance.activities?.size() == 0){
                     emailOnly();
@@ -79,6 +81,9 @@ class ActivityController {
                 else if(hasUzupelnijPodpisy){
                     uzupelnijPodpisy();
                 }
+                else if(hasOdrzucDokumenty){
+                    odrzucDokumenty();
+                }
                 else{
                     normal();
                 }
@@ -87,7 +92,32 @@ class ActivityController {
             on("normal").to "normal"
             on("uzupelnijPodpisy").to "uzupelnijPodpisy"
             on("poprawDane").to "poprawDane"
+            on("odrzucDokumenty").to "odrzucDokumenty"
             on("emailOnly").to "emailOnly"
+        }
+
+        /** send email only subflow*/
+        emailOnly {
+            action{
+                def processInstance = flow.processInstance
+                def notes = processInstance.notesToCoa
+                log.info("wysyłanie wiadomości email z uwagami do COA [notes: ${notes}]")
+                try{
+                    def user = springSecurityService.principal
+                    emailService.sendNotesToCOA(notes, user.nr, user.imie + ' ' + user.nazwisko)
+                    log.info(flash.infoMessage)
+                }catch (Exception error){
+                    log.info(flash.errorMessage)
+                    error.printStackTrace();
+                    return error()
+                }
+            }
+            on("error"){
+                flash.errorMessage = message(code:"email.send.error", default:"Wystąpił błąd podczas wysyłania wiadomości");
+            }to "defineActivity"
+            on("success"){
+                flash.infoMessage = message(code:"email.notesToCOA.send.complete", default:"Wysłano wiadomość z uwagami do COA");
+            }to "defineActivity"
         }
 
         /** default full subflow */
@@ -129,24 +159,15 @@ class ActivityController {
             }.to "clientSignature"
         }
 
-        /** send email only subflow*/
-        emailOnly {
-            action{
-                def processInstance = flow.processInstance
-                def notes = processInstance.notesToCoa
-                log.info("wysyłanie wiadomości email z uwagami do COA [notes: ${notes}]")
-                try{
-                    def user = springSecurityService.principal
-                    emailService.sendNotesToCOA(notes, user.nr, user.imie + ' ' + user.nazwisko)
-                    flash.infoMessage = message(code:"email.notesToCOA.send.complete", default:"Wysłano wiadomość z uwagami do COA");
-                    log.info(flash.infoMessage)
-                }catch (Exception error){
-                    flash.errorMessage = message(code:"email.send.error", default:"Wystąpił błąd podczas wysyłania wiadomości");
-                    log.info(flash.errorMessage)
-                    error.printStackTrace();
-                }
-            }
-            on("success").to "defineActivity"
+        /** popraw dane subflow */
+        odrzucDokumenty {
+            subflow(action: "odrzucDokumenty", input: [processInstance : { flow.processInstance }])
+            on("backToStart"){
+                flow.isGoBack = true;
+            }to "defineActivity"
+            on("finish"){
+                flow.processInstance = currentEvent.attributes.process
+            }.to "finish"
         }
 
         clientSignature {
@@ -235,7 +256,7 @@ class ActivityController {
 
                 if (!processInstance.save(flush:true)){
                     processInstance.errors.each {
-                        println it
+                        log.error(it)
                     }
                     return "error"
                 }
@@ -248,7 +269,12 @@ class ActivityController {
 
                 flow.processInstance = null;
             }
-            on("success").to "beforeRestart"
+            on("error"){
+                flow.newProcessFlow = false
+            }to "chooseSubFlow"
+            on("success"){
+                flow.newProcessFlow = true
+            }.to "beforeRestart"
         }
 
         beforeRestart{
@@ -497,7 +523,7 @@ class ActivityController {
 
         init {
             action {
-                log.info("init - normalFlow - newProcessFlow : ${flow.newProcessFlow}" )
+                log.info("init - poprawDaneFlow - newProcessFlow : ${flow.newProcessFlow}" )
                 flow.newProcessFlow ? chooseCalc() : selectedPanels()
             }
             on("chooseCalc").to "chooseCalc"
@@ -753,6 +779,98 @@ class ActivityController {
 
         backToStart()
     }
+
+
+/** UZUPELNIJ PODPISY SUBFLOW */
+    def odrzucDokumentyFlow = {
+        input {
+            processInstance(required: true)
+        }
+
+        init {
+            action {
+                log.info("init - odrzucDokumenty" )
+                chooseCalc()
+            }
+            on("chooseCalc").to "chooseCalc"
+        }
+
+        chooseCalc{
+            onEntry{
+                if(!flow.getCalculatorSucces){
+                    flow.isContinueEnabled = false;
+                    flow.calcNumber = null
+                    flow.client = null
+                }else{
+                    flow.getCalculatorSucces = false
+                }
+            }
+            render(view: "../createProcess/chooseCalc")
+            on("back").to "backToStart"
+            on("getCalculator").to "getCalculator"
+            on("continue"){
+                Process processInstance = flow.savedProcess
+                processInstance.status = Process.ProcessStatus.REJECTED;
+                flow.processInstance = processInstance
+            }.to "finish"
+        }
+
+        getCalculator {
+            action {
+                flow.nip = params.nip;
+
+                if(!clientService.isClientNipValid(params.nip)){
+                    flash.nipErrorMessage= message(code: 'GetCalculatorCommand.nip.validator.invalid');
+                    return error();
+                }
+
+                def client = cbdService.findClientByNip(flow.nip);
+
+                if(clientService.clientExists(client)){
+                    flash.nipInfoMessage =  message(code:"client.found.info", default:"Znaleziono");
+                }else {
+                    flash.nipErrorMessage = message(code:"client.notFound.error", default:"Brak klienta");
+                    return error()
+                }
+
+                flow.client = client;
+
+                /** sprawdzanie, czy w eUmowy istnieje dla danego Akceptanta niezakończony Proces */
+                if(!processService.hasIncompleteProcessForClient(client)){
+                    flash.nipErrorMessage = message(code:"client.todo.error", default:"Dla Akceptanta nie istnieje niezakończony Proces");
+                    return error();
+                }
+
+                /** sprawdzanie, czy w eUmowy istnieje dla danego Akceptanta niezakończony Proces */
+                def lastProcessId = processService.getLastIfIncompleteProcessForClientNip(client.nip)
+                if(!lastProcessId){
+                    flash.nipErrorMessage = message(code:"client.todo.error",
+                            default:"Nie można odrzucić dokumentów już zaakceptowanych");
+                    return error()
+                }
+
+                def lastProcess = Process.get(lastProcessId)
+                flow.savedProcess = lastProcess
+            }
+            on("success"){
+                flash.calcInfoMessage = message(code:"calc.todo.info", default:"Pomijanie kalkulatora");
+                flow.isContinueEnabled = true
+                flow.getCalculatorSucces = true
+            }.to "chooseCalc"
+            on("error"){
+                flow.getCalculatorSucces = false;
+            }.to "chooseCalc"
+        }
+
+        finish{
+            output {
+                process {flow.processInstance}
+            }
+        }
+
+        backToStart()
+    }
+
 
 //--------------
 //REMOTE METHODS

@@ -18,6 +18,14 @@
 <section id="create-activity">
 <h1 class="ng linia-bottom"><g:message code="defineActivity.header.title" default="Wybierz działanie"/></h1>
 
+    <div id="notesMessageBox">
+        <g:if test="${infoMessage}">
+            <g:render template="message/infoMessage" model="[message: infoMessage]"/>
+        </g:if>
+        <g:if test="${errorMessage}">
+            <g:render template="message/errorMessage" model="[message: errorMessage]"/>
+        </g:if>
+    </div>
 
  <g:form>
      <div class="activityTree" style="margin: 10px auto 0 auto;display: table;">
@@ -179,14 +187,6 @@
      <div style="margin:30px auto 0 auto;display: table;">
          <g:message code="defineActivity.uwagiDoCoa.name" default="Uwagi dla COA"/>
          <g:textArea name="notes" style="height: 100px; display: block; min-width: 380px" value="${notesToCOA}"/>
-         <div id="notesMessageBox">
-             <g:if test="${infoMessage}">
-                 <g:render template="message/infoMessage" model="[message: infoMessage]"/>
-             </g:if>
-             <g:if test="${errorMessage}">
-                 <g:render template="message/errorMessage" model="[message: errorMessage]"/>
-             </g:if>
-         </div>
      </div>
 
 

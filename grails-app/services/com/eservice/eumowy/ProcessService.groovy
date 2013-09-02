@@ -85,6 +85,8 @@ class ProcessService {
 
         log.info("getLastIfIncompleteProcessForClient - client.nip = ${nip} , id = ${result?.id} status = ${result?.status}")
 
+        /*return result?.id;*/
+
         return result?.status in [
                 Process.ProcessStatus.NEW,
                 Process.ProcessStatus.WAITING,
