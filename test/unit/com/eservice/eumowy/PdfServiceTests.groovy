@@ -58,10 +58,10 @@ class PdfServiceTests {
 	static HashMap<String, String[]> generateCommonFields(){
 		HashMap<String, String[]> result = new HashMap<String, String[]>();
 		result.put("dataUmowy", ["21.03.2013"] as String[]);
-		result.put("akceptantNazwa", ["Firma Handlowo Us�ugowa 'HandUs'"] as String[]);
-		result.put("akceptantSiedziba", ["ul. Marsza�kowska 3/4; 01-234 Warszawa"] as String[]);
+		result.put("akceptantNazwa", ["Firma Handlowo Usługowa 'HandUs'"] as String[]);
+		result.put("akceptantSiedziba", ["ul. Marszałkowska 3/4; 01-234 Warszawa"] as String[]);
 		result.put("reprezentant1", ["Jan Nowak"] as String[]);
-		result.put("reprezentant2", ["Gra�yna Prymek"] as String[]);
+		result.put("reprezentant2", ["Grażyna Prymek"] as String[]);
 		result.put("phNumer", ["12345"] as String[]);
 		return result;
 	}
@@ -111,7 +111,7 @@ class PdfServiceTests {
 		result.put("NrUmowy1", ["7890"] as String[]);
 		result.put("NrUmowy2", ["1"] as String[]);
 		result.put("OficjalnaNazwaAkceptanta1", ["To jest oficjalna nazwa akceptanta"] as String[]);
-		result.put("OficjalnaNazwaAkceptanta2", ["To jest druga linia z nazw� akceptanta"] as String[]);
+		result.put("OficjalnaNazwaAkceptanta2", ["To jest druga linia z nazwą akceptanta"] as String[]);
 		result.put("NazwaSieciowaAkceptanta", ["This is the end"] as String[]);
 		result.put("podpis", [new File(getTemplatePath()+"signature1.jpg").toURI().toURL(), "", "signature", "1", "435", "15", "74", "43"] as String[]);
 		
@@ -130,12 +130,12 @@ class PdfServiceTests {
 		result.put("rozszerzenieOPunkt", [""] as String[]);
 		result.put("linia1", ["Linia na uwagi?"] as String[]);
 		result.put("linia2", ["Linia na uwagiii :)"] as String[]);
-		result.put("imieINazwisko", ["Dominik Walczak, Micha� Knie�, Pawe� Szkup"] as String[]);
+		result.put("imieINazwisko", ["Dominik Walczak, Michał Knieć, Paweł Szkup"] as String[]);
 		result.put("pan", ["true", "", "checkbox"] as String[]);
 		result.put("pani", ["false", "", "checkbox"] as String[]);
 		result.put("email", ["mkniec@apreel.com"] as String[]);
-		result.put("nazwaDoWydrukuZTerminalaPos", ["To jest jaka� nazwa troch� inna"] as String[]);
-		result.put("nazwaDoWyszukiwarki", ["To jest jaka� nazwa"] as String[]);
+		result.put("nazwaDoWydrukuZTerminalaPos", ["To jest jakaś nazwa trochę inna"] as String[]);
+		result.put("nazwaDoWyszukiwarki", ["To jest jakaś nazwa"] as String[]);
 		
 		return result;
 	}
@@ -148,7 +148,7 @@ class PdfServiceTests {
 		result.put("centrumHandlowe", ["true"] as String[]);
 		result.put("trasaPrzelotowa", ["true"] as String[]);
 		result.put("dochodowosc", ["10000"] as String[]);
-		result.put("sredniaWartoscTransakcji", ["1 milion z�otych"] as String[]);
+		result.put("sredniaWartoscTransakcji", ["1 milion złotych"] as String[]);
 		result.put("innaLokalizacja", ["Wie�a Eiffla"] as String[]);
 //        result.put("handel", ["false", "", "checkbox"] as String[]);
 //        result.put("uslugi", ["true", "", "checkbox"] as String[]);
@@ -223,7 +223,7 @@ class PdfServiceTests {
 		HashMap<String, String[]> data = new HashMap<String, String[]>();
 		data.putAll(this.data);
 		data.putAll(insertSignatures(1, 85, 260, 74, 43))
-		process("APUNTSZDCCZ1 00112-10-05_Aneks do UN_DCC zmiana warunk�w.pdf", "APUNTSZDCCZ1 00112-10-05_Aneks do UN_DCC zmiana warunk�w_out.pdf", data)
+		process("APUNTSZDCCZ1 00112-10-05_Aneks do UN_DCC zmiana warunków.pdf", "APUNTSZDCCZ1 00112-10-05_Aneks do UN_DCC zmiana warunków_out.pdf", data)
 	}
 
 	void testAPUNTSZOKOD() {
@@ -261,7 +261,7 @@ class PdfServiceTests {
 		
 		data.putAll(this.data);
 		data.putAll(insertSignatures(1, 85, 225, 74, 43))
-		process("APUNTWANOD1.00312-01-16_Aneks do UN_zmiana Tabeli Op�at.pdf", "APUNTWANOD1.00312-01-16_Aneks do UN_zmiana Tabeli Op�at_out.pdf", data)
+		process("APUNTWANOD1.00312-01-16_Aneks do UN_zmiana Tabeli Opłat.pdf", "APUNTWANOD1.00312-01-16_Aneks do UN_zmiana Tabeli Opłat_out.pdf", data)
 	}
 
 	void testAPUNTZ() {
@@ -312,28 +312,28 @@ class PdfServiceTests {
 		HashMap<String, String[]> data = new HashMap<String, String[]>();
 		data.putAll(this.data);
 		data.putAll(insertSignatures(2, 85, 220, 74, 43))
-		process("APUPZACB2.00313-02-15 - Aneks do Umowy o przyjm zap� (dod Cashback).pdf", "APUPZACB2.00313-02-15 - Aneks do Umowy o przyjm zap� (dod Cashback)_out.pdf", data)
+		process("APUPZACB2.00313-02-15 - Aneks do Umowy o przyjm zapł (dod Cashback).pdf", "APUPZACB2.00313-02-15 - Aneks do Umowy o przyjm zapł (dod Cashback)_out.pdf", data)
 	}
 	
 	void testAPUPZAWNZBS() {
 		HashMap<String, String[]> data = new HashMap<String, String[]>();
 		data.putAll(this.data);
 		data.putAll(insertSignatures(1, 85, 180, 74, 43))
-		process("APUPZAWNZBS1.00013-01-25 - Aneks do umowy o przyjm zap� (bez stawek p�askich).pdf", "APUPZAWNZBS1.00013-01-25 - Aneks do umowy o przyjm zap� (bez stawek p�askich)_out.pdf", data)
+		process("APUPZAWNZBS1.00013-01-25 - Aneks do umowy o przyjm zapł (bez stawek płaskich).pdf", "APUPZAWNZBS1.00013-01-25 - Aneks do umowy o przyjm zapł (bez stawek płaskich)_out.pdf", data)
 	}
 	
 	void testAPUPZAWNZS() {
 		HashMap<String, String[]> data = new HashMap<String, String[]>();
 		data.putAll(this.data);
 		data.putAll(insertSignatures(1, 80, 180, 74, 43))
-		process("APUPZAWNZS1.00013-01-25 - Aneks do umowy o przyjm zap� (narzucone stawki p�askie).pdf", "APUPZAWNZS1.00013-01-25 - Aneks do umowy o przyjm zap� (narzucone stawki p�askie)_out.pdf", data)
+		process("APUPZAWNZS1.00013-01-25 - Aneks do umowy o przyjm zapł (narzucone stawki płaskie).pdf", "APUPZAWNZS1.00013-01-25 - Aneks do umowy o przyjm zapł (narzucone stawki płaskie)_out.pdf", data)
 	}
 	
 	void testAPUPZBS() {
 		HashMap<String, String[]> data = new HashMap<String, String[]>();
 		data.putAll(this.data);
 		data.putAll(insertSignatures(4, 80, 320, 74, 43))
-		process("APUPZBS2.00013-01-25 - Umowa o przyjmowanie zap�aty (wersja bez stawek p�askich)_do druku.pdf", "APUPZBS2.00013-01-25 - Umowa o przyjmowanie zap�aty (wersja bez stawek p�askich)_do druku_out.pdf", data)
+		process("APUPZBS2.00013-01-25 - Umowa o przyjmowanie zapłaty (wersja bez stawek płaskich)_do druku.pdf", "APUPZBS2.00013-01-25 - Umowa o przyjmowanie zapłaty (wersja bez stawek płaskich)_do druku_out.pdf", data)
 	}
 
 	void testATUSU() {
@@ -354,28 +354,28 @@ class PdfServiceTests {
 		HashMap<String, String[]> data = new HashMap<String, String[]>();
 		data.putAll(this.data);
 		data.putAll(insertSignatures(4, 80, 305, 74, 43))
-		process("APUPZIF2.00013-03-26 - Umowa o przyjmowanie zap�aty IF+_2013.pdf", "APUPZIF2.00013-03-26 - Umowa o przyjmowanie zap�aty IF+_2013_out.pdf", data)
+		process("APUPZIF2.00013-03-26 - Umowa o przyjmowanie zapłaty IF+_2013.pdf", "APUPZIF2.00013-03-26 - Umowa o przyjmowanie zapłaty IF+_2013_out.pdf", data)
 	}
 	
 	void testAPUPZDCC() {
 		HashMap<String, String[]> data = new HashMap<String, String[]>();
 		data.putAll(this.data);
 		data.putAll(insertSignatures(1, 80, 240, 74, 43))
-		process("APUPZDCC2.00313-02-15 - Aneks do Umowy o przyjm zap� (wprow DCC).pdf", "APUPZDCC2.00313-02-15 - Aneks do Umowy o przyjm zap� (wprow DCC)_out.pdf", data)
+		process("APUPZDCC2.00313-02-15 - Aneks do Umowy o przyjm zapł (wprow DCC).pdf", "APUPZDCC2.00313-02-15 - Aneks do Umowy o przyjm zapł (wprow DCC)_out.pdf", data)
 	}
 	
 	void testAPUPZDCCZ() {
 		HashMap<String, String[]> data = new HashMap<String, String[]>();
 		data.putAll(this.data);
 		data.putAll(insertSignatures(1, 85, 185, 74, 43))
-		process("APUPZDCCZ1.00213-02-15 - Aneks do Umowy o przyjm zap�. (zm. war. DCC).pdf", "APUPZDCCZ1.00213-02-15 - Aneks do Umowy o przyjm zap�. (zm. war. DCC)_out.pdf", data)
+		process("APUPZDCCZ1.00213-02-15 - Aneks do Umowy o przyjm zapł. (zm. war. DCC).pdf", "APUPZDCCZ1.00213-02-15 - Aneks do Umowy o przyjm zapł. (zm. war. DCC)_out.pdf", data)
 	}
 	
 	void testAPUPZ() {
 		HashMap<String, String[]> data = new HashMap<String, String[]>();
 		data.putAll(this.data);
 		data.putAll(insertSignatures(4, 90, 308, 74, 43))
-		process("APUPZ2.00013-01-03 - Umowa o przyjmowanie zap�aty v. 2.000_z faksymile.pdf", "APUPZ2.00013-01-03 - Umowa o przyjmowanie zap�aty v. 2.000_z faksymile_out.pdf", data)
+		process("APUPZ2.00013-01-03 - Umowa o przyjmowanie zapłaty v. 2.000_z faksymile.pdf", "APUPZ2.00013-01-03 - Umowa o przyjmowanie zapłaty v. 2.000_z faksymile_out.pdf", data)
 	}
 	
 	// ---------------------------------------------------------------------------------------
