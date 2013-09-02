@@ -18,7 +18,7 @@
 	
 	jQuery(document).ready(function() {
 		var panelPosTemplate = jQuery("#hiddenPosPanel").html();
-		var panelPosCount = 0;
+		var panelPosCount = ${data.poses.size()};
 		jQuery("#hiddenPosPanel").remove();
 			
 		jQuery("#addNewPosButton").on("click", function() {

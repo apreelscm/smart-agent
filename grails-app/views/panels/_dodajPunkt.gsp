@@ -21,8 +21,8 @@
 	
 	jQuery(document).ready(function() {
 		var panelTemplate = jQuery("#hiddenPanel").html();
-		var panelCount = 0;
-		var panelInternalCount = 1;
+		var panelCount = ${data.points.size()};
+		var panelInternalCount = ${data.points.size()}+1;
 		
 		jQuery("#hiddenPanel").remove();
 			

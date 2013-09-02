@@ -90,25 +90,25 @@ public class PdfGenerator {
 					form.setFieldProperty(dataEntry.getKey(), "textsize", Float.valueOf(dataEntry.getValue()[1]), null);
 				}
 				
-				/*if (fontsPathMap != null && fontsPathMap.containsKey(dataEntry.getKey())){
+				if (fontsPathMap != null && fontsPathMap.containsKey(dataEntry.getKey())){
 					BaseFont bf = null;
 					if("HELVETICA".equals(fontsPathMap.get(dataEntry.getKey()))) {
-						bf = BaseFont.createFont(BaseFont.TIMES_ROMAN, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+						bf = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.EMBEDDED);
 					}
 					else if ("ARIAL".equals(fontsPathMap.get(dataEntry.getKey()))) {
-						bf = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.EMBEDDED);
+						bf = BaseFont.createFont(ARIAL_FONT_PATH, BaseFont.CP1250, BaseFont.EMBEDDED);
 					}
 					else if ("ARIALBOLD".equals(fontsPathMap.get(dataEntry.getKey()))) {
-						bf = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.EMBEDDED);
+						bf = BaseFont.createFont(ARIALBOLD_FONT_PATH, BaseFont.CP1250, BaseFont.EMBEDDED);
 					}
 					else {
 						bf = BaseFont.createFont(fontsPathMap.get(dataEntry.getKey()), BaseFont.CP1250, BaseFont.EMBEDDED);
 					}
 					
-					form.setFieldProperty(dataEntry.getKey(), "textfont", bf, null);
+					form.setFieldProperty(dataEntry.getKey(), "textfont", bf, null);	
 					form.addSubstitutionFont(bf);
 					
-				}*/
+				}
 				
 				if (dataEntry.getValue().length > 2) {
 					
@@ -200,7 +200,7 @@ public class PdfGenerator {
 					form.setFieldProperty(dataEntry.getKey(), "textsize", Float.valueOf(dataEntry.getValue()[1]), null);
 				}
 				
-				/*if (fontsPathMap != null && fontsPathMap.containsKey(dataEntry.getKey())){
+				if (fontsPathMap != null && fontsPathMap.containsKey(dataEntry.getKey())){
 					BaseFont bf = null;
 					if("HELVETICA".equals(fontsPathMap.get(dataEntry.getKey()))) {
 						bf = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.EMBEDDED);
@@ -218,7 +218,7 @@ public class PdfGenerator {
 					form.setFieldProperty(dataEntry.getKey(), "textfont", bf, null);	
 					form.addSubstitutionFont(bf);
 					
-				}*/
+				}
 				
 				if (dataEntry.getValue().length > 2) {
 					
