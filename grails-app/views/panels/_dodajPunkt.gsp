@@ -25,6 +25,10 @@
 		var panelInternalCount = ${data.points.size()};
 		
 		jQuery("#hiddenPanel").remove();
+		
+		if (panelInternalCount > 0) {
+			jQuery("#conitnueButton").prop("disabled", false);
+		}
 			
 		jQuery("#addNewPointButton").on("click", function(e) {
 			e.preventDefault();
