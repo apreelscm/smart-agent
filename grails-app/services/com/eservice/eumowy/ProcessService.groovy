@@ -281,6 +281,12 @@ class ProcessService {
 	def getPointAndPosData(def cmd) {
 		def pointsList = []
 		cmd.points.each { PointCommand pc ->
+			
+			if (pc == null) {
+				log.info "PointCommand is NULL - skipping!"
+				return
+			}
+			
 			ArrayList<PosData> pdList = new ArrayList<PosData>()
 			PointData pointData = new PointData()
 			PointDataDetails pointDataDetails = new PointDataDetails()

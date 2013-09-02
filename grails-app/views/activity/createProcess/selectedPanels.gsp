@@ -100,17 +100,22 @@
     <h1 class="ng linia-bottom"><g:message code="selectedPanels.header.title" default="Lista paneli"/></h1>
     <g:form class="panelsForm">
         <g:each var="panel" in="${processInstance.panels}" status="i">
-            <g:render template="/panels/${panel.name}"/>
-            <g:if test="${panel.name.equals('scoring')}">
+            <g:if test="${panel.name.equals('danePunktu') == false && panel.name.equals('danePos') == false}">
+            	<g:render template="/panels/${panel.name}"/>
+           	</g:if>
+            <g:if test="${panel.name.equals('danePunktu')}">
             	<g:each var="point" in="${data.points}" status="j">
             		<g:render template="/panels/danePunktu" model="[panelType: 'points', id: j, pointData: point]" />
             	</g:each>
             </g:if>
+            <g:if tes="${panel.name.equals('danePos')}">
+            	<g:each var="pos" in="${data.pos}" status="j">
+            		<g:render template="/panels/danePos" model="[panelType: 'pos', id: j, pointData: pos]" />
+            	</g:each>
+            </g:if>
         </g:each>
-		
         <g:render template="/panels/uwagi"/>
     </g:form>
-
 
     <g:render template="/panels/zalaczniki"/>
 
