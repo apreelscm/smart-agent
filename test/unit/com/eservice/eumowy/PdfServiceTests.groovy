@@ -2,8 +2,12 @@ package com.eservice.eumowy
 
 import grails.test.mixin.*
 
+import java.awt.image.BufferedImage
 import java.text.DecimalFormat
 
+import org.apache.pdfbox.pdmodel.PDDocument
+import org.apache.pdfbox.pdmodel.PDPage
+import org.apache.pdfbox.util.PDFImageWriter
 import org.junit.*
 
 /**
@@ -386,8 +390,27 @@ class PdfServiceTests {
 	void testFormularzScoringowy() {
 		process("Formularz Scoringowy (oryginal).pdf", "Formularz Scoringowy (oryginal)_out.pdf", generateFormularzScoringowyFields());
 	}
+	
+	void testFormularzScoringowyToImage() {
+		processToImage("Formularz Scoringowy (oryginal)_out.pdf", 1)
+	}
 
-
+	void processToImage(pdfName, pageNumber) {
+		PDDocument document = null
+		document = PDDocument.load(getTemplateOutPath()+pdfName)
+		int resolution = 300
+		PDFImageWriter imageWriter = new PDFImageWriter()
+		boolean success = imageWriter.writeImage(document, "png", "",
+				pageNumber, pageNumber, getTemplateOutPath()+pdfName+"-TEST-", BufferedImage.TYPE_INT_RGB, resolution)
+		
+		if (!success) {
+			log.error "No writer found for PNG image format"
+		}
+		
+		document.close()
+		
+	}
+	
 	void process(templateName, outName, data){
 		byte[] pdf = service.fillPdfFormFromFile(getTemplatePath()+templateName, data, PdfService.FontType.ARIAL)
 

@@ -42,7 +42,7 @@
         restrictionsMap["dodatkowyPunktCB"] = ["nowaUmowa","poprawDane","odrzucDokumenty"];
         restrictionsMap["dodatkowyPosCB"] =  ["nowaUmowa","poprawDane","odrzucDokumenty"];
 
-        restrictionsMap["zmianaProwizjiCB"] =  ["nowaUmowa","poprawDane","odrzucDokumenty"];
+        restrictionsMap["zmianaProwizjiCB"] =  ["nowaUmowa","poprawDane","odrzucDokumenty", "uzupelnijPodpisy"];
         restrictionsMap["zmianaWarunkowDccCB"] =  ["nowaUmowa","poprawDane","odrzucDokumenty"];
         restrictionsMap["wymianaUmowyNajmuCB"] =  ["nowaUmowa","poprawDane","odrzucDokumenty"];
         restrictionsMap["aneksCB"] =  ["nowaUmowa","poprawDane","odrzucDokumenty"];

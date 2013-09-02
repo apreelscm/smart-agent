@@ -90,7 +90,7 @@ public class PdfGenerator {
 					form.setFieldProperty(dataEntry.getKey(), "textsize", Float.valueOf(dataEntry.getValue()[1]), null);
 				}
 				
-				if (fontsPathMap != null && fontsPathMap.containsKey(dataEntry.getKey())){
+				/*if (fontsPathMap != null && fontsPathMap.containsKey(dataEntry.getKey())){
 					BaseFont bf = null;
 					if("HELVETICA".equals(fontsPathMap.get(dataEntry.getKey()))) {
 						bf = BaseFont.createFont(BaseFont.TIMES_ROMAN, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
@@ -108,7 +108,7 @@ public class PdfGenerator {
 					form.setFieldProperty(dataEntry.getKey(), "textfont", bf, null);
 					form.addSubstitutionFont(bf);
 					
-				}
+				}*/
 				
 				if (dataEntry.getValue().length > 2) {
 					
@@ -200,7 +200,7 @@ public class PdfGenerator {
 					form.setFieldProperty(dataEntry.getKey(), "textsize", Float.valueOf(dataEntry.getValue()[1]), null);
 				}
 				
-				if (fontsPathMap != null && fontsPathMap.containsKey(dataEntry.getKey())){
+				/*if (fontsPathMap != null && fontsPathMap.containsKey(dataEntry.getKey())){
 					BaseFont bf = null;
 					if("HELVETICA".equals(fontsPathMap.get(dataEntry.getKey()))) {
 						bf = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.EMBEDDED);
@@ -218,13 +218,13 @@ public class PdfGenerator {
 					form.setFieldProperty(dataEntry.getKey(), "textfont", bf, null);	
 					form.addSubstitutionFont(bf);
 					
-				}
+				}*/
 				
 				if (dataEntry.getValue().length > 2) {
 					
 					if (dataEntry.getValue()[2].equals("checkbox")) {
 						String[] states = form.getAppearanceStates(dataEntry.getKey());
-	
+						
 						if ("false".equals(dataEntry.getValue()[0])) {
 							form.setField(dataEntry.getKey(), states[0]);
 						}
