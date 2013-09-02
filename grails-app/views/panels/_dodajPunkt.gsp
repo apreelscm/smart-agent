@@ -23,11 +23,18 @@
 		var panelTemplate = jQuery("#hiddenPanel").html();
 		var panelCount = ${data.points.size()};
 		var panelInternalCount = ${data.points.size()};
+		globalPanelCount = ${data.points.size()};
+		jQuery("#newPointPanelCount").val(panelCount);
 		
 		jQuery("#hiddenPanel").remove();
 		
 		if (panelInternalCount > 0) {
 			jQuery("#conitnueButton").prop("disabled", false);
+		}
+		
+		for (var i = 0; i < panelCount; i++) {
+			setupNewPointPanelHandlers(i-1, i, "points");
+			setupNewPointPanelData("points\\["+(i-1)+"\\]\\.", "points\\["+i+"\\]\\.");
 		}
 			
 		jQuery("#addNewPointButton").on("click", function(e) {
