@@ -60,7 +60,12 @@
 
 <g:layoutBody/>
 
-<footer class="rel" id="stopka"/>
+<footer class="rel" id="stopka">
+    <g:if test="${grails.util.Environment.getCurrentEnvironment() != grails.util.Environment.PRODUCTION}">
+        <build:buildInfo/>
+    </g:if>
+
+</footer>
 
 <g:if test="${params.controller != 'login'}">
     <p id="clock"/>

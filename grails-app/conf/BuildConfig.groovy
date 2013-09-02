@@ -79,6 +79,7 @@ grails.project.dependency.resolution = {
 
         build ":tomcat:$grailsVersion"
 
+        compile ":build-info-tag:0.3.1"
         compile ':webflow:2.0.8.1'
         compile ":cache:1.1.1"
       //  compile ":springcache:1.3.2-SNAPSHOT"

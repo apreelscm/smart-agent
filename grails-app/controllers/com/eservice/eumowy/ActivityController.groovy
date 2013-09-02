@@ -447,8 +447,13 @@ class ActivityController {
             }to "selectedPanels"
             on("continue"){ ProcessCommand cmd ->
 
+                flow.data = cmd;
+
                 if(cmd?.hasErrors()){
-                    log.info(params)
+                    log.error(params)
+                    cmd.errors.each {
+                        log.error(it)
+                    }
                     return error();
                 }
 
@@ -622,6 +627,8 @@ class ActivityController {
                 flow.skipPanelsInit = true;
             }to "selectedPanels"
             on("continue"){ ProcessCommand cmd ->
+
+                flow.data = cmd
 
                 if(cmd?.hasErrors()){
                     log.info(params)
