@@ -13,6 +13,17 @@ function getGlobalPanelCount(prefix) {
 function setupNewPointPanelHandlers(prevPanelId, panelId, prefix) {
 	
 	//jQuery(document).ready(function() {
+		jQuery("#"+prefix+"\\["+panelId+"\\]\\.bankAccountNumber").on("keyup", {p: prefix, pid: panelId}, function(e) {
+			if (jQuery(e.target).val() != undefined && jQuery(e.target).val() != null && jQuery(e.target).val().length == 26) {
+				jQuery.get("/eumowy/activity/getBankName", {accountNo: jQuery(e.target).val()}, function(data) {
+					if (data != undefined && data != null && data != "") {
+						var obj = JSON.parse(data);
+						jQuery("#"+e.data.p+"\\["+e.data.pid+"\\]\\.bankName").val(obj.name);
+					}
+		     	}); 
+			}
+		});
+	
         jQuery("#"+prefix+"\\["+panelId+"\\]\\.plannedInstallationDate").datepicker({ dateFormat: 'yy-mm-dd' });
         jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseFrom").datepicker({ 
         	dateFormat: 'yy-mm-dd',
@@ -36,7 +47,7 @@ function setupNewPointPanelHandlers(prevPanelId, panelId, prefix) {
         });
         
         jQuery("#"+prefix+"\\["+panelId+"\\]\\.dataforprintingAsForMerchant").on("click", function(e) { 
-        	console.log("clicked");
+        	//console.log("clicked");
         	if(e.target.checked) {
         		jQuery("#"+prefix+"\\["+panelId+"\\]\\.dataforprintingAddressStreet").val(jQuery("#akceptantUlica").val());
         		jQuery("#"+prefix+"\\["+panelId+"\\]\\.dataforprintingAddressHomeNumber").val(jQuery("#akceptantNrDomu").val());
