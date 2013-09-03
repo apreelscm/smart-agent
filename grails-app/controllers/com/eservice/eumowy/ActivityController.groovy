@@ -1,5 +1,7 @@
 package com.eservice.eumowy
 
+import org.codehaus.groovy.grails.web.json.JSONObject
+
 import com.eservice.eumowy.command.ProcessCommand
 import com.eservice.eumowy.pdfmapper.PdfMapper
 import com.eservice.eumowy.process.DefineActivityCommand
@@ -916,12 +918,18 @@ class ActivityController {
         render(text: path)
     }
 	
-	def getBankNames() {
+	def getBankName() {
 		String accountNumber = params.accountNo
-		
-		def bankNamesList = cbdService.getNazwaBanku()
-		JSONArray array = new JSONArray()
-		
+		String shortAccountNumber = accountNumber.substring(2, 10)
+
+		def bankData = cbdService.getNazwaBanku(shortAccountNumber)
+		if (bankData != null) {
+			JSONObject data = new JSONObject()
+			data.put("id", bankData.get("id"))
+			data.put("name", bankData.get("name"))
+			render(text: data.toString())
+		}
+		render(text: '')
 	}
 
     def testSql(){

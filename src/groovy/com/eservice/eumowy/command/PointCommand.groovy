@@ -18,6 +18,7 @@ class PointCommand implements Serializable {
 	String rodzProwadzDzialalWPraktyce
 	String numerRachunkuBankowego
 	String bank
+	Integer bankId
 				 
 	String nazwaDoWydrukuZTerminalaPos
 	String nazwaDoWyszukiwarki

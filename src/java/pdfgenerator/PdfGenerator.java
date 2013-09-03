@@ -115,7 +115,17 @@ public class PdfGenerator {
 					if ("checkbox".equals(dataEntry.getValue()[2])) {
 						String[] states = form.getAppearanceStates(dataEntry.getKey());
 
+                        System.out.println("dataEntry - KEY: " + dataEntry.getKey());
+
                         if (states != null){
+                            for (int i=0; i<dataEntry.getValue().length; i++){
+                                System.out.println(i + " --> " + dataEntry.getValue()[i]);
+                            }
+
+                            for (int i=0; i<states.length; i++){
+                                System.out.println("states: " + i + " --> " + states[i]);
+                            }
+
                             if ("false".equals(dataEntry.getValue()[0])) {
                                 form.setField(dataEntry.getKey(), states[0]);
                             } else {

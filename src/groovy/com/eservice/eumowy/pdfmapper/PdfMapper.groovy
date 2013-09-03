@@ -243,6 +243,18 @@ class PdfMapper {
 		addCheckboxes(data, ["noweZestPos":"obecne_i_nowe", "obecneZestPos":"obecne", "phu":"wskazane"], value)
 	}
 
+    private static mapInformacjaHandlowaProcess(def data, def pd, def key, def value) {
+        addCheckboxes(data, ["informacjaHandlowaTak": "true", "informacjaHandlowaNie": "false"], value)
+    }
+
+    private static mapObslugaTypProcess(def data, def pd, def key, def value) {
+        addCheckboxes(data, ["obsugaPrestiz": "prestige", "obslugaKomfort": "comfort", "obslugaEkonomiczny": "economic"], value)
+    }
+
+    private static mapUmowaCzasProcess(def data, def pd, def key, def value) {
+        addCheckboxes(data, ["umNieOzn": "nieoznaczony", "umOzn": "oznaczony"], value)
+    }
+
     private static getFromPointDataSet(def pd, def key){
         def result = pd.find{ processData -> processData.name.equals(key)}
         (result && result?.value)?result?.value:""

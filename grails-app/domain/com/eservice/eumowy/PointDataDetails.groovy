@@ -15,6 +15,7 @@ class PointDataDetails implements Serializable {
 	String rodzProwadzDzialalWPraktyce
 	String numerRachunkuBankowego
     String bank
+	Integer bankId
 	
 	String nazwaDoWydrukuZTerminalaPos
 	String nazwaDoWyszukiwarki
@@ -62,6 +63,7 @@ class PointDataDetails implements Serializable {
 		rodzProwadzDzialalWPraktyce column: "bussiness_type_in_practice"
 		numerRachunkuBankowego column: "bank_account_number"
 		bank column: "bank_name"
+		bankId column: "bank_id"
 		nazwaDoWydrukuZTerminalaPos column: "name_print_posterminal"
 		nazwaDoWyszukiwarki column: "name_search_engine"
 		wydrukUlicaTytul column: "print_addressstreet_type"
@@ -127,6 +129,7 @@ class PointDataDetails implements Serializable {
 		kontaktWPunkcieTelKomorkowy(nullable:true)
 		kontaktWPunkcieEmail(nullable:true)
 		terminalIlosc(nullable:true)
+		bankId(nullable:true)
 	}
 }
 

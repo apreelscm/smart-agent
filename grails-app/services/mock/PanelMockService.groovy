@@ -118,7 +118,7 @@ class PanelMockService {
     }
 
     def getDeklaracjeAkceptanta(ProcessCommand cmd) {
-        cmd.informacjaHandlowa = "nie"
+        cmd.informacjaHandlowa = "false"
     }
 
     def getDodajPos(ProcessCommand cmd) {
@@ -161,8 +161,8 @@ class PanelMockService {
     }
 
     def getFormaDoladowania(ProcessCommand cmd) {
-        cmd.doladowania_tp = "tak"
-        cmd.doladowania_tk = "nie"
+        cmd.doladowania_tp = "true"
+        cmd.doladowania_tk = "false"
         cmd.srednia_sprzedaz_doladowan = "123"
         cmd.srednia_sprzedaz_doladowan_slownie = "sto dwadzieścia trzy"
     }
@@ -358,7 +358,7 @@ class PanelMockService {
 
     def getPromocyjneObnizenieOplatyZaZestawPos(ProcessCommand cmd) {
 		
-		def p1 = new AllPosCommand()
+		/*def p1 = new AllPosCommand()
 		def p2 = new AllPosCommand()
 		def p3 = new AllPosCommand()
 		
@@ -383,7 +383,7 @@ class PanelMockService {
 		p3.wysokoscOplaty = '23.40'
 		p3.czyWybrany = true
 		
-		cmd.allPoses = [p1, p2, p3]
+		cmd.allPoses = [p1, p2, p3]*/
     }
 
     def getRachunekBankowyKlienta(ProcessCommand cmd) {
@@ -498,10 +498,7 @@ class PanelMockService {
     }
 
     def getWykazPunktowAkceptujacychKartyPlatnicze(ProcessCommand cmd) {
-        /*cmd.punktyTytulPlatnosci= [1,2,3]
-        cmd.punktySystemKasowy = [1, 3]
-        cmd.punktyUta = [1]
-        cmd.punktyWybrane = [2]*/
+        /*
 		
 		def p1 = new AllPointsCommand()
 		def p2 = new AllPointsCommand()
@@ -530,7 +527,7 @@ class PanelMockService {
 		p3.systemKasowy = true
 		
 		cmd.allPoints = [p1, p2, p3]
-		log.info "Punkty: " + cmd.allPoints
+		log.info "Punkty: " + cmd.allPoints*/
     }
 
     def getZalaczniki(ProcessCommand cmd) {

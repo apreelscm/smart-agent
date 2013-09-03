@@ -1,5 +1,7 @@
 package com.eservice.eumowy
 
+import grails.util.Environment
+
 class AppParametersService {
 
 	def getParamById(Integer id) {
@@ -13,8 +15,10 @@ class AppParametersService {
 	def getPdfImagePath() {
 		String tmpPath = AppParameters.findByName("TEMP_PDFIMAGE_STORAGE_PATH")
 		
-		if (tmpPath == null || tmpPath.isEmpty()) {
-			tmpPath = "web-app" + File.separator + "files" + File.separator + "pdf_images" + File.separator
+		if (Environment.getCurrent().equals(Environment.DEVELOPMENT)) {
+			if (tmpPath == null || tmpPath.isEmpty()) {
+				tmpPath = "web-app" + File.separator + "files" + File.separator + "pdf_images" + File.separator
+			}
 		}
 		
 		return tmpPath
@@ -23,8 +27,10 @@ class AppParametersService {
 	def getPdfImageUri() {
 		String tmpPath = AppParameters.findByName("TEMP_PDFIMAGE_STORAGE_URI")
 		
-		if (tmpPath == null || tmpPath.isEmpty()) {
-			tmpPath = "/eumowy/files/pdf_images/"
+		if (Environment.getCurrent().equals(Environment.DEVELOPMENT)) {
+			if (tmpPath == null || tmpPath.isEmpty()) {
+				tmpPath = "/eumowy/files/pdf_images/"
+			}
 		}
 		
 		return tmpPath
@@ -33,8 +39,10 @@ class AppParametersService {
 	def getPdfTemplatePath() {
 		String path = AppParameters.findByName("PDF_TEMPLATE_PATH")
 		
-		if (path == null || path.isEmpty()) {
-			path = System.getProperty("base.dir") + File.separator + "otherResources" + File.separator + "pdf_templates" + File.separator
+		if (Environment.getCurrent().equals(Environment.DEVELOPMENT)) {
+			if (path == null || path.isEmpty()) {
+				path = System.getProperty("base.dir") + File.separator + "otherResources" + File.separator + "pdf_templates" + File.separator
+			}
 		}
 		
 		return path
@@ -43,8 +51,10 @@ class AppParametersService {
 	def getSubscriptionsPath() {
 		String path = AppParameters.findByName("SUBSCRIPTIONS_PATH")
 		
-		if (path == null || path.isEmpty()) {
-			path = "web-app" + File.separator + "files" + File.separator 
+		if (Environment.getCurrent().equals(Environment.DEVELOPMENT)) {
+			if (path == null || path.isEmpty()) {
+				path = "web-app" + File.separator + "files" + File.separator 
+			}
 		}
 		
 		return path
@@ -53,8 +63,10 @@ class AppParametersService {
 	def getSubscriptionsBlackPath() {
 		String path = AppParameters.findByName("SUBSCRIPTIONS_BLACK_PATH")
 		
-		if (path == null || path.isEmpty()) {
-			path = "web-app" + File.separator + "files" + File.separator
+		if (Environment.getCurrent().equals(Environment.DEVELOPMENT)) {
+			if (path == null || path.isEmpty()) {
+				path = "web-app" + File.separator + "files" + File.separator
+			}
 		}
 		
 		return path
@@ -63,8 +75,10 @@ class AppParametersService {
 	def getTemplateNameForNewPoint() {
 		String name = AppParameters.findByName("TEMPLATE_NAME_FOR_NEW_POINT")
 		
-		if (name == null || name.isEmpty()) {
-			name = "BRAK TEMPLATE DLA NOWEGO PUNKTU"
+		if (Environment.getCurrent().equals(Environment.DEVELOPMENT)) {
+			if (name == null || name.isEmpty()) {
+				name = "BRAK TEMPLATE DLA NOWEGO PUNKTU"
+			}
 		}
 		
 		return name
@@ -73,8 +87,10 @@ class AppParametersService {
 	def getTemplateNameForNewPos() {
 		String name = AppParameters.findByName("TEMPLATE_NAME_FOR_NEW_POS")
 		
-		if (name == null || name.isEmpty()) {
-			name = "BRAK TEMPLATE DLA NOWEGO POS"
+		if (Environment.getCurrent().equals(Environment.DEVELOPMENT)) {
+			if (name == null || name.isEmpty()) {
+				name = "BRAK TEMPLATE DLA NOWEGO POS"
+			}
 		}
 		
 		return name
@@ -83,8 +99,10 @@ class AppParametersService {
 	def getManagementSubscriptionFirstScaleX() {
 		String scaleXString = AppParameters.findByName("MANAGEMENT_SUBSCRIPTION1_SCALE_X")
 		
-		if (scaleXString == null || scaleXString.isEmpty()) {
-			scaleXString = "85"
+		if (Environment.getCurrent().equals(Environment.DEVELOPMENT)) {
+			if (scaleXString == null || scaleXString.isEmpty()) {
+				scaleXString = "85"
+			}
 		}
 		
 		return scaleXString
@@ -93,8 +111,10 @@ class AppParametersService {
 	def getManagementSubscriptionFirstScaleY() {
 		String scaleYString = AppParameters.findByName("MANAGEMENT_SUBSCRIPTION1_SCALE_Y")
 		
-		if (scaleYString == null || scaleYString.isEmpty()) {
-			scaleYString = "58"
+		if (Environment.getCurrent().equals(Environment.DEVELOPMENT)) {
+			if (scaleYString == null || scaleYString.isEmpty()) {
+				scaleYString = "58"
+			}
 		}
 		
 		return scaleYString
@@ -103,8 +123,10 @@ class AppParametersService {
 	def getManagementSubscriptionSecondScaleX() {
 		String scaleXString = AppParameters.findByName("MANAGEMENT_SUBSCRIPTION2_SCALE_X")
 		
-		if (scaleXString == null || scaleXString.isEmpty()) {
-			scaleXString = "56"
+		if (Environment.getCurrent().equals(Environment.DEVELOPMENT)) {
+			if (scaleXString == null || scaleXString.isEmpty()) {
+				scaleXString = "56"
+			}
 		}
 		
 		return scaleXString
@@ -113,8 +135,10 @@ class AppParametersService {
 	def getManagementSubscriptionSecondScaleY() {
 		String scaleYString = AppParameters.findByName("MANAGEMENT_SUBSCRIPTION2_SCALE_Y")
 		
-		if (scaleYString == null || scaleYString.isEmpty()) {
-			scaleYString = "59"
+		if (Environment.getCurrent().equals(Environment.DEVELOPMENT)) {
+			if (scaleYString == null || scaleYString.isEmpty()) {
+				scaleYString = "59"
+			}
 		}
 		
 		return scaleYString

@@ -11,7 +11,7 @@
                         <span>
                             <g:radioGroup name="informacjaHandlowa"
                                           labels="['panel.agree','panel.dont.agree']"
-                                          values="['tak', 'nie']"
+                                          values="['true', 'false']"
                                           value="${data.informacjaHandlowa}">
                                 <span class="align-left"><label> ${it.radio} <g:message code="${it.label}"/></label></span>
                             </g:radioGroup>

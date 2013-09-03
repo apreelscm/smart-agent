@@ -103,6 +103,9 @@ class ProcessService {
         def cmd = initProcessCommand(process)
         loadProcessData(process,cmd)
 		loadPoints(process, cmd)
+		loadPoses(process, cmd)
+		loadAllPoints(process, cmd)
+		loadAllPoses(process, cmd)
        // loadPoses()
         prepareProcessCommand(cmd, calc, cbdMethods)
     }
@@ -223,6 +226,108 @@ class ProcessService {
 			
 			cmd.points.add(pc)
 		}
+	}
+	
+	def loadPoses(def process, def cmd) {
+		log.info "loadPoses"
+		process.points.each { PointData point ->
+			point.posDatas?.each { PosData posData ->
+			
+				PointCommand pc = new PointCommand()
+				
+				point.properties.each { key, value ->
+					log.info "PointData Key: " + key
+					if (["class", "posDatas", "errors", "constraints", "processId", "cbdId", "pointDetailsId", "empty"].contains(key) || value == null){
+						return
+					}
+					
+					if (PointCommand.metaClass.respondsTo(PointCommand, "set"+key.capitalize())) {
+						pc."set${key.capitalize()}"(value)
+					}
+				}
+				
+				point.pointDetails?.properties.each { key, value ->
+					log.info "PointDataDetails Key: " + key
+					if (["class", "posDatas", "errors", "constraints", "processId", "cbdId", "pointDetailsId", "empty"].contains(key) || value == null){
+						return
+					}
+					
+					if (PointCommand.metaClass.respondsTo(PointCommand, "set"+key.capitalize())) {
+						pc."set${key.capitalize()}"(value)
+					}
+				}
+				
+				posData?.properties.each { key, value ->
+					log.info "PosData Key: " + key
+					if (["class", "cbdId", "process", "point", "errors", "constraints", "empty", "", ""].contains(key) || value == null){
+						return
+					}
+					
+					if (PointCommand.metaClass.respondsTo(PointCommand, "set"+key.capitalize())) {
+						pc."set${key.capitalize()}"(value)
+					}
+				}
+				
+				posData?.posDetails?.properties.each { key, value ->
+					log.info "PosDataDetails Key: " + key
+					if (["class", "cbdId", "process", "point", "errors", "constraints", "empty", "", ""].contains(key) || value == null){
+						return
+					}
+					
+					if (PointCommand.metaClass.respondsTo(PointCommand, "set"+key.capitalize())) {
+						pc."set${key.capitalize()}"(value)
+					}
+				}
+				
+				cmd.poses.add(pc)
+			}
+		}
+	}
+	
+	def loadAllPoints(def process, def cmd) {
+		log.info "loadAllPoints"
+		process.points.each { PointData point ->
+			AllPointsCommand apc = new AllPointsCommand()
+			
+			point.properties.each { key, value ->
+				log.info "PointData Key: " + key
+				if (["class", "posDatas", "errors", "constraints", "processId", "cbdId", "pointDetailsId", "empty"].contains(key) || value == null){
+					return
+				}
+				
+				if (AllPointsCommand.metaClass.respondsTo(AllPointsCommand, "set"+key.capitalize())) {
+					apc."set${key.capitalize()}"(value)
+				}
+			}
+			
+			cmd.allPoints.add(apc)
+		}
+		
+		//TODO Load from CBD Here!
+	}
+	
+	def loadAllPoses(def process, def cmd) {
+		log.info "loadAllPoses"
+		process.points.each { PointData point ->
+			point.posDatas?.each { PosData posData ->
+				AllPosCommand apc = new AllPosCommand()
+				
+				posData.properties.each { key, value ->
+					log.info "PosData Key: " + key
+					if (["class", "cbdId", "process", "point", "errors", "constraints", "empty", "", ""].contains(key) || value == null){
+						return
+					}
+					
+					if (AllPosCommand.metaClass.respondsTo(AllPosCommand, "set"+key.capitalize())) {
+						apc."set${key.capitalize()}"(value)
+					}
+				}
+				
+				cmd.allPoses.add(apc)
+			}
+		}
+		
+		//TODO Load from CBD Here!
 	}
 	
     /** save data */

@@ -3,9 +3,6 @@
         <div class="belka-glowna"><g:message code="panel.aggrement.time.title"/> </div>
         <div class="centre" style="text-align: center; padding-top: 20px; width: 750px">
             <ul class="table-list centre">
-                %{--<li><span class="align-left"><label><input type="radio" name="umowaCzas" id="nieoznaczony" /><g:message code="panel.aggrement.time.not.defined"/></label></span></li>--}%
-                %{--<li><span class="align-left"><label><input type="radio" name="umowaCzas" id="oznaczony" /><g:message code="panel.aggrement.time.defined"/></label></span></li>--}%
-
                 <g:radioGroup name="umowaCzas"
                               labels="['panel.aggrement.time.not.defined','panel.aggrement.time.defined']"
                               values="['nieoznaczony', 'oznaczony']"
@@ -32,16 +29,28 @@
 <r:script>
     jQuery(document).ready(function() {
         var aggDates = jQuery('#aggrementDates');
+        var umowaOznOd = jQuery('#umowaOznOd');
+        var umowaOznDo = jQuery('#umowaOznDo');
 
         if (jQuery('input[name="umowaCzas"]:checked').val() == 'nieoznaczony'){
             aggDates.hide();
+            umowaOznOd.attr("disabled", true);
+            umowaOznOd.val("");
+            umowaOznDo.attr("disabled", true);
+            umowaOznDo.val("");
         };
 
         jQuery('input[name="umowaCzas"]').change(function(e){
             if (e.target.value === 'nieoznaczony'){
                 aggDates.hide();
+                umowaOznOd.attr("disabled", true);
+                umowaOznOd.val("");
+                umowaOznDo.attr("disabled", true);
+                umowaOznDo.val("");
             } else {
                 aggDates.show();
+                umowaOznOd.removeAttr("disabled");
+                umowaOznDo.removeAttr("disabled");
             }
         });
 
