@@ -71,27 +71,21 @@ class ProcessService {
     /**
      * sprawdzanie, czy w eUmowy istnieje dla danego Akceptanta niezakończony Proces
      **/
-    def hasIncompleteProcessForClient(Client client) {
-        return client.id != null && Process.findByClientAndStatusInList(client, [
-                Process.ProcessStatus.NEW,
-                Process.ProcessStatus.WAITING,
-                Process.ProcessStatus.WAIT_FOR_SUBSRIPTION,
-                Process.ProcessStatus.EDIT]
-        )
+
+    def isProcessWithStatus(Client client, def statusList) {
+        return client.id != null && Process.findByClientAndStatusInList(client, statusList)
     }
 
-    def getLastIfIncompleteProcessForClientNip(String nip) {
-        def result = Process.findByClient(Client.findByNip(nip),[sort: "id", order: "desc"])
+    def getLastProcessWithStatus(Client client, def statusList) {
+        def result = Process.findByClient(Client.findByNip(client.nip),[sort: "lastUpdated", order: "desc"])
+        log.info("getLastProcessWithStatus - client.nip = ${client.nip} , id = ${result?.id} status = ${result?.status}, statusList = ${statusList}")
+        return (result && isProcessWithStatus(client, statusList)) ? result : null
+    }
 
-        log.info("getLastIfIncompleteProcessForClient - client.nip = ${nip} , id = ${result?.id} status = ${result?.status}")
-
-        /*return result?.id;*/
-
-        return result?.status in [
-                Process.ProcessStatus.NEW,
-                Process.ProcessStatus.WAITING,
-                Process.ProcessStatus.WAIT_FOR_SUBSRIPTION,
-                Process.ProcessStatus.EDIT] ? result.id : null
+    def getLastProcessNotStatus(Client client, def statusList) {
+        def result = Process.findByClient(Client.findByNip(client.nip),[sort: "lastUpdated", order: "desc"])
+        log.info("getLastProcessNotStatus - client.nip = ${client.nip} , id = ${result?.id} status = ${result?.status}, statusList = ${statusList}")
+        return (result && !isProcessWithStatus(client, statusList)) ? result : null
     }
 
     def containsActivity(def activities, def activityCode) {
@@ -165,8 +159,6 @@ class ProcessService {
             if(!cmd.hasProperty(data.name)){
                 throw new NoSuchFieldException(data.name)
             }
-
-            println("${data.name} => ${data.value}" )
 
             if(data.name in ["allPoses", "allPoints", "points"]){
                 //TODO implement
@@ -246,7 +238,7 @@ class ProcessService {
             process.discard();
         }
 
-        def pointsDataList = getPointAndPosData(cmd)
+      def pointsDataList = getPointAndPosData(cmd)
         process.points?.clear()
         pointsDataList.each { data ->
             process.addToPoints(data)
@@ -265,7 +257,6 @@ class ProcessService {
     def getDataFromPanels(def cmd) {
         def processDataList = [];
         cmd.properties.each { key, value ->
-            // println("getDataFromPanels start: ${key} : ${value}");
             if (["class","process", "cbdService", "errors", "constraints", "notes"].contains(key) || value == null){
                 return
             }
@@ -274,8 +265,6 @@ class ProcessService {
                 //TODO implementacja logiki dla punktow
                 return;
             }
-
-            println(key+"()")
 
             processDataList.add(new ProcessData(name: "${key}", value:"${value ?: ''}"));
         }

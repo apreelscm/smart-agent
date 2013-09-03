@@ -71,8 +71,8 @@ class ProcessController {
     }
 
     @Secured(['EUM_ZRD'])
-    def reject(String id) {
-        def processInstance =Process.get(id)
+    def reject() {
+        def processInstance = Process.get(params.id)
 
         if (!processInstance) {
             flash.message = message(code: 'default.not.found.message', args:[ message(code: 'process.label', default: 'proces'), id])
@@ -80,16 +80,18 @@ class ProcessController {
             return
         }
 
-        processInstance.status = Process.ProcessStatus.REJECTED;
-        processInstance.save(flush: true, validate: false)
+        processInstance.status = Process.ProcessStatus.REJECTED
+        processInstance.observed = (params.observed == "on")
+        processInstance.save(validate: false)
         flash.message = message(code: 'default.rejected.message', args:[ message(code: 'process.label', default: 'proces'), processInstance.id])
         redirect(action: "list")
     }
 
     @Secured(['EUM_ZRD'])
-    def accept(String id) {
-        def processInstance = Process.get(id)
+    def accept() {
+        def processInstance = Process.get(params.id)
 
+        println(params)
         if (!processInstance) {
             flash.message = message(code: 'default.not.found.message', args:[ message(code: 'process.label', default: 'proces'), id])
             redirect(action: "list")
@@ -97,7 +99,8 @@ class ProcessController {
         }
 
         processInstance.status = Process.ProcessStatus.ACCEPTED;
-        processInstance.save(flush: true, validate: true)
+        processInstance.observed = (params.observed == "on")
+        processInstance.save(validate: true)
         flash.message = message(code: 'default.accepted.message', args:[ message(code: 'process.label', default: 'proces'), processInstance.id])
         redirect(action: "list")
     }

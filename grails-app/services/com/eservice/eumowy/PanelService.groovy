@@ -20,13 +20,13 @@ class PanelService {
     def getAdresDoKorespondencjizAkecptantem(ProcessCommand cmd ,def calc) {
         def result = cbdService.getAdresDoKorespondencjizAkceptantem(cmd.nip);
 
-        cmd.akceptantKontaktUlicaTytul = result?.typ_ulicy ?:  "-"
-        cmd.akceptantKontaktUlica = result?.ulica  ?: "-"
-        cmd.akceptantKontaktNrDomu = result?.nr_budynku ?: "-"
-        cmd.akceptantKontaktNrMieszkania = result?.nr_lokal ?: "-"
-        cmd.akceptantKontaktMiasto = result?.miejscowosc ?: "-"
-        cmd.akceptantKontaktKodPocztowy = result?.kod_pocztowy ?: "-"
-        cmd.akceptantKontaktPoczta = result?.poczta ?: "-"
+        cmd.akceptantKontaktUlicaTytul = result?.typ_ulicy ?:  ""
+        cmd.akceptantKontaktUlica = result?.ulica  ?: ""
+        cmd.akceptantKontaktNrDomu = result?.nr_budynku ?: ""
+        cmd.akceptantKontaktNrMieszkania = result?.nr_lokal ?: ""
+        cmd.akceptantKontaktMiasto = result?.miejscowosc ?: ""
+        cmd.akceptantKontaktKodPocztowy = result?.kod_pocztowy ?: ""
+        cmd.akceptantKontaktPoczta = result?.poczta ?: ""
     }
 
     def getAneksDoUmowyNajmuZestawuPos(ProcessCommand cmd,def calc) {
@@ -46,9 +46,9 @@ class PanelService {
     def getDaneAkceptanta(ProcessCommand cmd ,def calc) {
         def result = cbdService.getDaneAkceptanta(cmd.nip);
 
-        cmd.akceptantNazwaOficjalna = result?.nazwa ?: "-"
-        cmd.akceptantNazwaSieciowa = cmd.akceptantNazwaSieciowa ?: "-" //TODO
-        cmd.akceptantRegon = result?.regon ?: "-"
+        cmd.akceptantNazwaOficjalna = result?.nazwa ?: ""
+        cmd.akceptantNazwaSieciowa = cmd.akceptantNazwaSieciowa ?: "" //TODO
+        cmd.akceptantRegon = result?.regon ?: ""
 
         cmd.akceptantNazwaOficjalnaCbd= cmd.akceptantNazwaOficjalna
         cmd.akceptantNazwaSieciowaCbd= cmd.akceptantNazwaSieciowa
@@ -56,17 +56,17 @@ class PanelService {
     }
 
     def getDaneDoWydruku(ProcessCommand cmd ,def calc) {
-        cmd.nazwaDoWydrukuZTerminalaPos = cmd.nazwaDoWydrukuZTerminalaPos ?: "-"
-        cmd.wydrukNazwaDoWyszukwarki =cmd.wydrukNazwaDoWyszukwarki ?: "-"
-        cmd.wydrukUlicaTytul =cmd.wydrukUlicaTytul ?: "-"
-        cmd.wydrukUlica =cmd.wydrukUlica ?: "-"
-        cmd.wydrukNrDomu =cmd.wydrukNrDomu ?: "-"
-        cmd.wydrukNrMieszkania =cmd.wydrukNrMieszkania ?: "-"
-        cmd.wydrukMiasto =cmd.wydrukMiasto ?: "-"
-        cmd.wydrukKodPocztowy = cmd.wydrukKodPocztowy ?: "-"
-        cmd.wydrukPoczta =cmd.wydrukPoczta ?: "-"
-        cmd.wydrukLinia1 =cmd.wydrukLinia1 ?: "-"
-        cmd.wydrukLinia2 =cmd.wydrukLinia2 ?: "-"
+        cmd.nazwaDoWydrukuZTerminalaPos = cmd.nazwaDoWydrukuZTerminalaPos ?: ""
+        cmd.wydrukNazwaDoWyszukwarki =cmd.wydrukNazwaDoWyszukwarki ?: ""
+        cmd.wydrukUlicaTytul =cmd.wydrukUlicaTytul ?: ""
+        cmd.wydrukUlica =cmd.wydrukUlica ?: ""
+        cmd.wydrukNrDomu =cmd.wydrukNrDomu ?: ""
+        cmd.wydrukNrMieszkania =cmd.wydrukNrMieszkania ?: ""
+        cmd.wydrukMiasto =cmd.wydrukMiasto ?: ""
+        cmd.wydrukKodPocztowy = cmd.wydrukKodPocztowy ?: ""
+        cmd.wydrukPoczta =cmd.wydrukPoczta ?: ""
+        cmd.wydrukLinia1 =cmd.wydrukLinia1 ?: ""
+        cmd.wydrukLinia2 =cmd.wydrukLinia2 ?: ""
     }
 
     def getDanePos(ProcessCommand cmd ,def calc) {
@@ -103,21 +103,21 @@ class PanelService {
     }
 
     def getDodatkoweUslugi(ProcessCommand cmd ,def calc) {
-        cmd.oplataZaDzienneZestawienieTransakcji =cmd.oplataZaDzienneZestawienieTransakcji ?: "-"
-        cmd.oplataZaMiesieczneZestawienieTransakcji =cmd.oplataZaMiesieczneZestawienieTransakcji ?: "-"
-        cmd.oplataZaPotwierdzenieWykonaniaPrzelewu =cmd.oplataZaPotwierdzenieWykonaniaPrzelewu ?: "-"
-        cmd.oplataZaDostarczeniePapieru =cmd.oplataZaDostarczeniePapieru ?: "-"
-        cmd.oplataZaZmianeGrafiki =cmd.oplataZaZmianeGrafiki ?: "-"
-        cmd.oplataZaInstalacjePOS =cmd.oplataZaInstalacjePOS ?: "-"
-        cmd.oplataZaInstalacjeGPRS =cmd.oplataZaInstalacjeGPRS ?: "-"
-        cmd.oplataZaUruchomienieWalutyObcej =cmd.oplataZaUruchomienieWalutyObcej ?: "-"
+        cmd.oplataZaDzienneZestawienieTransakcji =cmd.oplataZaDzienneZestawienieTransakcji ?: ""
+        cmd.oplataZaMiesieczneZestawienieTransakcji =cmd.oplataZaMiesieczneZestawienieTransakcji ?: ""
+        cmd.oplataZaPotwierdzenieWykonaniaPrzelewu =cmd.oplataZaPotwierdzenieWykonaniaPrzelewu ?: ""
+        cmd.oplataZaDostarczeniePapieru =cmd.oplataZaDostarczeniePapieru ?: ""
+        cmd.oplataZaZmianeGrafiki =cmd.oplataZaZmianeGrafiki ?: ""
+        cmd.oplataZaInstalacjePOS =cmd.oplataZaInstalacjePOS ?: ""
+        cmd.oplataZaInstalacjeGPRS =cmd.oplataZaInstalacjeGPRS ?: ""
+        cmd.oplataZaUruchomienieWalutyObcej =cmd.oplataZaUruchomienieWalutyObcej ?: ""
     }
 
     def getDodatkoweUslugi2(ProcessCommand cmd ,def calc) {
         cmd.wydrukGrafikiCena = calculatorService.getCalcProperty(calc,"OPLATA_LOGO")
         cmd.dzialaniaMatematyczneCena = calculatorService.getCalcProperty(calc,"OPLATA_KALKULATOR")
-        cmd.tytulPlatnosciCena =cmd.tytulPlatnosciCena ?: "-"
-        cmd.pierwszaSesjaCena =cmd.pierwszaSesjaCena ?: "-"
+        cmd.tytulPlatnosciCena =cmd.tytulPlatnosciCena ?: ""
+        cmd.pierwszaSesjaCena =cmd.pierwszaSesjaCena ?: ""
     }
 
     def getDodatkoweUslugiMud(ProcessCommand cmd ,def calc) {
@@ -129,8 +129,8 @@ class PanelService {
     }
 
     def getDodatkoweUslugiUTAIntegracja(ProcessCommand cmd ,def calc) {
-        cmd.weryfikacjaPINCena =cmd.weryfikacjaPINCena ?: "-"
-        cmd.systemKasowyCena =cmd.systemKasowyCena ?: "-"
+        cmd.weryfikacjaPINCena =cmd.weryfikacjaPINCena ?: ""
+        cmd.systemKasowyCena =cmd.systemKasowyCena ?: ""
     }
 
     def getDodatkoweWyposazenie(ProcessCommand cmd ,def calc) {
@@ -156,10 +156,10 @@ class PanelService {
     }
 
     def getInformacjeDodatkowe(ProcessCommand cmd ,def calc) {
-        cmd.dzialalnoscForma = cmd.dzialalnoscForma ?: "-"
-        cmd.dzialalnoscFormaInna = cmd.dzialalnoscFormaInna?: "-"
-        cmd.dzialalnoscDokument = cmd.dzialalnoscDokument ?: "-"
-        cmd.dzialalnoscDokumentInny = cmd.dzialalnoscDokumentInny ?: "-"
+        cmd.dzialalnoscForma = cmd.dzialalnoscForma ?: ""
+        cmd.dzialalnoscFormaInna = cmd.dzialalnoscFormaInna?: ""
+        cmd.dzialalnoscDokument = cmd.dzialalnoscDokument ?: ""
+        cmd.dzialalnoscDokumentInny = cmd.dzialalnoscDokumentInny ?: ""
     }
 
     def getInformacjeTechniczne(ProcessCommand cmd ,def calc) {
@@ -167,7 +167,7 @@ class PanelService {
     }
 
     def getOkresLojalnosciowy(ProcessCommand cmd ,def calc) {
-        cmd.okresLojalnosciowy = calculatorService.getCalcProperty(calc,"LICZBA_MIESIECY_LOJ") ?: "-"
+        cmd.okresLojalnosciowy = calculatorService.getCalcProperty(calc,"LICZBA_MIESIECY_LOJ") ?: ""
     }
 
     def getOpieka(ProcessCommand cmd ,def calc) {
@@ -175,7 +175,7 @@ class PanelService {
     }
 
     def getOplataDCCZaUruchomienie(ProcessCommand cmd ,def calc) {
-        cmd.oplataZaUruchomienieDCC =cmd.oplataZaUruchomienieDCC ?: "-"
+        cmd.oplataZaUruchomienieDCC =cmd.oplataZaUruchomienieDCC ?: ""
     }
 
     def getOplatyDCC(ProcessCommand cmd ,def calc) {
@@ -183,12 +183,12 @@ class PanelService {
     }
 
     def getOsobaDoKontaktu(ProcessCommand cmd ,def calc) {
-        cmd.kontaktTytul =cmd.kontaktTytul ?: "-"
-        cmd.kontaktImie =cmd.kontaktImie ?: "-"
-        cmd.kontaktNazwisko =cmd.kontaktNazwisko ?: "-"
-        cmd.kontaktTelStacjonarny =cmd.kontaktTelStacjonarny ?: "-"
-        cmd.kontaktTelKomorkowy =cmd.kontaktTelKomorkowy ?: "-"
-        cmd.kontaktEmail =cmd.kontaktEmail ?: "-"
+        cmd.kontaktTytul =cmd.kontaktTytul ?: ""
+        cmd.kontaktImie =cmd.kontaktImie ?: ""
+        cmd.kontaktNazwisko =cmd.kontaktNazwisko ?: ""
+        cmd.kontaktTelStacjonarny =cmd.kontaktTelStacjonarny ?: ""
+        cmd.kontaktTelKomorkowy =cmd.kontaktTelKomorkowy ?: ""
+        cmd.kontaktEmail =cmd.kontaktEmail ?: ""
     }
 
     def getOsobaDoKontaktuWPunkcie(ProcessCommand cmd ,def calc) {
@@ -215,12 +215,12 @@ class PanelService {
           cmd.reprezentant2Imie = osoba2.imie
           cmd.reprezentant2Nazwisko = osoba2.nazwisko*/
 
-        cmd.reprezentant1Tytul =cmd.reprezentant1Tytul ?: "-"
-        cmd.reprezentant1Imie =cmd.reprezentant1Imie ?: "-"
-        cmd.reprezentant1Nazwisko =cmd.reprezentant1Nazwisko ?: "-"
-        cmd.reprezentant2Tytul =cmd.reprezentant2Tytul ?: "-"
-        cmd.reprezentant2Imie =cmd.reprezentant2Imie ?: "-"
-        cmd.reprezentant2Nazwisko =cmd.reprezentant2Nazwisko ?: "-"
+        cmd.reprezentant1Tytul =cmd.reprezentant1Tytul ?: ""
+        cmd.reprezentant1Imie =cmd.reprezentant1Imie ?: ""
+        cmd.reprezentant1Nazwisko =cmd.reprezentant1Nazwisko ?: ""
+        cmd.reprezentant2Tytul =cmd.reprezentant2Tytul ?: ""
+        cmd.reprezentant2Imie =cmd.reprezentant2Imie ?: ""
+        cmd.reprezentant2Nazwisko =cmd.reprezentant2Nazwisko ?: ""
 
     }
 
@@ -351,7 +351,7 @@ class PanelService {
     }
 
     def getRachunekBankowyKlienta(ProcessCommand cmd ,def calc) {
-        cmd.numerRachunkuBankowegoKlienta =cmd.numerRachunkuBankowegoKlienta ?: "-"
+        cmd.numerRachunkuBankowegoKlienta =cmd.numerRachunkuBankowegoKlienta ?: ""
         cmd.bankKlienta = cmd.bankKlienta ?: ""
     }
 
@@ -397,8 +397,8 @@ class PanelService {
             calculatorService.hasCalcProperty(calc,it.key,"TAK")
         }
 
-        cmd.obslugaTyp = result?.value ?: "-";
-        cmd.obslugaEkonomicznyCena =cmd.obslugaEkonomicznyCena ?: "-";
+        cmd.obslugaTyp = result?.value ?: "";
+        cmd.obslugaEkonomicznyCena =cmd.obslugaEkonomicznyCena ?: "";
     }
 
     def getSerwisEkonomiczny(ProcessCommand cmd ,def calc) {
@@ -417,16 +417,16 @@ class PanelService {
 
         def result = cbdService.getSiedzibaAkceptanta(cmd.nip);
 
-        cmd.akceptantUlicaTytul = result?.typ_ulicy ?: "-"
-        cmd.akceptantUlica = result?.ulica ?: "-"
-        cmd.akceptantNrDomu = result?.nr_budynku ?: "-"
-        cmd.akceptantNrMieszkania = result?.nr_lokal ?: "-"
-        cmd.akceptantMiasto = result?.miejscowosc ?: "-"
-        cmd.akceptantKodPocztowy = result?.kod_pocztowy ?: "-"
-        cmd.akceptantPoczta = result?.poczta ?: "-"
-        cmd.akceptantTelStacjonarny = result?.telStac ?: "-"
-        cmd.akceptantFax = result?.faks ?: "-"
-        cmd.akceptantTelKomorkowy = result?.telKom ?: "-"
+        cmd.akceptantUlicaTytul = result?.typ_ulicy ?: ""
+        cmd.akceptantUlica = result?.ulica ?: ""
+        cmd.akceptantNrDomu = result?.nr_budynku ?: ""
+        cmd.akceptantNrMieszkania = result?.nr_lokal ?: ""
+        cmd.akceptantMiasto = result?.miejscowosc ?: ""
+        cmd.akceptantKodPocztowy = result?.kod_pocztowy ?: ""
+        cmd.akceptantPoczta = result?.poczta ?: ""
+        cmd.akceptantTelStacjonarny = result?.telStac ?: ""
+        cmd.akceptantFax = result?.faks ?: ""
+        cmd.akceptantTelKomorkowy = result?.telKom ?: ""
 
         cmd.akceptantUlicaTytulCbd = cmd.akceptantUlicaTytul
         cmd.akceptantUlicaCbd = cmd.akceptantUlica
@@ -441,7 +441,7 @@ class PanelService {
     }
 
     def getUmowa2(ProcessCommand cmd ,def calc) {
-        cmd.miejsceUmowy= cmd.miejsceUmowy ?: "-"
+        cmd.miejsceUmowy= cmd.miejsceUmowy ?: ""
     }
 
     def getUwagi(ProcessCommand cmd ,def calc) {
