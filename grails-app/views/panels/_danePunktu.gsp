@@ -15,7 +15,7 @@
                 			<li><span class="align-right"><g:message code="panel.mcccode" /></span> <span><g:textField name="${panelType}[${id}].kodMCC" id="${panelType}[${id}].mccCode" value="${pointData?.kodMCC}" maxlength="4"/></span> <span><label for="${panelType}[${id}].sameForEveryPoint"><g:checkBox id="${panelType}[${id}].sameForEveryPoint" name="${panelType}[${id}].takSamoDlaWszystkichPunktow" value="${pointData?.takSamoDlaWszystkichPunktow}" /><g:message code="panel.sameforeverypoint" /></label></span></li>
                 			<li><span class="align-right"><g:message code="panel.bussinesstypeinpractice" /></span> <span><g:textField name="${panelType}[${id}].rodzProwadzDzialalWPraktyce" id="${panelType}[${id}].bussinessTypeInPractice" value="${pointData?.rodzProwadzDzialalWPraktyce}" maxlength="60" /></span></li>
                 			<li><span class="align-right"><g:message code="panel.bankaccountnumber" /></span> <span><g:textField name="${panelType}[${id}].numerRachunkuBankowego" id="${panelType}[${id}].bankAccountNumber" value="${pointData?.numerRachunkuBankowego}" maxlength="26"/></span></li>
-                			<li><span class="align-right"><g:message code="panel.bankname" /></span> <span><dict:bankSelect name="${panelType}[${id}].bank" id="${panelType}[${id}].bankName" value="${pointData?.bank}" /></span></li>
+                			<li><span class="align-right"><g:message code="panel.bankname" /></span> <span><g:textField name="${panelType}[${id}].bank" id="${panelType}[${id}].bankName" value="${pointData?.bank}" /></span></li>
                 		</ul>
                 	</div>
                 </fieldset>

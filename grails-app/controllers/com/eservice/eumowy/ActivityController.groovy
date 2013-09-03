@@ -1,5 +1,7 @@
 package com.eservice.eumowy
 
+import org.codehaus.groovy.grails.web.json.JSONArray
+
 import com.eservice.eumowy.command.ProcessCommand
 import com.eservice.eumowy.pdfmapper.PdfMapper
 import com.eservice.eumowy.process.DefineActivityCommand
@@ -909,6 +911,14 @@ class ActivityController {
                 Integer.valueOf(params.pageNumber));
         render(text: path)
     }
+	
+	def getBankNames() {
+		String accountNumber = params.accountNo
+		
+		def bankNamesList = cbdService.getNazwaBanku()
+		JSONArray array = new JSONArray()
+		
+	}
 
     def testSql(){
         /*   def result = cbdService.findCalculatorByNip("1570321560")

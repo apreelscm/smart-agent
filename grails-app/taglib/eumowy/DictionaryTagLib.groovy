@@ -1,5 +1,7 @@
 package eumowy
 
+import groovy.lang.Closure;
+
 class DictionaryTagLib {
 
     static namespace = "dict"
