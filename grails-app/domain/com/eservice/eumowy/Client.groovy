@@ -10,7 +10,7 @@ class Client implements Serializable{
     String nip
 
     static constraints = {
-        name(blank:false)
+        name(nullable:true,blank:false)
         nip(blank:false)
         cbdId(nullable: true,blank:true)
     }

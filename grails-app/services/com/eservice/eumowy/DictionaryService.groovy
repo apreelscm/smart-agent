@@ -38,8 +38,9 @@ class DictionaryService {
 //    }
 
     def getBankComboBox() {
-        //dictionary.put(GET_BANK, cbdDAO.selectMany(DICTIONARY_PATH + GET_BANK));
-        return [[klucz: "1", wartosc: "PKO PB"], [klucz: "2", wartosc: "Alior Bank"], [klucz: "3", wartosc: "Millenium Bank"], [klucz: "4", wartosc: "GE Bank"]]
-    }
+        dictionary.put(GET_BANK, cbdDAO.selectMany(DICTIONARY_PATH + GET_BANK));
+        //return [[klucz: "1", wartosc: "PKO PB"], [klucz: "2", wartosc: "Alior Bank"], [klucz: "3", wartosc: "Millenium Bank"], [klucz: "4", wartosc: "GE Bank"]]
+    	return dictionary[GET_BANK]
+	}
 
 }

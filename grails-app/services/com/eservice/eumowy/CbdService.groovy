@@ -103,8 +103,8 @@ class CbdService {
 
     @Cacheable(value="getNazwaBanku")
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
-    def getNazwaBanku(def clientNip) {
-        return cbdDAO.selectOne(GET_NAZWA_BANKU,[nip:clientNip])
+    def getNazwaBanku() {
+        return cbdDAO.selectMany(GET_NAZWA_BANKU,[])
     }
 
     @Cacheable(value="getNumerRachunkuBankowego")
