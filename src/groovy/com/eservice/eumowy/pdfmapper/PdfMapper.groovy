@@ -238,6 +238,10 @@ class PdfMapper {
         println 'Working with property: ' + key
         addCheckbox(data, key, 'true', value);
     }
+	
+	private static mapDccZakresUruchomieniaProcess(def data, def pd, def key, def value) {
+		addCheckboxes(data, ["noweZestPos":"obecne_i_nowe", "obecneZestPos":"obecne", "phu":"wskazane"], value)
+	}
 
     private static getFromPointDataSet(def pd, def key){
         def result = pd.find{ processData -> processData.name.equals(key)}
