@@ -6,4 +6,4 @@ GRANT RESOURCE TO eumowy;
 GRANT CONNECT TO eumowy;
 
 create user eumowy_app identified by eumowy_app DEFAULT TABLESPACE EUMOWY_DATA;
-GRANT CONNECT TO eumowy_app;
+GRANT CONNECT, CREATE SYNONYM TO eumowy_app;
