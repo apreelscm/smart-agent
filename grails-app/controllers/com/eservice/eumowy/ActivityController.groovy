@@ -387,7 +387,7 @@ class ActivityController {
                     def hasNowaUmowa = processService.containsActivity(processInstance.activities,"nowaUmowa")
                     if(hasNowaUmowa){
                         flash.nipInfoMessage =  message(code:"client.new.info", default:"Nowy klient");
-                        client = client ?: new Client(nip:params.nip, name:"NEW_CLIENT")
+                        client = new Client(nip:params.nip)
                     }else{
                         flash.nipErrorMessage = message(code:"client.notFound.error", default:"Brak klienta");
                         return error();
@@ -576,7 +576,7 @@ class ActivityController {
 
                 if(clientService.clientExists(client)){
                     flash.nipInfoMessage =  message(code:"client.found.info", default:"Znaleziono");
-                }else {
+                } else {
                     /** sprawdzanie, czy to nie jest nowa umowa */
                     flash.nipErrorMessage = message(code:"client.notFound.error", default:"Brak klienta");
                     return error()

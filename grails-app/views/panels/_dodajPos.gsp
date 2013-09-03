@@ -19,7 +19,13 @@
 	jQuery(document).ready(function() {
 		var panelPosTemplate = jQuery("#hiddenPosPanel").html();
 		var panelPosCount = ${data.poses.size()};
+		globalPanelPosCount = ${data.poses.size()};
 		jQuery("#hiddenPosPanel").remove();
+		
+		for( var i = 0; i < panelPosCount; i++) {
+			setupNewPosPanelHandlers(i-1, i, "poses");
+			setupNewPointPanelData("poses\\["+(i-1)+"\\]\\.", "poses\\["+i+"\\]\\.");
+		}
 			
 		jQuery("#addNewPosButton").on("click", function() {
 			var data = panelPosTemplate.replace(/%ID%/gm, panelPosCount);
