@@ -18,6 +18,14 @@
 <section id="create-activity">
 <h1 class="ng linia-bottom"><g:message code="defineActivity.header.title" default="Wybierz działanie"/></h1>
 
+    <div id="notesMessageBox">
+        <g:if test="${infoMessage}">
+            <g:render template="message/infoMessage" model="[message: infoMessage]"/>
+        </g:if>
+        <g:if test="${errorMessage}">
+            <g:render template="message/errorMessage" model="[message: errorMessage]"/>
+        </g:if>
+    </div>
 
  <g:form>
      <div class="activityTree" style="margin: 10px auto 0 auto;display: table;">
@@ -135,17 +143,17 @@
                      <a class="expander expanderSub expanded" href="#"><g:message code="activity.pakietSerwisowy.name" default="Pakiet serwisowy"/></a>
 
                      <div class="content nesting-sub2" style="display: block;">
-                         <div class="checkBoxBlock">
+                         <div class="checkBoxBlock" id="ekonomiczny">
                              <g:checkBox id="ekonomicznyCB" name="ekonomiczny" data-selected="${(processInstance?.activities*.code)?.contains('ekonomiczny')}"/>
                              <label for="ekonomicznyCB"><g:message code="activity.ekonomiczny.name" default="Ekonomiczny"/></label>
                          </div>
 
-                         <div class="checkBoxBlock">
+                         <div class="checkBoxBlock" id="komfort">
                              <g:checkBox id="komfortCB" name="komfort" data-selected="${(processInstance?.activities*.code)?.contains('komfort')}"/>
                              <label for="komfortCB"><g:message code="activity.komfort.name" default="Komfort"/></label>
                          </div>
 
-                         <div class="checkBoxBlock">
+                         <div class="checkBoxBlock" id="prestiz">
                              <g:checkBox id="prestizCB" name="prestiz" data-selected="${(processInstance?.activities*.code)?.contains('prestiz')}"/>
                              <label for="prestizCB"><g:message code="activity.prestiz.name" default="Prestiż"/></label>
                          </div>
@@ -179,14 +187,6 @@
      <div style="margin:30px auto 0 auto;display: table;">
          <g:message code="defineActivity.uwagiDoCoa.name" default="Uwagi dla COA"/>
          <g:textArea name="notes" style="height: 100px; display: block; min-width: 380px" value="${notesToCOA}"/>
-         <div id="notesMessageBox">
-             <g:if test="${infoMessage}">
-                 <g:render template="message/infoMessage" model="[message: infoMessage]"/>
-             </g:if>
-             <g:if test="${errorMessage}">
-                 <g:render template="message/errorMessage" model="[message: errorMessage]"/>
-             </g:if>
-         </div>
      </div>
 
 

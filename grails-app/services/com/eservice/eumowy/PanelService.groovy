@@ -197,7 +197,7 @@ class PanelService {
 
     def getOsobaKtoraPozyskalaAkceptanta(ProcessCommand cmd ,def calc) {
         def user = springSecurityService.principal;
-        cmd.pozyskujacyTytul =  user.typOsoby
+        cmd.pozyskujacyTytul = ""
         cmd.pozyskujacyImie =  user.imie
         cmd.pozyskujacyNazwisko = user.nazwisko
         cmd.pozyskujacyNumer =  user.nr
@@ -442,7 +442,6 @@ class PanelService {
 
     def getUmowa2(ProcessCommand cmd ,def calc) {
         cmd.miejsceUmowy= cmd.miejsceUmowy ?: "-"
-        cmd.dataUmowy = cmd.dataUmowy ?: new Date().format("yyyy-MM-dd")
     }
 
     def getUwagi(ProcessCommand cmd ,def calc) {

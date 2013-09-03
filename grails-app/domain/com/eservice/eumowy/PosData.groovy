@@ -5,6 +5,7 @@ import java.io.Serializable;
 class PosData implements Serializable {
 	
 	//TODO Add things needed for New POS/Point documents, like point name etc.
+	Integer cbdId
 	Integer numerZestawuPos
 	Date dataOd
 	Date dataDo
@@ -22,6 +23,7 @@ class PosData implements Serializable {
 		dataDo column: "date_to"
 		wysokoscOplaty column: "price_count"
 		czyWybrany column: "is_selected"
+		cbdId column: "cbd_id"
 	}
 	
 	static constraints = {
@@ -32,5 +34,6 @@ class PosData implements Serializable {
 		dataDo(nullable:true)
 		wysokoscOplaty(nullable:true)
 		czyWybrany(nullable:true)
+		cbdId(nullable:true)
 	}
 }

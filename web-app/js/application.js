@@ -5,10 +5,12 @@ if (typeof jQuery !== 'undefined') {
 		}).ajaxStop(function() {
 			$(this).fadeOut();
 		});
+
+
+        $('.errorNotification').click(function(){
+            var message = $(this).data("message")
+            alert(message);
+        })
+
 	})(jQuery);
-}
-
-
-function allertError(msg) {
-    alert(msg);
 }

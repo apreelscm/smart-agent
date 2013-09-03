@@ -85,6 +85,8 @@ class ProcessService {
 
         log.info("getLastIfIncompleteProcessForClient - client.nip = ${nip} , id = ${result?.id} status = ${result?.status}")
 
+        /*return result?.id;*/
+
         return result?.status in [
                 Process.ProcessStatus.NEW,
                 Process.ProcessStatus.WAITING,
@@ -106,7 +108,7 @@ class ProcessService {
         log.info("getSavedProcessCommand processId = ${process.id}")
         def cmd = initProcessCommand(process)
         loadProcessData(process,cmd)
-       // loadPoints()
+		loadPoints(process, cmd)
        // loadPoses()
         prepareProcessCommand(cmd, calc, cbdMethods)
     }
@@ -152,12 +154,18 @@ class ProcessService {
     /**
      *  create data
      * */
-    def loadProcessData(def process,  def cmd) {
+     def loadProcessData(def process,  def cmd) {
         log.info("loadProcessData - processData: ${process.processData}");
         process.processData.each {ProcessData data ->
+
+            if(data.name in ["dataUmowy"]){
+                return
+            }
+
             if(!cmd.hasProperty(data.name)){
                 throw new NoSuchFieldException(data.name)
             }
+
             println("${data.name} => ${data.value}" )
 
             if(data.name in ["allPoses", "allPoints", "points"]){
@@ -169,14 +177,72 @@ class ProcessService {
         }
         cmd
     }
-
+	
+	def loadPoints(def process, def cmd) {
+		log.info "loadPoints"
+		process.points.each { PointData point ->
+			PointCommand pc = new PointCommand()
+			
+			point.properties.each { key, value ->
+				log.info "PointData Key: " + key
+				if (["class", "posDatas", "errors", "constraints", "processId", "cbdId", "pointDetailsId", "empty"].contains(key) || value == null){
+					return
+				}
+				
+				if (PointCommand.metaClass.respondsTo(PointCommand, "set"+key.capitalize())) {
+					pc."set${key.capitalize()}"(value)
+				}
+			}
+			
+			point.pointDetails?.properties.each { key, value ->
+				log.info "PointDataDetails Key: " + key
+				if (["class", "posDatas", "errors", "constraints", "processId", "cbdId", "pointDetailsId", "empty"].contains(key) || value == null){
+					return
+				}
+				
+				if (PointCommand.metaClass.respondsTo(PointCommand, "set"+key.capitalize())) {
+					pc."set${key.capitalize()}"(value)
+				}
+			}
+			
+			def posData = point.posDatas != null && point.posDatas.size() > 0 ? point.posDatas[0] : null 
+			
+			posData?.properties.each { key, value ->
+				log.info "PosData Key: " + key
+				if (["class", "cbdId", "process", "point", "errors", "constraints", "empty", "", ""].contains(key) || value == null){
+					return
+				}
+				
+				if (PointCommand.metaClass.respondsTo(PointCommand, "set"+key.capitalize())) {
+					pc."set${key.capitalize()}"(value)
+				}
+			}
+			
+			posData?.posDetails?.properties.each { key, value ->
+				log.info "PosDataDetails Key: " + key
+				if (["class", "cbdId", "process", "point", "errors", "constraints", "empty", "", ""].contains(key) || value == null){
+					return
+				}
+				
+				if (PointCommand.metaClass.respondsTo(PointCommand, "set"+key.capitalize())) {
+					pc."set${key.capitalize()}"(value)
+				}
+			}
+			
+			cmd.points.add(pc)
+		}
+	}
+	
     /**
      *  save data
      * */
 
-
     def populateProcessWithData(def process, def cmd){
         def processDataList = getDataFromPanels(cmd)
+
+        //zapis obecnej daty na potrzeby dokumentow
+        addCurrentDate(processDataList);
+
         process.processData?.clear()
         processDataList.each { data ->
             process.addToProcessData(data)
@@ -192,7 +258,11 @@ class ProcessService {
         process
     }
 
-     List<PointCommand> points = ListUtils.lazyList([], FactoryUtils.instantiateFactory(PointCommand))
+    def addCurrentDate(def processDataList){
+        processDataList.add(new ProcessData([name: 'dataUmowy', value: DateUtils.getCurrentFormattedDate()]))
+    }
+
+    List<PointCommand> points = ListUtils.lazyList([], FactoryUtils.instantiateFactory(PointCommand))
     List<AllPointsCommand> allPoints = ListUtils.lazyList([], FactoryUtils.instantiateFactory(AllPointsCommand))
     List<AllPosCommand> allPoses = ListUtils.lazyList([], FactoryUtils.instantiateFactory(AllPosCommand))
     def getDataFromPanels(def cmd) {
@@ -208,8 +278,13 @@ class ProcessService {
                 return;
             }
 
+            println(key+"()")
+
             processDataList.add(new ProcessData(name: "${key}", value:"${value ?: ''}"));
         }
+
+
+
 
         processDataList
     }
@@ -217,6 +292,12 @@ class ProcessService {
 	def getPointAndPosData(def cmd) {
 		def pointsList = []
 		cmd.points.each { PointCommand pc ->
+			
+			if (pc == null) {
+				log.info "PointCommand is NULL - skipping!"
+				return
+			}
+			
 			ArrayList<PosData> pdList = new ArrayList<PosData>()
 			PointData pointData = new PointData()
 			PointDataDetails pointDataDetails = new PointDataDetails()

@@ -11,11 +11,11 @@
                 	<legend><g:message code="panel.newpoint.pointdata.title" /></legend>
                 	<div class="subpanel-fieldset-centercontent" >
                 		<ul class="table-list vertical-center">
-                			<li><span class="align-right"><g:message code="panel.nip" /></span> <span><g:textField name="points[${id}].nipPunktu" id="points[${id}].nip"/></span></li>
-                			<li><span class="align-right"><g:message code="panel.mcccode" /></span> <span><g:textField name="points[${id}].kodMCC" id="points[${id}].mccCode"/></span> <span><label for="points[${id}].sameForEveryPoint"><g:checkBox id="points[${id}].sameForEveryPoint" /><g:message code="panel.sameforeverypoint" /></label></span></li>
-                			<li><span class="align-right"><g:message code="panel.bussinesstypeinpractice" /></span> <span><g:textField name="points[${id}].rodzProwadzDzialalWPraktyce" id="points[${id}].bussinessTypeInPractice"/></span></li>
-                			<li><span class="align-right"><g:message code="panel.bankaccountnumber" /></span> <span><g:textField name="points[${id}].numerRachunkuBankowego" id="points[${id}].bankAccountNumber"/></span></li>
-                			<li><span class="align-right"><g:message code="panel.bankname" /></span> <span><select name="points[${id}].bank" id="points[${id}].bankName"></select></span></li>
+                			<li><span class="align-right"><g:message code="panel.nip" /></span> <span><g:textField name="${panelType}[${id}].nipPunktu" id="${panelType}[${id}].nip" value="${pointData?.nipPunktu}" maxlength="10"/></span></li>
+                			<li><span class="align-right"><g:message code="panel.mcccode" /></span> <span><g:textField name="${panelType}[${id}].kodMCC" id="${panelType}[${id}].mccCode" value="${pointData?.kodMCC}" maxlength="4"/></span> <span><label for="${panelType}[${id}].sameForEveryPoint"><g:checkBox id="${panelType}[${id}].sameForEveryPoint" name="${panelType}[${id}].takSamoDlaWszystkichPunktow" value="${pointData?.takSamoDlaWszystkichPunktow}" /><g:message code="panel.sameforeverypoint" /></label></span></li>
+                			<li><span class="align-right"><g:message code="panel.bussinesstypeinpractice" /></span> <span><g:textField name="${panelType}[${id}].rodzProwadzDzialalWPraktyce" id="${panelType}[${id}].bussinessTypeInPractice" value="${pointData?.rodzProwadzDzialalWPraktyce}" maxlength="60" /></span></li>
+                			<li><span class="align-right"><g:message code="panel.bankaccountnumber" /></span> <span><g:textField name="${panelType}[${id}].numerRachunkuBankowego" id="${panelType}[${id}].bankAccountNumber" value="${pointData?.numerRachunkuBankowego}" maxlength="26"/></span></li>
+                			<li><span class="align-right"><g:message code="panel.bankname" /></span> <span><select name="${panelType}[${id}].bank" id="${panelType}[${id}].bankName" value="${pointData?.bank}"></select></span></li>
                 		</ul>
                 	</div>
                 </fieldset>
@@ -23,42 +23,37 @@
                 	<legend><g:message code="panel.newpoint.dataforprinting" /></legend>
                 	<div class="subpanel-fieldset-centercontent" >
                 		<p><g:message code="panel.newpoint.pointnameforprintingfromposterminal" /></p>
-                		<p><g:textField name="points[${id}].nazwaDoWydrukuZTerminalaPos" id="points[${id}].pointNameForPrintingFromPOSTerminal"/></p>
-                		<p><g:message code="panel.newpoint.pointnameforsearchengine" /> <label for="points[${id}].dataforprintingAsAbove"><g:checkBox name="points[${id}].dataforprinting-asAbove" id="points[${id}].dataforprintingAsAbove" /><g:message code="panel.as.above" /></label></p>
-                		<p><g:textField name="points[${id}].nazwaDoWyszukiwarki" id="points[${id}].pointNameForSearchEngine"/></p>
-                		<p><label for="points[${id}].dataforprintingAsForMerchant"><g:checkBox name="points[${id}].dataforprintingAsForMerchant" id="points[${id}].dataforprintingAsForMerchant"/><g:message code="panel.as.merchant" /></label></p>
+                		<p><g:textField name="${panelType}[${id}].nazwaDoWydrukuZTerminalaPos" id="${panelType}[${id}].pointNameForPrintingFromPOSTerminal" value="${pointData?.nazwaDoWydrukuZTerminalaPos}"/></p>
+                		<p><g:message code="panel.newpoint.pointnameforsearchengine" /> <label for="${panelType}[${id}].dataforprintingAsAbove"><g:checkBox name="${panelType}[${id}].wydrukJakPowyzej" id="${panelType}[${id}].dataforprintingAsAbove" value="${pointData?.wydrukJakPowyzej}" /><g:message code="panel.as.above" /></label></p>
+                		<p><g:textField name="${panelType}[${id}].nazwaDoWyszukiwarki" id="${panelType}[${id}].pointNameForSearchEngine" value="${pointData?.nazwaDoWyszukiwarki}"/></p>
+                		<p><label for="${panelType}[${id}].dataforprintingAsForMerchant"><g:checkBox name="${panelType}[${id}].wydrukJakDlaMerchanta" id="${panelType}[${id}].dataforprintingAsForMerchant" value="${pointData?.wydrukJakDlaMerchanta}" /><g:message code="panel.as.merchant" /></label></p>
 		                <ul class="table-list">
 		                	<li>
 		                		<span><g:message code="panel.street" /></span>
 		                		<span>
-		                			<select name="points[${id}].dataforprintingStreetType">
-                                       <option value="ulica">ulica</option>
-                                       <option value="osiedle">osiedle</option>
-                                       <option value="aleja">aleja</option>
-                                       <option value="plac">plac</option>
-                                   </select>
-                                   <g:textField name="points[${id}].wydrukUlica" id="points[${id}].dataforprintingAddressStreet" style="width: 200px"/>
+		                			<dict:streetSelect name="${panelType}[${id}].wydrukUlicaTytul" id="${panelType}[${id}].dataforprintingAddressStreetType" value="${pointData?.wydrukUlicaTytul}"/>
+                                	<g:textField name="${panelType}[${id}].wydrukUlica" id="${panelType}[${id}].dataforprintingAddressStreet" style="width: 200px" value="${pointData?.wydrukUlica}"/>
                                 </span>
                                 <span>
-                                	<span><g:message code="panel.house.number" /></span> <span><g:textField name="points[${id}].wydrukNrDomu" id="points[${id}].dataforprintingAddressHomeNumber" style="width: 50px"/></span>
-                                	<span><g:message code="panel.flat.number" /></span> <span><g:textField name="points[${id}].wydrukNrMieszkania" id="points[${id}].dataforprintingAddressFlatNumber" style="width: 50px"/></span>
+                                	<span><g:message code="panel.house.number" /></span> <span><g:textField name="${panelType}[${id}].wydrukNrDomu" id="${panelType}[${id}].dataforprintingAddressHomeNumber" style="width: 50px" value="${pointData?.wydrukNrDomu}"/></span>
+                                	<span><g:message code="panel.flat.number" /></span> <span><g:textField name="${panelType}[${id}].wydrukNrLokalu" id="${panelType}[${id}].dataforprintingAddressFlatNumber" style="width: 50px" value="${pointData?.wydrukNrLokalu}"/></span>
                                 </span>
                             </li>
 		                	<li>
 		                		<span><g:message code="panel.city" /></span>
-		                		<span><g:textField name="points[${id}].wydrukMiasto" id="points[${id}].dataforprintingAddressCity"  style="width: 280px;"/></span>
+		                		<span><g:textField name="${panelType}[${id}].wydrukMiasto" id="${panelType}[${id}].dataforprintingAddressCity" value="${pointData?.wydrukMiasto}" style="width: 280px;"/></span>
 		                		<span>
-		                			<span><g:message code="panel.postal.code" /></span> <span><g:textField name="points[${id}].wydrukKodPocztowy" id="points[${id}].dataforprintingAddressPostalCode" style="width: 50px"/></span>
+		                			<span><g:message code="panel.postal.code" /></span> <span><g:textField name="${panelType}[${id}].wydrukKodPocztowy" id="${panelType}[${id}].dataforprintingAddressPostalCode" value="${pointData?.wydrukKodPocztowy}" style="width: 50px"/></span>
 		                		</span>
 		                	</li>
 		                	<li>
 		                		<span><g:message code="panel.postal" /></span>
-		                		<span><g:textField name="points[${id}].wydrukPoczta" id="points[${id}].dataforprintingAddressPostOffice" style="width: 280px;"/></span>
+		                		<span><g:textField name="${panelType}[${id}].wydrukPoczta" id="${panelType}[${id}].dataforprintingAddressPostOffice" value="${pointData?.wydrukPoczta}" style="width: 280px;"/></span>
 		                	</li>
 		                </ul>
                 		<p><g:message code="panel.newpoint.otherdataforprintingfromterminal" /></p>
-               			<p><g:message code="panel.line1" /> <g:textField name="points[${id}].wydrukLinia1" id="points[${id}].otherDataForPrintingFromTerminal1" style="width: 90%;" /></p>
-               			<p><g:message code="panel.line2" /> <g:textField name="points[${id}].wydrukLinia2" id="points[${id}].otherDataForPrintingFromTerminal1" style="width: 90%;" /></p>
+               			<p><g:message code="panel.line1" /> <g:textField name="${panelType}[${id}].wydrukLinia1" id="${panelType}[${id}].otherDataForPrintingFromTerminal1" value="${pointData?.wydrukLinia1}" style="width: 90%;" /></p>
+               			<p><g:message code="panel.line2" /> <g:textField name="${panelType}[${id}].wydrukLinia2" id="${panelType}[${id}].otherDataForPrintingFromTerminal1" value="${pointData?.wydrukLinia2}" style="width: 90%;" /></p>
                 	</div>
                 </fieldset>
                 <g:render template="../panels/adresDoKorespondencjiPunktu" />
@@ -66,19 +61,19 @@
                 <fieldset class="subpanel-fieldset">
                 	<legend><g:message code="panel.newpoint.posset.for.selected.point.title" /></legend>
                 	<div class="subpanel-fieldset-centercontent" >
-                		<label for="possetforselectedpointSameForEveryPoint"><g:checkBox name="possetforselectedpointSameForEveryPoint" /><g:message code="panel.sameforeverypoint" /></label>
+                		<label for="${panelType}[${id}].possetforselectedpointSameForEveryPoint"><g:checkBox id="${panelType}[${id}].possetforselectedpointSameForEveryPoint" name="${panelType}[${id}].zestawPosTakSamoDlaWszystkichPunktow" value="${pointData?.zestawPosTakSamoDlaWszystkichPunktow}" /><g:message code="panel.sameforeverypoint" /></label>
                 		<table class="vertical-center" >
                 			<thead>
                 				<tr><td></td><td></td><td></td><td></td><td colspan="2"  style="text-align: center;">Cena</td></tr>
                 				<tr><td></td><td></td><td></td><td></td><td>Term./mies</td><td>PP./mies.</td></tr>
                				</thead>
                				<tbody>
-               					<tr><td>typ <select name="points[${id}].possetforselectedpointDialupType" style="width: 50px"></select></td><td style="text-align: right;"><g:message code="panel.dialup" /></td><td><g:textField name="points[${id}].dialupIlosc" id="points[${id}].dialupCount" style="width: 50px"/> szt.</td><td><g:textField name="points[${id}].dialupPPIlosc" id="points[${id}].dialupPPCount" style="width: 50px"/> PP. szt.</td><td><g:textField name="points[${id}].dialupCena" id="points[${id}].dialupPrice" style="width: 50px"/> zł.</td><td><g:textField name="points[${id}].dialupPPCena" id="points[${id}].dialupPPPrice" style="width: 50px"/> zł.</td></tr>
-                				<tr><td>typ <select name="points[${id}].possetforselectedpointVpnType" style="width: 50px"></select></td><td style="text-align: right;"><g:message code="panel.vpn" /></td><td><g:textField name="points[${id}].vpnIlosc" id="points[${id}].vpnCount" style="width: 50px"/> szt.</td><td><g:textField name="points[${id}].vpnPPIlosc" id="points[${id}].vpnPPCount" style="width: 50px"/> PP. szt.</td><td><g:textField name="points[${id}].vpnCena" id="points[${id}].vpnPrice" style="width: 50px"/> zł.</td><td><g:textField name="points[${id}].vpnPPCena" id="points[${id}].vpnPPPrice" style="width: 50px"/> zł.</td></tr>
-                				<tr><td>typ <select name="points[${id}].possetforselectedpointSslType" style="width: 50px"></select></td><td style="text-align: right;"><g:message code="panel.ssl" /></td><td><g:textField name="points[${id}].sslIlosc" id="points[${id}].sslCount" style="width: 50px"/> szt.</td><td><g:textField name="points[${id}].sslPPIlosc" id="points[${id}].sslPPCount" style="width: 50px"/> PP. szt.</td><td><g:textField name="points[${id}].sslCena" id="points[${id}].sslPrice" style="width: 50px"/> zł.</td><td><g:textField name="points[${id}].sslPPCena" id="points[${id}].sslPPPrice" style="width: 50px"/> zł.</td></tr>
-                				<tr><td>typ <select name="points[${id}].possetforselectedpointWifiType" style="width: 50px"></select></td><td style="text-align: right;"><g:message code="panel.wifi" /></td><td><g:textField name="points[${id}].wifiIlosc" name="points[${id}].wifiCount" style="width: 50px"/> szt.</td><td><g:textField name="points[${id}].wifiPPIlosc" id="points[${id}].wifiPPCount" style="width: 50px"/> PP. szt.</td><td><g:textField name="points[${id}].wifiCena" id="points[${id}].wifiPrice" style="width: 50px"/> zł.</td><td><g:textField name="points[${id}].wifiPPCena" id="points[${id}].wifiPPPrice" style="width: 50px"/> zł.</td></tr>
-                				<tr><td>typ <select name="points[${id}].possetforselectedpointGprsType" style="width: 50px"></select></td><td style="text-align: right;"><g:message code="panel.gprs" /></td><td><g:textField name="points[${id}].gprsIlosc" id="points[${id}].gprsCount" style="width: 50px"/> szt.</td><td><g:textField name="points[${id}].gprsPPIlosc" id="points[${id}].gprsPPCount" style="width: 50px"/> PP. szt.</td><td><g:textField name="points[${id}].gprsCena" id="points[${id}].gprsPrice" style="width: 50px"/> zł.</td><td><g:textField name="points[${id}].gprsPPCena" id="points[${id}].gprsPPPrice" style="width: 50px"/> zł.</td></tr>
-                				<tr><td></td><td style="text-align: right;"><g:message code="panel.base" /></td><td><g:textField name="points[${id}].baseCount" style="width: 50px"/> szt.</td><td></td><td></td><td></td></tr>
+               					<tr><td>typ <g:select id="${panelType}[${id}].possetforselectedpointDialupType" name="${panelType}[${id}].dialupTyp" from="[]" valueMessagePrefix="" value="${pointData?.dialupTyp}"  style="width: 50px"/></td><td style="text-align: right;"><g:message code="panel.dialup" /></td><td><g:textField name="${panelType}[${id}].dialupIlosc" id="${panelType}[${id}].dialupCount" value="${pointData?.dialupIlosc}" style="width: 50px"/> szt.</td><td><g:textField name="${panelType}[${id}].dialupPPIlosc" id="${panelType}[${id}].dialupPPCount" value="${pointData?.dialupPPIlosc}" style="width: 50px"/> PP. szt.</td><td><g:textField name="${panelType}[${id}].dialupCena" id="${panelType}[${id}].dialupPrice" value="${pointData?.dialupCena}" style="width: 50px"/> zł.</td><td><g:textField name="${panelType}[${id}].dialupPPCena" id="${panelType}[${id}].dialupPPPrice" value="${pointData?.dialupPPCena}" style="width: 50px"/> zł.</td></tr>
+                				<tr><td>typ <g:select id="${panelType}[${id}].possetforselectedpointVpnType" name="${panelType}[${id}].vpnTyp" from="[]" valueMessagePrefix="" value="${pointData?.vpnTyp}"  style="width: 50px"/></td><td style="text-align: right;"><g:message code="panel.vpn" /></td><td><g:textField name="${panelType}[${id}].vpnIlosc" id="${panelType}[${id}].vpnCount" value="${pointData?.vpnIlosc}" style="width: 50px"/> szt.</td><td><g:textField name="${panelType}[${id}].vpnPPIlosc" id="${panelType}[${id}].vpnPPCount" value="${pointData?.vpnPPIlosc}" style="width: 50px"/> PP. szt.</td><td><g:textField name="${panelType}[${id}].vpnCena" id="${panelType}[${id}].vpnPrice" value="${pointData?.vpnCena}" style="width: 50px"/> zł.</td><td><g:textField name="${panelType}[${id}].vpnPPCena" id="${panelType}[${id}].vpnPPPrice" value="${pointData?.vpnPPCena}" style="width: 50px"/> zł.</td></tr>
+                				<tr><td>typ <g:select id="${panelType}[${id}].possetforselectedpointSslType" name="${panelType}[${id}].sslTyp" from="[]" valueMessagePrefix="" value="${pointData?.sslTyp}"  style="width: 50px"/></td><td style="text-align: right;"><g:message code="panel.ssl" /></td><td><g:textField name="${panelType}[${id}].sslIlosc" id="${panelType}[${id}].sslCount" value="${pointData?.sslIlosc}" style="width: 50px"/> szt.</td><td><g:textField name="${panelType}[${id}].sslPPIlosc" id="${panelType}[${id}].sslPPCount" value="${pointData?.sslPPIlosc}" style="width: 50px"/> PP. szt.</td><td><g:textField name="${panelType}[${id}].sslCena" id="${panelType}[${id}].sslPrice" value="${pointData?.sslCena}" style="width: 50px"/> zł.</td><td><g:textField name="${panelType}[${id}].sslPPCena" id="${panelType}[${id}].sslPPPrice" value="${pointData?.sslPPCena}" style="width: 50px"/> zł.</td></tr>
+                				<tr><td>typ <g:select id="${panelType}[${id}].possetforselectedpointWifiType" name="${panelType}[${id}].wifiTyp" from="[]" valueMessagePrefix="" value="${pointData?.wifiTyp}"  style="width: 50px"/></td><td style="text-align: right;"><g:message code="panel.wifi" /></td><td><g:textField name="${panelType}[${id}].wifiIlosc" name="${panelType}[${id}].wifiCount" value="${pointData?.wifiIlosc}" style="width: 50px"/> szt.</td><td><g:textField name="${panelType}[${id}].wifiPPIlosc" id="${panelType}[${id}].wifiPPCount" value="${pointData?.wifiPPIlosc}" style="width: 50px"/> PP. szt.</td><td><g:textField name="${panelType}[${id}].wifiCena" id="${panelType}[${id}].wifiPrice" value="${pointData?.wifiCena}" style="width: 50px"/> zł.</td><td><g:textField name="${panelType}[${id}].wifiPPCena" id="${panelType}[${id}].wifiPPPrice" value="${pointData?.wifiPPCena}" style="width: 50px"/> zł.</td></tr>
+                				<tr><td>typ <g:select id="${panelType}[${id}].possetforselectedpointGprsType" name="${panelType}[${id}].gprsTyp" from="[]" valueMessagePrefix="" value="${pointData?.gprsTyp}"  style="width: 50px"/></td><td style="text-align: right;"><g:message code="panel.gprs" /></td><td><g:textField name="${panelType}[${id}].gprsIlosc" id="${panelType}[${id}].gprsCount" value="${pointData?.gprsIlosc}" style="width: 50px"/> szt.</td><td><g:textField name="${panelType}[${id}].gprsPPIlosc" id="${panelType}[${id}].gprsPPCount" value="${pointData?.gprsPPIlosc}" style="width: 50px"/> PP. szt.</td><td><g:textField name="${panelType}[${id}].gprsCena" id="${panelType}[${id}].gprsPrice" value="${pointData?.gprsCena}" style="width: 50px"/> zł.</td><td><g:textField name="${panelType}[${id}].gprsPPCena" id="${panelType}[${id}].gprsPPPrice" value="${pointData?.gprsPPCena}" style="width: 50px"/> zł.</td></tr>
+                				<tr><td></td><td style="text-align: right;"><g:message code="panel.base" /></td><td><g:textField id="${panelType}[${id}].baseCount" name="${panelType}[${id}].bazaIlosc" value="${pointData?.bazaIlosc}" style="width: 50px"/> szt.</td><td></td><td></td><td></td></tr>
                				</tbody>
                 		</table>
                 	</div>
@@ -93,6 +88,6 @@
 </div>
 
 <r:require module="jquery_ui"/>
-<r:script>
+%{--<r:script>
 	setupNewPointPanelHandlers("");
-</r:script>
+</r:script>--}%

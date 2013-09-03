@@ -39,3 +39,4 @@ grant select on CBT_KALK_POLE to EUMOWY_APP;
 grant select on cbt_kalk to EUMOWY_APP;
 
 
+grant execute on ADM_WEB to EUMOWY_APP;

@@ -93,13 +93,13 @@ public class PdfGenerator {
 				if (fontsPathMap != null && fontsPathMap.containsKey(dataEntry.getKey())){
 					BaseFont bf = null;
 					if("HELVETICA".equals(fontsPathMap.get(dataEntry.getKey()))) {
-						bf = BaseFont.createFont(BaseFont.TIMES_ROMAN, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+						bf = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.EMBEDDED);
 					}
 					else if ("ARIAL".equals(fontsPathMap.get(dataEntry.getKey()))) {
-						bf = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.EMBEDDED);
+						bf = BaseFont.createFont(ARIAL_FONT_PATH, BaseFont.CP1250, BaseFont.EMBEDDED);
 					}
 					else if ("ARIALBOLD".equals(fontsPathMap.get(dataEntry.getKey()))) {
-						bf = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.EMBEDDED);
+						bf = BaseFont.createFont(ARIALBOLD_FONT_PATH, BaseFont.CP1250, BaseFont.EMBEDDED);
 					}
 					else {
 						bf = BaseFont.createFont(fontsPathMap.get(dataEntry.getKey()), BaseFont.CP1250, BaseFont.EMBEDDED);
@@ -114,13 +114,14 @@ public class PdfGenerator {
 					
 					if ("checkbox".equals(dataEntry.getValue()[2])) {
 						String[] states = form.getAppearanceStates(dataEntry.getKey());
-	
-						if ("false".equals(dataEntry.getValue()[0])) {
-							form.setField(dataEntry.getKey(), states[0]);
-						}
-						else {
-							form.setField(dataEntry.getKey(), states[1]);
-						}
+
+                        if (states != null){
+                            if ("false".equals(dataEntry.getValue()[0])) {
+                                form.setField(dataEntry.getKey(), states[0]);
+                            } else {
+                                form.setField(dataEntry.getKey(), states[1]);
+                            }
+                        }
 					}
 					else if ("signature".equals(dataEntry.getValue()[2])) {
 						Integer pageNo = Integer.valueOf(dataEntry.getValue()[3]);
@@ -223,12 +224,14 @@ public class PdfGenerator {
 					
 					if (dataEntry.getValue()[2].equals("checkbox")) {
 						String[] states = form.getAppearanceStates(dataEntry.getKey());
-	
-						if ("false".equals(dataEntry.getValue()[0])) {
-							form.setField(dataEntry.getKey(), states[0]);
-						}
-						else {
-							form.setField(dataEntry.getKey(), states[1]);
+						
+						if (states != null) {
+							if ("false".equals(dataEntry.getValue()[0])) {
+								form.setField(dataEntry.getKey(), states[0]);
+							}
+							else {
+								form.setField(dataEntry.getKey(), states[1]);
+							}
 						}
 					}
 					else if (dataEntry.getValue()[2].equals("signature")) {

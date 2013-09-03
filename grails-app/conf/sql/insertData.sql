@@ -924,6 +924,8 @@ insert into EUMOWY.PANEL (id, version, name, order_no) values (46, 0, 'serwis','
 insert into EUMOWY.PANEL (id, version, name, order_no) values (47, 0, 'rachunekBankowyKlienta','470');
 insert into EUMOWY.PANEL (id, version, name, order_no) values (48, 0, 'oplataDCCZaUruchomienie','360');
 insert into EUMOWY.PANEL (id, version, name, order_no) values (49, 0, 'liczbaMiesiecyZwolnieniaZNajmu','430');
+insert into EUMOWY.PANEL (id, version, name, order_no) values (50, 0, 'danePos', '140');
+insert into EUMOWY.PANEL (id, version, name, order_no) values (51, 0, 'dodajPos', '220');
 
 INSERT INTO EUMOWY.SIGNATURE_PANEL(id, version, signature_id,  panel_id) SELECT EUMOWY.SIGNATURE_PANEL_SEQ.NEXTVAL, 0, id, 34 FROM EUMOWY.SIGNATURE where name = 'AP/F/DS/2.000/09-04-22';
 INSERT INTO EUMOWY.SIGNATURE_PANEL(id, version, signature_id,  panel_id) SELECT EUMOWY.SIGNATURE_PANEL_SEQ.NEXTVAL, 0, id, 32 FROM EUMOWY.SIGNATURE where name = 'AT/USU/FDU/4.004/13-05-22';
@@ -1011,7 +1013,7 @@ INSERT INTO EUMOWY.SIGNATURE_PANEL(id, version, signature_id,  panel_id) SELECT 
 INSERT INTO EUMOWY.SIGNATURE_PANEL(id, version, signature_id,  panel_id) SELECT EUMOWY.SIGNATURE_PANEL_SEQ.NEXTVAL, 0, id, 7 FROM EUMOWY.SIGNATURE where name = 'AP/UPZ/DCC/2.003/13-02-15';
 INSERT INTO EUMOWY.SIGNATURE_PANEL(id, version, signature_id,  panel_id) SELECT EUMOWY.SIGNATURE_PANEL_SEQ.NEXTVAL, 0, id, 7 FROM EUMOWY.SIGNATURE where name = 'AP/UPZ/DCCZ/1.002/13-02-15';
 --INSERT INTO EUMOWY.SIGNATURE_PANEL(id, version, signature_id,  panel_id) SELECT EUMOWY.SIGNATURE_PANEL_SEQ.NEXTVAL, 0, id, 8 FROM EUMOWY.SIGNATURE where name = 'AP-AG/F/DP/2.003/13-05-10';
---INSERT INTO EUMOWY.SIGNATURE_PANEL(id, version, signature_id,  panel_id) SELECT EUMOWY.SIGNATURE_PANEL_SEQ.NEXTVAL, 0, id, 9 FROM EUMOWY.SIGNATURE where name = 'AP-AG/F/DP/2.003/13-05-10';
+INSERT INTO EUMOWY.SIGNATURE_PANEL(id, version, signature_id,  panel_id) SELECT EUMOWY.SIGNATURE_PANEL_SEQ.NEXTVAL, 0, id, 9 FROM EUMOWY.SIGNATURE where name = 'AP-AG/F/DP/2.003/13-05-10';
 INSERT INTO EUMOWY.SIGNATURE_PANEL(id, version, signature_id,  panel_id) SELECT EUMOWY.SIGNATURE_PANEL_SEQ.NEXTVAL, 0, id, 10 FROM EUMOWY.SIGNATURE where name = '1';
 INSERT INTO EUMOWY.SIGNATURE_PANEL(id, version, signature_id,  panel_id) SELECT EUMOWY.SIGNATURE_PANEL_SEQ.NEXTVAL, 0, id, 10 FROM EUMOWY.SIGNATURE where name = 'AP/UPZ/DCC/2.003/13-02-15';
 INSERT INTO EUMOWY.SIGNATURE_PANEL(id, version, signature_id,  panel_id) SELECT EUMOWY.SIGNATURE_PANEL_SEQ.NEXTVAL, 0, id, 10 FROM EUMOWY.SIGNATURE where name = 'AP/UPZ/DCCZ/1.002/13-02-15';
@@ -1131,6 +1133,9 @@ INSERT INTO EUMOWY.SIGNATURE_PANEL(id, version, signature_id,  panel_id) SELECT 
 INSERT INTO EUMOWY.SIGNATURE_PANEL(id, version, signature_id,  panel_id) SELECT EUMOWY.SIGNATURE_PANEL_SEQ.NEXTVAL, 0, id, 46 FROM EUMOWY.SIGNATURE where name = 'AP/UNTZ/2.003/12-01-16';
 INSERT INTO EUMOWY.SIGNATURE_PANEL(id, version, signature_id,  panel_id) SELECT EUMOWY.SIGNATURE_PANEL_SEQ.NEXTVAL, 0, id, 46 FROM EUMOWY.SIGNATURE where name = 'x8';
 INSERT INTO EUMOWY.SIGNATURE_PANEL(id, version, signature_id,  panel_id) SELECT EUMOWY.SIGNATURE_PANEL_SEQ.NEXTVAL, 0, id, 46 FROM EUMOWY.SIGNATURE where name = 'x9';
+INSERT INTO EUMOWY.SIGNATURE_PANEL(id, version, signature_id,  panel_id) SELECT EUWMOY.SIGNATURE_PANEL_SEQ.NEXTVAL, 0, id, 50 FROM EUMOWY.SIGNATURE where name = 'AP/UNTZ/2.003/12-01-16';
+INSERT INTO EUMOWY.SIGNATURE_PANEL(id, version, signature_id,  panel_id) SELECT EUWMOY.SIGNATURE_PANEL_SEQ.NEXTVAL, 0, id, 51 FROM EUMOWY.SIGNATURE where name = 'AP/UNTZ/2.003/12-01-16';
+
 
 insert into EUMOWY.EMAIL_TEMPLATES (id, version, name, recipient, sender) values (EUMOWY.EMAIL_TEMPLATES_SEQ.NEXTVAL, 0, 'NOTES_TO_COA', 'apreel.eUmowy@gmail.com', 'apreel.eUmowy@gmail.com'); --coa@eservice.com.pl
 insert into EUMOWY.EMAIL_TEMPLATES (id, version, name, recipient, sender) values (EUMOWY.EMAIL_TEMPLATES_SEQ.NEXTVAL, 0, 'DOCUMENTS_PAPER_VERSION', '', 'apreel.eUmowy@gmail.com'); --phEmail

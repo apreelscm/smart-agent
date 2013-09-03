@@ -19,7 +19,7 @@ create table EUMOWY.PROCESS (id number(19,0) not null, version number(19,0) not 
 create table EUMOWY.PROCESS_DATA (id number(19,0) not null, version number(19,0) not null, name varchar2(255 char), process_id number(19,0), value varchar2(255 char), data_idx number(10,0), primary key (id));
 create table EUMOWY.SIGNATURE (id number(19,0) not null, version number(19,0) not null, active number(1,0) not null, management_subscription1 varchar2(255 char) not null, management_subscription2 varchar2(255 char) not null, name varchar2(255 char) not null unique, subscription_page_number number(10,0) not null, subscriptionx number(10,0) not null, subscriptiony number(10,0) not null, template_path varchar2(255 char) not null, primary key (id));
 create table EUMOWY.SIGNATURE_PANEL (id number(19,0) not null, version number(19,0) not null, panel_id number(19,0), signature_id number(19,0), primary key (id));
-create table EUMOWY.SUBSCRIPTION (id number(19,0) not null, version number(19,0) not null, content long, primary key (id));
+create table EUMOWY.SUBSCRIPTION (id number(19,0) not null, version number(19,0) not null, content long not null, name varchar2(255 char) not null, person_role varchar2(255 char), person_type varchar2(255 char), process_id number(19,0), sign_date timestamp not null, surname varchar2(255 char) not null, primary key (id));
 create table EUMOWY.PROCESS_ACTIVITY (process_activities_id number(19,0), activity_id number(19,0), activities_idx number(10,0));
 create table EUMOWY.PROCESS_SIGNATURE (process_signatures_id number(19,0), signature_id number(19,0), signatures_idx number(10,0));
 create table EUMOWY.PROCCESS_SUBSCRIPTION (process_subscriptions_id number(19,0), subscription_id number(19,0), subscriptions_idx number(10,0));

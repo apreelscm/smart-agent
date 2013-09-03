@@ -60,7 +60,7 @@ grails.project.dependency.resolution = {
         //runtime 'org.docx4j:docx4j:2.8.1'
         runtime 'com.google.code.gson:gson:2.2.4'
 		runtime 'com.lowagie:itext:2.1.7'
-		runtime 'org.apache.pdfbox:pdfbox:1.7.0'
+		runtime 'org.apache.pdfbox:pdfbox:1.8.2'
     }
 
     plugins {
@@ -79,6 +79,7 @@ grails.project.dependency.resolution = {
 
         build ":tomcat:$grailsVersion"
 
+        compile ":build-info-tag:0.3.1"
         compile ':webflow:2.0.8.1'
         compile ":cache:1.1.1"
       //  compile ":springcache:1.3.2-SNAPSHOT"

@@ -30,11 +30,11 @@ class PointDataDetails implements Serializable {
 	String wydrukLinia1
 	String wydrukLinia2
 	
-	String contactAddressStreetType
+	String korespondencjaUlicaTytul
 	String korespondencjaUlica
 	Integer korespondencjaNrDomu
 	Integer korespondencjaNrLokalu
-	String koresponedencjaMiasto
+	String korespondencjaMiasto
 	String korespondencjaKodPocztowy
 	String korespondencjaPoczta
 	
@@ -73,11 +73,11 @@ class PointDataDetails implements Serializable {
 		wydrukPoczta column: "print_addr_post_office"
 		wydrukLinia1 column: "print_otherdata_terminal1"
 		wydrukLinia2 column: "print_otherdata_terminal2"
-		contactAddressStreetType column: "contact_addr_streettype"
+		korespondencjaUlicaTytul column: "contact_addr_streettype"
 		korespondencjaUlica column: "contact_addr_street"
 		korespondencjaNrDomu column: "contact_addr_home_number"
 		korespondencjaNrLokalu column: "contact_addr_flat_number"
-		koresponedencjaMiasto column: "contact_addr_city"
+		korespondencjaMiasto column: "contact_addr_city"
 		korespondencjaKodPocztowy column: "contact_addr_postalcode"
 		korespondencjaPoczta column: "contact_addr_post_office"
 		kontaktWPunkcieImie column: "contact_at_point_firstname"
@@ -113,11 +113,11 @@ class PointDataDetails implements Serializable {
 		wydrukPoczta(nullable:true)
 		wydrukLinia1(nullable:true)
 		wydrukLinia2(nullable:true)
-		contactAddressStreetType(nullable:true)
+		korespondencjaUlicaTytul(nullable:true)
 		korespondencjaUlica(nullable:true)
 		korespondencjaNrDomu(nullable:true)
 		korespondencjaNrLokalu(nullable:true)
-		koresponedencjaMiasto(nullable:true)
+		korespondencjaMiasto(nullable:true)
 		korespondencjaKodPocztowy(nullable:true)
 		korespondencjaPoczta(nullable:true)
 		kontaktWPunkcieImie(nullable:true)

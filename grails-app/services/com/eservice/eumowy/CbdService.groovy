@@ -1,8 +1,11 @@
 package com.eservice.eumowy
 
 import com.eservice.eumowy.dao.CbdDAO
+import com.sun.org.apache.xalan.internal.xslt.EnvironmentCheck;
+
 import grails.plugin.cache.Cacheable
 import grails.util.Environment
+
 import org.springframework.transaction.annotation.Isolation
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
@@ -64,6 +67,13 @@ class CbdService {
                 println("e:"+Client.findByCbdId(cbdClient.cbdId))
                 println(eumowyClient)
                return eumowyClient
+			case Environment.PRODUCTION:
+				def rowResult = cbdDAO.selectOne(FIND_CLIENT_ID_BY_NIP,[nip:clientNip])
+				def cbdClient = new Client(rowResult)
+				def eumowyClient = cbdClient.cbdId ? (Client.findByCbdId(cbdClient.cbdId) ?: cbdClient) :null
+				println("e:"+Client.findByCbdId(cbdClient.cbdId))
+				println(eumowyClient)
+			   return eumowyClient
         }
     }
 
@@ -227,7 +237,7 @@ class CbdService {
 
         else if(kln_id == "7343597142"){
             def calcFields =  CalcField.findAll();
-            calc = calcFields.collect{[POLEAPREEL:it,WARTOSCAPREEL:"BRAK"]}
+            calc = calcFields.collect{[POLEAPREEL:it.name,WARTOSCAPREEL:"BRAK"]}
         }
 
         return calc;

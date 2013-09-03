@@ -10,7 +10,7 @@
     </fieldset>
 </div>
 <div id="hiddenPosPanel" style="display: none;">
-	<g:render template="../panels/danePos" />
+	<g:render template="../panels/danePos" model="[id:'%ID%', panelType: 'poses']"/>
 </div>
 <r:require module="jquery_ui"/>
 	
@@ -18,14 +18,20 @@
 	
 	jQuery(document).ready(function() {
 		var panelPosTemplate = jQuery("#hiddenPosPanel").html();
-		var panelPosCount = 0;
+		var panelPosCount = ${data.poses.size()};
+		globalPanelPosCount = ${data.poses.size()};
 		jQuery("#hiddenPosPanel").remove();
+		
+		for( var i = 0; i < panelPosCount; i++) {
+			setupNewPosPanelHandlers(i-1, i, "poses");
+			setupNewPointPanelData("poses\\["+(i-1)+"\\]\\.", "poses\\["+i+"\\]\\.");
+		}
 			
 		jQuery("#addNewPosButton").on("click", function() {
-			var data = panelPosTemplate.replace(/%ID%/gm, "-pos" + panelPosCount);
+			var data = panelPosTemplate.replace(/%ID%/gm, panelPosCount);
 			jQuery("#addNewPosPanel").prepend(data);
-			setupNewPosPanelHandlers(panelPosCount-1, panelPosCount, "-pos");
-			setupNewPointPanelData("-pos"+(panelPosCount-1), "-pos"+panelPosCount);
+			setupNewPosPanelHandlers(panelPosCount-1, panelPosCount, "poses");
+			setupNewPointPanelData("poses\\["+(panelCount-1)+"\\]\\.", "poses\\["+panelCount+"\\]\\.");
 			panelPosCount++;
 			globalPanelPosCount++;
 			jQuery("#newPosPanelCount").val(panelPosCount);

@@ -13,7 +13,7 @@
     </fieldset>
 </div>
 <div id="hiddenPanel" style="display: none;">
-	<g:render template="../panels/danePunktu" model="[id:'%ID%']"/>
+	<g:render template="../panels/danePunktu" model="[id:'%ID%', panelType: 'points']"/>
 </div>
 <r:require module="jquery_ui"/>
 	
@@ -21,10 +21,21 @@
 	
 	jQuery(document).ready(function() {
 		var panelTemplate = jQuery("#hiddenPanel").html();
-		var panelCount = 0;
-		var panelInternalCount = 1;
+		var panelCount = ${data.points.size()};
+		var panelInternalCount = ${data.points.size()};
+		globalPanelCount = ${data.points.size()};
+		jQuery("#newPointPanelCount").val(panelCount);
 		
 		jQuery("#hiddenPanel").remove();
+		
+		if (panelInternalCount > 0) {
+			jQuery("#conitnueButton").prop("disabled", false);
+		}
+		
+		for (var i = 0; i < panelCount; i++) {
+			setupNewPointPanelHandlers(i-1, i, "points");
+			setupNewPointPanelData("points\\["+(i-1)+"\\]\\.", "points\\["+i+"\\]\\.");
+		}
 			
 		jQuery("#addNewPointButton").on("click", function(e) {
 			e.preventDefault();
@@ -44,6 +55,10 @@
 				jQuery(e.target).prop("disabled", true);
 			}
 			
+			if (panelInternalCount > 0) {
+				jQuery("#conitnueButton").prop("disabled", false);
+			}
+			
 			return false;
 		});
 		
@@ -55,6 +70,10 @@
 			
 			if (panelInternalCount < 10) {
 				jQuery("#addNewPointButton").prop("disabled", false);
+			}
+			
+			if (panelInternalCount == 0) {
+				jQuery("#conitnueButton").prop("disabled", true);
 			}
 			
 			return false;

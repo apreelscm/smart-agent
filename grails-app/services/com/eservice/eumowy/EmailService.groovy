@@ -9,49 +9,49 @@ class EmailService {
 
     def sendNotesToCOA(def notes, def phNumber, def phName) {
         def emailTemplate = EmailTemplates.findByName(EmailTemplates.EmailTemplateType.NOTES_TO_COA)
-        if(!emailTemplate) return;
-
+        //if(!emailTemplate) return;
+		log.info "COA Notes Recipient: " + emailTemplate.recipient
         sendMail(emailTemplate, emailTemplate.sender, emailTemplate.recipient, null, [notes: notes, phNumber: phNumber, phName: phName], null)
     }
 
 	def sendDocumentsPaperVersion(def recipient, List<DocumentFile> documents, def merchantName) {
 		def emailTemplate = EmailTemplates.findByName(EmailTemplates.EmailTemplateType.DOCUMENTS_PAPER_VERSION)
-        if(!emailTemplate) return;
+        //if(!emailTemplate) return;
 
         sendMail(emailTemplate, emailTemplate.sender, recipient, null, [merchantName: merchantName], documents)
 	}
 
     def sendDocumentsTemplateVersion(def recipient, List<DocumentFile> documents) {
         def emailTemplate = EmailTemplates.findByName(EmailTemplates.EmailTemplateType.DOCUMENTS_TEMPLATE_VERSION)
-        if(!emailTemplate) return;
+        //if(!emailTemplate) return;
 
         sendMail(emailTemplate, emailTemplate.sender, recipient, null, null, documents)
     }
 	
 	def sendDocumentsElectronicalVersion(def recipient, List<DocumentFile> documents) {
 		def emailTemplate = EmailTemplates.findByName(EmailTemplates.EmailTemplateType.DOCUMENTS_ELECTRONICAL_VERSION)
-        if(!emailTemplate) return;
+        //if(!emailTemplate) return;
 
         sendMail(emailTemplate, emailTemplate.sender, recipient, null, null, documents)
 	}
 	
 	def sendDocumentsAccepted(def recipient, List<DocumentFile> documents, def merchantName) {
 		def emailTemplate = EmailTemplates.findByName(EmailTemplates.EmailTemplateType.DOCUMENTS_ACCEPTED)
-        if(!emailTemplate) return;
+        //if(!emailTemplate) return;
 
         sendMail(emailTemplate, emailTemplate.sender, recipient, null, [merchantName: merchantName], documents)
 	}
 
-    def sendDocumentsAcceptedToPostSend(List<DocumentFile> documents, def merchantName, def merchantNip) {
+    def sendDocumentsAcceptedToPostSend(def recipient, List<DocumentFile> documents, def merchantName, def merchantNip) {
         def emailTemplate = EmailTemplates.findByName(EmailTemplates.EmailTemplateType.DOCUMENTS_MISSING_MAIL)
-        if(!emailTemplate) return;
+        //if(!emailTemplate) return;
 
         sendMail(emailTemplate, emailTemplate.sender, emailTemplate.recipient, null, [merchantName: merchantName, merchantNip: merchantNip], documents)
     }
 
     def sendDocumentsRejected(def recipient, def merchantName, def merchantNip, def rejectReason) {
         def emailTemplate = EmailTemplates.findByName(EmailTemplates.EmailTemplateType.DOCUMENTS_REJECTED)
-        if(!emailTemplate) return;
+        //if(!emailTemplate) return;
 
         sendMail(emailTemplate, emailTemplate.sender, recipient, [merchantNip, merchantName], [merchantName: merchantName, merchantNip: merchantNip, rejectReason: rejectReason], null)
     }

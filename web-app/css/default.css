@@ -955,14 +955,14 @@ input:invalid:focus, select:invalid:focus, textarea:invalid:focus {
     background: -moz-linear-gradient(top, #faa51a, #f47a20);
 }
 
-.submit:hover {
+.submit:not(:disabled):hover {
     color: #fef4e9;
     background: #f47c20;
     background: -webkit-gradient(linear, left top, left bottom, from(#f88e11), to(#f06015));
     background: -moz-linear-gradient(top, #f88e11, #f06015);
 }
 
-.submit:active {
+.submit:not(:disabled):active {
     color: #fcd3a5;
     background: -webkit-gradient(linear, left top, left bottom, from(#f47a20), to(#faa51a));
     background: -moz-linear-gradient(top, #f47a20, #faa51a);
@@ -1086,7 +1086,8 @@ input:invalid:focus, select:invalid:focus, textarea:invalid:focus {
 }
 
 .error {
-    color: red;
+    /*color: red;*/
+    border-color: red;
 }
 
 /* Other classes
@@ -1166,17 +1167,25 @@ input:invalid:focus, select:invalid:focus, textarea:invalid:focus {
     color: #a7a7a7;
 }
 
-.disabled a{
+.disabled a, .disabled label{
     color: #a7a7a7;
     text-decoration-line: line-through;
 }
 
-input[type="submit"]:disabled
+.disabled .link-button {
+	color: #FEF4E9;
+	background: #CCCCCC;
+	background: -moz-linear-gradient(center top , #D1D1D1, #a7a7a7) repeat scroll 0 0 transparent;
+	background: -webkit-gradient(linear, left top, left bottom, from(#D1D1D1), to(#a7a7a7));
+}
+
+input[type="submit"]:disabled, button:disabled
 {
 	background: #CCCCCC;
 	background: -moz-linear-gradient(center top , #D1D1D1, #a7a7a7) repeat scroll 0 0 transparent;
 	background: -webkit-gradient(linear, left top, left bottom, from(#D1D1D1), to(#a7a7a7));
-} 
+}
+
 
 /* chooseActivity*/
 .signature-article {

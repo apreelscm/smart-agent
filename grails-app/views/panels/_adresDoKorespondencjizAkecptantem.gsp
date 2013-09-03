@@ -10,23 +10,23 @@
                     <span><g:message code="panel.street" /></span>
                     <span>
                         <dict:streetSelect id="akceptantKontaktUlicaTytul" name="korespondencjaUlicaTytul" value="${data.akceptantKontaktUlicaTytul}" />
-                        <g:textField name="akceptantKontaktUlica" style="width: 200px" value="${data.akceptantKontaktUlica}"/>
+                        <g:textField name="akceptantKontaktUlica" style="width: 200px" value="${data.akceptantKontaktUlica}" maxlength ="19"/>
                     </span>
                     <span>
-                        <span><g:message code="panel.house.number" /></span> <span><g:textField name="akceptantKontaktNrDomu" value="${data.akceptantKontaktNrDomu}" style="width: 50px"/></span>
-                        <span><g:message code="panel.flat.number" /></span> <span><g:textField name="akceptantKontaktNrMieszkania" value="${data.akceptantKontaktNrMieszkania}" style="width: 50px"/></span>
+                        <span><g:message code="panel.house.number" /></span> <span><g:textField name="akceptantKontaktNrDomu" value="${data.akceptantKontaktNrDomu}" style="width: 50px" maxlength ="4"/></span>
+                        <span><g:message code="panel.flat.number" /></span> <span><g:textField name="akceptantKontaktNrMieszkania" value="${data.akceptantKontaktNrMieszkania}" style="width: 50px" maxlength ="4"/></span>
                     </span>
                 </li>
                 <li>
                     <span><g:message code="panel.city" /></span>
                     <span><g:textField name="akceptantKontaktMiasto" value="${data.akceptantKontaktMiasto}" style="width: 280px;"/></span>
                     <span>
-                        <span><g:message code="panel.postal.code" /></span> <span><g:textField class="postal-code" name="akceptantKontaktKodPocztowy" value="${data.akceptantKontaktKodPocztowy}" style="width: 50px"/></span>
+                        <span><g:message code="panel.postal.code" /></span> <span><g:textField class="postal-code" name="akceptantKontaktKodPocztowy" value="${data.akceptantKontaktKodPocztowy}" style="width: 50px" maxlength ="5"/></span>
                     </span>
                 </li>
                 <li>
                     <span><g:message code="panel.postal" /></span>
-                    <span><g:textField name="akceptantKontaktPoczta" value="${data.akceptantKontaktPoczta}" style="width: 280px;"/></span>
+                    <span><g:textField name="akceptantKontaktPoczta" value="${data.akceptantKontaktPoczta}" style="width: 280px;" maxlength ="19"/></span>
                 </li>
             </ul>
         </div>

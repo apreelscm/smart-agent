@@ -98,26 +98,43 @@
 
 <section id="create-activity">
     <h1 class="ng linia-bottom"><g:message code="selectedPanels.header.title" default="Lista paneli"/></h1>
+
+    <g:hasErrors bean="${data}">
+        <ul class="errors" role="alert">
+            <g:eachError bean="${data}" var="error">
+                <li <g:if test="${error in org.springframework.validation.FieldError}">data-field-id="${error.field}"</g:if>><g:message error="${error}"/></li>
+            </g:eachError>
+        </ul>
+    </g:hasErrors>
+
+
+
+
     <g:form class="panelsForm">
         <g:each var="panel" in="${processInstance.panels}" status="i">
-            <g:render template="/panels/${panel.name}"/>
-            <g:if test="${panel.name == 'scoring' && slipPanelsInit == true}">
+            <g:if test="${panel.name.equals('danePunktu') == false && panel.name.equals('danePos') == false}">
+            	<g:render template="/panels/${panel.name}"/>
+           	</g:if>
+            <g:if test="${panel.name.equals('danePunktu')}">
             	<g:each var="point" in="${data.points}" status="j">
-            		<g:render template="/panels/danePunktu" model="[id: j, data: point]" />
+            		<g:render template="/panels/danePunktu" model="[panelType: 'points', id: j, pointData: point]" />
+            	</g:each>
+            </g:if>
+            <g:if test="${panel.name.equals('danePos')}">
+            	<g:each var="pos" in="${data.pos}" status="j">
+            		<g:render template="/panels/danePos" model="[panelType: 'pos', id: j, pointData: pos]" />
             	</g:each>
             </g:if>
         </g:each>
-		
         <g:render template="/panels/uwagi"/>
     </g:form>
-
 
     <g:render template="/panels/zalaczniki"/>
 
     <nav style="margin-top: 20px">
         <fieldset>
             <g:link event="back" class="button submit float-left">${message(code:'default.navigation.button.prev', default: 'Wstecz')}</g:link>
-            <button id="conitnueButton"  class="button submit float-right">${message(code:'default.navigation.button.next', default: 'Dalej')}</button>
+            <button id="conitnueButton" class="button submit float-right" disabled>${message(code:'default.navigation.button.next', default: 'Dalej')}</button>
         </fieldset>
     </nav>
 
