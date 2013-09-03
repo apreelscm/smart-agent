@@ -9,7 +9,7 @@
                 </li>
                 <li>
                     <span class="align-right"><g:message code="panel.bank.name"/></span>
-                    <span class="align-left"><dict:bankSelect name="bankKlienta" style="width: 250px" value="${data.bankKlienta}"/></span>
+                    <span class="align-left"><g:textField name="bankKlienta" value="${data.bankKlienta}" style="width: 250px"/></span>
                 </li>
             </ul>
         </div>

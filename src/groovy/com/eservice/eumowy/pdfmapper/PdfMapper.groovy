@@ -243,9 +243,7 @@ class PdfMapper {
 		addCheckboxes(data, ["noweZestPos":"obecne_i_nowe", "obecneZestPos":"obecne", "phu":"wskazane"], value)
 	}
 
-    private static mapinformacjaHandlowaProcess(def data, def pd, def key, def value) {
-        println "DUPA - przerabiam informacjaHandlowa - DUPA"
-
+    private static mapInformacjaHandlowaProcess(def data, def pd, def key, def value) {
         addCheckboxes(data, ["informacjaHandlowaTak": "true", "informacjaHandlowaNie": "false"], value)
     }
 
