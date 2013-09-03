@@ -41,6 +41,10 @@ grant select on  PROCESS_DATA_SEQ to EUMOWY_APP;
 grant select on  SIGNATURE_PANEL_SEQ to EUMOWY_APP;
 grant select on  SIGNATURE_SEQ to EUMOWY_APP;
 grant select on  DOCUMENT_CONTENT_SEQ to EUMOWY_APP;
+grant select on  POINT_SEQ to EUMOWY_APP
+grant select on  POINT_DETAILS_SEQ to EUMOWY_APP
+grant select on  POS_DETAILS_SEQ to EUMOWY_APP
+grant select on  POS_SEQ to EUMOWY_APP
 
 grant select on mapowaniekalkulatora to EUMOWY_APP;
 grant execute on GetKalkulatorSerwis to EUMOWY_APP;

@@ -1,6 +1,6 @@
 package com.eservice.eumowy
 
-class AppParameters {
+class AppParameters implements Serializable {
 	String name
 	String value
 	

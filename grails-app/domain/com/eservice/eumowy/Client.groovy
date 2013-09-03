@@ -1,5 +1,4 @@
 package com.eservice.eumowy
-
 import groovy.transform.ToString
 
 @ToString
@@ -18,5 +17,17 @@ class Client implements Serializable{
     static mapping = {
         table name: "CLIENT", schema: DomainConsts.SHEMA_NAME
         id generator:'sequence', params:[sequence:DomainConsts.SHEMA_NAME+'.CLIENT_SEQ']
+    }
+
+    def beforeInsert() {
+        log.info("Tworzenie klienta [id:${id}, cbdId:${cbdId}, name:${name}]")
+    }
+
+    def afterInsert() {
+        log.info("Utworzono klienta [id:${id}, cbdId:${cbdId}, name:${name}]")
+    }
+
+    def afterUpdate() {
+        log.info("Aktualizacja klienta [id:${id}, cbdId:${cbdId}, name:${name}]")
     }
 }

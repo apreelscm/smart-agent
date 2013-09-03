@@ -19,8 +19,8 @@
         <tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
             <td class="tableCell" style="word-wrap:break-word;"><g:link action="show" id="${processInstance.id}">${fieldValue(bean: processInstance, field: "stringId")}</g:link></td>
             <td class="tableCell"><g:formatDate date="${processInstance.lastUpdated}" /></td>
-            <td class="tableCell">${fieldValue(bean: processInstance.client, field: "nip")}</td>
-            <td class="tableCell">${fieldValue(bean: processInstance.client, field: "name")}</td>
+            <td class="tableCell">${fieldValue(bean: processInstance.client ?: null, field: "nip")}</td>
+            <td class="tableCell">${fieldValue(bean: processInstance.client ?: null, field: "name")}</td>
             <td class="tableCell">${fieldValue(bean: processInstance, field: "saleSection")}
             <td class="tableCell">${fieldValue(bean: processInstance, field: "stringPhNumber")}</td>
             <td class="tableCell">${fieldValue(bean: processInstance, field: "phFirstName")}</td>
