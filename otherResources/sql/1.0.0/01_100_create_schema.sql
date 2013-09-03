@@ -20,30 +20,33 @@ create table EUMOWY.PROCESS_DATA (id number(19,0) not null, version number(19,0)
 create table EUMOWY.SIGNATURE (id number(19,0) not null, version number(19,0) not null, active number(1,0) not null, management_subscription1 varchar2(255 char) not null, management_subscription2 varchar2(255 char) not null, name varchar2(255 char) not null unique, subscription_page_number number(10,0) not null, subscriptionx number(10,0) not null, subscriptiony number(10,0) not null, template_path varchar2(255 char) not null, primary key (id));
 create table EUMOWY.SIGNATURE_PANEL (id number(19,0) not null, version number(19,0) not null, panel_id number(19,0), signature_id number(19,0), primary key (id));
 create table EUMOWY.SUBSCRIPTION (id number(19,0) not null, version number(19,0) not null, content long, primary key (id));
-create table EUMOWY.process_activity (process_activities_id number(19,0), activity_id number(19,0), activities_idx number(10,0));
-create table EUMOWY.process_signature (process_signatures_id number(19,0), signature_id number(19,0), signatures_idx number(10,0));
-create table EUMOWY.process_subscription (process_subscriptions_id number(19,0), subscription_id number(19,0), subscriptions_idx number(10,0));
+create table EUMOWY.PROCESS_ACTIVITY (process_activities_id number(19,0), activity_id number(19,0), activities_idx number(10,0));
+create table EUMOWY.PROCESS_SIGNATURE (process_signatures_id number(19,0), signature_id number(19,0), signatures_idx number(10,0));
+create table EUMOWY.PROCCESS_SUBSCRIPTION (process_subscriptions_id number(19,0), subscription_id number(19,0), subscriptions_idx number(10,0));
 
 -- CONSTRAINTS
 -- TODO do poprawy nazwy FK
-alter table EUMOWY.ACTIVITY_SIGNATURES add constraint FK19F8ADEBC1A12403 foreign key (activity_id) references EUMOWY.ACTIVITY;
-alter table EUMOWY.ACTIVITY_SIGNATURES add constraint FK19F8ADEBED846B31 foreign key (signature_id) references EUMOWY.SIGNATURE;
-alter table EUMOWY.ATTACHMENT add constraint FKA7E14523C7962D91 foreign key (process_id) references EUMOWY.PROCESS;
-alter table EUMOWY.CALCFIELD_SIGNATURE add constraint FK5E9E7C7EF3FEB546 foreign key (calc_field_id) references EUMOWY.CALCFIELD;
-alter table EUMOWY.CALCFIELD_SIGNATURE add constraint FK5E9E7C7EED846B31 foreign key (signature_id) references EUMOWY.SIGNATURE;
-alter table EUMOWY.DOCUMENT add constraint FK6202C11BC7962D91 foreign key (process_id) references EUMOWY.PROCESS;
-alter table EUMOWY.DOCUMENT_CONTENT add constraint FK6AFBDD3553CCC01F foreign key (document_id) references EUMOWY.DOCUMENT;
-alter table EUMOWY.POINT add constraint FK48C5D70C7962D91 foreign key (process_id) references EUMOWY.PROCESS;
-alter table EUMOWY.POINT_DETAILS add constraint FK870412537E3837FB foreign key (point_id) references EUMOWY.POINT;
-alter table EUMOWY.POS add constraint FK136347E3837FB foreign key (point_id) references EUMOWY.POINT;
-alter table EUMOWY.POS_DETAILS add constraint FK1085E7176EE8813B foreign key (pos_id) references EUMOWY.POS;
-alter table EUMOWY.PROCESS add constraint FK1858AA4FD030B0C3 foreign key (client_id) references EUMOWY.CLIENT;
-alter table EUMOWY.PROCESS_DATA add constraint FK2AB0F9AC7962D91 foreign key (process_id) references EUMOWY.PROCESS;
-alter table EUMOWY.SIGNATURE_PANEL add constraint FK688D4B7D84182B31 foreign key (panel_id) references EUMOWY.PANEL;
-alter table EUMOWY.SIGNATURE_PANEL add constraint FK688D4B7DED846B31 foreign key (signature_id) references EUMOWY.SIGNATURE;
-alter table EUMOWY.process_activity add constraint FKD3BAD0D9C1A12403 foreign key (activity_id) references EUMOWY.ACTIVITY;
-alter table EUMOWY.process_signature add constraint FKD76A742EED846B31 foreign key (signature_id) references EUMOWY.SIGNATURE;
-alter table EUMOWY.process_subscription add constraint FK992D41E74E3344C3 foreign key (subscription_id) references EUMOWY.SUBSCRIPTION;
+alter table EUMOWY.ACTIVITY_SIGNATURES add constraint ACTIVITY_SIGNATURES_ACT_ID_FK foreign key (activity_id) references EUMOWY.ACTIVITY;
+alter table EUMOWY.ACTIVITY_SIGNATURES add constraint ACTIVITY_SIGNATURES_SIGN_ID_FK foreign key (signature_id) references EUMOWY.SIGNATURE;
+alter table EUMOWY.ATTACHMENT add constraint ATTACHMENT_PROCESS_ID_FK foreign key (process_id) references EUMOWY.PROCESS;
+alter table EUMOWY.CALCFIELD_SIGNATURE add constraint CALCFIELD_SIGNATURE_CLC_ID_FK foreign key (calc_field_id) references EUMOWY.CALCFIELD;
+alter table EUMOWY.CALCFIELD_SIGNATURE add constraint CALCFIELD_SIGNATURE_SIG_ID foreign key (signature_id) references EUMOWY.SIGNATURE;
+alter table EUMOWY.DOCUMENT add constraint DOCUMENT_PROCESS_ID_FK foreign key (process_id) references EUMOWY.PROCESS;
+alter table EUMOWY.DOCUMENT_CONTENT add constraint DOCUMENT_CONTENT_DOC_ID_FK foreign key (document_id) references EUMOWY.DOCUMENT;
+alter table EUMOWY.POINT add constraint POINT_PROCESS_ID_FK foreign key (process_id) references EUMOWY.PROCESS;
+alter table EUMOWY.POINT_DETAILS add constraint POINT_DETAILS_POINT_ID_FK foreign key (point_id) references EUMOWY.POINT;
+alter table EUMOWY.POS add constraint POS_POINT_ID_FK foreign key (point_id) references EUMOWY.POINT;
+alter table EUMOWY.POS_DETAILS add constraint POS_DETAILS_POS_ID_FK foreign key (pos_id) references EUMOWY.POS;
+alter table EUMOWY.PROCESS add constraint PROCESS_CLIENT_ID_FK foreign key (client_id) references EUMOWY.CLIENT;
+alter table EUMOWY.PROCESS_DATA add constraint PROCESS_DATA_PROCESS_ID_FK foreign key (process_id) references EUMOWY.PROCESS;
+alter table EUMOWY.SIGNATURE_PANEL add constraint SIGNATURE_PANEL_PANEL_ID_FK foreign key (panel_id) references EUMOWY.PANEL;
+alter table EUMOWY.SIGNATURE_PANEL add constraint SIGNATURE_PANEL_SIGN_ID foreign key (signature_id) references EUMOWY.SIGNATURE;
+alter table EUMOWY.PROCESS_ACTIVITY add constraint PROCESS_ACTIVITY_ACT_ID_FK foreign key (activity_id) references EUMOWY.ACTIVITY;
+alter table EUMOWY.PROCESS_ACTIVITY add constraint PROCESS_ACTIVITY_PROCESS_ID_FK foreign key (process_activities_id) references EUMOWY.PROCESS;
+alter table EUMOWY.PROCESS_SIGNATURE add constraint PROCESS_SIGNATURE_SIGN_ID_FK foreign key (signature_id) references EUMOWY.SIGNATURE;
+alter table EUMOWY.PROCESS_SIGNATURE add constraint PROCESS_SIGNATURE_PRO_ID_FK foreign key (process_signatures_id) references EUMOWY.PROCESS;
+alter table EUMOWY.PROCESS_SUBSCRIPTION add constraint PROCCESS_SUBSCRIPTION_SU_ID_FK foreign key (subscription_id) references EUMOWY.SUBSCRIPTION;
+alter table EUMOWY.PROCESS_SUBSCRIPTION add constraint PROCCESS_SUBSCRIPTION_PR_ID_FK foreign key (process_subscriptions_id) references EUMOWY.PROCESS;
 
 -- SEQUENCES
 create sequence EUMOWY.ACTIVITY_SEQ;
