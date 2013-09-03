@@ -118,7 +118,7 @@ class PanelMockService {
     }
 
     def getDeklaracjeAkceptanta(ProcessCommand cmd) {
-        cmd.informacjaHandlowa = "nie"
+        cmd.informacjaHandlowa = "false"
     }
 
     def getDodajPos(ProcessCommand cmd) {
@@ -161,8 +161,8 @@ class PanelMockService {
     }
 
     def getFormaDoladowania(ProcessCommand cmd) {
-        cmd.doladowania_tp = "tak"
-        cmd.doladowania_tk = "nie"
+        cmd.doladowania_tp = "true"
+        cmd.doladowania_tk = "false"
         cmd.srednia_sprzedaz_doladowan = "123"
         cmd.srednia_sprzedaz_doladowan_slownie = "sto dwadzieścia trzy"
     }
