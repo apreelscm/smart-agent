@@ -31,4 +31,15 @@ class ClientService {
     def clientExists(Client client) {
         return client?.id != null || client?.cbdId != null
     }
+
+    def updateClientName(def client, def cmd) {
+
+        if(!client || cmd.akceptantNazwaOficjalnaCbd ){
+            return
+        }
+
+        client.name = cmd.akceptantNazwaOficjalna
+        client.save()
+    }
+
 }

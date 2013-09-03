@@ -233,10 +233,7 @@ class ProcessService {
 		}
 	}
 	
-    /**
-     *  save data
-     * */
-
+    /** save data */
     def populateProcessWithData(def process, def cmd){
         def processDataList = getDataFromPanels(cmd)
 
@@ -282,10 +279,6 @@ class ProcessService {
 
             processDataList.add(new ProcessData(name: "${key}", value:"${value ?: ''}"));
         }
-
-
-
-
         processDataList
     }
 

@@ -485,7 +485,10 @@ class ActivityController {
                     return error();
                 }
 
-                Process processInstance = processService.populateProcessWithData(flow.processInstance,cmd)
+                def processInstance = flow.processInstance
+
+                clientService.updateClientName(processInstance.client, cmd)
+                processInstance = processService.populateProcessWithData(processInstance,cmd)
                 processInstance.notesToCoa = cmd.notes;
 
                 flow.representative1 = cmd.reprezentant1Tytul + " " + cmd.reprezentant1Imie + " " + cmd.reprezentant1Nazwisko
@@ -663,7 +666,10 @@ class ActivityController {
                     return error();
                 }
 
-                Process processInstance = processService.populateProcessWithData(flow.processInstance,cmd)
+                def processInstance = flow.processInstance
+
+                clientService.updateClientName(processInstance.client, cmd)
+                processInstance = processService.populateProcessWithData(processInstance,cmd)
                 processInstance.notesToCoa = cmd.notes;
 
                 flow.representative1 = cmd.reprezentant1Tytul + " " + cmd.reprezentant1Imie + " " + cmd.reprezentant1Nazwisko
