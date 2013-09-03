@@ -99,6 +99,22 @@ class PdfMapperTest {
     }
 
     @Test
+    public void testUmowaCzas() {
+        println "testUmowaCzas - begin"
+
+        def objList = [
+                new Expando(['name': 'umowaCzas', 'value': 'oznaczony'])
+        ]
+
+        def data = PdfMapper.mapProcessDataToPDFData(objList)
+
+        data.each { key, value ->
+            println key + " : " + value
+        }
+        println "testUmowaCzas - end"
+    }
+
+    @Test
     public void testStringNull() {
 
         def a = null;

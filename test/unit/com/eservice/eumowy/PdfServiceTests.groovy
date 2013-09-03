@@ -346,13 +346,17 @@ class PdfServiceTests {
 	void testAPUPZIF() {
 		HashMap<String, String[]> data = new HashMap<String, String[]>();
 		data.putAll(this.data);
+        data.put("informacjaHandlowaTak", ["true", "", "checkbox"] as String[]);
+        data.put("informacjaHandlowaNie", ["false", "", "checkbox"] as String[]);
 		data.putAll(insertSignatures(2, 80, 460, 74, 43))
 		process("APUPZIF2.00113-04-05.pdf", "APUPZIF2.00113-04-05_out.pdf", data)
 	}
-	
+
 	void testAPUPZIF2() {
 		HashMap<String, String[]> data = new HashMap<String, String[]>();
 		data.putAll(this.data);
+        data.put("informacjaHandlowaTak", ["true", "", "checkbox"] as String[]);
+        data.put("informacjaHandlowaNie", ["false", "", "checkbox"] as String[]);
 		data.putAll(insertSignatures(4, 80, 305, 74, 43))
 		process("APUPZIF2.00013-03-26 - Umowa o przyjmowanie zapłaty IF+_2013.pdf", "APUPZIF2.00013-03-26 - Umowa o przyjmowanie zapłaty IF+_2013_out.pdf", data)
 	}
