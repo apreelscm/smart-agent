@@ -72,7 +72,7 @@
                 <label style="width: 70px; text-align: right">
                     <g:message code="todo" default="Obserwuj:"/>
                 </label>
-                <g:checkBox name="observe" style="position: relative; top: 3px; left: 3px"/>
+                <g:checkBox name="observed" checked="${processInstance?.observed}" style="position: relative; top: 3px; left: 3px"/>
             </div>
 
             <div style="margin-top: 15px">
@@ -88,14 +88,15 @@
             <fieldset class="przyciski">
                 <g:hiddenField name="id" value="${processInstance.id}"/>
                 <g:actionSubmit class="button submit float-left" value="Wróć" action="list"  />
-                <g:actionSubmit class="button submit" action="reject" value="Odrzuć"
-                                style="float: left;margin-right: 1em;display:${!isNewProcess ? 'block' : 'block'}"
-                                formnovalidate=""
-                                onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
-                <g:actionSubmit class="button submit" action="accept" value="Zaakceptuj"
-                                style="float: right;display:${!isNewProcess ? 'block' : 'block'}"
-                                onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
-
+                <g:if test="${!(processInstance?.status in [Process.ProcessStatus.ACCEPTED, Process.ProcessStatus.REJECTED])}">
+                    <g:actionSubmit class="button submit" action="reject" value="Odrzuć"
+                                    style="float: left;margin-right: 1em;display:${!isNewProcess ? 'block' : 'block'}"
+                                    formnovalidate=""
+                                    onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
+                    <g:actionSubmit class="button submit" action="accept" value="Zaakceptuj"
+                                    style="float: right;display:${!isNewProcess ? 'block' : 'block'}"
+                                    onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
+                </g:if>
             </fieldset>
         </nav>
     </g:form>

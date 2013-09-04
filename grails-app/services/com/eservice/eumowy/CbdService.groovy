@@ -1,11 +1,7 @@
 package com.eservice.eumowy
-
 import com.eservice.eumowy.dao.CbdDAO
-import com.sun.org.apache.xalan.internal.xslt.EnvironmentCheck;
-
 import grails.plugin.cache.Cacheable
 import grails.util.Environment
-
 import org.springframework.transaction.annotation.Isolation
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
@@ -54,7 +50,7 @@ class CbdService {
         }
     }
 
-    @Cacheable(value="getAdresDaneDoWydruku")
+    //@Cacheable(value="findClientByNip")
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
     def findClientByNip(def clientNip) {
         switch (Environment.getCurrent()) {
@@ -63,17 +59,9 @@ class CbdService {
             case Environment.TEST:
                 def rowResult = cbdDAO.selectOne(FIND_CLIENT_ID_BY_NIP,[nip:clientNip])
                 def cbdClient = new Client(rowResult)
-                def eumowyClient = cbdClient.cbdId ? (Client.findByCbdId(cbdClient.cbdId) ?: cbdClient) :null
-                println("e:"+Client.findByCbdId(cbdClient.cbdId))
+                def eumowyClient = cbdClient.nip ? (Client.findByNip(cbdClient.nip,[sort: "id", order: "desc"]) ?: cbdClient) :null
                 println(eumowyClient)
                return eumowyClient
-			case Environment.PRODUCTION:
-				def rowResult = cbdDAO.selectOne(FIND_CLIENT_ID_BY_NIP,[nip:clientNip])
-				def cbdClient = new Client(rowResult)
-				def eumowyClient = cbdClient.cbdId ? (Client.findByCbdId(cbdClient.cbdId) ?: cbdClient) :null
-				println("e:"+Client.findByCbdId(cbdClient.cbdId))
-				println(eumowyClient)
-			   return eumowyClient
         }
     }
 
@@ -166,6 +154,7 @@ class CbdService {
      * */
     def findClientIdByNipMock(String nip) {
         def cbdId;
+        def id
 
         if(nip.equals("1234567819")){
             cbdId = "11";
