@@ -76,6 +76,8 @@ environments {
 
 grails.gorm.default.constraints = {
     '*'(nullable: false, blank:true)
+    percentage(matches:/^\d{1,9}(\.\d{1,2})/)
+    number(matches:/^\d{1,9}(\.\d{1,2})/)
 }
 
 // log4j configuration

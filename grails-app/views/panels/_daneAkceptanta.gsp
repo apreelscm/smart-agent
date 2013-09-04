@@ -20,10 +20,10 @@
                 <li>
                     <span>
                         <span><g:message code="panel.acceptor.nip"/></span>
-                        <span><g:textField class="nip" name="akceptantNip" value="${data.nip}" readonly="true" maxlength ="10"/></span>
+                        <span><eumowy:textField class="nip" name="akceptantNip" value="${data.nip}" readonly="true" maxlength ="10"/></span>
                         <span><g:message code="panel.acceptor.regon" maxlength ="9"/></span>
                         <span>
-                            <g:textField class="regon" name="akceptantRegon" value="${data.akceptantRegon}" readonly="${data.isFromCbd('akceptantRegon')}"/>
+                            <eumowy:textField class="regon" name="akceptantRegon" value="${data.akceptantRegon}" bean="${data}" mandatory="true" readonly="${data.isFromCbd('akceptantRegon')}"/>
                             <g:hiddenField name="akceptantRegonCbd" value="${data.akceptantRegonCbd}"/>
                         </span>
                     </span>
