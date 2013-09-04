@@ -1,16 +1,16 @@
 package com.eservice.eumowy.command
 
 class AllPointsCommand implements Serializable {
-	String czyCbd
-	String id
+	Boolean czyCbd
+	Integer id
 	String nazwa
 	String ulica
 	String miejscowosc
 	String nrBudynku
 	String kodPocztowy
-	String liczbaPos
+    BigDecimal liczbaPos
 	String tytulPlatnosci
 	String systemKasowy
 	String uta
-	String czyWybrany
+	Boolean czyWybrany
 }

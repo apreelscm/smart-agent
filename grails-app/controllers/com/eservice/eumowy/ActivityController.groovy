@@ -1,11 +1,9 @@
 package com.eservice.eumowy
 
-import org.codehaus.groovy.grails.web.json.JSONObject
-
 import com.eservice.eumowy.command.ProcessCommand
 import com.eservice.eumowy.pdfmapper.PdfMapper
 import com.eservice.eumowy.process.DefineActivityCommand
-import org.codehaus.groovy.grails.web.json.JSONArray
+import org.codehaus.groovy.grails.web.json.JSONObject
 
 class ActivityController {
 
@@ -35,7 +33,6 @@ class ActivityController {
      * MAIN PROCESS FLOW
      * */
     def createProcessFlow = {
-
         init{
             action{
                 log.info("init new flow")
@@ -43,7 +40,6 @@ class ActivityController {
             }
             on("success").to "defineActivity"
         }
-
         defineActivity{
             onEntry{
                 if(flow.isGoBack == false){
@@ -1060,7 +1056,6 @@ class ActivityController {
             emailService.sendDocumentsTemplateVersion(recipientUser, documentFilesWithoutFaksymileList)
         }
     }
-
 
     def getFromProcessData(def process, def key){
         def result = process.processData.find{ pd -> pd.name.equals(key)}

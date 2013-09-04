@@ -128,7 +128,7 @@ class CbdService {
     @Cacheable(value="getPromocyjneObinzenieOplatGrid")
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
     def getPromocyjneObinzenieOplatGrid(def clientNip) {
-        return cbdDAO.selectOne(GET_PROMOCYJNE_OBINZENIE_OPLAT_GRID,[nip:clientNip])
+        return cbdDAO.selectMany(GET_PROMOCYJNE_OBINZENIE_OPLAT_GRID,[nip:clientNip])
     }
 
   //  @Cacheable(value="getSiedzibaAkceptanta")

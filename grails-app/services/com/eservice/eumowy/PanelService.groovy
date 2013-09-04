@@ -449,10 +449,10 @@ class PanelService {
     }
 
     def getWykazPunktowAkceptujacychKartyPlatnicze(ProcessCommand cmd ,def calc) {
-        cmd.punktyTytulPlatnosci= cmd.punktyTytulPlatnosci?: []
+       /* cmd.punktyTytulPlatnosci= cmd.punktyTytulPlatnosci?: []
         cmd.punktySystemKasowy = cmd.punktySystemKasowy ?: []
         cmd.punktyUta = cmd.punktyUta ?: []
-        cmd.punktyWybrane = cmd.punktyWybrane ?: []
+        cmd.punktyWybrane = cmd.punktyWybrane ?: []*/
     }
 
     def getZalaczniki(ProcessCommand cmd ,def calc) {
