@@ -1,11 +1,12 @@
 package com.eservice.eumowy
 
 import java.io.Serializable;
+import java.util.Date;
 
 class PosData implements Serializable {
 	
 	//TODO Add things needed for New POS/Point documents, like point name etc.
-	Integer cbdId
+	Integer tpsId
 	Integer numerZestawuPos
 	Date dataOd
 	Date dataDo
@@ -23,7 +24,7 @@ class PosData implements Serializable {
 		dataDo column: "date_to"
 		wysokoscOplaty column: "price_count"
 		czyWybrany column: "is_selected"
-		cbdId column: "cbd_id"
+		tpsId column: "tps_id"
 	}
 	
 	static constraints = {
@@ -34,6 +35,6 @@ class PosData implements Serializable {
 		dataDo(nullable:true)
 		wysokoscOplaty(nullable:true)
 		czyWybrany(nullable:true)
-		cbdId(nullable:true)
+		tpsId(nullable:true)
 	}
 }

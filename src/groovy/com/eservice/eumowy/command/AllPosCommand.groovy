@@ -3,9 +3,10 @@ package com.eservice.eumowy.command
 class AllPosCommand implements Serializable {
 	Integer id
     Boolean czyCbd
-	String numerZestawuPos
-	String dataOd
-	String dataDo
-	String wysokoscOplaty
+	Integer tpsId
+	Integer numerZestawuPos
+	Date dataOd
+	Date dataDo
+	BigDecimal wysokoscOplaty
 	Boolean czyWybrany
 }

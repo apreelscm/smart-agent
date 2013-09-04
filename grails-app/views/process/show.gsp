@@ -14,7 +14,7 @@
 <section id="show-process">
     <h1 class="ng linia-bottom">Id Procesu: ${processInstance?.id}</h1>
 
-    <ul class="property-list" >
+    <ul class="property-list" style="text-align: center">
         <li style="margin:0em 0em 1em 0em;">
             <label for="clientName" style="display: inline ">
                 <g:message code="process.clientName.label" default="Nazwa Klienta" />

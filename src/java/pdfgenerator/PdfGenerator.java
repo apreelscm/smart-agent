@@ -105,8 +105,10 @@ public class PdfGenerator {
 						bf = BaseFont.createFont(fontsPathMap.get(dataEntry.getKey()), BaseFont.CP1250, BaseFont.EMBEDDED);
 					}
 					
-					form.setFieldProperty(dataEntry.getKey(), "textfont", bf, null);	
-					form.addSubstitutionFont(bf);
+					if (dataEntry.getValue().length <= 2 || (dataEntry.getValue().length > 2 && "checkbox".equals(dataEntry.getValue()[2]) == false)) {
+						form.setFieldProperty(dataEntry.getKey(), "textfont", bf, null);	
+						form.addSubstitutionFont(bf);
+					}
 					
 				}
 				
@@ -225,8 +227,10 @@ public class PdfGenerator {
 						bf = BaseFont.createFont(fontsPathMap.get(dataEntry.getKey()), BaseFont.CP1250, BaseFont.EMBEDDED);
 					}
 					
-					form.setFieldProperty(dataEntry.getKey(), "textfont", bf, null);	
-					form.addSubstitutionFont(bf);
+					if (dataEntry.getValue().length <= 2 || (dataEntry.getValue().length > 2 && "checkbox".equals(dataEntry.getValue()[2]) == false)) {
+						form.setFieldProperty(dataEntry.getKey(), "textfont", bf, null);	
+						form.addSubstitutionFont(bf);
+					}
 					
 				}
 				

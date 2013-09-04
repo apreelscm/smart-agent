@@ -310,20 +310,19 @@ class ProcessService {
 		}
 		
 		def cbdPoints = cbdService.getZakresUruchomieniaPunktyGrid(cmd.nip)
-		
+		log.info cbdPoints
 		cbdPoints.each { GroovyRowResult row ->
+			log.info row
 			AllPointsCommand apc = new AllPointsCommand()
 			
 			apc.setCzyCbd(true)
+			apc.setCbdId(row.get("id"))
 			apc.setKodPocztowy(row.get("kod_pocztowy"))
 			apc.setLiczbaPos(row.get("liczba_pos"))
 			apc.setMiejscowosc(row.get("miejscowosc"))
 			apc.setNazwa(row.get("nazwa"))
 			apc.setNrBudynku(row.get("nr_budynku"))
 			apc.setUlica(row.get("ulica"))
-			//apc.setSystemKasowy(row.get(""))
-			//apc.setTytulPlatnosci(row.get(""))
-			//apc.setUta(row.get(""))
 			
 			cmd.allPoints.add(apc)
 		}
@@ -352,20 +351,14 @@ class ProcessService {
 		}
 		
 		def cbdPoses = cbdService.getPromocyjneObinzenieOplatGrid(cmd.nip)
-
-
-        println(cbdPoses)
+		log.info cbdPoses
 		cbdPoses.each { GroovyRowResult row ->
-
-            println(row)
+			log.info row
 			AllPosCommand apc = new AllPosCommand()
 			
 			apc.setCzyCbd(true)
-			//apc.setCzyWybrany("")
-			//apc.setDataDo("")
-			//apc.setDataOd("")
+			apc.setTpsId(row.get("tps_id"))
 			apc.setNumerZestawuPos(row.get("numer_logiczny"))
-			//apc.setWysokoscOplaty("")
 			
 			cmd.allPoses.add(apc)
 		}
