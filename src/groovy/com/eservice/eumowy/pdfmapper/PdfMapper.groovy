@@ -2,6 +2,9 @@ package com.eservice.eumowy.pdfmapper
 
 import org.apache.log4j.Logger
 
+import java.text.DecimalFormat
+import java.text.NumberFormat
+
 
 class PdfMapper {
 	static Logger LOG = Logger.getLogger(PdfMapper.class)
@@ -44,7 +47,7 @@ class PdfMapper {
 			data.put(key, [value] as String[])
 		}
 		
-		pd.pointDetails?.properties.each { key, value ->
+		pd.pointDetails?.properties.eachWithIndex { key, value, index ->
 			log.info "PointDataDetails Key: " + key
 			if (["class", "posDatas", "errors", "constraints", "processId", "cbdId", "pointDetailsId", "empty"].contains(key) || value == null){
 				return
@@ -53,6 +56,16 @@ class PdfMapper {
 			def methodName = "map" + key.capitalize()
 			if (PdfMapper.metaClass.respondsTo(PdfMapper, methodName)) {
 				PdfMapper."${methodName}"(data, pd, key, value)
+				return
+			}
+			
+			if (key == "wydrukUlica") {
+				PdfMapper.mapAdresPoint(data, pd, key, value, index + 1)
+				return
+			}
+			
+			if (key == "nazwaDoWydrukuZTerminalaPos") {
+				PdfMapper.mapNazwaDoWydrukuZTerminalaPosPoint(data, pd, key, value, index + 1)
 				return
 			}
 			
@@ -102,8 +115,20 @@ class PdfMapper {
 		Map<String, String[]> data = new HashMap<String, String[]>()
 
 		pd.each { processData ->
-			
-			def methodName = "map" + processData.name.capitalize()+"Process"
+
+            //formatowanie procentowej wartosci platnosci karty
+            if (processData.name.endsWith('Pr')){
+                formatDoubleValue(data, processData, '%')
+                return
+            }
+
+            //formatowanie stalej wartosci platnosci karty
+            if (processData.name.endsWith('St')){
+                formatDoubleValue(data, processData, 'zł')
+                return
+            }
+
+            def methodName = "map" + processData.name.capitalize()+"Process"
 
             if (PdfMapper.metaClass.respondsTo(PdfMapper, methodName)) {
 				PdfMapper."${methodName}"(data, pd, processData.name, processData.value)
@@ -124,8 +149,16 @@ class PdfMapper {
 		
 		return data
 	}
-	
-	private static mapNrMerchanta(def data, def pd, def key, def value) {
+
+    private static def formatDoubleValue(def data, def processData, def suffix) {
+        if (processData && processData.value && processData.value.isDouble()){
+            DecimalFormat df = (DecimalFormat)NumberFormat.getNumberInstance(new Locale("pl", "PL"));
+            def fn = df.format(processData.value.toDouble()) + ' ' + suffix;
+            data.put(processData.name, [fn] as String[])
+        }
+    }
+
+    private static mapNrMerchanta(def data, def pd, def key, def value) {
 		data.put(key+"1", [value.substring(0, 5)] as String[])
 		data.put(key+"2", [value.substring(5, 10)] as String[])
 		data.put(key+"3", [value.substring(10, 12)] as String[])
@@ -137,6 +170,18 @@ class PdfMapper {
 	}
 	
 	private static mapUlicaDoKorespondencjiTyp(def data, def pd, def key, def value) {}
+	
+	private static mapAdresPoint(def data, def pd, def key, def value, def index) {
+		
+		
+		getFromPointDataSet(pd, 'wydrukNrLokalu')? "/"+getFromPointDataSet(pd, 'wydrukNrLokalu'):""
+		
+		data.put("adres"+index, [getFromPointDataSet(pd, 'wydrukUlica') + " " + value + " " + getFromPointDataSet(pd, 'wydrukNrBudynku') +  getFromPointDataSet(pd, 'wydrukNrLokalu')? "/"+getFromPointDataSet(pd, 'wydrukNrLokalu'):"" + " " + getFromPointDataSet(pd, 'wydrukMiasto') + " " + getFromPointDataSet(pd, 'wydrukKodPocztowy')] as String[])
+	}
+	
+	private static mapNazwaDoWydrukuZTerminalaPosPoint(def data, def pd, def key, def value, def index) {
+		data.put("punkt"+index, [value] as String[])
+	}
 	
 	private static mapScoringDochodowoscProcess(def data, def pd, def key, def value) {
 		data.put("dochodowosc", [value] as String[])
@@ -151,7 +196,7 @@ class PdfMapper {
     }
 
     private static mapAkceptantUlicaProcess(def data, def pd, def key, def value) {
-        data.put("akceptantSiedziba", [getFromPointDataSet(pd, 'akceptantUlicaTytul') + " " + value + " " + getFromPointDataSet(pd, 'akceptantNrDomu') + "/" + getFromPointDataSet(pd, 'akceptantNrMieszkania') + " " + getFromPointDataSet(pd, 'akceptantMiasto')] as String[])
+        data.put("akceptantSiedziba", [getFromPointDataSet(pd, 'akceptantUlicaTytul') + " " + value + " " + getFromPointDataSet(pd, 'akceptantNrDomu') + getFromPointDataSet(pd, 'wydrukNrMieszkania')? "/"+getFromPointDataSet(pd, 'wydrukNrMieszkania'):"" + " " + getFromPointDataSet(pd, 'akceptantMiasto')] as String[])
     }
 
     private static mapAkceptantNazwaOficjalnaProcess(def data, def pd, def key, def value) {

@@ -65,7 +65,6 @@ class ProcessService {
         [searchResults: searchResults, searchResultSize: searchResults.getTotalCount()]
     }
 
-
     static def boolean isNumber(value){
         return value?.toString()?.isNumber()
     }
@@ -97,6 +96,8 @@ class ProcessService {
     def getNewProcessCommand(def process, def calc){
         log.info("getNewProcessCommand processId = ${process.id}")
         def cmd = initProcessCommand(process)
+        loadAllPoints(process, cmd)
+        loadAllPoses(process, cmd)
         prepareProcessCommand(cmd, calc)
     }
 
@@ -147,6 +148,7 @@ class ProcessService {
                     panelService."${panelFunctionName}"(cmd,calc)
             }
         }
+
         cmd
     }
 
@@ -154,8 +156,7 @@ class ProcessService {
      *  create data
      * */
      def loadProcessData(def process,  def cmd) {
-        log.info("loadProcessData - processData: ${process.processData}");
-        process.processData.each {ProcessData data ->
+        process.processData?.each {ProcessData data ->
 
             if(data.name in ["dataUmowy","punktyTytulPlatnosci","punktySystemKasowy","punktyUta","punktyWybrane"]){
                 return
@@ -169,10 +170,11 @@ class ProcessService {
                 //TODO implement
             }
             else{
-                println("data.name:"+data.name+ " value:"+data.value)
+                //println("data.name:"+data.name+ " value:"+data.value)
                 cmd[data.name] = data.value ?: ""
             }
         }
+
         cmd
     }
 	
@@ -314,7 +316,7 @@ class ProcessService {
 			AllPointsCommand apc = new AllPointsCommand()
 			
 			apc.setCzyCbd(true)
-			apc.setCbdId(row.get("id"))
+			apc.setCbdId(Integer.valueOf(row.get("id").toString()))
 			apc.setKodPocztowy(row.get("kod_pocztowy"))
 			apc.setLiczbaPos(row.get("liczba_pos"))
 			apc.setMiejscowosc(row.get("miejscowosc"))
@@ -355,26 +357,29 @@ class ProcessService {
 			AllPosCommand apc = new AllPosCommand()
 			
 			apc.setCzyCbd(true)
-			apc.setTpsId(row.get("tps_id"))
-			apc.setNumerZestawuPos(row.get("numer_logiczny"))
+			apc.setTpsId(Integer.valueOf(row.get("tps_id").toString()))
+			apc.setNumerZestawuPos(Integer.valueOf(row.get("numer_logiczny").toString()))
 			
 			cmd.allPoses.add(apc)
 		}
 	}
 	
     /** save data */
-    def populateProcessWithData(def process, def cmd){
+    def populateProcessWithData(Process process, def cmd){
         def processDataList = getDataFromPanels(cmd)
 
         //zapis obecnej daty na potrzeby dokumentow
         addCurrentDate(processDataList);
 
-        process.processData?.clear()
-        processDataList.each { data ->
-            process.addToProcessData(data)
-            process.discard();
+        //process.processData?.clear()
+        processDataList.each { ProcessData data ->
+            def foundData = process.processData.find { it.name == data.name }
+            if(!foundData){
+                process.addToProcessData(data)
+            }else if(data.value != foundData.value){
+                foundData.value = data.value
+            }
         }
-
 
         def pointsDataList = getPointData(cmd)
         process.points?.clear()
