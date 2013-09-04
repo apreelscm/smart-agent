@@ -65,7 +65,6 @@ class ProcessService {
         [searchResults: searchResults, searchResultSize: searchResults.getTotalCount()]
     }
 
-
     static def boolean isNumber(value){
         return value?.toString()?.isNumber()
     }
@@ -147,6 +146,7 @@ class ProcessService {
                     panelService."${panelFunctionName}"(cmd,calc)
             }
         }
+
         cmd
     }
 
@@ -155,6 +155,7 @@ class ProcessService {
      * */
      def loadProcessData(def process,  def cmd) {
         log.info("loadProcessData - processData: ${process.processData}");
+
         process.processData.each {ProcessData data ->
 
             if(data.name in ["dataUmowy","punktyTytulPlatnosci","punktySystemKasowy","punktyUta","punktyWybrane"]){
@@ -173,6 +174,7 @@ class ProcessService {
                 cmd[data.name] = data.value ?: ""
             }
         }
+
         cmd
     }
 	
@@ -370,18 +372,21 @@ class ProcessService {
 	}
 	
     /** save data */
-    def populateProcessWithData(def process, def cmd){
+    def populateProcessWithData(Process process, def cmd){
         def processDataList = getDataFromPanels(cmd)
 
         //zapis obecnej daty na potrzeby dokumentow
         addCurrentDate(processDataList);
 
-        process.processData?.clear()
-        processDataList.each { data ->
-            process.addToProcessData(data)
-            process.discard();
+        //process.processData?.clear()
+        processDataList.each { ProcessData data ->
+            def foundData = process.processData.find { it.name == data.name }
+            if(!foundData){
+                process.addToProcessData(data)
+            }else if(data.value != foundData.value){
+                foundData.value = data.value
+            }
         }
-
 
         def pointsDataList = getPointData(cmd)
         process.points?.clear()

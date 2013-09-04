@@ -761,10 +761,10 @@ class ActivityController {
 
                 flow.client = client;
                 /** sprawdzanie, czy w eUmowy istnieje dla danego Akceptanta niezakończony Proces */
-                def lastProcess = processService.getLastProcessNotStatus(client,[Process.ProcessStatus.ACCEPTED,Process.ProcessStatus.REJECTED])
+                def lastProcess = processService.getLastProcessWithStatus(client, [Process.ProcessStatus.WAIT_FOR_SUBSRIPTION,Process.ProcessStatus.WAIT_FOR_SUBSCRIPTION_PAPER_VERSION])
                 if(!lastProcess){
                     flash.nipErrorMessage = message(code:"client.todo.error",
-                            default:"Brak możliwości poprawy danych, istnieją inne nowsze zaakceptowane procesy dla tego Akceptanta");
+                            default:"Brak możliwości uzupełnienia podpisów.");
                     return error()
                 }
 
