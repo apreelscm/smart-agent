@@ -28,7 +28,7 @@ class Process implements Serializable {
     List<Panel> panels
     List<AttachmentFile> attachments
     List<DocumentFile> documents
-    List<ProcessData> processData
+    Set<ProcessData> processData
 
     String getStringId() {
         return String.format('%06d',this.id)

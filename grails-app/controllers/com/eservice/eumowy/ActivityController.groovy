@@ -902,7 +902,7 @@ class ActivityController {
     }
 
     def getAttachmentList(){
-        println(params)
+        //println(params)
         render(template:"../attachment/list", model:[files:attachmentService.getListByProcessId(params.processId), processId: params.processId]);
     }
 

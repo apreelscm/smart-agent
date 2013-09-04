@@ -225,9 +225,7 @@ class PanelService {
     }
 
     def setAtLeastAs(def data ,def calcValue){
-
-        println("data : ${data} , cal : ${calcValue}")
-
+        //println("data : ${data} , cal : ${calcValue}")
         if(!data || !data.toString().isNumber()) {
             return calcValue
         }
