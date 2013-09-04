@@ -9,12 +9,18 @@ class PointData implements Serializable {
 	Integer cbdId
 	
 	String nip
+	String nazwa
 	String ulica
 	Integer nrLokalu
 	Integer nrBudynku
 	String miejscowosc
 	String kodPocztowy
 	String poczta
+	BigDecimal liczbaPos
+	Boolean tytulPlatnosci
+	Boolean systemKasowy
+	Boolean uta
+	Boolean czyWybrany
 	
 	List<PosData> posDatas
 	
@@ -36,6 +42,13 @@ class PointData implements Serializable {
 		miejscowosc column: "city"
 		kodPocztowy column: "postal_code"
 		poczta column: "post_office"
+		liczbaPos column: "pos_count"
+		tytulPlatnosci column: "payment_title"
+		systemKasowy column: "cash_system"
+		uta column: "uta"
+		czyWybrany column: "is_chosen"
+		nazwa column: "name"
+		cbdId column: "cbd_id"
 	}
 	
 	static constraints = {
@@ -50,6 +63,12 @@ class PointData implements Serializable {
 		pointDetails(nullable:true)
 		posDatas(nullable:true)
 		cbdId(nullable:true)
+		liczbaPos(nullable:true)
+		tytulPlatnosci(nullable:true)
+		systemKasowy(nullable:true)
+		uta(nullable:true)
+		czyWybrany(nullable:true)
+		nazwa(nullable:true)
 	}
 	
 	def beforeInsert() {
