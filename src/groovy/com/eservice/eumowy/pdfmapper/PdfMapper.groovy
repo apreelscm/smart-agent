@@ -2,6 +2,9 @@ package com.eservice.eumowy.pdfmapper
 
 import org.apache.log4j.Logger
 
+import java.text.DecimalFormat
+import java.text.NumberFormat
+
 
 class PdfMapper {
 	static Logger LOG = Logger.getLogger(PdfMapper.class)
@@ -102,8 +105,20 @@ class PdfMapper {
 		Map<String, String[]> data = new HashMap<String, String[]>()
 
 		pd.each { processData ->
-			
-			def methodName = "map" + processData.name.capitalize()+"Process"
+
+            //formatowanie procentowej wartosci platnosci karty
+            if (processData.name.endsWith('Pr')){
+                formatDoubleValue(data, processData, '%')
+                return
+            }
+
+            //formatowanie stalej wartosci platnosci karty
+            if (processData.name.endsWith('St')){
+                formatDoubleValue(data, processData, 'zł')
+                return
+            }
+
+            def methodName = "map" + processData.name.capitalize()+"Process"
 
             if (PdfMapper.metaClass.respondsTo(PdfMapper, methodName)) {
 				PdfMapper."${methodName}"(data, pd, processData.name, processData.value)
@@ -124,8 +139,16 @@ class PdfMapper {
 		
 		return data
 	}
-	
-	private static mapNrMerchanta(def data, def pd, def key, def value) {
+
+    private static def formatDoubleValue(def data, def processData, def suffix) {
+        if (processData && processData.value && processData.value.isDouble()){
+            DecimalFormat df = (DecimalFormat)NumberFormat.getNumberInstance(new Locale("pl", "PL"));
+            def fn = df.format(processData.value.toDouble()) + ' ' + suffix;
+            data.put(processData.name, [fn] as String[])
+        }
+    }
+
+    private static mapNrMerchanta(def data, def pd, def key, def value) {
 		data.put(key+"1", [value.substring(0, 5)] as String[])
 		data.put(key+"2", [value.substring(5, 10)] as String[])
 		data.put(key+"3", [value.substring(10, 12)] as String[])

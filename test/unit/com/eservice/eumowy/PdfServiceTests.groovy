@@ -91,7 +91,7 @@ class PdfServiceTests {
 	}
 
 	static HashMap<String, String[]> generateDataPodpisaniaAneksuPOZField(){
-		HashMap<String, String[]> result = new HashMap<String, String[]>();
+        HashMap<String, String[]> result = new HashMap<String, String[]>();
 		result.put("dataPodpisaniaAneksuPOZ", ["23.04.2013"] as String[]);
 		return result;
 	}
@@ -376,8 +376,10 @@ class PdfServiceTests {
 	}
 	
 	void testAPUPZ() {
-		HashMap<String, String[]> data = new HashMap<String, String[]>();
+        HashMap<String, String[]> data = new HashMap<String, String[]>();
 		data.putAll(this.data);
+        data.put("umNieOzn", ["true", "", "checkbox"] as String[]);
+        data.put("umOzn", ["true", "", "checkbox"] as String[]);
 		data.putAll(insertSignatures(4, 90, 308, 74, 43))
 		process("APUPZ2.00013-01-03 - Umowa o przyjmowanie zapłaty v. 2.000_z faksymile.pdf", "APUPZ2.00013-01-03 - Umowa o przyjmowanie zapłaty v. 2.000_z faksymile_out.pdf", data)
 	}
