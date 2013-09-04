@@ -318,7 +318,7 @@ class ProcessService {
 			apc.setCzyCbd(true)
 			apc.setCbdId(Integer.valueOf(row.get("id").toString()))
 			apc.setKodPocztowy(row.get("kod_pocztowy"))
-			apc.setLiczbaPos(row.get("liczba_pos"))
+			apc.setLiczbaPos(Integer.valueOf(row.get("liczba_pos").toString()))
 			apc.setMiejscowosc(row.get("miejscowosc"))
 			apc.setNazwa(row.get("nazwa"))
 			apc.setNrBudynku(row.get("nr_budynku"))
