@@ -172,7 +172,11 @@ class PdfMapper {
 	private static mapUlicaDoKorespondencjiTyp(def data, def pd, def key, def value) {}
 	
 	private static mapAdresPoint(def data, def pd, def key, def value, def index) {
-		data.put("adres"+index, [getFromPointDataSet(pd, 'wydrukUlica') + " " + value + " " + getFromPointDataSet(pd, 'wydrukNrBudynku') + "/" + getFromPointDataSet(pd, 'wydrukNrLokalu') + " " + getFromPointDataSet(pd, 'wydrukMiasto') + " " + getFromPointDataSet(pd, 'wydrukKodPocztowy')] as String[])
+		
+		
+		getFromPointDataSet(pd, 'wydrukNrLokalu')? "/"+getFromPointDataSet(pd, 'wydrukNrLokalu'):""
+		
+		data.put("adres"+index, [getFromPointDataSet(pd, 'wydrukUlica') + " " + value + " " + getFromPointDataSet(pd, 'wydrukNrBudynku') +  getFromPointDataSet(pd, 'wydrukNrLokalu')? "/"+getFromPointDataSet(pd, 'wydrukNrLokalu'):"" + " " + getFromPointDataSet(pd, 'wydrukMiasto') + " " + getFromPointDataSet(pd, 'wydrukKodPocztowy')] as String[])
 	}
 	
 	private static mapNazwaDoWydrukuZTerminalaPosPoint(def data, def pd, def key, def value, def index) {
@@ -192,7 +196,7 @@ class PdfMapper {
     }
 
     private static mapAkceptantUlicaProcess(def data, def pd, def key, def value) {
-        data.put("akceptantSiedziba", [getFromPointDataSet(pd, 'akceptantUlicaTytul') + " " + value + " " + getFromPointDataSet(pd, 'akceptantNrDomu') + "/" + getFromPointDataSet(pd, 'akceptantNrMieszkania') + " " + getFromPointDataSet(pd, 'akceptantMiasto')] as String[])
+        data.put("akceptantSiedziba", [getFromPointDataSet(pd, 'akceptantUlicaTytul') + " " + value + " " + getFromPointDataSet(pd, 'akceptantNrDomu') + getFromPointDataSet(pd, 'wydrukNrMieszkania')? "/"+getFromPointDataSet(pd, 'wydrukNrMieszkania'):"" + " " + getFromPointDataSet(pd, 'akceptantMiasto')] as String[])
     }
 
     private static mapAkceptantNazwaOficjalnaProcess(def data, def pd, def key, def value) {
