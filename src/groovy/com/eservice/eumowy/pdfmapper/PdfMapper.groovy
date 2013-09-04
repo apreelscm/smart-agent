@@ -47,7 +47,7 @@ class PdfMapper {
 			data.put(key, [value] as String[])
 		}
 		
-		pd.pointDetails?.properties.each { key, value ->
+		pd.pointDetails?.properties.eachWithIndex { key, value, index ->
 			log.info "PointDataDetails Key: " + key
 			if (["class", "posDatas", "errors", "constraints", "processId", "cbdId", "pointDetailsId", "empty"].contains(key) || value == null){
 				return
@@ -56,6 +56,16 @@ class PdfMapper {
 			def methodName = "map" + key.capitalize()
 			if (PdfMapper.metaClass.respondsTo(PdfMapper, methodName)) {
 				PdfMapper."${methodName}"(data, pd, key, value)
+				return
+			}
+			
+			if (key == "wydrukUlica") {
+				PdfMapper.mapAdresPoint(data, pd, key, value, index + 1)
+				return
+			}
+			
+			if (key == "nazwaDoWydrukuZTerminalaPos") {
+				PdfMapper.mapNazwaDoWydrukuZTerminalaPosPoint(data, pd, key, value, index + 1)
 				return
 			}
 			
@@ -160,6 +170,14 @@ class PdfMapper {
 	}
 	
 	private static mapUlicaDoKorespondencjiTyp(def data, def pd, def key, def value) {}
+	
+	private static mapAdresPoint(def data, def pd, def key, def value, def index) {
+		data.put("adres"+index, [getFromPointDataSet(pd, 'wydrukUlica') + " " + value + " " + getFromPointDataSet(pd, 'wydrukNrBudynku') + "/" + getFromPointDataSet(pd, 'wydrukNrLokalu') + " " + getFromPointDataSet(pd, 'wydrukMiasto') + " " + getFromPointDataSet(pd, 'wydrukKodPocztowy')] as String[])
+	}
+	
+	private static mapNazwaDoWydrukuZTerminalaPosPoint(def data, def pd, def key, def value, def index) {
+		data.put("punkt"+index, [value] as String[])
+	}
 	
 	private static mapScoringDochodowoscProcess(def data, def pd, def key, def value) {
 		data.put("dochodowosc", [value] as String[])
