@@ -15,7 +15,12 @@
     <link rel="apple-touch-icon" sizes="114x114" href="${resource(dir: 'images', file: 'apple-touch-icon-retina.png')}">
 
     <link rel="stylesheet" href="${resource(dir: 'css', file: 'bootstrap.min.css')}" type="text/css">
-    <link rel="stylesheet" href="${resource(dir: 'css', file: 'default.css')}" type="text/css">
+    <g:if test="${params.controller == 'process'}">
+        <link rel="stylesheet" href="${resource(dir: 'css', file: 'default-process.css')}" type="text/css">
+    </g:if>
+    <g:else>
+        <link rel="stylesheet" href="${resource(dir: 'css', file: 'default.css')}" type="text/css">
+    </g:else>
     <link rel="stylesheet" href="${resource(dir: 'css', file: 'mobile/mobile.css')}" type="text/css">
 
     <g:javascript library="jquery" plugin="jquery"/>

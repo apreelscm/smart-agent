@@ -167,12 +167,25 @@ grails.plugins.springsecurity.interceptUrlMap = [
 ]
 
 // mail config
+//grails {
+//    mail {
+//        host = "smtp.gmail.com"
+//        port = 465
+//        username = "apreel.eUmowy@gmail.com"
+//        password = "apreel1234"
+//        props = ["mail.smtp.auth": "true",
+//                "mail.smtp.socketFactory.port": "465",
+//                "mail.smtp.socketFactory.class": "javax.net.ssl.SSLSocketFactory",
+//                "mail.smtp.socketFactory.fallback": "false",
+//                "mail.smtp.ssl.trust": "*"]
+//    }
+//}
 grails {
     mail {
-        host = "smtp.gmail.com"
+        host = "mail.your-server.de"
         port = 465
-        username = "apreel.eUmowy@gmail.com"
-        password = "apreel1234"
+        username = "atest@apreel.com"
+        password = "atest"
         props = ["mail.smtp.auth": "true",
                 "mail.smtp.socketFactory.port": "465",
                 "mail.smtp.socketFactory.class": "javax.net.ssl.SSLSocketFactory",

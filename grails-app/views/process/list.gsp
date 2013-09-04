@@ -18,7 +18,7 @@
         <div class="message" role="status">${flash.message}</div>
     </g:if>
 
-    <div class="search-bar" style="margin: .8em .5em ">
+    <div class="search-bar" style="margin: .8em .5em; text-align: center">
         <g:form action="list" style="vertical-align: middle">
             <div class="display-inline">
                 <label for="filterStatus"><g:message code="process.phFirstName.label" default="Status Procesu:" /></label>
