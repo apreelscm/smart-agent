@@ -373,16 +373,6 @@ class ProcessCommand implements Serializable{
 //    umowa2 - FINISH
     String miejsceUmowy //nie jest uzywane w pdf
 
-//    wykazPunktowAkceptujacychKartyPlatnicze
-    //TODO - to zmiany
-    List punktyTytulPlatnosci
-    //TODO - to zmiany
-    List punktySystemKasowy
-    //TODO - to zmiany
-    List punktyUta
-    //TODO - to zmiany
-    List punktyWybrane
-
 //    zestawPosOdplatneUzywanie
     String oplPOSDialUpTyp
     String oplPOSDialUpIlosc

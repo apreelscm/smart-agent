@@ -33,8 +33,8 @@ environments {
             password = "eumowy_app"
             dbCreate = "" // TODO change later for validate
            /*username = "eumowy"
-          password = "V7S1947nK89O"
-          dbCreate="update"*/
+             password = "V7S1947nK89O"
+             dbCreate="update"*/
             url = "jdbc:oracle:thin:@db-eservice.apreel.lan:1521:cbd01out"
         }
     }

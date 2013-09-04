@@ -74,20 +74,20 @@ class ProcessService {
      * sprawdzanie, czy w eUmowy istnieje dla danego Akceptanta niezakończony Proces
      **/
 
-    def isProcessWithStatus(Client client, def statusList) {
+/*    def isProcessWithStatus(Client client, def statusList) {
         return client.id != null && Process.findByClientAndStatusInList(client, statusList)
-    }
+    }*/
 
     def getLastProcessWithStatus(Client client, def statusList) {
         def result = Process.findByClient(Client.findByNip(client.nip),[sort: "lastUpdated", order: "desc"])
         log.info("getLastProcessWithStatus - client.nip = ${client.nip} , id = ${result?.id} status = ${result?.status}, statusList = ${statusList}")
-        return (result && isProcessWithStatus(client, statusList)) ? result : null
+        return (result && client.id && (result.status in statusList)) ? result : null
     }
 
     def getLastProcessNotStatus(Client client, def statusList) {
         def result = Process.findByClient(Client.findByNip(client.nip),[sort: "lastUpdated", order: "desc"])
         log.info("getLastProcessNotStatus - client.nip = ${client.nip} , id = ${result?.id} status = ${result?.status}, statusList = ${statusList}")
-        return (result && !isProcessWithStatus(client, statusList)) ? result : null
+        return (result && client.id && !(result.status in statusList)) ? result : null
     }
 
     def containsActivity(def activities, def activityCode) {
@@ -157,7 +157,7 @@ class ProcessService {
         log.info("loadProcessData - processData: ${process.processData}");
         process.processData.each {ProcessData data ->
 
-            if(data.name in ["dataUmowy"]){
+            if(data.name in ["dataUmowy","punktyTytulPlatnosci","punktySystemKasowy","punktyUta","punktyWybrane"]){
                 return
             }
 
@@ -165,10 +165,11 @@ class ProcessService {
                 throw new NoSuchFieldException(data.name)
             }
 
-            if(data.name in ["allPoses", "allPoints", "points"]){
+            if(data.name in ["allPoses", "allPoints", "points", "poses"]){
                 //TODO implement
             }
             else{
+                println("data.name:"+data.name+ " value:"+data.value)
                 cmd[data.name] = data.value ?: ""
             }
         }
@@ -325,7 +326,7 @@ class ProcessService {
 			cmd.allPoints.add(apc)
 		}
 	}
-	
+
 	def loadAllPoses(def process, def cmd) {
 		log.info "loadAllPoses"
 		process.points.each { PointData point ->
@@ -349,8 +350,12 @@ class ProcessService {
 		}
 		
 		def cbdPoses = cbdService.getPromocyjneObinzenieOplatGrid(cmd.nip)
-		
+
+
+        println(cbdPoses)
 		cbdPoses.each { GroovyRowResult row ->
+
+            println(row)
 			AllPosCommand apc = new AllPosCommand()
 			
 			apc.setCzyCbd(true)
