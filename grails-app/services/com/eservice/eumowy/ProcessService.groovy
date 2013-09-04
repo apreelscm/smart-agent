@@ -6,6 +6,7 @@ import com.eservice.eumowy.command.PointCommand
 import com.eservice.eumowy.command.ProcessCommand
 import com.eservice.eumowy.util.DateUtils
 import grails.util.Environment
+import groovy.sql.GroovyRowResult
 import org.apache.commons.collections.FactoryUtils
 import org.apache.commons.collections.ListUtils
 import org.apache.commons.lang.SerializationUtils
@@ -14,6 +15,7 @@ import org.apache.commons.lang.WordUtils
 class ProcessService {
 
     def panelService
+	def cbdService
     def panelMockService
 
     def searchProcessByFilters(def params) {
@@ -296,6 +298,7 @@ class ProcessService {
 		log.info "loadAllPoints"
 		process.points.each { PointData point ->
 			AllPointsCommand apc = new AllPointsCommand()
+			apc.setCzyCbd(false)
 			
 			point.properties.each { key, value ->
 				log.info "PointData Key: " + key
@@ -311,7 +314,24 @@ class ProcessService {
 			cmd.allPoints.add(apc)
 		}
 		
-		//TODO Load from CBD Here!
+		def cbdPoints = cbdService.getZakresUruchomieniaPunktyGrid(cmd.nip)
+		
+		cbdPoints.each { GroovyRowResult row ->
+			AllPointsCommand apc = new AllPointsCommand()
+			
+			apc.setCzyCbd(true)
+			apc.setKodPocztowy(row.get("kod_pocztowy"))
+			apc.setLiczbaPos(row.get("liczba_pos"))
+			apc.setMiejscowosc(row.get("miejscowosc"))
+			apc.setNazwa(row.get("nazwa"))
+			apc.setNrBudynku(row.get("nr_budynku"))
+			apc.setUlica(row.get("ulica"))
+			//apc.setSystemKasowy(row.get(""))
+			//apc.setTytulPlatnosci(row.get(""))
+			//apc.setUta(row.get(""))
+			
+			cmd.allPoints.add(apc)
+		}
 	}
 	
 	def loadAllPoses(def process, def cmd) {
@@ -319,6 +339,7 @@ class ProcessService {
 		process.points.each { PointData point ->
 			point.posDatas?.each { PosData posData ->
 				AllPosCommand apc = new AllPosCommand()
+				apc.setCzyCbd(false)
 				
 				posData.properties.each { key, value ->
 					log.info "PosData Key: " + key
@@ -335,7 +356,20 @@ class ProcessService {
 			}
 		}
 		
-		//TODO Load from CBD Here!
+		def cbdPoses = cbdService.getPromocyjneObinzenieOplatGrid(cmd.nip)
+		
+		cbdPoses.each { GroovyRowResult row ->
+			AllPosCommand apc = new AllPosCommand()
+			
+			apc.setCzyCbd(true)
+			//apc.setCzyWybrany("")
+			//apc.setDataDo("")
+			//apc.setDataOd("")
+			apc.setNumerZestawuPos(row.get("numer_logiczny"))
+			//apc.setWysokoscOplaty("")
+			
+			cmd.allPoses.add(apc)
+		}
 	}
 	
     /** save data */
@@ -351,12 +385,19 @@ class ProcessService {
             process.discard();
         }
 
-        def pointsDataList = getPointAndPosData(cmd)
+        def pointsDataList = getPointData(cmd)
         process.points?.clear()
         pointsDataList.each { data ->
             process.addToPoints(data)
             process.discard()
         }
+		
+		def posDataList = getPosData(cmd)
+		posDataList.each { data ->
+			process.addToPoints(data)
+			process.discard()
+		}
+		
         process
     }
 
@@ -387,7 +428,7 @@ class ProcessService {
         processDataList
     }
 
-	def getPointAndPosData(def cmd) {
+	def getPointData(def cmd) {
 		def pointsList = []
 		cmd.points.each { PointCommand pc ->
 			
@@ -452,6 +493,11 @@ class ProcessService {
 		}
 		
 		return pointsList
+	}
+	
+	def getPosData(def cmd) {
+		return []
+		//TODO
 	}
 	
 	def findDocumentByName(def documents, def name) {

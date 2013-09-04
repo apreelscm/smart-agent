@@ -19,6 +19,7 @@ function setupNewPointPanelHandlers(prevPanelId, panelId, prefix) {
 					if (data != undefined && data != null && data != "") {
 						var obj = JSON.parse(data);
 						jQuery("#"+e.data.p+"\\["+e.data.pid+"\\]\\.bankName").val(obj.name);
+						jQuery("#"+e.data.p+"\\["+e.data.pid+"\\]\\.bankId").val(obj.id);
 					}
 		     	}); 
 			}

@@ -135,7 +135,7 @@
 			
 			jQuery("#conitnueButton").on("click", function(e) {
 				e.preventDefault();
-				if (updateSubscriptionStatusCount != 2) {
+				if (updateSubscriptionStatusCount != 3) {
 					result = false;
 					jQuery("#confirm-submit-without-subscription-dialog").dialog({
 						resizable: true,
@@ -156,6 +156,11 @@
 									jQuery( this ).dialog( "close" );
 								}
 							}
+					});
+				}
+				else {
+					jQuery.post(jQuery(location).attr('href'), {_eventId_submit:"",requestVersion: jQuery("input[name=requestVersion]").val(), numberOfSubscriptions: updateSubscriptionStatusCount}, function(data, textStatus, jqXHR) {
+						window.location.reload();
 					});
 				}
 				

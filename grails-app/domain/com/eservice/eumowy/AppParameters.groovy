@@ -10,6 +10,7 @@ class AppParameters implements Serializable {
     }
 	
 	static mapping = {
+		version false
 		table name: "APP_PARAMETERS", schema: DomainConsts.SHEMA_NAME
         id generator:'sequence', params:[sequence:'APP_PARAMETERS_SEQ']
 	}

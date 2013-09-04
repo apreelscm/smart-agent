@@ -152,13 +152,13 @@ class CbdService {
     @Cacheable(value="getWykazPunktowGrid")
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
     def getWykazPunktowGrid(def clientNip) {
-        return cbdDAO.selectOne(GET_WYKAZ_PUNKTOW_GRID,[nip:clientNip])
+        return cbdDAO.selectMany(GET_WYKAZ_PUNKTOW_GRID,[nip:clientNip])
     }
 
     @Cacheable(value="getZakresUruchomieniaPunktyGrid")
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
     def getZakresUruchomieniaPunktyGrid(def clientNip) {
-        return cbdDAO.selectOne(GET_ZAKRES_URUCHOMIENIA_PUNKTY_GRID,[nip:clientNip])
+        return cbdDAO.selectMany(GET_ZAKRES_URUCHOMIENIA_PUNKTY_GRID,[nip:clientNip])
     }
 
     /**

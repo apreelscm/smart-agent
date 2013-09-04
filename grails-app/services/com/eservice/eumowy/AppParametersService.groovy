@@ -13,7 +13,7 @@ class AppParametersService {
 	}
 	
 	def getPdfImagePath() {
-		String tmpPath = AppParameters.findByName("TEMP_PDFIMAGE_STORAGE_PATH")
+		String tmpPath = AppParameters.findByName("TEMP_PDFIMAGE_STORAGE_PATH")?.value
 		
 		if (Environment.getCurrent().equals(Environment.DEVELOPMENT)) {
 			if (tmpPath == null || tmpPath.isEmpty()) {
@@ -25,7 +25,7 @@ class AppParametersService {
 	}
 	
 	def getPdfImageUri() {
-		String tmpPath = AppParameters.findByName("TEMP_PDFIMAGE_STORAGE_URI")
+		String tmpPath = AppParameters.findByName("TEMP_PDFIMAGE_STORAGE_URI")?.value
 		
 		if (Environment.getCurrent().equals(Environment.DEVELOPMENT)) {
 			if (tmpPath == null || tmpPath.isEmpty()) {
@@ -37,7 +37,7 @@ class AppParametersService {
 	}
 	
 	def getPdfTemplatePath() {
-		String path = AppParameters.findByName("PDF_TEMPLATE_PATH")
+		String path = AppParameters.findByName("PDF_TEMPLATE_PATH")?.value
 		
 		if (Environment.getCurrent().equals(Environment.DEVELOPMENT)) {
 			if (path == null || path.isEmpty()) {
@@ -49,7 +49,7 @@ class AppParametersService {
 	}
 	
 	def getSubscriptionsPath() {
-		String path = AppParameters.findByName("SUBSCRIPTIONS_PATH")
+		String path = AppParameters.findByName("SUBSCRIPTIONS_PATH")?.value
 		
 		if (Environment.getCurrent().equals(Environment.DEVELOPMENT)) {
 			if (path == null || path.isEmpty()) {
@@ -61,7 +61,7 @@ class AppParametersService {
 	}
 	
 	def getSubscriptionsBlackPath() {
-		String path = AppParameters.findByName("SUBSCRIPTIONS_BLACK_PATH")
+		String path = AppParameters.findByName("SUBSCRIPTIONS_BLACK_PATH")?.value
 		
 		if (Environment.getCurrent().equals(Environment.DEVELOPMENT)) {
 			if (path == null || path.isEmpty()) {
@@ -73,7 +73,7 @@ class AppParametersService {
 	}
 	
 	def getTemplateNameForNewPoint() {
-		String name = AppParameters.findByName("TEMPLATE_NAME_FOR_NEW_POINT")
+		String name = AppParameters.findByName("TEMPLATE_NAME_FOR_NEW_POINT")?.value
 		
 		if (Environment.getCurrent().equals(Environment.DEVELOPMENT)) {
 			if (name == null || name.isEmpty()) {
@@ -85,7 +85,7 @@ class AppParametersService {
 	}
 	
 	def getTemplateNameForNewPos() {
-		String name = AppParameters.findByName("TEMPLATE_NAME_FOR_NEW_POS")
+		String name = AppParameters.findByName("TEMPLATE_NAME_FOR_NEW_POS")?.value
 		
 		if (Environment.getCurrent().equals(Environment.DEVELOPMENT)) {
 			if (name == null || name.isEmpty()) {
@@ -97,7 +97,7 @@ class AppParametersService {
 	}
 	
 	def getManagementSubscriptionFirstScaleX() {
-		String scaleXString = AppParameters.findByName("MANAGEMENT_SUBSCRIPTION1_SCALE_X")
+		String scaleXString = AppParameters.findByName("MANAGEMENT_SUBSCRIPTION1_SCALE_X")?.value
 		
 		if (Environment.getCurrent().equals(Environment.DEVELOPMENT)) {
 			if (scaleXString == null || scaleXString.isEmpty()) {
@@ -109,7 +109,7 @@ class AppParametersService {
 	}
 	
 	def getManagementSubscriptionFirstScaleY() {
-		String scaleYString = AppParameters.findByName("MANAGEMENT_SUBSCRIPTION1_SCALE_Y")
+		String scaleYString = AppParameters.findByName("MANAGEMENT_SUBSCRIPTION1_SCALE_Y")?.value
 		
 		if (Environment.getCurrent().equals(Environment.DEVELOPMENT)) {
 			if (scaleYString == null || scaleYString.isEmpty()) {
@@ -121,7 +121,7 @@ class AppParametersService {
 	}
 	
 	def getManagementSubscriptionSecondScaleX() {
-		String scaleXString = AppParameters.findByName("MANAGEMENT_SUBSCRIPTION2_SCALE_X")
+		String scaleXString = AppParameters.findByName("MANAGEMENT_SUBSCRIPTION2_SCALE_X")?.value
 		
 		if (Environment.getCurrent().equals(Environment.DEVELOPMENT)) {
 			if (scaleXString == null || scaleXString.isEmpty()) {
@@ -133,7 +133,7 @@ class AppParametersService {
 	}
 	
 	def getManagementSubscriptionSecondScaleY() {
-		String scaleYString = AppParameters.findByName("MANAGEMENT_SUBSCRIPTION2_SCALE_Y")
+		String scaleYString = AppParameters.findByName("MANAGEMENT_SUBSCRIPTION2_SCALE_Y")?.value
 		
 		if (Environment.getCurrent().equals(Environment.DEVELOPMENT)) {
 			if (scaleYString == null || scaleYString.isEmpty()) {
