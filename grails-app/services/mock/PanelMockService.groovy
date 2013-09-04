@@ -98,21 +98,21 @@ class PanelMockService {
 		p1.miejscowosc = 'Lubartów'
 		p1.nrBudynku = 12
 		p1.kodPocztowy = '02-123'
-		p1.liczbaPos = '23'
+		p1.liczbaPos = 23
 		p2.id = 2
 		p2.nazwa = 'Kwiaciarnia Róża'
 		p2.ulica = 'Zielona'
 		p2.miejscowosc = 'Lubartów'
 		p2.nrBudynku = 12
 		p2.kodPocztowy = '02-123'
-		p2.liczbaPos = '6'
+		p2.liczbaPos = 6
 		p3.id = 3
 		p3.nazwa = 'Kino Femina'
 		p3.ulica = 'Zielona'
 		p3.miejscowosc = 'Lubartów'
 		p3.nrBudynku = 12
 		p3.kodPocztowy = '02-123'
-		p3.liczbaPos = '2'
+		p3.liczbaPos = 2
 		
 		cmd.allPoints = [p1, p2, p3]
     }

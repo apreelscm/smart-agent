@@ -16,7 +16,7 @@ class PointData implements Serializable {
 	String miejscowosc
 	String kodPocztowy
 	String poczta
-	BigDecimal liczbaPos
+	Integer liczbaPos
 	Boolean tytulPlatnosci
 	Boolean systemKasowy
 	Boolean uta

@@ -9,7 +9,7 @@ class AllPointsCommand implements Serializable {
 	String miejscowosc
 	String nrBudynku
 	String kodPocztowy
-    BigDecimal liczbaPos
+    Integer liczbaPos
 	Boolean tytulPlatnosci
 	Boolean systemKasowy
 	Boolean uta
