@@ -22,8 +22,8 @@ class PointDataDetails implements Serializable {
 	 
 	String wydrukUlicaTytul
 	String wydrukUlica
-	Integer wydrukNrDomu
-	Integer wydrukNrLokalu
+	String wydrukNrDomu
+	String wydrukNrLokalu
 	String wydrukMiasto
 	String wydrukKodPocztowy
 	String wydrukPoczta
@@ -33,8 +33,8 @@ class PointDataDetails implements Serializable {
 	
 	String korespondencjaUlicaTytul
 	String korespondencjaUlica
-	Integer korespondencjaNrDomu
-	Integer korespondencjaNrLokalu
+	String korespondencjaNrDomu
+	String korespondencjaNrLokalu
 	String korespondencjaMiasto
 	String korespondencjaKodPocztowy
 	String korespondencjaPoczta

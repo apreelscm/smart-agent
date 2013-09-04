@@ -25,8 +25,8 @@ class PointCommand implements Serializable {
 	 
 	String wydrukUlicaTytul
 	String wydrukUlica
-	Integer wydrukNrDomu
-	Integer wydrukNrLokalu
+	String wydrukNrDomu
+	String wydrukNrLokalu
 	String wydrukMiasto
 	String wydrukKodPocztowy
 	String WydrukPoczta
@@ -37,8 +37,8 @@ class PointCommand implements Serializable {
 	String korespondencjaJakDlaMerchantaLubWydruku
 	String korespondencjaUlicaTytul
 	String korespondencjaUlica
-	Integer korespondencjaNrDomu
-	Integer korespondencjaNrLokalu
+	String korespondencjaNrDomu
+	String korespondencjaNrLokalu
 	String korespondencjaMiasto
 	String korespondencjaKodPocztowy
 	String korespondencjaPoczta

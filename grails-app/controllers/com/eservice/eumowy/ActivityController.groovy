@@ -218,19 +218,22 @@ class ActivityController {
             on("subscribe").to "clientSignature"
             on("updateProcessStatus") {
                 log.info params
+				def processInstance = flow.processInstance
                 if (params.processStatus.equals("WAIT_FOR_SUBSCRIPTION")) {
                     Subscription sub = Subscription.get(params.subscriptionId)
-                    flow.processInstance.addToSubscriptions(sub)
-                    flow.processInstance.status = Process.ProcessStatus.WAIT_FOR_SUBSRIPTION
+                    processInstance.addToSubscriptions(sub)
+                    processInstance.status = Process.ProcessStatus.WAIT_FOR_SUBSRIPTION
                 }
                 else if (params.processStatus.equals("SUBSCRIPTIONS_DONE")) {
                     Subscription sub = Subscription.get(params.subscriptionId)
-                    flow.processInstance.addToSubscriptions(sub)
-                    flow.processInstance.status = Process.ProcessStatus.SUBSCRIPTIONS_DONE
+                    processInstance.addToSubscriptions(sub)
+                    processInstance.status = Process.ProcessStatus.SUBSCRIPTIONS_DONE
                 }
                 else if (params.processStatus.equals("REJECTED")) {
-                    flow.processInstance.status = Process.ProcessStatus.REJECTED
+                    processInstance.status = Process.ProcessStatus.REJECTED
                 }
+				processInstance.discard()
+				flow.processInstance = processInstance
             }.to "clientSignature"
             on("noaccept") {
                 def processInstance = flow.processInstance

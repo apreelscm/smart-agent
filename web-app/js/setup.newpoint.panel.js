@@ -26,17 +26,53 @@ function setupNewPointPanelHandlers(prevPanelId, panelId, prefix) {
 		});
 	
         jQuery("#"+prefix+"\\["+panelId+"\\]\\.plannedInstallationDate").datepicker({ dateFormat: 'yy-mm-dd' });
-        jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseFrom").datepicker({ 
-        	dateFormat: 'yy-mm-dd',
-        	onClose: function( selectedDate ) {
-				jQuery( "#"+prefix+"\\["+panelId+"\\]\\.dayCloseTo").datepicker( "option", "minDate", selectedDate );
-			}
+        jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseFrom").timepicker({ 
+        	controlType: 'select',
+        	timeFormat: 'hh:mm tt',
+        	onClose: function(dateText, inst) {
+        		if (jQuery( "#"+prefix+"\\["+panelId+"\\]\\.dayCloseTo").val() != '') {
+        			var testStartDate = jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseFrom").timepicker('getDate');
+        			var testEndDate = jQuery( "#"+prefix+"\\["+panelId+"\\]\\.dayCloseTo").timepicker('getDate');
+        			if (testStartDate > testEndDate)
+        				jQuery( "#"+prefix+"\\["+panelId+"\\]\\.dayCloseTo").timepicker('setDate', testStartDate);
+        		}
+        		else {
+        			jQuery( "#"+prefix+"\\["+panelId+"\\]\\.dayCloseTo").val(dateText);
+        		}
+        	},
+        	onSelect: function (selectedDateTime){
+        		jQuery( "#"+prefix+"\\["+panelId+"\\]\\.dayCloseTo").timepicker('option', 'minDate', selectedDateTime );
+        	}
+        	/*onClose: function( selectedDate ) {
+				jQuery( "#"+prefix+"\\["+panelId+"\\]\\.dayCloseTo").timepicker( "option", "minDate", selectedDate );
+			},
+			onSelect: function (selectedDateTime){
+				jQuery( "#"+prefix+"\\["+panelId+"\\]\\.dayCloseTo").timepicker("option", "minDate", selectedDateTime );
+			}*/
        	});
-        jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseTo").datepicker({ 
-        	dateFormat: 'yy-mm-dd',
-       	 	onClose: function( selectedDate ) {
-				jQuery( "#"+prefix+"\\["+panelId+"\\]\\.dayCloseFrom").datepicker( "option", "maxDate", selectedDate );
-			}
+        jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseTo").timepicker({ 
+        	controlType: 'select',
+        	timeFormat: 'hh:mm tt',
+        	onClose: function(dateText, inst) {
+        		if (jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseFrom").val() != '') {
+        			var testStartDate = jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseFrom").timepicker('getDate');
+        			var testEndDate = jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseTo").timepicker('getDate');
+        			if (testStartDate > testEndDate)
+        				jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseFrom").timepicker('setDate', testEndDate);
+        		}
+        		else {
+        			jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseFrom").val(dateText);
+        		}
+        	},
+        	onSelect: function (selectedDateTime){
+        		jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseFrom").timepicker('option', 'maxDate', selectedDateTime );
+        	}
+       	 	/*onClose: function( selectedDate ) {
+				jQuery( "#"+prefix+"\\["+panelId+"\\]\\.dayCloseFrom").timepicker( "option", "maxDate", selectedDate );
+			},
+			onSelect: function (selectedDateTime){
+				jQuery( "#"+prefix+"\\["+panelId+"\\]\\.dayCloseFrom").timepicker("option", "maxDate", selectedDateTime );
+			}*/
        	});
         
         jQuery("#"+prefix+"\\["+panelId+"\\]\\.dataforprintingAsAbove").on("click", function(e) {

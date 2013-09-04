@@ -49,6 +49,17 @@ modules = {
         resource url: 'css/jquery-ui/jquery-ui-1.10.3.custom.min.css', disposition: 'head'
         dependsOn 'jquery'
     }
+	
+	jquery_timepicker {
+		resource url: 'js/jquery-ui/jquery-ui-timepicker-addon.min.js', disposition: 'head'
+		resource url: 'js/jquery-ui/jquery-ui-timepicker-addon.min.css', disposition: 'head'
+		dependsOn 'jquery_ui'
+	}
+	
+	jquery_timepicker_pl {
+		resource url: 'js/jquery-ui/jquery-ui-timepicker-addon-pl.js', disposition: 'head'
+		dependsOn 'jquery_timepicker'
+	}
 
     bootstrap {
         resource url: 'js/bootstrap.min.js'

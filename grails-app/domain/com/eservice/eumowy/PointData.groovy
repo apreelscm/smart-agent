@@ -11,8 +11,8 @@ class PointData implements Serializable {
 	String nip
 	String nazwa
 	String ulica
-	Integer nrLokalu
-	Integer nrBudynku
+	String nrLokalu
+	String nrBudynku
 	String miejscowosc
 	String kodPocztowy
 	String poczta
