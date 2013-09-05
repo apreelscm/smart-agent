@@ -168,8 +168,10 @@ class ProcessService {
 
             if(data.name in ["allPoses", "allPoints", "points", "poses"]){
                 //TODO implement
-            }
-            else{
+            } else if (data.name in ["umowaOznOd", "umowaOznDo", "dataAneksowanejUmowyPos", "dataAneksowanejUmowyPrepaid"]){
+                cmd[data.name] = data.value?.trim()? DateUtils.getFormattedDate(DateUtils.parseWithTimezone(data.value), DateUtils.YYYY_MM_DD) : "";
+                return;
+            } else{
                 //println("data.name:"+data.name+ " value:"+data.value)
                 cmd[data.name] = data.value ?: ""
             }
@@ -413,6 +415,11 @@ class ProcessService {
 
             if(["allPoses", "allPoints", "points"].contains(key)){
                 //TODO implementacja logiki dla punktow
+                return;
+            }
+
+            if(["umowaOznOd", "umowaOznDo", "dataAneksowanejUmowyPos", "dataAneksowanejUmowyPrepaid"].contains(key)){
+                  processDataList.add(new ProcessData(name: "${key}", value:"${value? DateUtils.formatWithTimezone(DateUtils.parseDate(value)): ''}"));
                 return;
             }
 

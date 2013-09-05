@@ -572,11 +572,7 @@ class ProcessCommand implements Serializable{
 
     def isFromCbd(def property){
         def cbdName = property+"Cbd"
-        if (this.metaClass.hasProperty(this, cbdName) && this."$cbdName"?.trim()){
-            true
-        } else {
-            false
-        }
+        return (this.metaClass.hasProperty(this, cbdName) && this."$cbdName"?.trim())
     }
 
 	ProcessCommand() {

@@ -1,5 +1,9 @@
 package com.eservice.eumowy.util
 
+import org.joda.time.DateTime
+import org.joda.time.format.DateTimeFormat
+import org.joda.time.format.DateTimeFormatter
+
 import java.text.SimpleDateFormat
 
 /**
@@ -14,6 +18,7 @@ public class DateUtils {
     static YYYY_MM_DD = "yyyy-MM-dd"
     static DD_MM_YYYY = "dd-MM-yyyy"
     static DEFAULT_DATE_FORMAT = YYYY_MM_DD
+    static WITH_TIMEZONE = "yyyy-MM-dd'T'HH:mm:ssZ"
 
 
     def static Date getCurrentDate(){
@@ -50,5 +55,13 @@ public class DateUtils {
         } catch (Exception e){
             false
         }
+    }
+
+    static formatWithTimezone(def dateObj){
+        DateTimeFormat.forPattern(WITH_TIMEZONE).print(new DateTime(dateObj.getTime()));
+    }
+
+    static parseWithTimezone(def dateStr){
+        new Date(DateTimeFormat.forPattern(WITH_TIMEZONE).parseDateTime(dateStr).getMillis());
     }
 }
