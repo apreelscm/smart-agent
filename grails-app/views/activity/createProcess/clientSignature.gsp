@@ -39,11 +39,11 @@
 				jQuery("#"+linkid).parent().addClass("disabled");
 				isSubscriptionDone[linkid] = true;
 				
-				if (updateSubscriptionStatusCount == 1) {
+				if (updateSubscriptionStatusCount >= 1 && updateSubscriptionStatusCount <= 2) {
 		    		jQuery.post($(location).attr("href"), {_eventId_updateProcessStatus: "", processStatus: "WAIT_FOR_SUBSCRIPTION", subscriptionId: subId}, function(data){});
 				}
 				
-				if (updateSubscriptionStatusCount == 2) { // JUST FOR NOW IT's 2! CHANGE IT!
+				if (updateSubscriptionStatusCount == 3) {
                 	jQuery.post($(location).attr("href"), {_eventId_updateProcessStatus: "", processStatus: "SUBSCRIPTIONS_DONE", subscriptionId: subId}, function(data){});
 				}
 			}
