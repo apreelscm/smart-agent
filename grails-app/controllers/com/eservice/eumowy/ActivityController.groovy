@@ -172,40 +172,44 @@ class ActivityController {
         clientSignature {
             onEntry {
                 def processInstance = flow.processInstance
-                def totalPagesCount = 0
-                def data = PdfMapper.mapAllDataToPDFData(processInstance.processData, processInstance.points)
-
-                processInstance.signatures.each { sig ->
-                    log.info "SIGNATURE NAME: " + sig.name + " PDF TEMPLATE PATH: " + sig.templatePath
-
-                    byte[] documentData = pdfService.fillPdfFormFromURIWithFaksymile(sig, data, PdfService.FontType.ARIAL)
-
-                    if(!documentData) return
-
-                    int pc = pdfService.getPageCountFromPdf(documentData)
-                    totalPagesCount += pc
-
-                    if (processService.findDocumentByName(processInstance.documents, sig.templatePath) == null) {
-                        log.info "Creating new document [${sig.templatePath}]"
-                        DocumentFile df = new DocumentFile(name: sig.templatePath, dateCreated: new Date(), lastUpdated: new Date(), pagesCount: pc)
-                        df.setContent(new DocumentContent(content: documentData))
-                        df.save(flush: true)
-                        log.info "DF id: " + df.id + " PageCount: " + df.pagesCount
-                        log.info "Process ID: " + processInstance.id
-                        processInstance.addToDocuments(df)
-                        processInstance.discard();
-                    }
-                    else {
-                        log.info "Updating existing document [${sig.templatePath}]"
-                        DocumentFile df = processService.findDocumentByName(processInstance.documents, sig.templatePath)
-                        df.content.setContent(documentData)
-                        df.save(flush: true)
-                    }
-                }
-
-                flow.totalPagesCount = totalPagesCount;
-                processInstance.save(flush:true)
-                flow.processInstance = processInstance
+                
+				if (!flow.skipDocumentGeneration) {
+					def totalPagesCount = 0
+	                def data = PdfMapper.mapAllDataToPDFData(processInstance.processData, processInstance.points)
+					
+	                processInstance.signatures.each { sig ->
+	                    log.info "SIGNATURE NAME: " + sig.name + " PDF TEMPLATE PATH: " + sig.templatePath
+	
+	                    byte[] documentData = pdfService.fillPdfFormFromURIWithFaksymile(sig, data, PdfService.FontType.ARIAL)
+	
+	                    if(!documentData) return
+	
+	                    int pc = pdfService.getPageCountFromPdf(documentData)
+	                    totalPagesCount += pc
+	
+	                    if (processService.findDocumentByName(processInstance.documents, sig.templatePath) == null) {
+	                        log.info "Creating new document [${sig.templatePath}]"
+	                        DocumentFile df = new DocumentFile(name: sig.templatePath, dateCreated: new Date(), lastUpdated: new Date(), pagesCount: pc)
+	                        df.setContent(new DocumentContent(content: documentData))
+	                        df.save(flush: true)
+	                        log.info "DF id: " + df.id + " PageCount: " + df.pagesCount
+	                        log.info "Process ID: " + processInstance.id
+	                        processInstance.addToDocuments(df)
+	                        processInstance.discard();
+	                    }
+	                    else {
+	                        log.info "Updating existing document [${sig.templatePath}]"
+	                        DocumentFile df = processService.findDocumentByName(processInstance.documents, sig.templatePath)
+	                        df.content.setContent(documentData)
+	                        df.save(flush: true)
+	                    }
+	                }
+	
+	                flow.totalPagesCount = totalPagesCount;
+	                processInstance.save(flush:true)
+	                flow.processInstance = processInstance
+				}
+				flow.skipDocumentGeneration = false
             }
             render(view: "../createProcess/clientSignature", model: [
                     processInstance: flow.processInstance,
@@ -220,19 +224,20 @@ class ActivityController {
                 log.info params
 				def processInstance = flow.processInstance
                 if (params.processStatus.equals("WAIT_FOR_SUBSCRIPTION")) {
+					processInstance.status = Process.ProcessStatus.WAIT_FOR_SUBSRIPTION
                     Subscription sub = Subscription.get(params.subscriptionId)
                     processInstance.addToSubscriptions(sub)
-                    processInstance.status = Process.ProcessStatus.WAIT_FOR_SUBSRIPTION
                 }
                 else if (params.processStatus.equals("SUBSCRIPTIONS_DONE")) {
+					processInstance.status = Process.ProcessStatus.SUBSCRIPTIONS_DONE
                     Subscription sub = Subscription.get(params.subscriptionId)
                     processInstance.addToSubscriptions(sub)
-                    processInstance.status = Process.ProcessStatus.SUBSCRIPTIONS_DONE
                 }
                 else if (params.processStatus.equals("REJECTED")) {
                     processInstance.status = Process.ProcessStatus.REJECTED
                 }
-				processInstance.discard()
+				
+				flow.skipDocumentGeneration = true
 				flow.processInstance = processInstance
             }.to "clientSignature"
             on("noaccept") {
@@ -500,8 +505,8 @@ class ActivityController {
                 processInstance = processService.populateProcessWithData(processInstance,cmd)
                 processInstance.notesToCoa = cmd.notes;
 
-                flow.representative1 = cmd.reprezentant1Tytul + " " + cmd.reprezentant1Imie + " " + cmd.reprezentant1Nazwisko
-                flow.representative2 = cmd.reprezentant2Tytul + " " + cmd.reprezentant2Imie + " " + cmd.reprezentant2Nazwisko
+                flow.representative1 = [name: cmd.reprezentant1Imie, surname: cmd.reprezentant1Nazwisko]
+                flow.representative2 = [name: cmd.reprezentant2Imie, surname: cmd.reprezentant2Nazwisko]
 
                 if (!processInstance.save()){
                     processInstance.errors.each {

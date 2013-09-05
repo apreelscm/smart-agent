@@ -1,17 +1,10 @@
 package com.eservice.eumowy
 
-import com.eservice.eumowy.command.ProcessCommand;
+import grails.test.mixin.*
 
-//import grails.test.mixin.*
-
-import com.eservice.eumowy.pdfmapper.PdfMapper
-import org.joda.time.DateTime
-import org.joda.time.format.DateTimeFormat
-import org.joda.time.format.DateTimeFormatter
-import org.joda.time.format.ISODateTimeFormat
 import org.junit.Test
-
-import javax.xml.bind.DatatypeConverter
+import com.eservice.eumowy.command.ProcessCommand
+import com.eservice.eumowy.pdfmapper.PdfMapper
 
 class PdfMapperTest {
 
@@ -144,7 +137,7 @@ class PdfMapperTest {
 
     }
 
-    @Test
+    /*@Test
     public void testJodaTime() {
 
         def current = new Date();
@@ -165,7 +158,7 @@ class PdfMapperTest {
 //        DateTimeFormatter parser2 = ISODateTimeFormat.dateTimeNoMillis();
 //        String jtdate = "2010-01-01T12:00:00+01:00";
 //        println parser2.parseDateTime(jtdate)
-    }
+    }*/
 
 
     @Test

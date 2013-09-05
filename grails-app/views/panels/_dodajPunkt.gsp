@@ -20,6 +20,7 @@
 <r:script>
 	
 	jQuery(document).ready(function() {
+		jQuery("#conitnueButton").prop("disabled", true);
 		var panelTemplate = jQuery("#hiddenPanel").html();
 		var panelCount = ${data.points.size()};
 		var panelInternalCount = ${data.points.size()};

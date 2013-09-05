@@ -167,34 +167,34 @@
 				return false;
 			});
 			
-			%{--<g:each in="${com.eservice.eumowy.Activity$ClientType?.values()}">
-			jQuery("#subscribe-${it.name()}").on('click', function(e) {
-				e.preventDefault();
-				
-				var dialog = jQuery('#subscriptionDialog');
-				if (jQuery('#subscriptionDialog').length == 0) {
-					dialog = jQuery('<div id="subscriptionDialog" style="display:hidden"></div>').appendTo('body');
+			<g:each in="${processInstance.subscriptions}">
+				console.log("${it.name + ' ' + it.surname} - Reprezentant");
+				console.log("${it.name + ' ' + it.surname} - Reprezentant");
+				console.log("${it.name + ' ' + it.surname} - Pracownik eService");
+				if(jQuery("#subscribe-REPRESENTATIVE1").text() == "${it.name + ' ' + it.surname} - Reprezentant") {
+					jQuery("#subscribe-REPRESENTATIVE1").parent().addClass("disabled");
+					updateSubscriptionStatusCount++;
+					jQuery("#clientSignatureBackButton").addClass("disabled");
+					isSubscriptionDone["subscribe-REPRESENTATIVE1"] = true;
 				}
-				
-				dialog.load(
-		            "/eumowy/subscription/inlineview?signername=${it.encodeAsURL()}&linkid=subscribe-${it.name()}",
-		            {},
-		            function(responseText, textStatus, XMLHttpRequest) {
-		                dialog.dialog({
-		                	modal: true,
-      						width: 750
-		                });
-		            }
-		        );
-		        
-				return false;
-			});
-			</g:each>--}%
+				if(jQuery("#subscribe-REPRESENTATIVE2").text() == "${it.name + ' ' + it.surname} - Reprezentant") {
+					jQuery("#subscribe-REPRESENTATIVE2").parent().addClass("disabled");
+					updateSubscriptionStatusCount++;
+					jQuery("#clientSignatureBackButton").addClass("disabled");
+					isSubscriptionDone["subscribe-REPRESENTATIVE2"] = true;
+				}
+				if(jQuery("#subscribe-PH").text() == "${it.name + ' ' + it.surname} - Pracownik eService") {
+					jQuery("#subscribe-PH").parent().addClass("disabled");
+					updateSubscriptionStatusCount++;
+					jQuery("#clientSignatureBackButton").addClass("disabled");
+					isSubscriptionDone["subscribe-PH"] = true;
+				}
+			</g:each>
 			
 			jQuery("#subscribe-REPRESENTATIVE1").on('click', function(e) {
 				e.preventDefault();
 				
-				var signerName = jQuery(e.target).text();
+				//var signerName = jQuery(e.target).text();
 				
 				var dialog = jQuery('#subscriptionDialog');
 				if (jQuery('#subscriptionDialog').length == 0) {
@@ -202,7 +202,7 @@
 				}
 				
 				dialog.load(
-		            "/eumowy/subscription/inlineview?signername="+encodeURI(signerName)+"&linkid=subscribe-REPRESENTATIVE1",
+		            "/eumowy/subscription/inlineview?name="+encodeURI("${representative1.name}")+"&surname="+encodeURI("${representative1.surname}")+"&linkid=subscribe-REPRESENTATIVE1",
 		            {},
 		            function(responseText, textStatus, XMLHttpRequest) {
 		                dialog.dialog({
@@ -218,7 +218,7 @@
 			jQuery("#subscribe-REPRESENTATIVE2").on('click', function(e) {
 				e.preventDefault();
 				
-				var signerName = jQuery(e.target).text();
+				//var signerName = jQuery(e.target).text();
 				
 				var dialog = jQuery('#subscriptionDialog');
 				if (jQuery('#subscriptionDialog').length == 0) {
@@ -226,7 +226,7 @@
 				}
 				
 				dialog.load(
-		            "/eumowy/subscription/inlineview?signername="+encodeURI(signerName)+"&linkid=subscribe-REPRESENTATIVE2",
+		            "/eumowy/subscription/inlineview?name="+encodeURI("${representative2.name}")+"&surname="+encodeURI("${representative2.surname}")+"&linkid=subscribe-REPRESENTATIVE2",
 		            {},
 		            function(responseText, textStatus, XMLHttpRequest) {
 		                dialog.dialog({
@@ -242,15 +242,15 @@
 			jQuery("#subscribe-PH").on('click', function(e) {
 				e.preventDefault();
 				
-				var signerName = jQuery(e.target).text();
-				console.log("Name: " + signerName);
+				//var signerName = jQuery(e.target).text();
+
 				var dialog = jQuery('#subscriptionDialog');
 				if (jQuery('#subscriptionDialog').length == 0) {
 					dialog = jQuery('<div id="subscriptionDialog" style="display:hidden"></div>').appendTo('body');
 				}
 				
 				dialog.load(
-		            "/eumowy/subscription/inlineview?signername="+encodeURI(signerName)+"&linkid=subscribe-PH",
+		            "/eumowy/subscription/inlineview?name="+encodeURI("${processInstance.phFirstName}")+"&surname="+encodeURI("${processInstance.phSurname}")+"&linkid=subscribe-PH",
 		            {},
 		            function(responseText, textStatus, XMLHttpRequest) {
 		                dialog.dialog({
@@ -329,8 +329,8 @@
         	<fieldset id="clientSignaturePersons" class="subpanel-fieldset">
         		<legend><g:message code="clientSignature.signing.people" default="Osoby podpisujące" /></legend>
         		<ul class="table-list">
-					<li><span><a class="big-link" id="subscribe-REPRESENTATIVE1" href="#">${representative1} - Reprezentant</a></span></li>
-					<li><span><a class="big-link" id="subscribe-REPRESENTATIVE2" href="#">${representative2} - Reprezentant</a></span></li>
+					<li><span><a class="big-link" id="subscribe-REPRESENTATIVE1" href="#">${representative1.name} ${representative1.surname} - Reprezentant</a></span></li>
+					<li><span><a class="big-link" id="subscribe-REPRESENTATIVE2" href="#">${representative2.name} ${representative2.surname} - Reprezentant</a></span></li>
 					<li><span><a class="big-link" id="subscribe-PH" href="#">${processInstance.phFirstName} ${processInstance.phSurname} - Pracownik eService</a></span></li>
         		</ul>
         	</fieldset>

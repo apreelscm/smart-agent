@@ -36,7 +36,7 @@
 <section id="index-subscription">
     <h1 class="ng linia-bottom">Podpis</h1>
 
-    <h3 style="margin-top: 20px">${params.signername}</h3>
+    <h3 style="margin-top: 20px">${params.name} ${params.surname}</h3>
 
     <g:form  id="subscriptionForm" action="saveSubscription" class="sigPad">
         <p>
@@ -52,7 +52,8 @@
             <input type="hidden" name="content" class="output">
         </div>
 
-
+		<input type="hidden" name="name" value="${params.name}" />
+		<input type="hidden" name="surname" value="${params.surname}" />
         <fieldset style="margin-top: 20px;">
             <a href="#clear" class="button action clearButton"><g:message code="subscription.clear" /></a>
             <g:submitButton id="submitSubscription" name="Złożono podpis" class="button submit"/>
