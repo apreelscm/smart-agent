@@ -3,6 +3,7 @@ package signaturepad;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 
 import com.google.gson.Gson;
@@ -23,9 +24,10 @@ public class SignatureToImage {
                 Gson gson = new Gson();
         SignatureLine[] signatureLines = gson.fromJson(jsonString, SignatureLine[].class);
         
-        BufferedImage offscreenImage = new BufferedImage(600, 250, BufferedImage.TYPE_INT_RGB);
+        BufferedImage offscreenImage = new BufferedImage(600, 250, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = offscreenImage.createGraphics();
-        g2.setColor(Color.WHITE);
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2.setColor(new Color(0,0,0,1));
         g2.fillRect(0,0,700,300);
         g2.setPaint(Color.BLACK);
         g2.setStroke(new BasicStroke(3));
