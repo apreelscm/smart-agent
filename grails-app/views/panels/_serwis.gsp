@@ -10,10 +10,11 @@
                     <li><span class="align-left"><label> ${it.radio} <g:message code="${it.label}"/></label></span></li>
                 </g:radioGroup>
             </ul>
-            <ul table-list>
+            <ul class="table-list centre">
                 <li id="servicePayment">
-                    <span>
-                        <span><g:message code="panel.monthly.payment"/> <g:field type="number" step="any" name="obslugaEkonomicznyCena" value="${data.obslugaEkonomicznyCena}" style="width: 150px"/> <g:message code="panel.polish.currency"/></span>
+                    <span class="align-left"><g:message code="panel.monthly.payment"/></span>
+                    <span class="align-left">
+                        <eumowy:currencyField name="obslugaEkonomicznyCena" validatable="${data}" value="${data.obslugaEkonomicznyCena}" offset="30" />
                     </span>
                 </li>
             </ul>

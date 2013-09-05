@@ -1,3 +1,10 @@
+<style>
+.postfix{
+    text-align: right;
+}
+</style>
+
+
 <div id="ifplusPanel">
     <fieldset style="text-align: center">
         <div class="belka-glowna"><g:message code="panel.ifplus.title"/></div>
@@ -6,31 +13,32 @@
                 <li>
                     <span class="align-left"><g:message code="panel.visa"/></span>
                     <span class="align-left">
-                        <g:field type="number" step="any" name="ifOplataVISA" value="${data.ifOplataVISA}" readonly="true" style="width: 100px"/> <g:message code="panel.polish.currency"/>
+                        <eumowy:currencyField name="ifOplataVISA" value="${data.ifOplataVISA}" readonly="true" validatable="${data}" offset="27"/>
                     </span>
                 </li>
                 <li>
                     <span class="align-left"><g:message code="panel.mastercard"/></span>
                     <span class="align-left">
-                        <g:field type="number" step="any" name="ifOplataMasterCard" value="${data.ifOplataMasterCard}" readonly="true" style="width: 100px"/> <g:message code="panel.polish.currency"/>
+                        <eumowy:currencyField name="ifOplataMasterCard" value="${data.ifOplataMasterCard}" readonly="true" validatable="${data}" offset="27"/>
                     </span>
                 </li>
                 <li>
                     <span class="align-left"><g:message code="panel.dinersclub"/></span>
                     <span class="align-left">
-                        <g:field type="number" step="any" name="ifOplataDinersClub" value="${data.ifOplataDinersClub}" readonly="true" style="width: 100px"/> <g:message code="panel.polish.currency"/>
+                        <eumowy:currencyField name="ifOplataDinersClub" value="${data.ifOplataDinersClub}" readonly="true" validatable="${data}" offset="27"/>
                     </span>
                 </li>
                 <li>
                     <span class="align-left"><g:message code="panel.iko"/> </span>
                     <span class="align-left">
-                        <g:field type="number" step="any" name="ifOplataIKO" value="${data.ifOplataIKO}" readonly="true" style="width: 100px"/> <g:message code="panel.polish.currency"/>
+                        <eumowy:currencyField  name="ifOplataIKO" value="${data.ifOplataIKO}" readonly="true" validatable="${data}" offset="27"/>
                     </span>
                 </li>
                 <li>
                     <span class="align-right"><g:message code="panel.payment.for.pkopb"/></span>
                     <span class="align-left">
-                        <g:field type="number" step="any" name="ifOplataPKOPB" value="${data.ifOplataPKOPB}" readonly="true" style="width: 100px"/> <g:message code="panel.polish.currency"/>
+                        %{--TODO readonly = true--}%
+                        <eumowy:currencyField  name="ifOplataPKOPB" value="${data.ifOplataPKOPB}" readonly="true" validatable="${data}" offset="27" />
                     </span>
                 </li>
             </ul>

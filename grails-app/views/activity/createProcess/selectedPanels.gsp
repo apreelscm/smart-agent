@@ -108,8 +108,6 @@
     </g:hasErrors>
 
 
-
-
     <g:form class="panelsForm">
         <g:each var="panel" in="${processInstance.panels}" status="i">
             <g:if test="${panel.name.equals('danePunktu') == false && panel.name.equals('danePos') == false}">
@@ -121,7 +119,7 @@
             	</g:each>
             </g:if>
             <g:if test="${panel.name.equals('danePos')}">
-            	<g:each var="pos" in="${data.pos}" status="j">
+            	<g:each var="pos" in="${data.poses}" status="j">
             		<g:render template="/panels/danePos" model="[panelType: 'poses', id: j, pointData: pos]" />
             	</g:each>
             </g:if>

@@ -63,20 +63,26 @@ grails.exceptionresolver.params.exclude = ['password']
 grails.hibernate.cache.queries = false
 
 grails.views.javascript.library="jquery"
+grails.logging.jul.usebridge = true
 
 environments {
     development {
-        grails.logging.jul.usebridge = true
+        isPanelsValidationOn = true;
+    }
+    test {
+        isPanelsValidationOn = false;
     }
     production {
-        grails.logging.jul.usebridge = false
-        // TODO: grails.serverURL = "http://www.changeme.com"
+        isPanelsValidationOn = true;
     }
 }
 
 grails.gorm.default.constraints = {
     '*'(nullable: false, blank:true)
+    percentage(matches:"""^\\d{1,3}(\\.\\d{1,2})""")
+    number(matches:"""^\\d{1,9}(\\.\\d{1,2})""")
 }
+
 
 // log4j configuration
 log4j = {
@@ -204,4 +210,5 @@ fileuploader {
 }
 
 grails.gsp.reload.enable = true
+
 

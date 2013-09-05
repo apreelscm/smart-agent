@@ -3,7 +3,7 @@ package com.eservice.eumowy.command
 class AllPosCommand implements Serializable {
 	Integer id
     Boolean czyCbd
-    BigDecimal tpsId
+    Integer tpsId
 	Integer numerZestawuPos
 	Date dataOd
 	Date dataDo

@@ -12,6 +12,7 @@
             </ul>
             <ul>
                 <li id="aggrementDates">
+                    <!-- czas: ${data.umowaCzas} od: ${data.umowaOznOd} do: ${data.umowaOznDo} -->
                     <span>
                         <span><g:message code="panel.from"/></span>
                         <span><g:textField name="umowaOznOd" value="${data.umowaOznOd}" readonly="true" style="width: 120px;"/></span>

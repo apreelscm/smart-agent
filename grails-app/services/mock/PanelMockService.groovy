@@ -1,9 +1,5 @@
 package mock
-
-
-
 import com.eservice.eumowy.command.AllPointsCommand
-import com.eservice.eumowy.command.AllPosCommand
 import com.eservice.eumowy.command.ProcessCommand
 import com.eservice.eumowy.util.DateUtils
 
@@ -44,7 +40,7 @@ class PanelMockService {
     def getDaneAkceptanta(ProcessCommand cmd) {
         cmd.akceptantNazwaOficjalna= "KGHM Polska Miedź S.A."
 //        cmd.akceptantNazwaSieciowa= "KGHM nazwa sieciowa"
-        cmd.akceptantRegon = "1234567895"
+        cmd.akceptantRegon = "123456789"
 
         cmd.akceptantNazwaOficjalnaCbd= cmd.akceptantNazwaOficjalna
         cmd.akceptantNazwaSieciowaCbd= cmd.akceptantNazwaSieciowa

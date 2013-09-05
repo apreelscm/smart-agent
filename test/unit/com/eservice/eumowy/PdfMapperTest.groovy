@@ -2,6 +2,15 @@ package com.eservice.eumowy
 
 import grails.test.mixin.*
 
+//import grails.test.mixin.*
+
+import com.eservice.eumowy.pdfmapper.PdfMapper
+import com.eservice.eumowy.util.DateUtils
+import org.joda.time.DateTime
+import org.joda.time.format.DateTimeFormat
+import org.joda.time.format.DateTimeFormatter
+import org.joda.time.format.ISODateTimeFormat
+
 import org.junit.Test
 import com.eservice.eumowy.command.ProcessCommand
 import com.eservice.eumowy.pdfmapper.PdfMapper
@@ -139,6 +148,29 @@ class PdfMapperTest {
 
     /*@Test
     public void testJodaTime() {
+
+        println '-----------------------'
+        def dateStr = '2013-09-03T00:00:00+0200'
+        def dateStr2 = '2013-09-04T11:11:11+0200'
+        def dateStr3 = '2013-09-05T00:20:00+0200'
+
+        Date d1 = DateUtils.parseWithTimezone(dateStr);
+        Date d2 = DateUtils.parseWithTimezone(dateStr2);
+        Date d3 = DateUtils.parseWithTimezone(dateStr3);
+
+        assert dateStr.equals(DateUtils.formatWithTimezone(d1))
+        assert dateStr2.equals(DateUtils.formatWithTimezone(d2))
+        assert dateStr3.equals(DateUtils.formatWithTimezone(d3))
+        println '-----------------------'
+
+
+
+
+
+
+
+
+
 
         def current = new Date();
 

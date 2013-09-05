@@ -153,6 +153,11 @@ class PanelService {
         cmd.ifOplataDinersClub = calculatorService.getCalcProperty(calc,"OPLATA_IFPLUS_DINERSCLUB")
         cmd.ifOplataIKO = calculatorService.getCalcProperty(calc,"OPLATA_IFPLUS_IKO")
         cmd.ifOplataPKOPB = calculatorService.getCalcProperty(calc,"OPLATA_IFPLUS_PKOBP")
+
+
+
+
+
     }
 
     def getInformacjeDodatkowe(ProcessCommand cmd ,def calc) {

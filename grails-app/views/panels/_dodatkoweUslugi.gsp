@@ -5,43 +5,35 @@
             <table>
                 <tr>
                     <td><g:message code="panel.payment.daily.transaction.report"/></td>
-                    <td><g:field type="number" step="any" name="oplataZaDzienneZestawienieTransakcji" value="${data.oplataZaDzienneZestawienieTransakcji}" /></td>
-                    <td><g:message code="panel.polish.currency"/></td>
+                    <td><eumowy:currencyField  name="oplataZaDzienneZestawienieTransakcji" validatable="${data}" value="${data.oplataZaDzienneZestawienieTransakcji}"/></td>
                 </tr>
                 <tr>
                     <td><g:message code="panel.payment.monthly.transaction.report"/></td>
-                    <td><g:field type="number" step="any" name="oplataZaMiesieczneZestawienieTransakcji" value="${data.oplataZaMiesieczneZestawienieTransakcji}"/></td>
-                    <td><g:message code="panel.polish.currency"/></td>
+                    <td><eumowy:currencyField name="oplataZaMiesieczneZestawienieTransakcji" validatable="${data}" value="${data.oplataZaMiesieczneZestawienieTransakcji}"/></td>
                 </tr>
                 <tr>
                     <td><g:message code="panel.payment.confirmation.payment"/></td>
-                    <td><g:field type="number" step="any" name="oplataZaPotwierdzenieWykonaniaPrzelewu" value="${data.oplataZaPotwierdzenieWykonaniaPrzelewu}"/></td>
-                    <td><g:message code="panel.polish.currency"/></td>
+                    <td><eumowy:currencyField name="oplataZaPotwierdzenieWykonaniaPrzelewu" validatable="${data}" value="${data.oplataZaPotwierdzenieWykonaniaPrzelewu}"/></td>
                 </tr>
                 <tr>
                     <td><g:message code="panel.payment.paper"/></td>
-                    <td><g:field type="number" step="any" name="oplataZaDostarczeniePapieru" value="${data.oplataZaDostarczeniePapieru}"/></td>
-                    <td><g:message code="panel.polish.currency"/></td>
+                    <td><eumowy:currencyField name="oplataZaDostarczeniePapieru" validatable="${data}"  value="${data.oplataZaDostarczeniePapieru}"/></td>
                 </tr>
                 <tr>
                     <td><g:message code="panel.payment.graphics"/></td>
-                    <td><g:field type="number" step="any" name="oplataZaZmianeGrafiki" value="${data.oplataZaZmianeGrafiki}"/></td>
-                    <td><g:message code="panel.polish.currency"/></td>
+                    <td><eumowy:currencyField name="oplataZaZmianeGrafiki" validatable="${data}" value="${data.oplataZaZmianeGrafiki}"/></td>
                 </tr>
                 <tr>
                     <td><g:message code="panel.payment.instalation"/></td>
-                    <td><g:field type="number" step="any" name="oplataZaInstalacjePOS" value="${data.oplataZaInstalacjePOS}"/></td>
-                    <td><g:message code="panel.polish.currency"/></td>
+                    <td><eumowy:currencyField name="oplataZaInstalacjePOS" validatable="${data}" value="${data.oplataZaInstalacjePOS}"/></td>
                 </tr>
                 <tr>
                     <td><g:message code="panel.payment.gprs"/></td>
-                    <td><g:field type="number" step="any" name="oplataZaInstalacjeGPRS" value="${data.oplataZaInstalacjeGPRS}"/></td>
-                    <td><g:message code="panel.polish.currency"/></td>
+                    <td><eumowy:currencyField name="oplataZaInstalacjeGPRS" validatable="${data}" value="${data.oplataZaInstalacjeGPRS}"/></td>
                 </tr>
                 <tr>
                     <td><g:message code="panel.payment.foreing.currency"/></td>
-                    <td><g:field type="number" step="any" name="oplataZaUruchomienieWalutyObcej" value="${data.oplataZaUruchomienieWalutyObcej}"/></td>
-                    <td><g:message code="panel.polish.currency"/></td>
+                    <td><eumowy:currencyField name="oplataZaUruchomienieWalutyObcej" validatable="${data}" value="${data.oplataZaUruchomienieWalutyObcej}"/></td>
                 </tr>
             </table>
         </div>
