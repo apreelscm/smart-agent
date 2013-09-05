@@ -5,7 +5,13 @@ import com.eservice.eumowy.command.ProcessCommand;
 //import grails.test.mixin.*
 
 import com.eservice.eumowy.pdfmapper.PdfMapper
+import org.joda.time.DateTime
+import org.joda.time.format.DateTimeFormat
+import org.joda.time.format.DateTimeFormatter
+import org.joda.time.format.ISODateTimeFormat
 import org.junit.Test
+
+import javax.xml.bind.DatatypeConverter
 
 class PdfMapperTest {
 
@@ -23,7 +29,7 @@ class PdfMapperTest {
 		testObject.ulicaDoKorespondencjiTyp = "al."
 		testObject.ulicaDoKorespondencji = "Jerozolimskie"
 		
-		def data = PdfMapper.mapPointDataToPDFData(testObject)
+		def data = PdfMapper.mapPointDataToPDFData(testObject, 1)
 		
 		data.each { key, value ->
 			println key + " : " + value
@@ -137,6 +143,30 @@ class PdfMapperTest {
         println "empty boolean" + ala
 
     }
+
+    @Test
+    public void testJodaTime() {
+
+        def current = new Date();
+
+        println 'Test date: ' + current
+
+        String dateString = "2010-03-01T00:00:00-08:00";
+        String pattern = "yyyy-MM-dd'T'HH:mm:ssZ";
+        DateTimeFormatter dtf = DateTimeFormat.forPattern(pattern);
+
+        println 'String reprezentation: ' +  dtf.print(new DateTime(current.getTime()));
+
+        DateTime dateTime = dtf.parseDateTime(dtf.print(new DateTime(current.getTime())));
+        println 'Data po przeformatowaniu: ' + new Date(dateTime.getMillis());
+
+
+//
+//        DateTimeFormatter parser2 = ISODateTimeFormat.dateTimeNoMillis();
+//        String jtdate = "2010-01-01T12:00:00+01:00";
+//        println parser2.parseDateTime(jtdate)
+    }
+
 
     @Test
     public void testProcessCommand() {

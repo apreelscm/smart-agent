@@ -7,114 +7,109 @@ import java.text.NumberFormat
 
 
 class PdfMapper {
-	static Logger LOG = Logger.getLogger(PdfMapper.class)
-	
-	static mapAllDataToPDFData(def process, def points) {
-		HashMap<String, String[]> dataMap = new HashMap<String, String[]>()
-		
-		points?.each { point ->
-			dataMap.putAll(mapPointAndPosDataToPDFData(point))
-		}
-		
-		dataMap.putAll(mapProcessDataToPDFData(process))
-		
-		return dataMap
-	}
-	
-	static mapPointAndPosDataToPDFData(def pd) {
-		def pointDataMap = mapPointDataToPDFData(pd)
-		def posDataMap = mapPosDataToPDFData(pd.posDatas)
-		pointDataMap.putAll(posDataMap)
-		
-		return pointDataMap
-	}
-	
-	static mapPointDataToPDFData(def pd) {
-		Map<String, String[]> data = new HashMap<String, String[]>()
-		
-		pd.properties.each { key, value ->
-			log.info "PointData Key: " + key
-			if (["class", "posDatas", "errors", "constraints", "processId", "cbdId", "pointDetailsId", "empty"].contains(key) || value == null){
-				return
-			}
-			
-			def methodName = "map" + key.capitalize()
-			if (PdfMapper.metaClass.respondsTo(PdfMapper, methodName)) {
-				PdfMapper."${methodName}"(data, pd, key, value)
-				return
-			}
-			
-			data.put(key, [value] as String[])
-		}
-		
-		pd.pointDetails?.properties.eachWithIndex { key, value, index ->
-			log.info "PointDataDetails Key: " + key
-			if (["class", "posDatas", "errors", "constraints", "processId", "cbdId", "pointDetailsId", "empty"].contains(key) || value == null){
-				return
-			}
-			
-			def methodName = "map" + key.capitalize()
-			if (PdfMapper.metaClass.respondsTo(PdfMapper, methodName)) {
-				PdfMapper."${methodName}"(data, pd, key, value)
-				return
-			}
-			
-			/*if (key == "wydrukUlica") {
-				PdfMapper.mapAdresPoint(data, pd, key, value, index + 1)
-				return
-			}
-			
-			if (key == "nazwaDoWydrukuZTerminalaPos") {
-				PdfMapper.mapNazwaDoWydrukuZTerminalaPosPoint(data, pd, key, value, index + 1)
-				return
-			}*/
-			
-			data.put(key, [value] as String[])
-		}
-		
-		return data
-	}
-	
-	static mapPosDataToPDFData(def pd) {
-		Map<String, String[]> data = new HashMap<String, String[]>()
-		
-		pd.properties.each { key, value ->
-			log.info "PosData Key: " + key
-			if (["class", "cbdId", "process", "point", "errors", "constraints", "empty", "", ""].contains(key) || value == null){
-				return
-			}
-			
-			def methodName = "map" + key.capitalize()
-			if (PdfMapper.metaClass.respondsTo(PdfMapper, methodName)) {
-				PdfMapper."${methodName}"(data, pd, key, value)
-				return
-			}
-			
-			data.put(key, [value] as String[])
-		}
-		
-		pd.posDetails?.properties.each { key, value ->
-			log.info "PosDataDetails Key: " + key
-			if (["class", "cbdId", "process", "point", "errors", "constraints", "empty", "", ""].contains(key) || value == null){
-				return
-			}
-			
-			def methodName = "map" + key.capitalize()
-			if (PdfMapper.metaClass.respondsTo(PdfMapper, methodName)) {
-				PdfMapper."${methodName}"(data, pd, key, value)
-				return
-			}
-			
-			data.put(key, [value] as String[])
-		}
-		
-		return data
-	}
-	
-	static mapProcessDataToPDFData(def pd) {
-		Map<String, String[]> data = new HashMap<String, String[]>()
+    static Logger LOG = Logger.getLogger(PdfMapper.class)
 
-		pd.each { processData ->
+    static mapAllDataToPDFData(def process, def points) {
+        HashMap<String, String[]> dataMap = new HashMap<String, String[]>()
+
+        dataMap.putAll(mapProcessDataToPDFData(process))
+        points?.eachWithIndex { point, index ->
+            dataMap.putAll(mapPointAndPosDataToPDFData(point, index))
+        }
+        return dataMap
+    }
+
+    static mapPointAndPosDataToPDFData(def pd, def index) {
+        def pointDataMap = mapPointDataToPDFData(pd, index)
+        def posDataMap = mapPosDataToPDFData(pd.posDatas)
+        pointDataMap.putAll(posDataMap)
+
+        return pointDataMap
+    }
+
+    static mapPointDataToPDFData(def pointData, def index) {
+        Map<String, String[]> data = new HashMap<String, String[]>()
+
+        pointData.properties.each { key, value ->
+            log.info "PointData Key: " + key + " value: " + value
+            if (["class", "posDatas", "errors", "constraints", "processId", "cbdId", "pointDetailsId", "empty"].contains(key) || value == null){
+                return
+            }
+
+            def methodName = "map" + key.capitalize() + "Point"
+            if (PdfMapper.metaClass.respondsTo(PdfMapper, methodName)) {
+                PdfMapper."${methodName}"(data, pointData, key, value)
+                return
+            }
+
+            data.put(key, [value] as String[])
+        }
+
+        data.putAll(mapPointDataDetailsToPDFData(pointData, index));
+        return data
+    }
+
+    private static mapPointDataDetailsToPDFData(def pointData, def index) {
+        Map<String, String[]> data = new HashMap<String, String[]>()
+
+        pointData.pointDetails?.properties.each { key, value ->
+//            println  "PointDataDetails Key: " + key  +  " value: " + value + " index: " + index
+
+            if (["class", "posDatas", "errors", "constraints", "processId", "cbdId", "pointDetailsId", "empty"].contains(key) || value == null){
+                return
+            }
+
+            def methodName = "map" + key.capitalize() + "PointDataDetails"
+            if (PdfMapper.metaClass.respondsTo(PdfMapper, methodName)) {
+                PdfMapper."${methodName}"(data, pointData, key, value, index+1)
+                return
+            }
+            data.put(key, [value] as String[])
+        }
+        return data
+    }
+
+    static mapPosDataToPDFData(def pd) {
+        Map<String, String[]> data = new HashMap<String, String[]>()
+
+        pd.properties.each { key, value ->
+            log.info "PosData Key: " + key
+            if (["class", "cbdId", "process", "point", "errors", "constraints", "empty", "", ""].contains(key) || value == null){
+                return
+            }
+
+            def methodName = "map" + key.capitalize()
+            if (PdfMapper.metaClass.respondsTo(PdfMapper, methodName)) {
+                PdfMapper."${methodName}"(data, pd, key, value)
+                return
+            }
+
+            data.put(key, [value] as String[])
+        }
+
+        pd.posDetails?.properties.each { key, value ->
+            log.info "PosDataDetails Key: " + key
+            if (["class", "cbdId", "process", "point", "errors", "constraints", "empty", "", ""].contains(key) || value == null){
+                return
+            }
+
+            def methodName = "map" + key.capitalize()
+            if (PdfMapper.metaClass.respondsTo(PdfMapper, methodName)) {
+                PdfMapper."${methodName}"(data, pd, key, value)
+                return
+            }
+
+            data.put(key, [value] as String[])
+        }
+
+        return data
+    }
+
+    static mapProcessDataToPDFData(def pd) {
+        Map<String, String[]> data = new HashMap<String, String[]>()
+
+        pd.each { processData ->
+//            println  "ProcessData name: " + processData.name  +  " value: " + processData.value
 
             //formatowanie procentowej wartosci platnosci karty
             if (processData.name.endsWith('Pr')){
@@ -131,72 +126,68 @@ class PdfMapper {
             def methodName = "map" + processData.name.capitalize()+"Process"
 
             if (PdfMapper.metaClass.respondsTo(PdfMapper, methodName)) {
-				PdfMapper."${methodName}"(data, pd, processData.name, processData.value)
-				return
-			}
-			
-			if ("true".equals(processData.value) == true || "false".equals(processData.value) == true) {
-				data.put(processData.name, [processData.value, "", "checkbox"] as String[])
-			}
-			else {
-				data.put(processData.name, [processData.value] as String[])
-			}
-		}
-		
-		data.each { key, value ->
-			log.info "Mapping < " + key + " : " + value + " >"
-		}
-		
-		return data
-	}
+                PdfMapper."${methodName}"(data, pd, processData.name, processData.value)
+                return
+            }
 
-    private static def formatDoubleValue(def data, def processData, def suffix) {
-        if (processData && processData.value && processData.value.isDouble()){
-            DecimalFormat df = (DecimalFormat)NumberFormat.getNumberInstance(new Locale("pl", "PL"));
-            def fn = df.format(processData.value.toDouble()) + ' ' + suffix;
-            data.put(processData.name, [fn] as String[])
+            if ("true".equals(processData.value) == true || "false".equals(processData.value) == true) {
+                data.put(processData.name, [processData.value, "", "checkbox"] as String[])
+            }
+            else {
+                data.put(processData.name, [processData.value] as String[])
+            }
         }
+
+        data.each { key, value ->
+            log.info "Mapping < " + key + " : " + value + " >"
+        }
+
+        return data
     }
 
-    private static mapNrMerchanta(def data, def pd, def key, def value) {
-		data.put(key+"1", [value.substring(0, 5)] as String[])
-		data.put(key+"2", [value.substring(5, 10)] as String[])
-		data.put(key+"3", [value.substring(10, 12)] as String[])
-		data.put(key+"4", [value.substring(12, 15)] as String[])
-	}
-	
-	private static mapUlicaDoKorespondencji(def data, def pd, def key, def value) {
-		data.put(key, [pd.ulicaDoKorespondencjiTyp + " " + value] as String[])
-	}
-	
-	private static mapUlicaDoKorespondencjiTyp(def data, def pd, def key, def value) {}
-	
-	private static mapAdresPoint(def data, def pd, def key, def value, def index) {
-		
-		
-		getFromPointDataSet(pd, 'wydrukNrLokalu')? "/"+getFromPointDataSet(pd, 'wydrukNrLokalu'):""
-		
-		data.put("adres"+index, [getFromPointDataSet(pd, 'wydrukUlica') + " " + value + " " + getFromPointDataSet(pd, 'wydrukNrBudynku') +  getFromPointDataSet(pd, 'wydrukNrLokalu')? "/"+getFromPointDataSet(pd, 'wydrukNrLokalu'):"" + " " + getFromPointDataSet(pd, 'wydrukMiasto') + " " + getFromPointDataSet(pd, 'wydrukKodPocztowy')] as String[])
-	}
-	
-	private static mapNazwaDoWydrukuZTerminalaPosPoint(def data, def pd, def key, def value, def index) {
-		data.put("punkt"+index, [value] as String[])
-	}
-	
-	private static mapScoringDochodowoscProcess(def data, def pd, def key, def value) {
-		data.put("dochodowosc", [value] as String[])
-	}
+    //------------------- POINT METHODS --------------------------------
+
+    private static mapNrMerchantaPoint(def data, def pd, def key, def value) {
+        data.put(key+"1", [value.substring(0, 5)] as String[])
+        data.put(key+"2", [value.substring(5, 10)] as String[])
+        data.put(key+"3", [value.substring(10, 12)] as String[])
+        data.put(key+"4", [value.substring(12, 15)] as String[])
+    }
+
+    private static mapUlicaDoKorespondencjiPoint(def data, def pd, def key, def value) {
+        data.put(key, [pd.ulicaDoKorespondencjiTyp + " " + value] as String[])
+    }
+
+    //------------------- POINT DATA DETAILS METHODS --------------------------------
+
+    private static mapWydrukUlicaPointDataDetails(def data, def pointData, def key, def value, def index) {
+
+        //TODO - mozna pomyslec nad sprawdzeniem czy mieszkanie jest puste
+
+        def result = (value + " " + getFromPointDataDetails(pointData, 'wydrukNrDomu') +"/"+ getFromPointDataDetails(pointData, 'wydrukNrLokalu') + " " + getFromPointDataDetails(pointData, 'wydrukMiasto') + " " + getFromPointDataDetails(pointData, 'wydrukKodPocztowy'))
+        data.put("adres"+index, [result] as String[])
+    }
+
+    private static mapNazwaDoWydrukuZTerminalaPosPointDataDetails(def data, def pointData, def key, def value, def index) {
+        data.put("punkt"+index, [value] as String[])
+    }
+
+    //------------------- PROCESS METHODS --------------------------------
+
+    private static mapScoringDochodowoscProcess(def data, def pd, def key, def value) {
+        data.put("dochodowosc", [value] as String[])
+    }
 
     private static mapReprezentant1ImieProcess(def data, def pd, def key, def value) {
-        data.put("reprezentant1", [value + " " + getFromPointDataSet(pd, 'reprezentant1Nazwisko')] as String[])
+        data.put("reprezentant1", [value + " " + getFromProcessDataSet(pd, 'reprezentant1Nazwisko')] as String[])
     }
 
     private static mapReprezentant2ImieProcess(def data, def pd, def key, def value) {
-        data.put("reprezentant2", [value + " " + getFromPointDataSet(pd, 'reprezentant2Nazwisko')] as String[])
+        data.put("reprezentant2", [value + " " + getFromProcessDataSet(pd, 'reprezentant2Nazwisko')] as String[])
     }
 
     private static mapAkceptantUlicaProcess(def data, def pd, def key, def value) {
-        data.put("akceptantSiedziba", [getFromPointDataSet(pd, 'akceptantUlicaTytul') + " " + value + " " + getFromPointDataSet(pd, 'akceptantNrDomu') + getFromPointDataSet(pd, 'wydrukNrMieszkania')? "/"+getFromPointDataSet(pd, 'wydrukNrMieszkania'):"" + " " + getFromPointDataSet(pd, 'akceptantMiasto')] as String[])
+        data.put("akceptantSiedziba", [getFromProcessDataSet(pd, 'akceptantUlicaTytul') + " " + value + " " + getFromProcessDataSet(pd, 'akceptantNrDomu') + getFromProcessDataSet(pd, 'wydrukNrMieszkania')? "/"+getFromProcessDataSet(pd, 'wydrukNrMieszkania'):"" + " " + getFromProcessDataSet(pd, 'akceptantMiasto')] as String[])
     }
 
     private static mapAkceptantNazwaOficjalnaProcess(def data, def pd, def key, def value) {
@@ -283,10 +274,10 @@ class PdfMapper {
         println 'Working with property: ' + key
         addCheckbox(data, key, 'true', value);
     }
-	
-	private static mapDccZakresUruchomieniaProcess(def data, def pd, def key, def value) {
-		addCheckboxes(data, ["noweZestPos":"obecne_i_nowe", "obecneZestPos":"obecne", "phu":"wskazane"], value)
-	}
+
+    private static mapDccZakresUruchomieniaProcess(def data, def pd, def key, def value) {
+        addCheckboxes(data, ["noweZestPos":"obecne_i_nowe", "obecneZestPos":"obecne", "phu":"wskazane"], value)
+    }
 
     private static mapInformacjaHandlowaProcess(def data, def pd, def key, def value) {
         addCheckboxes(data, ["informacjaHandlowaTak": "true", "informacjaHandlowaNie": "false"], value)
@@ -300,9 +291,27 @@ class PdfMapper {
         addCheckboxes(data, ["umNieOzn": "nieoznaczony", "umOzn": "oznaczony"], value)
     }
 
-    private static getFromPointDataSet(def pd, def key){
-        def result = pd.find{ processData -> processData.name.equals(key)}
+    //------------------- OTHER/UTIL METHODS --------------------------------
+
+    private static getFromProcessDataSet(def processDataSet, def key){
+        def result = processDataSet.find{ processData -> processData.name.equals(key)}
         (result && result?.value)?result?.value:""
+    }
+
+    private static getFromPointData(def pointData, def key){
+        getPropertyFromObject(pointData, key);
+    }
+
+    private static getFromPointDataDetails(def pointData, def key){
+        getPropertyFromObject(pointData?.pointDetails, key)
+    }
+
+    private static getPropertyFromObject(def object, def property){
+        if (object?.hasProperty(property)){
+            return object."${property}" ?: "";
+        } else {
+            return ""
+        }
     }
 
     private static addCheckbox(def data, def pdfName, def fieldValue, def value){
@@ -312,4 +321,13 @@ class PdfMapper {
     private static addCheckboxes(def data, def pdfKeyValue, def value){
         pdfKeyValue.each{ k, v ->  data.put(k, [v.equals(value), "", "checkbox"] as String[])}
     }
+
+    private static def formatDoubleValue(def data, def processData, def suffix) {
+        if (processData && processData.value && processData.value.isDouble()){
+            DecimalFormat df = (DecimalFormat)NumberFormat.getNumberInstance(new Locale("pl", "PL"));
+            def fn = df.format(processData.value.toDouble()) + ' ' + suffix;
+            data.put(processData.name, [fn] as String[])
+        }
+    }
+
 }
