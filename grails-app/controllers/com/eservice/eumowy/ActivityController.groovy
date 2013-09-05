@@ -234,10 +234,17 @@ class ActivityController {
                     Subscription sub = Subscription.get(params.subscriptionId)
                     processInstance.addToSubscriptions(sub)
                 }
-                else if (params.processStatus.equals("REJECTED")) {
+                else if (params.processStatus.equals("REJECTED")){
                     processInstance.status = Process.ProcessStatus.REJECTED
                 }
-				
+
+                if (!processInstance.save(flush:true)){
+                    processInstance.errors.each {
+                        log.error(it)
+                    }
+                    return error();
+                }
+
 				flow.skipDocumentGeneration = true
 				flow.processInstance = processInstance
             }.to "clientSignature"
