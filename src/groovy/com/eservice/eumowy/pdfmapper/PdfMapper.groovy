@@ -59,7 +59,7 @@ class PdfMapper {
 				return
 			}
 			
-			/*if (key == "wydrukUlica") {
+			if (key == "wydrukUlica") {
 				PdfMapper.mapAdresPoint(data, pd, key, value, index + 1)
 				return
 			}
@@ -67,7 +67,7 @@ class PdfMapper {
 			if (key == "nazwaDoWydrukuZTerminalaPos") {
 				PdfMapper.mapNazwaDoWydrukuZTerminalaPosPoint(data, pd, key, value, index + 1)
 				return
-			}*/
+			}
 			
 			data.put(key, [value] as String[])
 		}
