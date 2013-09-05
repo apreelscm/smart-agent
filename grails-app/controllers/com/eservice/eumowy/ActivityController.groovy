@@ -9,6 +9,7 @@ class ActivityController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
+    def grailsApplication
     def emailService
     def cbdService
     def attachmentService
@@ -486,8 +487,7 @@ class ActivityController {
 
                 flow.data = cmd;
 
-                if(cmd?.hasErrors()){
-                    log.error(params)
+                if(grailsApplication.config.isPanelsValidationOn && cmd.hasErrors()){
                     cmd.errors.each {
                         log.error(it)
                     }

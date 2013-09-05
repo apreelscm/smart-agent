@@ -441,6 +441,20 @@ class ProcessCommand implements Serializable{
 
 
     static constraints = {
+
+        oplataZaDzienneZestawienieTransakcji(nullable:true, blank:false, shared: "percentage")
+        oplataZaMiesieczneZestawienieTransakcji(nullable:true, blank:false, shared: "percentage")
+        oplataZaPotwierdzenieWykonaniaPrzelewu(nullable:true, blank:false, shared: "percentage")
+        oplataZaDostarczeniePapieru(nullable:true, blank:false, shared: "percentage")
+        oplataZaZmianeGrafiki(nullable:true, blank:false, shared: "percentage")
+        oplataZaInstalacjePOS(nullable:true, blank:false, shared: "percentage")
+        oplataZaInstalacjeGPRS(nullable:true, blank:false, shared: "percentage")
+        oplataZaUruchomienieWalutyObcej(nullable:true, blank:false, shared: "percentage")
+        wydrukGrafikiCena(nullable:true, blank:false, shared: "percentage")
+        dzialaniaMatematyczneCena(nullable:true, blank:false, shared: "percentage")
+        tytulPlatnosciCena(nullable:true, blank:false, shared: "percentage")
+        pierwszaSesjaCena(nullable:true, blank:false, shared: "percentage")
+
         akceptantKontaktUlicaTytul(nullable:true)
         akceptantKontaktUlica(nullable:true)
         akceptantKontaktNrDomu(nullable:true)
@@ -478,18 +492,18 @@ class ProcessCommand implements Serializable{
         oplataMasteroPr(nullable:true)
         dccZakresUruchomienia(nullable:true)
         informacjaHandlowa(nullable:true)
-        oplataZaDzienneZestawienieTransakcji(nullable:true)
-        oplataZaMiesieczneZestawienieTransakcji(nullable:true)
-        oplataZaPotwierdzenieWykonaniaPrzelewu(nullable:true)
-        oplataZaDostarczeniePapieru(nullable:true)
-        oplataZaZmianeGrafiki(nullable:true)
-        oplataZaInstalacjePOS(nullable:true)
-        oplataZaInstalacjeGPRS(nullable:true)
-        oplataZaUruchomienieWalutyObcej(nullable:true)
-        wydrukGrafikiCena(nullable:true)
-        dzialaniaMatematyczneCena(nullable:true)
-        tytulPlatnosciCena(nullable:true)
-        pierwszaSesjaCena(nullable:true)
+        oplataZaDzienneZestawienieTransakcji(nullable:true, blank:false, shared: "number")
+        oplataZaMiesieczneZestawienieTransakcji(nullable:true, blank:false, shared: "number")
+        oplataZaPotwierdzenieWykonaniaPrzelewu(nullable:true, blank:false, shared: "number")
+        oplataZaDostarczeniePapieru(nullable:true, blank:false, shared: "number")
+        oplataZaZmianeGrafiki(nullable:true, blank:false, shared: "number")
+        oplataZaInstalacjePOS(nullable:true, blank:false, shared: "number")
+        oplataZaInstalacjeGPRS(nullable:true, blank:false, shared: "number")
+        oplataZaUruchomienieWalutyObcej(nullable:true, blank:false, shared: "number")
+        wydrukGrafikiCena(nullable:true, blank:false, shared: "number")
+        dzialaniaMatematyczneCena(nullable:true, blank:false, shared: "number")
+        tytulPlatnosciCena(nullable:true, blank:false, shared: "number")
+        pierwszaSesjaCena(nullable:true, blank:false, shared: "number")
         mudCena(nullable:true)
         weryfikacjaPINCena(nullable:true)
         systemKasowyCena(nullable:true)
@@ -497,11 +511,11 @@ class ProcessCommand implements Serializable{
         doladowania_tk(nullable:true)
         srednia_sprzedaz_doladowan(nullable:true)
         srednia_sprzedaz_doladowan_slownie(nullable:true)
-        ifOplataVISA(nullable:true,blank:false, shared: "percentage") //1.11 %, M
-        ifOplataMasterCard(nullable:true,blank:false, shared: "percentage") //1.11 %, M
-        ifOplataDinersClub(nullable:true,blank:false, shared: "percentage") //1.11 %, M
-        ifOplataIKO(nullable:true,blank:false, shared: "percentage") //1.11 %, M
-        ifOplataPKOPB(nullable:true,blank:false, shared: "percentage") //1.11 %, M
+        ifOplataVISA(nullable:true,blank:false, shared: "number") //1.11 %, M
+        ifOplataMasterCard(nullable:true,blank:false, shared: "number") //1.11 %, M
+        ifOplataDinersClub(nullable:true,blank:false, shared: "number") //1.11 %, M
+        ifOplataIKO(nullable:true,blank:false, shared: "number") //1.11 %, M
+        ifOplataPKOPB(nullable:true,blank:false, shared: "number") //1.11 %, M
         dzialalnoscForma(nullable:true)
         dzialalnoscFormaInna(nullable:true)
         dzialalnoscDokument(nullable:true)
