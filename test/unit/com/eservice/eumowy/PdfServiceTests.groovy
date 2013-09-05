@@ -99,20 +99,80 @@ class PdfServiceTests {
 	static HashMap<String, String[]> generateFormularzAplikacyjnyFields() {
 		HashMap<String, String[]> result = new HashMap<String, String[]>();
 		
-		result.put("NrMerchanta1", ["98765"] as String[]);
-		result.put("NrMerchanta2", ["12345"] as String[]);
-		result.put("NrMerchanta3", ["66"] as String[]);
-		result.put("NrMerchanta4", ["44"] as String[]);
-		result.put("SprawaNr1", ["123"] as String[]);
-		result.put("SprawaNr2", ["8906"] as String[]);
-		result.put("SprawaNr3", ["0"] as String[]);
-		result.put("OsobaPozyskalaAkceptantaNr", ["12345"] as String[]);
-		result.put("OsobaPodpisalaUmoweNr", ["67890"] as String[]);
-		result.put("NrUmowy1", ["7890"] as String[]);
-		result.put("NrUmowy2", ["1"] as String[]);
-		result.put("OficjalnaNazwaAkceptanta1", ["To jest oficjalna nazwa akceptanta"] as String[]);
-		result.put("OficjalnaNazwaAkceptanta2", ["To jest druga linia z nazwą akceptanta"] as String[]);
-		result.put("NazwaSieciowaAkceptanta", ["This is the end"] as String[]);
+		result.put("nrMerchanta1", ["98765"] as String[]);
+		result.put("nrMerchanta2", ["12345"] as String[]);
+		result.put("nrMerchanta3", ["66"] as String[]);
+		result.put("nrMerchanta4", ["404"] as String[]);
+		result.put("sprawaNr1", ["123"] as String[]);
+		result.put("sprawaNr2", ["8906"] as String[]);
+		result.put("sprawaNr3", ["0"] as String[]);
+		result.put("osobaPozyskalaAkceptanta", ["Klej Zdzisiek"] as String[]);
+		result.put("osobaPozyskalaAkceptantaNr", ["12345"] as String[]);
+		result.put("osobaPodpisalaUmowe", ["Pucki Zyndram"] as String[]);
+		result.put("osobaPodpisalaUmoweNr", ["67890"] as String[]);
+		result.put("nrUmowy1", ["7890"] as String[]);
+		result.put("nrUmowy2", ["1"] as String[]);
+		result.put("akceptantNazwaOficjalna1", ["To jest oficjalna nazwa akceptanta"] as String[]);
+		result.put("akceptantNazwaOficjalna2", ["To jest druga linia z nazwą akceptanta"] as String[]);
+		result.put("akceptantNazwaSieciowa", ["This is the end"] as String[]);
+		result.put("akceptantNip", ["1234567890"] as String[]);
+		result.put("akceptantRegon", ["987654321"] as String[]);
+		result.put("reprezentant1", ["Wiesiek Gabriel"] as String[]);
+		result.put("reprezentant2", ["Waldek Złotopolski"] as String[]);
+		result.put("pan1", ["true", "", "checkbox"] as String[]);
+		result.put("pan2", ["true", "", "checkbox"] as String[]);
+		result.put("pani1", ["true", "", "checkbox"] as String[]);
+		result.put("pani2", ["true", "", "checkbox"] as String[]);
+		result.put("akceptantUlica", ["Klanowa"] as String[]);
+		result.put("akceptantMiasto", ["Warszawa"] as String[]);
+		result.put("akceptantNrDomu", ["1"] as String[]);
+		result.put("akceptantNrMieszkania", ["2"] as String[]);
+		result.put("akceptantPoczta", ["Warszawa"] as String[]);
+		result.put("akceptantKodPocztowy1", ["90"] as String[]);
+		result.put("akceptantKodPocztowy2", ["310"] as String[]);
+		result.put("akceptantKontaktUlica", ["Złotopolska"] as String[]);
+		result.put("akceptantKontaktMiasto", ["Złotopolice"] as String[]);
+		result.put("akceptantKontaktNrDomu", ["3"] as String[]);
+		result.put("akceptantKontaktNrMieszkania", ["4"] as String[]);
+		result.put("akceptantKontaktPoczta", ["Wrocław"] as String[]);
+		result.put("akceptantKontaktKodPocztowy1", ["02"] as String[]);
+		result.put("akceptantKontaktKodPocztowy2", ["200"] as String[]);
+		result.put("panDoKontaktu", ["true", "", "checkbox"] as String[]);
+		result.put("paniDoKontaktu", ["true", "", "checkbox"] as String[]);
+		result.put("imieINazwiskoOsobyDoKontaktu", ["Listonosz Józef"] as String[]);
+		result.put("kierunkowyStacjonarnyDoKontaktu", ["01"] as String[]);
+		result.put("telStacjonarnyDoKontaktu1", ["801"] as String[]);
+		result.put("telStacjonarnyDoKontaktu2", ["01"] as String[]);
+		result.put("telStacjonarnyDoKontaktu3", ["07"] as String[]);
+		result.put("telKomorkowyDoKontaktu1", ["401"] as String[]);
+		result.put("telKomorkowyDoKontaktu2", ["301"] as String[]);
+		result.put("telKomorkowyDoKontaktu3", ["901"] as String[]);
+		result.put("email", ["zlotopolscy@tvp.pl"] as String[]);
+		result.put("osobaFizyczna", ["true", "", "checkbox"] as String[]);
+		result.put("spolkaCywilna", ["true", "", "checkbox"] as String[]);
+		result.put("spolka", ["true", "", "checkbox"] as String[]);
+		result.put("zaswiadczenieZEwidencji", ["true", "", "checkbox"] as String[]);
+		result.put("umowaSpolkiCywilnej", ["true", "", "checkbox"] as String[]);
+		result.put("odpisZKRS", ["true", "", "checkbox"] as String[]);
+		result.put("inne1", ["true", "", "checkbox"] as String[]);
+		result.put("inne2", ["true", "", "checkbox"] as String[]);
+		result.put("spolkaText", ["zoo"] as String[]);
+		result.put("inneText", ["coś"] as String[]);
+		result.put("inneText2", ["Tekścior"] as String[]);
+		result.put("NrSprzedazowyPH1", ["4561"] as String[]);
+		result.put("NrSprzedazowyPH2", ["8"] as String[]);
+		result.put("kierunkowyStacjonarny", ["04"] as String[]);
+		result.put("telStacjonarny1", ["533"] as String[]);
+		result.put("telStacjonarny2", ["33"] as String[]);
+		result.put("telStacjonarny3", ["34"] as String[]);
+		result.put("telKomorkowy1", ["999"] as String[]);
+		result.put("telKomorkowy2", ["451"] as String[]);;
+		result.put("telKomorkowy3", ["666"] as String[]);
+		result.put("kierunkowyFaks", ["11"] as String[]);
+		result.put("faks1", ["343"] as String[]);
+		result.put("faks2", ["55"] as String[]);
+		result.put("faks3", ["78"] as String[]);
+		
 		result.put("podpis", [new File(getTemplatePath()+"signature1.jpg").toURI().toURL(), "", "signature", "1", "435", "15", "74", "43"] as String[]);
 		
 		return result;
@@ -155,9 +215,21 @@ class PdfServiceTests {
 		result.put("numerRachunkuBankowego6", ["2876"] as String[]);
 		result.put("imieINazwisko", ["Jean "] as String[]);
 		result.put("pan", ["true", "", "checkbox"] as String[]);
-		result.put("pani", ["false", "", "checkbox"] as String[]);
+		result.put("pani", ["true", "", "checkbox"] as String[]);
 		result.put("email", ["mkniec@apreel.com"] as String[]);
+		result.put("kierunkowy1", ["22"] as String[]);
+		result.put("stacjonarny1", ["202"] as String[]);
+		result.put("stacjonarny2", ["22"] as String[]);
+		result.put("stacjonarny3", ["22"] as String[]);
+		result.put("kierunkowy2", ["22"] as String[]);
+		result.put("nrFaksu1", ["202"] as String[]);
+		result.put("nrFaksu2", ["22"] as String[]);
+		result.put("nrFaksu3", ["22"] as String[]);
+		result.put("komorka1", ["209"] as String[]);
+		result.put("komorka2", ["122"] as String[]);
+		result.put("komorka3", ["212"] as String[]);
 		result.put("nazwaDoWydrukuZTerminalaPos", ["To jest jakaś nazwa trochę inna"] as String[]);
+		result.put("wydrukJakWyzej", ["true", "", "checkbox"] as String[]);
 		result.put("nazwaDoWyszukiwarki", ["To jest jakaś nazwa"] as String[]);
 		
 		return result;
@@ -166,22 +238,61 @@ class PdfServiceTests {
 	static HashMap<String, String[]> generateFormularzScoringowyFields() {
 		HashMap<String, String[]> result = new HashMap<String, String[]>();
 
-		result.put("MCC", ["4763"] as String[]);
+		result.put("scoringMcc", ["4763"] as String[]);
+		result.put("phNumer", ["2333"] as String[]);
 		result.put("rodzajZezwolenia", ["Od prezydenta USA - VIP"] as String[]);
-		result.put("centrumHandlowe", ["true"] as String[]);
-		result.put("trasaPrzelotowa", ["true"] as String[]);
+		result.put("scoringSzczegolyDzialalnosci", ["Pranie pieniedzy w Perwoolu"] as String[]);
+		result.put("scoringCharakterystykaInna", ["Tesco Extra"] as String[]);
+		result.put("centrumHandlowe", ["true", "", "checkbox"] as String[]);
+		result.put("trasaPrzelotowa", ["true", "", "checkbox"] as String[]);
 		result.put("dochodowosc", ["10000"] as String[]);
-		result.put("sredniaWartoscTransakcji", ["1 milion złotych"] as String[]);
-		result.put("innaLokalizacja", ["Wieża Eiffla"] as String[]);
-//        result.put("handel", ["false", "", "checkbox"] as String[]);
-//        result.put("uslugi", ["true", "", "checkbox"] as String[]);
-
+		result.put("scoringDeklaracjaFinansowa", ["d"] as String[]);
+		result.put("scoringDeklaracjaFinansowaObrotOgolem", ["2 złote"] as String[]);
+		result.put("scoringDeklaracjaFinansowaObrotNaKarty", ["1 tysiąc euro"] as String[]);
+		result.put("scoringDeklaracjaFinansowaSredniObrot", ["50 centów"] as String[]);
+		result.put("scoringDeklaracjaFinansowaSredniaTransakcja", ["1 milion złotych"] as String[]);
+		result.put("scoringTypPunktuInny", ["Wieża Eiffla"] as String[]);
+        result.put("handel", ["true", "", "checkbox"] as String[]);
+	    result.put("uslugi", ["true", "", "checkbox"] as String[]);
+		result.put("wlasnosc", ["true", "", "checkbox"] as String[]);
+		result.put("wynajem", ["true", "", "checkbox"] as String[]);
+		result.put("powyzej5lat", ["true", "", "checkbox"] as String[]);
+		result.put("od1do5lat", ["true", "", "checkbox"] as String[]);
+		result.put("ponizejRoku", ["true", "", "checkbox"] as String[]);
+		result.put("dzialalnoscWymagaLicencjiTak", ["true", "", "checkbox"] as String[]);
+		result.put("dzialalnoscWymagaLicencjiNie", ["true", "", "checkbox"] as String[]);
+		result.put("salon", ["true", "", "checkbox"] as String[]);
+		result.put("sklep", ["true", "", "checkbox"] as String[]);
+		result.put("stoisko", ["true", "", "checkbox"] as String[]);
+		result.put("stacjaPaliw", ["true", "", "checkbox"] as String[]);
+		result.put("inny", ["true", "", "checkbox"] as String[]);
+		result.put("centrumMiasta", ["true", "", "checkbox"] as String[]);
+		result.put("peryferiaMiasta", ["true", "", "checkbox"] as String[]);
+		result.put("pawilonyHandlowe", ["true", "", "checkbox"] as String[]);
+		result.put("budynekWolnoStojacy", ["true", "", "checkbox"] as String[]);
+		result.put("osiedleMieszkaniowe", ["true", "", "checkbox"] as String[]);
+		result.put("targowisko", ["true", "", "checkbox"] as String[]);
+		result.put("inna", ["true", "", "checkbox"] as String[]);
+		result.put("miastoPonad500tysChb", ["true", "", "checkbox"] as String[]);
+		result.put("miastoOd100Do500tysChb", ["true", "", "checkbox"] as String[]);
+		result.put("miastoOd50Do90tysChb", ["true", "", "checkbox"] as String[]);
+		result.put("miastoPonizej50tysChb", ["true", "", "checkbox"] as String[]);
+		result.put("wies", ["true", "", "checkbox"] as String[]);
+		result.put("czynne", ["true", "", "checkbox"] as String[]);
+		result.put("nieczynne", ["true", "", "checkbox"] as String[]);
+		result.put("stanZadbany", ["true", "", "checkbox"] as String[]);
+		result.put("wPunktachMonitoringTak", ["true", "", "checkbox"] as String[]);
+		result.put("wPunktachMonitoringNie", ["true", "", "checkbox"] as String[]);
+		result.put("powyzej400m2", ["true", "", "checkbox"] as String[]);
+		result.put("od50do400m2", ["true", "", "checkbox"] as String[]);
+		result.put("do50m2", ["true", "", "checkbox"] as String[]);
+		/*
 		addCheckboxes(result, ["handel":"handel", "uslugi":"uslugi"], "uslugi")
 		addCheckbox(result, "stanZadbany", "true", "true")
 		addCheckbox(result, "uslugiPlatneZGory", "true", "true")
-		addCheckbox(result, "ruchTurystycznyPrzygraniczny", "true", "false")
+		addCheckbox(result, "ruchTurystycznyPrzygraniczny", "true", "false") */
 
-		result.put("podpis", [new File(getTemplatePath()+"signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "20", "58", "59"] as String[]);
+		result.put("reprezentant2_podpis", [new File(getTemplatePath()+"signature2.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
 		
 		return result;
 	}
@@ -211,6 +322,7 @@ class PdfServiceTests {
 		data.put("oplatyPOSPrefCenaB", ["55"] as String[]);
 		data.put("oplatyPOSPrefCenaC", ["53"] as String[]);
 		data.put("oplatyPOSMiesiacNaliczania", ["1"] as String[]);
+		data.put("informacjaHandlowaTak", ["true", "", "checkbox"] as String[]);
 		data.put("informacjaHandlowaNie", ["true", "", "checkbox"] as String[]);
 		data.put("wydrukGrafikiCena", ["53"] as String[]);
 		data.put("dzialaniaMatematyczneCena", ["53"] as String[]);
@@ -409,6 +521,8 @@ class PdfServiceTests {
 		data.put("pierwszaSesjaCena", ["53"] as String[]);
 		data.put("informacjaHandlowaNie", ["true", "", "checkbox"] as String[]);
 		data.put("okresLojalnosciowy", ["3"] as String[]);
+		data.put("informacjaHandlowaTak", ["true", "", "checkbox"] as String[]);
+		data.put("informacjaHandlowaNie", ["true", "", "checkbox"] as String[]);
 		data.put("obslugaPrestiz", ["true", "", "checkbox"] as String[]);
 		data.put("obslugaKomfort", ["true", "", "checkbox"] as String[]);
 		data.put("obslugaEkonomiczny", ["true", "", "checkbox"] as String[]);
@@ -495,6 +609,9 @@ class PdfServiceTests {
 		data.put("oplataMasterCard", ["34"] as String[]);
 		data.put("oplataMaestroPr", ["56"] as String[]);
 		data.put("oplataMaestro", ["83"] as String[]);
+		data.put("noweZestPos", ["true", "", "checkbox"] as String[]);
+		data.put("obecneZestPos", ["true", "", "checkbox"] as String[]);
+		data.put("phu", ["true", "", "checkbox"] as String[]);
 		data.put("punkt1", ["Kodziki"] as String[]);
 		data.put("adres1", ["Wąwozowa 7"] as String[]);
 		data.put("punkt2", ["Pompeczki"] as String[]);
@@ -733,6 +850,10 @@ class PdfServiceTests {
 	void testAPUPZBS() {
 		HashMap<String, String[]> data = new HashMap<String, String[]>();
 		data.putAll(this.data);
+		data.put("informacjaHandlowaTak", ["true", "", "checkbox"] as String[]);
+		data.put("informacjaHandlowaNie", ["true", "", "checkbox"] as String[]);
+		data.put("umowaNieOzn", ["true", "", "checkbox"] as String[]);
+		data.put("umowaOzn", ["true", "", "checkbox"] as String[]);
 		data.put("umowaOznOd", ["06.10.2003"] as String[]);
 		data.put("umowaOznDo", ["06.10.2010"] as String[]);
 		data.put("visaEUKKOPr", ["11"] as String[]);
@@ -895,6 +1016,8 @@ class PdfServiceTests {
 	void testATUSU() {
 		HashMap<String, String[]> data = new HashMap<String, String[]>();	
 		data.putAll(this.data);
+		data.put("informacjaHandlowaTak", ["true", "", "checkbox"] as String[]);
+		data.put("informacjaHandlowaNie", ["true", "", "checkbox"] as String[]);
 		data.put("doladowania_tp", ["true", "", "checkbox"] as String[]);
 		data.put("doladowania_tk", ["true", "", "checkbox"] as String[]);
 		data.put("srednia_sprzedaz_doladowan", ["450"] as String[]);
@@ -916,9 +1039,13 @@ class PdfServiceTests {
 		data.put("pp_vectonemobile_tk", ["71"] as String[]);
 		data.put("pp_delightmobile_tk", ["99"] as String[]);
 		data.put("oplataZaOprogramowanieDoDoladowan", ["300"] as String[]);
-		data.put("nazwaAdresPlat", ["300"] as String[]);
-		data.put("numerRachPlat", ["33333333333333"] as String[]);
+		data.put("akceptantNip", ["3004005003"] as String[]);
+		data.put("numerRachunkuBankowegoKlienta", ["33333333333333"] as String[]);
+		data.put("bankKlienta", ["33333333333333"] as String[]);
+		data.put("miejsceUmowy", ["Kurniki Podlaskie"] as String[]);
 		data.putAll(insertSignatures(3, 80, 580, 74, 43))
+		data.put("reprezentant1_podpis_gora", [new File(getTemplatePath()+"signature1.jpg").toURI().toURL(), "", "signature", 7, 360, 432, 74, 43] as String[]);
+		data.put("reprezentant1_podpis_dol", [new File(getTemplatePath()+"signature1.jpg").toURI().toURL(), "", "signature", 7, 360, 50, 74, 43] as String[]);
 		process("ATUSU5.00413-05-22.pdf", "ATUSU5.00413-05-22_out.pdf", data)
 	}
 	
@@ -936,6 +1063,10 @@ class PdfServiceTests {
 	void testAPUPZIF2() {
 		HashMap<String, String[]> data = new HashMap<String, String[]>();
 		data.putAll(this.data);
+		data.put("informacjaHandlowaTak", ["true", "", "checkbox"] as String[]);
+		data.put("informacjaHandlowaNie", ["true", "", "checkbox"] as String[]);
+		data.put("umowaOzn", ["true", "", "checkbox"] as String[]);
+		data.put("umowaNiezon", ["true", "", "checkbox"] as String[]);
 		data.put("umowaOznOd", ["06.10.2003"] as String[]);
 		data.put("umowaOznDo", ["06.10.2010"] as String[]);
 		data.put("punkt1", ["Kodzik"] as String[]);
@@ -959,7 +1090,10 @@ class PdfServiceTests {
 		data.put("oplataMasterCard", ["34"] as String[]);
 		data.put("oplataMaestroPr", ["56"] as String[]);
 		data.put("oplataMaestro", ["83"] as String[]);
-		data.put("punkt1", ["Kodziki"] as String[]);
+		data.put("noweZestPos", ["true", "", "checkbox"] as String[]);
+		data.put("obecneZestPos", ["true", "", "checkbox"] as String[]);
+		data.put("phu", ["true", "", "checkbox"] as String[]);
+		data.put("punkt1", ["Kodziki i inne teledoładowania co mają długą nazwę"] as String[]);
 		data.put("adres1", ["Wąwozowa 7"] as String[]);
 		data.put("punkt2", ["Pompeczki"] as String[]);
 		data.put("adres2", ["Kaszubska 2"] as String[]);
@@ -990,6 +1124,7 @@ class PdfServiceTests {
 		HashMap<String, String[]> data = new HashMap<String, String[]>();
 		data.putAll(this.data);
 		data.put("informacjaHandlowaNie", ["true", "", "checkbox"] as String[]);
+		data.put("informacjaHandlowaTak", ["true", "", "checkbox"] as String[]);
 		data.put("umowaOznOd", ["06.10.2003"] as String[]);
 		data.put("umowaOznDo", ["06.10.2010"] as String[]);
 		data.put("punkt1", ["Kodziki"] as String[]);
@@ -1092,8 +1227,8 @@ class PdfServiceTests {
 		data.put("mastercardPKOBPM3St", ["5"] as String[]);
 		data.put("dinersClubSt", ["55"] as String[]);
 		data.put("ikoSt", ["66"] as String[]);
-		data.put("umNieOzn", ["true", "", "checkbox"] as String[]);
-		data.put("umOzn", ["true", "", "checkbox"] as String[]);
+		data.put("umowaNieOzn", ["true", "", "checkbox"] as String[]);
+		data.put("umowaOzn", ["true", "", "checkbox"] as String[]);
 		data.putAll(insertSignatures(4, 90, 308, 74, 43))
 		process("APUPZ2.00013-01-03 - Umowa o przyjmowanie zapłaty v. 2.000_z faksymile.pdf", "APUPZ2.00013-01-03 - Umowa o przyjmowanie zapłaty v. 2.000_z faksymile_out.pdf", data)
 	}
