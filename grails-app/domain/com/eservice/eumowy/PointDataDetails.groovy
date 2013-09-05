@@ -39,6 +39,7 @@ class PointDataDetails implements Serializable {
 	String korespondencjaKodPocztowy
 	String korespondencjaPoczta
 	
+	String kontaktWPunkcieTytul
 	String kontaktWPunkcieImie
 	String kontaktWPunkcieNazwisko
 	String kontaktWPunkcieFax
@@ -82,6 +83,7 @@ class PointDataDetails implements Serializable {
 		korespondencjaMiasto column: "contact_addr_city"
 		korespondencjaKodPocztowy column: "contact_addr_postalcode"
 		korespondencjaPoczta column: "contact_addr_post_office"
+		kontaktWPunkcieTytul column: "contact_at_point_title"
 		kontaktWPunkcieImie column: "contact_at_point_firstname"
 		kontaktWPunkcieNazwisko column: "contact_at_point_lastname"
 		kontaktWPunkcieFax column: "contact_at_point_fax"
@@ -122,6 +124,7 @@ class PointDataDetails implements Serializable {
 		korespondencjaMiasto(nullable:true)
 		korespondencjaKodPocztowy(nullable:true)
 		korespondencjaPoczta(nullable:true)
+		kontaktWPunkcieTytul(nullable:true)
 		kontaktWPunkcieImie(nullable:true)
 		kontaktWPunkcieNazwisko(nullable:true)
 		kontaktWPunkcieFax(nullable:true)

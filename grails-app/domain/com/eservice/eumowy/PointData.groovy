@@ -46,7 +46,7 @@ class PointData implements Serializable {
 		tytulPlatnosci column: "payment_title"
 		systemKasowy column: "cash_system"
 		uta column: "uta"
-		czyWybrany column: "is_chosen"
+		czyWybrany column: "is_selected"
 		nazwa column: "name"
 		cbdId column: "cbd_id"
 	}

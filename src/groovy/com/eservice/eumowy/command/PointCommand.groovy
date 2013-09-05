@@ -42,7 +42,8 @@ class PointCommand implements Serializable {
 	String korespondencjaMiasto
 	String korespondencjaKodPocztowy
 	String korespondencjaPoczta
-		
+	
+	String kontaktWPunkcieTytul	
 	String kontaktWPunkcieImie
 	String kontaktWPunkcieNazwisko
 	String kontaktWPunkcieFax
