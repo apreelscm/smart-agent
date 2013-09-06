@@ -4,6 +4,8 @@ import grails.util.Environment
 
 class AppParametersService {
 
+	def grailsApplication
+	
 	def getParamById(Integer id) {
 		return AppParameters.get(id);	
 	}
@@ -21,7 +23,12 @@ class AppParametersService {
 			}
 		}
 		
-		return tmpPath
+		if (new File(tmpPath).isAbsolute()) {
+			return tmpPath
+		}
+		else {
+			return grailsApplication.mainContext.getServletContext().getRealPath(tmpPath) + File.separator
+		}
 	}
 	
 	def getPdfImageUri() {
@@ -45,7 +52,12 @@ class AppParametersService {
 			}
 		}
 		
-		return path
+		if (new File(path).isAbsolute()) {
+			return path
+		}
+		else {
+			return grailsApplication.mainContext.getServletContext().getRealPath(path) + File.separator
+		}
 	}
 	
 	def getSubscriptionsPath() {
@@ -57,7 +69,12 @@ class AppParametersService {
 			}
 		}
 		
-		return path
+		if (new File(path).isAbsolute()) {
+			return path
+		}
+		else {
+			return grailsApplication.mainContext.getServletContext().getRealPath(path) + File.separator
+		}
 	}
 	
 	def getSubscriptionsBlackPath() {
@@ -69,7 +86,12 @@ class AppParametersService {
 			}
 		}
 		
-		return path
+		if (new File(path).isAbsolute()) {
+			return path
+		}
+		else {
+			return grailsApplication.mainContext.getServletContext().getRealPath(path) + File.separator
+		}
 	}
 	
 	def getTemplateNameForNewPoint() {

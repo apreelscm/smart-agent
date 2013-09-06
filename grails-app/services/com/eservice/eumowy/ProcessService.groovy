@@ -112,6 +112,14 @@ class ProcessService {
        // loadPoses()
         prepareProcessCommand(cmd, calc, cbdMethods)
     }
+	
+	def getRepresentative1(def process) {
+		return [name: process?.processData?.find { pd -> pd.name == "reprezentant1Imie" }?.value, surname: process?.processData?.find { pd -> pd.name == "reprezentant1Nazwisko" }?.value]
+	}
+	
+	def getRepresentative2(def process) {
+		return [name: process?.processData?.find { pd -> pd.name == "reprezentant2Imie" }?.value, surname: process?.processData?.find { pd -> pd.name == "reprezentant2Nazwisko" }?.value]
+	}
 
     /**
      *  init data

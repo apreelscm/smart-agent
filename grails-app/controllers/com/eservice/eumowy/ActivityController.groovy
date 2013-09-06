@@ -174,6 +174,9 @@ class ActivityController {
             onEntry {
                 def processInstance = flow.processInstance
                 
+				flow.representative1 = flow.representative1 != null ? flow.representative1 : processService.getRepresentative1(processInstance)
+				flow.representative2 = flow.representative2 != null ? flow.representative2 : processService.getRepresentative2(processInstance)
+				
 				if (!flow.skipDocumentGeneration) {
 					def totalPagesCount = 0
 	                def data = PdfMapper.mapAllDataToPDFData(processInstance.processData, processInstance.points)
@@ -692,9 +695,9 @@ class ActivityController {
                 processInstance = processService.populateProcessWithData(processInstance,cmd)
                 processInstance.notesToCoa = cmd.notes;
 
-                flow.representative1 = cmd.reprezentant1Tytul + " " + cmd.reprezentant1Imie + " " + cmd.reprezentant1Nazwisko
-                flow.representative2 = cmd.reprezentant2Tytul + " " + cmd.reprezentant2Imie + " " + cmd.reprezentant2Nazwisko
-
+                flow.representative1 = [name: cmd.reprezentant1Imie, surname: cmd.reprezentant1Nazwisko]
+                flow.representative2 = [name: cmd.reprezentant2Imie, surname: cmd.reprezentant2Nazwisko]
+				
                 if (!processInstance.save()){
                     processInstance.errors.each {
                         log.error(it)
@@ -749,7 +752,7 @@ class ActivityController {
                 Process processInstance = flow.savedProcess
                 processInstance.calcNumber =  flow.calcNumber
                 processInstance.client =  flow.client
-                processInstance.save();
+                processInstance.save()
                 flow.processInstance = processInstance
             }.to "clientSignature"
         }

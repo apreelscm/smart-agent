@@ -72,7 +72,7 @@ class PdfMapper {
     static mapPosDataToPDFData(def pd) {
         Map<String, String[]> data = new HashMap<String, String[]>()
 
-        pd.properties.each { key, value ->
+        pd?.properties.each { key, value ->
             log.info "PosData Key: " + key
             if (["class", "cbdId", "process", "point", "errors", "constraints", "empty", "", ""].contains(key) || value == null){
                 return
@@ -87,7 +87,7 @@ class PdfMapper {
             data.put(key, [value] as String[])
         }
 
-        pd.posDetails?.properties.each { key, value ->
+        pd?.posDetails?.properties.each { key, value ->
             log.info "PosDataDetails Key: " + key
             if (["class", "cbdId", "process", "point", "errors", "constraints", "empty", "", ""].contains(key) || value == null){
                 return
