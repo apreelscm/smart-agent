@@ -22,7 +22,7 @@ class DocumentFile implements Serializable {
         dateCreated(nullable:true)
         lastUpdated(nullable:true)
         pagesCount()
-        content()
+        content(lazy:true)
         process(nullable:true)
     }
 
