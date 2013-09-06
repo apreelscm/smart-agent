@@ -246,6 +246,7 @@ class PdfServiceTests {
 		result.put("centrumHandlowe", ["true", "", "checkbox"] as String[]);
 		result.put("trasaPrzelotowa", ["true", "", "checkbox"] as String[]);
 		result.put("dochodowosc", ["10000"] as String[]);
+		result.put("dochodowoscRd", ["4500"] as String [])
 		result.put("scoringDeklaracjaFinansowa", ["d"] as String[]);
 		result.put("scoringDeklaracjaFinansowaObrotOgolem", ["2 złote"] as String[]);
 		result.put("scoringDeklaracjaFinansowaObrotNaKarty", ["1 tysiąc euro"] as String[]);
@@ -292,7 +293,7 @@ class PdfServiceTests {
 		addCheckbox(result, "uslugiPlatneZGory", "true", "true")
 		addCheckbox(result, "ruchTurystycznyPrzygraniczny", "true", "false") */
 
-		result.put("reprezentant2_podpis", [new File(getTemplatePath()+"signature2.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
+		result.put("podpis", [new File(getTemplatePath()+"sign-Mariusz-Kolonko-2.png").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
 		
 		return result;
 	}
@@ -329,6 +330,7 @@ class PdfServiceTests {
 		data.put("tytulPlatnosciCena", ["53"] as String[]);
 		data.put("pierwszaSesjaCena", ["53"] as String[]);
 		data.put("walutaObcaCena", ["53"] as String[]);
+		data.put("oplataZaUruchomienieDCC", ["200"] as String []);
 		data.put("mudCena", ["53"] as String[]);
 		data.put("obslugaPrestiz", ["true", "", "checkbox"] as String[]);
 		data.put("obslugaKomfort", ["true", "", "checkbox"] as String[]);
@@ -399,14 +401,14 @@ class PdfServiceTests {
 		data.put("systemKasowyCena", ["53"] as String[]);
 		data.put("pierwszaSesjaCena", ["53"] as String[]);
 		data.put("weryfikacjaPINCena", ["53"] as String[]);
-		data.put("punkt1", ["To jest pełna czterdziestoczteroliterowa naz"] as String[]);
-		data.put("adres1", ["1234567890123456789012345678901234567890123456789012345"] as String[]);
-		data.put("punkt2", ["Pompeczki"] as String[]);
-		data.put("adres2", ["Kaszubska 2"] as String[]);
-		data.put("punkt3", ["Orencz"] as String[]);
-		data.put("adres3", ["Pomarańczowa 11"] as String[]);
-		data.put("punkt4", ["Timobajl"] as String[]);
-		data.put("adres4", ["Rózowa 1"] as String[]);
+		data.put("punktAkceptacjaKart1", ["To jest pełna czterdziestoczteroliterowa naz"] as String[]);
+		data.put("adresAkceptacjaKart1", ["1234567890123456789012345678901234567890123456789012345"] as String[]);
+		data.put("punktAkceptacjaKart2", ["Pompeczki"] as String[]);
+		data.put("adresAkceptacjaKart2", ["Kaszubska 2"] as String[]);
+		data.put("punktAkceptacjaKart3", ["Orencz"] as String[]);
+		data.put("adresAkceptacjaKart3", ["Pomarańczowa 11"] as String[]);
+		data.put("punktAkceptacjaKart4", ["Timobajl"] as String[]);
+		data.put("adresAkceptacjaKart4", ["Rózowa 1"] as String[]);
 		data.put("platnoscTN1", ["TAK"] as String[]);
 		data.put("platnoscTN2", ["NIE"] as String[]);
 		data.put("platnoscTN3", ["NIE"] as String[]);
@@ -612,10 +614,10 @@ class PdfServiceTests {
 		data.put("noweZestPos", ["true", "", "checkbox"] as String[]);
 		data.put("obecneZestPos", ["true", "", "checkbox"] as String[]);
 		data.put("phu", ["true", "", "checkbox"] as String[]);
-		data.put("punkt1", ["Kodziki"] as String[]);
-		data.put("adres1", ["Wąwozowa 7"] as String[]);
-		data.put("punkt2", ["Pompeczki"] as String[]);
-		data.put("adres2", ["Kaszubska 2"] as String[]);
+		data.put("punktZakresUruchomienia1", ["Kodziki"] as String[]);
+		data.put("adresZakresUruchomienia1", ["Wąwozowa 7"] as String[]);
+		data.put("punktZakresUruchomienia2", ["Pompeczki"] as String[]);
+		data.put("adresZakresUruchomienia2", ["Kaszubska 2"] as String[]);
 		data.put("pos1", ["7"] as String[]);
 		data.put("pos2", ["9"] as String[]);
 		data.putAll(insertSignatures(1, 85, 215, 74, 43))
@@ -1093,10 +1095,10 @@ class PdfServiceTests {
 		data.put("noweZestPos", ["true", "", "checkbox"] as String[]);
 		data.put("obecneZestPos", ["true", "", "checkbox"] as String[]);
 		data.put("phu", ["true", "", "checkbox"] as String[]);
-		data.put("punkt1", ["Kodziki i inne teledoładowania co mają długą nazwę"] as String[]);
-		data.put("adres1", ["Wąwozowa 7"] as String[]);
-		data.put("punkt2", ["Pompeczki"] as String[]);
-		data.put("adres2", ["Kaszubska 2"] as String[]);
+		data.put("punktZakresUruchomienia1", ["Kodziki i inne teledoładowania co mają długą nazwę"] as String[]);
+		data.put("adresZakresUruchomienia1", ["Wąwozowa 7"] as String[]);
+		data.put("punktZakresUruchomienia2", ["Pompeczki"] as String[]);
+		data.put("adresZakresUruchomienia2", ["Kaszubska 2"] as String[]);
 		data.put("pos1", ["7"] as String[]);
 		data.put("pos2", ["9"] as String[]);
 		data.put("punkt3", ["SuperTele"] as String[]);
@@ -1279,7 +1281,8 @@ class PdfServiceTests {
 	
 	 private HashMap<String, String[]> insertSignatures(int pageNo, int x, int y, int scaleX, int scaleY){
 		HashMap<String, String[]> result = new HashMap<String, String[]>();
-		result.put("reprezentant1_podpis", [new File(getTemplatePath()+"signature1.jpg").toURI().toURL(), "", "signature", pageNo, x, y, scaleX, scaleY] as String[]);
+	//	result.put("reprezentant1_podpis", [new File(getTemplatePath()+"signature1.jpg").toURI().toURL(), "", "signature", pageNo, x, y, scaleX, scaleY] as String[]);
+		result.put("reprezentant1_podpis", [new File(getTemplatePath()+"sign-Mariusz-Kolonko-2.png").toURI().toURL(), "", "signature", pageNo, x, y, scaleX, scaleY] as String[]);
 		result.put("reprezentant2_podpis", [new File(getTemplatePath()+"signature2.jpg").toURI().toURL(), "", "signature", pageNo, x+120, y, scaleX, scaleY] as String[]);
 		result.put("zarzad1_podpis", [new File(getTemplatePath()+"signature4.jpg").toURI().toURL(), "", "signature", pageNo, x+250, y, BOARD_MEMBER_1_X, BOARD_MEMBER_1_Y] as String[]);
 		result.put("zarzad2_podpis", [new File(getTemplatePath()+"signature5.jpg").toURI().toURL(), "", "signature", pageNo, x+380, y, BOARD_MEMBER_2_X, BOARD_MEMBER_2_Y] as String[]);
