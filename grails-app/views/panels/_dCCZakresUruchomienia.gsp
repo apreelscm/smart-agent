@@ -33,7 +33,7 @@
 		                <td>${point.nrBudynku}</td>
 		                <td>${point.kodPocztowy}</td>
 		                <td>${point.liczbaPos}</td>
-		                <td><g:checkBox name="allPoints[${i}].czyWybrany" checked="${point.czyWybrany}" /></td>
+		                <td><g:checkBox name="allPoints[${i}].czyWybranyZakresUruchomienia" checked="${point.czyWybranyZakresUruchomienia}" /></td>
 	                </tr>
 	                </g:each>
         		</tbody>

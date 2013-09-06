@@ -10,8 +10,9 @@ class AllPointsCommand implements Serializable {
 	String nrBudynku
 	String kodPocztowy
     Integer liczbaPos
+    Boolean czyWybranyZakresUruchomienia
 	Boolean tytulPlatnosci
 	Boolean systemKasowy
 	Boolean uta
-	Boolean czyWybrany
+	Boolean czyWybranyAkceptacjaKart
 }

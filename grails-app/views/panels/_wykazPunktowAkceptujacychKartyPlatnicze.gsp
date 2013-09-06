@@ -30,7 +30,7 @@
 							<td><g:checkBox name="allPoints[${i}].tytulPlatnosci" checked="${point.tytulPlatnosci}" /></td>
 							<td><g:checkBox name="allPoints[${i}].systemKasowy" checked="${point.systemKasowy}" /></td>
 							<td><g:checkBox name="allPoints[${i}].uta" checked="${point.uta}" /></td>
-							<td><g:checkBox name="allPoints[${i}].czyWybrany" checked="${point.czyWybrany}" /></td>
+							<td><g:checkBox name="allPoints[${i}].czyWybranyAkceptacjaKart" checked="${point.czyWybranyAkceptacjaKart}" /></td>
 						</tr>
            			</g:each>
            		</tbody>

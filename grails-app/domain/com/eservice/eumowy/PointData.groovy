@@ -17,10 +17,11 @@ class PointData implements Serializable {
 	String kodPocztowy
 	String poczta
 	Integer liczbaPos
+    Boolean czyWybranyZakresUruchomienia
 	Boolean tytulPlatnosci
 	Boolean systemKasowy
 	Boolean uta
-	Boolean czyWybrany
+	Boolean czyWybranyAkceptacjaKart
 	
 	List<PosData> posDatas
 	
@@ -46,7 +47,8 @@ class PointData implements Serializable {
 		tytulPlatnosci column: "payment_title"
 		systemKasowy column: "cash_system"
 		uta column: "uta"
-		czyWybrany column: "is_selected"
+        czyWybranyAkceptacjaKart column: "is_selected_card_accept"
+        czyWybranyZakresUruchomienia column: "is_selected_range"
 		nazwa column: "name"
 		cbdId column: "cbd_id"
 	}
@@ -67,7 +69,8 @@ class PointData implements Serializable {
 		tytulPlatnosci(nullable:true)
 		systemKasowy(nullable:true)
 		uta(nullable:true)
-		czyWybrany(nullable:true)
+        czyWybranyAkceptacjaKart(nullable:true)
+        czyWybranyZakresUruchomienia(nullable:true)
 		nazwa(nullable:true)
 	}
 	
