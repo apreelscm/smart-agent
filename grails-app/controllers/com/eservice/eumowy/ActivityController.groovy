@@ -912,7 +912,7 @@ class ActivityController {
 
         if(msg instanceof AttachmentFile){
             def attachment = msg as AttachmentFile
-            attachment.processId = Long.valueOf(params.processId)
+            attachment.process = Process.read(Long.valueOf(params.processId))
             println("attachment.processId : ${attachment.processId}")
             attachment.save(flush:true)
             render "";

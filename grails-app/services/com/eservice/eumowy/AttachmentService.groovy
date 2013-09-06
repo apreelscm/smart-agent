@@ -12,7 +12,9 @@ class AttachmentService {
     def getListByProcessId(def id) {
         def attachmentCriteria = AttachmentFile.createCriteria()
         def searchResult = attachmentCriteria.list{
-            eq("processId", Long.valueOf(id))
+            process {
+                eq("id", Long.valueOf(id))
+            }
         }
         searchResult
     }
