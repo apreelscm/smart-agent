@@ -468,6 +468,14 @@ class ActivityController {
                         processInstance.errors.each { log.error(it) }
                         return error();
                     }
+					
+					// Update
+					processInstance.points?.each { point ->
+						if (point.cbdId != null) {
+							def foundApc = processCmd.allPoints?.find { apc -> apc.cbdId == point.cbdId }
+							foundApc.id = point.id
+						}
+					}
                 }
                 else{
                     log.info("skipPanelsInit - true")
