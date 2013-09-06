@@ -29,13 +29,13 @@ class ProcessController {
         def processes = new ProcessService().searchProcessByFilters(params)
 
         [   filterStatus: params.filterStatus,
-            filterObserved:params.filterObserved,
-            filterNip:params.filterNip,
-            filterPhNo:params.filterPhNo,
-            filterDateFrom: params.filterDateFrom?params.filterDateFrom: DateUtils.getFormattedDate(DateUtils.addDays(new Date(), -30), DateUtils.DD_MM_YYYY),
-            filterDateTo: params.filterDateTo?params.filterDateTo: DateUtils.getFormattedDate(new Date(), DateUtils.DD_MM_YYYY),
-            processInstanceList: processes.searchResults,
-            processInstanceTotal: processes.searchResultSize]
+                filterObserved:params.filterObserved,
+                filterNip:params.filterNip,
+                filterPhNo:params.filterPhNo,
+                filterDateFrom: params.filterDateFrom?params.filterDateFrom: DateUtils.getFormattedDate(DateUtils.addDays(new Date(), -30), DateUtils.DD_MM_YYYY),
+                filterDateTo: params.filterDateTo?params.filterDateTo: DateUtils.getFormattedDate(new Date(), DateUtils.DD_MM_YYYY),
+                processInstanceList: processes.searchResults,
+                processInstanceTotal: processes.searchResultSize]
     }
 
     //---------------------------------
@@ -109,16 +109,25 @@ class ProcessController {
     // REMOTE CALLS
     //---------------------------------
 
+    def servletContext
+
     def showPdfByDocumentId(String id){
         log.info( "pdf document = " + id);
         def documentFile = DocumentFile.get(id);
 
         def dir = "tmp"
         def fileName = "${id}_${documentFile.version}_${documentFile.name}"
-        def tmpPdf = ApplicationHolder.getApplication().getParentContext().getResource("${dir}/${fileName}").getFile()
 
-        if(!tmpPdf.exists()){
-            tmpPdf.withOutputStream { s ->
+        def tmpRes
+        try{
+            tmpRes = ApplicationHolder.getApplication().getParentContext().getResource("${dir}/${fileName}")
+        }catch(Exception ex){
+            log.warn(ex.message)
+        }
+
+        if(!tmpRes.exists()){
+            def tmpPdfFile = tmpRes.getFile()
+            tmpPdfFile.withOutputStream { s ->
                 s << documentFile.content.content
             }
         }
@@ -127,10 +136,11 @@ class ProcessController {
     }
 
     def downloadDoc(){
+        log.info( "downloadDoc = " +  params.id);
         DocumentFile file = documentService.download(params.id)
 
-        if(!file?.content?.content){
-            return;
+        if(!(file?.content?.content)){
+            redirect(action: "show")
         }
 
         response.setContentType("application/octet-stream")
@@ -139,10 +149,11 @@ class ProcessController {
     }
 
     def downloadAttachment(){
+        log.info( "downloadAttachment = " +  params.id);
         AttachmentFile file = attachmentService.download( params.id, request , messageSource)
 
-        if(file?.file?.content){
-            return;
+        if(!(file?.file?.content)){
+            redirect(action: "show")
         }
 
         response.setContentType("application/octet-stream")

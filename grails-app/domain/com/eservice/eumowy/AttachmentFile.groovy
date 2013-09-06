@@ -14,7 +14,9 @@ class AttachmentFile implements Serializable{
     Date dateUploaded
     Integer downloads
 
-    Long processId
+    //Long processId
+
+    static belongsTo = [process:Process]
 
     static hasOne = [file:AttachmentContent]
 
@@ -24,14 +26,12 @@ class AttachmentFile implements Serializable{
         extension()
         dateUploaded(nullable:true)
         downloads(nullable: true)
-        processId(nullable: false)
         file()
     }
 
     static mapping = {
         table name: "ATTACHMENT", schema: DomainConsts.SHEMA_NAME
         id generator:'sequence', params:[sequence:DomainConsts.SHEMA_NAME+'.ATTACHMENT_SEQ']
-        process nullable:false;
         file cascade:"all-delete-orphan"
     }
 }

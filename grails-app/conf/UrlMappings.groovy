@@ -8,6 +8,7 @@ class UrlMappings {
 		}
 
         "/"(controller: 'home')
+        "/tmp/$id"(controller: 'file', action: "showTmpFile")
 		"/index"(view:'/index')
 		"/ping"(view:'/ping')
         "500"(view:'/error')
