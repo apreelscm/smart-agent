@@ -19,7 +19,7 @@ class AppParametersService {
 		
 		if (Environment.getCurrent().equals(Environment.DEVELOPMENT)) {
 			if (tmpPath == null || tmpPath.isEmpty()) {
-				tmpPath = "web-app" + File.separator + "files" + File.separator + "pdf_images" + File.separator
+				tmpPath = File.separator + "files" + File.separator + "pdf_images" + File.separator
 			}
 		}
 		
