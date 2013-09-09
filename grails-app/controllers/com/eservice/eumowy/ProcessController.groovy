@@ -18,6 +18,8 @@ class ProcessController {
 
     @Secured(['EUM_PH_BZOS','EUM_ZRD'])
     def list() {
+        params.remove('_action_list')
+
         params.max = Math.min(params.max ? params.int('max') : 10, 100)
 
 //        log.info("PSZKUP in Controller --> filterPhNo: " + params.filterPhNo + "; filterDateFrom: " + params.filterDateFrom + "; filterDateTo: " + params.filterDateTo)
@@ -28,14 +30,20 @@ class ProcessController {
 
         def processes = new ProcessService().searchProcessByFilters(params)
 
-        [   filterStatus: params.filterStatus,
-                filterObserved:params.filterObserved,
-                filterNip:params.filterNip,
-                filterPhNo:params.filterPhNo,
-                filterDateFrom: params.filterDateFrom?params.filterDateFrom: DateUtils.getFormattedDate(DateUtils.addDays(new Date(), -30), DateUtils.DD_MM_YYYY),
-                filterDateTo: params.filterDateTo?params.filterDateTo: DateUtils.getFormattedDate(new Date(), DateUtils.DD_MM_YYYY),
-                processInstanceList: processes.searchResults,
-                processInstanceTotal: processes.searchResultSize]
+        [
+            filterStatus: params.filterStatus,
+            filterObserved:params.filterObserved,
+            filterNip:params.filterNip,
+            filterPhNo:params.filterPhNo,
+            filterDateFrom: params.filterDateFrom?params.filterDateFrom: DateUtils.getFormattedDate(DateUtils.addDays(new Date(), -30), DateUtils.DD_MM_YYYY),
+            filterDateTo: params.filterDateTo?params.filterDateTo: DateUtils.getFormattedDate(new Date(), DateUtils.DD_MM_YYYY),
+            sort:params.sort,
+            order:params.order,
+            max:params.max,
+            offset:params.offset,
+            processInstanceList: processes.searchResults,
+            processInstanceTotal: processes.searchResultSize
+        ]
     }
 
     //---------------------------------
@@ -47,11 +55,31 @@ class ProcessController {
         def processInstance = Process.get(id)
         if (!processInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'process.label', default: 'proces'), id])
-            redirect(action: "list" )
+            redirect(action: "list", params: params )
             return
         }
 
-        [processInstance: processInstance]
+        def result = [
+            processInstance: processInstance,
+            filterStatus: params.filterStatus,
+            filterObserved:params.filterObserved,
+            filterNip:params.filterNip,
+            filterPhNo:params.filterPhNo,
+            filterDateFrom: params.filterDateFrom?params.filterDateFrom: DateUtils.getFormattedDate(DateUtils.addDays(new Date(), -30), DateUtils.DD_MM_YYYY),
+            filterDateTo: params.filterDateTo?params.filterDateTo: DateUtils.getFormattedDate(new Date(), DateUtils.DD_MM_YYYY)
+        ]
+
+        if (params.sort){
+            result.put('sort', params.sort)
+        }
+        if (params.order){
+            result.put('order', params.order)
+        }
+        if (params.offset){
+            result.put('offset', params.offset)
+        }
+
+        result
     }
 
     //---------------------------------
@@ -63,20 +91,39 @@ class ProcessController {
         def processInstance = Process.get(id)
         if (!processInstance) {
             flash.message = message(code: 'default.not.found.message', args:[ message(code: 'process.label', default: 'proces'), id])
-            redirect(action: "list")
+            redirect(action: "list", params: params)
             return
         }
 
-        [processInstance: processInstance]
+        def result = [
+            processInstance: processInstance,
+            filterStatus: params.filterStatus,
+            filterObserved:params.filterObserved,
+            filterNip:params.filterNip,
+            filterPhNo:params.filterPhNo,
+            filterDateFrom: params.filterDateFrom?params.filterDateFrom: DateUtils.getFormattedDate(DateUtils.addDays(new Date(), -30), DateUtils.DD_MM_YYYY),
+            filterDateTo: params.filterDateTo?params.filterDateTo: DateUtils.getFormattedDate(new Date(), DateUtils.DD_MM_YYYY)
+        ]
+
+        if (params.sort){
+            result.put('sort', params.sort)
+        }
+        if (params.order){
+            result.put('order', params.order)
+        }
+        if (params.offset){
+            result.put('offset', params.offset)
+        }
+        result
     }
 
     @Secured(['EUM_ZRD'])
     def reject() {
         def processInstance = Process.get(params.id)
-
+        params.remove('_action_reject')
         if (!processInstance) {
             flash.message = message(code: 'default.not.found.message', args:[ message(code: 'process.label', default: 'proces'), id])
-            redirect(action: "list")
+            redirect(action: "list", params: params)
             return
         }
 
@@ -84,17 +131,19 @@ class ProcessController {
         processInstance.observed = (params.observed == "on")
         processInstance.save(validate: false)
         flash.message = message(code: 'default.rejected.message', args:[ message(code: 'process.label', default: 'proces'), processInstance.id])
-        redirect(action: "list")
+
+        redirect(action: "list", params: params)
     }
 
     @Secured(['EUM_ZRD'])
     def accept() {
         def processInstance = Process.get(params.id)
+        params.remove('_action_accept')
 
         println(params)
         if (!processInstance) {
             flash.message = message(code: 'default.not.found.message', args:[ message(code: 'process.label', default: 'proces'), id])
-            redirect(action: "list")
+            redirect(action: "list", params: params)
             return
         }
 
@@ -102,7 +151,7 @@ class ProcessController {
         processInstance.observed = (params.observed == "on")
         processInstance.save(validate: true)
         flash.message = message(code: 'default.accepted.message', args:[ message(code: 'process.label', default: 'proces'), processInstance.id])
-        redirect(action: "list")
+        redirect(action: "list", params: params)
     }
 
     //---------------------------------

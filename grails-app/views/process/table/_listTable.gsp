@@ -17,7 +17,7 @@
     <tbody>
     <g:each in="${processInstanceList}" status="i" var="processInstance">
         <tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
-            <td class="tableCell" style="word-wrap:break-word;"><g:link action="show" id="${processInstance.id}">${fieldValue(bean: processInstance, field: "stringId")}</g:link></td>
+            <td class="tableCell" style="word-wrap:break-word;"><g:link action="show" id="${processInstance.id}" params="[filterStatus:filterStatus,filterObserved:filterObserved,filterNip:filterNip,filterPhNo:filterPhNo,filterDateFrom:filterDateFrom,filterDateTo:filterDateTo,sort:sort,order:order,max:max,offset:offset]">${fieldValue(bean: processInstance, field: "stringId")}</g:link></td>
             <td class="tableCell"><g:formatDate date="${processInstance.lastUpdated}" /></td>
             <td class="tableCell">${fieldValue(bean: processInstance.client ?: null, field: "nip")}</td>
             <td class="tableCell">${fieldValue(bean: processInstance.client ?: null, field: "name")}</td>

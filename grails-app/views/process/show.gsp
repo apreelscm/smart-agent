@@ -87,6 +87,16 @@
         <nav>
             <fieldset class="przyciski">
                 <g:hiddenField name="id" value="${processInstance.id}"/>
+                <g:hiddenField name="filterStatus" value="${params.filterStatus}"/>
+                <g:hiddenField name="filterObserved" value="${params.filterObserved}"/>
+                <g:hiddenField name="filterNip" value="${params.filterNip}"/>
+                <g:hiddenField name="filterPhNo" value="${params.filterPhNo}"/>
+                <g:hiddenField name="filterDateFrom" value="${params.filterDateFrom}"/>
+                <g:hiddenField name="filterDateTo" value="${params.filterDateTo}"/>
+                <g:if test="${params.sort}"><g:hiddenField name="sort" value="${params.sort}"/></g:if>
+                <g:if test="${params.order}"><g:hiddenField name="order" value="${params.order}"/></g:if>
+                <g:if test="${params.max}"><g:hiddenField name="max" value="${params.max}"/></g:if>
+                <g:if test="${params.offset}"><g:hiddenField name="offset" value="${params.offset}"/></g:if>
                 <g:actionSubmit class="button submit float-left" value="Wróć" action="list"  />
                 <g:if test="${!(processInstance?.status in [Process.ProcessStatus.ACCEPTED, Process.ProcessStatus.REJECTED])}">
                     <g:actionSubmit class="button submit" action="reject" value="Odrzuć"
