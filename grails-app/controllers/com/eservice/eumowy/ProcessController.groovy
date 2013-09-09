@@ -118,12 +118,7 @@ class ProcessController {
         def dir = "tmp"
         def fileName = "${id}_${documentFile.version}_${documentFile.name}"
 
-        def tmpRes
-        try{
-            tmpRes = ApplicationHolder.getApplication().getParentContext().getResource("${dir}/${fileName}")
-        }catch(Exception ex){
-            log.warn(ex.message)
-        }
+        def tmpRes = ApplicationHolder.getApplication().getParentContext().getResource("${dir}/${fileName}")
 
         if(!tmpRes.exists()){
             def tmpPdfFile = tmpRes.getFile()
@@ -131,6 +126,9 @@ class ProcessController {
                 s << documentFile.content.content
             }
         }
+
+        //TODO zmienic
+        while(!tmpRes.exists()){}
 
         render(template: '../forms/pdf/embedDocument', model:  [pdfDocument: resource(dir:dir, file:fileName)]);
     }

@@ -9,47 +9,75 @@ import java.text.NumberFormat
 class PdfMapper {
     static Logger LOG = Logger.getLogger(PdfMapper.class)
 
-    static mapAllDataToPDFData(def process, def points) {
+    private int pointIndex=0;
+    private int pointAcceptCardCount =0;
+    private int pointRangeCount =0;
+
+    def mapAllDataToPDFData(def process, def points) {
         HashMap<String, String[]> dataMap = new HashMap<String, String[]>()
 
         dataMap.putAll(mapProcessDataToPDFData(process))
-        points?.eachWithIndex { point, index ->
-            dataMap.putAll(mapPointAndPosDataToPDFData(point, index))
-        }
+        dataMap.putAll(mapPointsDataToPDFData(points))
+
         return dataMap
     }
 
-    static mapPointAndPosDataToPDFData(def pd, def index) {
-        def pointDataMap = mapPointDataToPDFData(pd, index)
-        def posDataMap = mapPosDataToPDFData(pd.posDatas)
-        pointDataMap.putAll(posDataMap)
+    def mapPointsDataToPDFData(def points) {
+        Map<String, String[]> data = new HashMap<String, String[]>()
+        points?.eachWithIndex { point, index ->
+            pointIndex = index;
 
-        return pointDataMap
+            data.putAll(mapPointDataToPDFData(point))
+            data.putAll(mapPosesDataToPDFData(point.posDatas))
+        }
+        return data
     }
 
-    static mapPointDataToPDFData(def pointData, def index) {
+    def mapPointDataToPDFData(def pointData) {
         Map<String, String[]> data = new HashMap<String, String[]>()
+
+//        boolean acceptCardIsChoosen = false;
+        boolean rangeIsChoosen, acceptCardIsChoosen = false;
+
+        if (pointData.czyWybranyAkceptacjaKart){
+            pointAcceptCardCount++
+            acceptCardIsChoosen = true;
+        }
+
+        if (pointData.czyWybranyZakresUruchomienia){
+            pointRangeCount++
+            rangeIsChoosen = true
+        }
 
         pointData.properties.each { key, value ->
             log.info "PointData Key: " + key + " value: " + value
             if (["class", "posDatas", "errors", "constraints", "processId", "cbdId", "pointDetailsId", "empty"].contains(key) || value == null){
                 return
+            } else if (["tytulPlatnosci", "systemKasowy", "uta"].contains(key)) {
+                if (acceptCardIsChoosen){
+                    def methodName = "map" + key.capitalize() + "Point"
+                    if (PdfMapper.metaClass.respondsTo(PdfMapper, methodName)) {
+                        PdfMapper."${methodName}"(data, pointData, key, value, pointAcceptCardCount)
+                        return
+                    }
+                }
+            } else {
+                //TODO -
+                def methodName = "map" + key.capitalize() + "Point"
+                if (PdfMapper.metaClass.respondsTo(PdfMapper, methodName)) {
+                    PdfMapper."${methodName}"(data, pointData, key, value, pointAcceptCardCount)
+                    return
+                }
+                // w ostatecznosci...
+                data.put(key, [value] as String[])
             }
-
-            def methodName = "map" + key.capitalize() + "Point"
-            if (PdfMapper.metaClass.respondsTo(PdfMapper, methodName)) {
-                PdfMapper."${methodName}"(data, pointData, key, value)
-                return
-            }
-
-            data.put(key, [value] as String[])
         }
 
-        data.putAll(mapPointDataDetailsToPDFData(pointData, index));
+        data.putAll(mapPointDataDetailsToPDFData(pointData, acceptCardIsChoosen, rangeIsChoosen));
         return data
     }
 
-    private static mapPointDataDetailsToPDFData(def pointData, def index) {
+    def mapPointDataDetailsToPDFData(def pointData, def acceptCardIsChoosen, def rangeIsChoosen) {
         Map<String, String[]> data = new HashMap<String, String[]>()
 
         pointData.pointDetails?.properties.each { key, value ->
@@ -57,22 +85,65 @@ class PdfMapper {
 
             if (["class", "posDatas", "errors", "constraints", "processId", "cbdId", "pointDetailsId", "empty"].contains(key) || value == null){
                 return
-            }
+            } else if (["wydrukUlica", "nazwaDoWydrukuZTerminalaPos"].contains(key)){
+                //specjalne traktowanie pol do obslugi tabelek
 
-            def methodName = "map" + key.capitalize() + "PointDataDetails"
-            if (PdfMapper.metaClass.respondsTo(PdfMapper, methodName)) {
-                PdfMapper."${methodName}"(data, pointData, key, value, index+1)
-                return
+                def pdfProperty;
+
+                if (acceptCardIsChoosen){
+                    if ("wydrukUlica".equals(key)){
+                        pdfProperty="adresAkceptacjaKart";
+                    } else if ("nazwaDoWydrukuZTerminalaPos".equals(key)){
+                        pdfProperty="punktAkceptacjaKart";
+                    }
+
+                    if (pdfProperty?.trim()){
+                        def methodName = "map" + key.capitalize() + "PointDataDetails"
+                        if (PdfMapper.metaClass.respondsTo(PdfMapper, methodName)) {
+                            PdfMapper."${methodName}"(data, pointData, pdfProperty, value, pointAcceptCardCount)
+                        }
+                    }
+                }
+
+                if (rangeIsChoosen){
+                    if ("wydrukUlica".equals(key)){
+                        pdfProperty="adresZakresUruchomienia";
+                    } else if ("nazwaDoWydrukuZTerminalaPos".equals(key)){
+                        pdfProperty="punktZakresUruchomienia";
+                    }
+
+                    if (pdfProperty?.trim()){
+                        def methodName = "map" + key.capitalize() + "PointDataDetails"
+                        if (PdfMapper.metaClass.respondsTo(PdfMapper, methodName)) {
+                            PdfMapper."${methodName}"(data, pointData, pdfProperty, value, pointRangeCount)
+                        }
+                    }
+                }
+            } else {
+                def methodName = "map" + key.capitalize() + "PointDataDetails"
+                if (PdfMapper.metaClass.respondsTo(PdfMapper, methodName)) {
+                    PdfMapper."${methodName}"(data, pointData, key, value, pointIndex+1)
+                    return
+                }
+                data.put(key, [value] as String[])
             }
-            data.put(key, [value] as String[])
         }
         return data
     }
 
-    static mapPosDataToPDFData(def pd) {
+    def mapPosesDataToPDFData(def posesData) {
+        Map<String, String[]> data = new HashMap<String, String[]>()
+        posesData?.each { posData ->
+            data.putAll(mapPosDataToPDFData(posData))
+        }
+        return data
+    }
+
+    def mapPosDataToPDFData(def pos){
         Map<String, String[]> data = new HashMap<String, String[]>()
 
-        pd?.properties.each { key, value ->
+        //MAP properties
+        pos.properties.each { key, value ->
             log.info "PosData Key: " + key
             if (["class", "cbdId", "process", "point", "errors", "constraints", "empty", "", ""].contains(key) || value == null){
                 return
@@ -80,22 +151,24 @@ class PdfMapper {
 
             def methodName = "map" + key.capitalize()
             if (PdfMapper.metaClass.respondsTo(PdfMapper, methodName)) {
-                PdfMapper."${methodName}"(data, pd, key, value)
+                PdfMapper."${methodName}"(data, pos, key, value)
                 return
             }
 
             data.put(key, [value] as String[])
         }
 
-        pd?.posDetails?.properties.each { key, value ->
-            log.info "PosDataDetails Key: " + key
-            if (["class", "cbdId", "process", "point", "errors", "constraints", "empty", "", ""].contains(key) || value == null){
+        //MAP posDetails properties
+        pos.posDetails?.properties.each { key, value ->
+            log.info "PosDataDetails Key: " + key + " value: " + value
+
+            if (["class", "cbdId", "process", "point", "errors", "constraints", "empty"].contains(key) || value == null){
                 return
             }
 
             def methodName = "map" + key.capitalize()
             if (PdfMapper.metaClass.respondsTo(PdfMapper, methodName)) {
-                PdfMapper."${methodName}"(data, pd, key, value)
+                PdfMapper."${methodName}"(data, pos, key, value)
                 return
             }
 
@@ -105,10 +178,10 @@ class PdfMapper {
         return data
     }
 
-    static mapProcessDataToPDFData(def pd) {
+    def mapProcessDataToPDFData(def process) {
         Map<String, String[]> data = new HashMap<String, String[]>()
 
-        pd.each { processData ->
+        process.each { processData ->
 //            println  "ProcessData name: " + processData.name  +  " value: " + processData.value
 
             //formatowanie procentowej wartosci platnosci karty
@@ -126,7 +199,7 @@ class PdfMapper {
             def methodName = "map" + processData.name.capitalize()+"Process"
 
             if (PdfMapper.metaClass.respondsTo(PdfMapper, methodName)) {
-                PdfMapper."${methodName}"(data, pd, processData.name, processData.value)
+                PdfMapper."${methodName}"(data, process, processData.name, processData.value)
                 return
             }
 
@@ -147,15 +220,27 @@ class PdfMapper {
 
     //------------------- POINT METHODS --------------------------------
 
-    private static mapNrMerchantaPoint(def data, def pd, def key, def value) {
+    private static mapNrMerchantaPoint(def data, def pd, def key, def value, def index) {
         data.put(key+"1", [value.substring(0, 5)] as String[])
         data.put(key+"2", [value.substring(5, 10)] as String[])
         data.put(key+"3", [value.substring(10, 12)] as String[])
         data.put(key+"4", [value.substring(12, 15)] as String[])
     }
 
-    private static mapUlicaDoKorespondencjiPoint(def data, def pd, def key, def value) {
+    private static mapUlicaDoKorespondencjiPoint(def data, def pd, def key, def value, def index) {
         data.put(key, [pd.ulicaDoKorespondencjiTyp + " " + value] as String[])
+    }
+
+    private static mapTytulPlatnosciPoint(def data, def pd, def key, def value, def index) {
+        data.put("platnoscTN"+index, [value?"TAK":"NIE"] as String[])
+    }
+
+    private static mapSystemKasowyPoint(def data, def pd, def key, def value, def index) {
+        data.put("integracjaTN"+index, [value?"TAK":"NIE"] as String[])
+    }
+
+    private static mapUtaPoint(def data, def pd, def key, def value, def index) {
+        data.put("utaTN"+index, [value?"TAK":"NIE"] as String[])
     }
 
     //------------------- POINT DATA DETAILS METHODS --------------------------------
@@ -165,11 +250,11 @@ class PdfMapper {
         //TODO - mozna pomyslec nad sprawdzeniem czy mieszkanie jest puste
 
         def result = (value + " " + getFromPointDataDetails(pointData, 'wydrukNrDomu') +"/"+ getFromPointDataDetails(pointData, 'wydrukNrLokalu') + " " + getFromPointDataDetails(pointData, 'wydrukMiasto') + " " + getFromPointDataDetails(pointData, 'wydrukKodPocztowy'))
-        data.put("adres"+index, [result] as String[])
+        data.put(key+index, [result] as String[])
     }
 
     private static mapNazwaDoWydrukuZTerminalaPosPointDataDetails(def data, def pointData, def key, def value, def index) {
-        data.put("punkt"+index, [value] as String[])
+        data.put(key+index, [value] as String[])
     }
 
     //------------------- PROCESS METHODS --------------------------------
