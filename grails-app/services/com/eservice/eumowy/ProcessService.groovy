@@ -325,7 +325,7 @@ class ProcessService {
 					apc."set${key.capitalize()}"(value)
 				}
 			}
-			
+			apc.id = point.id
 			cmd.allPoints.add(apc)
 		}
 		
@@ -527,6 +527,17 @@ class ProcessService {
 				}
 			}
 			
+			pointData.cbdId = null
+			pointData.nip = pointDataDetails.nipPunktu
+			pointData.nazwa = pointDataDetails.nazwaDoWyszukiwarki
+			pointData.ulica = pointDataDetails.korespondencjaUlica
+			pointData.nrLokalu = pointDataDetails.korespondencjaNrLokalu
+			pointData.nrBudynku = pointDataDetails.korespondencjaNrDomu
+			pointData.miejscowosc = pointDataDetails.korespondencjaMiasto
+			pointData.kodPocztowy = pointDataDetails.korespondencjaKodPocztowy
+			pointData.poczta = pointDataDetails.korespondencjaPoczta
+			pointData.liczbaPos = pdList.size()
+			
 			pointsList.add(pointData)
 			
 			posData.setPosDetails(posDataDetails)
@@ -580,13 +591,12 @@ class ProcessService {
 			}
 			else {
 				PointData pointData = new PointData()
-				
 				apc.properties.each { key, value ->
 					if (PointData.metaClass.respondsTo(PointData, "set" + key.capitalize())) {
 						pointData?."set${key.capitalize()}"(value)
 					}
 				}
-				
+				pointData.cbdId = apc.cbdId
 				pointsList.add(pointData)
 			}
 		}

@@ -34,6 +34,7 @@ class PointData implements Serializable {
 	}
 	
 	static mapping = {
+		sort "id"
 		table name: "POINT", schema:DomainConsts.SHEMA_NAME
 		id generator:'sequence', params:[sequence:DomainConsts.SHEMA_NAME+'.POINT_SEQ']
 		nip column: "nip"

@@ -1,11 +1,22 @@
 <%@ page import="com.eservice.eumowy.Process" %>
-
+<r:require module="jquery" />
 <g:javascript>
     function showPdfBox(obj) {
         var el = document.getElementById(obj);
         if ( el.style.display == 'none' ) {
             el.style.display = '';
         }
+        
+    }
+    
+    function loadedPdfBox(obj) {
+    	console.log("Cleaning...");
+    	jQuery("#"+obj).html('');
+    }
+    
+    function showPdfBoxSpinner(obj) {
+    	console.log("Loading...");
+    	jQuery("#"+obj).show().html('<div style="text-align: center; width: 200px; display: block; margin: 0 auto;"><h2 style="padding-top: 100px;"><g:message code="process.subscriptions.loadingPage" /></h2><img style="width: 40px;" src="/eumowy/images/document-loading.gif" /></div>')
     }
 </g:javascript>
 
@@ -24,6 +35,8 @@
             <td class="tableCellLeft"  class="wrapped"><g:remoteLink action="showPdfByDocumentId" class="wrapped"
                                                      title="${fieldValue(bean: document, field: "name")}"
                                                      update="pdfBox"
+                                                     onLoading="showPdfBoxSpinner('pdfBox')"
+                                                     onLoaded ="loadedPdfBox('pdfBox')"
                                                      onSuccess="showPdfBox('pdfBox')"
                                                      params="[id: document.id]">
                 ${fieldValue(bean: document, field: "name")}
