@@ -17,6 +17,7 @@ class PosData implements Serializable {
 	static hasOne = [posDetails: PosDataDetails]
 	
 	static mapping = {
+		sort "id"
 		table name: "POS", schema:DomainConsts.SHEMA_NAME
 		id generator:'sequence', params:[sequence:DomainConsts.SHEMA_NAME+'.POS_SEQ']
 		numerZestawuPos column: "pos_set_number"

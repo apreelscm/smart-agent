@@ -29,3 +29,4 @@ SELECT
          AND k.kln_poziom = 'OUT'
          AND a.adr_rodzaj = 'SGL'
          AND a.adr_czy_aktywny = 'T'
+ ORDER BY k.kln_id
