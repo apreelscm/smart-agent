@@ -19,17 +19,19 @@ import com.lowagie.text.pdf.PdfStamper;
 
 public class PdfGenerator {
 	private static Logger LOG = Logger.getLogger(PdfGenerator.class);
-	
-	private static String ARIAL_FONT_PATH = "web-app"+File.separator+"fonts"+File.separator+"arial.ttf";
-	private static String ARIALBOLD_FONT_PATH = "web-app"+File.separator+"fonts"+File.separator+"arialbd.ttf";
-	
+
+//	private static String ARIAL_FONT_PATH = "web-app"+File.separator+"fonts"+File.separator+"arial.ttf";
+//	private static String ARIALBOLD_FONT_PATH = "web-app"+File.separator+"fonts"+File.separator+"arialbd.ttf";
+	private static String ARIAL_FONT_NAME = "arial.ttf";
+	private static String ARIALBOLD_FONT_NAME = "arialbd.ttf";
+
 	/**
 	 * 
 	 * @param urlTemplatePath
 	 * @param dataMap
 	 * @return
 	 */
-	public static byte[] generatePdfContentFromURI(String urlTemplatePath, Map<String,String[]> dataMap, String fontPath) {
+	public static byte[] generatePdfContentFromURI(String urlTemplatePath, Map<String,String[]> dataMap, String fontPath, String fPath) {
 		Map<String,String> fontsPathMap = new HashMap<String, String>();
 		if (fontPath != null && dataMap != null){
 			
@@ -37,7 +39,7 @@ public class PdfGenerator {
 				fontsPathMap.put(dataEntry.getKey(), fontPath);
 			}
 		}
-		return generatePdfContentFromURI(urlTemplatePath,dataMap,fontsPathMap);
+		return generatePdfContentFromURI(urlTemplatePath,dataMap,fontsPathMap, fPath);
 	}
 	
 	/**
@@ -46,7 +48,7 @@ public class PdfGenerator {
 	 * @param dataMap
 	 * @return
 	 */
-	public static byte[] generatePdfContentFromFile(String fileTemplatePath, Map<String,String[]> dataMap, String fontPath) {
+	public static byte[] generatePdfContentFromFile(String fileTemplatePath, Map<String,String[]> dataMap, String fontPath, String fPath) {
 		Map<String,String> fontsPathMap = new HashMap<String, String>();
 		if (fontPath != null && dataMap != null){
 			
@@ -54,7 +56,7 @@ public class PdfGenerator {
 				fontsPathMap.put(dataEntry.getKey(), fontPath);
 			}
 		}
-		return generatePdfContentFromFile(fileTemplatePath,dataMap,fontsPathMap);
+		return generatePdfContentFromFile(fileTemplatePath,dataMap,fontsPathMap, fPath);
 	}
 	
 	/**
@@ -64,7 +66,7 @@ public class PdfGenerator {
 	 * @param fontsPathMap
 	 * @return
 	 */
-	public static byte[] generatePdfContentFromURI(String urlTemplatePath, Map<String,String[]> dataMap, Map<String,String> fontsPathMap) {
+	public static byte[] generatePdfContentFromURI(String urlTemplatePath, Map<String,String[]> dataMap, Map<String,String> fontsPathMap, String fPath) {
 		if (urlTemplatePath == null){
 			throw new IllegalArgumentException("urlTemplatePath param shouldn't be null");
 		}
@@ -96,10 +98,10 @@ public class PdfGenerator {
 						bf = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.EMBEDDED);
 					}
 					else if ("ARIAL".equals(fontsPathMap.get(dataEntry.getKey()))) {
-						bf = BaseFont.createFont(ARIAL_FONT_PATH, BaseFont.CP1250, BaseFont.EMBEDDED);
+						bf = BaseFont.createFont(fPath+ARIAL_FONT_NAME, BaseFont.CP1250, BaseFont.EMBEDDED);
 					}
 					else if ("ARIALBOLD".equals(fontsPathMap.get(dataEntry.getKey()))) {
-						bf = BaseFont.createFont(ARIALBOLD_FONT_PATH, BaseFont.CP1250, BaseFont.EMBEDDED);
+						bf = BaseFont.createFont(fPath+ARIALBOLD_FONT_NAME, BaseFont.CP1250, BaseFont.EMBEDDED);
 					}
 					else {
 						bf = BaseFont.createFont(fontsPathMap.get(dataEntry.getKey()), BaseFont.CP1250, BaseFont.EMBEDDED);
@@ -165,9 +167,12 @@ public class PdfGenerator {
 
 
 		} catch (DocumentException e) {
+            LOG.info("DocumentException: ", e);
 			//throw new RuntimeException(e);
 		} 
 		catch (IOException e) {
+
+            LOG.info("IOException: ", e);
 			//throw new RuntimeException(e);
 		}
 		finally {
@@ -194,7 +199,7 @@ public class PdfGenerator {
 	 * @param fontsPathMap
 	 * @return
 	 */
-	public static byte[] generatePdfContentFromFile(String fileTemplatePath, Map<String,String[]> dataMap, Map<String,String> fontsPathMap) {
+	public static byte[] generatePdfContentFromFile(String fileTemplatePath, Map<String,String[]> dataMap, Map<String,String> fontsPathMap, String fPath) {
 		if (fileTemplatePath == null){
 			throw new IllegalArgumentException("urlTemplatePath param shouldn't be null");
 		}
@@ -218,10 +223,10 @@ public class PdfGenerator {
 						bf = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.EMBEDDED);
 					}
 					else if ("ARIAL".equals(fontsPathMap.get(dataEntry.getKey()))) {
-						bf = BaseFont.createFont(ARIAL_FONT_PATH, BaseFont.CP1250, BaseFont.EMBEDDED);
+						bf = BaseFont.createFont(fPath + ARIAL_FONT_NAME, BaseFont.CP1250, BaseFont.EMBEDDED);
 					}
 					else if ("ARIALBOLD".equals(fontsPathMap.get(dataEntry.getKey()))) {
-						bf = BaseFont.createFont(ARIALBOLD_FONT_PATH, BaseFont.CP1250, BaseFont.EMBEDDED);
+						bf = BaseFont.createFont(fPath + ARIALBOLD_FONT_NAME, BaseFont.CP1250, BaseFont.EMBEDDED);
 					}
 					else {
 						bf = BaseFont.createFont(fontsPathMap.get(dataEntry.getKey()), BaseFont.CP1250, BaseFont.EMBEDDED);

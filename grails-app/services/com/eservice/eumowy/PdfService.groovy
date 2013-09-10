@@ -123,13 +123,13 @@ class PdfService {
 		
 		return f
 	}
-	
+
 	def fillPdfFormFromURI(String urlTemplatePath, Map<String,String[]> dataMap, FontType fontType) {
-		return PdfGenerator.generatePdfContentFromURI(urlTemplatePath, dataMap, getFont(fontType))
+		return PdfGenerator.generatePdfContentFromURI(urlTemplatePath, dataMap, getFont(fontType), appParametersService.getFontUri())
 	}
 	
 	def fillPdfFormFromFile(String fileTemplatePath, Map<String,String[]> dataMap, FontType fontType) {
-		return PdfGenerator.generatePdfContentFromFile(fileTemplatePath, dataMap, getFont(fontType))
+		return PdfGenerator.generatePdfContentFromFile(fileTemplatePath, dataMap, getFont(fontType), appParametersService.getFontUri())
 	}
 	
 	def fillPdfFormFromURIWithFaksymile(Signature sig, Map<String,String[]> panelData, FontType fontType) {
@@ -153,10 +153,10 @@ class PdfService {
 		if (panelData != null) {
 			dataMap.putAll(panelData)
 		}
+
+        String pdfTemplatePath = appParametersService.getPdfTemplatePath() + sig.templatePath
 		
-		String pdfTemplatePath = appParametersService.getPdfTemplatePath() + sig.templatePath
-		
-		return PdfGenerator.generatePdfContentFromURI(pdfTemplatePath, dataMap, getFont(fontType))
+		return PdfGenerator.generatePdfContentFromURI(pdfTemplatePath, dataMap, getFont(fontType), appParametersService.getFontUri())
 	}
 	
 	def fillPdfFormFromURIWithoutFaksymile(Signature sig, Map<String,String[]> panelData, FontType fontType) {
@@ -168,7 +168,7 @@ class PdfService {
 		
 		String pdfTemplatePath = appParametersService.getPdfTemplatePath() + sig.templatePath
 		
-		return PdfGenerator.generatePdfContentFromURI(pdfTemplatePath, dataMap, getFont(fontType))
+		return PdfGenerator.generatePdfContentFromURI(pdfTemplatePath, dataMap, getFont(fontType), appParametersService.getFontUri())
 	}
 	
 	def fillPdfFormFromURIWithBlackFaksymile(Signature sig, Map<String,String[]> panelData, FontType fontType) {
@@ -195,6 +195,6 @@ class PdfService {
 		
 		String pdfTemplatePath = appParametersService.getPdfTemplatePath() + sig.templatePath
 		
-		return PdfGenerator.generatePdfContentFromURI(pdfTemplatePath, dataMap, getFont(fontType))
+		return PdfGenerator.generatePdfContentFromURI(pdfTemplatePath, dataMap, getFont(fontType), appParametersService.getFontUri())
 	}
 }
