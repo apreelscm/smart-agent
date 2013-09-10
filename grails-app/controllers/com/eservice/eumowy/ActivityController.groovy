@@ -3,6 +3,7 @@ package com.eservice.eumowy
 import com.eservice.eumowy.command.ProcessCommand
 import com.eservice.eumowy.pdfmapper.PdfMapper
 import com.eservice.eumowy.process.DefineActivityCommand
+import org.apache.pdfbox.pdmodel.PDDocument
 import org.codehaus.groovy.grails.web.json.JSONObject
 
 class ActivityController {
@@ -176,12 +177,12 @@ class ActivityController {
                 
 				flow.representative1 = flow.representative1 != null ? flow.representative1 : processService.getRepresentative1(processInstance)
 				flow.representative2 = flow.representative2 != null ? flow.representative2 : processService.getRepresentative2(processInstance)
-				
+
 				if (!flow.skipDocumentGeneration) {
 					def totalPagesCount = 0
 	                def data = new PdfMapper().mapAllDataToPDFData(processInstance.processData, processInstance.points)
-					
-	                processInstance.signatures.each { sig ->
+
+                    processInstance.signatures.each { sig ->
 	                    log.info "SIGNATURE NAME: " + sig.name + " PDF TEMPLATE PATH: " + sig.templatePath
 	
 	                    byte[] documentData = pdfService.fillPdfFormFromURIWithFaksymile(sig, data, PdfService.FontType.ARIAL)
@@ -190,7 +191,19 @@ class ActivityController {
 	
 	                    int pc = pdfService.getPageCountFromPdf(documentData)
 	                    totalPagesCount += pc
-	
+
+//                        try {
+//                            log.info "Saving " + sig.name + " to disk - start"
+//                            ByteArrayInputStream bis = new ByteArrayInputStream(documentData)
+//                            PDDocument document = PDDocument.load(bis)
+//                            document.save('/home/tomcat/aaa/'+sig.templatePath)
+//                            document.close();
+//                            log.info "Saving " + sig.name + " to disk - finish"
+//                        } catch (Exception e){
+//                            log.info("Nie udalo sie zapisac pliku do katalgu!!!! " + sig.templatePath)
+//                        }
+
+
 	                    if (processService.findDocumentByName(processInstance.documents, sig.templatePath) == null) {
 	                        log.info "Creating new document [${sig.templatePath}]"
 	                        DocumentFile df = new DocumentFile(name: sig.templatePath, dateCreated: new Date(), lastUpdated: new Date(), pagesCount: pc)

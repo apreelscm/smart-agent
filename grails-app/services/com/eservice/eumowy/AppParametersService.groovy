@@ -30,7 +30,13 @@ class AppParametersService {
 			return grailsApplication.mainContext.getServletContext().getRealPath(tmpPath) + File.separator
 		}
 	}
-	
+
+    def getFontUri() {
+        def fontUri = grailsApplication.mainContext.getServletContext().getRealPath(File.separator+"fonts")+File.separator
+        //println  "FONT URI: " + fontUri
+        fontUri
+    }
+
 	def getPdfImageUri() {
 		String tmpPath = AppParameters.findByName("TEMP_PDFIMAGE_STORAGE_URI")?.value
 		
