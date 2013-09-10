@@ -57,9 +57,9 @@
         restrictionsMap["dodanieCashBackCB"] =  ["poprawDane","odrzucDokumenty", "uzupelnijPodpisy"];
         restrictionsMap["dodanieIkoCB"] =  ["poprawDane","odrzucDokumenty", "uzupelnijPodpisy"];
 
-        restrictionsMap["ekonomicznyCB"] =  ["nowaUmowa", "komfort", "prestiz", "uzupelnijPodpisy"];
-        restrictionsMap["komfortCB"] =  ["nowaUmowa", "ekonomiczny", "prestiz", "uzupelnijPodpisy"];
-        restrictionsMap["prestizCB"] =  ["nowaUmowa", "ekonomiczny", "komfort", "uzupelnijPodpisy"];
+        restrictionsMap["ekonomicznyCB"] =  ["nowaUmowa", "komfort", "prestiz", "uzupelnijPodpisy", "poprawDane","odrzucDokumenty"];
+        restrictionsMap["komfortCB"] =  ["nowaUmowa", "ekonomiczny", "prestiz", "uzupelnijPodpisy", "poprawDane","odrzucDokumenty"];
+        restrictionsMap["prestizCB"] =  ["nowaUmowa", "ekonomiczny", "komfort", "uzupelnijPodpisy", "poprawDane","odrzucDokumenty"];
 
         restrictionsMap["poprawDaneCB"] = ["nowaUmowa", "rozszerzenie", "zmianaWarunkow", "odrzucDokumenty","uzupelnijPodpisy", "pakietSerwisowy", "dodatkoweFuncjonalnosci"];
         restrictionsMap["odrzucDokumentyCB"] = ["nowaUmowa","rozszerzenie", "zmianaWarunkow", "poprawDane", "pakietSerwisowy","uzupelnijPodpisy", "dodatkoweFuncjonalnosci"];

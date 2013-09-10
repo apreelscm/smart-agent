@@ -21,7 +21,7 @@
            		<tbody>
            			<g:each status="i" var="point" in="${data.allPoints}">
            				<tr>
-							<td>${point.id}</td>
+							<td>${point.id}<input type="hidden" name="allPoints[${i}].id" value="${point.id}" /></td>
 							<td>${point.nazwa}</td>
 							<td>${point.ulica}</td>
 							<td>${point.miejscowosc}</td>

@@ -16,7 +16,7 @@
 				<tbody>
 					<g:each status="i" var="pos" in="${data.allPoses}" >
 					<tr>
-						<td>${pos.id}</td>
+						<td>${pos.id}<input type="hidden" name="allPoses[${i}].id" value="${pos.id}" /></td>
 						<td>${pos.numerZestawuPos}</td>
 						<td>${pos.dataOd}</td>
 						<td>${pos.dataDo}</td>

@@ -1376,3 +1376,7 @@ a.submit{
 
 .ui-widget-overlay{
 }
+
+fieldset legend {
+	margin-left: 1em;
+}

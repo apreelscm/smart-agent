@@ -4,7 +4,7 @@
 		<label for="${panelType}[${id}].persontocontactAsForMerchant"><g:checkBox name="${panelType}[${id}].kontaktWPunkcieJakDlaMerchanta" id="${panelType}[${id}].persontocontactAsForMerchant" value="${pointData?.kontaktWPunkcieJakDlaMerchanta}"/><g:message code="panel.as.merchant" /></label>
 		<ul class="table-list vertical-center">
 			<li>
-				<span><g:select name="${panelType}[${id}].kontaktWPunkcieTytul" id="${panelType}[${id}].contactAtPointTitle" from="['', 'Pan','Pani']" valueMessagePrefix="person.title" value="${pointData?.tytulInformatykDynamiczna}"  style="width: 50px"/></span>
+				<span><g:select name="${panelType}[${id}].kontaktWPunkcieTytul" id="${panelType}[${id}].contactAtPointTitle" from="['', 'Pan','Pani']" valueMessagePrefix="person.title" value="${pointData?.tytulInformatykDynamiczna}"  style="width: 60px"/></span>
 				<span><g:message code="panel.first.name" />:</span><span><g:textField name="${panelType}[${id}].kontaktWPunkcieImie" id="${panelType}[${id}].contactAtPointFirstName" value="${pointData?.kontaktWPunkcieImie}" style="width: 120px" maxlength="15"/></span>
 				<span><g:message code="panel.last.name" />:</span><span><g:textField name="${panelType}[${id}].kontaktWPunkcieNazwisko" id="${panelType}[${id}].contactAtPointLastName" value="${pointData?.kontaktWPunkcieNazwisko}"  style="width: 120px" maxlength="18"/></span>
 				<span><g:message code="panel.fax" />:</span><span><g:textField name="${panelType}[${id}].kontaktWPunkcieFax" id="${panelType}[${id}].contactAtPointFax" value="${pointData?.kontaktWPunkcieFax}" style="width: 120px" maxlength="9"/></span>

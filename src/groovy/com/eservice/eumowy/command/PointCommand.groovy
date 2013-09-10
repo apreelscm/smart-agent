@@ -7,6 +7,8 @@ package com.eservice.eumowy.command
  */
 class PointCommand implements Serializable {
 	
+	Integer id
+	
 	BigDecimal phPozysk
 	BigDecimal opiekaBiznesowa
 	BigDecimal opiekaSerwisowaI

@@ -198,7 +198,7 @@
             </ul>
         </fieldset>
         <fieldset class="border">
-            <legend>TODO - TODO - zmiana tytulu!!</legend>
+            <legend>Liczba dokonywanych dziennie transakcji</legend>
             <ul class="table-list">
                 <li>
                     <g:radioGroup name="scoringDeklaracjaFinansowa"

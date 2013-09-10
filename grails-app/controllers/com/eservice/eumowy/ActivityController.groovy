@@ -713,6 +713,9 @@ class ActivityController {
                     return error();
                 }
 
+				/* Delete subscriptions */
+				processInstance.subscriptions?.clear()
+				
                 flow.processInstance = processInstance
 
             }.to "clientSignature"

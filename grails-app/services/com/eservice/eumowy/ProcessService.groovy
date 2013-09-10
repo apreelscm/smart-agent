@@ -193,6 +193,11 @@ class ProcessService {
 	def loadPoints(def process, def cmd) {
 		log.info "loadPoints"
 		process.points.each { PointData point ->
+			
+			if (point.cbdId != null) {
+				return
+			}
+			
 			PointCommand pc = new PointCommand()
 			
 			point.properties.each { key, value ->
@@ -249,7 +254,11 @@ class ProcessService {
 		log.info "loadPoses"
 		process.points.each { PointData point ->
 			point.posDatas?.each { PosData posData ->
-			
+				
+				if (posData.tpsId != null) {
+					return
+				}
+				
 				PointCommand pc = new PointCommand()
 				
 				point.properties.each { key, value ->
@@ -305,7 +314,6 @@ class ProcessService {
 		log.info "loadAllPoints"
 		process.points.each { PointData point ->
 			AllPointsCommand apc = new AllPointsCommand()
-			apc.setCzyCbd(false)
 			
 			point.properties.each { key, value ->
 				log.info "PointData Key: " + key
@@ -336,9 +344,11 @@ class ProcessService {
 			
 			/* Don't add a point from CBD if we have a local copy with saved data */
 			if (cmd.allPoints.find { obj -> obj.cbdId == apc.cbdId } == null) {
+				log.info "Nowy punkt z CBD: " + apc.cbdId
 				cmd.allPoints.add(apc)
 			}
 			else {
+				log.info "Znaleziony punkt z CBD: " + apc.cbdId
 				AllPointsCommand foundApc = cmd.allPoints.find { obj -> obj.cbdId == apc.cbdId }
 				foundApc.setCzyCbd(apc.czyCbd)
 				foundApc.setCbdId(apc.cbdId)
@@ -416,8 +426,13 @@ class ProcessService {
         }
 		
         def pointsDataList = getPointData(cmd, process)
-        process.points?.clear()
+		//process.points?.clear()
         pointsDataList.each { data ->
+			def foundData = process.points.find { p -> p.id != null }
+			if (foundData != null) {
+				log.info "Removing old point data: " + foundData.id
+				process.points.remove(foundData)
+			}
             process.addToPoints(data)
             process.discard()
         }
@@ -438,7 +453,7 @@ class ProcessService {
     List<PointCommand> points = ListUtils.lazyList([], FactoryUtils.instantiateFactory(PointCommand))
     List<AllPointsCommand> allPoints = ListUtils.lazyList([], FactoryUtils.instantiateFactory(AllPointsCommand))
     List<AllPosCommand> allPoses = ListUtils.lazyList([], FactoryUtils.instantiateFactory(AllPosCommand))
-    def getDataFromPanels(def cmd) {
+	def getDataFromPanels(def cmd) {
         def processDataList = [];
         cmd.properties.each { key, value ->
             if (["class","process", "cbdService", "errors", "constraints", "notes"].contains(key) || value == null){
@@ -525,33 +540,54 @@ class ProcessService {
 		}
 		
 		/* Save points from AllPointsCommand */
-		cmd.allPoints?.each { apc ->
+		cmd.allPoints?.each { AllPointsCommand apc ->
 			
 			if (apc == null) {
 				log.info "AllPointCommand is NULL - skipping!"
 				return
 			}
 			
-			PointData pointData = null
-			
 			/* 
 			 * Check if the point already exists in our DB, if yes, just update it.
 			 * If not, create one, and mark him as "from CBD"
 			 */
 			if (apc.id != null) {
-				log.info "Szukam punktu: " + apc.id
-				pointData = process.points?.find { p -> p.id == apc.id }
-				log.info "Znaleziono punkt: " + apc.id
+				//PointData.withNewSession {
+					log.info "Szukam punktu: " + apc.id
+					//PointData pointData = process.points?.find { p -> p.id == apc.id && p.cbdId == null}
+					PointData pointData = PointData.find {id == apc.id}
+					if (pointData != null) {
+						log.info "Znaleziono punkt: " + pointData.id
+					
+						/*apc.properties.each { key, value ->
+							if (PointData.metaClass.respondsTo(PointData, "set" + key.capitalize())) {
+								pointData?."set${key.capitalize()}"(value)
+							}
+						}*/
+			
+					    pointData.czyWybranyZakresUruchomienia = apc.czyWybranyZakresUruchomienia
+						pointData.tytulPlatnosci = apc.tytulPlatnosci
+						pointData.systemKasowy = apc.systemKasowy
+						pointData.uta = apc.uta
+						pointData.czyWybranyAkceptacjaKart = apc.czyWybranyAkceptacjaKart
+						
+						pointData.save()
+					}
+					else {
+						log.info "Nie znaleziono punktu: " + apc.id
+					}
+				//}
 			}
 			else {
-				pointData = new PointData()
-				pointsList.add(pointData)
-			}
-			
-			apc.properties.each { key, value ->
-				if (PointData.metaClass.respondsTo(PointData, "set" + key.capitalize())) {
-					pointData?."set${key.capitalize()}"(value)
+				PointData pointData = new PointData()
+				
+				apc.properties.each { key, value ->
+					if (PointData.metaClass.respondsTo(PointData, "set" + key.capitalize())) {
+						pointData?."set${key.capitalize()}"(value)
+					}
 				}
+				
+				pointsList.add(pointData)
 			}
 		}
 			

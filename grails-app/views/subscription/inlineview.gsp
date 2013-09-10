@@ -29,14 +29,14 @@
       	return false;
       });
       
-    });
+    }); 
 
 </r:script>
 <div id="dialog">
 <section id="index-subscription">
     <h1 class="ng linia-bottom">Podpis</h1>
 
-    <h3 style="margin-top: 20px">${params.name} ${params.surname}</h3>
+    <h3 style="margin-top: 20px">${params.name?.decodeURL()} ${params.surname?.decodeURL()}</h3>
 
     <g:form  id="subscriptionForm" action="saveSubscription" class="sigPad">
         <p>

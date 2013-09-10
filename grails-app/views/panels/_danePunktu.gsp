@@ -6,6 +6,7 @@
             		<g:submitButton id="removePointButton" name="removePointButton" class="button submit" value="Usuń punkt" style="margin-right: 2em; margin-bottom: 1em;"/>
             	</div>
             	<div style="clear: both;"></div>
+            	<input type="hidden" name="${panelType}[${id}].id" value="${pointData?.id}" />
                 <g:render template="../panels/opieka" />
                 <fieldset class="subpanel-fieldset">
                 	<legend><g:message code="panel.newpoint.pointdata.title" /></legend>
