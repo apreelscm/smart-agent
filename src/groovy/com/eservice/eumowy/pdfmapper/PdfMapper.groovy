@@ -272,7 +272,8 @@ class PdfMapper {
     }
 
     private static mapAkceptantUlicaProcess(def data, def pd, def key, def value) {
-        data.put("akceptantSiedziba", [getFromProcessDataSet(pd, 'akceptantUlicaTytul') + " " + value + " " + getFromProcessDataSet(pd, 'akceptantNrDomu') + getFromProcessDataSet(pd, 'wydrukNrMieszkania')? "/"+getFromProcessDataSet(pd, 'wydrukNrMieszkania'):"" + " " + getFromProcessDataSet(pd, 'akceptantMiasto')] as String[])
+        //TODO - mozna sprawdzic czy jest numer mieszkania
+        data.put("akceptantSiedziba", [getFromProcessDataSet(pd, 'akceptantUlicaTytul') + " " + value + " " + getFromProcessDataSet(pd, 'akceptantNrDomu') + " " + getFromProcessDataSet(pd, 'akceptantNrMieszkania') + " " + getFromProcessDataSet(pd, 'akceptantMiasto')] as String[])
     }
 
     private static mapAkceptantNazwaOficjalnaProcess(def data, def pd, def key, def value) {
