@@ -3,6 +3,7 @@ package com.eservice.eumowy
 import com.eservice.eumowy.command.ProcessCommand
 import com.eservice.eumowy.pdfmapper.PdfMapper
 import com.eservice.eumowy.process.DefineActivityCommand
+import com.eservice.eumowy.util.DateUtils
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.codehaus.groovy.grails.web.json.JSONObject
 
@@ -182,6 +183,11 @@ class ActivityController {
 					def totalPagesCount = 0
 	                def data = new PdfMapper().mapAllDataToPDFData(processInstance.processData, processInstance.points)
 
+                    data.each{ key, value ->
+                        println 'DO GENERATORA PDF -> ' + key + ' = ' + value
+                    }
+
+
                     processInstance.signatures.each { sig ->
 	                    log.info "SIGNATURE NAME: " + sig.name + " PDF TEMPLATE PATH: " + sig.templatePath
 	
@@ -249,6 +255,17 @@ class ActivityController {
 					processInstance.status = Process.ProcessStatus.SUBSCRIPTIONS_DONE
                     Subscription sub = Subscription.get(params.subscriptionId)
                     processInstance.addToSubscriptions(sub)
+
+                    //w momencie gdy zlozymy ostatni podpis zapisujemy date jako dataUmowy
+                    def aggrementDate = DateUtils.formatWithTimezone(DateUtils.getCurrentDate());
+                    log.info 'Zapisuje formatowana dateUmowy: ' + aggrementDate
+
+                    def aggrementDateProcessData = processInstance.processData?.find{ pData -> 'dataUmowy'.equals(pData.name)};
+                    if (aggrementDateProcessData){
+                        aggrementDateProcessData.value = aggrementDate
+                    } else {
+                        processInstance.addToProcessData(new ProcessData(name: 'dataUmowy', value: aggrementDate))
+                    }
                 }
                 else if (params.processStatus.equals("REJECTED")){
                     processInstance.status = Process.ProcessStatus.REJECTED
