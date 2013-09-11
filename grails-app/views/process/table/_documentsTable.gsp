@@ -42,7 +42,7 @@
                 ${fieldValue(bean: document, field: "name")}
             </g:remoteLink></td>
 
-            <td class="tableCell"><g:formatDate date="${document.lastUpdated}" /></td>
+            <td class="tableCell"><g:formatDate date="${document.lastUpdated}" format="yyyy-MM-dd hh:mm"/></td>
 
             <td class="tableCell">
                 <g:link class="button action float-left" style="margin: 0 auto"

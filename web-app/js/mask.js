@@ -15,4 +15,5 @@ jQuery(document).ready(function() {
     jQuery(".mobile-phone").mask('999-999-999');
     jQuery(".fax").mask('(99) 999-99-99');
     jQuery(".ip").mask('999.999.999.999');
+    jQuery(".ph-number").mask('99999');
 });

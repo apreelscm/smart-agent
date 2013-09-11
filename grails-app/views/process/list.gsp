@@ -6,6 +6,7 @@
     <g:set var="entityName" value="${message(code: 'process.label', default: 'Proces')}" />
     <title><g:message code="process.list.label"  /></title>
     <r:require module="listProcess"/>
+    <r:require module="mask"/>
 
 
 </head>
@@ -32,12 +33,12 @@
 
             <div class="display-inline" style="margin-left: .4em">
                 <label for="filterNip"><g:message code="process.nip.label" default="NIP:" /></label>
-                <g:textField name="filterNip" style="width: 80px" value="${filterNip}" maxlength="10"/>
+                <g:textField name="filterNip" style="width: 80px" value="${filterNip}" class="nip"/>
             </div>
 
             <div class="display-inline" style="margin-left: .4em">
                 <label for="filterPhNo"><g:message code="process.phNumber.label" default="Nr PH:" /></label>
-                <g:textField name="filterPhNo" style="width: 80px" value="${filterPhNo}" maxlength="6"/>
+                <g:textField name="filterPhNo" style="width: 80px" value="${filterPhNo}" class="ph-number"/>
             </div>
 
             <div class="display-inline-block" style="margin-left: .4em">
