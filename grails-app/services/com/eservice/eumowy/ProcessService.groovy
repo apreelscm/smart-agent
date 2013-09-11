@@ -447,7 +447,7 @@ class ProcessService {
     }
 
     def addCurrentDate(def processDataList){
-        processDataList.add(new ProcessData([name: 'dataUmowy', value: DateUtils.getCurrentFormattedDate()]))
+        processDataList.add(new ProcessData([name: 'dataUmowy', value: DateUtils.formatWithTimezone(DateUtils.getCurrentDate())]))
     }
 
     List<PointCommand> points = ListUtils.lazyList([], FactoryUtils.instantiateFactory(PointCommand))
@@ -465,7 +465,7 @@ class ProcessService {
                 return;
             }
 
-            if(["umowaOznOd", "umowaOznDo", "dataAneksowanejUmowyPos", "dataAneksowanejUmowyPrepaid"].contains(key)){
+            if(["umowaOznOd", "umowaOznDo", "dataAneksowanejUmowyPos", "dataAneksowanejUmowyPrepaid", "dataUmowy"].contains(key)){
                   processDataList.add(new ProcessData(name: "${key}", value:"${value? DateUtils.formatWithTimezone(DateUtils.parseDate(value)): ''}"));
                 return;
             }

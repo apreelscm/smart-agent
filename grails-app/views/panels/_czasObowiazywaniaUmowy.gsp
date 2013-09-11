@@ -33,7 +33,7 @@
         var umowaOznOd = jQuery('#umowaOznOd');
         var umowaOznDo = jQuery('#umowaOznDo');
 
-        if (jQuery('input[name="umowaCzas"]:checked').val() == 'nieoznaczony'){
+        if (jQuery('input[name="umowaCzas"]:checked').val() != 'oznaczony'){
             aggDates.hide();
             umowaOznOd.attr("disabled", true);
             umowaOznOd.val("");

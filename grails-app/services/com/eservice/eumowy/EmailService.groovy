@@ -53,7 +53,7 @@ class EmailService {
         def emailTemplate = EmailTemplates.findByName(EmailTemplates.EmailTemplateType.DOCUMENTS_REJECTED)
         //if(!emailTemplate) return;
 
-        sendMail(emailTemplate, emailTemplate.sender, recipient, [merchantNip, merchantName], [merchantName: merchantName, merchantNip: merchantNip, rejectReason: rejectReason], null)
+        sendMail(emailTemplate, emailTemplate.sender, recipient, [merchantNip, merchantName] as Object[], [merchantName: merchantName, merchantNip: merchantNip, rejectReason: rejectReason], null)
     }
 
 
