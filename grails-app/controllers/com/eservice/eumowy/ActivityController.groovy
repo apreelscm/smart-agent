@@ -233,6 +233,7 @@ class ActivityController {
 	                        log.info "Updating existing document [${sig.templatePath}]"
 	                        DocumentFile df = processService.findDocumentByName(processInstance.documents, sig.templatePath)
 	                        df.content.setContent(documentData)
+                            df.lastUpdated = new Date();
 	                        df.save(flush: true)
 	                    }
 	                }
