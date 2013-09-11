@@ -177,7 +177,16 @@ class ActivityController {
                 
 				flow.representative1 = flow.representative1 != null ? flow.representative1 : processService.getRepresentative1(processInstance)
 				flow.representative2 = flow.representative2 != null ? flow.representative2 : processService.getRepresentative2(processInstance)
-
+				flow.requiredNumberOfSubscriptions = 1 //PH subscription is always required
+				
+				if (flow.representative1.name != null && flow.representative1.surname != null) {
+					flow.requiredNumberOfSubscriptions++
+				}
+				
+				if (flow.representative2.name != null && flow.representative2.surname != null) {
+					flow.requiredNumberOfSubscriptions++
+				}
+				
 				if (!flow.skipDocumentGeneration) {
 					def totalPagesCount = 0
 	                def data = new PdfMapper().mapAllDataToPDFData(processInstance.processData, processInstance.points)
@@ -232,7 +241,9 @@ class ActivityController {
                     processInstance: flow.processInstance,
                     totalPagesCount: flow.totalPagesCount,
                     representative1: flow.representative1,
-                    representative2: flow.representative2])
+                    representative2: flow.representative2,
+					requiredNumberOfSubscriptions: flow.requiredNumberOfSubscriptions
+					])
             on("back"){
                 flow.newProcessFlow = false
             }to "chooseSubFlow"
@@ -241,7 +252,7 @@ class ActivityController {
                 log.info params
 				def processInstance = flow.processInstance
                 if (params.processStatus.equals("WAIT_FOR_SUBSCRIPTION")) {
-					processInstance.status = Process.ProcessStatus.WAIT_FOR_SUBSRIPTION
+					processInstance.status = Process.ProcessStatus.WAIT_FOR_SUBSCRIPTION
                     Subscription sub = Subscription.get(params.subscriptionId)
                     processInstance.addToSubscriptions(sub)
                 }
@@ -273,8 +284,8 @@ class ActivityController {
                 log.info "PARAMS: " + params
                 def processInstance = flow.processInstance
                 _processDocumentCreation(processInstance, params.requestVersion)
-
-                processInstance.status = Process.ProcessStatus.WAITING
+				processInstance.status = _getNewProcessStatus(params, flow.requiredNumberOfSubscriptions)
+				
                 flow.processInstance = processInstance
 
             }.to "finish"
@@ -1033,10 +1044,8 @@ class ActivityController {
 
     def _processDocumentCreation(Process process, String requestVersion)	{
 
-        Process.ProcessStatus newStatus;
         if ("electronical".equals(requestVersion)) {
             //TODO Check signatures and update documents in DB
-            newStatus = Process.ProcessStatus.WAITING
 
             process.documents.each { doc ->
                 //TODO Update document content from Data Map
@@ -1052,13 +1061,9 @@ class ActivityController {
                 emailService.sendDocumentsAcceptedToPostSend(null, process.documents, merchantName, merchantNip)
             }
 
-
-
         }
         else if ("paper".equals(requestVersion)) {
             //Documents are already in DB
-            newStatus = Process.ProcessStatus.WAIT_FOR_SUBSCRIPTION_PAPER_VERSION
-
             def merchantName = getFromProcessData(process, 'akceptantNazwaOficjalna');
 
             //TODO PSZKUP - phEmail
@@ -1067,7 +1072,6 @@ class ActivityController {
         }
         else if ("templates".equals(requestVersion)) {
             //TODO Documents are already in DB
-            newStatus = Process.ProcessStatus.WAIT_FOR_SUBSRIPTION
             List<DocumentFile> documentFilesWithBlackFaksymileList = new ArrayList<DocumentFile>()
             List<DocumentFile> documentFilesWithoutFaksymileList = new ArrayList<DocumentFile>()
 
@@ -1098,6 +1102,27 @@ class ActivityController {
             emailService.sendDocumentsTemplateVersion(recipientUser, documentFilesWithoutFaksymileList)
         }
     }
+	
+	def _getNewProcessStatus(def params, def requiredNumberOfSubscriptions) {
+		Process.ProcessStatus newStatus
+		
+		if ("electronical".equals(params?.requestVersion)) {
+			if (params?.numberOfSubscriptions < requiredNumberOfSubscriptions) {
+				newStatus = Process.ProcessStatus.WAIT_FOR_SUBSCRIPTION
+			}
+			else {
+				newStatus = Process.ProcessStatus.WAITING
+			}
+		}
+		else if ("paper".equals(params?.requestVersion)) {
+			newStatus = Process.ProcessStatus.WAIT_FOR_SUBSCRIPTION_PAPER_VERSION
+		}
+		else if ("templates".equals(params?.requestVersion)) {
+			newStatus = Process.ProcessStatus.WAIT_FOR_SUBSCRIPTION
+		}
+		
+		return newStatus
+	}
 
     def getFromProcessData(def process, def key){
         def result = process.processData.find{ pd -> pd.name.equals(key)}

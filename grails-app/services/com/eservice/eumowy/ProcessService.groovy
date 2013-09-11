@@ -523,6 +523,8 @@ class ProcessService {
 					posDataNew.setPoint(pointData)
 					posDataDetailsNew.setPos(posDataNew)
 					
+					//posDataNew.save()
+					
 					pdList.add(posDataNew)
 				}
 			}
@@ -538,10 +540,14 @@ class ProcessService {
 			pointData.poczta = pointDataDetails.korespondencjaPoczta
 			pointData.liczbaPos = pdList.size()
 			
+			//pointData.save()
+			
 			pointsList.add(pointData)
 			
 			posData.setPosDetails(posDataDetails)
 			posData.setPoint(pointData)
+			
+			//posData.save()
 			
 			pointData.setPointDetails(pointDataDetails)
 			pointData.setPosDatas(pdList)
@@ -582,7 +588,7 @@ class ProcessService {
 						pointData.uta = apc.uta
 						pointData.czyWybranyAkceptacjaKart = apc.czyWybranyAkceptacjaKart
 						
-						pointData.save()
+						//pointData.save()
 					}
 					else {
 						log.info "Nie znaleziono punktu: " + apc.id
@@ -597,6 +603,7 @@ class ProcessService {
 					}
 				}
 				pointData.cbdId = apc.cbdId
+				//pointData.save()
 				pointsList.add(pointData)
 			}
 		}

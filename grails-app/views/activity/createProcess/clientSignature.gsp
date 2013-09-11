@@ -31,6 +31,7 @@
 	<r:script>
 		var updateSubscriptionStatusCount = 0;
 		var isSubscriptionDone = {};
+		var requiredSubscriptionsCount = ${requiredNumberOfSubscriptions}
 		function updateSubscriptionStatus(status, linkid, subId) {
 			if (status == "OK") {
 				updateSubscriptionStatusCount++;
@@ -39,11 +40,11 @@
 				jQuery("#"+linkid).parent().addClass("disabled");
 				isSubscriptionDone[linkid] = true;
 				
-				if (updateSubscriptionStatusCount >= 1 && updateSubscriptionStatusCount <= 2) {
+				if (updateSubscriptionStatusCount >= 1 && updateSubscriptionStatusCount <= requiredSubscriptionsCount - 1) {
 		    		jQuery.post($(location).attr("href"), {_eventId_updateProcessStatus: "", processStatus: "WAIT_FOR_SUBSCRIPTION", subscriptionId: subId}, function(data){});
 				}
 				
-				if (updateSubscriptionStatusCount == 3) {
+				if (updateSubscriptionStatusCount == requiredSubscriptionsCount) {
                 	jQuery.post($(location).attr("href"), {_eventId_updateProcessStatus: "", processStatus: "SUBSCRIPTIONS_DONE", subscriptionId: subId}, function(data){});
 				}
 			}
@@ -135,7 +136,7 @@
 			
 			jQuery("#conitnueButton").on("click", function(e) {
 				e.preventDefault();
-				if (updateSubscriptionStatusCount != 3) {
+				if (updateSubscriptionStatusCount != requiredSubscriptionsCount) {
 					result = false;
 					jQuery("#confirm-submit-without-subscription-dialog").dialog({
 						resizable: true,
@@ -166,6 +167,14 @@
 				
 				return false;
 			});
+			
+			if (jQuery("#subscribe-REPRESENTATIVE1").text() == "  - Reprezentant") {
+				jQuery("#subscribe-REPRESENTATIVE1").parent().parent().hide();
+			}
+			
+			if (jQuery("#subscribe-REPRESENTATIVE2").text() == "  - Reprezentant") {
+				jQuery("#subscribe-REPRESENTATIVE2").parent().parent().hide();
+			}
 			
 			<g:each in="${processInstance.subscriptions}">
 				console.log("${it.name + ' ' + it.surname} - Reprezentant");
