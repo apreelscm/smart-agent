@@ -832,7 +832,7 @@ class ActivityController {
 
                 flow.client = client;
                 /** sprawdzanie, czy w eUmowy istnieje dla danego Akceptanta niezakończony Proces */
-                def lastProcess = processService.getLastProcessWithStatus(client, [Process.ProcessStatus.WAIT_FOR_SUBSRIPTION,Process.ProcessStatus.WAIT_FOR_SUBSCRIPTION_PAPER_VERSION])
+                def lastProcess = processService.getLastProcessWithStatus(client, [Process.ProcessStatus.WAIT_FOR_SUBSCRIPTION,Process.ProcessStatus.WAIT_FOR_SUBSCRIPTION_PAPER_VERSION])
                 if(!lastProcess){
                     flash.nipErrorMessage = message(code:"client.todo.error",
                             default:"Brak możliwości uzupełnienia podpisów.");
@@ -1123,19 +1123,16 @@ class ActivityController {
 	
 	def _getNewProcessStatus(def params, def requiredNumberOfSubscriptions) {
 		Process.ProcessStatus newStatus
-		
+
 		if ("electronical".equals(params?.requestVersion)) {
-			if (params?.numberOfSubscriptions < requiredNumberOfSubscriptions) {
+			if (params?.numberOfSubscriptions?.toInteger() < requiredNumberOfSubscriptions) {
 				newStatus = Process.ProcessStatus.WAIT_FOR_SUBSCRIPTION
-			}
-			else {
+			} else {
 				newStatus = Process.ProcessStatus.WAITING
 			}
-		}
-		else if ("paper".equals(params?.requestVersion)) {
+		} else if ("paper".equals(params?.requestVersion)) {
 			newStatus = Process.ProcessStatus.WAIT_FOR_SUBSCRIPTION_PAPER_VERSION
-		}
-		else if ("templates".equals(params?.requestVersion)) {
+		} else if ("templates".equals(params?.requestVersion)) {
 			newStatus = Process.ProcessStatus.WAIT_FOR_SUBSCRIPTION
 		}
 		
