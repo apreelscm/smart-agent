@@ -17,7 +17,7 @@ class ProcessController {
         redirect(action: "list", params: params)
     }
 
-    @Secured(['EUM_PH_BZOS','EUM_ZRD'])
+    @Secured(['EUM_ZRD'])
     def list() {
         params.remove('_action_list')
 
@@ -51,7 +51,7 @@ class ProcessController {
     // PH AVAILABLE
     //---------------------------------
 
-    @Secured(['EUM_PH_BZOS'])
+    @Secured(['EUM_ZRD'])
     def edit(Long id) {
         def processInstance = Process.get(id)
         if (!processInstance) {

@@ -1,4 +1,6 @@
 import grails.plugins.springsecurity.SecurityConfigType
+
+import org.apache.catalina.security.SecurityConfig;
 import org.apache.log4j.jdbc.JDBCAppender
 
 // locations to search for config files that get merged into the main config;
@@ -163,13 +165,15 @@ grails.plugins.springsecurity.authority.className = 'com.eservice.eumowy.secure.
 
 grails.plugins.springsecurity.securityConfigType = SecurityConfigType.InterceptUrlMap
 grails.plugins.springsecurity.interceptUrlMap = [
-        '/login/**':                 ['IS_AUTHENTICATED_ANONYMOUSLY'],
-        '/logout/**':              ['IS_AUTHENTICATED_ANONYMOUSLY'],  //leave the page open
-        '/images*/**': ['IS_AUTHENTICATED_ANONYMOUSLY'],
-        '/css*/**': ['IS_AUTHENTICATED_ANONYMOUSLY'],
-        '/fonts*/**': ['IS_AUTHENTICATED_ANONYMOUSLY'],
-        '/js*/**': ['IS_AUTHENTICATED_ANONYMOUSLY'],
-        '/**': ['IS_AUTHENTICATED_FULLY']
+		'/process/**':	['hasRole("EUM_ZRD")'],
+		'/activity/**': ['hasRole("EUM_PH_BZOS")'],
+        '/login/**':	['IS_AUTHENTICATED_ANONYMOUSLY'],
+        '/logout/**':	['IS_AUTHENTICATED_ANONYMOUSLY'],  //leave the page open
+        '/images*/**':	['IS_AUTHENTICATED_ANONYMOUSLY'],
+        '/css*/**':		['IS_AUTHENTICATED_ANONYMOUSLY'],
+        '/fonts*/**':	['IS_AUTHENTICATED_ANONYMOUSLY'],
+        '/js*/**':		['IS_AUTHENTICATED_ANONYMOUSLY'],
+        '/**':			['IS_AUTHENTICATED_FULLY']
 ]
 
 // mail config
