@@ -1,5 +1,6 @@
 package com.eservice.eumowy.pdfmapper
 
+import com.eservice.eumowy.util.DateUtils
 import org.apache.log4j.Logger
 
 import java.text.DecimalFormat
@@ -260,6 +261,26 @@ class PdfMapper {
 
     //------------------- PROCESS METHODS --------------------------------
 
+    private mapUmowaOznOdProcess(def data, def pd, def key, def value){
+        addDateField(data, key, value);
+    }
+
+    private mapUmowaOznDoProcess(def data, def pd, def key, def value){
+        addDateField(data, key, value);
+    }
+
+    private mapDataAneksowanejUmowyPosProcess(def data, def pd, def key, def value){
+        addDateField(data, key, value);
+    }
+
+    private mapDataAneksowanejUmowyPrepaidProcess(def data, def pd, def key, def value){
+        addDateField(data, key, value);
+    }
+
+    private mapDataUmowyProcess(def data, def pd, def key, def value){
+        addDateField(data, key, value);
+    }
+
     private mapScoringDochodowoscProcess(def data, def pd, def key, def value) {
         data.put("dochodowosc", [value] as String[])
     }
@@ -405,6 +426,10 @@ class PdfMapper {
 
     private addCheckbox(def data, def pdfName, def fieldValue, def value){
         data.put(pdfName, [fieldValue.equals(value), "", "checkbox"] as String[])
+    }
+
+    private addDateField(def data, def key, def value){
+        data.put(key, value?.trim()?DateUtils.getFormattedDate(DateUtils.parseWithTimezone(value), DateUtils.YYYY_MM_DD):"")
     }
 
     private addCheckboxes(def data, def pdfKeyValue, def value){

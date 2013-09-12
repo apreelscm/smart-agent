@@ -12,7 +12,7 @@
                 	<legend><g:message code="panel.newpoint.pointdata.title" /></legend>
                 	<div class="subpanel-fieldset-centercontent" >
                 		<ul class="table-list vertical-center">
-                			<li><span class="align-right"><g:message code="panel.nip" /></span> <span><g:textField name="${panelType}[${id}].nipPunktu" id="${panelType}[${id}].nip" value="${pointData?.nipPunktu}" maxlength="10"/></span></li>
+                			<li><span class="align-right"><g:message code="panel.nip" /></span> <span><g:textField class="nip" name="${panelType}[${id}].nipPunktu" id="${panelType}[${id}].nip" value="${pointData?.nipPunktu}" maxlength="10"/></span></li>
                 			<li><span class="align-right"><g:message code="panel.mcccode" /></span> <span><g:textField name="${panelType}[${id}].kodMCC" id="${panelType}[${id}].mccCode" value="${pointData?.kodMCC}" maxlength="4"/> <label for="${panelType}[${id}].sameForEveryPoint"><g:checkBox id="${panelType}[${id}].sameForEveryPoint" name="${panelType}[${id}].takSamoDlaWszystkichPunktow" value="${pointData?.takSamoDlaWszystkichPunktow}" /><g:message code="panel.sameforeverypoint" /></label></span></li>
                 			<li><span class="align-right"><g:message code="panel.bussinesstypeinpractice" /></span> <span><g:textField name="${panelType}[${id}].rodzProwadzDzialalWPraktyce" id="${panelType}[${id}].bussinessTypeInPractice" value="${pointData?.rodzProwadzDzialalWPraktyce}" maxlength="60" /></span></li>
                 			<li><span class="align-right"><g:message code="panel.bankaccountnumber" /></span> <span><g:textField name="${panelType}[${id}].numerRachunkuBankowego" id="${panelType}[${id}].bankAccountNumber" value="${pointData?.numerRachunkuBankowego}" maxlength="26" style="width: 250px;"/></span></li>
@@ -44,7 +44,7 @@
 		                		<span><g:message code="panel.city" /></span>
 		                		<span><g:textField name="${panelType}[${id}].wydrukMiasto" id="${panelType}[${id}].dataforprintingAddressCity" value="${pointData?.wydrukMiasto}" style="width: 280px;"/></span>
 		                		<span>
-		                			<span><g:message code="panel.postal.code" /></span> <span><g:textField name="${panelType}[${id}].wydrukKodPocztowy" id="${panelType}[${id}].dataforprintingAddressPostalCode" value="${pointData?.wydrukKodPocztowy}" style="width: 50px"/></span>
+		                			<span><g:message code="panel.postal.code" /></span> <span><g:textField class="postal-code" name="${panelType}[${id}].wydrukKodPocztowy" id="${panelType}[${id}].dataforprintingAddressPostalCode" value="${pointData?.wydrukKodPocztowy}" style="width: 50px"/></span>
 		                		</span>
 		                	</li>
 		                	<li>

@@ -59,7 +59,10 @@ class PdfMapperTest {
         processDatas.add(new ProcessData(name: 'reprezentant1Nazwisko', value: 'Nowak'))
         processDatas.add(new ProcessData(name: 'reprezentant2Tytul', value: 'Pan'))
         processDatas.add(new ProcessData(name: 'reprezentant2Imie', value: 'Adam'))
-        processDatas.add(new ProcessData(name: 'reprezentant2Nazwisko', value: 'Michnik'))
+        processDatas.add(new ProcessData(name: 'dataAneksowanejUmowyPos', value: '2013-09-03T00:00:00+0200'))
+        processDatas.add(new ProcessData(name: 'umowaOznOd', value: '2013-09-04T11:11:11+0200'))
+        processDatas.add(new ProcessData(name: 'umowaOznDo', value: ''))
+        processDatas.add(new ProcessData(name: 'dataUmowy', value: '2013-09-05T00:20:00+0200'))
 
         def data =new PdfMapper().mapAllDataToPDFData(processDatas, new HashSet<PointData>());
 

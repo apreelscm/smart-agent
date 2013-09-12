@@ -24,7 +24,7 @@
                     <input id="fileUploadInput" name="file" type="file" class="filestyle"
                            data-icon="false"
                            data-classButton="button action"
-                           data-buttonText="Dodaj plik"
+                           data-buttonText="${message(code:'default.upload.button.add')}"
                            data-input="false"/>
 
                     <div id="spinner2" class="spinner-big display-inline-block display-none" style="margin-left: 5px" ></div>

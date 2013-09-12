@@ -19,7 +19,7 @@
 		  		<span><g:message code="panel.city" /></span>
 		  		<span><g:textField name="${panelType}[${id}].korespondencjaMiasto" id="${panelType}[${id}].contactAddressAddressCity" value="${pointData?.korespondencjaMiasto}" style="width: 280px;" maxlength="19"/></span>
 		  		<span>
-		  			<span><g:message code="panel.postal.code" /></span> <span><g:textField name="${panelType}[${id}].korespondencjaKodPocztowy" id="${panelType}[${id}].contactAddressAddressPostalCode" value="${pointData?.korespondencjaKodPocztowy}" style="width: 50px" maxlength="5" /></span>
+		  			<span><g:message code="panel.postal.code" /></span> <span><g:textField class="postal-code" name="${panelType}[${id}].korespondencjaKodPocztowy" id="${panelType}[${id}].contactAddressAddressPostalCode" value="${pointData?.korespondencjaKodPocztowy}" style="width: 50px" maxlength="5" /></span>
 		  		</span>
 		  	</li>
 		  	<li>

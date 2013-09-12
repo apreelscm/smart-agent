@@ -7,6 +7,11 @@ import org.apache.commons.collections.FactoryUtils
 import org.apache.commons.collections.ListUtils
 import org.apache.commons.lang.SerializationUtils
 import org.apache.commons.lang.WordUtils
+import org.hibernate.Criteria
+import org.hibernate.Session
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
+import org.hibernate.transform.ResultTransformer;
 
 import com.eservice.eumowy.command.AllPointsCommand
 import com.eservice.eumowy.command.AllPosCommand
@@ -16,6 +21,7 @@ import com.eservice.eumowy.util.DateUtils
 
 class ProcessService {
 
+	def sessionFactory
     def panelService
 	def cbdService
     def panelMockService
@@ -86,8 +92,9 @@ class ProcessService {
     }
 
     def getLastProcessNotStatus(Client client, def statusList) {
-        def result = Process.findByClient(Client.findByNip(client.nip),[sort: "lastUpdated", order: "desc"])
-        log.info("getLastProcessNotStatus - client.nip = ${client.nip} , id = ${result?.id} status = ${result?.status}, statusList = ${statusList}")
+		sessionFactory.evict(Process.class)
+		def result = Process.findByClient(Client.findByNip(client.nip),[sort: "lastUpdated", order: "desc"])
+		log.info("getLastProcessNotStatus - client.nip = ${client.nip} , id = ${result?.id} status = ${result?.status}, statusList = ${statusList}")
         return (result && client.id && !(result.status in statusList)) ? result : null
     }
 

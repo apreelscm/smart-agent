@@ -75,6 +75,7 @@ class Process implements Serializable {
     }
 
     static mapping = {
+		cache false
         table name: "PROCESS", schema: DomainConsts.SHEMA_NAME
         id generator:'sequence', params:[sequence:DomainConsts.SHEMA_NAME+'.PROCESS_SEQ']
         sort id: "desc"
