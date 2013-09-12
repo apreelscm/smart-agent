@@ -26,7 +26,7 @@
         <br>
         ${merchantName}
         <br><br>
-        Pozdrawiamy,
+        Pozdrawiamy,<br>
         Zespół Rejestracji Danych
     </p>
 </body>

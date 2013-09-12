@@ -565,6 +565,8 @@ class ActivityController {
                 processInstance = processService.populateProcessWithData(processInstance,cmd)
                 processInstance.notesToCoa = cmd.notes;
 
+                processInstance.client.name = cmd.akceptantNazwaOficjalna;
+
                 flow.representative1 = [name: cmd.reprezentant1Imie, surname: cmd.reprezentant1Nazwisko]
                 flow.representative2 = [name: cmd.reprezentant2Imie, surname: cmd.reprezentant2Nazwisko]
 

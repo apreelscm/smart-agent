@@ -7,7 +7,7 @@
 		Umowa z Klientem – ${merchantName} została zaakceptowana.
 		Skontaktuj się z Klientem i poinformuj o dalszych krokach.
         <br><br>
-		Pozdrawiamy, 
+		Pozdrawiamy,<br>
 		Zespół Wsparcia Sprzedaży 
 	</p>
 </body>
