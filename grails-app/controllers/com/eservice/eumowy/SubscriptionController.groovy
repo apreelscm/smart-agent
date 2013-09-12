@@ -18,6 +18,12 @@ class SubscriptionController {
 	}
 	
 	def saveSubscription() {
+		
+		if (params.content.length() < 2000) {
+			render(text: "{\"status\": \"FAIL\", \"text\": \"Niewyraźny podpis. Proszę spróbować jeszcze raz.\"}")
+			return
+		}
+		
 		def subscription = new Subscription(params)
 		subscription.signDate = new Date()
 		subscription.save(flush: true)

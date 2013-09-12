@@ -9,7 +9,8 @@
 <r:script>
 
     jQuery(document).ready(function() {
-      jQuery('#subscriberData').text(decodeURI(${params.name}) + " " + decodeURI(${params.surname}));
+      jQuery('#subscriberData').text(decodeURI('${params.name}') + " " + decodeURI('${params.surname}'));
+      jQuery('#padPlaceholder').html('<div class="typed"></div><canvas id="pad" class="pad" width="700" height="300"></canvas><input type="hidden" name="content" class="output">');
       jQuery('.sigPad').signaturePad({errorMessageDraw: '<g:message code="subscription.error" />'});
       
       jQuery('form').on("submit", function(e) {
@@ -22,7 +23,7 @@
       			updateSubscriptionStatus("OK", "${params.linkid}", result.subscriptionId);
       		}
       		else {
-      			jQuery("#dialog").html(result.text);
+      			jQuery("#dialog").html('<p class="align-center">'+result.text+'</p>');
       		}
      		
       	});
@@ -47,10 +48,8 @@
             </label>
         </p>
 
-        <div class="sig sigWrapper" style="margin-top: 20px">
-            <div class="typed"></div>
-            <canvas id="pad" class="pad" width="700" height="300"></canvas>
-            <input type="hidden" name="content" class="output">
+        <div id="padPlaceholder" class="sig sigWrapper" style="margin-top: 20px">
+            
         </div>
 
 		<input type="hidden" name="name" value="${params.name}" />

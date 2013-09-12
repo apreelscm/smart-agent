@@ -343,7 +343,7 @@
                 $(this).attr('checked', true);
                 changeActivity(this);
                 var expander = $(this).closest( ".expendable").find(".expander")
-                if(!$(expander).hasClass("expanded")){
+                if(!$(expander).hasClass("expanded") && $(expander).prop('data-disabled') != true){
                     toggleExpander(expander)
                 }
              })
@@ -391,6 +391,8 @@
         function disableItem (itemId) {
             var item = $('#'+itemId);
             item.addClass("disabled");
+            item.prop("data-disabled", true);
+            item.find("input").prop("disabled", true);
 
             var disabledExpander = item.children("a[class*='expander']:first");
             if(disabledExpander){
@@ -433,6 +435,8 @@
         function enableItem (itemId) {
             var item = $('#'+itemId);
             item.removeClass("disabled");
+            item.prop("data-disabled", false);
+            item.find("input").prop("disabled", false);
         }
     }
 
