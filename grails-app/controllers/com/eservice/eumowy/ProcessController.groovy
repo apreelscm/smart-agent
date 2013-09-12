@@ -123,7 +123,7 @@ class ProcessController {
         def processInstance = Process.get(params.id)
         params.remove('_action_reject')
         if (!processInstance) {
-            flash.message = message(code: 'default.not.found.message', args:[ message(code: 'process.label', default: 'proces'), id])
+            flash.message = message(code: 'default.not.found.message', args:[ message(code: 'process.label', default: 'proces'), params.id])
             redirect(action: "list", params: params)
             return
         }

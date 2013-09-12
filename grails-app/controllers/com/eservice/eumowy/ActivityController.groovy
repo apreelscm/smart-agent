@@ -301,7 +301,7 @@ class ActivityController {
             on("submit") {
                 log.info "PARAMS: " + params
                 def processInstance = flow.processInstance
-                _processDocumentCreation(processInstance, params.requestVersion)
+                _processDocumentCreation(processInstance, params.requestVersion, flow.requiredNumberOfSubscriptions)
 				processInstance.status = _getNewProcessStatus(params, flow.requiredNumberOfSubscriptions)
 				
                 flow.processInstance = processInstance
@@ -1060,32 +1060,35 @@ class ActivityController {
         return signatures;
     }
 
-    def _processDocumentCreation(Process process, String requestVersion)	{
+    def _processDocumentCreation(Process process, String requestVersion, def requiredNumberOfSubscriptions)	{
 
         if ("electronical".equals(requestVersion)) {
             //TODO Check signatures and update documents in DB
 
-            process.documents.each { doc ->
-                //TODO Update document content from Data Map
-            }
+            //TODO - sprawdzenie czy sa wszystkie podpisy
+            if (params?.numberOfSubscriptions?.toInteger() == requiredNumberOfSubscriptions) {
 
-            //TODO Send emails
-            def recipient = getFromProcessData(process, 'kontaktEmail');
-            if (recipient){
-                emailService.sendDocumentsElectronicalVersion(recipient, process.documents)
-            } else {
-                def merchantName = getFromProcessData(process, 'akceptantNazwaOficjalna');
-                def merchantNip = getFromProcessData(process, 'nip');
-                emailService.sendDocumentsAcceptedToPostSend(null, process.documents, merchantName, merchantNip)
-            }
+                process.documents.each { doc ->
+                    //TODO Update document content from Data Map
+                }
 
+                //TODO Send emails
+                def recipient = getFromProcessData(process, 'kontaktEmail');
+                if (recipient){
+                    emailService.sendDocumentsElectronicalVersion(recipient, process.documents)
+                } else {
+                    def merchantName = getFromProcessData(process, 'akceptantNazwaOficjalna');
+                    def merchantNip = getFromProcessData(process, 'nip');
+                    emailService.sendDocumentsAcceptedToPostSend(null, process.documents, merchantName, merchantNip)
+                }
+            }
         }
         else if ("paper".equals(requestVersion)) {
             //Documents are already in DB
             def merchantName = getFromProcessData(process, 'akceptantNazwaOficjalna');
 
             //TODO PSZKUP - phEmail
-            def recipientPh = "szkup.pawel@gmail.com"
+            def recipientPh = "apreel.eUmowy@gmail.com"
             emailService.sendDocumentsPaperVersion(recipientPh, process.documents, merchantName)
         }
         else if ("templates".equals(requestVersion)) {
@@ -1112,7 +1115,7 @@ class ActivityController {
 
             //for ph
             //TODO - dodac recipient ph
-            def recipientPh = "szkup.pawel@gmail.com"
+            def recipientPh = "apreel.eUmowy@gmail.com"
             emailService.sendDocumentsTemplateVersion(recipientPh, documentFilesWithBlackFaksymileList)
 
             //for acceptant
