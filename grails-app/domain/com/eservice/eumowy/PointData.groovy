@@ -1,5 +1,6 @@
 package com.eservice.eumowy
 
+import org.apache.commons.lang.builder.HashCodeBuilder
 import org.apache.log4j.Logger
 
 class PointData implements Serializable {
@@ -86,4 +87,5 @@ class PointData implements Serializable {
 	def afterUpdate() {
 		log.info("Aktualizacja punktu [id:${id}]")
 	}
+	
 }

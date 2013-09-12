@@ -1,5 +1,7 @@
 package com.eservice.eumowy
 
+import org.apache.commons.lang.builder.HashCodeBuilder
+
 class EmailTemplates implements Serializable {
 
     EmailTemplateType name;
@@ -37,4 +39,5 @@ class EmailTemplates implements Serializable {
             return text;
         }
     }
+	
 }

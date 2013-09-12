@@ -1,6 +1,8 @@
 package com.eservice.eumowy
 import groovy.transform.ToString
 
+import org.apache.commons.lang.builder.HashCodeBuilder
+
 @ToString
 class Client implements Serializable{
 
@@ -30,4 +32,5 @@ class Client implements Serializable{
     def afterUpdate() {
         log.info("Aktualizacja klienta [id:${id}, cbdId:${cbdId}, name:${name}]")
     }
+	
 }

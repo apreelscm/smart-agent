@@ -1,5 +1,7 @@
 package com.eservice.eumowy
 
+import org.apache.commons.lang.builder.HashCodeBuilder
+
 class ActivitySignatures implements Serializable {
 
     Signature signature;
@@ -21,5 +23,5 @@ class ActivitySignatures implements Serializable {
         id generator:'sequence', params:[sequence:DomainConsts.SHEMA_NAME+'.ACTIVITY_SIGNATURES_SEQ']
         sort id: "desc"
     }
-
+	
 }

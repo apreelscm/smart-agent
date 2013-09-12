@@ -1,9 +1,8 @@
 package com.eservice.eumowy
 
-import signaturepad.SignatureToImage
-
-import javax.imageio.ImageIO
 import java.awt.image.BufferedImage
+
+import signaturepad.SignatureToImage
 
 class SubscriptionController {
 	
@@ -30,9 +29,13 @@ class SubscriptionController {
 		
         BufferedImage img = SignatureToImage.convertJsonToImage(subscription.content)
 
-		File outputfile = new File(appParametersService.getSubscriptionsPath()+"sign-"+subscription.name+"-"+subscription.surname+"-"+subscription.id+".png")
+		/* We don't need it for now
+		
+		File outputfile = new File(appParametersService.getSubscriptionsPath()+subscription.getFileName())
 		ImageIO.write(img, "png", outputfile)
-		//redirect(action: "preview")
+		
+		*/
+
 		if (subscription?.id != null) {
 			render(text: "{\"status\": \"OK\", \"subscriptionId\": " + subscription.id + "}")
 		}

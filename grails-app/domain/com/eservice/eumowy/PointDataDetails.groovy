@@ -1,6 +1,6 @@
 package com.eservice.eumowy
 
-import java.util.List;
+import org.apache.commons.lang.builder.HashCodeBuilder
 
 class PointDataDetails implements Serializable {
 
@@ -134,5 +134,6 @@ class PointDataDetails implements Serializable {
 		terminalIlosc(nullable:true)
 		bankId(nullable:true)
 	}
+	
 }
 

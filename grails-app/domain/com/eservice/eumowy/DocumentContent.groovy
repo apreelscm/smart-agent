@@ -1,5 +1,7 @@
 package com.eservice.eumowy
 
+import org.apache.commons.lang.builder.HashCodeBuilder
+
 class DocumentContent implements Serializable {
 
     byte[] content
@@ -16,4 +18,5 @@ class DocumentContent implements Serializable {
 		id generator:'sequence', params:[sequence:DomainConsts.SHEMA_NAME+'.DOCUMENT_CONTENT_SEQ']
 		content  sqlType: "blob"
 	}
+	
 }

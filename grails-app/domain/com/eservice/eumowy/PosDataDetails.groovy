@@ -1,7 +1,6 @@
 package com.eservice.eumowy
 
-import java.io.Serializable;
-import java.util.Date;
+import org.apache.commons.lang.builder.HashCodeBuilder
 
 class PosDataDetails implements Serializable {
 

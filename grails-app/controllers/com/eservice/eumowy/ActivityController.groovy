@@ -457,10 +457,13 @@ class ActivityController {
                 flow.client = client;
 
                 /** sprawdzanie, czy w eUmowy istnieje dla danego Akceptanta niezakończony Proces */
-                if(processService.getLastProcessNotStatus(client,[Process.ProcessStatus.REJECTED,Process.ProcessStatus.ACCEPTED])){
+				def lastProcess = processService.getLastProcessNotStatus(client,[Process.ProcessStatus.REJECTED,Process.ProcessStatus.ACCEPTED])
+                if(lastProcess){
                     flash.nipErrorMessage = message(code:"client.unfinishedProcess.error", default:"Dla Akceptanta istnieje niezakończony Proces");
-                    return error();
+					lastProcess?.discard() // drop it from session
+					return error();
                 }
+				lastProcess?.discard() // drop it from session
 
                 /** pobieranie danych o kalkulatorze */
                 def calcId = cbdService.findCalculatorIdByNip(client.nip)
@@ -688,6 +691,7 @@ class ActivityController {
                     flash.calcErrorMessage =  message(code:"calc.notEnough.error", default:"Kalkulator nie pozwala na wykonanie wszystkich zaznaczonych czynności");
                     return error()
                 }
+				lastProcess?.discard() // drop it from session
 
                 flow.calc = calc;
                 flow.calcNumber =  calcId;
@@ -1070,8 +1074,17 @@ class ActivityController {
             //TODO - sprawdzenie czy sa wszystkie podpisy
             if (params?.numberOfSubscriptions?.toInteger() == requiredNumberOfSubscriptions) {
 
-                process.documents.each { doc ->
+                process.documents.each { DocumentFile doc ->
                     //TODO Update document content from Data Map
+					Signature s = process.signatures.find { Signature si -> si.templatePath == doc.name }
+					if (s != null) {
+						byte[] newContent = pdfService.addClientSubscriptionsToDocument(doc.content.content, s, process.subscriptions)
+						doc.content.content = newContent
+						doc.content.discard()
+					}
+					else {
+						log.info "Couldn't find signature for document name: " + doc.name
+					}
                 }
 
                 //TODO Send emails

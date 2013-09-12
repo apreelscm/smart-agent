@@ -1,11 +1,14 @@
 package com.eservice.eumowy
 
+import java.awt.Image
+import java.awt.image.BufferedImage
+
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.util.PDFImageWriter
 import org.springframework.context.ApplicationContext
-import pdfgenerator.PdfGenerator
 
-import java.awt.image.BufferedImage
+import pdfgenerator.PdfGenerator
+import signaturepad.SignatureToImage
 
 class PdfService {
 	def appParametersService
@@ -171,7 +174,8 @@ class PdfService {
 		int subscriptionDeltaX1 = 250
 		int subscriptionDeltaX2 = 380
 		
-		String subscriptionsPath = appParametersService.getSubscriptionsBlackPath()
+		String subscriptionsPath = appParametersService.getSubscriptionsPath()
+		String subscriptionsBlackNamePrefix = appParametersService.getSubscriptionsBlackPrefix()
 		
 		Map<String,String[]> dataMap = new HashMap<String, String[]>()
 		
@@ -181,8 +185,8 @@ class PdfService {
 		String subscriptionYScale2 = appParametersService.getManagementSubscriptionSecondScaleY()
 		
 		if (sig.subscriptionPageNumber > -1) {
-			dataMap.put("managementSubscription1", [new File(subscriptionsPath+sig.managementSubscription1).toURI().toURL(), "", "signature", sig.subscriptionPageNumber.toString(), (sig.subscriptionX+subscriptionDeltaX1).toString(), sig.subscriptionY.toString(), subscriptionXScale1, subscriptionYScale1] as String[])
-			dataMap.put("managementSubscription2", [new File(subscriptionsPath+sig.managementSubscription2).toURI().toURL(), "", "signature", sig.subscriptionPageNumber.toString(), (sig.subscriptionX+subscriptionDeltaX2).toString(), sig.subscriptionY.toString(), subscriptionXScale2, subscriptionYScale2] as String[])
+			dataMap.put("managementSubscription1", [new File(subscriptionsPath+subscriptionsBlackNamePrefix+sig.managementSubscription1).toURI().toURL(), "", "signature", sig.subscriptionPageNumber.toString(), (sig.subscriptionX+subscriptionDeltaX1).toString(), sig.subscriptionY.toString(), subscriptionXScale1, subscriptionYScale1] as String[])
+			dataMap.put("managementSubscription2", [new File(subscriptionsPath+subscriptionsBlackNamePrefix+sig.managementSubscription2).toURI().toURL(), "", "signature", sig.subscriptionPageNumber.toString(), (sig.subscriptionX+subscriptionDeltaX2).toString(), sig.subscriptionY.toString(), subscriptionXScale2, subscriptionYScale2] as String[])
 		}
 		
 		if (panelData != null) {
@@ -192,5 +196,29 @@ class PdfService {
 		String pdfTemplatePath = appParametersService.getPdfTemplatePath() + sig.templatePath
 		
 		return PdfGenerator.generatePdfContentFromURI(pdfTemplatePath, dataMap, getFont(fontType), appParametersService.getFontUri())
+	}
+	
+	def addClientSubscriptionsToDocument(byte[] documentContent, Signature sig, Set<Subscription> subscriptions) {
+		byte[] updatedContent = documentContent
+		int subscriptionDeltaX = 120
+		if (sig.subscriptionPageNumber > -1) {
+			Map<String,Object[]> subscriptionsMap = new HashMap<String, Object[]>()
+			int xScale = appParametersService.SUBSCRIPTION_SCALE_X
+			int yScale = appParametersService.SUBSCRIPTION_SCALE_Y
+			subscriptions.eachWithIndex { s, i ->
+				
+				if (s.content != null) {
+					BufferedImage img = SignatureToImage.convertJsonToImage(s.content)
+					subscriptionsMap.put("subscriber"+s.id, [img, sig.subscriptionPageNumber, sig.subscriptionX+i*subscriptionDeltaX, sig.subscriptionY, xScale, yScale] as Object[])
+				}
+				else {
+					log.info "Subscription without subscription content found!"
+				}
+				
+			}
+			
+			updatedContent = PdfGenerator.addImageToPdfContent(sig.templatePath, documentContent, subscriptionsMap)
+		}
+		return updatedContent
 	}
 }

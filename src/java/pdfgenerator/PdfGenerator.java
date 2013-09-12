@@ -23,6 +23,64 @@ public class PdfGenerator {
 	private static String ARIAL_FONT_NAME = "arial.ttf";
 	private static String ARIALBOLD_FONT_NAME = "arialbd.ttf";
 
+	public static byte[] addImageToPdfContent(String templatePath, byte[] content, Map<String, Object[]> imageMap) {
+		
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		PdfReader templateReader = null;
+		PdfStamper stamp = null;
+		
+		try {
+			templateReader = new PdfReader(content);
+			stamp = new PdfStamper(templateReader, baos);
+			
+			for(Map.Entry<String, Object[]> dataEntry : imageMap.entrySet()) {
+				try {
+					Integer pageNo = (Integer)dataEntry.getValue()[1];
+					Integer x = (Integer)dataEntry.getValue()[2];
+					Integer y = (Integer)dataEntry.getValue()[3];
+					Integer xScale = (Integer)dataEntry.getValue()[4];
+					Integer yScale = (Integer)dataEntry.getValue()[5];
+					Image img = Image.getInstance((java.awt.Image)dataEntry.getValue()[0], null);
+					
+					PdfContentByte pdfContent = stamp.getOverContent(pageNo);
+					
+					img.setAbsolutePosition(x,y);
+					img.scaleAbsolute(xScale,yScale);
+					pdfContent.addImage(img);
+				}
+				catch (Exception e) {
+					LOG.info("Error while adding signature to document! Template path: " + templatePath);
+					e.printStackTrace();
+				}
+			}
+			
+		} catch (DocumentException e) {
+	        LOG.info("addImageToPdfContent - DocumentException ("+templatePath+"): ", e);
+		} 
+		catch (IOException e) {
+	        LOG.info("addImageToPdfContent - IOException ("+templatePath+"): ", e);
+		}
+		catch (Exception e) {
+			LOG.info("addImageToPdfContent - Exception ("+templatePath+"): ", e);
+		}
+		finally {
+			
+			if (stamp != null){
+				try {
+					stamp.close();
+				} catch (Exception e) {
+					LOG.error(e);
+				}
+			}
+			if (templateReader != null){
+				templateReader.close();
+			}
+			
+		}
+	//		document.close();
+		return baos.toByteArray();
+	}
+	
 	/**
 	 * 
 	 * @param urlTemplatePath

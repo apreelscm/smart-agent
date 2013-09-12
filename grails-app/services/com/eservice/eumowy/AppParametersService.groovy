@@ -4,6 +4,10 @@ import grails.util.Environment
 
 class AppParametersService {
 
+	/* Consts */
+	public static int SUBSCRIPTION_SCALE_X = 74
+	public static int SUBSCRIPTION_SCALE_Y = 43
+	
 	def grailsApplication
 	
 	def getParamById(Integer id) {
@@ -12,6 +16,23 @@ class AppParametersService {
 	
     def getParamByName(String name) {
 		return AppParameters.findByName(name)?.value
+	}
+	
+	def getPdfPreviewPath() {
+		String tmpPath = AppParameters.findByName("TEMP_PDFPREVIEW_STORAGE_PATH")?.value
+		
+		if (Environment.getCurrent().equals(Environment.DEVELOPMENT)) {
+			if (tmpPath == null || tmpPath.isEmpty()) {
+				tmpPath = File.separator + "tmp" + File.separator
+			}
+		}
+		
+		if (new File(tmpPath).isAbsolute()) {
+			return tmpPath
+		}
+		else {
+			return grailsApplication.mainContext.getServletContext().getRealPath(tmpPath) + File.separator
+		}
 	}
 	
 	def getPdfImagePath() {
@@ -82,21 +103,16 @@ class AppParametersService {
 		}
 	}
 	
-	def getSubscriptionsBlackPath() {
-		String path = AppParameters.findByName("SUBSCRIPTIONS_BLACK_PATH")?.value
+	def getSubscriptionsBlackPrefix() {
+		String prefix = AppParameters.findByName("SUBSCRIPTIONS_PATH_BLACKPREFIX")?.value
 		
 		if (Environment.getCurrent().equals(Environment.DEVELOPMENT)) {
-			if (path == null || path.isEmpty()) {
-				path = File.separator + "files" + File.separator
+			if (prefix == null || prefix.isEmpty()) {
+				prefix = "black_"
 			}
 		}
 		
-		if (new File(path).isAbsolute()) {
-			return path
-		}
-		else {
-			return grailsApplication.mainContext.getServletContext().getRealPath(path) + File.separator
-		}
+		return prefix
 	}
 	
 	def getTemplateNameForNewPoint() {

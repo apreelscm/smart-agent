@@ -86,16 +86,17 @@ class ProcessService {
     }*/
 
     def getLastProcessWithStatus(Client client, def statusList) {
+		sessionFactory.currentSession.clear()
         def result = Process.findByClient(Client.findByNip(client.nip),[sort: "lastUpdated", order: "desc"])
         log.info("getLastProcessWithStatus - client.nip = ${client.nip} , id = ${result?.id} status = ${result?.status}, statusList = ${statusList}")
         return (result && client.id && (result.status in statusList)) ? result : null
     }
 
     def getLastProcessNotStatus(Client client, def statusList) {
-		sessionFactory.evict(Process.class)
+		//sessionFactory.currentSession.clear()
 		def result = Process.findByClient(Client.findByNip(client.nip),[sort: "lastUpdated", order: "desc"])
 		log.info("getLastProcessNotStatus - client.nip = ${client.nip} , id = ${result?.id} status = ${result?.status}, statusList = ${statusList}")
-        return (result && client.id && !(result.status in statusList)) ? result : null
+		return (result && client.id && !(result.status in statusList)) ? result : null
     }
 
     def containsActivity(def activities, def activityCode) {

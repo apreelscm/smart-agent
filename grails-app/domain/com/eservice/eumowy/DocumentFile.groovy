@@ -1,4 +1,7 @@
 package com.eservice.eumowy
+
+import org.apache.commons.lang.builder.HashCodeBuilder
+
 /**
  * Created with IntelliJ IDEA.
  * User: mariusz.kaczkowski
@@ -30,4 +33,5 @@ class DocumentFile implements Serializable {
         table name: "DOCUMENT", schema:DomainConsts.SHEMA_NAME
         id generator:'sequence', params:[sequence:DomainConsts.SHEMA_NAME+'.DOCUMENT_SEQ']
     }
+	
 }

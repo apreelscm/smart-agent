@@ -1,4 +1,7 @@
 package com.eservice.eumowy
+
+import org.apache.commons.lang.builder.HashCodeBuilder
+
 /**
  * Created with IntelliJ IDEA.
  * User: mariusz.kaczkowski
@@ -33,4 +36,5 @@ class AttachmentFile implements Serializable{
         id generator:'sequence', params:[sequence:DomainConsts.SHEMA_NAME+'.ATTACHMENT_SEQ']
         file cascade:"all-delete-orphan"
     }
+	
 }

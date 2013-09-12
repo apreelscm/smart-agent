@@ -2,6 +2,8 @@ package com.eservice.eumowy
 
 import groovy.transform.ToString
 
+import org.apache.commons.lang.builder.HashCodeBuilder
+
 @ToString
 class Panel implements Serializable{
 
@@ -17,5 +19,5 @@ class Panel implements Serializable{
         table name: "PANEL", schema: DomainConsts.SHEMA_NAME
         id generator:'sequence', params:[sequence:DomainConsts.SHEMA_NAME+'.PANEL_SEQ']
     }
-
+	
 }

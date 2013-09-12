@@ -1,5 +1,7 @@
 package com.eservice.eumowy
 
+import org.apache.commons.lang.builder.HashCodeBuilder
+
 class CalcField implements Serializable {
 
     String name;
@@ -12,4 +14,5 @@ class CalcField implements Serializable {
         table name: "CALCFIELD", schema: DomainConsts.SHEMA_NAME
         id generator:'sequence', params:[sequence:DomainConsts.SHEMA_NAME+'.CALCFIELD_SEQ']
     }
+	
 }

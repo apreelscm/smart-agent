@@ -1,5 +1,7 @@
 package com.eservice.eumowy
 
+import org.apache.commons.lang.builder.HashCodeBuilder
+
 class Subscription implements Serializable {
 
     String content
@@ -46,7 +48,7 @@ class Subscription implements Serializable {
 
     static constraints = {
         process(nullable:true)
-		content(blank:false, maxSize: 10000)
+		content(blank:false, maxSize: 100000)
         name(blank: false)
         surname(blank: false)
 		personType(nullable:true)
@@ -57,4 +59,9 @@ class Subscription implements Serializable {
         table name: "SUBSCRIPTION", schema: DomainConsts.SHEMA_NAME
         id generator:'sequence', params:[sequence:DomainConsts.SHEMA_NAME+'.SUBSCRIPTION_SEQ']
     }
+	
+	def getFileName() {
+		return "sign-"+name+"-"+surname+"-"+id+".png"
+	}
+	
 }
