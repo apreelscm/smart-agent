@@ -173,17 +173,17 @@ class ProcessController {
         def dir = "tmp"
         def fileName = "${id}_${documentFile.version}_${documentFile.name}"
 
-        def tmpRes = ApplicationHolder.getApplication().getParentContext().getResource("${dir}/${fileName}")
+        def tmpRes = new File(servletContext.getRealPath("${dir}/${fileName}"))
 
         if(!tmpRes.exists()){
-            def tmpPdfFile = tmpRes.getFile()
+            def tmpPdfFile = tmpRes
             tmpPdfFile.withOutputStream { s ->
                 s << documentFile.content.content
             }
         }
 
         //TODO zmienic
-        while(!tmpRes.exists()){}
+        while(!tmpRes.exists()){ System.sleep(2000) }
 
         render(template: '../forms/pdf/embedDocument', model:  [pdfDocument: resource(dir:dir, file:fileName)]);
     }
