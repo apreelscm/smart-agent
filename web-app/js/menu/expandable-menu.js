@@ -6,6 +6,14 @@
  * To change this template use File | Settings | File Templates.
  */
 
+function showSaveLink() {
+	$j("#saveProcessLink").show();
+}
+
+function hideSaveLink() {
+	$j("#saveProcessLink").hide();
+}
+
 (function ($) {
     "use strict";
 

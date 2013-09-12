@@ -367,7 +367,7 @@ class ActivityController {
             }.to "selectedPanels"
         }
 
-        chooseActivity{
+        chooseActivity {
             render(view: "../createProcess/chooseActivity")
             on("continue"){
                 def processInstance = flow.processInstance

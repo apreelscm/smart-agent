@@ -11,7 +11,7 @@
     var $j = jQuery.noConflict();
 
     $j(function(){
-
+	  showSaveLink();
       $j("#saveProcessLink").click(function() {
                 var input = $j("<input>").attr("type", "hidden").attr("name", "_eventId_saveOnly").val("");
                 $j('.panelsForm').append($j(input)).submit()

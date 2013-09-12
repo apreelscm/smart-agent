@@ -86,6 +86,7 @@ function setupNewPointPanelHandlers(prevPanelId, panelId, prefix) {
         jQuery("#"+prefix+"\\["+panelId+"\\]\\.dataforprintingAsForMerchant").on("click", function(e) { 
         	//console.log("clicked");
         	if(e.target.checked) {
+        		jQuery("#"+prefix+"\\["+panelId+"\\]\\.dataforprintingAddressStreetType").val(jQuery("#akceptantUlicaTytul").val());
         		jQuery("#"+prefix+"\\["+panelId+"\\]\\.dataforprintingAddressStreet").val(jQuery("#akceptantUlica").val());
         		jQuery("#"+prefix+"\\["+panelId+"\\]\\.dataforprintingAddressHomeNumber").val(jQuery("#akceptantNrDomu").val());
         		jQuery("#"+prefix+"\\["+panelId+"\\]\\.dataforprintingAddressFlatNumber").val(jQuery("#akceptantNrMieszkania").val());
@@ -93,6 +94,7 @@ function setupNewPointPanelHandlers(prevPanelId, panelId, prefix) {
         		jQuery("#"+prefix+"\\["+panelId+"\\]\\.dataforprintingAddressPostalCode").val(jQuery("#akceptantKodPocztowy").val());
         		jQuery("#"+prefix+"\\["+panelId+"\\]\\.dataforprintingAddressPostOffice").val(jQuery("#akceptantPoczta").val());
         	} else {
+        		jQuery("#"+prefix+"\\["+panelId+"\\]\\.dataforprintingAddressStreetType").val("");
         		jQuery("#"+prefix+"\\["+panelId+"\\]\\.dataforprintingAddressStreet").val("");
         		jQuery("#"+prefix+"\\["+panelId+"\\]\\.dataforprintingAddressHomeNumber").val("");
         		jQuery("#"+prefix+"\\["+panelId+"\\]\\.dataforprintingAddressFlatNumber").val("");
@@ -103,6 +105,7 @@ function setupNewPointPanelHandlers(prevPanelId, panelId, prefix) {
         });
         
         jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAddressAsForMerchant").on("change", function(e) {
+        	jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAddressAddressStreetType").val(jQuery("#akceptantUlicaTytul").val());
        		jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAddressAddressStreet").val(jQuery("#akceptantUlica").val());
        		jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAddressAddressHomeNumber").val(jQuery("#akceptantNrDomu").val());
        		jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAddressAddressFlatNumber").val(jQuery("#akceptantNrMieszkania").val());
@@ -112,6 +115,7 @@ function setupNewPointPanelHandlers(prevPanelId, panelId, prefix) {
         });
         
         jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAddressAsOnPrint").on("change", function(e) {
+        	jQuery("#"+prefix+"\\["+panelId+"\\]\\.dataforprintingAddressStreetType").val(jQuery("#"+prefix+"\\["+panelId+"\\]\\.dataforprintingAddressStreetType").val());
        		jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAddressAddressStreet").val(jQuery("#"+prefix+"\\["+panelId+"\\]\\.dataforprintingAddressStreet").val());
        		jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAddressAddressHomeNumber").val(jQuery("#"+prefix+"\\["+panelId+"\\]\\.dataforprintingAddressHomeNumber").val());
        		jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAddressAddressFlatNumber").val(jQuery("#"+prefix+"\\["+panelId+"\\]\\.dataforprintingAddressFlatNumber").val());

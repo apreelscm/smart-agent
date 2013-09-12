@@ -9,6 +9,7 @@
 <r:script>
 
     jQuery(document).ready(function() {
+      jQuery('#subscriberData').text(decodeURI(${params.name}) + " " + decodeURI(${params.surname}));
       jQuery('.sigPad').signaturePad({errorMessageDraw: '<g:message code="subscription.error" />'});
       
       jQuery('form').on("submit", function(e) {
@@ -36,7 +37,7 @@
 <section id="index-subscription">
     <h1 class="ng linia-bottom">Podpis</h1>
 
-    <h3 style="margin-top: 20px">${params.name?.decodeURL()} ${params.surname?.decodeURL()}</h3>
+    <h3 style="margin-top: 20px" id="subscriberData"></h3>
 
     <g:form  id="subscriptionForm" action="saveSubscription" class="sigPad">
         <p>
