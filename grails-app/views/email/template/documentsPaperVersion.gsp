@@ -8,7 +8,7 @@
         <br><br>
         Pamiętaj o wydrukowaniu dwóch egzemplarzy dokumentów przed spotkaniem z tym Klientem. Dopilnuj by na obu egzemplarzach został złożony podpis, następnie postępuj zgodnie z obowiązującymi standardami.
         <br><br>
-        Pozdrawiamy,
+        Pozdrawiamy,<br>
         Zespół Wsparcia Sprzedaży
 	</p>
 </body>

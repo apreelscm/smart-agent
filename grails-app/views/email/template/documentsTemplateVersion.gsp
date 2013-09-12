@@ -10,7 +10,7 @@
         <br><br>
         Wierzymy, że już wkrótce rozpoczniemy współpracę, która przyniesie obu stronom wysoki poziom satysfakcji i wymierne korzyści.
         <br><br>
-        Z wyrazami szacunku,
+        Z wyrazami szacunku,<br>
         Zespół eService
 	</p>
 </body>

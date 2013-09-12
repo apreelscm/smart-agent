@@ -10,7 +10,7 @@
         <br><br>
         Wierzymy, że nasza współpraca przyczyni się do efektywnego działania Państwa firmy i zapewni komfort i bezpieczeństwo korzystania z dostarczanych usług.
         <br><br>
-        Z wyrazami szacunku,
+        Z wyrazami szacunku,<br>
         Zespół eService
 	</p>
 </body>

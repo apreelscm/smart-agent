@@ -24,7 +24,7 @@
                         <span><g:textField class="mobile-phone" name="kontaktTelKomorkowy" value="${data.kontaktTelKomorkowy}" style="width: 100px" maxlength="9"/></span>
                     </span>
                     <span>
-                        <span><g:message code="panel.email"/></span>
+                        <span style="white-space:nowrap"><g:message code="panel.email"/></span>
                         <span><g:textField class="" name="kontaktEmail" value="${data.kontaktEmail}" style="width: 150px"/></span>
                     </span>
                 </li>
