@@ -33,7 +33,6 @@ class AppParametersService {
 
     def getFontUri() {
         def fontUri = grailsApplication.mainContext.getServletContext().getRealPath(File.separator+"fonts")+File.separator
-        //println  "FONT URI: " + fontUri
         fontUri
     }
 
@@ -71,7 +70,7 @@ class AppParametersService {
 		
 		if (Environment.getCurrent().equals(Environment.DEVELOPMENT)) {
 			if (path == null || path.isEmpty()) {
-				path = "web-app" + File.separator + "files" + File.separator 
+				path = File.separator + "files" + File.separator 
 			}
 		}
 		
@@ -88,7 +87,7 @@ class AppParametersService {
 		
 		if (Environment.getCurrent().equals(Environment.DEVELOPMENT)) {
 			if (path == null || path.isEmpty()) {
-				path = "web-app" + File.separator + "files" + File.separator
+				path = File.separator + "files" + File.separator
 			}
 		}
 		

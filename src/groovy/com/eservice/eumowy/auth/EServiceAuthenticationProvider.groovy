@@ -35,6 +35,8 @@ class EServiceAuthenticationProvider implements AuthenticationProvider {
         def userDTO
         try{
             userDTO = userService.loginToEUmowy(username,password);
+			
+			println(userDTO.getRoles())
         }catch(Exception e)
         {
             log.error(e.message)
@@ -42,8 +44,6 @@ class EServiceAuthenticationProvider implements AuthenticationProvider {
         }
 
         authorities = new ArrayList<GrantedAuthorityImpl>()
-
-        println(userDTO.getRoles())
 
         if (!userDTO) {
             auditLogger.info("Nie znaleziono użytkownika [login:${username}]")

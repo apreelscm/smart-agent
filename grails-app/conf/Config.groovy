@@ -70,7 +70,7 @@ environments {
         isPanelsValidationOn = true;
     }
     test {
-        isPanelsValidationOn = false;
+        isPanelsValidationOn = true;
     }
     production {
         isPanelsValidationOn = true;

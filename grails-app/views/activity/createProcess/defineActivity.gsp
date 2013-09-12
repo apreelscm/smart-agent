@@ -6,10 +6,10 @@
     <title><g:message code="defineActivity.header.title" default="Wybierz działanie"/></title>
     <r:require module="expandable_tree"/>
 
-
     <r:script>
-
-
+		jQuery('input[type="checkbox"]').on("change", function() {
+			jQuery("ul.errors").remove();
+		});
     </r:script>
 </head>
 

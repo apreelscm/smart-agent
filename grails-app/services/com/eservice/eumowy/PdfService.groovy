@@ -128,10 +128,6 @@ class PdfService {
 		return PdfGenerator.generatePdfContentFromURI(urlTemplatePath, dataMap, getFont(fontType), appParametersService.getFontUri())
 	}
 	
-	def fillPdfFormFromFile(String fileTemplatePath, Map<String,String[]> dataMap, FontType fontType) {
-		return PdfGenerator.generatePdfContentFromFile(fileTemplatePath, dataMap, getFont(fontType), appParametersService.getFontUri())
-	}
-	
 	def fillPdfFormFromURIWithFaksymile(Signature sig, Map<String,String[]> panelData, FontType fontType) {
 		int subscriptionDeltaX1 = 250
 		int subscriptionDeltaX2 = 380

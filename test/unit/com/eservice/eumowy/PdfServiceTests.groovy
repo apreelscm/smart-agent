@@ -1269,7 +1269,7 @@ class PdfServiceTests {
 	}
 	
 	void process(templateName, outName, data){
-		byte[] pdf = service.fillPdfFormFromFile(getTemplatePath()+templateName, data, PdfService.FontType.ARIAL)
+		byte[] pdf = service.fillPdfFormFromURI(getTemplatePath()+templateName, data, PdfService.FontType.ARIAL)
 
 		assert pdf != null
 

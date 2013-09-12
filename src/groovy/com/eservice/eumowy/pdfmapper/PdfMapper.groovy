@@ -87,7 +87,9 @@ class PdfMapper {
                 return
             } else if (["wydrukUlica", "nazwaDoWydrukuZTerminalaPos"].contains(key)){
                 //specjalne traktowanie pol do obslugi tabelek
-
+				data.put(key, [value] as String[])
+			
+			
                 def pdfProperty;
 
                 if (acceptCardIsChoosen){
@@ -272,11 +274,13 @@ class PdfMapper {
 
     private mapAkceptantUlicaProcess(def data, def pd, def key, def value) {
         //TODO - mozna sprawdzic czy jest numer mieszkania
+		data.put("akceptantUlica", [value] as String[])
         data.put("akceptantSiedziba", [getFromProcessDataSet(pd, 'akceptantUlicaTytul') + " " + value + " " + getFromProcessDataSet(pd, 'akceptantNrDomu') + " " + getFromProcessDataSet(pd, 'akceptantNrMieszkania') + " " + getFromProcessDataSet(pd, 'akceptantMiasto')] as String[])
     }
 
     private mapAkceptantNazwaOficjalnaProcess(def data, def pd, def key, def value) {
         data.put("akceptantNazwa", [value] as String[])
+		data.putAt("akceptantNazwaOficjalna", [value] as String[])
     }
 
     private mapScoringTypPunktuProcess(def data, def pd, def key, def value) {
