@@ -16,7 +16,7 @@ class DocumentFile implements Serializable {
     Date lastUpdated
 	Integer pagesCount
 
-    static belongsTo = [process:Process]
+    static belongsTo = [process:Process, signature:Signature]
 	
 	static hasOne = [content:DocumentContent]
 
@@ -27,6 +27,7 @@ class DocumentFile implements Serializable {
         pagesCount()
         content(lazy:true)
         process(nullable:true)
+		signature(nullable:true)
     }
 
     static mapping = {

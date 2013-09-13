@@ -13,20 +13,28 @@ class Signature implements Serializable {
 	Integer subscriptionY;
 	Integer subscriptionPageNumber;
 	
+	Integer phSubscriptionX;
+	Integer phSubscriptionY;
+	Integer phSubscriptionPageNumber;
+
 	String managementSubscription1;
 	String managementSubscription2;
 
     static hasMany = [
             calcFieldsSignature:CalcFieldSignature,
-            panelsSignature:SignaturePanel
+            panelsSignature:SignaturePanel,
+			documentFile:DocumentFile
     ]
 
     static constraints = {
        name(unique:true,blank:false)
        templatePath()
-       subscriptionX()
-       subscriptionY()
-       subscriptionPageNumber()
+       subscriptionX(nullable: true)
+       subscriptionY(nullable: true)
+	   phSubscriptionX(nullable: true)
+	   phSubscriptionY(nullable: true)
+	   phSubscriptionPageNumber(nullable: true)
+       subscriptionPageNumber(nullable: true)
        managementSubscription1()
        managementSubscription2()
     }

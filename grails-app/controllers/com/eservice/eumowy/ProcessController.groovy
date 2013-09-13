@@ -131,6 +131,8 @@ class ProcessController {
 
         processInstance.status = Process.ProcessStatus.REJECTED
         processInstance.observed = (params.observed == "on")
+		/* Delete subscriptions */
+		processInstance.subscriptions?.clear()
         processInstance.save(validate: false)
         flash.message = message(code: 'default.rejected.message', args:[ message(code: 'process.label', default: 'proces'), processInstance.id])
 
@@ -174,7 +176,7 @@ class ProcessController {
         def dir = appParametersService.getPdfPreviewPath()
         def fileName = "${id}_${documentFile.version}_${documentFile.name}"
 
-        def tmpRes = new File("${dir}${fileName}")
+        def tmpRes = new File(grailsApplication.mainContext.getServletContext().getRealPath(dir+File.separator+fileName))
 
         if(!tmpRes.exists()){
             def tmpPdfFile = tmpRes
@@ -184,9 +186,10 @@ class ProcessController {
         }
 
         //TODO zmienic
-        while(!tmpRes.exists()){ System.sleep(2000) }
+        //while(!tmpRes.exists()){ System.sleep(2000) }
+		System.sleep(10000)
 
-        render(template: '../forms/pdf/embedDocument', model:  [pdfDocument: tmpRes.toURI().toURL()]);
+        render(template: '../forms/pdf/embedDocument', model:  [pdfDocument: resource(dir: dir ,file: fileName)]);
     }
 
     def downloadDoc(){

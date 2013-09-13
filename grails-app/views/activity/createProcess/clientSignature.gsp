@@ -136,7 +136,7 @@
 			
 			jQuery("#conitnueButton").on("click", function(e) {
 				e.preventDefault();
-				if (updateSubscriptionStatusCount != requiredSubscriptionsCount) {
+				if (updateSubscriptionStatusCount != requiredSubscriptionsCoun && jQuery("#requestVersionElectronical").is(":checked") == true) {
 					result = false;
 					jQuery("#confirm-submit-without-subscription-dialog").dialog({
 						resizable: true,
@@ -211,7 +211,7 @@
 				}
 				
 				dialog.load(
-		            "/eumowy/subscription/inlineview?name="+encodeURI("${representative1.name}")+"&surname="+encodeURI("${representative1.surname}")+"&linkid=subscribe-REPRESENTATIVE1",
+		            "/eumowy/subscription/inlineview?name="+encodeURI("${representative1.name}")+"&surname="+encodeURI("${representative1.surname}")+"&personRole=ACCEPTANT1&linkid=subscribe-REPRESENTATIVE1",
 		            {},
 		            function(responseText, textStatus, XMLHttpRequest) {
 		                dialog.dialog({
@@ -235,7 +235,7 @@
 				}
 				
 				dialog.load(
-		            "/eumowy/subscription/inlineview?name="+encodeURI("${representative2.name}")+"&surname="+encodeURI("${representative2.surname}")+"&linkid=subscribe-REPRESENTATIVE2",
+		            "/eumowy/subscription/inlineview?name="+encodeURI("${representative2.name}")+"&surname="+encodeURI("${representative2.surname}")+"&personRole=ACCEPTANT2&linkid=subscribe-REPRESENTATIVE2",
 		            {},
 		            function(responseText, textStatus, XMLHttpRequest) {
 		                dialog.dialog({
@@ -259,7 +259,7 @@
 				}
 				
 				dialog.load(
-		            "/eumowy/subscription/inlineview?name="+encodeURI("${processInstance.phFirstName}")+"&surname="+encodeURI("${processInstance.phSurname}")+"&linkid=subscribe-PH",
+		            "/eumowy/subscription/inlineview?name="+encodeURI("${processInstance.phFirstName}")+"&surname="+encodeURI("${processInstance.phSurname}")+"&personRole=PH&linkid=subscribe-PH",
 		            {},
 		            function(responseText, textStatus, XMLHttpRequest) {
 		                dialog.dialog({

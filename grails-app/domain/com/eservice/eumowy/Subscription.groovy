@@ -8,10 +8,10 @@ class Subscription implements Serializable {
 	String name
 	String surname
 	Date signDate
-	PersonType personType
+	//PersonType personType
 	PersonRole personRole
 	
-	public enum PersonType {
+	/*public enum PersonType {
 		MR("Pan"),
 		MRS("Pani")
 		
@@ -25,7 +25,7 @@ class Subscription implements Serializable {
 		public String toString() {
 			return text
 		}
-	}
+	}*/
 	
 	public enum PersonRole {
 		ACCEPTANT1("Akceptant 1"),
@@ -51,7 +51,7 @@ class Subscription implements Serializable {
 		content(blank:false, maxSize: 100000)
         name(blank: false)
         surname(blank: false)
-		personType(nullable:true)
+		//personType(nullable:true)
 		personRole(nullable:true)
     }
 

@@ -31,6 +31,7 @@ grails.mime.types = [
         multipartForm: 'multipart/form-data',
         rss:           'application/rss+xml',
         text:          'text/plain',
+		pdf:		   'application/pdf',
         xml:           ['text/xml', 'application/xml']
 ]
 
@@ -38,7 +39,7 @@ grails.mime.types = [
 //grails.urlmapping.cache.maxsize = 1000
 
 // What URL patterns should be processed by the resources plugin
-grails.resources.adhoc.patterns = ['/images/*', '/css/*', '/js/*', '/plugins/*']
+grails.resources.adhoc.patterns = ['/images/*', '/css/*', '/js/*', '/plugins/*', '/tmp/*']
 
 // The default codec used to encode data with ${}
 grails.views.default.codec = "none" // none, html, base64
@@ -173,6 +174,7 @@ grails.plugins.springsecurity.interceptUrlMap = [
         '/css*/**':		['IS_AUTHENTICATED_ANONYMOUSLY'],
         '/fonts*/**':	['IS_AUTHENTICATED_ANONYMOUSLY'],
         '/js*/**':		['IS_AUTHENTICATED_ANONYMOUSLY'],
+		'/tmp*/**':		['IS_AUTHENTICATED_FULLY'],
         '/**':			['IS_AUTHENTICATED_FULLY']
 ]
 

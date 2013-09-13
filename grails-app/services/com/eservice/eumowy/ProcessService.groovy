@@ -238,6 +238,11 @@ class ProcessService {
 					return
 				}
 				
+				if (["dataOd","dataDo","zamkniecieDniaOd", "zamkniecieDniaDo", "planowanaDataInstalacji"].contains(key)) {
+					pc."set${key.capitalize()}"(DateUtils.parseDate(value))
+					return
+				}
+				
 				if (PointCommand.metaClass.respondsTo(PointCommand, "set"+key.capitalize())) {
 					pc."set${key.capitalize()}"(value)
 				}

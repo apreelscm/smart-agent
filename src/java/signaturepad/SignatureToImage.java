@@ -24,7 +24,7 @@ public class SignatureToImage {
                 Gson gson = new Gson();
         SignatureLine[] signatureLines = gson.fromJson(jsonString, SignatureLine[].class);
         
-        BufferedImage offscreenImage = new BufferedImage(600, 250, BufferedImage.TYPE_INT_ARGB);
+        BufferedImage offscreenImage = new BufferedImage(700, 300, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = offscreenImage.createGraphics();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2.setColor(new Color(1,1,1,1));

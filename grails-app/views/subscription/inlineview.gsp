@@ -54,6 +54,7 @@
 
 		<input type="hidden" name="name" value="${params.name}" />
 		<input type="hidden" name="surname" value="${params.surname}" />
+		<input type="hidden" name="personRole" value="${params.personRole}" />
         <fieldset style="margin-top: 20px;">
             <a href="#clear" class="button action clearButton"><g:message code="subscription.clear" /></a>
             <g:submitButton id="submitSubscription" name="Złożono podpis" class="button submit"/>

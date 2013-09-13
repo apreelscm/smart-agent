@@ -1,10 +1,9 @@
 package com.eservice.eumowy.util
 
+import java.text.SimpleDateFormat
+
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
-import org.joda.time.format.DateTimeFormatter
-
-import java.text.SimpleDateFormat
 
 /**
  * Created with IntelliJ IDEA.
@@ -38,7 +37,14 @@ public class DateUtils {
     }
 
     static def Date parseDate(def dateStr, def dateFormat){
-        new SimpleDateFormat(dateFormat).parse(dateStr)
+        Date date
+		try {
+			date = new SimpleDateFormat(dateFormat).parse(dateStr)
+        }
+		catch (Exception e) {
+			date = null
+		}
+		date
     }
 
     static def Date parseDate(def dateStr){

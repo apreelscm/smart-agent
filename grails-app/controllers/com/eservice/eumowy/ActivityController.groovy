@@ -209,7 +209,7 @@ class ActivityController {
 
 	                    if (processService.findDocumentByName(processInstance.documents, sig.templatePath) == null) {
 	                        log.info "Creating new document [${sig.templatePath}]"
-	                        DocumentFile df = new DocumentFile(name: sig.templatePath, dateCreated: new Date(), lastUpdated: new Date(), pagesCount: pc)
+	                        DocumentFile df = new DocumentFile(name: sig.templatePath, dateCreated: new Date(), lastUpdated: new Date(), pagesCount: pc, signature: sig)
 	                        df.setContent(new DocumentContent(content: documentData))
 	                        df.save(flush: true)
 	                        log.info "DF id: " + df.id + " PageCount: " + df.pagesCount
@@ -249,13 +249,21 @@ class ActivityController {
                 if (params.processStatus.equals("WAIT_FOR_SUBSCRIPTION")) {
 					processInstance.status = Process.ProcessStatus.WAIT_FOR_SUBSCRIPTION
                     Subscription sub = Subscription.get(params.subscriptionId)
+					if (sub == null) {
+						log.info "PUSTE ID!"
+					}
                     processInstance.addToSubscriptions(sub)
+					sub.save()
                 }
                 else if (params.processStatus.equals("SUBSCRIPTIONS_DONE")) {
 					processInstance.status = Process.ProcessStatus.SUBSCRIPTIONS_DONE
                     Subscription sub = Subscription.get(params.subscriptionId)
+					if (sub == null) {
+						log.info "PUSTE ID!"
+					}
                     processInstance.addToSubscriptions(sub)
-
+					sub.save()
+					
                     //w momencie gdy zlozymy ostatni podpis zapisujemy date jako dataUmowy
                     def aggrementDate = DateUtils.formatWithTimezone(DateUtils.getCurrentDate());
                     log.info 'Zapisuje formatowana dateUmowy: ' + aggrementDate
@@ -797,9 +805,6 @@ class ActivityController {
             on("getCalculator").to "getCalculator"
             on("continue"){
                 Process processInstance = flow.savedProcess
-                processInstance.calcNumber =  flow.calcNumber
-                processInstance.client =  flow.client
-                processInstance.save()
                 flow.processInstance = processInstance
             }.to "clientSignature"
         }
@@ -1064,15 +1069,15 @@ class ActivityController {
 
                 process.documents.each { DocumentFile doc ->
                     //TODO Update document content from Data Map
-					Signature s = process.signatures.find { Signature si -> si.templatePath == doc.name }
-					if (s != null) {
-						byte[] newContent = pdfService.addClientSubscriptionsToDocument(doc.content.content, s, process.subscriptions)
+					//Signature s = process.signatures.find { Signature si -> si.templatePath == doc.name }
+					//if (s != null) {
+						byte[] newContent = pdfService.addClientSubscriptionsToDocument(doc.content.content, doc.signature, process.subscriptions)
 						doc.content.content = newContent
 						doc.content.discard()
-					}
-					else {
-						log.info "Couldn't find signature for document name: " + doc.name
-					}
+					//}
+					//else {
+					//	log.info "Couldn't find signature for document name: " + doc.name
+					//}
                 }
 
                 //TODO Send emails

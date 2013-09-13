@@ -23,16 +23,11 @@ class AppParametersService {
 		
 		if (Environment.getCurrent().equals(Environment.DEVELOPMENT)) {
 			if (tmpPath == null || tmpPath.isEmpty()) {
-				tmpPath = File.separator + "tmp" + File.separator
+				tmpPath = "tmp"
 			}
 		}
 		
-		if (new File(tmpPath).isAbsolute()) {
-			return tmpPath
-		}
-		else {
-			return grailsApplication.mainContext.getServletContext().getRealPath(tmpPath) + File.separator
-		}
+		return tmpPath
 	}
 	
 	def getPdfImagePath() {
