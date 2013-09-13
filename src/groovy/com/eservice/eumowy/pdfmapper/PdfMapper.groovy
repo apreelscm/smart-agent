@@ -429,7 +429,7 @@ class PdfMapper {
     }
 
     private addDateField(def data, def key, def value){
-        data.put(key, value?.trim()?DateUtils.getFormattedDate(DateUtils.parseWithTimezone(value), DateUtils.YYYY_MM_DD):"")
+        data.put(key, [value?.trim()?DateUtils.getFormattedDate(DateUtils.parseWithTimezone(value), DateUtils.YYYY_MM_DD):""] as String[])
     }
 
     private addCheckboxes(def data, def pdfKeyValue, def value){
