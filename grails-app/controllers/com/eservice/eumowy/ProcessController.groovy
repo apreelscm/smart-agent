@@ -136,7 +136,7 @@ class ProcessController {
         processInstance.save(validate: false)
         flash.message = message(code: 'default.rejected.message', args:[ message(code: 'process.label', default: 'proces'), processInstance.id])
 
-        emailService.sendDocumentsRejected('apreel.eUmowy@gmail.com', processInstance.client.name, processInstance.client.nip, params.notes)
+        emailService.sendDocumentsRejected(processInstance.phEmail, processInstance.client.name, processInstance.client.nip, params.notes)
 
         redirect(action: "list", params: params)
     }
@@ -158,7 +158,7 @@ class ProcessController {
         processInstance.save(validate: true)
         flash.message = message(code: 'default.accepted.message', args:[ message(code: 'process.label', default: 'proces'), processInstance.id])
 
-        emailService.sendDocumentsAccepted('apreel.eUmowy@gmail.com', null , processInstance.client.name)
+        emailService.sendDocumentsAccepted(processInstance.phEmail, null , processInstance.client.name)
 
         redirect(action: "list", params: params)
     }

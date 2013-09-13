@@ -136,7 +136,7 @@
 			
 			jQuery("#conitnueButton").on("click", function(e) {
 				e.preventDefault();
-				if (updateSubscriptionStatusCount != requiredSubscriptionsCoun && jQuery("#requestVersionElectronical").is(":checked") == true) {
+				if (updateSubscriptionStatusCount != requiredSubscriptionsCount && jQuery("#requestVersionElectronical").is(":checked") == true) {
 					result = false;
 					jQuery("#confirm-submit-without-subscription-dialog").dialog({
 						resizable: true,

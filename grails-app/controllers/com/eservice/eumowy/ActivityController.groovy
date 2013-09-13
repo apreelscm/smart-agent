@@ -1066,7 +1066,6 @@ class ActivityController {
         if ("electronical".equals(requestVersion)) {
             //TODO Check signatures and update documents in DB
 
-            //TODO - sprawdzenie czy sa wszystkie podpisy
             if (params?.numberOfSubscriptions?.toInteger() == requiredNumberOfSubscriptions) {
 
                 process.documents.each { DocumentFile doc ->
@@ -1082,7 +1081,6 @@ class ActivityController {
 					//}
                 }
 
-                //TODO Send emails
                 def recipient = getFromProcessData(process, 'kontaktEmail');
                 if (recipient){
                     emailService.sendDocumentsElectronicalVersion(recipient, process.documents)
@@ -1096,10 +1094,7 @@ class ActivityController {
         else if ("paper".equals(requestVersion)) {
             //Documents are already in DB
             def merchantName = getFromProcessData(process, 'akceptantNazwaOficjalna');
-
-            //TODO PSZKUP - phEmail
-            def recipientPh = "apreel.eUmowy@gmail.com"
-            emailService.sendDocumentsPaperVersion(recipientPh, process.documents, merchantName)
+            emailService.sendDocumentsPaperVersion(process.phEmail, process.documents, merchantName)
         }
         else if ("templates".equals(requestVersion)) {
             //TODO Documents are already in DB
@@ -1123,10 +1118,7 @@ class ActivityController {
                 documentFilesWithoutFaksymileList.add(dfwof)
             }
 
-            //for ph
-            //TODO - dodac recipient ph
-            def recipientPh = "apreel.eUmowy@gmail.com"
-            emailService.sendDocumentsTemplateVersion(recipientPh, documentFilesWithBlackFaksymileList)
+            emailService.sendDocumentsTemplateVersion(process.phEmail, documentFilesWithBlackFaksymileList)
 
             //for acceptant
             def recipientUser = getFromProcessData(process, 'kontaktEmail');
