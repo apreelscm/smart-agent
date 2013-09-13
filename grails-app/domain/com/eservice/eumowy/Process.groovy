@@ -1,6 +1,9 @@
 package com.eservice.eumowy
 
 import groovy.transform.ToString
+
+import org.apache.commons.lang.builder.EqualsBuilder
+import org.apache.commons.lang.builder.HashCodeBuilder
 import org.apache.commons.logging.LogFactory
 
 @ToString(includeNames = true,ignoreNulls = true)
@@ -120,4 +123,27 @@ class Process implements Serializable {
             return text;
         }
     }
+
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder(17, 37).append(id).append(version).toHashCode()
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) { return false; }
+		if (obj == this) { return true; }
+		if (obj.getClass() != getClass()) {
+		  return false;
+		}
+		Process rhs = (Process) obj;
+		return new EqualsBuilder()
+					  .appendSuper(super.equals(obj))
+					  .append(id, rhs.id)
+					  .append(version, rhs.version)
+					  .isEquals();
+	}
+	
+	
+	
 }

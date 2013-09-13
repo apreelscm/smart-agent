@@ -1,5 +1,7 @@
 package com.eservice.eumowy
 
+import org.apache.commons.lang.builder.HashCodeBuilder
+
 class SignaturePanel implements Serializable {
 
     Panel panel;
@@ -13,4 +15,5 @@ class SignaturePanel implements Serializable {
         table name: "SIGNATURE_PANEL", schema: DomainConsts.SHEMA_NAME
         id generator:'sequence', params:[sequence:DomainConsts.SHEMA_NAME+'.SIGNATURE_PANEL_SEQ']
     }
+	
 }

@@ -10,6 +10,7 @@ class ProcessController {
     def attachmentService
     def documentService
     def emailService
+	def appParametersService
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
@@ -170,10 +171,10 @@ class ProcessController {
         log.info( "pdf document = " + id);
         def documentFile = DocumentFile.get(id);
 
-        def dir = "tmp"
+        def dir = appParametersService.getPdfPreviewPath()
         def fileName = "${id}_${documentFile.version}_${documentFile.name}"
 
-        def tmpRes = new File(servletContext.getRealPath("${dir}/${fileName}"))
+        def tmpRes = new File("${dir}${fileName}")
 
         if(!tmpRes.exists()){
             def tmpPdfFile = tmpRes
@@ -185,7 +186,7 @@ class ProcessController {
         //TODO zmienic
         while(!tmpRes.exists()){ System.sleep(2000) }
 
-        render(template: '../forms/pdf/embedDocument', model:  [pdfDocument: resource(dir:dir, file:fileName)]);
+        render(template: '../forms/pdf/embedDocument', model:  [pdfDocument: tmpRes.toURI().toURL()]);
     }
 
     def downloadDoc(){

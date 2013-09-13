@@ -1,4 +1,7 @@
 package com.eservice.eumowy
+
+import org.apache.commons.lang.builder.HashCodeBuilder
+
 /**
  * User: Dominik Walczak
  * Date: 20.08.13 Time: 11:47
@@ -29,5 +32,10 @@ class ProcessData implements Serializable {
     def afterUpdate() {
         log.info("Zaktualizowano ProcessData [name:${name}, value:${value}]")
     }
+	
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder(17, 37).append(id).append(version).toHashCode()
+	}
 
 }

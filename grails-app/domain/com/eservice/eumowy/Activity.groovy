@@ -1,5 +1,7 @@
 package com.eservice.eumowy
 
+import org.apache.commons.lang.builder.HashCodeBuilder
+
 class Activity implements Serializable {
 
     String code;
@@ -40,4 +42,5 @@ class Activity implements Serializable {
 
         }
     }
+
 }

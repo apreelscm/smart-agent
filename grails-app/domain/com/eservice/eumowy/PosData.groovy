@@ -1,7 +1,6 @@
 package com.eservice.eumowy
 
-import java.io.Serializable;
-import java.util.Date;
+import org.apache.commons.lang.builder.HashCodeBuilder
 
 class PosData implements Serializable {
 	
@@ -38,4 +37,5 @@ class PosData implements Serializable {
 		czyWybrany(nullable:true)
 		tpsId(nullable:true)
 	}
+	
 }

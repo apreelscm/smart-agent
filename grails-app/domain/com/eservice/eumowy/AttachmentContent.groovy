@@ -1,5 +1,7 @@
 package com.eservice.eumowy
 
+import org.apache.commons.lang.builder.HashCodeBuilder
+
 class AttachmentContent implements Serializable{
 
     byte[] content
@@ -15,4 +17,5 @@ class AttachmentContent implements Serializable{
         id generator:'sequence', params:[sequence:DomainConsts.SHEMA_NAME+'.ATTACHMENT_CONTENT_SEQ']
         content  sqlType: "blob"
     }
+	
 }

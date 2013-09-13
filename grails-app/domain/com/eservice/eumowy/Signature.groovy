@@ -1,5 +1,7 @@
 package com.eservice.eumowy
 
+import org.apache.commons.lang.builder.HashCodeBuilder
+
 
 class Signature implements Serializable {
 
@@ -37,4 +39,5 @@ class Signature implements Serializable {
     String toString(){
         return name;
     }
+	
 }
