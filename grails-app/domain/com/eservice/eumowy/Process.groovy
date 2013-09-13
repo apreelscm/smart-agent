@@ -19,6 +19,7 @@ class Process implements Serializable {
     Integer phNumber
     String phFirstName
     String phSurname
+    String phEmail
     String calcNumber
     String saleSection // TODO skad ?
     String notesToCoa
@@ -61,6 +62,7 @@ class Process implements Serializable {
         phNumber(blank:false)
         phFirstName(blank:false)
         phSurname(blank:false)
+        phEmail(blank: false)
         calcNumber(blank:false)
         saleSection(nullable: true)
         observed()

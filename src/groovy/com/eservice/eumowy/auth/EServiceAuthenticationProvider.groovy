@@ -78,7 +78,7 @@ class EServiceAuthenticationProvider implements AuthenticationProvider {
         }
 
         userDetails = new EServiceUserDetails(userDTO.getLogin(), "pass",
-                true, true, true, true, authorities, 1, userDTO.getFirstName(), userDTO.getLastName(),userDTO.getAuwId()); //userDTO.getUzyId())
+                true, true, true, true, authorities, 1, userDTO.getFirstName(), userDTO.getLastName(),userDTO.getAuwId(),userDTO.getEmail()); //userDTO.getUzyId())
 
         preAuthenticationChecks.check userDetails
         postAuthenticationChecks.check userDetails
