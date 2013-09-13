@@ -409,6 +409,7 @@ class ActivityController {
                 processInstance.phNumber = user.nr
                 processInstance.phFirstName = user.imie
                 processInstance.phSurname = user.nazwisko
+                processInstance.phEmail = user.email
                 processInstance.client =  client
                 processInstance.status = Process.ProcessStatus.NEW
 
@@ -565,6 +566,7 @@ class ActivityController {
                 processInstance.notesToCoa = cmd.notes;
 
                 processInstance.client.name = cmd.akceptantNazwaOficjalna;
+                processInstance.saleSection = calculatorService.getCalcProperty(flow.calc, 'SEGMENT_SPRZEDAZOWY')
 
                 flow.representative1 = [name: cmd.reprezentant1Imie, surname: cmd.reprezentant1Nazwisko]
                 flow.representative2 = [name: cmd.reprezentant2Imie, surname: cmd.reprezentant2Nazwisko]
