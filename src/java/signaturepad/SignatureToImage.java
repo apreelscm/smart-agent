@@ -27,7 +27,7 @@ public class SignatureToImage {
         BufferedImage offscreenImage = new BufferedImage(600, 250, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = offscreenImage.createGraphics();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2.setColor(new Color(0,0,0,1));
+        g2.setColor(new Color(1,1,1,1));
         g2.fillRect(0,0,700,300);
         g2.setPaint(Color.BLACK);
         g2.setStroke(new BasicStroke(3));

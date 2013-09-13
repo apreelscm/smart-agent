@@ -207,18 +207,6 @@ class ActivityController {
 	                    int pc = pdfService.getPageCountFromPdf(documentData)
 	                    totalPagesCount += pc
 
-//                        try {
-//                            log.info "Saving " + sig.name + " to disk - start"
-//                            ByteArrayInputStream bis = new ByteArrayInputStream(documentData)
-//                            PDDocument document = PDDocument.load(bis)
-//                            document.save('/home/tomcat/aaa/'+sig.templatePath)
-//                            document.close();
-//                            log.info "Saving " + sig.name + " to disk - finish"
-//                        } catch (Exception e){
-//                            log.info("Nie udalo sie zapisac pliku do katalgu!!!! " + sig.templatePath)
-//                        }
-
-
 	                    if (processService.findDocumentByName(processInstance.documents, sig.templatePath) == null) {
 	                        log.info "Creating new document [${sig.templatePath}]"
 	                        DocumentFile df = new DocumentFile(name: sig.templatePath, dateCreated: new Date(), lastUpdated: new Date(), pagesCount: pc)
