@@ -52,4 +52,6 @@ grant execute on GetKalkulatorStawkaPlaska to EUMOWY_APP;
 grant execute on GetKalkulatorZero to EUMOWY_APP;
 grant execute on GetKalkulatorPrepaid to EUMOWY_APP;
 grant execute on GetKalkulatorPromocyjne to EUMOWY_APP;
+grant execute on GetKosztAmortyzacji to EUMOWY_APP;
+
 
