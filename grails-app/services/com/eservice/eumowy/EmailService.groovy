@@ -49,11 +49,11 @@ class EmailService {
         sendMail(emailTemplate, emailTemplate.sender, emailTemplate.recipient, null, [merchantName: merchantName, merchantNip: merchantNip], documents)
     }
 
-    def sendDocumentsRejected(def recipient, def merchantName, def merchantNip, def rejectReason) {
+    def sendDocumentsRejected(def recipient, def merchantName, def merchantNip, def rejectReason, def activities) {
         def emailTemplate = EmailTemplates.findByName(EmailTemplates.EmailTemplateType.DOCUMENTS_REJECTED)
         //if(!emailTemplate) return;
 
-        sendMail(emailTemplate, emailTemplate.sender, recipient, [merchantNip, merchantName] as Object[], [merchantName: merchantName, merchantNip: merchantNip, rejectReason: rejectReason], null)
+        sendMail(emailTemplate, emailTemplate.sender, recipient, [merchantNip, merchantName] as Object[], [merchantName: merchantName, merchantNip: merchantNip, rejectReason: rejectReason, activities: activities], null)
     }
 
 
