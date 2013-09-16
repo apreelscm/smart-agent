@@ -18,24 +18,9 @@ grant select on cbt_sl_kraje to EUMOWY_APP;
 grant select on cbt_sl_wojewodztwa to EUMOWY_APP;
 grant select on cbt_sl_powiaty to EUMOWY_APP;
 grant select on cbt_sl_gminy to EUMOWY_APP;
+grant select on cbt_sl_kalk_slownik to EUMOWY_APP;
+grant select on cbt_sl_kalk_slownik to EUMOWY;
 grant select on cg_ref_codes to EUMOWY_APP;
-
---grant select on adm_patche to EUMOWY_APP;
---grant select on cbt_aplikacje to EUMOWY_APP;
---grant select on cbt_banki to EUMOWY_APP;
---grant select on cbt_cp_cardplany to EUMOWY_APP;
---grant select on cbt_cp_schematy to EUMOWY_APP;
---grant select on cbt_dochodowosci to EUMOWY_APP;
---grant select on cbt_dokumenty to EUMOWY_APP;
---grant select on cbt_dostawy to EUMOWY_APP;
---grant select on cbt_faktury to EUMOWY_APP;
---grant select on cbt_gwarancje to EUMOWY_APP;
---grant select on cbt_lgo_kolekcja_logo to EUMOWY_APP;
---grant select on cbt_lgo_logo_klienta to EUMOWY_APP;
---grant select on cbt_lgo_slownik_aplikacji to EUMOWY_APP;
---grant select on cbt_obroty to EUMOWY_APP;
---grant select on cbt_obsluga_pz to EUMOWY_APP;
-
 
 grant select on CBT_KALK_SZABLON to EUMOWY_APP;
 grant select on CBT_KALK_SZABLON_POLE to EUMOWY_APP;
