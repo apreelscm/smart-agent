@@ -513,8 +513,8 @@ class ProcessCommand implements Serializable{
 		doladowania_tp(nullable:true, validator: { value, process, errors ->
 			if (value == null || value.isEmpty()) {
 				if (process.doladowania_tk == null || process.doladowania_tk.isEmpty()){
-					errors.rejectValue( "doladowania_tp", "default.atLeastOne.option", "Nale\u017Cy zaznaczyc\u0107 przynajmniej jedn\u0105 opcj\u0119")
-					errors.rejectValue( "doladowania_tk", "default.atLeastOne.option", "Nale\u017Cy zaznaczyc\u0107 przynajmniej jedn\u0105 opcj\u0119")
+					errors.rejectValue( "doladowania_tp", "default.atLeastOne.option", "Nale\u017Cy zaznaczy\u0107 przynajmniej jedn\u0105 opcj\u0119")
+					errors.rejectValue( "doladowania_tk", "default.atLeastOne.option", "Nale\u017Cy zaznaczy\u0107 przynajmniej jedn\u0105 opcj\u0119")
 					return false
 				}
 			} 
