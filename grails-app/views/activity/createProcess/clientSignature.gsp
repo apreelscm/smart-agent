@@ -147,7 +147,7 @@
 							{
 								"Tak": function() {
 									jQuery( this ).dialog( "close" );
-									jQuery.post(jQuery(location).attr('href'), {_eventId_submit:"",requestVersion: jQuery("input[name=requestVersion]").val(), numberOfSubscriptions: updateSubscriptionStatusCount}, function(data, textStatus, jqXHR) {
+									jQuery.post(jQuery(location).attr('href'), {_eventId_submit:"",requestVersion: jQuery('input[name="requestVersion"]:checked').val(), numberOfSubscriptions: updateSubscriptionStatusCount}, function(data, textStatus, jqXHR) {
 										window.location.reload();
 									});
 									
@@ -160,7 +160,7 @@
 					});
 				}
 				else {
-					jQuery.post(jQuery(location).attr('href'), {_eventId_submit:"",requestVersion: jQuery("input[name=requestVersion]").val(), numberOfSubscriptions: updateSubscriptionStatusCount}, function(data, textStatus, jqXHR) {
+					jQuery.post(jQuery(location).attr('href'), {_eventId_submit:"",requestVersion: jQuery('input[name="requestVersion"]:checked').val(), numberOfSubscriptions: updateSubscriptionStatusCount}, function(data, textStatus, jqXHR) {
 						window.location.reload();
 					});
 				}
