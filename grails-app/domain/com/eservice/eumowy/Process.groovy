@@ -75,8 +75,8 @@ class Process implements Serializable {
         subscriptions(nullable: true)
         points(nullable: true)
         processData(nullable: true)
-        notesToCoa(nullable: true, maxSize: 2048)
-        notesToZrd(nullable: true, maxSize: 2048)
+        notesToCoa(nullable: true, maxSize: 1000)
+        notesToZrd(blank: false, maxSize: 300)
     }
 
     static mapping = {
