@@ -136,7 +136,12 @@ class ProcessController {
         processInstance.save(validate: false)
         flash.message = message(code: 'default.rejected.message', args:[ message(code: 'process.label', default: 'proces'), processInstance.id])
 
-        emailService.sendDocumentsRejected(processInstance.phEmail, processInstance.client.name, processInstance.client.nip, params.notes)
+        List<String> activities = new ArrayList<String>();
+        processInstance.activities.each {a ->
+            def key = 'activity.' + a.code + '.name'
+            activities.add(messageSource.getMessage(key, [] as Object[], request.locale))
+        }
+        emailService.sendDocumentsRejected(processInstance.phEmail, processInstance.client.name, processInstance.client.nip, params.notes, activities)
 
         redirect(action: "list", params: params)
     }

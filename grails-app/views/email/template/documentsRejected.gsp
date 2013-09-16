@@ -5,12 +5,10 @@
         Dokumentacja odrzucona po procesie weryfikacji O-ZRD
         <br><br>
         Rodzaj odrzuconych dokumentów:
-
-        //TODO - co to jest????
-
-        - (…)Rodzaj działania
-
-        - (…)Rodzaj działania
+        <br><br>
+        <g:each in="${activities}">
+        - ${it}<br>
+        </g:each>
 
         <br><br>
         Powód odrzucenia:
