@@ -3,6 +3,7 @@ import com.eservice.eumowy.Process
 import grails.validation.Validateable
 import org.apache.commons.collections.FactoryUtils
 import org.apache.commons.collections.ListUtils
+import org.springframework.validation.Errors
 /**
  * User: Dominik Walczak
  * Date: 20.08.13 Time: 10:22
@@ -507,8 +508,18 @@ class ProcessCommand implements Serializable{
         mudCena(nullable:true, blank:false, shared:"number")
         weryfikacjaPINCena(nullable:true)
         systemKasowyCena(nullable:true)
-        doladowania_tp(nullable:true)
-        doladowania_tk(nullable:true)
+//        doladowania_tp(nullable:true)
+//        doladowania_tk(nullable:true)
+		doladowania_tp(nullable:true, validator: { value, process, errors ->
+			if (value == null || value.isEmpty()) {
+				if (process.doladowania_tk == null || process.doladowania_tk.isEmpty())
+				errors.rejectValue( "doladowania_tp", "default.atLeastOne.option", "Nale\u017Cy zaznaczyc\u0107 przynajmniej jedn\u0105 opcj\u0119")
+				errors.rejectValue( "doladowania_tk", "default.atLeastOne.option", "Nale\u017Cy zaznaczyc\u0107 przynajmniej jedn\u0105 opcj\u0119")
+				return false
+			}
+			 
+			return true
+		})
         srednia_sprzedaz_doladowan(nullable:true, blank:false, shared:"number")
         srednia_sprzedaz_doladowan_slownie(nullable:true, blank:false)
         ifOplataVISA(nullable:true,blank:false, shared: "number") //1.11 %, M
@@ -525,8 +536,18 @@ class ProcessCommand implements Serializable{
         kontaktTytul(nullable:true, blank:false)
         kontaktImie(nullable:true, blank:false)
         kontaktNazwisko(nullable:true, blank:false)
-        kontaktTelStacjonarny(nullable:true)
-        kontaktTelKomorkowy(nullable:true)
+//        kontaktTelStacjonarny(nullable:true)
+//        kontaktTelKomorkowy(nullable:true)
+		kontaktTelStacjonarny(nullable:true, validator: { value, process, errors ->
+			if (value == null || value.isEmpty()) {
+				if (process.kontaktTelKomorkowy == null || process.kontaktTelKomorkowy.isEmpty())
+				errors.rejectValue( "kontaktTelStacjonarny", "default.atLeastOne.phoneNumber", "Nale\u017Cy poda\u0107 przynajmniej jeden numer telefonu")
+				errors.rejectValue( "kontaktTelKomorkowy", "default.atLeastOne.phoneNumber", "Nale\u017Cy poda\u0107 przynajmniej jeden numer telefonu")
+				return false
+			}
+			 
+			return true
+		})
         kontaktEmail(nullable:true, blank:true)
         pozyskujacyTytul(nullable:true, blank:false)
         pozyskujacyImie(nullable:true, blank:false)
@@ -684,9 +705,19 @@ class ProcessCommand implements Serializable{
         akceptantMiasto(nullable:true, blank:false)
         akceptantKodPocztowy(nullable:true, blank:false)
         akceptantPoczta(nullable:true, blank:false)
-        akceptantTelStacjonarny(nullable:true)
+//        akceptantTelStacjonarny(nullable:true)
+		akceptantTelStacjonarny(nullable:true, validator: { value, process, errors ->
+		    if (value == null || value.isEmpty()) {
+				if (process.akceptantTelKomorkowy == null || process.akceptantTelKomorkowy.isEmpty())
+		        errors.rejectValue( "akceptantTelStacjonarny", "default.atLeastOne.phoneNumber", "Nale\u017Cy poda\u0107 przynajmniej jeden numer telefonu")
+				errors.rejectValue( "akceptantTelKomorkowy", "default.atLeastOne.phoneNumber", "Nale\u017Cy poda\u0107 przynajmniej jeden numer telefonu")
+		        return false
+		    }
+		     
+		    return true
+		})
         akceptantFax(nullable:true, blank:true)
-        akceptantTelKomorkowy(nullable:true)
+//        akceptantTelKomorkowy(nullable:true)
         akceptantUlicaTytulCbd(nullable:true)
         akceptantUlicaCbd(nullable:true)
         akceptantNrDomuCbd(nullable:true)
