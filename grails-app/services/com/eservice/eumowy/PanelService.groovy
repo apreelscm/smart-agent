@@ -138,7 +138,7 @@ class PanelService {
 
     def getFormaDoladowania(ProcessCommand cmd ,def calc) {
         cmd.doladowania_tp = calculatorService.getCalcProperty(calc,"CZY_TELEPOMPKA")
-        cmd.doladowania_tk = calculatorService.getCalcProperty(calc,"OPLATA_IFPLUS_VISA")
+        cmd.doladowania_tk = calculatorService.getCalcProperty(calc,"CZY_TELEKODZIK")
         cmd.srednia_sprzedaz_doladowan = calculatorService.getCalcProperty(calc,"DEKLARACJA_SPRZEDAZY_PP")
         cmd.srednia_sprzedaz_doladowan_slownie = cmd.srednia_sprzedaz_doladowan_slownie ?: ""
     }
