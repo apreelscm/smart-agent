@@ -133,12 +133,12 @@ class PointDataDetails implements Serializable {
 //		TODO - sprawdzic czy to zadziala; mozliwe, ze trzeba nadac nazwy pol pokroju "points[0].kontaktWPunkcieTelStacjonarny
 		kontaktWPunkcieTelStacjonarny(nullable:true, validator: { value, pointDetails, errors ->
 			if (value == null || value.isEmpty()) {
-				if (pointDetails.kontaktWPunkcieTelKomorkowy == null || pointDetails.kontaktWPunkcieTelKomorkowy.isEmpty())
-				errors.rejectValue( "kontaktWPunkcieTelStacjonarny", "default.atLeastOne.phoneNumber", "Nale\u017Cy poda\u0107 przynajmniej jeden numer telefonu")
-				errors.rejectValue( "kontaktWPunkcieTelKomorkowy", "default.atLeastOne.phoneNumber", "Nale\u017Cy poda\u0107 przynajmniej jeden numer telefonu")
-				return false
-			}
-			 
+				if (pointDetails.kontaktWPunkcieTelKomorkowy == null || pointDetails.kontaktWPunkcieTelKomorkowy.isEmpty()){
+					errors.rejectValue( "kontaktWPunkcieTelStacjonarny", "default.atLeastOne.phoneNumber", "Nale\u017Cy poda\u0107 przynajmniej jeden numer telefonu")
+					errors.rejectValue( "kontaktWPunkcieTelKomorkowy", "default.atLeastOne.phoneNumber", "Nale\u017Cy poda\u0107 przynajmniej jeden numer telefonu")
+					return false
+				}
+			} 
 			return true
 		})
 		kontaktWPunkcieEmail(nullable:true)

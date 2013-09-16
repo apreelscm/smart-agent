@@ -512,12 +512,12 @@ class ProcessCommand implements Serializable{
 //        doladowania_tk(nullable:true)
 		doladowania_tp(nullable:true, validator: { value, process, errors ->
 			if (value == null || value.isEmpty()) {
-				if (process.doladowania_tk == null || process.doladowania_tk.isEmpty())
-				errors.rejectValue( "doladowania_tp", "default.atLeastOne.option", "Nale\u017Cy zaznaczyc\u0107 przynajmniej jedn\u0105 opcj\u0119")
-				errors.rejectValue( "doladowania_tk", "default.atLeastOne.option", "Nale\u017Cy zaznaczyc\u0107 przynajmniej jedn\u0105 opcj\u0119")
-				return false
-			}
-			 
+				if (process.doladowania_tk == null || process.doladowania_tk.isEmpty()){
+					errors.rejectValue( "doladowania_tp", "default.atLeastOne.option", "Nale\u017Cy zaznaczyc\u0107 przynajmniej jedn\u0105 opcj\u0119")
+					errors.rejectValue( "doladowania_tk", "default.atLeastOne.option", "Nale\u017Cy zaznaczyc\u0107 przynajmniej jedn\u0105 opcj\u0119")
+					return false
+				}
+			} 
 			return true
 		})
         srednia_sprzedaz_doladowan(nullable:true, blank:false, shared:"number")
@@ -540,12 +540,12 @@ class ProcessCommand implements Serializable{
 //        kontaktTelKomorkowy(nullable:true)
 		kontaktTelStacjonarny(nullable:true, validator: { value, process, errors ->
 			if (value == null || value.isEmpty()) {
-				if (process.kontaktTelKomorkowy == null || process.kontaktTelKomorkowy.isEmpty())
-				errors.rejectValue( "kontaktTelStacjonarny", "default.atLeastOne.phoneNumber", "Nale\u017Cy poda\u0107 przynajmniej jeden numer telefonu")
-				errors.rejectValue( "kontaktTelKomorkowy", "default.atLeastOne.phoneNumber", "Nale\u017Cy poda\u0107 przynajmniej jeden numer telefonu")
-				return false
-			}
-			 
+				if (process.kontaktTelKomorkowy == null || process.kontaktTelKomorkowy.isEmpty()){
+					errors.rejectValue( "kontaktTelStacjonarny", "default.atLeastOne.phoneNumber", "Nale\u017Cy poda\u0107 przynajmniej jeden numer telefonu")
+					errors.rejectValue( "kontaktTelKomorkowy", "default.atLeastOne.phoneNumber", "Nale\u017Cy poda\u0107 przynajmniej jeden numer telefonu")
+					return false
+				}
+			}		 
 			return true
 		})
         kontaktEmail(nullable:true, blank:true)
@@ -708,12 +708,12 @@ class ProcessCommand implements Serializable{
 //        akceptantTelStacjonarny(nullable:true)
 		akceptantTelStacjonarny(nullable:true, validator: { value, process, errors ->
 		    if (value == null || value.isEmpty()) {
-				if (process.akceptantTelKomorkowy == null || process.akceptantTelKomorkowy.isEmpty())
-		        errors.rejectValue( "akceptantTelStacjonarny", "default.atLeastOne.phoneNumber", "Nale\u017Cy poda\u0107 przynajmniej jeden numer telefonu")
-				errors.rejectValue( "akceptantTelKomorkowy", "default.atLeastOne.phoneNumber", "Nale\u017Cy poda\u0107 przynajmniej jeden numer telefonu")
-		        return false
-		    }
-		     
+				if (process.akceptantTelKomorkowy == null || process.akceptantTelKomorkowy.isEmpty()){
+					errors.rejectValue( "akceptantTelStacjonarny", "default.atLeastOne.phoneNumber", "Nale\u017Cy poda\u0107 przynajmniej jeden numer telefonu")
+					errors.rejectValue( "akceptantTelKomorkowy", "default.atLeastOne.phoneNumber", "Nale\u017Cy poda\u0107 przynajmniej jeden numer telefonu")
+					return false
+				}
+		    }     
 		    return true
 		})
         akceptantFax(nullable:true, blank:true)
