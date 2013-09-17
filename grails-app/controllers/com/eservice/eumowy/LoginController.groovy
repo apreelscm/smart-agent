@@ -91,19 +91,9 @@ class LoginController {
 
         def username = session[UsernamePasswordAuthenticationFilter.SPRING_SECURITY_LAST_USERNAME_KEY]
         String msg = ''
-        def exception = session[WebAttributes.AUTHENTICATION_EXCEPTION]
+        Exception exception = session[WebAttributes.AUTHENTICATION_EXCEPTION]
         if (exception) {
-            if (exception instanceof AccountExpiredException) {
-                msg = g.message(code: "springSecurity.errors.login.expired")
-            } else if (exception instanceof CredentialsExpiredException) {
-                msg = g.message(code: "springSecurity.errors.login.passwordExpired")
-            } else if (exception instanceof DisabledException) {
-                msg = g.message(code: "springSecurity.errors.login.disabled")
-            } else if (exception instanceof LockedException) {
-                msg = g.message(code: "springSecurity.errors.login.locked")
-            } else {
-                msg = g.message(code: "springSecurity.errors.login.fail")
-            }
+            msg = exception.getMessage()
         }
 
         if (springSecurityService.isAjax(request)) {

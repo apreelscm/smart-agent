@@ -104,7 +104,7 @@
                 <g:if test="${params.order}"><g:hiddenField name="order" value="${params.order}"/></g:if>
                 <g:if test="${params.max}"><g:hiddenField name="max" value="${params.max}"/></g:if>
                 <g:if test="${params.offset}"><g:hiddenField name="offset" value="${params.offset}"/></g:if>
-                <g:link class="button submit float-left" action="list" >Wróć</g:link>
+                <g:actionSubmit value="Wróć" class="button submit float-left" action="list"/>
                 <g:if test="${!(processInstance?.status in [Process.ProcessStatus.ACCEPTED, Process.ProcessStatus.REJECTED])}">
                     <g:actionSubmit class="button submit" action="reject" value="Odrzuć"
                                     style="float: left;margin-right: 1em;display:${!isNewProcess ? 'block' : 'block'}"
