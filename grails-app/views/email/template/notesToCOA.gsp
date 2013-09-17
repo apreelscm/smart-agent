@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <body>
     <p>
-        ${notes?.encodeAsHTML().replace('\n', '<br/>\n')}
+        ${notes?.encodeAsHTML()?.replace('\n', '<br/>\n')}
         <br><br>
         ${phNumber}
         <br>
