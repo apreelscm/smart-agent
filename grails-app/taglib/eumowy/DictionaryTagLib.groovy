@@ -12,6 +12,12 @@ class DictionaryTagLib {
         attrs.from = dictionaryService.getUlicaComboBox()*.value
         fieldImpl(out, attrs)
     }
+	
+	Closure typeSelect = { attrs ->
+		def nipNum = attrs.nip
+		attrs.from = dictionaryService.getPosTypeComboBox(nipNum)*.value
+		fieldImpl(out, attrs)
+	}
 
     def fieldImpl(out, attrs) {
         out << g.select(attrs)

@@ -16,11 +16,11 @@
 				<tbody>
 					<g:each status="i" var="pos" in="${data.allPoses}" >
 					<tr>
-						<td>${pos.id}<input type="hidden" name="allPoses[${i}].id" value="${pos.id}" /></td>
-						<td>${pos.numerZestawuPos}</td>
-						<td>${pos.dataOd}</td>
-						<td>${pos.dataDo}</td>
-						<td>${pos.wysokoscOplaty}</td>
+						<td>${pos.id}<input type="hidden" name="allPoses[${i}].id" value="${pos.id}" /><input type="hidden" name="allPoses[${i}].tpsId" value="${pos.tpsId}" /></td>
+						<td>${pos.numerZestawuPos}<input type="hidden" name="allPoses[${i}].numerZestawuPos" value="${pos.numerZestawuPos}" /></td>
+						<td>${pos.dataOd}<input type="hidden" name="allPoses[${i}].dataOd" value="${pos.dataOd}" /></td>
+						<td>${pos.dataDo}<input type="hidden" name="allPoses[${i}].dataDo" value="${pos.dataDo}" /></td>
+						<td>${pos.wysokoscOplaty}<input type="hidden" name="allPoses[${i}].wysokoscOplaty" value="${pos.wysokoscOplaty}" /></td>
 						<td><g:checkBox name="allPoses[${i}].czyWybrany"/></td>
 					</tr>
 					</g:each>

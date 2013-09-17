@@ -4,12 +4,12 @@
         <div style="text-align: center; padding-top: 20px; width: 750px" class="centre">
             <ul class="table-list centre">
                 <li>
-                    <span><label><g:checkBox name="correspondenceAsMerchant"/><g:message code="panel.as.merchant"/></label></span>
+                    <span><label for="correspondenceAsMerchant"><g:checkBox name="correspondenceAsMerchant"/><g:message code="panel.as.merchant"/></label></span>
                 </li>
                 <li>
                     <span><g:message code="panel.street" /></span>
                     <span>
-                        <dict:streetSelect id="akceptantKontaktUlicaTytul" name="korespondencjaUlicaTytul" value="${data.akceptantKontaktUlicaTytul}" />
+                        <dict:streetSelect id="akceptantKontaktUlicaTytul" name="akceptantKontaktUlicaTytul" value="${data.akceptantKontaktUlicaTytul}" />
                         <g:textField name="akceptantKontaktUlica" style="width: 200px" value="${data.akceptantKontaktUlica}" maxlength ="19"/>
                     </span>
                     <span>
@@ -39,18 +39,22 @@
 
         jQuery("#correspondenceAsMerchant").click(function() {
             if(this.checked) {
-                var selectedValue = jQuery('#akceptantUlicaTytul').val();
-                jQuery("#korespondencjaUlicaTytul").filter(function() {
-                    return jQuery(this).val() == selectedValue;
-                }).prop('selected', true);
-
-                jQuery('#akceptantKontaktUlicaTytul').val(jQuery('#akceptantUlicaTytul').val());
+				jQuery('#akceptantKontaktUlicaTytul').val(jQuery('#akceptantUlicaTytul').val());
                 jQuery('#akceptantKontaktUlica').val(jQuery('#akceptantUlica').val());
                 jQuery('#akceptantKontaktNrDomu').val(jQuery('#akceptantNrDomu').val());
                 jQuery('#akceptantKontaktNrMieszkania').val(jQuery('#akceptantNrMieszkania').val());
                 jQuery('#akceptantKontaktMiasto').val(jQuery('#akceptantMiasto').val());
                 jQuery('#akceptantKontaktKodPocztowy').val(jQuery('#akceptantKodPocztowy').val());
                 jQuery('#akceptantKontaktPoczta').val(jQuery('#akceptantPoczta').val());
+            }
+            else {
+                jQuery('#akceptantKontaktUlicaTytul').val('');
+                jQuery('#akceptantKontaktUlica').val('');
+                jQuery('#akceptantKontaktNrDomu').val('');
+                jQuery('#akceptantKontaktNrMieszkania').val('');
+                jQuery('#akceptantKontaktMiasto').val('');
+                jQuery('#akceptantKontaktKodPocztowy').val('');
+                jQuery('#akceptantKontaktPoczta').val('');
             }
         });
     });

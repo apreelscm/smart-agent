@@ -131,9 +131,11 @@ class ProcessController {
 
         processInstance.status = Process.ProcessStatus.REJECTED
         processInstance.observed = (params.observed == "on")
+		
 		/* Delete subscriptions */
 		processInstance.subscriptions?.clear()
-        processInstance.save(validate: false)
+        processInstance.save(flush: true, validate: false)
+		
         flash.message = message(code: 'default.rejected.message', args:[ message(code: 'process.label', default: 'proces'), processInstance.id])
 
         emailService.sendDocumentsRejected(processInstance.phEmail, processInstance.client.name, processInstance.client.nip, params.notes)

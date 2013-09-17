@@ -147,9 +147,16 @@
 							{
 								"Tak": function() {
 									jQuery( this ).dialog( "close" );
+									jQuery('#confirm-pleasewait h2').text("${message(code: "process.subscriptions.sendingEmails")}");
+									jQuery('#confirm-pleasewait img').show();
+									jQuery('#confirm-pleasewait').dialog({resizable: true,
+																			height:200,
+																			width: 450,
+																			modal: true});
 									jQuery.post(jQuery(location).attr('href'), {_eventId_submit:"",requestVersion: jQuery("input[name=requestVersion]").val(), numberOfSubscriptions: updateSubscriptionStatusCount}, function(data, textStatus, jqXHR) {
 										window.location.reload();
-									});
+									})
+									.fail(function() { jQuery("#confirm-pleasewait h2").text("${message(code: "process.subscriptions.sendingEmails.error")}"); jQuery("#confirm-pleasewait img").hide() });
 									
 									result = true;
 								},
@@ -160,9 +167,16 @@
 					});
 				}
 				else {
+					jQuery('#confirm-pleasewait h2').text("${message(code: "process.subscriptions.sendingEmails")}");
+					jQuery('#confirm-pleasewait img').show();
+					jQuery('#confirm-pleasewait').dialog({resizable: true,
+															height:200,
+															width: 450,
+															modal: true});
 					jQuery.post(jQuery(location).attr('href'), {_eventId_submit:"",requestVersion: jQuery("input[name=requestVersion]").val(), numberOfSubscriptions: updateSubscriptionStatusCount}, function(data, textStatus, jqXHR) {
 						window.location.reload();
-					});
+					})
+					.fail(function() { jQuery("#confirm-pleasewait h2").text("${message(code: "process.subscriptions.sendingEmails.error")}"); jQuery("#confirm-pleasewait img").hide() });
 				}
 				
 				return false;
@@ -311,6 +325,10 @@
 <div id="confirm-submit-without-subscription-dialog"  style="display: none;">
 	<p><g:message code="process.subscriptions.submit.without.subscription.confirm" /></p>
 </div>
+<div id="confirm-pleasewait" class="align-center" style="display: none;">
+	<h2 style="padding-top: 20px;"><g:message code="process.subscriptions.sendingEmails" /></h2>
+	<img style="width: 40px;" src="/eumowy/images/document-loading.gif" />
+</div>
 <section id="create_clientSignature" >
 
     <h1 class="ng linia-bottom"><g:message code="clientSignature.header.title" default="Podpis Klienta"/></h1>
@@ -385,9 +403,6 @@
                         </td>
                         <td>
                             <g:submitButton style="width: 100%" id="conitnueButton" name="submit" class="button submit" value="${message(code: 'default.navigation.button.finish', default: 'Zakończ')}"/>
-                        %{-- <g:form>
-                                <g:submitButton style="width: 100%" name="submit" class="button submit" value="test2"/>
-                            </g:form>--}%
                         </td>
                     </tr>
                     </tbody>

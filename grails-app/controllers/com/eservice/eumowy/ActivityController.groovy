@@ -215,18 +215,18 @@ class ActivityController {
 	                        log.info "DF id: " + df.id + " PageCount: " + df.pagesCount
 	                        log.info "Process ID: " + processInstance.id
 	                        processInstance.addToDocuments(df)
-	                        processInstance.discard();
+	                        processInstance.discard()
 	                    }
 	                    else {
 	                        log.info "Updating existing document [${sig.templatePath}]"
 	                        DocumentFile df = processService.findDocumentByName(processInstance.documents, sig.templatePath)
 	                        df.content.setContent(documentData)
-                            df.lastUpdated = new Date();
+                            df.lastUpdated = new Date()
 	                        df.save(flush: true)
 	                    }
 	                }
 	
-	                flow.totalPagesCount = totalPagesCount;
+	                flow.totalPagesCount = totalPagesCount
 	                processInstance.save(flush:true)
 	                flow.processInstance = processInstance
 				}
@@ -497,7 +497,7 @@ class ActivityController {
                 def calc = flow.calc;
 
                 def processCmd
-                if(!flow.skipPanelsInit){
+                if(!flow.skipPanelsInit) {
                     log.info("skipPanelsInit - false")
                     TreeSet activePanels = _getActivePanels(processInstance.signatures)
                     processInstance.panels = activePanels.toList();
@@ -536,13 +536,18 @@ class ActivityController {
             }.to "selectedPanels"
             on("saveOnly"){ ProcessCommand cmd ->
                 Process processInstance = processService.populateProcessWithData(flow.processInstance,cmd)
-
-                if (!processInstance.save()){
-                    processInstance.errors.each {
-                        log.error(it)
-                    }
-                    return error();
-                }
+                
+				log.info "Zapisuje dane paneli"
+				processInstance.save(flush: true, validate: false)
+				log.info "Zapisano dane paneli"
+				
+				// Update
+				processInstance.points?.each { point ->
+					if (point.cbdId != null) {
+						def foundApc = cmd.allPoints?.find { apc -> apc.cbdId == point.cbdId }
+						foundApc.id = point.id
+					}
+				}
 
                 flow.processInstance = processInstance
                 flow.data = cmd

@@ -4,7 +4,6 @@ import org.apache.commons.lang.builder.HashCodeBuilder
 
 class PosData implements Serializable {
 	
-	//TODO Add things needed for New POS/Point documents, like point name etc.
 	Integer tpsId
 	Integer numerZestawuPos
 	Date dataOd

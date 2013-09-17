@@ -31,6 +31,7 @@ alter table EUMOWY.ACTIVITY_SIGNATURES add constraint ACTIVITY_SIGNATURES_SIGN_I
 alter table EUMOWY.ATTACHMENT add constraint ATTACHMENT_PROCESS_ID_FK foreign key (process_id) references EUMOWY.PROCESS;
 alter table EUMOWY.CALCFIELD_SIGNATURE add constraint CALCFIELD_SIGNATURE_CLC_ID_FK foreign key (calc_field_id) references EUMOWY.CALCFIELD;
 alter table EUMOWY.CALCFIELD_SIGNATURE add constraint CALCFIELD_SIGNATURE_SIG_ID foreign key (signature_id) references EUMOWY.SIGNATURE;
+alter table EUMOWY.DOCUMENT add constraint DOCUMENT_SIGNATURE_ID_FK foreign key (signature_id) references EUMOWY.SIGNATURE;
 alter table EUMOWY.DOCUMENT add constraint DOCUMENT_PROCESS_ID_FK foreign key (process_id) references EUMOWY.PROCESS;
 alter table EUMOWY.DOCUMENT_CONTENT add constraint DOCUMENT_CONTENT_DOC_ID_FK foreign key (document_id) references EUMOWY.DOCUMENT;
 alter table EUMOWY.POINT add constraint POINT_PROCESS_ID_FK foreign key (process_id) references EUMOWY.PROCESS;

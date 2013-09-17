@@ -6,6 +6,19 @@
  * To change this template use File | Settings | File Templates.
  */
 
+function maskNewPointRefresh() {
+	console.log("Testt");
+	jQuery("#newPointPanel").find(".bank-account").mask('99 9999 9999 9999 9999 9999 9999');
+	jQuery("#newPointPanel").find(".nip").mask('9999999999');
+	jQuery("#newPointPanel").find(".regon").mask('999999999');
+	jQuery("#newPointPanel").find(".postal-code").mask('99-999');
+	jQuery("#newPointPanel").find(".phone").mask('(99) 999-99-99');
+	jQuery("#newPointPanel").find(".mobile-phone").mask('999-999-999');
+	jQuery("#newPointPanel").find(".fax").mask('(99) 999-99-99');
+	jQuery("#newPointPanel").find(".ip").mask('999.999.999.999');
+	jQuery("#newPointPanel").find(".ph-number").mask('99999');
+}
+
 jQuery(document).ready(function() {
     jQuery(".bank-account").mask('99 9999 9999 9999 9999 9999 9999');
     jQuery(".nip").mask('9999999999');

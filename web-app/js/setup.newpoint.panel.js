@@ -25,10 +25,10 @@ function setupNewPointPanelHandlers(prevPanelId, panelId, prefix) {
 			}
 		});
 	
-        jQuery("#"+prefix+"\\["+panelId+"\\]\\.plannedInstallationDate").datepicker({ dateFormat: 'yyyy-MM-dd' });
+        jQuery("#"+prefix+"\\["+panelId+"\\]\\.plannedInstallationDate").datepicker({ dateFormat: 'yy-mm-dd' });
         jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseFrom").timepicker({ 
         	controlType: 'select',
-        	timeFormat: 'hh:mm tt',
+        	timeFormat: 'HH:mm',
         	onClose: function(dateText, inst) {
         		if (jQuery( "#"+prefix+"\\["+panelId+"\\]\\.dayCloseTo").val() != '') {
         			var testStartDate = jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseFrom").timepicker('getDate');
@@ -52,7 +52,7 @@ function setupNewPointPanelHandlers(prevPanelId, panelId, prefix) {
        	});
         jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseTo").timepicker({ 
         	controlType: 'select',
-        	timeFormat: 'hh:mm tt',
+        	timeFormat: 'HH:mm',
         	onClose: function(dateText, inst) {
         		if (jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseFrom").val() != '') {
         			var testStartDate = jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseFrom").timepicker('getDate');

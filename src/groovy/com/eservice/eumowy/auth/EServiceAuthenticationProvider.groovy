@@ -52,6 +52,7 @@ class EServiceAuthenticationProvider implements AuthenticationProvider {
 
         switch (Environment.getCurrent()) {
             case Environment.DEVELOPMENT:
+				userDTO.setEmail("pszkup@apreel.com")
                 if(username == "ph"){
                     authorities.add(new GrantedAuthorityImpl(EUM_PH_BZOS))
                 }

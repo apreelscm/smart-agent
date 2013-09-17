@@ -80,5 +80,7 @@
 			return false;
 		});
 		
+		maskNewPointRefresh()
+		
 	});
 </r:script>
