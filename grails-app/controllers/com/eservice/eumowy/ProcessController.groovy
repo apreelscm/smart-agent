@@ -206,7 +206,8 @@ class ProcessController {
         //while(!tmpRes.exists()){ System.sleep(2000) }
 		System.sleep(10000)
 
-        render(template: '../forms/pdf/embedDocument', model:  [pdfDocument: resource(dir: dir ,file: fileName)]);
+        //render(template: '../forms/pdf/embedDocument', model:  [pdfDocument: resource(dir: dir ,file: fileName)]);
+		render(template: '../forms/pdf/embedDocument', model:  [pdfDocument: "/eumowy/tmp/"+fileName]);
     }
 
     def downloadDoc(){
