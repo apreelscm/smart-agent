@@ -90,6 +90,3 @@
 
 <r:require module="jquery_ui"/>
 <r:require module="jquery_timepicker_pl" />
-%{--<r:script>
-	setupNewPointPanelHandlers("");
-</r:script>--}%

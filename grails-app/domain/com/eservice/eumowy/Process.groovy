@@ -23,7 +23,7 @@ class Process implements Serializable {
     String calcNumber
     String saleSection // TODO skad ?
     String notesToCoa
-    String notesToZrd
+    String notesFromZrd
 
     boolean observed = false
 
@@ -76,7 +76,7 @@ class Process implements Serializable {
         points(nullable: true)
         processData(nullable: true)
         notesToCoa(nullable: true, maxSize: 1000)
-        notesToZrd(blank: false, maxSize: 300)
+        notesFromZrd(nullable: true, maxSize: 300)
     }
 
     static mapping = {

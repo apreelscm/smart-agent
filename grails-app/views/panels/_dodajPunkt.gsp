@@ -1,3 +1,4 @@
+<div id="addNewPointPanelPlaceholder"></div>
 <div id="addNewPointPanel">
     <fieldset style="text-align: center">
         <div class="belka-glowna"><g:message code="panel.addnewpoint.title"/> </div>
@@ -43,7 +44,7 @@
 			
 			if (panelInternalCount < 10) {
 				var data = panelTemplate.replace(/%ID%/gm, panelCount);
-				jQuery("#addNewPointPanel").prepend(data);
+				jQuery("#addNewPointPanelPlaceholder").append(data);
 				setupNewPointPanelHandlers(panelCount-1, panelCount, "points");
 				setupNewPointPanelData("points\\["+(panelCount-1)+"\\]\\.", "points\\["+panelCount+"\\]\\.");
 				panelCount++;
