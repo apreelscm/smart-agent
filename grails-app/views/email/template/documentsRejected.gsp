@@ -13,7 +13,7 @@
         <br><br>
         Powód odrzucenia:
         <br><br>
-        ${rejectReason}
+        ${rejectReason?.encodeAsHTML()?.replace('\n', '<br/>\n')}
         <br><br>
         --------------------------------------------------------------------------------
         <br><br>
