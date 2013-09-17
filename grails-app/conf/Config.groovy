@@ -84,6 +84,7 @@ grails.gorm.default.constraints = {
     '*'(nullable: false, blank:true)
     percentage(matches:"""^\\d{1,3}(\\.\\d{1,2})""")
     number(matches:"""^\\d{1,9}(\\.\\d{1,2})""")
+	date(matches:'^(20|21|22|23|[01]d|d)(([:][0-5]d){1,2})$')
 }
 
 
