@@ -4,6 +4,7 @@ import grails.util.Environment
 import org.apache.commons.logging.LogFactory
 import org.apache.log4j.MDC
 import org.springframework.security.authentication.AuthenticationProvider
+import org.springframework.security.authentication.AuthenticationServiceException
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.AuthenticationException
@@ -25,6 +26,7 @@ class EServiceAuthenticationProvider implements AuthenticationProvider {
 
     Authentication authenticate(Authentication auth) throws AuthenticationException {
         UsernamePasswordAuthenticationToken authentication = auth
+        Exception exception = null
 
         String password = authentication.credentials
         String username = authentication.name
@@ -37,8 +39,8 @@ class EServiceAuthenticationProvider implements AuthenticationProvider {
             userDTO = userService.loginToEUmowy(username,password);
 			
 			println(userDTO.getRoles())
-        }catch(Exception e)
-        {
+        }catch(Exception e){
+            exception = e
             log.error(e.message)
             e.printStackTrace();
         }
@@ -46,8 +48,7 @@ class EServiceAuthenticationProvider implements AuthenticationProvider {
         authorities = new ArrayList<GrantedAuthorityImpl>()
 
         if (!userDTO) {
-            auditLogger.info("Nie znaleziono użytkownika [login:${username}]")
-            throw new UsernameNotFoundException('User not found', username)
+            throw new AuthenticationServiceException(exception.getMessage())
         }
 
         switch (Environment.getCurrent()) {
