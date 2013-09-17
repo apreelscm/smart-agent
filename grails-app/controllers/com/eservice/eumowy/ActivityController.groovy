@@ -539,7 +539,7 @@ class ActivityController {
             }.to "selectedPanels"
             on("saveOnly"){ ProcessCommand cmd ->
                 Process processInstance = processService.populateProcessWithData(flow.processInstance,cmd)
-                
+                log.info "Params: " + params
 				log.info "Zapisuje dane paneli"
 				processInstance.save(flush: true, validate: false)
 				log.info "Zapisano dane paneli"
