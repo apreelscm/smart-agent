@@ -5,7 +5,7 @@
                 <ul class="table-list centre">
                     <li>
                         <span><g:message code="panel.aggrement.annex.day"/></span>
-                        <span><g:textField name="dataAneksowanejUmowyPrepaid"
+                        <span><eumowy:textField name="dataAneksowanejUmowyPrepaid"
                                            value="${data.dataAneksowanejUmowyPrepaid}" readonly="true" style="width: 120px;"/></span>
                     </li>
                 </ul>

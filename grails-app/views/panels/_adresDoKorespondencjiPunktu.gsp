@@ -8,23 +8,23 @@
 		  		<span><g:message code="panel.street" /></span>
 		  		<span>
 		  			<dict:streetSelect name="${panelType}[${id}].korespondencjaUlicaTytul" id="${panelType}[${id}].contactAddressAddressStreetType" value="${pointData?.korespondencjaUlicaTytul}"/>
-                	<g:textField name="${panelType}[${id}].korespondencjaUlica" id="${panelType}[${id}].contactAddressAddressStreet" value="${pointData?.korespondencjaUlica}" style="width: 200px" maxlength="19"/>
+                	<eumowy:textField name="${panelType}[${id}].korespondencjaUlica" id="${panelType}[${id}].contactAddressAddressStreet" value="${pointData?.korespondencjaUlica}" style="width: 200px" maxlength="19"/>
                 </span>
                 <span>
-                	<span><g:message code="panel.house.number" /></span> <span><g:textField name="${panelType}[${id}].korespondencjaNrDomu" id="${panelType}[${id}].contactAddressAddressHomeNumber" value="${pointData?.korespondencjaNrDomu}" style="width: 50px" maxlength="4"/></span>
-                	<span><g:message code="panel.flat.number" /></span> <span><g:textField name="${panelType}[${id}].korespondencjaNrLokalu" id="${panelType}[${id}].contactAddressAddressFlatNumber" value="${pointData?.korespondencjaNrLokalu}" style="width: 50px" maxlength="4"/></span>
+                	<span><g:message code="panel.house.number" /></span> <span><eumowy:textField name="${panelType}[${id}].korespondencjaNrDomu" id="${panelType}[${id}].contactAddressAddressHomeNumber" value="${pointData?.korespondencjaNrDomu}" style="width: 50px" maxlength="4"/></span>
+                	<span><g:message code="panel.flat.number" /></span> <span><eumowy:textField name="${panelType}[${id}].korespondencjaNrLokalu" id="${panelType}[${id}].contactAddressAddressFlatNumber" value="${pointData?.korespondencjaNrLokalu}" style="width: 50px" maxlength="4"/></span>
                 </span>
             </li>
 		  	<li>
 		  		<span><g:message code="panel.city" /></span>
-		  		<span><g:textField name="${panelType}[${id}].korespondencjaMiasto" id="${panelType}[${id}].contactAddressAddressCity" value="${pointData?.korespondencjaMiasto}" style="width: 280px;" maxlength="19"/></span>
+		  		<span><eumowy:textField name="${panelType}[${id}].korespondencjaMiasto" id="${panelType}[${id}].contactAddressAddressCity" value="${pointData?.korespondencjaMiasto}" style="width: 280px;" maxlength="19"/></span>
 		  		<span>
-		  			<span><g:message code="panel.postal.code" /></span> <span><g:textField class="postal-code" name="${panelType}[${id}].korespondencjaKodPocztowy" id="${panelType}[${id}].contactAddressAddressPostalCode" value="${pointData?.korespondencjaKodPocztowy}" style="width: 50px" maxlength="5" /></span>
+		  			<span><g:message code="panel.postal.code" /></span> <span><eumowy:textField class="postal-code" name="${panelType}[${id}].korespondencjaKodPocztowy" id="${panelType}[${id}].contactAddressAddressPostalCode" value="${pointData?.korespondencjaKodPocztowy}" style="width: 50px" maxlength="5" /></span>
 		  		</span>
 		  	</li>
 		  	<li>
 		  		<span><g:message code="panel.postal" /></span>
-		  		<span><g:textField name="${panelType}[${id}].korespondencjaPoczta" id="${panelType}[${id}].contactAddressAddressPostOffice" value="${pointData?.korespondencjaPoczta}" style="width: 280px;" maxlength="19"/></span>
+		  		<span><eumowy:textField name="${panelType}[${id}].korespondencjaPoczta" id="${panelType}[${id}].contactAddressAddressPostOffice" value="${pointData?.korespondencjaPoczta}" style="width: 280px;" maxlength="19"/></span>
 		  	</li>
 	  	</ul>
 	</div>

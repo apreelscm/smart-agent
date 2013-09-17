@@ -4,32 +4,32 @@
         <div style="text-align: center; padding-top: 20px; width: 750px" class="centre">
             <div class="align-left">
                 <p><g:message code="panel.newpoint.pointnameforprintingfromposterminal" /></p>
-                <p><g:textField name="nazwaDoWydrukuZTerminalaPos" value="${data.nazwaDoWydrukuZTerminalaPos}" maxlength ="40"/></p>
+                <p><eumowy:textField name="nazwaDoWydrukuZTerminalaPos" value="${data.nazwaDoWydrukuZTerminalaPos}" maxlength ="40"/></p>
                 <p><g:message code="panel.newpoint.pointnameforsearchengine" /> <label for="wydrukJakWyzej"><g:checkBox name="wydrukJakWyzej" id="wydrukJakWyzej" /><g:message code="panel.as.above" /></label></p>
-                <p><g:textField name="wydrukNazwaDoWyszukwarki" value="${data.wydrukNazwaDoWyszukwarki}" maxlength ="40"/></p>
+                <p><eumowy:textField name="wydrukNazwaDoWyszukwarki" value="${data.wydrukNazwaDoWyszukwarki}" maxlength ="40"/></p>
                 <p><label for="wydrukJakMerchant"><g:checkBox name="wydrukJakMerchant"/><g:message code="panel.as.merchant" /></label></p>
                 <ul class="table-list">
                     <li>
                         <span><g:message code="panel.street" /></span>
                         <span>
                             <dict:streetSelect name="wydrukUlicaTytul" />
-                            <g:textField name="wydrukUlica" value="${data.wydrukUlica}" style="width: 200px" maxlength ="19"/>
+                            <eumowy:textField name="wydrukUlica" value="${data.wydrukUlica}" style="width: 200px" maxlength ="19"/>
                         </span>
                         <span>
-                            <span><g:message code="panel.house.number" /></span> <span><g:textField name="wydrukNrDomu" value="${data.wydrukNrDomu}" style="width: 50px" maxlength ="4"/></span>
-                            <span><g:message code="panel.flat.number" /></span> <span><g:textField name="wydrukNrMieszkania" value="${data.wydrukNrMieszkania}" style="width: 50px" maxlength ="4"/></span>
+                            <span><g:message code="panel.house.number" /></span> <span><eumowy:textField name="wydrukNrDomu" value="${data.wydrukNrDomu}" style="width: 50px" maxlength ="4"/></span>
+                            <span><g:message code="panel.flat.number" /></span> <span><eumowy:textField name="wydrukNrMieszkania" value="${data.wydrukNrMieszkania}" style="width: 50px" maxlength ="4"/></span>
                         </span>
                     </li>
                     <li>
                         <span><g:message code="panel.city" /></span>
-                        <span><g:textField name="wydrukMiasto" value="${data.wydrukMiasto}" style="width: 280px;" maxlength ="19"/></span>
+                        <span><eumowy:textField name="wydrukMiasto" value="${data.wydrukMiasto}" style="width: 280px;" maxlength ="19"/></span>
                         <span>
-                            <span><g:message code="panel.postal.code" /></span> <span><g:textField class="postal-code" name="wydrukKodPocztowy" value="${data.wydrukKodPocztowy}" style="width: 50px" maxlength ="5"/></span>
+                            <span><g:message code="panel.postal.code" /></span> <span><eumowy:textField class="postal-code" name="wydrukKodPocztowy" value="${data.wydrukKodPocztowy}" style="width: 50px" maxlength ="5"/></span>
                         </span>
                     </li>
                     <li>
                         <span><g:message code="panel.postal" /></span>
-                        <span><g:textField name="wydrukPoczta" value="${data.wydrukPoczta}" style="width: 280px;" maxlength ="19"/></span>
+                        <span><eumowy:textField name="wydrukPoczta" value="${data.wydrukPoczta}" style="width: 280px;" maxlength ="19"/></span>
                     </li>
                 </ul>
                 <p><g:message code="panel.newpoint.otherdataforprintingfromterminal" /></p>
