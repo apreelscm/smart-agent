@@ -605,7 +605,13 @@ class ProcessService {
 					pointDataDetails = pointData.pointDetails
 			
 					posData = pointData.posDatas?.getAt(0)
-					posDataDetails = posData.posDetails
+					posDataDetails = posData?.posDetails
+					
+					if (posData == null) {
+						log.info "Brakujacy POS dla Danych punktu o id: " + pc.id + " - Tworzę nowy!"
+						posData = new PosData()
+						posDataDetails = new PosDataDetails()
+					}
 					
 					//pointData.id = pc.id
 				}
@@ -627,11 +633,11 @@ class ProcessService {
 					pointDataDetails."set${key.capitalize()}"(value)
 				}
 				
-				if (PosData.metaClass.respondsTo(PosData, "set" + key.capitalize())) {
+				if (PosData.metaClass.respondsTo(PosData, "set" + key.capitalize())  && key != 'id') {
 					posData."set${key.capitalize()}"(value)
 				}
 				
-				if (PosDataDetails.metaClass.respondsTo(PosDataDetails, "set" + key.capitalize())) {
+				if (PosDataDetails.metaClass.respondsTo(PosDataDetails, "set" + key.capitalize()) && key != 'id') {
 					posDataDetails."set${key.capitalize()}"(value)
 				}
 			}
@@ -664,14 +670,15 @@ class ProcessService {
 			pointData.liczbaPos = pdList.size()
 			pointData.save()
 			//if (isNew == true) {
-				posData.setPosDetails(posDataDetails)
-				posData.setPoint(pointData)
-				
-				pointData.setPointDetails(pointDataDetails)
-				pointData.setPosDatas(pdList)
-				
-				posDataDetails.setPos(posData)
-				pointDataDetails.setPoint(pointData)
+			posData.setPosDetails(posDataDetails)
+			posData.setPoint(pointData)
+			
+			pointData.setPointDetails(pointDataDetails)
+			pointData.setPosDatas(pdList)
+			
+			posDataDetails.setPos(posData)
+			pointDataDetails.setPoint(pointData)
+			posData.save()
 			//}
 			
 			pointsList.add(pointData)
