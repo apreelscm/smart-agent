@@ -3,8 +3,8 @@
        style="table-layout: fixed;">
     <thead>
     <tr>
-        <g:sortableColumn title="Załącznik" action="list" property="name" />
-        <g:sortableColumn property="dateUploaded" title="Data Aktualizacji" style="width: 150px" />
+        <th style="text-align: center"><g:message code="process.attachment"/></th>
+        <th style="width: 150px"><g:message code="process.update.date"/></th>
         <th style="width: 55px"></th>
     </tr>
     </thead>

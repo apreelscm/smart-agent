@@ -1372,3 +1372,7 @@ a.submit{
 
 .ui-widget-overlay{
 }
+
+.text-center{
+    text-align: center;
+}

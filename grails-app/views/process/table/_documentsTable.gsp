@@ -24,8 +24,8 @@
        style="table-layout: fixed;">
     <thead>
     <tr>
-        <g:sortableColumn title="Dokument" action="list" property="name" />
-        <g:sortableColumn property="lastUpdated" title="Data Aktualizacji" style="width: 150px" />
+        <th style="text-align: center"><g:message code="process.document"/></th>
+        <th style="width: 150px"><g:message code="process.update.date"/></th>
         <th style="width: 55px"></th>
     </tr>
     </thead>

@@ -5,11 +5,11 @@
             <ul class="table-list">
                 <li>
                     <span class="align-right"><g:message code="panel.bank.account.number"/></span>
-                    <span class="align-left"><g:textField name="numerRachunkuBankowegoKlienta" class="bank-account" value="${data.numerRachunkuBankowegoKlienta}" style="width: 250px"/></span>
+                    <span class="align-left"><eumowy:textField name="numerRachunkuBankowegoKlienta" class="bank-account" value="${data.numerRachunkuBankowegoKlienta}" style="width: 250px"/></span>
                 </li>
                 <li>
                     <span class="align-right"><g:message code="panel.bank.name"/></span>
-                    <span class="align-left"><g:textField name="bankKlienta" value="${data.bankKlienta}" style="width: 250px"/></span>
+                    <span class="align-left"><eumowy:textField name="bankKlienta" value="${data.bankKlienta}" style="width: 250px"/></span>
                 </li>
             </ul>
         </div>
