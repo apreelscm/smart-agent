@@ -14,6 +14,13 @@ class PdfMapper {
     private int pointAcceptCardCount =0;
     private int pointRangeCount =0;
 
+    def mapToPDFData(def processInstance){
+        HashMap<String, String[]> dataMap = new HashMap<String, String[]>()
+        dataMap.putAll(mapProcessToPDFData(processInstance))
+        dataMap.putAll(mapAllDataToPDFData(processInstance.processData, processInstance.points))
+        return dataMap
+    }
+
     def mapAllDataToPDFData(def process, def points) {
         HashMap<String, String[]> dataMap = new HashMap<String, String[]>()
 
@@ -31,6 +38,13 @@ class PdfMapper {
             data.putAll(mapPointDataToPDFData(point))
             data.putAll(mapPosesDataToPDFData(point.posDatas))
         }
+        return data
+    }
+
+    private def mapProcessToPDFData(def processInstance){
+        Map<String, String[]> data = new HashMap<String, String[]>()
+        data.put("phNumer", [processInstance.phNumber.toString()] as String[])
+        data.put("mid", [processInstance.client.mid?:'{mid}'] as String[])
         return data
     }
 

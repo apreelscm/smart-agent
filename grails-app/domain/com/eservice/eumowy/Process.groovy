@@ -21,7 +21,7 @@ class Process implements Serializable {
     String phSurname
     String phEmail
     String calcNumber
-    String saleSection // TODO skad ?
+    String saleSection
     String notesToCoa
     String notesFromZrd
 
