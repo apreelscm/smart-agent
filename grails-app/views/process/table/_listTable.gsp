@@ -10,7 +10,7 @@
             <g:sortableColumn property="saleSection"  title="Segment Sprzedażowy" params="[filterStatus:filterStatus,filterObserved:filterObserved,filterNip:filterNip,filterPhNo:filterPhNo,filterDateFrom:filterDateFrom,filterDateTo:filterDateTo]"/>
             <g:sortableColumn property="phNumber"  title="Numer PH" params="[filterStatus:filterStatus,filterObserved:filterObserved,filterNip:filterNip,filterPhNo:filterPhNo,filterDateFrom:filterDateFrom,filterDateTo:filterDateTo]"/>
             <g:sortableColumn property="phFirstName"  title="Imię PH" params="[filterStatus:filterStatus,filterObserved:filterObserved,filterNip:filterNip,filterPhNo:filterPhNo,filterDateFrom:filterDateFrom,filterDateTo:filterDateTo]"/>
-            <g:sortableColumn property="phSurname"  title="Naziwsko PH" params="[filterStatus:filterStatus,filterObserved:filterObserved,filterNip:filterNip,filterPhNo:filterPhNo,filterDateFrom:filterDateFrom,filterDateTo:filterDateTo]"/>
+            <g:sortableColumn property="phSurname"  title="Nazwisko PH" params="[filterStatus:filterStatus,filterObserved:filterObserved,filterNip:filterNip,filterPhNo:filterPhNo,filterDateFrom:filterDateFrom,filterDateTo:filterDateTo]"/>
             <g:sortableColumn property="status"  title="Status" params="[filterStatus:filterStatus,filterObserved:filterObserved,filterNip:filterNip,filterPhNo:filterPhNo,filterDateFrom:filterDateFrom,filterDateTo:filterDateTo]"/>
         </tr>
     </thead>
