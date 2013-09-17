@@ -15,4 +15,12 @@ class AllPointsCommand implements Serializable {
 	Boolean systemKasowy
 	Boolean uta
 	Boolean czyWybranyAkceptacjaKart
+	
+	static constraints = {
+		tytulPlatnosci(nullable:true)
+		systemKasowy(nullable:true)
+		uta(nullable:true)
+		czyWybranyAkceptacjaKart(nullable:true)
+		czyWybranyZakresUruchomienia(nullable:true)
+	}
 }
