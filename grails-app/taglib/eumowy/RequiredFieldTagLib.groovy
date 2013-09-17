@@ -46,7 +46,7 @@ class RequiredFieldTagLib {
             sb << """
               <div ${id ? 'id = "'+ id +'"': ''} class="requiredField ${isError ? 'error' : ''} display-block" style="disabled:${disabled}">
                 <label for="${name}" style="margin-bottom:10px">
-               ${title}
+               ${title?:''}
                 </label>
                ${inputField} ${imgBody}
             </div>

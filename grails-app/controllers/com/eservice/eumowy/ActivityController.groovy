@@ -11,6 +11,10 @@ class ActivityController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
+    private static final String TEMPLATES="templates"
+    private static final String ELECTRIONICAL="electronical"
+    private static final String PAPER="paper"
+
     def grailsApplication
     def emailService
     def cbdService
@@ -1068,7 +1072,7 @@ class ActivityController {
 
     def _processDocumentCreation(Process process, String requestVersion, def requiredNumberOfSubscriptions)	{
 
-        if ("electronical".equals(requestVersion)) {
+        if (ELECTRIONICAL.equals(requestVersion)) {
             //TODO Check signatures and update documents in DB
 
             if (params?.numberOfSubscriptions?.toInteger() == requiredNumberOfSubscriptions) {
@@ -1096,12 +1100,12 @@ class ActivityController {
                 }
             }
         }
-        else if ("paper".equals(requestVersion)) {
+        else if (PAPER.equals(requestVersion)) {
             //Documents are already in DB
             def merchantName = getFromProcessData(process, 'akceptantNazwaOficjalna');
             emailService.sendDocumentsPaperVersion(process.phEmail, process.documents, merchantName)
         }
-        else if ("templates".equals(requestVersion)) {
+        else if (TEMPLATES.equals(requestVersion)) {
             //TODO Documents are already in DB
             List<DocumentFile> documentFilesWithBlackFaksymileList = new ArrayList<DocumentFile>()
             List<DocumentFile> documentFilesWithoutFaksymileList = new ArrayList<DocumentFile>()
@@ -1134,15 +1138,15 @@ class ActivityController {
 	def _getNewProcessStatus(def params, def requiredNumberOfSubscriptions) {
 		Process.ProcessStatus newStatus
 
-		if ("electronical".equals(params?.requestVersion)) {
+		if (ELECTRIONICAL.equals(params?.requestVersion)) {
 			if (params?.numberOfSubscriptions?.toInteger() < requiredNumberOfSubscriptions) {
 				newStatus = Process.ProcessStatus.WAIT_FOR_SUBSCRIPTION
 			} else {
 				newStatus = Process.ProcessStatus.WAITING
 			}
-		} else if ("paper".equals(params?.requestVersion)) {
+		} else if (PAPER.equals(params?.requestVersion)) {
 			newStatus = Process.ProcessStatus.WAIT_FOR_SUBSCRIPTION_PAPER_VERSION
-		} else if ("templates".equals(params?.requestVersion)) {
+		} else if (TEMPLATES.equals(params?.requestVersion)) {
 			newStatus = Process.ProcessStatus.WAIT_FOR_SUBSCRIPTION
 		}
 		

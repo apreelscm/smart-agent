@@ -4,6 +4,7 @@
 <head>
     <meta name="layout" content="main">
     <title> <g:message code="chooseCalc.header.title" default="Wybierz klienta"/></title>
+    <r:require module="mask"/>
 </head>
 <body>
 
@@ -13,7 +14,7 @@
     <g:form>
         <div>
             <div class="display-inline-block">
-                <apreel:textField  id="nipField" name="nip"
+                <apreel:textField  id="nipField" name="nip" class="nip"
                                    title="${message(code:'client.nip.label', default:'Wprowadź NIP klienta')}"
                                    value="${nip}" direction="vertical"
                 />

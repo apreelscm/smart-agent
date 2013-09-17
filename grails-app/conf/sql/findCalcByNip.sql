@@ -1,7 +1,7 @@
 select 
 poleapreel,
 case
-when  KSP_NAZWA='S_MCC' then eumowy.split(nvl(KAP_WARTOSC,'BRAK'),1,'-')
+when  KSP_NAZWA='S_MCC' then trim(eumowy.split(nvl(KAP_WARTOSC,'BRAK'),1,'-'))
 else
 nvl(KAP_WARTOSC,'BRAK')
 end as wartoscApreel
@@ -12,8 +12,8 @@ join CBD_ADM.CBT_KALK_POLE kp on kp.KAP_KSP_ID =ksp.ksp_id
 join CBD_ADM.cbt_kalk k on k.kak_id=kp.KAP_KAK_ID
 where KAK_ID in
 (
-	Select max(kak_id) as kak_id from CBD_ADM.cbt_kalk where kak_nip=:nip
-	and kak_status='Zaakceptowany'
+  Select max(kak_id) as kak_id from CBD_ADM.cbt_kalk where kak_nip=:nip
+  and kak_status='Zaakceptowany'
 )
 and KSP_NAZWA<>'S_PAKIET_SERWIS_1'
 union all
@@ -21,4 +21,8 @@ select pole,wartosc from table(eumowy.GetKalkulatorStawkaPlaska(:nip))
 union all 
 select pole,wartosc from table(eumowy.GetKalkulatorSerwis(:nip))
 union all
-select pole,wartosc from table(eumowy.GetKalkulatorZero)
+select pole,wartosc from table(eumowy.GetKalkulatorZero(:nip))
+union all
+select pole,wartosc from table(eumowy.GetKalkulatorPrepaid(:nip))
+union all
+select pole,wartosc from table(eumowy.GetKalkulatorPromocyjne(:nip))

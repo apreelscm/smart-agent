@@ -128,6 +128,11 @@ class ProcessController {
             redirect(action: "list", params: params)
             return
         }
+        if (isNotesEmpty(params.notes)){
+            flash.message = message(code: 'notes.empty')
+            redirect(action: "show", params: params)
+            return
+        }
 
         processInstance.status = Process.ProcessStatus.REJECTED
         processInstance.observed = (params.observed == "on")
@@ -138,7 +143,12 @@ class ProcessController {
 		
         flash.message = message(code: 'default.rejected.message', args:[ message(code: 'process.label', default: 'proces'), processInstance.id])
 
-        emailService.sendDocumentsRejected(processInstance.phEmail, processInstance.client.name, processInstance.client.nip, params.notes)
+        List<String> activities = new ArrayList<String>();
+        processInstance.activities.each {a ->
+            def key = 'activity.' + a.code + '.name'
+            activities.add(messageSource.getMessage(key, [] as Object[], request.locale))
+        }
+        emailService.sendDocumentsRejected(processInstance.phEmail, processInstance.client.name, processInstance.client.nip, params.notes, activities)
 
         redirect(action: "list", params: params)
     }
@@ -152,6 +162,11 @@ class ProcessController {
         if (!processInstance) {
             flash.message = message(code: 'default.not.found.message', args:[ message(code: 'process.label', default: 'proces'), id])
             redirect(action: "list", params: params)
+            return
+        }
+        if (isNotesEmpty(params.notes)){
+            flash.message = message(code: 'notes.empty')
+            redirect(action: "show", params: params)
             return
         }
 
@@ -218,5 +233,12 @@ class ProcessController {
         response.setContentType("application/octet-stream")
         response.setHeader("Content-disposition", "${params.contentDisposition}; filename=${file.name}")
         response.outputStream << file.file.content
+    }
+
+    private boolean isNotesEmpty(def notes){
+        if(notes == null || notes == ""){
+            return true
+        }
+        return false
     }
 }
