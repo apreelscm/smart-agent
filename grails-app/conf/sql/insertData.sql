@@ -2,7 +2,7 @@ insert into EUMOWY.activity (id, version, code, numer_pozycji) values (1,0,'nowa
 insert into EUMOWY.activity (id, version, code, numer_pozycji) values (2,0,'dodatkowyPunkt',2);
 insert into EUMOWY.activity (id, version, code, numer_pozycji) values (3,0,'dodatkowyPos',3);
 insert into EUMOWY.activity (id, version, code, numer_pozycji) values (4,0,'zmianaProwizji',4);
-insert into EUMOWY.activity (id, version, code, numer_pozycji) values (5,0,'dodanieAneksuKoszty',5);
+insert into EUMOWY.activity (id, version, code, numer_pozycji) values (5,0,'dodanieAneksuKosztyPlus',5);
 insert into EUMOWY.activity (id, version, code, numer_pozycji) values (6,0,'wymianaUmowyNajmu',6);
 insert into EUMOWY.activity (id, version, code, numer_pozycji) values (7,0,'aneks',7);
 insert into EUMOWY.activity (id, version, code, numer_pozycji) values (8,0,'zmianaTabeliOplatDodatkowych',8);

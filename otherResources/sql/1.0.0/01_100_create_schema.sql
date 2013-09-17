@@ -6,7 +6,7 @@ create table EUMOWY.ATTACHMENT (id number(19,0) not null, date_created timestamp
 create table EUMOWY.ATTACHMENT_CONTENT (id integer not null, version integer not null, attachment_id integer not null unique, content BLOB not null, primary key (id));
 create table EUMOWY.CALCFIELD (id number(19,0) not null, version number(19,0) not null, name varchar2(255 char) unique, primary key (id));
 create table EUMOWY.CALCFIELD_SIGNATURE (id number(19,0) not null, version number(19,0) not null, calc_field_id number(19,0), signature_id number(19,0), primary key (id));
-create table EUMOWY.CLIENT (id number(19,0) not null, version number(19,0) not null, cbd_id varchar2(255 char) unique, name varchar2(255 char) unique, nip varchar2(255 char) unique, primary key (id));
+create table EUMOWY.CLIENT (id number(19,0) not null, version number(19,0) not null, cbd_id varchar2(255 char) unique, name varchar2(255 char) unique, nip varchar2(255 char) unique, mid varchar2(15 char), primary key (id));
 create table EUMOWY.DOCUMENT (id number(19,0) not null, version number(19,0) not null, date_created timestamp, last_updated timestamp, name varchar2(255 char) not null, pages_count number(10,0) not null, process_id number(19,0), signature_id number(19,0), documents_idx number(10,0), primary key (id));
 create table EUMOWY.DOCUMENT_CONTENT (id number(19,0) not null, version number(19,0) not null, content blob not null, document_id number(19,0) not null unique, primary key (id));
 create table EUMOWY.EMAIL_TEMPLATES (id number(19,0) not null, version number(19,0) not null, name varchar2(255 char), recipent varchar2(255 char), sender varchar2(255 char), primary key (id));
