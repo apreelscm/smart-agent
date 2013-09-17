@@ -5,6 +5,13 @@
     <meta name="layout" content="main">
     <title> <g:message code="chooseCalc.header.title" default="Wybierz klienta"/></title>
     <r:require module="mask"/>
+    <r:script>
+        jQuery(document).ready(function(){
+            jQuery("#nipField").bind('input', function(){
+                jQuery("#continueButton").attr('disabled', 'disabled');
+            });
+        })
+    </r:script>
 </head>
 <body>
 
@@ -48,7 +55,7 @@
 
         <fieldset style="margin-top: 20px; left: -32px">
             <g:link event="back" class="button submit">${message(code:'default.navigation.button.prev', default: 'Wstecz')}</g:link>
-            <input id="conitnueButton" class="button submit" type="submit" value="Dalej" name="_eventId_continue" ${(!isContinueEnabled)?"disabled":""} />
+            <input id="continueButton" class="button submit" type="submit" value="Dalej" name="_eventId_continue" ${(!isContinueEnabled)?"disabled":""} />
         </fieldset>
     </g:form>
 
