@@ -21,7 +21,7 @@ class Process implements Serializable {
     String phSurname
     String phEmail
     String calcNumber
-    String saleSection // TODO skad ?
+    String saleSection
     String notesToCoa
     String notesToZrd
 
@@ -76,7 +76,7 @@ class Process implements Serializable {
         points(nullable: true)
         processData(nullable: true)
         notesToCoa(nullable: true, maxSize: 1000)
-        notesToZrd(blank: false, maxSize: 300)
+        notesToZrd(nullable: true, maxSize: 300)
     }
 
     static mapping = {

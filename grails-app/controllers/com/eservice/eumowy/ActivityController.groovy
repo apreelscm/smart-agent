@@ -194,12 +194,11 @@ class ActivityController {
 				
 				if (!flow.skipDocumentGeneration) {
 					def totalPagesCount = 0
-	                def data = new PdfMapper().mapAllDataToPDFData(processInstance.processData, processInstance.points)
+                    def data = new PdfMapper().mapToPDFData(processInstance)
 
                     data.each{ key, value ->
                         println 'DO GENERATORA PDF -> ' + key + ' = ' + value
                     }
-
 
                     processInstance.signatures.each { sig ->
 	                    log.info "SIGNATURE NAME: " + sig.name + " PDF TEMPLATE PATH: " + sig.templatePath

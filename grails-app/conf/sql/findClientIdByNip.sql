@@ -1,4 +1,4 @@
-SELECT kln_nip as "nip", kln_id as "cbdId", kln_nazwa as "name"
+SELECT kln_nip as "nip", kln_id as "cbdId", kln_nazwa as "name", kln_mid as "mid"
 FROM CBD_ADM.cbt_klienci m
 WHERE kln_poziom = 'MRC'
 AND kln_nip = :nip
