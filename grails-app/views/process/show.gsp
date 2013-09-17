@@ -7,12 +7,15 @@
     <g:set var="entityName" value="${message(code: 'process.label', default: 'Process')}" />
     <g:set var="isNewProcess" value="${processInstance?.status.equals(Process.ProcessStatus.NEW)}" />
     <title>${entityName}</title>
-
 </head>
 <body>
 
 <section id="show-process">
     <h1 class="ng linia-bottom">Id Procesu: ${processInstance?.id}</h1>
+
+    <g:if test="${flash.message}">
+        <div class="message" role="status">${flash.message}</div>
+    </g:if>
 
     <ul class="property-list" style="text-align: center">
         <li style="margin:0em 0em 1em 0em;">
@@ -66,21 +69,25 @@
 
     <div class="clear"/>
 
-    <g:form >
+    <g:form>
         <div style="margin: 0 auto; width: 600px">
             <div>
                 <label style="width: 70px; text-align: right">
                     <g:message code="todo" default="Obserwuj:"/>
                 </label>
-                <g:checkBox name="observed" checked="${processInstance?.observed}" style="position: relative; top: 3px; left: 3px"/>
+                    <g:checkBox name="observed" checked="${processInstance?.observed}" style="position: relative; top: 3px; left: 3px"/>
             </div>
 
             <div style="margin-top: 15px">
                 <label style="width: 70px; text-align: right">
                     <g:message code="todo" default="Uwagi:"/>
                 </label>
-                <g:textArea name="notes" style="margin-left: 8px; height: 100px; min-width: 400px"
-                maxlength="300" required="required"/>
+                <g:if test="${params.notes == ""}">
+                    <g:textArea id="notes" name="notes" style="margin-left: 8px; height: 100px; min-width: 400px" maxlength="300" required="required"/>
+                </g:if>
+                <g:else>
+                    <g:textArea id="notes" name="notes" style="margin-left: 8px; height: 100px; min-width: 400px" maxlength="300"/>
+                </g:else>
             </div>
         </div>
 
