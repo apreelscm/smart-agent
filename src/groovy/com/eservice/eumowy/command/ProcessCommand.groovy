@@ -3,7 +3,6 @@ import com.eservice.eumowy.Process
 import grails.validation.Validateable
 import org.apache.commons.collections.FactoryUtils
 import org.apache.commons.collections.ListUtils
-import org.springframework.validation.Errors
 /**
  * User: Dominik Walczak
  * Date: 20.08.13 Time: 10:22
@@ -12,6 +11,8 @@ import org.springframework.validation.Errors
 
 @Validateable
 class ProcessCommand implements Serializable{
+
+    static def nullableTrueBlankFalse = {return it == null || it.toString().size() > 0}
 
 //    adresDoKorespondencjizAkecptantem - FINISH
     String akceptantKontaktUlicaTytul
@@ -429,7 +430,7 @@ class ProcessCommand implements Serializable{
         umowaOznOd(nullable:true, blank:true, shared: "date")
         umowaOznDo(nullable:true, blank:true, shared: "date")
         akceptantNazwaOficjalna(nullable:false, blank:false) //a1!, M
-        akceptantNazwaSieciowa(nullable:true, blank:false) //a1!
+        akceptantNazwaSieciowa(validator: nullableTrueBlankFalse) //a1!
         akceptantRegon(nullable:true,blank:false, matches:"[0-9]{9}") //111111111, M
         akceptantNazwaOficjalnaCbd(nullable:true)
         akceptantNazwaSieciowaCbd(nullable:true)
@@ -746,34 +747,4 @@ class ProcessCommand implements Serializable{
         return (this.metaClass.hasProperty(this, cbdName) && this."$cbdName"?.trim())
     }
 
-	ProcessCommand() {
-	}
-
-
-
-
-
-    /*def initialize(Process process){
-
-        this.process = process
-        this.nip = process.client.nip
-
-        *//* process.data.each { ProcessData field ->
-             properties.hasProperty(field.name){
-                 properties[field.name] = field.value;
-             }
-         }*//*
-
-        // pobranie danych dla wybranych paneli
-
-        process.panels.each { panel ->
-
-            def functionName = "get" + WordUtils.capitalize(panel.name);
-            println("functionName:"+functionName)
-         //   cbdService."$functionName"()
-        }
-
-        int i = 1
-        //def adresDoKorespondencji = cbdService.getAdresDoKorespondencji(process.client.nip);
-    }*/
 }
