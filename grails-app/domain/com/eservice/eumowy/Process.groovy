@@ -58,8 +58,8 @@ class Process implements Serializable {
     static constraints = {
         dateCreated(nullable: true)
         lastUpdated(nullable: true)
-        status(blank:false)
-        phNumber(blank:false)
+        status()
+        phNumber()
         phFirstName(blank:false)
         phSurname(blank:false)
         phEmail(blank: false)

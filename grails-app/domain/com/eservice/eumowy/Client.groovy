@@ -14,7 +14,7 @@ class Client implements Serializable{
     static constraints = {
         name(nullable:true,blank:false)
         nip(blank:false)
-        cbdId(nullable: true,blank:true)
+        cbdId(nullable: true)
         mid(nullable: true, blank:true)
     }
 
