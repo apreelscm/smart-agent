@@ -1,4 +1,5 @@
 package com.eservice.eumowy.command
+
 import com.eservice.eumowy.Process
 import grails.validation.Validateable
 import org.apache.commons.collections.FactoryUtils
@@ -512,7 +513,7 @@ class ProcessCommand implements Serializable{
             }
 			return true
 		})
-        kontaktEmail(nullable:true, blank:true)
+        kontaktEmail(nullable:true, blank:true, email: true)
         pozyskujacyTytul(validator: nullableTrueBlankFalse)
         pozyskujacyImie(validator: nullableTrueBlankFalse)
         pozyskujacyNazwisko(validator: nullableTrueBlankFalse)
