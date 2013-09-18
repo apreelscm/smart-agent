@@ -9,7 +9,7 @@ class EmailTemplates implements Serializable {
     String sender;
 
     static constraints = {
-        name(unique:true,blank:false)
+        name(unique:true)
         recipient(blank:false, email: true)
         sender(blank:false, email: true)
     }
