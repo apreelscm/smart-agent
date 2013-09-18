@@ -1,5 +1,4 @@
 <div id="additionalInformationPanel">
-    <form action="#">
     <fieldset>
         <div class="belka-glowna"><g:message code="panel.additional.information.title"/> </div>
             <div class="centre" style="text-align: center; padding-top: 20px; width: 750px">
@@ -33,7 +32,6 @@
                 </ul>
             </div>
     </fieldset>
-    </form>
 </div>
 
 <r:script>
