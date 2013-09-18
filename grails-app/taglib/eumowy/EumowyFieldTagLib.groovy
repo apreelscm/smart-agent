@@ -13,11 +13,14 @@ class EumowyFieldTagLib {
 
         StringBuilder sb = new StringBuilder()
 
-        def style = attrs.remove("style")
-        sb.append("""<div ${style?' style=\"'+ style+'\"':''}">""");
-
+        //def style = attrs.remove("style")
+        //sb.append("""<div ${style?' style=\"'+ style+'\"':''}">""");
+		
         attrs.class = attrs.class + " " + hasErrors(bean:attrs.validatable,field:attrs.name,'error')
-        attrs.style = "width:100%"
+		if (attrs.class?.indexOf("error") != -1) {
+			sb.append("<div style=\"padding-right: 2em; display: inline;\">")
+		}
+        //attrs.style = "width:100%"
         sb.append(g.textField(attrs))
 
         if(attrs.remove("validatable")){
@@ -30,8 +33,9 @@ class EumowyFieldTagLib {
                 sb.append(imgBody)
             }
         }
-
-        sb.append("""</div>""")
+		if (attrs.class?.indexOf("error") != -1) {
+			sb.append("""</div>""")
+		}
         out << sb.toString()
     }
 
@@ -62,27 +66,35 @@ class EumowyFieldTagLib {
         def classDiv = attrs.remove("classDiv")
         def width = attrs.remove("width")
         def postfix = attrs.remove("postfix")
-        int offset = attrs.offset.toString().isNumber() ? Integer.valueOf(attrs.remove("offset")) : 15
+        int offset = attrs.offset.toString().isNumber() ? Integer.valueOf(attrs.remove("offset")) : 0
 
         attrs.style = "text-align:right"
         attrs.class = attrs.class + " " + hasErrors(bean:attrs.validatable,field:attrs.name,'error')
 
         StringBuilder sb = new StringBuilder()
-        sb.append("""<div class=" ${classDiv ?: ''}  ${attrs.class}" style="position:relative; margin-right: 25px; ${width ? 'width:' + width : ''}">""");
-        sb.append(g.field(attrs))
+        //sb.append("""<div class=" ${classDiv ?: ''}  ${attrs.class}" style="position:relative; margin-right: 25px; ${width ? 'width:' + width : ''}">""");
+        if (attrs.class?.indexOf("error") != -1) {
+			sb.append("<div style=\"padding-right: 2em; display: inline;\">")
+        }
+		sb.append(g.field(attrs))
 
         if(attrs.remove("validatable")){
             def isError = attrs.class.contains("error")
             if(isError){
                 def message = attrs.errorMessage ?: message(code:'default.validation.required.error', default: 'Pole Wymagane');
                 def icon = g.resource(dir: "images/skin", file: "exclamation.png");
-                def imgBody = """<img src="${icon}" class="errorNotification" data-message="${message}" style="cursor:pointer; position:absolute; margin:2px; right:-35px;"/>"""
+                def imgBody = """<img src="${icon}" class="errorNotification" data-message="${message}" style="cursor:pointer; position:absolute; margin:2px;"/>"""
                 sb.append(imgBody)
             }
         }
 
-        sb.append("""<span style="position:absolute; right:-${offset}px; top: 0px">${postfix}</span>""")
-        sb.append("""</div>""")
+		if (attrs.class?.indexOf("error") != -1) {
+			sb.append("""<span class="postfix-span" ${offset != 0 ? ' style="right:-'+offset+'px;"' : ''}>${postfix}</span>""")
+			sb.append("""</div>""")
+		}
+		else {
+			sb.append(""" ${postfix}""")
+		}
 
         out << sb.toString()
     }

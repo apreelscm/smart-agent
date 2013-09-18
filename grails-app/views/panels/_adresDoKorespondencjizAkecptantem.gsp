@@ -1,7 +1,7 @@
 <div id="acceptorCorrespondenceAddressPanel">
     <fieldset>
         <div class="belka-glowna"><g:message code="panel.acceptor.correspondence.addres.title"/></div>
-        <div style="text-align: center; padding-top: 20px; width: 750px" class="centre">
+        <div style="text-align: center; padding-top: 20px; width: 850px" class="centre">
             <ul class="table-list centre">
                 <li>
                     <span><label for="correspondenceAsMerchant"><g:checkBox name="correspondenceAsMerchant"/><g:message code="panel.as.merchant"/></label></span>

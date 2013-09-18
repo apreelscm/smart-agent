@@ -14,7 +14,7 @@
                 <li id="servicePayment">
                     <span class="align-left"><g:message code="panel.monthly.payment"/></span>
                     <span class="align-left">
-                        <eumowy:currencyField name="obslugaEkonomicznyCena" validatable="${data}" value="${data.obslugaEkonomicznyCena}" offset="30" />
+                        <eumowy:currencyField name="obslugaEkonomicznyCena" validatable="${data}" value="${data.obslugaEkonomicznyCena}" />
                     </span>
                 </li>
             </ul>

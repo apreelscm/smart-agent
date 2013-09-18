@@ -1380,3 +1380,15 @@ a.submit{
 fieldset legend {
 	margin-left: 1em;
 }
+
+td span.postfix-span {
+	position: relative;
+	right: -20px;
+	top: 0px
+}
+
+span.postfix-span {
+	position: absolute;
+	right: -5px;
+	top: 0px
+}

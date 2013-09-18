@@ -147,14 +147,14 @@
 				<legend>
 					<g:message code="panel.newpoint.posset.for.selected.point.title" />
 				</legend>
-				<div class="subpanel-fieldset-centercontent">
+				<div class="subpanel-fieldset-centercontent" style="width: 800px;">
 					<label
 						for="${panelType}[${id}].possetforselectedpointSameForEveryPoint"><g:checkBox
 							id="${panelType}[${id}].possetforselectedpointSameForEveryPoint"
 							name="${panelType}[${id}].zestawPosTakSamoDlaWszystkichPunktow"
 							value="${pointData?.zestawPosTakSamoDlaWszystkichPunktow}" />
 						<g:message code="panel.sameforeverypoint" /></label>
-					<table class="vertical-center">
+					<table class="vertical-center" style="width: 800px;">
 						<thead>
 							<tr>
 								<td></td>
@@ -178,7 +178,7 @@
 										id="${panelType}[${id}].possetforselectedpointDialupType"
 										name="${panelType}[${id}].dialupTyp" from="[]"
 										valueMessagePrefix="" value="${pointData?.dialupTyp}"
-										style="width: 50px" /></td>
+										style="width: 220px" /></td>
 								<td style="text-align: right;"><g:message
 										code="panel.dialup" /></td>
 								<td><g:textField name="${panelType}[${id}].dialupIlosc"
@@ -200,7 +200,7 @@
 										id="${panelType}[${id}].possetforselectedpointVpnType"
 										name="${panelType}[${id}].vpnTyp" from="[]"
 										valueMessagePrefix="" value="${pointData?.vpnTyp}"
-										style="width: 50px" /></td>
+										style="width: 220px" /></td>
 								<td style="text-align: right;"><g:message code="panel.vpn" /></td>
 								<td><g:textField name="${panelType}[${id}].vpnIlosc"
 										id="${panelType}[${id}].vpnCount"
@@ -221,7 +221,7 @@
 										id="${panelType}[${id}].possetforselectedpointSslType"
 										name="${panelType}[${id}].sslTyp" from="[]"
 										valueMessagePrefix="" value="${pointData?.sslTyp}"
-										style="width: 50px" /></td>
+										style="width: 220px" /></td>
 								<td style="text-align: right;"><g:message code="panel.ssl" /></td>
 								<td><g:textField name="${panelType}[${id}].sslIlosc"
 										id="${panelType}[${id}].sslCount"
@@ -242,7 +242,7 @@
 										id="${panelType}[${id}].possetforselectedpointWifiType"
 										name="${panelType}[${id}].wifiTyp" from="[]"
 										valueMessagePrefix="" value="${pointData?.wifiTyp}"
-										style="width: 50px" /></td>
+										style="width: 220px" /></td>
 								<td style="text-align: right;"><g:message code="panel.wifi" /></td>
 								<td><g:textField name="${panelType}[${id}].wifiIlosc"
 										name="${panelType}[${id}].wifiCount"
@@ -263,7 +263,7 @@
 										id="${panelType}[${id}].possetforselectedpointGprsType"
 										name="${panelType}[${id}].gprsTyp" from="[]"
 										valueMessagePrefix="" value="${pointData?.gprsTyp}"
-										style="width: 50px" /></td>
+										style="width: 220px" /></td>
 								<td style="text-align: right;"><g:message code="panel.gprs" /></td>
 								<td><g:textField name="${panelType}[${id}].gprsIlosc"
 										id="${panelType}[${id}].gprsCount"

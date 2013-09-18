@@ -18,13 +18,13 @@
                 <tr>
                      <td><g:message code="panel.payment.title.payment"/></td>
                      <td>
-                        <eumowy:currencyField name="tytulPlatnosciCena" validatable="${data}" value="${data.tytulPlatnosciCena}" />
+                        <eumowy:currencyField name="tytulPlatnosciCena" validatable="${data}" value="${data.tytulPlatnosciCena}"/>
                     </td>
                 </tr>
                 <tr>
                      <td><g:message code="panel.payment.first.session"/></td>
                      <td>
-                        <eumowy:currencyField name="pierwszaSesjaCena" validatable="${data}" value="${data.pierwszaSesjaCena}" />
+                        <eumowy:currencyField name="pierwszaSesjaCena" validatable="${data}" value="${data.pierwszaSesjaCena}"/>
                     </td>
                 </tr>
             </table>

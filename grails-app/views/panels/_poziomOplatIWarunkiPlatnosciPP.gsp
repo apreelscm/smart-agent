@@ -1,7 +1,7 @@
 <div id="ppPaymentPanel">
     <fieldset style="text-align: center">
         <div class="belka-glowna"><g:message code="panel.pp.payment.title"/></div>
-        <div style="text-align: center; padding-top: 20px; width: 750px" class="centre">
+        <div style="text-align: center; padding-top: 20px; width: 800px" class="centre">
             <table class="vertical-center">
                 <thead>
                     <tr><td></td><td></td><td style="max-width: 120px"><g:message code="panel.percent.discount.telekodzik"/></td><td style="max-width: 120px"><g:message code="panel.percent.discount.telepompka"/></td></tr>

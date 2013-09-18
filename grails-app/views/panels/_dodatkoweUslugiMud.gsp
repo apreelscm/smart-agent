@@ -6,7 +6,7 @@
                 <li>
                     <span class="align-left"><g:message code="panel.payment.mud"/></span>
                     <span class="align-left">
-                        <eumowy:currencyField name="mudCena" validatable="${data}" value="${data.mudCena}" offset="30" />
+                        <eumowy:currencyField name="mudCena" validatable="${data}" value="${data.mudCena}" />
                     </span>
                 </li>
             </ul>
