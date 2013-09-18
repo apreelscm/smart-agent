@@ -9,12 +9,12 @@
             <table style="padding-top: 10px">
                 <tr class="vertical-center">
                     <td>&nbsp;</td>
-                    <td class="align-right"><eumowy:textField name="srednia_sprzedaz_doladowan" value="${data.srednia_sprzedaz_doladowan}" style="width: 100px"/></td>
+                    <td class="align-right"><eumowy:textField name="srednia_sprzedaz_doladowan" value="${data.srednia_sprzedaz_doladowan}" validatable="${data}" style="width: 100px"/></td>
                     <td class="align-left"><g:message code="panel.for.each.pos"/></td>
                 </tr>
                 <tr class="vertical-center">
                     <td class="align-right">słownie</td>
-                    <td class="align-right"><eumowy:textField name="srednia_sprzedaz_doladowan_slownie" value="${data.srednia_sprzedaz_doladowan_slownie}" style="width: 300px"/></td>
+                    <td class="align-right"><eumowy:textField name="srednia_sprzedaz_doladowan_slownie" value="${data.srednia_sprzedaz_doladowan_slownie}" validatable="${data}" style="width: 300px"/></td>
                     <td class="align-left"><g:message code="panel.for.each.pos"/></td>
                 </tr>
             </table>

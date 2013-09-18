@@ -7,11 +7,11 @@
                     <span>
                         <span><g:select name="reprezentant1Tytul" from="['Pan','Pani']" valueMessagePrefix="person.title" value="${data.reprezentant1Tytul}"/></span>
                         <span><g:message code="panel.first.name"/>: </span>
-                        <span><eumowy:textField name="reprezentant1Imie" value="${data.reprezentant1Imie}" maxlength ="13"/></span>
+                        <span><eumowy:textField name="reprezentant1Imie" value="${data.reprezentant1Imie}" validatable="${data}" maxlength ="13"/></span>
                     </span>
                     <span>
                         <span><g:message code="panel.last.name"/>: </span>
-                        <span><eumowy:textField name="reprezentant1Nazwisko" value="${data.reprezentant1Nazwisko}" maxlength ="14"/></span>
+                        <span><eumowy:textField name="reprezentant1Nazwisko" value="${data.reprezentant1Nazwisko}" validatable="${data}" maxlength ="14"/></span>
                     </span>
                 </li>
                 <li>

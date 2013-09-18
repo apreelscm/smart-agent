@@ -10,7 +10,7 @@
                     <ul>
                         <li>
                             <span><g:message code="panel.mcc"/></span>
-                            <span> <eumowy:textField name="scoringMcc" value="${data.scoringMcc}" readonly="true"/></span>
+                            <span> <eumowy:textField name="scoringMcc" value="${data.scoringMcc}" validatable="${data}" readonly="true"/></span>
                         </li>
                     </ul>
                 </div>

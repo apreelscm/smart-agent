@@ -6,11 +6,11 @@
                 <li>
                     <span><g:select name="pozyskujacyTytul" from="['Pan','Pani']" valueMessagePrefix="person.title" value="${data.pozyskujacyTytul}"/></span>
                     <span><g:message code="panel.first.name"/>: </span>
-                    <span><eumowy:textField name="pozyskujacyImie" value="${data.pozyskujacyImie}" validatable="{data}" readonly="true" style="width: 120px"/></span>
+                    <span><eumowy:textField name="pozyskujacyImie" value="${data.pozyskujacyImie}" validatable="${data}" readonly="true" style="width: 120px"/></span>
                     <span style="padding-left: 10px"><g:message code="panel.last.name"/>: </span>
-                    <span><eumowy:textField name="pozyskujacyNazwisko" value="${data.pozyskujacyNazwisko}" validatable="{data}" readonly="true"/></span>
+                    <span><eumowy:textField name="pozyskujacyNazwisko" value="${data.pozyskujacyNazwisko}" validatable="${data}"  readonly="true"/></span>
                     <span style="padding-left: 10px"><g:message code="panel.number"/>: </span>
-                    <span><eumowy:textField name="pozyskujacyNumer" value="${data.pozyskujacyNumer}" validatable="{data}" readonly="true" style="width: 100px"/></span>
+                    <span><eumowy:textField name="pozyskujacyNumer" value="${data.pozyskujacyNumer}" validatable="${data}"" readonly="true" style="width: 100px"/></span>
                 </li>
             </ul>
         </div>
