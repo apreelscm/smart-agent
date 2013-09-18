@@ -25,7 +25,7 @@
                     </span>
                     <span>
                         <span style="white-space:nowrap"><g:message code="panel.email"/></span>
-                        <span><g:textField class="" name="kontaktEmail" value="${data.kontaktEmail}" style="width: 150px"/></span>
+                        <span><g:textField class="" name="kontaktEmail" value="${data.kontaktEmail}" validatable="${data}" style="width: 150px"/></span>
                     </span>
                 </li>
             </ul>
