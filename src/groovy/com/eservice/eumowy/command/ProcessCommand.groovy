@@ -13,7 +13,6 @@ import org.springframework.validation.Errors
 @Validateable
 class ProcessCommand implements Serializable{
 
-//    adresacjaSeciowa
 //    adresDoKorespondencjizAkecptantem - FINISH
     String akceptantKontaktUlicaTytul
     String akceptantKontaktUlica
@@ -27,11 +26,11 @@ class ProcessCommand implements Serializable{
 //    aneksDoUmowyNajmuZestawuPos - FINISH
     String dataAneksowanejUmowyPos
 
-//    aneksDoUmowyPrepaid - FINISH (ale trzeba zobaczyc w dokumentach czy jest dobrze wpisany)
+//    aneksDoUmowyPrepaid - FINISH
     String dataAneksowanejUmowyPrepaid
 
 //    czasObowiazywaniaUmowy - FINISH
-    String umowaCzas //TODO -  MOZLIWE, ze pdfach jest to umowaOzn, umowaNieOzn
+    String umowaCzas
     String umowaOznOd
     String umowaOznDo
 
@@ -76,8 +75,6 @@ class ProcessCommand implements Serializable{
 
 //    deklaracjeAkceptanta - FINISH
     String informacjaHandlowa
-    //TODO - w pdf wykorzystujemy informacjaHandlowaTak i informacjaHandlowaNie (checkboxy)
-
 
 //    dodajPunkt
 //    dodatkoweUslugi - FINISH
@@ -104,8 +101,8 @@ class ProcessCommand implements Serializable{
     String systemKasowyCena
 
 //    formaDoladowania - FINISH
-    String doladowania_tp
-    String doladowania_tk
+    Boolean doladowania_tp
+    Boolean doladowania_tk
     String srednia_sprzedaz_doladowan
     String srednia_sprzedaz_doladowan_slownie
 
@@ -149,7 +146,6 @@ class ProcessCommand implements Serializable{
     String reprezentant2Tytul
     String reprezentant2Imie
     String reprezentant2Nazwisko
-    //TODO - w pdf wykorzystujemy reprezentant1 i reprezentant2 przechowujace imie i nazwisko
 
 //    poziomOplatiWarunkiPlatnosciKarty - FINISH
     String visaEUKKOPr
@@ -266,69 +262,36 @@ class ProcessCommand implements Serializable{
 
 //    promocyjneObnizenieOplatyZaZestawPos
 //    scoring
-//    TODO - co wpisac w scoringMidFirmy i scoringNrUmowy????
+//    TODO - co wpisac w scoringNrUmowy????
 
     String scoringMcc
     String scoringDzialalnosc
     String scoringSzczegolyDzialalnosci
-//    TODO - w pdf uzywamy pol: handel, uslugi (checkboxy)
-//    TODO - co to sa za pola: MCC, szczegolowyRodzajDzialalnosciWPraktyce ??
+//    TODO - co to sa za pola: szczegolowyRodzajDzialalnosciWPraktyce ??
 
-    String scoringWlasnosc = "1"
-
-//    TODO - w pdf uzywamy pol: wlasnosc, wynajem (checkboxy)
-
+    String scoringWlasnosc
     String scoringDzialalnoscCzas
-//    TODO - w pdf uzywamy pol: powyzej5lat, od1do5lat, ponizejRoku
-
     String scoringKoncesja
-//    TODO - w pdf dzialalnoscWymagaLicencjiTak, dzialalnoscWymagaLicencjiNie
-
     String rodzajZezwolenia
     String scoringCharakterystyka
-//    TODO - w pdf salon, sklep, stoisko, stacjaPaliw, charakterystykaInny
-
     String scoringCharakterystykaInna
     String scoringWielkoscPunktu
-//    TODO - w pfd powyzej400m2, od50do400m2, do50m2
-
     String scoringAkceptacja
-//    TODO - w pdf akceptacjaKartPlatniczychTak, akceptacjaKartPlatniczychNie
-
     String scoringMonitoring
-//    TODO - w pdf wPunktachMonitoringTak, wPunktachMonitoringNie
-
     String scoringLokalizacjaPunktu
-//    TODO - w pdf trasaPrzelotowa, centrumMiasta, peryferiaMiasta
-
     String scoringTypPunktu
-//    TODO - w pdf centrumHandlowe, pawilonyHandlowe, budynekWolnoStojacy, osiedleMieszkaniowe, targowisko
     String scoringTypPunktuInny
     String scoringWielkoscMiejscowosci
-//    TODO - w pdf miastoPonad500tysChb, miastoOd100Do500tysChb, miastoOd50Do99tysChb, miastoPonizej50tysChb
-
     String scoringOtwartyZamkniety
-//    TODO - w pdf czynne, nieczynne
-
-    String scoringStanZadbany
-//    TODO - w pdf stanZadbany
-
-    String scoringSprzedazTowarowEkskluzywnych
-    String scoringPonad50ProcentObrotowWNocy
-    String scoringRuchTurystycznyPrzygraniczny
-    String scoringUslugiPlatneZGory
-//    TODO - w pdf sprzedazTowarowEkskluzywnych, ponad50ProcentObrotowWNocy, ruchTurystycznyPrzygraniczny, uslugiPlatneZGory
-
+    Boolean scoringStanZadbany
+    Boolean scoringSprzedazTowarowEkskluzywnych
+    Boolean scoringPonad50ProcentObrotowWNocy
+    Boolean scoringRuchTurystycznyPrzygraniczny
+    Boolean scoringUslugiPlatneZGory
     String scoringCzestoscTransakcji
-//    TODO - w pdf kilkaRazyWMiesiacu, kilkaRazyWTygodniu, coDrugiDzien, codziennie
-
     String scoringIloscTransakcji
-//    TODO - w pdf od0do4, od5do10, powyzej10
-
     String scoringDochodowosc
     String scoringDeklaracjaFinansowa
-//    TODO - w pdf wartosciWlasciwe, wartosciDeklarowane
-
     String scoringDeklaracjaFinansowaObrotOgolem
     String scoringDeklaracjaFinansowaObrotNaKarty
     String scoringDeklaracjaFinansowaSredniObrot
@@ -364,8 +327,6 @@ class ProcessCommand implements Serializable{
     String akceptantTelStacjonarnyCbd
     String akceptantFaxCbd
     String akceptantTelKomorkowyCbd
-
-    //TODO - w pdf wykorzystujemy pole akceptantSiedziba, w ktore wsadzamy to co potrzeba.
 
 //    umowa2 - FINISH
     String miejsceUmowy //nie jest uzywane w pdf
@@ -416,7 +377,6 @@ class ProcessCommand implements Serializable{
 //    serwis - FINISH
     String obslugaTyp
     String obslugaEkonomicznyCena
-    //TODO - w pdf wykorzystujemy obsugaPrestiz, obslugaKomfort, obslugaEkonomiczny (checkboxy)
 
 //    rachunekBankowyKlienta
     String numerRachunkuBankowegoKlienta
@@ -508,14 +468,14 @@ class ProcessCommand implements Serializable{
         mudCena(nullable:true, blank:false, shared:"number")
         weryfikacjaPINCena(nullable:true)
         systemKasowyCena(nullable:true)
-//        doladowania_tp(nullable:true)
         doladowania_tk(nullable:true)
 		doladowania_tp(nullable:true, validator: { value, process, errors ->
-			if (value == null || process.doladowania_tk == null){
+			if (value == null && process.doladowania_tk == null){
+                //panel nie jest wyswietlony
                 return true
             }
 
-            if (value.isEmpty() && process.doladowania_tk.isEmpty()) {
+            if (!(value || process.doladowania_tk)) {
                 errors.rejectValue( "doladowania_tp", "default.atLeastOne.option", "Nale\u017Cy zaznaczy\u0107 przynajmniej jedn\u0105 opcj\u0119")
                 errors.rejectValue( "doladowania_tk", "default.atLeastOne.option", "Nale\u017Cy zaznaczy\u0107 przynajmniej jedn\u0105 opcj\u0119")
                 return false
@@ -538,7 +498,6 @@ class ProcessCommand implements Serializable{
         kontaktTytul(nullable:true, blank:false)
         kontaktImie(nullable:true, blank:false)
         kontaktNazwisko(nullable:true, blank:false)
-//        kontaktTelStacjonarny(nullable:true)
         kontaktTelKomorkowy(nullable:true)
 		kontaktTelStacjonarny(nullable:true, validator: { value, process, errors ->
 			if (value == null || process.kontaktTelKomorkowy == null) {
@@ -709,7 +668,7 @@ class ProcessCommand implements Serializable{
         akceptantMiasto(nullable:true, blank:false)
         akceptantKodPocztowy(nullable:true, blank:false)
         akceptantPoczta(nullable:true, blank:false)
-//        akceptantTelStacjonarny(nullable:true)
+        akceptantTelKomorkowy(nullable:true)
 		akceptantTelStacjonarny(nullable:true, validator: { value, process, errors ->
 		    if (value == null || process.akceptantTelKomorkowy == null) {
                 return true
@@ -722,7 +681,6 @@ class ProcessCommand implements Serializable{
 		    return true
 		})
         akceptantFax(nullable:true, blank:true)
-        akceptantTelKomorkowy(nullable:true)
         akceptantUlicaTytulCbd(nullable:true)
         akceptantUlicaCbd(nullable:true)
         akceptantNrDomuCbd(nullable:true)

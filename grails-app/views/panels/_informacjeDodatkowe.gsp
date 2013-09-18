@@ -1,4 +1,5 @@
 <div id="additionalInformationPanel">
+    <form action="#">
     <fieldset>
         <div class="belka-glowna"><g:message code="panel.additional.information.title"/> </div>
             <div class="centre" style="text-align: center; padding-top: 20px; width: 750px">
@@ -13,24 +14,26 @@
                                       style="width: 200px;"/>
                         </span>
                         <span><g:message code="panel.other"/></span>
-                        <span class="align-right"><g:textField name="dzialalnoscFormaInna" value="${data.dzialalnoscFormaInna}" style="width: 70px;"/></span>
+                        <span class="align-right"><g:textField name="dzialalnoscFormaInna" value="${data.dzialalnoscFormaInna}" readonly="${data.dzialalnoscForma != ''}" style="width: 140px;"/></span>
                     </li>
                     <li>
                         <span class="align-left"><g:message code="panel.document"/></span>
                         <span>
-                            <g:select name="dzialalnoscDokument"
+                            <g:select name="dzialalnoscDokumentSel"
                                       from="['', 'KRS', 'Wpis do ewidencji']"
                                       keys="['', 'krs', 'ewidencja']"
                                       value="${data.dzialalnoscDokument}"
                                       style="width: 200px;"
-                                      disabled="disabled"/>
+                                      disabled="true"/>
+                            <g:hiddenField name="dzialalnoscDokument" value="${data.dzialalnoscDokument}"/>
                         </span>
                         <span><g:message code="panel.other"/></span>
-                        <span class="align-right"><g:textField name="dzialalnoscDokumentInny" value="${data.dzialalnoscDokumentInny}" style="width: 70px;"/></span>
+                        <span class="align-right"><g:textField name="dzialalnoscDokumentInny" value="${data.dzialalnoscDokumentInny}" readonly="${data.dzialalnoscDokument != ''}" style="width: 140px;"/></span>
                     </li>
                 </ul>
             </div>
     </fieldset>
+    </form>
 </div>
 
 <r:script>
@@ -41,50 +44,51 @@
             switch(result){
                 case '':
                     selectDoc('');
-                    clearAndDisableOtherFields(false, false);
+                    clearAndReadonlyOtherFields(false, false);
                     break;
                 case 'spolka_akcyjna':
                     selectDoc('krs');
-                    clearAndDisableOtherFields(true, true);
+                    clearAndReadonlyOtherFields(true, true);
                     break;
                 case 'spolka_zoo':
                     selectDoc('krs');
-                    clearAndDisableOtherFields(true, true);
+                    clearAndReadonlyOtherFields(true, true);
                     break;
                 case 'spolka_cywilna':
                     selectDoc('krs');
-                    clearAndDisableOtherFields(true, true);
+                    clearAndReadonlyOtherFields(true, true);
                     break;
                 case 'osoba_fizyczna':
                     selectDoc('ewidencja');
-                    clearAndDisableOtherFields(true, true);
+                    clearAndReadonlyOtherFields(true, true);
                     break;
                 case 'spolka_komandytowa':
                     selectDoc('krs');
-                    clearAndDisableOtherFields();
+                    clearAndReadonlyOtherFields(true, true);
                     break;
             }
 
             function selectDoc(value){
-                jQuery('[name=dzialalnoscDokument] option').filter(function() {
+                jQuery('[name=dzialalnoscDokumentSel] option').filter(function() {
                     return (jQuery(this).val() == value);
                 }).prop('selected', true);
+                jQuery('#dzialalnoscDokument').val(value)
             }
 
-            function clearAndDisableOtherFields(clear, disable){
+            function clearAndReadonlyOtherFields(clear, disable){
                 var f = jQuery("#dzialalnoscFormaInna");
                 var d = jQuery("#dzialalnoscDokumentInny");
                 if (clear){
-                    f.val("");
-                    d.val("");
+                    f.removeAttr("value");
+                    d.removeAttr("value");
                 }
 
                 if (disable) {
-                    f.attr("disabled", true);
-                    d.attr("disabled", true);
+                    f.attr("readonly", true);
+                    d.attr("readonly", true);
                 } else {
-                    f.removeAttr("disabled");
-                    d.removeAttr("disabled");
+                    f.removeAttr("readonly");
+                    d.removeAttr("readonly");
                 }
             }
         });

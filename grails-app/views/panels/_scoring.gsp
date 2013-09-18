@@ -153,16 +153,16 @@
                               value="${data.scoringOtwartyZamkniety}">
                     <p><label> ${it.radio} <g:message code="${it.label}"/></label></p>
                 </g:radioGroup>
-                <p><label><g:checkBox name="scoringStanZadbany" value="${data.scoringStanZadbany}" checked="${data.scoringStanZadbany == 'true'}" /> <g:message code="panel.maintained"/></label></p>
+                <p><label><g:checkBox name="scoringStanZadbany" value="${data.scoringStanZadbany}" /> <g:message code="panel.maintained"/></label></p>
             </div>
         </fieldset>
         <fieldset class="border">
             <legend><g:message code="panel.important.data.title"/></legend>
             <div style="text-align: left">
-                <p><label><g:checkBox name="scoringSprzedazTowarowEkskluzywnych" value="${data.scoringSprzedazTowarowEkskluzywnych}" checked="${data.scoringSprzedazTowarowEkskluzywnych == 'true'}" /> <g:message code="panel.luxury.goods"/></label></p>
-                <p><label><g:checkBox name="scoringPonad50ProcentObrotowWNocy" value="${data.scoringPonad50ProcentObrotowWNocy}" checked="${data.scoringPonad50ProcentObrotowWNocy == 'true'}" /> <g:message code="panel.nightly.sell"/></label></p>
-                <p><label><g:checkBox name="scoringRuchTurystycznyPrzygraniczny" value="${data.scoringRuchTurystycznyPrzygraniczny}" checked="${data.scoringRuchTurystycznyPrzygraniczny == 'true'}" /> <g:message code="panel.tourism"/></label></p>
-                <p><label><g:checkBox name="scoringUslugiPlatneZGory" value="${data.scoringUslugiPlatneZGory}" checked="${data.scoringUslugiPlatneZGory == 'true'}" /> <g:message code="panel.instalment"/></label></p>
+                <p><label><g:checkBox name="scoringSprzedazTowarowEkskluzywnych" value="${data.scoringSprzedazTowarowEkskluzywnych}" /> <g:message code="panel.luxury.goods"/></label></p>
+                <p><label><g:checkBox name="scoringPonad50ProcentObrotowWNocy" value="${data.scoringPonad50ProcentObrotowWNocy}" /> <g:message code="panel.nightly.sell"/></label></p>
+                <p><label><g:checkBox name="scoringRuchTurystycznyPrzygraniczny" value="${data.scoringRuchTurystycznyPrzygraniczny}" /> <g:message code="panel.tourism"/></label></p>
+                <p><label><g:checkBox name="scoringUslugiPlatneZGory" value="${data.scoringUslugiPlatneZGory}"  /> <g:message code="panel.instalment"/></label></p>
             </div>
         </fieldset>
         <fieldset class="border">
