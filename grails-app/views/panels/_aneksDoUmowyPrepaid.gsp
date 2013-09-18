@@ -6,7 +6,7 @@
                     <li>
                         <span><g:message code="panel.aggrement.annex.day"/></span>
                         <span><eumowy:textField name="dataAneksowanejUmowyPrepaid"
-                                           value="${data.dataAneksowanejUmowyPrepaid}" readonly="true" style="width: 120px;"/></span>
+                                           value="${data.dataAneksowanejUmowyPrepaid}" validatable="${data}" readonly="true" style="width: 120px;"/></span>
                     </li>
                 </ul>
             </div>

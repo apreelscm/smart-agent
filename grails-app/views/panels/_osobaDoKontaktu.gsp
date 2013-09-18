@@ -7,25 +7,25 @@
                     <span>
                         <span><g:select name="kontaktTytul" from="['Pan','Pani']" valueMessagePrefix="person.title" value="${data.kontaktTytul}"/></span>
                         <span><g:message code="panel.first.name"/>: </span>
-                        <span><eumowy:textField name="kontaktImie" value="${data.kontaktImie}" style="width: 120px" maxlength ="15"/></span>
+                        <span><eumowy:textField name="kontaktImie" value="${data.kontaktImie}" validatable="${data}" style="width: 120px" maxlength ="15"/></span>
                     </span>
                     <span>
                         <span><g:message code="panel.last.name"/>: </span>
-                        <span><eumowy:textField name="kontaktNazwisko" value="${data.kontaktNazwisko}" maxlength ="18"/></span>
+                        <span><eumowy:textField name="kontaktNazwisko" value="${data.kontaktNazwisko}" validatable="${data}" maxlength ="18"/></span>
                     </span>
                 </li>
                 <li>
                     <span>
                         <span><g:message code="panel.landline.phone.number"/></span>
-                        <span><eumowy:textField class="phone" name="kontaktTelStacjonarny" value="${data.kontaktTelStacjonarny}" style="width: 100px;" maxlength="9"/></span>
+                        <span><eumowy:textField class="phone" name="kontaktTelStacjonarny" value="${data.kontaktTelStacjonarny}" validatable="${data}" style="width: 100px;" maxlength="9"/></span>
                     </span>
                     <span>
                         <span><g:message code="panel.mobile.phone.number"/></span>
-                        <span><eumowy:textField class="mobile-phone" name="kontaktTelKomorkowy" value="${data.kontaktTelKomorkowy}" style="width: 100px" maxlength="9"/></span>
+                        <span><eumowy:textField class="mobile-phone" name="kontaktTelKomorkowy" value="${data.kontaktTelKomorkowy}" validatable="${data}" style="width: 100px" maxlength="9"/></span>
                     </span>
                     <span>
                         <span style="white-space:nowrap"><g:message code="panel.email"/></span>
-                        <span><g:textField class="" name="kontaktEmail" value="${data.kontaktEmail}" style="width: 150px"/></span>
+                        <span><g:textField class="" name="kontaktEmail" value="${data.kontaktEmail}" validatable="${data}" style="width: 150px"/></span>
                     </span>
                 </li>
             </ul>

@@ -1,9 +1,9 @@
 package com.eservice.eumowy.command
+
 import com.eservice.eumowy.Process
 import grails.validation.Validateable
 import org.apache.commons.collections.FactoryUtils
 import org.apache.commons.collections.ListUtils
-import org.springframework.validation.Errors
 /**
  * User: Dominik Walczak
  * Date: 20.08.13 Time: 10:22
@@ -13,7 +13,8 @@ import org.springframework.validation.Errors
 @Validateable
 class ProcessCommand implements Serializable{
 
-//    adresacjaSeciowa
+    static def nullableTrueBlankFalse = {return it == null || it.toString().size() > 0}
+
 //    adresDoKorespondencjizAkecptantem - FINISH
     String akceptantKontaktUlicaTytul
     String akceptantKontaktUlica
@@ -27,11 +28,11 @@ class ProcessCommand implements Serializable{
 //    aneksDoUmowyNajmuZestawuPos - FINISH
     String dataAneksowanejUmowyPos
 
-//    aneksDoUmowyPrepaid - FINISH (ale trzeba zobaczyc w dokumentach czy jest dobrze wpisany)
+//    aneksDoUmowyPrepaid - FINISH
     String dataAneksowanejUmowyPrepaid
 
 //    czasObowiazywaniaUmowy - FINISH
-    String umowaCzas //TODO -  MOZLIWE, ze pdfach jest to umowaOzn, umowaNieOzn
+    String umowaCzas
     String umowaOznOd
     String umowaOznDo
 
@@ -76,8 +77,6 @@ class ProcessCommand implements Serializable{
 
 //    deklaracjeAkceptanta - FINISH
     String informacjaHandlowa
-    //TODO - w pdf wykorzystujemy informacjaHandlowaTak i informacjaHandlowaNie (checkboxy)
-
 
 //    dodajPunkt
 //    dodatkoweUslugi - FINISH
@@ -104,8 +103,8 @@ class ProcessCommand implements Serializable{
     String systemKasowyCena
 
 //    formaDoladowania - FINISH
-    String doladowania_tp
-    String doladowania_tk
+    Boolean doladowania_tp
+    Boolean doladowania_tk
     String srednia_sprzedaz_doladowan
     String srednia_sprzedaz_doladowan_slownie
 
@@ -149,7 +148,6 @@ class ProcessCommand implements Serializable{
     String reprezentant2Tytul
     String reprezentant2Imie
     String reprezentant2Nazwisko
-    //TODO - w pdf wykorzystujemy reprezentant1 i reprezentant2 przechowujace imie i nazwisko
 
 //    poziomOplatiWarunkiPlatnosciKarty - FINISH
     String visaEUKKOPr
@@ -266,69 +264,36 @@ class ProcessCommand implements Serializable{
 
 //    promocyjneObnizenieOplatyZaZestawPos
 //    scoring
-//    TODO - co wpisac w scoringMidFirmy i scoringNrUmowy????
+//    TODO - co wpisac w scoringNrUmowy????
 
     String scoringMcc
     String scoringDzialalnosc
     String scoringSzczegolyDzialalnosci
-//    TODO - w pdf uzywamy pol: handel, uslugi (checkboxy)
-//    TODO - co to sa za pola: MCC, szczegolowyRodzajDzialalnosciWPraktyce ??
+//    TODO - co to sa za pola: szczegolowyRodzajDzialalnosciWPraktyce ??
 
-    String scoringWlasnosc = "1"
-
-//    TODO - w pdf uzywamy pol: wlasnosc, wynajem (checkboxy)
-
+    String scoringWlasnosc
     String scoringDzialalnoscCzas
-//    TODO - w pdf uzywamy pol: powyzej5lat, od1do5lat, ponizejRoku
-
     String scoringKoncesja
-//    TODO - w pdf dzialalnoscWymagaLicencjiTak, dzialalnoscWymagaLicencjiNie
-
     String rodzajZezwolenia
     String scoringCharakterystyka
-//    TODO - w pdf salon, sklep, stoisko, stacjaPaliw, charakterystykaInny
-
     String scoringCharakterystykaInna
     String scoringWielkoscPunktu
-//    TODO - w pfd powyzej400m2, od50do400m2, do50m2
-
     String scoringAkceptacja
-//    TODO - w pdf akceptacjaKartPlatniczychTak, akceptacjaKartPlatniczychNie
-
     String scoringMonitoring
-//    TODO - w pdf wPunktachMonitoringTak, wPunktachMonitoringNie
-
     String scoringLokalizacjaPunktu
-//    TODO - w pdf trasaPrzelotowa, centrumMiasta, peryferiaMiasta
-
     String scoringTypPunktu
-//    TODO - w pdf centrumHandlowe, pawilonyHandlowe, budynekWolnoStojacy, osiedleMieszkaniowe, targowisko
     String scoringTypPunktuInny
     String scoringWielkoscMiejscowosci
-//    TODO - w pdf miastoPonad500tysChb, miastoOd100Do500tysChb, miastoOd50Do99tysChb, miastoPonizej50tysChb
-
     String scoringOtwartyZamkniety
-//    TODO - w pdf czynne, nieczynne
-
-    String scoringStanZadbany
-//    TODO - w pdf stanZadbany
-
-    String scoringSprzedazTowarowEkskluzywnych
-    String scoringPonad50ProcentObrotowWNocy
-    String scoringRuchTurystycznyPrzygraniczny
-    String scoringUslugiPlatneZGory
-//    TODO - w pdf sprzedazTowarowEkskluzywnych, ponad50ProcentObrotowWNocy, ruchTurystycznyPrzygraniczny, uslugiPlatneZGory
-
+    Boolean scoringStanZadbany
+    Boolean scoringSprzedazTowarowEkskluzywnych
+    Boolean scoringPonad50ProcentObrotowWNocy
+    Boolean scoringRuchTurystycznyPrzygraniczny
+    Boolean scoringUslugiPlatneZGory
     String scoringCzestoscTransakcji
-//    TODO - w pdf kilkaRazyWMiesiacu, kilkaRazyWTygodniu, coDrugiDzien, codziennie
-
     String scoringIloscTransakcji
-//    TODO - w pdf od0do4, od5do10, powyzej10
-
     String scoringDochodowosc
     String scoringDeklaracjaFinansowa
-//    TODO - w pdf wartosciWlasciwe, wartosciDeklarowane
-
     String scoringDeklaracjaFinansowaObrotOgolem
     String scoringDeklaracjaFinansowaObrotNaKarty
     String scoringDeklaracjaFinansowaSredniObrot
@@ -364,8 +329,6 @@ class ProcessCommand implements Serializable{
     String akceptantTelStacjonarnyCbd
     String akceptantFaxCbd
     String akceptantTelKomorkowyCbd
-
-    //TODO - w pdf wykorzystujemy pole akceptantSiedziba, w ktore wsadzamy to co potrzeba.
 
 //    umowa2 - FINISH
     String miejsceUmowy //nie jest uzywane w pdf
@@ -416,7 +379,6 @@ class ProcessCommand implements Serializable{
 //    serwis - FINISH
     String obslugaTyp
     String obslugaEkonomicznyCena
-    //TODO - w pdf wykorzystujemy obsugaPrestiz, obslugaKomfort, obslugaEkonomiczny (checkboxy)
 
 //    rachunekBankowyKlienta
     String numerRachunkuBankowegoKlienta
@@ -443,102 +405,101 @@ class ProcessCommand implements Serializable{
 
     static constraints = {
 
-        oplataZaDzienneZestawienieTransakcji(nullable:true, blank:false, shared: "number")
-        oplataZaMiesieczneZestawienieTransakcji(nullable:true, blank:false, shared: "number")
-        oplataZaPotwierdzenieWykonaniaPrzelewu(nullable:true, blank:false, shared: "number")
-        oplataZaDostarczeniePapieru(nullable:true, blank:false, shared: "number")
-        oplataZaZmianeGrafiki(nullable:true, blank:false, shared: "number")
-        oplataZaInstalacjePOS(nullable:true, blank:false, shared: "number")
-        oplataZaInstalacjeGPRS(nullable:true, blank:false, shared: "number")
-        oplataZaUruchomienieWalutyObcej(nullable:true, blank:false, shared: "number")
-        wydrukGrafikiCena(nullable:true, blank:false, shared: "number")
-        dzialaniaMatematyczneCena(nullable:true, blank:false, shared: "number")
-        tytulPlatnosciCena(nullable:true, blank:false, shared: "number")
-        pierwszaSesjaCena(nullable:true, blank:false, shared: "number")
+        oplataZaDzienneZestawienieTransakcji(validator: nullableTrueBlankFalse, shared: "number")
+        oplataZaMiesieczneZestawienieTransakcji(validator: nullableTrueBlankFalse, shared: "number")
+        oplataZaPotwierdzenieWykonaniaPrzelewu(validator: nullableTrueBlankFalse, shared: "number")
+        oplataZaDostarczeniePapieru(validator: nullableTrueBlankFalse, shared: "number")
+        oplataZaZmianeGrafiki(validator: nullableTrueBlankFalse, shared: "number")
+        oplataZaInstalacjePOS(validator: nullableTrueBlankFalse, shared: "number")
+        oplataZaInstalacjeGPRS(validator: nullableTrueBlankFalse, shared: "number")
+        oplataZaUruchomienieWalutyObcej(validator: nullableTrueBlankFalse, shared: "number")
+        wydrukGrafikiCena(validator: nullableTrueBlankFalse, shared: "number")
+        dzialaniaMatematyczneCena(validator: nullableTrueBlankFalse, shared: "number")
+        tytulPlatnosciCena(validator: nullableTrueBlankFalse, shared: "number")
+        pierwszaSesjaCena(validator: nullableTrueBlankFalse, shared: "number")
 
-        akceptantKontaktUlicaTytul(nullable:true, blank:false)
-        akceptantKontaktUlica(nullable:true, blank:false)
-        akceptantKontaktNrDomu(nullable:true, blank:false)
-        akceptantKontaktNrMieszkania(nullable:true, blank:false)
-        akceptantKontaktMiasto(nullable:true, blank:false)
-        akceptantKontaktKodPocztowy(nullable:true, blank:false)
-        akceptantKontaktPoczta(nullable:true, blank:false)
-        dataAneksowanejUmowyPos(nullable:true, blank:false, shared: "date")
-        dataAneksowanejUmowyPrepaid(nullable:true, blank:false, shared: "date")
-        umowaCzas(nullable:true, blank:false)
+        akceptantKontaktUlicaTytul(validator: nullableTrueBlankFalse)
+        akceptantKontaktUlica(validator: nullableTrueBlankFalse)
+        akceptantKontaktNrDomu(validator: nullableTrueBlankFalse)
+        akceptantKontaktNrMieszkania(validator: nullableTrueBlankFalse)
+        akceptantKontaktMiasto(validator: nullableTrueBlankFalse)
+        akceptantKontaktKodPocztowy(validator: nullableTrueBlankFalse)
+        akceptantKontaktPoczta(validator: nullableTrueBlankFalse)
+        dataAneksowanejUmowyPos(validator: nullableTrueBlankFalse, shared: "date")
+        dataAneksowanejUmowyPrepaid(validator: nullableTrueBlankFalse, shared: "date")
+        umowaCzas(validator: nullableTrueBlankFalse)
         umowaOznOd(nullable:true, blank:true, shared: "date")
         umowaOznDo(nullable:true, blank:true, shared: "date")
         akceptantNazwaOficjalna(nullable:false, blank:false) //a1!, M
-        akceptantNazwaSieciowa(nullable:true, blank:false) //a1!
+        akceptantNazwaSieciowa(validator: nullableTrueBlankFalse) //a1!
         akceptantRegon(nullable:true,blank:false, matches:"[0-9]{9}") //111111111, M
         akceptantNazwaOficjalnaCbd(nullable:true)
         akceptantNazwaSieciowaCbd(nullable:true)
         akceptantRegonCbd(nullable:true)
         nazwaDoWydrukuZTerminalaPos(nullable:true)
         wydrukNazwaDoWyszukwarki(nullable:true)
-        wydrukUlicaTytul(nullable:true, blank:false)
-        wydrukUlica(nullable:true, blank:false)
-        wydrukNrDomu(nullable:true, blank:false)
-        wydrukNrMieszkania(nullable:true, blank:false)
-        wydrukMiasto(nullable:true, blank:false)
-        wydrukKodPocztowy(nullable:true, blank:false)
-        wydrukPoczta(nullable:true, blank:false)
+        wydrukUlicaTytul(validator: nullableTrueBlankFalse)
+        wydrukUlica(validator: nullableTrueBlankFalse)
+        wydrukNrDomu(validator: nullableTrueBlankFalse)
+        wydrukNrMieszkania(validator: nullableTrueBlankFalse)
+        wydrukMiasto(validator: nullableTrueBlankFalse)
+        wydrukKodPocztowy(validator: nullableTrueBlankFalse)
+        wydrukPoczta(validator: nullableTrueBlankFalse)
         wydrukLinia1(nullable:true, blank:true)
         wydrukLinia2(nullable:true, blank:true)
-        oplataVISA(nullable:true, blank:false, shared: "number")
-        oplataVISAPr(nullable:true, blank:false, shared: "number")
-        oplataMasterCard(nullable:true, blank:false, shared: "number")
-        oplataMasterCardPr(nullable:true, blank:false, shared: "number")
-        oplataMaestro(nullable:true, blank:false, shared: "number")
-        oplataMasteroPr(nullable:true, blank:false, shared: "number")
-        dccZakresUruchomienia(nullable:true, blank:false)
-        informacjaHandlowa(nullable:true, blank:false)
-        oplataZaDzienneZestawienieTransakcji(nullable:true, blank:false, shared: "number")
-        oplataZaMiesieczneZestawienieTransakcji(nullable:true, blank:false, shared: "number")
-        oplataZaPotwierdzenieWykonaniaPrzelewu(nullable:true, blank:false, shared: "number")
-        oplataZaDostarczeniePapieru(nullable:true, blank:false, shared: "number")
-        oplataZaZmianeGrafiki(nullable:true, blank:false, shared: "number")
-        oplataZaInstalacjePOS(nullable:true, blank:false, shared: "number")
-        oplataZaInstalacjeGPRS(nullable:true, blank:false, shared: "number")
-        oplataZaUruchomienieWalutyObcej(nullable:true, blank:false, shared: "number")
-        wydrukGrafikiCena(nullable:true, blank:false, shared: "number")
-        dzialaniaMatematyczneCena(nullable:true, blank:false, shared: "number")
-        tytulPlatnosciCena(nullable:true, blank:false, shared: "number")
-        pierwszaSesjaCena(nullable:true, blank:false, shared: "number")
-        mudCena(nullable:true, blank:false, shared:"number")
+        oplataVISA(validator: nullableTrueBlankFalse, shared: "number")
+        oplataVISAPr(validator: nullableTrueBlankFalse, shared: "number")
+        oplataMasterCard(validator: nullableTrueBlankFalse, shared: "number")
+        oplataMasterCardPr(validator: nullableTrueBlankFalse, shared: "number")
+        oplataMaestro(validator: nullableTrueBlankFalse, shared: "number")
+        oplataMasteroPr(validator: nullableTrueBlankFalse, shared: "number")
+        dccZakresUruchomienia(validator: nullableTrueBlankFalse)
+        informacjaHandlowa(validator: nullableTrueBlankFalse)
+        oplataZaDzienneZestawienieTransakcji(validator: nullableTrueBlankFalse, shared: "number")
+        oplataZaMiesieczneZestawienieTransakcji(validator: nullableTrueBlankFalse, shared: "number")
+        oplataZaPotwierdzenieWykonaniaPrzelewu(validator: nullableTrueBlankFalse, shared: "number")
+        oplataZaDostarczeniePapieru(validator: nullableTrueBlankFalse, shared: "number")
+        oplataZaZmianeGrafiki(validator: nullableTrueBlankFalse, shared: "number")
+        oplataZaInstalacjePOS(validator: nullableTrueBlankFalse, shared: "number")
+        oplataZaInstalacjeGPRS(validator: nullableTrueBlankFalse, shared: "number")
+        oplataZaUruchomienieWalutyObcej(validator: nullableTrueBlankFalse, shared: "number")
+        wydrukGrafikiCena(validator: nullableTrueBlankFalse, shared: "number")
+        dzialaniaMatematyczneCena(validator: nullableTrueBlankFalse, shared: "number")
+        tytulPlatnosciCena(validator: nullableTrueBlankFalse, shared: "number")
+        pierwszaSesjaCena(validator: nullableTrueBlankFalse, shared: "number")
+        mudCena(validator: nullableTrueBlankFalse, shared:"number")
         weryfikacjaPINCena(nullable:true)
         systemKasowyCena(nullable:true)
-//        doladowania_tp(nullable:true)
         doladowania_tk(nullable:true)
 		doladowania_tp(nullable:true, validator: { value, process, errors ->
-			if (value == null || process.doladowania_tk == null){
+			if (value == null && process.doladowania_tk == null){
+                //panel nie jest wyswietlony
                 return true
             }
 
-            if (value.isEmpty() && process.doladowania_tk.isEmpty()) {
+            if (!(value || process.doladowania_tk)) {
                 errors.rejectValue( "doladowania_tp", "default.atLeastOne.option", "Nale\u017Cy zaznaczy\u0107 przynajmniej jedn\u0105 opcj\u0119")
                 errors.rejectValue( "doladowania_tk", "default.atLeastOne.option", "Nale\u017Cy zaznaczy\u0107 przynajmniej jedn\u0105 opcj\u0119")
                 return false
 			}
 			return true
 		})
-        srednia_sprzedaz_doladowan(nullable:true, blank:false, shared:"number")
-        srednia_sprzedaz_doladowan_slownie(nullable:true, blank:false)
-        ifOplataVISA(nullable:true,blank:false, shared: "number") //1.11 %, M
-        ifOplataMasterCard(nullable:true, blank:false, shared: "number") //1.11 %, M
-        ifOplataDinersClub(nullable:true, blank:false, shared: "number") //1.11 %, M
-        ifOplataIKO(nullable:true,blank:false, shared: "number") //1.11 %, M
-        ifOplataPKOPB(nullable:true,blank:false, shared: "number") //1.11 %, M
-        dzialalnoscForma(nullable:true, blank:false)
+        srednia_sprzedaz_doladowan(validator: nullableTrueBlankFalse, shared:"number")
+        srednia_sprzedaz_doladowan_slownie(validator: nullableTrueBlankFalse)
+        ifOplataVISA(validator: nullableTrueBlankFalse, shared: "number") //1.11 %, M
+        ifOplataMasterCard(validator: nullableTrueBlankFalse, shared: "number") //1.11 %, M
+        ifOplataDinersClub(validator: nullableTrueBlankFalse, shared: "number") //1.11 %, M
+        ifOplataIKO(validator: nullableTrueBlankFalse, shared: "number") //1.11 %, M
+        ifOplataPKOPB(validator: nullableTrueBlankFalse, shared: "number") //1.11 %, M
+        dzialalnoscForma(validator: nullableTrueBlankFalse)
         dzialalnoscFormaInna(nullable:true, blank:true)
-        dzialalnoscDokument(nullable:true, blank:false)
+        dzialalnoscDokument(validator: nullableTrueBlankFalse)
         dzialalnoscDokumentInny(nullable:true, blank:true)
-        okresLojalnosciowy(nullable:true, blank:false)
-        oplataZaPlatnoscWInnejWalucie(nullable:true, blank:false)
-        kontaktTytul(nullable:true, blank:false)
-        kontaktImie(nullable:true, blank:false)
-        kontaktNazwisko(nullable:true, blank:false)
-//        kontaktTelStacjonarny(nullable:true)
+        okresLojalnosciowy(validator: nullableTrueBlankFalse)
+        oplataZaPlatnoscWInnejWalucie(validator: nullableTrueBlankFalse)
+        kontaktTytul(validator: nullableTrueBlankFalse)
+        kontaktImie(validator: nullableTrueBlankFalse)
+        kontaktNazwisko(validator: nullableTrueBlankFalse)
         kontaktTelKomorkowy(nullable:true)
 		kontaktTelStacjonarny(nullable:true, validator: { value, process, errors ->
 			if (value == null || process.kontaktTelKomorkowy == null) {
@@ -552,169 +513,169 @@ class ProcessCommand implements Serializable{
             }
 			return true
 		})
-        kontaktEmail(nullable:true, blank:true)
-        pozyskujacyTytul(nullable:true, blank:false)
-        pozyskujacyImie(nullable:true, blank:false)
-        pozyskujacyNazwisko(nullable:true, blank:false)
-        pozyskujacyNumer(nullable:true, blank:false)
-        reprezentant1Tytul(nullable:true, blank:false)
-        reprezentant1Imie(nullable:true, blank:false)
-        reprezentant1Nazwisko(nullable:true, blank:false)
-        reprezentant2Tytul(nullable:true, blank:false)
+        kontaktEmail(nullable:true, blank:true, email: true)
+        pozyskujacyTytul(validator: nullableTrueBlankFalse)
+        pozyskujacyImie(validator: nullableTrueBlankFalse)
+        pozyskujacyNazwisko(validator: nullableTrueBlankFalse)
+        pozyskujacyNumer(validator: nullableTrueBlankFalse)
+        reprezentant1Tytul(validator: nullableTrueBlankFalse)
+        reprezentant1Imie(validator: nullableTrueBlankFalse)
+        reprezentant1Nazwisko(validator: nullableTrueBlankFalse)
+        reprezentant2Tytul(validator: nullableTrueBlankFalse)
         reprezentant2Imie(nullable:true, blank:true)
         reprezentant2Nazwisko(nullable:true, blank:true)
-        visaEUKKOPr(nullable:true,blank:false, shared: "percentage")
-        visaEUKDPr(nullable:true,blank:false, shared: "percentage")
-        visaEUKBPr(nullable:true,blank:false, shared: "percentage")
-        visaOutEUKKOPr(nullable:true,blank:false, shared: "percentage")
-        visaOutEUKDPr(nullable:true,blank:false, shared: "percentage")
-        visaOutEUKBPr(nullable:true,blank:false, shared: "percentage")
-        visaPolskaKKO1Pr(nullable:true,blank:false, shared: "percentage")
-        visaPolskaKKO2Pr(nullable:true,blank:false, shared: "percentage")
-        visaPolskaKD1Pr(nullable:true,blank:false, shared: "percentage")
-        visaPolskaKD2Pr(nullable:true,blank:false, shared: "percentage")
-        visaPolskaKBPr(nullable:true,blank:false, shared: "percentage")
-        mastercardEUKKPr(nullable:true,blank:false, shared: "percentage")
-        mastercardEUKDPr(nullable:true,blank:false, shared: "percentage")
-        mastercardEUKBLPr(nullable:true,blank:false, shared: "percentage")
-        mastercardEUMPr(nullable:true,blank:false, shared: "percentage")
-        mastercardOutEUKKPr(nullable:true,blank:false, shared: "percentage")
-        mastercardOutEUKDPr(nullable:true,blank:false, shared: "percentage")
-        mastercardOutEUKBPr(nullable:true,blank:false, shared: "percentage")
-        mastercardOutEUMPr(nullable:true,blank:false, shared: "percentage")
-        mastercardPolskaKK1Pr(nullable:true,blank:false, shared: "percentage")
-        mastercardPolskaKK2Pr(nullable:true,blank:false, shared: "percentage")
-        mastercardPolskaKK3Pr(nullable:true,blank:false, shared: "percentage")
-        mastercardPolskaKD1Pr(nullable:true,blank:false, shared: "percentage")
-        mastercardPolskaKD2Pr(nullable:true,blank:false, shared: "percentage")
-        mastercardPolskaKD3Pr(nullable:true,blank:false, shared: "percentage")
-        mastercardPolskaKBPr(nullable:true,blank:false, shared: "percentage")
-        mastercardPolskaM1Pr(nullable:true,blank:false, shared: "percentage")
-        mastercardPolskaM2Pr(nullable:true,blank:false, shared: "percentage")
-        mastercardPolskaM3Pr(nullable:true,blank:false, shared: "percentage")
-        visaPKOBPKKO1Pr(nullable:true,blank:false, shared: "percentage")
-        visaPKOBPKKO2Pr(nullable:true,blank:false, shared: "percentage")
-        visaPKOBPKD1Pr(nullable:true,blank:false, shared: "percentage")
-        visaPKOBPKD2Pr(nullable:true,blank:false, shared: "percentage")
-        visaPKOBPKB3Pr(nullable:true,blank:false, shared: "percentage")
-        mastercardPKOBPKK1Pr(nullable:true,blank:false, shared: "percentage")
-        mastercardPKOBPKK2Pr(nullable:true,blank:false, shared: "percentage")
-        mastercardPKOBPKK3Pr(nullable:true,blank:false, shared: "percentage")
-        mastercardPKOBPKD1Pr(nullable:true,blank:false, shared: "percentage")
-        mastercardPKOBPKD2LPr(nullable:true,blank:false, shared: "percentage")
-        mastercardPKOBPKD3Pr(nullable:true,blank:false, shared: "percentage")
-        mastercardPKOBPKBPr(nullable:true,blank:false, shared: "percentage")
-        mastercardPKOBPM1Pr(nullable:true,blank:false, shared: "percentage")
-        mastercardPKOBPM2Pr(nullable:true,blank:false, shared: "percentage")
-        mastercardPKOBPM3Pr(nullable:true,blank:false, shared: "percentage")
-        dinersClubPr(nullable:true,blank:false, shared: "percentage")
+        visaEUKKOPr(validator: nullableTrueBlankFalse, shared: "percentage")
+        visaEUKDPr(validator: nullableTrueBlankFalse, shared: "percentage")
+        visaEUKBPr(validator: nullableTrueBlankFalse, shared: "percentage")
+        visaOutEUKKOPr(validator: nullableTrueBlankFalse, shared: "percentage")
+        visaOutEUKDPr(validator: nullableTrueBlankFalse, shared: "percentage")
+        visaOutEUKBPr(validator: nullableTrueBlankFalse, shared: "percentage")
+        visaPolskaKKO1Pr(validator: nullableTrueBlankFalse, shared: "percentage")
+        visaPolskaKKO2Pr(validator: nullableTrueBlankFalse, shared: "percentage")
+        visaPolskaKD1Pr(validator: nullableTrueBlankFalse, shared: "percentage")
+        visaPolskaKD2Pr(validator: nullableTrueBlankFalse, shared: "percentage")
+        visaPolskaKBPr(validator: nullableTrueBlankFalse, shared: "percentage")
+        mastercardEUKKPr(validator: nullableTrueBlankFalse, shared: "percentage")
+        mastercardEUKDPr(validator: nullableTrueBlankFalse, shared: "percentage")
+        mastercardEUKBLPr(validator: nullableTrueBlankFalse, shared: "percentage")
+        mastercardEUMPr(validator: nullableTrueBlankFalse, shared: "percentage")
+        mastercardOutEUKKPr(validator: nullableTrueBlankFalse, shared: "percentage")
+        mastercardOutEUKDPr(validator: nullableTrueBlankFalse, shared: "percentage")
+        mastercardOutEUKBPr(validator: nullableTrueBlankFalse, shared: "percentage")
+        mastercardOutEUMPr(validator: nullableTrueBlankFalse, shared: "percentage")
+        mastercardPolskaKK1Pr(validator: nullableTrueBlankFalse, shared: "percentage")
+        mastercardPolskaKK2Pr(validator: nullableTrueBlankFalse, shared: "percentage")
+        mastercardPolskaKK3Pr(validator: nullableTrueBlankFalse, shared: "percentage")
+        mastercardPolskaKD1Pr(validator: nullableTrueBlankFalse, shared: "percentage")
+        mastercardPolskaKD2Pr(validator: nullableTrueBlankFalse, shared: "percentage")
+        mastercardPolskaKD3Pr(validator: nullableTrueBlankFalse, shared: "percentage")
+        mastercardPolskaKBPr(validator: nullableTrueBlankFalse, shared: "percentage")
+        mastercardPolskaM1Pr(validator: nullableTrueBlankFalse, shared: "percentage")
+        mastercardPolskaM2Pr(validator: nullableTrueBlankFalse, shared: "percentage")
+        mastercardPolskaM3Pr(validator: nullableTrueBlankFalse, shared: "percentage")
+        visaPKOBPKKO1Pr(validator: nullableTrueBlankFalse, shared: "percentage")
+        visaPKOBPKKO2Pr(validator: nullableTrueBlankFalse, shared: "percentage")
+        visaPKOBPKD1Pr(validator: nullableTrueBlankFalse, shared: "percentage")
+        visaPKOBPKD2Pr(validator: nullableTrueBlankFalse, shared: "percentage")
+        visaPKOBPKB3Pr(validator: nullableTrueBlankFalse, shared: "percentage")
+        mastercardPKOBPKK1Pr(validator: nullableTrueBlankFalse, shared: "percentage")
+        mastercardPKOBPKK2Pr(validator: nullableTrueBlankFalse, shared: "percentage")
+        mastercardPKOBPKK3Pr(validator: nullableTrueBlankFalse, shared: "percentage")
+        mastercardPKOBPKD1Pr(validator: nullableTrueBlankFalse, shared: "percentage")
+        mastercardPKOBPKD2LPr(validator: nullableTrueBlankFalse, shared: "percentage")
+        mastercardPKOBPKD3Pr(validator: nullableTrueBlankFalse, shared: "percentage")
+        mastercardPKOBPKBPr(validator: nullableTrueBlankFalse, shared: "percentage")
+        mastercardPKOBPM1Pr(validator: nullableTrueBlankFalse, shared: "percentage")
+        mastercardPKOBPM2Pr(validator: nullableTrueBlankFalse, shared: "percentage")
+        mastercardPKOBPM3Pr(validator: nullableTrueBlankFalse, shared: "percentage")
+        dinersClubPr(validator: nullableTrueBlankFalse, shared: "percentage")
         ikoPr(nullable:true, blank:true,  shared: "percentage")
-        visaEUKKOSt(nullable:true,blank:false, shared: "number")
-        visaEUKDSt(nullable:true,blank:false, shared: "number")
-        visaEUKBSt(nullable:true,blank:false, shared: "number")
-        visaOutEUKKOSt(nullable:true,blank:false, shared: "number")
-        visaOutEUKDSt(nullable:true,blank:false, shared: "number")
-        visaOutEUKBSt(nullable:true,blank:false, shared: "number")
-        visaPolskaKKO1St(nullable:true,blank:false, shared: "number")
-        visaPolskaKKO2St(nullable:true,blank:false, shared: "number")
-        visaPolskaKD1St(nullable:true,blank:false, shared: "number")
-        visaPolskaKD2St(nullable:true,blank:false, shared: "number")
-        visaPolskaKBSt(nullable:true,blank:false, shared: "number")
-        mastercardEUKKSt(nullable:true,blank:false, shared: "number")
-        mastercardEUKDSt(nullable:true,blank:false, shared: "number")
-        mastercardEUKBLSt(nullable:true,blank:false, shared: "number")
-        mastercardEUMSt(nullable:true,blank:false, shared: "number")
-        mastercardOutEUKKSt(nullable:true,blank:false, shared: "number")
-        mastercardOutEUKDSt(nullable:true,blank:false, shared: "number")
-        mastercardOutEUKBSt(nullable:true,blank:false, shared: "number")
-        mastercardOutEUMSt(nullable:true,blank:false, shared: "number")
-        mastercardPolskaKK1St(nullable:true,blank:false, shared: "number")
-        mastercardPolskaKK2St(nullable:true,blank:false, shared: "number")
-        mastercardPolskaKK3St(nullable:true,blank:false, shared: "number")
-        mastercardPolskaKD1St(nullable:true,blank:false, shared: "number")
-        mastercardPolskaKD2St(nullable:true,blank:false, shared: "number")
-        mastercardPolskaKD3St(nullable:true,blank:false, shared: "number")
-        mastercardPolskaKBSt(nullable:true,blank:false, shared: "number")
-        mastercardPolskaM1St(nullable:true,blank:false, shared: "number")
-        mastercardPolskaM2St(nullable:true,blank:false, shared: "number")
-        mastercardPolskaM3St(nullable:true,blank:false, shared: "number")
-        visaPKOBPKKO1St(nullable:true,blank:false, shared: "number")
-        visaPKOBPKKO2St(nullable:true,blank:false, shared: "number")
-        visaPKOBPKD1St(nullable:true,blank:false, shared: "number")
-        visaPKOBPKD2St(nullable:true,blank:false, shared: "number")
-        visaPKOBPKB3St(nullable:true,blank:false, shared: "number")
-        mastercardPKOBPKK1St(nullable:true,blank:false, shared: "number")
-        mastercardPKOBPKK2St(nullable:true,blank:false, shared: "number")
-        mastercardPKOBPKK3St(nullable:true,blank:false, shared: "number")
-        mastercardPKOBPKD1St(nullable:true,blank:false, shared: "number")
-        mastercardPKOBPKD2LSt(nullable:true,blank:false, shared: "number")
-        mastercardPKOBPKD3St(nullable:true,blank:false, shared: "number")
-        mastercardPKOBPKBSt(nullable:true,blank:false, shared: "number")
-        mastercardPKOBPM1St(nullable:true,blank:false, shared: "number")
-        mastercardPKOBPM2St(nullable:true,blank:false, shared: "number")
-        mastercardPKOBPM3St(nullable:true,blank:false, shared: "number")
-        dinersClubSt(nullable:true,blank:true,shared: "number")
-        ikoSt(nullable:true, blank:true,shared: "number")
-        pp_orange_tk(nullable:true,blank:false, shared: "percentage")
-        pp_orange_tp(nullable:true,blank:false, shared: "percentage")
-        pp_plus_tk(nullable:true,blank:false, shared: "percentage")
-        pp_plus_tp(nullable:true,blank:false, shared: "percentage")
-        pp_tmobile_tk(nullable:true,blank:false, shared: "percentage")
-        pp_tmobile_tp(nullable:true,blank:false, shared: "percentage")
-        pp_heyah_tk(nullable:true,blank:false, shared: "percentage")
-        pp_heyah_tp(nullable:true,blank:false, shared: "percentage")
-        pp_play_tk(nullable:true,blank:false, shared: "percentage")
-        pp_play_tp(nullable:true,blank:false, shared: "percentage")
-        pp_telegrosik_tk(nullable:true,blank:false, shared: "percentage")
-        pp_virginmobile_tk(nullable:true,blank:false, shared: "percentage")
-        pp_lycamobile_tk(nullable:true,blank:false, shared: "percentage")
-        pp_gtmobile_tk(nullable:true,blank:false, shared: "percentage")
-        pp_vectonemobile_tk(nullable:true,blank:false, shared: "percentage")
-        pp_delightmobile_tk(nullable:true,blank:false, shared: "percentage")
-        oplataZaOprogramowanieDoDoladowan(nullable:true, blank:false, shared: "number" )
+        visaEUKKOSt(validator: nullableTrueBlankFalse, shared: "number")
+        visaEUKDSt(validator: nullableTrueBlankFalse, shared: "number")
+        visaEUKBSt(validator: nullableTrueBlankFalse, shared: "number")
+        visaOutEUKKOSt(validator: nullableTrueBlankFalse, shared: "number")
+        visaOutEUKDSt(validator: nullableTrueBlankFalse, shared: "number")
+        visaOutEUKBSt(validator: nullableTrueBlankFalse, shared: "number")
+        visaPolskaKKO1St(validator: nullableTrueBlankFalse, shared: "number")
+        visaPolskaKKO2St(validator: nullableTrueBlankFalse, shared: "number")
+        visaPolskaKD1St(validator: nullableTrueBlankFalse, shared: "number")
+        visaPolskaKD2St(validator: nullableTrueBlankFalse, shared: "number")
+        visaPolskaKBSt(validator: nullableTrueBlankFalse, shared: "number")
+        mastercardEUKKSt(validator: nullableTrueBlankFalse, shared: "number")
+        mastercardEUKDSt(validator: nullableTrueBlankFalse, shared: "number")
+        mastercardEUKBLSt(validator: nullableTrueBlankFalse, shared: "number")
+        mastercardEUMSt(validator: nullableTrueBlankFalse, shared: "number")
+        mastercardOutEUKKSt(validator: nullableTrueBlankFalse, shared: "number")
+        mastercardOutEUKDSt(validator: nullableTrueBlankFalse, shared: "number")
+        mastercardOutEUKBSt(validator: nullableTrueBlankFalse, shared: "number")
+        mastercardOutEUMSt(validator: nullableTrueBlankFalse, shared: "number")
+        mastercardPolskaKK1St(validator: nullableTrueBlankFalse, shared: "number")
+        mastercardPolskaKK2St(validator: nullableTrueBlankFalse, shared: "number")
+        mastercardPolskaKK3St(validator: nullableTrueBlankFalse, shared: "number")
+        mastercardPolskaKD1St(validator: nullableTrueBlankFalse, shared: "number")
+        mastercardPolskaKD2St(validator: nullableTrueBlankFalse, shared: "number")
+        mastercardPolskaKD3St(validator: nullableTrueBlankFalse, shared: "number")
+        mastercardPolskaKBSt(validator: nullableTrueBlankFalse, shared: "number")
+        mastercardPolskaM1St(validator: nullableTrueBlankFalse, shared: "number")
+        mastercardPolskaM2St(validator: nullableTrueBlankFalse, shared: "number")
+        mastercardPolskaM3St(validator: nullableTrueBlankFalse, shared: "number")
+        visaPKOBPKKO1St(validator: nullableTrueBlankFalse, shared: "number")
+        visaPKOBPKKO2St(validator: nullableTrueBlankFalse, shared: "number")
+        visaPKOBPKD1St(validator: nullableTrueBlankFalse, shared: "number")
+        visaPKOBPKD2St(validator: nullableTrueBlankFalse, shared: "number")
+        visaPKOBPKB3St(validator: nullableTrueBlankFalse, shared: "number")
+        mastercardPKOBPKK1St(validator: nullableTrueBlankFalse, shared: "number")
+        mastercardPKOBPKK2St(validator: nullableTrueBlankFalse, shared: "number")
+        mastercardPKOBPKK3St(validator: nullableTrueBlankFalse, shared: "number")
+        mastercardPKOBPKD1St(validator: nullableTrueBlankFalse, shared: "number")
+        mastercardPKOBPKD2LSt(validator: nullableTrueBlankFalse, shared: "number")
+        mastercardPKOBPKD3St(validator: nullableTrueBlankFalse, shared: "number")
+        mastercardPKOBPKBSt(validator: nullableTrueBlankFalse, shared: "number")
+        mastercardPKOBPM1St(validator: nullableTrueBlankFalse, shared: "number")
+        mastercardPKOBPM2St(validator: nullableTrueBlankFalse, shared: "number")
+        mastercardPKOBPM3St(validator: nullableTrueBlankFalse, shared: "number")
+        dinersClubSt(nullable:true, blank:true, shared: "number")
+        ikoSt(nullable:true, blank:true, shared: "number")
+        pp_orange_tk(validator: nullableTrueBlankFalse, shared: "percentage")
+        pp_orange_tp(validator: nullableTrueBlankFalse, shared: "percentage")
+        pp_plus_tk(validator: nullableTrueBlankFalse, shared: "percentage")
+        pp_plus_tp(validator: nullableTrueBlankFalse, shared: "percentage")
+        pp_tmobile_tk(validator: nullableTrueBlankFalse, shared: "percentage")
+        pp_tmobile_tp(validator: nullableTrueBlankFalse, shared: "percentage")
+        pp_heyah_tk(validator: nullableTrueBlankFalse, shared: "percentage")
+        pp_heyah_tp(validator: nullableTrueBlankFalse, shared: "percentage")
+        pp_play_tk(validator: nullableTrueBlankFalse, shared: "percentage")
+        pp_play_tp(validator: nullableTrueBlankFalse, shared: "percentage")
+        pp_telegrosik_tk(validator: nullableTrueBlankFalse, shared: "percentage")
+        pp_virginmobile_tk(validator: nullableTrueBlankFalse, shared: "percentage")
+        pp_lycamobile_tk(validator: nullableTrueBlankFalse, shared: "percentage")
+        pp_gtmobile_tk(validator: nullableTrueBlankFalse, shared: "percentage")
+        pp_vectonemobile_tk(validator: nullableTrueBlankFalse, shared: "percentage")
+        pp_delightmobile_tk(validator: nullableTrueBlankFalse, shared: "percentage")
+        oplataZaOprogramowanieDoDoladowan(validator: nullableTrueBlankFalse, shared: "number" )
         scoringMcc(nullable:true, blank:false, matches:"[0-9]{4}")
-        scoringDzialalnosc(nullable:true, blank:false)
+        scoringDzialalnosc(validator: nullableTrueBlankFalse)
         scoringSzczegolyDzialalnosci(nullable:true, blank:true)
-        scoringWlasnosc(nullable:true, blank:false)
-        scoringDzialalnoscCzas(nullable:true, blank:false)
-        scoringKoncesja(nullable:true, blank:false)
+        scoringWlasnosc(validator: nullableTrueBlankFalse)
+        scoringDzialalnoscCzas(validator: nullableTrueBlankFalse)
+        scoringKoncesja(validator: nullableTrueBlankFalse)
         rodzajZezwolenia(nullable:true, blank:true)
-        scoringCharakterystyka(nullable:true, blank:false)
+        scoringCharakterystyka(validator: nullableTrueBlankFalse)
         scoringCharakterystykaInna(nullable:true, blank:true)
-        scoringWielkoscPunktu(nullable:true, blank:false)
-        scoringAkceptacja(nullable:true, blank:false)
-        scoringMonitoring(nullable:true, blank:false)
-        scoringLokalizacjaPunktu(nullable:true, blank:false)
-        scoringTypPunktu(nullable:true, blank:false)
+        scoringWielkoscPunktu(validator: nullableTrueBlankFalse)
+        scoringAkceptacja(validator: nullableTrueBlankFalse)
+        scoringMonitoring(validator: nullableTrueBlankFalse)
+        scoringLokalizacjaPunktu(validator: nullableTrueBlankFalse)
+        scoringTypPunktu(validator: nullableTrueBlankFalse)
         scoringTypPunktuInny(nullable:true, blank:true)
-        scoringWielkoscMiejscowosci(nullable:true, blank:false)
-        scoringOtwartyZamkniety(nullable:true, blank:false)
+        scoringWielkoscMiejscowosci(validator: nullableTrueBlankFalse)
+        scoringOtwartyZamkniety(validator: nullableTrueBlankFalse)
         scoringStanZadbany(nullable:true)
-        scoringSprzedazTowarowEkskluzywnych(nullable:true, blank:false)
-        scoringPonad50ProcentObrotowWNocy(nullable:true, blank:false)
-        scoringRuchTurystycznyPrzygraniczny(nullable:true, blank:false)
-        scoringUslugiPlatneZGory(nullable:true, blank:false)
-        scoringCzestoscTransakcji(nullable:true, blank:false)
-        scoringIloscTransakcji(nullable:true, blank:false)
+        scoringSprzedazTowarowEkskluzywnych(validator: nullableTrueBlankFalse)
+        scoringPonad50ProcentObrotowWNocy(validator: nullableTrueBlankFalse)
+        scoringRuchTurystycznyPrzygraniczny(validator: nullableTrueBlankFalse)
+        scoringUslugiPlatneZGory(validator: nullableTrueBlankFalse)
+        scoringCzestoscTransakcji(validator: nullableTrueBlankFalse)
+        scoringIloscTransakcji(validator: nullableTrueBlankFalse)
         scoringDochodowosc(nullable:true, blank:true)
-        scoringDeklaracjaFinansowa(nullable:true, blank:false)
+        scoringDeklaracjaFinansowa(validator: nullableTrueBlankFalse)
         scoringDeklaracjaFinansowaObrotOgolem(nullable:true, blank:true)
         scoringDeklaracjaFinansowaObrotNaKarty(nullable:true, blank:true)
         scoringDeklaracjaFinansowaSredniObrot(nullable:true, blank:true)
         scoringDeklaracjaFinansowaSredniaTransakcja(nullable:true, blank:true)
-        akceptantUlicaTytul(nullable:true, blank:false)
-        akceptantUlica(nullable:true, blank:false)
-        akceptantNrDomu(nullable:true, blank:false)
-        akceptantNrMieszkania(nullable:true, blank:false)
-        akceptantMiasto(nullable:true, blank:false)
-        akceptantKodPocztowy(nullable:true, blank:false)
-        akceptantPoczta(nullable:true, blank:false)
-//        akceptantTelStacjonarny(nullable:true)
-		akceptantTelStacjonarny(nullable:true, validator: { value, process, errors ->
+        akceptantUlicaTytul(validator: nullableTrueBlankFalse)
+        akceptantUlica(validator: nullableTrueBlankFalse)
+        akceptantNrDomu(validator: nullableTrueBlankFalse)
+        akceptantNrMieszkania(validator: nullableTrueBlankFalse)
+        akceptantMiasto(validator: nullableTrueBlankFalse)
+        akceptantKodPocztowy(validator: nullableTrueBlankFalse)
+        akceptantPoczta(validator: nullableTrueBlankFalse)
+        akceptantTelKomorkowy()
+		akceptantTelStacjonarny(validator: { value, process, errors ->
 		    if (value == null || process.akceptantTelKomorkowy == null) {
                 return true
             }
-            if (value.isEmpty() || process.akceptantTelKomorkowy.isEmpty()){
+            if (value.isEmpty() && process.akceptantTelKomorkowy.isEmpty()){
                 errors.rejectValue( "akceptantTelStacjonarny", "default.atLeastOne.phoneNumber", "Nale\u017Cy poda\u0107 przynajmniej jeden numer telefonu")
                 errors.rejectValue( "akceptantTelKomorkowy", "default.atLeastOne.phoneNumber", "Nale\u017Cy poda\u0107 przynajmniej jeden numer telefonu")
                 return false
@@ -722,7 +683,6 @@ class ProcessCommand implements Serializable{
 		    return true
 		})
         akceptantFax(nullable:true, blank:true)
-        akceptantTelKomorkowy(nullable:true)
         akceptantUlicaTytulCbd(nullable:true)
         akceptantUlicaCbd(nullable:true)
         akceptantNrDomuCbd(nullable:true)
@@ -770,11 +730,11 @@ class ProcessCommand implements Serializable{
         oplPOSGPRSPreferencyjneMies(nullable:true)
         oplPOSGPRSPreferencyjnePP(nullable:true)
         oplPOSBaza(nullable:true)
-        obslugaTyp(nullable:true, blank:false)
-        obslugaEkonomicznyCena(nullable:true, blank:false, shared: "number")
+        obslugaTyp(validator: nullableTrueBlankFalse)
+        obslugaEkonomicznyCena(validator: nullableTrueBlankFalse, shared: "number")
         numerRachunkuBankowegoKlienta(nullable:true, blank:false, matches: "[0-9]{26}")
-        bankKlienta(nullable:true, blank:false)
-        oplataZaUruchomienieDCC(nullable:true, blank:false, shared: "number")
+        bankKlienta(validator: nullableTrueBlankFalse)
+        oplataZaUruchomienieDCC(validator: nullableTrueBlankFalse, shared: "number")
         nip(nullable:true)
         notes(nullable:true) //a1!
         points(nullable:true)
@@ -788,34 +748,4 @@ class ProcessCommand implements Serializable{
         return (this.metaClass.hasProperty(this, cbdName) && this."$cbdName"?.trim())
     }
 
-	ProcessCommand() {
-	}
-
-
-
-
-
-    /*def initialize(Process process){
-
-        this.process = process
-        this.nip = process.client.nip
-
-        *//* process.data.each { ProcessData field ->
-             properties.hasProperty(field.name){
-                 properties[field.name] = field.value;
-             }
-         }*//*
-
-        // pobranie danych dla wybranych paneli
-
-        process.panels.each { panel ->
-
-            def functionName = "get" + WordUtils.capitalize(panel.name);
-            println("functionName:"+functionName)
-         //   cbdService."$functionName"()
-        }
-
-        int i = 1
-        //def adresDoKorespondencji = cbdService.getAdresDoKorespondencji(process.client.nip);
-    }*/
 }

@@ -4,9 +4,9 @@
         <div style="text-align: center; padding-top: 20px; width: 750px" class="centre">
             <div class="align-left">
                 <p><g:message code="panel.newpoint.pointnameforprintingfromposterminal" /></p>
-                <p><eumowy:textField name="nazwaDoWydrukuZTerminalaPos" value="${data.nazwaDoWydrukuZTerminalaPos}" maxlength ="40"/></p>
+                <p><eumowy:textField name="nazwaDoWydrukuZTerminalaPos" value="${data.nazwaDoWydrukuZTerminalaPos}" validatable="${data}" maxlength ="40"/></p>
                 <p><g:message code="panel.newpoint.pointnameforsearchengine" /> <label for="wydrukJakWyzej"><g:checkBox name="wydrukJakWyzej" id="wydrukJakWyzej" /><g:message code="panel.as.above" /></label></p>
-                <p><eumowy:textField name="wydrukNazwaDoWyszukwarki" value="${data.wydrukNazwaDoWyszukwarki}" maxlength ="40"/></p>
+                <p><eumowy:textField name="wydrukNazwaDoWyszukwarki" value="${data.wydrukNazwaDoWyszukwarki}" validatable="${data}" maxlength ="40"/></p>
                 <p><label for="wydrukJakMerchant"><g:checkBox name="wydrukJakMerchant"/><g:message code="panel.as.merchant" /></label></p>
                 <ul class="table-list">
                     <li>
@@ -16,20 +16,20 @@
                             <eumowy:textField name="wydrukUlica" value="${data.wydrukUlica}" style="width: 200px" maxlength ="19"/>
                         </span>
                         <span>
-                            <span><g:message code="panel.house.number" /></span> <span><eumowy:textField name="wydrukNrDomu" value="${data.wydrukNrDomu}" style="width: 50px" maxlength ="4"/></span>
-                            <span><g:message code="panel.flat.number" /></span> <span><eumowy:textField name="wydrukNrMieszkania" value="${data.wydrukNrMieszkania}" style="width: 50px" maxlength ="4"/></span>
+                            <span><g:message code="panel.house.number" /></span> <span><eumowy:textField name="wydrukNrDomu" value="${data.wydrukNrDomu}" validatable="${data}" style="width: 50px" maxlength ="4"/></span>
+                            <span><g:message code="panel.flat.number" /></span> <span><eumowy:textField name="wydrukNrMieszkania" value="${data.wydrukNrMieszkania}" validatable="${data}" style="width: 50px" maxlength ="4"/></span>
                         </span>
                     </li>
                     <li>
                         <span><g:message code="panel.city" /></span>
-                        <span><eumowy:textField name="wydrukMiasto" value="${data.wydrukMiasto}" style="width: 280px;" maxlength ="19"/></span>
+                        <span><eumowy:textField name="wydrukMiasto" value="${data.wydrukMiasto}" validatable="${data}" style="width: 280px;" maxlength ="19"/></span>
                         <span>
-                            <span><g:message code="panel.postal.code" /></span> <span><eumowy:textField class="postal-code" name="wydrukKodPocztowy" value="${data.wydrukKodPocztowy}" style="width: 50px" maxlength ="5"/></span>
+                            <span><g:message code="panel.postal.code" /></span> <span><eumowy:textField class="postal-code" name="wydrukKodPocztowy" value="${data.wydrukKodPocztowy}" validatable="${data}" style="width: 50px" maxlength ="5"/></span>
                         </span>
                     </li>
                     <li>
                         <span><g:message code="panel.postal" /></span>
-                        <span><eumowy:textField name="wydrukPoczta" value="${data.wydrukPoczta}" style="width: 280px;" maxlength ="19"/></span>
+                        <span><eumowy:textField name="wydrukPoczta" value="${data.wydrukPoczta}" validatable="${data}" style="width: 280px;" maxlength ="19"/></span>
                     </li>
                 </ul>
                 <p><g:message code="panel.newpoint.otherdataforprintingfromterminal" /></p>
