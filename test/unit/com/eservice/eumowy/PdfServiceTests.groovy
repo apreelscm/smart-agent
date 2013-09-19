@@ -1,12 +1,13 @@
 package com.eservice.eumowy
 
 import grails.test.mixin.*
+import groovy.mock.interceptor.MockFor;
 
 import java.awt.image.BufferedImage
 import java.text.DecimalFormat
 
+import org.apache.catalina.core.ApplicationContext
 import org.apache.pdfbox.pdmodel.PDDocument
-import org.apache.pdfbox.pdmodel.PDPage
 import org.apache.pdfbox.util.PDFImageWriter
 import org.junit.*
 

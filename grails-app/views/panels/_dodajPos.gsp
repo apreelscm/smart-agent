@@ -1,3 +1,4 @@
+<div id="addNewPosPanelPlaceholder"></div>
 <div id="addNewPosPanel">
     <fieldset style="text-align: center">
         <div class="belka-glowna"><g:message code="panel.addnewpos.title"/> </div>
@@ -27,14 +28,18 @@
 			setupNewPointPanelData("poses\\["+(i-1)+"\\]\\.", "poses\\["+i+"\\]\\.");
 		}
 			
-		jQuery("#addNewPosButton").on("click", function() {
+		jQuery("#addNewPosButton").on("click", function(e) {
+			e.preventDefault();
+			
 			var data = panelPosTemplate.replace(/%ID%/gm, panelPosCount);
-			jQuery("#addNewPosPanel").prepend(data);
+			jQuery("#addNewPosPanelPlaceholder").append(data);
 			setupNewPosPanelHandlers(panelPosCount-1, panelPosCount, "poses");
 			setupNewPointPanelData("poses\\["+(panelCount-1)+"\\]\\.", "poses\\["+panelCount+"\\]\\.");
 			panelPosCount++;
 			globalPanelPosCount++;
 			jQuery("#newPosPanelCount").val(panelPosCount);
+			
+			return false;
 		});
 		
 		jQuery("body").on("click", "#removePosButton", function(e) {
