@@ -273,6 +273,40 @@ class PdfMapper {
         data.put(key+index, [value] as String[])
     }
 
+    private mapKorespondencjaPocztaPointDataDetails(def data, def pointData, def key, def value, def index){
+        data.put(key, [value] as String[]);
+        String[] split = key.split("-");
+        for (int i=0; i<split.length; i++){
+            data.put("korespondencjaKodPocztowy"+(i+1), [split[i]] as String[])
+        }
+    }
+
+    private mapKontaktWPunkcieTelKomorkowyPointDataDetails(def data, def pointData, def key, def value, def index){
+        data.put(key, [value] as String[]);
+        String[] split = key.split("-");
+        for (int i=0; i<split.length; i++){
+            data.put("komorka"+(i+1), [split[i]] as String[])
+        }
+    }
+
+    private mapKontaktWPunkcieImiePointDataDetails(def data, def pointData, def key, def value, def index){
+        data.put(key, [value] as String[]);
+        data.put("imieINazwisko", [value + " " + getFromPointDataDetails(pointData, 'kontaktWPunkcieNazwisko')] as String[]);
+    }
+
+    private mapKontaktWPunkcieTytulPointDataDetails(def data, def pointData, def key, def value, def index){
+        data.put(key, [value] as String[]);
+        addCheckboxes(data, ["pan": "Pan", "pani": "Pani"], value)
+    }
+
+    private mapKontaktWPunkcieEmailPointDataDetails(def data, def pointData, def key, def value, def index){
+        data.put(key, [value] as String[]);
+        data.put("email", [value] as String[])
+    }
+
+
+    //BRAK numeru stacjonarnego, numeru faksu i numeru rachunku bankowego
+
     //------------------- PROCESS METHODS --------------------------------
 
     private mapUmowaOznOdProcess(def data, def pd, def key, def value){
