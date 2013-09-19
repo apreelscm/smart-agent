@@ -191,7 +191,7 @@ class ProcessController {
         def documentFile = DocumentFile.get(id);
 
         def dir = appParametersService.getPdfPreviewPath()
-        def fileName = "${id}_${documentFile.version}_${documentFile.name}"
+        def fileName = "${id}_${documentFile.version}.pdf"
 
         def tmpRes = new File(grailsApplication.mainContext.getServletContext().getRealPath(dir+File.separator+fileName))
 
@@ -218,8 +218,8 @@ class ProcessController {
             redirect(action: "show")
         }
 
-        response.setContentType("application/octet-stream")
-        response.setHeader("Content-disposition", "${params.contentDisposition}; filename=${file.name}.pdf")
+        response.setContentType("application/pdf")
+        response.setHeader("Content-disposition", "${params.contentDisposition}; filename=\"${file.name}\"")
         response.outputStream << file.content.content
     }
 
