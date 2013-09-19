@@ -308,9 +308,11 @@ class PdfMapper {
     }
 
     private mapAkceptantUlicaProcess(def data, def pd, def key, def value) {
-        //TODO - mozna sprawdzic czy jest numer mieszkania
-		data.put("akceptantUlica", [value] as String[])
-        data.put("akceptantSiedziba", [getFromProcessDataSet(pd, 'akceptantUlicaTytul') + " " + value + " " + getFromProcessDataSet(pd, 'akceptantNrDomu') + " " + getFromProcessDataSet(pd, 'akceptantNrMieszkania') + " " + getFromProcessDataSet(pd, 'akceptantMiasto')] as String[])
+     //TODO - mozna sprawdzic czy jest numer mieszkania
+	// data.put("akceptantUlica", [value] as String[])
+	   data.put("akceptantSiedziba", [(getSiedzibaAkceptanta(getFromProcessDataSet(pd, 'akceptantUlicaTytul'), getFromProcessDataSet(pd, 'akceptantUlica'), getFromProcessDataSet(pd, 'akceptantNrDomu'), getFromProcessDataSet(pd, 'akceptantNrMieszkania'), getFromProcessDataSet(pd, 'akceptantKodPocztowy'), getFromProcessDataSet(pd, 'akceptantMiasto')))] as String[])
+		
+    // data.put("akceptantSiedziba", [getFromProcessDataSet(pd, 'akceptantUlicaTytul') + " " + value + " " + getFromProcessDataSet(pd, 'akceptantNrDomu') + "/" + getFromProcessDataSet(pd, 'akceptantNrMieszkania') + " " + getFromProcessDataSet(pd, 'akceptantKodPocztowy') + " " + getFromProcessDataSet(pd, 'akceptantMiasto')] as String[])
     }
 
     private mapAkceptantNazwaOficjalnaProcess(def data, def pd, def key, def value) {
@@ -414,7 +416,26 @@ class PdfMapper {
     private mapUmowaCzasProcess(def data, def pd, def key, def value) {
         addCheckboxes(data, ["umNieOzn": "nieoznaczony", "umOzn": "oznaczony"], value)
     }
-
+	
+	//------------------- STRINGBUILDER -------------------------------------
+	private String getSiedzibaAkceptanta(String streetType, String street, String houseNumber, String flatNumber, String postalCode, String city){
+		def sb = new StringBuilder();
+		sb.append(streetType);
+		sb.append(" ");
+		sb.append(street);
+		sb.append(" ");
+		sb.append(houseNumber);
+		if (flatNumber != null) {
+			sb.append("/");
+			sb.append(flatNumber)
+			}
+		sb.append(", ");
+		sb.append(postalCode);
+		sb.append(" ");
+		sb.append(city);
+		return sb.toString();
+	}
+	 
     //------------------- OTHER/UTIL METHODS --------------------------------
 
     private getFromProcessDataSet(def processDataSet, def key){
