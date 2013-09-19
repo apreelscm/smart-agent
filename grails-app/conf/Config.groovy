@@ -82,8 +82,11 @@ environments {
 
 grails.gorm.default.constraints = {
     '*'(nullable: false, blank:true)
-    percentage(matches:"""^\\d{1,3}(\\.\\d{1,2})""")
-    number(matches:"""^\\d{1,9}(\\.\\d{1,2})""")
+    percentage(matches:'^(?:[1-9]\\d*|0)?(?:\\.\\d{2})?$')
+    number(matches:'^(?:[1-9]\\d*|0)?(?:\\.\\d{2})?$')
+	natural(matches:'^[0-9]*')
+	lettersonly(matches:'^[A-Za-z\\s\\u0104-\\u017c\\u00d3\\u00f3]*')
+	alpha(matches:'^[A-Za-z0-9\\s.,\\u0104-\\u017c\\u00d3\\u00f3]*')
     //TODO - ten regexp nie jest doskonaly przepuszcza np. 30 lutego. Mozna/Trzeba to poprawic
 	date(matches:'^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$')
 }
