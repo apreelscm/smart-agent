@@ -82,7 +82,7 @@ create table EUMOWY.EMAIL_TEMPLATES (
   id number(12,0) not null,
   version number(2,0) not null,
   name varchar2(255 char),
-  recipent varchar2(150 char),
+  recipient varchar2(150 char),
   sender varchar2(150 char),
   primary key (id));
 

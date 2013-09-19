@@ -16,15 +16,15 @@ grant select, insert, update, delete on SUBSCRIPTION to EUMOWY_APP;
 grant select, insert, update, delete on process_activity to EUMOWY_APP;
 grant select, insert, update, delete on process_signature to EUMOWY_APP;
 grant select, insert, update, delete on process_subscription to EUMOWY_APP;
-grant select, insert, update, delete on process_panel to EUMOWY_APP;
-grant select, insert, update, delete on sec_role to EUMOWY_APP;
-grant select, insert, update, delete on sec_user to EUMOWY_APP;
-grant select, insert, update, delete on sec_user_sec_role to EUMOWY_APP;
+grant select, insert, update, delete on panel to EUMOWY_APP;
+--grant select, insert, update, delete on sec_role to EUMOWY_APP;
+--grant select, insert, update, delete on sec_user to EUMOWY_APP;
+--grant select, insert, update, delete on sec_user_sec_role to EUMOWY_APP;
 grant select, insert, update, delete on LOGS to EUMOWY_APP;
 grant select, insert, update, delete on APP_PARAMETERS to EUMOWY_APP;
-grant select, insert, update, delete on process_attachment to EUMOWY_APP;
+grant select, insert, update, delete on attachment to EUMOWY_APP;
 
-grant select on  dual to EUMOWY_APP
+
 grant select on  ACTIVITY_SEQ to EUMOWY_APP;
 grant select on  ACTIVITY_SIGNATURES_SEQ to EUMOWY_APP;
 grant select on  ADM_U_WEB_SEQ to EUMOWY_APP;
@@ -41,10 +41,11 @@ grant select on  PROCESS_DATA_SEQ to EUMOWY_APP;
 grant select on  SIGNATURE_PANEL_SEQ to EUMOWY_APP;
 grant select on  SIGNATURE_SEQ to EUMOWY_APP;
 grant select on  DOCUMENT_CONTENT_SEQ to EUMOWY_APP;
-grant select on  POINT_SEQ to EUMOWY_APP
-grant select on  POINT_DETAILS_SEQ to EUMOWY_APP
-grant select on  POS_DETAILS_SEQ to EUMOWY_APP
-grant select on  POS_SEQ to EUMOWY_APP
+grant select on  POINT_SEQ to EUMOWY_APP;
+grant select on  POINT_DETAILS_SEQ to EUMOWY_APP;
+grant select on  POS_DETAILS_SEQ to EUMOWY_APP;
+grant select on  POS_SEQ to EUMOWY_APP;
+grant select on  dual to EUMOWY_APP;
 
 grant select on mapowaniekalkulatora to EUMOWY_APP;
 grant execute on GetKalkulatorSerwis to EUMOWY_APP;

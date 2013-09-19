@@ -20,6 +20,7 @@ insert into EUMOWY.activity (id, version, code, numer_pozycji) values (19,0,'pre
 insert into EUMOWY.activity (id, version, code, numer_pozycji) values (20,0,'poprawDane',20);
 insert into EUMOWY.activity (id, version, code, numer_pozycji) values (21,0,'odrzucDokumenty',21);
 insert into EUMOWY.activity (id, version, code, numer_pozycji) values (22,0,'uzupelnijPodpisy',22);
+
 insert into EUMOWY.SIGNATURE (id, version, active, name, template_path, management_subscription1, management_subscription2, subscription_page_number, subscriptionx, subscriptiony) values (1, 0,1,'AP-AG/F/DF/2.003/12-02-06', 'Formularz aplikacyjny_po_zmianach_18.01.2012.pdf', 'podpis_zarzad_1.png', 'podpis_zarzad_2.png', -1, 0, 0);
 insert into EUMOWY.SIGNATURE (id, version, active, name, template_path, management_subscription1, management_subscription2, subscription_page_number, subscriptionx, subscriptiony) values (2, 0,1,'AP-AG/F/DP/2.003/13-05-10', 'Formularz danych punktu_zmiany_15.05.2013_edited.pdf', 'podpis_zarzad_1.png', 'podpis_zarzad_2.png', -1, 0, 0);
 insert into EUMOWY.SIGNATURE (id, version, active, name, template_path, management_subscription1, management_subscription2, subscription_page_number, subscriptionx, subscriptiony) values (3, 0,1,'AP/F/DS/2.000/09-04-22', 'Formularz Scoringowy (oryginal).pdf', 'podpis_zarzad_1.png', 'podpis_zarzad_2.png', -1, 0, 0);
