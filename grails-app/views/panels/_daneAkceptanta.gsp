@@ -6,24 +6,23 @@
                 <li><span><g:message code="panel.acceptor.full.name"/></span></li>
                 <li>
                     <span>
-                    %{--<g:textField name="akceptantNazwaOficjalna" value="${data.akceptantNazwaOficjalna}" readonly="${data.isFromCbd('akceptantNazwaOficjalna')}" style="width: 400px" maxlength ="80"/>--}%
-                    <eumowy:textField name="akceptantNazwaOficjalna" value="${data.akceptantNazwaOficjalna}" validatable="${data}" readonly="${data.isFromCbd('akceptantNazwaOficjalna')}" style="width: 400px" maxlength ="80"/>
+                        <eumowy:textField name="akceptantNazwaOficjalna" value="${data.akceptantNazwaOficjalna}" validatable="${data}" readonly="${data.isFromCbd('akceptantNazwaOficjalna')}" style="width: 400px" required="true" maxlength="88"/>
+                        <g:hiddenField name="akceptantNazwaOficjalnaCbd" value="${data.akceptantNazwaOficjalnaCbd}"/>
                     </span>
-                    <g:hiddenField name="akceptantNazwaOficjalnaCbd" value="${data.akceptantNazwaOficjalnaCbd}"/>
-
                 </li>
                 <li><span><g:message code="panel.acceptor.network.name"/></span></li>
                 <li>
-                    <span><eumowy:textField name="akceptantNazwaSieciowa" value="${data.akceptantNazwaSieciowa}" validatable="${data}" readonly="${data.isFromCbd('akceptantNazwaSieciowa')}" style="width: 400px;" maxlength ="22"/></span>
+                    <span><eumowy:textField name="akceptantNazwaSieciowa" value="${data.akceptantNazwaSieciowa}" validatable="${data}" readonly="${data.isFromCbd('akceptantNazwaSieciowa')}" style="width: 400px;" required="true" maxlength="22"/></span>
                     <g:hiddenField name="akceptantNazwaSieciowaCbd" value="${data.akceptantNazwaSieciowaCbd}"/>
                 </li>
                 <li>
                     <span>
                         <span><g:message code="panel.acceptor.nip"/></span>
-                        <span><eumowy:textField class="nip" name="akceptantNip" value="${data.nip}" readonly="true" maxlength ="10"/></span>
-                        <span style="padding-left: 8px"><g:message code="panel.acceptor.regon" maxlength ="9"/></span>
+                        <span><eumowy:textField class="nip" name="akceptantNip" value="${data.nip}" readonly="true"/></span>
+                        %{--required="true" minlength="10" maxlength="10" digits="true"--}%
+                        <span style="padding-left: 8px"><g:message code="panel.acceptor.regon"/></span>
                         <span>
-                            <eumowy:textField class="regon" name="akceptantRegon" value="${data.akceptantRegon}" validatable="${data}" readonly="${data.isFromCbd('akceptantRegon')}"/>
+                            <eumowy:textField class="regon" name="akceptantRegon" value="${data.akceptantRegon}" validatable="${data}" readonly="${data.isFromCbd('akceptantRegon')}" required="true" minlength="9" maxlength="9" digits="true"/>
                             <g:hiddenField name="akceptantRegonCbd" value="${data.akceptantRegonCbd}"/>
                         </span>
                     </span>
@@ -32,3 +31,4 @@
         </div>
     </fieldset>
 </div>
+

@@ -7,7 +7,7 @@
                     <span class="align-left"><g:message code="panel.service.economic"/></span>
                 </li>
                 <li>
-                    <span class="align-left"><g:message code="panel.monthly.payment"/> <g:field type="number" step="any"  name="obslugaEkonomicznyCena" value="${data.obslugaEkonomicznyCena}" style="width: 100px;" /></span>
+                    <span class="align-left"><g:message code="panel.monthly.payment"/> <g:field type="number" step="any"  name="obslugaEkonomicznyCena" value="${data.obslugaEkonomicznyCena}" style="width: 100px;" readonly="true"/></span>
                 </li>
             </ul>
         </div>

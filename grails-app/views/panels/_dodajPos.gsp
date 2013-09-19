@@ -34,7 +34,7 @@
 			var data = panelPosTemplate.replace(/%ID%/gm, panelPosCount);
 			jQuery("#addNewPosPanelPlaceholder").append(data);
 			setupNewPosPanelHandlers(panelPosCount-1, panelPosCount, "poses");
-			setupNewPointPanelData("poses\\["+(panelCount-1)+"\\]\\.", "poses\\["+panelCount+"\\]\\.");
+			setupNewPointPanelData("poses\\["+(panelPosCount-1)+"\\]\\.", "poses\\["+panelPosCount+"\\]\\.");
 			panelPosCount++;
 			globalPanelPosCount++;
 			jQuery("#newPosPanelCount").val(panelPosCount);

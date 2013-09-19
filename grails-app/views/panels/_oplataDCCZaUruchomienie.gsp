@@ -6,7 +6,7 @@
                 <li>
                     <span class="align-right"><g:message code="panel.payment.startup"/></span>
                     <span class="align-left">
-                        <g:field type="number" step="any" name="oplataZaUruchomienieDCC" value="${data.oplataZaUruchomienieDCC}" style="width: 100px"/> <g:message code="panel.polish.currency"/>
+                        <g:field type="number" step="any" name="oplataZaUruchomienieDCC" value="${data.oplataZaUruchomienieDCC}" style="width: 100px" required="true"/> <g:message code="panel.polish.currency"/>
                     </span>
                 </li>
             </ul>

@@ -19,6 +19,11 @@ modules = {
 		dependsOn 'jquery'
 	}
 
+    validation {
+        resource url: 'js/jquery.validate.js', disposition: 'head'
+        dependsOn 'jquery'
+    }
+
     expandable_menu {
         resource url:'js/menu/expandable-menu.js'
         dependsOn 'jquery'
