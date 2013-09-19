@@ -30,9 +30,9 @@ class PointData implements Serializable {
 	
 	static hasOne = [pointDetails: PointDataDetails]
 	
-	static hasMany = {
+	static hasMany = [
 		posDatas: PosData
-	}
+	]
 	
 	static mapping = {
 		sort "id"
@@ -65,7 +65,7 @@ class PointData implements Serializable {
 		kodPocztowy(nullable:true)
 		poczta(nullable:true)
 		pointDetails(nullable:true)
-		posDatas(nullable:true)
+		//posDatas(nullable:true)
 		cbdId(nullable:true)
 		liczbaPos(nullable:true)
 		tytulPlatnosci(nullable:true)

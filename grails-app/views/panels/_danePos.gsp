@@ -10,9 +10,7 @@
         		<legend><g:message code="panel.newpos.listofactivepoints.title" /></legend>
         		<div class="subpanel-fieldset-centercontent" >
         			<p><g:message code="panel.newpos.listofpointsfromcbd" /></p>
-        			<select>
-        			
-        			</select>
+        			<dict:cbdPointsSelect id="${panelType}[${id}].cbdId" name="${panelType}[${id}].cbdId" nip="${nip}" />
         		</div>
         	</fieldset>
         	<g:render template="../panels/zestawPos" />

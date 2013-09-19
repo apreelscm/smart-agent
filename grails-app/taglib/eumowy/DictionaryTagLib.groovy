@@ -18,6 +18,14 @@ class DictionaryTagLib {
 		attrs.from = dictionaryService.getPosTypeComboBox(nipNum)*.value
 		fieldImpl(out, attrs)
 	}
+	
+	Closure cbdPointsSelect = { attrs ->
+		def nipNum = attrs.nip
+		attrs.from = dictionaryService.getCbdPointsComboBox(nipNum)
+		attrs.optionKey = "id"
+		attrs.optionValue = "value"
+		fieldImpl(out, attrs)
+	}
 
     def fieldImpl(out, attrs) {
         out << g.select(attrs)

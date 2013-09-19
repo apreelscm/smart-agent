@@ -17,6 +17,7 @@ class DictionaryService {
     public static final def GET_PAN_PANI = "getPanPaniComboBox"
     public static final def GET_BANK = "getBank"
 	public static final def GET_POS_TYPE_COMBOBOX = "getPosTypeComboBox"
+	public static final def GET_CBD_POINTS_COMBOBOX = "getCbdPointsComboBox"
 
     //@Cacheable(value="getUlicaComboBox")
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_UNCOMMITTED, readOnly = true)
@@ -47,6 +48,11 @@ class DictionaryService {
 	def getPosTypeComboBox(def nipNum) {
 		dictionary.putAt(GET_POS_TYPE_COMBOBOX, cbdDAO.selectMany(DICTIONARY_PATH+GET_POS_TYPE_COMBOBOX, [nip: nipNum]))
 		return dictionary[GET_POS_TYPE_COMBOBOX]
+	}
+	
+	def getCbdPointsComboBox(def nipNum) {
+		dictionary.putAt(GET_CBD_POINTS_COMBOBOX, cbdDAO.selectMany(DICTIONARY_PATH+GET_CBD_POINTS_COMBOBOX, [nip: nipNum]))
+		return dictionary[GET_CBD_POINTS_COMBOBOX]
 	}
 
 }

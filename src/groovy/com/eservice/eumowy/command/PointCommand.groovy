@@ -82,8 +82,8 @@ class PointCommand implements Serializable {
 	BigDecimal gprsPPCena
 	Integer bazaIlosc
 	
-	Date zamkniecieDniaOd
-	Date zamkniecieDniaDo
+	String zamkniecieDniaOd
+	String zamkniecieDniaDo
 	Date planowanaDataInstalacji
 	String uwagiDodatkowe
 	

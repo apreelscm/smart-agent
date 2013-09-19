@@ -68,4 +68,6 @@ beans = {
     cbdDAO(CbdDAO){
         dataSource = ref('dataSource')
     }
+	
+	customDateEditorRegistrar(CustomDateEditorRegistrar)
 }

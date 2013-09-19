@@ -255,11 +255,6 @@ class ProcessService {
 					return
 				}
 				
-				if (["dataOd","dataDo","zamkniecieDniaOd", "zamkniecieDniaDo", "planowanaDataInstalacji"].contains(key)) {
-					pc."set${key.capitalize()}"(DateUtils.parseDate(value))
-					return
-				}
-				
 				if (PointCommand.metaClass.respondsTo(PointCommand, "set"+key.capitalize())) {
 					pc."set${key.capitalize()}"(value)
 				}
@@ -268,11 +263,6 @@ class ProcessService {
 			posData?.posDetails?.properties.each { key, value ->
 				log.info "PosDataDetails Key: " + key
 				if (["class", "cbdId", "process", "point", "errors", "constraints", "empty", "", ""].contains(key) || value == null){
-					return
-				}
-				
-				if (["dataOd","dataDo","zamkniecieDniaOd", "zamkniecieDniaDo", "planowanaDataInstalacji"].contains(key)) {
-					pc."set${key.capitalize()}"(DateUtils.parseDate(value))
 					return
 				}
 				
