@@ -71,20 +71,22 @@
 						<eumowy:textField
 							name="${panelType}[${id}].nazwaDoWydrukuZTerminalaPos"
 							id="${panelType}[${id}].pointNameForPrintingFromPOSTerminal"
-							value="${pointData?.nazwaDoWydrukuZTerminalaPos}" />
+							value="${pointData?.nazwaDoWydrukuZTerminalaPos}"
+                            required="true"/>
 					</p>
 					<p>
 						<g:message code="panel.newpoint.pointnameforsearchengine" />
 						<label for="${panelType}[${id}].dataforprintingAsAbove"><g:checkBox
 								name="${panelType}[${id}].wydrukJakPowyzej"
 								id="${panelType}[${id}].dataforprintingAsAbove"
-								value="${pointData?.wydrukJakPowyzej}" />
+								value="${pointData?.wydrukJakPowyzej}"/>
 							<g:message code="panel.as.above" /></label>
 					</p>
 					<p>
 						<eumowy:textField name="${panelType}[${id}].nazwaDoWyszukiwarki"
 							id="${panelType}[${id}].pointNameForSearchEngine"
-							value="${pointData?.nazwaDoWyszukiwarki}" />
+							value="${pointData?.nazwaDoWyszukiwarki}"
+                            required="true"/>
 					</p>
 					<p>
 						<label for="${panelType}[${id}].dataforprintingAsForMerchant"><g:checkBox
@@ -100,31 +102,36 @@
 									value="${pointData?.wydrukUlicaTytul}" /> <eumowy:textField
 									name="${panelType}[${id}].wydrukUlica"
 									id="${panelType}[${id}].dataforprintingAddressStreet"
-									style="width: 200px" value="${pointData?.wydrukUlica}" />
+									style="width: 200px" value="${pointData?.wydrukUlica}"
+                                    required="true"/>
 						</span> <span> <span><g:message code="panel.house.number" /></span>
 								<span><eumowy:textField
 										name="${panelType}[${id}].wydrukNrDomu"
 										id="${panelType}[${id}].dataforprintingAddressHomeNumber"
 										style="width: 50px" value="${pointData?.wydrukNrDomu}" /></span> <span><g:message
-										code="panel.flat.number" /></span> <span><eumowy:textField
+										code="panel.flat.number" required="true"/></span> <span><eumowy:textField
 										name="${panelType}[${id}].wydrukNrLokalu"
 										id="${panelType}[${id}].dataforprintingAddressFlatNumber"
-										style="width: 50px" value="${pointData?.wydrukNrLokalu}" /></span>
+										style="width: 50px" value="${pointData?.wydrukNrLokalu}"
+                                        required="true"/></span>
 						</span></li>
 						<li><span><g:message code="panel.city" /></span> <span><eumowy:textField
 									name="${panelType}[${id}].wydrukMiasto"
 									id="${panelType}[${id}].dataforprintingAddressCity"
-									value="${pointData?.wydrukMiasto}" style="width: 280px;" /></span> <span>
+									value="${pointData?.wydrukMiasto}" style="width: 280px;"
+                                    required="true"/></span> <span>
 								<span><g:message code="panel.postal.code" /></span> <span><eumowy:textField
 										class="postal-code"
 										name="${panelType}[${id}].wydrukKodPocztowy"
 										id="${panelType}[${id}].dataforprintingAddressPostalCode"
-										value="${pointData?.wydrukKodPocztowy}" style="width: 50px" /></span>
+										value="${pointData?.wydrukKodPocztowy}" style="width: 50px"
+                                        required="true"/></span>
 						</span></li>
 						<li><span><g:message code="panel.postal" /></span> <span><eumowy:textField
 									name="${panelType}[${id}].wydrukPoczta"
 									id="${panelType}[${id}].dataforprintingAddressPostOffice"
-									value="${pointData?.wydrukPoczta}" style="width: 280px;" /></span></li>
+									value="${pointData?.wydrukPoczta}" style="width: 280px;"
+                                    required="true"/></span></li>
 					</ul>
 					<p>
 						<g:message code="panel.newpoint.otherdataforprintingfromterminal" />
