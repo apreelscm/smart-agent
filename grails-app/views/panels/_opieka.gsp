@@ -3,8 +3,8 @@
     <div class="subpanel-fieldset-centercontent" >
 	    <ul class="table-list vertical-center">
 	        <li>
-	            <span class="align-right"><g:message code="panel.newpoint.care.phgain"/></span><span><eumowy:textField readonly="true" style="width: 45px;" name="${panelType}[${id}].phPozysk" id="${panelType}[${id}].phGain" value="${pointData?.phPozysk}" maxlength="5"/></span>
-	            <span class="align-right"><g:message code="panel.newpoint.care.bussinesscare" /></span><span><eumowy:textField style="width: 45px;" name="${panelType}[${id}].opiekaBiznesowa" id="${panelType}[${id}].businessCare" value="${pointData?.opiekaBiznesowa}" maxlength="5"/></span>
+	            <span class="align-right"><g:message code="panel.newpoint.care.phgain"/></span><span><eumowy:textField style="width: 45px;" name="${panelType}[${id}].phPozysk" id="${panelType}[${id}].phGain" value="${pointData?.phPozysk}" maxlength="5" required="true"/></span>
+	            <span class="align-right"><g:message code="panel.newpoint.care.bussinesscare" /></span><span><eumowy:textField style="width: 45px;" name="${panelType}[${id}].opiekaBiznesowa" id="${panelType}[${id}].businessCare" value="${pointData?.opiekaBiznesowa}" maxlength="5" required="true"/></span>
 	            <span class="align-right"><g:message code="panel.newpoint.care.servicecare" /></span><span><g:textField style="width: 45px;" name="${panelType}[${id}].opiekaSerwisowaI" id="${panelType}[${id}].serviceCare1" value="${pointData?.opiekaSerwisowaI}" maxlength="5"/></span>
 	            <span class="align-right"><g:message code="panel.newpoint.care.servicecare" /></span><span><g:textField style="width: 45px;" name="${panelType}[${id}].opiekaSerwisowaII" id="${panelType}[${id}].serviceCare2" value="${pointData?.opiekaSerwisowaII}" maxlength="5"/></span>
 	            <span class="align-right"><g:message code="panel.newpoint.care.servicecare" /></span><span><g:textField style="width: 45px;" name="${panelType}[${id}].opiekaSerwisowaIII" id="${panelType}[${id}].serviceCare3" value="${pointData?.opiekaSerwisowaIII}" maxlength="5"/></span>

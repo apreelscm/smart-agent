@@ -23,12 +23,12 @@
 									code="panel.nip" /></span> <span><eumowy:textField class="nip"
 									name="${panelType}[${id}].nipPunktu"
 									id="${panelType}[${id}].nip" value="${pointData?.nipPunktu}"
-									maxlength="10" /></span></li>
+									maxlength="10" required="true"/></span></li>
 						<li><span class="align-right"><g:message
 									code="panel.mcccode" /></span> <span><eumowy:textField
 									name="${panelType}[${id}].kodMCC"
 									id="${panelType}[${id}].mccCode" value="${pointData?.kodMCC}"
-									maxlength="4" /> <label
+									maxlength="4" required="true" /> <label
 								for="${panelType}[${id}].sameForEveryPoint"><g:checkBox
 										id="${panelType}[${id}].sameForEveryPoint"
 										name="${panelType}[${id}].takSamoDlaWszystkichPunktow"
@@ -39,18 +39,20 @@
 									name="${panelType}[${id}].rodzProwadzDzialalWPraktyce"
 									id="${panelType}[${id}].bussinessTypeInPractice"
 									value="${pointData?.rodzProwadzDzialalWPraktyce}"
-									maxlength="60" /></span></li>
+									maxlength="60" required="true"/></span></li>
 						<li><span class="align-right"><g:message
 									code="panel.bankaccountnumber" /></span> <span><eumowy:textField
 									name="${panelType}[${id}].numerRachunkuBankowego"
 									id="${panelType}[${id}].bankAccountNumber"
 									value="${pointData?.numerRachunkuBankowego}" maxlength="26"
-									style="width: 250px;" /></span></li>
+									style="width: 250px;"
+                                    required="true"/></span></li>
 						<li><span class="align-right"><g:message
 									code="panel.bankname" /></span> <span><eumowy:textField
 									name="${panelType}[${id}].bank"
 									id="${panelType}[${id}].bankName" value="${pointData?.bank}"
-									style="width: 400px;" /><input type="hidden"
+									style="width: 400px;"
+                                    required="true"/><input type="hidden"
 								name="${panelType}[${id}].bankId"
 								id="${panelType}[${id}].bankId" value="${pointData?.bankId}" /></span></li>
 					</ul>
@@ -245,7 +247,6 @@
 										style="width: 220px" /></td>
 								<td style="text-align: right;"><g:message code="panel.wifi" /></td>
 								<td><g:textField name="${panelType}[${id}].wifiIlosc"
-										name="${panelType}[${id}].wifiCount"
 										value="${pointData?.wifiIlosc}" style="width: 50px" /> szt.</td>
 								<td><g:textField name="${panelType}[${id}].wifiPPIlosc"
 										id="${panelType}[${id}].wifiPPCount"
