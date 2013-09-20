@@ -6,6 +6,7 @@ grant select, insert, update, delete on CALCFIELD to EUMOWY_APP;
 grant select, insert, update, delete on CALCFIELD_SIGNATURE to EUMOWY_APP;
 grant select, insert, update, delete on CLIENT to EUMOWY_APP;
 grant select, insert, update, delete on DOCUMENT to EUMOWY_APP;
+grant select, insert, update, delete on DOCUMENT_CONTENT to EUMOWY_APP;
 grant select, insert, update, delete on EMAIL_TEMPLATES to EUMOWY_APP;
 grant select, insert, update, delete on PANEL to EUMOWY_APP;
 grant select, insert, update, delete on PROCESS to EUMOWY_APP;
@@ -17,12 +18,17 @@ grant select, insert, update, delete on process_activity to EUMOWY_APP;
 grant select, insert, update, delete on process_signature to EUMOWY_APP;
 grant select, insert, update, delete on process_subscription to EUMOWY_APP;
 grant select, insert, update, delete on panel to EUMOWY_APP;
+grant select, insert, update, delete on PROCESS_PANEL to EUMOWY_APP;
 --grant select, insert, update, delete on sec_role to EUMOWY_APP;
 --grant select, insert, update, delete on sec_user to EUMOWY_APP;
 --grant select, insert, update, delete on sec_user_sec_role to EUMOWY_APP;
 grant select, insert, update, delete on LOGS to EUMOWY_APP;
 grant select, insert, update, delete on APP_PARAMETERS to EUMOWY_APP;
 grant select, insert, update, delete on attachment to EUMOWY_APP;
+grant select, insert, update, delete on POINT to EUMOWY_APP;
+grant select, insert, update, delete on POINT_DETAILS to EUMOWY_APP;
+grant select, insert, update, delete on POS to EUMOWY_APP;
+grant select, insert, update, delete on POS_DETAILS to EUMOWY_APP;
 
 
 grant select on  ACTIVITY_SEQ to EUMOWY_APP;
@@ -45,6 +51,7 @@ grant select on  POINT_SEQ to EUMOWY_APP;
 grant select on  POINT_DETAILS_SEQ to EUMOWY_APP;
 grant select on  POS_DETAILS_SEQ to EUMOWY_APP;
 grant select on  POS_SEQ to EUMOWY_APP;
+grant select on  SUBSCRIPTION_SEQ to EUMOWY_APP;
 grant select on  dual to EUMOWY_APP;
 
 grant select on mapowaniekalkulatora to EUMOWY_APP;
