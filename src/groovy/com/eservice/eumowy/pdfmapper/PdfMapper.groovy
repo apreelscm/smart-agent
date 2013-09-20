@@ -273,9 +273,9 @@ class PdfMapper {
         data.put(key+index, [value] as String[])
     }
 
-    private mapKorespondencjaPocztaPointDataDetails(def data, def pointData, def key, def value, def index){
+    private mapKorespondencjaKodPocztowyPointDataDetails(def data, def pointData, def key, def value, def index){
         data.put(key, [value] as String[]);
-        String[] split = key.split("-");
+        String[] split = value.split("-");
         for (int i=0; i<split.length; i++){
             data.put("korespondencjaKodPocztowy"+(i+1), [split[i]] as String[])
         }
@@ -283,7 +283,7 @@ class PdfMapper {
 
     private mapKontaktWPunkcieTelKomorkowyPointDataDetails(def data, def pointData, def key, def value, def index){
         data.put(key, [value] as String[]);
-        String[] split = key.split("-");
+        String[] split = value.split("-");
         for (int i=0; i<split.length; i++){
             data.put("komorka"+(i+1), [split[i]] as String[])
         }
