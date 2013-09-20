@@ -23,9 +23,13 @@ grant select on cbt_sl_kalk_slownik to EUMOWY;
 grant select on cg_ref_codes to EUMOWY_APP;
 
 grant select on CBT_KALK_SZABLON to EUMOWY_APP;
+grant select on CBT_KALK_SZABLON to EUMOWY;
 grant select on CBT_KALK_SZABLON_POLE to EUMOWY_APP;
+grant select on CBT_KALK_SZABLON_POLE to EUMOWY;
 grant select on CBT_KALK_POLE to EUMOWY_APP;
+grant select on CBT_KALK_POLE to EUMOWY;
 grant select on cbt_kalk to EUMOWY_APP;
+grant select on cbt_kalk to EUMOWY;
 
 
 grant execute on ADM_WEB to EUMOWY_APP;
