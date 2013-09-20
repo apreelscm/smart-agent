@@ -122,6 +122,8 @@
         </ul>
     </g:hasErrors>
 
+    <!-- Working with process with id: ${processInstance.id} , and status ${processInstance.status?.toString()}-->
+
 
     <g:form class="panelsForm">
         <g:each var="panel" in="${processInstance.panels}" status="i">

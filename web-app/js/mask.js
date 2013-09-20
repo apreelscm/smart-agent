@@ -1,13 +1,4 @@
-/**
- * Created with IntelliJ IDEA.
- * User: user
- * Date: 27.08.93
- * Time: 08:92
- * To change this template use File | Settings | File Templates.
- */
-
 function maskNewPointRefresh() {
-	console.log("Testt");
 	jQuery("#newPointPanel").find(".bank-account").mask('99 9999 9999 9999 9999 9999 9999');
 	jQuery("#newPointPanel").find(".nip").mask('9999999999');
 	jQuery("#newPointPanel").find(".regon").mask('999999999');
