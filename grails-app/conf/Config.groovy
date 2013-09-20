@@ -82,7 +82,7 @@ environments {
 
 grails.gorm.default.constraints = {
     '*'(nullable: false, blank:true)
-    percentage(matches:'^(?:[1-9]\\d*|0)?(?:\\.\\d{2})?$')
+    percentage(matches:'^(?:100(?:.0(?:0)?)?|\\d{1,2}(?:.\\d{1,2})?)$')
     number(matches:'^(?:[1-9]\\d*|0)?(?:\\.\\d{2})?$')
 	natural(matches:'^[0-9]*')
 	lettersonly(matches:'^[A-Za-z\\s\\u0104-\\u017c\\u00d3\\u00f3]*')
