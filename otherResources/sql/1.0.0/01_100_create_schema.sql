@@ -242,6 +242,7 @@ create table EUMOWY.PROCESS (
   calc_number varchar2(20 char),
   date_created timestamp not null,
   last_updated timestamp not null,
+  observed number(1,0),
   ph_number varchar2(12 char),
   ph_first_name varchar2(40 char),
   ph_surname varchar2(100 char),
@@ -309,6 +310,14 @@ create table EUMOWY.PROCESS_SUBSCRIPTION (
   subscription_id number(12,0),
   subscriptions_idx number(10,0));
 
+CREATE TABLE EUMOWY.KALKULATORTYPURZADZEN (
+    TYP VARCHAR2(50 BYTE),
+    SLOWNIK VARCHAR2(50 BYTE));
+
+CREATE TABLE EUMOWY.MAPOWANIEKALKULATORA (
+  POLEKALKULATOR VARCHAR2(255 BYTE),
+  POLEAPREEL     VARCHAR2(255 BYTE),
+  DZIALANIE      VARCHAR2(20 BYTE));
 
 -- CONSTRAINTS
 -- TODO do poprawy nazwy FK
