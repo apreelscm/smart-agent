@@ -110,8 +110,8 @@ create table EUMOWY.POINT (
   payment_title number(1,0),
   cash_system number(1,0),
   uta number(1,0),
-  is_selected_card_accept(1,0),
-  is_selected_range(1,0),
+  is_selected_card_accept number(1,0),
+  is_selected_range number(1,0),
   primary key (id));
 
 create table EUMOWY.POINT_DETAILS (
@@ -123,7 +123,7 @@ create table EUMOWY.POINT_DETAILS (
   terminal_count number(3,0) not null,
   bank_account_number varchar2(40 char) not null,
   bank_name varchar2(255 char) not null,
-  bank_id number(10,0)
+  bank_id number(10,0),
   contact_at_point_email varchar2(80 char) not null,
   contact_addr_streettype varchar2(40 char) not null,
   contact_at_point_fax varchar2(20 char) not null,
@@ -328,6 +328,8 @@ CREATE TABLE EUMOWY.MAPOWANIEKALKULATORA (
   POLEKALKULATOR VARCHAR2(255 BYTE),
   POLEAPREEL     VARCHAR2(255 BYTE),
   DZIALANIE      VARCHAR2(20 BYTE));
+
+create table EUMOWY.LOGS (login varchar2(100 char), log_date varchar2(80 char), log_message varchar2(1000 char));
 
 -- CONSTRAINTS
 -- TODO do poprawy nazwy FK
