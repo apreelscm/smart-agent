@@ -39,7 +39,7 @@ class PanelMockService {
 
     def getDaneAkceptanta(ProcessCommand cmd) {
         cmd.akceptantNazwaOficjalna= "KGHM Polska Miedź S.A."
-//        cmd.akceptantNazwaSieciowa= "KGHM nazwa sieciowa"
+        cmd.akceptantNazwaSieciowa= ""// "KGHM nazwa sieciowa"
         cmd.akceptantRegon = "123456789"
 
         cmd.akceptantNazwaOficjalnaCbd= cmd.akceptantNazwaOficjalna
@@ -73,21 +73,21 @@ class PanelMockService {
     }
 
     def getDcc(ProcessCommand cmd) {
-        cmd.oplataVISA = "124.333"
-        cmd.oplataVISAPr = "12.4"
+        cmd.oplataVISA = "24.33"
+        cmd.oplataVISAPr = "12.42"
         cmd.oplataMasterCard = "0.73"
-        cmd.oplataMasterCardPr = "12.6"
+        cmd.oplataMasterCardPr = "12.61"
         cmd.oplataMaestro = "12.93"
         cmd.oplataMasteroPr = "1.04"
     }
 
     def getDccZakresUruchomienia(ProcessCommand cmd) {
         cmd.dccZakresUruchomienia = "obecne_i_nowe"
-		
+
 		def p1 = new AllPointsCommand()
 		def p2 = new AllPointsCommand()
 		def p3 = new AllPointsCommand()
-		
+
 		p1.id = 1
 		p1.nazwa = 'Sklep spozywczy'
 		p1.ulica = 'Zielona'
@@ -109,7 +109,7 @@ class PanelMockService {
 		p3.nrBudynku = 12
 		p3.kodPocztowy = '02-123'
 		p3.liczbaPos = 2
-		
+
 		cmd.allPoints = [p1, p2, p3]
     }
 
@@ -148,7 +148,7 @@ class PanelMockService {
     }
 
     def getDodatkoweUslugiUTAIntegracja(ProcessCommand cmd) {
-        cmd.weryfikacjaPINCena = "123.5"
+        cmd.weryfikacjaPINCena = "123.51"
         cmd.systemKasowyCena = "2.50"
     }
 
@@ -187,7 +187,7 @@ class PanelMockService {
     }
 
     def getOkresLojalnosciowy(ProcessCommand cmd) {
-
+        cmd.okresLojalnosciowy = "1"
     }
 
     def getOpieka(ProcessCommand cmd) {
@@ -333,15 +333,15 @@ class PanelMockService {
     }
 
     def getPoziomOplatIWarunkiPlatnosciPP(ProcessCommand cmd) {
-        cmd.pp_orange_tk = "2.3"
+        cmd.pp_orange_tk = "2.31"
         cmd.pp_orange_tp = "1.35"
         cmd.pp_plus_tk = "0.48"
-        cmd.pp_plus_tp = "23.1"
+        cmd.pp_plus_tp = "23.21"
         cmd.pp_tmobile_tk = "0.01"
         cmd.pp_tmobile_tp = "0.32"
         cmd.pp_heyah_tk = "0.45"
         cmd.pp_heyah_tp = "0.03"
-        cmd.pp_play_tk = "34.0"
+        cmd.pp_play_tk = "34.01"
         cmd.pp_play_tp = "0.25"
         cmd.pp_telegrosik_tk = "1.05"
         cmd.pp_virginmobile_tk = "3"
@@ -349,36 +349,36 @@ class PanelMockService {
         cmd.pp_gtmobile_tk = "5.02"
         cmd.pp_vectonemobile_tk = "2.34"
         cmd.pp_delightmobile_tk = "1.23"
-        cmd.oplataZaOprogramowanieDoDoladowan = "0.003"
+        cmd.oplataZaOprogramowanieDoDoladowan = "0.03"
     }
 
     def getPromocyjneObnizenieOplatyZaZestawPos(ProcessCommand cmd) {
-		
+
 		/*def p1 = new AllPosCommand()
 		def p2 = new AllPosCommand()
 		def p3 = new AllPosCommand()
-		
+
 		p1.id = 1
 		p1.numerZestawuPos = '234'
 		p1.dataOd = '2011-05-21'
 		p1.dataDo = '2012-05-20'
 		p1.wysokoscOplaty = '12.25'
 		p1.czyWybrany = true
-		
+
 		p2.id = 2
 		p2.numerZestawuPos = '567'
 		p2.dataOd = '2012-05-21'
 		p2.dataDo = '2013-05-20'
 		p2.wysokoscOplaty = '15.99'
 		p2.czyWybrany = true
-		
+
 		p3.id = 3
 		p3.numerZestawuPos = '154'
 		p3.dataOd = '2013-05-21'
 		p3.dataDo = '2014-05-20'
 		p3.wysokoscOplaty = '23.40'
 		p3.czyWybrany = true
-		
+
 		cmd.allPoses = [p1, p2, p3]*/
     }
 
@@ -446,7 +446,7 @@ class PanelMockService {
 
     def getSerwisEkonomiczny(ProcessCommand cmd) {
         //korzysta z pola cmd.obslugaEkonomicznyCena z getSerwis
-        cmd.obslugaEkonomicznyCena = "-"
+        cmd.obslugaEkonomicznyCena = "12"
     }
 
     def getSerwisKomfort(ProcessCommand cmd) {
@@ -460,8 +460,8 @@ class PanelMockService {
     def getSiedzibaAkceptanta(ProcessCommand cmd) {
         cmd.akceptantUlicaTytul = "Plac"
         cmd.akceptantUlica = "Wilsona"
-        cmd.akceptantNrDomu = ""
-        cmd.akceptantNrMieszkania = null
+        cmd.akceptantNrDomu = "5"
+        cmd.akceptantNrMieszkania = "7"
 
         cmd.akceptantMiasto = "Warszawa"
         cmd.akceptantKodPocztowy = "98-765"

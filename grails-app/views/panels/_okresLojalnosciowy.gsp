@@ -6,7 +6,9 @@
                 <li>
                     <span class="align-right"><g:message code="panel.loyality.period"/></span>
                     <span class="align-left">
-                        <g:field type="number" step="any" name="okresLojalnosciowy" readonly="true" style="width: 100px"/> <g:message code="panel.months"/>
+                        %{--<g:field type="number" step="any" name="okresLojalnosciowy" readonly="true" style="width: 100px"/> --}%
+                        <eumowy:textField name="okresLojalnosciowy" validatable="${data}" value="${data.okresLojalnosciowy}"  readonly="true"/>
+                        <g:message code="panel.months"/>
                     </span>
                 </li>
             </ul>

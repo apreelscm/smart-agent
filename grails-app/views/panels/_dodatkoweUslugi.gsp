@@ -2,7 +2,7 @@
     <fieldset>
         <div class="belka-glowna"><g:message code="panel.additional.services.title"/></div>
         <div class="centre" style="text-align: center; padding-top: 20px; width: 750px">
-            <table>
+            <table class="table-list centre">
                 <tr>
                     <td><g:message code="panel.payment.daily.transaction.report"/></td>
                     <td><eumowy:currencyField  name="oplataZaDzienneZestawienieTransakcji" validatable="${data}" value="${data.oplataZaDzienneZestawienieTransakcji}" required="true"/></td>

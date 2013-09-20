@@ -184,7 +184,7 @@ class PanelService {
     }
 
     def getOplatyDCC(ProcessCommand cmd ,def calc) {
-        cmd.oplataZaPlatnoscWInnejWalucie = calculatorService.getCalcProperty(calc,"OPLATA_DCC")
+        cmd.oplataZaPlatnoscWInnejWalucie = calculatorService.getCalcProperty(calc,"OPLATA_DCC") ?: ""
     }
 
     def getOsobaDoKontaktu(ProcessCommand cmd ,def calc) {
