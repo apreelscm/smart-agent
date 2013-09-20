@@ -6,11 +6,22 @@
     <title><g:message code="selectedPanels.header.title" default="Lista paneli"/></title>
     <r:require module="filestyle"/>
     <r:require module="newpoint_panel_setup"/>
+    <r:require module="validation"/>
     <g:javascript>
 
     var $j = jQuery.noConflict();
 
     $j(function(){
+        console.log('JS Validation starting...');
+        jQuery(".panelsForm").validate({
+            errorElement: 'img',
+            errorPlacement: function(error, element) {
+            },
+            success: function(label) {
+            }
+        });
+        console.log('JS Validation started...');
+
 	  showSaveLink();
       $j("#saveProcessLink").click(function() {
                 var input = $j("<input>").attr("type", "hidden").attr("name", "_eventId_saveOnly").val("");
@@ -19,8 +30,10 @@
             });
 
         $j("#conitnueButton").click(function() {
-                var input = $j("<input>").attr("type", "hidden").attr("name", "_eventId_continue").val("");
-                $j('.panelsForm').append($j(input)).submit()
+                if ( $j(".panelsForm").valid()){
+                    var input = $j("<input>").attr("type", "hidden").attr("name", "_eventId_continue").val("");
+                    $j('.panelsForm').append($j(input)).submit()
+                }
                 false
             });
 
@@ -59,13 +72,6 @@
         }
 });
     </g:javascript>
-
-
-    <r:script>
-        jQuery(document).ready(function(){
-
-        });
-    </r:script>
 
     <style>
     #uploads {

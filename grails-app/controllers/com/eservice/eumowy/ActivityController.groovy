@@ -128,7 +128,7 @@ class ActivityController {
 
         /** default full subflow */
         normal {
-            subflow(action: "normal", input: [processInstance : { flow.processInstance }, newProcessFlow : {flow.newProcessFlow}])
+            subflow(action: "normal", input: [processInstance : { flow.processInstance }, newProcessFlow : {flow.newProcessFlow}, calc: {flow.calc}, calcId: {flow.calcId}])
             on("backToStart"){
                 flow.isGoBack = true;
             }to "defineActivity"
@@ -136,6 +136,8 @@ class ActivityController {
                 flow.processInstance = currentEvent.attributes.process
                 flow.representative1 = currentEvent.attributes.representative1
                 flow.representative2 = currentEvent.attributes.representative2
+				flow.calc = currentEvent.attributes.calc
+				flow.calcId = currentEvent.attributes.calcId
             }.to "clientSignature"
         }
 
@@ -179,7 +181,7 @@ class ActivityController {
         clientSignature {
             onEntry {
                 def processInstance = flow.processInstance
-                
+                log.info "Calc: " + flow.calc
 				flow.representative1 = flow.representative1 != null ? flow.representative1 : processService.getRepresentative1(processInstance)
 				flow.representative2 = flow.representative2 != null ? flow.representative2 : processService.getRepresentative2(processInstance)
 				flow.requiredNumberOfSubscriptions = 1 //PH subscription is always required
@@ -353,6 +355,8 @@ class ActivityController {
         input {
             processInstance(required: true)
             newProcessFlow(required: true)
+			calc(required: false)
+			calcId(required: false)
         }
 
         init {
@@ -595,6 +599,8 @@ class ActivityController {
                 process {flow.processInstance}
                 representative1 { flow.representative1 }
                 representative2 { flow.representative2 }
+				calc { flow.calc }
+				calcId { flow.calcId }
             }
         }
         backToStart()

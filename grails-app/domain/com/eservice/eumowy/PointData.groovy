@@ -65,7 +65,7 @@ class PointData implements Serializable {
 		kodPocztowy(nullable:true)
 		poczta(nullable:true)
 		pointDetails(nullable:true)
-		//posDatas(nullable:true)
+		posDatas(nullable:true)
 		cbdId(nullable:true)
 		liczbaPos(nullable:true)
 		tytulPlatnosci(nullable:true)

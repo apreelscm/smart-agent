@@ -5,35 +5,35 @@
             <table>
                 <tr>
                     <td><g:message code="panel.payment.daily.transaction.report"/></td>
-                    <td><eumowy:currencyField  name="oplataZaDzienneZestawienieTransakcji" validatable="${data}" value="${data.oplataZaDzienneZestawienieTransakcji}"/></td>
+                    <td><eumowy:currencyField  name="oplataZaDzienneZestawienieTransakcji" validatable="${data}" value="${data.oplataZaDzienneZestawienieTransakcji}" required="true"/></td>
                 </tr>
                 <tr>
                     <td><g:message code="panel.payment.monthly.transaction.report"/></td>
-                    <td><eumowy:currencyField name="oplataZaMiesieczneZestawienieTransakcji" validatable="${data}" value="${data.oplataZaMiesieczneZestawienieTransakcji}"/></td>
+                    <td><eumowy:currencyField name="oplataZaMiesieczneZestawienieTransakcji" validatable="${data}" value="${data.oplataZaMiesieczneZestawienieTransakcji}" required="true"/></td>
                 </tr>
                 <tr>
                     <td><g:message code="panel.payment.confirmation.payment"/></td>
-                    <td><eumowy:currencyField name="oplataZaPotwierdzenieWykonaniaPrzelewu" validatable="${data}" value="${data.oplataZaPotwierdzenieWykonaniaPrzelewu}"/></td>
+                    <td><eumowy:currencyField name="oplataZaPotwierdzenieWykonaniaPrzelewu" validatable="${data}" value="${data.oplataZaPotwierdzenieWykonaniaPrzelewu}" required="true"/></td>
                 </tr>
                 <tr>
                     <td><g:message code="panel.payment.paper"/></td>
-                    <td><eumowy:currencyField name="oplataZaDostarczeniePapieru" validatable="${data}"  value="${data.oplataZaDostarczeniePapieru}"/></td>
+                    <td><eumowy:currencyField name="oplataZaDostarczeniePapieru" validatable="${data}"  value="${data.oplataZaDostarczeniePapieru}" required="true"/></td>
                 </tr>
                 <tr>
                     <td><g:message code="panel.payment.graphics"/></td>
-                    <td><eumowy:currencyField name="oplataZaZmianeGrafiki" validatable="${data}" value="${data.oplataZaZmianeGrafiki}"/></td>
+                    <td><eumowy:currencyField name="oplataZaZmianeGrafiki" validatable="${data}" value="${data.oplataZaZmianeGrafiki}" required="true"/></td>
                 </tr>
                 <tr>
                     <td><g:message code="panel.payment.instalation"/></td>
-                    <td><eumowy:currencyField name="oplataZaInstalacjePOS" validatable="${data}" value="${data.oplataZaInstalacjePOS}"/></td>
+                    <td><eumowy:currencyField name="oplataZaInstalacjePOS" validatable="${data}" value="${data.oplataZaInstalacjePOS}" required="true"/></td>
                 </tr>
                 <tr>
                     <td><g:message code="panel.payment.gprs"/></td>
-                    <td><eumowy:currencyField name="oplataZaInstalacjeGPRS" validatable="${data}" value="${data.oplataZaInstalacjeGPRS}"/></td>
+                    <td><eumowy:currencyField name="oplataZaInstalacjeGPRS" validatable="${data}" value="${data.oplataZaInstalacjeGPRS}" required="true"/></td>
                 </tr>
                 <tr>
                     <td><g:message code="panel.payment.foreing.currency"/></td>
-                    <td><eumowy:currencyField name="oplataZaUruchomienieWalutyObcej" validatable="${data}" value="${data.oplataZaUruchomienieWalutyObcej}"/></td>
+                    <td><eumowy:currencyField name="oplataZaUruchomienieWalutyObcej" validatable="${data}" value="${data.oplataZaUruchomienieWalutyObcej}" required="true"/></td>
                 </tr>
             </table>
         </div>

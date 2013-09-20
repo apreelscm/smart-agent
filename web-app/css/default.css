@@ -649,7 +649,7 @@ fieldset.embedded legend {
 /* form fields with errors */
 
 .error input, .error select, .error textarea {
-    background: #fff3f3;
+    /*background: #fff3f3;*/
     border-color: #ffaaaa;
     /*color: #cc0000;*/
 }

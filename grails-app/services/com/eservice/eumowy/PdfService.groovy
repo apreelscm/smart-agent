@@ -26,7 +26,7 @@ class PdfService {
 		log.info documents
 		def data = getDocumentAndPageCountFromGlobalPageNumber(documents, pageNumber)
 		if (data.document != null) {
-			result = generateImageFromPDF(data.document.content.content, data.document.name, processId, data.page)
+			result = generateImageFromPDF(data.document.content.content, data.document.id, processId, data.page)
 		}
 		else {
 			log.warn "generateImageFromPDFDocumentFile - document == null"
@@ -36,7 +36,7 @@ class PdfService {
 		return result
 	}
 	
-	def generateImageFromPDF(byte[] pdf, String pdfName, String processId, Integer pageNumber) {
+	def generateImageFromPDF(byte[] pdf, Long documentId, String processId, Integer pageNumber) {
 		PDDocument document = null
 		ByteArrayInputStream bis = new ByteArrayInputStream(pdf)
 		document = PDDocument.load(bis)
@@ -45,7 +45,7 @@ class PdfService {
 		PDFImageWriter imageWriter = new PDFImageWriter()
 		
 		boolean success = imageWriter.writeImage(document, "png", "",
-			pageNumber, pageNumber, appParametersService.getPdfImagePath()+pdfName+"-"+processId+"-", BufferedImage.TYPE_INT_RGB, resolution)
+			pageNumber, pageNumber, appParametersService.getPdfImagePath()+documentId+"-"+processId+"-", BufferedImage.TYPE_INT_RGB, resolution)
 	
 		if (!success) {
 			log.error "No writer found for PNG image format"
@@ -53,7 +53,7 @@ class PdfService {
 		
 		document.close()
 		
-		return appParametersService.getPdfImageUri()+pdfName+"-"+processId+"-"+pageNumber+".png"
+		return appParametersService.getPdfImageUri()+documentId+"-"+processId+"-"+pageNumber+".png"
 	}
 	
 	def generateImageFromPDF(String pdfPath, String pdfName, String processId, Integer pageNumber) {
