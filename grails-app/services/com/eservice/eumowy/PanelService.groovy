@@ -86,7 +86,7 @@ class PanelService {
         cmd.oplataMasteroPr =calculatorService.getCalcProperty(calc,"OPLATA_DCC_MAESTRO_PR")
     }
 
-    def getDccZakresUruchomienia(ProcessCommand cmd ,def calc) {
+    def getDCCZakresUruchomienia(ProcessCommand cmd ,def calc) {
         cmd.dccZakresUruchomienia = cmd.dccZakresUruchomienia ?: ""
     }
 

@@ -18,6 +18,15 @@
             errorPlacement: function(error, element) {
             },
             success: function(label) {
+            },
+            focusInvalid: false,
+            invalidHandler: function(form, validator) {
+                if (!validator.numberOfInvalids())
+                    return;
+
+                $j('html, body').animate({
+                    scrollTop: $j(validator.errorList[0].element).offset().top
+                }, 100);
             }
         });
         console.log('JS Validation started...');
