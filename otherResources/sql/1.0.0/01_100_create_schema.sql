@@ -249,7 +249,7 @@ create table EUMOWY.PROCESS (
   ph_email varchar2(120 char),
   sale_section varchar2(120 char),
   notes_to_coa varchar2(1000 char),
-  notes_to_zrd varchar2(300 char),
+  notes_from_zrd varchar2(300 char),
   primary key (id));
 
 create table EUMOWY.PROCESS_DATA (
