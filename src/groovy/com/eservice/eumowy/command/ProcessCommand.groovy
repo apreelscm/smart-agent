@@ -415,8 +415,8 @@ class ProcessCommand implements Serializable{
         oplataZaInstalacjePOS(nullable:false, blank:false, shared: "number")
         oplataZaInstalacjeGPRS(nullable:false, blank:false, shared: "number")
         oplataZaUruchomienieWalutyObcej(nullable:false, blank:false, shared: "number")
-        wydrukGrafikiCena(nullable:false, blank:false, shared: "number")
-        dzialaniaMatematyczneCena(nullable:false, blank:false, shared: "number")
+       // wydrukGrafikiCena(nullable:false, blank:false, shared: "number")
+       // dzialaniaMatematyczneCena(nullable:false, blank:false, shared: "number")
         tytulPlatnosciCena(nullable:false, blank:false, shared: "number")
         pierwszaSesjaCena(nullable:false, blank:false, shared: "number")
 
@@ -427,11 +427,11 @@ class ProcessCommand implements Serializable{
         akceptantKontaktMiasto(nullable:false, blank:false)
         akceptantKontaktKodPocztowy(nullable:false, blank:false)
         akceptantKontaktPoczta(nullable:false, blank:false)
-    /*    dataAneksowanejUmowyPos(nullable:false, blank:false, shared: "date")
+    /*  dataAneksowanejUmowyPos(nullable:false, blank:false, shared: "date")
         dataAneksowanejUmowyPrepaid(nullable:false, blank:false, shared: "date")*/
         umowaCzas(nullable:false, blank:false)
-        umowaOznOd(nullable:true, blank:true, shared: "date")
-        umowaOznDo(nullable:true, blank:true, shared: "date")
+        umowaOznOd(nullable:true, blank:true, shared: "date") //TODO VERIFY
+        umowaOznDo(nullable:true, blank:true, shared: "date") //TODO VERIFY
         akceptantNazwaOficjalna(nullable:false, blank:false) //a1!, M
         akceptantNazwaSieciowa(nullable:false, blank:false) //a1!
         akceptantRegon(nullable:false, blank:false, matches:"~|[0-9]{9}") //111111111, M
@@ -449,12 +449,12 @@ class ProcessCommand implements Serializable{
         wydrukPoczta(nullable:false, blank:false)
         wydrukLinia1(nullable:true, blank:true)
         wydrukLinia2(nullable:true, blank:true)
-        oplataVISA(nullable:false, blank:false, shared: "number")
+     /*   oplataVISA(nullable:false, blank:false, shared: "number")
         oplataVISAPr(nullable:false, blank:false, shared: "number")
         oplataMasterCard(nullable:false, blank:false, shared: "number")
         oplataMasterCardPr(nullable:false, blank:false, shared: "number")
         oplataMaestro(nullable:false, blank:false, shared: "number")
-        oplataMasteroPr(nullable:false, blank:false, shared: "number")
+        oplataMasteroPr(nullable:false, blank:false, shared: "number")*/
         dccZakresUruchomienia(nullable:false, blank:false)
         informacjaHandlowa(nullable:false, blank:false)
         oplataZaDzienneZestawienieTransakcji(nullable:false, blank:false, shared: "number")
@@ -465,8 +465,8 @@ class ProcessCommand implements Serializable{
         oplataZaInstalacjePOS(nullable:false, blank:false, shared: "number")
         oplataZaInstalacjeGPRS(nullable:false, blank:false, shared: "number")
         oplataZaUruchomienieWalutyObcej(nullable:false, blank:false, shared: "number")
-        wydrukGrafikiCena(nullable:false, blank:false, shared: "number")
-        dzialaniaMatematyczneCena(nullable:false, blank:false, shared: "number")
+       // wydrukGrafikiCena(nullable:false, blank:false, shared: "number")
+       // dzialaniaMatematyczneCena(nullable:false, blank:false, shared: "number")
         tytulPlatnosciCena(nullable:false, blank:false, shared: "number")
         pierwszaSesjaCena(nullable:false, blank:false, shared: "number")
         mudCena(nullable:false, blank:false, shared:"number")
@@ -480,8 +480,8 @@ class ProcessCommand implements Serializable{
             }
 
             if (!(value || process.doladowania_tk)) {
-                errors.rejectValue( "doladowania_tp", "default.atLeastOne.option", "Nale\u017Cy zaznaczy\u0107 przynajmniej jedn\u0105 opcj\u0119")
-                errors.rejectValue( "doladowania_tk", "default.atLeastOne.option", "Nale\u017Cy zaznaczy\u0107 przynajmniej jedn\u0105 opcj\u0119")
+                errors.rejectValue( "doladowania", "default.atLeastOne.option", "Nale\u017Cy zaznaczy\u0107 przynajmniej jedn\u0105 opcj\u0119")
+              //  errors.rejectValue( "doladowania_tk", "default.atLeastOne.option", "Nale\u017Cy zaznaczy\u0107 przynajmniej jedn\u0105 opcj\u0119")
                 return false
             }
             return true
@@ -493,11 +493,11 @@ class ProcessCommand implements Serializable{
         ifOplataDinersClub(nullable:false, blank:false, shared: "number") //1.11 %, M
         ifOplataIKO(nullable:false, blank:false, shared: "number") //1.11 %, M
         ifOplataPKOPB(nullable:false, blank:false, shared: "number") //1.11 %, M*/
-        dzialalnoscForma(nullable:false, blank:false)
+        dzialalnoscForma(nullable:false, blank:true)
         dzialalnoscFormaInna(nullable:true, blank:true)
-        dzialalnoscDokument(nullable:false, blank:false)
+        dzialalnoscDokument(nullable:false, blank:true)
         dzialalnoscDokumentInny(nullable:true, blank:true)
-        okresLojalnosciowy(nullable:false, blank:false)
+        //okresLojalnosciowy(nullable:false, blank:false)
         oplataZaPlatnoscWInnejWalucie(nullable:false, blank:false)
         kontaktTytul(nullable:false, blank:false)
         kontaktImie(nullable:false, blank:false)
@@ -636,7 +636,7 @@ class ProcessCommand implements Serializable{
         pp_vectonemobile_tk(nullable:false, blank:false, shared: "percentage")
         pp_delightmobile_tk(nullable:false, blank:false, shared: "percentage")*/
 
-        oplataZaOprogramowanieDoDoladowan(nullable:false, blank:false, shared: "number" )
+        //oplataZaOprogramowanieDoDoladowan(nullable:false, blank:false, shared: "number" )
         //scoringMcc(nullable:false, blank:false, matches:"~|[0-9]{4}")
         scoringDzialalnosc(nullable:false, blank:false)
         scoringSzczegolyDzialalnosci(nullable:true, blank:true)
@@ -737,7 +737,7 @@ class ProcessCommand implements Serializable{
         oplPOSGPRSPreferencyjnePP(nullable:true, shared: "number")
         oplPOSBaza(nullable:true, shared: "number")
         obslugaTyp(nullable:false, blank:false)
-        obslugaEkonomicznyCena(nullable:false, blank:false, shared: "number")
+        obslugaEkonomicznyCena(nullable:true, blank:false, shared: "number") //TODO VERIFY
         numerRachunkuBankowegoKlienta(nullable:false, blank:false, matches: "~|[0-9]{26}")
         bankKlienta(nullable:false, blank:false)
         oplataZaUruchomienieDCC(nullable:false, blank:false, shared: "number")
