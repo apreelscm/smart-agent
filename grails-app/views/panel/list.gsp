@@ -39,7 +39,7 @@
 <g:render template="../panels/ifplus"/>
 <g:render template="../panels/oplatyDCC"/>
 <g:render template="../panels/oplataDCCZaUruchomienie"/>
-<g:render template="../panels/dCCZakresUruchomienia"/>
+<g:render template="../panels/dccZakresUruchomienia"/>
 <g:render template="../panels/dcc"/>
 <g:render template="../panels/wykazPunktowAkceptujacychKartyPlatnicze"/>
 <g:render template="../panels/serwisEkonomiczny"/>
