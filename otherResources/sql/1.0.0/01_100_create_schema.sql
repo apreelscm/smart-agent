@@ -30,6 +30,18 @@ create table EUMOWY.ATTACHMENT (
   attachments_idx number(10,0),
   primary key (id));
 
+create table EUMOWY.ATTACHMENT (
+  id number(12,0) not null,
+  version number(19, 0) not null,
+  date_uploaded timestamp(6),
+  downloads number(10, 0),
+  extension varchar2(255 CHAR),
+  file_size number(19, 0),
+  name varchar2(255 CHAR),
+  process_id number(19, 0)
+  attachments_idx number(10,0),
+  primary key (id));
+
 create table EUMOWY.ATTACHMENT_CONTENT (
   id number(12,0) not null,
   version number(2,0) not null,

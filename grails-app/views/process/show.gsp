@@ -7,6 +7,14 @@
     <g:set var="entityName" value="${message(code: 'process.label', default: 'Process')}" />
     <g:set var="isNewProcess" value="${processInstance?.status.equals(Process.ProcessStatus.NEW)}" />
     <title>${entityName}</title>
+    <r:script>
+        jQuery(document).ready(function(){
+            var isProcessAccepted = ${processInstance?.status.equals(Process.ProcessStatus.ACCEPTED)};
+            if(isProcessAccepted){
+                jQuery("input.submit").attr('disabled', 'disabled');
+            }
+        })
+    </r:script>
 </head>
 <body>
 
@@ -104,16 +112,14 @@
                 <g:if test="${params.order}"><g:hiddenField name="order" value="${params.order}"/></g:if>
                 <g:if test="${params.max}"><g:hiddenField name="max" value="${params.max}"/></g:if>
                 <g:if test="${params.offset}"><g:hiddenField name="offset" value="${params.offset}"/></g:if>
-                <g:actionSubmit value="Wróć" class="button submit float-left" action="list"/>
-                <g:if test="${!(processInstance?.status in [Process.ProcessStatus.ACCEPTED, Process.ProcessStatus.REJECTED])}">
-                    <g:actionSubmit class="button submit" action="reject" value="Odrzuć"
-                                    style="float: left;margin-right: 1em;display:${!isNewProcess ? 'block' : 'block'}"
-                                    formnovalidate=""
-                                    onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
-                    <g:actionSubmit class="button submit" action="accept" value="Zaakceptuj"
-                                    style="float: right;display:${!isNewProcess ? 'block' : 'block'}"
-                                    onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
-                </g:if>
+                <g:link class="button submit float-left" action="list">Wróć</g:link>
+                <g:actionSubmit class="button submit" action="reject" value="Odrzuć"
+                                style="float: left;margin-right: 1em;display:block"
+                                formnovalidate=""
+                                onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
+                <g:actionSubmit class="button submit" action="accept" value="Zaakceptuj"
+                                style="float: right;display:block"
+                                onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
             </fieldset>
         </nav>
     </g:form>
