@@ -123,9 +123,11 @@ create table EUMOWY.POINT_DETAILS (
   terminal_count number(3,0) not null,
   bank_account_number varchar2(40 char) not null,
   bank_name varchar2(255 char) not null,
+  bank_id number(10,0)
   contact_at_point_email varchar2(80 char) not null,
   contact_addr_streettype varchar2(40 char) not null,
   contact_at_point_fax varchar2(20 char) not null,
+  contact_at_point_title varchar2(20 char) not null,
   contact_at_point_firstname varchar2(40 char) not null,
   contact_at_point_lastname varchar2(80 char) not null,
   contact_at_point_mobilephone varchar2(20 char) not null,
