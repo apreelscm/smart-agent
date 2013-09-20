@@ -60,7 +60,9 @@
 			if (panelInternalCount > 0) {
 				jQuery("#conitnueButton").prop("disabled", false);
 			}
-			
+
+            maskNewPointRefresh();
+
 			return false;
 		});
 		
@@ -80,8 +82,6 @@
 			
 			return false;
 		});
-		
-		maskNewPointRefresh()
-		
+
 	});
 </r:script>

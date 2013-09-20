@@ -1,4 +1,5 @@
 import com.eservice.dao.emetrics.UserDAO
+import com.eservice.eumowy.CustomDateEditorRegistrar
 import com.eservice.eumowy.auth.EServiceAuthenticationProvider
 import com.eservice.eumowy.dao.CbdDAO
 import com.eservice.eumowy.propEditors.CustomDateEditorRegistrar
