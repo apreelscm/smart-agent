@@ -493,6 +493,11 @@ class ProcessService {
 
         //process.processData?.clear()
         processDataList.each { ProcessData data ->
+
+            if (["reprezentant2Imie", "reprezentant2Nazwisko"].contains(data.name)){
+                println 'Jest w populateProcessWithData ' + data.name + '!!!!'
+            }
+
             def foundData = process.processData.find { it.name == data.name }
             if(!foundData){
                 process.addToProcessData(data)
@@ -538,13 +543,14 @@ class ProcessService {
         processDataList.add(new ProcessData([name: 'dataUmowy', value: DateUtils.formatWithTimezone(DateUtils.getCurrentDate())]))
     }
 
-    //TODO - czy te trzy ponizsze listy sa gdzies uzywane????
-//    List<PointCommand> points = ListUtils.lazyList([], FactoryUtils.instantiateFactory(PointCommand))
-//    List<AllPointsCommand> allPoints = ListUtils.lazyList([], FactoryUtils.instantiateFactory(AllPointsCommand))
-//    List<AllPosCommand> allPoses = ListUtils.lazyList([], FactoryUtils.instantiateFactory(AllPosCommand))
 	def getDataFromPanels(def cmd) {
         def processDataList = [];
         cmd.properties.each { key, value ->
+
+            if (["reprezentant2Imie", "reprezentant2Nazwisko"].contains(key)){
+                println 'JEST ' + key + '!!!!'
+            }
+
             if (["class","process", "cbdService", "errors", "constraints", "notes"].contains(key) || value == null){
                 return
             }

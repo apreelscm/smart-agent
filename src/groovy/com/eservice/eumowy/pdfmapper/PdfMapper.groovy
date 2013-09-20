@@ -231,6 +231,20 @@ class PdfMapper {
             log.info "Mapping < " + key + " : " + value + " >"
         }
 
+        def result = data.findAll {
+            def value = it.value;
+            if (value != null && value.size()==1){
+                if (value[0] != null && "null".equals(value[0].trim())){
+                    return true
+                }
+            }
+            return false
+        }
+
+        result.each { key, value ->
+            data.remove(key)
+        }
+
         return data
     }
 
@@ -273,9 +287,9 @@ class PdfMapper {
         data.put(key+index, [value] as String[])
     }
 
-    private mapKorespondencjaPocztaPointDataDetails(def data, def pointData, def key, def value, def index){
+    private mapKorespondencjaKodPocztowyPointDataDetails(def data, def pointData, def key, def value, def index){
         data.put(key, [value] as String[]);
-        String[] split = key.split("-");
+        String[] split = value.split("-");
         for (int i=0; i<split.length; i++){
             data.put("korespondencjaKodPocztowy"+(i+1), [split[i]] as String[])
         }
@@ -283,9 +297,31 @@ class PdfMapper {
 
     private mapKontaktWPunkcieTelKomorkowyPointDataDetails(def data, def pointData, def key, def value, def index){
         data.put(key, [value] as String[]);
-        String[] split = key.split("-");
+        String[] split = value.split("-");
         for (int i=0; i<split.length; i++){
             data.put("komorka"+(i+1), [split[i]] as String[])
+        }
+    }
+
+    private mapKontaktWPunkcieTelStacjonarnyPointDataDetails(def data, def pointData, def key, def value, def index){
+        data.put(key, [value] as String[]);
+        mapFaxOrPhone(data, value, "kierunkowy1", "stacjonarny");
+    }
+
+    private mapKontaktWPunkcieFaxPointDataDetails(def data, def pointData, def key, def value, def index){
+        data.put(key, [value] as String[]);
+        mapFaxOrPhone(data, value, "kierunkowy2", "nrFaksu");
+    }
+
+    private void mapFaxOrPhone(def data, def phoneNumber, def kierName, def otherName){
+        //(11) 222-33-44
+        if (phoneNumber != null){
+            data.put(kierName, [phoneNumber.substring(phoneNumber.lastIndexOf('(') +1, phoneNumber.indexOf(')'))] as String[]);
+
+            def parts = phoneNumber.substring(phoneNumber.lastIndexOf(' ')+1).split('-');
+            for (int i=0; i<parts.length; i++){
+                data.put(otherName+(i+1), [parts[i]] as String[])
+            }
         }
     }
 
@@ -305,7 +341,7 @@ class PdfMapper {
     }
 
 
-    //BRAK numeru stacjonarnego, numeru faksu i numeru rachunku bankowego
+    //BRAK numeru rachunku bankowego
 
     //------------------- PROCESS METHODS --------------------------------
 
@@ -450,23 +486,44 @@ class PdfMapper {
     private mapUmowaCzasProcess(def data, def pd, def key, def value) {
         addCheckboxes(data, ["umNieOzn": "nieoznaczony", "umOzn": "oznaczony"], value)
     }
-	
+
+    private mapDzialalnoscFormaProcess(def data, def pd, def key, def value) {
+        if (value != null){
+            if ("spolka_akcyjna".equals(value)){
+                value = "spolka";
+                data.put("spolkaText", ["akcyjna"] as String[])
+            } else if ("spolka_zoo".equals(value)){
+                value = "spolka";
+                data.put("spolkaText", ["z o.o."] as String[])
+            } else if ("spolka_komandytowa".equals(value)){
+                value = "spolka";
+                data.put("spolkaText", ["komandytowa"] as String[])
+            }
+
+            addCheckboxes(data, ["spolkaCywilna":"spolka_cywilna", "osobaFizyczna":"osoba_fizyczna", "spolka":"spolka", "inne1":""], value)
+
+            if ("".equals(value)){
+                data.put("inneText", [getFromProcessDataSet(pd, "dzialalnoscFormaInna")] as String[])
+            }
+        }
+    }
+
+    private mapDzialalnoscDokumentProcess(def data, def pd, def key, def value) {
+        addCheckboxes(data, ["zaswiadczenieZEwidencji": "ewidencja", "umowaSpolkiCywilnej": "NIE_MAMY_W_PANELACH", "odpisZKRS":"krs", "inne2":""], value)
+        if ("".equals(value)){
+            data.put("inneText2", [getFromProcessDataSet(pd, "dzialalnoscDokumentInny")] as String[])
+        }
+    }
+
 	//------------------- STRINGBUILDER -------------------------------------
 	private String getSiedzibaAkceptanta(String streetType, String street, String houseNumber, String flatNumber, String postalCode, String city){
 		def sb = new StringBuilder();
-		sb.append(streetType);
-		sb.append(" ");
-		sb.append(street);
-		sb.append(" ");
-		sb.append(houseNumber);
-		if (flatNumber != null) {
-			sb.append("/");
-			sb.append(flatNumber)
-			}
-		sb.append(", ");
-		sb.append(postalCode);
-		sb.append(" ");
-		sb.append(city);
+
+		sb.append(streetType).append(" ").append(street).append(" ").append(houseNumber);
+		if (flatNumber != null && !"".equals(flatNumber)) {
+			sb.append("/").append(flatNumber);
+	    }
+		sb.append(", ").append(postalCode).append(" ").append(city);
 		return sb.toString();
 	}
 	 
