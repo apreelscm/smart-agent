@@ -459,7 +459,7 @@ class PdfMapper {
 		sb.append(street);
 		sb.append(" ");
 		sb.append(houseNumber);
-		if (flatNumber != null) {
+		if (flatNumber != null && !"".equals(flatNumber)) {
 			sb.append("/");
 			sb.append(flatNumber)
 			}
