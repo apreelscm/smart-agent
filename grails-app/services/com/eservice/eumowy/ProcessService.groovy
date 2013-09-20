@@ -1,13 +1,23 @@
 package com.eservice.eumowy
+
+import grails.util.Environment
+import groovy.sql.GroovyRowResult
+
+import org.apache.commons.collections.FactoryUtils
+import org.apache.commons.collections.ListUtils
+import org.apache.commons.lang.SerializationUtils
+import org.apache.commons.lang.WordUtils
+import org.hibernate.Criteria
+import org.hibernate.Session
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
+import org.hibernate.transform.ResultTransformer;
+
 import com.eservice.eumowy.command.AllPointsCommand
 import com.eservice.eumowy.command.AllPosCommand
 import com.eservice.eumowy.command.PointCommand
 import com.eservice.eumowy.command.ProcessCommand
 import com.eservice.eumowy.util.DateUtils
-import grails.util.Environment
-import groovy.sql.GroovyRowResult
-import org.apache.commons.lang.SerializationUtils
-import org.apache.commons.lang.WordUtils
 
 class ProcessService {
 
@@ -115,11 +125,11 @@ class ProcessService {
         cmd.allPoses?.addAll(getPosesToAllPosCommandList(process, cmd))
         prepareProcessCommand(cmd, calc, cbdMethods)
     }
-
+	
 	def getRepresentative1(def process) {
 		return [name: process?.processData?.find { pd -> pd.name == "reprezentant1Imie" }?.value, surname: process?.processData?.find { pd -> pd.name == "reprezentant1Nazwisko" }?.value]
 	}
-
+	
 	def getRepresentative2(def process) {
 		return [name: process?.processData?.find { pd -> pd.name == "reprezentant2Imie" }?.value, surname: process?.processData?.find { pd -> pd.name == "reprezentant2Nazwisko" }?.value]
 	}
@@ -190,148 +200,148 @@ class ProcessService {
 
         cmd
     }
-
+	
 	def getLocalPointsToPointCommandList(def process) {
 		def localPoints = []
 		process.points.each { PointData point ->
-
+			
 			/* Don't load points from CBD */
 			if (point.cbdId != null) {
 				return
 			}
-
+			
 			PointCommand pc = new PointCommand()
-
+			
 			point.properties.each { key, value ->
 				log.info "PointData Key: " + key
 				if (["process",
 					 "processId",
 					 "pointDetails",
 					 "posDatas",
-					 "processId",
-					 //"cbdId",
-					 "pointDetailsId",
+					 "processId", 
+					 //"cbdId", 
+					 "pointDetailsId", 
 					].contains(key) || value == null){
 					return
 				}
-
+				
 				if (PointCommand.metaClass.respondsTo(PointCommand, "set"+key.capitalize())) {
 					pc."set${key.capitalize()}"(value)
 				}
 			}
-
+			
 			pc.id = point.id
-
+			
 			point.pointDetails?.properties.each { key, value ->
 				log.info "PointDataDetails Key: " + key
-				if (["point",
-					 "pointId",
+				if (["point", 
+					 "pointId", 
 					].contains(key) || value == null){
 					return
 				}
-
+				
 				if (PointCommand.metaClass.respondsTo(PointCommand, "set"+key.capitalize())) {
 					pc."set${key.capitalize()}"(value)
 				}
 			}
-
+			
 			//def posData = point.posDatas != null && point.posDatas.size() > 0 ? point.posDatas[0] : null
 			def posData = point.posDatas?.find { PosData pd -> pd.tpsId == null }
-
+			
 			posData?.properties.each { key, value ->
 				log.info "PosData Key: " + key
-				if (["tpsId",
+				if (["tpsId", 
 					 "point"].contains(key) || value == null){
 					return
 				}
-
+				
 				if (PointCommand.metaClass.respondsTo(PointCommand, "set"+key.capitalize())) {
 					pc."set${key.capitalize()}"(value)
 				}
 			}
-
+			
 			posData?.posDetails?.properties.each { key, value ->
 				log.info "PosDataDetails Key: " + key
 				if (["class", "cbdId", "process", "point", "errors", "constraints", "empty", "", ""].contains(key) || value == null){
 					return
 				}
-
+				
 				if (PointCommand.metaClass.respondsTo(PointCommand, "set"+key.capitalize())) {
 					pc."set${key.capitalize()}"(value)
 				}
 			}
-
+			
 			localPoints.add(pc)
 		}
 		localPoints
 	}
-
+	
 	def getLocalPosesToPointCommandList(def process) {
 		def localPoses = []
 		process.points.each { PointData point ->
 			point.posDatas?.each { PosData posData ->
-
+				
 				/* Don't load POSes from CBD */
 				if (posData.tpsId != null) {
 					return
 				}
-
+				
 				PointCommand pc = new PointCommand()
 				pc.id = posData.id
-
+				
 				point.properties.each { key, value ->
 					log.info "PointData Key: " + key
 					if (["class", "posDatas", "errors", "constraints", "processId", "cbdId", "pointDetailsId", "empty"].contains(key) || value == null){
 						return
 					}
-
+					
 					if (PointCommand.metaClass.respondsTo(PointCommand, "set"+key.capitalize())) {
 						pc."set${key.capitalize()}"(value)
 					}
 				}
-
+				
 				point.pointDetails?.properties.each { key, value ->
 					log.info "PointDataDetails Key: " + key
 					if (["class", "posDatas", "errors", "constraints", "processId", "cbdId", "pointDetailsId", "empty"].contains(key) || value == null){
 						return
 					}
-
+					
 					if (PointCommand.metaClass.respondsTo(PointCommand, "set"+key.capitalize())) {
 						pc."set${key.capitalize()}"(value)
 					}
 				}
-
+				
 				posData?.properties.each { key, value ->
 					log.info "PosData Key: " + key
 					if (["class", "cbdId", "process", "point", "errors", "constraints", "empty", "", ""].contains(key) || value == null){
 						return
 					}
-
+					
 					if (PointCommand.metaClass.respondsTo(PointCommand, "set"+key.capitalize())) {
 						pc."set${key.capitalize()}"(value)
 					}
 				}
-
+				
 				posData?.posDetails?.properties.each { key, value ->
 					log.info "PosDataDetails Key: " + key
 					if (["class", "cbdId", "process", "point", "errors", "constraints", "empty", "", ""].contains(key) || value == null){
 						return
 					}
-
+					
 					if (PointCommand.metaClass.respondsTo(PointCommand, "set"+key.capitalize())) {
 						pc."set${key.capitalize()}"(value)
 					}
 				}
-
+				
 				localPoses.add(pc)
 			}
 		}
 		localPoses
 	}
-
+	
 	def getLocalPointsToAllPointsCommandList(def process, def pointsList) {
 		process.points?.each { PointData point ->
-
+			
 			AllPointsCommand apc = new AllPointsCommand()
 			apc.id = point.id
 			apc.setCzyCbd(false)
@@ -340,25 +350,25 @@ class ProcessService {
 					 "processId",
 					 "pointDetails",
 					 "posDatas",
-					 "processId",
-					 "pointDetailsId",
+					 "processId", 
+					 "pointDetailsId", 
 					].contains(key) || value == null){
 					return
 				}
-
+				
 				if (AllPointsCommand.metaClass.respondsTo(AllPointsCommand, "set"+key.capitalize())) {
 					apc."set${key.capitalize()}"(value)
 				}
 			}
-
+			
 			pointsList.add(apc)
 		}
 	}
-
+	
 	def getLocalPosesToAllPosesCommandList(def process, def posesList) {
 		process.points?.each { PointData point ->
 			point.posDatas?.each { PosData posData ->
-
+				
 				AllPosCommand apc = new AllPosCommand()
 				apc.setCzyCbd(false)
 				apc.id = posData.id
@@ -367,22 +377,22 @@ class ProcessService {
 					if (["class", "process", "point", "errors", "constraints", "empty", "", ""].contains(key) || value == null){
 						return
 					}
-
+					
 					if (AllPosCommand.metaClass.respondsTo(AllPosCommand, "set"+key.capitalize())) {
 						apc."set${key.capitalize()}"(value)
 					}
 				}
-
+				
 				posesList.add(apc)
 			}
 		}
 	}
-
+	
 	def getCbdPointsToAllPointsCommandList(def cmd, def pointsList) {
 		def cbdPoints = cbdService.getZakresUruchomieniaPunktyGrid(cmd.nip)
 		cbdPoints?.each { GroovyRowResult row ->
 			AllPointsCommand apc = new AllPointsCommand()
-
+			
 			apc.setCzyCbd(true)
 			apc.setCbdId(Integer.valueOf(row.get("id").toString()))
 			apc.setKodPocztowy(row.get("kod_pocztowy"))
@@ -391,36 +401,36 @@ class ProcessService {
 			apc.setNazwa(row.get("nazwa"))
 			apc.setNrBudynku(row.get("nr_budynku"))
 			apc.setUlica(row.get("ulica"))
-
+			
 			pointsList.add(apc)
 		}
 	}
-
+	
 	def getCbdPosesToAllPosesCommandList(def cmd, def posesList) {
 		def cbdPoses = cbdService.getPromocyjneObinzenieOplatGrid(cmd.nip)
 		cbdPoses.each { GroovyRowResult row ->
 			AllPosCommand apc = new AllPosCommand()
-
+			
 			apc.setCzyCbd(true)
 			apc.setTpsId(Integer.valueOf(row.get("tps_id").toString()))
 			apc.setNumerZestawuPos(Integer.valueOf(row.get("numer_logiczny").toString()))
 			/* TODO The rest data should be loaded from calculator here! */
-
+			
 			posesList.add(apc)
 		}
 	}
-
+	
 	def getPointsToAllPointsCommandList(def process, def cmd) {
 		def localPoints = [], cbdPoints = [], result = []
 		getLocalPointsToAllPointsCommandList(process, localPoints)
 		getCbdPointsToAllPointsCommandList(cmd, cbdPoints)
-
+		
 		/* Merge them with possibly new data from CBD */
 		localPoints.each { AllPointsCommand apc ->
-
+			
 			if (apc.cbdId != null) {
 				AllPointsCommand point = cbdPoints.find { AllPointsCommand i -> i.cbdId == apc.cbdId }
-
+				
 				/* Update field data */
 				if (point) {
 					apc.nazwa = point.nazwa
@@ -436,10 +446,10 @@ class ProcessService {
 					apc.cbdId = -1 // Mark the point for deletion from local (eumowy) db
 				}
 			}
-
+			
 			result.add(apc)
 		}
-
+		
 		result.addAll(cbdPoints)
 		result
 	}
@@ -448,12 +458,12 @@ class ProcessService {
 		def localPoses = [], cbdPoses = [], result = []
 		getLocalPosesToAllPosesCommandList(process, localPoses)
 		getCbdPosesToAllPosesCommandList(cmd, cbdPoses)
-
+		
 		/* Merge them with possibly new data from CBD */
 		localPoses.each { AllPosCommand apc ->
 			if (apc.tpsId != null) {
 				AllPosCommand pos = cbdPoses.find { AllPosCommand i -> i.tpsId == apc.tpsId	}
-
+				
 				/* Update field data */
 				if (pos) {
 					apc.dataDo = pos.dataDo
@@ -465,15 +475,15 @@ class ProcessService {
 				}
 				else {
 					apc.tpsId = -1 // Mark POS for deletion from local (eumowy) db
-				}
+				} 
 			}
-
+			
 			result.add(apc)
 		}
 		result.addAll(cbdPoses)
 		result
 	}
-
+	
     /** save data */
     def populateProcessWithData(Process process, def cmd){
         def processDataList = getDataFromPanels(cmd)
@@ -483,6 +493,11 @@ class ProcessService {
 
         //process.processData?.clear()
         processDataList.each { ProcessData data ->
+
+            if (["reprezentant2Imie", "reprezentant2Nazwisko"].contains(data.name)){
+                println 'Jest w populateProcessWithData ' + data.name + '!!!!'
+            }
+
             def foundData = process.processData.find { it.name == data.name }
             if(!foundData){
                 process.addToProcessData(data)
@@ -490,19 +505,19 @@ class ProcessService {
                 foundData.value = data.value
             }
         }
-
+		
 		def pointDataList = getPointCommandsToPointDataList(process, cmd)
-
+		
 		pointDataList?.each { PointData point ->
 			if (point.cbdId == -1) {
 				point.delete(flush: true)
 				return
 			}
-
+			
 			point.save(flush: true)
 			process.addToPoints(point)
 		}
-
+		
         /*def pointsDataList = getPointData(cmd, process)
 		//process.points?.clear()
         pointsDataList.each { data ->
@@ -514,13 +529,13 @@ class ProcessService {
             process.addToPoints(data)
             process.discard()
         }
-
+		
 		def posDataList = getPosData(cmd)
 		posDataList.each { data ->
 			process.addToPoints(data)
 			process.discard()
 		}*/
-
+		
         process
     }
 
@@ -528,14 +543,15 @@ class ProcessService {
         processDataList.add(new ProcessData([name: 'dataUmowy', value: DateUtils.formatWithTimezone(DateUtils.getCurrentDate())]))
     }
 
-    //TODO - czy te trzy ponizsze listy sa gdzies uzywane????
-//    List<PointCommand> points = ListUtils.lazyList([], FactoryUtils.instantiateFactory(PointCommand))
-//    List<AllPointsCommand> allPoints = ListUtils.lazyList([], FactoryUtils.instantiateFactory(AllPointsCommand))
-//    List<AllPosCommand> allPoses = ListUtils.lazyList([], FactoryUtils.instantiateFactory(AllPosCommand))
 	def getDataFromPanels(def cmd) {
         def processDataList = [];
         cmd.properties.each { key, value ->
-            if (["class","process", "cbdService", "errors", "constraints", "notes"].contains(key) || value == ProcessCommand.DEFAULT_VALUE){
+
+            if (["reprezentant2Imie", "reprezentant2Nazwisko"].contains(key)){
+                println 'JEST ' + key + '!!!!'
+            }
+
+            if (["class","process", "cbdService", "errors", "constraints", "notes"].contains(key) || value == null){
                 return
             }
 
