@@ -218,7 +218,7 @@ class PdfService {
 		}*/
 		if (sig.subscriptionPageNumber != null && sig.subscriptionPageNumber > -1) {
 			Subscription s = subscriptions.find { it.personRole?.equals(Subscription.PersonRole.ACCEPTANT1) == true }
-			if (s.content != null) {
+			if (s?.content != null) {
 				BufferedImage img = SignatureToImage.convertJsonToImage(s.content)
 				subscriptionsMap.put("subscriber"+s.id, [img, sig.subscriptionPageNumber, sig.subscriptionX, sig.subscriptionY, xScale, yScale] as Object[])
 				s = null
@@ -228,7 +228,7 @@ class PdfService {
 			}
 			
 			s = subscriptions.find { it.personRole?.equals(Subscription.PersonRole.ACCEPTANT2) == true }
-			if (s.content != null) {
+			if (s?.content != null) {
 				BufferedImage img = SignatureToImage.convertJsonToImage(s.content)
 				subscriptionsMap.put("subscriber"+s.id, [img, sig.subscriptionPageNumber, sig.subscriptionX+subscriptionDeltaX, sig.subscriptionY, xScale, yScale] as Object[])
 				s = null
@@ -242,8 +242,8 @@ class PdfService {
 		}
 		
 		if (sig.phSubscriptionPageNumber != null && sig.phSubscriptionPageNumber > -1) {
-			s = subscriptions.find { it.personRole?.equals(Subscription.PersonRole.PH) == true }
-			if (s.content != null) {
+			Subscription s = subscriptions.find { it.personRole?.equals(Subscription.PersonRole.PH) == true }
+			if (s?.content != null) {
 				BufferedImage img = SignatureToImage.convertJsonToImage(s.content)
 				subscriptionsMap.put("subscriber"+s.id, [img, sig.phSubscriptionPageNumber, sig.phSubscriptionX, sig.phSubscriptionY, xScale, yScale] as Object[])
 				s = null
