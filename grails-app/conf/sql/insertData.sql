@@ -886,7 +886,7 @@ insert into EUMOWY.PANEL (id, version, name, order_no) values (7, 0, 'daneAkcept
 insert into EUMOWY.PANEL (id, version, name, order_no) values (8, 0, 'daneDoWydruku','140');
 insert into EUMOWY.PANEL (id, version, name, order_no) values (9, 0, 'danePunktu','130');
 insert into EUMOWY.PANEL (id, version, name, order_no) values (10, 0, 'dcc','380');
-insert into EUMOWY.PANEL (id, version, name, order_no) values (11, 0, 'dCCZakresUruchomienia','370');
+insert into EUMOWY.PANEL (id, version, name, order_no) values (11, 0, 'dccZakresUruchomienia','370');
 insert into EUMOWY.PANEL (id, version, name, order_no) values (12, 0, 'deklaracjeAkceptanta','310');
 insert into EUMOWY.PANEL (id, version, name, order_no) values (13, 0, 'dodajPunkt','240');
 insert into EUMOWY.PANEL (id, version, name, order_no) values (14, 0, 'dodatkoweUslugi','280');
