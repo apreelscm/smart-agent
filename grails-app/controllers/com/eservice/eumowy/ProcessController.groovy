@@ -232,7 +232,7 @@ class ProcessController {
         }
 
         response.setContentType("application/octet-stream")
-        response.setHeader("Content-disposition", "${params.contentDisposition}; filename=${file.name}")
+        response.setHeader("Content-disposition", "${params.contentDisposition}; filename=\"${file.name}\"")
         response.outputStream << file.file.content
     }
 
