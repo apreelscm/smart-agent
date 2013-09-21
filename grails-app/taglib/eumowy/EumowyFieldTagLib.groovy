@@ -68,7 +68,7 @@ class EumowyFieldTagLib {
         def postfix = attrs.remove("postfix")
         int offset = attrs.offset.toString().isNumber() ? Integer.valueOf(attrs.remove("offset")) : 0
 
-        attrs.style = "text-align:right"
+        attrs.style = "text-align:right" + (width ? "; width:${width}" : "")
         attrs.class = attrs.class + " " + hasErrors(bean:attrs.validatable,field:attrs.name,'error')
 
         StringBuilder sb = new StringBuilder()

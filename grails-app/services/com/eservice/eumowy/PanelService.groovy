@@ -30,24 +30,24 @@ class PanelService {
     }
 
     def getAneksDoUmowyNajmuZestawuPos(ProcessCommand cmd,def calc) {
-        cmd.dataAneksowanejUmowyPos =  cmd.dataAneksowanejUmowyPos ?: ""
+        cmd.dataAneksowanejUmowyPos =  nullify(cmd.dataAneksowanejUmowyPos)
     }
 
     def getAneksDoUmowyPrepaid(ProcessCommand cmd,def calc) {
-        cmd.dataAneksowanejUmowyPrepaid = cmd.dataAneksowanejUmowyPrepaid ?: ""
+        cmd.dataAneksowanejUmowyPrepaid = nullify(cmd.dataAneksowanejUmowyPrepaid)
     }
 
     def getCzasObowiazywaniaUmowy(ProcessCommand cmd ,def calc) {
-        cmd.umowaCzas = cmd.umowaCzas ?: ""
-        cmd.umowaOznOd = cmd.umowaOznOd ?: ""
-        cmd.umowaOznDo = cmd.umowaOznDo ?: ""
+        cmd.umowaCzas = nullify(cmd.umowaCzas)
+        cmd.umowaOznOd = nullify(cmd.umowaOznOd)
+        cmd.umowaOznDo = nullify(cmd.umowaOznDo)
     }
 
     def getDaneAkceptanta(ProcessCommand cmd ,def calc) {
         def result = cbdService.getDaneAkceptanta(cmd.nip);
 
         cmd.akceptantNazwaOficjalna = result?.nazwa ?: ""
-        cmd.akceptantNazwaSieciowa = cmd.akceptantNazwaSieciowa ?: "" //TODO
+        cmd.akceptantNazwaSieciowa = nullify(cmd.akceptantNazwaSieciowa) //TODO
         cmd.akceptantRegon = result?.regon ?: ""
 
         cmd.akceptantNazwaOficjalnaCbd= cmd.akceptantNazwaOficjalna
@@ -56,17 +56,17 @@ class PanelService {
     }
 
     def getDaneDoWydruku(ProcessCommand cmd ,def calc) {
-        cmd.nazwaDoWydrukuZTerminalaPos = cmd.nazwaDoWydrukuZTerminalaPos ?: ""
-        cmd.wydrukNazwaDoWyszukwarki =cmd.wydrukNazwaDoWyszukwarki ?: ""
-        cmd.wydrukUlicaTytul =cmd.wydrukUlicaTytul ?: ""
-        cmd.wydrukUlica =cmd.wydrukUlica ?: ""
-        cmd.wydrukNrDomu =cmd.wydrukNrDomu ?: ""
-        cmd.wydrukNrMieszkania =cmd.wydrukNrMieszkania ?: ""
-        cmd.wydrukMiasto =cmd.wydrukMiasto ?: ""
-        cmd.wydrukKodPocztowy = cmd.wydrukKodPocztowy ?: ""
-        cmd.wydrukPoczta =cmd.wydrukPoczta ?: ""
-        cmd.wydrukLinia1 =cmd.wydrukLinia1 ?: ""
-        cmd.wydrukLinia2 =cmd.wydrukLinia2 ?: ""
+        cmd.nazwaDoWydrukuZTerminalaPos = nullify(cmd.nazwaDoWydrukuZTerminalaPos)
+        cmd.wydrukNazwaDoWyszukwarki = nullify(cmd.wydrukNazwaDoWyszukwarki)
+        cmd.wydrukUlicaTytul = nullify(cmd.wydrukUlicaTytul)
+        cmd.wydrukUlica = nullify(cmd.wydrukUlica)
+        cmd.wydrukNrDomu = nullify(cmd.wydrukNrDomu)
+        cmd.wydrukNrMieszkania = nullify(cmd.wydrukNrMieszkania)
+        cmd.wydrukMiasto = nullify(cmd.wydrukMiasto)
+        cmd.wydrukKodPocztowy = nullify(cmd.wydrukKodPocztowy)
+        cmd.wydrukPoczta = nullify(cmd.wydrukPoczta)
+        cmd.wydrukLinia1 = nullify(cmd.wydrukLinia1)
+        cmd.wydrukLinia2 = nullify(cmd.wydrukLinia2)
     }
 
     def getDanePos(ProcessCommand cmd ,def calc) {
@@ -86,12 +86,12 @@ class PanelService {
         cmd.oplataMasteroPr =calculatorService.getCalcProperty(calc,"OPLATA_DCC_MAESTRO_PR")
     }
 
-    def getDccZakresUruchomienia(ProcessCommand cmd ,def calc) {
-        cmd.dccZakresUruchomienia = cmd.dccZakresUruchomienia ?: ""
+    def getDCCZakresUruchomienia(ProcessCommand cmd ,def calc) {
+        cmd.dccZakresUruchomienia = nullify(cmd.dccZakresUruchomienia)
     }
 
     def getDeklaracjeAkceptanta(ProcessCommand cmd ,def calc) {
-        cmd.informacjaHandlowa = cmd.informacjaHandlowa ?: ""
+        cmd.informacjaHandlowa = nullify(cmd.informacjaHandlowa)
     }
 
     def getDodajPos(ProcessCommand cmd ,def calc) {
@@ -103,34 +103,30 @@ class PanelService {
     }
 
     def getDodatkoweUslugi(ProcessCommand cmd ,def calc) {
-        cmd.oplataZaDzienneZestawienieTransakcji =cmd.oplataZaDzienneZestawienieTransakcji ?: ""
-        cmd.oplataZaMiesieczneZestawienieTransakcji =cmd.oplataZaMiesieczneZestawienieTransakcji ?: ""
-        cmd.oplataZaPotwierdzenieWykonaniaPrzelewu =cmd.oplataZaPotwierdzenieWykonaniaPrzelewu ?: ""
-        cmd.oplataZaDostarczeniePapieru =cmd.oplataZaDostarczeniePapieru ?: ""
-        cmd.oplataZaZmianeGrafiki =cmd.oplataZaZmianeGrafiki ?: ""
-        cmd.oplataZaInstalacjePOS =cmd.oplataZaInstalacjePOS ?: ""
-        cmd.oplataZaInstalacjeGPRS =cmd.oplataZaInstalacjeGPRS ?: ""
-        cmd.oplataZaUruchomienieWalutyObcej =cmd.oplataZaUruchomienieWalutyObcej ?: ""
+        cmd.oplataZaDzienneZestawienieTransakcji = nullify(cmd.oplataZaDzienneZestawienieTransakcji)
+        cmd.oplataZaMiesieczneZestawienieTransakcji = nullify(cmd.oplataZaMiesieczneZestawienieTransakcji)
+        cmd.oplataZaPotwierdzenieWykonaniaPrzelewu = nullify(cmd.oplataZaPotwierdzenieWykonaniaPrzelewu)
+        cmd.oplataZaDostarczeniePapieru = nullify(cmd.oplataZaDostarczeniePapieru)
+        cmd.oplataZaZmianeGrafiki = nullify(cmd.oplataZaZmianeGrafiki)
+        cmd.oplataZaInstalacjePOS = nullify(cmd.oplataZaInstalacjePOS)
+        cmd.oplataZaInstalacjeGPRS = nullify(cmd.oplataZaInstalacjeGPRS)
+        cmd.oplataZaUruchomienieWalutyObcej = nullify(cmd.oplataZaUruchomienieWalutyObcej)
     }
 
     def getDodatkoweUslugi2(ProcessCommand cmd ,def calc) {
         cmd.wydrukGrafikiCena = calculatorService.getCalcProperty(calc,"OPLATA_LOGO")
         cmd.dzialaniaMatematyczneCena = calculatorService.getCalcProperty(calc,"OPLATA_KALKULATOR")
-        cmd.tytulPlatnosciCena =cmd.tytulPlatnosciCena ?: ""
-        cmd.pierwszaSesjaCena =cmd.pierwszaSesjaCena ?: ""
+        cmd.tytulPlatnosciCena = nullify(cmd.tytulPlatnosciCena)
+        cmd.pierwszaSesjaCena = nullify(cmd.pierwszaSesjaCena)
     }
 
     def getDodatkoweUslugiMud(ProcessCommand cmd ,def calc) {
-
-    }
-
-    def getDodatkoweUslugiMud(ProcessCommand cmd) {
-        cmd.mudCena = ""
+        cmd.mudCena = nullify(cmd.mudCena)
     }
 
     def getDodatkoweUslugiUTAIntegracja(ProcessCommand cmd ,def calc) {
-        cmd.weryfikacjaPINCena =cmd.weryfikacjaPINCena ?: ""
-        cmd.systemKasowyCena =cmd.systemKasowyCena ?: ""
+        cmd.weryfikacjaPINCena = nullify(cmd.weryfikacjaPINCena)
+        cmd.systemKasowyCena = nullify(cmd.systemKasowyCena)
     }
 
     def getDodatkoweWyposazenie(ProcessCommand cmd ,def calc) {
@@ -140,7 +136,7 @@ class PanelService {
         cmd.doladowania_tp = calculatorService.getCalcProperty(calc,"CZY_TELEPOMPKA")
         cmd.doladowania_tk = calculatorService.getCalcProperty(calc,"CZY_TELEKODZIK")
         cmd.srednia_sprzedaz_doladowan = calculatorService.getCalcProperty(calc,"DEKLARACJA_SPRZEDAZY_PP")
-        cmd.srednia_sprzedaz_doladowan_slownie = cmd.srednia_sprzedaz_doladowan_slownie ?: ""
+        cmd.srednia_sprzedaz_doladowan_slownie = nullify(cmd.srednia_sprzedaz_doladowan_slownie)
     }
 
     def getFunkcjeTerminala(ProcessCommand cmd ,def calc) {
@@ -153,18 +149,13 @@ class PanelService {
         cmd.ifOplataDinersClub = calculatorService.getCalcProperty(calc,"OPLATA_IFPLUS_DINERSCLUB")
         cmd.ifOplataIKO = calculatorService.getCalcProperty(calc,"OPLATA_IFPLUS_IKO")
         cmd.ifOplataPKOPB = calculatorService.getCalcProperty(calc,"OPLATA_IFPLUS_PKOBP")
-
-
-
-
-
     }
 
     def getInformacjeDodatkowe(ProcessCommand cmd ,def calc) {
-        cmd.dzialalnoscForma = cmd.dzialalnoscForma ?: ""
-        cmd.dzialalnoscFormaInna = cmd.dzialalnoscFormaInna?: ""
-        cmd.dzialalnoscDokument = cmd.dzialalnoscDokument ?: ""
-        cmd.dzialalnoscDokumentInny = cmd.dzialalnoscDokumentInny ?: ""
+        cmd.dzialalnoscForma = nullify(cmd.dzialalnoscForma)
+        cmd.dzialalnoscFormaInna = nullify(cmd.dzialalnoscFormaInna)
+        cmd.dzialalnoscDokument = nullify(cmd.dzialalnoscDokument)
+        cmd.dzialalnoscDokumentInny = nullify(cmd.dzialalnoscDokumentInny)
     }
 
     def getInformacjeTechniczne(ProcessCommand cmd ,def calc) {
@@ -180,20 +171,20 @@ class PanelService {
     }
 
     def getOplataDCCZaUruchomienie(ProcessCommand cmd ,def calc) {
-        cmd.oplataZaUruchomienieDCC =cmd.oplataZaUruchomienieDCC ?: ""
+        cmd.oplataZaUruchomienieDCC = nullify(cmd.oplataZaUruchomienieDCC)
     }
 
     def getOplatyDCC(ProcessCommand cmd ,def calc) {
-        cmd.oplataZaPlatnoscWInnejWalucie = calculatorService.getCalcProperty(calc,"OPLATA_DCC")
+        cmd.oplataZaPlatnoscWInnejWalucie = calculatorService.getCalcProperty(calc,"OPLATA_DCC") ?: ""
     }
 
     def getOsobaDoKontaktu(ProcessCommand cmd ,def calc) {
-        cmd.kontaktTytul =cmd.kontaktTytul ?: ""
-        cmd.kontaktImie =cmd.kontaktImie ?: ""
-        cmd.kontaktNazwisko =cmd.kontaktNazwisko ?: ""
-        cmd.kontaktTelStacjonarny =cmd.kontaktTelStacjonarny ?: ""
-        cmd.kontaktTelKomorkowy =cmd.kontaktTelKomorkowy ?: ""
-        cmd.kontaktEmail =cmd.kontaktEmail ?: ""
+        cmd.kontaktTytul = nullify(cmd.kontaktTytul)
+        cmd.kontaktImie = nullify(cmd.kontaktImie)
+        cmd.kontaktNazwisko = nullify(cmd.kontaktNazwisko)
+        cmd.kontaktTelStacjonarny = nullify(cmd.kontaktTelStacjonarny)
+        cmd.kontaktTelKomorkowy = nullify(cmd.kontaktTelKomorkowy)
+        cmd.kontaktEmail = nullify(cmd.kontaktEmail)
     }
 
     def getOsobaDoKontaktuWPunkcie(ProcessCommand cmd ,def calc) {
@@ -220,12 +211,12 @@ class PanelService {
           cmd.reprezentant2Imie = osoba2.imie
           cmd.reprezentant2Nazwisko = osoba2.nazwisko*/
 
-        cmd.reprezentant1Tytul =cmd.reprezentant1Tytul ?: ""
-        cmd.reprezentant1Imie =cmd.reprezentant1Imie ?: ""
-        cmd.reprezentant1Nazwisko =cmd.reprezentant1Nazwisko ?: ""
-        cmd.reprezentant2Tytul =cmd.reprezentant2Tytul ?: ""
-        cmd.reprezentant2Imie =cmd.reprezentant2Imie ?: ""
-        cmd.reprezentant2Nazwisko =cmd.reprezentant2Nazwisko ?: ""
+        cmd.reprezentant1Tytul = nullify(cmd.reprezentant1Tytul)
+        cmd.reprezentant1Imie = nullify(cmd.reprezentant1Imie)
+        cmd.reprezentant1Nazwisko = nullify(cmd.reprezentant1Nazwisko)
+        cmd.reprezentant2Tytul = nullify(cmd.reprezentant2Tytul)
+        cmd.reprezentant2Imie = nullify(cmd.reprezentant2Imie)
+        cmd.reprezentant2Nazwisko = nullify(cmd.reprezentant2Nazwisko)
 
     }
 
@@ -377,40 +368,40 @@ class PanelService {
     }
 
     def getRachunekBankowyKlienta(ProcessCommand cmd ,def calc) {
-        cmd.numerRachunkuBankowegoKlienta =cmd.numerRachunkuBankowegoKlienta ?: ""
-        cmd.bankKlienta = cmd.bankKlienta ?: ""
+        cmd.numerRachunkuBankowegoKlienta = nullify(cmd.numerRachunkuBankowegoKlienta)
+        cmd.bankKlienta = nullify(cmd.bankKlienta)
     }
 
     def getScoring(ProcessCommand cmd ,def calc) {
         cmd.scoringMcc = calculatorService.getCalcProperty(calc,"MCC")
-        cmd.scoringDzialalnosc = cmd.scoringDzialalnosc ?: ""
-        cmd.scoringIloscTransakcji = cmd.scoringIloscTransakcji ?: ""
-        cmd.scoringCzestoscTransakcji = cmd.scoringCzestoscTransakcji ?: ""
-        cmd.scoringOtwartyZamkniety = cmd.scoringOtwartyZamkniety ?: ""
-        cmd.scoringStanZadbany = cmd.scoringStanZadbany ?: ""
-        cmd.scoringWielkoscMiejscowosci = cmd.scoringWielkoscMiejscowosci ?: ""
-        cmd.scoringLokalizacjaPunktu = cmd.scoringLokalizacjaPunktu ?: ""
-        cmd.scoringTypPunktu = cmd.scoringTypPunktu ?: ""
-        cmd.scoringTypPunktuInny = cmd.scoringTypPunktuInny ?: ""
-        cmd.scoringWielkoscPunktu = cmd.scoringWielkoscPunktu ?: ""
-        cmd.scoringAkceptacja = cmd.scoringAkceptacja ?: ""
-        cmd.scoringMonitoring = cmd.scoringMonitoring ?: ""
-        cmd.scoringCharakterystyka = cmd.scoringCharakterystyka ?: ""
-        cmd.scoringCharakterystykaInna = cmd.scoringCharakterystykaInna ?: ""
-        cmd.scoringKoncesja = cmd.scoringKoncesja ?: ""
-        cmd.rodzajZezwolenia = cmd.rodzajZezwolenia ?: ""
-        cmd.scoringWlasnosc = cmd.scoringWlasnosc ?: ""
-        cmd.scoringDzialalnoscCzas = cmd.scoringDzialalnoscCzas ?: ""
-        cmd.scoringSprzedazTowarowEkskluzywnych = cmd.scoringSprzedazTowarowEkskluzywnych ?: ""
-        cmd.scoringPonad50ProcentObrotowWNocy = cmd.scoringPonad50ProcentObrotowWNocy ?: ""
-        cmd.scoringRuchTurystycznyPrzygraniczny = cmd.scoringRuchTurystycznyPrzygraniczny ?: ""
-        cmd.scoringUslugiPlatneZGory = cmd.scoringUslugiPlatneZGory ?: ""
-        cmd.scoringDochodowosc = cmd.scoringDochodowosc ?: ""
-        cmd.scoringDeklaracjaFinansowa = cmd.scoringDeklaracjaFinansowa ?: ""
-        cmd.scoringDeklaracjaFinansowaObrotOgolem = cmd.scoringDeklaracjaFinansowaObrotOgolem ?: ""
-        cmd.scoringDeklaracjaFinansowaObrotNaKarty = cmd.scoringDeklaracjaFinansowaObrotNaKarty ?: ""
-        cmd.scoringDeklaracjaFinansowaSredniObrot = cmd.scoringDeklaracjaFinansowaSredniObrot ?: ""
-        cmd.scoringDeklaracjaFinansowaSredniaTransakcja = cmd.scoringDeklaracjaFinansowaSredniaTransakcja ?: ""
+        cmd.scoringDzialalnosc = nullify(cmd.scoringDzialalnosc)
+        cmd.scoringIloscTransakcji = nullify(cmd.scoringIloscTransakcji)
+        cmd.scoringCzestoscTransakcji = nullify(cmd.scoringCzestoscTransakcji)
+        cmd.scoringOtwartyZamkniety = nullify(cmd.scoringOtwartyZamkniety)
+        cmd.scoringStanZadbany = nullify(cmd.scoringStanZadbany)
+        cmd.scoringWielkoscMiejscowosci = nullify(cmd.scoringWielkoscMiejscowosci)
+        cmd.scoringLokalizacjaPunktu = nullify(cmd.scoringLokalizacjaPunktu)
+        cmd.scoringTypPunktu = nullify(cmd.scoringTypPunktu)
+        cmd.scoringTypPunktuInny = nullify(cmd.scoringTypPunktuInny)
+        cmd.scoringWielkoscPunktu = nullify(cmd.scoringWielkoscPunktu)
+        cmd.scoringAkceptacja = nullify(cmd.scoringAkceptacja)
+        cmd.scoringMonitoring = nullify(cmd.scoringMonitoring)
+        cmd.scoringCharakterystyka = nullify(cmd.scoringCharakterystyka)
+        cmd.scoringCharakterystykaInna = nullify(cmd.scoringCharakterystykaInna)
+        cmd.scoringKoncesja = nullify(cmd.scoringKoncesja)
+        cmd.rodzajZezwolenia = nullify(cmd.rodzajZezwolenia)
+        cmd.scoringWlasnosc = nullify(cmd.scoringWlasnosc)
+        cmd.scoringDzialalnoscCzas = nullify(cmd.scoringDzialalnoscCzas)
+        cmd.scoringSprzedazTowarowEkskluzywnych = nullify(cmd.scoringSprzedazTowarowEkskluzywnych)
+        cmd.scoringPonad50ProcentObrotowWNocy = nullify(cmd.scoringPonad50ProcentObrotowWNocy)
+        cmd.scoringRuchTurystycznyPrzygraniczny = nullify(cmd.scoringRuchTurystycznyPrzygraniczny)
+        cmd.scoringUslugiPlatneZGory = nullify(cmd.scoringUslugiPlatneZGory)
+        cmd.scoringDochodowosc = nullify(cmd.scoringDochodowosc)
+        cmd.scoringDeklaracjaFinansowa = nullify(cmd.scoringDeklaracjaFinansowa)
+        cmd.scoringDeklaracjaFinansowaObrotOgolem = nullify(cmd.scoringDeklaracjaFinansowaObrotOgolem)
+        cmd.scoringDeklaracjaFinansowaObrotNaKarty = nullify(cmd.scoringDeklaracjaFinansowaObrotNaKarty)
+        cmd.scoringDeklaracjaFinansowaSredniObrot = nullify(cmd.scoringDeklaracjaFinansowaSredniObrot)
+        cmd.scoringDeklaracjaFinansowaSredniaTransakcja = nullify(cmd.scoringDeklaracjaFinansowaSredniaTransakcja)
     }
 
     def getSerwis(ProcessCommand cmd ,def calc) {
@@ -424,7 +415,7 @@ class PanelService {
         }
 
         cmd.obslugaTyp = result?.value ?: "";
-        cmd.obslugaEkonomicznyCena =cmd.obslugaEkonomicznyCena ?: "";
+        cmd.obslugaEkonomicznyCena = nullify(cmd.obslugaEkonomicznyCena);
     }
 
     def getSerwisEkonomiczny(ProcessCommand cmd ,def calc) {
@@ -467,7 +458,7 @@ class PanelService {
     }
 
     def getUmowa2(ProcessCommand cmd ,def calc) {
-        cmd.miejsceUmowy= cmd.miejsceUmowy ?: ""
+        cmd.miejsceUmowy= nullify(cmd.miejsceUmowy)
     }
 
     def getUwagi(ProcessCommand cmd ,def calc) {
@@ -495,5 +486,10 @@ class PanelService {
 
     def getZestawPosStawkiPreferencyjne(ProcessCommand cmd ,def calc) {
 
+    }
+
+
+    def nullify(def value){
+        value != ProcessCommand.DEFAULT_VALUE ? value : ""
     }
 }

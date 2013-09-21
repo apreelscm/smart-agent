@@ -6,7 +6,7 @@
                 <li class="align-center">
                     <span class="align-right"><g:message code="panel.payment.foreing.currency2"/></span>
                     <span class="align-left">
-                        <g:field type="number" step="any"  name="oplataZaPlatnoscWInnejWalucie" value="${data.oplataZaPlatnoscWInnejWalucie}" style="width: 100px" required="true"/> <g:message code="panel.polish.currency"/>
+                        <eumowy:currencyField name="oplataZaPlatnoscWInnejWalucie" validatable="${data}" value="${data.oplataZaPlatnoscWInnejWalucie}" required="true"/>
                     </span>
                 </li>
             </ul>

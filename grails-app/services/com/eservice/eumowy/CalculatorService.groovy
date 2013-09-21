@@ -6,6 +6,8 @@ class CalculatorService {
 
     static transactional = false
 
+    static final BRAK_LABEL = "BRAK"
+
     def isCalcValid(def calc, def signatures) {
 
         if(!Environment.isDevelopmentMode()){ return true }
@@ -34,6 +36,6 @@ class CalculatorService {
 
     def getCalcProperty(def calc, def key){
         //println("has ${key} = ${ calc.contains([POLEAPREEL:key, WARTOSCAPREEL:value])}")
-        calc.findResult{ it.POLEAPREEL == key ? it.WARTOSCAPREEL : null }
+        calc.findResult{ (it.POLEAPREEL == key && it.WARTOSCAPREEL != BRAK_LABEL  ) ? it.WARTOSCAPREEL : null }
     }
 }

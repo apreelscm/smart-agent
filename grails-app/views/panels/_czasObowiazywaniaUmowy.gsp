@@ -3,21 +3,24 @@
         <div class="belka-glowna"><g:message code="panel.aggrement.time.title"/> </div>
         <div class="centre" style="text-align: center; padding-top: 20px; width: 750px">
             <ul class="table-list centre">
-                <g:radioGroup name="umowaCzas"
-                              labels="['panel.aggrement.time.not.defined','panel.aggrement.time.defined']"
-                              values="['nieoznaczony', 'oznaczony']"
-                              value="${data.umowaCzas}">
-                    <li><span class="align-left"><label> ${it.radio} <g:message code="${it.label}"/></label></span></li>
-                </g:radioGroup>
+                <div class="${hasErrors(bean:data,field:'hasUmowaCzas','errorContainer')}">
+                    <g:hiddenField name="hasUmowaCzas" value="true"/>
+                    <g:radioGroup name="umowaCzas"
+                                  labels="['panel.aggrement.time.not.defined','panel.aggrement.time.defined']"
+                                  values="['nieoznaczony', 'oznaczony']"
+                                  value="${data.umowaCzas != com.eservice.eumowy.command.ProcessCommand.DEFAULT_VALUE ? data.umowaCzas : '' }">
+                        <li><span class="align-left"><label> ${it.radio} <g:message code="${it.label}"/></label></span></li>
+                    </g:radioGroup>
+                </div>
             </ul>
             <ul>
                 <li id="aggrementDates">
                     <!-- czas: ${data.umowaCzas} od: ${data.umowaOznOd} do: ${data.umowaOznDo} -->
                     <span>
                         <span><g:message code="panel.from"/></span>
-                        <span><eumowy:textField name="umowaOznOd" value="${data.umowaOznOd}" validatable="${data}" readonly="true" style="width: 120px;"/></span>
+                        <span><eumowy:textField name="umowaOznOd" value="${data.umowaOznOd}" validatable="${data}"  style="width: 120px;"/></span>
                         <span><g:message code="panel.to"/></span>
-                        <span><eumowy:textField name="umowaOznDo" value="${data.umowaOznDo}" validatable="${data}" readonly="true" style="width: 120px;"/></span>
+                        <span><eumowy:textField name="umowaOznDo" value="${data.umowaOznDo}" validatable="${data}"  style="width: 120px;"/></span>
                     </span>
                 </li>
             </ul>
