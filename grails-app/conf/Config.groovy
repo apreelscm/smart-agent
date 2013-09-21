@@ -14,6 +14,19 @@ import org.apache.log4j.jdbc.JDBCAppender
 //    grails.config.locations << "file:" + System.properties["${appName}.config.location"]
 // }
 
+// referencja do konfiguracji srodowisk, poza dev parametr ustawiany przy starcie tomcata
+grails.config.locations = []
+development {
+    grails.config.locations << "file:web-app/WEB-INF/${appName}-config-${grails.util.Environment.current.name}.groovy"
+}
+// TODO do usuniecia , na razie zostaje zeby nie kopiowac za kazdym razem konfigu na serwer
+test {
+    grails.config.locations << "file:web-app/WEB-INF/${appName}-config-${grails.util.Environment.current.name}.groovy"
+}
+uat {
+    grails.config.locations << "file:web-app/WEB-INF/${appName}-config-${grails.util.Environment.current.name}.groovy"
+}
+
 grails.project.groupId = appName // change this to alter the default package name and Maven publishing destination
 grails.mime.file.extensions = true // enables the parsing of file extensions from URLs into the request format
 grails.mime.use.accept.header = false
@@ -149,6 +162,29 @@ log4j = {
                         threshold: org.apache.log4j.Level.INFO
                 )
             }
+            uat {
+                appender new JDBCAppender(
+                        name: "database",
+                        //URL: "jdbc:oracle:thin:@192.168.3.221:1523:tstcbd",
+                        URL: "jdbc:oracle:thin:@db-eservice.apreel.lan:1521:cbd01out",
+                        user: "eumowy_app",
+                        password: "eumowy_app",
+                        driver: "oracle.jdbc.driver.OracleDriver",
+                        sql: "INSERT INTO EUMOWY.LOGS (login, log_date, log_message) VALUES ('%X{sessionUserName}','%d{yyyy.MM.dd HH:mm:ss}', '%m')",
+                        threshold: org.apache.log4j.Level.INFO
+                )
+            }
+            production {
+                appender new JDBCAppender(
+                        name: "database",
+                        URL: "TODO",
+                        user: "eumowy_app",
+                        password: "eumowy_app",
+                        driver: "oracle.jdbc.driver.OracleDriver",
+                        sql: "INSERT INTO EUMOWY.LOGS (login, log_date, log_message) VALUES ('%X{sessionUserName}','%d{yyyy.MM.dd HH:mm:ss}', '%m')",
+                        threshold: org.apache.log4j.Level.INFO
+                )
+            }
         }
     }
 
@@ -195,19 +231,6 @@ grails.plugins.springsecurity.interceptUrlMap = [
 //                "mail.smtp.ssl.trust": "*"]
 //    }
 //}
-grails {
-    mail {
-        host = "mail.your-server.de"
-        port = 465
-        username = "atest@apreel.com"
-        password = "atest"
-        props = ["mail.smtp.auth": "true",
-                "mail.smtp.socketFactory.port": "465",
-                "mail.smtp.socketFactory.class": "javax.net.ssl.SSLSocketFactory",
-                "mail.smtp.socketFactory.fallback": "false",
-                "mail.smtp.ssl.trust": "*"]
-    }
-}
 trustAll = true
 
 fileuploader {

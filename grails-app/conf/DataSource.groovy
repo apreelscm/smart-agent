@@ -38,6 +38,17 @@ environments {
             url = "jdbc:oracle:thin:@db-eservice.apreel.lan:1521:cbd01out"
         }
     }
+    uat {
+        dataSource {
+            driverClassName = "oracle.jdbc.driver.OracleDriver"
+            dialect = "org.hibernate.dialect.Oracle10gDialect"
+            username = "eumowy_app"
+            password = "eumowy_app"
+            dbCreate = "" // TODO change later for validate
+            //url = "jdbc:oracle:thin:@192.168.3.221:1523:tstcbd"
+            url = "jdbc:oracle:thin:@db-eservice.apreel.lan:1521:cbd01out"
+        }
+    }
     production {
         dataSource {
             dbCreate = "validate"
@@ -51,7 +62,7 @@ environments {
                testOnBorrow=true
                testWhileIdle=true
                testOnReturn=true
-               validationQuery="SELECT 1"
+               validationQuery="SELECT 1 from dual"
             }
         }
     }
