@@ -34,7 +34,7 @@ class CbdService {
         switch (Environment.getCurrent()) {
             case Environment.DEVELOPMENT:
                 return findCalculatorByNipMock(clientNip);
-            case Environment.TEST:
+            default:
                 return cbdDAO.selectMany(FIND_CALC_BY_NIP,[nip:clientNip]).collect{ [POLEAPREEL:it.POLEAPREEL,WARTOSCAPREEL:it.WARTOSCAPREEL]}//*.POLEAPREEL
         }
     }
@@ -45,7 +45,7 @@ class CbdService {
         switch (Environment.getCurrent()) {
             case Environment.DEVELOPMENT:
                 return findCalculatorIdByNipMock(clientNip);
-            case Environment.TEST:
+            default:
                 return cbdDAO.selectOne(FIND_CALC_ID_BY_NIP,[nip:clientNip])?.get("KAK_ID")
         }
     }
@@ -56,7 +56,7 @@ class CbdService {
         switch (Environment.getCurrent()) {
             case Environment.DEVELOPMENT:
                return findClientIdByNipMock(clientNip);
-            case Environment.TEST:
+            default:
                 def rowResult = cbdDAO.selectOne(FIND_CLIENT_ID_BY_NIP,[nip:clientNip])
                 def cbdClient = new Client(rowResult)
                 def eumowyClient = cbdClient.nip ? (Client.findByNip(cbdClient.nip,[sort: "id", order: "desc"]) ?: cbdClient) :null

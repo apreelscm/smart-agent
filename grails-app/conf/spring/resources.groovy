@@ -41,7 +41,7 @@ beans = {
         case Environment.DEVELOPMENT:
             roleService(NoRoleService){}
             break;
-        case Environment.TEST:
+        default:
             roleService(ECbdRoleService){
                 sessionFactory = ref('sessionFactory')
             }

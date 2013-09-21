@@ -18,7 +18,7 @@ class BootStrap {
                 createCBDDataForDevProfile();
                 createTestDomains()
                 break;
-            case Environment.TEST:
+            default:
                 //createTestDomains()
                 break;
         }

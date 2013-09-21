@@ -152,9 +152,6 @@ class ProcessService {
                 case Environment.DEVELOPMENT:
                     panelMockService."${panelFunctionName}"(cmd)
                     break;
-                case Environment.TEST:
-                    panelService."${panelFunctionName}"(cmd,calc)
-                    break;
                 default:
                     panelService."${panelFunctionName}"(cmd,calc)
             }

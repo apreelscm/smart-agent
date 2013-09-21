@@ -66,7 +66,7 @@ class EServiceAuthenticationProvider implements AuthenticationProvider {
                     authorities.add(new GrantedAuthorityImpl(EUM_ADMINISTRATOR))
                 }
                 break;
-            case Environment.TEST:
+           default:
                 if(userDTO.roles.any{ it.name == EUM_ADMINISTRATOR }){
                     authorities.add(new GrantedAuthorityImpl(EUM_ADMINISTRATOR))
                 }
