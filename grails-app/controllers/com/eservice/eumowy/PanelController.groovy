@@ -1,5 +1,6 @@
 package com.eservice.eumowy
 
+import com.eservice.eumowy.command.ProcessCommand
 import org.springframework.dao.DataIntegrityViolationException
 
 class PanelController {
@@ -24,32 +25,47 @@ class PanelController {
 
     def list(Integer max) {
 
-        def process = new Process();
-        process.panels = Panel.list();
-        process.client = new Client(nip: '4457490660')
+        if(flash.data){
+            [panelInstanceList: Panel.list(params), panelInstanceTotal: Panel.count(), data: flash.data]
+        }
+        else{
+            def process = new Process();
+            process.panels = Panel.list();
+            process.client = new Client(nip: '4457490660')
 
-        def calc = cbdService.findCalculatorByNip('4457490660')
+            def calc = cbdService.findCalculatorByNip('4457490660')
 
-        println("process.panels:"+ process.panels)
+            def processCmd =  new ProcessCommand()//processService.getSavedProcessCommand(process,calc)
+            processCmd.umowaOznOd = ""
+            processCmd.umowaOznDo = ""
+            processCmd.akceptantTelStacjonarny = ""
+            processCmd.akceptantTelKomorkowy = ""
+            processCmd.kontaktTelKomorkowy = ""
+            processCmd.kontaktTelStacjonarny = ""
 
-        def processCmd =  processService.getSavedProcessCommand(process,calc)
-        params.max = Math.min(max ?: 10, 100)
-        [panelInstanceList: Panel.list(params), panelInstanceTotal: Panel.count(), data: processCmd]
+
+            params.max = Math.min(max ?: 10, 100)
+            [panelInstanceList: Panel.list(params), panelInstanceTotal: Panel.count(), data: processCmd]
+        }
     }
 
     def create() {
         [panelInstance: new Panel(params)]
     }
 
-    def save() {
-        def panelInstance = new Panel(params)
-        if (!panelInstance.save(flush: true)) {
-            render(view: "create", model: [panelInstance: panelInstance])
-            return
+    def save(ProcessCommand cmd) {
+        log.info(params)
+        log.info(cmd.properties)
+
+        if(cmd.hasErrors()){
+            cmd.errors.each {
+                log.error(it)
+            }
         }
 
-        flash.message = message(code: 'default.created.message', args: [message(code: 'panel.label', default: 'Panel'), panelInstance.id])
-        redirect(action: "show", id: panelInstance.id)
+        flash.data = cmd
+
+        redirect(action: "list")
     }
 
     def show(Long id) {

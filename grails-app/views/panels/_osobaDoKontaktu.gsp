@@ -15,14 +15,13 @@
                     </span>
                 </li>
                 <li>
-                    <span>
-                        <span><g:message code="panel.landline.phone.number"/></span>
-                        <span><eumowy:textField class="phone" name="kontaktTelStacjonarny" value="${data.kontaktTelStacjonarny}" validatable="${data}" style="width: 100px;" maxlength="9"/></span>
+                    <g:hiddenField name="hasKontaktTel" value="true"/>
+
+                    <span class="${hasErrors(bean:data,field:'hasAkceptantTel','errorSpan')}">
+                        <div style="display: inline"><g:message code="panel.landline.phone.number"/><eumowy:textField class="phone" name="kontaktTelStacjonarny" value="${data.kontaktTelStacjonarny}" validatable="${data}"  maxlength="9"/></div>
+                        <div style="display: inline; margin-left: 5px"><g:message code="panel.mobile.phone.number"/> <eumowy:textField class="mobile-phone" name="kontaktTelKomorkowy" value="${data.kontaktTelKomorkowy}" validatable="${data}"  maxlength="9"/></div>
                     </span>
-                    <span>
-                        <span><g:message code="panel.mobile.phone.number"/></span>
-                        <span><eumowy:textField class="mobile-phone" name="kontaktTelKomorkowy" value="${data.kontaktTelKomorkowy}" validatable="${data}" style="width: 100px" maxlength="9"/></span>
-                    </span>
+
                     <span>
                         <span style="white-space:nowrap"><g:message code="panel.email"/></span>
                         <span><g:textField class="" name="kontaktEmail" value="${data.kontaktEmail}" validatable="${data}" style="width: 150px" email="true"/></span>

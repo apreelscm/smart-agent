@@ -648,6 +648,17 @@ fieldset.embedded legend {
 
 /* form fields with errors */
 
+.errorContainer{
+    border: 1px solid #FF0000;
+    padding: 3px 2px;
+}
+
+.errorSpan{
+    border: 1px solid #FF0000;
+    padding: 3px 2px;
+    padding-top: .8em;
+}
+
 .error input, .error select, .error textarea {
     /*background: #fff3f3;*/
     border-color: #ffaaaa;

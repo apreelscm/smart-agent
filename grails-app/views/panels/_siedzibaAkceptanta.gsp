@@ -50,20 +50,19 @@
                 </li>
                 <li>
                     <span>
-                        <span><g:message code="panel.landline.phone.number"/></span>
-                        <span>
-                            <eumowy:textField class="phone" name="akceptantTelStacjonarny" value="${data.akceptantTelStacjonarny}" validatable="${data}" readonly="${data.isFromCbd('akceptantTelStacjonarny')}" style="width: 100px;" maxlength="9"/>
-                            <g:hiddenField name="akceptantTelStacjonarnyCbd" value="${data.akceptantTelStacjonarnyCbd}"/>
+
+                        <g:hiddenField name="hasAkceptantTel" value="true"/>
+                        <g:hiddenField name="akceptantTelStacjonarnyCbd" value="${data.akceptantTelStacjonarnyCbd}"/>
+                        <g:hiddenField name="akceptantTelKomorkowyCbd" value="${data.akceptantTelKomorkowyCbd}"/>
+                        <g:hiddenField name="akceptantFaxCbd" value="${data.akceptantFaxCbd}"/>
+
+                        <span class="${hasErrors(bean:data,field:'hasAkceptantTel','errorSpan')}">
+                            <div style="display: inline"><g:message code="panel.landline.phone.number"/> <eumowy:textField class="phone" name="akceptantTelStacjonarny" value="${data.akceptantTelStacjonarny}" validatable="${data}" readonly="${data.isFromCbd('akceptantTelStacjonarny')}" style="width: 100px;" maxlength="9"/></div>
+                            <div style="display: inline; margin-left: 5px"><g:message code="panel.mobile.phone.number"/> <eumowy:textField class="mobile-phone" name="akceptantTelKomorkowy" value="${data.akceptantTelKomorkowy}" validatable="${data}" readonly="${data.isFromCbd('akceptantTelKomorkowy')}" style="width: 100px" maxlength="9"/></div>
                         </span>
-                        <span><g:message code="panel.fax"/></span>
+
                         <span>
-                            <g:textField class="fax" name="akceptantFax" value="${data.akceptantFax}" readonly="${data.isFromCbd('akceptantFax')}" style="width: 100px" maxlength="9"/>
-                            <g:hiddenField name="akceptantFaxCbd" value="${data.akceptantFaxCbd}"/>
-                        </span>
-                        <span><g:message code="panel.mobile.phone.number"/></span>
-                        <span>
-                            <eumowy:textField class="mobile-phone" name="akceptantTelKomorkowy" value="${data.akceptantTelKomorkowy}" validatable="${data}" readonly="${data.isFromCbd('akceptantTelKomorkowy')}" style="width: 100px" maxlength="9"/>
-                            <g:hiddenField name="akceptantTelKomorkowyCbd" value="${data.akceptantTelKomorkowyCbd}"/>
+                            <g:message code="panel.fax"/> <g:textField class="fax" name="akceptantFax" value="${data.akceptantFax}" readonly="${data.isFromCbd('akceptantFax')}" style="width: 100px" maxlength="9"/>
                         </span>
                     </span>
                 </li>

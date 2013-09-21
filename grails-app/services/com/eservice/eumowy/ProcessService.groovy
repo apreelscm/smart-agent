@@ -533,9 +533,13 @@ class ProcessService {
         def processDataList = [];
         cmd.properties.each { key, value ->
 
-            if (["class","process", "cbdService", "errors", "constraints", "notes"].contains(key) || value == ProcessCommand.DEFAULT_VALUE){
+            if (["class","process", "cbdService", "errors", "constraints",
+                    "notes", "hasUmowaCzas", "hasKontaktTel", "hasDoladowania", "hasAkceptantTel"]
+                    .contains(key) || value == ProcessCommand.DEFAULT_VALUE){
                 return
             }
+
+
 
             if(["allPoses", "allPoints", "points"].contains(key)){
                 //TODO implementacja logiki dla punktow

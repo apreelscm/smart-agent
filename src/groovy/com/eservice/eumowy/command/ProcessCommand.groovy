@@ -404,6 +404,10 @@ class ProcessCommand implements Serializable{
     List<AllPointsCommand> allPoints = ListUtils.lazyList([], FactoryUtils.instantiateFactory(AllPointsCommand))
     List<AllPosCommand> allPoses = ListUtils.lazyList([], FactoryUtils.instantiateFactory(AllPosCommand))
 
+    String hasUmowaCzas
+    String hasKontaktTel
+    String hasDoladowania
+    String hasAkceptantTel
 
     static constraints = {
 
@@ -415,8 +419,8 @@ class ProcessCommand implements Serializable{
         oplataZaInstalacjePOS(nullable:false, blank:false, shared: "number")
         oplataZaInstalacjeGPRS(nullable:false, blank:false, shared: "number")
         oplataZaUruchomienieWalutyObcej(nullable:false, blank:false, shared: "number")
-       // wydrukGrafikiCena(nullable:false, blank:false, shared: "number")
-       // dzialaniaMatematyczneCena(nullable:false, blank:false, shared: "number")
+        // wydrukGrafikiCena(nullable:false, blank:false, shared: "number")
+        // dzialaniaMatematyczneCena(nullable:false, blank:false, shared: "number")
         tytulPlatnosciCena(nullable:false, blank:false, shared: "number")
         pierwszaSesjaCena(nullable:false, blank:false, shared: "number")
 
@@ -427,11 +431,35 @@ class ProcessCommand implements Serializable{
         akceptantKontaktMiasto(nullable:false, blank:false)
         akceptantKontaktKodPocztowy(nullable:false, blank:false)
         akceptantKontaktPoczta(nullable:false, blank:false)
-    /*  dataAneksowanejUmowyPos(nullable:false, blank:false, shared: "date")
-        dataAneksowanejUmowyPrepaid(nullable:false, blank:false, shared: "date")*/
+        /*  dataAneksowanejUmowyPos(nullable:false, blank:false, shared: "date")
+            dataAneksowanejUmowyPrepaid(nullable:false, blank:false, shared: "date")*/
+
+        hasUmowaCzas(nullable:false, blank:false, validator: { value, cmd, errors ->
+            if(value && cmd.umowaCzas == DEFAULT_VALUE){
+                errors.rejectValue( "hasUmowaCzas", "default.atLeastOne.czasUmowy")
+                return false
+            }
+            return true
+        })
+
         umowaCzas(nullable:false, blank:false)
-        umowaOznOd(nullable:true, blank:true, shared: "date") //TODO VERIFY
-        umowaOznDo(nullable:true, blank:true, shared: "date") //TODO VERIFY
+
+        umowaOznOd(nullable:true, blank:true, shared: "date",validator: { value, cmd, errors ->
+            if(value == null && cmd.umowaCzas == "oznaczony"){
+                errors.rejectValue( "umowaOznOd", "default.validation.required.error", "Pole wymagane")
+                return false
+            }
+            return true
+        })
+
+        umowaOznDo(nullable:true, blank:true, shared: "date",validator: { value, cmd, errors ->
+            if(value == null && cmd.umowaCzas == "oznaczony"){
+                errors.rejectValue( "umowaOznDo", "default.validation.required.error", "Pole wymagane")
+                return false
+            }
+            return true
+        })
+
         akceptantNazwaOficjalna(nullable:false, blank:false) //a1!, M
         akceptantNazwaSieciowa(nullable:false, blank:false) //a1!
         akceptantRegon(nullable:false, blank:false, matches:"~|[0-9]{9}") //111111111, M
@@ -449,12 +477,12 @@ class ProcessCommand implements Serializable{
         wydrukPoczta(nullable:false, blank:false)
         wydrukLinia1(nullable:true, blank:true)
         wydrukLinia2(nullable:true, blank:true)
-     /*   oplataVISA(nullable:false, blank:false, shared: "number")
-        oplataVISAPr(nullable:false, blank:false, shared: "number")
-        oplataMasterCard(nullable:false, blank:false, shared: "number")
-        oplataMasterCardPr(nullable:false, blank:false, shared: "number")
-        oplataMaestro(nullable:false, blank:false, shared: "number")
-        oplataMasteroPr(nullable:false, blank:false, shared: "number")*/
+        /*   oplataVISA(nullable:false, blank:false, shared: "number")
+           oplataVISAPr(nullable:false, blank:false, shared: "number")
+           oplataMasterCard(nullable:false, blank:false, shared: "number")
+           oplataMasterCardPr(nullable:false, blank:false, shared: "number")
+           oplataMaestro(nullable:false, blank:false, shared: "number")
+           oplataMasteroPr(nullable:false, blank:false, shared: "number")*/
         dccZakresUruchomienia(nullable:false, blank:false)
         informacjaHandlowa(nullable:false, blank:false)
         oplataZaDzienneZestawienieTransakcji(nullable:false, blank:false, shared: "number")
@@ -465,27 +493,28 @@ class ProcessCommand implements Serializable{
         oplataZaInstalacjePOS(nullable:false, blank:false, shared: "number")
         oplataZaInstalacjeGPRS(nullable:false, blank:false, shared: "number")
         oplataZaUruchomienieWalutyObcej(nullable:false, blank:false, shared: "number")
-       // wydrukGrafikiCena(nullable:false, blank:false, shared: "number")
-       // dzialaniaMatematyczneCena(nullable:false, blank:false, shared: "number")
-        tytulPlatnosciCena(nullable:false, blank:false, shared: "number")
-        pierwszaSesjaCena(nullable:false, blank:false, shared: "number")
-        mudCena(nullable:false, blank:false, shared:"number")
+        // wydrukGrafikiCena(nullable:false, blank:false, shared: "number")
+        // dzialaniaMatematyczneCena(nullable:false, blank:false, shared: "number")
+        tytulPlatnosciCena(nullable:false, blank:true, shared: "number")
+        pierwszaSesjaCena(nullable:false, blank:true, shared: "number")
+        mudCena(nullable:false, blank:true, shared:"number")
         weryfikacjaPINCena(nullable:true)
         systemKasowyCena(nullable:true)
+
         doladowania_tk(nullable:true)
-        doladowania_tp(nullable:true, validator: { value, process, errors ->
-            if (value == null && process.doladowania_tk == null){
-                //panel nie jest wyswietlony
+        doladowania_tp(nullable:true)
+        hasDoladowania(nullable:true, validator: { value, process, errors ->
+            if(value == null){
                 return true
             }
 
-            if (!(value || process.doladowania_tk)) {
-                errors.rejectValue( "doladowania", "default.atLeastOne.option", "Nale\u017Cy zaznaczy\u0107 przynajmniej jedn\u0105 opcj\u0119")
-              //  errors.rejectValue( "doladowania_tk", "default.atLeastOne.option", "Nale\u017Cy zaznaczy\u0107 przynajmniej jedn\u0105 opcj\u0119")
+            if (!process.doladowania_tp && !process.doladowania_tk) {
+                errors.rejectValue( "hasDoladowania", "default.atLeastOne.doladowania")
                 return false
             }
             return true
         })
+
         srednia_sprzedaz_doladowan(nullable:false, blank:false, shared:"number")
         srednia_sprzedaz_doladowan_slownie(nullable:false, blank:false)
 /*        ifOplataVISA(nullable:false, blank:false, shared: "number") //1.11 %, M
@@ -502,19 +531,23 @@ class ProcessCommand implements Serializable{
         kontaktTytul(nullable:false, blank:false)
         kontaktImie(nullable:false, blank:false)
         kontaktNazwisko(nullable:false, blank:false)
-        kontaktTelKomorkowy(nullable:true)
-        kontaktTelStacjonarny(nullable:true, validator: { value, process, errors ->
-            if (value == null || process.kontaktTelKomorkowy == null) {
-                return true;
+
+        hasKontaktTel(nullable:true, validator: { value, process, errors ->
+            if(value == null){
+                return true
             }
 
-            if (value.isEmpty() && process.kontaktTelKomorkowy.isEmpty()){
-                errors.rejectValue( "kontaktTelStacjonarny", "default.atLeastOne.phoneNumber", "Nale\u017Cy poda\u0107 przynajmniej jeden numer telefonu")
-                errors.rejectValue( "kontaktTelKomorkowy", "default.atLeastOne.phoneNumber", "Nale\u017Cy poda\u0107 przynajmniej jeden numer telefonu")
+            if (!process.kontaktTelKomorkowy && !process.kontaktTelStacjonarny) {
+                errors.rejectValue( "hasKontaktTel", "default.atLeastOne.phoneNumber")
                 return false
             }
             return true
         })
+
+        kontaktTelKomorkowy(nullable:true)
+        kontaktTelStacjonarny(nullable:true)
+
+
         kontaktEmail(nullable:true, blank:true, shared: "email")
         pozyskujacyTytul(nullable:false, blank:false)
         pozyskujacyImie(nullable:false, blank:false)
@@ -526,62 +559,14 @@ class ProcessCommand implements Serializable{
         reprezentant2Tytul(nullable:false, blank:false)
         reprezentant2Imie(nullable:true, blank:true)
         reprezentant2Nazwisko(nullable:true, blank:true)
-/*        visaEUKKOPr(nullable:false, blank:false, shared: "percentage")
-        visaEUKDPr(nullable:false, blank:false, shared: "percentage")
-        visaEUKBPr(nullable:false, blank:false, shared: "percentage")
-        visaOutEUKKOPr(nullable:false, blank:false, shared: "percentage")
-        visaOutEUKDPr(nullable:false, blank:false, shared: "percentage")
-        visaOutEUKBPr(nullable:false, blank:false, shared: "percentage")
-        visaPolskaKKO1Pr(nullable:false, blank:false, shared: "percentage")
-        visaPolskaKKO2Pr(nullable:false, blank:false, shared: "percentage")
-        visaPolskaKD1Pr(nullable:false, blank:false, shared: "percentage")
-        visaPolskaKD2Pr(nullable:false, blank:false, shared: "percentage")
-        visaPolskaKBPr(nullable:false, blank:false, shared: "percentage")
-        mastercardEUKKPr(nullable:false, blank:false, shared: "percentage")
-        mastercardEUKDPr(nullable:false, blank:false, shared: "percentage")
-        mastercardEUKBLPr(nullable:false, blank:false, shared: "percentage")
-        mastercardEUMPr(nullable:false, blank:false, shared: "percentage")
-        mastercardOutEUKKPr(nullable:false, blank:false, shared: "percentage")
-        mastercardOutEUKDPr(nullable:false, blank:false, shared: "percentage")
-        mastercardOutEUKBPr(nullable:false, blank:false, shared: "percentage")
-        mastercardOutEUMPr(nullable:false, blank:false, shared: "percentage")
-        mastercardPolskaKK1Pr(nullable:false, blank:false, shared: "percentage")
-        mastercardPolskaKK2Pr(nullable:false, blank:false, shared: "percentage")
-        mastercardPolskaKK3Pr(nullable:false, blank:false, shared: "percentage")
-        mastercardPolskaKD1Pr(nullable:false, blank:false, shared: "percentage")
-        mastercardPolskaKD2Pr(nullable:false, blank:false, shared: "percentage")
-        mastercardPolskaKD3Pr(nullable:false, blank:false, shared: "percentage")
-        mastercardPolskaKBPr(nullable:false, blank:false, shared: "percentage")
-        mastercardPolskaM1Pr(nullable:false, blank:false, shared: "percentage")
-        mastercardPolskaM2Pr(nullable:false, blank:false, shared: "percentage")
-        mastercardPolskaM3Pr(nullable:false, blank:false, shared: "percentage")
-        visaPKOBPKKO1Pr(nullable:false, blank:false, shared: "percentage")
-        visaPKOBPKKO2Pr(nullable:false, blank:false, shared: "percentage")
-        visaPKOBPKD1Pr(nullable:false, blank:false, shared: "percentage")
-        visaPKOBPKD2Pr(nullable:false, blank:false, shared: "percentage")
-        visaPKOBPKB3Pr(nullable:false, blank:false, shared: "percentage")
-        mastercardPKOBPKK1Pr(nullable:false, blank:false, shared: "percentage")
-        mastercardPKOBPKK2Pr(nullable:false, blank:false, shared: "percentage")
-        mastercardPKOBPKK3Pr(nullable:false, blank:false, shared: "percentage")
-        mastercardPKOBPKD1Pr(nullable:false, blank:false, shared: "percentage")
-        mastercardPKOBPKD2LPr(nullable:false, blank:false, shared: "percentage")
-        mastercardPKOBPKD3Pr(nullable:false, blank:false, shared: "percentage")
-        mastercardPKOBPKBPr(nullable:false, blank:false, shared: "percentage")
-        mastercardPKOBPM1Pr(nullable:false, blank:false, shared: "percentage")
-        mastercardPKOBPM2Pr(nullable:false, blank:false, shared: "percentage")
-        mastercardPKOBPM3Pr(nullable:false, blank:false, shared: "percentage")
-        dinersClubPr(nullable:false, blank:false, shared: "percentage")
-        ikoPr(nullable:true, blank:true,  shared: "percentage")
+
+        visaEUKKOPr(nullable:false, blank:false, shared: "percentage")
         visaEUKKOSt(nullable:false, blank:false, shared: "number")
         visaEUKDSt(nullable:false, blank:false, shared: "number")
         visaEUKBSt(nullable:false, blank:false, shared: "number")
         visaOutEUKKOSt(nullable:false, blank:false, shared: "number")
         visaOutEUKDSt(nullable:false, blank:false, shared: "number")
         visaOutEUKBSt(nullable:false, blank:false, shared: "number")
-        visaPolskaKKO1St(nullable:false, blank:false, shared: "number")
-        visaPolskaKKO2St(nullable:false, blank:false, shared: "number")
-        visaPolskaKD1St(nullable:false, blank:false, shared: "number")
-        visaPolskaKD2St(nullable:false, blank:false, shared: "number")
         visaPolskaKBSt(nullable:false, blank:false, shared: "number")
         mastercardEUKKSt(nullable:false, blank:false, shared: "number")
         mastercardEUKDSt(nullable:false, blank:false, shared: "number")
@@ -591,50 +576,116 @@ class ProcessCommand implements Serializable{
         mastercardOutEUKDSt(nullable:false, blank:false, shared: "number")
         mastercardOutEUKBSt(nullable:false, blank:false, shared: "number")
         mastercardOutEUMSt(nullable:false, blank:false, shared: "number")
-        mastercardPolskaKK1St(nullable:false, blank:false, shared: "number")
-        mastercardPolskaKK2St(nullable:false, blank:false, shared: "number")
-        mastercardPolskaKK3St(nullable:false, blank:false, shared: "number")
-        mastercardPolskaKD1St(nullable:false, blank:false, shared: "number")
-        mastercardPolskaKD2St(nullable:false, blank:false, shared: "number")
-        mastercardPolskaKD3St(nullable:false, blank:false, shared: "number")
-        mastercardPolskaKBSt(nullable:false, blank:false, shared: "number")
-        mastercardPolskaM1St(nullable:false, blank:false, shared: "number")
-        mastercardPolskaM2St(nullable:false, blank:false, shared: "number")
-        mastercardPolskaM3St(nullable:false, blank:false, shared: "number")
-        visaPKOBPKKO1St(nullable:false, blank:false, shared: "number")
-        visaPKOBPKKO2St(nullable:false, blank:false, shared: "number")
-        visaPKOBPKD1St(nullable:false, blank:false, shared: "number")
-        visaPKOBPKD2St(nullable:false, blank:false, shared: "number")
-        visaPKOBPKB3St(nullable:false, blank:false, shared: "number")
-        mastercardPKOBPKK1St(nullable:false, blank:false, shared: "number")
-        mastercardPKOBPKK2St(nullable:false, blank:false, shared: "number")
-        mastercardPKOBPKK3St(nullable:false, blank:false, shared: "number")
-        mastercardPKOBPKD1St(nullable:false, blank:false, shared: "number")
-        mastercardPKOBPKD2LSt(nullable:false, blank:false, shared: "number")
-        mastercardPKOBPKD3St(nullable:false, blank:false, shared: "number")
-        mastercardPKOBPKBSt(nullable:false, blank:false, shared: "number")
-        mastercardPKOBPM1St(nullable:false, blank:false, shared: "number")
-        mastercardPKOBPM2St(nullable:false, blank:false, shared: "number")
-        mastercardPKOBPM3St(nullable:false, blank:false, shared: "number")
-        dinersClubSt(nullable:true,blank:true,shared: "number")
-        ikoSt(nullable:true, blank:true,shared: "number")*/
 
-      /*  pp_orange_tk(nullable:false, blank:false, shared: "percentage")
-        pp_orange_tp(nullable:false, blank:false, shared: "percentage")
-        pp_plus_tk(nullable:false, blank:false, shared: "percentage")
-        pp_plus_tp(nullable:false, blank:false, shared: "percentage")
-        pp_tmobile_tk(nullable:false, blank:false, shared: "percentage")
-        pp_tmobile_tp(nullable:false, blank:false, shared: "percentage")
-        pp_heyah_tk(nullable:false, blank:false, shared: "percentage")
-        pp_heyah_tp(nullable:false, blank:false, shared: "percentage")
-        pp_play_tk(nullable:false, blank:false, shared: "percentage")
-        pp_play_tp(nullable:false, blank:false, shared: "percentage")
-        pp_telegrosik_tk(nullable:false, blank:false, shared: "percentage")
-        pp_virginmobile_tk(nullable:false, blank:false, shared: "percentage")
-        pp_lycamobile_tk(nullable:false, blank:false, shared: "percentage")
-        pp_gtmobile_tk(nullable:false, blank:false, shared: "percentage")
-        pp_vectonemobile_tk(nullable:false, blank:false, shared: "percentage")
-        pp_delightmobile_tk(nullable:false, blank:false, shared: "percentage")*/
+        /*
+         visaEUKKOPr(nullable:false, blank:false, shared: "percentage")visaEUKDPr(nullable:false, blank:false, shared: "percentage")
+            visaEUKBPr(nullable:false, blank:false, shared: "percentage")
+            visaOutEUKKOPr(nullable:false, blank:false, shared: "percentage")
+            visaOutEUKDPr(nullable:false, blank:false, shared: "percentage")
+            visaOutEUKBPr(nullable:false, blank:false, shared: "percentage")
+            visaPolskaKKO1Pr(nullable:false, blank:false, shared: "percentage")
+            visaPolskaKKO2Pr(nullable:false, blank:false, shared: "percentage")
+            visaPolskaKD1Pr(nullable:false, blank:false, shared: "percentage")
+            visaPolskaKD2Pr(nullable:false, blank:false, shared: "percentage")
+            visaPolskaKBPr(nullable:false, blank:false, shared: "percentage")
+            mastercardEUKKPr(nullable:false, blank:false, shared: "percentage")
+            mastercardEUKDPr(nullable:false, blank:false, shared: "percentage")
+            mastercardEUKBLPr(nullable:false, blank:false, shared: "percentage")
+            mastercardEUMPr(nullable:false, blank:false, shared: "percentage")
+            mastercardOutEUKKPr(nullable:false, blank:false, shared: "percentage")
+            mastercardOutEUKDPr(nullable:false, blank:false, shared: "percentage")
+            mastercardOutEUKBPr(nullable:false, blank:false, shared: "percentage")
+            mastercardOutEUMPr(nullable:false, blank:false, shared: "percentage")
+            mastercardPolskaKK1Pr(nullable:false, blank:false, shared: "percentage")
+            mastercardPolskaKK2Pr(nullable:false, blank:false, shared: "percentage")
+            mastercardPolskaKK3Pr(nullable:false, blank:false, shared: "percentage")
+            mastercardPolskaKD1Pr(nullable:false, blank:false, shared: "percentage")
+            mastercardPolskaKD2Pr(nullable:false, blank:false, shared: "percentage")
+            mastercardPolskaKD3Pr(nullable:false, blank:false, shared: "percentage")
+            mastercardPolskaKBPr(nullable:false, blank:false, shared: "percentage")
+            mastercardPolskaM1Pr(nullable:false, blank:false, shared: "percentage")
+            mastercardPolskaM2Pr(nullable:false, blank:false, shared: "percentage")
+            mastercardPolskaM3Pr(nullable:false, blank:false, shared: "percentage")
+            visaPKOBPKKO1Pr(nullable:false, blank:false, shared: "percentage")
+            visaPKOBPKKO2Pr(nullable:false, blank:false, shared: "percentage")
+            visaPKOBPKD1Pr(nullable:false, blank:false, shared: "percentage")
+            visaPKOBPKD2Pr(nullable:false, blank:false, shared: "percentage")
+            visaPKOBPKB3Pr(nullable:false, blank:false, shared: "percentage")
+            mastercardPKOBPKK1Pr(nullable:false, blank:false, shared: "percentage")
+            mastercardPKOBPKK2Pr(nullable:false, blank:false, shared: "percentage")
+            mastercardPKOBPKK3Pr(nullable:false, blank:false, shared: "percentage")
+            mastercardPKOBPKD1Pr(nullable:false, blank:false, shared: "percentage")
+            mastercardPKOBPKD2LPr(nullable:false, blank:false, shared: "percentage")
+            mastercardPKOBPKD3Pr(nullable:false, blank:false, shared: "percentage")
+            mastercardPKOBPKBPr(nullable:false, blank:false, shared: "percentage")
+            mastercardPKOBPM1Pr(nullable:false, blank:false, shared: "percentage")
+            mastercardPKOBPM2Pr(nullable:false, blank:false, shared: "percentage")
+            mastercardPKOBPM3Pr(nullable:false, blank:false, shared: "percentage")
+            dinersClubPr(nullable:false, blank:false, shared: "percentage")
+            ikoPr(nullable:true, blank:true,  shared: "percentage")
+            visaEUKKOSt(nullable:false, blank:false, shared: "number")
+            visaEUKDSt(nullable:false, blank:false, shared: "number")
+            visaEUKBSt(nullable:false, blank:false, shared: "number")
+            visaOutEUKKOSt(nullable:false, blank:false, shared: "number")
+            visaOutEUKDSt(nullable:false, blank:false, shared: "number")
+            visaOutEUKBSt(nullable:false, blank:false, shared: "number")
+            visaPolskaKKO1St(nullable:false, blank:false, shared: "number")
+            visaPolskaKKO2St(nullable:false, blank:false, shared: "number")
+            visaPolskaKD1St(nullable:false, blank:false, shared: "number")
+            visaPolskaKD2St(nullable:false, blank:false, shared: "number")
+            visaPolskaKBSt(nullable:false, blank:false, shared: "number")
+            mastercardEUKKSt(nullable:false, blank:false, shared: "number")
+            mastercardEUKDSt(nullable:false, blank:false, shared: "number")
+            mastercardEUKBLSt(nullable:false, blank:false, shared: "number")
+            mastercardEUMSt(nullable:false, blank:false, shared: "number")
+            mastercardOutEUKKSt(nullable:false, blank:false, shared: "number")
+            mastercardOutEUKDSt(nullable:false, blank:false, shared: "number")
+            mastercardOutEUKBSt(nullable:false, blank:false, shared: "number")
+            mastercardOutEUMSt(nullable:false, blank:false, shared: "number")
+            mastercardPolskaKK1St(nullable:false, blank:false, shared: "number")
+            mastercardPolskaKK2St(nullable:false, blank:false, shared: "number")
+            mastercardPolskaKK3St(nullable:false, blank:false, shared: "number")
+            mastercardPolskaKD1St(nullable:false, blank:false, shared: "number")
+            mastercardPolskaKD2St(nullable:false, blank:false, shared: "number")
+            mastercardPolskaKD3St(nullable:false, blank:false, shared: "number")
+            mastercardPolskaKBSt(nullable:false, blank:false, shared: "number")
+            mastercardPolskaM1St(nullable:false, blank:false, shared: "number")
+            mastercardPolskaM2St(nullable:false, blank:false, shared: "number")
+            mastercardPolskaM3St(nullable:false, blank:false, shared: "number")
+            visaPKOBPKKO1St(nullable:false, blank:false, shared: "number")
+            visaPKOBPKKO2St(nullable:false, blank:false, shared: "number")
+            visaPKOBPKD1St(nullable:false, blank:false, shared: "number")
+            visaPKOBPKD2St(nullable:false, blank:false, shared: "number")
+            visaPKOBPKB3St(nullable:false, blank:false, shared: "number")
+            mastercardPKOBPKK1St(nullable:false, blank:false, shared: "number")
+            mastercardPKOBPKK2St(nullable:false, blank:false, shared: "number")
+            mastercardPKOBPKK3St(nullable:false, blank:false, shared: "number")
+            mastercardPKOBPKD1St(nullable:false, blank:false, shared: "number")
+            mastercardPKOBPKD2LSt(nullable:false, blank:false, shared: "number")
+            mastercardPKOBPKD3St(nullable:false, blank:false, shared: "number")
+            mastercardPKOBPKBSt(nullable:false, blank:false, shared: "number")
+            mastercardPKOBPM1St(nullable:false, blank:false, shared: "number")
+            mastercardPKOBPM2St(nullable:false, blank:false, shared: "number")
+            mastercardPKOBPM3St(nullable:false, blank:false, shared: "number")
+            dinersClubSt(nullable:true,blank:true,shared: "number")
+            ikoSt(nullable:true, blank:true,shared: "number")*/
+
+        /*  pp_orange_tk(nullable:false, blank:false, shared: "percentage")
+          pp_orange_tp(nullable:false, blank:false, shared: "percentage")
+          pp_plus_tk(nullable:false, blank:false, shared: "percentage")
+          pp_plus_tp(nullable:false, blank:false, shared: "percentage")
+          pp_tmobile_tk(nullable:false, blank:false, shared: "percentage")
+          pp_tmobile_tp(nullable:false, blank:false, shared: "percentage")
+          pp_heyah_tk(nullable:false, blank:false, shared: "percentage")
+          pp_heyah_tp(nullable:false, blank:false, shared: "percentage")
+          pp_play_tk(nullable:false, blank:false, shared: "percentage")
+          pp_play_tp(nullable:false, blank:false, shared: "percentage")
+          pp_telegrosik_tk(nullable:false, blank:false, shared: "percentage")
+          pp_virginmobile_tk(nullable:false, blank:false, shared: "percentage")
+          pp_lycamobile_tk(nullable:false, blank:false, shared: "percentage")
+          pp_gtmobile_tk(nullable:false, blank:false, shared: "percentage")
+          pp_vectonemobile_tk(nullable:false, blank:false, shared: "percentage")
+          pp_delightmobile_tk(nullable:false, blank:false, shared: "percentage")*/
 
         //oplataZaOprogramowanieDoDoladowan(nullable:false, blank:false, shared: "number" )
         //scoringMcc(nullable:false, blank:false, matches:"~|[0-9]{4}")
@@ -674,9 +725,8 @@ class ProcessCommand implements Serializable{
         akceptantMiasto(nullable:false, blank:false)
         akceptantKodPocztowy(nullable:false, blank:false)
         akceptantPoczta(nullable:false, blank:false)
-        akceptantTelKomorkowy(nullable:true)
 
-        akceptantTelStacjonarny(nullable:true, validator: { value, process, errors ->
+     /*   hasAkceptantTel(validator: { value, process, errors ->
             if (value == null || process.akceptantTelKomorkowy == null) {
                 return true
             }
@@ -686,7 +736,22 @@ class ProcessCommand implements Serializable{
                 return false
             }
             return true
+        })*/
+
+        hasAkceptantTel(nullable:true, validator: { value, process, errors ->
+            if(value == null){
+                return true
+            }
+
+            if (!process.akceptantTelStacjonarny && !process.akceptantTelKomorkowy) {
+                errors.rejectValue( "hasAkceptantTel", "default.atLeastOne.phoneNumber")
+                return false
+            }
+            return true
         })
+
+        akceptantTelKomorkowy(nullable:true)
+        akceptantTelStacjonarny(nullable:true)
 
         akceptantFax(nullable:true, blank:true)
         akceptantUlicaTytulCbd(nullable:true)
@@ -738,7 +803,7 @@ class ProcessCommand implements Serializable{
         oplPOSBaza(nullable:true, shared: "number")
         obslugaTyp(nullable:false, blank:false)
         obslugaEkonomicznyCena(nullable:true, blank:false, shared: "number") //TODO VERIFY
-        numerRachunkuBankowegoKlienta(nullable:false, blank:false, matches: "~|[0-9]{26}")
+        numerRachunkuBankowegoKlienta(nullable:false, blank:false) //TODO  matches: "~|[0-9]{26}") dodac spacje
         bankKlienta(nullable:false, blank:false)
         oplataZaUruchomienieDCC(nullable:false, blank:false, shared: "number")
         //nip(nullable:true)
@@ -754,7 +819,7 @@ class ProcessCommand implements Serializable{
         return (this.metaClass.hasProperty(this, cbdName) && this."$cbdName"?.trim())
     }
 
-   /* static nullableNotBlank(value){
-        return value == null || value.size() > 0
-    }*/
+    /* static nullableNotBlank(value){
+         return value == null || value.size() > 0
+     }*/
 }
