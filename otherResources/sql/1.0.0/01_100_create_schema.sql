@@ -32,13 +32,13 @@ create table EUMOWY.ATTACHMENT (
 
 create table EUMOWY.ATTACHMENT (
   id number(12,0) not null,
-  version number(19, 0) not null,
+  version number(2, 0) not null,
   date_uploaded timestamp(6),
-  downloads number(10, 0),
-  extension varchar2(255 CHAR),
-  file_size number(19, 0),
+  downloads number(4, 0),
+  file_size number(12, 0),
+  extension varchar2(120 CHAR),
   name varchar2(255 CHAR),
-  process_id number(19, 0)
+  process_id number(12, 0),
   attachments_idx number(10,0),
   primary key (id));
 
@@ -104,6 +104,14 @@ create table EUMOWY.PANEL (
   name varchar2(120 char) unique,
   order_no number(3,0),
   primary key (id));
+
+CREATE TABLE EUMOWY.PROCESS_PANEL
+(
+  PROCESS_PANELS_ID NUMBER(12,0) not null ,
+  PANEL_ID          NUMBER(12,0) not null,
+  PANELS_IDX        NUMBER(10,0),
+  primary key (PROCESS_PANELS_ID,PANEL_ID)
+);
 
 create table EUMOWY.POINT (
   id number(12,0) not null,
@@ -320,17 +328,20 @@ create table EUMOWY.SUBSCRIPTION (
 create table EUMOWY.PROCESS_ACTIVITY (
   process_activities_id number(12,0),
   activity_id number(12,0),
-  activities_idx number(10,0));
+  activities_idx number(10,0),
+  primary key (process_activities_id, activity_id));
 
 create table EUMOWY.PROCESS_SIGNATURE (
   process_signatures_id number(12,0),
   signature_id number(12,0),
-  signatures_idx number(10,0));
+  signatures_idx number(10,0),
+  primary key (process_signatures_id, signature_id));
 
 create table EUMOWY.PROCESS_SUBSCRIPTION (
   process_subscriptions_id number(12,0),
   subscription_id number(12,0),
-  subscriptions_idx number(10,0));
+  subscriptions_idx number(10,0),
+  primary key (process_subscriptions_id,subscription_id));
 
 CREATE TABLE EUMOWY.KALKULATORTYPURZADZEN (
     TYP VARCHAR2(50 BYTE),
@@ -339,7 +350,8 @@ CREATE TABLE EUMOWY.KALKULATORTYPURZADZEN (
 CREATE TABLE EUMOWY.MAPOWANIEKALKULATORA (
   POLEKALKULATOR VARCHAR2(255 BYTE),
   POLEAPREEL     VARCHAR2(255 BYTE),
-  DZIALANIE      VARCHAR2(20 BYTE));
+  DZIALANIE      VARCHAR2(20 BYTE),
+  primary key (POLEKALKULATOR,POLEAPREEL,DZIALANIE));
 
 create table EUMOWY.LOGS (login varchar2(100 char), log_date varchar2(80 char), log_message varchar2(1000 char));
 
@@ -367,6 +379,7 @@ alter table EUMOWY.PROCESS_SIGNATURE add constraint PROCESS_SIGNATURE_SIGN_ID_FK
 alter table EUMOWY.PROCESS_SIGNATURE add constraint PROCESS_SIGNATURE_PRO_ID_FK foreign key (process_signatures_id) references EUMOWY.PROCESS;
 alter table EUMOWY.PROCESS_SUBSCRIPTION add constraint PROCCESS_SUBSCRIPTION_SU_ID_FK foreign key (subscription_id) references EUMOWY.SUBSCRIPTION;
 alter table EUMOWY.PROCESS_SUBSCRIPTION add constraint PROCCESS_SUBSCRIPTION_PR_ID_FK foreign key (process_subscriptions_id) references EUMOWY.PROCESS;
+alter table EUMOWY.PROCESS_PANEL add constraint PROCESS_PANEL_PANEL_ID_FK FOREIGN KEY (PANEL_ID) REFERENCES EUMOWY.PANEL(ID);
 
 -- SEQUENCES
 create sequence EUMOWY.ACTIVITY_SEQ;
