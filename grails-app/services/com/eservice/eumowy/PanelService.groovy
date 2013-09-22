@@ -482,6 +482,48 @@ class PanelService {
 
     def getZestawPosOdplatneUzywanie(ProcessCommand cmd ,def calc) {
 
+        //TODO pobierac dane z kalkulatora
+        cmd.oplPOSDialUpTyp = ""
+        cmd.oplPOSDialUpIlosc = ""
+        cmd.oplPOSDialUpIloscPP = ""
+        cmd.oplPOSDialUpNormalneMies = ""
+        cmd.oplPOSDialUpNormalnePP = ""
+        cmd.oplPOSDialUpPreferencyjneMies = ""
+        cmd.oplPOSDialUpPreferencyjnePP = ""
+
+        cmd.oplPOSVPNTyp = ""
+        cmd.oplPOSVPNIlosc = ""
+        cmd.oplPOSVPNIloscPP = ""
+        cmd.oplPOSVPNNormalneMies = ""
+        cmd.oplPOSVPNNormalnePP = ""
+        cmd.oplPOSVPNPreferencyjneMies = ""
+        cmd.oplPOSVPNPreferencyjnePP = ""
+
+        cmd.oplPOSSSLTyp = ""
+        cmd.oplPOSSSLIlosc = ""
+        cmd.oplPOSSSLIloscPP = ""
+        cmd.oplPOSSSLNormalneMies = ""
+        cmd.oplPOSSSLNormalnePP = ""
+        cmd.oplPOSSSLPreferencyjneMies = ""
+        cmd.oplPOSSSLPreferencyjnePP = ""
+
+        cmd.oplPOSWiFiTyp = ""
+        cmd.oplPOSWiFiIlosc = ""
+        cmd.oplPOSWiFiIloscPP = ""
+        cmd.oplPOSWiFiNormalneMies = ""
+        cmd.oplPOSWiFiNormalnePP = ""
+        cmd.oplPOSWiFiPreferencyjneMies = ""
+        cmd.oplPOSWiFiPreferencyjnePP = ""
+
+        cmd.oplPOSGPRSTyp = ""
+        cmd.oplPOSGPRSIlosc = ""
+        cmd.oplPOSGPRSIloscPP = ""
+        cmd.oplPOSGPRSNormalneMies = ""
+        cmd.oplPOSGPRSNormalnePP = ""
+        cmd.oplPOSGPRSPreferencyjneMies = ""
+        cmd.oplPOSGPRSPreferencyjnePP = ""
+
+        cmd.oplPOSBaza = ""
     }
 
     def getZestawPosStawkiPreferencyjne(ProcessCommand cmd ,def calc) {
