@@ -1,4 +1,5 @@
 import com.eservice.eumowy.*
+import com.eservice.eumowy.util.ProjectPathHelper
 import grails.util.Environment
 import groovy.sql.Sql
 
@@ -12,9 +13,11 @@ class BootStrap {
 
         switch (Environment.getCurrent()) {
             case Environment.DEVELOPMENT:
-                // Wykonywanie inicjacyjnych zapytan sql z pliku insertData.sql
-                executeSqlScript("/sql/createData.sql")
-                executeSqlScript("/sql/insertData.sql")
+                // Wykonywanie inicjacyjnych zapytan sql
+                def projectPath = ProjectPathHelper.getProjectPath(this.class.getResource("BootStrap.class"))
+                executeSqlScript(projectPath+"grails-app/conf/sql/createData.sql")
+                executeSqlScript(projectPath+"otherResources/sql/1.0.0/02_100_dictionaries.sql")
+                executeSqlScript(projectPath+"otherResources/sql/1.0.0/03_100_params.sql")
                 createCBDDataForDevProfile();
                 createTestDomains()
                 break;
@@ -261,7 +264,7 @@ class BootStrap {
 
     def executeSqlScript(String scriptPath){
         def sql = new Sql(dataSource)
-        File sqlFile = new File(this.class.getResource(scriptPath).getFile())
+        File sqlFile = new File(scriptPath)
 
         try{
             sqlFile.eachLine {

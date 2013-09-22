@@ -1,5 +1,7 @@
 package com.eservice.eumowy
 
+import com.eservice.eumowy.util.DateUtils
+import com.eservice.eumowy.util.ProjectPathHelper
 import grails.test.mixin.*
 import groovy.mock.interceptor.MockFor;
 
@@ -31,21 +33,12 @@ class PdfServiceTests {
 	static String fileTemplateOutPath = File.separator+"otherResources" +File.separator+ "pdf_out" + File.separator;
 	static Map<String, String[]> data;
 	
-	private static String getProjectPath() {
-		String urlString = url.toString();
-		if (urlString.contains("target")){
-			return urlString.substring(0,urlString.indexOf("target")).replace("file:/", "");
-		} else {
-			return urlString.substring(0,urlString.indexOf("out")).replace("file:/", "");
-		}
-	}
-	
 	public static String getTemplatePath(){
-		return getProjectPath() + fileTemplatePath;
+		return ProjectPathHelper.getProjectPath(url) + fileTemplatePath;
 	}
 	
 	public static String getTemplateOutPath(){
-		return getProjectPath() + fileTemplateOutPath;
+		return ProjectPathHelper.getProjectPath(url) + fileTemplateOutPath;
 	}
 	
 	@BeforeClass
