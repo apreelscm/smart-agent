@@ -614,7 +614,8 @@ class ProcessService {
                 }
 
                 if (PosData.metaClass.respondsTo(PosData, "set" + key.capitalize())  && key != 'id') {
-                    posData."set${key.capitalize()}"(value)
+                    // FIXME krytyczne obejscie, nigdy nie powinno byc null
+                    posData?."set${key.capitalize()}"(value)
                 }
 
                 if (PosDataDetails.metaClass.respondsTo(PosDataDetails, "set" + key.capitalize()) && key != 'id') {

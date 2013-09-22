@@ -315,14 +315,15 @@ class PdfMapper {
 
     private void mapFaxOrPhone(def data, def phoneNumber, def kierName, def otherName){
         //(11) 222-33-44
-        if (phoneNumber != null){
+        // FIXME Pawel - sypie sie, trzeba przed na samym poczatku sprawdzic regexp czy numer spelnia maske
+        /*if (phoneNumber != null){
             data.put(kierName, [phoneNumber.substring(phoneNumber.lastIndexOf('(') +1, phoneNumber.indexOf(')'))] as String[]);
 
             def parts = phoneNumber.substring(phoneNumber.lastIndexOf(' ')+1).split('-');
             for (int i=0; i<parts.length; i++){
                 data.put(otherName+(i+1), [parts[i]] as String[])
             }
-        }
+        }*/
     }
 
     private mapKontaktWPunkcieImiePointDataDetails(def data, def pointData, def key, def value, def index){
