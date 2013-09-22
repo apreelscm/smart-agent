@@ -11,7 +11,6 @@
                 </g:radioGroup>
             </div>
         </div>
-
         <div id="dccRange" class="centre" style="text-align: center; padding-top: 20px; width: 800px; max-width: 950px">
             <table class="t">
                 <thead>
@@ -80,4 +79,5 @@
             }
         }
     });
+
 </r:script>
