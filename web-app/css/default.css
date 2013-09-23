@@ -673,10 +673,9 @@ fieldset.embedded legend {
 
 /* same effects for browsers that support HTML5 client-side validation (these have to be specified separately or IE will ignore the entire rule) */
 
-input:invalid, select:invalid, textarea:invalid {
+.error{
     background: #fff3f3;
     border-color: #ffaaaa;
-    color: #cc0000;
 }
 
 input:invalid:focus, select:invalid:focus, textarea:invalid:focus {
@@ -1100,10 +1099,10 @@ input[readonly]{
     text-align: center;
 }
 
-.error {
+/*.error {*/
     /*color: red;*/
-    border-color: red;
-}
+    /*border-color: red;*/
+/*}*/
 
 /* Other classes
 -------------------------------------------------------------------*/
