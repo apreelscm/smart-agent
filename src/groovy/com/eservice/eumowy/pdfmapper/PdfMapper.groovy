@@ -321,12 +321,12 @@ class PdfMapper {
 
     private mapKontaktWPunkcieTelStacjonarnyPointDataDetails(def data, def pointData, def key, def value, def index){
         data.put(key, [value] as String[]);
-        mapFaxOrPhone(data, value, "kierunkowy1", "stacjonarny");
+        mapFaxOrPhone(key, data, value, "kierunkowy1", "stacjonarny");
     }
 
     private mapKontaktWPunkcieFaxPointDataDetails(def data, def pointData, def key, def value, def index){
         data.put(key, [value] as String[]);
-        mapFaxOrPhone(data, value, "kierunkowy2", "nrFaksu");
+        mapFaxOrPhone(key, data, value, "kierunkowy2", "nrFaksu");
     }
 
     private void mapFaxOrPhone(def key, def data, def phoneNumber, def kierName, def otherName){
