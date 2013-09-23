@@ -479,6 +479,12 @@ class ActivityController {
 
                 def calc = cbdService.findCalculatorByNip(client.nip)
 
+                if(calc == []){
+                    flash.calcErrorMessage = message(code:"calc.fetch.error", default:"Wystąpił błąd podczas próby pobrania kalkulatora");
+                    return error();
+                }
+
+
                 if(!calculatorService.isCalcValid(calc,processInstance.signatures)){
                     flash.calcErrorMessage =  message(code:"calc.notEnough.error", default:"Kalkulator nie pozwala na wykonanie wszystkich zaznaczonych czynności");
                     return error();
@@ -697,6 +703,7 @@ class ActivityController {
                 }
 
                 def calc = cbdService.findCalculatorByNip(client.nip)
+
 
                 if(!calculatorService.isCalcValid(calc,lastProcess.signatures)){
                     flash.calcErrorMessage =  message(code:"calc.notEnough.error", default:"Kalkulator nie pozwala na wykonanie wszystkich zaznaczonych czynności");
