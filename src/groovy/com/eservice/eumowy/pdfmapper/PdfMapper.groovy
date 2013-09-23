@@ -362,8 +362,22 @@ class PdfMapper {
         data.put("email", [value] as String[])
     }
 
-
-    //BRAK numeru rachunku bankowego
+	private mapNumerRachunkuBankowegoPointDataDetails(def data, def pointData, def key, def value, def index) {
+		data.put(key, [value] as String[]);
+		
+				if (value != null){
+					def pattern = ~/\d{2}\s\d{4}\s\d{4}\s\d{4}\s\d{4}\s\d{4}\s\d{4}/
+					if (pattern.matcher(value).matches()){
+						final String[] split = value.split(" ");
+						for (int i=0; i<split.length; i++){
+							data.put("numerRachunkuBankowego"+(i+1), [split[i]] as String[])
+						}
+					} else {
+						LOG.error('[PointDataDetails - ' + key+ '] nie spelnia warunku: \\d{2}\\s\\d{4}\\s\\d{4}\\s\\d{4}\\s\\d{4}\\s\\d{4}\\s\\d{4} value = ' + value )
+					}
+				}
+	}
+	
 
     //------------------- PROCESS METHODS --------------------------------
 
