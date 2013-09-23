@@ -42,9 +42,10 @@
 									maxlength="60" required="true"/></span></li>
 						<li><span class="align-right"><g:message
 									code="panel.bankaccountnumber" /></span> <span><eumowy:textField
+									class="bank-account"
 									name="${panelType}[${id}].numerRachunkuBankowego"
 									id="${panelType}[${id}].bankAccountNumber"
-									value="${pointData?.numerRachunkuBankowego}" maxlength="26"
+									value="${pointData?.numerRachunkuBankowego}"
 									style="width: 250px;"
                                     required="true"/></span></li>
 						<li><span class="align-right"><g:message
