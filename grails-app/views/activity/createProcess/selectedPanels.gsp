@@ -128,18 +128,20 @@
     <g:form class="panelsForm">
         <g:hiddenField name="nip" value="${data.nip}"/>
         <g:each var="panel" in="${processInstance.panels}" status="i">
-            <g:if test="${panel.name.equals('danePunktu') == false && panel.name.equals('danePos') == false}">
-            	<g:render template="/panels/${panel.name}"/>
-           	</g:if>
-            <g:if test="${panel.name.equals('danePunktu')}">
-            	<g:each var="point" in="${data.points}" status="j">
-            		<g:render template="/panels/danePunktu" model="[panelType: 'points', id: j, pointData: point]" />
-            	</g:each>
-            </g:if>
-            <g:if test="${panel.name.equals('danePos')}">
-            	<g:each var="pos" in="${data.poses}" status="j">
-            		<g:render template="/panels/danePos" model="[panelType: 'poses', id: j, pointData: pos]" />
-            	</g:each>
+            <g:if test="${panel != null}">
+                <g:if test="${panel.name.equals('danePunktu') == false && panel.name.equals('danePos') == false}">
+                    <g:render template="/panels/${panel.name}"/>
+                </g:if>
+                <g:if test="${panel.name.equals('danePunktu')}">
+                    <g:each var="point" in="${data.points}" status="j">
+                        <g:render template="/panels/danePunktu" model="[panelType: 'points', id: j, pointData: point]" />
+                    </g:each>
+                </g:if>
+                <g:if test="${panel.name.equals('danePos')}">
+                    <g:each var="pos" in="${data.poses}" status="j">
+                        <g:render template="/panels/danePos" model="[panelType: 'poses', id: j, pointData: pos]" />
+                    </g:each>
+                </g:if>
             </g:if>
         </g:each>
         <g:render template="/panels/uwagi"/>

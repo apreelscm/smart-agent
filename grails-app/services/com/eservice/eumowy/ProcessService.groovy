@@ -143,17 +143,21 @@ class ProcessService {
         def exclusions = defaultMethods + restrictedMethods
 
         cmd.process.panels.each { Panel panel ->
-            String panelFunctionName = "get${WordUtils.capitalize(panel.name)}"
-            if(panelFunctionName in exclusions){ return }
 
-            log.info("invokin ${panelFunctionName} on panelService")
+            if (panel!=null){
+                //po usunieciu panelu z procesu w jego miesjsce wchodzi null, trzeba to obsluzyc.
+                String panelFunctionName = "get${WordUtils.capitalize(panel.name)}"
+                if(panelFunctionName in exclusions){ return }
 
-            switch (Environment.getCurrent()) {
-                case Environment.DEVELOPMENT:
-                    panelMockService."${panelFunctionName}"(cmd)
-                    break;
-                default:
-                    panelService."${panelFunctionName}"(cmd,calc)
+                log.info("invokin ${panelFunctionName} on panelService")
+
+                switch (Environment.getCurrent()) {
+                    case Environment.DEVELOPMENT:
+                        panelMockService."${panelFunctionName}"(cmd)
+                        break;
+                    default:
+                        panelService."${panelFunctionName}"(cmd,calc)
+                }
             }
         }
 
