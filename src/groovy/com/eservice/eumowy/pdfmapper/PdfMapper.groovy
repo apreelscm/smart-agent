@@ -44,6 +44,12 @@ class PdfMapper {
     private def mapProcessToPDFData(def processInstance){
         Map<String, String[]> data = new HashMap<String, String[]>()
         data.put("phNumer", [processInstance.phNumber.toString()] as String[])
+	//TODO - sprawdzic czy dziala, byc moze w pdfie nazwy pol sa inne niz podane tutaj
+		if (processInstance.phNumber.toString() != null && processInstance.phNumber.toString().size()==5){
+			data.put("nrSprzedazowyPH2", [processInstance.phNumber.toString().substring(0, 3)] as String[])
+			data.put("nrSprzedazowyPH2", [processInstance.phNumber.toString().substring(3, 4)] as String[])
+		}
+		
         data.put("mid", [processInstance.client.mid?:'{mid}'] as String[])
         return data
     }
@@ -303,6 +309,23 @@ class PdfMapper {
         }
     }
 
+	private mapWydrukKodPocztowyPointDataDetails(def data, def pointData, def key, def value, def index){
+		data.put(key, [value] as String[]);
+
+		if (value != null){
+			def pattern = ~/\d{2}-\d{3}/
+			if (pattern.matcher(value).matches()){
+				final String[] split = value.split("-");
+				for (int i=0; i<split.length; i++){
+					data.put("wydrukKodPocztowy"+(i+1), [split[i]] as String[])
+				}
+			} else {
+				LOG.error('[PointDataDetails - ' + key+ '] nie spelnia warunku: d{2}-d{3} value = ' + value )
+			}
+		}
+	}
+
+	
     private mapKontaktWPunkcieTelKomorkowyPointDataDetails(def data, def pointData, def key, def value, def index){
         data.put(key, [value] as String[]);
 
@@ -321,12 +344,12 @@ class PdfMapper {
 
     private mapKontaktWPunkcieTelStacjonarnyPointDataDetails(def data, def pointData, def key, def value, def index){
         data.put(key, [value] as String[]);
-        mapFaxOrPhone(data, value, "kierunkowy1", "stacjonarny");
+        mapFaxOrPhone(key, data, value, "kierunkowy1", "stacjonarny");
     }
 
     private mapKontaktWPunkcieFaxPointDataDetails(def data, def pointData, def key, def value, def index){
         data.put(key, [value] as String[]);
-        mapFaxOrPhone(data, value, "kierunkowy2", "nrFaksu");
+        mapFaxOrPhone(key, data, value, "kierunkowy2", "nrFaksu");
     }
 
     private void mapFaxOrPhone(def key, def data, def phoneNumber, def kierName, def otherName){
@@ -342,7 +365,7 @@ class PdfMapper {
                     data.put(otherName+(i+1), [parts[i]] as String[])
                 }
             } else {
-                LOG.error('[key ' + key + '] nie spelnia warunku: d{3}-d{3}-d{3} value = ' + phoneNumber )
+                LOG.error('[key ' + key + '] nie spelnia warunku: (d{2}) d{3}-d{2}-d{2} value = ' + phoneNumber )
             }
         }
     }
@@ -373,7 +396,7 @@ class PdfMapper {
 							data.put("numerRachunkuBankowego"+(i+1), [split[i]] as String[])
 						}
 					} else {
-						LOG.error('[PointDataDetails - ' + key+ '] nie spelnia warunku: \\d{2}\\s\\d{4}\\s\\d{4}\\s\\d{4}\\s\\d{4}\\s\\d{4}\\s\\d{4} value = ' + value )
+						LOG.error('[PointDataDetails - ' + key+ '] nie spelnia warunku: d{2} d{4} d{4} d{4} d{4} d{4} d{4} value = ' + value )
 					}
 				}
 	}
@@ -381,6 +404,94 @@ class PdfMapper {
 
     //------------------- PROCESS METHODS --------------------------------
 
+	private mapAkceptantTelKomorkowyProcess(def data, def pd, def key, def value){
+		data.put(key, [value] as String[]);
+
+		if (value != null){
+			def pattern = ~/\d{3}-\d{3}-\d{3}/
+			if (pattern.matcher(value).matches()){
+				final String[] split = value.split("-");
+				for (int i=0; i<split.length; i++){
+					data.put("telKomorkowy"+(i+1), [split[i]] as String[])
+				}
+			} else {
+				LOG.error('[Process - ' + key+ '] nie spelnia warunku: d{3}-d{3}-d{3} value = ' + value )
+			}
+		}
+	}
+
+	private mapAkceptantTelStacjonarnyProcess(def data, def pd, def key, def value){
+		data.put(key, [value] as String[]);
+		mapFaxOrPhone(key, data, value, "kierunkowyStacjonarny", "telStacjonarny");
+	}
+	
+	private mapKontaktTelStacjonarnyProcess(def data, def pd, def key, def value){
+		data.put(key, [value] as String[]);
+		mapFaxOrPhone(key, data, value, "kierunkowyStacjonarnyDoKontaktu", "telStacjonarnyDoKontaktu");
+	}
+	
+	private mapAkceptantFaxProcess(def data, def pd, def key, def value){
+		data.put(key, [value] as String[]);
+		mapFaxOrPhone(key, data, value, "kierunkowyFaks", "faks");
+	}
+		
+	private mapKontaktTelKomorkowyProcess(def data, def pd, def key, def value){
+		data.put(key, [value] as String[]);
+
+		if (value != null){
+			def pattern = ~/\d{3}-\d{3}-\d{3}/
+			if (pattern.matcher(value).matches()){
+				final String[] split = value.split("-");
+				for (int i=0; i<split.length; i++){
+					data.put("telKomorkowyDoKontaktu"+(i+1), [split[i]] as String[])
+				}
+			} else {
+				LOG.error('[Process - ' + key+ '] nie spelnia warunku: d{3}-d{3}-d{3} value = ' + value )
+			}
+		}
+	}
+	
+	private mapAkceptantKodPocztowyProcess(def data, def pd, def key, def value){
+		data.put(key, [value] as String[]);
+
+		if (value != null){
+			def pattern = ~/\d{2}-\d{3}/
+			if (pattern.matcher(value).matches()){
+				final String[] split = value.split("-");
+				for (int i=0; i<split.length; i++){
+					data.put("akceptantKodPocztowy"+(i+1), [split[i]] as String[])
+				}
+			} else {
+				LOG.error('[Process - ' + key+ '] nie spelnia warunku: d{2}-d{3} value = ' + value )
+			}
+		}
+	}
+
+	private mapAkceptantKontaktKodPocztowyProcess(def data, def pd, def key, def value){
+		data.put(key, [value] as String[]);
+
+		if (value != null){
+			def pattern = ~/\d{2}-\d{3}/
+			if (pattern.matcher(value).matches()){
+				final String[] split = value.split("-");
+				for (int i=0; i<split.length; i++){
+					data.put("akceptantKontaktKodPocztowy"+(i+1), [split[i]] as String[])
+				}
+			} else {
+				LOG.error('[Process - ' + key+ '] nie spelnia warunku: d{2}-d{3} value = ' + value )
+			}
+		}
+	}
+	
+	private mapKontaktImieProcess(def data, def pd, def key, def value) {
+		data.put("imieINazwiskoOsobyDoKontaktu", [value + " " + getFromProcessDataSet(pd, 'kontaktNazwisko')] as String[])
+	}
+	
+	private mapNipProcess(def data, def pointData, def key, def value){
+		data.put(key, [value] as String[]);
+		data.put("akceptantNip", [value] as String[]);
+	}
+		
     private mapUmowaOznOdProcess(def data, def pd, def key, def value){
         addDateField(data, key, value);
     }
@@ -407,15 +518,23 @@ class PdfMapper {
 
     private mapReprezentant1ImieProcess(def data, def pd, def key, def value) {
         data.put("reprezentant1", [value + " " + getFromProcessDataSet(pd, 'reprezentant1Nazwisko')] as String[])
+		data.put("osobaPodpisalaUmowe", [value + " " + getFromProcessDataSet(pd, 'reprezentant1Nazwisko')] as String[])
     }
 
     private mapReprezentant2ImieProcess(def data, def pd, def key, def value) {
         data.put("reprezentant2", [value + " " + getFromProcessDataSet(pd, 'reprezentant2Nazwisko')] as String[])
     }
+	
+	private mapPozyskujacyImieProcess(def data, def pd, def key, def value){
+		data.put("osobaPozyskalaAkceptanta", [value + " " + getFromProcessDataSet(pd, 'pozyskujacyNazwisko')] as String[])
+	}
+	
+	private mappozyskujacyNumerProcess(def data, def pd, def key, def value) {
+		data.put("osobaPozyskalaAkceptantaNr",[value] as String[])
+	}
 
     private mapAkceptantUlicaProcess(def data, def pd, def key, def value) {
-     //TODO - mozna sprawdzic czy jest numer mieszkania
-	// data.put("akceptantUlica", [value] as String[])
+	   data.put("akceptantUlica", [value] as String[])
 	   data.put("akceptantSiedziba", [(getSiedzibaAkceptanta(getFromProcessDataSet(pd, 'akceptantUlicaTytul'), getFromProcessDataSet(pd, 'akceptantUlica'), getFromProcessDataSet(pd, 'akceptantNrDomu'), getFromProcessDataSet(pd, 'akceptantNrMieszkania'), getFromProcessDataSet(pd, 'akceptantKodPocztowy'), getFromProcessDataSet(pd, 'akceptantMiasto')))] as String[])
 		
     // data.put("akceptantSiedziba", [getFromProcessDataSet(pd, 'akceptantUlicaTytul') + " " + value + " " + getFromProcessDataSet(pd, 'akceptantNrDomu') + "/" + getFromProcessDataSet(pd, 'akceptantNrMieszkania') + " " + getFromProcessDataSet(pd, 'akceptantKodPocztowy') + " " + getFromProcessDataSet(pd, 'akceptantMiasto')] as String[])
@@ -605,5 +724,4 @@ class PdfMapper {
             data.put(processData.name, [fn] as String[])
         }
     }
-
 }
