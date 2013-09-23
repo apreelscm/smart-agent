@@ -18,6 +18,6 @@ jQuery(document).ready(function() {
     jQuery(".phone").mask('(99) 999-99-99');
     jQuery(".mobile-phone").mask('999-999-999');
     jQuery(".fax").mask('(99) 999-99-99');
-    jQuery(".ip").mask('999.999.999.999');
+    jQuery(".ip").mask('0ZZ.0ZZ.0ZZ.0ZZ', {translation:  {'Z': {pattern: /[0-9]/, optional: true}}});
     jQuery(".ph-number").mask('99999');
 });
