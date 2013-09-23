@@ -1,5 +1,5 @@
 <div id="additionalServicesPanel">
-    <fieldset style="text-align: center">>
+    <fieldset style="text-align: center">
         <div class="belka-glowna"><g:message code="panel.additional.services.title"/></div>
         <div class="centre" style="text-align: center; padding-top: 20px; width: 800px">
             <table class="table-list centre">

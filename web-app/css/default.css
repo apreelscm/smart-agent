@@ -655,8 +655,10 @@ fieldset.embedded legend {
 
 .errorSpan{
     border: 1px solid #FF0000;
-    padding: 3px 2px;
     padding-top: .8em;
+    padding-right: .5em;
+    padding-left: .5em;
+    padding-bottom: .5em;
 }
 
 .error input, .error select, .error textarea {

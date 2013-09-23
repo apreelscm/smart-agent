@@ -199,17 +199,19 @@ log4j = {
                 layout: pattern(conversionPattern:'%d [%t] %-5p %c{2} %x - %m%n')
         )
 
-        console name:'stdout', layout:pattern(conversionPattern: '%d{ISO8601}\t%p\t%c:%L\t%m%n')
     }
 
-    root {
-        additivity: false
-        info 'console', 'file-roll'
+    environments {
+        development { root { additivity: false; info 'console' } }
+        test { root { additivity: false; info 'console','file-roll' } }
+        uat { root { additivity: false; info 'file-roll' } }
+        production { root { additivity: false; info 'file-roll' } }
     }
 
     info database: ["audit"]
     additivity: false
 }
+
 
 // Added by the Spring Security Core plugin:
 grails.plugins.springsecurity.userLookup.userDomainClassName = 'com.eservice.eumowy.secure.SecUser'

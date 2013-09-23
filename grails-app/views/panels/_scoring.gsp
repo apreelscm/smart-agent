@@ -26,7 +26,7 @@
                 <ul>
                     <li>
                         <span><g:message code="panel.activity.details"/></span>
-                        <span> <g:textField name="scoringSzczegolyDzialalnosci" value="${data.scoringSzczegolyDzialalnosci}"/></span>
+                        <span> <g:textField name="scoringSzczegolyDzialalnosci" value="${data.scoringSzczegolyDzialalnosci}" readonly="true"/></span>
                     </li>
                 </ul>
                 </div>

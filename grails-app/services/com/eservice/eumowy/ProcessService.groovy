@@ -480,7 +480,6 @@ class ProcessService {
 
         //process.processData?.clear()
         processDataList.each { ProcessData data ->
-
             def foundData = process.processData.find { it.name == data.name }
             if(!foundData){
                 process.addToProcessData(data)
@@ -512,7 +511,6 @@ class ProcessService {
             process.addToPoints(data)
             process.discard()
         }
-		
 		def posDataList = getPosData(cmd)
 		posDataList.each { data ->
 			process.addToPoints(data)

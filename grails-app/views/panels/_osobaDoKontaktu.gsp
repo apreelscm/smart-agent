@@ -3,28 +3,30 @@
         <div class="belka-glowna"><g:message code="panel.person.contact.title"/> </div>
         <div class="centre" style="text-align: center; padding-top: 20px; width: 750px">
             <ul class="table-list centre">
-                <li class="align-center">
+                <li><span><g:message code="panel.acceptor.full.name"/></span></li>
+                <li>
                     <span>
-                        <span><g:select name="kontaktTytul" from="['Pan','Pani']" valueMessagePrefix="person.title" value="${data.kontaktTytul}"/></span>
-                        <span><g:message code="panel.first.name"/>: </span>
-                        <span><eumowy:textField name="kontaktImie" value="${data.kontaktImie}" validatable="${data}" style="width: 120px" maxlength ="15" required="true"/></span>
-                    </span>
-                    <span>
-                        <span><g:message code="panel.last.name"/>: </span>
-                        <span><eumowy:textField name="kontaktNazwisko" value="${data.kontaktNazwisko}" validatable="${data}" maxlength ="18" required="true"/></span>
+                        <span>
+                            <g:select name="kontaktTytul" from="['Pan','Pani']" valueMessagePrefix="person.title" value="${data.kontaktTytul}"/>
+                        </span>
+                        <span>
+                            <g:message code="panel.first.name"/>: <eumowy:textField name="kontaktImie" value="${data.kontaktImie}" validatable="${data}" style="width: 120px" maxlength ="15" required="true"/>
+                        </span>
+                        <span>
+                            <g:message code="panel.last.name"/>: <eumowy:textField name="kontaktNazwisko" value="${data.kontaktNazwisko}" validatable="${data}" maxlength ="18" required="true"/>
+                        </span>
                     </span>
                 </li>
                 <li>
-                    <g:hiddenField name="hasKontaktTel" value="true"/>
-
-                    <span class="${hasErrors(bean:data,field:'hasAkceptantTel','errorSpan')}">
-                        <div style="display: inline"><g:message code="panel.landline.phone.number"/><eumowy:textField class="phone" name="kontaktTelStacjonarny" value="${data.kontaktTelStacjonarny}" validatable="${data}"  maxlength="9"/></div>
-                        <div style="display: inline; margin-left: 5px"><g:message code="panel.mobile.phone.number"/> <eumowy:textField class="mobile-phone" name="kontaktTelKomorkowy" value="${data.kontaktTelKomorkowy}" validatable="${data}"  maxlength="9"/></div>
-                    </span>
-
-                    <span>
-                        <span style="white-space:nowrap"><g:message code="panel.email"/></span>
-                        <span><g:textField class="" name="kontaktEmail" value="${data.kontaktEmail}" validatable="${data}" style="width: 150px" email="true"/></span>
+                    <span style="width: 750px;">
+                        <g:hiddenField name="hasKontaktTel" value="true"/>
+                        <div class="${hasErrors(bean:data,field:'hasAkceptantTel','errorSpan')} float-left">
+                            <span><g:message code="panel.landline.phone.number"/>: <eumowy:textField class="phone" name="kontaktTelStacjonarny" value="${data.kontaktTelStacjonarny}" validatable="${data}"  maxlength="9"/> </span>
+                            <span><g:message code="panel.mobile.phone.number"/>: <eumowy:textField class="mobile-phone" name="kontaktTelKomorkowy" value="${data.kontaktTelKomorkowy}" validatable="${data}"  maxlength="9"/> </span>
+                        </div>
+                        <span>
+                            <g:message code="panel.email"/>: <g:textField class="" name="kontaktEmail" value="${data.kontaktEmail}" validatable="${data}" style="width: 150px" email="true"/>
+                        </span>
                     </span>
                 </li>
             </ul>
