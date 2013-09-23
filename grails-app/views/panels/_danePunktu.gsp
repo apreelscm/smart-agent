@@ -113,8 +113,7 @@
 										code="panel.flat.number" required="true"/></span> <span><eumowy:textField
 										name="${panelType}[${id}].wydrukNrLokalu"
 										id="${panelType}[${id}].dataforprintingAddressFlatNumber"
-										style="width: 50px" value="${pointData?.wydrukNrLokalu}"
-                                        required="true"/></span>
+										style="width: 50px" value="${pointData?.wydrukNrLokalu}"/></span>
 						</span></li>
 						<li><span><g:message code="panel.city" /></span> <span><eumowy:textField
 									name="${panelType}[${id}].wydrukMiasto"
