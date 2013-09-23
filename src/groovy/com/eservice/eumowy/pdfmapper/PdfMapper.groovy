@@ -289,17 +289,33 @@ class PdfMapper {
 
     private mapKorespondencjaKodPocztowyPointDataDetails(def data, def pointData, def key, def value, def index){
         data.put(key, [value] as String[]);
-        String[] split = value.split("-");
-        for (int i=0; i<split.length; i++){
-            data.put("korespondencjaKodPocztowy"+(i+1), [split[i]] as String[])
+
+        if (value != null){
+            def pattern = ~/\d{2}-\d{3}/
+            if (pattern.matcher(value).matches()){
+                final String[] split = value.split("-");
+                for (int i=0; i<split.length; i++){
+                    data.put("korespondencjaKodPocztowy"+(i+1), [split[i]] as String[])
+                }
+            } else {
+                LOG.error('[PointDataDetails - ' + key+ '] nie spelnia warunku: d{2}-d{3} value = ' + value )
+            }
         }
     }
 
     private mapKontaktWPunkcieTelKomorkowyPointDataDetails(def data, def pointData, def key, def value, def index){
         data.put(key, [value] as String[]);
-        String[] split = value.split("-");
-        for (int i=0; i<split.length; i++){
-            data.put("komorka"+(i+1), [split[i]] as String[])
+
+        if (value != null){
+            def pattern = ~/\d{3}-\d{3}-\d{3}/
+            if (pattern.matcher(value).matches()){
+                final String[] split = value.split("-");
+                for (int i=0; i<split.length; i++){
+                    data.put("komorka"+(i+1), [split[i]] as String[])
+                }
+            } else {
+                LOG.error('[PointDataDetails - ' + key+ '] nie spelnia warunku: d{3}-d{3}-d{3} value = ' + value )
+            }
         }
     }
 
@@ -313,17 +329,22 @@ class PdfMapper {
         mapFaxOrPhone(data, value, "kierunkowy2", "nrFaksu");
     }
 
-    private void mapFaxOrPhone(def data, def phoneNumber, def kierName, def otherName){
+    private void mapFaxOrPhone(def key, def data, def phoneNumber, def kierName, def otherName){
         //(11) 222-33-44
-        // FIXME Pawel - sypie sie, trzeba przed na samym poczatku sprawdzic regexp czy numer spelnia maske
-        /*if (phoneNumber != null){
-            data.put(kierName, [phoneNumber.substring(phoneNumber.lastIndexOf('(') +1, phoneNumber.indexOf(')'))] as String[]);
+        def pattern = ~/\(\d{2}\) \d{3}-\d{2}-\d{2}/
 
-            def parts = phoneNumber.substring(phoneNumber.lastIndexOf(' ')+1).split('-');
-            for (int i=0; i<parts.length; i++){
-                data.put(otherName+(i+1), [parts[i]] as String[])
+        if (phoneNumber != null){
+            if (pattern.matcher(phoneNumber).matches()){
+                data.put(kierName, [phoneNumber.substring(phoneNumber.lastIndexOf('(') +1, phoneNumber.indexOf(')'))] as String[]);
+
+                def parts = phoneNumber.substring(phoneNumber.lastIndexOf(' ')+1).split('-');
+                for (int i=0; i<parts.length; i++){
+                    data.put(otherName+(i+1), [parts[i]] as String[])
+                }
+            } else {
+                LOG.error('[key ' + key + '] nie spelnia warunku: d{3}-d{3}-d{3} value = ' + phoneNumber )
             }
-        }*/
+        }
     }
 
     private mapKontaktWPunkcieImiePointDataDetails(def data, def pointData, def key, def value, def index){
