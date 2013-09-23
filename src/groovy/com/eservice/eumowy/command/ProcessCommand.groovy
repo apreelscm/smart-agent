@@ -803,7 +803,7 @@ class ProcessCommand implements Serializable{
         oplPOSBaza(nullable:true, shared: "number")
         obslugaTyp(nullable:false, blank:false)
         obslugaEkonomicznyCena(nullable:true, blank:false, shared: "number") //TODO VERIFY
-        numerRachunkuBankowegoKlienta(nullable:false, blank:false) //TODO  matches: "~|[0-9]{26}") dodac spacje
+        numerRachunkuBankowegoKlienta(nullable:false, blank:false, matches: "~|^[0-9]{2}\\s[0-9]{4}\\s[0-9]{4}\\s[0-9]{4}\\s[0-9]{4}\\s[0-9]{4}\\s[0-9]{4}")
         bankKlienta(nullable:false, blank:false)
         oplataZaUruchomienieDCC(nullable:false, blank:false, shared: "number")
         //nip(nullable:true)
