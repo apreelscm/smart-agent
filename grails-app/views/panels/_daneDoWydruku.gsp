@@ -17,7 +17,7 @@
                         </span>
                         <span>
                             <span><g:message code="panel.house.number" /></span> <span><eumowy:textField name="wydrukNrDomu" value="${data.wydrukNrDomu}" validatable="${data}" style="width: 50px" maxlength ="4" required="true"/></span>
-                            <span><g:message code="panel.flat.number" /></span> <span><eumowy:textField name="wydrukNrMieszkania" value="${data.wydrukNrMieszkania}" validatable="${data}" style="width: 50px" maxlength ="4" required="true"/></span>
+                            <span><g:message code="panel.flat.number" /></span> <span><eumowy:textField name="wydrukNrMieszkania" value="${data.wydrukNrMieszkania}" validatable="${data}" style="width: 50px" maxlength ="4"/></span>
                         </span>
                     </li>
                     <li>

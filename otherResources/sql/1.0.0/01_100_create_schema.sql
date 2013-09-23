@@ -296,6 +296,7 @@ create table EUMOWY.SIGNATURE (
   version number(2,0) not null,
   active number(1,0) not null,
   name varchar2(255 char) not null unique,
+  for_point number(1,0) not null,
   ph_subscription_page_number number(6,0),
   ph_subscriptionx number(6,0),
   ph_subscriptiony number(6,0),

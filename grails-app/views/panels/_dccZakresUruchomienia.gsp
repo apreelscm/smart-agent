@@ -1,5 +1,5 @@
 <div id="dccRangePanel">
-    <fieldset>
+    <fieldset> 
         <div class="belka-glowna"><g:message code="panel.dcc.range.title"/> </div>
         <div class="centre" style="text-align: center; padding-top: 20px; width: 600px">
             <div style="text-align: left">
@@ -79,5 +79,4 @@
             }
         }
     });
-
 </r:script>
