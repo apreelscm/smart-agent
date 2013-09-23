@@ -39,7 +39,12 @@ class EmailService {
 		def emailTemplate = EmailTemplates.findByName(EmailTemplates.EmailTemplateType.DOCUMENTS_ACCEPTED)
         //if(!emailTemplate) return;
 
-        sendMail(emailTemplate, emailTemplate.sender, recipient, null, [merchantName: merchantName], documents)
+        try{
+            sendMail(emailTemplate, emailTemplate.sender, recipient, null, [merchantName: merchantName], documents)
+        }catch(Exception ex){
+            return false
+        }
+        return true
 	}
 
     def sendDocumentsAcceptedToPostSend(def recipient, List<DocumentFile> documents, def merchantName, def merchantNip) {
@@ -53,7 +58,12 @@ class EmailService {
         def emailTemplate = EmailTemplates.findByName(EmailTemplates.EmailTemplateType.DOCUMENTS_REJECTED)
         //if(!emailTemplate) return;
 
-        sendMail(emailTemplate, emailTemplate.sender, recipient, [merchantNip, merchantName] as Object[], [merchantName: merchantName, merchantNip: merchantNip, rejectReason: rejectReason, activities: activities], null)
+        try{
+            sendMail(emailTemplate, emailTemplate.sender, recipient, [merchantNip, merchantName] as Object[], [merchantName: merchantName, merchantNip: merchantNip, rejectReason: rejectReason, activities: activities], null)
+        }catch(Exception ex){
+            return false
+        }
+        return true
     }
 
 

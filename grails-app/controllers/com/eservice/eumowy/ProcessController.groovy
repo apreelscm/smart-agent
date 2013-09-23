@@ -1,8 +1,7 @@
 package com.eservice.eumowy
-
 import com.eservice.eumowy.util.DateUtils
+import com.sun.xml.internal.messaging.saaj.packaging.mime.internet.MimeUtility
 import grails.plugins.springsecurity.Secured
-import org.codehaus.groovy.grails.commons.ApplicationHolder
 
 class ProcessController {
 
@@ -128,15 +127,23 @@ class ProcessController {
             redirect(action: "list", params: params)
             return
         }
-        if (isNotesEmpty(params.notes)){
-            flash.message = message(code: 'notes.empty')
+
+        if (!params.notesFromZrd){
+            flash.error = message(code: 'notes.empty')
+            redirect(action: "show", params: params)
+            return
+        }
+
+        if (processInstance.status != Process.ProcessStatus.WAITING){
+            flash.error = "Można odrzuić/zaakceptować jedynie proces ze statusem - Oczekujący"
             redirect(action: "show", params: params)
             return
         }
 
         processInstance.status = Process.ProcessStatus.REJECTED
         processInstance.observed = (params.observed == "on")
-		
+        processInstance.notesFromZrd = params.notesFromZrd
+
 		/* Delete subscriptions */
 		processInstance.subscriptions?.clear()
         processInstance.save(flush: true, validate: false)
@@ -148,7 +155,12 @@ class ProcessController {
             def key = 'activity.' + a.code + '.name'
             activities.add(messageSource.getMessage(key, [] as Object[], request.locale))
         }
-        emailService.sendDocumentsRejected(processInstance.phEmail, processInstance.client.name, processInstance.client.nip, params.notes, activities)
+
+        if(!emailService.sendDocumentsRejected(processInstance.phEmail, processInstance.client.name, processInstance.client.nip, params.notesFromZrd, activities)){
+            flash.error = "Błąd podczas wysyłania maila na adres ${processInstance.phEmail}"
+            redirect(action: "show", params: params)
+            return
+        }
 
         redirect(action: "list", params: params)
     }
@@ -164,18 +176,31 @@ class ProcessController {
             redirect(action: "list", params: params)
             return
         }
-        if (isNotesEmpty(params.notes)){
-            flash.message = message(code: 'notes.empty')
+        if (!params.notesFromZrd){
+            flash.error = message(code: 'notes.empty')
+            redirect(action: "show", params: params)
+            return
+        }
+
+        if (processInstance.status != Process.ProcessStatus.WAITING){
+            flash.error = "Można odrzuić/zaakceptować jedynie proces ze statusem - Oczekujący"
             redirect(action: "show", params: params)
             return
         }
 
         processInstance.status = Process.ProcessStatus.ACCEPTED;
         processInstance.observed = (params.observed == "on")
+        processInstance.notesFromZrd = params.notesFromZrd
+
         processInstance.save(validate: true)
         flash.message = message(code: 'default.accepted.message', args:[ message(code: 'process.label', default: 'proces'), processInstance.id])
 
-        emailService.sendDocumentsAccepted(processInstance.phEmail, null , processInstance.client.name)
+
+        if(!emailService.sendDocumentsAccepted(processInstance.phEmail, null , processInstance.client.name)){
+            flash.error = "Błąd podczas wysyłania maila na adres ${processInstance.phEmail}"
+            redirect(action: "show", params: params)
+            return
+        }
 
         redirect(action: "list", params: params)
     }
@@ -232,14 +257,14 @@ class ProcessController {
         }
 
         response.setContentType("application/octet-stream")
-        response.setHeader("Content-disposition", "${params.contentDisposition}; filename=\"${file.name}\"")
+        response.setHeader("Content-disposition", "${params.contentDisposition}; filename=\"${MimeUtility.encodeWord(file.name)}\"")
         response.outputStream << file.file.content
     }
-
+/*
     private boolean isNotesEmpty(def notes){
         if(notes == null || notes == ""){
             return true
         }
         return false
-    }
+    }*/
 }

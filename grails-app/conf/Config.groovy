@@ -1,4 +1,5 @@
 import grails.plugins.springsecurity.SecurityConfigType
+import org.apache.log4j.DailyRollingFileAppender
 import org.apache.log4j.jdbc.JDBCAppender
 
 // locations to search for config files that get merged into the main config;
@@ -42,7 +43,7 @@ grails.mime.types = [
         multipartForm: 'multipart/form-data',
         rss:           'application/rss+xml',
         text:          'text/plain',
-		pdf:		   'application/pdf',
+        pdf:		   'application/pdf',
         xml:           ['text/xml', 'application/xml']
 ]
 
@@ -106,6 +107,7 @@ grails.gorm.default.constraints = {
 // log4j configuration
 log4j = {
 
+
 // Set level for all application artefacts
     info "grails.app"
     debug "grails.app.controller.com.eservice.umowy.activity"
@@ -129,15 +131,15 @@ log4j = {
     trace 'grails.plugin.mail'
 
     //show sql values
-  /*  info "org.hibernate.SQL", "org.hibernate.type", "org.codehaus.groovy.grails.orm.hibernate"
-    trace 'org.hibernate.type' debug 'org.hibernate.SQL'*/
+    /*  info "org.hibernate.SQL", "org.hibernate.type", "org.codehaus.groovy.grails.orm.hibernate"
+      trace 'org.hibernate.type' debug 'org.hibernate.SQL'*/
 
-  //  trace 'org.hibernate.type'
+    //  trace 'org.hibernate.type'
     info 'org.hibernate.SQL'
 
 
     appenders {
-       console name: 'console', layout: pattern(conversionPattern: '%d{dd-MM-yyyy HH:mm:ss,SSS} %5p %c - %m%n')
+        console name: 'console', layout: pattern(conversionPattern: '%d{dd-MM-yyyy HH:mm:ss,SSS} %5p %c - %m%n')
 
         environments {
             development {
@@ -186,11 +188,23 @@ log4j = {
                 )
             }
         }
+
+        String logDirectory = "${System.getProperty('catalina.base') ?: '.'}/logs"
+        println("catalina.base dir : "+logDirectory)
+
+        appender new DailyRollingFileAppender(
+                name: 'file-roll',
+                datePattern: "'.'yyyy-MM-dd",
+                fileName: logDirectory+'/eumowy.log',  //storage path of log file
+                layout: pattern(conversionPattern:'%d [%t] %-5p %c{2} %x - %m%n')
+        )
+
+        console name:'stdout', layout:pattern(conversionPattern: '%d{ISO8601}\t%p\t%c:%L\t%m%n')
     }
 
     root {
         additivity: false
-        info 'console'
+        info 'console', 'file-roll'
     }
 
     info database: ["audit"]
@@ -205,15 +219,15 @@ grails.plugins.springsecurity.authority.className = 'com.eservice.eumowy.secure.
 
 grails.plugins.springsecurity.securityConfigType = SecurityConfigType.InterceptUrlMap
 grails.plugins.springsecurity.interceptUrlMap = [
-		'/process/**':	['hasRole("EUM_ZRD")'],
-		'/activity/**': ['hasRole("EUM_PH_BZOS")'],
+        '/process/**':	['hasRole("EUM_ZRD")'],
+        '/activity/**': ['hasRole("EUM_PH_BZOS")'],
         '/login/**':	['IS_AUTHENTICATED_ANONYMOUSLY'],
         '/logout/**':	['IS_AUTHENTICATED_ANONYMOUSLY'],  //leave the page open
         '/images*/**':	['IS_AUTHENTICATED_ANONYMOUSLY'],
         '/css*/**':		['IS_AUTHENTICATED_ANONYMOUSLY'],
         '/fonts*/**':	['IS_AUTHENTICATED_ANONYMOUSLY'],
         '/js*/**':		['IS_AUTHENTICATED_ANONYMOUSLY'],
-		'/tmp/**':		['IS_AUTHENTICATED_FULLY'],
+        '/tmp/**':		['IS_AUTHENTICATED_FULLY'],
         '/**':			['IS_AUTHENTICATED_FULLY']
 ]
 

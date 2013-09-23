@@ -3,16 +3,16 @@
         <div class="belka-glowna"><g:message code="panel.additional.services2.title"/></div>
         <div style="text-align: center; padding-top: 20px; width: 400px" class="centre">
             <table class="table-list centre">
-                <tr>
+                <tr class="${!data.wydrukGrafikiCena ?  'display-none' : ''}">
                     <td><g:message code="panel.payment.logo"/></td>
                     <td>
                         <eumowy:currencyField name="wydrukGrafikiCena" value="${data.wydrukGrafikiCena}"  readonly="true"/>
                     </td>
                 </tr>
-                <tr>
+                <tr  class="${!data.dzialaniaMatematyczneCena ?  'display-none' : ''}">
                      <td><g:message code="panel.payment.calc"/></td>
                      <td>
-                        <eumowy:currencyField  name="dzialaniaMatematyczneCena" value="${data.dzialaniaMatematyczneCena}"  readonly="true"/>
+                        <eumowy:currencyField name="dzialaniaMatematyczneCena" value="${data.dzialaniaMatematyczneCena}"  readonly="true"/>
                     </td>
                 </tr>
                 <tr>

@@ -5,25 +5,31 @@
 <head>
     <meta name="layout" content="main">
     <g:set var="entityName" value="${message(code: 'process.label', default: 'Process')}" />
-    <g:set var="isNewProcess" value="${processInstance?.status.equals(Process.ProcessStatus.NEW)}" />
+    <g:set var="isWaitingProcess" value="${processInstance?.status.equals(Process.ProcessStatus.WAITING)}" />
+
     <title>${entityName}</title>
-    <r:script>
+  %{--  <r:script>
         jQuery(document).ready(function(){
-            var isProcessAccepted = ${processInstance?.status.equals(Process.ProcessStatus.ACCEPTED)};
+            var isProcessAccepted = ${isProcessAccepted};
             if(isProcessAccepted){
                 jQuery("input.submit").attr('disabled', 'disabled');
             }
         })
-    </r:script>
+    </r:script>--}%
 </head>
 <body>
 
 <section id="show-process">
     <h1 class="ng linia-bottom">Id Procesu: ${processInstance?.id}</h1>
 
-    <g:if test="${flash.message}">
-        <div class="message" role="status">${flash.message}</div>
-    </g:if>
+    <div id="notesMessageBox">
+        <g:if test="${flash.message}">
+            <g:render template="../activity/message/infoMessage" model="[message: flash.message]"/>
+        </g:if>
+        <g:if test="${flash.error}">
+            <g:render template="../activity/message/errorMessage" model="[message: flash.error]"/>
+        </g:if>
+    </div>
 
     <ul class="property-list" style="text-align: center">
         <li style="margin:0em 0em 1em 0em;">
@@ -33,7 +39,6 @@
             <g:textField name="clientName" value="${processInstance?.client?.name}" disabled="disabled"
                          style="width: 89%;display: inline"/>
         </li>
-
 
         <li style="margin:0em 0em 0em 0em;display:inline;">
             <label for="clientNip"  style="display: inline ">
@@ -83,19 +88,23 @@
                 <label style="width: 70px; text-align: right">
                     <g:message code="todo" default="Obserwuj:"/>
                 </label>
-                    <g:checkBox name="observed" checked="${processInstance?.observed}" style="position: relative; top: 3px; left: 3px"/>
+             %{--   <g:checkBox name="observed" checked="true" style="position: relative; top: 3px; left: 3px"/>--}%
+
+                <input type="checkbox" id="observed" style="position: relative; top: 3px; left: 3px" name="observed"
+                    ${processInstance?.observed ? 'checked' : ''}
+                    ${!isWaitingProcess ? 'disabled' : ''}
+                >
             </div>
 
             <div style="margin-top: 15px">
                 <label style="width: 70px; text-align: right">
                     <g:message code="todo" default="Uwagi:"/>
                 </label>
-                <g:if test="${params.notes == ""}">
-                    <g:textArea id="notes" name="notes" style="margin-left: 8px; height: 100px; min-width: 400px" maxlength="300" required="required"/>
-                </g:if>
-                <g:else>
-                    <g:textArea id="notes" name="notes" style="margin-left: 8px; height: 100px; min-width: 400px" maxlength="300"/>
-                </g:else>
+
+                <textarea id="notes" maxlength="300" style="margin-left: 8px; height: 100px; min-width: 400px" name="notesFromZrd"
+                    ${!isWaitingProcess ? 'disabled' : ''}
+                    ${!params.notesFromZrd ? 'required' : '' }>${processInstance?.notesFromZrd}</textarea>
+
             </div>
         </div>
 
@@ -113,11 +122,14 @@
                 <g:if test="${params.max}"><g:hiddenField name="max" value="${params.max}"/></g:if>
                 <g:if test="${params.offset}"><g:hiddenField name="offset" value="${params.offset}"/></g:if>
                 <g:link class="button submit float-left" action="list">Wróć</g:link>
+
                 <g:actionSubmit class="button submit" action="reject" value="Odrzuć"
                                 style="float: left;margin-right: 1em;display:block"
+                                disabled="${!isWaitingProcess}"
                                 formnovalidate=""
                                 onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
                 <g:actionSubmit class="button submit" action="accept" value="Zaakceptuj"
+                                disabled="${!isWaitingProcess}"
                                 style="float: right;display:block"
                                 onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
             </fieldset>
@@ -127,5 +139,3 @@
 </section>
 </body>
 </html>
-
-

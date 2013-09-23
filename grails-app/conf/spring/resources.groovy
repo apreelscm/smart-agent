@@ -2,7 +2,6 @@ import com.eservice.dao.emetrics.UserDAO
 import com.eservice.eumowy.CustomDateEditorRegistrar
 import com.eservice.eumowy.auth.EServiceAuthenticationProvider
 import com.eservice.eumowy.dao.CbdDAO
-import com.eservice.eumowy.propEditors.CustomDateEditorRegistrar
 import com.eservice.eumowy.propEditors.CustomPropertyEditorRegistrar
 import com.eservice.service.security.ECbdRoleService
 import com.eservice.service.security.NoRoleService
@@ -15,7 +14,6 @@ import org.jasypt.util.password.ConfigurablePasswordEncryptor
 // Place your Spring DSL code here
 
 beans = {
-
     /**
      * SPRING BEANS
      * */
@@ -59,6 +57,7 @@ beans = {
      * LOGIN BEANS
      * */
     customPropertyEditorRegistrar(CustomPropertyEditorRegistrar){}
+    customDateEditorRegistrar(CustomDateEditorRegistrar)
 
     // custom authentication
     daoAuthenticationProvider(EServiceAuthenticationProvider) {
@@ -71,5 +70,5 @@ beans = {
         dataSource = ref('dataSource')
     }
 	
-	customDateEditorRegistrar(CustomDateEditorRegistrar)
+
 }

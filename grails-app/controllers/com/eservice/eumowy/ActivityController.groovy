@@ -982,7 +982,7 @@ class ActivityController {
     }
 
     def deleteFile(){
-        attachmentService.deleteFile(params.id);
+        attachmentService.deleteFile(params.id,params.processId);
         getAttachmentList()
     }
 

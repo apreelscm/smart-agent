@@ -2,11 +2,19 @@ package com.eservice.eumowy
 
 class AttachmentService {
 
-    def deleteFile(def id) {
+    def deleteFile(def id, def processId) {
 
+        log.info("deleteFile [ id:${id}, processId:${processId}]")
         def fileId = java.lang.Integer.valueOf(id);
         AttachmentFile ufile = AttachmentFile.get(fileId);
-        ufile.delete()
+
+        log.info("deleteFile exists : ${ufile}]")
+        if(ufile.processId == Long.valueOf(processId)){
+            ufile.delete()
+        }
+        else{
+            log.error("deleteFile and process dismatch")
+        }
     }
 
     def getListByProcessId(def id) {

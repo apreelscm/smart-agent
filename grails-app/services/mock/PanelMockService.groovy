@@ -81,7 +81,7 @@ class PanelMockService {
         cmd.oplataMasteroPr = "1.04"
     }
 
-    def getDCCZakresUruchomienia(ProcessCommand cmd) {
+    def getDccZakresUruchomienia(ProcessCommand cmd) {
         cmd.dccZakresUruchomienia = "obecne_i_nowe"
 
 		def p1 = new AllPointsCommand()
