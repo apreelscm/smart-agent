@@ -12,7 +12,7 @@
                 </li>
                 <li><span><g:message code="panel.acceptor.network.name"/></span></li>
                 <li>
-                    <span><eumowy:textField name="akceptantNazwaSieciowa" value="${data.akceptantNazwaSieciowa}" validatable="${data}" readonly="${data.isFromCbd('akceptantNazwaSieciowa')}" style="width: 400px;" required="true" maxlength="22"/></span>
+                    <span><eumowy:textField name="akceptantNazwaSieciowa" value="${data.akceptantNazwaSieciowa}" validatable="${data}" readonly="${data.isFromCbd('akceptantNazwaSieciowa')}" style="width: 400px;" maxlength="22"/></span>
                     <g:hiddenField name="akceptantNazwaSieciowaCbd" value="${data.akceptantNazwaSieciowaCbd}"/>
                 </li>
                 <li>
