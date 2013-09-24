@@ -51,6 +51,7 @@
 				panelInternalCount++;
 				globalPanelCount++;
 				jQuery("#newPointPanelCount").val(panelCount);
+                maskNewPointRefresh();
 			}
 			
 			if (panelInternalCount == 10) {
@@ -61,15 +62,13 @@
 				jQuery("#conitnueButton").prop("disabled", false);
 			}
 
-            maskNewPointRefresh();
-
 			return false;
 		});
 		
 		jQuery("body").on("click", "#removePointButton", function(e) {
 			e.preventDefault();
 			
-			jQuery(e.target).closest("#newPointPanel").remove();
+			jQuery(e.target).closest(".newPointPanel").remove();
 			panelInternalCount--;
 			
 			if (panelInternalCount < 10) {
