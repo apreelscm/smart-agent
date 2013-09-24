@@ -5,7 +5,9 @@
 <head>
     <meta name="layout" content="main">
     <g:set var="entityName" value="${message(code: 'process.label', default: 'Process')}" />
-    <g:set var="isWaitingProcess" value="${processInstance?.status.equals(Process.ProcessStatus.WAITING)}" />
+    <g:set var="isWaitingProcess" value="${processInstance?.status in [Process.ProcessStatus.WAITING,Process.ProcessStatus.WAIT_FOR_SUBSCRIPTION_PAPER_VERSION]}" />
+    <g:set var="isClosedProcess" value="${processInstance?.status in [Process.ProcessStatus.ACCEPTED,Process.ProcessStatus.REJECTED]}" />
+    <g:set var="hasDocuments" value="${processInstance?.documents?.size() > 0}" />
 
     <title>${entityName}</title>
   %{--  <r:script>
@@ -92,7 +94,7 @@
 
                 <input type="checkbox" id="observed" style="position: relative; top: 3px; left: 3px" name="observed"
                     ${processInstance?.observed ? 'checked' : ''}
-                    ${!isWaitingProcess ? 'disabled' : ''}
+                    ${isClosedProcess ? 'disabled' : ''}
                 >
             </div>
 
@@ -102,9 +104,8 @@
                 </label>
 
                 <textarea id="notes" maxlength="300" style="margin-left: 8px; height: 100px; min-width: 400px" name="notesFromZrd"
-                    ${!isWaitingProcess ? 'disabled' : ''}
+                    ${isClosedProcess ? 'disabled' : ''}
                     ${!params.notesFromZrd ? 'required' : '' }>${processInstance?.notesFromZrd}</textarea>
-
             </div>
         </div>
 
@@ -125,11 +126,11 @@
 
                 <g:actionSubmit class="button submit" action="reject" value="Odrzuć"
                                 style="float: left;margin-right: 1em;display:block"
-                                disabled="${!isWaitingProcess}"
+                                disabled="${isClosedProcess}"
                                 formnovalidate=""
                                 onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
                 <g:actionSubmit class="button submit" action="accept" value="Zaakceptuj"
-                                disabled="${!isWaitingProcess}"
+                                disabled="${!isWaitingProcess || !hasDocuments}"
                                 style="float: right;display:block"
                                 onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
             </fieldset>

@@ -69,7 +69,7 @@
         <g:render template="../panels/wykazPunktowAkceptujacychKartyPlatnicze"/>
         %{--<g:render template="../panels/zestawPos"/>--}%
         <g:render template="../panels/zestawPosOdplatneUzywanie"/>
-        <g:render template="../panels/zestawPosStawkiPreferencyjne"/>
+        %{--<g:render template="../panels/zestawPosStawkiPreferencyjne"/>--}%
         <g:render template="../panels/serwis"/>
         <g:render template="../panels/rachunekBankowyKlienta"/>
         <g:render template="../panels/oplataDCCZaUruchomienie"/>

@@ -11,7 +11,13 @@ class EmailService {
         def emailTemplate = EmailTemplates.findByName(EmailTemplates.EmailTemplateType.NOTES_TO_COA)
         //if(!emailTemplate) return;
 		log.info "COA Notes Recipient: " + emailTemplate.recipient
-        sendMail(emailTemplate, emailTemplate.sender, emailTemplate.recipient, null, [notes: notes, phNumber: phNumber, phName: phName], null)
+
+        try{
+            sendMail(emailTemplate, emailTemplate.sender, emailTemplate.recipient, null, [notes: notes, phNumber: phNumber, phName: phName], null)
+        }catch(Exception ex){
+            return false
+        }
+        return true
     }
 
 	def sendDocumentsPaperVersion(def recipient, List<DocumentFile> documents, def merchantName) {

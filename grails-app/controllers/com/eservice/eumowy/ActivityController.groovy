@@ -1,7 +1,6 @@
 package com.eservice.eumowy
 
 import com.eservice.eumowy.command.ProcessCommand
-import com.eservice.eumowy.pdfmapper.PdfMapper
 import com.eservice.eumowy.process.DefineActivityCommand
 import com.eservice.eumowy.util.DateUtils
 import org.apache.pdfbox.pdmodel.PDDocument
@@ -43,6 +42,12 @@ class ActivityController {
         init{
             action{
                 log.info("init new flow")
+                log.info("init params:"+params)
+                log.info("init params.message:"+ params.message)
+                log.info("init flow.message:"+ flow.message)
+                log.info("init flash.message:"+ flash.message)
+                log.info("init flow.prevActivityMessage:"+flow.prevActivityMessage)
+                flash.infoMessage =  params.message
                 flow.isGoBack = false;
             }
             on("success").to "defineActivity"
@@ -108,13 +113,9 @@ class ActivityController {
                 def processInstance = flow.processInstance
                 def notes = processInstance.notesToCoa
                 log.info("wysyłanie wiadomości email z uwagami do COA [notes: ${notes}]")
-                try{
-                    def user = springSecurityService.principal
-                    emailService.sendNotesToCOA(notes, user.nr, user.imie + ' ' + user.nazwisko)
-                    log.info(flash.infoMessage)
-                }catch (Exception error){
-                    log.info(flash.errorMessage)
-                    error.printStackTrace();
+
+                def user = springSecurityService.principal
+                if(!emailService.sendNotesToCOA(notes, user.nr, user.imie + ' ' + user.nazwisko)){
                     return error()
                 }
             }
@@ -122,8 +123,8 @@ class ActivityController {
                 flash.errorMessage = message(code:"email.send.error", default:"Wystąpił błąd podczas wysyłania wiadomości");
             }to "defineActivity"
             on("success"){
-                flash.infoMessage = message(code:"email.notesToCOA.send.complete", default:"Wysłano wiadomość z uwagami do COA");
-            }to "defineActivity"
+                flow.prevActivityMessage = message(code:"email.notesToCOA.send.complete", default:"Wysłano wiadomość z uwagami do COA");
+            }to "beforeRestart"
         }
 
         /** default full subflow */
@@ -138,6 +139,7 @@ class ActivityController {
                 flow.representative2 = currentEvent.attributes.representative2
 				flow.calc = currentEvent.attributes.calc
 				flow.calcId = currentEvent.attributes.calcId
+                flow.prevActivityMessage = "Proces [id = ${flow.processInstance.id}] został poprawnie zapisany."
             }.to "clientSignature"
         }
 
@@ -151,6 +153,7 @@ class ActivityController {
                 flow.processInstance = currentEvent.attributes.process
                 flow.representative1 = currentEvent.attributes.representative1
                 flow.representative2 = currentEvent.attributes.representative2
+                flow.prevActivityMessage = "Proces [id = ${flow.processInstance.id}] został poprawnie zaktualizowany."
             }.to "clientSignature"
         }
 
@@ -164,6 +167,7 @@ class ActivityController {
                 flow.processInstance = currentEvent.attributes.process
                 flow.representative1 = currentEvent.attributes.representative1
                 flow.representative2 = currentEvent.attributes.representative2
+                flow.prevActivityMessage = "Dla Procesu [id = ${flow.processInstance.id}] zostały poprawnie uzupełnione podpisy."
             }.to "clientSignature"
         }
 
@@ -175,6 +179,7 @@ class ActivityController {
             }to "defineActivity"
             on("finish"){
                 flow.processInstance = currentEvent.attributes.process
+                flow.prevActivityMessage = "Proces [id = ${flow.processInstance.id}] został poprawnie odrzucony."
             }.to "finish"
         }
 
@@ -306,7 +311,7 @@ class ActivityController {
 
         beforeRestart{
             action {
-                redirect action: "createProcess", controller: "activity"
+                redirect action: "createProcess", controller: "activity", params: [message:flow.prevActivityMessage]
             }
             on("success").to "restartFlow"
         }
