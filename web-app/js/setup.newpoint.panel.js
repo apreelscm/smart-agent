@@ -11,17 +11,21 @@ function getGlobalPanelCount(prefix) {
 }
 
 function setupNewPointPanelHandlers(prevPanelId, panelId, prefix) {
-	
+
 	//jQuery(document).ready(function() {
 		jQuery("#"+prefix+"\\["+panelId+"\\]\\.bankAccountNumber").on("keyup", {p: prefix, pid: panelId}, function(e) {
-			if (jQuery(e.target).val() != undefined && jQuery(e.target).val() != null && jQuery(e.target).val().length == 26) {
-				jQuery.get("/eumowy/activity/getBankName", {accountNo: jQuery(e.target).val()}, function(data) {
-					if (data != undefined && data != null && data != "") {
-						var obj = JSON.parse(data);
-						jQuery("#"+e.data.p+"\\["+e.data.pid+"\\]\\.bankName").val(obj.name);
-						jQuery("#"+e.data.p+"\\["+e.data.pid+"\\]\\.bankId").val(obj.id);
-					}
-		     	}); 
+            var accountNr = jQuery(e.target).val();
+			if ( accountNr != undefined && accountNr != null){
+                var normalizedAccountNr = accountNr.replace(/\s+/g, '');
+                if (normalizedAccountNr.length == 26){
+                    jQuery.get("/eumowy/activity/getBankName", {accountNo: normalizedAccountNr}, function(data) {
+                        if (data != undefined && data != null && data != "") {
+                            var obj = JSON.parse(data);
+                            jQuery("#"+prefix+"\\["+panelId+"\\]\\.bankName").val(obj.name);
+                            jQuery("#"+prefix+"\\["+panelId+"\\]\\.bankId").val(obj.id);
+                        }
+                    });
+                }
 			}
 		});
 	
@@ -242,21 +246,15 @@ function setupNewPointPanelHandlers(prevPanelId, panelId, prefix) {
 
 function setupNewPointPanelData(prevPanelId, panelId) {
 	//jQuery(document).ready(function() {
-	
-		var pointdata = {};
+
 		var terminaloptions = {};
 		var technicalinformation = {};
 		var possetforselectedpoint = {};
 		var additionalequipment = {};
-		
-		if (Object.keys(pointdata).length == 0) {
-			pointdata['nip'] = jQuery("#"+prevPanelId+"nip").val();
-			pointdata['mmccode'] = jQuery("#"+prevPanelId+"mccCode").val();
-			pointdata['bussinessTypeInPractice'] = jQuery("#"+prevPanelId+"bussinessTypeInPractice").val();
-			pointdata['bankAccountNumber'] = jQuery("#"+prevPanelId+"bankAccountNumber").val();
-			pointdata['bankName'] = jQuery("#"+prevPanelId+"bankName").val();
-		}
-		
+
+        var nip = jQuery("#akceptantNip").val();
+        var mmccode = jQuery("#"+prevPanelId+"mccCode").val();
+
 		if (Object.keys(possetforselectedpoint).length == 0) {
 			possetforselectedpoint['dialupCount'] = jQuery("#"+prevPanelId+"dialupCount").val();
 			possetforselectedpoint['dialupPPCount'] = jQuery("#"+prevPanelId+"dialupPPCount").val();
@@ -317,14 +315,12 @@ function setupNewPointPanelData(prevPanelId, panelId) {
 			additionalequipment['otherAdditionalDeviceCount'] = jQuery("#"+prevPanelId+"otherAdditionalDeviceCount").val();
 			additionalequipment['otherAdditionalDevicePrice'] = jQuery("#"+prevPanelId+"otherAdditionalDevicePrice").val();
 		}
-		
+
+        jQuery("#"+panelId+"nip").val(nip);
+
 		if (panelId != prevPanelId) {
 			if (jQuery("#"+prevPanelId+"sameForEveryPoint").is(':checked')) {
-				jQuery("#"+panelId+"nip").val(pointdata['nip']);
-				jQuery("#"+panelId+"mccCode").val(pointdata['mmccode']);
-				jQuery("#"+panelId+"bussinessTypeInPractice").val(pointdata['bussinessTypeInPractice']);
-				jQuery("#"+panelId+"bankAccountNumber").val(pointdata['bankAccountNumber']);
-				jQuery("#"+panelId+"bankName").val(pointdata['bankName']);
+				jQuery("#"+panelId+"mccCode").val(mmccode);
 				jQuery("#"+panelId+"sameForEveryPoint").prop("checked", true);
 				jQuery("#"+panelId+"sameForEveryPoint").prop("disabled", true);
 			}
