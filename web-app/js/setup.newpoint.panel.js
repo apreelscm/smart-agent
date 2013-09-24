@@ -11,17 +11,21 @@ function getGlobalPanelCount(prefix) {
 }
 
 function setupNewPointPanelHandlers(prevPanelId, panelId, prefix) {
-	
+
 	//jQuery(document).ready(function() {
 		jQuery("#"+prefix+"\\["+panelId+"\\]\\.bankAccountNumber").on("keyup", {p: prefix, pid: panelId}, function(e) {
-			if (jQuery(e.target).val() != undefined && jQuery(e.target).val() != null && jQuery(e.target).val().length == 26) {
-				jQuery.get("/eumowy/activity/getBankName", {accountNo: jQuery(e.target).val()}, function(data) {
-					if (data != undefined && data != null && data != "") {
-						var obj = JSON.parse(data);
-						jQuery("#"+e.data.p+"\\["+e.data.pid+"\\]\\.bankName").val(obj.name);
-						jQuery("#"+e.data.p+"\\["+e.data.pid+"\\]\\.bankId").val(obj.id);
-					}
-		     	}); 
+            var accountNr = jQuery(e.target).val();
+			if ( accountNr != undefined && accountNr != null){
+                var normalizedAccountNr = accountNr.replace(/\s+/g, '');
+                if (normalizedAccountNr.length == 26){
+                    jQuery.get("/eumowy/activity/getBankName", {accountNo: normalizedAccountNr}, function(data) {
+                        if (data != undefined && data != null && data != "") {
+                            var obj = JSON.parse(data);
+                            jQuery("#"+prefix+"\\["+panelId+"\\]\\.bankName").val(obj.name);
+                            jQuery("#"+prefix+"\\["+panelId+"\\]\\.bankId").val(obj.id);
+                        }
+                    });
+                }
 			}
 		});
 	
