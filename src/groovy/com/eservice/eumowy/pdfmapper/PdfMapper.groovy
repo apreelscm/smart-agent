@@ -506,6 +506,10 @@ class PdfMapper {
 		addCheckboxes(data, ["panDoKontaktu": "Pan", "paniDoKontaktu": "Pani"], value)
 	}
 	
+	private mapOplataZaUruchomienieWalutyObcej(def data, def pd, def key, def value) {
+		data.put("walutaObcaCena", [value] as String[])
+	}
+	
 	private mapNipProcess(def data, def pointData, def key, def value){
 		data.put(key, [value] as String[]);
 		data.put("akceptantNip", [value] as String[]);
@@ -658,7 +662,7 @@ class PdfMapper {
     }
 
     private mapUmowaCzasProcess(def data, def pd, def key, def value) {
-        addCheckboxes(data, ["umNieOzn": "nieoznaczony", "umOzn": "oznaczony"], value)
+		addCheckboxes(data, ["umowaNieOzn": "nieoznaczony", "umowaOzn": "oznaczony"], value)
     }
 
     private mapDzialalnoscFormaProcess(def data, def pd, def key, def value) {
