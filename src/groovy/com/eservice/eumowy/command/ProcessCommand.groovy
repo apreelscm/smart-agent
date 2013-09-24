@@ -462,7 +462,7 @@ class ProcessCommand implements Serializable{
         })
 
         akceptantNazwaOficjalna(nullable:false, blank:false) //a1!, M
-        akceptantNazwaSieciowa(nullable:false, blank:false) //a1!
+        akceptantNazwaSieciowa(nullable:false, blank:true) //a1!
         akceptantRegon(nullable:false, blank:false, matches:"~|[0-9]{9}") //111111111, M
         akceptantNazwaOficjalnaCbd(nullable:true)
         akceptantNazwaSieciowaCbd(nullable:true)
