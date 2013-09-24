@@ -14,13 +14,23 @@ class PdfMapper {
     private int pointAcceptCardCount =0;
     private int pointRangeCount =0;
 
-    def mapToPDFData(def processInstance){
+    def mapOnlyProcessData(def processInstance){
         HashMap<String, String[]> dataMap = new HashMap<String, String[]>()
         dataMap.putAll(mapProcessToPDFData(processInstance))
-        dataMap.putAll(mapAllDataToPDFData(processInstance.processData, processInstance.points))
-        return dataMap
+        dataMap.putAll(mapProcessDataToPDFData(processInstance.processData))
+        return dataMap;
     }
 
+    def mapOnlyPointData(def point, def index){
+        Map<String, String[]> data = new HashMap<String, String[]>()
+        pointIndex = index;
+
+        data.putAll(mapPointDataToPDFData(point))
+        data.putAll(mapPosesDataToPDFData(point.posDatas))
+        return data
+    }
+
+    //FOR TEST ONLY !!!
     def mapAllDataToPDFData(def process, def points) {
         HashMap<String, String[]> dataMap = new HashMap<String, String[]>()
 
@@ -30,6 +40,7 @@ class PdfMapper {
         return dataMap
     }
 
+    //FOR TEST ONLY !!!
     private def mapPointsDataToPDFData(def points) {
         Map<String, String[]> data = new HashMap<String, String[]>()
         points?.eachWithIndex { point, index ->
@@ -71,8 +82,8 @@ class PdfMapper {
         }
 
         pointData.properties.each { key, value ->
-            log.info "PointData Key: " + key + " value: " + value
-            if (["class", "posDatas", "errors", "constraints", "processId", "cbdId", "pointDetailsId", "empty"].contains(key) || value == null){
+//            log.info "PointData Key: " + key + " value: " + value
+            if (["class", "posDatas", "errors", "constraints", "process", "processId", "cbdId", "pointDetails", "empty"].contains(key) || value == null){
                 return
             } else if (["tytulPlatnosci", "systemKasowy", "uta"].contains(key)) {
                 if (acceptCardIsChoosen){

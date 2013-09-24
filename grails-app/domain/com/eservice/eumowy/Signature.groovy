@@ -8,7 +8,8 @@ class Signature implements Serializable {
     String name;
     Boolean active = true;
 	String templatePath;
-	
+    Boolean forPoint = true;
+
 	Integer subscriptionX;
 	Integer subscriptionY;
 	Integer subscriptionPageNumber;

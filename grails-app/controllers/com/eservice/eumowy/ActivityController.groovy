@@ -195,45 +195,11 @@ class ActivityController {
 				}
 				
 				if (!flow.skipDocumentGeneration) {
-					def totalPagesCount = 0
-                    def data = new PdfMapper().mapToPDFData(processInstance)
+                    def processWithPages = pdfService.workWithDocuments(processInstance)
+                    flow.totalPagesCount = processWithPages.totalPagesCount
+                    processInstance.save(flush:true)
+                    flow.processInstance = processWithPages.processInstance
 
-                    data.each{ key, value ->
-                        println 'DO GENERATORA PDF -> ' + key + ' = ' + value
-                    }
-
-                    processInstance.signatures.each { sig ->
-	                    log.info "SIGNATURE NAME: " + sig.name + " PDF TEMPLATE PATH: " + sig.templatePath
-	
-	                    byte[] documentData = pdfService.fillPdfFormFromURIWithFaksymile(sig, data, PdfService.FontType.ARIAL)
-	
-	                    if(!documentData) return
-	
-	                    int pc = pdfService.getPageCountFromPdf(documentData)
-	                    totalPagesCount += pc
-
-	                    if (processService.findDocumentByName(processInstance.documents, sig.templatePath) == null) {
-	                        log.info "Creating new document [${sig.templatePath}]"
-	                        DocumentFile df = new DocumentFile(name: sig.templatePath, dateCreated: new Date(), lastUpdated: new Date(), pagesCount: pc, signature: sig)
-	                        df.setContent(new DocumentContent(content: documentData))
-	                        df.save(flush: true)
-	                        log.info "DF id: " + df.id + " PageCount: " + df.pagesCount
-	                        log.info "Process ID: " + processInstance.id
-	                        processInstance.addToDocuments(df)
-	                        processInstance.discard()
-	                    }
-	                    else {
-	                        log.info "Updating existing document [${sig.templatePath}]"
-	                        DocumentFile df = processService.findDocumentByName(processInstance.documents, sig.templatePath)
-	                        df.content.setContent(documentData)
-                            df.lastUpdated = new Date()
-	                        df.save(flush: true)
-	                    }
-	                }
-	
-	                flow.totalPagesCount = totalPagesCount
-	                processInstance.save(flush:true)
-	                flow.processInstance = processInstance
 				}
 				flow.skipDocumentGeneration = false
             }
@@ -1122,16 +1088,15 @@ class ActivityController {
             List<DocumentFile> documentFilesWithoutFaksymileList = new ArrayList<DocumentFile>()
 
             process.signatures.each { sig ->
-                byte[] documentDataWithBlackFaksymile = pdfService.fillPdfFormFromURIWithBlackFaksymile(sig, null, PdfService.FontType.ARIAL)
-                byte[] documentDataWithoutFaksymile = pdfService.fillPdfFormFromURIWithoutFaksymile(sig, null, PdfService.FontType.ARIAL)
-
                 // Generate documents with black faksymile for PH
+                byte[] documentDataWithBlackFaksymile = pdfService.fillPdfFormFromURIWithBlackFaksymile(sig, null, PdfService.FontType.ARIAL)
                 DocumentFile dfwbf = new DocumentFile(name: sig.templatePath, dateCreated: new Date(), lastUpdated: new Date(), pagesCount: 0)
                 dfwbf.setContent(new DocumentContent(content: documentDataWithBlackFaksymile))
                 dfwbf.discard()
                 documentFilesWithBlackFaksymileList.add(dfwbf)
 
                 // Generate documents without faksymile for acceptant
+                byte[] documentDataWithoutFaksymile = pdfService.fillPdfFormFromURIWithoutFaksymile(sig, null, PdfService.FontType.ARIAL)
                 DocumentFile dfwof = new DocumentFile(name: sig.templatePath, dateCreated: new Date(), lastUpdated: new Date(), pagesCount: 0)
                 dfwof.setContent(new DocumentContent(content: documentDataWithoutFaksymile))
                 dfwof.discard()
