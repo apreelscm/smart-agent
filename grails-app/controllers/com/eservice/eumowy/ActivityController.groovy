@@ -507,6 +507,7 @@ class ActivityController {
                     log.info("skipPanelsInit - true")
                     flow.skipPanelsInit = false
                     processCmd = processService.getSavedProcessCommand(processInstance,calc)
+
                 }
 
                 flow.data = processCmd
@@ -533,7 +534,6 @@ class ActivityController {
 				}
 
                 flow.processInstance = processInstance
-                flow.data = cmd
                 flow.skipPanelsInit = true;
             }to "selectedPanels"
             on("continue"){ ProcessCommand cmd ->
