@@ -516,7 +516,11 @@ class PdfMapper {
 		addCheckboxes(data, ["pan2": "Pan", "pani2": "Pani"], value)
 	}
 	
-	private mapOplataZaUruchomienieWalutyObcej(def data, def pd, def key, def value) {
+	private mapKontaktEmailProcess(def data, def pd, def key, def value) {
+		data.put("email", [value] as String[])
+	}
+	
+	private mapOplataZaUruchomienieWalutyObcejProcess(def data, def pd, def key, def value) {
 		data.put("walutaObcaCena", [value] as String[])
 	}
 	
