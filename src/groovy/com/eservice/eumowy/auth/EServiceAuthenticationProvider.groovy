@@ -37,7 +37,6 @@ class EServiceAuthenticationProvider implements AuthenticationProvider {
         def userDTO
         try{
             userDTO = userService.loginToEUmowy(username,password);
-			
 			println(userDTO.getRoles())
         }catch(Exception e){
             exception = e
@@ -77,6 +76,10 @@ class EServiceAuthenticationProvider implements AuthenticationProvider {
                     authorities.add(new GrantedAuthorityImpl(EUM_PH_BZOS))
                 }
                 break;
+        }
+
+        if(!authorities.any{ it.getAuthority() in [EUM_PH_BZOS,EUM_ZRD] }) {
+            throw new AuthenticationServiceException("Użytkownik nie posiada uprawnień do aplikacji.")
         }
 
         userDetails = new EServiceUserDetails(userDTO.getLogin(), "pass",
