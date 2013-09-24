@@ -17,12 +17,12 @@ where KAK_ID in
 )
 and KSP_NAZWA<>'S_PAKIET_SERWIS_1'
 union all
-select pole,wartosc from table(eumowy.GetKalkulatorStawkaPlaska(:nip))
+select pole,wartosc from table(CAST(eumowy.GetKalkulatorStawkaPlaska(:nip) AS EUMOWY.KALKULATOR))
 union all 
-select pole,wartosc from table(eumowy.GetKalkulatorSerwis(:nip))
+select pole,wartosc from table(CAST(eumowy.GetKalkulatorSerwis(:nip) AS EUMOWY.KALKULATOR))
 union all
-select pole,wartosc from table(eumowy.GetKalkulatorZero(:nip))
+select pole,wartosc from table(CAST(eumowy.GetKalkulatorZero(:nip) AS EUMOWY.KALKULATOR))
 union all
-select pole,wartosc from table(eumowy.GetKalkulatorPrepaid(:nip))
+select pole,wartosc from table(CAST(eumowy.GetKalkulatorPrepaid(:nip) AS EUMOWY.KALKULATOR))
 union all
-select pole,wartosc from table(eumowy.GetKalkulatorPromocyjne(:nip))
+select pole,wartosc from table(CAST(eumowy.GetKalkulatorPromocyjne(:nip) AS EUMOWY.KALKULATOR))
