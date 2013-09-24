@@ -5,8 +5,6 @@
     <meta name="layout" content="main">
     <title><g:message code="selectedPanels.header.title" default="Lista paneli"/></title>
     <r:require module="filestyle"/>
-    <r:require module="newpoint_panel_setup"/>
-    <r:require module="validation"/>
     <g:javascript>
 
     var $j = jQuery.noConflict();
@@ -34,6 +32,7 @@
 	  showSaveLink();
       $j("#saveProcessLink").click(function() {
                 var input = $j("<input>").attr("type", "hidden").attr("name", "_eventId_saveOnly").val("");
+                $j('.panelsForm').data("validator").cancelSubmit = true;
                 $j('.panelsForm').append($j(input)).submit()
                 false
             });
@@ -81,6 +80,8 @@
         }
 });
     </g:javascript>
+    <r:require module="newpoint_panel_setup"/>
+    <r:require module="validation"/>
 
     <style>
     #uploads {

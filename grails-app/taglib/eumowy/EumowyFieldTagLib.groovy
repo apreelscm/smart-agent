@@ -40,7 +40,6 @@ class EumowyFieldTagLib {
     }
 
     Closure percentageField = { attrs ->
-        attrs.classDiv = "postfix"
         attrs.type="number"
         attrs.step="any"
         attrs.postfix = message(code:"panel.percent")
@@ -49,10 +48,16 @@ class EumowyFieldTagLib {
     }
 
     Closure currencyField = { attrs ->
-        attrs.classDiv = "postfix"
         attrs.type="number"
         attrs.step="any"
         attrs.postfix = message(code:"panel.polish.currency")
+
+        fieldImpl(out, attrs)
+    }
+
+    Closure numberField = { attrs ->
+        attrs.type="number"
+        attrs.step="any"
 
         fieldImpl(out, attrs)
     }
@@ -63,7 +68,6 @@ class EumowyFieldTagLib {
             throwTagError("Tag [textArea] is missing required attribute [name]")
         }
 
-        def classDiv = attrs.remove("classDiv")
         def width = attrs.remove("width")
         def postfix = attrs.remove("postfix")
         int offset = attrs.offset.toString().isNumber() ? Integer.valueOf(attrs.remove("offset")) : 0
@@ -72,7 +76,6 @@ class EumowyFieldTagLib {
         attrs.class = attrs.class + " " + hasErrors(bean:attrs.validatable,field:attrs.name,'error')
 
         StringBuilder sb = new StringBuilder()
-        //sb.append("""<div class=" ${classDiv ?: ''}  ${attrs.class}" style="position:relative; margin-right: 25px; ${width ? 'width:' + width : ''}">""");
         if (attrs.class?.indexOf("error") != -1) {
 			sb.append("<div style=\"padding-right: 2em; display: inline;\">")
         }
@@ -88,13 +91,16 @@ class EumowyFieldTagLib {
             }
         }
 
-		if (attrs.class?.indexOf("error") != -1) {
-			sb.append("""<span class="postfix-span" ${offset != 0 ? ' style="right:-'+offset+'px;"' : ''}>${postfix}</span>""")
-			sb.append("""</div>""")
-		}
-		else {
-			sb.append(""" ${postfix}""")
-		}
+        if(postfix){
+            if (attrs.class?.indexOf("error") != -1) {
+                sb.append("""<span class="postfix-span" ${offset != 0 ? ' style="right:-'+offset+'px;"' : ''}>${postfix}</span>""")
+                sb.append("""</div>""")
+            }
+            else {
+                sb.append(""" ${postfix}""")
+            }
+        }
+
 
         out << sb.toString()
     }

@@ -506,6 +506,24 @@ class PdfMapper {
 		addCheckboxes(data, ["panDoKontaktu": "Pan", "paniDoKontaktu": "Pani"], value)
 	}
 	
+	private reprezentant1TytulProcess(def data, def pd, def key, def value){
+		data.put(key, [value] as String[]);
+		addCheckboxes(data, ["pan1": "Pan", "pani1": "Pani"], value)
+	}
+	
+	private reprezentant2TytulProcess(def data, def pd, def key, def value){
+		data.put(key, [value] as String[]);
+		addCheckboxes(data, ["pan2": "Pan", "pani2": "Pani"], value)
+	}
+	
+	private mapKontaktEmailProcess(def data, def pd, def key, def value) {
+		data.put("email", [value] as String[])
+	}
+	
+	private mapOplataZaUruchomienieWalutyObcejProcess(def data, def pd, def key, def value) {
+		data.put("walutaObcaCena", [value] as String[])
+	}
+	
 	private mapNipProcess(def data, def pointData, def key, def value){
 		data.put(key, [value] as String[]);
 		data.put("akceptantNip", [value] as String[]);
@@ -658,7 +676,7 @@ class PdfMapper {
     }
 
     private mapUmowaCzasProcess(def data, def pd, def key, def value) {
-        addCheckboxes(data, ["umNieOzn": "nieoznaczony", "umOzn": "oznaczony"], value)
+		addCheckboxes(data, ["umowaNieOzn": "nieoznaczony", "umowaOzn": "oznaczony"], value)
     }
 
     private mapDzialalnoscFormaProcess(def data, def pd, def key, def value) {

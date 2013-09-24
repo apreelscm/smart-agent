@@ -1,20 +1,3 @@
-<style>
-  /*  #cardPaymentPanel td:not(.cardPaymentPanel-padding)
-    {
-        width: 40px;
-    }
-*/
-   /* #cardPaymentPanel td[class*="bold"]
-    {
-        text-align: left
-    }
-
-    #cardPaymentPanel input[type="number"]
-    {
-        text-align: right
-    }*/
-</style>
-
 <div id="cardPaymentPanel">
     <fieldset style="text-align: center">
         <div class="belka-glowna"><g:message code="panel.card.payment.title"/></div>

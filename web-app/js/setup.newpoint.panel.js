@@ -11,22 +11,26 @@ function getGlobalPanelCount(prefix) {
 }
 
 function setupNewPointPanelHandlers(prevPanelId, panelId, prefix) {
-	
+
 	//jQuery(document).ready(function() {
 		jQuery("#"+prefix+"\\["+panelId+"\\]\\.bankAccountNumber").on("keyup", {p: prefix, pid: panelId}, function(e) {
-			if (jQuery(e.target).val() != undefined && jQuery(e.target).val() != null && jQuery(e.target).val().length == 26) {
-				jQuery.get("/eumowy/activity/getBankName", {accountNo: jQuery(e.target).val()}, function(data) {
-					if (data != undefined && data != null && data != "") {
-						var obj = JSON.parse(data);
-						jQuery("#"+e.data.p+"\\["+e.data.pid+"\\]\\.bankName").val(obj.name);
-						jQuery("#"+e.data.p+"\\["+e.data.pid+"\\]\\.bankId").val(obj.id);
-					}
-		     	}); 
+            var accountNr = jQuery(e.target).val();
+			if ( accountNr != undefined && accountNr != null){
+                var normalizedAccountNr = accountNr.replace(/\s+/g, '');
+                if (normalizedAccountNr.length == 26){
+                    jQuery.get("/eumowy/activity/getBankName", {accountNo: normalizedAccountNr}, function(data) {
+                        if (data != undefined && data != null && data != "") {
+                            var obj = JSON.parse(data);
+                            jQuery("#"+prefix+"\\["+panelId+"\\]\\.bankName").val(obj.name);
+                            jQuery("#"+prefix+"\\["+panelId+"\\]\\.bankId").val(obj.id);
+                        }
+                    });
+                }
 			}
 		});
 	
         jQuery("#"+prefix+"\\["+panelId+"\\]\\.plannedInstallationDate").datepicker({ dateFormat: 'yy-mm-dd' });
-        jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseFrom").timepicker({ 
+        jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseFrom").timepicker({
         	controlType: 'select',
         	timeFormat: 'HH:mm',
         	onClose: function(dateText, inst) {
@@ -46,7 +50,11 @@ function setupNewPointPanelHandlers(prevPanelId, panelId, prefix) {
         		}
         	},
         	onSelect: function (selectedDateTime){
-        		jQuery( "#"+prefix+"\\["+panelId+"\\]\\.dayCloseTo").datetimepicker('option', 'minDate', jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseFrom").datetimepicker('getDate') );
+                var oldValue = jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseTo").val();
+                var newValue = jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseFrom").datetimepicker('getDate')
+
+                jQuery( "#"+prefix+"\\["+panelId+"\\]\\.dayCloseTo").datetimepicker('option', 'minDate', newValue);
+                jQuery( "#"+prefix+"\\["+panelId+"\\]\\.dayCloseTo").val(oldValue);
         	}
         	/*onClose: function( selectedDate ) {
 				jQuery( "#"+prefix+"\\["+panelId+"\\]\\.dayCloseTo").timepicker( "option", "minDate", selectedDate );
@@ -55,7 +63,7 @@ function setupNewPointPanelHandlers(prevPanelId, panelId, prefix) {
 				jQuery( "#"+prefix+"\\["+panelId+"\\]\\.dayCloseTo").timepicker("option", "minDate", selectedDateTime );
 			}*/
        	});
-        jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseTo").timepicker({ 
+        jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseTo").timepicker({
         	controlType: 'select',
         	timeFormat: 'HH:mm',
         	onClose: function(dateText, inst) {
@@ -71,7 +79,11 @@ function setupNewPointPanelHandlers(prevPanelId, panelId, prefix) {
         		}
         	},
         	onSelect: function (selectedDateTime){
-        		jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseFrom").datetimepicker('option', 'maxDate', jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseTo").datetimepicker('getDate') );
+                var oldValue = jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseFrom").val();
+                var newValue = jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseTo").datetimepicker('getDate')
+
+        		jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseFrom").datetimepicker('option', 'maxDate', newValue );
+                jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseFrom").val(oldValue);
         	}
        	 	/*onClose: function( selectedDate ) {
 				jQuery( "#"+prefix+"\\["+panelId+"\\]\\.dayCloseFrom").timepicker( "option", "maxDate", selectedDate );
@@ -132,12 +144,16 @@ function setupNewPointPanelHandlers(prevPanelId, panelId, prefix) {
         
         jQuery("#"+prefix+"\\["+panelId+"\\]\\.persontocontactAsForMerchant").on("click", function(e) {
         	if (e.target.checked) {
-        		jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAtPointFax").val(jQuery("#akceptantFax").val());
-        		jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAtPointPhone").val(jQuery("#akceptantTelStacjonarny").val());
-        		jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAtPointMobilePhone").val(jQuery("#akceptantTelKomorkowy").val());
-        		jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAtPointEmail").val(jQuery("#").val());
+        		jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAtPointTitle").val(jQuery("#kontaktTytul").val());
+        		jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAtPointFirstName").val(jQuery("#kontaktImie").val());
+        		jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAtPointLastName").val(jQuery("#kontaktNazwisko").val());
+        		jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAtPointPhone").val(jQuery("#kontaktTelStacjonarny").val());
+        		jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAtPointMobilePhone").val(jQuery("#kontaktTelKomorkowy").val());
+        		jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAtPointEmail").val(jQuery("#kontaktEmail").val());
         	} else {
-        		jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAtPointFax").val("");
+        		jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAtPointTitle").val('');
+        		jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAtPointFirstName").val('');
+        		jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAtPointLastName").val('');
         		jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAtPointPhone").val("");
         		jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAtPointMobilePhone").val("");
         		jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAtPointEmail").val("");
@@ -234,21 +250,15 @@ function setupNewPointPanelHandlers(prevPanelId, panelId, prefix) {
 
 function setupNewPointPanelData(prevPanelId, panelId) {
 	//jQuery(document).ready(function() {
-	
-		var pointdata = {};
+
 		var terminaloptions = {};
 		var technicalinformation = {};
 		var possetforselectedpoint = {};
 		var additionalequipment = {};
-		
-		if (Object.keys(pointdata).length == 0) {
-			pointdata['nip'] = jQuery("#"+prevPanelId+"nip").val();
-			pointdata['mmccode'] = jQuery("#"+prevPanelId+"mccCode").val();
-			pointdata['bussinessTypeInPractice'] = jQuery("#"+prevPanelId+"bussinessTypeInPractice").val();
-			pointdata['bankAccountNumber'] = jQuery("#"+prevPanelId+"bankAccountNumber").val();
-			pointdata['bankName'] = jQuery("#"+prevPanelId+"bankName").val();
-		}
-		
+
+        var nip = jQuery("#akceptantNip").val();
+        var mmccode = jQuery("#"+prevPanelId+"mccCode").val();
+
 		if (Object.keys(possetforselectedpoint).length == 0) {
 			possetforselectedpoint['dialupCount'] = jQuery("#"+prevPanelId+"dialupCount").val();
 			possetforselectedpoint['dialupPPCount'] = jQuery("#"+prevPanelId+"dialupPPCount").val();
@@ -309,14 +319,12 @@ function setupNewPointPanelData(prevPanelId, panelId) {
 			additionalequipment['otherAdditionalDeviceCount'] = jQuery("#"+prevPanelId+"otherAdditionalDeviceCount").val();
 			additionalequipment['otherAdditionalDevicePrice'] = jQuery("#"+prevPanelId+"otherAdditionalDevicePrice").val();
 		}
-		
+
+        jQuery("#"+panelId+"nip").val(nip);
+
 		if (panelId != prevPanelId) {
 			if (jQuery("#"+prevPanelId+"sameForEveryPoint").is(':checked')) {
-				jQuery("#"+panelId+"nip").val(pointdata['nip']);
-				jQuery("#"+panelId+"mccCode").val(pointdata['mmccode']);
-				jQuery("#"+panelId+"bussinessTypeInPractice").val(pointdata['bussinessTypeInPractice']);
-				jQuery("#"+panelId+"bankAccountNumber").val(pointdata['bankAccountNumber']);
-				jQuery("#"+panelId+"bankName").val(pointdata['bankName']);
+				jQuery("#"+panelId+"mccCode").val(mmccode);
 				jQuery("#"+panelId+"sameForEveryPoint").prop("checked", true);
 				jQuery("#"+panelId+"sameForEveryPoint").prop("disabled", true);
 			}
