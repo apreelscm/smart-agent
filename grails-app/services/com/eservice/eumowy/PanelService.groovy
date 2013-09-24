@@ -236,14 +236,11 @@ class PanelService {
         println("oldNumber : ${oldNumber} , calcNumber : ${calcNumber}")
 
          oldNumber < calcNumber ? calcValue : data
-
-
     }
 
     def getPoziomOplatiWarunkiPlatnosciKarty(ProcessCommand cmd ,def calc) {
-        cmd.visaEUKKOPr = calculatorService.getCalcProperty(calc,"OPLATA_MSC_11_ZL")
-
-        cmd.visaEUKKOSt = setAtLeastAs(cmd.visaEUKKOSt,calculatorService.getCalcProperty(calc,"OPLATA_MSC_11_PROCENT"))
+        cmd.visaEUKKOPr = calculatorService.getCalcProperty(calc,"OPLATA_MSC_11_PROCENT")
+        cmd.visaEUKKOSt = setAtLeastAs(cmd.visaEUKKOSt,calculatorService.getCalcProperty(calc,"OPLATA_MSC_11_ZL"))
         cmd.visaEUKDPr = calculatorService.getCalcProperty(calc,"OPLATA_MSC_12_PROCENT")
         cmd.visaEUKDSt = setAtLeastAs(cmd.visaEUKDSt,calculatorService.getCalcProperty(calc,"OPLATA_MSC_12_ZL"))
         cmd.visaEUKBPr = calculatorService.getCalcProperty(calc,"OPLATA_MSC_13_PROCENT")

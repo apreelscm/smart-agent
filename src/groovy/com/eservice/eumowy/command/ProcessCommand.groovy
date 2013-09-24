@@ -63,7 +63,6 @@ class ProcessCommand implements Serializable{
     String wydrukLinia1	 = DEFAULT_VALUE
     String wydrukLinia2	 = DEFAULT_VALUE
 
-
 //    danePunktu
 //    dcc - FINISH
     String oplataVISA	 = DEFAULT_VALUE
@@ -286,11 +285,13 @@ class ProcessCommand implements Serializable{
     String scoringTypPunktuInny	 = DEFAULT_VALUE
     String scoringWielkoscMiejscowosci	 = DEFAULT_VALUE
     String scoringOtwartyZamkniety	 = DEFAULT_VALUE
-    Boolean scoringStanZadbany	 = DEFAULT_VALUE
-    Boolean scoringSprzedazTowarowEkskluzywnych	 = DEFAULT_VALUE
-    Boolean scoringPonad50ProcentObrotowWNocy	 = DEFAULT_VALUE
-    Boolean scoringRuchTurystycznyPrzygraniczny	 = DEFAULT_VALUE
-    Boolean scoringUslugiPlatneZGory	 = DEFAULT_VALUE
+
+    Boolean scoringStanZadbany
+    Boolean scoringSprzedazTowarowEkskluzywnych
+    Boolean scoringPonad50ProcentObrotowWNocy
+    Boolean scoringRuchTurystycznyPrzygraniczny
+    Boolean scoringUslugiPlatneZGory
+
     String scoringCzestoscTransakcji	 = DEFAULT_VALUE
     String scoringIloscTransakcji	 = DEFAULT_VALUE
     String scoringDochodowosc	 = DEFAULT_VALUE
