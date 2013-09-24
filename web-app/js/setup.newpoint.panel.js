@@ -144,12 +144,16 @@ function setupNewPointPanelHandlers(prevPanelId, panelId, prefix) {
         
         jQuery("#"+prefix+"\\["+panelId+"\\]\\.persontocontactAsForMerchant").on("click", function(e) {
         	if (e.target.checked) {
-        		jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAtPointFax").val(jQuery("#akceptantFax").val());
-        		jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAtPointPhone").val(jQuery("#akceptantTelStacjonarny").val());
-        		jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAtPointMobilePhone").val(jQuery("#akceptantTelKomorkowy").val());
-        		jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAtPointEmail").val(jQuery("#").val());
+        		jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAtPointTitle").val(jQuery("#kontaktTytul").val());
+        		jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAtPointFirstName").val(jQuery("#kontaktImie").val());
+        		jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAtPointLastName").val(jQuery("#kontaktNazwisko").val());
+        		jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAtPointPhone").val(jQuery("#kontaktTelStacjonarny").val());
+        		jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAtPointMobilePhone").val(jQuery("#kontaktTelKomorkowy").val());
+        		jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAtPointEmail").val(jQuery("#kontaktEmail").val());
         	} else {
-        		jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAtPointFax").val("");
+        		jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAtPointTitle").val('');
+        		jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAtPointFirstName").val('');
+        		jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAtPointLastName").val('');
         		jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAtPointPhone").val("");
         		jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAtPointMobilePhone").val("");
         		jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAtPointEmail").val("");
