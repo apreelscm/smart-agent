@@ -242,21 +242,15 @@ function setupNewPointPanelHandlers(prevPanelId, panelId, prefix) {
 
 function setupNewPointPanelData(prevPanelId, panelId) {
 	//jQuery(document).ready(function() {
-	
-		var pointdata = {};
+
 		var terminaloptions = {};
 		var technicalinformation = {};
 		var possetforselectedpoint = {};
 		var additionalequipment = {};
-		
-		if (Object.keys(pointdata).length == 0) {
-			pointdata['nip'] = jQuery("#"+prevPanelId+"nip").val();
-			pointdata['mmccode'] = jQuery("#"+prevPanelId+"mccCode").val();
-			pointdata['bussinessTypeInPractice'] = jQuery("#"+prevPanelId+"bussinessTypeInPractice").val();
-			pointdata['bankAccountNumber'] = jQuery("#"+prevPanelId+"bankAccountNumber").val();
-			pointdata['bankName'] = jQuery("#"+prevPanelId+"bankName").val();
-		}
-		
+
+        var nip = jQuery("#akceptantNip").val();
+        var mmccode = jQuery("#"+prevPanelId+"mccCode").val();
+
 		if (Object.keys(possetforselectedpoint).length == 0) {
 			possetforselectedpoint['dialupCount'] = jQuery("#"+prevPanelId+"dialupCount").val();
 			possetforselectedpoint['dialupPPCount'] = jQuery("#"+prevPanelId+"dialupPPCount").val();
@@ -317,14 +311,12 @@ function setupNewPointPanelData(prevPanelId, panelId) {
 			additionalequipment['otherAdditionalDeviceCount'] = jQuery("#"+prevPanelId+"otherAdditionalDeviceCount").val();
 			additionalequipment['otherAdditionalDevicePrice'] = jQuery("#"+prevPanelId+"otherAdditionalDevicePrice").val();
 		}
-		
+
+        jQuery("#"+panelId+"nip").val(nip);
+
 		if (panelId != prevPanelId) {
 			if (jQuery("#"+prevPanelId+"sameForEveryPoint").is(':checked')) {
-				jQuery("#"+panelId+"nip").val(pointdata['nip']);
-				jQuery("#"+panelId+"mccCode").val(pointdata['mmccode']);
-				jQuery("#"+panelId+"bussinessTypeInPractice").val(pointdata['bussinessTypeInPractice']);
-				jQuery("#"+panelId+"bankAccountNumber").val(pointdata['bankAccountNumber']);
-				jQuery("#"+panelId+"bankName").val(pointdata['bankName']);
+				jQuery("#"+panelId+"mccCode").val(mmccode);
 				jQuery("#"+panelId+"sameForEveryPoint").prop("checked", true);
 				jQuery("#"+panelId+"sameForEveryPoint").prop("disabled", true);
 			}
