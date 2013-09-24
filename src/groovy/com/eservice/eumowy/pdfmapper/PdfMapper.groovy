@@ -57,10 +57,11 @@ class PdfMapper {
         data.put("phNumer", [processInstance.phNumber.toString()] as String[])
 	//TODO - sprawdzic czy dziala, byc moze w pdfie nazwy pol sa inne niz podane tutaj
 		if (processInstance.phNumber.toString() != null && processInstance.phNumber.toString().size()==5){
-			data.put("nrSprzedazowyPH2", [processInstance.phNumber.toString().substring(0, 3)] as String[])
-			data.put("nrSprzedazowyPH2", [processInstance.phNumber.toString().substring(3, 4)] as String[])
+			data.put("NrSprzedazowyPH1", [processInstance.phNumber.toString().substring(0, 3)] as String[])
+			data.put("NrSprzedazowyPH2", [processInstance.phNumber.toString().substring(3, 4)] as String[])
+		} else {
+		data.put("NrSprzedazowyPH1", [processInstance.phNumber.toString()] as String[])
 		}
-		
         data.put("mid", [processInstance.client.mid?:'{mid}'] as String[])
         return data
     }
