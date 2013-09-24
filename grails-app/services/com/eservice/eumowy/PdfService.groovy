@@ -1,6 +1,7 @@
 package com.eservice.eumowy
 
-import java.awt.Image
+import com.eservice.eumowy.pdfmapper.PdfMapper
+
 import java.awt.image.BufferedImage
 
 import org.apache.pdfbox.pdmodel.PDDocument
@@ -12,6 +13,7 @@ import signaturepad.SignatureToImage
 
 class PdfService {
 	def appParametersService
+    def processService
 	
 	public static enum FontType {
 		HELVETICA,
@@ -262,4 +264,67 @@ class PdfService {
 		
 		return updatedContent
 	}
+
+    def workWithDocuments(def processInstance){
+        def totalPagesCount = 0
+        def dataFromProcess = new PdfMapper().mapOnlyProcessData(processInstance);
+
+        //takie rozbicie bylo konieczne aby ograniczyc wywolania wolnego mappera
+        def singleDocuments = processInstance.signatures.findAll{ sig -> !sig.forPoint}
+        def multiDocuments = processInstance.signatures.findAll{ sig -> sig.forPoint}
+
+        singleDocuments.each { sig ->
+            log.info "SINGLE DOCUMENT --> SIGNATURE NAME: " + sig.name + " PDF TEMPLATE PATH: " + sig.templatePath
+            totalPagesCount += workWithOneDocument(processInstance, sig, dataFromProcess, sig.templatePath)
+        }
+
+        processInstance.points.eachWithIndex{ point, index ->
+            def dataFromPoint = new PdfMapper().mapOnlyPointData(point, index);
+
+            final Map<String, String> data = new HashMap<String, String>();
+            data.putAll(dataFromProcess);
+            data.putAll(dataFromPoint);
+
+            multiDocuments.each { sig ->
+
+                def path = sig.templatePath
+                def begin = path.substring(0, path.lastIndexOf('.'));
+                def end = path.substring(path.lastIndexOf('.'));
+                def documentName = begin +  "_" + point.id + end
+
+                log.info "MULTI DOCUMENT --> SIGNATURE NAME: " + sig.name + " PDF TEMPLATE PATH: " + sig.templatePath + " WITH NEW NAME: " + documentName
+                totalPagesCount += workWithOneDocument(processInstance, sig, data, documentName)
+            }
+        }
+
+        processInstance.save(flush:true)
+        ['totalPagesCount': totalPagesCount, 'processInstance': processInstance]
+    }
+
+
+    private def workWithOneDocument(def processInstance, def sig, def data, def documentName){
+        byte[] documentData = this.fillPdfFormFromURIWithFaksymile(sig, data, PdfService.FontType.ARIAL)
+        if(!documentData) return 0
+
+        int pc = this.getPageCountFromPdf(documentData)
+
+        if (processService.findDocumentByName(processInstance.documents, documentName) == null) {
+            log.info "Creating new document [${sig.templatePath}]"
+            DocumentFile df = new DocumentFile(name: documentName, dateCreated: new Date(), lastUpdated: new Date(), pagesCount: pc, signature: sig)
+            df.setContent(new DocumentContent(content: documentData))
+            df.save(flush: true)
+            log.info "DF id: " + df.id + " PageCount: " + df.pagesCount
+            log.info "Process ID: " + processInstance.id
+            processInstance.addToDocuments(df)
+            processInstance.discard()
+        } else {
+            log.info "Updating existing document [${sig.templatePath}]"
+            DocumentFile df = processService.findDocumentByName(processInstance.documents, documentName)
+            df.content.setContent(documentData)
+            df.lastUpdated = new Date()
+            df.save(flush: true)
+        }
+        pc
+    }
+
 }

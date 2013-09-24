@@ -14,13 +14,23 @@ class PdfMapper {
     private int pointAcceptCardCount =0;
     private int pointRangeCount =0;
 
-    def mapToPDFData(def processInstance){
+    def mapOnlyProcessData(def processInstance){
         HashMap<String, String[]> dataMap = new HashMap<String, String[]>()
         dataMap.putAll(mapProcessToPDFData(processInstance))
-        dataMap.putAll(mapAllDataToPDFData(processInstance.processData, processInstance.points))
-        return dataMap
+        dataMap.putAll(mapProcessDataToPDFData(processInstance.processData))
+        return dataMap;
     }
 
+    def mapOnlyPointData(def point, def index){
+        Map<String, String[]> data = new HashMap<String, String[]>()
+        pointIndex = index;
+
+        data.putAll(mapPointDataToPDFData(point))
+        data.putAll(mapPosesDataToPDFData(point.posDatas))
+        return data
+    }
+
+    //FOR TEST ONLY !!!
     def mapAllDataToPDFData(def process, def points) {
         HashMap<String, String[]> dataMap = new HashMap<String, String[]>()
 
@@ -30,6 +40,7 @@ class PdfMapper {
         return dataMap
     }
 
+    //FOR TEST ONLY !!!
     private def mapPointsDataToPDFData(def points) {
         Map<String, String[]> data = new HashMap<String, String[]>()
         points?.eachWithIndex { point, index ->
@@ -44,10 +55,13 @@ class PdfMapper {
     private def mapProcessToPDFData(def processInstance){
         Map<String, String[]> data = new HashMap<String, String[]>()
         data.put("phNumer", [processInstance.phNumber.toString()] as String[])
-	//TODO - sprawdzic czy dziala, byc moze w pdfie nazwy pol sa inne niz podane tutaj
+		data.put("osobaPozyskalaAkceptantaNr", [processInstance.phNumber.toString()] as String[])
+		
 		if (processInstance.phNumber.toString() != null && processInstance.phNumber.toString().size()==5){
-			data.put("nrSprzedazowyPH2", [processInstance.phNumber.toString().substring(0, 3)] as String[])
-			data.put("nrSprzedazowyPH2", [processInstance.phNumber.toString().substring(3, 4)] as String[])
+			data.put("NrSprzedazowyPH1", [processInstance.phNumber.toString().substring(0, 3)] as String[])
+			data.put("NrSprzedazowyPH2", [processInstance.phNumber.toString().substring(3, 4)] as String[])
+		} else {
+		data.put("NrSprzedazowyPH1", [processInstance.phNumber.toString()] as String[])
 		}
 		
         data.put("mid", [processInstance.client.mid?:'{mid}'] as String[])
@@ -71,8 +85,8 @@ class PdfMapper {
         }
 
         pointData.properties.each { key, value ->
-            log.info "PointData Key: " + key + " value: " + value
-            if (["class", "posDatas", "errors", "constraints", "processId", "cbdId", "pointDetailsId", "empty"].contains(key) || value == null){
+//            log.info "PointData Key: " + key + " value: " + value
+            if (["class", "posDatas", "errors", "constraints", "process", "processId", "cbdId", "pointDetails", "empty"].contains(key) || value == null){
                 return
             } else if (["tytulPlatnosci", "systemKasowy", "uta"].contains(key)) {
                 if (acceptCardIsChoosen){
@@ -487,6 +501,15 @@ class PdfMapper {
 		data.put("imieINazwiskoOsobyDoKontaktu", [value + " " + getFromProcessDataSet(pd, 'kontaktNazwisko')] as String[])
 	}
 	
+	private mapKontaktTytulProcess(def data, def pd, def key, def value){
+		data.put(key, [value] as String[]);
+		addCheckboxes(data, ["panDoKontaktu": "Pan", "paniDoKontaktu": "Pani"], value)
+	}
+	
+	private mapOplataZaUruchomienieWalutyObcej(def data, def pd, def key, def value) {
+		data.put("walutaObcaCena", [value] as String[])
+	}
+	
 	private mapNipProcess(def data, def pointData, def key, def value){
 		data.put(key, [value] as String[]);
 		data.put("akceptantNip", [value] as String[]);
@@ -639,7 +662,7 @@ class PdfMapper {
     }
 
     private mapUmowaCzasProcess(def data, def pd, def key, def value) {
-        addCheckboxes(data, ["umNieOzn": "nieoznaczony", "umOzn": "oznaczony"], value)
+		addCheckboxes(data, ["umowaNieOzn": "nieoznaczony", "umowaOzn": "oznaczony"], value)
     }
 
     private mapDzialalnoscFormaProcess(def data, def pd, def key, def value) {

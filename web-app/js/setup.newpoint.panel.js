@@ -26,7 +26,7 @@ function setupNewPointPanelHandlers(prevPanelId, panelId, prefix) {
 		});
 	
         jQuery("#"+prefix+"\\["+panelId+"\\]\\.plannedInstallationDate").datepicker({ dateFormat: 'yy-mm-dd' });
-        jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseFrom").timepicker({ 
+        jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseFrom").timepicker({
         	controlType: 'select',
         	timeFormat: 'HH:mm',
         	onClose: function(dateText, inst) {
@@ -46,7 +46,11 @@ function setupNewPointPanelHandlers(prevPanelId, panelId, prefix) {
         		}
         	},
         	onSelect: function (selectedDateTime){
-        		jQuery( "#"+prefix+"\\["+panelId+"\\]\\.dayCloseTo").datetimepicker('option', 'minDate', jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseFrom").datetimepicker('getDate') );
+                var oldValue = jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseTo").val();
+                var newValue = jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseFrom").datetimepicker('getDate')
+
+                jQuery( "#"+prefix+"\\["+panelId+"\\]\\.dayCloseTo").datetimepicker('option', 'minDate', newValue);
+                jQuery( "#"+prefix+"\\["+panelId+"\\]\\.dayCloseTo").val(oldValue);
         	}
         	/*onClose: function( selectedDate ) {
 				jQuery( "#"+prefix+"\\["+panelId+"\\]\\.dayCloseTo").timepicker( "option", "minDate", selectedDate );
@@ -55,7 +59,7 @@ function setupNewPointPanelHandlers(prevPanelId, panelId, prefix) {
 				jQuery( "#"+prefix+"\\["+panelId+"\\]\\.dayCloseTo").timepicker("option", "minDate", selectedDateTime );
 			}*/
        	});
-        jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseTo").timepicker({ 
+        jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseTo").timepicker({
         	controlType: 'select',
         	timeFormat: 'HH:mm',
         	onClose: function(dateText, inst) {
@@ -71,7 +75,11 @@ function setupNewPointPanelHandlers(prevPanelId, panelId, prefix) {
         		}
         	},
         	onSelect: function (selectedDateTime){
-        		jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseFrom").datetimepicker('option', 'maxDate', jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseTo").datetimepicker('getDate') );
+                var oldValue = jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseFrom").val();
+                var newValue = jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseTo").datetimepicker('getDate')
+
+        		jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseFrom").datetimepicker('option', 'maxDate', newValue );
+                jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseFrom").val(oldValue);
         	}
        	 	/*onClose: function( selectedDate ) {
 				jQuery( "#"+prefix+"\\["+panelId+"\\]\\.dayCloseFrom").timepicker( "option", "maxDate", selectedDate );
