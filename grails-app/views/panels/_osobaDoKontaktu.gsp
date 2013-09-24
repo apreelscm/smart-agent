@@ -1,9 +1,8 @@
 <div id="personToContactPanel" style="margin: 0">
     <fieldset>
         <div class="belka-glowna"><g:message code="panel.person.contact.title"/> </div>
-        <div class="centre" style="text-align: center; padding-top: 20px; width: 750px">
+        <div class="centre" style="text-align: center; padding-top: 20px; width: 800px">
             <ul class="table-list centre">
-                <li><span><g:message code="panel.acceptor.full.name"/></span></li>
                 <li>
                     <span>
                         <span>
@@ -18,7 +17,7 @@
                     </span>
                 </li>
                 <li>
-                    <span style="width: 750px;">
+                    <span style="width: 800px;">
                         <g:hiddenField name="hasKontaktTel" value="true"/>
                         <div class="${hasErrors(bean:data,field:'hasAkceptantTel','errorSpan')} float-left">
                             <span><g:message code="panel.landline.phone.number"/>: <eumowy:textField class="phone" name="kontaktTelStacjonarny" value="${data.kontaktTelStacjonarny}" validatable="${data}"  maxlength="9"/> </span>

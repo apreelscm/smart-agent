@@ -578,7 +578,4 @@ class PanelMockService {
         cmd.oplPOSBaza = "21"
     }
 
-    def getZestawPosStawkiPreferencyjne(ProcessCommand cmd) {
-
-    }
 }

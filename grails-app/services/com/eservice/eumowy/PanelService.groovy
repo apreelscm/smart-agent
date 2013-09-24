@@ -530,11 +530,6 @@ class PanelService {
         cmd.oplPOSBaza = ""
     }
 
-    def getZestawPosStawkiPreferencyjne(ProcessCommand cmd ,def calc) {
-
-    }
-
-
     def nullify(def value){
         value != ProcessCommand.DEFAULT_VALUE ? value : ""
     }

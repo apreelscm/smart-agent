@@ -105,7 +105,7 @@ public class PdfGenerator {
 	 * @param fontsPathMap
 	 * @return
 	 */
-	public static byte[] generatePdfContentFromURI(String urlTemplatePath, Map<String,String[]> dataMap, Map<String,String> fontsPathMap, String fPath) {
+	private static byte[] generatePdfContentFromURI(String urlTemplatePath, Map<String,String[]> dataMap, Map<String,String> fontsPathMap, String fPath) {
 		if (urlTemplatePath == null){
 			throw new IllegalArgumentException("urlTemplatePath param shouldn't be null");
 		}
