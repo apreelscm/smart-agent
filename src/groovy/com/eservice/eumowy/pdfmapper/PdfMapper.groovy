@@ -55,13 +55,15 @@ class PdfMapper {
     private def mapProcessToPDFData(def processInstance){
         Map<String, String[]> data = new HashMap<String, String[]>()
         data.put("phNumer", [processInstance.phNumber.toString()] as String[])
-	//TODO - sprawdzic czy dziala, byc moze w pdfie nazwy pol sa inne niz podane tutaj
+		data.put("osobaPozyskalaAkceptantaNr", [processInstance.phNumber.toString()] as String[])
+		
 		if (processInstance.phNumber.toString() != null && processInstance.phNumber.toString().size()==5){
 			data.put("NrSprzedazowyPH1", [processInstance.phNumber.toString().substring(0, 3)] as String[])
 			data.put("NrSprzedazowyPH2", [processInstance.phNumber.toString().substring(3, 4)] as String[])
 		} else {
 		data.put("NrSprzedazowyPH1", [processInstance.phNumber.toString()] as String[])
 		}
+		
         data.put("mid", [processInstance.client.mid?:'{mid}'] as String[])
         return data
     }
@@ -497,6 +499,11 @@ class PdfMapper {
 	
 	private mapKontaktImieProcess(def data, def pd, def key, def value) {
 		data.put("imieINazwiskoOsobyDoKontaktu", [value + " " + getFromProcessDataSet(pd, 'kontaktNazwisko')] as String[])
+	}
+	
+	private mapKontaktTytulProcess(def data, def pd, def key, def value){
+		data.put(key, [value] as String[]);
+		addCheckboxes(data, ["panDoKontaktu": "Pan", "paniDoKontaktu": "Pani"], value)
 	}
 	
 	private mapNipProcess(def data, def pointData, def key, def value){

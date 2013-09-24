@@ -411,7 +411,7 @@ class ActivityController {
                 def client = cbdService.findClientByNip(flow.nip);
 
                 if(client?.id){
-                    flash.nipInfoMessage =  message(code:"client.found.info", default:"Znaleziono");
+                    flash.nipInfoMessage =  message(code:"client.found.info", default:"Znaleziono klienta w CBD");
                 }else {
                     /** sprawdzanie, czy to nie jest nowa umowa */
                     def hasNowaUmowa = processService.containsActivity(processInstance.activities,"nowaUmowa")
@@ -643,7 +643,7 @@ class ActivityController {
 
 
                 if(client?.id){
-                    flash.nipInfoMessage =  message(code:"client.found.info", default:"Znaleziono");
+                    flash.nipInfoMessage =  message(code:"client.found.info", default:"Znaleziono klienta w CBD");
                 }else {
                     flash.nipErrorMessage = message(code:"client.notFound.error", default:"Brak klienta");
                     return error();
@@ -811,7 +811,7 @@ class ActivityController {
                 def client = cbdService.findClientByNip(flow.nip);
 
                 if(client?.id){
-                    flash.nipInfoMessage =  message(code:"client.found.info", default:"Znaleziono");
+                    flash.nipInfoMessage =  message(code:"client.found.info", default:"Znaleziono klienta w CBD");
                 }else {
                     flash.nipErrorMessage = message(code:"client.notFound.error", default:"Brak klienta");
                     return error();
@@ -896,7 +896,7 @@ class ActivityController {
                 def client = cbdService.findClientByNip(flow.nip);
 
                 if(client?.id){
-                    flash.nipInfoMessage =  message(code:"client.found.info", default:"Znaleziono");
+                    flash.nipInfoMessage =  message(code:"client.found.info", default:"Znaleziono klienta w CBD");
                 }else {
                     flash.nipErrorMessage = message(code:"client.notFound.error", default:"Brak klienta");
                     return error();
