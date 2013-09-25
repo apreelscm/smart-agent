@@ -179,7 +179,7 @@ class ActivityController {
             }to "defineActivity"
             on("finish"){
                 flow.processInstance = currentEvent.attributes.process
-                flow.prevActivityMessage = "Proces [id = ${flow.processInstance.id}] został poprawnie odrzucony."
+                flow.prevActivityMessage = message(code: 'process.reject', args:[flow.processInstance.client.nip])
             }.to "finish"
         }
 
