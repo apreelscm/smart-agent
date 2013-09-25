@@ -256,6 +256,11 @@ function setupNewPointPanelHandlers(prevPanelId, panelId, prefix) {
             }
         }
     });
+
+    // pobieranie numeru PH do ph pozysk oraz opieka biznesowa
+    jQuery("#"+prefix+"\\["+panelId+"\\]\\.phGain").val(jQuery("#pozyskujacyNumer").val());
+    jQuery("#"+prefix+"\\["+panelId+"\\]\\.businessCare").val(jQuery("#pozyskujacyNumer").val());
+
     //});
 
 }
