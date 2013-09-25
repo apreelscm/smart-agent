@@ -10,7 +10,9 @@ class CalculatorService {
 
     def isCalcValid(def calc, def signatures) {
 
-        if(!Environment.isDevelopmentMode()){ return true }
+        // TODO tymczasowo
+        if(Environment.isDevelopmentMode() ||
+                Environment.TEST.getName().equalsIgnoreCase(Environment.getCurrent())){ return true }
 
         Set signaturesCalcNames = []
         signatures.each{signature ->
