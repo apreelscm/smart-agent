@@ -15,7 +15,7 @@ hibernate {
 
 // environment specific settings
 environments {
-    development {
+    mock {
         dataSource {
             driverClassName = "org.h2.Driver"
             dialect = "org.hibernate.dialect.H2Dialect"
@@ -23,6 +23,16 @@ environments {
             password = ""
             dbCreate = "create-drop" // one of 'create', 'create-drop', 'update', 'validate', ''
             url = "jdbc:h2:mem:CbdDb;MODE=Oracle;MVCC=TRUE;LOCK_TIMEOUT=10000;INIT=CREATE SCHEMA IF NOT EXISTS CBD_ADM\\;CREATE SCHEMA IF NOT EXISTS EUMOWY"
+        }
+    }
+    development {
+        dataSource {
+            driverClassName = "oracle.jdbc.driver.OracleDriver"
+            dialect = "org.hibernate.dialect.Oracle10gDialect"
+            username = "eumowy_app"
+            password = "eumowy_app"
+            dbCreate = ""
+            url = "jdbc:oracle:thin:@db-eservice.apreel.lan:1521:cbd01out"
         }
     }
     test {

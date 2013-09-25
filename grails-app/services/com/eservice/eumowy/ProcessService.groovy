@@ -4,6 +4,7 @@ import com.eservice.eumowy.command.AllPosCommand
 import com.eservice.eumowy.command.PointCommand
 import com.eservice.eumowy.command.ProcessCommand
 import com.eservice.eumowy.util.DateUtils
+import com.eservice.eumowy.util.EumowyCustomEnvironment
 import grails.util.Environment
 import groovy.sql.GroovyRowResult
 import org.apache.commons.lang.SerializationUtils
@@ -151,8 +152,8 @@ class ProcessService {
 
                 log.info("invokin ${panelFunctionName} on panelService")
 
-                switch (Environment.getCurrent()) {
-                    case Environment.DEVELOPMENT:
+                switch (Environment.getCurrent().getName()) {
+                    case EumowyCustomEnvironment.MOCK.getName():
                         panelMockService."${panelFunctionName}"(cmd)
                         break;
                     default:

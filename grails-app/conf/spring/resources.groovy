@@ -3,6 +3,7 @@ import com.eservice.eumowy.CustomDateEditorRegistrar
 import com.eservice.eumowy.auth.EServiceAuthenticationProvider
 import com.eservice.eumowy.dao.CbdDAO
 import com.eservice.eumowy.propEditors.CustomPropertyEditorRegistrar
+import com.eservice.eumowy.util.EumowyCustomEnvironment
 import com.eservice.service.security.ECbdRoleService
 import com.eservice.service.security.NoRoleService
 import com.eservice.service.security.UserService
@@ -35,8 +36,8 @@ beans = {
         sessionFactory = ref('sessionFactory')
     }
 
-    switch (Environment.getCurrent()) {
-        case Environment.DEVELOPMENT:
+    switch (Environment.getCurrent().getName()) {
+        case EumowyCustomEnvironment.MOCK.getName():
             roleService(NoRoleService){}
             break;
         default:

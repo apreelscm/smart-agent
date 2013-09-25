@@ -1,5 +1,6 @@
 package com.eservice.eumowy.auth
 
+import com.eservice.eumowy.util.EumowyCustomEnvironment
 import grails.util.Environment
 import org.apache.commons.logging.LogFactory
 import org.apache.log4j.MDC
@@ -50,8 +51,8 @@ class EServiceAuthenticationProvider implements AuthenticationProvider {
             throw new AuthenticationServiceException(exception.getMessage())
         }
 
-        switch (Environment.getCurrent()) {
-            case Environment.DEVELOPMENT:
+        switch (Environment.getCurrent().getName()) {
+            case EumowyCustomEnvironment.MOCK.getName():
 				userDTO.setEmail("pszkup@apreel.com")
                 if(username == "ph"){
                     authorities.add(new GrantedAuthorityImpl(EUM_PH_BZOS))

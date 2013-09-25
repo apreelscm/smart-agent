@@ -79,18 +79,7 @@ grails.hibernate.cache.queries = false
 
 grails.views.javascript.library="jquery"
 grails.logging.jul.usebridge = true
-
-environments {
-    development {
-        isPanelsValidationOn = true;
-    }
-    test {
-        isPanelsValidationOn = true;
-    }
-    production {
-        isPanelsValidationOn = true;
-    }
-}
+isPanelsValidationOn = true;
 
 grails.gorm.default.constraints = {
     '*'(nullable: false, blank:true)
@@ -142,7 +131,7 @@ log4j = {
         console name: 'console', layout: pattern(conversionPattern: '%d{dd-MM-yyyy HH:mm:ss,SSS} %5p %c - %m%n')
 
         environments {
-            development {
+            mock {
                 appender new JDBCAppender(
                         name: "database",
                         URL: "jdbc:h2:mem:CbdDb;MODE=Oracle;MVCC=TRUE",
@@ -150,6 +139,17 @@ log4j = {
                         password: "",
                         driver: "org.h2.Driver",
                         sql: "INSERT INTO EUMOWY.LOGS (login, log_date, log_message) VALUES ('%X{sessionUserName}','%d{yyyy.MM.dd HH:mm:ss}', '%m');",
+                        threshold: org.apache.log4j.Level.INFO
+                )
+            }
+            development {
+                appender new JDBCAppender(
+                        name: "database",
+                        URL: "jdbc:oracle:thin:@db-eservice.apreel.lan:1521:cbd01out",
+                        user: "eumowy_app",
+                        password: "eumowy_app",
+                        driver: "oracle.jdbc.driver.OracleDriver",
+                        sql: "INSERT INTO EUMOWY.LOGS (login, log_date, log_message) VALUES ('%X{sessionUserName}','%d{yyyy.MM.dd HH:mm:ss}', '%m')",
                         threshold: org.apache.log4j.Level.INFO
                 )
             }
@@ -202,6 +202,7 @@ log4j = {
     }
 
     environments {
+        mock { root { additivity: false; info 'console' } }
         development { root { additivity: false; info 'console' } }
         test { root { additivity: false; info 'console','file-roll' } }
         uat { root { additivity: false; info 'file-roll' } }
