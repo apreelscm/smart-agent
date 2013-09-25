@@ -142,6 +142,10 @@ function setupNewPointPanelHandlers(prevPanelId, panelId, prefix) {
        		jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAddressAddressPostOffice").val(jQuery("#"+prefix+"\\["+panelId+"\\]\\.dataforprintingAddressPostOffice").val());
         });
         
+        // pobieranie numeru PH
+        jQuery("#"+prefix+"\\["+panelId+"\\]\\.phGain").val(jQuery("#pozyskujacyNumer").val());
+        // koniec pobierania
+        
         jQuery("#"+prefix+"\\["+panelId+"\\]\\.persontocontactAsForMerchant").on("click", function(e) {
         	if (e.target.checked) {
         		jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAtPointTitle").val(jQuery("#kontaktTytul").val());
