@@ -418,7 +418,7 @@ class PdfMapper {
 	
 
     //------------------- PROCESS METHODS --------------------------------
-
+	
 	private mapAkceptantTelKomorkowyProcess(def data, def pd, def key, def value){
 		data.put(key, [value] as String[]);
 
@@ -673,7 +673,7 @@ class PdfMapper {
     }
 
     private mapObslugaTypProcess(def data, def pd, def key, def value) {
-        addCheckboxes(data, ["obsugaPrestiz": "prestige", "obslugaKomfort": "comfort", "obslugaEkonomiczny": "economic"], value)
+        addCheckboxes(data, ["obslugaPrestiz": "prestige", "obslugaKomfort": "comfort", "obslugaEkonomiczny": "economic"], value)
     }
 
     private mapUmowaCzasProcess(def data, def pd, def key, def value) {
