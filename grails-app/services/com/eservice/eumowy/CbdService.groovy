@@ -27,6 +27,7 @@ class CbdService {
     private static final def GET_PROMOCYJNE_OBINZENIE_OPLAT_GRID = "getPromocyjneObinzenieOplatGrid"
     private static final def GET_WYKAZ_PUNKTOW_GRID = "getWykazPunktowGrid"
     private static final def GET_ZAKRES_URUCHOMIENIA_PUNKTY_GRID = "getZakresUruchomieniaPunktyGrid"
+    private static final def GET_RODZAJ_DZIALALNOSCI_BY_MCC = "getRodzajDzialanosciByMCC"
 
     @Cacheable(value="findCalculatorByNip")
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
@@ -148,6 +149,12 @@ class CbdService {
     def getZakresUruchomieniaPunktyGrid(def clientNip) {
         return cbdDAO.selectMany(GET_ZAKRES_URUCHOMIENIA_PUNKTY_GRID,[nip:clientNip])
     }
+
+    @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
+    def getRodzajDzialalnosciByMCC(def mcc) {
+        return cbdDAO.selectOne(GET_RODZAJ_DZIALALNOSCI_BY_MCC,[mcc: mcc])
+    }
+
 
     /**
      * MOCK

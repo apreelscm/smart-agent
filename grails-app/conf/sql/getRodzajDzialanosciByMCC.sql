@@ -1,0 +1,1 @@
+select SLM_NAZWA as "slm_nazwa" from CBD_ADM.cbt_sl_mcc where SLM_KOD = :mcc

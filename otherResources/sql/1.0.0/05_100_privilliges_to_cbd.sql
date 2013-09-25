@@ -30,6 +30,7 @@ grant select on CBT_KALK_POLE to EUMOWY_APP;
 grant select on CBT_KALK_POLE to EUMOWY;
 grant select on cbt_kalk to EUMOWY_APP;
 grant select on cbt_kalk to EUMOWY;
-
+grant select on CBT_SL_MCC to EUMOWY_APP;
+grant select on CBT_SL_MCC to EUMOWY;
 
 grant execute on ADM_WEB to EUMOWY_APP;

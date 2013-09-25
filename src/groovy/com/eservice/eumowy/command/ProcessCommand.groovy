@@ -435,7 +435,7 @@ class ProcessCommand implements Serializable{
         /*  dataAneksowanejUmowyPos(nullable:false, blank:false, shared: "date")
             dataAneksowanejUmowyPrepaid(nullable:false, blank:false, shared: "date")*/
 
-        hasUmowaCzas(nullable:false, blank:false, validator: { value, cmd, errors ->
+        hasUmowaCzas(nullable:false, validator: { value, cmd, errors ->
             if(value && cmd.umowaCzas == DEFAULT_VALUE){
                 errors.rejectValue( "hasUmowaCzas", "default.atLeastOne.czasUmowy")
                 return false
@@ -561,7 +561,6 @@ class ProcessCommand implements Serializable{
         reprezentant2Imie(nullable:true, blank:true, shared: "lettersonly")
         reprezentant2Nazwisko(nullable:true, blank:true, shared: "lettersonly")
 
-        visaEUKKOPr(nullable:false, blank:false, shared: "percentage")
         visaEUKKOSt(nullable:false, blank:false, shared: "number")
         visaEUKDSt(nullable:false, blank:false, shared: "number")
         visaEUKBSt(nullable:false, blank:false, shared: "number")
@@ -579,6 +578,7 @@ class ProcessCommand implements Serializable{
         mastercardOutEUMSt(nullable:false, blank:false, shared: "number")
 
         /*
+        visaEUKKOPr(nullable:false, blank:false, shared: "percentage")
          visaEUKKOPr(nullable:false, blank:false, shared: "percentage")
          visaEUKDPr(nullable:false, blank:false, shared: "percentage")
             visaEUKBPr(nullable:false, blank:false, shared: "percentage")
