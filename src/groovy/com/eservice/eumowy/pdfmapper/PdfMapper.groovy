@@ -507,12 +507,12 @@ class PdfMapper {
 		addCheckboxes(data, ["panDoKontaktu": "Pan", "paniDoKontaktu": "Pani"], value)
 	}
 	
-	private reprezentant1TytulProcess(def data, def pd, def key, def value){
+	private MapReprezentant1TytulProcess(def data, def pd, def key, def value){
 		data.put(key, [value] as String[]);
 		addCheckboxes(data, ["pan1": "Pan", "pani1": "Pani"], value)
 	}
 	
-	private reprezentant2TytulProcess(def data, def pd, def key, def value){
+	private MapReprezentant2TytulProcess(def data, def pd, def key, def value){
 		data.put(key, [value] as String[]);
 		addCheckboxes(data, ["pan2": "Pan", "pani2": "Pani"], value)
 	}
