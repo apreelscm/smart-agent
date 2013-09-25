@@ -19,8 +19,8 @@
                         <span class="align-left"><g:message code="panel.document"/></span>
                         <span>
                             <g:select name="dzialalnoscDokumentSel"
-                                      from="['', 'KRS', 'Wpis do ewidencji']"
-                                      keys="['', 'krs', 'ewidencja']"
+                                      from="['', 'KRS', 'Wpis do ewidencji', 'Umowa spółki cywilnej']"
+                                      keys="['', 'krs', 'ewidencja', 'umowa_spolki_cywilnej']"
                                       value="${data.dzialalnoscDokument}"
                                       style="width: 200px;"
                                       disabled="true"/>
@@ -53,7 +53,7 @@
                     clearAndReadonlyOtherFields(true, true);
                     break;
                 case 'spolka_cywilna':
-                    selectDoc('krs');
+                    selectDoc('umowa_spolki_cywilnej');
                     clearAndReadonlyOtherFields(true, true);
                     break;
                 case 'osoba_fizyczna':
