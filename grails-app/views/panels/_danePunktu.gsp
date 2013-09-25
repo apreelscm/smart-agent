@@ -109,11 +109,13 @@
 								<span><eumowy:textField
 										name="${panelType}[${id}].wydrukNrDomu"
 										id="${panelType}[${id}].dataforprintingAddressHomeNumber"
-										style="width: 50px" value="${pointData?.wydrukNrDomu}" /></span> <span><g:message
+										style="width: 50px" value="${pointData?.wydrukNrDomu}" 
+										maxlength="4"/></span> <span><g:message
 										code="panel.flat.number" required="true"/></span> <span><eumowy:textField
 										name="${panelType}[${id}].wydrukNrLokalu"
 										id="${panelType}[${id}].dataforprintingAddressFlatNumber"
-										style="width: 50px" value="${pointData?.wydrukNrLokalu}"/></span>
+										style="width: 50px" value="${pointData?.wydrukNrLokalu}"
+										maxlength="4"/></span>
 						</span></li>
 						<li><span><g:message code="panel.city" /></span> <span><eumowy:textField
 									name="${panelType}[${id}].wydrukMiasto"
