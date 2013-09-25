@@ -419,13 +419,6 @@ class PdfMapper {
 
     //------------------- PROCESS METHODS --------------------------------
 	
-/*	private mapDzialaniaMatematyczneCenaProcess(def data, def pd, def key, def value){
-		data.put(key, [value] as String[]);
-		
-		if (value !=null)
-			data.put("dataUmowy",[" "] as String)
-	}*/
-	
 	private mapAkceptantTelKomorkowyProcess(def data, def pd, def key, def value){
 		data.put(key, [value] as String[]);
 
