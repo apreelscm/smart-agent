@@ -991,6 +991,17 @@ class ActivityController {
 		render(text: '')
 	}
 
+    def getRodzajDzialalnosci() {
+        String mcc = params.mcc
+        def result = cbdService.getRodzajDzialalnosciByMCC(mcc)
+        if (result != null) {
+            JSONObject data = new JSONObject()
+            data.put("id", result.slm_nazwa)
+            render(text: data.toString())
+        }
+        render(text: '')
+    }
+
     def testSql(){
         /*   def result = cbdService.findCalculatorByNip("1570321560")
            log.info("findCalculatorByNip result:"+result)*/

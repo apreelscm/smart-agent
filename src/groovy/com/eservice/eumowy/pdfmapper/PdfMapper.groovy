@@ -56,12 +56,13 @@ class PdfMapper {
         Map<String, String[]> data = new HashMap<String, String[]>()
         data.put("phNumer", [processInstance.phNumber.toString()] as String[])
 		data.put("osobaPozyskalaAkceptantaNr", [processInstance.phNumber.toString()] as String[])
-		
+
+        //to na jakis formularz jest
 		if (processInstance.phNumber.toString() != null && processInstance.phNumber.toString().size()==5){
 			data.put("NrSprzedazowyPH1", [processInstance.phNumber.toString().substring(0, 3)] as String[])
 			data.put("NrSprzedazowyPH2", [processInstance.phNumber.toString().substring(3, 4)] as String[])
 		} else {
-		data.put("NrSprzedazowyPH1", [processInstance.phNumber.toString()] as String[])
+		    data.put("NrSprzedazowyPH1", [processInstance.phNumber.toString()] as String[])
 		}
 		
         data.put("mid", [processInstance.client.mid?:'{mid}'] as String[])
@@ -506,12 +507,12 @@ class PdfMapper {
 		addCheckboxes(data, ["panDoKontaktu": "Pan", "paniDoKontaktu": "Pani"], value)
 	}
 	
-	private reprezentant1TytulProcess(def data, def pd, def key, def value){
+	private mapReprezentant1TytulProcess(def data, def pd, def key, def value){
 		data.put(key, [value] as String[]);
 		addCheckboxes(data, ["pan1": "Pan", "pani1": "Pani"], value)
 	}
 	
-	private reprezentant2TytulProcess(def data, def pd, def key, def value){
+	private mapReprezentant2TytulProcess(def data, def pd, def key, def value){
 		data.put(key, [value] as String[]);
 		addCheckboxes(data, ["pan2": "Pan", "pani2": "Pani"], value)
 	}
@@ -701,7 +702,7 @@ class PdfMapper {
     }
 
     private mapDzialalnoscDokumentProcess(def data, def pd, def key, def value) {
-        addCheckboxes(data, ["zaswiadczenieZEwidencji": "ewidencja", "umowaSpolkiCywilnej": "NIE_MAMY_W_PANELACH", "odpisZKRS":"krs", "inne2":""], value)
+        addCheckboxes(data, ["zaswiadczenieZEwidencji": "ewidencja", "umowaSpolkiCywilnej": "umowa_spolki_cywilnej", "odpisZKRS":"krs", "inne2":""], value)
         if ("".equals(value)){
             data.put("inneText2", [getFromProcessDataSet(pd, "dzialalnoscDokumentInny")] as String[])
         }

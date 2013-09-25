@@ -428,14 +428,14 @@ class ProcessCommand implements Serializable{
         akceptantKontaktUlicaTytul(nullable:false, blank:false)
         akceptantKontaktUlica(nullable:false, blank:false, shared: "alpha")
         akceptantKontaktNrDomu(nullable:false, blank:false, shared: "alpha")
-        akceptantKontaktNrMieszkania(nullable:true, blank:false, shared: "natural")
+        akceptantKontaktNrMieszkania(nullable:true, blank:false, shared: "alpha")
         akceptantKontaktMiasto(nullable:false, blank:false, shared: "alpha")
         akceptantKontaktKodPocztowy(nullable:false, blank:false)
         akceptantKontaktPoczta(nullable:false, blank:false, shared: "alpha")
         /*  dataAneksowanejUmowyPos(nullable:false, blank:false, shared: "date")
             dataAneksowanejUmowyPrepaid(nullable:false, blank:false, shared: "date")*/
 
-        hasUmowaCzas(nullable:false, blank:false, validator: { value, cmd, errors ->
+        hasUmowaCzas(nullable:false, validator: { value, cmd, errors ->
             if(value && cmd.umowaCzas == DEFAULT_VALUE){
                 errors.rejectValue( "hasUmowaCzas", "default.atLeastOne.czasUmowy")
                 return false
@@ -472,7 +472,7 @@ class ProcessCommand implements Serializable{
         wydrukUlicaTytul(nullable:false, blank:false)
         wydrukUlica(nullable:false, blank:false, shared: "alpha")
         wydrukNrDomu(nullable:false, blank:false, shared: "alpha")
-        wydrukNrMieszkania(nullable:true, blank:false, shared: "natural")
+        wydrukNrMieszkania(nullable:true, blank:false, shared: "alpha")
         wydrukMiasto(nullable:false, blank:false, shared: "alpha")
         wydrukKodPocztowy(nullable:false, blank:false)
         wydrukPoczta(nullable:false, blank:false, shared: "alpha")
@@ -561,7 +561,6 @@ class ProcessCommand implements Serializable{
         reprezentant2Imie(nullable:true, blank:true, shared: "lettersonly")
         reprezentant2Nazwisko(nullable:true, blank:true, shared: "lettersonly")
 
-        visaEUKKOPr(nullable:false, blank:false, shared: "percentage")
         visaEUKKOSt(nullable:false, blank:false, shared: "number")
         visaEUKDSt(nullable:false, blank:false, shared: "number")
         visaEUKBSt(nullable:false, blank:false, shared: "number")
@@ -579,6 +578,7 @@ class ProcessCommand implements Serializable{
         mastercardOutEUMSt(nullable:false, blank:false, shared: "number")
 
         /*
+        visaEUKKOPr(nullable:false, blank:false, shared: "percentage")
          visaEUKKOPr(nullable:false, blank:false, shared: "percentage")
          visaEUKDPr(nullable:false, blank:false, shared: "percentage")
             visaEUKBPr(nullable:false, blank:false, shared: "percentage")

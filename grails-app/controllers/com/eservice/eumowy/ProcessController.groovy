@@ -134,8 +134,8 @@ class ProcessController {
             return
         }
 
-        if (processInstance.status != Process.ProcessStatus.WAITING){
-            flash.error = "Można odrzuić/zaakceptować jedynie proces ze statusem - Oczekujący"
+        if (processInstance.status in [Process.ProcessStatus.ACCEPTED,Process.ProcessStatus.REJECTED]){
+            flash.error = "Nie można odrzucić zakończonego procesu"
             redirect(action: "show", params: params)
             return
         }
@@ -182,8 +182,16 @@ class ProcessController {
             return
         }
 
-        if (processInstance.status != Process.ProcessStatus.WAITING){
-            flash.error = "Można odrzuić/zaakceptować jedynie proces ze statusem - Oczekujący"
+        def isWaitingProcess = processInstance.status in [Process.ProcessStatus.WAITING,Process.ProcessStatus.WAIT_FOR_SUBSCRIPTION_PAPER_VERSION]
+        if (!isWaitingProcess){
+            flash.error = "Można zaakceptować jedynie proces ze statusem - Oczekujący / Oczekujący na podpis"
+            redirect(action: "show", params: params)
+            return
+        }
+
+        def hasDocuments = processInstance.documents?.size() > 0
+        if (!hasDocuments){
+            flash.error = "Nie można zaakceptować procesu bez dokumentów"
             redirect(action: "show", params: params)
             return
         }

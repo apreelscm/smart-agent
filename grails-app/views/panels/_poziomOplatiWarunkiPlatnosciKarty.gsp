@@ -8,7 +8,7 @@
                 </thead>
                 <tbody>
                     <tr><td class="bold">1. <g:message code="panel.visa.ue"/></td><td></td><td></td></tr>
-                    <tr><td class="cardPaymentPanel-padding">1.1 <g:message code="panel.consumer.credit.charge"/></td><td><eumowy:percentageField validatable="${data}"  name="visaEUKKOPr" value="${data.visaEUKKOPr}" readonly="false" /> </td><td><eumowy:currencyField validatable="${data}"  name="visaEUKKOSt" value="${data.visaEUKKOSt}" /></td></tr>
+                    <tr><td class="cardPaymentPanel-padding">1.1 <g:message code="panel.consumer.credit.charge"/></td><td><eumowy:percentageField validatable="${data}"  name="visaEUKKOPr" value="${data.visaEUKKOPr}" readonly="true" /> </td><td><eumowy:currencyField validatable="${data}"  name="visaEUKKOSt" value="${data.visaEUKKOSt}" /></td></tr>
                     <tr><td class="cardPaymentPanel-padding">1.2 <g:message code="panel.consumer.debit"/></td><td><eumowy:percentageField   name="visaEUKDPr" value="${data.visaEUKDPr}" readonly="true" /> </td><td><eumowy:currencyField validatable="${data}"  name="visaEUKDSt" value="${data.visaEUKDSt}" /> </td></tr>
                     <tr><td class="cardPaymentPanel-padding">1.3 <g:message code="panel.commercial.buisness"/></td><td><eumowy:percentageField validatable="${data}"  name="visaEUKBPr" value="${data.visaEUKBPr}" readonly="true" /> </td><td><eumowy:currencyField validatable="${data}"  name="visaEUKBSt" value="${data.visaEUKBSt}" /> </td></tr>
                     <tr><td class="bold">2. <g:message code="panel.visa.not.ue"/></td><td></td><td></td></tr>

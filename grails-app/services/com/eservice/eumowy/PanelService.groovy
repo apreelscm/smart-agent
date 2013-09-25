@@ -345,8 +345,8 @@ class PanelService {
         cmd.pp_orange_tp = calculatorService.getCalcProperty(calc,"STAWKA_TELEPOMPKA_ORANGE")
         cmd.pp_plus_tk = calculatorService.getCalcProperty(calc,"STAWKA_TELEKODZIK_PLUS")
         cmd.pp_plus_tp = calculatorService.getCalcProperty(calc,"STAWKA_TELEPOMPKA_PLUS")
-        cmd.pp_tmobile_tk = calculatorService.getCalcProperty(calc,"STAWKA_TELEKODZIK_T_MOBILE")
-        cmd.pp_tmobile_tp = calculatorService.getCalcProperty(calc,"STAWKA_TELEPOMPKA_T_MOBILE")
+        cmd.pp_tmobile_tk = calculatorService.getCalcProperty(calc,"STAWKA_TELEKODZIK_TAKTAK")
+        cmd.pp_tmobile_tp = calculatorService.getCalcProperty(calc,"STAWKA_TELEPOMPKA_TAKTAK")
         cmd.pp_heyah_tk = calculatorService.getCalcProperty(calc,"STAWKA_TELEKODZIK_HEYAH")
         cmd.pp_heyah_tp = calculatorService.getCalcProperty(calc,"STAWKA_TELEPOMPKA_HEYAH")
         cmd.pp_play_tk = calculatorService.getCalcProperty(calc,"STAWKA_TELEKODZIK_PLAY")
@@ -372,9 +372,9 @@ class PanelService {
     def getScoring(ProcessCommand cmd ,def calc) {
         cmd.scoringMcc = calculatorService.getCalcProperty(calc,"MCC")
         cmd.scoringDzialalnosc = nullify(cmd.scoringDzialalnosc)
-        cmd.scoringSzczegolyDzialalnosci = nullify(cmd.scoringSzczegolyDzialalnosci) //TODO VERIFY
 
-        //select SLM_NAZWA from cbt_sl_mcc where SLM_KOD=MCC(MCC z pola KodMCCComboBox - wartośc pola)
+        def result = cbdService.getRodzajDzialalnosciByMCC(cmd.scoringMcc);
+        cmd.scoringSzczegolyDzialalnosci = result?.slm_nazwa ?: ""
 
         cmd.scoringIloscTransakcji = nullify(cmd.scoringIloscTransakcji)
         cmd.scoringCzestoscTransakcji = nullify(cmd.scoringCzestoscTransakcji)
