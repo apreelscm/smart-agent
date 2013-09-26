@@ -80,8 +80,8 @@
         }
 });
     </g:javascript>
-    <r:require module="newpoint_panel_setup"/>
     <r:require module="validation"/>
+    <r:require module="newpoint_panel_setup"/>
 
     <style>
     #uploads {

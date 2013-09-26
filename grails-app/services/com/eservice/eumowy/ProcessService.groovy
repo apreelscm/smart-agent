@@ -637,9 +637,8 @@ class ProcessService {
                     PosData posDataNew
                     PosDataDetails posDataDetailsNew
 
-                    posDataNew = SerializationUtils.clone(posData)
-                    posDataDetailsNew = SerializationUtils.clone(posDataDetails)
-
+                    posDataNew = SerializationUtils.clone(posData) as PosData
+                    posDataDetailsNew = SerializationUtils.clone(posDataDetails) as PosDataDetails
                     posDataNew.setPosDetails(posDataDetailsNew)
                     posDataNew.setPoint(pointData)
                     posDataDetailsNew.setPos(posDataNew)

@@ -21,6 +21,7 @@ modules = {
 
     validation {
         resource url: 'js/jquery.validate.js', disposition: 'head'
+        resource url: 'js/validation_utils.js', disposition: 'head'
         dependsOn 'jquery'
     }
 
