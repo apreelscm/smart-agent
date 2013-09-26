@@ -4,15 +4,17 @@
         <div style="text-align: center; padding-top: 20px; width: 600px" class="centre">
             <g:hiddenField name="hasDoladowania" value="true"/>
             <div class="${hasErrors(bean:data,field:'hasDoladowania','errorContainer')}">
-                <div style="display: inline"><label><g:checkBox name="doladowania_tp" value="${data.doladowania_tp}" /> <g:message code="panel.newpoint.terminaloptions.phonecreditsrecharge.telepompka"/></label></div>
-                <div style="display: inline"><label><g:checkBox name="doladowania_tk" value="${data.doladowania_tk}" /> <g:message code="panel.newpoint.terminaloptions.phonecreditsrecharge.telekodzik"/></label></div>
+                <g:hiddenField name="doladowania_tp" value="${data.doladowania_tp}"/>
+                <g:hiddenField name="doladowania_tk" value="${data.doladowania_tk}"/>
+                <div style="display: inline"><label><g:checkBox name="doladowania_tp" value="${data.doladowania_tp}" disabled="true" /> <g:message code="panel.newpoint.terminaloptions.phonecreditsrecharge.telepompka"/></label></div>
+                <div style="display: inline"><label><g:checkBox name="doladowania_tk" value="${data.doladowania_tk}" disabled="true" /> <g:message code="panel.newpoint.terminaloptions.phonecreditsrecharge.telekodzik"/></label></div>
             </div>
 
             <div class="align-center" style="padding-top: 10px"><g:message code="panel.declared.selling.electronic.recharch"/></div>
             <table style="padding-top: 10px">
                 <tr class="vertical-center">
                     <td>&nbsp;</td>
-                    <td class="align-right"><eumowy:textField name="srednia_sprzedaz_doladowan" value="${data.srednia_sprzedaz_doladowan}" validatable="${data}" style="width: 100px" required="true"/></td>
+                    <td class="align-right"><eumowy:textField name="srednia_sprzedaz_doladowan" value="${data.srednia_sprzedaz_doladowan}" validatable="${data}" style="width: 100px"  readonly="true"/></td>
                     <td class="align-left"><g:message code="panel.for.each.pos"/></td>
                 </tr>
                 <tr class="vertical-center">

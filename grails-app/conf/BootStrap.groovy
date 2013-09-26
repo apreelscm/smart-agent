@@ -29,7 +29,6 @@ class BootStrap {
 
     }
 
-
     def createTestDomains(){
         // klienci
         Client.findByName('clientName1') ?: new Client(name: 'clientName1', nip: "555344435").save(flush:true);

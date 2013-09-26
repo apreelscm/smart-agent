@@ -15,3 +15,26 @@
         </div>
     </fieldset>
 </div>
+
+<r:script>
+    jQuery(document).ready(function() {
+        jQuery("#numerRachunkuBankowegoKlienta").on("keyup", function(e) {
+            var accountNr = jQuery(e.target).val();
+            if ( accountNr != undefined && accountNr != null){
+
+                var bankNameInput = jQuery("#bankKlienta");
+
+                if (validateAccountNumber(accountNr)){
+                    jQuery.get("/eumowy/activity/getBankName", {accountNo: accountNr.replace(/\s+/g, '')}, function(data) {
+                        if (data != undefined && data != null && data != "") {
+                            var obj = JSON.parse(data);
+                            bankNameInput.val(obj.name);
+                        }
+                    });
+                } else {
+                    bankNameInput.val('').attr('placeholder', 'Numer konta jest nieprawidłowy');
+                }
+            }
+        });
+    });
+</r:script>
