@@ -14,7 +14,8 @@ import signaturepad.SignatureToImage
 class PdfService {
 	def appParametersService
     def processService
-	
+    def calculatorService
+
 	public static enum FontType {
 		HELVETICA,
 		ARIAL,
@@ -265,9 +266,9 @@ class PdfService {
 		return updatedContent
 	}
 
-    def workWithDocuments(def processInstance){
+    def workWithDocuments(def processInstance, def calc){
         def totalPagesCount = 0
-        def dataFromProcess = new PdfMapper().mapOnlyProcessData(processInstance);
+        def dataFromProcess = new PdfMapper(calc, calculatorService).mapOnlyProcessData(processInstance);
 
         //takie rozbicie bylo konieczne aby ograniczyc wywolania wolnego mappera
         def singleDocuments = processInstance.signatures.findAll{ sig -> !sig.forPoint}
@@ -279,7 +280,7 @@ class PdfService {
         }
 
         processInstance.points.eachWithIndex{ point, index ->
-            def dataFromPoint = new PdfMapper().mapOnlyPointData(point, index);
+            def dataFromPoint = new PdfMapper(calc, calculatorService).mapOnlyPointData(point, index);
 
             final Map<String, String> data = new HashMap<String, String>();
             data.putAll(dataFromProcess);
