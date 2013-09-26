@@ -409,6 +409,7 @@ class ProcessCommand implements Serializable{
     String hasKontaktTel
     String hasDoladowania
     String hasAkceptantTel
+    String hasInformacjaHandlowa
 
     static constraints = {
 
@@ -485,7 +486,19 @@ class ProcessCommand implements Serializable{
            oplataMaestro(nullable:false, blank:false, shared: "number")
            oplataMasteroPr(nullable:false, blank:false, shared: "number")*/
         dccZakresUruchomienia(nullable:false, blank:false)
+
+
         informacjaHandlowa(nullable:false, blank:false)
+
+        hasInformacjaHandlowa(nullable:false, validator: { value, cmd, errors ->
+            if(value && cmd.informacjaHandlowa == DEFAULT_VALUE){
+                errors.rejectValue( "hasInformacjaHandlowa", "default.atLeastOne.informacjaHandlowa")
+                return false
+            }
+            return true
+        })
+
+
         oplataZaDzienneZestawienieTransakcji(nullable:false, blank:false, shared: "number")
         oplataZaMiesieczneZestawienieTransakcji(nullable:false, blank:false, shared: "number")
         oplataZaPotwierdzenieWykonaniaPrzelewu(nullable:false, blank:false, shared: "number")
@@ -516,7 +529,7 @@ class ProcessCommand implements Serializable{
             return true
         })
 
-        srednia_sprzedaz_doladowan(nullable:false, blank:false, shared:"number")
+        /*srednia_sprzedaz_doladowan(nullable:false, blank:false, shared:"number")*/
         srednia_sprzedaz_doladowan_slownie(nullable:false, blank:false, shared: "lettersonly")
 /*        ifOplataVISA(nullable:false, blank:false, shared: "number") //1.11 %, M
         ifOplataMasterCard(nullable:false, blank:false, shared: "number") //1.11 %, M
@@ -528,7 +541,7 @@ class ProcessCommand implements Serializable{
         dzialalnoscDokument(nullable:false, blank:true)
         dzialalnoscDokumentInny(nullable:true, blank:true, shared: "alpha")
         //okresLojalnosciowy(nullable:false, blank:false)
-        oplataZaPlatnoscWInnejWalucie(nullable:false, blank:false)
+        /*oplataZaPlatnoscWInnejWalucie(nullable:false, blank:false)*/
         kontaktTytul(nullable:false, blank:false)
         kontaktImie(nullable:false, blank:false, shared: "lettersonly")
         kontaktNazwisko(nullable:false, blank:false, shared: "lettersonly")
@@ -576,6 +589,9 @@ class ProcessCommand implements Serializable{
         mastercardOutEUKDSt(nullable:false, blank:false, shared: "number")
         mastercardOutEUKBSt(nullable:false, blank:false, shared: "number")
         mastercardOutEUMSt(nullable:false, blank:false, shared: "number")
+
+        dinersClubSt(nullable:true,blank:true,shared: "number")
+        ikoSt(nullable:true, blank:true,shared: "number")*
 
         /*
         visaEUKKOPr(nullable:false, blank:false, shared: "percentage")

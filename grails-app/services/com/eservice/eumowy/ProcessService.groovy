@@ -539,7 +539,7 @@ class ProcessService {
         cmd.properties.each { key, value ->
 
             if (["class","process", "cbdService", "errors", "constraints",
-                    "notes", "hasUmowaCzas", "hasKontaktTel", "hasDoladowania", "hasAkceptantTel"]
+                    "notes", "hasUmowaCzas", "hasKontaktTel", "hasDoladowania", "hasAkceptantTel", "hasInformacjaHandlowa"]
                     .contains(key) || value == ProcessCommand.DEFAULT_VALUE){
                 return
             }
