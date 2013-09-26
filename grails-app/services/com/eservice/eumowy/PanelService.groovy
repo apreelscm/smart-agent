@@ -31,12 +31,12 @@ class PanelService {
 	
 	def getAneksDoUmowyNajmuZestawuPos(ProcessCommand cmd, def calc) {
 		def result = cbdService.getAneksDoUmowyNajmuZestawuPos(cmd.nip)
-		cmd.dataAneksowanejUmowyPos = nullify(result)
+		cmd.dataAneksowanejUmowyPos = result?.dataAneksowanejUmowyPos ?: ""
 	}
 
 	def getAneksDoUmowyPrepaid(ProcessCommand cmd, def calc) {
 		def result = cbdService.getAneksDoUmowyPrepaid(cmd.nip)
-		cmd.dataAneksowanejUmowyPrepaid = nullify(result)
+		cmd.dataAneksowanejUmowyPrepaid = result?.dataAneksowanejUmowyPrepaid ?: ""
 	}
 
     def getCzasObowiazywaniaUmowy(ProcessCommand cmd ,def calc) {

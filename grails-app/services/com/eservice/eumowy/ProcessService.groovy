@@ -547,7 +547,7 @@ class ProcessService {
             }
 
             if(["umowaOznOd", "umowaOznDo", "dataAneksowanejUmowyPos", "dataAneksowanejUmowyPrepaid", "dataUmowy"].contains(key)){
-                processDataList.add(new ProcessData(name: "${key}", value:"${value? DateUtils.formatWithTimezone(DateUtils.parseDate(value)): ''}"));
+                processDataList.add(new ProcessData(name: "${key}", value:"${DateUtils.formatWithTimezoneFromStr(value)}"));
                 return;
             }
 
