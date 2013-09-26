@@ -18,6 +18,10 @@ class AttachmentService {
     }
 
     def getListByProcessId(def id) {
+        if (id == null){
+            log.error("FIXME - id can't be null")
+            return;
+        }
         def attachmentCriteria = AttachmentFile.createCriteria()
         def searchResult = attachmentCriteria.list{
             process {

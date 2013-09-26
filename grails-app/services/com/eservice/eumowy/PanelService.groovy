@@ -28,14 +28,16 @@ class PanelService {
         cmd.akceptantKontaktKodPocztowy = result?.kod_pocztowy ?: ""
         cmd.akceptantKontaktPoczta = result?.poczta ?: ""
     }
+	
+	def getAneksDoUmowyNajmuZestawuPos(ProcessCommand cmd, def calc) {
+		def result = cbdService.getAneksDoUmowyNajmuZestawuPos(cmd.nip)
+		cmd.dataAneksowanejUmowyPos = result?.dataAneksowanejUmowyPos ?: ""
+	}
 
-    def getAneksDoUmowyNajmuZestawuPos(ProcessCommand cmd,def calc) {
-        cmd.dataAneksowanejUmowyPos =  nullify(cmd.dataAneksowanejUmowyPos)
-    }
-
-    def getAneksDoUmowyPrepaid(ProcessCommand cmd,def calc) {
-        cmd.dataAneksowanejUmowyPrepaid = nullify(cmd.dataAneksowanejUmowyPrepaid)
-    }
+	def getAneksDoUmowyPrepaid(ProcessCommand cmd, def calc) {
+		def result = cbdService.getAneksDoUmowyPrepaid(cmd.nip)
+		cmd.dataAneksowanejUmowyPrepaid = result?.dataAneksowanejUmowyPrepaid ?: ""
+	}
 
     def getCzasObowiazywaniaUmowy(ProcessCommand cmd ,def calc) {
         cmd.umowaCzas = nullify(cmd.umowaCzas)

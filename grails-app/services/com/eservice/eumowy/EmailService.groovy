@@ -15,6 +15,7 @@ class EmailService {
         try{
             sendMail(emailTemplate, emailTemplate.sender, emailTemplate.recipient, null, [notes: notes, phNumber: phNumber, phName: phName], null)
         }catch(Exception ex){
+            log.error(ex)
             return false
         }
         return true
@@ -48,6 +49,7 @@ class EmailService {
         try{
             sendMail(emailTemplate, emailTemplate.sender, recipient, null, [merchantName: merchantName], documents)
         }catch(Exception ex){
+            log.error(ex)
             return false
         }
         return true
@@ -67,6 +69,7 @@ class EmailService {
         try{
             sendMail(emailTemplate, emailTemplate.sender, recipient, [merchantNip, merchantName] as Object[], [merchantName: merchantName, merchantNip: merchantNip, rejectReason: rejectReason, activities: activities], null)
         }catch(Exception ex){
+            log.error(ex)
             return false
         }
         return true

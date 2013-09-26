@@ -1,4 +1,4 @@
-﻿environments {
+environments {
     test{
         grails.mail.host = "mail.your-server.de"
         grails.mail.port = 465

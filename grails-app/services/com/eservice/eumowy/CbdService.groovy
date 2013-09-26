@@ -1,5 +1,6 @@
 package com.eservice.eumowy
 import com.eservice.eumowy.dao.CbdDAO
+import com.eservice.eumowy.util.EumowyCustomEnvironment
 import grails.plugin.cache.Cacheable
 import grails.util.Environment
 import org.springframework.transaction.annotation.Isolation
@@ -28,12 +29,14 @@ class CbdService {
     private static final def GET_WYKAZ_PUNKTOW_GRID = "getWykazPunktowGrid"
     private static final def GET_ZAKRES_URUCHOMIENIA_PUNKTY_GRID = "getZakresUruchomieniaPunktyGrid"
     private static final def GET_RODZAJ_DZIALALNOSCI_BY_MCC = "getRodzajDzialanosciByMCC"
+	private static final def GET_ANEKS_DO_UMOWY_NAJMU_ZESTAWU_POS = "getAneksDoUmowyNajmuZestawuPos"
+	private static final def GET_ANEKS_DO_UMOWY_PREPAID = "getAneksDoUmowyPrepaid"
 
     @Cacheable(value="findCalculatorByNip")
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
     def findCalculatorByNip(def clientNip) {
-        switch (Environment.getCurrent()) {
-            case Environment.DEVELOPMENT:
+        switch (Environment.getCurrent().getName()) {
+            case EumowyCustomEnvironment.MOCK.getName():
                 return findCalculatorByNipMock(clientNip);
             default:
                 return cbdDAO.selectMany(FIND_CALC_BY_NIP,[nip:clientNip]).collect{ [POLEAPREEL:it.POLEAPREEL,WARTOSCAPREEL:it.WARTOSCAPREEL]}//*.POLEAPREEL
@@ -43,19 +46,19 @@ class CbdService {
     @Cacheable(value="findCalculatorIdByNip")
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
     def findCalculatorIdByNip(def clientNip) {
-        switch (Environment.getCurrent()) {
-            case Environment.DEVELOPMENT:
+        switch (Environment.getCurrent().getName()) {
+            case EumowyCustomEnvironment.MOCK.getName():
                 return findCalculatorIdByNipMock(clientNip);
             default:
                 return cbdDAO.selectOne(FIND_CALC_ID_BY_NIP,[nip:clientNip])?.get("KAK_ID")
         }
     }
 
-    //@Cacheable(value="findClientByNip")
+    //@Cacheable(value="findClientByNip")                        Boot
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
     def findClientByNip(def clientNip) {
-        switch (Environment.getCurrent()) {
-            case Environment.DEVELOPMENT:
+        switch (Environment.getCurrent().getName()) {
+            case EumowyCustomEnvironment.MOCK.getName():
                return findClientIdByNipMock(clientNip);
             default:
                 def rowResult = cbdDAO.selectOne(FIND_CLIENT_ID_BY_NIP,[nip:clientNip])
@@ -154,6 +157,18 @@ class CbdService {
     def getRodzajDzialalnosciByMCC(def mcc) {
         return cbdDAO.selectOne(GET_RODZAJ_DZIALALNOSCI_BY_MCC,[mcc: mcc])
     }
+	
+	@Cacheable(value="getAneksDoUmowyNajmuZestawuPos")
+	@Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
+	def getAneksDoUmowyNajmuZestawuPos(def clientNip) {
+		return cbdDAO.selectOne(GET_ANEKS_DO_UMOWY_NAJMU_ZESTAWU_POS,[nip:clientNip])
+	}
+	
+	@Cacheable(value="getAneksDoUmowyPrepaid")
+	@Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
+	def getAneksDoUmowyPrepaid(def clientNip) {
+		return cbdDAO.selectOne(GET_ANEKS_DO_UMOWY_PREPAID,[nip:clientNip])
+	}
 
 
     /**

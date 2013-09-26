@@ -42,6 +42,7 @@ public class DateUtils {
 			date = new SimpleDateFormat(dateFormat).parse(dateStr)
         }
 		catch (Exception e) {
+            // TODO zalogowac blad
 			date = null
 		}
 		date
@@ -61,6 +62,11 @@ public class DateUtils {
         } catch (Exception e){
             false
         }
+    }
+
+    static formatWithTimezoneFromStr(def dateStr){
+        Date date = parseDate(dateStr)
+        return date != null ? formatWithTimezone() : ""
     }
 
     static formatWithTimezone(def dateObj){

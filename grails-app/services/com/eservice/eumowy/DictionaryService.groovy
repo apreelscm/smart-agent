@@ -1,5 +1,6 @@
 package com.eservice.eumowy
 import com.eservice.eumowy.dao.CbdDAO
+import com.eservice.eumowy.util.EumowyCustomEnvironment
 import grails.util.Environment
 import org.springframework.transaction.annotation.Isolation
 import org.springframework.transaction.annotation.Propagation
@@ -22,8 +23,8 @@ class DictionaryService {
     //@Cacheable(value="getUlicaComboBox")
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_UNCOMMITTED, readOnly = true)
     def getUlicaComboBox() {
-        switch (Environment.getCurrent()) {
-            case Environment.DEVELOPMENT:
+        switch (Environment.getCurrent().getName()) {
+            case EumowyCustomEnvironment.MOCK.getName():
                 return []
             default:
                 dictionary.put(GET_ULICA_COMBOBOX, cbdDAO.selectMany(DICTIONARY_PATH + GET_ULICA_COMBOBOX));
@@ -40,8 +41,8 @@ class DictionaryService {
 //    }
 
     def getBankComboBox() {
-        switch (Environment.getCurrent()) {
-            case Environment.DEVELOPMENT:
+        switch (Environment.getCurrent().getName()) {
+            case EumowyCustomEnvironment.MOCK.getName():
                 return []
             default:
                 dictionary.put(GET_BANK, cbdDAO.selectMany(DICTIONARY_PATH + GET_BANK));
@@ -51,8 +52,8 @@ class DictionaryService {
     }
 
     def getPosTypeComboBox(def nipNum) {
-        switch (Environment.getCurrent()) {
-            case Environment.DEVELOPMENT:
+        switch (Environment.getCurrent().getName()) {
+            case EumowyCustomEnvironment.MOCK.getName():
                 return []
             default:
                 dictionary.putAt(GET_POS_TYPE_COMBOBOX, cbdDAO.selectMany(DICTIONARY_PATH+GET_POS_TYPE_COMBOBOX, [nip: nipNum]))
@@ -61,8 +62,8 @@ class DictionaryService {
     }
 
     def getCbdPointsComboBox(def nipNum) {
-        switch (Environment.getCurrent()) {
-            case Environment.DEVELOPMENT:
+        switch (Environment.getCurrent().getName()) {
+            case EumowyCustomEnvironment.MOCK.getName():
                 return []
             default:
                 dictionary.putAt(GET_CBD_POINTS_COMBOBOX, cbdDAO.selectMany(DICTIONARY_PATH+GET_CBD_POINTS_COMBOBOX, [nip: nipNum]))
