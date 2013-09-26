@@ -306,6 +306,7 @@ create table EUMOWY.SIGNATURE (
   management_subscription1 varchar2(255 char) not null,
   management_subscription2 varchar2(255 char) not null,
   template_path varchar2(255 char) not null,
+  signature_order number(6,0) not null,
   primary key (id));
 
 create table EUMOWY.SIGNATURE_PANEL (

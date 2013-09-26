@@ -21,6 +21,8 @@ class Signature implements Serializable {
 	String managementSubscription1;
 	String managementSubscription2;
 
+    Integer signatureOrder;
+
     static hasMany = [
             calcFieldsSignature:CalcFieldSignature,
             panelsSignature:SignaturePanel,
