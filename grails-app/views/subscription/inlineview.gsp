@@ -42,7 +42,7 @@
 
     <g:form  id="subscriptionForm" action="saveSubscription" class="sigPad">
         <p>
-            <g:checkBox name="agreement"/>
+            <g:checkBox name="agreement" required="required"/>
             <label for="agreement">
                 <g:message code="subscription.agreement" />
             </label>
