@@ -586,7 +586,6 @@ class PdfMapper {
 
     private mapReprezentant1ImieProcess(def data, def pd, def key, def value) {
         data.put("reprezentant1", [value + " " + getFromProcessDataSet(pd, 'reprezentant1Nazwisko')] as String[])
-		data.put("osobaPodpisalaUmowe", [value + " " + getFromProcessDataSet(pd, 'reprezentant1Nazwisko')] as String[])
     }
 
     private mapReprezentant2ImieProcess(def data, def pd, def key, def value) {
