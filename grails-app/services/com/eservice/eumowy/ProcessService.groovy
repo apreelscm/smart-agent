@@ -114,6 +114,9 @@ class ProcessService {
         cmd.poses?.addAll(getLocalPosesToPointCommandList(process))
         cmd.allPoints?.addAll(getPointsToAllPointsCommandList(process, cmd))
         cmd.allPoses?.addAll(getPosesToAllPosCommandList(process, cmd))
+
+        cmd.notes = process.notesToCoa
+
         prepareProcessCommand(cmd, calc, cbdMethods)
     }
 
@@ -522,6 +525,8 @@ class ProcessService {
 			process.discard()
 		}*/
 
+        process.notesToCoa = cmd.notes //notesToCOA
+
         process
     }
 
@@ -632,9 +637,8 @@ class ProcessService {
                     PosData posDataNew
                     PosDataDetails posDataDetailsNew
 
-                    posDataNew = SerializationUtils.clone(posData)
-                    posDataDetailsNew = SerializationUtils.clone(posDataDetails)
-
+                    posDataNew = SerializationUtils.clone(posData) as PosData
+                    posDataDetailsNew = SerializationUtils.clone(posDataDetails) as PosDataDetails
                     posDataNew.setPosDetails(posDataDetailsNew)
                     posDataNew.setPoint(pointData)
                     posDataDetailsNew.setPos(posDataNew)

@@ -1,9 +1,9 @@
 package com.eservice.eumowy.util
 
-import java.text.SimpleDateFormat
-
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
+
+import java.text.SimpleDateFormat
 
 /**
  * Created with IntelliJ IDEA.
@@ -66,7 +66,7 @@ public class DateUtils {
 
     static formatWithTimezoneFromStr(def dateStr){
         Date date = parseDate(dateStr)
-        return date != null ? formatWithTimezone() : ""
+        return date != null ? formatWithTimezone(date) : ""
     }
 
     static formatWithTimezone(def dateObj){
