@@ -36,6 +36,10 @@ public class DateUtils {
         new SimpleDateFormat(dateFormat).format(date)
     }
 
+    def static String getFormattedDate(def date){
+        new SimpleDateFormat(DEFAULT_DATE_FORMAT).format(date)
+    }
+
     static def Date parseDate(def dateStr, def dateFormat){
         Date date
 		try {

@@ -1,5 +1,6 @@
 package com.eservice.eumowy
 import com.eservice.eumowy.command.ProcessCommand
+import com.eservice.eumowy.util.DateUtils
 
 class PanelService {
 
@@ -31,12 +32,12 @@ class PanelService {
 	
 	def getAneksDoUmowyNajmuZestawuPos(ProcessCommand cmd, def calc) {
 		def result = cbdService.getAneksDoUmowyNajmuZestawuPos(cmd.nip)
-		cmd.dataAneksowanejUmowyPos = result?.dataAneksowanejUmowyPos ?: ""
+		cmd.dataAneksowanejUmowyPos =  DateUtils.getFormattedDate(result?.dataAneksowanejUmowyPos ?: "")
 	}
 
 	def getAneksDoUmowyPrepaid(ProcessCommand cmd, def calc) {
 		def result = cbdService.getAneksDoUmowyPrepaid(cmd.nip)
-		cmd.dataAneksowanejUmowyPrepaid = result?.dataAneksowanejUmowyPrepaid ?: ""
+		cmd.dataAneksowanejUmowyPrepaid = DateUtils.getFormattedDate(result?.dataAneksowanejUmowyPrepaid ?: "")
 	}
 
     def getCzasObowiazywaniaUmowy(ProcessCommand cmd ,def calc) {
