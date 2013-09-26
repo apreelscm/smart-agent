@@ -16,17 +16,17 @@ import org.apache.log4j.jdbc.JDBCAppender
 // }
 
 // referencja do konfiguracji srodowisk, poza dev parametr ustawiany przy starcie tomcata
-grails.config.locations = []
-development {
-    grails.config.locations << "file:web-app/WEB-INF/${appName}-config-${grails.util.Environment.current.name}.groovy"
-}
+//grails.config.locations = ["classpath:${appName}-config-${grails.util.Environment.current.name}.groovy"]
+//development {
+//    grails.config.locations << "file:web-app/WEB-INF/${appName}-config-${grails.util.Environment.current.name}.groovy"
+//}
 // TODO do usuniecia , na razie zostaje zeby nie kopiowac za kazdym razem konfigu na serwer
-test {
-    grails.config.locations << "file:web-app/WEB-INF/${appName}-config-${grails.util.Environment.current.name}.groovy"
-}
-uat {
-    grails.config.locations << "file:web-app/WEB-INF/${appName}-config-${grails.util.Environment.current.name}.groovy"
-}
+//test {
+//    grails.config.locations << "file:web-app/WEB-INF/${appName}-config-${grails.util.Environment.current.name}.groovy"
+//}
+//uat {
+//    grails.config.locations << "file:web-app/WEB-INF/${appName}-config-${grails.util.Environment.current.name}.groovy"
+//}
 
 grails.project.groupId = appName // change this to alter the default package name and Maven publishing destination
 grails.mime.file.extensions = true // enables the parsing of file extensions from URLs into the request format
@@ -167,8 +167,9 @@ log4j = {
             uat {
                 appender new JDBCAppender(
                         name: "database",
-                        //URL: "jdbc:oracle:thin:@192.168.3.221:1523:tstcbd",
-                        URL: "jdbc:oracle:thin:@db-eservice.apreel.lan:1521:cbd01out",
+                        URL: "jdbc:oracle:thin:@192.168.3.221:1523:tstcbd",
+                        //URL: "jdbc:oracle:thin:@192.168.3.22:1523:tstcbd", -- apreel lokalny
+                        //URL: "jdbc:oracle:thin:@db-eservice.apreel.lan:1521:cbd01out",
                         user: "eumowy_app",
                         password: "eumowy_app",
                         driver: "oracle.jdbc.driver.OracleDriver",
@@ -235,19 +236,14 @@ grails.plugins.springsecurity.interceptUrlMap = [
 ]
 
 // mail config
-//grails {
-//    mail {
-//        host = "smtp.gmail.com"
-//        port = 465
-//        username = "apreel.eUmowy@gmail.com"
-//        password = "apreel1234"
-//        props = ["mail.smtp.auth": "true",
-//                "mail.smtp.socketFactory.port": "465",
-//                "mail.smtp.socketFactory.class": "javax.net.ssl.SSLSocketFactory",
-//                "mail.smtp.socketFactory.fallback": "false",
-//                "mail.smtp.ssl.trust": "*"]
-//    }
-//}
+grails {
+    mail {
+        host = "192.168.3.140"
+        port = 25
+        username = "ldamiecki@testeservice.com"
+        password = "Standard1"
+    }
+}
 trustAll = true
 
 fileuploader {
