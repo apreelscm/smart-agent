@@ -435,7 +435,7 @@ class ProcessCommand implements Serializable{
         /*  dataAneksowanejUmowyPos(nullable:false, blank:false, shared: "date")
             dataAneksowanejUmowyPrepaid(nullable:false, blank:false, shared: "date")*/
 
-        hasUmowaCzas(nullable:false, validator: { value, cmd, errors ->
+        hasUmowaCzas(nullable:true, validator: { value, cmd, errors ->
             if(value && cmd.umowaCzas == DEFAULT_VALUE){
                 errors.rejectValue( "hasUmowaCzas", "default.atLeastOne.czasUmowy")
                 return false
