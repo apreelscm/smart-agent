@@ -103,7 +103,7 @@ log4j = {
     debug "grails.app.controller.com.eservice.umowy"
     debug "grails.app.controller.process"
     info "grails.app.domain"
-    info "grails.app.tagLib"
+    info "grails.app.taglib"
 
     error  'org.codehaus.groovy.grails.web.servlet',        // controllers
             'org.codehaus.groovy.grails.web.pages',          // GSP
@@ -255,3 +255,4 @@ fileuploader {
 }
 
 grails.gsp.reload.enable = true
+grails.resources.debug = true //refreshing css and js
