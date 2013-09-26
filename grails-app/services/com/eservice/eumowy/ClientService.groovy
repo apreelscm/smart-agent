@@ -10,7 +10,7 @@ class ClientService {
 
         // TODO tymczasowo
         if(Environment.isDevelopmentMode() ||
-                Environment.TEST.getName().equalsIgnoreCase(Environment.getCurrent())){ return true }
+                Environment.TEST.getName().equalsIgnoreCase(Environment.getCurrent().name)){ return true }
 
         if (nip.length() == 13) {
             nip = nip.replaceAll("-", "");

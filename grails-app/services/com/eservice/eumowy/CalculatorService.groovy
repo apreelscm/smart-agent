@@ -12,7 +12,7 @@ class CalculatorService {
 
         // TODO tymczasowo
         if(Environment.isDevelopmentMode() ||
-                Environment.TEST.getName().equalsIgnoreCase(Environment.getCurrent())){ return true }
+                Environment.TEST.getName().equalsIgnoreCase(Environment.getCurrent().name)){ return true }
 
         Set signaturesCalcNames = []
         signatures.each{signature ->
