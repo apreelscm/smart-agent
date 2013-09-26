@@ -255,4 +255,4 @@ fileuploader {
 }
 
 grails.gsp.reload.enable = true
-grails.resources.debug = true //refreshing css and js
+//grails.resources.debug = true //refreshing css and js
