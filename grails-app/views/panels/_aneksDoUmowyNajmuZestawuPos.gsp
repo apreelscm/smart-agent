@@ -5,17 +5,17 @@
             <ul class="table-list centre">
                 <li>
                     <span class="align-right"><g:message code="panel.aggrement.annex.day"/></span>
-                    <span><eumowy:textField name="dataAneksowanejUmowyPos" value="${data.dataAneksowanejUmowyPos}" validatable="${data}" readonly="true" style="width: 120px;" required="true"/></span>
+                    <span><eumowy:textField name="dataAneksowanejUmowyPos" value="${data.dataAneksowanejUmowyPos}" validatable="${data}" readonly="true" style="width: 120px;"/></span>
                 </li>
             </ul>
         </div>
     </fieldset>
 </div>
 
-<r:require module="jquery_ui"/>
-
+%{--<r:require module="jquery_ui"/>--}%
+%{--
 <r:script>
     jQuery(document).ready(function() {
         jQuery("#dataAneksowanejUmowyPos").datepicker({ dateFormat: 'yy-mm-dd', maxDate: new Date() });
     });
-</r:script>
+</r:script>--}%

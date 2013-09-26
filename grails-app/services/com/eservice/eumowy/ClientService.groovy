@@ -9,8 +9,9 @@ class ClientService {
     def isClientNipValid(def nip) {
 
         // TODO tymczasowo
-        if(Environment.isDevelopmentMode() ||
-                Environment.TEST.getName().equalsIgnoreCase(Environment.getCurrent().name)){ return true }
+        if(Environment.isDevelopmentMode() || Environment.TEST.getName().equalsIgnoreCase(Environment.getCurrent().name)) {
+            return true
+        }
 
         if (nip.length() == 13) {
             nip = nip.replaceAll("-", "");
