@@ -10,21 +10,48 @@ function getGlobalPanelCount(prefix) {
     }
 }
 
-function setupNewPointPanelHandlers(prevPanelId, panelId, prefix) {
+function validateAccountNumber(nrb) {
+    nrb = nrb.replace(/[^0-9]+/g, '');
+    var Wagi = new Array(1, 10, 3, 30, 9, 90, 27, 76, 81, 34, 49, 5, 50, 15, 53, 45, 62, 38, 89, 17, 73, 51, 25, 56, 75, 71, 31, 19, 93, 57);
+    if (nrb.length == 26) {
+        nrb = nrb + "2521";
+        nrb = nrb.substr(2) + nrb.substr(0, 2);
+        var Z = 0;
+        for (var i = 0; i < 30; i++) {
+            Z += nrb[29 - i] * Wagi[i];
+        }
+        if (Z % 97 == 1) {
+            return true;
+        } else {
+            return false;
+        }
+    } else {
+        return false;
+    }
+}
+
+
+    function setupNewPointPanelHandlers(prevPanelId, panelId, prefix) {
 
     //jQuery(document).ready(function() {
     jQuery("#"+prefix+"\\["+panelId+"\\]\\.bankAccountNumber").on("keyup", {p: prefix, pid: panelId}, function(e) {
         var accountNr = jQuery(e.target).val();
         if ( accountNr != undefined && accountNr != null){
-            var normalizedAccountNr = accountNr.replace(/\s+/g, '');
-            if (normalizedAccountNr.length == 26){
-                jQuery.get("/eumowy/activity/getBankName", {accountNo: normalizedAccountNr}, function(data) {
+
+            var bankNameInput = jQuery("#"+prefix+"\\["+panelId+"\\]\\.bankName");
+            var bankIdInput = jQuery("#"+prefix+"\\["+panelId+"\\]\\.bankId");
+
+            if (validateAccountNumber(accountNr)){
+                jQuery.get("/eumowy/activity/getBankName", {accountNo: accountNr.replace(/\s+/g, '')}, function(data) {
                     if (data != undefined && data != null && data != "") {
                         var obj = JSON.parse(data);
-                        jQuery("#"+prefix+"\\["+panelId+"\\]\\.bankName").val(obj.name);
-                        jQuery("#"+prefix+"\\["+panelId+"\\]\\.bankId").val(obj.id);
+                        bankNameInput.val(obj.name);
+                        bankIdInput.val(obj.id);
                     }
                 });
+            } else {
+                bankNameInput.val('').attr('placeholder', 'Numer konta jest nieprawidłowy');
+                bankIdInput.val('');
             }
         }
     });
