@@ -345,16 +345,16 @@ function setupNewPointPanelData(prevPanelId, panelId) {
     }
 
     jQuery("#"+panelId+"nip").val(nip);
-    jQuery("#"+panelId+"mccCode").val(scoringMccCode);
+    jQuery("#"+panelId+"mccCode").val(scoringMccCode).keyup();
 
     if (panelId != prevPanelId) {
         if (jQuery("#"+prevPanelId+"sameForEveryPoint").is(':checked')) {
-            jQuery("#"+panelId+"mccCode").val(mmccode);
+            jQuery("#"+panelId+"mccCode").val(mmccode).keyup();
             jQuery("#"+panelId+"sameForEveryPoint").prop("checked", true);
             jQuery("#"+panelId+"sameForEveryPoint").prop("disabled", true);
         }
 
-        if (jQuery("#possetforselectedpointSameForEveryPoint").is(':checked')) {
+        if (jQuery("#"+prevPanelId+"possetforselectedpointSameForEveryPoint").is(':checked')) {
             jQuery("#"+panelId+"dialupCount").val(possetforselectedpoint['dialupCount']);
             jQuery("#"+panelId+"dialupPPCount").val(possetforselectedpoint['dialupPPCount']);
             jQuery("#"+panelId+"dialupPrice").val(possetforselectedpoint['dialupPrice']);
@@ -381,12 +381,12 @@ function setupNewPointPanelData(prevPanelId, panelId) {
         }
 
         if (jQuery("#"+prevPanelId+"technicalinformationSameForEveryPoint").is(':checked')) {
-            jQuery("#"+panelId+"dayCloseFrom"+panelId).val(technicalinformation['dayCloseFrom']);
-            jQuery("#"+panelId+"dayCloseTo"+panelId).val(technicalinformation['dayCloseTo']);
-            jQuery("#"+panelId+"plannedInstallationDate"+panelId).val(technicalinformation['plannedInstallationDate']);
-            jQuery("#"+panelId+"additionalNotes"+panelId).val(technicalinformation['additionalNotes']);
-            jQuery("#"+panelId+"technicalinformationSameForEveryPoint"+panelId).prop("checked", true);
-            jQuery("#"+panelId+"technicalinformationSameForEveryPoint"+panelId).prop("disabled", true);
+            jQuery("#"+panelId+"dayCloseFrom").val(technicalinformation['dayCloseFrom']);
+            jQuery("#"+panelId+"dayCloseTo").val(technicalinformation['dayCloseTo']);
+            jQuery("#"+panelId+"plannedInstallationDate").val(technicalinformation['plannedInstallationDate']);
+            jQuery("#"+panelId+"additionalNotes").val(technicalinformation['additionalNotes']);
+            jQuery("#"+panelId+"technicalinformationSameForEveryPoint").prop("checked", true);
+            jQuery("#"+panelId+"technicalinformationSameForEveryPoint").prop("disabled", true);
         }
 
         if (jQuery("#"+prevPanelId+"terminaloptionsSameForEveryPoint").is(':checked')) {
