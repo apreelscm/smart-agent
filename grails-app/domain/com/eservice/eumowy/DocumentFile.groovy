@@ -1,7 +1,4 @@
 package com.eservice.eumowy
-
-import org.apache.commons.lang.builder.HashCodeBuilder
-
 /**
  * Created with IntelliJ IDEA.
  * User: mariusz.kaczkowski
@@ -17,7 +14,7 @@ class DocumentFile implements Serializable {
 	Integer pagesCount
 
     static belongsTo = [process:Process, signature:Signature]
-	
+
 	static hasOne = [content:DocumentContent]
 
     static constraints = {

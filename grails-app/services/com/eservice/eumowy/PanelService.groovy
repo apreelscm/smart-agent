@@ -137,7 +137,9 @@ class PanelService {
     def getFormaDoladowania(ProcessCommand cmd ,def calc) {
         cmd.doladowania_tp = calculatorService.getCalcProperty(calc,"CZY_TELEPOMPKA")
         cmd.doladowania_tk = calculatorService.getCalcProperty(calc,"CZY_TELEKODZIK")
+
         cmd.srednia_sprzedaz_doladowan = calculatorService.getCalcProperty(calc,"DEKLARACJA_SPRZEDAZY_PP")
+
         cmd.srednia_sprzedaz_doladowan_slownie = nullify(cmd.srednia_sprzedaz_doladowan_slownie)
     }
 
@@ -195,7 +197,7 @@ class PanelService {
 
     def getOsobaKtoraPozyskalaAkceptanta(ProcessCommand cmd ,def calc) {
         def user = springSecurityService.principal;
-        cmd.pozyskujacyTytul = ""
+        cmd.pozyskujacyTytul = nullify(cmd.pozyskujacyTytul)
         cmd.pozyskujacyImie =  user.imie
         cmd.pozyskujacyNazwisko = user.nazwisko
         cmd.pozyskujacyNumer =  user.nr
@@ -488,42 +490,42 @@ class PanelService {
         cmd.oplPOSDialUpTyp = calculatorService.getCalcProperty(calc,"TYP_DIALUP") //K RW
         cmd.oplPOSDialUpIlosc = nullify(cmd.oplPOSDialUpIlosc)
         cmd.oplPOSDialUpIloscPP = nullify(cmd.oplPOSDialUpIloscPP)
-        cmd.oplPOSDialUpNormalneMies = calculatorService.getCalcProperty(calc,"TYP_DIALUP_TERM_CENA")
-        cmd.oplPOSDialUpNormalnePP = calculatorService.getCalcProperty(calc,"TYP_DIALUP_PP_CENA")
-        cmd.oplPOSDialUpPreferencyjneMies = calculatorService.getCalcProperty(calc,"TYP_DIALUP_TERM_CENA")
-        cmd.oplPOSDialUpPreferencyjnePP = calculatorService.getCalcProperty(calc,"TYP_DIALUP_PP_CENA")
+        cmd.oplPOSDialUpNormalneMies =  setAtLeastAs(cmd.oplPOSDialUpNormalneMies,calculatorService.getCalcProperty(calc,"TYP_DIALUP_TERM_CENA"))
+        cmd.oplPOSDialUpNormalnePP =  setAtLeastAs(cmd.oplPOSDialUpNormalnePP,calculatorService.getCalcProperty(calc,"TYP_DIALUP_PP_CENA"))
+        cmd.oplPOSDialUpPreferencyjneMies =  setAtLeastAs(cmd.oplPOSDialUpPreferencyjneMies,calculatorService.getCalcProperty(calc,"TYP_DIALUP_TERM_CENA"))
+        cmd.oplPOSDialUpPreferencyjnePP =  setAtLeastAs(cmd.oplPOSDialUpPreferencyjnePP,calculatorService.getCalcProperty(calc,"TYP_DIALUP_PP_CENA"))
 
         cmd.oplPOSVPNTyp = calculatorService.getCalcProperty(calc,"TYP_VPN") //K RW
         cmd.oplPOSVPNIlosc =  nullify(cmd.oplPOSVPNIlosc)
         cmd.oplPOSVPNIloscPP =  nullify(cmd.oplPOSVPNIloscPP)
-        cmd.oplPOSVPNNormalneMies = calculatorService.getCalcProperty(calc,"TYP_VPN_TERM_CENA")
-        cmd.oplPOSVPNNormalnePP = calculatorService.getCalcProperty(calc,"TYP_VPN_PP_CENA")
-        cmd.oplPOSVPNPreferencyjneMies = calculatorService.getCalcProperty(calc,"TYP_VPN_TERM_CENA")
-        cmd.oplPOSVPNPreferencyjnePP = calculatorService.getCalcProperty(calc,"TYP_VPN_PP_CENA")
+        cmd.oplPOSVPNNormalneMies =  setAtLeastAs(cmd.oplPOSVPNNormalneMies ,calculatorService.getCalcProperty(calc,"TYP_VPN_TERM_CENA"))
+        cmd.oplPOSVPNNormalnePP =  setAtLeastAs(cmd.oplPOSVPNNormalnePP ,calculatorService.getCalcProperty(calc,"TYP_VPN_PP_CENA"))
+        cmd.oplPOSVPNPreferencyjneMies =  setAtLeastAs(cmd.oplPOSVPNPreferencyjneMies ,calculatorService.getCalcProperty(calc,"TYP_VPN_TERM_CENA"))
+        cmd.oplPOSVPNPreferencyjnePP =  setAtLeastAs(cmd.oplPOSVPNPreferencyjnePP ,calculatorService.getCalcProperty(calc,"TYP_VPN_PP_CENA"))
 
         cmd.oplPOSSSLTyp = calculatorService.getCalcProperty(calc,"TYP_SSL") //K RW
         cmd.oplPOSSSLIlosc =  nullify(cmd.oplPOSSSLIlosc)
         cmd.oplPOSSSLIloscPP =  nullify(cmd.oplPOSSSLIloscPP)
-        cmd.oplPOSSSLNormalneMies = calculatorService.getCalcProperty(calc,"TYP_SSL_TERM_CENA")
-        cmd.oplPOSSSLNormalnePP = calculatorService.getCalcProperty(calc,"TYP_SSL_PP_CENA")
-        cmd.oplPOSSSLPreferencyjneMies = calculatorService.getCalcProperty(calc,"TYP_SSL_TERM_CENA")
-        cmd.oplPOSSSLPreferencyjnePP = calculatorService.getCalcProperty(calc,"TYP_SSL_PP_CENA")
+        cmd.oplPOSSSLNormalneMies =  setAtLeastAs(cmd.oplPOSSSLNormalneMies ,calculatorService.getCalcProperty(calc,"TYP_SSL_TERM_CENA"))
+        cmd.oplPOSSSLNormalnePP =  setAtLeastAs(cmd.oplPOSSSLNormalnePP ,calculatorService.getCalcProperty(calc,"TYP_SSL_PP_CENA"))
+        cmd.oplPOSSSLPreferencyjneMies =  setAtLeastAs(cmd.oplPOSSSLPreferencyjneMies ,calculatorService.getCalcProperty(calc,"TYP_SSL_TERM_CENA"))
+        cmd.oplPOSSSLPreferencyjnePP =  setAtLeastAs(cmd.oplPOSSSLPreferencyjnePP ,calculatorService.getCalcProperty(calc,"TYP_SSL_PP_CENA"))
 
         cmd.oplPOSWiFiTyp = calculatorService.getCalcProperty(calc,"TYP_WIFI") //K RW
         cmd.oplPOSWiFiIlosc =  nullify(cmd.oplPOSWiFiIlosc)
         cmd.oplPOSWiFiIloscPP = nullify(cmd.oplPOSWiFiIloscPP)
-        cmd.oplPOSWiFiNormalneMies = calculatorService.getCalcProperty(calc,"TYP_WIFI_TERM_CENA")
-        cmd.oplPOSWiFiNormalnePP = calculatorService.getCalcProperty(calc,"TYP_WIFI_PP_CENA")
-        cmd.oplPOSWiFiPreferencyjneMies = calculatorService.getCalcProperty(calc,"TYP_WIFI_TERM_CENA")
-        cmd.oplPOSWiFiPreferencyjnePP = calculatorService.getCalcProperty(calc,"TYP_WIFI_PP_CENA")
+        cmd.oplPOSWiFiNormalneMies =  setAtLeastAs(cmd.oplPOSWiFiNormalneMies ,calculatorService.getCalcProperty(calc,"TYP_WIFI_TERM_CENA"))
+        cmd.oplPOSWiFiNormalnePP =  setAtLeastAs(cmd.oplPOSWiFiNormalnePP ,calculatorService.getCalcProperty(calc,"TYP_WIFI_PP_CENA"))
+        cmd.oplPOSWiFiPreferencyjneMies =  setAtLeastAs(cmd.oplPOSWiFiPreferencyjneMies ,calculatorService.getCalcProperty(calc,"TYP_WIFI_TERM_CENA"))
+        cmd.oplPOSWiFiPreferencyjnePP =  setAtLeastAs(cmd.oplPOSWiFiPreferencyjnePP ,calculatorService.getCalcProperty(calc,"TYP_WIFI_PP_CENA"))
 
         cmd.oplPOSGPRSTyp = calculatorService.getCalcProperty(calc,"TYP_GPRS") //K RW
         cmd.oplPOSGPRSIlosc =  nullify(cmd.oplPOSGPRSIlosc)
         cmd.oplPOSGPRSIloscPP =  nullify(cmd.oplPOSGPRSIloscPP)
-        cmd.oplPOSGPRSNormalneMies = calculatorService.getCalcProperty(calc,"TYP_SSL_TERM_CENA")
-        cmd.oplPOSGPRSNormalnePP = calculatorService.getCalcProperty(calc,"TYP_GPRS_PP_CENA")
-        cmd.oplPOSGPRSPreferencyjneMies = calculatorService.getCalcProperty(calc,"TYP_SSL_TERM_CENA")
-        cmd.oplPOSGPRSPreferencyjnePP = calculatorService.getCalcProperty(calc,"TYP_GPRS_PP_CENA")
+        cmd.oplPOSGPRSNormalneMies =  setAtLeastAs(cmd.oplPOSGPRSNormalneMies ,calculatorService.getCalcProperty(calc,"TYP_SSL_TERM_CENA"))
+        cmd.oplPOSGPRSNormalnePP =  setAtLeastAs(cmd.oplPOSGPRSNormalnePP ,calculatorService.getCalcProperty(calc,"TYP_GPRS_PP_CENA"))
+        cmd.oplPOSGPRSPreferencyjneMies =  setAtLeastAs(cmd.oplPOSGPRSPreferencyjneMies ,calculatorService.getCalcProperty(calc,"TYP_SSL_TERM_CENA"))
+        cmd.oplPOSGPRSPreferencyjnePP =  setAtLeastAs(cmd.oplPOSGPRSPreferencyjnePP ,calculatorService.getCalcProperty(calc,"TYP_GPRS_PP_CENA"))
 
         cmd.oplPOSBaza = nullify(cmd.oplPOSBaza)
 
