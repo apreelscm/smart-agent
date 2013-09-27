@@ -28,7 +28,7 @@
                     jQuery.get("/eumowy/activity/getBankName", {accountNo: accountNr.replace(/\s+/g, '')}, function(data) {
                         if (data != undefined && data != null && data != "") {
                             var obj = JSON.parse(data);
-                            bankNameInput.val(obj.name);
+                            bankNameInput.val(obj.name).keyup();
                         }
                     });
                 } else {
