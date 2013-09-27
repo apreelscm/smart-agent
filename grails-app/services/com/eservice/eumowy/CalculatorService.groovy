@@ -2,13 +2,17 @@ package com.eservice.eumowy
 
 import grails.util.Environment
 
-class CalculatorService {
+class CalculatorService implements Serializable{
 
     static transactional = false
 
+    static scope = "session"
+
+    def calc
+
     static final BRAK_LABEL = "BRAK"
 
-    def isCalcValid(def calc, def signatures) {
+    def isCalcValid(def calcExt, def signatures) {
 
         // TODO tymczasowo
         if(Environment.isDevelopmentMode() ||
@@ -19,8 +23,8 @@ class CalculatorService {
             signaturesCalcNames.addAll(signature.calcFieldsSignature?.collect{it.calcField.name});
         }
 
-        println(calc)
-        def calcKeyList = calc.collect { it.POLEAPREEL }
+        println(calcExt)
+        def calcKeyList = calcExt.collect { it.POLEAPREEL }
 
         println("calcKeyList:"+calcKeyList+ " size:"+calcKeyList.size())
         println("calcNames:"+signaturesCalcNames+ " size:"+signaturesCalcNames.size())
@@ -30,14 +34,12 @@ class CalculatorService {
         return calcKeyList.containsAll(signaturesCalcNames)
     }
 
-    def hasCalcProperty(def calc, def key, def value){
-        //println("has ${key} = ${ calc.contains([POLEAPREEL:key, WARTOSCAPREEL:value])}")
-        calc.contains([POLEAPREEL:key, WARTOSCAPREEL:value])
+    def hasCalcProperty(def key, def value){
+        calc?.contains([POLEAPREEL:key, WARTOSCAPREEL:value])
     }
 
 
-    def getCalcProperty(def calc, def key){
-        //println("has ${key} = ${ calc.contains([POLEAPREEL:key, WARTOSCAPREEL:value])}")
-        calc.findResult{ (it.POLEAPREEL == key && it.WARTOSCAPREEL != BRAK_LABEL  ) ? it.WARTOSCAPREEL : null }
+    def getCalcProperty( def key){
+        calc?.findResult{ (it.POLEAPREEL == key && it.WARTOSCAPREEL != BRAK_LABEL  ) ? it.WARTOSCAPREEL : null }
     }
 }

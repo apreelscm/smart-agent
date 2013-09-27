@@ -94,15 +94,15 @@ class ProcessService {
         return activities?.any{it.code.equals(activityCode)};
     }
 
-    def getNewProcessCommand(def process, def calc){
+    def getNewProcessCommand(def process){
         log.info("getNewProcessCommand processId = ${process.id}")
         def cmd = initProcessCommand(process)
         cmd.allPoints?.addAll(getPointsToAllPointsCommandList(process, cmd))
         cmd.allPoses?.addAll(getPosesToAllPosCommandList(process, cmd))
-        prepareProcessCommand(cmd, calc)
+        prepareProcessCommand(cmd)
     }
 
-    def getSavedProcessCommand(def process, def calc){
+    def getSavedProcessCommand(def process){
         log.info("getSavedProcessCommand processId = ${process.id}")
         def cmd = initProcessCommand(process)
         loadProcessData(process,cmd)
@@ -117,7 +117,7 @@ class ProcessService {
 
         cmd.notes = process.notesToCoa
 
-        prepareProcessCommand(cmd, calc, cbdMethods)
+        prepareProcessCommand(cmd, cbdMethods)
     }
 
     def getRepresentative1(def process) {
@@ -143,7 +143,7 @@ class ProcessService {
     def defaultMethods = ["getWyborDzialania","getLiczbaMiesiecyZwolnieniaZNajmu"]
     def cbdMethods = ["getAdresDoKorespondencjizAkecptantem","getDaneAkceptanta","getSiedzibaAkceptanta","getSerwis"]
 
-    def prepareProcessCommand(def cmd, def calc, def restrictedMethods = []) {
+    def prepareProcessCommand(def cmd, def restrictedMethods = []) {
         def exclusions = defaultMethods + restrictedMethods
 
         cmd.process.panels.each { Panel panel ->
@@ -160,7 +160,7 @@ class ProcessService {
                         panelMockService."${panelFunctionName}"(cmd)
                         break;
                     default:
-                        panelService."${panelFunctionName}"(cmd,calc)
+                        panelService."${panelFunctionName}"(cmd)
                 }
             }
         }
@@ -539,7 +539,7 @@ class ProcessService {
         cmd.properties.each { key, value ->
 
             if (["class","process", "cbdService", "errors", "constraints",
-                    "notes", "hasUmowaCzas", "hasKontaktTel", "hasDoladowania", "hasAkceptantTel", "hasInformacjaHandlowa"]
+                    "notes", "hasUmowaCzas", "hasKontaktTel", "hasDoladowania", "hasAkceptantTel", "hasInformacjaHandlowa","liczbaTerminali"]
                     .contains(key) || value == ProcessCommand.DEFAULT_VALUE){
                 return
             }
@@ -563,6 +563,7 @@ class ProcessService {
 
     def getPointCommandsToPointDataList(def process, def cmd) {
         def pointsList = []
+
         cmd.points?.each { PointCommand pc ->
             boolean isNew = false
             if (pc == null) {
