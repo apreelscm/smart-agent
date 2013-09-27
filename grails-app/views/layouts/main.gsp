@@ -66,7 +66,7 @@
 
 <footer class="rel" id="stopka">
     <g:if test="${grails.util.Environment.getCurrentEnvironment() != grails.util.Environment.PRODUCTION}">
-        <build:buildInfo/>
+        <build:buildInfo/> ENV: ${grails.util.Environment.getCurrentEnvironment().name}
     </g:if>
 
 </footer>

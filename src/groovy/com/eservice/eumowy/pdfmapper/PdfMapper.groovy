@@ -14,12 +14,29 @@ class PdfMapper {
     private int pointAcceptCardCount =0;
     private int pointRangeCount =0;
 
-    def mapOnlyProcessData(def processInstance){
-        HashMap<String, String[]> dataMap = new HashMap<String, String[]>()
-        dataMap.putAll(mapProcessToPDFData(processInstance))
-        dataMap.putAll(mapProcessDataToPDFData(processInstance.processData))
-        return dataMap;
-    }
+	def calc
+	def calculatorService
+
+	PdfMapper(def calc, def calculatorService){
+		this.calc = calc
+		this.calculatorService = calculatorService
+	}
+
+	def mapOnlyProcessData(def processInstance){
+		HashMap<String, String[]> dataMap = new HashMap<String, String[]>()
+		dataMap.putAll(mapProcessToPDFData(processInstance))
+		dataMap.putAll(mapProcessDataToPDFData(processInstance.processData))
+
+//		//potrzebne aby zepelnic tabelki danymi punktow
+//		processInstance?.points?.eachWithIndex{ point, index ->
+//			def dataFromPoints = mapPointDataToPDFData(point, true)
+//			dataMap.putAll(dataFromPoints)
+//		}
+
+		dataMap.putAll(mapProcessCalcToPDFData())
+
+		return dataMap;
+	}
 
     def mapOnlyPointData(def point, def index){
         Map<String, String[]> data = new HashMap<String, String[]>()
@@ -52,6 +69,20 @@ class PdfMapper {
         return data
     }
 
+	private def mapProcessCalcToPDFData() {
+		Map<String, String[]> data = new HashMap<String, String[]>()
+		println 'Jestem w mapowaniu danych z Kalkulatora!!!!'
+
+		if (calc != null && calculatorService != null){
+			println 'Pobieram dane z kalkulatora!!!!'
+ //           data.put('recznieWpisanaNazwaZDokumentu', [calculatorService.getCalcProperty(calc, 'poleDoPobraniaZKalkulatora')] as String[])
+            data.put('oplatyPOSMiesiacNaliczania', [calculatorService.getCalcProperty(calc, 'E_LICZBA_MIES_ZWOL_NAJ_1')] as String[])
+			
+		}
+		return data
+	}
+	
+	
     private def mapProcessToPDFData(def processInstance){
         Map<String, String[]> data = new HashMap<String, String[]>()
         data.put("phNumer", [processInstance.phNumber.toString()] as String[])
@@ -556,7 +587,6 @@ class PdfMapper {
 
     private mapReprezentant1ImieProcess(def data, def pd, def key, def value) {
         data.put("reprezentant1", [value + " " + getFromProcessDataSet(pd, 'reprezentant1Nazwisko')] as String[])
-		data.put("osobaPodpisalaUmowe", [value + " " + getFromProcessDataSet(pd, 'reprezentant1Nazwisko')] as String[])
     }
 
     private mapReprezentant2ImieProcess(def data, def pd, def key, def value) {
@@ -565,10 +595,12 @@ class PdfMapper {
 	
 	private mapPozyskujacyImieProcess(def data, def pd, def key, def value){
 		data.put("osobaPozyskalaAkceptanta", [value + " " + getFromProcessDataSet(pd, 'pozyskujacyNazwisko')] as String[])
+		data.put("osobaPodpisalaUmowe", [value + " " + getFromProcessDataSet(pd, 'pozyskujacyNazwisko')] as String[])
 	}
 	
 	private mappozyskujacyNumerProcess(def data, def pd, def key, def value) {
 		data.put("osobaPozyskalaAkceptantaNr",[value] as String[])
+		data.put("osobaPodpisalaUmoweNr",[value] as String[])
 	}
 
     private mapAkceptantUlicaProcess(def data, def pd, def key, def value) {
