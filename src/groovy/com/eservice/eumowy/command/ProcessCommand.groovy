@@ -1,4 +1,5 @@
 package com.eservice.eumowy.command
+
 import com.eservice.eumowy.Process
 import grails.validation.Validateable
 import org.apache.commons.collections.FactoryUtils
@@ -12,7 +13,9 @@ import org.apache.commons.collections.ListUtils
 @Validateable
 class ProcessCommand implements Serializable{
 
-    static def nullableTrueBlankFalse = {return it == null || it.toString().size() > 0}
+    def calculatorService
+
+    static def nullableTrueBlankFalse = {return it == null || it.toString()?.size() > 0}
 
     static def DEFAULT_VALUE = "~"
 
@@ -409,6 +412,8 @@ class ProcessCommand implements Serializable{
     String hasKontaktTel
     String hasDoladowania
     String hasAkceptantTel
+    String hasInformacjaHandlowa
+    String liczbaTerminali
 
     static constraints = {
 
@@ -485,7 +490,18 @@ class ProcessCommand implements Serializable{
            oplataMaestro(nullable:false, blank:false, shared: "number")
            oplataMasteroPr(nullable:false, blank:false, shared: "number")*/
         dccZakresUruchomienia(nullable:false, blank:false)
+
         informacjaHandlowa(nullable:false, blank:false)
+
+        hasInformacjaHandlowa(nullable:true, validator: { value, cmd, errors ->
+            if(value && cmd.informacjaHandlowa == DEFAULT_VALUE){
+                errors.rejectValue( "hasInformacjaHandlowa", "default.atLeastOne.informacjaHandlowa")
+                return false
+            }
+            return true
+        })
+
+
         oplataZaDzienneZestawienieTransakcji(nullable:false, blank:false, shared: "number")
         oplataZaMiesieczneZestawienieTransakcji(nullable:false, blank:false, shared: "number")
         oplataZaPotwierdzenieWykonaniaPrzelewu(nullable:false, blank:false, shared: "number")
@@ -516,7 +532,7 @@ class ProcessCommand implements Serializable{
             return true
         })
 
-        srednia_sprzedaz_doladowan(nullable:false, blank:false, shared:"number")
+        /*srednia_sprzedaz_doladowan(nullable:false, blank:false, shared:"number")*/
         srednia_sprzedaz_doladowan_slownie(nullable:false, blank:false, shared: "lettersonly")
 /*        ifOplataVISA(nullable:false, blank:false, shared: "number") //1.11 %, M
         ifOplataMasterCard(nullable:false, blank:false, shared: "number") //1.11 %, M
@@ -528,7 +544,7 @@ class ProcessCommand implements Serializable{
         dzialalnoscDokument(nullable:false, blank:true)
         dzialalnoscDokumentInny(nullable:true, blank:true, shared: "alpha")
         //okresLojalnosciowy(nullable:false, blank:false)
-        oplataZaPlatnoscWInnejWalucie(nullable:false, blank:false)
+        /*oplataZaPlatnoscWInnejWalucie(nullable:false, blank:false)*/
         kontaktTytul(nullable:false, blank:false)
         kontaktImie(nullable:false, blank:false, shared: "lettersonly")
         kontaktNazwisko(nullable:false, blank:false, shared: "lettersonly")
@@ -547,8 +563,6 @@ class ProcessCommand implements Serializable{
 
         kontaktTelKomorkowy(nullable:true)
         kontaktTelStacjonarny(nullable:true)
-
-
         kontaktEmail(nullable:true, blank:true, shared: "email")
         pozyskujacyTytul(nullable:false, blank:false)
         pozyskujacyImie(nullable:false, blank:false, shared: "lettersonly")
@@ -561,21 +575,182 @@ class ProcessCommand implements Serializable{
         reprezentant2Imie(nullable:true, blank:true, shared: "lettersonly")
         reprezentant2Nazwisko(nullable:true, blank:true, shared: "lettersonly")
 
-        visaEUKKOSt(nullable:false, blank:false, shared: "number")
-        visaEUKDSt(nullable:false, blank:false, shared: "number")
-        visaEUKBSt(nullable:false, blank:false, shared: "number")
-        visaOutEUKKOSt(nullable:false, blank:false, shared: "number")
-        visaOutEUKDSt(nullable:false, blank:false, shared: "number")
-        visaOutEUKBSt(nullable:false, blank:false, shared: "number")
-        visaPolskaKBSt(nullable:false, blank:false, shared: "number")
-        mastercardEUKKSt(nullable:false, blank:false, shared: "number")
-        mastercardEUKDSt(nullable:false, blank:false, shared: "number")
-        mastercardEUKBLSt(nullable:false, blank:false, shared: "number")
-        mastercardEUMSt(nullable:false, blank:false, shared: "number")
-        mastercardOutEUKKSt(nullable:false, blank:false, shared: "number")
-        mastercardOutEUKDSt(nullable:false, blank:false, shared: "number")
-        mastercardOutEUKBSt(nullable:false, blank:false, shared: "number")
-        mastercardOutEUMSt(nullable:false, blank:false, shared: "number")
+        visaEUKKOSt(nullable:false, blank:false, shared: "number", validator: { value, cmd, errors ->
+            def calcValue = cmd.calculatorService.getCalcProperty("OPLATA_MSC_11_ZL")
+            def minValue = calcValue?.toString()?.isNumber() ? Integer.valueOf(calcValue) : 0
+            def currValue = value?.toString()?.isNumber() ? Integer.valueOf(value) : 0
+
+            if (currValue < minValue) {
+                errors.rejectValue( "visaEUKKOSt", "default.atLeast.asCalc")
+                return false
+            }
+            return true
+        })
+
+        visaEUKDSt(nullable:false, blank:false, shared: "number", validator: { value, cmd, errors ->
+            def calcValue = cmd.calculatorService.getCalcProperty("OPLATA_MSC_12_ZL")
+            def minValue = calcValue?.toString()?.isNumber() ? Integer.valueOf(calcValue) : 0
+            def currValue = value?.toString()?.isNumber() ? Integer.valueOf(value) : 0
+
+            if (currValue < minValue) {
+                errors.rejectValue( "visaEUKDSt", "default.atLeast.asCalc")
+                return false
+            }
+            return true
+        })
+
+        visaEUKBSt(nullable:false, blank:false, shared: "number", validator: { value, cmd, errors ->
+            def calcValue = cmd.calculatorService.getCalcProperty("OPLATA_MSC_13_ZL")
+            def minValue = calcValue?.toString()?.isNumber() ? Integer.valueOf(calcValue) : 0
+            def currValue = value?.toString()?.isNumber() ? Integer.valueOf(value) : 0
+
+            if (currValue < minValue) {
+                errors.rejectValue( "visaEUKBSt", "default.atLeast.asCalc")
+                return false
+            }
+            return true
+        })
+
+        visaOutEUKKOSt(nullable:false, blank:false, shared: "number", validator: { value, cmd, errors ->
+            def calcValue = cmd.calculatorService.getCalcProperty("OPLATA_MSC_21_ZL")
+            def minValue = calcValue?.toString()?.isNumber() ? Integer.valueOf(calcValue) : 0
+            def currValue = value?.toString()?.isNumber() ? Integer.valueOf(value) : 0
+
+            if (currValue < minValue) {
+                errors.rejectValue( "visaOutEUKKOSt", "default.atLeast.asCalc")
+                return false
+            }
+            return true
+        })
+
+        visaOutEUKDSt(nullable:false, blank:false, shared: "number", validator: { value, cmd, errors ->
+            def calcValue = cmd.calculatorService.getCalcProperty("OPLATA_MSC_22_ZL")
+            def minValue = calcValue?.toString()?.isNumber() ? Integer.valueOf(calcValue) : 0
+            def currValue = value?.toString()?.isNumber() ? Integer.valueOf(value) : 0
+
+            if (currValue < minValue) {
+                errors.rejectValue( "visaOutEUKDSt", "default.atLeast.asCalc")
+                return false
+            }
+            return true
+        })
+
+        visaOutEUKBSt(nullable:false, blank:false, shared: "number", validator: { value, cmd, errors ->
+            def calcValue = cmd.calculatorService.getCalcProperty("OPLATA_MSC_23_ZL")
+            def minValue = calcValue?.toString()?.isNumber() ? Integer.valueOf(calcValue) : 0
+            def currValue = value?.toString()?.isNumber() ? Integer.valueOf(value) : 0
+
+            if (currValue < minValue) {
+                errors.rejectValue( "visaOutEUKBSt", "default.atLeast.asCalc")
+                return false
+            }
+            return true
+        })
+
+        visaPolskaKBSt(nullable:false, blank:false, shared: "number", validator: { value, cmd, errors ->
+            def calcValue = cmd.calculatorService.getCalcProperty("OPLATA_MSC_33_ZL")
+            def minValue = calcValue?.toString()?.isNumber() ? Integer.valueOf(calcValue) : 0
+            def currValue = value?.toString()?.isNumber() ? Integer.valueOf(value) : 0
+
+            if (currValue < minValue) {
+                errors.rejectValue( "visaPolskaKBSt", "default.atLeast.asCalc")
+                return false
+            }
+            return true
+        })
+
+        mastercardEUKKSt(nullable:false, blank:false, shared: "number", validator: { value, cmd, errors ->
+            def calcValue = cmd.calculatorService.getCalcProperty("OPLATA_MSC_41_ZL")
+            def minValue = calcValue?.toString()?.isNumber() ? Integer.valueOf(calcValue) : 0
+            def currValue = value?.toString()?.isNumber() ? Integer.valueOf(value) : 0
+
+            if (currValue < minValue) {
+                errors.rejectValue( "mastercardEUKKSt", "default.atLeast.asCalc")
+                return false
+            }
+            return true
+        })
+
+        mastercardEUKDSt(nullable:false, blank:false, shared: "number", validator: { value, cmd, errors ->
+            def calcValue = cmd.calculatorService.getCalcProperty("OPLATA_MSC_42_ZL")
+            def minValue = calcValue?.toString()?.isNumber() ? Integer.valueOf(calcValue) : 0
+            def currValue = value?.toString()?.isNumber() ? Integer.valueOf(value) : 0
+
+            if (currValue < minValue) {
+                errors.rejectValue( "mastercardEUKDSt", "default.atLeast.asCalc")
+                return false
+            }
+            return true
+        })
+        mastercardEUKBLSt(nullable:false, blank:false, shared: "number", validator: { value, cmd, errors ->
+            def calcValue = cmd.calculatorService.getCalcProperty("OPLATA_MSC_43_ZL")
+            def minValue = calcValue?.toString()?.isNumber() ? Integer.valueOf(calcValue) : 0
+            def currValue = value?.toString()?.isNumber() ? Integer.valueOf(value) : 0
+
+            if (currValue < minValue) {
+                errors.rejectValue( "mastercardEUKBLSt", "default.atLeast.asCalc")
+                return false
+            }
+            return true
+        })
+        mastercardEUMSt(nullable:false, blank:false, shared: "number", validator: { value, cmd, errors ->
+            def calcValue = cmd.calculatorService.getCalcProperty("OPLATA_MSC_44_ZL")
+            def minValue = calcValue?.toString()?.isNumber() ? Integer.valueOf(calcValue) : 0
+            def currValue = value?.toString()?.isNumber() ? Integer.valueOf(value) : 0
+
+            if (currValue < minValue) {
+                errors.rejectValue( "mastercardEUMSt", "default.atLeast.asCalc")
+                return false
+            }
+            return true
+        })
+        mastercardOutEUKKSt(nullable:false, blank:false, shared: "number", validator: { value, cmd, errors ->
+            def calcValue = cmd.calculatorService.getCalcProperty("OPLATA_MSC_51_ZL")
+            def minValue = calcValue?.toString()?.isNumber() ? Integer.valueOf(calcValue) : 0
+            def currValue = value?.toString()?.isNumber() ? Integer.valueOf(value) : 0
+
+            if (currValue < minValue) {
+                errors.rejectValue( "mastercardOutEUKKSt", "default.atLeast.asCalc")
+                return false
+            }
+            return true
+        })
+        mastercardOutEUKDSt(nullable:false, blank:false, shared: "number", validator: { value, cmd, errors ->
+            def calcValue = cmd.calculatorService.getCalcProperty("OPLATA_MSC_52_ZL")
+            def minValue = calcValue?.toString()?.isNumber() ? Integer.valueOf(calcValue) : 0
+            def currValue = value?.toString()?.isNumber() ? Integer.valueOf(value) : 0
+
+            if (currValue < minValue) {
+                errors.rejectValue( "mastercardOutEUKDSt", "default.atLeast.asCalc")
+                return false
+            }
+            return true
+        })
+        mastercardOutEUKBSt(nullable:false, blank:false, shared: "number", validator: { value, cmd, errors ->
+            def calcValue = cmd.calculatorService.getCalcProperty("OPLATA_MSC_53_ZL")
+            def minValue = calcValue?.toString()?.isNumber() ? Integer.valueOf(calcValue) : 0
+            def currValue = value?.toString()?.isNumber() ? Integer.valueOf(value) : 0
+
+            if (currValue < minValue) {
+                errors.rejectValue( "mastercardOutEUKBSt", "default.atLeast.asCalc")
+                return false
+            }
+            return true
+        })
+        mastercardOutEUMSt(nullable:false, blank:false, shared: "number", validator: { value, cmd, errors ->
+            def calcValue = cmd.calculatorService.getCalcProperty("OPLATA_MSC_54_ZL")
+            def minValue = calcValue?.toString()?.isNumber() ? Integer.valueOf(calcValue) : 0
+            def currValue = value?.toString()?.isNumber() ? Integer.valueOf(value) : 0
+
+            if (currValue < minValue) {
+                errors.rejectValue( "mastercardOutEUMSt", "default.atLeast.asCalc")
+                return false
+            }
+            return true
+        })
+
+        dinersClubSt(nullable:true,blank:true,shared: "number")
+        ikoSt(nullable:true, blank:true,shared: "number")
 
         /*
         visaEUKKOPr(nullable:false, blank:false, shared: "percentage")
@@ -814,6 +989,31 @@ class ProcessCommand implements Serializable{
         poses(nullable:true)
         allPoints(nullable:true)
         allPoses(nullable:true)
+
+        liczbaTerminali(nullable:true, validator: { value, cmd, errors ->
+            //println("liczbaTerminali : " + value)
+            def max = value ? Integer.valueOf(value) : 0
+            def counter = 0
+
+            cmd.points?.each{ point ->
+                //println("point.terminalIlosc : " + point.terminalIlosc)
+                if(point.terminalIlosc?.toString()?.isNumber()){
+                    counter += Integer.valueOf(point.terminalIlosc)
+                }
+            }
+            /* cmd.allPoses?.each{ PosData pos ->
+                if(pos.posDetails.terminalIlosc){
+                    counter += pos.pointDetails.terminalIlosc;
+                }
+            }*/
+
+            if( counter > max) {
+                errors.rejectValue( "liczbaTerminali", "default.tooMuch.liczbaTerminali",)
+                return false
+            }
+            return true
+        })
+
     }
 
     def isFromCbd(def property){

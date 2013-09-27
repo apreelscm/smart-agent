@@ -123,6 +123,7 @@
 								jQuery( this ).dialog( "close" );
 								jQuery.post(jQuery(location).attr('href'), {_eventId_noaccept:""}, function(data) {
 									window.location.reload();
+									//TODO dodanie komunikatu o poprzedniej aktywnosci na ekranie wyboru dzialania
 								});
 							},
 							"Nie": function() {
@@ -175,6 +176,7 @@
 															modal: true});
 					jQuery.post(jQuery(location).attr('href'), {_eventId_submit:"",requestVersion: jQuery("input[name=requestVersion]:checked").val(), numberOfSubscriptions: updateSubscriptionStatusCount}, function(data, textStatus, jqXHR) {
 						window.location.reload();
+						//TODO dodanie komunikatu o poprzedniej aktywnosci na ekranie wyboru dzialania
 					})
 					.fail(function() { jQuery("#confirm-pleasewait h2").text("${message(code: "process.subscriptions.sendingEmails.error")}"); jQuery("#confirm-pleasewait img").hide() });
 				}

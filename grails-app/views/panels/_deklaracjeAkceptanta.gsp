@@ -8,14 +8,15 @@
                 </ul>
                 <ul class="table-list centre">
                     <li>
-                        <span>
+                        <div class="${hasErrors(bean:data,field:'hasInformacjaHandlowa','errorContainer')}">
+                            <g:hiddenField name="hasInformacjaHandlowa" value="true"/>
                             <g:radioGroup name="informacjaHandlowa"
                                           labels="['panel.agree','panel.dont.agree']"
                                           values="['true', 'false']"
                                           value="${data.informacjaHandlowa}">
                                 <span class="align-left"><label> ${it.radio} <g:message code="${it.label}"/></label></span>
                             </g:radioGroup>
-                        </span>
+                        </div>
                     </li>
                 </ul>
             </div>

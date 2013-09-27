@@ -550,3 +550,5 @@ INSERT INTO EUMOWY.SIGNATURE_PANEL(id, version, signature_id,  panel_id) SELECT 
 INSERT INTO EUMOWY.SIGNATURE_PANEL(id, version, signature_id,  panel_id) SELECT EUMOWY.SIGNATURE_PANEL_SEQ.NEXTVAL, 0, id, 51 FROM EUMOWY.SIGNATURE where name = 'AP/UNTSZ/APOU/3.002/12-01-16';
 INSERT INTO EUMOWY.SIGNATURE_PANEL(id, version, signature_id,  panel_id) SELECT EUMOWY.SIGNATURE_PANEL_SEQ.NEXTVAL, 0, id, 50 FROM EUMOWY.SIGNATURE where name = 'AP-AG/F/DP/2.003/13-05-10';
 INSERT INTO EUMOWY.SIGNATURE_PANEL(id, version, signature_id,  panel_id) SELECT EUMOWY.SIGNATURE_PANEL_SEQ.NEXTVAL, 0, id, 51 FROM EUMOWY.SIGNATURE where name = 'AP-AG/F/DP/2.003/13-05-10';
+
+-- select distinct(p.name),s.name from Panel p join signature_panel s_p on p.id = s_p.panel_id join signature s on s_p.signature_id = s.id where s.name = 'AP/UNTSS/1.003/12-01-16' order by s.name, p.name
