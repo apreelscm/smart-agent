@@ -418,8 +418,10 @@ class PdfMapper {
 	}
 	
 	private mapReprezentant2TytulProcess(def data, def pd, def key, def value){
+		if ((getFromProcessDataSet(pd, 'reprezentant2Imie')) != null && (getFromProcessDataSet(pd, 'reprezentant2Nazwisko'))){
 		data.put(key, [value] as String[]);
 		addCheckboxes(data, ["pan2": "Pan", "pani2": "Pani"], value)
+		}
 	}
 	
 	private mapKontaktEmailProcess(def data, def pd, def key, def value) {
