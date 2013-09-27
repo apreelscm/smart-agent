@@ -561,7 +561,44 @@ class PdfMapper {
 		data.put("akceptantNip", [value] as String[]);
 	}
 		
-    private mapUmowaOznOdProcess(def data, def pd, def key, def value){
+  
+	private mapWydrukGrafikiCenaProcess(def data, def pd, def key, def value){
+		mapFieldWithStartDate(data, pd, key, value, "wydrukGrafikiData");
+	}
+	
+	private mapDzialaniaMatematyczneCenaProcess(def data, def pd, def key, def value){
+		mapFieldWithStartDate(data, pd, key, value, "dzialaniaMatematyczneData");
+	}
+	
+	private mapTytulPlatnosciCenaProcess(def data, def pd, def key, def value){
+		mapFieldWithStartDate(data, pd, key, value, "tytulPlatnosciData");
+	}
+	
+	private mapPierwszaSesjaCenaProcess(def data, def pd, def key, def value){
+		mapFieldWithStartDate(data, pd, key, value, "pierwszaSesjaData");
+	}
+	
+	private mapSystemKasowyCenaProcess(def data, def pd, def key, def value){
+		mapFieldWithStartDate(data, pd, key, value, "systemKasowyData");
+	}
+	
+	private mapWeryfikacjaPINCenaProcess(def data, def pd, def key, def value){
+		mapFieldWithStartDate(data, pd, key, value, "weryfikacjaPINData");
+	}
+	
+	private mapCzasObslugiCenaProcess(def data, def pd, def key, def value){
+		mapFieldWithStartDate(data, pd, key, value, "czasObslugiData");
+	}
+
+	private mapFieldWithStartDate(def data, def pd, def key, def value, def dateFieldName){
+		if (value != null && !"".equals(value)){
+			data.put(key, [value] as String[])
+			addDateField(data, dateFieldName, getFromProcessDataSet(pd, "dataUmowy"));
+		}
+	}
+	
+	
+	private mapUmowaOznOdProcess(def data, def pd, def key, def value){
         addDateField(data, key, value);
     }
 
@@ -579,6 +616,16 @@ class PdfMapper {
 
     private mapDataUmowyProcess(def data, def pd, def key, def value){
         addDateField(data, key, value);
+		
+		if (value != null && !"".equals(value)){
+			def pattern = ~/\d{4}-\d{2}-\d{2}/
+			if (pattern.matcher(value).matches()){
+				final String[] split = value.split("-");
+				data.put("data1", [split[2]] as String[]);
+				data.put("data2", [split[1]] as String[]);
+				data.put("data3", [split[0]] as String[]);
+			}		
+		}
     }
 
     private mapScoringDochodowoscProcess(def data, def pd, def key, def value) {

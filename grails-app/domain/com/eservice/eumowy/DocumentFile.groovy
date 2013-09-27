@@ -28,8 +28,8 @@ class DocumentFile implements Serializable {
     }
 
     static mapping = {
+        signature(sort:'signatureOrder', order:'asc')
         table name: "DOCUMENT", schema:DomainConsts.SHEMA_NAME
         id generator:'sequence', params:[sequence:DomainConsts.SHEMA_NAME+'.DOCUMENT_SEQ']
     }
-	
 }
