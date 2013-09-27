@@ -447,6 +447,33 @@ class PdfMapper {
 				}
 	}
 	
+	private mapUwagiDodatkowePointDataDetails(def data, def pointData, def key, def value, def index) {
+		data.put(key, [value] as String[]);
+	}
+	
+	// ------------------ POS METHODS ------------------------------------
+	
+	private mapZamkniecieDniaOd(def data, def posesData, def key, def value){
+		if (value != null){
+			def pattern = ~/\d{2}:\d{2}/
+			if (pattern.matcher(value).matches()){
+				final String[] split = value.split(":");
+				data.put("zamkniecieDniaOd1", [split[0]] as String[]);
+				data.put("zamkniecieDniaOd2", [split[1]] as String[]);
+			}
+		}
+	}
+	
+	private mapZamkniecieDniaDo(def data, def posesData, def key, def value){
+		if (value != null){
+			def pattern = ~/\d{2}:\d{2}/
+			if (pattern.matcher(value).matches()){
+				final String[] split = value.split(":");
+				data.put("zamkniecieDniaDo1", [split[0]] as String[]);
+				data.put("zamkniecieDniaDo2", [split[1]] as String[]);
+			}
+		}
+	}
 
     //------------------- PROCESS METHODS --------------------------------
 	
