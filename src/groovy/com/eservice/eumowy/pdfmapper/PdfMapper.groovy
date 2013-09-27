@@ -102,6 +102,7 @@ class PdfMapper {
         Map<String, String[]> data = new HashMap<String, String[]>()
         data.put("phNumer", [processInstance.phNumber.toString()] as String[])
 		data.put("osobaPozyskalaAkceptantaNr", [processInstance.phNumber.toString()] as String[])
+		data.put("osobaPodpisalaUmoweNr", [processInstance.phNumber.toString()] as String[])
 
         //to na jakis formularz jest
 		if (processInstance.phNumber.toString() != null && processInstance.phNumber.toString().size()==5){
@@ -512,11 +513,6 @@ class PdfMapper {
 		data.put("osobaPodpisalaUmowe", [value + " " + getFromProcessDataSet(pd, 'pozyskujacyNazwisko')] as String[])
 	}
 	
-	private mappozyskujacyNumerProcess(def data, def pd, def key, def value) {
-		data.put("osobaPozyskalaAkceptantaNr",[value] as String[])
-		data.put("osobaPodpisalaUmoweNr",[value] as String[])
-	}
-
     private mapAkceptantUlicaProcess(def data, def pd, def key, def value) {
 	   data.put("akceptantUlica", [value] as String[])
 	   data.put("akceptantSiedziba", [(getAddress(getFromProcessDataSet(pd, 'akceptantUlicaTytul'), getFromProcessDataSet(pd, 'akceptantUlica'), getFromProcessDataSet(pd, 'akceptantNrDomu'), getFromProcessDataSet(pd, 'akceptantNrMieszkania'), getFromProcessDataSet(pd, 'akceptantKodPocztowy'), getFromProcessDataSet(pd, 'akceptantMiasto')))] as String[])
