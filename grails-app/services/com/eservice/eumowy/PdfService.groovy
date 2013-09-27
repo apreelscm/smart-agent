@@ -279,22 +279,26 @@ class PdfService {
             totalPagesCount += workWithOneDocument(processInstance, sig, dataFromProcess, sig.templatePath)
         }
 
-        processInstance.points.eachWithIndex{ point, index ->
-            def dataFromPoint = new PdfMapper(calc, calculatorService).mapOnlyPointData(point, index);
+        processInstance.points.each{ point ->
 
-            final Map<String, String> data = new HashMap<String, String>();
-            data.putAll(dataFromProcess);
-            data.putAll(dataFromPoint);
+            if (point.cbdId != null){
+                //generujemy tylko dokumenty dla tych punktow, ktore nie sa z CBD
+                def dataFromPoint = new PdfMapper(calc, calculatorService).mapOnlyPointData(point);
 
-            multiDocuments.each { sig ->
+                final Map<String, String> data = new HashMap<String, String>();
+                data.putAll(dataFromProcess);
+                data.putAll(dataFromPoint);
 
-                def path = sig.templatePath
-                def begin = path.substring(0, path.lastIndexOf('.'));
-                def end = path.substring(path.lastIndexOf('.'));
-                def documentName = begin +  "_" + point.id + end
+                multiDocuments.each { sig ->
 
-                log.info "MULTI DOCUMENT --> SIGNATURE NAME: " + sig.name + " PDF TEMPLATE PATH: " + sig.templatePath + " WITH NEW NAME: " + documentName
-                totalPagesCount += workWithOneDocument(processInstance, sig, data, documentName)
+                    def path = sig.templatePath
+                    def begin = path.substring(0, path.lastIndexOf('.'));
+                    def end = path.substring(path.lastIndexOf('.'));
+                    def documentName = begin +  "_" + point.id + end
+
+                    log.info "MULTI DOCUMENT --> SIGNATURE NAME: " + sig.name + " PDF TEMPLATE PATH: " + sig.templatePath + " WITH NEW NAME: " + documentName
+                    totalPagesCount += workWithOneDocument(processInstance, sig, data, documentName)
+                }
             }
         }
 

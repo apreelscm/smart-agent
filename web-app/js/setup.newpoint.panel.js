@@ -47,7 +47,7 @@ function setupNewPointPanelHandlers(prevPanelId, panelId, prefix) {
         }
     });
 
-    jQuery("#"+prefix+"\\["+panelId+"\\]\\.plannedInstallationDate").datepicker({ dateFormat: 'yy-mm-dd' });
+    jQuery("#"+prefix+"\\["+panelId+"\\]\\.plannedInstallationDate").datepicker({ dateFormat: 'yy-mm-dd', minDate: 0 });
     jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseFrom").timepicker({
         controlType: 'select',
         timeFormat: 'HH:mm',
@@ -513,22 +513,7 @@ function clearNewPointData(prevPanelId, panelId) {
 }
 
 function setupNewPosPanelHandlers(prevPanelId, panelId, prefix) {
-
-    //jQuery(document).ready(function() {
-    jQuery("#"+prefix+"\\["+panelId+"\\]\\.plannedInstallationDate").datepicker({ dateFormat: 'yy-mm-dd' });
-    /*jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseFrom").datepicker({
-     dateFormat: 'yy-mm-dd',
-     onClose: function( selectedDate ) {
-     jQuery( "#"+prefix+"\\["+panelId+"\\]\\.dayCloseTo").datepicker( "option", "minDate", selectedDate );
-     }
-     });
-     jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseTo").datepicker({
-     dateFormat: 'yy-mm-dd',
-     onClose: function( selectedDate ) {
-     jQuery( "#"+prefix+"\\["+panelId+"\\]\\.dayCloseFrom").datepicker( "option", "maxDate", selectedDate );
-     }
-     });*/
-    jQuery("#"+prefix+"\\["+panelId+"\\]\\.plannedInstallationDate").datepicker({ dateFormat: 'yy-mm-dd' });
+    jQuery("#"+prefix+"\\["+panelId+"\\]\\.plannedInstallationDate").datepicker({ dateFormat: 'yy-mm-dd', minDate: 0 });
     jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseFrom").timepicker({
         controlType: 'select',
         timeFormat: 'HH:mm',
@@ -549,7 +534,12 @@ function setupNewPosPanelHandlers(prevPanelId, panelId, prefix) {
             }
         },
         onSelect: function (selectedDateTime){
-            jQuery( "#"+prefix+"\\["+panelId+"\\]\\.dayCloseTo").datetimepicker('option', 'minDate', jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseFrom").datetimepicker('getDate') );
+            var oldValue = jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseTo").val();
+            var newValue = jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseFrom").datetimepicker('getDate');
+            newValue.setTime(newValue.getTime() + (1*60*1000)); //add one minute
+
+            jQuery( "#"+prefix+"\\["+panelId+"\\]\\.dayCloseTo").datetimepicker('option', 'minDateTime', newValue);
+            jQuery( "#"+prefix+"\\["+panelId+"\\]\\.dayCloseTo").val(oldValue);
         }
         /*onClose: function( selectedDate ) {
          jQuery( "#"+prefix+"\\["+panelId+"\\]\\.dayCloseTo").timepicker( "option", "minDate", selectedDate );
@@ -574,7 +564,11 @@ function setupNewPosPanelHandlers(prevPanelId, panelId, prefix) {
             }
         },
         onSelect: function (selectedDateTime){
-            jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseFrom").datetimepicker('option', 'maxDate', jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseTo").datetimepicker('getDate') );
+            var oldValue = jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseFrom").val();
+            var newValue = jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseTo").datetimepicker('getDate')
+
+            jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseFrom").datetimepicker('option', 'maxDate', newValue );
+            jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseFrom").val(oldValue);
         }
         /*onClose: function( selectedDate ) {
          jQuery( "#"+prefix+"\\["+panelId+"\\]\\.dayCloseFrom").timepicker( "option", "maxDate", selectedDate );

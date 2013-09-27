@@ -10,9 +10,7 @@ import java.text.NumberFormat
 class PdfMapper {
     static Logger LOG = Logger.getLogger(PdfMapper.class)
 
-    private int pointIndex=0;
-    private int pointAcceptCardCount =0;
-    private int pointRangeCount =0;
+    private int myIndex = 0;
 
 	def calc
 	def calculatorService
@@ -27,20 +25,41 @@ class PdfMapper {
 		dataMap.putAll(mapProcessToPDFData(processInstance))
 		dataMap.putAll(mapProcessDataToPDFData(processInstance.processData))
 
-//		//potrzebne aby zepelnic tabelki danymi punktow
-//		processInstance?.points?.eachWithIndex{ point, index ->
-//			def dataFromPoints = mapPointDataToPDFData(point, true)
-//			dataMap.putAll(dataFromPoints)
-//		}
+        def points = processInstance?.points;
+        println "Ilosc punktow: " + points?.size()
+
+        if (points != null && points.size()>0){
+            //TODO - czy takie filtrowanie wystarczy; czy nie trzeba sprawdzac jeszcze czy punkt jest wybrany ( pole - czyWybranyAkceptacjaKart).
+            dataMap.putAll(mapPointsSpecial(points.findAll{ point -> point.tytulPlatnosci}, ["nazwa":"punktTytulPlatnosci", "miejscowosc":"adresTytulPlatnosci"]));
+            dataMap.putAll(mapPointsSpecial(points.findAll{ point -> point.czyWybranyZakresUruchomienia}, ["nazwa":"punktZakresUruchomienia", "miejscowosc":"adresZakresUruchomienia"]));
+            dataMap.putAll(mapPointsSpecial(points.findAll{ point -> point.czyWybranyAkceptacjaKart}, ["nazwa":"punktAkceptacjaKart", "miejscowosc":"adresAkceptacjaKart"]));
+            dataMap.putAll(mapPointsSpecial(points, ["nazwa":"punkt", "miejscowosc":"adres"]));
+            dataMap.putAll(mapPointsSpecial(points, ["tytulPlatnosci":"platnoscTN","systemKasowy":"integracjaTN","uta":"utaTN"]));
+        }
 
 		dataMap.putAll(mapProcessCalcToPDFData())
-
 		return dataMap;
 	}
 
-    def mapOnlyPointData(def point, def index){
+    private def mapPointsSpecial(def points, def mapping) {
         Map<String, String[]> data = new HashMap<String, String[]>()
-        pointIndex = index;
+        myIndex = 1;
+        points?.each { point ->
+            point.properties.each { key, value ->
+                if (key != null && mapping.containsKey(key)){
+                    def methodName = "map" + key.capitalize() + "Point"
+                    if (PdfMapper.metaClass.respondsTo(this, methodName)) {
+                        this."${methodName}"(data, point, mapping.get(key), value, myIndex)
+                    }
+                }
+            }
+            myIndex++
+        }
+        return data
+    }
+
+    def mapOnlyPointData(def point){
+        Map<String, String[]> data = new HashMap<String, String[]>()
 
         data.putAll(mapPointDataToPDFData(point))
         data.putAll(mapPosesDataToPDFData(point.posDatas))
@@ -61,7 +80,6 @@ class PdfMapper {
     private def mapPointsDataToPDFData(def points) {
         Map<String, String[]> data = new HashMap<String, String[]>()
         points?.eachWithIndex { point, index ->
-            pointIndex = index;
 
             data.putAll(mapPointDataToPDFData(point))
             data.putAll(mapPosesDataToPDFData(point.posDatas))
@@ -75,13 +93,10 @@ class PdfMapper {
 
 		if (calc != null && calculatorService != null){
 			println 'Pobieram dane z kalkulatora!!!!'
- //           data.put('recznieWpisanaNazwaZDokumentu', [calculatorService.getCalcProperty(calc, 'poleDoPobraniaZKalkulatora')] as String[])
             data.put('oplatyPOSMiesiacNaliczania', [calculatorService.getCalcProperty('E_LICZBA_MIES_ZWOL_NAJ_1')] as String[])
-			
 		}
 		return data
 	}
-	
 	
     private def mapProcessToPDFData(def processInstance){
         Map<String, String[]> data = new HashMap<String, String[]>()
@@ -102,37 +117,16 @@ class PdfMapper {
 
     private def mapPointDataToPDFData(def pointData) {
         Map<String, String[]> data = new HashMap<String, String[]>()
-
-//        boolean acceptCardIsChoosen = false;
-        boolean rangeIsChoosen, acceptCardIsChoosen = false;
-
-        if (pointData.czyWybranyAkceptacjaKart){
-            pointAcceptCardCount++
-            acceptCardIsChoosen = true;
-        }
-
-        if (pointData.czyWybranyZakresUruchomienia){
-            pointRangeCount++
-            rangeIsChoosen = true
-        }
-
         pointData.properties.each { key, value ->
 //            log.info "PointData Key: " + key + " value: " + value
             if (["class", "posDatas", "errors", "constraints", "process", "processId", "cbdId", "pointDetails", "empty"].contains(key) || value == null){
                 return
-            } else if (["tytulPlatnosci", "systemKasowy", "uta"].contains(key)) {
-                if (acceptCardIsChoosen){
-                    def methodName = "map" + key.capitalize() + "Point"
-                    if (PdfMapper.metaClass.respondsTo(this, methodName)) {
-                        this."${methodName}"(data, pointData, key, value, pointAcceptCardCount)
-                        return
-                    }
-                }
             } else {
-                //TODO -
                 def methodName = "map" + key.capitalize() + "Point"
                 if (PdfMapper.metaClass.respondsTo(this, methodName)) {
-                    this."${methodName}"(data, pointData, key, value, pointAcceptCardCount)
+                    //TEORETYCZNIE tutaj nie jest potrzebny zaden indeks stad -1
+                    //ale na wszelki wypadek w kodzie jest na to zabezpieczenie.
+                    this."${methodName}"(data, pointData, key, value, -1)
                     return
                 }
                 // w ostatecznosci...
@@ -140,11 +134,11 @@ class PdfMapper {
             }
         }
 
-        data.putAll(mapPointDataDetailsToPDFData(pointData, acceptCardIsChoosen, rangeIsChoosen));
+        data.putAll(mapPointDataDetailsToPDFData(pointData));
         return data
     }
 
-    private def mapPointDataDetailsToPDFData(def pointData, def acceptCardIsChoosen, def rangeIsChoosen) {
+    private def mapPointDataDetailsToPDFData(def pointData) {
         Map<String, String[]> data = new HashMap<String, String[]>()
 
         pointData.pointDetails?.properties.each { key, value ->
@@ -152,46 +146,10 @@ class PdfMapper {
 
             if (["class", "posDatas", "errors", "constraints", "processId", "cbdId", "pointDetailsId", "empty"].contains(key) || value == null){
                 return
-            } else if (["wydrukUlica", "nazwaDoWydrukuZTerminalaPos"].contains(key)){
-                //specjalne traktowanie pol do obslugi tabelek
-				data.put(key, [value] as String[])
-			
-			
-                def pdfProperty;
-
-                if (acceptCardIsChoosen){
-                    if ("wydrukUlica".equals(key)){
-                        pdfProperty="adresAkceptacjaKart";
-                    } else if ("nazwaDoWydrukuZTerminalaPos".equals(key)){
-                        pdfProperty="punktAkceptacjaKart";
-                    }
-
-                    if (pdfProperty?.trim()){
-                        def methodName = "map" + key.capitalize() + "PointDataDetails"
-                        if (PdfMapper.metaClass.respondsTo(this, methodName)) {
-                            this."${methodName}"(data, pointData, pdfProperty, value, pointAcceptCardCount)
-                        }
-                    }
-                }
-
-                if (rangeIsChoosen){
-                    if ("wydrukUlica".equals(key)){
-                        pdfProperty="adresZakresUruchomienia";
-                    } else if ("nazwaDoWydrukuZTerminalaPos".equals(key)){
-                        pdfProperty="punktZakresUruchomienia";
-                    }
-
-                    if (pdfProperty?.trim()){
-                        def methodName = "map" + key.capitalize() + "PointDataDetails"
-                        if (PdfMapper.metaClass.respondsTo(this, methodName)) {
-                            this."${methodName}"(data, pointData, pdfProperty, value, pointRangeCount)
-                        }
-                    }
-                }
             } else {
                 def methodName = "map" + key.capitalize() + "PointDataDetails"
                 if (PdfMapper.metaClass.respondsTo(this, methodName)) {
-                    this."${methodName}"(data, pointData, key, value, pointIndex+1)
+                    this."${methodName}"(data, pointData, key, value)
                     return
                 }
                 data.put(key, [value] as String[])
@@ -214,7 +172,7 @@ class PdfMapper {
         //MAP properties
         pos.properties.each { key, value ->
             log.info "PosData Key: " + key
-            if (["class", "cbdId", "process", "point", "errors", "constraints", "empty", "", ""].contains(key) || value == null){
+            if (["class", "cbdId", "process", "point", "errors", "constraints", "empty", ""].contains(key) || value == null){
                 return
             }
 
@@ -251,8 +209,6 @@ class PdfMapper {
         Map<String, String[]> data = new HashMap<String, String[]>()
 
         process.each { processData ->
-//            println  "ProcessData name: " + processData.name  +  " value: " + processData.value
-
             //formatowanie procentowej wartosci platnosci karty
             if (processData.name.endsWith('Pr')){
                 formatDoubleValue(data, processData, '%')
@@ -302,6 +258,14 @@ class PdfMapper {
 
     //------------------- POINT METHODS --------------------------------
 
+    private mapMiejscowoscPoint(def data, def pd, def key, def value, def index) {
+        data.put((index == -1)?key:key+index, [getAddress("", pd.ulica, pd.nrBudynku, pd.nrLokalu, pd.kodPocztowy, value)] as String[])
+    }
+
+    private mapNazwaPoint(def data, def pd, def key, def value, def index) {
+        data.put((index == -1)?key:key+index, [value] as String[])
+    }
+
     private mapNrMerchantaPoint(def data, def pd, def key, def value, def index) {
         data.put(key+"1", [value.substring(0, 5)] as String[])
         data.put(key+"2", [value.substring(5, 10)] as String[])
@@ -314,137 +278,63 @@ class PdfMapper {
     }
 
     private  mapTytulPlatnosciPoint(def data, def pd, def key, def value, def index) {
-        data.put("platnoscTN"+index, [value?"TAK":"NIE"] as String[])
+        mapYesNoField(data, (index == -1)?key:key+index, value);
     }
 
     private mapSystemKasowyPoint(def data, def pd, def key, def value, def index) {
-        data.put("integracjaTN"+index, [value?"TAK":"NIE"] as String[])
+        mapYesNoField(data, (index == -1)?key:key+index, value);
     }
 
     private mapUtaPoint(def data, def pd, def key, def value, def index) {
-        data.put("utaTN"+index, [value?"TAK":"NIE"] as String[])
+        mapYesNoField(data, (index == -1)?key:key+index, value);
     }
 
     //------------------- POINT DATA DETAILS METHODS --------------------------------
 
-    private mapWydrukUlicaPointDataDetails(def data, def pointData, def key, def value, def index) {
-
-        //TODO - mozna pomyslec nad sprawdzeniem czy mieszkanie jest puste
-
-        def result = (value + " " + getFromPointDataDetails(pointData, 'wydrukNrDomu') +"/"+ getFromPointDataDetails(pointData, 'wydrukNrLokalu') + " " + getFromPointDataDetails(pointData, 'wydrukMiasto') + " " + getFromPointDataDetails(pointData, 'wydrukKodPocztowy'))
-        data.put(key+index, [result] as String[])
-    }
-
-    private mapNazwaDoWydrukuZTerminalaPosPointDataDetails(def data, def pointData, def key, def value, def index) {
-        data.put(key+index, [value] as String[])
-    }
-
-    private mapKorespondencjaKodPocztowyPointDataDetails(def data, def pointData, def key, def value, def index){
+    private mapKorespondencjaKodPocztowyPointDataDetails(def data, def pointData, def key, def value){
         data.put(key, [value] as String[]);
-
-        if (value != null){
-            def pattern = ~/\d{2}-\d{3}/
-            if (pattern.matcher(value).matches()){
-                final String[] split = value.split("-");
-                for (int i=0; i<split.length; i++){
-                    data.put("korespondencjaKodPocztowy"+(i+1), [split[i]] as String[])
-                }
-            } else {
-                LOG.error('[PointDataDetails - ' + key+ '] nie spelnia warunku: d{2}-d{3} value = ' + value )
-            }
-        }
+        mapWithPattern(data, value, ~/\d{2}-\d{3}/, "-", "korespondencjaKodPocztowy");
     }
 
-	private mapWydrukKodPocztowyPointDataDetails(def data, def pointData, def key, def value, def index){
+	private mapWydrukKodPocztowyPointDataDetails(def data, def pointData, def key, def value){
 		data.put(key, [value] as String[]);
-
-		if (value != null){
-			def pattern = ~/\d{2}-\d{3}/
-			if (pattern.matcher(value).matches()){
-				final String[] split = value.split("-");
-				for (int i=0; i<split.length; i++){
-					data.put("wydrukKodPocztowy"+(i+1), [split[i]] as String[])
-				}
-			} else {
-				LOG.error('[PointDataDetails - ' + key+ '] nie spelnia warunku: d{2}-d{3} value = ' + value )
-			}
-		}
+        mapWithPattern(data, value, ~/\d{2}-\d{3}/, "-", "wydrukKodPocztowy");
 	}
 
 	
-    private mapKontaktWPunkcieTelKomorkowyPointDataDetails(def data, def pointData, def key, def value, def index){
+    private mapKontaktWPunkcieTelKomorkowyPointDataDetails(def data, def pointData, def key, def value){
         data.put(key, [value] as String[]);
-
-        if (value != null){
-            def pattern = ~/\d{3}-\d{3}-\d{3}/
-            if (pattern.matcher(value).matches()){
-                final String[] split = value.split("-");
-                for (int i=0; i<split.length; i++){
-                    data.put("komorka"+(i+1), [split[i]] as String[])
-                }
-            } else {
-                LOG.error('[PointDataDetails - ' + key+ '] nie spelnia warunku: d{3}-d{3}-d{3} value = ' + value )
-            }
-        }
+        mapWithPattern(data, value, ~/\d{3}-\d{3}-\d{3}/, "-", "komorka");
     }
 
-    private mapKontaktWPunkcieTelStacjonarnyPointDataDetails(def data, def pointData, def key, def value, def index){
+    private mapKontaktWPunkcieTelStacjonarnyPointDataDetails(def data, def pointData, def key, def value){
         data.put(key, [value] as String[]);
         mapFaxOrPhone(key, data, value, "kierunkowy1", "stacjonarny");
     }
 
-    private mapKontaktWPunkcieFaxPointDataDetails(def data, def pointData, def key, def value, def index){
+    private mapKontaktWPunkcieFaxPointDataDetails(def data, def pointData, def key, def value){
         data.put(key, [value] as String[]);
         mapFaxOrPhone(key, data, value, "kierunkowy2", "nrFaksu");
     }
 
-    private void mapFaxOrPhone(def key, def data, def phoneNumber, def kierName, def otherName){
-        //(11) 222-33-44
-        def pattern = ~/\(\d{2}\) \d{3}-\d{2}-\d{2}/
-
-        if (phoneNumber != null){
-            if (pattern.matcher(phoneNumber).matches()){
-                data.put(kierName, [phoneNumber.substring(phoneNumber.lastIndexOf('(') +1, phoneNumber.indexOf(')'))] as String[]);
-
-                def parts = phoneNumber.substring(phoneNumber.lastIndexOf(' ')+1).split('-');
-                for (int i=0; i<parts.length; i++){
-                    data.put(otherName+(i+1), [parts[i]] as String[])
-                }
-            } else {
-                LOG.error('[key ' + key + '] nie spelnia warunku: (d{2}) d{3}-d{2}-d{2} value = ' + phoneNumber )
-            }
-        }
-    }
-
-    private mapKontaktWPunkcieImiePointDataDetails(def data, def pointData, def key, def value, def index){
+    private mapKontaktWPunkcieImiePointDataDetails(def data, def pointData, def key, def value){
         data.put(key, [value] as String[]);
         data.put("imieINazwisko", [value + " " + getFromPointDataDetails(pointData, 'kontaktWPunkcieNazwisko')] as String[]);
     }
 
-    private mapKontaktWPunkcieTytulPointDataDetails(def data, def pointData, def key, def value, def index){
+    private mapKontaktWPunkcieTytulPointDataDetails(def data, def pointData, def key, def value){
         data.put(key, [value] as String[]);
         addCheckboxes(data, ["pan": "Pan", "pani": "Pani"], value)
     }
 
-    private mapKontaktWPunkcieEmailPointDataDetails(def data, def pointData, def key, def value, def index){
+    private mapKontaktWPunkcieEmailPointDataDetails(def data, def pointData, def key, def value){
         data.put(key, [value] as String[]);
         data.put("email", [value] as String[])
     }
 
-	private mapNumerRachunkuBankowegoPointDataDetails(def data, def pointData, def key, def value, def index) {
+	private mapNumerRachunkuBankowegoPointDataDetails(def data, def pointData, def key, def value) {
 		data.put(key, [value] as String[]);
-		
-				if (value != null){
-					def pattern = ~/\d{2}\s\d{4}\s\d{4}\s\d{4}\s\d{4}\s\d{4}\s\d{4}/
-					if (pattern.matcher(value).matches()){
-						final String[] split = value.split(" ");
-						for (int i=0; i<split.length; i++){
-							data.put("numerRachunkuBankowego"+(i+1), [split[i]] as String[])
-						}
-					} else {
-						LOG.error('[PointDataDetails - ' + key+ '] nie spelnia warunku: d{2} d{4} d{4} d{4} d{4} d{4} d{4} value = ' + value )
-					}
-				}
+        mapWithPattern(data, value, ~/\d{2}\s\d{4}\s\d{4}\s\d{4}\s\d{4}\s\d{4}\s\d{4}/, " ", "numerRachunkuBankowego");
 	}
 	
 	private mapUwagiDodatkowePointDataDetails(def data, def pointData, def key, def value, def index) {
@@ -480,17 +370,7 @@ class PdfMapper {
 	private mapAkceptantTelKomorkowyProcess(def data, def pd, def key, def value){
 		data.put(key, [value] as String[]);
 
-		if (value != null){
-			def pattern = ~/\d{3}-\d{3}-\d{3}/
-			if (pattern.matcher(value).matches()){
-				final String[] split = value.split("-");
-				for (int i=0; i<split.length; i++){
-					data.put("telKomorkowy"+(i+1), [split[i]] as String[])
-				}
-			} else {
-				LOG.error('[Process - ' + key+ '] nie spelnia warunku: d{3}-d{3}-d{3} value = ' + value )
-			}
-		}
+        mapWithPattern(data, value, ~/\d{3}-\d{3}-\d{3}/, "-", "telKomorkowy");
 	}
 
 	private mapAkceptantTelStacjonarnyProcess(def data, def pd, def key, def value){
@@ -510,50 +390,17 @@ class PdfMapper {
 		
 	private mapKontaktTelKomorkowyProcess(def data, def pd, def key, def value){
 		data.put(key, [value] as String[]);
-
-		if (value != null){
-			def pattern = ~/\d{3}-\d{3}-\d{3}/
-			if (pattern.matcher(value).matches()){
-				final String[] split = value.split("-");
-				for (int i=0; i<split.length; i++){
-					data.put("telKomorkowyDoKontaktu"+(i+1), [split[i]] as String[])
-				}
-			} else {
-				LOG.error('[Process - ' + key+ '] nie spelnia warunku: d{3}-d{3}-d{3} value = ' + value )
-			}
-		}
+        mapWithPattern(data, value, ~/\d{3}-\d{3}-\d{3}/, "-", "telKomorkowyDoKontaktu");
 	}
 	
 	private mapAkceptantKodPocztowyProcess(def data, def pd, def key, def value){
 		data.put(key, [value] as String[]);
-
-		if (value != null){
-			def pattern = ~/\d{2}-\d{3}/
-			if (pattern.matcher(value).matches()){
-				final String[] split = value.split("-");
-				for (int i=0; i<split.length; i++){
-					data.put("akceptantKodPocztowy"+(i+1), [split[i]] as String[])
-				}
-			} else {
-				LOG.error('[Process - ' + key+ '] nie spelnia warunku: d{2}-d{3} value = ' + value )
-			}
-		}
+        mapWithPattern(data, value, ~/\d{2}-\d{3}/, "-", "akceptantKodPocztowy");
 	}
 
 	private mapAkceptantKontaktKodPocztowyProcess(def data, def pd, def key, def value){
 		data.put(key, [value] as String[]);
-
-		if (value != null){
-			def pattern = ~/\d{2}-\d{3}/
-			if (pattern.matcher(value).matches()){
-				final String[] split = value.split("-");
-				for (int i=0; i<split.length; i++){
-					data.put("akceptantKontaktKodPocztowy"+(i+1), [split[i]] as String[])
-				}
-			} else {
-				LOG.error('[Process - ' + key+ '] nie spelnia warunku: d{2}-d{3} value = ' + value )
-			}
-		}
+        mapWithPattern(data, value, ~/\d{2}-\d{3}/, "-", "akceptantKontaktKodPocztowy");
 	}
 	
 	private mapKontaktImieProcess(def data, def pd, def key, def value) {
@@ -588,7 +435,6 @@ class PdfMapper {
 		data.put("akceptantNip", [value] as String[]);
 	}
 		
-  
 	private mapWydrukGrafikiCenaProcess(def data, def pd, def key, def value){
 		mapFieldWithStartDate(data, pd, key, value, "wydrukGrafikiData");
 	}
@@ -617,14 +463,6 @@ class PdfMapper {
 		mapFieldWithStartDate(data, pd, key, value, "czasObslugiData");
 	}
 
-	private mapFieldWithStartDate(def data, def pd, def key, def value, def dateFieldName){
-		if (value != null && !"".equals(value)){
-			data.put(key, [value] as String[])
-			addDateField(data, dateFieldName, getFromProcessDataSet(pd, "dataUmowy"));
-		}
-	}
-	
-	
 	private mapUmowaOznOdProcess(def data, def pd, def key, def value){
         addDateField(data, key, value);
     }
@@ -679,7 +517,7 @@ class PdfMapper {
 
     private mapAkceptantUlicaProcess(def data, def pd, def key, def value) {
 	   data.put("akceptantUlica", [value] as String[])
-	   data.put("akceptantSiedziba", [(getSiedzibaAkceptanta(getFromProcessDataSet(pd, 'akceptantUlicaTytul'), getFromProcessDataSet(pd, 'akceptantUlica'), getFromProcessDataSet(pd, 'akceptantNrDomu'), getFromProcessDataSet(pd, 'akceptantNrMieszkania'), getFromProcessDataSet(pd, 'akceptantKodPocztowy'), getFromProcessDataSet(pd, 'akceptantMiasto')))] as String[])
+	   data.put("akceptantSiedziba", [(getAddress(getFromProcessDataSet(pd, 'akceptantUlicaTytul'), getFromProcessDataSet(pd, 'akceptantUlica'), getFromProcessDataSet(pd, 'akceptantNrDomu'), getFromProcessDataSet(pd, 'akceptantNrMieszkania'), getFromProcessDataSet(pd, 'akceptantKodPocztowy'), getFromProcessDataSet(pd, 'akceptantMiasto')))] as String[])
 		
     // data.put("akceptantSiedziba", [getFromProcessDataSet(pd, 'akceptantUlicaTytul') + " " + value + " " + getFromProcessDataSet(pd, 'akceptantNrDomu') + "/" + getFromProcessDataSet(pd, 'akceptantNrMieszkania') + " " + getFromProcessDataSet(pd, 'akceptantKodPocztowy') + " " + getFromProcessDataSet(pd, 'akceptantMiasto')] as String[])
     }
@@ -747,26 +585,21 @@ class PdfMapper {
 
     private mapScoringSprzedazTowarowEkskluzywnychProcess(def data, def pd, def key, def value) {
         addCheckbox(data, 'sprzedazTowarowEkskluzywnych', 'true', value);
-        println 'Working with property: ' + key
     }
 
     private mapScoringPonad50ProcentObrotowWNocyProcess(def data, def pd, def key, def value) {
         addCheckbox(data, 'ponad50ProcentObrotowWNocy', 'true', value);
-        println 'Working with property: ' + key
     }
 
     private mapScoringRuchTurystycznyPrzygranicznyProcess(def data, def pd, def key, def value) {
         addCheckbox(data, 'ruchTurystycznyPrzygraniczny', 'true', value);
-        println 'Working with property: ' + key
     }
 
     private mapScoringUslugiPlatneZGoryProcess(def data, def pd, def key, def value) {
-        println 'Working with property: ' + key
         addCheckbox(data, 'uslugiPlatneZGory', 'true', value);
     }
 
     private mapScoringStanZadbanyProcess(def data, def pd, def key, def value) {
-        println 'Working with property: ' + key
         addCheckbox(data, key, 'true', value);
     }
 
@@ -815,7 +648,7 @@ class PdfMapper {
     }
 
 	//------------------- STRINGBUILDER -------------------------------------
-	private String getSiedzibaAkceptanta(String streetType, String street, String houseNumber, String flatNumber, String postalCode, String city){
+	private String getAddress(String streetType, String street, String houseNumber, String flatNumber, String postalCode, String city){
 		def sb = new StringBuilder();
 
 		sb.append(streetType).append(" ").append(street).append(" ").append(houseNumber);
@@ -866,6 +699,49 @@ class PdfMapper {
             DecimalFormat df = (DecimalFormat)NumberFormat.getNumberInstance(new Locale("pl", "PL"));
             def fn = df.format(processData.value.toDouble()) + ' ' + suffix;
             data.put(processData.name, [fn] as String[])
+        }
+    }
+
+    private mapYesNoField(def data, def key, def value){
+        data.put(key, [value?"TAK":"NIE"] as String[])
+    }
+
+    private def mapWithPattern(def data, def value, def pattern, def delimenter, def fieldName){
+        if (value != null){
+            if (pattern.matcher(value).matches()){
+                final String[] split = value.split(delimenter);
+                for (int i=0; i<split.length; i++){
+                    data.put(fieldName+(i+1), [split[i]] as String[])
+                }
+            } else {
+                //TODO - wyciagnac z patterna warunek i go wypisac.
+                LOG.error('[Wartosc - ' + value + '] nie spelnia zalozonego warunku. value = ' + value )
+            }
+        }
+    }
+
+    private void mapFaxOrPhone(def key, def data, def phoneNumber, def kierName, def otherName){
+        //(11) 222-33-44
+        def pattern = ~/\(\d{2}\) \d{3}-\d{2}-\d{2}/
+
+        if (phoneNumber != null){
+            if (pattern.matcher(phoneNumber).matches()){
+                data.put(kierName, [phoneNumber.substring(phoneNumber.lastIndexOf('(') +1, phoneNumber.indexOf(')'))] as String[]);
+
+                def parts = phoneNumber.substring(phoneNumber.lastIndexOf(' ')+1).split('-');
+                for (int i=0; i<parts.length; i++){
+                    data.put(otherName+(i+1), [parts[i]] as String[])
+                }
+            } else {
+                LOG.error('[key ' + key + '] nie spelnia warunku: (d{2}) d{3}-d{2}-d{2} value = ' + phoneNumber )
+            }
+        }
+    }
+
+    private mapFieldWithStartDate(def data, def pd, def key, def value, def dateFieldName){
+        if (value != null && !"".equals(value)){
+            data.put(key, [value] as String[])
+            addDateField(data, dateFieldName, getFromProcessDataSet(pd, "dataUmowy"));
         }
     }
 }
