@@ -69,9 +69,10 @@ function setupNewPointPanelHandlers(prevPanelId, panelId, prefix) {
         },
         onSelect: function (selectedDateTime){
             var oldValue = jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseTo").val();
-            var newValue = jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseFrom").datetimepicker('getDate')
+            var newValue = jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseFrom").datetimepicker('getDate');
+            newValue.setTime(newValue.getTime() + (1*60*1000)); //add one minute
 
-            jQuery( "#"+prefix+"\\["+panelId+"\\]\\.dayCloseTo").datetimepicker('option', 'minDate', newValue);
+            jQuery( "#"+prefix+"\\["+panelId+"\\]\\.dayCloseTo").datetimepicker('option', 'minDateTime', newValue);
             jQuery( "#"+prefix+"\\["+panelId+"\\]\\.dayCloseTo").val(oldValue);
         }
         /*onClose: function( selectedDate ) {
