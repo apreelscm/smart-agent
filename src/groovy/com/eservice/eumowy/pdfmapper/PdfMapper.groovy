@@ -76,7 +76,7 @@ class PdfMapper {
 		if (calc != null && calculatorService != null){
 			println 'Pobieram dane z kalkulatora!!!!'
  //           data.put('recznieWpisanaNazwaZDokumentu', [calculatorService.getCalcProperty(calc, 'poleDoPobraniaZKalkulatora')] as String[])
-            data.put('oplatyPOSMiesiacNaliczania', [calculatorService.getCalcProperty(calc, 'E_LICZBA_MIES_ZWOL_NAJ_1')] as String[])
+            data.put('oplatyPOSMiesiacNaliczania', [calculatorService.getCalcProperty('E_LICZBA_MIES_ZWOL_NAJ_1')] as String[])
 			
 		}
 		return data
