@@ -2,9 +2,16 @@ package com.eservice.eumowy
 
 import grails.util.Environment
 
+
+/**
+ * !!
+ * !! OBIEKT SESYJNY DO TRZYMANIA KALKULATORA I OPERACJI NA NIM
+ * !!
+ * */
 class CalculatorService implements Serializable{
 
     static transactional = false
+
 
     static scope = "session"
 
