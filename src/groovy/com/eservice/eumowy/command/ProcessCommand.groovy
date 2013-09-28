@@ -15,7 +15,22 @@ class ProcessCommand implements Serializable{
 
     def calculatorService
 
+    //UWAGA - kazde nowe pole, ktore ma byc pomijane w zapisie do bazy trzeba dodac tez w
+    //ProcessService.getDataFromPanels(). Gdy sie tego nie zrobi zapisuja sie dane a pozniej leci
+    // NoSuchFieldException z ProcessService.loadProcessData() przy probie usuniecia zbednej metody
     static def nullableTrueBlankFalse = {return it == null || it.toString()?.size() > 0}
+
+    static def atLeastClosure = { value, cmd, errors, property, calcProperty ->
+        def calcValue = cmd.calculatorService.getCalcProperty(calcProperty)
+        def minValue = calcValue?.toString()?.isNumber() ? Integer.valueOf(calcValue) : 0
+        def currValue = value?.toString()?.isNumber() ? Integer.valueOf(value) : 0
+
+        if (currValue < minValue) {
+            errors.rejectValue(property, "default.atLeast.asCalc")
+            return false
+        }
+        return true
+    }
 
     static def DEFAULT_VALUE = "~"
 
@@ -576,177 +591,57 @@ class ProcessCommand implements Serializable{
         reprezentant2Nazwisko(nullable:true, blank:true, shared: "lettersonly")
 
         visaEUKKOSt(nullable:false, blank:false, shared: "number", validator: { value, cmd, errors ->
-            def calcValue = cmd.calculatorService.getCalcProperty("OPLATA_MSC_11_ZL")
-            def minValue = calcValue?.toString()?.isNumber() ? Integer.valueOf(calcValue) : 0
-            def currValue = value?.toString()?.isNumber() ? Integer.valueOf(value) : 0
-
-            if (currValue < minValue) {
-                errors.rejectValue( "visaEUKKOSt", "default.atLeast.asCalc")
-                return false
-            }
-            return true
+            atLeastClosure.call(value, cmd, errors, "visaEUKKOSt", "OPLATA_MSC_53_ZL")
         })
 
         visaEUKDSt(nullable:false, blank:false, shared: "number", validator: { value, cmd, errors ->
-            def calcValue = cmd.calculatorService.getCalcProperty("OPLATA_MSC_12_ZL")
-            def minValue = calcValue?.toString()?.isNumber() ? Integer.valueOf(calcValue) : 0
-            def currValue = value?.toString()?.isNumber() ? Integer.valueOf(value) : 0
-
-            if (currValue < minValue) {
-                errors.rejectValue( "visaEUKDSt", "default.atLeast.asCalc")
-                return false
-            }
-            return true
+            atLeastClosure.call(value, cmd, errors, "visaEUKDSt", "OPLATA_MSC_12_ZL")
         })
 
         visaEUKBSt(nullable:false, blank:false, shared: "number", validator: { value, cmd, errors ->
-            def calcValue = cmd.calculatorService.getCalcProperty("OPLATA_MSC_13_ZL")
-            def minValue = calcValue?.toString()?.isNumber() ? Integer.valueOf(calcValue) : 0
-            def currValue = value?.toString()?.isNumber() ? Integer.valueOf(value) : 0
-
-            if (currValue < minValue) {
-                errors.rejectValue( "visaEUKBSt", "default.atLeast.asCalc")
-                return false
-            }
-            return true
+            atLeastClosure.call(value, cmd, errors, "visaEUKBSt", "OPLATA_MSC_13_ZL")
         })
 
         visaOutEUKKOSt(nullable:false, blank:false, shared: "number", validator: { value, cmd, errors ->
-            def calcValue = cmd.calculatorService.getCalcProperty("OPLATA_MSC_21_ZL")
-            def minValue = calcValue?.toString()?.isNumber() ? Integer.valueOf(calcValue) : 0
-            def currValue = value?.toString()?.isNumber() ? Integer.valueOf(value) : 0
-
-            if (currValue < minValue) {
-                errors.rejectValue( "visaOutEUKKOSt", "default.atLeast.asCalc")
-                return false
-            }
-            return true
+            atLeastClosure.call(value, cmd, errors, "visaOutEUKKOSt", "OPLATA_MSC_21_ZL")
         })
 
         visaOutEUKDSt(nullable:false, blank:false, shared: "number", validator: { value, cmd, errors ->
-            def calcValue = cmd.calculatorService.getCalcProperty("OPLATA_MSC_22_ZL")
-            def minValue = calcValue?.toString()?.isNumber() ? Integer.valueOf(calcValue) : 0
-            def currValue = value?.toString()?.isNumber() ? Integer.valueOf(value) : 0
-
-            if (currValue < minValue) {
-                errors.rejectValue( "visaOutEUKDSt", "default.atLeast.asCalc")
-                return false
-            }
-            return true
+            atLeastClosure.call(value, cmd, errors, "visaOutEUKDSt", "OPLATA_MSC_22_ZL")
         })
 
         visaOutEUKBSt(nullable:false, blank:false, shared: "number", validator: { value, cmd, errors ->
-            def calcValue = cmd.calculatorService.getCalcProperty("OPLATA_MSC_23_ZL")
-            def minValue = calcValue?.toString()?.isNumber() ? Integer.valueOf(calcValue) : 0
-            def currValue = value?.toString()?.isNumber() ? Integer.valueOf(value) : 0
-
-            if (currValue < minValue) {
-                errors.rejectValue( "visaOutEUKBSt", "default.atLeast.asCalc")
-                return false
-            }
-            return true
+            atLeastClosure.call(value, cmd, errors, "visaOutEUKBSt", "OPLATA_MSC_23_ZL")
         })
 
         visaPolskaKBSt(nullable:false, blank:false, shared: "number", validator: { value, cmd, errors ->
-            def calcValue = cmd.calculatorService.getCalcProperty("OPLATA_MSC_33_ZL")
-            def minValue = calcValue?.toString()?.isNumber() ? Integer.valueOf(calcValue) : 0
-            def currValue = value?.toString()?.isNumber() ? Integer.valueOf(value) : 0
-
-            if (currValue < minValue) {
-                errors.rejectValue( "visaPolskaKBSt", "default.atLeast.asCalc")
-                return false
-            }
-            return true
+            atLeastClosure.call(value, cmd, errors, "visaPolskaKBSt", "OPLATA_MSC_33_ZL")
         })
 
         mastercardEUKKSt(nullable:false, blank:false, shared: "number", validator: { value, cmd, errors ->
-            def calcValue = cmd.calculatorService.getCalcProperty("OPLATA_MSC_41_ZL")
-            def minValue = calcValue?.toString()?.isNumber() ? Integer.valueOf(calcValue) : 0
-            def currValue = value?.toString()?.isNumber() ? Integer.valueOf(value) : 0
-
-            if (currValue < minValue) {
-                errors.rejectValue( "mastercardEUKKSt", "default.atLeast.asCalc")
-                return false
-            }
-            return true
+            atLeastClosure.call(value, cmd, errors, "mastercardEUKKSt", "OPLATA_MSC_41_ZL")
         })
 
         mastercardEUKDSt(nullable:false, blank:false, shared: "number", validator: { value, cmd, errors ->
-            def calcValue = cmd.calculatorService.getCalcProperty("OPLATA_MSC_42_ZL")
-            def minValue = calcValue?.toString()?.isNumber() ? Integer.valueOf(calcValue) : 0
-            def currValue = value?.toString()?.isNumber() ? Integer.valueOf(value) : 0
-
-            if (currValue < minValue) {
-                errors.rejectValue( "mastercardEUKDSt", "default.atLeast.asCalc")
-                return false
-            }
-            return true
+            atLeastClosure.call(value, cmd, errors, "mastercardEUKDSt", "OPLATA_MSC_42_ZL")
         })
         mastercardEUKBLSt(nullable:false, blank:false, shared: "number", validator: { value, cmd, errors ->
-            def calcValue = cmd.calculatorService.getCalcProperty("OPLATA_MSC_43_ZL")
-            def minValue = calcValue?.toString()?.isNumber() ? Integer.valueOf(calcValue) : 0
-            def currValue = value?.toString()?.isNumber() ? Integer.valueOf(value) : 0
-
-            if (currValue < minValue) {
-                errors.rejectValue( "mastercardEUKBLSt", "default.atLeast.asCalc")
-                return false
-            }
-            return true
+            atLeastClosure.call(value, cmd, errors, "mastercardEUKBLSt", "OPLATA_MSC_43_ZL")
         })
         mastercardEUMSt(nullable:false, blank:false, shared: "number", validator: { value, cmd, errors ->
-            def calcValue = cmd.calculatorService.getCalcProperty("OPLATA_MSC_44_ZL")
-            def minValue = calcValue?.toString()?.isNumber() ? Integer.valueOf(calcValue) : 0
-            def currValue = value?.toString()?.isNumber() ? Integer.valueOf(value) : 0
-
-            if (currValue < minValue) {
-                errors.rejectValue( "mastercardEUMSt", "default.atLeast.asCalc")
-                return false
-            }
-            return true
+            atLeastClosure.call(value, cmd, errors, "mastercardEUMSt", "OPLATA_MSC_44_ZL")
         })
         mastercardOutEUKKSt(nullable:false, blank:false, shared: "number", validator: { value, cmd, errors ->
-            def calcValue = cmd.calculatorService.getCalcProperty("OPLATA_MSC_51_ZL")
-            def minValue = calcValue?.toString()?.isNumber() ? Integer.valueOf(calcValue) : 0
-            def currValue = value?.toString()?.isNumber() ? Integer.valueOf(value) : 0
-
-            if (currValue < minValue) {
-                errors.rejectValue( "mastercardOutEUKKSt", "default.atLeast.asCalc")
-                return false
-            }
-            return true
+            atLeastClosure.call(value, cmd, errors, "mastercardOutEUKKSt", "OPLATA_MSC_51_ZL")
         })
         mastercardOutEUKDSt(nullable:false, blank:false, shared: "number", validator: { value, cmd, errors ->
-            def calcValue = cmd.calculatorService.getCalcProperty("OPLATA_MSC_52_ZL")
-            def minValue = calcValue?.toString()?.isNumber() ? Integer.valueOf(calcValue) : 0
-            def currValue = value?.toString()?.isNumber() ? Integer.valueOf(value) : 0
-
-            if (currValue < minValue) {
-                errors.rejectValue( "mastercardOutEUKDSt", "default.atLeast.asCalc")
-                return false
-            }
-            return true
+            atLeastClosure.call(value, cmd, errors, "mastercardOutEUKDSt", "OPLATA_MSC_52_ZL")
         })
         mastercardOutEUKBSt(nullable:false, blank:false, shared: "number", validator: { value, cmd, errors ->
-            def calcValue = cmd.calculatorService.getCalcProperty("OPLATA_MSC_53_ZL")
-            def minValue = calcValue?.toString()?.isNumber() ? Integer.valueOf(calcValue) : 0
-            def currValue = value?.toString()?.isNumber() ? Integer.valueOf(value) : 0
-
-            if (currValue < minValue) {
-                errors.rejectValue( "mastercardOutEUKBSt", "default.atLeast.asCalc")
-                return false
-            }
-            return true
+            atLeastClosure.call(value, cmd, errors, "mastercardOutEUKBSt", "OPLATA_MSC_53_ZL")
         })
         mastercardOutEUMSt(nullable:false, blank:false, shared: "number", validator: { value, cmd, errors ->
-            def calcValue = cmd.calculatorService.getCalcProperty("OPLATA_MSC_54_ZL")
-            def minValue = calcValue?.toString()?.isNumber() ? Integer.valueOf(calcValue) : 0
-            def currValue = value?.toString()?.isNumber() ? Integer.valueOf(value) : 0
-
-            if (currValue < minValue) {
-                errors.rejectValue( "mastercardOutEUMSt", "default.atLeast.asCalc")
-                return false
-            }
-            return true
+            atLeastClosure.call(value, cmd, errors, "mastercardOutEUMSt", "OPLATA_MSC_54_ZL")
         })
 
         dinersClubSt(nullable:true,blank:true,shared: "number")
