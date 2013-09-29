@@ -122,15 +122,15 @@ class ProcessService {
         return activities?.any{it.code.equals(activityCode)};
     }
 
-    def getNewProcessCommand(def process, def calc){
+    def getNewProcessCommand(def process){
         log.info("getNewProcessCommand processId = ${process.id}")
         def cmd = initProcessCommand(process)
         cmd.allPoints?.addAll(getPointsToAllPointsCommandList(process, cmd))
         cmd.allPoses?.addAll(getPosesToAllPosCommandList(process, cmd))
-        prepareProcessCommand(cmd, calc)
+        prepareProcessCommand(cmd)
     }
 
-    def getSavedProcessCommand(def process, def calc){
+    def getSavedProcessCommand(def process){
         log.info("getSavedProcessCommand processId = ${process.id}")
         def cmd = initProcessCommand(process)
         loadProcessData(process,cmd)
@@ -145,7 +145,7 @@ class ProcessService {
 
         cmd.notes = process.notesToCoa
 
-        prepareProcessCommand(cmd, calc, cbdMethods)
+        prepareProcessCommand(cmd, cbdMethods)
     }
 
     def getRepresentative1(def process) {
@@ -171,7 +171,7 @@ class ProcessService {
     def defaultMethods = ["getWyborDzialania","getLiczbaMiesiecyZwolnieniaZNajmu"]
     def cbdMethods = ["getAdresDoKorespondencjizAkecptantem","getDaneAkceptanta","getSiedzibaAkceptanta","getSerwis"]
 
-    def prepareProcessCommand(def cmd, def calc, def restrictedMethods = []) {
+    def prepareProcessCommand(def cmd, def restrictedMethods = []) {
         def exclusions = defaultMethods + restrictedMethods
 
         cmd.process.panels.each { Panel panel ->
@@ -188,7 +188,7 @@ class ProcessService {
                         panelMockService."${panelFunctionName}"(cmd)
                         break;
                     default:
-                        panelService."${panelFunctionName}"(cmd,calc)
+                        panelService."${panelFunctionName}"(cmd)
                 }
             }
         }
@@ -236,7 +236,7 @@ class ProcessService {
             PointCommand pc = new PointCommand()
 
             point.properties.each { key, value ->
-                log.info "PointData Key: " + key
+               //log.info "PointData Key: " + key
                 if (["process",
                         "processId",
                         "pointDetails",
@@ -256,7 +256,7 @@ class ProcessService {
             pc.id = point.id
 
             point.pointDetails?.properties.each { key, value ->
-                log.info "PointDataDetails Key: " + key
+                //log.info "PointDataDetails Key: " + key
                 if (["point",
                         "pointId",
                 ].contains(key) || value == null){
@@ -284,7 +284,7 @@ class ProcessService {
             }
 
             posData?.posDetails?.properties.each { key, value ->
-                log.info "PosDataDetails Key: " + key
+                //log.info "PosDataDetails Key: " + key
                 if (["class", "cbdId", "process", "point", "errors", "constraints", "empty", "", ""].contains(key) || value == null){
                     return
                 }
@@ -313,7 +313,7 @@ class ProcessService {
                 pc.id = posData.id
 
                 point.properties.each { key, value ->
-                    log.info "PointData Key: " + key
+                   // log.info "PointData Key: " + key
                     if (["class", "posDatas", "errors", "constraints", "processId", "cbdId", "pointDetailsId", "empty"].contains(key) || value == null){
                         return
                     }
@@ -324,7 +324,7 @@ class ProcessService {
                 }
 
                 point.pointDetails?.properties.each { key, value ->
-                    log.info "PointDataDetails Key: " + key
+//                    log.info "PointDataDetails Key: " + key
                     if (["class", "posDatas", "errors", "constraints", "processId", "cbdId", "pointDetailsId", "empty"].contains(key) || value == null){
                         return
                     }
@@ -335,7 +335,7 @@ class ProcessService {
                 }
 
                 posData?.properties.each { key, value ->
-                    log.info "PosData Key: " + key
+//                    log.info "PosData Key: " + key
                     if (["class", "cbdId", "process", "point", "errors", "constraints", "empty", "", ""].contains(key) || value == null){
                         return
                     }
@@ -346,7 +346,7 @@ class ProcessService {
                 }
 
                 posData?.posDetails?.properties.each { key, value ->
-                    log.info "PosDataDetails Key: " + key
+//                    log.info "PosDataDetails Key: " + key
                     if (["class", "cbdId", "process", "point", "errors", "constraints", "empty", "", ""].contains(key) || value == null){
                         return
                     }
@@ -396,7 +396,7 @@ class ProcessService {
                 apc.setCzyCbd(false)
                 apc.id = posData.id
                 posData.properties.each { key, value ->
-                    log.info "PosData Key: " + key
+//                    log.info "PosData Key: " + key
                     if (["class", "process", "point", "errors", "constraints", "empty", "", ""].contains(key) || value == null){
                         return
                     }
@@ -524,7 +524,7 @@ class ProcessService {
             }
         }
 
-        def pointDataList = getPointCommandsToPointDataList(process, cmd)
+        def pointDataList = getPointCommandsToPointDataList(cmd)
 
         pointDataList?.each { PointData point ->
             if (point.cbdId == -1) {
@@ -567,7 +567,7 @@ class ProcessService {
         cmd.properties.each { key, value ->
 
             if (["class","process", "cbdService", "errors", "constraints",
-                    "notes", "hasUmowaCzas", "hasKontaktTel", "hasDoladowania", "hasAkceptantTel"]
+                    "notes", "hasUmowaCzas", "hasKontaktTel", "hasDoladowania", "hasAkceptantTel", "hasInformacjaHandlowa","liczbaTerminali", "atLeastClosure", "nullableTrueBlankFalse"]
                     .contains(key) || value == ProcessCommand.DEFAULT_VALUE){
                 return
             }
@@ -589,8 +589,9 @@ class ProcessService {
         processDataList
     }
 
-    def getPointCommandsToPointDataList(def process, def cmd) {
+    def getPointCommandsToPointDataList(def cmd) {
         def pointsList = []
+
         cmd.points?.each { PointCommand pc ->
             boolean isNew = false
             if (pc == null) {
@@ -701,53 +702,48 @@ class ProcessService {
         }
 
         /* Save points from AllPointsCommand */
-        cmd.allPoints?.each { AllPointsCommand apc ->
-            //boolean isNew = false
-            if (apc == null) {
-                log.info "AllPointCommand is NULL - skipping!"
-                return
-            }
-
-            PointData point;
-
-            if (apc.id != null) {
-                point = PointData.get(apc.id)
-            }
-            else {
-                point = new PointData()
-                //isNew = true
-            }
-
-            if (point != null) {
-                // Update data from CBD
-                if (apc.cbdId != null) {
-                    point.nazwa = apc.nazwa
-                    point.ulica = apc.ulica
-                    point.kodPocztowy = apc.kodPocztowy
-                    point.liczbaPos = apc.liczbaPos
-                    point.miejscowosc = apc.miejscowosc
-                    point.nrBudynku = apc.nrBudynku
-                    point.cbdId = apc.cbdId
+        if (cmd.hasProperty("allPoints")){
+            // cmd moze byc zarowno ProcessCommand jak i OnlyPointsCommand, w ktorym nie ma allPoints
+            cmd?.allPoints?.each { AllPointsCommand apc ->
+                //boolean isNew = false
+                if (apc == null) {
+                    log.info "AllPointCommand is NULL - skipping!"
+                    return
                 }
 
-                point.czyWybranyAkceptacjaKart = apc.czyWybranyAkceptacjaKart
-                point.czyWybranyZakresUruchomienia = apc.czyWybranyZakresUruchomienia
-                point.tytulPlatnosci = apc.tytulPlatnosci
-                point.systemKasowy = apc.systemKasowy
-                point.uta = apc.uta
+                PointData point = (apc.id != null)? PointData.get(apc.id): new PointData();
+                if (point != null) {
+                    // Update data from CBD
+                    if (apc.cbdId != null) {
+                        point.nazwa = apc.nazwa
+                        point.ulica = apc.ulica
+                        point.kodPocztowy = apc.kodPocztowy
+                        point.liczbaPos = apc.liczbaPos
+                        point.miejscowosc = apc.miejscowosc
+                        point.nrBudynku = apc.nrBudynku
+                        point.cbdId = apc.cbdId
+                    }
 
-                //if (isNew == true) {
-                pointsList.add(point)
-                //}
-            }
-            else {
-                log.info "Nie znaleziono punktu o id: " + apc.id
+                    point.czyWybranyAkceptacjaKart = apc.czyWybranyAkceptacjaKart
+                    point.czyWybranyZakresUruchomienia = apc.czyWybranyZakresUruchomienia
+                    point.tytulPlatnosci = apc.tytulPlatnosci
+                    point.systemKasowy = apc.systemKasowy
+                    point.uta = apc.uta
+
+                    //if (isNew == true) {
+                    pointsList.add(point)
+                    //}
+                }
+                else {
+                    log.info "Nie znaleziono punktu o id: " + apc.id
+                }
             }
         }
 
         return pointsList
     }
 
+    //TODO - metod nieuzywana????
     def getPointCommandsToPosDataList(def process, def cmd) {
         def pointsList = []
         cmd.points?.each { PointCommand pc ->

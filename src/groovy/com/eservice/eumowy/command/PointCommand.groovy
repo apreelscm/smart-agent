@@ -256,9 +256,11 @@ class PointCommand implements Serializable {
 		bramka(nullable:true, blank:false)
 		adresIp(nullable:true, blank:false)
 		kontaktInformatykStatyczna(nullable:true, blank:false)
-		imieInformatykStatyczna(nullable:true, blank:false)
+        tytulInformatykStatyczna(nullable:true, blank:false)
+        imieInformatykStatyczna(nullable:true, blank:false)
 		nazwiskoInformatykStatyczna(nullable:true, blank:false)
 		kontaktInformatykDynamiczna(nullable:true, blank:false)
+        tytulInformatykDynamiczna(nullable:true, blank:false)
 		imieInformatykDynamiczna(nullable:true, blank:false)
 		nazwiskoInformatykDynamiczna(nullable:true, blank:false)
 	}

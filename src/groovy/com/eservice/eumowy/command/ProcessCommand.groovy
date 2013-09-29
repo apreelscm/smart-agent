@@ -1,4 +1,5 @@
 package com.eservice.eumowy.command
+
 import com.eservice.eumowy.Process
 import grails.validation.Validateable
 import org.apache.commons.collections.FactoryUtils
@@ -12,7 +13,24 @@ import org.apache.commons.collections.ListUtils
 @Validateable
 class ProcessCommand implements Serializable{
 
-    static def nullableTrueBlankFalse = {return it == null || it.toString().size() > 0}
+    def calculatorService
+
+    //UWAGA - kazde nowe pole, ktore ma byc pomijane w zapisie do bazy trzeba dodac tez w
+    //ProcessService.getDataFromPanels(). Gdy sie tego nie zrobi zapisuja sie dane a pozniej leci
+    // NoSuchFieldException z ProcessService.loadProcessData() przy probie usuniecia zbednej metody
+    static def nullableTrueBlankFalse = {return it == null || it.toString()?.size() > 0}
+
+    static def atLeastClosure = { value, cmd, errors, property, calcProperty ->
+        def calcValue = cmd.calculatorService.getCalcProperty(calcProperty)
+        def minValue = calcValue?.toString()?.isNumber() ? Integer.valueOf(calcValue) : 0
+        def currValue = value?.toString()?.isNumber() ? Integer.valueOf(value) : 0
+
+        if (currValue < minValue) {
+            errors.rejectValue(property, "default.atLeast.asCalc")
+            return false
+        }
+        return true
+    }
 
     static def DEFAULT_VALUE = "~"
 
@@ -409,6 +427,8 @@ class ProcessCommand implements Serializable{
     String hasKontaktTel
     String hasDoladowania
     String hasAkceptantTel
+    String hasInformacjaHandlowa
+    String liczbaTerminali
 
     static constraints = {
 
@@ -485,7 +505,18 @@ class ProcessCommand implements Serializable{
            oplataMaestro(nullable:false, blank:false, shared: "number")
            oplataMasteroPr(nullable:false, blank:false, shared: "number")*/
         dccZakresUruchomienia(nullable:false, blank:false)
+
         informacjaHandlowa(nullable:false, blank:false)
+
+        hasInformacjaHandlowa(nullable:true, validator: { value, cmd, errors ->
+            if(value && cmd.informacjaHandlowa == DEFAULT_VALUE){
+                errors.rejectValue( "hasInformacjaHandlowa", "default.atLeastOne.informacjaHandlowa")
+                return false
+            }
+            return true
+        })
+
+
         oplataZaDzienneZestawienieTransakcji(nullable:false, blank:false, shared: "number")
         oplataZaMiesieczneZestawienieTransakcji(nullable:false, blank:false, shared: "number")
         oplataZaPotwierdzenieWykonaniaPrzelewu(nullable:false, blank:false, shared: "number")
@@ -516,7 +547,7 @@ class ProcessCommand implements Serializable{
             return true
         })
 
-        srednia_sprzedaz_doladowan(nullable:false, blank:false, shared:"number")
+        /*srednia_sprzedaz_doladowan(nullable:false, blank:false, shared:"number")*/
         srednia_sprzedaz_doladowan_slownie(nullable:false, blank:false, shared: "lettersonly")
 /*        ifOplataVISA(nullable:false, blank:false, shared: "number") //1.11 %, M
         ifOplataMasterCard(nullable:false, blank:false, shared: "number") //1.11 %, M
@@ -528,7 +559,7 @@ class ProcessCommand implements Serializable{
         dzialalnoscDokument(nullable:false, blank:true)
         dzialalnoscDokumentInny(nullable:true, blank:true, shared: "alpha")
         //okresLojalnosciowy(nullable:false, blank:false)
-        oplataZaPlatnoscWInnejWalucie(nullable:false, blank:false)
+        /*oplataZaPlatnoscWInnejWalucie(nullable:false, blank:false)*/
         kontaktTytul(nullable:false, blank:false)
         kontaktImie(nullable:false, blank:false, shared: "lettersonly")
         kontaktNazwisko(nullable:false, blank:false, shared: "lettersonly")
@@ -547,8 +578,6 @@ class ProcessCommand implements Serializable{
 
         kontaktTelKomorkowy(nullable:true)
         kontaktTelStacjonarny(nullable:true)
-
-
         kontaktEmail(nullable:true, blank:true, shared: "email")
         pozyskujacyTytul(nullable:false, blank:false)
         pozyskujacyImie(nullable:false, blank:false, shared: "lettersonly")
@@ -561,21 +590,62 @@ class ProcessCommand implements Serializable{
         reprezentant2Imie(nullable:true, blank:true, shared: "lettersonly")
         reprezentant2Nazwisko(nullable:true, blank:true, shared: "lettersonly")
 
-        visaEUKKOSt(nullable:false, blank:false, shared: "number")
-        visaEUKDSt(nullable:false, blank:false, shared: "number")
-        visaEUKBSt(nullable:false, blank:false, shared: "number")
-        visaOutEUKKOSt(nullable:false, blank:false, shared: "number")
-        visaOutEUKDSt(nullable:false, blank:false, shared: "number")
-        visaOutEUKBSt(nullable:false, blank:false, shared: "number")
-        visaPolskaKBSt(nullable:false, blank:false, shared: "number")
-        mastercardEUKKSt(nullable:false, blank:false, shared: "number")
-        mastercardEUKDSt(nullable:false, blank:false, shared: "number")
-        mastercardEUKBLSt(nullable:false, blank:false, shared: "number")
-        mastercardEUMSt(nullable:false, blank:false, shared: "number")
-        mastercardOutEUKKSt(nullable:false, blank:false, shared: "number")
-        mastercardOutEUKDSt(nullable:false, blank:false, shared: "number")
-        mastercardOutEUKBSt(nullable:false, blank:false, shared: "number")
-        mastercardOutEUMSt(nullable:false, blank:false, shared: "number")
+        visaEUKKOSt(nullable:false, blank:false, shared: "number", validator: { value, cmd, errors ->
+            atLeastClosure.call(value, cmd, errors, "visaEUKKOSt", "OPLATA_MSC_53_ZL")
+        })
+
+        visaEUKDSt(nullable:false, blank:false, shared: "number", validator: { value, cmd, errors ->
+            atLeastClosure.call(value, cmd, errors, "visaEUKDSt", "OPLATA_MSC_12_ZL")
+        })
+
+        visaEUKBSt(nullable:false, blank:false, shared: "number", validator: { value, cmd, errors ->
+            atLeastClosure.call(value, cmd, errors, "visaEUKBSt", "OPLATA_MSC_13_ZL")
+        })
+
+        visaOutEUKKOSt(nullable:false, blank:false, shared: "number", validator: { value, cmd, errors ->
+            atLeastClosure.call(value, cmd, errors, "visaOutEUKKOSt", "OPLATA_MSC_21_ZL")
+        })
+
+        visaOutEUKDSt(nullable:false, blank:false, shared: "number", validator: { value, cmd, errors ->
+            atLeastClosure.call(value, cmd, errors, "visaOutEUKDSt", "OPLATA_MSC_22_ZL")
+        })
+
+        visaOutEUKBSt(nullable:false, blank:false, shared: "number", validator: { value, cmd, errors ->
+            atLeastClosure.call(value, cmd, errors, "visaOutEUKBSt", "OPLATA_MSC_23_ZL")
+        })
+
+        visaPolskaKBSt(nullable:false, blank:false, shared: "number", validator: { value, cmd, errors ->
+            atLeastClosure.call(value, cmd, errors, "visaPolskaKBSt", "OPLATA_MSC_33_ZL")
+        })
+
+        mastercardEUKKSt(nullable:false, blank:false, shared: "number", validator: { value, cmd, errors ->
+            atLeastClosure.call(value, cmd, errors, "mastercardEUKKSt", "OPLATA_MSC_41_ZL")
+        })
+
+        mastercardEUKDSt(nullable:false, blank:false, shared: "number", validator: { value, cmd, errors ->
+            atLeastClosure.call(value, cmd, errors, "mastercardEUKDSt", "OPLATA_MSC_42_ZL")
+        })
+        mastercardEUKBLSt(nullable:false, blank:false, shared: "number", validator: { value, cmd, errors ->
+            atLeastClosure.call(value, cmd, errors, "mastercardEUKBLSt", "OPLATA_MSC_43_ZL")
+        })
+        mastercardEUMSt(nullable:false, blank:false, shared: "number", validator: { value, cmd, errors ->
+            atLeastClosure.call(value, cmd, errors, "mastercardEUMSt", "OPLATA_MSC_44_ZL")
+        })
+        mastercardOutEUKKSt(nullable:false, blank:false, shared: "number", validator: { value, cmd, errors ->
+            atLeastClosure.call(value, cmd, errors, "mastercardOutEUKKSt", "OPLATA_MSC_51_ZL")
+        })
+        mastercardOutEUKDSt(nullable:false, blank:false, shared: "number", validator: { value, cmd, errors ->
+            atLeastClosure.call(value, cmd, errors, "mastercardOutEUKDSt", "OPLATA_MSC_52_ZL")
+        })
+        mastercardOutEUKBSt(nullable:false, blank:false, shared: "number", validator: { value, cmd, errors ->
+            atLeastClosure.call(value, cmd, errors, "mastercardOutEUKBSt", "OPLATA_MSC_53_ZL")
+        })
+        mastercardOutEUMSt(nullable:false, blank:false, shared: "number", validator: { value, cmd, errors ->
+            atLeastClosure.call(value, cmd, errors, "mastercardOutEUMSt", "OPLATA_MSC_54_ZL")
+        })
+
+        dinersClubSt(nullable:true,blank:true,shared: "number")
+        ikoSt(nullable:true, blank:true,shared: "number")
 
         /*
         visaEUKKOPr(nullable:false, blank:false, shared: "percentage")
@@ -814,6 +884,31 @@ class ProcessCommand implements Serializable{
         poses(nullable:true)
         allPoints(nullable:true)
         allPoses(nullable:true)
+
+        liczbaTerminali(nullable:true, validator: { value, cmd, errors ->
+            //println("liczbaTerminali : " + value)
+            def max = value ? Integer.valueOf(value) : 0
+            def counter = 0
+
+            cmd.points?.each{ point ->
+                //println("point.terminalIlosc : " + point.terminalIlosc)
+                if(point.terminalIlosc?.toString()?.isNumber()){
+                    counter += Integer.valueOf(point.terminalIlosc)
+                }
+            }
+            /* cmd.allPoses?.each{ PosData pos ->
+                if(pos.posDetails.terminalIlosc){
+                    counter += pos.pointDetails.terminalIlosc;
+                }
+            }*/
+
+            if( counter > max) {
+                errors.rejectValue( "liczbaTerminali", "default.tooMuch.liczbaTerminali",)
+                return false
+            }
+            return true
+        })
+
     }
 
     def isFromCbd(def property){

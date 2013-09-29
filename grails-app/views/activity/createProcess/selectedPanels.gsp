@@ -128,6 +128,7 @@
 
     <g:form class="panelsForm">
         <g:hiddenField name="nip" value="${data.nip}"/>
+        <g:hiddenField name="liczbaTerminali" value="${data.liczbaTerminali}"/>
         <g:each var="panel" in="${processInstance.panels}" status="i">
             <g:if test="${panel != null}">
                 <g:if test="${panel.name.equals('danePunktu') == false && panel.name.equals('danePos') == false}">

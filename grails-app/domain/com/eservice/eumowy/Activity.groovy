@@ -24,6 +24,7 @@ class Activity implements Serializable {
     }
 
     static mapping = {
+        sort numerPozycji: "asc"
         table name: "ACTIVITY", schema: DomainConsts.SHEMA_NAME
         id generator:'sequence', params:[sequence:DomainConsts.SHEMA_NAME+'.ACTIVITY_SEQ']
     }

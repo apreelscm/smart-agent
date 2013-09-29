@@ -31,7 +31,16 @@
 			<div>
  			<p class="bold" ><g:message code="panel.newpoint.terminaloptions.phonecreditsrecharge" /></p>
  			<ul class="table-list vertical-center">
- 				<li><span><label for="${panelType}[${id}].telePompka"><g:checkBox name="${panelType}[${id}].telePompka" value="${pointData?.telePompka}"/><g:message code="panel.newpoint.terminaloptions.phonecreditsrecharge.telepompka" /></label></span> <span style="padding-left: 6em;"><label><g:message code="panel.newpoint.terminaloptions.phonecreditsrecharge.terminalcount" /> <g:textField name="${panelType}[${id}].terminalIlosc" id="${panelType}[${id}].terminalCount" value="${pointData?.terminalIlosc}" style="width: 50px;"/></label></span></li>
+ 				<li><span><label for="${panelType}[${id}].telePompka"><g:checkBox name="${panelType}[${id}].telePompka" value="${pointData?.telePompka}"/><g:message code="panel.newpoint.terminaloptions.phonecreditsrecharge.telepompka" /></label></span> <span style="padding-left: 6em;">
+
+                    %{--TODO--}%
+                    %{--liczbaTerminali--}%
+                    <label><g:message code="panel.newpoint.terminaloptions.phonecreditsrecharge.terminalcount" />
+                    <eumowy:numberField name="${panelType}[${id}].terminalIlosc" id="${panelType}[${id}].terminalCount" validatable="${data}"
+                                        class="${hasErrors(bean:data,field:'liczbaTerminali','error')}"
+                                        value="${pointData?.terminalIlosc}" style="width: 50px;"/></label>
+                </span></li>
+
  				<li><label for="${panelType}[${id}].teleKodzik"><g:checkBox name="${panelType}[${id}].teleKodzik" value="${pointData?.teleKodzik}"/><g:message code="panel.newpoint.terminaloptions.phonecreditsrecharge.telekodzik" /></label></li>
  			</ul>
  			<div>

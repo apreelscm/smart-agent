@@ -9,7 +9,7 @@
 <r:script>
 
     jQuery(document).ready(function() {
-      jQuery('#subscriberData').text(decodeURI('${params.name}') + " " + decodeURI('${params.surname}'));
+      jQuery('#subscriberData').html(decodeURI('${params.name}') + " " + decodeURI('${params.surname}'));
       jQuery('#padPlaceholder').html('<div class="typed"></div><canvas id="pad" class="pad" width="700" height="300"></canvas><input type="hidden" name="content" class="output">');
       jQuery('.sigPad').signaturePad({errorMessageDraw: '<g:message code="subscription.error" />'});
       
