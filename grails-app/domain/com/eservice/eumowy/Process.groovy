@@ -84,7 +84,7 @@ class Process implements Serializable {
         table name: "PROCESS", schema: DomainConsts.SHEMA_NAME
         id generator:'sequence', params:[sequence:DomainConsts.SHEMA_NAME+'.PROCESS_SEQ']
         sort id: "desc"
-       // client cascade: 'save-update'
+        client cascade: 'all-delete-orphan'
         subscriptions cascade:"all-delete-orphan"
         attachments cascade:"all-delete-orphan"
         documents cascade:"all-delete-orphan"

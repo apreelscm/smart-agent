@@ -65,10 +65,10 @@ create table EUMOWY.CALCFIELD_SIGNATURE (
 create table EUMOWY.CLIENT (
   id number(12,0) not null,
   version number(2,0) not null,
-  cbd_id varchar2(20 char) unique,
+  cbd_id varchar2(20 char),
   nip varchar2(20 char),
   mid varchar2(15 char),
-  name varchar2(255 char) unique,
+  name varchar2(255 char),
   primary key (id));
 
 create table EUMOWY.DOCUMENT (

@@ -3,7 +3,6 @@ package com.eservice.eumowy
 import com.eservice.eumowy.command.ProcessCommand
 import com.eservice.eumowy.process.DefineActivityCommand
 import com.eservice.eumowy.util.DateUtils
-import org.apache.pdfbox.pdmodel.PDDocument
 import org.codehaus.groovy.grails.web.json.JSONObject
 
 class ActivityController {
@@ -415,7 +414,7 @@ class ActivityController {
 
                 def client = cbdService.findClientByNip(flow.nip);
 
-                if(client?.id){
+                if(client?.cbdId){
                     flash.nipInfoMessage =  message(code:"client.found.info", default:"Znaleziono klienta w CBD");
                 }else {
                     /** sprawdzanie, czy to nie jest nowa umowa */
@@ -425,6 +424,7 @@ class ActivityController {
                         client = new Client(nip:params.nip)
                     }else{
                         flash.nipErrorMessage = message(code:"client.notFound.error", default:"Brak klienta");
+                        log.info(message(code:"client.notFound.error") + " - " + flow.nip)
                         return error();
                     }
                 }
@@ -432,7 +432,7 @@ class ActivityController {
                 flow.client = client;
 
                 /** sprawdzanie, czy w eUmowy istnieje dla danego Akceptanta niezakończony Proces */
-				def lastProcess = processService.getLastProcessNotStatus(client,[Process.ProcessStatus.REJECTED,Process.ProcessStatus.ACCEPTED])
+				def lastProcess = processService.getLastProcessWhenNotInStatus(params.nip,[Process.ProcessStatus.REJECTED,Process.ProcessStatus.ACCEPTED])
                 if(lastProcess){
                     flash.nipErrorMessage = message(code:"client.unfinishedProcess.error", default:"Dla Akceptanta istnieje niezakończony Proces");
 					lastProcess?.discard() // drop it from session
@@ -645,23 +645,38 @@ class ActivityController {
                 }
 
                 def client = cbdService.findClientByNip(flow.nip);
+                def lastProcess = processService.getLastProcessForClient(params.nip)
 
 
-                if(client?.id){
+                if(! client?.cbdId){
+                    /** sprawdzanie, czy to nie jest nowa umowa */
+                    def hasNowaUmowa = processService.containsActivity(lastProcess.activities,"nowaUmowa")
+                    if(hasNowaUmowa){
+                        flash.nipInfoMessage =  message(code:"client.new.info", default:"Nowy klient");
+                        client = new Client(nip:params.nip)
+                    }else {
+                        flash.nipErrorMessage = message(code:"client.notFound.error", default:"Brak klienta");
+                        log.info(message(code:"client.notFound.error") + " - " + flow.nip)
+                        return error();
+                    }
+                }
+                else {
                     flash.nipInfoMessage =  message(code:"client.found.info", default:"Znaleziono klienta w CBD");
-                }else {
-                    flash.nipErrorMessage = message(code:"client.notFound.error", default:"Brak klienta");
-                    return error();
                 }
 
-                flow.client = client;
 
-                /** sprawdzanie, czy w eUmowy istnieje dla danego Akceptanta niezakończony Proces */
-
-                def lastProcess = processService.getLastProcessNotStatus(client,[Process.ProcessStatus.ACCEPTED])
-                if(!lastProcess){
-                    flash.nipErrorMessage = message(code:"client.todo.error",
+                if (! lastProcess?.id){
+                    /* brak otwartego procesu */
+                    flash.nipErrorMessage = message(code:"process.openNotFound.error",
+                            default:"Brak otwartego procesu dla Akceptant" + flow.nip);
+                    log.info(message(code:"process.openNotFound.error") + " - " + flow.nip)
+                    return error()
+                }
+                else if (Process.ProcessStatus.ACCEPTED.equals(lastProcess?.status)){
+                    /* ostatni proces jest zaakceptowany */
+                    flash.nipErrorMessage = message(code:"process.youngerAcceptedProcess.error",
                             default:"Brak możliwości poprawy danych, istnieją inne nowsze zaakceptowane procesy dla tego Akceptanta");
+                    log.info(message(code:"process.youngerAcceptedProcess.error") + " - " + flow.nip)
                     return error()
                 }
 
@@ -670,11 +685,12 @@ class ActivityController {
 
                 if(!calcId){
                     flash.calcErrorMessage = message(code:"calc.notFound.error", default:"Kalkulator nie istnieje");
+                    log.info(message(code:"calc.notFound.error") + " - " + client.nip)
                     return error()
                 }
 
                 def calc = cbdService.findCalculatorByNip(client.nip)
-
+                log.info("pobrano kalkulator " + calcId)
 
                 if(!calculatorService.isCalcValid(calc,lastProcess.signatures)){
                     flash.calcErrorMessage =  message(code:"calc.notEnough.error", default:"Kalkulator nie pozwala na wykonanie wszystkich zaznaczonych czynności");
@@ -685,6 +701,11 @@ class ActivityController {
                 flow.calc = calc;
                 flow.calcNumber =  calcId;
                 flow.savedProcess = lastProcess
+
+                // aktualizacja danych klienta w procesie danymi z CBD
+                lastProcess.client = client
+                flow.client = lastProcess.client;
+
                 flash.calcInfoMessage = message(code:"calc.found.info", default:"Znaleziono");
             }
             on("success"){
@@ -768,7 +789,7 @@ class ActivityController {
         backToStart()
     }
 
-/** UZUPELNIJ PODPISY SUBFLOW */
+    /** UZUPELNIJ PODPISY SUBFLOW */
     def uzupelnijPodpisyFlow = {
         input {
             processInstance(required: true)
@@ -814,24 +835,22 @@ class ActivityController {
                 }
 
                 def client = cbdService.findClientByNip(flow.nip);
-
-                if(client?.id){
+                if(client?.cbdId){
                     flash.nipInfoMessage =  message(code:"client.found.info", default:"Znaleziono klienta w CBD");
-                }else {
-                    flash.nipErrorMessage = message(code:"client.notFound.error", default:"Brak klienta");
-                    return error();
                 }
 
-                flow.client = client;
-                /** sprawdzanie, czy w eUmowy istnieje dla danego Akceptanta niezakończony Proces */
-                def lastProcess = processService.getLastProcessWithStatus(client, [Process.ProcessStatus.WAIT_FOR_SUBSCRIPTION,Process.ProcessStatus.WAIT_FOR_SUBSCRIPTION_PAPER_VERSION])
-                if(!lastProcess){
-                    flash.nipErrorMessage = message(code:"client.todo.error",
-                            default:"Brak możliwości uzupełnienia podpisów.");
+                /** sprawdzanie, czy w eUmowy istnieje dla danego Akceptanta Proces w statusie oczekiwania na podpis */
+                def lastProcess = processService.getLastProcessForClient(params.nip)
+                if(! Process.ProcessStatus.WAIT_FOR_SUBSCRIPTION.equals(lastProcess?.status)){
+                    flash.nipErrorMessage = message(code:"client.addSignatures.error",
+                            default:"Brak możliwości uzupełnienia podpisów");
+                    log.info(message(code:"client.addSignatures.error") + " - " + flow.nip)
                     return error()
                 }
 
                 flow.savedProcess = lastProcess
+                flow.client = lastProcess.client
+
             }
             on("success"){
                 flash.calcInfoMessage = message(code:"calc.todo.info", default:"Pomijanie kalkulatora");
@@ -855,7 +874,7 @@ class ActivityController {
     }
 
 
-/** UZUPELNIJ PODPISY SUBFLOW */
+    /** ODZRUC DOKUMENTY SUBFLOW */
     def odrzucDokumentyFlow = {
         input {
             processInstance(required: true)
@@ -899,25 +918,36 @@ class ActivityController {
                 }
 
                 def client = cbdService.findClientByNip(flow.nip);
-
-                if(client?.id){
+                if(client?.cbdId){
                     flash.nipInfoMessage =  message(code:"client.found.info", default:"Znaleziono klienta w CBD");
-                }else {
-                    flash.nipErrorMessage = message(code:"client.notFound.error", default:"Brak klienta");
-                    return error();
                 }
 
-                flow.client = client;
+                /** sprawdzanie, czy w eUmowy istnieje dla danego Akceptanta jakis Proces */
+                def lastProcess = processService.getLastProcessForClient(params.nip)
 
+                if(! lastProcess?.id){
+                    flash.nipErrorMessage = message(code:"client.eUmowyNotFound.error", default:"Brak klienta w eUmowy");
+                    log.info(message(code:"client.eUmowyNotFound.error") + " - " + flow.nip)
+                    return error();
+                }
                 /** sprawdzanie, czy w eUmowy istnieje dla danego Akceptanta niezakończony Proces */
-                def lastProcess = processService.getLastProcessNotStatus(client,[Process.ProcessStatus.ACCEPTED,Process.ProcessStatus.REJECTED])
-                if(!lastProcess){
-                    flash.nipErrorMessage = message(code:"client.todo.error",
-                            default:"Nie można odrzucić dokumentów już zaakceptowanych");
+                else if (Process.ProcessStatus.ACCEPTED.equals(lastProcess?.status)){
+                    /* ostatni proces jest zaakceptowany */
+                    flash.nipErrorMessage = message(code:"process.rejectAccepted.error",
+                            default:"Nie można odrzucić dokumentów już zaakceptowanych")
+                    log.info(message(code:"process.rejectAccepted.error") + " - " + flow.nip)
+                    return error()
+
+                }
+                else if (Process.ProcessStatus.REJECTED.equals(lastProcess?.status)){
+                    flash.nipErrorMessage = message(code:" process.openNotFound.error",
+                            default:"Brak otwartego procesu dla tego Akceptanta")
+                    log.info(message(code:" process.openNotFound.error") + " - " + flow.nip)
                     return error()
                 }
 
                 flow.savedProcess = lastProcess
+                flow.client = lastProcess.client;
             }
             on("success"){
                 flash.calcInfoMessage = message(code:"calc.todo.info", default:"Pomijanie kalkulatora");
