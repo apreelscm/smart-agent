@@ -18,8 +18,6 @@ class ChooseActivityCommand {
 
     static constraints = {
 
-
-
     }
 
 }
