@@ -842,6 +842,7 @@ class ProcessCommand implements Serializable{
         akceptantFaxCbd(nullable:true)
         akceptantTelKomorkowyCbd(nullable:true)
         miejsceUmowy(nullable:true)
+        isZestawPosOdplatneUzywanieShown(nullable: true)
         oplPOSDialUpTyp(nullable:true)
         oplPOSDialUpIlosc(nullable:true, shared: "natural")
         oplPOSDialUpIloscPP(nullable:true, shared: "natural")

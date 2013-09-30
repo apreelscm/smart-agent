@@ -3,6 +3,7 @@
         <div class="belka-glowna"><g:message code="panel.pos.usage.title"/></div>
         <div style="text-align: center; padding-top: 20px;" class="centre">
             <div>
+                <g:hiddenField name="isZestawPosOdplatneUzywanieShown" value="tak"/>
                 <table class="vertical-center" >
                     <thead>
                         <tr><td></td><td></td><td></td><td></td><td colspan="2"  style="text-align: center;"><g:message code="panel.used.fees"/></td><td colspan="2"  style="text-align: center;"><g:message code="panel.preferential.rate"/></td></tr>

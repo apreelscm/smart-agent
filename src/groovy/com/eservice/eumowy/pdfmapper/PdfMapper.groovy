@@ -272,12 +272,8 @@ class PdfMapper {
         data.put(key+"3", [value.substring(10, 12)] as String[])
         data.put(key+"4", [value.substring(12, 15)] as String[])
     }
-
-	private mapPhPozyskPoint(def data, def pd, def key, def value, def index) {
-		data.put("osobaPodpisalaUmoweNr", [value] as String[])		
-	}
 	
-	  private mapUlicaDoKorespondencjiPoint(def data, def pd, def key, def value, def index) {
+	private mapUlicaDoKorespondencjiPoint(def data, def pd, def key, def value, def index) {
         data.put(key, [pd.ulicaDoKorespondencjiTyp + " " + value] as String[])
     }
 
@@ -343,6 +339,11 @@ class PdfMapper {
 	
 	private mapUwagiDodatkowePointDataDetails(def data, def pointData, def key, def value, def index) {
 		data.put(key, [value] as String[]);
+	}
+	
+	private mapPhPozyskPointDataDetails(def data, def pointData, def key, def value, def index) {
+		data.put(key, [value] as String[]);
+		data.put("osobaPodpisalaUmoweNr", [value] as String[])
 	}
 	
 	// ------------------ POS METHODS ------------------------------------
@@ -655,52 +656,67 @@ class PdfMapper {
 
     private mapIsZestawPosOdplatneUzywanieShownProcess(def data, def pd, def key, def value){
         if (value != null && "tak".equals(value)){
-            //byl pokazany panel zestawPosOdplatneUzywanie --> dzialamy
-//            String oplPOSDialUpTyp	 = DEFAULT_VALUE
-//            String oplPOSDialUpIlosc	 = DEFAULT_VALUE
-//            String oplPOSDialUpIloscPP	 = DEFAULT_VALUE
-//            String oplPOSDialUpNormalneMies	 = DEFAULT_VALUE
-//            String oplPOSDialUpNormalnePP	 = DEFAULT_VALUE
-//            String oplPOSDialUpPreferencyjneMies	 = DEFAULT_VALUE
-//            String oplPOSDialUpPreferencyjnePP	 = DEFAULT_VALUE
-//
-//            String oplPOSVPNTyp	 = DEFAULT_VALUE
-//            String oplPOSVPNIlosc	 = DEFAULT_VALUE
-//            String oplPOSVPNIloscPP	 = DEFAULT_VALUE
-//            String oplPOSVPNNormalneMies	 = DEFAULT_VALUE
-//            String oplPOSVPNNormalnePP	 = DEFAULT_VALUE
-//            String oplPOSVPNPreferencyjneMies	 = DEFAULT_VALUE
-//            String oplPOSVPNPreferencyjnePP	 = DEFAULT_VALUE
-//
-//            String oplPOSSSLTyp	 = DEFAULT_VALUE
-//            String oplPOSSSLIlosc	 = DEFAULT_VALUE
-//            String oplPOSSSLIloscPP	 = DEFAULT_VALUE
-//            String oplPOSSSLNormalneMies	 = DEFAULT_VALUE
-//            String oplPOSSSLNormalnePP	 = DEFAULT_VALUE
-//            String oplPOSSSLPreferencyjneMies	 = DEFAULT_VALUE
-//            String oplPOSSSLPreferencyjnePP	 = DEFAULT_VALUE
-//
-//            String oplPOSWiFiTyp	 = DEFAULT_VALUE
-//            String oplPOSWiFiIlosc	 = DEFAULT_VALUE
-//            String oplPOSWiFiIloscPP	 = DEFAULT_VALUE
-//            String oplPOSWiFiNormalneMies	 = DEFAULT_VALUE
-//            String oplPOSWiFiNormalnePP	 = DEFAULT_VALUE
-//            String oplPOSWiFiPreferencyjneMies	 = DEFAULT_VALUE
-//            String oplPOSWiFiPreferencyjnePP	 = DEFAULT_VALUE
-//
-//            String oplPOSGPRSTyp	 = DEFAULT_VALUE
-//            String oplPOSGPRSIlosc	 = DEFAULT_VALUE
-//            String oplPOSGPRSIloscPP	 = DEFAULT_VALUE
-//            String oplPOSGPRSNormalneMies	 = DEFAULT_VALUE
-//            String oplPOSGPRSNormalnePP	 = DEFAULT_VALUE
-//            String oplPOSGPRSPreferencyjneMies	 = DEFAULT_VALUE
-//            String oplPOSGPRSPreferencyjnePP	 = DEFAULT_VALUE
+            def suffixes = ['A', 'B', 'C'];
 
+            def resultNormalMap = new TreeMap<Integer, Integer>();
+            addToPosMap(pd, resultNormalMap, 'oplPOSDialUpIlosc', 'oplPOSDialUpNormalneMies', 'oplPOSDialUpNormalnePP')
+            addToPosMap(pd, resultNormalMap, 'oplPOSVPNIlosc', 'oplPOSVPNNormalneMies', 'oplPOSVPNNormalnePP')
+            addToPosMap(pd, resultNormalMap, 'oplPOSSSLIlosc', 'oplPOSSSLNormalneMies', 'oplPOSSSLNormalnePP')
+            addToPosMap(pd, resultNormalMap, 'oplPOSWiFiIlosc', 'oplPOSWiFiNormalneMies', 'oplPOSWiFiNormalnePP')
+            addToPosMap(pd, resultNormalMap, 'oplPOSGPRSIlosc', 'oplPOSGPRSNormalneMies', 'oplPOSGPRSNormalnePP')
+            addToData(data, resultNormalMap, 'oplatyPOSIlosc', 'oplatyPOSCena', suffixes)
 
+            def resultPrefMap = new TreeMap<Integer, Integer>();
+            addToPosMap(pd, resultPrefMap, 'oplPOSDialUpIlosc', 'oplPOSDialUpPreferencyjneMies', 'oplPOSDialUpPreferencyjnePP')
+            addToPosMap(pd, resultPrefMap, 'oplPOSVPNIlosc', 'oplPOSVPNPreferencyjneMies', 'oplPOSVPNPreferencyjnePP')
+            addToPosMap(pd, resultPrefMap, 'oplPOSSSLIlosc', 'oplPOSSSLPreferencyjneMies', 'oplPOSSSLPreferencyjnePP')
+            addToPosMap(pd, resultPrefMap, 'oplPOSWiFiIlosc', 'oplPOSWiFiPreferencyjneMies', 'oplPOSWiFiPreferencyjnePP')
+            addToPosMap(pd, resultPrefMap, 'oplPOSGPRSIlosc', 'oplPOSGPRSPreferencyjneMies', 'oplPOSGPRSPreferencyjnePP')
+            addToData(data, resultPrefMap, 'oplatyPOSPrefIlosc', 'oplatyPOSPrefCena', suffixes)
         }
     }
 
-	//------------------- STRINGBUILDER -------------------------------------
+    def addToData(def data, def resultNormalMap, def countPdfFileName, def pricePdfFileName, def suffixes) {
+        resultNormalMap.eachWithIndex{ key, value, index ->
+            if (index < suffixes.size()){
+                data.put(pricePdfFileName+suffixes[index], [key.toString()] as String[])
+                data.put(countPdfFileName+suffixes[index], [value.toString()] as String[])
+            }
+        }
+    }
+
+    def addToPosMap(def pd, def resultMap, def countKey, def normalPriceKey, def normalPricePPKey) {
+        def countResult = convertToInteger(getFromProcessDataSet(pd, countKey));
+
+        if (countResult.isDigit && countResult.value>0){
+            def priceResult = convertToInteger(getFromProcessDataSet(pd, normalPriceKey));
+            def pricePPResult = convertToInteger(getFromProcessDataSet(pd, normalPricePPKey));
+
+            def priceSum = 0;
+            if (priceResult.isDigit && priceResult.value>0){
+                priceSum+=priceResult.value
+            }
+            if (pricePPResult.isDigit && pricePPResult.value>0){
+                priceSum+=pricePPResult.value
+            }
+
+            if (priceSum>0){
+                resultMap.put(priceSum, countResult.value+=resultMap.containsKey(priceSum)?resultMap.get(priceSum):0)
+            }
+        }
+    }
+
+    def convertToInteger(def value){
+        def resultInt
+        try {
+            resultInt = value.toInteger();
+        } catch (Exception e){
+            return ["isDigit":false]
+        }
+        return ["isDigit":true, "value":resultInt]
+    }
+
+//------------------- STRINGBUILDER -------------------------------------
 	private String getAddress(String streetType, String street, String houseNumber, String flatNumber, String postalCode, String city){
 		def sb = new StringBuilder();
 

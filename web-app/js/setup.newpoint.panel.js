@@ -11,14 +11,14 @@ function getGlobalPanelCount(prefix) {
 }
 
 function setupNewPointPanelHandlers(prevPanelId, panelId, prefix) {
+    var prefixPanel = "#"+prefix+"\\["+panelId+"\\]\\";
 
-    //jQuery(document).ready(function() {
-    jQuery("#"+prefix+"\\["+panelId+"\\]\\.bankAccountNumber").on("keyup", {p: prefix, pid: panelId}, function(e) {
+    jQuery(prefixPanel + ".bankAccountNumber").on("keyup", {p: prefix, pid: panelId}, function(e) {
         var accountNr = jQuery(e.target).val();
         if ( accountNr != undefined && accountNr != null){
 
-            var bankNameInput = jQuery("#"+prefix+"\\["+panelId+"\\]\\.bankName");
-            var bankIdInput = jQuery("#"+prefix+"\\["+panelId+"\\]\\.bankId");
+            var bankNameInput = jQuery(prefixPanel + ".bankName");
+            var bankIdInput = jQuery(prefixPanel + ".bankId");
 
             if (validateAccountNumber(accountNr)){
                 jQuery.get("/eumowy/activity/getBankName", {accountNo: accountNr.replace(/\s+/g, '')}, function(data) {
@@ -35,151 +35,107 @@ function setupNewPointPanelHandlers(prevPanelId, panelId, prefix) {
         }
     });
 
-    jQuery("#"+prefix+"\\["+panelId+"\\]\\.mccCode").on("keyup", {p: prefix, pid: panelId}, function(e) {
+    jQuery(prefixPanel + ".mccCode").on("keyup", {p: prefix, pid: panelId}, function(e) {
         var mcc = jQuery(e.target).val();
         if ( mcc != undefined && mcc != null){
             jQuery.get("/eumowy/activity/getRodzajDzialalnosci", {mcc: mcc}, function(data) {
                 if (data != undefined && data != null && data != "") {
                     var obj = JSON.parse(data);
-                    jQuery("#"+prefix+"\\["+panelId+"\\]\\.bussinessTypeInPractice").val(obj.id);
+                    jQuery(prefixPanel + ".bussinessTypeInPractice").val(obj.id);
                 }
             });
         }
     });
 
-    jQuery("#"+prefix+"\\["+panelId+"\\]\\.plannedInstallationDate").datepicker({ dateFormat: 'yy-mm-dd', minDate: 0 });
-    jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseFrom").timepicker({
+    jQuery(prefixPanel + ".plannedInstallationDate").datepicker({ dateFormat: 'yy-mm-dd', minDate: 0 });
+    jQuery(prefixPanel + ".dayCloseFrom").timepicker({
         controlType: 'select',
         timeFormat: 'HH:mm',
-        onClose: function(dateText, inst) {
-            if (jQuery( "#"+prefix+"\\["+panelId+"\\]\\.dayCloseTo").val() != '') {
-                var testStartDate = jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseFrom").datetimepicker('getDate');
-                var testEndDate = jQuery( "#"+prefix+"\\["+panelId+"\\]\\.dayCloseTo").datetimepicker('getDate');
-                console.log("TEST testStartDate > testEndDate\nstartDate: " + testStartDate + "\nendDate: " + testEndDate);
-                console.log(testStartDate)
-                console.log(testEndDate)
-                if (testStartDate > testEndDate) {
-                    console.log("testStartDate > testEndDate")
-                    jQuery( "#"+prefix+"\\["+panelId+"\\]\\.dayCloseTo").datetimepicker('setDate', testStartDate);
-                }
-            }
-            else {
-                jQuery( "#"+prefix+"\\["+panelId+"\\]\\.dayCloseTo").val(dateText);
-            }
+        onClose: function(dateText, inst){
+            onCloseDayCloseFrom(prefix, panelId);
         },
-        onSelect: function (selectedDateTime){
-            var oldValue = jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseTo").val();
-            var newValue = jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseFrom").datetimepicker('getDate');
-            newValue.setTime(newValue.getTime() + (1*60*1000)); //add one minute
-
-            jQuery( "#"+prefix+"\\["+panelId+"\\]\\.dayCloseTo").datetimepicker('option', 'minDateTime', newValue);
-            jQuery( "#"+prefix+"\\["+panelId+"\\]\\.dayCloseTo").val(oldValue);
+        onSelect: function (selectedDateTime) {
+            onSelectDayCloseFrom(prefix, panelId);
         }
-        /*onClose: function( selectedDate ) {
-         jQuery( "#"+prefix+"\\["+panelId+"\\]\\.dayCloseTo").timepicker( "option", "minDate", selectedDate );
-         },
-         onSelect: function (selectedDateTime){
-         jQuery( "#"+prefix+"\\["+panelId+"\\]\\.dayCloseTo").timepicker("option", "minDate", selectedDateTime );
-         }*/
     });
-    jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseTo").timepicker({
+    jQuery(prefixPanel + ".dayCloseTo").timepicker({
         controlType: 'select',
         timeFormat: 'HH:mm',
-        onClose: function(dateText, inst) {
-            if (jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseFrom").val() != '') {
-                var testStartDate = jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseFrom").datetimepicker('getDate');
-                var testEndDate = jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseTo").datetimepicker('getDate');
-                if (testStartDate > testEndDate) {
-                    jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseFrom").datetimepicker('setDate', testEndDate);
-                }
-            }
-            else {
-                jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseFrom").val(dateText);
-            }
+        onClose: function(dateText, inst){
+            onCloseDayCloseTo(prefix, panelId);
         },
-        onSelect: function (selectedDateTime){
-            var oldValue = jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseFrom").val();
-            var newValue = jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseTo").datetimepicker('getDate')
-
-            jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseFrom").datetimepicker('option', 'maxDate', newValue );
-            jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseFrom").val(oldValue);
+        onSelect: function (selectedDateTime) {
+            onSelectDayCloseTo(prefix, panelId);
         }
-        /*onClose: function( selectedDate ) {
-         jQuery( "#"+prefix+"\\["+panelId+"\\]\\.dayCloseFrom").timepicker( "option", "maxDate", selectedDate );
-         },
-         onSelect: function (selectedDateTime){
-         jQuery( "#"+prefix+"\\["+panelId+"\\]\\.dayCloseFrom").timepicker("option", "maxDate", selectedDateTime );
-         }*/
     });
 
-    jQuery("#"+prefix+"\\["+panelId+"\\]\\.dataforprintingAsAbove").on("click", function(e) {
+    jQuery(prefixPanel + ".dataforprintingAsAbove").on("click", function(e) {
         if(e.target.checked) {
-            jQuery("#"+prefix+"\\["+panelId+"\\]\\.pointNameForSearchEngine").val(jQuery("#"+prefix+"\\["+panelId+"\\]\\.pointNameForPrintingFromPOSTerminal").val()).keyup();
+            jQuery(prefixPanel + ".pointNameForSearchEngine").val(jQuery(prefixPanel + ".pointNameForPrintingFromPOSTerminal").val()).keyup();
         } else {
-            jQuery("#"+prefix+"\\["+panelId+"\\]\\.pointNameForSearchEngine").val("");
+            jQuery(prefixPanel + ".pointNameForSearchEngine").val("");
         }
     });
 
-    jQuery("#"+prefix+"\\["+panelId+"\\]\\.dataforprintingAsForMerchant").on("click", function(e) {
-        //console.log("clicked");
+    jQuery(prefixPanel + ".dataforprintingAsForMerchant").on("click", function(e) {
         if(e.target.checked) {
-            jQuery("#"+prefix+"\\["+panelId+"\\]\\.dataforprintingAddressStreetType").val(jQuery("#akceptantUlicaTytul").val()).keyup();
-            jQuery("#"+prefix+"\\["+panelId+"\\]\\.dataforprintingAddressStreet").val(jQuery("#akceptantUlica").val()).keyup();
-            jQuery("#"+prefix+"\\["+panelId+"\\]\\.dataforprintingAddressHomeNumber").val(jQuery("#akceptantNrDomu").val()).keyup();
-            jQuery("#"+prefix+"\\["+panelId+"\\]\\.dataforprintingAddressFlatNumber").val(jQuery("#akceptantNrMieszkania").val()).keyup();
-            jQuery("#"+prefix+"\\["+panelId+"\\]\\.dataforprintingAddressCity").val(jQuery("#akceptantMiasto").val()).keyup();
-            jQuery("#"+prefix+"\\["+panelId+"\\]\\.dataforprintingAddressPostalCode").val(jQuery("#akceptantKodPocztowy").val()).keyup();
-            jQuery("#"+prefix+"\\["+panelId+"\\]\\.dataforprintingAddressPostOffice").val(jQuery("#akceptantPoczta").val()).keyup();
+            jQuery(prefixPanel + ".dataforprintingAddressStreetType").val(jQuery("#akceptantUlicaTytul").val()).keyup();
+            jQuery(prefixPanel + ".dataforprintingAddressStreet").val(jQuery("#akceptantUlica").val()).keyup();
+            jQuery(prefixPanel + ".dataforprintingAddressHomeNumber").val(jQuery("#akceptantNrDomu").val()).keyup();
+            jQuery(prefixPanel + ".dataforprintingAddressFlatNumber").val(jQuery("#akceptantNrMieszkania").val()).keyup();
+            jQuery(prefixPanel + ".dataforprintingAddressCity").val(jQuery("#akceptantMiasto").val()).keyup();
+            jQuery(prefixPanel + ".dataforprintingAddressPostalCode").val(jQuery("#akceptantKodPocztowy").val()).keyup();
+            jQuery(prefixPanel + ".dataforprintingAddressPostOffice").val(jQuery("#akceptantPoczta").val()).keyup();
         } else {
-            jQuery("#"+prefix+"\\["+panelId+"\\]\\.dataforprintingAddressStreetType").val("");
-            jQuery("#"+prefix+"\\["+panelId+"\\]\\.dataforprintingAddressStreet").val("");
-            jQuery("#"+prefix+"\\["+panelId+"\\]\\.dataforprintingAddressHomeNumber").val("");
-            jQuery("#"+prefix+"\\["+panelId+"\\]\\.dataforprintingAddressFlatNumber").val("");
-            jQuery("#"+prefix+"\\["+panelId+"\\]\\.dataforprintingAddressCity").val("");
-            jQuery("#"+prefix+"\\["+panelId+"\\]\\.dataforprintingAddressPostalCode").val("");
-            jQuery("#"+prefix+"\\["+panelId+"\\]\\.dataforprintingAddressPostOffice").val("");
+            jQuery(prefixPanel + ".dataforprintingAddressStreetType").val("");
+            jQuery(prefixPanel + ".dataforprintingAddressStreet").val("");
+            jQuery(prefixPanel + ".dataforprintingAddressHomeNumber").val("");
+            jQuery(prefixPanel + ".dataforprintingAddressFlatNumber").val("");
+            jQuery(prefixPanel + ".dataforprintingAddressCity").val("");
+            jQuery(prefixPanel + ".dataforprintingAddressPostalCode").val("");
+            jQuery(prefixPanel + ".dataforprintingAddressPostOffice").val("");
         }
     });
 
-    jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAddressAsForMerchant").on("change", function(e) {
-        jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAddressAddressStreetType").val(jQuery("#akceptantUlicaTytul").val());
-        jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAddressAddressStreet").val(jQuery("#akceptantUlica").val()).keyup();
-        jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAddressAddressHomeNumber").val(jQuery("#akceptantNrDomu").val()).keyup();
-        jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAddressAddressFlatNumber").val(jQuery("#akceptantNrMieszkania").val()).keyup();
-        jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAddressAddressCity").val(jQuery("#akceptantMiasto").val()).keyup();
-        jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAddressAddressPostalCode").val(jQuery("#akceptantKodPocztowy").val()).keyup();
-        jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAddressAddressPostOffice").val(jQuery("#akceptantPoczta").val()).keyup();
+    jQuery(prefixPanel + ".contactAddressAsForMerchant").on("change", function(e) {
+        jQuery(prefixPanel + ".contactAddressAddressStreetType").val(jQuery("#akceptantUlicaTytul").val());
+        jQuery(prefixPanel + ".contactAddressAddressStreet").val(jQuery("#akceptantUlica").val()).keyup();
+        jQuery(prefixPanel + ".contactAddressAddressHomeNumber").val(jQuery("#akceptantNrDomu").val()).keyup();
+        jQuery(prefixPanel + ".contactAddressAddressFlatNumber").val(jQuery("#akceptantNrMieszkania").val()).keyup();
+        jQuery(prefixPanel + ".contactAddressAddressCity").val(jQuery("#akceptantMiasto").val()).keyup();
+        jQuery(prefixPanel + ".contactAddressAddressPostalCode").val(jQuery("#akceptantKodPocztowy").val()).keyup();
+        jQuery(prefixPanel + ".contactAddressAddressPostOffice").val(jQuery("#akceptantPoczta").val()).keyup();
     });
 
-    jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAddressAsOnPrint").on("change", function(e) {
-        jQuery("#"+prefix+"\\["+panelId+"\\]\\.dataforprintingAddressStreetType").val(jQuery("#"+prefix+"\\["+panelId+"\\]\\.dataforprintingAddressStreetType").val()).keyup();
-        jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAddressAddressStreet").val(jQuery("#"+prefix+"\\["+panelId+"\\]\\.dataforprintingAddressStreet").val()).keyup();
-        jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAddressAddressHomeNumber").val(jQuery("#"+prefix+"\\["+panelId+"\\]\\.dataforprintingAddressHomeNumber").val()).keyup();
-        jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAddressAddressFlatNumber").val(jQuery("#"+prefix+"\\["+panelId+"\\]\\.dataforprintingAddressFlatNumber").val()).keyup();
-        jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAddressAddressCity").val(jQuery("#"+prefix+"\\["+panelId+"\\]\\.dataforprintingAddressCity").val()).keyup();
-        jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAddressAddressPostalCode").val(jQuery("#"+prefix+"\\["+panelId+"\\]\\.dataforprintingAddressPostalCode").val()).keyup();
-        jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAddressAddressPostOffice").val(jQuery("#"+prefix+"\\["+panelId+"\\]\\.dataforprintingAddressPostOffice").val()).keyup();
+    jQuery(prefixPanel + ".contactAddressAsOnPrint").on("change", function(e) {
+        jQuery(prefixPanel + ".dataforprintingAddressStreetType").val(jQuery(prefixPanel + ".dataforprintingAddressStreetType").val()).keyup();
+        jQuery(prefixPanel + ".contactAddressAddressStreet").val(jQuery(prefixPanel + ".dataforprintingAddressStreet").val()).keyup();
+        jQuery(prefixPanel + ".contactAddressAddressHomeNumber").val(jQuery(prefixPanel + ".dataforprintingAddressHomeNumber").val()).keyup();
+        jQuery(prefixPanel + ".contactAddressAddressFlatNumber").val(jQuery(prefixPanel + ".dataforprintingAddressFlatNumber").val()).keyup();
+        jQuery(prefixPanel + ".contactAddressAddressCity").val(jQuery(prefixPanel + ".dataforprintingAddressCity").val()).keyup();
+        jQuery(prefixPanel + ".contactAddressAddressPostalCode").val(jQuery(prefixPanel + ".dataforprintingAddressPostalCode").val()).keyup();
+        jQuery(prefixPanel + ".contactAddressAddressPostOffice").val(jQuery(prefixPanel + ".dataforprintingAddressPostOffice").val()).keyup();
     });
 
-    jQuery("#"+prefix+"\\["+panelId+"\\]\\.persontocontactAsForMerchant").on("click", function(e) {
+    jQuery(prefixPanel + ".persontocontactAsForMerchant").on("click", function(e) {
         if (e.target.checked) {
-            jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAtPointTitle").val(jQuery("#kontaktTytul").val()).keyup();
-            jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAtPointFirstName").val(jQuery("#kontaktImie").val()).keyup();
-            jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAtPointLastName").val(jQuery("#kontaktNazwisko").val()).keyup();
-            jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAtPointPhone").val(jQuery("#kontaktTelStacjonarny").val()).keyup();
-            jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAtPointMobilePhone").val(jQuery("#kontaktTelKomorkowy").val()).keyup();
-            jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAtPointEmail").val(jQuery("#kontaktEmail").val()).keyup();
+            jQuery(prefixPanel + ".contactAtPointTitle").val(jQuery("#kontaktTytul").val()).keyup();
+            jQuery(prefixPanel + ".contactAtPointFirstName").val(jQuery("#kontaktImie").val()).keyup();
+            jQuery(prefixPanel + ".contactAtPointLastName").val(jQuery("#kontaktNazwisko").val()).keyup();
+            jQuery(prefixPanel + ".contactAtPointPhone").val(jQuery("#kontaktTelStacjonarny").val()).keyup();
+            jQuery(prefixPanel + ".contactAtPointMobilePhone").val(jQuery("#kontaktTelKomorkowy").val()).keyup();
+            jQuery(prefixPanel + ".contactAtPointEmail").val(jQuery("#kontaktEmail").val()).keyup();
         } else {
-            jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAtPointTitle").val('');
-            jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAtPointFirstName").val('');
-            jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAtPointLastName").val('');
-            jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAtPointPhone").val("");
-            jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAtPointMobilePhone").val("");
-            jQuery("#"+prefix+"\\["+panelId+"\\]\\.contactAtPointEmail").val("");
+            jQuery(prefixPanel + ".contactAtPointTitle").val('');
+            jQuery(prefixPanel + ".contactAtPointFirstName").val('');
+            jQuery(prefixPanel + ".contactAtPointLastName").val('');
+            jQuery(prefixPanel + ".contactAtPointPhone").val("");
+            jQuery(prefixPanel + ".contactAtPointMobilePhone").val("");
+            jQuery(prefixPanel + ".contactAtPointEmail").val("");
         }
     });
 
-    jQuery("#"+prefix+"\\["+panelId+"\\]\\.sameForEveryPoint").on("click", function(e) {
+    jQuery(prefixPanel + ".sameForEveryPoint").on("click", function(e) {
         if (e.target.checked) {
             for(var i = 0; i < getGlobalPanelCount(prefix); i++) {
                 if (i != panelId) {
@@ -196,7 +152,7 @@ function setupNewPointPanelHandlers(prevPanelId, panelId, prefix) {
         }
     });
 
-    jQuery("#"+prefix+"\\["+panelId+"\\]\\.possetforselectedpointSameForEveryPoint").on("click", function(e) {
+    jQuery(prefixPanel + ".possetforselectedpointSameForEveryPoint").on("click", function(e) {
         if (e.target.checked) {
             for(var i = 0; i < getGlobalPanelCount(prefix); i++) {
                 if (i != panelId) {
@@ -213,7 +169,7 @@ function setupNewPointPanelHandlers(prevPanelId, panelId, prefix) {
         }
     });
 
-    jQuery("#"+prefix+"\\["+panelId+"\\]\\.technicalinformationSameForEveryPoint").on("click", function(e) {
+    jQuery(prefixPanel + ".technicalinformationSameForEveryPoint").on("click", function(e) {
         if (e.target.checked) {
             for(var i = 0; i < getGlobalPanelCount(prefix); i++) {
                 if (i != panelId) {
@@ -230,7 +186,7 @@ function setupNewPointPanelHandlers(prevPanelId, panelId, prefix) {
         }
     });
 
-    jQuery("#"+prefix+"\\["+panelId+"\\]\\.terminaloptionsSameForEveryPoint").on("click", function(e) {
+    jQuery(prefixPanel + ".terminaloptionsSameForEveryPoint").on("click", function(e) {
         if (e.target.checked) {
             for(var i = 0; i < getGlobalPanelCount(prefix); i++) {
                 if (i != panelId) {
@@ -247,7 +203,7 @@ function setupNewPointPanelHandlers(prevPanelId, panelId, prefix) {
         }
     });
 
-    jQuery("#"+prefix+"\\["+panelId+"\\]\\.additionalequipmentSameForEveryPoint").on("click", function(e) {
+    jQuery(prefixPanel + ".additionalequipmentSameForEveryPoint").on("click", function(e) {
         if (e.target.checked) {
             for(var i = 0; i < getGlobalPanelCount(prefix); i++) {
                 if (i != panelId) {
@@ -265,15 +221,14 @@ function setupNewPointPanelHandlers(prevPanelId, panelId, prefix) {
     });
 
     // pobieranie numeru PH do ph pozysk oraz opieka biznesowa
-    jQuery("#"+prefix+"\\["+panelId+"\\]\\.phGain").val(jQuery("#pozyskujacyNumer").val());
-    jQuery("#"+prefix+"\\["+panelId+"\\]\\.businessCare").val(jQuery("#pozyskujacyNumer").val());
+    jQuery(prefixPanel + ".phGain").val(jQuery("#pozyskujacyNumer").val());
+    jQuery(prefixPanel + ".businessCare").val(jQuery("#pozyskujacyNumer").val());
 
     //});
 
 }
 
 function setupNewPointPanelData(prevPanelId, panelId) {
-    //jQuery(document).ready(function() {
 
     var terminaloptions = {};
     var technicalinformation = {};
@@ -513,72 +468,30 @@ function clearNewPointData(prevPanelId, panelId) {
 }
 
 function setupNewPosPanelHandlers(prevPanelId, panelId, prefix) {
-    jQuery("#"+prefix+"\\["+panelId+"\\]\\.plannedInstallationDate").datepicker({ dateFormat: 'yy-mm-dd', minDate: 0 });
-    jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseFrom").timepicker({
+    var prefixPanel = "#"+prefix+"\\["+panelId+"\\]\\";
+    jQuery(prefixPanel + ".plannedInstallationDate").datepicker({ dateFormat: 'yy-mm-dd', minDate: 0 });
+    jQuery(prefixPanel + ".dayCloseFrom").timepicker({
         controlType: 'select',
         timeFormat: 'HH:mm',
-        onClose: function(dateText, inst) {
-            if (jQuery( "#"+prefix+"\\["+panelId+"\\]\\.dayCloseTo").val() != '') {
-                var testStartDate = jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseFrom").datetimepicker('getDate');
-                var testEndDate = jQuery( "#"+prefix+"\\["+panelId+"\\]\\.dayCloseTo").datetimepicker('getDate');
-                console.log("TEST testStartDate > testEndDate\nstartDate: " + testStartDate + "\nendDate: " + testEndDate);
-                console.log(testStartDate)
-                console.log(testEndDate)
-                if (testStartDate > testEndDate) {
-                    console.log("testStartDate > testEndDate")
-                    jQuery( "#"+prefix+"\\["+panelId+"\\]\\.dayCloseTo").datetimepicker('setDate', testStartDate);
-                }
-            }
-            else {
-                jQuery( "#"+prefix+"\\["+panelId+"\\]\\.dayCloseTo").val(dateText);
-            }
+        onClose: function(dateText, inst){
+            onCloseDayCloseFrom(prefix, panelId);
         },
         onSelect: function (selectedDateTime){
-            var oldValue = jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseTo").val();
-            var newValue = jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseFrom").datetimepicker('getDate');
-            newValue.setTime(newValue.getTime() + (1*60*1000)); //add one minute
-
-            jQuery( "#"+prefix+"\\["+panelId+"\\]\\.dayCloseTo").datetimepicker('option', 'minDateTime', newValue);
-            jQuery( "#"+prefix+"\\["+panelId+"\\]\\.dayCloseTo").val(oldValue);
+            onSelectDayCloseFrom(prefix, panelId);
         }
-        /*onClose: function( selectedDate ) {
-         jQuery( "#"+prefix+"\\["+panelId+"\\]\\.dayCloseTo").timepicker( "option", "minDate", selectedDate );
-         },
-         onSelect: function (selectedDateTime){
-         jQuery( "#"+prefix+"\\["+panelId+"\\]\\.dayCloseTo").timepicker("option", "minDate", selectedDateTime );
-         }*/
     });
-    jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseTo").timepicker({
+    jQuery(prefixPanel + ".dayCloseTo").timepicker({
         controlType: 'select',
         timeFormat: 'HH:mm',
-        onClose: function(dateText, inst) {
-            if (jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseFrom").val() != '') {
-                var testStartDate = jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseFrom").datetimepicker('getDate');
-                var testEndDate = jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseTo").datetimepicker('getDate');
-                if (testStartDate > testEndDate) {
-                    jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseFrom").datetimepicker('setDate', testEndDate);
-                }
-            }
-            else {
-                jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseFrom").val(dateText);
-            }
+        onClose: function(dateText, inst){
+            onCloseDayCloseTo(prefix, panelId)
         },
-        onSelect: function (selectedDateTime){
-            var oldValue = jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseFrom").val();
-            var newValue = jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseTo").datetimepicker('getDate')
-
-            jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseFrom").datetimepicker('option', 'maxDate', newValue );
-            jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseFrom").val(oldValue);
+        onSelect: function (selectedDateTime) {
+            onSelectDayCloseTo(prefix, panelId);
         }
-        /*onClose: function( selectedDate ) {
-         jQuery( "#"+prefix+"\\["+panelId+"\\]\\.dayCloseFrom").timepicker( "option", "maxDate", selectedDate );
-         },
-         onSelect: function (selectedDateTime){
-         jQuery( "#"+prefix+"\\["+panelId+"\\]\\.dayCloseFrom").timepicker("option", "maxDate", selectedDateTime );
-         }*/
     });
 
-    jQuery("#"+prefix+"\\["+panelId+"\\]\\.sameForEveryPoint").on("click", function(e) {
+    jQuery(prefixPanel + ".sameForEveryPoint").on("click", function(e) {
         if (e.target.checked) {
             for(var i = 0; i < getGlobalPanelCount(prefix); i++) {
                 if (i != panelId) {
@@ -595,7 +508,7 @@ function setupNewPosPanelHandlers(prevPanelId, panelId, prefix) {
         }
     });
 
-    jQuery("#"+prefix+"\\["+panelId+"\\]\\.possetforselectedpointSameForEveryPoint").on("click", function(e) {
+    jQuery(prefixPanel + ".possetforselectedpointSameForEveryPoint").on("click", function(e) {
         if (e.target.checked) {
             for(var i = 0; i < getGlobalPanelCount(prefix); i++) {
                 if (i != panelId) {
@@ -612,7 +525,7 @@ function setupNewPosPanelHandlers(prevPanelId, panelId, prefix) {
         }
     });
 
-    jQuery("#"+prefix+"\\["+panelId+"\\]\\.technicalinformationSameForEveryPoint").on("click", function(e) {
+    jQuery(prefixPanel + ".technicalinformationSameForEveryPoint").on("click", function(e) {
         if (e.target.checked) {
             for(var i = 0; i < getGlobalPanelCount(prefix); i++) {
                 if (i != panelId) {
@@ -629,7 +542,7 @@ function setupNewPosPanelHandlers(prevPanelId, panelId, prefix) {
         }
     });
 
-    jQuery("#"+prefix+"\\["+panelId+"\\]\\.terminaloptionsSameForEveryPoint").on("click", function(e) {
+    jQuery(prefixPanel + ".terminaloptionsSameForEveryPoint").on("click", function(e) {
         if (e.target.checked) {
             for(var i = 0; i < getGlobalPanelCount(prefix); i++) {
                 if (i != panelId) {
@@ -646,7 +559,7 @@ function setupNewPosPanelHandlers(prevPanelId, panelId, prefix) {
         }
     });
 
-    jQuery("#"+prefix+"\\["+panelId+"\\]\\.additionalequipmentSameForEveryPoint").on("click", function(e) {
+    jQuery(prefixPanel + ".additionalequipmentSameForEveryPoint").on("click", function(e) {
         if (e.target.checked) {
             for(var i = 0; i < getGlobalPanelCount(prefix); i++) {
                 if (i != panelId) {
@@ -662,6 +575,62 @@ function setupNewPosPanelHandlers(prevPanelId, panelId, prefix) {
             }
         }
     });
-    //});
+}
 
+function onCloseDayCloseTo(prefix, panelId) {
+    var dayCloseTo = jQuery( "#"+prefix+"\\["+panelId+"\\]\\.dayCloseTo"),
+        hours = jQuery("[data-unit='hour']").val(),
+        minutes = jQuery("[data-unit='minute']").val(),
+        selectedDate = hours+":"+minutes;
+
+    dayCloseTo.datetimepicker('setDate', getDateFromTime(selectedDate));
+}
+
+function onSelectDayCloseTo(prefix, panelId){
+//    var dayCloseFrom = jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseFrom"),
+//        dayCloseTo = jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseTo"),
+//        dayCloseFromValue = dayCloseFrom.val(),
+//        dayCloseToDate = dayCloseTo.datetimepicker('getDate')
+//
+//    dayCloseFrom.datetimepicker('option', 'maxDate', dayCloseToDate);
+//    dayCloseFrom.val(dayCloseFromValue);
+}
+
+function onCloseDayCloseFrom(prefix, panelId) {
+    var dayCloseFrom = jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseFrom"),
+        dayCloseTo =  jQuery( "#"+prefix+"\\["+panelId+"\\]\\.dayCloseTo"),
+        dayCloseToValue = dayCloseTo.val();
+    if (dayCloseTo.val() != '') {
+        var dayCloseFromDate = dayCloseFrom.datetimepicker('getDate'),
+            testEndDate = dayCloseTo.datetimepicker('getDate');
+        if (dayCloseFromDate > testEndDate) {
+            dayCloseTo.datetimepicker('setDate', dayCloseFromDate);
+            dayCloseToValue = dayCloseTo.val();
+        }
+    }
+
+    //hack
+    if(dayCloseFrom.val() !== ""){
+        var minimumDate = getDateFromTime(dayCloseFrom.val());
+        minimumDate.setMinutes(minimumDate.getMinutes() + 1);
+        dayCloseTo.datetimepicker('option', 'minDateTime', minimumDate);
+        dayCloseTo.val(dayCloseToValue);
+    }
+
+}
+
+function onSelectDayCloseFrom(prefix, panelId){
+    var dayCloseTo = jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseTo"),
+        dayCloseToValue = dayCloseTo.val();
+
+    dayCloseTo.val(dayCloseToValue);
+}
+
+function getDateFromTime(time){
+    var hoursAndMinutes = time.split(":");
+    var minimumDate = new Date();
+    minimumDate.setHours(parseInt(hoursAndMinutes[0]));
+    minimumDate.setMinutes(parseInt(hoursAndMinutes[1]));
+    minimumDate.setSeconds(00);
+    return minimumDate;
 }
