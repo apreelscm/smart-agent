@@ -22,10 +22,14 @@ class ProcessCommand implements Serializable{
 
     static def atLeastClosure = { value, cmd, errors, property, calcProperty ->
         def calcValue = cmd.calculatorService.getCalcProperty(calcProperty)
-        def minValue = calcValue?.toString()?.isNumber() ? Integer.valueOf(calcValue) : 0
-        def currValue = value?.toString()?.isNumber() ? Integer.valueOf(value) : 0
+        if (! calcValue){
+            return true
+        }
 
-        if (currValue < minValue) {
+        def minValue = calcValue?.toString()?.isNumber() ? calcValue.toString().toBigDecimal() : BigDecimal.ZERO
+        def currValue = value?.toString()?.isNumber() ? value.toString().toBigDecimal() : BigDecimal.ZERO
+
+        if (currValue.compareTo(minValue) < 0) {
             errors.rejectValue(property, "default.atLeast.asCalc")
             return false
         }
@@ -354,6 +358,7 @@ class ProcessCommand implements Serializable{
     String miejsceUmowy //nie jest uzywane w pdf
 
 //    zestawPosOdplatneUzywanie
+    String isZestawPosOdplatneUzywanieShown	 = DEFAULT_VALUE
     String oplPOSDialUpTyp	 = DEFAULT_VALUE
     String oplPOSDialUpIlosc	 = DEFAULT_VALUE
     String oplPOSDialUpIloscPP	 = DEFAULT_VALUE

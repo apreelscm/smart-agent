@@ -33,6 +33,7 @@ environments {
             password = "eumowy_app"
             dbCreate = ""
             url = "jdbc:oracle:thin:@db-eservice.apreel.lan:1521:cbd01out"
+            //url = "jdbc:oracle:thin:@192.168.9.22:1523:tstcbd"
         }
     }
     test {
@@ -56,8 +57,8 @@ environments {
             password = "eumowy_app"
             dbCreate = "" // TODO change later for validate
             url = "jdbc:oracle:thin:@192.168.3.221:1523:tstcbd"
-            //url = "jdbc:oracle:thin:@192.168.3.22:1523:tstcbd" // w sieci apreel
-            //url = "jdbc:oracle:thin:@db-eservice.apreel.lan:1521:cbd01out" // test
+            //url = "jdbc:oracle:thin:@192.168.9.22:1523:tstcbd"  // w sieci apreel
+            //url = "jdbc:oracle:thin:@db-eservice.apreel.lan:1521:cbd01out"  // test
         }
     }
     production {

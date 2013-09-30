@@ -149,12 +149,14 @@ insert into EUMOWY.ACTIVITY_SIGNATURES (id, version, activity_id, mandatory, num
 insert into EUMOWY.ACTIVITY_SIGNATURES (id, version, activity_id, mandatory, number_of_list, signature_id) values (EUMOWY.ACTIVITY_SIGNATURES_SEQ.NEXTVAL, 0,18,0,2,27);
 insert into EUMOWY.ACTIVITY_SIGNATURES (id, version, activity_id, mandatory, number_of_list, signature_id) values (EUMOWY.ACTIVITY_SIGNATURES_SEQ.NEXTVAL, 0,19,0,1,29);
 
-insert into eumowy.kalkulatortypurzadzen Values('AMORT_VX510CTLS','Verifone Vx510/520C + PINPad CTLS');
-insert into eumowy.kalkulatortypurzadzen Values('AMORT_VX510GCTLS','Verifone Vx510G GPRS + PINPad CTLS');
-insert into eumowy.kalkulatortypurzadzen Values('AMORT_VX510520','Verifone Vx510/520C + PINPad Standard');
-insert into eumowy.kalkulatortypurzadzen Values('AMORT_XV510GPRS','Verifone Vx510G GPRS + PINPad Standard');
-insert into eumowy.kalkulatortypurzadzen Values('AMORT_IPP350','PINPad IPP 350 (system kasowy)');
-insert into eumowy.kalkulatortypurzadzen Values('AMORT_VX670GPRS','Verifone Vx670 GPRS');
+Insert into eumowy.kalkulatortypurzadzen values ('AMORT_IPP350','PINPad IPP 350 (system kasowy)',null,'1');
+Insert into eumowy.kalkulatortypurzadzen values ('AMORT_VX510520','Verifone Vx510 + PINPad Standard','106','2');
+Insert into eumowy.kalkulatortypurzadzen values ('AMORT_VX510520','Verifone Vx520C + PINPad Standard','176','3');
+Insert into eumowy.kalkulatortypurzadzen values ('AMORT_VX510CTLS','Verifone Vx510 + PINPad CTLS','106','4');
+Insert into eumowy.kalkulatortypurzadzen values ('AMORT_VX510CTLS','Verifone Vx520C + PINPad CTLS','176','5');
+Insert into eumowy.kalkulatortypurzadzen values ('AMORT_VX510GCTLS','Verifone Vx510G GPRS + PINPad CTLS','158','6');
+Insert into eumowy.kalkulatortypurzadzen values ('AMORT_VX670GPRS','Verifone Vx670 GPRS','121','7');
+Insert into eumowy.kalkulatortypurzadzen values ('AMORT_XV510GPRS','Verifone Vx510G GPRS + PINPad Standard','158','8');
 
 Insert into EUMOWY.MAPOWANIEKALKULATORA (POLEKALKULATOR,POLEAPREEL,DZIALANIE) values ('L_SEGMENT','SEGMENT_SPRZEDAZOWY','P');
 Insert into EUMOWY.MAPOWANIEKALKULATORA (POLEKALKULATOR,POLEAPREEL,DZIALANIE) values ('E_OPLATA_POS_1','TYP_DIALUP_TERM_CENA','P');
