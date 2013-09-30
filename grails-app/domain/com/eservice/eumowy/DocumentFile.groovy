@@ -15,14 +15,40 @@ class DocumentFile implements Serializable {
 
     static belongsTo = [process:Process, signature:Signature]
 
-	static hasOne = [content:DocumentContent]
+    /** workaround for hibernate limitation one-to-one eager problem GRAILS-5077 **/
+    //static  hasOne = [content:DocumentContent]
+    static hasMany = [contents: DocumentContent]
+
+    static transients = ['content']
+
+    /**
+     * fake method to override many-to-one behaviour to act as one-to-one
+     * @param content
+     */
+    public void setContent(DocumentContent content) {
+        if (!contents){
+            contents = []
+        } else {
+            contents.clear()
+        }
+        addToContents(content)
+    }
+
+    /**
+     * fake method to override many-to-one behaviour to act as one-to-one
+     * @param content
+     */
+    public DocumentContent getContent() {
+        contents?.iterator().next()
+    }
+
 
     static constraints = {
         name(unique:false,blank:false)
         dateCreated(nullable:true)
         lastUpdated(nullable:true)
         pagesCount()
-        content(lazy:true)
+        contents(cascade:"all-delete-orphan")
         process(nullable:true)
 		signature(nullable:true)
     }

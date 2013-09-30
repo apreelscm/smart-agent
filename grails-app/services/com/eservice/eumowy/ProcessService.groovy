@@ -76,18 +76,46 @@ class ProcessService {
         return client.id != null && Process.findByClientAndStatusInList(client, statusList)
     }*/
 
-    def getLastProcessWithStatus(Client client, def statusList) {
+    def getLastProcessWhenInStatus(def nip, def statusList) {
         sessionFactory.currentSession.clear()
-        def result = Process.findByClient(Client.findByNip(client.nip),[sort: "lastUpdated", order: "desc"])
-        log.info("getLastProcessWithStatus - client.nip = ${client.nip} , id = ${result?.id} status = ${result?.status}, statusList = ${statusList}")
-        return (result && client.id && (result.status in statusList)) ? result : null
+        def crit = Process.createCriteria()
+        def result = crit.list {
+            client {
+                eq("nip", nip)
+            }
+            order("lastUpdated", "desc")
+            maxResults(1)
+        }
+        log.info("getLastProcessWhenInStatus - nip = ${nip} , id = ${result?.id} status = ${result?.status}, statusList = ${statusList}")
+        return (result && nip && (result.status in statusList)) ? result : null
     }
 
-    def getLastProcessNotStatus(Client client, def statusList) {
+    def getLastProcessWhenNotInStatus(def nip, def statusList) {
         //sessionFactory.currentSession.clear()
-        def result = Process.findByClient(Client.findByNip(client.nip),[sort: "lastUpdated", order: "desc"])
-        log.info("getLastProcessNotStatus - client.nip = ${client.nip} , id = ${result?.id} status = ${result?.status}, statusList = ${statusList}")
-        return (result && client.id && !(result.status in statusList)) ? result : null
+        def crit = Process.createCriteria()
+        def result = crit.get {
+            client {
+                eq("nip", nip)
+            }
+            order("lastUpdated", "desc")
+            maxResults(1)
+        }
+        log.info("getLastProcessWhenNotInStatus - nip = ${nip} , id = ${result?.id} status = ${result?.status}, statusList = ${statusList}")
+        return (result && nip && !(result.status in statusList)) ? result : null
+    }
+
+    def getLastProcessForClient(def nip) {
+        sessionFactory.currentSession.clear()
+        def crit = Process.createCriteria()
+        def result = crit.get {
+            client {
+                eq("nip", nip)
+            }
+            order("lastUpdated", "desc")
+            maxResults(1)
+        }
+        log.info("getLastProcessForClient - nip = ${nip} , id = ${result?.id}, status = ${result?.status}")
+        result ?: new Process(result)
     }
 
     def containsActivity(def activities, def activityCode) {

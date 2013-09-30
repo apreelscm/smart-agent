@@ -74,7 +74,8 @@ class AppParametersService {
 		String path = AppParameters.findByName("PDF_TEMPLATE_PATH")?.value
 		
 		if (isDevelopmentMode()) {
-			if (path == null || path.isEmpty()) {
+            File checkPath = new File(path);
+			if (path == null || path.isEmpty() || ! checkPath.exists()) {
 				path = System.getProperty("base.dir") + File.separator + "otherResources" + File.separator + "pdf_templates" + File.separator
 			}
 		}

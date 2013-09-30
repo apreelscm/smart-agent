@@ -16,7 +16,36 @@ class AttachmentFile implements Serializable{
 
     static belongsTo = [process:Process]
 
-    static hasOne = [file:AttachmentContent]
+    /** workaround for hibernate limitation one-to-one eager problem GRAILS-5077 **/
+    //static hasOne = [file:AttachmentContent]
+    static hasMany = [files: AttachmentContent]
+
+    static transients = ['file']
+
+    //List<AttachmentContent> files = []
+
+    /**
+     * fake method to override many-to-one behaviour to act as one-to-one
+     * @param file
+     */
+    public void setFile(AttachmentContent file) {
+        if (!files){
+            files = []
+        } else {
+            files.clear()
+        }
+
+        addToFiles(file)
+    }
+
+    /**
+     * fake method to override many-to-one behaviour to act as one-to-one
+     * @param file
+     */
+    public AttachmentContent getFile() {
+        files?.iterator().next()
+    }
+
 
     static constraints = {
         fileSize(min:0L)
@@ -24,7 +53,7 @@ class AttachmentFile implements Serializable{
         extension()
         dateUploaded(nullable:true)
         downloads(nullable: true)
-        file(lazy:true)
+        files(cascade:"all-delete-orphan")
         process(nullable:true)
     }
 

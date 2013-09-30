@@ -102,7 +102,6 @@ class PdfMapper {
         Map<String, String[]> data = new HashMap<String, String[]>()
         data.put("phNumer", [processInstance.phNumber.toString()] as String[])
 		data.put("osobaPozyskalaAkceptantaNr", [processInstance.phNumber.toString()] as String[])
-		data.put("osobaPodpisalaUmoweNr", [processInstance.phNumber.toString()] as String[])
 
         //to na jakis formularz jest
 		if (processInstance.phNumber.toString() != null && processInstance.phNumber.toString().size()==5){
@@ -274,7 +273,11 @@ class PdfMapper {
         data.put(key+"4", [value.substring(12, 15)] as String[])
     }
 
-    private mapUlicaDoKorespondencjiPoint(def data, def pd, def key, def value, def index) {
+	private mapPhPozyskPoint(def data, def pd, def key, def value, def index) {
+		data.put("osobaPodpisalaUmoweNr", [value] as String[])		
+	}
+	
+	  private mapUlicaDoKorespondencjiPoint(def data, def pd, def key, def value, def index) {
         data.put(key, [pd.ulicaDoKorespondencjiTyp + " " + value] as String[])
     }
 
@@ -424,7 +427,7 @@ class PdfMapper {
 	}
 	
 	private mapReprezentant2TytulProcess(def data, def pd, def key, def value){
-		if ((getFromProcessDataSet(pd, 'reprezentant2Imie')) != null && (getFromProcessDataSet(pd, 'reprezentant2Nazwisko'))){
+		if ((getFromProcessDataSet(pd, 'reprezentant2Imie')) != null && !"".equals(getFromProcessDataSet(pd, 'reprezentant2Imie')) && (getFromProcessDataSet(pd, 'reprezentant2Nazwisko')) && !"".equals(getFromProcessDataSet(pd, 'reprezentant2Nazwisko'))){
 		data.put(key, [value] as String[]);
 		addCheckboxes(data, ["pan2": "Pan", "pani2": "Pani"], value)
 		}
