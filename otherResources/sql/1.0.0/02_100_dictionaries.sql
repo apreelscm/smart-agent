@@ -554,3 +554,35 @@ INSERT INTO EUMOWY.SIGNATURE_PANEL(id, version, signature_id,  panel_id) SELECT 
 INSERT INTO EUMOWY.SIGNATURE_PANEL(id, version, signature_id,  panel_id) SELECT EUMOWY.SIGNATURE_PANEL_SEQ.NEXTVAL, 0, id, 51 FROM EUMOWY.SIGNATURE where name = 'AP-AG/F/DP/2.003/13-05-10';
 
 -- select distinct(p.name),s.name from Panel p join signature_panel s_p on p.id = s_p.panel_id join signature s on s_p.signature_id = s.id where s.name = 'AP/UNTSS/1.003/12-01-16' order by s.name, p.name
+
+update eumowy.signature set ph_subscription_page_number=2, ph_subscriptionx=450, ph_subscriptiony=320 where template_path LIKE 'APUPZIF2.00113-04-05%';
+update eumowy.signature set ph_subscription_page_number=2, ph_subscriptionx=450, ph_subscriptiony=395 where template_path LIKE 'ATUSUFDU4%';
+update eumowy.signature set ph_subscription_page_number=2, ph_subscriptionx=445, ph_subscriptiony=40 where template_path LIKE 'APUPZ2ACB1%'
+update eumowy.signature set ph_subscription_page_number=1, ph_subscriptionx=450, ph_subscriptiony=70 where template_path LIKE 'APUPZBSAIKO%'
+update eumowy.signature set ph_subscription_page_number=1, ph_subscriptionx=455, ph_subscriptiony=105 where template_path LIKE 'APUNTWAGOP1%'
+update eumowy.signature set ph_subscription_page_number=1, ph_subscriptionx=460, ph_subscriptiony=96 where template_path LIKE 'APUNTWAGON1%'
+update eumowy.signature set ph_subscription_page_number=1, ph_subscriptionx=455, ph_subscriptiony=105 where template_path LIKE 'APUNTWAGOK1%'
+update eumowy.signature set ph_subscription_page_number=1, ph_subscriptionx=455, ph_subscriptiony=125 where template_path LIKE 'APUNTSZOKOD2%'
+update eumowy.signature set ph_subscription_page_number=1, ph_subscriptionx=460, ph_subscriptiony=168 where template_path LIKE 'APUNTSZDCC2%'
+update eumowy.signature set ph_subscription_page_number=1, ph_subscriptionx=457, ph_subscriptiony=206 where template_path LIKE 'APUNTSZAWNZ3%'
+--update eumowy.signature set ph_subscription_page_number=2, ph_subscriptionx=455, ph_subscriptiony=275 where template_path LIKE 'APUNTSZAPOO3.00212-01-16%' -- ta sama sygnatura
+update eumowy.signature set ph_subscription_page_number=1, ph_subscriptionx=444, ph_subscriptiony=143 where template_path LIKE 'APUNTSZAPOO3.00212-01-16%'
+update eumowy.signature set ph_subscription_page_number=4, ph_subscriptionx=455, ph_subscriptiony=70 where template_path LIKE 'APUNTSS1.00312-01-16%'
+update eumowy.signature set ph_subscription_page_number=4, ph_subscriptionx=447, ph_subscriptiony=30 where template_path LIKE 'APUNTZ2.00312-01-16%'
+update eumowy.signature set ph_subscription_page_number=1, ph_subscriptionx=443, ph_subscriptiony=97 where template_path LIKE 'APUPZ2DCC1.00013-02-15%'
+update eumowy.signature set ph_subscription_page_number=3, ph_subscriptionx=450, ph_subscriptiony=464 where template_path LIKE 'ATUSU5.00413%'
+update eumowy.signature set ph_subscription_page_number=1, ph_subscriptionx=458, ph_subscriptiony=155 where template_path LIKE 'APUNTSZDCCZ1%'
+update eumowy.signature set ph_subscription_page_number=1, ph_subscriptionx=458, ph_subscriptiony=62 where template_path LIKE 'APUNTWANOD1%'
+update eumowy.signature set ph_subscription_page_number=4, ph_subscriptionx=458, ph_subscriptiony=188 where template_path LIKE 'APUPZ2.00013-01-03%'
+update eumowy.signature set ph_subscription_page_number=2, ph_subscriptionx=445, ph_subscriptiony=105 where template_path LIKE 'APUPZACB2.00313%'
+update eumowy.signature set ph_subscription_page_number=1, ph_subscriptionx=455, ph_subscriptiony=80 where template_path LIKE 'APUPZAWNZBS1%'
+update eumowy.signature set ph_subscription_page_number=1, ph_subscriptionx=445, ph_subscriptiony=80 where template_path LIKE 'APUPZAWNZS1.00013%'
+update eumowy.signature set ph_subscription_page_number=4, ph_subscriptionx=450, ph_subscriptiony=200 where template_path LIKE 'APUPZBS2.00013-01-25%'
+update eumowy.signature set ph_subscription_page_number=1, ph_subscriptionx=440, ph_subscriptiony=105 where template_path LIKE 'APUPZDCC2.00313-02-15%'
+update eumowy.signature set ph_subscription_page_number=1, ph_subscriptionx=440, ph_subscriptiony=70 where template_path LIKE 'APUPZDCCZ1.00213-02-15%'
+
+update eumowy.signature set ph_subscription_page_number=4, ph_subscriptionx=455, ph_subscriptiony=180 where template_path LIKE '%APUPZIF2.00013-03-26%';
+
+update eumowy.signature set ph_subscription_page_number=1, ph_subscriptionx=435, ph_subscriptiony=15 where template_path LIKE '%aplikacyjny%';
+update eumowy.signature set ph_subscription_page_number=2, ph_subscriptionx=50, ph_subscriptiony=170 where template_path LIKE '%danych punktu%';
+update eumowy.signature set ph_subscription_page_number=1, ph_subscriptionx=90, ph_subscriptiony=12 where template_path LIKE '%Scoring%';

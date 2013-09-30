@@ -39,15 +39,18 @@ class ActivityController {
      * */
     def createProcessFlow = {
         init{
-            action{
+            action {
                 log.info("init new flow")
                 log.info("init params:"+params)
                 log.info("init params.message:"+ params.message)
                 log.info("init flow.message:"+ flow.message)
                 log.info("init flash.message:"+ flash.message)
                 log.info("init flow.prevActivityMessage:"+flow.prevActivityMessage)
-                flash.infoMessage =  params.message
-                flow.isGoBack = false;
+				if (params.message != null) {
+					flow.prevActivityMessage = params.message
+				}
+				flash.infoMessage =  flow.prevActivityMessage
+                flow.isGoBack = false
             }
             on("success").to "defineActivity"
         }
@@ -58,7 +61,6 @@ class ActivityController {
                     flow.processInstance =  new Process();
                     flow.newProcessFlow = true
                 }
-
             }
             on("continue") { DefineActivityCommand cmd ->
                 def processInstance = flow.processInstance
@@ -167,7 +169,7 @@ class ActivityController {
                 flow.processInstance = currentEvent.attributes.process
                 flow.representative1 = currentEvent.attributes.representative1
                 flow.representative2 = currentEvent.attributes.representative2
-                flow.prevActivityMessage = "W procesiue dla NIP ${flow.processInstance.client.nip} zostały poprawnie uzupełnione podpisy."
+                flow.prevActivityMessage = "W procesie dla NIP ${flow.processInstance.client.nip} zostały poprawnie uzupełnione podpisy."
             }.to "clientSignature"
         }
 
@@ -495,7 +497,9 @@ class ActivityController {
                     processInstance.points?.each { point ->
                         if (point.cbdId != null) {
                             def foundApc = processCmd.allPoints?.find { apc -> apc.cbdId == point.cbdId }
-                            foundApc.id = point.id
+							if (foundApc != null) {
+								foundApc.id = point.id
+							}
                         }
                     }
                 }
