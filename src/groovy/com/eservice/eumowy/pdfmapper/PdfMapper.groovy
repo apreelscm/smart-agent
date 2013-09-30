@@ -210,7 +210,7 @@ class PdfMapper {
 
         process.each { processData ->
             //formatowanie procentowej wartosci platnosci karty
-            if (processData.name.endsWith('Pr')){
+            if (processData.name.endsWith('Pr') && !['oplataVISAPr', 'oplataMasterCardPr', 'oplataMaestroPr'].contains(processData.name)){
                 formatDoubleValue(data, processData, '%')
                 return
             }
@@ -344,8 +344,8 @@ class PdfMapper {
 	private mapPhPozyskPointDataDetails(def data, def pointData, def key, def value, def index) {
 		data.put(key, [value] as String[]);
 		data.put("osobaPodpisalaUmoweNr", [value] as String[])
-	}
-	
+    }
+
 	// ------------------ POS METHODS ------------------------------------
 	
 	private mapZamkniecieDniaOd(def data, def posesData, def key, def value){
