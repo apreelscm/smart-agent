@@ -674,41 +674,38 @@ class ProcessService {
         }
 
         /* Save points from AllPointsCommand */
-        if (cmd.hasProperty("allPoints")){
-            // cmd moze byc zarowno ProcessCommand jak i OnlyPointsCommand, w ktorym nie ma allPoints
-            cmd?.allPoints?.each { AllPointsCommand apc ->
-                //boolean isNew = false
-                if (apc == null) {
-                    log.info "AllPointCommand is NULL - skipping!"
-                    return
+        cmd.allPoints?.each { AllPointsCommand apc ->
+            //boolean isNew = false
+            if (apc == null) {
+                log.info "AllPointCommand is NULL - skipping!"
+                return
+            }
+
+            PointData point = (apc.id != null)? PointData.get(apc.id): new PointData();
+            if (point != null) {
+                // Update data from CBD
+                if (apc.cbdId != null) {
+                    point.nazwa = apc.nazwa
+                    point.ulica = apc.ulica
+                    point.kodPocztowy = apc.kodPocztowy
+                    point.liczbaPos = apc.liczbaPos
+                    point.miejscowosc = apc.miejscowosc
+                    point.nrBudynku = apc.nrBudynku
+                    point.cbdId = apc.cbdId
                 }
 
-                PointData point = (apc.id != null)? PointData.get(apc.id): new PointData();
-                if (point != null) {
-                    // Update data from CBD
-                    if (apc.cbdId != null) {
-                        point.nazwa = apc.nazwa
-                        point.ulica = apc.ulica
-                        point.kodPocztowy = apc.kodPocztowy
-                        point.liczbaPos = apc.liczbaPos
-                        point.miejscowosc = apc.miejscowosc
-                        point.nrBudynku = apc.nrBudynku
-                        point.cbdId = apc.cbdId
-                    }
+                point.czyWybranyAkceptacjaKart = apc.czyWybranyAkceptacjaKart
+                point.czyWybranyZakresUruchomienia = apc.czyWybranyZakresUruchomienia
+                point.tytulPlatnosci = apc.tytulPlatnosci
+                point.systemKasowy = apc.systemKasowy
+                point.uta = apc.uta
 
-                    point.czyWybranyAkceptacjaKart = apc.czyWybranyAkceptacjaKart
-                    point.czyWybranyZakresUruchomienia = apc.czyWybranyZakresUruchomienia
-                    point.tytulPlatnosci = apc.tytulPlatnosci
-                    point.systemKasowy = apc.systemKasowy
-                    point.uta = apc.uta
-
-                    //if (isNew == true) {
-                    pointsList.add(point)
-                    //}
-                }
-                else {
-                    log.info "Nie znaleziono punktu o id: " + apc.id
-                }
+                //if (isNew == true) {
+                pointsList.add(point)
+                //}
+            }
+            else {
+                log.info "Nie znaleziono punktu o id: " + apc.id
             }
         }
 

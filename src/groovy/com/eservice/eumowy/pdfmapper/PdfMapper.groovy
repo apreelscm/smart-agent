@@ -650,6 +650,53 @@ class PdfMapper {
         }
     }
 
+    private mapIsZestawPosOdplatneUzywanieShownProcess(def data, def pd, def key, def value){
+        if (value != null && "tak".equals(value)){
+            //byl pokazany panel zestawPosOdplatneUzywanie --> dzialamy
+//            String oplPOSDialUpTyp	 = DEFAULT_VALUE
+//            String oplPOSDialUpIlosc	 = DEFAULT_VALUE
+//            String oplPOSDialUpIloscPP	 = DEFAULT_VALUE
+//            String oplPOSDialUpNormalneMies	 = DEFAULT_VALUE
+//            String oplPOSDialUpNormalnePP	 = DEFAULT_VALUE
+//            String oplPOSDialUpPreferencyjneMies	 = DEFAULT_VALUE
+//            String oplPOSDialUpPreferencyjnePP	 = DEFAULT_VALUE
+//
+//            String oplPOSVPNTyp	 = DEFAULT_VALUE
+//            String oplPOSVPNIlosc	 = DEFAULT_VALUE
+//            String oplPOSVPNIloscPP	 = DEFAULT_VALUE
+//            String oplPOSVPNNormalneMies	 = DEFAULT_VALUE
+//            String oplPOSVPNNormalnePP	 = DEFAULT_VALUE
+//            String oplPOSVPNPreferencyjneMies	 = DEFAULT_VALUE
+//            String oplPOSVPNPreferencyjnePP	 = DEFAULT_VALUE
+//
+//            String oplPOSSSLTyp	 = DEFAULT_VALUE
+//            String oplPOSSSLIlosc	 = DEFAULT_VALUE
+//            String oplPOSSSLIloscPP	 = DEFAULT_VALUE
+//            String oplPOSSSLNormalneMies	 = DEFAULT_VALUE
+//            String oplPOSSSLNormalnePP	 = DEFAULT_VALUE
+//            String oplPOSSSLPreferencyjneMies	 = DEFAULT_VALUE
+//            String oplPOSSSLPreferencyjnePP	 = DEFAULT_VALUE
+//
+//            String oplPOSWiFiTyp	 = DEFAULT_VALUE
+//            String oplPOSWiFiIlosc	 = DEFAULT_VALUE
+//            String oplPOSWiFiIloscPP	 = DEFAULT_VALUE
+//            String oplPOSWiFiNormalneMies	 = DEFAULT_VALUE
+//            String oplPOSWiFiNormalnePP	 = DEFAULT_VALUE
+//            String oplPOSWiFiPreferencyjneMies	 = DEFAULT_VALUE
+//            String oplPOSWiFiPreferencyjnePP	 = DEFAULT_VALUE
+//
+//            String oplPOSGPRSTyp	 = DEFAULT_VALUE
+//            String oplPOSGPRSIlosc	 = DEFAULT_VALUE
+//            String oplPOSGPRSIloscPP	 = DEFAULT_VALUE
+//            String oplPOSGPRSNormalneMies	 = DEFAULT_VALUE
+//            String oplPOSGPRSNormalnePP	 = DEFAULT_VALUE
+//            String oplPOSGPRSPreferencyjneMies	 = DEFAULT_VALUE
+//            String oplPOSGPRSPreferencyjnePP	 = DEFAULT_VALUE
+
+
+        }
+    }
+
 	//------------------- STRINGBUILDER -------------------------------------
 	private String getAddress(String streetType, String street, String houseNumber, String flatNumber, String postalCode, String city){
 		def sb = new StringBuilder();

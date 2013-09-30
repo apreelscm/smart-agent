@@ -358,6 +358,7 @@ class ProcessCommand implements Serializable{
     String miejsceUmowy //nie jest uzywane w pdf
 
 //    zestawPosOdplatneUzywanie
+    String isZestawPosOdplatneUzywanieShown	 = DEFAULT_VALUE
     String oplPOSDialUpTyp	 = DEFAULT_VALUE
     String oplPOSDialUpIlosc	 = DEFAULT_VALUE
     String oplPOSDialUpIloscPP	 = DEFAULT_VALUE

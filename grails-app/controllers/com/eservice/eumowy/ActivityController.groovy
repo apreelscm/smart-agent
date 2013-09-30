@@ -1,7 +1,6 @@
 package com.eservice.eumowy
 
 import com.eservice.eumowy.command.ProcessCommand
-import com.eservice.eumowy.command.OnlyPointsCommand
 import com.eservice.eumowy.process.DefineActivityCommand
 import com.eservice.eumowy.util.DateUtils
 import org.codehaus.groovy.grails.web.json.JSONObject
@@ -512,30 +511,8 @@ class ActivityController {
             render(view: "../createProcess/selectedPanels")
             on("back").to "chooseCalc"
             on("error").to "selectedPanels"
-            on("acceptPoints") { OnlyPointsCommand cmd ->
+            on("acceptPointsButton") {
                 log.info "acceptPointsButton TRIGGERED"
-
-                def points = processService.getPointCommandsToPointDataList(cmd);
-                points?.each { PointData point ->
-                    log.info "Working with id: " + point.id + ", cbdId: " + point.cbdId + ", name: " + point.name
-                    if (point.cbdId == -1) {
-                        point.delete(flush: true)
-                        return
-                    }
-
-                    point.save(flush: true)
-                    flow.processInstance.addToPoints(point)
-                }
-
-                if (!flow.processInstance.save()){
-                    flow.processInstance.errors.each {
-                        log.error(it)
-                    }
-                    return error();
-                }
-
-                flow.data = cmd
-                flow.skipPanelsInit = true;
             }.to "selectedPanels"
             on("saveOnly"){ ProcessCommand cmd ->
                 Process processInstance = processService.populateProcessWithData(flow.processInstance,cmd)
@@ -733,29 +710,8 @@ class ActivityController {
             render(view: "../createProcess/selectedPanels")
             on("back").to "chooseCalc"
             on("error").to "selectedPanels"
-            on("acceptPoints") { OnlyPointsCommand cmd ->
+            on("acceptPointsButton") {
                 log.info "acceptPointsButton TRIGGERED"
-                def points = processService.getPointCommandsToPointDataList(cmd);
-                points?.each { PointData point ->
-                    log.info "Working with id: " + point.id + ", cbdId: " + point.cbdId + ", name: " + point.nazwa
-                    if (point.cbdId == -1) {
-                        point.delete(flush: true)
-                        return
-                    }
-
-                    point.save(flush: true)
-                    flow.processInstance.addToPoints(point)
-                }
-
-                if (!flow.processInstance.save()){
-                    flow.processInstance.errors.each {
-                        log.error(it)
-                    }
-                    return error();
-                }
-
-                flow.data = cmd
-                flow.skipPanelsInit = true;
             }.to "selectedPanels"
             on("saveOnly"){ ProcessCommand cmd ->
                 Process processInstance = processService.populateProcessWithData(flow.processInstance,cmd)
