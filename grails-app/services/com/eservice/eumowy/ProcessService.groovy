@@ -202,7 +202,8 @@ class ProcessService {
     def loadProcessData(def process,  def cmd) {
         process.processData?.each {ProcessData data ->
 
-            if(data.name in ["dataUmowy","punktyTytulPlatnosci","punktySystemKasowy","punktyUta","punktyWybrane"]){
+            //oplataMasteroPr - zmiana nazwy tego parametru wymusila dodanie go do tej listy.
+            if(data.name in ["dataUmowy","punktyTytulPlatnosci","punktySystemKasowy","punktyUta","punktyWybrane", "oplataMasteroPr"]){
                 return
             }
 
@@ -695,6 +696,7 @@ class ProcessService {
 
             posDataDetails.setPos(posData)
             pointDataDetails.setPoint(pointData)
+            pointDataDetails.save()
             posData.save()
             //}
 

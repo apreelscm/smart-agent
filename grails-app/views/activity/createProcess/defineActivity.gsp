@@ -186,7 +186,7 @@
 
      <div style="margin:30px auto 0 auto;display: table;">
          <g:message code="defineActivity.uwagiDoCoa.name" default="Uwagi dla COA"/>
-         <g:textArea name="notes" style="height: 100px; display: block; min-width: 380px" value="${notesToCOA}"/>
+         <g:textArea name="notes" style="height: 100px; display: block; min-width: 380px" value="${notesToCOA}" maxlength="1000"/>
      </div>
 
 

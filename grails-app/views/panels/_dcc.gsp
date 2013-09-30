@@ -11,7 +11,6 @@
                     <span>
                         <eumowy:currencyField name="oplataVISA" validatable="${data}" value="${data.oplataVISA}" readonly="true"/>
                     </span>
-
                 </li>
                 <li>
                     <span class="align-left"><g:message code="panel.mastercard"/></span>
@@ -25,7 +24,7 @@
                 <li>
                     <span class="align-left"><g:message code="panel.maestro"/></span>
                     <span>
-                        <eumowy:percentageField name="oplataMasteroPr" validatable="${data}" value="${data.oplataMasteroPr}" readonly="true"/>
+                        <eumowy:percentageField name="oplataMaestroPr" validatable="${data}" value="${data.oplataMaestroPr}" readonly="true"/>
                     </span>
                     <span>
                         <eumowy:currencyField name="oplataMaestro" validatable="${data}" value="${data.oplataMaestro}" readonly="true"/>

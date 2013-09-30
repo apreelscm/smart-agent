@@ -78,7 +78,7 @@ class PanelMockService {
         cmd.oplataMasterCard = "0.73"
         cmd.oplataMasterCardPr = "12.61"
         cmd.oplataMaestro = "12.93"
-        cmd.oplataMasteroPr = "1.04"
+        cmd.oplataMaestroPr = "1.04"
     }
 
     def getDccZakresUruchomienia(ProcessCommand cmd) {
