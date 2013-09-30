@@ -272,12 +272,8 @@ class PdfMapper {
         data.put(key+"3", [value.substring(10, 12)] as String[])
         data.put(key+"4", [value.substring(12, 15)] as String[])
     }
-
-	private mapPhPozyskPoint(def data, def pd, def key, def value, def index) {
-		data.put("osobaPodpisalaUmoweNr", [value] as String[])		
-	}
 	
-	  private mapUlicaDoKorespondencjiPoint(def data, def pd, def key, def value, def index) {
+	private mapUlicaDoKorespondencjiPoint(def data, def pd, def key, def value, def index) {
         data.put(key, [pd.ulicaDoKorespondencjiTyp + " " + value] as String[])
     }
 
@@ -343,6 +339,11 @@ class PdfMapper {
 	
 	private mapUwagiDodatkowePointDataDetails(def data, def pointData, def key, def value, def index) {
 		data.put(key, [value] as String[]);
+	}
+	
+	private mapPhPozyskPointDataDetails(def data, def pointData, def key, def value, def index) {
+		data.put(key, [value] as String[]);
+		data.put("osobaPodpisalaUmoweNr", [value] as String[])
 	}
 	
 	// ------------------ POS METHODS ------------------------------------
