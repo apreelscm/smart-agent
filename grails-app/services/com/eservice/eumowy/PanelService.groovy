@@ -487,6 +487,7 @@ class PanelService {
 
     def getZestawPosOdplatneUzywanie(ProcessCommand cmd ) {
 
+        cmd.isZestawPosOdplatneUzywanieShown = nullify(cmd.isZestawPosOdplatneUzywanieShown)
         cmd.oplPOSDialUpTyp = calculatorService.getCalcProperty("TYP_DIALUP") //K RW
         cmd.oplPOSDialUpIlosc = nullify(cmd.oplPOSDialUpIlosc)
         cmd.oplPOSDialUpIloscPP = nullify(cmd.oplPOSDialUpIloscPP)
