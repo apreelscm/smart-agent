@@ -76,18 +76,46 @@ class ProcessService {
         return client.id != null && Process.findByClientAndStatusInList(client, statusList)
     }*/
 
-    def getLastProcessWithStatus(Client client, def statusList) {
+    def getLastProcessWhenInStatus(def nip, def statusList) {
         sessionFactory.currentSession.clear()
-        def result = Process.findByClient(Client.findByNip(client.nip),[sort: "lastUpdated", order: "desc"])
-        log.info("getLastProcessWithStatus - client.nip = ${client.nip} , id = ${result?.id} status = ${result?.status}, statusList = ${statusList}")
-        return (result && client.id && (result.status in statusList)) ? result : null
+        def crit = Process.createCriteria()
+        def result = crit.list {
+            client {
+                eq("nip", nip)
+            }
+            order("lastUpdated", "desc")
+            maxResults(1)
+        }
+        log.info("getLastProcessWhenInStatus - nip = ${nip} , id = ${result?.id} status = ${result?.status}, statusList = ${statusList}")
+        return (result && nip && (result.status in statusList)) ? result : null
     }
 
-    def getLastProcessNotStatus(Client client, def statusList) {
+    def getLastProcessWhenNotInStatus(def nip, def statusList) {
         //sessionFactory.currentSession.clear()
-        def result = Process.findByClient(Client.findByNip(client.nip),[sort: "lastUpdated", order: "desc"])
-        log.info("getLastProcessNotStatus - client.nip = ${client.nip} , id = ${result?.id} status = ${result?.status}, statusList = ${statusList}")
-        return (result && client.id && !(result.status in statusList)) ? result : null
+        def crit = Process.createCriteria()
+        def result = crit.get {
+            client {
+                eq("nip", nip)
+            }
+            order("lastUpdated", "desc")
+            maxResults(1)
+        }
+        log.info("getLastProcessWhenNotInStatus - nip = ${nip} , id = ${result?.id} status = ${result?.status}, statusList = ${statusList}")
+        return (result && nip && !(result.status in statusList)) ? result : null
+    }
+
+    def getLastProcessForClient(def nip) {
+        sessionFactory.currentSession.clear()
+        def crit = Process.createCriteria()
+        def result = crit.get {
+            client {
+                eq("nip", nip)
+            }
+            order("lastUpdated", "desc")
+            maxResults(1)
+        }
+        log.info("getLastProcessForClient - nip = ${nip} , id = ${result?.id}, status = ${result?.status}")
+        result ?: new Process(result)
     }
 
     def containsActivity(def activities, def activityCode) {
@@ -674,41 +702,38 @@ class ProcessService {
         }
 
         /* Save points from AllPointsCommand */
-        if (cmd.hasProperty("allPoints")){
-            // cmd moze byc zarowno ProcessCommand jak i OnlyPointsCommand, w ktorym nie ma allPoints
-            cmd?.allPoints?.each { AllPointsCommand apc ->
-                //boolean isNew = false
-                if (apc == null) {
-                    log.info "AllPointCommand is NULL - skipping!"
-                    return
+        cmd.allPoints?.each { AllPointsCommand apc ->
+            //boolean isNew = false
+            if (apc == null) {
+                log.info "AllPointCommand is NULL - skipping!"
+                return
+            }
+
+            PointData point = (apc.id != null)? PointData.get(apc.id): new PointData();
+            if (point != null) {
+                // Update data from CBD
+                if (apc.cbdId != null) {
+                    point.nazwa = apc.nazwa
+                    point.ulica = apc.ulica
+                    point.kodPocztowy = apc.kodPocztowy
+                    point.liczbaPos = apc.liczbaPos
+                    point.miejscowosc = apc.miejscowosc
+                    point.nrBudynku = apc.nrBudynku
+                    point.cbdId = apc.cbdId
                 }
 
-                PointData point = (apc.id != null)? PointData.get(apc.id): new PointData();
-                if (point != null) {
-                    // Update data from CBD
-                    if (apc.cbdId != null) {
-                        point.nazwa = apc.nazwa
-                        point.ulica = apc.ulica
-                        point.kodPocztowy = apc.kodPocztowy
-                        point.liczbaPos = apc.liczbaPos
-                        point.miejscowosc = apc.miejscowosc
-                        point.nrBudynku = apc.nrBudynku
-                        point.cbdId = apc.cbdId
-                    }
+                point.czyWybranyAkceptacjaKart = apc.czyWybranyAkceptacjaKart
+                point.czyWybranyZakresUruchomienia = apc.czyWybranyZakresUruchomienia
+                point.tytulPlatnosci = apc.tytulPlatnosci
+                point.systemKasowy = apc.systemKasowy
+                point.uta = apc.uta
 
-                    point.czyWybranyAkceptacjaKart = apc.czyWybranyAkceptacjaKart
-                    point.czyWybranyZakresUruchomienia = apc.czyWybranyZakresUruchomienia
-                    point.tytulPlatnosci = apc.tytulPlatnosci
-                    point.systemKasowy = apc.systemKasowy
-                    point.uta = apc.uta
-
-                    //if (isNew == true) {
-                    pointsList.add(point)
-                    //}
-                }
-                else {
-                    log.info "Nie znaleziono punktu o id: " + apc.id
-                }
+                //if (isNew == true) {
+                pointsList.add(point)
+                //}
+            }
+            else {
+                log.info "Nie znaleziono punktu o id: " + apc.id
             }
         }
 

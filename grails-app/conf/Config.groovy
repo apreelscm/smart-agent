@@ -146,6 +146,7 @@ log4j = {
                 appender new JDBCAppender(
                         name: "database",
                         URL: "jdbc:oracle:thin:@db-eservice.apreel.lan:1521:cbd01out",
+                        //URL: "jdbc:oracle:thin:@192.168.9.22:1523:tstcbd",
                         user: "eumowy_app",
                         password: "eumowy_app",
                         driver: "oracle.jdbc.driver.OracleDriver",
@@ -168,7 +169,7 @@ log4j = {
                 appender new JDBCAppender(
                         name: "database",
                         URL: "jdbc:oracle:thin:@192.168.3.221:1523:tstcbd",
-                        //URL: "jdbc:oracle:thin:@192.168.3.22:1523:tstcbd", -- apreel lokalny
+                        //URL: "jdbc:oracle:thin:@192.168.9.22:1523:tstcbd", // apreel lokalny
                         //URL: "jdbc:oracle:thin:@db-eservice.apreel.lan:1521:cbd01out",
                         user: "eumowy_app",
                         password: "eumowy_app",
@@ -242,6 +243,15 @@ grails {
         port = 25
         username = "ldamiecki@testeservice.com"
         password = "Standard1"
+        //host = "mail.your-server.de"
+        //port = 465
+        //username = "atest@apreel.com"
+        //password = "atest"
+        //props = ["mail.smtp.auth": "true",
+        //        "mail.smtp.socketFactory.port": "465",
+        //        "mail.smtp.socketFactory.class": "javax.net.ssl.SSLSocketFactory",
+        //        "mail.smtp.socketFactory.fallback": "false",
+        //        "mail.smtp.ssl.trust": "*"]
     }
 }
 trustAll = true

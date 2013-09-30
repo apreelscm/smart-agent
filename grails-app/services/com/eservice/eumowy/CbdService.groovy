@@ -54,7 +54,7 @@ class CbdService {
         }
     }
 
-    //@Cacheable(value="findClientByNip")                        Boot
+    //@Cacheable(value="findClientByNip")
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
     def findClientByNip(def clientNip) {
         switch (Environment.getCurrent().getName()) {
@@ -63,9 +63,7 @@ class CbdService {
             default:
                 def rowResult = cbdDAO.selectOne(FIND_CLIENT_ID_BY_NIP,[nip:clientNip])
                 def cbdClient = new Client(rowResult)
-                def eumowyClient = cbdClient.nip ? (Client.findByNip(cbdClient.nip,[sort: "id", order: "desc"]) ?: cbdClient) :null
-                println(eumowyClient)
-               return eumowyClient
+                return cbdClient
         }
     }
 

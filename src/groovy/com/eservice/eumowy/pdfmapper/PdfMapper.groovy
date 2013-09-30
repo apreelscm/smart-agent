@@ -102,7 +102,6 @@ class PdfMapper {
         Map<String, String[]> data = new HashMap<String, String[]>()
         data.put("phNumer", [processInstance.phNumber.toString()] as String[])
 		data.put("osobaPozyskalaAkceptantaNr", [processInstance.phNumber.toString()] as String[])
-		data.put("osobaPodpisalaUmoweNr", [processInstance.phNumber.toString()] as String[])
 
         //to na jakis formularz jest
 		if (processInstance.phNumber.toString() != null && processInstance.phNumber.toString().size()==5){
@@ -274,7 +273,11 @@ class PdfMapper {
         data.put(key+"4", [value.substring(12, 15)] as String[])
     }
 
-    private mapUlicaDoKorespondencjiPoint(def data, def pd, def key, def value, def index) {
+	private mapPhPozyskPoint(def data, def pd, def key, def value, def index) {
+		data.put("osobaPodpisalaUmoweNr", [value] as String[])		
+	}
+	
+	  private mapUlicaDoKorespondencjiPoint(def data, def pd, def key, def value, def index) {
         data.put(key, [pd.ulicaDoKorespondencjiTyp + " " + value] as String[])
     }
 
@@ -424,7 +427,7 @@ class PdfMapper {
 	}
 	
 	private mapReprezentant2TytulProcess(def data, def pd, def key, def value){
-		if ((getFromProcessDataSet(pd, 'reprezentant2Imie')) != null && (getFromProcessDataSet(pd, 'reprezentant2Nazwisko'))){
+		if ((getFromProcessDataSet(pd, 'reprezentant2Imie')) != null && !"".equals(getFromProcessDataSet(pd, 'reprezentant2Imie')) && (getFromProcessDataSet(pd, 'reprezentant2Nazwisko')) && !"".equals(getFromProcessDataSet(pd, 'reprezentant2Nazwisko'))){
 		data.put(key, [value] as String[]);
 		addCheckboxes(data, ["pan2": "Pan", "pani2": "Pani"], value)
 		}
@@ -647,6 +650,53 @@ class PdfMapper {
         addCheckboxes(data, ["zaswiadczenieZEwidencji": "ewidencja", "umowaSpolkiCywilnej": "umowa_spolki_cywilnej", "odpisZKRS":"krs", "inne2":""], value)
         if ("".equals(value)){
             data.put("inneText2", [getFromProcessDataSet(pd, "dzialalnoscDokumentInny")] as String[])
+        }
+    }
+
+    private mapIsZestawPosOdplatneUzywanieShownProcess(def data, def pd, def key, def value){
+        if (value != null && "tak".equals(value)){
+            //byl pokazany panel zestawPosOdplatneUzywanie --> dzialamy
+//            String oplPOSDialUpTyp	 = DEFAULT_VALUE
+//            String oplPOSDialUpIlosc	 = DEFAULT_VALUE
+//            String oplPOSDialUpIloscPP	 = DEFAULT_VALUE
+//            String oplPOSDialUpNormalneMies	 = DEFAULT_VALUE
+//            String oplPOSDialUpNormalnePP	 = DEFAULT_VALUE
+//            String oplPOSDialUpPreferencyjneMies	 = DEFAULT_VALUE
+//            String oplPOSDialUpPreferencyjnePP	 = DEFAULT_VALUE
+//
+//            String oplPOSVPNTyp	 = DEFAULT_VALUE
+//            String oplPOSVPNIlosc	 = DEFAULT_VALUE
+//            String oplPOSVPNIloscPP	 = DEFAULT_VALUE
+//            String oplPOSVPNNormalneMies	 = DEFAULT_VALUE
+//            String oplPOSVPNNormalnePP	 = DEFAULT_VALUE
+//            String oplPOSVPNPreferencyjneMies	 = DEFAULT_VALUE
+//            String oplPOSVPNPreferencyjnePP	 = DEFAULT_VALUE
+//
+//            String oplPOSSSLTyp	 = DEFAULT_VALUE
+//            String oplPOSSSLIlosc	 = DEFAULT_VALUE
+//            String oplPOSSSLIloscPP	 = DEFAULT_VALUE
+//            String oplPOSSSLNormalneMies	 = DEFAULT_VALUE
+//            String oplPOSSSLNormalnePP	 = DEFAULT_VALUE
+//            String oplPOSSSLPreferencyjneMies	 = DEFAULT_VALUE
+//            String oplPOSSSLPreferencyjnePP	 = DEFAULT_VALUE
+//
+//            String oplPOSWiFiTyp	 = DEFAULT_VALUE
+//            String oplPOSWiFiIlosc	 = DEFAULT_VALUE
+//            String oplPOSWiFiIloscPP	 = DEFAULT_VALUE
+//            String oplPOSWiFiNormalneMies	 = DEFAULT_VALUE
+//            String oplPOSWiFiNormalnePP	 = DEFAULT_VALUE
+//            String oplPOSWiFiPreferencyjneMies	 = DEFAULT_VALUE
+//            String oplPOSWiFiPreferencyjnePP	 = DEFAULT_VALUE
+//
+//            String oplPOSGPRSTyp	 = DEFAULT_VALUE
+//            String oplPOSGPRSIlosc	 = DEFAULT_VALUE
+//            String oplPOSGPRSIloscPP	 = DEFAULT_VALUE
+//            String oplPOSGPRSNormalneMies	 = DEFAULT_VALUE
+//            String oplPOSGPRSNormalnePP	 = DEFAULT_VALUE
+//            String oplPOSGPRSPreferencyjneMies	 = DEFAULT_VALUE
+//            String oplPOSGPRSPreferencyjnePP	 = DEFAULT_VALUE
+
+
         }
     }
 

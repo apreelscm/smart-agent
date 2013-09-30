@@ -23,7 +23,7 @@
 									code="panel.nip" /></span> <span><eumowy:textField class="nip"
 									name="${panelType}[${id}].nipPunktu"
 									id="${panelType}[${id}].nip" value="${pointData?.nipPunktu}"
-									maxlength="10" required="true"/></span></li>
+									maxlength="10" required="true" readonly="true"/></span></li>
 						<li><span class="align-right"><g:message
 									code="panel.mcccode" /></span> <span><eumowy:textField
 									name="${panelType}[${id}].kodMCC"
