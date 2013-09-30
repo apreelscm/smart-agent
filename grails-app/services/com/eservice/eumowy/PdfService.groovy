@@ -79,12 +79,14 @@ class PdfService {
 	
 	def getDocumentAndPageCountFromGlobalPageNumber(List<DocumentFile> documents, Integer pageNumber) {
 		Integer pagesCount = 0
+
+        documents = documents.sort {it.signature.signatureOrder}
 		
 		for(DocumentFile doc : documents) {
-			log.info "Document: " + doc + " PageCount: " + doc.pagesCount
+			log.info "Document: " + doc + " PageCount: " + doc.pagesCount + " Signature_order: " + doc.signature.signatureOrder
 			if (pageNumber >= pagesCount && pageNumber <= pagesCount + doc.pagesCount) {
 				return [document: doc, page: pageNumber - pagesCount]
-			}
+            }
 				
 			pagesCount += doc.pagesCount		
 		}
