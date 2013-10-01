@@ -621,9 +621,9 @@ class ProcessCommand implements Serializable{
         kontaktTelStacjonarny(nullable:true)
         kontaktEmail(nullable:true, blank:true, shared: "email")
         pozyskujacyTytul(nullable:false, blank:false)
-        pozyskujacyImie(nullable:false, blank:false, shared: "lettersonly")
-        pozyskujacyNazwisko(nullable:false, blank:false, shared: "lettersonly")
-        pozyskujacyNumer(nullable:false, blank:false)
+        pozyskujacyImie(nullable:false, blank:false, shared: "lettersonly", maxSize: 40)
+        pozyskujacyNazwisko(nullable:false, blank:false, shared: "lettersonly", maxSize: 100)
+        pozyskujacyNumer(nullable:false, blank:false, maxSize: 12)
         reprezentant1Tytul(nullable:false, blank:false)
         reprezentant1Imie(nullable:false, blank:false, shared: "lettersonly")
         reprezentant1Nazwisko(nullable:false, blank:false, shared: "lettersonly")
@@ -939,7 +939,7 @@ class ProcessCommand implements Serializable{
         bankKlienta(nullable:false, blank:false)
         oplataZaUruchomienieDCC(nullable:false, blank:false, shared: "number")
         //nip(nullable:true)
-        notes(nullable:true) //a1!
+        notes(nullable:true, maxSize: 1000) //a1!
         points(nullable:true)
         poses(nullable:true)
         allPoints(nullable:true)
