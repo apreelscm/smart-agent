@@ -536,6 +536,18 @@ class ProcessService {
             point.save(flush: true)
             process.addToPoints(point)
         }
+		
+		def posDataList = getPointCommandsToPosDataList(cmd)
+		
+		posDataList?.each { PointData point ->
+			if (point.cbdId == -1) {
+				point.delete(flush: true)
+				return
+			}
+			
+			point.save(flush: true)
+			process.addToPoints(point);
+		}
 
         /*def pointsDataList = getPointData(cmd, process)
 		//process.points?.clear()
@@ -626,7 +638,7 @@ class ProcessService {
                     posDataDetails = posData?.posDetails
 
                     if (posData == null) {
-                        log.info "Brakujacy POS dla Danych punktu o id: " + pc.id + " - Tworzę nowy!"
+                        log.info "getPointCommandsToPointDataList - Brakujacy POS dla Danych punktu o id: " + pc.id + " - Tworzę nowy!"
                         posData = new PosData()
                         posDataDetails = new PosDataDetails()
                     }
@@ -743,115 +755,162 @@ class ProcessService {
     }
 
     //TODO - metod nieuzywana????
-    def getPointCommandsToPosDataList(def process, def cmd) {
+    def getPointCommandsToPosDataList(def cmd) {
         def pointsList = []
-        cmd.points?.each { PointCommand pc ->
+        cmd.poses?.each { PointCommand pc ->
+			boolean isNew = false
+			if (pc == null) {
+				log.info "getPointCommandsToPosDataList: PointCommand is NULL - skipping!"
+				return
+			}
 
-            if (pc == null) {
-                log.info "PointCommand is NULL - skipping!"
-                return
-            }
+			PointData pointData
+			PointDataDetails pointDataDetails
+			PosData posData
+			PosDataDetails posDataDetails
 
-            ArrayList<PosData> pdList = new ArrayList<PosData>()
+			ArrayList<PosData> pdList = new ArrayList<PosData>()
 
-            PointData pointData = new PointData()
-            PointDataDetails pointDataDetails = new PointDataDetails()
+			if (pc.id == null) {
+				pointData = new PointData()
+				pointDataDetails = new PointDataDetails()
 
-            PosData posData = new PosData()
-            PosDataDetails posDataDetails = new PosDataDetails()
+				posData = new PosData()
+				posDataDetails = new PosDataDetails()
+				isNew = true
+			}
+			else {
+				posData = PosData.get(pc.id)
+				
+				if (posData != null) {
+					pointData = posData.point
+					posDataDetails = posData.posDetails
 
-            pdList.add(posData)
+					if (pointData != null) {
+						log.info "getPointCommandsToPosDataList - Znaleziono punkt o id: " + pointData.id + " dla POS o id: " + pc.id
+						pointDataDetails = pointData.pointDetails
+					}
+					else {
+						log.info "getPointCommandsToPosDataList - Brakujacy punkt dla POS o id: " + pc.id
+						pointData = new PointData()
+						pointDataDetails = new PointDataDetails()
+					}
+				}
+				else {
+					log.info "getPointCommandsToPosDataList - Nie znaleziono POS o id: " + pc.id
+					return
+				}
+			}
 
-            pc.properties.each { key, value ->
-                if (PointData.metaClass.respondsTo(PointData, "set" + key.capitalize())) {
-                    pointData."set${key.capitalize()}"(value)
-                }
+			pdList.add(posData)
 
-                if (PointDataDetails.metaClass.respondsTo(PointDataDetails, "set" + key.capitalize())) {
-                    pointDataDetails."set${key.capitalize()}"(value)
-                }
+			pc.properties.each { key, value ->
+				log.info "PCPOSProperties " + key + ": " + value
+				if (PointData.metaClass.respondsTo(PointData, "set" + key.capitalize()) && key != 'id') {
+					pointData."set${key.capitalize()}"(value)
+				}
 
-                if (PosData.metaClass.respondsTo(PosData, "set" + key.capitalize())) {
-                    posData."set${key.capitalize()}"(value)
-                }
+				if (PointDataDetails.metaClass.respondsTo(PointDataDetails, "set" + key.capitalize()) && key != 'id') {
+					pointDataDetails."set${key.capitalize()}"(value)
+				}
 
-                if (PosDataDetails.metaClass.respondsTo(PosDataDetails, "set" + key.capitalize())) {
-                    posDataDetails."set${key.capitalize()}"(value)
-                }
-            }
+				if (PosData.metaClass.respondsTo(PosData, "set" + key.capitalize())) {
+					// FIXME krytyczne obejscie, nigdy nie powinno byc null
+					posData?."set${key.capitalize()}"(value)
+				}
 
-            pointData.id = pc.id
+				if (PosDataDetails.metaClass.respondsTo(PosDataDetails, "set" + key.capitalize()) && key != 'id') {
+					posDataDetails."set${key.capitalize()}"(value)
+				}
+			}
 
-            // Create POSes with same values
-            if (pc.terminalIlosc != null && pc.terminalIlosc > 1) {
-                for (int i = 0; i < pc.terminalIlosc; i++) {
-                    PosData posDataNew
-                    PosDataDetails posDataDetailsNew
+			// Create POSes with same values
+			if (pc.terminalIlosc != null && pc.terminalIlosc > 1) {
+				for (int i = 0; i < pc.terminalIlosc; i++) {
+					PosData posDataNew
+					PosDataDetails posDataDetailsNew
 
-                    posDataNew = SerializationUtils.clone(posData)
-                    posDataDetailsNew = SerializationUtils.clone(posDataDetails)
+					posDataNew = SerializationUtils.clone(posData) as PosData
+					posDataDetailsNew = SerializationUtils.clone(posDataDetails) as PosDataDetails
+					posDataNew.setPosDetails(posDataDetailsNew)
+					posDataNew.setPoint(pointData)
+					posDataDetailsNew.setPos(posDataNew)
 
-                    posDataNew.setPosDetails(posDataDetailsNew)
-                    posDataNew.setPoint(pointData)
-                    posDataDetailsNew.setPos(posDataNew)
+					pdList.add(posDataNew)
+				}
+			}
 
-                    pdList.add(posDataNew)
-                }
-            }
+			pointData.nip = pointDataDetails.nipPunktu
+			pointData.nazwa = pointDataDetails.nazwaDoWyszukiwarki
+			pointData.ulica = pointDataDetails.korespondencjaUlica
+			pointData.nrLokalu = pointDataDetails.korespondencjaNrLokalu
+			pointData.nrBudynku = pointDataDetails.korespondencjaNrDomu
+			pointData.miejscowosc = pointDataDetails.korespondencjaMiasto
+			pointData.kodPocztowy = pointDataDetails.korespondencjaKodPocztowy
+			pointData.poczta = pointDataDetails.korespondencjaPoczta
+			pointData.liczbaPos = pdList.size()
+			pointData.save()
+			//if (isNew == true) {
+			posData.setPosDetails(posDataDetails)
+			posData.setPoint(pointData)
 
-            pointData.nip = pointDataDetails.nipPunktu
-            pointData.nazwa = pointDataDetails.nazwaDoWyszukiwarki
-            pointData.ulica = pointDataDetails.korespondencjaUlica
-            pointData.nrLokalu = pointDataDetails.korespondencjaNrLokalu
-            pointData.nrBudynku = pointDataDetails.korespondencjaNrDomu
-            pointData.miejscowosc = pointDataDetails.korespondencjaMiasto
-            pointData.kodPocztowy = pointDataDetails.korespondencjaKodPocztowy
-            pointData.poczta = pointDataDetails.korespondencjaPoczta
-            pointData.liczbaPos = pdList.size()
+			pointData.setPointDetails(pointDataDetails)
+			pointData.setPosDatas(pdList)
 
-            posData.setPosDetails(posDataDetails)
-            posData.setPoint(pointData)
+			posDataDetails.setPos(posData)
+			pointDataDetails.setPoint(pointData)
+			posData.save()
+			//}
 
-            pointData.setPointDetails(pointDataDetails)
-            pointData.setPosDatas(pdList)
-
-            posDataDetails.setPos(posData)
-            pointDataDetails.setPoint(pointData)
-
-            pointsList.add(pointData)
+			pointsList.add(pointData)
         }
 
-        /* Save points from AllPointsCommand */
-        cmd.allPoints?.each { AllPointsCommand apc ->
-
+        /* Save poses from AllPosCommand */
+        cmd.allPoses?.each { AllPosCommand apc ->
+			
             if (apc == null) {
-                log.info "AllPointCommand is NULL - skipping!"
+                log.info "AllPosCommand is NULL - skipping!"
                 return
             }
-
-            PointData point;
+			ArrayList<PosData> pdList = new ArrayList<PosData>()
+            PosData pos;
+			PointData point;
 
             if (apc.id != null) {
-                point = PointData.get(apc.id)
+                pos = PosData.get(apc.id)
+				
+				if (pos != null) {
+					point = pos.point
+				}
+				
             }
             else {
-                point = new PointData()
+                pos = new PosData()
+				point = new PointData()
             }
 
-            point.nazwa = apc.nazwa
-            point.ulica = apc.ulica
-            point.kodPocztowy = apc.kodPocztowy
-            point.liczbaPos = apc.liczbaPos
-            point.miejscowosc = apc.miejscowosc
-            point.nrBudynku = apc.nrBudynku
-            point.czyWybranyAkceptacjaKart = apc.czyWybranyAkceptacjaKart
-            point.czyWybranyZakresUruchomienia = apc.czyWybranyZakresUruchomienia
-            point.cbdId = apc.cbdId
-            point.tytulPlatnosci = apc.tytulPlatnosci
-            point.systemKasowy = apc.systemKasowy
-            point.uta = apc.uta
+			if (pos != null) {
+				if (apc.tpsId != null) {
+					pos.dataOd = apc.dataOd
+					pos.dataDo = apc.dataDo
+					pos.numerZestawuPos = apc.numerZestawuPos
+					pos.wysokoscOplaty = apc.wysokoscOplaty
+				}
+				
+				pdList.add(pos)
+				pos.czyWybrany = apc.czyWybrany
+				pos.tpsId = apc.tpsId
+				
+				point.cbdId = apc.tpsId
+				point.save()
+				
+				point.setPosDatas(pdList)
+				
+				pos.setPoint(point)
+				pos.save()
+			}
 
-            pointsList.add(pointData)
+            pointsList.add(point)
         }
 
         return pointsList

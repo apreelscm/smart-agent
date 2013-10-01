@@ -9,7 +9,7 @@
                         <span>
                             <dict:streetSelect name="akceptantUlicaTytul" value="${data.akceptantUlicaTytul}" readonly="${data.isFromCbd('akceptantUlicaTytul')}"/>
                             <g:hiddenField name="akceptantUlicaTytulCbd" value="${data.akceptantUlicaTytulCbd}"/>
-                            <eumowy:textField name="akceptantUlica" value="${data.akceptantUlica}" validatable="${data}" readonly="${data.isFromCbd('akceptantUlica')}" style="width: 200px" maxlength="19" required="true"/>
+                            <eumowy:textField name="akceptantUlica" value="${data.akceptantUlica}" validatable="${data}" readonly="${data.isFromCbd('akceptantUlica')}" style="width: 200px" required="true"/>
                             <g:hiddenField name="akceptantUlicaCbd" value="${data.akceptantUlicaCbd}"/>
                         </span>
                         <span>
@@ -28,7 +28,7 @@
                     <span>
                     <span><g:message code="panel.city" /></span>
                     <span>
-                        <eumowy:textField name="akceptantMiasto" value="${data.akceptantMiasto}" validatable="${data}" readonly="${data.isFromCbd('akceptantMiasto')}" style="width: 280px;" maxlength="19" required="true"/>
+                        <eumowy:textField name="akceptantMiasto" value="${data.akceptantMiasto}" validatable="${data}" readonly="${data.isFromCbd('akceptantMiasto')}" style="width: 280px;" required="true"/>
                         <g:hiddenField name="akceptantMiastoCbd" value="${data.akceptantMiastoCbd}"/>
                     </span>
                     <span>
@@ -43,7 +43,7 @@
                     <span>
                         <span><g:message code="panel.postal" /></span>
                         <span>
-                            <eumowy:textField name="akceptantPoczta" value="${data.akceptantPoczta}" validatable="${data}" readonly="${data.isFromCbd('akceptantPoczta')}" style="width: 280px;" maxlength="19" required="true"/>
+                            <eumowy:textField name="akceptantPoczta" value="${data.akceptantPoczta}" validatable="${data}" readonly="${data.isFromCbd('akceptantPoczta')}" style="width: 280px;" required="true"/>
                             <g:hiddenField name="akceptantPocztaCbd" value="${data.akceptantPocztaCbd}"/>
                         </span>
                     </span>

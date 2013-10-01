@@ -7,7 +7,7 @@
 
                 <div style="padding-bottom: 10px"><g:message code="panel.notes"/></div>
 
-                <g:textArea name="notes"  value="${data.notes}" style="width: 100%"/>
+                <g:textArea name="notes"  value="${data.notes}" style="width: 100%" maxlength="1000"/>
 
               %{--  <h1>TagLib test (-)</h1>
                 <eumowy:textArea name="notes" style="width: 100%"   bean="${data}"/>--}%
