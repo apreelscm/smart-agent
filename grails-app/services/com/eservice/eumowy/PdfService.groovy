@@ -283,7 +283,7 @@ class PdfService {
 
         processInstance.points.each{ point ->
 
-            if (point.cbdId != null){
+            if (point.cbdId == null){
                 //generujemy tylko dokumenty dla tych punktow, ktore nie sa z CBD
                 def dataFromPoint = new PdfMapper(calc, calculatorService).mapOnlyPointData(point);
 
@@ -304,7 +304,6 @@ class PdfService {
             }
         }
 
-        processInstance.save(flush:true)
         ['totalPagesCount': totalPagesCount, 'processInstance': processInstance]
     }
 
@@ -323,7 +322,7 @@ class PdfService {
             log.info "DF id: " + df.id + " PageCount: " + df.pagesCount
             log.info "Process ID: " + processInstance.id
             processInstance.addToDocuments(df)
-            processInstance.discard()
+            //processInstance.discard()
         } else {
             log.info "Updating existing document [${sig.templatePath}]"
             DocumentFile df = processService.findDocumentByName(processInstance.documents, documentName)

@@ -337,11 +337,11 @@ class PdfMapper {
         mapWithPattern(data, value, ~/\d{2}\s\d{4}\s\d{4}\s\d{4}\s\d{4}\s\d{4}\s\d{4}/, " ", "numerRachunkuBankowego");
 	}
 	
-	private mapUwagiDodatkowePointDataDetails(def data, def pointData, def key, def value, def index) {
+	private mapUwagiDodatkowePointDataDetails(def data, def pointData, def key, def value) {
 		data.put(key, [value] as String[]);
 	}
 	
-	private mapPhPozyskPointDataDetails(def data, def pointData, def key, def value, def index) {
+	private mapPhPozyskPointDataDetails(def data, def pointData, def key, def value) {
 		data.put(key, [value] as String[]);
 		data.put("osobaPodpisalaUmoweNr", [value] as String[])
     }
