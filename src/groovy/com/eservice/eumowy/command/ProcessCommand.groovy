@@ -901,11 +901,13 @@ class ProcessCommand implements Serializable{
                     counter += Integer.valueOf(point.terminalIlosc)
                 }
             }
-            /* cmd.allPoses?.each{ PosData pos ->
-                if(pos.posDetails.terminalIlosc){
-                    counter += pos.pointDetails.terminalIlosc;
+			
+			cmd.poses?.each{ point ->
+                //println("point.terminalIlosc : " + point.terminalIlosc)
+                if(point.terminalIlosc?.toString()?.isNumber()){
+                    counter += Integer.valueOf(point.terminalIlosc)
                 }
-            }*/
+            }
 
             if( counter > max) {
                 errors.rejectValue( "liczbaTerminali", "default.tooMuch.liczbaTerminali",)
