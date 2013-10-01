@@ -451,10 +451,22 @@ class ProcessCommand implements Serializable{
         pierwszaSesjaCena(nullable:false, blank:false, shared: "number")
 
         akceptantKontaktUlicaTytul(nullable:false, blank:false)
-        akceptantKontaktUlica(nullable:false, blank:false, shared: "alpha")
+        akceptantKontaktUlica(nullable:false, blank:false, shared: "alpha", validator: { value, process, errors ->
+			if(value.length() > 40){
+				errors.rejectValue("akceptantKontaktUlica", "default.nameTooLong.street")
+                return false
+			}
+			return true
+        })
         akceptantKontaktNrDomu(nullable:false, blank:false, shared: "alpha")
         akceptantKontaktNrMieszkania(nullable:true, blank:false, shared: "alpha")
-        akceptantKontaktMiasto(nullable:false, blank:false, shared: "alpha")
+        akceptantKontaktMiasto(nullable:false, blank:false, shared: "alpha", validator: { value, process, errors ->
+			if(value.length() > 33){
+				errors.rejectValue("akceptantKontaktMiasto", "default.nameTooLong.city")
+                return false
+			}
+			return true
+        })
         akceptantKontaktKodPocztowy(nullable:false, blank:false)
         akceptantKontaktPoczta(nullable:false, blank:false, shared: "alpha")
         /*  dataAneksowanejUmowyPos(nullable:false, blank:false, shared: "date")
@@ -495,10 +507,22 @@ class ProcessCommand implements Serializable{
         nazwaDoWydrukuZTerminalaPos(nullable:true)
         wydrukNazwaDoWyszukwarki(nullable:true)
         wydrukUlicaTytul(nullable:false, blank:false)
-        wydrukUlica(nullable:false, blank:false, shared: "alpha")
+        wydrukUlica(nullable:false, blank:false, shared: "alpha", validator: { value, process, errors ->
+			if(value.length() > 40){
+				errors.rejectValue("wyrdukUlica", "default.nameTooLong.city")
+                return false
+			}
+			return true
+        })
         wydrukNrDomu(nullable:false, blank:false, shared: "alpha")
         wydrukNrMieszkania(nullable:true, blank:false, shared: "alpha")
-        wydrukMiasto(nullable:false, blank:false, shared: "alpha")
+        wydrukMiasto(nullable:false, blank:false, shared: "alpha", validator: { value, process, errors ->
+			if(value.length() > 33){
+				errors.rejectValue("wydrukMiasto", "default.nameTooLong.city")
+                return false
+			}
+			return true
+        })
         wydrukKodPocztowy(nullable:false, blank:false)
         wydrukPoczta(nullable:false, blank:false, shared: "alpha")
         wydrukLinia1(nullable:true, blank:true)
@@ -796,10 +820,22 @@ class ProcessCommand implements Serializable{
         scoringDeklaracjaFinansowaSredniObrot(nullable:true, blank:true)
         scoringDeklaracjaFinansowaSredniaTransakcja(nullable:true, blank:true)
         akceptantUlicaTytul(nullable:false, blank:false)
-        akceptantUlica(nullable:false, blank:false, shared: "alpha")
+        akceptantUlica(nullable:false, blank:false, shared: "alpha", validator: { value, process, errors ->
+			if(value.length() > 40){
+				errors.rejectValue("akceptantUlica", "default.nameTooLong.street")
+                return false
+			}
+			return true
+        })
         akceptantNrDomu(nullable:false, blank:false, shared: "alpha")
         akceptantNrMieszkania(nullable:true, blank:false, shared: "alpha")
-        akceptantMiasto(nullable:false, blank:false, shared: "alpha")
+        akceptantMiasto(nullable:false, blank:false, shared: "alpha", validator: { value, process, errors ->
+			if(value.length() > 33){
+				errors.rejectValue("akceptantMiasto", "default.nameTooLong.city")
+                return false
+			}
+			return true
+        })
         akceptantKodPocztowy(nullable:false, blank:false)
         akceptantPoczta(nullable:false, blank:false, shared: "alpha")
 
