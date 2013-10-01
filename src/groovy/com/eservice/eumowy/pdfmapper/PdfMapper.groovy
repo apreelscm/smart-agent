@@ -12,11 +12,9 @@ class PdfMapper {
 
     private int myIndex = 0;
 
-	def calc
 	def calculatorService
 
-	PdfMapper(def calc, def calculatorService){
-		this.calc = calc
+	PdfMapper(def calculatorService){
 		this.calculatorService = calculatorService
 	}
 
@@ -89,10 +87,7 @@ class PdfMapper {
 
 	private def mapProcessCalcToPDFData() {
 		Map<String, String[]> data = new HashMap<String, String[]>()
-		println 'Jestem w mapowaniu danych z Kalkulatora!!!!'
-
-		if (calc != null && calculatorService != null){
-			println 'Pobieram dane z kalkulatora!!!!'
+		if (calculatorService != null){
             data.put('oplatyPOSMiesiacNaliczania', [calculatorService.getCalcProperty('E_LICZBA_MIES_ZWOL_NAJ_1')] as String[])
 		}
 		return data
@@ -102,7 +97,7 @@ class PdfMapper {
         Map<String, String[]> data = new HashMap<String, String[]>()
         data.put("phNumer", [processInstance.phNumber.toString()] as String[])
 		data.put("osobaPozyskalaAkceptantaNr", [processInstance.phNumber.toString()] as String[])
-
+	    data.put("osobaPodpisalaUmoweNr", [processInstance.phNumber.toString()] as String[]) 
         //to na jakis formularz jest
 		if (processInstance.phNumber.toString() != null && processInstance.phNumber.toString().size()==5){
 			data.put("NrSprzedazowyPH1", [processInstance.phNumber.toString().substring(0, 3)] as String[])
@@ -343,7 +338,6 @@ class PdfMapper {
 	
 	private mapPhPozyskPointDataDetails(def data, def pointData, def key, def value) {
 		data.put(key, [value] as String[]);
-		data.put("osobaPodpisalaUmoweNr", [value] as String[])
     }
 
 	// ------------------ POS METHODS ------------------------------------
@@ -442,7 +436,7 @@ class PdfMapper {
 		data.put("walutaObcaCena", [value] as String[])
 	}
 
-	private mapNipProcess(def data, def pointData, def key, def value){
+	private mapNipProcess(def data, def pd, def key, def value){
 		data.put(key, [value] as String[]);
 		data.put("akceptantNip", [value] as String[]);
 	}

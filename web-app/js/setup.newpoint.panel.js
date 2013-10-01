@@ -239,7 +239,7 @@ function setupNewPointPanelData(prevPanelId, panelId) {
             jQuery("#"+panelId+"wifiPPCount").val(possetforselectedpoint['wifiPPCount']);
             jQuery("#"+panelId+"wifiPrice").val(possetforselectedpoint['wifiPrice']);
             jQuery("#"+panelId+"wifiPPPrice").val(possetforselectedpoint['wifiPPPrice']);
-            jQuery("#"+panelId+"possetforselectedpointGprsType").val(possetforselectedpoint['possetforselectedpointGprsType']);         ddd
+            jQuery("#"+panelId+"possetforselectedpointGprsType").val(possetforselectedpoint['possetforselectedpointGprsType']);
             jQuery("#"+panelId+"gprsCount").val(possetforselectedpoint['gprsCount']);
             jQuery("#"+panelId+"gprsPPCount").val(possetforselectedpoint['gprsPPCount']);
             jQuery("#"+panelId+"gprsPrice").val(possetforselectedpoint['gprsPrice']);

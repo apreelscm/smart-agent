@@ -201,7 +201,7 @@ class ActivityController {
                 }
 
                 if (!flow.skipDocumentGeneration) {
-                    def processWithPages = pdfService.workWithDocuments(processInstance, calculatorService.calc)
+                    def processWithPages = pdfService.workWithDocuments(processInstance)
                     flow.totalPagesCount = processWithPages.totalPagesCount
                     //processInstance.discard()
 					//processInstance.save(flush: true)
