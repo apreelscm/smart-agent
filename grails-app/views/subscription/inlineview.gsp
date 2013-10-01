@@ -1,4 +1,3 @@
-<%@ page contentType="text/html; UTF-8" %>
 <!DOCTYPE html>
 <head>
     <meta name="layout" content="blank">
