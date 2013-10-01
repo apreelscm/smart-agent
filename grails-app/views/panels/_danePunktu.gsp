@@ -322,9 +322,6 @@
 <r:script>
 
     function verifyBaseVisibility(value, trId){
-
-        alert("1:"+value + " == " + (value == "Verifone Vx670 GPRS"))
-
         if(value == "Verifone Vx670 GPRS"){
             jQuery("#trBase"+trId).show()
         }
