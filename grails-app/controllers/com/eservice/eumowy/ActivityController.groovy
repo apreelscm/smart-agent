@@ -430,7 +430,7 @@ class ActivityController {
 					else{
 						flash.nipInfoMessage =  message(code:"client.found.info", default:"Znaleziono klienta w CBD");
 					}
-    
+     
                 }else {
                     /** sprawdzanie, czy to nie jest nowa umowa */
                     if(hasNowaUmowa){
