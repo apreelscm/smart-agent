@@ -441,7 +441,7 @@ class PdfMapper {
 	private mapOplataZaUruchomienieWalutyObcejProcess(def data, def pd, def key, def value) {
 		data.put("walutaObcaCena", [value] as String[])
 	}
-	
+
 	private mapNipProcess(def data, def pointData, def key, def value){
 		data.put(key, [value] as String[]);
 		data.put("akceptantNip", [value] as String[]);
@@ -639,17 +639,17 @@ class PdfMapper {
                 data.put("spolkaText", ["komandytowa"] as String[])
             }
 
-            addCheckboxes(data, ["spolkaCywilna":"spolka_cywilna", "osobaFizyczna":"osoba_fizyczna", "spolka":"spolka", "inne1":""], value)
+            addCheckboxes(data, ["spolkaCywilna":"spolka_cywilna", "osobaFizyczna":"osoba_fizyczna", "spolka":"spolka", "inne1":"inne"], value)
 
-            if ("".equals(value)){
+            if ("inne".equals(value)){
                 data.put("inneText", [getFromProcessDataSet(pd, "dzialalnoscFormaInna")] as String[])
             }
         }
     }
 
     private mapDzialalnoscDokumentProcess(def data, def pd, def key, def value) {
-        addCheckboxes(data, ["zaswiadczenieZEwidencji": "ewidencja", "umowaSpolkiCywilnej": "umowa_spolki_cywilnej", "odpisZKRS":"krs", "inne2":""], value)
-        if ("".equals(value)){
+        addCheckboxes(data, ["zaswiadczenieZEwidencji": "ewidencja", "umowaSpolkiCywilnej": "umowa_spolki_cywilnej", "odpisZKRS":"krs", "inne2":"inne"], value)
+        if ("inne".equals(value)){
             data.put("inneText2", [getFromProcessDataSet(pd, "dzialalnoscDokumentInny")] as String[])
         }
     }

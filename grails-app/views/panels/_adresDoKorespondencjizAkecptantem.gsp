@@ -10,7 +10,7 @@
                     <span><g:message code="panel.street" /></span>
                     <span>
                         <dict:streetSelect id="akceptantKontaktUlicaTytul" name="akceptantKontaktUlicaTytul" value="${data.akceptantKontaktUlicaTytul}" />
-                        <eumowy:textField name="akceptantKontaktUlica" style="width: 200px" value="${data.akceptantKontaktUlica}" validatable="${data}" maxlength ="19" required="true"/>
+                        <eumowy:textField name="akceptantKontaktUlica" style="width: 200px" value="${data.akceptantKontaktUlica}" validatable="${data}" required="true"/>
                     </span>
                     <span>
                         <span><g:message code="panel.house.number" /></span> <span><eumowy:textField name="akceptantKontaktNrDomu" value="${data.akceptantKontaktNrDomu}" validatable="${data}" style="width: 50px" maxlength ="4" required="true"/></span>
@@ -26,7 +26,7 @@
                 </li>
                 <li>
                     <span><g:message code="panel.postal" /></span>
-                    <span><eumowy:textField name="akceptantKontaktPoczta" value="${data.akceptantKontaktPoczta}" validatable="${data}" style="width: 280px;" maxlength ="19" required="true"/></span>
+                    <span><eumowy:textField name="akceptantKontaktPoczta" value="${data.akceptantKontaktPoczta}" validatable="${data}" style="width: 280px;" required="true"/></span>
                 </li>
             </ul>
         </div>

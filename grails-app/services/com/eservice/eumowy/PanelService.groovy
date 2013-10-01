@@ -21,7 +21,7 @@ class PanelService {
     def getAdresDoKorespondencjizAkecptantem(ProcessCommand cmd ) {
         def result = cbdService.getAdresDoKorespondencjizAkceptantem(cmd.nip);
 
-        cmd.akceptantKontaktUlicaTytul = result?.typ_ulicy ?:  ""
+        cmd.akceptantKontaktUlicaTytul = result?.typ_ulicy ?:  "UL"
         cmd.akceptantKontaktUlica = result?.ulica  ?: ""
         cmd.akceptantKontaktNrDomu = result?.nr_budynku ?: ""
         cmd.akceptantKontaktNrMieszkania = result?.nr_lokal ?: ""
@@ -439,7 +439,7 @@ class PanelService {
 
         def result = cbdService.getSiedzibaAkceptanta(cmd.nip);
 
-        cmd.akceptantUlicaTytul = result?.typ_ulicy ?: ""
+        cmd.akceptantUlicaTytul = result?.typ_ulicy ?: "UL"
         cmd.akceptantUlica = result?.ulica ?: ""
         cmd.akceptantNrDomu = result?.nr_budynku ?: ""
         cmd.akceptantNrMieszkania = result?.nr_lokal ?: ""

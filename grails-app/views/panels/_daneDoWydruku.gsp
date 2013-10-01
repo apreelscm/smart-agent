@@ -13,7 +13,7 @@
                         <span><g:message code="panel.street" /></span>
                         <span>
                             <dict:streetSelect name="wydrukUlicaTytul" />
-                            <eumowy:textField name="wydrukUlica" value="${data.wydrukUlica}" style="width: 200px" maxlength ="19" required="true"/>
+                            <eumowy:textField name="wydrukUlica" value="${data.wydrukUlica}" style="width: 200px" required="true"/>
                         </span>
                         <span>
                             <span><g:message code="panel.house.number" /></span> <span><eumowy:textField name="wydrukNrDomu" value="${data.wydrukNrDomu}" validatable="${data}" style="width: 50px" maxlength ="4" required="true"/></span>
@@ -22,14 +22,14 @@
                     </li>
                     <li>
                         <span><g:message code="panel.city" /></span>
-                        <span><eumowy:textField name="wydrukMiasto" value="${data.wydrukMiasto}" validatable="${data}" style="width: 280px;" maxlength ="19" required="true"/></span>
+                        <span><eumowy:textField name="wydrukMiasto" value="${data.wydrukMiasto}" validatable="${data}" style="width: 280px;" required="true"/></span>
                         <span>
                             <span><g:message code="panel.postal.code" /></span> <span><eumowy:textField class="postal-code" name="wydrukKodPocztowy" value="${data.wydrukKodPocztowy}" validatable="${data}" style="width: 50px" maxlength ="5" required="true"/></span>
                         </span>
                     </li>
                     <li>
                         <span><g:message code="panel.postal" /></span>
-                        <span><eumowy:textField name="wydrukPoczta" value="${data.wydrukPoczta}" validatable="${data}" style="width: 280px;" maxlength ="19" required="true"/></span>
+                        <span><eumowy:textField name="wydrukPoczta" value="${data.wydrukPoczta}" validatable="${data}" style="width: 280px;" required="true"/></span>
                     </li>
                 </ul>
                 <p><g:message code="panel.newpoint.otherdataforprintingfromterminal" /></p>
