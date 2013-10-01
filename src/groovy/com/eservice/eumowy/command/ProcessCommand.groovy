@@ -468,7 +468,13 @@ class ProcessCommand implements Serializable{
 			return true
         })
         akceptantKontaktKodPocztowy(nullable:false, blank:false)
-        akceptantKontaktPoczta(nullable:false, blank:false, shared: "alpha")
+        akceptantKontaktPoczta(nullable:false, blank:false, shared: "alpha", validator: { value, process, errors ->
+			if(value.length() > 33){
+				errors.rejectValue("akceptantKontaktPoczta", "default.nameTooLong.postalTown")
+                return false
+			}
+			return true
+        })
         /*  dataAneksowanejUmowyPos(nullable:false, blank:false, shared: "date")
             dataAneksowanejUmowyPrepaid(nullable:false, blank:false, shared: "date")*/
 
@@ -524,7 +530,13 @@ class ProcessCommand implements Serializable{
 			return true
         })
         wydrukKodPocztowy(nullable:false, blank:false)
-        wydrukPoczta(nullable:false, blank:false, shared: "alpha")
+        wydrukPoczta(nullable:false, blank:false, shared: "alpha", validator: { value, process, errors ->
+			if(value.length() > 33){
+				errors.rejectValue("wydrukPoczta", "default.nameTooLong.postalTown")
+                return false
+			}
+			return true
+        })
         wydrukLinia1(nullable:true, blank:true)
         wydrukLinia2(nullable:true, blank:true)
         /*   oplataVISA(nullable:false, blank:false, shared: "number")
@@ -837,7 +849,13 @@ class ProcessCommand implements Serializable{
 			return true
         })
         akceptantKodPocztowy(nullable:false, blank:false)
-        akceptantPoczta(nullable:false, blank:false, shared: "alpha")
+        akceptantPoczta(nullable:false, blank:false, shared: "alpha", validator: { value, process, errors ->
+			if(value.length() > 33){
+				errors.rejectValue("akceptantPoczta", "default.nameTooLong.postalTown")
+                return false
+			}
+			return true
+        })
 
      /*   hasAkceptantTel(validator: { value, process, errors ->
             if (value == null || process.akceptantTelKomorkowy == null) {
