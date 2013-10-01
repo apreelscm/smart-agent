@@ -133,8 +133,8 @@ insert into EUMOWY.ACTIVITY_SIGNATURES (id, version, activity_id, mandatory, num
 insert into EUMOWY.ACTIVITY_SIGNATURES (id, version, activity_id, mandatory, number_of_list, signature_id) values (EUMOWY.ACTIVITY_SIGNATURES_SEQ.NEXTVAL, 0,16,0,1,18);
 insert into EUMOWY.ACTIVITY_SIGNATURES (id, version, activity_id, mandatory, number_of_list, signature_id) values (EUMOWY.ACTIVITY_SIGNATURES_SEQ.NEXTVAL, 0,16,0,2,19);
 insert into EUMOWY.ACTIVITY_SIGNATURES (id, version, activity_id, mandatory, number_of_list, signature_id) values (EUMOWY.ACTIVITY_SIGNATURES_SEQ.NEXTVAL, 0,12,0,1,15);
-insert into EUMOWY.ACTIVITY_SIGNATURES (id, version, activity_id, mandatory, number_of_list, signature_id) values (EUMOWY.ACTIVITY_SIGNATURES_SEQ.NEXTVAL, 0,12,0,1,14);
-insert into EUMOWY.ACTIVITY_SIGNATURES (id, version, activity_id, mandatory, number_of_list, signature_id) values (EUMOWY.ACTIVITY_SIGNATURES_SEQ.NEXTVAL, 0,12,1,0,2);
+-- insert into EUMOWY.ACTIVITY_SIGNATURES (id, version, activity_id, mandatory, number_of_list, signature_id) values (EUMOWY.ACTIVITY_SIGNATURES_SEQ.NEXTVAL, 0,12,0,1,14);
+/*insert into EUMOWY.ACTIVITY_SIGNATURES (id, version, activity_id, mandatory, number_of_list, signature_id) values (EUMOWY.ACTIVITY_SIGNATURES_SEQ.NEXTVAL, 0,12,1,0,2);*/
 insert into EUMOWY.ACTIVITY_SIGNATURES (id, version, activity_id, mandatory, number_of_list, signature_id) values (EUMOWY.ACTIVITY_SIGNATURES_SEQ.NEXTVAL, 0,13,0,1,20);
 insert into EUMOWY.ACTIVITY_SIGNATURES (id, version, activity_id, mandatory, number_of_list, signature_id) values (EUMOWY.ACTIVITY_SIGNATURES_SEQ.NEXTVAL, 0,13,0,1,21);
 insert into EUMOWY.ACTIVITY_SIGNATURES (id, version, activity_id, mandatory, number_of_list, signature_id) values (EUMOWY.ACTIVITY_SIGNATURES_SEQ.NEXTVAL, 0,13,0,2,8);

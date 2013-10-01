@@ -134,7 +134,7 @@
 				return false;
 			});
 			
-			jQuery("#conitnueButton").on("click", function(e) {
+			jQuery("#continueButton").on("click", function(e) {
 				e.preventDefault();
 				if (updateSubscriptionStatusCount != requiredSubscriptionsCount && jQuery("#requestVersionElectronical").is(":checked") == true) {
 					result = false;
@@ -214,66 +214,22 @@
 				}
 			</g:each>
 			
-			jQuery("#subscribe-REPRESENTATIVE1").on('click', function(e) {
+			jQuery(".showSignatureDialog").on('click', function(e) {
 				e.preventDefault();
-				
-				//var signerName = jQuery(e.target).text();
-				
-				var dialog = jQuery('#subscriptionDialog');
-				if (jQuery('#subscriptionDialog').length == 0) {
-					dialog = jQuery('<div id="subscriptionDialog" style="display:hidden"></div>').appendTo('body');
-				}
-				
-				dialog.load(
-		            "/eumowy/subscription/inlineview?name="+encodeURI("${representative1.name}")+"&surname="+encodeURI("${representative1.surname}")+"&personRole=ACCEPTANT1&linkid=subscribe-REPRESENTATIVE1",
-		            {},
-		            function(responseText, textStatus, XMLHttpRequest) {
-		                dialog.dialog({
-		                	modal: true,
-      						width: 750
-		                });
-		            }
-		        );
-		        
-				return false;
-			});
-			
-			jQuery("#subscribe-REPRESENTATIVE2").on('click', function(e) {
-				e.preventDefault();
-				
-				//var signerName = jQuery(e.target).text();
-				
-				var dialog = jQuery('#subscriptionDialog');
-				if (jQuery('#subscriptionDialog').length == 0) {
-					dialog = jQuery('<div id="subscriptionDialog" style="display:hidden"></div>').appendTo('body');
-				}
-				
-				dialog.load(
-		            "/eumowy/subscription/inlineview?name="+encodeURI("${representative2.name}")+"&surname="+encodeURI("${representative2.surname}")+"&personRole=ACCEPTANT2&linkid=subscribe-REPRESENTATIVE2",
-		            {},
-		            function(responseText, textStatus, XMLHttpRequest) {
-		                dialog.dialog({
-		                	modal: true,
-      						width: 750
-		                });
-		            }
-		        );
-		        
-				return false;
-			});
-			
-			jQuery("#subscribe-PH").on('click', function(e) {
-				e.preventDefault();
-				
-				//var signerName = jQuery(e.target).text();
 
-				var dialog = jQuery('#subscriptionDialog');
+				var currentTarget = jQuery(e.currentTarget),
+				    firstName = currentTarget.attr('data-firstName'),
+				    lastName = currentTarget.attr('data-lastName'),
+				    role = currentTarget.attr('data-role'),
+				    linkId = currentTarget.attr('id');
+				
+		        var dialog = jQuery('#subscriptionDialog');
 				if (jQuery('#subscriptionDialog').length == 0) {
 					dialog = jQuery('<div id="subscriptionDialog" style="display:hidden"></div>').appendTo('body');
 				}
-				
+
 				dialog.load(
-		            "/eumowy/subscription/inlineview?name="+encodeURI("${processInstance.phFirstName}")+"&surname="+encodeURI("${processInstance.phSurname}")+"&personRole=PH&linkid=subscribe-PH",
+                    "${createLink(controller: 'subscription', action: 'inlineview')}&name=" + encodeURI(firstName) + "&surname=" + encodeURI(lastName) + "&personRole=" + role + "&linkid=" + linkId,
 		            {},
 		            function(responseText, textStatus, XMLHttpRequest) {
 		                dialog.dialog({
@@ -313,7 +269,6 @@
 					}
 				}
 			});
-			
 		});
 	</r:script>
 </head>
@@ -356,9 +311,17 @@
         	<fieldset id="clientSignaturePersons" class="subpanel-fieldset">
         		<legend><g:message code="clientSignature.signing.people" default="Osoby podpisujące" /></legend>
         		<ul class="table-list">
-					<li><span><a class="big-link" id="subscribe-REPRESENTATIVE1" href="#">${representative1.name} ${representative1.surname} - Reprezentant</a></span></li>
-					<li><span><a class="big-link" id="subscribe-REPRESENTATIVE2" href="#">${representative2.name} ${representative2.surname} - Reprezentant</a></span></li>
-					<li><span><a class="big-link" id="subscribe-PH" href="#">${processInstance.phFirstName} ${processInstance.phSurname} - Pracownik eService</a></span></li>
+					<li><span><a class="big-link showSignatureDialog" data-firstName="${representative1.name}"
+                                 data-lastName="${representative1.surname}" data-role="ACCEPTANT1" id="subscribe-REPRESENTATIVE1"
+                                 href="#">${representative1.name} ${representative1.surname} - Reprezentant</a></span></li>
+
+					<li><span><a class="big-link showSignatureDialog" data-firstName="${representative2.name}"
+                                 data-lastName="${representative2.surname}" data-role="ACCEPTANT2" id="subscribe-REPRESENTATIVE2"
+                                 href="#">${representative2.name} ${representative2.surname} - Reprezentant</a></span></li>
+
+					<li><span><a class="big-link showSignatureDialog" data-firstName="${processInstance.phFirstName}"
+                                 data-lastName="${processInstance.phSurname}" data-role="PH" id="subscribe-PH"
+                                 href="#">${processInstance.phFirstName} ${processInstance.phSurname} - Pracownik eService</a></span></li>
         		</ul>
         	</fieldset>
         	<fieldset class="subpanel-fieldset" id="clientSignatureDocType">
@@ -402,7 +365,7 @@
                                             value="${message(code: 'clientSignature.noAcceptance.button', default:'Brak akceptacji')}"/>
                         </td>
                         <td>
-                            <g:submitButton style="width: 100%" id="conitnueButton" name="submit" class="button submit" value="${message(code: 'default.navigation.button.finish', default: 'Zakończ')}"/>
+                            <g:submitButton style="width: 100%" id="continueButton" name="submit" class="button submit" value="${message(code: 'default.navigation.button.finish', default: 'Zakończ')}"/>
                         </td>
                     </tr>
                     </tbody>

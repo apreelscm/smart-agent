@@ -8,26 +8,26 @@
                         <span>
                             <g:select name="dzialalnoscForma"
                                       from="['', 'Spółka akcyjna', 'Spółka z o.o.', 'Spółka cywilna', 'Osoba fizyczna', 'Spółka komandytowa']"
-                                      keys="['', 'spolka_akcyjna', 'spolka_zoo', 'spolka_cywilna', 'osoba_fizyczna', 'spolka_komandytowa']"
+                                      keys="['inne', 'spolka_akcyjna', 'spolka_zoo', 'spolka_cywilna', 'osoba_fizyczna', 'spolka_komandytowa']"
                                       value="${data.dzialalnoscForma}"
                                       style="width: 200px;"/>
                         </span>
                         <span><g:message code="panel.other"/></span>
-                        <span class="align-right"><g:textField name="dzialalnoscFormaInna" value="${data.dzialalnoscFormaInna}" readonly="${data.dzialalnoscForma != ''}" style="width: 140px;"/></span>
+                        <span class="align-right"><g:textField name="dzialalnoscFormaInna" value="${data.dzialalnoscFormaInna}" readonly="${data.dzialalnoscForma != 'inne' && data.dzialalnoscForma != ''}" style="width: 140px;"/></span>
                     </li>
                     <li>
                         <span class="align-left"><g:message code="panel.document"/></span>
                         <span>
                             <g:select name="dzialalnoscDokumentSel"
                                       from="['', 'KRS', 'Wpis do ewidencji', 'Umowa spółki cywilnej']"
-                                      keys="['', 'krs', 'ewidencja', 'umowa_spolki_cywilnej']"
+                                      keys="['inne', 'krs', 'ewidencja', 'umowa_spolki_cywilnej']"
                                       value="${data.dzialalnoscDokument}"
                                       style="width: 200px;"
                                       disabled="true"/>
                             <g:hiddenField name="dzialalnoscDokument" value="${data.dzialalnoscDokument}"/>
                         </span>
                         <span><g:message code="panel.other"/></span>
-                        <span class="align-right"><g:textField name="dzialalnoscDokumentInny" value="${data.dzialalnoscDokumentInny}" readonly="${data.dzialalnoscDokument != ''}" style="width: 140px;"/></span>
+                        <span class="align-right"><g:textField name="dzialalnoscDokumentInny" value="${data.dzialalnoscDokumentInny}" readonly="${data.dzialalnoscDokument != 'inne' && data.dzialalnoscDokument != ''}" style="width: 140px;"/></span>
                     </li>
                 </ul>
             </div>
@@ -40,8 +40,8 @@
 
             var result = jQuery("#dzialalnoscForma option:selected").val();
             switch(result){
-                case '':
-                    selectDoc('');
+                case 'inne':
+                    selectDoc('inne');
                     clearAndReadonlyOtherFields(false, false);
                     break;
                 case 'spolka_akcyjna':

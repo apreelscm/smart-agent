@@ -92,7 +92,7 @@ class ProcessCommand implements Serializable{
     String oplataMasterCard	 = DEFAULT_VALUE
     String oplataMasterCardPr	 = DEFAULT_VALUE
     String oplataMaestro	 = DEFAULT_VALUE
-    String oplataMasteroPr	 = DEFAULT_VALUE
+    String oplataMaestroPr	 = DEFAULT_VALUE
 
 //    dccZakresUruchomienia
     String dccZakresUruchomienia	 = DEFAULT_VALUE
@@ -508,7 +508,7 @@ class ProcessCommand implements Serializable{
            oplataMasterCard(nullable:false, blank:false, shared: "number")
            oplataMasterCardPr(nullable:false, blank:false, shared: "number")
            oplataMaestro(nullable:false, blank:false, shared: "number")
-           oplataMasteroPr(nullable:false, blank:false, shared: "number")*/
+           oplataMaestroPr(nullable:false, blank:false, shared: "number")*/
         dccZakresUruchomienia(nullable:false, blank:false)
 
         informacjaHandlowa(nullable:false, blank:false)
@@ -842,6 +842,7 @@ class ProcessCommand implements Serializable{
         akceptantFaxCbd(nullable:true)
         akceptantTelKomorkowyCbd(nullable:true)
         miejsceUmowy(nullable:true)
+        isZestawPosOdplatneUzywanieShown(nullable: true)
         oplPOSDialUpTyp(nullable:true)
         oplPOSDialUpIlosc(nullable:true, shared: "natural")
         oplPOSDialUpIloscPP(nullable:true, shared: "natural")

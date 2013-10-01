@@ -86,7 +86,7 @@ class PanelService {
         cmd.oplataMasterCard = calculatorService.getCalcProperty("OPLATA_DCC_MASTERCARD_ZL")
         cmd.oplataMasterCardPr = calculatorService.getCalcProperty("OPLATA_DCC_MASTERCARD_PR")
         cmd.oplataMaestro = calculatorService.getCalcProperty("OPLATA_DCC_MAESTRO_ZL")
-        cmd.oplataMasteroPr =calculatorService.getCalcProperty("OPLATA_DCC_MAESTRO_PR")
+        cmd.oplataMaestroPr =calculatorService.getCalcProperty("OPLATA_DCC_MAESTRO_PR")
     }
 
     def getDccZakresUruchomienia(ProcessCommand cmd ) {
@@ -487,6 +487,7 @@ class PanelService {
 
     def getZestawPosOdplatneUzywanie(ProcessCommand cmd ) {
 
+        cmd.isZestawPosOdplatneUzywanieShown = nullify(cmd.isZestawPosOdplatneUzywanieShown)
         cmd.oplPOSDialUpTyp = calculatorService.getCalcProperty("TYP_DIALUP") //K RW
         cmd.oplPOSDialUpIlosc = nullify(cmd.oplPOSDialUpIlosc)
         cmd.oplPOSDialUpIloscPP = nullify(cmd.oplPOSDialUpIloscPP)
