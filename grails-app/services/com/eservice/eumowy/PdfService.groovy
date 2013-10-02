@@ -6,7 +6,6 @@ import java.awt.image.BufferedImage
 
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.util.PDFImageWriter
-import org.springframework.context.ApplicationContext
 
 import pdfgenerator.PdfGenerator
 import signaturepad.SignatureToImage
@@ -17,21 +16,25 @@ class PdfService {
     def calculatorService
 
 	public static enum FontType {
-		HELVETICA,
-		ARIAL,
-		ARIALBOLD
+        HELVETICA(""),
+        ARIAL("arial.ttf"),
+        ARIALBOLD("arialbd.ttf"),
+        TIMES_NEW_ROMAN_PSMT("TimesNewRomanPSMT.ttf")
+
+        public String field;
+
+        FontType(final String field){
+            this.field = field;
+        }
 	}
-	
-	ApplicationContext applicationContext
 	
 	def generateImageFromPDFDocumentFile(List<DocumentFile> documents, String processId, Integer pageNumber) {
 		String result = ""
 		log.info documents
 		def data = getDocumentAndPageCountFromGlobalPageNumber(documents, pageNumber)
-		if (data.document != null) {
+        if (data.document != null) {
 			result = generateImageFromPDF(data.document.content.content, data.document.id, processId, data.page)
-		}
-		else {
+		}else {
 			log.warn "generateImageFromPDFDocumentFile - document == null"
 			result = ""
 		}
@@ -40,9 +43,8 @@ class PdfService {
 	}
 	
 	def generateImageFromPDF(byte[] pdf, Long documentId, String processId, Integer pageNumber) {
-		PDDocument document = null
 		ByteArrayInputStream bis = new ByteArrayInputStream(pdf)
-		document = PDDocument.load(bis)
+        PDDocument document = PDDocument.load(bis)
 		int resolution = 300
 		log.info document
 		PDFImageWriter imageWriter = new PDFImageWriter()
@@ -58,7 +60,8 @@ class PdfService {
 		
 		return appParametersService.getPdfImageUri()+documentId+"-"+processId+"-"+pageNumber+".png"
 	}
-	
+
+    //METODA PRAWDOPODOBNIE NIE UZYWANA
 	def generateImageFromPDF(String pdfPath, String pdfName, String processId, Integer pageNumber) {
 		PDDocument document = null
 		document = PDDocument.load(pdfPath+pdfName)
@@ -80,9 +83,9 @@ class PdfService {
 	def getDocumentAndPageCountFromGlobalPageNumber(List<DocumentFile> documents, Integer pageNumber) {
 		Integer pagesCount = 0
 
-        documents = documents.sort {it.signature.signatureOrder}
+        def docs = documents.sort(false) {it.signature.signatureOrder}
 		
-		for(DocumentFile doc : documents) {
+		for(DocumentFile doc : docs) {
 			log.info "Document: " + doc + " PageCount: " + doc.pagesCount + " Signature_order: " + doc.signature.signatureOrder
 			if (pageNumber >= pagesCount && pageNumber <= pagesCount + doc.pagesCount) {
 				return [document: doc, page: pageNumber - pagesCount]
@@ -97,43 +100,19 @@ class PdfService {
 	def getPageCountFromPdf(byte[] pdf) {
 		int numberOfPages = 0
 		try {
-			PDDocument document = null
 			ByteArrayInputStream bis = new ByteArrayInputStream(pdf)
-			document = PDDocument.load(bis)
+            PDDocument document = PDDocument.load(bis)
 			numberOfPages = document.getNumberOfPages()
 			document.close()
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			log.warn "getPageCountFromPdf - Error while loading PDF file from byte array: " + e
-			//e.printStackTrace()
 		}
 		
 		return numberOfPages
 	}
-	
-	private String getFont(FontType fontType) {
-		String f = null
-		
-		switch(fontType) {
-			case FontType.HELVETICA:
-				f = "HELVETICA"
-				break;
-				
-			case FontType.ARIAL:
-				f = "ARIAL"
-				break;
-			
-			case FontType.ARIALBOLD:
-				f = "ARIALBOLD"
-				break;
-			
-		}
-		
-		return f
-	}
 
 	def fillPdfFormFromURI(String urlTemplatePath, Map<String,String[]> dataMap, FontType fontType) {
-		return PdfGenerator.generatePdfContentFromURI(urlTemplatePath, dataMap, getFont(fontType), appParametersService.getFontUri())
+		return PdfGenerator.generatePdfContentFromURI(urlTemplatePath, dataMap, fontType, appParametersService.getFontUri())
 	}
 	
 	def fillPdfFormFromURIWithFaksymile(Signature sig, Map<String,String[]> panelData, FontType fontType) {
@@ -160,7 +139,7 @@ class PdfService {
 
         String pdfTemplatePath = appParametersService.getPdfTemplatePath() + sig.templatePath
 		
-		return PdfGenerator.generatePdfContentFromURI(pdfTemplatePath, dataMap, getFont(fontType), appParametersService.getFontUri())
+		return PdfGenerator.generatePdfContentFromURI(pdfTemplatePath, dataMap, fontType, appParametersService.getFontUri())
 	}
 	
 	def fillPdfFormFromURIWithoutFaksymile(Signature sig, Map<String,String[]> panelData, FontType fontType) {
@@ -172,7 +151,7 @@ class PdfService {
 		
 		String pdfTemplatePath = appParametersService.getPdfTemplatePath() + sig.templatePath
 		
-		return PdfGenerator.generatePdfContentFromURI(pdfTemplatePath, dataMap, getFont(fontType), appParametersService.getFontUri())
+		return PdfGenerator.generatePdfContentFromURI(pdfTemplatePath, dataMap, fontType, appParametersService.getFontUri())
 	}
 	
 	def fillPdfFormFromURIWithBlackFaksymile(Signature sig, Map<String,String[]> panelData, FontType fontType) {
@@ -200,7 +179,7 @@ class PdfService {
 		
 		String pdfTemplatePath = appParametersService.getPdfTemplatePath() + sig.templatePath
 		
-		return PdfGenerator.generatePdfContentFromURI(pdfTemplatePath, dataMap, getFont(fontType), appParametersService.getFontUri())
+		return PdfGenerator.generatePdfContentFromURI(pdfTemplatePath, dataMap, fontType, appParametersService.getFontUri())
 	}
 	
 	def addClientSubscriptionsToDocument(byte[] documentContent, Signature sig, Set<Subscription> subscriptions) {
@@ -210,17 +189,7 @@ class PdfService {
 		Map<String,Object[]> subscriptionsMap = new HashMap<String, Object[]>()
 		int xScale = appParametersService.SUBSCRIPTION_SCALE_X
 		int yScale = appParametersService.SUBSCRIPTION_SCALE_Y
-		/*subscriptions.eachWithIndex { s, i ->
-			
-			if (s.content != null) {
-				BufferedImage img = SignatureToImage.convertJsonToImage(s.content)
-				subscriptionsMap.put("subscriber"+s.id, [img, sig.subscriptionPageNumber, sig.subscriptionX+i*subscriptionDeltaX, sig.subscriptionY, xScale, yScale] as Object[])
-			}
-			else {
-				log.info "Subscription without subscription content found!"
-			}
-			
-		}*/
+
 		if (sig.subscriptionPageNumber != null && sig.subscriptionPageNumber > -1) {
 			Subscription s = subscriptions.find { it.personRole?.equals(Subscription.PersonRole.ACCEPTANT1) == true }
 			if (s?.content != null) {
@@ -303,7 +272,7 @@ class PdfService {
                 }
             }
         }
-		processInstance.save(flush: true)
+		processInstance.discard()
         ['totalPagesCount': totalPagesCount, 'processInstance': processInstance]
     }
 
@@ -322,14 +291,15 @@ class PdfService {
             log.info "DF id: " + df.id + " PageCount: " + df.pagesCount
             log.info "Process ID: " + processInstance.id
             processInstance.addToDocuments(df)
+			processInstance.save(flush: true)
         } else {
             log.info "Updating existing document [${sig.templatePath}]"
             DocumentFile df = processService.findDocumentByName(processInstance.documents, documentName)
             df.content.setContent(documentData)
             df.lastUpdated = new Date()
             df.save(flush: true)
+			processInstance.save(flush: true)
         }
-		processInstance.save(flush: true)
         pc
     }
 

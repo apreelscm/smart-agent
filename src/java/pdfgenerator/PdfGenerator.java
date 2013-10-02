@@ -7,6 +7,7 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.eservice.eumowy.PdfService;
 import org.apache.log4j.Logger;
 
 import com.lowagie.text.DocumentException;
@@ -19,9 +20,6 @@ import com.lowagie.text.pdf.PdfStamper;
 
 public class PdfGenerator {
 	private static Logger LOG = Logger.getLogger(PdfGenerator.class);
-
-	private static String ARIAL_FONT_NAME = "arial.ttf";
-	private static String ARIALBOLD_FONT_NAME = "arialbd.ttf";
 
 	public static byte[] addImageToPdfContent(String templatePath, byte[] content, Map<String, Object[]> imageMap) {
 		
@@ -87,12 +85,11 @@ public class PdfGenerator {
 	 * @param dataMap
 	 * @return
 	 */
-	public static byte[] generatePdfContentFromURI(String urlTemplatePath, Map<String,String[]> dataMap, String fontPath, String fPath) {
-		Map<String,String> fontsPathMap = new HashMap<String, String>();
-		if (fontPath != null && dataMap != null){
-			
+	public static byte[] generatePdfContentFromURI(String urlTemplatePath, Map<String,String[]> dataMap, PdfService.FontType fontType, String fPath) {
+		Map<String,PdfService.FontType> fontsPathMap = new HashMap<String, PdfService.FontType>();
+		if (fontType != null && dataMap != null){
 			for (Map.Entry<String, String[]> dataEntry : dataMap.entrySet()){
-				fontsPathMap.put(dataEntry.getKey(), fontPath);
+				fontsPathMap.put(dataEntry.getKey(), fontType);
 			}
 		}
 		return generatePdfContentFromURI(urlTemplatePath,dataMap,fontsPathMap, fPath);
@@ -105,12 +102,12 @@ public class PdfGenerator {
 	 * @param fontsPathMap
 	 * @return
 	 */
-	private static byte[] generatePdfContentFromURI(String urlTemplatePath, Map<String,String[]> dataMap, Map<String,String> fontsPathMap, String fPath) {
+	private static byte[] generatePdfContentFromURI(String urlTemplatePath, Map<String,String[]> dataMap, Map<String,PdfService.FontType> fontsPathMap, String fPath) {
 		if (urlTemplatePath == null){
 			throw new IllegalArgumentException("urlTemplatePath param shouldn't be null");
 		}
-		
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		PdfReader templateReader = null;
 		PdfStamper stamp = null;
 		try {
@@ -133,21 +130,25 @@ public class PdfGenerator {
 				
 				if (fontsPathMap != null && fontsPathMap.containsKey(dataEntry.getKey())){
 					BaseFont bf = null;
-					if("HELVETICA".equals(fontsPathMap.get(dataEntry.getKey()))) {
-						bf = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.EMBEDDED);
-					}
-					else if ("ARIAL".equals(fontsPathMap.get(dataEntry.getKey()))) {
-						bf = BaseFont.createFont(fPath+ARIAL_FONT_NAME, BaseFont.CP1250, BaseFont.EMBEDDED);
-					}
-					else if ("ARIALBOLD".equals(fontsPathMap.get(dataEntry.getKey()))) {
-						bf = BaseFont.createFont(fPath+ARIALBOLD_FONT_NAME, BaseFont.CP1250, BaseFont.EMBEDDED);
-					}
-					else {
-						bf = BaseFont.createFont(fontsPathMap.get(dataEntry.getKey()), BaseFont.CP1250, BaseFont.EMBEDDED);
-					}
+                    PdfService.FontType fontType = fontsPathMap.get(dataEntry.getKey());
+
+                    switch(fontType){
+                        case HELVETICA:
+                            bf = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.EMBEDDED);
+                            break;
+                        case ARIAL:
+                        case ARIALBOLD:
+                            bf = BaseFont.createFont(fPath+fontType.field, BaseFont.CP1250, BaseFont.EMBEDDED);
+                            break;
+                        case TIMES_NEW_ROMAN_PSMT:
+                            break;
+                        default:
+                            bf = BaseFont.createFont(fontType.name(), BaseFont.CP1250, BaseFont.EMBEDDED);
+                            break;
+                    }
 					
 					if (dataEntry.getValue().length <= 2 || (dataEntry.getValue().length > 2 && "checkbox".equals(dataEntry.getValue()[2]) == false)) {
-						form.setFieldProperty(dataEntry.getKey(), "textfont", bf, null);	
+						form.setFieldProperty(dataEntry.getKey(), "textfont", bf, null);
 						form.addSubstitutionFont(bf);
 					}
 					
