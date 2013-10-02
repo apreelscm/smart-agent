@@ -80,9 +80,9 @@ class PdfService {
 	def getDocumentAndPageCountFromGlobalPageNumber(List<DocumentFile> documents, Integer pageNumber) {
 		Integer pagesCount = 0
 
-        documents = documents.sort {it.signature.signatureOrder}
+        def docs = documents.sort(false) {it.signature.signatureOrder}
 		
-		for(DocumentFile doc : documents) {
+		for(DocumentFile doc : docs) {
 			log.info "Document: " + doc + " PageCount: " + doc.pagesCount + " Signature_order: " + doc.signature.signatureOrder
 			if (pageNumber >= pagesCount && pageNumber <= pagesCount + doc.pagesCount) {
 				return [document: doc, page: pageNumber - pagesCount]
@@ -210,17 +210,7 @@ class PdfService {
 		Map<String,Object[]> subscriptionsMap = new HashMap<String, Object[]>()
 		int xScale = appParametersService.SUBSCRIPTION_SCALE_X
 		int yScale = appParametersService.SUBSCRIPTION_SCALE_Y
-		/*subscriptions.eachWithIndex { s, i ->
-			
-			if (s.content != null) {
-				BufferedImage img = SignatureToImage.convertJsonToImage(s.content)
-				subscriptionsMap.put("subscriber"+s.id, [img, sig.subscriptionPageNumber, sig.subscriptionX+i*subscriptionDeltaX, sig.subscriptionY, xScale, yScale] as Object[])
-			}
-			else {
-				log.info "Subscription without subscription content found!"
-			}
-			
-		}*/
+
 		if (sig.subscriptionPageNumber != null && sig.subscriptionPageNumber > -1) {
 			Subscription s = subscriptions.find { it.personRole?.equals(Subscription.PersonRole.ACCEPTANT1) == true }
 			if (s?.content != null) {
@@ -303,7 +293,7 @@ class PdfService {
                 }
             }
         }
-		processInstance.save(flush: true)
+		processInstance.discard()
         ['totalPagesCount': totalPagesCount, 'processInstance': processInstance]
     }
 
@@ -322,14 +312,15 @@ class PdfService {
             log.info "DF id: " + df.id + " PageCount: " + df.pagesCount
             log.info "Process ID: " + processInstance.id
             processInstance.addToDocuments(df)
+			processInstance.save(flush: true)
         } else {
             log.info "Updating existing document [${sig.templatePath}]"
             DocumentFile df = processService.findDocumentByName(processInstance.documents, documentName)
             df.content.setContent(documentData)
             df.lastUpdated = new Date()
             df.save(flush: true)
+			processInstance.save(flush: true)
         }
-		processInstance.save(flush: true)
         pc
     }
 
