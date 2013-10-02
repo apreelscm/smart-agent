@@ -102,7 +102,7 @@ class PdfMapper {
         Map<String, String[]> data = new HashMap<String, String[]>()
         data.put("phNumer", [processInstance.phNumber.toString()] as String[])
 		data.put("osobaPozyskalaAkceptantaNr", [processInstance.phNumber.toString()] as String[])
-
+	    data.put("osobaPodpisalaUmoweNr", [processInstance.phNumber.toString()] as String[]) 
         //to na jakis formularz jest
 		if (processInstance.phNumber.toString() != null && processInstance.phNumber.toString().size()==5){
 			data.put("NrSprzedazowyPH1", [processInstance.phNumber.toString().substring(0, 3)] as String[])
@@ -343,7 +343,6 @@ class PdfMapper {
 	
 	private mapPhPozyskPointDataDetails(def data, def pointData, def key, def value) {
 		data.put(key, [value] as String[]);
-		data.put("osobaPodpisalaUmoweNr", [value] as String[])
     }
 
 	// ------------------ POS METHODS ------------------------------------
