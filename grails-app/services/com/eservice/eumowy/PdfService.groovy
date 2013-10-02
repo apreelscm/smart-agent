@@ -303,7 +303,7 @@ class PdfService {
                 }
             }
         }
-
+		processInstance.save(flush: true)
         ['totalPagesCount': totalPagesCount, 'processInstance': processInstance]
     }
 
@@ -322,7 +322,6 @@ class PdfService {
             log.info "DF id: " + df.id + " PageCount: " + df.pagesCount
             log.info "Process ID: " + processInstance.id
             processInstance.addToDocuments(df)
-            //processInstance.discard()
         } else {
             log.info "Updating existing document [${sig.templatePath}]"
             DocumentFile df = processService.findDocumentByName(processInstance.documents, documentName)
@@ -330,6 +329,7 @@ class PdfService {
             df.lastUpdated = new Date()
             df.save(flush: true)
         }
+		processInstance.save(flush: true)
         pc
     }
 
