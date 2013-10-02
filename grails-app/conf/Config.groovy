@@ -6,27 +6,10 @@ import org.apache.log4j.jdbc.JDBCAppender
 // config files can be ConfigSlurper scripts, Java properties files, or classes
 // in the classpath in ConfigSlurper format
 
-// grails.config.locations = [ "classpath:${appName}-config.properties",
-//                             "classpath:${appName}-config.groovy",
-//                             "file:${userHome}/.grails/${appName}-config.properties",
-//                             "file:${userHome}/.grails/${appName}-config.groovy"]
-
-// if (System.properties["${appName}.config.location"]) {
-//    grails.config.locations << "file:" + System.properties["${appName}.config.location"]
-// }
-
 // referencja do konfiguracji srodowisk, poza dev parametr ustawiany przy starcie tomcata
-//grails.config.locations = ["classpath:${appName}-config-${grails.util.Environment.current.name}.groovy"]
-//development {
-//    grails.config.locations << "file:web-app/WEB-INF/${appName}-config-${grails.util.Environment.current.name}.groovy"
-//}
-// TODO do usuniecia , na razie zostaje zeby nie kopiowac za kazdym razem konfigu na serwer
-//test {
-//    grails.config.locations << "file:web-app/WEB-INF/${appName}-config-${grails.util.Environment.current.name}.groovy"
-//}
-//uat {
-//    grails.config.locations << "file:web-app/WEB-INF/${appName}-config-${grails.util.Environment.current.name}.groovy"
-//}
+grails.config.locations = ["classpath:${appName}-config-${grails.util.Environment.current.name}.groovy",
+        "file:web-app/WEB-INF/${appName}-config-${grails.util.Environment.current.name}.groovy"]
+
 
 grails.project.groupId = appName // change this to alter the default package name and Maven publishing destination
 grails.mime.file.extensions = true // enables the parsing of file extensions from URLs into the request format
@@ -249,24 +232,6 @@ grails.plugins.springsecurity.interceptUrlMap = [
         '/**':			['IS_AUTHENTICATED_FULLY']
 ]
 
-// mail config
-grails {
-    mail {
-        host = "192.168.3.140"
-        port = 25
-        username = "ldamiecki@testeservice.com"
-        password = "Standard1"
-        //host = "mail.your-server.de"
-        //port = 465
-        //username = "atest@apreel.com"
-        //password = "atest"
-        //props = ["mail.smtp.auth": "true",
-        //        "mail.smtp.socketFactory.port": "465",
-        //       "mail.smtp.socketFactory.class": "javax.net.ssl.SSLSocketFactory",
-        //        "mail.smtp.socketFactory.fallback": "false",
-        //        "mail.smtp.ssl.trust": "*"]
-    }
-}
 trustAll = true
 
 fileuploader {
