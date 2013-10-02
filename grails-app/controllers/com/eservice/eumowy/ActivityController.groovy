@@ -201,7 +201,7 @@ class ActivityController {
                 }
 
                 if (!flow.skipDocumentGeneration) {
-                    def processWithPages = pdfService.workWithDocuments(processInstance, calculatorService.calc)
+                    def processWithPages = pdfService.workWithDocuments(processInstance)
                     flow.totalPagesCount = processWithPages.totalPagesCount
                     //processInstance.discard()
 					//processInstance.save(flush: true)
@@ -416,12 +416,23 @@ class ActivityController {
                 }
 
                 def client = cbdService.findClientByNip(flow.nip);
-
+				
+				/** pobranie wartości, czy to jest nowa umowa*/
+				def hasNowaUmowa = processService.containsActivity(processInstance.activities,"nowaUmowa")
+				
                 if(client?.cbdId){
-                    flash.nipInfoMessage =  message(code:"client.found.info", default:"Znaleziono klienta w CBD");
+					/** sprawdzanie, czy to nie jest nowa umowa dla klienta CBD*/
+					if(hasNowaUmowa){
+						flash.nipErrorMessage = message(code:"client.newAgreementAndClientCBD.error", default:"Nowa umowa dla klienta CBD");
+                        log.info(message(code:"client.newAgreementAndClientCBD.error") + " - " + flow.nip)
+                        return error();
+					}
+					else{
+						flash.nipInfoMessage =  message(code:"client.found.info", default:"Znaleziono klienta w CBD");
+					}
+     
                 }else {
                     /** sprawdzanie, czy to nie jest nowa umowa */
-                    def hasNowaUmowa = processService.containsActivity(processInstance.activities,"nowaUmowa")
                     if(hasNowaUmowa){
                         flash.nipInfoMessage =  message(code:"client.new.info", default:"Nowy klient");
                         client = new Client(nip:params.nip)

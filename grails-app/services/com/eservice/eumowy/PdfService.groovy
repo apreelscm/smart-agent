@@ -6,7 +6,6 @@ import java.awt.image.BufferedImage
 
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.util.PDFImageWriter
-import org.springframework.context.ApplicationContext
 
 import pdfgenerator.PdfGenerator
 import signaturepad.SignatureToImage
@@ -17,21 +16,25 @@ class PdfService {
     def calculatorService
 
 	public static enum FontType {
-		HELVETICA,
-		ARIAL,
-		ARIALBOLD
+        HELVETICA(""),
+        ARIAL("arial.ttf"),
+        ARIALBOLD("arialbd.ttf"),
+        TIMES_NEW_ROMAN_PSMT("TimesNewRomanPSMT.ttf")
+
+        public String field;
+
+        FontType(final String field){
+            this.field = field;
+        }
 	}
-	
-	ApplicationContext applicationContext
 	
 	def generateImageFromPDFDocumentFile(List<DocumentFile> documents, String processId, Integer pageNumber) {
 		String result = ""
 		log.info documents
 		def data = getDocumentAndPageCountFromGlobalPageNumber(documents, pageNumber)
-		if (data.document != null) {
+        if (data.document != null) {
 			result = generateImageFromPDF(data.document.content.content, data.document.id, processId, data.page)
-		}
-		else {
+		}else {
 			log.warn "generateImageFromPDFDocumentFile - document == null"
 			result = ""
 		}
@@ -40,9 +43,8 @@ class PdfService {
 	}
 	
 	def generateImageFromPDF(byte[] pdf, Long documentId, String processId, Integer pageNumber) {
-		PDDocument document = null
 		ByteArrayInputStream bis = new ByteArrayInputStream(pdf)
-		document = PDDocument.load(bis)
+        PDDocument document = PDDocument.load(bis)
 		int resolution = 300
 		log.info document
 		PDFImageWriter imageWriter = new PDFImageWriter()
@@ -58,7 +60,8 @@ class PdfService {
 		
 		return appParametersService.getPdfImageUri()+documentId+"-"+processId+"-"+pageNumber+".png"
 	}
-	
+
+    //METODA PRAWDOPODOBNIE NIE UZYWANA
 	def generateImageFromPDF(String pdfPath, String pdfName, String processId, Integer pageNumber) {
 		PDDocument document = null
 		document = PDDocument.load(pdfPath+pdfName)
@@ -97,43 +100,19 @@ class PdfService {
 	def getPageCountFromPdf(byte[] pdf) {
 		int numberOfPages = 0
 		try {
-			PDDocument document = null
 			ByteArrayInputStream bis = new ByteArrayInputStream(pdf)
-			document = PDDocument.load(bis)
+            PDDocument document = PDDocument.load(bis)
 			numberOfPages = document.getNumberOfPages()
 			document.close()
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			log.warn "getPageCountFromPdf - Error while loading PDF file from byte array: " + e
-			//e.printStackTrace()
 		}
 		
 		return numberOfPages
 	}
-	
-	private String getFont(FontType fontType) {
-		String f = null
-		
-		switch(fontType) {
-			case FontType.HELVETICA:
-				f = "HELVETICA"
-				break;
-				
-			case FontType.ARIAL:
-				f = "ARIAL"
-				break;
-			
-			case FontType.ARIALBOLD:
-				f = "ARIALBOLD"
-				break;
-			
-		}
-		
-		return f
-	}
 
 	def fillPdfFormFromURI(String urlTemplatePath, Map<String,String[]> dataMap, FontType fontType) {
-		return PdfGenerator.generatePdfContentFromURI(urlTemplatePath, dataMap, getFont(fontType), appParametersService.getFontUri())
+		return PdfGenerator.generatePdfContentFromURI(urlTemplatePath, dataMap, fontType, appParametersService.getFontUri())
 	}
 	
 	def fillPdfFormFromURIWithFaksymile(Signature sig, Map<String,String[]> panelData, FontType fontType) {
@@ -160,7 +139,7 @@ class PdfService {
 
         String pdfTemplatePath = appParametersService.getPdfTemplatePath() + sig.templatePath
 		
-		return PdfGenerator.generatePdfContentFromURI(pdfTemplatePath, dataMap, getFont(fontType), appParametersService.getFontUri())
+		return PdfGenerator.generatePdfContentFromURI(pdfTemplatePath, dataMap, fontType, appParametersService.getFontUri())
 	}
 	
 	def fillPdfFormFromURIWithoutFaksymile(Signature sig, Map<String,String[]> panelData, FontType fontType) {
@@ -172,7 +151,7 @@ class PdfService {
 		
 		String pdfTemplatePath = appParametersService.getPdfTemplatePath() + sig.templatePath
 		
-		return PdfGenerator.generatePdfContentFromURI(pdfTemplatePath, dataMap, getFont(fontType), appParametersService.getFontUri())
+		return PdfGenerator.generatePdfContentFromURI(pdfTemplatePath, dataMap, fontType, appParametersService.getFontUri())
 	}
 	
 	def fillPdfFormFromURIWithBlackFaksymile(Signature sig, Map<String,String[]> panelData, FontType fontType) {
@@ -200,7 +179,7 @@ class PdfService {
 		
 		String pdfTemplatePath = appParametersService.getPdfTemplatePath() + sig.templatePath
 		
-		return PdfGenerator.generatePdfContentFromURI(pdfTemplatePath, dataMap, getFont(fontType), appParametersService.getFontUri())
+		return PdfGenerator.generatePdfContentFromURI(pdfTemplatePath, dataMap, fontType, appParametersService.getFontUri())
 	}
 	
 	def addClientSubscriptionsToDocument(byte[] documentContent, Signature sig, Set<Subscription> subscriptions) {
@@ -258,9 +237,9 @@ class PdfService {
 		return updatedContent
 	}
 
-    def workWithDocuments(def processInstance, def calc){
+    def workWithDocuments(def processInstance){
         def totalPagesCount = 0
-        def dataFromProcess = new PdfMapper(calc, calculatorService).mapOnlyProcessData(processInstance);
+        def dataFromProcess = new PdfMapper(calculatorService).mapOnlyProcessData(processInstance);
 
         //takie rozbicie bylo konieczne aby ograniczyc wywolania wolnego mappera
         def singleDocuments = processInstance.signatures.findAll{ sig -> !sig.forPoint}
@@ -275,7 +254,7 @@ class PdfService {
 
             if (point.cbdId == null){
                 //generujemy tylko dokumenty dla tych punktow, ktore nie sa z CBD
-                def dataFromPoint = new PdfMapper(calc, calculatorService).mapOnlyPointData(point);
+                def dataFromPoint = new PdfMapper(calculatorService).mapOnlyPointData(point);
 
                 final Map<String, String> data = new HashMap<String, String>();
                 data.putAll(dataFromProcess);
