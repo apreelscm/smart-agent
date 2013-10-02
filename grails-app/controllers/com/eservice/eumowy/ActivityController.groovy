@@ -201,13 +201,17 @@ class ActivityController {
                 }
 
                 if (!flow.skipDocumentGeneration) {
-                    def processWithPages = pdfService.workWithDocuments(processInstance, calculatorService.calc)
+                    def processWithPages = pdfService.workWithDocuments(processInstance)
                     flow.totalPagesCount = processWithPages.totalPagesCount
-                    processInstance.save(flush:true)
-                    flow.processInstance = processWithPages.processInstance
+                    //processInstance.discard()
+					//processInstance.save(flush: true)
+                    processInstance = processWithPages.processInstance
+					processInstance.save(flush: true)
+					//flow.processInstance = processInstance
 
                 }
                 flow.skipDocumentGeneration = false
+				flow.processInstance = processInstance
             }
             render(view: "../createProcess/clientSignature", model: [
                     processInstance: flow.processInstance,
@@ -469,7 +473,7 @@ class ActivityController {
                 flow.getCalculatorSucces = true
             }.to "chooseCalc"
             on("error"){
-                flow.getCalculatorSucces = false;
+                flow.getCalculatorSucces = false
             }.to "chooseCalc"
         }
 
@@ -1111,15 +1115,9 @@ class ActivityController {
 
                 process.documents.each { DocumentFile doc ->
                     //TODO Update document content from Data Map
-                    //Signature s = process.signatures.find { Signature si -> si.templatePath == doc.name }
-                    //if (s != null) {
                     byte[] newContent = pdfService.addClientSubscriptionsToDocument(doc.content.content, doc.signature, process.subscriptions)
                     doc.content.content = newContent
                     doc.content.discard()
-                    //}
-                    //else {
-                    //	log.info "Couldn't find signature for document name: " + doc.name
-                    //}
                 }
 
                 def recipient = getFromProcessData(process, 'kontaktEmail');

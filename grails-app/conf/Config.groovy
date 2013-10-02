@@ -92,7 +92,6 @@ grails.gorm.default.constraints = {
     email(matches:'~|^(.+)@(.+)$')
 }
 
-
 // log4j configuration
 log4j = {
 
@@ -164,6 +163,20 @@ log4j = {
                         sql: "INSERT INTO EUMOWY.LOGS (login, log_date, log_message) VALUES ('%X{sessionUserName}','%d{yyyy.MM.dd HH:mm:ss}', '%m')",
                         threshold: org.apache.log4j.Level.INFO
                 )
+                grails.resources.debug = true //refreshing css and js
+                grails {
+                    mail {
+                        host = "smtp.gmail.com"
+                        port = 465
+                        username = "apreel.eumowy@gmail.com"
+                        password = "apreel1234"
+                        props = ["mail.smtp.auth": "true",
+                                "mail.smtp.socketFactory.port": "465",
+                                "mail.smtp.socketFactory.class": "javax.net.ssl.SSLSocketFactory",
+                                "mail.smtp.socketFactory.fallback": "false",
+                                "mail.smtp.ssl.trust": "*"]
+                    }
+                }
             }
             uat {
                 appender new JDBCAppender(
@@ -249,7 +262,7 @@ grails {
         //password = "atest"
         //props = ["mail.smtp.auth": "true",
         //        "mail.smtp.socketFactory.port": "465",
-        //        "mail.smtp.socketFactory.class": "javax.net.ssl.SSLSocketFactory",
+        //       "mail.smtp.socketFactory.class": "javax.net.ssl.SSLSocketFactory",
         //        "mail.smtp.socketFactory.fallback": "false",
         //        "mail.smtp.ssl.trust": "*"]
     }
@@ -265,4 +278,3 @@ fileuploader {
 }
 
 grails.gsp.reload.enable = true
-//grails.resources.debug = true //refreshing css and js

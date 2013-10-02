@@ -47,27 +47,7 @@ function setupNewPointPanelHandlers(prevPanelId, panelId, prefix) {
         }
     });
 
-    jQuery(prefixPanel + ".plannedInstallationDate").datepicker({ dateFormat: 'yy-mm-dd', minDate: 0 });
-    jQuery(prefixPanel + ".dayCloseFrom").timepicker({
-        controlType: 'select',
-        timeFormat: 'HH:mm',
-        onClose: function(dateText, inst){
-            onCloseDayCloseFrom(prefix, panelId);
-        },
-        onSelect: function (selectedDateTime) {
-            onSelectDayCloseFrom(prefix, panelId);
-        }
-    });
-    jQuery(prefixPanel + ".dayCloseTo").timepicker({
-        controlType: 'select',
-        timeFormat: 'HH:mm',
-        onClose: function(dateText, inst){
-            onCloseDayCloseTo(prefix, panelId);
-        },
-        onSelect: function (selectedDateTime) {
-            onSelectDayCloseTo(prefix, panelId);
-        }
-    });
+    addDateHandlers(prefixPanel, prefix, panelId);
 
     jQuery(prefixPanel + ".dataforprintingAsAbove").on("click", function(e) {
         if(e.target.checked) {
@@ -135,90 +115,11 @@ function setupNewPointPanelHandlers(prevPanelId, panelId, prefix) {
         }
     });
 
-    jQuery(prefixPanel + ".sameForEveryPoint").on("click", function(e) {
-        if (e.target.checked) {
-            for(var i = 0; i < getGlobalPanelCount(prefix); i++) {
-                if (i != panelId) {
-                    setupNewPointPanelData(prefix+"\\["+panelId+"\\]\\.", prefix+"\\["+i+"\\]\\.");
-                }
-            }
-        }
-        else {
-            for(var i = 0; i < getGlobalPanelCount(prefix); i++) {
-                if (i != panelId) {
-                    clearNewPointData(prefix+"\\["+panelId+"\\]\\.", prefix+"\\["+i+"\\]\\.");
-                }
-            }
-        }
-    });
-
-    jQuery(prefixPanel + ".possetforselectedpointSameForEveryPoint").on("click", function(e) {
-        if (e.target.checked) {
-            for(var i = 0; i < getGlobalPanelCount(prefix); i++) {
-                if (i != panelId) {
-                    setupNewPointPanelData(prefix+"\\["+panelId+"\\]\\.", prefix+"\\["+i+"\\]\\.");
-                }
-            }
-        }
-        else {
-            for(var i = 0; i < getGlobalPanelCount(prefix); i++) {
-                if (i != panelId) {
-                    clearNewPointData(prefix+"\\["+panelId+"\\]\\.", prefix+"\\["+i+"\\]\\.");
-                }
-            }
-        }
-    });
-
-    jQuery(prefixPanel + ".technicalinformationSameForEveryPoint").on("click", function(e) {
-        if (e.target.checked) {
-            for(var i = 0; i < getGlobalPanelCount(prefix); i++) {
-                if (i != panelId) {
-                    setupNewPointPanelData(prefix+"\\["+panelId+"\\]\\.", prefix+"\\["+i+"\\]\\.");
-                }
-            }
-        }
-        else {
-            for(var i = 0; i < getGlobalPanelCount(prefix); i++) {
-                if (i != panelId) {
-                    clearNewPointData(prefix+"\\["+panelId+"\\]\\.", prefix+"\\["+i+"\\]\\.");
-                }
-            }
-        }
-    });
-
-    jQuery(prefixPanel + ".terminaloptionsSameForEveryPoint").on("click", function(e) {
-        if (e.target.checked) {
-            for(var i = 0; i < getGlobalPanelCount(prefix); i++) {
-                if (i != panelId) {
-                    setupNewPointPanelData(prefix+"\\["+panelId+"\\]\\.", prefix+"\\["+i+"\\]\\.");
-                }
-            }
-        }
-        else {
-            for(var i = 0; i < getGlobalPanelCount(prefix); i++) {
-                if (i != panelId) {
-                    clearNewPointData(prefix+"\\["+panelId+"\\]\\.", prefix+"\\["+i+"\\]\\.");
-                }
-            }
-        }
-    });
-
-    jQuery(prefixPanel + ".additionalequipmentSameForEveryPoint").on("click", function(e) {
-        if (e.target.checked) {
-            for(var i = 0; i < getGlobalPanelCount(prefix); i++) {
-                if (i != panelId) {
-                    setupNewPointPanelData(prefix+"\\["+panelId+"\\]\\.", prefix+"\\["+i+"\\]\\.");
-                }
-            }
-        }
-        else {
-            for(var i = 0; i < getGlobalPanelCount(prefix); i++) {
-                if (i != panelId) {
-                    clearNewPointData(prefix+"\\["+panelId+"\\]\\.", prefix+"\\["+i+"\\]\\.");
-                }
-            }
-        }
-    });
+    sameForEveryPoint(prefixPanel + ".sameForEveryPoint", prefix, panelId);
+    sameForEveryPoint(prefixPanel + ".possetforselectedpointSameForEveryPoint", prefix, panelId);
+    sameForEveryPoint(prefixPanel + ".technicalinformationSameForEveryPoint", prefix, panelId);
+    sameForEveryPoint(prefixPanel + ".terminaloptionsSameForEveryPoint", prefix, panelId);
+    sameForEveryPoint(prefixPanel + ".additionalequipmentSameForEveryPoint", prefix, panelId);
 
     // pobieranie numeru PH do ph pozysk oraz opieka biznesowa
     jQuery(prefixPanel + ".phGain").val(jQuery("#pozyskujacyNumer").val());
@@ -238,24 +139,30 @@ function setupNewPointPanelData(prevPanelId, panelId) {
     var nip = jQuery("#akceptantNip").val();
     var scoringMccCode = jQuery("#scoringMcc").val();
     var mmccode = jQuery("#"+prevPanelId+"mccCode").val();
+    var bankAccount = jQuery("#"+prevPanelId+"bankAccountNumber").val();
 
     if (Object.keys(possetforselectedpoint).length == 0) {
+        possetforselectedpoint['possetforselectedpointDialupType'] = jQuery("#"+prevPanelId+"possetforselectedpointDialupType").val();
         possetforselectedpoint['dialupCount'] = jQuery("#"+prevPanelId+"dialupCount").val();
         possetforselectedpoint['dialupPPCount'] = jQuery("#"+prevPanelId+"dialupPPCount").val();
         possetforselectedpoint['dialupPrice'] = jQuery("#"+prevPanelId+"dialupPrice").val();
         possetforselectedpoint['dialupPPPrice'] = jQuery("#"+prevPanelId+"dialupPPPrice").val();
+        possetforselectedpoint['possetforselectedpointVpnType'] = jQuery("#"+prevPanelId+"possetforselectedpointVpnType").val();
         possetforselectedpoint['vpnCount'] = jQuery("#"+prevPanelId+"vpnCount").val();
         possetforselectedpoint['vpnPPCount'] = jQuery("#"+prevPanelId+"vpnPPCount").val();
         possetforselectedpoint['vpnPrice'] = jQuery("#"+prevPanelId+"vpnPrice").val();
         possetforselectedpoint['vpnPPPrice'] = jQuery("#"+prevPanelId+"vpnPPPrice").val();
+        possetforselectedpoint['possetforselectedpointSslType'] = jQuery("#"+prevPanelId+"possetforselectedpointSslType").val();
         possetforselectedpoint['sslCount'] = jQuery("#"+prevPanelId+"sslCount").val();
         possetforselectedpoint['sslPPCount'] = jQuery("#"+prevPanelId+"sslPPCount").val();
         possetforselectedpoint['sslPrice'] = jQuery("#"+prevPanelId+"sslPrice").val();
         possetforselectedpoint['sslPPPrice'] = jQuery("#"+prevPanelId+"sslPPPrice").val();
+        possetforselectedpoint['possetforselectedpointWifiType'] = jQuery("#"+prevPanelId+"possetforselectedpointWifiType").val();
         possetforselectedpoint['wifiCount'] = jQuery("#"+prevPanelId+"wifiCount").val();
         possetforselectedpoint['wifiPPCount'] = jQuery("#"+prevPanelId+"wifiPPCount").val();
         possetforselectedpoint['wifiPrice'] = jQuery("#"+prevPanelId+"wifiPrice").val();
         possetforselectedpoint['wifiPPPrice'] = jQuery("#"+prevPanelId+"wifiPPPrice").val();
+        possetforselectedpoint['possetforselectedpointGprsType'] = jQuery("#"+prevPanelId+"possetforselectedpointGprsType").val();
         possetforselectedpoint['gprsCount'] = jQuery("#"+prevPanelId+"gprsCount").val();
         possetforselectedpoint['gprsPPCount'] = jQuery("#"+prevPanelId+"gprsPPCount").val();
         possetforselectedpoint['gprsPrice'] = jQuery("#"+prevPanelId+"gprsPrice").val();
@@ -306,27 +213,33 @@ function setupNewPointPanelData(prevPanelId, panelId) {
     if (panelId != prevPanelId) {
         if (jQuery("#"+prevPanelId+"sameForEveryPoint").is(':checked')) {
             jQuery("#"+panelId+"mccCode").val(mmccode).keyup();
+            jQuery("#"+panelId+"bankAccountNumber").val(bankAccount).keyup();
             jQuery("#"+panelId+"sameForEveryPoint").prop("checked", true);
             jQuery("#"+panelId+"sameForEveryPoint").prop("disabled", true);
         }
 
         if (jQuery("#"+prevPanelId+"possetforselectedpointSameForEveryPoint").is(':checked')) {
+            jQuery("#"+panelId+"possetforselectedpointDialupType").val(possetforselectedpoint['possetforselectedpointDialupType']);
             jQuery("#"+panelId+"dialupCount").val(possetforselectedpoint['dialupCount']);
             jQuery("#"+panelId+"dialupPPCount").val(possetforselectedpoint['dialupPPCount']);
             jQuery("#"+panelId+"dialupPrice").val(possetforselectedpoint['dialupPrice']);
             jQuery("#"+panelId+"dialupPPPrice").val(possetforselectedpoint['dialupPPPrice']);
+            jQuery("#"+panelId+"possetforselectedpointVpnType").val(possetforselectedpoint['possetforselectedpointVpnType']);
             jQuery("#"+panelId+"vpnCount").val(possetforselectedpoint['vpnCount']);
             jQuery("#"+panelId+"vpnPPCount").val(possetforselectedpoint['vpnPPCount']);
             jQuery("#"+panelId+"vpnPrice").val(possetforselectedpoint['vpnPrice']);
             jQuery("#"+panelId+"vpnPPPrice").val(possetforselectedpoint['vpnPPPrice']);
+            jQuery("#"+panelId+"possetforselectedpointSslType").val(possetforselectedpoint['possetforselectedpointSslType']);
             jQuery("#"+panelId+"sslCount").val(possetforselectedpoint['sslCount']);
             jQuery("#"+panelId+"sslPPCount").val(possetforselectedpoint['sslPPCount']);
             jQuery("#"+panelId+"sslPrice").val(possetforselectedpoint['sslPrice']);
             jQuery("#"+panelId+"sslPPPrice").val(possetforselectedpoint['sslPPPrice']);
+            jQuery("#"+panelId+"possetforselectedpointWifiType").val(possetforselectedpoint['possetforselectedpointWifiType']);
             jQuery("#"+panelId+"wifiCount").val(possetforselectedpoint['wifiCount']);
             jQuery("#"+panelId+"wifiPPCount").val(possetforselectedpoint['wifiPPCount']);
             jQuery("#"+panelId+"wifiPrice").val(possetforselectedpoint['wifiPrice']);
             jQuery("#"+panelId+"wifiPPPrice").val(possetforselectedpoint['wifiPPPrice']);
+            jQuery("#"+panelId+"possetforselectedpointGprsType").val(possetforselectedpoint['possetforselectedpointGprsType']);
             jQuery("#"+panelId+"gprsCount").val(possetforselectedpoint['gprsCount']);
             jQuery("#"+panelId+"gprsPPCount").val(possetforselectedpoint['gprsPPCount']);
             jQuery("#"+panelId+"gprsPrice").val(possetforselectedpoint['gprsPrice']);
@@ -396,22 +309,27 @@ function clearNewPointData(prevPanelId, panelId) {
         }
 
         if (jQuery("#"+prevPanelId+"possetforselectedpointSameForEveryPoint"+prevPanelId).is(':checked') == false) {
+            jQuery("#"+panelId+"possetforselectedpointDialupType").val("");
             jQuery("#"+panelId+"dialupCount").val("");
             jQuery("#"+panelId+"dialupPPCount").val("");
             jQuery("#"+panelId+"dialupPrice").val("");
             jQuery("#"+panelId+"dialupPPPrice").val("");
+            jQuery("#"+panelId+"possetforselectedpointVpnType").val("");
             jQuery("#"+panelId+"vpnCount").val("");
             jQuery("#"+panelId+"vpnPPCount").val("");
             jQuery("#"+panelId+"vpnPrice").val("");
             jQuery("#"+panelId+"vpnPPPrice").val("");
+            jQuery("#"+panelId+"possetforselectedpointSslType").val("");
             jQuery("#"+panelId+"sslCount").val("");
             jQuery("#"+panelId+"sslPPCount").val("");
             jQuery("#"+panelId+"sslPrice").val("");
             jQuery("#"+panelId+"sslPPPrice").val("");
+            jQuery("#"+panelId+"possetforselectedpointWifiType").val("");
             jQuery("#"+panelId+"wifiCount").val("");
             jQuery("#"+panelId+"wifiPPCount").val("");
             jQuery("#"+panelId+"wifiPrice").val("");
             jQuery("#"+panelId+"wifiPPPrice").val("");
+            jQuery("#"+panelId+"possetforselectedpointGprsType").val("");
             jQuery("#"+panelId+"gprsCount").val("");
             jQuery("#"+panelId+"gprsPPCount").val("");
             jQuery("#"+panelId+"gprsPrice").val("");
@@ -469,6 +387,17 @@ function clearNewPointData(prevPanelId, panelId) {
 
 function setupNewPosPanelHandlers(prevPanelId, panelId, prefix) {
     var prefixPanel = "#"+prefix+"\\["+panelId+"\\]\\";
+
+    addDateHandlers(prefixPanel, prefix, panelId);
+
+    sameForEveryPoint(prefixPanel + ".sameForEveryPoint", prefix, panelId);
+    sameForEveryPoint(prefixPanel + ".possetforselectedpointSameForEveryPoint", prefix, panelId);
+    sameForEveryPoint(prefixPanel + ".technicalinformationSameForEveryPoint", prefix, panelId);
+    sameForEveryPoint(prefixPanel + ".terminaloptionsSameForEveryPoint", prefix, panelId);
+    sameForEveryPoint(prefixPanel + ".additionalequipmentSameForEveryPoint", prefix, panelId);
+}
+
+function addDateHandlers(prefixPanel, prefix, panelId){
     jQuery(prefixPanel + ".plannedInstallationDate").datepicker({ dateFormat: 'yy-mm-dd', minDate: 0 });
     jQuery(prefixPanel + ".dayCloseFrom").timepicker({
         controlType: 'select',
@@ -486,94 +415,7 @@ function setupNewPosPanelHandlers(prevPanelId, panelId, prefix) {
         onClose: function(dateText, inst){
             onCloseDayCloseTo(prefix, panelId)
         },
-        onSelect: function (selectedDateTime) {
-            onSelectDayCloseTo(prefix, panelId);
-        }
-    });
-
-    jQuery(prefixPanel + ".sameForEveryPoint").on("click", function(e) {
-        if (e.target.checked) {
-            for(var i = 0; i < getGlobalPanelCount(prefix); i++) {
-                if (i != panelId) {
-                    setupNewPointPanelData(prefix+"\\["+panelId+"\\]\\.", prefix+"["+i+"]\\.");
-                }
-            }
-        }
-        else {
-            for(var i = 0; i < getGlobalPanelCount(prefix); i++) {
-                if (i != panelId) {
-                    clearNewPointData(prefix+"\\["+panelId+"\\]\\.", prefix+"["+i+"]\\.");
-                }
-            }
-        }
-    });
-
-    jQuery(prefixPanel + ".possetforselectedpointSameForEveryPoint").on("click", function(e) {
-        if (e.target.checked) {
-            for(var i = 0; i < getGlobalPanelCount(prefix); i++) {
-                if (i != panelId) {
-                    setupNewPointPanelData(prefix+"\\["+panelId+"\\]\\.", prefix+"\\["+i+"\\]\\.");
-                }
-            }
-        }
-        else {
-            for(var i = 0; i < getGlobalPanelCount(prefix); i++) {
-                if (i != panelId) {
-                    clearNewPointData(prefix+"\\["+panelId+"\\]\\.", prefix+"\\["+i+"\\]\\.");
-                }
-            }
-        }
-    });
-
-    jQuery(prefixPanel + ".technicalinformationSameForEveryPoint").on("click", function(e) {
-        if (e.target.checked) {
-            for(var i = 0; i < getGlobalPanelCount(prefix); i++) {
-                if (i != panelId) {
-                    setupNewPointPanelData(prefix+"\\["+panelId+"\\]\\.", prefix+"\\["+i+"\\]\\.");
-                }
-            }
-        }
-        else {
-            for(var i = 0; i < getGlobalPanelCount(prefix); i++) {
-                if (i != panelId) {
-                    clearNewPointData(prefix+"\\["+panelId+"\\]\\.", prefix+"\\["+i+"\\]\\.");
-                }
-            }
-        }
-    });
-
-    jQuery(prefixPanel + ".terminaloptionsSameForEveryPoint").on("click", function(e) {
-        if (e.target.checked) {
-            for(var i = 0; i < getGlobalPanelCount(prefix); i++) {
-                if (i != panelId) {
-                    setupNewPointPanelData(prefix+"\\["+panelId+"\\]\\.", prefix+"\\["+i+"\\]\\.");
-                }
-            }
-        }
-        else {
-            for(var i = 0; i < getGlobalPanelCount(prefix); i++) {
-                if (i != panelId) {
-                    clearNewPointData(prefix+"\\["+panelId+"\\]\\.", prefix+"\\["+i+"\\]\\.");
-                }
-            }
-        }
-    });
-
-    jQuery(prefixPanel + ".additionalequipmentSameForEveryPoint").on("click", function(e) {
-        if (e.target.checked) {
-            for(var i = 0; i < getGlobalPanelCount(prefix); i++) {
-                if (i != panelId) {
-                    setupNewPointPanelData(prefix+"\\["+panelId+"\\]\\.", prefix+"\\["+i+"\\]\\.");
-                }
-            }
-        }
-        else {
-            for(var i = 0; i < getGlobalPanelCount(prefix); i++) {
-                if (i != panelId) {
-                    clearNewPointData(prefix+"\\["+panelId+"\\]\\.", prefix+"\\["+i+"\\]\\.");
-                }
-            }
-        }
+        onSelect: function (selectedDateTime) {}
     });
 }
 
@@ -584,16 +426,6 @@ function onCloseDayCloseTo(prefix, panelId) {
         selectedDate = hours+":"+minutes;
 
     dayCloseTo.datetimepicker('setDate', getDateFromTime(selectedDate));
-}
-
-function onSelectDayCloseTo(prefix, panelId){
-//    var dayCloseFrom = jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseFrom"),
-//        dayCloseTo = jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseTo"),
-//        dayCloseFromValue = dayCloseFrom.val(),
-//        dayCloseToDate = dayCloseTo.datetimepicker('getDate')
-//
-//    dayCloseFrom.datetimepicker('option', 'maxDate', dayCloseToDate);
-//    dayCloseFrom.val(dayCloseFromValue);
 }
 
 function onCloseDayCloseFrom(prefix, panelId) {
@@ -633,4 +465,18 @@ function getDateFromTime(time){
     minimumDate.setMinutes(parseInt(hoursAndMinutes[1]));
     minimumDate.setSeconds(00);
     return minimumDate;
+}
+
+function sameForEveryPoint(selector, prefix, panelId){
+    jQuery(selector).on("click", function(e) {
+        for(var i = 0; i < getGlobalPanelCount(prefix); i++) {
+            if (i != panelId) {
+                if (e.target.checked) {
+                    setupNewPointPanelData(prefix+"\\["+panelId+"\\]\\.", prefix+"\\["+i+"\\]\\.");
+                } else {
+                    clearNewPointData(prefix+"\\["+panelId+"\\]\\.", prefix+"\\["+i+"\\]\\.");
+                }
+            }
+        }
+    });
 }

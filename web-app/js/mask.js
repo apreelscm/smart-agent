@@ -12,6 +12,13 @@ function maskNewPointRefresh() {
 }
 
 jQuery(document).ready(function() {
+    jQuery(".bank-account").live('keyup', function(event){
+        var element = jQuery(this),
+            value = element.val().toString();
+        if(event.keyCode === 32){
+            element.val(value.slice(0, -1));
+        }
+    })
     jQuery(".bank-account").mask('99 9999 9999 9999 9999 9999 9999');
     jQuery(".nip").mask('9999999999');
     jQuery(".regon").mask('999999999');

@@ -268,9 +268,9 @@ class PdfService {
 		return updatedContent
 	}
 
-    def workWithDocuments(def processInstance, def calc){
+    def workWithDocuments(def processInstance){
         def totalPagesCount = 0
-        def dataFromProcess = new PdfMapper(calc, calculatorService).mapOnlyProcessData(processInstance);
+        def dataFromProcess = new PdfMapper(calculatorService).mapOnlyProcessData(processInstance);
 
         //takie rozbicie bylo konieczne aby ograniczyc wywolania wolnego mappera
         def singleDocuments = processInstance.signatures.findAll{ sig -> !sig.forPoint}
@@ -283,9 +283,9 @@ class PdfService {
 
         processInstance.points.each{ point ->
 
-            if (point.cbdId != null){
+            if (point.cbdId == null){
                 //generujemy tylko dokumenty dla tych punktow, ktore nie sa z CBD
-                def dataFromPoint = new PdfMapper(calc, calculatorService).mapOnlyPointData(point);
+                def dataFromPoint = new PdfMapper(calculatorService).mapOnlyPointData(point);
 
                 final Map<String, String> data = new HashMap<String, String>();
                 data.putAll(dataFromProcess);
@@ -303,8 +303,7 @@ class PdfService {
                 }
             }
         }
-
-        processInstance.save(flush:true)
+		processInstance.save(flush: true)
         ['totalPagesCount': totalPagesCount, 'processInstance': processInstance]
     }
 
@@ -323,7 +322,6 @@ class PdfService {
             log.info "DF id: " + df.id + " PageCount: " + df.pagesCount
             log.info "Process ID: " + processInstance.id
             processInstance.addToDocuments(df)
-            processInstance.discard()
         } else {
             log.info "Updating existing document [${sig.templatePath}]"
             DocumentFile df = processService.findDocumentByName(processInstance.documents, documentName)
@@ -331,6 +329,7 @@ class PdfService {
             df.lastUpdated = new Date()
             df.save(flush: true)
         }
+		processInstance.save(flush: true)
         pc
     }
 
