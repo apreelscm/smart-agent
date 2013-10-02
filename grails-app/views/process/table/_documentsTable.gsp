@@ -30,7 +30,7 @@
     </tr>
     </thead>
     <tbody>
-    <g:each in="${processInstance.documents.sort{a,b -> a.signature.signatureOrder.compareTo(b.signature.signatureOrder)} }" status="i" var="document">
+    <g:each in="${processInstance.documents.sort(false){a,b -> a.signature.signatureOrder.compareTo(b.signature.signatureOrder)} }" status="i" var="document">
         <tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
             <td class="tableCellLeft"  class="wrapped"><g:remoteLink action="showPdfByDocumentId" class="wrapped"
                                                      title="${fieldValue(bean: document, field: "name")}"
