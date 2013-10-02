@@ -12,11 +12,9 @@ class PdfMapper {
 
     private int myIndex = 0;
 
-	def calc
 	def calculatorService
 
-	PdfMapper(def calc, def calculatorService){
-		this.calc = calc
+	PdfMapper(def calculatorService){
 		this.calculatorService = calculatorService
 	}
 
@@ -89,10 +87,7 @@ class PdfMapper {
 
 	private def mapProcessCalcToPDFData() {
 		Map<String, String[]> data = new HashMap<String, String[]>()
-		println 'Jestem w mapowaniu danych z Kalkulatora!!!!'
-
-		if (calc != null && calculatorService != null){
-			println 'Pobieram dane z kalkulatora!!!!'
+		if (calculatorService != null){
             data.put('oplatyPOSMiesiacNaliczania', [calculatorService.getCalcProperty('E_LICZBA_MIES_ZWOL_NAJ_1')] as String[])
 		}
 		return data
