@@ -19,6 +19,7 @@
 	
 	jQuery(document).ready(function() {
 		var panelPosTemplate = jQuery("#hiddenPosPanel").html();
+		var maxTerminalCount = jQuery("#liczbaTerminali").val();
 		var panelPosCount = ${data.poses.size()};
 		globalPanelPosCount = ${data.poses.size()};
 		jQuery("#hiddenPosPanel").remove();
@@ -27,9 +28,27 @@
 			setupNewPosPanelHandlers(i-1, i, "poses");
 			setupNewPointPanelData("poses\\["+(i-1)+"\\]\\.", "poses\\["+i+"\\]\\.");
 		}
+		
+		if (getCurrentTerminalCount() == maxTerminalCount) {
+			jQuery("#addNewPointButton").prop("disabled", true);
+			jQuery("#addNewPosButton").prop("disabled", true);
+		}
+		else if (getCurrentTerminalCount() < maxTerminalCount) {
+			jQuery("#addNewPointButton").prop("disabled", false);
+			jQuery("#addNewPosButton").prop("disabled", false);
+		}
 			
 		jQuery("#addNewPosButton").on("click", function(e) {
 			e.preventDefault();
+			
+			if (getCurrentTerminalCount() == maxTerminalCount) {
+				jQuery(e.target).prop("disabled", true);
+				jQuery("#addNewPointButton").prop("disabled", true);
+			}
+			else if (getCurrentTerminalCount() < maxTerminalCount) {
+				jQuery(e.target).prop("disabled", false);
+				jQuery("#addNewPointButton").prop("disabled", false);
+			}
 			
 			var data = panelPosTemplate.replace(/%ID%/gm, panelPosCount);
 			jQuery("#addNewPosPanelPlaceholder").append(data);
