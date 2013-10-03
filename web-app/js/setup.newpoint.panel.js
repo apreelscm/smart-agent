@@ -1,6 +1,23 @@
 var globalPanelCount = 0;
 var globalPanelPosCount = 0;
 
+function getCurrentTerminalCount() {
+	
+	var counter = globalPanelPosCount
+	
+	for(var i = 0; i < globalPanelCount; i++) {
+		var prefixPanel = "#"+prefix+"\\["+i+"\\]\\"
+		counter += jQuery(prefixPanel + ".dialupCount").val();
+		counter += jQuery(prefixPanel + ".vpnCount").val();
+		counter += jQuery(prefixPanel + ".sslCount").val();
+		counter += jQuery(prefixPanel + ".wifiCount").val();
+		counter += jQuery(prefixPanel + ".gprsCount").val();
+		counter += jQuery(prefixPanel + ".baseCount").val();
+	}
+	
+	return counter;
+}
+
 function getGlobalPanelCount(prefix) {
     if (prefix == "points") {
         return globalPanelCount;
