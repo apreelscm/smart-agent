@@ -13,7 +13,8 @@ import org.apache.commons.collections.ListUtils
 @Validateable
 class ProcessCommand implements Serializable{
 
-    def calculatorService
+    transient def calculatorService
+    transient def calc
 
     //UWAGA - kazde nowe pole, ktore ma byc pomijane w zapisie do bazy trzeba dodac tez w
     //ProcessService.getDataFromPanels(). Gdy sie tego nie zrobi zapisuja sie dane a pozniej leci
@@ -21,7 +22,7 @@ class ProcessCommand implements Serializable{
     static def nullableTrueBlankFalse = {return it == null || it.toString()?.size() > 0}
 
     static def atLeastClosure = { value, cmd, errors, property, calcProperty ->
-        def calcValue = cmd.calculatorService.getCalcProperty(calcProperty)
+        def calcValue = cmd.calculatorService?.getCalcProperty(cmd.calc,calcProperty)
         if (! calcValue){
             return true
         }

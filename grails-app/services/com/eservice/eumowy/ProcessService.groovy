@@ -122,15 +122,15 @@ class ProcessService {
         return activities?.any{it.code.equals(activityCode)};
     }
 
-    def getNewProcessCommand(def process){
+    def getNewProcessCommand(def process, def calc){
         log.info("getNewProcessCommand processId = ${process.id}")
         def cmd = initProcessCommand(process)
         cmd.allPoints?.addAll(getPointsToAllPointsCommandList(process, cmd))
         cmd.allPoses?.addAll(getPosesToAllPosCommandList(process, cmd))
-        prepareProcessCommand(cmd)
+        prepareProcessCommand(cmd, calc,)
     }
 
-    def getSavedProcessCommand(def process){
+    def getSavedProcessCommand(def process, def calc){
         log.info("getSavedProcessCommand processId = ${process.id}")
         def cmd = initProcessCommand(process)
         loadProcessData(process,cmd)
@@ -145,7 +145,7 @@ class ProcessService {
 
         cmd.notes = process.notesToCoa
 
-        prepareProcessCommand(cmd, cbdMethods)
+        prepareProcessCommand(cmd, calc, cbdMethods)
     }
 
     def getRepresentative1(def process) {
@@ -171,7 +171,7 @@ class ProcessService {
     def defaultMethods = ["getWyborDzialania","getLiczbaMiesiecyZwolnieniaZNajmu"]
     def cbdMethods = ["getAdresDoKorespondencjizAkecptantem","getDaneAkceptanta","getSiedzibaAkceptanta","getSerwis"]
 
-    def prepareProcessCommand(def cmd, def restrictedMethods = []) {
+    def prepareProcessCommand(def cmd, def calc, def restrictedMethods = []) {
         def exclusions = defaultMethods + restrictedMethods
 
         cmd.process.panels.each { Panel panel ->
@@ -188,7 +188,7 @@ class ProcessService {
                         panelMockService."${panelFunctionName}"(cmd)
                         break;
                     default:
-                        panelService."${panelFunctionName}"(cmd)
+                        panelService."${panelFunctionName}"(cmd,calc)
                 }
             }
         }
@@ -520,6 +520,7 @@ class ProcessService {
             def foundData = process.processData.find { it.name == data.name }
             if(!foundData){
                 process.addToProcessData(data)
+                log.info("process data: ${data.processId?.class} ${data.version?.class} ${data.name?.class} ${data.id?.class}")
             }else if(data.value != foundData.value){
                 foundData.value = data.value
             }
