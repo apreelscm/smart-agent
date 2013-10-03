@@ -1170,8 +1170,10 @@ class ActivityController {
             emailService.sendDocumentsTemplateVersion(process.phEmail, documentFilesWithBlackFaksymileList)
 
             //for acceptant
-            def recipientUser = getFromProcessData(process, 'kontaktEmail');
-            emailService.sendDocumentsTemplateVersion(recipientUser, documentFilesWithoutFaksymileList)
+            def recipientUser = getFromProcessData(process, 'kontaktEmail')
+            if(recipientUser != ""){
+                emailService.sendDocumentsTemplateVersion(recipientUser, documentFilesWithoutFaksymileList)
+            }
         }
     }
 
