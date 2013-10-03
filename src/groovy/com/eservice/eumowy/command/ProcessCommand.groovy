@@ -1,9 +1,11 @@
 package com.eservice.eumowy.command
 
-import com.eservice.eumowy.Process
 import grails.validation.Validateable
+
 import org.apache.commons.collections.FactoryUtils
 import org.apache.commons.collections.ListUtils
+
+import com.eservice.eumowy.Process
 /**
  * User: Dominik Walczak
  * Date: 20.08.13 Time: 10:22
@@ -12,7 +14,6 @@ import org.apache.commons.collections.ListUtils
 
 @Validateable
 class ProcessCommand implements Serializable{
-
     def calculatorService
 
     //UWAGA - kazde nowe pole, ktore ma byc pomijane w zapisie do bazy trzeba dodac tez w
@@ -946,22 +947,26 @@ class ProcessCommand implements Serializable{
         allPoses(nullable:true)
 
         liczbaTerminali(nullable:true, validator: { value, cmd, errors ->
-            //println("liczbaTerminali : " + value)
+			//println("liczbaTerminali : " + value)
             def max = value ? Integer.valueOf(value) : 0
             def counter = 0
 
             cmd.points?.each{ point ->
-                //println("point.terminalIlosc : " + point.terminalIlosc)
-                if(point.terminalIlosc?.toString()?.isNumber()){
-                    counter += Integer.valueOf(point.terminalIlosc)
-                }
+				counter += point?.dialupIlosc != null ? point?.dialupIlosc : 0
+				counter += point?.vpnIlosc != null ? point?.vpnIlosc : 0
+				counter += point?.sslIlosc != null ? point?.sslIlosc : 0
+				counter += point?.wifiIlosc != null ? point?.wifiIlosc : 0
+				counter += point?.gprsIlosc != null ? point?.gprsIlosc : 0
+				counter += point?.bazaIlosc != null ? point?.bazaIlosc : 0
             }
 			
 			cmd.poses?.each{ point ->
-                //println("point.terminalIlosc : " + point.terminalIlosc)
-                if(point.terminalIlosc?.toString()?.isNumber()){
-                    counter += Integer.valueOf(point.terminalIlosc)
-                }
+                counter += point?.dialupIlosc != null ? point?.dialupIlosc : 0
+				counter += point?.vpnIlosc != null ? point?.vpnIlosc : 0
+				counter += point?.sslIlosc != null ? point?.sslIlosc : 0
+				counter += point?.wifiIlosc != null ? point?.wifiIlosc : 0
+				counter += point?.gprsIlosc != null ? point?.gprsIlosc : 0
+				counter += point?.bazaIlosc != null ? point?.bazaIlosc : 0
             }
 
             if( counter > max) {
