@@ -13,9 +13,11 @@ class PdfMapper {
     private int myIndex = 0;
 
 	def calculatorService
+	def calc
 
-	PdfMapper(def calculatorService){
+	PdfMapper(def calculatorService, def calc){
 		this.calculatorService = calculatorService
+        this.calc = calc
 	}
 
 	def mapOnlyProcessData(def processInstance){
@@ -88,7 +90,7 @@ class PdfMapper {
 	private def mapProcessCalcToPDFData() {
 		Map<String, String[]> data = new HashMap<String, String[]>()
 		if (calculatorService != null){
-            data.put('oplatyPOSMiesiacNaliczania', [calculatorService.getCalcProperty('E_LICZBA_MIES_ZWOL_NAJ_1')] as String[])
+            data.put('oplatyPOSMiesiacNaliczania', [calculatorService.getCalcProperty(calc,'E_LICZBA_MIES_ZWOL_NAJ_1')] as String[])
 		}
 		return data
 	}

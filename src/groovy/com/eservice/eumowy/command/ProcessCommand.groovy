@@ -1,11 +1,9 @@
 package com.eservice.eumowy.command
 
+import com.eservice.eumowy.Process
 import grails.validation.Validateable
-
 import org.apache.commons.collections.FactoryUtils
 import org.apache.commons.collections.ListUtils
-
-import com.eservice.eumowy.Process
 /**
  * User: Dominik Walczak
  * Date: 20.08.13 Time: 10:22
@@ -14,7 +12,9 @@ import com.eservice.eumowy.Process
 
 @Validateable
 class ProcessCommand implements Serializable{
-    def calculatorService
+
+    transient def calculatorService
+    transient def calc
 
     //UWAGA - kazde nowe pole, ktore ma byc pomijane w zapisie do bazy trzeba dodac tez w
     //ProcessService.getDataFromPanels(). Gdy sie tego nie zrobi zapisuja sie dane a pozniej leci

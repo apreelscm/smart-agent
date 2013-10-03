@@ -12,11 +12,6 @@ class CalculatorService implements Serializable{
 
     static transactional = false
 
-
-    static scope = "session"
-
-    def calc
-
     static final BRAK_LABEL = "BRAK"
 
     def isCalcValid(def calcExt, def signatures) {
@@ -41,12 +36,12 @@ class CalculatorService implements Serializable{
         return calcKeyList.containsAll(signaturesCalcNames)
     }
 
-    def hasCalcProperty(def key, def value){
+    def hasCalcProperty(def key, def value, def calc){
         calc?.contains([POLEAPREEL:key, WARTOSCAPREEL:value])
     }
 
 
-    def getCalcProperty( def key){
+    def getCalcProperty(  def calc,def key){
         calc?.findResult{ (it.POLEAPREEL == key && it.WARTOSCAPREEL != BRAK_LABEL  ) ? it.WARTOSCAPREEL : null }
     }
 }

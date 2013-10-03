@@ -41,6 +41,7 @@ class ActivityController {
         init{
             action {
                 log.info("init new flow")
+                log.info("init conversation.calc"+conversation.calc)
                 log.info("init params:"+params)
                 log.info("init params.message:"+ params.message)
                 log.info("init flow.message:"+ flow.message)
@@ -475,7 +476,7 @@ class ActivityController {
                     return error();
                 }
 
-                calculatorService.calc = calc;
+                conversation.calc = calc
                 flow.calcNumber =  calcId;
                 flash.calcInfoMessage = message(code:"calc.found.info", default:"Znaleziono");
             }
@@ -498,7 +499,7 @@ class ActivityController {
                     log.info("skipPanelsInit - false")
                     TreeSet activePanels = _getActivePanels(processInstance.signatures)
                     processInstance.panels = activePanels.toList();
-                    processCmd = processService.getNewProcessCommand(processInstance)
+                    processCmd = processService.getNewProcessCommand(processInstance, conversation.calc)
 
                     //inicjacyjne zapisanie danych pobranych z cbd i calc
                     processInstance = processService.populateProcessWithData(processInstance,processCmd)
@@ -521,7 +522,7 @@ class ActivityController {
                 else{
                     log.info("skipPanelsInit - true")
                     flow.skipPanelsInit = false
-                    processCmd = processService.getSavedProcessCommand(processInstance)
+                    processCmd = processService.getSavedProcessCommand(processInstance, conversation.calc)
 
                 }
 
@@ -535,11 +536,15 @@ class ActivityController {
                 log.info "acceptPointsButton TRIGGERED"
             }.to "selectedPanels"
             on("saveOnly"){ ProcessCommand cmd ->
-                Process processInstance = processService.populateProcessWithData(flow.processInstance,cmd)
+                Process processInstance = processService.populateProcessWithData(flow.processInstance, cmd)
                 log.info "Zapisuje dane paneli"
 
                 //TEST start
-               /* flow.data = cmd;
+              /*  cmd.calc = conversation.calc
+                cmd.calculatorService = calculatorService
+                cmd.validate()
+                flow.data = cmd
+
                 if(cmd.hasErrors()){
                     cmd.errors.each {
                         log.error(it)
@@ -563,9 +568,14 @@ class ActivityController {
                 flow.processInstance = processInstance
                 flow.skipPanelsInit = true;
             }to "selectedPanels"
-            on("continue"){ ProcessCommand cmd ->
+            on("continue"){
 
-                flow.data = cmd;
+                def cmd = new ProcessCommand()
+                bindData(cmd,params)
+                cmd.calc = conversation.calc
+                cmd.calculatorService = calculatorService
+                cmd.validate()
+                flow.data = cmd
 
                 if(grailsApplication.config.isPanelsValidationOn && cmd.hasErrors()){
                     cmd.errors.each {
@@ -581,7 +591,7 @@ class ActivityController {
                 processInstance.notesToCoa = cmd.notes;
 
                 processInstance.client.name = cmd.akceptantNazwaOficjalna;
-                processInstance.saleSection = calculatorService.getCalcProperty('SEGMENT_SPRZEDAZOWY')
+                processInstance.saleSection = calculatorService.getCalcProperty(conversation.calc,'SEGMENT_SPRZEDAZOWY')
 
                 flow.representative1 = [name: cmd.reprezentant1Imie, surname: cmd.reprezentant1Nazwisko]
                 flow.representative2 = [name: cmd.reprezentant2Imie, surname: cmd.reprezentant2Nazwisko]
@@ -724,7 +734,7 @@ class ActivityController {
                 }
                 lastProcess?.discard() // drop it from session
 
-                calculatorService.calc = calc
+                conversation.calc = calc
                 flow.calcNumber =  calcId;
                 flow.savedProcess = lastProcess
 
@@ -747,7 +757,7 @@ class ActivityController {
             onEntry {
                 log.info "SkipPanelsInit: " + flow.skipPanelsInit
                 def processInstance = flow.processInstance;
-                def processCmd = processService.getSavedProcessCommand(processInstance);
+                def processCmd = processService.getSavedProcessCommand(processInstance,conversation.calc);
                 flow.data = processCmd
             }
             render(view: "../createProcess/selectedPanels")
@@ -770,8 +780,12 @@ class ActivityController {
                 flow.data = cmd
                 flow.skipPanelsInit = true;
             }to "selectedPanels"
-            on("continue"){ ProcessCommand cmd ->
-
+            on("continue"){
+                def cmd = new ProcessCommand()
+                bindData(cmd,params)
+                cmd.calc = conversation.calc
+                cmd.calculatorService = calculatorService
+                cmd.validate()
                 flow.data = cmd
 
                 if(cmd?.hasErrors()){
