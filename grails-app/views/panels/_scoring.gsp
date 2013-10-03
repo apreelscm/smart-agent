@@ -91,7 +91,7 @@
         </fieldset>
         <fieldset class="border">
             <legend><g:message code="panel.acceptance.title"/></legend>
-            <div style="text-align: left">
+            <div style="text-align: left" class="${hasErrors(bean:data,field:'hasScoringAkceptacja','errorSpan')}">
                 <p><g:message code="panel.acceptance.question"/></p>
                 <g:radioGroup name="scoringAkceptacja"
                               labels="['panel.yes','panel.no']"
