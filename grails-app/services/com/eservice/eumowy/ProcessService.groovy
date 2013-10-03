@@ -1,14 +1,16 @@
 package com.eservice.eumowy
+import grails.util.Environment
+import groovy.sql.GroovyRowResult
+
+import org.apache.commons.lang.SerializationUtils
+import org.apache.commons.lang.WordUtils
+
 import com.eservice.eumowy.command.AllPointsCommand
 import com.eservice.eumowy.command.AllPosCommand
 import com.eservice.eumowy.command.PointCommand
 import com.eservice.eumowy.command.ProcessCommand
 import com.eservice.eumowy.util.DateUtils
 import com.eservice.eumowy.util.EumowyCustomEnvironment
-import grails.util.Environment
-import groovy.sql.GroovyRowResult
-import org.apache.commons.lang.SerializationUtils
-import org.apache.commons.lang.WordUtils
 
 class ProcessService {
 
@@ -675,18 +677,34 @@ class ProcessService {
             }
 
             // Create POSes with same values
-            if (pc.terminalIlosc != null && pc.terminalIlosc > 1) {
-                for (int i = 0; i < pc.terminalIlosc; i++) {
-                    PosData posDataNew
-                    PosDataDetails posDataDetailsNew
+			def terminalCount = 0
+			terminalCount += posDataDetails?.gprsIlosc != null ? posDataDetails?.gprsIlosc : 0
+			terminalCount += posDataDetails?.dialupIlosc != null ? posDataDetails?.dialupIlosc : 0
+			terminalCount += posDataDetails?.vpnIlosc != null ? posDataDetails?.vpnIlosc : 0
+			terminalCount += posDataDetails?.sslIlosc != null ? posDataDetails?.sslIlosc : 0
+			terminalCount += posDataDetails?.wifiIlosc != null ? posDataDetails?.wifiIlosc : 0
+			terminalCount += posDataDetails?.bazaIlosc != null ? posDataDetails?.bazaIlosc : 0
+			
+			if (terminalCount > 1) {
+				for (int i = 0; i < terminalCount; i++) {
+					PosData posDataNew
+					PosDataDetails posDataDetailsNew
 
-                    posDataNew = SerializationUtils.clone(posData) as PosData
-                    posDataDetailsNew = SerializationUtils.clone(posDataDetails) as PosDataDetails
-                    posDataNew.setPosDetails(posDataDetailsNew)
-                    posDataNew.setPoint(pointData)
-                    posDataDetailsNew.setPos(posDataNew)
+					posDataNew = SerializationUtils.clone(posData) as PosData
+					posDataDetailsNew = SerializationUtils.clone(posDataDetails) as PosDataDetails
+					posDataNew.setPosDetails(posDataDetailsNew)
+					posDataNew.setPoint(pointData)
+					posDataDetailsNew.setPos(posDataNew)
 
-                    pdList.add(posDataNew)
+					pdList.add(posDataNew)
+				}
+			}
+			
+			// Set telePomka and teleKodzik based on terminalIlosc
+            if (pc.terminalIlosc != null && pc.terminalIlosc > 0) {
+				for (int i = 0; i < pc.terminalIlosc; i++) {
+                    pdList.get(i).telePompka = posData.telePompka
+					pdList.get(i).teleKodzik = posData.teleKodzik
                 }
             }
 
@@ -826,8 +844,16 @@ class ProcessService {
 			}
 
 			// Create POSes with same values
-			if (pc.terminalIlosc != null && pc.terminalIlosc > 1) {
-				for (int i = 0; i < pc.terminalIlosc; i++) {
+			def terminalCount = 0
+			terminalCount += posDataDetails?.gprsIlosc != null ? posDataDetails?.gprsIlosc : 0
+			terminalCount += posDataDetails?.dialupIlosc != null ? posDataDetails?.dialupIlosc : 0
+			terminalCount += posDataDetails?.vpnIlosc != null ? posDataDetails?.vpnIlosc : 0
+			terminalCount += posDataDetails?.sslIlosc != null ? posDataDetails?.sslIlosc : 0
+			terminalCount += posDataDetails?.wifiIlosc != null ? posDataDetails?.wifiIlosc : 0
+			terminalCount += posDataDetails?.bazaIlosc != null ? posDataDetails?.bazaIlosc : 0
+			
+			if (terminalCount > 1) {
+				for (int i = 0; i < terminalCount; i++) {
 					PosData posDataNew
 					PosDataDetails posDataDetailsNew
 
@@ -840,6 +866,14 @@ class ProcessService {
 					pdList.add(posDataNew)
 				}
 			}
+			
+			// Set telePomka and teleKodzik based on terminalIlosc
+            if (pc.terminalIlosc != null && pc.terminalIlosc > 0) {
+				for (int i = 0; i < pc.terminalIlosc; i++) {
+                    pdList.get(i).telePompka = posData.telePompka
+					pdList.get(i).teleKodzik = posData.teleKodzik
+                }
+            }
 
 			pointData.nip = pointDataDetails.nipPunktu
 			pointData.nazwa = pointDataDetails.nazwaDoWyszukiwarki

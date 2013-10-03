@@ -22,7 +22,7 @@ class ProcessCommand implements Serializable{
     static def nullableTrueBlankFalse = {return it == null || it.toString()?.size() > 0}
 
     static def atLeastClosure = { value, cmd, errors, property, calcProperty ->
-        def calcValue = cmd.calculatorService?.getCalcProperty(cmd.calc,calcProperty)
+        def calcValue = cmd.calculatorService.getCalcProperty(calcProperty)
         if (! calcValue){
             return true
         }
@@ -947,22 +947,26 @@ class ProcessCommand implements Serializable{
         allPoses(nullable:true)
 
         liczbaTerminali(nullable:true, validator: { value, cmd, errors ->
-            //println("liczbaTerminali : " + value)
+			//println("liczbaTerminali : " + value)
             def max = value ? Integer.valueOf(value) : 0
             def counter = 0
 
             cmd.points?.each{ point ->
-                //println("point.terminalIlosc : " + point.terminalIlosc)
-                if(point.terminalIlosc?.toString()?.isNumber()){
-                    counter += Integer.valueOf(point.terminalIlosc)
-                }
+				counter += point?.dialupIlosc != null ? point?.dialupIlosc : 0
+				counter += point?.vpnIlosc != null ? point?.vpnIlosc : 0
+				counter += point?.sslIlosc != null ? point?.sslIlosc : 0
+				counter += point?.wifiIlosc != null ? point?.wifiIlosc : 0
+				counter += point?.gprsIlosc != null ? point?.gprsIlosc : 0
+				counter += point?.bazaIlosc != null ? point?.bazaIlosc : 0
             }
 			
 			cmd.poses?.each{ point ->
-                //println("point.terminalIlosc : " + point.terminalIlosc)
-                if(point.terminalIlosc?.toString()?.isNumber()){
-                    counter += Integer.valueOf(point.terminalIlosc)
-                }
+                counter += point?.dialupIlosc != null ? point?.dialupIlosc : 0
+				counter += point?.vpnIlosc != null ? point?.vpnIlosc : 0
+				counter += point?.sslIlosc != null ? point?.sslIlosc : 0
+				counter += point?.wifiIlosc != null ? point?.wifiIlosc : 0
+				counter += point?.gprsIlosc != null ? point?.gprsIlosc : 0
+				counter += point?.bazaIlosc != null ? point?.bazaIlosc : 0
             }
 
             if( counter > max) {

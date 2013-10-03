@@ -1,6 +1,23 @@
 var globalPanelCount = 0;
 var globalPanelPosCount = 0;
 
+function getCurrentTerminalCount() {
+	
+	var counter = globalPanelPosCount
+	
+	for(var i = 0; i < globalPanelCount; i++) {
+		var prefixPanel = "#"+prefix+"\\["+i+"\\]\\"
+		counter += jQuery(prefixPanel + ".dialupCount").val();
+		counter += jQuery(prefixPanel + ".vpnCount").val();
+		counter += jQuery(prefixPanel + ".sslCount").val();
+		counter += jQuery(prefixPanel + ".wifiCount").val();
+		counter += jQuery(prefixPanel + ".gprsCount").val();
+		counter += jQuery(prefixPanel + ".baseCount").val();
+	}
+	
+	return counter;
+}
+
 function getGlobalPanelCount(prefix) {
     if (prefix == "points") {
         return globalPanelCount;
@@ -398,40 +415,53 @@ function setupNewPosPanelHandlers(prevPanelId, panelId, prefix) {
 }
 
 function addDateHandlers(prefixPanel, prefix, panelId){
+    var dayCloseFrom = jQuery(prefixPanel + ".dayCloseFrom"),
+        dayCloseTo = jQuery(prefixPanel + ".dayCloseTo"),
+        dayCloseToDefault = new Date();
+
+    dayCloseToDefault.setHours(23);
+    dayCloseToDefault.setMinutes(59);
+
     jQuery(prefixPanel + ".plannedInstallationDate").datepicker({ dateFormat: 'yy-mm-dd', minDate: 0 });
-    jQuery(prefixPanel + ".dayCloseFrom").timepicker({
+    dayCloseFrom.timepicker({
         controlType: 'select',
         timeFormat: 'HH:mm',
         onClose: function(dateText, inst){
-            onCloseDayCloseFrom(prefix, panelId);
+            onCloseDayCloseFrom(prefix, panelId, dayCloseFrom, dayCloseTo);
         },
         onSelect: function (selectedDateTime){
-            onSelectDayCloseFrom(prefix, panelId);
+            onSelectDayCloseFrom(prefix, panelId, dayCloseTo);
         }
     });
-    jQuery(prefixPanel + ".dayCloseTo").timepicker({
+
+    dayCloseTo.timepicker({
         controlType: 'select',
         timeFormat: 'HH:mm',
         onClose: function(dateText, inst){
-            onCloseDayCloseTo(prefix, panelId)
+            onCloseDayCloseTo(prefix, panelId, dayCloseTo)
         },
         onSelect: function (selectedDateTime) {}
     });
+
+    for(var i = 0; i < dayCloseTo.length; i++){
+        var dayCloseToItem = dayCloseTo[i],
+            dayCloseToValue = dayCloseToItem.value;
+        if(!dayCloseToValue || dayCloseToValue === ""){
+            jQuery(dayCloseToItem).datetimepicker('setDate', dayCloseToDefault);
+        }
+    }
 }
 
-function onCloseDayCloseTo(prefix, panelId) {
-    var dayCloseTo = jQuery( "#"+prefix+"\\["+panelId+"\\]\\.dayCloseTo"),
-        hours = jQuery("[data-unit='hour']").val(),
+function onCloseDayCloseTo(prefix, panelId, dayCloseTo) {
+    var hours = jQuery("[data-unit='hour']").val(),
         minutes = jQuery("[data-unit='minute']").val(),
         selectedDate = hours+":"+minutes;
 
     dayCloseTo.datetimepicker('setDate', getDateFromTime(selectedDate));
 }
 
-function onCloseDayCloseFrom(prefix, panelId) {
-    var dayCloseFrom = jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseFrom"),
-        dayCloseTo =  jQuery( "#"+prefix+"\\["+panelId+"\\]\\.dayCloseTo"),
-        dayCloseToValue = dayCloseTo.val();
+function onCloseDayCloseFrom(prefix, panelId, dayCloseFrom, dayCloseTo) {
+    var dayCloseToValue = dayCloseTo.val();
     if (dayCloseTo.val() != '') {
         var dayCloseFromDate = dayCloseFrom.datetimepicker('getDate'),
             testEndDate = dayCloseTo.datetimepicker('getDate');
@@ -440,20 +470,16 @@ function onCloseDayCloseFrom(prefix, panelId) {
             dayCloseToValue = dayCloseTo.val();
         }
     }
-
     //hack
     if(dayCloseFrom.val() !== ""){
         var minimumDate = getDateFromTime(dayCloseFrom.val());
-        minimumDate.setMinutes(minimumDate.getMinutes() + 1);
         dayCloseTo.datetimepicker('option', 'minDateTime', minimumDate);
         dayCloseTo.val(dayCloseToValue);
     }
-
 }
 
-function onSelectDayCloseFrom(prefix, panelId){
-    var dayCloseTo = jQuery("#"+prefix+"\\["+panelId+"\\]\\.dayCloseTo"),
-        dayCloseToValue = dayCloseTo.val();
+function onSelectDayCloseFrom(prefix, panelId, dayCloseTo){
+    var dayCloseToValue = dayCloseTo.val();
 
     dayCloseTo.val(dayCloseToValue);
 }

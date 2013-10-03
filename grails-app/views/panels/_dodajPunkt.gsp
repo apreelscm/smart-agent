@@ -22,6 +22,7 @@
 	
 	jQuery(document).ready(function() {
 		jQuery("#conitnueButton").prop("disabled", true);
+		var maxTerminalCount = jQuery("#liczbaTerminali").val();
 		var panelTemplate = jQuery("#hiddenPanel").html();
 		var panelCount = ${data.points.size()};
 		var panelInternalCount = ${data.points.size()};
@@ -34,6 +35,15 @@
 			jQuery("#conitnueButton").prop("disabled", false);
 		}
 		
+		if (getCurrentTerminalCount() == maxTerminalCount) {
+			jQuery("#addNewPointButton").prop("disabled", true);
+			jQuery("#addNewPosButton").prop("disabled", true);
+		}
+		else if (getCurrentTerminalCount() < maxTerminalCount) {
+			jQuery("#addNewPointButton").prop("disabled", false);
+			jQuery("#addNewPosButton").prop("disabled", false);
+		}
+		
 		for (var i = 0; i < panelCount; i++) {
 			setupNewPointPanelHandlers(i-1, i, "points");
 			setupNewPointPanelData("points\\["+(i-1)+"\\]\\.", "points\\["+i+"\\]\\.");
@@ -41,6 +51,15 @@
 			
 		jQuery("#addNewPointButton").on("click", function(e) {
 			e.preventDefault();
+			
+			if (getCurrentTerminalCount() == maxTerminalCount) {
+				jQuery(e.target).prop("disabled", true);
+				jQuery("#addNewPosButton").prop("disabled", true);
+			}
+			else if (getCurrentTerminalCount() < maxTerminalCount) {
+				jQuery(e.target).prop("disabled", false);
+				jQuery("#addNewPosButton").prop("disabled", false);
+			}
 			
 			if (panelInternalCount < 10) {
 				var data = panelTemplate.replace(/%ID%/gm, panelCount);
