@@ -688,7 +688,8 @@ class ProcessService {
 			terminalCount += posDataDetails?.wifiIlosc != null ? posDataDetails?.wifiIlosc : 0
 			terminalCount += posDataDetails?.bazaIlosc != null ? posDataDetails?.bazaIlosc : 0
 			
-			if (terminalCount > 1) {
+			// Create cloned poses only when they are not already cloned
+			if (terminalCount > 1 && terminalCount > pointData.liczbaPos) {
 				for (int i = 0; i < terminalCount; i++) {
 					PosData posDataNew
 					PosDataDetails posDataDetailsNew
@@ -709,10 +710,16 @@ class ProcessService {
 			}
 			
 			// Set telePomka and teleKodzik based on terminalIlosc
-			if (pc.terminalIlosc != null && pc.terminalIlosc > 0) {
-				for (int i = 0; i < pc.terminalIlosc; i++) {
+			if (pc.terminalIlosc != null && pc.terminalIlosc > 0 && terminalCount > pointData.liczbaPos) {
+				for (int i = 0; i < pc.terminalIlosc && i < pdList.size; i++) {
 					pdList.get(i).posDetails?.telePompka = posData.posDetails?.telePompka
 					pdList.get(i).posDetails?.teleKodzik = posData.posDetails?.teleKodzik
+				}
+			}
+			else if (pc.terminalIlosc != null && pc.terminalIlosc > 0 && terminalCount == pointData.liczbaPos) {
+				for (int i = 0; i < pc.terminalIlosc; i++) {
+					pointData.posDatas?.get(i).posDetails?.telePompka = posData.posDetails?.telePompka
+					pointData.posDatas?.get(i).posDetails?.teleKodzik = posData.posDetails?.teleKodzik
 				}
 			}
 
@@ -862,7 +869,8 @@ class ProcessService {
 			terminalCount += posDataDetails?.wifiIlosc != null ? posDataDetails?.wifiIlosc : 0
 			terminalCount += posDataDetails?.bazaIlosc != null ? posDataDetails?.bazaIlosc : 0
 			
-			if (terminalCount > 1) {
+			// Create cloned poses only when they are not already cloned
+			if (terminalCount > 1 && terminalCount > pointData.liczbaPos) {
 				for (int i = 0; i < terminalCount; i++) {
 					PosData posDataNew
 					PosDataDetails posDataDetailsNew
@@ -883,10 +891,16 @@ class ProcessService {
 			}
 			
 			// Set telePomka and teleKodzik based on terminalIlosc
-			if (pc.terminalIlosc != null && pc.terminalIlosc > 0) {
-				for (int i = 0; i < pc.terminalIlosc; i++) {
+			if (pc.terminalIlosc != null && pc.terminalIlosc > 0 && terminalCount > pointData.liczbaPos) {
+				for (int i = 0; i < pc.terminalIlosc && i < pdList.size; i++) {
 					pdList.get(i).posDetails?.telePompka = posData.posDetails?.telePompka
 					pdList.get(i).posDetails?.teleKodzik = posData.posDetails?.teleKodzik
+				}
+			}
+			else if (pc.terminalIlosc != null && pc.terminalIlosc > 0 && terminalCount == pointData.liczbaPos) {
+				for (int i = 0; i < pc.terminalIlosc; i++) {
+					pointData.posDatas?.get(i).posDetails?.telePompka = posData.posDetails?.telePompka
+					pointData.posDatas?.get(i).posDetails?.teleKodzik = posData.posDetails?.teleKodzik
 				}
 			}
 
