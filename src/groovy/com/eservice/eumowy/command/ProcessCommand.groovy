@@ -23,7 +23,9 @@ class ProcessCommand implements Serializable{
 
     static def atLeastClosure = { value, cmd, errors, property, calcProperty ->
         def calcValue = cmd.calculatorService.getCalcProperty(cmd.calc,calcProperty)
-        if (! calcValue){
+		
+		//warunek na brak wartości w kalkulatorze lub wartość domyślną w panelu
+        if ( DEFAULT_VALUE.equals(value) || !calcValue){
             return true
         }
 
