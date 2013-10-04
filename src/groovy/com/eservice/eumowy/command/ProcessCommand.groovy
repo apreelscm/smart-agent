@@ -22,7 +22,7 @@ class ProcessCommand implements Serializable{
     static def nullableTrueBlankFalse = {return it == null || it.toString()?.size() > 0}
 
     static def atLeastClosure = { value, cmd, errors, property, calcProperty ->
-        def calcValue = cmd.calculatorService.getCalcProperty(calcProperty)
+        def calcValue = cmd.calculatorService.getCalcProperty(cmd.calc,calcProperty)
         if (! calcValue){
             return true
         }
