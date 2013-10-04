@@ -10,6 +10,24 @@
             jQuery("#nipField").bind('input', function(){
                 jQuery("#continueButton").attr('disabled', 'disabled');
             });
+
+            jQuery("#continueButton").click(function(){
+                var self= jQuery(this),
+                    tempElement = jQuery("<input type='hidden'/>"),
+                    form = jQuery("form");
+
+                tempElement                    //for web flow <3
+                        .attr("name", this.name)
+                        .val(self.val())
+                        .appendTo(form);
+
+                self.attr('disabled', 'disabled');
+                jQuery(".loading-box").show();
+
+                form.submit();
+
+                return false;
+            });
         })
     </r:script>
 </head>
@@ -18,7 +36,7 @@
 <section id="create_chooseCalc">
     <h1 class="ng linia-bottom"><g:message code="chooseCalc.header.title" default="Wybierz klienta"/></h1>
 
-    <g:form>
+    <g:form class="calcForm">
         <div>
             <div class="display-inline-block">
                 <apreel:textField  id="nipField" name="nip" class="nip"
@@ -58,6 +76,10 @@
             <input id="continueButton" class="button submit" type="submit" value="Dalej" name="_eventId_continue" ${(!isContinueEnabled)?"disabled":""} />
         </fieldset>
     </g:form>
+
+    <div class="loading-box">
+        <p>Trwa ładowanie danych...</p>
+    </div>
 
 </section>
 

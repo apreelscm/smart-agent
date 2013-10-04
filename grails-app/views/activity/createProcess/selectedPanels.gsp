@@ -37,12 +37,26 @@
                 false
             });
 
-        $j("#conitnueButton").click(function() {
+        $j("#continueButton").click(function() {
+                var self= jQuery(this),
+                    tempElement = jQuery("<input type='hidden'/>"),
+                    form = jQuery("form");
+
                 if ( $j(".panelsForm").valid()){
                     var input = $j("<input>").attr("type", "hidden").attr("name", "_eventId_continue").val("");
                     $j('.panelsForm').append($j(input)).submit()
                 }
-                false
+
+                tempElement                    //for web flow <3
+                        .attr("name", this.name)
+                        .val(self.val())
+                        .appendTo(form);
+
+                self.attr('disabled', 'disabled');
+                jQuery(".loading-box").show();
+
+                form.submit();
+                return false
             });
 
         refreshAttachmentList()
@@ -154,8 +168,11 @@
     <nav style="margin-top: 20px">
         <fieldset>
             <g:link event="back" class="button submit float-left">${message(code:'default.navigation.button.prev', default: 'Wstecz')}</g:link>
-            <button id="conitnueButton" class="button submit float-right">${message(code:'default.navigation.button.next', default: 'Dalej')}</button>
+            <button id="continueButton" class="button submit float-right">${message(code:'default.navigation.button.next', default: 'Dalej')}</button>
         </fieldset>
+        <div class="loading-box">
+            <p>Trwa ładowanie danych...</p>
+        </div>
     </nav>
 
 </section>
