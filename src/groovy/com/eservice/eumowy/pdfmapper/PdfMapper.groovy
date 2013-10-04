@@ -399,6 +399,14 @@ class PdfMapper {
 		addCheckbox(data, key, 'true', value);
 	}
 	
+	private mapInneWyposazenieSslPointDataDetails(def data, def pointData, def key, def value) {
+		addCheckbox(data, key, 'true', value);
+	}
+	
+	private mapInneWyposazenieGprsPointDataDetails(def data, def pointData, def key, def value) {
+		addCheckbox(data, key, 'true', value);
+	}
+	
 	// ------------------ POS METHODS ------------------------------------
 	
 	private mapZamkniecieDniaOd(def data, def posesData, def key, def value){
