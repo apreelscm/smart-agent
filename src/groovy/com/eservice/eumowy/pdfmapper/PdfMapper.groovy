@@ -29,9 +29,8 @@ class PdfMapper {
         println "Ilosc punktow: " + points?.size()
 
         if (points != null && points.size()>0){
-            //TODO - czy takie filtrowanie wystarczy; czy nie trzeba sprawdzac jeszcze czy punkt jest wybrany ( pole - czyWybranyAkceptacjaKart).
-            dataMap.putAll(mapPointsSpecial(points.findAll{ point -> point.tytulPlatnosci}, ["nazwa":"punktTytulPlatnosci", "miejscowosc":"adresTytulPlatnosci"]));
-            dataMap.putAll(mapPointsSpecial(points.findAll{ point -> point.czyWybranyZakresUruchomienia}, ["nazwa":"punktZakresUruchomienia", "miejscowosc":"adresZakresUruchomienia"]));
+            dataMap.putAll(mapPointsSpecial(points.findAll{ point -> (point.czyWybranyAkceptacjaKart && point.tytulPlatnosci)}, ["nazwa":"punktTytulPlatnosci", "miejscowosc":"adresTytulPlatnosci"]));
+            dataMap.putAll(mapPointsSpecial(points.findAll{ point -> (point.czyWybranyAkceptacjaKart && point.czyWybranyZakresUruchomienia)}, ["nazwa":"punktZakresUruchomienia", "miejscowosc":"adresZakresUruchomienia"]));
             dataMap.putAll(mapPointsSpecial(points.findAll{ point -> point.czyWybranyAkceptacjaKart}, ["nazwa":"punktAkceptacjaKart", "miejscowosc":"adresAkceptacjaKart"]));
             dataMap.putAll(mapPointsSpecial(points, ["nazwa":"punkt", "miejscowosc":"adres"]));
             dataMap.putAll(mapPointsSpecial(points, ["tytulPlatnosci":"platnoscTN","systemKasowy":"integracjaTN","uta":"utaTN"]));
