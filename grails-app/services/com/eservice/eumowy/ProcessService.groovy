@@ -626,6 +626,7 @@ class ProcessService {
             ArrayList<PosData> pdList = new ArrayList<PosData>()
 
             if (pc.id == null) {
+				log.info "NEW POINT!"
                 pointData = new PointData()
                 pointDataDetails = new PointDataDetails()
 
@@ -634,6 +635,7 @@ class ProcessService {
                 isNew = true
             }
             else {
+				log.info "EXISTING POINT!"
                 pointData = PointData.get(pc.id)
 
                 if (pointData != null) {
