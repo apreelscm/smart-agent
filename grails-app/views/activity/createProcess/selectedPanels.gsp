@@ -127,6 +127,7 @@
 
 
     <g:form class="panelsForm">
+        <g:hiddenField name="globalMCC" value="${data.scoringMcc}"/>
         <g:hiddenField name="nip" value="${data.nip}"/>
         <g:hiddenField name="liczbaTerminali" value="${data.liczbaTerminali}"/>
         <g:each var="panel" in="${processInstance.panels}" status="i">

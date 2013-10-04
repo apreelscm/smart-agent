@@ -178,6 +178,23 @@ class ProcessService {
     def prepareProcessCommand(def cmd, def calc, def restrictedMethods = []) {
         def exclusions = defaultMethods + restrictedMethods
 
+        def populateMethod;
+
+        switch (Environment.getCurrent().getName()) {
+            case EumowyCustomEnvironment.MOCK.getName():
+                panelMockService.init(cmd)
+                populateMethod = {command, calculator, functionName ->
+                    panelMockService."${functionName}"(command)
+                }
+                break;
+            default:
+                panelService.init(cmd, calc)
+                populateMethod = {command, calculator, functionName ->
+                    panelService."${functionName}"(command, calculator)
+                }
+                break;
+        }
+
         cmd.process.panels.each { Panel panel ->
 
             if (panel!=null){
@@ -186,14 +203,15 @@ class ProcessService {
                 if(panelFunctionName in exclusions){ return }
 
                 log.info("invokin ${panelFunctionName} on panelService")
-
-                switch (Environment.getCurrent().getName()) {
-                    case EumowyCustomEnvironment.MOCK.getName():
-                        panelMockService."${panelFunctionName}"(cmd)
-                        break;
-                    default:
-                        panelService."${panelFunctionName}"(cmd,calc)
-                }
+                populateMethod.call(cmd, calc, panelFunctionName)
+//
+//                switch (Environment.getCurrent().getName()) {
+//                    case EumowyCustomEnvironment.MOCK.getName():
+//                        panelMockService."${panelFunctionName}"(cmd)
+//                        break;
+//                    default:
+//                        panelService."${panelFunctionName}"(cmd,calc)
+//                }
             }
         }
 
