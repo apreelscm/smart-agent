@@ -491,9 +491,6 @@ class PdfMapper {
 		data.put("email", [value] as String[])
 	}
 	
-	private mapOplataZaUruchomienieWalutyObcejProcess(def data, def pd, def key, def value) {
-		data.put("walutaObcaCena", [value] as String[])
-	}
 
 	private mapNipProcess(def data, def pd, def key, def value){
 		data.put(key, [value] as String[]);
