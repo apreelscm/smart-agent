@@ -44,11 +44,10 @@ environments {
             username = "eumowy_app"
             password = "eumowy_app"
             dbCreate = "" // TODO change later for validate
-            url = "jdbc:oracle:thin:@192.168.9.22:1523:tstcbd"
            /*username = "eumowy"
              password = "V7S1947nK89O"
              dbCreate="update"*/
-           // url = "jdbc:oracle:thin:@db-eservice.apreel.lan:1521:cbd01out"
+            url = "jdbc:oracle:thin:@db-eservice.apreel.lan:1521:cbd01out"
         }
     }
     uat {
@@ -58,8 +57,8 @@ environments {
             username = "eumowy_app"
             password = "eumowy_app"
             dbCreate = "" // TODO change later for validate
-            url = "jdbc:oracle:thin:@192.168.3.221:1523:tstcbd"
-            //url = "jdbc:oracle:thin:@192.168.9.22:1523:tstcbd"  // w sieci apreel
+          //  url = "jdbc:oracle:thin:@192.168.3.221:1523:tstcbd"
+            url = "jdbc:oracle:thin:@192.168.9.22:1523:tstcbd"  // w sieci apreel
             //url = "jdbc:oracle:thin:@db-eservice.apreel.lan:1521:cbd01out"  // test
         }
     }
