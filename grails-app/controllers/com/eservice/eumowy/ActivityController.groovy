@@ -418,7 +418,7 @@ class ActivityController {
                 }
 
                 def client = cbdService.findClientByNip(flow.nip);
-
+                log.info(flow?.processInstance)
                 /** pobranie wartości, czy to jest nowa umowa*/
                 def hasNowaUmowa = processService.containsActivity(processInstance.activities,"nowaUmowa")
 
