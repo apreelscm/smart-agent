@@ -26,7 +26,7 @@ class ProcessController {
 //        log.info("PSZKUP in Controller --> filterPhNo: " + params.filterPhNo + "; filterDateFrom: " + params.filterDateFrom + "; filterDateTo: " + params.filterDateTo)
 
         if(params.filterStatus == null){
-            params.filterStatus = Process.ProcessStatus.REJECTED.name()
+            params.filterStatus = Process.ProcessStatus.WAITING.name()
         }
 
         def processes = new ProcessService().searchProcessByFilters(params)

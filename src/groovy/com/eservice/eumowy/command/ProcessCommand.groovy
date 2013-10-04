@@ -430,6 +430,7 @@ class ProcessCommand implements Serializable{
     List<AllPosCommand> allPoses = ListUtils.lazyList([], FactoryUtils.instantiateFactory(AllPosCommand))
 
     String hasUmowaCzas
+    String hasScoringAkceptacja
     String hasKontaktTel
     String hasDoladowania
     String hasAkceptantTel
@@ -482,6 +483,14 @@ class ProcessCommand implements Serializable{
         hasUmowaCzas(nullable:true, validator: { value, cmd, errors ->
             if(value && cmd.umowaCzas == DEFAULT_VALUE){
                 errors.rejectValue( "hasUmowaCzas", "default.atLeastOne.czasUmowy")
+                return false
+            }
+            return true
+        })
+
+        hasScoringAkceptacja(nullable:true, validator: { value, cmd, errors ->
+            if(cmd.scoringAkceptacja == null || cmd.scoringAkceptacja == DEFAULT_VALUE){
+                errors.rejectValue( "hasScoringAkceptacja", "panel.scoring.accept.required")
                 return false
             }
             return true
