@@ -950,7 +950,7 @@ class ProcessCommand implements Serializable{
                 return true;
             }
 
-            if(cmd.obslugaTyp == DEFAULT_VALUE){
+            if(!cmd.obslugaTyp){
                 errors.rejectValue( "hasObslugaTyp", "default.atLeastOne.obslugaTyp")
                 return false
             }

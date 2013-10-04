@@ -3,7 +3,7 @@
         <div class="belka-glowna"><g:message code="panel.service.title"/></div>
         <div class="centre" style="text-align: center; padding-top: 20px; width: 750px">
             <ul class="table-list centre">
-                <div class="${hasErrors(bean:data,field:'hasObslugaTyp','errorSpan')}">
+                <div class="${hasErrors(bean:data, field:'hasObslugaTyp','errorSpan')}">
                 <g:hiddenField name="hasObslugaTyp" value="true"/>
                 <g:hiddenField name="obslugaTyp" value="${data.obslugaTyp}"/>
                 <g:radioGroup name="obslugaTypRadio"
@@ -33,11 +33,11 @@
     jQuery(document).ready(function() {
         var servicePayment = jQuery('#servicePayment');
 
-        if (jQuery('input[name="obslugaTyp"]:checked').val() != 'economic'){
+        if (jQuery('input[name="obslugaTypRadio"]:checked').val() != 'economic'){
             servicePayment.hide();
         };
 
-        jQuery('input[name="obslugaTyp"]').change(function(e){
+        jQuery('input[name="obslugaTypRadio"]').change(function(e){
             if (e.target.value == 'prestige'){
                 servicePayment.hide();
             } else if (e.target.value == 'comfort'){
