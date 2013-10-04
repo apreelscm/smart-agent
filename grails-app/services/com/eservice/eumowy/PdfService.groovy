@@ -252,7 +252,7 @@ class PdfService {
 
             if (point.cbdId == null){
                 //generujemy tylko dokumenty dla tych punktow, ktore nie sa z CBD
-                def dataFromPoint = new PdfMapper(calculatorService).mapOnlyPointData(point);
+                def dataFromPoint = new PdfMapper(calculatorService,calc).mapOnlyPointData(point);
 
                 final Map<String, String> data = new HashMap<String, String>();
                 data.putAll(dataFromProcess);
