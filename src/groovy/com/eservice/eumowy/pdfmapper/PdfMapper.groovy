@@ -29,9 +29,8 @@ class PdfMapper {
         println "Ilosc punktow: " + points?.size()
 
         if (points != null && points.size()>0){
-            //TODO - czy takie filtrowanie wystarczy; czy nie trzeba sprawdzac jeszcze czy punkt jest wybrany ( pole - czyWybranyAkceptacjaKart).
-            dataMap.putAll(mapPointsSpecial(points.findAll{ point -> point.tytulPlatnosci}, ["nazwa":"punktTytulPlatnosci", "miejscowosc":"adresTytulPlatnosci"]));
-            dataMap.putAll(mapPointsSpecial(points.findAll{ point -> point.czyWybranyZakresUruchomienia}, ["nazwa":"punktZakresUruchomienia", "miejscowosc":"adresZakresUruchomienia"]));
+            dataMap.putAll(mapPointsSpecial(points.findAll{ point -> (point.czyWybranyAkceptacjaKart && point.tytulPlatnosci)}, ["nazwa":"punktTytulPlatnosci", "miejscowosc":"adresTytulPlatnosci"]));
+            dataMap.putAll(mapPointsSpecial(points.findAll{ point -> (point.czyWybranyAkceptacjaKart && point.czyWybranyZakresUruchomienia)}, ["nazwa":"punktZakresUruchomienia", "miejscowosc":"adresZakresUruchomienia"]));
             dataMap.putAll(mapPointsSpecial(points.findAll{ point -> point.czyWybranyAkceptacjaKart}, ["nazwa":"punktAkceptacjaKart", "miejscowosc":"adresAkceptacjaKart"]));
             dataMap.putAll(mapPointsSpecial(points, ["nazwa":"punkt", "miejscowosc":"adres"]));
             dataMap.putAll(mapPointsSpecial(points, ["tytulPlatnosci":"platnoscTN","systemKasowy":"integracjaTN","uta":"utaTN"]));
@@ -349,7 +348,65 @@ class PdfMapper {
 	private mapPhPozyskPointDataDetails(def data, def pointData, def key, def value) {
 		data.put(key, [value] as String[]);
     }
-
+	
+	// FP - Checkboxy
+	
+	private mapPreautoryzacjaPointDataDetails(def data, def pointData, def key, def value) {
+		addCheckbox(data, key, 'true', value);
+	}
+	
+	private mapBrakFunkcjiZwrotuPointDataDetails(def data, def pointData, def key, def value) {
+		addCheckbox(data, key, 'true', value);
+	}
+	
+	private mapZwrotNaHasloPointDataDetails(def data, def pointData, def key, def value) {
+		addCheckbox(data, key, 'true', value);
+	}
+	
+	private mapAnalizaZbioruPointDataDetails(def data, def pointData, def key, def value) {
+		addCheckbox(data, key, 'true', value);
+	}
+	
+	private mapIntegracjaZSysKasPointDataDetails(def data, def pointData, def key, def value) {
+		addCheckbox(data, key, 'true', value);
+	}
+	
+	private mapZwrotyIKOPointDataDetails(def data, def pointData, def key, def value) {
+		addCheckbox(data, key, 'true', value);
+	}
+	
+	private mapLogowaniePrzedKazdaTransakcjaPointDataDetails(def data, def pointData, def key, def value) {
+		addCheckbox(data, key, 'true', value);
+	}
+	
+	private mapLogowanieZmianowePointDataDetails(def data, def pointData, def key, def value) {
+		addCheckbox(data, key, 'true', value);
+	}
+	
+	private mapNapiwek1PointDataDetails(def data, def pointData, def key, def value) {
+		addCheckbox(data, key, 'true', value);
+	}
+	
+	private mapTelePompkaPointDataDetails(def data, def pointData, def key, def value) {
+		addCheckbox(data, key, 'true', value);
+	}
+	
+	private mapTeleKodzik(def data, def pointData, def key, def value) {
+		addCheckbox(data, key, 'true', value);
+	}
+	
+	private mapKartaPodarunkowaPointDataDetails(def data, def pointData, def key, def value) {
+		addCheckbox(data, key, 'true', value);
+	}
+	
+	private mapInneWyposazenieSslPointDataDetails(def data, def pointData, def key, def value) {
+		addCheckbox(data, key, 'true', value);
+	}
+	
+	private mapInneWyposazenieGprsPointDataDetails(def data, def pointData, def key, def value) {
+		addCheckbox(data, key, 'true', value);
+	}
+	
 	// ------------------ POS METHODS ------------------------------------
 	
 	private mapZamkniecieDniaOd(def data, def posesData, def key, def value){
@@ -442,9 +499,6 @@ class PdfMapper {
 		data.put("email", [value] as String[])
 	}
 	
-	private mapOplataZaUruchomienieWalutyObcejProcess(def data, def pd, def key, def value) {
-		data.put("walutaObcaCena", [value] as String[])
-	}
 
 	private mapNipProcess(def data, def pd, def key, def value){
 		data.put(key, [value] as String[]);
