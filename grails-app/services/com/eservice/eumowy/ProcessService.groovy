@@ -1,9 +1,4 @@
 package com.eservice.eumowy
-import grails.util.Environment
-import groovy.sql.GroovyRowResult
-
-import org.apache.commons.lang.SerializationUtils
-import org.apache.commons.lang.WordUtils
 
 import com.eservice.eumowy.command.AllPointsCommand
 import com.eservice.eumowy.command.AllPosCommand
@@ -11,6 +6,10 @@ import com.eservice.eumowy.command.PointCommand
 import com.eservice.eumowy.command.ProcessCommand
 import com.eservice.eumowy.util.DateUtils
 import com.eservice.eumowy.util.EumowyCustomEnvironment
+import grails.util.Environment
+import groovy.sql.GroovyRowResult
+import org.apache.commons.lang.SerializationUtils
+import org.apache.commons.lang.WordUtils
 
 class ProcessService {
 
@@ -582,7 +581,7 @@ class ProcessService {
         def processDataList = [];
         cmd.properties.each { key, value ->
 
-            if (["class","process", "cbdService", "errors", "constraints",
+            if (["class","process", "cbdService", "errors", "constraints","calc","calculatorService",
                     "notes", "hasUmowaCzas", "hasKontaktTel", "hasDoladowania", "hasAkceptantTel", "hasInformacjaHandlowa","liczbaTerminali", "atLeastClosure", "nullableTrueBlankFalse"]
                     .contains(key) || value == ProcessCommand.DEFAULT_VALUE){
                 return
@@ -703,8 +702,8 @@ class ProcessService {
 			// Set telePomka and teleKodzik based on terminalIlosc
             if (pc.terminalIlosc != null && pc.terminalIlosc > 0) {
 				for (int i = 0; i < pc.terminalIlosc; i++) {
-                    pdList.get(i).telePompka = posData.telePompka
-					pdList.get(i).teleKodzik = posData.teleKodzik
+                    pdList.get(i).posDetails?.telePompka = posData.posDetails?.telePompka
+					pdList.get(i).posDetails?.teleKodzik = posData?.posDetails?.teleKodzik
                 }
             }
 

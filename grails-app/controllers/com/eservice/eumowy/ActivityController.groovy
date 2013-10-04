@@ -202,7 +202,7 @@ class ActivityController {
                 }
 
                 if (!flow.skipDocumentGeneration) {
-                    def processWithPages = pdfService.workWithDocuments(processInstance)
+                    def processWithPages = pdfService.workWithDocuments(processInstance, conversation.calc)
                     flow.totalPagesCount = processWithPages.totalPagesCount
                     //processInstance.discard()
 					//processInstance.save(flush: true)
@@ -464,6 +464,11 @@ class ActivityController {
                 }
 
                 def calc = cbdService.findCalculatorByNip(client.nip)
+                //TEST
+                if (Environment.getCurrent().getName() != EumowyCustomEnvironment.UAT.getName()) {
+                    calc.push([POLEAPREEL:"LICZBA_POS_MAX",WARTOSCAPREEL:"2"])
+                }
+
 
                 if(calc == []){
                     flash.calcErrorMessage = message(code:"calc.fetch.error", default:"Wystąpił błąd podczas próby pobrania kalkulatora");
@@ -726,6 +731,11 @@ class ActivityController {
                 }
 
                 def calc = cbdService.findCalculatorByNip(client.nip)
+                //TEST
+                if (Environment.getCurrent().getName() != EumowyCustomEnvironment.UAT.getName()) {
+                    calc.push([POLEAPREEL:"LICZBA_POS_MAX",WARTOSCAPREEL:"2"])
+                }
+
                 log.info("pobrano kalkulator " + calcId)
 
                 if(!calculatorService.isCalcValid(calc,lastProcess.signatures)){
@@ -769,15 +779,9 @@ class ActivityController {
             on("saveOnly"){ ProcessCommand cmd ->
                 Process processInstance = processService.populateProcessWithData(flow.processInstance,cmd)
 
-                if (!processInstance.save()){
-                    processInstance.errors.each {
-                        log.error(it)
-                    }
-                    return error();
-                }
-
+                processInstance.save(flush: true, validate: false)
                 flow.processInstance = processInstance
-                flow.data = cmd
+              //  flow.data = cmd
                 flow.skipPanelsInit = true;
             }to "selectedPanels"
             on("continue"){

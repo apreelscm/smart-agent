@@ -1,14 +1,12 @@
 package com.eservice.eumowy
 
 import com.eservice.eumowy.pdfmapper.PdfMapper
-
-import java.awt.image.BufferedImage
-
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.util.PDFImageWriter
-
 import pdfgenerator.PdfGenerator
 import signaturepad.SignatureToImage
+
+import java.awt.image.BufferedImage
 
 class PdfService {
 	def appParametersService
@@ -237,9 +235,9 @@ class PdfService {
 		return updatedContent
 	}
 
-    def workWithDocuments(def processInstance){
+    def workWithDocuments(def processInstance, def calc){
         def totalPagesCount = 0
-        def dataFromProcess = new PdfMapper(calculatorService).mapOnlyProcessData(processInstance);
+        def dataFromProcess = new PdfMapper(calculatorService,calc).mapOnlyProcessData(processInstance);
 
         //takie rozbicie bylo konieczne aby ograniczyc wywolania wolnego mappera
         def singleDocuments = processInstance.signatures.findAll{ sig -> !sig.forPoint}
