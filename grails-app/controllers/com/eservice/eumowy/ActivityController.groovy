@@ -1,13 +1,10 @@
 package com.eservice.eumowy
 
-import grails.util.Environment
-
-import org.codehaus.groovy.grails.web.json.JSONObject
-
 import com.eservice.eumowy.command.ProcessCommand
 import com.eservice.eumowy.process.DefineActivityCommand
 import com.eservice.eumowy.util.DateUtils
-import com.eservice.eumowy.util.EumowyCustomEnvironment
+import grails.util.Environment
+import org.codehaus.groovy.grails.web.json.JSONObject
 
 class ActivityController {
 
@@ -51,10 +48,10 @@ class ActivityController {
                 log.info("init flow.message:"+ flow.message)
                 log.info("init flash.message:"+ flash.message)
                 log.info("init flow.prevActivityMessage:"+flow.prevActivityMessage)
-				if (params.message != null) {
-					flow.prevActivityMessage = params.message
-				}
-				flash.infoMessage =  flow.prevActivityMessage
+                if (params.message != null) {
+                    flow.prevActivityMessage = params.message
+                }
+                flash.infoMessage =  flow.prevActivityMessage
                 flow.isGoBack = false
             }
             on("success").to "defineActivity"
@@ -209,10 +206,10 @@ class ActivityController {
                     def processWithPages = pdfService.workWithDocuments(processInstance, conversation.calc)
                     flow.totalPagesCount = processWithPages.totalPagesCount
                     //processInstance.discard()
-					//processInstance.save(flush: true)
+                    //processInstance.save(flush: true)
                     processInstance = processWithPages.processInstance
-					processInstance.save(flush: true)
-					//flow.processInstance = processInstance
+                    processInstance.save(flush: true)
+                    //flow.processInstance = processInstance
 
                 }
                 flow.skipDocumentGeneration = false
@@ -423,21 +420,21 @@ class ActivityController {
                 }
 
                 def client = cbdService.findClientByNip(flow.nip);
-				
-				/** pobranie wartości, czy to jest nowa umowa*/
-				def hasNowaUmowa = processService.containsActivity(processInstance.activities,"nowaUmowa")
-				
+                log.info(flow?.processInstance)
+                /** pobranie wartości, czy to jest nowa umowa*/
+                def hasNowaUmowa = processService.containsActivity(processInstance.activities,"nowaUmowa")
+
                 if(client?.cbdId){
-					/** sprawdzanie, czy to nie jest nowa umowa dla klienta CBD*/
-					if(hasNowaUmowa){
-						flash.nipErrorMessage = message(code:"client.newAgreementAndClientCBD.error", default:"Nowa umowa dla klienta CBD");
+                    /** sprawdzanie, czy to nie jest nowa umowa dla klienta CBD*/
+                    if(hasNowaUmowa){
+                        flash.nipErrorMessage = message(code:"client.newAgreementAndClientCBD.error", default:"Nowa umowa dla klienta CBD");
                         log.info(message(code:"client.newAgreementAndClientCBD.error") + " - " + flow.nip)
                         return error();
-					}
-					else{
-						flash.nipInfoMessage =  message(code:"client.found.info", default:"Znaleziono klienta w CBD");
-					}
-     
+                    }
+                    else{
+                        flash.nipInfoMessage =  message(code:"client.found.info", default:"Znaleziono klienta w CBD");
+                    }
+
                 }else {
                     /** sprawdzanie, czy to nie jest nowa umowa */
                     if(hasNowaUmowa){
@@ -453,7 +450,7 @@ class ActivityController {
                 flow.client = client;
 
                 /** sprawdzanie, czy w eUmowy istnieje dla danego Akceptanta niezakończony Proces */
-				def lastProcess = processService.getLastProcessWhenNotInStatus(params.nip,[Process.ProcessStatus.REJECTED,Process.ProcessStatus.ACCEPTED])
+                def lastProcess = processService.getLastProcessWhenNotInStatus(params.nip,[Process.ProcessStatus.REJECTED,Process.ProcessStatus.ACCEPTED])
                 if(lastProcess){
                     flash.nipErrorMessage = message(code:"client.unfinishedProcess.error", default:"Dla Akceptanta istnieje niezakończony Proces");
                     lastProcess?.discard() // drop it from session
@@ -470,8 +467,7 @@ class ActivityController {
                 }
 
                 def calc = cbdService.findCalculatorByNip(client.nip)
-                //TEST
-                if (Environment.getCurrent().getName() != EumowyCustomEnvironment.UAT.getName()) {
+                if (Environment.getCurrent() == Environment.DEVELOPMENT) {
                     calc.push([POLEAPREEL:"LICZBA_POS_MAX",WARTOSCAPREEL:"2"])
                 }
 
@@ -524,9 +520,9 @@ class ActivityController {
                     processInstance.points?.each { point ->
                         if (point.cbdId != null) {
                             def foundApc = processCmd.allPoints?.find { apc -> apc.cbdId == point.cbdId }
-							if (foundApc != null) {
-								foundApc.id = point.id
-							}
+                            if (foundApc != null) {
+                                foundApc.id = point.id
+                            }
                         }
                     }
                 }
@@ -551,17 +547,17 @@ class ActivityController {
                 log.info "Zapisuje dane paneli"
 
                 //TEST start
-              /*  cmd.calc = conversation.calc
-                cmd.calculatorService = calculatorService
-                cmd.validate()
-                flow.data = cmd
+                /*  cmd.calc = conversation.calc
+                  cmd.calculatorService = calculatorService
+                  cmd.validate()
+                  flow.data = cmd
 
-                if(cmd.hasErrors()){
-                    cmd.errors.each {
-                        log.error(it)
-                    }
-                    return error();
-                }*/
+                  if(cmd.hasErrors()){
+                      cmd.errors.each {
+                          log.error(it)
+                      }
+                      return error();
+                  }*/
                 //TEST end
 
                 processInstance.save(flush: true, validate: false)
@@ -737,8 +733,7 @@ class ActivityController {
                 }
 
                 def calc = cbdService.findCalculatorByNip(client.nip)
-                //TEST
-                if (Environment.getCurrent().getName() != EumowyCustomEnvironment.UAT.getName()) {
+                if (Environment.getCurrent() == Environment.DEVELOPMENT) {
                     calc.push([POLEAPREEL:"LICZBA_POS_MAX",WARTOSCAPREEL:"2"])
                 }
 
@@ -787,7 +782,7 @@ class ActivityController {
 
                 processInstance.save(flush: true, validate: false)
                 flow.processInstance = processInstance
-              //  flow.data = cmd
+                //  flow.data = cmd
                 flow.skipPanelsInit = true;
             }to "selectedPanels"
             on("continue"){

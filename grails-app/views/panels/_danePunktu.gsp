@@ -256,6 +256,7 @@
                                          style="width: 220px" /></td>
                 <td style="text-align: right;"><g:message code="panel.wifi" /></td>
                 <td><g:textField name="${panelType}[${id}].wifiIlosc"
+                				 id="${panelType}[${id}].wifiCount"
                                  value="${pointData?.wifiIlosc}" style="width: 50px" /> szt.</td>
                 <td><g:textField name="${panelType}[${id}].wifiPPIlosc"
                                  id="${panelType}[${id}].wifiPPCount"

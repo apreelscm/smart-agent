@@ -1,15 +1,18 @@
 package com.eservice.eumowy
 
+import grails.util.Environment
+import groovy.sql.GroovyRowResult
+
+import org.apache.commons.lang.WordUtils
+
+import serializationutils.SerializationUtils
+
 import com.eservice.eumowy.command.AllPointsCommand
 import com.eservice.eumowy.command.AllPosCommand
 import com.eservice.eumowy.command.PointCommand
 import com.eservice.eumowy.command.ProcessCommand
 import com.eservice.eumowy.util.DateUtils
 import com.eservice.eumowy.util.EumowyCustomEnvironment
-import grails.util.Environment
-import groovy.sql.GroovyRowResult
-import org.apache.commons.lang.SerializationUtils
-import org.apache.commons.lang.WordUtils
 
 class ProcessService {
 
@@ -175,6 +178,23 @@ class ProcessService {
     def prepareProcessCommand(def cmd, def calc, def restrictedMethods = []) {
         def exclusions = defaultMethods + restrictedMethods
 
+        def populateMethod;
+
+        switch (Environment.getCurrent().getName()) {
+            case EumowyCustomEnvironment.MOCK.getName():
+                panelMockService.init(cmd)
+                populateMethod = {command, calculator, functionName ->
+                    panelMockService."${functionName}"(command)
+                }
+                break;
+            default:
+                panelService.init(cmd, calc)
+                populateMethod = {command, calculator, functionName ->
+                    panelService."${functionName}"(command, calculator)
+                }
+                break;
+        }
+
         cmd.process.panels.each { Panel panel ->
 
             if (panel!=null){
@@ -183,14 +203,15 @@ class ProcessService {
                 if(panelFunctionName in exclusions){ return }
 
                 log.info("invokin ${panelFunctionName} on panelService")
-
-                switch (Environment.getCurrent().getName()) {
-                    case EumowyCustomEnvironment.MOCK.getName():
-                        panelMockService."${panelFunctionName}"(cmd)
-                        break;
-                    default:
-                        panelService."${panelFunctionName}"(cmd,calc)
-                }
+                populateMethod.call(cmd, calc, panelFunctionName)
+//
+//                switch (Environment.getCurrent().getName()) {
+//                    case EumowyCustomEnvironment.MOCK.getName():
+//                        panelMockService."${panelFunctionName}"(cmd)
+//                        break;
+//                    default:
+//                        panelService."${panelFunctionName}"(cmd,calc)
+//                }
             }
         }
 
@@ -623,6 +644,7 @@ class ProcessService {
             ArrayList<PosData> pdList = new ArrayList<PosData>()
 
             if (pc.id == null) {
+				log.info "NEW POINT!"
                 pointData = new PointData()
                 pointDataDetails = new PointDataDetails()
 
@@ -631,6 +653,7 @@ class ProcessService {
                 isNew = true
             }
             else {
+				log.info "EXISTING POINT!"
                 pointData = PointData.get(pc.id)
 
                 if (pointData != null) {
@@ -676,7 +699,7 @@ class ProcessService {
                 }
             }
 
-            // Create POSes with same values
+			// Create POSes with same values
 			def terminalCount = 0
 			terminalCount += posDataDetails?.gprsIlosc != null ? posDataDetails?.gprsIlosc : 0
 			terminalCount += posDataDetails?.dialupIlosc != null ? posDataDetails?.dialupIlosc : 0
@@ -685,13 +708,19 @@ class ProcessService {
 			terminalCount += posDataDetails?.wifiIlosc != null ? posDataDetails?.wifiIlosc : 0
 			terminalCount += posDataDetails?.bazaIlosc != null ? posDataDetails?.bazaIlosc : 0
 			
-			if (terminalCount > 1) {
+			// Create cloned poses only when they are not already cloned
+			if (terminalCount > 1 && terminalCount > pointData.liczbaPos) {
 				for (int i = 0; i < terminalCount; i++) {
 					PosData posDataNew
 					PosDataDetails posDataDetailsNew
-
-					posDataNew = SerializationUtils.clone(posData) as PosData
-					posDataDetailsNew = SerializationUtils.clone(posDataDetails) as PosDataDetails
+					Serializable posDataSer = posData
+					posDataNew = SerializationUtils.clone(posDataSer) // as PosData
+					posDataNew.id = null
+					posDataNew.version = 0
+					posDataDetailsNew = SerializationUtils.clone(posDataDetails)  // as PosDataDetails
+					posDataDetailsNew.id = null
+					posDataDetailsNew.version = 0
+					
 					posDataNew.setPosDetails(posDataDetailsNew)
 					posDataNew.setPoint(pointData)
 					posDataDetailsNew.setPos(posDataNew)
@@ -701,12 +730,18 @@ class ProcessService {
 			}
 			
 			// Set telePomka and teleKodzik based on terminalIlosc
-            if (pc.terminalIlosc != null && pc.terminalIlosc > 0) {
+			if (pc.terminalIlosc != null && pc.terminalIlosc > 0 && terminalCount > pointData.liczbaPos) {
+				for (int i = 0; i < pc.terminalIlosc && i < pdList.size; i++) {
+					pdList.get(i).posDetails?.telePompka = posData.posDetails?.telePompka
+					pdList.get(i).posDetails?.teleKodzik = posData.posDetails?.teleKodzik
+				}
+			}
+			else if (pc.terminalIlosc != null && pc.terminalIlosc > 0 && terminalCount == pointData.liczbaPos) {
 				for (int i = 0; i < pc.terminalIlosc; i++) {
-                    pdList.get(i).posDetails?.telePompka = posData.posDetails?.telePompka
-					pdList.get(i).posDetails?.teleKodzik = posData?.posDetails?.teleKodzik
-                }
-            }
+					pointData.posDatas?.get(i).posDetails?.telePompka = posData.posDetails?.telePompka
+					pointData.posDatas?.get(i).posDetails?.teleKodzik = posData.posDetails?.teleKodzik
+				}
+			}
 
             pointData.nip = pointDataDetails.nipPunktu
             pointData.nazwa = pointDataDetails.nazwaDoWyszukiwarki
@@ -732,6 +767,8 @@ class ProcessService {
             //}
 
             pointsList.add(pointData)
+			
+			
         }
 
         /* Save points from AllPointsCommand */
@@ -852,13 +889,19 @@ class ProcessService {
 			terminalCount += posDataDetails?.wifiIlosc != null ? posDataDetails?.wifiIlosc : 0
 			terminalCount += posDataDetails?.bazaIlosc != null ? posDataDetails?.bazaIlosc : 0
 			
-			if (terminalCount > 1) {
+			// Create cloned poses only when they are not already cloned
+			if (terminalCount > 1 && terminalCount > pointData.liczbaPos) {
 				for (int i = 0; i < terminalCount; i++) {
 					PosData posDataNew
 					PosDataDetails posDataDetailsNew
-
-					posDataNew = SerializationUtils.clone(posData) as PosData
-					posDataDetailsNew = SerializationUtils.clone(posDataDetails) as PosDataDetails
+					Serializable posDataSer = posData
+					posDataNew = SerializationUtils.clone(posDataSer) // as PosData
+					posDataNew.id = null
+					posDataNew.version = 0
+					posDataDetailsNew = SerializationUtils.clone(posDataDetails)  // as PosDataDetails
+					posDataDetailsNew.id = null
+					posDataDetailsNew.version = 0
+					
 					posDataNew.setPosDetails(posDataDetailsNew)
 					posDataNew.setPoint(pointData)
 					posDataDetailsNew.setPos(posDataNew)
@@ -868,12 +911,18 @@ class ProcessService {
 			}
 			
 			// Set telePomka and teleKodzik based on terminalIlosc
-            if (pc.terminalIlosc != null && pc.terminalIlosc > 0) {
+			if (pc.terminalIlosc != null && pc.terminalIlosc > 0 && terminalCount > pointData.liczbaPos) {
+				for (int i = 0; i < pc.terminalIlosc && i < pdList.size; i++) {
+					pdList.get(i).posDetails?.telePompka = posData.posDetails?.telePompka
+					pdList.get(i).posDetails?.teleKodzik = posData.posDetails?.teleKodzik
+				}
+			}
+			else if (pc.terminalIlosc != null && pc.terminalIlosc > 0 && terminalCount == pointData.liczbaPos) {
 				for (int i = 0; i < pc.terminalIlosc; i++) {
-                    pdList.get(i).telePompka = posData.telePompka
-					pdList.get(i).teleKodzik = posData.teleKodzik
-                }
-            }
+					pointData.posDatas?.get(i).posDetails?.telePompka = posData.posDetails?.telePompka
+					pointData.posDatas?.get(i).posDetails?.teleKodzik = posData.posDetails?.teleKodzik
+				}
+			}
 
 			pointData.nip = pointDataDetails.nipPunktu
 			pointData.nazwa = pointDataDetails.nazwaDoWyszukiwarki

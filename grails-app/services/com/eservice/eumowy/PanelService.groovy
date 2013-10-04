@@ -12,6 +12,10 @@ class PanelService {
 
     def cbdMethods = ["getAdresDoKorespondencjizAkecptantem","getDaneAkceptanta","getSiedzibaAkceptanta","getSerwis"]
 
+    def init(ProcessCommand cmd, def calc){
+        cmd.scoringMcc = calculatorService.getCalcProperty(calc,"MCC")
+    }
+
     def getAdresacjaSeciowa(ProcessCommand cmd, def calc ) {
     }
 
@@ -374,9 +378,9 @@ class PanelService {
     }
 
     def getScoring(ProcessCommand cmd, def calc ) {
-        cmd.scoringMcc = calculatorService.getCalcProperty(calc,"MCC")
         cmd.scoringDzialalnosc = nullify(cmd.scoringDzialalnosc)
 
+        //scoringMcc pobierany jest globalnie w metodzie init()
         def result = cbdService.getRodzajDzialalnosciByMCC(cmd.scoringMcc);
         cmd.scoringSzczegolyDzialalnosci = result?.slm_nazwa ?: ""
 
