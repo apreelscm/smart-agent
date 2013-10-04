@@ -319,6 +319,14 @@ class PdfMapper {
         data.put("imieINazwisko", [value + " " + getFromPointDataDetails(pointData, 'kontaktWPunkcieNazwisko')] as String[]);
     }
 
+	private mapImieInformatykStatycznaPointDataDetails(def data, def pointData, def key, def value){
+		data.put("imieINazwiskoInformatykStatyczna", [value + " " + getFromPointDataDetails(pointData, 'nazwiskoInformatykStatyczna')] as String[]);
+	}
+	
+	private mapImieInformatykDynamicznaPointDataDetails(def data, def pointData, def key, def value){
+		data.put("imieINazwiskoInformatykDynamiczna", [value + " " + getFromPointDataDetails(pointData, 'nazwiskoInformatykDynamiczna')] as String[]);
+	}
+	
     private mapKontaktWPunkcieTytulPointDataDetails(def data, def pointData, def key, def value){
         data.put(key, [value] as String[]);
         addCheckboxes(data, ["pan": "Pan", "pani": "Pani"], value)
