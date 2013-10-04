@@ -29,11 +29,11 @@
 			setupNewPointPanelData("poses\\["+(i-1)+"\\]\\.", "poses\\["+i+"\\]\\.");
 		}
 		
-		if (getCurrentTerminalCount() == maxTerminalCount) {
+		if (getCurrentTerminalCount("poses") == maxTerminalCount) {
 			jQuery("#addNewPointButton").prop("disabled", true);
 			jQuery("#addNewPosButton").prop("disabled", true);
 		}
-		else if (getCurrentTerminalCount() < maxTerminalCount) {
+		else if (getCurrentTerminalCount("poses") < maxTerminalCount) {
 			jQuery("#addNewPointButton").prop("disabled", false);
 			jQuery("#addNewPosButton").prop("disabled", false);
 		}
@@ -41,11 +41,11 @@
 		jQuery("#addNewPosButton").on("click", function(e) {
 			e.preventDefault();
 			
-			if (getCurrentTerminalCount() == maxTerminalCount) {
+			if (getCurrentTerminalCount("poses") == maxTerminalCount) {
 				jQuery(e.target).prop("disabled", true);
 				jQuery("#addNewPointButton").prop("disabled", true);
 			}
-			else if (getCurrentTerminalCount() < maxTerminalCount) {
+			else if (getCurrentTerminalCount("poses") < maxTerminalCount) {
 				jQuery(e.target).prop("disabled", false);
 				jQuery("#addNewPointButton").prop("disabled", false);
 			}

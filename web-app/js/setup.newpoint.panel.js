@@ -1,10 +1,10 @@
 var globalPanelCount = 0;
 var globalPanelPosCount = 0;
 
-function getCurrentTerminalCount() {
-	
+function getCurrentTerminalCount(prefix) {
+
 	var counter = globalPanelPosCount
-	
+
 	for(var i = 0; i < globalPanelCount; i++) {
 		var prefixPanel = "#"+prefix+"\\["+i+"\\]\\"
 		counter += jQuery(prefixPanel + ".dialupCount").val();

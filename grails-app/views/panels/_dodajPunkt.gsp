@@ -35,11 +35,11 @@
 			jQuery("#conitnueButton").prop("disabled", false);
 		}
 		
-		if (getCurrentTerminalCount() == maxTerminalCount) {
+		if (getCurrentTerminalCount("points") == maxTerminalCount) {
 			jQuery("#addNewPointButton").prop("disabled", true);
 			jQuery("#addNewPosButton").prop("disabled", true);
 		}
-		else if (getCurrentTerminalCount() < maxTerminalCount) {
+		else if (getCurrentTerminalCount("points") < maxTerminalCount) {
 			jQuery("#addNewPointButton").prop("disabled", false);
 			jQuery("#addNewPosButton").prop("disabled", false);
 		}
@@ -52,11 +52,11 @@
 		jQuery("#addNewPointButton").on("click", function(e) {
 			e.preventDefault();
 			
-			if (getCurrentTerminalCount() == maxTerminalCount) {
+			if (getCurrentTerminalCount("points") == maxTerminalCount) {
 				jQuery(e.target).prop("disabled", true);
 				jQuery("#addNewPosButton").prop("disabled", true);
 			}
-			else if (getCurrentTerminalCount() < maxTerminalCount) {
+			else if (getCurrentTerminalCount("points") < maxTerminalCount) {
 				jQuery(e.target).prop("disabled", false);
 				jQuery("#addNewPosButton").prop("disabled", false);
 			}

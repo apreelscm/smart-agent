@@ -429,6 +429,7 @@ class ProcessCommand implements Serializable{
     List<AllPointsCommand> allPoints = ListUtils.lazyList([], FactoryUtils.instantiateFactory(AllPointsCommand))
     List<AllPosCommand> allPoses = ListUtils.lazyList([], FactoryUtils.instantiateFactory(AllPosCommand))
 
+    String hasObslugaTyp
     String hasUmowaCzas
     String hasScoringAkceptacja
     String hasKontaktTel
@@ -944,6 +945,17 @@ class ProcessCommand implements Serializable{
         oplPOSGPRSPreferencyjnePP(nullable:true, shared: "number")
         oplPOSBaza(nullable:true, shared: "number")
         obslugaTyp(nullable:false, blank:false)
+        hasObslugaTyp(nullable:true, validator: { value, cmd, errors ->
+            if (value == null){
+                return true;
+            }
+
+            if(cmd.obslugaTyp == DEFAULT_VALUE){
+                errors.rejectValue( "hasObslugaTyp", "default.atLeastOne.obslugaTyp")
+                return false
+            }
+            return true
+        })
         obslugaEkonomicznyCena(nullable:true, blank:false, shared: "number") //TODO VERIFY
         numerRachunkuBankowegoKlienta(nullable:false, blank:false, matches: "~|\\d{2}\\s\\d{4}\\s\\d{4}\\s\\d{4}\\s\\d{4}\\s\\d{4}\\s\\d{4}")
         bankKlienta(nullable:false, blank:false)
