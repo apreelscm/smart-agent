@@ -437,6 +437,7 @@ class ProcessService {
             AllPosCommand apc = new AllPosCommand()
 
             apc.setCzyCbd(true)
+			apc.setCbdId(Integer.valueOf(row.get("cbd_id").toString()))
             apc.setTpsId(Integer.valueOf(row.get("tps_id").toString()))
             apc.setNumerZestawuPos(Integer.valueOf(row.get("numer_logiczny").toString()))
             /* TODO The rest data should be loaded from calculator here! */
