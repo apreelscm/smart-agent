@@ -43,10 +43,11 @@
                         </span>
                         <span style="padding-left: 6em;display: inline-block">
                             <div><g:message code="panel.newpoint.terminaloptions.phonecreditsrecharge.terminalcount" /></div>
-                            <eumowy:numberField name="${panelType}[${id}].terminalIlosc" id="${panelType}[${id}].terminalCount" validatable="${data}"
+                            <!--<eumowy:numberField name="${panelType}[${id}].terminalIlosc" id="${panelType}[${id}].terminalCount" validatable="${data}"
                                                 class="${hasErrors(bean:data,field:'liczbaTerminali','error')}"
                                                 value="${pointData?.terminalIlosc}" style="width: 50px;"
-                                                errorMessage="${message(code:'default.tooMuch.liczbaTerminali')}"/>
+                                                errorMessage="${message(code:'default.tooMuch.liczbaTerminali')}"/>-->
+                            <eumowy:numberField name="${panelType}[${id}].terminalIlosc" id="${panelType}[${id}].terminalCount" value="${pointData?.terminalIlosc}" style="width: 50px;" />
                         </span>
                     </li>
                 </ul>
