@@ -1,15 +1,18 @@
 package com.eservice.eumowy
 
+import grails.util.Environment
+import groovy.sql.GroovyRowResult
+
+import org.apache.commons.lang.WordUtils
+
+import serializationutils.SerializationUtils
+
 import com.eservice.eumowy.command.AllPointsCommand
 import com.eservice.eumowy.command.AllPosCommand
 import com.eservice.eumowy.command.PointCommand
 import com.eservice.eumowy.command.ProcessCommand
 import com.eservice.eumowy.util.DateUtils
 import com.eservice.eumowy.util.EumowyCustomEnvironment
-import grails.util.Environment
-import groovy.sql.GroovyRowResult
-import org.apache.commons.lang.SerializationUtils
-import org.apache.commons.lang.WordUtils
 
 class ProcessService {
 
@@ -676,7 +679,7 @@ class ProcessService {
                 }
             }
 
-            // Create POSes with same values
+			// Create POSes with same values
 			def terminalCount = 0
 			terminalCount += posDataDetails?.gprsIlosc != null ? posDataDetails?.gprsIlosc : 0
 			terminalCount += posDataDetails?.dialupIlosc != null ? posDataDetails?.dialupIlosc : 0
@@ -689,9 +692,14 @@ class ProcessService {
 				for (int i = 0; i < terminalCount; i++) {
 					PosData posDataNew
 					PosDataDetails posDataDetailsNew
-
-					posDataNew = SerializationUtils.clone(posData) as PosData
-					posDataDetailsNew = SerializationUtils.clone(posDataDetails) as PosDataDetails
+					Serializable posDataSer = posData
+					posDataNew = SerializationUtils.clone(posDataSer) // as PosData
+					posDataNew.id = null
+					posDataNew.version = 0
+					posDataDetailsNew = SerializationUtils.clone(posDataDetails)  // as PosDataDetails
+					posDataDetailsNew.id = null
+					posDataDetailsNew.version = 0
+					
 					posDataNew.setPosDetails(posDataDetailsNew)
 					posDataNew.setPoint(pointData)
 					posDataDetailsNew.setPos(posDataNew)
@@ -701,12 +709,12 @@ class ProcessService {
 			}
 			
 			// Set telePomka and teleKodzik based on terminalIlosc
-            if (pc.terminalIlosc != null && pc.terminalIlosc > 0) {
+			if (pc.terminalIlosc != null && pc.terminalIlosc > 0) {
 				for (int i = 0; i < pc.terminalIlosc; i++) {
-                    pdList.get(i).posDetails?.telePompka = posData.posDetails?.telePompka
-					pdList.get(i).posDetails?.teleKodzik = posData?.posDetails?.teleKodzik
-                }
-            }
+					pdList.get(i).posDetails?.telePompka = posData.posDetails?.telePompka
+					pdList.get(i).posDetails?.teleKodzik = posData.posDetails?.teleKodzik
+				}
+			}
 
             pointData.nip = pointDataDetails.nipPunktu
             pointData.nazwa = pointDataDetails.nazwaDoWyszukiwarki
@@ -732,6 +740,8 @@ class ProcessService {
             //}
 
             pointsList.add(pointData)
+			
+			
         }
 
         /* Save points from AllPointsCommand */
@@ -856,9 +866,14 @@ class ProcessService {
 				for (int i = 0; i < terminalCount; i++) {
 					PosData posDataNew
 					PosDataDetails posDataDetailsNew
-
-					posDataNew = SerializationUtils.clone(posData) as PosData
-					posDataDetailsNew = SerializationUtils.clone(posDataDetails) as PosDataDetails
+					Serializable posDataSer = posData
+					posDataNew = SerializationUtils.clone(posDataSer) // as PosData
+					posDataNew.id = null
+					posDataNew.version = 0
+					posDataDetailsNew = SerializationUtils.clone(posDataDetails)  // as PosDataDetails
+					posDataDetailsNew.id = null
+					posDataDetailsNew.version = 0
+					
 					posDataNew.setPosDetails(posDataDetailsNew)
 					posDataNew.setPoint(pointData)
 					posDataDetailsNew.setPos(posDataNew)
@@ -868,12 +883,12 @@ class ProcessService {
 			}
 			
 			// Set telePomka and teleKodzik based on terminalIlosc
-            if (pc.terminalIlosc != null && pc.terminalIlosc > 0) {
+			if (pc.terminalIlosc != null && pc.terminalIlosc > 0) {
 				for (int i = 0; i < pc.terminalIlosc; i++) {
-                    pdList.get(i).telePompka = posData.telePompka
-					pdList.get(i).teleKodzik = posData.teleKodzik
-                }
-            }
+					pdList.get(i).posDetails?.telePompka = posData.posDetails?.telePompka
+					pdList.get(i).posDetails?.teleKodzik = posData.posDetails?.teleKodzik
+				}
+			}
 
 			pointData.nip = pointDataDetails.nipPunktu
 			pointData.nazwa = pointDataDetails.nazwaDoWyszukiwarki
