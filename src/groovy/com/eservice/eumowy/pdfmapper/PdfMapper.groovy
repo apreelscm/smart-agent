@@ -351,51 +351,51 @@ class PdfMapper {
 	
 	// FP - Checkboxy
 	
-	private mapPreautoryzacjaPointDataDetails(def data, def pd, def key, def value) {
+	private mapPreautoryzacjaPointDataDetails(def data, def pointData, def key, def value) {
 		addCheckbox(data, key, 'true', value);
 	}
 	
-	private mapBrakFunkcjiZwrotuPointDataDetails(def data, def pd, def key, def value) {
+	private mapBrakFunkcjiZwrotuPointDataDetails(def data, def pointData, def key, def value) {
 		addCheckbox(data, key, 'true', value);
 	}
 	
-	private mapZwrotNaHasloPointDataDetails(def data, def pd, def key, def value) {
+	private mapZwrotNaHasloPointDataDetails(def data, def pointData, def key, def value) {
 		addCheckbox(data, key, 'true', value);
 	}
 	
-	private mapAnalizaZbioruPointDataDetails(def data, def pd, def key, def value) {
+	private mapAnalizaZbioruPointDataDetails(def data, def pointData, def key, def value) {
 		addCheckbox(data, key, 'true', value);
 	}
 	
-	private mapIntegracjaZSysKasPointDataDetails(def data, def pd, def key, def value) {
+	private mapIntegracjaZSysKasPointDataDetails(def data, def pointData, def key, def value) {
 		addCheckbox(data, key, 'true', value);
 	}
 	
-	private mapZwrotyIKOPointDataDetails(def data, def pd, def key, def value) {
+	private mapZwrotyIKOPointDataDetails(def data, def pointData, def key, def value) {
 		addCheckbox(data, key, 'true', value);
 	}
 	
-	private mapLogowaniePrzedKazdaTransakcjaPointDataDetails(def data, def pd, def key, def value) {
+	private mapLogowaniePrzedKazdaTransakcjaPointDataDetails(def data, def pointData, def key, def value) {
 		addCheckbox(data, key, 'true', value);
 	}
 	
-	private mapLogowanieZmianowePointDataDetails(def data, def pd, def key, def value) {
+	private mapLogowanieZmianowePointDataDetails(def data, def pointData, def key, def value) {
 		addCheckbox(data, key, 'true', value);
 	}
 	
-	private mapNapiwek1PointDataDetails(def data, def pd, def key, def value) {
+	private mapNapiwek1PointDataDetails(def data, def pointData, def key, def value) {
 		addCheckbox(data, key, 'true', value);
 	}
 	
-	private mapTelePompkaPointDataDetails(def data, def pd, def key, def value) {
+	private mapTelePompkaPointDataDetails(def data, def pointData, def key, def value) {
 		addCheckbox(data, key, 'true', value);
 	}
 	
-	private mapTeleKodzik(def data, def pd, def key, def value) {
+	private mapTeleKodzik(def data, def pointData, def key, def value) {
 		addCheckbox(data, key, 'true', value);
 	}
 	
-	private mapKartaPodarunkowaPointDataDetails(def data, def pd, def key, def value) {
+	private mapKartaPodarunkowaPointDataDetails(def data, def pointData, def key, def value) {
 		addCheckbox(data, key, 'true', value);
 	}
 	
