@@ -489,7 +489,7 @@ class ProcessCommand implements Serializable{
         })
 
         hasScoringAkceptacja(nullable:true, validator: { value, cmd, errors ->
-            if(cmd.scoringAkceptacja == null || cmd.scoringAkceptacja == DEFAULT_VALUE){
+            if(value && cmd.scoringAkceptacja == DEFAULT_VALUE){
                 errors.rejectValue( "hasScoringAkceptacja", "panel.scoring.accept.required")
                 return false
             }

@@ -92,6 +92,7 @@
         <fieldset class="border">
             <legend><g:message code="panel.acceptance.title"/></legend>
             <div style="text-align: left" class="${hasErrors(bean:data,field:'hasScoringAkceptacja','errorSpan')}">
+                <g:hiddenField name="hasScoringAkceptacja" value="true"/>
                 <p><g:message code="panel.acceptance.question"/></p>
                 <g:radioGroup name="scoringAkceptacja"
                               labels="['panel.yes','panel.no']"
