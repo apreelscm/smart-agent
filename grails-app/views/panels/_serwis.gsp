@@ -1,14 +1,16 @@
 <div id="servicePanel">
     <fieldset>
-        <div class="belka-glowna"><g:message code="default.atLeastOne.obslugaTyp"/></div>
+        <div class="belka-glowna"><g:message code="panel.service.title"/></div>
         <div class="centre" style="text-align: center; padding-top: 20px; width: 750px">
             <ul class="table-list centre">
                 <div class="${hasErrors(bean:data,field:'hasObslugaTyp','errorSpan')}">
                 <g:hiddenField name="hasObslugaTyp" value="true"/>
-                <g:radioGroup name="obslugaTyp"
+                <g:hiddenField name="obslugaTyp" value="${data.obslugaTyp}"/>
+                <g:radioGroup name="obslugaTypRadio"
                               labels="['panel.service.prestige.name','panel.service.comfort.name', 'panel.service.economic.name']"
                               values="['prestige', 'comfort', 'economic']"
-                              value="${data.obslugaTyp}">
+                              value="${data.obslugaTyp}"
+                              disabled="true">
                     <li><span class="align-left"><label> ${it.radio} <g:message code="${it.label}"/></label></span></li>
                 </g:radioGroup>
                 </div>
