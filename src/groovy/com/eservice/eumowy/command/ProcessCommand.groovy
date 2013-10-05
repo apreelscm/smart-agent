@@ -450,8 +450,11 @@ class ProcessCommand implements Serializable{
         oplataZaInstalacjePOS(nullable:false, blank:false, shared: "number")
         oplataZaInstalacjeGPRS(nullable:false, blank:false, shared: "number")
         oplataZaUruchomienieWalutyObcej(nullable:false, blank:false, shared: "number")
-        wydrukGrafikiCena(nullable:false, blank:false, shared: "number")
-        dzialaniaMatematyczneCena(nullable:false, blank:false, shared: "number")
+
+        // FIXME pola prezentowane warunkowo na panelu z Kalkulatora do odczytu, ponizsza walidacja nie dziala
+        //wydrukGrafikiCena(nullable:false, blank:false, shared: "number")
+        //dzialaniaMatematyczneCena(nullable:false, blank:false, shared: "number")
+
         tytulPlatnosciCena(nullable:false, blank:false, shared: "number")
         pierwszaSesjaCena(nullable:false, blank:false, shared: "number")
 
@@ -946,7 +949,6 @@ class ProcessCommand implements Serializable{
         oplPOSGPRSPreferencyjneMies(nullable:true, shared: "number")
         oplPOSGPRSPreferencyjnePP(nullable:true, shared: "number")
         oplPOSBaza(nullable:true, shared: "number")
-        obslugaTyp(nullable:false, blank:false)
         hasObslugaTyp(nullable:true, validator: { value, cmd, errors ->
             if (value == null){
                 return true;
