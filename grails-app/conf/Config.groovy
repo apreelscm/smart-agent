@@ -106,12 +106,8 @@ log4j = {
     trace 'grails.plugin.mail'
 
     //show sql values
-  //    info "org.hibernate.SQL", "org.hibernate.type", "org.codehaus.groovy.grails.orm.hibernate"
-      trace 'org.hibernate.type' , "org.codehaus.groovy.grails.orm.hibernate"
-    trace 'org.hibernate.SQL'
+    //trace 'org.hibernate.type' , "org.codehaus.groovy.grails.orm.hibernate", 'org.hibernate.SQL'
 
-    //  trace 'org.hibernate.type'
-    //info 'org.hibernate.SQL'
 
 
     appenders {
