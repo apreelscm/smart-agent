@@ -92,8 +92,6 @@ class ProcessCommand implements Serializable{
 
     boolean czyDcc
 
-
-//  dcc - FINISH
     String oplataVISA	 = DEFAULT_VALUE
     String oplataVISAPr	 = DEFAULT_VALUE
     String oplataMasterCard	 = DEFAULT_VALUE
@@ -151,7 +149,7 @@ class ProcessCommand implements Serializable{
     String dzialalnoscDokumentInny = DEFAULT_VALUE
 
 //    okresLojalnosciowy
-    String okresLojalnosciowy  = DEFAULT_VALUE
+    String okresLojalnosciowy  = DEFAULT_VALUE //  TODO - czy to jest dobrze????
 
 //    oplatyDCC
     String oplataZaPlatnoscWInnejWalucie = DEFAULT_VALUE
@@ -619,7 +617,7 @@ class ProcessCommand implements Serializable{
         dzialalnoscFormaInna(nullable:true, blank:true, shared: "alpha")
         dzialalnoscDokument(nullable:false, blank:true)
         dzialalnoscDokumentInny(nullable:true, blank:true, shared: "alpha")
-        //okresLojalnosciowy(nullable:false, blank:false) FIXME do wyjasnienia znaczenie BRAK vs 0
+        okresLojalnosciowy(nullable:false, blank:false)
         oplataZaPlatnoscWInnejWalucie(nullable:false, blank:false)
         kontaktTytul(nullable:false, blank:false)
         kontaktImie(nullable:false, blank:false, shared: "lettersonly")
@@ -967,7 +965,7 @@ class ProcessCommand implements Serializable{
         obslugaEkonomicznyCena(nullable:true, blank:false, shared: "number") //TODO VERIFY
         numerRachunkuBankowegoKlienta(nullable:false, blank:false, matches: "~|\\d{2}\\s\\d{4}\\s\\d{4}\\s\\d{4}\\s\\d{4}\\s\\d{4}\\s\\d{4}")
         bankKlienta(nullable:false, blank:false)
-        oplataZaUruchomienieDCC(nullable:false, blank:false, matches: "matches:'\\-|^(?:[1-9]\\\\d*|0|\\-)?(?:\\\\.\\\\d{2})?\$")
+        oplataZaUruchomienieDCC(nullable:false, blank:false, shared: "number")
         nip(nullable:true)
         notes(nullable:true, maxSize: 1000) //a1!
         points(nullable:true)
