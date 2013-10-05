@@ -178,12 +178,23 @@ class PanelService {
 
     }
 
+    def setCzyDcc(ProcessCommand cmd, def calc){
+        cmd.czyDcc = "TAK".equalsIgnoreCase(calculatorService.getCalcProperty(calc,"CZY_DCC")) ? true : false
+    }
+
     def getOplataDCCZaUruchomienie(ProcessCommand cmd, def calc ) {
-        cmd.oplataZaUruchomienieDCC = nullify(cmd.oplataZaUruchomienieDCC)
+        setCzyDcc(cmd,calc)
+        cmd.oplataZaUruchomienieDCC = cmd.czyDcc ? nullify(cmd.oplataZaUruchomienieDCC) : "-"
     }
 
     def getOplatyDCC(ProcessCommand cmd, def calc ) {
-        cmd.oplataZaPlatnoscWInnejWalucie = calculatorService.getCalcProperty(calc,"OPLATA_DCC") ?: ""
+        setCzyDcc(cmd,calc)
+        if (! cmd.czyDcc && ! calculatorService.getCalcProperty(calc,"OPLATA_DCC")){
+            cmd.oplataZaPlatnoscWInnejWalucie = "-"
+        }
+        else {
+            cmd.oplataZaPlatnoscWInnejWalucie = calculatorService.getCalcProperty(calc,"OPLATA_DCC") ?: ""
+        }
     }
 
     def getOsobaDoKontaktu(ProcessCommand cmd, def calc ) {
