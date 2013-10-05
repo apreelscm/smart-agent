@@ -31,32 +31,44 @@
 
 	  showSaveLink();
       $j("#saveProcessLink").click(function() {
-                var input = $j("<input>").attr("type", "hidden").attr("name", "_eventId_saveOnly").val("");
-                $j('.panelsForm').data("validator").cancelSubmit = true;
+            var input = $j("<input>").attr("type", "hidden").attr("name", "_eventId_saveOnly").val("");
+            $j('.panelsForm').data("validator").cancelSubmit = true;
+            $j('.panelsForm').append($j(input)).submit()
+            return false
+        });
+
+        $j("#acceptPointsButton").click(function() {
+            var submitButtons = $j("input[type='submit']"),
+                continueButton = $j("#continueButton");
+
+            if ( $j(".panelsForm").valid()){
+                var input = $j("<input>").attr("type", "hidden").attr("name", "saveOnly").val("");
+
+                submitButtons.attr('disabled', 'disabled');
+                continueButton.attr('disabled', 'disabled');
+                $j(".loading-box").show();
+
                 $j('.panelsForm').append($j(input)).submit()
-                false
-            });
+            }
+
+            return false;
+        });
 
         $j("#continueButton").click(function() {
-                var self= jQuery(this),
-                    tempElement = jQuery("<input type='hidden'/>"),
-                    form = jQuery("form");
+                var submitButtons = $j("input[type='submit']"),
+                    continueButton = $j("#continueButton");
 
                 if ( $j(".panelsForm").valid()){
                     var input = $j("<input>").attr("type", "hidden").attr("name", "_eventId_continue").val("");
+
+                    submitButtons.attr('disabled', 'disabled');
+                    continueButton.attr('disabled', 'disabled');
+                    $j(".loading-box").show();
+
                     $j('.panelsForm').append($j(input)).submit()
                 }
 
-                tempElement                    //for web flow <3
-                        .attr("name", this.name)
-                        .val(self.val())
-                        .appendTo(form);
-
-                self.attr('disabled', 'disabled');
-                jQuery(".loading-box").show();
-
-                form.submit();
-                return false
+                return false;
             });
 
         refreshAttachmentList()
