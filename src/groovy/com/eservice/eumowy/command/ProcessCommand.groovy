@@ -575,19 +575,6 @@ class ProcessCommand implements Serializable{
             return true
         })
 
-
-        oplataZaDzienneZestawienieTransakcji(nullable:false, blank:false, shared: "number")
-        oplataZaMiesieczneZestawienieTransakcji(nullable:false, blank:false, shared: "number")
-        oplataZaPotwierdzenieWykonaniaPrzelewu(nullable:false, blank:false, shared: "number")
-        oplataZaDostarczeniePapieru(nullable:false, blank:false, shared: "number")
-        oplataZaZmianeGrafiki(nullable:false, blank:false, shared: "number")
-        oplataZaInstalacjePOS(nullable:false, blank:false, shared: "number")
-        oplataZaInstalacjeGPRS(nullable:false, blank:false, shared: "number")
-        oplataZaUruchomienieWalutyObcej(nullable:false, blank:false, shared: "number")
-        wydrukGrafikiCena(nullable:false, blank:false, shared: "number")
-        dzialaniaMatematyczneCena(nullable:false, blank:false, shared: "number")
-        tytulPlatnosciCena(nullable:false, blank:true, shared: "number")
-        pierwszaSesjaCena(nullable:false, blank:true, shared: "number")
         mudCena(nullable:false, blank:true, shared:"number")
         weryfikacjaPINCena(nullable:true, shared: "number")
         systemKasowyCena(nullable:true, shared: "number")
