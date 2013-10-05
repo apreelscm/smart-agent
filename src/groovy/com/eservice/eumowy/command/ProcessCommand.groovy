@@ -89,7 +89,10 @@ class ProcessCommand implements Serializable{
     String wydrukLinia2	 = DEFAULT_VALUE
 
 //    danePunktu
-//    dcc - FINISH
+
+    boolean czyDcc
+
+//  dcc - FINISH
     String oplataVISA	 = DEFAULT_VALUE
     String oplataVISAPr	 = DEFAULT_VALUE
     String oplataMasterCard	 = DEFAULT_VALUE
