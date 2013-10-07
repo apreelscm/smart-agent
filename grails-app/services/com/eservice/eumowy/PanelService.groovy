@@ -33,16 +33,16 @@ class PanelService {
         cmd.akceptantKontaktKodPocztowy = result?.kod_pocztowy ?: ""
         cmd.akceptantKontaktPoczta = result?.poczta ?: ""
     }
-	
-	def getAneksDoUmowyNajmuZestawuPos(ProcessCommand cmd, def calc ) {
-		def result = cbdService.getAneksDoUmowyNajmuZestawuPos(cmd.nip)
-		cmd.dataAneksowanejUmowyPos =  DateUtils.getFormattedDate(result?.dataAneksowanejUmowyPos ?: "")
-	}
 
-	def getAneksDoUmowyPrepaid(ProcessCommand cmd, def calc ) {
-		def result = cbdService.getAneksDoUmowyPrepaid(cmd.nip)
-		cmd.dataAneksowanejUmowyPrepaid = DateUtils.getFormattedDate(result?.dataAneksowanejUmowyPrepaid ?: "")
-	}
+    def getAneksDoUmowyNajmuZestawuPos(ProcessCommand cmd, def calc ) {
+        def result = cbdService.getAneksDoUmowyNajmuZestawuPos(cmd.nip)
+        cmd.dataAneksowanejUmowyPos =  DateUtils.getFormattedDate(result?.dataAneksowanejUmowyPos ?: "")
+    }
+
+    def getAneksDoUmowyPrepaid(ProcessCommand cmd, def calc ) {
+        def result = cbdService.getAneksDoUmowyPrepaid(cmd.nip)
+        cmd.dataAneksowanejUmowyPrepaid = DateUtils.getFormattedDate(result?.dataAneksowanejUmowyPrepaid ?: "")
+    }
 
     def getCzasObowiazywaniaUmowy(ProcessCommand cmd, def calc ) {
         cmd.umowaCzas = nullify(cmd.umowaCzas)
@@ -208,7 +208,8 @@ class PanelService {
 
     def getOplataDCCZaUruchomienie(ProcessCommand cmd, def calc ) {
         setCzyDcc(cmd,calc)
-        cmd.oplataZaUruchomienieDCC = cmd.czyDcc ? nullify(cmd.oplataZaUruchomienieDCC) : "-"
+        String tmpValue = nullify(cmd.oplataZaUruchomienieDCC)
+        cmd.oplataZaUruchomienieDCC = cmd.czyDcc ? tmpValue : (tmpValue.length() > 0 ? tmpValue : "-")
     }
 
     def getOplatyDCC(ProcessCommand cmd, def calc ) {
@@ -278,7 +279,7 @@ class PanelService {
 
         println("oldNumber : ${oldNumber} , calcNumber : ${calcNumber}")
 
-         oldNumber < calcNumber ? calcValue : data
+        oldNumber < calcNumber ? calcValue : data
     }
 
     def getPoziomOplatiWarunkiPlatnosciKarty(ProcessCommand cmd, def calc ) {
@@ -337,8 +338,8 @@ class PanelService {
         cmd.mastercardPolskaKD2St = calculatorService.getCalcProperty(calc,"OPLATA_MSC_622_ZL")
         cmd.mastercardPolskaKD3Pr = calculatorService.getCalcProperty(calc,"OPLATA_MSC_623_PROCENT")
         cmd.mastercardPolskaKD3St = calculatorService.getCalcProperty(calc,"OPLATA_MSC_623_ZL")
-		cmd.mastercardPolskaKBPr = calculatorService.getCalcProperty(calc,"OPLATA_MSC_63_PROCENT")
-		cmd.mastercardPolskaKBSt = calculatorService.getCalcProperty(calc,"OPLATA_MSC_63_ZL")
+        cmd.mastercardPolskaKBPr = calculatorService.getCalcProperty(calc,"OPLATA_MSC_63_PROCENT")
+        cmd.mastercardPolskaKBSt = calculatorService.getCalcProperty(calc,"OPLATA_MSC_63_ZL")
         cmd.mastercardPolskaM1Pr = calculatorService.getCalcProperty(calc,"OPLATA_MSC_641_PROCENT")
         cmd.mastercardPolskaM1St = calculatorService.getCalcProperty(calc,"OPLATA_MSC_641_ZL")
         cmd.mastercardPolskaM2Pr = calculatorService.getCalcProperty(calc,"OPLATA_MSC_642_PROCENT")
@@ -510,10 +511,10 @@ class PanelService {
     }
 
     def getWykazPunktowAkceptujacychKartyPlatnicze(ProcessCommand cmd, def calc ) {
-       /* cmd.punktyTytulPlatnosci= cmd.punktyTytulPlatnosci?: []
-        cmd.punktySystemKasowy = cmd.punktySystemKasowy ?: []
-        cmd.punktyUta = cmd.punktyUta ?: []
-        cmd.punktyWybrane = cmd.punktyWybrane ?: []*/
+        /* cmd.punktyTytulPlatnosci= cmd.punktyTytulPlatnosci?: []
+         cmd.punktySystemKasowy = cmd.punktySystemKasowy ?: []
+         cmd.punktyUta = cmd.punktyUta ?: []
+         cmd.punktyWybrane = cmd.punktyWybrane ?: []*/
     }
 
     def getZalaczniki(ProcessCommand cmd, def calc ) {
