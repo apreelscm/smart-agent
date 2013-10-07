@@ -441,6 +441,10 @@ class PdfMapper {
 
     //------------------- PROCESS METHODS --------------------------------
 	
+	private mapNumerRachunkuBankowegoKlientaProcess(def data, def pd, def key, def value){
+		data.put(key, [value?.replaceAll(" ","")] as String[]);
+	}
+	
 	private mapAkceptantNrMieszkaniaProcess(def data, def pd, def key, def value){
 		data.put(key, [value] as String[]);
 		data.put("akceptantNrLokalu", [value] as String[])
