@@ -5,6 +5,7 @@
     <meta name="layout" content="main">
     <title> <g:message code="chooseCalc.header.title" default="Wybierz klienta"/></title>
     <r:require module="mask"/>
+    <r:require module="jquery_ui" />
     <r:script>
         jQuery(document).ready(function(){
             jQuery("#nipField").bind('input', function(){
@@ -22,7 +23,13 @@
                         .appendTo(form);
 
                 self.attr('disabled', 'disabled');
-                jQuery(".loading-box").show();
+
+                jQuery("#loadingDialog").dialog({
+                    resizable: true,
+                    height: 100,
+                    width: 215,
+                    modal: true
+                });
 
                 form.submit();
 
@@ -77,8 +84,8 @@
         </fieldset>
     </g:form>
 
-    <div class="loading-box">
-        <p>Trwa ładowanie danych...</p>
+    <div id="loadingDialog" style="display: none;">
+        <p><g:message code="loading" default="Trwa ładowanie danych..."/></p>
     </div>
 
 </section>

@@ -5,6 +5,8 @@
     <meta name="layout" content="main">
     <title><g:message code="selectedPanels.header.title" default="Lista paneli"/></title>
     <r:require module="filestyle"/>
+    <r:require module="jquery_ui" />
+
     <g:javascript>
 
     var $j = jQuery.noConflict();
@@ -63,7 +65,13 @@
 
                     submitButtons.attr('disabled', 'disabled');
                     continueButton.attr('disabled', 'disabled');
-                    $j(".loading-box").show();
+
+                    $j("#loadingDialog").dialog({
+                        resizable: true,
+                        height: 100,
+                        width: 215,
+                        modal: true
+				    });
 
                     $j('.panelsForm').append($j(input)).submit()
                 }
@@ -183,8 +191,8 @@
             <g:link event="back" class="button submit float-left">${message(code:'default.navigation.button.prev', default: 'Wstecz')}</g:link>
             <button id="continueButton" class="button submit float-right">${message(code:'default.navigation.button.next', default: 'Dalej')}</button>
         </fieldset>
-        <div class="loading-box">
-            <p>Trwa ładowanie danych...</p>
+        <div id="loadingDialog" style="display: none;">
+            <p><g:message code="loading" default="Trwa ładowanie danych..."/></p>
         </div>
     </nav>
 
