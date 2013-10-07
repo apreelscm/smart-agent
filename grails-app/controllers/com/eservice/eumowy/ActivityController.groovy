@@ -580,7 +580,7 @@ class ActivityController {
                 processInstance.points?.each { point ->
                     if (point.cbdId != null) {
                         def foundApc = cmd.allPoints?.find { apc -> apc.cbdId == point.cbdId }
-                        foundApc.id = point.id
+                        foundApc?.id = point.id
                     }
                 }
 
