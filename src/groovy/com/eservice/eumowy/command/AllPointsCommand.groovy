@@ -37,7 +37,7 @@ class AllPointsCommand implements Serializable {
 	}
 	
 	def formatProperty(String value) {
-		if (value.contains(",")) {
+		if (value?.contains(",")) {
 			Set<String> set = new HashSet<String>()
 			String[] values = value.split(",")
 			set.addAll(values)
