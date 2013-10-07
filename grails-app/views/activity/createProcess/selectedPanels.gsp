@@ -128,6 +128,8 @@
                 var type = $j(this).attr("type")
                 var name = $j(this).attr("name")
 
+                if( $j(this).attr("value")){return}
+
                 if( name == "akceptantRegon"){
                    $j(this).attr("value",randomString(possibleNumbers,9))
                 }
