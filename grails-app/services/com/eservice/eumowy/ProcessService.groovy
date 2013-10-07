@@ -178,6 +178,23 @@ class ProcessService {
     def prepareProcessCommand(def cmd, def calc, def restrictedMethods = []) {
         def exclusions = defaultMethods + restrictedMethods
 
+        def populateMethod;
+
+        switch (Environment.getCurrent().getName()) {
+            case EumowyCustomEnvironment.MOCK.getName():
+                panelMockService.init(cmd)
+                populateMethod = {command, calculator, functionName ->
+                    panelMockService."${functionName}"(command)
+                }
+                break;
+            default:
+                panelService.init(cmd, calc)
+                populateMethod = {command, calculator, functionName ->
+                    panelService."${functionName}"(command, calculator)
+                }
+                break;
+        }
+
         cmd.process.panels.each { Panel panel ->
 
             if (panel!=null){
@@ -186,14 +203,15 @@ class ProcessService {
                 if(panelFunctionName in exclusions){ return }
 
                 log.info("invokin ${panelFunctionName} on panelService")
-
-                switch (Environment.getCurrent().getName()) {
-                    case EumowyCustomEnvironment.MOCK.getName():
-                        panelMockService."${panelFunctionName}"(cmd)
-                        break;
-                    default:
-                        panelService."${panelFunctionName}"(cmd,calc)
-                }
+                populateMethod.call(cmd, calc, panelFunctionName)
+//
+//                switch (Environment.getCurrent().getName()) {
+//                    case EumowyCustomEnvironment.MOCK.getName():
+//                        panelMockService."${panelFunctionName}"(cmd)
+//                        break;
+//                    default:
+//                        panelService."${panelFunctionName}"(cmd,calc)
+//                }
             }
         }
 
@@ -760,8 +778,18 @@ class ProcessService {
                 log.info "AllPointCommand is NULL - skipping!"
                 return
             }
-
-            PointData point = (apc.id != null)? PointData.get(apc.id): new PointData();
+			
+			PointData point
+			
+			if (apc.id != null) {
+				log.info "ZNALAZLEM PUNKT - ALLPOINTS"
+				point = PointData.get(apc.id)
+			}
+			else {
+				log.info "NIE ZNALAZLEM PUNKTU - ALLPOINTS"
+				point = new PointData()
+			}
+			
             if (point != null) {
                 // Update data from CBD
                 if (apc.cbdId != null) {
@@ -810,6 +838,7 @@ class ProcessService {
 			ArrayList<PosData> pdList = new ArrayList<PosData>()
 
 			if (pc.id == null) {
+				log.info "NOWY PUNKT DLA POS"
 				pointData = new PointData()
 				pointDataDetails = new PointDataDetails()
 
@@ -944,12 +973,24 @@ class ProcessService {
 
             if (apc.id != null) {
                 pos = PosData.get(apc.id)
-				
+				log.info "Got POS Data!"
 				if (pos != null) {
 					point = pos.point
 				}
 				
             }
+			else if (apc.cbdId != null) {
+				
+				point = PointData.findByCbdId(apc.cbdId)
+				
+				if (point != null) {
+					log.info "FOUND POINT FOR CBD POS"
+				}
+				else {
+					log.info "DIDN'T FIND POINT FOR CBD POS"
+					point = new PointData()
+				}
+			}
             else {
                 pos = new PosData()
 				point = new PointData()
@@ -967,7 +1008,7 @@ class ProcessService {
 				pos.czyWybrany = apc.czyWybrany
 				pos.tpsId = apc.tpsId
 				
-				point.cbdId = apc.tpsId
+				point.cbdId = apc.cbdId
 				point.save()
 				
 				point.setPosDatas(pdList)

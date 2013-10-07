@@ -12,6 +12,10 @@ class PanelService {
 
     def cbdMethods = ["getAdresDoKorespondencjizAkecptantem","getDaneAkceptanta","getSiedzibaAkceptanta","getSerwis"]
 
+    def init(ProcessCommand cmd, def calc){
+        cmd.scoringMcc = calculatorService.getCalcProperty(calc,"MCC")
+    }
+
     def getAdresacjaSeciowa(ProcessCommand cmd, def calc ) {
     }
 
@@ -174,12 +178,23 @@ class PanelService {
 
     }
 
+    def setCzyDcc(ProcessCommand cmd, def calc){
+        cmd.czyDcc = "TAK".equalsIgnoreCase(calculatorService.getCalcProperty(calc,"CZY_DCC")) ? true : false
+    }
+
     def getOplataDCCZaUruchomienie(ProcessCommand cmd, def calc ) {
-        cmd.oplataZaUruchomienieDCC = nullify(cmd.oplataZaUruchomienieDCC)
+        setCzyDcc(cmd,calc)
+        cmd.oplataZaUruchomienieDCC = cmd.czyDcc ? nullify(cmd.oplataZaUruchomienieDCC) : "-"
     }
 
     def getOplatyDCC(ProcessCommand cmd, def calc ) {
-        cmd.oplataZaPlatnoscWInnejWalucie = calculatorService.getCalcProperty(calc,"OPLATA_DCC") ?: ""
+        setCzyDcc(cmd,calc)
+        if (! cmd.czyDcc && ! calculatorService.getCalcProperty(calc,"OPLATA_DCC")){
+            cmd.oplataZaPlatnoscWInnejWalucie = "-"
+        }
+        else {
+            cmd.oplataZaPlatnoscWInnejWalucie = calculatorService.getCalcProperty(calc,"OPLATA_DCC") ?: ""
+        }
     }
 
     def getOsobaDoKontaktu(ProcessCommand cmd, def calc ) {
@@ -298,8 +313,8 @@ class PanelService {
         cmd.mastercardPolskaKD2St = calculatorService.getCalcProperty(calc,"OPLATA_MSC_622_ZL")
         cmd.mastercardPolskaKD3Pr = calculatorService.getCalcProperty(calc,"OPLATA_MSC_623_PROCENT")
         cmd.mastercardPolskaKD3St = calculatorService.getCalcProperty(calc,"OPLATA_MSC_623_ZL")
-		cmd.mastercardPolskaKBPr = calculatorService.getCalcProperty(calc,"OPLATA_MSC_625_PROCENT")
-		cmd.mastercardPolskaKBSt = calculatorService.getCalcProperty(calc,"OPLATA_MSC_625_ZL")
+		cmd.mastercardPolskaKBPr = calculatorService.getCalcProperty(calc,"OPLATA_MSC_63_PROCENT")
+		cmd.mastercardPolskaKBSt = calculatorService.getCalcProperty(calc,"OPLATA_MSC_63_ZL")
         cmd.mastercardPolskaM1Pr = calculatorService.getCalcProperty(calc,"OPLATA_MSC_641_PROCENT")
         cmd.mastercardPolskaM1St = calculatorService.getCalcProperty(calc,"OPLATA_MSC_641_ZL")
         cmd.mastercardPolskaM2Pr = calculatorService.getCalcProperty(calc,"OPLATA_MSC_642_PROCENT")
@@ -374,9 +389,9 @@ class PanelService {
     }
 
     def getScoring(ProcessCommand cmd, def calc ) {
-        cmd.scoringMcc = calculatorService.getCalcProperty(calc,"MCC")
         cmd.scoringDzialalnosc = nullify(cmd.scoringDzialalnosc)
 
+        //scoringMcc pobierany jest globalnie w metodzie init()
         def result = cbdService.getRodzajDzialalnosciByMCC(cmd.scoringMcc);
         cmd.scoringSzczegolyDzialalnosci = result?.slm_nazwa ?: ""
 

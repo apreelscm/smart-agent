@@ -5,6 +5,8 @@
     <meta name="layout" content="main">
     <title><g:message code="selectedPanels.header.title" default="Lista paneli"/></title>
     <r:require module="filestyle"/>
+    <r:require module="jquery_ui" />
+
     <g:javascript>
 
     var $j = jQuery.noConflict();
@@ -31,18 +33,55 @@
 
 	  showSaveLink();
       $j("#saveProcessLink").click(function() {
-                var input = $j("<input>").attr("type", "hidden").attr("name", "_eventId_saveOnly").val("");
-                $j('.panelsForm').data("validator").cancelSubmit = true;
-                $j('.panelsForm').append($j(input)).submit()
-                false
-            });
+            var input = $j("<input>").attr("type", "hidden").attr("name", "_eventId_saveOnly").val("");
+            $j('.panelsForm').data("validator").cancelSubmit = true;
+            $j('.panelsForm').append($j(input)).submit()
+            return false
+        });
 
-        $j("#conitnueButton").click(function() {
+        $j("#acceptPointsButton").click(function() {
+            var submitButtons = $j("input[type='submit']"),
+                continueButton = $j("#continueButton");
+
+            if ( $j(".panelsForm").valid()){
+                var input = $j("<input>").attr("type", "hidden").attr("name", "saveOnly").val("");
+
+                submitButtons.attr('disabled', 'disabled');
+                continueButton.attr('disabled', 'disabled');
+                $j("#loadingDialog").dialog({
+                    resizable: true,
+                    height: 100,
+                    width: 250,
+                    modal: true
+                });
+
+                $j('.panelsForm').append($j(input)).submit()
+            }
+
+            return false;
+        });
+
+        $j("#continueButton").click(function() {
+                var submitButtons = $j("input[type='submit']"),
+                    continueButton = $j("#continueButton");
+
                 if ( $j(".panelsForm").valid()){
                     var input = $j("<input>").attr("type", "hidden").attr("name", "_eventId_continue").val("");
+
+                    submitButtons.attr('disabled', 'disabled');
+                    continueButton.attr('disabled', 'disabled');
+
+                    $j("#loadingDialog").dialog({
+                        resizable: true,
+                        height: 100,
+                        width: 250,
+                        modal: true
+				    });
+
                     $j('.panelsForm').append($j(input)).submit()
                 }
-                false
+
+                return false;
             });
 
         refreshAttachmentList()
@@ -173,7 +212,9 @@
 
 <!-- Working with process with id: ${processInstance?.id} , and status ${processInstance?.status?.toString()}-->
 
+
     <g:form class="panelsForm">
+        <g:hiddenField name="globalMCC" value="${data.scoringMcc}"/>
         <g:hiddenField name="nip" value="${data.nip}"/>
         <g:hiddenField name="liczbaTerminali" value="${data.liczbaTerminali}"/>
         <g:each var="panel" in="${processInstance.panels}" status="i">
@@ -201,8 +242,11 @@
     <nav style="margin-top: 20px">
         <fieldset>
             <g:link event="reject" class="button submit float-left">${message(code:'default.navigation.button.reject', default: 'Odrzuć')}</g:link>
-            <button id="conitnueButton" class="button submit float-right">${message(code:'default.navigation.button.next', default: 'Dalej')}</button>
+            <button id="continueButton" class="button submit float-right">${message(code:'default.navigation.button.next', default: 'Dalej')}</button>
         </fieldset>
+        <div id="loadingDialog" style="display: none;">
+            <p><g:message code="loading" default="Trwa ładowanie danych..."/></p>
+        </div>
     </nav>
 
 </section>

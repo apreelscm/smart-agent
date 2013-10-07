@@ -1404,3 +1404,24 @@ span.postfix-span {
 	right: -5px;
 	top: 0px
 }
+
+.loading-box{
+    height: 100px;
+    width: 200px;
+    position: fixed;
+    left: 45%;
+    top: 50%;
+    margin: -25px 0 0 -25px;
+    z-index: 1000;
+    border-radius: 5px;
+    display: none;
+    background: #789fc4;
+}
+
+.loading-box p{
+    text-align: center;
+    position: relative;
+    top: 35%;
+    color: white;
+    font-weight: bold;
+}
