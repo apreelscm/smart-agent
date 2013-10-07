@@ -79,6 +79,49 @@
             params: [processId: processInstance.id])}
         }
 });
+
+         $j("#mockBtn").click(function() {
+         var possibleLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+         var possibleNumbers = "123456789";
+
+         $j( "#addNewPointButton" ).trigger( "click" );
+              $j(":required").each(function(){
+                var type = $j(this).attr("type")
+                var name = $j(this).attr("name")
+
+                if( name == "akceptantRegon"){
+                   $j(this).attr("value",randomString(possibleNumbers,9))
+                }
+                else if( name.indexOf("KodPocztowy") != -1 ){
+                   $j(this).attr("value",randomString(possibleNumbers,5))
+                }
+                 else if(name.indexOf("kodMCC") != -1){
+                   $j(this).attr("value",randomString(possibleNumbers,4))
+                }
+                  else if(name.indexOf("TelKomorkowy") != -1){
+                   $j(this).attr("value",randomString(possibleNumbers,9))
+                }
+               else if( name == "akceptantNrDomu" || name ==  "akceptantKontaktNrDomu" || name.indexOf("korespondencjaNrDomu") != -1){
+                   $j(this).attr("value",randomString(possibleNumbers,1))
+                }
+                else if(type == "text"){
+                 $j(this).attr("value",randomString(possibleLetters,Math.floor((Math.random()+0.1)*10)))
+                }
+                else if(type == "number"){
+                  $j(this).attr("value",randomString(possibleNumbers,2))
+                }
+                console.info("2:"+$j(this).attr("type"))
+              })
+        });
+
+        function randomString(chars,length){
+           var result = ""
+         	for(var i = 0; i < length; i++) {
+                var randomChar = chars.charAt(Math.floor(Math.random() * chars.length));
+                result += randomChar
+            }
+            return result
+        }
     </g:javascript>
     <r:require module="validation"/>
     <r:require module="newpoint_panel_setup"/>
@@ -113,6 +156,11 @@
 <r:require module="mask"/>
 
 <section id="create-activity">
+
+    <g:if env="development">
+        <button id="mockBtn">MOCK</button>
+    </g:if>
+
     <h1 class="ng linia-bottom"><g:message code="selectedPanels.header.title" default="Lista paneli"/></h1>
 
     <g:hasErrors bean="${data}">
@@ -123,8 +171,7 @@
         </ul>
     </g:hasErrors>
 
-    <!-- Working with process with id: ${processInstance?.id} , and status ${processInstance?.status?.toString()}-->
-
+<!-- Working with process with id: ${processInstance?.id} , and status ${processInstance?.status?.toString()}-->
 
     <g:form class="panelsForm">
         <g:hiddenField name="nip" value="${data.nip}"/>
@@ -153,7 +200,7 @@
 
     <nav style="margin-top: 20px">
         <fieldset>
-            <g:link event="back" class="button submit float-left">${message(code:'default.navigation.button.prev', default: 'Wstecz')}</g:link>
+            <g:link event="reject" class="button submit float-left">${message(code:'default.navigation.button.reject', default: 'Odrzuć')}</g:link>
             <button id="conitnueButton" class="button submit float-right">${message(code:'default.navigation.button.next', default: 'Dalej')}</button>
         </fieldset>
     </nav>

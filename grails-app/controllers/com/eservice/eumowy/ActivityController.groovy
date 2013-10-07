@@ -140,11 +140,13 @@ class ActivityController {
                 flow.processInstance = currentEvent.attributes.process
                 flow.representative1 = currentEvent.attributes.representative1
                 flow.representative2 = currentEvent.attributes.representative2
-                //flow.calc = currentEvent.attributes.calc
                 flow.calcId = currentEvent.attributes.calcId
-                //flow.prevActivityMessage = "Proces [id = ${flow.processInstance.id}] został poprawnie zapisany."
                 flow.prevActivityMessage = "Pozytywnie zakończono proces rejestracji dokumentacji dla NIP ${flow.processInstance.client.nip}."
             }.to "clientSignature"
+            on("reject"){
+                flow.processInstance = currentEvent.attributes.process
+                flow.prevActivityMessage = message(code: 'process.reject', args:[flow.processInstance.client.nip])
+            }.to "finish"
         }
 
         /** popraw dane subflow */
@@ -159,6 +161,10 @@ class ActivityController {
                 flow.representative2 = currentEvent.attributes.representative2
                 flow.prevActivityMessage = "Proces dla NIP ${flow.processInstance.client.nip} został poprawnie zaktualizowany."
             }.to "clientSignature"
+            on("reject"){
+                flow.processInstance = currentEvent.attributes.process
+                flow.prevActivityMessage = message(code: 'process.reject', args:[flow.processInstance.client.nip])
+            }.to "finish"
         }
 
         /** uzupelnij podpisy subflow */
@@ -535,7 +541,11 @@ class ActivityController {
                 flow.processInstance = processInstance
             }
             render(view: "../createProcess/selectedPanels")
-            on("back").to "chooseCalc"
+            on("reject"){
+                def processInstance = flow.processInstance;
+                processInstance.status = Process.ProcessStatus.REJECTED;
+                flow.processInstance = processInstance
+            }.to "reject"
             on("error").to "selectedPanels"
             on("acceptPointsButton") {
                 log.info "acceptPointsButton TRIGGERED"
@@ -621,6 +631,13 @@ class ActivityController {
                 calcId { flow.calcId }
             }
         }
+
+        reject{
+            output {
+                process {flow.processInstance}
+            }
+        }
+
         backToStart()
     }
 
@@ -814,10 +831,13 @@ class ActivityController {
 
                 /* Delete subscriptions */
                 processInstance.subscriptions?.clear()
-
                 flow.processInstance = processInstance
-
             }.to "clientSignature"
+            on("reject"){
+                def processInstance = flow.processInstance;
+                processInstance.status = Process.ProcessStatus.REJECTED;
+                flow.processInstance = processInstance
+            }.to "reject"
         }
 
         clientSignature {
@@ -827,6 +847,14 @@ class ActivityController {
                 representative2 { flow.representative2 }
             }
         }
+
+        reject{
+            output {
+                process {flow.processInstance}
+            }
+        }
+
+
         backToStart()
     }
 
