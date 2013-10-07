@@ -936,7 +936,7 @@ class ProcessCommand implements Serializable{
         obslugaEkonomicznyCena(nullable:true, blank:false, shared: "number") //TODO VERIFY
         numerRachunkuBankowegoKlienta(nullable:false, blank:false, matches: "~|\\d{2}\\s\\d{4}\\s\\d{4}\\s\\d{4}\\s\\d{4}\\s\\d{4}\\s\\d{4}")
         bankKlienta(nullable:false, blank:false)
-        oplataZaUruchomienieDCC(nullable:false, blank:false, matches: "~|\\-|^(?:[1-9]\\\\d*|0|\\-)?(?:\\\\.\\\\d{2})?\$")
+        oplataZaUruchomienieDCC(nullable:false, blank:false, matches: "~|\\-|^(?:[1-9]\\\\d*|0|\\-)?(?:\\\\.\\\\d{1,2})?\$")
         nip(nullable:true)
         notes(nullable:true, maxSize: 1000) //a1!
         points(nullable:true)
