@@ -14,7 +14,7 @@
     </fieldset>
 </div>
 <div id="hiddenPanel" style="display: none;">
-	<g:render template="../panels/danePunktu" model="[id:'%ID%', panelType: 'points']"/>
+	<g:render template="../panels/danePunktu" model="[id:'%ID%', panelType: 'points', pointData: data.defaultPointData]"/>
 </div>
 <r:require module="jquery_ui"/>
 	

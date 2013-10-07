@@ -1,18 +1,15 @@
 package com.eservice.eumowy
 
-import grails.util.Environment
-import groovy.sql.GroovyRowResult
-
-import org.apache.commons.lang.WordUtils
-
-import serializationutils.SerializationUtils
-
 import com.eservice.eumowy.command.AllPointsCommand
 import com.eservice.eumowy.command.AllPosCommand
 import com.eservice.eumowy.command.PointCommand
 import com.eservice.eumowy.command.ProcessCommand
 import com.eservice.eumowy.util.DateUtils
 import com.eservice.eumowy.util.EumowyCustomEnvironment
+import grails.util.Environment
+import groovy.sql.GroovyRowResult
+import org.apache.commons.lang.WordUtils
+import serializationutils.SerializationUtils
 
 class ProcessService {
 
@@ -560,35 +557,18 @@ class ProcessService {
             point.save(flush: true)
             process.addToPoints(point)
         }
-		
+
 		def posDataList = getPointCommandsToPosDataList(cmd)
-		
+
 		posDataList?.each { PointData point ->
 			if (point.cbdId == -1) {
 				point.delete(flush: true)
 				return
 			}
-			
+
 			point.save(flush: true)
 			process.addToPoints(point);
 		}
-
-        /*def pointsDataList = getPointData(cmd, process)
-		//process.points?.clear()
-        pointsDataList.each { data ->
-			def foundData = process.points.find { p -> p.id != null }
-			if (foundData != null) {
-				log.info "Removing old point data: " + foundData.id
-				process.points.remove(foundData)
-			}
-            process.addToPoints(data)
-            process.discard()
-        }
-		def posDataList = getPosData(cmd)
-		posDataList.each { data ->
-			process.addToPoints(data)
-			process.discard()
-		}*/
 
         process.notesToCoa = cmd.notes //notesToCOA
 
@@ -606,12 +586,10 @@ class ProcessService {
             if (["class","process", "cbdService", "errors", "constraints","calc","calculatorService",
                     "notes", "hasUmowaCzas", "hasKontaktTel", "hasDoladowania", "hasAkceptantTel",
                     "hasInformacjaHandlowa","liczbaTerminali", "atLeastClosure", "nullableTrueBlankFalse",
-                    "maxLengthClosure", "skipAddressValidationClosure"]
+                    "defaultPointData", "maxLengthClosure", "skipAddressValidationClosure"]
                     .contains(key) || value == ProcessCommand.DEFAULT_VALUE){
                 return
             }
-
-
 
             if(["allPoses", "allPoints", "points"].contains(key)){
                 //TODO implementacja logiki dla punktow

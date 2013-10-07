@@ -4,7 +4,6 @@ import com.eservice.eumowy.Process
 import grails.validation.Validateable
 import org.apache.commons.collections.FactoryUtils
 import org.apache.commons.collections.ListUtils
-
 /**
  * User: Dominik Walczak
  * Date: 20.08.13 Time: 10:22
@@ -462,6 +461,7 @@ class ProcessCommand implements Serializable {
     String hasAkceptantTel
     String hasInformacjaHandlowa
     String liczbaTerminali
+    def defaultPointData
 
     static constraints = {
 

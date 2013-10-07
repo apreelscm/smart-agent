@@ -107,6 +107,30 @@ class PanelService {
 
     def getDodajPunkt(ProcessCommand cmd, def calc ) {
         cmd.liczbaTerminali = calculatorService.getCalcProperty(calc,"LICZBA_POS_MAX")
+
+        def pointData = [:]
+
+        pointData.dialupTyp = calculatorService.getCalcProperty(calc,"TYP_DIALUP") //K RW
+        pointData.dialupCena =  calculatorService.getCalcProperty(calc,"TYP_DIALUP_TERM_CENA")
+        pointData.dialupPPCena =  calculatorService.getCalcProperty(calc,"TYP_DIALUP_PP_CENA")
+
+        pointData.vpnTyp = calculatorService.getCalcProperty(calc,"TYP_VPN") //K RW
+        pointData.vpnCena =  calculatorService.getCalcProperty(calc,"TYP_VPN_TERM_CENA")
+        pointData.vpnPPCena =  calculatorService.getCalcProperty(calc,"TYP_VPN_PP_CENA")
+
+        pointData.sslTyp = calculatorService.getCalcProperty(calc,"TYP_SSL") //K RW
+        pointData.sslCena = calculatorService.getCalcProperty(calc,"TYP_SSL_TERM_CENA")
+        pointData.sslPPCena =  calculatorService.getCalcProperty(calc,"TYP_SSL_PP_CENA")
+
+        pointData.wifiTyp = calculatorService.getCalcProperty(calc,"TYP_WIFI") //K RW
+        pointData.wifiCena = calculatorService.getCalcProperty(calc,"TYP_WIFI_TERM_CENA")
+        pointData.wifiPPCena =  calculatorService.getCalcProperty(calc,"TYP_WIFI_PP_CENA")
+
+        pointData.gprsTyp = calculatorService.getCalcProperty(calc,"TYP_GPRS") //K RW
+        pointData.gprsCena =  calculatorService.getCalcProperty(calc,"TYP_SSL_TERM_CENA")
+        pointData.gprsPPCena =  calculatorService.getCalcProperty(calc,"TYP_GPRS_PP_CENA")
+
+        cmd.defaultPointData = pointData
     }
 
     def getDodatkoweUslugi(ProcessCommand cmd, def calc ) {
