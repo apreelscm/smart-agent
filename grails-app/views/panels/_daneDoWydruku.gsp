@@ -12,7 +12,7 @@
                     <li>
                         <span><g:message code="panel.street" /></span>
                         <span>
-                            <dict:streetSelect name="wydrukUlicaTytul" />
+                            <dict:streetSelect name="wydrukUlicaTytul" default="UL"/>
                             <eumowy:textField name="wydrukUlica" value="${data.wydrukUlica}" style="width: 200px" required="true"/>
                         </span>
                         <span>

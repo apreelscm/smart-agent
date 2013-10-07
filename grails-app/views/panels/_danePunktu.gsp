@@ -100,7 +100,9 @@
             <li><span><g:message code="panel.street" /></span> <span>
                 <dict:streetSelect name="${panelType}[${id}].wydrukUlicaTytul"
                                    id="${panelType}[${id}].dataforprintingAddressStreetType"
-                                   value="${pointData?.wydrukUlicaTytul}" /> <eumowy:textField
+                                   value="${pointData?.wydrukUlicaTytul}"
+                                   default="UL"/>
+                <eumowy:textField
                         name="${panelType}[${id}].wydrukUlica"
                         id="${panelType}[${id}].dataforprintingAddressStreet"
                         style="width: 200px" value="${pointData?.wydrukUlica}"
