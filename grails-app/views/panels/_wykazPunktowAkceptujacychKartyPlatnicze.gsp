@@ -21,12 +21,12 @@
            		<tbody>
            			<g:each status="i" var="point" in="${data.allPoints}">
            				<tr>
-							<td>${point.id}<input type="hidden" name="allPoints[${i}].id" value="${point.id}" /><input type="hidden" name="allPoints[${i}].cbdId" value="${point.cbdId}" /></td>
-							<td>${point.nazwa}<input type="hidden" name="allPoints[${i}].nazwa" value="${point.nazwa}" /></td>
-							<td>${point.ulica}<input type="hidden" name="allPoints[${i}].ulica" value="${point.ulica}" /></td>
-							<td>${point.miejscowosc}<input type="hidden" name="allPoints[${i}].miejscowosc" value="${point.miejscowosc}" /></td>
-							<td>${point.nrBudynku}<input type="hidden" name="allPoints[${i}].nrBudynku" value="${point.nrBudynku}" /></td>
-							<td>${point.kodPocztowy}<input type="hidden" name="allPoints[${i}].kodPocztowy" value="${point.kodPocztowy}" /></td>
+							<td>${point.id}<g:hiddenField name="allPoints[${i}].id" value="${point.id}" /><g:hiddenField name="allPoints[${i}].cbdId" value="${point.cbdId}" /></td>
+							<td>${point.nazwa}<g:hiddenField name="allPoints[${i}].nazwa" value="${point.nazwa}" /></td>
+							<td>${point.ulica}<g:hiddenField name="allPoints[${i}].ulica" value="${point.ulica}" /></td>
+							<td>${point.miejscowosc}<g:hiddenField name="allPoints[${i}].miejscowosc" value="${point.miejscowosc}" /></td>
+							<td>${point.nrBudynku}<g:hiddenField name="allPoints[${i}].nrBudynku" value="${point.nrBudynku}" /></td>
+							<td>${point.kodPocztowy}<g:hiddenField name="allPoints[${i}].kodPocztowy" value="${point.kodPocztowy}" /></td>
 							<td><g:checkBox name="allPoints[${i}].tytulPlatnosci" checked="${point.tytulPlatnosci}" /></td>
 							<td><g:checkBox name="allPoints[${i}].systemKasowy" checked="${point.systemKasowy}" /></td>
 							<td><g:checkBox name="allPoints[${i}].uta" checked="${point.uta}" /></td>

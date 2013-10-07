@@ -27,7 +27,7 @@
                 <tbody>
                 <g:each status="i" var="point" in="${data.allPoints}">
                     <tr>
-                        <td>${point.nazwa}<input type="hidden" name="allPoints[${i}].id" value="${point.nazwa}" /><input type="hidden" name="allPoints[${i}].id" value="${point.id}" /><input type="hidden" name="allPoints[${i}].cbdId" value="${point.cbdId}" /></td>
+                        <td>${point.nazwa}<input type="hidden" name="allPoints[${i}].nazwa" value="${point.nazwa}" /><input type="hidden" name="allPoints[${i}].id" value="${point.id}" /><input type="hidden" name="allPoints[${i}].cbdId" value="${point.cbdId}" /></td>
                         <td>${point.ulica}<input type="hidden" name="allPoints[${i}].ulica" value="${point.ulica}" /></td>
                         <td>${point.miejscowosc}<input type="hidden" name="allPoints[${i}].miejscowosc" value="${point.miejscowosc}" /></td>
                         <td>${point.nrBudynku}<input type="hidden" name="allPoints[${i}].nrBudynku" value="${point.nrBudynku}" /></td>

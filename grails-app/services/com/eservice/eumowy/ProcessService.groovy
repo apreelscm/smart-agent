@@ -604,7 +604,9 @@ class ProcessService {
         cmd.properties.each { key, value ->
 
             if (["class","process", "cbdService", "errors", "constraints","calc","calculatorService",
-                    "notes", "hasUmowaCzas", "hasKontaktTel", "hasDoladowania", "hasAkceptantTel", "hasInformacjaHandlowa","liczbaTerminali", "atLeastClosure", "nullableTrueBlankFalse"]
+                    "notes", "hasUmowaCzas", "hasKontaktTel", "hasDoladowania", "hasAkceptantTel",
+                    "hasInformacjaHandlowa","liczbaTerminali", "atLeastClosure", "nullableTrueBlankFalse",
+                    "maxLengthClosure"]
                     .contains(key) || value == ProcessCommand.DEFAULT_VALUE){
                 return
             }
@@ -778,8 +780,18 @@ class ProcessService {
                 log.info "AllPointCommand is NULL - skipping!"
                 return
             }
-
-            PointData point = (apc.id != null)? PointData.get(apc.id): new PointData();
+			
+			PointData point
+			
+			if (apc.id != null) {
+				log.info "ZNALAZLEM PUNKT - ALLPOINTS"
+				point = PointData.get(apc.id)
+			}
+			else {
+				log.info "NIE ZNALAZLEM PUNKTU - ALLPOINTS"
+				point = new PointData()
+			}
+			
             if (point != null) {
                 // Update data from CBD
                 if (apc.cbdId != null) {
@@ -828,6 +840,7 @@ class ProcessService {
 			ArrayList<PosData> pdList = new ArrayList<PosData>()
 
 			if (pc.id == null) {
+				log.info "NOWY PUNKT DLA POS"
 				pointData = new PointData()
 				pointDataDetails = new PointDataDetails()
 
@@ -962,12 +975,24 @@ class ProcessService {
 
             if (apc.id != null) {
                 pos = PosData.get(apc.id)
-				
+				log.info "Got POS Data!"
 				if (pos != null) {
 					point = pos.point
 				}
 				
             }
+			else if (apc.cbdId != null) {
+				
+				point = PointData.findByCbdId(apc.cbdId)
+				
+				if (point != null) {
+					log.info "FOUND POINT FOR CBD POS"
+				}
+				else {
+					log.info "DIDN'T FIND POINT FOR CBD POS"
+					point = new PointData()
+				}
+			}
             else {
                 pos = new PosData()
 				point = new PointData()
@@ -985,7 +1010,7 @@ class ProcessService {
 				pos.czyWybrany = apc.czyWybrany
 				pos.tpsId = apc.tpsId
 				
-				point.cbdId = apc.tpsId
+				point.cbdId = apc.cbdId
 				point.save()
 				
 				point.setPosDatas(pdList)
