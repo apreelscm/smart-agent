@@ -3,7 +3,7 @@ function maskNewPointRefresh() {
 }
 
 function maskNewPosRefresh() {
-    maskFields(jQuery("#addNewPosPanelPlaceholder"))
+    maskFields(jQuery("#addNewPosPanelPlaceholder"));
 }
 
 function maskFields(element){
@@ -18,7 +18,6 @@ function maskFields(element){
     element.find(".ph-number").mask('99999');
 }
 
-newPosPanel
 jQuery(document).ready(function() {
     jQuery(".bank-account").live('keyup', function(event){
         var element = jQuery(this),
