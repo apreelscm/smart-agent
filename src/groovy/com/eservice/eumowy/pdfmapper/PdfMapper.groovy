@@ -774,6 +774,14 @@ class PdfMapper {
         return ["isDigit":true, "value":resultInt]
     }
 
+    def mapOplataZaUruchomienieDCC(def data, def pd, def key, def value){
+        if (value == null && calculatorService != null && "NIE".equals(calculatorService.getCalcProperty(calc,'CZY_DCC'))){
+            data.put('oplataZaUruchomienieDCC', ['-'] as String[]);
+        } else {
+            data.put('oplataZaUruchomienieDCC', [value] as String[]);
+        }
+    }
+
 //------------------- STRINGBUILDER -------------------------------------
 	private String getAddress(String streetType, String street, String houseNumber, String flatNumber, String postalCode, String city){
 		def sb = new StringBuilder();

@@ -105,7 +105,7 @@ function setupNewPointPanelHandlers(prevPanelId, panelId, prefix) {
     });
 
     jQuery(prefixPanel + ".contactAddressAsOnPrint").on("change", function(e) {
-        jQuery(prefixPanel + ".dataforprintingAddressStreetType").val(jQuery(prefixPanel + ".dataforprintingAddressStreetType").val()).keyup();
+        jQuery(prefixPanel + ".contactAddressAddressStreetType").val(jQuery(prefixPanel + ".dataforprintingAddressStreetType").val()).keyup();
         jQuery(prefixPanel + ".contactAddressAddressStreet").val(jQuery(prefixPanel + ".dataforprintingAddressStreet").val()).keyup();
         jQuery(prefixPanel + ".contactAddressAddressHomeNumber").val(jQuery(prefixPanel + ".dataforprintingAddressHomeNumber").val()).keyup();
         jQuery(prefixPanel + ".contactAddressAddressFlatNumber").val(jQuery(prefixPanel + ".dataforprintingAddressFlatNumber").val()).keyup();
