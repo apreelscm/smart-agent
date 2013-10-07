@@ -27,7 +27,7 @@
                 jQuery("#loadingDialog").dialog({
                     resizable: true,
                     height: 100,
-                    width: 215,
+                    width: 250,
                     modal: true
                 });
 

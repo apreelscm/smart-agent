@@ -48,7 +48,12 @@
 
                 submitButtons.attr('disabled', 'disabled');
                 continueButton.attr('disabled', 'disabled');
-                $j(".loading-box").show();
+                $j("#loadingDialog").dialog({
+                    resizable: true,
+                    height: 100,
+                    width: 250,
+                    modal: true
+                });
 
                 $j('.panelsForm').append($j(input)).submit()
             }
@@ -69,7 +74,7 @@
                     $j("#loadingDialog").dialog({
                         resizable: true,
                         height: 100,
-                        width: 215,
+                        width: 250,
                         modal: true
 				    });
 
