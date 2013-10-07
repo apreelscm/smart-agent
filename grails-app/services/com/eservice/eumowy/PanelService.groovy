@@ -65,7 +65,7 @@ class PanelService {
     def getDaneDoWydruku(ProcessCommand cmd, def calc ) {
         cmd.nazwaDoWydrukuZTerminalaPos = nullify(cmd.nazwaDoWydrukuZTerminalaPos)
         cmd.wydrukNazwaDoWyszukwarki = nullify(cmd.wydrukNazwaDoWyszukwarki)
-        cmd.wydrukUlicaTytul = nullify(cmd.wydrukUlicaTytul)
+        cmd.wydrukUlicaTytul = nullify(cmd.wydrukUlicaTytul, "UL")
         cmd.wydrukUlica = nullify(cmd.wydrukUlica)
         cmd.wydrukNrDomu = nullify(cmd.wydrukNrDomu)
         cmd.wydrukNrMieszkania = nullify(cmd.wydrukNrMieszkania)
@@ -548,6 +548,10 @@ class PanelService {
     }
 
     def nullify(def value){
-        value != ProcessCommand.DEFAULT_VALUE ? value : ""
+        nullify(value, "")
+    }
+
+    def nullify(def value, def defaultValue){
+        value != ProcessCommand.DEFAULT_VALUE ? value : defaultValue
     }
 }

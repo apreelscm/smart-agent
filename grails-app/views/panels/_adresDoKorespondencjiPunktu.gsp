@@ -7,7 +7,7 @@
 		  	<li>
 		  		<span><g:message code="panel.street" /></span>
 		  		<span>
-		  			<dict:streetSelect name="${panelType}[${id}].korespondencjaUlicaTytul" id="${panelType}[${id}].contactAddressAddressStreetType" value="${pointData?.korespondencjaUlicaTytul}"/>
+		  			<dict:streetSelect name="${panelType}[${id}].korespondencjaUlicaTytul" id="${panelType}[${id}].contactAddressAddressStreetType" value="${pointData?.korespondencjaUlicaTytul}" default="UL"/>
                 	<eumowy:textField name="${panelType}[${id}].korespondencjaUlica" id="${panelType}[${id}].contactAddressAddressStreet" value="${pointData?.korespondencjaUlica}" style="width: 200px" required="true"/>
                 </span>
                 <span>

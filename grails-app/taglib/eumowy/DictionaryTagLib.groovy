@@ -1,7 +1,5 @@
 package eumowy
 
-import groovy.lang.Closure;
-
 class DictionaryTagLib {
 
     static namespace = "dict"
@@ -10,6 +8,9 @@ class DictionaryTagLib {
 
     Closure streetSelect = { attrs ->
         attrs.from = dictionaryService.getUlicaComboBox()*.value
+        if (!attrs.value && attrs.default){
+            attrs.value = attrs.default
+        }
         fieldImpl(out, attrs)
     }
 	
