@@ -604,7 +604,9 @@ class ProcessService {
         cmd.properties.each { key, value ->
 
             if (["class","process", "cbdService", "errors", "constraints","calc","calculatorService",
-                    "notes", "hasUmowaCzas", "hasKontaktTel", "hasDoladowania", "hasAkceptantTel", "hasInformacjaHandlowa","liczbaTerminali", "atLeastClosure", "nullableTrueBlankFalse"]
+                    "notes", "hasUmowaCzas", "hasKontaktTel", "hasDoladowania", "hasAkceptantTel",
+                    "hasInformacjaHandlowa","liczbaTerminali", "atLeastClosure", "nullableTrueBlankFalse",
+                    "maxLengthClosure"]
                     .contains(key) || value == ProcessCommand.DEFAULT_VALUE){
                 return
             }

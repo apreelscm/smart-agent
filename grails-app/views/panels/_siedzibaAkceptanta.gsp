@@ -7,7 +7,7 @@
                     <span>
                         <span><g:message code="panel.street" /></span>
                         <span>
-                            <dict:streetSelect name="akceptantUlicaTytul" value="${data.akceptantUlicaTytul}" readonly="${data.isFromCbd('akceptantUlicaTytul')}"/>
+                            <dict:streetSelect name="akceptantUlicaTytul" value="${data.akceptantUlicaTytul}" readonly="${data.isFromCbd('akceptantUlicaTytul')}" default="UL"/>
                             <g:hiddenField name="akceptantUlicaTytulCbd" value="${data.akceptantUlicaTytulCbd}"/>
                             <eumowy:textField name="akceptantUlica" value="${data.akceptantUlica}" validatable="${data}" readonly="${data.isFromCbd('akceptantUlica')}" style="width: 200px" required="true"/>
                             <g:hiddenField name="akceptantUlicaCbd" value="${data.akceptantUlicaCbd}"/>
