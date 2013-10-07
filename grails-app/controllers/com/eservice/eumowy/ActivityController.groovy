@@ -541,6 +541,8 @@ class ActivityController {
                 log.info "acceptPointsButton TRIGGERED"
             }.to "selectedPanels"
             on("saveOnly"){ ProcessCommand cmd ->
+				log.info params
+				log.info params.get('allPoints[0]')
                 Process processInstance = processService.populateProcessWithData(flow.processInstance, cmd)
                 log.info "Zapisuje dane paneli"
 
