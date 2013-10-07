@@ -225,7 +225,7 @@ class ProcessService {
         process.processData?.each {ProcessData data ->
 
             //oplataMasteroPr - zmiana nazwy tego parametru wymusila dodanie go do tej listy.
-            if(data.name in ["dataUmowy","punktyTytulPlatnosci","punktySystemKasowy","punktyUta","punktyWybrane", "oplataMasteroPr"]){
+            if(data.name in ["dataUmowy","punktyTytulPlatnosci","punktySystemKasowy","punktyUta","punktyWybrane", "oplataMasteroPr", "fromCbd"]){
                 return
             }
 
@@ -606,7 +606,7 @@ class ProcessService {
             if (["class","process", "cbdService", "errors", "constraints","calc","calculatorService",
                     "notes", "hasUmowaCzas", "hasKontaktTel", "hasDoladowania", "hasAkceptantTel",
                     "hasInformacjaHandlowa","liczbaTerminali", "atLeastClosure", "nullableTrueBlankFalse",
-                    "maxLengthClosure"]
+                    "maxLengthClosure", "skipAddressValidationClosure"]
                     .contains(key) || value == ProcessCommand.DEFAULT_VALUE){
                 return
             }

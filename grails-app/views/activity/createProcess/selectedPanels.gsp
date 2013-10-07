@@ -44,7 +44,8 @@
                 continueButton = $j("#continueButton");
 
             if ( $j(".panelsForm").valid()){
-                var input = $j("<input>").attr("type", "hidden").attr("name", "saveOnly").val("");
+                var input = $j("<input>").attr("type", "hidden").attr("name", "_eventId_saveOnly").val("");
+                $j('.panelsForm').append($j(input)).submit()
 
                 submitButtons.attr('disabled', 'disabled');
                 continueButton.attr('disabled', 'disabled');
@@ -55,7 +56,6 @@
                     modal: true
                 });
 
-                $j('.panelsForm').append($j(input)).submit()
             }
 
             return false;
