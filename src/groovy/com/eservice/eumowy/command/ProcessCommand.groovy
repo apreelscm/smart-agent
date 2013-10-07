@@ -595,7 +595,6 @@ class ProcessCommand implements Serializable {
         })
 
         srednia_sprzedaz_doladowan(nullable:false, blank:false, shared:"number")
-        srednia_sprzedaz_doladowan(nullable:false, blank:false, shared:"nudccmber")
         srednia_sprzedaz_doladowan_slownie(nullable:false, blank:false, shared: "lettersonly")
         ifOplataVISA(nullable:false, blank:false, shared: "number4Precision") //1.11 %, M
         ifOplataMasterCard(nullable:false, blank:false, shared: "number4Precision") //1.11 %, M

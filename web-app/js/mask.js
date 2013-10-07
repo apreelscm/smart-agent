@@ -1,14 +1,21 @@
 function maskNewPointRefresh() {
-    var addNewPointPanelPlaceholder = jQuery("#addNewPointPanelPlaceholder");
-    addNewPointPanelPlaceholder.find(".bank-account").mask('99 9999 9999 9999 9999 9999 9999');
-    addNewPointPanelPlaceholder.find(".nip").mask('9999999999');
-    addNewPointPanelPlaceholder.find(".regon").mask('999999999');
-    addNewPointPanelPlaceholder.find(".postal-code").mask('99-999');
-    addNewPointPanelPlaceholder.find(".phone").mask('(99) 999-99-99');
-    addNewPointPanelPlaceholder.find(".mobile-phone").mask('999-999-999');
-    addNewPointPanelPlaceholder.find(".fax").mask('(99) 999-99-99');
-    addNewPointPanelPlaceholder.find(".ip").mask('0ZZ.0ZZ.0ZZ.0ZZ', {translation:  {'Z': {pattern: /[0-9]/, optional: true}}});
-    addNewPointPanelPlaceholder.find(".ph-number").mask('99999');
+    maskFields(jQuery("#addNewPointPanelPlaceholder"));
+}
+
+function maskNewPosRefresh() {
+    maskFields(jQuery("#addNewPosPanelPlaceholder"));
+}
+
+function maskFields(element){
+    element.find(".bank-account").mask('99 9999 9999 9999 9999 9999 9999');
+    element.find(".nip").mask('9999999999');
+    element.find(".regon").mask('999999999');
+    element.find(".postal-code").mask('99-999');
+    element.find(".phone").mask('(99) 999-99-99');
+    element.find(".mobile-phone").mask('999-999-999');
+    element.find(".fax").mask('(99) 999-99-99');
+    element.find(".ip").mask('0ZZ.0ZZ.0ZZ.0ZZ', {translation:  {'Z': {pattern: /[0-9]/, optional: true}}});
+    element.find(".ph-number").mask('99999');
 }
 
 jQuery(document).ready(function() {

@@ -57,7 +57,8 @@
 			panelPosCount++;
 			globalPanelPosCount++;
 			jQuery("#newPosPanelCount").val(panelPosCount);
-			
+
+			maskNewPosRefresh();
 			return false;
 		});
 		

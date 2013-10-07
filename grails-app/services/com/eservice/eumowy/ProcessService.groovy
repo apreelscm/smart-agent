@@ -222,7 +222,7 @@ class ProcessService {
         process.processData?.each {ProcessData data ->
 
             //oplataMasteroPr - zmiana nazwy tego parametru wymusila dodanie go do tej listy.
-            if(data.name in ["dataUmowy","punktyTytulPlatnosci","punktySystemKasowy","punktyUta","punktyWybrane", "oplataMasteroPr", "fromCbd"]){
+            if(data.name in ["dataUmowy","punktyTytulPlatnosci","punktySystemKasowy","punktyUta","punktyWybrane", "oplataMasteroPr", "clientFromCbd"]){
                 return
             }
 

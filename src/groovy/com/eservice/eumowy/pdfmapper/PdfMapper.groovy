@@ -32,7 +32,7 @@ class PdfMapper {
             dataMap.putAll(mapPointsSpecial(points.findAll{ point -> (point.czyWybranyAkceptacjaKart && point.tytulPlatnosci)}, ["nazwa":"punktTytulPlatnosci", "miejscowosc":"adresTytulPlatnosci"]));
             dataMap.putAll(mapPointsSpecial(points.findAll{ point -> (point.czyWybranyAkceptacjaKart && point.czyWybranyZakresUruchomienia)}, ["nazwa":"punktZakresUruchomienia", "miejscowosc":"adresZakresUruchomienia"]));
             dataMap.putAll(mapPointsSpecial(points.findAll{ point -> point.czyWybranyAkceptacjaKart}, ["nazwa":"punktAkceptacjaKart", "miejscowosc":"adresAkceptacjaKart"]));
-            dataMap.putAll(mapPointsSpecial(points, ["nazwa":"punkt", "miejscowosc":"adres"]));
+            dataMap.putAll(mapPointsSpecial(points.findAll{ point -> point.cbdId == null}, ["nazwa":"punkt", "miejscowosc":"adres"]));
             dataMap.putAll(mapPointsSpecial(points, ["tytulPlatnosci":"platnoscTN","systemKasowy":"integracjaTN","uta":"utaTN"]));
         }
 
@@ -108,6 +108,14 @@ class PdfMapper {
 		}
 		
         data.put("mid", [processInstance.client.mid?:'{mid}'] as String[])
+		
+		def aaa = processInstance.client.mid;
+		
+				data.put("nrMerchanta1", [aaa?aaa.toString().substring(0, 5):'{mid}'] as String[])
+				data.put("nrMerchanta2", [aaa?aaa.toString().substring(5, 10):'{mid}'] as String[])
+				data.put("nrMerchanta3", [aaa?aaa.toString().substring(10, 12):'{mid}'] as String[])
+				data.put("nrMerchanta4", [aaa?aaa.toString().substring(12, 14):'{mid}'] as String[])
+		
         return data
     }
 
@@ -432,6 +440,10 @@ class PdfMapper {
 	}
 
     //------------------- PROCESS METHODS --------------------------------
+	
+	private mapNumerRachunkuBankowegoKlientaProcess(def data, def pd, def key, def value){
+		data.put(key, [value?.replaceAll(" ","")] as String[]);
+	}
 	
 	private mapAkceptantNrMieszkaniaProcess(def data, def pd, def key, def value){
 		data.put(key, [value] as String[]);
@@ -774,7 +786,7 @@ class PdfMapper {
         return ["isDigit":true, "value":resultInt]
     }
 
-    def mapOplataZaUruchomienieDCC(def data, def pd, def key, def value){
+    def mapOplataZaUruchomienieDCCProcess(def data, def pd, def key, def value){
         if (value == null && calculatorService != null && "NIE".equals(calculatorService.getCalcProperty(calc,'CZY_DCC'))){
             data.put('oplataZaUruchomienieDCC', ['-'] as String[]);
         } else {
