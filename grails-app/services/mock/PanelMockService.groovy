@@ -5,6 +5,10 @@ import com.eservice.eumowy.util.DateUtils
 
 class PanelMockService {
 
+    def init(ProcessCommand cmd){
+        cmd.scoringMcc = "1234"
+    }
+
     def getAdresacjaSeciowa(ProcessCommand cmd) {
     }
 
@@ -389,7 +393,6 @@ class PanelMockService {
 
     def getScoring(ProcessCommand cmd) {
 
-        cmd.scoringMcc = "1234"
         cmd.scoringDzialalnosc = "uslugi"
         cmd.scoringSzczegolyDzialalnosci = "Handel zywym towarem"
 

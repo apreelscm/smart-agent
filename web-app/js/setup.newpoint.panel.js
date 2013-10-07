@@ -154,7 +154,7 @@ function setupNewPointPanelData(prevPanelId, panelId) {
     var additionalequipment = {};
 
     var nip = jQuery("#akceptantNip").val();
-    var scoringMccCode = jQuery("#scoringMcc").val();
+    var globalMCC = jQuery("#globalMCC").val();
     var mmccode = jQuery("#"+prevPanelId+"mccCode").val();
     var bankAccount = jQuery("#"+prevPanelId+"bankAccountNumber").val();
 
@@ -225,7 +225,7 @@ function setupNewPointPanelData(prevPanelId, panelId) {
     }
 
     jQuery("#"+panelId+"nip").val(nip).keyup();
-    jQuery("#"+panelId+"mccCode").val(scoringMccCode).keyup();
+    jQuery("#"+panelId+"mccCode").val(globalMCC).keyup();
 
     if (panelId != prevPanelId) {
         if (jQuery("#"+prevPanelId+"sameForEveryPoint").is(':checked')) {

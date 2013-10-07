@@ -122,7 +122,7 @@
 							"Tak": function() {
 								jQuery( this ).dialog( "close" );
 								jQuery.post(jQuery(location).attr('href'), {_eventId_noaccept:""}, function(data) {
-									window.location.href = '<g:createLink controller="activity" action="createProcess" params="[message: prevActivityMessage]"/>';
+									window.location.href = '<g:createLink controller="activity" action="createProcess" params="[message: rejectedDocumentsMessage]"/>';
 								});
 							},
 							"Nie": function() {
@@ -136,6 +136,7 @@
 			
 			jQuery("#continueButton").on("click", function(e) {
 				e.preventDefault();
+
 				if (updateSubscriptionStatusCount != requiredSubscriptionsCount && jQuery("#requestVersionElectronical").is(":checked") == true) {
 					result = false;
 					jQuery("#confirm-submit-without-subscription-dialog").dialog({
@@ -167,6 +168,7 @@
 					});
 				}
 				else {
+
 					jQuery('#confirm-pleasewait h2').text("${message(code: "process.subscriptions.sendingEmails")}");
 					jQuery('#confirm-pleasewait img').show();
 					jQuery('#confirm-pleasewait').dialog({resizable: true,
@@ -178,7 +180,6 @@
 					})
 					.fail(function() { jQuery("#confirm-pleasewait h2").text("${message(code: "process.subscriptions.sendingEmails.error")}"); jQuery("#confirm-pleasewait img").hide() });
 				}
-				
 				return false;
 			});
 			
@@ -290,18 +291,24 @@
 	
     <div id="pdfBox" style="background-color: #F2F2F2; height: 680px; overflow: auto;border: solid 1px; border-radius: 5px;  margin: 20px 15px 0">
     	<div id="pdfBox-nav" style="padding: 1em; border-bottom: solid 1px;">
-    		<a id="nextPdfPage" class="button submit" style="float: right;"><g:message code="process.subscriptions.nextPage" /></a>
-    		<a id="prevPdfPage" class="button submit" style="float: right;"><g:message code="process.subscriptions.previousPage" /></a>
-    		<a id="zoomOutPdfPage" class="button submit">-</a>
-    		<a id="zoomInPdfPage" class="button submit">+</a>
-    		<span style="margin-left: 330px; font-weight: bold"><g:message code="process.subscriptions.page" />: <span id="page_num"></span> / <span id="page_count">${totalPagesCount}</span></span>
-    	</div>
+            <div style="display: inline-block; float: left">
+                <a id="zoomOutPdfPage" class="button submit">-</a>
+                <a id="zoomInPdfPage" class="button submit">+</a>
+            </div>
+            <div style="display: inline-block; float: right">
+                <a id="nextPdfPage" class="button submit" style="float: right"><g:message code="process.subscriptions.nextPage" /></a>
+                <a id="prevPdfPage" class="button submit"><g:message code="process.subscriptions.previousPage" /></a>
+            </div>
+            <div style="text-align: center; padding-left: 165px; padding-top: 5px">
+                <span style="font-weight: bold"><g:message code="process.subscriptions.page" />: <span id="page_num"></span> / <span id="page_count">${totalPagesCount}</span></span>
+            </div>
+            <div style="clear: both"></div>
+        </div>
     	<div id="pdfBox-content" style="margin: 1em;">
     		<div id="pdfBox-content-loading" style="text-align: center; width: 200px; display: block; margin: 0 auto;">
     			<h2 style="padding-top: 100px;"><g:message code="process.subscriptions.loadingPage" /></h2>
     			<img style="width: 40px;" src="/eumowy/images/document-loading.gif" />
     		</div>
-    		
             <img id="pdfPage" style="border:1px solid gray; display: none; width: 440px; height: 570px; display: none; margin-left: auto; margin-right: auto; vertical-align: middle; text-align: center;"/>
     	</div>
     </div>

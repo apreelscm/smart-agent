@@ -1,10 +1,14 @@
 import grails.plugins.springsecurity.SecurityConfigType
 import org.apache.log4j.DailyRollingFileAppender
-import org.apache.log4j.jdbc.JDBCAppender
+import org.apache.log4j.jdbc.EumowyJDBCAppender
+import org.codehaus.groovy.grails.commons.ConfigurationHolder
 
 // locations to search for config files that get merged into the main config;
 // config files can be ConfigSlurper scripts, Java properties files, or classes
 // in the classpath in ConfigSlurper format
+
+def dataSource
+def grailsApplication
 
 // referencja do konfiguracji srodowisk, poza dev parametr ustawiany przy starcie tomcata
 grails.config.locations = ["classpath:${appName}-config-${grails.util.Environment.current.name}.groovy",
@@ -67,7 +71,8 @@ isPanelsValidationOn = true;
 grails.gorm.default.constraints = {
     '*'(nullable: false, blank:true)
     percentage(matches:'~|^(?:100(?:.0(?:0)?)?|\\d{1,2}(?:.\\d{1,2})?)$')
-    number(matches:'~|^(?:[1-9]\\d*|0)?(?:\\.\\d{2})?$')
+    number(matches:'~|^(?:[1-9]\\d*|0)?(?:\\.\\d{1,2})?$')
+    number4Precision(matches:'~|^(?:[1-9]\\d*|0)?(?:\\.\\d{1,4})?$')
     natural(matches:'~|^[0-9]*')
     lettersonly(matches:'~|^[A-Za-z\\s\\u0104-\\u017c\\u00d3\\u00f3]*')
     alpha(matches:'~|^[A-Za-z0-9\\s.\\-,\\u0104-\\u017c\\u00d3\\u00f3]*')
@@ -102,50 +107,21 @@ log4j = {
     trace 'grails.plugin.mail'
 
     //show sql values
-    /*  info "org.hibernate.SQL", "org.hibernate.type", "org.codehaus.groovy.grails.orm.hibernate"
-      trace 'org.hibernate.type' debug 'org.hibernate.SQL'*/
+    //trace 'org.hibernate.type' , "org.codehaus.groovy.grails.orm.hibernate", 'org.hibernate.SQL'
 
-    //  trace 'org.hibernate.type'
-    info 'org.hibernate.SQL'
 
 
     appenders {
         console name: 'console', layout: pattern(conversionPattern: '%d{dd-MM-yyyy HH:mm:ss,SSS} %5p %c - %m%n')
 
+        appender new EumowyJDBCAppender(ConfigurationHolder.config.dataSource,
+                "database",
+                "INSERT INTO EUMOWY.LOGS (login, log_date, log_message) VALUES ('%X{sessionUserName}','%d{yyyy.MM.dd HH:mm:ss}', '%m')",
+                org.apache.log4j.Level.INFO
+        )
+
         environments {
-            mock {
-                appender new JDBCAppender(
-                        name: "database",
-                        URL: "jdbc:h2:mem:CbdDb;MODE=Oracle;MVCC=TRUE",
-                        user: "sa",
-                        password: "",
-                        driver: "org.h2.Driver",
-                        sql: "INSERT INTO EUMOWY.LOGS (login, log_date, log_message) VALUES ('%X{sessionUserName}','%d{yyyy.MM.dd HH:mm:ss}', '%m');",
-                        threshold: org.apache.log4j.Level.INFO
-                )
-            }
-            development {
-                appender new JDBCAppender(
-                        name: "database",
-                        URL: "jdbc:oracle:thin:@db-eservice.apreel.lan:1521:cbd01out",
-                        //URL: "jdbc:oracle:thin:@192.168.9.22:1523:tstcbd",
-                        user: "eumowy_app",
-                        password: "eumowy_app",
-                        driver: "oracle.jdbc.driver.OracleDriver",
-                        sql: "INSERT INTO EUMOWY.LOGS (login, log_date, log_message) VALUES ('%X{sessionUserName}','%d{yyyy.MM.dd HH:mm:ss}', '%m')",
-                        threshold: org.apache.log4j.Level.INFO
-                )
-            }
             test {
-                appender new JDBCAppender(
-                        name: "database",
-                        URL: "jdbc:oracle:thin:@db-eservice.apreel.lan:1521:cbd01out",
-                        user: "eumowy_app",
-                        password: "eumowy_app",
-                        driver: "oracle.jdbc.driver.OracleDriver",
-                        sql: "INSERT INTO EUMOWY.LOGS (login, log_date, log_message) VALUES ('%X{sessionUserName}','%d{yyyy.MM.dd HH:mm:ss}', '%m')",
-                        threshold: org.apache.log4j.Level.INFO
-                )
                 grails.resources.debug = true //refreshing css and js
                 grails {
                     mail {
@@ -161,30 +137,6 @@ log4j = {
                     }
                 }
             }
-            uat {
-                appender new JDBCAppender(
-                        name: "database",
-                        URL: "jdbc:oracle:thin:@192.168.3.221:1523:tstcbd",
-                        //URL: "jdbc:oracle:thin:@192.168.9.22:1523:tstcbd", // apreel lokalny
-                        //URL: "jdbc:oracle:thin:@db-eservice.apreel.lan:1521:cbd01out",
-                        user: "eumowy_app",
-                        password: "eumowy_app",
-                        driver: "oracle.jdbc.driver.OracleDriver",
-                        sql: "INSERT INTO EUMOWY.LOGS (login, log_date, log_message) VALUES ('%X{sessionUserName}','%d{yyyy.MM.dd HH:mm:ss}', '%m')",
-                        threshold: org.apache.log4j.Level.INFO
-                )
-            }
-            production {
-                appender new JDBCAppender(
-                        name: "database",
-                        URL: "TODO",
-                        user: "eumowy_app",
-                        password: "eumowy_app",
-                        driver: "oracle.jdbc.driver.OracleDriver",
-                        sql: "INSERT INTO EUMOWY.LOGS (login, log_date, log_message) VALUES ('%X{sessionUserName}','%d{yyyy.MM.dd HH:mm:ss}', '%m')",
-                        threshold: org.apache.log4j.Level.INFO
-                )
-            }
         }
 
         String logDirectory = "${System.getProperty('catalina.base') ?: '.'}/logs"
@@ -196,7 +148,6 @@ log4j = {
                 fileName: logDirectory+'/eumowy.log',  //storage path of log file
                 layout: pattern(conversionPattern:'%d [%t] %-5p %c{2} %x - %m%n')
         )
-
     }
 
     environments {

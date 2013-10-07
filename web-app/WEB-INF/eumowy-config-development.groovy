@@ -1,5 +1,5 @@
 environments {
-    dev{
+    development{
         grails.mail.host = "mail.your-server.de"
         grails.mail.port = 465
         grails.mail.username = "atest@apreel.com"

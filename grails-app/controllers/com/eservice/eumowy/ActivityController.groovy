@@ -213,14 +213,16 @@ class ActivityController {
 
                 }
                 flow.skipDocumentGeneration = false
-                flow.processInstance = processInstance
+				flow.processInstance = processInstance
+                flow.rejectedDocumentsMessage = 'Pomyslnie odrzucono dokumentacje dla NIP ' + flow.processInstance.client.nip
             }
             render(view: "../createProcess/clientSignature", model: [
                     processInstance: flow.processInstance,
                     totalPagesCount: flow.totalPagesCount,
                     representative1: flow.representative1,
                     representative2: flow.representative2,
-                    requiredNumberOfSubscriptions: flow.requiredNumberOfSubscriptions
+                    requiredNumberOfSubscriptions: flow.requiredNumberOfSubscriptions,
+                    clientNip: flow.rejectedDocumentsMessage
             ])
             on("back"){
                 flow.newProcessFlow = false
@@ -418,7 +420,7 @@ class ActivityController {
                 }
 
                 def client = cbdService.findClientByNip(flow.nip);
-
+                log.info(flow?.processInstance)
                 /** pobranie wartości, czy to jest nowa umowa*/
                 def hasNowaUmowa = processService.containsActivity(processInstance.activities,"nowaUmowa")
 
