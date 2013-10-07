@@ -595,11 +595,11 @@ class ProcessCommand implements Serializable{
 
         srednia_sprzedaz_doladowan(nullable:false, blank:false, shared:"number")
         srednia_sprzedaz_doladowan_slownie(nullable:false, blank:false, shared: "lettersonly")
-        ifOplataVISA(nullable:false, blank:false, shared: "number") //1.11 %, M
-        ifOplataMasterCard(nullable:false, blank:false, shared: "number") //1.11 %, M
-        ifOplataDinersClub(nullable:false, blank:false, shared: "number") //1.11 %, M
-        ifOplataIKO(nullable:false, blank:false, shared: "number") //1.11 %, M
-        ifOplataPKOPB(nullable:false, blank:false, shared: "number") //1.11 %, M
+        ifOplataVISA(nullable:false, blank:false, shared: "number4Precision") //1.11 %, M
+        ifOplataMasterCard(nullable:false, blank:false, shared: "number4Precision") //1.11 %, M
+        ifOplataDinersClub(nullable:false, blank:false, shared: "number4Precision") //1.11 %, M
+        ifOplataIKO(nullable:false, blank:false, shared: "number4Precision") //1.11 %, M
+        ifOplataPKOPB(nullable:false, blank:false, shared: "number4Precision") //1.11 %, M
         dzialalnoscForma(nullable:false, blank:true)
         dzialalnoscFormaInna(nullable:true, blank:true, shared: "alpha")
         dzialalnoscDokument(nullable:false, blank:true)
@@ -936,7 +936,7 @@ class ProcessCommand implements Serializable{
         obslugaEkonomicznyCena(nullable:true, blank:false, shared: "number") //TODO VERIFY
         numerRachunkuBankowegoKlienta(nullable:false, blank:false, matches: "~|\\d{2}\\s\\d{4}\\s\\d{4}\\s\\d{4}\\s\\d{4}\\s\\d{4}\\s\\d{4}")
         bankKlienta(nullable:false, blank:false)
-        oplataZaUruchomienieDCC(nullable:false, blank:false, matches: "~|\\-|^(?:[1-9]\\\\d*|0|\\-)?(?:\\\\.\\\\d{1,2})?\$")
+        oplataZaUruchomienieDCC(nullable:false, blank:false, matches: "~|\\-|^(?:[1-9]\\d*|0|\\-)?(?:\\.\\d{1,2})?\$")
         nip(nullable:true)
         notes(nullable:true, maxSize: 1000) //a1!
         points(nullable:true)
