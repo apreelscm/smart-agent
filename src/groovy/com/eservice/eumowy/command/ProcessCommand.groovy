@@ -821,24 +821,64 @@ class ProcessCommand implements Serializable{
         scoringDeklaracjaFinansowaSredniObrot(nullable:true, blank:true)
         scoringDeklaracjaFinansowaSredniaTransakcja(nullable:true, blank:true)
         akceptantUlicaTytul(nullable:false, blank:false)
-        akceptantUlica(nullable:false, blank:false, shared: "alpha", validator: { value, process, errors ->
-			if(value.length() > 40){
+        akceptantUlica(nullable:false, shared: "alpha", validator: { value, cmd, errors ->
+            if(value.isEmpty() && cmd.isFromCbd()){
+                return true
+            }
+
+            if(value.isEmpty()){ //cannot use contraint blank: true because of cbd values
+                return false
+            }
+
+            if(value.length() > 40){
 				errors.rejectValue("akceptantUlica", "default.nameTooLong.street")
                 return false
 			}
 			return true
         })
-        akceptantNrDomu(nullable:false, blank:false, shared: "alpha")
+        akceptantNrDomu(nullable:false, shared: "alpha", validator: {value, cmd, errors ->
+            if(value.isEmpty() && cmd.isFromCbd()){
+                return true
+            }
+
+            if(value.isEmpty()){ //cannot use contraint blank: true because of cbd values
+                return false
+            }
+        })
         akceptantNrMieszkania(nullable:true, blank:false, shared: "alpha")
-        akceptantMiasto(nullable:false, blank:false, shared: "alpha", validator: { value, process, errors ->
-			if(value.length() > 33){
+        akceptantMiasto(nullable:false, shared: "alpha", validator: { value, cmd, errors ->
+            if(value.isEmpty() && cmd.isFromCbd()){
+                return true
+            }
+
+            if(value.isEmpty()){ //cannot use contraint blank: true because of cbd values
+                return false
+            }
+
+            if(value.length() > 33){
 				errors.rejectValue("akceptantMiasto", "default.nameTooLong.city")
                 return false
 			}
 			return true
         })
-        akceptantKodPocztowy(nullable:false, blank:false)
-        akceptantPoczta(nullable:false, blank:false, shared: "alpha", validator: { value, process, errors ->
+        akceptantKodPocztowy(nullable:false, validator: {value, cmd, errors ->
+            if(value.isEmpty() && cmd.isFromCbd()){
+                return true
+            }
+
+            if(value.isEmpty()){ //cannot use contraint blank: true because of cbd values
+                return false
+            }
+        })
+        akceptantPoczta(nullable:false, shared: "alpha", validator: { value, cmd, errors ->
+            if(value.isEmpty() && cmd.isFromCbd()){
+                return true
+            }
+
+            if(value.isEmpty()){ //cannot use contraint blank: true because of cbd values
+                return false
+            }
+
 			if(value.length() > 33){
 				errors.rejectValue("akceptantPoczta", "default.nameTooLong.postalTown")
                 return false
@@ -979,6 +1019,10 @@ class ProcessCommand implements Serializable{
     def isFromCbd(def property){
         def cbdName = property+"Cbd"
         return (this.metaClass.hasProperty(this, cbdName) && this."$cbdName"?.trim())
+    }
+
+    def isFromCbd(){
+        return isFromCbd("akceptantNazwaOficjalna")
     }
 
     /* static nullableNotBlank(value){
