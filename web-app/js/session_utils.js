@@ -51,13 +51,13 @@
 
     $j(document).ready(function () {
         new Clock("mainBody", "clock", "/eumowy/logout", 600);
-       /* window.setInterval(function () {
+       window.setInterval(function () {
             jQuery.post("/eumowy/ping")
                 .fail(function() {
                     var message = "Brak połączenia z serwerem";
-                    alert(message);
+                    //alert(message);
                 });
-        }, 51000);*/
+        }, 151000);
     });
 
 }(jQuery));
