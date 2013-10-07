@@ -48,6 +48,19 @@ class ProcessCommand implements Serializable {
         return true
     }
 
+    static def skipAddressValidationClosure = { value, cmd, errors, propertyName, message ->
+        if(value.isEmpty() && cmd.isClientFromCbd()){
+            return true
+        }
+
+        if(value.isEmpty()){ //cannot use contraint blank: true because of cbd values
+            errors.rejectValue(propertyName, message)
+            return false
+        }
+
+        return true
+    }
+
     static def DEFAULT_VALUE = "~"
 
 //    adresDoKorespondencjizAkecptantem - FINISH
@@ -812,15 +825,23 @@ class ProcessCommand implements Serializable {
         scoringDeklaracjaFinansowaSredniaTransakcja(nullable: true, blank: true)
         akceptantUlicaTytul(nullable: false, blank: false)
         akceptantUlica(nullable: false, blank: false, shared: "alpha", validator: { value, cmd, errors ->
+            skipAddressValidationClosure.call(value, cmd, errors, "akceptantUlica", "default.cantBeEmpty.akceptantPoczta")
             maxLengthClosure.call(value, cmd, errors, 40, "akceptantUlica", "default.nameTooLong.street")
         })
-        akceptantNrDomu(nullable: false, blank: false, shared: "alpha")
+        akceptantNrDomu(nullable:false, shared: "alpha", validator: {value, cmd, errors ->
+            skipAddressValidationClosure.call(value, cmd, errors, "akceptantNrDomu", "default.cantBeEmpty.akceptantNrDomu")
+        })
         akceptantNrMieszkania(nullable: true, blank: false, shared: "alpha")
-        akceptantMiasto(nullable: false, blank: false, shared: "alpha", validator: { value, cmd, errors ->
+        akceptantMiasto(nullable: false, shared: "alpha", validator: { value, cmd, errors ->
+            skipAddressValidationClosure.call(value, cmd, errors, "akceptantMiasto", "default.cantBeEmpty.akceptantNrDomu")
             maxLengthClosure.call(value, cmd, errors, 33, "akceptantMiasto", "default.nameTooLong.city")
         })
-        akceptantKodPocztowy(nullable: false, blank: false)
-        akceptantPoczta(nullable: false, blank: false, shared: "alpha", validator: { value, cmd, errors ->
+        akceptantKodPocztowy(nullable:false, validator: {value, cmd, errors ->
+            skipAddressValidationClosure.call(value, cmd, errors, "akceptantKodPocztowy", "default.cantBeEmpty.akceptantKodPocztowy")
+        })
+        akceptantPoczta(nullable: false, shared: "alpha", validator: { value, cmd, errors ->
+            skipAddressValidationClosure.call(value, cmd, errors, "akceptantPoczta", "default.cantBeEmpty.akceptantPoczta")
+
             maxLengthClosure.call(value, cmd, errors, 33, "akceptantPoczta", "default.nameTooLong.postalTown")
         })
 
@@ -957,6 +978,10 @@ class ProcessCommand implements Serializable {
     def isFromCbd(def property) {
         def cbdName = property + "Cbd"
         return (this.metaClass.hasProperty(this, cbdName) && this."$cbdName"?.trim())
+    }
+
+    private boolean isClientFromCbd(){
+        return this.isFromCbd("akceptantNazwaOficjalna")
     }
 
 }

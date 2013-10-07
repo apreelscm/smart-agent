@@ -1,3 +1,15 @@
+<r:script>
+    jQuery(document).ready(function() {
+        var fields = new Array("akceptantUlica", "akceptantNrDomu", "akceptantMiasto", "akceptantKodPocztowy", "akceptantPoczta"),
+            clientCbdId = ${client?.cbdId ? client?.cbdId : 'null'};
+
+        if(clientCbdId !== null && clientCbdId !== ""){
+            for(var i in fields){
+                jQuery("#" + fields[i]).removeAttr('required');
+            }
+        }
+    });
+</r:script>
 <div id="acceptorAddressPanel">
     <fieldset>
         <div class="belka-glowna"><g:message code="panel.acceptor.address.title"/> </div>
