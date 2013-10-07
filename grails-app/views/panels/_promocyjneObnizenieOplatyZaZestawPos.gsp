@@ -21,7 +21,7 @@
 						<td>${pos.dataOd}<input type="hidden" name="allPoses[${i}].dataOd" value="${pos.dataOd}" /></td>
 						<td>${pos.dataDo}<input type="hidden" name="allPoses[${i}].dataDo" value="${pos.dataDo}" /></td>
 						<td>${pos.wysokoscOplaty}<input type="hidden" name="allPoses[${i}].wysokoscOplaty" value="${pos.wysokoscOplaty}" /></td>
-						<td><g:checkBox name="allPoses[${i}].czyWybrany"/></td>
+						<td><g:checkBox name="allPoses[${i}].czyWybrany" checked="${pos.czyWybrany}"/></td>
 					</tr>
 					</g:each>
 				</tbody>

@@ -544,7 +544,7 @@ class ActivityController {
             }.to "selectedPanels"
             on("saveOnly"){ ProcessCommand cmd ->
 				log.info params
-				log.info params.get('allPoints[0]')
+				log.info params.get('allPoses[0]')
                 Process processInstance = processService.populateProcessWithData(flow.processInstance, cmd)
                 log.info "Zapisuje dane paneli"
 
