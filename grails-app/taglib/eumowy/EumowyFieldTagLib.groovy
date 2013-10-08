@@ -73,7 +73,9 @@ class EumowyFieldTagLib {
         int offset = attrs.offset.toString().isNumber() ? Integer.valueOf(attrs.remove("offset")) : 0
 
         attrs.style = "text-align:right" + (width ? "; width:${width}" : "")
-        attrs.class = attrs.class + " " + hasErrors(bean:attrs.validatable,field:attrs.name,'error')
+
+        def validateField = attrs.remove("validateField") ?: attrs.name
+        attrs.class = attrs.class + " " + hasErrors(bean:attrs.validatable,field:validateField,'error')
 
         StringBuilder sb = new StringBuilder()
         if (attrs.class?.indexOf("error") != -1) {

@@ -11,7 +11,7 @@
     </fieldset>
 </div>
 <div id="hiddenPosPanel" style="display: none;">
-	<g:render template="../panels/danePos" model="[id:'%ID%', panelType: 'poses']"/>
+	<g:render template="../panels/danePos" model="[id:'%ID%', panelType: 'poses', pointData: data.defaultPosData]"/>
 </div>
 <r:require module="jquery_ui"/>
 	
@@ -21,6 +21,7 @@
 		var panelPosTemplate = jQuery("#hiddenPosPanel").html();
 		var maxTerminalCount = jQuery("#liczbaTerminali").val();
 		var panelPosCount = ${data.poses.size()};
+		panelPosInternalCount = ${data.poses.size()};
 		globalPanelPosCount = ${data.poses.size()};
 		jQuery("#hiddenPosPanel").remove();
 		
@@ -41,6 +42,15 @@
 		jQuery("#addNewPosButton").on("click", function(e) {
 			e.preventDefault();
 			
+			var data = panelPosTemplate.replace(/%ID%/gm, panelPosCount);
+			jQuery("#addNewPosPanelPlaceholder").append(data);
+			setupNewPosPanelHandlers(panelPosCount-1, panelPosCount, "poses");
+			setupNewPointPanelData("poses\\["+(panelPosCount-1)+"\\]\\.", "poses\\["+panelPosCount+"\\]\\.");
+			panelPosCount++;
+			globalPanelPosCount++;
+			panelPosInternalCount++;
+			jQuery("#newPosPanelCount").val(panelPosCount);
+			
 			if (getCurrentTerminalCount("poses") == maxTerminalCount) {
 				jQuery(e.target).prop("disabled", true);
 				jQuery("#addNewPointButton").prop("disabled", true);
@@ -49,14 +59,6 @@
 				jQuery(e.target).prop("disabled", false);
 				jQuery("#addNewPointButton").prop("disabled", false);
 			}
-			
-			var data = panelPosTemplate.replace(/%ID%/gm, panelPosCount);
-			jQuery("#addNewPosPanelPlaceholder").append(data);
-			setupNewPosPanelHandlers(panelPosCount-1, panelPosCount, "poses");
-			setupNewPointPanelData("poses\\["+(panelPosCount-1)+"\\]\\.", "poses\\["+panelPosCount+"\\]\\.");
-			panelPosCount++;
-			globalPanelPosCount++;
-			jQuery("#newPosPanelCount").val(panelPosCount);
 
 			maskNewPosRefresh();
 			return false;
@@ -64,6 +66,12 @@
 		
 		jQuery("body").on("click", "#removePosButton", function(e) {
 			jQuery(e.target).closest("#newPosPanel").remove();
+			panelPosInternalCount--;
+			
+			if (getCurrentTerminalCount("poses") < maxTerminalCount) {
+				jQuery("#addNewPointButton").prop("disabled", false);
+				jQuery("#addNewPosButton").prop("disabled", false);
+			}
 			
 			return false;
 		});

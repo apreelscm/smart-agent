@@ -1,5 +1,4 @@
 package com.eservice.eumowy.command
-
 import com.eservice.eumowy.Process
 import grails.validation.Validateable
 import org.apache.commons.collections.FactoryUtils
@@ -462,6 +461,7 @@ class ProcessCommand implements Serializable {
     String hasInformacjaHandlowa
     String liczbaTerminali
     def defaultPointData
+	def defaultPosData
 
     static constraints = {
 
@@ -937,7 +937,23 @@ class ProcessCommand implements Serializable {
         oplataZaUruchomienieDCC(nullable:false, blank:false, matches: "~|\\-|^(?:[1-9]\\d*|0|\\-)?(?:\\.\\d{1,2})?\$")
         nip(nullable:true)
         notes(nullable:true, maxSize: 1000) //a1!
-        points(nullable:true)
+
+        points(nullable:true, validator: { value, cmd, errors ->
+            def hasPointErrors = false
+            value.each {  ptCmd ->
+                ptCmd?.validate()
+                if(ptCmd?.hasErrors()){
+                    hasPointErrors = true
+                }
+            }
+
+            if (hasPointErrors) {
+                errors.rejectValue("points", "default.error.points",)
+                return false
+            }
+            return true
+        })
+
         poses(nullable:true)
         allPoints(nullable:true)
         allPoses(nullable:true)
