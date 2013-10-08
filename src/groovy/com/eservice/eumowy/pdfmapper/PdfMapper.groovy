@@ -107,6 +107,12 @@ class PdfMapper {
 		    data.put("NrSprzedazowyPH1", [processInstance.phNumber.toString()] as String[])
 		}
 		
+		// Znaczniki do PDFow
+		
+		data.put("nrIdentyfikacjiPunktu", ['{nrPunktu}'] as String[])
+		data.put("sprawaNr", ['{outletId}'] as String[])
+		data.put("nrUmowy", ['{nrUmowy}'] as String[])
+		
         data.put("mid", [processInstance.client.mid?:'{mid}'] as String[])
 		
 		def picm = processInstance.client.mid;
