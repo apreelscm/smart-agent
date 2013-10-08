@@ -33,7 +33,7 @@ class PdfMapper {
             dataMap.putAll(mapPointsSpecial(points.findAll{ point -> (point.czyWybranyAkceptacjaKart && point.czyWybranyZakresUruchomienia)}, ["nazwa":"punktZakresUruchomienia", "miejscowosc":"adresZakresUruchomienia"]));
             dataMap.putAll(mapPointsSpecial(points.findAll{ point -> point.czyWybranyAkceptacjaKart}, ["nazwa":"punktAkceptacjaKart", "miejscowosc":"adresAkceptacjaKart"]));
             dataMap.putAll(mapPointsSpecial(points.findAll{ point -> point.cbdId == null}, ["nazwa":"punkt", "miejscowosc":"adres"]));
-            dataMap.putAll(mapPointsSpecial(points, ["tytulPlatnosci":"platnoscTN","systemKasowy":"integracjaTN","uta":"utaTN"]));
+            dataMap.putAll(mapPointsSpecial(points, ["nazwa":"punktTN", "miejscowosc":"adresTN", "tytulPlatnosci":"platnoscTN", "systemKasowy":"integracjaTN", "uta":"utaTN"]));
         }
 
 		dataMap.putAll(mapProcessCalcToPDFData())
@@ -106,21 +106,21 @@ class PdfMapper {
 		} else {
 		    data.put("NrSprzedazowyPH1", [processInstance.phNumber.toString()] as String[])
 		}
-		
 		// Znaczniki do PDFow
 		
 		data.put("nrIdentyfikacjiPunktu", ['{nrPunktu}'] as String[])
 		data.put("sprawaNr", ['{outletId}'] as String[])
 		data.put("nrUmowy", ['{nrUmowy}'] as String[])
-		
-        data.put("mid", [processInstance.client.mid?:'{mid}'] as String[])
-		
-		def picm = processInstance.client.mid;
-		
-				data.put("nrMerchanta1", [picm?picm.toString().substring(0, 5):'{mid}'] as String[])
-				data.put("nrMerchanta2", [picm?picm.toString().substring(5, 10):''] as String[])
-				data.put("nrMerchanta3", [picm?picm.toString().substring(10, 12):''] as String[])
-				data.put("nrMerchanta4", [picm?picm.toString().substring(12, 14):''] as String[])
+
+
+        def picm = processInstance.client.mid;
+
+        data.put("mid", [picm?:'{mid}'] as String[])
+
+        data.put("nrMerchanta1", [picm?picm.toString().substring(0, 5):'{mid}'] as String[])
+        data.put("nrMerchanta2", [picm?picm.toString().substring(5, 10):''] as String[])
+        data.put("nrMerchanta3", [picm?picm.toString().substring(10, 12):''] as String[])
+        data.put("nrMerchanta4", [picm?picm.toString().substring(12, 14):''] as String[])
 		
         return data
     }
