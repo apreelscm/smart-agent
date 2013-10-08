@@ -138,12 +138,6 @@ function setupNewPointPanelHandlers(prevPanelId, panelId, prefix) {
     sameForEveryPoint(prefixPanel + ".terminaloptionsSameForEveryPoint", prefix, panelId);
     sameForEveryPoint(prefixPanel + ".additionalequipmentSameForEveryPoint", prefix, panelId);
 
-    // pobieranie numeru PH do ph pozysk oraz opieka biznesowa
-    jQuery(prefixPanel + ".phGain").val(jQuery("#pozyskujacyNumer").val());
-    jQuery(prefixPanel + ".businessCare").val(jQuery("#pozyskujacyNumer").val());
-
-    //});
-
 }
 
 function setupNewPointPanelData(prevPanelId, panelId) {

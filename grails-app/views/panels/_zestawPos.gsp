@@ -1,7 +1,7 @@
 <fieldset class="subpanel-fieldset" style="clear: both;">
 	<legend><g:message code="panel.newpos.posset.title" /></legend>
 	<div class="subpanel-fieldset-centercontent" style="width: 800px;" >
-		<label for="${panelType}[${id}].possetSameForEveryPoint"><g:checkBox id="${panelType}[${id}].possetSameForEveryPoint" name="${panelType}[${id}].zestawPosTakSamoDlaWszystkichPunktow" value="${pointData?.zestawPosTakSamoDlaWszystkichPunktow}" /><g:message code="panel.sameforeverypoint" /></label>
+		<label for="${panelType}[${id}].possetforselectedpointSameForEveryPoint"><g:checkBox id="${panelType}[${id}].possetforselectedpointSameForEveryPoint" name="${panelType}[${id}].zestawPosTakSamoDlaWszystkichPunktow" value="${pointData?.zestawPosTakSamoDlaWszystkichPunktow}" /><g:message code="panel.sameforeverypoint" /></label>
 		<table class="vertical-center" style="width: 800px;" >
 			<thead>
 				<tr><td></td><td></td><td></td><td></td><td colspan="2"  style="text-align: center;">Cena</td></tr>
