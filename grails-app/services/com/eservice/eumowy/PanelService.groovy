@@ -104,7 +104,31 @@ class PanelService {
     }
 
     def getDodajPos(ProcessCommand cmd, def calc ) {
+		cmd.liczbaTerminali = calculatorService.getCalcProperty(calc,"LICZBA_POS_MAX")
+		
+		def pointData = new PointCommand()
+		
+		pointData.dialupTyp = calculatorService.getCalcProperty(calc,"TYP_DIALUP") //K RW
+		pointData.dialupCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_DIALUP_TERM_CENA"))
+		pointData.dialupPPCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_DIALUP_PP_CENA"))
 
+		pointData.vpnTyp = calculatorService.getCalcProperty(calc,"TYP_VPN") //K RW
+		pointData.vpnCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_VPN_TERM_CENA"))
+		pointData.vpnPPCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_VPN_PP_CENA"))
+
+		pointData.sslTyp = calculatorService.getCalcProperty(calc,"TYP_SSL") //K RW
+		pointData.sslCena = toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_SSL_TERM_CENA"))
+		pointData.sslPPCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_SSL_PP_CENA"))
+
+		pointData.wifiTyp = calculatorService.getCalcProperty(calc,"TYP_WIFI") //K RW
+		pointData.wifiCena = toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_WIFI_TERM_CENA"))
+		pointData.wifiPPCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_WIFI_PP_CENA"))
+
+		pointData.gprsTyp = calculatorService.getCalcProperty(calc,"TYP_GPRS") //K RW
+		pointData.gprsCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_SSL_TERM_CENA"))
+		pointData.gprsPPCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_GPRS_PP_CENA"))
+
+		cmd.defaultPointData = pointData
     }
 
     def getDodajPunkt(ProcessCommand cmd, def calc ) {
@@ -132,7 +156,7 @@ class PanelService {
         pointData.gprsCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_SSL_TERM_CENA"))
         pointData.gprsPPCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_GPRS_PP_CENA"))
 
-        cmd.defaultPointData = pointData
+        cmd.defaultPosData = pointData
     }
 
     def getDodatkoweUslugi(ProcessCommand cmd, def calc ) {

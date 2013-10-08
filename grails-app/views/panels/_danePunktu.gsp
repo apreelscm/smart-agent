@@ -188,6 +188,7 @@
             <tbody>
             <tr>
                 <td>typ <dict:typeSelect nip="${nip}"
+                                         medium="DIALUP"
                                          id="${panelType}[${id}].possetforselectedpointDialupType"
                                          name="${panelType}[${id}].dialupTyp" from="[]"
                                          valueMessagePrefix="" value="${pointData?.dialupTyp}"
@@ -210,6 +211,7 @@
             </tr>
             <tr>
                 <td>typ <dict:typeSelect nip="${nip}"
+                                         medium="VPN"
                                          id="${panelType}[${id}].possetforselectedpointVpnType"
                                          name="${panelType}[${id}].vpnTyp" from="[]"
                                          valueMessagePrefix="" value="${pointData?.vpnTyp}"
@@ -232,6 +234,7 @@
             </tr>
             <tr>
                 <td>typ <dict:typeSelect nip="${nip}"
+                                         medium="SSL"
                                          id="${panelType}[${id}].possetforselectedpointSslType"
                                          name="${panelType}[${id}].sslTyp" from="[]"
                                          valueMessagePrefix="" value="${pointData?.sslTyp}"
@@ -254,6 +257,7 @@
             </tr>
             <tr>
                 <td>typ <dict:typeSelect nip="${nip}"
+                                         medium="WiFi"
                                          id="${panelType}[${id}].possetforselectedpointWifiType"
                                          name="${panelType}[${id}].wifiTyp" from="[]"
                                          valueMessagePrefix="" value="${pointData?.wifiTyp}"
@@ -276,6 +280,7 @@
             </tr>
             <tr>
                 <td>typ <dict:typeSelect nip="${nip}"
+                                         medium="GPRS"
                                          id="${panelType}[${id}].possetforselectedpointGprsType"
                                          name="${panelType}[${id}].gprsTyp" from="[]"
                                          valueMessagePrefix="" value="${pointData?.gprsTyp}"

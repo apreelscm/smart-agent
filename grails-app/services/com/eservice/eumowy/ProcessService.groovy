@@ -615,7 +615,7 @@ class ProcessService {
             if (["class","process", "cbdService", "errors", "constraints","calc","calculatorService",
                     "notes", "hasUmowaCzas", "hasKontaktTel", "hasDoladowania", "hasAkceptantTel",
                     "hasInformacjaHandlowa","liczbaTerminali", "atLeastClosure", "nullableTrueBlankFalse",
-                    "defaultPointData", "maxLengthClosure", "skipAddressValidationClosure"]
+                    "defaultPointData", "defaultPosData", "maxLengthClosure", "skipAddressValidationClosure"]
                     .contains(key) || value == ProcessCommand.DEFAULT_VALUE){
                 return
             }

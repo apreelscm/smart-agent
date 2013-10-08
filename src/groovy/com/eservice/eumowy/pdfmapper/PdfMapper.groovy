@@ -33,7 +33,7 @@ class PdfMapper {
             dataMap.putAll(mapPointsSpecial(points.findAll{ point -> (point.czyWybranyAkceptacjaKart && point.czyWybranyZakresUruchomienia)}, ["nazwa":"punktZakresUruchomienia", "miejscowosc":"adresZakresUruchomienia"]));
             dataMap.putAll(mapPointsSpecial(points.findAll{ point -> point.czyWybranyAkceptacjaKart}, ["nazwa":"punktAkceptacjaKart", "miejscowosc":"adresAkceptacjaKart"]));
             dataMap.putAll(mapPointsSpecial(points.findAll{ point -> point.cbdId == null}, ["nazwa":"punkt", "miejscowosc":"adres"]));
-            dataMap.putAll(mapPointsSpecial(points, ["tytulPlatnosci":"platnoscTN","systemKasowy":"integracjaTN","uta":"utaTN"]));
+            dataMap.putAll(mapPointsSpecial(points, ["nazwa":"punktTN", "miejscowosc":"adresTN", "tytulPlatnosci":"platnoscTN", "systemKasowy":"integracjaTN", "uta":"utaTN"]));
         }
 
 		dataMap.putAll(mapProcessCalcToPDFData())
@@ -89,7 +89,7 @@ class PdfMapper {
 	private def mapProcessCalcToPDFData() {
 		Map<String, String[]> data = new HashMap<String, String[]>()
 		if (calculatorService != null){
-            data.put('oplatyPOSMiesiacNaliczania', [calculatorService.getCalcProperty(calc,'E_LICZBA_MIES_ZWOL_NAJ_1')] as String[])
+            data.put('oplatyPOSMiesiacNaliczania', [calculatorService.getCalcProperty(calc,'E_LICZBA_MIES_ZWOL_NAJ_1')?:"1"] as String[])
 		}
 		return data
 	}
@@ -106,15 +106,21 @@ class PdfMapper {
 		} else {
 		    data.put("NrSprzedazowyPH1", [processInstance.phNumber.toString()] as String[])
 		}
+		// Znaczniki do PDFow
 		
-        data.put("mid", [processInstance.client.mid?:'{mid}'] as String[])
-		
-		def aaa = processInstance.client.mid;
-		
-				data.put("nrMerchanta1", [aaa?aaa.toString().substring(0, 5):'{mid}'] as String[])
-				data.put("nrMerchanta2", [aaa?aaa.toString().substring(5, 10):''] as String[])
-				data.put("nrMerchanta3", [aaa?aaa.toString().substring(10, 12):''] as String[])
-				data.put("nrMerchanta4", [aaa?aaa.toString().substring(12, 14):''] as String[])
+		data.put("nrIdentyfikacjiPunktu", ['{nrPunktu}'] as String[])
+		data.put("sprawaNr", ['{outletId}'] as String[])
+		data.put("nrUmowy", ['{nrUmowy}'] as String[])
+
+
+        def picm = processInstance.client.mid;
+
+        data.put("mid", [picm?:'{mid}'] as String[])
+
+        data.put("nrMerchanta1", [picm?picm.toString().substring(0, 5):'{mid}'] as String[])
+        data.put("nrMerchanta2", [picm?picm.toString().substring(5, 10):''] as String[])
+        data.put("nrMerchanta3", [picm?picm.toString().substring(10, 12):''] as String[])
+        data.put("nrMerchanta4", [picm?picm.toString().substring(12, 14):''] as String[])
 		
         return data
     }
