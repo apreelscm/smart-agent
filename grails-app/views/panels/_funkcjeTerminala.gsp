@@ -50,7 +50,8 @@
                             <eumowy:numberField name="${panelType}[${id}].terminalIlosc"
                                                 id="${panelType}[${id}].terminalCount"
                                                 value="${pointData?.terminalIlosc}"
-                                                validatable="${data}"
+                                                validatable="${pointData}"
+                                                validateField="terminalIlosc"
                                                 style="width: 50px;"  />
 
                         </span>

@@ -283,7 +283,7 @@
                 <td style="text-align: right;"><g:message code="panel.gprs" /></td>
                 <td><g:textField name="${panelType}[${id}].gprsIlosc"
                                  id="${panelType}[${id}].gprsCount"
-                                 value="${pointData?.gprsIlosc}" style="width: 50px" /> szt.</td>
+                                 value="${pointData?.gprsIlosc}" style="width: 50px" /></td>
                 <td><g:textField name="${panelType}[${id}].gprsPPIlosc"
                                  id="${panelType}[${id}].gprsPPCount"
                                  value="${pointData?.gprsPPIlosc}" style="width: 50px" /> PP.
