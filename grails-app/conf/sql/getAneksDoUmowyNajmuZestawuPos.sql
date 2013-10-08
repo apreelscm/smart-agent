@@ -1,4 +1,4 @@
-SELECT MAX(umw_data_podpisania) as "dataAneksowanejUmowyPos"
+SELECT NVL(MAX (umw_data_podpisania),sysdate) as "dataAneksowanejUmowyPos"
 FROM CBD_ADM.cbt_umowy
 WHERE umw_typ = 'ATP'
       AND umw_kln_id IN
