@@ -102,7 +102,7 @@ class PanelService {
     }
 
     def getDodajPos(ProcessCommand cmd, def calc ) {
-
+		cmd.liczbaTerminali = calculatorService.getCalcProperty(calc,"LICZBA_POS_MAX")
     }
 
     def getDodajPunkt(ProcessCommand cmd, def calc ) {
