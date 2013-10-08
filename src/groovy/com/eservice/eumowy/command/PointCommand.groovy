@@ -192,7 +192,7 @@ class PointCommand implements Serializable {
 //			return true
 //		})
 		kontaktWPunkcieEmail(nullable:true)
-		terminalIlosc(nullable:true)
+		terminalIlosc(nullable:true, shared: "natural")
 		bankId(nullable:true)
 		
 		dialupTyp(nullable:true)
