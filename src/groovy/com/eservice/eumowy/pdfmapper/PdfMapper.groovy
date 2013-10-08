@@ -326,14 +326,6 @@ class PdfMapper {
         data.put("imieINazwisko", [value + " " + getFromPointDataDetails(pointData, 'kontaktWPunkcieNazwisko')] as String[]);
     }
 
-	private mapImieInformatykStatycznaPointDataDetails(def data, def pointData, def key, def value){
-		data.put("imieINazwiskoInformatykStatyczna", [value + " " + getFromPointDataDetails(pointData, 'nazwiskoInformatykStatyczna')] as String[]);
-	}
-	
-	private mapImieInformatykDynamicznaPointDataDetails(def data, def pointData, def key, def value){
-		data.put("imieINazwiskoInformatykDynamiczna", [value + " " + getFromPointDataDetails(pointData, 'nazwiskoInformatykDynamiczna')] as String[]);
-	}
-	
     private mapKontaktWPunkcieTytulPointDataDetails(def data, def pointData, def key, def value){
         data.put(key, [value] as String[]);
         addCheckboxes(data, ["pan": "Pan", "pani": "Pani"], value)
@@ -357,65 +349,63 @@ class PdfMapper {
 		data.put(key, [value] as String[]);
     }
 	
-	// FP - Checkboxy
-	
-	private mapPreautoryzacjaPointDataDetails(def data, def pointData, def key, def value) {
-		addCheckbox(data, key, 'true', value);
-	}
-	
-	private mapBrakFunkcjiZwrotuPointDataDetails(def data, def pointData, def key, def value) {
-		addCheckbox(data, key, 'true', value);
-	}
-	
-	private mapZwrotNaHasloPointDataDetails(def data, def pointData, def key, def value) {
-		addCheckbox(data, key, 'true', value);
-	}
-	
-	private mapAnalizaZbioruPointDataDetails(def data, def pointData, def key, def value) {
-		addCheckbox(data, key, 'true', value);
-	}
-	
-	private mapIntegracjaZSysKasPointDataDetails(def data, def pointData, def key, def value) {
-		addCheckbox(data, key, 'true', value);
-	}
-	
-	private mapZwrotyIKOPointDataDetails(def data, def pointData, def key, def value) {
-		addCheckbox(data, key, 'true', value);
-	}
-	
-	private mapLogowaniePrzedKazdaTransakcjaPointDataDetails(def data, def pointData, def key, def value) {
-		addCheckbox(data, key, 'true', value);
-	}
-	
-	private mapLogowanieZmianowePointDataDetails(def data, def pointData, def key, def value) {
-		addCheckbox(data, key, 'true', value);
-	}
-	
-	private mapNapiwek1PointDataDetails(def data, def pointData, def key, def value) {
-		addCheckbox(data, key, 'true', value);
-	}
-	
-	private mapTelePompkaPointDataDetails(def data, def pointData, def key, def value) {
-		addCheckbox(data, key, 'true', value);
-	}
-	
-	private mapTeleKodzik(def data, def pointData, def key, def value) {
-		addCheckbox(data, key, 'true', value);
-	}
-	
-	private mapKartaPodarunkowaPointDataDetails(def data, def pointData, def key, def value) {
-		addCheckbox(data, key, 'true', value);
-	}
-	
-	private mapInneWyposazenieSslPointDataDetails(def data, def pointData, def key, def value) {
-		addCheckbox(data, key, 'true', value);
-	}
-	
-	private mapInneWyposazenieGprsPointDataDetails(def data, def pointData, def key, def value) {
-		addCheckbox(data, key, 'true', value);
-	}
-	
 	// ------------------ POS METHODS ------------------------------------
+	
+	private mapPreautoryzacja(def data, def posesData, def key, def value) {
+		addCheckbox(data, key, true, value);
+	}
+	
+	private mapBrakFunkcjiZwrotu(def data, def posesData, def key, def value) {
+		addCheckbox(data, key, true, value);
+	}
+	
+	private mapZwrotNaHaslo(def data, def posesData, def key, def value) {
+		addCheckbox(data, key, true, value);
+	}
+	
+	private mapAnalizaZbioru(def data, def posesData, def key, def value) {
+		addCheckbox(data, key, true, value);
+	}
+	
+	private mapIntegracjaZSysKas(def data, def posesData, def key, def value) {
+		addCheckbox(data, key, true, value);
+	}
+	
+	private mapZwrotyIKO(def data, def posesData, def key, def value) {
+		addCheckbox(data, key, true, value);
+	}
+	
+	private mapLogowaniePrzedKazdaTransakcja(def data, def posesData, def key, def value) {
+		addCheckbox(data, key, true, value);
+	}
+	
+	private mapLogowanieZmianowe(def data, def posesData, def key, def value) {
+		addCheckbox(data, key, true, value);
+	}
+	
+	private mapNapiwek1(def data, def posesData, def key, def value) {
+		addCheckbox(data, key, true, value);
+	}
+	
+	private mapTelePompka(def data, def posesData, def key, def value) {
+		addCheckbox(data, key, true, value);
+	}
+	
+	private mapTeleKodzik(def data, def posesData, def key, def value) {
+		addCheckbox(data, key, true, value);
+	}
+	
+	private mapKartaPodarunkowa(def data, def posesData, def key, def value) {
+		addCheckbox(data, key, true, value);
+	}
+	
+	private mapInneWyposazenieSsl(def data, def posesData, def key, def value) {
+		addCheckbox(data, key, true, value);
+	}
+	
+	private mapInneWyposazenieGprs(def data, def posesData, def key, def value) {
+		addCheckbox(data, key, true, value);
+	}
 	
 	private mapZamkniecieDniaOd(def data, def posesData, def key, def value){
 		if (value != null){
@@ -438,7 +428,15 @@ class PdfMapper {
 			}
 		}
 	}
-
+	
+	private mapImieInformatykStatyczna(def data, def posesData, def key, def value){
+		data.put("imieINazwiskoInformatykStatyczna", [value + " " + getFromPosDataDetails(posesData, 'nazwiskoInformatykStatyczna')] as String[]);
+	}
+	
+	private mapImieInformatykDynamiczna(def data, def posesData, def key, def value){
+		data.put("imieINazwiskoInformatykDynamiczna", [value + " " + getFromPosDataDetails(posesData, 'nazwiskoInformatykDynamiczna')] as String[]);
+	}
+	
     //------------------- PROCESS METHODS --------------------------------
 	
 	private mapNumerRachunkuBankowegoKlientaProcess(def data, def pd, def key, def value){
@@ -821,6 +819,14 @@ class PdfMapper {
         getPropertyFromObject(pointData?.pointDetails, key)
     }
 
+	private getFromPosData(def posesData, def key){
+		getPropertyFromObject(posesData, key);
+	}
+
+	private getFromPosDataDetails(def posesData, def key){
+		getPropertyFromObject(posesData?.posDetails, key)
+	}
+	
     private getPropertyFromObject(def object, def property){
         if (object?.hasProperty(property)){
             return object."${property}" ?: "";
