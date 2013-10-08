@@ -89,7 +89,7 @@ class PdfMapper {
 	private def mapProcessCalcToPDFData() {
 		Map<String, String[]> data = new HashMap<String, String[]>()
 		if (calculatorService != null){
-            data.put('oplatyPOSMiesiacNaliczania', [calculatorService.getCalcProperty(calc,'E_LICZBA_MIES_ZWOL_NAJ_1')] as String[])
+            data.put('oplatyPOSMiesiacNaliczania', [calculatorService.getCalcProperty(calc,'E_LICZBA_MIES_ZWOL_NAJ_1')?:"1"] as String[])
 		}
 		return data
 	}
