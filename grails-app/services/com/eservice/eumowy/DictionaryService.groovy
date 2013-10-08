@@ -29,8 +29,8 @@ class DictionaryService {
         getFromDictionary(GET_BANK, [])
     }
 
-    def getPosTypeComboBox(def nipNum) {
-        getFromDictionary(GET_POS_TYPE_COMBOBOX, [nip:nipNum])
+    def getPosTypeComboBox(def nipNum, def medium) {
+        getFromDictionary(GET_POS_TYPE_COMBOBOX, [nip:nipNum, medium:medium])
     }
 
     def getCbdPointsComboBox(def nipNum) {

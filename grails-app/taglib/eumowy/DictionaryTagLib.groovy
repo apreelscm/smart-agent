@@ -16,7 +16,8 @@ class DictionaryTagLib {
 	
 	Closure typeSelect = { attrs ->
 		def nipNum = attrs.nip
-		attrs.from = dictionaryService.getPosTypeComboBox(nipNum)*.value
+        def medium = attrs.medium
+		attrs.from = dictionaryService.getPosTypeComboBox(nipNum, medium)*.value
 		fieldImpl(out, attrs)
 	}
 	
