@@ -109,12 +109,12 @@ class PdfMapper {
 		
         data.put("mid", [processInstance.client.mid?:'{mid}'] as String[])
 		
-		def aaa = processInstance.client.mid;
+		def picm = processInstance.client.mid;
 		
-				data.put("nrMerchanta1", [aaa?aaa.toString().substring(0, 5):'{mid}'] as String[])
-				data.put("nrMerchanta2", [aaa?aaa.toString().substring(5, 10):''] as String[])
-				data.put("nrMerchanta3", [aaa?aaa.toString().substring(10, 12):''] as String[])
-				data.put("nrMerchanta4", [aaa?aaa.toString().substring(12, 14):''] as String[])
+				data.put("nrMerchanta1", [picm?picm.toString().substring(0, 5):'{mid}'] as String[])
+				data.put("nrMerchanta2", [picm?picm.toString().substring(5, 10):''] as String[])
+				data.put("nrMerchanta3", [picm?picm.toString().substring(10, 12):''] as String[])
+				data.put("nrMerchanta4", [picm?picm.toString().substring(12, 14):''] as String[])
 		
         return data
     }
