@@ -6,7 +6,8 @@
                 <li class="align-center">
                     <span class="align-right"><g:message code="panel.payment.foreing.currency2"/></span>
                     <span class="align-left">
-                        <eumowy:currencyField name="oplataZaPlatnoscWInnejWalucie" validatable="${data}" value="${data.oplataZaPlatnoscWInnejWalucie}" readonly="true"/>
+                        <eumowy:textField name="oplataZaPlatnoscWInnejWalucie" validatable="${data}" value="${data.oplataZaPlatnoscWInnejWalucie}" readonly="true"/>
+                        <g:message code="panel.polish.currency"/>
                     </span>
                 </li>
             </ul>
