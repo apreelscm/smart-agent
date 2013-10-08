@@ -47,7 +47,8 @@
                                                 class="${hasErrors(bean:data,field:'liczbaTerminali','error')}"
                                                 value="${pointData?.terminalIlosc}" style="width: 50px;"
                                                 errorMessage="${message(code:'default.tooMuch.liczbaTerminali')}"/>-->
-                            <eumowy:numberField name="${panelType}[${id}].terminalIlosc" id="${panelType}[${id}].terminalCount" value="${pointData?.terminalIlosc}" style="width: 50px;" />
+                            %{--<eumowy:numberField name="${panelType}[${id}].terminalIlosc" id="${panelType}[${id}].terminalCount" value="${pointData?.terminalIlosc}" style="width: 50px;" />--}%
+                            <eumowy:textField name="${panelType}[${id}].terminalIlosc" id="${panelType}[${id}].terminalCount" class="integer-number" value="${pointData?.terminalIlosc}" style="width: 50px;" />
                         </span>
                     </li>
                 </ul>
