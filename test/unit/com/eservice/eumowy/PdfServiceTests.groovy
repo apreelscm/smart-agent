@@ -729,7 +729,7 @@ class PdfServiceTests {
 		data.put("mastercardPKOBPM2St", ["55"] as String[]);
 		data.put("mastercardPKOBPM3St", ["5"] as String[]);
 		data.put("dinersClubSt", ["55"] as String[]);
-		data.put("ikoSt", ["66"] as String[]);
+		data.put("ikoPr", ["66"] as String[]);
 		data.putAll(insertSignatures(1, 85, 180, 74, 43))
 		process("APUPZAWNZBS1.00013-01-25 - Aneks do umowy o przyjm zapł (bez stawek płaskich).pdf", "APUPZAWNZBS1.00013-01-25 - Aneks do umowy o przyjm zapł (bez stawek płaskich)_out.pdf", data)
 	}
@@ -838,7 +838,7 @@ class PdfServiceTests {
 		data.put("mastercardPKOBPM2St", ["55"] as String[]);
 		data.put("mastercardPKOBPM3St", ["5"] as String[]);
 		data.put("dinersClubSt", ["55"] as String[]);
-		data.put("ikoSt", ["66"] as String[]);
+		data.put("ikoPr", ["66"] as String[]);
 		data.putAll(insertSignatures(1, 80, 180, 74, 43))
 		process("APUPZAWNZS1.00013-01-25 - Aneks do umowy o przyjm zapł (narzucone stawki płaskie).pdf", "APUPZAWNZS1.00013-01-25 - Aneks do umowy o przyjm zapł (narzucone stawki płaskie)_out.pdf", data)
 	}
@@ -943,7 +943,7 @@ class PdfServiceTests {
 		data.put("mastercardPKOBPM2St", ["55"] as String[]);
 		data.put("mastercardPKOBPM3St", ["5"] as String[]);
 		data.put("dinersClubSt", ["55"] as String[]);
-		data.put("ikoSt", ["66"] as String[]);
+		data.put("ikoPr", ["66"] as String[]);
 		
 		data.put("punkt1", ["Kodzik"] as String[]);
 		data.put("adres1", ["Kodzikowa 2"] as String[]);
@@ -1222,7 +1222,7 @@ class PdfServiceTests {
 		data.put("mastercardPKOBPM2St", ["55"] as String[]);
 		data.put("mastercardPKOBPM3St", ["5"] as String[]);
 		data.put("dinersClubSt", ["55"] as String[]);
-		data.put("ikoSt", ["66"] as String[]);
+		data.put("ikoPr", ["66"] as String[]);
 		data.put("umowaNieOzn", ["true", "", "checkbox"] as String[]);
 		data.put("umowaOzn", ["true", "", "checkbox"] as String[]);
 		data.putAll(insertSignatures(4, 90, 308, 74, 43))

@@ -1,4 +1,4 @@
-SELECT MAX(umw_data_podpisania) as "dataAneksowanejUmowyPrepaid"
+SELECT NVL(MAX (umw_data_podpisania),sysdate) as "dataAneksowanejUmowyPrepaid"
 FROM CBD_ADM.cbt_umowy
 WHERE umw_typ = 'PRP'
       AND umw_kln_id IN

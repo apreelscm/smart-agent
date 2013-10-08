@@ -800,6 +800,17 @@ class ActivityController {
                 Process processInstance = processService.populateProcessWithData(flow.processInstance,cmd)
 
                 processInstance.save(flush: true, validate: false)
+				
+				log.info "Zapisano dane paneli"
+				
+				// Update
+				processInstance.points?.each { point ->
+					if (point.cbdId != null) {
+						def foundApc = cmd.allPoints?.find { apc -> apc.cbdId == point.cbdId }
+						foundApc?.id = point.id
+					}
+				}
+								
                 flow.processInstance = processInstance
                 //  flow.data = cmd
                 flow.skipPanelsInit = true;

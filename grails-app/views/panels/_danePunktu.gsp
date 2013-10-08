@@ -192,15 +192,15 @@
                                          name="${panelType}[${id}].dialupTyp" from="[]"
                                          valueMessagePrefix="" value="${pointData?.dialupTyp}"
                                          style="width: 220px" /></td>
-                <td style="text-align: right;"><g:message
-                        code="panel.dialup" /></td>
+                <td style="text-align: right;"><g:message code="panel.dialup" /></td>
                 <td><g:textField name="${panelType}[${id}].dialupIlosc"
                                  id="${panelType}[${id}].dialupCount"
-                                 value="${pointData?.dialupIlosc}" style="width: 50px" /> szt.</td>
+                                 value="${pointData?.dialupIlosc}" style="width: 50px"
+                                 class="integer-number"/> szt.</td>
                 <td><g:textField name="${panelType}[${id}].dialupPPIlosc"
                                  id="${panelType}[${id}].dialupPPCount"
-                                 value="${pointData?.dialupPPIlosc}" style="width: 50px" /> PP.
-                szt.</td>
+                                 value="${pointData?.dialupPPIlosc}" style="width: 50px"
+                                 class="integer-number"/> PP. szt.</td>
                 <td><g:textField name="${panelType}[${id}].dialupCena"
                                  id="${panelType}[${id}].dialupPrice"
                                  value="${pointData?.dialupCena}" style="width: 50px" /> zł.</td>
@@ -217,11 +217,12 @@
                 <td style="text-align: right;"><g:message code="panel.vpn" /></td>
                 <td><g:textField name="${panelType}[${id}].vpnIlosc"
                                  id="${panelType}[${id}].vpnCount"
-                                 value="${pointData?.vpnIlosc}" style="width: 50px" /> szt.</td>
+                                 value="${pointData?.vpnIlosc}" style="width: 50px"
+                                 class="integer-number"/> szt.</td>
                 <td><g:textField name="${panelType}[${id}].vpnPPIlosc"
                                  id="${panelType}[${id}].vpnPPCount"
-                                 value="${pointData?.vpnPPIlosc}" style="width: 50px" /> PP.
-                szt.</td>
+                                 value="${pointData?.vpnPPIlosc}" style="width: 50px"
+                                 class="integer-number"/> PP. szt.</td>
                 <td><g:textField name="${panelType}[${id}].vpnCena"
                                  id="${panelType}[${id}].vpnPrice"
                                  value="${pointData?.vpnCena}" style="width: 50px" /> zł.</td>
@@ -238,11 +239,12 @@
                 <td style="text-align: right;"><g:message code="panel.ssl" /></td>
                 <td><g:textField name="${panelType}[${id}].sslIlosc"
                                  id="${panelType}[${id}].sslCount"
-                                 value="${pointData?.sslIlosc}" style="width: 50px" /> szt.</td>
+                                 value="${pointData?.sslIlosc}" style="width: 50px"
+                                 class="integer-number"/> szt.</td>
                 <td><g:textField name="${panelType}[${id}].sslPPIlosc"
                                  id="${panelType}[${id}].sslPPCount"
-                                 value="${pointData?.sslPPIlosc}" style="width: 50px" /> PP.
-                szt.</td>
+                                 value="${pointData?.sslPPIlosc}" style="width: 50px"
+                                 class="integer-number"/> PP. szt.</td>
                 <td><g:textField name="${panelType}[${id}].sslCena"
                                  id="${panelType}[${id}].sslPrice"
                                  value="${pointData?.sslCena}" style="width: 50px" /> zł.</td>
@@ -259,11 +261,12 @@
                 <td style="text-align: right;"><g:message code="panel.wifi" /></td>
                 <td><g:textField name="${panelType}[${id}].wifiIlosc"
                 				 id="${panelType}[${id}].wifiCount"
-                                 value="${pointData?.wifiIlosc}" style="width: 50px" /> szt.</td>
+                                 value="${pointData?.wifiIlosc}" style="width: 50px"
+                                 class="integer-number"/> szt.</td>
                 <td><g:textField name="${panelType}[${id}].wifiPPIlosc"
                                  id="${panelType}[${id}].wifiPPCount"
-                                 value="${pointData?.wifiPPIlosc}" style="width: 50px" /> PP.
-                szt.</td>
+                                 value="${pointData?.wifiPPIlosc}" style="width: 50px"
+                                 class="integer-number"/> PP. szt.</td>
                 <td><g:textField name="${panelType}[${id}].wifiCena"
                                  id="${panelType}[${id}].wifiPrice"
                                  value="${pointData?.wifiCena}" style="width: 50px" /> zł.</td>
@@ -283,11 +286,12 @@
                 <td style="text-align: right;"><g:message code="panel.gprs" /></td>
                 <td><g:textField name="${panelType}[${id}].gprsIlosc"
                                  id="${panelType}[${id}].gprsCount"
-                                 value="${pointData?.gprsIlosc}" style="width: 50px" /></td>
+                                 value="${pointData?.gprsIlosc}" style="width: 50px"
+                                 class="integer-number"/> szt.</td>
                 <td><g:textField name="${panelType}[${id}].gprsPPIlosc"
                                  id="${panelType}[${id}].gprsPPCount"
-                                 value="${pointData?.gprsPPIlosc}" style="width: 50px" /> PP.
-                szt.</td>
+                                 value="${pointData?.gprsPPIlosc}" style="width: 50px"
+                                 class="integer-number"/> PP. szt.</td>
                 <td><g:textField name="${panelType}[${id}].gprsCena"
                                  id="${panelType}[${id}].gprsPrice"
                                  value="${pointData?.gprsCena}" style="width: 50px" /> zł.</td>

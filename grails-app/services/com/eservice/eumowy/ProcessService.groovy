@@ -1,15 +1,18 @@
 package com.eservice.eumowy
 
+import grails.util.Environment
+import groovy.sql.GroovyRowResult
+
+import org.apache.commons.lang.WordUtils
+
+import serializationutils.SerializationUtils
+
 import com.eservice.eumowy.command.AllPointsCommand
 import com.eservice.eumowy.command.AllPosCommand
 import com.eservice.eumowy.command.PointCommand
 import com.eservice.eumowy.command.ProcessCommand
 import com.eservice.eumowy.util.DateUtils
 import com.eservice.eumowy.util.EumowyCustomEnvironment
-import grails.util.Environment
-import groovy.sql.GroovyRowResult
-import org.apache.commons.lang.WordUtils
-import serializationutils.SerializationUtils
 
 class ProcessService {
 
@@ -128,8 +131,21 @@ class ProcessService {
         def cmd = initProcessCommand(process)
         cmd.allPoints?.addAll(getPointsToAllPointsCommandList(process, cmd))
         cmd.allPoses?.addAll(getPosesToAllPosCommandList(process, cmd))
+		
+		cmd.allPoints?.each { AllPointsCommand apc ->
+			if (apc.cbdId == -1) {
+				PointData point = PointData.findById(apc.id)
+				if (point != null) {
+					log.info "USUWAM PUNKT O ID: " + point.id
+					process.removeFromPoints(point)
+					point.delete(flush: true)
+				}
+			}
+		}
+		cmd.allPoints?.removeAll { it.cbdId == -1 }
+		
         prepareProcessCommand(cmd, calc,)
-    }
+	}
 
     def getSavedProcessCommand(def process, def calc){
         log.info("getSavedProcessCommand processId = ${process.id}")
@@ -144,6 +160,29 @@ class ProcessService {
         cmd.allPoints?.addAll(getPointsToAllPointsCommandList(process, cmd))
         cmd.allPoses?.addAll(getPosesToAllPosCommandList(process, cmd))
 
+		cmd.allPoints?.each { AllPointsCommand apc ->
+			if (apc.cbdId == -1) {
+				PointData point = PointData.findById(apc.id)
+				if (point != null) {
+					log.info "USUWAM PUNKT O ID: " + point.id
+					process.removeFromPoints(point)
+					point.delete(flush: true)
+				}
+			}
+		}
+		cmd.allPoints?.removeAll { it.cbdId == -1 }
+		
+		cmd.allPoses?.each { AllPosCommand apc ->
+			if (apc.tpsId == -1) {
+				PosData pos = PosData.findById(apc.id)
+				if (pos != null) {
+					log.info "USUWAM POS O ID: " + pos.id
+					pos.delete(flush: true)
+				}
+			}
+		}
+		cmd.allPoses?.removeAll { it.tpsId == -1 }
+		
         cmd.notes = process.notesToCoa
 
         prepareProcessCommand(cmd, calc, cbdMethods)
@@ -549,11 +588,6 @@ class ProcessService {
         def pointDataList = getPointCommandsToPointDataList(cmd)
 
         pointDataList?.each { PointData point ->
-            if (point.cbdId == -1) {
-                point.delete(flush: true)
-                return
-            }
-
             point.save(flush: true)
             process.addToPoints(point)
         }
@@ -561,11 +595,6 @@ class ProcessService {
 		def posDataList = getPointCommandsToPosDataList(cmd)
 
 		posDataList?.each { PointData point ->
-			if (point.cbdId == -1) {
-				point.delete(flush: true)
-				return
-			}
-
 			point.save(flush: true)
 			process.addToPoints(point);
 		}
