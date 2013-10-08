@@ -112,9 +112,9 @@ class PdfMapper {
 		def aaa = processInstance.client.mid;
 		
 				data.put("nrMerchanta1", [aaa?aaa.toString().substring(0, 5):'{mid}'] as String[])
-				data.put("nrMerchanta2", [aaa?aaa.toString().substring(5, 10):'{mid}'] as String[])
-				data.put("nrMerchanta3", [aaa?aaa.toString().substring(10, 12):'{mid}'] as String[])
-				data.put("nrMerchanta4", [aaa?aaa.toString().substring(12, 14):'{mid}'] as String[])
+				data.put("nrMerchanta2", [aaa?aaa.toString().substring(5, 10):''] as String[])
+				data.put("nrMerchanta3", [aaa?aaa.toString().substring(10, 12):''] as String[])
+				data.put("nrMerchanta4", [aaa?aaa.toString().substring(12, 14):''] as String[])
 		
         return data
     }
