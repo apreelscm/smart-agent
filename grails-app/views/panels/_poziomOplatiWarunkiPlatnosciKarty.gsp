@@ -59,8 +59,8 @@
                     <tr><td class="cardPaymentPanel-padding">8.4.1 <g:message code="panel.maestro.to" args="['20,00']"/></td><td><eumowy:percentageField validatable="${data}"  name="mastercardPKOBPM1Pr" value="${data.mastercardPKOBPM1Pr}" readonly="true" /> </td><td><eumowy:currencyField validatable="${data}"  name="mastercardPKOBPM1St" value="${data.mastercardPKOBPM1St}" readonly="true" /> </td></tr>
                     <tr><td class="cardPaymentPanel-padding">8.4.2 <g:message code="panel.maestro.from.to" args="['20,01','40,00']"/></td><td><eumowy:percentageField validatable="${data}"  name="mastercardPKOBPM2Pr" value="${data.mastercardPKOBPM2Pr}" readonly="true" /> </td><td><eumowy:currencyField validatable="${data}"  name="mastercardPKOBPM2St" value="${data.mastercardPKOBPM2St}" readonly="true" /> </td></tr>
                     <tr><td class="cardPaymentPanel-padding">8.4.3 <g:message code="panel.maestro.from" args="['40,01']"/></td><td><eumowy:percentageField validatable="${data}"  name="mastercardPKOBPM3Pr" value="${data.mastercardPKOBPM3Pr}" readonly="true" /> </td><td><eumowy:currencyField validatable="${data}"  name="mastercardPKOBPM3St" value="${data.mastercardPKOBPM3St}" readonly="true" /> </td></tr>
-                    <tr><td class="bold">9. <g:message code="panel.dinersclub.upercase"/></td><td><eumowy:percentageField   name="dinersClubPr" value="${data.dinersClubPr}" /> </td><td></td></tr>
-                    <tr><td class="bold">10. <g:message code="panel.iko"/></td><td><eumowy:percentageField  name="ikoSt" value="${data.ikoSt}" /> </td><td></td></tr>
+                    <tr><td class="bold">9. <g:message code="panel.dinersclub.upercase"/></td><td><eumowy:percentageField   name="dinersClubPr" value="${data.dinersClubPr}" readonly="true"/> </td><td></td></tr>
+                    <tr><td class="bold">10. <g:message code="panel.iko"/></td><td><eumowy:percentageField  name="ikoPr" value="${data.ikoPr}" readonly="true"/> </td><td></td></tr>
                 </tbody>
             </table>
         </div>
