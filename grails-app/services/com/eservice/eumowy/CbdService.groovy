@@ -39,7 +39,7 @@ class CbdService {
             case EumowyCustomEnvironment.MOCK.getName():
                 return findCalculatorByNipMock(clientNip);
             default:
-                return cbdDAO.selectMany(FIND_CALC_BY_NIP,[nip:clientNip]).collect{ [POLEAPREEL:it.POLEAPREEL,WARTOSCAPREEL:it.WARTOSCAPREEL]}//*.POLEAPREEL
+                return cbdDAO.selectMany(FIND_CALC_BY_NIP,[nip:clientNip]).collect{ [POLEAPREEL:it.POLE,WARTOSCAPREEL:it.WARTOSC]}//*.POLEAPREEL
         }
     }
 

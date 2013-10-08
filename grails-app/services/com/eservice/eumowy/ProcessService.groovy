@@ -131,8 +131,21 @@ class ProcessService {
         def cmd = initProcessCommand(process)
         cmd.allPoints?.addAll(getPointsToAllPointsCommandList(process, cmd))
         cmd.allPoses?.addAll(getPosesToAllPosCommandList(process, cmd))
+		
+		cmd.allPoints?.each { AllPointsCommand apc ->
+			if (apc.cbdId == -1) {
+				PointData point = PointData.findById(apc.id)
+				if (point != null) {
+					log.info "USUWAM PUNKT O ID: " + point.id
+					process.removeFromPoints(point)
+					point.delete(flush: true)
+				}
+			}
+		}
+		cmd.allPoints?.removeAll { it.cbdId == -1 }
+		
         prepareProcessCommand(cmd, calc,)
-    }
+	}
 
     def getSavedProcessCommand(def process, def calc){
         log.info("getSavedProcessCommand processId = ${process.id}")
@@ -147,6 +160,29 @@ class ProcessService {
         cmd.allPoints?.addAll(getPointsToAllPointsCommandList(process, cmd))
         cmd.allPoses?.addAll(getPosesToAllPosCommandList(process, cmd))
 
+		cmd.allPoints?.each { AllPointsCommand apc ->
+			if (apc.cbdId == -1) {
+				PointData point = PointData.findById(apc.id)
+				if (point != null) {
+					log.info "USUWAM PUNKT O ID: " + point.id
+					process.removeFromPoints(point)
+					point.delete(flush: true)
+				}
+			}
+		}
+		cmd.allPoints?.removeAll { it.cbdId == -1 }
+		
+		cmd.allPoses?.each { AllPosCommand apc ->
+			if (apc.tpsId == -1) {
+				PosData pos = PosData.findById(apc.id)
+				if (pos != null) {
+					log.info "USUWAM POS O ID: " + pos.id
+					pos.delete(flush: true)
+				}
+			}
+		}
+		cmd.allPoses?.removeAll { it.tpsId == -1 }
+		
         cmd.notes = process.notesToCoa
 
         prepareProcessCommand(cmd, calc, cbdMethods)
@@ -552,43 +588,16 @@ class ProcessService {
         def pointDataList = getPointCommandsToPointDataList(cmd)
 
         pointDataList?.each { PointData point ->
-            if (point.cbdId == -1) {
-                point.delete(flush: true)
-                return
-            }
-
             point.save(flush: true)
             process.addToPoints(point)
         }
-		
+
 		def posDataList = getPointCommandsToPosDataList(cmd)
-		
+
 		posDataList?.each { PointData point ->
-			if (point.cbdId == -1) {
-				point.delete(flush: true)
-				return
-			}
-			
 			point.save(flush: true)
 			process.addToPoints(point);
 		}
-
-        /*def pointsDataList = getPointData(cmd, process)
-		//process.points?.clear()
-        pointsDataList.each { data ->
-			def foundData = process.points.find { p -> p.id != null }
-			if (foundData != null) {
-				log.info "Removing old point data: " + foundData.id
-				process.points.remove(foundData)
-			}
-            process.addToPoints(data)
-            process.discard()
-        }
-		def posDataList = getPosData(cmd)
-		posDataList.each { data ->
-			process.addToPoints(data)
-			process.discard()
-		}*/
 
         process.notesToCoa = cmd.notes //notesToCOA
 
@@ -606,12 +615,10 @@ class ProcessService {
             if (["class","process", "cbdService", "errors", "constraints","calc","calculatorService",
                     "notes", "hasUmowaCzas", "hasKontaktTel", "hasDoladowania", "hasAkceptantTel",
                     "hasInformacjaHandlowa","liczbaTerminali", "atLeastClosure", "nullableTrueBlankFalse",
-                    "maxLengthClosure", "skipAddressValidationClosure"]
+                    "defaultPointData", "maxLengthClosure", "skipAddressValidationClosure"]
                     .contains(key) || value == ProcessCommand.DEFAULT_VALUE){
                 return
             }
-
-
 
             if(["allPoses", "allPoints", "points"].contains(key)){
                 //TODO implementacja logiki dla punktow
