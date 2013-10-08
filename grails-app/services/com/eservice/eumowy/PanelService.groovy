@@ -208,8 +208,7 @@ class PanelService {
 
     def getOplataDCCZaUruchomienie(ProcessCommand cmd, def calc ) {
         setCzyDcc(cmd,calc)
-        String tmpValue = nullify(cmd.oplataZaUruchomienieDCC)
-        cmd.oplataZaUruchomienieDCC = cmd.czyDcc ? tmpValue : (tmpValue.length() > 0 ? tmpValue : "-")
+        cmd.oplataZaUruchomienieDCC = cmd.czyDcc ? nullify(cmd.oplataZaUruchomienieDCC) : "-"
     }
 
     def getOplatyDCC(ProcessCommand cmd, def calc ) {
