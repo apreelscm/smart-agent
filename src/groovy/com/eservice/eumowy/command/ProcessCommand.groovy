@@ -461,6 +461,7 @@ class ProcessCommand implements Serializable {
     String hasInformacjaHandlowa
     String liczbaTerminali
     def defaultPointData
+	def defaultPosData
 
     static constraints = {
 

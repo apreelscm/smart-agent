@@ -1,12 +1,17 @@
 var globalPanelCount = 0;
 var globalPanelPosCount = 0;
+var panelPosInternalCount = 0;
 
 function getCurrentTerminalCount(prefix) {
 
-	var counter = globalPanelPosCount
-
+	var counter = 0;
+	
+	if (panelPosInternalCount != undefined) {
+		counter += panelPosInternalCount;
+	}
+	
 	for(var i = 0; i < globalPanelCount; i++) {
-		var prefixPanel = "#"+prefix+"\\["+i+"\\]\\"
+		var prefixPanel = "#"+prefix+"\\["+i+"\\]\\";
 		counter += jQuery(prefixPanel + ".dialupCount").val();
 		counter += jQuery(prefixPanel + ".vpnCount").val();
 		counter += jQuery(prefixPanel + ".sslCount").val();
