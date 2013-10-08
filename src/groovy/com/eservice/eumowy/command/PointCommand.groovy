@@ -1,10 +1,14 @@
 package com.eservice.eumowy.command
 
+import grails.validation.Validateable
+
 /**
  * User: Dominik Walczak
  * Date: 20.08.13 Time: 10:28
  *
  */
+
+@Validateable
 class PointCommand implements Serializable {
 	
 	Integer id
