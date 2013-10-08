@@ -55,13 +55,15 @@ grant select on  SUBSCRIPTION_SEQ to EUMOWY_APP;
 grant select on  dual to EUMOWY_APP;
 
 grant select on mapowaniekalkulatora to EUMOWY_APP;
+grant select on kalkulatortypurzadzen to EUMOWY_APP;
+
+grant execute on GetKalkulatorData to EUMOWY_APP;
 grant execute on GetKalkulatorSerwis to EUMOWY_APP;
 grant execute on GetKalkulatorStawkaPlaska to EUMOWY_APP;
 grant execute on GetKalkulatorZero to EUMOWY_APP;
 grant execute on GetKalkulatorPrepaid to EUMOWY_APP;
 grant execute on GetKalkulatorPromocyjne to EUMOWY_APP;
 grant execute on GetKosztAmortyzacji to EUMOWY_APP;
-grant execute on kalkulatortypurzadzen to EUMOWY_APP;
 grant execute on split to EUMOWY_APP;
 GRANT EXECUTE ON kalkulator TO eumowy_app;
 GRANT EXECUTE ON rekordkalkulator TO eumowy_app;

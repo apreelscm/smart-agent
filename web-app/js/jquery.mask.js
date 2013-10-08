@@ -1,6 +1,6 @@
 /**
  * jquery.mask.js
- * @version: v1.1.2
+ * @version: v1.3.0
  * @author: Igor Escobar
  *
  * Created by Igor Escobar on 2012-03-10. Please report any bug at http://blog.igorescobar.com
@@ -47,6 +47,7 @@
             jMask.translation = {
                 '0': {pattern: /\d/},
                 '9': {pattern: /\d/, optional: true},
+                '#': {pattern: /\d/, recursive: true},
                 'A': {pattern: /[a-zA-Z0-9]/},
                 'S': {pattern: /[a-zA-Z]/}
             };
@@ -55,14 +56,13 @@
             jMask = $.extend(true, {}, jMask, options);
 
             el.each(function() {
-                el.attr('maxlength', mask.length).attr('autocomplete', 'off');
+                if (options.maxlength !== false)
+                    el.attr('maxlength', mask.length);
+
+                el.attr('autocomplete', 'off');
                 p.destroyEvents();
                 p.events();
-
-                // div, span, p etc
-                if (!p.isInput()){
-                    p.val(p.getMasked());
-                }
+                p.val(p.getMasked());
             });
         };
 
@@ -81,11 +81,9 @@
             destroyEvents: function() {
                 el.off('keydown.mask').off("keyup.mask").off("paste.mask");
             },
-            isInput: function() {
-                return el.get(0).tagName.toLowerCase() === "input"
-            },
             val: function(v) {
-                return arguments.length > 0 ? (p.isInput() ? el.val(v) : el.text(v)) : (p.isInput() ? el.val() : el.text());
+                var isInput = el.get(0).tagName.toLowerCase() === "input";
+                return arguments.length > 0 ? (isInput ? el.val(v) : el.text(v)) : (isInput ? el.val() : el.text());
             },
             behaviour: function(e) {
                 e = e || window.event;
@@ -100,32 +98,45 @@
                     m = 0, maskLen = mask.length,
                     v = 0, valLen = value.length,
                     offset = 1, addMethod = "push",
+                    resetPos = -1,
+                    lastMaskChar,
                     check;
 
                 if (options.reverse) {
                     addMethod = "unshift";
                     offset = -1;
+                    lastMaskChar = 0;
                     m = maskLen - 1;
                     v = valLen - 1;
                     check = function () {
                         return m > -1 && v > -1;
                     };
                 } else {
+                    lastMaskChar = maskLen - 1;
                     check = function () {
-                        return m < maskLen && v < valLen
+                        return m < maskLen && v < valLen;
                     };
                 }
 
                 while (check()) {
                     var maskDigit = mask.charAt(m),
-                        translationMaskDigit = jMask.translation[maskDigit],
-                        valDigit = value.charAt(v);
+                        valDigit = value.charAt(v),
+                        translation = jMask.translation[maskDigit];
 
-                    if (translationMaskDigit) {
-                        if (valDigit.match(translationMaskDigit.pattern)) {
+                    if (translation) {
+                        if (valDigit.match(translation.pattern)) {
                             buf[addMethod](valDigit);
+                            if (translation.recursive) {
+                                if (resetPos == -1) {
+                                    resetPos = m;
+                                } else if (m == lastMaskChar) {
+                                    m = resetPos - offset;
+                                }
+                                if (lastMaskChar == resetPos)
+                                    m -= offset;
+                            }
                             m += offset;
-                        } else if (translationMaskDigit.optional == true) {
+                        } else if (translation.optional) {
                             m += offset;
                             v -= offset;
                         }

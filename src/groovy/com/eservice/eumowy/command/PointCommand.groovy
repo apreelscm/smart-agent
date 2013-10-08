@@ -1,10 +1,14 @@
 package com.eservice.eumowy.command
 
+import grails.validation.Validateable
+
 /**
  * User: Dominik Walczak
  * Date: 20.08.13 Time: 10:28
  *
  */
+
+@Validateable
 class PointCommand implements Serializable {
 	
 	Integer id
@@ -192,7 +196,7 @@ class PointCommand implements Serializable {
 //			return true
 //		})
 		kontaktWPunkcieEmail(nullable:true)
-		terminalIlosc(nullable:true)
+		terminalIlosc(nullable:true, shared: "natural")
 		bankId(nullable:true)
 		
 		dialupTyp(nullable:true)
