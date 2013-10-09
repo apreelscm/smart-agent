@@ -1,18 +1,15 @@
 package com.eservice.eumowy
 
-import grails.util.Environment
-import groovy.sql.GroovyRowResult
-
-import org.apache.commons.lang.WordUtils
-
-import serializationutils.SerializationUtils
-
 import com.eservice.eumowy.command.AllPointsCommand
 import com.eservice.eumowy.command.AllPosCommand
 import com.eservice.eumowy.command.PointCommand
 import com.eservice.eumowy.command.ProcessCommand
 import com.eservice.eumowy.util.DateUtils
 import com.eservice.eumowy.util.EumowyCustomEnvironment
+import grails.util.Environment
+import groovy.sql.GroovyRowResult
+import org.apache.commons.lang.WordUtils
+import serializationutils.SerializationUtils
 
 class ProcessService {
 
@@ -301,6 +298,7 @@ class ProcessService {
                         "pointDetails",
                         "posDatas",
                         "processId",
+                        "constraints",
                         //"cbdId",
                         "pointDetailsId",
                 ].contains(key) || value == null){
@@ -316,9 +314,8 @@ class ProcessService {
 
             point.pointDetails?.properties.each { key, value ->
                 //log.info "PointDataDetails Key: " + key
-                if (["point",
-                        "pointId",
-                ].contains(key) || value == null){
+                if (["point","constraints", "pointId"]
+                        .contains(key) || value == null){
                     return
                 }
 
@@ -332,7 +329,7 @@ class ProcessService {
 
             posData?.properties.each { key, value ->
                 log.info "PosData Key: " + key
-                if (["tpsId",
+                if (["tpsId","constraints",
                         "point"].contains(key) || value == null){
                     return
                 }
@@ -434,6 +431,7 @@ class ProcessService {
                         "posDatas",
                         "processId",
                         "pointDetailsId",
+                        "constraints",
                 ].contains(key) || value == null){
                     return
                 }
