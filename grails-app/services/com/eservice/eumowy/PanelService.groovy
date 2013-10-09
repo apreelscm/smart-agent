@@ -16,6 +16,8 @@ class PanelService {
 
     def init(ProcessCommand cmd, def calc){
         cmd.scoringMcc = calculatorService.getCalcProperty(calc,"MCC")
+        cmd.doladowania_tp = calculatorService.getCalcProperty(calc,"CZY_TELEPOMPKA")
+        cmd.doladowania_tk = calculatorService.getCalcProperty(calc,"CZY_TELEKODZIK")
     }
 
     def getAdresacjaSeciowa(ProcessCommand cmd, def calc ) {
@@ -190,11 +192,7 @@ class PanelService {
     }
 
     def getFormaDoladowania(ProcessCommand cmd, def calc ) {
-        cmd.doladowania_tp = calculatorService.getCalcProperty(calc,"CZY_TELEPOMPKA")
-        cmd.doladowania_tk = calculatorService.getCalcProperty(calc,"CZY_TELEKODZIK")
-
         cmd.srednia_sprzedaz_doladowan = calculatorService.getCalcProperty(calc,"DEKLARACJA_SPRZEDAZY_PP")
-
         cmd.srednia_sprzedaz_doladowan_slownie = nullify(cmd.srednia_sprzedaz_doladowan_slownie)
     }
 
