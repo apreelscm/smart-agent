@@ -177,7 +177,7 @@ class PointCommand implements Serializable {
 		korespondencjaNrLokalu(nullable:true, blank:false, shared: "natural")
 		korespondencjaMiasto(nullable:true, blank:false, shared: "alpha")
 		korespondencjaKodPocztowy(nullable:true, blank:false, shared: "natural")
-		korespondencjaPoczta(nullable:true, blank:false, shared:"apha")
+		korespondencjaPoczta(nullable:true, blank:false, shared:"alpha")
 		kontaktWPunkcieTytul(nullable:true)
 		kontaktWPunkcieImie(nullable:true, blank:false, shared: "lettersonly")
 		kontaktWPunkcieNazwisko(nullable:true, blank:false, shared: "lettersonly")
