@@ -165,6 +165,18 @@ class CbdService {
 		return cbdDAO.selectOne(GET_ANEKS_DO_UMOWY_PREPAID,[nip:clientNip])
 	}
 
+    @Cacheable(value="getPosTypes")
+    @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
+    def getPosTypes(def query, def clientNip, def medium) {
+        return cbdDAO.selectMany(query,[nip:clientNip, medium: medium]);
+    }
+
+    @Cacheable(value="getCbdPoints")
+    @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
+    def getCbdPoints(def query, def clientNip) {
+        return cbdDAO.selectMany(query,[nip:clientNip]);
+    }
+
 
     /**
      * MOCK
