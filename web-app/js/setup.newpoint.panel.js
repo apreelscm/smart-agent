@@ -157,19 +157,12 @@ function setupNewPointPanelHandlers(prevPanelId, panelId, prefix) {
     sameForEveryPoint(prefixPanel + ".terminaloptionsSameForEveryPoint", prefix, panelId);
     sameForEveryPoint(prefixPanel + ".additionalequipmentSameForEveryPoint", prefix, panelId);
 
+    unlockStaticAddress(testNumber(jQuery(prefixPanel + ".wifiCount").val()) || testNumber(jQuery(prefixPanel + ".vpnCount").val()) || testNumber(jQuery(prefixPanel + ".sslCount").val()), prefixPanel);
+    unlockDynamicAddress(testNumber(jQuery(prefixPanel + ".wifiCount").val()), prefixPanel);
 }
 
 function testNumber(value){
-    //brzydko, ale nie wiem jak to ladniej napisac...
-    if (value){
-        if (parseInt(value)>0){
-            return true
-        } else {
-            return false
-        }
-    } else {
-        return false
-    }
+    return parseInt(value)>0;
 }
 
 function unlockStaticAddress(lock, prefixPanel){
