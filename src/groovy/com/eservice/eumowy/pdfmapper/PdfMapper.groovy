@@ -29,11 +29,20 @@ class PdfMapper {
         println "Ilosc punktow: " + points?.size()
 
         if (points != null && points.size()>0){
+            //APUNTSS
             dataMap.putAll(mapPointsSpecial(points.findAll{ point -> (point.czyWybranyAkceptacjaKart && point.tytulPlatnosci)}, ["nazwa":"punktTytulPlatnosci", "miejscowosc":"adresTytulPlatnosci"]));
+
+            //APUPZDCC2, APUPZ2DC1
             dataMap.putAll(mapPointsSpecial(points.findAll{ point -> (point.czyWybranyAkceptacjaKart && point.czyWybranyZakresUruchomienia)}, ["nazwa":"punktZakresUruchomienia", "miejscowosc":"adresZakresUruchomienia"]));
-            dataMap.putAll(mapPointsSpecial(points.findAll{ point -> point.czyWybranyAkceptacjaKart}, ["nazwa":"punktAkceptacjaKart", "miejscowosc":"adresAkceptacjaKart"]));
+
+            //APUPZIF2, APUPZ2, APUPZBS2
+            dataMap.putAll(mapPointsSpecial(points.findAll{ point -> point.czyWybranyAkceptacjaKart }, ["nazwa":"punktAkceptacjaKart", "miejscowosc":"adresAkceptacjaKart"]));
+
+            //APUPZAWNZBS1, APUPZAWNZS1, APUNTZ2
             dataMap.putAll(mapPointsSpecial(points.findAll{ point -> point.cbdId == null}, ["nazwa":"punkt", "miejscowosc":"adres"]));
-            dataMap.putAll(mapPointsSpecial(points, ["nazwa":"punktTN", "miejscowosc":"adresTN", "tytulPlatnosci":"platnoscTN", "systemKasowy":"integracjaTN", "uta":"utaTN"]));
+
+            //APUNTSZAPOU3
+            dataMap.putAll(mapPointsSpecial(points.findAll{ point -> point.czyWybranyAkceptacjaKart}, ["nazwa":"punktTN", "miejscowosc":"adresTN", "tytulPlatnosci":"platnoscTN", "systemKasowy":"integracjaTN", "uta":"utaTN"]));
         }
 
 		dataMap.putAll(mapProcessCalcToPDFData())

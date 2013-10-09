@@ -32,7 +32,6 @@ class CbdService {
 	private static final def GET_ANEKS_DO_UMOWY_NAJMU_ZESTAWU_POS = "getAneksDoUmowyNajmuZestawuPos"
 	private static final def GET_ANEKS_DO_UMOWY_PREPAID = "getAneksDoUmowyPrepaid"
 
-    @Cacheable(value="findCalculatorByNip")
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
     def findCalculatorByNip(def clientNip) {
         switch (Environment.getCurrent().getName()) {
@@ -43,7 +42,6 @@ class CbdService {
         }
     }
 
-    @Cacheable(value="findCalculatorIdByNip")
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
     def findCalculatorIdByNip(def clientNip) {
         switch (Environment.getCurrent().getName()) {
@@ -54,7 +52,6 @@ class CbdService {
         }
     }
 
-    //@Cacheable(value="findClientByNip")
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
     def findClientByNip(def clientNip) {
         switch (Environment.getCurrent().getName()) {
