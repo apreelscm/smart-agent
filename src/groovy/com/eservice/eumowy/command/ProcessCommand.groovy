@@ -943,6 +943,9 @@ class ProcessCommand implements Serializable {
             value.each {  ptCmd ->
                 ptCmd?.validate()
                 if(ptCmd?.hasErrors()){
+                    ptCmd.errors.each {
+                        log.error(it)
+                    }
                     hasPointErrors = true
                 }
             }
