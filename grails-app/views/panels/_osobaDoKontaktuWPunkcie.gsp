@@ -5,8 +5,8 @@
 		<ul class="table-list vertical-center">
 			<li>
 				<span><g:select name="${panelType}[${id}].kontaktWPunkcieTytul" id="${panelType}[${id}].contactAtPointTitle" from="['', 'Pan','Pani']" valueMessagePrefix="person.title" value="${pointData?.kontaktWPunkcieTytul}" /></span>
-				<span><g:message code="panel.first.name" />:</span><span><eumowy:textField name="${panelType}[${id}].kontaktWPunkcieImie" id="${panelType}[${id}].contactAtPointFirstName" value="${pointData?.kontaktWPunkcieImie}" style="width: 120px" maxlength="15" required="true"/></span>
-				<span><g:message code="panel.last.name" />:</span><span><eumowy:textField name="${panelType}[${id}].kontaktWPunkcieNazwisko" id="${panelType}[${id}].contactAtPointLastName" value="${pointData?.kontaktWPunkcieNazwisko}"  style="width: 120px" maxlength="18" required="true"/></span>
+				<span><g:message code="panel.first.name" />:</span><span><eumowy:textField name="${panelType}[${id}].kontaktWPunkcieImie" id="${panelType}[${id}].contactAtPointFirstName" value="${pointData?.kontaktWPunkcieImie}" validatable="${pointData}" validateField="kontaktWPunkcieImie" style="width: 120px" maxlength="15" required="true"/></span>
+				<span><g:message code="panel.last.name" />:</span><span><eumowy:textField name="${panelType}[${id}].kontaktWPunkcieNazwisko" id="${panelType}[${id}].contactAtPointLastName" value="${pointData?.kontaktWPunkcieNazwisko}" validatable="${pointData}" validateField="kontaktWPunkcieNazwisko" style="width: 120px" maxlength="18" required="true"/></span>
 				<span><g:message code="panel.fax" />:</span><span><g:textField class="fax" name="${panelType}[${id}].kontaktWPunkcieFax" id="${panelType}[${id}].contactAtPointFax" value="${pointData?.kontaktWPunkcieFax}" style="width: 120px" maxlength="9"/></span>
 			</li>
 			<li>
