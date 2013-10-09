@@ -181,7 +181,7 @@ class PointCommand implements Serializable {
 		kontaktWPunkcieTytul(nullable:true)
 		kontaktWPunkcieImie(nullable:true, blank:false, shared: "lettersonly")
 		kontaktWPunkcieNazwisko(nullable:true, blank:false, shared: "lettersonly")
-		kontaktWPunkcieFax(nullable:true, blank:true, shared: "natural")
+		kontaktWPunkcieFax(nullable:true, blank:true)
 		kontaktWPunkcieTelStacjonarny(nullable:true, blank:false)
 		kontaktWPunkcieTelKomorkowy(nullable:true, blank:false)
 //		TODO - sprawdzic czy to zadziala; mozliwe, ze trzeba nadac nazwy pol pokroju "points[0].kontaktWPunkcieTelStacjonarny
