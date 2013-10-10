@@ -483,11 +483,13 @@ class PanelService {
         }
 
         cmd.obslugaTyp = result?.value ?: "";
-        cmd.obslugaEkonomicznyCena = nullify(cmd.obslugaEkonomicznyCena);
+        //serwis ekonomiczny zaczytujemy w dwoch panelach
+        cmd.obslugaEkonomicznyCena = nullify(cmd.obslugaEkonomicznyCena, "0");
     }
 
     def getSerwisEkonomiczny(ProcessCommand cmd, def calc ) {
-
+        //serwis ekonomiczny zaczytujemy w dwoch panelach
+        cmd.obslugaEkonomicznyCena = nullify(cmd.obslugaEkonomicznyCena, "0");
     }
 
     def getSerwisKomfort(ProcessCommand cmd, def calc ) {
