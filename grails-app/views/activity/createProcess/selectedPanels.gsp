@@ -202,6 +202,12 @@
         <button id="mockBtn">MOCK</button>
     </g:if>
 
+    <g:if env="production">
+        %{--empty--}%
+    </g:if>
+    <g:else>
+        <a href="/eumowy/calculator?nip=${data.nip}" target="_blank">Zobacz kalkulator</a>
+    </g:else>
     <h1 class="ng linia-bottom"><g:message code="selectedPanels.header.title" default="Lista paneli"/></h1>
 
     <g:hasErrors bean="${data}">
