@@ -36,6 +36,7 @@
             var input = $j("<input>").attr("type", "hidden").attr("name", "_eventId_saveOnly").val("");
             $j('.panelsForm').data("validator").cancelSubmit = true;
             $j('.panelsForm').append($j(input)).submit()
+            showLoadingDialog()
             return false
         });
 
@@ -49,12 +50,7 @@
 
                 submitButtons.attr('disabled', 'disabled');
                 continueButton.attr('disabled', 'disabled');
-                $j("#loadingDialog").dialog({
-                    resizable: true,
-                    height: 100,
-                    width: 250,
-                    modal: true
-                });
+                showLoadingDialog()
 
             }
 
@@ -67,17 +63,9 @@
 
                 if ( $j(".panelsForm").valid()){
                     var input = $j("<input>").attr("type", "hidden").attr("name", "_eventId_continue").val("");
-
                     submitButtons.attr('disabled', 'disabled');
                     continueButton.attr('disabled', 'disabled');
-
-                    $j("#loadingDialog").dialog({
-                        resizable: true,
-                        height: 100,
-                        width: 250,
-                        modal: true
-				    });
-
+                    showLoadingDialog()
                     $j('.panelsForm').append($j(input)).submit()
                 }
 
@@ -202,6 +190,12 @@
         <button id="mockBtn">MOCK</button>
     </g:if>
 
+    <g:if env="production">
+        %{--empty--}%
+    </g:if>
+    <g:else>
+        <a href="/eumowy/calculator?nip=${data.nip}" target="_blank">Zobacz kalkulator</a>
+    </g:else>
     <h1 class="ng linia-bottom"><g:message code="selectedPanels.header.title" default="Lista paneli"/></h1>
 
     <g:hasErrors bean="${data}">

@@ -15,18 +15,23 @@ class EumowyFieldTagLib {
 
         //def style = attrs.remove("style")
         //sb.append("""<div ${style?' style=\"'+ style+'\"':''}">""");
-		
-        attrs.class = attrs.class + " " + hasErrors(bean:attrs.validatable,field:attrs.name,'error')
+
+        def validateField = attrs.remove("validateField") ?: attrs.name
+        attrs.class = attrs.class + " " + hasErrors(bean:attrs.validatable,field:validateField,'error')
+
+
 		if (attrs.class?.indexOf("error") != -1) {
 			sb.append("<div style=\"padding-right: 2em; display: inline;\">")
 		}
         //attrs.style = "width:100%"
         sb.append(g.textField(attrs))
 
-        if(attrs.remove("validatable")){
+        def cmd = attrs.remove("validatable")
+        if(cmd){
             def isError = attrs.class.contains("error")
             if(isError){
-                def message = attrs.errorMessage ?: message(code:'default.validation.required.error', default: 'Pole Wymagane');
+
+                def message = attrs.errorMessage ?: message(error:cmd.errors.getFieldError(validateField));
                 def icon = g.resource(dir: "images/skin", file: "exclamation.png");
 
                 def imgBody = """<img src="${icon}" class="errorNotification" data-message="${message}" style="cursor:pointer; position:absolute; margin:2px;"/>"""
@@ -83,10 +88,11 @@ class EumowyFieldTagLib {
         }
 		sb.append(g.field(attrs))
 
-        if(attrs.remove("validatable")){
+        def cmd = attrs.remove("validatable")
+        if(cmd){
             def isError = attrs.class.contains("error")
             if(isError){
-                def message = attrs.errorMessage ?: message(code:'default.validation.required.error', default: 'Pole Wymagane');
+                def message = attrs.errorMessage ?: message(error:cmd.errors.getFieldError(validateField));
                 def icon = g.resource(dir: "images/skin", file: "exclamation.png");
                 def imgBody = """<img src="${icon}" class="errorNotification" data-message="${message}" style="cursor:pointer; position:absolute; margin:2px;"/>"""
                 sb.append(imgBody)

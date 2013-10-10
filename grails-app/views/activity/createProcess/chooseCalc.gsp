@@ -24,12 +24,7 @@
 
                 self.attr('disabled', 'disabled');
 
-                jQuery("#loadingDialog").dialog({
-                    resizable: true,
-                    height: 100,
-                    width: 250,
-                    modal: true
-                });
+                showLoadingDialog()
 
                 form.submit();
 
@@ -84,9 +79,6 @@
         </fieldset>
     </g:form>
 
-    <div id="loadingDialog" style="display: none;">
-        <p><g:message code="loading" default="Trwa ładowanie danych..."/></p>
-    </div>
 
 </section>
 

@@ -1,22 +1,17 @@
 package pdfgenerator;
 
+import com.eservice.eumowy.PdfService;
+import com.lowagie.text.DocumentException;
+import com.lowagie.text.Image;
+import com.lowagie.text.pdf.*;
+import org.apache.log4j.Logger;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
-
-import com.eservice.eumowy.PdfService;
-import org.apache.log4j.Logger;
-
-import com.lowagie.text.DocumentException;
-import com.lowagie.text.Image;
-import com.lowagie.text.pdf.AcroFields;
-import com.lowagie.text.pdf.BaseFont;
-import com.lowagie.text.pdf.PdfContentByte;
-import com.lowagie.text.pdf.PdfReader;
-import com.lowagie.text.pdf.PdfStamper;
 
 public class PdfGenerator {
 	private static Logger LOG = Logger.getLogger(PdfGenerator.class);
@@ -147,7 +142,7 @@ public class PdfGenerator {
                             break;
                     }
 					
-					if (dataEntry.getValue().length <= 2 || (dataEntry.getValue().length > 2 && "checkbox".equals(dataEntry.getValue()[2]) == false)) {
+					if(dataEntry.getValue().length <= 2 || (dataEntry.getValue().length > 2 && "checkbox".equals(dataEntry.getValue()[2]) == false)) {
 						form.setFieldProperty(dataEntry.getKey(), "textfont", bf, null);
 						form.addSubstitutionFont(bf);
 					}
