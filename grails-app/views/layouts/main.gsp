@@ -79,6 +79,10 @@
     <g:message code="spinner.alt" default="Proszę czekać..."/>
 </div>--}%
 
+<div id="loadingDialog" style="display: none;">
+    <p><g:message code="loading" default="Trwa ładowanie danych..."/></p>
+</div>
+
 <g:javascript library="application"/>
 <r:layoutResources/>
 

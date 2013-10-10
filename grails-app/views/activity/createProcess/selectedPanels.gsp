@@ -36,6 +36,7 @@
             var input = $j("<input>").attr("type", "hidden").attr("name", "_eventId_saveOnly").val("");
             $j('.panelsForm').data("validator").cancelSubmit = true;
             $j('.panelsForm').append($j(input)).submit()
+            showLoadingDialog()
             return false
         });
 
@@ -49,12 +50,7 @@
 
                 submitButtons.attr('disabled', 'disabled');
                 continueButton.attr('disabled', 'disabled');
-                $j("#loadingDialog").dialog({
-                    resizable: true,
-                    height: 100,
-                    width: 250,
-                    modal: true
-                });
+                showLoadingDialog()
 
             }
 
@@ -67,17 +63,9 @@
 
                 if ( $j(".panelsForm").valid()){
                     var input = $j("<input>").attr("type", "hidden").attr("name", "_eventId_continue").val("");
-
                     submitButtons.attr('disabled', 'disabled');
                     continueButton.attr('disabled', 'disabled');
-
-                    $j("#loadingDialog").dialog({
-                        resizable: true,
-                        height: 100,
-                        width: 250,
-                        modal: true
-				    });
-
+                    showLoadingDialog()
                     $j('.panelsForm').append($j(input)).submit()
                 }
 
