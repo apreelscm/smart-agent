@@ -17,4 +17,14 @@ class EmailController {
         emailService.sendEmail(email)
         redirect(action: "index")
     }
+	
+	
+	//statystyki hibernate'a:
+	/*def sessionFactory
+	
+	def showCacheStatistics = {
+		def statistics = sessionFactory.statistics
+		log.info(statistics)
+		render statistics
+	}*/
 }
