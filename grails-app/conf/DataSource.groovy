@@ -23,6 +23,7 @@ environments {
             password = ""
             dbCreate = "create-drop" // one of 'create', 'create-drop', 'update', 'validate', ''
             url = "jdbc:h2:mem:CbdDb;MODE=Oracle;MVCC=TRUE;LOCK_TIMEOUT=10000;INIT=CREATE SCHEMA IF NOT EXISTS CBD_ADM\\;CREATE SCHEMA IF NOT EXISTS EUMOWY"
+
         }
     }
     development {
@@ -32,8 +33,23 @@ environments {
             username = "eumowy_app"
             password = "eumowy_app"
             dbCreate = ""
-//            url = "jdbc:oracle:thin:@db-eservice.apreel.lan:1521:cbd01out"
             url = "jdbc:oracle:thin:@192.168.9.22:1523:tstcbd"
+           //url = "jdbc:oracle:thin:@db-eservice.apreel.lan:1521:cbd01out"
+            //url = "jdbc:oracle:thin:@192.168.9.22:1523:tstcbd"
+            //url = "jdbc:oracle:thin:@192.168.9.22:1523:tstcbd"
+            properties {
+                maxActive = -1
+                initialSize = 1
+                maxWait = 10000
+                numTestsPerEvictionRun = 3
+                testOnBorrow = true
+                testWhileIdle = true
+                testOnReturn = true
+                validationQuery = "SELECT 1 from dual"
+                minEvictableIdleTimeMillis = 1000 * 60 * 5
+                timeBetweenEvictionRunsMillis = 1000 * 60 * 5
+            }
+
         }
     }
     test {
@@ -46,8 +62,20 @@ environments {
            /*username = "eumowy"
              password = "V7S1947nK89O"
              dbCreate="update"*/
-            //url = "jdbc:oracle:thin:@db-eservice.apreel.lan:1521:cbd01out"
-            url = "jdbc:oracle:thin:@192.168.9.22:1523:tstcbd"
+            url = "jdbc:oracle:thin:@db-eservice.apreel.lan:1521:cbd01out"
+            //url = "jdbc:oracle:thin:@192.168.9.22:1523:tstcbd"
+            properties {
+                maxActive = -1
+                initialSize = 1
+                maxWait = 10000
+                numTestsPerEvictionRun = 3
+                testOnBorrow = true
+                testWhileIdle = true
+                testOnReturn = true
+                validationQuery = "SELECT 1 from dual"
+                minEvictableIdleTimeMillis = 1000 * 60 * 5
+                timeBetweenEvictionRunsMillis = 1000 * 60 * 5
+            }
         }
     }
     uat {
@@ -60,6 +88,18 @@ environments {
             url = "jdbc:oracle:thin:@192.168.3.221:1523:tstcbd"
             //url = "jdbc:oracle:thin:@192.168.9.22:1523:tstcbd"  // w sieci apreel
             //url = "jdbc:oracle:thin:@db-eservice.apreel.lan:1521:cbd01out"  // test
+            properties {
+                maxActive = -1
+                initialSize = 1
+                maxWait = 10000
+                numTestsPerEvictionRun = 3
+                testOnBorrow = true
+                testWhileIdle = true
+                testOnReturn = true
+                validationQuery = "SELECT 1 from dual"
+                minEvictableIdleTimeMillis = 1000 * 60 * 5
+                timeBetweenEvictionRunsMillis = 1000 * 60 * 5
+            }
         }
     }
     production {
