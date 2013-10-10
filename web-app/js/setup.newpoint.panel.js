@@ -460,6 +460,23 @@ function clearNewPointData(prevPanelId, panelId) {
 function setupNewPosPanelHandlers(prevPanelId, panelId, prefix) {
     var prefixPanel = "#"+prefix+"\\["+panelId+"\\]\\";
 
+    jQuery(prefixPanel + ".wifiCount").on( "blur", function(e){
+        var lock = testNumber(e.target.value) || testNumber(jQuery(prefixPanel + ".vpnCount").val()) || testNumber(jQuery(prefixPanel + ".sslCount").val());
+        unlockStaticAddress(lock, prefixPanel);
+        unlockDynamicAddress(testNumber(e.target.value), prefixPanel);
+    })
+    jQuery(prefixPanel + ".vpnCount").on( "blur", function(e){
+        var lock = testNumber(e.target.value) || testNumber(jQuery(prefixPanel + ".wifiCount").val()) || testNumber(jQuery(prefixPanel + ".sslCount").val());
+        unlockStaticAddress(lock, prefixPanel);
+    })
+    jQuery(prefixPanel + ".sslCount").on( "blur", function(e){
+        var lock = testNumber(e.target.value) || testNumber(jQuery(prefixPanel + ".wifiCount").val()) || testNumber(jQuery(prefixPanel + ".vpnCount").val());
+        unlockStaticAddress(lock, prefixPanel);
+    })
+
+    unlockStaticAddress(testNumber(jQuery(prefixPanel + ".wifiCount").val()) || testNumber(jQuery(prefixPanel + ".vpnCount").val()) || testNumber(jQuery(prefixPanel + ".sslCount").val()), prefixPanel);
+    unlockDynamicAddress(testNumber(jQuery(prefixPanel + ".wifiCount").val()), prefixPanel);
+
     addDateHandlers(prefixPanel, prefix, panelId);
 
     sameForEveryPoint(prefixPanel + ".sameForEveryPoint", prefix, panelId);
