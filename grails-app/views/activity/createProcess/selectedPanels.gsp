@@ -6,6 +6,7 @@
     <title><g:message code="selectedPanels.header.title" default="Lista paneli"/></title>
     <r:require module="filestyle"/>
     <r:require module="jquery_ui" />
+    <r:require module="selectedPanels"/>
 
     <g:javascript>
 
@@ -151,6 +152,10 @@
             }
             return result
         }
+
+        $j("input.doladowanie").live("click", function(){refreshTelepomkaAndTelekodzikPercentValues()});
+
+        refreshTelepomkaAndTelekodzikPercentValues()
     </g:javascript>
     <r:require module="validation"/>
     <r:require module="newpoint_panel_setup"/>

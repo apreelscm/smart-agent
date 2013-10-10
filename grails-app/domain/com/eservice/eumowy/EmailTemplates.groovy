@@ -17,6 +17,7 @@ class EmailTemplates implements Serializable {
     static mapping = {
         table name: "EMAIL_TEMPLATES", schema: DomainConsts.SHEMA_NAME
         id generator:'sequence', params:[sequence:DomainConsts.SHEMA_NAME+'.EMAIL_TEMPLATES_SEQ']
+		cache true
     }
 
     enum EmailTemplateType {

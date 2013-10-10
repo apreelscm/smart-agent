@@ -35,10 +35,10 @@
                         <span>
                             <g:set var="hasNewUmowaAndPrepaid" value="${processInstance?.activities?.any{it.code.equals('nowaUmowa')} && processInstance?.activities?.any{it.code.equals('dodaniePrepaid')}}"/>
                             <div>
-                                <label for="${panelType}[${id}].telePompka"><g:checkBox name="${panelType}[${id}].telePompka" value="${pointData?.telePompka}"  disabled="${!(hasNewUmowaAndPrepaid || data.doladowania_tp)}"/><g:message code="panel.newpoint.terminaloptions.phonecreditsrecharge.telepompka" /></label>
+                                <label for="${panelType}[${id}].telePompka"><g:checkBox name="${panelType}[${id}].telePompka" value="${pointData?.telePompka}"  disabled="${!(hasNewUmowaAndPrepaid || data.doladowania_tp)}" class="doladowanie" data-doladowanie="telepompka"/><g:message code="panel.newpoint.terminaloptions.phonecreditsrecharge.telepompka" /></label>
                             </div>
                             <div>
-                                <label for="${panelType}[${id}].teleKodzik"><g:checkBox name="${panelType}[${id}].teleKodzik" value="${pointData?.teleKodzik}"  disabled="${!(hasNewUmowaAndPrepaid || data.doladowania_tk)}"/><g:message code="panel.newpoint.terminaloptions.phonecreditsrecharge.telekodzik" /></label>
+                                <label for="${panelType}[${id}].teleKodzik"><g:checkBox name="${panelType}[${id}].teleKodzik" value="${pointData?.teleKodzik}"  disabled="${!(hasNewUmowaAndPrepaid || data.doladowania_tk)}" class="doladowanie" data-doladowanie="telekodzik"/><g:message code="panel.newpoint.terminaloptions.phonecreditsrecharge.telekodzik" /></label>
                             </div>
                         </span>
                         <span style="padding-left: 6em;display: inline-block">
