@@ -137,12 +137,68 @@ function setupNewPointPanelHandlers(prevPanelId, panelId, prefix) {
         }
     });
 
+    jQuery(prefixPanel + ".wifiCount").on( "blur", function(e){
+        var lock = testNumber(e.target.value) || testNumber(jQuery(prefixPanel + ".vpnCount").val()) || testNumber(jQuery(prefixPanel + ".sslCount").val());
+        unlockStaticAddress(lock, prefixPanel);
+        unlockDynamicAddress(testNumber(e.target.value), prefixPanel);
+    })
+    jQuery(prefixPanel + ".vpnCount").on( "blur", function(e){
+        var lock = testNumber(e.target.value) || testNumber(jQuery(prefixPanel + ".wifiCount").val()) || testNumber(jQuery(prefixPanel + ".sslCount").val());
+        unlockStaticAddress(lock, prefixPanel);
+    })
+    jQuery(prefixPanel + ".sslCount").on( "blur", function(e){
+        var lock = testNumber(e.target.value) || testNumber(jQuery(prefixPanel + ".wifiCount").val()) || testNumber(jQuery(prefixPanel + ".vpnCount").val());
+        unlockStaticAddress(lock, prefixPanel);
+    })
+
     sameForEveryPoint(prefixPanel + ".sameForEveryPoint", prefix, panelId);
     sameForEveryPoint(prefixPanel + ".possetforselectedpointSameForEveryPoint", prefix, panelId);
     sameForEveryPoint(prefixPanel + ".technicalinformationSameForEveryPoint", prefix, panelId);
     sameForEveryPoint(prefixPanel + ".terminaloptionsSameForEveryPoint", prefix, panelId);
     sameForEveryPoint(prefixPanel + ".additionalequipmentSameForEveryPoint", prefix, panelId);
 
+    unlockStaticAddress(testNumber(jQuery(prefixPanel + ".wifiCount").val()) || testNumber(jQuery(prefixPanel + ".vpnCount").val()) || testNumber(jQuery(prefixPanel + ".sslCount").val()), prefixPanel);
+    unlockDynamicAddress(testNumber(jQuery(prefixPanel + ".wifiCount").val()), prefixPanel);
+}
+
+function testNumber(value){
+    return parseInt(value)>0;
+}
+
+function unlockStaticAddress(lock, prefixPanel){
+    if (lock){
+        jQuery(prefixPanel + ".tytulInformatykStatyczna").prop("disabled", false);
+        jQuery(prefixPanel + ".staticDeviceMask").prop("disabled", false);
+        jQuery(prefixPanel + ".staticDeviceGateway").prop("disabled", false);
+        jQuery(prefixPanel + ".staticDeviceIp").prop("disabled", false);
+        jQuery(prefixPanel + ".staticDeviceSupportContact").prop("disabled", false);
+        jQuery(prefixPanel + ".staticDeviceSupportContactName").prop("disabled", false);
+        jQuery(prefixPanel + ".staticDeviceSupportContactSurname").prop("disabled", false);
+    }  else {
+        jQuery(prefixPanel + ".tytulInformatykStatyczna").val('').prop("disabled", true);
+        jQuery(prefixPanel + ".staticDeviceMask").val('').prop("disabled", true);
+        jQuery(prefixPanel + ".staticDeviceGateway").val('').prop("disabled", true);
+        jQuery(prefixPanel + ".staticDeviceIp").val('').prop("disabled", true);
+        jQuery(prefixPanel + ".staticDeviceSupportContact").val('').prop("disabled", true);
+        jQuery(prefixPanel + ".staticDeviceSupportContactName").val('').prop("disabled", true);
+        jQuery(prefixPanel + ".staticDeviceSupportContactSurname").val('').prop("disabled", true);
+    }
+}
+
+function unlockDynamicAddress(lock, prefixPanel){
+    console.log('DynamicAddress lock: ' + lock)
+
+    if (lock){
+        jQuery(prefixPanel + ".tytulInformatykDynamiczna").prop("disabled", false);
+        jQuery(prefixPanel + ".dynamicDeviceSupportContact").prop("disabled", false);
+        jQuery(prefixPanel + ".dynamicDeviceSupportSurname").prop("disabled", false);
+        jQuery(prefixPanel + ".dynamicDeviceSupportName").prop("disabled", false);
+    }  else {
+        jQuery(prefixPanel + ".tytulInformatykDynamiczna").val('').prop("disabled", true);
+        jQuery(prefixPanel + ".dynamicDeviceSupportContact").val('').prop("disabled", true);
+        jQuery(prefixPanel + ".dynamicDeviceSupportSurname").val('').prop("disabled", true);
+        jQuery(prefixPanel + ".dynamicDeviceSupportName").val('').prop("disabled", true);
+    }
 }
 
 function setupNewPointPanelData(prevPanelId, panelId) {
@@ -403,6 +459,23 @@ function clearNewPointData(prevPanelId, panelId) {
 
 function setupNewPosPanelHandlers(prevPanelId, panelId, prefix) {
     var prefixPanel = "#"+prefix+"\\["+panelId+"\\]\\";
+
+    jQuery(prefixPanel + ".wifiCount").on( "blur", function(e){
+        var lock = testNumber(e.target.value) || testNumber(jQuery(prefixPanel + ".vpnCount").val()) || testNumber(jQuery(prefixPanel + ".sslCount").val());
+        unlockStaticAddress(lock, prefixPanel);
+        unlockDynamicAddress(testNumber(e.target.value), prefixPanel);
+    })
+    jQuery(prefixPanel + ".vpnCount").on( "blur", function(e){
+        var lock = testNumber(e.target.value) || testNumber(jQuery(prefixPanel + ".wifiCount").val()) || testNumber(jQuery(prefixPanel + ".sslCount").val());
+        unlockStaticAddress(lock, prefixPanel);
+    })
+    jQuery(prefixPanel + ".sslCount").on( "blur", function(e){
+        var lock = testNumber(e.target.value) || testNumber(jQuery(prefixPanel + ".wifiCount").val()) || testNumber(jQuery(prefixPanel + ".vpnCount").val());
+        unlockStaticAddress(lock, prefixPanel);
+    })
+
+    unlockStaticAddress(testNumber(jQuery(prefixPanel + ".wifiCount").val()) || testNumber(jQuery(prefixPanel + ".vpnCount").val()) || testNumber(jQuery(prefixPanel + ".sslCount").val()), prefixPanel);
+    unlockDynamicAddress(testNumber(jQuery(prefixPanel + ".wifiCount").val()), prefixPanel);
 
     addDateHandlers(prefixPanel, prefix, panelId);
 

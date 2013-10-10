@@ -36,7 +36,7 @@ jQuery(document).ready(function() {
     jQuery(".phone").mask('(00) 000-00-00');
     jQuery(".mobile-phone").mask('000-000-000');
     jQuery(".fax").mask('(00) 000-00-00');
-    jQuery(".ip").mask('099.099.099.09');
+    jQuery(".ip").mask('099.099.099.099');
     jQuery(".ph-number").mask('00000');
     jQuery(".integer-number").mask('099999');
     jQuery(".float-number").mask('099999X99', {translation:  {'X': {pattern: /[.]/, optional: true}}});

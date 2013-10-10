@@ -37,15 +37,15 @@
         var that = this;
 
         var restrictionsMap = {}
-        restrictionsMap["nowaUmowaCB"] = ["rozszerzenie", "zmianaWarunkow", "poprawDane", "odrzucDokumenty","uzupelnijPodpisy", "pakietSerwisowy"];
+        restrictionsMap["nowaUmowaCB"] = ["rozszerzenie", "zmianaWarunkow", "poprawDane", "odrzucDokumenty","uzupelnijPodpisy", "pakietSerwisowy", "dodanieIkoCB"];
 
         restrictionsMap["dodatkowyPunktCB"] = ["nowaUmowa","poprawDane","odrzucDokumenty", "uzupelnijPodpisy"];
         restrictionsMap["dodatkowyPosCB"] =  ["nowaUmowa","poprawDane","odrzucDokumenty", "uzupelnijPodpisy"];
 
-        restrictionsMap["zmianaProwizjiCB"] =  ["nowaUmowa","poprawDane","odrzucDokumenty", "uzupelnijPodpisy"];
+        restrictionsMap["zmianaProwizjiCB"] =  ["nowaUmowa","poprawDane","odrzucDokumenty", "uzupelnijPodpisy", "dodanieIkoCB"];
         restrictionsMap["zmianaWarunkowDccCB"] =  ["nowaUmowa","poprawDane","odrzucDokumenty", "uzupelnijPodpisy"];
         restrictionsMap["wymianaUmowyNajmuCB"] =  ["nowaUmowa","poprawDane","odrzucDokumenty", "uzupelnijPodpisy"];
-        restrictionsMap["dodanieAneksuKosztyPlusCB"] = ["nowaUmowa","poprawDane","odrzucDokumenty", "uzupelnijPodpisy"];
+        restrictionsMap["dodanieAneksuKosztyPlusCB"] = ["nowaUmowa","poprawDane","odrzucDokumenty", "uzupelnijPodpisy", "dodanieIkoCB"];
         restrictionsMap["aneksCB"] =  ["nowaUmowa","poprawDane","odrzucDokumenty", "uzupelnijPodpisy"];
         restrictionsMap["zmianaTabeliOplatDodatkowychCB"] =  ["nowaUmowa","poprawDane","odrzucDokumenty", "uzupelnijPodpisy"];
         restrictionsMap["zmianaWarunkowPrepaidCB"] =  ["nowaUmowa","poprawDane","odrzucDokumenty", "uzupelnijPodpisy"];
@@ -55,7 +55,7 @@
         restrictionsMap["dodaniePrepaidCB"] =  ["poprawDane","odrzucDokumenty", "uzupelnijPodpisy"];
         restrictionsMap["dodanieDccCB"] =  ["poprawDane","odrzucDokumenty", "uzupelnijPodpisy"];
         restrictionsMap["dodanieCashBackCB"] =  ["poprawDane","odrzucDokumenty", "uzupelnijPodpisy"];
-        restrictionsMap["dodanieIkoCB"] =  ["poprawDane","odrzucDokumenty", "uzupelnijPodpisy"];
+        restrictionsMap["dodanieIkoCB"] =  ["poprawDane","odrzucDokumenty", "uzupelnijPodpisy", "dodanieAneksuKosztyPlusCB", "zmianaProwizjiCB", "nowaUmowa"];
 
         restrictionsMap["ekonomicznyCB"] =  ["nowaUmowa", "komfort", "prestiz", "uzupelnijPodpisy", "poprawDane","odrzucDokumenty"];
         restrictionsMap["komfortCB"] =  ["nowaUmowa", "ekonomiczny", "prestiz", "uzupelnijPodpisy", "poprawDane","odrzucDokumenty"];
@@ -364,6 +364,7 @@
 
         function changeActivity (target) {
             var elements = restrictionsMap[target.id]
+            console.log(elements);
 
             if(target.checked){
                 $.each(elements,function(index, value){
@@ -392,6 +393,7 @@
             var item = $('#'+itemId);
             item.addClass("disabled");
             item.prop("data-disabled", true);
+            item.attr('disabled', 'disabled');
             item.find("input").prop("disabled", true);
 
             var disabledExpander = item.children("a[class*='expander']:first");
@@ -435,6 +437,7 @@
         function enableItem (itemId) {
             var item = $('#'+itemId);
             item.removeClass("disabled");
+            item.removeAttr('disabled');
             item.prop("data-disabled", false);
             item.find("input").prop("disabled", false);
         }

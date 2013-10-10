@@ -1,6 +1,7 @@
 modules = {
     application {
         resource url: 'js/application.js'
+        dependsOn 'jquery'
     }
 	
 	json2 {
@@ -87,5 +88,10 @@ modules = {
 		resource url: 'js/jquery.panzoom.min.js'
 		dependsOn 'jquery'
 	}
+
+    selectedPanels {
+        resource url: 'js/createProcess/selectedPanels.js'
+        dependsOn 'jquery'
+    }
 	
 }
