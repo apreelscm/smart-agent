@@ -211,19 +211,19 @@
                 </li>
                 <li>
                     <span class="align-left"><g:message code="panel.monthly.circulation.overall"/></span>
-                    <span><g:field type="number" step="any" name="scoringDeklaracjaFinansowaObrotOgolem" value="${data.scoringDeklaracjaFinansowaObrotOgolem}" style="width: 100px"/> <g:message code="panel.polish.currency"/></span>
+                    <span><g:field type="text" class="float-number" name="scoringDeklaracjaFinansowaObrotOgolem" value="${data.scoringDeklaracjaFinansowaObrotOgolem}" style="width: 100px"/> <g:message code="panel.polish.currency"/></span>
                 </li>
                 <li>
                     <span class="align-left"><g:message code="panel.monthly.circulation.cards"/></span>
-                    <span><g:field type="number" step="any" name="scoringDeklaracjaFinansowaObrotNaKarty" value="${data.scoringDeklaracjaFinansowaObrotNaKarty}" style="width: 100px"/> <g:message code="panel.polish.currency"/></span>
+                    <span><g:field type="text" class="float-number" name="scoringDeklaracjaFinansowaObrotNaKarty" value="${data.scoringDeklaracjaFinansowaObrotNaKarty}" style="width: 100px"/> <g:message code="panel.polish.currency"/></span>
                 </li>
                 <li>
                     <span class="align-left"><g:message code="panel.average.monthly.circulation.per.point"/></span>
-                    <span><g:field type="number" step="any" name="scoringDeklaracjaFinansowaSredniObrot" value="${data.scoringDeklaracjaFinansowaSredniObrot}"style="width: 100px"/> <g:message code="panel.polish.currency"/></span>
+                    <span><g:field type="text" class="float-number" name="scoringDeklaracjaFinansowaSredniObrot" value="${data.scoringDeklaracjaFinansowaSredniObrot}"style="width: 100px"/> <g:message code="panel.polish.currency"/></span>
                 </li>
                 <li>
                     <span class="align-left"><g:message code="panel.average.transaction.count"/></span>
-                    <span><g:field type="number" step="any" name="scoringDeklaracjaFinansowaSredniaTransakcja" value="${data.scoringDeklaracjaFinansowaSredniaTransakcja}" style="width: 100px"/> <g:message code="panel.polish.currency"/></span>
+                    <span><g:field type="text" class="float-number" name="scoringDeklaracjaFinansowaSredniaTransakcja" value="${data.scoringDeklaracjaFinansowaSredniaTransakcja}" style="width: 100px"/> <g:message code="panel.polish.currency"/></span>
                 </li>
             </ul>
         </fieldset>

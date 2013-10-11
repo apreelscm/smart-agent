@@ -8,7 +8,7 @@
                 </li>
                 <li>
                     <span class="align-left"><g:message code="panel.monthly.payment"/>
-                        <eumowy:currencyField validatable="${data}"  name="obslugaEkonomicznyCena" value="${data.obslugaEkonomicznyCena}" />
+                        <eumowy:currencyField type="text" class="float-number" validatable="${data}" name="obslugaEkonomicznyCena" value="${data.obslugaEkonomicznyCena}" />
                     </span>
                 </li>
             </ul>
