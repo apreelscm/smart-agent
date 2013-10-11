@@ -26,7 +26,9 @@
 
                 showLoadingDialog()
 
-                form.submit();
+                setTimeout(function() { //hax for android 4.1.3 native browser
+                    form.submit()
+                }, 1);
 
                 return false;
             });
