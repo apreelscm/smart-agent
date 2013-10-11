@@ -29,17 +29,17 @@ class PdfMapper {
         println "Ilosc punktow: " + points?.size()
 
         if (points != null && points.size()>0){
-            //APUNTSS
+            //APUNTSS, APUNTZ2
             dataMap.putAll(mapPointsSpecial(points.findAll{ point -> (point.czyWybranyAkceptacjaKart && point.tytulPlatnosci)}, ["nazwa":"punktTytulPlatnosci", "miejscowosc":"adresTytulPlatnosci"]));
 
             //APUPZDCC2, APUPZ2DC1
             dataMap.putAll(mapPointsSpecial(points.findAll{ point -> (point.czyWybranyAkceptacjaKart && point.czyWybranyZakresUruchomienia)}, ["nazwa":"punktZakresUruchomienia", "miejscowosc":"adresZakresUruchomienia"]));
 
             //APUPZIF2, APUPZ2, APUPZBS2
-            dataMap.putAll(mapPointsSpecial(points.findAll{ point -> point.czyWybranyAkceptacjaKart }, ["nazwa":"punktAkceptacjaKart", "miejscowosc":"adresAkceptacjaKart"]));
+            dataMap.putAll(mapPointsSpecial(points.findAll{ point -> point.cbdId == null || (point.posDatas && point.posDatas.findAll{ pos -> pos.tpsId == null}.size()>0)}, ["nazwa":"punktAkceptacjaKart", "miejscowosc":"adresAkceptacjaKart"]));
 
-            //APUPZAWNZBS1, APUPZAWNZS1, APUNTZ2
-            dataMap.putAll(mapPointsSpecial(points.findAll{ point -> point.cbdId == null}, ["nazwa":"punkt", "miejscowosc":"adres"]));
+            //APUPZAWNZBS1, APUPZAWNZS1
+            dataMap.putAll(mapPointsSpecial(points.findAll{ point -> point.cbdId == null || (point.posDatas && point.posDatas.findAll{ pos -> pos.tpsId == null}.size()>0)}, ["nazwa":"punkt", "miejscowosc":"adres"]));
 
             //APUNTSZAPOU3
             dataMap.putAll(mapPointsSpecial(points.findAll{ point -> point.czyWybranyAkceptacjaKart}, ["nazwa":"punktTN", "miejscowosc":"adresTN", "tytulPlatnosci":"platnoscTN", "systemKasowy":"integracjaTN", "uta":"utaTN"]));
@@ -115,18 +115,19 @@ class PdfMapper {
 		} else {
 		    data.put("NrSprzedazowyPH1", [processInstance.phNumber.toString()] as String[])
 		}
-		// Znaczniki do PDFow
+		
+		/* // Znaczniki do PDFow
 		
 		data.put("nrIdentyfikacjiPunktu", ['{nrPunktu}'] as String[])
 		data.put("sprawaNr", ['{outletId}'] as String[])
-		data.put("nrUmowy", ['{nrUmowy}'] as String[])
+		data.put("nrUmowy", ['{nrUmowy}'] as String[]) */
 
 
         def picm = processInstance.client.mid;
 
-        data.put("mid", [picm?:'{mid}'] as String[])
+        data.put("mid", [picm?:''] as String[])
 
-        data.put("nrMerchanta1", [picm?picm.toString().substring(0, 5):'{mid}'] as String[])
+        data.put("nrMerchanta1", [picm?picm.toString().substring(0, 5):''] as String[])
         data.put("nrMerchanta2", [picm?picm.toString().substring(5, 10):''] as String[])
         data.put("nrMerchanta3", [picm?picm.toString().substring(10, 12):''] as String[])
         data.put("nrMerchanta4", [picm?picm.toString().substring(12, 14):''] as String[])
