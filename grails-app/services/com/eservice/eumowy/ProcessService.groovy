@@ -744,7 +744,7 @@ class ProcessService {
 				}
 			}
 			else if (pc.terminalIlosc != null && pc.terminalIlosc > 0 && terminalCount == pointData.liczbaPos) {
-				for (int i = 0; i < pc.terminalIlosc; i++) {
+				for (int i = 0; i < pc.terminalIlosc && i < pointData.posDatas.size(); i++) {
 					pointData.posDatas?.get(i).posDetails?.telePompka = posData.posDetails?.telePompka
 					pointData.posDatas?.get(i).posDetails?.teleKodzik = posData.posDetails?.teleKodzik
 				}
@@ -849,6 +849,27 @@ class ProcessService {
 				pointData = new PointData()
 				pointDataDetails = new PointDataDetails()
 
+				if (pc.cbdId != null) {
+					log.info "Ustawiam dane z CBD"
+					def cbdPoint = cbdService.getCbdPointById(cmd.nip, pc.cbdId)
+					if (cbdPoint != null) {
+						
+						pointData.setCbdId(Integer.valueOf(cbdPoint.get("id").toString()))
+						pointData.setKodPocztowy(cbdPoint.get("kod_pocztowy"))
+						//pointData.setLiczbaPos(Integer.valueOf(cbdPoint.get("liczba_pos").toString()))
+						pointData.setMiejscowosc(cbdPoint.get("miejscowosc"))
+						pointData.setNazwa(cbdPoint.get("nazwa"))
+						pointData.setNrBudynku(cbdPoint.get("nr_budynku"))
+						pointData.setUlica(cbdPoint.get("ulica"))
+					}
+					else {
+						log.info "DIDN'T FIND POINT INFORMATION IN CBD!!! CBDID: " + pc.cbdId + " NIP: " + cmd.nip
+					}
+				}
+				else {
+					log.info "Punkt nie pochodzi z CBD"
+				}
+				
 				posData = new PosData()
 				posDataDetails = new PosDataDetails()
 				isNew = true
@@ -868,6 +889,22 @@ class ProcessService {
 						log.info "getPointCommandsToPosDataList - Brakujacy punkt dla POS o id: " + pc.id
 						pointData = new PointData()
 						pointDataDetails = new PointDataDetails()
+						
+						if (pc.cbdId != null) {
+							def cbdPoint = cbdService.getCbdPointById(cmd.nip, pc.cbdId)
+							if (cbdPoint != null) {
+								pointData.setCbdId(Integer.valueOf(cbdPoint.get("id").toString()))
+								pointData.setKodPocztowy(cbdPoint.get("kod_pocztowy"))
+								//pointData.setLiczbaPos(Integer.valueOf(cbdPoint.get("liczba_pos").toString()))
+								pointData.setMiejscowosc(cbdPoint.get("miejscowosc"))
+								pointData.setNazwa(cbdPoint.get("nazwa"))
+								pointData.setNrBudynku(cbdPoint.get("nr_budynku"))
+								pointData.setUlica(cbdPoint.get("ulica"))
+							}
+							else {
+								log.info "DIDN'T FIND POINT INFORMATION IN CBD!!! CBDID: " + pc.cbdId + " NIP: " + cmd.nip
+							}
+						}
 					}
 				}
 				else {
@@ -936,20 +973,12 @@ class ProcessService {
 				}
 			}
 			else if (pc.terminalIlosc != null && pc.terminalIlosc > 0 && terminalCount == pointData.liczbaPos) {
-				for (int i = 0; i < pc.terminalIlosc; i++) {
+				for (int i = 0; i < pc.terminalIlosc && i < pointData.posDatas.size(); i++) {
 					pointData.posDatas?.get(i).posDetails?.telePompka = posData.posDetails?.telePompka
 					pointData.posDatas?.get(i).posDetails?.teleKodzik = posData.posDetails?.teleKodzik
 				}
 			}
-
-			pointData.nip = pointDataDetails.nipPunktu
-			pointData.nazwa = pointDataDetails.nazwaDoWyszukiwarki
-			pointData.ulica = pointDataDetails.korespondencjaUlica
-			pointData.nrLokalu = pointDataDetails.korespondencjaNrLokalu
-			pointData.nrBudynku = pointDataDetails.korespondencjaNrDomu
-			pointData.miejscowosc = pointDataDetails.korespondencjaMiasto
-			pointData.kodPocztowy = pointDataDetails.korespondencjaKodPocztowy
-			pointData.poczta = pointDataDetails.korespondencjaPoczta
+			
 			pointData.liczbaPos = pdList.size()
 			pointData.save()
 			//if (isNew == true) {
@@ -996,6 +1025,21 @@ class ProcessService {
 				else {
 					log.info "DIDN'T FIND POINT FOR CBD POS"
 					point = new PointData()
+					
+					// Nie znalezlismy punktu z CBD u nas w bazie, musimy dossac dane z CBD dla tego punktu
+					def cbdPoint = cbdService.getCbdPointById(cmd.nip, apc.cbdId)
+					if (cbdPoint != null) {
+						point.setCbdId(Integer.valueOf(cbdPoint.get("id").toString()))
+						point.setKodPocztowy(cbdPoint.get("kod_pocztowy"))
+						point.setLiczbaPos(Integer.valueOf(cbdPoint.get("liczba_pos").toString()))
+						point.setMiejscowosc(cbdPoint.get("miejscowosc"))
+						point.setNazwa(cbdPoint.get("nazwa"))
+						point.setNrBudynku(cbdPoint.get("nr_budynku"))
+						point.setUlica(cbdPoint.get("ulica"))
+					}
+					else {
+						log.info "DIDN'T FIND POINT INFORMATION IN CBD!!! CBDID: " + apc.cbdId + " NIP: " + cmd.nip
+					}
 				}
 			}
             else {

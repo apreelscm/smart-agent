@@ -105,6 +105,12 @@
 
 			refreshTelepomkaAndTelekodzikPercentValues();
 			
+			var dbPointId = parseInt(jQuery(e.target).attr('data-point-id'));
+			if (dbPointId) {
+				console.log("Usuwam punkt o id: " + dbPointId);
+				jQuery.post(jQuery(location).attr("href"), {_eventId_deletePoint: "", pointId: dbPointId}, function(data){});			
+			}
+			
 			return false;
 		});
 

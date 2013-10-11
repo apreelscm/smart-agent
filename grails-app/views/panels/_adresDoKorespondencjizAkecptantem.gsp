@@ -4,7 +4,7 @@
         <div style="text-align: center; padding-top: 20px; width: 850px" class="centre">
             <ul class="table-list centre">
                 <li>
-                    <span><label for="correspondenceAsMerchant"><g:checkBox name="correspondenceAsMerchant"/><g:message code="panel.as.merchant"/></label></span>
+                    <span><label for="correspondenceAsMerchant"><g:checkBox id="correspondenceAsMerchant" name="korespondencjaJakDlaMerchanta" value="${data.korespondencjaJakDlaMerchanta}" /><g:message code="panel.as.merchant"/></label></span>
                 </li>
                 <li>
                     <span><g:message code="panel.street" /></span>

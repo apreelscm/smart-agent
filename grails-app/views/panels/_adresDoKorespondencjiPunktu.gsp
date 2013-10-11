@@ -1,8 +1,8 @@
 <fieldset class="subpanel-fieldset">
 	<legend><g:message code="panel.newpoint.contactaddress" /></legend>
 	<div class="subpanel-fieldset-centercontent" >
-		<label for="${panelType}[${id}].contactAddressAsForMerchant"><g:radio name="${panelType}[${id}].korespondencjaJakDlaMerchantaLubWydruku" id="${panelType}[${id}].contactAddressAsForMerchant" value="" /><g:message code="panel.as.merchant" /></label>
-		<label for="${panelType}[${id}].contactAddressAsOnPrint"><g:radio name="${panelType}[${id}].korespondencjaJakDlaMerchantaLubWydruku" id="${panelType}[${id}].contactAddressAsOnPrint" value=""/><g:message code="panel.as.on.print" /></label>
+		<label for="${panelType}[${id}].contactAddressAsForMerchant"><g:radio name="${panelType}[${id}].korespondencjaJakDlaMerchantaLubWydruku" id="${panelType}[${id}].contactAddressAsForMerchant" value="true" checked="${pointData?.korespondencjaJakDlaMerchantaLubWydruku == true}"/><g:message code="panel.as.merchant" /></label>
+		<label for="${panelType}[${id}].contactAddressAsOnPrint"><g:radio name="${panelType}[${id}].korespondencjaJakDlaMerchantaLubWydruku" id="${panelType}[${id}].contactAddressAsOnPrint" value="false" checked="${pointData?.korespondencjaJakDlaMerchantaLubWydruku == false}"/><g:message code="panel.as.on.print" /></label>
 		<ul class="table-list">
 		  	<li>
 		  		<span><g:message code="panel.street" /></span>

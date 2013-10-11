@@ -5,12 +5,12 @@
 </div>
 <div style="text-align: center; padding-top: 20px;" class="centre">
 <div style="float: right;">
-    <g:submitButton id="removePointButton" name="removePointButton"
+    <g:submitButton data-point-id="${pointData?.id}" id="removePointButton" name="removePointButton"
                     class="button submit" value="Usuń punkt"
                     style="margin-right: 2em; margin-bottom: 1em;" />
 </div>
 <div style="clear: both;"></div>
-<input type="hidden" name="${panelType}[${id}].id"
+<input type="hidden" id="${panelType}[${id}].id" name="${panelType}[${id}].id"
        value="${pointData?.id}" />
 <g:render template="../panels/opieka" />
 <fieldset class="subpanel-fieldset">

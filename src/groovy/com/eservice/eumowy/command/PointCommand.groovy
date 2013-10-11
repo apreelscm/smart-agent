@@ -40,7 +40,6 @@ class PointCommand implements Serializable {
 	String wydrukLinia1
 	String wydrukLinia2
 	
-	String korespondencjaJakDlaMerchantaLubWydruku
 	String korespondencjaUlicaTytul
 	String korespondencjaUlica
 	String korespondencjaNrDomu
@@ -139,7 +138,6 @@ class PointCommand implements Serializable {
 	String imieInformatykDynamiczna
 	String nazwiskoInformatykDynamiczna	
 	
-	/* Not Saved To DB - only GUI */
 	Boolean takSamoDlaWszystkichPunktow
 	Boolean zestawPosTakSamoDlaWszystkichPunktow
 	Boolean wydrukJakDlaMerchanta
@@ -148,6 +146,7 @@ class PointCommand implements Serializable {
 	Boolean funkcjeTerminalaTakSamoDlaWszystkichPunktow
 	Boolean informacjeTechniczneTakSamoDlaWszystkichPunktow
 	Boolean kontaktWPunkcieJakDlaMerchanta
+	Boolean korespondencjaJakDlaMerchantaLubWydruku
 	
 	static constraints = {
 		phPozysk(nullable:true, blank:false, shared: "natural")
