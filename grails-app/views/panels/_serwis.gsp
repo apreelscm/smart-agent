@@ -19,7 +19,7 @@
                 <li id="servicePayment">
                     <span class="align-left"><g:message code="panel.monthly.payment"/></span>
                     <span class="align-left">
-                        <eumowy:currencyField name="obslugaEkonomicznyCena" validatable="${data}" value="${data.obslugaEkonomicznyCena}" />
+                        <eumowy:currencyField class="float-number"  name="obslugaEkonomicznyCena" validatable="${data}" value="${data.obslugaEkonomicznyCena}" />
                     </span>
                 </li>
             </ul>

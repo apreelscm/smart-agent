@@ -6,25 +6,25 @@
                 <tr class="${!data.wydrukGrafikiCena ?  'display-none' : ''}">
                     <td><g:message code="panel.payment.logo"/></td>
                     <td>
-                        <eumowy:currencyField name="wydrukGrafikiCena" value="${data.wydrukGrafikiCena}"  readonly="true"/>
+                        <eumowy:currencyField type="text" name="wydrukGrafikiCena" value="${data.wydrukGrafikiCena}"  readonly="true"/>
                     </td>
                 </tr>
                 <tr  class="${!data.dzialaniaMatematyczneCena ?  'display-none' : ''}">
                      <td><g:message code="panel.payment.calc"/></td>
                      <td>
-                        <eumowy:currencyField name="dzialaniaMatematyczneCena" value="${data.dzialaniaMatematyczneCena}"  readonly="true"/>
+                        <eumowy:currencyField type="text" name="dzialaniaMatematyczneCena" value="${data.dzialaniaMatematyczneCena}"  readonly="true"/>
                     </td>
                 </tr>
                 <tr>
                      <td><g:message code="panel.payment.title.payment"/></td>
                      <td>
-                        <eumowy:currencyField name="tytulPlatnosciCena" validatable="${data}" value="${data.tytulPlatnosciCena}"/>
+                        <eumowy:currencyField type="text" class="float-number" name="tytulPlatnosciCena" validatable="${data}" value="${data.tytulPlatnosciCena}"/>
                     </td>
                 </tr>
                 <tr>
                      <td><g:message code="panel.payment.first.session"/></td>
                      <td>
-                        <eumowy:currencyField name="pierwszaSesjaCena" validatable="${data}" value="${data.pierwszaSesjaCena}"/>
+                        <eumowy:currencyField type="text" class="float-number" name="pierwszaSesjaCena" validatable="${data}" value="${data.pierwszaSesjaCena}"/>
                     </td>
                 </tr>
             </table>

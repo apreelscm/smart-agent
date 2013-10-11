@@ -45,16 +45,14 @@ class EumowyFieldTagLib {
     }
 
     Closure percentageField = { attrs ->
-        attrs.type="number"
-        attrs.step="any"
+        attrs.type="text"
         attrs.postfix = message(code:"panel.percent")
 
         fieldImpl(out, attrs)
     }
 
     Closure currencyField = { attrs ->
-        attrs.type="number"
-        attrs.step="any"
+        attrs.type="text"
         attrs.postfix = message(code:"panel.polish.currency")
 
         fieldImpl(out, attrs)

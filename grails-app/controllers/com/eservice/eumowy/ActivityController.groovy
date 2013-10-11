@@ -552,6 +552,20 @@ class ActivityController {
             on("acceptPointsButton") {
                 log.info "acceptPointsButton TRIGGERED"
             }.to "selectedPanels"
+			on("deletePoint") {
+				def processInstance = flow.processInstance
+				def point = PointData.get(Integer.valueOf(params.pointId));
+				if (point != null) {
+					log.info "DeletePoint - Usuwam punkt o id: " + params.pointId
+					processInstance.removeFromPoints(point)
+					point.delete()
+					processInstance.save(flush: true)
+				}
+				else {
+					log.info "DeletePoint - Nie znalazłem punktu o id: " + params.pointId
+				}
+				flow.processInstance = processInstance
+			}.to "saveOnly"
             on("saveOnly"){ ProcessCommand cmd ->
 				log.info params
 				log.info params.get('allPoses[0]')
@@ -796,6 +810,20 @@ class ActivityController {
             on("acceptPointsButton") {
                 log.info "acceptPointsButton TRIGGERED"
             }.to "selectedPanels"
+			on("deletePoint") {
+				def processInstance = flow.processInstance
+				def point = PointData.get(Integer.valueOf(params.pointId));
+				if (point != null) {
+					log.info "DeletePoint - Usuwam punkt o id: " + params.pointId
+					processInstance.removeFromPoints(point)
+					point.delete()
+					processInstance.save(flush: true)
+				}
+				else {
+					log.info "DeletePoint - Nie znalazłem punktu o id: " + params.pointId
+				}
+				flow.processInstance = processInstance
+			}.to "selectedPanels"
             on("saveOnly"){ ProcessCommand cmd ->
                 Process processInstance = processService.populateProcessWithData(flow.processInstance,cmd)
 
@@ -1072,7 +1100,7 @@ class ActivityController {
             render(template:"message/errorMessage", model:[message:msg]);
         }
     }
-
+	
     def deleteFile(){
         attachmentService.deleteFile(params.id,params.processId);
         getAttachmentList()

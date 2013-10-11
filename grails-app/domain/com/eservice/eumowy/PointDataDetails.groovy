@@ -49,6 +49,16 @@ class PointDataDetails implements Serializable {
 	
 	Integer terminalIlosc
 	
+	Boolean takSamoDlaWszystkichPunktow
+	Boolean zestawPosTakSamoDlaWszystkichPunktow
+	Boolean wydrukJakDlaMerchanta
+	Boolean wydrukJakPowyzej
+	Boolean dodatkoweWyposazenieTakSamoDlaWszystkichPunktow
+	Boolean funkcjeTerminalaTakSamoDlaWszystkichPunktow
+	Boolean informacjeTechniczneTakSamoDlaWszystkichPunktow
+	Boolean kontaktWPunkcieJakDlaMerchanta
+	Boolean korespondencjaJakDlaMerchantaLubWydruku
+	
 	static belongsTo = [point: PointData]
 	
 	static mapping = {
@@ -91,6 +101,15 @@ class PointDataDetails implements Serializable {
 		kontaktWPunkcieTelKomorkowy column: "contact_at_point_mobilephone"
 		kontaktWPunkcieEmail column: "contact_at_point_email"
 		terminalIlosc column: "terminal_count"
+		takSamoDlaWszystkichPunktow column: "same_every_point"
+		zestawPosTakSamoDlaWszystkichPunktow column: "pos_sep"
+		wydrukJakDlaMerchanta column: "print_as_merchant"
+		wydrukJakPowyzej column: "print_as_above"
+		dodatkoweWyposazenieTakSamoDlaWszystkichPunktow column: "adddevice_sep"
+		funkcjeTerminalaTakSamoDlaWszystkichPunktow column: "terminalfun_sep"
+		informacjeTechniczneTakSamoDlaWszystkichPunktow column: "tecinf_sep"
+		kontaktWPunkcieJakDlaMerchanta column: "contactpoint_as_merchant"
+		korespondencjaJakDlaMerchantaLubWydruku column: "contact_as_merch_or_print"
 
 	}
 	
@@ -133,6 +152,15 @@ class PointDataDetails implements Serializable {
 		kontaktWPunkcieEmail(nullable:true)
 		terminalIlosc(nullable:true)
 		bankId(nullable:true)
+		takSamoDlaWszystkichPunktow(nullable:true)
+		zestawPosTakSamoDlaWszystkichPunktow(nullable:true)
+		wydrukJakDlaMerchanta(nullable:true)
+		wydrukJakPowyzej(nullable:true)
+		dodatkoweWyposazenieTakSamoDlaWszystkichPunktow(nullable:true)
+		funkcjeTerminalaTakSamoDlaWszystkichPunktow(nullable:true)
+		informacjeTechniczneTakSamoDlaWszystkichPunktow(nullable:true)
+		kontaktWPunkcieJakDlaMerchanta(nullable:true)
+		korespondencjaJakDlaMerchantaLubWydruku(nullable:true)
 	}
 	
 }

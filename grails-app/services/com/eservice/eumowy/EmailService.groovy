@@ -76,7 +76,7 @@ class EmailService {
 		println 'Sending: ' + emailTemplate + ', to: ' + recipients + ', subjectParams: ' + subjectParams + ', bodyParams: ' + bodyParams + ', documents count: ' + documents?.size()
 		
         mailService.sendMail {
-            if (documents){
+            if (documents) {
                 multipart true
             }
             from emailTemplate.sender

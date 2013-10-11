@@ -40,7 +40,6 @@ class PointCommand implements Serializable {
 	String wydrukLinia1
 	String wydrukLinia2
 	
-	String korespondencjaJakDlaMerchantaLubWydruku
 	String korespondencjaUlicaTytul
 	String korespondencjaUlica
 	String korespondencjaNrDomu
@@ -139,7 +138,6 @@ class PointCommand implements Serializable {
 	String imieInformatykDynamiczna
 	String nazwiskoInformatykDynamiczna	
 	
-	/* Not Saved To DB - only GUI */
 	Boolean takSamoDlaWszystkichPunktow
 	Boolean zestawPosTakSamoDlaWszystkichPunktow
 	Boolean wydrukJakDlaMerchanta
@@ -148,6 +146,7 @@ class PointCommand implements Serializable {
 	Boolean funkcjeTerminalaTakSamoDlaWszystkichPunktow
 	Boolean informacjeTechniczneTakSamoDlaWszystkichPunktow
 	Boolean kontaktWPunkcieJakDlaMerchanta
+	Boolean korespondencjaJakDlaMerchantaLubWydruku
 	
 	static constraints = {
 		phPozysk(nullable:true, blank:false, shared: "natural")
@@ -165,7 +164,7 @@ class PointCommand implements Serializable {
 		wydrukUlicaTytul(nullable:true)
 		wydrukUlica(nullable:true, blank:false, shared:"alpha")
 		wydrukNrDomu(nullable:true, blank:false, shared: "alpha")
-		wydrukNrLokalu(nullable:true, blank:false, shared: "natural")
+		wydrukNrLokalu(nullable:true, blank:false, shared: "alpha")
 		wydrukMiasto(nullable:true, blank:false, shared: "alpha")
 		wydrukKodPocztowy(nullable:true, blank:false)
 		wydrukPoczta(nullable:true, blank:false, shared: "alpha")
@@ -174,7 +173,7 @@ class PointCommand implements Serializable {
 		korespondencjaUlicaTytul(nullable:true)
 		korespondencjaUlica(nullable:true, blank:false, shared: "alpha")
 		korespondencjaNrDomu(nullable:true, blank:false, shared: "alpha")
-		korespondencjaNrLokalu(nullable:true, blank:false, shared: "natural")
+		korespondencjaNrLokalu(nullable:true, blank:false, shared: "alpha")
 		korespondencjaMiasto(nullable:true, blank:false, shared: "alpha")
 		korespondencjaKodPocztowy(nullable:true, blank:false)
 		korespondencjaPoczta(nullable:true, blank:false, shared:"alpha")
@@ -267,5 +266,7 @@ class PointCommand implements Serializable {
         tytulInformatykDynamiczna(nullable:true, blank:false)
 		imieInformatykDynamiczna(nullable:true, blank:false, shared: "lettersonly")
 		nazwiskoInformatykDynamiczna(nullable:true, blank:false, shared: "lettersonly")
+		
+		
 	}
 }

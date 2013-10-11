@@ -32,8 +32,9 @@ class ProcessCommand implements Serializable {
         def currValue = value?.toString()?.isNumber() ? value.toString().toBigDecimal() : BigDecimal.ZERO
 
         if (currValue.compareTo(minValue) < 0) {
+            //errors.rejectValue(property, "default.atLeast.asCalc", [property] as Object[], "Podana warto\u015B\u0107 dla pola {0} nie mo\u017Ce by\u0107 mniejsza ni\u017C pobrana z kalkulatora.")
             errors.rejectValue(property, "default.atLeast.asCalc")
-            return false
+			return false
         }
         return true
     }
@@ -460,6 +461,9 @@ class ProcessCommand implements Serializable {
     String hasAkceptantTel
     String hasInformacjaHandlowa
     String liczbaTerminali
+	
+	Boolean korespondencjaJakDlaMerchanta
+	
     def defaultPointData
 	def defaultPosData
 
@@ -960,6 +964,7 @@ class ProcessCommand implements Serializable {
         poses(nullable:true)
         allPoints(nullable:true)
         allPoses(nullable:true)
+		korespondencjaJakDlaMerchanta(nullable:true)
 
         liczbaTerminali(nullable:true, validator: { value, cmd, errors ->
 			//println("liczbaTerminali : " + value)

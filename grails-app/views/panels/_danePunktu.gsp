@@ -5,12 +5,12 @@
 </div>
 <div style="text-align: center; padding-top: 20px;" class="centre">
 <div style="float: right;">
-    <g:submitButton id="removePointButton" name="removePointButton"
+    <g:submitButton data-point-id="${pointData?.id}" id="removePointButton" name="removePointButton"
                     class="button submit" value="Usuń punkt"
                     style="margin-right: 2em; margin-bottom: 1em;" />
 </div>
 <div style="clear: both;"></div>
-<input type="hidden" name="${panelType}[${id}].id"
+<input type="hidden" id="${panelType}[${id}].id" name="${panelType}[${id}].id"
        value="${pointData?.id}" />
 <g:render template="../panels/opieka" />
 <fieldset class="subpanel-fieldset">
@@ -23,12 +23,16 @@
                     code="panel.nip" /></span> <span><eumowy:textField class="nip"
                                                                        name="${panelType}[${id}].nipPunktu"
                                                                        id="${panelType}[${id}].nip" value="${pointData?.nipPunktu}"
-                                                                       maxlength="10" required="true" readonly="true"/></span></li>
+                                                                       maxlength="10" required="true" readonly="true"
+                                                                       validatable="${pointData}" 
+                    												   validateField="nipPunktu"/></span></li>
             <li><span class="align-right"><g:message
                     code="panel.mcccode" /></span> <span><eumowy:textField
                     name="${panelType}[${id}].kodMCC"
                     id="${panelType}[${id}].mccCode" value="${pointData?.kodMCC}"
-                    maxlength="4" required="true" /> <label
+                    maxlength="4" required="true"
+                    validatable="${pointData}" 
+                    validateField="kodMCC" /> <label
                     for="${panelType}[${id}].sameForEveryPoint"><g:checkBox
                         id="${panelType}[${id}].sameForEveryPoint"
                         name="${panelType}[${id}].takSamoDlaWszystkichPunktow"
@@ -46,6 +50,8 @@
                     name="${panelType}[${id}].numerRachunkuBankowego"
                     id="${panelType}[${id}].bankAccountNumber"
                     value="${pointData?.numerRachunkuBankowego}"
+                    validatable="${pointData}" 
+                    validateField="numerRachunkuBankowego"
                     style="width: 250px;"
                     required="true"/></span></li>
             <li><span class="align-right"><g:message
@@ -73,6 +79,8 @@
                     name="${panelType}[${id}].nazwaDoWydrukuZTerminalaPos"
                     id="${panelType}[${id}].pointNameForPrintingFromPOSTerminal"
                     value="${pointData?.nazwaDoWydrukuZTerminalaPos}"
+                    validatable="${pointData}"
+                    validateField="nazwaDoWydrukuZTerminalaPos"
                     required="true"/>
         </p>
         <p>
@@ -87,6 +95,8 @@
             <eumowy:textField name="${panelType}[${id}].nazwaDoWyszukiwarki"
                               id="${panelType}[${id}].pointNameForSearchEngine"
                               value="${pointData?.nazwaDoWyszukiwarki}"
+                              validatable="${pointData}"
+                              validateField="nazwaDoWyszukiwarki"
                               required="true"/>
         </p>
         <p>
@@ -106,12 +116,17 @@
                         name="${panelType}[${id}].wydrukUlica"
                         id="${panelType}[${id}].dataforprintingAddressStreet"
                         style="width: 200px" value="${pointData?.wydrukUlica}"
+                        validatable="${pointData}"
+                        validateField="wydrukUlica"
                         required="true"/>
             </span> <span> <span><g:message code="panel.house.number" /></span>
                 <span><eumowy:textField
                         name="${panelType}[${id}].wydrukNrDomu"
                         id="${panelType}[${id}].dataforprintingAddressHomeNumber"
                         style="width: 50px" value="${pointData?.wydrukNrDomu}"
+                        validatable="${pointData}"
+                        validateField="wydrukNrDomu"
+                        required="true"
                         maxlength="4"/></span> <span><g:message
                         code="panel.flat.number" required="true"/></span> <span><eumowy:textField
                         name="${panelType}[${id}].wydrukNrLokalu"
@@ -123,18 +138,23 @@
                     name="${panelType}[${id}].wydrukMiasto"
                     id="${panelType}[${id}].dataforprintingAddressCity"
                     value="${pointData?.wydrukMiasto}" style="width: 280px;"
+                    validateField="wydrukMiasto"
                     required="true"/></span> <span>
                 <span><g:message code="panel.postal.code" /></span> <span><eumowy:textField
                         class="postal-code"
                         name="${panelType}[${id}].wydrukKodPocztowy"
                         id="${panelType}[${id}].dataforprintingAddressPostalCode"
                         value="${pointData?.wydrukKodPocztowy}" style="width: 50px"
+                        validatable="${pointData}"
+                        validateField="wydrukKodPocztowy"
                         required="true"/></span>
             </span></li>
             <li><span><g:message code="panel.postal" /></span> <span><eumowy:textField
                     name="${panelType}[${id}].wydrukPoczta"
                     id="${panelType}[${id}].dataforprintingAddressPostOffice"
                     value="${pointData?.wydrukPoczta}" style="width: 280px;"
+                    validatable="${pointData}"
+                    validateField="wydrukPoczta"
                     required="true"/></span></li>
         </ul>
         <p>
@@ -204,10 +224,12 @@
                                  class="integer-number"/> PP. szt.</td>
                 <td><g:textField name="${panelType}[${id}].dialupCena"
                                  id="${panelType}[${id}].dialupPrice"
-                                 value="${pointData?.dialupCena}" style="width: 50px" /> zł.</td>
+                                 value="${pointData?.dialupCena}" style="width: 50px" 
+                                 class="float-number"/> zł.</td>
                 <td><g:textField name="${panelType}[${id}].dialupPPCena"
                                  id="${panelType}[${id}].dialupPPPrice"
-                                 value="${pointData?.dialupPPCena}" style="width: 50px" /> zł.</td>
+                                 value="${pointData?.dialupPPCena}" style="width: 50px" 
+                                 class="float-number"/> zł.</td>
             </tr>
             <tr>
                 <td>typ <dict:typeSelect nip="${nip}"
@@ -227,10 +249,12 @@
                                  class="integer-number"/> PP. szt.</td>
                 <td><g:textField name="${panelType}[${id}].vpnCena"
                                  id="${panelType}[${id}].vpnPrice"
-                                 value="${pointData?.vpnCena}" style="width: 50px" /> zł.</td>
+                                 value="${pointData?.vpnCena}" style="width: 50px" 
+                                 class="float-number"/> zł.</td>
                 <td><g:textField name="${panelType}[${id}].vpnPPCena"
                                  id="${panelType}[${id}].vpnPPPrice"
-                                 value="${pointData?.vpnPPCena}" style="width: 50px" /> zł.</td>
+                                 value="${pointData?.vpnPPCena}" style="width: 50px" 
+                                 class="float-number"/> zł.</td>
             </tr>
             <tr>
                 <td>typ <dict:typeSelect nip="${nip}"
@@ -250,10 +274,12 @@
                                  class="integer-number"/> PP. szt.</td>
                 <td><g:textField name="${panelType}[${id}].sslCena"
                                  id="${panelType}[${id}].sslPrice"
-                                 value="${pointData?.sslCena}" style="width: 50px" /> zł.</td>
+                                 value="${pointData?.sslCena}" style="width: 50px" 
+                                 class="float-number"/> zł.</td>
                 <td><g:textField name="${panelType}[${id}].sslPPCena"
                                  id="${panelType}[${id}].sslPPPrice"
-                                 value="${pointData?.sslPPCena}" style="width: 50px" /> zł.</td>
+                                 value="${pointData?.sslPPCena}" style="width: 50px" 
+                                 class="float-number"/> zł.</td>
             </tr>
             <tr>
                 <td>typ <dict:typeSelect nip="${nip}"
@@ -273,10 +299,12 @@
                                  class="integer-number"/> PP. szt.</td>
                 <td><g:textField name="${panelType}[${id}].wifiCena"
                                  id="${panelType}[${id}].wifiPrice"
-                                 value="${pointData?.wifiCena}" style="width: 50px" /> zł.</td>
+                                 value="${pointData?.wifiCena}" style="width: 50px" 
+                                 class="float-number"/> zł.</td>
                 <td><g:textField name="${panelType}[${id}].wifiPPCena"
                                  id="${panelType}[${id}].wifiPPPrice"
-                                 value="${pointData?.wifiPPCena}" style="width: 50px" /> zł.</td>
+                                 value="${pointData?.wifiPPCena}" style="width: 50px" 
+                                 class="float-number"/> zł.</td>
             </tr>
             <tr>
                 <td>typ <dict:typeSelect nip="${nip}"
@@ -299,10 +327,12 @@
                                  class="integer-number"/> PP. szt.</td>
                 <td><g:textField name="${panelType}[${id}].gprsCena"
                                  id="${panelType}[${id}].gprsPrice"
-                                 value="${pointData?.gprsCena}" style="width: 50px" /> zł.</td>
+                                 value="${pointData?.gprsCena}" style="width: 50px" 
+                                 class="float-number"/> zł.</td>
                 <td><g:textField name="${panelType}[${id}].gprsPPCena"
                                  id="${panelType}[${id}].gprsPPPrice"
-                                 value="${pointData?.gprsPPCena}" style="width: 50px" /> zł.</td>
+                                 value="${pointData?.gprsPPCena}" style="width: 50px" 
+                                 class="float-number"/> zł.</td>
             </tr>
             <tr id="trBase${id}">
                 <td></td>

@@ -48,7 +48,8 @@
                                                 value="${pointData?.terminalIlosc}" style="width: 50px;"
                                                 errorMessage="${message(code:'default.tooMuch.liczbaTerminali')}"/>--}%
 
-                            <eumowy:numberField name="${panelType}[${id}].terminalIlosc"
+                            <eumowy:textField name="${panelType}[${id}].terminalIlosc"
+                            					class="integer-number"
                                                 id="${panelType}[${id}].terminalCount"
                                                 value="${pointData?.terminalIlosc}"
                                                 validatable="${pointData}"
