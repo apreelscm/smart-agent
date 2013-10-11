@@ -250,7 +250,7 @@ class PdfService {
 
         processInstance.points.each{ point ->
 
-            if (point.cbdId == null){
+            if (point.cbdId == null || (point.posDatas && point.posDatas.findAll{ pos -> pos.tpsId == null}.size()>0)){
                 //generujemy tylko dokumenty dla tych punktow, ktore nie sa z CBD
                 def dataFromPoint = new PdfMapper(calculatorService,calc).mapOnlyPointData(point);
 
