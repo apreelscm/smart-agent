@@ -115,18 +115,19 @@ class PdfMapper {
 		} else {
 		    data.put("NrSprzedazowyPH1", [processInstance.phNumber.toString()] as String[])
 		}
-		// Znaczniki do PDFow
+		
+		/* // Znaczniki do PDFow
 		
 		data.put("nrIdentyfikacjiPunktu", ['{nrPunktu}'] as String[])
 		data.put("sprawaNr", ['{outletId}'] as String[])
-		data.put("nrUmowy", ['{nrUmowy}'] as String[])
+		data.put("nrUmowy", ['{nrUmowy}'] as String[]) */
 
 
         def picm = processInstance.client.mid;
 
-        data.put("mid", [picm?:'{mid}'] as String[])
+        data.put("mid", [picm?:''] as String[])
 
-        data.put("nrMerchanta1", [picm?picm.toString().substring(0, 5):'{mid}'] as String[])
+        data.put("nrMerchanta1", [picm?picm.toString().substring(0, 5):''] as String[])
         data.put("nrMerchanta2", [picm?picm.toString().substring(5, 10):''] as String[])
         data.put("nrMerchanta3", [picm?picm.toString().substring(10, 12):''] as String[])
         data.put("nrMerchanta4", [picm?picm.toString().substring(12, 14):''] as String[])
