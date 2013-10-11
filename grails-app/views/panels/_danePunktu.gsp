@@ -126,6 +126,7 @@
                         style="width: 50px" value="${pointData?.wydrukNrDomu}"
                         validatable="${pointData}"
                         validateField="wydrukNrDomu"
+                        required="true"
                         maxlength="4"/></span> <span><g:message
                         code="panel.flat.number" required="true"/></span> <span><eumowy:textField
                         name="${panelType}[${id}].wydrukNrLokalu"
