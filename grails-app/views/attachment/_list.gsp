@@ -16,10 +16,16 @@
         <tr>
             <td>${fieldValue(bean: file, field: "name")}
             <td>
-                <g:remoteLink  class="button small action" action="deleteFile" params="[id:file.id, processId:processId]"
-                              update="attachmentsBox">Usuń</g:remoteLink>
+                <g:remoteLink class="button small action deleteAttachment" action="deleteFile" params="[id:file.id, processId:processId]"
+                              update="attachmentsBox"
+                              before="showDeletingAttachmentDialog(this)"
+                              onLoaded="hideDeletingAttachmentDialog()"
+                >Usuń</g:remoteLink>
             </td>
         </tr>
     </g:each>
     </tbody>
 </table>
+<div id="deletingAttachment" style="display: none;">
+    <p><g:message code="deletingAttachment" default="Trwa usuwanie załącznika..."/></p>
+</div>
