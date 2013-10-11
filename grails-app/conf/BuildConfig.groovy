@@ -49,19 +49,14 @@ grails.project.dependency.resolution = {
         runtime 'cbd3:cbd-orm-security:2.6-SNAPSHOT'
         runtime 'cbd4:cbd-orm-e-kalkulator:2.6-SNAPSHOT'
         runtime 'PDFRenderer:PDFRenderer:0.9.1'
-        //runtime 'fr.opensagres.xdocreport:fr.opensagres.xdocreport.core:1.0.2'
-        //runtime 'fr.opensagres.xdocreport:fr.opensagres.xdocreport.converter:1.0.2'
-        //runtime 'fr.opensagres.xdocreport:fr.opensagres.xdocreport.template:1.0.2'
-        //runtime 'fr.opensagres.xdocreport:fr.opensagres.xdocreport.template.velocity:1.0.2'
-        //runtime 'fr.opensagres.xdocreport:fr.opensagres.xdocreport.document:1.0.2'
-        //runtime 'fr.opensagres.xdocreport:fr.opensagres.xdocreport.document.docx:1.0.2'
-        //runtime 'fr.opensagres.xdocreport:fr.opensagres.xdocreport.converter.docx.xwpf:1.0.2'
-        //runtime 'fr.opensagres.xdocreport:fr.opensagres.xdocreport.itext.extension:1.0.2'
-        //runtime 'org.docx4j:docx4j:2.8.1'
         runtime 'com.google.code.gson:gson:2.2.4'
 		runtime 'com.lowagie:itext:2.1.7'
 		runtime 'org.apache.pdfbox:pdfbox:1.8.2'
         runtime 'joda-time:joda-time:2.3'
+        runtime 'com.eservice:e-umowy-sync-ws-client:1.0'
+        //runtime 'org.springframework.ws:spring-ws:2.1.2.RELEASE-all'
+        runtime 'org.springframework.ws:spring-ws-core:2.1.3.RELEASE'
+        runtime 'org.springframework.ws:spring-oxm:3.2.2.RELEASE'
     }
 
     plugins {
