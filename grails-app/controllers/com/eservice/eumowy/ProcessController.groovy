@@ -1,4 +1,7 @@
 package com.eservice.eumowy
+
+import com.eservice.eum.ws.client.AcceptUmowaWSClient
+import com.eservice.eum.ws.xml.Result
 import com.eservice.eumowy.util.DateUtils
 import com.sun.xml.internal.messaging.saaj.packaging.mime.internet.MimeUtility
 import grails.plugins.springsecurity.Secured
@@ -10,6 +13,8 @@ class ProcessController {
     def documentService
     def emailService
 	def appParametersService
+    def springSecurityService
+    def acceptUmowaWSClient
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
@@ -194,6 +199,19 @@ class ProcessController {
             flash.error = "Nie można zaakceptować procesu bez dokumentów"
             redirect(action: "show", params: params)
             return
+        }
+
+        log.info("wywolanie synchronizacji dla procesu [" + processInstance.id + "]")
+        Result result = acceptUmowaWSClient.acceptEUmowa(processInstance.id, springSecurityService.principal.nr)
+        if (result.wynik < 0){
+            flash.error = result.wynikString
+            log.error("wynik synchronizacji procesu : " + result.wynikString)
+            log.error(result.stackString)
+            redirect(action: "show", params: params)
+            return
+        }
+        else {
+            log.info("wynik synchronizacji procesu [" + processInstance.id + "] : " + result.wynikString)
         }
 
         processInstance.status = Process.ProcessStatus.ACCEPTED;

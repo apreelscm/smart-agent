@@ -43,7 +43,7 @@
     <sec:ifLoggedIn>
         <div class="userInfoBar">
             <g:set var="phFullName" value="${sec.loggedInUserInfo(field: 'name')}"/>
-            <g:set var="phId" value="${sec.loggedInUserInfo(field: 'id')}"/>
+            <g:set var="phId" value="${sec.loggedInUserInfo(field: 'nr')}"/>
             <span id="userNameLabel">${phFullName}</span>
             <span id="userIdLabel">${phId}</span>
         </div>
