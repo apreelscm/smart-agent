@@ -56,6 +56,7 @@ grails.project.dependency.resolution = {
         runtime 'com.eservice:e-umowy-sync-ws-client:1.0'
         //runtime 'org.springframework.ws:spring-ws:2.1.2.RELEASE-all'
         runtime 'org.springframework.ws:spring-ws-core:2.1.3.RELEASE'
+        runtime 'org.springframework.ws:spring-xml:2.1.3.RELEASE'
         runtime 'org.springframework.ws:spring-oxm:3.2.2.RELEASE'
     }
 
