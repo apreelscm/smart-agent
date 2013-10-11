@@ -1,5 +1,7 @@
 environments {
     test{
+        eumowySyncWSAddress="http://uat-eumowy.apreel.lan:8080/e-umowy-sync-ws/acceptUmowa/"
+
         grails.mail.host = "mail.your-server.de"
         grails.mail.port = 465
         grails.mail.username = "atest@apreel.com"

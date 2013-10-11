@@ -68,6 +68,18 @@ grails.views.javascript.library="jquery"
 grails.logging.jul.usebridge = true
 isPanelsValidationOn = true;
 
+
+grails.cache.config = {
+	cache {
+		name 'eumowycache'
+		maxElementsInMemory 1000
+		eternal false
+		timeToLiveSeconds 120
+		overflowToDisk false
+		memoryStoreEvictionPolicy 'LRU'
+	}
+}
+
 grails.gorm.default.constraints = {
     '*'(nullable: false, blank:true)
     percentage(matches:'~|^(?:100(?:.0(?:0)?)?|\\d{1,2}(?:.\\d{1,2})?)$')

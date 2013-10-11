@@ -1,51 +1,66 @@
 package com.eservice.eumowy
 
+import java.util.HashMap
+import java.util.List
+import java.util.Locale
+import grails.plugin.cache.Cacheable
+
+
+
 class EmailService {
 
     boolean transactional = false
+	boolean cache = true
 
     def mailService
     def messageSource
 
+	
+	@Cacheable(value="emailTampletByName", key="#name")
+	def getEmailTampletesByName(def name){
+		return EmailTemplates.findByName(name,[cache:true])
+	}
+	
+	
     def sendNotesToCOA(def notes, def phNumber, def phName) {
-        def emailTemplate = EmailTemplates.findByName(EmailTemplates.EmailTemplateType.NOTES_TO_COA)
+        def emailTemplate = getEmailTampletesByName(EmailTemplates.EmailTemplateType.NOTES_TO_COA)
 		log.info "COA Notes Recipient: " + emailTemplate.recipient
-        sendMailWithTryCatch(emailTemplate, emailTemplate.sender, emailTemplate.recipient, null, [notes: notes, phNumber: phNumber, phName: phName], null)
+        sendMailWithTryCatch(emailTemplate, null, [notes: notes, phNumber: phNumber, phName: phName], null)		
     }
 
 	def sendDocumentsPaperVersion(def recipient, List<DocumentFile> documents, def merchantName) {
-		def emailTemplate = EmailTemplates.findByName(EmailTemplates.EmailTemplateType.DOCUMENTS_PAPER_VERSION)
-        sendMail(emailTemplate, emailTemplate.sender, recipient, null, [merchantName: merchantName], documents)
+		emailTemplate = getEmailTampletesByName(EmailTemplates.EmailTemplateType.DOCUMENTS_PAPER_VERSION)
+		sendMail(emailTemplate, recipient, null, [merchantName: merchantName], documents)
 	}
 
     def sendDocumentsTemplateVersion(def recipient, List<DocumentFile> documents) {
-        def emailTemplate = EmailTemplates.findByName(EmailTemplates.EmailTemplateType.DOCUMENTS_TEMPLATE_VERSION)
-        sendMail(emailTemplate, emailTemplate.sender, recipient, null, null, documents)
+        def emailTemplate = getEmailTampletesByName(EmailTemplates.EmailTemplateType.DOCUMENTS_TEMPLATE_VERSION)
+        sendMail(emailTemplate, recipient, null, null, documents)
     }
 	
 	def sendDocumentsElectronicalVersion(def recipient, List<DocumentFile> documents) {
-		def emailTemplate = EmailTemplates.findByName(EmailTemplates.EmailTemplateType.DOCUMENTS_ELECTRONICAL_VERSION)
-        sendMail(emailTemplate, emailTemplate.sender, recipient, null, null, documents)
+		def emailTemplate = getEmailTampletesByName(EmailTemplates.EmailTemplateType.DOCUMENTS_ELECTRONICAL_VERSION)
+        sendMail(emailTemplate, null, null, documents)
 	}
 	
 	def sendDocumentsAccepted(def recipient, List<DocumentFile> documents, def merchantName) {
-		def emailTemplate = EmailTemplates.findByName(EmailTemplates.EmailTemplateType.DOCUMENTS_ACCEPTED)
-        sendMailWithTryCatch(emailTemplate, emailTemplate.sender, recipient, null, [merchantName: merchantName], documents)
+		def emailTemplate = getEmailTampletesByName(EmailTemplates.EmailTemplateType.DOCUMENTS_ACCEPTED)
+        sendMailWithTryCatch(emailTemplate, null, [merchantName: merchantName], documents)
 	}
 
     def sendDocumentsAcceptedToPostSend(def recipient, List<DocumentFile> documents, def merchantName, def merchantNip) {
-        def emailTemplate = EmailTemplates.findByName(EmailTemplates.EmailTemplateType.DOCUMENTS_MISSING_MAIL)
-        sendMail(emailTemplate, emailTemplate.sender, emailTemplate.recipient, null, [merchantName: merchantName, merchantNip: merchantNip], documents)
+        def emailTemplate = getEmailTampletesByName(EmailTemplates.EmailTemplateType.DOCUMENTS_MISSING_MAIL)
+        sendMail(emailTemplate, null, [merchantName: merchantName, merchantNip: merchantNip], documents)
     }
 
     def sendDocumentsRejected(def recipient, def merchantName, def merchantNip, def rejectReason, def activities) {
-        def emailTemplate = EmailTemplates.findByName(EmailTemplates.EmailTemplateType.DOCUMENTS_REJECTED)
-        sendMailWithTryCatch(emailTemplate, emailTemplate.sender, recipient, [merchantNip, merchantName] as Object[], [merchantName: merchantName, merchantNip: merchantNip, rejectReason: rejectReason, activities: activities], null)
+        def emailTemplate = getEmailTampletesByName(EmailTemplates.EmailTemplateType.DOCUMENTS_REJECTED)
+        sendMailWithTryCatch(emailTemplate, [merchantNip, merchantName] as Object[], [merchantName: merchantName, merchantNip: merchantNip, rejectReason: rejectReason, activities: activities], null)
     }
 
-    private def sendMailWithTryCatch(def emailTemplate, def sender, def recipient, def subjectParams, def bodyParams, def documents){
+    private def sendMailWithTryCatch(def emailTemplate, def subjectParams, def bodyParams, def documents){
         try{
-            sendMail(emailTemplate, sender, recipient, subjectParams, bodyParams, documents);
+            sendMail(emailTemplate, subjectParams, bodyParams, documents);
         }catch(Exception ex){
             log.error(ex)
             return false
@@ -53,16 +68,19 @@ class EmailService {
         return true
     }
 
-    private def sendMail(def emailTemplate, def sender, def recipient, def subjectParams, def bodyParams, def documents){
+    private def sendMail(def emailTemplate , def subjectParams, def bodyParams, def documents){
 
-        println 'Sending: ' + emailTemplate + ', to: ' + recipient + ', subjectParams: ' + subjectParams + ', bodyParams: ' + bodyParams + ', documents count: ' + documents?.size()
-
+		//wydzielenie adresatów z separatorem ","
+		String[] recipients = emailTemplate.recipient.split(",");
+		
+		println 'Sending: ' + emailTemplate + ', to: ' + recipients + ', subjectParams: ' + subjectParams + ', bodyParams: ' + bodyParams + ', documents count: ' + documents?.size()
+		
         mailService.sendMail {
             if (documents){
                 multipart true
             }
-            from sender
-            to recipient
+            from emailTemplate.sender
+            to recipients
             subject messageSource.getMessage("${emailTemplate.name}.email.subject", subjectParams, Locale.default)
             body( view: "/email/template/${emailTemplate.name}", model: bodyParams)
 

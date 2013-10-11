@@ -102,6 +102,8 @@
 				jQuery("#addNewPointButton").prop("disabled", false);
 				jQuery("#addNewPosButton").prop("disabled", false);
 			}
+
+			refreshTelepomkaAndTelekodzikPercentValues();
 			
 			return false;
 		});

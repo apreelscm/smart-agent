@@ -50,7 +50,7 @@ class AttachmentService {
         println "extensions start - allowedExtensions:" + config.allowedExtensions
         def fileExtension = file.originalFilename.substring(file.originalFilename.lastIndexOf('.') + 1)
         if (!config.allowedExtensions[0].equals("*")) {
-            if (!config.allowedExtensions.contains(fileExtension)) {
+            if (!config.allowedExtensions.contains(fileExtension?.toLowerCase())) {
                 def msg = messageSource.getMessage("fileupload.upload.unauthorizedExtension", [fileExtension, config.allowedExtensions] as Object[], request.locale)
                 log.warn(msg)
                 return msg

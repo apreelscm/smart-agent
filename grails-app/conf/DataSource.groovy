@@ -8,8 +8,10 @@ dataSource {
 }
 
 hibernate {
-    cache.use_second_level_cache = false
-    cache.use_query_cache = false
+	generate_statistics=true
+    cache.use_second_level_cache = true
+    cache.use_query_cache = true
+	cache.provider_class='org.hibernate.cache.EhCacheProvider'
    /* cache.region.factory_class = 'net.sf.ehcache.hibernate.EhCacheRegionFactory'*/
 }
 
