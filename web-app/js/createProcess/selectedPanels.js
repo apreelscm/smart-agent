@@ -24,8 +24,6 @@ function refreshTelepomkaAndTelekodzikPercentValues(){
         }
     });
 
-    console.log("Telekodzik: " + showTK);
-
     if(showTK){
         teleKodzikiInPPPaymentPanel.each(function(){
             this.value = this.getAttribute('data-value');
@@ -35,8 +33,6 @@ function refreshTelepomkaAndTelekodzikPercentValues(){
             this.value = '';
         })
     }
-
-    console.log("Telepompka: " + showTP);
 
     if (showTP) {
         telepompkiInPPPPaymentPanel.each(function() {
