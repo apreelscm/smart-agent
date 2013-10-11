@@ -29,17 +29,17 @@ class PdfMapper {
         println "Ilosc punktow: " + points?.size()
 
         if (points != null && points.size()>0){
-            //APUNTSS
+            //APUNTSS, APUNTZ2
             dataMap.putAll(mapPointsSpecial(points.findAll{ point -> (point.czyWybranyAkceptacjaKart && point.tytulPlatnosci)}, ["nazwa":"punktTytulPlatnosci", "miejscowosc":"adresTytulPlatnosci"]));
 
             //APUPZDCC2, APUPZ2DC1
             dataMap.putAll(mapPointsSpecial(points.findAll{ point -> (point.czyWybranyAkceptacjaKart && point.czyWybranyZakresUruchomienia)}, ["nazwa":"punktZakresUruchomienia", "miejscowosc":"adresZakresUruchomienia"]));
 
             //APUPZIF2, APUPZ2, APUPZBS2
-            dataMap.putAll(mapPointsSpecial(points.findAll{ point -> point.czyWybranyAkceptacjaKart }, ["nazwa":"punktAkceptacjaKart", "miejscowosc":"adresAkceptacjaKart"]));
+            dataMap.putAll(mapPointsSpecial(points.findAll{ point -> point.cbdId == null || (point.posDatas && point.posDatas.findAll{ pos -> pos.tpsId == null}.size()>0)}, ["nazwa":"punktAkceptacjaKart", "miejscowosc":"adresAkceptacjaKart"]));
 
-            //APUPZAWNZBS1, APUPZAWNZS1, APUNTZ2
-            dataMap.putAll(mapPointsSpecial(points.findAll{ point -> point.cbdId == null}, ["nazwa":"punkt", "miejscowosc":"adres"]));
+            //APUPZAWNZBS1, APUPZAWNZS1
+            dataMap.putAll(mapPointsSpecial(points.findAll{ point -> point.cbdId == null || (point.posDatas && point.posDatas.findAll{ pos -> pos.tpsId == null}.size()>0)}, ["nazwa":"punkt", "miejscowosc":"adres"]));
 
             //APUNTSZAPOU3
             dataMap.putAll(mapPointsSpecial(points.findAll{ point -> point.czyWybranyAkceptacjaKart}, ["nazwa":"punktTN", "miejscowosc":"adresTN", "tytulPlatnosci":"platnoscTN", "systemKasowy":"integracjaTN", "uta":"utaTN"]));
