@@ -18,6 +18,7 @@ class PanelService {
         cmd.scoringMcc = calculatorService.getCalcProperty(calc,"MCC")
         cmd.doladowania_tp = calculatorService.getCalcProperty(calc,"CZY_TELEPOMPKA")
         cmd.doladowania_tk = calculatorService.getCalcProperty(calc,"CZY_TELEKODZIK")
+        cmd.liczbaTerminali = calculatorService.getCalcProperty(calc,"LICZBA_POS_MAX")
     }
 
     def getAdresacjaSeciowa(ProcessCommand cmd, def calc ) {
@@ -106,8 +107,6 @@ class PanelService {
     }
 
     def getDodajPos(ProcessCommand cmd, def calc ) {
-		cmd.liczbaTerminali = calculatorService.getCalcProperty(calc,"LICZBA_POS_MAX")
-		
 		def pointData = new PointCommand()
 		
 		pointData.dialupTyp = calculatorService.getCalcProperty(calc,"TYP_DIALUP") //K RW
@@ -130,12 +129,10 @@ class PanelService {
 		pointData.gprsCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_SSL_TERM_CENA"))
 		pointData.gprsPPCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_GPRS_PP_CENA"))
 
-		cmd.defaultPointData = pointData
+		cmd.defaultPosData = pointData
     }
 
     def getDodajPunkt(ProcessCommand cmd, def calc ) {
-        cmd.liczbaTerminali = calculatorService.getCalcProperty(calc,"LICZBA_POS_MAX")
-
         def pointData = new PointCommand()
 
         pointData.dialupTyp = calculatorService.getCalcProperty(calc,"TYP_DIALUP") //K RW
@@ -158,7 +155,7 @@ class PanelService {
         pointData.gprsCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_SSL_TERM_CENA"))
         pointData.gprsPPCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_GPRS_PP_CENA"))
 
-        cmd.defaultPosData = pointData
+        cmd.defaultPointData = pointData
     }
 
     def getDodatkoweUslugi(ProcessCommand cmd, def calc ) {
