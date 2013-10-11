@@ -1101,10 +1101,6 @@ class ActivityController {
         }
     }
 	
-	def deletePos() {
-		
-	}
-	
     def deleteFile(){
         attachmentService.deleteFile(params.id,params.processId);
         getAttachmentList()

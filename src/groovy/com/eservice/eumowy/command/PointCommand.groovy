@@ -40,7 +40,6 @@ class PointCommand implements Serializable {
 	String wydrukLinia1
 	String wydrukLinia2
 	
-	String korespondencjaJakDlaMerchantaLubWydruku
 	String korespondencjaUlicaTytul
 	String korespondencjaUlica
 	String korespondencjaNrDomu
