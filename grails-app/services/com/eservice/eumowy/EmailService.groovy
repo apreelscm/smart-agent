@@ -70,14 +70,17 @@ class EmailService {
 
     private def sendMail(def emailTemplate , def subjectParams, def bodyParams, def documents){
 
-        println 'Sending: ' + emailTemplate + ', to: ' + emailTemplate.recipient + ', subjectParams: ' + subjectParams + ', bodyParams: ' + bodyParams + ', documents count: ' + documents?.size()
-
+		//wydzielenie adresatów z separatorem ","
+		String[] recipients = emailTemplate.recipient.split(",");
+		
+		println 'Sending: ' + emailTemplate + ', to: ' + recipients + ', subjectParams: ' + subjectParams + ', bodyParams: ' + bodyParams + ', documents count: ' + documents?.size()
+		
         mailService.sendMail {
             if (documents){
                 multipart true
             }
             from emailTemplate.sender
-            to emailTemplate.recipient
+            to recipients
             subject messageSource.getMessage("${emailTemplate.name}.email.subject", subjectParams, Locale.default)
             body( view: "/email/template/${emailTemplate.name}", model: bodyParams)
 
