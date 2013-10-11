@@ -34,40 +34,55 @@
 
 	  showSaveLink();
       $j("#saveProcessLink").click(function() {
-            var input = $j("<input>").attr("type", "hidden").attr("name", "_eventId_saveOnly").val("");
-            $j('.panelsForm').data("validator").cancelSubmit = true;
-            $j('.panelsForm').append($j(input)).submit()
+            var input = $j("<input>").attr("type", "hidden").attr("name", "_eventId_saveOnly").val(""),
+                form = $j('.panelsForm');
+            form.data("validator").cancelSubmit = true;
+            form.append($j(input));
+
             showLoadingDialog()
+
+            setTimeout(function() {
+                form.submit()
+            }, 1);
             return false
         });
 
         $j("#acceptPointsButton").click(function() {
             var submitButtons = $j("input[type='submit']"),
-                continueButton = $j("#continueButton");
+                continueButton = $j("#continueButton"),
+                form = $j(".panelsForm");
 
-            if ( $j(".panelsForm").valid()){
+            if ( form.valid()){
                 var input = $j("<input>").attr("type", "hidden").attr("name", "_eventId_saveOnly").val("");
-                $j('.panelsForm').append($j(input)).submit()
+                form.append($j(input))
 
                 submitButtons.attr('disabled', 'disabled');
                 continueButton.attr('disabled', 'disabled');
                 showLoadingDialog()
 
+                setTimeout(function() {
+                    form.submit()
+                }, 1);
             }
-
             return false;
         });
 
         $j("#continueButton").click(function() {
                 var submitButtons = $j("input[type='submit']"),
-                    continueButton = $j("#continueButton");
+                    continueButton = $j("#continueButton"),
+                    form = $j(".panelsForm");
 
-                if ( $j(".panelsForm").valid()){
+                if ( form.valid()){
                     var input = $j("<input>").attr("type", "hidden").attr("name", "_eventId_continue").val("");
                     submitButtons.attr('disabled', 'disabled');
                     continueButton.attr('disabled', 'disabled');
+
+                    form.append($j(input))
                     showLoadingDialog()
-                    $j('.panelsForm').append($j(input)).submit()
+
+                    setTimeout(function() {
+                        form.submit()
+                    }, 1);
                 }
 
                 return false;
