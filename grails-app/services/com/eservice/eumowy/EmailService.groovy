@@ -29,7 +29,7 @@ class EmailService {
     }
 
 	def sendDocumentsPaperVersion(def recipient, List<DocumentFile> documents, def merchantName) {
-		emailTemplate = getEmailTampletesByName(EmailTemplates.EmailTemplateType.DOCUMENTS_PAPER_VERSION)
+        def emailTemplate = getEmailTampletesByName(EmailTemplates.EmailTemplateType.DOCUMENTS_PAPER_VERSION)
 		sendMail(emailTemplate, recipient, null, [merchantName: merchantName], documents)
 	}
 
