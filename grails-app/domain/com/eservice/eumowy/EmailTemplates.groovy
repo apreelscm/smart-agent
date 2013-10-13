@@ -8,6 +8,10 @@ class EmailTemplates implements Serializable {
     String recipient;
     String sender;
 
+    public String[] getRecipients(){
+        recipient.split(",");
+    }
+
     static constraints = {
         name(unique:true)
         recipient(blank:false, email: true)

@@ -1,11 +1,6 @@
 package com.eservice.eumowy
 
-import java.util.HashMap
-import java.util.List
-import java.util.Locale
 import grails.plugin.cache.Cacheable
-
-
 
 class EmailService {
 
@@ -20,12 +15,10 @@ class EmailService {
 	def getEmailTampletesByName(def name){
 		return EmailTemplates.findByName(name,[cache:true])
 	}
-	
-	
+
     def sendNotesToCOA(def notes, def phNumber, def phName) {
         def emailTemplate = getEmailTampletesByName(EmailTemplates.EmailTemplateType.NOTES_TO_COA)
-		log.info "COA Notes Recipient: " + emailTemplate.recipient
-        sendMailWithTryCatch(emailTemplate, null, [notes: notes, phNumber: phNumber, phName: phName], null)		
+        sendMailWithTryCatch(emailTemplate, emailTemplate.recipients , null, [notes: notes, phNumber: phNumber, phName: phName], null)
     }
 
 	def sendDocumentsPaperVersion(def recipient, List<DocumentFile> documents, def merchantName) {
@@ -40,27 +33,31 @@ class EmailService {
 	
 	def sendDocumentsElectronicalVersion(def recipient, List<DocumentFile> documents) {
 		def emailTemplate = getEmailTampletesByName(EmailTemplates.EmailTemplateType.DOCUMENTS_ELECTRONICAL_VERSION)
-        sendMail(emailTemplate, null, null, documents)
+        sendMail(emailTemplate, recipient, null, null, documents)
 	}
 	
 	def sendDocumentsAccepted(def recipient, List<DocumentFile> documents, def merchantName) {
 		def emailTemplate = getEmailTampletesByName(EmailTemplates.EmailTemplateType.DOCUMENTS_ACCEPTED)
-        sendMailWithTryCatch(emailTemplate, null, [merchantName: merchantName], documents)
+        sendMailWithTryCatch(emailTemplate, recipient, null, [merchantName: merchantName], documents)
 	}
 
-    def sendDocumentsAcceptedToPostSend(def recipient, List<DocumentFile> documents, def merchantName, def merchantNip) {
+    def sendDocumentsAcceptedToPostSend(List<DocumentFile> documents, def merchantName, def merchantNip) {
         def emailTemplate = getEmailTampletesByName(EmailTemplates.EmailTemplateType.DOCUMENTS_MISSING_MAIL)
-        sendMail(emailTemplate, null, [merchantName: merchantName, merchantNip: merchantNip], documents)
+        sendMail(emailTemplate, emailTemplate.recipients, null, [merchantName: merchantName, merchantNip: merchantNip], documents)
     }
 
     def sendDocumentsRejected(def recipient, def merchantName, def merchantNip, def rejectReason, def activities) {
         def emailTemplate = getEmailTampletesByName(EmailTemplates.EmailTemplateType.DOCUMENTS_REJECTED)
-        sendMailWithTryCatch(emailTemplate, [merchantNip, merchantName] as Object[], [merchantName: merchantName, merchantNip: merchantNip, rejectReason: rejectReason, activities: activities], null)
+        sendMailWithTryCatch(emailTemplate,
+                recipient,
+                [merchantNip, merchantName] as Object[],
+                [merchantName: merchantName, merchantNip: merchantNip, rejectReason: rejectReason, activities: activities],
+                null)
     }
 
-    private def sendMailWithTryCatch(def emailTemplate, def subjectParams, def bodyParams, def documents){
+    private def sendMailWithTryCatch(def emailTemplate, def recipients,  def subjectParams, def bodyParams, def documents){
         try{
-            sendMail(emailTemplate, subjectParams, bodyParams, documents);
+            sendMail(emailTemplate, recipients, subjectParams, bodyParams, documents);
         }catch(Exception ex){
             log.error(ex)
             return false
@@ -68,12 +65,9 @@ class EmailService {
         return true
     }
 
-    private def sendMail(def emailTemplate , def subjectParams, def bodyParams, def documents){
+    private def sendMail(def emailTemplate , def recipients, def subjectParams, def bodyParams, def documents){
 
-		//wydzielenie adresatów z separatorem ","
-		String[] recipients = emailTemplate.recipient.split(",");
-		
-		println 'Sending: ' + emailTemplate + ', to: ' + recipients + ', subjectParams: ' + subjectParams + ', bodyParams: ' + bodyParams + ', documents count: ' + documents?.size()
+        log.info 'Sending: ' + emailTemplate + ', to: ' + recipients + ', subjectParams: ' + subjectParams + ', bodyParams: ' + bodyParams + ', documents count: ' + documents?.size()
 		
         mailService.sendMail {
             if (documents) {

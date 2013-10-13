@@ -1225,7 +1225,7 @@ class ActivityController {
                 } else {
                     def merchantName = getFromProcessData(process, 'akceptantNazwaOficjalna');
                     def merchantNip = getFromProcessData(process, 'nip');
-                    emailService.sendDocumentsAcceptedToPostSend(null, process.documents, merchantName, merchantNip)
+                    emailService.sendDocumentsAcceptedToPostSend(process.documents, merchantName, merchantNip)
                 }
             }
         }
