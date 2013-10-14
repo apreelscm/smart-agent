@@ -536,7 +536,7 @@ class ActivityController {
                     log.info("skipPanelsInit - true")
                     flow.skipPanelsInit = false
                     processCmd = processService.getSavedProcessCommand(processInstance, conversation.calc)
-
+                    processCmd.nip = processInstance.client.nip
                 }
 
                 flow.data = processCmd

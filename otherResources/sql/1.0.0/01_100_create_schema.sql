@@ -261,7 +261,7 @@ create table EUMOWY.POS_DETAILS (
   returnIKO number(1,0),
   dynamicdevicesupp_surname varchar2(255 char),
   statdevicesupp_contactsurname varchar2(255 char),
-  additional_notes varchar2(255 char),
+  additional_notes varchar2(1000 char),
   primary key (id));
 
 create table EUMOWY.PROCESS (
