@@ -112,128 +112,86 @@ class PdfService {
 	def fillPdfFormFromURI(String urlTemplatePath, Map<String,String[]> dataMap, FontType fontType) {
 		return PdfGenerator.generatePdfContentFromURI(urlTemplatePath, dataMap, fontType, appParametersService.getFontUri())
 	}
-	
-	def fillPdfFormFromURIWithFaksymile(Signature sig, Map<String,String[]> panelData, FontType fontType) {
-		int subscriptionDeltaX1 = 250
-		int subscriptionDeltaX2 = 380
-		
-		String subscriptionsPath = appParametersService.getSubscriptionsPath()
-		
-		Map<String,String[]> dataMap = new HashMap<String, String[]>()
-		
-		String subscriptionXScale1 = appParametersService.getManagementSubscriptionFirstScaleX()
-		String subscriptionXScale2 = appParametersService.getManagementSubscriptionSecondScaleX()
-		String subscriptionYScale1 = appParametersService.getManagementSubscriptionFirstScaleY()
-		String subscriptionYScale2 = appParametersService.getManagementSubscriptionSecondScaleY()
-		
-		if (sig.subscriptionPageNumber != null && sig.subscriptionPageNumber > -1) {
-			dataMap.put("managementSubscription1", [new File(subscriptionsPath+sig.managementSubscription1).toURI().toURL(), "", "signature", sig.subscriptionPageNumber.toString(), (sig.subscriptionX+subscriptionDeltaX1).toString(), sig.subscriptionY.toString(), subscriptionXScale1, subscriptionYScale1] as String[])
-			dataMap.put("managementSubscription2", [new File(subscriptionsPath+sig.managementSubscription2).toURI().toURL(), "", "signature", sig.subscriptionPageNumber.toString(), (sig.subscriptionX+subscriptionDeltaX2).toString(), sig.subscriptionY.toString(), subscriptionXScale2, subscriptionYScale2] as String[])
-		}
-		
-		if (panelData != null) {
-			dataMap.putAll(panelData)
-		}
+
+    def fillPdfFormFromURIWithoutFaksymile(Signature sig, Map<String,String[]> panelData, FontType fontType) {
+        Map<String,String[]> dataMap = new HashMap<String, String[]>()
+
+        if (panelData != null) {
+            dataMap.putAll(panelData)
+        }
 
         String pdfTemplatePath = appParametersService.getPdfTemplatePath() + sig.templatePath
-		
-		return PdfGenerator.generatePdfContentFromURI(pdfTemplatePath, dataMap, fontType, appParametersService.getFontUri())
-	}
-	
-	def fillPdfFormFromURIWithoutFaksymile(Signature sig, Map<String,String[]> panelData, FontType fontType) {
-		Map<String,String[]> dataMap = new HashMap<String, String[]>()
-		
-		if (panelData != null) {
-			dataMap.putAll(panelData)
-		}
-		
-		String pdfTemplatePath = appParametersService.getPdfTemplatePath() + sig.templatePath
-		
-		return PdfGenerator.generatePdfContentFromURI(pdfTemplatePath, dataMap, fontType, appParametersService.getFontUri())
-	}
-	
-	def fillPdfFormFromURIWithBlackFaksymile(Signature sig, Map<String,String[]> panelData, FontType fontType) {
-		int subscriptionDeltaX1 = 250
-		int subscriptionDeltaX2 = 380
-		
-		String subscriptionsPath = appParametersService.getSubscriptionsPath()
-		String subscriptionsBlackNamePrefix = appParametersService.getSubscriptionsBlackPrefix()
-		
-		Map<String,String[]> dataMap = new HashMap<String, String[]>()
-		
-		String subscriptionXScale1 = appParametersService.getManagementSubscriptionFirstScaleX()
-		String subscriptionXScale2 = appParametersService.getManagementSubscriptionSecondScaleX()
-		String subscriptionYScale1 = appParametersService.getManagementSubscriptionFirstScaleY()
-		String subscriptionYScale2 = appParametersService.getManagementSubscriptionSecondScaleY()
-		
-		if (sig.subscriptionPageNumber != null && sig.subscriptionPageNumber > -1) {
-			dataMap.put("managementSubscription1", [new File(subscriptionsPath+subscriptionsBlackNamePrefix+sig.managementSubscription1).toURI().toURL(), "", "signature", sig.subscriptionPageNumber.toString(), (sig.subscriptionX+subscriptionDeltaX1).toString(), sig.subscriptionY.toString(), subscriptionXScale1, subscriptionYScale1] as String[])
-			dataMap.put("managementSubscription2", [new File(subscriptionsPath+subscriptionsBlackNamePrefix+sig.managementSubscription2).toURI().toURL(), "", "signature", sig.subscriptionPageNumber.toString(), (sig.subscriptionX+subscriptionDeltaX2).toString(), sig.subscriptionY.toString(), subscriptionXScale2, subscriptionYScale2] as String[])
-		}
-		
-		if (panelData != null) {
-			dataMap.putAll(panelData)
-		}
-		
-		String pdfTemplatePath = appParametersService.getPdfTemplatePath() + sig.templatePath
-		
-		return PdfGenerator.generatePdfContentFromURI(pdfTemplatePath, dataMap, fontType, appParametersService.getFontUri())
-	}
-	
-	def addClientSubscriptionsToDocument(byte[] documentContent, Signature sig, Set<Subscription> subscriptions) {
-		byte[] updatedContent = documentContent
-		int subscriptionDeltaX = 120
-		
-		Map<String,Object[]> subscriptionsMap = new HashMap<String, Object[]>()
-		int xScale = appParametersService.SUBSCRIPTION_SCALE_X
-		int yScale = appParametersService.SUBSCRIPTION_SCALE_Y
 
-		if (sig.subscriptionPageNumber != null && sig.subscriptionPageNumber > -1) {
-			Subscription s = subscriptions.find { it.personRole?.equals(Subscription.PersonRole.ACCEPTANT1) == true }
-			if (s?.content != null) {
-				BufferedImage img = SignatureToImage.convertJsonToImage(s.content)
-				subscriptionsMap.put("subscriber"+s.id, [img, sig.subscriptionPageNumber, sig.subscriptionX, sig.subscriptionY, xScale, yScale] as Object[])
-				s = null
-			}
-			else {
-				log.info "Subscription without subscription content found for ACCEPTANT1! Template path: " + sig.templatePath
-			}
-			
-			s = subscriptions.find { it.personRole?.equals(Subscription.PersonRole.ACCEPTANT2) == true }
-			if (s?.content != null) {
-				BufferedImage img = SignatureToImage.convertJsonToImage(s.content)
-				subscriptionsMap.put("subscriber"+s.id, [img, sig.subscriptionPageNumber, sig.subscriptionX+subscriptionDeltaX, sig.subscriptionY, xScale, yScale] as Object[])
-				s = null
-			}
-			else {
-				log.info "Subscription without subscription content found for ACCEPTANT2! Template path: " + sig.templatePath
-			}
-		}
-		else {
-			log.info "No page number for ACCEPTANTS specified - template: " + sig.templatePath
-		}
-		
-		if (sig.phSubscriptionPageNumber != null && sig.phSubscriptionPageNumber > -1) {
-			Subscription s = subscriptions.find { it.personRole?.equals(Subscription.PersonRole.PH) == true }
-			if (s?.content != null) {
-				BufferedImage img = SignatureToImage.convertJsonToImage(s.content)
-				subscriptionsMap.put("subscriber"+s.id, [img, sig.phSubscriptionPageNumber, sig.phSubscriptionX, sig.phSubscriptionY, xScale, yScale] as Object[])
-				s = null
-			}
-			else {
-				log.info "Subscription without subscription content found for PH! Template path: " + sig.templatePath
-			}
-		}
-		else {
-			log.info "No page number for PH specified - template: " + sig.templatePath
-		}
-		
-		if (subscriptionsMap.isEmpty() == false) {	
-			updatedContent = PdfGenerator.addImageToPdfContent(sig.templatePath, documentContent, subscriptionsMap)
-		}
-		
-		return updatedContent
+        return PdfGenerator.generatePdfContentFromURI(pdfTemplatePath, dataMap, fontType, appParametersService.getFontUri())
+    }
+
+	def fillPdfFormFromURIWithFaksymile(def sigId, Map<String,String[]> panelData, FontType fontType) {
+        fillPdfFormFromURI2(sigId, panelData, fontType, false)
 	}
+
+	def fillPdfFormFromURIWithBlackFaksymile(def sigId, Map<String,String[]> panelData, FontType fontType) {
+        fillPdfFormFromURI2(sigId, panelData, fontType, true)
+	}
+
+    private def fillPdfFormFromURI2(def sigId, Map<String,String[]> panelData, FontType fontType, boolean withBlackFaksymile) {
+
+        String subscriptionsPath = appParametersService.getSubscriptionsPath()
+        String subscriptionsBlackNamePrefix = withBlackFaksymile ? appParametersService.getSubscriptionsBlackPrefix() : "";
+
+        Map<String,String[]> dataMap = new HashMap<String, String[]>()
+
+        Signature sig = Signature.get(sigId);
+        if (sig.subscriptionPageNumber != null && sig.subscriptionPageNumber > -1) {
+            sig.subscriptionDefinitions.findAll { it.role == Subscription.PersonRole.ZARZAD1 || it.role == Subscription.PersonRole.ZARZAD2}.eachWithIndex{ SubscriptionDefinition it, int i ->
+                dataMap.put(it.role.name() + i, [new File(subscriptionsPath+subscriptionsBlackNamePrefix+it.fileName).toURI().toURL(), "", "signature", it.subscriptionPageNumber.toString(), (it.subscriptionX).toString(), it.subscriptionY.toString(), it.scaleX, it.scaleY] as String[])
+            }
+        }
+
+        if (panelData != null) {
+            dataMap.putAll(panelData)
+        }
+
+        String pdfTemplatePath = appParametersService.getPdfTemplatePath() + sig.templatePath
+
+        return PdfGenerator.generatePdfContentFromURI(pdfTemplatePath, dataMap, fontType, appParametersService.getFontUri())
+    }
+
+    def addClientSubscriptionsToDocument(byte[] documentContent, def sigId, Set<Subscription> subscriptions) {
+        byte[] updatedContent = documentContent
+        Map<String,Object[]> subscriptionsMap = new HashMap<String, Object[]>()
+
+        Signature sig = Signature.get(sigId);
+
+        subscriptionsMap.putAll(attachSignatures(sig, subscriptions, Subscription.PersonRole.ACCEPTANT1))
+        subscriptionsMap.putAll(attachSignatures(sig, subscriptions, Subscription.PersonRole.ACCEPTANT2))
+        subscriptionsMap.putAll(attachSignatures(sig, subscriptions, Subscription.PersonRole.PH))
+
+        if (!subscriptionsMap.isEmpty()) {
+            updatedContent = PdfGenerator.addImageToPdfContent(sig.templatePath, documentContent, subscriptionsMap)
+        }
+
+        return updatedContent
+    }
+
+    private def attachSignatures(Signature sig, Set<Subscription> subscriptions, Subscription.PersonRole personRole) {
+        def result = [:]
+        if (sig.subscriptionPageNumber != null && sig.subscriptionPageNumber > -1) {
+            Subscription s = subscriptions.find { it.personRole == personRole }
+            Set<SubscriptionDefinition> definitions = sig.subscriptionDefinitions.findAll { it.role == personRole }
+            if (s?.content != null && !definitions.isEmpty()) {
+                definitions.each{
+                    BufferedImage img = SignatureToImage.convertJsonToImage(s.content)
+                    result.put("subscriber_"+it.id, [img, it.subscriptionPageNumber, it.subscriptionX, it.subscriptionY, it.scaleX, it.scaleY] as Object[])
+                }
+            } else {
+                log.info "Subscription without definitions or subscription content found for" + personRole.name() +"! Template path: " + sig.templatePath
+            }
+        } else {
+			log.info "No page number for "+ personRole.name() +" specified - template: " + sig.templatePath
+        }
+
+        result;
+    }
 
     def workWithDocuments(def processInstance, def calc){
         def totalPagesCount = 0
@@ -274,9 +232,8 @@ class PdfService {
         ['totalPagesCount': totalPagesCount, 'processInstance': processInstance]
     }
 
-
     private def workWithOneDocument(def processInstance, def sig, def data, def documentName){
-        byte[] documentData = this.fillPdfFormFromURIWithFaksymile(sig, data, PdfService.FontType.ARIAL)
+        byte[] documentData = this.fillPdfFormFromURIWithFaksymile(sig.id, data, PdfService.FontType.ARIAL)
         if(!documentData) return 0
 
         int pc = this.getPageCountFromPdf(documentData)

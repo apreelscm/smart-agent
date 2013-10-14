@@ -5,10 +5,6 @@ import grails.util.Environment
 
 class AppParametersService {
 
-	/* Consts */
-	public static int SUBSCRIPTION_SCALE_X = 74
-	public static int SUBSCRIPTION_SCALE_Y = 43
-	
 	def grailsApplication
 	
 	def getParamById(Integer id) {
@@ -116,76 +112,5 @@ class AppParametersService {
 		
 		return prefix
 	}
-	
-	def getTemplateNameForNewPoint() {
-		String name = AppParameters.findByName("TEMPLATE_NAME_FOR_NEW_POINT")?.value
-		
-		if (isDevelopmentMode()) {
-			if (name == null || name.isEmpty()) {
-				name = "BRAK TEMPLATE DLA NOWEGO PUNKTU"
-			}
-		}
-		
-		return name
-	}
-	
-	def getTemplateNameForNewPos() {
-		String name = AppParameters.findByName("TEMPLATE_NAME_FOR_NEW_POS")?.value
-		
-		if (isDevelopmentMode()) {
-			if (name == null || name.isEmpty()) {
-				name = "BRAK TEMPLATE DLA NOWEGO POS"
-			}
-		}
-		
-		return name
-	}
-	
-	def getManagementSubscriptionFirstScaleX() {
-		String scaleXString = AppParameters.findByName("MANAGEMENT_SUBSCRIPTION1_SCALE_X")?.value
-		
-		if (isDevelopmentMode()) {
-			if (scaleXString == null || scaleXString.isEmpty()) {
-				scaleXString = "85"
-			}
-		}
-		
-		return scaleXString
-	}
-	
-	def getManagementSubscriptionFirstScaleY() {
-		String scaleYString = AppParameters.findByName("MANAGEMENT_SUBSCRIPTION1_SCALE_Y")?.value
-		
-		if (isDevelopmentMode()) {
-			if (scaleYString == null || scaleYString.isEmpty()) {
-				scaleYString = "58"
-			}
-		}
-		
-		return scaleYString
-	}
-	
-	def getManagementSubscriptionSecondScaleX() {
-		String scaleXString = AppParameters.findByName("MANAGEMENT_SUBSCRIPTION2_SCALE_X")?.value
 
-		if (isDevelopmentMode()) {
-			if (scaleXString == null || scaleXString.isEmpty()) {
-				scaleXString = "56"
-			}
-		}
-
-		return scaleXString
-	}
-	
-	def getManagementSubscriptionSecondScaleY() {
-		String scaleYString = AppParameters.findByName("MANAGEMENT_SUBSCRIPTION2_SCALE_Y")?.value
-		
-		if (isDevelopmentMode()) {
-			if (scaleYString == null || scaleYString.isEmpty()) {
-				scaleYString = "59"
-			}
-		}
-		
-		return scaleYString
-	}
 }
