@@ -23,28 +23,20 @@ class AppParametersService {
         return Environment.isDevelopmentMode() ||
                 Environment.getCurrent().getName().equalsIgnoreCase(EumowyCustomEnvironment.MOCK.getName())
     }
+
+    def getDefaultResourcePath(){
+        System.getProperty("base.dir") + File.separator + "otherResources" + File.separator
+    }
 	
 	def getPdfPreviewPath() {
-		String tmpPath = AppParameters.findByName("TEMP_PDFPREVIEW_STORAGE_PATH")?.value
-		
-		if (isDevelopmentMode()) {
-			if (tmpPath == null || tmpPath.isEmpty()) {
-				tmpPath = "tmp"
-			}
-		}
-		
-		return tmpPath
+		return grailsApplication.config.tempPdfPreviewStoragePath
 	}
-	
+
+    // TODO warto to wydzielic poza paczke aplikacji i dorobic czyszczenie
 	def getPdfImagePath() {
-		String tmpPath = AppParameters.findByName("TEMP_PDFIMAGE_STORAGE_PATH")?.value
-		// FIXME dodac tworzenie katalogu tmp jesli go nie ma
-		if (isDevelopmentMode()) {
-			if (tmpPath == null || tmpPath.isEmpty()) {
-				tmpPath = File.separator + "files" + File.separator + "pdf_images" + File.separator
-			}
-		}
-		
+        String tmpPath = grailsApplication.config.tempPdfImageStoragePath
+
+        // TODO pozbyc sie tego, parametr z konfiguracji powinien wystarczyc
 		if (new File(tmpPath).isAbsolute()) {
 			return tmpPath
 		}
@@ -53,30 +45,21 @@ class AppParametersService {
 		}
 	}
 
-    def getFontUri() {
-        def fontUri = grailsApplication.mainContext.getServletContext().getRealPath(File.separator+"fonts")+File.separator
-        fontUri
+    def getFontUri() { // TODO powinna wskazywac na katalog ew. podkatalog gdzie sa pdfy
+        return grailsApplication.mainContext.getServletContext().getRealPath(File.separator+"fonts")+File.separator
     }
 
 	def getPdfImageUri() {
-		String tmpPath = AppParameters.findByName("TEMP_PDFIMAGE_STORAGE_URI")?.value
-		
-		if (isDevelopmentMode()) {
-			if (tmpPath == null || tmpPath.isEmpty()) {
-				tmpPath = "/eumowy/files/pdf_images/"
-			}
-		}
-		
-		return tmpPath
+		return  grailsApplication.config.tempPdfImageStorageUri
 	}
-	
+
 	def getPdfTemplatePath() {
-		String path = AppParameters.findByName("PDF_TEMPLATE_PATH")?.value
-		
+        String path = grailsApplication.config.pdfTemplatePath
+
+        // TODO pozbyc sie tych ifow, parametr z konfiguracji powinien wystarczyc
 		if (isDevelopmentMode()) {
-            File checkPath = new File(path);
-			if (path == null || path.isEmpty() || ! checkPath.exists()) {
-				path = System.getProperty("base.dir") + File.separator + "otherResources" + File.separator + "pdf_templates" + File.separator
+			if (path == null || path.isEmpty()  || ! new File(path).exists()) {
+				path = getDefaultResourcePath() + "pdf_templates" + File.separator
 			}
 		}
 		
@@ -88,15 +71,10 @@ class AppParametersService {
 		}
 	}
 	
-	def getSubscriptionsPath() {
-		String path = AppParameters.findByName("SUBSCRIPTIONS_PATH")?.value
-		
-		if (isDevelopmentMode()) {
-			if (path == null || path.isEmpty()) {
-				path = File.separator + "files" + File.separator 
-			}
-		}
-		
+	def getSubscriptionsPath() { // TODO powinna wskazywac na katalog ew. podkatalog gdzie sa pdfy
+        String path = grailsApplication.config.subscriptionsPath
+
+        // TODO pozbyc sie tych ifow, parametr z konfiguracji powinien wystarczyc
 		if (new File(path).isAbsolute()) {
 			return path
 		}
@@ -106,86 +84,22 @@ class AppParametersService {
 	}
 	
 	def getSubscriptionsBlackPrefix() {
-		String prefix = AppParameters.findByName("SUBSCRIPTIONS_PATH_BLACKPREFIX")?.value
-		
-		if (isDevelopmentMode()) {
-			if (prefix == null || prefix.isEmpty()) {
-				prefix = "black_"
-			}
-		}
-		
-		return prefix
-	}
-	
-	def getTemplateNameForNewPoint() {
-		String name = AppParameters.findByName("TEMPLATE_NAME_FOR_NEW_POINT")?.value
-		
-		if (isDevelopmentMode()) {
-			if (name == null || name.isEmpty()) {
-				name = "BRAK TEMPLATE DLA NOWEGO PUNKTU"
-			}
-		}
-		
-		return name
-	}
-	
-	def getTemplateNameForNewPos() {
-		String name = AppParameters.findByName("TEMPLATE_NAME_FOR_NEW_POS")?.value
-		
-		if (isDevelopmentMode()) {
-			if (name == null || name.isEmpty()) {
-				name = "BRAK TEMPLATE DLA NOWEGO POS"
-			}
-		}
-		
-		return name
+		return AppParameters.findByName("SUBSCRIPTIONS_PATH_BLACKPREFIX")?.value
 	}
 	
 	def getManagementSubscriptionFirstScaleX() {
-		String scaleXString = AppParameters.findByName("MANAGEMENT_SUBSCRIPTION1_SCALE_X")?.value
-		
-		if (isDevelopmentMode()) {
-			if (scaleXString == null || scaleXString.isEmpty()) {
-				scaleXString = "85"
-			}
-		}
-		
-		return scaleXString
+		return AppParameters.findByName("MANAGEMENT_SUBSCRIPTION1_SCALE_X")?.value
 	}
 	
 	def getManagementSubscriptionFirstScaleY() {
-		String scaleYString = AppParameters.findByName("MANAGEMENT_SUBSCRIPTION1_SCALE_Y")?.value
-		
-		if (isDevelopmentMode()) {
-			if (scaleYString == null || scaleYString.isEmpty()) {
-				scaleYString = "58"
-			}
-		}
-		
-		return scaleYString
+		return AppParameters.findByName("MANAGEMENT_SUBSCRIPTION1_SCALE_Y")?.value
 	}
 	
 	def getManagementSubscriptionSecondScaleX() {
-		String scaleXString = AppParameters.findByName("MANAGEMENT_SUBSCRIPTION2_SCALE_X")?.value
-
-		if (isDevelopmentMode()) {
-			if (scaleXString == null || scaleXString.isEmpty()) {
-				scaleXString = "56"
-			}
-		}
-
-		return scaleXString
+		return AppParameters.findByName("MANAGEMENT_SUBSCRIPTION2_SCALE_X")?.value
 	}
 	
 	def getManagementSubscriptionSecondScaleY() {
-		String scaleYString = AppParameters.findByName("MANAGEMENT_SUBSCRIPTION2_SCALE_Y")?.value
-		
-		if (isDevelopmentMode()) {
-			if (scaleYString == null || scaleYString.isEmpty()) {
-				scaleYString = "59"
-			}
-		}
-		
-		return scaleYString
+		return AppParameters.findByName("MANAGEMENT_SUBSCRIPTION2_SCALE_Y")?.value
 	}
 }
