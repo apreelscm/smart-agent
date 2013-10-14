@@ -194,7 +194,7 @@
             <ul class="table-list">
                 <li>
                     <span><g:message code="panel.profitability.calc"/></span>
-                    <span><g:field type="number" step="any"  name="scoringDochodowosc" value="${data.scoringDochodowosc}" style="width: 100px"/> <g:message code="panel.polish.currency"/></span>
+                    <span><g:field type="text" class="float-number"  name="scoringDochodowosc" value="${data.scoringDochodowosc}" style="width: 100px"/> <g:message code="panel.polish.currency"/></span>
                 </li>
             </ul>
         </fieldset>

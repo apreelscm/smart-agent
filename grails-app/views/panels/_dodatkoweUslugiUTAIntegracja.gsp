@@ -6,13 +6,13 @@
                 <li>
                     <span class="align-left"><g:message code="panel.payment.uta"/></span>
                     <span class="align-left">
-                        <g:field type="number" step="any" name="weryfikacjaPINCena" value="${data.weryfikacjaPINCena}" style="width: 100px"/> <g:message code="panel.polish.currency"/>
+                        <g:field type="text" class="float-number" name="weryfikacjaPINCena" value="${data.weryfikacjaPINCena}" style="width: 100px"/> <g:message code="panel.polish.currency"/>
                     </span>
                 </li>
                 <li>
                     <span class="align-left"><g:message code="panel.payment.integration.with.system"/></span>
                     <span class="align-left">
-                        <g:field type="number" step="any" name="systemKasowyCena" value="${data.systemKasowyCena}" style="width: 100px"/> <g:message code="panel.polish.currency"/>
+                        <g:field type="text" class="float-number" name="systemKasowyCena" value="${data.systemKasowyCena}" style="width: 100px"/> <g:message code="panel.polish.currency"/>
                     </span>
                 </li>
             </ul>
