@@ -219,7 +219,7 @@ class ActivityController {
 
                 }
                 flow.skipDocumentGeneration = false
-				flow.processInstance = processInstance
+                flow.processInstance = processInstance
                 flow.rejectedDocumentsMessage = 'Pomyslnie odrzucono dokumentacje dla NIP ' + flow.processInstance.client.nip
             }
             render(view: "../createProcess/clientSignature", model: [
@@ -253,6 +253,7 @@ class ActivityController {
                         log.info "PUSTE ID!"
                     }
                     processInstance.addToSubscriptions(sub)
+                    //      processInstance.discard()
                     sub.save()
 
                     //w momencie gdy zlozymy ostatni podpis zapisujemy date jako dataUmowy
@@ -263,7 +264,16 @@ class ActivityController {
                     if (aggrementDateProcessData){
                         aggrementDateProcessData.value = aggrementDate
                     } else {
-                        processInstance.addToProcessData(new ProcessData(name: 'dataUmowy', value: aggrementDate))
+
+                        def dataUmowyPD = new ProcessData(name: 'dataUmowy', value: aggrementDate)
+
+                        ProcessData foundData = processInstance.processData.find { it.name == dataUmowyPD.name }
+                        if(!foundData){
+                            processInstance.addToProcessData(dataUmowyPD)
+                        }else if(dataUmowyPD.value != foundData.value){
+                            foundData.value = dataUmowyPD.value
+                        }
+
                     }
                 }
                 else if (params.processStatus.equals("REJECTED")){
@@ -386,6 +396,7 @@ class ActivityController {
             on("continue"){
 
                 Process processInstance = flow.processInstance
+
                 processInstance.calcNumber =  flow.calcNumber
 
                 Client client = flow.client
@@ -407,6 +418,8 @@ class ActivityController {
                     processInstance.errors.each { log.error(it) }
                     return "error"
                 }
+
+                log.info("NOWY PROCES - utworzenie procesu - nip = ${flow.nip} , processId = ${processInstance?.id}, status = ${processInstance?.status}")
 
                 flow.processInstance = processInstance
 
@@ -563,23 +576,23 @@ class ActivityController {
             on("acceptPointsButton") {
                 log.info "acceptPointsButton TRIGGERED"
             }.to "selectedPanels"
-			on("deletePoint") {
-				def processInstance = flow.processInstance
-				def point = PointData.get(Integer.valueOf(params.pointId));
-				if (point != null) {
-					log.info "DeletePoint - Usuwam punkt o id: " + params.pointId
-					processInstance.removeFromPoints(point)
-					point.delete()
-					processInstance.save(flush: true)
-				}
-				else {
-					log.info "DeletePoint - Nie znalazłem punktu o id: " + params.pointId
-				}
-				flow.processInstance = processInstance
-			}.to "saveOnly"
+            on("deletePoint") {
+                def processInstance = flow.processInstance
+                def point = PointData.get(Integer.valueOf(params.pointId));
+                if (point != null) {
+                    log.info "DeletePoint - Usuwam punkt o id: " + params.pointId
+                    processInstance.removeFromPoints(point)
+                    point.delete()
+                    processInstance.save(flush: true)
+                }
+                else {
+                    log.info "DeletePoint - Nie znalazłem punktu o id: " + params.pointId
+                }
+                flow.processInstance = processInstance
+            }.to "saveOnly"
             on("saveOnly"){ ProcessCommand cmd ->
-				log.info params
-				log.info params.get('allPoses[0]')
+                log.info params
+                log.info params.get('allPoses[0]')
                 Process processInstance = processService.populateProcessWithData(flow.processInstance, cmd)
                 log.info "Zapisuje dane paneli"
 
@@ -707,6 +720,8 @@ class ActivityController {
             on("continue"){
                 def processInstance = flow.savedProcess
 
+                log.info("POPRAW DANE - wczytanie procesu - nip = ${flow.nip} , processId = ${processInstance?.id}, status = ${processInstance?.status}")
+
                 def user = springSecurityService.principal
                 processInstance.phNumber = user.nr
                 processInstance.phFirstName = user.imie
@@ -734,6 +749,7 @@ class ActivityController {
                 def client = cbdService.findClientByNip(flow.nip);
                 def lastProcess = processService.getLastProcessForClient(params.nip)
 
+                log.info("POPRAW DANE - Znaleziono proces - nip = ${flow.nip} , processId = ${lastProcess?.id}, status = ${lastProcess?.status}")
 
                 if(! client?.cbdId){
                     /** sprawdzanie, czy to nie jest nowa umowa */
@@ -832,35 +848,35 @@ class ActivityController {
             on("acceptPointsButton") {
                 log.info "acceptPointsButton TRIGGERED"
             }.to "selectedPanels"
-			on("deletePoint") {
-				def processInstance = flow.processInstance
-				def point = PointData.get(Integer.valueOf(params.pointId));
-				if (point != null) {
-					log.info "DeletePoint - Usuwam punkt o id: " + params.pointId
-					processInstance.removeFromPoints(point)
-					point.delete()
-					processInstance.save(flush: true)
-				}
-				else {
-					log.info "DeletePoint - Nie znalazłem punktu o id: " + params.pointId
-				}
-				flow.processInstance = processInstance
-			}.to "selectedPanels"
+            on("deletePoint") {
+                def processInstance = flow.processInstance
+                def point = PointData.get(Integer.valueOf(params.pointId));
+                if (point != null) {
+                    log.info "DeletePoint - Usuwam punkt o id: " + params.pointId
+                    processInstance.removeFromPoints(point)
+                    point.delete()
+                    processInstance.save(flush: true)
+                }
+                else {
+                    log.info "DeletePoint - Nie znalazłem punktu o id: " + params.pointId
+                }
+                flow.processInstance = processInstance
+            }.to "selectedPanels"
             on("saveOnly"){ ProcessCommand cmd ->
                 Process processInstance = processService.populateProcessWithData(flow.processInstance,cmd)
 
                 processInstance.save(flush: true, validate: false)
-				
-				log.info "Zapisano dane paneli"
-				
-				// Update
-				processInstance.points?.each { point ->
-					if (point.cbdId != null) {
-						def foundApc = cmd.allPoints?.find { apc -> apc.cbdId == point.cbdId }
-						foundApc?.id = point.id
-					}
-				}
-								
+
+                log.info "Zapisano dane paneli"
+
+                // Update
+                processInstance.points?.each { point ->
+                    if (point.cbdId != null) {
+                        def foundApc = cmd.allPoints?.find { apc -> apc.cbdId == point.cbdId }
+                        foundApc?.id = point.id
+                    }
+                }
+
                 flow.processInstance = processInstance
                 //  flow.data = cmd
                 flow.skipPanelsInit = true;
@@ -953,6 +969,9 @@ class ActivityController {
             on("getCalculator").to "getCalculator"
             on("continue"){
                 Process processInstance = flow.savedProcess
+
+                log.info("UZUPELNIJ PODPISY - wczytanie procesu - nip = ${flow.nip} , processId = ${processInstance?.id}, status = ${processInstance?.status}")
+
                 flow.processInstance = processInstance
             }.to "clientSignature"
         }
@@ -975,6 +994,8 @@ class ActivityController {
 
                 /** sprawdzanie, czy w eUmowy istnieje dla danego Akceptanta Proces w statusie oczekiwania na podpis */
                 def lastProcess = processService.getLastProcessForClient(params.nip)
+                log.info("UZUPELNIJ PODPISY - znaleziono proces - nip = ${flow.nip} , processId = ${lastProcess?.id}, status = ${lastProcess?.status}")
+
                 if(! Process.ProcessStatus.WAIT_FOR_SUBSCRIPTION.equals(lastProcess?.status)){
                     flash.nipErrorMessage = message(code:"client.addSignatures.error",
                             default:"Brak możliwości uzupełnienia podpisów");
@@ -1037,6 +1058,9 @@ class ActivityController {
             on("getCalculator").to "getCalculator"
             on("continue"){
                 Process processInstance = flow.savedProcess
+
+                log.info("ODRZUCENIE PROCESU - wczytanie procesu - nip = ${flow.nip} , processId = ${processInstance?.id}, status = ${processInstance?.status}")
+
                 processInstance.status = Process.ProcessStatus.REJECTED;
                 flow.processInstance = processInstance
             }.to "finish"
@@ -1058,6 +1082,7 @@ class ActivityController {
 
                 /** sprawdzanie, czy w eUmowy istnieje dla danego Akceptanta jakis Proces */
                 def lastProcess = processService.getLastProcessForClient(params.nip)
+                log.info("ODRZUCENIE PROCESU - znaleziono proces - nip = ${flow.nip} , processId = ${lastProcess?.id}, status = ${lastProcess?.status}")
 
                 if(! lastProcess?.id){
                     flash.nipErrorMessage = message(code:"client.eUmowyNotFound.error", default:"Brak klienta w eUmowy");
@@ -1122,7 +1147,7 @@ class ActivityController {
             render(template:"message/errorMessage", model:[message:msg]);
         }
     }
-	
+
     def deleteFile(){
         attachmentService.deleteFile(params.id,params.processId);
         getAttachmentList()

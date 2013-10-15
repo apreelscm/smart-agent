@@ -9,7 +9,7 @@
 			</thead>
 			<tbody>
 				<tr>
-                    <td>typ <dict:typeSelect nip="${nip}"  medium="DIALUP" id="${panelType}[${id}].possetDialupType" name="${panelType}[${id}].dialupTyp" from="[]" valueMessagePrefix="" value="${pointData?.dialupTyp}"  style="width: 220px"/></td>
+                    <td>typ <dict:typeSelect nip="${nip}"  medium="DIALUP" id="${panelType}[${id}].possetforselectedpointDialupType" name="${panelType}[${id}].dialupTyp" from="[]" valueMessagePrefix="" value="${pointData?.dialupTyp}"  style="width: 220px"/></td>
                     <td style="text-align: right;"><g:message code="panel.dialup" /></td>
                     <td><eumowy:textField name="${panelType}[${id}].dialupIlosc" id="${panelType}[${id}].dialupCount" value="${pointData?.dialupIlosc}" class="integer-number" style="width: 50px"/> szt.</td>
                     <td><eumowy:textField name="${panelType}[${id}].dialupPPIlosc" id="${panelType}[${id}].dialupPPCount" value="${pointData?.dialupPPIlosc}" class="integer-number" style="width: 50px"/> PP. szt.</td>
@@ -18,7 +18,7 @@
                 </tr>
 
 				<tr>
-                    <td>typ <dict:typeSelect nip="${nip}"  medium="VPN" id="${panelType}[${id}].possetVpnType" name="${panelType}[${id}].vpnTyp" from="[]" valueMessagePrefix="" value="${pointData?.vpnTyp}"  style="width: 220px"/></td>
+                    <td>typ <dict:typeSelect nip="${nip}"  medium="VPN" id="${panelType}[${id}].possetforselectedpointVpnType" name="${panelType}[${id}].vpnTyp" from="[]" valueMessagePrefix="" value="${pointData?.vpnTyp}"  style="width: 220px"/></td>
                     <td style="text-align: right;"><g:message code="panel.vpn" /></td>
                     <td><eumowy:textField name="${panelType}[${id}].vpnIlosc" id="${panelType}[${id}].vpnCount" value="${pointData?.vpnIlosc}" class="integer-number" style="width: 50px"/> szt.</td>
                     <td><eumowy:textField name="${panelType}[${id}].vpnPPIlosc" id="${panelType}[${id}].vpnPPCount" value="${pointData?.vpnPPIlosc}" class="integer-number" style="width: 50px"/> PP. szt.</td>
@@ -27,7 +27,7 @@
                 </tr>
 
 				<tr>
-                    <td>typ <dict:typeSelect nip="${nip}"  medium="SSL" id="${panelType}[${id}].possetSslType" name="${panelType}[${id}].sslTyp" from="[]" valueMessagePrefix="" value="${pointData?.sslTyp}"  style="width: 220px"/></td>
+                    <td>typ <dict:typeSelect nip="${nip}"  medium="SSL" id="${panelType}[${id}].possetforselectedpointSslType" name="${panelType}[${id}].sslTyp" from="[]" valueMessagePrefix="" value="${pointData?.sslTyp}"  style="width: 220px"/></td>
                     <td style="text-align: right;"><g:message code="panel.ssl" /></td><td><eumowy:textField name="${panelType}[${id}].sslIlosc" id="${panelType}[${id}].sslCount" value="${pointData?.sslIlosc}" class="integer-number" style="width: 50px"/> szt.</td>
                     <td><eumowy:textField name="${panelType}[${id}].sslPPIlosc" id="${panelType}[${id}].sslPPCount" value="${pointData?.sslPPIlosc}" class="integer-number" style="width: 50px"/> PP. szt.</td>
                     <td><eumowy:textField name="${panelType}[${id}].sslCena" id="${panelType}[${id}].sslPrice" value="${pointData?.sslCena}" class="float-number" style="width: 50px"/> zł.</td>
@@ -35,7 +35,7 @@
                 </tr>
 
 				<tr>
-                    <td>typ <dict:typeSelect nip="${nip}"  medium="WiFI" id="${panelType}[${id}].possetWifiType" name="${panelType}[${id}].wifiTyp" from="[]" valueMessagePrefix="" value="${pointData?.wifiTyp}"  style="width: 220px"/></td>
+                    <td>typ <dict:typeSelect nip="${nip}"  medium="WiFI" id="${panelType}[${id}].possetforselectedpointWifiType" name="${panelType}[${id}].wifiTyp" from="[]" valueMessagePrefix="" value="${pointData?.wifiTyp}"  style="width: 220px"/></td>
                     <td style="text-align: right;"><g:message code="panel.wifi" /></td>
                     <td><eumowy:textField name="${panelType}[${id}].wifiIlosc" id="${panelType}[${id}].wifiCount" value="${pointData?.wifiIlosc}" class="integer-number" style="width: 50px"/> szt.</td>
                     <td><eumowy:textField name="${panelType}[${id}].wifiPPIlosc" id="${panelType}[${id}].wifiPPCount" value="${pointData?.wifiPPIlosc}" class="integer-number" style="width: 50px"/> PP. szt.</td>
@@ -44,7 +44,7 @@
                 </tr>
 
 				<tr>
-                    <td>typ <dict:typeSelect nip="${nip}"  medium="GPRS" id="${panelType}[${id}].possetGprsType" name="${panelType}[${id}].gprsTyp" from="[]" valueMessagePrefix="" value="${pointData?.gprsTyp}"  style="width: 220px"/></td>
+                    <td>typ <dict:typeSelect nip="${nip}"  medium="GPRS" id="${panelType}[${id}].possetforselectedpointGprsType" name="${panelType}[${id}].gprsTyp" from="[]" valueMessagePrefix="" value="${pointData?.gprsTyp}"  style="width: 220px"/></td>
                     <td style="text-align: right;"><g:message code="panel.gprs" /></td>
                     <td><eumowy:textField name="${panelType}[${id}].gprsIlosc" id="${panelType}[${id}].gprsCount" value="${pointData?.gprsIlosc}" class="integer-number" style="width: 50px"/> szt.</td>
                     <td><eumowy:textField name="${panelType}[${id}].gprsPPIlosc" id="${panelType}[${id}].gprsPPCount" value="${pointData?.gprsPPIlosc}" class="integer-number" style="width: 50px"/> PP. szt.</td>
