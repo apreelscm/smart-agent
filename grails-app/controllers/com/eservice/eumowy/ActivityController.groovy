@@ -219,7 +219,7 @@ class ActivityController {
 
                 }
                 flow.skipDocumentGeneration = false
-				flow.processInstance = processInstance
+                flow.processInstance = processInstance
                 flow.rejectedDocumentsMessage = 'Pomyslnie odrzucono dokumentacje dla NIP ' + flow.processInstance.client.nip
             }
             render(view: "../createProcess/clientSignature", model: [
@@ -253,18 +253,28 @@ class ActivityController {
                         log.info "PUSTE ID!"
                     }
                     processInstance.addToSubscriptions(sub)
+                    //      processInstance.discard()
                     sub.save()
 
                     //w momencie gdy zlozymy ostatni podpis zapisujemy date jako dataUmowy
                     def aggrementDate = DateUtils.formatWithTimezone(DateUtils.getCurrentDate());
                     log.info 'Zapisuje formatowana dateUmowy: ' + aggrementDate
 
-                    def aggrementDateProcessData = processInstance.processData?.find{ pData -> 'dataUmowy'.equals(pData.name)};
-                    if (aggrementDateProcessData){
-                        aggrementDateProcessData.value = aggrementDate
-                    } else {
-                        processInstance.addToProcessData(new ProcessData(name: 'dataUmowy', value: aggrementDate))
+                    //    def aggrementDateProcessData = processInstance.processData?.find{ pData -> 'dataUmowy'.equals(pData.name)};
+                    //    if (aggrementDateProcessData){
+                    //          aggrementDateProcessData.value = aggrementDate
+                    //    } else {
+
+                    def dataUmowyPD = new ProcessData(name: 'dataUmowy', value: aggrementDate)
+
+                    ProcessData foundData = processInstance.processData.find { it.name == dataUmowyPD.name }
+                    if(!foundData){
+                        processInstance.addToProcessData(dataUmowyPD)
+                    }else if(dataUmowyPD.value != foundData.value){
+                        foundData.value = dataUmowyPD.value
                     }
+
+                    //    }
                 }
                 else if (params.processStatus.equals("REJECTED")){
                     processInstance.status = Process.ProcessStatus.REJECTED
@@ -552,23 +562,23 @@ class ActivityController {
             on("acceptPointsButton") {
                 log.info "acceptPointsButton TRIGGERED"
             }.to "selectedPanels"
-			on("deletePoint") {
-				def processInstance = flow.processInstance
-				def point = PointData.get(Integer.valueOf(params.pointId));
-				if (point != null) {
-					log.info "DeletePoint - Usuwam punkt o id: " + params.pointId
-					processInstance.removeFromPoints(point)
-					point.delete()
-					processInstance.save(flush: true)
-				}
-				else {
-					log.info "DeletePoint - Nie znalazłem punktu o id: " + params.pointId
-				}
-				flow.processInstance = processInstance
-			}.to "saveOnly"
+            on("deletePoint") {
+                def processInstance = flow.processInstance
+                def point = PointData.get(Integer.valueOf(params.pointId));
+                if (point != null) {
+                    log.info "DeletePoint - Usuwam punkt o id: " + params.pointId
+                    processInstance.removeFromPoints(point)
+                    point.delete()
+                    processInstance.save(flush: true)
+                }
+                else {
+                    log.info "DeletePoint - Nie znalazłem punktu o id: " + params.pointId
+                }
+                flow.processInstance = processInstance
+            }.to "saveOnly"
             on("saveOnly"){ ProcessCommand cmd ->
-				log.info params
-				log.info params.get('allPoses[0]')
+                log.info params
+                log.info params.get('allPoses[0]')
                 Process processInstance = processService.populateProcessWithData(flow.processInstance, cmd)
                 log.info "Zapisuje dane paneli"
 
@@ -810,35 +820,35 @@ class ActivityController {
             on("acceptPointsButton") {
                 log.info "acceptPointsButton TRIGGERED"
             }.to "selectedPanels"
-			on("deletePoint") {
-				def processInstance = flow.processInstance
-				def point = PointData.get(Integer.valueOf(params.pointId));
-				if (point != null) {
-					log.info "DeletePoint - Usuwam punkt o id: " + params.pointId
-					processInstance.removeFromPoints(point)
-					point.delete()
-					processInstance.save(flush: true)
-				}
-				else {
-					log.info "DeletePoint - Nie znalazłem punktu o id: " + params.pointId
-				}
-				flow.processInstance = processInstance
-			}.to "selectedPanels"
+            on("deletePoint") {
+                def processInstance = flow.processInstance
+                def point = PointData.get(Integer.valueOf(params.pointId));
+                if (point != null) {
+                    log.info "DeletePoint - Usuwam punkt o id: " + params.pointId
+                    processInstance.removeFromPoints(point)
+                    point.delete()
+                    processInstance.save(flush: true)
+                }
+                else {
+                    log.info "DeletePoint - Nie znalazłem punktu o id: " + params.pointId
+                }
+                flow.processInstance = processInstance
+            }.to "selectedPanels"
             on("saveOnly"){ ProcessCommand cmd ->
                 Process processInstance = processService.populateProcessWithData(flow.processInstance,cmd)
 
                 processInstance.save(flush: true, validate: false)
-				
-				log.info "Zapisano dane paneli"
-				
-				// Update
-				processInstance.points?.each { point ->
-					if (point.cbdId != null) {
-						def foundApc = cmd.allPoints?.find { apc -> apc.cbdId == point.cbdId }
-						foundApc?.id = point.id
-					}
-				}
-								
+
+                log.info "Zapisano dane paneli"
+
+                // Update
+                processInstance.points?.each { point ->
+                    if (point.cbdId != null) {
+                        def foundApc = cmd.allPoints?.find { apc -> apc.cbdId == point.cbdId }
+                        foundApc?.id = point.id
+                    }
+                }
+
                 flow.processInstance = processInstance
                 //  flow.data = cmd
                 flow.skipPanelsInit = true;
@@ -1100,7 +1110,7 @@ class ActivityController {
             render(template:"message/errorMessage", model:[message:msg]);
         }
     }
-	
+
     def deleteFile(){
         attachmentService.deleteFile(params.id,params.processId);
         getAttachmentList()
