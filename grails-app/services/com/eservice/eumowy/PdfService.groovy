@@ -1,6 +1,5 @@
 package com.eservice.eumowy
 
-import com.eservice.eumowy.pdfmapper.PdfMapper
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.util.PDFImageWriter
 import pdfgenerator.PdfGenerator
@@ -12,6 +11,7 @@ class PdfService {
 	def appParametersService
     def processService
     def calculatorService
+    def mapperService
 
 	public static enum FontType {
         HELVETICA(""),
@@ -195,7 +195,7 @@ class PdfService {
 
     def workWithDocuments(def processInstance, def calc){
         def totalPagesCount = 0
-        def dataFromProcess = new PdfMapper(calculatorService,calc).mapOnlyProcessData(processInstance);
+        def dataFromProcess = mapperService.mapOnlyProcessData(processInstance, calc);
 
         //takie rozbicie bylo konieczne aby ograniczyc wywolania wolnego mappera
         def singleDocuments = processInstance.signatures.findAll{ sig -> !sig.forPoint}
@@ -210,7 +210,7 @@ class PdfService {
 
             if (point.cbdId == null || (point.posDatas && point.posDatas.findAll{ pos -> pos.tpsId == null}.size()>0)){
                 //generujemy tylko dokumenty dla tych punktow, ktore nie sa z CBD
-                def dataFromPoint = new PdfMapper(calculatorService,calc).mapOnlyPointData(point);
+                def dataFromPoint = mapperService.mapOnlyPointData(point)
 
                 final Map<String, String> data = new HashMap<String, String>();
                 data.putAll(dataFromProcess);
