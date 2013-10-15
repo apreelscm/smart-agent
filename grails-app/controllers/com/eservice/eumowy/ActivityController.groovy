@@ -260,21 +260,21 @@ class ActivityController {
                     def aggrementDate = DateUtils.formatWithTimezone(DateUtils.getCurrentDate());
                     log.info 'Zapisuje formatowana dateUmowy: ' + aggrementDate
 
-                    //    def aggrementDateProcessData = processInstance.processData?.find{ pData -> 'dataUmowy'.equals(pData.name)};
-                    //    if (aggrementDateProcessData){
-                    //          aggrementDateProcessData.value = aggrementDate
-                    //    } else {
+                    def aggrementDateProcessData = processInstance.processData?.find{ pData -> 'dataUmowy'.equals(pData.name)};
+                    if (aggrementDateProcessData){
+                        aggrementDateProcessData.value = aggrementDate
+                    } else {
 
-                    def dataUmowyPD = new ProcessData(name: 'dataUmowy', value: aggrementDate)
+                        def dataUmowyPD = new ProcessData(name: 'dataUmowy', value: aggrementDate)
 
-                    ProcessData foundData = processInstance.processData.find { it.name == dataUmowyPD.name }
-                    if(!foundData){
-                        processInstance.addToProcessData(dataUmowyPD)
-                    }else if(dataUmowyPD.value != foundData.value){
-                        foundData.value = dataUmowyPD.value
+                        ProcessData foundData = processInstance.processData.find { it.name == dataUmowyPD.name }
+                        if(!foundData){
+                            processInstance.addToProcessData(dataUmowyPD)
+                        }else if(dataUmowyPD.value != foundData.value){
+                            foundData.value = dataUmowyPD.value
+                        }
+
                     }
-
-                    //    }
                 }
                 else if (params.processStatus.equals("REJECTED")){
                     processInstance.status = Process.ProcessStatus.REJECTED
