@@ -1,4 +1,5 @@
-<div id="servicePanel">
+<div id="servicePanel" class="${data.serwisZablokowany ? "display-none" : ""}">
+    <g:hiddenField name="serwisZablokowany" value="${data.serwisZablokowany}"/>
     <fieldset>
         <div class="belka-glowna"><g:message code="panel.service.title"/></div>
         <div class="centre" style="text-align: center; padding-top: 20px; width: 750px">

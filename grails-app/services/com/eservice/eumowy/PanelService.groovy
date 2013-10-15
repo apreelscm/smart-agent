@@ -482,6 +482,8 @@ class PanelService {
             calculatorService.hasCalcProperty(it.key,"TAK",calc)
         }
 
+        setSerwisZablokowany(cmd, calc, SERWIS_TYPES)
+
         cmd.obslugaTyp = result?.value ?: "";
         //serwis ekonomiczny zaczytujemy w dwoch panelach
         cmd.obslugaEkonomicznyCena = nullify(cmd.obslugaEkonomicznyCena, "0");
@@ -605,5 +607,13 @@ class PanelService {
 
     def toBigDecimal(def value){
         value ? new BigDecimal(value) : null
+    }
+
+    private setSerwisZablokowany(ProcessCommand cmd, def calc, def serwisy){
+        def results = serwisy.findAll{
+            calculatorService.hasCalcProperty(it.key,"BRAK",calc)
+        }
+
+        cmd.serwisZablokowany = results.size() == 3
     }
 }
