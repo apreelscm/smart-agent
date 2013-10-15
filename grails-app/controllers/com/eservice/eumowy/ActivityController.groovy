@@ -539,7 +539,17 @@ class ActivityController {
                     processCmd = processService.getSavedProcessCommand(processInstance, conversation.calc)
                     processCmd.nip = processInstance.client.nip
                 }
-
+				
+				// Calculate pos count from cbd
+				def counter = 0
+				processCmd.liczbaPosZCbd = 0
+				processCmd.allPoints?.each { allPoint ->
+					if (allPoint.cbdId != null) {
+						counter += allPoint?.liczbaPos != null ? allPoint?.liczbaPos : 0
+					}
+				}
+				processCmd.liczbaPosZCbd += counter != null ? counter : 0
+				
                 flow.data = processCmd
                 flow.processInstance = processInstance
             }
@@ -773,7 +783,7 @@ class ActivityController {
 
                 log.info("pobrano kalkulator " + calcId)
 
-                if(!calculatorService.isCalcValid(calc,lastProcess.signatures)){
+                if(!calculatorService.isCalcValid(calc,calcId,lastProcess)){
                     flash.calcErrorMessage =  message(code:"calc.notEnough.error", default:"Kalkulator nie pozwala na wykonanie wszystkich zaznaczonych czynności");
                     return error()
                 }
@@ -803,6 +813,17 @@ class ActivityController {
                 log.info "SkipPanelsInit: " + flow.skipPanelsInit
                 def processInstance = flow.processInstance;
                 def processCmd = processService.getSavedProcessCommand(processInstance,conversation.calc);
+				
+				// Calculate pos count from cbd
+				def counter = 0
+				processCmd.liczbaPosZCbd = 0
+				processCmd.allPoints?.each { allPoint ->
+					if (allPoint.cbdId != null) {
+						counter += allPoint?.liczbaPos != null ? allPoint?.liczbaPos : 0
+					}
+				}
+				processCmd.liczbaPosZCbd += counter != null ? counter : 0
+				
                 flow.data = processCmd
             }
             render(view: "../createProcess/selectedPanels")
