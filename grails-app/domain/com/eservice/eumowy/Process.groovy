@@ -102,7 +102,11 @@ class Process implements Serializable {
     }
 
     def afterUpdate() {
-        auditLogger.info("Aktualizacja procesu [id:${id}, status:${status}]")
+        auditLogger.info("Aktualizacja procesu [id:${id}, [version:${version}, status:${status}]")
+    }
+
+    def onLoad() { // TODO tymczasowo na potrzeby inwestygacji
+        log.info("Wczytanie procesu [id:${id}, [version:${version}, status:${status}]")
     }
 
     enum ProcessStatus {
