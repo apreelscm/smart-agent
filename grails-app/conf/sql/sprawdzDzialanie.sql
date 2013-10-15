@@ -1,0 +1,1 @@
+select eumowy.sprawdzdzialanie2(:activities, :calcid) as result from dual

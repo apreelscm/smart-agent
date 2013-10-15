@@ -408,3 +408,6 @@ create sequence EUMOWY.SIGNATURE_PANEL_SEQ;
 create sequence EUMOWY.SIGNATURE_SEQ;
 create sequence EUMOWY.SUBSCRIPTION_SEQ;
 create sequence EUMOWY.APP_PARAMETERS_SEQ;
+
+-- TYPES
+CREATE OR REPLACE TYPE "EUMOWY"."DZIALANIE" as table of varchar2(4000);

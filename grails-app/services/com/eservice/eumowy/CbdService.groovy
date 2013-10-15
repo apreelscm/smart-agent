@@ -32,6 +32,7 @@ class CbdService {
 	private static final def GET_ANEKS_DO_UMOWY_NAJMU_ZESTAWU_POS = "getAneksDoUmowyNajmuZestawuPos"
 	private static final def GET_ANEKS_DO_UMOWY_PREPAID = "getAneksDoUmowyPrepaid"
 	private static final def GET_CBD_POINT_BY_ID = "getCbdPointById"
+	private static final def SPRAWDZ_DZIALANIE = "sprawdzDzialanie"
 
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
     def findCalculatorByNip(def clientNip) {
@@ -182,6 +183,16 @@ class CbdService {
 	@Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
 	def getCbdPointById(def clientNip, def cbdId) {
 		return cbdDAO.selectOne(GET_CBD_POINT_BY_ID, [nip: clientNip, cbdid: cbdId])
+	}
+	
+	@Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
+	def checkActivities(def activitiesString, def calcId) {
+		def rowResult = cbdDAO.selectOne(SPRAWDZ_DZIALANIE, [activities: activitiesString, calcid: calcId])
+		def result = false
+		if (rowResult.get("result") == 1) {
+			result = true
+		}
+		return result
 	}
 
 

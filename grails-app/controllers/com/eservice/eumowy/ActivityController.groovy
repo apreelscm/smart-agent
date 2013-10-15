@@ -483,11 +483,12 @@ class ActivityController {
                     return error();
                 }
 
-
-                if(!calculatorService.isCalcValid(calc,processInstance.signatures)){
+				// Validation 1 & 2
+                if(!calculatorService.isCalcValid(calc,calcId,processInstance)){
                     flash.calcErrorMessage =  message(code:"calc.notEnough.error", default:"Kalkulator nie pozwala na wykonanie wszystkich zaznaczonych czynności");
                     return error();
                 }
+				
 
                 conversation.calc = calc
                 flow.calcNumber =  calcId;

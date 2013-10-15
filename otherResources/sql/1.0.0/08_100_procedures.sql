@@ -711,35 +711,387 @@ return kal;
 end;
 
 
--- SPRAWDZENIEDZIALANIA
-create or replace
-function                                                         EUMOWY.SPRAWDZDZIALANIE(idProcessu NUMBER)
+-- SPRAWDZENIEDZIALANIA - STARA FUNKCJA
+--create or replace
+--function                                                         EUMOWY.SPRAWDZDZIALANIE(idProcessu NUMBER)
+--return BOOLEAN
+--is
+--ind integer;
+--nipKlienta varchar2(20);
+--wynik BOOLEAN;
+--liczbaNiezgodnosci integer;
+--jestKlient integer;
+--begin
+--
+--select count(*)
+--into
+--jestKlient
+--from eumowy.Client c
+--join eumowy.process p on p.client_id=c.id
+--where p.id=idProcessu;
+--
+--if jestKlient>0 then
+--select nip
+--into
+--nipKlienta
+--from eumowy.Client c
+--join eumowy.process p on p.client_id=c.id
+--where p.id=idProcessu;
+--else
+--nipKlienta:='';
+--End If;
+--
+--select count(*)
+--into
+--liczbaNiezgodnosci
+--from  EUMOWY.activity a
+--left outer join
+--(
+--select Pole from table(EUMOWY.GETPROCESSDZIALANIE(idProcessu))
+--where wartosc='ok'
+--group by Pole
+--) kalkualtor on kalkualtor.Pole=a.id
+--
+--left outer join
+--(
+--select Pole from table(EUMOWY.GETKALKULATORDZIALANIE(nipKlienta))
+--where wartosc='ok'
+--group by Pole
+--) proces on proces.Pole=a.id
+--where COALESCE(kalkualtor.Pole,'0')<>COALESCE(proces.Pole,'0');
+--
+--if liczbaNiezgodnosci=0 then
+--wynik:=true;
+--Else
+--wynik:=false;
+--End if;
+--
+--return wynik;
+--
+--
+--end;
+
+-- GET_KALKULATOR_DZIALANIE
+create or replace FUNCTION  "EUMOWY"."GET_KALKULATOR_DZIALANIE" (KAKID number)
+return EUMOWY.KALKULATOR
+is
+
+cursor kalKursor is
+select
+S_TYP_UMOWY_NAJMU,
+E_L_POS,
+E_LACZNA_KWOTA_PROM_ZWOL_NAJ_1,
+E_OPLATA_PINPAD_1,
+E_OPLATA_POS_1,
+E_OPLATA_POS_NETTO_1,
+E_PROM_OBN_NAJ_1,
+S_TYP_UMOWY_PLATN,
+S_CZYNNOSCI_KONTRAKTOWE,
+S_DCC,
+S_KOSZTY_MARZA,
+S_PAKIET_SERWIS_1,
+S_UMOWA_PP
+
+from
+(
+select
+max(DECODE(nazwa,'S_TYP_UMOWY_NAJMU',wartosc))  S_TYP_UMOWY_NAJMU,
+max(DECODE(nazwa,'E_L_POS',wartosc))  E_L_POS,
+max(DECODE(nazwa,'E_LACZNA_KWOTA_PROM_ZWOL_NAJ_1',wartosc))  E_LACZNA_KWOTA_PROM_ZWOL_NAJ_1,
+max(DECODE(nazwa,'E_OPLATA_PINPAD_1',wartosc))  E_OPLATA_PINPAD_1,
+max(DECODE(nazwa,'E_OPLATA_POS_1',wartosc))  E_OPLATA_POS_1,
+max(DECODE(nazwa,'E_OPLATA_POS_NETTO_1',wartosc))  E_OPLATA_POS_NETTO_1,
+max(DECODE(nazwa,'E_PROM_OBN_NAJ_1',wartosc))  E_PROM_OBN_NAJ_1,
+max(DECODE(nazwa,'S_TYP_UMOWY_PLATN',wartosc))  S_TYP_UMOWY_PLATN,
+max(DECODE(nazwa,'S_CZYNNOSCI_KONTRAKTOWE',wartosc))  S_CZYNNOSCI_KONTRAKTOWE,
+max(DECODE(nazwa,'S_DCC',wartosc))  S_DCC,
+max(DECODE(nazwa,'S_KOSZTY_MARZA',wartosc))  S_KOSZTY_MARZA,
+max(DECODE(nazwa,'S_PAKIET_SERWIS_1',wartosc))  S_PAKIET_SERWIS_1,
+max(DECODE(nazwa,'S_UMOWA_PP',wartosc))  S_UMOWA_PP
+
+from
+
+(
+select
+KSP_NAZWA as nazwa,REPLACE(KAP_WARTOSC,'&'||'nbsp;') as wartosc
+from CBD_ADM.cbt_kalk kalk
+join CBD_ADM.cbt_kalk_pole kp on KAP_KAK_ID=KAK_ID
+join CBD_ADM.cbt_kalk_szablon_pole ksp on KAP_KSP_ID=KSP_ID
+join CBD_ADM.cbt_kalk_szablon ks on KSP_KAS_ID=KAS_ID
+where KAK_ID =KAKID
+and KSP_NAZWA in
+(
+'S_TYP_UMOWY_NAJMU',
+'E_L_POS',
+'E_LACZNA_KWOTA_PROM_ZWOL_NAJ_1',
+'E_OPLATA_PINPAD_1',
+'E_OPLATA_POS_1',
+'E_OPLATA_POS_NETTO_1',
+'E_PROM_OBN_NAJ_1',
+'S_TYP_UMOWY_PLATN',
+'S_CZYNNOSCI_KONTRAKTOWE',
+'S_DCC',
+'S_KOSZTY_MARZA',
+'S_PAKIET_SERWIS_1',
+'S_UMOWA_PP'
+)
+
+
+) kalkulator
+) PoPivocie;
+
+kal EUMOWY.KALKULATOR := EUMOWY.KALKULATOR();
+rekord REKORDKALKULATOR := EUMOWY.REKORDKALKULATOR(null,null);
+ind integer;
+
+begin
+ind:=1;
+
+FOR rec in kalKursor
+LOOP
+if rec.S_CZYNNOSCI_KONTRAKTOWE='NOWA UMOWA' AND rec.S_TYP_UMOWY_PLATN is not null AND rec.S_TYP_UMOWY_NAJMU is not null THEN
+kal.extend;
+-- NOWA UMOWA
+rekord.pole:='1';
+rekord.wartosc:='ok';
+  kal(ind):=rekord;
+  ind:=ind+1;
+END IF;
+
+if rec.E_L_POS is not null And rec.E_L_POS>0 AND rec.S_CZYNNOSCI_KONTRAKTOWE='NEGOCJACJE' THEN
+kal.extend;
+-- DODATKOWY PUNKT
+rekord.pole:='2';
+rekord.wartosc:='ok';
+  kal(ind):=rekord;
+  ind:=ind+1;
+END IF;
+
+if ((rec.E_OPLATA_POS_1 is not null and rec.E_OPLATA_POS_1>0) OR rec.E_OPLATA_PINPAD_1 is not null) AND rec.S_CZYNNOSCI_KONTRAKTOWE='NEGOCJACJE' THEN
+kal.extend;
+-- DODATKOWY POS
+rekord.pole:='3';
+rekord.wartosc:='ok';
+  kal(ind):=rekord;
+  ind:=ind+1;
+END IF;
+
+if rec.S_CZYNNOSCI_KONTRAKTOWE='NEGOCJACJE'  THEN
+kal.extend;
+-- Zmiana prowizji
+rekord.pole:='4';
+rekord.wartosc:='ok';
+  kal(ind):=rekord;
+  ind:=ind+1;
+END IF;
+
+if rec.S_CZYNNOSCI_KONTRAKTOWE='NEGOCJACJE' AND rec.S_KOSZTY_MARZA='TAK' THEN
+kal.extend;
+-- Dodanie aneksu Koszty+
+rekord.pole:='5';
+rekord.wartosc:='ok';
+  kal(ind):=rekord;
+  ind:=ind+1;
+END IF;
+
+if rec.S_CZYNNOSCI_KONTRAKTOWE='NEGOCJACJE' AND rec.S_TYP_UMOWY_NAJMU is not null THEN
+kal.extend;
+--Wymiana umowy najmu
+rekord.pole:='6';
+rekord.wartosc:='ok';
+  kal(ind):=rekord;
+  ind:=ind+1;
+END IF;
+
+if rec.S_CZYNNOSCI_KONTRAKTOWE='NEGOCJACJE' AND rec.E_L_POS is not null And rec.E_L_POS>0 AND rec.E_OPLATA_POS_NETTO_1 is not null THEN
+kal.extend;
+--Aneks
+rekord.pole:='7';
+rekord.wartosc:='ok';
+  kal(ind):=rekord;
+  ind:=ind+1;
+END IF;
+
+if rec.S_CZYNNOSCI_KONTRAKTOWE='NEGOCJACJE' AND  rec.S_TYP_UMOWY_NAJMU='Umowa UNTZ – negocjowana' THEN
+kal.extend;
+--Zmiana tabeli opłat dodatkowych
+rekord.pole:='8';
+rekord.wartosc:='ok';
+  kal(ind):=rekord;
+  ind:=ind+1;
+END IF;
+
+if rec.S_CZYNNOSCI_KONTRAKTOWE='NEGOCJACJE' AND rec.S_UMOWA_PP='TAK' THEN
+kal.extend;
+--Zmiana prowizji prepaid
+rekord.pole:='9';
+rekord.wartosc:='ok';
+  kal(ind):=rekord;
+  ind:=ind+1;
+END IF;
+
+if rec.S_CZYNNOSCI_KONTRAKTOWE='NEGOCJACJE' OR (rec.S_CZYNNOSCI_KONTRAKTOWE='NOWA UMOWA' AND rec.S_TYP_UMOWY_NAJMU='Umowa UNTZ – negocjowana') THEN
+kal.extend;
+--Zmiana okresu lojalnościowego
+rekord.pole:='10';
+rekord.wartosc:='ok';
+  kal(ind):=rekord;
+  ind:=ind+1;
+END IF;
+
+if rec.S_CZYNNOSCI_KONTRAKTOWE='NEGOCJACJE' AND rec.E_L_POS is not null And rec.E_L_POS>0 AND rec.E_LACZNA_KWOTA_PROM_ZWOL_NAJ_1 is not null AND rec.E_PROM_OBN_NAJ_1 is not null THEN
+kal.extend;
+--Promocyjne obniżenie najmu
+rekord.pole:='11';
+rekord.wartosc:='ok';
+  kal(ind):=rekord;
+  ind:=ind+1;
+END IF;
+
+if rec.S_CZYNNOSCI_KONTRAKTOWE='NEGOCJACJE' AND rec.S_DCC='TAK' THEN
+kal.extend;
+-- Nie rozróżniamy tych warunków
+--Zmiana Warunków DCC
+rekord.pole:='13';
+rekord.wartosc:='ok';
+  kal(ind):=rekord;
+  ind:=ind+1;
+-- Dodanie DCC
+kal.extend;
+rekord.pole:='16';
+rekord.wartosc:='ok';
+  kal(ind):=rekord;
+  ind:=ind+1;
+
+END IF;
+
+if rec.S_CZYNNOSCI_KONTRAKTOWE='NEGOCJACJE' AND rec.S_UMOWA_PP='TAK' THEN
+kal.extend;
+--Dodanie prepaid
+rekord.pole:='12';
+rekord.wartosc:='ok';
+  kal(ind):=rekord;
+  ind:=ind+1;
+END IF;
+
+if (rec.S_CZYNNOSCI_KONTRAKTOWE='NEGOCJACJE' OR rec.S_CZYNNOSCI_KONTRAKTOWE='NOWA UMOWA') AND rec.S_PAKIET_SERWIS_1 ='EKONOMICZNY' THEN
+kal.extend;
+--Ekonomiczny
+rekord.pole:='17';
+rekord.wartosc:='ok';
+  kal(ind):=rekord;
+  ind:=ind+1;
+END IF;
+
+if (rec.S_CZYNNOSCI_KONTRAKTOWE='NEGOCJACJE' OR rec.S_CZYNNOSCI_KONTRAKTOWE='NOWA UMOWA') AND rec.S_PAKIET_SERWIS_1 ='KOMFORT' THEN
+kal.extend;
+--Komfort
+rekord.pole:='18';
+rekord.wartosc:='ok';
+  kal(ind):=rekord;
+  ind:=ind+1;
+END IF;
+
+if (rec.S_CZYNNOSCI_KONTRAKTOWE='NEGOCJACJE' OR rec.S_CZYNNOSCI_KONTRAKTOWE='NOWA UMOWA') AND rec.S_PAKIET_SERWIS_1 ='PRESTIŻ' THEN
+kal.extend;
+--Prestiż
+rekord.pole:='19';
+rekord.wartosc:='ok';
+  kal(ind):=rekord;
+  ind:=ind+1;
+END IF;
+
+END LOOP;
+
+return kal;
+
+end;
+
+-- GET_PROCESS_DZIALANIE
+create or replace FUNCTION                  "EUMOWY"."GET_PROCESS_DZIALANIE" (v_t eumowy.dzialanie)
+return EUMOWY.KALKULATOR
+is
+cursor kalKursor is
+select a.id as dzial,a.numer_pozycji as wartosc from EUMOWY.activity a
+where a.CODE in
+(
+select p.column_value from table (CAST(v_t as eumowy.dzialanie)) p
+)
+and a.numer_pozycji not in
+(
+14,15,20,21,22
+);
+
+kal EUMOWY.KALKULATOR := EUMOWY.KALKULATOR();
+rekord REKORDKALKULATOR := EUMOWY.REKORDKALKULATOR(null,null);
+ind integer;
+
+begin
+ind:=1;
+
+FOR rec in kalKursor
+LOOP
+if rec.wartosc is not null THEN
+if rec.dzial=13 or rec.dzial=16 THEN
+kal.extend;
+-- dcc 2 dzialania, te same warunki w kalkulatorze
+-- trzeba przyslonic
+rekord.pole:='13';
+rekord.wartosc:='ok';
+  kal(ind):=rekord;
+  ind:=ind+1;
+kal.extend;
+rekord.pole:='16';
+rekord.wartosc:='ok';
+  kal(ind):=rekord;
+  ind:=ind+1;
+ELSE
+kal.extend;
+rekord.pole:=rec.dzial;
+rekord.wartosc:='ok';
+  kal(ind):=rekord;
+  ind:=ind+1;
+END IF;
+END IF;
+
+END LOOP;
+
+return kal;
+
+end;
+
+-- SPRAWDZDZIALANIE
+create or replace FUNCTION                      "EUMOWY"."SPRAWDZDZIALANIE" (dzialaniaStr varchar2,KAKID number)
 return BOOLEAN
+
 is
 ind integer;
-nipKlienta varchar2(20);
 wynik BOOLEAN;
 liczbaNiezgodnosci integer;
 jestKlient integer;
+
+l_array dbms_utility.lname_array;
+l_count binary_integer;
+v_t eumowy.dzialanie := eumowy.dzialanie();
+
 begin
+
+dbms_utility.comma_to_table(dzialaniaStr, l_count, l_array);
+
+for idx in 1..l_array.count
+     loop
+       v_t.extend;
+       v_t(v_t.last) := l_array(idx);
+     end loop;
+
 
 select count(*)
 into
 jestKlient
-from eumowy.Client c
-join eumowy.process p on p.client_id=c.id
-where p.id=idProcessu;
+from cbd_adm.cbt_kalk k
+where k.kak_id=KAKID;
 
 if jestKlient>0 then
-select nip
-into
-nipKlienta
-from eumowy.Client c
-join eumowy.process p on p.client_id=c.id
-where p.id=idProcessu;
-else
-nipKlienta:='';
-End If;
 
 select count(*)
 into
@@ -747,18 +1099,19 @@ liczbaNiezgodnosci
 from  EUMOWY.activity a
 left outer join
 (
-select Pole from table(EUMOWY.GETPROCESSDZIALANIE(idProcessu))
+select Pole from table(EUMOWY.GET_PROCESS_DZIALANIE(v_t))
 where wartosc='ok'
 group by Pole
 ) kalkualtor on kalkualtor.Pole=a.id
-
 left outer join
 (
-select Pole from table(EUMOWY.GETKALKULATORDZIALANIE(nipKlienta))
+select Pole from table (EUMOWY.GET_KALKULATOR_DZIALANIE(KAKID))
 where wartosc='ok'
 group by Pole
 ) proces on proces.Pole=a.id
 where COALESCE(kalkualtor.Pole,'0')<>COALESCE(proces.Pole,'0');
+
+End if;
 
 if liczbaNiezgodnosci=0 then
 wynik:=true;
@@ -769,4 +1122,21 @@ End if;
 return wynik;
 
 
+End;
+
+-- SPRAWDZDZIALANIE2 zwraca number zamiast boolean do selecta
+create or replace 
+FUNCTION                               "SPRAWDZDZIALANIE2" (dzialaniaStr varchar2,KAKID number)
+return NUMBER
+is
+wynik number(1,0);
+result boolean;
+begin
+ result := eumowy.sprawdzdzialanie(dzialaniaStr, KAKID);
+ if result = true then
+  wynik := 1;
+ else
+  wynik := 0;
+ end if;
+ return wynik;
 end;
