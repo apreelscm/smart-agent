@@ -199,7 +199,7 @@ class PdfServiceTests {
         data.put("mudCena", ["510"] as String[]);
         data.put("oplataZaUruchomienieWalutyObcej", ["50"] as String[]);
         data.putAll(insertSignatures(1, 85, 260, 74, 43))
-        process("APUNTSZDCCZ1 00112-10-05_Aneks do UN_DCC zmiana warunków.pdf", "APUNTSZDCCZ1 00112-10-05_Aneks do UN_DCC zmiana warunków_out.pdf", data)
+        process("APUNTSZDCCZ1 00112-10-05_Aneks do UN_DCC zmiana warunkow.pdf", "APUNTSZDCCZ1 00112-10-05_Aneks do UN_DCC zmiana warunkow_out.pdf", data)
     }
 
     void testAPUNTSZOKOD() { //gotowe
@@ -237,7 +237,7 @@ class PdfServiceTests {
         data.putAll(this.data);
         data.putAll(generateDataPodpisaniaAneksuPOZField())
         data.putAll(insertSignatures(1, 85, 225, 74, 43))
-        process("APUNTWANOD1.00312-01-16_Aneks do UN_zmiana Tabeli Opłat.pdf", "APUNTWANOD1.00312-01-16_Aneks do UN_zmiana Tabeli Opłat_out.pdf", data)
+        process("APUNTWANOD1.00312-01-16_Aneks do UN_zmiana Tabeli Oplat.pdf", "APUNTWANOD1.00312-01-16_Aneks do UN_zmiana Tabeli Oplat_out.pdf", data)
     }
 
     void testAPUNTZ() { //gotowe
@@ -332,7 +332,7 @@ class PdfServiceTests {
         HashMap<String, String[]> data = new HashMap<String, String[]>();
         data.putAll(this.data);
         data.putAll(insertSignatures(2, 85, 220, 74, 43))
-        process("APUPZACB2.00313-02-15 - Aneks do Umowy o przyjm zapł (dod Cashback).pdf", "APUPZACB2.00313-02-15 - Aneks do Umowy o przyjm zapł (dod Cashback)_out.pdf", data)
+        process("APUPZACB2.00313-02-15 - Aneks do Umowy o przyjm zapl (dod Cashback).pdf", "APUPZACB2.00313-02-15 - Aneks do Umowy o przyjm zapl (dod Cashback)_out.pdf", data)
     }
 
     void testAPUPZAWNZBS() {
@@ -343,7 +343,7 @@ class PdfServiceTests {
         data.putAll(preparePozopmOplatIWarunkiPlatnosciKartyData())
 
         data.putAll(insertSignatures(1, 85, 180, 74, 43))
-        process("APUPZAWNZBS1.00013-01-25 - Aneks do umowy o przyjm zapł (bez stawek płaskich).pdf", "APUPZAWNZBS1.00013-01-25 - Aneks do umowy o przyjm zapł (bez stawek płaskich)_out.pdf", data)
+        process("APUPZAWNZBS1.00013-01-25 - Aneks do umowy o przyjm zapl (bez stawek plaskich).pdf", "APUPZAWNZBS1.00013-01-25 - Aneks do umowy o przyjm zapl (bez stawek plaskich)_out.pdf", data)
     }
 
     void testAPUPZAWNZS() {
@@ -352,7 +352,7 @@ class PdfServiceTests {
         data.putAll(preparePunktyData())
         data.putAll(preparePozopmOplatIWarunkiPlatnosciKartyData())
         data.putAll(insertSignatures(1, 80, 180, 74, 43))
-        process("APUPZAWNZS1.00013-01-25 - Aneks do umowy o przyjm zapł (narzucone stawki płaskie).pdf", "APUPZAWNZS1.00013-01-25 - Aneks do umowy o przyjm zapł (narzucone stawki płaskie)_out.pdf", data)
+        process("APUPZAWNZS1.00013-01-25 - Aneks do umowy o przyjm zapl (narzucone stawki plaskie).pdf", "APUPZAWNZS1.00013-01-25 - Aneks do umowy o przyjm zapl (narzucone stawki plaskie)_out.pdf", data)
     }
 
     void testAPUPZBS() {
@@ -367,7 +367,7 @@ class PdfServiceTests {
         data.putAll(preparePozopmOplatIWarunkiPlatnosciKartyData())
         data.putAll(preparePunktyData(30))
         data.putAll(insertSignatures(4, 80, 320, 74, 43))
-        process("APUPZBS2.00013-01-25 - Umowa o przyjmowanie zapłaty (wersja bez stawek płaskich)_do druku.pdf", "APUPZBS2.00013-01-25 - Umowa o przyjmowanie zapłaty (wersja bez stawek płaskich)_do druku_out.pdf", data)
+        process("APUPZBS2.00013-01-25 - Umowa o przyjmowanie zaplaty (wersja bez stawek plaskich)_do druku.pdf", "APUPZBS2.00013-01-25 - Umowa o przyjmowanie zaplaty (wersja bez stawek plaskich)_do druku_out.pdf", data)
     }
 
     void testATUSU() {
@@ -411,7 +411,7 @@ class PdfServiceTests {
         data.put("adres6", ["Nieznana ulica  bo nie wiem 34A/259"] as String[]);
 
         data.putAll(insertSignatures(4, 80, 305, 74, 43))
-        process("APUPZIF2.00013-03-26 - Umowa o przyjmowanie zapłaty IF+_2013.pdf", "APUPZIF2.00013-03-26 - Umowa o przyjmowanie zapłaty IF+_2013_out.pdf", data)
+        process("APUPZIF2.00013-03-26 - Umowa o przyjmowanie zaplaty IF+_2013.pdf", "APUPZIF2.00013-03-26 - Umowa o przyjmowanie zaplaty IF+_2013_out.pdf", data)
     }
 
     void testAPUPZDCC() {
@@ -432,7 +432,7 @@ class PdfServiceTests {
         data.put("adres3", ["Parówkowa"] as String[]);
         data.put("pos3", ["9999"] as String[]);
         data.putAll(insertSignatures(1, 80, 240, 74, 43))
-        process("APUPZDCC2.00313-02-15 - Aneks do Umowy o przyjm zapł (wprow DCC).pdf", "APUPZDCC2.00313-02-15 - Aneks do Umowy o przyjm zapł (wprow DCC)_out.pdf", data)
+        process("APUPZDCC2.00313-02-15 - Aneks do Umowy o przyjm zapl (wprow DCC).pdf", "APUPZDCC2.00313-02-15 - Aneks do Umowy o przyjm zapl (wprow DCC)_out.pdf", data)
     }
 
     void testAPUPZDCCZ() {
@@ -441,7 +441,7 @@ class PdfServiceTests {
         data.put("zalNumer", ["6"] as String[]);
         data.putAll(prepareDccData())
         data.putAll(insertSignatures(1, 85, 185, 74, 43))
-        process("APUPZDCCZ1.00213-02-15 - Aneks do Umowy o przyjm zapł. (zm. war. DCC).pdf", "APUPZDCCZ1.00213-02-15 - Aneks do Umowy o przyjm zapł. (zm. war. DCC)_out.pdf", data)
+        process("APUPZDCCZ1.00213-02-15 - Aneks do Umowy o przyjm zapl. (zm. war. DCC).pdf", "APUPZDCCZ1.00213-02-15 - Aneks do Umowy o przyjm zapl. (zm. war. DCC)_out.pdf", data)
     }
 
     void testAPUPZ() { //gotowe
@@ -456,7 +456,7 @@ class PdfServiceTests {
         data.put("umowaNieOzn", ["true", "", "checkbox"] as String[]);
         data.put("umowaOzn", ["true", "", "checkbox"] as String[]);
         data.putAll(insertSignatures(4, 90, 308, 74, 43))
-        process("APUPZ2.00013-01-03 - Umowa o przyjmowanie zapłaty v. 2.000_z faksymile.pdf", "APUPZ2.00013-01-03 - Umowa o przyjmowanie zapłaty v. 2.000_z faksymile_out.pdf", data)
+        process("APUPZ2.00013-01-03 - Umowa o przyjmowanie zaplaty v. 2.000_z faksymile.pdf", "APUPZ2.00013-01-03 - Umowa o przyjmowanie zaplaty v. 2.000_z faksymile_out.pdf", data)
     }
 
     // ---------------------------------------------------------------------------------------
