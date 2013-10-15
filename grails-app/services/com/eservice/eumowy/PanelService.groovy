@@ -16,8 +16,12 @@ class PanelService {
 
     def init(ProcessCommand cmd, def calc){
         cmd.scoringMcc = calculatorService.getCalcProperty(calc,"MCC")
-        cmd.doladowania_tp = calculatorService.getCalcProperty(calc,"CZY_TELEPOMPKA")
-        cmd.doladowania_tk = calculatorService.getCalcProperty(calc,"CZY_TELEKODZIK")
+
+        cmd.isDoladowania_tp = calculatorService.getCalcProperty(calc,"CZY_TELEPOMPKA")
+        cmd.isDoladowania_tk = calculatorService.getCalcProperty(calc,"CZY_TELEKODZIK")
+        cmd.doladowania_tp = nullify(cmd.doladowania_tp)
+        cmd.doladowania_tk = nullify(cmd.doladowania_tk)
+
         cmd.liczbaTerminali = calculatorService.getCalcProperty(calc,"LICZBA_POS_MAX")
     }
 
@@ -425,7 +429,6 @@ class PanelService {
     }
 
     def getPromocyjneObnizenieOplatyZaZestawPos(ProcessCommand cmd, def calc ) {
-
     }
 
     def getRachunekBankowyKlienta(ProcessCommand cmd, def calc ) {
@@ -478,6 +481,8 @@ class PanelService {
         def result = SERWIS_TYPES.find{
             calculatorService.hasCalcProperty(it.key,"TAK",calc)
         }
+
+        setSerwisZablokowany(cmd, calc, SERWIS_TYPES)
 
         cmd.obslugaTyp = result?.value ?: "";
         //serwis ekonomiczny zaczytujemy w dwoch panelach
@@ -548,7 +553,6 @@ class PanelService {
     }
 
     def getZestawPosOdplatneUzywanie(ProcessCommand cmd, def calc ) {
-
         cmd.isZestawPosOdplatneUzywanieShown = nullify(cmd.isZestawPosOdplatneUzywanieShown)
         cmd.oplPOSDialUpTyp = calculatorService.getCalcProperty(calc,"TYP_DIALUP") //K RW
         cmd.oplPOSDialUpIlosc = nullify(cmd.oplPOSDialUpIlosc)
@@ -591,7 +595,6 @@ class PanelService {
         cmd.oplPOSGPRSPreferencyjnePP =  setAtLeastAs(cmd.oplPOSGPRSPreferencyjnePP ,calculatorService.getCalcProperty(calc,"TYP_GPRS_PP_CENA"))
 
         cmd.oplPOSBaza = nullify(cmd.oplPOSBaza)
-
     }
 
     def nullify(def value){
@@ -604,5 +607,13 @@ class PanelService {
 
     def toBigDecimal(def value){
         value ? new BigDecimal(value) : null
+    }
+
+    private setSerwisZablokowany(ProcessCommand cmd, def calc, def serwisy){
+        def results = serwisy.findAll{
+            calculatorService.hasCalcProperty(it.key,"BRAK",calc)
+        }
+
+        cmd.serwisZablokowany = results.size() == 3
     }
 }

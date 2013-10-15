@@ -29,6 +29,7 @@ grant select, insert, update, delete on POINT to EUMOWY_APP;
 grant select, insert, update, delete on POINT_DETAILS to EUMOWY_APP;
 grant select, insert, update, delete on POS to EUMOWY_APP;
 grant select, insert, update, delete on POS_DETAILS to EUMOWY_APP;
+grant select, insert, update, delete on SUBSCRIPTION_DEFINITION to EUMOWY_APP;
 
 
 grant select on  ACTIVITY_SEQ to EUMOWY_APP;

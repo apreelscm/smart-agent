@@ -1215,7 +1215,7 @@ class ActivityController {
 
                 process.documents.each { DocumentFile doc ->
                     //TODO Update document content from Data Map
-                    byte[] newContent = pdfService.addClientSubscriptionsToDocument(doc.content.content, doc.signature, process.subscriptions)
+                    byte[] newContent = pdfService.addClientSubscriptionsToDocument(doc.content.content, doc.signature.id, process.subscriptions)
                     doc.content.content = newContent
                     doc.content.discard()
                 }
@@ -1242,7 +1242,7 @@ class ActivityController {
 
             process.signatures.each { sig ->
                 // Generate documents with black faksymile for PH
-                byte[] documentDataWithBlackFaksymile = pdfService.fillPdfFormFromURIWithBlackFaksymile(sig, null, PdfService.FontType.ARIAL)
+                byte[] documentDataWithBlackFaksymile = pdfService.fillPdfFormFromURIWithBlackFaksymile(sig.id, null, PdfService.FontType.ARIAL)
                 DocumentFile dfwbf = new DocumentFile(name: sig.templatePath, dateCreated: new Date(), lastUpdated: new Date(), pagesCount: 0)
                 dfwbf.setContent(new DocumentContent(content: documentDataWithBlackFaksymile))
                 dfwbf.discard()

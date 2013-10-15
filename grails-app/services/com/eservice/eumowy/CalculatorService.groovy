@@ -15,6 +15,7 @@ class CalculatorService implements Serializable{
     static transactional = false
 
     static final BRAK_LABEL = "BRAK"
+	static final FALSE_LABEL = "NIE"
 	
 	def cbdService
 
@@ -68,6 +69,8 @@ class CalculatorService implements Serializable{
 
 
     def getCalcProperty(  def calc,def key){
-        calc?.findResult{ (it.POLEAPREEL == key && it.WARTOSCAPREEL != BRAK_LABEL  ) ? it.WARTOSCAPREEL : null }
+        calc?.findResult{ (it.POLEAPREEL == key && !(it.WARTOSCAPREEL in [BRAK_LABEL,FALSE_LABEL])  ) ? it.WARTOSCAPREEL : null }
     }
+
+
 }

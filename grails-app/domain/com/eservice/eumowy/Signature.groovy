@@ -1,8 +1,5 @@
 package com.eservice.eumowy
 
-import org.apache.commons.lang.builder.HashCodeBuilder
-
-
 class Signature implements Serializable {
 
     String name;
@@ -10,6 +7,7 @@ class Signature implements Serializable {
 	String templatePath;
     Boolean forPoint = true;
 
+    //TO DELETE in future - begin
 	Integer subscriptionX;
 	Integer subscriptionY;
 	Integer subscriptionPageNumber;
@@ -20,13 +18,15 @@ class Signature implements Serializable {
 
 	String managementSubscription1;
 	String managementSubscription2;
+    //TO DELETE in future - end
 
     Integer signatureOrder;
 
     static hasMany = [
             calcFieldsSignature:CalcFieldSignature,
             panelsSignature:SignaturePanel,
-			documentFile:DocumentFile
+			documentFile:DocumentFile,
+            subscriptionDefinitions:SubscriptionDefinition
     ]
 
     static constraints = {

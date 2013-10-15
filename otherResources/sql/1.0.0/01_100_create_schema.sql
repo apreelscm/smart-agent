@@ -359,6 +359,18 @@ CREATE TABLE EUMOWY.MAPOWANIEKALKULATORA (
 
 create table EUMOWY.LOGS (login varchar2(100 char), log_date varchar2(80 char), log_message varchar2(1000 char));
 
+create table EUMOWY.SUBSCRIPTION_DEFINITION (
+  id number(19,0) not null,
+  version number(19,0) not null,
+  file_name varchar2(255 char),
+  role varchar2(255 char),
+  scalex number(10,0),
+  scaley number(10,0),
+  signature_id number(19,0) not null,
+  subscription_page_number number(10,0),
+  subscriptionx number(10,0),
+  subscriptiony number(10,0),
+  primary key (id));
 -- CONSTRAINTS
 -- TODO do poprawy nazwy FK
 alter table EUMOWY.ACTIVITY_SIGNATURES add constraint ACTIVITY_SIGNATURES_ACT_ID_FK foreign key (activity_id) references EUMOWY.ACTIVITY;
@@ -384,6 +396,7 @@ alter table EUMOWY.PROCESS_SIGNATURE add constraint PROCESS_SIGNATURE_PRO_ID_FK 
 alter table EUMOWY.PROCESS_SUBSCRIPTION add constraint PROCCESS_SUBSCRIPTION_SU_ID_FK foreign key (subscription_id) references EUMOWY.SUBSCRIPTION;
 alter table EUMOWY.PROCESS_SUBSCRIPTION add constraint PROCCESS_SUBSCRIPTION_PR_ID_FK foreign key (process_subscriptions_id) references EUMOWY.PROCESS;
 alter table EUMOWY.PROCESS_PANEL add constraint PROCESS_PANEL_PANEL_ID_FK FOREIGN KEY (PANEL_ID) REFERENCES EUMOWY.PANEL(ID);
+alter table EUMOWY.SUBSCRIPTION_DEFINITION add constraint FK51D951B5ED846B31 foreign key (signature_id) references EUMOWY.SIGNATURE;
 
 -- SEQUENCES
 create sequence EUMOWY.ACTIVITY_SEQ;
@@ -408,6 +421,7 @@ create sequence EUMOWY.SIGNATURE_PANEL_SEQ;
 create sequence EUMOWY.SIGNATURE_SEQ;
 create sequence EUMOWY.SUBSCRIPTION_SEQ;
 create sequence EUMOWY.APP_PARAMETERS_SEQ;
+create sequence EUMOWY.SUBSCRIPTION_DEFINITION_SEQ;
 
 -- TYPES
 CREATE OR REPLACE TYPE "EUMOWY"."DZIALANIE" as table of varchar2(4000);

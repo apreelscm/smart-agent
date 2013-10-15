@@ -427,6 +427,7 @@ class ProcessCommand implements Serializable {
     String oplPOSBaza = DEFAULT_VALUE
 
 //    serwis - FINISH
+    Boolean serwisZablokowany
     String obslugaTyp = DEFAULT_VALUE
     String obslugaEkonomicznyCena = DEFAULT_VALUE
 
@@ -461,7 +462,10 @@ class ProcessCommand implements Serializable {
     String hasAkceptantTel
     String hasInformacjaHandlowa
     String liczbaTerminali
-	
+
+    Boolean isDoladowania_tp
+    Boolean isDoladowania_tk
+
 	Boolean korespondencjaJakDlaMerchanta
 	
     def defaultPointData
@@ -965,6 +969,7 @@ class ProcessCommand implements Serializable {
         allPoints(nullable:true)
         allPoses(nullable:true)
 		korespondencjaJakDlaMerchanta(nullable:true)
+        serwisZablokowany(nullable: true)
 
         liczbaTerminali(nullable:true, validator: { value, cmd, errors ->
 			//println("liczbaTerminali : " + value)

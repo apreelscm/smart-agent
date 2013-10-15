@@ -1,7 +1,5 @@
 package com.eservice.eumowy
 
-import org.apache.commons.lang.builder.HashCodeBuilder
-
 class Subscription implements Serializable {
 
     String content
@@ -11,29 +9,15 @@ class Subscription implements Serializable {
 	//PersonType personType
 	PersonRole personRole
 	
-	/*public enum PersonType {
-		MR("Pan"),
-		MRS("Pani")
-		
-		private final String text;
-		
-		private PersonType(final String text) {
-			this.text = text
-		}
-
-		@Override
-		public String toString() {
-			return text
-		}
-	}*/
-	
 	public enum PersonRole {
 		ACCEPTANT1("Akceptant 1"),
 		ACCEPTANT2("Akceptant 2"),
-		PH("PH")
+		PH("PH"),
+        ZARZAD1(""),
+        ZARZAD2("")
 		
 		private final String text
-		
+
 		private PersonRole(final String text) {
 			this.text = text
 		}
