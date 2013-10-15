@@ -1,6 +1,7 @@
 package com.eservice.eumowy.pdfmapper
 
 import com.eservice.eumowy.util.DateUtils
+import org.apache.log4j.Logger
 
 /**
  * Created with IntelliJ IDEA.
@@ -10,6 +11,8 @@ import com.eservice.eumowy.util.DateUtils
  * To change this template use File | Settings | File Templates.
  */
 public abstract class AbstractPdfMapper {
+
+    static Logger LOG = Logger.getLogger(AbstractPdfMapper.class)
 
     def String getAddress(String streetType, String street, String houseNumber, String flatNumber, String postalCode, String city){
         def sb = new StringBuilder();
