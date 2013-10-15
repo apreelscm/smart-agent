@@ -470,6 +470,7 @@ class ProcessCommand implements Serializable {
 	
     def defaultPointData
 	def defaultPosData
+	def liczbaPosZCbd
 
     static constraints = {
 
@@ -968,6 +969,7 @@ class ProcessCommand implements Serializable {
         poses(nullable:true)
         allPoints(nullable:true)
         allPoses(nullable:true)
+		liczbaPosZCbd(nullable:true)
 		korespondencjaJakDlaMerchanta(nullable:true)
         serwisZablokowany(nullable: true)
 
@@ -984,6 +986,8 @@ class ProcessCommand implements Serializable {
                 counter += point?.gprsIlosc != null ? point?.gprsIlosc : 0
                 counter += point?.bazaIlosc != null ? point?.bazaIlosc : 0
             }
+			
+			counter += Integer.valueOf(cmd.liczbaPosZCbd) != null ? Integer.valueOf(cmd.liczbaPosZCbd) : 0
 
             cmd.poses?.each { point ->
                 counter += point?.dialupIlosc != null ? point?.dialupIlosc : 0

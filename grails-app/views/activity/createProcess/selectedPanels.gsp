@@ -233,6 +233,7 @@
         <g:hiddenField name="globalMCC" value="${data.scoringMcc}"/>
         <g:hiddenField name="nip" value="${data.nip}"/>
         <g:hiddenField name="liczbaTerminali" value="${data.liczbaTerminali}"/>
+        <g:hiddenField name="liczbaPosZCbd" value="${data.liczbaPosZCbd}"/>
         <g:each var="panel" in="${processInstance.panels}" status="i">
             <g:if test="${panel != null}">
                 <g:if test="${panel.name.equals('danePunktu') == false && panel.name.equals('danePos') == false}">

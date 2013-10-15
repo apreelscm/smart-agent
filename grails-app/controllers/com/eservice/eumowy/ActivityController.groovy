@@ -396,6 +396,7 @@ class ActivityController {
             on("continue"){
 
                 Process processInstance = flow.processInstance
+
                 processInstance.calcNumber =  flow.calcNumber
 
                 Client client = flow.client
@@ -417,6 +418,8 @@ class ActivityController {
                     processInstance.errors.each { log.error(it) }
                     return "error"
                 }
+
+                log.info("NOWY PROCES - utworzenie procesu - nip = ${flow.nip} , processId = ${processInstance?.id}, status = ${processInstance?.status}")
 
                 flow.processInstance = processInstance
 
@@ -493,11 +496,12 @@ class ActivityController {
                     return error();
                 }
 
-
-                if(!calculatorService.isCalcValid(calc,processInstance.signatures)){
+				// Validation 1 & 2
+                if(!calculatorService.isCalcValid(calc,calcId,processInstance)){
                     flash.calcErrorMessage =  message(code:"calc.notEnough.error", default:"Kalkulator nie pozwala na wykonanie wszystkich zaznaczonych czynności");
                     return error();
                 }
+				
 
                 conversation.calc = calc
                 flow.calcNumber =  calcId;
@@ -548,7 +552,17 @@ class ActivityController {
                     processCmd = processService.getSavedProcessCommand(processInstance, conversation.calc)
                     processCmd.nip = processInstance.client.nip
                 }
-
+				
+				// Calculate pos count from cbd
+				def counter = 0
+				processCmd.liczbaPosZCbd = 0
+				processCmd.allPoints?.each { allPoint ->
+					if (allPoint.cbdId != null) {
+						counter += allPoint?.liczbaPos != null ? allPoint?.liczbaPos : 0
+					}
+				}
+				processCmd.liczbaPosZCbd += counter != null ? counter : 0
+				
                 flow.data = processCmd
                 flow.processInstance = processInstance
             }
@@ -706,6 +720,8 @@ class ActivityController {
             on("continue"){
                 def processInstance = flow.savedProcess
 
+                log.info("POPRAW DANE - wczytanie procesu - nip = ${flow.nip} , processId = ${processInstance?.id}, status = ${processInstance?.status}")
+
                 def user = springSecurityService.principal
                 processInstance.phNumber = user.nr
                 processInstance.phFirstName = user.imie
@@ -733,6 +749,7 @@ class ActivityController {
                 def client = cbdService.findClientByNip(flow.nip);
                 def lastProcess = processService.getLastProcessForClient(params.nip)
 
+                log.info("POPRAW DANE - Znaleziono proces - nip = ${flow.nip} , processId = ${lastProcess?.id}, status = ${lastProcess?.status}")
 
                 if(! client?.cbdId){
                     /** sprawdzanie, czy to nie jest nowa umowa */
@@ -782,7 +799,7 @@ class ActivityController {
 
                 log.info("pobrano kalkulator " + calcId)
 
-                if(!calculatorService.isCalcValid(calc,lastProcess.signatures)){
+                if(!calculatorService.isCalcValid(calc,calcId,lastProcess)){
                     flash.calcErrorMessage =  message(code:"calc.notEnough.error", default:"Kalkulator nie pozwala na wykonanie wszystkich zaznaczonych czynności");
                     return error()
                 }
@@ -812,6 +829,17 @@ class ActivityController {
                 log.info "SkipPanelsInit: " + flow.skipPanelsInit
                 def processInstance = flow.processInstance;
                 def processCmd = processService.getSavedProcessCommand(processInstance,conversation.calc);
+				
+				// Calculate pos count from cbd
+				def counter = 0
+				processCmd.liczbaPosZCbd = 0
+				processCmd.allPoints?.each { allPoint ->
+					if (allPoint.cbdId != null) {
+						counter += allPoint?.liczbaPos != null ? allPoint?.liczbaPos : 0
+					}
+				}
+				processCmd.liczbaPosZCbd += counter != null ? counter : 0
+				
                 flow.data = processCmd
             }
             render(view: "../createProcess/selectedPanels")
@@ -941,6 +969,9 @@ class ActivityController {
             on("getCalculator").to "getCalculator"
             on("continue"){
                 Process processInstance = flow.savedProcess
+
+                log.info("UZUPELNIJ PODPISY - wczytanie procesu - nip = ${flow.nip} , processId = ${processInstance?.id}, status = ${processInstance?.status}")
+
                 flow.processInstance = processInstance
             }.to "clientSignature"
         }
@@ -963,6 +994,8 @@ class ActivityController {
 
                 /** sprawdzanie, czy w eUmowy istnieje dla danego Akceptanta Proces w statusie oczekiwania na podpis */
                 def lastProcess = processService.getLastProcessForClient(params.nip)
+                log.info("UZUPELNIJ PODPISY - znaleziono proces - nip = ${flow.nip} , processId = ${lastProcess?.id}, status = ${lastProcess?.status}")
+
                 if(! Process.ProcessStatus.WAIT_FOR_SUBSCRIPTION.equals(lastProcess?.status)){
                     flash.nipErrorMessage = message(code:"client.addSignatures.error",
                             default:"Brak możliwości uzupełnienia podpisów");
@@ -1025,6 +1058,9 @@ class ActivityController {
             on("getCalculator").to "getCalculator"
             on("continue"){
                 Process processInstance = flow.savedProcess
+
+                log.info("ODRZUCENIE PROCESU - wczytanie procesu - nip = ${flow.nip} , processId = ${processInstance?.id}, status = ${processInstance?.status}")
+
                 processInstance.status = Process.ProcessStatus.REJECTED;
                 flow.processInstance = processInstance
             }.to "finish"
@@ -1046,6 +1082,7 @@ class ActivityController {
 
                 /** sprawdzanie, czy w eUmowy istnieje dla danego Akceptanta jakis Proces */
                 def lastProcess = processService.getLastProcessForClient(params.nip)
+                log.info("ODRZUCENIE PROCESU - znaleziono proces - nip = ${flow.nip} , processId = ${lastProcess?.id}, status = ${lastProcess?.status}")
 
                 if(! lastProcess?.id){
                     flash.nipErrorMessage = message(code:"client.eUmowyNotFound.error", default:"Brak klienta w eUmowy");
