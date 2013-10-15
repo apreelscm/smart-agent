@@ -5,112 +5,82 @@ import grails.util.Environment
 
 class AppParametersService {
 
-	def grailsApplication
-	
-	def getParamById(Integer id) {
-		return AppParameters.get(id);	
-	}
-	
+    def grailsApplication
+
+    def getParamById(Integer id) {
+        return AppParameters.get(id);
+    }
+
     def getParamByName(String name) {
-		return AppParameters.findByName(name)?.value
-	}
+        return AppParameters.findByName(name)?.value
+    }
 
     def isDevelopmentMode(){
         return Environment.isDevelopmentMode() ||
                 Environment.getCurrent().getName().equalsIgnoreCase(EumowyCustomEnvironment.MOCK.getName())
     }
-	
-	def getPdfPreviewPath() {
-		String tmpPath = AppParameters.findByName("TEMP_PDFPREVIEW_STORAGE_PATH")?.value
-		
-		if (isDevelopmentMode()) {
-			if (tmpPath == null || tmpPath.isEmpty()) {
-				tmpPath = "tmp"
-			}
-		}
-		
-		return tmpPath
-	}
-	
-	def getPdfImagePath() {
-		String tmpPath = AppParameters.findByName("TEMP_PDFIMAGE_STORAGE_PATH")?.value
-		// FIXME dodac tworzenie katalogu tmp jesli go nie ma
-		if (isDevelopmentMode()) {
-			if (tmpPath == null || tmpPath.isEmpty()) {
-				tmpPath = File.separator + "files" + File.separator + "pdf_images" + File.separator
-			}
-		}
-		
-		if (new File(tmpPath).isAbsolute()) {
-			return tmpPath
-		}
-		else {
-			return grailsApplication.mainContext.getServletContext().getRealPath(tmpPath) + File.separator
-		}
-	}
 
-    def getFontUri() {
-        def fontUri = grailsApplication.mainContext.getServletContext().getRealPath(File.separator+"fonts")+File.separator
-        fontUri
+    def getDefaultResourcePath(){
+        System.getProperty("base.dir") + File.separator + "otherResources" + File.separator
     }
 
-	def getPdfImageUri() {
-		String tmpPath = AppParameters.findByName("TEMP_PDFIMAGE_STORAGE_URI")?.value
-		
-		if (isDevelopmentMode()) {
-			if (tmpPath == null || tmpPath.isEmpty()) {
-				tmpPath = "/eumowy/files/pdf_images/"
-			}
-		}
-		
-		return tmpPath
-	}
-	
-	def getPdfTemplatePath() {
-		String path = AppParameters.findByName("PDF_TEMPLATE_PATH")?.value
-		
-		if (isDevelopmentMode()) {
-            File checkPath = new File(path);
-			if (path == null || path.isEmpty() || ! checkPath.exists()) {
-				path = System.getProperty("base.dir") + File.separator + "otherResources" + File.separator + "pdf_templates" + File.separator
-			}
-		}
-		
-		if (new File(path).isAbsolute()) {
-			return path
-		}
-		else {
-			return grailsApplication.mainContext.getServletContext().getRealPath(path) + File.separator
-		}
-	}
-	
-	def getSubscriptionsPath() {
-		String path = AppParameters.findByName("SUBSCRIPTIONS_PATH")?.value
-		
-		if (isDevelopmentMode()) {
-			if (path == null || path.isEmpty()) {
-				path = File.separator + "files" + File.separator 
-			}
-		}
-		
-		if (new File(path).isAbsolute()) {
-			return path
-		}
-		else {
-			return grailsApplication.mainContext.getServletContext().getRealPath(path) + File.separator
-		}
-	}
-	
-	def getSubscriptionsBlackPrefix() {
-		String prefix = AppParameters.findByName("SUBSCRIPTIONS_PATH_BLACKPREFIX")?.value
-		
-		if (isDevelopmentMode()) {
-			if (prefix == null || prefix.isEmpty()) {
-				prefix = "black_"
-			}
-		}
-		
-		return prefix
-	}
+    def getPdfPreviewPath() {
+        return grailsApplication.config.tempPdfPreviewStoragePath
+    }
+
+    // TODO warto to wydzielic poza paczke aplikacji i dorobic czyszczenie
+    def getPdfImagePath() {
+        String tmpPath = grailsApplication.config.tempPdfImageStoragePath
+
+        // TODO pozbyc sie tego, parametr z konfiguracji powinien wystarczyc
+        if (new File(tmpPath).isAbsolute()) {
+            return tmpPath
+        }
+        else {
+            return grailsApplication.mainContext.getServletContext().getRealPath(tmpPath) + File.separator
+        }
+    }
+
+    def getFontUri() { // TODO powinna wskazywac na katalog ew. podkatalog gdzie sa pdfy
+        return grailsApplication.mainContext.getServletContext().getRealPath(File.separator+"fonts")+File.separator
+    }
+
+    def getPdfImageUri() {
+        return  grailsApplication.config.tempPdfImageStorageUri
+    }
+
+    def getPdfTemplatePath() {
+        String path = grailsApplication.config.pdfTemplatePath
+
+        // TODO pozbyc sie tych ifow, parametr z konfiguracji powinien wystarczyc
+        if (isDevelopmentMode()) {
+            if (path == null || path.isEmpty()  || ! new File(path).exists()) {
+                path = getDefaultResourcePath() + "pdf_templates" + File.separator
+            }
+        }
+
+        if (new File(path).isAbsolute()) {
+            return path
+        }
+        else {
+            return grailsApplication.mainContext.getServletContext().getRealPath(path) + File.separator
+        }
+    }
+
+    def getSubscriptionsPath() { // TODO powinna wskazywac na katalog ew. podkatalog gdzie sa pdfy
+        String path = grailsApplication.config.subscriptionsPath
+
+        // TODO pozbyc sie tych ifow, parametr z konfiguracji powinien wystarczyc
+        if (new File(path).isAbsolute()) {
+            return path
+        }
+        else {
+            return grailsApplication.mainContext.getServletContext().getRealPath(path) + File.separator
+        }
+    }
+
+    def getSubscriptionsBlackPrefix() {
+        return AppParameters.findByName("SUBSCRIPTIONS_PATH_BLACKPREFIX")?.value
+    }
 
 }
