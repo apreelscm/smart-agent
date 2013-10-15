@@ -461,7 +461,10 @@ class ProcessCommand implements Serializable {
     String hasAkceptantTel
     String hasInformacjaHandlowa
     String liczbaTerminali
-	
+
+    Boolean isDoladowania_tp
+    Boolean isDoladowania_tk
+
 	Boolean korespondencjaJakDlaMerchanta
 	
     def defaultPointData

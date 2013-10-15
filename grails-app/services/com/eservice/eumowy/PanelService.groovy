@@ -16,8 +16,12 @@ class PanelService {
 
     def init(ProcessCommand cmd, def calc){
         cmd.scoringMcc = calculatorService.getCalcProperty(calc,"MCC")
-        cmd.doladowania_tp = calculatorService.getCalcProperty(calc,"CZY_TELEPOMPKA")
-        cmd.doladowania_tk = calculatorService.getCalcProperty(calc,"CZY_TELEKODZIK")
+
+        cmd.isDoladowania_tp = calculatorService.getCalcProperty(calc,"CZY_TELEPOMPKA")
+        cmd.isDoladowania_tk = calculatorService.getCalcProperty(calc,"CZY_TELEKODZIK")
+        cmd.doladowania_tp = nullify(cmd.doladowania_tp)
+        cmd.doladowania_tk = nullify(cmd.doladowania_tk)
+
         cmd.liczbaTerminali = calculatorService.getCalcProperty(calc,"LICZBA_POS_MAX")
     }
 
@@ -425,7 +429,6 @@ class PanelService {
     }
 
     def getPromocyjneObnizenieOplatyZaZestawPos(ProcessCommand cmd, def calc ) {
-
     }
 
     def getRachunekBankowyKlienta(ProcessCommand cmd, def calc ) {
@@ -548,7 +551,6 @@ class PanelService {
     }
 
     def getZestawPosOdplatneUzywanie(ProcessCommand cmd, def calc ) {
-
         cmd.isZestawPosOdplatneUzywanieShown = nullify(cmd.isZestawPosOdplatneUzywanieShown)
         cmd.oplPOSDialUpTyp = calculatorService.getCalcProperty(calc,"TYP_DIALUP") //K RW
         cmd.oplPOSDialUpIlosc = nullify(cmd.oplPOSDialUpIlosc)
@@ -591,7 +593,6 @@ class PanelService {
         cmd.oplPOSGPRSPreferencyjnePP =  setAtLeastAs(cmd.oplPOSGPRSPreferencyjnePP ,calculatorService.getCalcProperty(calc,"TYP_GPRS_PP_CENA"))
 
         cmd.oplPOSBaza = nullify(cmd.oplPOSBaza)
-
     }
 
     def nullify(def value){
