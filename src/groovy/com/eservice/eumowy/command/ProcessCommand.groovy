@@ -987,7 +987,9 @@ class ProcessCommand implements Serializable {
                 counter += point?.bazaIlosc != null ? point?.bazaIlosc : 0
             }
 			
-			counter += Integer.valueOf(cmd.liczbaPosZCbd) != null ? Integer.valueOf(cmd.liczbaPosZCbd) : 0
+			if (cmd.liczbaPosZCbd != null) {
+				counter += Integer.valueOf(cmd.liczbaPosZCbd) != null ? Integer.valueOf(cmd.liczbaPosZCbd) : 0
+			}
 
             cmd.poses?.each { point ->
                 counter += point?.dialupIlosc != null ? point?.dialupIlosc : 0
