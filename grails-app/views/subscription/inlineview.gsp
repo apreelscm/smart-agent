@@ -44,7 +44,12 @@
         <p>
             <g:checkBox name="agreement" required="required"/>
             <label for="agreement">
-                <g:message code="subscription.agreement" />
+                <g:if test="${params.personRole == 'PH'}">
+                    <g:message code="subscription.agreement.ph" />
+                </g:if>
+                <g:else>
+                    <g:message code="subscription.agreement" />
+                </g:else>
             </label>
         </p>
 

@@ -6,7 +6,7 @@ environments {
         tempPdfPreviewStoragePath="tmp"
         tempPdfImageStoragePath="files/pdf_images/"
         tempPdfImageStorageUri="/eumowy/files/pdf_images/"
-        fontUri="/eumowy/fonts"
+        fontUri="eumowy/fonts"
         subscriptionsPath="files/"
 
         grails.mail.host = "192.168.3.140"
