@@ -394,6 +394,9 @@ class PdfProcessMapper extends AbstractPdfMapper{
             } else if ("spolka_komandytowa".equals(value)){
                 value = "spolka";
                 data.put("spolkaText", ["komandytowa"] as String[])
+            } else if ("spolka_jawna".equals(value)){
+                value = "spolka";
+                data.put("spolkaText", ["jawna"] as String[])
             }
 
             addCheckboxes(data, ["spolkaCywilna":"spolka_cywilna", "osobaFizyczna":"osoba_fizyczna", "spolka":"spolka", "inne1":"inne"], value)
