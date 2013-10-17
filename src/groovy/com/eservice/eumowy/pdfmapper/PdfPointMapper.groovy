@@ -5,6 +5,10 @@ class PdfPointMapper extends AbstractPdfMapper{
     static def EXCLUDE_FROM_POINT = ["class", "posDatas", "errors", "constraints", "process", "processId", "cbdId", "pointDetails", "empty"];
     static def EXCLUDE_FROM_POINT_DATA_DETAILS = ["class", "posDatas", "errors", "constraints", "processId", "cbdId", "pointDetailsId", "empty"];
 
+    static def ALLOW_NULL_POINT = [];
+    static def ALLOW_NULL_POINT_DATA_DETAILS = ["wydrukUlica", "wydrukMiasto", "wydrukPoczta", "wydrukNrDomu", "wydrukNrLokalu", "wydrukKodPocztowy",
+                                                "korespondencjaUlica", "korespondencjaMiasto", "korespondencjaPoczta", "korespondencjaNrDomu", "korespondencjaNrLokalu", "korespondencjaKodPocztowy"];
+
     public def mapPointsSpecial(def points, def mapping) {
         def data = [:];
         def myIndex = 1;
@@ -24,14 +28,14 @@ class PdfPointMapper extends AbstractPdfMapper{
 
     public def mapPointDataToPDFData(def pointData) {
         def data = [:];
-        mapperClosure(pointData.properties, data, "Point", EXCLUDE_FROM_POINT, pointData, true)
-        mapperClosure(pointData.pointDetails?.properties, data, "PointDataDetails", EXCLUDE_FROM_POINT_DATA_DETAILS, pointData, false)
+        mapperClosure(pointData.properties, data, "Point", EXCLUDE_FROM_POINT, ALLOW_NULL_POINT, pointData, true)
+        mapperClosure(pointData.pointDetails?.properties, data, "PointDataDetails", EXCLUDE_FROM_POINT_DATA_DETAILS, ALLOW_NULL_POINT_DATA_DETAILS, pointData, false)
         return data
     }
 
-    private def mapperClosure = {source, data, methodSuffix, exclude, pd, withIndex ->
+    private def mapperClosure = {source, data, methodSuffix, exclude, allowNull, pd, withIndex ->
         source.each { key, value ->
-            if (exclude.contains(key) || value == null){
+            if ((!allowNull.contains(key) && value == null) || exclude.contains(key)){
                 return
             } else {
                 def methodName = "map" + key.capitalize() + methodSuffix
@@ -83,15 +87,56 @@ class PdfPointMapper extends AbstractPdfMapper{
 
     //------------------PointDataDetails----------------------------
 
-    private mapKorespondencjaKodPocztowyPointDataDetails(def data, def pointData, def key, def value){
-        data.put(key, [value] as String[]);
-        mapWithPattern(data, value, ~/\d{2}-\d{3}/, "-", "korespondencjaKodPocztowy");
+    private mapWydrukUlicaPointDataDetails(def data, def pointData, def key, def value){
+        data.put(key, [pointData.cbdId == null ? value : pointData.ulica] as String[]);
+    }
+
+    private mapWydrukMiastoPointDataDetails(def data, def pointData, def key, def value){
+        data.put(key, [pointData.cbdId == null ? value : pointData.miejscowosc] as String[]);
+    }
+
+    private mapWydrukPocztaPointDataDetails(def data, def pointData, def key, def value){
+        data.put(key, [pointData.cbdId == null ? value : pointData.poczta] as String[]);
+    }
+
+    private mapWydrukNrDomuPointDataDetails(def data, def pointData, def key, def value){
+        data.put(key, [pointData.cbdId == null ? value : pointData.nrBudynku] as String[]);
+    }
+
+    private mapWydrukNrLokaluPointDataDetails(def data, def pointData, def key, def value){
+        data.put(key, [pointData.cbdId == null ? value : pointData.nrLokalu] as String[]);
     }
 
     private mapWydrukKodPocztowyPointDataDetails(def data, def pointData, def key, def value){
         data.put(key, [value] as String[]);
-        mapWithPattern(data, value, ~/\d{2}-\d{3}/, "-", "wydrukKodPocztowy");
+        mapWithPattern(data, pointData.cbdId == null ? value : pointData.kodPocztowy, ~/\d{2}-\d{3}/, "-", "wydrukKodPocztowy");
     }
+
+    private mapKorespondencjaUlicaPointDataDetails(def data, def pointData, def key, def value){
+        data.put(key, [pointData.cbdId == null ? value : pointData.ulica] as String[]);
+    }
+
+    private mapKorespondencjaMiastoPointDataDetails(def data, def pointData, def key, def value){
+        data.put(key, [pointData.cbdId == null ? value : pointData.miejscowosc] as String[]);
+    }
+
+    private mapKorespondencjaPocztaPointDataDetails(def data, def pointData, def key, def value){
+        data.put(key, [pointData.cbdId == null ? value : pointData.poczta] as String[]);
+    }
+
+    private mapKorespondencjaNrDomuPointDataDetails(def data, def pointData, def key, def value){
+        data.put(key, [pointData.cbdId == null ? value : pointData.nrBudynku] as String[]);
+    }
+
+    private mapKorespondencjaNrLokaluPointDataDetails(def data, def pointData, def key, def value){
+        data.put(key, [pointData.cbdId == null ? value : pointData.nrLokalu] as String[]);
+    }
+
+    private mapKorespondencjaKodPocztowyPointDataDetails(def data, def pointData, def key, def value){
+        data.put(key, [value] as String[]);
+        mapWithPattern(data, pointData.cbdId == null ? value : pointData.kodPocztowy, ~/\d{2}-\d{3}/, "-", "korespondencjaKodPocztowy");
+    }
+
 
     private mapKontaktWPunkcieTelKomorkowyPointDataDetails(def data, def pointData, def key, def value){
         data.put(key, [value] as String[]);
@@ -128,13 +173,15 @@ class PdfPointMapper extends AbstractPdfMapper{
         mapWithPattern(data, value, ~/\d{2}\s\d{4}\s\d{4}\s\d{4}\s\d{4}\s\d{4}\s\d{4}/, " ", "numerRachunkuBankowego");
     }
 
-    private mapUwagiDodatkowePointDataDetails(def data, def pointData, def key, def value) {
-        data.put(key, [value] as String[]);
-    }
-
-    private mapPhPozyskPointDataDetails(def data, def pointData, def key, def value) {
-        data.put(key, [value] as String[]);
-    }
+//    // czy ta metoda jest potrzebna???
+//    private mapUwagiDodatkowePointDataDetails(def data, def pointData, def key, def value) {
+//        data.put(key, [value] as String[]);
+//    }
+//
+//    // czy ta metoda jest potrzebna???
+//    private mapPhPozyskPointDataDetails(def data, def pointData, def key, def value) {
+//        data.put(key, [value] as String[]);
+//    }
 
     //----------------------------UTILS--------------------------------
 
