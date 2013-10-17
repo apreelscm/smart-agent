@@ -26,8 +26,8 @@ class DictionaryService {
         getFromDictionary(GET_ULICA_COMBOBOX, [])
     }
 
-    def getPosTypeComboBox(def medium) {
-        cbdService.getPosTypes(DICTIONARY_PATH + GET_POS_TYPE_COMBOBOX, medium)
+    def getPosTypeComboBox(def nip, def medium) {
+        cbdService.getPosTypes(DICTIONARY_PATH + GET_POS_TYPE_COMBOBOX, nip, medium)
     }
 
     def getCbdPointsComboBox(def nip) {
