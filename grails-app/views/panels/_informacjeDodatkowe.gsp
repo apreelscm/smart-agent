@@ -7,8 +7,8 @@
                         <span class="align-left"><g:message code="panel.legal.form"/></span>
                         <span>
                             <g:select name="dzialalnoscForma"
-                                      from="['', 'Spółka akcyjna', 'Spółka z o.o.', 'Spółka cywilna', 'Osoba fizyczna', 'Spółka komandytowa']"
-                                      keys="['inne', 'spolka_akcyjna', 'spolka_zoo', 'spolka_cywilna', 'osoba_fizyczna', 'spolka_komandytowa']"
+                                      from="['', 'Spółka akcyjna', 'Spółka z o.o.', 'Spółka cywilna', 'Osoba fizyczna', 'Spółka komandytowa', 'Spółka Jawna']"
+                                      keys="['inne', 'spolka_akcyjna', 'spolka_zoo', 'spolka_cywilna', 'osoba_fizyczna', 'spolka_komandytowa', 'spolka_jawna']"
                                       value="${data.dzialalnoscForma}"
                                       style="width: 200px;"/>
                         </span>
@@ -61,6 +61,10 @@
                     clearAndReadonlyOtherFields(true, true);
                     break;
                 case 'spolka_komandytowa':
+                    selectDoc('krs');
+                    clearAndReadonlyOtherFields(true, true);
+                    break;
+                case 'spolka_jawna':
                     selectDoc('krs');
                     clearAndReadonlyOtherFields(true, true);
                     break;

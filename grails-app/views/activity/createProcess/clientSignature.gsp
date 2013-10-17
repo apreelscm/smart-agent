@@ -332,6 +332,7 @@
         <g:form>
         	<fieldset id="clientSignaturePersons" class="subpanel-fieldset">
         		<legend><g:message code="clientSignature.signing.people" default="Osoby podpisujące" /></legend>
+
         		<ul class="table-list">
 					<li><span><a class="big-link showSignatureDialog" data-firstName="${representative1.name}"
                                  data-lastName="${representative1.surname}" data-role="ACCEPTANT1" id="subscribe-REPRESENTATIVE1"
@@ -348,11 +349,14 @@
         	</fieldset>
         	<fieldset class="subpanel-fieldset" id="clientSignatureDocType">
         		<legend><g:message code="clientSignature.version.title" default="Forma" /></legend>
+                <g:set var="hasKontaktEmail" value="${processInstance.processData.any { it.name == 'kontaktEmail' && it.value }}"/>
         		<ul class="table-list">
         			<li>
         				<span>
         					<label>
-        						<g:radio id="requestVersionElectronical" name="requestVersion" value="electronical" checked="on"/>
+        						<g:radio id="requestVersionElectronical" name="requestVersion" value="electronical"
+                                    disabled="${hasKontaktEmail ? 'false' : 'true' }"
+                                    checked="${hasKontaktEmail ? 'false' : 'on' }"/>
         						<g:message code="clientSignature.electronicalVersion.radio" default="Elektroniczna" />
                             </label>
                         </span>
@@ -360,7 +364,7 @@
                     <li>
                     	<span>
                     		<label>
-                                <g:radio id="requestVersionPaper" name="requestVersion" value="paper"/>
+                                <g:radio id="requestVersionPaper" name="requestVersion" value="paper"   checked="${hasKontaktEmail ? 'true' : 'false' }"/>
                                 <g:message code="clientSignature.paperVersion.radio" default="Papierowa" />
                             </label>
                     	</span>

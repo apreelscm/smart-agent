@@ -141,10 +141,9 @@ class PdfService {
         Map<String,String[]> dataMap = new HashMap<String, String[]>()
 
         Signature sig = Signature.get(sigId);
-        if (sig.subscriptionPageNumber != null && sig.subscriptionPageNumber > -1) {
-            sig.subscriptionDefinitions.findAll { it.role == Subscription.PersonRole.ZARZAD1 || it.role == Subscription.PersonRole.ZARZAD2}.eachWithIndex{ SubscriptionDefinition it, int i ->
+        sig.subscriptionDefinitions.findAll { (it.role == Subscription.PersonRole.ZARZAD1 || it.role == Subscription.PersonRole.ZARZAD2) && it.subscriptionPageNumber != null && it.subscriptionPageNumber > -1}
+            .eachWithIndex{ SubscriptionDefinition it, int i ->
                 dataMap.put(it.role.name() + i, [new File(subscriptionsPath+subscriptionsBlackNamePrefix+it.fileName).toURI().toURL(), "", "signature", it.subscriptionPageNumber.toString(), (it.subscriptionX).toString(), it.subscriptionY.toString(), it.scaleX, it.scaleY] as String[])
-            }
         }
 
         if (panelData != null) {
@@ -175,19 +174,15 @@ class PdfService {
 
     private def attachSignatures(Signature sig, Set<Subscription> subscriptions, Subscription.PersonRole personRole) {
         def result = [:]
-        if (sig.subscriptionPageNumber != null && sig.subscriptionPageNumber > -1) {
-            Subscription s = subscriptions.find { it.personRole == personRole }
-            Set<SubscriptionDefinition> definitions = sig.subscriptionDefinitions.findAll { it.role == personRole }
-            if (s?.content != null && !definitions.isEmpty()) {
-                definitions.each{
-                    BufferedImage img = SignatureToImage.convertJsonToImage(s.content)
-                    result.put("subscriber_"+it.id, [img, it.subscriptionPageNumber, it.subscriptionX, it.subscriptionY, it.scaleX, it.scaleY] as Object[])
-                }
-            } else {
-                log.info "Subscription without definitions or subscription content found for" + personRole.name() +"! Template path: " + sig.templatePath
+        Subscription s = subscriptions.find { it.personRole == personRole }
+        Set<SubscriptionDefinition> definitions = sig.subscriptionDefinitions.findAll { it.role == personRole && it.subscriptionPageNumber != null && it.subscriptionPageNumber > -1}
+        if (s?.content != null && !definitions.isEmpty()) {
+            definitions.each{
+                BufferedImage img = SignatureToImage.convertJsonToImage(s.content)
+                result.put("subscriber_"+it.id, [img, it.subscriptionPageNumber, it.subscriptionX, it.subscriptionY, it.scaleX, it.scaleY] as Object[])
             }
         } else {
-			log.info "No page number for "+ personRole.name() +" specified - template: " + sig.templatePath
+            log.info "Subscription without definitions or subscription content found for" + personRole.name() +"! Template path: " + sig.templatePath
         }
 
         result;
