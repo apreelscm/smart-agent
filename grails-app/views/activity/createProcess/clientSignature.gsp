@@ -1,4 +1,4 @@
-<%@ page import="com.eservice.eumowy.Activity" %>
+<%@ page import="com.eservice.eumowy.Subscription; com.eservice.eumowy.Activity" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -243,13 +243,19 @@
 				return false;
 			});
 			
-			jQuery("#requestVersionTemplates, #requestVersionPaper").on("change", function(e) {
+			jQuery("#requestVersionTemplates").on("change", function(e) {
 				if (jQuery(e.target).is(":checked")) {
 					jQuery("#noaccept").prop("disabled", true);
 					
-					jQuery("#subscribe-REPRESENTATIVE1").parent().addClass("disabled");
-					jQuery("#subscribe-REPRESENTATIVE2").parent().addClass("disabled");
-					jQuery("#subscribe-PH").parent().addClass("disabled");
+					jQuery("a.big-link").parent().addClass("disabled");
+				}
+			});
+
+			jQuery("#requestVersionPaper").on("change", function(e) {
+			    if (jQuery(e.target).is(":checked")) {
+					jQuery("#noaccept").prop("disabled", false);
+
+                    jQuery("a.big-link").parent().removeClass("disabled");
 				}
 			});
 			
@@ -317,7 +323,6 @@
         <g:form>
         	<fieldset id="clientSignaturePersons" class="subpanel-fieldset">
         		<legend><g:message code="clientSignature.signing.people" default="Osoby podpisujące" /></legend>
-
         		<ul class="table-list">
 					<li><span><a class="big-link showSignatureDialog" data-firstName="${representative1.name}"
                                  data-lastName="${representative1.surname}" data-role="ACCEPTANT1" id="subscribe-REPRESENTATIVE1"
