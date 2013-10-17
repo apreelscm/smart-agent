@@ -734,9 +734,23 @@ class PdfServiceTests {
 		data.put("podpis", [new File(getTemplatePath()+"signature1.jpg").toURI().toURL(), "", "signature", "1", "435", "15", "74", "43"] as String[]);
 		process("Formularz aplikacyjny_po_zmianach_18.01.2012.pdf", "Formularz aplikacyjny_po_zmianach_18.01.2012_out.pdf", data);
 	}
+	
+	void testFormularzAplikacyjnyToImage() {
+		String outFile =  "Formularz aplikacyjny_po_zmianach_18.01.2012_out2.pdf"
+		data.put("podpis", [new File(getTemplatePath()+"signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
+		process("Formularz aplikacyjny_po_zmianach_18.01.2012.pdf", outFile, data);
+		processToImage(outFile, 1)
+	}
 
 	void testFormularzDanychPunktu() {
 		process("Formularz danych punktu_zmiany_15.05.2013_edited.pdf", "Formularz danych punktu_zmiany_15.05.2013_edited_out.pdf", generateFormularzDanychPunktuFields());
+	}
+	
+	void testFormularzDanychPunktuToImage() {
+		String outFile =  "Formularz danych punktu_zmiany_15.05.2013_edited_out2.pdf"
+		data.put("podpis", [new File(getTemplatePath()+"signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
+		process("Formularz danych punktu_zmiany_15.05.2013_edited.pdf", outFile, data);
+		processToImage(outFile, 2)
 	}
 
 	void testFormularzScoringowy() {
