@@ -3,6 +3,7 @@
 <html>
 <head>
     <meta name="layout" content="main">
+    <meta name="viewport" content="width=960, initial-scale=1, maximum-scale=1"/>
     <title><g:message code="clientSignature.header.title" default="Podpis Klienta"/></title>
 
     <style>
@@ -235,8 +236,22 @@
 		            function(responseText, textStatus, XMLHttpRequest) {
 		                dialog.dialog({
 		                	modal: true,
-      						width: 750
+      						width: 750,
+      						open : function() {
+							    var t = jQuery(this).parent(), w = jQuery(window);
+							    t.offset({
+							        top: (w.height() / 2) - (t.height() / 2) - 200,
+							        left: (w.width() / 2) - (t.width() / 2)
+							    });
+							    w.scrollTop(0);
+							    setUpSignaturePad();
+							    jQuery('body').addClass('stop-scrolling');
+							},
+							close: function() {
+								jQuery('body').removeClass('stop-scrolling');
+							}
 		                });
+		                
 		            }
 		        );
 		        
