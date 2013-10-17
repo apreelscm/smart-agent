@@ -103,6 +103,69 @@ class PdfServiceTests {
 			processToImage(outFile, 1)
 		}
 
+		void testAPUPZAWNZBSX() {
+			HashMap<String, String[]> data = new HashMap<String, String[]>();
+			data.putAll(this.data);
+			data.put("dataUmowy", ["10-05-2012"] as String[]);
+			data.putAll(prepareDccData())
+			data.putAll(insertSignatures(1, 85, 185, 74, 43))
+			process("APUPZAWNZBS1.00113-08-06 - Aneks do umowy o przyjm zapl (bez stawek plaskich).pdf", "APUPZAWNZBS1.00113-08-06 - Aneks do umowy o przyjm zapl (bez stawek plaskich)_out.pdf", data)
+		}
+		
+		void testAPUPZAWNZBSXToImage() {
+			String outFile =  "APUPZAWNZBS1.00113-08-06 - Aneks do umowy o przyjm zapl (bez stawek plaskich)_out2.pdf"
+			data.put("podpis", [new File(getTemplatePath()+"signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
+			process("APUPZAWNZBS1.00113-08-06 - Aneks do umowy o przyjm zapl (bez stawek plaskich).pdf", outFile, data);
+			processToImage(outFile, 1)
+		}
+		
+		void testAPUPZBSX() {
+			HashMap<String, String[]> data = new HashMap<String, String[]>();
+			data.putAll(this.data);
+			data.put("dataUmowy", ["10-05-2012"] as String[]);
+			data.putAll(prepareDccData())
+			data.putAll(insertSignatures(1, 85, 185, 74, 43))
+			process("APUPZBS2.00113-08-06 - Umowa o przyjmowanie zaplaty (wersja bez stawek plaskich)_do druku.pdf", "APUPZBS2.00113-08-06 - Umowa o przyjmowanie zaplaty (wersja bez stawek plaskich)_do druku_out.pdf", data)
+		}
+		
+		void testAPUPZBSXToImage() {
+			String outFile =  "APUPZBS2.00113-08-06 - Umowa o przyjmowanie zaplaty (wersja bez stawek plaskich)_do druku_out2.pdf"
+			data.put("podpis", [new File(getTemplatePath()+"signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
+			process("APUPZBS2.00113-08-06 - Umowa o przyjmowanie zaplaty (wersja bez stawek plaskich)_do druku.pdf", outFile, data);
+			processToImage(outFile, 1)
+		}
+		
+		void testAPUPZIFX() {
+			HashMap<String, String[]> data = new HashMap<String, String[]>();
+			data.putAll(this.data);
+			data.put("dataUmowy", ["10-05-2012"] as String[]);
+			data.putAll(prepareDccData())
+			data.putAll(insertSignatures(1, 85, 185, 74, 43))
+			process("APUPZIF2.00113-08-06 - Umowa o przyjmowanie zaplaty IF+_2013.pdf", "APUPZIF2.00113-08-06 - Umowa o przyjmowanie zaplaty IF+_2013_out.pdf", data)
+		}
+		
+		void testAPUPZIFXToImage() {
+			String outFile =  "APUPZIF2.00113-08-06 - Umowa o przyjmowanie zaplaty IF+_2013_out2.pdf"
+			data.put("podpis", [new File(getTemplatePath()+"signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
+			process("APUPZIF2.00113-08-06 - Umowa o przyjmowanie zaplaty IF+_2013.pdf", outFile, data);
+			processToImage(outFile, 1)
+		}
+		
+		void testAPUPZIF2X() {
+			HashMap<String, String[]> data = new HashMap<String, String[]>();
+			data.putAll(this.data);
+			data.put("dataUmowy", ["10-05-2012"] as String[]);
+			data.putAll(prepareDccData())
+			data.putAll(insertSignatures(1, 85, 185, 74, 43))
+			process("APUPZIF2.00213-08-06_Aneks na IF+ i IKO.pdf", "APUPZIF2.00213-08-06_Aneks na IF+ i IKO_out.pdf", data)
+		}
+		
+		void testAPUPZIF2XToImage() {
+			String outFile =  "APUPZIF2.00213-08-06_Aneks na IF+ i IKO_out2.pdf"
+			data.put("podpis", [new File(getTemplatePath()+"signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
+			process("APUPZIF2.00213-08-06_Aneks na IF+ i IKO.pdf", outFile, data);
+			processToImage(outFile, 1)
+		}
 		
 	// --------------- podstawowe dokumenty 
 			
@@ -671,9 +734,23 @@ class PdfServiceTests {
 		data.put("podpis", [new File(getTemplatePath()+"signature1.jpg").toURI().toURL(), "", "signature", "1", "435", "15", "74", "43"] as String[]);
 		process("Formularz aplikacyjny_po_zmianach_18.01.2012.pdf", "Formularz aplikacyjny_po_zmianach_18.01.2012_out.pdf", data);
 	}
+	
+	void testFormularzAplikacyjnyToImage() {
+		String outFile =  "Formularz aplikacyjny_po_zmianach_18.01.2012_out2.pdf"
+		data.put("podpis", [new File(getTemplatePath()+"signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
+		process("Formularz aplikacyjny_po_zmianach_18.01.2012.pdf", outFile, data);
+		processToImage(outFile, 1)
+	}
 
 	void testFormularzDanychPunktu() {
 		process("Formularz danych punktu_zmiany_15.05.2013_edited.pdf", "Formularz danych punktu_zmiany_15.05.2013_edited_out.pdf", generateFormularzDanychPunktuFields());
+	}
+	
+	void testFormularzDanychPunktuToImage() {
+		String outFile =  "Formularz danych punktu_zmiany_15.05.2013_edited_out2.pdf"
+		data.put("podpis", [new File(getTemplatePath()+"signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
+		process("Formularz danych punktu_zmiany_15.05.2013_edited.pdf", outFile, data);
+		processToImage(outFile, 2)
 	}
 
 	void testFormularzScoringowy() {
