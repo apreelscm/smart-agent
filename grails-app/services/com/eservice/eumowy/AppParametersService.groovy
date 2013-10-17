@@ -1,86 +1,74 @@
 package com.eservice.eumowy
 
-import com.eservice.eumowy.util.EumowyCustomEnvironment
 import grails.util.Environment
+import java.nio.file.Paths
+import com.eservice.eumowy.util.EumowyCustomEnvironment
 
 class AppParametersService {
 
-    def grailsApplication
+	def grailsApplication
+	def grailsLinkGenerator
 
-    def getParamById(Integer id) {
-        return AppParameters.get(id);
-    }
+	def getPdfTemplatePath(String fileName) {
+		String basePath = grailsApplication.config.appParametersPaths?.get("pdfTemplates")
+		String path = basePath ? Paths.get(basePath, fileName).normalize().toAbsolutePath().toString() : null
+		createDirectoryIfNotExists(basePath)
+		return path
+	}
 
-    def getParamByName(String name) {
-        return AppParameters.findByName(name)?.value
-    }
+	def getPdfPreviewPath(String fileName) {
+		String basePath = grailsApplication.config.appParametersPaths?.get("pdfPreviews")
+		String path = basePath ? Paths.get(basePath, fileName).normalize().toAbsolutePath().toString() : null
+		createDirectoryIfNotExists(basePath)
+		return path
+	}
 
-    def isDevelopmentMode(){
-        return Environment.isDevelopmentMode() ||
-                Environment.getCurrent().getName().equalsIgnoreCase(EumowyCustomEnvironment.MOCK.getName())
-    }
+	def getPdfPreviewUri(String fileName) {
+		return  grailsLinkGenerator.link(controller: 'file', action: 'get', absolute: true, params: [root: "pdfPreviews", path: fileName])
+	}
 
-    def getDefaultResourcePath(){
-        System.getProperty("base.dir") + File.separator + "otherResources" + File.separator
-    }
+	def getPdfImagePath(String fileName) {
+		String basePath = grailsApplication.config.appParametersPaths?.get("pdfImages")
+		String path = basePath ? Paths.get(basePath, fileName).normalize().toAbsolutePath().toString() : null
+		createDirectoryIfNotExists(basePath)
+		return path
+	}
 
-    def getPdfPreviewPath() {
-        return grailsApplication.config.tempPdfPreviewStoragePath
-    }
+	def getPdfImageUri(String fileName) {
+		return grailsLinkGenerator.link(controller: 'file', action: 'get', absolute: true, params: [root: "pdfImages", path: fileName])
+	}
 
-    // TODO warto to wydzielic poza paczke aplikacji i dorobic czyszczenie
-    def getPdfImagePath() {
-        String tmpPath = grailsApplication.config.tempPdfImageStoragePath
+	def getFontUri() {
+		String basePath = grailsApplication.config.appParametersPaths?.get("pdfTemplates")
+		String path = basePath ? Paths.get(basePath, "fonts").normalize().toAbsolutePath().toString() : null
+		createDirectoryIfNotExists(path)
+		return path
+	}
 
-        // TODO pozbyc sie tego, parametr z konfiguracji powinien wystarczyc
-        if (new File(tmpPath).isAbsolute()) {
-            return tmpPath
-        }
-        else {
-            return grailsApplication.mainContext.getServletContext().getRealPath(tmpPath) + File.separator
-        }
-    }
+	def getSubscriptionsPath() {
+		String basePath = grailsApplication.config.appParametersPaths?.get("pdfTemplates")
+		String path = basePath ? Paths.get(basePath, "subscriptions").normalize().toAbsolutePath().toString() : null
+		createDirectoryIfNotExists(path)
+		return path
+	}
 
-    def getFontUri() { // TODO powinna wskazywac na katalog ew. podkatalog gdzie sa pdfy
-        return grailsApplication.mainContext.getServletContext().getRealPath(File.separator+"fonts")+File.separator
-    }
-
-    def getPdfImageUri() {
-        return  grailsApplication.config.tempPdfImageStorageUri
-    }
-
-    def getPdfTemplatePath() {
-        String path = grailsApplication.config.pdfTemplatePath
-
-        // TODO pozbyc sie tych ifow, parametr z konfiguracji powinien wystarczyc
-        if (isDevelopmentMode()) {
-            if (path == null || path.isEmpty()  || ! new File(path).exists()) {
-                path = getDefaultResourcePath() + "pdf_templates" + File.separator
-            }
-        }
-
-        if (new File(path).isAbsolute()) {
-            return path
-        }
-        else {
-            return grailsApplication.mainContext.getServletContext().getRealPath(path) + File.separator
-        }
-    }
-
-    def getSubscriptionsPath() { // TODO powinna wskazywac na katalog ew. podkatalog gdzie sa pdfy
-        String path = grailsApplication.config.subscriptionsPath
-
-        // TODO pozbyc sie tych ifow, parametr z konfiguracji powinien wystarczyc
-        if (new File(path).isAbsolute()) {
-            return path
-        }
-        else {
-            return grailsApplication.mainContext.getServletContext().getRealPath(path) + File.separator
-        }
-    }
-
-    def getSubscriptionsBlackPrefix() {
-        return AppParameters.findByName("SUBSCRIPTIONS_PATH_BLACKPREFIX")?.value
-    }
+	def getSubscriptionsBlackPrefix() {
+		return AppParameters.findByName("SUBSCRIPTIONS_PATH_BLACKPREFIX")?.value
+	}
+	
+	def createDirectoryIfNotExists(String path) {
+		try {
+			log.info "createDirectoryIfNotExists - Checking dir: " + path
+			def file = new File(path)
+			if (file.exists() == false) {
+				file.mkdirs()
+				log.info "createDirectoryIfNotExists - Creating dir: " + path
+			}
+		}
+		catch(Exception e) {
+			log.error "createDirectoryIfNotExists - " + e
+			e.printStackTrace()
+		}
+	}
 
 }
