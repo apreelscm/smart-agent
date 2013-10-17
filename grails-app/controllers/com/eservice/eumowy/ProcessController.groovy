@@ -245,15 +245,10 @@ class ProcessController {
         def fileUri = appParametersService.getPdfPreviewUri(fileName)
         def tmpRes = new File(fileDir)
 
-        if(!tmpRes.exists()){
-            def tmpPdfFile = tmpRes
-            tmpPdfFile.withOutputStream { s ->
-                s << documentFile.content.content
-            }
+        def tmpPdfFile = tmpRes
+        tmpPdfFile.withOutputStream { s ->
+            s << documentFile.content.content
         }
-
-        //TODO zmienic
-		System.sleep(10000)
 
 		render(template: '../forms/pdf/embedDocument', model:  [pdfDocument: fileUri]);
     }
