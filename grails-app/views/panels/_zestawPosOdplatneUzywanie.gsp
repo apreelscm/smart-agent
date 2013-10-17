@@ -19,37 +19,37 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td><g:message code="panel.type"/> <dict:typeSelect id="oplPOSDialUpTyp"  medium="DIALUP" nip="${nip}" name="oplPOSDialUpTyp" value="${data.oplPOSDialUpTyp}" style="width: 220px"/></td>
+                            <td><g:message code="panel.type"/> <dict:typeSelect id="oplPOSDialUpTyp"  medium="DIALUP" name="oplPOSDialUpTyp" value="${data.oplPOSDialUpTyp}" style="width: 220px"/></td>
                             <td style="text-align: right;"><g:message code="panel.dialup"/></td>
                             <td><g:field name="oplPOSDialUpIlosc" type="text" class="integer-number" value="${data.oplPOSDialUpIlosc}" style="width: 50px"/> <g:message code="panel.unit"/></td>
                             <td><g:field type="text" class="integer-number" name="oplPOSDialUpIloscPP" value="${data.oplPOSDialUpIloscPP}" style="width: 50px"/> <g:message code="panel.pp.unit"/></td>
                             <td><g:field type="text" class="float-number oplPOSDialUpCena" name="oplPOSDialUpNormalneMies" value="${data.oplPOSDialUpNormalneMies}" style="width: 50px"/> <g:message code="panel.polish.currency"/></td>
                             <td><g:field type="text" class="float-number oplPOSDialUpCena" name="oplPOSDialUpNormalnePP" value="${data.oplPOSDialUpNormalnePP}" style="width: 50px"/> <g:message code="panel.polish.currency"/></td>
                             <td><g:field type="text" class="float-number oplPOSDialUpCena" name="oplPOSDialUpPreferencyjneMies" value="${data.oplPOSDialUpPreferencyjneMies}" style="width: 50px"/> <g:message code="panel.polish.currency"/></td>
-                            <td><g:field type="text" class="float-number oplPOSDialUpCena"  name="oplPOSDialUpPreferencyjnePP" value="${data.oplPOSDialUpPreferencyjnePP}" style="width: 50px"/> <g:message code="panel.polish.currency"/></td>
+                            <td><g:field type="text" class="float-number oplPOSDialUpCena" name="oplPOSDialUpPreferencyjnePP" value="${data.oplPOSDialUpPreferencyjnePP}" style="width: 50px"/> <g:message code="panel.polish.currency"/></td>
                         </tr>
                         <tr>
-                            <td><g:message code="panel.type"/> <dict:typeSelect id="oplPOSVPNTyp"  medium="VPN" nip="${nip}" name="oplPOSVPNTyp" value="${data.oplPOSVPNTyp}" style="width: 220px" /></td>
+                            <td><g:message code="panel.type"/> <dict:typeSelect id="oplPOSVPNTyp" medium="VPN" name="oplPOSVPNTyp" value="${data.oplPOSVPNTyp}" style="width: 220px" /></td>
                             <td style="text-align: right;"><g:message code="panel.vpn"/></td>
                             <td><g:field name="oplPOSVPNIlosc" type="text" class="integer-number" value="${data.oplPOSVPNIlosc}" style="width: 50px"/> <g:message code="panel.unit"/></td>
                             <td><g:field type="text" class="integer-number" name="oplPOSVPNIloscPP" value="${data.oplPOSVPNIloscPP}" style="width: 50px"/> <g:message code="panel.pp.unit"/></td>
                             <td><g:field type="text" class="float-number oplPOSVPNCena" name="oplPOSVPNNormalneMies" value="${data.oplPOSVPNNormalneMies}" style="width: 50px"/> <g:message code="panel.polish.currency"/></td>
                             <td><g:field type="text" class="float-number oplPOSVPNCena" name="oplPOSVPNNormalnePP" value="${data.oplPOSVPNNormalnePP}" style="width: 50px"/> <g:message code="panel.polish.currency"/></td>
-                            <td><g:field type="text" class="float-number oplPOSVPNCena"  name="oplPOSVPNPreferencyjneMies" value="${data.oplPOSVPNPreferencyjneMies}" style="width: 50px"/> <g:message code="panel.polish.currency"/></td>
-                            <td><g:field type="text" class="float-number oplPOSVPNCena"  name="oplPOSVPNPreferencyjnePP" value="${data.oplPOSVPNPreferencyjnePP}" style="width: 50px"/> <g:message code="panel.polish.currency"/></td>
+                            <td><g:field type="text" class="float-number oplPOSVPNCena" name="oplPOSVPNPreferencyjneMies" value="${data.oplPOSVPNPreferencyjneMies}" style="width: 50px"/> <g:message code="panel.polish.currency"/></td>
+                            <td><g:field type="text" class="float-number oplPOSVPNCena" name="oplPOSVPNPreferencyjnePP" value="${data.oplPOSVPNPreferencyjnePP}" style="width: 50px"/> <g:message code="panel.polish.currency"/></td>
                         </tr>
                         <tr>
-                            <td><g:message code="panel.type"/> <dict:typeSelect id="oplPOSSSLTyp"  medium="SSL" nip="${nip}" name="oplPOSSSLTyp" value="${data.oplPOSSSLTyp}" style="width: 220px" /></td>
+                            <td><g:message code="panel.type"/> <dict:typeSelect id="oplPOSSSLTyp"  medium="SSL" name="oplPOSSSLTyp" value="${data.oplPOSSSLTyp}" style="width: 220px" /></td>
                             <td style="text-align: right;"><g:message code="panel.ssl"/></td>
                             <td><g:field name="oplPOSSSLIlosc" type="text" class="integer-number" value="${data.oplPOSSSLIlosc}" style="width: 50px"/> <g:message code="panel.unit"/></td>
                             <td><g:field type="text" class="integer-number" name="oplPOSSSLIloscPP" value="${data.oplPOSSSLIloscPP}" style="width: 50px"/> <g:message code="panel.pp.unit"/></td>
                             <td><g:field type="text" class="float-number oplPOSSSLCena" name="oplPOSSSLNormalneMies" value="${data.oplPOSSSLNormalneMies}" style="width: 50px"/> <g:message code="panel.polish.currency"/></td>
                             <td><g:field type="text" class="float-number oplPOSSSLCena" name="oplPOSSSLNormalnePP" value="${data.oplPOSSSLNormalnePP}" style="width: 50px"/> <g:message code="panel.polish.currency"/></td>
-                            <td><g:field type="text" class="float-number oplPOSSSLCena"  name="oplPOSSSLPreferencyjneMies" value="${data.oplPOSSSLPreferencyjneMies}" style="width: 50px"/> <g:message code="panel.polish.currency"/></td>
-                            <td><g:field type="text" class="float-number oplPOSSSLCena"  name="oplPOSSSLPreferencyjnePP" value="${data.oplPOSSSLPreferencyjnePP}" style="width: 50px"/> <g:message code="panel.polish.currency"/></td>
+                            <td><g:field type="text" class="float-number oplPOSSSLCena" name="oplPOSSSLPreferencyjneMies" value="${data.oplPOSSSLPreferencyjneMies}" style="width: 50px"/> <g:message code="panel.polish.currency"/></td>
+                            <td><g:field type="text" class="float-number oplPOSSSLCena" name="oplPOSSSLPreferencyjnePP" value="${data.oplPOSSSLPreferencyjnePP}" style="width: 50px"/> <g:message code="panel.polish.currency"/></td>
                         </tr>
                         <tr>
-                            <td><g:message code="panel.type"/> <dict:typeSelect id="oplPOSWiFiTyp"  medium="WiFi" nip="${nip}" name="oplPOSWiFiTyp" value="${data.oplPOSWiFiTyp}" style="width: 220px" /></td>
+                            <td><g:message code="panel.type"/> <dict:typeSelect id="oplPOSWiFiTyp"  medium="WiFi" name="oplPOSWiFiTyp" value="${data.oplPOSWiFiTyp}" style="width: 220px" /></td>
                             <td style="text-align: right;"><g:message code="panel.wifi"/></td>
                             <td><g:field name="oplPOSWiFiIlosc" type="text" class="integer-number" value="${data.oplPOSWiFiIlosc}" style="width: 50px"/> <g:message code="panel.unit"/></td>
                             <td><g:field type="text" class="integer-number" name="oplPOSWiFiIloscPP" value="${data.oplPOSWiFiIloscPP}" style="width: 50px"/> <g:message code="panel.pp.unit"/></td>
@@ -59,7 +59,7 @@
                             <td><g:field type="text" class="float-number oplPOSWiFiCena" name="oplPOSWiFiPreferencyjnePP" value="${data.oplPOSWiFiPreferencyjnePP}" style="width: 50px"/> <g:message code="panel.polish.currency"/></td>
                         </tr>
                         <tr>
-                            <td><g:message code="panel.type"/> <dict:typeSelect id="oplPOSGPRSTyp"  medium="GPRS" nip="${nip}" name="oplPOSGPRSTyp" value="${data.oplPOSGPRSTyp}" style="width: 220px" /></td>
+                            <td><g:message code="panel.type"/> <dict:typeSelect id="oplPOSGPRSTyp"  medium="GPRS" name="oplPOSGPRSTyp" value="${data.oplPOSGPRSTyp}" style="width: 220px" /></td>
                             <td style="text-align: right;"><g:message code="panel.gprs"/></td>
                             <td><g:field name="oplPOSGPRSIlosc" type="text" class="integer-number" value="${data.oplPOSGPRSIlosc}" style="width: 50px"/> <g:message code="panel.unit"/></td>
                             <td><g:field type="text" class="integer-number" name="oplPOSGPRSIloscPP" value="${data.oplPOSGPRSIloscPP}" style="width: 50px"/> <g:message code="panel.pp.unit"/></td>
