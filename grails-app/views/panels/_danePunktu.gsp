@@ -207,7 +207,8 @@
             </thead>
             <tbody>
             <tr>
-                <td>typ <dict:typeSelect medium="DIALUP"
+                <td>typ <dict:typeSelect nip="${nip}"
+                                         medium="DIALUP"
                                          id="${panelType}[${id}].possetforselectedpointDialupType"
                                          name="${panelType}[${id}].dialupTyp" from="[]"
                                          valueMessagePrefix="" value="${pointData?.dialupTyp}"
@@ -231,7 +232,8 @@
                                  class="float-number"/> zł.</td>
             </tr>
             <tr>
-                <td>typ <dict:typeSelect medium="VPN"
+                <td>typ <dict:typeSelect nip="${nip}"
+                                         medium="VPN"
                                          id="${panelType}[${id}].possetforselectedpointVpnType"
                                          name="${panelType}[${id}].vpnTyp" from="[]"
                                          valueMessagePrefix="" value="${pointData?.vpnTyp}"
@@ -255,7 +257,8 @@
                                  class="float-number"/> zł.</td>
             </tr>
             <tr>
-                <td>typ <dict:typeSelect medium="SSL"
+                <td>typ <dict:typeSelect nip="${nip}"
+                                         medium="SSL"
                                          id="${panelType}[${id}].possetforselectedpointSslType"
                                          name="${panelType}[${id}].sslTyp" from="[]"
                                          valueMessagePrefix="" value="${pointData?.sslTyp}"
@@ -279,7 +282,8 @@
                                  class="float-number"/> zł.</td>
             </tr>
             <tr>
-                <td>typ <dict:typeSelect medium="WiFi"
+                <td>typ <dict:typeSelect nip="${nip}"
+                                         medium="WiFi"
                                          id="${panelType}[${id}].possetforselectedpointWifiType"
                                          name="${panelType}[${id}].wifiTyp" from="[]"
                                          valueMessagePrefix="" value="${pointData?.wifiTyp}"
@@ -303,7 +307,8 @@
                                  class="float-number"/> zł.</td>
             </tr>
             <tr>
-                <td>typ <dict:typeSelect medium="GPRS"
+                <td>typ <dict:typeSelect nip="${nip}"
+                                         medium="GPRS"
                                          id="${panelType}[${id}].possetforselectedpointGprsType"
                                          name="${panelType}[${id}].gprsTyp" from="[]"
                                          valueMessagePrefix="" value="${pointData?.gprsTyp}"
