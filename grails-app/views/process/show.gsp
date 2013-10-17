@@ -10,14 +10,14 @@
     <g:set var="hasDocuments" value="${processInstance?.documents?.size() > 0}" />
 
     <title>${entityName}</title>
-  %{--  <r:script>
+    <r:script>
         jQuery(document).ready(function(){
-            var isProcessAccepted = ${isProcessAccepted};
-            if(isProcessAccepted){
-                jQuery("input.submit").attr('disabled', 'disabled');
-            }
+            jQuery("#back").click(function(event) {
+                event.preventDefault();
+                history.back();
+            });
         })
-    </r:script>--}%
+    </r:script>
 </head>
 <body>
 
@@ -122,7 +122,7 @@
                 <g:if test="${params.order}"><g:hiddenField name="order" value="${params.order}"/></g:if>
                 <g:if test="${params.max}"><g:hiddenField name="max" value="${params.max}"/></g:if>
                 <g:if test="${params.offset}"><g:hiddenField name="offset" value="${params.offset}"/></g:if>
-                <g:link class="button submit float-left" action="list">Wróć</g:link>
+                <a href="#" id="back" class="button submit float-left">Wróć</a>
 
                 <g:actionSubmit class="button submit" action="reject" value="Odrzuć"
                                 style="float: left;margin-right: 1em;display:block"
