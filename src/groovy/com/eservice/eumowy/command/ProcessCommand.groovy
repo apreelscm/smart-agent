@@ -582,6 +582,11 @@ class ProcessCommand implements Serializable {
                 errors.rejectValue("hasInformacjaHandlowa", "default.atLeastOne.informacjaHandlowa")
                 return false
             }
+
+            if (cmd.informacjaHandlowa == "true" && (!cmd.kontaktEmail || cmd.kontaktEmail == DEFAULT_VALUE)) {
+                errors.rejectValue("hasInformacjaHandlowa", "default.noEmail.informacjaHandlowa")
+                return false
+            }
             return true
         })
 

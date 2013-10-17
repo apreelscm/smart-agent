@@ -135,10 +135,12 @@ class ProcessService {
 				if (point != null) {
 					log.info "USUWAM PUNKT O ID: " + point.id
 					process.removeFromPoints(point)
-					point.delete(flush: true)
+                    process.discard()
+					//point.delete(flush: true)
 				}
 			}
 		}
+      //  process.save(flush:true)
 		cmd.allPoints?.removeAll { it.cbdId == -1 }
 		
         prepareProcessCommand(cmd, calc,)
@@ -163,10 +165,13 @@ class ProcessService {
 				if (point != null) {
 					log.info "USUWAM PUNKT O ID: " + point.id
 					process.removeFromPoints(point)
-					point.delete(flush: true)
+                    process.discard()
+				//	point.delete(flush: true)
 				}
 			}
 		}
+        //process.save(flush:true)
+
 		cmd.allPoints?.removeAll { it.cbdId == -1 }
 		
 		cmd.allPoses?.each { AllPosCommand apc ->
