@@ -45,6 +45,7 @@ function refreshTelepomkaAndTelekodzikPercentValues(){
     }
 }
 
+/* CR - TO UNCOMMENT
 (function ($) {
     $(function() {
 
@@ -74,4 +75,4 @@ function refreshTelepomkaAndTelekodzikPercentValues(){
             select.val('')
         }
     }
-}(jQuery));
+}(jQuery));*/

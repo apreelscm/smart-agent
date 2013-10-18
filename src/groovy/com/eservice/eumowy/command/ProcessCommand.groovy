@@ -594,7 +594,11 @@ class ProcessCommand implements Serializable {
         informacjaHandlowa(nullable: false, blank: false)
 
         hasInformacjaHandlowa(nullable: true, validator: { value, cmd, errors ->
-            if (value && cmd.informacjaHandlowa == DEFAULT_VALUE) {
+            if(!value){
+                return true
+            }
+
+            if (cmd.informacjaHandlowa == DEFAULT_VALUE) {
                 errors.rejectValue("hasInformacjaHandlowa", "default.atLeastOne.informacjaHandlowa")
                 return false
             }

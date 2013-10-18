@@ -42,17 +42,17 @@
                         <span>
                             <g:set var="isCityDisabled" value="${data.isFromCbd('akceptantMiasto')}"/>
 
-
-                            %{--<eumowy:textField id="akceptantMiasto" name="akceptantMiasto" value="${data.akceptantMiasto}" validatable="${data}" readonly="${data.isFromCbd('akceptantMiasto')}" style="width: 280px;" required="true"/>--}%
                             <g:hiddenField name="akceptantMiastoCbd" value="${data.akceptantMiastoCbd}"/>
+                            <eumowy:textField id="akceptantMiasto" name="akceptantMiasto" value="${data.akceptantMiasto}" validatable="${data}" readonly="${data.isFromCbd('akceptantMiasto')}" style="width: 280px;" required="true"/>
 
-                            <g:if test="${isCityDisabled}">
+                            %{--CR - to uncomment--}%
+                         %{--   <g:if test="${isCityDisabled}">
                                 <eumowy:textField name="akceptantMiasto" value="${data.akceptantMiasto}" validatable="${data}" readonly="true" style="width: 280px;" required="true"/>
                             </g:if>
                             <g:else>
                                 <g:select id="akceptantMiasto" name="akceptantMiasto" value="${data.akceptantMiasto}" from=""
                                           style="width: 280px;"  required="required"/>
-                            </g:else>
+                            </g:else>--}%
 
                         </span>
                         <span>
