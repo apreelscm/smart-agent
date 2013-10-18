@@ -40,7 +40,7 @@
                     <span>
                         <span><g:message code="panel.city" /></span>
                         <span>
-                            <g:set var="isCityDisabled" value="${data.isFromCbd('akceptantMiasto')}"/>
+                            <g:set var="isCityDisabled" value="${data.checkIfFromCbd('akceptantMiasto')}"/>
 
                             <g:hiddenField name="akceptantMiastoCbd" value="${data.akceptantMiastoCbd}"/>
                             <eumowy:textField id="akceptantMiasto" name="akceptantMiasto" value="${data.akceptantMiasto}" validatable="${data}" readonly="${data.checkIfFromCbd('akceptantMiasto')}" style="width: 280px;" required="true"/>

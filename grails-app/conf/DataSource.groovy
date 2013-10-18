@@ -12,7 +12,6 @@ hibernate {
     cache.use_second_level_cache = true
     cache.use_query_cache = true
 	cache.provider_class='org.hibernate.cache.EhCacheProvider'
-   /* cache.region.factory_class = 'net.sf.ehcache.hibernate.EhCacheRegionFactory'*/
 }
 
 // environment specific settings
@@ -35,9 +34,9 @@ environments {
             username = "eumowy_app"
             password = "eumowy_app"
             dbCreate = ""
-            //url = "jdbc:oracle:thin:@192.168.9.22:1523:tstcbd"
-           url = "jdbc:oracle:thin:@db-eservice.apreel.lan:1521:cbd01out"
-            //url = "jdbc:oracle:thin:@192.168.9.22:1523:tstcbd"
+           // url = "jdbc:oracle:thin:@192.168.9.22:1523:tstcbd"
+           //url = "jdbc:oracle:thin:@db-eservice.apreel.lan:1521:cbd01out"
+            url = "jdbc:oracle:thin:@192.168.9.22:1523:tstcbd"
             properties {
                 maxActive = -1
                 initialSize = 1
@@ -50,7 +49,6 @@ environments {
                 minEvictableIdleTimeMillis = 1000 * 60 * 5
                 timeBetweenEvictionRunsMillis = 1000 * 60 * 5
             }
-
         }
     }
     test {
