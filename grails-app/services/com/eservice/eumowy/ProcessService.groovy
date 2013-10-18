@@ -620,7 +620,7 @@ class ProcessService {
                     "notes", "hasUmowaCzas", "hasKontaktTel", "hasDoladowania", "hasAkceptantTel",
                     "hasInformacjaHandlowa","liczbaTerminali", "atLeastClosure", "nullableTrueBlankFalse",
                     "defaultPointData", "defaultPosData", "maxLengthClosure", "skipAddressValidationClosure",
-                    "isDoladowania_tp","isDoladowania_tk"]
+                    "isDoladowania_tp","isDoladowania_tk","checkTelekodzik","checkTelepompka"]
                     .contains(key) || value == ProcessCommand.DEFAULT_VALUE){
                 return
             }
@@ -635,6 +635,7 @@ class ProcessService {
                 return;
             }
 
+            //log.info("key: ${key}"); log.info("value: ${value}")
             processDataList.add(new ProcessData(name: "${key}", value:"${value ?: ''}"));
         }
         processDataList
