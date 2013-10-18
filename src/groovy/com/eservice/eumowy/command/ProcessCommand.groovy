@@ -1102,7 +1102,7 @@ class ProcessCommand implements Serializable {
         return (this.metaClass.hasProperty(this, cbdName) && this."$cbdName"?.trim())
     }
 
-    private def boolean checkIfClientFromCbd(){
+    private boolean checkIfClientFromCbd(){
         return this.checkIfFromCbd("akceptantNazwaOficjalna")
     }
 
