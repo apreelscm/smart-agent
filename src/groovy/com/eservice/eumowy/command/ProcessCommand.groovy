@@ -519,7 +519,7 @@ class ProcessCommand implements Serializable {
         akceptantKontaktMiasto(nullable: false, blank: false, shared: "alpha", validator: { value, cmd, errors ->
             maxLengthClosure.call(value, cmd, errors, 33, "akceptantKontaktMiasto", "default.nameTooLong.city")
         })
-        akceptantKontaktKodPocztowy(nullable: false, blank: false)
+        akceptantKontaktKodPocztowy(nullable: false, blank: false, shared: "postalCodeValidator")
         akceptantKontaktPoczta(nullable: false, blank: false, shared: "alpha", validator: { value, cmd, errors ->
             maxLengthClosure.call(value, cmd, errors, 33, "akceptantKontaktPoczta", "default.nameTooLong.postalTown")
         })
@@ -577,7 +577,7 @@ class ProcessCommand implements Serializable {
         wydrukMiasto(nullable: false, blank: false, shared: "alpha", validator: { value, cmd, errors ->
             maxLengthClosure.call(value, cmd, errors, 33, "wydrukMiasto", "default.nameTooLong.postalTown")
         })
-        wydrukKodPocztowy(nullable: false, blank: false)
+        wydrukKodPocztowy(nullable: false, blank: false, shared: "postalCodeValidator")
         wydrukPoczta(nullable: false, blank: false, shared: "alpha", validator: { value, cmd, errors ->
             maxLengthClosure.call(value, cmd, errors, 33, "wydrukPoczta", "default.nameTooLong.postalTown")
         })
@@ -897,7 +897,7 @@ class ProcessCommand implements Serializable {
             skipAddressValidationClosure.call(value, cmd, errors, "akceptantMiasto", "default.cantBeEmpty.akceptantNrDomu")
             maxLengthClosure.call(value, cmd, errors, 33, "akceptantMiasto", "default.nameTooLong.city")
         })
-        akceptantKodPocztowy(nullable:false, validator: {value, cmd, errors ->
+        akceptantKodPocztowy(nullable:false, shared: "postalCodeValidator", validator: {value, cmd, errors ->
             skipAddressValidationClosure.call(value, cmd, errors, "akceptantKodPocztowy", "default.cantBeEmpty.akceptantKodPocztowy")
         })
         akceptantPoczta(nullable: false, shared: "alpha", validator: { value, cmd, errors ->

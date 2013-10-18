@@ -1,10 +1,10 @@
-<%@ page import="com.eservice.eumowy.Activity" %>
+<%@ page import="com.eservice.eumowy.Subscription; com.eservice.eumowy.Activity" %>
 <!DOCTYPE html>
 <html>
 <head>
-    <meta name="layout" content="main">
-    <meta name="viewport" content="width=960, initial-scale=1, maximum-scale=1"/>
-    <title><g:message code="clientSignature.header.title" default="Podpis Klienta"/></title>
+<meta name="layout" content="main">
+<meta name="viewport" content="width=960, initial-scale=1, maximum-scale=1"/>
+<title><g:message code="clientSignature.header.title" default="Podpis Klienta"/></title>
 
 <style>
 
@@ -355,10 +355,10 @@ jQuery(".showSignatureDialog").on('click', function(e) {
 
     <nav>
         <g:form>
-        	<fieldset id="clientSignaturePersons" class="subpanel-fieldset">
-        		<legend><g:message code="clientSignature.signing.people" default="Osoby podpisujące" /></legend>
-        		<ul class="table-list">
-					<li><span><a class="big-link showSignatureDialog" data-firstName="${representative1.name}"
+            <fieldset id="clientSignaturePersons" class="subpanel-fieldset">
+                <legend><g:message code="clientSignature.signing.people" default="Osoby podpisujące" /></legend>
+                <ul class="table-list">
+                    <li><span><a class="big-link showSignatureDialog" data-firstName="${representative1.name}"
                                  data-lastName="${representative1.surname}" data-role="ACCEPTANT1" id="subscribe-REPRESENTATIVE1"
                                  href="#">${representative1.name} ${representative1.surname} - Reprezentant</a></span></li>
 

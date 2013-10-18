@@ -68,5 +68,6 @@ grant execute on GetKosztAmortyzacji to EUMOWY_APP;
 grant execute on split to EUMOWY_APP;
 GRANT EXECUTE ON kalkulator TO eumowy_app;
 GRANT EXECUTE ON rekordkalkulator TO eumowy_app;
+GRANT EXECUTE ON GET_NUMER_SPRZEDAZOWY TO eumowy_app;
 
 
