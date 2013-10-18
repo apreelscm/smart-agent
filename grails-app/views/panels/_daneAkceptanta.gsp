@@ -6,13 +6,13 @@
                 <li><span><g:message code="panel.acceptor.full.name"/></span></li>
                 <li>
                     <span>
-                        <eumowy:textField name="akceptantNazwaOficjalna" value="${data.akceptantNazwaOficjalna}" validatable="${data}" readonly="${data.isFromCbd('akceptantNazwaOficjalna')}" style="width: 400px" required="true" maxlength="88"/>
+                        <eumowy:textField name="akceptantNazwaOficjalna" value="${data.akceptantNazwaOficjalna}" validatable="${data}" readonly="${data.checkIfFromCbd('akceptantNazwaOficjalna')}" style="width: 400px" required="true" maxlength="88"/>
                         <g:hiddenField name="akceptantNazwaOficjalnaCbd" value="${data.akceptantNazwaOficjalnaCbd}"/>
                     </span>
                 </li>
                 <li><span><g:message code="panel.acceptor.network.name"/></span></li>
                 <li>
-                    <span><eumowy:textField name="akceptantNazwaSieciowa" value="${data.akceptantNazwaSieciowa}" validatable="${data}" readonly="${data.isFromCbd('akceptantNazwaSieciowa')}" style="width: 400px;" maxlength="22"/></span>
+                    <span><eumowy:textField name="akceptantNazwaSieciowa" value="${data.akceptantNazwaSieciowa}" validatable="${data}" readonly="${data.checkIfFromCbd('akceptantNazwaSieciowa')}" style="width: 400px;" maxlength="22"/></span>
                     <g:hiddenField name="akceptantNazwaSieciowaCbd" value="${data.akceptantNazwaSieciowaCbd}"/>
                 </li>
                 <li>
@@ -22,7 +22,7 @@
                         %{--required="true" minlength="10" maxlength="10" digits="true"--}%
                         <span style="padding-left: 8px"><g:message code="panel.acceptor.regon"/></span>
                         <span>
-                            <eumowy:textField class="regon" name="akceptantRegon" value="${data.akceptantRegon}" validatable="${data}" readonly="${data.isFromCbd('akceptantRegon')}" required="true" minlength="9" maxlength="9" digits="true"/>
+                            <eumowy:textField class="regon" name="akceptantRegon" value="${data.akceptantRegon}" validatable="${data}" readonly="${data.checkIfFromCbd('akceptantRegon')}" required="true" minlength="9" maxlength="9" digits="true"/>
                             <g:hiddenField name="akceptantRegonCbd" value="${data.akceptantRegonCbd}"/>
                         </span>
                     </span>

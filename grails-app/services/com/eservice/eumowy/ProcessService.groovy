@@ -1,7 +1,9 @@
 package com.eservice.eumowy
 
+import com.eservice.eumowy.annotation.DateField
 import com.eservice.eumowy.command.AllPointsCommand
 import com.eservice.eumowy.command.AllPosCommand
+import com.eservice.eumowy.annotation.Omit
 import com.eservice.eumowy.command.PointCommand
 import com.eservice.eumowy.command.ProcessCommand
 import com.eservice.eumowy.util.DateUtils
@@ -237,14 +239,6 @@ class ProcessService {
 
                 log.info("invokin ${panelFunctionName} on panelService")
                 populateMethod.call(cmd, calc, panelFunctionName)
-//
-//                switch (Environment.getCurrent().getName()) {
-//                    case EumowyCustomEnvironment.MOCK.getName():
-//                        panelMockService."${panelFunctionName}"(cmd)
-//                        break;
-//                    default:
-//                        panelService."${panelFunctionName}"(cmd,calc)
-//                }
             }
         }
 
@@ -254,26 +248,17 @@ class ProcessService {
     /**
      *  create data
      * */
-    def loadProcessData(def process,  def cmd) {
+    def loadProcessData(def process, def cmd) {
         process.processData?.each {ProcessData data ->
-
-            //oplataMasteroPr - zmiana nazwy tego parametru wymusila dodanie go do tej listy.
-            if(data.name in ["dataUmowy","punktyTytulPlatnosci","punktySystemKasowy",
-                    "punktyUta","punktyWybrane", "oplataMasteroPr", "clientFromCbd","isDoladowania_tp","isDoladowania_tk"]){
+            if (!cmd.hasProperty(data.name)){
+                log.error('NoSuchField in ProcessComand for : ' + data.name)
                 return
-            }
-
-            if(!cmd.hasProperty(data.name)){
-                throw new NoSuchFieldException(data.name)
-            }
-
-            if(data.name in ["allPoses", "allPoints", "points", "poses"]){
-                //TODO implement
-            } else if (data.name in ["umowaOznOd", "umowaOznDo", "dataAneksowanejUmowyPos", "dataAneksowanejUmowyPrepaid"]){
+            } else if (hasAnnotation(cmd, data.name, Omit) && getAnnotation(cmd, data.name, Omit).inPopulate()){
+                return
+            } else if (hasAnnotation(cmd, data.name, DateField)){
                 cmd[data.name] = data.value?.trim()? DateUtils.getFormattedDate(DateUtils.parseWithTimezone(data.value), DateUtils.YYYY_MM_DD) : "";
                 return;
-            } else{
-                //println("data.name:"+data.name+ " value:"+data.value)
+            } else {
                 cmd[data.name] = data.value ?: ""
             }
         }
@@ -607,29 +592,33 @@ class ProcessService {
         processDataList.add(new ProcessData([name: 'dataUmowy', value: DateUtils.formatWithTimezone(DateUtils.getCurrentDate())]))
     }
 
+// Then, we will write a method to take an object and an annotation class
+// And we will return all properties of the object that define that annotation
+    private def findAllPropertiesToSave( def obj, def annotClass ) {
+        obj.properties.findAll { prop ->
+            obj.getClass().declaredFields.find {
+                it.name == prop.key && (!it.isAnnotationPresent(annotClass) || it.getAnnotation(annotClass).inSave())
+            }
+        }
+    }
+
+    private def hasAnnotation(def obj, def property, def annotClass){
+        println 'Checking annotation for property: ' + property
+        obj.getClass().declaredFields.find { it -> it.name == property }.isAnnotationPresent(annotClass);
+    }
+
+    private def getAnnotation(def obj, def property, def annotClass){
+        obj.getClass().declaredFields.find { it -> it.name == property }.getAnnotation(annotClass);
+    }
+
     def getDataFromPanels(def cmd) {
         def processDataList = [];
-        cmd.properties.each { key, value ->
-
-            if (["class","process", "cbdService", "errors", "constraints","calc","calculatorService",
-                    "notes", "hasUmowaCzas", "hasKontaktTel", "hasDoladowania", "hasAkceptantTel",
-                    "hasInformacjaHandlowa","liczbaTerminali", "atLeastClosure", "nullableTrueBlankFalse",
-                    "defaultPointData", "defaultPosData", "maxLengthClosure", "skipAddressValidationClosure",
-                    "isDoladowania_tp","isDoladowania_tk"]
-                    .contains(key) || value == ProcessCommand.DEFAULT_VALUE){
-                return
-            }
-
-            if(["allPoses", "allPoints", "points"].contains(key)){
-                //TODO implementacja logiki dla punktow
-                return;
-            }
-
-            if(["umowaOznOd", "umowaOznDo", "dataAneksowanejUmowyPos", "dataAneksowanejUmowyPrepaid", "dataUmowy"].contains(key)){
+        def dataToSave = findAllPropertiesToSave(cmd, Omit);
+        dataToSave.findAll { it.value != ProcessCommand.DEFAULT_VALUE || !["class", "errors"].contains(it.key) }.each { key, value ->
+            if (hasAnnotation(cmd, key, DateField) || "dataUmowy".equals(key)){
                 processDataList.add(new ProcessData(name: "${key}", value:"${DateUtils.formatWithTimezoneFromStr(value)}"));
                 return;
             }
-
             processDataList.add(new ProcessData(name: "${key}", value:"${value ?: ''}"));
         }
         processDataList
@@ -639,7 +628,6 @@ class ProcessService {
         def pointsList = []
 
         cmd.points?.each { PointCommand pc ->
-            boolean isNew = false
             if (pc == null) {
                 log.info "PointCommand is NULL - skipping!"
                 return
@@ -659,7 +647,6 @@ class ProcessService {
 
                 posData = new PosData()
                 posDataDetails = new PosDataDetails()
-                isNew = true
             }
             else {
 				log.info "EXISTING POINT!"
