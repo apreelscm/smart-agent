@@ -43,7 +43,7 @@
                             <g:set var="isCityDisabled" value="${data.isFromCbd('akceptantMiasto')}"/>
 
                             <g:hiddenField name="akceptantMiastoCbd" value="${data.akceptantMiastoCbd}"/>
-                            <eumowy:textField id="akceptantMiasto" name="akceptantMiasto" value="${data.akceptantMiasto}" validatable="${data}" readonly="${data.isFromCbd('akceptantMiasto')}" style="width: 280px;" required="true"/>
+                            <eumowy:textField id="akceptantMiasto" name="akceptantMiasto" value="${data.akceptantMiasto}" validatable="${data}" readonly="${data.checkIfFromCbd('akceptantMiasto')}" style="width: 280px;" required="true"/>
 
                             %{--CR - to uncomment--}%
                          %{--   <g:if test="${isCityDisabled}">
@@ -53,11 +53,10 @@
                                 <g:select id="akceptantMiasto" name="akceptantMiasto" value="${data.akceptantMiasto}" from=""
                                           style="width: 280px;"  required="required"/>
                             </g:else>--}%
-
                         </span>
                         <span>
                             <span>
-                                <g:message code="panel.postal.code" /></span> <span><eumowy:textField id="akceptantKodPocztowy" class="postal-code" name="akceptantKodPocztowy" value="${data.akceptantKodPocztowy}" validatable="${data}" readonly="${data.isFromCbd('akceptantKodPocztowy')}" style="width: 50px" maxlength="5" required="true"/>
+                                <g:message code="panel.postal.code" /></span> <span><eumowy:textField id="akceptantKodPocztowy" class="postal-code" name="akceptantKodPocztowy" value="${data.akceptantKodPocztowy}" validatable="${data}" readonly="${data.checkIfFromCbd('akceptantKodPocztowy')}" style="width: 50px" maxlength="5" required="true"/>
                         <g:hiddenField name="akceptantKodPocztowyCbd" value="${data.akceptantKodPocztowyCbd}"/>
                         </span>
                         </span>

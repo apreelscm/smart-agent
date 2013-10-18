@@ -632,10 +632,11 @@ class ProcessCommand implements Serializable {
                 return false
             }
 
-            if (cmd.informacjaHandlowa == "true" && (!cmd.kontaktEmail || cmd.kontaktEmail == DEFAULT_VALUE)) {
+            /*CR - uncomment when ready*/
+        /*if (cmd.informacjaHandlowa == "true" && (!cmd.kontaktEmail || cmd.kontaktEmail == DEFAULT_VALUE)) {
                 errors.rejectValue("hasInformacjaHandlowa", "default.noEmail.informacjaHandlowa")
                 return false
-            }
+            }*/
             return true
         })
 
