@@ -264,7 +264,6 @@ jQuery(".showSignatureDialog").on('click', function(e) {
 			jQuery("#requestVersionTemplates").on("change", function(e) {
 				if (jQuery(e.target).is(":checked")) {
 					jQuery("#noaccept").prop("disabled", true);
-					
 					jQuery("a.big-link").parent().addClass("disabled");
 				}
 			});
@@ -294,11 +293,9 @@ jQuery(".showSignatureDialog").on('click', function(e) {
 				}
 			});
 
-
 			function checkEmailKontakt(){
-
-                var kontaktEmail = ${processInstance.processData.find { it.name == 'kontaktEmail'}}
-                var hasKontaktEmail = ${kontaktEmail.value}
+                var kontaktEmail = ${processInstance.processData.any { it.name == 'kontaktEmail'}}
+                var hasKontaktEmail = ${processInstance.processData.any { it.name == 'kontaktEmail' && it.value}}
 
                 if(kontaktEmail && !hasKontaktEmail){
                        jQuery("#requestVersionElectronical").attr("disabled","disabled").removeAttr("checked")
