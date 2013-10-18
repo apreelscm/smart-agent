@@ -240,25 +240,17 @@ class ProcessController {
     def showPdfByDocumentId(String id){
         log.info( "pdf document = " + id);
         def documentFile = DocumentFile.get(id);
+		def fileName = "${id}_${documentFile.version}.pdf"
+        def fileDir = appParametersService.getPdfPreviewPath(fileName)
+        def fileUri = appParametersService.getPdfPreviewUri(fileName)
+        def tmpRes = new File(fileDir)
 
-        def dir = appParametersService.getPdfPreviewPath()
-        def fileName = "${id}_${documentFile.version}.pdf"
-
-        def tmpRes = new File(grailsApplication.mainContext.getServletContext().getRealPath(dir+File.separator+fileName))
-
-        if(!tmpRes.exists()){
-            def tmpPdfFile = tmpRes
-            tmpPdfFile.withOutputStream { s ->
-                s << documentFile.content.content
-            }
+        def tmpPdfFile = tmpRes
+        tmpPdfFile.withOutputStream { s ->
+            s << documentFile.content.content
         }
 
-        //TODO zmienic
-        //while(!tmpRes.exists()){ System.sleep(2000) }
-		System.sleep(10000)
-
-        //render(template: '../forms/pdf/embedDocument', model:  [pdfDocument: resource(dir: dir ,file: fileName)]);
-		render(template: '../forms/pdf/embedDocument', model:  [pdfDocument: "/eumowy/tmp/"+fileName]); // FIXME wykorzystac istniejace parametry
+		render(template: '../forms/pdf/embedDocument', model:  [pdfDocument: fileUri]);
     }
 
     def downloadDoc(){

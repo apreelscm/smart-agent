@@ -28,7 +28,7 @@ class PdfServiceTests {
 	static URL url = new PdfServiceTests().getClass().getResource("PdfServiceTests.class");
 	static String fileTemplatePath = "otherResources" +File.separator+"pdf_templates" + File.separator;
 	static String fileTemplateOutPath = "target" +File.separator+ "pdf_out" + File.separator;
-	static String fontsPath = "web-app" +File.separator+ "fonts" + File.separator;
+	static String fontsPath = fileTemplatePath +File.separator+ "fonts" + File.separator;
 
 	static Map<String, String[]> data;
 
@@ -521,9 +521,9 @@ class PdfServiceTests {
 	
 	void testAPUP2DCCToImage() {
 		String outFile =  "APUPZ2DCC1.00013-02-15 - Aneks do Umowy o przyjm po 2013 r (wprow DCC)_out2.pdf"
-		data.put("podpis", [new File(getTemplatePath()+"signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
+		data.put("podpis", [new File(getTemplatePath()+File.separator+"subscriptions"+File.separator+"signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
 		process("APUPZ2DCC1.00013-02-15 - Aneks do Umowy o przyjm po 2013 r (wprow DCC).pdf", outFile, data);
-		processToImage(outFile, 1)
+		processToImage(outFile, 2)
 	}
 
 	void testAPUPZACB() {
@@ -797,10 +797,10 @@ class PdfServiceTests {
 	private HashMap<String, String[]> insertSignatures(int pageNo, int x, int y, int scaleX, int scaleY){
 		HashMap<String, String[]> result = new HashMap<String, String[]>();
 		//	result.put("reprezentant1_podpis", [new File(getTemplatePath()+"signature1.jpg").toURI().toURL(), "", "signature", pageNo, x, y, scaleX, scaleY] as String[]);
-		result.put("reprezentant1_podpis", [new File(getTemplatePath()+"signature1.jpg").toURI().toURL(), "", "signature", pageNo, x, y, scaleX, scaleY] as String[]);
-		result.put("reprezentant2_podpis", [new File(getTemplatePath()+"signature2.jpg").toURI().toURL(), "", "signature", pageNo, x+120, y, scaleX, scaleY] as String[]);
-		result.put("zarzad1_podpis", [new File(getTemplatePath()+"signature1.jpg").toURI().toURL(), "", "signature", pageNo, x+250, y, BOARD_MEMBER_1_X, BOARD_MEMBER_1_Y] as String[]);
-		result.put("zarzad2_podpis", [new File(getTemplatePath()+"signature3.jpg").toURI().toURL(), "", "signature", pageNo, x+380, y, BOARD_MEMBER_2_X, BOARD_MEMBER_2_Y] as String[]);
+		result.put("reprezentant1_podpis", [new File(getTemplatePath()+File.separator+"subscriptions"+File.separator+"signature1.jpg").toURI().toURL(), "", "signature", pageNo, x, y, scaleX, scaleY] as String[]);
+		result.put("reprezentant2_podpis", [new File(getTemplatePath()+File.separator+"subscriptions"+File.separator+"signature2.jpg").toURI().toURL(), "", "signature", pageNo, x+120, y, scaleX, scaleY] as String[]);
+		result.put("zarzad1_podpis", [new File(getTemplatePath()+File.separator+"subscriptions"+File.separator+"signature1.jpg").toURI().toURL(), "", "signature", pageNo, x+250, y, BOARD_MEMBER_1_X, BOARD_MEMBER_1_Y] as String[]);
+		result.put("zarzad2_podpis", [new File(getTemplatePath()+File.separator+"subscriptions"+File.separator+"signature3.jpg").toURI().toURL(), "", "signature", pageNo, x+380, y, BOARD_MEMBER_2_X, BOARD_MEMBER_2_Y] as String[]);
 		return result;
 	}
 

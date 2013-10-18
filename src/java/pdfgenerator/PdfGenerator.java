@@ -133,7 +133,7 @@ public class PdfGenerator {
                             break;
                         case ARIAL:
                         case ARIALBOLD:
-                            bf = BaseFont.createFont(fPath+fontType.field, BaseFont.CP1250, BaseFont.EMBEDDED);
+                            bf = BaseFont.createFont(fPath+File.separator+fontType.field, BaseFont.CP1250, BaseFont.EMBEDDED);
                             break;
                         case TIMES_NEW_ROMAN_PSMT:
                             break;

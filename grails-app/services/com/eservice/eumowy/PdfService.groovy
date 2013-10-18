@@ -48,7 +48,7 @@ class PdfService {
 		PDFImageWriter imageWriter = new PDFImageWriter()
 		
 		boolean success = imageWriter.writeImage(document, "png", "",
-			pageNumber, pageNumber, appParametersService.getPdfImagePath()+documentId+"-"+processId+"-", BufferedImage.TYPE_INT_RGB, resolution)
+			pageNumber, pageNumber, appParametersService.getPdfImagePath(documentId+"-"+processId+"-"), BufferedImage.TYPE_INT_RGB, resolution)
 	
 		if (!success) {
 			log.error "No writer found for PNG image format"
@@ -56,7 +56,7 @@ class PdfService {
 		
 		document.close()
 		
-		return appParametersService.getPdfImageUri()+documentId+"-"+processId+"-"+pageNumber+".png"
+		return appParametersService.getPdfImageUri(documentId+"-"+processId+"-"+pageNumber+".png")
 	}
 
     //METODA PRAWDOPODOBNIE NIE UZYWANA
@@ -67,7 +67,7 @@ class PdfService {
 
 		PDFImageWriter imageWriter = new PDFImageWriter()
 		boolean success = imageWriter.writeImage(document, "png", "",
-				pageNumber, pageNumber, appParametersService.getPdfImagePath()+pdfName+"-"+processId+"-", BufferedImage.TYPE_INT_RGB, resolution)
+				pageNumber, pageNumber, appParametersService.getPdfImagePath(pdfName+"-"+processId+"-"), BufferedImage.TYPE_INT_RGB, resolution)
 		
 		if (!success) {
 			log.error "No writer found for PNG image format"
@@ -75,7 +75,7 @@ class PdfService {
 		
 		document.close()
 		
-		return appParametersService.getPdfImageUri()+pdfName+"-"+processId+"-"+pageNumber+".png"
+		return appParametersService.getPdfImageUri(pdfName+"-"+processId+"-"+pageNumber+".png")
 	}
 	
 	def getDocumentAndPageCountFromGlobalPageNumber(List<DocumentFile> documents, Integer pageNumber) {
@@ -120,7 +120,7 @@ class PdfService {
             dataMap.putAll(panelData)
         }
 
-        String pdfTemplatePath = appParametersService.getPdfTemplatePath() + sig.templatePath
+        String pdfTemplatePath = appParametersService.getPdfTemplatePath(sig.templatePath)
 
         return PdfGenerator.generatePdfContentFromURI(pdfTemplatePath, dataMap, fontType, appParametersService.getFontUri())
     }
@@ -143,14 +143,14 @@ class PdfService {
         Signature sig = Signature.get(sigId);
         sig.subscriptionDefinitions.findAll { (it.role == Subscription.PersonRole.ZARZAD1 || it.role == Subscription.PersonRole.ZARZAD2) && it.subscriptionPageNumber != null && it.subscriptionPageNumber > -1}
             .eachWithIndex{ SubscriptionDefinition it, int i ->
-                dataMap.put(it.role.name() + i, [new File(subscriptionsPath+subscriptionsBlackNamePrefix+it.fileName).toURI().toURL(), "", "signature", it.subscriptionPageNumber.toString(), (it.subscriptionX).toString(), it.subscriptionY.toString(), it.scaleX, it.scaleY] as String[])
+                dataMap.put(it.role.name() + i, [new File(subscriptionsPath+File.separator+subscriptionsBlackNamePrefix+it.fileName).toURI().toURL(), "", "signature", it.subscriptionPageNumber.toString(), (it.subscriptionX).toString(), it.subscriptionY.toString(), it.scaleX, it.scaleY] as String[])
         }
 
         if (panelData != null) {
             dataMap.putAll(panelData)
         }
 
-        String pdfTemplatePath = appParametersService.getPdfTemplatePath() + sig.templatePath
+        String pdfTemplatePath = appParametersService.getPdfTemplatePath(sig.templatePath)
 
         return PdfGenerator.generatePdfContentFromURI(pdfTemplatePath, dataMap, fontType, appParametersService.getFontUri())
     }
@@ -159,7 +159,7 @@ class PdfService {
         byte[] updatedContent = documentContent
         Map<String,Object[]> subscriptionsMap = new HashMap<String, Object[]>()
 
-        Signature sig = Signature.get(sigId);
+        Signature sig = Signature.get(sigId)
 
         subscriptionsMap.putAll(attachSignatures(sig, subscriptions, Subscription.PersonRole.ACCEPTANT1))
         subscriptionsMap.putAll(attachSignatures(sig, subscriptions, Subscription.PersonRole.ACCEPTANT2))
