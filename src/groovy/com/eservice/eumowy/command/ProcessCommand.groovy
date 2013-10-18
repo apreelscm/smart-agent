@@ -1,5 +1,7 @@
 package com.eservice.eumowy.command
 import com.eservice.eumowy.Process
+import com.eservice.eumowy.annotation.DateField
+import com.eservice.eumowy.annotation.Omit
 import grails.validation.Validateable
 import org.apache.commons.collections.FactoryUtils
 import org.apache.commons.collections.ListUtils
@@ -12,14 +14,18 @@ import org.apache.commons.collections.ListUtils
 @Validateable
 class ProcessCommand implements Serializable {
 
+    @Omit()
     transient def calculatorService
+    @Omit
     transient def calc
 
     //UWAGA - kazde nowe pole, ktore ma byc pomijane w zapisie do bazy trzeba dodac tez w
     //ProcessService.getDataFromPanels(). Gdy sie tego nie zrobi zapisuja sie dane a pozniej leci
     // NoSuchFieldException z ProcessService.loadProcessData() przy probie usuniecia zbednej metody
+    @Omit
     static def nullableTrueBlankFalse = {/** puste ale potrzebne */}
 
+    @Omit
     static def atLeastClosure = { value, cmd, errors, property, calcProperty ->
         def calcValue = cmd.calculatorService.getCalcProperty(cmd.calc, calcProperty)
 
@@ -39,6 +45,7 @@ class ProcessCommand implements Serializable {
         return true
     }
 
+    @Omit
     static def maxLengthClosure = { value, cmd, errors, maxValue, propertyName, message ->
         if (value.length() > maxValue) {
             errors.rejectValue(propertyName, message)
@@ -47,8 +54,9 @@ class ProcessCommand implements Serializable {
         return true
     }
 
+    @Omit
     static def skipAddressValidationClosure = { value, cmd, errors, propertyName, message ->
-        if(value.isEmpty() && cmd.isClientFromCbd()){
+        if(value.isEmpty() && cmd.checkIfClientFromCbd()){
             return true
         }
 
@@ -76,6 +84,7 @@ class ProcessCommand implements Serializable {
         return true
     }
 
+    @Omit
     static def DEFAULT_VALUE = "~"
 
 //    adresDoKorespondencjizAkecptantem - FINISH
@@ -89,14 +98,18 @@ class ProcessCommand implements Serializable {
     String akceptantKontaktPoczta = DEFAULT_VALUE
 
 //    aneksDoUmowyNajmuZestawuPos - FINISH
+    @DateField
     String dataAneksowanejUmowyPos = DEFAULT_VALUE
 
 //    aneksDoUmowyPrepaid - FINISH
+    @DateField
     String dataAneksowanejUmowyPrepaid = DEFAULT_VALUE
 
 //    czasObowiazywaniaUmowy - FINISH
     String umowaCzas = DEFAULT_VALUE
+    @DateField
     String umowaOznOd = DEFAULT_VALUE
+    @DateField
     String umowaOznDo = DEFAULT_VALUE
 
 //    daneAkceptanta
@@ -127,6 +140,7 @@ class ProcessCommand implements Serializable {
 
 //    danePunktu
 
+    //TODO - co to jest???
     boolean czyDcc
 
     String oplataVISA = DEFAULT_VALUE
@@ -153,16 +167,15 @@ class ProcessCommand implements Serializable {
     String oplataZaInstalacjeGPRS = DEFAULT_VALUE
     String oplataZaUruchomienieWalutyObcej = DEFAULT_VALUE
 
-//    dodatkoweUslugi2 - FINISH (ale trzeba jeszcze daty startu pobrac)
+//    dodatkoweUslugi2
     String wydrukGrafikiCena = DEFAULT_VALUE
     String dzialaniaMatematyczneCena = DEFAULT_VALUE
-    String tytulPlatnosciCena = DEFAULT_VALUE
     String pierwszaSesjaCena = DEFAULT_VALUE
 
 //    dodatkoweUslugiMud - FINISH
     String mudCena = DEFAULT_VALUE
 
-//    dodatkoweUslugiUTAIntegracja - FINISH (ale trzeba jeszcze daty startu pobrac)
+//    dodatkoweUslugiUTAIntegracja
     String weryfikacjaPINCena = DEFAULT_VALUE
     String systemKasowyCena = DEFAULT_VALUE
 
@@ -172,7 +185,7 @@ class ProcessCommand implements Serializable {
     String srednia_sprzedaz_doladowan = DEFAULT_VALUE
     String srednia_sprzedaz_doladowan_slownie = DEFAULT_VALUE
 
-//    ifplus - FINISH (ale zmiany w dokumentach)
+//    ifplus - FINISH
     String ifOplataVISA = DEFAULT_VALUE
     String ifOplataMasterCard = DEFAULT_VALUE
     String ifOplataDinersClub = DEFAULT_VALUE
@@ -186,7 +199,7 @@ class ProcessCommand implements Serializable {
     String dzialalnoscDokumentInny = DEFAULT_VALUE
 
 //    okresLojalnosciowy
-    String okresLojalnosciowy = DEFAULT_VALUE //  TODO - czy to jest dobrze????
+    String okresLojalnosciowy = DEFAULT_VALUE
 
 //    oplatyDCC
     String oplataZaPlatnoscWInnejWalucie = DEFAULT_VALUE
@@ -327,13 +340,10 @@ class ProcessCommand implements Serializable {
 
 //    promocyjneObnizenieOplatyZaZestawPos
 //    scoring
-//    TODO - co wpisac w scoringNrUmowy????
 
     String scoringMcc = DEFAULT_VALUE
     String scoringDzialalnosc = DEFAULT_VALUE
     String scoringSzczegolyDzialalnosci = DEFAULT_VALUE
-//    TODO - co to sa za pola: szczegolowyRodzajDzialalnosciWPraktyce ??
-
     String scoringWlasnosc = DEFAULT_VALUE
     String scoringDzialalnoscCzas = DEFAULT_VALUE
     String scoringKoncesja = DEFAULT_VALUE
@@ -460,34 +470,54 @@ class ProcessCommand implements Serializable {
     String nip = DEFAULT_VALUE
 
 //    uwagi
+    @Omit
     String notes = DEFAULT_VALUE
 
-
+    @Omit
     transient Process process
 
+    @Omit(inPopulate = true)
     List<PointCommand> points = ListUtils.lazyList([], FactoryUtils.instantiateFactory(PointCommand))
+    @Omit(inPopulate = true)
     List<PointCommand> poses = ListUtils.lazyList([], FactoryUtils.instantiateFactory(PointCommand))
+    @Omit(inPopulate = true)
     List<AllPointsCommand> allPoints = ListUtils.lazyList([], FactoryUtils.instantiateFactory(AllPointsCommand))
+    @Omit(inPopulate = true)
     List<AllPosCommand> allPoses = ListUtils.lazyList([], FactoryUtils.instantiateFactory(AllPosCommand))
 
+    @Omit
     String hasObslugaTyp
+    @Omit
     String hasUmowaCzas
+    @Omit
     String hasScoringAkceptacja
+    @Omit
     String hasKontaktTel
+    @Omit
     String hasDoladowania
+    @Omit
     String hasAkceptantTel
+    @Omit
     String hasInformacjaHandlowa
+
+    @Omit
     String liczbaTerminali
 
+    @Omit(inPopulate = true)
     Boolean isDoladowania_tp
+
+    @Omit(inPopulate = true)
     Boolean isDoladowania_tk
 
 	Boolean korespondencjaJakDlaMerchanta
-	
+
+    @Omit
     def defaultPointData
+    @Omit
 	def defaultPosData
 	def liczbaPosZCbd
 
+    @Omit
     static constraints = {
 
         oplataZaDzienneZestawienieTransakcji(nullable: false, blank: false, shared: "number")
@@ -507,7 +537,6 @@ class ProcessCommand implements Serializable {
 ////        dzialaniaMatematyczneCena(nullable:true, blank:false, shared: "number")
 ////
 
-        tytulPlatnosciCena(nullable: false, blank: true, shared: "number")
         pierwszaSesjaCena(nullable: false, blank: true, shared: "number")
 
         akceptantKontaktUlicaTytul(nullable: false, blank: false)
@@ -728,6 +757,7 @@ class ProcessCommand implements Serializable {
 
         dinersClubSt(nullable: true, blank: true, shared: "number")
         ikoSt(nullable: true, blank: true, shared: "number")
+
 
         visaEUKKOPr(nullable: false, blank: false, shared: "percentage")
         visaEUKKOPr(nullable: false, blank: false, shared: "percentage")
@@ -1066,13 +1096,13 @@ class ProcessCommand implements Serializable {
 
     }
 
-    def isFromCbd(def property) {
+    def checkIfFromCbd(def property) {
         def cbdName = property + "Cbd"
         return (this.metaClass.hasProperty(this, cbdName) && this."$cbdName"?.trim())
     }
 
-    private boolean isClientFromCbd(){
-        return this.isFromCbd("akceptantNazwaOficjalna")
+    private def boolean checkIfClientFromCbd(){
+        return this.checkIfFromCbd("akceptantNazwaOficjalna")
     }
 
 }
