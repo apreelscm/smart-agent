@@ -1008,7 +1008,7 @@ class ActivityController {
 
             }
             on("success"){
-                flash.calcInfoMessage = message(code:"calc.todo.info", default:"Pomijanie kalkulatora");
+                flash.calcInfoMessage = message(code:"calc.omitting.info", default:"Pomijanie kalkulatora");
                 flow.isContinueEnabled = true
                 flow.getCalculatorSucces = true
             }.to "chooseCalc"
@@ -1109,7 +1109,7 @@ class ActivityController {
                 flow.client = lastProcess.client;
             }
             on("success"){
-                flash.calcInfoMessage = message(code:"calc.todo.info", default:"Pomijanie kalkulatora");
+                flash.calcInfoMessage = message(code:"calc.omitting.info", default:"Pomijanie kalkulatora");
                 flow.isContinueEnabled = true
                 flow.getCalculatorSucces = true
             }.to "chooseCalc"
