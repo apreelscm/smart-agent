@@ -16,7 +16,7 @@ class Process implements Serializable {
 
     ProcessStatus status;
 
-    Integer phNumber
+    String phNumber
     String phFirstName
     String phSurname
     String phEmail
@@ -39,7 +39,7 @@ class Process implements Serializable {
     }
 
     String getStringPhNumber(){
-        return phNumber ? Integer.toString(this.phNumber) : ''
+        return phNumber
     }
 
     static transients = ['stringId']

@@ -36,7 +36,7 @@ class BootStrap {
 
         //przykladowe procesy
         Process.get(1) ?: new Process(id: 1, phFirstName: "Jerzy",
-                saleSection: 'segment1', phNumber: 12345, observed: true,
+                saleSection: 'segment1', phNumber: "12345", observed: true,
                 phSurname: 'Kowalski', calcNumber: '44444' , status: Process.ProcessStatus.ACCEPTED,
                 client: Client.findByName("clientName1"))
                 .addToDocuments(new DocumentFile(name: "pedef.pdf", pagesCount: 1, content: new DocumentContent(content:[95, 96] as byte[]))).save(flush: true);

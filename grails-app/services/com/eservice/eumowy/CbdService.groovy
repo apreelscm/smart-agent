@@ -33,6 +33,7 @@ class CbdService {
 	private static final def GET_ANEKS_DO_UMOWY_PREPAID = "getAneksDoUmowyPrepaid"
 	private static final def GET_CBD_POINT_BY_ID = "getCbdPointById"
 	private static final def SPRAWDZ_DZIALANIE = "sprawdzDzialanie"
+    private static final def GET_NUMER_SPRZEDAZOWY = "getNumerSprzedazowy"
 
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
     def findCalculatorByNip(def clientNip) {
@@ -194,6 +195,13 @@ class CbdService {
 		}
 		return result
 	}
+
+    @Cacheable(value="getNumerSprzedazowy")
+    @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
+    def getNumerSprzedazowy(def auwId) {
+        def rowResult = cbdDAO.selectOne(GET_NUMER_SPRZEDAZOWY, [auwId: auwId])
+        return rowResult.get("numer")
+    }
 
 
     /**
