@@ -68,6 +68,7 @@ class ProcessCommand implements Serializable {
         return true
     }
 
+    @Omit
     static def checkTelekodzik = { value, cmd, errors, propertyName ->
         if(cmd.doladowania_tk && value?.isEmpty() ){
             errors.rejectValue(propertyName, "default.validation.required.error", "Pole wymagane")
@@ -76,6 +77,7 @@ class ProcessCommand implements Serializable {
         return true
     }
 
+    @Omit
     static def checkTelepompka = { value, cmd, errors, propertyName ->
         if(cmd.doladowania_tp && value?.isEmpty() ){
             errors.rejectValue(propertyName, "default.validation.required.error", "Pole wymagane")
