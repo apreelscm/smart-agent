@@ -297,9 +297,11 @@ jQuery(".showSignatureDialog").on('click', function(e) {
 
 
 			function checkEmailKontakt(){
-			    var hasKontaktEmail = ${processInstance.processData.any { it.name == 'kontaktEmail' && it.value }}
 
-                if(!hasKontaktEmail){
+                var kontaktEmail = ${processInstance.processData.find { it.name == 'kontaktEmail'}}
+                var hasKontaktEmail = ${kontaktEmail.value}
+
+                if(kontaktEmail && !hasKontaktEmail){
                        jQuery("#requestVersionElectronical").attr("disabled","disabled").removeAttr("checked")
                        jQuery("#requestVersionPaper").attr("checked","checked")
 

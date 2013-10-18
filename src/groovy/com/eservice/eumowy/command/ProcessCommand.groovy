@@ -60,6 +60,22 @@ class ProcessCommand implements Serializable {
         return true
     }
 
+    static def checkTelekodzik = { value, cmd, errors, propertyName ->
+        if(cmd.doladowania_tk && value?.isEmpty() ){
+            errors.rejectValue(propertyName, "default.validation.required.error", "Pole wymagane")
+            return false
+        }
+        return true
+    }
+
+    static def checkTelepompka = { value, cmd, errors, propertyName ->
+        if(cmd.doladowania_tp && value?.isEmpty() ){
+            errors.rejectValue(propertyName, "default.validation.required.error", "Pole wymagane")
+            return false
+        }
+        return true
+    }
+
     static def DEFAULT_VALUE = "~"
 
 //    adresDoKorespondencjizAkecptantem - FINISH
@@ -709,7 +725,6 @@ class ProcessCommand implements Serializable {
         dinersClubSt(nullable: true, blank: true, shared: "number")
         ikoSt(nullable: true, blank: true, shared: "number")
 
-
         visaEUKKOPr(nullable: false, blank: false, shared: "percentage")
         visaEUKKOPr(nullable: false, blank: false, shared: "percentage")
         visaEUKDPr(nullable: false, blank: false, shared: "percentage")
@@ -788,22 +803,55 @@ class ProcessCommand implements Serializable {
         mastercardPKOBPM2St(nullable: false, blank: false, shared: "number")
         mastercardPKOBPM3St(nullable: false, blank: false, shared: "number")
 
-        pp_orange_tk(nullable: false, blank: false, shared: "percentage")
-        pp_orange_tp(nullable: false, blank: false, shared: "percentage")
-        pp_plus_tk(nullable: false, blank: false, shared: "percentage")
-        pp_plus_tp(nullable: false, blank: false, shared: "percentage")
-        pp_tmobile_tk(nullable: false, blank: false, shared: "percentage")
-        pp_tmobile_tp(nullable: false, blank: false, shared: "percentage")
-        pp_heyah_tk(nullable: false, blank: false, shared: "percentage")
-        pp_heyah_tp(nullable: false, blank: false, shared: "percentage")
-        pp_play_tk(nullable: false, blank: false, shared: "percentage")
-        pp_play_tp(nullable: false, blank: false, shared: "percentage")
-        pp_telegrosik_tk(nullable: false, blank: false, shared: "percentage")
-        pp_virginmobile_tk(nullable: false, blank: false, shared: "percentage")
-        pp_lycamobile_tk(nullable: false, blank: false, shared: "percentage")
-        pp_gtmobile_tk(nullable: false, blank: false, shared: "percentage")
-        pp_vectonemobile_tk(nullable: false, blank: false, shared: "percentage")
-        pp_delightmobile_tk(nullable: false, blank: false, shared: "percentage")
+
+        pp_orange_tk(nullable: true, blank: true, shared: "percentage", validator: { value, cmd, errors ->
+            cmd.checkTelekodzik(value, cmd, errors, "pp_orange_tk")
+        })
+        pp_orange_tp(nullable: true, blank: true, shared: "percentage" , validator: { value, cmd, errors ->
+            cmd.checkTelepompka(value, cmd, errors, "pp_orange_tp")
+        })
+        pp_plus_tk(nullable: true, blank: true, shared: "percentage", validator: { value, cmd, errors ->
+            cmd.checkTelekodzik(value, cmd, errors, "pp_plus_tk")
+        })
+        pp_plus_tp(nullable: true, blank: true, shared: "percentage" , validator: { value, cmd, errors ->
+            cmd.checkTelepompka(value, cmd, errors, "pp_plus_tp")
+        })
+        pp_tmobile_tk(nullable: true, blank: true, shared: "percentage", validator: { value, cmd, errors ->
+            cmd.checkTelekodzik(value, cmd, errors, "pp_tmobile_tk")
+        })
+        pp_tmobile_tp(nullable: true, blank: true, shared: "percentage" , validator: { value, cmd, errors ->
+            cmd.checkTelepompka(value, cmd, errors, "pp_tmobile_tp")
+        })
+        pp_heyah_tk(nullable: true, blank: true, shared: "percentage", validator: { value, cmd, errors ->
+            cmd.checkTelekodzik(value, cmd, errors, "pp_heyah_tk")
+        })
+        pp_heyah_tp(nullable: true, blank: true, shared: "percentage" , validator: { value, cmd, errors ->
+            cmd.checkTelepompka(value, cmd, errors, "pp_heyah_tp")
+        })
+        pp_play_tk(nullable: true, blank: true, shared: "percentage", validator: { value, cmd, errors ->
+            cmd.checkTelekodzik(value, cmd, errors, "pp_play_tk")
+        })
+        pp_play_tp(nullable: true, blank: true, shared: "percentage" , validator: { value, cmd, errors ->
+            cmd.checkTelepompka(value, cmd, errors, "pp_play_tp")
+        })
+        pp_telegrosik_tk(nullable: true, blank: true, shared: "percentage", validator: { value, cmd, errors ->
+            cmd.checkTelekodzik(value, cmd, errors, "pp_telegrosik_tk")
+        })
+        pp_virginmobile_tk(nullable: true, blank: true, shared: "percentage", validator: { value, cmd, errors ->
+            cmd.checkTelekodzik(value, cmd, errors, "pp_virginmobile_tk")
+        })
+        pp_lycamobile_tk(nullable: true, blank: true, shared: "percentage", validator: { value, cmd, errors ->
+            cmd.checkTelekodzik(value, cmd, errors, "pp_lycamobile_tk")
+        })
+        pp_gtmobile_tk(nullable: true, blank: true, shared: "percentage", validator: { value, cmd, errors ->
+            cmd.checkTelekodzik(value, cmd, errors, "pp_gtmobile_tk")
+        })
+        pp_vectonemobile_tk(nullable: true, blank: true, shared: "percentage", validator: { value, cmd, errors ->
+            cmd.checkTelekodzik(value, cmd, errors, "pp_vectonemobile_tk")
+        })
+        pp_delightmobile_tk(nullable: true, blank: true, shared: "percentage", validator: { value, cmd, errors ->
+            cmd.checkTelekodzik(value, cmd, errors, "pp_delightmobile_tk")
+        })
 
         oplataZaOprogramowanieDoDoladowan(nullable: false, blank: false, shared: "number")
         scoringMcc(nullable: false, blank: false, matches: "~|[0-9]{4}")
