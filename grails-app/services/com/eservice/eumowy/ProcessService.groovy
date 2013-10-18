@@ -692,8 +692,13 @@ class ProcessService {
                 }
 
                 if (PosData.metaClass.respondsTo(PosData, "set" + key.capitalize())  && key != 'id') {
-                    // FIXME krytyczne obejscie, nigdy nie powinno byc null
-                    posData?."set${key.capitalize()}"(value)
+                    // FIXME krytyczne obejscie, nigdy nie powinno byc null. Dodalem logi gdy sytuacja z NULL wystepuje, sprawdzimy czy nadal sa takie przypadki - mkniec
+                    if (posData != null) {
+						posData?."set${key.capitalize()}"(value)
+                    }
+					else {
+						log.info "FIXMEII - PosData = NULL"
+					}
                 }
 
                 if (PosDataDetails.metaClass.respondsTo(PosDataDetails, "set" + key.capitalize()) && key != 'id') {
@@ -822,7 +827,6 @@ class ProcessService {
         return pointsList
     }
 
-    //TODO - metod nieuzywana????
     def getPointCommandsToPosDataList(def cmd) {
         def pointsList = []
         cmd.poses?.each { PointCommand pc ->
@@ -921,8 +925,13 @@ class ProcessService {
 				}
 
 				if (PosData.metaClass.respondsTo(PosData, "set" + key.capitalize())) {
-					// FIXME krytyczne obejscie, nigdy nie powinno byc null
-					posData?."set${key.capitalize()}"(value)
+					// FIXME krytyczne obejscie, nigdy nie powinno byc null. Dodalem logi gdy sytuacja z NULL wystepuje, sprawdzimy czy nadal sa takie przypadki - mkniec
+					if (posData != null) {
+						posData?."set${key.capitalize()}"(value)
+					}
+					else {
+						log.info "FIXME - PosData = NULL"
+					}
 				}
 
 				if (PosDataDetails.metaClass.respondsTo(PosDataDetails, "set" + key.capitalize()) && key != 'id') {

@@ -53,8 +53,7 @@ public abstract class AbstractPdfMapper {
                     data.put(fieldName+(i+1), [split[i]] as String[])
                 }
             } else {
-                //TODO - wyciagnac z patterna warunek i go wypisac.
-                LOG.error('[Wartosc - ' + value + '] nie spelnia zalozonego warunku. value = ' + value )
+                LOG.error('[Wartosc - ' + value + '] nie spelnia zalozonego warunku ('+pattern.pattern()+'). value = ' + value )
             }
         }
     }
