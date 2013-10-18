@@ -272,7 +272,6 @@ jQuery(".showSignatureDialog").on('click', function(e) {
 			jQuery("#requestVersionPaper").on("change", function(e) {
 			    if (jQuery(e.target).is(":checked")) {
 					jQuery("#noaccept").prop("disabled", false);
-
                     jQuery("a.big-link").parent().removeClass("disabled");
 				}
 			});
