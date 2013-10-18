@@ -1140,3 +1140,22 @@ begin
  end if;
  return wynik;
 end;
+
+-- GET_NUMER_SPRZEDAZOWY
+create or replace
+FUNCTION                           GET_NUMER_SPRZEDAZOWY (auwId number)
+return varchar2
+is
+
+wynik varchar2(255);
+begin
+
+select max(prz_numer_sprzedazowy)
+into wynik
+from cbd_adm.adm_uzytkownicy_web w
+join cbd_adm.cbt_przedstawicieleh pz on w.auw_Prz_id=pz.prz_id
+where w.auw_id=auwId;
+
+return wynik;
+
+end;

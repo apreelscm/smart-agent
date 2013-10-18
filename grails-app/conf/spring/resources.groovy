@@ -83,6 +83,7 @@ beans = {
         preAuthenticationChecks = ref('preAuthenticationChecks')
         postAuthenticationChecks = ref('postAuthenticationChecks')
         userService = ref('userService')
+        cbdService = ref('cbdService')
     }
 
     cbdDAO(CbdDAO){

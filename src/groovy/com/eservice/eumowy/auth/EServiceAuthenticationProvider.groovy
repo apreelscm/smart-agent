@@ -1,5 +1,6 @@
 package com.eservice.eumowy.auth
 
+import com.eservice.eumowy.CbdService
 import com.eservice.eumowy.util.EumowyCustomEnvironment
 import grails.util.Environment
 import org.apache.commons.logging.LogFactory
@@ -24,6 +25,7 @@ class EServiceAuthenticationProvider implements AuthenticationProvider {
     UserDetailsChecker preAuthenticationChecks
     UserDetailsChecker postAuthenticationChecks
     def userService
+    def cbdService
 
     Authentication authenticate(Authentication auth) throws AuthenticationException {
         UsernamePasswordAuthenticationToken authentication = auth
@@ -84,7 +86,8 @@ class EServiceAuthenticationProvider implements AuthenticationProvider {
         }
 
         userDetails = new EServiceUserDetails(userDTO.getLogin(), "pass",
-                true, true, true, true, authorities, 1, userDTO.getFirstName(), userDTO.getLastName(),userDTO.getAuwId(),userDTO.getEmail()); //userDTO.getUzyId())
+                true, true, true, true, authorities, 1, userDTO.getFirstName(), userDTO.getLastName(),
+                cbdService.getNumerSprzedazowy(userDTO.getAuwId()),userDTO.getEmail()); //userDTO.getUzyId())
 
         preAuthenticationChecks.check userDetails
         postAuthenticationChecks.check userDetails
