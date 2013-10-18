@@ -2,8 +2,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta name="layout" content="main">
-<title><g:message code="clientSignature.header.title" default="Podpis Klienta"/></title>
+    <meta name="layout" content="main">
+    <meta name="viewport" content="width=960, initial-scale=1, maximum-scale=1"/>
+    <title><g:message code="clientSignature.header.title" default="Podpis Klienta"/></title>
 
 <style>
 
@@ -238,21 +239,41 @@ jQuery(".showSignatureDialog").on('click', function(e) {
 		            function(responseText, textStatus, XMLHttpRequest) {
 		                dialog.dialog({
 		                	modal: true,
-      						width: 750
+      						width: 750,
+      						open : function() {
+							    var t = jQuery(this).parent(), w = jQuery(window);
+							    t.offset({
+							        top: (w.height() / 2) - (t.height() / 2) - 200,
+							        left: (w.width() / 2) - (t.width() / 2)
+							    });
+							    w.scrollTop(0);
+							    setUpSignaturePad();
+							    jQuery('body').addClass('stop-scrolling');
+							},
+							close: function() {
+								jQuery('body').removeClass('stop-scrolling');
+							}
 		                });
+		                
 		            }
 		        );
 		        
 				return false;
 			});
 			
-			jQuery("#requestVersionTemplates, #requestVersionPaper").on("change", function(e) {
+			jQuery("#requestVersionTemplates").on("change", function(e) {
 				if (jQuery(e.target).is(":checked")) {
 					jQuery("#noaccept").prop("disabled", true);
 					
-					jQuery("#subscribe-REPRESENTATIVE1").parent().addClass("disabled");
-					jQuery("#subscribe-REPRESENTATIVE2").parent().addClass("disabled");
-					jQuery("#subscribe-PH").parent().addClass("disabled");
+					jQuery("a.big-link").parent().addClass("disabled");
+				}
+			});
+
+			jQuery("#requestVersionPaper").on("change", function(e) {
+			    if (jQuery(e.target).is(":checked")) {
+					jQuery("#noaccept").prop("disabled", false);
+
+                    jQuery("a.big-link").parent().removeClass("disabled");
 				}
 			});
 			
@@ -336,11 +357,10 @@ jQuery(".showSignatureDialog").on('click', function(e) {
 
     <nav>
         <g:form>
-            <fieldset id="clientSignaturePersons" class="subpanel-fieldset">
-                <legend><g:message code="clientSignature.signing.people" default="Osoby podpisujące" /></legend>
-
-                <ul class="table-list">
-                    <li><span><a class="big-link showSignatureDialog" data-firstName="${representative1.name}"
+        	<fieldset id="clientSignaturePersons" class="subpanel-fieldset">
+        		<legend><g:message code="clientSignature.signing.people" default="Osoby podpisujące" /></legend>
+        		<ul class="table-list">
+					<li><span><a class="big-link showSignatureDialog" data-firstName="${representative1.name}"
                                  data-lastName="${representative1.surname}" data-role="ACCEPTANT1" id="subscribe-REPRESENTATIVE1"
                                  href="#">${representative1.name} ${representative1.surname} - Reprezentant</a></span></li>
 

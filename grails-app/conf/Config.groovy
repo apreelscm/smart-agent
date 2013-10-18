@@ -12,7 +12,8 @@ def grailsApplication
 
 // referencja do konfiguracji srodowisk, poza dev parametr ustawiany przy starcie tomcata
 grails.config.locations = ["classpath:${appName}-config-${grails.util.Environment.current.name}.groovy",
-        "file:web-app/WEB-INF/${appName}-config-${grails.util.Environment.current.name}.groovy"]
+        "file:web-app/WEB-INF/${appName}-config-${grails.util.Environment.current.name}.groovy",
+		"file:${userHome}/.grails/${appName}-config-${grails.util.Environment.current.name}.groovy"]
 
 
 grails.project.groupId = appName // change this to alter the default package name and Maven publishing destination
