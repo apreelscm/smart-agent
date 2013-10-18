@@ -258,7 +258,7 @@ class ProcessService {
             if (!cmd.hasProperty(data.name)){
                 log.error('NoSuchField in ProcessComand for : ' + data.name)
                 return
-            } else if (hasAnnotation(cmd, data.name, Omit) && getAnnotation(cmd, data.name, Omit).inPopulate()){
+            } else if (["errors", "class"].contains(data.name) || (hasAnnotation(cmd, data.name, Omit) && getAnnotation(cmd, data.name, Omit).inPopulate())){
                 return
             } else if (hasAnnotation(cmd, data.name, DateField)){
                 cmd[data.name] = data.value?.trim()? DateUtils.getFormattedDate(DateUtils.parseWithTimezone(data.value), DateUtils.YYYY_MM_DD) : "";
@@ -602,13 +602,12 @@ class ProcessService {
     private def findAllPropertiesToSave( def obj, def annotClass ) {
         obj.properties.findAll { prop ->
             obj.getClass().declaredFields.find {
-                it.name == prop.key && (!it.isAnnotationPresent(annotClass) || it.getAnnotation(annotClass).inSave())
+                it.name == prop.key && (!it.isAnnotationPresent(annotClass) || !it.getAnnotation(annotClass).inSave())
             }
         }
     }
 
     private def hasAnnotation(def obj, def property, def annotClass){
-        println 'Checking annotation for property: ' + property
         obj.getClass().declaredFields.find { it -> it.name == property }.isAnnotationPresent(annotClass);
     }
 
