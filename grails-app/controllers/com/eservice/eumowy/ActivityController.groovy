@@ -4,6 +4,7 @@ import com.eservice.eumowy.command.ProcessCommand
 import com.eservice.eumowy.process.DefineActivityCommand
 import com.eservice.eumowy.util.DateUtils
 import grails.util.Environment
+import groovy.sql.GroovyRowResult
 import org.codehaus.groovy.grails.web.json.JSONObject
 
 class ActivityController {
@@ -601,7 +602,6 @@ class ActivityController {
                   cmd.calculatorService = calculatorService
                   cmd.validate()
                   flow.data = cmd
-
                   if(cmd.hasErrors()){
                       cmd.errors.each {
                           log.error(it)
@@ -1008,7 +1008,7 @@ class ActivityController {
 
             }
             on("success"){
-                flash.calcInfoMessage = message(code:"calc.todo.info", default:"Pomijanie kalkulatora");
+                flash.calcInfoMessage = message(code:"calc.omitting.info", default:"Pomijanie kalkulatora");
                 flow.isContinueEnabled = true
                 flow.getCalculatorSucces = true
             }.to "chooseCalc"
@@ -1109,7 +1109,7 @@ class ActivityController {
                 flow.client = lastProcess.client;
             }
             on("success"){
-                flash.calcInfoMessage = message(code:"calc.todo.info", default:"Pomijanie kalkulatora");
+                flash.calcInfoMessage = message(code:"calc.omitting.info", default:"Pomijanie kalkulatora");
                 flow.isContinueEnabled = true
                 flow.getCalculatorSucces = true
             }.to "chooseCalc"
@@ -1176,6 +1176,20 @@ class ActivityController {
             data.put("id", bankData.get("id"))
             data.put("name", bankData.get("name"))
             render(text: data.toString())
+        }
+        render(text: '')
+    }
+
+    def getCity() {
+        String code = params.code
+
+        def citiesData = cbdService.getMiasto(code)
+        if (citiesData) {
+            def result = []
+            citiesData.each { GroovyRowResult row ->
+                result.push("\""+row.get("NAME")+"\"")
+            }
+            render(text: result.toString())
         }
         render(text: '')
     }

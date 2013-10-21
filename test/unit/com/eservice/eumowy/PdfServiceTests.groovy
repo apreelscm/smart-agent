@@ -178,7 +178,6 @@ class PdfServiceTests {
 
 		data.put("wydrukGrafikiCena", ["53"] as String[]);
 		data.put("dzialaniaMatematyczneCena", ["53"] as String[]);
-		data.put("tytulPlatnosciCena", ["53"] as String[]);
 		data.put("pierwszaSesjaCena", ["53"] as String[]);
 		data.put("walutaObcaCena", ["53"] as String[]);
 		data.put("oplataZaUruchomienieDCC", ["200"] as String []);
@@ -244,7 +243,6 @@ class PdfServiceTests {
 
 		data.put("wydrukGrafikiCena", ["53"] as String[]);
 		data.put("dzialaniaMatematyczneCena", ["53"] as String[]);
-		data.put("tytulPlatnosciCena", ["53"] as String[]);
 		data.put("systemKasowyCena", ["53"] as String[]);
 		data.put("pierwszaSesjaCena", ["53"] as String[]);
 		data.put("weryfikacjaPINCena", ["53"] as String[]);
@@ -411,7 +409,6 @@ class PdfServiceTests {
 
 		data.put("wydrukGrafikiCena", ["53"] as String[]);
 		data.put("dzialaniaMatematyczneCena", ["53"] as String[]);
-		data.put("tytulPlatnosciCena", ["53"] as String[]);
 		data.put("pierwszaSecjaCena", ["53"] as String[]);
 		data.put("walutaObcaCena", ["53"] as String[]);
 		data.put("mudCena", ["53"] as String[]);

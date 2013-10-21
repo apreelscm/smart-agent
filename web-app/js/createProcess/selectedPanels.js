@@ -44,3 +44,35 @@ function refreshTelepomkaAndTelekodzikPercentValues(){
         })
     }
 }
+
+/* CR - TO UNCOMMENT
+(function ($) {
+    $(function() {
+
+        refreshCityField(jQuery('#akceptantKodPocztowy').val(),  jQuery("#akceptantMiasto"))
+
+        $("#akceptantKodPocztowy").on("keyup", function(e) {
+            refreshCityField(jQuery(e.target).val(),  jQuery("#akceptantMiasto"))
+        });
+    });
+
+    function refreshCityField(code, select){
+        var selectValue = select.val()
+
+        select.empty();
+        if (code && code.length == 6){
+            $.get("/eumowy/activity/getCity", {code: code.replace(/\s+/g, '')}, function(data) {
+                var cities = eval('(' + data + ')');
+
+                if(cities instanceof Array){
+                    $.each(cities, function(value) {
+                        select.append('<option value="'+cities[value]+'">'+cities[value]+'</option>')
+                    });
+                }
+                select.val(selectValue)
+            });
+        }else{
+            select.val('')
+        }
+    }
+}(jQuery));*/

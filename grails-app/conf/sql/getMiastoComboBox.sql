@@ -1,0 +1,1 @@
+select MIA_MIEJSCOWOSC as name from CBD_ADM.cbt_sl_miasta where mia_kod = :code

@@ -176,7 +176,6 @@ class PanelService {
     def getDodatkoweUslugi2(ProcessCommand cmd, def calc ) {
         cmd.wydrukGrafikiCena = calculatorService.getCalcProperty(calc,"OPLATA_LOGO")
         cmd.dzialaniaMatematyczneCena = calculatorService.getCalcProperty(calc,"OPLATA_KALKULATOR")
-        cmd.tytulPlatnosciCena = nullify(cmd.tytulPlatnosciCena)
         cmd.pierwszaSesjaCena = nullify(cmd.pierwszaSesjaCena)
     }
 
@@ -538,10 +537,7 @@ class PanelService {
     }
 
     def getWykazPunktowAkceptujacychKartyPlatnicze(ProcessCommand cmd, def calc ) {
-        /* cmd.punktyTytulPlatnosci= cmd.punktyTytulPlatnosci?: []
-         cmd.punktySystemKasowy = cmd.punktySystemKasowy ?: []
-         cmd.punktyUta = cmd.punktyUta ?: []
-         cmd.punktyWybrane = cmd.punktyWybrane ?: []*/
+        //EMPTY
     }
 
     def getZalaczniki(ProcessCommand cmd, def calc ) {

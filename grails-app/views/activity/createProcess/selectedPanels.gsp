@@ -14,7 +14,7 @@
 
     $j(function(){
         console.log('JS Validation starting...');
-        jQuery(".panelsForm").validate({
+        $j(".panelsForm").validate({
             errorElement: 'img',
             errorPlacement: function(error, element) {
             },
@@ -36,57 +36,77 @@
       $j("#saveProcessLink").click(function() {
             var input = $j("<input>").attr("type", "hidden").attr("name", "_eventId_saveOnly").val(""),
                 form = $j('.panelsForm');
+
             form.data("validator").cancelSubmit = true;
-            form.append($j(input));
+            submitForm(form,input, true)
 
-            showLoadingDialog()
-
-            setTimeout(function() {
-                form.submit()
-            }, 1);
             return false
         });
 
         $j("#acceptPointsButton").click(function() {
-            var submitButtons = $j("input[type='submit']"),
-                continueButton = $j("#continueButton"),
-                form = $j(".panelsForm");
+              var input = $j("<input>").attr("type", "hidden").attr("name", "_eventId_saveOnly").val(""),
+                form = $j('.panelsForm');
 
             if ( form.valid()){
-                var input = $j("<input>").attr("type", "hidden").attr("name", "_eventId_saveOnly").val("");
+                submitForm(form,input,true)
+            }
+            return false;
+        });
+
+
+        $j("#continueButton").click(function() {
+            var input = $j("<input>").attr("type", "hidden").attr("name", "_eventId_continue").val("");
+            var form = $j(".panelsForm");
+
+            if ( form.valid()){
+
+              var kontaktEmail = $j("input[name='kontaktEmail']").val()
+
+               if(kontaktEmail){
+                    submitForm(form,input, true)
+               }else{
+                    //sprawdzanie maila akceptanta
+                     $j("#confirm-submit-without-emailKontakt-dialog").dialog({
+                        resizable: true,
+                        height:200,
+                        width: 450,
+                        modal: true,
+                        buttons:
+                            {
+                                "Dalej": function() {
+                                    $j( this ).dialog( "close" );
+                                    submitForm(form,input, true)
+
+                                },
+                                "Popraw": function() {
+                                    $j( this ).dialog( "close" );
+                                }
+                            }
+                    });
+               }
+            }
+
+            return false;
+        });
+
+        function submitForm(form, input, disableButtons){
+           var submitButtons = $j("input[type='submit']")
+           var continueButton = $j("#continueButton")
+
                 form.append($j(input))
 
-                submitButtons.attr('disabled', 'disabled');
-                continueButton.attr('disabled', 'disabled');
+                if(disableButtons){
+                  submitButtons.attr('disabled', 'disabled');
+                  continueButton.attr('disabled', 'disabled');
+                }
+
                 showLoadingDialog()
 
                 setTimeout(function() {
                     form.submit()
                 }, 1);
-            }
-            return false;
-        });
+        }
 
-        $j("#continueButton").click(function() {
-                var submitButtons = $j("input[type='submit']"),
-                    continueButton = $j("#continueButton"),
-                    form = $j(".panelsForm");
-
-                if ( form.valid()){
-                    var input = $j("<input>").attr("type", "hidden").attr("name", "_eventId_continue").val("");
-                    submitButtons.attr('disabled', 'disabled');
-                    continueButton.attr('disabled', 'disabled');
-
-                    form.append($j(input))
-                    showLoadingDialog()
-
-                    setTimeout(function() {
-                        form.submit()
-                    }, 1);
-                }
-
-                return false;
-        });
 
         refreshAttachmentList()
 
@@ -116,12 +136,12 @@
     });
 
         function refreshAttachmentList(){
-            ${remoteFunction(
+    ${remoteFunction(
             action:'getAttachmentList',
             update:'attachmentsBox',
             params: [processId: processInstance.id])}
         }
-});
+    });
 
          $j("#mockBtn").click(function() {
          var possibleLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -161,7 +181,7 @@
 
         function randomString(chars,length){
            var result = ""
-         	for(var i = 0; i < length; i++) {
+             for(var i = 0; i < length; i++) {
                 var randomChar = chars.charAt(Math.floor(Math.random() * chars.length));
                 result += randomChar
             }
@@ -201,8 +221,11 @@
     </style>
 </head>
 <body>
-
 <r:require module="mask"/>
+
+<div id="confirm-submit-without-emailKontakt-dialog"  style="display: none;">
+    <p><g:message code="process.subscriptions.submit.without.emailKontakt.confirm" /></p>
+</div>
 
 <section id="create-activity">
 
@@ -211,7 +234,7 @@
     </g:if>
 
     <g:if env="production">
-        %{--empty--}%
+    %{--empty--}%
     </g:if>
     <g:else>
         <a href="/eumowy/calculator?nip=${data.nip}" target="_blank">Zobacz kalkulator</a>

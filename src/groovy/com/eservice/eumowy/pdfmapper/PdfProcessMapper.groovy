@@ -208,7 +208,8 @@ class PdfProcessMapper extends AbstractPdfMapper{
     }
 
     private mapTytulPlatnosciCenaProcess(def data, def pd, def key, def value){
-        mapFieldWithStartDate(data, pd, key, value, "tytulPlatnosciData");
+        //TODO co tutaj zrobic, bo to pole zostalo usuniete???
+//        mapFieldWithStartDate(data, pd, key, value, "tytulPlatnosciData");
     }
 
     private mapPierwszaSesjaCenaProcess(def data, def pd, def key, def value){

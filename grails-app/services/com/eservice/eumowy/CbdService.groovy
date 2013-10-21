@@ -20,6 +20,7 @@ class CbdService {
     private static final def GET_SIEDZIBA_AKCEPTANTA = "getSiedzibaAkceptanta"
     private static final def GET_DANE_AKCEPTANTA = "getDaneAkceptanta"
     private static final def GET_NAZWA_BANKU = "getNazwaBanku"
+    private static final def GET_MIASTO = "getMiastoComboBox"
     private static final def GET_NUMER_RACHUNKU_BANKOWEGO = "getNumerRachunkuBankowego"
     private static final def GET_OSOBA1_UPRAWNIONA_DO_PODPISANIA_UMOWY = "getOsoba1UprawnionaDoPodpisaniaUmowy"
     private static final def GET_OSOBA2_UPRAWNIONA_DO_PODPISANIA_UMOWY = "getOsoba2UprawnionaDoPodpisaniaUmowy"
@@ -95,6 +96,11 @@ class CbdService {
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
     def getNazwaBanku(def accountShortNum) {
         return cbdDAO.selectOne(GET_NAZWA_BANKU,[num: accountShortNum])
+    }
+
+    @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
+    def getMiasto(def code) {
+        return cbdDAO.selectMany(GET_MIASTO,[code: code])
     }
 
     @Cacheable(value="getNumerRachunkuBankowego")

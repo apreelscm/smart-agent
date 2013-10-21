@@ -16,12 +16,6 @@
                     </td>
                 </tr>
                 <tr>
-                     <td><g:message code="panel.payment.title.payment"/></td>
-                     <td>
-                        <eumowy:currencyField type="text" class="float-number" name="tytulPlatnosciCena" validatable="${data}" value="${data.tytulPlatnosciCena}"/>
-                    </td>
-                </tr>
-                <tr>
                      <td><g:message code="panel.payment.first.session"/></td>
                      <td>
                         <eumowy:currencyField type="text" class="float-number" name="pierwszaSesjaCena" validatable="${data}" value="${data.pierwszaSesjaCena}"/>
