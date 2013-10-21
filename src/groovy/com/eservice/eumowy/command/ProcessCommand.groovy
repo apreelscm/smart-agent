@@ -543,7 +543,7 @@ class ProcessCommand implements Serializable {
 
         pierwszaSesjaCena(nullable: false, blank: true, shared: "number")
 
-        akceptantKontaktUlicaTytul(nullable: false, blank: false)
+        akceptantKontaktUlicaTytul(nullable: true, blank: true)
         akceptantKontaktUlica(nullable: false, blank: false, shared: "alpha", validator: { value, cmd, errors ->
             maxLengthClosure.call(value, cmd, errors, 40, "akceptantKontaktUlica", "default.nameTooLong.street")
         })
@@ -601,7 +601,7 @@ class ProcessCommand implements Serializable {
         akceptantRegonCbd(nullable: true)
         nazwaDoWydrukuZTerminalaPos(nullable: true)
         wydrukNazwaDoWyszukwarki(nullable: true)
-        wydrukUlicaTytul(nullable: false, blank: false)
+        wydrukUlicaTytul(nullable: true, blank: true)
         wydrukUlica(nullable: false, blank: false, shared: "alpha", validator: { value, cmd, errors ->
             maxLengthClosure.call(value, cmd, errors, 40, "wyrdukUlica", "default.nameTooLong.city")
         })
