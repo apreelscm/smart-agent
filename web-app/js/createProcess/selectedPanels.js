@@ -46,34 +46,46 @@ function refreshTelepomkaAndTelekodzikPercentValues(){
     }
 }
 
-/* CR - TO UNCOMMENT
- (function ($) {
- $(function() {
+var $j = jQuery.noConflict();
 
- refreshCityField(jQuery('#akceptantKodPocztowy').val(),  jQuery("#akceptantMiasto"))
+(function ($) {
+    $(function() {
 
- $("#akceptantKodPocztowy").on("keyup", function(e) {
- refreshCityField(jQuery(e.target).val(),  jQuery("#akceptantMiasto"))
- });
- });
+        refreshCityField(jQuery('#akceptantKodPocztowy').val(),  jQuery("#akceptantMiasto"))
+        refreshCityField(jQuery('#akceptantKontaktKodPocztowy').val(),  jQuery("#akceptantKontaktMiasto"))
+        refreshCityField(jQuery('#wydrukKodPocztowy').val(),  jQuery("#wydrukMiasto"))
 
- function refreshCityField(code, select){
- var selectValue = select.val()
+        $("#akceptantKodPocztowy").on("keyup", function(e) {
+            refreshCityField(jQuery(e.target).val(),  jQuery("#akceptantMiasto"))
+        });
 
- select.empty();
- if (code && code.length == 6){
- $.get("/eumowy/activity/getCity", {code: code.replace(/\s+/g, '')}, function(data) {
- var cities = eval('(' + data + ')');
+        $("#akceptantKontaktKodPocztowy").on("keyup", function(e) {
+            refreshCityField(jQuery(e.target).val(),  jQuery("#akceptantKontaktMiasto"))
+            });
 
- if(cities instanceof Array){
- $.each(cities, function(value) {
- select.append('<option value="'+cities[value]+'">'+cities[value]+'</option>')
- });
- }
- select.val(selectValue)
- });
- }else{
- select.val('')
- }
- }
- }(jQuery));*/
+        $("#wydrukKodPocztowy").on("keyup", function(e) {
+            refreshCityField(jQuery(e.target).val(),  jQuery("#wydrukMiasto"))
+        });
+    });
+}(jQuery));
+
+
+function refreshCityField(code, select){
+    var selectValue = select.val()
+
+    select.empty();
+    if (code && code.length == 6){
+        $j.get("/eumowy/activity/getCity", {code: code.replace(/\s+/g, '')}, function(data) {
+            var cities = eval('(' + data + ')');
+
+            if(cities instanceof Array){
+                $j.each(cities, function(value) {
+                    select.append('<option value="'+cities[value]+'">'+cities[value]+'</option>')
+                });
+            }
+            select.val(selectValue)
+        });
+    }else{
+        select.val('')
+    }
+}

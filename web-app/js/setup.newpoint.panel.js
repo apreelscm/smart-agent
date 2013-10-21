@@ -4,23 +4,23 @@ var panelPosInternalCount = 0;
 
 function getCurrentTerminalCount(prefix) {
 
-	var counter = 0;
-	
-	if (panelPosInternalCount != undefined) {
-		counter += panelPosInternalCount;
-	}
-	
-	for(var i = 0; i < globalPanelCount; i++) {
-		var prefixPanel = "#"+prefix+"\\["+i+"\\]\\";
-		counter += jQuery(prefixPanel + ".dialupCount").val();
-		counter += jQuery(prefixPanel + ".vpnCount").val();
-		counter += jQuery(prefixPanel + ".sslCount").val();
-		counter += jQuery(prefixPanel + ".wifiCount").val();
-		counter += jQuery(prefixPanel + ".gprsCount").val();
-		counter += jQuery(prefixPanel + ".baseCount").val();
-	}
-	
-	return counter;
+    var counter = 0;
+
+    if (panelPosInternalCount != undefined) {
+        counter += panelPosInternalCount;
+    }
+
+    for(var i = 0; i < globalPanelCount; i++) {
+        var prefixPanel = "#"+prefix+"\\["+i+"\\]\\";
+        counter += jQuery(prefixPanel + ".dialupCount").val();
+        counter += jQuery(prefixPanel + ".vpnCount").val();
+        counter += jQuery(prefixPanel + ".sslCount").val();
+        counter += jQuery(prefixPanel + ".wifiCount").val();
+        counter += jQuery(prefixPanel + ".gprsCount").val();
+        counter += jQuery(prefixPanel + ".baseCount").val();
+    }
+
+    return counter;
 }
 
 function getGlobalPanelCount(prefix) {
@@ -56,6 +56,27 @@ function setupNewPointPanelHandlers(prevPanelId, panelId, prefix) {
             }
         }
     });
+
+    //adres do korespondencji punktu
+    var $codeField = jQuery(prefixPanel+".contactAddressAddressPostalCode")
+    var $cityField = jQuery(prefixPanel+".contactAddressAddressCity")
+
+    refreshCityField( $codeField.val(),  $cityField )
+
+    $codeField.on("keyup", {p: prefix, pid: panelId}, function(e) {
+        refreshCityField(jQuery(e.target).val(),  $cityField)
+    });
+
+    //adres dowydruku
+    var $codeField2 = jQuery(prefixPanel+".dataforprintingAddressPostalCode")
+    var $cityField2 = jQuery(prefixPanel+".dataforprintingAddressCity")
+
+    refreshCityField( $codeField2.val(),  $cityField2 )
+    $codeField2.on("keyup", {p: prefix, pid: panelId}, function(e) {
+        refreshCityField(jQuery(e.target).val(),  $cityField2)
+    });
+
+
 
     jQuery(prefixPanel + ".mccCode").on("keyup", {p: prefix, pid: panelId}, function(e) {
         var mcc = jQuery(e.target).val();

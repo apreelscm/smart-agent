@@ -21,11 +21,15 @@
                         </span>
                     </li>
                     <li>
-                        <span><g:message code="panel.city" /></span>
-                        <span><eumowy:textField name="wydrukMiasto" value="${data.wydrukMiasto}" validatable="${data}" style="width: 280px;" required="true"/></span>
                         <span>
-                            <span><g:message code="panel.postal.code" /></span> <span><eumowy:textField class="postal-code" name="wydrukKodPocztowy" value="${data.wydrukKodPocztowy}" validatable="${data}" style="width: 50px" maxlength ="5" required="true"/></span>
+                            <span><g:message code="panel.postal.code" /></span> <span><eumowy:textField id="wydrukKodPocztowy" class="postal-code" name="wydrukKodPocztowy" value="${data.wydrukKodPocztowy}" validatable="${data}" style="width: 50px" maxlength ="5" required="true"/></span>
                         </span>
+                        <span><g:message code="panel.city" /></span>
+                        <span>
+                            %{--<eumowy:textField name="wydrukMiasto" value="${data.wydrukMiasto}" validatable="${data}" style="width: 280px;" required="true"/>--}%
+                            <g:select id="wydrukMiasto" name="wydrukMiasto" value="${data.wydrukMiasto}" from="" style="width: 280px;" required="required"/>
+                        </span>
+
                     </li>
                     <li>
                         <span><g:message code="panel.postal" /></span>
