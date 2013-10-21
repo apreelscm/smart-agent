@@ -922,7 +922,7 @@ class ProcessCommand implements Serializable {
         scoringDeklaracjaFinansowaObrotNaKarty(nullable: true, blank: true)
         scoringDeklaracjaFinansowaSredniObrot(nullable: true, blank: true)
         scoringDeklaracjaFinansowaSredniaTransakcja(nullable: true, blank: true)
-        akceptantUlicaTytul(nullable: false, blank: false)
+        akceptantUlicaTytul(nullable: true, blank: true)
         akceptantUlica(nullable: false, blank: false, shared: "alpha", validator: { value, cmd, errors ->
             skipAddressValidationClosure.call(value, cmd, errors, "akceptantUlica", "default.cantBeEmpty.akceptantPoczta")
             maxLengthClosure.call(value, cmd, errors, 40, "akceptantUlica", "default.nameTooLong.street")
