@@ -45,7 +45,7 @@ class CbdDAO {
         try {
             sqlFile = new File(this.class.getResource("/sql/${sqlName}.sql").getFile())
         } catch (IOException ex) {
-            log.error ex.message, ex
+            println("getSqlText error:"+ex.message)
             throw ex
         }
 

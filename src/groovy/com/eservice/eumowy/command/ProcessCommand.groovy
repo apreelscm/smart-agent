@@ -1,5 +1,7 @@
 package com.eservice.eumowy.command
 import com.eservice.eumowy.Process
+import com.eservice.eumowy.annotation.DateField
+import com.eservice.eumowy.annotation.Omit
 import grails.validation.Validateable
 import org.apache.commons.collections.FactoryUtils
 import org.apache.commons.collections.ListUtils
@@ -12,14 +14,18 @@ import org.apache.commons.collections.ListUtils
 @Validateable
 class ProcessCommand implements Serializable {
 
+    @Omit()
     transient def calculatorService
+    @Omit
     transient def calc
 
     //UWAGA - kazde nowe pole, ktore ma byc pomijane w zapisie do bazy trzeba dodac tez w
     //ProcessService.getDataFromPanels(). Gdy sie tego nie zrobi zapisuja sie dane a pozniej leci
     // NoSuchFieldException z ProcessService.loadProcessData() przy probie usuniecia zbednej metody
+    @Omit
     static def nullableTrueBlankFalse = {/** puste ale potrzebne */}
 
+    @Omit
     static def atLeastClosure = { value, cmd, errors, property, calcProperty ->
         def calcValue = cmd.calculatorService.getCalcProperty(cmd.calc, calcProperty)
 
@@ -39,6 +45,7 @@ class ProcessCommand implements Serializable {
         return true
     }
 
+    @Omit
     static def maxLengthClosure = { value, cmd, errors, maxValue, propertyName, message ->
         if (value.length() > maxValue) {
             errors.rejectValue(propertyName, message)
@@ -47,8 +54,9 @@ class ProcessCommand implements Serializable {
         return true
     }
 
+    @Omit
     static def skipAddressValidationClosure = { value, cmd, errors, propertyName, message ->
-        if(value.isEmpty() && cmd.isClientFromCbd()){
+        if(value.isEmpty() && cmd.checkIfClientFromCbd()){
             return true
         }
 
@@ -60,6 +68,25 @@ class ProcessCommand implements Serializable {
         return true
     }
 
+    @Omit
+    static def checkTelekodzik = { value, cmd, errors, propertyName ->
+        if(cmd.doladowania_tk && value?.isEmpty() ){
+            errors.rejectValue(propertyName, "default.validation.required.error", "Pole wymagane")
+            return false
+        }
+        return true
+    }
+
+    @Omit
+    static def checkTelepompka = { value, cmd, errors, propertyName ->
+        if(cmd.doladowania_tp && value?.isEmpty() ){
+            errors.rejectValue(propertyName, "default.validation.required.error", "Pole wymagane")
+            return false
+        }
+        return true
+    }
+
+    @Omit
     static def DEFAULT_VALUE = "~"
 
 //    adresDoKorespondencjizAkecptantem - FINISH
@@ -73,14 +100,18 @@ class ProcessCommand implements Serializable {
     String akceptantKontaktPoczta = DEFAULT_VALUE
 
 //    aneksDoUmowyNajmuZestawuPos - FINISH
+    @DateField
     String dataAneksowanejUmowyPos = DEFAULT_VALUE
 
 //    aneksDoUmowyPrepaid - FINISH
+    @DateField
     String dataAneksowanejUmowyPrepaid = DEFAULT_VALUE
 
 //    czasObowiazywaniaUmowy - FINISH
     String umowaCzas = DEFAULT_VALUE
+    @DateField
     String umowaOznOd = DEFAULT_VALUE
+    @DateField
     String umowaOznDo = DEFAULT_VALUE
 
 //    daneAkceptanta
@@ -111,6 +142,7 @@ class ProcessCommand implements Serializable {
 
 //    danePunktu
 
+    //TODO - co to jest???
     boolean czyDcc
 
     String oplataVISA = DEFAULT_VALUE
@@ -137,16 +169,15 @@ class ProcessCommand implements Serializable {
     String oplataZaInstalacjeGPRS = DEFAULT_VALUE
     String oplataZaUruchomienieWalutyObcej = DEFAULT_VALUE
 
-//    dodatkoweUslugi2 - FINISH (ale trzeba jeszcze daty startu pobrac)
+//    dodatkoweUslugi2
     String wydrukGrafikiCena = DEFAULT_VALUE
     String dzialaniaMatematyczneCena = DEFAULT_VALUE
-    String tytulPlatnosciCena = DEFAULT_VALUE
     String pierwszaSesjaCena = DEFAULT_VALUE
 
 //    dodatkoweUslugiMud - FINISH
     String mudCena = DEFAULT_VALUE
 
-//    dodatkoweUslugiUTAIntegracja - FINISH (ale trzeba jeszcze daty startu pobrac)
+//    dodatkoweUslugiUTAIntegracja
     String weryfikacjaPINCena = DEFAULT_VALUE
     String systemKasowyCena = DEFAULT_VALUE
 
@@ -156,7 +187,7 @@ class ProcessCommand implements Serializable {
     String srednia_sprzedaz_doladowan = DEFAULT_VALUE
     String srednia_sprzedaz_doladowan_slownie = DEFAULT_VALUE
 
-//    ifplus - FINISH (ale zmiany w dokumentach)
+//    ifplus - FINISH
     String ifOplataVISA = DEFAULT_VALUE
     String ifOplataMasterCard = DEFAULT_VALUE
     String ifOplataDinersClub = DEFAULT_VALUE
@@ -170,7 +201,7 @@ class ProcessCommand implements Serializable {
     String dzialalnoscDokumentInny = DEFAULT_VALUE
 
 //    okresLojalnosciowy
-    String okresLojalnosciowy = DEFAULT_VALUE //  TODO - czy to jest dobrze????
+    String okresLojalnosciowy = DEFAULT_VALUE
 
 //    oplatyDCC
     String oplataZaPlatnoscWInnejWalucie = DEFAULT_VALUE
@@ -308,18 +339,13 @@ class ProcessCommand implements Serializable {
     String pp_vectonemobile_tk = DEFAULT_VALUE
     String pp_delightmobile_tk = DEFAULT_VALUE
     String oplataZaOprogramowanieDoDoladowan = DEFAULT_VALUE
-    Boolean czyWybranoTK
-    Boolean czyWybranoTP
 
 //    promocyjneObnizenieOplatyZaZestawPos
 //    scoring
-//    TODO - co wpisac w scoringNrUmowy????
 
     String scoringMcc = DEFAULT_VALUE
     String scoringDzialalnosc = DEFAULT_VALUE
     String scoringSzczegolyDzialalnosci = DEFAULT_VALUE
-//    TODO - co to sa za pola: szczegolowyRodzajDzialalnosciWPraktyce ??
-
     String scoringWlasnosc = DEFAULT_VALUE
     String scoringDzialalnoscCzas = DEFAULT_VALUE
     String scoringKoncesja = DEFAULT_VALUE
@@ -446,35 +472,56 @@ class ProcessCommand implements Serializable {
     String nip = DEFAULT_VALUE
 
 //    uwagi
+    @Omit
     String notes = DEFAULT_VALUE
 
-
+    @Omit
     transient Process process
 
+    @Omit(inPopulate = true)
     List<PointCommand> points = ListUtils.lazyList([], FactoryUtils.instantiateFactory(PointCommand))
+    @Omit(inPopulate = true)
     List<PointCommand> poses = ListUtils.lazyList([], FactoryUtils.instantiateFactory(PointCommand))
+    @Omit(inPopulate = true)
     List<AllPointsCommand> allPoints = ListUtils.lazyList([], FactoryUtils.instantiateFactory(AllPointsCommand))
+    @Omit(inPopulate = true)
     List<AllPosCommand> allPoses = ListUtils.lazyList([], FactoryUtils.instantiateFactory(AllPosCommand))
 
+    @Omit
     String hasObslugaTyp
+    @Omit
     String hasUmowaCzas
+    @Omit
     String hasScoringAkceptacja
+    @Omit
     String hasKontaktTel
+    @Omit
     String hasDoladowania
-    Boolean hasAtLeastOneDoladowanie
+    @Omit
     String hasAkceptantTel
+    @Omit
     String hasInformacjaHandlowa
+    @Omit
+    Boolean hasAtLeastOneDoladowanie
+
+    @Omit
     String liczbaTerminali
 
+    @Omit(inPopulate = true)
     Boolean isDoladowania_tp
+
+    @Omit(inPopulate = true)
     Boolean isDoladowania_tk
 
 	Boolean korespondencjaJakDlaMerchanta
-	
+
+    @Omit
     def defaultPointData
+    @Omit
 	def defaultPosData
 	def liczbaPosZCbd
 
+    @Omit
     static constraints = {
 
         oplataZaDzienneZestawienieTransakcji(nullable: false, blank: false, shared: "number")
@@ -494,7 +541,6 @@ class ProcessCommand implements Serializable {
 ////        dzialaniaMatematyczneCena(nullable:true, blank:false, shared: "number")
 ////
 
-        tytulPlatnosciCena(nullable: false, blank: true, shared: "number")
         pierwszaSesjaCena(nullable: false, blank: true, shared: "number")
 
         akceptantKontaktUlicaTytul(nullable: false, blank: false)
@@ -506,7 +552,7 @@ class ProcessCommand implements Serializable {
         akceptantKontaktMiasto(nullable: false, blank: false, shared: "alpha", validator: { value, cmd, errors ->
             maxLengthClosure.call(value, cmd, errors, 33, "akceptantKontaktMiasto", "default.nameTooLong.city")
         })
-        akceptantKontaktKodPocztowy(nullable: false, blank: false)
+        akceptantKontaktKodPocztowy(nullable: false, blank: false, shared: "postalCodeValidator")
         akceptantKontaktPoczta(nullable: false, blank: false, shared: "alpha", validator: { value, cmd, errors ->
             maxLengthClosure.call(value, cmd, errors, 33, "akceptantKontaktPoczta", "default.nameTooLong.postalTown")
         })
@@ -564,7 +610,7 @@ class ProcessCommand implements Serializable {
         wydrukMiasto(nullable: false, blank: false, shared: "alpha", validator: { value, cmd, errors ->
             maxLengthClosure.call(value, cmd, errors, 33, "wydrukMiasto", "default.nameTooLong.postalTown")
         })
-        wydrukKodPocztowy(nullable: false, blank: false)
+        wydrukKodPocztowy(nullable: false, blank: false, shared: "postalCodeValidator")
         wydrukPoczta(nullable: false, blank: false, shared: "alpha", validator: { value, cmd, errors ->
             maxLengthClosure.call(value, cmd, errors, 33, "wydrukPoczta", "default.nameTooLong.postalTown")
         })
@@ -581,10 +627,20 @@ class ProcessCommand implements Serializable {
         informacjaHandlowa(nullable: false, blank: false)
 
         hasInformacjaHandlowa(nullable: true, validator: { value, cmd, errors ->
-            if (value && cmd.informacjaHandlowa == DEFAULT_VALUE) {
+            if(!value){
+                return true
+            }
+
+            if (cmd.informacjaHandlowa == DEFAULT_VALUE) {
                 errors.rejectValue("hasInformacjaHandlowa", "default.atLeastOne.informacjaHandlowa")
                 return false
             }
+
+            /*CR - uncomment when ready*/
+        /*if (cmd.informacjaHandlowa == "true" && (!cmd.kontaktEmail || cmd.kontaktEmail == DEFAULT_VALUE)) {
+                errors.rejectValue("hasInformacjaHandlowa", "default.noEmail.informacjaHandlowa")
+                return false
+            }*/
             return true
         })
 
@@ -785,22 +841,55 @@ class ProcessCommand implements Serializable {
         mastercardPKOBPM2St(nullable: false, blank: false, shared: "number")
         mastercardPKOBPM3St(nullable: false, blank: false, shared: "number")
 
-        pp_orange_tk(nullable: false, blank: false, shared: "percentage")
-        pp_orange_tp(nullable: false, blank: false, shared: "percentage")
-        pp_plus_tk(nullable: false, blank: false, shared: "percentage")
-        pp_plus_tp(nullable: false, blank: false, shared: "percentage")
-        pp_tmobile_tk(nullable: false, blank: false, shared: "percentage")
-        pp_tmobile_tp(nullable: false, blank: false, shared: "percentage")
-        pp_heyah_tk(nullable: false, blank: false, shared: "percentage")
-        pp_heyah_tp(nullable: false, blank: false, shared: "percentage")
-        pp_play_tk(nullable: false, blank: false, shared: "percentage")
-        pp_play_tp(nullable: false, blank: false, shared: "percentage")
-        pp_telegrosik_tk(nullable: false, blank: false, shared: "percentage")
-        pp_virginmobile_tk(nullable: false, blank: false, shared: "percentage")
-        pp_lycamobile_tk(nullable: false, blank: false, shared: "percentage")
-        pp_gtmobile_tk(nullable: false, blank: false, shared: "percentage")
-        pp_vectonemobile_tk(nullable: false, blank: false, shared: "percentage")
-        pp_delightmobile_tk(nullable: false, blank: false, shared: "percentage")
+
+        pp_orange_tk(nullable: true, blank: true, shared: "percentage", validator: { value, cmd, errors ->
+            cmd.checkTelekodzik(value, cmd, errors, "pp_orange_tk")
+        })
+        pp_orange_tp(nullable: true, blank: true, shared: "percentage" , validator: { value, cmd, errors ->
+            cmd.checkTelepompka(value, cmd, errors, "pp_orange_tp")
+        })
+        pp_plus_tk(nullable: true, blank: true, shared: "percentage", validator: { value, cmd, errors ->
+            cmd.checkTelekodzik(value, cmd, errors, "pp_plus_tk")
+        })
+        pp_plus_tp(nullable: true, blank: true, shared: "percentage" , validator: { value, cmd, errors ->
+            cmd.checkTelepompka(value, cmd, errors, "pp_plus_tp")
+        })
+        pp_tmobile_tk(nullable: true, blank: true, shared: "percentage", validator: { value, cmd, errors ->
+            cmd.checkTelekodzik(value, cmd, errors, "pp_tmobile_tk")
+        })
+        pp_tmobile_tp(nullable: true, blank: true, shared: "percentage" , validator: { value, cmd, errors ->
+            cmd.checkTelepompka(value, cmd, errors, "pp_tmobile_tp")
+        })
+        pp_heyah_tk(nullable: true, blank: true, shared: "percentage", validator: { value, cmd, errors ->
+            cmd.checkTelekodzik(value, cmd, errors, "pp_heyah_tk")
+        })
+        pp_heyah_tp(nullable: true, blank: true, shared: "percentage" , validator: { value, cmd, errors ->
+            cmd.checkTelepompka(value, cmd, errors, "pp_heyah_tp")
+        })
+        pp_play_tk(nullable: true, blank: true, shared: "percentage", validator: { value, cmd, errors ->
+            cmd.checkTelekodzik(value, cmd, errors, "pp_play_tk")
+        })
+        pp_play_tp(nullable: true, blank: true, shared: "percentage" , validator: { value, cmd, errors ->
+            cmd.checkTelepompka(value, cmd, errors, "pp_play_tp")
+        })
+        pp_telegrosik_tk(nullable: true, blank: true, shared: "percentage", validator: { value, cmd, errors ->
+            cmd.checkTelekodzik(value, cmd, errors, "pp_telegrosik_tk")
+        })
+        pp_virginmobile_tk(nullable: true, blank: true, shared: "percentage", validator: { value, cmd, errors ->
+            cmd.checkTelekodzik(value, cmd, errors, "pp_virginmobile_tk")
+        })
+        pp_lycamobile_tk(nullable: true, blank: true, shared: "percentage", validator: { value, cmd, errors ->
+            cmd.checkTelekodzik(value, cmd, errors, "pp_lycamobile_tk")
+        })
+        pp_gtmobile_tk(nullable: true, blank: true, shared: "percentage", validator: { value, cmd, errors ->
+            cmd.checkTelekodzik(value, cmd, errors, "pp_gtmobile_tk")
+        })
+        pp_vectonemobile_tk(nullable: true, blank: true, shared: "percentage", validator: { value, cmd, errors ->
+            cmd.checkTelekodzik(value, cmd, errors, "pp_vectonemobile_tk")
+        })
+        pp_delightmobile_tk(nullable: true, blank: true, shared: "percentage", validator: { value, cmd, errors ->
+            cmd.checkTelekodzik(value, cmd, errors, "pp_delightmobile_tk")
+        })
 
         oplataZaOprogramowanieDoDoladowan(nullable: false, blank: false, shared: "number")
         scoringMcc(nullable: false, blank: false, matches: "~|[0-9]{4}")
@@ -846,7 +935,7 @@ class ProcessCommand implements Serializable {
             skipAddressValidationClosure.call(value, cmd, errors, "akceptantMiasto", "default.cantBeEmpty.akceptantNrDomu")
             maxLengthClosure.call(value, cmd, errors, 33, "akceptantMiasto", "default.nameTooLong.city")
         })
-        akceptantKodPocztowy(nullable:false, validator: {value, cmd, errors ->
+        akceptantKodPocztowy(nullable:false, shared: "postalCodeValidator", validator: {value, cmd, errors ->
             skipAddressValidationClosure.call(value, cmd, errors, "akceptantKodPocztowy", "default.cantBeEmpty.akceptantKodPocztowy")
         })
         akceptantPoczta(nullable: false, shared: "alpha", validator: { value, cmd, errors ->
@@ -1011,13 +1100,13 @@ class ProcessCommand implements Serializable {
 
     }
 
-    def isFromCbd(def property) {
+    def checkIfFromCbd(def property) {
         def cbdName = property + "Cbd"
         return (this.metaClass.hasProperty(this, cbdName) && this."$cbdName"?.trim())
     }
 
-    private boolean isClientFromCbd(){
-        return this.isFromCbd("akceptantNazwaOficjalna")
+    private boolean checkIfClientFromCbd(){
+        return this.checkIfFromCbd("akceptantNazwaOficjalna")
     }
 
 }

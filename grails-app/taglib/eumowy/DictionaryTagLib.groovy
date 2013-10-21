@@ -30,6 +30,15 @@ class DictionaryTagLib {
 		fieldImpl(out, attrs)
 	}
 
+    Closure citySelect = { attrs ->
+
+        def nipNum = attrs.nip
+        def medium = attrs.medium
+        attrs.from = dictionaryService.getPosTypeComboBox(nipNum, medium)*.value
+        attrs.from.add(0,"")
+        fieldImpl(out, attrs)
+    }
+
     def fieldImpl(out, attrs) {
         out << g.select(attrs)
     }

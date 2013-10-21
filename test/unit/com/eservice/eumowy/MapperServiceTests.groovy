@@ -90,7 +90,7 @@ class MapperServiceTests {
     public void testSelectedPoints() {
 
         PointDataDetails pdd = new PointDataDetails(nazwaDoWydrukuZTerminalaPos: 'Sklep wielobranzowy', wydrukNrDomu: '34', wydrukNrLokalu: '23g', wydrukMiasto: 'Siedlce', wydrukKodPocztowy: '00-123', wydrukUlica: 'Zielona');
-        PointData pd = new PointData(nazwa: 'A', czyWybranyZakresUruchomienia: true, czyWybranyAkceptacjaKart: false, tytulPlatnosci: true, systemKasowy: true, uta: true, pointDetails: pdd)
+        PointData pd = new PointData(nazwa: 'A', czyWybranyZakresUruchomienia: true, czyWybranyAkceptacjaKart: false, systemKasowy: true, uta: true, pointDetails: pdd)
 
         HashMap<String, String[]> data = service.mapOnlyPointData(pd);
 

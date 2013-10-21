@@ -1,6 +1,5 @@
 package com.eservice.eumowy
 
-import com.eservice.eum.ws.client.AcceptUmowaWSClient
 import com.eservice.eum.ws.xml.Result
 import com.eservice.eumowy.util.DateUtils
 import com.sun.xml.internal.messaging.saaj.packaging.mime.internet.MimeUtility
@@ -35,7 +34,6 @@ class ProcessController {
         }
 
         def processes = new ProcessService().searchProcessByFilters(params)
-
         [
             filterStatus: params.filterStatus,
             filterObserved:params.filterObserved,

@@ -72,10 +72,6 @@ class PdfPointMapper extends AbstractPdfMapper{
         data.put(key, [pd.ulicaDoKorespondencjiTyp + " " + value] as String[])
     }
 
-    private  mapTytulPlatnosciPoint(def data, def pd, def key, def value, def index) {
-        mapYesNoField(data, (index == -1)?key:key+index, value);
-    }
-
     private mapSystemKasowyPoint(def data, def pd, def key, def value, def index) {
         mapYesNoField(data, (index == -1)?key:key+index, value);
     }
@@ -172,16 +168,6 @@ class PdfPointMapper extends AbstractPdfMapper{
         data.put(key, [value] as String[]);
         mapWithPattern(data, value, ~/\d{2}\s\d{4}\s\d{4}\s\d{4}\s\d{4}\s\d{4}\s\d{4}/, " ", "numerRachunkuBankowego");
     }
-
-//    // czy ta metoda jest potrzebna???
-//    private mapUwagiDodatkowePointDataDetails(def data, def pointData, def key, def value) {
-//        data.put(key, [value] as String[]);
-//    }
-//
-//    // czy ta metoda jest potrzebna???
-//    private mapPhPozyskPointDataDetails(def data, def pointData, def key, def value) {
-//        data.put(key, [value] as String[]);
-//    }
 
     //----------------------------UTILS--------------------------------
 

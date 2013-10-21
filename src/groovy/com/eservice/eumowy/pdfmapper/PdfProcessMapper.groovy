@@ -25,7 +25,7 @@ class PdfProcessMapper extends AbstractPdfMapper{
 
         if (points != null && points.size()>0){
             //APUNTSS, APUNTZ2
-            dataMap.putAll(pointMapper.mapPointsSpecial(points.findAll{ point -> (point.czyWybranyAkceptacjaKart && point.tytulPlatnosci)}, ["nazwa":"punktTytulPlatnosci", "miejscowosc":"adresTytulPlatnosci"]));
+            //TODO - nie uzupelniamy tabelek w tych dokumentach
 
             //APUPZDCC2, APUPZ2DC1
             dataMap.putAll(pointMapper.mapPointsSpecial(points.findAll{ point -> (point.czyWybranyAkceptacjaKart && point.czyWybranyZakresUruchomienia)}, ["nazwa":"punktZakresUruchomienia", "miejscowosc":"adresZakresUruchomienia"]));
@@ -37,7 +37,7 @@ class PdfProcessMapper extends AbstractPdfMapper{
             dataMap.putAll(pointMapper.mapPointsSpecial(points.findAll{ point -> point.cbdId == null || (point.posDatas && point.posDatas.findAll{ pos -> pos.tpsId == null}.size()>0)}, ["nazwa":"punkt", "miejscowosc":"adres"]));
 
             //APUNTSZAPOU3
-            dataMap.putAll(pointMapper.mapPointsSpecial(points.findAll{ point -> point.czyWybranyAkceptacjaKart}, ["nazwa":"punktTN", "miejscowosc":"adresTN", "tytulPlatnosci":"platnoscTN", "systemKasowy":"integracjaTN", "uta":"utaTN"]));
+            dataMap.putAll(pointMapper.mapPointsSpecial(points.findAll{ point -> point.czyWybranyAkceptacjaKart}, ["nazwa":"punktTN", "miejscowosc":"adresTN", "systemKasowy":"integracjaTN", "uta":"utaTN"]));
         }
 
         return dataMap;
@@ -208,7 +208,8 @@ class PdfProcessMapper extends AbstractPdfMapper{
     }
 
     private mapTytulPlatnosciCenaProcess(def data, def pd, def key, def value){
-        mapFieldWithStartDate(data, pd, key, value, "tytulPlatnosciData");
+        //TODO co tutaj zrobic, bo to pole zostalo usuniete???
+//        mapFieldWithStartDate(data, pd, key, value, "tytulPlatnosciData");
     }
 
     private mapPierwszaSesjaCenaProcess(def data, def pd, def key, def value){
