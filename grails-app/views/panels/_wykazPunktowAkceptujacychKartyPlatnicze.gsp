@@ -2,7 +2,6 @@
     <fieldset>
         <div class="belka-glowna"><g:message code="panel.payment.card.points.title"/></div>
         <div class="centre" style="text-align: center; padding-top: 20px;">
-            %{--<cbd:dccPointsAcceptedCards nip="${data.nip}" tytulPlatnosci="${data.punktyTytulPlatnosci}" systemKasowy="${data.punktySystemKasowy}" uta="${data.punktyUta}" accepted="${data.punktyWybrane}"/>--}%
             <table class="t">
             	<thead>
             		<tr>
@@ -12,7 +11,6 @@
 				        <td><g:message code="panel.label.city" /></td>
 				        <td><g:message code="panel.label.house.number" /></td>
 				        <td class="min-width-20px"><g:message code="panel.label.code" /></td>
-				        <td class="min-width-10px"><g:message code="panel.label.payment.title" /></td>
 				        <td class="min-width-10px"><g:message code="panel.label.sys.kas" /></td>
 				        <td class="min-width-10px"><g:message code="panel.label.uta" /></td>
 				        <td><g:message code="panel.label.choosen" /></td>
@@ -27,7 +25,6 @@
 							<td>${point.miejscowosc}<g:hiddenField name="allPoints[${i}].miejscowosc" value="${point.miejscowosc}" /></td>
 							<td>${point.nrBudynku}<g:hiddenField name="allPoints[${i}].nrBudynku" value="${point.nrBudynku}" /></td>
 							<td>${point.kodPocztowy}<g:hiddenField name="allPoints[${i}].kodPocztowy" value="${point.kodPocztowy}" /></td>
-							<td><g:checkBox name="allPoints[${i}].tytulPlatnosci" checked="${point.tytulPlatnosci}" /></td>
 							<td><g:checkBox name="allPoints[${i}].systemKasowy" checked="${point.systemKasowy}" /></td>
 							<td><g:checkBox name="allPoints[${i}].uta" checked="${point.uta}" /></td>
 							<td><g:checkBox name="allPoints[${i}].czyWybranyAkceptacjaKart" checked="${point.czyWybranyAkceptacjaKart}" /></td>
