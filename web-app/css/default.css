@@ -1430,3 +1430,14 @@ span.postfix-span {
   height: 100%;
   overflow: hidden;
 }
+
+tbody#ppPayment div{
+    display: inline-block;
+    width: 50px;
+    border: 1px solid #cccccc;
+    font-size: 1em;
+    padding: 0.2em 0.4em;
+    background-color: #f0f0f0;
+    text-align: center;
+    color: black;
+}

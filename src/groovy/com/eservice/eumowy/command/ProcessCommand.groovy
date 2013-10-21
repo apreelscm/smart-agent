@@ -501,6 +501,8 @@ class ProcessCommand implements Serializable {
     String hasAkceptantTel
     @Omit
     String hasInformacjaHandlowa
+    @Omit
+    Boolean hasAtLeastOneDoladowanie
 
     @Omit
     String liczbaTerminali
@@ -541,7 +543,7 @@ class ProcessCommand implements Serializable {
 
         pierwszaSesjaCena(nullable: false, blank: true, shared: "number")
 
-        akceptantKontaktUlicaTytul(nullable: false, blank: false)
+        akceptantKontaktUlicaTytul(nullable: true, blank: true)
         akceptantKontaktUlica(nullable: false, blank: false, shared: "alpha", validator: { value, cmd, errors ->
             maxLengthClosure.call(value, cmd, errors, 40, "akceptantKontaktUlica", "default.nameTooLong.street")
         })
@@ -599,7 +601,7 @@ class ProcessCommand implements Serializable {
         akceptantRegonCbd(nullable: true)
         nazwaDoWydrukuZTerminalaPos(nullable: true)
         wydrukNazwaDoWyszukwarki(nullable: true)
-        wydrukUlicaTytul(nullable: false, blank: false)
+        wydrukUlicaTytul(nullable: true, blank: true)
         wydrukUlica(nullable: false, blank: false, shared: "alpha", validator: { value, cmd, errors ->
             maxLengthClosure.call(value, cmd, errors, 40, "wyrdukUlica", "default.nameTooLong.city")
         })
@@ -648,14 +650,13 @@ class ProcessCommand implements Serializable {
 
         doladowania_tk(nullable: true)
         doladowania_tp(nullable: true)
-        hasDoladowania(nullable: true, validator: { value, process, errors ->
-            if (value == null) {
-                return true
-            }
+        hasDoladowania(nullable: true, validator: { value, cmd, errors ->
 
-            if (!process.doladowania_tp && !process.doladowania_tk) {
-                errors.rejectValue("hasDoladowania", "default.atLeastOne.doladowania")
-                return false
+            if(value && (cmd.isDoladowania_tp || cmd.isDoladowania_tk)){
+                if(!cmd.hasAtLeastOneDoladowanie){
+                    errors.rejectValue("hasDoladowania", "default.atLeastOne.doladowania")
+                    return false
+                }
             }
             return true
         })
@@ -921,7 +922,7 @@ class ProcessCommand implements Serializable {
         scoringDeklaracjaFinansowaObrotNaKarty(nullable: true, blank: true)
         scoringDeklaracjaFinansowaSredniObrot(nullable: true, blank: true)
         scoringDeklaracjaFinansowaSredniaTransakcja(nullable: true, blank: true)
-        akceptantUlicaTytul(nullable: false, blank: false)
+        akceptantUlicaTytul(nullable: true, blank: true)
         akceptantUlica(nullable: false, blank: false, shared: "alpha", validator: { value, cmd, errors ->
             skipAddressValidationClosure.call(value, cmd, errors, "akceptantUlica", "default.cantBeEmpty.akceptantPoczta")
             maxLengthClosure.call(value, cmd, errors, 40, "akceptantUlica", "default.nameTooLong.street")

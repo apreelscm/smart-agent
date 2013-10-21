@@ -1,6 +1,5 @@
 package com.eservice.eumowy
 
-import org.apache.commons.lang.builder.HashCodeBuilder
 import org.apache.log4j.Logger
 
 class PointData implements Serializable {
@@ -19,7 +18,6 @@ class PointData implements Serializable {
 	String poczta
 	Integer liczbaPos
     Boolean czyWybranyZakresUruchomienia
-	Boolean tytulPlatnosci
 	Boolean systemKasowy
 	Boolean uta
 	Boolean czyWybranyAkceptacjaKart
@@ -46,7 +44,6 @@ class PointData implements Serializable {
 		kodPocztowy column: "postal_code"
 		poczta column: "post_office"
 		liczbaPos column: "pos_count"
-		tytulPlatnosci column: "payment_title"
 		systemKasowy column: "cash_system"
 		uta column: "uta"
         czyWybranyAkceptacjaKart column: "is_selected_card_accept"
@@ -68,7 +65,6 @@ class PointData implements Serializable {
 		posDatas(nullable:true)
 		cbdId(nullable:true)
 		liczbaPos(nullable:true)
-		tytulPlatnosci(nullable:true)
 		systemKasowy(nullable:true)
 		uta(nullable:true)
         czyWybranyAkceptacjaKart(nullable:true)

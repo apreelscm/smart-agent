@@ -805,7 +805,6 @@ class ProcessService {
 
                 point.czyWybranyAkceptacjaKart = apc.czyWybranyAkceptacjaKart
                 point.czyWybranyZakresUruchomienia = apc.czyWybranyZakresUruchomienia
-                point.tytulPlatnosci = apc.tytulPlatnosci
                 point.systemKasowy = apc.systemKasowy
                 point.uta = apc.uta
 
