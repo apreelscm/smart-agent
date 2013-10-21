@@ -308,6 +308,8 @@ class ProcessCommand implements Serializable {
     String pp_vectonemobile_tk = DEFAULT_VALUE
     String pp_delightmobile_tk = DEFAULT_VALUE
     String oplataZaOprogramowanieDoDoladowan = DEFAULT_VALUE
+    Boolean czyWybranoTK
+    Boolean czyWybranoTP
 
 //    promocyjneObnizenieOplatyZaZestawPos
 //    scoring
@@ -459,6 +461,7 @@ class ProcessCommand implements Serializable {
     String hasScoringAkceptacja
     String hasKontaktTel
     String hasDoladowania
+    Boolean hasAtLeastOneDoladowanie
     String hasAkceptantTel
     String hasInformacjaHandlowa
     String liczbaTerminali
@@ -591,14 +594,13 @@ class ProcessCommand implements Serializable {
 
         doladowania_tk(nullable: true)
         doladowania_tp(nullable: true)
-        hasDoladowania(nullable: true, validator: { value, process, errors ->
-            if (value == null) {
-                return true
-            }
+        hasDoladowania(nullable: true, validator: { value, cmd, errors ->
 
-            if (!process.doladowania_tp && !process.doladowania_tk) {
-                errors.rejectValue("hasDoladowania", "default.atLeastOne.doladowania")
-                return false
+            if(value && (cmd.isDoladowania_tp || cmd.isDoladowania_tk)){
+                if(!cmd.hasAtLeastOneDoladowanie){
+                    errors.rejectValue("hasDoladowania", "default.atLeastOne.doladowania")
+                    return false
+                }
             }
             return true
         })

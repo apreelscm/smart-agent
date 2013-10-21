@@ -615,7 +615,7 @@ class ProcessService {
                     "notes", "hasUmowaCzas", "hasKontaktTel", "hasDoladowania", "hasAkceptantTel",
                     "hasInformacjaHandlowa","liczbaTerminali", "atLeastClosure", "nullableTrueBlankFalse",
                     "defaultPointData", "defaultPosData", "maxLengthClosure", "skipAddressValidationClosure",
-                    "isDoladowania_tp","isDoladowania_tk"]
+                    "isDoladowania_tp","isDoladowania_tk", "hasAtLeastOneDoladowanie"]
                     .contains(key) || value == ProcessCommand.DEFAULT_VALUE){
                 return
             }

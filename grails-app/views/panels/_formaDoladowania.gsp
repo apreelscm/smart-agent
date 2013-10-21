@@ -2,7 +2,6 @@
     <fieldset style="text-align: center">
         <div class="belka-glowna"><g:message code="panel.recharge.title"/></div>
         <div style="text-align: center; padding-top: 20px; width: 600px" class="centre">
-            <g:hiddenField name="hasDoladowania" value="true"/>
             <div class="${hasErrors(bean:data,field:'hasDoladowania','errorContainer')}" id="formaDoladowania">
 
                 <g:set var="hasNewUmowaAndPrepaid" value="${processInstance?.activities?.any{it.code.equals('nowaUmowa')} && processInstance?.activities?.any{it.code.equals('dodaniePrepaid')}}"/>
@@ -18,10 +17,10 @@
                 </g:if>
 
                 <div style="display: inline">
-                    <label><g:checkBox name="doladowania_tp" value="${data.doladowania_tp}" disabled="${!tpEnabled}" class="doladowanie" data-doladowanie="telepompka"/> <g:message code="panel.newpoint.terminaloptions.phonecreditsrecharge.telepompka"/></label>
+                    <label><g:checkBox name="doladowania_tk" value="${data.doladowania_tk}" disabled="${!tkEnabled}" class="doladowanie" data-doladowanie="telekodzik"/> <g:message code="panel.newpoint.terminaloptions.phonecreditsrecharge.telekodzik"/></label>
                 </div>
                 <div style="display: inline">
-                    <label><g:checkBox name="doladowania_tk" value="${data.doladowania_tk}" disabled="${!tkEnabled}" class="doladowanie" data-doladowanie="telekodzik"/> <g:message code="panel.newpoint.terminaloptions.phonecreditsrecharge.telekodzik"/></label>
+                    <label><g:checkBox name="doladowania_tp" value="${data.doladowania_tp}" disabled="${!tpEnabled}" class="doladowanie" data-doladowanie="telepompka"/> <g:message code="panel.newpoint.terminaloptions.phonecreditsrecharge.telepompka"/></label>
                 </div>
             </div>
 

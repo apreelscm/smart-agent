@@ -43,32 +43,32 @@ class PdfProcessMapper extends AbstractPdfMapper{
         return dataMap;
     }
 
-    private def mapProcessDataToPDFData(def process) {
+    private def mapProcessDataToPDFData(def processData) {
         Map<String, String[]> data = new HashMap<String, String[]>()
 
-        process.each { processData ->
+        processData.each { processDataItem ->
             //formatowanie procentowej wartosci platnosci karty
-            if (processData.name.endsWith('Pr') && !['oplataVISAPr', 'oplataMasterCardPr', 'oplataMaestroPr'].contains(processData.name)){
-                formatDoubleValue(data, processData, '%')
+            if (processDataItem.name.endsWith('Pr') && !['oplataVISAPr', 'oplataMasterCardPr', 'oplataMaestroPr'].contains(processDataItem.name)){
+                formatDoubleValue(data, processDataItem, '%')
                 return
             }
 
             //formatowanie stalej wartosci platnosci karty
-            if (processData.name.endsWith('St')){
-                formatDoubleValue(data, processData, 'zł')
+            if (processDataItem.name.endsWith('St')){
+                formatDoubleValue(data, processDataItem, 'zł')
                 return
             }
 
-            def methodName = "map" + processData.name.capitalize()+"Process"
-            if (PdfProcessMapper.metaClass.respondsTo(this, methodName)) {
-                this."${methodName}"(data, process, processData.name, processData.value)
+            def methodName = "map" + processDataItem.name.capitalize()+"Process"
+            if (isMappingMethodExists(methodName)) {
+                this."${methodName}"(data, processData, processDataItem.name, processDataItem.value)
                 return
             }
 
-            if ("true".equals(processData.value) == true || "false".equals(processData.value) == true) {
-                data.put(processData.name, [processData.value, "", "checkbox"] as String[])
+            if ("true".equals(processDataItem.value) == true || "false".equals(processDataItem.value) == true) {
+                data.put(processDataItem.name, [processDataItem.value, "", "checkbox"] as String[])
             }else {
-                data.put(processData.name, [processData.value] as String[])
+                data.put(processDataItem.name, [processDataItem.value] as String[])
             }
         }
 
@@ -444,6 +444,70 @@ class PdfProcessMapper extends AbstractPdfMapper{
         }
     }
 
+    private def mapPp_orange_tkProcess(def data, def process, def key, def value){
+        setUpustDlaTypuDoladowania(data, process, key, value, "doladowania_tk")
+    }
+
+    private def mapPp_plus_tkProcess(def data, def process, def key, def value){
+        setUpustDlaTypuDoladowania(data, process, key, value, "doladowania_tk")
+    }
+
+    private def mapPp_tmobile_tkProcess(def data, def process, def key, def value){
+        setUpustDlaTypuDoladowania(data, process, key, value, "doladowania_tk")
+    }
+
+    private def mapPp_heyah_tkProcess(def data, def process, def key, def value){
+        setUpustDlaTypuDoladowania(data, process, key, value, "doladowania_tk")
+    }
+
+    private def mapPp_play_tkProcess(def data, def process, def key, def value){
+        setUpustDlaTypuDoladowania(data, process, key, value, "doladowania_tk")
+    }
+
+    private def mapPp_telegrosik_tkProcess(def data, def process, def key, def value){
+        setUpustDlaTypuDoladowania(data, process, key, value, "doladowania_tk")
+    }
+
+    private def mapPp_virginmobile_tkProcess(def data, def process, def key, def value){
+        setUpustDlaTypuDoladowania(data, process, key, value, "doladowania_tk")
+    }
+
+    private def mapPp_lycamobile_tkProcess(def data, def process, def key, def value){
+        setUpustDlaTypuDoladowania(data, process, key, value, "doladowania_tk")
+    }
+
+    private def mapPp_gtmobile_tkProcess(def data, def process, def key, def value){
+        setUpustDlaTypuDoladowania(data, process, key, value, "doladowania_tk")
+    }
+
+    private def mapPp_vectonemobile_tkProcess(def data, def process, def key, def value){
+        setUpustDlaTypuDoladowania(data, process, key, value, "doladowania_tk")
+    }
+
+    private def mapPp_delightmobile_tkProcess(def data, def process, def key, def value){
+        setUpustDlaTypuDoladowania(data, process, key, value, "doladowania_tk")
+    }
+
+    private def mapPp_orange_tpProcess(def data, def process, def key, def value){
+        setUpustDlaTypuDoladowania(data, process, key, value, "doladowania_tp")
+    }
+
+    private def mapPp_plus_tpProcess(def data, def process, def key, def value){
+        setUpustDlaTypuDoladowania(data, process, key, value, "doladowania_tp")
+    }
+
+    private def mapPp_tmobile_tpProcess(def data, def process, def key, def value){
+        setUpustDlaTypuDoladowania(data, process, key, value, "doladowania_tp")
+    }
+
+    private def mapPp_heyah_tpProcess(def data, def process, def key, def value){
+        setUpustDlaTypuDoladowania(data, process, key, value, "doladowania_tp")
+    }
+
+    private def mapPp_play_tpProcess(def data, def process, def key, def value){
+        setUpustDlaTypuDoladowania(data, process, key, value, "doladowania_tp")
+    }
+
     private def addToData(def data, def resultNormalMap, def countPdfFileName, def pricePdfFileName, def suffixes) {
         resultNormalMap.eachWithIndex{ key, value, index ->
             if (index < suffixes.size()){
@@ -503,7 +567,19 @@ class PdfProcessMapper extends AbstractPdfMapper{
 
     private getFromProcessDataSet(def processDataSet, def key){
         def result = processDataSet.find{ processData -> processData.name.equals(key)}
-        (result && result?.value)?result?.value:""
+        (result && result?.value) ? result?.value:""
+    }
+
+    private Boolean isMappingMethodExists(String methodName) {
+        return PdfProcessMapper.metaClass.respondsTo(this, methodName)
+    }
+
+    private void setUpustDlaTypuDoladowania(def data, def process, def key, def value, def typDoladownaia) {
+        if(getFromProcessDataSet(process, typDoladownaia).equals("true")){
+            data.put(key, [value] as String[]);
+        } else {
+            data.put(key, ['-'] as String[]);
+        }
     }
 
 }
