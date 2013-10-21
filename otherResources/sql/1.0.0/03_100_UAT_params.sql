@@ -1,5 +1,5 @@
 insert into EUMOWY.APP_PARAMETERS (id, name, value) values (4, 'SUBSCRIPTIONS_PATH_BLACKPREFIX', 'black_');
-insert into EUMOWY.APP_PARAMETERS (id, name, value) values (7, 'MANAGEMENT_SUBSCRIPTION1_SCALE_X', '85');
+insert into EUMOWY.APP_PARAMETERS (id, name, value) values (7, 'MANAGEMENT_SUBSCRIPTION1_SCALE_X', '85'); -- TODO tez powinno byc w definicji
 insert into EUMOWY.APP_PARAMETERS (id, name, value) values (8, 'MANAGEMENT_SUBSCRIPTION1_SCALE_Y', '58');
 insert into EUMOWY.APP_PARAMETERS (id, name, value) values (9, 'MANAGEMENT_SUBSCRIPTION2_SCALE_X', '56');
 insert into EUMOWY.APP_PARAMETERS (id, name, value) values (10, 'MANAGEMENT_SUBSCRIPTION2_SCALE_Y', '59');
