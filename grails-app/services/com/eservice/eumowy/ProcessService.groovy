@@ -601,7 +601,7 @@ class ProcessService {
 // And we will return all properties of the object that define that annotation
     private def findAllPropertiesToSave( def obj, def annotClass ) {
         obj.properties.findAll { prop ->
-            obj.getClass().declaredFields.find {
+			obj.getClass().declaredFields.find {
                 it.name == prop.key && (!it.isAnnotationPresent(annotClass) || !it.getAnnotation(annotClass).inSave())
             }
         }
