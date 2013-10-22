@@ -1,9 +1,9 @@
 package com.eservice.eumowy
 
 import com.eservice.eumowy.annotation.DateField
+import com.eservice.eumowy.annotation.Omit
 import com.eservice.eumowy.command.AllPointsCommand
 import com.eservice.eumowy.command.AllPosCommand
-import com.eservice.eumowy.annotation.Omit
 import com.eservice.eumowy.command.PointCommand
 import com.eservice.eumowy.command.ProcessCommand
 import com.eservice.eumowy.util.DateUtils
@@ -256,7 +256,7 @@ class ProcessService {
     def loadProcessData(def process, def cmd) {
         process.processData?.each {ProcessData data ->
             if (!cmd.hasProperty(data.name)){
-                log.error('NoSuchField in ProcessComand for : ' + data.name)
+                log.warn('NoSuchField in ProcessComand for : ' + data.name)
                 return
             } else if (["errors", "class"].contains(data.name) || (hasAnnotation(cmd, data.name, Omit) && getAnnotation(cmd, data.name, Omit).inPopulate())){
                 return
@@ -618,12 +618,14 @@ class ProcessService {
     def getDataFromPanels(def cmd) {
         def processDataList = [];
         def dataToSave = findAllPropertiesToSave(cmd, Omit);
-        dataToSave.findAll { it.value != ProcessCommand.DEFAULT_VALUE || !["class", "errors"].contains(it.key) }.each { key, value ->
+        dataToSave.findAll { it.value != ProcessCommand.DEFAULT_VALUE && !["class", "errors"].contains(it.key) }.each { key, value ->
             if (hasAnnotation(cmd, key, DateField) || "dataUmowy".equals(key)){
                 processDataList.add(new ProcessData(name: "${key}", value:"${DateUtils.formatWithTimezoneFromStr(value)}"));
                 return;
             }
 
+            log.info("key:"+key)
+            log.info("value:"+value)
             processDataList.add(new ProcessData(name: "${key}", value:"${value ?: ''}"));
         }
         processDataList
@@ -810,7 +812,6 @@ class ProcessService {
 
                 point.czyWybranyAkceptacjaKart = apc.czyWybranyAkceptacjaKart
                 point.czyWybranyZakresUruchomienia = apc.czyWybranyZakresUruchomienia
-                point.tytulPlatnosci = apc.tytulPlatnosci
                 point.systemKasowy = apc.systemKasowy
                 point.uta = apc.uta
 

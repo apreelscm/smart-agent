@@ -196,6 +196,29 @@ class PanelService {
         cmd.srednia_sprzedaz_doladowan_slownie = nullify(cmd.srednia_sprzedaz_doladowan_slownie)
     }
 
+    def getFormaDoladowaniaOrazWartosciUpustow(ProcessCommand cmd, def calc){
+        cmd.srednia_sprzedaz_doladowan = calculatorService.getCalcProperty(calc,"DEKLARACJA_SPRZEDAZY_PP")
+        cmd.srednia_sprzedaz_doladowan_slownie = nullify(cmd.srednia_sprzedaz_doladowan_slownie)
+
+        cmd.pp_orange_tk = calculatorService.getCalcProperty(calc,"STAWKA_TELEKODZIK_ORANGE")
+        cmd.pp_orange_tp = calculatorService.getCalcProperty(calc,"STAWKA_TELEPOMPKA_ORANGE")
+        cmd.pp_plus_tk = calculatorService.getCalcProperty(calc,"STAWKA_TELEKODZIK_PLUS")
+        cmd.pp_plus_tp = calculatorService.getCalcProperty(calc,"STAWKA_TELEPOMPKA_PLUS")
+        cmd.pp_tmobile_tk = calculatorService.getCalcProperty(calc,"STAWKA_TELEKODZIK_TAKTAK")
+        cmd.pp_tmobile_tp = calculatorService.getCalcProperty(calc,"STAWKA_TELEPOMPKA_TAKTAK")
+        cmd.pp_heyah_tk = calculatorService.getCalcProperty(calc,"STAWKA_TELEKODZIK_HEYAH")
+        cmd.pp_heyah_tp = calculatorService.getCalcProperty(calc,"STAWKA_TELEPOMPKA_HEYAH")
+        cmd.pp_play_tk = calculatorService.getCalcProperty(calc,"STAWKA_TELEKODZIK_PLAY")
+        cmd.pp_play_tp = calculatorService.getCalcProperty(calc,"STAWKA_TELEPOMPKA_PLAY")
+        cmd.pp_telegrosik_tk = calculatorService.getCalcProperty(calc,"STAWKA_TELEKODZIK_GALENA")
+        cmd.pp_virginmobile_tk = calculatorService.getCalcProperty(calc,"STAWKA_TELEKODZIK_VIRGIN")
+        cmd.pp_lycamobile_tk = calculatorService.getCalcProperty(calc,"STAWKA_TELEKODZIK_LYCA")
+        cmd.pp_gtmobile_tk =calculatorService.getCalcProperty(calc,"STAWKA_TELEKODZIK_GTMOBILE")
+        cmd.pp_vectonemobile_tk =  calculatorService.getCalcProperty(calc,"STAWKA_TELEKODZIK_VECTOBE")
+        cmd.pp_delightmobile_tk =  calculatorService.getCalcProperty(calc,"STAWKA_TELEKODZIK_DELIGHT")
+        cmd.oplataZaOprogramowanieDoDoladowan = calculatorService.getCalcProperty(calc,"OPLATA_ZA_APL_PP")
+    }
+
     def getFunkcjeTerminala(ProcessCommand cmd, def calc ) {
     }
 
@@ -408,23 +431,7 @@ class PanelService {
     }
 
     def getPoziomOplatIWarunkiPlatnosciPP(ProcessCommand cmd, def calc ) {
-        cmd.pp_orange_tk = calculatorService.getCalcProperty(calc,"STAWKA_TELEKODZIK_ORANGE")
-        cmd.pp_orange_tp = calculatorService.getCalcProperty(calc,"STAWKA_TELEPOMPKA_ORANGE")
-        cmd.pp_plus_tk = calculatorService.getCalcProperty(calc,"STAWKA_TELEKODZIK_PLUS")
-        cmd.pp_plus_tp = calculatorService.getCalcProperty(calc,"STAWKA_TELEPOMPKA_PLUS")
-        cmd.pp_tmobile_tk = calculatorService.getCalcProperty(calc,"STAWKA_TELEKODZIK_TAKTAK")
-        cmd.pp_tmobile_tp = calculatorService.getCalcProperty(calc,"STAWKA_TELEPOMPKA_TAKTAK")
-        cmd.pp_heyah_tk = calculatorService.getCalcProperty(calc,"STAWKA_TELEKODZIK_HEYAH")
-        cmd.pp_heyah_tp = calculatorService.getCalcProperty(calc,"STAWKA_TELEPOMPKA_HEYAH")
-        cmd.pp_play_tk = calculatorService.getCalcProperty(calc,"STAWKA_TELEKODZIK_PLAY")
-        cmd.pp_play_tp = calculatorService.getCalcProperty(calc,"STAWKA_TELEPOMPKA_PLAY")
-        cmd.pp_telegrosik_tk = calculatorService.getCalcProperty(calc,"STAWKA_TELEKODZIK_GALENA")
-        cmd.pp_virginmobile_tk = calculatorService.getCalcProperty(calc,"STAWKA_TELEKODZIK_VIRGIN")
-        cmd.pp_lycamobile_tk = calculatorService.getCalcProperty(calc,"STAWKA_TELEKODZIK_LYCA")
-        cmd.pp_gtmobile_tk =calculatorService.getCalcProperty(calc,"STAWKA_TELEKODZIK_GTMOBILE")
-        cmd.pp_vectonemobile_tk =  calculatorService.getCalcProperty(calc,"STAWKA_TELEKODZIK_VECTOBE")
-        cmd.pp_delightmobile_tk =  calculatorService.getCalcProperty(calc,"STAWKA_TELEKODZIK_DELIGHT")
-        cmd.oplataZaOprogramowanieDoDoladowan = calculatorService.getCalcProperty(calc,"OPLATA_ZA_APL_PP")
+        getFormaDoladowaniaOrazWartosciUpustow(cmd, calc)
     }
 
     def getPromocyjneObnizenieOplatyZaZestawPos(ProcessCommand cmd, def calc ) {

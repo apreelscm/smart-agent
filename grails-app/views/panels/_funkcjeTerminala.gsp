@@ -39,19 +39,14 @@
                             <g:set var="tkEnabled" value="${hasNewUmowaAndPrepaid || data.isDoladowania_tk}"/>
 
                             <div>
-                                <label for="${panelType}[${id}].telePompka"><g:checkBox name="${panelType}[${id}].telePompka" value="${pointData?.telePompka}"  disabled="${!tpEnabled}" class="doladowanie" data-doladowanie="telepompka"/><g:message code="panel.newpoint.terminaloptions.phonecreditsrecharge.telepompka" /></label>
+                                <label for="${panelType}[${id}].teleKodzik"><g:checkBox name="${panelType}[${id}].teleKodzik" value="${pointData?.teleKodzik}"  disabled="${!tkEnabled}" class="doladowanie" data-doladowanie="telekodzik"/><g:message code="panel.newpoint.terminaloptions.phonecreditsrecharge.telekodzik" /></label>
                             </div>
                             <div>
-                                <label for="${panelType}[${id}].teleKodzik"><g:checkBox name="${panelType}[${id}].teleKodzik" value="${pointData?.teleKodzik}"  disabled="${!tkEnabled}" class="doladowanie" data-doladowanie="telekodzik"/><g:message code="panel.newpoint.terminaloptions.phonecreditsrecharge.telekodzik" /></label>
+                                <label for="${panelType}[${id}].telePompka"><g:checkBox name="${panelType}[${id}].telePompka" value="${pointData?.telePompka}"  disabled="${!tpEnabled}" class="doladowanie" data-doladowanie="telepompka"/><g:message code="panel.newpoint.terminaloptions.phonecreditsrecharge.telepompka" /></label>
                             </div>
                         </span>
                         <span style="padding-left: 6em;display: inline-block">
                             <div><g:message code="panel.newpoint.terminaloptions.phonecreditsrecharge.terminalcount" /></div>
-                      %{--      <eumowy:numberField name="${panelType}[${id}].terminalIlosc" id="${panelType}[${id}].terminalCount" validatable="${data}"
-                                                class="${hasErrors(bean:data,field:'liczbaTerminali','error')}"
-                                                value="${pointData?.terminalIlosc}" style="width: 50px;"
-                                                errorMessage="${message(code:'default.tooMuch.liczbaTerminali')}"/>--}%
-
                             <eumowy:textField name="${panelType}[${id}].terminalIlosc"
                             					class="integer-number"
                                                 id="${panelType}[${id}].terminalCount"

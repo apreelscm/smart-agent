@@ -1,78 +1,91 @@
 function refreshTelepomkaAndTelekodzikPercentValues(){
-    var showTK = false,
-        showTP = false,
+    var isActiveTK = false,
+        isActiveTP = false,
         checkedDoladowaniaInPanels = jQuery('div.newPointPanel').find('input.doladowanie:checked'),
         checkedDoladowaniaInFormaDoladowania = jQuery('div#formaDoladowania').find('input.doladowanie:checked'),
-        teleKodzikiInPPPaymentPanel = jQuery("div#ppPaymentPanel").find("input.telekodzikValue"),
-        telepompkiInPPPPaymentPanel = jQuery("div#ppPaymentPanel").find("input.telepompkaValue");
+        teleKodzikiInPPPaymentPanel = jQuery("div#ppPaymentPanel").find("div.telekodzikValue"),
+        telepompkiInPPPPaymentPanel = jQuery("div#ppPaymentPanel").find("div.telepompkaValue"),
+        hasActiveAtLeastOneDoladowanie = jQuery("input#hasActiveAtLeastOneDoladowanie");
 
     checkedDoladowaniaInPanels.each(function(){
         var type = this.getAttribute('data-doladowanie');
         if(type === "telekodzik"){
-            showTK = true
+            isActiveTK = true
         } else {
-            showTP = true
+            isActiveTP = true
         }
     });
 
     checkedDoladowaniaInFormaDoladowania.each(function(){
         var type = this.getAttribute('data-doladowanie');
         if(type === "telekodzik"){
-            showTK = true
+            isActiveTK = true
         } else {
-            showTP = true
+            isActiveTP = true
         }
     });
 
-    if(showTK){
-        teleKodzikiInPPPaymentPanel.each(function(){
-            this.value = this.getAttribute('data-value');
-        })
-    } else {
-        teleKodzikiInPPPaymentPanel.each(function(){
-            this.value = '';
-        })
+    jQuery("#hasAtLeastOneDoladowanie").val(isActiveTK || isActiveTP);
+
+    if(isActiveTK && isActiveTP){
+        teleKodzikiInPPPaymentPanel.parent().removeClass('visibility-hidden');
+        telepompkiInPPPPaymentPanel.parent().removeClass('visibility-hidden');
+        return;
     }
 
-    if (showTP) {
-        telepompkiInPPPPaymentPanel.each(function() {
-            this.value = this.getAttribute('data-value');
-        })
+    if(isActiveTP){
+        teleKodzikiInPPPaymentPanel.parent().addClass('visibility-hidden');
     } else {
-        telepompkiInPPPPaymentPanel.each(function() {
-            this.value = '';
-        })
+        teleKodzikiInPPPaymentPanel.parent().removeClass('visibility-hidden');
+    }
+
+    if(isActiveTK){
+        telepompkiInPPPPaymentPanel.parent().addClass('visibility-hidden');
+    } else {
+        telepompkiInPPPPaymentPanel.parent().removeClass('visibility-hidden');
     }
 }
 
-/* CR - TO UNCOMMENT
+var $j = jQuery.noConflict();
+
 (function ($) {
     $(function() {
 
         refreshCityField(jQuery('#akceptantKodPocztowy').val(),  jQuery("#akceptantMiasto"))
+        refreshCityField(jQuery('#akceptantKontaktKodPocztowy').val(),  jQuery("#akceptantKontaktMiasto"))
+        refreshCityField(jQuery('#wydrukKodPocztowy').val(),  jQuery("#wydrukMiasto"))
 
         $("#akceptantKodPocztowy").on("keyup", function(e) {
             refreshCityField(jQuery(e.target).val(),  jQuery("#akceptantMiasto"))
         });
-    });
 
-    function refreshCityField(code, select){
-        var selectValue = select.val()
-
-        select.empty();
-        if (code && code.length == 6){
-            $.get("/eumowy/activity/getCity", {code: code.replace(/\s+/g, '')}, function(data) {
-                var cities = eval('(' + data + ')');
-
-                if(cities instanceof Array){
-                    $.each(cities, function(value) {
-                        select.append('<option value="'+cities[value]+'">'+cities[value]+'</option>')
-                    });
-                }
-                select.val(selectValue)
+        $("#akceptantKontaktKodPocztowy").on("keyup", function(e) {
+            refreshCityField(jQuery(e.target).val(),  jQuery("#akceptantKontaktMiasto"))
             });
-        }else{
-            select.val('')
-        }
+
+        $("#wydrukKodPocztowy").on("keyup", function(e) {
+            refreshCityField(jQuery(e.target).val(),  jQuery("#wydrukMiasto"))
+        });
+    });
+}(jQuery));
+
+
+function refreshCityField(code, select){
+    var selectValue = select.val()
+
+    select.empty();
+    if (code && code.length == 6){
+        $j.get("/eumowy/activity/getCity", {code: code.replace(/\s+/g, '')}, function(data) {
+            var cities = eval('(' + data + ')');
+
+            if(cities instanceof Array){
+                $j.each(cities, function(value) {
+                    select.append('<option value="'+cities[value]+'">'+cities[value]+'</option>')
+                });
+            }
+            select.val(selectValue)
+        });
+    }else{
+        select.val('')
     }
-}(jQuery));*/
+}
