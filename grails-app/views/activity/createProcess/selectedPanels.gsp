@@ -194,31 +194,6 @@
     </g:javascript>
     <r:require module="validation"/>
     <r:require module="newpoint_panel_setup"/>
-
-    <style>
-    #uploads {
-        margin: 6px 0;
-        padding: 0 0 9px;
-        position: relative;
-        width: 310px;
-    }
-    #uploads div.fakeupload {
-        background: #FF0000 no-repeat scroll 100% 50% transparent;
-        cursor: pointer;
-    }
-    #uploads div.fakeupload input {
-        width: 219px;
-        height: 29px;
-    }
-    #uploads input.realupload {
-        opacity: 0;
-        position: absolute;
-        right: 0;
-        top: 0;
-        width: 310px;
-        z-index: 2;
-    }
-    </style>
 </head>
 <body>
 <r:require module="mask"/>
@@ -257,7 +232,7 @@
         <g:hiddenField name="nip" value="${data.nip}"/>
         <g:hiddenField name="liczbaTerminali" value="${data.liczbaTerminali}"/>
         <g:hiddenField name="liczbaPosZCbd" value="${data.liczbaPosZCbd}"/>
-        <g:each var="panel" in="${processInstance.panels}" status="i">
+        <g:each var="panel" in="${processInstance.panels.sort{it.orderNo}}" status="i">
             <g:if test="${panel != null}">
                 <g:if test="${panel.name.equals('danePunktu') == false && panel.name.equals('danePos') == false}">
                     <g:render template="/panels/${panel.name}"/>
