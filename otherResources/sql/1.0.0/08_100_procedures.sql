@@ -1159,3 +1159,42 @@ where w.auw_id=auwId;
 return wynik;
 
 end;
+
+create or replace
+FUNCTION                                   CZY_GIFT (NIP varchar2)
+  return number
+is
+
+  ile number;
+  wynik number;
+  begin
+
+    SELECT   count(*)
+    into ile
+    FROM   cbd_adm.cbt_umowy
+    WHERE   umw_typ = 'GIFT'
+            AND     umw_stan='Z'
+            AND umw_kln_id IN
+
+                (SELECT   kln_id
+                 FROM   cbt_klienci m
+                 WHERE       kln_poziom = 'MRC'
+                             AND kln_nip = NIP
+                             AND kln_status = 'Q'
+                             AND kln_qcards_nr = 1
+                             AND EXISTS
+                 (SELECT   1
+                  FROM   cbt_klienci o, cbt_terminale_pos
+                  WHERE       o.kln_kln_id = m.kln_id
+                              AND o.kln_id = tps_kln_id
+                              AND tps_status NOT IN ('N', 'C')));
+
+
+    if ile>0 then
+      wynik:= 1;
+    else
+      wynik:= 0;
+    End if;
+
+    return wynik;
+  end;

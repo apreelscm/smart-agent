@@ -39,10 +39,10 @@
                             <g:set var="tkEnabled" value="${hasNewUmowaAndPrepaid || data.isDoladowania_tk}"/>
 
                             <div>
-                                <label for="${panelType}[${id}].teleKodzik"><g:checkBox name="${panelType}[${id}].teleKodzik" value="${pointData?.teleKodzik}"  disabled="${!tkEnabled}" class="doladowanie" data-doladowanie="telekodzik"/><g:message code="panel.newpoint.terminaloptions.phonecreditsrecharge.telekodzik" /></label>
+                                <label for="${panelType}[${id}].teleKodzik" class="doladowanieLabel"><g:checkBox name="${panelType}[${id}].teleKodzik" value="${pointData?.teleKodzik}"  disabled="${!tkEnabled}" class="doladowanie" data-doladowanie="telekodzik"/><g:message code="panel.newpoint.terminaloptions.phonecreditsrecharge.telekodzik" /></label>
                             </div>
                             <div>
-                                <label for="${panelType}[${id}].telePompka"><g:checkBox name="${panelType}[${id}].telePompka" value="${pointData?.telePompka}"  disabled="${!tpEnabled}" class="doladowanie" data-doladowanie="telepompka"/><g:message code="panel.newpoint.terminaloptions.phonecreditsrecharge.telepompka" /></label>
+                                <label for="${panelType}[${id}].telePompka" class="doladowanieLabel"><g:checkBox name="${panelType}[${id}].telePompka" value="${pointData?.telePompka}"  disabled="${!tpEnabled}" class="doladowanie" data-doladowanie="telepompka"/><g:message code="panel.newpoint.terminaloptions.phonecreditsrecharge.telepompka" /></label>
                             </div>
                         </span>
                         <span style="padding-left: 6em;display: inline-block">
@@ -52,7 +52,7 @@
                                                 id="${panelType}[${id}].terminalCount"
                                                 value="${pointData?.terminalIlosc}"
                                                 validatable="${pointData}"
-                                                validateField="terminalIlosc"
+                                                validateField="terminalIlosc" disabled="${!tkEnabled && !tpEnabled}"
                                                 style="width: 50px;"  />
 
                         </span>
@@ -60,7 +60,8 @@
                 </ul>
                 <div>
                     <p class="bold" ><g:message code="panel.newpoint.terminaloptions.marketingproducts" /></p>
-                    <p><label for="${panelType}[${id}].giftCard"><g:checkBox name="${panelType}[${id}].kartaPodarunkowa" id="${panelType}[${id}].giftCard" value="${pointData?.kartaPodarunkowa}"/><g:message code="panel.newpoint.terminaloptions.marketingproducts.giftcard" /></label></p>
+                    <g:hiddenField name="czyGift" value="${data.czyGift}"/>
+                    <p><label for="${panelType}[${id}].giftCard"><g:checkBox disabled="${!(data.czyGift && data.czyRozszerzenie)}" name="${panelType}[${id}].kartaPodarunkowa" id="${panelType}[${id}].giftCard" value="${pointData?.kartaPodarunkowa}"/><g:message code="panel.newpoint.terminaloptions.marketingproducts.giftcard" /></label></p>
                 </div>
             </div>
 

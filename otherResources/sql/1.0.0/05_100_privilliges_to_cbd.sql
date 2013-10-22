@@ -4,6 +4,7 @@ grant select, update on adm_uzytkownicy_web to EUMOWY_APP;
 grant select, update on adm_uzytkownicy_web to EUMOWY;
 grant select on adm_role to EUMOWY_APP;
 grant select on cbt_klienci to EUMOWY_APP;
+grant select on cbt_klienci to EUMOWY;
 grant select on cbt_klienci_pp to EUMOWY_APP;
 grant select on cbt_umowy to EUMOWY_APP;
 grant select on cbt_pracownicy to EUMOWY_APP;

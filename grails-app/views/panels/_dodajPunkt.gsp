@@ -16,6 +16,9 @@
 <div id="hiddenPanel" style="display: none;">
 	<g:render template="../panels/danePunktu" model="[id:'%ID%', panelType: 'points', pointData: data.defaultPointData]"/>
 </div>
+<div id="removePointConfirmDialog" style="display: none;">
+	<g:message code="panel.addnewpoint.confirmRemoval"/>
+</div>
 <r:require module="jquery_ui"/>
 	
 <r:script>
@@ -87,29 +90,45 @@
 		jQuery("body").on("click", "#removePointButton", function(e) {
 			e.preventDefault();
 			
-			jQuery(e.target).closest(".newPointPanel").remove();
-			panelInternalCount--;
+			jQuery("#removePointConfirmDialog").dialog({
+				resizable: true,
+				height:200,
+				width: 450,
+				modal: true,
+				buttons: 
+					{
+						"Tak": function() {
+							jQuery( this ).dialog( "close" );
+							jQuery(e.target).closest(".newPointPanel").remove();
+							panelInternalCount--;
+							
+							if (panelInternalCount < 10) {
+								jQuery("#addNewPointButton").prop("disabled", false);
+							}
+							
+							if (panelInternalCount == 0) {
+								jQuery("#conitnueButton").prop("disabled", true);
+							}
+							
+							if (getCurrentTerminalCount("points") < maxTerminalCount) {
+								jQuery("#addNewPointButton").prop("disabled", false);
+								jQuery("#addNewPosButton").prop("disabled", false);
+							}
+				
+							refreshTelepomkaAndTelekodzikPercentValues();
+							
+							var dbPointId = parseInt(jQuery(e.target).attr('data-point-id'));
+							if (dbPointId) {
+								console.log("Usuwam punkt o id: " + dbPointId);
+								jQuery.post(jQuery(location).attr("href"), {_eventId_deletePoint: "", pointId: dbPointId}, function(data){});			
+							}
+						},
+						"Nie": function() {
+							jQuery( this ).dialog( "close" );
+						}
+					}
+			});
 			
-			if (panelInternalCount < 10) {
-				jQuery("#addNewPointButton").prop("disabled", false);
-			}
-			
-			if (panelInternalCount == 0) {
-				jQuery("#conitnueButton").prop("disabled", true);
-			}
-			
-			if (getCurrentTerminalCount("points") < maxTerminalCount) {
-				jQuery("#addNewPointButton").prop("disabled", false);
-				jQuery("#addNewPosButton").prop("disabled", false);
-			}
-
-			refreshTelepomkaAndTelekodzikPercentValues();
-			
-			var dbPointId = parseInt(jQuery(e.target).attr('data-point-id'));
-			if (dbPointId) {
-				console.log("Usuwam punkt o id: " + dbPointId);
-				jQuery.post(jQuery(location).attr("href"), {_eventId_deletePoint: "", pointId: dbPointId}, function(data){});			
-			}
 			
 			return false;
 		});
