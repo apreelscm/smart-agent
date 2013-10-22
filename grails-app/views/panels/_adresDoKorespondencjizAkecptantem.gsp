@@ -17,12 +17,16 @@
                         <span><g:message code="panel.flat.number" /></span> <span><eumowy:textField name="akceptantKontaktNrMieszkania" value="${data.akceptantKontaktNrMieszkania}" validatable="${data}" style="width: 50px" maxlength ="4"/></span>
                     </span>
                 </li>
+
                 <li>
-                    <span><g:message code="panel.city" /></span>
-                    <span><eumowy:textField name="akceptantKontaktMiasto" value="${data.akceptantKontaktMiasto}" validatable="${data}" style="width: 280px;" required="true"/></span>
+                    <span><g:message code="panel.postal.code" /></span>
+                    <span style="text-align: left;"><eumowy:textField class="postal-code" id="akceptantKontaktKodPocztowy" name="akceptantKontaktKodPocztowy" value="${data.akceptantKontaktKodPocztowy}" validatable="${data}" style="width: 50px" maxlength ="5" required="true"/></span>
                     <span>
-                        <span><g:message code="panel.postal.code" /></span> <span><eumowy:textField class="postal-code" name="akceptantKontaktKodPocztowy" value="${data.akceptantKontaktKodPocztowy}" validatable="${data}" style="width: 50px" maxlength ="5" required="true"/></span>
+                        <span><g:message code="panel.city" /></span>
+                        <span> <g:select id="akceptantKontaktMiasto" name="akceptantKontaktMiasto" value="${data.akceptantKontaktMiasto}" from="" style="width: 200px;" required="required"/></span>
                     </span>
+                </li>
+
                 </li>
                 <li>
                     <span><g:message code="panel.postal" /></span>

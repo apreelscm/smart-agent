@@ -544,16 +544,16 @@ class ProcessCommand implements Serializable {
         pierwszaSesjaCena(nullable: false, blank: true, shared: "number")
 
         akceptantKontaktUlicaTytul(nullable: true, blank: true)
-        akceptantKontaktUlica(nullable: false, blank: false, shared: "alpha", validator: { value, cmd, errors ->
+        akceptantKontaktUlica(nullable: false, blank: false, shared: "alphanumeric", validator: { value, cmd, errors ->
             maxLengthClosure.call(value, cmd, errors, 40, "akceptantKontaktUlica", "default.nameTooLong.street")
         })
-        akceptantKontaktNrDomu(nullable: false, blank: false, shared: "alpha")
-        akceptantKontaktNrMieszkania(nullable: true, blank: false, shared: "alpha")
-        akceptantKontaktMiasto(nullable: false, blank: false, shared: "alpha", validator: { value, cmd, errors ->
+        akceptantKontaktNrDomu(nullable: false, blank: false, shared: "alphanumeric")
+        akceptantKontaktNrMieszkania(nullable: true, blank: false, shared: "alphanumeric")
+        akceptantKontaktMiasto(nullable: false, blank: false, shared: "alphanumeric", validator: { value, cmd, errors ->
             maxLengthClosure.call(value, cmd, errors, 33, "akceptantKontaktMiasto", "default.nameTooLong.city")
         })
         akceptantKontaktKodPocztowy(nullable: false, blank: false, shared: "postalCodeValidator")
-        akceptantKontaktPoczta(nullable: false, blank: false, shared: "alpha", validator: { value, cmd, errors ->
+        akceptantKontaktPoczta(nullable: false, blank: false, shared: "alphanumeric", validator: { value, cmd, errors ->
             maxLengthClosure.call(value, cmd, errors, 33, "akceptantKontaktPoczta", "default.nameTooLong.postalTown")
         })
         dataAneksowanejUmowyPos(nullable: false, blank: false, shared: "date")
@@ -602,16 +602,16 @@ class ProcessCommand implements Serializable {
         nazwaDoWydrukuZTerminalaPos(nullable: true)
         wydrukNazwaDoWyszukwarki(nullable: true)
         wydrukUlicaTytul(nullable: true, blank: true)
-        wydrukUlica(nullable: false, blank: false, shared: "alpha", validator: { value, cmd, errors ->
+        wydrukUlica(nullable: false, blank: false, shared: "alphanumeric", validator: { value, cmd, errors ->
             maxLengthClosure.call(value, cmd, errors, 40, "wyrdukUlica", "default.nameTooLong.city")
         })
-        wydrukNrDomu(nullable: false, blank: false, shared: "alpha")
-        wydrukNrMieszkania(nullable: true, blank: false, shared: "alpha")
-        wydrukMiasto(nullable: false, blank: false, shared: "alpha", validator: { value, cmd, errors ->
+        wydrukNrDomu(nullable: false, blank: false, shared: "alphanumeric")
+        wydrukNrMieszkania(nullable: true, blank: false, shared: "alphanumeric")
+        wydrukMiasto(nullable: false, blank: false, shared: "alphanumeric", validator: { value, cmd, errors ->
             maxLengthClosure.call(value, cmd, errors, 33, "wydrukMiasto", "default.nameTooLong.postalTown")
         })
         wydrukKodPocztowy(nullable: false, blank: false, shared: "postalCodeValidator")
-        wydrukPoczta(nullable: false, blank: false, shared: "alpha", validator: { value, cmd, errors ->
+        wydrukPoczta(nullable: false, blank: false, shared: "alphanumeric", validator: { value, cmd, errors ->
             maxLengthClosure.call(value, cmd, errors, 33, "wydrukPoczta", "default.nameTooLong.postalTown")
         })
         wydrukLinia1(nullable: true, blank: true)
@@ -662,22 +662,22 @@ class ProcessCommand implements Serializable {
         })
 
         srednia_sprzedaz_doladowan(nullable:false, blank:false, shared:"number")
-        srednia_sprzedaz_doladowan_slownie(nullable:false, blank:false, shared: "lettersonly")
+        srednia_sprzedaz_doladowan_slownie(nullable:false, blank:false, shared: "lettersOnly")
         ifOplataVISA(nullable:false, blank:false, shared: "number4Precision") //1.11 %, M
         ifOplataMasterCard(nullable:false, blank:false, shared: "number4Precision") //1.11 %, M
         ifOplataDinersClub(nullable:false, blank:false, shared: "number4Precision") //1.11 %, M
         ifOplataIKO(nullable:false, blank:false, shared: "number4Precision") //1.11 %, M
         ifOplataPKOPB(nullable:false, blank:false, shared: "number4Precision") //1.11 %, M
         dzialalnoscForma(nullable:false, blank:true)
-        dzialalnoscFormaInna(nullable:true, blank:true, shared: "alpha")
+        dzialalnoscFormaInna(nullable:true, blank:true, shared: "alphanumeric")
         dzialalnoscDokument(nullable:false, blank:true)
-        dzialalnoscDokumentInny(nullable:true, blank:true, shared: "alpha")
+        dzialalnoscDokumentInny(nullable:true, blank:true, shared: "alphanumeric")
 
         //okresLojalnosciowy(nullable:false, blank:false) FIXME do wyjasnienia znaczenie BRAK vs 0
         oplataZaPlatnoscWInnejWalucie(nullable: false, blank: false)
         kontaktTytul(nullable: false, blank: false)
-        kontaktImie(nullable: false, blank: false, shared: "lettersonly")
-        kontaktNazwisko(nullable: false, blank: false, shared: "lettersonly")
+        kontaktImie(nullable: false, blank: false, shared: "lettersOnly")
+        kontaktNazwisko(nullable: false, blank: false, shared: "lettersOnly")
 
         hasKontaktTel(nullable: true, validator: { value, process, errors ->
             if (value == null) {
@@ -695,15 +695,15 @@ class ProcessCommand implements Serializable {
         kontaktTelStacjonarny(nullable: true)
         kontaktEmail(nullable: true, blank: true, shared: "email")
         pozyskujacyTytul(nullable: false, blank: false)
-        pozyskujacyImie(nullable: false, blank: false, shared: "lettersonly", maxSize: 40)
-        pozyskujacyNazwisko(nullable: false, blank: false, shared: "lettersonly", maxSize: 100)
+        pozyskujacyImie(nullable: false, blank: false, shared: "lettersOnly", maxSize: 40)
+        pozyskujacyNazwisko(nullable: false, blank: false, shared: "lettersOnly", maxSize: 100)
         pozyskujacyNumer(nullable: false, blank: false, maxSize: 12)
         reprezentant1Tytul(nullable: false, blank: false)
-        reprezentant1Imie(nullable: false, blank: false, shared: "lettersonly")
-        reprezentant1Nazwisko(nullable: false, blank: false, shared: "lettersonly")
+        reprezentant1Imie(nullable: false, blank: false, shared: "lettersOnly")
+        reprezentant1Nazwisko(nullable: false, blank: false, shared: "lettersOnly")
         reprezentant2Tytul(nullable: false, blank: false)
-        reprezentant2Imie(nullable: true, blank: true, shared: "lettersonly")
-        reprezentant2Nazwisko(nullable: true, blank: true, shared: "lettersonly")
+        reprezentant2Imie(nullable: true, blank: true, shared: "lettersOnly")
+        reprezentant2Nazwisko(nullable: true, blank: true, shared: "lettersOnly")
 
         visaEUKKOSt(nullable: false, blank: false, shared: "number", validator: { value, cmd, errors ->
             atLeastClosure.call(value, cmd, errors, "visaEUKKOSt", "OPLATA_MSC_53_ZL")
@@ -923,22 +923,22 @@ class ProcessCommand implements Serializable {
         scoringDeklaracjaFinansowaSredniObrot(nullable: true, blank: true)
         scoringDeklaracjaFinansowaSredniaTransakcja(nullable: true, blank: true)
         akceptantUlicaTytul(nullable: true, blank: true)
-        akceptantUlica(nullable: false, blank: false, shared: "alpha", validator: { value, cmd, errors ->
+        akceptantUlica(nullable: false, blank: false, shared: "alphanumeric", validator: { value, cmd, errors ->
             skipAddressValidationClosure.call(value, cmd, errors, "akceptantUlica", "default.cantBeEmpty.akceptantPoczta")
             maxLengthClosure.call(value, cmd, errors, 40, "akceptantUlica", "default.nameTooLong.street")
         })
-        akceptantNrDomu(nullable:false, shared: "alpha", validator: {value, cmd, errors ->
+        akceptantNrDomu(nullable:false, shared: "alphanumeric", validator: {value, cmd, errors ->
             skipAddressValidationClosure.call(value, cmd, errors, "akceptantNrDomu", "default.cantBeEmpty.akceptantNrDomu")
         })
-        akceptantNrMieszkania(nullable: true, blank: false, shared: "alpha")
-        akceptantMiasto(nullable: false, shared: "alpha", validator: { value, cmd, errors ->
+        akceptantNrMieszkania(nullable: true, blank: false, shared: "alphanumeric")
+        akceptantMiasto(nullable: false, shared: "alphanumeric", validator: { value, cmd, errors ->
             skipAddressValidationClosure.call(value, cmd, errors, "akceptantMiasto", "default.cantBeEmpty.akceptantNrDomu")
             maxLengthClosure.call(value, cmd, errors, 33, "akceptantMiasto", "default.nameTooLong.city")
         })
         akceptantKodPocztowy(nullable:false, shared: "postalCodeValidator", validator: {value, cmd, errors ->
             skipAddressValidationClosure.call(value, cmd, errors, "akceptantKodPocztowy", "default.cantBeEmpty.akceptantKodPocztowy")
         })
-        akceptantPoczta(nullable: false, shared: "alpha", validator: { value, cmd, errors ->
+        akceptantPoczta(nullable: false, shared: "alphanumeric", validator: { value, cmd, errors ->
             skipAddressValidationClosure.call(value, cmd, errors, "akceptantPoczta", "default.cantBeEmpty.akceptantPoczta")
 
             maxLengthClosure.call(value, cmd, errors, 33, "akceptantPoczta", "default.nameTooLong.postalTown")
