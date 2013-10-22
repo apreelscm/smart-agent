@@ -99,13 +99,13 @@
 						"Tak": function() {
 							jQuery( this ).dialog( "close" );
 							jQuery(e.target).closest(".newPointPanel").remove();
-							panelInternalCount--;
+							panelInternalCount.value--;
 							
-							if (panelInternalCount < 10) {
+							if (panelInternalCount.value < 10) {
 								jQuery("#addNewPointButton").prop("disabled", false);
 							}
 							
-							if (panelInternalCount == 0) {
+							if (panelInternalCount.value == 0) {
 								jQuery("#conitnueButton").prop("disabled", true);
 							}
 							
@@ -128,11 +128,11 @@
 					}
 			});
 			
-			if (panelInternalCount < 10) {
+			if (panelInternalCount.value < 10) {
 				jQuery("#addNewPointButton").prop("disabled", false);
 			}
 			
-			if (panelInternalCount == 0) {
+			if (panelInternalCount.value == 0) {
 				jQuery("#conitnueButton").prop("disabled", true);
 			}
 			
