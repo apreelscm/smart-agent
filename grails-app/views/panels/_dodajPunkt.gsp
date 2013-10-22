@@ -19,19 +19,19 @@
 <r:require module="jquery_ui"/>
 	
 <r:script>
-	
+
 	jQuery(document).ready(function() {
 		jQuery("#conitnueButton").prop("disabled", true);
 		var maxTerminalCount = jQuery("#liczbaTerminali").val();
 		var panelTemplate = jQuery("#hiddenPanel").html();
 		var panelCount = ${data.points.size()};
-		var panelInternalCount = ${data.points.size()};
+		panelInternalCount.value = ${data.points.size()};
 		globalPanelCount = ${data.points.size()};
+
 		jQuery("#newPointPanelCount").val(panelCount);
-		
 		jQuery("#hiddenPanel").remove();
 		
-		if (panelInternalCount > 0) {
+		if (panelInternalCount.value > 0) {
 			jQuery("#conitnueButton").prop("disabled", false);
 		}
 		
@@ -52,23 +52,23 @@
 		jQuery("#addNewPointButton").on("click", function(e) {
 			e.preventDefault();
 			
-			if (panelInternalCount < 10) {
+			if (panelInternalCount.value < 10) {
 				var data = panelTemplate.replace(/%ID%/gm, panelCount);
 				jQuery("#addNewPointPanelPlaceholder").append(data);
 				setupNewPointPanelHandlers(panelCount-1, panelCount, "points");
 				setupNewPointPanelData("points\\["+(panelCount-1)+"\\]\\.", "points\\["+panelCount+"\\]\\.");
 				panelCount++;
-				panelInternalCount++;
+				panelInternalCount.value++;
 				globalPanelCount++;
 				jQuery("#newPointPanelCount").val(panelCount);
                 maskNewPointRefresh();
 			}
 			
-			if (panelInternalCount == 10) {
+			if (panelInternalCount.value == 10) {
 				jQuery(e.target).prop("disabled", true);
 			}
 			
-			if (panelInternalCount > 0) {
+			if (panelInternalCount.value > 0) {
 				jQuery("#conitnueButton").prop("disabled", false);
 			}
 			
@@ -88,13 +88,13 @@
 			e.preventDefault();
 			
 			jQuery(e.target).closest(".newPointPanel").remove();
-			panelInternalCount--;
+			panelInternalCount.value--;
 			
-			if (panelInternalCount < 10) {
+			if (panelInternalCount.value < 10) {
 				jQuery("#addNewPointButton").prop("disabled", false);
 			}
 			
-			if (panelInternalCount == 0) {
+			if (panelInternalCount.value == 0) {
 				jQuery("#conitnueButton").prop("disabled", true);
 			}
 			

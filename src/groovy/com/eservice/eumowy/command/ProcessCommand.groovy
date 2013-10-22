@@ -376,6 +376,10 @@ class ProcessCommand implements Serializable {
     String scoringDeklaracjaFinansowaSredniObrot = DEFAULT_VALUE
     String scoringDeklaracjaFinansowaSredniaTransakcja = DEFAULT_VALUE
 
+    //used only for calculation
+    String progrnozaMiesieczna = DEFAULT_VALUE
+    String liczbaPtkCbd = DEFAULT_VALUE
+
 //    serwisEkonomiczny - FINISH
 //    serwisKomfort - FINISH
 //    serwisPrzestiz - FINISH
