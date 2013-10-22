@@ -1,3 +1,4 @@
+
 package com.eservice.eumowy
 
 import com.eservice.eumowy.command.ProcessCommand
@@ -1269,12 +1270,10 @@ class ActivityController {
     def _processDocumentCreation(Process process, String requestVersion, def requiredNumberOfSubscriptions)	{
 
         if (ELECTRIONICAL.equals(requestVersion)) {
-            //TODO Check signatures and update documents in DB
 
             if (params?.numberOfSubscriptions?.toInteger() == requiredNumberOfSubscriptions) {
 
                 process.documents.each { DocumentFile doc ->
-                    //TODO Update document content from Data Map
                     byte[] newContent = pdfService.addClientSubscriptionsToDocument(doc.content.content, doc.signature.id, process.subscriptions)
                     doc.content.content = newContent
                     doc.content.discard()
@@ -1296,7 +1295,7 @@ class ActivityController {
             emailService.sendDocumentsPaperVersion(process.phEmail, process.documents, merchantName)
         }
         else if (TEMPLATES.equals(requestVersion)) {
-            //TODO Documents are already in DB
+            //Documents are already in DB
             List<DocumentFile> documentFilesWithBlackFaksymileList = new ArrayList<DocumentFile>()
             List<DocumentFile> documentFilesWithoutFaksymileList = new ArrayList<DocumentFile>()
 

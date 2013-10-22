@@ -63,7 +63,7 @@ class PanelService {
         def result = cbdService.getDaneAkceptanta(cmd.nip);
 
         cmd.akceptantNazwaOficjalna = result?.nazwa ?: ""
-        cmd.akceptantNazwaSieciowa = nullify(cmd.akceptantNazwaSieciowa) //TODO
+        cmd.akceptantNazwaSieciowa = nullify(cmd.akceptantNazwaSieciowa)
         cmd.akceptantRegon = result?.regon ?: ""
 
         cmd.akceptantNazwaOficjalnaCbd= cmd.akceptantNazwaOficjalna

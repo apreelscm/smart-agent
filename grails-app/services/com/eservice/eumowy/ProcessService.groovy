@@ -1,9 +1,9 @@
 package com.eservice.eumowy
 
 import com.eservice.eumowy.annotation.DateField
+import com.eservice.eumowy.annotation.Omit
 import com.eservice.eumowy.command.AllPointsCommand
 import com.eservice.eumowy.command.AllPosCommand
-import com.eservice.eumowy.annotation.Omit
 import com.eservice.eumowy.command.PointCommand
 import com.eservice.eumowy.command.ProcessCommand
 import com.eservice.eumowy.util.DateUtils
@@ -256,7 +256,7 @@ class ProcessService {
     def loadProcessData(def process, def cmd) {
         process.processData?.each {ProcessData data ->
             if (!cmd.hasProperty(data.name)){
-                log.error('NoSuchField in ProcessComand for : ' + data.name)
+                log.warn('NoSuchField in ProcessComand for : ' + data.name)
                 return
             } else if (["errors", "class"].contains(data.name) || (hasAnnotation(cmd, data.name, Omit) && getAnnotation(cmd, data.name, Omit).inPopulate())){
                 return
@@ -601,7 +601,7 @@ class ProcessService {
 // And we will return all properties of the object that define that annotation
     private def findAllPropertiesToSave( def obj, def annotClass ) {
         obj.properties.findAll { prop ->
-            obj.getClass().declaredFields.find {
+			obj.getClass().declaredFields.find {
                 it.name == prop.key && (!it.isAnnotationPresent(annotClass) || !it.getAnnotation(annotClass).inSave())
             }
         }
@@ -618,12 +618,14 @@ class ProcessService {
     def getDataFromPanels(def cmd) {
         def processDataList = [];
         def dataToSave = findAllPropertiesToSave(cmd, Omit);
-        dataToSave.findAll { it.value != ProcessCommand.DEFAULT_VALUE || !["class", "errors"].contains(it.key) }.each { key, value ->
+        dataToSave.findAll { it.value != ProcessCommand.DEFAULT_VALUE && !["class", "errors"].contains(it.key) }.each { key, value ->
             if (hasAnnotation(cmd, key, DateField) || "dataUmowy".equals(key)){
                 processDataList.add(new ProcessData(name: "${key}", value:"${DateUtils.formatWithTimezoneFromStr(value)}"));
                 return;
             }
 
+            log.info("key:"+key)
+            log.info("value:"+value)
             processDataList.add(new ProcessData(name: "${key}", value:"${value ?: ''}"));
         }
         processDataList
@@ -691,8 +693,13 @@ class ProcessService {
                 }
 
                 if (PosData.metaClass.respondsTo(PosData, "set" + key.capitalize())  && key != 'id') {
-                    // FIXME krytyczne obejscie, nigdy nie powinno byc null
-                    posData?."set${key.capitalize()}"(value)
+                    // FIXME krytyczne obejscie, nigdy nie powinno byc null. Dodalem logi gdy sytuacja z NULL wystepuje, sprawdzimy czy nadal sa takie przypadki - mkniec
+                    if (posData != null) {
+						posData?."set${key.capitalize()}"(value)
+                    }
+					else {
+						log.info "FIXMEII - PosData = NULL"
+					}
                 }
 
                 if (PosDataDetails.metaClass.respondsTo(PosDataDetails, "set" + key.capitalize()) && key != 'id') {
@@ -820,7 +827,6 @@ class ProcessService {
         return pointsList
     }
 
-    //TODO - metod nieuzywana????
     def getPointCommandsToPosDataList(def cmd) {
         def pointsList = []
         cmd.poses?.each { PointCommand pc ->
@@ -919,8 +925,13 @@ class ProcessService {
 				}
 
 				if (PosData.metaClass.respondsTo(PosData, "set" + key.capitalize())) {
-					// FIXME krytyczne obejscie, nigdy nie powinno byc null
-					posData?."set${key.capitalize()}"(value)
+					// FIXME krytyczne obejscie, nigdy nie powinno byc null. Dodalem logi gdy sytuacja z NULL wystepuje, sprawdzimy czy nadal sa takie przypadki - mkniec
+					if (posData != null) {
+						posData?."set${key.capitalize()}"(value)
+					}
+					else {
+						log.info "FIXME - PosData = NULL"
+					}
 				}
 
 				if (PosDataDetails.metaClass.respondsTo(PosDataDetails, "set" + key.capitalize()) && key != 'id') {

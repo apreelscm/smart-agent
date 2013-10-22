@@ -1,9 +1,10 @@
 package com.eservice.eumowy.util
 
+import java.text.SimpleDateFormat
+
+import org.apache.log4j.Logger
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
-
-import java.text.SimpleDateFormat
 
 /**
  * Created with IntelliJ IDEA.
@@ -18,8 +19,9 @@ public class DateUtils {
     static DD_MM_YYYY = "dd-MM-yyyy"
     static DEFAULT_DATE_FORMAT = YYYY_MM_DD
     static WITH_TIMEZONE = "yyyy-MM-dd'T'HH:mm:ssZ"
-
-
+	
+	static Logger log = Logger.getLogger(DateUtils.class)
+	
     def static Date getCurrentDate(){
         new Date()
     }
@@ -46,7 +48,7 @@ public class DateUtils {
 			date = new SimpleDateFormat(dateFormat).parse(dateStr)
         }
 		catch (Exception e) {
-            // TODO zalogowac blad
+            log.error "parseDate - Error parsing date string: " + dateStr + " with date format: " + dateFormat
 			date = null
 		}
 		date

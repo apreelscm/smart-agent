@@ -29,7 +29,9 @@ class MapperService {
             String value = calculatorService.getCalcProperty(calc,'E_LICZBA_MIES_ZWOL_NAJ_1')
             if (value && value.isInteger()){
                 data.put('oplatyPOSMiesiacNaliczania', [String.valueOf(value.toInteger()+1)] as String[])
-            }
+            } else {
+                data.put('oplatyPOSMiesiacNaliczania', ["1"] as String[])
+			}
         }
         return data
     }
