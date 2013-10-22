@@ -18,6 +18,7 @@ class Signature implements Serializable {
 
 	String managementSubscription1;
 	String managementSubscription2;
+	String description;
     //TO DELETE in future - end
 
     Integer signatureOrder;
@@ -40,6 +41,7 @@ class Signature implements Serializable {
        subscriptionPageNumber(nullable: true)
        managementSubscription1()
        managementSubscription2()
+	   description()
     }
 
     static mapping = {

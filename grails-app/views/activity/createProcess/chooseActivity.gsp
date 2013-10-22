@@ -7,6 +7,19 @@
     <r:require module="chooseActivity"/>
 
     <r:script>
+    	jQuery(document).ready(function() {
+    		jQuery('select[data-id="sig1"], select[data-id="sig2"]').on('change', function(e) { 
+    			var id = jQuery(e.target).val();
+    			var activity = jQuery(e.target).attr('data-activity');
+    			if (jQuery(e.target).attr('data-id') == 'sig1') {
+    				jQuery('.sig-'+activity+'-description-1').hide();
+    			}
+    			else {
+    				jQuery('.sig-'+activity+'-description-2').hide();
+    			}
+    			jQuery('#sig_'+id+'_desc').show();
+    		});
+    	});
     </r:script>
 
 </head>
@@ -30,22 +43,32 @@
                 <div>
                     <g:hiddenField name="activitySignature_${activity.id}" value="${listM*.id}" />
 
-                    <apreel:selectField id="act_${activity.id}_sig1" name="activitySignature_${activity.id}"
+                    <apreel:selectField data-activity="${activity.id}" data-id="sig1" id="act_${activity.id}_sig1" name="activitySignature_${activity.id}"
                                         title="${message(code:'signature.sygnaturaDokumentu.name', default:'Sygnatura Dokumentu')}"
                                         from="${list1}"
                                         optionKey="id"
                                         optionValue="signature"
                                         value="${selectedValue1?.id}"
                                         noSelection="[null: '']"/>
-
+                    
+                    <g:each var="sig" in="${list1}">
+                   		<g:if test="${sig.signature.description != null}">                
+							<p class="sig-${activity.id}-description-1" id="sig_${sig.id}_desc" style="display: none;">${sig.signature.description}</p>
+						</g:if>
+					</g:each>
                     <g:if test="${list2?.size() > 0}">
-                        <apreel:selectField id="act_${activity.id}_sig2"  name="activitySignature_${activity.id}"
+                        <apreel:selectField data-activity="${activity.id}" data-id="sig2" id="act_${activity.id}_sig2"  name="activitySignature_${activity.id}"
                                             title="${message(code:'signature.sygnaturaDokumentu.name', default:'Sygnatura Dokumentu')}"
                                             from="${list2}"
                                             optionKey="id"
                                             optionValue="signature"
                                             value="${selectedValue2?.id}"
                                             noSelection="[null: '']"/>
+                    	<g:each var="sig" in="${list2}">
+                    		<g:if test="${sig.signature.description != null}">
+                    			<p class="sig-${activity.id}-description-2" id="sig_${sig.id}_desc" style="display: none;">${sig.signature.description}</p>
+                    		</g:if>
+                    	</g:each>
                     </g:if>
                 </div>
 
