@@ -662,7 +662,7 @@ class ProcessCommand implements Serializable {
         })
 
         srednia_sprzedaz_doladowan(nullable:false, blank:false, shared:"number")
-        srednia_sprzedaz_doladowan_slownie(nullable:false, blank:false, shared: "lettersonly")
+        srednia_sprzedaz_doladowan_slownie(nullable:false, blank:false, shared: "lettersOnly")
         ifOplataVISA(nullable:false, blank:false, shared: "number4Precision") //1.11 %, M
         ifOplataMasterCard(nullable:false, blank:false, shared: "number4Precision") //1.11 %, M
         ifOplataDinersClub(nullable:false, blank:false, shared: "number4Precision") //1.11 %, M
@@ -676,8 +676,8 @@ class ProcessCommand implements Serializable {
         //okresLojalnosciowy(nullable:false, blank:false) FIXME do wyjasnienia znaczenie BRAK vs 0
         oplataZaPlatnoscWInnejWalucie(nullable: false, blank: false)
         kontaktTytul(nullable: false, blank: false)
-        kontaktImie(nullable: false, blank: false, shared: "lettersonly")
-        kontaktNazwisko(nullable: false, blank: false, shared: "lettersonly")
+        kontaktImie(nullable: false, blank: false, shared: "lettersOnly")
+        kontaktNazwisko(nullable: false, blank: false, shared: "lettersOnly")
 
         hasKontaktTel(nullable: true, validator: { value, process, errors ->
             if (value == null) {
@@ -695,15 +695,15 @@ class ProcessCommand implements Serializable {
         kontaktTelStacjonarny(nullable: true)
         kontaktEmail(nullable: true, blank: true, shared: "email")
         pozyskujacyTytul(nullable: false, blank: false)
-        pozyskujacyImie(nullable: false, blank: false, shared: "lettersonly", maxSize: 40)
-        pozyskujacyNazwisko(nullable: false, blank: false, shared: "lettersonly", maxSize: 100)
+        pozyskujacyImie(nullable: false, blank: false, shared: "lettersOnly", maxSize: 40)
+        pozyskujacyNazwisko(nullable: false, blank: false, shared: "lettersOnly", maxSize: 100)
         pozyskujacyNumer(nullable: false, blank: false, maxSize: 12)
         reprezentant1Tytul(nullable: false, blank: false)
-        reprezentant1Imie(nullable: false, blank: false, shared: "lettersonly")
-        reprezentant1Nazwisko(nullable: false, blank: false, shared: "lettersonly")
+        reprezentant1Imie(nullable: false, blank: false, shared: "lettersOnly")
+        reprezentant1Nazwisko(nullable: false, blank: false, shared: "lettersOnly")
         reprezentant2Tytul(nullable: false, blank: false)
-        reprezentant2Imie(nullable: true, blank: true, shared: "lettersonly")
-        reprezentant2Nazwisko(nullable: true, blank: true, shared: "lettersonly")
+        reprezentant2Imie(nullable: true, blank: true, shared: "lettersOnly")
+        reprezentant2Nazwisko(nullable: true, blank: true, shared: "lettersOnly")
 
         visaEUKKOSt(nullable: false, blank: false, shared: "number", validator: { value, cmd, errors ->
             atLeastClosure.call(value, cmd, errors, "visaEUKKOSt", "OPLATA_MSC_53_ZL")
