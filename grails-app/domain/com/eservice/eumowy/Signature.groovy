@@ -6,21 +6,7 @@ class Signature implements Serializable {
     Boolean active = true;
 	String templatePath;
     Boolean forPoint = true;
-
-    //TO DELETE in future - begin
-	Integer subscriptionX;
-	Integer subscriptionY;
-	Integer subscriptionPageNumber;
-	
-	Integer phSubscriptionX;
-	Integer phSubscriptionY;
-	Integer phSubscriptionPageNumber;
-
-	String managementSubscription1;
-	String managementSubscription2;
 	String description;
-    //TO DELETE in future - end
-
     Integer signatureOrder;
 
     static hasMany = [
@@ -33,14 +19,6 @@ class Signature implements Serializable {
     static constraints = {
        name(unique:true,blank:false)
        templatePath()
-       subscriptionX(nullable: true)
-       subscriptionY(nullable: true)
-	   phSubscriptionX(nullable: true)
-	   phSubscriptionY(nullable: true)
-	   phSubscriptionPageNumber(nullable: true)
-       subscriptionPageNumber(nullable: true)
-       managementSubscription1()
-       managementSubscription2()
 	   description()
     }
 
@@ -52,5 +30,4 @@ class Signature implements Serializable {
     String toString(){
         return name;
     }
-	
 }
