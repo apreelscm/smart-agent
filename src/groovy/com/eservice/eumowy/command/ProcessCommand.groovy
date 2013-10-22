@@ -503,6 +503,10 @@ class ProcessCommand implements Serializable {
     String hasInformacjaHandlowa
     @Omit
     Boolean hasAtLeastOneDoladowanie
+    @Omit
+    Boolean czyGift
+    @Omit
+    Boolean czyRozszerzenie
 
     @Omit
     String liczbaTerminali

@@ -21,6 +21,7 @@ class PanelService {
         cmd.isDoladowania_tk = calculatorService.getCalcProperty(calc,"CZY_TELEKODZIK")
         cmd.doladowania_tp = nullify(cmd.doladowania_tp)
         cmd.doladowania_tk = nullify(cmd.doladowania_tk)
+        cmd.czyRozszerzenie = cmd.process?.activities?.any{it.code.equals('dodatkowyPunkt')} || cmd.process?.activities?.any{it.code.equals('dodatkowyPos')}
 
         cmd.liczbaTerminali = calculatorService.getCalcProperty(calc,"LICZBA_POS_MAX")
     }
@@ -134,6 +135,7 @@ class PanelService {
 		pointData.gprsPPCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_GPRS_PP_CENA"))
 
 		cmd.defaultPosData = pointData
+        cmd.czyGift = cbdService.czyGift(cmd.nip)
     }
 
     def getDodajPunkt(ProcessCommand cmd, def calc ) {
@@ -160,6 +162,7 @@ class PanelService {
         pointData.gprsPPCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_GPRS_PP_CENA"))
 
         cmd.defaultPointData = pointData
+        cmd.czyGift = cbdService.czyGift(cmd.nip)
     }
 
     def getDodatkoweUslugi(ProcessCommand cmd, def calc ) {
@@ -220,6 +223,7 @@ class PanelService {
     }
 
     def getFunkcjeTerminala(ProcessCommand cmd, def calc ) {
+        cmd.czyGift = cbdService.czyGift(cmd.nip)
     }
 
     def getIfplus(ProcessCommand cmd, def calc ) {

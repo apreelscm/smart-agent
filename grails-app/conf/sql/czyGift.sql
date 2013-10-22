@@ -1,0 +1,1 @@
+select eumowy.czy_gift(:nip) as result from dual
