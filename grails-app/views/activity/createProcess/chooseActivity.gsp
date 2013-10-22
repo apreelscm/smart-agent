@@ -19,9 +19,9 @@
     <g:form id="signaturesFormId">
         <g:each var="activity" in="${processInstance?.activities}">
             <article id="${activity.code}" class="border-article signature-article">
-                <g:set var="list1" value="${activity?.activitySignatures?.findAll { it.numberOfList == 1 }}"/>
-                <g:set var="list2" value="${activity?.activitySignatures?.findAll { it.numberOfList == 2 }}"/>
-                <g:set var="listM" value="${activity?.activitySignatures?.findAll { it.mandatory == true }}"/>
+                <g:set var="list1" value="${activity?.activitySignatures?.findAll { it.numberOfList == 1 && it.signature.active}}"/>
+                <g:set var="list2" value="${activity?.activitySignatures?.findAll { it.numberOfList == 2 && it.signature.active}}"/>
+                <g:set var="listM" value="${activity?.activitySignatures?.findAll { it.mandatory == true && it.signature.active}}"/>
 
                 <g:set var="selectedValue1" value="${activity?.selectedActivitySignatures?.find { it.numberOfList == 1 }}"/>
                 <g:set var="selectedValue2" value="${activity?.selectedActivitySignatures?.find { it.numberOfList == 2 }}"/>

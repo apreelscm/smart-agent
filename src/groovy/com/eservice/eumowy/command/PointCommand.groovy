@@ -158,7 +158,7 @@ class PointCommand implements Serializable {
 		kodMCC(nullable:true, shared: "natural")
 		rodzProwadzDzialalWPraktyce(nullable:true, blank:false)
 		numerRachunkuBankowego(nullable:true, blank:false, matches: "~|\\d{2}\\s\\d{4}\\s\\d{4}\\s\\d{4}\\s\\d{4}\\s\\d{4}\\s\\d{4}")
-		bank(nullable:true, blank:false, shared: "alphanumeric")
+		bank(nullable:true, blank:false)
 		nazwaDoWydrukuZTerminalaPos(nullable:true)
 		nazwaDoWyszukiwarki(nullable:true)
 		wydrukUlicaTytul(nullable:true)

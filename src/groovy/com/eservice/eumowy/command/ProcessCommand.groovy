@@ -478,13 +478,13 @@ class ProcessCommand implements Serializable {
     @Omit
     transient Process process
 
-    @Omit(inPopulate = true)
+    @Omit(inSave = true, inPopulate = true)
     List<PointCommand> points = ListUtils.lazyList([], FactoryUtils.instantiateFactory(PointCommand))
-    @Omit(inPopulate = true)
+    @Omit(inSave = true, inPopulate = true)
     List<PointCommand> poses = ListUtils.lazyList([], FactoryUtils.instantiateFactory(PointCommand))
-    @Omit(inPopulate = true)
+    @Omit(inSave = true, inPopulate = true)
     List<AllPointsCommand> allPoints = ListUtils.lazyList([], FactoryUtils.instantiateFactory(AllPointsCommand))
-    @Omit(inPopulate = true)
+    @Omit(inSave = true, inPopulate = true)
     List<AllPosCommand> allPoses = ListUtils.lazyList([], FactoryUtils.instantiateFactory(AllPosCommand))
 
     @Omit
