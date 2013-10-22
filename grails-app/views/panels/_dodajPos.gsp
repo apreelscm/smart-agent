@@ -13,6 +13,9 @@
 <div id="hiddenPosPanel" style="display: none;">
 	<g:render template="../panels/danePos" model="[id:'%ID%', panelType: 'poses', pointData: data.defaultPosData]"/>
 </div>
+<div id="removePosConfirmDialog" style="display: none;">
+	<g:message code="panel.addnewpos.confirmRemoval"/>
+</div>
 <r:require module="jquery_ui"/>
 	
 <r:script>
@@ -34,7 +37,7 @@
 			jQuery("#addNewPointButton").prop("disabled", true);
 			jQuery("#addNewPosButton").prop("disabled", true);
 		}
-		else if (getCurrentTerminalCount("poses") < maxTerminalCount) {
+		else if (getCurrentTerminalCount("poses") != maxTerminalCount) {
 			jQuery("#addNewPointButton").prop("disabled", false);
 			jQuery("#addNewPosButton").prop("disabled", false);
 		}
@@ -55,7 +58,7 @@
 				jQuery(e.target).prop("disabled", true);
 				jQuery("#addNewPointButton").prop("disabled", true);
 			}
-			else if (getCurrentTerminalCount("poses") < maxTerminalCount) {
+			else if (getCurrentTerminalCount("poses") != maxTerminalCount) {
 				jQuery(e.target).prop("disabled", false);
 				jQuery("#addNewPointButton").prop("disabled", false);
 			}
@@ -65,13 +68,28 @@
 		});
 		
 		jQuery("body").on("click", "#removePosButton", function(e) {
-			jQuery(e.target).closest("#newPosPanel").remove();
-			panelPosInternalCount--;
-			
-			if (getCurrentTerminalCount("poses") < maxTerminalCount) {
-				jQuery("#addNewPointButton").prop("disabled", false);
-				jQuery("#addNewPosButton").prop("disabled", false);
-			}
+			jQuery("#removePosConfirmDialog").dialog({
+				resizable: true,
+				height:200,
+				width: 450,
+				modal: true,
+				buttons: 
+					{
+						"Tak": function() {
+							jQuery( this ).dialog( "close" );
+							jQuery(e.target).closest("#newPosPanel").remove();
+							panelPosInternalCount--;
+							
+							if (getCurrentTerminalCount("poses") != maxTerminalCount) {
+								jQuery("#addNewPointButton").prop("disabled", false);
+								jQuery("#addNewPosButton").prop("disabled", false);
+							}
+						},
+						"Nie": function() {
+							jQuery( this ).dialog( "close" );
+						}
+					}
+			});
 			
 			return false;
 		});

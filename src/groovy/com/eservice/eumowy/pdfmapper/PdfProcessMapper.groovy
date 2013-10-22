@@ -8,6 +8,8 @@ class PdfProcessMapper extends AbstractPdfMapper{
     def calculatorService
     def calc
     def pointMapper
+	
+	private static final EMPTY_VALUES = ["", "-"]
 
     public PdfProcessMapper (def calculatorService, def calc, def pointMapper){
         this.calculatorService = calculatorService
@@ -560,7 +562,7 @@ class PdfProcessMapper extends AbstractPdfMapper{
     }
 
     private mapFieldWithStartDate(def data, def pd, def key, def value, def dateFieldName){
-        if (value != null && !"".equals(value)){
+        if (value !=null && !EMPTY_VALUES.contains(value)){
             data.put(key, [value] as String[])
             addDateField(data, dateFieldName, getFromProcessDataSet(pd, "dataUmowy"));
         }

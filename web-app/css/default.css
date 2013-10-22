@@ -1464,3 +1464,7 @@ tbody#ppPayment div{
     width: 310px;
     z-index: 2;
 }
+
+label.doladowanieLabel {
+    width: 95px;
+}

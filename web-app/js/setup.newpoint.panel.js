@@ -12,12 +12,19 @@ function getCurrentTerminalCount(prefix) {
 
     for(var i = 0; i < globalPanelCount; i++) {
         var prefixPanel = "#"+prefix+"\\["+i+"\\]\\";
-        counter += jQuery(prefixPanel + ".dialupCount").val();
-        counter += jQuery(prefixPanel + ".vpnCount").val();
-        counter += jQuery(prefixPanel + ".sslCount").val();
-        counter += jQuery(prefixPanel + ".wifiCount").val();
-        counter += jQuery(prefixPanel + ".gprsCount").val();
-        counter += jQuery(prefixPanel + ".baseCount").val();
+        var dialupCount = jQuery(prefixPanel + ".dialupCount").val();
+        var vpnCount = jQuery(prefixPanel + ".vpnCount").val();
+        var sslCount = jQuery(prefixPanel + ".sslCount").val();
+        var wifiCount = jQuery(prefixPanel + ".wifiCount").val();
+        var gprsCount = jQuery(prefixPanel + ".gprsCount").val();
+        var baseCount = jQuery(prefixPanel + ".baseCount").val();
+        
+        counter += dialupCount != "" ? parseInt(dialupCount) : 0;
+        counter += vpnCount != "" ? parseInt(vpnCount) : 0;
+        counter += sslCount != "" ? parseInt(sslCount) : 0;
+        counter += wifiCount != "" ? parseInt(wifiCount) : 0;
+        counter += gprsCount != "" ? parseInt(gprsCount) : 0;
+        counter += baseCount != "" ? parseInt(baseCount) : 0;
     }
 
     return counter;
