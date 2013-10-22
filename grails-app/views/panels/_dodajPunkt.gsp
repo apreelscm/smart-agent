@@ -42,7 +42,7 @@
 			jQuery("#addNewPointButton").prop("disabled", true);
 			jQuery("#addNewPosButton").prop("disabled", true);
 		}
-		else if (getCurrentTerminalCount("points") < maxTerminalCount) {
+		else if (getCurrentTerminalCount("points") != maxTerminalCount) {
 			jQuery("#addNewPointButton").prop("disabled", false);
 			jQuery("#addNewPosButton").prop("disabled", false);
 		}
@@ -74,12 +74,12 @@
 			if (panelInternalCount > 0) {
 				jQuery("#conitnueButton").prop("disabled", false);
 			}
-			
+			console.log("CurrentTerminalCount: " + getCurrentTerminalCount("points"));
 			if (getCurrentTerminalCount("points") == maxTerminalCount) {
 				jQuery(e.target).prop("disabled", true);
 				jQuery("#addNewPosButton").prop("disabled", true);
 			}
-			else if (getCurrentTerminalCount("points") < maxTerminalCount) {
+			else if (getCurrentTerminalCount("points") != maxTerminalCount) {
 				jQuery(e.target).prop("disabled", false);
 				jQuery("#addNewPosButton").prop("disabled", false);
 			}
