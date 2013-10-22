@@ -580,16 +580,20 @@ class ActivityController {
             }.to "selectedPanels"
             on("deletePoint") {
                 def processInstance = flow.processInstance
+				def cmd = flow.data
                 def point = PointData.get(Integer.valueOf(params.pointId));
                 if (point != null) {
                     log.info "DeletePoint - Usuwam punkt o id: " + params.pointId
                     processInstance.removeFromPoints(point)
                     point.delete()
                     processInstance.save(flush: true)
+					
+					cmd?.points?.removeAll { it.id == point.id }
                 }
                 else {
                     log.info "DeletePoint - Nie znalazłem punktu o id: " + params.pointId
                 }
+				flow.data = cmd
                 flow.processInstance = processInstance
             }.to "saveOnly"
             on("saveOnly"){ ProcessCommand cmd ->
@@ -851,16 +855,20 @@ class ActivityController {
             }.to "selectedPanels"
             on("deletePoint") {
                 def processInstance = flow.processInstance
+				def cmd = flow.data
                 def point = PointData.get(Integer.valueOf(params.pointId));
                 if (point != null) {
                     log.info "DeletePoint - Usuwam punkt o id: " + params.pointId
                     processInstance.removeFromPoints(point)
                     point.delete()
                     processInstance.save(flush: true)
+					
+					cmd?.points?.removeAll { it.id == point.id }
                 }
                 else {
                     log.info "DeletePoint - Nie znalazłem punktu o id: " + params.pointId
                 }
+				flow.data = cmd
                 flow.processInstance = processInstance
             }.to "selectedPanels"
             on("saveOnly"){ ProcessCommand cmd ->

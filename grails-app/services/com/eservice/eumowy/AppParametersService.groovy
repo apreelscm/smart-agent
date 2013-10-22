@@ -24,7 +24,7 @@ class AppParametersService {
 	}
 
 	def getPdfPreviewUri(String fileName) {
-		return  grailsLinkGenerator.link(controller: 'file', action: 'get', absolute: true, params: [root: "pdfPreviews", path: fileName])
+		return  grailsLinkGenerator.link(controller: 'file', action: 'get', absolute: false, params: [root: "pdfPreviews", path: fileName])
 	}
 
 	def getPdfImagePath(String fileName) {
@@ -35,7 +35,7 @@ class AppParametersService {
 	}
 
 	def getPdfImageUri(String fileName) {
-		return grailsLinkGenerator.link(controller: 'file', action: 'get', absolute: true, params: [root: "pdfImages", path: fileName])
+		return grailsLinkGenerator.link(controller: 'file', action: 'get', absolute: false, params: [root: "pdfImages", path: fileName])
 	}
 
 	def getFontUri() {
