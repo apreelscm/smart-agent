@@ -22,19 +22,18 @@
 <r:require module="jquery_ui"/>
 	
 <r:script>
-	
+
 	jQuery(document).ready(function() {
 		jQuery("#conitnueButton").prop("disabled", true);
 		var maxTerminalCount = jQuery("#liczbaTerminali").val();
 		var panelTemplate = jQuery("#hiddenPanel").html();
 		var panelCount = ${data.points.size()};
-		var panelInternalCount = ${data.points.size()};
+		panelInternalCount.value = ${data.points.size()};
 		globalPanelCount = ${data.points.size()};
 		jQuery("#newPointPanelCount").val(panelCount);
-		
 		jQuery("#hiddenPanel").remove();
 		
-		if (panelInternalCount > 0) {
+		if (panelInternalCount.value > 0) {
 			jQuery("#conitnueButton").prop("disabled", false);
 		}
 		
@@ -42,7 +41,7 @@
 			jQuery("#addNewPointButton").prop("disabled", true);
 			jQuery("#addNewPosButton").prop("disabled", true);
 		}
-		else if (getCurrentTerminalCount("points") < maxTerminalCount) {
+		else if (getCurrentTerminalCount("points") != maxTerminalCount) {
 			jQuery("#addNewPointButton").prop("disabled", false);
 			jQuery("#addNewPosButton").prop("disabled", false);
 		}
@@ -55,31 +54,31 @@
 		jQuery("#addNewPointButton").on("click", function(e) {
 			e.preventDefault();
 			
-			if (panelInternalCount < 10) {
+			if (panelInternalCount.value < 10) {
 				var data = panelTemplate.replace(/%ID%/gm, panelCount);
 				jQuery("#addNewPointPanelPlaceholder").append(data);
 				setupNewPointPanelHandlers(panelCount-1, panelCount, "points");
 				setupNewPointPanelData("points\\["+(panelCount-1)+"\\]\\.", "points\\["+panelCount+"\\]\\.");
 				panelCount++;
-				panelInternalCount++;
+				panelInternalCount.value++;
 				globalPanelCount++;
 				jQuery("#newPointPanelCount").val(panelCount);
                 maskNewPointRefresh();
 			}
 			
-			if (panelInternalCount == 10) {
+			if (panelInternalCount.value == 10) {
 				jQuery(e.target).prop("disabled", true);
 			}
 			
-			if (panelInternalCount > 0) {
+			if (panelInternalCount.value > 0) {
 				jQuery("#conitnueButton").prop("disabled", false);
 			}
-			
+			console.log("CurrentTerminalCount: " + getCurrentTerminalCount("points"));
 			if (getCurrentTerminalCount("points") == maxTerminalCount) {
 				jQuery(e.target).prop("disabled", true);
 				jQuery("#addNewPosButton").prop("disabled", true);
 			}
-			else if (getCurrentTerminalCount("points") < maxTerminalCount) {
+			else if (getCurrentTerminalCount("points") != maxTerminalCount) {
 				jQuery(e.target).prop("disabled", false);
 				jQuery("#addNewPosButton").prop("disabled", false);
 			}
@@ -95,18 +94,17 @@
 				height:200,
 				width: 450,
 				modal: true,
-				buttons: 
-					{
+				buttons: {
 						"Tak": function() {
 							jQuery( this ).dialog( "close" );
 							jQuery(e.target).closest(".newPointPanel").remove();
-							panelInternalCount--;
+							panelInternalCount.value--;
 							
-							if (panelInternalCount < 10) {
+							if (panelInternalCount.value < 10) {
 								jQuery("#addNewPointButton").prop("disabled", false);
 							}
 							
-							if (panelInternalCount == 0) {
+							if (panelInternalCount.value == 0) {
 								jQuery("#conitnueButton").prop("disabled", true);
 							}
 							
@@ -129,6 +127,26 @@
 					}
 			});
 			
+			if (panelInternalCount.value < 10) {
+				jQuery("#addNewPointButton").prop("disabled", false);
+			}
+			
+			if (panelInternalCount.value == 0) {
+				jQuery("#conitnueButton").prop("disabled", true);
+			}
+			
+			if (getCurrentTerminalCount("points") < maxTerminalCount) {
+				jQuery("#addNewPointButton").prop("disabled", false);
+				jQuery("#addNewPosButton").prop("disabled", false);
+			}
+
+			refreshTelepomkaAndTelekodzikPercentValues();
+			
+			var dbPointId = parseInt(jQuery(e.target).attr('data-point-id'));
+			if (dbPointId) {
+				console.log("Usuwam punkt o id: " + dbPointId);
+				jQuery.post(jQuery(location).attr("href"), {_eventId_deletePoint: "", pointId: dbPointId}, function(data){});			
+			}
 			
 			return false;
 		});
