@@ -24,7 +24,7 @@
                             <span><g:message code="panel.mobile.phone.number"/>: <eumowy:textField class="mobile-phone" name="kontaktTelKomorkowy" value="${data.kontaktTelKomorkowy}" validatable="${data}"  maxlength="9"/> </span>
                         </div>
                         <span>
-                            <g:message code="panel.email"/>: <g:textField class="" name="kontaktEmail" value="${data.kontaktEmail}" validatable="${data}" style="width: 150px" email="true"/>
+                            <g:message code="panel.email"/>: <g:textField id="" class="kontaktEmail" name="kontaktEmail" value="${data.kontaktEmail}" validatable="${data}" style="width: 150px" email="true"/>
                         </span>
                     </span>
                 </li>

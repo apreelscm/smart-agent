@@ -60,9 +60,10 @@
 
             if ( form.valid()){
 
-              var kontaktEmail = $j("input[name='kontaktEmail']").val()
+              var kontaktEmail = $j("#kontaktEmail").val()
+              var emailDoWysylkiDokumentu = $j("#emailDoWysylkiDokumentu").val()
 
-               if(kontaktEmail){
+               if(emailDoWysylkiDokumentu || kontaktEmail){
                     submitForm(form,input, true)
                }else{
                     //sprawdzanie maila akceptanta

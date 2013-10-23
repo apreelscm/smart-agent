@@ -228,6 +228,7 @@ class ProcessCommand implements Serializable {
     String reprezentant2Tytul = DEFAULT_VALUE
     String reprezentant2Imie = DEFAULT_VALUE
     String reprezentant2Nazwisko = DEFAULT_VALUE
+    String emailDoWysylkiDokumentu = DEFAULT_VALUE
 
 //    poziomOplatiWarunkiPlatnosciKarty - FINISH
     String visaEUKKOPr = DEFAULT_VALUE
@@ -714,6 +715,7 @@ class ProcessCommand implements Serializable {
         reprezentant2Tytul(nullable: false, blank: false)
         reprezentant2Imie(nullable: true, blank: true, shared: "lettersOnly")
         reprezentant2Nazwisko(nullable: true, blank: true, shared: "lettersOnly")
+        emailDoWysylkiDokumentu(nullable: true, blank: true, shared: "email")
 
         visaEUKKOSt(nullable: false, blank: false, shared: "number", validator: { value, cmd, errors ->
             atLeastClosure.call(value, cmd, errors, "visaEUKKOSt", "OPLATA_MSC_53_ZL")
