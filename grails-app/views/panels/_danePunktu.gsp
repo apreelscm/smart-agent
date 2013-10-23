@@ -43,7 +43,7 @@
                     name="${panelType}[${id}].rodzProwadzDzialalWPraktyce"
                     id="${panelType}[${id}].bussinessTypeInPractice"
                     value="${pointData?.rodzProwadzDzialalWPraktyce}"
-                    maxlength="60" required="true"/></span></li>
+                    maxlength="255" required="true"/></span></li>
             <li><span class="align-right"><g:message
                     code="panel.bankaccountnumber" /></span> <span><eumowy:textField
                     class="bank-account"
@@ -147,7 +147,9 @@
                             required="true"/>
                     </span>
                     <span style="float: left"> <g:message code="panel.city" />
-                    <g:select  id="${panelType}[${id}].dataforprintingAddressCity"  name="${panelType}[${id}].wydrukMiasto" value="${pointData?.wydrukMiasto}" from=""
+                    <g:select  id="${panelType}[${id}].dataforprintingAddressCity"
+                               name="${panelType}[${id}].wydrukMiasto" value="${pointData?.wydrukMiasto}"
+                               from="[pointData?.wydrukMiasto ?: '']"
                                style="width: 200px;"  required="required"
                                validateField="wydrukMiasto"/>
                     </span>

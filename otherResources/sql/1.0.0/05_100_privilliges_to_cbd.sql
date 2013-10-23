@@ -1,6 +1,7 @@
 -- wykonywany z poziomu ownera CBD_ADM
 grant select, update on adm_uzytkownicy to EUMOWY_APP;
 grant select, update on adm_uzytkownicy_web to EUMOWY_APP;
+grant select, update on adm_uzytkownicy_web to EUMOWY;
 grant select on adm_role to EUMOWY_APP;
 grant select on cbt_klienci to EUMOWY_APP;
 grant select on cbt_klienci to EUMOWY;
@@ -8,6 +9,7 @@ grant select on cbt_klienci_pp to EUMOWY_APP;
 grant select on cbt_umowy to EUMOWY_APP;
 grant select on cbt_pracownicy to EUMOWY_APP;
 grant select on cbt_przedstawicieleh to EUMOWY_APP;
+grant select on cbt_przedstawicieleh to EUMOWY;
 grant select on cbt_struktury to EUMOWY_APP;
 grant select on cbt_adresy to EUMOWY_APP;
 grant select on cbt_terminale_pos to EUMOWY_APP;

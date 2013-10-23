@@ -103,13 +103,6 @@ class PdfProcessMapper extends AbstractPdfMapper{
         data.put("phNumer", [phNumber?.toString()] as String[])
         data.put("osobaPozyskalaAkceptantaNr", [phNumber?.toString()] as String[])
         data.put("osobaPodpisalaUmoweNr", [phNumber?.toString()] as String[])
-        //to na jakis formularz jest
-        if (phNumber != null && phNumber?.toString().size()==5){
-            data.put("NrSprzedazowyPH1", [phNumber?.toString().substring(0, 3)] as String[])
-            data.put("NrSprzedazowyPH2", [phNumber?.toString().substring(3, 4)] as String[])
-        } else {
-            data.put("NrSprzedazowyPH1", [phNumber?.toString()] as String[])
-        }
 
         /* // Znaczniki do PDFow
 

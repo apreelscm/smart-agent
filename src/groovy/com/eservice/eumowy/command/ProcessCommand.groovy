@@ -29,6 +29,8 @@ class ProcessCommand implements Serializable {
     static def atLeastClosure = { value, cmd, errors, property, calcProperty ->
         def calcValue = cmd.calculatorService.getCalcProperty(cmd.calc, calcProperty)
 
+        log.info("property: ${property}, value: ${value}, cal:${calcValue}")
+
         //warunek na brak wartości w kalkulatorze lub wartość domyślną w panelu
         if (DEFAULT_VALUE.equals(value) || !calcValue) {
             return true
@@ -39,7 +41,7 @@ class ProcessCommand implements Serializable {
 
         if (currValue.compareTo(minValue) < 0) {
             //errors.rejectValue(property, "default.atLeast.asCalc", [property] as Object[], "Podana warto\u015B\u0107 dla pola {0} nie mo\u017Ce by\u0107 mniejsza ni\u017C pobrana z kalkulatora.")
-            errors.rejectValue(property, "default.atLeast.asCalc")
+            errors.rejectValue(property, "default.atLeast.asCalc",[property] as Object[], "")
 			return false
         }
         return true
@@ -226,6 +228,7 @@ class ProcessCommand implements Serializable {
     String reprezentant2Tytul = DEFAULT_VALUE
     String reprezentant2Imie = DEFAULT_VALUE
     String reprezentant2Nazwisko = DEFAULT_VALUE
+    String emailDoWysylkiDokumentu = DEFAULT_VALUE
 
 //    poziomOplatiWarunkiPlatnosciKarty - FINISH
     String visaEUKKOPr = DEFAULT_VALUE
@@ -712,6 +715,7 @@ class ProcessCommand implements Serializable {
         reprezentant2Tytul(nullable: false, blank: false)
         reprezentant2Imie(nullable: true, blank: true, shared: "lettersOnly")
         reprezentant2Nazwisko(nullable: true, blank: true, shared: "lettersOnly")
+        emailDoWysylkiDokumentu(nullable: true, blank: true, shared: "email")
 
         visaEUKKOSt(nullable: false, blank: false, shared: "number", validator: { value, cmd, errors ->
             atLeastClosure.call(value, cmd, errors, "visaEUKKOSt", "OPLATA_MSC_53_ZL")
@@ -769,8 +773,6 @@ class ProcessCommand implements Serializable {
 
         dinersClubSt(nullable: true, blank: true, shared: "number")
         ikoSt(nullable: true, blank: true, shared: "number")
-
-
         visaEUKKOPr(nullable: false, blank: false, shared: "percentage")
         visaEUKKOPr(nullable: false, blank: false, shared: "percentage")
         visaEUKDPr(nullable: false, blank: false, shared: "percentage")
@@ -978,7 +980,6 @@ class ProcessCommand implements Serializable {
 
         akceptantTelKomorkowy(nullable: true)
         akceptantTelStacjonarny(nullable: true)
-
         akceptantFax(nullable: true, blank: true)
         akceptantUlicaTytulCbd(nullable: true)
         akceptantUlicaCbd(nullable: true)
@@ -995,44 +996,85 @@ class ProcessCommand implements Serializable {
         oplPOSDialUpTyp(nullable: true)
         oplPOSDialUpIlosc(nullable: true, shared: "natural")
         oplPOSDialUpIloscPP(nullable: true, shared: "natural")
-        oplPOSDialUpNormalneMies(nullable: true, shared: "number")
-        oplPOSDialUpNormalnePP(nullable: true, shared: "number")
-        oplPOSDialUpPreferencyjneMies(nullable: true, shared: "number")
-        oplPOSDialUpPreferencyjnePP(nullable: true, shared: "number")
+        oplPOSDialUpNormalneMies(nullable: true, shared: "number", validator: { value, cmd, errors ->
+            atLeastClosure.call(value, cmd, errors, "oplPOSDialUpNormalneMies", "TYP_DIALUP_TERM_CENA")
+        })
+        oplPOSDialUpNormalnePP(nullable: true, shared: "number", validator: { value, cmd, errors ->
+            atLeastClosure.call(value, cmd, errors, "oplPOSDialUpNormalnePP", "TYP_DIALUP_PP_CENA")
+        })
+        oplPOSDialUpPreferencyjneMies(nullable: true, shared: "number", validator: { value, cmd, errors ->
+
+            atLeastClosure.call(value, cmd, errors, "oplPOSDialUpPreferencyjneMies", "TYP_DIALUP_TERM_CENA")
+        })
+        oplPOSDialUpPreferencyjnePP(nullable: true, shared: "number", validator: { value, cmd, errors ->
+            atLeastClosure.call(value, cmd, errors, "oplPOSDialUpPreferencyjnePP", "TYP_DIALUP_PP_CENA")
+        })
+
         oplPOSVPNTyp(nullable: true)
         oplPOSVPNIlosc(nullable: true, shared: "natural")
         oplPOSVPNIloscPP(nullable: true, shared: "natural")
-        oplPOSVPNNormalneMies(nullable: true, shared: "number")
-        oplPOSVPNNormalnePP(nullable: true, shared: "number")
-        oplPOSVPNPreferencyjneMies(nullable: true, shared: "number")
-        oplPOSVPNPreferencyjnePP(nullable: true, shared: "number")
+        oplPOSVPNNormalneMies(nullable: true, shared: "number", validator: { value, cmd, errors ->
+            atLeastClosure.call(value, cmd, errors, "oplPOSVPNNormalneMies", "TYP_VPN_TERM_CENA")
+        })
+        oplPOSVPNNormalnePP(nullable: true, shared: "number", validator: { value, cmd, errors ->
+            atLeastClosure.call(value, cmd, errors, "oplPOSVPNNormalnePP", "TYP_VPN_PP_CENA")
+        })
+        oplPOSVPNPreferencyjneMies(nullable: true, shared: "number", validator: { value, cmd, errors ->
+            atLeastClosure.call(value, cmd, errors, "oplPOSVPNPreferencyjneMies", "TYP_VPN_TERM_CENA")
+        })
+        oplPOSVPNPreferencyjnePP(nullable: true, shared: "number", validator: { value, cmd, errors ->
+            atLeastClosure.call(value, cmd, errors, "oplPOSVPNPreferencyjnePP", "TYP_VPN_PP_CENA")
+        })
         oplPOSSSLTyp(nullable: true)
         oplPOSSSLIlosc(nullable: true, shared: "natural")
         oplPOSSSLIloscPP(nullable: true, shared: "natural")
-        oplPOSSSLNormalneMies(nullable: true, shared: "number")
-        oplPOSSSLNormalnePP(nullable: true, shared: "number")
-        oplPOSSSLPreferencyjneMies(nullable: true, shared: "number")
-        oplPOSSSLPreferencyjnePP(nullable: true, shared: "number")
+        oplPOSSSLNormalneMies(nullable: true, shared: "number", validator: { value, cmd, errors ->
+            atLeastClosure.call(value, cmd, errors, "oplPOSSSLNormalneMies", "TYP_SSL_TERM_CENA")
+        })
+        oplPOSSSLNormalnePP(nullable: true, shared: "number", validator: { value, cmd, errors ->
+            atLeastClosure.call(value, cmd, errors, "oplPOSSSLNormalnePP", "TYP_SSL_PP_CENA")
+        })
+        oplPOSSSLPreferencyjneMies(nullable: true, shared: "number", validator: { value, cmd, errors ->
+            atLeastClosure.call(value, cmd, errors, "oplPOSSSLPreferencyjneMies", "TYP_SSL_TERM_CENA")
+        })
+        oplPOSSSLPreferencyjnePP(nullable: true, shared: "number", validator: { value, cmd, errors ->
+            atLeastClosure.call(value, cmd, errors, "oplPOSSSLPreferencyjnePP", "TYP_SSL_PP_CENA")
+        })
         oplPOSWiFiTyp(nullable: true)
         oplPOSWiFiIlosc(nullable: true, shared: "natural")
         oplPOSWiFiIloscPP(nullable: true, shared: "natural")
-        oplPOSWiFiNormalneMies(nullable: true, shared: "number")
-        oplPOSWiFiNormalnePP(nullable: true, shared: "number")
-        oplPOSWiFiPreferencyjneMies(nullable: true, shared: "number")
-        oplPOSWiFiPreferencyjnePP(nullable: true, shared: "number")
+        oplPOSWiFiNormalneMies(nullable: true, shared: "number", validator: { value, cmd, errors ->
+            atLeastClosure.call(value, cmd, errors, "oplPOSWiFiNormalneMies", "TYP_WIFI_TERM_CENA")
+        })
+        oplPOSWiFiNormalnePP(nullable: true, shared: "number", validator: { value, cmd, errors ->
+            atLeastClosure.call(value, cmd, errors, "oplPOSWiFiNormalnePP", "TYP_WIFI_PP_CENA")
+        })
+        oplPOSWiFiPreferencyjneMies(nullable: true, shared: "number", validator: { value, cmd, errors ->
+            atLeastClosure.call(value, cmd, errors, "oplPOSWiFiPreferencyjneMies", "TYP_WIFI_TERM_CENA")
+        })
+        oplPOSWiFiPreferencyjnePP(nullable: true, shared: "number", validator: { value, cmd, errors ->
+            atLeastClosure.call(value, cmd, errors, "oplPOSWiFiPreferencyjnePP", "TYP_WIFI_PP_CENA")
+        })
         oplPOSGPRSTyp(nullable: true)
         oplPOSGPRSIlosc(nullable: true, shared: "natural")
         oplPOSGPRSIloscPP(nullable: true, shared: "natural")
-        oplPOSGPRSNormalneMies(nullable: true, shared: "number")
-        oplPOSGPRSNormalnePP(nullable: true, shared: "number")
-        oplPOSGPRSPreferencyjneMies(nullable: true, shared: "number")
-        oplPOSGPRSPreferencyjnePP(nullable: true, shared: "number")
+        oplPOSGPRSNormalneMies(nullable: true, shared: "number", validator: { value, cmd, errors ->
+            atLeastClosure.call(value, cmd, errors, "oplPOSGPRSNormalneMies", "TYP_SSL_TERM_CENA")
+        })
+        oplPOSGPRSNormalnePP(nullable: true, shared: "number", validator: { value, cmd, errors ->
+            atLeastClosure.call(value, cmd, errors, "oplPOSGPRSNormalnePP", "TYP_GPRS_PP_CENA")
+        })
+        oplPOSGPRSPreferencyjneMies(nullable: true, shared: "number", validator: { value, cmd, errors ->
+            atLeastClosure.call(value, cmd, errors, "oplPOSGPRSPreferencyjneMies", "TYP_SSL_TERM_CENA")
+        })
+        oplPOSGPRSPreferencyjnePP(nullable: true, shared: "number", validator: { value, cmd, errors ->
+            atLeastClosure.call(value, cmd, errors, "oplPOSGPRSPreferencyjnePP", "TYP_GPRS_PP_CENA")
+        })
         oplPOSBaza(nullable: true, shared: "number")
         hasObslugaTyp(nullable: true, validator: { value, cmd, errors ->
             if (value == null) {
                 return true;
             }
-
             if (!cmd.obslugaTyp) {
                 errors.rejectValue("hasObslugaTyp", "default.atLeastOne.obslugaTyp")
                 return false
