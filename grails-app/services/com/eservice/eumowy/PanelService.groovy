@@ -311,7 +311,7 @@ class PanelService {
         cmd.reprezentant2Tytul = nullify(cmd.reprezentant2Tytul)
         cmd.reprezentant2Imie = nullify(cmd.reprezentant2Imie)
         cmd.reprezentant2Nazwisko = nullify(cmd.reprezentant2Nazwisko)
-
+        cmd.emailDoWysylkiDokumentu = nullify(cmd.emailDoWysylkiDokumentu)
     }
 
     def setAtLeastAs(def data, def calcValue){

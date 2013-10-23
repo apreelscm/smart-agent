@@ -1287,7 +1287,8 @@ class ActivityController {
                     doc.content.discard()
                 }
 
-                def recipient = getFromProcessData(process, 'kontaktEmail');
+                def recipient = getFromProcessData(process, 'kontaktEmail') ?: getFromProcessData(process, 'emailDoWysylkiDokumentu')
+
                 if (recipient){
                     emailService.sendDocumentsElectronicalVersion(recipient, process.documents)
                 } else {
