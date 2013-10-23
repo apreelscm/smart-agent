@@ -164,7 +164,7 @@ create table EUMOWY.POINT_DETAILS (
   service_care1 number(6,2) not null,
   service_care2 number(6,2) not null,
   service_care3 number(6,2) not null,
-  ph_gain number(6,2) not null,
+  ph_gain varchar2(12 char),
   print_addr_postal_code varchar2(20 char) not null,
   print_addr_city varchar2(80 char) not null,
   print_addr_home_number varchar2(20 char) not null,
