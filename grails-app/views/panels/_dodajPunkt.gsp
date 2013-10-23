@@ -94,8 +94,7 @@
 				height:200,
 				width: 450,
 				modal: true,
-				buttons: 
-					{
+				buttons: {
 						"Tak": function() {
 							jQuery( this ).dialog( "close" );
 							jQuery(e.target).closest(".newPointPanel").remove();
