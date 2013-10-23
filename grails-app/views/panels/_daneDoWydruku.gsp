@@ -27,7 +27,8 @@
                         <span><g:message code="panel.city" /></span>
                         <span>
                             %{--<eumowy:textField name="wydrukMiasto" value="${data.wydrukMiasto}" validatable="${data}" style="width: 280px;" required="true"/>--}%
-                            <g:select id="wydrukMiasto" name="wydrukMiasto" value="${data.wydrukMiasto}" from="" style="width: 280px;" required="required"/>
+                            <g:select id="wydrukMiasto" name="wydrukMiasto" value="${data.wydrukMiasto}"
+                                      from="[data.wydrukMiasto]" style="width: 280px;" required="required"/>
                         </span>
 
                     </li>

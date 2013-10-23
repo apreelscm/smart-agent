@@ -147,7 +147,9 @@
                             required="true"/>
                     </span>
                     <span style="float: left"> <g:message code="panel.city" />
-                    <g:select  id="${panelType}[${id}].dataforprintingAddressCity"  name="${panelType}[${id}].wydrukMiasto" value="${pointData?.wydrukMiasto}" from=""
+                    <g:select  id="${panelType}[${id}].dataforprintingAddressCity"
+                               name="${panelType}[${id}].wydrukMiasto" value="${pointData?.wydrukMiasto}"
+                               from="[pointData?.wydrukMiasto ?: '']"
                                style="width: 200px;"  required="required"
                                validateField="wydrukMiasto"/>
                     </span>
