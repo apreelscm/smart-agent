@@ -22,12 +22,12 @@ class SubscriptionController {
 			render(text: "{\"status\": \"FAIL\", \"text\": \"Niewyraźny podpis. Proszę spróbować jeszcze raz.\"}")
 			return
 		}
-		
+		log.info "CONTENT: " + params.content
 		def subscription = new Subscription(params)
 		subscription.signDate = new Date()
 		subscription.save(flush: true)
 		
-        BufferedImage img = SignatureToImage.convertJsonToImage(subscription.content)
+        BufferedImage img = SignatureToImage.convertBase64ToImage(subscription.content)
 
 		/* We don't need it for now
 		
