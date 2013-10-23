@@ -43,7 +43,7 @@
                     name="${panelType}[${id}].rodzProwadzDzialalWPraktyce"
                     id="${panelType}[${id}].bussinessTypeInPractice"
                     value="${pointData?.rodzProwadzDzialalWPraktyce}"
-                    maxlength="60" required="true"/></span></li>
+                    maxlength="255" required="true"/></span></li>
             <li><span class="align-right"><g:message
                     code="panel.bankaccountnumber" /></span> <span><eumowy:textField
                     class="bank-account"
