@@ -1113,7 +1113,6 @@ class ActivityController {
                     log.info(message(code:" process.openNotFound.error") + " - " + flow.nip)
                     return error()
                 }
-
                 flow.savedProcess = lastProcess
                 flow.client = lastProcess.client;
             }
