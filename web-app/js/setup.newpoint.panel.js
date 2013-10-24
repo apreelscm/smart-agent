@@ -113,7 +113,11 @@ function setupNewPointPanelHandlers(prevPanelId, panelId, prefix) {
             jQuery(prefixPanel + ".dataforprintingAddressStreet").val(jQuery("#akceptantUlica").val()).keyup();
             jQuery(prefixPanel + ".dataforprintingAddressHomeNumber").val(jQuery("#akceptantNrDomu").val()).keyup();
             jQuery(prefixPanel + ".dataforprintingAddressFlatNumber").val(jQuery("#akceptantNrMieszkania").val()).keyup();
-            jQuery(prefixPanel + ".dataforprintingAddressCity").val(jQuery("#akceptantMiasto").val()).keyup();
+
+            var $dataforprintingAddressCity =  jQuery(prefixPanel + ".dataforprintingAddressCity")
+            $dataforprintingAddressCity.append('<option value="'+jQuery('#akceptantMiasto').val()+'">'+jQuery('#akceptantMiasto').val()+'</option>')
+            $dataforprintingAddressCity.val(jQuery('#akceptantMiasto').val()).keyup();
+
             jQuery(prefixPanel + ".dataforprintingAddressPostalCode").val(jQuery("#akceptantKodPocztowy").val()).keyup();
             jQuery(prefixPanel + ".dataforprintingAddressPostOffice").val(jQuery("#akceptantPoczta").val()).keyup();
         } else {
@@ -132,7 +136,12 @@ function setupNewPointPanelHandlers(prevPanelId, panelId, prefix) {
         jQuery(prefixPanel + ".contactAddressAddressStreet").val(jQuery("#akceptantUlica").val()).keyup();
         jQuery(prefixPanel + ".contactAddressAddressHomeNumber").val(jQuery("#akceptantNrDomu").val()).keyup();
         jQuery(prefixPanel + ".contactAddressAddressFlatNumber").val(jQuery("#akceptantNrMieszkania").val()).keyup();
-        jQuery(prefixPanel + ".contactAddressAddressCity").val(jQuery("#akceptantMiasto").val()).keyup();
+
+        //jQuery(prefixPanel + ".contactAddressAddressCity").val(jQuery("#akceptantMiasto").val()).keyup();
+        var $contactAddressAddressCity =  jQuery(prefixPanel + ".contactAddressAddressCity")
+        $contactAddressAddressCity.append('<option value="'+jQuery('#akceptantMiasto').val()+'">'+jQuery('#akceptantMiasto').val()+'</option>')
+        $contactAddressAddressCity.val(jQuery('#akceptantMiasto').val()).keyup();
+
         jQuery(prefixPanel + ".contactAddressAddressPostalCode").val(jQuery("#akceptantKodPocztowy").val()).keyup();
         jQuery(prefixPanel + ".contactAddressAddressPostOffice").val(jQuery("#akceptantPoczta").val()).keyup();
     });

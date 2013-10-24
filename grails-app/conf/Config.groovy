@@ -202,7 +202,7 @@ trustAll = true
 fileuploader {
     attachments {
         maxSize =  10 * FileUploaderTagLib._mbyte;
-        allowedExtensions = ["jpg", "tiff", "pdf", "gif"]
+        allowedExtensions = ["jpg", "tiff", "pdf", "gif", "doc", "docx"]
         //path = "/tmp/attachment/"
     }
 }

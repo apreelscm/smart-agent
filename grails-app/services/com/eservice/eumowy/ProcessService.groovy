@@ -161,19 +161,20 @@ class ProcessService {
         cmd.allPoints?.addAll(getPointsToAllPointsCommandList(process, cmd))
         cmd.allPoses?.addAll(getPosesToAllPosCommandList(process, cmd))
 
+		//FIXME Optymalizacja usuwania, z uwzglednieniem tego, zeby nie zamykalo sesji, bo potem
+		//		w metodzie prepareProcessCommand jest zamknieta sesja i nie mozna zrobic lazyLoad na liscie paneli
 		cmd.allPoints?.each { AllPointsCommand apc ->
 			if (apc.cbdId == -1) {
 				PointData point = PointData.findById(apc.id)
 				if (point != null) {
 					log.info "USUWAM PUNKT O ID: " + point.id
 					process.removeFromPoints(point)
-                    process.discard()
-				//	point.delete(flush: true)
+					point.delete(flush: true)
 				}
 			}
 		}
-        //process.save(flush:true)
-
+		process.save(flush:true)
+		
 		cmd.allPoints?.removeAll { it.cbdId == -1 }
 		
 		cmd.allPoses?.each { AllPosCommand apc ->
@@ -188,7 +189,7 @@ class ProcessService {
 		cmd.allPoses?.removeAll { it.tpsId == -1 }
 		
         cmd.notes = process.notesToCoa
-
+		
         prepareProcessCommand(cmd, calc, cbdMethods)
     }
 
