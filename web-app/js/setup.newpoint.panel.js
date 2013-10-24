@@ -114,6 +114,10 @@ function setupNewPointPanelHandlers(prevPanelId, panelId, prefix) {
             jQuery(prefixPanel + ".dataforprintingAddressHomeNumber").val(jQuery("#akceptantNrDomu").val()).keyup();
             jQuery(prefixPanel + ".dataforprintingAddressFlatNumber").val(jQuery("#akceptantNrMieszkania").val()).keyup();
             jQuery(prefixPanel + ".dataforprintingAddressCity").val(jQuery("#akceptantMiasto").val()).keyup();
+
+           // alert("akcMiasto:"+jQuery("#akceptantMiasto").val())
+           // console.info("akcMiasto:"+jQuery("#akceptantMiasto").val())
+
             jQuery(prefixPanel + ".dataforprintingAddressPostalCode").val(jQuery("#akceptantKodPocztowy").val()).keyup();
             jQuery(prefixPanel + ".dataforprintingAddressPostOffice").val(jQuery("#akceptantPoczta").val()).keyup();
         } else {
