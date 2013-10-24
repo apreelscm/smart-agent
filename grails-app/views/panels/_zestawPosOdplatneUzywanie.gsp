@@ -87,19 +87,19 @@
         verifyBaseVisibility()
 
         if(jQuery("#oplPOSDialUpTyp").val() == ""){
-            jQuery("input.oplPOSDialUpCena").val("");
+            jQuery("input.oplPOSDialUpCena").removeAttr('value');
         }
         if(jQuery("#oplPOSVPNTyp").val() == ""){
-            jQuery("input.oplPOSVPNCena").val("");
+            jQuery("input.oplPOSVPNCena").removeAttr('value');
         }
         if(jQuery("#oplPOSSSLTyp").val() == ""){
-            jQuery("input.oplPOSSSLCena").val("");
+            jQuery("input.oplPOSSSLCena").removeAttr('value');
         }
         if(jQuery("#oplPOSWiFiTyp").val() == ""){
-            jQuery("input.oplPOSWiFiCena").val("");
+            jQuery("input.oplPOSWiFiCena").removeAttr('value');
         }
         if(jQuery("#oplPOSGPRSTyp").val() == ""){
-            jQuery("input.oplPOSGPRSCena").val("");
+            jQuery("input.oplPOSGPRSCena").removeAttr('value');
         }
     });
 
