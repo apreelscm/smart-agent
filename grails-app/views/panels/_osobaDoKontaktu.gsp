@@ -12,7 +12,7 @@
                             <g:message code="panel.first.name"/>: <eumowy:textField name="kontaktImie" value="${data.kontaktImie}" validatable="${data}" style="width: 120px" maxlength ="15" required="true"/>
                         </span>
                         <span>
-                            <g:message code="panel.last.name"/>: <eumowy:textField name="kontaktNazwisko" value="${data.kontaktNazwisko}" validatable="${data}" maxlength ="18" required="true"/>
+                            <g:message code="panel.last.name"/>: <eumowy:textField name="kontaktNazwisko" value="${data.kontaktNazwisko}" validatable="${data}" maxlength ="35" required="true"/>
                         </span>
                     </span>
                 </li>
