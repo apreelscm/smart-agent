@@ -178,7 +178,7 @@ class PdfService {
         Set<SubscriptionDefinition> definitions = sig.subscriptionDefinitions.findAll { it.role == personRole && it.subscriptionPageNumber != null && it.subscriptionPageNumber > -1}
         if (s?.content != null && !definitions.isEmpty()) {
             definitions.each{
-                BufferedImage img = SignatureToImage.convertJsonToImage(s.content)
+				BufferedImage img = SignatureToImage.convertDataToImage(s.content)
                 result.put("subscriber_"+it.id, [img, it.subscriptionPageNumber, it.subscriptionX, it.subscriptionY, it.scaleX, it.scaleY] as Object[])
             }
         } else {

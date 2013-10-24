@@ -2,22 +2,28 @@
 <head>
     <meta name="layout" content="blank">
     <title><g:message code="subscription.title" /></title>
-    <r:require module="signaturepad" />
+    <r:require module="jsignature" />
     <r:require module="jquery_ui" />
 </head>
 <body>
 	<r:script>
 		function setUpSignaturePad() {
-			jQuery('#padPlaceholder').html('<div class="typed"></div><canvas id="pad" class="pad" width="700" height="300"></canvas><input type="hidden" name="content" class="output">');
-			jQuery('.sigPad').signaturePad({errorMessageDraw: '<g:message code="subscription.error" />'});
+			//jQuery('#padPlaceholder').html('<div class="typed"></div><canvas id="pad" class="pad" width="700" height="300"></canvas><input type="hidden" name="content" class="output">');
+			//jQuery('.sigPad').signaturePad({errorMessageDraw: '<g:message code="subscription.error" />'});
+			jQuery('#padPlaceholder').jSignature({'width': 700, 'height': 300, 'decor-color': 'transparent'});
 		}
 		
 	    jQuery(document).ready(function() {
 	      jQuery('#subscriberData').html(decodeURI('${params.name}') + " " + decodeURI('${params.surname}'));
 	      
+	      jQuery('.clearButton').on('click', function(e) { 
+	      	e.preventDefault();
+	      	jQuery('#padPlaceholder').jSignature('reset');
+	      	return false;
+	      });
 	      jQuery('form').on("submit", function(e) {
 	      	e.preventDefault();
-	      	
+	      	jQuery("#sigContent").val(jQuery('#padPlaceholder').jSignature("getData"));
 	      	jQuery.post("/eumowy/subscription/saveSubscription", $(this).serialize(), function(data) {
 	      		var result = JSON.parse(data);
 	      		if (result.status == "OK") {
@@ -40,7 +46,7 @@
 		<section id="index-subscription">
 		    <h1 class="ng linia-bottom">Podpis</h1>
 			<!-- style="margin-top: 20px" -->
-		    <h3 id="subscriberData"></h3>
+		    <h3 id="subscriberData" style="margin-top: 20px"></h3>
 		
 		    <g:form  id="subscriptionForm" action="saveSubscription" class="sigPad">
 		        <p>
@@ -55,12 +61,13 @@
 		            </label>
 		        </p>
 				<!-- style="margin-top: 20px" -->
-		        <div id="padPlaceholder" class="sig sigWrapper" >
+		        <div id="padPlaceholder" class="sig sigWrapper" style="border: 1px solid black; height: 300px; width: 700px; margin-top: 20px" >
 		        </div>
 		
 				<input type="hidden" name="name" value="${params.name}" />
 				<input type="hidden" name="surname" value="${params.surname}" />
 				<input type="hidden" name="personRole" value="${params.personRole}" />
+				<input id="sigContent" type="hidden" name="content" value="" />
 		        <fieldset style="margin-top: 20px;">
 		            <a href="#clear" class="button action clearButton"><g:message code="subscription.clear" /></a>
 		            <g:submitButton id="submitSubscription" name="Złożono podpis" class="button submit"/>

@@ -201,6 +201,7 @@ function SignaturePad (selector, options) {
     canvasContext.moveTo(previous.x, previous.y)
     canvasContext.lineTo(newX, newY)
     canvasContext.lineCap = settings.penCap
+    canvasContext.lineJoin = 'round'
     canvasContext.stroke()
     canvasContext.closePath()
 
@@ -263,6 +264,7 @@ function SignaturePad (selector, options) {
     canvasContext.strokeStyle = settings.lineColour
     canvasContext.moveTo(settings.lineMargin, settings.lineTop)
     canvasContext.lineTo(element.width - settings.lineMargin, settings.lineTop)
+    canvasContext.lineJoin = 'round'
     canvasContext.stroke()
     canvasContext.closePath()
   }

@@ -243,7 +243,7 @@ jQuery(".showSignatureDialog").on('click', function(e) {
       						open : function() {
 							    var t = jQuery(this).parent(), w = jQuery(window);
 							    t.offset({
-							        top: (w.height() / 2) - (t.height() / 2) - 200,
+							        top: (w.height() / 2) - (t.height() / 2) - 50,
 							        left: (w.width() / 2) - (t.width() / 2)
 							    });
 							    w.scrollTop(0);

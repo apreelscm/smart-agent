@@ -5,6 +5,14 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
+import javax.imageio.ImageIO;
+
+import org.apache.commons.codec.binary.Base64;
+import org.apache.log4j.Logger;
 
 import com.google.gson.Gson;
 
@@ -18,10 +26,22 @@ import com.google.gson.Gson;
  *	@version	1.0.0
  */
 public class SignatureToImage {
-
+	static Logger LOG = Logger.getLogger(SignatureToImage.class);
+	
+	public static BufferedImage convertDataToImage(String data) {
+		BufferedImage img = null;
+		if (data.contains("data:image/png;base64,")) {
+			img = convertBase64ToImage(data);
+		}
+		else {
+			img = convertJsonToImage(data);
+		}
+		return img;
+	}
+	
     public static BufferedImage convertJsonToImage(String jsonString){
-        System.out.println( "convertJsonToImage:"+jsonString);
-                Gson gson = new Gson();
+        LOG.info( "convertJsonToImage:"+jsonString);
+        Gson gson = new Gson();
         SignatureLine[] signatureLines = gson.fromJson(jsonString, SignatureLine[].class);
         
         BufferedImage offscreenImage = new BufferedImage(700, 300, BufferedImage.TYPE_INT_ARGB);
@@ -36,5 +56,20 @@ public class SignatureToImage {
             g2.drawLine(line.lx, line.ly, line.mx, line.my);
         }
         return offscreenImage;
+    }
+    
+    public static BufferedImage convertBase64ToImage(String baseimg) {
+    	baseimg = baseimg.replace("data:image/png;base64,", "");
+    	Base64 decoder = new Base64();   
+    	byte[] imgBytes = decoder.decode(baseimg);
+    	InputStream in = new ByteArrayInputStream(imgBytes);
+    	BufferedImage img = null;
+		try {
+			img = ImageIO.read(in);
+		} catch (IOException e) {
+			LOG.info("Could not convert Base64 encoded image to BufferedImage!!");
+			e.printStackTrace();
+		}
+    	return img;
     }
 }
