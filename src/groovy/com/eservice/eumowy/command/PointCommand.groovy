@@ -13,11 +13,11 @@ class PointCommand implements Serializable {
 	
 	Integer id
 	
-	BigDecimal phPozysk
-	BigDecimal opiekaBiznesowa
-	BigDecimal opiekaSerwisowaI
-	BigDecimal opiekaSerwisowaII
-	BigDecimal opiekaSerwisowaIII
+	String phPozysk
+	String opiekaBiznesowa
+	String opiekaSerwisowaI
+	String opiekaSerwisowaII
+	String opiekaSerwisowaIII
 
 	String nipPunktu
 	String kodMCC
@@ -149,11 +149,11 @@ class PointCommand implements Serializable {
 	Boolean korespondencjaJakDlaMerchantaLubWydruku
 	
 	static constraints = {
-		phPozysk(nullable:true, blank:false, shared: "natural")
-		opiekaBiznesowa(nullable:true, blank:false, shared: "natural")
-		opiekaSerwisowaI(nullable:true, blank:true, shared: "natural")
-		opiekaSerwisowaII(nullable:true, blank:true, shared: "natural")
-		opiekaSerwisowaIII(nullable:true, blank:true, shared: "natural")
+		phPozysk(nullable:true, blank:false, shared: "alphanumeric")
+		opiekaBiznesowa(nullable:true, blank:false, shared: "alphanumeric")
+		opiekaSerwisowaI(nullable:true, blank:true, shared: "alphanumeric")
+		opiekaSerwisowaII(nullable:true, blank:true, shared: "alphanumeric")
+		opiekaSerwisowaIII(nullable:true, blank:true, shared: "alphanumeric")
 		nipPunktu(nullable:true, blank:false, shared: "natural")
 		kodMCC(nullable:true, shared: "natural")
 		rodzProwadzDzialalWPraktyce(nullable:true, blank:false)

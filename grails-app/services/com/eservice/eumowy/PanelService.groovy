@@ -23,7 +23,7 @@ class PanelService {
         cmd.doladowania_tk = nullify(cmd.doladowania_tk)
         cmd.czyRozszerzenie = cmd.process?.activities?.any{it.code.equals('dodatkowyPunkt')} || cmd.process?.activities?.any{it.code.equals('dodatkowyPos')}
 
-        cmd.liczbaTerminali = calculatorService.getCalcProperty(calc,"LICZBA_POS_MAX")
+        cmd.liczbaTerminali = calculatorService.getCalcProperty(calc,"LICZBA_POS_MAX") != null ? calculatorService.getCalcProperty(calc,"LICZBA_POS_MAX") : 0
     }
 
     def getAdresacjaSeciowa(ProcessCommand cmd, def calc ) {

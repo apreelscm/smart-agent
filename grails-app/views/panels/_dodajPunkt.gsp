@@ -73,7 +73,7 @@
 			if (panelInternalCount.value > 0) {
 				jQuery("#conitnueButton").prop("disabled", false);
 			}
-			console.log("CurrentTerminalCount: " + getCurrentTerminalCount("points"));
+
 			if (getCurrentTerminalCount("points") == maxTerminalCount) {
 				jQuery(e.target).prop("disabled", true);
 				jQuery("#addNewPosButton").prop("disabled", true);

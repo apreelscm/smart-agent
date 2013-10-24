@@ -4,11 +4,11 @@ import org.apache.commons.lang.builder.HashCodeBuilder
 
 class PointDataDetails implements Serializable {
 
-	BigDecimal phPozysk
-	BigDecimal opiekaBiznesowa
-	BigDecimal opiekaSerwisowaI
-	BigDecimal opiekaSerwisowaII
-	BigDecimal opiekaSerwisowaIII
+	String phPozysk
+	String opiekaBiznesowa
+	String opiekaSerwisowaI
+	String opiekaSerwisowaII
+	String opiekaSerwisowaIII
 
 	String nipPunktu
 	String kodMCC
