@@ -11,6 +11,7 @@ class DictionaryTagLib {
         if (!attrs.value && attrs.default){
             attrs.value = attrs.default
         }
+		attrs.from.add(0,"")
         fieldImpl(out, attrs)
     }
 	
