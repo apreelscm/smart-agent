@@ -1,3 +1,23 @@
+
+var panelInternalCount = {
+    _value: 0,
+    get value() { return this._value; },
+    set value(obj) { this._value = obj; /*Listener code can go here*/
+        evaluateSredniObrot()
+    }
+};
+
+function evaluateSredniObrot(){
+    var divideBy = parseInt($j("#liczbaPtkCbd").val()) + panelInternalCount.value
+    var sredniObrot = divideBy ? parseFloat($j("#progrnozaMiesieczna").val()) / divideBy : 0
+    console.info("progrnozaMiesieczna:"+$j("#progrnozaMiesieczna").val())
+    console.info("liczbaPtkCbd:"+$j("#liczbaPtkCbd").val())
+    console.info("panelInternalCount:"+panelInternalCount.value)
+    console.info("sredniObrot:"+sredniObrot)
+    $j("#scoringDeklaracjaFinansowaSredniObrot").val(Math.round(sredniObrot * 100)/100)
+}
+
+
 function refreshTelepomkaAndTelekodzikPercentValues(){
     var isActiveTK = false,
         isActiveTP = false,
@@ -50,7 +70,6 @@ var $j = jQuery.noConflict();
 
 (function ($) {
     $(function() {
-
         refreshCityField(jQuery('#akceptantKodPocztowy').val(),  jQuery("#akceptantMiasto"))
         refreshCityField(jQuery('#akceptantKontaktKodPocztowy').val(),  jQuery("#akceptantKontaktMiasto"))
         refreshCityField(jQuery('#wydrukKodPocztowy').val(),  jQuery("#wydrukMiasto"))

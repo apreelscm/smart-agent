@@ -1113,7 +1113,6 @@ class ActivityController {
                     log.info(message(code:" process.openNotFound.error") + " - " + flow.nip)
                     return error()
                 }
-
                 flow.savedProcess = lastProcess
                 flow.client = lastProcess.client;
             }
@@ -1287,7 +1286,8 @@ class ActivityController {
                     doc.content.discard()
                 }
 
-                def recipient = getFromProcessData(process, 'kontaktEmail');
+                def recipient = getFromProcessData(process, 'kontaktEmail') ?: getFromProcessData(process, 'emailDoWysylkiDokumentu')
+
                 if (recipient){
                     emailService.sendDocumentsElectronicalVersion(recipient, process.documents)
                 } else {

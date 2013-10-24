@@ -23,7 +23,10 @@
                     <span style="text-align: left;"><eumowy:textField class="postal-code" id="akceptantKontaktKodPocztowy" name="akceptantKontaktKodPocztowy" value="${data.akceptantKontaktKodPocztowy}" validatable="${data}" style="width: 50px" maxlength ="5" required="true"/></span>
                     <span>
                         <span><g:message code="panel.city" /></span>
-                        <span> <g:select id="akceptantKontaktMiasto" name="akceptantKontaktMiasto" value="${data.akceptantKontaktMiasto}" from="" style="width: 200px;" required="required"/></span>
+                        <span> <g:select id="akceptantKontaktMiasto" name="akceptantKontaktMiasto"
+                                         value="${data.akceptantKontaktMiasto}"
+                                         from="[data.akceptantKontaktMiasto]"
+                                         style="width: 200px;" required="required"/></span>
                     </span>
                 </li>
 

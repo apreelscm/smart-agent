@@ -60,9 +60,10 @@
 
             if ( form.valid()){
 
-              var kontaktEmail = $j("input[name='kontaktEmail']").val()
+              var kontaktEmail = $j("#kontaktEmail").val()
+              var emailDoWysylkiDokumentu = $j("#emailDoWysylkiDokumentu").val()
 
-               if(kontaktEmail){
+               if(emailDoWysylkiDokumentu || kontaktEmail){
                     submitForm(form,input, true)
                }else{
                     //sprawdzanie maila akceptanta
@@ -232,6 +233,9 @@
         <g:hiddenField name="nip" value="${data.nip}"/>
         <g:hiddenField name="liczbaTerminali" value="${data.liczbaTerminali}"/>
         <g:hiddenField name="liczbaPosZCbd" value="${data.liczbaPosZCbd}"/>
+        <g:hiddenField id="progrnozaMiesieczna" name="progrnozaMiesieczna" value="${data.progrnozaMiesieczna}"/>
+        <g:hiddenField id="liczbaPtkCbd" name="liczbaPtkCbd" value="${data.liczbaPtkCbd}"/>
+
         <g:hiddenField name="czyRozszerzenie" value="${data.czyRozszerzenie}"/>
         <g:each var="panel" in="${processInstance.panels.sort{it.orderNo}}" status="i">
             <g:if test="${panel != null}">

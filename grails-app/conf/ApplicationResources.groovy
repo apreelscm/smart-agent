@@ -14,6 +14,11 @@ modules = {
 		dependsOn 'jquery', 'json2'
 	}
 	
+	jsignature {
+		resource url: 'js/jsignature/jSignature.min.noconflict.js', disposition: 'head'
+		dependsOn 'jquery'
+	}
+	
 	mask {
         resource url: 'js/jquery.mask.js', disposition: 'head'
         resource url: 'js/mask.js', disposition: 'head'

@@ -20,7 +20,9 @@
                 <span><eumowy:textField class="postal-code" name="${panelType}[${id}].korespondencjaKodPocztowy" id="${panelType}[${id}].contactAddressAddressPostalCode" value="${pointData?.korespondencjaKodPocztowy}" validatable="${pointData}" validateField="korespondencjaKodPocztowy" style="width: 50px" maxlength="5" required="true"/></span>
                 <span>
 		  			<span><g:message code="panel.city" /></span>
-                    <span><g:select id="${panelType}[${id}].contactAddressAddressCity" name="${panelType}[${id}].korespondencjaMiasto" value="${pointData?.korespondencjaMiasto}" from="" validatable="${pointData}" validateField="korespondencjaMiasto" style="width: 200px;" required="required"/></span>
+                    <span><g:select id="${panelType}[${id}].contactAddressAddressCity" name="${panelType}[${id}].korespondencjaMiasto"
+                                    value="${pointData?.korespondencjaMiasto}" from="[pointData?.korespondencjaMiasto ?: '']"
+                                    validatable="${pointData}" validateField="korespondencjaMiasto" style="width: 200px;" required="required"/></span>
 		  		</span>
 		  	</li>
 		  	<li>

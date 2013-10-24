@@ -8,6 +8,8 @@ class PdfProcessMapper extends AbstractPdfMapper{
     def calculatorService
     def calc
     def pointMapper
+	
+	private static final EMPTY_VALUES = ["", "-"]
 
     public PdfProcessMapper (def calculatorService, def calc, def pointMapper){
         this.calculatorService = calculatorService
@@ -101,13 +103,6 @@ class PdfProcessMapper extends AbstractPdfMapper{
         data.put("phNumer", [phNumber?.toString()] as String[])
         data.put("osobaPozyskalaAkceptantaNr", [phNumber?.toString()] as String[])
         data.put("osobaPodpisalaUmoweNr", [phNumber?.toString()] as String[])
-        //to na jakis formularz jest
-        if (phNumber != null && phNumber?.toString().size()==5){
-            data.put("NrSprzedazowyPH1", [phNumber?.toString().substring(0, 3)] as String[])
-            data.put("NrSprzedazowyPH2", [phNumber?.toString().substring(3, 4)] as String[])
-        } else {
-            data.put("NrSprzedazowyPH1", [phNumber?.toString()] as String[])
-        }
 
         /* // Znaczniki do PDFow
 
@@ -560,7 +555,7 @@ class PdfProcessMapper extends AbstractPdfMapper{
     }
 
     private mapFieldWithStartDate(def data, def pd, def key, def value, def dateFieldName){
-        if (value != null && !"".equals(value)){
+        if (value !=null && !EMPTY_VALUES.contains(value)){
             data.put(key, [value] as String[])
             addDateField(data, dateFieldName, getFromProcessDataSet(pd, "dataUmowy"));
         }

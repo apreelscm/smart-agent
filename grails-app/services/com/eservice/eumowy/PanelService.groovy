@@ -311,12 +311,12 @@ class PanelService {
         cmd.reprezentant2Tytul = nullify(cmd.reprezentant2Tytul)
         cmd.reprezentant2Imie = nullify(cmd.reprezentant2Imie)
         cmd.reprezentant2Nazwisko = nullify(cmd.reprezentant2Nazwisko)
-
+        cmd.emailDoWysylkiDokumentu = nullify(cmd.emailDoWysylkiDokumentu)
     }
 
     def setAtLeastAs(def data, def calcValue){
         //println("data : ${data} , cal : ${calcValue}")
-        if(!data || !data.toString().isNumber()) {
+        if(!data || data == "null" || !data.toString().isNumber()) {
             return calcValue
         }
 
@@ -474,12 +474,21 @@ class PanelService {
         cmd.scoringPonad50ProcentObrotowWNocy = nullify(cmd.scoringPonad50ProcentObrotowWNocy)
         cmd.scoringRuchTurystycznyPrzygraniczny = nullify(cmd.scoringRuchTurystycznyPrzygraniczny)
         cmd.scoringUslugiPlatneZGory = nullify(cmd.scoringUslugiPlatneZGory)
-        cmd.scoringDochodowosc = nullify(cmd.scoringDochodowosc)
+
         cmd.scoringDeklaracjaFinansowa = nullify(cmd.scoringDeklaracjaFinansowa)
-        cmd.scoringDeklaracjaFinansowaObrotOgolem = nullify(cmd.scoringDeklaracjaFinansowaObrotOgolem)
-        cmd.scoringDeklaracjaFinansowaObrotNaKarty = nullify(cmd.scoringDeklaracjaFinansowaObrotNaKarty)
-        cmd.scoringDeklaracjaFinansowaSredniObrot = nullify(cmd.scoringDeklaracjaFinansowaSredniObrot)
-        cmd.scoringDeklaracjaFinansowaSredniaTransakcja = nullify(cmd.scoringDeklaracjaFinansowaSredniaTransakcja)
+
+        cmd.scoringDochodowosc = calculatorService.getCalcProperty(calc,"DOCHODOWOSC") ?: 0;
+        cmd.scoringDeklaracjaFinansowaObrotOgolem = calculatorService.getCalcProperty(calc,"OBROT_OGOLEM") ?: 0;
+        cmd.scoringDeklaracjaFinansowaObrotNaKarty = calculatorService.getCalcProperty(calc,"OBROT_MIESIECZNY") ?: 0;
+        cmd.scoringDeklaracjaFinansowaSredniaTransakcja = calculatorService.getCalcProperty(calc,"WARTOSC_SREDNIA") ?: 0;
+
+        cmd.progrnozaMiesieczna =  calculatorService.getCalcProperty(calc,"PROGNOZA_MIESIECZNA") ?: 0;
+        cmd.liczbaPtkCbd = calculatorService.getCalcProperty(calc,"LICZBA_PUNKTOW_CBD") ?: 0;
+
+//        cmd.scoringDeklaracjaFinansowaSredniObrot = Double.valueOf(progrnozaMies) / (Double.valueOf(liczbaPtkCbd) + 0)
+
+
+        //PROGNOZA_MIESIECZNA/(LICZBA_PUNKTOW_CBD + N)
     }
 
     def getSerwis(ProcessCommand cmd, def calc ) {
