@@ -14,7 +14,7 @@ function evaluateSredniObrot(){
     console.info("liczbaPtkCbd:"+$j("#liczbaPtkCbd").val())
     console.info("panelInternalCount:"+panelInternalCount.value)
     console.info("sredniObrot:"+sredniObrot)
-    $j("#scoringDeklaracjaFinansowaSredniObrot").val(Math.round(sredniObrot))
+    $j("#scoringDeklaracjaFinansowaSredniObrot").val(Math.round(sredniObrot * 100)/100)
 }
 
 
