@@ -551,6 +551,8 @@ class PdfProcessMapper extends AbstractPdfMapper{
             DecimalFormat df = (DecimalFormat)NumberFormat.getNumberInstance(new Locale("pl", "PL"));
             def fn = df.format(processData.value.toDouble()) + ' ' + suffix;
             data.put(processData.name, [fn] as String[])
+        } else if ("-".equals(processData.value)){
+            data.put(processData.name, [processData.value + ' ' + suffix] as String[])
         }
     }
 

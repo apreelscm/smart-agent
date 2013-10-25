@@ -7,7 +7,7 @@ class PdfPointMapper extends AbstractPdfMapper{
 
     static def ALLOW_NULL_POINT = [];
     static def ALLOW_NULL_POINT_DATA_DETAILS = ["wydrukUlica", "wydrukMiasto", "wydrukPoczta", "wydrukNrDomu", "wydrukNrLokalu", "wydrukKodPocztowy",
-                                                "korespondencjaUlica", "korespondencjaMiasto", "korespondencjaPoczta", "korespondencjaNrDomu", "korespondencjaNrLokalu", "korespondencjaKodPocztowy"];
+                                                "nazwaDoWydrukuZTerminalaPos", "nipPunktu"];
 
     public def mapPointsSpecial(def points, def mapping) {
         def data = [:];
@@ -108,29 +108,17 @@ class PdfPointMapper extends AbstractPdfMapper{
         mapWithPattern(data, pointData.cbdId == null ? value : pointData.kodPocztowy, ~/\d{2}-\d{3}/, "-", "wydrukKodPocztowy");
     }
 
-    private mapKorespondencjaUlicaPointDataDetails(def data, def pointData, def key, def value){
-        data.put(key, [pointData.cbdId == null ? value : pointData.ulica] as String[]);
+    private mapNipPunktuPointDataDetails(def data, def pointData, def key, def value){
+        data.put(key, [pointData.cbdId == null ? value : pointData.nip] as String[]);
     }
 
-    private mapKorespondencjaMiastoPointDataDetails(def data, def pointData, def key, def value){
-        data.put(key, [pointData.cbdId == null ? value : pointData.miejscowosc] as String[]);
-    }
-
-    private mapKorespondencjaPocztaPointDataDetails(def data, def pointData, def key, def value){
-        data.put(key, [pointData.cbdId == null ? value : pointData.poczta] as String[]);
-    }
-
-    private mapKorespondencjaNrDomuPointDataDetails(def data, def pointData, def key, def value){
-        data.put(key, [pointData.cbdId == null ? value : pointData.nrBudynku] as String[]);
-    }
-
-    private mapKorespondencjaNrLokaluPointDataDetails(def data, def pointData, def key, def value){
-        data.put(key, [pointData.cbdId == null ? value : pointData.nrLokalu] as String[]);
+    private mapNazwaDoWydrukuZTerminalaPosPointDataDetails(def data, def pointData, def key, def value){
+        data.put(key, [pointData.cbdId == null ? value : pointData.nazwa] as String[]);
     }
 
     private mapKorespondencjaKodPocztowyPointDataDetails(def data, def pointData, def key, def value){
         data.put(key, [value] as String[]);
-        mapWithPattern(data, pointData.cbdId == null ? value : pointData.kodPocztowy, ~/\d{2}-\d{3}/, "-", "korespondencjaKodPocztowy");
+        mapWithPattern(data, value, ~/\d{2}-\d{3}/, "-", "korespondencjaKodPocztowy");
     }
 
 
