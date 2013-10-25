@@ -24,7 +24,7 @@
 <r:script>
 
 	jQuery(document).ready(function() {
-		jQuery("#conitnueButton").prop("disabled", true);
+		jQuery("#continueButton").prop("disabled", true);
 		var maxTerminalCount = jQuery("#liczbaTerminali").val();
 		var panelTemplate = jQuery("#hiddenPanel").html();
 		var panelCount = ${data.points.size()};
@@ -34,7 +34,7 @@
 		jQuery("#hiddenPanel").remove();
 		
 		if (panelInternalCount.value > 0) {
-			jQuery("#conitnueButton").prop("disabled", false);
+			jQuery("#continueButton").prop("disabled", false);
 		}
 		
 		if (getCurrentTerminalCount("points") == maxTerminalCount) {
@@ -71,7 +71,7 @@
 			}
 			
 			if (panelInternalCount.value > 0) {
-				jQuery("#conitnueButton").prop("disabled", false);
+				jQuery("#continueButton").prop("disabled", false);
 			}
 
 			if (getCurrentTerminalCount("points") == maxTerminalCount) {
@@ -105,7 +105,7 @@
 							}
 							
 							if (panelInternalCount.value == 0) {
-								jQuery("#conitnueButton").prop("disabled", true);
+								jQuery("#continueButton").prop("disabled", true);
 							}
 							
 							if (getCurrentTerminalCount("points") < maxTerminalCount) {
@@ -132,7 +132,7 @@
 			}
 			
 			if (panelInternalCount.value == 0) {
-				jQuery("#conitnueButton").prop("disabled", true);
+				jQuery("#continueButton").prop("disabled", true);
 			}
 			
 			if (getCurrentTerminalCount("points") < maxTerminalCount) {

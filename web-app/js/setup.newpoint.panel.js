@@ -2,6 +2,14 @@ var globalPanelCount = 0;
 var globalPanelPosCount = 0;
 var panelPosInternalCount = 0;
 
+var sameForEveryPointSourcePanelId = {
+	"sameForEveryPoint": -1,
+	"possetforselectedpointSameForEveryPoint": -1,
+	"technicalinformationSameForEveryPoint": -1,
+	"terminaloptionsSameForEveryPoint": -1,
+	"additionalequipmentSameForEveryPoint": -1
+};
+
 function getCurrentTerminalCount(prefix) {
 
     var counter = 0;
@@ -604,6 +612,16 @@ function getDateFromTime(time){
 
 function sameForEveryPoint(selector, prefix, panelId){
     jQuery(selector).on("click", function(e) {
+    	var index = selector.substring(selector.indexOf('.')+1, selector.length);
+    	console.log("INDEX: " + index);
+    	var panelJsId = parseInt(jQuery(e.target).parents(".newPointPanel").attr('data-js-id'));
+    	if (e.target.checked) {
+    		sameForEveryPointSourcePanelId[index] = panelJsId;
+    	}
+    	else {
+    		sameForEveryPointSourcePanelId[index] = -1;
+    	}
+    	
         for(var i = 0; i < getGlobalPanelCount(prefix); i++) {
             if (i != panelId) {
                 if (e.target.checked) {

@@ -19,7 +19,11 @@
            		<tbody>
            			<g:each status="i" var="point" in="${data.allPoints}">
            				<tr>
-							<td>${point.id}<g:hiddenField name="allPoints[${i}].id" value="${point.id}" /><g:hiddenField name="allPoints[${i}].cbdId" value="${point.cbdId}" /></td>
+							<td>${point.id}
+								<g:hiddenField name="allPoints[${i}].id" value="${point.id}" />
+								<g:hiddenField name="allPoints[${i}].cbdId" value="${point.cbdId}" />
+								<g:hiddenField name="allPoints[${i}].nip" value="${point.nip}" />
+							</td>
 							<td>${point.nazwa}<g:hiddenField name="allPoints[${i}].nazwa" value="${point.nazwa}" /></td>
 							<td>${point.ulica}<g:hiddenField name="allPoints[${i}].ulica" value="${point.ulica}" /></td>
 							<td>${point.miejscowosc}<g:hiddenField name="allPoints[${i}].miejscowosc" value="${point.miejscowosc}" /></td>
