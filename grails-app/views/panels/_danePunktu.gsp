@@ -368,15 +368,22 @@
 <r:require module="jquery_ui" />
 <r:require module="jquery_timepicker_pl" />
 
-
 <r:script>
 
-    function verifyBaseVisibility(value, trId){
+    function verifyBaseVisibility(value, id){
+        console.info('input[name="points['+id+'].gprsPPCena"]')
+        console.info($j('input[name="points['+id+'].gprsPPCena"]').length)
+
         if(value == "Verifone Vx670 GPRS"){
-            jQuery("#trBase"+trId).show()
+            $j("#trBase"+id).show()
+            $j('input[name="points['+id+'].gprsPPIlosc"]').attr("readonly","")
+            $j('input[name="points['+id+'].gprsPPCena"]').attr("readonly","")
         }
         else{
-            jQuery("#trBase"+trId).hide()
+            $j("#trBase"+id).hide()
+            $j('input[name="points['+id+'].gprsPPIlosc"]').removeAttr("readonly")
+            $j('input[name="points['+id+'].gprsPPCena"]').removeAttr("readonly")
         }
     }
+
 </r:script>
