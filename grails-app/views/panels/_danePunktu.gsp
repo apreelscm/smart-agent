@@ -1,4 +1,4 @@
-<div class="newPointPanel">
+<div data-js-id="${id}" class="newPointPanel">
 <fieldset style="text-align: center">
 <div class="belka-glowna">
     <g:message code="panel.newpoint.pointdata.title" />
