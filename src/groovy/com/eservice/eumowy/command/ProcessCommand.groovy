@@ -739,7 +739,7 @@ class ProcessCommand implements Serializable {
             atLeastClosure.call(value, cmd, errors, "visaOutEUKBSt", "OPLATA_MSC_23_ZL")
         })
 
-        visaPolskaKBSt(nullable: false, blank: false, shared: "number", validator: { value, cmd, errors ->
+        visaPolskaKBSt(nullable: false, blank: false, matches: "~|\\-|^(?:[1-9]\\d*|0|\\-)?(?:\\.\\d{1,2})?\$", validator: { value, cmd, errors ->
             atLeastClosure.call(value, cmd, errors, "visaPolskaKBSt", "OPLATA_MSC_33_ZL")
         })
 
@@ -822,7 +822,7 @@ class ProcessCommand implements Serializable {
         visaPolskaKKO2St(nullable: false, blank: false, shared: "number")
         visaPolskaKD1St(nullable: false, blank: false, shared: "number")
         visaPolskaKD2St(nullable: false, blank: false, shared: "number")
-        visaPolskaKBSt(nullable: false, blank: false, shared: "number")
+        visaPolskaKBSt(nullable: false, blank: false, matches: "~|\\-|^(?:[1-9]\\d*|0|\\-)?(?:\\.\\d{1,2})?\$")
         mastercardPolskaKK1St(nullable: false, blank: false, shared: "number")
         mastercardPolskaKK2St(nullable: false, blank: false, shared: "number")
         mastercardPolskaKK3St(nullable: false, blank: false, shared: "number")
