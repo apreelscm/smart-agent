@@ -21,6 +21,7 @@
 <r:script>
 	
 	jQuery(document).ready(function() {
+		jQuery("#continueButton").prop("disabled", true);
 		var panelPosTemplate = jQuery("#hiddenPosPanel").html();
 		var maxTerminalCount = jQuery("#liczbaTerminali").val();
 		var panelPosCount = ${data.poses.size()};
@@ -62,6 +63,10 @@
 				jQuery(e.target).prop("disabled", false);
 				jQuery("#addNewPointButton").prop("disabled", false);
 			}
+			
+			if (panelPosInternalCount > 0) {
+				jQuery("#continueButton").prop("disabled", false);
+			}
 
 			maskNewPosRefresh();
 			return false;
@@ -84,6 +89,10 @@
 								jQuery("#addNewPointButton").prop("disabled", false);
 								jQuery("#addNewPosButton").prop("disabled", false);
 							}
+							
+							if (panelPosInternalCount == 0) {
+								jQuery("#continueButton").prop("disabled", true);
+							}
 						},
 						"Nie": function() {
 							jQuery( this ).dialog( "close" );
@@ -93,6 +102,10 @@
 			
 			return false;
 		});
+		
+		if (panelPosInternalCount == 0) {
+			jQuery("#continueButton").prop("disabled", true);
+		}
 		
 	});
 </r:script>

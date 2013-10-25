@@ -473,6 +473,7 @@ class ProcessService {
             apc.setNazwa(row.get("nazwa"))
             apc.setNrBudynku(row.get("nr_budynku"))
             apc.setUlica(row.get("ulica"))
+			apc.setNip(row.get("nip"))
 
             pointsList.add(apc)
         }
@@ -513,6 +514,7 @@ class ProcessService {
                     apc.miejscowosc = point.miejscowosc
                     apc.nrBudynku = point.nrBudynku
                     apc.czyCbd = true // Mark for update in local (eumowy) db
+					apc.nip = point.nip
                     cbdPoints.remove(cbdPoints.findIndexOf { AllPointsCommand i -> i.cbdId == apc.cbdId })
                 }
                 else {
@@ -809,6 +811,7 @@ class ProcessService {
                     point.miejscowosc = apc.miejscowosc
                     point.nrBudynku = apc.nrBudynku
                     point.cbdId = apc.cbdId
+					point.nip = apc.nip
                 }
 
                 point.czyWybranyAkceptacjaKart = apc.czyWybranyAkceptacjaKart
@@ -861,6 +864,7 @@ class ProcessService {
 						pointData.setNazwa(cbdPoint.get("nazwa"))
 						pointData.setNrBudynku(cbdPoint.get("nr_budynku"))
 						pointData.setUlica(cbdPoint.get("ulica"))
+						pointData.setNip(cbdPoint.get("nip"))
 					}
 					else {
 						log.info "DIDN'T FIND POINT INFORMATION IN CBD!!! CBDID: " + pc.cbdId + " NIP: " + cmd.nip
@@ -900,6 +904,7 @@ class ProcessService {
 								pointData.setNazwa(cbdPoint.get("nazwa"))
 								pointData.setNrBudynku(cbdPoint.get("nr_budynku"))
 								pointData.setUlica(cbdPoint.get("ulica"))
+								pointData.setNip(cbdPoint.get("nip"))
 							}
 							else {
 								log.info "DIDN'T FIND POINT INFORMATION IN CBD!!! CBDID: " + pc.cbdId + " NIP: " + cmd.nip
@@ -1041,6 +1046,7 @@ class ProcessService {
 						point.setNazwa(cbdPoint.get("nazwa"))
 						point.setNrBudynku(cbdPoint.get("nr_budynku"))
 						point.setUlica(cbdPoint.get("ulica"))
+						point.setNip(cbdPoint.get("nip"))
 					}
 					else {
 						log.info "DIDN'T FIND POINT INFORMATION IN CBD!!! CBDID: " + apc.cbdId + " NIP: " + cmd.nip

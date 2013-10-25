@@ -9,6 +9,7 @@ class AllPointsCommand implements Serializable {
 	String miejscowosc
 	String nrBudynku
 	String kodPocztowy
+	String nip
     Integer liczbaPos
     Boolean czyWybranyZakresUruchomienia
 //	Boolean tytulPlatnosci
@@ -34,6 +35,10 @@ class AllPointsCommand implements Serializable {
 	
 	def setKodPocztowy(String value) {
 		kodPocztowy = formatProperty(value)
+	}
+	
+	def setNip(String value) {
+		nip = formatProperty(value)
 	}
 	
 	def formatProperty(String value) {
