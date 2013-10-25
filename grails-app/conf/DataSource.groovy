@@ -103,19 +103,8 @@ environments {
     }
     production {
         dataSource {
-            dbCreate = "validate"
-            url = "jdbc:h2:CbdDb;MVCC=TRUE;LOCK_TIMEOUT=10000"
+            java:comp/env/jdbc/eumowyDS
             pooled = true
-            properties {
-               maxActive = -1
-               minEvictableIdleTimeMillis=1800000
-               timeBetweenEvictionRunsMillis=1800000
-               numTestsPerEvictionRun=3
-               testOnBorrow=true
-               testWhileIdle=true
-               testOnReturn=true
-               validationQuery="SELECT 1 from dual"
-            }
         }
     }
 }
