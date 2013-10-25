@@ -297,7 +297,7 @@ jQuery(".showSignatureDialog").on('click', function(e) {
                 var kontaktEmail = "${processInstance.processData.find { it.name == 'kontaktEmail'}?.value}"
                 var emailDoWysylkiDokumentu = "${processInstance.processData.find { it.name == 'emailDoWysylkiDokumentu'}?.value}"
 
-                console.info("checkEmailKontakt - kontaktEmail:"+kontaktEmail+" emailDoWysylkiDokumentu:"+emailDoWysylkiDokumentu)
+               // console.info("checkEmailKontakt - kontaktEmail:"+kontaktEmail+" emailDoWysylkiDokumentu:"+emailDoWysylkiDokumentu)
 
                if(!kontaktEmail && !emailDoWysylkiDokumentu){
                       jQuery("#requestVersionElectronical").attr("disabled","disabled").removeAttr("checked")
