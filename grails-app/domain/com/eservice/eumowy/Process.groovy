@@ -92,21 +92,12 @@ class Process implements Serializable {
         processData cascade:"all-delete-orphan"
     }
 
-
-    def beforeInsert() {
-        auditLogger.info("Tworzenie procesu [id:${id}]")
-    }
-
     def afterInsert() {
         auditLogger.info("Utworzono proces [id:${id}]")
     }
 
     def afterUpdate() {
-        auditLogger.info("Aktualizacja procesu [id:${id}, [version:${version}, status:${status}]")
-    }
-
-    def onLoad() { // TODO tymczasowo na potrzeby inwestygacji
-        log.info("Wczytanie procesu [id:${id}, [version:${version}, status:${status}]")
+        auditLogger.info("Aktualizacja procesu [id:${id}, version:${version}, status:${status}]")
     }
 
     enum ProcessStatus {

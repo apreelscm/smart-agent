@@ -59,14 +59,15 @@
                             <td><eumowy:currencyField  class="float-number oplPOSWiFiCena" name="oplPOSWiFiPreferencyjnePP" value="${data.oplPOSWiFiPreferencyjnePP}" validatable="${data}" width="50px"/> </td>
                         </tr>
                         <tr>
-                            <td><g:message code="panel.type"/> <dict:typeSelect id="oplPOSGPRSTyp"  medium="GPRS" nip="${nip}" name="oplPOSGPRSTyp" value="${data.oplPOSGPRSTyp}" style="width: 220px" /></td>
+                            <td><g:message code="panel.type"/> <dict:typeSelect id="oplPOSGPRSTyp"  onchange="console.info('0000')"
+                                                                                medium="GPRS" nip="${nip}" name="oplPOSGPRSTyp" value="${data.oplPOSGPRSTyp}" style="width: 220px" /></td>
                             <td style="text-align: right;"><g:message code="panel.gprs"/></td>
                             <td><g:field name="oplPOSGPRSIlosc" type="text" class="integer-number" value="${data.oplPOSGPRSIlosc}" style="width: 50px"/> <g:message code="panel.unit"/></td>
-                            <td><g:field type="text" class="integer-number" name="oplPOSGPRSIloscPP" value="${data.oplPOSGPRSIloscPP}" style="width: 50px"/> <g:message code="panel.pp.unit"/></td>
+                            <td><g:field type="text" id="oplPOSGPRSIloscPP" class="integer-number" name="oplPOSGPRSIloscPP" value="${data.oplPOSGPRSIloscPP}" style="width: 50px"/> <g:message code="panel.pp.unit"/></td>
                             <td><eumowy:currencyField  class="float-number oplPOSGPRSCena" name="oplPOSGPRSNormalneMies" value="${data.oplPOSGPRSNormalneMies}" validatable="${data}" width="50px"/> </td>
-                            <td><eumowy:currencyField  class="float-number oplPOSGPRSCena" name="oplPOSGPRSNormalnePP" value="${data.oplPOSGPRSNormalnePP}" validatable="${data}" width="50px"/> </td>
+                            <td><eumowy:currencyField id="oplPOSGPRSNormalnePP"   class="float-number oplPOSGPRSCena" name="oplPOSGPRSNormalnePP" value="${data.oplPOSGPRSNormalnePP}" validatable="${data}" width="50px"/> </td>
                             <td><eumowy:currencyField  class="float-number oplPOSGPRSCena"  name="oplPOSGPRSPreferencyjneMies" value="${data.oplPOSGPRSPreferencyjneMies}" validatable="${data}" width="50px"/> </td>
-                            <td><eumowy:currencyField  class="float-number oplPOSGPRSCena" name="oplPOSGPRSPreferencyjnePP" value="${data.oplPOSGPRSPreferencyjnePP}" validatable="${data}" width="50px"/> </td>
+                            <td><eumowy:currencyField id="oplPOSGPRSPreferencyjnePP"  class="float-number oplPOSGPRSCena" name="oplPOSGPRSPreferencyjnePP" value="${data.oplPOSGPRSPreferencyjnePP}" validatable="${data}" width="50px"/> </td>
                         </tr>
                         <tr id="trBase">
                             <td></td>
@@ -83,9 +84,25 @@
 
 <r:script>
     jQuery(document).ready(function() {
-        jQuery("#oplPOSGPRSTyp").change(verifyBaseVisibility)
-        verifyBaseVisibility()
+        function verifyBaseVisibility(){
+            var value = jQuery("#oplPOSGPRSTyp").val().toString()
+            if(value == "Verifone Vx670 GPRS"){
+                jQuery("#trBase").show()
+                jQuery("#oplPOSGPRSIloscPP").attr("readonly","")
+                jQuery("#oplPOSGPRSNormalnePP").attr("readonly","")
+                jQuery("#oplPOSGPRSPreferencyjnePP").attr("readonly","")
+            }
+            else{
+                jQuery("#trBase").hide()
+                jQuery("#oplPOSGPRSIloscPP").removeAttr("readonly")
+                jQuery("#oplPOSGPRSNormalnePP").removeAttr("readonly")
+                jQuery("#oplPOSGPRSPreferencyjnePP").removeAttr("readonly")
+            }
+        }
 
+        jQuery("#oplPOSGPRSTyp").change(function(){verifyBaseVisibility()})
+
+        verifyBaseVisibility()
         if(jQuery("#oplPOSDialUpTyp").val() == ""){
             jQuery("input.oplPOSDialUpCena").removeAttr('value');
         }
@@ -103,13 +120,4 @@
         }
     });
 
-    function verifyBaseVisibility(){
-        var value = jQuery("#oplPOSGPRSTyp").val().toString()
-        if(value == "Verifone Vx670 GPRS"){
-            jQuery("#trBase").show()
-        }
-        else{
-            jQuery("#trBase").hide()
-        }
-    }
 </r:script>
