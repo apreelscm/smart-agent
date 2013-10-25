@@ -55,8 +55,11 @@ grant select on  POS_SEQ to EUMOWY_APP;
 grant select on  SUBSCRIPTION_SEQ to EUMOWY_APP;
 grant select on  dual to EUMOWY_APP;
 
-grant select on mapowaniekalkulatora to EUMOWY_APP;
-grant select on kalkulatortypurzadzen to EUMOWY_APP;
+grant select on MAPOWANIEKALKULATORA to EUMOWY_APP;
+grant select on KALKULATORTYPURZADZEN to EUMOWY_APP;
+grant select on EUM_SYGNATURA_FUNKCJA to EUMOWY_APP;
+grant select on PANEL_ADDITIONAL_INFO to EUMOWY_APP;
+grant select on SIGNATURE_ADDITIONAL_INFO to EUMOWY_APP;
 
 grant execute on GetKalkulatorData to EUMOWY_APP;
 grant execute on GetKalkulatorSerwis to EUMOWY_APP;

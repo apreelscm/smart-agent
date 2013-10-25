@@ -294,22 +294,23 @@ jQuery(".showSignatureDialog").on('click', function(e) {
 			});
 
 			function checkEmailKontakt(){
-                var kontaktEmail = ${processInstance.processData.any { it.name == 'kontaktEmail'}}
-                var hasKontaktEmail = ${processInstance.processData.any { it.name == 'kontaktEmail' && it.value}}
+                var kontaktEmail = "${processInstance.processData.find { it.name == 'kontaktEmail'}?.value}"
+                var emailDoWysylkiDokumentu = "${processInstance.processData.find { it.name == 'emailDoWysylkiDokumentu'}?.value}"
 
-                if(kontaktEmail && !hasKontaktEmail){
-                       jQuery("#requestVersionElectronical").attr("disabled","disabled").removeAttr("checked")
-                       jQuery("#requestVersionPaper").attr("checked","checked")
+                console.info("checkEmailKontakt - kontaktEmail:"+kontaktEmail+" emailDoWysylkiDokumentu:"+emailDoWysylkiDokumentu)
 
-                       jQuery("#noaccept").prop("disabled", true);
-                       jQuery("#subscribe-REPRESENTATIVE1").parent().addClass("disabled");
-                       jQuery("#subscribe-REPRESENTATIVE2").parent().addClass("disabled");
-                       jQuery("#subscribe-PH").parent().addClass("disabled");
-                }else{
-                    jQuery("#requestVersionElectronical").attr("checked","checked")
-                }
-             }
+               if(!kontaktEmail && !emailDoWysylkiDokumentu){
+                      jQuery("#requestVersionElectronical").attr("disabled","disabled").removeAttr("checked")
+                      jQuery("#requestVersionPaper").attr("checked","checked")
 
+                      jQuery("#noaccept").prop("disabled", true);
+                      jQuery("#subscribe-REPRESENTATIVE1").parent().addClass("disabled");
+                      jQuery("#subscribe-REPRESENTATIVE2").parent().addClass("disabled");
+                      jQuery("#subscribe-PH").parent().addClass("disabled");
+               }else{
+                   jQuery("#requestVersionElectronical").attr("checked","checked")
+               }
+          }
 });
 </r:script>
 </head>
