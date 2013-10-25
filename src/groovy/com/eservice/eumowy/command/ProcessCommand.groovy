@@ -1,10 +1,13 @@
 package com.eservice.eumowy.command
+import grails.validation.Validateable
+
+import org.apache.commons.collections.FactoryUtils
+import org.apache.commons.collections.ListUtils
+import org.apache.log4j.Logger
+
 import com.eservice.eumowy.Process
 import com.eservice.eumowy.annotation.DateField
 import com.eservice.eumowy.annotation.Omit
-import grails.validation.Validateable
-import org.apache.commons.collections.FactoryUtils
-import org.apache.commons.collections.ListUtils
 /**
  * User: Dominik Walczak
  * Date: 20.08.13 Time: 10:22
@@ -506,6 +509,8 @@ class ProcessCommand implements Serializable {
     String hasAkceptantTel
     @Omit
     String hasInformacjaHandlowa
+	@Omit
+	String hasDccZakresUruchomienia
     @Omit
     Boolean hasAtLeastOneDoladowanie
     @Omit
@@ -631,8 +636,17 @@ class ProcessCommand implements Serializable {
         oplataMasterCardPr(nullable: false, blank: false, shared: "number")
         oplataMaestro(nullable: false, blank: false, shared: "number")
         oplataMaestroPr(nullable: false, blank: false, shared: "number")
-        dccZakresUruchomienia(nullable: false, blank: false)
-
+        
+		dccZakresUruchomienia(nullable: false, blank: false)
+		hasDccZakresUruchomienia(nullable: true, validator: { value, cmd, errors ->
+			if(!value){
+				return true
+			}
+			if (cmd.dccZakresUruchomienia == DEFAULT_VALUE) {
+				errors.rejectValue("dccZakresUruchomienia", "default.atLeastOne.dccZakresUruchomienia")
+				return false
+			}
+        })
         informacjaHandlowa(nullable: false, blank: false)
 
         hasInformacjaHandlowa(nullable: true, validator: { value, cmd, errors ->
@@ -739,7 +753,7 @@ class ProcessCommand implements Serializable {
             atLeastClosure.call(value, cmd, errors, "visaOutEUKBSt", "OPLATA_MSC_23_ZL")
         })
 
-        visaPolskaKBSt(nullable: false, blank: false, shared: "number", validator: { value, cmd, errors ->
+        visaPolskaKBSt(nullable: false, blank: false, matches: "~|\\-|^(?:[1-9]\\d*|0|\\-)?(?:\\.\\d{1,2})?\$", validator: { value, cmd, errors ->
             atLeastClosure.call(value, cmd, errors, "visaPolskaKBSt", "OPLATA_MSC_33_ZL")
         })
 
@@ -822,7 +836,7 @@ class ProcessCommand implements Serializable {
         visaPolskaKKO2St(nullable: false, blank: false, shared: "number")
         visaPolskaKD1St(nullable: false, blank: false, shared: "number")
         visaPolskaKD2St(nullable: false, blank: false, shared: "number")
-        visaPolskaKBSt(nullable: false, blank: false, shared: "number")
+        visaPolskaKBSt(nullable: false, blank: false, matches: "~|\\-|^(?:[1-9]\\d*|0|\\-)?(?:\\.\\d{1,2})?\$")
         mastercardPolskaKK1St(nullable: false, blank: false, shared: "number")
         mastercardPolskaKK2St(nullable: false, blank: false, shared: "number")
         mastercardPolskaKK3St(nullable: false, blank: false, shared: "number")

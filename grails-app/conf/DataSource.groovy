@@ -103,7 +103,7 @@ environments {
     }
     production {
         dataSource {
-            java:comp/env/jdbc/eumowyDS
+            jndiName ="java:comp/env/jdbc/eumowyDS"
             pooled = true
         }
     }
