@@ -1,10 +1,13 @@
 package com.eservice.eumowy.command
+import grails.validation.Validateable
+
+import org.apache.commons.collections.FactoryUtils
+import org.apache.commons.collections.ListUtils
+import org.apache.log4j.Logger
+
 import com.eservice.eumowy.Process
 import com.eservice.eumowy.annotation.DateField
 import com.eservice.eumowy.annotation.Omit
-import grails.validation.Validateable
-import org.apache.commons.collections.FactoryUtils
-import org.apache.commons.collections.ListUtils
 /**
  * User: Dominik Walczak
  * Date: 20.08.13 Time: 10:22
@@ -506,6 +509,8 @@ class ProcessCommand implements Serializable {
     String hasAkceptantTel
     @Omit
     String hasInformacjaHandlowa
+	@Omit
+	String hasDccZakresUruchomienia
     @Omit
     Boolean hasAtLeastOneDoladowanie
     @Omit
@@ -631,8 +636,17 @@ class ProcessCommand implements Serializable {
         oplataMasterCardPr(nullable: false, blank: false, shared: "number")
         oplataMaestro(nullable: false, blank: false, shared: "number")
         oplataMaestroPr(nullable: false, blank: false, shared: "number")
-        dccZakresUruchomienia(nullable: false, blank: false)
-
+        
+		dccZakresUruchomienia(nullable: false, blank: false)
+		hasDccZakresUruchomienia(nullable: true, validator: { value, cmd, errors ->
+			if(!value){
+				return true
+			}
+			if (cmd.dccZakresUruchomienia == DEFAULT_VALUE) {
+				errors.rejectValue("dccZakresUruchomienia", "default.atLeastOne.dccZakresUruchomienia")
+				return false
+			}
+        })
         informacjaHandlowa(nullable: false, blank: false)
 
         hasInformacjaHandlowa(nullable: true, validator: { value, cmd, errors ->
