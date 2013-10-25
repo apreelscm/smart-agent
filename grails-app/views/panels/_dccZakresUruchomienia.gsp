@@ -2,7 +2,8 @@
     <fieldset>
         <div class="belka-glowna"><g:message code="panel.dcc.range.title"/> </div>
         <div class="centre" style="text-align: center; padding-top: 20px; width: 600px">
-            <div style="text-align: left">
+        	<g:hiddenField name="hasDccZakresUruchomienia" value="true"/>
+            <div class="${hasErrors(bean:data,field:'dccZakresUruchomienia','errorContainer')}" style="text-align: left">
                 <g:radioGroup name="dccZakresUruchomienia"
                               labels="['panel.dcc.range.current.and.new','panel.dcc.range.current', 'panel.dcc.range.direct']"
                               values="['obecne_i_nowe', 'obecne', 'wskazane']"
@@ -27,7 +28,12 @@
                 <tbody>
                 <g:each status="i" var="point" in="${data.allPoints}">
                     <tr>
-                        <td>${point.nazwa}<input type="hidden" name="allPoints[${i}].nazwa" value="${point.nazwa}" /><input type="hidden" name="allPoints[${i}].id" value="${point.id}" /><input type="hidden" name="allPoints[${i}].cbdId" value="${point.cbdId}" /></td>
+                        <td>${point.nazwa}
+                        	<input type="hidden" name="allPoints[${i}].nazwa" value="${point.nazwa}" />
+                       		<input type="hidden" name="allPoints[${i}].id" value="${point.id}" />
+                       		<input type="hidden" name="allPoints[${i}].cbdId" value="${point.cbdId}" />
+                       		<input type="hidden" name="allPoints[${i}].nip" value="${point.nip}" />
+                      	</td>
                         <td>${point.ulica}<input type="hidden" name="allPoints[${i}].ulica" value="${point.ulica}" /></td>
                         <td>${point.miejscowosc}<input type="hidden" name="allPoints[${i}].miejscowosc" value="${point.miejscowosc}" /></td>
                         <td>${point.nrBudynku}<input type="hidden" name="allPoints[${i}].nrBudynku" value="${point.nrBudynku}" /></td>

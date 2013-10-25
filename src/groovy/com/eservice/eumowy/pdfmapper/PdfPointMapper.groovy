@@ -157,15 +157,6 @@ class PdfPointMapper extends AbstractPdfMapper{
         mapWithPattern(data, value, ~/\d{2}\s\d{4}\s\d{4}\s\d{4}\s\d{4}\s\d{4}\s\d{4}/, " ", "numerRachunkuBankowego");
     }
 
-	//----------------------CHECKBOX PRZENOSNY-------------------------
-	
-	private mapGprsTypPointDataDetails(def data, def pointData, def key, def value){
-		data.put(key, [value] as String[]);
-		if ("Verifone Vx670 GPRS".equals(value)){
-			addCheckbox(data, "przenosnyDol", true, true);
-		}
-	}
-	
     //----------------------------UTILS--------------------------------
 
     private mapYesNoField(def data, def key, def value){
