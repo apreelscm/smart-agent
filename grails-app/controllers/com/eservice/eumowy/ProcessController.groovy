@@ -199,8 +199,8 @@ class ProcessController {
             return
         }
 
-        log.info("wywolanie synchronizacji dla procesu [" + processInstance.id + "]")
-        Result result = acceptUmowaWSClient.acceptEUmowa(processInstance.id, springSecurityService.principal.nr)
+        log.info("wywolanie synchronizacji dla procesu [${processInstance.id}] oraz auwId [${springSecurityService.principal.auwId}]")
+        Result result = acceptUmowaWSClient.acceptEUmowa(processInstance.id, springSecurityService.principal.auwId)
         if (result.wynik < 0){
             flash.error = result.wynikString
             log.error("wynik synchronizacji procesu : " + result.wynikString)

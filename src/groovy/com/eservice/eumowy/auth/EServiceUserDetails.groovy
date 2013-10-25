@@ -16,6 +16,7 @@ public class EServiceUserDetails extends GrailsUser {
     final String nazwisko;
     final String nr;
     final String email;
+    final Long auwId
 
     EServiceUserDetails(String username,
                         String password,
@@ -28,6 +29,7 @@ public class EServiceUserDetails extends GrailsUser {
                         String imie,
                         String nazwisko,
                         String nr,
+                        Long auwId,
                         String email) {
 
         super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities, id);
@@ -35,6 +37,7 @@ public class EServiceUserDetails extends GrailsUser {
         this.imie = imie
         this.nazwisko = nazwisko
         this.nr = nr
+        this.auwId = auwId
         this.name = imie +" "+nazwisko
         this.email = email
     }
