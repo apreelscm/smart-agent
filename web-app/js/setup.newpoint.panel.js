@@ -409,7 +409,32 @@ function setupNewPointPanelData(prevPanelId, panelId) {
             jQuery("#"+panelId+"additionalequipmentSameForEveryPoint").prop("disabled", true);
         }
     }
-    //});
+
+    var dialupType = jQuery("#"+panelId+"possetforselectedpointDialupType"),
+        vpnType = jQuery("#"+panelId+"possetforselectedpointVpnType"),
+        sslType = jQuery("#"+panelId+"possetforselectedpointSslType"),
+        wifiType = jQuery("#"+panelId+"possetforselectedpointWifiType"),
+        gprsType = jQuery("#"+panelId+"possetforselectedpointGprsType");
+
+    if(dialupType.val() == ''){
+        dialupType.closest('tr').find('input.float-number').removeAttr('value');
+    }
+
+    if(vpnType.val() == ''){
+        vpnType.closest('tr').find('input.float-number').removeAttr('value');
+    }
+
+    if(sslType.val() == ''){
+        sslType.closest('tr').find('input.float-number').removeAttr('value');
+    }
+
+    if(wifiType.val() == ''){
+        wifiType.closest('tr').find('input.float-number').removeAttr('value');
+    }
+
+    if(gprsType.val() == ''){
+        gprsType.closest('tr').find('input.float-number').removeAttr('value');
+    }
 }
 
 function clearNewPointData(prevPanelId, panelId) {

@@ -3,8 +3,10 @@ package com.eservice.eumowy.pdfmapper
 class PdfPosMapper extends AbstractPdfMapper{
 
     private static EXCLUDE_FROM_POS = ["class", "cbdId", "process", "point", "errors", "constraints", "empty", ""]
-    private static EXCLUDE_FROM_POS_DETAILS = ["class", "cbdId", "process", "point", "errors", "constraints", "empty"]
+    private static EXCLUDE_FROM_POS_DETAILS = ["class", "cbdId", "process", "point", "errors", "constraints", "empty", "dialupTyp", "dialupCena", "vpnTyp", "vpnCena", "sslTyp", "sslCena", "wifiTyp", "wifiCena", "gprsCena"]
 
+	public static final ZERO_VALUES = ["", "0"]
+	
     public def mapPosesDataToPDFData(def posesData) {
         def data = [:]
         posesData?.each { pos ->
@@ -106,10 +108,96 @@ class PdfPosMapper extends AbstractPdfMapper{
         getPropertyFromObject(posesData?.posDetails, key)
     }
 	
+	//--------------------------ZESTAW POS-----------------------------
+	private mapDialupIloscPosDataDetails(def data, def posesData, def key, def value){
+		if(value !=null && !ZERO_VALUES.contains(value)){
+			data.put(key, [value] as String[]);
+			data.put("dialupCena", [(getFromPosDataDetails(posesData, 'dialupCena'))] as String[])
+			data.put("dialupTyp", [(getFromPosDataDetails(posesData, 'dialupTyp'))] as String[])
+		}
+	}
+	
+	private mapDialupIloscPPPosDataDetails(def data, def posesData, def key, def value){
+		if(value !=null && !ZERO_VALUES.contains(value)){
+			data.put(key, [value] as String[]);
+			data.put("dialupCena", [(getFromPosDataDetails(posesData, 'dialupCena'))] as String[])
+			data.put("dialupTyp", [(getFromPosDataDetails(posesData, 'dialupTyp'))] as String[])
+		}
+	}
+	
+	private mapVpnIloscPosDataDetails(def data, def posesData, def key, def value){
+		if(value !=null && !ZERO_VALUES.contains(value)){
+			data.put(key, [value] as String[]);
+			data.put("vpnCena", [(getFromPosDataDetails(posesData, 'vpnCena'))] as String[])
+			data.put("vpnTyp", [(getFromPosDataDetails(posesData, 'vpnTyp'))] as String[])
+		}
+	}
+	
+	private mapVpnIloscPPPosDataDetails(def data, def posesData, def key, def value){
+		if(value !=null && !ZERO_VALUES.contains(value)){
+			data.put(key, [value] as String[]);
+			data.put("vpnCena", [(getFromPosDataDetails(posesData, 'vpnCena'))] as String[])
+			data.put("vpnTyp", [(getFromPosDataDetails(posesData, 'vpnTyp'))] as String[])
+		}
+	}
+	
+	private mapSslIloscPosDataDetails(def data, def posesData, def key, def value){
+		if(value !=null && !ZERO_VALUES.contains(value)){
+			data.put(key, [value] as String[]);
+			data.put("sslCena", [(getFromPosDataDetails(posesData, 'sslCena'))] as String[])
+			data.put("sslTyp", [(getFromPosDataDetails(posesData, 'sslTyp'))] as String[])
+		}
+	}
+	
+	private mapSslIloscPPPosDataDetails(def data, def posesData, def key, def value){
+		if(value !=null && !ZERO_VALUES.contains(value)){
+			data.put(key, [value] as String[]);
+			data.put("sslCena", [(getFromPosDataDetails(posesData, 'sslCena'))] as String[])
+			data.put("sslTyp", [(getFromPosDataDetails(posesData, 'sslTyp'))] as String[])
+		}
+	}
+	
+	private mapWifiIloscPosDataDetails(def data, def posesData, def key, def value){
+		if(value !=null && !ZERO_VALUES.contains(value)){
+			data.put(key, [value] as String[]);
+			data.put("wifiCena", [(getFromPosDataDetails(posesData, 'wifiCena'))] as String[])
+			data.put("wifiTyp", [(getFromPosDataDetails(posesData, 'wifiTyp'))] as String[])
+		}
+	}
+	
+	private mapWifiIloscPPPosDataDetails(def data, def posesData, def key, def value){
+		if(value !=null && !ZERO_VALUES.contains(value)){
+			data.put(key, [value] as String[]);
+			data.put("wifiCena", [(getFromPosDataDetails(posesData, 'wifiCena'))] as String[])
+			data.put("wifiTyp", [(getFromPosDataDetails(posesData, 'wifiTyp'))] as String[])
+		}
+	}
+	
+	private mapGprsIloscPosDataDetails(def data, def posesData, def key, def value){
+		if(value !=null && !ZERO_VALUES.contains(value)){
+			data.put(key, [value] as String[]);
+			data.put("gprsCena", [(getFromPosDataDetails(posesData, 'gprsCena'))] as String[])
+			data.put("gprsTyp", [(getFromPosDataDetails(posesData, 'gprsTyp'))] as String[])
+		}
+	}
+	
+	private mapGprsIloscPPPosDataDetails(def data, def posesData, def key, def value){
+		if(value !=null && !ZERO_VALUES.contains(value)){
+			data.put(key, [value] as String[]);
+			data.put("gprsCena", [(getFromPosDataDetails(posesData, 'gprsCena'))] as String[])
+			data.put("gprsTyp", [(getFromPosDataDetails(posesData, 'gprsTyp'))] as String[])
+		}
+	}
+	
+	private mapBazaIloscPosDataDetails(def data, def posesData, def key, def value){
+		if(value !=null && !ZERO_VALUES.contains(value)){
+			data.put(key, [value] as String[]);
+		}
+	}
+	
 	//----------------------CHECKBOX PRZENOSNY-------------------------
 	
 	private mapGprsTypPosDataDetails(def data, def posesData, def key, def value){
-		data.put(key, [value] as String[]);
 		if ("Verifone Vx670 GPRS".equals(value)){
 			addCheckbox(data, "przenosnyDol", true, true);
 		}
