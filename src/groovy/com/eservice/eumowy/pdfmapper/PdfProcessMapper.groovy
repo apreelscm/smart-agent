@@ -8,13 +8,15 @@ class PdfProcessMapper extends AbstractPdfMapper{
     def calculatorService
     def calc
     def pointMapper
+    def posMapper
 	
 	private static final EMPTY_VALUES = ["", "-"]
 
-    public PdfProcessMapper (def calculatorService, def calc, def pointMapper){
+    public PdfProcessMapper (def calculatorService, def calc, def pointMapper, def posMapper){
         this.calculatorService = calculatorService
         this.calc = calc
         this.pointMapper = pointMapper
+        this.posMapper = posMapper
     }
 
     protected def mapOnlyProcessData(def processInstance){
@@ -40,6 +42,13 @@ class PdfProcessMapper extends AbstractPdfMapper{
 
             //APUNTSZAPOU3
             dataMap.putAll(pointMapper.mapPointsSpecial(points.findAll{ point -> point.czyWybranyAkceptacjaKart}, ["nazwa":"punktTN", "miejscowosc":"adresTN", "systemKasowy":"integracjaTN", "uta":"utaTN"]));
+
+            //APUNTSZAPOO3
+            def poses = []
+            points.each{ p ->
+                poses.addAll(p?.posDatas.findAll {pos -> pos.czyWybrany})
+            }
+            dataMap.putAll(posMapper.mapPosSpecial(poses))
         }
 
         return dataMap;

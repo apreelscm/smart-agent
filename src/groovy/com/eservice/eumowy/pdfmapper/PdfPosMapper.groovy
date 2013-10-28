@@ -1,12 +1,41 @@
 package com.eservice.eumowy.pdfmapper
 
+import com.eservice.eumowy.util.DateUtils
+
 class PdfPosMapper extends AbstractPdfMapper{
 
     private static EXCLUDE_FROM_POS = ["class", "cbdId", "process", "point", "errors", "constraints", "empty", ""]
     private static EXCLUDE_FROM_POS_DETAILS = ["class", "cbdId", "process", "point", "errors", "constraints", "empty", "dialupTyp", "dialupCena", "vpnTyp", "vpnCena", "sslTyp", "sslCena", "wifiTyp", "wifiCena", "gprsCena"]
 
 	public static final ZERO_VALUES = ["", "0"]
-	
+
+    public def mapPosSpecial(def poses) {
+        println 'Zaczynam Mapowac!!!!'
+
+        def suffixes = ['A', 'B', 'C', 'D', 'E']
+
+        def newPoses = [];
+        if (poses.size()>suffixes.size()){
+            LOG.info('To much poses - ' + poses.size() + '. Trimming to: ' + suffixes.size());
+            newPoses.addAll(poses.subList(0, suffixes.size()))
+        } else {
+            newPoses.addAll(poses)
+        }
+
+        def data = [:];
+        if (newPoses.size()>0){
+            data.put("dataPoczatkuUzywaniaPOZ", [DateUtils.parseDate(newPoses[0].dataOd)] as String[])
+            data.put("dataKoncaUzywaniaPOZ", [DateUtils.parseDate(newPoses[0].dataDo)] as String[])
+
+            newPoses.eachWithIndex{ pos, i ->
+                data.put("numerPOS"+suffixes[i], [pos.numerZestawuPos] as String[])
+                data.put("oplataPOS"+suffixes[i], [pos.wysokoscOplaty] as String[])
+            }
+        }
+        return data
+        println 'Koncze Mapowac!!!!'
+    }
+
     public def mapPosesDataToPDFData(def posesData) {
         def data = [:]
         posesData?.each { pos ->

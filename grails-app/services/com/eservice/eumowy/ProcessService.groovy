@@ -2,6 +2,7 @@ package com.eservice.eumowy
 
 import com.eservice.eumowy.annotation.DateField
 import com.eservice.eumowy.annotation.Omit
+import com.eservice.eumowy.command.AllPointPosCommand
 import com.eservice.eumowy.command.AllPointsCommand
 import com.eservice.eumowy.command.AllPosCommand
 import com.eservice.eumowy.command.PointCommand
@@ -130,7 +131,7 @@ class ProcessService {
         def cmd = initProcessCommand(process)
         cmd.allPoints?.addAll(getPointsToAllPointsCommandList(process, cmd))
         cmd.allPoses?.addAll(getPosesToAllPosCommandList(process, cmd))
-		
+
 		cmd.allPoints?.each { AllPointsCommand apc ->
 			if (apc.cbdId == -1) {
 				PointData point = PointData.findById(apc.id)
@@ -144,9 +145,74 @@ class ProcessService {
 		}
       //  process.save(flush:true)
 		cmd.allPoints?.removeAll { it.cbdId == -1 }
-		
+
+        cmd.allPointPosesForPoint?.addAll(getCbdTerminalPricesByPointToAllPointPosCommandList(cmd))
+        cmd.allPointPosesForPos?.addAll(getCbdTerminalPricesByPosToAllPointPosCommandList(cmd))
+
+//        cmd.allPointPosesForPoint?.addAll(getDataForPointToAllPointPosCommandList(process, cmd.allPoints, cmd.allPoses))
+//        cmd.allPointPosesForPos?.addAll(getDataForPosToAllPointPosCommandList(process, cmd.allPoints, cmd.allPoses))
+
         prepareProcessCommand(cmd, calc,)
 	}
+
+    def getDataForPointToAllPointPosCommandList(def process, def allPoints, def allPoses) {
+        def result = [];
+
+        //iterujemy po punktach z cbd i mergujemy je z punktami od nas.
+        getCbdTerminalPricesByPointToAllPointPosCommandList(cmd)
+
+        for (int i=0; i<5; i++){
+            AllPointPosCommand command = new AllPointPosCommand()
+            command.cbdId = 22
+            command.czyCbd = true
+            command.nazwa = 'To jest jakis punkt'
+            command.adres = 'ul. Sienkiewicza 2, Siedlce'
+            command.odpUzyTermSzt = 12
+            command.odpUzyPpSzt = 2
+
+            command.tpsId = 3
+            command.typ = 'WiFi'
+
+            command.obecnaOplataTerm = new BigDecimal("234");
+            command.obecnaOplataPP = new BigDecimal("1234");
+            command.nowaOplataTerm = new BigDecimal("567");
+            command.nowaOplataPP = new BigDecimal("987");
+
+            command.czyWybranyOdplatneUzywanie = true
+
+            result.add(command)
+        }
+        result
+    }
+
+    def getDataForPosToAllPointPosCommandList(def process, def allPoints, def allPoses) {
+        def result = [];
+
+
+        for (int i=0; i<5; i++){
+            AllPointPosCommand command = new AllPointPosCommand()
+            command.cbdId = 22
+            command.czyCbd = true
+            command.nazwa = 'To jest jakis punkt'
+            command.adres = 'ul. Sienkiewicza 2, Siedlce'
+
+            command.tpsId = 25
+            command.numerZestawuPos = 234325
+            command.typ = 'WiFi'
+
+            command.obecnaOplataTerm = new BigDecimal("234");
+            command.obecnaOplataPP = new BigDecimal("1234");
+            command.nowaOplataTerm = new BigDecimal("567");
+            command.nowaOplataPP = new BigDecimal("987");
+
+            command.czyWybranyOdplatneUzywanie = true
+
+            result.add(command)
+        }
+        result
+    }
+
+
 
     def getSavedProcessCommand(def process, def calc){
         log.info("getSavedProcessCommand processId = ${process.id}")
@@ -156,6 +222,8 @@ class ProcessService {
         cmd.poses?.clear()
         cmd.allPoints?.clear()
         cmd.allPoses?.clear()
+        cmd.allPointPosesForPos?.clear()
+        cmd.allPointPosesForPoint?.clear()
         cmd.points?.addAll(getLocalPointsToPointCommandList(process))
         cmd.poses?.addAll(getLocalPosesToPointCommandList(process))
         cmd.allPoints?.addAll(getPointsToAllPointsCommandList(process, cmd))
@@ -176,7 +244,7 @@ class ProcessService {
 		process.save(flush:true)
 		
 		cmd.allPoints?.removeAll { it.cbdId == -1 }
-		
+
 		cmd.allPoses?.each { AllPosCommand apc ->
 			if (apc.tpsId == -1) {
 				PosData pos = PosData.findById(apc.id)
@@ -187,7 +255,12 @@ class ProcessService {
 			}
 		}
 		cmd.allPoses?.removeAll { it.tpsId == -1 }
-		
+
+        //TODO - pobrac dane od nas jak i z CBD
+
+//        cmd.allPointPosesForPoint?.addAll(getDataForPointToAllPointPosCommandList(process, cmd))
+//        cmd.allPointPosesForPos?.addAll(getDataForPosToAllPointPosCommandList(process, cmd))
+
         cmd.notes = process.notesToCoa
 		
         prepareProcessCommand(cmd, calc, cbdMethods)
@@ -490,8 +563,76 @@ class ProcessService {
             apc.setNumerZestawuPos(Integer.valueOf(row.get("numer_logiczny").toString()))
             /* TODO The rest data should be loaded from calculator here! */
 
+
             posesList.add(apc)
         }
+    }
+
+//    SELECT   COUNT (1) ile,
+//    o.kln_id point_id,
+//    o.kln_nazwa nazwa_punktu,
+//    CBD_ADM.getAdres (o.kln_id, 'SGL') adres_posadowienia,
+//    tps_oplata_pos oplata_za_pos
+//    FROM   CBD_ADM.cbt_terminale_pos, CBD_ADM.cbt_klienci o, CBD_ADM.cbt_klienci m
+//    WHERE       tps_kln_id = o.kln_id
+//    AND o.kln_kln_id = m.kln_id
+//    AND m.kln_nip = :KLN_NIP
+//    AND tps_status NOT IN ('N', 'C')
+//    GROUP BY   tps_oplata_pos, o.kln_nazwa, CBD_ADM.getAdres (o.kln_id, 'SGL'), o.kln_id
+
+    def getCbdTerminalPricesByPointToAllPointPosCommandList(def cmd) {
+        def result = cbdService.getTerminalPricesAndCountsByPoint(cmd.nip)
+
+        def appcResult = []
+
+        result.each { GroovyRowResult row ->
+            AllPointPosCommand appc = new AllPointPosCommand()
+            appc.setCzyCbd(true)
+            appc.setCbdId(Integer.valueOf(row.get("point_id").toString()))
+            appc.setAdres(row.get("adres_posadowienia").toString())
+            appc.setNazwa(row.get("nazwa_punktu").toString())
+            appc.setOdpUzyTermSzt(Integer.valueOf(row.get("ile").toString()))
+            appc.setObecnaOplataTerm(new BigDecimal(row.get("oplata_za_pos").toString()))
+            appc.setTyp(row.get("rodzaj_terminala"))
+
+            appcResult.add(appc)
+        }
+        return appcResult
+    }
+
+//    SELECT   ss.tps_id as "pos_id",
+//    o.kln_id as "point_id",
+//    o.kln_nazwa "nazwa_punktu",
+//    CBD_ADM.getAdres (o.kln_id, 'SGL') "adres_posadowienia",
+//    tps_numer_logiczny "tid",
+//    tps_oplata_pos "oplata_za_pos",
+//    (select smt_nazwa from cbt_sl_modele_terminali where smt_id = tps_smt_id) "rodzaj_terminala"
+//    FROM   cbt_terminale_pos ss, cbt_klienci o, cbt_klienci m
+//    WHERE       tps_kln_id = o.kln_id
+//    AND o.kln_kln_id = m.kln_id
+//    AND m.kln_nip = :KLN_NIP
+//    AND tps_status NOT IN ('N', 'C')
+
+    def getCbdTerminalPricesByPosToAllPointPosCommandList(def cmd) {
+        def result = cbdService.getTerminalPricesAndCountsByPos(cmd.nip)
+
+        def appcResult = []
+
+        result.each { GroovyRowResult row ->
+            AllPointPosCommand appc = new AllPointPosCommand()
+            appc.setCzyCbd(true)
+            appc.setCbdId(Integer.valueOf(row.get("point_id").toString()))
+            appc.setTpsId(Integer.valueOf(row.get("tps_id").toString()))
+            appc.setAdres(row.get("adres_posadowienia").toString())
+            appc.setNazwa(row.get("nazwa_punktu").toString())
+            appc.setOdpUzyTermSzt(1)
+            appc.setObecnaOplataTerm(new BigDecimal(row.get("oplata_za_pos").toString()))
+            appc.numerZestawuPos(Integer.valueOf(row.get("tid").toString()))
+            appc.setTyp(row.get("rodzaj_terminala"))
+
+            appcResult.add(appc)
+        }
+        return appcResult
     }
 
     def getPointsToAllPointsCommandList(def process, def cmd) {
@@ -626,9 +767,6 @@ class ProcessService {
                 processDataList.add(new ProcessData(name: "${key}", value:"${DateUtils.formatWithTimezoneFromStr(value)}"));
                 return;
             }
-
-            log.info("key:"+key)
-            log.info("value:"+value)
             processDataList.add(new ProcessData(name: "${key}", value:"${value ?: ''}"));
         }
         processDataList
@@ -804,6 +942,7 @@ class ProcessService {
             if (point != null) {
                 // Update data from CBD
                 if (apc.cbdId != null) {
+                    point.nip = apc.nip
                     point.nazwa = apc.nazwa
                     point.ulica = apc.ulica
                     point.kodPocztowy = apc.kodPocztowy
@@ -1006,6 +1145,8 @@ class ProcessService {
 			pointsList.add(pointData)
         }
 
+        //TODO - save poses!!!
+
         /* Save poses from AllPosCommand */
         cmd.allPoses?.each { AllPosCommand apc ->
 			
@@ -1018,24 +1159,29 @@ class ProcessService {
 			PointData point;
 
             if (apc.id != null) {
+                //poieramy point i pos z naszej bazy
                 pos = PosData.get(apc.id)
 				log.info "Got POS Data!"
 				if (pos != null) {
 					point = pos.point
 				}
-				
             }
 			else if (apc.cbdId != null) {
-				
+				//pobieramy point z bazy CBD
 				point = PointData.findByCbdId(apc.cbdId)
 				
 				if (point != null) {
+                    pos = point.posDatas.find{pd -> pd.tpsId == apc.tpsId}
+                    if (pos == null){
+                        pos = new PosData();
+                    }
 					log.info "FOUND POINT FOR CBD POS"
 				}
 				else {
 					log.info "DIDN'T FIND POINT FOR CBD POS"
 					point = new PointData()
-					
+                    pos = new PosData();
+
 					// Nie znalezlismy punktu z CBD u nas w bazie, musimy dossac dane z CBD dla tego punktu
 					def cbdPoint = cbdService.getCbdPointById(cmd.nip, apc.cbdId)
 					if (cbdPoint != null) {
@@ -1054,6 +1200,7 @@ class ProcessService {
 				}
 			}
             else {
+                //zupelnie nowe point i pos
                 pos = new PosData()
 				point = new PointData()
             }
@@ -1065,7 +1212,30 @@ class ProcessService {
 					pos.numerZestawuPos = apc.numerZestawuPos
 					pos.wysokoscOplaty = apc.wysokoscOplaty
 				}
-				
+
+                //zapis danych z panelu odplatne uzywanie!!!
+                if ('one_for_all_terminals'.equals(cmd.odplatneUzywanie)){
+                    pos.nowaOplataTerm = cmd.nowaOplataTerm
+                    pos.nowaOplataPP = cmd.nowaOplataPP
+                    pos.czyWybranyOdplatneUzywanie = cmd.czyWybranyOdplatneUzywanie
+                } else if ('one_for_all_terminals_in_point'.equals(cmd.odplatneUzywanie)){
+//                    allPointPosesForPoint
+                    def foundAPos = cmd.allPointPosesForPoint.findAll{ it.pointId == pos.point.id && it.typ == pos.typ && /** TODO - dodac warunki na ceny */ it.czyWybranyOdplatneUzywanie }
+                    if (foundAPos){
+                        pos.nowaOplataTerm = foundAPos[0].nowaOplataTerm
+                        pos.nowaOplataPP = foundAPos[0].nowaOplataPP
+                        pos.czyWybranyOdplatneUzywanie = foundAPos[0].czyWybranyOdplatneUzywanie
+                    }
+                } else if ('other_for_selected_terminals'.equals(cmd.odplatneUzywanie)){
+//                    allPointPosesForPos
+                    def foundAPos = cmd.allPointPosesForPos.find{it.posId == pos.id && it.czyWybranyOdplatneUzywanie}
+                    if (foundAPos){
+                        pos.nowaOplataTerm = foundAPos.nowaOplataTerm
+                        pos.nowaOplataPP = foundAPos.nowaOplataPP
+                        pos.czyWybranyOdplatneUzywanie = foundAPos.czyWybranyOdplatneUzywanie
+                    }
+                }
+
 				pdList.add(pos)
 				pos.czyWybrany = apc.czyWybrany
 				pos.tpsId = apc.tpsId
@@ -1087,12 +1257,8 @@ class ProcessService {
 
     def findDocumentByName(def documents, def name) {
         if (documents != null) {
-            for(DocumentFile df : documents) {
-                if (df.name.equals(name))
-                    return df
-            }
+            return documents.find { it.name.equals(name) }
         }
-
         return null
     }
 
