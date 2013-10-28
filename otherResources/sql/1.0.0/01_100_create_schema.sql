@@ -319,14 +319,6 @@ create table EUMOWY.SIGNATURE (
   active number(1,0) not null,
   name varchar2(255 char) not null,
   for_point number(1,0) not null,
-  ph_subscription_page_number number(6,0),
-  ph_subscriptionx number(6,0),
-  ph_subscriptiony number(6,0),
-  subscription_page_number number(6,0),
-  subscriptionx number(6,0),
-  subscriptiony number(6,0),
-  management_subscription1 varchar2(255 char) not null,
-  management_subscription2 varchar2(255 char) not null,
   template_path varchar2(255 char) not null,
   description varchar2(1024 char),
   signature_order number(6,0) not null,
@@ -378,10 +370,15 @@ create table EUMOWY.PROCESS_SUBSCRIPTION (
   constraint PK_PROCESS_SUBSCRIPTION primary key (process_subscriptions_id,subscription_id));
 
 CREATE TABLE EUMOWY.KALKULATORTYPURZADZEN (
-    TYP VARCHAR2(50 BYTE),
-    SLOWNIK VARCHAR2(50 BYTE),
-    SMT_ID NUMBER(10,0),
-    ID NUMBER(10,0));
+  TYP        VARCHAR2(50 BYTE),
+  SLOWNIK    VARCHAR2(50 BYTE),
+  SMT_ID     NUMBER(10,0),
+  ID         NUMBER(10,0) NOT NULL ENABLE,
+  MEDIUM     VARCHAR2(20 BYTE),
+  KALKULATOR VARCHAR2(50 BYTE),
+  DOMYSLNIE  NUMBER(*,0),
+  CONSTRAINT KALKULATORTYPURZADZEN_PK PRIMARY KEY ("ID")
+);
 
 CREATE TABLE EUMOWY.MAPOWANIEKALKULATORA (
   POLEKALKULATOR VARCHAR2(255 BYTE),
