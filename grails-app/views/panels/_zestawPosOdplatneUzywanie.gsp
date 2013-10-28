@@ -86,11 +86,12 @@
     jQuery(document).ready(function() {
         function verifyBaseVisibility(){
             var value = jQuery("#oplPOSGPRSTyp").val().toString()
+
             if(value == "Verifone Vx670 GPRS"){
                 jQuery("#trBase").show()
-                jQuery("#oplPOSGPRSIloscPP").attr("readonly","")
-                jQuery("#oplPOSGPRSNormalnePP").attr("readonly","")
-                jQuery("#oplPOSGPRSPreferencyjnePP").attr("readonly","")
+                jQuery("#oplPOSGPRSIloscPP").attr("readonly","true")
+                jQuery("#oplPOSGPRSNormalnePP").attr("readonly","true")
+                jQuery("#oplPOSGPRSPreferencyjnePP").attr("readonly","true")
             }
             else{
                 jQuery("#trBase").hide()

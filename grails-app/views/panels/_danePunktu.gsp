@@ -321,8 +321,7 @@
                                          name="${panelType}[${id}].gprsTyp" from="[]"
                                          valueMessagePrefix="" value="${pointData?.gprsTyp}"
                                          style="width: 220px"
-                                         onchange="verifyBaseVisibility(this.value,${id})"
-
+                                         onchange="verifyBaseVisibility(this.value,'${panelType}[${id}]')"
                 /></td>
                 <td style="text-align: right;"><g:message code="panel.gprs" /></td>
                 <td><g:textField name="${panelType}[${id}].gprsIlosc"
@@ -342,7 +341,7 @@
                                  value="${pointData?.gprsPPCena}" style="width: 50px"
                                  class="float-number"/> zł.</td>
             </tr>
-            <tr id="trBase${id}">
+            <tr name="${panelType}[${id}].trBase">
                 <td></td>
                 <td style="text-align: right;"><g:message code="panel.base" /></td>
                 <td><g:textField id="${panelType}[${id}].baseCount"
@@ -352,6 +351,7 @@
                 <td></td>
                 <td></td>
             </tr>
+            <select on />
             </tbody>
         </table>
     </div>
@@ -367,23 +367,3 @@
 
 <r:require module="jquery_ui" />
 <r:require module="jquery_timepicker_pl" />
-
-<r:script>
-
-    function verifyBaseVisibility(value, id){
-        console.info('input[name="points['+id+'].gprsPPCena"]')
-        console.info($j('input[name="points['+id+'].gprsPPCena"]').length)
-
-        if(value == "Verifone Vx670 GPRS"){
-            $j("#trBase"+id).show()
-            $j('input[name="points['+id+'].gprsPPIlosc"]').attr("readonly","")
-            $j('input[name="points['+id+'].gprsPPCena"]').attr("readonly","")
-        }
-        else{
-            $j("#trBase"+id).hide()
-            $j('input[name="points['+id+'].gprsPPIlosc"]').removeAttr("readonly")
-            $j('input[name="points['+id+'].gprsPPCena"]').removeAttr("readonly")
-        }
-    }
-
-</r:script>

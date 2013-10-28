@@ -26,7 +26,7 @@ function getCurrentTerminalCount(prefix) {
         var wifiCount = jQuery(prefixPanel + ".wifiCount").val();
         var gprsCount = jQuery(prefixPanel + ".gprsCount").val();
         var baseCount = jQuery(prefixPanel + ".baseCount").val();
-        
+
         counter += dialupCount != "" ? parseInt(dialupCount) : 0;
         counter += vpnCount != "" ? parseInt(vpnCount) : 0;
         counter += sslCount != "" ? parseInt(sslCount) : 0;
@@ -435,6 +435,25 @@ function setupNewPointPanelData(prevPanelId, panelId) {
     if(gprsType.val() == ''){
         gprsType.closest('tr').find('input.float-number').removeAttr('value');
     }
+
+    verifyBaseVisibility(gprsType.val(),panelId)
+}
+
+function verifyBaseVisibility(value, panelId){
+    console.info('input[name="'+panelId+'.gprsPPCena"]')
+    console.info($j('input[name="'+panelId+'.gprsPPCena"]').length)
+
+    var str = panelId.replace(".","")
+    if(value == "Verifone Vx670 GPRS"){
+        $j('tr[name="'+str+'.trBase"]').show()
+        $j('input[name="'+str+'.gprsPPIlosc"]').attr("readonly","true")
+        $j('input[name="'+str+'.gprsPPCena"]').attr("readonly","true")
+    }
+    else{
+        $j('tr[name="'+str+'.trBase"]').hide()
+        $j('input[name="'+str+'.gprsPPIlosc"]').removeAttr("readonly")
+        $j('input[name="'+str+'.gprsPPCena"]').removeAttr("readonly")
+    }
 }
 
 function clearNewPointData(prevPanelId, panelId) {
@@ -646,7 +665,7 @@ function sameForEveryPoint(selector, prefix, panelId){
     	else {
     		sameForEveryPointSourcePanelId[index] = -1;
     	}
-    	
+
         for(var i = 0; i < getGlobalPanelCount(prefix); i++) {
             if (i != panelId) {
                 if (e.target.checked) {
