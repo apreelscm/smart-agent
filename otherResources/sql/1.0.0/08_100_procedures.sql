@@ -1,11 +1,3 @@
--- rekordKalkulator
-create or replace
-type               eumowy.rekordKalkulator is object (pole varchar2(50), wartosc varchar2(255));
-
--- kalkulator
-create or replace
-type               eumowy.kalkulator is table of EUMOWY.rekordKalkulator;
-
 -- split
 create or replace
 FUNCTION               split
@@ -1160,6 +1152,8 @@ return wynik;
 
 end;
 
+-- CZY_GIFT
+
 create or replace
 FUNCTION                                   CZY_GIFT (NIP varchar2)
   return number
@@ -1177,14 +1171,14 @@ is
             AND umw_kln_id IN
 
                 (SELECT   kln_id
-                 FROM   cbt_klienci m
+                 FROM   cbd_adm.cbt_klienci m
                  WHERE       kln_poziom = 'MRC'
                              AND kln_nip = NIP
                              AND kln_status = 'Q'
                              AND kln_qcards_nr = 1
                              AND EXISTS
                  (SELECT   1
-                  FROM   cbt_klienci o, cbt_terminale_pos
+                  FROM   cbd_adm.cbt_klienci o, cbd_adm.cbt_terminale_pos
                   WHERE       o.kln_kln_id = m.kln_id
                               AND o.kln_id = tps_kln_id
                               AND tps_status NOT IN ('N', 'C')));
