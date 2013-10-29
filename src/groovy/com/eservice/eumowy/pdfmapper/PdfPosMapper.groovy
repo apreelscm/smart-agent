@@ -36,6 +36,33 @@ class PdfPosMapper extends AbstractPdfMapper{
         println 'Koncze Mapowac!!!!'
     }
 
+    public def mapPoses(def poses){
+        def data = [:]
+        def resultNormalMap = new TreeMap<Integer, BigDecimal>();
+        def resultPrefMap = new TreeMap<Integer, BigDecimal>();
+        poses?.each { pos ->
+            pos.posDetails?.each { posDetail ->
+                addToPosMap(resultNormalMap, posDetail.dialupIlosc, posDetail.dialupCena, posDetail.dialupPPCena)
+                addToPosMap(resultNormalMap, posDetail.vpnIlosc, posDetail.vpnCena, posDetail.vpnPPCena)
+                addToPosMap(resultNormalMap, posDetail.sslIlosc, posDetail.sslCena, posDetail.sslPPCena)
+                addToPosMap(resultNormalMap, posDetail.gprsIlosc, posDetail.gprsCena, posDetail.gprsPPCena)
+                addToPosMap(resultNormalMap, posDetail.pinPadIlosc, posDetail.pinPadCena, 0)
+                addToPosMap(resultNormalMap, posDetail.wifiIlosc, posDetail.wifiCena, 0)
+
+                addToPosMap(resultPrefMap, posDetail.dialupIlosc, posDetail.dialupCenaPreferencyjna, posDetail.dialupPPCenaPreferencyjna)
+                addToPosMap(resultPrefMap, posDetail.vpnIlosc, posDetail.vpnCenaPreferencyjna, posDetail.vpnPPCenaPreferencyjna)
+                addToPosMap(resultPrefMap, posDetail.sslIlosc, posDetail.sslCenaPreferencyjna, posDetail.sslPPCenaPreferencyjna)
+                addToPosMap(resultPrefMap, posDetail.gprsIlosc, posDetail.gprsCenaPreferencyjna, posDetail.gprsPPCenaPreferencyjna)
+                addToPosMap(resultPrefMap, posDetail.pinPadIlosc, posDetail.pinPadCenaPreferencyjna, 0)
+                addToPosMap(resultPrefMap, posDetail.wifiIlosc, posDetail.wifiCenaPreferencyjna, 0)
+            }
+        }
+        addToData(data, resultNormalMap, "oplatyPOSIlosc", "oplatyPOSCena", ['A', 'B', 'C'])
+        addToData(data, resultPrefMap, "oplatyPOSPrefIlosc", "oplatyPOSPrefCena", ['A', 'B', 'C'])
+
+        return data
+    }
+
     public def mapPosesDataToPDFData(def posesData) {
         def data = [:]
         posesData?.each { pos ->
@@ -231,4 +258,30 @@ class PdfPosMapper extends AbstractPdfMapper{
 			addCheckbox(data, "przenosnyDol", true, true);
 		}
 	}
+
+    private def addToPosMap(def resultMap, def count, def price, def pricePP) {
+
+        if (count > 0){
+            def priceSum = 0;
+            if (price > 0){
+                priceSum += price
+            }
+            if (pricePP > 0){
+                priceSum += pricePP
+            }
+
+            if (priceSum > 0){
+                resultMap.put(priceSum, count + (resultMap.containsKey(priceSum) ? resultMap.get(priceSum) : 0))
+            }
+        }
+    }
+
+    private def addToData(def data, def resultMap, def countPdfFieldName, def pricePdfFieldName, def suffixes) {
+        resultMap.eachWithIndex{ key, value, index ->
+            if (index < suffixes.size()){
+                data.put(countPdfFieldName+suffixes[index], [value.toString()] as String[])
+                data.put(pricePdfFieldName+suffixes[index], [key.toString()] as String[])
+            }
+        }
+    }
 }

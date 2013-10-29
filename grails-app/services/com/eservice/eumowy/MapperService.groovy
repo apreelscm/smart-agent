@@ -16,7 +16,7 @@ class MapperService {
     }
 
     def mapOnlyProcessData(def processInstance, def calc){
-        PdfProcessMapper processMapper = new PdfProcessMapper(calculatorService, calc, new PdfPointMapper(), new PdfPosMapper());
+        PdfProcessMapper processMapper = new PdfProcessMapper(calculatorService, calc, new PdfPointMapper(), new PdfPosMapper())
         def data = [:]
         data.putAll(processMapper.mapOnlyProcessData(processInstance))
         data.putAll(mapProcessCalcToPDFData(calc))

@@ -82,7 +82,7 @@
 					{
 						"Tak": function() {
 							jQuery( this ).dialog( "close" );
-							jQuery(e.target).closest("#newPosPanel").remove();
+							jQuery(e.target).closest(".newPosPanel").remove();
 							panelPosInternalCount--;
 							
 							if (getCurrentTerminalCount("poses") != maxTerminalCount) {

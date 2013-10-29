@@ -61,6 +61,8 @@ class PosDataDetails implements Serializable {
 	String czytnikKartTyp
 	Integer czytnikKartIlosc
 	BigDecimal czytnikKartCena
+    String kartaSimTyp
+    Integer kartaSimIlosc
 	
 	String inneWyposazenie
 	Boolean inneWyposazenieSsl
@@ -80,7 +82,18 @@ class PosDataDetails implements Serializable {
 	String tytulInformatykDynamiczna
 	String kontaktInformatykDynamiczna
 	String imieInformatykDynamiczna
-	String nazwiskoInformatykDynamiczna	
+	String nazwiskoInformatykDynamiczna
+
+    BigDecimal dialupCenaPreferencyjna
+    BigDecimal dialupPPCenaPreferencyjna
+    BigDecimal vpnCenaPreferencyjna
+    BigDecimal vpnPPCenaPreferencyjna
+    BigDecimal sslCenaPreferencyjna
+    BigDecimal sslPPCenaPreferencyjna
+    BigDecimal gprsCenaPreferencyjna
+    BigDecimal gprsPPCenaPreferencyjna
+    BigDecimal pinPadCenaPreferencyjna
+    BigDecimal wifiCenaPreferencyjna
 	
 	static belongsTo = [pos: PosData]
 	
@@ -92,26 +105,35 @@ class PosDataDetails implements Serializable {
 		dialupPPIlosc column: "dialup_pp_count"
 		dialupCena column: "dialup_price"
 		dialupPPCena column: "dialup_pp_price"
+        dialupCenaPreferencyjna column: "dialup_price_pref"
+        dialupPPCenaPreferencyjna column: "dialup_pp_price_pref"
 		vpnTyp column: "vpn_type"
 		vpnIlosc column: "vpn_count"
 		vpnPPIlosc column: "vpn_pp_count"
 		vpnCena column: "vpn_price"
 		vpnPPCena column: "vpn_pp_price"
+        vpnCenaPreferencyjna column: "vpn_price_pref"
+        vpnPPCenaPreferencyjna column: "vpn_pp_price_pref"
 		sslTyp column: "ssl_type"
 		sslIlosc column: "ssl_count"
 		sslPPIlosc column: "ssl_pp_count"
 		sslCena column: "ssl_price"
 		sslPPCena column: "ssl_pp_price"
+        sslCenaPreferencyjna column: "ssl_price_pref"
+        sslPPCenaPreferencyjna column: "ssl_pp_price_pref"
 		wifiTyp column: "wifi_type"
 		wifiIlosc column: "wifi_count"
 		wifiPPIlosc column: "wifi_pp_count"
 		wifiCena column: "wifi_price"
-		wifiPPCena column: "wifi_pp_price"
+        wifiCenaPreferencyjna column: "wifi_price_pref"
+        wifiPPCena column: "wifi_pp_price"
 		gprsTyp column: "gprs_type"
 		gprsIlosc column: "gprs_count"
 		gprsPPIlosc column: "gprs_pp_count"
 		gprsCena column: "gprs_price"
 		gprsPPCena column: "gprs_pp_price"
+        gprsCenaPreferencyjna column: "gprs_price_pref"
+        gprsPPCenaPreferencyjna column: "gprs_pp_price_pref"
 		bazaIlosc column: "base_count"
 		zamkniecieDniaOd column: "day_close_from"
 		zamkniecieDniaDo column: "day_close_to"
@@ -130,9 +152,12 @@ class PosDataDetails implements Serializable {
 		teleKodzik column: "tele_kodzik"
 		kartaPodarunkowa column: "gift_card"
 		pinPadTyp column: "pin_pad_type"
+        kartaSimTyp column: "sim_card_type"
+        kartaSimIlosc column: "sim_card_count"
 		pinPadIlosc column: "pin_pad_count"
 		pinPadCena column: "pin_pad_price"
-		routerTyp column: "router_type"
+        pinPadCenaPreferencyjna column: "pin_pad_price_pref"
+        routerTyp column: "router_type"
 		routerIlosc column: "router_count"
 		routerCena column: "router_price"
 		czytnikKartTyp column: "card_reader_type"
@@ -227,6 +252,18 @@ class PosDataDetails implements Serializable {
 		kontaktInformatykDynamiczna(nullable:true)
 		imieInformatykDynamiczna(nullable:true)
 		nazwiskoInformatykDynamiczna(nullable:true)
+        dialupCenaPreferencyjna(nullable:true)
+        dialupPPCenaPreferencyjna(nullable:true)
+        vpnCenaPreferencyjna(nullable:true)
+        vpnPPCenaPreferencyjna(nullable:true)
+        sslCenaPreferencyjna(nullable:true)
+        sslPPCenaPreferencyjna(nullable:true)
+        gprsCenaPreferencyjna(nullable:true)
+        gprsPPCenaPreferencyjna(nullable:true)
+        pinPadCenaPreferencyjna(nullable:true)
+        wifiCenaPreferencyjna(nullable:true)
+        kartaSimTyp(nullable:true)
+        kartaSimIlosc(nullable:true)
     }
 	
 }
