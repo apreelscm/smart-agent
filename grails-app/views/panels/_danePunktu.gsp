@@ -276,11 +276,11 @@
 
                 <td><g:textField name="${panelType}[${id}].vpnCenaPreferencyjna"
                                  id="${panelType}[${id}].vpnPricePreferencyjna"
-                                 value="${pointData?.dialupCenaPreferencyjna}" style="width: 50px"
+                                 value="${pointData?.vpnCenaPreferencyjna}" style="width: 50px"
                                  class="float-number"/> zł.</td>
                 <td><g:textField name="${panelType}[${id}].vpnPPCenaPreferencyjna"
                                  id="${panelType}[${id}].vpnPPPricePreferencyjna"
-                                 value="${pointData?.dialupPPCenaPreferencyjna}" style="width: 50px"
+                                 value="${pointData?.vpnPPCenaPreferencyjna}" style="width: 50px"
                                  class="float-number"/> zł.</td>
             </tr>
             <tr>
@@ -311,11 +311,11 @@
 
                 <td><g:textField name="${panelType}[${id}].sslCenaPreferencyjna"
                                  id="${panelType}[${id}].sslPricePreferencyjna"
-                                 value="${pointData?.dialupCenaPreferencyjna}" style="width: 50px"
+                                 value="${pointData?.sslCenaPreferencyjna}" style="width: 50px"
                                  class="float-number"/> zł.</td>
                 <td><g:textField name="${panelType}[${id}].sslPPCenaPreferencyjna"
                                  id="${panelType}[${id}].sslPPPricePreferencyjna"
-                                 value="${pointData?.dialupPPCenaPreferencyjna}" style="width: 50px"
+                                 value="${pointData?.sslPPCenaPreferencyjna}" style="width: 50px"
                                  class="float-number"/> zł.</td>
             </tr>
             <tr>
@@ -349,11 +349,11 @@
 
                 <td><g:textField name="${panelType}[${id}].gprsCenaPreferencyjna"
                                  id="${panelType}[${id}].gprsPricePreferencyjna"
-                                 value="${pointData?.dialupCenaPreferencyjna}" style="width: 50px"
+                                 value="${pointData?.gprsCenaPreferencyjna}" style="width: 50px"
                                  class="float-number"/> zł.</td>
                 <td><g:textField name="${panelType}[${id}].gprsPPCenaPreferencyjna"
                                  id="${panelType}[${id}].gprsPPPricePreferencyjna"
-                                 value="${pointData?.dialupPPCenaPreferencyjna}" style="width: 50px"
+                                 value="${pointData?.gprsPPCenaPreferencyjna}" style="width: 50px"
                                  class="float-number"/> zł.</td>
             </tr>
             <tr>

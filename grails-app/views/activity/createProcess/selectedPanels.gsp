@@ -32,6 +32,46 @@
         });
         console.log('JS Validation started...');
 
+//        var normalPrices = []
+//        $j("input.normal-price").live("focusout", function(event){
+//            console.log(event);
+//            var row = $j(this).closest("tr"),
+//                prices = $j(row.find('input.normal-price')),
+//                sum = 0,
+//                isBothPricesFilled = true;
+//
+//            $j.each(prices, function(){
+//                if(this.value == ""){
+//                    isBothPricesFilled = false;
+//                    return false;
+//                }
+//                sum += parseFloat(this.value)
+//            });
+//
+//            if(!isBothPricesFilled){
+//                prices.removeClass("error");
+//                return false;
+//            }
+//
+//            console.log(sum);
+//            console.log(normalPrices);
+//
+//            if(normalPrices.indexOf(sum) === -1 && normalPrices.length == 3){ //jesli grupa nie istnieje i sa juz 3 grupy
+//                prices.addClass("error");
+//                return false;
+//            } else if (normalPrices.indexOf(sum) !== -1){ //jesli istnieje taka grupa
+//                return false;
+//            } else {
+//                normalPrices.push(sum)
+//            }
+//            console.log(normalPrices);
+//        });
+//
+//        $j("input.pref-price").focusout(function(){
+//            var row = this.closest("tr")
+//            row.find('')
+//        });
+
 	  showSaveLink();
       $j("#saveProcessLink").click(function() {
             var input = $j("<input>").attr("type", "hidden").attr("name", "_eventId_saveOnly").val(""),

@@ -143,7 +143,7 @@ class ActivityController {
                 flow.representative1 = currentEvent.attributes.representative1
                 flow.representative2 = currentEvent.attributes.representative2
                 flow.calcId = currentEvent.attributes.calcId
-                flow.prevActivityMessage = "Pozytywnie zakończono proces rejestracji dokumentacji dla NIP ${flow.processInstance.client.nip}."
+                flow.prevActivityMessage = message(code: 'process.completed', args:[flow.processInstance.client.nip])
             }.to "clientSignature"
             on("reject"){
                 flow.processInstance = currentEvent.attributes.process
@@ -161,7 +161,7 @@ class ActivityController {
                 flow.processInstance = currentEvent.attributes.process
                 flow.representative1 = currentEvent.attributes.representative1
                 flow.representative2 = currentEvent.attributes.representative2
-                flow.prevActivityMessage = "Proces dla NIP ${flow.processInstance.client.nip} został poprawnie zaktualizowany."
+                flow.prevActivityMessage = message(code: 'process.udpated', args:[flow.processInstance.client.nip])
             }.to "clientSignature"
             on("reject"){
                 flow.processInstance = currentEvent.attributes.process
@@ -179,7 +179,7 @@ class ActivityController {
                 flow.processInstance = currentEvent.attributes.process
                 flow.representative1 = currentEvent.attributes.representative1
                 flow.representative2 = currentEvent.attributes.representative2
-                flow.prevActivityMessage = "W procesie dla NIP ${flow.processInstance.client.nip} zostały poprawnie uzupełnione podpisy."
+                flow.prevActivityMessage = message(code: 'process.udpated.signatures', args:[flow.processInstance.client.nip])
             }.to "clientSignature"
         }
 
@@ -222,7 +222,7 @@ class ActivityController {
                 }
                 flow.skipDocumentGeneration = false
                 flow.processInstance = processInstance
-                flow.rejectedDocumentsMessage = 'Pomyslnie odrzucono dokumentacje dla NIP ' + flow.processInstance.client.nip
+                flow.rejectedDocumentsMessage = message(code: 'process.reject', args:[flow.processInstance.client.nip])
             }
             render(view: "../createProcess/clientSignature", model: [
                     processInstance: flow.processInstance,

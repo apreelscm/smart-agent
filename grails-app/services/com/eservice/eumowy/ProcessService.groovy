@@ -11,6 +11,7 @@ import com.eservice.eumowy.util.EumowyCustomEnvironment
 import grails.util.Environment
 import groovy.sql.GroovyRowResult
 import org.apache.commons.lang.WordUtils
+import org.codehaus.groovy.grails.web.binding.DataBindingUtils
 import serializationutils.SerializationUtils
 
 class ProcessService {
@@ -19,6 +20,7 @@ class ProcessService {
     def panelService
     def cbdService
     def panelMockService
+    def calculatorService
 
     def searchProcessByFilters(def params) {
         def filterObserved = params.filterObserved
@@ -129,7 +131,7 @@ class ProcessService {
         log.info("getNewProcessCommand processId = ${process.id}")
         def cmd = initProcessCommand(process)
         cmd.allPoints?.addAll(getPointsToAllPointsCommandList(process, cmd))
-        cmd.allPoses?.addAll(getPosesToAllPosCommandList(process, cmd))
+        cmd.allPoses?.addAll(getPosesToAllPosCommandList(process, cmd, calc))
 		
 		cmd.allPoints?.each { AllPointsCommand apc ->
 			if (apc.cbdId == -1) {
@@ -159,7 +161,7 @@ class ProcessService {
         cmd.points?.addAll(getLocalPointsToPointCommandList(process))
         cmd.poses?.addAll(getLocalPosesToPointCommandList(process))
         cmd.allPoints?.addAll(getPointsToAllPointsCommandList(process, cmd))
-        cmd.allPoses?.addAll(getPosesToAllPosCommandList(process, cmd))
+        cmd.allPoses?.addAll(getPosesToAllPosCommandList(process, cmd, calc))
 
 		//FIXME Optymalizacja usuwania, z uwzglednieniem tego, zeby nie zamykalo sesji, bo potem
 		//		w metodzie prepareProcessCommand jest zamknieta sesja i nie mozna zrobic lazyLoad na liscie paneli
@@ -176,7 +178,6 @@ class ProcessService {
 		process.save(flush:true)
 		
 		cmd.allPoints?.removeAll { it.cbdId == -1 }
-		
 		cmd.allPoses?.each { AllPosCommand apc ->
 			if (apc.tpsId == -1) {
 				PosData pos = PosData.findById(apc.id)
@@ -440,21 +441,11 @@ class ProcessService {
     def getLocalPosesToAllPosesCommandList(def process, def posesList) {
         process.points?.each { PointData point ->
             point.posDatas?.each { PosData posData ->
-
                 AllPosCommand apc = new AllPosCommand()
+                DataBindingUtils.bindObjectToInstance(apc, posData.properties
+                        , ["id","tpsId", "numerZestawuPos", "dataOd", "dataDo", "wysokoscOplaty", "czyWybrany"], [], null)
                 apc.setCzyCbd(false)
-                apc.id = posData.id
-                posData.properties.each { key, value ->
-//                    log.info "PosData Key: " + key
-                    if (["class", "process", "point", "errors", "constraints", "empty", "", ""].contains(key) || value == null){
-                        return
-                    }
-
-                    if (AllPosCommand.metaClass.respondsTo(AllPosCommand, "set"+key.capitalize())) {
-                        apc."set${key.capitalize()}"(value)
-                    }
-                }
-
+                apc.id = posData.id;
                 posesList.add(apc)
             }
         }
@@ -529,7 +520,7 @@ class ProcessService {
         result
     }
 
-    def getPosesToAllPosCommandList(def process, def cmd) {
+    def getPosesToAllPosCommandList(def process, def cmd, def calc) {
         def localPoses = [], cbdPoses = [], result = []
         getLocalPosesToAllPosesCommandList(process, localPoses)
         getCbdPosesToAllPosesCommandList(cmd, cbdPoses)
@@ -541,10 +532,10 @@ class ProcessService {
 
                 /* Update field data */
                 if (pos) {
-                    apc.dataDo = pos.dataDo
-                    apc.dataOd = pos.dataOd
-                    apc.numerZestawuPos = pos.numerZestawuPos
-                    apc.wysokoscOplaty = pos.wysokoscOplaty
+                    apc.dataDo = pos.dataDo ?: apc.dataDo
+                    apc.dataOd = pos.dataOd ?: apc.dataOd
+                    apc.numerZestawuPos = pos.numerZestawuPos ?: apc.numerZestawuPos
+                    apc.wysokoscOplaty = pos.wysokoscOplaty ?: (apc.wysokoscOplaty ?: calculatorService.getCalcProperty(calc,"E_PROM_OBN_NAJ_1"))
                     apc.czyCbd = true // Mark for update in local (eumowy) db
                     cbdPoses.remove(cbdPoses.findIndexOf { AllPosCommand i -> i.tpsId == apc.tpsId })
                 }
@@ -556,6 +547,7 @@ class ProcessService {
             result.add(apc)
         }
         result.addAll(cbdPoses)
+        result.sort {it.id}
         result
     }
 
@@ -834,256 +826,287 @@ class ProcessService {
     def getPointCommandsToPosDataList(def cmd) {
         def pointsList = []
         cmd.poses?.each { PointCommand pc ->
-			boolean isNew = false
-			if (pc == null) {
-				log.info "getPointCommandsToPosDataList: PointCommand is NULL - skipping!"
-				return
-			}
+            boolean isNew = false
+            if (pc == null) {
+                log.info "getPointCommandsToPosDataList: PointCommand is NULL - skipping!"
+                return
+            }
 
-			PointData pointData
-			PointDataDetails pointDataDetails
-			PosData posData
-			PosDataDetails posDataDetails
+            PointData pointData
+            PointDataDetails pointDataDetails
+            PosData posData
+            PosDataDetails posDataDetails
 
-			ArrayList<PosData> pdList = new ArrayList<PosData>()
+            ArrayList<PosData> pdList = new ArrayList<PosData>()
 
-			if (pc.id == null) {
-				log.info "NOWY PUNKT DLA POS"
-				pointData = new PointData()
-				pointDataDetails = new PointDataDetails()
+            if (pc.id == null) {
+                log.info "NOWY PUNKT DLA POS"
+                pointData = new PointData()
+                pointDataDetails = new PointDataDetails()
 
-				if (pc.cbdId != null) {
-					log.info "Ustawiam dane z CBD"
-					def cbdPoint = cbdService.getCbdPointById(cmd.nip, pc.cbdId)
-					if (cbdPoint != null) {
-						
-						pointData.setCbdId(Integer.valueOf(cbdPoint.get("id").toString()))
-						pointData.setKodPocztowy(cbdPoint.get("kod_pocztowy"))
-						//pointData.setLiczbaPos(Integer.valueOf(cbdPoint.get("liczba_pos").toString()))
-						pointData.setMiejscowosc(cbdPoint.get("miejscowosc"))
-						pointData.setNazwa(cbdPoint.get("nazwa"))
-						pointData.setNrBudynku(cbdPoint.get("nr_budynku"))
-						pointData.setUlica(cbdPoint.get("ulica"))
-						pointData.setNip(cbdPoint.get("nip"))
-					}
-					else {
-						log.info "DIDN'T FIND POINT INFORMATION IN CBD!!! CBDID: " + pc.cbdId + " NIP: " + cmd.nip
-					}
-				}
-				else {
-					log.info "Punkt nie pochodzi z CBD"
-				}
-				
-				posData = new PosData()
-				posDataDetails = new PosDataDetails()
-				isNew = true
-			}
-			else {
-				posData = PosData.get(pc.id)
-				
-				if (posData != null) {
-					pointData = posData.point
-					posDataDetails = posData.posDetails
+                if (pc.cbdId != null) {
+                    log.info "Ustawiam dane z CBD"
+                    def cbdPoint = cbdService.getCbdPointById(cmd.nip,
+                            pc.cbdId)
+                    if (cbdPoint != null) {
 
-					if (pointData != null) {
-						log.info "getPointCommandsToPosDataList - Znaleziono punkt o id: " + pointData.id + " dla POS o id: " + pc.id
-						pointDataDetails = pointData.pointDetails
-					}
-					else {
-						log.info "getPointCommandsToPosDataList - Brakujacy punkt dla POS o id: " + pc.id
-						pointData = new PointData()
-						pointDataDetails = new PointDataDetails()
-						
-						if (pc.cbdId != null) {
-							def cbdPoint = cbdService.getCbdPointById(cmd.nip, pc.cbdId)
-							if (cbdPoint != null) {
-								pointData.setCbdId(Integer.valueOf(cbdPoint.get("id").toString()))
-								pointData.setKodPocztowy(cbdPoint.get("kod_pocztowy"))
-								//pointData.setLiczbaPos(Integer.valueOf(cbdPoint.get("liczba_pos").toString()))
-								pointData.setMiejscowosc(cbdPoint.get("miejscowosc"))
-								pointData.setNazwa(cbdPoint.get("nazwa"))
-								pointData.setNrBudynku(cbdPoint.get("nr_budynku"))
-								pointData.setUlica(cbdPoint.get("ulica"))
-								pointData.setNip(cbdPoint.get("nip"))
-							}
-							else {
-								log.info "DIDN'T FIND POINT INFORMATION IN CBD!!! CBDID: " + pc.cbdId + " NIP: " + cmd.nip
-							}
-						}
-					}
-				}
-				else {
-					log.info "getPointCommandsToPosDataList - Nie znaleziono POS o id: " + pc.id
-					return
-				}
-			}
+                        pointData.setCbdId(Integer.valueOf(cbdPoint.get("id").toString()))
+                        pointData.setKodPocztowy(cbdPoint.get("kod_pocztowy"))
+                        //pointData.setLiczbaPos(Integer.valueOf(cbdPoint.get("liczba_pos").toString()))
+                        pointData.setMiejscowosc(cbdPoint.get("miejscowosc"))
+                        pointData.setNazwa(cbdPoint.get("nazwa"))
+                        pointData.setNrBudynku(cbdPoint.get("nr_budynku"))
+                        pointData.setUlica(cbdPoint.get("ulica"))
+                        pointData.setNip(cbdPoint.get("nip"))
+                    }
+                    else {
+                        log.info "DIDN'T FIND POINT INFORMATION IN CBD!!! CBDID: " + pc.cbdId + " NIP: " + cmd.nip
+                    }
+                }
+                else {
+                    log.info "Punkt nie pochodzi z CBD"
+                }
 
-			pdList.add(posData)
+                posData = new PosData()
+                posDataDetails = new PosDataDetails()
+                isNew = true
+            }
+            else {
+                posData = PosData.get(pc.id)
 
-			pc.properties.each { key, value ->
-				log.info "PCPOSProperties " + key + ": " + value
-				if (PointData.metaClass.respondsTo(PointData, "set" + key.capitalize()) && key != 'id') {
-					pointData."set${key.capitalize()}"(value)
-				}
+                if (posData != null) {
+                    pointData = posData.point
+                    posDataDetails = posData.posDetails
 
-				if (PointDataDetails.metaClass.respondsTo(PointDataDetails, "set" + key.capitalize()) && key != 'id') {
-					pointDataDetails."set${key.capitalize()}"(value)
-				}
+                    if (pointData != null) {
+                        log.info "getPointCommandsToPosDataList - Znaleziono punkt o id: " + pointData.id + " dla POS o id: " + pc.id
+                        pointDataDetails = pointData.pointDetails
+                    }
+                    else {
+                        log.info "getPointCommandsToPosDataList - Brakujacy punkt dla POS o id: " + pc.id
+                        pointData = new PointData()
+                        pointDataDetails = new PointDataDetails()
 
-				if (PosData.metaClass.respondsTo(PosData, "set" + key.capitalize())) {
-					// FIXME krytyczne obejscie, nigdy nie powinno byc null. Dodalem logi gdy sytuacja z NULL wystepuje, sprawdzimy czy nadal sa takie przypadki - mkniec
-					if (posData != null) {
-						posData?."set${key.capitalize()}"(value)
-					}
-					else {
-						log.info "FIXME - PosData = NULL"
-					}
-				}
+                        if (pc.cbdId != null) {
+                            def cbdPoint =
+                                cbdService.getCbdPointById(cmd.nip, pc.cbdId)
+                            if (cbdPoint != null) {
+                                pointData.setCbdId(Integer.valueOf(cbdPoint.get("id").toString()))
+                                pointData.setKodPocztowy(cbdPoint.get("kod_pocztowy"))
+//pointData.setLiczbaPos(Integer.valueOf(cbdPoint.get("liczba_pos").toString()))
+                                pointData.setMiejscowosc(cbdPoint.get("miejscowosc"))
+                                pointData.setNazwa(cbdPoint.get("nazwa"))
+                                pointData.setNrBudynku(cbdPoint.get("nr_budynku"))
+                                pointData.setUlica(cbdPoint.get("ulica"))
+                                pointData.setNip(cbdPoint.get("nip"))
+                            }
+                            else {
+                                log.info "DIDN'T FIND POINT INFORMATION IN CBD!!! CBDID: " + pc.cbdId + " NIP: " + cmd.nip
+                            }
+                        }
+                    }
+                }
+                else {
+                    log.info "getPointCommandsToPosDataList - Nie znaleziono POS o id: " + pc.id
+                    return
+                }
+            }
 
-				if (PosDataDetails.metaClass.respondsTo(PosDataDetails, "set" + key.capitalize()) && key != 'id') {
-					posDataDetails."set${key.capitalize()}"(value)
-				}
-			}
+            pdList.add(posData)
 
-			// Create POSes with same values
-			def terminalCount = 0
-			terminalCount += posDataDetails?.gprsIlosc != null ? posDataDetails?.gprsIlosc : 0
-			terminalCount += posDataDetails?.dialupIlosc != null ? posDataDetails?.dialupIlosc : 0
-			terminalCount += posDataDetails?.vpnIlosc != null ? posDataDetails?.vpnIlosc : 0
-			terminalCount += posDataDetails?.sslIlosc != null ? posDataDetails?.sslIlosc : 0
-			terminalCount += posDataDetails?.wifiIlosc != null ? posDataDetails?.wifiIlosc : 0
-			terminalCount += posDataDetails?.bazaIlosc != null ? posDataDetails?.bazaIlosc : 0
-			
-			// Create cloned poses only when they are not already cloned
-			if (terminalCount > 1 && terminalCount > pointData.liczbaPos) {
-				for (int i = 0; i < terminalCount; i++) {
-					PosData posDataNew
-					PosDataDetails posDataDetailsNew
-					Serializable posDataSer = posData
-					posDataNew = SerializationUtils.clone(posDataSer) // as PosData
-					posDataNew.id = null
-					posDataNew.version = 0
-					posDataDetailsNew = SerializationUtils.clone(posDataDetails)  // as PosDataDetails
-					posDataDetailsNew.id = null
-					posDataDetailsNew.version = 0
-					
-					posDataNew.setPosDetails(posDataDetailsNew)
-					posDataNew.setPoint(pointData)
-					posDataDetailsNew.setPos(posDataNew)
+            pc.properties.each { key, value ->
+                log.info "PCPOSProperties " + key + ": " + value
+                if (PointData.metaClass.respondsTo(PointData, "set" +
+                        key.capitalize()) && key != 'id') {
+                    pointData."set${key.capitalize()}"(value)
+                }
 
-					pdList.add(posDataNew)
-				}
-			}
-			
-			// Set telePomka and teleKodzik based on terminalIlosc
-			if (pc.terminalIlosc != null && pc.terminalIlosc > 0 && terminalCount > pointData.liczbaPos) {
-				for (int i = 0; i < pc.terminalIlosc && i < pdList.size; i++) {
-					pdList.get(i).posDetails?.telePompka = posData.posDetails?.telePompka
-					pdList.get(i).posDetails?.teleKodzik = posData.posDetails?.teleKodzik
-				}
-			}
-			else if (pc.terminalIlosc != null && pc.terminalIlosc > 0 && terminalCount == pointData.liczbaPos) {
-				for (int i = 0; i < pc.terminalIlosc && i < pointData.posDatas.size(); i++) {
-					pointData.posDatas?.get(i).posDetails?.telePompka = posData.posDetails?.telePompka
-					pointData.posDatas?.get(i).posDetails?.teleKodzik = posData.posDetails?.teleKodzik
-				}
-			}
-			
-			pointData.liczbaPos = pdList.size()
-			pointData.save()
-			//if (isNew == true) {
-			posData.setPosDetails(posDataDetails)
-			posData.setPoint(pointData)
+                if(PointDataDetails.metaClass.respondsTo(PointDataDetails, "set" + key.capitalize()) && key != 'id') {
+                    pointDataDetails."set${key.capitalize()}"(value)
+                }
 
-			pointData.setPointDetails(pointDataDetails)
-			pointData.setPosDatas(pdList)
+                if (PosData.metaClass.respondsTo(PosData, "set" +
+                        key.capitalize())) {
+                    // FIXME krytyczne obejscie, nigdy nie powinno byc null. Dodalem logi gdy sytuacja z NULL wystepuje, sprawdzimy czy nadal
+                    sa takie przypadki - mkniec
+                    if (posData != null) {
+                        posData?."set${key.capitalize()}"(value)
+                    }
+                    else {
+                        log.info "FIXME - PosData = NULL"
+                    }
+                }
 
-			posDataDetails.setPos(posData)
-			pointDataDetails.setPoint(pointData)
-			posData.save()
-			//}
+                if (PosDataDetails.metaClass.respondsTo(PosDataDetails,
+                        "set" + key.capitalize()) && key != 'id') {
+                    posDataDetails."set${key.capitalize()}"(value)
+                }
+            }
 
-			pointsList.add(pointData)
+            // Create POSes with same values
+            def terminalCount = 0
+            terminalCount += posDataDetails?.gprsIlosc != null ?
+                posDataDetails?.gprsIlosc : 0
+            terminalCount += posDataDetails?.dialupIlosc != null ?
+                posDataDetails?.dialupIlosc : 0
+            terminalCount += posDataDetails?.vpnIlosc != null ?
+                posDataDetails?.vpnIlosc : 0
+            terminalCount += posDataDetails?.sslIlosc != null ?
+                posDataDetails?.sslIlosc : 0
+            terminalCount += posDataDetails?.wifiIlosc != null ?
+                posDataDetails?.wifiIlosc : 0
+            terminalCount += posDataDetails?.bazaIlosc != null ?
+                posDataDetails?.bazaIlosc : 0
+
+            // Create cloned poses only when they are not already cloned
+            if (terminalCount > 1 && terminalCount > pointData.liczbaPos) {
+                for (int i = 0; i < terminalCount; i++) {
+                    PosData posDataNew
+                    PosDataDetails posDataDetailsNew
+                    Serializable posDataSer = posData
+                    posDataNew = SerializationUtils.clone(posDataSer)
+// as PosData
+                    posDataNew.id = null
+                    posDataNew.version = 0
+                    posDataDetailsNew = SerializationUtils.clone(posDataDetails)  // as PosDataDetails
+                    posDataDetailsNew.id = null
+                    posDataDetailsNew.version = 0
+
+                    posDataNew.setPosDetails(posDataDetailsNew)
+                    posDataNew.setPoint(pointData)
+                    posDataDetailsNew.setPos(posDataNew)
+
+                    pdList.add(posDataNew)
+                }
+            }
+
+            // Set telePomka and teleKodzik based on terminalIlosc
+            if (pc.terminalIlosc != null && pc.terminalIlosc > 0 &&
+                    terminalCount > pointData.liczbaPos) {
+                for (int i = 0; i < pc.terminalIlosc && i <
+                        pdList.size; i++) {
+                    pdList.get(i).posDetails?.telePompka =
+                        posData.posDetails?.telePompka
+                    pdList.get(i).posDetails?.teleKodzik =
+                        posData.posDetails?.teleKodzik
+                }
+            }
+            else if (pc.terminalIlosc != null && pc.terminalIlosc > 0
+                    && terminalCount == pointData.liczbaPos) {
+                for (int i = 0; i < pc.terminalIlosc && i <
+                        pointData.posDatas.size(); i++) {
+                    pointData.posDatas?.get(i).posDetails?.telePompka =
+                        posData.posDetails?.telePompka
+                    pointData.posDatas?.get(i).posDetails?.teleKodzik =
+                        posData.posDetails?.teleKodzik
+                }
+            }
+
+            pointData.liczbaPos = pdList.size()
+            pointData.save()
+            //if (isNew == true) {
+            posData.setPosDetails(posDataDetails)
+            posData.setPoint(pointData)
+
+            pointData.setPointDetails(pointDataDetails)
+            pointData.setPosDatas(pdList)
+
+            posDataDetails.setPos(posData)
+            pointDataDetails.setPoint(pointData)
+            posData.save()
+            //}
+
+            pointsList.add(pointData)
         }
+
+        //TODO - save poses!!!
 
         /* Save poses from AllPosCommand */
         cmd.allPoses?.each { AllPosCommand apc ->
-			
+
             if (apc == null) {
                 log.info "AllPosCommand is NULL - skipping!"
                 return
             }
-			ArrayList<PosData> pdList = new ArrayList<PosData>()
+            ArrayList<PosData> pdList = new ArrayList<PosData>()
             PosData pos;
-			PointData point;
+            PointData point;
 
             if (apc.id != null) {
+                //poieramy point i pos z naszej bazy
                 pos = PosData.get(apc.id)
-				log.info "Got POS Data!"
-				if (pos != null) {
-					point = pos.point
-				}
-				
+                log.info "Got POS Data!"
+                if (pos != null) {
+                    point = pos.point
+                }
             }
-			else if (apc.cbdId != null) {
-				
-				point = PointData.findByCbdId(apc.cbdId)
-				
-				if (point != null) {
-					log.info "FOUND POINT FOR CBD POS"
-				}
-				else {
-					log.info "DIDN'T FIND POINT FOR CBD POS"
-					point = new PointData()
-					
-					// Nie znalezlismy punktu z CBD u nas w bazie, musimy dossac dane z CBD dla tego punktu
-					def cbdPoint = cbdService.getCbdPointById(cmd.nip, apc.cbdId)
-					if (cbdPoint != null) {
-						point.setCbdId(Integer.valueOf(cbdPoint.get("id").toString()))
-						point.setKodPocztowy(cbdPoint.get("kod_pocztowy"))
-						point.setLiczbaPos(Integer.valueOf(cbdPoint.get("liczba_pos").toString()))
-						point.setMiejscowosc(cbdPoint.get("miejscowosc"))
-						point.setNazwa(cbdPoint.get("nazwa"))
-						point.setNrBudynku(cbdPoint.get("nr_budynku"))
-						point.setUlica(cbdPoint.get("ulica"))
-						point.setNip(cbdPoint.get("nip"))
-					}
-					else {
-						log.info "DIDN'T FIND POINT INFORMATION IN CBD!!! CBDID: " + apc.cbdId + " NIP: " + cmd.nip
-					}
-				}
-			}
+            else if (apc.cbdId != null) {
+                //pobieramy point z bazy CBD
+                point = PointData.findByCbdId(apc.cbdId)
+
+                if (point != null) {
+                    pos = point.posDatas.find{pd -> pd.tpsId == apc.tpsId}
+                    if (pos == null){
+                        pos = new PosData();
+                    }
+                    log.info "FOUND POINT FOR CBD POS"
+                }
+                else {
+                    log.info "DIDN'T FIND POINT FOR CBD POS"
+                    point = new PointData()
+                    pos = new PosData();
+
+                    // Nie znalezlismy punktu z CBD u nas w bazie,
+                    musimy dossac dane z CBD dla tego punktu
+                    def cbdPoint = cbdService.getCbdPointById(cmd.nip,
+                            apc.cbdId)
+                    if (cbdPoint != null) {
+                        point.setCbdId(Integer.valueOf(cbdPoint.get("id").toString()))
+                        point.setKodPocztowy(cbdPoint.get("kod_pocztowy"))
+                        point.setLiczbaPos(Integer.valueOf(cbdPoint.get("liczba_pos").toString()))
+                        point.setMiejscowosc(cbdPoint.get("miejscowosc"))
+                        point.setNazwa(cbdPoint.get("nazwa"))
+                        point.setNrBudynku(cbdPoint.get("nr_budynku"))
+                        point.setUlica(cbdPoint.get("ulica"))
+                        point.setNip(cbdPoint.get("nip"))
+                    }
+                    else {
+                        log.info "DIDN'T FIND POINT INFORMATION IN CBD!!! CBDID: " + apc.cbdId + " NIP: " + cmd.nip
+                    }
+                }
+            }
             else {
+                //zupelnie nowe point i pos
                 pos = new PosData()
-				point = new PointData()
+                point = new PointData()
             }
 
-			if (pos != null) {
-				if (apc.tpsId != null) {
-					pos.dataOd = apc.dataOd
-					pos.dataDo = apc.dataDo
-					pos.numerZestawuPos = apc.numerZestawuPos
-					pos.wysokoscOplaty = apc.wysokoscOplaty
-				}
-				
-				pdList.add(pos)
-				pos.czyWybrany = apc.czyWybrany
-				pos.tpsId = apc.tpsId
-				
-				point.cbdId = apc.cbdId
-				point.save()
-				
-				point.setPosDatas(pdList)
-				
-				pos.setPoint(point)
-				pos.save()
-			}
+            if (pos != null) {
+                if (apc.tpsId != null) {
+                    pos.dataOd = apc.dataOd
+                    pos.dataDo = apc.dataDo
+                    pos.numerZestawuPos = apc.numerZestawuPos
+                    pos.wysokoscOplaty = apc.wysokoscOplaty
+                }
+                pos.czyWybrany = apc.czyWybrany
+                pos.tpsId = apc.tpsId
+                pdList.add(pos)
+
+
+                point.cbdId = apc.cbdId
+                point.save()
+                point.setPosDatas(pdList)
+
+                pos.setPoint(point)
+                pos.save()
+            }
 
             pointsList.add(point)
         }
 
         return pointsList
     }
+
 
     def findDocumentByName(def documents, def name) {
         if (documents != null) {
