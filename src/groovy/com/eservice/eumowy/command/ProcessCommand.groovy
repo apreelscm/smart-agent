@@ -1202,8 +1202,8 @@ class ProcessCommand implements Serializable {
             prefPriceGroups.add(getGroupValue(pos.wifiCenaPreferencyjna, BigDecimal.ZERO))
         }
 
-        normalPriceGroups.remove(0) //jesli obie ceny sa nullem to dostajemy 0
-        prefPriceGroups.remove(0)
+        normalPriceGroups.removeAll(Collections.singleton(BigDecimal.ZERO)) //jesli obie ceny sa nullem to dostajemy 0
+        prefPriceGroups.removeAll(Collections.singleton(BigDecimal.ZERO))
         if(normalPriceGroups.size() > 3 || prefPriceGroups.size() > 3){
             return true
         }

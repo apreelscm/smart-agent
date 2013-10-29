@@ -582,7 +582,7 @@ function addDateHandlers(prefixPanel, prefix, panelId){
     dayCloseToDefault.setMinutes(59);
 
     jQuery(prefixPanel + ".plannedInstallationDate").datepicker({ dateFormat: 'yy-mm-dd', minDate: 0 });
-  /*  dayCloseFrom.timepicker({
+    dayCloseFrom.timepicker({
         controlType: 'select',
         timeFormat: 'HH:mm',
         onClose: function(dateText, inst){
@@ -591,16 +591,16 @@ function addDateHandlers(prefixPanel, prefix, panelId){
         onSelect: function (selectedDateTime){
             onSelectDayCloseFrom(prefix, panelId, dayCloseTo);
         }
-    });*/
+    });
 
- /*   dayCloseTo.timepicker({
+    dayCloseTo.timepicker({
         controlType: 'select',
         timeFormat: 'HH:mm',
         onClose: function(dateText, inst){
             onCloseDayCloseTo(prefix, panelId, dayCloseTo)
         },
         onSelect: function (selectedDateTime) {}
-    });*/
+    });
 
     for(var i = 0; i < dayCloseTo.length; i++){
         var dayCloseToItem = dayCloseTo[i],
