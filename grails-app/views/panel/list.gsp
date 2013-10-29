@@ -44,7 +44,7 @@
         <g:render template="../panels/dodatkoweUslugiMud"/>
         <g:render template="../panels/dodatkoweUslugiUTAIntegracja"/>
         <g:render template="../panels/dodatkoweWyposazenie"/>
-        <g:render template="../panels/formaDoladowania"/>
+        %{--<g:render template="../panels/formaDoladowania"/>--}%
         %{--<g:render template="../panels/funkcjeTerminala"/>--}%
         <g:render template="../panels/ifplus"/>
         <g:render template="../panels/informacjeDodatkowe"/>

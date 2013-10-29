@@ -4,10 +4,33 @@
 		<label for="${panelType}[${id}].additionalequipmentSameForEveryPoint"><g:checkBox id="${panelType}[${id}].additionalequipmentSameForEveryPoint" name="${panelType}[${id}].dodatkoweWyposazenieTakSamoDlaWszystkichPunktow" value="${pointData?.dodatkoweWyposazenieTakSamoDlaWszystkichPunktow}" /><g:message code="panel.sameforeverypoint" /></label>
 		<table class="vertical-center" >
 			<tbody>
-				<tr><td><g:message code="panel.newpoint.additionalequipment.pinpad" /></td><td>typ <g:select name="${panelType}[${id}].pinPadTyp" id="${panelType}[${id}].pinPadType" from="[]" value="${pointData?.pinPadTyp}" style="width: 50px"></g:select></td><td><eumowy:textField name="${panelType}[${id}].pinPadIlosc" id="${panelType}[${id}].pinPadCount" class="integer-number" style="width: 50px" value="${pointData?.pinPadIlosc}" /> szt.</td><td><eumowy:textField class="float-number" name="${panelType}[${id}].pinPadCena" id="${panelType}[${id}].pinPadPrice" style="width: 50px" value="${pointData?.pinPadCena}"/> <g:message code="panel.price" /></td></tr>
-				<tr><td><g:message code="panel.newpoint.additionalequipment.router" /></td><td>typ <g:select name="${panelType}[${id}].routerTyp" id="${panelType}[${id}].routerType" from="[]" value="${pointData?.routerTyp}" style="width: 50px"></g:select></td><td><eumowy:textField name="${panelType}[${id}].routerIlosc" id="${panelType}[${id}].routerCount" class="integer-number" style="width: 50px" value="${pointData?.routerIlosc}"/> szt.</td><td><eumowy:textField class="float-number" name="${panelType}[${id}].routerCena" id="${panelType}[${id}].routerPrice" style="width: 50px" value="${pointData?.routerCena}"/> <g:message code="panel.price" /></td></tr>
-				<tr><td><g:message code="panel.newpoint.additionalequipment.cardreader" /></td><td>typ <g:select name="${panelType}[${id}].czytnikKartTyp" id="${panelType}[${id}].cardReaderType" from="[]" value="${pointData?.czytnikKartTyp}" style="width: 50px"></g:select></td><td><eumowy:textField name="${panelType}[${id}].czytnikKartIlosc" id="${panelType}[${id}].cardReaderCount" class="integer-number" style="width: 50px" value="${pointData?.czytnikKartIlosc}"/> szt.</td><td><eumowy:textField class="float-number" name="${panelType}[${id}].czytnikKartCena" id="${panelType}[${id}].cardReaderPrice" style="width: 50px" value="${pointData?.czytnikKartCena}"/> <g:message code="panel.price" /></td></tr>
-				<tr><td><g:message code="panel.newpoint.additionalequipment.other" /> <g:textField name="${panelType}[${id}].inneWyposazenie" id="${panelType}[${id}].otherAdditionalDevice" value="${pointData?.inneWyposazenie}" maxlength="255" style="width: 150px;" /> <label for="${panelType}[${id}].otherAdditionalDeviceSsl"><g:checkBox name="${panelType}[${id}].inneWyposazenieSsl" id="${panelType}[${id}].otherAdditionalDeviceSsl" value="${pointData?.inneWyposazenieSsl}"/><g:message code="panel.ssl" /></label> <label for="${panelType}[${id}].otherAdditionalDeviceGprs"><g:checkBox name="${panelType}[${id}].inneWyposazenieGprs" id="${panelType}[${id}].otherAdditionalDeviceGprs" value="${pointData?.inneWyposazenieGprs}"/><g:message code="panel.gprs" /></label></td><td>typ <select name="${panelType}[${id}].inneWyposazenieTyp" id="${panelType}[${id}].otherAdditionalDeviceType" style="width: 50px"></select></td><td><eumowy:textField name="${panelType}[${id}].inneWyposazenieIlosc" id="${panelType}[${id}].otherAdditionalDeviceCount" class="integer-number" style="width: 50px" value="${pointData?.inneWyposazenieIlosc}"/> szt.</td><td><eumowy:textField class="float-number" name="${panelType}[${id}].inneWyposazenieCena" id="${panelType}[${id}].otherAdditionalDevicePrice" style="width: 50px" value="${pointData?.inneWyposazenieCena}"/> <g:message code="panel.price" /></td></tr>
+				<tr class="baseRow display-none">
+                    <td><g:message code="panel.base" /></td>
+                    <td colspan="2"></td>
+                    <td><eumowy:textField name="${panelType}[${id}].bazaIlosc" id="${panelType}[${id}].bazaCount" class="integer-number" style="width: 50px" value="${pointData?.bazaIlosc}" /> szt.</td>
+                </tr>
+				<tr>
+                    <td><g:message code="panel.newpoint.additionalequipment.router" /></td>
+                    <td colspan="2"></td>
+                    <td><eumowy:textField name="${panelType}[${id}].routerIlosc" id="${panelType}[${id}].routerCount" class="integer-number" style="width: 50px" value="${pointData?.routerIlosc}"/> szt.</td>
+                </tr>
+				<tr>
+                    <td><g:message code="panel.newpoint.additionalequipment.cardreader" /></td>
+                    <td colspan="2"></td>
+                    <td><eumowy:textField name="${panelType}[${id}].czytnikKartIlosc" id="${panelType}[${id}].cardReaderCount" class="integer-number" style="width: 50px" value="${pointData?.czytnikKartIlosc}"/> szt.</td>
+                </tr>
+                <tr>
+                    <td><g:message code="panel.sim.card" /></td>
+                    <td></td>
+                    <td><dict:simCardSelect name="${panelType}[${id}].kartaSimTyp" id="${panelType}[${id}].simCardType" value="${pointData?.kartaSimTyp}" class="kartaSimTyp" style="width: 163px;"/></td>
+                    <td><eumowy:textField name="${panelType}[${id}].kartaSimIlosc" id="${panelType}[${id}].simCardCount" class="integer-number kartaSimIlosc" style="width: 50px" value="${pointData?.kartaSimIlosc}"/> szt.</td>
+                </tr>
+				<tr>
+                    <td><g:message code="panel.newpoint.additionalequipment.other" /></td>
+                    <td></td>
+                    <td><g:textField name="${panelType}[${id}].inneWyposazenie" id="${panelType}[${id}].otherAdditionalDevice" value="${pointData?.inneWyposazenie}" maxlength="255" style="width: 150px;" /></td>
+                    <td><eumowy:textField name="${panelType}[${id}].inneWyposazenieIlosc" id="${panelType}[${id}].otherAdditionalDeviceCount" class="integer-number" style="width: 50px" value="${pointData?.inneWyposazenieIlosc}"/> szt.</td>
+                </tr>
 			</tbody>
 		</table>
 	</div>

@@ -14,6 +14,15 @@ class DictionaryTagLib {
 		attrs.from.add(0,"")
         fieldImpl(out, attrs)
     }
+
+    Closure simCardSelect = { attrs ->
+        attrs.from = dictionaryService.getSimCardComboBox()*.value
+        if (!attrs.value && attrs.default){
+            attrs.value = attrs.default
+        }
+        attrs.from.add(0,"")
+        fieldImpl(out, attrs)
+    }
 	
 	Closure typeSelect = { attrs ->
 		def nipNum = attrs.nip

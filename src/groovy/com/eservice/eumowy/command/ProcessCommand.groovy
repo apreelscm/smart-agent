@@ -1152,10 +1152,10 @@ class ProcessCommand implements Serializable {
                 counter += point?.bazaIlosc != null ? point?.bazaIlosc : 0
             }
 
-            if (counter != max) {
-                errors.rejectValue("liczbaTerminali", "default.notEqual.liczbaTerminali",)
-                return false
-            }
+//            if (counter != max) {
+//                errors.rejectValue("liczbaTerminali", "default.notEqual.liczbaTerminali",)
+//                return false
+//            }
             return true
         })
 

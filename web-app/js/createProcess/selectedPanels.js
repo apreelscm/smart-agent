@@ -80,7 +80,7 @@ var $j = jQuery.noConflict();
 
         $("#akceptantKontaktKodPocztowy").on("keyup", function(e) {
             refreshCityField(jQuery(e.target).val(),  jQuery("#akceptantKontaktMiasto"))
-            });
+        });
 
         $("#wydrukKodPocztowy").on("keyup", function(e) {
             refreshCityField(jQuery(e.target).val(),  jQuery("#wydrukMiasto"))
@@ -108,3 +108,4 @@ function refreshCityField(code, select){
         select.val('')
     }
 }
+

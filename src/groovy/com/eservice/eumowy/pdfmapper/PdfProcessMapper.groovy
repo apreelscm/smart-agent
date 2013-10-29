@@ -8,13 +8,15 @@ class PdfProcessMapper extends AbstractPdfMapper{
     def calculatorService
     def calc
     def pointMapper
+    def posMapper
 	
 	private static final EMPTY_VALUES = ["", "-"]
 
-    public PdfProcessMapper (def calculatorService, def calc, def pointMapper){
+    public PdfProcessMapper (def calculatorService, def calc, def pointMapper, def posMapper){
         this.calculatorService = calculatorService
         this.calc = calc
         this.pointMapper = pointMapper
+        this.posMapper = posMapper
     }
 
     protected def mapOnlyProcessData(def processInstance){
@@ -22,7 +24,7 @@ class PdfProcessMapper extends AbstractPdfMapper{
         dataMap.putAll(mapProcessToPDFData(processInstance))
         dataMap.putAll(mapProcessDataToPDFData(processInstance.processData))
 
-        def points = processInstance?.points;
+        def points = processInstance?.points
         println "Ilosc punktow: " + points?.size()
 
         if (points != null && points.size()>0){
@@ -40,6 +42,25 @@ class PdfProcessMapper extends AbstractPdfMapper{
 
             //APUNTSZAPOU3
             dataMap.putAll(pointMapper.mapPointsSpecial(points.findAll{ point -> point.czyWybranyAkceptacjaKart}, ["nazwa":"punktTN", "miejscowosc":"adresTN", "systemKasowy":"integracjaTN", "uta":"utaTN"]));
+
+            //APUNTSZAPOO3
+            def poses = []
+            points.each{ p ->
+                poses.addAll(p?.posDatas.findAll {pos -> pos.czyWybrany})
+            }
+            dataMap.putAll(posMapper.mapPosSpecial(poses))
+
+            def posesNotFromCBD = []
+            points.findAll { point ->
+                if(point.posDatas){
+                    if(point.cbdId == null){
+                        posesNotFromCBD.addAll(point.posDatas)
+                    } else {
+                        posesNotFromCBD.addAll(point.posDatas.findAll{ pos -> pos.tpsId == null})
+                    }
+                }
+            }
+            dataMap.putAll(posMapper.mapPoses(posesNotFromCBD))
         }
 
         return dataMap;
@@ -423,6 +444,8 @@ class PdfProcessMapper extends AbstractPdfMapper{
             def suffixes = ['A', 'B', 'C'];
 
             def resultNormalMap = new TreeMap<Integer, Integer>();
+            def resultPrefMap = new TreeMap<Integer, Integer>();
+
             addToPosMap(pd, resultNormalMap, 'oplPOSDialUpIlosc', 'oplPOSDialUpNormalneMies', 'oplPOSDialUpNormalnePP')
             addToPosMap(pd, resultNormalMap, 'oplPOSVPNIlosc', 'oplPOSVPNNormalneMies', 'oplPOSVPNNormalnePP')
             addToPosMap(pd, resultNormalMap, 'oplPOSSSLIlosc', 'oplPOSSSLNormalneMies', 'oplPOSSSLNormalnePP')
@@ -430,7 +453,6 @@ class PdfProcessMapper extends AbstractPdfMapper{
             addToPosMap(pd, resultNormalMap, 'oplPOSGPRSIlosc', 'oplPOSGPRSNormalneMies', 'oplPOSGPRSNormalnePP')
             addToData(data, resultNormalMap, 'oplatyPOSIlosc', 'oplatyPOSCena', suffixes)
 
-            def resultPrefMap = new TreeMap<Integer, Integer>();
             addToPosMap(pd, resultPrefMap, 'oplPOSDialUpIlosc', 'oplPOSDialUpPreferencyjneMies', 'oplPOSDialUpPreferencyjnePP')
             addToPosMap(pd, resultPrefMap, 'oplPOSVPNIlosc', 'oplPOSVPNPreferencyjneMies', 'oplPOSVPNPreferencyjnePP')
             addToPosMap(pd, resultPrefMap, 'oplPOSSSLIlosc', 'oplPOSSSLPreferencyjneMies', 'oplPOSSSLPreferencyjnePP')
