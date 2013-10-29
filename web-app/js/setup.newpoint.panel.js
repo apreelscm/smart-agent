@@ -440,8 +440,6 @@ function setupNewPointPanelData(prevPanelId, panelId) {
 }
 
 function verifyBaseVisibility(value, panelId){
-    console.info('input[name="'+panelId+'.gprsPPCena"]')
-    console.info($j('input[name="'+panelId+'.gprsPPCena"]').length)
 
     var str = panelId.replace(".","")
     if(value == "Verifone Vx670 GPRS"){

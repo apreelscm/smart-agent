@@ -38,20 +38,20 @@
             <td><g:textField name="${panelType}[${id}].dialupCena"
                              id="${panelType}[${id}].dialupPrice"
                              value="${pointData?.dialupCena}" style="width: 50px"
-                             class="float-number"/> zł.</td>
+                             class="float-number normal-price"/> zł.</td>
             <td><g:textField name="${panelType}[${id}].dialupPPCena"
                              id="${panelType}[${id}].dialupPPPrice"
                              value="${pointData?.dialupPPCena}" style="width: 50px"
-                             class="float-number"/> zł.</td>
+                             class="float-number normal-price"/> zł.</td>
 
             <td><g:textField name="${panelType}[${id}].dialupCenaPreferencyjna"
                              id="${panelType}[${id}].dialupPricePreferencyjna"
                              value="${pointData?.dialupCenaPreferencyjna}" style="width: 50px"
-                             class="float-number"/> zł.</td>
+                             class="float-number pref-price"/> zł.</td>
             <td><g:textField name="${panelType}[${id}].dialupPPCenaPreferencyjna"
                              id="${panelType}[${id}].dialupPPPricePreferencyjna"
                              value="${pointData?.dialupPPCenaPreferencyjna}" style="width: 50px"
-                             class="float-number"/> zł.</td>
+                             class="float-number pref-price"/> zł.</td>
         </tr>
         <tr>
             <td>typ <dict:typeSelect nip="${nip}"
@@ -73,20 +73,20 @@
             <td><g:textField name="${panelType}[${id}].vpnCena"
                              id="${panelType}[${id}].vpnPrice"
                              value="${pointData?.vpnCena}" style="width: 50px"
-                             class="float-number"/> zł.</td>
+                             class="float-number normal-price"/> zł.</td>
             <td><g:textField name="${panelType}[${id}].vpnPPCena"
                              id="${panelType}[${id}].vpnPPPrice"
                              value="${pointData?.vpnPPCena}" style="width: 50px"
-                             class="float-number"/> zł.</td>
+                             class="float-number normal-price"/> zł.</td>
 
             <td><g:textField name="${panelType}[${id}].vpnCenaPreferencyjna"
                              id="${panelType}[${id}].vpnPricePreferencyjna"
-                             value="${pointData?.dialupCenaPreferencyjna}" style="width: 50px"
-                             class="float-number"/> zł.</td>
+                             value="${pointData?.vpnCenaPreferencyjna}" style="width: 50px"
+                             class="float-number pref-price"/> zł.</td>
             <td><g:textField name="${panelType}[${id}].vpnPPCenaPreferencyjna"
                              id="${panelType}[${id}].vpnPPPricePreferencyjna"
-                             value="${pointData?.dialupPPCenaPreferencyjna}" style="width: 50px"
-                             class="float-number"/> zł.</td>
+                             value="${pointData?.vpnPPCenaPreferencyjna}" style="width: 50px"
+                             class="float-number pref-price"/> zł.</td>
         </tr>
         <tr>
             <td>typ <dict:typeSelect nip="${nip}"
@@ -108,20 +108,20 @@
             <td><g:textField name="${panelType}[${id}].sslCena"
                              id="${panelType}[${id}].sslPrice"
                              value="${pointData?.sslCena}" style="width: 50px"
-                             class="float-number"/> zł.</td>
+                             class="float-number normal-price"/> zł.</td>
             <td><g:textField name="${panelType}[${id}].sslPPCena"
                              id="${panelType}[${id}].sslPPPrice"
                              value="${pointData?.sslPPCena}" style="width: 50px"
-                             class="float-number"/> zł.</td>
+                             class="float-number normal-price"/> zł.</td>
 
             <td><g:textField name="${panelType}[${id}].sslCenaPreferencyjna"
                              id="${panelType}[${id}].sslPricePreferencyjna"
-                             value="${pointData?.dialupCenaPreferencyjna}" style="width: 50px"
-                             class="float-number"/> zł.</td>
+                             value="${pointData?.sslCenaPreferencyjna}" style="width: 50px"
+                             class="float-number pref-price"/> zł.</td>
             <td><g:textField name="${panelType}[${id}].sslPPCenaPreferencyjna"
                              id="${panelType}[${id}].sslPPPricePreferencyjna"
-                             value="${pointData?.dialupPPCenaPreferencyjna}" style="width: 50px"
-                             class="float-number"/> zł.</td>
+                             value="${pointData?.sslPPCenaPreferencyjna}" style="width: 50px"
+                             class="float-number pref-price"/> zł.</td>
         </tr>
         <tr>
             <td>typ <dict:typeSelect nip="${nip}"
@@ -146,20 +146,20 @@
             <td><g:textField name="${panelType}[${id}].gprsCena"
                              id="${panelType}[${id}].gprsPrice"
                              value="${pointData?.gprsCena}" style="width: 50px"
-                             class="float-number"/> zł.</td>
+                             class="float-number normal-price"/> zł.</td>
             <td><g:textField name="${panelType}[${id}].gprsPPCena"
                              id="${panelType}[${id}].gprsPPPrice"
                              value="${pointData?.gprsPPCena}" style="width: 50px"
-                             class="float-number"/> zł.</td>
+                             class="float-number normal-price"/> zł.</td>
 
             <td><g:textField name="${panelType}[${id}].gprsCenaPreferencyjna"
                              id="${panelType}[${id}].gprsPricePreferencyjna"
-                             value="${pointData?.dialupCenaPreferencyjna}" style="width: 50px"
-                             class="float-number"/> zł.</td>
+                             value="${pointData?.gprsCenaPreferencyjna}" style="width: 50px"
+                             class="float-number pref-price"/> zł.</td>
             <td><g:textField name="${panelType}[${id}].gprsPPCenaPreferencyjna"
                              id="${panelType}[${id}].gprsPPPricePreferencyjna"
-                             value="${pointData?.dialupPPCenaPreferencyjna}" style="width: 50px"
-                             class="float-number"/> zł.</td>
+                             value="${pointData?.gprsPPCenaPreferencyjna}" style="width: 50px"
+                             class="float-number pref-price"/> zł.</td>
         </tr>
         <tr>
             <td>typ <dict:typeSelect nip="${nip}"
@@ -180,13 +180,13 @@
             <td><g:textField name="${panelType}[${id}].pinPadCena"
                              id="${panelType}[${id}].pinpadPrice"
                              value="${pointData?.pinPadCena}" style="width: 50px"
-                             class="float-number"/> zł.</td>
+                             class="float-number normal-price"/> zł.</td>
             <td></td>
 
             <td><g:textField name="${panelType}[${id}].pinPadCenaPreferencyjna"
                              id="${panelType}[${id}].pinpadPricePreferencyjna"
                              value="${pointData?.pinPadCenaPreferencyjna}" style="width: 50px"
-                             class="float-number"/> zł.</td>
+                             class="float-number pref-price"/> zł.</td>
             <td></td>
         </tr>
         <tr>
@@ -206,13 +206,13 @@
             <td><g:textField name="${panelType}[${id}].wifiCena"
                              id="${panelType}[${id}].wifiPrice"
                              value="${pointData?.wifiCena}" style="width: 50px"
-                             class="float-number"/> zł.</td>
+                             class="float-number normal-price"/> zł.</td>
             <td></td>
 
             <td><g:textField name="${panelType}[${id}].wifiCenaPreferencyjna"
                              id="${panelType}[${id}].wifiPricePreferencyjna"
                              value="${pointData?.wifiCenaPreferencyjna}" style="width: 50px"
-                             class="float-number"/> zł.</td>
+                             class="float-number pref-price"/> zł.</td>
             <td></td>
         </tr>
         </tbody>

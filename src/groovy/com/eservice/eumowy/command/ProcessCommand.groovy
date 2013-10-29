@@ -1101,6 +1101,7 @@ class ProcessCommand implements Serializable {
 
         points(nullable:true, validator: { value, cmd, errors ->
             def hasPointErrors = false
+
             value.each {  ptCmd ->
                 ptCmd?.validate()
                 if(ptCmd?.hasErrors()){
@@ -1111,6 +1112,11 @@ class ProcessCommand implements Serializable {
                 }
             }
 
+            if(cmd.points?.size() > 0 && cmd.hasMoreThanThreePriceGroups(cmd.points)){
+                errors.reject("default.tooMany.groups")
+                return false
+            }
+
             if (hasPointErrors) {
                 errors.rejectValue("points", "default.error.points",)
                 return false
@@ -1118,7 +1124,13 @@ class ProcessCommand implements Serializable {
             return true
         })
 
-        poses(nullable:true)
+        poses(nullable:true, validator: { value, cmd, errors ->
+            if(cmd.poses?.size() > 0 && cmd.hasMoreThanThreePriceGroups(cmd.poses)){
+                errors.reject("default.tooMany.groups")
+                return false
+            }
+            return true
+        })
         allPoints(nullable:true)
         allPoses(nullable:true)
         liczbaPosZCbd(nullable:true)
@@ -1134,9 +1146,9 @@ class ProcessCommand implements Serializable {
                 counter += point?.dialupIlosc != null ? point?.dialupIlosc : 0
                 counter += point?.vpnIlosc != null ? point?.vpnIlosc : 0
                 counter += point?.sslIlosc != null ? point?.sslIlosc : 0
-                counter += point?.wifiIlosc != null ? point?.wifiIlosc : 0
                 counter += point?.gprsIlosc != null ? point?.gprsIlosc : 0
-                counter += point?.bazaIlosc != null ? point?.bazaIlosc : 0
+                counter += point?.pinPadIlosc != null ? point?.pinPadIlosc : 0
+                counter += point?.wifiIlosc != null ? point?.wifiIlosc : 0
             }
 
             if (cmd.liczbaPosZCbd != null) {
@@ -1147,15 +1159,15 @@ class ProcessCommand implements Serializable {
                 counter += point?.dialupIlosc != null ? point?.dialupIlosc : 0
                 counter += point?.vpnIlosc != null ? point?.vpnIlosc : 0
                 counter += point?.sslIlosc != null ? point?.sslIlosc : 0
-                counter += point?.wifiIlosc != null ? point?.wifiIlosc : 0
                 counter += point?.gprsIlosc != null ? point?.gprsIlosc : 0
-                counter += point?.bazaIlosc != null ? point?.bazaIlosc : 0
+                counter += point?.pinPadIlosc != null ? point?.pinPadIlosc : 0
+                counter += point?.wifiIlosc != null ? point?.wifiIlosc : 0
             }
 
-//            if (counter != max) {
-//                errors.rejectValue("liczbaTerminali", "default.notEqual.liczbaTerminali",)
-//                return false
-//            }
+            if (counter != max) {
+                errors.rejectValue("liczbaTerminali", "default.notEqual.liczbaTerminali",)
+                return false
+            }
             return true
         })
 
@@ -1168,6 +1180,44 @@ class ProcessCommand implements Serializable {
 
     private boolean checkIfClientFromCbd(){
         return this.checkIfFromCbd("akceptantNazwaOficjalna")
+    }
+
+    private boolean hasMoreThanThreePriceGroups(def pointCommands){
+        Set<BigDecimal> normalPriceGroups = new HashSet<BigDecimal>()
+        Set<BigDecimal> prefPriceGroups = new HashSet<BigDecimal>()
+
+        pointCommands.each { pos ->
+            normalPriceGroups.add(getGroupValue(pos.dialupCena, pos.dialupPPCena))
+            normalPriceGroups.add(getGroupValue(pos.vpnCena, pos.vpnPPCena))
+            normalPriceGroups.add(getGroupValue(pos.sslCena, pos.sslPPCena))
+            normalPriceGroups.add(getGroupValue(pos.gprsCena, pos.gprsPPCena))
+            normalPriceGroups.add(getGroupValue(pos.pinPadCena, BigDecimal.ZERO))
+            normalPriceGroups.add(getGroupValue(pos.wifiCena, BigDecimal.ZERO))
+
+            prefPriceGroups.add(getGroupValue(pos.dialupCenaPreferencyjna, pos.dialupPPCenaPreferencyjna))
+            prefPriceGroups.add(getGroupValue(pos.vpnCenaPreferencyjna, pos.vpnPPCenaPreferencyjna))
+            prefPriceGroups.add(getGroupValue(pos.sslCenaPreferencyjna, pos.sslPPCenaPreferencyjna))
+            prefPriceGroups.add(getGroupValue(pos.gprsCenaPreferencyjna, pos.gprsPPCenaPreferencyjna))
+            prefPriceGroups.add(getGroupValue(pos.pinPadCenaPreferencyjna, BigDecimal.ZERO))
+            prefPriceGroups.add(getGroupValue(pos.wifiCenaPreferencyjna, BigDecimal.ZERO))
+        }
+
+        normalPriceGroups.remove(0) //jesli obie ceny sa nullem to dostajemy 0
+        prefPriceGroups.remove(0)
+        if(normalPriceGroups.size() > 3 || prefPriceGroups.size() > 3){
+            return true
+        }
+        return false
+    }
+
+    private def getGroupValue(def normalPrice, def ppPrice){
+        if(normalPrice == null){
+            normalPrice = BigDecimal.ZERO
+        }
+        if (ppPrice == null){
+            ppPrice = BigDecimal.ZERO
+        }
+        return normalPrice + ppPrice
     }
 
 }
