@@ -19,11 +19,16 @@ class DictionaryService {
     public static final def GET_ULICA_COMBOBOX = "getUlicaComboBox"
     public static final def GET_POS_TYPE_COMBOBOX = "getPosTypeComboBox"
     public static final def GET_CBD_POINTS_COMBOBOX = "getCbdPointsComboBox"
+    public static final def GET_SIM_CARD_COMBOBOX = "getSimCardComboBox"
 
     //@Cacheable(value="getUlicaComboBox")
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_UNCOMMITTED, readOnly = true)
     def getUlicaComboBox() {
         getFromDictionary(GET_ULICA_COMBOBOX, [])
+    }
+
+    def getSimCardComboBox() {
+        getFromDictionary(GET_SIM_CARD_COMBOBOX, [])
     }
 
     def getPosTypeComboBox(def nip, def medium) {

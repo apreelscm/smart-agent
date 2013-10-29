@@ -61,6 +61,7 @@ class PointCommand implements Serializable {
 	String dialupTyp
 	Integer dialupIlosc
 	Integer dialupPPIlosc
+    Integer wifiPPIlosc
 	BigDecimal dialupCena
 	BigDecimal dialupPPCena
 	String vpnTyp
@@ -75,7 +76,6 @@ class PointCommand implements Serializable {
 	BigDecimal sslPPCena
 	String wifiTyp
 	Integer wifiIlosc
-	Integer wifiPPIlosc
 	BigDecimal wifiCena
 	BigDecimal wifiPPCena
 	String gprsTyp
@@ -109,7 +109,9 @@ class PointCommand implements Serializable {
 	
 	// polskie nazwy
 	String pinPadTyp
+    String kartaSimTyp
 	Integer pinPadIlosc
+    Integer kartaSimIlosc
 	BigDecimal pinPadCena
 	String routerTyp
 	Integer routerIlosc
@@ -147,7 +149,18 @@ class PointCommand implements Serializable {
 	Boolean informacjeTechniczneTakSamoDlaWszystkichPunktow
 	Boolean kontaktWPunkcieJakDlaMerchanta
 	Boolean korespondencjaJakDlaMerchantaLubWydruku
-	
+
+    BigDecimal dialupCenaPreferencyjna
+    BigDecimal dialupPPCenaPreferencyjna
+    BigDecimal vpnCenaPreferencyjna
+    BigDecimal vpnPPCenaPreferencyjna
+    BigDecimal sslCenaPreferencyjna
+    BigDecimal sslPPCenaPreferencyjna
+    BigDecimal gprsCenaPreferencyjna
+    BigDecimal gprsPPCenaPreferencyjna
+    BigDecimal pinPadCenaPreferencyjna
+    BigDecimal wifiCenaPreferencyjna
+
 	static constraints = {
 		phPozysk(nullable:true, blank:false, shared: "alphanumeric")
 		opiekaBiznesowa(nullable:true, blank:false, shared: "alphanumeric")
@@ -224,6 +237,16 @@ class PointCommand implements Serializable {
 		gprsCena(nullable:true, blank:false, shared: "number")
 		gprsPPCena(nullable:true, blank:false, shared: "number")
 		bazaIlosc(nullable:true, blank:false, shared: "number")
+        dialupCenaPreferencyjna(nullable:true, blank:false, shared: "number")
+        dialupPPCenaPreferencyjna(nullable:true, blank:false, shared: "number")
+        vpnCenaPreferencyjna(nullable:true, blank:false, shared: "number")
+        vpnPPCenaPreferencyjna(nullable:true, blank:false, shared: "number")
+        sslCenaPreferencyjna(nullable:true, blank:false, shared: "number")
+        sslPPCenaPreferencyjna(nullable:true, blank:false, shared: "number")
+        gprsCenaPreferencyjna(nullable:true, blank:false, shared: "number")
+        gprsPPCenaPreferencyjna(nullable:true, blank:false, shared: "number")
+        pinPadCenaPreferencyjna(nullable:true, blank:false, shared: "number")
+        wifiCenaPreferencyjna(nullable:true, blank:false, shared: "number")
 		//zamkniecieDniaOd(nullable:true, blank:false, shared: "date")
 		//zamkniecieDniaDo(nullable:true, blank:false, shared: "date")
 		//planowanaDataInstalacji(nullable:true, blank:true, shared: "date")
@@ -241,7 +264,9 @@ class PointCommand implements Serializable {
 		teleKodzik(nullable:true)
 		kartaPodarunkowa(nullable:true)
 		pinPadTyp(nullable:true)
+        kartaSimTyp(nullable:true)
 		pinPadIlosc(nullable:true, blank:false, shared: "natural")
+        kartaSimIlosc(nullable: true, blank: false, shared: "natural")
 		pinPadCena(nullable:true, blank:false, shared: "number")
 		routerTyp(nullable:true)
 		routerIlosc(nullable:true, blank:false, shared: "natural")

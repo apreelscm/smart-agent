@@ -1,64 +1,221 @@
 <fieldset class="subpanel-fieldset" style="clear: both;">
 	<legend><g:message code="panel.newpos.posset.title" /></legend>
-	<div class="subpanel-fieldset-centercontent" style="width: 800px;" >
+	<div class="subpanel-fieldset-centercontent" style="width: auto" >
 		<label for="${panelType}[${id}].possetforselectedpointSameForEveryPoint"><g:checkBox id="${panelType}[${id}].possetforselectedpointSameForEveryPoint" name="${panelType}[${id}].zestawPosTakSamoDlaWszystkichPunktow" value="${pointData?.zestawPosTakSamoDlaWszystkichPunktow}" /><g:message code="panel.sameforeverypoint" /></label>
-		<table class="vertical-center" style="width: 800px;" >
-			<thead>
-				<tr><td colspan="4"></td><td colspan="2"  style="text-align: center;">Cena</td></tr>
-				<tr><td colspan="4"></td><td>Term./mies</td><td>PP./mies.</td></tr>
-			</thead>
-			<tbody>
-				<tr>
-                    <td>typ <dict:typeSelect nip="${nip}"  medium="DIALUP" id="${panelType}[${id}].possetforselectedpointDialupType" name="${panelType}[${id}].dialupTyp" from="[]" valueMessagePrefix="" value="${pointData?.dialupTyp}"  style="width: 220px"/></td>
-                    <td style="text-align: right;"><g:message code="panel.dialup" /></td>
-                    <td><eumowy:textField name="${panelType}[${id}].dialupIlosc" id="${panelType}[${id}].dialupCount" value="${pointData?.dialupIlosc}" class="integer-number" style="width: 50px"/> szt.</td>
-                    <td><eumowy:textField name="${panelType}[${id}].dialupPPIlosc" id="${panelType}[${id}].dialupPPCount" value="${pointData?.dialupPPIlosc}" class="integer-number" style="width: 50px"/> PP. szt.</td>
-                    <td><eumowy:textField name="${panelType}[${id}].dialupCena" id="${panelType}[${id}].dialupPrice" value="${pointData?.dialupCena}" style="width: 50px"/> zł.</td>
-                    <td><eumowy:textField name="${panelType}[${id}].dialupPPCena" id="${panelType}[${id}].dialupPPPrice" value="${pointData?.dialupPPCena}" class="float-number" style="width: 50px"/> zł. </td>
-                </tr>
+		<table class="vertical-center" style="width: auto;" >
+            <thead>
+            <tr>
+                <td colspan="4"></td>
+                <td colspan="2" class="text-center"><g:message code="panel.used.fees"/></td>
+                <td colspan="2" class="text-center"><g:message code="panel.preferential.rate"/></td>
+            </tr>
+            <tr>
+                <td colspan="4"></td>
+                <td>Term./mies</td>
+                <td>PP./mies.</td>
+                <td>Term./mies</td>
+                <td>PP./mies.</td>
+            </tr>
+            </thead>
+        <tbody>
+        <tr>
+            <td>typ <dict:typeSelect nip="${nip}"
+                                     medium="DIALUP"
+                                     id="${panelType}[${id}].possetforselectedpointDialupType"
+                                     name="${panelType}[${id}].dialupTyp" from="[]"
+                                     valueMessagePrefix="" value="${pointData?.dialupTyp}"
+                                     style="width: 220px" /></td>
+            <td style="text-align: right;"><g:message code="panel.dialup" /></td>
+            <td><g:textField name="${panelType}[${id}].dialupIlosc"
+                             id="${panelType}[${id}].dialupCount"
+                             value="${pointData?.dialupIlosc}" style="width: 50px"
+                             class="integer-number"/> szt.</td>
+            <td><g:textField name="${panelType}[${id}].dialupPPIlosc"
+                             id="${panelType}[${id}].dialupPPCount"
+                             value="${pointData?.dialupPPIlosc}" style="width: 50px"
+                             class="integer-number"/> PP. szt.</td>
 
-				<tr>
-                    <td>typ <dict:typeSelect nip="${nip}"  medium="VPN" id="${panelType}[${id}].possetforselectedpointVpnType" name="${panelType}[${id}].vpnTyp" from="[]" valueMessagePrefix="" value="${pointData?.vpnTyp}"  style="width: 220px"/></td>
-                    <td style="text-align: right;"><g:message code="panel.vpn" /></td>
-                    <td><eumowy:textField name="${panelType}[${id}].vpnIlosc" id="${panelType}[${id}].vpnCount" value="${pointData?.vpnIlosc}" class="integer-number" style="width: 50px"/> szt.</td>
-                    <td><eumowy:textField name="${panelType}[${id}].vpnPPIlosc" id="${panelType}[${id}].vpnPPCount" value="${pointData?.vpnPPIlosc}" class="integer-number" style="width: 50px"/> PP. szt.</td>
-                    <td><eumowy:textField name="${panelType}[${id}].vpnCena" id="${panelType}[${id}].vpnPrice" value="${pointData?.vpnCena}" class="float-number" style="width: 50px"/> zł.</td>
-                    <td><eumowy:textField name="${panelType}[${id}].vpnPPCena" id="${panelType}[${id}].vpnPPPrice" value="${pointData?.vpnPPCena}" class="float-number" style="width: 50px"/> zł.</td>
-                </tr>
+            <td><g:textField name="${panelType}[${id}].dialupCena"
+                             id="${panelType}[${id}].dialupPrice"
+                             value="${pointData?.dialupCena}" style="width: 50px"
+                             class="float-number"/> zł.</td>
+            <td><g:textField name="${panelType}[${id}].dialupPPCena"
+                             id="${panelType}[${id}].dialupPPPrice"
+                             value="${pointData?.dialupPPCena}" style="width: 50px"
+                             class="float-number"/> zł.</td>
 
-				<tr>
-                    <td>typ <dict:typeSelect nip="${nip}"  medium="SSL" id="${panelType}[${id}].possetforselectedpointSslType" name="${panelType}[${id}].sslTyp" from="[]" valueMessagePrefix="" value="${pointData?.sslTyp}"  style="width: 220px"/></td>
-                    <td style="text-align: right;"><g:message code="panel.ssl" /></td><td><eumowy:textField name="${panelType}[${id}].sslIlosc" id="${panelType}[${id}].sslCount" value="${pointData?.sslIlosc}" class="integer-number" style="width: 50px"/> szt.</td>
-                    <td><eumowy:textField name="${panelType}[${id}].sslPPIlosc" id="${panelType}[${id}].sslPPCount" value="${pointData?.sslPPIlosc}" class="integer-number" style="width: 50px"/> PP. szt.</td>
-                    <td><eumowy:textField name="${panelType}[${id}].sslCena" id="${panelType}[${id}].sslPrice" value="${pointData?.sslCena}" class="float-number" style="width: 50px"/> zł.</td>
-                    <td><eumowy:textField name="${panelType}[${id}].sslPPCena" id="${panelType}[${id}].sslPPPrice" value="${pointData?.sslPPCena}" class="float-number" style="width: 50px"/> zł.</td>
-                </tr>
+            <td><g:textField name="${panelType}[${id}].dialupCenaPreferencyjna"
+                             id="${panelType}[${id}].dialupPricePreferencyjna"
+                             value="${pointData?.dialupCenaPreferencyjna}" style="width: 50px"
+                             class="float-number"/> zł.</td>
+            <td><g:textField name="${panelType}[${id}].dialupPPCenaPreferencyjna"
+                             id="${panelType}[${id}].dialupPPPricePreferencyjna"
+                             value="${pointData?.dialupPPCenaPreferencyjna}" style="width: 50px"
+                             class="float-number"/> zł.</td>
+        </tr>
+        <tr>
+            <td>typ <dict:typeSelect nip="${nip}"
+                                     medium="VPN"
+                                     id="${panelType}[${id}].possetforselectedpointVpnType"
+                                     name="${panelType}[${id}].vpnTyp" from="[]"
+                                     valueMessagePrefix="" value="${pointData?.vpnTyp}"
+                                     style="width: 220px" /></td>
+            <td style="text-align: right;"><g:message code="panel.vpn" /></td>
+            <td><g:textField name="${panelType}[${id}].vpnIlosc"
+                             id="${panelType}[${id}].vpnCount"
+                             value="${pointData?.vpnIlosc}" style="width: 50px"
+                             class="integer-number"/> szt.</td>
+            <td><g:textField name="${panelType}[${id}].vpnPPIlosc"
+                             id="${panelType}[${id}].vpnPPCount"
+                             value="${pointData?.vpnPPIlosc}" style="width: 50px"
+                             class="integer-number"/> PP. szt.</td>
 
-				<tr>
-                    <td>typ <dict:typeSelect nip="${nip}"  medium="WiFI" id="${panelType}[${id}].possetforselectedpointWifiType" name="${panelType}[${id}].wifiTyp" from="[]" valueMessagePrefix="" value="${pointData?.wifiTyp}"  style="width: 220px"/></td>
-                    <td style="text-align: right;"><g:message code="panel.wifi" /></td>
-                    <td><eumowy:textField name="${panelType}[${id}].wifiIlosc" id="${panelType}[${id}].wifiCount" value="${pointData?.wifiIlosc}" class="integer-number" style="width: 50px"/> szt.</td>
-                    <td><eumowy:textField name="${panelType}[${id}].wifiPPIlosc" id="${panelType}[${id}].wifiPPCount" value="${pointData?.wifiPPIlosc}" class="integer-number" style="width: 50px"/> PP. szt.</td>
-                    <td><eumowy:textField name="${panelType}[${id}].wifiCena" id="${panelType}[${id}].wifiPrice" value="${pointData?.wifiCena}" class="float-number" style="width: 50px"/> zł.</td>
-                    <td><eumowy:textField name="${panelType}[${id}].wifiPPCena" id="${panelType}[${id}].wifiPPPrice" value="${pointData?.wifiPPCena}" class="float-number" style="width: 50px"/> zł.</td>
-                </tr>
+            <td><g:textField name="${panelType}[${id}].vpnCena"
+                             id="${panelType}[${id}].vpnPrice"
+                             value="${pointData?.vpnCena}" style="width: 50px"
+                             class="float-number"/> zł.</td>
+            <td><g:textField name="${panelType}[${id}].vpnPPCena"
+                             id="${panelType}[${id}].vpnPPPrice"
+                             value="${pointData?.vpnPPCena}" style="width: 50px"
+                             class="float-number"/> zł.</td>
 
-				<tr>
-                    <td>typ <dict:typeSelect nip="${nip}"  medium="GPRS" id="${panelType}[${id}].possetforselectedpointGprsType" name="${panelType}[${id}].gprsTyp" from="[]" valueMessagePrefix="" value="${pointData?.gprsTyp}"  style="width: 220px"/></td>
-                    <td style="text-align: right;"><g:message code="panel.gprs" /></td>
-                    <td><eumowy:textField name="${panelType}[${id}].gprsIlosc" id="${panelType}[${id}].gprsCount" value="${pointData?.gprsIlosc}" class="integer-number" style="width: 50px"/> szt.</td>
-                    <td><eumowy:textField name="${panelType}[${id}].gprsPPIlosc" id="${panelType}[${id}].gprsPPCount" value="${pointData?.gprsPPIlosc}" class="integer-number" style="width: 50px"/> PP. szt.</td>
-                    <td><eumowy:textField name="${panelType}[${id}].gprsCena" id="${panelType}[${id}].gprsPrice" value="${pointData?.gprsCena}" class="float-number" style="width: 50px"/> zł.</td>
-                    <td><eumowy:textField name="${panelType}[${id}].gprsPPCena" id="${panelType}[${id}].gprsPPPrice" value="${pointData?.gprsPPCena}" class="float-number" style="width: 50px"/> zł.</td>
-                </tr>
+            <td><g:textField name="${panelType}[${id}].vpnCenaPreferencyjna"
+                             id="${panelType}[${id}].vpnPricePreferencyjna"
+                             value="${pointData?.dialupCenaPreferencyjna}" style="width: 50px"
+                             class="float-number"/> zł.</td>
+            <td><g:textField name="${panelType}[${id}].vpnPPCenaPreferencyjna"
+                             id="${panelType}[${id}].vpnPPPricePreferencyjna"
+                             value="${pointData?.dialupPPCenaPreferencyjna}" style="width: 50px"
+                             class="float-number"/> zł.</td>
+        </tr>
+        <tr>
+            <td>typ <dict:typeSelect nip="${nip}"
+                                     medium="SSL"
+                                     id="${panelType}[${id}].possetforselectedpointSslType"
+                                     name="${panelType}[${id}].sslTyp" from="[]"
+                                     valueMessagePrefix="" value="${pointData?.sslTyp}"
+                                     style="width: 220px" /></td>
+            <td style="text-align: right;"><g:message code="panel.ssl" /></td>
+            <td><g:textField name="${panelType}[${id}].sslIlosc"
+                             id="${panelType}[${id}].sslCount"
+                             value="${pointData?.sslIlosc}" style="width: 50px"
+                             class="integer-number"/> szt.</td>
+            <td><g:textField name="${panelType}[${id}].sslPPIlosc"
+                             id="${panelType}[${id}].sslPPCount"
+                             value="${pointData?.sslPPIlosc}" style="width: 50px"
+                             class="integer-number"/> PP. szt.</td>
 
-				<tr>
-                    <td></td>
-                    <td style="text-align: right;"><g:message code="panel.base" /></td>
-                    <td><eumowy:textField id="${panelType}[${id}].baseCount" name="${panelType}[${id}].bazaIlosc" value="${pointData?.bazaIlosc}" style="width: 50px"/> szt.</td>
-                    <td colspan="3"></td>
-                </tr>
-			</tbody>
+            <td><g:textField name="${panelType}[${id}].sslCena"
+                             id="${panelType}[${id}].sslPrice"
+                             value="${pointData?.sslCena}" style="width: 50px"
+                             class="float-number"/> zł.</td>
+            <td><g:textField name="${panelType}[${id}].sslPPCena"
+                             id="${panelType}[${id}].sslPPPrice"
+                             value="${pointData?.sslPPCena}" style="width: 50px"
+                             class="float-number"/> zł.</td>
+
+            <td><g:textField name="${panelType}[${id}].sslCenaPreferencyjna"
+                             id="${panelType}[${id}].sslPricePreferencyjna"
+                             value="${pointData?.dialupCenaPreferencyjna}" style="width: 50px"
+                             class="float-number"/> zł.</td>
+            <td><g:textField name="${panelType}[${id}].sslPPCenaPreferencyjna"
+                             id="${panelType}[${id}].sslPPPricePreferencyjna"
+                             value="${pointData?.dialupPPCenaPreferencyjna}" style="width: 50px"
+                             class="float-number"/> zł.</td>
+        </tr>
+        <tr>
+            <td>typ <dict:typeSelect nip="${nip}"
+                                     medium="GPRS"
+                                     id="${panelType}[${id}].possetforselectedpointGprsType"
+                                     name="${panelType}[${id}].gprsTyp" from="[]"
+                                     valueMessagePrefix="" value="${pointData?.gprsTyp}"
+                                     style="width: 220px"
+                                     onchange="setFieldPropertiesInDodatkoweWyposazenie(this, this.value)"
+
+            /></td>
+            <td style="text-align: right;"><g:message code="panel.gprs" /></td>
+            <td><g:textField name="${panelType}[${id}].gprsIlosc"
+                             id="${panelType}[${id}].gprsCount"
+                             value="${pointData?.gprsIlosc}" style="width: 50px"
+                             class="integer-number"/> szt.</td>
+            <td><g:textField name="${panelType}[${id}].gprsPPIlosc"
+                             id="${panelType}[${id}].gprsPPCount"
+                             value="${pointData?.gprsPPIlosc}" style="width: 50px"
+                             class="integer-number"/> PP. szt.</td>
+
+            <td><g:textField name="${panelType}[${id}].gprsCena"
+                             id="${panelType}[${id}].gprsPrice"
+                             value="${pointData?.gprsCena}" style="width: 50px"
+                             class="float-number"/> zł.</td>
+            <td><g:textField name="${panelType}[${id}].gprsPPCena"
+                             id="${panelType}[${id}].gprsPPPrice"
+                             value="${pointData?.gprsPPCena}" style="width: 50px"
+                             class="float-number"/> zł.</td>
+
+            <td><g:textField name="${panelType}[${id}].gprsCenaPreferencyjna"
+                             id="${panelType}[${id}].gprsPricePreferencyjna"
+                             value="${pointData?.dialupCenaPreferencyjna}" style="width: 50px"
+                             class="float-number"/> zł.</td>
+            <td><g:textField name="${panelType}[${id}].gprsPPCenaPreferencyjna"
+                             id="${panelType}[${id}].gprsPPPricePreferencyjna"
+                             value="${pointData?.dialupPPCenaPreferencyjna}" style="width: 50px"
+                             class="float-number"/> zł.</td>
+        </tr>
+        <tr>
+            <td>typ <dict:typeSelect nip="${nip}"
+                                     medium="PINPAD"
+                                     id="${panelType}[${id}].possetforselectedpointPinpadType"
+                                     name="${panelType}[${id}].pinPadTyp" from="[]"
+                                     valueMessagePrefix="" value="${pointData?.pinPadTyp}"
+                                     style="width: 220px"
+
+            /></td>
+            <td style="text-align: right;"><g:message code="panel.pinpad" /></td>
+            <td><g:textField name="${panelType}[${id}].pinPadIlosc"
+                             id="${panelType}[${id}].pinpadCount"
+                             value="${pointData?.pinPadIlosc}" style="width: 50px"
+                             class="integer-number"/> szt.</td>
+            <td></td>
+
+            <td><g:textField name="${panelType}[${id}].pinPadCena"
+                             id="${panelType}[${id}].pinpadPrice"
+                             value="${pointData?.pinPadCena}" style="width: 50px"
+                             class="float-number"/> zł.</td>
+            <td></td>
+
+            <td><g:textField name="${panelType}[${id}].pinPadCenaPreferencyjna"
+                             id="${panelType}[${id}].pinpadPricePreferencyjna"
+                             value="${pointData?.pinPadCenaPreferencyjna}" style="width: 50px"
+                             class="float-number"/> zł.</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>typ <dict:typeSelect nip="${nip}"
+                                     medium="WiFi"
+                                     id="${panelType}[${id}].possetforselectedpointWifiType"
+                                     name="${panelType}[${id}].wifiTyp" from="[]"
+                                     valueMessagePrefix="" value="${pointData?.wifiTyp}"
+                                     style="width: 220px" /></td>
+            <td style="text-align: right;"><g:message code="panel.wifi" /></td>
+            <td><g:textField name="${panelType}[${id}].wifiIlosc"
+                             id="${panelType}[${id}].wifiCount"
+                             value="${pointData?.wifiIlosc}" style="width: 50px"
+                             class="integer-number"/> szt.</td>
+            <td></td>
+
+            <td><g:textField name="${panelType}[${id}].wifiCena"
+                             id="${panelType}[${id}].wifiPrice"
+                             value="${pointData?.wifiCena}" style="width: 50px"
+                             class="float-number"/> zł.</td>
+            <td></td>
+
+            <td><g:textField name="${panelType}[${id}].wifiCenaPreferencyjna"
+                             id="${panelType}[${id}].wifiPricePreferencyjna"
+                             value="${pointData?.wifiCenaPreferencyjna}" style="width: 50px"
+                             class="float-number"/> zł.</td>
+            <td></td>
+        </tr>
+        </tbody>
 		</table>
 	</div>
 </fieldset>

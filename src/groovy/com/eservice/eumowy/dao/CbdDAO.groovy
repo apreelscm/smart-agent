@@ -51,6 +51,10 @@ class CbdDAO {
 
         StringBuilder buf = new StringBuilder();
         sqlFile.eachLine {
+//            //hack dla randomowego dodawania przez jave srednikow na koncu query
+//            if(it.length() > 0 && it.charAt(it.length() - 1) == ';'){
+//                it = it.substring(0, it.length() - 1)
+//            }
             buf.append(it).append(" ")
         }
 

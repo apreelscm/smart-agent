@@ -18,6 +18,11 @@
         <g:message code="panel.newpoint.pointdata.title" />
     </legend>
     <div class="subpanel-fieldset-centercontent">
+        <label for="${panelType}[${id}].sameForEveryPoint">
+            <g:checkBox id="${panelType}[${id}].sameForEveryPoint"
+                        name="${panelType}[${id}].takSamoDlaWszystkichPunktow"
+                        value="${pointData?.takSamoDlaWszystkichPunktow}" />
+            <g:message code="panel.sameforeverypoint" /></label>
         <ul class="table-list vertical-center">
             <li><span class="align-right"><g:message
                     code="panel.nip" /></span> <span><eumowy:textField class="nip"
@@ -32,12 +37,9 @@
                     id="${panelType}[${id}].mccCode" value="${pointData?.kodMCC}"
                     maxlength="4" required="true"
                     validatable="${pointData}"
-                    validateField="kodMCC" /> <label
-                    for="${panelType}[${id}].sameForEveryPoint"><g:checkBox
-                        id="${panelType}[${id}].sameForEveryPoint"
-                        name="${panelType}[${id}].takSamoDlaWszystkichPunktow"
-                        value="${pointData?.takSamoDlaWszystkichPunktow}" />
-                <g:message code="panel.sameforeverypoint" /></label></span></li>
+                    validateField="kodMCC" />
+                </span>
+            </li>
             <li><span class="align-right"><g:message
                     code="panel.bussinesstypeinpractice" /></span> <span><eumowy:textField
                     name="${panelType}[${id}].rodzProwadzDzialalWPraktyce"
@@ -188,30 +190,27 @@
     <legend>
         <g:message code="panel.newpoint.posset.for.selected.point.title" />
     </legend>
-    <div class="subpanel-fieldset-centercontent" style="width: 800px;">
+    <div class="subpanel-fieldset-centercontent" style="width: auto">
         <label
                 for="${panelType}[${id}].possetforselectedpointSameForEveryPoint"><g:checkBox
                 id="${panelType}[${id}].possetforselectedpointSameForEveryPoint"
                 name="${panelType}[${id}].zestawPosTakSamoDlaWszystkichPunktow"
                 value="${pointData?.zestawPosTakSamoDlaWszystkichPunktow}" />
             <g:message code="panel.sameforeverypoint" /></label>
-        <table class="vertical-center" style="width: 800px;">
+        <table class="vertical-center">
             <thead>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td colspan="2" style="text-align: center;">Cena</td>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td>Term./mies</td>
-                <td>PP./mies.</td>
-            </tr>
+                <tr>
+                    <td colspan="4"></td>
+                    <td colspan="2" class="text-center"><g:message code="panel.used.fees"/></td>
+                    <td colspan="2" class="text-center"><g:message code="panel.preferential.rate"/></td>
+                </tr>
+                <tr>
+                    <td colspan="4"></td>
+                    <td>Term./mies</td>
+                    <td>PP./mies.</td>
+                    <td>Term./mies</td>
+                    <td>PP./mies.</td>
+                </tr>
             </thead>
             <tbody>
             <tr>
@@ -230,6 +229,7 @@
                                  id="${panelType}[${id}].dialupPPCount"
                                  value="${pointData?.dialupPPIlosc}" style="width: 50px"
                                  class="integer-number"/> PP. szt.</td>
+
                 <td><g:textField name="${panelType}[${id}].dialupCena"
                                  id="${panelType}[${id}].dialupPrice"
                                  value="${pointData?.dialupCena}" style="width: 50px"
@@ -237,6 +237,15 @@
                 <td><g:textField name="${panelType}[${id}].dialupPPCena"
                                  id="${panelType}[${id}].dialupPPPrice"
                                  value="${pointData?.dialupPPCena}" style="width: 50px"
+                                 class="float-number"/> zł.</td>
+
+                <td><g:textField name="${panelType}[${id}].dialupCenaPreferencyjna"
+                                 id="${panelType}[${id}].dialupPricePreferencyjna"
+                                 value="${pointData?.dialupCenaPreferencyjna}" style="width: 50px"
+                                 class="float-number"/> zł.</td>
+                <td><g:textField name="${panelType}[${id}].dialupPPCenaPreferencyjna"
+                                 id="${panelType}[${id}].dialupPPPricePreferencyjna"
+                                 value="${pointData?.dialupPPCenaPreferencyjna}" style="width: 50px"
                                  class="float-number"/> zł.</td>
             </tr>
             <tr>
@@ -255,6 +264,7 @@
                                  id="${panelType}[${id}].vpnPPCount"
                                  value="${pointData?.vpnPPIlosc}" style="width: 50px"
                                  class="integer-number"/> PP. szt.</td>
+
                 <td><g:textField name="${panelType}[${id}].vpnCena"
                                  id="${panelType}[${id}].vpnPrice"
                                  value="${pointData?.vpnCena}" style="width: 50px"
@@ -262,6 +272,15 @@
                 <td><g:textField name="${panelType}[${id}].vpnPPCena"
                                  id="${panelType}[${id}].vpnPPPrice"
                                  value="${pointData?.vpnPPCena}" style="width: 50px"
+                                 class="float-number"/> zł.</td>
+
+                <td><g:textField name="${panelType}[${id}].vpnCenaPreferencyjna"
+                                 id="${panelType}[${id}].vpnPricePreferencyjna"
+                                 value="${pointData?.dialupCenaPreferencyjna}" style="width: 50px"
+                                 class="float-number"/> zł.</td>
+                <td><g:textField name="${panelType}[${id}].vpnPPCenaPreferencyjna"
+                                 id="${panelType}[${id}].vpnPPPricePreferencyjna"
+                                 value="${pointData?.dialupPPCenaPreferencyjna}" style="width: 50px"
                                  class="float-number"/> zł.</td>
             </tr>
             <tr>
@@ -280,6 +299,7 @@
                                  id="${panelType}[${id}].sslPPCount"
                                  value="${pointData?.sslPPIlosc}" style="width: 50px"
                                  class="integer-number"/> PP. szt.</td>
+
                 <td><g:textField name="${panelType}[${id}].sslCena"
                                  id="${panelType}[${id}].sslPrice"
                                  value="${pointData?.sslCena}" style="width: 50px"
@@ -288,6 +308,82 @@
                                  id="${panelType}[${id}].sslPPPrice"
                                  value="${pointData?.sslPPCena}" style="width: 50px"
                                  class="float-number"/> zł.</td>
+
+                <td><g:textField name="${panelType}[${id}].sslCenaPreferencyjna"
+                                 id="${panelType}[${id}].sslPricePreferencyjna"
+                                 value="${pointData?.dialupCenaPreferencyjna}" style="width: 50px"
+                                 class="float-number"/> zł.</td>
+                <td><g:textField name="${panelType}[${id}].sslPPCenaPreferencyjna"
+                                 id="${panelType}[${id}].sslPPPricePreferencyjna"
+                                 value="${pointData?.dialupPPCenaPreferencyjna}" style="width: 50px"
+                                 class="float-number"/> zł.</td>
+            </tr>
+            <tr>
+                <td>typ <dict:typeSelect nip="${nip}"
+                                         medium="GPRS"
+                                         id="${panelType}[${id}].possetforselectedpointGprsType"
+                                         name="${panelType}[${id}].gprsTyp" from="[]"
+                                         valueMessagePrefix="" value="${pointData?.gprsTyp}"
+                                         style="width: 220px"
+                                         onchange="setFieldPropertiesInDodatkoweWyposazenie(this, this.value)"
+
+                /></td>
+                <td style="text-align: right;"><g:message code="panel.gprs" /></td>
+                <td><g:textField name="${panelType}[${id}].gprsIlosc"
+                                 id="${panelType}[${id}].gprsCount"
+                                 value="${pointData?.gprsIlosc}" style="width: 50px"
+                                 class="integer-number"/> szt.</td>
+                <td><g:textField name="${panelType}[${id}].gprsPPIlosc"
+                                 id="${panelType}[${id}].gprsPPCount"
+                                 value="${pointData?.gprsPPIlosc}" style="width: 50px"
+                                 class="integer-number"/> PP. szt.</td>
+
+                <td><g:textField name="${panelType}[${id}].gprsCena"
+                                 id="${panelType}[${id}].gprsPrice"
+                                 value="${pointData?.gprsCena}" style="width: 50px"
+                                 class="float-number"/> zł.</td>
+                <td><g:textField name="${panelType}[${id}].gprsPPCena"
+                                 id="${panelType}[${id}].gprsPPPrice"
+                                 value="${pointData?.gprsPPCena}" style="width: 50px"
+                                 class="float-number"/> zł.</td>
+
+                <td><g:textField name="${panelType}[${id}].gprsCenaPreferencyjna"
+                                 id="${panelType}[${id}].gprsPricePreferencyjna"
+                                 value="${pointData?.dialupCenaPreferencyjna}" style="width: 50px"
+                                 class="float-number"/> zł.</td>
+                <td><g:textField name="${panelType}[${id}].gprsPPCenaPreferencyjna"
+                                 id="${panelType}[${id}].gprsPPPricePreferencyjna"
+                                 value="${pointData?.dialupPPCenaPreferencyjna}" style="width: 50px"
+                                 class="float-number"/> zł.</td>
+            </tr>
+            <tr>
+                <td>typ <dict:typeSelect nip="${nip}"
+                                         medium="PINPAD"
+                                         id="${panelType}[${id}].possetforselectedpointPinpadType"
+                                         name="${panelType}[${id}].pinPadTyp" from="[]"
+                                         valueMessagePrefix="" value="${pointData?.pinPadTyp}"
+                                         style="width: 220px"
+                                         onchange="verifyBaseVisibility(this.value,${id})"
+
+                /></td>
+                <td style="text-align: right;"><g:message code="panel.pinpad" /></td>
+                <td><g:textField name="${panelType}[${id}].pinPadIlosc"
+                                 id="${panelType}[${id}].pinpadCount"
+                                 value="${pointData?.pinPadIlosc}" style="width: 50px"
+                                 class="integer-number"/> szt.</td>
+                <td></td>
+
+                <td><g:textField name="${panelType}[${id}].pinPadCena"
+                                 id="${panelType}[${id}].pinpadPrice"
+                                 value="${pointData?.pinPadCena}" style="width: 50px"
+                                 class="float-number"/> zł.</td>
+                <td></td>
+
+                <td><g:textField name="${panelType}[${id}].pinPadCenaPreferencyjna"
+                                 id="${panelType}[${id}].pinpadPricePreferencyjna"
+                                 value="${pointData?.pinPadCenaPreferencyjna}" style="width: 50px"
+                                 class="float-number"/> zł.</td>
+                <td></td>
             </tr>
             <tr>
                 <td>typ <dict:typeSelect nip="${nip}"
@@ -301,57 +397,20 @@
                                  id="${panelType}[${id}].wifiCount"
                                  value="${pointData?.wifiIlosc}" style="width: 50px"
                                  class="integer-number"/> szt.</td>
-                <td><g:textField name="${panelType}[${id}].wifiPPIlosc"
-                                 id="${panelType}[${id}].wifiPPCount"
-                                 value="${pointData?.wifiPPIlosc}" style="width: 50px"
-                                 class="integer-number"/> PP. szt.</td>
+                <td></td>
+
                 <td><g:textField name="${panelType}[${id}].wifiCena"
                                  id="${panelType}[${id}].wifiPrice"
                                  value="${pointData?.wifiCena}" style="width: 50px"
                                  class="float-number"/> zł.</td>
-                <td><g:textField name="${panelType}[${id}].wifiPPCena"
-                                 id="${panelType}[${id}].wifiPPPrice"
-                                 value="${pointData?.wifiPPCena}" style="width: 50px"
-                                 class="float-number"/> zł.</td>
-            </tr>
-            <tr>
-                <td>typ <dict:typeSelect nip="${nip}"
-                                         medium="GPRS"
-                                         id="${panelType}[${id}].possetforselectedpointGprsType"
-                                         name="${panelType}[${id}].gprsTyp" from="[]"
-                                         valueMessagePrefix="" value="${pointData?.gprsTyp}"
-                                         style="width: 220px"
-                                         onchange="verifyBaseVisibility(this.value,'${panelType}[${id}]')"
-                /></td>
-                <td style="text-align: right;"><g:message code="panel.gprs" /></td>
-                <td><g:textField name="${panelType}[${id}].gprsIlosc"
-                                 id="${panelType}[${id}].gprsCount"
-                                 value="${pointData?.gprsIlosc}" style="width: 50px"
-                                 class="integer-number"/> szt.</td>
-                <td><g:textField name="${panelType}[${id}].gprsPPIlosc"
-                                 id="${panelType}[${id}].gprsPPCount"
-                                 value="${pointData?.gprsPPIlosc}" style="width: 50px"
-                                 class="integer-number"/> PP. szt.</td>
-                <td><g:textField name="${panelType}[${id}].gprsCena"
-                                 id="${panelType}[${id}].gprsPrice"
-                                 value="${pointData?.gprsCena}" style="width: 50px"
-                                 class="float-number"/> zł.</td>
-                <td><g:textField name="${panelType}[${id}].gprsPPCena"
-                                 id="${panelType}[${id}].gprsPPPrice"
-                                 value="${pointData?.gprsPPCena}" style="width: 50px"
-                                 class="float-number"/> zł.</td>
-            </tr>
-            <tr name="${panelType}[${id}].trBase">
                 <td></td>
-                <td style="text-align: right;"><g:message code="panel.base" /></td>
-                <td><g:textField id="${panelType}[${id}].baseCount"
-                                 name="${panelType}[${id}].bazaIlosc"
-                                 value="${pointData?.bazaIlosc}" style="width: 50px" /> szt.</td>
-                <td></td>
-                <td></td>
+
+                <td><g:textField name="${panelType}[${id}].wifiCenaPreferencyjna"
+                                 id="${panelType}[${id}].wifiPricePreferencyjna"
+                                 value="${pointData?.wifiCenaPreferencyjna}" style="width: 50px"
+                                 class="float-number"/> zł.</td>
                 <td></td>
             </tr>
-            <select on />
             </tbody>
         </table>
     </div>
@@ -366,4 +425,30 @@
 </div>
 
 <r:require module="jquery_ui" />
-<r:require module="jquery_timepicker_pl" />
+
+<r:script>
+    function setFieldPropertiesInDodatkoweWyposazenie(element, value){
+        var punkt = jQuery(element).closest("div.newPointPanel");
+        if(value == "Verifone Vx670 GPRS"){
+            punkt.find("tr.baseRow").show();
+            setRequiredForSimCard(true, punkt)
+        } else if (value !== ""){
+            setRequiredForSimCard(true, punkt)
+        }
+        else{
+            punkt.find("tr.baseRow").hide();
+            setRequiredForSimCard(false, punkt)
+        }
+    }
+
+    function setRequiredForSimCard(isRequired, punkt){
+        if(isRequired){
+            punkt.find("select.kartaSimTyp").attr("required", true);
+            punkt.find("input.kartaSimIlosc").attr("required", true);
+        } else {
+            punkt.find("select.kartaSimTyp").removeAttr("required", true).removeClass("error");
+            punkt.find("input.kartaSimIlosc").removeAttr("required", true).removeClass("error");
+        }
+
+    }
+</r:script>
