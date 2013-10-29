@@ -1108,9 +1108,9 @@ class ActivityController {
 
                 }
                 else if (Process.ProcessStatus.REJECTED.equals(lastProcess?.status)){
-                    flash.nipErrorMessage = message(code:" process.openNotFound.error",
+                    flash.nipErrorMessage = message(code:"process.openNotFound.error",
                             default:"Brak otwartego procesu dla tego Akceptanta")
-                    log.info(message(code:" process.openNotFound.error") + " - " + flow.nip)
+                    log.info(message(code:"process.openNotFound.error") + " - " + flow.nip)
                     return error()
                 }
                 flow.savedProcess = lastProcess
