@@ -16,20 +16,23 @@
 				</thead>
 				<tbody>
 					<g:each status="i" var="pos" in="${data.allPoses}" >
-					<tr>
-						<td>${pos.id}<input type="hidden" name="allPoses[${i}].id" value="${pos.id}" /><input type="hidden" name="allPoses[${i}].tpsId" value="${pos.tpsId}" /><input type="hidden" name="allPoses[${i}].cbdId" value="${pos.cbdId}" /></td>
-						<td>${pos.numerZestawuPos}<input type="hidden" name="allPoses[${i}].numerZestawuPos" value="${pos.numerZestawuPos}" /></td>
-						<td><eumowy:textField name="allPoses[${i}].dataOd" value="${pos.dataOd}" validatable="${pos.dataOd}" readonly="true"/></td>
-						<td><eumowy:textField name="allPoses[${i}].dataDo" value="${pos.dataDo}" validatable="${pos.dataDo}" readonly="true"/></td>
-						<td><eumowy:textField name="allPoses[${i}].wysokoscOplaty" value="${pos.wysokoscOplaty}" class="float-number"  validatable="${pos.wysokoscOplaty}"/></td>
-						<td><g:checkBox name="allPoses[${i}].czyWybrany" checked="${pos.czyWybrany}"/></td>
-					</tr>
+                        <tr>
+                            <td>${pos.id}<input type="hidden" name="allPoses[${i}].id" value="${pos.id}" /><input type="hidden" name="allPoses[${i}].tpsId" value="${pos.tpsId}" /><input type="hidden" name="allPoses[${i}].cbdId" value="${pos.cbdId}" /></td>
+                            <td>${pos.numerZestawuPos}<input type="hidden" name="allPoses[${i}].numerZestawuPos" value="${pos.numerZestawuPos}" /></td>
+                            <td><eumowy:textField name="allPoses[${i}].dataOd" value="${g.formatDate( format:"yyyy-MM-dd", date:pos.dataOd)}" validatable="${pos.dataOd}" readonly="true"/></td>
+                            <td><eumowy:textField name="allPoses[${i}].dataDo" value="${g.formatDate( format:"yyyy-MM-dd", date:pos.dataDo)}" validatable="${pos.dataDo}" readonly="true"/></td>
+                            <td style="white-space: nowrap;line-height: 27px;"><eumowy:currencyField name="allPoses[${i}].wysokoscOplaty" value="${pos.wysokoscOplaty}" class="float-number"  validatable="${pos.wysokoscOplaty}" width="120px"/></td>
+                            <td><g:checkBox name="allPoses[${i}].czyWybrany" checked="${pos.czyWybrany}"/></td>
+                        </tr>
 					</g:each>
 				</tbody>
 			</table>
         </div>
     </fieldset>
 </div>
+
+
+
 
 <r:require module="jquery_ui"/>
 
