@@ -20,6 +20,7 @@ class ProcessService {
     def panelService
     def cbdService
     def panelMockService
+    def calculatorService
 
     def searchProcessByFilters(def params) {
         def filterObserved = params.filterObserved
@@ -130,7 +131,7 @@ class ProcessService {
         log.info("getNewProcessCommand processId = ${process.id}")
         def cmd = initProcessCommand(process)
         cmd.allPoints?.addAll(getPointsToAllPointsCommandList(process, cmd))
-        cmd.allPoses?.addAll(getPosesToAllPosCommandList(process, cmd))
+        cmd.allPoses?.addAll(getPosesToAllPosCommandList(process, cmd, calc))
 		
 		cmd.allPoints?.each { AllPointsCommand apc ->
 			if (apc.cbdId == -1) {
@@ -160,7 +161,7 @@ class ProcessService {
         cmd.points?.addAll(getLocalPointsToPointCommandList(process))
         cmd.poses?.addAll(getLocalPosesToPointCommandList(process))
         cmd.allPoints?.addAll(getPointsToAllPointsCommandList(process, cmd))
-        cmd.allPoses?.addAll(getPosesToAllPosCommandList(process, cmd))
+        cmd.allPoses?.addAll(getPosesToAllPosCommandList(process, cmd, calc))
 
 		//FIXME Optymalizacja usuwania, z uwzglednieniem tego, zeby nie zamykalo sesji, bo potem
 		//		w metodzie prepareProcessCommand jest zamknieta sesja i nie mozna zrobic lazyLoad na liscie paneli
@@ -519,7 +520,7 @@ class ProcessService {
         result
     }
 
-    def getPosesToAllPosCommandList(def process, def cmd) {
+    def getPosesToAllPosCommandList(def process, def cmd, def calc) {
         def localPoses = [], cbdPoses = [], result = []
         getLocalPosesToAllPosesCommandList(process, localPoses)
         getCbdPosesToAllPosesCommandList(cmd, cbdPoses)
@@ -534,7 +535,7 @@ class ProcessService {
                     apc.dataDo = pos.dataDo ?: apc.dataDo
                     apc.dataOd = pos.dataOd ?: apc.dataOd
                     apc.numerZestawuPos = pos.numerZestawuPos ?: apc.numerZestawuPos
-                    apc.wysokoscOplaty = pos.wysokoscOplaty ?: apc.wysokoscOplaty
+                    apc.wysokoscOplaty = pos.wysokoscOplaty ?: (apc.wysokoscOplaty ?: calculatorService.getCalcProperty(calc,"E_PROM_OBN_NAJ_1"))
                     apc.czyCbd = true // Mark for update in local (eumowy) db
                     cbdPoses.remove(cbdPoses.findIndexOf { AllPosCommand i -> i.tpsId == apc.tpsId })
                 }
@@ -547,7 +548,6 @@ class ProcessService {
         }
         result.addAll(cbdPoses)
         result.sort {it.id}
-
         result
     }
 
