@@ -1,14 +1,14 @@
 package com.eservice.eumowy.command
-import grails.util.Environment;
-import grails.validation.Validateable
-
-import org.apache.commons.collections.FactoryUtils
-import org.apache.commons.collections.ListUtils
-import org.apache.log4j.Logger
 
 import com.eservice.eumowy.Process
 import com.eservice.eumowy.annotation.DateField
 import com.eservice.eumowy.annotation.Omit
+import grails.util.Environment
+import grails.validation.Validateable
+import org.apache.commons.collections.FactoryUtils
+import org.apache.commons.collections.ListUtils
+import org.apache.log4j.Logger
+
 /**
  * User: Dominik Walczak
  * Date: 20.08.13 Time: 10:22
@@ -1174,7 +1174,7 @@ class ProcessCommand implements Serializable {
             }
 
             if (counter != max) {
-                errors.rejectValue("liczbaTerminali", "default.notEqual.liczbaTerminali",)
+                errors.rejectValue("liczbaTerminali", "default.notEqual.liczbaTerminali",[counter, max] as Object[], "")
                 return false
             }
             return true
