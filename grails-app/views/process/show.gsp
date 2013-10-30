@@ -85,7 +85,23 @@
     <div class="clear"/>
 
     <g:form>
-        <div style="margin: 0 auto; width: 600px">
+        <div style="margin: 10px auto; width: 600px;padding-top: 15px;">
+            %{--ACTIVITIES--}%
+            <div>
+                <label style="width: 70px; text-align: right;vertical-align: top;">
+                    <g:message code="todo" default="Aktywności:"/>
+                </label>
+
+                <ul style="padding: 0; margin: 0px;display: inline-block;top: -10px; position: relative;">
+                <g:each var="activity" in="${processInstance?.activities}">
+                    <li style="list-style: none;padding: 0;font-weight: bold;">
+                        <g:message code="activity.${activity.code}.name"/>
+                    </li>
+                </g:each>
+                </ul>
+
+            </div>
+
             <div>
                 <label style="width: 70px; text-align: right">
                     <g:message code="todo" default="Obserwuj:"/>
