@@ -1,5 +1,6 @@
 <div class="newPosPanel">
 	<input type="hidden" id="${panelType}[${id}].id" name="${panelType}[${id}].id" value="${pointData?.id}" />
+	<input type="hidden" name="${panelType}[${id}].parentPosId" value="${pointData?.parentPosId}" />
     <fieldset style="text-align: center">
         <div class="belka-glowna"><g:message code="panel.newpos.posdata.title" /></div>
         <div style="text-align: center; padding-top: 20px;" class="centre">

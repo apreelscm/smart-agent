@@ -520,6 +520,9 @@ class ProcessCommand implements Serializable {
 
     @Omit
     String liczbaTerminali
+	
+	@Omit
+	String liczbaPosZCbd
 
     @Omit(inPopulate = true)
     Boolean isDoladowania_tp
@@ -533,7 +536,7 @@ class ProcessCommand implements Serializable {
     def defaultPointData
     @Omit
     def defaultPosData
-    def liczbaPosZCbd
+    
 
     @Omit
     static constraints = {
@@ -1070,13 +1073,13 @@ class ProcessCommand implements Serializable {
         oplPOSGPRSIlosc(nullable: true, shared: "natural")
         oplPOSGPRSIloscPP(nullable: true, shared: "natural")
         oplPOSGPRSNormalneMies(nullable: true, shared: "number", validator: { value, cmd, errors ->
-            cmd.oplPOSGPRSTyp ? atLeastClosure.call(value, cmd, errors, "oplPOSGPRSNormalneMies", "TYP_SSL_TERM_CENA") : true;
+            cmd.oplPOSGPRSTyp ? atLeastClosure.call(value, cmd, errors, "oplPOSGPRSNormalneMies", "TYP_GPRS_TERM_CENA") : true;
         })
         oplPOSGPRSNormalnePP(nullable: true, shared: "number", validator: { value, cmd, errors ->
             cmd.oplPOSGPRSTyp ? atLeastClosure.call(value, cmd, errors, "oplPOSGPRSNormalnePP", "TYP_GPRS_PP_CENA") : true;
         })
         oplPOSGPRSPreferencyjneMies(nullable: true, shared: "number", validator: { value, cmd, errors ->
-            cmd.oplPOSGPRSTyp ? atLeastClosure.call(value, cmd, errors, "oplPOSGPRSPreferencyjneMies", "TYP_SSL_TERM_CENA") : true;
+            cmd.oplPOSGPRSTyp ? atLeastClosure.call(value, cmd, errors, "oplPOSGPRSPreferencyjneMies", "TYP_GPRS_TERM_CENA") : true;
         })
         oplPOSGPRSPreferencyjnePP(nullable: true, shared: "number", validator: { value, cmd, errors ->
             cmd.oplPOSGPRSTyp ? atLeastClosure.call(value, cmd, errors, "oplPOSGPRSPreferencyjnePP", "TYP_GPRS_PP_CENA") : true;
@@ -1139,6 +1142,7 @@ class ProcessCommand implements Serializable {
 
         liczbaTerminali(nullable:true, validator: { value, cmd, errors ->
             //println("liczbaTerminali : " + value)
+			Logger LOG = Logger.getLogger("liczbaTerminali")
             def max = value ? Integer.valueOf(value) : 0
             def counter = 0
 
@@ -1150,8 +1154,9 @@ class ProcessCommand implements Serializable {
                 counter += point?.pinPadIlosc != null ? point?.pinPadIlosc : 0
                 counter += point?.wifiIlosc != null ? point?.wifiIlosc : 0
             }
-
+			LOG.info "!!! liczbaPosZCbd " + cmd.liczbaPosZCbd
             if (cmd.liczbaPosZCbd != null) {
+				LOG.info "Here :) " + Integer.valueOf(cmd.liczbaPosZCbd)
                 counter += Integer.valueOf(cmd.liczbaPosZCbd) != null ? Integer.valueOf(cmd.liczbaPosZCbd) : 0
             }
 

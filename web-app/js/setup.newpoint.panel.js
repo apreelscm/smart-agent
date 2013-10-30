@@ -47,7 +47,7 @@ function getGlobalPanelCount(prefix) {
     }
 }
 
-function setupNewPointPanelHandlers(prevPanelId, panelId, prefix) {
+function setupNewPointPanelHandlers(panelId, prefix) {
     var prefixPanel = "#"+prefix+"\\["+panelId+"\\]\\";
 
     jQuery(prefixPanel + ".bankAccountNumber").on("keyup", {p: prefix, pid: panelId}, function(e) {
@@ -90,8 +90,6 @@ function setupNewPointPanelHandlers(prevPanelId, panelId, prefix) {
     $codeField2.on("keyup", {p: prefix, pid: panelId}, function(e) {
         refreshCityField(jQuery(e.target).val(),  $cityField2)
     });
-
-
 
     jQuery(prefixPanel + ".mccCode").on("keyup", {p: prefix, pid: panelId}, function(e) {
         var mcc = jQuery(e.target).val();
@@ -246,8 +244,9 @@ function unlockDynamicAddress(lock, prefixPanel){
     }
 }
 
-function setupNewPointPanelData(prevPanelId, panelId) {
-
+function setupNewPointPanelData(prefix, ppid, pid) {
+	var prevPanelId = prefix+"\\["+ppid+"\\]\\.";
+	var panelId = prefix+"\\["+pid+"\\]\\.";
     var terminaloptions = {};
     var technicalinformation = {};
     var possetforselectedpoint = {};
@@ -258,7 +257,7 @@ function setupNewPointPanelData(prevPanelId, panelId) {
     var mmccode = jQuery("#"+prevPanelId+"mccCode").val();
     var bankAccount = jQuery("#"+prevPanelId+"bankAccountNumber").val();
 
-    if (Object.keys(possetforselectedpoint).length == 0) {
+    if (Object.keys(possetforselectedpoint).length == 0 && sameForEveryPointSourcePanelId['possetforselectedpointSameForEveryPoint'] != -1) {
         possetforselectedpoint['possetforselectedpointDialupType'] = jQuery("#"+prevPanelId+"possetforselectedpointDialupType").val();
         possetforselectedpoint['dialupCount'] = jQuery("#"+prevPanelId+"dialupCount").val();
         possetforselectedpoint['dialupPPCount'] = jQuery("#"+prevPanelId+"dialupPPCount").val();
@@ -454,9 +453,11 @@ function verifyBaseVisibility(value, panelId){
     }
 }
 
-function clearNewPointData(prevPanelId, panelId) {
-    //jQuery(document).ready(function() {
-    if (panelId != prevPanelId) {
+function clearNewPointData(prefix, prevPanelId, panelId) {
+	var prevPanelId = prefix+"\\["+ppid+"\\]\\.";
+	var panelId = prefix+"\\["+pid+"\\]\\.";
+	
+	if (panelId != prevPanelId) {
         if (jQuery("#"+prevPanelId+"sameForEveryPoint").is(':checked') == false) {
             jQuery("#"+panelId+"nip").val("");
             jQuery("#"+panelId+"mccCode").val("");
@@ -667,9 +668,9 @@ function sameForEveryPoint(selector, prefix, panelId){
         for(var i = 0; i < getGlobalPanelCount(prefix); i++) {
             if (i != panelId) {
                 if (e.target.checked) {
-                    setupNewPointPanelData(prefix+"\\["+panelId+"\\]\\.", prefix+"\\["+i+"\\]\\.");
+                    setupNewPointPanelData(prefix, panelId, i);
                 } else {
-                    clearNewPointData(prefix+"\\["+panelId+"\\]\\.", prefix+"\\["+i+"\\]\\.");
+                    clearNewPointData(prefix, panelId, i);
                 }
             }
         }

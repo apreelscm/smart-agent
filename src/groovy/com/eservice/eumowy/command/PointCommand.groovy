@@ -1,5 +1,8 @@
 package com.eservice.eumowy.command
 
+import com.eservice.eumowy.CalculatorService
+import com.eservice.eumowy.annotation.Omit;
+
 import grails.validation.Validateable
 
 /**
@@ -11,7 +14,14 @@ import grails.validation.Validateable
 @Validateable
 class PointCommand implements Serializable {
 	
+	@Omit
+	transient def calculatorService
+	@Omit
+	transient def calc
+	
 	Integer id
+	
+	Long parentPosId
 	
 	String phPozysk
 	String opiekaBiznesowa
@@ -161,6 +171,31 @@ class PointCommand implements Serializable {
     BigDecimal pinPadCenaPreferencyjna
     BigDecimal wifiCenaPreferencyjna
 
+	@Omit
+	static def DEFAULT_VALUE = "~"
+	
+	@Omit
+	static def atLeastClosure = { value, cmd, errors, property, calcProperty ->
+		def calcValue = cmd.calculatorService.getCalcProperty(cmd.calc, calcProperty)
+
+		log.info("property: ${property}, value: ${value}, cal:${calcValue}")
+
+		//warunek na brak wartości w kalkulatorze lub wartość domyślną w panelu
+		if (DEFAULT_VALUE.equals(value) || !calcValue) {
+			return true
+		}
+
+		def minValue = calcValue?.toString()?.isNumber() ? calcValue.toString().toBigDecimal() : BigDecimal.ZERO
+		def currValue = value?.toString()?.isNumber() ? value.toString().toBigDecimal() : BigDecimal.ZERO
+
+		if (currValue.compareTo(minValue) < 0) {
+			//errors.rejectValue(property, "default.atLeast.asCalc", [property] as Object[], "Podana warto\u015B\u0107 dla pola {0} nie mo\u017Ce by\u0107 mniejsza ni\u017C pobrana z kalkulatora.")
+			errors.rejectValue(property, "default.atLeast.asCalc",[property] as Object[], "")
+			return false
+		}
+		return true
+	}
+	
 	static constraints = {
 		phPozysk(nullable:true, blank:false, shared: "alphanumeric")
 		opiekaBiznesowa(nullable:true, blank:false, shared: "alphanumeric")
@@ -196,17 +231,7 @@ class PointCommand implements Serializable {
 		kontaktWPunkcieFax(nullable:true, blank:true)
 		kontaktWPunkcieTelStacjonarny(nullable:true, blank:false)
 		kontaktWPunkcieTelKomorkowy(nullable:true, blank:false)
-//		TODO - sprawdzic czy to zadziala; mozliwe, ze trzeba nadac nazwy pol pokroju "points[0].kontaktWPunkcieTelStacjonarny
-//		kontaktWPunkcieTelStacjonarny(nullable:true, validator: { value, pointDetails, errors ->
-//			if (value == null || value.isEmpty()) {
-//				if (pointDetails.kontaktWPunkcieTelKomorkowy == null || pointDetails.kontaktWPunkcieTelKomorkowy.isEmpty()){
-//					errors.rejectValue( "kontaktWPunkcieTelStacjonarny", "default.atLeastOne.phoneNumber", "Nale\u017Cy poda\u0107 przynajmniej jeden numer telefonu")
-//					errors.rejectValue( "kontaktWPunkcieTelKomorkowy", "default.atLeastOne.phoneNumber", "Nale\u017Cy poda\u0107 przynajmniej jeden numer telefonu")
-//					return false
-//				}
-//			}
-//			return true
-//		})
+
 		kontaktWPunkcieEmail(nullable:true, shared: "email")
 		terminalIlosc(nullable:true, shared: "natural")
 		bankId(nullable:true)
@@ -214,39 +239,79 @@ class PointCommand implements Serializable {
 		dialupTyp(nullable:true)
 		dialupIlosc(nullable:true, blank:false, shared: "natural")
 		dialupPPIlosc(nullable:true, blank:false, shared: "natural")
-		dialupCena(nullable:true, blank:false, shared: "number")
-		dialupPPCena(nullable:true, blank:false, shared: "number")
+		dialupCena(nullable:true, shared: "number", validator: { value, cmd, errors ->
+			cmd.dialupTyp ? atLeastClosure.call(value, cmd, errors, "dialupCena", "TYP_DIALUP_TERM_CENA") : true;
+		})
+		dialupPPCena(nullable:true, shared: "number", validator: { value, cmd, errors ->
+			cmd.dialupTyp ? atLeastClosure.call(value, cmd, errors, "dialupPPCena", "TYP_DIALUP_PP_CENA") : true;
+		})
 		vpnTyp(nullable:true)
 		vpnIlosc(nullable:true, blank:false, shared: "natural")
 		vpnPPIlosc(nullable:true, blank:false, shared: "natural")
-		vpnCena(nullable:true, blank:false, shared: "number")
-		vpnPPCena(nullable:true, blank:false, shared: "number")
+		vpnCena(nullable:true, shared: "number", validator: { value, cmd, errors ->
+			cmd.vpnTyp ? atLeastClosure.call(value, cmd, errors, "vpnCena", "TYP_VPN_TERM_CENA") : true;
+		})
+		vpnPPCena(nullable:true, shared: "number", validator: { value, cmd, errors ->
+			cmd.vpnTyp ? atLeastClosure.call(value, cmd, errors, "vpnPPCena", "TYP_VPN_PP_CENA") : true;
+		})
 		sslTyp(nullable:true)
 		sslIlosc(nullable:true, blank:false, shared: "natural")
 		sslPPIlosc(nullable:true, blank:false, shared: "natural")
-		sslCena(nullable:true, blank:false, shared: "number")
-		sslPPCena(nullable:true, blank:false, shared: "number")
+		sslCena(nullable:true, shared: "number", validator: { value, cmd, errors ->
+			cmd.sslTyp ? atLeastClosure.call(value, cmd, errors, "sslCena", "TYP_SSL_TERM_CENA") : true;
+		})
+		sslPPCena(nullable:true, shared: "number", validator: { value, cmd, errors ->
+			cmd.sslTyp ? atLeastClosure.call(value, cmd, errors, "sslPPCena", "TYP_SSL_PP_CENA") : true;
+		})
 		wifiTyp(nullable:true)
 		wifiIlosc(nullable:true, blank:false, shared: "number")
 		wifiPPIlosc(nullable:true, blank:false, shared: "natural")
-		wifiCena(nullable:true, blank:false, shared: "number")
-		wifiPPCena(nullable:true, blank:false, shared: "number")
+		wifiCena(nullable:true, shared: "number", validator: { value, cmd, errors ->
+			cmd.wifiTyp ? atLeastClosure.call(value, cmd, errors, "wifiCena", "TYP_WIFI_TERM_CENA") : true;
+		})
+		wifiPPCena(nullable:true, shared: "number", validator: { value, cmd, errors ->
+			cmd.wifiTyp ? atLeastClosure.call(value, cmd, errors, "wifiPPCena", "TYP_WIFI_PP_CENA") : true;
+		})
 		gprsTyp(nullable:true)
 		gprsIlosc(nullable:true, blank:false, shared: "natural")
 		gprsPPIlosc(nullable:true, blank:false, shared: "number")
-		gprsCena(nullable:true, blank:false, shared: "number")
-		gprsPPCena(nullable:true, blank:false, shared: "number")
+		gprsCena(nullable:true, shared: "number", validator: { value, cmd, errors ->
+			cmd.gprsTyp ? atLeastClosure.call(value, cmd, errors, "gprsCena", "TYP_GPRS_TERM_CENA") : true;
+		})
+		gprsPPCena(nullable:true, shared: "number", validator: { value, cmd, errors ->
+			cmd.gprsTyp ? atLeastClosure.call(value, cmd, errors, "gprsPPCena", "TYP_GPRS_PP_CENA") : true;
+		})
 		bazaIlosc(nullable:true, blank:false, shared: "number")
-        dialupCenaPreferencyjna(nullable:true, blank:false, shared: "number")
-        dialupPPCenaPreferencyjna(nullable:true, blank:false, shared: "number")
-        vpnCenaPreferencyjna(nullable:true, blank:false, shared: "number")
-        vpnPPCenaPreferencyjna(nullable:true, blank:false, shared: "number")
-        sslCenaPreferencyjna(nullable:true, blank:false, shared: "number")
-        sslPPCenaPreferencyjna(nullable:true, blank:false, shared: "number")
-        gprsCenaPreferencyjna(nullable:true, blank:false, shared: "number")
-        gprsPPCenaPreferencyjna(nullable:true, blank:false, shared: "number")
-        pinPadCenaPreferencyjna(nullable:true, blank:false, shared: "number")
-        wifiCenaPreferencyjna(nullable:true, blank:false, shared: "number")
+        dialupCenaPreferencyjna(nullable:true, shared: "number", validator: { value, cmd, errors ->
+			cmd.dialupTyp ? atLeastClosure.call(value, cmd, errors, "dialupCenaPreferencyjna", "TYP_DIALUP_CENA") : true;
+		})
+        dialupPPCenaPreferencyjna(nullable:true, shared: "number", validator: { value, cmd, errors ->
+			cmd.dialupTyp ? atLeastClosure.call(value, cmd, errors, "dialupPPCenaPreferencyjna", "TYP_DIALUP_PP_CENA") : true;
+		})
+        vpnCenaPreferencyjna(nullable:true, shared: "number", validator: { value, cmd, errors ->
+			cmd.vpnTyp ? atLeastClosure.call(value, cmd, errors, "vpnCenaPreferencyjna", "TYP_VPN_CENA") : true;
+		})
+        vpnPPCenaPreferencyjna(nullable:true, shared: "number", validator: { value, cmd, errors ->
+			cmd.vpnTyp ? atLeastClosure.call(value, cmd, errors, "vpnPPCenaPreferencyjna", "TYP_VPN_PP_CENA") : true;
+		})
+        sslCenaPreferencyjna(nullable:true, shared: "number", validator: { value, cmd, errors ->
+			cmd.sslTyp ? atLeastClosure.call(value, cmd, errors, "sslCenaPreferencyjna", "TYP_SSL_CENA") : true;
+		})
+        sslPPCenaPreferencyjna(nullable:true, shared: "number", validator: { value, cmd, errors ->
+			cmd.sslTyp ? atLeastClosure.call(value, cmd, errors, "sslPPCenaPreferencyjna", "TYP_SSL_PP_CENA") : true;
+		})
+        gprsCenaPreferencyjna(nullable:true, shared: "number", validator: { value, cmd, errors ->
+			cmd.gprsTyp ? atLeastClosure.call(value, cmd, errors, "gprsCenaPreferencyjna", "TYP_GPRS_CENA") : true;
+		})
+        gprsPPCenaPreferencyjna(nullable:true, shared: "number", validator: { value, cmd, errors ->
+			cmd.gprsTyp ? atLeastClosure.call(value, cmd, errors, "gprsPPCenaPreferencyjna", "TYP_GPRS_PP_CENA") : true;
+		})
+        pinPadCenaPreferencyjna(nullable:true, shared: "number", validator: { value, cmd, errors ->
+			cmd.pinPadTyp ? atLeastClosure.call(value, cmd, errors, "pinPadCenaPreferencyjna", "TYP_PINPAD_CENA") : true;
+		})
+        wifiCenaPreferencyjna(nullable:true, shared: "number", validator: { value, cmd, errors ->
+			cmd.wifiTyp ? atLeastClosure.call(value, cmd, errors, "wifiCenaPreferencyjna", "TYP_WIFI_CENA") : true;
+		})
 		//zamkniecieDniaOd(nullable:true, blank:false, shared: "date")
 		//zamkniecieDniaDo(nullable:true, blank:false, shared: "date")
 		//planowanaDataInstalacji(nullable:true, blank:true, shared: "date")
@@ -292,6 +357,11 @@ class PointCommand implements Serializable {
 		imieInformatykDynamiczna(nullable:true, blank:false, shared: "lettersOnly")
 		nazwiskoInformatykDynamiczna(nullable:true, blank:false, shared: "lettersOnly")
 		
+		parentPosId(nullable:true)
 		
+	}
+	
+	PointCommand() {
+		calculatorService = new CalculatorService()
 	}
 }

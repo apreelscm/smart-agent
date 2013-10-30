@@ -522,3 +522,5 @@ alter table EUMOWY.POS_DETAILS add (
     sim_card_type varchar2(255 char),
     sim_card_count number(10,0)
 )
+
+ALTER TABLE EUMOWY.POS ADD parent_pos_id number(19,0);
