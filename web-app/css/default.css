@@ -1469,6 +1469,11 @@ label.doladowanieLabel {
     width: 95px;
 }
 
+
 .text-center{
     text-align: center;
+}
+
+.half-width {
+	width: 50%;
 }

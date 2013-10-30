@@ -25,13 +25,18 @@
 
 	jQuery(document).ready(function() {
 		jQuery("#continueButton").prop("disabled", true);
-		var maxTerminalCount = jQuery("#liczbaTerminali").val();
+		
+		var maxTerminalCount = parseInt(jQuery("#liczbaTerminali").val());
 		var panelTemplate = jQuery("#hiddenPanel").html();
 		var panelCount = ${data.points.size()};
 		panelInternalCount.value = ${data.points.size()};
 		globalPanelCount = ${data.points.size()};
 		jQuery("#newPointPanelCount").val(panelCount);
 		jQuery("#hiddenPanel").remove();
+		
+		if (jQuery(".newPointPanel").length > 0) {
+			jQuery("#continueButton").prop("disabled", false);
+		}
 		
 		if (panelInternalCount.value > 0) {
 			jQuery("#continueButton").prop("disabled", false);
@@ -57,8 +62,8 @@
 			if (panelInternalCount.value < 10) {
 				var data = panelTemplate.replace(/%ID%/gm, panelCount);
 				jQuery("#addNewPointPanelPlaceholder").append(data);
-				setupNewPointPanelHandlers(panelCount-1, panelCount, "points");
-				setupNewPointPanelData("points\\["+(panelCount-1)+"\\]\\.", "points\\["+panelCount+"\\]\\.");
+				setupNewPointPanelHandlers(panelCount, "points");
+				setupNewPointPanelData("points", panelCount);
 				panelCount++;
 				panelInternalCount.value++;
 				globalPanelCount++;

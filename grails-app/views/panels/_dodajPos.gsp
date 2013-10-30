@@ -23,11 +23,15 @@
 	jQuery(document).ready(function() {
 		jQuery("#continueButton").prop("disabled", true);
 		var panelPosTemplate = jQuery("#hiddenPosPanel").html();
-		var maxTerminalCount = jQuery("#liczbaTerminali").val();
+		var maxTerminalCount = parseInt(jQuery("#liczbaTerminali").val());
 		var panelPosCount = ${data.poses.size()};
 		panelPosInternalCount = ${data.poses.size()};
 		globalPanelPosCount = ${data.poses.size()};
 		jQuery("#hiddenPosPanel").remove();
+		
+		if (jQuery(".newPosPanel").length > 0) {
+			jQuery("#continueButton").prop("disabled", false);
+		}
 		
 		for( var i = 0; i < panelPosCount; i++) {
 			setupNewPosPanelHandlers(i-1, i, "poses");
