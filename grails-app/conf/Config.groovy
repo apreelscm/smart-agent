@@ -1,3 +1,4 @@
+import com.apache.log4j.jdbc.EumowyJDBCAppender
 import grails.plugins.springsecurity.SecurityConfigType
 import org.apache.log4j.DailyRollingFileAppender
 import org.apache.log4j.jdbc.EumowyJDBCAppender
@@ -124,10 +125,8 @@ log4j = {
     //trace 'org.hibernate.type' , "org.codehaus.groovy.grails.orm.hibernate", 'org.hibernate.SQL'
 
 
-
     appenders {
         console name: 'console', layout: pattern(conversionPattern: '%d{dd-MM-yyyy HH:mm:ss,SSS} %5p %c - %m%n')
-
         appender new EumowyJDBCAppender(ConfigurationHolder.config.dataSource,
                 "database",
                 "INSERT INTO EUMOWY.LOGS (login, log_date, log_message) VALUES ('%X{sessionUserName}','%d{yyyy.MM.dd HH:mm:ss}', '%m')",
