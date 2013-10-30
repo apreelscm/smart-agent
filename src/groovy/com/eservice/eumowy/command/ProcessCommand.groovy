@@ -1,13 +1,14 @@
 package com.eservice.eumowy.command
-import grails.validation.Validateable
-
-import org.apache.commons.collections.FactoryUtils
-import org.apache.commons.collections.ListUtils
-import org.apache.log4j.Logger
 
 import com.eservice.eumowy.Process
 import com.eservice.eumowy.annotation.DateField
 import com.eservice.eumowy.annotation.Omit
+import grails.util.Environment
+import grails.validation.Validateable
+import org.apache.commons.collections.FactoryUtils
+import org.apache.commons.collections.ListUtils
+import org.apache.log4j.Logger
+
 /**
  * User: Dominik Walczak
  * Date: 20.08.13 Time: 10:22
@@ -520,6 +521,9 @@ class ProcessCommand implements Serializable {
 
     @Omit
     String liczbaTerminali
+	
+	@Omit
+	String liczbaPosZCbd
 
     @Omit(inPopulate = true)
     Boolean isDoladowania_tp
@@ -533,7 +537,7 @@ class ProcessCommand implements Serializable {
     def defaultPointData
     @Omit
     def defaultPosData
-    def liczbaPosZCbd
+    
 
     @Omit
     static constraints = {
@@ -1070,13 +1074,13 @@ class ProcessCommand implements Serializable {
         oplPOSGPRSIlosc(nullable: true, shared: "natural")
         oplPOSGPRSIloscPP(nullable: true, shared: "natural")
         oplPOSGPRSNormalneMies(nullable: true, shared: "number", validator: { value, cmd, errors ->
-            cmd.oplPOSGPRSTyp ? atLeastClosure.call(value, cmd, errors, "oplPOSGPRSNormalneMies", "TYP_SSL_TERM_CENA") : true;
+            cmd.oplPOSGPRSTyp ? atLeastClosure.call(value, cmd, errors, "oplPOSGPRSNormalneMies", "TYP_GPRS_TERM_CENA") : true;
         })
         oplPOSGPRSNormalnePP(nullable: true, shared: "number", validator: { value, cmd, errors ->
             cmd.oplPOSGPRSTyp ? atLeastClosure.call(value, cmd, errors, "oplPOSGPRSNormalnePP", "TYP_GPRS_PP_CENA") : true;
         })
         oplPOSGPRSPreferencyjneMies(nullable: true, shared: "number", validator: { value, cmd, errors ->
-            cmd.oplPOSGPRSTyp ? atLeastClosure.call(value, cmd, errors, "oplPOSGPRSPreferencyjneMies", "TYP_SSL_TERM_CENA") : true;
+            cmd.oplPOSGPRSTyp ? atLeastClosure.call(value, cmd, errors, "oplPOSGPRSPreferencyjneMies", "TYP_GPRS_TERM_CENA") : true;
         })
         oplPOSGPRSPreferencyjnePP(nullable: true, shared: "number", validator: { value, cmd, errors ->
             cmd.oplPOSGPRSTyp ? atLeastClosure.call(value, cmd, errors, "oplPOSGPRSPreferencyjnePP", "TYP_GPRS_PP_CENA") : true;
@@ -1138,7 +1142,11 @@ class ProcessCommand implements Serializable {
         serwisZablokowany(nullable: true)
 
         liczbaTerminali(nullable:true, validator: { value, cmd, errors ->
-            //println("liczbaTerminali : " + value)
+			if (Environment.getCurrent().equals(Environment.TEST)) {
+				return true
+			}
+			
+			Logger LOG = Logger.getLogger("liczbaTerminali")
             def max = value ? Integer.valueOf(value) : 0
             def counter = 0
 
@@ -1150,8 +1158,9 @@ class ProcessCommand implements Serializable {
                 counter += point?.pinPadIlosc != null ? point?.pinPadIlosc : 0
                 counter += point?.wifiIlosc != null ? point?.wifiIlosc : 0
             }
-
+			LOG.info "!!! liczbaPosZCbd " + cmd.liczbaPosZCbd
             if (cmd.liczbaPosZCbd != null) {
+				LOG.info "Here :) " + Integer.valueOf(cmd.liczbaPosZCbd)
                 counter += Integer.valueOf(cmd.liczbaPosZCbd) != null ? Integer.valueOf(cmd.liczbaPosZCbd) : 0
             }
 
@@ -1165,7 +1174,7 @@ class ProcessCommand implements Serializable {
             }
 
             if (counter != max) {
-                errors.rejectValue("liczbaTerminali", "default.notEqual.liczbaTerminali",)
+                errors.rejectValue("liczbaTerminali", "default.notEqual.liczbaTerminali",[counter, max] as Object[], "")
                 return false
             }
             return true

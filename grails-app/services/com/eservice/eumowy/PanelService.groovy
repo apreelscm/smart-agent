@@ -114,6 +114,8 @@ class PanelService {
     def getDodajPos(ProcessCommand cmd, def calc ) {
 		def pointData = new PointCommand()
 		
+		pointData.calc = calc
+		
 		pointData.dialupTyp = calculatorService.getCalcProperty(calc,"TYP_DIALUP") //K RW
 		pointData.dialupCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_DIALUP_TERM_CENA"))
 		pointData.dialupPPCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_DIALUP_PP_CENA"))
@@ -137,19 +139,22 @@ class PanelService {
 		pointData.wifiPPCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_WIFI_PP_CENA"))
         pointData.wifiCenaPreferencyjna = toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_WIFI_PP_CENA"))
 
-        pointData.gprsTyp = calculatorService.getCalcProperty(calc,"TYP_GPRS") //K RW
-		pointData.gprsCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_SSL_TERM_CENA"))
+		pointData.gprsTyp = calculatorService.getCalcProperty(calc,"TYP_GPRS") //K RW
+		pointData.gprsCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_GPRS_TERM_CENA"))
 		pointData.gprsPPCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_GPRS_PP_CENA"))
         pointData.gprsCenaPreferencyjna = toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_SSL_TERM_CENA"))
         pointData.gprsPPCenaPreferencyjna = toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_GPRS_PP_CENA"))
 
 		cmd.defaultPosData = pointData
         cmd.czyGift = cbdService.czyGift(cmd.nip)
+		
     }
 
     def getDodajPunkt(ProcessCommand cmd, def calc ) {
         def pointData = new PointCommand()
 
+		pointData.calc = calc
+		
         pointData.dialupTyp = calculatorService.getCalcProperty(calc,"TYP_DIALUP") //K RW
         pointData.dialupCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_DIALUP_TERM_CENA"))
         pointData.dialupPPCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_DIALUP_PP_CENA"))
@@ -174,13 +179,14 @@ class PanelService {
         pointData.wifiCenaPreferencyjna = toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_WIFI_PP_CENA"))
 
         pointData.gprsTyp = calculatorService.getCalcProperty(calc,"TYP_GPRS") //K RW
-        pointData.gprsCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_SSL_TERM_CENA"))
+        pointData.gprsCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_GPRS_TERM_CENA"))
         pointData.gprsPPCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_GPRS_PP_CENA"))
         pointData.gprsCenaPreferencyjna = toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_SSL_TERM_CENA"))
         pointData.gprsPPCenaPreferencyjna = toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_GPRS_PP_CENA"))
 
         cmd.defaultPointData = pointData
         cmd.czyGift = cbdService.czyGift(cmd.nip)
+		
     }
 
     def getDodatkoweUslugi(ProcessCommand cmd, def calc ) {
@@ -503,6 +509,7 @@ class PanelService {
         cmd.progrnozaMiesieczna =  calculatorService.getCalcProperty(calc,"PROGNOZA_MIESIECZNA") ?: 0;
         cmd.liczbaPtkCbd = calculatorService.getCalcProperty(calc,"LICZBA_PUNKTOW_CBD") ?: 0;
 
+		log.info "Liczba punktow z CBD: " + cmd.liczbaPtkCbd
 //        cmd.scoringDeklaracjaFinansowaSredniObrot = Double.valueOf(progrnozaMies) / (Double.valueOf(liczbaPtkCbd) + 0)
 
 
@@ -641,6 +648,43 @@ class PanelService {
     def toBigDecimal(def value){
         value ? new BigDecimal(value) : null
     }
+	
+	def setupPointDataFromCalc(PointCommand cmd, def calc) {
+		cmd.calc = calc
+		cmd.dialupCena =  setAtLeastAs(cmd.dialupCena, toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_DIALUP_TERM_CENA")))
+		cmd.dialupPPCena =  setAtLeastAs(cmd.dialupPPCena, toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_DIALUP_PP_CENA")))
+
+		cmd.vpnCena =  setAtLeastAs(cmd.vpnCena, toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_VPN_TERM_CENA")))
+		cmd.vpnPPCena =  setAtLeastAs(cmd.vpnPPCena, toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_VPN_PP_CENA")))
+
+		cmd.sslCena = setAtLeastAs(cmd.sslCena, toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_SSL_TERM_CENA")))
+		cmd.sslPPCena =  setAtLeastAs(cmd.sslPPCena, toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_SSL_PP_CENA")))
+
+		cmd.wifiCena = setAtLeastAs(cmd.wifiCena, toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_WIFI_TERM_CENA")))
+		cmd.wifiPPCena =  setAtLeastAs(cmd.wifiPPCena, toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_WIFI_PP_CENA")))
+
+		cmd.gprsCena =  setAtLeastAs(cmd.gprsCena, toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_GPRS_TERM_CENA")))
+		cmd.gprsPPCena =  setAtLeastAs(cmd.gprsPPCena, toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_GPRS_PP_CENA")))
+	}
+	
+	def setupPosDataFromCalc(PointCommand cmd, def calc) {
+		cmd.calc = calc
+
+		pointData.dialupCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_DIALUP_TERM_CENA"))
+		pointData.dialupPPCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_DIALUP_PP_CENA"))
+
+		pointData.vpnCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_VPN_TERM_CENA"))
+		pointData.vpnPPCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_VPN_PP_CENA"))
+
+		pointData.sslCena = toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_SSL_TERM_CENA"))
+		pointData.sslPPCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_SSL_PP_CENA"))
+
+		pointData.wifiCena = toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_WIFI_TERM_CENA"))
+		pointData.wifiPPCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_WIFI_PP_CENA"))
+
+		pointData.gprsCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_GPRS_TERM_CENA"))
+		pointData.gprsPPCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_GPRS_PP_CENA"))
+	}
 
     private setSerwisZablokowany(ProcessCommand cmd, def calc, def serwisy){
         def results = serwisy.findAll{

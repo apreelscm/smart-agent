@@ -192,6 +192,9 @@ class ProcessService {
         cmd.notes = process.notesToCoa
 		
         prepareProcessCommand(cmd, calc, cbdMethods)
+		preparePointCommands(cmd.points, cmd.poses, calc)
+		
+		cmd
     }
 
     def getRepresentative1(def process) {
@@ -217,6 +220,15 @@ class ProcessService {
     def defaultMethods = ["getWyborDzialania","getLiczbaMiesiecyZwolnieniaZNajmu"]
     def cbdMethods = ["getAdresDoKorespondencjizAkecptantem","getDaneAkceptanta","getSiedzibaAkceptanta","getSerwis"]
 
+	def preparePointCommands(def points, def poses, def calc) {
+		points.each { PointCommand pc ->
+			panelService.setupPointDataFromCalc(pc, calc)
+		}
+		poses.each { PointCommand pc ->
+			panelService.setupPointDataFromCalc(pc, calc)
+		}
+	}
+	
     def prepareProcessCommand(def cmd, def calc, def restrictedMethods = []) {
         def exclusions = defaultMethods + restrictedMethods
 
@@ -701,6 +713,8 @@ class ProcessService {
                     posDataDetails."set${key.capitalize()}"(value)
                 }
             }
+			
+			updateChildPosData(posData, pointData.posDatas)
 
 			// Create POSes with same values
 			def terminalCount = 0
@@ -769,6 +783,12 @@ class ProcessService {
             posData.save()
             //}
 
+			pdList.each { PosData pd ->
+				if (pd != posData) {
+					pd.parentPosId = posData.id
+				}
+			}
+			
             pointsList.add(pointData)
 			
 			
@@ -893,7 +913,7 @@ class ProcessService {
                             if (cbdPoint != null) {
                                 pointData.setCbdId(Integer.valueOf(cbdPoint.get("id").toString()))
                                 pointData.setKodPocztowy(cbdPoint.get("kod_pocztowy"))
-//pointData.setLiczbaPos(Integer.valueOf(cbdPoint.get("liczba_pos").toString()))
+								//pointData.setLiczbaPos(Integer.valueOf(cbdPoint.get("liczba_pos").toString()))
                                 pointData.setMiejscowosc(cbdPoint.get("miejscowosc"))
                                 pointData.setNazwa(cbdPoint.get("nazwa"))
                                 pointData.setNrBudynku(cbdPoint.get("nr_budynku"))
@@ -911,7 +931,7 @@ class ProcessService {
                     return
                 }
             }
-
+			
             pdList.add(posData)
 
             pc.properties.each { key, value ->
@@ -928,7 +948,7 @@ class ProcessService {
                 if (PosData.metaClass.respondsTo(PosData, "set" +
                         key.capitalize())) {
                     // FIXME krytyczne obejscie, nigdy nie powinno byc null. Dodalem logi gdy sytuacja z NULL wystepuje, sprawdzimy czy nadal
-                    sa takie przypadki - mkniec
+                    // sa takie przypadki - mkniec
                     if (posData != null) {
                         posData?."set${key.capitalize()}"(value)
                     }
@@ -942,6 +962,7 @@ class ProcessService {
                     posDataDetails."set${key.capitalize()}"(value)
                 }
             }
+			updateChildPosData(posData, pointData.posDatas)
 
             // Create POSes with same values
             def terminalCount = 0
@@ -1015,6 +1036,11 @@ class ProcessService {
             pointDataDetails.setPoint(pointData)
             posData.save()
             //}
+			pdList.each { PosData pd ->
+				if (pd != posData) {
+					pd.parentPosId = posData.id
+				}
+			}
 
             pointsList.add(pointData)
         }
@@ -1106,6 +1132,25 @@ class ProcessService {
 
         return pointsList
     }
+	
+	def updateChildPosData(PosData parent, List<PosData> children) {
+		children?.each { PosData child ->
+			if (child != null && child != parent) {
+				parent?.properties.each { key, value ->
+					if (["id", "version", "posDetails"].contains(key)) {
+						return
+					}
+					if (PosData.metaClass.respondsTo(PosData, "set" + key.capitalize())) {
+							child."set${key.capitalize()}"(value)
+					}
+	
+					if (PosDataDetails.metaClass.respondsTo(PosDataDetails, "set" + key.capitalize()) && key != 'id') {
+						child.posDetails?."set${key.capitalize()}"(value)
+					}
+				}
+			}
+		}
+	}
 
 
     def findDocumentByName(def documents, def name) {

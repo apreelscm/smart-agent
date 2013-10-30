@@ -1,12 +1,15 @@
 
 package com.eservice.eumowy
 
+import grails.util.Environment
+import groovy.sql.GroovyRowResult
+
+import org.codehaus.groovy.grails.web.json.JSONObject
+
+import com.eservice.eumowy.command.PointCommand
 import com.eservice.eumowy.command.ProcessCommand
 import com.eservice.eumowy.process.DefineActivityCommand
 import com.eservice.eumowy.util.DateUtils
-import grails.util.Environment
-import groovy.sql.GroovyRowResult
-import org.codehaus.groovy.grails.web.json.JSONObject
 
 class ActivityController {
 
@@ -563,7 +566,7 @@ class ActivityController {
 						counter += allPoint?.liczbaPos != null ? allPoint?.liczbaPos : 0
 					}
 				}
-				processCmd.liczbaPosZCbd += counter != null ? counter : 0
+				processCmd.liczbaPosZCbd = Integer.valueOf(processCmd.liczbaPosZCbd) != null ? Integer.valueOf(processCmd.liczbaPosZCbd) + counter : counter
 				
                 flow.data = processCmd
                 flow.processInstance = processInstance
@@ -635,6 +638,14 @@ class ActivityController {
                 def cmd = new ProcessCommand()
                 bindData(cmd,params)
                 cmd.calc = conversation.calc
+				cmd.points?.each { PointCommand pc ->
+					pc.calc = cmd.calc
+					pc.calculatorService = cmd.calculatorService
+				}
+				cmd.poses?.each { PointCommand pc ->
+					pc.calc = cmd.calc
+					pc.calculatorService = cmd.calculatorService
+				}
                 cmd.calculatorService = calculatorService
                 cmd.validate()
                 flow.data = cmd
@@ -843,7 +854,7 @@ class ActivityController {
 						counter += allPoint?.liczbaPos != null ? allPoint?.liczbaPos : 0
 					}
 				}
-				processCmd.liczbaPosZCbd += counter != null ? counter : 0
+				processCmd.liczbaPosZCbd = Integer.valueOf(processCmd.liczbaPosZCbd) != null ? Integer.valueOf(processCmd.liczbaPosZCbd) + counter : counter
 				
                 flow.data = processCmd
             }
@@ -895,6 +906,14 @@ class ActivityController {
                 bindData(cmd,params)
                 cmd.calc = conversation.calc
                 cmd.calculatorService = calculatorService
+				cmd.points?.each { PointCommand pc ->
+					pc.calc = cmd.calc
+					pc.calculatorService = cmd.calculatorService
+                }
+				cmd.poses?.each { PointCommand pc ->
+					pc.calc = cmd.calc
+					pc.calculatorService = cmd.calculatorService
+				}
                 cmd.validate()
                 flow.data = cmd
 
