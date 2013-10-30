@@ -1,4 +1,5 @@
 package com.eservice.eumowy.command
+import grails.util.Environment;
 import grails.validation.Validateable
 
 import org.apache.commons.collections.FactoryUtils
@@ -1141,7 +1142,10 @@ class ProcessCommand implements Serializable {
         serwisZablokowany(nullable: true)
 
         liczbaTerminali(nullable:true, validator: { value, cmd, errors ->
-            //println("liczbaTerminali : " + value)
+			if (Environment.getCurrent().equals(Environment.TEST)) {
+				return true
+			}
+			
 			Logger LOG = Logger.getLogger("liczbaTerminali")
             def max = value ? Integer.valueOf(value) : 0
             def counter = 0
