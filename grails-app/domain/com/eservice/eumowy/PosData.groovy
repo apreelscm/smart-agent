@@ -1,18 +1,16 @@
 package com.eservice.eumowy
 
-import org.apache.commons.lang.builder.HashCodeBuilder
-
 class PosData implements Serializable {
 	
 	Long parentPosId
 	Integer tpsId
-	Integer numerZestawuPos
-	Date dataOd
+    Integer numerZestawuPos
+    Date dataOd
 	Date dataDo
 	BigDecimal wysokoscOplaty
 	Boolean czyWybrany
-	
-	static belongsTo = [point: PointData]
+
+    static belongsTo = [point: PointData]
 	static hasOne = [posDetails: PosDataDetails]
 	
 	static mapping = {
@@ -39,5 +37,5 @@ class PosData implements Serializable {
 		tpsId(nullable:true)
 		parentPosId(nullable:true)
 	}
-	
+
 }
