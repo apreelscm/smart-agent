@@ -39,7 +39,7 @@ class EumowyJDBCAppender extends JDBCAppender {
         protected Connection getConnection() {
             if (connection == null && jndi){
                 DataSource ds = lookupDataSource()
-                this.connection(ds.getConnection())
+                this.connection = ds.getConnection()
                 return connection
             }
             super.getConnection()
