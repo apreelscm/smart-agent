@@ -59,26 +59,8 @@ environments {
     }
     uat {
         dataSource {
-            driverClassName = "oracle.jdbc.driver.OracleDriver"
-            dialect = "org.hibernate.dialect.Oracle10gDialect"
-            username = "eumowy_app"
-            password = "eumowy_app"
-            dbCreate = ""
-            url = "jdbc:oracle:thin:@192.168.3.221:1523:tstcbd"
-            //url = "jdbc:oracle:thin:@192.168.9.22:1523:tstcbd"  // w sieci apreel
-            //url = "jdbc:oracle:thin:@db-eservice.apreel.lan:1521:cbd01out"  // test
-            properties {
-                maxActive = -1
-                initialSize = 1
-                maxWait = 10000
-                numTestsPerEvictionRun = 3
-                testOnBorrow = true
-                testWhileIdle = true
-                testOnReturn = true
-                validationQuery = "SELECT 1 from dual"
-                minEvictableIdleTimeMillis = 1000 * 60 * 5
-                timeBetweenEvictionRunsMillis = 1000 * 60 * 5
-            }
+            jndiName ="java:comp/env/jdbc/eumowyDS"
+            pooled = true
         }
     }
     production {
