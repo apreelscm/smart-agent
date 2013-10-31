@@ -7,6 +7,7 @@ import javax.naming.Context
 import javax.naming.InitialContext
 import javax.naming.NamingException
 import javax.sql.DataSource
+import java.sql.Connection
 
 /**
  * Log4j appender for audit log
@@ -17,18 +18,12 @@ import javax.sql.DataSource
  */
 class EumowyJDBCAppender extends JDBCAppender {
 
+        String jndi;
+
         public EumowyJDBCAppender(Object dataSourceConfig, String name, String sql, Priority threshold) {
             String jndiName = ((ConfigObject) dataSourceConfig).getProperty("jndiName")?.toString();
             if (! "[:]".equalsIgnoreCase(jndiName)){
-                try {
-                    Context initialContext = new InitialContext();
-                    Context envCtx = (Context) initialContext.lookup("java:comp/env");
-                    DataSource ds = (DataSource) envCtx.lookup(jndiName);
-                    this.connection(ds.getConnection())
-                }
-                catch (NamingException  e){
-                    throw new IllegalArgumentException(e)
-                }
+                this.jndi = jndiName
             }
             else {
                 setPropertiesFromConfig((ConfigObject) dataSourceConfig)
@@ -38,6 +33,26 @@ class EumowyJDBCAppender extends JDBCAppender {
             this.setSql(sql);
             this.setThreshold(threshold);
 
+        }
+
+        @Override
+        protected Connection getConnection() {
+            if (connection == null && jndi){
+                DataSource ds = lookupDataSource()
+                this.connection(ds.getConnection())
+            }
+            super.getConnection()
+        }
+
+        private synchronized DataSource lookupDataSource() {
+            try {
+                Context initialContext = new InitialContext();
+                Context envCtx = (Context) initialContext.lookup("java:comp/env");
+                return (DataSource) envCtx.lookup(jndi);
+            }
+            catch (NamingException  e){
+                throw new IllegalArgumentException(e)
+            }
         }
 
         private void setPropertiesFromConfig(ConfigObject dataSourceConfig){
