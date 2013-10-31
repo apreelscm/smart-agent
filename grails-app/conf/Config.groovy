@@ -1,4 +1,3 @@
-import com.apache.log4j.jdbc.EumowyJDBCAppender
 import grails.plugins.springsecurity.SecurityConfigType
 import org.apache.log4j.DailyRollingFileAppender
 import com.apache.log4j.jdbc.EumowyJDBCAppender
@@ -13,7 +12,6 @@ def grailsApplication
 
 // referencja do konfiguracji srodowisk, poza dev parametr ustawiany przy starcie tomcata
 grails.config.locations = ["classpath:${appName}-config-${grails.util.Environment.current.name}.groovy",
-        "file:web-app/WEB-INF/${appName}-config-${grails.util.Environment.current.name}.groovy",
 		"file:${userHome}/.grails/${appName}-config-${grails.util.Environment.current.name}.groovy"]
 
 
