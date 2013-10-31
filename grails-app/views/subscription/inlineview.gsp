@@ -3,7 +3,7 @@
     <meta name="layout" content="blank">
     <title><g:message code="subscription.title" /></title>
     <r:require module="jsignature" />
-    <r:require module="jquery_ui" />
+    <r:require module="messi" />
 </head>
 <body>
 	<r:script>
@@ -21,6 +21,12 @@
 	      	jQuery('#padPlaceholder').jSignature('reset');
 	      	return false;
 	      });
+	      jQuery('.closeButton').on('click', function(e) {
+	      	e.preventDefault();
+	      	jQuery('#subscriptionDialog').slideUp();
+	      	return false;
+	      });
+	      
 	      jQuery('form').on("submit", function(e) {
 	      	e.preventDefault();
 	      	jQuery("#sigContent").val(jQuery('#padPlaceholder').jSignature("getData"));
@@ -71,6 +77,7 @@
 		        <fieldset style="margin-top: 20px;">
 		            <a href="#clear" class="button action clearButton"><g:message code="subscription.clear" /></a>
 		            <g:submitButton id="submitSubscription" name="Złożono podpis" class="button submit"/>
+		            <a href="#close" class="button submit closeButton"><g:message code="subscription.close" /></a>
 		        </fieldset>
 		
 		    </g:form>

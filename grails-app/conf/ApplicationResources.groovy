@@ -15,7 +15,7 @@ modules = {
 	}
 	
 	jsignature {
-		resource url: 'js/jsignature/jSignature.min.noconflict.js', disposition: 'head'
+		resource url: 'js/jsignature/jSignature.min.noconflict.patch.js', disposition: 'head'
 		dependsOn 'jquery'
 	}
 	

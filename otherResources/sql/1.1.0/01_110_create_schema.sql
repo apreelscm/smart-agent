@@ -1,1 +1,3 @@
 alter table  EUMOWY.PROCESS MODIFY VERSION NUMBER(3,0);
+
+ALTER TABLE EUMOWY.POS ADD parent_pos_id number(19,0);
