@@ -263,27 +263,42 @@ function setupNewPointPanelData(prefix, ppid, pid) {
         possetforselectedpoint['dialupPPCount'] = jQuery("#"+prevPanelId+"dialupPPCount").val();
         possetforselectedpoint['dialupPrice'] = jQuery("#"+prevPanelId+"dialupPrice").val();
         possetforselectedpoint['dialupPPPrice'] = jQuery("#"+prevPanelId+"dialupPPPrice").val();
+        possetforselectedpoint['dialupPricePreferencyjna'] = jQuery("#"+prevPanelId+"dialupPricePreferencyjna").val();
+        possetforselectedpoint['dialupPPPricePreferencyjna'] = jQuery("#"+prevPanelId+"dialupPPPricePreferencyjna").val();
+
         possetforselectedpoint['possetforselectedpointVpnType'] = jQuery("#"+prevPanelId+"possetforselectedpointVpnType").val();
         possetforselectedpoint['vpnCount'] = jQuery("#"+prevPanelId+"vpnCount").val();
         possetforselectedpoint['vpnPPCount'] = jQuery("#"+prevPanelId+"vpnPPCount").val();
         possetforselectedpoint['vpnPrice'] = jQuery("#"+prevPanelId+"vpnPrice").val();
         possetforselectedpoint['vpnPPPrice'] = jQuery("#"+prevPanelId+"vpnPPPrice").val();
+        possetforselectedpoint['vpnPricePreferencyjna'] = jQuery("#"+prevPanelId+"vpnPricePreferencyjna").val();
+        possetforselectedpoint['vpnPPPricePreferencyjna'] = jQuery("#"+prevPanelId+"vpnPPPricePreferencyjna").val();
+
         possetforselectedpoint['possetforselectedpointSslType'] = jQuery("#"+prevPanelId+"possetforselectedpointSslType").val();
         possetforselectedpoint['sslCount'] = jQuery("#"+prevPanelId+"sslCount").val();
         possetforselectedpoint['sslPPCount'] = jQuery("#"+prevPanelId+"sslPPCount").val();
         possetforselectedpoint['sslPrice'] = jQuery("#"+prevPanelId+"sslPrice").val();
         possetforselectedpoint['sslPPPrice'] = jQuery("#"+prevPanelId+"sslPPPrice").val();
+        possetforselectedpoint['sslPricePreferencyjna'] = jQuery("#"+prevPanelId+"sslPricePreferencyjna").val();
+        possetforselectedpoint['sslPPPricePreferencyjna'] = jQuery("#"+prevPanelId+"sslPPPricePreferencyjna").val();
+
         possetforselectedpoint['possetforselectedpointWifiType'] = jQuery("#"+prevPanelId+"possetforselectedpointWifiType").val();
         possetforselectedpoint['wifiCount'] = jQuery("#"+prevPanelId+"wifiCount").val();
-        possetforselectedpoint['wifiPPCount'] = jQuery("#"+prevPanelId+"wifiPPCount").val();
         possetforselectedpoint['wifiPrice'] = jQuery("#"+prevPanelId+"wifiPrice").val();
-        possetforselectedpoint['wifiPPPrice'] = jQuery("#"+prevPanelId+"wifiPPPrice").val();
+        possetforselectedpoint['wifiPricePreferencyjna'] = jQuery("#"+prevPanelId+"wifiPricePreferencyjna").val();
+
+        possetforselectedpoint['possetforselectedpointPinpadType'] = jQuery("#"+prevPanelId+"possetforselectedpointPinpadType").val();
+        possetforselectedpoint['pinpadCount'] = jQuery("#"+prevPanelId+"pinpadCount").val();
+        possetforselectedpoint['pinpadPrice'] = jQuery("#"+prevPanelId+"pinpadPrice").val();
+        possetforselectedpoint['pinpadPricePreferencyjna'] = jQuery("#"+prevPanelId+"pinpadPricePreferencyjna").val();
+
         possetforselectedpoint['possetforselectedpointGprsType'] = jQuery("#"+prevPanelId+"possetforselectedpointGprsType").val();
         possetforselectedpoint['gprsCount'] = jQuery("#"+prevPanelId+"gprsCount").val();
         possetforselectedpoint['gprsPPCount'] = jQuery("#"+prevPanelId+"gprsPPCount").val();
         possetforselectedpoint['gprsPrice'] = jQuery("#"+prevPanelId+"gprsPrice").val();
         possetforselectedpoint['gprsPPPrice'] = jQuery("#"+prevPanelId+"gprsPPPrice").val();
-        possetforselectedpoint['baseCount'] = jQuery("#"+prevPanelId+"baseCount").val();
+        possetforselectedpoint['gprsPricePreferencyjna'] = jQuery("#"+prevPanelId+"gprsPricePreferencyjna").val();
+        possetforselectedpoint['gprsPPPricePreferencyjna'] = jQuery("#"+prevPanelId+"gprsPPPricePreferencyjna").val();
     }
 
     if (Object.keys(technicalinformation).length == 0) {
@@ -310,17 +325,13 @@ function setupNewPointPanelData(prefix, ppid, pid) {
     }
 
     if (Object.keys(additionalequipment).length == 0) {
-        additionalequipment['pinPadCount'] = jQuery("#"+prevPanelId+"pinPadCount").val();
-        additionalequipment['pinPadPrice'] = jQuery("#"+prevPanelId+"pinPadPrice").val();
+        additionalequipment['bazaCount'] = jQuery("#"+prevPanelId+"bazaCount").val();
         additionalequipment['routerCount'] = jQuery("#"+prevPanelId+"routerCount").val();
-        additionalequipment['routerPrice'] = jQuery("#"+prevPanelId+"routerPrice").val();
         additionalequipment['cardReaderCount'] = jQuery("#"+prevPanelId+"cardReaderCount").val();
-        additionalequipment['cardReaderPrice'] = jQuery("#"+prevPanelId+"cardReaderPrice").val();
+        additionalequipment['simCardCount'] = jQuery("#"+prevPanelId+"simCardCount").val();
+        additionalequipment['simCardType'] = jQuery("#"+prevPanelId+"simCardType").val();
         additionalequipment['otherAdditionalDevice'] = jQuery("#"+prevPanelId+"otherAdditionalDevice").val();
-        additionalequipment['otherAdditionalDeviceSsl'] = jQuery("#"+prevPanelId+"otherAdditionalDeviceSsl").prop("checked");
-        additionalequipment['otherAdditionalDeviceGprs'] = jQuery("#"+prevPanelId+"otherAdditionalDeviceGprs").prop("checked");
         additionalequipment['otherAdditionalDeviceCount'] = jQuery("#"+prevPanelId+"otherAdditionalDeviceCount").val();
-        additionalequipment['otherAdditionalDevicePrice'] = jQuery("#"+prevPanelId+"otherAdditionalDevicePrice").val();
     }
 
     jQuery("#"+panelId+"nip").val(nip).keyup();
@@ -340,27 +351,43 @@ function setupNewPointPanelData(prefix, ppid, pid) {
             jQuery("#"+panelId+"dialupPPCount").val(possetforselectedpoint['dialupPPCount']);
             jQuery("#"+panelId+"dialupPrice").val(possetforselectedpoint['dialupPrice']);
             jQuery("#"+panelId+"dialupPPPrice").val(possetforselectedpoint['dialupPPPrice']);
+            jQuery("#"+panelId+"dialupPricePreferencyjna").val(possetforselectedpoint['dialupPricePreferencyjna']);
+            jQuery("#"+panelId+"dialupPPPricePreferencyjna").val(possetforselectedpoint['dialupPPPricePreferencyjna']);
+
             jQuery("#"+panelId+"possetforselectedpointVpnType").val(possetforselectedpoint['possetforselectedpointVpnType']);
             jQuery("#"+panelId+"vpnCount").val(possetforselectedpoint['vpnCount']);
             jQuery("#"+panelId+"vpnPPCount").val(possetforselectedpoint['vpnPPCount']);
             jQuery("#"+panelId+"vpnPrice").val(possetforselectedpoint['vpnPrice']);
             jQuery("#"+panelId+"vpnPPPrice").val(possetforselectedpoint['vpnPPPrice']);
+            jQuery("#"+panelId+"vpnPricePreferencyjna").val(possetforselectedpoint['vpnPricePreferencyjna']);
+            jQuery("#"+panelId+"vpnPPPricePreferencyjna").val(possetforselectedpoint['vpnPPPricePreferencyjna']);
+
             jQuery("#"+panelId+"possetforselectedpointSslType").val(possetforselectedpoint['possetforselectedpointSslType']);
             jQuery("#"+panelId+"sslCount").val(possetforselectedpoint['sslCount']);
             jQuery("#"+panelId+"sslPPCount").val(possetforselectedpoint['sslPPCount']);
             jQuery("#"+panelId+"sslPrice").val(possetforselectedpoint['sslPrice']);
             jQuery("#"+panelId+"sslPPPrice").val(possetforselectedpoint['sslPPPrice']);
+            jQuery("#"+panelId+"sslPricePreferencyjna").val(possetforselectedpoint['sslPricePreferencyjna']);
+            jQuery("#"+panelId+"sslPPPricePreferencyjna").val(possetforselectedpoint['sslPPPricePreferencyjna']);
+
             jQuery("#"+panelId+"possetforselectedpointWifiType").val(possetforselectedpoint['possetforselectedpointWifiType']);
             jQuery("#"+panelId+"wifiCount").val(possetforselectedpoint['wifiCount']);
-            jQuery("#"+panelId+"wifiPPCount").val(possetforselectedpoint['wifiPPCount']);
             jQuery("#"+panelId+"wifiPrice").val(possetforselectedpoint['wifiPrice']);
-            jQuery("#"+panelId+"wifiPPPrice").val(possetforselectedpoint['wifiPPPrice']);
+            jQuery("#"+panelId+"wifiPricePreferencyjna").val(possetforselectedpoint['wifiPricePreferencyjna']);
+
             jQuery("#"+panelId+"possetforselectedpointGprsType").val(possetforselectedpoint['possetforselectedpointGprsType']);
             jQuery("#"+panelId+"gprsCount").val(possetforselectedpoint['gprsCount']);
             jQuery("#"+panelId+"gprsPPCount").val(possetforselectedpoint['gprsPPCount']);
             jQuery("#"+panelId+"gprsPrice").val(possetforselectedpoint['gprsPrice']);
             jQuery("#"+panelId+"gprsPPPrice").val(possetforselectedpoint['gprsPPPrice']);
-            jQuery("#"+panelId+"baseCount").val(possetforselectedpoint['baseCount']);
+            jQuery("#"+panelId+"gprsPricePreferencyjna").val(possetforselectedpoint['gprsPricePreferencyjna']);
+            jQuery("#"+panelId+"gprsPPPricePreferencyjna").val(possetforselectedpoint['gprsPPPricePreferencyjna']);
+
+            jQuery("#"+panelId+"possetforselectedpointPinpadType").val(possetforselectedpoint['possetforselectedpointPinpadType']);
+            jQuery("#"+panelId+"pinpadCount").val(possetforselectedpoint['pinpadCount']);
+            jQuery("#"+panelId+"pinpadPrice").val(possetforselectedpoint['pinpadPrice']);
+            jQuery("#"+panelId+"pinpadPricePreferencyjna").val(possetforselectedpoint['pinpadPricePreferencyjna']);
+
             jQuery("#"+panelId+"possetforselectedpointSameForEveryPoint").prop("checked", true);
             jQuery("#"+panelId+"possetforselectedpointSameForEveryPoint").prop("disabled", true);
         }
@@ -393,17 +420,13 @@ function setupNewPointPanelData(prefix, ppid, pid) {
         }
 
         if (jQuery("#"+prevPanelId+"additionalequipmentSameForEveryPoint").is(':checked')) {
-            jQuery("#"+panelId+"pinPadCount").val(additionalequipment['pinPadCount']);
-            jQuery("#"+panelId+"pinPadPrice").val(additionalequipment['pinPadPrice']);
+            jQuery("#"+panelId+"bazaCount").val(additionalequipment['bazaCount']);
             jQuery("#"+panelId+"routerCount").val(additionalequipment['routerCount']);
-            jQuery("#"+panelId+"routerPrice").val(additionalequipment['routerPrice']);
             jQuery("#"+panelId+"cardReaderCount").val(additionalequipment['cardReaderCount']);
-            jQuery("#"+panelId+"cardReaderPrice").val(additionalequipment['cardReaderPrice']);
+            jQuery("#"+panelId+"simCardCount").val(additionalequipment['simCardCount']);
+            jQuery("#"+panelId+"simCardType").val(additionalequipment['simCardType']);
             jQuery("#"+panelId+"otherAdditionalDevice").val(additionalequipment['otherAdditionalDevice']);
-            jQuery("#"+panelId+"otherAdditionalDeviceSsl").prop("checked", additionalequipment['otherAdditionalDeviceSsl']);
-            jQuery("#"+panelId+"otherAdditionalDeviceGprs").prop("checked", additionalequipment['otherAdditionalDeviceGprs']);
             jQuery("#"+panelId+"otherAdditionalDeviceCount").val(additionalequipment['otherAdditionalDeviceCount']);
-            jQuery("#"+panelId+"otherAdditionalDevicePrice").val(additionalequipment['otherAdditionalDevicePrice']);
             jQuery("#"+panelId+"additionalequipmentSameForEveryPoint").prop("checked", true);
             jQuery("#"+panelId+"additionalequipmentSameForEveryPoint").prop("disabled", true);
         }
@@ -435,6 +458,12 @@ function setupNewPointPanelData(prefix, ppid, pid) {
         gprsType.closest('tr').find('input.float-number').removeAttr('value');
     }
 
+    if(gprsType.val() === ""){
+        setRequiredForSimCardForPanelId(false, panelId)
+    } else {
+        setRequiredForSimCardForPanelId(true, panelId)
+    }
+
     verifyBaseVisibility(gprsType.val(),panelId)
 }
 
@@ -450,6 +479,16 @@ function verifyBaseVisibility(value, panelId){
         $j('tr[name="'+str+'.trBase"]').hide()
         $j('input[name="'+str+'.gprsPPIlosc"]').removeAttr("readonly")
         $j('input[name="'+str+'.gprsPPCena"]').removeAttr("readonly")
+    }
+}
+
+function setRequiredForSimCardForPanelId(isRequired, panelId){
+    if(isRequired){
+        jQuery("#"+panelId+"simCardType").attr("required", true);
+        jQuery("#"+panelId+"simCardCount").attr("required", true);
+    } else {
+        jQuery("#"+panelId+"simCardType").removeAttr("required");
+        jQuery("#"+panelId+"simCardCount").removeAttr("required");
     }
 }
 

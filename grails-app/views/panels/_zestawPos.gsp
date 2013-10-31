@@ -32,7 +32,7 @@
                              class="half-width integer-number"/> szt.</td>
             <td><g:textField name="${panelType}[${id}].dialupPPIlosc"
                              id="${panelType}[${id}].dialupPPCount"
-                             value="${pointData?.dialupPPIlosc}" 
+                             value="${pointData?.dialupPPIlosc}" readonly="readonly"
                              class="half-width integer-number"/> PP. szt.</td>
 
             <td><eumowy:textField name="${panelType}[${id}].dialupCena"
@@ -44,7 +44,7 @@
             <td><eumowy:textField name="${panelType}[${id}].dialupPPCena"
                              id="${panelType}[${id}].dialupPPPrice"
                              value="${pointData?.dialupPPCena}" 
-                             validatable="${pointData}"
+                             validatable="${pointData}" readonly="readonly"
                              validateField="dialupPPCena"
                              class="half-width float-number normal-price"/> zł.</td>
             <td><eumowy:textField name="${panelType}[${id}].dialupCenaPreferencyjna"
@@ -55,7 +55,7 @@
                              class="half-width float-number pref-price"/> zł.</td>
             <td><eumowy:textField name="${panelType}[${id}].dialupPPCenaPreferencyjna"
                              id="${panelType}[${id}].dialupPPPricePreferencyjna"
-                             value="${pointData?.dialupPPCenaPreferencyjna}" 
+                             value="${pointData?.dialupPPCenaPreferencyjna}" readonly="readonly"
                              class="half-width float-number pref-price"/> zł.</td>
         </tr>
         <tr>
@@ -72,7 +72,7 @@
                              class="half-width integer-number"/> szt.</td>
             <td><g:textField name="${panelType}[${id}].vpnPPIlosc"
                              id="${panelType}[${id}].vpnPPCount"
-                             value="${pointData?.vpnPPIlosc}" 
+                             value="${pointData?.vpnPPIlosc}" readonly="readonly"
                              class="half-width integer-number"/> PP. szt.</td>
 
             <td><eumowy:textField name="${panelType}[${id}].vpnCena"
@@ -85,7 +85,7 @@
                              id="${panelType}[${id}].vpnPPPrice"
                              value="${pointData?.vpnPPCena}" 
                              validatable="${pointData}"
-                             validateField="vpnPPCena"
+                             validateField="vpnPPCena" readonly="readonly"
                              class="half-width float-number normal-price"/> zł.</td>
 
             <td><eumowy:textField name="${panelType}[${id}].vpnCenaPreferencyjna"
@@ -98,7 +98,7 @@
                              id="${panelType}[${id}].vpnPPPricePreferencyjna"
                              value="${pointData?.vpnPPCenaPreferencyjna}" 
                              validatable="${pointData}"
-                             validateField="vpnPPCenaPreferencyjna"
+                             validateField="vpnPPCenaPreferencyjna" readonly="readonly"
                              class="half-width float-number pref-price"/> zł.</td>
         </tr>
         <tr>
@@ -115,7 +115,7 @@
                              class="half-width integer-number"/> szt.</td>
             <td><g:textField name="${panelType}[${id}].sslPPIlosc"
                              id="${panelType}[${id}].sslPPCount"
-                             value="${pointData?.sslPPIlosc}" 
+                             value="${pointData?.sslPPIlosc}" readonly="readonly"
                              class="half-width integer-number"/> PP. szt.</td>
             <td><eumowy:textField name="${panelType}[${id}].sslCena"
                              id="${panelType}[${id}].sslPrice"
@@ -126,7 +126,7 @@
             <td><eumowy:textField name="${panelType}[${id}].sslPPCena"
                              id="${panelType}[${id}].sslPPPrice"
                              value="${pointData?.sslPPCena}" 
-                             validatable="${pointData}"
+                             validatable="${pointData}" readonly="readonly"
                              validateField="sslPPCena"
                              class="half-width float-number normal-price"/> zł.</td>
 
@@ -139,7 +139,7 @@
             <td><eumowy:textField name="${panelType}[${id}].sslPPCenaPreferencyjna"
                              id="${panelType}[${id}].sslPPPricePreferencyjna"
                              value="${pointData?.sslPPCenaPreferencyjna}" 
-                             validatable="${pointData}" 
+                             validatable="${pointData}" readonly="readonly"
                              validateField="sslPPCenaPreferencyjna"
                              class="half-width float-number pref-price"/> zł.</td>
         </tr>
@@ -149,7 +149,7 @@
                                      id="${panelType}[${id}].possetforselectedpointGprsType"
                                      name="${panelType}[${id}].gprsTyp" from="[]"
                                      valueMessagePrefix="" value="${pointData?.gprsTyp}"
-                                     style="width: 220px"
+                                     style="width: 220px" class="gprsType"
                                      onchange="setFieldPropertiesInDodatkoweWyposazenie(this, this.value)"
 
             /></td>
@@ -160,7 +160,7 @@
                              class="half-width integer-number"/> szt.</td>
             <td><g:textField name="${panelType}[${id}].gprsPPIlosc"
                              id="${panelType}[${id}].gprsPPCount"
-                             value="${pointData?.gprsPPIlosc}" 
+                             value="${pointData?.gprsPPIlosc}" readonly="readonly"
                              class="half-width integer-number"/> PP. szt.</td>
 
             <td><eumowy:textField name="${panelType}[${id}].gprsCena"
@@ -173,7 +173,7 @@
                              id="${panelType}[${id}].gprsPPPrice"
                              value="${pointData?.gprsPPCena}" 
                              validatable="${pointData}" 
-                             validateField="gprsPPCena"
+                             validateField="gprsPPCena" readonly="readonly"
                              class="half-width float-number normal-price"/> zł.</td>
 
             <td><eumowy:textField name="${panelType}[${id}].gprsCenaPreferencyjna"
@@ -183,7 +183,7 @@
             <td><eumowy:textField name="${panelType}[${id}].gprsPPCenaPreferencyjna"
                              id="${panelType}[${id}].gprsPPPricePreferencyjna"
                              value="${pointData?.gprsPPCenaPreferencyjna}" 
-                             validatable="${pointData}" 
+                             validatable="${pointData}" readonly="readonly"
                              validateField="gprsPPCenaPreferencyjna"
                              class="half-width float-number pref-price"/> zł.</td>
         </tr>

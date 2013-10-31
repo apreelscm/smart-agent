@@ -32,7 +32,7 @@ class DictionaryService {
     }
 
     def getPosTypeComboBox(def nip, def medium) {
-        cbdService.getPosTypes(DICTIONARY_PATH + GET_POS_TYPE_COMBOBOX, nip, medium)
+        cbdService.getPosTypes(DICTIONARY_PATH + GET_POS_TYPE_COMBOBOX, medium)
     }
 
     def getCbdPointsComboBox(def nip) {

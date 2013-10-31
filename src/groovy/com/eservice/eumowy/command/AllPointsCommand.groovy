@@ -12,11 +12,10 @@ class AllPointsCommand implements Serializable {
 	String nip
     Integer liczbaPos
     Boolean czyWybranyZakresUruchomienia
-//	Boolean tytulPlatnosci
 	Boolean systemKasowy
 	Boolean uta
 	Boolean czyWybranyAkceptacjaKart
-	
+
 	def setNazwa(String value) {
 		nazwa = formatProperty(value)
 	}
@@ -56,7 +55,6 @@ class AllPointsCommand implements Serializable {
 	}
 	
 	static constraints = {
-//		tytulPlatnosci(nullable:true)
 		systemKasowy(nullable:true)
 		uta(nullable:true)
 		czyWybranyAkceptacjaKart(nullable:true)

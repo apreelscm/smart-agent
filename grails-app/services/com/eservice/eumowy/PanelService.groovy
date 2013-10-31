@@ -318,17 +318,6 @@ class PanelService {
     }
 
     def getOsobaUprawnionaDoPodpisaniaUmowy(ProcessCommand cmd, def calc ){
-
-        /*  def osoba1 = cbdService.getOsoba1UprawnionaDoPodpisaniaUmowy(cmd.nip);
-          cmd.reprezentant1Tytul =  osoba1.tytul
-          cmd.reprezentant1Imie = osoba1.imie
-          cmd.reprezentant1Nazwisko = osoba1.nazwisko
-
-          def osoba2 = cbdService.getOsoba2UprawnionaDoPodpisaniaUmowy(cmd.nip);
-          cmd.reprezentant2Tytul = osoba2.tytul
-          cmd.reprezentant2Imie = osoba2.imie
-          cmd.reprezentant2Nazwisko = osoba2.nazwisko*/
-
         cmd.reprezentant1Tytul = nullify(cmd.reprezentant1Tytul)
         cmd.reprezentant1Imie = nullify(cmd.reprezentant1Imie)
         cmd.reprezentant1Nazwisko = nullify(cmd.reprezentant1Nazwisko)
@@ -594,47 +583,25 @@ class PanelService {
     }
 
     def getZestawPosOdplatneUzywanie(ProcessCommand cmd, def calc ) {
-        cmd.isZestawPosOdplatneUzywanieShown = nullify(cmd.isZestawPosOdplatneUzywanieShown)
-        cmd.oplPOSDialUpTyp = cmd.oplPOSDialUpTyp ?: calculatorService.getCalcProperty(calc,"TYP_DIALUP") //K RW
-        cmd.oplPOSDialUpIlosc = nullify(cmd.oplPOSDialUpIlosc)
-        cmd.oplPOSDialUpIloscPP = nullify(cmd.oplPOSDialUpIloscPP)
-        cmd.oplPOSDialUpNormalneMies =  setAtLeastAs(cmd.oplPOSDialUpNormalneMies,calculatorService.getCalcProperty(calc,"TYP_DIALUP_TERM_CENA"))
-        cmd.oplPOSDialUpNormalnePP =  setAtLeastAs(cmd.oplPOSDialUpNormalnePP,calculatorService.getCalcProperty(calc,"TYP_DIALUP_PP_CENA"))
-        cmd.oplPOSDialUpPreferencyjneMies =  setAtLeastAs(cmd.oplPOSDialUpPreferencyjneMies,calculatorService.getCalcProperty(calc,"TYP_DIALUP_TERM_CENA"))
-        cmd.oplPOSDialUpPreferencyjnePP =  setAtLeastAs(cmd.oplPOSDialUpPreferencyjnePP,calculatorService.getCalcProperty(calc,"TYP_DIALUP_PP_CENA"))
+        cmd.isOdplatneUzywanieShown = nullify(cmd.isOdplatneUzywanieShown)
+        cmd.odplatneUzywanie = nullify(cmd.odplatneUzywanie)
 
-        cmd.oplPOSVPNTyp = cmd.oplPOSVPNTyp ?: calculatorService.getCalcProperty(calc,"TYP_VPN") //K RW
-        cmd.oplPOSVPNIlosc =  nullify(cmd.oplPOSVPNIlosc)
-        cmd.oplPOSVPNIloscPP =  nullify(cmd.oplPOSVPNIloscPP)
-        cmd.oplPOSVPNNormalneMies =  setAtLeastAs(cmd.oplPOSVPNNormalneMies ,calculatorService.getCalcProperty(calc,"TYP_VPN_TERM_CENA"))
-        cmd.oplPOSVPNNormalnePP =  setAtLeastAs(cmd.oplPOSVPNNormalnePP ,calculatorService.getCalcProperty(calc,"TYP_VPN_PP_CENA"))
-        cmd.oplPOSVPNPreferencyjneMies =  setAtLeastAs(cmd.oplPOSVPNPreferencyjneMies ,calculatorService.getCalcProperty(calc,"TYP_VPN_TERM_CENA"))
-        cmd.oplPOSVPNPreferencyjnePP =  setAtLeastAs(cmd.oplPOSVPNPreferencyjnePP ,calculatorService.getCalcProperty(calc,"TYP_VPN_PP_CENA"))
+        def result = cbdService.getTerminalPricesAndCounts(cmd.nip)
+        cmd.odplatneUzywanieLiczbaTerminali = result?.ile ?: ""
+        cmd.odplatneUzywanieCenaTerminal = result?.top ?: ""
+        //TODO - skad to brac
+        cmd.odplatneUzywanieCenaPinpad = ""
 
-        cmd.oplPOSSSLTyp = cmd.oplPOSSSLTyp ?: calculatorService.getCalcProperty(calc,"TYP_SSL") //K RW
-        cmd.oplPOSSSLIlosc =  nullify(cmd.oplPOSSSLIlosc)
-        cmd.oplPOSSSLIloscPP =  nullify(cmd.oplPOSSSLIloscPP)
-        cmd.oplPOSSSLNormalneMies =  setAtLeastAs(cmd.oplPOSSSLNormalneMies ,calculatorService.getCalcProperty(calc,"TYP_SSL_TERM_CENA"))
-        cmd.oplPOSSSLNormalnePP =  setAtLeastAs(cmd.oplPOSSSLNormalnePP ,calculatorService.getCalcProperty(calc,"TYP_SSL_PP_CENA"))
-        cmd.oplPOSSSLPreferencyjneMies =  setAtLeastAs(cmd.oplPOSSSLPreferencyjneMies ,calculatorService.getCalcProperty(calc,"TYP_SSL_TERM_CENA"))
-        cmd.oplPOSSSLPreferencyjnePP =  setAtLeastAs(cmd.oplPOSSSLPreferencyjnePP ,calculatorService.getCalcProperty(calc,"TYP_SSL_PP_CENA"))
 
-        cmd.oplPOSWiFiTyp = cmd.oplPOSWiFiTyp ?: calculatorService.getCalcProperty(calc,"TYP_WIFI") //K RW
-        cmd.oplPOSWiFiIlosc =  nullify(cmd.oplPOSWiFiIlosc)
-        cmd.oplPOSWiFiIloscPP = nullify(cmd.oplPOSWiFiIloscPP)
-        cmd.oplPOSWiFiNormalneMies =  setAtLeastAs(cmd.oplPOSWiFiNormalneMies ,calculatorService.getCalcProperty(calc,"TYP_WIFI_TERM_CENA"))
-        cmd.oplPOSWiFiNormalnePP =  setAtLeastAs(cmd.oplPOSWiFiNormalnePP ,calculatorService.getCalcProperty(calc,"TYP_WIFI_PP_CENA"))
-        cmd.oplPOSWiFiPreferencyjneMies =  setAtLeastAs(cmd.oplPOSWiFiPreferencyjneMies ,calculatorService.getCalcProperty(calc,"TYP_WIFI_TERM_CENA"))
-        cmd.oplPOSWiFiPreferencyjnePP =  setAtLeastAs(cmd.oplPOSWiFiPreferencyjnePP ,calculatorService.getCalcProperty(calc,"TYP_WIFI_PP_CENA"))
+        //TODO - pobrac dane z cbd
+        def result2 = cbdService.getHirePaymentByProcess(cmd.nip);
+        cmd.odpUzyTermSzt = result?.ile ?: ""
+        //powinno przyjsc cbd, gdy po stronie eService beda zaimplementowane zmiany
+        cmd.odpUzyPpSzt = ""
+        cmd.odpUzyTermMies = setAtLeastAs(cmd.odpUzyTermMies,calculatorService.getCalcProperty(calc,"CENA_NAJMU"))
+        //nie mniej niz z kalkulatora powinno byc
+        cmd.odpUzyPpMies = ""
 
-        cmd.oplPOSGPRSTyp = cmd.oplPOSGPRSTyp ?: calculatorService.getCalcProperty(calc,"TYP_GPRS") //K RW
-        cmd.oplPOSGPRSIlosc =  nullify(cmd.oplPOSGPRSIlosc)
-        cmd.oplPOSGPRSIloscPP =  nullify(cmd.oplPOSGPRSIloscPP)
-        cmd.oplPOSGPRSNormalneMies =  setAtLeastAs(cmd.oplPOSGPRSNormalneMies ,calculatorService.getCalcProperty(calc,"TYP_SSL_TERM_CENA"))
-        cmd.oplPOSGPRSNormalnePP =  setAtLeastAs(cmd.oplPOSGPRSNormalnePP ,calculatorService.getCalcProperty(calc,"TYP_GPRS_PP_CENA"))
-        cmd.oplPOSGPRSPreferencyjneMies =  setAtLeastAs(cmd.oplPOSGPRSPreferencyjneMies ,calculatorService.getCalcProperty(calc,"TYP_SSL_TERM_CENA"))
-        cmd.oplPOSGPRSPreferencyjnePP =  setAtLeastAs(cmd.oplPOSGPRSPreferencyjnePP ,calculatorService.getCalcProperty(calc,"TYP_GPRS_PP_CENA"))
-        cmd.oplPOSBaza = nullify(cmd.oplPOSBaza)
     }
 
     def nullify(def value){
@@ -670,20 +637,20 @@ class PanelService {
 	def setupPosDataFromCalc(PointCommand cmd, def calc) {
 		cmd.calc = calc
 
-		pointData.dialupCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_DIALUP_TERM_CENA"))
-		pointData.dialupPPCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_DIALUP_PP_CENA"))
+        cmd.dialupCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_DIALUP_TERM_CENA"))
+        cmd.dialupPPCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_DIALUP_PP_CENA"))
 
-		pointData.vpnCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_VPN_TERM_CENA"))
-		pointData.vpnPPCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_VPN_PP_CENA"))
+        cmd.vpnCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_VPN_TERM_CENA"))
+        cmd.vpnPPCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_VPN_PP_CENA"))
 
-		pointData.sslCena = toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_SSL_TERM_CENA"))
-		pointData.sslPPCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_SSL_PP_CENA"))
+        cmd.sslCena = toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_SSL_TERM_CENA"))
+        cmd.sslPPCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_SSL_PP_CENA"))
 
-		pointData.wifiCena = toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_WIFI_TERM_CENA"))
-		pointData.wifiPPCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_WIFI_PP_CENA"))
+        cmd.wifiCena = toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_WIFI_TERM_CENA"))
+        cmd.wifiPPCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_WIFI_PP_CENA"))
 
-		pointData.gprsCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_GPRS_TERM_CENA"))
-		pointData.gprsPPCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_GPRS_PP_CENA"))
+        cmd.gprsCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_GPRS_TERM_CENA"))
+        cmd.gprsPPCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_GPRS_PP_CENA"))
 	}
 
     private setSerwisZablokowany(ProcessCommand cmd, def calc, def serwisy){
