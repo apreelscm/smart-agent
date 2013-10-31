@@ -1,5 +1,5 @@
 --eUmowy_ext-240
-delete from signature_panel where panel_id = 44 and (signature_id = 2 or signature_id = 4 or signature_id = 8 or signature_id = 9);
+delete from signature_panel where panel_id = 44 and signature_id in (2, 4, 8, 9);
 insert into EUMOWY.SIGNATURE (id, version, active, name, signature_order, template_path, for_point, description) values (31, 0,1,'virtualZestawPosOdplatneUzywanie', -1, null, 0, 'Zestaw POS odplatne uzywanie - wymusza prezetacje panelu');
 insert into EUMOWY.SIGNATURE_PANEL (ID,VERSION,PANEL_ID,SIGNATURE_ID) values ('220','0','44','31');
 insert into EUMOWY.ACTIVITY_SIGNATURES (ID,VERSION,ACTIVITY_ID,MANDATORY,NUMBER_OF_LIST,SIGNATURE_ID) values ('51','0','6','1','0','31');
