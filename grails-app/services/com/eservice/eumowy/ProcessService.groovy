@@ -4,6 +4,7 @@ import com.eservice.eumowy.annotation.DateField
 import com.eservice.eumowy.annotation.Omit
 import com.eservice.eumowy.command.AllPointsCommand
 import com.eservice.eumowy.command.AllPosCommand
+import com.eservice.eumowy.command.HirePaymentCommand
 import com.eservice.eumowy.command.PointCommand
 import com.eservice.eumowy.command.ProcessCommand
 import com.eservice.eumowy.util.DateUtils
@@ -146,7 +147,10 @@ class ProcessService {
 		}
       //  process.save(flush:true)
 		cmd.allPoints?.removeAll { it.cbdId == -1 }
-		
+
+        cmd.hirePaymentsByPoint?.addAll(getHirePaymentByPointCommandList(cmd))
+        cmd.hirePaymentsByPos?.addAll(getHirePaymentByPosCommandList(cmd))
+
         prepareProcessCommand(cmd, calc,)
 	}
 
@@ -188,7 +192,10 @@ class ProcessService {
 			}
 		}
 		cmd.allPoses?.removeAll { it.tpsId == -1 }
-		
+
+        cmd.hirePaymentsByPoint = getHirePaymentByPointCommandList(cmd)
+        cmd.hirePaymentsByPos = getHirePaymentByPosCommandList(cmd)
+
         cmd.notes = process.notesToCoa
 		
         prepareProcessCommand(cmd, calc, cbdMethods)
@@ -495,6 +502,53 @@ class ProcessService {
 
             posesList.add(apc)
         }
+    }
+
+    def getHirePaymentByPointCommandList(def cmd) {
+        def hpcResult = []
+
+        def result = cbdService.getHirePaymentByPoint(cmd.nip)
+        result.each { GroovyRowResult row ->
+            HirePaymentCommand hpc = new HirePaymentCommand()
+            hpc.setCbdId(Integer.valueOf(row.get("point_id").toString()))
+            hpc.setName(row.get("nazwa_punktu").toString())
+            hpc.setAddress(row.get("adres_posadowienia").toString())
+            hpc.setType(row.get("typ"))
+            hpc.setTermCount(Integer.valueOf(row.get("ile").toString()))
+            hpc.setCurrentTermPayment(Double.valueOf(row.get("oplata_za_pos").toString()))
+            hpc.setIsChoosen(false)
+
+            //gdy dojdzie PP trzeba zapisac te dane tutaj
+//            hpc.setPpCount()
+//            hpc.setCurrentPpPayment()
+            hpcResult.add(hpc)
+        }
+        return hpcResult
+    }
+
+    def getHirePaymentByPosCommandList(def cmd) {
+        def hpcResult = []
+
+        def result = cbdService.getHirePaymentByPos(cmd.nip)
+        result.each { GroovyRowResult row ->
+            HirePaymentCommand hpc = new HirePaymentCommand()
+            hpc.setTpsId(Integer.valueOf(row.get("pos_id").toString()))
+            hpc.setPosNumber(row.get("tid").toString())
+            hpc.setCbdId(Integer.valueOf(row.get("point_id").toString()))
+            hpc.setName(row.get("nazwa_punktu").toString())
+            hpc.setAddress(row.get("adres_posadowienia").toString())
+            hpc.setType(row.get("rodzaj_terminala"))
+            hpc.setTermCount(Integer.valueOf(row.get("terminal_count").toString()))
+            hpc.setCurrentTermPayment(Double.valueOf(row.get("oplata_za_pos").toString()))
+            hpc.setIsChoosen(false)
+
+            //gdy dojdzie PP trzeba zapisac te dane tutaj
+//            hpc.setPpCount()
+//            hpc.setCurrentPpPayment()
+
+            hpcResult.add(hpc)
+        }
+        return hpcResult
     }
 
     def getPointsToAllPointsCommandList(def process, def cmd) {

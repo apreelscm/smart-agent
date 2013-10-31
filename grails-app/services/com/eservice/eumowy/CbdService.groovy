@@ -36,6 +36,10 @@ class CbdService {
 	private static final def SPRAWDZ_DZIALANIE = "sprawdzDzialanie"
     private static final def GET_NUMER_SPRZEDAZOWY = "getNumerSprzedazowy"
     private static final def CZY_GIFT = "czyGift"
+    private static final def GET_TERMINAL_PRICES_AND_COUNTS = "getTerminalPriceAndCountByNip"
+    private static final def GET_HIRE_PAYMENT_BY_POINT = "getHirePaymentByPoint"
+    private static final def GET_HIRE_PAYMENT_BY_POS = "getHirePaymentByPos"
+    private static final def GET_HIRE_PAYMENT_BY_PROCESS = "getHirePaymentByProcess"
 
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
     def findCalculatorByNip(def clientNip) {
@@ -213,6 +217,29 @@ class CbdService {
         return rowResult != null && rowResult.get("result") == 1
     }
 
+    @Cacheable(value="getTerminalPricesAndCounts")
+    @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
+    def getTerminalPricesAndCounts(def nip) {
+        return cbdDAO.selectOne(GET_TERMINAL_PRICES_AND_COUNTS, [nip: nip])
+    }
+
+    @Cacheable(value="getHirePaymentByPoint")
+    @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
+    def getHirePaymentByPoint(def nip) {
+        return cbdDAO.selectMany(GET_HIRE_PAYMENT_BY_POINT, [nip: nip])
+    }
+
+    @Cacheable(value="getHirePaymentByPos")
+    @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
+    def getHirePaymentByPos(def nip) {
+        return cbdDAO.selectMany(GET_HIRE_PAYMENT_BY_POS, [nip: nip])
+    }
+
+    @Cacheable(value="getHirePaymentByProcess")
+    @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
+    def getHirePaymentByProcess(def nip) {
+        return cbdDAO.selectMany(GET_HIRE_PAYMENT_BY_PROCESS, [nip: nip])
+    }
 
     /**
      * MOCK
