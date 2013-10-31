@@ -177,8 +177,8 @@ class CbdService {
 
     @Cacheable(value="getPosTypes")
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
-    def getPosTypes(def query, def clientNip, def medium) {
-        return cbdDAO.selectMany(query,[nip:clientNip, medium: medium]);
+    def getPosTypes(def query, def medium) {
+        return cbdDAO.selectMany(query,[medium: medium]);
     }
 
     @Cacheable(value="getCbdPoints")
