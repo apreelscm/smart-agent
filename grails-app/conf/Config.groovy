@@ -133,25 +133,6 @@ log4j = {
                 org.apache.log4j.Level.INFO
         )
 
-        environments {
-            test {
-                grails.resources.debug = true //refreshing css and js
-                grails {
-                    mail {
-                        host = "smtp.gmail.com"
-                        port = 465
-                        username = "apreel.eumowy@gmail.com"
-                        password = "apreel1234"
-                        props = ["mail.smtp.auth": "true",
-                                "mail.smtp.socketFactory.port": "465",
-                                "mail.smtp.socketFactory.class": "javax.net.ssl.SSLSocketFactory",
-                                "mail.smtp.socketFactory.fallback": "false",
-                                "mail.smtp.ssl.trust": "*"]
-                    }
-                }
-            }
-        }
-
         String logDirectory = "${System.getProperty('catalina.base') ?: '.'}/logs"
         println("catalina.base dir : "+logDirectory)
 
