@@ -3,7 +3,6 @@
     <meta name="layout" content="blank">
     <title><g:message code="subscription.title" /></title>
     <r:require module="jsignature" />
-    <r:require module="messi" />
 </head>
 <body>
 	<r:script>
