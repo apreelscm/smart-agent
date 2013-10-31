@@ -458,10 +458,10 @@ function setupNewPointPanelData(prefix, ppid, pid) {
         gprsType.closest('tr').find('input.float-number').removeAttr('value');
     }
 
-    if(gprsType === "Verifone Vx670 GPRS"){
-        setRequiredForSimCardForPanelId(true, panelId)
-    } else {
+    if(gprsType.val() === ""){
         setRequiredForSimCardForPanelId(false, panelId)
+    } else {
+        setRequiredForSimCardForPanelId(true, panelId)
     }
 
     verifyBaseVisibility(gprsType.val(),panelId)
