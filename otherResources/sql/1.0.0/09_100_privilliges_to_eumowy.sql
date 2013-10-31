@@ -62,11 +62,6 @@ grant select on PANEL_ADDITIONAL_INFO to EUMOWY_APP;
 grant select on SIGNATURE_ADDITIONAL_INFO to EUMOWY_APP;
 
 grant execute on GetKalkulatorData to EUMOWY_APP;
-grant execute on GetKalkulatorSerwis to EUMOWY_APP;
-grant execute on GetKalkulatorStawkaPlaska to EUMOWY_APP;
-grant execute on GetKalkulatorZero to EUMOWY_APP;
-grant execute on GetKalkulatorPrepaid to EUMOWY_APP;
-grant execute on GetKalkulatorPromocyjne to EUMOWY_APP;
 grant execute on GetKosztAmortyzacji to EUMOWY_APP;
 grant execute on split to EUMOWY_APP;
 GRANT EXECUTE ON kalkulator TO eumowy_app;

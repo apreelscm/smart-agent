@@ -135,21 +135,20 @@ CREATE TABLE EUMOWY.PROCESS_PANEL
   constraint PK_PROCESS_PANEL primary key (PROCESS_PANELS_ID,PANEL_ID)
 );
 
--- todo do weryfikacji not null
 create table EUMOWY.POINT (
   id number(12,0) not null,
   version number(2,0) not null,
   process_id number(12,0),
-  cbd_id number(10,0) not null,
-  nip varchar2(20 char) not null,
+  cbd_id number(10,0),
+  nip varchar2(20 char),
   name varchar2(120 char),
   pos_count number(10,0),
-  postal_code varchar2(10 char) not null,
-  city varchar2(120 char) not null,
-  home_number varchar2(20 char) not null,
-  flat_number varchar2(20 char) not null,
-  post_office varchar2(80 char) not null,
-  street varchar2(80 char) not null,
+  postal_code varchar2(10 char),
+  city varchar2(120 char),
+  home_number varchar2(20 char),
+  flat_number varchar2(20 char),
+  post_office varchar2(80 char),
+  street varchar2(80 char),
   payment_title number(1,0),
   cash_system number(1,0),
   uta number(1,0),
@@ -157,48 +156,47 @@ create table EUMOWY.POINT (
   is_selected_range number(1,0),
   constraint PK_POINT primary key (id));
 
--- todo do weryfikacji not null
 create table EUMOWY.POINT_DETAILS (
   id number(12,0) not null,
   version number(2,0) not null,
   point_id number(12,0) not null,
-  nip varchar2(20 char) not null,
-  mcc_code varchar2(20 char) not null,
-  terminal_count number(3,0) not null,
-  bank_account_number varchar2(40 char) not null,
-  bank_name varchar2(255 char) not null,
+  nip varchar2(20 char),
+  mcc_code varchar2(20 char),
+  terminal_count number(3,0),
+  bank_account_number varchar2(40 char),
+  bank_name varchar2(255 char),
   bank_id number(10,0),
-  contact_at_point_email varchar2(80 char) not null,
-  contact_addr_streettype varchar2(40 char) not null,
-  contact_at_point_fax varchar2(20 char) not null,
-  contact_at_point_title varchar2(20 char) not null,
-  contact_at_point_firstname varchar2(40 char) not null,
-  contact_at_point_lastname varchar2(80 char) not null,
-  contact_at_point_mobilephone varchar2(20 char) not null,
-  contact_at_point_phone varchar2(20 char) not null,
-  contact_addr_postalcode varchar2(20 char) not null,
-  contact_addr_home_number varchar2(20 char) not null,
-  contact_addr_flat_number varchar2(20 char) not null,
-  contact_addr_post_office varchar2(255 char) not null,
-  contact_addr_street varchar2(120 char) not null,
-  contact_addr_city varchar2(80 char) not null,
-  name_print_posterminal varchar2(255 char) not null,
-  name_search_engine varchar2(255 char) not null,
-  business_care number(6,2) not null,
-  service_care1 number(6,2) not null,
-  service_care2 number(6,2) not null,
-  service_care3 number(6,2) not null,
+  contact_at_point_email varchar2(80 char),
+  contact_addr_streettype varchar2(40 char),
+  contact_at_point_fax varchar2(20 char),
+  contact_at_point_title varchar2(20 char),
+  contact_at_point_firstname varchar2(40 char),
+  contact_at_point_lastname varchar2(80 char),
+  contact_at_point_mobilephone varchar2(20 char),
+  contact_at_point_phone varchar2(20 char),
+  contact_addr_postalcode varchar2(20 char),
+  contact_addr_home_number varchar2(20 char),
+  contact_addr_flat_number varchar2(20 char),
+  contact_addr_post_office varchar2(255 char),
+  contact_addr_street varchar2(120 char),
+  contact_addr_city varchar2(80 char),
+  name_print_posterminal varchar2(255 char),
+  name_search_engine varchar2(255 char),
+  business_care number(6,2),
+  service_care1 number(6,2),
+  service_care2 number(6,2),
+  service_care3 number(6,2),
   ph_gain varchar2(12 char),
-  print_addr_postal_code varchar2(20 char) not null,
-  print_addr_city varchar2(80 char) not null,
-  print_addr_home_number varchar2(20 char) not null,
-  print_addr_flat_number varchar2(20 char) not null,
-  print_addr_post_office varchar2(255 char) not null,
-  print_addr_street varchar2(120 char) not null,
-  print_addressstreet_type varchar2(40 char) not null,
-  print_otherdata_terminal1 varchar2(255 char) not null,
-  print_otherdata_terminal2 varchar2(255 char) not null,
-  bussiness_type_in_practice varchar2(255 char) not null,
+  print_addr_postal_code varchar2(20 char),
+  print_addr_city varchar2(80 char),
+  print_addr_home_number varchar2(20 char),
+  print_addr_flat_number varchar2(20 char),
+  print_addr_post_office varchar2(255 char),
+  print_addr_street varchar2(120 char),
+  print_addressstreet_type varchar2(40 char),
+  print_otherdata_terminal1 varchar2(255 char),
+  print_otherdata_terminal2 varchar2(255 char),
+  bussiness_type_in_practice varchar2(255 char),
   constraint PK_POINT_DETAILS primary key (id));
 
 create table EUMOWY.POS (
@@ -214,7 +212,6 @@ create table EUMOWY.POS (
   pos_datas_idx number(10,0),
   constraint PK_POS primary key (id));
 
--- todo do weryfikacji not null
 create table EUMOWY.POS_DETAILS (
   id number(12,0) not null,
   version number(2,0) not null,
@@ -268,8 +265,8 @@ create table EUMOWY.POS_DETAILS (
   ssl_type varchar2(60 char),
   tele_kodzik number(1,0),
   tele_pompka number(1,0),
-  dynamicdevicesupp_title varchar2(255 char) not null,
-  statdevicesupp_title varchar2(255 char) not null,
+  dynamicdevicesupp_title varchar2(255 char),
+  statdevicesupp_title varchar2(255 char),
   vpn_price number(8,2),
   vpn_count number(6,0),
   vpn_pp_price number(8,2),
@@ -288,6 +285,23 @@ create table EUMOWY.POS_DETAILS (
   statdevicesupp_contactsurname varchar2(255 char),
   additional_notes varchar2(1000 char),
   constraint PK_POS_DETAILS primary key (id));
+
+
+-- NEW COLUMNS
+alter table EUMOWY.POS_DETAILS add (
+  dialup_price_pref number(8,2),
+  dialup_pp_price_pref number(8,2),
+  vpn_price_pref number(8,2),
+  vpn_pp_price_pref number(8,2),
+  ssl_price_pref number(8,2),
+  ssl_pp_price_pref number(8,2),
+  gprs_price_pref number(8,2),
+  gprs_pp_price_pref number(8,2),
+  pin_pad_price_pref number(8,2),
+  wifi_price_pref number(8,2),
+  sim_card_type varchar2(255 char),
+  sim_card_count number(10,0)
+);
 
 create table EUMOWY.PROCESS (
   id number(12,0) not null,
@@ -322,14 +336,6 @@ create table EUMOWY.SIGNATURE (
   active number(1,0) not null,
   name varchar2(255 char) not null,
   for_point number(1,0) not null,
-  ph_subscription_page_number number(6,0),
-  ph_subscriptionx number(6,0),
-  ph_subscriptiony number(6,0),
-  subscription_page_number number(6,0),
-  subscriptionx number(6,0),
-  subscriptiony number(6,0),
-  management_subscription1 varchar2(255 char) not null,
-  management_subscription2 varchar2(255 char) not null,
   template_path varchar2(255 char) not null,
   description varchar2(1024 char),
   signature_order number(6,0) not null,
@@ -381,10 +387,15 @@ create table EUMOWY.PROCESS_SUBSCRIPTION (
   constraint PK_PROCESS_SUBSCRIPTION primary key (process_subscriptions_id,subscription_id));
 
 CREATE TABLE EUMOWY.KALKULATORTYPURZADZEN (
-    TYP VARCHAR2(50 BYTE),
-    SLOWNIK VARCHAR2(50 BYTE),
-    SMT_ID NUMBER(10,0),
-    ID NUMBER(10,0));
+  TYP        VARCHAR2(50 BYTE),
+  SLOWNIK    VARCHAR2(50 BYTE),
+  SMT_ID     NUMBER(10,0),
+  ID         NUMBER(10,0) NOT NULL ENABLE,
+  MEDIUM     VARCHAR2(20 BYTE),
+  KALKULATOR VARCHAR2(50 BYTE),
+  DOMYSLNIE  NUMBER(*,0),
+  CONSTRAINT KALKULATORTYPURZADZEN_PK PRIMARY KEY ("ID")
+);
 
 CREATE TABLE EUMOWY.MAPOWANIEKALKULATORA (
   POLEKALKULATOR VARCHAR2(255 BYTE),
@@ -447,11 +458,8 @@ CREATE INDEX CLIENT_NIP_IDX ON EUMOWY.CLIENT(nip) TABLESPACE EUMOWY_I;
 CREATE INDEX DOCUMENT_SIGNATURE_ID_IDX ON EUMOWY.DOCUMENT(signature_id) TABLESPACE EUMOWY_I;
 CREATE INDEX DOCUMENT_PROCESS_ID_IDX ON EUMOWY.DOCUMENT(process_id) TABLESPACE EUMOWY_I;
 CREATE INDEX LOGS_LOGIN_IDX ON EUMOWY.LOGS(LOGIN) TABLESPACE EUMOWY_I;
---CREATE INDEX DOCUMENT_CONTENT_DOC_ID_IDX ON EUMOWY.DOCUMENT_CONTENT(document_id) TABLESPACE EUMOWY_I;
 CREATE INDEX POINT_PROCESS_ID_IDX ON EUMOWY.POINT(process_id) TABLESPACE EUMOWY_I;
---CREATE INDEX POINT_DETAILS_POINT_ID_IDX ON EUMOWY.POINT_DETAILS(point_id) TABLESPACE EUMOWY_I;
---CREATE INDEX POS_POINT_ID_IDX ON EUMOWY.POS(point_id) TABLESPACE EUMOWY_I;
---CREATE INDEX POS_DETAILS_POS_ID_IDX ON EUMOWY.POS_DETAILS(pos_id) TABLESPACE EUMOWY_I;
+CREATE INDEX POS_POINT_ID_IDX ON EUMOWY.POS(point_id) TABLESPACE EUMOWY_I;
 CREATE INDEX PROCESS_CLIENT_ID_IDX ON EUMOWY.PROCESS(client_id) TABLESPACE EUMOWY_I;
 CREATE INDEX PROCESS_DATA_PROCESS_ID_IDX ON EUMOWY.PROCESS_DATA(process_id) TABLESPACE EUMOWY_I;
 CREATE INDEX SIGNATURE_PANEL_PANEL_ID_IDX ON EUMOWY.SIGNATURE_PANEL(panel_id) TABLESPACE EUMOWY_I;
@@ -505,21 +513,8 @@ create sequence EUMOWY.APP_PARAMETERS_SEQ;
 create sequence EUMOWY.SUBSCRIPTION_DEFINITION_SEQ;
 
 -- TYPES
-CREATE OR REPLACE TYPE "EUMOWY"."DZIALANIE" as table of varchar2(4000);
 
--- NEW COLUMNS
-alter table EUMOWY.POS_DETAILS add (
-    dialup_price_pref number(8,2),
-    dialup_pp_price_pref number(8,2),
-    vpn_price_pref number(8,2),
-    vpn_pp_price_pref number(8,2),
-    ssl_price_pref number(8,2),
-    ssl_pp_price_pref number(8,2),
-    gprs_price_pref number(8,2),
-    gprs_pp_price_pref number(8,2),
-    pin_pad_price_pref number(8,2),
-    wifi_price_pref number(8,2),
-    sim_card_type varchar2(255 char),
-    sim_card_count number(10,0)
-)
+CREATE OR REPLACE TYPE EUMOWY.DZIALANIE as table of varchar2(4000);
+CREATE OR REPLACE TYPE EUMOWY.REKORDKALKULATOR is object (pole varchar2(50), wartosc varchar2(255));
+CREATE OR REPLACE TYPE EUMOWY.KALKULATOR is table of EUMOWY.REKORDKALKULATOR;
 

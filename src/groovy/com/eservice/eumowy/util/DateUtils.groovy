@@ -48,7 +48,7 @@ public class DateUtils {
 			date = new SimpleDateFormat(dateFormat).parse(dateStr)
         }
 		catch (Exception e) {
-            log.error "parseDate - Error parsing date string: " + dateStr + " with date format: " + dateFormat
+            log.info "parseDate - Error parsing date string: [" + dateStr + "] with date format: " + dateFormat
 			date = null
 		}
 		date
