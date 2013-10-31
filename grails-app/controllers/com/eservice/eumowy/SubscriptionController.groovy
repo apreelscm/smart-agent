@@ -12,10 +12,6 @@ class SubscriptionController {
 		
 	}
 	
-	def inlineview() {
-		
-	}
-	
 	def saveSubscription() {
 		
 		if (params.content.length() < 2000) {

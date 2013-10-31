@@ -65,7 +65,7 @@ insert into EUMOWY.PANEL (id, version, name, order_no) values (38, 0, 'siedzibaA
 --insert into EUMOWY.PANEL (id, version, name, order_no) values (41, 0, 'wyborDzialania','10');
 insert into EUMOWY.PANEL (id, version, name, order_no) values (42, 0, 'wykazPunktowAkceptujacychKartyPlatnicze','390');
 --insert into EUMOWY.PANEL (id, version, name, order_no) values (43, 0, 'zestawPos','170');
--- insert into EUMOWY.PANEL (id, version, name, order_no) values (44, 0, 'zestawPosOdplatneUzywanie','200');
+insert into EUMOWY.PANEL (id, version, name, order_no) values (44, 0, 'zestawPosOdplatneUzywanie','200');
 insert into EUMOWY.PANEL (id, version, name, order_no) values (46, 0, 'serwis','260');
 insert into EUMOWY.PANEL (id, version, name, order_no) values (47, 0, 'rachunekBankowyKlienta','470');
 insert into EUMOWY.PANEL (id, version, name, order_no) values (48, 0, 'oplataDCCZaUruchomienie','360');
@@ -392,7 +392,7 @@ Insert into EUMOWY.SIGNATURE_PANEL (ID,VERSION,PANEL_ID,SIGNATURE_ID) values ('6
 Insert into EUMOWY.SIGNATURE_PANEL (ID,VERSION,PANEL_ID,SIGNATURE_ID) values ('69','0','7','18');
 Insert into EUMOWY.SIGNATURE_PANEL (ID,VERSION,PANEL_ID,SIGNATURE_ID) values ('70','0','7','22');
 Insert into EUMOWY.SIGNATURE_PANEL (ID,VERSION,PANEL_ID,SIGNATURE_ID) values ('71','0','7','21');
--- Insert into EUMOWY.SIGNATURE_PANEL (ID,VERSION,PANEL_ID,SIGNATURE_ID) values ('185','0','44','9');
+Insert into EUMOWY.SIGNATURE_PANEL (ID,VERSION,PANEL_ID,SIGNATURE_ID) values ('185','0','44','9');
 Insert into EUMOWY.SIGNATURE_PANEL (ID,VERSION,PANEL_ID,SIGNATURE_ID) values ('74','0','9','2');
 Insert into EUMOWY.SIGNATURE_PANEL (ID,VERSION,PANEL_ID,SIGNATURE_ID) values ('75','0','10','21');
 Insert into EUMOWY.SIGNATURE_PANEL (ID,VERSION,PANEL_ID,SIGNATURE_ID) values ('77','0','12','8');
@@ -410,14 +410,14 @@ Insert into EUMOWY.SIGNATURE_PANEL (ID,VERSION,PANEL_ID,SIGNATURE_ID) values ('4
 Insert into EUMOWY.SIGNATURE_PANEL (ID,VERSION,PANEL_ID,SIGNATURE_ID) values ('22','0','31','11');
 Insert into EUMOWY.SIGNATURE_PANEL (ID,VERSION,PANEL_ID,SIGNATURE_ID) values ('105','0','26','22');
 Insert into EUMOWY.SIGNATURE_PANEL (ID,VERSION,PANEL_ID,SIGNATURE_ID) values ('187','0','17','9');
--- Insert into EUMOWY.SIGNATURE_PANEL (ID,VERSION,PANEL_ID,SIGNATURE_ID) values ('188','0','44','8');
+Insert into EUMOWY.SIGNATURE_PANEL (ID,VERSION,PANEL_ID,SIGNATURE_ID) values ('188','0','44','8');
 Insert into EUMOWY.SIGNATURE_PANEL (ID,VERSION,PANEL_ID,SIGNATURE_ID) values ('213','0','4','27');
 Insert into EUMOWY.SIGNATURE_PANEL (ID,VERSION,PANEL_ID,SIGNATURE_ID) values ('215','0','38','27');
 Insert into EUMOWY.SIGNATURE_PANEL (ID,VERSION,PANEL_ID,SIGNATURE_ID) values ('41','0','36','28');
 Insert into EUMOWY.SIGNATURE_PANEL (ID,VERSION,PANEL_ID,SIGNATURE_ID) values ('190','0','26','8');
 Insert into EUMOWY.SIGNATURE_PANEL (ID,VERSION,PANEL_ID,SIGNATURE_ID) values ('88','0','38','28');
 Insert into EUMOWY.SIGNATURE_PANEL (ID,VERSION,PANEL_ID,SIGNATURE_ID) values ('100','0','22','1');
--- Insert into EUMOWY.SIGNATURE_PANEL (ID,VERSION,PANEL_ID,SIGNATURE_ID) values ('192','0','44','4');
+Insert into EUMOWY.SIGNATURE_PANEL (ID,VERSION,PANEL_ID,SIGNATURE_ID) values ('192','0','44','4');
 Insert into EUMOWY.SIGNATURE_PANEL (ID,VERSION,PANEL_ID,SIGNATURE_ID) values ('216','0','30','27');
 Insert into EUMOWY.SIGNATURE_PANEL (ID,VERSION,PANEL_ID,SIGNATURE_ID) values ('218','0','50','30');
 Insert into EUMOWY.SIGNATURE_PANEL (ID,VERSION,PANEL_ID,SIGNATURE_ID) values ('219','0','51','30');
@@ -474,7 +474,7 @@ Insert into EUMOWY.SIGNATURE_PANEL (ID,VERSION,PANEL_ID,SIGNATURE_ID) values ('1
 Insert into EUMOWY.SIGNATURE_PANEL (ID,VERSION,PANEL_ID,SIGNATURE_ID) values ('161','0','38','18');
 Insert into EUMOWY.SIGNATURE_PANEL (ID,VERSION,PANEL_ID,SIGNATURE_ID) values ('162','0','38','22');
 Insert into EUMOWY.SIGNATURE_PANEL (ID,VERSION,PANEL_ID,SIGNATURE_ID) values ('163','0','38','21');
--- Insert into EUMOWY.SIGNATURE_PANEL (ID,VERSION,PANEL_ID,SIGNATURE_ID) values ('165','0','44','2');
+Insert into EUMOWY.SIGNATURE_PANEL (ID,VERSION,PANEL_ID,SIGNATURE_ID) values ('165','0','44','2');
 Insert into EUMOWY.SIGNATURE_PANEL (ID,VERSION,PANEL_ID,SIGNATURE_ID) values ('164','0','38','19');
 Insert into EUMOWY.SIGNATURE_PANEL (ID,VERSION,PANEL_ID,SIGNATURE_ID) values ('199','0','47','15');
 Insert into EUMOWY.SIGNATURE_PANEL (ID,VERSION,PANEL_ID,SIGNATURE_ID) values ('169','0','46','8');
