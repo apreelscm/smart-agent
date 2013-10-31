@@ -36,7 +36,7 @@ class PdfPosMapper extends AbstractPdfMapper{
         println 'Koncze Mapowac!!!!'
     }
 
-    public def mapPoses(def poses){
+    public def mapPosesNotFromCBD(def poses){
         def data = [:]
         def resultNormalMap = new TreeMap<Integer, BigDecimal>();
         def resultPrefMap = new TreeMap<Integer, BigDecimal>();
