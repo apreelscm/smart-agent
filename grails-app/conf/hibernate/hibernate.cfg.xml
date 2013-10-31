@@ -4,28 +4,22 @@
         'http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd'>
 
 <hibernate-configuration>
-
     <session-factory>
-
         <mapping resource='CbtSlTpsPrefix.hbm.xml'/>
         <mapping resource='CbtTerminalePos.hbm.xml'/>
         <mapping resource='CbtBanki.hbm.xml'/>
         <mapping resource='CbtTabeleWynagrodzen.hbm.xml'/>
         <mapping resource='CbtSlMccCms.hbm.xml'/>
         <mapping resource='CbtPorozumienia.hbm.xml'/>
-
         <mapping resource='CbtSlSygnaturyUmow.hbm.xml'/>
         <mapping resource='CbtAdresy.hbm.xml'/>
         <mapping resource='CbtUmowy.hbm.xml'/>
-
         <mapping resource='CbtSlPowiaty.hbm.xml'/>
         <mapping resource='CbtSlKomunikacje.hbm.xml'/>
         <mapping resource='CbtWersjeAplikacji.hbm.xml'/>
         <mapping resource='CbtAplikacje.hbm.xml'/>
-
         <mapping resource='CbtPracownicy.hbm.xml'/>
         <mapping resource='CbtPrzedstawicieleh.hbm.xml'/>
-
         <mapping resource='CbtStruktury.hbm.xml'/>
         <mapping resource='CbtKlienci.hbm.xml'/>
         <mapping resource='CbtCpSchematy.hbm.xml'/>
@@ -33,7 +27,6 @@
         <mapping resource='CbtCpCardplany.hbm.xml'/>
         <mapping resource='CbtSlModeleTerminali.hbm.xml'/>
         <mapping resource='CbtSlWojewodztwa.hbm.xml'/>
-
         <mapping resource='CbtSlGminy.hbm.xml'/>
         <mapping resource='CbtSlOkresy.hbm.xml'/>
         <mapping resource='CbtWynagrodzenia.hbm.xml'/>
@@ -63,7 +56,6 @@
         <mapping resource='CbtLgoKolekcjaLogo.hbm.xml'/>
         <mapping resource='CbtLgoSlownikAplikacji.hbm.xml'/>
         <mapping resource='CbtDokumenty.hbm.xml'/>
-
         <mapping resource='CbtStrukturaPrePaid.hbm.xml'/>
         <mapping resource='CbtObslugaPz.hbm.xml'/>
 
@@ -71,7 +63,5 @@
         <mapping resource='AdmUzytkownicy.hbm.xml'/>
         <mapping resource='AdmPatche.hbm.xml'/>
         <mapping resource='AdmRole.hbm.xml'/>
-
     </session-factory>
-
 </hibernate-configuration>
