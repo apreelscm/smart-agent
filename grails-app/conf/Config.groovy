@@ -1,7 +1,7 @@
 import com.apache.log4j.jdbc.EumowyJDBCAppender
 import grails.plugins.springsecurity.SecurityConfigType
 import org.apache.log4j.DailyRollingFileAppender
-import org.apache.log4j.jdbc.EumowyJDBCAppender
+import com.apache.log4j.jdbc.EumowyJDBCAppender
 import org.codehaus.groovy.grails.commons.ConfigurationHolder
 
 // locations to search for config files that get merged into the main config;

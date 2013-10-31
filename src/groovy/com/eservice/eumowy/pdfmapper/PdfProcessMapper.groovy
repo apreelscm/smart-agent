@@ -439,26 +439,26 @@ class PdfProcessMapper extends AbstractPdfMapper{
         }
     }
 
-    private mapIsZestawPosOdplatneUzywanieShownProcess(def data, def pd, def key, def value){
-        if (value != null && "tak".equals(value)){
-            def suffixes = ['A', 'B', 'C'];
+    private def mapIsOdplatneUzywanieShownProcess(def data, def pd, def key, def value){
+        if ( value != null && "tak".equals(value) && 'one_for_all_terminals'.equals(getFromProcessDataSet(pd, "odplatneUzywanie"))){
+            //mamy tylko jedna opcje wiec zapisujemy ja z suffixem 'A'
+            data.put("oplatyPOSIloscA", [getFromProcessDataSet(pd, "odpUzyTermSzt")] as String[]);
 
-            def resultNormalMap = new TreeMap<Integer, Integer>();
-            def resultPrefMap = new TreeMap<Integer, Integer>();
+            def sum = 0
 
-            addToPosMap(pd, resultNormalMap, 'oplPOSDialUpIlosc', 'oplPOSDialUpNormalneMies', 'oplPOSDialUpNormalnePP')
-            addToPosMap(pd, resultNormalMap, 'oplPOSVPNIlosc', 'oplPOSVPNNormalneMies', 'oplPOSVPNNormalnePP')
-            addToPosMap(pd, resultNormalMap, 'oplPOSSSLIlosc', 'oplPOSSSLNormalneMies', 'oplPOSSSLNormalnePP')
-            addToPosMap(pd, resultNormalMap, 'oplPOSWiFiIlosc', 'oplPOSWiFiNormalneMies', 'oplPOSWiFiNormalnePP')
-            addToPosMap(pd, resultNormalMap, 'oplPOSGPRSIlosc', 'oplPOSGPRSNormalneMies', 'oplPOSGPRSNormalnePP')
-            addToData(data, resultNormalMap, 'oplatyPOSIlosc', 'oplatyPOSCena', suffixes)
+            def termCount = convertToDouble(getFromProcessDataSet(pd, "odpUzyTermMies"));
+            if (termCount.isDigit && termCount.value>0) {
+                sum += termCount.value
+            }
 
-            addToPosMap(pd, resultPrefMap, 'oplPOSDialUpIlosc', 'oplPOSDialUpPreferencyjneMies', 'oplPOSDialUpPreferencyjnePP')
-            addToPosMap(pd, resultPrefMap, 'oplPOSVPNIlosc', 'oplPOSVPNPreferencyjneMies', 'oplPOSVPNPreferencyjnePP')
-            addToPosMap(pd, resultPrefMap, 'oplPOSSSLIlosc', 'oplPOSSSLPreferencyjneMies', 'oplPOSSSLPreferencyjnePP')
-            addToPosMap(pd, resultPrefMap, 'oplPOSWiFiIlosc', 'oplPOSWiFiPreferencyjneMies', 'oplPOSWiFiPreferencyjnePP')
-            addToPosMap(pd, resultPrefMap, 'oplPOSGPRSIlosc', 'oplPOSGPRSPreferencyjneMies', 'oplPOSGPRSPreferencyjnePP')
-            addToData(data, resultPrefMap, 'oplatyPOSPrefIlosc', 'oplatyPOSPrefCena', suffixes)
+            def ppCount = convertToDouble(getFromProcessDataSet(pd, "odpUzyPpMies"));
+            if (ppCount.isDigit && ppCount.value>0) {
+                sum += ppCount.value
+            }
+
+            if (sum >0){
+                data.put("oplatyPOSCenaA", [sum] as String[]);
+            }
         }
     }
 
@@ -526,36 +526,6 @@ class PdfProcessMapper extends AbstractPdfMapper{
         setUpustDlaTypuDoladowania(data, process, key, value, "doladowania_tp")
     }
 
-    private def addToData(def data, def resultNormalMap, def countPdfFileName, def pricePdfFileName, def suffixes) {
-        resultNormalMap.eachWithIndex{ key, value, index ->
-            if (index < suffixes.size()){
-                data.put(pricePdfFileName+suffixes[index], [key.toString()] as String[])
-                data.put(countPdfFileName+suffixes[index], [value.toString()] as String[])
-            }
-        }
-    }
-
-    private def addToPosMap(def pd, def resultMap, def countKey, def normalPriceKey, def normalPricePPKey) {
-        def countResult = convertToInteger(getFromProcessDataSet(pd, countKey));
-
-        if (countResult.isDigit && countResult.value>0){
-            def priceResult = convertToInteger(getFromProcessDataSet(pd, normalPriceKey));
-            def pricePPResult = convertToInteger(getFromProcessDataSet(pd, normalPricePPKey));
-
-            def priceSum = 0;
-            if (priceResult.isDigit && priceResult.value>0){
-                priceSum+=priceResult.value
-            }
-            if (pricePPResult.isDigit && pricePPResult.value>0){
-                priceSum+=pricePPResult.value
-            }
-
-            if (priceSum>0){
-                resultMap.put(priceSum, countResult.value+=resultMap.containsKey(priceSum)?resultMap.get(priceSum):0)
-            }
-        }
-    }
-
     private def convertToInteger(def value){
         def resultInt
         try {
@@ -564,6 +534,16 @@ class PdfProcessMapper extends AbstractPdfMapper{
             return ["isDigit":false]
         }
         return ["isDigit":true, "value":resultInt]
+    }
+
+    private def convertToDouble(def value){
+        def resultDouble
+        try {
+            resultDouble = value.toDouble();
+        } catch (Exception e){
+            return ["isDigit":false]
+        }
+        return ["isDigit":true, "value":resultDouble]
     }
 
     //--------------------------------------------------------------------------------------------------
