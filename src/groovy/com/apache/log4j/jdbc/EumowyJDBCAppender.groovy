@@ -5,7 +5,6 @@ import org.apache.log4j.jdbc.JDBCAppender
 
 import javax.naming.Context
 import javax.naming.InitialContext
-import javax.naming.NamingException
 import javax.sql.DataSource
 import java.sql.Connection
 import java.sql.SQLException
@@ -74,11 +73,11 @@ class EumowyJDBCAppender extends JDBCAppender {
 
     private synchronized DataSource lookupDataSource() {
             try {
+                log.info("lookup for: " + jndiValue)
                 Context initialContext = new InitialContext();
-                Context envCtx = (Context) initialContext.lookup("java:comp/env");
-                return (DataSource) envCtx.lookup(jndiValue);
+                return (DataSource) initialContext.lookup(jndiValue);
             }
-            catch (NamingException  e){
+            catch (Exception  e){
                 throw new IllegalArgumentException(e)
             }
             finally {
