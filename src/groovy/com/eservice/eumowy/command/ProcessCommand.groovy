@@ -666,8 +666,8 @@ class ProcessCommand implements Serializable {
         odplatneUzywanieCenaTerminal(nullable: true, blank: false,  validator: { value, cmd, errors -> cmd.numberValidationClosure(value, cmd, errors, "odplatneUzywanieCenaTerminal")})
         odplatneUzywanieCenaPinpad(nullable: true, blank: false,  validator: { value, cmd, errors -> cmd.numberValidationClosure(value, cmd, errors, "odplatneUzywanieCenaPinpad")})
 
-        odpUzyTermSzt(nullable: true, blank: false, shared: "number")
-        odpUzyPpSzt(nullable: true, blank: false, shared: "number")
+        odpUzyTermSzt(nullable: true, blank: false,  validator: { value, cmd, errors -> cmd.numberValidationClosure(value, cmd, errors, "odpUzyTermSzt")})
+        odpUzyPpSzt(nullable: true, blank: false,  validator: { value, cmd, errors -> cmd.numberValidationClosure(value, cmd, errors, "odpUzyPpSzt")})
         isOdplatneUzywanieShown(nullable: true, blank: true, validator: { value, cmd, errors ->
             if ("tak".equals(value)){
                 if ("one_for_all_terminals".equals(cmd.odplatneUzywanie)){
@@ -682,6 +682,11 @@ class ProcessCommand implements Serializable {
             }
             return true
         })
+
+  /*      odpUzyTermMies(nullable: false, blank: false, validator: { value, cmd, errors ->
+            cmd.numberValidationClosure(value, cmd, errors, "odpUzyTermMies") &&
+                    atLeastClosure.call(value, cmd, errors, "odpUzyTermMies", "CENA_NAJMU")
+        })*/
 
         odpUzyPpMies(nullable: true, blank: false,  validator: { value, cmd, errors -> cmd.numberValidationClosure(value, cmd, errors, "odpUzyPpMies")})
 
