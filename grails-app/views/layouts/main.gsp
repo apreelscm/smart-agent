@@ -110,7 +110,7 @@
 
                     },
                     "Nie": function() {
-                        $( this ).dialog( "close" );
+                        $j( this ).dialog( "close" );
                     }
                 }
             })
