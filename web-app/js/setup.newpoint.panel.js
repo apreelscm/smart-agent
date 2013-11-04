@@ -257,7 +257,7 @@ function setupNewPointPanelData(prefix, ppid, pid) {
     var mmccode = jQuery("#"+prevPanelId+"mccCode").val();
     var bankAccount = jQuery("#"+prevPanelId+"bankAccountNumber").val();
 
-    if (Object.keys(possetforselectedpoint).length == 0 && sameForEveryPointSourcePanelId['possetforselectedpointSameForEveryPoint'] != -1) {
+    if (Object.keys(possetforselectedpoint).length == 0) {
         possetforselectedpoint['possetforselectedpointDialupType'] = jQuery("#"+prevPanelId+"possetforselectedpointDialupType").val();
         possetforselectedpoint['dialupCount'] = jQuery("#"+prevPanelId+"dialupCount").val();
         possetforselectedpoint['dialupPPCount'] = jQuery("#"+prevPanelId+"dialupPPCount").val();
@@ -584,7 +584,7 @@ function clearNewPointData(prefix, prevPanelId, panelId) {
     //});
 }
 
-function setupNewPosPanelHandlers(prevPanelId, panelId, prefix) {
+function setupNewPosPanelHandlers(panelId, prefix) {
     var prefixPanel = "#"+prefix+"\\["+panelId+"\\]\\";
 
     jQuery(prefixPanel + ".wifiCount").on( "blur", function(e){

@@ -34,8 +34,8 @@
 		}
 		
 		for( var i = 0; i < panelPosCount; i++) {
-			setupNewPosPanelHandlers(i-1, i, "poses");
-			setupNewPointPanelData("poses\\["+(i-1)+"\\]\\.", "poses\\["+i+"\\]\\.");
+			setupNewPosPanelHandlers(i, "poses");
+			setupNewPointPanelData("poses",i-1, i);
 		}
 		
 		if (getCurrentTerminalCount("poses") == maxTerminalCount) {
@@ -52,8 +52,8 @@
 			
 			var data = panelPosTemplate.replace(/%ID%/gm, panelPosCount);
 			jQuery("#addNewPosPanelPlaceholder").append(data);
-			setupNewPosPanelHandlers(panelPosCount-1, panelPosCount, "poses");
-			setupNewPointPanelData("poses\\["+(panelPosCount-1)+"\\]\\.", "poses\\["+panelPosCount+"\\]\\.");
+			setupNewPosPanelHandlers(panelPosCount, "poses");
+			setupNewPointPanelData("poses", panelPosCount-1, panelPosCount);
 			panelPosCount++;
 			globalPanelPosCount++;
 			panelPosInternalCount++;

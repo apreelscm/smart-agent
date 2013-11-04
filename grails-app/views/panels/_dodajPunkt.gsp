@@ -52,8 +52,8 @@
 		}
 		
 		for (var i = 0; i < panelCount; i++) {
-			setupNewPointPanelHandlers(i-1, i, "points");
-			setupNewPointPanelData("points\\["+(i-1)+"\\]\\.", "points\\["+i+"\\]\\.");
+			setupNewPointPanelHandlers(i, "points");
+			setupNewPointPanelData("points",i-1, i);
 		}
 			
 		jQuery("#addNewPointButton").on("click", function(e) {
@@ -63,7 +63,7 @@
 				var data = panelTemplate.replace(/%ID%/gm, panelCount);
 				jQuery("#addNewPointPanelPlaceholder").append(data);
 				setupNewPointPanelHandlers(panelCount, "points");
-				setupNewPointPanelData("points", panelCount);
+				setupNewPointPanelData("points", panelCount-1, panelCount);
 				panelCount++;
 				panelInternalCount.value++;
 				globalPanelCount++;
