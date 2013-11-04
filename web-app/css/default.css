@@ -1477,3 +1477,7 @@ label.doladowanieLabel {
 .half-width{
 	width: 50px;
 }
+
+.nazwiskoField {
+    width: 200px;
+}

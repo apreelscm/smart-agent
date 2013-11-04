@@ -21,11 +21,13 @@ function evaluateSredniObrot(){
 function refreshTelepomkaAndTelekodzikPercentValues(){
     var isActiveTK = false,
         isActiveTP = false,
-        checkedDoladowaniaInPanels = jQuery('div.newPointPanel').find('input.doladowanie:checked'),
-        checkedDoladowaniaInFormaDoladowania = jQuery('div#formaDoladowania').find('input.doladowanie:checked'),
         teleKodzikiInPPPaymentPanel = jQuery("div#ppPaymentPanel").find("div.telekodzikValue"),
-        telepompkiInPPPPaymentPanel = jQuery("div#ppPaymentPanel").find("div.telepompkaValue"),
-        hasActiveAtLeastOneDoladowanie = jQuery("input#hasActiveAtLeastOneDoladowanie");
+        telepompkiInPPPPaymentPanel = jQuery("div#ppPaymentPanel").find("div.telepompkaValue");
+
+    manageTKAndTPCheckedProperty();
+
+    var checkedDoladowaniaInPanels = jQuery('div.newPointPanel').find('input.doladowanie:checked'),
+        checkedDoladowaniaInFormaDoladowania = jQuery('div#formaDoladowania').find('input.doladowanie:checked');
 
     checkedDoladowaniaInPanels.each(function(){
         var type = this.getAttribute('data-doladowanie');
@@ -54,15 +56,45 @@ function refreshTelepomkaAndTelekodzikPercentValues(){
     }
 
     if(isActiveTP){
-        teleKodzikiInPPPaymentPanel.parent().addClass('visibility-hidden');
+        telepompkiInPPPPaymentPanel.parent().removeClass('visibility-hidden');
     } else {
-        teleKodzikiInPPPaymentPanel.parent().removeClass('visibility-hidden');
+        telepompkiInPPPPaymentPanel.parent().addClass('visibility-hidden');
     }
 
     if(isActiveTK){
-        telepompkiInPPPPaymentPanel.parent().addClass('visibility-hidden');
+        teleKodzikiInPPPaymentPanel.parent().removeClass('visibility-hidden');
     } else {
-        telepompkiInPPPPaymentPanel.parent().removeClass('visibility-hidden');
+        teleKodzikiInPPPaymentPanel.parent().addClass('visibility-hidden');
+    }
+}
+
+function manageTKAndTPCheckedProperty(){
+    var isMainTKChecked = jQuery('input.mainDoladowanieTK').prop('checked'),
+        isMainTPChecked = jQuery('input.mainDoladowanieTP').prop('checked'),
+        telekodzikiInPanels = jQuery('div.newPointPanel').find("[data-doladowanie='telekodzik']"),
+        telepompkiInPanels = jQuery('div.newPointPanel').find("[data-doladowanie='telepompka']");
+
+    if(isMainTKChecked === undefined || isMainTPChecked === undefined){  //checkboxy nie istnieja
+        return;
+    }
+
+    if(isMainTKChecked && isMainTPChecked){
+        telekodzikiInPanels.removeAttr('disabled');
+        telepompkiInPanels.removeAttr('disabled');
+    } else {
+        if(isMainTKChecked){
+            telepompkiInPanels.prop('checked', false);
+            telepompkiInPanels.attr('disabled', 'disabled');
+        } else {
+            telepompkiInPanels.removeAttr('disabled');
+        }
+
+        if(isMainTPChecked){
+            telekodzikiInPanels.prop('checked', false);
+            telekodzikiInPanels.attr('disabled', 'disabled');
+        } else {
+            telekodzikiInPanels.removeAttr('disabled');
+        }
     }
 }
 
