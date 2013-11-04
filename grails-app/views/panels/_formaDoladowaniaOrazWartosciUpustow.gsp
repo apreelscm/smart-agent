@@ -22,10 +22,10 @@
                 </g:if>
 
                 <div style="display: inline">
-                    <label><g:checkBox name="doladowania_tk" value="${data.doladowania_tk}" disabled="${!tkEnabled}" class="doladowanie" data-doladowanie="telekodzik"/> <g:message code="panel.newpoint.terminaloptions.phonecreditsrecharge.telekodzik"/></label>
+                    <label><g:checkBox name="doladowania_tk" value="${data.doladowania_tk}" disabled="${!tkEnabled}" class="doladowanie mainDoladowanieTK" data-doladowanie="telekodzik"/> <g:message code="panel.newpoint.terminaloptions.phonecreditsrecharge.telekodzik"/></label>
                 </div>
                 <div style="display: inline">
-                    <label><g:checkBox name="doladowania_tp" value="${data.doladowania_tp}" disabled="${!tpEnabled}" class="doladowanie" data-doladowanie="telepompka"/> <g:message code="panel.newpoint.terminaloptions.phonecreditsrecharge.telepompka"/></label>
+                    <label><g:checkBox name="doladowania_tp" value="${data.doladowania_tp}" disabled="${!tpEnabled}" class="doladowanie mainDoladowanieTP" data-doladowanie="telepompka"/> <g:message code="panel.newpoint.terminaloptions.phonecreditsrecharge.telepompka"/></label>
                 </div>
             </div>
 

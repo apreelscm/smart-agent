@@ -1,5 +1,7 @@
 package com.eservice.eumowy.pdfmapper
 
+import com.eservice.eumowy.HirePayment
+
 import java.text.DecimalFormat
 import java.text.NumberFormat
 
@@ -63,8 +65,62 @@ class PdfProcessMapper extends AbstractPdfMapper{
             dataMap.putAll(posMapper.mapPosesNotFromCBD(posesNotFromCBD))
         }
 
+        if (processInstance.processData.find{"isOdplatneUzywanieShown".equals(it.name) && "tak".equals(it.value)}){
+            dataMap.putAll(mapOdplatneUzywanie(processInstance))
+        }
+
         return dataMap;
     }
+
+
+    private def mapOdplatneUzywanie(def processInstance){
+        def dataMap = [:]
+
+        def pd = processInstance.processData;
+
+        if ('one_for_all_terminals'.equals(getFromProcessDataSet(pd, "odplatneUzywanie"))) {
+            //mamy tylko jedna opcje wiec zapisujemy ja z suffixem 'A'
+            dataMap.put("oplatyPOSIloscA", [getFromProcessDataSet(pd, "odpUzyTermSzt")] as String[]);
+
+            def sum = 0
+            def termCount = convertToDouble(getFromProcessDataSet(pd, "odpUzyTermMies"));
+            if (termCount.isDigit && termCount.value>0) {
+                sum += termCount.value
+            }
+
+            def ppCount = convertToDouble(getFromProcessDataSet(pd, "odpUzyPpMies"));
+            if (ppCount.isDigit && ppCount.value>0) {
+                sum += ppCount.value
+            }
+
+            if (sum >0){
+                dataMap.put("oplatyPOSCenaA", [formatDoubleValue(sum)] as String[]);
+            }
+        } else if (['one_for_all_terminals_in_point', 'other_for_selected_terminals'].contains(getFromProcessDataSet(pd, "odplatneUzywanie"))){
+            def result = [:]
+            processInstance.hirePayments?.findAll{it.isVisible && it.isChoosen}.each{ HirePayment hp ->
+
+                //Gdy bedzie PP trzeba dodac hp.currentPpPayment
+                BigDecimal sum = hp.newTermPayment
+                Integer count = hp.termCount
+
+                if (sum>0){
+                    count+=(result.containsKey(sum)?result.get(sum):0)
+                    result.put(sum, count)
+                }
+            }
+
+            def suffixes = ['A', 'B', 'C']
+            result.eachWithIndex { def entry, int i ->
+                if (i<suffixes.size()){
+                    dataMap.put('oplatyPOSIlosc' + suffixes.get(i), [entry.value.toString()] as String[])
+                    dataMap.put('oplatyPOSCena' + suffixes.get(i), [formatDoubleValue(((BigDecimal)entry.key).toDouble())] as String[])
+                }
+            }
+        }
+        dataMap
+    }
+
 
     private def mapProcessDataToPDFData(def processData) {
         Map<String, String[]> data = new HashMap<String, String[]>()
@@ -439,29 +495,6 @@ class PdfProcessMapper extends AbstractPdfMapper{
         }
     }
 
-    private def mapIsOdplatneUzywanieShownProcess(def data, def pd, def key, def value){
-        if ( value != null && "tak".equals(value) && 'one_for_all_terminals'.equals(getFromProcessDataSet(pd, "odplatneUzywanie"))){
-            //mamy tylko jedna opcje wiec zapisujemy ja z suffixem 'A'
-            data.put("oplatyPOSIloscA", [getFromProcessDataSet(pd, "odpUzyTermSzt")] as String[]);
-
-            def sum = 0
-
-            def termCount = convertToDouble(getFromProcessDataSet(pd, "odpUzyTermMies"));
-            if (termCount.isDigit && termCount.value>0) {
-                sum += termCount.value
-            }
-
-            def ppCount = convertToDouble(getFromProcessDataSet(pd, "odpUzyPpMies"));
-            if (ppCount.isDigit && ppCount.value>0) {
-                sum += ppCount.value
-            }
-
-            if (sum >0){
-                data.put("oplatyPOSCenaA", [sum] as String[]);
-            }
-        }
-    }
-
     private def mapPp_orange_tkProcess(def data, def process, def key, def value){
         setUpustDlaTypuDoladowania(data, process, key, value, "doladowania_tk")
     }
@@ -550,12 +583,14 @@ class PdfProcessMapper extends AbstractPdfMapper{
 
     private def formatDoubleValue(def data, def processData, def suffix) {
         if (processData && processData.value && processData.value.isDouble()){
-            DecimalFormat df = (DecimalFormat)NumberFormat.getNumberInstance(new Locale("pl", "PL"));
-            def fn = df.format(processData.value.toDouble()) + ' ' + suffix;
-            data.put(processData.name, [fn] as String[])
+            data.put(processData.name, [formatDoubleValue(processData.value.toDouble()) + ' ' + suffix] as String[])
         } else if ("-".equals(processData.value)){
             data.put(processData.name, [processData.value + ' ' + suffix] as String[])
         }
+    }
+
+    private def formatDoubleValue(def value){
+        ((DecimalFormat)NumberFormat.getNumberInstance(new Locale("pl", "PL"))).format(value)
     }
 
     private mapFieldWithStartDate(def data, def pd, def key, def value, def dateFieldName){

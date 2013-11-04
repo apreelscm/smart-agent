@@ -40,6 +40,8 @@ class CbdService {
     private static final def GET_HIRE_PAYMENT_BY_POINT = "getHirePaymentByPoint"
     private static final def GET_HIRE_PAYMENT_BY_POS = "getHirePaymentByPos"
     private static final def GET_HIRE_PAYMENT_BY_PROCESS = "getHirePaymentByProcess"
+    private static final def GET_PREPAID_EVOUCHER = "getPrepaidEvoucher"
+    private static final def GET_PREPAID_TOPUP = "getPrepaidTopup"
 
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
     def findCalculatorByNip(def clientNip) {
@@ -240,6 +242,19 @@ class CbdService {
     def getHirePaymentByProcess(def nip) {
         return cbdDAO.selectMany(GET_HIRE_PAYMENT_BY_PROCESS, [nip: nip])
     }
+
+    @Cacheable(value="getPrepaidEvoucher")
+    @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
+    def getPrepaidEvoucher(def nip) {
+        return cbdDAO.selectOne(GET_PREPAID_EVOUCHER, [NIP: nip])
+    }
+
+    @Cacheable(value="getPrepaidTopup")
+    @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
+    def getPrepaidTopup(def nip) {
+        return cbdDAO.selectOne(GET_PREPAID_TOPUP, [NIP: nip])
+    }
+
 
     /**
      * MOCK

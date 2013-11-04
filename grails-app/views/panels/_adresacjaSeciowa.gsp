@@ -7,7 +7,7 @@
 			<li><span class="align-right" ><g:message code="panel.ipaddress" /></span><span><eumowy:textField class="ip" name="${panelType}[${id}].adresIp" id="${panelType}[${id}].staticDeviceIp" value="${pointData?.adresIp}"/></span></li>
 			<li><span class="align-right" ><g:message code="panel.techniciancontact" /></span><span><eumowy:textField class="mobile-phone" name="${panelType}[${id}].kontaktInformatykStatyczna" id="${panelType}[${id}].staticDeviceSupportContact" value="${pointData?.kontaktInformatykStatyczna}"/></span></li>
 			<li><span class="align-right" ><g:select name="${panelType}[${id}].tytulInformatykStatyczna" from="['', 'Pan','Pani']" valueMessagePrefix="person.title" value="${pointData?.tytulInformatykStatyczna}" /><g:message code="panel.first.name" /></span><span><eumowy:textField name="${panelType}[${id}].imieInformatykStatyczna" id="${panelType}[${id}].staticDeviceSupportContactName" value="${pointData?.imieInformatykStatyczna}"/></span></li>
-			<li><span class="align-right" ><g:message code="panel.last.name" /></span><span><eumowy:textField name="${panelType}[${id}].nazwiskoInformatykStatyczna" id="${panelType}[${id}].staticDeviceSupportContactSurname" value="${pointData?.nazwiskoInformatykStatyczna}"/></span></li>
+			<li><span class="align-right" ><g:message code="panel.last.name" /></span><span><eumowy:textField name="${panelType}[${id}].nazwiskoInformatykStatyczna" id="${panelType}[${id}].staticDeviceSupportContactSurname" value="${pointData?.nazwiskoInformatykStatyczna}" class="nazwiskoField"/></span></li>
 		</ul>
 	</div>
 </fieldset>
@@ -17,7 +17,7 @@
 		<ul class="table-list vertical-center" >
 			<li><span class="align-right" ><g:message code="panel.techniciancontact" /></span><span><eumowy:textField class="mobile-phone" name="${panelType}[${id}].kontaktInformatykDynamiczna" id="${panelType}[${id}].dynamicDeviceSupportContact" value="${pointData?.kontaktInformatykDynamiczna}"/></span></li>
 			<li><span class="align-right" ><g:select name="${panelType}[${id}].tytulInformatykDynamiczna" from="['', 'Pan','Pani']" valueMessagePrefix="person.title" value="${pointData?.tytulInformatykDynamiczna}" /><g:message code="panel.first.name" /></span><span><eumowy:textField name="${panelType}[${id}].imieInformatykDynamiczna" id="${panelType}[${id}].dynamicDeviceSupportName" value="${pointData?.imieInformatykDynamiczna}"/></span></li>
-			<li><span class="align-right" ><g:message code="panel.last.name" /></span><span><eumowy:textField name="${panelType}[${id}].nazwiskoInformatykDynamiczna" id="${panelType}[${id}].dynamicDeviceSupportSurname" value="${pointData?.nazwiskoInformatykDynamiczna}"/></span></li>
+			<li><span class="align-right" ><g:message code="panel.last.name" /></span><span><eumowy:textField name="${panelType}[${id}].nazwiskoInformatykDynamiczna" id="${panelType}[${id}].dynamicDeviceSupportSurname" value="${pointData?.nazwiskoInformatykDynamiczna}" class="nazwiskoField"/></span></li>
 		</ul>
 	</div>
 </fieldset>

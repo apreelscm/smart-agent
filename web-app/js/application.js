@@ -10,6 +10,7 @@
             var message = $(this).data("message")
             alert(message);
         })
+
     });
 }(jQuery));
 

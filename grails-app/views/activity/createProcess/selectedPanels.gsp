@@ -277,7 +277,8 @@
         <g:hiddenField id="liczbaPtkCbd" name="liczbaPtkCbd" value="${data.liczbaPtkCbd}"/>
 
         <g:hiddenField name="czyRozszerzenie" value="${data.czyRozszerzenie}"/>
-        <g:each var="panel" in="${processInstance.panels.sort{it.orderNo}}" status="i">
+        <g:each var="panel" in="${processInstance.panels.sort{p -> p?.orderNo}}" status="i">
+
             <g:if test="${panel != null}">
                 <g:if test="${panel.name.equals('danePunktu') == false && panel.name.equals('danePos') == false}">
                     <g:render template="/panels/${panel.name}"/>

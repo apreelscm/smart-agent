@@ -73,6 +73,8 @@
 			}
 
 			maskNewPosRefresh();
+			manageTKAndTPCheckedProperty();
+
 			return false;
 		});
 		
