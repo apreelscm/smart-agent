@@ -154,7 +154,7 @@ class ProcessService {
         prepareProcessCommand(cmd, calc,)
 	}
 
-    def getSavedProcessCommand(def process, def calc){
+    def getSavedProcessCommand(def process, def calc, def newProcess){
         log.info("getSavedProcessCommand processId = ${process.id}")
         def cmd = initProcessCommand(process)
         loadProcessData(process,cmd)
@@ -166,8 +166,18 @@ class ProcessService {
         cmd.poses?.addAll(getLocalPosesToPointCommandList(process))
         cmd.allPoints?.addAll(getPointsToAllPointsCommandList(process, cmd))
         cmd.allPoses?.addAll(getPosesToAllPosCommandList(process, cmd, calc))
+        cmd.hirePaymentsByPoint?.clear()
+        cmd.hirePaymentsByPos?.clear()
 
-		//FIXME Optymalizacja usuwania, z uwzglednieniem tego, zeby nie zamykalo sesji, bo potem
+        if (newProcess){
+            cmd.hirePaymentsByPoint?.addAll(getHirePaymentByPointCommandList(cmd))
+            cmd.hirePaymentsByPos?.addAll(getHirePaymentByPosCommandList(cmd))
+        } else {
+            cmd.hirePaymentsByPoint?.addAll(getHirePaymentCommandFromHirePayments(process.hirePayments.findAll{ it.tpsId == null}))
+            cmd.hirePaymentsByPos?.addAll(getHirePaymentCommandFromHirePayments(process.hirePayments.findAll{ it.tpsId != null}))
+        }
+
+        //FIXME Optymalizacja usuwania, z uwzglednieniem tego, zeby nie zamykalo sesji, bo potem
 		//		w metodzie prepareProcessCommand jest zamknieta sesja i nie mozna zrobic lazyLoad na liscie paneli
 		cmd.allPoints?.each { AllPointsCommand apc ->
 			if (apc.cbdId == -1) {
@@ -192,9 +202,6 @@ class ProcessService {
 			}
 		}
 		cmd.allPoses?.removeAll { it.tpsId == -1 }
-
-        cmd.hirePaymentsByPoint = getHirePaymentByPointCommandList(cmd)
-        cmd.hirePaymentsByPos = getHirePaymentByPosCommandList(cmd)
 
         cmd.notes = process.notesToCoa
 		
@@ -504,7 +511,7 @@ class ProcessService {
         }
     }
 
-    def getHirePaymentByPointCommandList(def cmd) {
+    private def getHirePaymentByPointCommandList(def cmd) {
         def hpcResult = []
 
         def result = cbdService.getHirePaymentByPoint(cmd.nip)
@@ -526,7 +533,7 @@ class ProcessService {
         return hpcResult
     }
 
-    def getHirePaymentByPosCommandList(def cmd) {
+    private def getHirePaymentByPosCommandList(def cmd) {
         def hpcResult = []
 
         def result = cbdService.getHirePaymentByPos(cmd.nip)
@@ -549,6 +556,30 @@ class ProcessService {
             hpcResult.add(hpc)
         }
         return hpcResult
+    }
+
+    private def getHirePaymentCommandFromHirePayments(def dataSet){
+        def result = []
+        dataSet.each{ HirePayment hp ->
+            HirePaymentCommand hpc = new HirePaymentCommand()
+
+            hpc.setTpsId(hp.tpsId)
+            hpc.setPosNumber(hp.posNumber)
+            hpc.setCbdId(hp.cbdId)
+            hpc.setName(hp.name)
+            hpc.setAddress(hp.address)
+            hpc.setType(hp.type)
+            hpc.setTermCount(hp.termCount)
+            hpc.setPpCount(hp.ppCount)
+            hpc.setCurrentTermPayment(hp.currentTermPayment)
+            hpc.setCurrentPpPayment(hp.currentPpPayment)
+            hpc.setNewTermPayment(hp.newTermPayment)
+            hpc.setNewPpPayment(hp.newPpPayment)
+            hpc.setIsChoosen(hp.isChoosen)
+
+            result.add(hpc)
+        }
+        return result
     }
 
     def getPointsToAllPointsCommandList(def process, def cmd) {
@@ -649,12 +680,71 @@ class ProcessService {
 			process.addToPoints(point);
 		}
 
+        fillPaymentUsage(cmd, process);
+
         process.notesToCoa = cmd.notes //notesToCOA
 
         process
     }
 
-    def addCurrentDate(def processDataList){
+    private def fillPaymentUsage(def cmd, def process){
+        if ('one_for_all_terminals'.equals(cmd.odplatneUzywanie)){
+            // dane dla tej opcji trzymamy w procesie
+            println 'Zapisujemy dla one_for_all_terminals'
+            clearHirePayments(process)
+        } else if ('one_for_all_terminals_in_point'.equals(cmd.odplatneUzywanie)){
+            clearHirePayments(process)
+            saveHirePaymets(cmd.hirePaymentsByPoint, process, true)
+            saveHirePaymets(cmd.hirePaymentsByPos, process, false)
+        } else if ('other_for_selected_terminals'.equals(cmd.odplatneUzywanie)){
+            clearHirePayments(process)
+            saveHirePaymets(cmd.hirePaymentsByPoint, process, false)
+            saveHirePaymets(cmd.hirePaymentsByPos, process, true)
+        }
+    };
+
+    private def saveHirePaymets(def hirePayments, def process, def choosen){
+        hirePayments.each{ HirePaymentCommand hpc ->
+            HirePayment hp = new HirePayment()
+            hp.setTpsId(hpc.tpsId)
+            hp.setPosNumber(hpc.posNumber)
+            hp.setCbdId(hpc.cbdId)
+            hp.setName(hpc.name)
+            hp.setAddress(hpc.address)
+            hp.setType(hpc.type)
+            hp.setTermCount(hpc.termCount)
+            hp.setPpCount(hpc.ppCount)
+            hp.setCurrentTermPayment(hpc.currentTermPayment)
+            hp.setCurrentPpPayment(hpc.currentPpPayment)
+            hp.setNewTermPayment(hpc.newTermPayment)
+            hp.setNewPpPayment(hpc.newPpPayment)
+            hp.setIsChoosen(hpc.isChoosen)
+            hp.setIsVisible(choosen)
+
+            hp.setProcess(process)
+            hp.save(flush: true)
+            process.addToHirePayments(hp)
+        }
+        process
+    }
+
+    private def clearHirePayments(def process){
+        def idsToDelete = []
+        process.hirePayments?.each { HirePayment hp ->
+            idsToDelete.add(hp.id);
+        }
+
+        idsToDelete.each {
+            HirePayment hp = HirePayment.findById(it);
+            if (hp){
+                process.removeFromHirePayments(hp)
+                hp.delete(flush: true);
+            }
+        }
+        process
+    }
+
+    private def addCurrentDate(def processDataList){
         processDataList.add(new ProcessData([name: 'dataUmowy', value: DateUtils.formatWithTimezone(DateUtils.getCurrentDate())]))
     }
 

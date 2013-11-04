@@ -12,6 +12,7 @@
             </div>
         </div>
         <g:hiddenField name="isOdplatneUzywanieShown" value="tak"/>
+        <g:hiddenField name="odpUzyTermMiesCopy" value="${data.odpUzyTermMies}"/>
 
         <div style="padding-top: 20px;">Liczba i cena aktywnych terminali u klienta</div>
         <div style="text-align: center; width: 950px" class="centre">
@@ -71,13 +72,12 @@
                 </thead>
                 <tbody>
                 <g:each status="i" var="hp" in="${data.hirePaymentsByPoint}">
-                    %{--TODO - co robimy z Integer id--}%
                     <tr>
                         <td>${hp.name}
                             <g:hiddenField name="hirePaymentsByPoint[${i}].cbdId" value="${hp.cbdId}" />
                             <g:hiddenField name="hirePaymentsByPoint[${i}].name" value="${hp.name}" />
                         </td>
-                        <td>${hp.address} <g:hiddenField name="hirePaymentsByPoint[${i}].adres" value="${hp.address}" /></td>
+                        <td>${hp.address} <g:hiddenField name="hirePaymentsByPoint[${i}].address" value="${hp.address}" /></td>
                         <td class="align-center">${hp.type} <g:hiddenField name="hirePaymentsByPoint[${i}].type" value="${hp.type}" /></td>
                         <td class="align-center"><g:field name="hirePaymentsByPoint[${i}].termCount" type="text" class="float-number" value="${hp.termCount}" style="width: 40px" readonly="true"/></td>
                         <td class="align-center"><g:field name="hirePaymentsByPoint[${i}].ppCount" type="text" class="float-number" value="${hp.ppCount}" style="width: 40px" readonly="true"/></td>
@@ -103,8 +103,6 @@
                         <td class="align-center">Typ</td>
                         <td class="align-center">Term. Szt.</td>
                         <td class="align-center">PP. Szt.</td>
-                        %{--<td></td>--}%
-                        %{--<td></td>--}%
                         <td class="align-center">Opłata obowiązująca /mies.</td>
                         <td class="align-center">Opłata obowiązująca PP./mies.</td>
                         <td class="align-center">Nowa opłata /mies.</td>
@@ -114,7 +112,6 @@
                 </thead>
                 <tbody>
                 <g:each status="i" var="hp" in="${data.hirePaymentsByPos}">
-                %{--TODO - co robimy z Integer id--}%
                     <tr>
                         <td>${hp.name}
                             <g:hiddenField name="hirePaymentsByPos[${i}].tpsId" value="${hp.tpsId}" />
@@ -143,15 +140,12 @@
 
 <r:script>
     jQuery(document).ready(function() {
-        //disable second and third option for test
-        jQuery("input[name='odplatneUzywanie'][value='one_for_all_terminals_in_point']").attr('disabled',true);
-        jQuery("input[name='odplatneUzywanie'][value='other_for_selected_terminals']").attr('disabled',true);
 
         selectUsageOption(jQuery('input[name="odplatneUzywanie"]:checked').val());
         jQuery('input[name="odplatneUzywanie"]').change(function(e){
             selectUsageOption(e.target.value);
 
-            cleanValues();
+            cleanValues(e.target.value);
         });
 
         function selectUsageOption(selectedValue){
@@ -166,23 +160,27 @@
             }
         }
 
-        function cleanValues(){
-            //for option 1
-            jQuery('#odpUzyTermMies').val("");
-
-            //for option 2
-            var count2 = parseInt(jQuery('#hirePaymentsByPointSize'));
-            for (var i=0; i < count2; i++){
-                jQuery('#hirePaymentsByPoint\\['+ i +'\\]\\.newTermPayment').val("");
-                jQuery('#hirePaymentsByPoint\\['+ i +'\\]\\.isChoosen').attr('checked', false);
-            }
-
-            //for option 3
-            var count3 = parseInt(jQuery('#hirePaymentsByPosSize'));
-            for (var i=0; i < count3; i++){
-                jQuery('#hirePaymentsByPos\\['+ i +'\\]\\.newTermPayment').val("");
-                jQuery('#hirePaymentsByPos\\['+ i +'\\]\\.isChoosen').attr('checked', false);
+        function cleanValues(selectedValue){
+            if (selectedValue == 'one_for_all_terminals'){
+                jQuery('#odpUzyTermMies').val(jQuery('#odpUzyTermMiesCopy').val());
+                clean(jQuery('#hirePaymentsByPointSize').val(), "hirePaymentsByPoint");
+                clean(jQuery('#hirePaymentsByPosSize').val(), "hirePaymentsByPos");
+            } else if (selectedValue == 'one_for_all_terminals_in_point') {
+                jQuery('#odpUzyTermMies').val("");
+                clean(jQuery('#hirePaymentsByPosSize').val(), "hirePaymentsByPos");
+            } else if (selectedValue == 'other_for_selected_terminals') {
+                jQuery('#odpUzyTermMies').val("");
+                clean(jQuery('#hirePaymentsByPointSize').val(), "hirePaymentsByPoint");
             }
         }
+
+        function clean(size, name){
+            var count = parseInt(size);
+            for (var i=0; i < count; i++){
+                jQuery('#'+name+'\\['+ i +'\\]\\.newTermPayment').val("");
+                jQuery('#'+name+'\\['+ i +'\\]\\.isChoosen').attr('checked', false);
+            }
+        }
+
     });
 </r:script>

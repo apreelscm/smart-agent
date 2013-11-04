@@ -25,6 +25,9 @@ class ProcessCommand implements Serializable {
     @Omit
     transient def calc
 
+    @Omit
+    static int MAX_PRICE_GROUP_SIZE = 3
+
     //UWAGA - kazde nowe pole, ktore ma byc pomijane w zapisie do bazy trzeba dodac tez w
     //ProcessService.getDataFromPanels(). Gdy sie tego nie zrobi zapisuja sie dane a pozniej leci
     // NoSuchFieldException z ProcessService.loadProcessData() przy probie usuniecia zbednej metody
@@ -542,6 +545,7 @@ class ProcessCommand implements Serializable {
     def defaultPointData
     @Omit
     def defaultPosData
+    
 
 
     @Omit
@@ -662,11 +666,21 @@ class ProcessCommand implements Serializable {
         odplatneUzywanieCenaTerminal(nullable: true, blank: false,  validator: { value, cmd, errors -> cmd.numberValidationClosure(value, cmd, errors, "odplatneUzywanieCenaTerminal")})
         odplatneUzywanieCenaPinpad(nullable: true, blank: false,  validator: { value, cmd, errors -> cmd.numberValidationClosure(value, cmd, errors, "odplatneUzywanieCenaPinpad")})
 
-        odpUzyTermSzt(nullable: true, blank: false,  validator: { value, cmd, errors -> cmd.numberValidationClosure(value, cmd, errors, "odpUzyTermSzt")})
-        odpUzyPpSzt(nullable: true, blank: false,  validator: { value, cmd, errors -> cmd.numberValidationClosure(value, cmd, errors, "odpUzyPpSzt")})
-        odpUzyTermMies(nullable: false, blank: false, validator: { value, cmd, errors ->
-            cmd.numberValidationClosure(value, cmd, errors, "odpUzyTermMies") &&
-            atLeastClosure.call(value, cmd, errors, "odpUzyTermMies", "CENA_NAJMU")
+        odpUzyTermSzt(nullable: true, blank: false, shared: "number")
+        odpUzyPpSzt(nullable: true, blank: false, shared: "number")
+        isOdplatneUzywanieShown(nullable: true, blank: true, validator: { value, cmd, errors ->
+            if ("tak".equals(value)){
+                if ("one_for_all_terminals".equals(cmd.odplatneUzywanie)){
+                    atLeastClosure.call(cmd.odpUzyTermMies, cmd, errors, "odpUzyTermMies", "CENA_NAJMU")
+                } else if ("one_for_all_terminals_in_point".equals(cmd.odplatneUzywanie) && hasMoreThanPriceGroups(MAX_PRICE_GROUP_SIZE, cmd.hirePaymentsByPoint)){
+                    errors.reject("default.tooMany.groups")
+                    return false
+                } else if ("other_for_selected_terminals".equals(cmd.odplatneUzywanie) && hasMoreThanPriceGroups(MAX_PRICE_GROUP_SIZE, cmd.hirePaymentsByPos)){
+                    errors.reject("default.tooMany.groups")
+                    return false
+                }
+            }
+            return true
         })
 
         odpUzyPpMies(nullable: true, blank: false,  validator: { value, cmd, errors -> cmd.numberValidationClosure(value, cmd, errors, "odpUzyPpMies")})
@@ -1193,13 +1207,26 @@ class ProcessCommand implements Serializable {
 
         normalPriceGroups.removeAll(Collections.singleton(BigDecimal.ZERO)) //jesli obie ceny sa nullem to dostajemy 0
         prefPriceGroups.removeAll(Collections.singleton(BigDecimal.ZERO))
-        if(normalPriceGroups.size() > 3 || prefPriceGroups.size() > 3){
+        if(normalPriceGroups.size() > MAX_PRICE_GROUP_SIZE || prefPriceGroups.size() > MAX_PRICE_GROUP_SIZE){
             return true
         }
         return false
     }
 
-    private def getGroupValue(def normalPrice, def ppPrice){
+    private static boolean hasMoreThanPriceGroups(int maxSize, List<HirePaymentCommand> hirePaymentCommands){
+        Set<BigDecimal> normalPriceGroups = new HashSet<BigDecimal>()
+
+        hirePaymentCommands.each { HirePaymentCommand hpc ->
+            normalPriceGroups.add(getGroupValue(hpc.newTermPayment, hpc.newPpPayment))
+        }
+
+        normalPriceGroups.removeAll(Collections.singleton(BigDecimal.ZERO)) //jesli obie ceny sa nullem to dostajemy 0
+
+        normalPriceGroups.size() > maxSize? true : false;
+    }
+
+
+    private static def getGroupValue(def normalPrice, def ppPrice){
         if(normalPrice == null){
             normalPrice = BigDecimal.ZERO
         }

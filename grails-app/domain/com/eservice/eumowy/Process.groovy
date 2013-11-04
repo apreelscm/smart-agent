@@ -52,8 +52,8 @@ class Process implements Serializable {
             panels: Panel,
             subscriptions:Subscription,
             points: PointData,
-            processData: ProcessData
-//            hirePayment: HirePayment
+            processData: ProcessData,
+            hirePayments: HirePayment
     ]
 
     static constraints = {

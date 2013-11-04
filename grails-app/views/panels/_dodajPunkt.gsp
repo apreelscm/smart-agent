@@ -88,6 +88,8 @@
 				jQuery("#addNewPosButton").prop("disabled", false);
 			}
 
+			manageTKAndTPCheckedProperty();
+
 			return false;
 		});
 		

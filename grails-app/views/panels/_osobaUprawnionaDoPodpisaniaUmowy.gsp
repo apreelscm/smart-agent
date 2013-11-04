@@ -11,7 +11,7 @@
                     </span>
                     <span>
                         <span><g:message code="panel.last.name"/>: </span>
-                        <span><eumowy:textField name="reprezentant1Nazwisko" value="${data.reprezentant1Nazwisko}" validatable="${data}" maxlength ="35" required="true"/></span>
+                        <span><eumowy:textField name="reprezentant1Nazwisko" value="${data.reprezentant1Nazwisko}" validatable="${data}" maxlength ="35" required="true" class="nazwiskoField"/></span>
                     </span>
                 </li>
                 <li>
@@ -22,7 +22,7 @@
                     </span>
                     <span>
                         <span><g:message code="panel.last.name"/>: </span>
-                        <span><g:textField name="reprezentant2Nazwisko" value="${data.reprezentant2Nazwisko}" maxlength ="35"/></span>
+                        <span><g:textField name="reprezentant2Nazwisko" value="${data.reprezentant2Nazwisko}" maxlength ="35" class="nazwiskoField"/></span>
                     </span>
                 </li>
             </ul>
