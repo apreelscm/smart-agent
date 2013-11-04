@@ -554,7 +554,7 @@ class ActivityController {
                 else{
                     log.info("skipPanelsInit - true")
                     flow.skipPanelsInit = false
-                    processCmd = processService.getSavedProcessCommand(processInstance, conversation.calc)
+                    processCmd = processService.getSavedProcessCommand(processInstance, conversation.calc, flow.newProcessFlow)
                     processCmd.nip = processInstance.client.nip
                 }
 				
@@ -844,7 +844,7 @@ class ActivityController {
             onEntry {
                 log.info "SkipPanelsInit: " + flow.skipPanelsInit
                 def processInstance = flow.processInstance;
-                def processCmd = processService.getSavedProcessCommand(processInstance,conversation.calc);
+                def processCmd = processService.getSavedProcessCommand(processInstance, conversation.calc, flow.newProcessFlow);
 				
 				// Calculate pos count from cbd
 				def counter = 0

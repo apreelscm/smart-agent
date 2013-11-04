@@ -19,9 +19,7 @@ class HirePayment implements Serializable{
     BigDecimal newTermPayment
     BigDecimal newPpPayment
     Boolean isChoosen
-
-    static transients = ['tpsId', 'posNumber', 'cbdId', 'name', 'address', 'type', 'termCount', 'ppCount',
-            'currentTermPayment', 'currentPpPayment', 'newTermPayment', 'newPpPayment', 'isChoosen']
+    Boolean isVisible
 
     static belongsTo = [process: Process]
 
@@ -43,6 +41,7 @@ class HirePayment implements Serializable{
         newTermPayment column: "NEW_TERM_PAYMENT"
         newPpPayment column: "NEW_PP_PAYMENT"
         isChoosen column: "IS_CHOOSEN"
+        isVisible column: "IS_VISIBLE"
     }
 
     static constraints = {
@@ -59,5 +58,6 @@ class HirePayment implements Serializable{
         newTermPayment(nullable: true)
         newPpPayment(nullable: true)
         isChoosen(nullable: true)
+        isVisible(nullable: true)
     }
 }
