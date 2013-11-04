@@ -1,0 +1,1 @@
+SELECT VALUE FROM (SELECT smt_nazwa VALUE FROM cbd_adm.cbt_sl_modele_terminali WHERE smt_rodzaj ='S')

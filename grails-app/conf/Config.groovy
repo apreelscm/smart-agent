@@ -1,4 +1,3 @@
-import com.apache.log4j.jdbc.EumowyJDBCAppender
 import grails.plugins.springsecurity.SecurityConfigType
 import org.apache.log4j.DailyRollingFileAppender
 import com.apache.log4j.jdbc.EumowyJDBCAppender
@@ -13,7 +12,6 @@ def grailsApplication
 
 // referencja do konfiguracji srodowisk, poza dev parametr ustawiany przy starcie tomcata
 grails.config.locations = ["classpath:${appName}-config-${grails.util.Environment.current.name}.groovy",
-        "file:web-app/WEB-INF/${appName}-config-${grails.util.Environment.current.name}.groovy",
 		"file:${userHome}/.grails/${appName}-config-${grails.util.Environment.current.name}.groovy"]
 
 
@@ -132,25 +130,6 @@ log4j = {
                 "INSERT INTO EUMOWY.LOGS (login, log_date, log_message) VALUES ('%X{sessionUserName}','%d{yyyy.MM.dd HH:mm:ss}', '%m')",
                 org.apache.log4j.Level.INFO
         )
-
-        environments {
-            test {
-                grails.resources.debug = true //refreshing css and js
-                grails {
-                    mail {
-                        host = "smtp.gmail.com"
-                        port = 465
-                        username = "apreel.eumowy@gmail.com"
-                        password = "apreel1234"
-                        props = ["mail.smtp.auth": "true",
-                                "mail.smtp.socketFactory.port": "465",
-                                "mail.smtp.socketFactory.class": "javax.net.ssl.SSLSocketFactory",
-                                "mail.smtp.socketFactory.fallback": "false",
-                                "mail.smtp.ssl.trust": "*"]
-                    }
-                }
-            }
-        }
 
         String logDirectory = "${System.getProperty('catalina.base') ?: '.'}/logs"
         println("catalina.base dir : "+logDirectory)
