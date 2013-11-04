@@ -22,3 +22,5 @@ create table EUMOWY.HIRE_PAYMENT (
   TPS_ID number(10,0),
   TYPE varchar2(255 char),
   primary key (id));
+
+  ALTER TABLE EUMOWY.HIRE_PAYMENT ADD IS_VISIBLE number(1,0);

@@ -3,25 +3,93 @@ package com.apache.log4j.jdbc
 import org.apache.log4j.Priority
 import org.apache.log4j.jdbc.JDBCAppender
 
+import javax.naming.Context
+import javax.naming.InitialContext
+import javax.sql.DataSource
+import java.sql.Connection
+import java.sql.SQLException
+import java.sql.Statement
+
 /**
- * Created with IntelliJ IDEA.
+ * Log4j appender for audit log
+ *
  * User: mariusz.kaczkowski
  * Date: 30.10.13
  * Time: 13:43
- * To change this template use File | Settings | File Templates.
  */
 class EumowyJDBCAppender extends JDBCAppender {
 
-        protected Object dataSource = null;
+        String jndiValue
+        DataSource jndiDS
+        boolean jndiSearched
 
-        public EumowyJDBCAppender(Object dataSource, String name, String sql, Priority threshold) {
-            this.dataSource = dataSource;
+        public EumowyJDBCAppender(Object dataSourceConfig, String name, String sql, Priority threshold) {
+            String jndiName = ((ConfigObject) dataSourceConfig).getProperty("jndiName")?.toString();
+            if (! "[:]".equalsIgnoreCase(jndiName)){
+                this.jndiValue = jndiName
+            }
+            else {
+                setPropertiesFromConfig((ConfigObject) dataSourceConfig)
+            }
+
             this.setName(name);
             this.setSql(sql);
             this.setThreshold(threshold);
-            this.setUser(((ConfigObject)dataSource).getProperty("username").toString());
-            this.setPassword(((ConfigObject)dataSource).getProperty("password").toString());
-            this.setDriver(((ConfigObject)dataSource).getProperty("driverClassName").toString());
-            this.setURL(((ConfigObject)dataSource).getProperty("url").toString());
+
         }
+
+    /**
+     *
+     * Jndi lookup placed in this method because on constructor JNDI value can be not initialized yet by server
+     * */
+     @Override
+     protected void execute(String sql) throws SQLException {
+
+        Connection con = null;
+        Statement stmt = null;
+
+        try {
+            if (jndiValue && ! jndiSearched){
+                jndiDS = lookupDataSource()
+            }
+
+            if (jndiValue) {
+                con = jndiDS.getConnection();
+            }
+            else {
+                con = getConnection();
+            }
+
+            stmt = con.createStatement();
+            stmt.executeUpdate(sql);
+        } finally {
+            if(stmt != null) {
+                stmt.close();
+            }
+            closeConnection(con);
+        }
+
+    }
+
+    private synchronized DataSource lookupDataSource() {
+            try {
+                log.info("lookup for: " + jndiValue)
+                Context initialContext = new InitialContext();
+                return (DataSource) initialContext.lookup(jndiValue);
+            }
+            catch (Exception  e){
+                throw new IllegalArgumentException(e)
+            }
+            finally {
+                jndiSearched = true
+            }
+    }
+
+    private void setPropertiesFromConfig(ConfigObject dataSourceConfig){
+            this.setUser(dataSourceConfig.getProperty("username").toString());
+            this.setPassword(dataSourceConfig.getProperty("password").toString());
+            this.setDriver(dataSourceConfig.getProperty("driverClassName").toString());
+            this.setURL(dataSourceConfig.getProperty("url").toString());
+    }
+
 }

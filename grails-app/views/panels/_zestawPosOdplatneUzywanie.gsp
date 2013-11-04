@@ -77,7 +77,7 @@
                             <g:hiddenField name="hirePaymentsByPoint[${i}].cbdId" value="${hp.cbdId}" />
                             <g:hiddenField name="hirePaymentsByPoint[${i}].name" value="${hp.name}" />
                         </td>
-                        <td>${hp.address} <g:hiddenField name="hirePaymentsByPoint[${i}].adres" value="${hp.address}" /></td>
+                        <td>${hp.address} <g:hiddenField name="hirePaymentsByPoint[${i}].address" value="${hp.address}" /></td>
                         <td class="align-center">${hp.type} <g:hiddenField name="hirePaymentsByPoint[${i}].type" value="${hp.type}" /></td>
                         <td class="align-center"><g:field name="hirePaymentsByPoint[${i}].termCount" type="text" class="float-number" value="${hp.termCount}" style="width: 40px" readonly="true"/></td>
                         <td class="align-center"><g:field name="hirePaymentsByPoint[${i}].ppCount" type="text" class="float-number" value="${hp.ppCount}" style="width: 40px" readonly="true"/></td>
@@ -103,8 +103,6 @@
                         <td class="align-center">Typ</td>
                         <td class="align-center">Term. Szt.</td>
                         <td class="align-center">PP. Szt.</td>
-                        %{--<td></td>--}%
-                        %{--<td></td>--}%
                         <td class="align-center">Opłata obowiązująca /mies.</td>
                         <td class="align-center">Opłata obowiązująca PP./mies.</td>
                         <td class="align-center">Nowa opłata /mies.</td>
@@ -143,9 +141,6 @@
 
 <r:script>
     jQuery(document).ready(function() {
-        //disable second and third option for test
-        jQuery("input[name='odplatneUzywanie'][value='one_for_all_terminals_in_point']").attr('disabled',true);
-        jQuery("input[name='odplatneUzywanie'][value='other_for_selected_terminals']").attr('disabled',true);
 
         selectUsageOption(jQuery('input[name="odplatneUzywanie"]:checked').val());
         jQuery('input[name="odplatneUzywanie"]').change(function(e){
@@ -171,14 +166,14 @@
             jQuery('#odpUzyTermMies').val("");
 
             //for option 2
-            var count2 = parseInt(jQuery('#hirePaymentsByPointSize'));
+            var count2 = parseInt(jQuery('#hirePaymentsByPointSize').val());
             for (var i=0; i < count2; i++){
                 jQuery('#hirePaymentsByPoint\\['+ i +'\\]\\.newTermPayment').val("");
                 jQuery('#hirePaymentsByPoint\\['+ i +'\\]\\.isChoosen').attr('checked', false);
             }
 
             //for option 3
-            var count3 = parseInt(jQuery('#hirePaymentsByPosSize'));
+            var count3 = parseInt(jQuery('#hirePaymentsByPosSize').val());
             for (var i=0; i < count3; i++){
                 jQuery('#hirePaymentsByPos\\['+ i +'\\]\\.newTermPayment').val("");
                 jQuery('#hirePaymentsByPos\\['+ i +'\\]\\.isChoosen').attr('checked', false);

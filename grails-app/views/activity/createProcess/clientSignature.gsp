@@ -32,7 +32,76 @@
 <r:script>
 	var updateSubscriptionStatusCount = 0;
 	var isSubscriptionDone = {};
-	var requiredSubscriptionsCount = ${requiredNumberOfSubscriptions}
+	var requiredSubscriptionsCount = ${requiredNumberOfSubscriptions};
+	var subscriptionDialog = null;
+	var subscriptionLinkId = null;
+	var agreementLabel = {
+		"PH": "${message(code:'subscription.agreement.ph')}",
+		"ACCEPTANT1": "${message(code:'subscription.agreement')}",
+		"ACCEPTANT2": "${message(code:'subscription.agreement')}"
+	};
+	
+	function setUpSignaturePad() {
+		jQuery('#padPlaceholder').jSignature({'width': 700, 'height': 300, 'decor-color': 'transparent'});
+
+	    jQuery('.clearButton').on('click', function(e) { 
+	    	e.preventDefault();
+	    	jQuery('#padPlaceholder').jSignature('reset');
+	    	return false;
+	    });
+	    jQuery('.closeButton').on('click', function(e) {
+	    	e.preventDefault();
+	    	hideSubscriptionPanel();
+	    	return false;
+	    });
+	    
+	    jQuery('form[data-id="subscriptionForm"]').on("submit", function(e) {
+	    	e.preventDefault();
+	    	jQuery("#sigContent").val(jQuery('#padPlaceholder').jSignature("getData"));
+	    	jQuery.post("${createLink(controller: 'subscription', action: 'saveSubscription')}", jQuery(this).serialize(), function(data) {
+	    		var result = JSON.parse(data);
+	    		if (result.status == "OK") {
+	    			jQuery("#dialogInfoText").html('<h2 class="align-center">Pomyślnie zapisano podpis!</h2>');
+	    			updateSubscriptionStatus("OK", subscriptionLinkId, result.subscriptionId);
+				}
+				else {
+					jQuery("#dialogInfoText").html('<p class="align-center">'+result.text+'</p>');
+				}
+				jQuery('#dialog').hide();
+				jQuery('#dialogInfo').show();
+			});
+			return false;
+		});
+	}
+	
+	function showSubscriptionPanel(name, surname, role, linkid) {
+		if (subscriptionDialog != null) {
+			subscriptionLinkId = linkid;
+			jQuery('#padPlaceholder').jSignature('reset');
+			jQuery('#dialog').show();
+			jQuery('#dialogInfo').hide();
+			jQuery('#subscriberData').html(name + " " + surname);
+			jQuery('#subscriberName').val(name);
+			jQuery('#subscriberSurname').val(surname);
+			jQuery('#subscriberRole').val(role);
+			jQuery('#agreementLabel').html(agreementLabel[role]);
+			subscriptionDialog.css({opacity: 100});
+			subscriptionDialog.slideDown(function() {
+				var offset = jQuery(this).offset().top
+				jQuery('html').animate({scrollTop: offset+"px" });
+			});
+		}
+	}
+	
+	function hideSubscriptionPanel() {
+		if (subscriptionDialog != null) {
+			subscriptionDialog.animate({opacity: 0}, function() {
+	    		jQuery(this).slideUp();
+	    	});
+			jQuery('#dialogInfo').hide();
+		}
+	}
+	
 	function updateSubscriptionStatus(status, linkid, subId) {
 	    if (status == "OK") {
 	        updateSubscriptionStatusCount++;
@@ -53,8 +122,10 @@
 	jQuery(document).ready(function(){
 	    var pageNum = 1;
 	    var documentPages = [];
+		subscriptionDialog = jQuery('#subscriptionDialog');
 	
-	    checkEmailKontakt()
+		setUpSignaturePad();
+	    checkEmailKontakt();
 	
 	    function refreshPdfPageView(pageNum, pid) {
 	        console.log("PageNum: " + pageNum + " PID: " + pid)
@@ -226,23 +297,12 @@
 	        lastName = currentTarget.attr('data-lastName'),
 	        role = currentTarget.attr('data-role'),
 	        linkId = currentTarget.attr('id');
-	
-	    var dialog = jQuery('#subscriptionDialog');
-	    if (jQuery('#subscriptionDialog').length == 0) {
-	        dialog = jQuery('#subscriptionDialog');
-					}
-					dialog.slideUp();
-					dialog.load(
-	                    "${createLink(controller: 'subscription', action: 'inlineview')}&name=" + encodeURI(firstName) + "&surname=" + encodeURI(lastName) + "&personRole=" + role + "&linkid=" + linkId,
-			            {},
-			            function(responseText, textStatus, XMLHttpRequest) {
-			                setUpSignaturePad();
-			                dialog.slideDown();
-			            }
-			        );
-			        
-					return false;
-				});
+		
+		if (isSubscriptionDone[linkId] != true) {
+			showSubscriptionPanel(firstName, lastName, role, linkId);
+        }
+		return false;
+	});
 				
 				jQuery("#requestVersionTemplates").on("change", function(e) {
 					if (jQuery(e.target).is(":checked")) {
@@ -336,7 +396,36 @@
             <img id="pdfPage" style="border:1px solid gray; display: none; width: 440px; height: 570px; display: none; margin-left: auto; margin-right: auto; vertical-align: middle; text-align: center;"/>
         </div>
     </div>
-	<div id="subscriptionDialog" style="display: none; padding: 10px; overflow: auto;border: solid 1px; border-radius: 5px;  margin: 20px 15px 15px 15px;"></div>
+	<div id="subscriptionDialog" style="display: none; padding: 10px; overflow: auto;border: solid 1px; border-radius: 5px;  margin: 20px 15px 15px 15px;">
+		<div id="dialog">
+			<section id="index-subscription">
+			    <h3 id="subscriberData" style="margin-top: 20px"></h3>
+			
+			    <g:form data-id="subscriptionForm"  id="subscriptionForm" action="saveSubscription" class="sigPad">
+			        <p>
+			            <g:checkBox name="agreement" required="required"/>
+			            <label id="agreementLabel" for="agreement"></label>
+			        </p>
+			        <div id="padPlaceholder" class="sig sigWrapper" style="border: 1px solid black; height: 300px; width: 700px; margin-top: 20px" ></div>
+			
+					<input id="subscriberName" type="hidden" name="name" value="" />
+					<input id="subscriberSurname" type="hidden" name="surname" value="" />
+					<input id="subscriberRole" type="hidden" name="personRole" value="" />
+					<input id="sigContent" type="hidden" name="content" value="" />
+			        <fieldset style="margin-top: 20px;">
+			            <a href="#clear" class="button action clearButton"><g:message code="subscription.clear" /></a>
+			            <g:submitButton id="submitSubscription" name="Złożono podpis" value="Złożono podpis" class="button submit"/>
+			            <a href="#close" class="button submit closeButton"><g:message code="subscription.close" /></a>
+			        </fieldset>
+			
+			    </g:form>
+			</section>
+		</div>
+		<div id="dialogInfo">
+			<span id="dialogInfoText"></span>
+			<a id="closeSubscriptionDialog" href="#close" class="button submit closeButton" style="float: right;"><g:message code="subscription.close" /></a>
+		</div>
+	</div>
     <nav>
         <g:form>
             <fieldset id="clientSignaturePersons" class="subpanel-fieldset">

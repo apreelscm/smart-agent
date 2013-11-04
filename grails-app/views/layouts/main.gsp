@@ -24,11 +24,16 @@
     <link rel="stylesheet" href="${resource(dir: 'css', file: 'mobile/mobile.css')}" type="text/css">
 
     <g:javascript library="jquery" plugin="jquery"/>
+    <r:require module="jquery_ui" />
+
+
     <r:require module="modernizr"/>
     <g:if test="${params.controller != 'login'}">
         <r:require module="session_utils"/>
     </g:if>
+
     <r:require module="expandable_menu"/>
+
     <r:layoutResources/>
     <g:layoutHead/>
 </head>
@@ -39,7 +44,6 @@
 <header id="mainHeader" style="position:relative">
 
     <figure id="smallLogo"/>
-
     <sec:ifLoggedIn>
         <div class="userInfoBar">
             <g:set var="phFullName" value="${sec.loggedInUserInfo(field: 'name')}"/>
@@ -54,7 +58,7 @@
             <li><a href="#" class="submit">Menu</a>
                 <ul>
                     <li><a id="saveProcessLink" href="#" style="display: none;">Zapisz</a></li>
-                    <li><a href="${createLink(controller: 'logout')}">Wyloguj</a>
+                    <li><a id="logoutLink" href="#">Wyloguj</a>
                     </li>
                 </ul></li>
         </ul>
@@ -83,7 +87,39 @@
     <p><g:message code="loading" default="Trwa ładowanie danych..."/></p>
 </div>
 
+<div id="confirm-logout-dialog"  style="display: none;">
+    <p><g:message code="logout.confirm" /></p>
+</div>
+
 <g:javascript library="application"/>
+<g:javascript>
+
+ var $j = jQuery.noConflict();
+    $j(function(){
+          $j("#logoutLink").click(function() {
+            $j("#confirm-logout-dialog").dialog({
+                resizable: true,
+                height:200,
+                width: 450,
+                modal: true,
+                buttons:
+                {
+                    "Tak": function() {
+                        $j( this ).dialog( "close" );
+                        window.location.href = '<g:createLink controller="logout"/>'
+
+                    },
+                    "Nie": function() {
+                        $j( this ).dialog( "close" );
+                    }
+                }
+            })
+            return false
+    })
+})
+
+</g:javascript>
+
 <r:layoutResources/>
 
 </body>
