@@ -1,5 +1,8 @@
 package com.eservice.eumowy
 
+import org.perf4j.StopWatch
+import org.perf4j.log4j.Log4JStopWatch
+
 class AttachmentService {
 
     def deleteFile(def id, def processId) {
@@ -32,7 +35,10 @@ class AttachmentService {
     }
 
     def uploadFile( def config, def request, def messageSource) {
+
+        StopWatch stopWatch = new Log4JStopWatch();
         def file = request.getFile("file")
+        log.info 'Uploading file ' + file.originalFilename
 
         /**************************
          check if file exists
@@ -47,7 +53,6 @@ class AttachmentService {
          check extensions
          *********************** */
 
-        println "extensions start - allowedExtensions:" + config.allowedExtensions
         def fileExtension = file.originalFilename.substring(file.originalFilename.lastIndexOf('.') + 1)
         if (!config.allowedExtensions[0].equals("*")) {
             if (!config.allowedExtensions.contains(fileExtension?.toLowerCase())) {
@@ -56,7 +61,6 @@ class AttachmentService {
                 return msg
             }
         }
-        println "extensions end"
 
         /*********************
          check file size
@@ -80,6 +84,7 @@ class AttachmentService {
         ufile.downloads = 0
         ufile.file = new AttachmentContent(content:file.bytes)
 
+        stopWatch.stop('uploadAttachment')
         return ufile;
     }
 

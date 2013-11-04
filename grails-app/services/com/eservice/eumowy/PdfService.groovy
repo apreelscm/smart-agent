@@ -2,6 +2,8 @@ package com.eservice.eumowy
 
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.util.PDFImageWriter
+import org.perf4j.StopWatch
+import org.perf4j.log4j.Log4JStopWatch
 import pdfgenerator.PdfGenerator
 import signaturepad.SignatureToImage
 
@@ -34,13 +36,12 @@ class PdfService {
 			result = generateImageFromPDF(data.document.content.content, data.document.id, processId, data.page)
 		}else {
 			log.warn "generateImageFromPDFDocumentFile - document == null"
-			result = ""
 		}
-		
 		return result
 	}
 	
 	def generateImageFromPDF(byte[] pdf, Long documentId, String processId, Integer pageNumber) {
+        StopWatch stopWatch = new Log4JStopWatch()
 		ByteArrayInputStream bis = new ByteArrayInputStream(pdf)
         PDDocument document = PDDocument.load(bis)
 		int resolution = 300
@@ -55,7 +56,7 @@ class PdfService {
 		}
 		
 		document.close()
-		
+        stopWatch.stop('generateImageFromPDF')
 		return appParametersService.getPdfImageUri(documentId+"-"+processId+"-"+pageNumber+".png")
 	}
 

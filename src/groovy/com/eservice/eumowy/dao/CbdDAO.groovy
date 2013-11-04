@@ -1,6 +1,8 @@
 package com.eservice.eumowy.dao
 
 import groovy.sql.Sql
+import org.perf4j.StopWatch
+import org.perf4j.log4j.Log4JStopWatch
 
 import java.sql.SQLException
 
@@ -9,6 +11,7 @@ class CbdDAO {
     def dataSource
 
     def selectOne(String sqlName ,def paramers = []){
+        StopWatch stopWatch = new Log4JStopWatch();
         def row
         try {
             def sql = new Sql(dataSource)
@@ -18,10 +21,12 @@ class CbdDAO {
             log.error ex.message, ex
             throw ex
         }
+        stopWatch.stop('sql-'+sqlName)
         row
     }
 
     def selectMany(String sqlName ,def paramers = []){
+        StopWatch stopWatch = new Log4JStopWatch();
 
         def rows = []
 
@@ -36,11 +41,13 @@ class CbdDAO {
             throw ex
         }
         finally{
+            stopWatch.stop('sql-'+sqlName)
             return rows;
         }
     }
 
     def getSqlText(String sqlName){
+        StopWatch stopWatch = new Log4JStopWatch();
         File sqlFile
         try {
             sqlFile = new File(this.class.getResource("/sql/${sqlName}.sql").getFile())
@@ -57,7 +64,7 @@ class CbdDAO {
 //            }
             buf.append(it).append(" ")
         }
-
+        stopWatch.stop('sql-'+sqlName)
         buf.toString()
     }
 }
