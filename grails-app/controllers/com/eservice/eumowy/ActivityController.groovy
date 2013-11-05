@@ -10,6 +10,7 @@ import com.eservice.eumowy.command.PointCommand
 import com.eservice.eumowy.command.ProcessCommand
 import com.eservice.eumowy.process.DefineActivityCommand
 import com.eservice.eumowy.util.DateUtils
+import pdfgenerator.PdfGenerator
 
 class ActivityController {
 
@@ -1319,6 +1320,18 @@ class ActivityController {
         else if (PAPER.equals(requestVersion)) {
             //Documents are already in DB
             def merchantName = getFromProcessData(process, 'akceptantNazwaOficjalna');
+
+            //pola zapleniane na podstawie 'dataUmowy'
+            def toRemove = ['dataUmowy', 'wydrukGrafikiData', 'dzialaniaMatematyczneData',
+                    'pierwszaSesjaData', 'systemKasowyData', 'weryfikacjaPINData', 'czasObslugiData'];
+
+            process.documents.each{ DocumentFile df ->
+                DocumentContent ndc = PdfGenerator.cleanValuesContent(df.content, toRemove);
+                ndc.setDocument(df)
+                ndc.save(flush: true)
+                df.setContent(ndc);
+                df.save(flush: true)
+            }
             emailService.sendDocumentsPaperVersion(process.phEmail, process.documents, merchantName)
         }
         else if (TEMPLATES.equals(requestVersion)) {

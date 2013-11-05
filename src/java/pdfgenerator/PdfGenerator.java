@@ -1,5 +1,6 @@
 package pdfgenerator;
 
+import com.eservice.eumowy.DocumentContent;
 import com.eservice.eumowy.PdfService;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.Image;
@@ -13,6 +14,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class PdfGenerator {
@@ -194,9 +196,11 @@ public class PdfGenerator {
 
 			}
 
-			stamp.setFormFlattening( true );
-			stamp.getReader().removeUnusedObjects();
-			stamp.getReader().removeAnnotations();
+            //konieczne jest zahashowanie tych dwoch opcji, gdy sa odhashowane nie ma mozliwosci
+            //ponownej edycji dokumentu (usuniecie pola 'dataUmowy' i jego pochodnych
+			//stamp.setFormFlattening( true );
+			//stamp.getReader().removeAnnotations();
+            stamp.getReader().removeUnusedObjects();
 			stamp.setFullCompression();
 
 
@@ -227,6 +231,41 @@ public class PdfGenerator {
         }
 //			document.close();
 		return baos.toByteArray();
-	}
-	
+    }
+
+    public static DocumentContent cleanValuesContent(DocumentContent dc, List<String> fieldsToClean){
+
+        PdfReader templateReader = null;
+        PdfStamper stamp = null;
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+        try{
+            templateReader = new PdfReader(dc.getContent());
+            stamp = new PdfStamper(templateReader, baos);
+
+            AcroFields form = stamp.getAcroFields();
+            for (String field: fieldsToClean){
+                form.setField(field, "");
+            }
+        } catch (IOException e){
+            LOG.error(e);
+        } catch (DocumentException e) {
+            LOG.error(e);
+        } finally {
+            if (stamp != null){
+                try {
+                    stamp.close();
+                } catch (Exception e) {
+                    LOG.error(e);
+                }
+            }
+            if (templateReader != null){
+                templateReader.close();
+            }
+        }
+
+        dc.setContent(baos.toByteArray());
+        return dc;
+    }
+
 }
