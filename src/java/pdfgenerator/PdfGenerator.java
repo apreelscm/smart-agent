@@ -5,6 +5,8 @@ import com.lowagie.text.DocumentException;
 import com.lowagie.text.Image;
 import com.lowagie.text.pdf.*;
 import org.apache.log4j.Logger;
+import org.perf4j.StopWatch;
+import org.perf4j.log4j.Log4JStopWatch;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -81,7 +83,7 @@ public class PdfGenerator {
 	 * @return
 	 */
 	public static byte[] generatePdfContentFromURI(String urlTemplatePath, Map<String,String[]> dataMap, PdfService.FontType fontType, String fPath) {
-		Map<String,PdfService.FontType> fontsPathMap = new HashMap<String, PdfService.FontType>();
+        Map<String,PdfService.FontType> fontsPathMap = new HashMap<String, PdfService.FontType>();
 		if (fontType != null && dataMap != null){
 			for (Map.Entry<String, String[]> dataEntry : dataMap.entrySet()){
 				fontsPathMap.put(dataEntry.getKey(), fontType);
@@ -98,9 +100,11 @@ public class PdfGenerator {
 	 * @return
 	 */
 	private static byte[] generatePdfContentFromURI(String urlTemplatePath, Map<String,String[]> dataMap, Map<String,PdfService.FontType> fontsPathMap, String fPath) {
-		if (urlTemplatePath == null){
+        if (urlTemplatePath == null){
 			throw new IllegalArgumentException("urlTemplatePath param shouldn't be null");
 		}
+
+        StopWatch stopWatch = new Log4JStopWatch();
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		PdfReader templateReader = null;
@@ -217,8 +221,10 @@ public class PdfGenerator {
 			if (templateReader != null){
 				templateReader.close();
 			}
-			
-		}
+
+            stopWatch.stop("generatePdfContentFromURI");
+
+        }
 //			document.close();
 		return baos.toByteArray();
 	}

@@ -1,6 +1,8 @@
 package com.eservice.eumowy
 
 import grails.plugin.cache.Cacheable
+import org.perf4j.StopWatch
+import org.perf4j.log4j.Log4JStopWatch
 
 class EmailService {
 
@@ -10,7 +12,6 @@ class EmailService {
     def mailService
     def messageSource
 
-	
 	@Cacheable(value="emailTampletByName", key="#name")
 	def getEmailTampletesByName(def name){
 		return EmailTemplates.findByName(name,[cache:true])
@@ -68,7 +69,8 @@ class EmailService {
     private def sendMail(def emailTemplate , def recipients, def subjectParams, def bodyParams, def documents){
 
         log.info 'Sending: ' + emailTemplate + ', to: ' + recipients + ', subjectParams: ' + subjectParams + ', bodyParams: ' + bodyParams + ', documents count: ' + documents?.size()
-		
+        StopWatch stopWatch = new Log4JStopWatch();
+
         mailService.sendMail {
             if (documents) {
                 multipart true
@@ -84,5 +86,6 @@ class EmailService {
                 }
             }
         }
+        stopWatch.stop('sendMail')
     }
 }
