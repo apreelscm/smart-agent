@@ -36,6 +36,27 @@ Michal Kniec - dodany patch, ktory dla przegladarek mobilnych uwzglednia przesun
 jQuery(window).scrollTop()
 
 */
+
+function addScroll() {
+	var deviceAgent = navigator.userAgent.toLowerCase();
+
+	var isTouchDevice = Modernizr.touch || 
+	(deviceAgent.match(/(iphone|ipod|ipad)/) ||
+	deviceAgent.match(/(android)/)  || 
+	deviceAgent.match(/(iemobile)/) || 
+	deviceAgent.match(/iphone/i) || 
+	deviceAgent.match(/ipad/i) || 
+	deviceAgent.match(/ipod/i) || 
+	deviceAgent.match(/blackberry/i) || 
+	deviceAgent.match(/bada/i));
+
+	if (isTouchDevice) {
+        return jQuery(window).scrollTop();
+    } else {
+        return 0;
+    }
+}	
+	
 (function(){function q(b){for(var j,s=b.css("color"),g,b=b[0],c=!1;b&&!g&&!c;){try{j=$(b).css("background-color")}catch(d){j="transparent"}"transparent"!==j&&"rgba(0, 0, 0, 0)"!==j&&(g=j);c=b.body;b=b.parentNode}var b=/rgb[a]*\((\d+),\s*(\d+),\s*(\d+)/,c=/#([AaBbCcDdEeFf\d]{2})([AaBbCcDdEeFf\d]{2})([AaBbCcDdEeFf\d]{2})/,a;j=void 0;(j=s.match(b))?a={r:parseInt(j[1],10),g:parseInt(j[2],10),b:parseInt(j[3],10)}:(j=s.match(c))&&(a={r:parseInt(j[1],16),g:parseInt(j[2],16),b:parseInt(j[3],16)});var f;g?
 (j=void 0,(j=g.match(b))?f={r:parseInt(j[1],10),g:parseInt(j[2],10),b:parseInt(j[3],10)}:(j=g.match(c))&&(f={r:parseInt(j[1],16),g:parseInt(j[2],16),b:parseInt(j[3],16)})):f=a?127<Math.max.apply(null,[a.r,a.g,a.b])?{r:0,g:0,b:0}:{r:255,g:255,b:255}:{r:255,g:255,b:255};j=function(b){return"rgb("+[b.r,b.g,b.b].join(", ")+")"};a&&f?(b=Math.max.apply(null,[a.r,a.g,a.b]),a=Math.max.apply(null,[f.r,f.g,f.b]),a=Math.round(a+-0.75*(a-b)),a={r:a,g:a,b:a}):a?(a=Math.max.apply(null,[a.r,a.g,a.b]),b=1,127<a&&
 (b=-1),a=Math.round(a+96*b),a={r:a,g:a,b:a}):a={r:191,g:191,b:191};return{color:s,"background-color":f?j(f):g,"decor-color":j(a)}}function m(b,j){this.x=b;this.y=j;this.reverse=function(){return new this.constructor(-1*this.x,-1*this.y)};this._length=null;this.getLength=function(){this._length||(this._length=Math.sqrt(Math.pow(this.x,2)+Math.pow(this.y,2)));return this._length};var s=function(b){return Math.round(b/Math.abs(b))};this.resizeTo=function(b){if(0===this.x&&0===this.y)this._length=0;else if(0===
@@ -45,7 +66,7 @@ c;this.inStroke=!1;this._stroke=this._lastPoint=null;this.startStroke=function(b
 this._stroke.x.length;this._stroke.x.push(b.x);this._stroke.y.push(b.y);this._lastPoint=b;var a=this._stroke,g=this.addToStrokeFn,s=this.context;setTimeout(function(){g.call(s,a,j)},3);return b}return null};this.endStroke=function(){var b=this.inStroke;this.inStroke=!1;this._lastPoint=null;if(b){var j=this._stroke,a=this.endStrokeFn,g=this.context,s=this.changed;setTimeout(function(){a.call(g,j);s.call(g)},3);return!0}return null}}function r(b,j,a){var g=this.$parent=$(b),b=this.eventTokens={};this.events=
 new v(this);var c=$.fn[e]("globalEvents"),d={width:"ratio",height:"ratio",sizeRatio:4,color:"#000","background-color":"#fff","decor-color":"#eee",lineWidth:0,minFatFingerCompensation:-10,showUndoButton:!1,data:[]};$.extend(d,q(g));j&&$.extend(d,j);this.settings=d;for(var f in a)a.hasOwnProperty(f)&&a[f].call(this,f);this.events.publish(e+".initializing");this.$controlbarUpper=$('<div style="padding:0 !important;margin:0 !important;width: 100% !important; height: 0 !important;margin-top:-1em !important;margin-bottom:1em !important;"></div>').appendTo(g);
 this.isCanvasEmulator=!1;a=this.canvas=this.initializeCanvas(d);j=$(a);this.$controlbarLower=$('<div style="padding:0 !important;margin:0 !important;width: 100% !important; height: 0 !important;margin-top:-1.5em !important;margin-bottom:1.5em !important;"></div>').appendTo(g);this.canvasContext=a.getContext("2d");j.data(e+".this",this);g=(g=d.lineWidth)?g:Math.max(Math.round(a.width/400),2);d.lineWidth=g;this.lineCurveThreshold=3*d.lineWidth;d.cssclass&&""!=$.trim(d.cssclass)&&j.addClass(d.cssclass);
-this.fatFingerCompensation=0;var g=function(b){var j,a,g=function(g){g=g.changedTouches&&0<g.changedTouches.length?g.changedTouches[0]:g;return new k(Math.round(g.pageX+j),Math.round(g.pageY+a-jQuery(window).scrollTop())+b.fatFingerCompensation)},d=new y(750,function(){b.dataEngine.endStroke()});this.drawEndHandler=function(j){try{j.preventDefault()}catch(a){}d.clear();b.dataEngine.endStroke()};this.drawStartHandler=function(c){c.preventDefault();var s=$(b.canvas).offset();j=-1*s.left;a=-1*s.top;b.dataEngine.startStroke(g(c));
+this.fatFingerCompensation=0;var g=function(b){var j,a,g=function(g){g=g.changedTouches&&0<g.changedTouches.length?g.changedTouches[0]:g;return new k(Math.round(g.pageX+j),Math.round(g.pageY+a-addScroll())+b.fatFingerCompensation)},d=new y(750,function(){b.dataEngine.endStroke()});this.drawEndHandler=function(j){try{j.preventDefault()}catch(a){}d.clear();b.dataEngine.endStroke()};this.drawStartHandler=function(c){c.preventDefault();var s=$(b.canvas).offset();j=-1*s.left;a=-1*s.top;b.dataEngine.startStroke(g(c));
 d.kick()};this.drawMoveHandler=function(j){j.preventDefault();b.dataEngine.inStroke&&(b.dataEngine.addToStroke(g(j)),d.kick())};return this}.call({},this),l=g.drawEndHandler,i=g.drawStartHandler,p=g.drawMoveHandler,h=this.canvas,j=$(h);this.isCanvasEmulator?(j.bind("mousemove."+e,p),j.bind("mouseup."+e,l),j.bind("mousedown."+e,i)):(h.ontouchstart=function(b){h.onmousedown=void 0;h.onmouseup=void 0;h.onmousemove=void 0;this.fatFingerCompensation=d.minFatFingerCompensation&&-3*d.lineWidth>d.minFatFingerCompensation?
 -3*d.lineWidth:d.minFatFingerCompensation;i(b);h.ontouchend=l;h.ontouchstart=i;h.ontouchmove=p},h.onmousedown=function(b){h.ontouchstart=void 0;h.ontouchend=void 0;h.ontouchmove=void 0;i(b);h.onmousedown=i;h.onmouseup=l;h.onmousemove=p});b[e+".windowmouseup"]=c.subscribe(e+".windowmouseup",g.drawEndHandler);this.events.publish(e+".attachingEventHandlers");var n=this,b=d.width.toString(10),w=e;if("ratio"===b||"%"===b.split("")[b.length-1])this.eventTokens[w+".parentresized"]=c.subscribe(w+".parentresized",
 function(b,j,a){return function(){var g=j.width();if(g!==a){for(var d in b)b.hasOwnProperty(d)&&(c.unsubscribe(b[d]),delete b[d]);var s=n.settings;n.$parent.children().remove();for(d in n)n.hasOwnProperty(d)&&delete n[d];d=s.data;var g=1*g/a,f=[],l,i,e,h,k,p;i=0;for(e=d.length;i<e;i++){p=d[i];l={x:[],y:[]};h=0;for(k=p.x.length;h<k;h++)l.x.push(p.x[h]*g),l.y.push(p.y[h]*g);f.push(l)}s.data=f;j[w](s)}}}(this.eventTokens,this.$parent,this.$parent.width(),1*this.canvas.width/this.canvas.height));this.resetCanvas(d.data);
