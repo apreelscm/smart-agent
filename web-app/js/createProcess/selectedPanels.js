@@ -135,6 +135,7 @@ function refreshCityField(code, select){
                 });
             }
             select.val(selectValue)
+            select.removeClass("error")
         });
     }else{
         select.val('')
