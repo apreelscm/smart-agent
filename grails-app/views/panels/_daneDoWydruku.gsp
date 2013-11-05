@@ -4,9 +4,9 @@
         <div style="text-align: center; padding-top: 20px; width: 750px" class="centre">
             <div class="align-left">
                 <p><g:message code="panel.newpoint.pointnameforprintingfromposterminal" /></p>
-                <p><eumowy:textField name="nazwaDoWydrukuZTerminalaPos" value="${data.nazwaDoWydrukuZTerminalaPos}" validatable="${data}" maxlength ="40" required="true"/></p>
+                <p><eumowy:textField name="nazwaDoWydrukuZTerminalaPos" value="${data.nazwaDoWydrukuZTerminalaPos}" validatable="${data}" maxlength ="40" required="true" class="nazwaField"/></p>
                 <p><g:message code="panel.newpoint.pointnameforsearchengine" /> <label for="wydrukJakWyzej"><g:checkBox name="wydrukJakWyzej" id="wydrukJakWyzej" /><g:message code="panel.as.above" /></label></p>
-                <p><eumowy:textField name="wydrukNazwaDoWyszukwarki" value="${data.wydrukNazwaDoWyszukwarki}" validatable="${data}" maxlength ="40" required="true"/></p>
+                <p><eumowy:textField name="wydrukNazwaDoWyszukwarki" value="${data.wydrukNazwaDoWyszukwarki}" validatable="${data}" maxlength ="40" required="true" class="nazwaField"/></p>
                 <p><label for="wydrukJakMerchant"><g:checkBox name="wydrukJakMerchant"/><g:message code="panel.as.merchant" /></label></p>
                 <ul class="table-list">
                     <li>

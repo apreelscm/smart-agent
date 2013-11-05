@@ -84,7 +84,7 @@
                     value="${pointData?.nazwaDoWydrukuZTerminalaPos}"
                     validatable="${pointData}"
                     validateField="nazwaDoWydrukuZTerminalaPos"
-                    required="true"/>
+                    required="true" class="nazwaField"/>
         </p>
         <p>
             <g:message code="panel.newpoint.pointnameforsearchengine" />
@@ -100,7 +100,7 @@
                               value="${pointData?.nazwaDoWyszukiwarki}"
                               validatable="${pointData}"
                               validateField="nazwaDoWyszukiwarki"
-                              required="true"/>
+                              required="true" class="nazwaField"/>
         </p>
         <p>
             <label for="${panelType}[${id}].dataforprintingAsForMerchant"><g:checkBox
