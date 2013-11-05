@@ -113,7 +113,7 @@ class ProcessCommand implements Serializable {
 
     @Omit
     static def numberValidationClosure = {value, cmd,  errors, propertyName ->
-        return cmd.regexpValidationClosure.call(value, errors, propertyName, "~|^(?:[1-9]\\d*|0)?(?:\\.\\d{1,2})?","default.validation.number.error")
+        return cmd.regexpValidationClosure.call(value, errors, propertyName, '~|\\-|^(?:[1-9]\\d*|0)?(?:\\.\\d{1,2})?$',"default.validation.number.error")
     }
 
     @Omit
@@ -129,7 +129,7 @@ class ProcessCommand implements Serializable {
     @Omit
     static def DEFAULT_VALUE = "~"
 
-//    adresDoKorespondencjizAkecptantem - FINISH
+    //adresDoKorespondencjizAkecptantem - FINISH
     String akceptantKontaktUlicaTytul = DEFAULT_VALUE
     String akceptantKontaktUlica = DEFAULT_VALUE
     String akceptantKontaktNrDomu = DEFAULT_VALUE
@@ -566,9 +566,8 @@ class ProcessCommand implements Serializable {
         oplataZaUruchomienieWalutyObcej(nullable: false, blank: false,  validator: { value, cmd, errors -> cmd.numberValidationClosure(value, cmd, errors, "oplataZaUruchomienieWalutyObcej")})
 
         // FIXME pola prezentowane warunkowo na panelu z Kalkulatora do odczytu, ponizsza walidacja nie dziala
-        //wydrukGrafikiCena(nullable:true, blank:false,  validator: { value, cmd, errors -> cmd.numberValidationClosure(value, cmd, errors, "wydrukGrafikiCena")})
-        //dzialaniaMatematyczneCena(nullable:true, blank:false,  validator: { value, cmd, errors -> cmd.numberValidationClosure(value, cmd, errors, "dzialaniaMatematyczneCena")})
-
+        wydrukGrafikiCena(nullable:true, blank:false,  validator: { value, cmd, errors -> cmd.numberValidationClosure(value, cmd, errors, "wydrukGrafikiCena")})
+        dzialaniaMatematyczneCena(nullable:true, blank:false,  validator: { value, cmd, errors -> cmd.numberValidationClosure(value, cmd, errors, "dzialaniaMatematyczneCena")})
 
         pierwszaSesjaCena(nullable: false, blank: true,  validator: { value, cmd, errors -> cmd.numberValidationClosure(value, cmd, errors, "pierwszaSesjaCena")})
 
