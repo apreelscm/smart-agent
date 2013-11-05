@@ -525,7 +525,9 @@ class ProcessCommand implements Serializable {
     @Omit
     Boolean czyGift
     @Omit
-    Boolean czyRozszerzenie
+    Boolean isRozszerzenie
+    @Omit
+    Boolean hasNewUmowaAndPrepaid
 
     @Omit
     String liczbaTerminali
@@ -538,6 +540,9 @@ class ProcessCommand implements Serializable {
 
     @Omit(inPopulate = true)
     Boolean isDoladowania_tk
+
+    @Omit
+    Boolean hasPrepaid
 
     Boolean korespondencjaJakDlaMerchanta
 

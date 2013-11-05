@@ -34,9 +34,13 @@
                     <li>
                         <span>
 
-                            <g:set var="hasNewUmowaAndPrepaid" value="${processInstance?.activities?.any{it.code.equals('nowaUmowa')} && processInstance?.activities?.any{it.code.equals('dodaniePrepaid')}}"/>
-                            <g:set var="tpEnabled" value="${hasNewUmowaAndPrepaid || data.isDoladowania_tp}"/>
-                            <g:set var="tkEnabled" value="${hasNewUmowaAndPrepaid || data.isDoladowania_tk}"/>
+                            <g:set var="hasNewUmowaAndPrepaid" value="${data.hasNewUmowaAndPrepaid}"/>
+                            <g:set var="isRozszerzenie" value="${data.isRozszerzenie}"/>
+                            <g:set var="tpFromCalcEnabled" value="${data.isDoladowania_tp}"/>
+                            <g:set var="tkFromCalcEnabled" value="${data.isDoladowania_tk}"/>
+                            <g:set var="hasPrepaid" value="${data.hasPrepaid}"/>
+                            <g:set var="tpEnabled" value="${hasNewUmowaAndPrepaid || tpFromCalcEnabled || (tpFromCalcEnabled && isRozszerzenie && hasPrepaid)}"/>
+                            <g:set var="tkEnabled" value="${hasNewUmowaAndPrepaid || tkFromCalcEnabled || (tkFromCalcEnabled && isRozszerzenie && hasPrepaid)}"/>
 
                             <div>
                                 <label for="${panelType}[${id}].teleKodzik" class="doladowanieLabel"><g:checkBox name="${panelType}[${id}].teleKodzik" value="${pointData?.teleKodzik}"  disabled="${!tkEnabled}" class="doladowanie" data-doladowanie="telekodzik"/><g:message code="panel.newpoint.terminaloptions.phonecreditsrecharge.telekodzik" /></label>

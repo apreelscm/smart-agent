@@ -472,13 +472,9 @@ function verifyBaseVisibility(value, panelId){
     var str = panelId.replace(".","")
     if(value == "Verifone Vx670 GPRS"){
         $j('tr[name="'+str+'.trBase"]').show()
-        $j('input[name="'+str+'.gprsPPIlosc"]').attr("readonly","true")
-        $j('input[name="'+str+'.gprsPPCena"]').attr("readonly","true")
     }
     else{
         $j('tr[name="'+str+'.trBase"]').hide()
-        $j('input[name="'+str+'.gprsPPIlosc"]').removeAttr("readonly")
-        $j('input[name="'+str+'.gprsPPCena"]').removeAttr("readonly")
     }
 }
 

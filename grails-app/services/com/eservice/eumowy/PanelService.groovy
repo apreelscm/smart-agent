@@ -21,7 +21,9 @@ class PanelService {
         cmd.isDoladowania_tk = calculatorService.getCalcProperty(calc,"CZY_TELEKODZIK")
         cmd.doladowania_tp = nullify(cmd.doladowania_tp)
         cmd.doladowania_tk = nullify(cmd.doladowania_tk)
-        cmd.czyRozszerzenie = cmd.process?.activities?.any{it.code.equals('dodatkowyPunkt')} || cmd.process?.activities?.any{it.code.equals('dodatkowyPos')}
+        cmd.isRozszerzenie = cmd.process?.activities?.any{it.code.equals('dodatkowyPunkt')} || cmd.process?.activities?.any{it.code.equals('dodatkowyPos')}
+        cmd.hasPrepaid = cbdService.getPrepaidEvoucher(cmd.nip) || cbdService.getPrepaidTopup(cmd.nip)
+        cmd.hasNewUmowaAndPrepaid = cmd.process?.activities?.any{it.code.equals('nowaUmowa')} && cmd.process?.activities?.any{it.code.equals('dodaniePrepaid')}
 
         cmd.liczbaTerminali = calculatorService.getCalcProperty(calc,"LICZBA_POS_MAX") != null ? calculatorService.getCalcProperty(calc,"LICZBA_POS_MAX") : 0
     }

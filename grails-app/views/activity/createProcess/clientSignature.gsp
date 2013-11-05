@@ -65,7 +65,7 @@
 	    			updateSubscriptionStatus("OK", subscriptionLinkId, result.subscriptionId);
 				}
 				else {
-					jQuery("#dialogInfoText").html('<p class="align-center">'+result.text+'</p>');
+					jQuery("#dialogInfoText").html('<h3 class="align-center" style="color: red;">'+result.text+'</h3>');
 				}
 				jQuery('#dialog').hide();
 				jQuery('#dialogInfo').show();
@@ -111,11 +111,11 @@
 	        isSubscriptionDone[linkid] = true;
 	
 	        if (updateSubscriptionStatusCount >= 1 && updateSubscriptionStatusCount <= requiredSubscriptionsCount - 1) {
-	            jQuery.post($(location).attr("href"), {_eventId_updateProcessStatus: "", processStatus: "WAIT_FOR_SUBSCRIPTION", subscriptionId: subId}, function(data){});
+	            jQuery.post(jQuery(location).attr("href"), {_eventId_updateProcessStatus: "", processStatus: "WAIT_FOR_SUBSCRIPTION", subscriptionId: subId}, function(data){});
 	        }
 	
 	        if (updateSubscriptionStatusCount == requiredSubscriptionsCount) {
-	            jQuery.post($(location).attr("href"), {_eventId_updateProcessStatus: "", processStatus: "SUBSCRIPTIONS_DONE", subscriptionId: subId}, function(data){});
+	            jQuery.post(jQuery(location).attr("href"), {_eventId_updateProcessStatus: "", processStatus: "SUBSCRIPTIONS_DONE", subscriptionId: subId}, function(data){});
 	        }
 	    }
 	}
