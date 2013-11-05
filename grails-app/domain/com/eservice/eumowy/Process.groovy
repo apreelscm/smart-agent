@@ -78,6 +78,7 @@ class Process implements Serializable {
         processData(nullable: true)
         notesToCoa(nullable: true, maxSize: 1000)
         notesFromZrd(nullable: true, maxSize: 300)
+        hirePayments(nullable: true)
     }
 
     static mapping = {
@@ -91,6 +92,7 @@ class Process implements Serializable {
         documents cascade:"all-delete-orphan"
         points cascade:"all-delete-orphan"
         processData cascade:"all-delete-orphan"
+        hirePayments cascade:"all-delete-orphan"
     }
 
     def afterInsert() {
