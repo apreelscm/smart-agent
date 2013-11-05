@@ -126,11 +126,11 @@ log4j = {
 
     appenders {
         console name: 'console', layout: pattern(conversionPattern: '%d{dd-MM-yyyy HH:mm:ss,SSS} %5p %c - %m%n')
-        appender new EumowyJDBCAppender(ConfigurationHolder.config.dataSource,
+        /*appender new EumowyJDBCAppender(ConfigurationHolder.config.dataSource,
                 "database",
                 "INSERT INTO EUMOWY.LOGS (login, log_date, log_message) VALUES ('%X{sessionUserName}','%d{yyyy.MM.dd HH:mm:ss}', '%m')",
                 org.apache.log4j.Level.INFO
-        )
+        )*/
 
         String logDirectory = "${System.getProperty('catalina.base') ?: '.'}/logs"
         println("catalina.base dir : "+logDirectory)
