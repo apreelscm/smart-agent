@@ -83,16 +83,13 @@ class ProcessCommand implements Serializable {
         }
 
         if (counter == 0 ){
+            // warunek o tyle poprawny ze z poziomu klienta uniemozliwamy przejsie dalej bez dodania jakiegokolwiek punktu lub pos
             log.debug "no points/pos were added"
             return true
         }
 
 
-        log.info "liczbaPosZCbd " + cmd.liczbaPosZCbd
-        if (cmd.liczbaPosZCbd != null) {
-            log.debug "Here :) " + Integer.valueOf(cmd.liczbaPosZCbd)
-            counter += Integer.valueOf(cmd.liczbaPosZCbd) != null ? Integer.valueOf(cmd.liczbaPosZCbd) : 0
-        }
+        log.info "liczba dodanych terminali w eUmowy [${counter}], dozwolona [${max}]"
 
         if (counter != max) {
             errors.rejectValue("liczbaTerminali", "default.notEqual.liczbaTerminali",[counter, max] as Object[], "")
@@ -142,7 +139,7 @@ class ProcessCommand implements Serializable {
 
     @Omit
     static def regexpValidationClosure = { value, errors, propertyName, patternStr, message ->
-        log.info("regexpValidationClosure - propertyName:"+propertyName+" value:"+value + " pattern:"+patternStr)
+        log.trace("regexpValidationClosure - propertyName:"+propertyName+" value:"+value + " pattern:"+patternStr)
 
         if(!value){
             return true;
