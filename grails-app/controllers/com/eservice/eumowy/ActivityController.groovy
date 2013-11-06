@@ -492,10 +492,6 @@ class ActivityController {
                 }
 
                 def calc = cbdService.findCalculatorByNip(client.nip)
-                if (Environment.getCurrent() == Environment.DEVELOPMENT) {
-                    calc.push([POLEAPREEL:"LICZBA_POS_MAX",WARTOSCAPREEL:"2"])
-                }
-
 
                 if(calc == []){
                     flash.calcErrorMessage = message(code:"calc.fetch.error", default:"Wystąpił błąd podczas próby pobrania kalkulatora");
@@ -810,9 +806,6 @@ class ActivityController {
                 }
 
                 def calc = cbdService.findCalculatorByNip(client.nip)
-                if (Environment.getCurrent() == Environment.DEVELOPMENT) {
-                    calc.push([POLEAPREEL:"LICZBA_POS_MAX",WARTOSCAPREEL:"2"])
-                }
 
                 log.info("pobrano kalkulator " + calcId)
 
