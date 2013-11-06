@@ -266,8 +266,10 @@ class PdfServiceTests {
 		data.put("utaTN2", ["NIE"] as String[]);
 		data.put("utaTN3", ["NIE"] as String[]);
 		data.put("utaTN4", ["NIE"] as String[]);
+//        data.put("crossAdditional", ['_______________'] as String[])
+        data.put("crossNew", ['______'] as String[])
 		data.putAll(insertSignatures(2, 85, 395, 74, 43))
-		process("APUNTSZAPOU3.00212-01-16.pdf", "APUNTSZAPOU3.00212-01-16_out.pdf", data)
+		process("APUNTSZAPOU3.00212-01-16_new.pdf", "APUNTSZAPOU3.00212-01-16_out.pdf", data)
 	}
 	
 	void testAPUNTSZAPOUToImage() {
