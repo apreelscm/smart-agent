@@ -34,9 +34,13 @@
                     <li>
                         <span>
 
-                            <g:set var="hasNewUmowaAndPrepaid" value="${processInstance?.activities?.any{it.code.equals('nowaUmowa')} && processInstance?.activities?.any{it.code.equals('dodaniePrepaid')}}"/>
-                            <g:set var="tpEnabled" value="${hasNewUmowaAndPrepaid || data.isDoladowania_tp}"/>
-                            <g:set var="tkEnabled" value="${hasNewUmowaAndPrepaid || data.isDoladowania_tk}"/>
+                            <g:set var="hasNewUmowaAndPrepaid" value="${data.hasNewUmowaAndPrepaid}"/>
+                            <g:set var="isRozszerzenie" value="${data.isRozszerzenie}"/>
+                            <g:set var="tpFromCalcEnabled" value="${data.isDoladowania_tp}"/>
+                            <g:set var="tkFromCalcEnabled" value="${data.isDoladowania_tk}"/>
+                            <g:set var="hasPrepaid" value="${data.hasPrepaid}"/>
+                            <g:set var="tpEnabled" value="${hasNewUmowaAndPrepaid || tpFromCalcEnabled || (tpFromCalcEnabled && isRozszerzenie && hasPrepaid)}"/>
+                            <g:set var="tkEnabled" value="${hasNewUmowaAndPrepaid || tkFromCalcEnabled || (tkFromCalcEnabled && isRozszerzenie && hasPrepaid)}"/>
 
                             <div>
                                 <label for="${panelType}[${id}].teleKodzik" class="doladowanieLabel"><g:checkBox name="${panelType}[${id}].teleKodzik" value="${pointData?.teleKodzik}"  disabled="${!tkEnabled}" class="doladowanie" data-doladowanie="telekodzik"/><g:message code="panel.newpoint.terminaloptions.phonecreditsrecharge.telekodzik" /></label>
@@ -61,7 +65,7 @@
                 <div>
                     <p class="bold" ><g:message code="panel.newpoint.terminaloptions.marketingproducts" /></p>
                     <g:hiddenField name="czyGift" value="${data.czyGift}"/>
-                    <p><label for="${panelType}[${id}].giftCard"><g:checkBox disabled="${!(data.czyGift && data.czyRozszerzenie)}" name="${panelType}[${id}].kartaPodarunkowa" id="${panelType}[${id}].giftCard" value="${pointData?.kartaPodarunkowa}"/><g:message code="panel.newpoint.terminaloptions.marketingproducts.giftcard" /></label></p>
+                    <p><label for="${panelType}[${id}].giftCard"><g:checkBox disabled="${!(data.czyGift && data.isRozszerzenie)}" name="${panelType}[${id}].kartaPodarunkowa" id="${panelType}[${id}].giftCard" value="${pointData?.kartaPodarunkowa}"/><g:message code="panel.newpoint.terminaloptions.marketingproducts.giftcard" /></label></p>
                 </div>
             </div>
 

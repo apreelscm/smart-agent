@@ -275,8 +275,10 @@
         <g:hiddenField name="liczbaPosZCbd" value="${data.liczbaPosZCbd}"/>
         <g:hiddenField id="progrnozaMiesieczna" name="progrnozaMiesieczna" value="${data.progrnozaMiesieczna}"/>
         <g:hiddenField id="liczbaPtkCbd" name="liczbaPtkCbd" value="${data.liczbaPtkCbd}"/>
+        <g:hiddenField id="hasPrepaid" name="hasPrepaid" value="${data.hasPrepaid}"/>
+        <g:hiddenField id="hasNewUmowaAndPrepaid" name="hasNewUmowaAndPrepaid" value="${data.hasNewUmowaAndPrepaid}"/>
+        <g:hiddenField name="isRozszerzenie" value="${data.isRozszerzenie}"/>
 
-        <g:hiddenField name="czyRozszerzenie" value="${data.czyRozszerzenie}"/>
         <g:each var="panel" in="${processInstance.panels.sort{p -> p?.orderNo}}" status="i">
 
             <g:if test="${panel != null}">

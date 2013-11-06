@@ -228,6 +228,13 @@ class PdfService {
         ['totalPagesCount': totalPagesCount, 'processInstance': processInstance]
     }
 
+    def cleanAgrementDateContent(DocumentContent dc){
+        //pola zapleniane na podstawie 'dataUmowy'
+        def fieldsToClean = ['dataUmowy', 'wydrukGrafikiData', 'dzialaniaMatematyczneData',
+                'pierwszaSesjaData', 'systemKasowyData', 'weryfikacjaPINData', 'czasObslugiData'];
+        PdfGenerator.cleanValuesContent(dc, fieldsToClean)
+    }
+
     private def workWithOneDocument(def processInstance, def sig, def data, def documentName){
         byte[] documentData = this.fillPdfFormFromURIWithFaksymile(sig.id, data, PdfService.FontType.ARIAL)
         if(!documentData) return 0

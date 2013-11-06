@@ -10,6 +10,7 @@ import com.eservice.eumowy.command.PointCommand
 import com.eservice.eumowy.command.ProcessCommand
 import com.eservice.eumowy.process.DefineActivityCommand
 import com.eservice.eumowy.util.DateUtils
+import pdfgenerator.PdfGenerator
 
 class ActivityController {
 
@@ -491,10 +492,6 @@ class ActivityController {
                 }
 
                 def calc = cbdService.findCalculatorByNip(client.nip)
-                if (Environment.getCurrent() == Environment.DEVELOPMENT) {
-                    calc.push([POLEAPREEL:"LICZBA_POS_MAX",WARTOSCAPREEL:"2"])
-                }
-
 
                 if(calc == []){
                     flash.calcErrorMessage = message(code:"calc.fetch.error", default:"Wystąpił błąd podczas próby pobrania kalkulatora");
@@ -809,9 +806,6 @@ class ActivityController {
                 }
 
                 def calc = cbdService.findCalculatorByNip(client.nip)
-                if (Environment.getCurrent() == Environment.DEVELOPMENT) {
-                    calc.push([POLEAPREEL:"LICZBA_POS_MAX",WARTOSCAPREEL:"2"])
-                }
 
                 log.info("pobrano kalkulator " + calcId)
 
@@ -1319,6 +1313,14 @@ class ActivityController {
         else if (PAPER.equals(requestVersion)) {
             //Documents are already in DB
             def merchantName = getFromProcessData(process, 'akceptantNazwaOficjalna');
+
+            process.documents.each{ DocumentFile df ->
+                DocumentContent ndc = pdfService.cleanAgrementDateContent(df.content);
+                ndc.setDocument(df)
+                ndc.save(flush: true)
+                df.setContent(ndc);
+                df.save(flush: true)
+            }
             emailService.sendDocumentsPaperVersion(process.phEmail, process.documents, merchantName)
         }
         else if (TEMPLATES.equals(requestVersion)) {

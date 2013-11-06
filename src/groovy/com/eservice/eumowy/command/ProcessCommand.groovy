@@ -7,7 +7,6 @@ import grails.util.Environment
 import grails.validation.Validateable
 import org.apache.commons.collections.FactoryUtils
 import org.apache.commons.collections.ListUtils
-import org.apache.log4j.Logger
 
 import java.util.regex.Pattern
 
@@ -57,6 +56,49 @@ class ProcessCommand implements Serializable {
     }
 
     @Omit
+    static def checkTerminalNumber = { value, cmd, errors ->
+        if (Environment.getCurrent().equals(Environment.TEST)) {
+            return true
+        }
+
+        def max = value ? Integer.valueOf(value) : 0
+        def counter = 0
+
+        cmd.points?.each { point ->
+            counter += point?.dialupIlosc != null ? point?.dialupIlosc : 0
+            counter += point?.vpnIlosc != null ? point?.vpnIlosc : 0
+            counter += point?.sslIlosc != null ? point?.sslIlosc : 0
+            counter += point?.gprsIlosc != null ? point?.gprsIlosc : 0
+            counter += point?.pinPadIlosc != null ? point?.pinPadIlosc : 0
+            counter += point?.wifiIlosc != null ? point?.wifiIlosc : 0
+        }
+
+        cmd.poses?.each { point ->
+            counter += point?.dialupIlosc != null ? point?.dialupIlosc : 0
+            counter += point?.vpnIlosc != null ? point?.vpnIlosc : 0
+            counter += point?.sslIlosc != null ? point?.sslIlosc : 0
+            counter += point?.gprsIlosc != null ? point?.gprsIlosc : 0
+            counter += point?.pinPadIlosc != null ? point?.pinPadIlosc : 0
+            counter += point?.wifiIlosc != null ? point?.wifiIlosc : 0
+        }
+
+        if (counter == 0 ){
+            // warunek o tyle poprawny ze z poziomu klienta uniemozliwamy przejsie dalej bez dodania jakiegokolwiek punktu lub pos
+            log.debug "no points/pos were added"
+            return true
+        }
+
+
+        log.info "liczba dodanych terminali w eUmowy [${counter}], dozwolona [${max}]"
+
+        if (counter != max) {
+            errors.rejectValue("liczbaTerminali", "default.notEqual.liczbaTerminali",[counter, max] as Object[], "")
+            return false
+        }
+        return true
+    }
+
+    @Omit
     static def maxLengthClosure = { value, cmd, errors, maxValue, propertyName, message ->
         if (value.length() > maxValue) {
             errors.rejectValue(propertyName, message)
@@ -97,7 +139,7 @@ class ProcessCommand implements Serializable {
 
     @Omit
     static def regexpValidationClosure = { value, errors, propertyName, patternStr, message ->
-        log.info("regexpValidationClosure - propertyName:"+propertyName+" value:"+value + " pattern:"+patternStr)
+        log.trace("regexpValidationClosure - propertyName:"+propertyName+" value:"+value + " pattern:"+patternStr)
 
         if(!value){
             return true;
@@ -525,7 +567,9 @@ class ProcessCommand implements Serializable {
     @Omit
     Boolean czyGift
     @Omit
-    Boolean czyRozszerzenie
+    Boolean isRozszerzenie
+    @Omit
+    Boolean hasNewUmowaAndPrepaid
 
     @Omit
     String liczbaTerminali
@@ -538,6 +582,9 @@ class ProcessCommand implements Serializable {
 
     @Omit(inPopulate = true)
     Boolean isDoladowania_tk
+
+    @Omit
+    Boolean hasPrepaid
 
     Boolean korespondencjaJakDlaMerchanta
 
@@ -1093,8 +1140,8 @@ class ProcessCommand implements Serializable {
             return true
         })
         obslugaEkonomicznyCena(nullable:true, blank:false,  validator: { value, cmd, errors -> cmd.numberValidationClosure(value, cmd, errors, "xxx")}) //TODO VERIFY
-        numerRachunkuBankowegoKlienta(nullable:false, blank:false, matches: "~|\\d{2}\\s\\d{4}\\s\\d{4}\\s\\d{4}\\s\\d{4}\\s\\d{4}\\s\\d{4}")
-        bankKlienta(nullable:false, blank:false)
+        numerRachunkuBankowegoKlienta(nullable:true, blank:false, matches: "~|\\d{2}\\s\\d{4}\\s\\d{4}\\s\\d{4}\\s\\d{4}\\s\\d{4}\\s\\d{4}")
+        bankKlienta(nullable:true, blank:false)
         oplataZaUruchomienieDCC(nullable:false, blank:false, matches: "~|\\-|^(?:[1-9]\\d*|0|\\-)?(?:\\.\\d{1,2})?\$")
         nip(nullable:true)
         notes(nullable:true, maxSize: 1000) //a1!
@@ -1137,42 +1184,7 @@ class ProcessCommand implements Serializable {
         serwisZablokowany(nullable: true)
 
         liczbaTerminali(nullable:true, validator: { value, cmd, errors ->
-            if (Environment.getCurrent().equals(Environment.TEST)) {
-                return true
-            }
-
-            Logger LOG = Logger.getLogger("liczbaTerminali")
-            def max = value ? Integer.valueOf(value) : 0
-            def counter = 0
-
-            cmd.points?.each { point ->
-                counter += point?.dialupIlosc != null ? point?.dialupIlosc : 0
-                counter += point?.vpnIlosc != null ? point?.vpnIlosc : 0
-                counter += point?.sslIlosc != null ? point?.sslIlosc : 0
-                counter += point?.gprsIlosc != null ? point?.gprsIlosc : 0
-                counter += point?.pinPadIlosc != null ? point?.pinPadIlosc : 0
-                counter += point?.wifiIlosc != null ? point?.wifiIlosc : 0
-            }
-            LOG.info "!!! liczbaPosZCbd " + cmd.liczbaPosZCbd
-            if (cmd.liczbaPosZCbd != null) {
-                LOG.info "Here :) " + Integer.valueOf(cmd.liczbaPosZCbd)
-                counter += Integer.valueOf(cmd.liczbaPosZCbd) != null ? Integer.valueOf(cmd.liczbaPosZCbd) : 0
-            }
-
-            cmd.poses?.each { point ->
-                counter += point?.dialupIlosc != null ? point?.dialupIlosc : 0
-                counter += point?.vpnIlosc != null ? point?.vpnIlosc : 0
-                counter += point?.sslIlosc != null ? point?.sslIlosc : 0
-                counter += point?.gprsIlosc != null ? point?.gprsIlosc : 0
-                counter += point?.pinPadIlosc != null ? point?.pinPadIlosc : 0
-                counter += point?.wifiIlosc != null ? point?.wifiIlosc : 0
-            }
-
-            if (counter != max) {
-                errors.rejectValue("liczbaTerminali", "default.notEqual.liczbaTerminali",[counter, max] as Object[], "")
-                return false
-            }
-            return true
+            checkTerminalNumber.call(value, cmd, errors)
         })
 
     }

@@ -1,20 +1,12 @@
 package com.eservice.eumowy
 
-import java.awt.image.BufferedImage
-
-import signaturepad.SignatureToImage
-
 class SubscriptionController {
-	
-	def appParametersService
-	
-    def index() {
-		
-	}
-	
+
+    private static int MIN_SIGNATURE_LENGHT = 700
+
 	def saveSubscription() {
 		
-		if (params.content.length() < 2000) {
+		if (params.nativeContent.length() < MIN_SIGNATURE_LENGHT) {
 			render(text: "{\"status\": \"FAIL\", \"text\": \"Niewyraźny podpis. Proszę spróbować jeszcze raz.\"}")
 			return
 		}
@@ -22,20 +14,10 @@ class SubscriptionController {
 		def subscription = new Subscription(params)
 		subscription.signDate = new Date()
 		subscription.save(flush: true)
-		
-        BufferedImage img = SignatureToImage.convertBase64ToImage(subscription.content)
-
-		/* We don't need it for now
-		
-		File outputfile = new File(appParametersService.getSubscriptionsPath()+subscription.getFileName())
-		ImageIO.write(img, "png", outputfile)
-		
-		*/
 
 		if (subscription?.id != null) {
 			render(text: "{\"status\": \"OK\", \"subscriptionId\": " + subscription.id + "}")
-		}
-		else {
+		} else {
 			render(text: "{\"status\": \"FAIL\", \"text\": \"Nie udało się zapisać podpisu do bazy!\"}")
 		}
 	}
@@ -44,5 +26,4 @@ class SubscriptionController {
 		Subscription sign = Subscription.last()
 		render(view: "preview", model: [signature: sign])
 	}
-	
 }

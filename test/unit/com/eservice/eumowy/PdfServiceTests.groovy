@@ -266,8 +266,10 @@ class PdfServiceTests {
 		data.put("utaTN2", ["NIE"] as String[]);
 		data.put("utaTN3", ["NIE"] as String[]);
 		data.put("utaTN4", ["NIE"] as String[]);
+//        data.put("crossAdditional", ['_______________'] as String[])
+        data.put("crossNew", ['______'] as String[])
 		data.putAll(insertSignatures(2, 85, 395, 74, 43))
-		process("APUNTSZAPOU3.00212-01-16.pdf", "APUNTSZAPOU3.00212-01-16_out.pdf", data)
+		process("APUNTSZAPOU3.00212-01-16_new.pdf", "APUNTSZAPOU3.00212-01-16_out.pdf", data)
 	}
 	
 	void testAPUNTSZAPOUToImage() {
@@ -488,7 +490,8 @@ class PdfServiceTests {
 	void testAPUPZ2ACB() {
 		HashMap<String, String[]> data = new HashMap<String, String[]>();
 		data.putAll(this.data);
-		data.putAll(insertSignatures(2, 80, 145, 74, 43))
+//		data.putAll(insertSignatures(2, 80, 145, 74, 43))
+        data.putAll(insertDirectSignature(2, 445, 40, 74, 43))
 		process("APUPZ2ACB1.00013-02-15 - Aneks do Umowy o przyjm po 2013 r (wprow Cashback).pdf", "APUPZ2ACB1.00013-02-15 - Aneks do Umowy o przyjm po 2013 r (wprow Cashback)_out.pdf", data)
 	}
 	
@@ -788,7 +791,8 @@ class PdfServiceTests {
 		new File(getTemplateOutPath()+outName).withOutputStream {
 			it.write pdf
 		}
-	}
+        println 'Writing pdf to: ' + getTemplateOutPath()+outName
+    }
 
 
 	private HashMap<String, String[]> insertSignatures(int pageNo, int x, int y, int scaleX, int scaleY){
@@ -800,6 +804,12 @@ class PdfServiceTests {
 		result.put("zarzad2_podpis", [new File(getTemplatePath()+File.separator+"subscriptions"+File.separator+"signature3.jpg").toURI().toURL(), "", "signature", pageNo, x+380, y, BOARD_MEMBER_2_X, BOARD_MEMBER_2_Y] as String[]);
 		return result;
 	}
+
+    private HashMap<String, String[]> insertDirectSignature(int pageNo, int x, int y, int scaleX, int scaleY){
+        HashMap<String, String[]> result = new HashMap<String, String[]>();
+        result.put("czyjs_podpis", [new File(getTemplatePath()+File.separator+"subscriptions"+File.separator+"signature3.jpg").toURI().toURL(), "", "signature", pageNo, x, y, scaleX, scaleY] as String[]);
+        return result;
+    }
 
 	private static addCheckboxes(def data, def pdfKeyValue, def value){
 		pdfKeyValue.each{ k, v ->  data.put(k, [v.equals(value), "", "checkbox"] as String[])}
