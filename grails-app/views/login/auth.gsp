@@ -31,6 +31,7 @@
 		</form>
 	</div>
 </div>
+<a href="http://goo.gl/LqSN6">Pobierz bibliotekę Signature Capture</a>
 <script type='text/javascript'>
 	<!--
 	(function() {
