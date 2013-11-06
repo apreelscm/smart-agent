@@ -1321,12 +1321,8 @@ class ActivityController {
             //Documents are already in DB
             def merchantName = getFromProcessData(process, 'akceptantNazwaOficjalna');
 
-            //pola zapleniane na podstawie 'dataUmowy'
-            def toRemove = ['dataUmowy', 'wydrukGrafikiData', 'dzialaniaMatematyczneData',
-                    'pierwszaSesjaData', 'systemKasowyData', 'weryfikacjaPINData', 'czasObslugiData'];
-
             process.documents.each{ DocumentFile df ->
-                DocumentContent ndc = PdfGenerator.cleanValuesContent(df.content, toRemove);
+                DocumentContent ndc = pdfService.cleanAgrementDateContent(df.content);
                 ndc.setDocument(df)
                 ndc.save(flush: true)
                 df.setContent(ndc);
