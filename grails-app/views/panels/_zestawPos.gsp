@@ -35,28 +35,28 @@
                              value="${pointData?.dialupPPIlosc}" readonly="readonly"
                              class="half-width integer-number"/> PP. szt.</td>
 
-            <td><eumowy:textField name="${panelType}[${id}].dialupCena"
+            <td><eumowy:currencyField name="${panelType}[${id}].dialupCena"
                              id="${panelType}[${id}].dialupPrice"
                              value="${pointData?.dialupCena}" 
                              validatable="${pointData}"
                              validateField="dialupCena"
-                             class="half-width float-number normal-price"/> zł.</td>
-            <td><eumowy:textField name="${panelType}[${id}].dialupPPCena"
+                             class="half-width float-number normal-price"/></td>
+            <td><eumowy:currencyField name="${panelType}[${id}].dialupPPCena"
                              id="${panelType}[${id}].dialupPPPrice"
                              value="${pointData?.dialupPPCena}" 
                              validatable="${pointData}" readonly="readonly"
                              validateField="dialupPPCena"
-                             class="half-width float-number normal-price"/> zł.</td>
-            <td><eumowy:textField name="${panelType}[${id}].dialupCenaPreferencyjna"
+                             class="half-width float-number normal-price"/></td>
+            <td><eumowy:currencyField name="${panelType}[${id}].dialupCenaPreferencyjna"
                              id="${panelType}[${id}].dialupPricePreferencyjna"
                              value="${pointData?.dialupCenaPreferencyjna}" 
                              validatable="${pointData}"
                              validateField="dialupCenaPreferencyjna"
-                             class="half-width float-number pref-price"/> zł.</td>
-            <td><eumowy:textField name="${panelType}[${id}].dialupPPCenaPreferencyjna"
+                             class="half-width float-number pref-price"/></td>
+            <td><eumowy:currencyField name="${panelType}[${id}].dialupPPCenaPreferencyjna"
                              id="${panelType}[${id}].dialupPPPricePreferencyjna"
                              value="${pointData?.dialupPPCenaPreferencyjna}" readonly="readonly"
-                             class="half-width float-number pref-price"/> zł.</td>
+                             class="half-width float-number pref-price"/></td>
         </tr>
         <tr>
             <td>typ <dict:typeSelect nip="${nip}"
@@ -75,31 +75,31 @@
                              value="${pointData?.vpnPPIlosc}" readonly="readonly"
                              class="half-width integer-number"/> PP. szt.</td>
 
-            <td><eumowy:textField name="${panelType}[${id}].vpnCena"
+            <td><eumowy:currencyField name="${panelType}[${id}].vpnCena"
                              id="${panelType}[${id}].vpnPrice"
                              value="${pointData?.vpnCena}" 
                              validatable="${pointData}"
                              validateField="vpnCena"
-                             class="half-width float-number normal-price"/> zł.</td>
-            <td><eumowy:textField name="${panelType}[${id}].vpnPPCena"
+                             class="half-width float-number normal-price"/></td>
+            <td><eumowy:currencyField name="${panelType}[${id}].vpnPPCena"
                              id="${panelType}[${id}].vpnPPPrice"
                              value="${pointData?.vpnPPCena}" 
                              validatable="${pointData}"
                              validateField="vpnPPCena" readonly="readonly"
-                             class="half-width float-number normal-price"/> zł.</td>
+                             class="half-width float-number normal-price"/></td>
 
-            <td><eumowy:textField name="${panelType}[${id}].vpnCenaPreferencyjna"
+            <td><eumowy:currencyField name="${panelType}[${id}].vpnCenaPreferencyjna"
                              id="${panelType}[${id}].vpnPricePreferencyjna"
                              value="${pointData?.vpnCenaPreferencyjna}" 
                              validatable="${pointData}"
                              validateField="vpnCenaPreferencyjna"
-                             class="half-width float-number pref-price"/> zł.</td>
-            <td><eumowy:textField name="${panelType}[${id}].vpnPPCenaPreferencyjna"
+                             class="half-width float-number pref-price"/></td>
+            <td><eumowy:currencyField name="${panelType}[${id}].vpnPPCenaPreferencyjna"
                              id="${panelType}[${id}].vpnPPPricePreferencyjna"
                              value="${pointData?.vpnPPCenaPreferencyjna}" 
                              validatable="${pointData}"
                              validateField="vpnPPCenaPreferencyjna" readonly="readonly"
-                             class="half-width float-number pref-price"/> zł.</td>
+                             class="half-width float-number pref-price"/></td>
         </tr>
         <tr>
             <td>typ <dict:typeSelect nip="${nip}"
@@ -117,31 +117,31 @@
                              id="${panelType}[${id}].sslPPCount"
                              value="${pointData?.sslPPIlosc}" readonly="readonly"
                              class="half-width integer-number"/> PP. szt.</td>
-            <td><eumowy:textField name="${panelType}[${id}].sslCena"
+            <td><eumowy:currencyField name="${panelType}[${id}].sslCena"
                              id="${panelType}[${id}].sslPrice"
                              value="${pointData?.sslCena}" 
                              validatable="${pointData}"
                              validateField="sslCena"
-                             class="half-width float-number normal-price"/> zł.</td>
-            <td><eumowy:textField name="${panelType}[${id}].sslPPCena"
+                             class="half-width float-number normal-price"/></td>
+            <td><eumowy:currencyField name="${panelType}[${id}].sslPPCena"
                              id="${panelType}[${id}].sslPPPrice"
                              value="${pointData?.sslPPCena}" 
                              validatable="${pointData}" readonly="readonly"
                              validateField="sslPPCena"
-                             class="half-width float-number normal-price"/> zł.</td>
+                             class="half-width float-number normal-price"/></td>
 
-            <td><eumowy:textField name="${panelType}[${id}].sslCenaPreferencyjna"
+            <td><eumowy:currencyField name="${panelType}[${id}].sslCenaPreferencyjna"
                              id="${panelType}[${id}].sslPricePreferencyjna"
                              value="${pointData?.sslCenaPreferencyjna}" 
                              validatable="${pointData}"
                              validateField="sslCenaPreferencyjna"
-                             class="half-width float-number pref-price"/> zł.</td>
-            <td><eumowy:textField name="${panelType}[${id}].sslPPCenaPreferencyjna"
+                             class="half-width float-number pref-price"/></td>
+            <td><eumowy:currencyField name="${panelType}[${id}].sslPPCenaPreferencyjna"
                              id="${panelType}[${id}].sslPPPricePreferencyjna"
                              value="${pointData?.sslPPCenaPreferencyjna}" 
                              validatable="${pointData}" readonly="readonly"
                              validateField="sslPPCenaPreferencyjna"
-                             class="half-width float-number pref-price"/> zł.</td>
+                             class="half-width float-number pref-price"/></td>
         </tr>
         <tr>
             <td>typ <dict:typeSelect nip="${nip}"
@@ -163,29 +163,29 @@
                              value="${pointData?.gprsPPIlosc}" readonly="readonly"
                              class="half-width integer-number"/> PP. szt.</td>
 
-            <td><eumowy:textField name="${panelType}[${id}].gprsCena"
+            <td><eumowy:currencyField name="${panelType}[${id}].gprsCena"
                              id="${panelType}[${id}].gprsPrice"
                              value="${pointData?.gprsCena}" 
                              validatable="${pointData}" 
                              validateField="gprsCena"
-                             class="half-width float-number normal-price"/> zł.</td>
-            <td><eumowy:textField name="${panelType}[${id}].gprsPPCena"
+                             class="half-width float-number normal-price"/></td>
+            <td><eumowy:currencyField name="${panelType}[${id}].gprsPPCena"
                              id="${panelType}[${id}].gprsPPPrice"
                              value="${pointData?.gprsPPCena}" 
                              validatable="${pointData}" 
                              validateField="gprsPPCena" readonly="readonly"
-                             class="half-width float-number normal-price"/> zł.</td>
+                             class="half-width float-number normal-price"/></td>
 
-            <td><eumowy:textField name="${panelType}[${id}].gprsCenaPreferencyjna"
+            <td><eumowy:currencyField name="${panelType}[${id}].gprsCenaPreferencyjna"
                              id="${panelType}[${id}].gprsPricePreferencyjna"
                              value="${pointData?.gprsCenaPreferencyjna}" 
-                             class="half-width float-number pref-price"/> zł.</td>
-            <td><eumowy:textField name="${panelType}[${id}].gprsPPCenaPreferencyjna"
+                             class="half-width float-number pref-price"/></td>
+            <td><eumowy:currencyField name="${panelType}[${id}].gprsPPCenaPreferencyjna"
                              id="${panelType}[${id}].gprsPPPricePreferencyjna"
                              value="${pointData?.gprsPPCenaPreferencyjna}" 
                              validatable="${pointData}" readonly="readonly"
                              validateField="gprsPPCenaPreferencyjna"
-                             class="half-width float-number pref-price"/> zł.</td>
+                             class="half-width float-number pref-price"/></td>
         </tr>
         <tr>
             <td>typ <dict:typeSelect nip="${nip}"
@@ -203,20 +203,20 @@
                              class="half-width integer-number"/> szt.</td>
             <td></td>
 
-            <td><eumowy:textField name="${panelType}[${id}].pinPadCena"
+            <td><eumowy:currencyField name="${panelType}[${id}].pinPadCena"
                              id="${panelType}[${id}].pinpadPrice"
                              value="${pointData?.pinPadCena}" 
                              validatable="${pointData}" 
                              validateField="pinPadCena"
-                             class="half-width float-number normal-price"/> zł.</td>
+                             class="half-width float-number normal-price"/></td>
             <td></td>
 
-            <td><eumowy:textField name="${panelType}[${id}].pinPadCenaPreferencyjna"
+            <td><eumowy:currencyField name="${panelType}[${id}].pinPadCenaPreferencyjna"
                              id="${panelType}[${id}].pinpadPricePreferencyjna"
                              value="${pointData?.pinPadCenaPreferencyjna}" 
                              validatable="${pointData}" 
                              validateField="pinPadCenaPreferencyjna"
-                             class="half-width float-number pref-price"/> zł.</td>
+                             class="half-width float-number pref-price"/></td>
             <td></td>
         </tr>
         <tr>
@@ -233,20 +233,20 @@
                              class="half-width integer-number"/> szt.</td>
             <td></td>
 
-            <td><eumowy:textField name="${panelType}[${id}].wifiCena"
+            <td><eumowy:currencyField name="${panelType}[${id}].wifiCena"
                              id="${panelType}[${id}].wifiPrice"
                              value="${pointData?.wifiCena}" 
                              validatable="${pointData}" 
                              validateField="wifiCena"
-                             class="half-width float-number normal-price"/> zł.</td>
+                             class="half-width float-number normal-price"/></td>
             <td></td>
 
-            <td><eumowy:textField name="${panelType}[${id}].wifiCenaPreferencyjna"
+            <td><eumowy:currencyField name="${panelType}[${id}].wifiCenaPreferencyjna"
                              id="${panelType}[${id}].wifiPricePreferencyjna"
                              value="${pointData?.wifiCenaPreferencyjna}" 
                              validatable="${pointData}" 
                              validateField="wifiCenaPreferencyjna"
-                             class="half-width float-number pref-price"/> zł.</td>
+                             class="half-width float-number pref-price"/></td>
             <td></td>
         </tr>
         </tbody>

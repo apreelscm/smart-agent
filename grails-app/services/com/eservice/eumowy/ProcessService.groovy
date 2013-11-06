@@ -138,9 +138,18 @@ class ProcessService {
 			if (apc.cbdId == -1) {
 				PointData point = PointData.findById(apc.id)
 				if (point != null) {
-					log.info "USUWAM PUNKT O ID: " + point.id
-					process.removeFromPoints(point)
-                    process.discard()
+					boolean atLeastOneLocalPos = point.posDatas?.findAll { PosData pos -> pos.tpsId == null } != null
+					if (atLeastOneLocalPos == false) {
+						log.info "USUWAM PUNKT O ID: " + point.id
+						process.removeFromPoints(point)
+						process.discard()
+					}
+					else {
+						log.info "ZERUJĘ CBDID - PUNKT O ID: " + point.id
+						point.cbdId = null
+						point.save()
+						apc.cbdId = null
+					}
 					//point.delete(flush: true)
 				}
 			}
@@ -183,9 +192,18 @@ class ProcessService {
 			if (apc.cbdId == -1) {
 				PointData point = PointData.findById(apc.id)
 				if (point != null) {
-					log.info "USUWAM PUNKT O ID: " + point.id
-					process.removeFromPoints(point)
-					point.delete(flush: true)
+					boolean atLeastOneLocalPos = point.posDatas?.findAll { PosData pos -> pos.tpsId == null } != null
+					if (atLeastOneLocalPos == false) {
+						log.info "USUWAM PUNKT O ID: " + point.id
+						process.removeFromPoints(point)
+						point.delete(flush: true)
+					}
+					else {
+						log.info "ZERUJĘ CBDID - PUNKT O ID: " + point.id
+						point.cbdId = null
+						point.save()
+						apc.cbdId = null
+					}
 				}
 			}
 		}
