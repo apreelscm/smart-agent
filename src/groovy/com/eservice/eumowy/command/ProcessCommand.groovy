@@ -7,7 +7,6 @@ import grails.util.Environment
 import grails.validation.Validateable
 import org.apache.commons.collections.FactoryUtils
 import org.apache.commons.collections.ListUtils
-import org.apache.log4j.Logger
 
 import java.util.regex.Pattern
 
@@ -51,6 +50,52 @@ class ProcessCommand implements Serializable {
         if (currValue.compareTo(minValue) < 0) {
             //errors.rejectValue(property, "default.atLeast.asCalc", [property] as Object[], "Podana warto\u015B\u0107 dla pola {0} nie mo\u017Ce by\u0107 mniejsza ni\u017C pobrana z kalkulatora.")
             errors.rejectValue(property, "default.atLeast.asCalc",[property] as Object[], "")
+            return false
+        }
+        return true
+    }
+
+    @Omit
+    static def checkTerminalNumber = { value, cmd, errors ->
+        if (Environment.getCurrent().equals(Environment.TEST)) {
+            return true
+        }
+
+        def max = value ? Integer.valueOf(value) : 0
+        def counter = 0
+
+        cmd.points?.each { point ->
+            counter += point?.dialupIlosc != null ? point?.dialupIlosc : 0
+            counter += point?.vpnIlosc != null ? point?.vpnIlosc : 0
+            counter += point?.sslIlosc != null ? point?.sslIlosc : 0
+            counter += point?.gprsIlosc != null ? point?.gprsIlosc : 0
+            counter += point?.pinPadIlosc != null ? point?.pinPadIlosc : 0
+            counter += point?.wifiIlosc != null ? point?.wifiIlosc : 0
+        }
+
+        cmd.poses?.each { point ->
+            counter += point?.dialupIlosc != null ? point?.dialupIlosc : 0
+            counter += point?.vpnIlosc != null ? point?.vpnIlosc : 0
+            counter += point?.sslIlosc != null ? point?.sslIlosc : 0
+            counter += point?.gprsIlosc != null ? point?.gprsIlosc : 0
+            counter += point?.pinPadIlosc != null ? point?.pinPadIlosc : 0
+            counter += point?.wifiIlosc != null ? point?.wifiIlosc : 0
+        }
+
+        if (counter == 0 ){
+            log.debug "no points/pos were added"
+            return true
+        }
+
+
+        log.info "liczbaPosZCbd " + cmd.liczbaPosZCbd
+        if (cmd.liczbaPosZCbd != null) {
+            log.debug "Here :) " + Integer.valueOf(cmd.liczbaPosZCbd)
+            counter += Integer.valueOf(cmd.liczbaPosZCbd) != null ? Integer.valueOf(cmd.liczbaPosZCbd) : 0
+        }
+
+        if (counter != max) {
+            errors.rejectValue("liczbaTerminali", "default.notEqual.liczbaTerminali",[counter, max] as Object[], "")
             return false
         }
         return true
@@ -1142,42 +1187,7 @@ class ProcessCommand implements Serializable {
         serwisZablokowany(nullable: true)
 
         liczbaTerminali(nullable:true, validator: { value, cmd, errors ->
-            if (Environment.getCurrent().equals(Environment.TEST)) {
-                return true
-            }
-
-            Logger LOG = Logger.getLogger("liczbaTerminali")
-            def max = value ? Integer.valueOf(value) : 0
-            def counter = 0
-
-            cmd.points?.each { point ->
-                counter += point?.dialupIlosc != null ? point?.dialupIlosc : 0
-                counter += point?.vpnIlosc != null ? point?.vpnIlosc : 0
-                counter += point?.sslIlosc != null ? point?.sslIlosc : 0
-                counter += point?.gprsIlosc != null ? point?.gprsIlosc : 0
-                counter += point?.pinPadIlosc != null ? point?.pinPadIlosc : 0
-                counter += point?.wifiIlosc != null ? point?.wifiIlosc : 0
-            }
-            LOG.info "!!! liczbaPosZCbd " + cmd.liczbaPosZCbd
-            if (cmd.liczbaPosZCbd != null) {
-                LOG.info "Here :) " + Integer.valueOf(cmd.liczbaPosZCbd)
-                counter += Integer.valueOf(cmd.liczbaPosZCbd) != null ? Integer.valueOf(cmd.liczbaPosZCbd) : 0
-            }
-
-            cmd.poses?.each { point ->
-                counter += point?.dialupIlosc != null ? point?.dialupIlosc : 0
-                counter += point?.vpnIlosc != null ? point?.vpnIlosc : 0
-                counter += point?.sslIlosc != null ? point?.sslIlosc : 0
-                counter += point?.gprsIlosc != null ? point?.gprsIlosc : 0
-                counter += point?.pinPadIlosc != null ? point?.pinPadIlosc : 0
-                counter += point?.wifiIlosc != null ? point?.wifiIlosc : 0
-            }
-
-            if (counter != max) {
-                errors.rejectValue("liczbaTerminali", "default.notEqual.liczbaTerminali",[counter, max] as Object[], "")
-                return false
-            }
-            return true
+            checkTerminalNumber.call(value, cmd, errors)
         })
 
     }
