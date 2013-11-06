@@ -69,6 +69,14 @@ class PdfProcessMapper extends AbstractPdfMapper{
             dataMap.putAll(mapOdplatneUzywanie(processInstance))
         }
 
+        def additionalToCross = ['aneks']
+        def newToCross = ['dodatkowyPunkt', 'dodatkowyPos']
+        if (processInstance.activities.findAll { activity -> additionalToCross.contains(activity.code)}.size()>0){
+            dataMap.put("crossAdditional", ['_______________'] as String[])
+        } else if (processInstance.activities.size()==1 && processInstance.activities.findAll { activity -> newToCross.contains(activity.code)}.size()>0){
+            dataMap.put("crossNew", ['______'] as String[])
+        }
+
         return dataMap;
     }
 
