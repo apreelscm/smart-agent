@@ -58,6 +58,7 @@
 	    jQuery('form[data-id="subscriptionForm"]').on("submit", function(e) {
 	    	e.preventDefault();
 	    	jQuery("#sigContent").val(jQuery('#padPlaceholder').jSignature("getData"));
+	    	jQuery("#nativeContent").val(JSON.stringify(jQuery('#padPlaceholder').jSignature("getData", "native")));
 	    	jQuery.post("${createLink(controller: 'subscription', action: 'saveSubscription')}", jQuery(this).serialize(), function(data) {
 	    		var result = JSON.parse(data);
 	    		if (result.status == "OK") {
@@ -77,6 +78,7 @@
 	function showSubscriptionPanel(name, surname, role, linkid) {
 		if (subscriptionDialog != null) {
 			subscriptionLinkId = linkid;
+			jQuery('#agreement').attr('checked', false);
 			jQuery('#padPlaceholder').jSignature('reset');
 			jQuery('#dialog').show();
 			jQuery('#dialogInfo').hide();
@@ -412,6 +414,7 @@
 					<input id="subscriberSurname" type="hidden" name="surname" value="" />
 					<input id="subscriberRole" type="hidden" name="personRole" value="" />
 					<input id="sigContent" type="hidden" name="content" value="" />
+					<input id="nativeContent" type="hidden" name="nativeContent" value="" />
 			        <fieldset style="margin-top: 20px;">
 			            <a href="#clear" class="button action clearButton"><g:message code="subscription.clear" /></a>
 			            <g:submitButton id="submitSubscription" name="Złożono podpis" value="Złożono podpis" class="button submit"/>
