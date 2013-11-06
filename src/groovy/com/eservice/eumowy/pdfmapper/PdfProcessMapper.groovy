@@ -274,6 +274,16 @@ class PdfProcessMapper extends AbstractPdfMapper{
         data.put("email", [value] as String[])
     }
 
+    private mapIfOplataPKOPBProcess(def data, def pd, def key, def value) {
+        data.put(key, [value] as String[])
+        data.put("ifOplataPKOBP", [value] as String[])
+    }
+
+    private mapIfOplataVISAProcess(def data, def pd, def key, def value) {
+        data.put(key, [value] as String[])
+        data.put("ifOplataVisa", [value] as String[])
+    }
+
     private mapNipProcess(def data, def pd, def key, def value){
         data.put(key, [value] as String[]);
         data.put("akceptantNip", [value] as String[]);
