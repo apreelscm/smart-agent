@@ -78,6 +78,7 @@
 	function showSubscriptionPanel(name, surname, role, linkid) {
 		if (subscriptionDialog != null) {
 			subscriptionLinkId = linkid;
+			jQuery('#agreement').attr('checked', false);
 			jQuery('#padPlaceholder').jSignature('reset');
 			jQuery('#dialog').show();
 			jQuery('#dialogInfo').hide();
