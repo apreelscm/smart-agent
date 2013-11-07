@@ -611,21 +611,14 @@ function setupNewPosPanelHandlers(panelId, prefix) {
 
 function addDateHandlers(prefixPanel, prefix, panelId){
     var dayCloseFrom = jQuery(prefixPanel + ".dayCloseFrom"),
-        dayCloseTo = jQuery(prefixPanel + ".dayCloseTo"),
-        dayCloseToDefault = new Date();
-
-    dayCloseToDefault.setHours(23);
-    dayCloseToDefault.setMinutes(59);
+        dayCloseTo = jQuery(prefixPanel + ".dayCloseTo");
 
     jQuery(prefixPanel + ".plannedInstallationDate").datepicker({ dateFormat: 'yy-mm-dd', minDate: 0 });
     dayCloseFrom.timepicker({
         controlType: 'select',
         timeFormat: 'HH:mm',
         onClose: function(dateText, inst){
-            onCloseDayCloseFrom(prefix, panelId, dayCloseFrom, dayCloseTo);
-        },
-        onSelect: function (selectedDateTime){
-            onSelectDayCloseFrom(prefix, panelId, dayCloseTo);
+            onCloseDayCloseFrom(dayCloseFrom, dayCloseTo);
         }
     });
 
@@ -633,35 +626,29 @@ function addDateHandlers(prefixPanel, prefix, panelId){
         controlType: 'select',
         timeFormat: 'HH:mm',
         onClose: function(dateText, inst){
-            onCloseDayCloseTo(prefix, panelId, dayCloseTo)
-        },
-        onSelect: function (selectedDateTime) {}
+            onCloseDayCloseTo(dayCloseTo)
+        }
     });
 
-    for(var i = 0; i < dayCloseTo.length; i++){
-        var dayCloseToItem = dayCloseTo[i],
-            dayCloseToValue = dayCloseToItem.value;
-        if(!dayCloseToValue || dayCloseToValue === ""){
-            jQuery(dayCloseToItem).datetimepicker('setDate', dayCloseToDefault);
-        }
-    }
+    dayCloseTo.val('23:59'); //default value
 }
 
-function onCloseDayCloseTo(prefix, panelId, dayCloseTo) {
+function onCloseDayCloseTo(dayCloseTo) {
     var hours = jQuery("[data-unit='hour']").val(),
         minutes = jQuery("[data-unit='minute']").val(),
         selectedDate = hours+":"+minutes;
 
-    dayCloseTo.datetimepicker('setDate', getDateFromTime(selectedDate));
+    dayCloseTo.val(selectedDate);
 }
 
-function onCloseDayCloseFrom(prefix, panelId, dayCloseFrom, dayCloseTo) {
+function onCloseDayCloseFrom(dayCloseFrom, dayCloseTo) {
     var dayCloseToValue = dayCloseTo.val();
     if (dayCloseTo.val() != '') {
         var dayCloseFromDate = dayCloseFrom.datetimepicker('getDate'),
             testEndDate = dayCloseTo.datetimepicker('getDate');
+
         if (dayCloseFromDate > testEndDate) {
-            dayCloseTo.datetimepicker('setDate', dayCloseFromDate);
+            dayCloseTo.val(dayCloseFromDate.getHours() + ":" + (dayCloseFromDate.getMinutes() < 10 ? '0' : '') + dayCloseFromDate.getMinutes())
             dayCloseToValue = dayCloseTo.val();
         }
     }
@@ -671,12 +658,6 @@ function onCloseDayCloseFrom(prefix, panelId, dayCloseFrom, dayCloseTo) {
         dayCloseTo.datetimepicker('option', 'minDateTime', minimumDate);
         dayCloseTo.val(dayCloseToValue);
     }
-}
-
-function onSelectDayCloseFrom(prefix, panelId, dayCloseTo){
-    var dayCloseToValue = dayCloseTo.val();
-
-    dayCloseTo.val(dayCloseToValue);
 }
 
 function getDateFromTime(time){
