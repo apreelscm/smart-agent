@@ -32,44 +32,22 @@
         });
         console.log('JS Validation started...');
 
-//        var normalPrices = []
-//        $j("input.normal-price").live("focusout", function(event){
-//            console.log(event);
-//            var row = $j(this).closest("tr"),
-//                prices = $j(row.find('input.normal-price')),
-//                sum = 0,
-//                isBothPricesFilled = true;
-//
-//            $j.each(prices, function(){
-//                if(this.value == ""){
-//                    isBothPricesFilled = false;
-//                    return false;
-//                }
-//                sum += parseFloat(this.value)
-//            });
-//
-//            if(!isBothPricesFilled){
-//                prices.removeClass("error");
-//                return false;
-//            }
-//
-//            console.log(sum);
-//            console.log(normalPrices);
-//
-//            if(normalPrices.indexOf(sum) === -1 && normalPrices.length == 3){ //jesli grupa nie istnieje i sa juz 3 grupy
-//                prices.addClass("error");
-//                return false;
-//            } else if (normalPrices.indexOf(sum) !== -1){ //jesli istnieje taka grupa
-//                return false;
-//            } else {
-//                normalPrices.push(sum)
-//            }
-//            console.log(normalPrices);
+        $j("#hackishSubmit").click(function(event) {
+            //eUmowy_ext-364
+            console.log('click');
+            return false;
+        });
+
+//        $j(".panelsForm").keydown(function(event){
+//            alert('asd');
+//            console.log("------- " + event.keyCode);
+//            if(event.keyCode === 13) { return false; }  //eUmowy_ext-364
 //        });
 //
-//        $j("input.pref-price").focusout(function(){
-//            var row = this.closest("tr")
-//            row.find('')
+//        $j(".panelsForm").keyup(function(event){
+//            alert('asd');
+//            console.log("+++++++ " + event.keyCode);
+//            if(event.keyCode === 13) { return false; }  //eUmowy_ext-364
 //        });
 
 	  showSaveLink();
@@ -269,6 +247,9 @@
 
 
     <g:form class="panelsForm">
+        %{--eUmowy_ext-364--}%
+        <g:submitButton id="hackishSubmit" name="hackishSubmit" style="visibility: hidden"/>
+
         <g:hiddenField name="globalMCC" value="${data.scoringMcc}"/>
         <g:hiddenField name="nip" value="${data.nip}"/>
         <g:hiddenField name="liczbaTerminali" value="${data.liczbaTerminali}"/>
