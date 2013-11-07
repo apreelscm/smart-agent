@@ -233,7 +233,24 @@ class PointCommand implements Serializable {
 		kontaktWPunkcieTelKomorkowy(nullable:true, blank:false)
 
 		kontaktWPunkcieEmail(nullable:true, shared: "email")
-		terminalIlosc(nullable:true, shared: "natural")
+		terminalIlosc(nullable:true, shared: "natural", validator: {value, cmd, errors ->
+           if(value == null){
+               return true
+           }
+           def terminalsCount = 0
+            terminalsCount += cmd?.dialupIlosc != null ? cmd?.dialupIlosc : 0
+            terminalsCount += cmd?.vpnIlosc != null ? cmd?.vpnIlosc : 0
+            terminalsCount += cmd?.sslIlosc != null ? cmd?.sslIlosc : 0
+            terminalsCount += cmd?.gprsIlosc != null ? cmd?.gprsIlosc : 0
+            terminalsCount += cmd?.pinPadIlosc != null ? cmd?.pinPadIlosc : 0
+            terminalsCount += cmd?.wifiIlosc != null ? cmd?.wifiIlosc : 0
+
+            if(value && value > terminalsCount){
+                errors.rejectValue("terminalIlosc", "panel.tooMany.terminalIlosc", [value, terminalsCount] as Object[], "")
+                return false
+            }
+            return true
+        })
 		bankId(nullable:true)
 		
 		dialupTyp(nullable:true)
