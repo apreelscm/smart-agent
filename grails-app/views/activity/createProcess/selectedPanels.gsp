@@ -38,18 +38,6 @@
             return false;
         });
 
-//        $j(".panelsForm").keydown(function(event){
-//            alert('asd');
-//            console.log("------- " + event.keyCode);
-//            if(event.keyCode === 13) { return false; }  //eUmowy_ext-364
-//        });
-//
-//        $j(".panelsForm").keyup(function(event){
-//            alert('asd');
-//            console.log("+++++++ " + event.keyCode);
-//            if(event.keyCode === 13) { return false; }  //eUmowy_ext-364
-//        });
-
 	  showSaveLink();
       $j("#saveProcessLink").click(function() {
             var input = $j("<input>").attr("type", "hidden").attr("name", "_eventId_saveOnly").val(""),
