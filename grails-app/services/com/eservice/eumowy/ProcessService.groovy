@@ -885,7 +885,6 @@ class ProcessService {
 			terminalCount += posDataDetails?.vpnIlosc != null ? posDataDetails?.vpnIlosc : 0
 			terminalCount += posDataDetails?.sslIlosc != null ? posDataDetails?.sslIlosc : 0
 			terminalCount += posDataDetails?.wifiIlosc != null ? posDataDetails?.wifiIlosc : 0
-			terminalCount += posDataDetails?.bazaIlosc != null ? posDataDetails?.bazaIlosc : 0
 			
 			// Create cloned poses only when they are not already cloned
 			if (terminalCount > 1 && terminalCount > pointData.liczbaPos) {
@@ -923,13 +922,13 @@ class ProcessService {
 			}
 
             pointData.nip = pointDataDetails.nipPunktu
-            pointData.nazwa = pointDataDetails.nazwaDoWyszukiwarki
-            pointData.ulica = pointDataDetails.korespondencjaUlica
-            pointData.nrLokalu = pointDataDetails.korespondencjaNrLokalu
-            pointData.nrBudynku = pointDataDetails.korespondencjaNrDomu
-            pointData.miejscowosc = pointDataDetails.korespondencjaMiasto
-            pointData.kodPocztowy = pointDataDetails.korespondencjaKodPocztowy
-            pointData.poczta = pointDataDetails.korespondencjaPoczta
+            pointData.nazwa = pointDataDetails.nazwaDoWydrukuZTerminalaPos
+            pointData.ulica = pointDataDetails.wydrukUlica
+            pointData.nrLokalu = pointDataDetails.wydrukNrLokalu
+            pointData.nrBudynku = pointDataDetails.wydrukNrDomu
+            pointData.miejscowosc = pointDataDetails.wydrukMiasto
+            pointData.kodPocztowy = pointDataDetails.wydrukKodPocztowy
+            pointData.poczta = pointDataDetails.wydrukPoczta
             pointData.liczbaPos = pdList.size()
             pointData.save()
             //if (isNew == true) {
@@ -1138,8 +1137,6 @@ class ProcessService {
                 posDataDetails?.sslIlosc : 0
             terminalCount += posDataDetails?.wifiIlosc != null ?
                 posDataDetails?.wifiIlosc : 0
-            terminalCount += posDataDetails?.bazaIlosc != null ?
-                posDataDetails?.bazaIlosc : 0
 
             // Create cloned poses only when they are not already cloned
             if (terminalCount > 1 && terminalCount > pointData.liczbaPos) {
