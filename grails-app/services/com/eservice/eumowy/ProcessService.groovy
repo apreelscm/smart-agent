@@ -288,7 +288,7 @@ class ProcessService {
                 String panelFunctionName = "get${WordUtils.capitalize(panel.name)}"
                 if(panelFunctionName in exclusions){ return }
 
-                log.info("invokin ${panelFunctionName} on panelService")
+                log.debug("invokin ${panelFunctionName} on panelService")
                 populateMethod.call(cmd, calc, panelFunctionName)
             }
         }
@@ -365,7 +365,7 @@ class ProcessService {
             def posData = point.posDatas?.find { PosData pd -> pd.tpsId == null }
 
             posData?.properties.each { key, value ->
-                log.info "PosData Key: " + key
+                log.debug "PosData Key: " + key
                 if (["tpsId","constraints",
                         "point"].contains(key) || value == null){
                     return
@@ -678,7 +678,7 @@ class ProcessService {
             def foundData = process.processData.find { it.name == data.name }
             if(!foundData){
                 process.addToProcessData(data)
-                log.info("process data: ${data.processId?.class} ${data.version?.class} ${data.name?.class} ${data.id?.class}")
+                log.debug("process data: ${data.processId?.class} ${data.version?.class} ${data.name?.class} ${data.id?.class}")
             }else if(data.value != foundData.value){
                 foundData.value = data.value
             }
@@ -793,8 +793,7 @@ class ProcessService {
                 return;
             }
 
-            log.info("key:"+key)
-            log.info("value:"+value)
+            log.debug("key: [${key}] , value [${value}]")
             processDataList.add(new ProcessData(name: "${key}", value:"${value ?: ''}"));
         }
         processDataList
@@ -829,14 +828,14 @@ class ProcessService {
                 pointData = PointData.get(pc.id)
 
                 if (pointData != null) {
-                    log.info "getPointCommandsToPointDataList - Znaleziono punkt o id: " + pc.id
+                    log.debug "getPointCommandsToPointDataList - Znaleziono punkt o id: " + pc.id
                     pointDataDetails = pointData.pointDetails
 
                     posData = pointData.posDatas?.getAt(0)
                     posDataDetails = posData?.posDetails
 
                     if (posData == null) {
-                        log.info "getPointCommandsToPointDataList - Brakujacy POS dla Danych punktu o id: " + pc.id + " - Tworzę nowy!"
+                        log.debug "getPointCommandsToPointDataList - Brakujacy POS dla Danych punktu o id: " + pc.id + " - Tworzę nowy!"
                         posData = new PosData()
                         posDataDetails = new PosDataDetails()
                     }
@@ -852,7 +851,7 @@ class ProcessService {
             pdList.add(posData)
 
             pc.properties.each { key, value ->
-                log.info "PCProperties " + key + ": " + value
+                log.debug "PCProperties " + key + ": " + value
                 if (PointData.metaClass.respondsTo(PointData, "set" + key.capitalize())) {
                     pointData."set${key.capitalize()}"(value)
                 }
@@ -867,7 +866,7 @@ class ProcessService {
 						posData?."set${key.capitalize()}"(value)
                     }
 					else {
-						log.info "FIXMEII - PosData = NULL"
+						log.warn "FIXMEII - PosData = NULL"
 					}
                 }
 
@@ -959,18 +958,18 @@ class ProcessService {
         cmd.allPoints?.each { AllPointsCommand apc ->
             //boolean isNew = false
             if (apc == null) {
-                log.info "AllPointCommand is NULL - skipping!"
+                log.debug "AllPointCommand is NULL - skipping!"
                 return
             }
 			
 			PointData point
 			
 			if (apc.id != null) {
-				log.info "ZNALAZLEM PUNKT - ALLPOINTS"
+				log.debug "ZNALAZLEM PUNKT - ALLPOINTS"
 				point = PointData.get(apc.id)
 			}
 			else {
-				log.info "NIE ZNALAZLEM PUNKTU - ALLPOINTS"
+				log.debug "NIE ZNALAZLEM PUNKTU - ALLPOINTS"
 				point = new PointData()
 			}
 			
@@ -1096,7 +1095,7 @@ class ProcessService {
             pdList.add(posData)
 
             pc.properties.each { key, value ->
-                log.info "PCPOSProperties " + key + ": " + value
+                log.debug "PCPOSProperties " + key + ": " + value
                 if (PointData.metaClass.respondsTo(PointData, "set" +
                         key.capitalize()) && key != 'id') {
                     pointData."set${key.capitalize()}"(value)
@@ -1114,7 +1113,7 @@ class ProcessService {
                         posData?."set${key.capitalize()}"(value)
                     }
                     else {
-                        log.info "FIXME - PosData = NULL"
+                        log.warn "FIXME - PosData = NULL"
                     }
                 }
 
@@ -1220,7 +1219,7 @@ class ProcessService {
             if (apc.id != null) {
                 //poieramy point i pos z naszej bazy
                 pos = PosData.get(apc.id)
-                log.info "Got POS Data!"
+                log.debug "Got POS Data!"
                 if (pos != null) {
                     point = pos.point
                 }
