@@ -7,6 +7,7 @@ class Signature implements Serializable {
 	String templatePath;
     Boolean forPoint = true;
 	String description;
+    String filename;
     Integer signatureOrder;
 
     static hasMany = [
@@ -19,6 +20,7 @@ class Signature implements Serializable {
     static constraints = {
        name(unique:true,blank:false)
        templatePath()
+       filename(nullable:true,blank:true)
 	   description()
     }
 

@@ -199,7 +199,7 @@ class PdfService {
 
         singleDocuments.each { sig ->
             log.info "SINGLE DOCUMENT --> SIGNATURE NAME: " + sig.name + " PDF TEMPLATE PATH: " + sig.templatePath
-            totalPagesCount += workWithOneDocument(processInstance, sig, dataFromProcess, sig.templatePath)
+            totalPagesCount += workWithOneDocument(processInstance, sig, dataFromProcess, sig.filename)
         }
 
         processInstance.points.each{ point ->
@@ -213,8 +213,7 @@ class PdfService {
                 data.putAll(dataFromPoint);
 
                 multiDocuments.each { sig ->
-
-                    def path = sig.templatePath
+                    def path = sig.filename
                     def begin = path.substring(0, path.lastIndexOf('.'));
                     def end = path.substring(path.lastIndexOf('.'));
                     def documentName = begin +  "_" + point.id + end
