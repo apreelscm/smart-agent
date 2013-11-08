@@ -5,7 +5,6 @@ import groovy.sql.GroovyRowResult
 
 import org.codehaus.groovy.grails.web.json.JSONObject
 
-import com.eservice.eumowy.command.PointCommand
 import com.eservice.eumowy.command.ProcessCommand
 import com.eservice.eumowy.process.DefineActivityCommand
 import com.eservice.eumowy.util.DateUtils
@@ -629,18 +628,7 @@ class ActivityController {
                 flow.skipPanelsInit = true;
             }to "selectedPanels"
             on("continue"){
-                def cmd = new ProcessCommand()
-                bindData(cmd,params)
-                cmd.calc = conversation.calc
-                cmd.calculatorService = calculatorService
-				cmd.points?.each { PointCommand pc ->
-					pc.calc = cmd.calc
-					pc.calculatorService = cmd.calculatorService
-				}
-				cmd.poses?.each { PointCommand pc ->
-					pc.calc = cmd.calc
-					pc.calculatorService = cmd.calculatorService
-				}
+                def cmd = crateProcessCommand(params, conversation.calc)
                 cmd.validate()
                 flow.data = cmd
 
@@ -893,18 +881,7 @@ class ActivityController {
                 flow.skipPanelsInit = true;
             }to "selectedPanels"
             on("continue"){
-                def cmd = new ProcessCommand()
-                bindData(cmd,params)
-                cmd.calc = conversation.calc
-                cmd.calculatorService = calculatorService
-				cmd.points?.each { PointCommand pc ->
-					pc.calc = cmd.calc
-					pc.calculatorService = cmd.calculatorService
-                }
-				cmd.poses?.each { PointCommand pc ->
-					pc.calc = cmd.calc
-					pc.calculatorService = cmd.calculatorService
-				}
+                def cmd = crateProcessCommand(params, conversation.calc)
                 cmd.validate()
                 flow.data = cmd
 
@@ -1373,4 +1350,24 @@ class ActivityController {
         def result = process.processData.find{ pd -> pd.name.equals(key)}
         return (result && result?.value)?result?.value:""
     }
+
+    private def crateProcessCommand(def params, def calc) {
+        def cmd = new ProcessCommand()
+        bindData(cmd,params)
+        cmd.calc = calc
+        cmd.calculatorService = calculatorService
+        addCalculatorFields(cmd.points, calc)
+        addCalculatorFields(cmd.poses, calc)
+        addCalculatorFields(cmd.hirePaymentsByPoint, calc)
+        addCalculatorFields(cmd.hirePaymentsByPos, calc)
+        cmd
+    }
+
+    private def addCalculatorFields(def commands, def calc){
+        commands?.each{
+            it.calc = calc
+            it.calculatorService =calculatorService
+        }
+    }
+
 }
