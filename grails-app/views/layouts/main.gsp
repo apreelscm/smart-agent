@@ -28,7 +28,7 @@
 
 
     <r:require module="modernizr"/>
-    <g:if test="${params.controller != 'login'}">
+    <g:if test="${params.controller != 'login' && grails.util.Environment.getCurrentEnvironment() != grails.util.Environment.DEVELOPMENT}">
         <r:require module="session_utils"/>
     </g:if>
 

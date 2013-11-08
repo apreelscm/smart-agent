@@ -4,7 +4,7 @@
 		<label for="${panelType}[${id}].additionalequipmentSameForEveryPoint"><g:checkBox id="${panelType}[${id}].additionalequipmentSameForEveryPoint" name="${panelType}[${id}].dodatkoweWyposazenieTakSamoDlaWszystkichPunktow" value="${pointData?.dodatkoweWyposazenieTakSamoDlaWszystkichPunktow}" /><g:message code="panel.sameforeverypoint" /></label>
 		<table class="vertical-center" >
 			<tbody>
-				<tr class="baseRow display-none">
+				<tr class="baseRow display-none" name="${panelType}[${id}].trBase">
                     <td><g:message code="panel.base" /></td>
                     <td colspan="2"></td>
                     <td><eumowy:textField name="${panelType}[${id}].bazaIlosc" id="${panelType}[${id}].bazaCount" class="integer-number" style="width: 50px" value="${pointData?.bazaIlosc}" /> szt.</td>

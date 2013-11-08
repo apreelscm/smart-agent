@@ -465,12 +465,17 @@
         if(value == "Verifone Vx670 GPRS"){
             punkt.find("tr.baseRow").show();
             setRequiredForSimCard(true, punkt)
-        } else if (value !== ""){
-            setRequiredForSimCard(true, punkt)
-        }
-        else{
+        } else {
+            var id = jQuery(element).attr('id');
+            var bazaXPath = id.substring(0,id.indexOf('.')) + ".bazaIlosc";
+            jQuery("[name='"+bazaXPath+"']").val("");
             punkt.find("tr.baseRow").hide();
-            setRequiredForSimCard(false, punkt)
+            if (value !== ""){
+                setRequiredForSimCard(true, punkt)
+            }
+            else {
+                setRequiredForSimCard(false, punkt)
+            }
         }
     }
 

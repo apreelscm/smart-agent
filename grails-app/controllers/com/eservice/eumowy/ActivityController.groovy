@@ -1,7 +1,6 @@
 
 package com.eservice.eumowy
 
-import grails.util.Environment
 import groovy.sql.GroovyRowResult
 
 import org.codehaus.groovy.grails.web.json.JSONObject
@@ -10,7 +9,6 @@ import com.eservice.eumowy.command.PointCommand
 import com.eservice.eumowy.command.ProcessCommand
 import com.eservice.eumowy.process.DefineActivityCommand
 import com.eservice.eumowy.util.DateUtils
-import pdfgenerator.PdfGenerator
 
 class ActivityController {
 
@@ -631,10 +629,10 @@ class ActivityController {
                 flow.skipPanelsInit = true;
             }to "selectedPanels"
             on("continue"){
-
                 def cmd = new ProcessCommand()
                 bindData(cmd,params)
                 cmd.calc = conversation.calc
+                cmd.calculatorService = calculatorService
 				cmd.points?.each { PointCommand pc ->
 					pc.calc = cmd.calc
 					pc.calculatorService = cmd.calculatorService
@@ -643,7 +641,6 @@ class ActivityController {
 					pc.calc = cmd.calc
 					pc.calculatorService = cmd.calculatorService
 				}
-                cmd.calculatorService = calculatorService
                 cmd.validate()
                 flow.data = cmd
 

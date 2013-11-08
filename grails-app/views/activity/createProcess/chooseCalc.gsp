@@ -12,7 +12,7 @@
                 jQuery("#continueButton").attr('disabled', 'disabled');
             });
 
-            jQuery("#continueButton").click(function(){
+            jQuery("#continueButton, .getCalculator").click(function(){
                 var self= jQuery(this),
                     tempElement = jQuery("<input type='hidden'/>"),
                     form = jQuery("form");
@@ -49,7 +49,7 @@
                 />
             </div>
 
-            <g:submitButton name="getCalculator" class="button action display-inline"
+            <g:submitButton name="getCalculator" class="button action display-inline getCalculator"
                             value="${message(code:'default.search.button.name', default: 'Wyszukaj')}"/>
 
             <div id="nipMessageBox">

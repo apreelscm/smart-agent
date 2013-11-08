@@ -537,47 +537,7 @@ class PanelMockService {
     }
 
     def getZestawPosOdplatneUzywanie(ProcessCommand cmd) {
-        cmd.oplPOSDialUpTyp = ""
-        cmd.oplPOSDialUpIlosc = "12"
-        cmd.oplPOSDialUpIloscPP = "23"
-        cmd.oplPOSDialUpNormalneMies = "1.23"
-        cmd.oplPOSDialUpNormalnePP = "1.24"
-        cmd.oplPOSDialUpPreferencyjneMies = "1.25"
-        cmd.oplPOSDialUpPreferencyjnePP = "1.26"
 
-        cmd.oplPOSVPNTyp = ""
-        cmd.oplPOSVPNIlosc = "43"
-        cmd.oplPOSVPNIloscPP = "56"
-        cmd.oplPOSVPNNormalneMies = "2.23"
-        cmd.oplPOSVPNNormalnePP = "2.24"
-        cmd.oplPOSVPNPreferencyjneMies = "2.25"
-        cmd.oplPOSVPNPreferencyjnePP = "2.26"
-
-        cmd.oplPOSSSLTyp = ""
-        cmd.oplPOSSSLIlosc = "67"
-        cmd.oplPOSSSLIloscPP = "91"
-        cmd.oplPOSSSLNormalneMies = "3.23"
-        cmd.oplPOSSSLNormalnePP = "3.24"
-        cmd.oplPOSSSLPreferencyjneMies = "3.25"
-        cmd.oplPOSSSLPreferencyjnePP = "3.26"
-
-        cmd.oplPOSWiFiTyp = ""
-        cmd.oplPOSWiFiIlosc = "81"
-        cmd.oplPOSWiFiIloscPP = "52"
-        cmd.oplPOSWiFiNormalneMies = "4.23"
-        cmd.oplPOSWiFiNormalnePP = "4.24"
-        cmd.oplPOSWiFiPreferencyjneMies = "4.25"
-        cmd.oplPOSWiFiPreferencyjnePP = "4.26"
-
-        cmd.oplPOSGPRSTyp = ""
-        cmd.oplPOSGPRSIlosc = "10"
-        cmd.oplPOSGPRSIloscPP = "12"
-        cmd.oplPOSGPRSNormalneMies = "5.23"
-        cmd.oplPOSGPRSNormalnePP = "5.24"
-        cmd.oplPOSGPRSPreferencyjneMies = "5.25"
-        cmd.oplPOSGPRSPreferencyjnePP = "5.26"
-
-        cmd.oplPOSBaza = "21"
     }
 
 }

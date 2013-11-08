@@ -657,7 +657,7 @@ class PanelService {
 
     private setSerwisZablokowany(ProcessCommand cmd, def calc, def serwisy){
         def results = serwisy.findAll{
-            calculatorService.hasCalcProperty(it.key,"BRAK",calc)
+            calculatorService.hasCalcProperty(it.key,"NIE",calc)
         }
 
         cmd.serwisZablokowany = results.size() == 3
