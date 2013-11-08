@@ -281,6 +281,10 @@ class PdfTestDataBuilder {
     public static HashMap<String, String[]> generateFormularzDanychPunktuFields() {
         HashMap<String, String[]> result = new HashMap<String, String[]>();
 
+        result.put('simPlus', ['____'] as String[]);
+//        result.put('simEra', ['_____'] as String[]);
+        result.put('simOrange', ['_____'] as String[]);
+
         result.put("sslTyp", ["Verifone Vx510G GPRS + PINPad Standard"] as String[]);
         result.put("sslIlosc", ["23"] as String[]);
         result.put("sslPPIlosc", ["45"] as String[]);

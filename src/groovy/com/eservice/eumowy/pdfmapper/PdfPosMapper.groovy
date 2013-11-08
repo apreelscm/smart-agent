@@ -250,7 +250,25 @@ class PdfPosMapper extends AbstractPdfMapper{
 			data.put(key, [value] as String[]);
 		}
 	}
-	
+
+    private mapKartaSimTypPosDataDetails(def data, def posesData, def key, def value){
+        if (value !=null) {
+            if ("Centertel".equals(value)){
+                //Orange
+                data.put('simPlus', ['_____'] as String[]);
+                data.put('simEra', ['_____'] as String[]);
+            } else if ("Polkomtel".equals(value)){
+                //Polkomtel
+                data.put('simOrange', ['_____'] as String[]);
+                data.put('simEra', ['_____'] as String[]);
+            } else if ("ERA".equals(value)){
+                //T-Mobile
+                data.put('simPlus', ['_____'] as String[]);
+                data.put('simOrange', ['_____'] as String[]);
+            }
+        }
+    }
+
 	//----------------------CHECKBOX PRZENOSNY-------------------------
 	
 	private mapGprsTypPosDataDetails(def data, def posesData, def key, def value){

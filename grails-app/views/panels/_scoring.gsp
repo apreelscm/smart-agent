@@ -3,6 +3,23 @@
     <div class="belka-glowna"><g:message code="panel.scoring.title"/></div>
 </fieldset>
 
+<g:hiddenField name="hasScoringDzialalnosc" value="true"/>
+<g:hiddenField name="hasScoringWlasnosc" value="true"/>
+<g:hiddenField name="hasScoringDzialalnoscCzas" value="true"/>
+<g:hiddenField name="hasScoringKoncesja" value="true"/>
+<g:hiddenField name="hasScoringCharakterystyka" value="true"/>
+<g:hiddenField name="hasScoringWielkoscPunktu" value="true"/>
+<g:hiddenField name="hasScoringAkceptacja" value="true"/>
+<g:hiddenField name="hasScoringMonitoring" value="true"/>
+<g:hiddenField name="hasScoringLokalizacjaPunktu" value="true"/>
+<g:hiddenField name="hasScoringTypPunktu" value="true"/>
+<g:hiddenField name="hasScoringWielkoscMiejscowosci" value="true"/>
+<g:hiddenField name="hasScoringOtwartyZamkniety" value="true"/>
+<g:hiddenField name="hasScoringCzestoscTransakcji" value="true"/>
+<g:hiddenField name="hasScoringIloscTransakcji" value="true"/>
+<g:hiddenField name="hasScoringDeklaracjaFinansowa" value="true"/>
+<g:hiddenField name="hasAtLeastOneIstotneDane" value="true"/>
+
 <div class="centre" style="text-align: center; padding-top: 20px; width: 500px">
 <fieldset class="border">
     <legend><g:message code="panel.activity.title"/></legend>
@@ -14,7 +31,7 @@
             </li>
         </ul>
     </div>
-    <div style="text-align: left">
+    <div style="text-align: left" class="${hasErrors(bean:data,field:'hasScoringDzialalnosc','errorSpan')}">
         <g:radioGroup name="scoringDzialalnosc"
                       labels="['panel.activity.trade','panel.activity.services']"
                       values="['handel','uslugi']"
@@ -34,7 +51,7 @@
 </fieldset>
 <fieldset class="border">
     <legend><g:message code="panel.ownership.title"/></legend>
-    <div style="text-align: left">
+    <div style="text-align: left" class="${hasErrors(bean:data,field:'hasScoringWlasnosc','errorSpan')}">
         <g:radioGroup name="scoringWlasnosc"
                       labels="['panel.ownership.ownership','panel.ownership.rent']"
                       values="['wlasnosc','wynajem']"
@@ -45,7 +62,7 @@
 </fieldset>
 <fieldset class="border">
     <legend><g:message code="panel.activity.time.title"/></legend>
-    <div style="text-align: left">
+    <div style="text-align: left" class="${hasErrors(bean:data,field:'hasScoringDzialalnoscCzas','errorSpan')}">
         <g:radioGroup name="scoringDzialalnoscCzas"
                       labels="['panel.activity.time.more.than.five.years','panel.activity.time.between.one.and.five.years', 'panel.activity.time.less.than.one.year']"
                       values="['5<', '1-5', '<1']"
@@ -56,7 +73,7 @@
 </fieldset>
 <fieldset class="border">
     <legend><g:message code="panel.concession.title"/></legend>
-    <div style="text-align: left">
+    <div style="text-align: left" class="${hasErrors(bean:data,field:'hasScoringKoncesja','errorSpan')}">
         <p><g:message code="panel.concession.needed"/></p>
         <g:radioGroup name="scoringKoncesja"
                       labels="['panel.yes','panel.no']"
@@ -69,7 +86,7 @@
 </fieldset>
 <fieldset class="border">
     <legend><g:message code="panel.point.characteristic.title"/></legend>
-    <div style="text-align: left">
+    <div style="text-align: left" class="${hasErrors(bean:data,field:'hasScoringCharakterystyka','errorSpan')}">
         <g:radioGroup name="scoringCharakterystyka"
                       labels="['panel.point.characteristic.salon','panel.point.characteristic.shop', 'panel.point.characteristic.stand', 'panel.point.characteristic.petrol.station', 'panel.point.characteristic.other']"
                       values="['salon', 'sklep', 'stoisko', 'stacja_paliw', 'inny']"
@@ -80,7 +97,7 @@
 </fieldset>
 <fieldset class="border">
     <legend><g:message code="panel.point.size.title"/></legend>
-    <div style="text-align: left">
+    <div style="text-align: left" class="${hasErrors(bean:data,field:'hasScoringWielkoscPunktu','errorSpan')}">
         <g:radioGroup name="scoringWielkoscPunktu"
                       labels="['panel.point.size.more.than.400','panel.point.size.between.50.and.400', 'panel.point.size.less.than.50']"
                       values="['400<', '50-400', '<50']"
@@ -92,7 +109,7 @@
 <fieldset class="border">
     <legend><g:message code="panel.acceptance.title"/></legend>
     <div style="text-align: left" class="${hasErrors(bean:data,field:'hasScoringAkceptacja','errorSpan')}">
-        <g:hiddenField name="hasScoringAkceptacja" value="true"/>
+
         <p><g:message code="panel.acceptance.question"/></p>
         <g:radioGroup name="scoringAkceptacja"
                       labels="['panel.yes','panel.no']"
@@ -104,7 +121,7 @@
 </fieldset>
 <fieldset class="border">
     <legend><g:message code="panel.monitoring.title"/></legend>
-    <div style="text-align: left">
+    <div style="text-align: left" class="${hasErrors(bean:data,field:'hasScoringMonitoring','errorSpan')}">
         <p><g:message code="panel.monitoring.question"/></p>
         <g:radioGroup name="scoringMonitoring"
                       labels="['panel.yes','panel.no']"
@@ -116,7 +133,7 @@
 </fieldset>
 <fieldset class="border">
     <legend><g:message code="panel.point.localization.title"/></legend>
-    <div class="border" style="text-align: left; margin: 20px">
+    <div style="text-align: left; margin: 20px" class=" ${hasErrors(bean:data,field:'hasScoringLokalizacjaPunktu','errorSpan') ?: "border"}">
         <g:radioGroup name="scoringLokalizacjaPunktu"
                       labels="['panel.point.localization.cruising.route','panel.point.localization.town', 'panel.point.localization.periphery']"
                       values="['trasa_przelotowa', 'centrum_miasta', 'peryferia_miasta']"
@@ -124,7 +141,7 @@
             <p><label> ${it.radio} <g:message code="${it.label}"/></label></p>
         </g:radioGroup>
     </div>
-    <div class="border" style="text-align: left; margin: 20px">
+    <div style="text-align: left; margin: 20px" class=" ${hasErrors(bean:data,field:'hasScoringTypPunktu','errorSpan') ?: "border"}">
         <g:radioGroup name="scoringTypPunktu"
                       labels="['panel.shopping.center','panel.commercial.pavilions', 'panel.commercial.building', 'panel.settlement', 'panel.market', 'panel.point.characteristic.other']"
                       values="['centrum_handlowe', 'pawilony_handlowe', 'budynek_wolnostojacy', 'osiedle_mieszkaniowe', 'targowisko', 'inny']"
@@ -135,7 +152,7 @@
 </fieldset>
 <fieldset class="border">
     <legend><g:message code="panel.point.place.size.title"/></legend>
-    <div style="text-align: left">
+    <div style="text-align: left" class="${hasErrors(bean:data,field:'hasScoringWielkoscMiejscowosci','errorSpan')}">
         <g:radioGroup name="scoringWielkoscMiejscowosci"
                       labels="['panel.city.size.more.than.500', 'panel.city.size.between.100.and.500', 'panel.city.size.between.50.and.99', 'panel.city.size.less.than.50', 'panel.city.size.village']"
                       values="['500<', '100-500', '50-99', '<50', 'wies']"
@@ -146,7 +163,7 @@
 </fieldset>
 <fieldset class="border">
     <legend><g:message code="panel.visit conclusion.title"/></legend>
-    <div style="text-align: left">
+    <div style="text-align: left" class="${hasErrors(bean:data,field: 'hasScoringOtwartyZamkniety','errorSpan')}">
         <p>Punkty były: </p>
         <g:radioGroup name="scoringOtwartyZamkniety"
                       labels="['panel.open','panel.close']"
@@ -159,7 +176,7 @@
 </fieldset>
 <fieldset class="border">
     <legend><g:message code="panel.important.data.title"/></legend>
-    <div style="text-align: left">
+    <div style="text-align: left" class="${hasErrors(bean:data,field:'hasAtLeastOneIstotneDane','errorSpan')}">
         <p><label><g:checkBox name="scoringSprzedazTowarowEkskluzywnych" value="${data.scoringSprzedazTowarowEkskluzywnych}" /> <g:message code="panel.luxury.goods"/></label></p>
         <p><label><g:checkBox name="scoringPonad50ProcentObrotowWNocy" value="${data.scoringPonad50ProcentObrotowWNocy}" /> <g:message code="panel.nightly.sell"/></label></p>
         <p><label><g:checkBox name="scoringRuchTurystycznyPrzygraniczny" value="${data.scoringRuchTurystycznyPrzygraniczny}" /> <g:message code="panel.tourism"/></label></p>
@@ -168,7 +185,7 @@
 </fieldset>
 <fieldset class="border">
     <legend><g:message code="panel.transaction.frequency.title"/></legend>
-    <div style="text-align: left">
+    <div style="text-align: left" class="${hasErrors(bean:data,field:'hasScoringCzestoscTransakcji','errorSpan')}">
         <g:radioGroup name="scoringCzestoscTransakcji"
                       labels="['panel.few.in.month','panel.few.in.week', 'panel.every.other.day', 'panel.every.day']"
                       values="['kilka_miesiecznie', 'kilka_tygodniowo', 'co_drugi_dzien', 'codziennie']"
@@ -179,7 +196,7 @@
 </fieldset>
 <fieldset class="border">
     <legend><g:message code="panel.transaction.count.title"/></legend>
-    <div style="text-align: left">
+    <div style="text-align: left" class="${hasErrors(bean:data,field:'hasScoringIloscTransakcji','errorSpan')}">
         <g:radioGroup name="scoringIloscTransakcji"
                       labels="['panel.transaction.count.between.0.and.4', 'panel.transaction.count.between.5.and.10', 'panel.transaction.count.more.than.10']"
                       values="['0-4', '5-10', '<10']"
@@ -203,12 +220,14 @@
     <ul class="table-list">
 
         <li>
-            <g:radioGroup name="scoringDeklaracjaFinansowa"
-                          labels="['panel.actual','panel.declared']"
-                          values="['w', 'd']"
-                          value="${data.scoringDeklaracjaFinansowa}">
-                <span><label> ${it.radio} <g:message code="${it.label}"/></label></span>
-            </g:radioGroup>
+            <div style="text-align: left" class="${hasErrors(bean:data,field:'hasScoringDeklaracjaFinansowa','errorSpan')}">
+                <g:radioGroup name="scoringDeklaracjaFinansowa"
+                              labels="['panel.actual','panel.declared']"
+                              values="['w', 'd']"
+                              value="${data.scoringDeklaracjaFinansowa}">
+                    <span><label> ${it.radio} <g:message code="${it.label}"/></label></span>
+                </g:radioGroup>
+            </div>
         </li>
         <li>
             <span class="align-left"><g:message code="panel.monthly.circulation.overall"/></span>

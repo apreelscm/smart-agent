@@ -4,7 +4,6 @@
     <fieldset style="text-align: center">
         <div class="belka-glowna"><g:message code="panel.pp.payment.title"/></div>
         <div style="text-align: center; padding-top: 20px; width: 600px" class="centre">
-            <g:hiddenField name="hasDoladowania" value="true"/>
             <g:hiddenField name="isDoladowania_tp" value="${data.isDoladowania_tp}"/>
             <g:hiddenField name="isDoladowania_tk" value="${data.isDoladowania_tk}"/>
             <div id="formaDoladowania">

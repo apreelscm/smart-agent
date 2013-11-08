@@ -508,8 +508,40 @@ class ProcessCommand extends BaseCommand {
     String hasObslugaTyp
     @Omit
     String hasUmowaCzas
+
+    @Omit
+    String hasScoringDzialalnosc
+    @Omit
+    String hasScoringWlasnosc
+    @Omit
+    String hasScoringDzialalnoscCzas
+    @Omit
+    String hasScoringKoncesja
+    @Omit
+    String hasScoringCharakterystyka
+    @Omit
+    String hasScoringWielkoscPunktu
     @Omit
     String hasScoringAkceptacja
+    @Omit
+    String hasScoringMonitoring
+    @Omit
+    String hasScoringLokalizacjaPunktu
+    @Omit
+    String hasScoringTypPunktu
+    @Omit
+    String hasScoringWielkoscMiejscowosci
+    @Omit
+    String hasScoringOtwartyZamkniety
+    @Omit
+    String hasScoringCzestoscTransakcji
+    @Omit
+    String hasScoringIloscTransakcji
+    @Omit
+    String hasScoringDeklaracjaFinansowa
+    @Omit
+    String hasAtLeastOneIstotneDane
+
     @Omit
     String hasKontaktTel
     @Omit
@@ -550,7 +582,7 @@ class ProcessCommand extends BaseCommand {
     def defaultPointData
     @Omit
     def defaultPosData
-    
+
 
 
     @Omit
@@ -595,13 +627,137 @@ class ProcessCommand extends BaseCommand {
             return true
         })
 
-        hasScoringAkceptacja(nullable: true, validator: { value, cmd, errors ->
-            if (value && cmd.scoringAkceptacja == DEFAULT_VALUE) {
-                errors.rejectValue("hasScoringAkceptacja", "panel.scoring.accept.required")
+        //TODO REFACTORING
+        hasScoringDzialalnosc(nullable: true, validator: { value, cmd, errors ->
+            if (value && cmd.scoringDzialalnosc == DEFAULT_VALUE) {
+                errors.rejectValue("hasScoringDzialalnosc", "panel.scoring.field.required", ["scoringDzialalnosc"] as Object[], "")
                 return false
             }
             return true
         })
+
+        hasScoringWlasnosc(nullable: true, validator: { value, cmd, errors ->
+            if (value && cmd.scoringWlasnosc == DEFAULT_VALUE) {
+                errors.rejectValue("hasScoringWlasnosc", "panel.scoring.field.required", ["scoringWlasnosc"] as Object[], "")
+                return false
+            }
+            return true
+        })
+
+        hasScoringDzialalnoscCzas(nullable: true, validator: { value, cmd, errors ->
+            if (value && cmd.scoringDzialalnoscCzas == DEFAULT_VALUE) {
+                errors.rejectValue("hasScoringDzialalnoscCzas", "panel.scoring.field.required", ["scoringDzialalnoscCzas"] as Object[], "")
+                return false
+            }
+            return true
+        })
+
+        hasScoringKoncesja(nullable: true, validator: { value, cmd, errors ->
+            if (value && cmd.scoringKoncesja == DEFAULT_VALUE) {
+                errors.rejectValue("hasScoringKoncesja", "panel.scoring.field.required", ["scoringKoncesja"] as Object[], "")
+                return false
+            }
+            return true
+        })
+
+        hasScoringCharakterystyka(nullable: true, validator: { value, cmd, errors ->
+            if (value && cmd.scoringCharakterystyka == DEFAULT_VALUE) {
+                errors.rejectValue("hasScoringCharakterystyka", "panel.scoring.field.required", ["scoringCharakterystyka"] as Object[], "")
+                return false
+            }
+            return true
+        })
+
+        hasScoringWielkoscPunktu(nullable: true, validator: { value, cmd, errors ->
+            if (value && cmd.scoringWielkoscPunktu == DEFAULT_VALUE) {
+                errors.rejectValue("hasScoringWielkoscPunktu", "panel.scoring.field.required", ["scoringWielkoscPunktu"] as Object[], "")
+                return false
+            }
+            return true
+        })
+
+        hasScoringAkceptacja(nullable: true, validator: { value, cmd, errors ->
+            if (value && cmd.scoringAkceptacja == DEFAULT_VALUE) {
+                errors.rejectValue("hasScoringAkceptacja", "panel.scoring.field.required", ["scoringAkceptacja"] as Object[], "")
+                return false
+            }
+            return true
+        })
+
+        hasScoringMonitoring(nullable: true, validator: { value, cmd, errors ->
+            if (value && cmd.scoringMonitoring == DEFAULT_VALUE) {
+                errors.rejectValue("hasScoringMonitoring", "panel.scoring.field.required", ["scoringMonitoring"] as Object[], "")
+                return false
+            }
+            return true
+        })
+
+        hasScoringLokalizacjaPunktu(nullable: true, validator: { value, cmd, errors ->
+            if (value && cmd.scoringLokalizacjaPunktu == DEFAULT_VALUE) {
+                errors.rejectValue("hasScoringLokalizacjaPunktu", "panel.scoring.field.required", ["scoringLokalizacjaPunktu"] as Object[], "")
+                return false
+            }
+            return true
+        })
+
+        hasScoringTypPunktu(nullable: true, validator: { value, cmd, errors ->
+            if (value && cmd.scoringTypPunktu == DEFAULT_VALUE) {
+                errors.rejectValue("hasScoringTypPunktu", "panel.scoring.field.required", ["scoringTypPunktu"] as Object[], "")
+                return false
+            }
+            return true
+        })
+
+        hasScoringWielkoscMiejscowosci(nullable: true, validator: { value, cmd, errors ->
+            if (value && cmd.scoringWielkoscMiejscowosci == DEFAULT_VALUE) {
+                errors.rejectValue("hasScoringWielkoscMiejscowosci", "panel.scoring.field.required", ["scoringWielkoscMiejscowosci"] as Object[], "")
+                return false
+            }
+            return true
+        })
+
+        hasScoringOtwartyZamkniety(nullable: true, validator: { value, cmd, errors ->
+            if (value && cmd.scoringOtwartyZamkniety == DEFAULT_VALUE) {
+                errors.rejectValue("hasScoringOtwartyZamkniety", "panel.scoring.field.required", ["scoringOtwartyZamkniety"] as Object[], "")
+                return false
+            }
+            return true
+        })
+
+        hasScoringCzestoscTransakcji(nullable: true, validator: { value, cmd, errors ->
+            if (value && cmd.scoringCzestoscTransakcji == DEFAULT_VALUE) {
+                errors.rejectValue("hasScoringCzestoscTransakcji", "panel.scoring.field.required", ["scoringCzestoscTransakcji"] as Object[], "")
+                return false
+            }
+            return true
+        })
+
+        hasScoringIloscTransakcji(nullable: true, validator: { value, cmd, errors ->
+            if (value && cmd.scoringIloscTransakcji == DEFAULT_VALUE) {
+                errors.rejectValue("hasScoringIloscTransakcji", "panel.scoring.field.required", ["scoringIloscTransakcji"] as Object[], "")
+                return false
+            }
+            return true
+        })
+
+        hasScoringDeklaracjaFinansowa(nullable: true, validator: { value, cmd, errors ->
+            if (value && cmd.scoringDeklaracjaFinansowa == DEFAULT_VALUE) {
+                errors.rejectValue("hasScoringDeklaracjaFinansowa", "panel.scoring.field.required", ["scoringDeklaracjaFinansowa"] as Object[], "")
+                return false
+            }
+            return true
+        })
+
+        hasAtLeastOneIstotneDane(nullable: true, validator: { value, cmd, errors ->
+            if(value && !(cmd.scoringSprzedazTowarowEkskluzywnych || cmd.scoringPonad50ProcentObrotowWNocy
+                    || cmd.scoringRuchTurystycznyPrzygraniczny || cmd.scoringUslugiPlatneZGory)){
+                    errors.rejectValue("hasAtLeastOneIstotneDane", "default.atLeastOne.required", ["Inne istotne dane"] as Object[], "")
+                    return false
+            }
+            return true
+        })
+
+//END REFACTORING
 
         umowaCzas(nullable: false, blank: false)
 
@@ -682,10 +838,10 @@ class ProcessCommand extends BaseCommand {
             return true
         })
 
-  /*      odpUzyTermMies(nullable: false, blank: false, validator: { value, cmd, errors ->
-            cmd.numberValidationClosure(value, cmd, errors, "odpUzyTermMies") &&
-                    atLeastClosure.call(value, cmd, errors, "odpUzyTermMies", "CENA_NAJMU")
-        })*/
+        /*      odpUzyTermMies(nullable: false, blank: false, validator: { value, cmd, errors ->
+                  cmd.numberValidationClosure(value, cmd, errors, "odpUzyTermMies") &&
+                          atLeastClosure.call(value, cmd, errors, "odpUzyTermMies", "CENA_NAJMU")
+              })*/
 
         odpUzyPpMies(nullable: true, blank: false,  validator: { value, cmd, errors -> cmd.numberValidationClosure(value, cmd, errors, "odpUzyPpMies")})
 
@@ -773,32 +929,32 @@ class ProcessCommand extends BaseCommand {
 
         visaEUKKOSt(nullable: false, blank: false,  validator: { value, cmd, errors ->
             cmd.numberValidationClosure(value, cmd, errors, "visaEUKKOSt") &&
-            atLeastClosure.call(value, cmd, errors, "visaEUKKOSt", "OPLATA_MSC_53_ZL")
+                    atLeastClosure.call(value, cmd, errors, "visaEUKKOSt", "OPLATA_MSC_53_ZL")
         })
 
         visaEUKDSt(nullable: false, blank: false,  validator: { value, cmd, errors ->
             cmd.numberValidationClosure(value, cmd, errors, "visaEUKDSt") &&
-            atLeastClosure.call(value, cmd, errors, "visaEUKDSt", "OPLATA_MSC_12_ZL")
+                    atLeastClosure.call(value, cmd, errors, "visaEUKDSt", "OPLATA_MSC_12_ZL")
         })
 
         visaEUKBSt(nullable: false, blank: false,  validator: { value, cmd, errors ->
             cmd.numberValidationClosure(value, cmd, errors, "visaEUKBSt") &&
-            atLeastClosure.call(value, cmd, errors, "visaEUKBSt", "OPLATA_MSC_13_ZL")
+                    atLeastClosure.call(value, cmd, errors, "visaEUKBSt", "OPLATA_MSC_13_ZL")
         })
 
         visaOutEUKKOSt(nullable: false, blank: false,  validator: { value, cmd, errors ->
             cmd.numberValidationClosure(value, cmd, errors, "visaOutEUKKOSt") &&
-            atLeastClosure.call(value, cmd, errors, "visaOutEUKKOSt", "OPLATA_MSC_21_ZL")
+                    atLeastClosure.call(value, cmd, errors, "visaOutEUKKOSt", "OPLATA_MSC_21_ZL")
         })
 
         visaOutEUKDSt(nullable: false, blank: false,  validator: { value, cmd, errors ->
             cmd.numberValidationClosure(value, cmd, errors, "visaOutEUKDSt") &&
-            atLeastClosure.call(value, cmd, errors, "visaOutEUKDSt", "OPLATA_MSC_22_ZL")
+                    atLeastClosure.call(value, cmd, errors, "visaOutEUKDSt", "OPLATA_MSC_22_ZL")
         })
 
         visaOutEUKBSt(nullable: false, blank: false,  validator: { value, cmd, errors ->
             cmd.numberValidationClosure(value, cmd, errors, "visaOutEUKBSt") &&
-            atLeastClosure.call(value, cmd, errors, "visaOutEUKBSt", "OPLATA_MSC_23_ZL")
+                    atLeastClosure.call(value, cmd, errors, "visaOutEUKBSt", "OPLATA_MSC_23_ZL")
         })
 
         visaPolskaKBSt(nullable: false, blank: false, validator: { value, cmd, errors ->
@@ -808,36 +964,36 @@ class ProcessCommand extends BaseCommand {
 
         mastercardEUKKSt(nullable: false, blank: false,  validator: { value, cmd, errors ->
             cmd.numberValidationClosure(value, cmd, errors, "mastercardEUKKSt") &&
-            atLeastClosure.call(value, cmd, errors, "mastercardEUKKSt", "OPLATA_MSC_41_ZL")
+                    atLeastClosure.call(value, cmd, errors, "mastercardEUKKSt", "OPLATA_MSC_41_ZL")
         })
 
         mastercardEUKDSt(nullable: false, blank: false,  validator: { value, cmd, errors ->
             cmd.numberValidationClosure(value, cmd, errors, "mastercardEUKDSt") &&
-            atLeastClosure.call(value, cmd, errors, "mastercardEUKDSt", "OPLATA_MSC_42_ZL")
+                    atLeastClosure.call(value, cmd, errors, "mastercardEUKDSt", "OPLATA_MSC_42_ZL")
         })
         mastercardEUKBLSt(nullable: false, blank: false,  validator: { value, cmd, errors ->
             cmd.numberValidationClosure(value, cmd, errors, "mastercardEUKBLSt") &&
-            atLeastClosure.call(value, cmd, errors, "mastercardEUKBLSt", "OPLATA_MSC_43_ZL")
+                    atLeastClosure.call(value, cmd, errors, "mastercardEUKBLSt", "OPLATA_MSC_43_ZL")
         })
         mastercardEUMSt(nullable: false, blank: false,  validator: { value, cmd, errors ->
             cmd.numberValidationClosure(value, cmd, errors, "mastercardEUMSt") &&
-            atLeastClosure.call(value, cmd, errors, "mastercardEUMSt", "OPLATA_MSC_44_ZL")
+                    atLeastClosure.call(value, cmd, errors, "mastercardEUMSt", "OPLATA_MSC_44_ZL")
         })
         mastercardOutEUKKSt(nullable: false, blank: false,  validator: { value, cmd, errors ->
             cmd.numberValidationClosure(value, cmd, errors, "mastercardOutEUKKSt") &&
-            atLeastClosure.call(value, cmd, errors, "mastercardOutEUKKSt", "OPLATA_MSC_51_ZL")
+                    atLeastClosure.call(value, cmd, errors, "mastercardOutEUKKSt", "OPLATA_MSC_51_ZL")
         })
         mastercardOutEUKDSt(nullable: false, blank: false,  validator: { value, cmd, errors ->
             cmd.numberValidationClosure(value, cmd, errors, "mastercardOutEUKDSt") &&
-            atLeastClosure.call(value, cmd, errors, "mastercardOutEUKDSt", "OPLATA_MSC_52_ZL")
+                    atLeastClosure.call(value, cmd, errors, "mastercardOutEUKDSt", "OPLATA_MSC_52_ZL")
         })
         mastercardOutEUKBSt(nullable: false, blank: false,  validator: { value, cmd, errors ->
             cmd.numberValidationClosure(value, cmd, errors, "mastercardOutEUKBSt") &&
-            atLeastClosure.call(value, cmd, errors, "mastercardOutEUKBSt", "OPLATA_MSC_53_ZL")
+                    atLeastClosure.call(value, cmd, errors, "mastercardOutEUKBSt", "OPLATA_MSC_53_ZL")
         })
         mastercardOutEUMSt(nullable: false, blank: false,  validator: { value, cmd, errors ->
             cmd.numberValidationClosure(value, cmd, errors, "mastercardOutEUMSt") &&
-            atLeastClosure.call(value, cmd, errors, "mastercardOutEUMSt", "OPLATA_MSC_54_ZL")
+                    atLeastClosure.call(value, cmd, errors, "mastercardOutEUMSt", "OPLATA_MSC_54_ZL")
         })
 
         dinersClubSt(nullable: true, blank: true,  validator: { value, cmd, errors -> cmd.numberValidationClosure(value, cmd, errors, "dinersClubSt")
@@ -1016,67 +1172,67 @@ class ProcessCommand extends BaseCommand {
 
         pp_orange_tk(nullable: true, blank: true,  validator: { value, cmd, errors ->
             cmd.percentageValidationClosure(value, cmd, errors, "pp_orange_tk") &&
-            cmd.checkTelekodzik(value, cmd, errors, "pp_orange_tk")
+                    cmd.checkTelekodzik(value, cmd, errors, "pp_orange_tk")
         })
         pp_orange_tp(nullable: true, blank: true, validator: { value, cmd, errors ->
             cmd.percentageValidationClosure(value, cmd, errors, "pp_orange_tp") &&
-            cmd.checkTelepompka(value, cmd, errors, "pp_orange_tp")
+                    cmd.checkTelepompka(value, cmd, errors, "pp_orange_tp")
         })
         pp_plus_tk(nullable: true, blank: true,  validator: { value, cmd, errors ->
             cmd.percentageValidationClosure(value, cmd, errors, "pp_plus_tk") &&
-            cmd.checkTelekodzik(value, cmd, errors, "pp_plus_tk")
+                    cmd.checkTelekodzik(value, cmd, errors, "pp_plus_tk")
         })
         pp_plus_tp(nullable: true, blank: true,  validator: { value, cmd, errors ->
             cmd.percentageValidationClosure(value, cmd, errors, "pp_plus_tp") &&
-            cmd.checkTelepompka(value, cmd, errors, "pp_plus_tp")
+                    cmd.checkTelepompka(value, cmd, errors, "pp_plus_tp")
         })
         pp_tmobile_tk(nullable: true, blank: true,  validator: { value, cmd, errors ->
             cmd.percentageValidationClosure(value, cmd, errors, "pp_tmobile_tk") &&
-            cmd.checkTelekodzik(value, cmd, errors, "pp_tmobile_tk")
+                    cmd.checkTelekodzik(value, cmd, errors, "pp_tmobile_tk")
         })
         pp_tmobile_tp(nullable: true, blank: true,  validator: { value, cmd, errors ->
             cmd.percentageValidationClosure(value, cmd, errors, "pp_tmobile_tp") &&
-            cmd.checkTelepompka(value, cmd, errors, "pp_tmobile_tp")
+                    cmd.checkTelepompka(value, cmd, errors, "pp_tmobile_tp")
         })
         pp_heyah_tk(nullable: true, blank: true,  validator: { value, cmd, errors ->
             cmd.percentageValidationClosure(value, cmd, errors, "pp_heyah_tk") &&
-            cmd.checkTelekodzik(value, cmd, errors, "pp_heyah_tk")
+                    cmd.checkTelekodzik(value, cmd, errors, "pp_heyah_tk")
         })
         pp_heyah_tp(nullable: true, blank: true,  validator: { value, cmd, errors ->
             cmd.percentageValidationClosure(value, cmd, errors, "pp_heyah_tp") &&
-            cmd.checkTelepompka(value, cmd, errors, "pp_heyah_tp")
+                    cmd.checkTelepompka(value, cmd, errors, "pp_heyah_tp")
         })
         pp_play_tk(nullable: true, blank: true,  validator: { value, cmd, errors ->
             cmd.percentageValidationClosure(value, cmd, errors, "pp_play_tk") &&
-            cmd.checkTelekodzik(value, cmd, errors, "pp_play_tk")
+                    cmd.checkTelekodzik(value, cmd, errors, "pp_play_tk")
         })
         pp_play_tp(nullable: true, blank: true,  validator: { value, cmd, errors ->
             cmd.percentageValidationClosure(value, cmd, errors, "pp_play_tp") &&
-            cmd.checkTelepompka(value, cmd, errors, "pp_play_tp")
+                    cmd.checkTelepompka(value, cmd, errors, "pp_play_tp")
         })
         pp_telegrosik_tk(nullable: true, blank: true,  validator: { value, cmd, errors ->
             cmd.percentageValidationClosure(value, cmd, errors, "pp_telegrosik_tk") &&
-            cmd.checkTelekodzik(value, cmd, errors, "pp_telegrosik_tk")
+                    cmd.checkTelekodzik(value, cmd, errors, "pp_telegrosik_tk")
         })
         pp_virginmobile_tk(nullable: true, blank: true,  validator: { value, cmd, errors ->
             cmd.percentageValidationClosure(value, cmd, errors, "pp_virginmobile_tk") &&
-            cmd.checkTelekodzik(value, cmd, errors, "pp_virginmobile_tk")
+                    cmd.checkTelekodzik(value, cmd, errors, "pp_virginmobile_tk")
         })
         pp_lycamobile_tk(nullable: true, blank: true,  validator: { value, cmd, errors ->
             cmd.percentageValidationClosure(value, cmd, errors, "pp_lycamobile_tk") &&
-            cmd.checkTelekodzik(value, cmd, errors, "pp_lycamobile_tk")
+                    cmd.checkTelekodzik(value, cmd, errors, "pp_lycamobile_tk")
         })
         pp_gtmobile_tk(nullable: true, blank: true,  validator: { value, cmd, errors ->
             cmd.percentageValidationClosure(value, cmd, errors, "pp_gtmobile_tk") &&
-            cmd.checkTelekodzik(value, cmd, errors, "pp_gtmobile_tk")
+                    cmd.checkTelekodzik(value, cmd, errors, "pp_gtmobile_tk")
         })
         pp_vectonemobile_tk(nullable: true, blank: true,  validator: { value, cmd, errors ->
             cmd.percentageValidationClosure(value, cmd, errors, "pp_vectonemobile_tk") &&
-            cmd.checkTelekodzik(value, cmd, errors, "pp_vectonemobile_tk")
+                    cmd.checkTelekodzik(value, cmd, errors, "pp_vectonemobile_tk")
         })
         pp_delightmobile_tk(nullable: true, blank: true,  validator: { value, cmd, errors ->
             cmd.percentageValidationClosure(value, cmd, errors, "pp_delightmobile_tk") &&
-            cmd.checkTelekodzik(value, cmd, errors, "pp_delightmobile_tk")
+                    cmd.checkTelekodzik(value, cmd, errors, "pp_delightmobile_tk")
         })
 
         oplataZaOprogramowanieDoDoladowan(nullable: false, blank: false,  validator: { value, cmd, errors -> cmd.numberValidationClosure(value, cmd, errors, "oplataZaOprogramowanieDoDoladowan")})

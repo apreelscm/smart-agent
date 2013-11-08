@@ -654,11 +654,11 @@ fieldset.embedded legend {
 }
 
 .errorSpan{
-    border: 1px solid #FF0000;
-    padding-top: .8em;
-    padding-right: .5em;
-    padding-left: .5em;
-    padding-bottom: .5em;
+    border: 1px solid #FF0000 !important;
+    padding-top: .8em !important;
+    padding-right: .5em !important;
+    padding-left: .5em !important;
+    padding-bottom: .5em !important;
 }
 
 .error input, .error select, .error textarea {

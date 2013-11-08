@@ -71,29 +71,42 @@ function refreshTelepomkaAndTelekodzikPercentValues(){
 function manageTKAndTPCheckedProperty(){
     var isMainTKChecked = jQuery('input.mainDoladowanieTK').prop('checked'),
         isMainTPChecked = jQuery('input.mainDoladowanieTP').prop('checked'),
-        telekodzikiInPanels = jQuery('div.newPointPanel').find("[data-doladowanie='telekodzik']"),
-        telepompkiInPanels = jQuery('div.newPointPanel').find("[data-doladowanie='telepompka']");
+        telekodzikiInPointPanels = jQuery('div.newPointPanel').find("[data-doladowanie='telekodzik']"),//TODO: refactor
+        telekodzikiInPosPanels = jQuery('div.newPosPanel').find("[data-doladowanie='telekodzik']"),
+        telepompkiInPointPanels = jQuery('div.newPointPanel').find("[data-doladowanie='telepompka']"),
+        telepompkiInPosPanels = jQuery('div.newPosPanel').find("[data-doladowanie='telepompka']");
+
+    console.log(isMainTKChecked);
+    console.log(isMainTPChecked);
 
     if(isMainTKChecked === undefined || isMainTPChecked === undefined){  //checkboxy nie istnieja
         return;
     }
 
     if(isMainTKChecked && isMainTPChecked){
-        telekodzikiInPanels.removeAttr('disabled');
-        telepompkiInPanels.removeAttr('disabled');
+        telekodzikiInPointPanels.removeAttr('disabled');
+        telekodzikiInPosPanels.removeAttr('disabled');
+        telepompkiInPointPanels.removeAttr('disabled');
+        telepompkiInPosPanels.removeAttr('disabled');
     } else {
         if(isMainTKChecked){
-            telepompkiInPanels.prop('checked', false);
-            telepompkiInPanels.attr('disabled', 'disabled');
+            telepompkiInPointPanels.attr('disabled', 'disabled');
+            telepompkiInPointPanels.removeAttr('checked');
+            telepompkiInPosPanels.attr('disabled', 'disabled');
+            telepompkiInPosPanels.removeAttr('checked');
         } else {
-            telepompkiInPanels.removeAttr('disabled');
+            telepompkiInPosPanels.removeAttr('disabled');
+            telepompkiInPointPanels.removeAttr('disabled');
         }
 
         if(isMainTPChecked){
-            telekodzikiInPanels.prop('checked', false);
-            telekodzikiInPanels.attr('disabled', 'disabled');
+            telekodzikiInPointPanels.attr('disabled', 'disabled');
+            telekodzikiInPointPanels.removeAttr('checked');
+            telekodzikiInPosPanels.attr('disabled', 'disabled');
+            telekodzikiInPosPanels.removeAttr('checked');
         } else {
-            telekodzikiInPanels.removeAttr('disabled');
+            telekodzikiInPointPanels.removeAttr('disabled');
+            telekodzikiInPosPanels.removeAttr('disabled');
         }
     }
 }
