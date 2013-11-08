@@ -7,5 +7,6 @@ package com.eservice.eumowy;
 public class DomainConsts {
 
     public static final String SHEMA_NAME = "EUMOWY";
+    public static final String EMPTY_VALUE = "-";
 
 }

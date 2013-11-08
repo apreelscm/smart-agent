@@ -11,13 +11,8 @@ import grails.validation.Validateable
  */
 
 @Validateable
-class PointCommand implements Serializable {
-	
-	@Omit
-	transient def calculatorService
-	@Omit
-	transient def calc
-	
+class PointCommand extends BaseCommand {
+
 	Integer id
 	
 	Long parentPosId
@@ -170,31 +165,6 @@ class PointCommand implements Serializable {
     BigDecimal pinPadCenaPreferencyjna
     BigDecimal wifiCenaPreferencyjna
 
-	@Omit
-	static def DEFAULT_VALUE = "~"
-	
-	@Omit
-	static def atLeastClosure = { value, cmd, errors, property, calcProperty ->
-		def calcValue = cmd.calculatorService.getCalcProperty(cmd.calc, calcProperty)
-
-		log.info("property: ${property}, value: ${value}, cal:${calcValue}")
-
-		//warunek na brak wartości w kalkulatorze lub wartość domyślną w panelu
-		if (DEFAULT_VALUE.equals(value) || !calcValue) {
-			return true
-		}
-
-		def minValue = calcValue?.toString()?.isNumber() ? calcValue.toString().toBigDecimal() : BigDecimal.ZERO
-		def currValue = value?.toString()?.isNumber() ? value.toString().toBigDecimal() : BigDecimal.ZERO
-
-		if (currValue.compareTo(minValue) < 0) {
-			//errors.rejectValue(property, "default.atLeast.asCalc", [property] as Object[], "Podana warto\u015B\u0107 dla pola {0} nie mo\u017Ce by\u0107 mniejsza ni\u017C pobrana z kalkulatora.")
-			errors.rejectValue(property, "default.atLeast.asCalc",[property] as Object[], "")
-			return false
-		}
-		return true
-	}
-	
 	static constraints = {
 		phPozysk(nullable:true, blank:false, shared: "alphanumeric")
 		opiekaBiznesowa(nullable:true, blank:false, shared: "alphanumeric")
@@ -374,10 +344,5 @@ class PointCommand implements Serializable {
 		nazwiskoInformatykDynamiczna(nullable:true, blank:false, shared: "lettersOnly")
 		
 		parentPosId(nullable:true)
-		
-	}
-	
-	PointCommand() {
-		calculatorService = new CalculatorService()
 	}
 }

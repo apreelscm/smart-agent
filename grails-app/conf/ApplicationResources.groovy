@@ -73,6 +73,11 @@ modules = {
 		dependsOn 'jquery_timepicker'
 	}
 
+    jquery_datepicker_pl {
+        resource url: 'js/jquery-ui/jquery-ui-datepicker-pl.js', disposition: 'head'
+        dependsOn 'jquery_ui'
+    }
+
     bootstrap {
         resource url: 'js/bootstrap.min.js'
         dependsOn 'jquery'

@@ -441,7 +441,7 @@
                                  href="#">${representative1.name} ${representative1.surname} - Reprezentant</a>
                         </span>
                         <span>
-                        	<a href="intent:#Intent;action=biz.binarysolutions.signature.CAPTURE;S.biz.binarysolutions.signature.Title=${representative1.name}%20${representative1.surname};i.biz.binarysolutions.signature.StrokeWidth=6;B.biz.binarysolutions.signature.Crop=false;S.biz.binarysolutions.signature.Width=700dp;S.biz.binarysolutions.signature.Height=300dp;S.biz.binarysolutions.signature.ActivationCode=;S.biz.binarysolutions.signature.UploadURL=http%3A%2F%2Fwww.example.com%2Freceiver_script;S.biz.binarysolutions.signature.SuccessURL=http%3A%2F%2Fwww.example.com%2Fsuccess.html;S.biz.binarysolutions.signature.FailureURL=http%3A%2F%2Fwww.example.com%2Ffailure.html;end"> | Podpisz </a>
+                        	<a href="eumowysig://data/${representative1.name.encodeAsURL()}/${representative1.surname.encodeAsURL()}/AKCEPTANT1/${message(code:'subscription.agreement').encodeAsURL()}/${createLink(controller: "subscriptionEx", action:"saveSubscription", absolute: true)}"> | PODPISZ</a>
                         </span>
                     </li>
 
@@ -449,7 +449,7 @@
                                  data-lastName="${representative2.surname}" data-role="ACCEPTANT2" id="subscribe-REPRESENTATIVE2"
                                  href="#">${representative2.name} ${representative2.surname} - Reprezentant</a></span>
                     <span>
-                        	<a href="intent:#Intent;action=biz.binarysolutions.signature.CAPTURE;S.biz.binarysolutions.signature.Title=${representative2.name}%20${representative2.surname};i.biz.binarysolutions.signature.StrokeWidth=6;B.biz.binarysolutions.signature.Crop=false;S.biz.binarysolutions.signature.Width=700dp;S.biz.binarysolutions.signature.Height=300dp;S.biz.binarysolutions.signature.ActivationCode=;S.biz.binarysolutions.signature.UploadURL=http%3A%2F%2Fwww.example.com%2Freceiver_script;S.biz.binarysolutions.signature.SuccessURL=http%3A%2F%2Fwww.example.com%2Fsuccess.html;S.biz.binarysolutions.signature.FailureURL=http%3A%2F%2Fwww.example.com%2Ffailure.html;end"> | Podpisz </a>
+                        <a href="eumowysig://data/${representative2.name.encodeAsURL()}/${representative2.surname.encodeAsURL()}/AKCEPTANT2/${message(code:'subscription.agreement').encodeAsURL()}/${createLink(controller: "subscriptionEx", action:"saveSubscription", absolute: true)}"> | PODPISZ</a>
                         </span>             
                     </li>
 						
@@ -457,8 +457,8 @@
                                  data-lastName="${processInstance.phSurname}" data-role="PH" id="subscribe-PH"
                                  href="#">${processInstance.phFirstName} ${processInstance.phSurname} - Pracownik eService</a></span>
                       <span>
-                        	<a href="intent:#Intent;action=biz.binarysolutions.signature.CAPTURE;S.biz.binarysolutions.signature.Title=${processInstance.phFirstName}%20${processInstance.phSurname};i.biz.binarysolutions.signature.StrokeWidth=6;B.biz.binarysolutions.signature.Crop=false;S.biz.binarysolutions.signature.Width=700dp;S.biz.binarysolutions.signature.Height=300dp;S.biz.binarysolutions.signature.ActivationCode=;S.biz.binarysolutions.signature.UploadURL=http%3A%2F%2Fwww.example.com%2Freceiver_script;S.biz.binarysolutions.signature.SuccessURL=http%3A%2F%2Fwww.example.com%2Fsuccess.html;S.biz.binarysolutions.signature.FailureURL=http%3A%2F%2Fwww.example.com%2Ffailure.html;end"> | Podpisz </a>
-                        </span>           
+                      	<a href="eumowysig://data/${processInstance.phFirstName.encodeAsURL()}/${processInstance.phSurname.encodeAsURL()}/PH/${message(code:'subscription.agreement.ph').encodeAsURL()}/${createLink(controller: "subscriptionEx", action:"saveSubscription", absolute: true)}"> | PODPISZ</a>
+                      </span>           
                     </li>
                 </ul>
             </fieldset>

@@ -613,6 +613,7 @@ function addDateHandlers(prefixPanel, prefix, panelId){
     var dayCloseFrom = jQuery(prefixPanel + ".dayCloseFrom"),
         dayCloseTo = jQuery(prefixPanel + ".dayCloseTo");
 
+    jQuery.datepicker.setDefaults( jQuery.datepicker.regional[ "pl" ] );
     jQuery(prefixPanel + ".plannedInstallationDate").datepicker({ dateFormat: 'yy-mm-dd', minDate: 0 });
     dayCloseFrom.timepicker({
         controlType: 'select',
