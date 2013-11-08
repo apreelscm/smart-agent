@@ -1,13 +1,11 @@
 
 package com.eservice.eumowy
 
-import groovy.sql.GroovyRowResult
-
-import org.codehaus.groovy.grails.web.json.JSONObject
-
 import com.eservice.eumowy.command.ProcessCommand
 import com.eservice.eumowy.process.DefineActivityCommand
 import com.eservice.eumowy.util.DateUtils
+import groovy.sql.GroovyRowResult
+import org.codehaus.groovy.grails.web.json.JSONObject
 
 class ActivityController {
 
@@ -495,12 +493,12 @@ class ActivityController {
                     return error();
                 }
 
-				// Validation 1 & 2
+                // Validation 1 & 2
                 if(!calculatorService.isCalcValid(calc,calcId,processInstance)){
                     flash.calcErrorMessage =  message(code:"calc.notEnough.error", default:"Kalkulator nie pozwala na wykonanie wszystkich zaznaczonych czynności");
                     return error();
                 }
-				
+
 
                 conversation.calc = calc
                 flow.calcNumber =  calcId;
@@ -551,17 +549,17 @@ class ActivityController {
                     processCmd = processService.getSavedProcessCommand(processInstance, conversation.calc, flow.newProcessFlow)
                     processCmd.nip = processInstance.client.nip
                 }
-				
-				// Calculate pos count from cbd
-				def counter = 0
-				processCmd.liczbaPosZCbd = 0
-				processCmd.allPoints?.each { allPoint ->
-					if (allPoint.cbdId != null) {
-						counter += allPoint?.liczbaPos != null ? allPoint?.liczbaPos : 0
-					}
-				}
-				processCmd.liczbaPosZCbd = Integer.valueOf(processCmd.liczbaPosZCbd) != null ? Integer.valueOf(processCmd.liczbaPosZCbd) + counter : counter
-				
+
+                // Calculate pos count from cbd
+                def counter = 0
+                processCmd.liczbaPosZCbd = 0
+                processCmd.allPoints?.each { allPoint ->
+                    if (allPoint.cbdId != null) {
+                        counter += allPoint?.liczbaPos != null ? allPoint?.liczbaPos : 0
+                    }
+                }
+                processCmd.liczbaPosZCbd = Integer.valueOf(processCmd.liczbaPosZCbd) != null ? Integer.valueOf(processCmd.liczbaPosZCbd) + counter : counter
+
                 flow.data = processCmd
                 flow.processInstance = processInstance
             }
@@ -577,20 +575,20 @@ class ActivityController {
             }.to "selectedPanels"
             on("deletePoint") {
                 def processInstance = flow.processInstance
-				def cmd = flow.data
+                def cmd = flow.data
                 def point = PointData.get(Integer.valueOf(params.pointId));
                 if (point != null) {
                     log.info "DeletePoint - Usuwam punkt o id: " + params.pointId
                     processInstance.removeFromPoints(point)
                     point.delete()
                     processInstance.save(flush: true)
-					
-					cmd?.points?.removeAll { it.id == point.id }
+
+                    cmd?.points?.removeAll { it.id == point.id }
                 }
                 else {
                     log.info "DeletePoint - Nie znalazłem punktu o id: " + params.pointId
                 }
-				flow.data = cmd
+                flow.data = cmd
                 flow.processInstance = processInstance
             }.to "saveOnly"
             on("saveOnly"){ ProcessCommand cmd ->
@@ -824,17 +822,17 @@ class ActivityController {
                 log.info "SkipPanelsInit: " + flow.skipPanelsInit
                 def processInstance = flow.processInstance;
                 def processCmd = processService.getSavedProcessCommand(processInstance, conversation.calc, flow.newProcessFlow);
-				
-				// Calculate pos count from cbd
-				def counter = 0
-				processCmd.liczbaPosZCbd = 0
-				processCmd.allPoints?.each { allPoint ->
-					if (allPoint.cbdId != null) {
-						counter += allPoint?.liczbaPos != null ? allPoint?.liczbaPos : 0
-					}
-				}
-				processCmd.liczbaPosZCbd = Integer.valueOf(processCmd.liczbaPosZCbd) != null ? Integer.valueOf(processCmd.liczbaPosZCbd) + counter : counter
-				
+
+                // Calculate pos count from cbd
+                def counter = 0
+                processCmd.liczbaPosZCbd = 0
+                processCmd.allPoints?.each { allPoint ->
+                    if (allPoint.cbdId != null) {
+                        counter += allPoint?.liczbaPos != null ? allPoint?.liczbaPos : 0
+                    }
+                }
+                processCmd.liczbaPosZCbd = Integer.valueOf(processCmd.liczbaPosZCbd) != null ? Integer.valueOf(processCmd.liczbaPosZCbd) + counter : counter
+
                 flow.data = processCmd
             }
             render(view: "../createProcess/selectedPanels")
@@ -845,20 +843,20 @@ class ActivityController {
             }.to "selectedPanels"
             on("deletePoint") {
                 def processInstance = flow.processInstance
-				def cmd = flow.data
+                def cmd = flow.data
                 def point = PointData.get(Integer.valueOf(params.pointId));
                 if (point != null) {
                     log.info "DeletePoint - Usuwam punkt o id: " + params.pointId
                     processInstance.removeFromPoints(point)
                     point.delete()
                     processInstance.save(flush: true)
-					
-					cmd?.points?.removeAll { it.id == point.id }
+
+                    cmd?.points?.removeAll { it.id == point.id }
                 }
                 else {
                     log.info "DeletePoint - Nie znalazłem punktu o id: " + params.pointId
                 }
-				flow.data = cmd
+                flow.data = cmd
                 flow.processInstance = processInstance
             }.to "selectedPanels"
             on("saveOnly"){ ProcessCommand cmd ->
