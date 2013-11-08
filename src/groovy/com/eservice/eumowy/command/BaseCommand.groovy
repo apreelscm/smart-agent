@@ -25,7 +25,7 @@ abstract class BaseCommand implements Serializable{
         log.info("property: ${property}, value: ${value}, cal:${calcValue}")
 
         //warunek na brak wartości w kalkulatorze lub wartość domyślną w panelu
-        if (DEFAULT_VALUE.equals(value) || !calcValue) {
+        if (DEFAULT_VALUE.equals(value) || !calcValue || "-".equals(value)) { // '-' dla eUmowy_ext-298
             return true
         }
 
