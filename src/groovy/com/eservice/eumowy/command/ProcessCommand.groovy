@@ -8,8 +8,6 @@ import grails.validation.Validateable
 import org.apache.commons.collections.FactoryUtils
 import org.apache.commons.collections.ListUtils
 
-import java.util.regex.Pattern
-
 /**
  * User: Dominik Walczak
  * Date: 20.08.13 Time: 10:22
@@ -17,12 +15,7 @@ import java.util.regex.Pattern
  */
 
 @Validateable
-class ProcessCommand implements Serializable {
-
-    @Omit()
-    transient def calculatorService
-    @Omit
-    transient def calc
+class ProcessCommand extends BaseCommand {
 
     @Omit
     static int MAX_PRICE_GROUP_SIZE = 3
@@ -32,28 +25,6 @@ class ProcessCommand implements Serializable {
     // NoSuchFieldException z ProcessService.loadProcessData() przy probie usuniecia zbednej metody
     @Omit
     static def nullableTrueBlankFalse = {/** puste ale potrzebne */}
-
-    @Omit
-    static def atLeastClosure = { value, cmd, errors, property, calcProperty ->
-        def calcValue = cmd.calculatorService.getCalcProperty(cmd.calc, calcProperty)
-
-        log.info("property: ${property}, value: ${value}, cal:${calcValue}")
-
-        //warunek na brak wartości w kalkulatorze lub wartość domyślną w panelu
-        if (DEFAULT_VALUE.equals(value) || !calcValue) {
-            return true
-        }
-
-        def minValue = calcValue?.toString()?.isNumber() ? calcValue.toString().toBigDecimal() : BigDecimal.ZERO
-        def currValue = value?.toString()?.isNumber() ? value.toString().toBigDecimal() : BigDecimal.ZERO
-
-        if (currValue.compareTo(minValue) < 0) {
-            //errors.rejectValue(property, "default.atLeast.asCalc", [property] as Object[], "Podana warto\u015B\u0107 dla pola {0} nie mo\u017Ce by\u0107 mniejsza ni\u017C pobrana z kalkulatora.")
-            errors.rejectValue(property, "default.atLeast.asCalc",[property] as Object[], "")
-            return false
-        }
-        return true
-    }
 
     @Omit
     static def checkTerminalNumber = { value, cmd, errors ->
@@ -99,15 +70,6 @@ class ProcessCommand implements Serializable {
     }
 
     @Omit
-    static def maxLengthClosure = { value, cmd, errors, maxValue, propertyName, message ->
-        if (value.length() > maxValue) {
-            errors.rejectValue(propertyName, message)
-            return false
-        }
-        return true
-    }
-
-    @Omit
     static def skipAddressValidationClosure = { value, cmd, errors, propertyName, message ->
         if(value.isEmpty() && cmd.checkIfClientFromCbd()){
             return true
@@ -138,34 +100,30 @@ class ProcessCommand implements Serializable {
     }
 
     @Omit
-    static def regexpValidationClosure = { value, errors, propertyName, patternStr, message ->
-        log.trace("regexpValidationClosure - propertyName:"+propertyName+" value:"+value + " pattern:"+patternStr)
+    static def hirePaymentsValidationClosure =  { value, cmd, errors ->
+        def hasError = false
 
-        if(!value){
-            return true;
+        value.each { hpCmd ->
+            hpCmd?.validate()
+            if(hpCmd?.hasErrors()){
+                hpCmd.errors.each {
+                    log.info(it)
+                }
+                hasError = true
+            }
         }
 
-        Pattern pattern = Pattern.compile(patternStr)
-        if (!pattern.matcher(value).matches()){
-            errors.rejectValue(propertyName, message,[value, propertyName] as Object[], "")
+        if (hasError) {
+            errors.reject("default.error.hire.payments",)
             return false
         }
+
+        if(value?.size() > 0 && hasMoreThanPriceGroups(MAX_PRICE_GROUP_SIZE, value)){
+            errors.reject("default.tooMany.groups")
+            return false
+        }
+
         return true
-    }
-
-    @Omit
-    static def numberValidationClosure = {value, cmd,  errors, propertyName ->
-        return cmd.regexpValidationClosure.call(value, errors, propertyName, '~|\\-|^(?:[1-9]\\d*|0)?(?:\\.\\d{1,2})?$',"default.validation.number.error")
-    }
-
-    @Omit
-    static def percentageValidationClosure = {value, cmd,  errors, propertyName ->
-        cmd.regexpValidationClosure.call(value, errors, propertyName, "~|\\-|^(?:100(?:.0(?:0)?)?|\\d{1,2}(?:.\\d{1,2})?)", "default.validation.number.error")
-    }
-
-    @Omit
-    static def customValidationClosure = {value, cmd,  errors, propertyName, regex ->
-        cmd.regexpValidationClosure.call(value, errors, propertyName,regex, "default.validation.regex.error")
     }
 
     @Omit
@@ -715,12 +673,10 @@ class ProcessCommand implements Serializable {
             if ("tak".equals(value)){
                 if ("one_for_all_terminals".equals(cmd.odplatneUzywanie)){
                     atLeastClosure.call(cmd.odpUzyTermMies, cmd, errors, "odpUzyTermMies", "CENA_NAJMU")
-                } else if ("one_for_all_terminals_in_point".equals(cmd.odplatneUzywanie) && hasMoreThanPriceGroups(MAX_PRICE_GROUP_SIZE, cmd.hirePaymentsByPoint)){
-                    errors.reject("default.tooMany.groups")
-                    return false
-                } else if ("other_for_selected_terminals".equals(cmd.odplatneUzywanie) && hasMoreThanPriceGroups(MAX_PRICE_GROUP_SIZE, cmd.hirePaymentsByPos)){
-                    errors.reject("default.tooMany.groups")
-                    return false
+                } else if ("one_for_all_terminals_in_point".equals(cmd.odplatneUzywanie)){
+                    hirePaymentsValidationClosure(cmd.hirePaymentsByPoint, cmd, errors)
+                } else if ("other_for_selected_terminals".equals(cmd.odplatneUzywanie)){
+                    hirePaymentsValidationClosure(cmd.hirePaymentsByPos, cmd, errors)
                 }
             }
             return true

@@ -2,7 +2,6 @@
     <fieldset style="text-align: center">
         <div class="belka-glowna"><g:message code="panel.pos.discount.title"/></div>
         <div style="text-align: center; padding-top: 20px; width: 750px" class="centre">
-            <g:hiddenField id="discountCount" name="discountCount" value="${data.allPoses.size()}"/>
 			<table class="t">
 				<thead style="text-align: center !important;">
 					<tr>
@@ -38,7 +37,7 @@
 
 <r:script>
     jQuery(document).ready(function() {
-        var discCount = parseInt(jQuery("#discountCount").val());
+        var discCount = parseInt('${data.allPoses.size()}');
 
         for (var i =0; i< discCount; i++){
             var start = jQuery('#allPoses\\['+ i +'\\]\\.dataOd');

@@ -1,13 +1,14 @@
 package com.eservice.eumowy.command
 
+import grails.validation.Validateable
+
 /**
- * Created with IntelliJ IDEA.
- * User: user
+ * User: pszkup
  * Date: 30.10.13
  * Time: 14:23
- * To change this template use File | Settings | File Templates.
  */
-class HirePaymentCommand implements Serializable {
+@Validateable
+class HirePaymentCommand extends BaseCommand{
 
     Integer id
     Integer tpsId
@@ -26,7 +27,12 @@ class HirePaymentCommand implements Serializable {
     Boolean isChoosen
 
     static constraints = {
-
+        newTermPayment(nullable:true, shared: "number", validator: { value, cmd, errors ->
+            cmd.newTermPayment ? atLeastClosure.call(value, cmd, errors, "newTermPayment", "CENA_NAJMU") : true;
+        })
+        newPpPayment(nullable:true, shared: "number", validator: { value, cmd, errors ->
+            cmd.newPpPayment ? atLeastClosure.call(value, cmd, errors, "newPpPayment", "CENA_NAJMU_PP") : true;
+        })
     }
 
 }

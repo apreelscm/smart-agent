@@ -12,7 +12,6 @@
             </div>
         </div>
         <g:hiddenField name="isOdplatneUzywanieShown" value="tak"/>
-        <g:hiddenField name="odpUzyTermMiesCopy" value="${data.odpUzyTermMies}"/>
 
         <div style="padding-top: 20px;">Liczba i cena aktywnych terminali u klienta</div>
         <div style="text-align: center; width: 950px" class="centre">
@@ -24,8 +23,8 @@
                 </li>
                 <li>
                     <span><g:field name="odplatneUzywanieLiczbaTerminali" type="text" class="integer-number" value="${data.odplatneUzywanieLiczbaTerminali}" style="width: 70px" readonly="true"/></span>
-                    <span><g:field name="odplatneUzywanieCenaTerminal" type="text" class="integer-number" value="${data.odplatneUzywanieCenaTerminal}" style="width: 70px" readonly="true"/></span>
-                    <span><g:field name="odplatneUzywanieCenaPinpad" type="text" class="integer-number" value="${data.odplatneUzywanieCenaPinpad}" style="width: 70px" readonly="true"/></span>
+                    <span><g:field name="odplatneUzywanieCenaTerminal" type="text" class="float-number" value="${data.odplatneUzywanieCenaTerminal}" style="width: 70px" readonly="true"/></span>
+                    <span><g:field name="odplatneUzywanieCenaPinpad" type="text" class="float-number" value="${data.odplatneUzywanieCenaPinpad}" style="width: 70px" readonly="true"/></span>
                 </li>
             </ul>
         </div>
@@ -83,7 +82,7 @@
                         <td class="align-center"><g:field name="hirePaymentsByPoint[${i}].ppCount" type="text" class="float-number" value="${hp.ppCount}" style="width: 40px" readonly="true"/></td>
                         <td class="align-center"><g:field name="hirePaymentsByPoint[${i}].currentTermPayment" type="text" class="float-number" value="${hp.currentTermPayment}" style="width: 40px" readonly="true"/></td>
                         <td class="align-center"><g:field name="hirePaymentsByPoint[${i}].currentPpPayment" type="text" class="float-number" value="${hp.currentPpPayment}" style="width: 40px" readonly="true"/></td>
-                        <td class="align-center"><g:field name="hirePaymentsByPoint[${i}].newTermPayment" type="text" class="float-number" value="${hp.newTermPayment}" style="width: 40px"/></td>
+                        <td class="align-center"><eumowy:textField name="hirePaymentsByPoint[${i}].newTermPayment" style="width: 40px" value="${hp.newTermPayment}" class="float-number" validatable="${hp}" validateField="newTermPayment"/></td>
                         <td class="align-center"><g:field name="hirePaymentsByPoint[${i}].newPpPayment" type="text" class="float-number" value="${hp.newPpPayment}" style="width: 40px" readonly="true"/></td>
                         <td class="align-center"><g:checkBox name="hirePaymentsByPoint[${i}].isChoosen" checked="${hp.isChoosen}"/></td>
                     </tr>
@@ -125,7 +124,7 @@
                         <td class="align-center"><g:field name="hirePaymentsByPos[${i}].ppCount" type="text" class="integer-number" value="${hp.ppCount}" style="width: 40px" readonly="true"/></td>
                         <td class="align-center"><g:field name="hirePaymentsByPos[${i}].currentTermPayment" type="text" class="integer-number" value="${hp.currentTermPayment}" style="width: 40px" readonly="true"/></td>
                         <td class="align-center"><g:field name="hirePaymentsByPos[${i}].currentPpPayment" type="text" class="integer-number" value="${hp.currentPpPayment}" style="width: 40px" readonly="true"/></td>
-                        <td class="align-center"><g:field name="hirePaymentsByPos[${i}].newTermPayment" type="text" class="float-number" value="${hp.newTermPayment}" style="width: 40px"/></td>
+                        <td class="align-center"><eumowy:textField name="hirePaymentsByPos[${i}].newTermPayment" style="width: 40px" value="${hp.newTermPayment}" class="float-number" validatable="${hp}" validateField="newTermPayment"/></td>
                         <td class="align-center"><g:field name="hirePaymentsByPos[${i}].newPpPayment" type="text" class="float-number" value="${hp.newPpPayment}" style="width: 40px" readonly="true"/></td>
                         <td class="align-center"><g:checkBox name="hirePaymentsByPos[${i}].isChoosen" checked="${hp.isChoosen}"/></td>
                     </tr>
@@ -144,7 +143,6 @@
         selectUsageOption(jQuery('input[name="odplatneUzywanie"]:checked').val());
         jQuery('input[name="odplatneUzywanie"]').change(function(e){
             selectUsageOption(e.target.value);
-
             cleanValues(e.target.value);
         });
 
@@ -162,7 +160,7 @@
 
         function cleanValues(selectedValue){
             if (selectedValue == 'one_for_all_terminals'){
-                jQuery('#odpUzyTermMies').val(jQuery('#odpUzyTermMiesCopy').val());
+                jQuery('#odpUzyTermMies').val('${data.odpUzyTermMies}');
                 clean(jQuery('#hirePaymentsByPointSize').val(), "hirePaymentsByPoint");
                 clean(jQuery('#hirePaymentsByPosSize').val(), "hirePaymentsByPos");
             } else if (selectedValue == 'one_for_all_terminals_in_point') {
