@@ -85,6 +85,7 @@ grails.gorm.default.constraints = {
     percentage(matches:'~|\\-|^(?:100(?:.0(?:0)?)?|\\d{1,2}(?:.\\d{1,2})?)$')
     number(matches:'~|\\-|^(?:[1-9]\\d*|0)?(?:\\.\\d{1,2})?$')
     number4Precision(matches:'~|\\-|^(?:[1-9]\\d*|0)?(?:\\.\\d{1,4})?$')
+    number3Precision(matches:'~|\\-|^(?:[1-9]\\d*|0)?(?:\\.\\d{1,3})?$')
     natural(matches:'~|\\-|^[0-9]*')
     lettersOnly(matches:'~|^[A-Za-z\\s\\u0104-\\u017c\\u00d3\\u00f3]*')
     alphanumeric(matches:'~|^[A-Za-z0-9\\s.\\-,\\u0104-\\u017c\\u00d3\\u00f3]*')

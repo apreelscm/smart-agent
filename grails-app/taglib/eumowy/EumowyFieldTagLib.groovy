@@ -1,5 +1,7 @@
 package eumowy
 
+import com.eservice.eumowy.DomainConsts
+
 class EumowyFieldTagLib {
 
     static namespace = "eumowy"
@@ -42,6 +44,16 @@ class EumowyFieldTagLib {
 			sb.append("""</div>""")
 		}
         out << sb.toString()
+    }
+
+    Closure flatPriceField = { attrs ->
+        if(attrs.value == null || attrs.value == ""){
+            attrs.value = "-"
+        }
+        attrs.type="text"
+        attrs.postfix = message(code:"panel.polish.currency")
+
+        fieldImpl(out, attrs)
     }
 
     Closure percentageField = { attrs ->
