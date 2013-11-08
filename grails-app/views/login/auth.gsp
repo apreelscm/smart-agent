@@ -32,6 +32,7 @@
 	</div>
 </div>
 <a href="http://goo.gl/LqSN6">Pobierz bibliotekę Signature Capture</a>
+<a href="eumowysig://data/Elżbieta/Tomaszewska/PH/Wyra%C5%BCam%20zgod%C4%99%20na%20co%C5%9B%20tam">Test</a>
 <script type='text/javascript'>
 	<!--
 	(function() {
