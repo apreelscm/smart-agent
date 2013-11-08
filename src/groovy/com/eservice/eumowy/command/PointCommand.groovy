@@ -1,8 +1,7 @@
 package com.eservice.eumowy.command
 
 import com.eservice.eumowy.CalculatorService
-import com.eservice.eumowy.annotation.Omit;
-
+import com.eservice.eumowy.annotation.Omit
 import grails.validation.Validateable
 
 /**
@@ -224,8 +223,8 @@ class PointCommand extends BaseCommand {
 		bankId(nullable:true)
 		
 		dialupTyp(nullable:true)
-		dialupIlosc(nullable:true, blank:false, shared: "natural")
-		dialupPPIlosc(nullable:true, blank:false, shared: "natural")
+		dialupIlosc(nullable:true,  shared: "natural")
+		dialupPPIlosc(nullable:true,  shared: "natural")
 		dialupCena(nullable:true, shared: "number", validator: { value, cmd, errors ->
 			cmd.dialupTyp ? atLeastClosure.call(value, cmd, errors, "dialupCena", "TYP_DIALUP_TERM_CENA") : true;
 		})
@@ -233,8 +232,8 @@ class PointCommand extends BaseCommand {
 			cmd.dialupTyp ? atLeastClosure.call(value, cmd, errors, "dialupPPCena", "TYP_DIALUP_PP_CENA") : true;
 		})
 		vpnTyp(nullable:true)
-		vpnIlosc(nullable:true, blank:false, shared: "natural")
-		vpnPPIlosc(nullable:true, blank:false, shared: "natural")
+		vpnIlosc(nullable:true,  shared: "natural")
+		vpnPPIlosc(nullable:true,  shared: "natural")
 		vpnCena(nullable:true, shared: "number", validator: { value, cmd, errors ->
 			cmd.vpnTyp ? atLeastClosure.call(value, cmd, errors, "vpnCena", "TYP_VPN_TERM_CENA") : true;
 		})
@@ -242,8 +241,8 @@ class PointCommand extends BaseCommand {
 			cmd.vpnTyp ? atLeastClosure.call(value, cmd, errors, "vpnPPCena", "TYP_VPN_PP_CENA") : true;
 		})
 		sslTyp(nullable:true)
-		sslIlosc(nullable:true, blank:false, shared: "natural")
-		sslPPIlosc(nullable:true, blank:false, shared: "natural")
+		sslIlosc(nullable:true,  shared: "natural")
+		sslPPIlosc(nullable:true,  shared: "natural")
 		sslCena(nullable:true, shared: "number", validator: { value, cmd, errors ->
 			cmd.sslTyp ? atLeastClosure.call(value, cmd, errors, "sslCena", "TYP_SSL_TERM_CENA") : true;
 		})
@@ -251,8 +250,8 @@ class PointCommand extends BaseCommand {
 			cmd.sslTyp ? atLeastClosure.call(value, cmd, errors, "sslPPCena", "TYP_SSL_PP_CENA") : true;
 		})
 		wifiTyp(nullable:true)
-		wifiIlosc(nullable:true, blank:false, shared: "number")
-		wifiPPIlosc(nullable:true, blank:false, shared: "natural")
+		wifiIlosc(nullable:true,  shared: "number")
+		wifiPPIlosc(nullable:true,  shared: "natural")
 		wifiCena(nullable:true, shared: "number", validator: { value, cmd, errors ->
 			cmd.wifiTyp ? atLeastClosure.call(value, cmd, errors, "wifiCena", "TYP_WIFI_TERM_CENA") : true;
 		})
@@ -260,15 +259,15 @@ class PointCommand extends BaseCommand {
 			cmd.wifiTyp ? atLeastClosure.call(value, cmd, errors, "wifiPPCena", "TYP_WIFI_PP_CENA") : true;
 		})
 		gprsTyp(nullable:true)
-		gprsIlosc(nullable:true, blank:false, shared: "natural")
-		gprsPPIlosc(nullable:true, blank:false, shared: "number")
+		gprsIlosc(nullable:true,  shared: "natural")
+		gprsPPIlosc(nullable:true,  shared: "number")
 		gprsCena(nullable:true, shared: "number", validator: { value, cmd, errors ->
 			cmd.gprsTyp ? atLeastClosure.call(value, cmd, errors, "gprsCena", "TYP_GPRS_TERM_CENA") : true;
 		})
 		gprsPPCena(nullable:true, shared: "number", validator: { value, cmd, errors ->
 			cmd.gprsTyp ? atLeastClosure.call(value, cmd, errors, "gprsPPCena", "TYP_GPRS_PP_CENA") : true;
 		})
-		bazaIlosc(nullable:true, blank:false, shared: "number")
+		bazaIlosc(nullable:true,  shared: "number")
         dialupCenaPreferencyjna(nullable:true, shared: "number", validator: { value, cmd, errors ->
 			cmd.dialupTyp ? atLeastClosure.call(value, cmd, errors, "dialupCenaPreferencyjna", "TYP_DIALUP_CENA") : true;
 		})
@@ -317,21 +316,21 @@ class PointCommand extends BaseCommand {
 		kartaPodarunkowa(nullable:true)
 		pinPadTyp(nullable:true)
         kartaSimTyp(nullable:true)
-		pinPadIlosc(nullable:true, blank:false, shared: "natural")
-        kartaSimIlosc(nullable: true, blank: false, shared: "natural")
-		pinPadCena(nullable:true, blank:false, shared: "number")
+		pinPadIlosc(nullable:true,  shared: "natural")
+        kartaSimIlosc(nullable: true, shared: "natural")
+		pinPadCena(nullable:true,  shared: "number")
 		routerTyp(nullable:true)
-		routerIlosc(nullable:true, blank:false, shared: "natural")
-		routerCena(nullable:true, blank:false, shared: "number")
+		routerIlosc(nullable:true,  shared: "natural")
+		routerCena(nullable:true,  shared: "number")
 		czytnikKartTyp(nullable:true)
-		czytnikKartIlosc(nullable:true, blank:false, shared: "natural")
-		czytnikKartCena(nullable:true, blank:false, shared: "number")
+		czytnikKartIlosc(nullable:true,  shared: "natural")
+		czytnikKartCena(nullable:true,  shared: "number")
 		inneWyposazenie(nullable:true, blank:true)
-		inneWyposazenieSsl(nullable:true, blank:true)
-		inneWyposazenieGprs(nullable:true, blank:true)
+		inneWyposazenieSsl(nullable:true)
+		inneWyposazenieGprs(nullable:true)
 		inneWyposazenieTyp(nullable:true, blank:true)
-		inneWyposazenieIlosc(nullable:true, blank:true, shared: "natural")
-		inneWyposazenieCena(nullable:true, blank:true, shared: "number")
+		inneWyposazenieIlosc(nullable:true, shared: "natural")
+		inneWyposazenieCena(nullable:true, shared: "number")
 		maska(nullable:true, blank:false)
 		bramka(nullable:true, blank:false)
 		adresIp(nullable:true, blank:false)
