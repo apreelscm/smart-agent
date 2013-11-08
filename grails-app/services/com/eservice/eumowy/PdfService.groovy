@@ -115,6 +115,11 @@ class PdfService {
 	}
 
     def fillPdfFormFromURIWithoutFaksymile(Signature sig, Map<String,String[]> panelData, FontType fontType) {
+        if (! sig.templatePath) {
+            log.debug('skiping virtual signature')
+            return
+        }
+
         Map<String,String[]> dataMap = new HashMap<String, String[]>()
 
         if (panelData != null) {
@@ -142,6 +147,11 @@ class PdfService {
         Map<String,String[]> dataMap = new HashMap<String, String[]>()
 
         Signature sig = Signature.get(sigId);
+        if (! sig.templatePath){
+            log.debug('skiping virtual signature')
+            return
+        }
+
         sig.subscriptionDefinitions.findAll { (it.role == Subscription.PersonRole.ZARZAD1 || it.role == Subscription.PersonRole.ZARZAD2) && it.subscriptionPageNumber != null && it.subscriptionPageNumber > -1}
             .eachWithIndex{ SubscriptionDefinition it, int i ->
                 dataMap.put(it.role.name() + i, [new File(subscriptionsPath+File.separator+subscriptionsBlackNamePrefix+it.fileName).toURI().toURL(), "", "signature", it.subscriptionPageNumber.toString(), (it.subscriptionX).toString(), it.subscriptionY.toString(), it.scaleX, it.scaleY] as String[])
