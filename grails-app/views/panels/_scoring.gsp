@@ -163,7 +163,7 @@
 </fieldset>
 <fieldset class="border">
     <legend><g:message code="panel.visit conclusion.title"/></legend>
-    <div style="text-align: left" class="${hasErrors(bean:data,field:'hasScoringOtwartyZamkniety','errorSpan')}">
+    <div style="text-align: left" class="${hasErrors(bean:data,field: 'hasScoringOtwartyZamkniety','errorSpan')}">
         <p>Punkty były: </p>
         <g:radioGroup name="scoringOtwartyZamkniety"
                       labels="['panel.open','panel.close']"
