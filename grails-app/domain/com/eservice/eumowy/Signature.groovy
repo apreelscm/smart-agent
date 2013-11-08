@@ -9,6 +9,8 @@ class Signature implements Serializable {
 	String description;
     String filename;
     Integer signatureOrder;
+    Boolean sendToClient = true;
+    Boolean showOnPreview = true;
 
     static hasMany = [
             calcFieldsSignature:CalcFieldSignature,
@@ -27,6 +29,8 @@ class Signature implements Serializable {
     static mapping = {
         table name: "SIGNATURE", schema: DomainConsts.SHEMA_NAME
         id generator:'sequence', params:[sequence:DomainConsts.SHEMA_NAME+'.SIGNATURE_SEQ']
+        sendToClient column: "SEND_TO_CLIENT"
+        showOnPreview column: "SHOW_ON_PREVIEW"
     }
 
     String toString(){

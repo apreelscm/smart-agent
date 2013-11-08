@@ -83,8 +83,8 @@ class PdfService {
 		Integer pagesCount = 0
 
         def docs = documents.sort(false) {it.signature.signatureOrder}
-		
-		for(DocumentFile doc : docs) {
+
+		for(DocumentFile doc : docs.findAll{it.signature?.sendToClient}) {
 			log.info "Document: " + doc + " PageCount: " + doc.pagesCount + " Signature_order: " + doc.signature.signatureOrder
 			if (pageNumber >= pagesCount && pageNumber <= pagesCount + doc.pagesCount) {
 				return [document: doc, page: pageNumber - pagesCount]
@@ -257,7 +257,7 @@ class PdfService {
             df.save(flush: true)
 			processInstance.save(flush: true)
         }
-        pc
+        return sig.showOnPreview ? pc : 0
     }
 
 }

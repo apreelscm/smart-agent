@@ -1274,7 +1274,7 @@ class ActivityController {
                 def recipient = getFromProcessData(process, 'kontaktEmail') ?: getFromProcessData(process, 'emailDoWysylkiDokumentu')
 
                 if (recipient){
-                    emailService.sendDocumentsElectronicalVersion(recipient, process.documents)
+                    emailService.sendDocumentsElectronicalVersion(recipient, process.documents?.findAll{it.signature?.sendToClient})
                 } else {
                     def merchantName = getFromProcessData(process, 'akceptantNazwaOficjalna');
                     def merchantNip = getFromProcessData(process, 'nip');
@@ -1286,14 +1286,14 @@ class ActivityController {
             //Documents are already in DB
             def merchantName = getFromProcessData(process, 'akceptantNazwaOficjalna');
 
-            process.documents.each{ DocumentFile df ->
+            process.documents.each { DocumentFile df ->
                 DocumentContent ndc = pdfService.cleanAgrementDateContent(df.content);
                 ndc.setDocument(df)
                 ndc.save(flush: true)
                 df.setContent(ndc);
                 df.save(flush: true)
             }
-            emailService.sendDocumentsPaperVersion(process.phEmail, process.documents, merchantName)
+            emailService.sendDocumentsPaperVersion(process.phEmail, process.documents?.findAll{it.signature?.sendToClient}, merchantName)
         }
         else if (TEMPLATES.equals(requestVersion)) {
             //Documents are already in DB
@@ -1316,12 +1316,12 @@ class ActivityController {
                 documentFilesWithoutFaksymileList.add(dfwof)
             }
 
-            emailService.sendDocumentsTemplateVersion(process.phEmail, documentFilesWithBlackFaksymileList)
+            emailService.sendDocumentsTemplateVersion(process.phEmail, documentFilesWithBlackFaksymileList?.findAll{it.signature?.sendToClient})
 
             //for acceptant
             def recipientUser = getFromProcessData(process, 'kontaktEmail')
             if(recipientUser != ""){
-                emailService.sendDocumentsTemplateVersion(recipientUser, documentFilesWithoutFaksymileList)
+                emailService.sendDocumentsTemplateVersion(recipientUser, documentFilesWithoutFaksymileList?.findAll{it.signature?.sendToClient})
             }
         }
     }
