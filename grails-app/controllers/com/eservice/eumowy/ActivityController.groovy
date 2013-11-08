@@ -1,14 +1,12 @@
 
 package com.eservice.eumowy
 
-import groovy.sql.GroovyRowResult
-
-import org.codehaus.groovy.grails.web.json.JSONObject
-
 import com.eservice.eumowy.command.PointCommand
 import com.eservice.eumowy.command.ProcessCommand
 import com.eservice.eumowy.process.DefineActivityCommand
 import com.eservice.eumowy.util.DateUtils
+import groovy.sql.GroovyRowResult
+import org.codehaus.groovy.grails.web.json.JSONObject
 
 class ActivityController {
 
@@ -1328,14 +1326,14 @@ class ActivityController {
             process.signatures.each { sig ->
                 // Generate documents with black faksymile for PH
                 byte[] documentDataWithBlackFaksymile = pdfService.fillPdfFormFromURIWithBlackFaksymile(sig.id, null, PdfService.FontType.ARIAL)
-                DocumentFile dfwbf = new DocumentFile(name: sig.templatePath, dateCreated: new Date(), lastUpdated: new Date(), pagesCount: 0)
+                DocumentFile dfwbf = new DocumentFile(name: sig.filename, dateCreated: new Date(), lastUpdated: new Date(), pagesCount: 0)
                 dfwbf.setContent(new DocumentContent(content: documentDataWithBlackFaksymile))
                 dfwbf.discard()
                 documentFilesWithBlackFaksymileList.add(dfwbf)
 
                 // Generate documents without faksymile for acceptant
                 byte[] documentDataWithoutFaksymile = pdfService.fillPdfFormFromURIWithoutFaksymile(sig, null, PdfService.FontType.ARIAL)
-                DocumentFile dfwof = new DocumentFile(name: sig.templatePath, dateCreated: new Date(), lastUpdated: new Date(), pagesCount: 0)
+                DocumentFile dfwof = new DocumentFile(name: sig.filename, dateCreated: new Date(), lastUpdated: new Date(), pagesCount: 0)
                 dfwof.setContent(new DocumentContent(content: documentDataWithoutFaksymile))
                 dfwof.discard()
                 documentFilesWithoutFaksymileList.add(dfwof)

@@ -1,10 +1,10 @@
 package com.eservice.eumowy
 
 import groovy.transform.ToString
-
 import org.apache.commons.lang.builder.EqualsBuilder
 import org.apache.commons.lang.builder.HashCodeBuilder
 import org.apache.commons.logging.LogFactory
+import org.apache.log4j.MDC
 
 @ToString(includeNames = true,ignoreNulls = true)
 class Process implements Serializable {
@@ -100,6 +100,7 @@ class Process implements Serializable {
     }
 
     def afterUpdate() {
+        log.info("mdc:"+MDC.get("sessionUserName"));
         auditLogger.info("Aktualizacja procesu [id:${id}, version:${version}, status:${status}]")
     }
 
