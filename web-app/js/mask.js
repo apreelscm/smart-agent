@@ -20,6 +20,7 @@ function maskFields(element){
     element.find(".integer-number").mask('099999');
     element.find(".float-number").mask('099999X99', {translation:  {'X': {pattern: /[.]/, optional: true}}});
     element.find(".percent-number").mask('09X999', {translation:  {'X': {pattern: /[.]/}}})
+    element.find(".flat-price").mask('AAAAA');
 }
 
 jQuery(document).ready(function() {
@@ -34,5 +35,6 @@ jQuery(document).ready(function() {
     jQuery(".ph-number").mask('00000');
     jQuery(".integer-number").mask('099999');
     jQuery(".float-number").mask('099999X99', {translation:  {'X': {pattern: /[.]/, optional: true}}});
-    jQuery(".percent-number").mask('09X999', {translation:  {'X': {pattern: /[.]/}}})
+    jQuery(".percent-number").mask('09X999', {translation:  {'X': {pattern: /[.]/}}});
+    jQuery(".flat-price").mask('XXXXX', {translation: {'X': {pattern: /[a-zA-Z0-9.-]/}}});
 });
