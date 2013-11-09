@@ -525,6 +525,10 @@ class ProcessCommand implements Serializable {
 
 //    zestawPosOdplatneUzywanie
     String isOdplatneUzywanieShown = DEFAULT_VALUE
+
+    @Omit(inPopulate = true)
+    String odpUzyTermCalc = DEFAULT_VALUE
+
     String odplatneUzywanie = DEFAULT_VALUE
     String odplatneUzywanieLiczbaTerminali = DEFAULT_VALUE
     String odplatneUzywanieCenaTerminal = DEFAULT_VALUE

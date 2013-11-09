@@ -602,6 +602,8 @@ class PanelService {
         //powinno przyjsc cbd, gdy po stronie eService beda zaimplementowane zmiany
         cmd.odpUzyPpSzt = ""
         cmd.odpUzyTermMies = setAtLeastAs(cmd.odpUzyTermMies,calculatorService.getCalcProperty(calc,"CENA_NAJMU"))
+        cmd.odpUzyTermCalc = calculatorService.getCalcProperty(calc,"CENA_NAJMU")
+
         //nie mniej niz z kalkulatora powinno byc
         cmd.odpUzyPpMies = ""
 

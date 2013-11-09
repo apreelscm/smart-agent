@@ -53,7 +53,6 @@
 
         <div id='one_for_all_terminals_in_point' style="text-align: center; width: 950px" class="centre">
             <div>Wybrano: one_for_all_terminals_in_point</div>
-            <g:hiddenField name="hirePaymentsByPointSize" value="${data.hirePaymentsByPoint.size()}" />
             <table class="t">
                 <thead>
                 <tr>
@@ -92,7 +91,6 @@
         </div>
         <div id='other_for_selected_terminals' style="text-align: center; width: 950px" class="centre">
             <div>Wybrano: other_for_selected_terminals</div>
-            <g:hiddenField name="hirePaymentsByPosSize" value="${data.hirePaymentsByPos.size()}" />
             <table class="t">
                 <thead>
                     <tr>
@@ -140,6 +138,9 @@
 <r:script>
     jQuery(document).ready(function() {
 
+        var hirePaymentsByPointSize = ${data.hirePaymentsByPoint.size()};
+        var hirePaymentsByPosSize = ${data.hirePaymentsByPos.size()};
+
         selectUsageOption(jQuery('input[name="odplatneUzywanie"]:checked').val());
         jQuery('input[name="odplatneUzywanie"]').change(function(e){
             selectUsageOption(e.target.value);
@@ -161,22 +162,29 @@
         function cleanValues(selectedValue){
             if (selectedValue == 'one_for_all_terminals'){
                 jQuery('#odpUzyTermMies').val('${data.odpUzyTermMies}');
-                clean(jQuery('#hirePaymentsByPointSize').val(), "hirePaymentsByPoint");
-                clean(jQuery('#hirePaymentsByPosSize').val(), "hirePaymentsByPos");
+                clean(hirePaymentsByPointSize, "hirePaymentsByPoint");
+                clean(hirePaymentsByPosSize, "hirePaymentsByPos");
             } else if (selectedValue == 'one_for_all_terminals_in_point') {
+                setFields(hirePaymentsByPointSize, "hirePaymentsByPoint", "${data.odpUzyTermCalc}")
                 jQuery('#odpUzyTermMies').val("");
-                clean(jQuery('#hirePaymentsByPosSize').val(), "hirePaymentsByPos");
+                clean(hirePaymentsByPosSize, "hirePaymentsByPos");
             } else if (selectedValue == 'other_for_selected_terminals') {
+                setFields(hirePaymentsByPosSize, "hirePaymentsByPos", "${data.odpUzyTermCalc}")
                 jQuery('#odpUzyTermMies').val("");
-                clean(jQuery('#hirePaymentsByPointSize').val(), "hirePaymentsByPoint");
+                clean(hirePaymentsByPointSize, "hirePaymentsByPoint");
             }
         }
 
         function clean(size, name){
-            var count = parseInt(size);
-            for (var i=0; i < count; i++){
+            for (var i=0; i < size; i++){
                 jQuery('#'+name+'\\['+ i +'\\]\\.newTermPayment').val("");
                 jQuery('#'+name+'\\['+ i +'\\]\\.isChoosen').attr('checked', false);
+            }
+        }
+
+        function setFields(size, name, value){
+            for (var i=0; i < size; i++){
+                jQuery('#'+name+'\\['+ i +'\\]\\.newTermPayment').val(value);
             }
         }
 

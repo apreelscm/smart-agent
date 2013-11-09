@@ -157,8 +157,8 @@ class ProcessService {
       //  process.save(flush:true)
 		cmd.allPoints?.removeAll { it.cbdId == -1 }
 
-        cmd.hirePaymentsByPoint?.addAll(getHirePaymentByPointCommandList(cmd))
-        cmd.hirePaymentsByPos?.addAll(getHirePaymentByPosCommandList(cmd))
+        cmd.hirePaymentsByPoint?.addAll(getHirePaymentByPointCommandList(cmd, calc))
+        cmd.hirePaymentsByPos?.addAll(getHirePaymentByPosCommandList(cmd, calc))
 
         prepareProcessCommand(cmd, calc,)
 	}
@@ -179,8 +179,8 @@ class ProcessService {
         cmd.hirePaymentsByPos?.clear()
 
         if (newProcess){
-            cmd.hirePaymentsByPoint?.addAll(getHirePaymentByPointCommandList(cmd))
-            cmd.hirePaymentsByPos?.addAll(getHirePaymentByPosCommandList(cmd))
+            cmd.hirePaymentsByPoint?.addAll(getHirePaymentByPointCommandList(cmd, calc))
+            cmd.hirePaymentsByPos?.addAll(getHirePaymentByPosCommandList(cmd, calc))
         } else {
             cmd.hirePaymentsByPoint?.addAll(getHirePaymentCommandFromHirePayments(process.hirePayments.findAll{ it.tpsId == null}))
             cmd.hirePaymentsByPos?.addAll(getHirePaymentCommandFromHirePayments(process.hirePayments.findAll{ it.tpsId != null}))
@@ -529,7 +529,7 @@ class ProcessService {
         }
     }
 
-    private def getHirePaymentByPointCommandList(def cmd) {
+    private def getHirePaymentByPointCommandList(def cmd, def calc) {
         def hpcResult = []
 
         def result = cbdService.getHirePaymentByPoint(cmd.nip)
@@ -541,6 +541,10 @@ class ProcessService {
             hpc.setType(row.get("typ"))
             hpc.setTermCount(Integer.valueOf(row.get("ile").toString()))
             hpc.setCurrentTermPayment(Double.valueOf(row.get("oplata_za_pos").toString()))
+            def hirePayment = calculatorService.getCalcProperty(calc,"CENA_NAJMU")
+            if (hirePayment && hirePayment.toString()?.isNumber()){
+                hpc.setNewTermPayment(hirePayment.toString().toBigDecimal())
+            }
             hpc.setIsChoosen(false)
 
             //gdy dojdzie PP trzeba zapisac te dane tutaj
@@ -551,7 +555,7 @@ class ProcessService {
         return hpcResult
     }
 
-    private def getHirePaymentByPosCommandList(def cmd) {
+    private def getHirePaymentByPosCommandList(def cmd, def calc) {
         def hpcResult = []
 
         def result = cbdService.getHirePaymentByPos(cmd.nip)
@@ -565,6 +569,10 @@ class ProcessService {
             hpc.setType(row.get("rodzaj_terminala"))
             hpc.setTermCount(Integer.valueOf(row.get("terminal_count").toString()))
             hpc.setCurrentTermPayment(Double.valueOf(row.get("oplata_za_pos").toString()))
+            def hirePayment = calculatorService.getCalcProperty(calc,"CENA_NAJMU")
+            if (hirePayment && hirePayment.toString()?.isNumber()){
+                hpc.setNewTermPayment(hirePayment.toString().toBigDecimal())
+            }
             hpc.setIsChoosen(false)
 
             //gdy dojdzie PP trzeba zapisac te dane tutaj
@@ -710,6 +718,8 @@ class ProcessService {
             // dane dla tej opcji trzymamy w procesie
             println 'Zapisujemy dla one_for_all_terminals'
             clearHirePayments(process)
+            saveHirePaymets(cmd.hirePaymentsByPoint, process, false)
+            saveHirePaymets(cmd.hirePaymentsByPos, process, false)
         } else if ('one_for_all_terminals_in_point'.equals(cmd.odplatneUzywanie)){
             clearHirePayments(process)
             saveHirePaymets(cmd.hirePaymentsByPoint, process, true)
