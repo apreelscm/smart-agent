@@ -4,9 +4,11 @@ import com.eservice.eumowy.Process
 import com.eservice.eumowy.annotation.DateField
 import com.eservice.eumowy.annotation.Omit
 import grails.util.Environment
+import grails.util.Holders
 import grails.validation.Validateable
 import org.apache.commons.collections.FactoryUtils
 import org.apache.commons.collections.ListUtils
+import org.springframework.context.MessageSource
 
 import java.util.regex.Pattern
 
@@ -23,6 +25,8 @@ class ProcessCommand implements Serializable {
     transient def calculatorService
     @Omit
     transient def calc
+    @Omit()
+    transient def messageSource = Holders.applicationContext.messageSource
 
     @Omit
     static int MAX_PRICE_GROUP_SIZE = 3
@@ -48,23 +52,23 @@ class ProcessCommand implements Serializable {
         def currValue = value?.toString()?.isNumber() ? value.toString().toBigDecimal() : BigDecimal.ZERO
 
         if (currValue.compareTo(minValue) < 0) {
-            errors.rejectValue(property, "default.atLeast.asCalc",[property] as Object[], "")
+            errors.rejectValue(property, "default.atLeast.asCalc",[cmd.getMessageForProperty(property)] as Object[], "")
             return false
         }
         return true
     }
 
     @Omit
-    static def maxLengthClosure = { value, cmd, errors, maxValue, propertyName, message ->
+    static def maxLengthClosure = { value, cmd, errors, maxValue, propertyName ->
         if (value.length() > maxValue) {
-            errors.rejectValue(propertyName, message)
+            errors.rejectValue(propertyName, "default.nameTooLong", [cmd.getMessageForProperty(propertyName), maxValue] as Object[], "")
             return false
         }
         return true
     }
 
     @Omit
-    static def regexpValidationClosure = { value, errors, propertyName, patternStr, message ->
+    static def regexpValidationClosure = { cmd, value, errors, propertyName, patternStr, message ->
         log.trace("regexpValidationClosure - propertyName:"+propertyName+" value:"+value + " pattern:"+patternStr)
 
         if(!value){
@@ -73,7 +77,7 @@ class ProcessCommand implements Serializable {
 
         Pattern pattern = Pattern.compile(patternStr)
         if (!pattern.matcher(value).matches()){
-            errors.rejectValue(propertyName, message,[value, propertyName] as Object[], "")
+            errors.rejectValue(propertyName, message, [value, cmd.getMessageForProperty(propertyName)] as Object[], "")
             return false
         }
         return true
@@ -81,17 +85,17 @@ class ProcessCommand implements Serializable {
 
     @Omit
     static def numberValidationClosure = {value, cmd,  errors, propertyName ->
-        regexpValidationClosure.call(value, errors, propertyName, '~|\\-|^(?:[1-9]\\d*|0)?(?:\\.\\d{1,2})?$',"default.validation.number.error")
+        regexpValidationClosure.call(cmd, value, errors, propertyName, '~|\\-|^(?:[1-9]\\d*|0)?(?:\\.\\d{1,2})?$',"default.validation.number.error")
     }
 
     @Omit
     static def percentageValidationClosure = {value, cmd,  errors, propertyName ->
-        regexpValidationClosure.call(value, errors, propertyName, "~|\\-|^(?:100(?:.0(?:0)?)?|\\d{1,2}(?:.\\d{1,2})?)", "default.validation.number.error")
+        regexpValidationClosure.call(cmd, value, errors, propertyName, "~|\\-|^(?:100(?:.0(?:0)?)?|\\d{1,2}(?:.\\d{1,2})?)", "default.validation.number.error")
     }
 
     @Omit
     static def customValidationClosure = {value, cmd,  errors, propertyName, regex ->
-        regexpValidationClosure.call(value, errors, propertyName,regex, "default.validation.regex.error")
+        regexpValidationClosure.call(cmd, value, errors, propertyName,regex, "default.validation.regex.error")
     }
 
     @Omit
@@ -138,12 +142,12 @@ class ProcessCommand implements Serializable {
     }
 
     @Omit
-    static def skipAddressValidationClosure = { value, cmd, errors, propertyName, message ->
+    static def skipAddressValidationClosure = { value, cmd, errors, propertyName ->
         if(value.isEmpty() && cmd.checkIfClientFromCbd()){
             return true
         }
         if(value.isEmpty()){ //cannot use contraint blank: true because of cbd values
-            errors.rejectValue(propertyName, message)
+            errors.rejectValue(propertyName, "default.cantBeEmpty", [cmd.getMessageForProperty(propertyName)] as Object[], "")
             return false
         }
         return true
@@ -673,16 +677,16 @@ class ProcessCommand implements Serializable {
 
         akceptantKontaktUlicaTytul(nullable: true, blank: true)
         akceptantKontaktUlica(nullable: false, blank: false, shared: "alphanumeric", validator: { value, cmd, errors ->
-            maxLengthClosure.call(value, cmd, errors, 40, "akceptantKontaktUlica", "default.nameTooLong.street")
+            maxLengthClosure.call(value, cmd, errors, 40, "akceptantKontaktUlica")
         })
         akceptantKontaktNrDomu(nullable: false, blank: false, shared: "alphanumeric")
         akceptantKontaktNrMieszkania(nullable: true, blank: false, shared: "alphanumeric")
         akceptantKontaktMiasto(nullable: false, blank: false, shared: "alphanumeric", validator: { value, cmd, errors ->
-            maxLengthClosure.call(value, cmd, errors, 33, "akceptantKontaktMiasto", "default.nameTooLong.city")
+            maxLengthClosure.call(value, cmd, errors, 33, "akceptantKontaktMiasto")
         })
         akceptantKontaktKodPocztowy(nullable: false, blank: false, shared: "postalCodeValidator")
         akceptantKontaktPoczta(nullable: false, blank: false, shared: "alphanumeric", validator: { value, cmd, errors ->
-            maxLengthClosure.call(value, cmd, errors, 33, "akceptantKontaktPoczta", "default.nameTooLong.postalTown")
+            maxLengthClosure.call(value, cmd, errors, 33, "akceptantKontaktPoczta")
         })
         dataAneksowanejUmowyPos(nullable: false, blank: false, shared: "date")
         dataAneksowanejUmowyPrepaid(nullable: false, blank: false, shared: "date")
@@ -855,16 +859,16 @@ class ProcessCommand implements Serializable {
         wydrukNazwaDoWyszukwarki(nullable: true)
         wydrukUlicaTytul(nullable: true, blank: true)
         wydrukUlica(nullable: false, blank: false, shared: "alphanumeric", validator: { value, cmd, errors ->
-            maxLengthClosure.call(value, cmd, errors, 40, "wyrdukUlica", "default.nameTooLong.city")
+            maxLengthClosure.call(value, cmd, errors, 40, "wyrdukUlica")
         })
         wydrukNrDomu(nullable: false, blank: false, shared: "alphanumeric")
         wydrukNrMieszkania(nullable: true, blank: false, shared: "alphanumeric")
         wydrukMiasto(nullable: false, blank: false, shared: "alphanumeric", validator: { value, cmd, errors ->
-            maxLengthClosure.call(value, cmd, errors, 33, "wydrukMiasto", "default.nameTooLong.postalTown")
+            maxLengthClosure.call(value, cmd, errors, 33, "wydrukMiasto")
         })
         wydrukKodPocztowy(nullable: false, blank: false, shared: "postalCodeValidator")
         wydrukPoczta(nullable: false, blank: false, shared: "alphanumeric", validator: { value, cmd, errors ->
-            maxLengthClosure.call(value, cmd, errors, 33, "wydrukPoczta", "default.nameTooLong.postalTown")
+            maxLengthClosure.call(value, cmd, errors, 33, "wydrukPoczta")
         })
         wydrukLinia1(nullable: true, blank: true)
         wydrukLinia2(nullable: true, blank: true)
@@ -1341,24 +1345,24 @@ class ProcessCommand implements Serializable {
         scoringDeklaracjaFinansowaSredniaTransakcja(nullable: true, blank: true)
         akceptantUlicaTytul(nullable: true, blank: true)
         akceptantUlica(nullable: false, blank: false, shared: "alphanumeric", validator: { value, cmd, errors ->
-            skipAddressValidationClosure.call(value, cmd, errors, "akceptantUlica", "default.cantBeEmpty.akceptantPoczta")
-            maxLengthClosure.call(value, cmd, errors, 40, "akceptantUlica", "default.nameTooLong.street")
+            skipAddressValidationClosure.call(value, cmd, errors, "akceptantUlica")
+            maxLengthClosure.call(value, cmd, errors, 40, "akceptantUlica")
         })
         akceptantNrDomu(nullable:false, shared: "alphanumeric", validator: {value, cmd, errors ->
-            skipAddressValidationClosure.call(value, cmd, errors, "akceptantNrDomu", "default.cantBeEmpty.akceptantNrDomu")
+            skipAddressValidationClosure.call(value, cmd, errors, "akceptantNrDomu")
         })
         akceptantNrMieszkania(nullable: true, blank: false, shared: "alphanumeric")
         akceptantMiasto(nullable: false, shared: "alphanumeric", validator: { value, cmd, errors ->
-            skipAddressValidationClosure.call(value, cmd, errors, "akceptantMiasto", "default.cantBeEmpty.akceptantNrDomu")
-            maxLengthClosure.call(value, cmd, errors, 33, "akceptantMiasto", "default.nameTooLong.city")
+            skipAddressValidationClosure.call(value, cmd, errors, "akceptantMiasto")
+            maxLengthClosure.call(value, cmd, errors, 33, "akceptantMiasto")
         })
         akceptantKodPocztowy(nullable:false, shared: "postalCodeValidator", validator: {value, cmd, errors ->
-            skipAddressValidationClosure.call(value, cmd, errors, "akceptantKodPocztowy", "default.cantBeEmpty.akceptantKodPocztowy")
+            skipAddressValidationClosure.call(value, cmd, errors, "akceptantKodPocztowy")
         })
         akceptantPoczta(nullable: false, shared: "alphanumeric", validator: { value, cmd, errors ->
-            skipAddressValidationClosure.call(value, cmd, errors, "akceptantPoczta", "default.cantBeEmpty.akceptantPoczta")
+            skipAddressValidationClosure.call(value, cmd, errors, "akceptantPoczta")
 
-            maxLengthClosure.call(value, cmd, errors, 33, "akceptantPoczta", "default.nameTooLong.postalTown")
+            maxLengthClosure.call(value, cmd, errors, 33, "akceptantPoczta")
         })
 
         hasAkceptantTel(validator: { value, process, errors ->
@@ -1517,6 +1521,10 @@ class ProcessCommand implements Serializable {
             ppPrice = BigDecimal.ZERO
         }
         return normalPrice + ppPrice
+    }
+
+    private String getMessageForProperty(String property){
+        return messageSource.getMessage("com.eservice.eumowy.command.ProcessCommand." + property + ".label", [] as Object[], property, Locale.getDefault())
     }
 
 }
