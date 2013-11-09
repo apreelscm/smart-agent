@@ -894,11 +894,11 @@ class ProcessService {
 			terminalCount += posDataDetails?.vpnIlosc != null ? posDataDetails?.vpnIlosc : 0
 			terminalCount += posDataDetails?.sslIlosc != null ? posDataDetails?.sslIlosc : 0
 			terminalCount += posDataDetails?.wifiIlosc != null ? posDataDetails?.wifiIlosc : 0
-			
-			// Create cloned poses only when they are not already cloned
+
+            // Create cloned poses only when they are not already cloned
 			if (terminalCount > 1 && terminalCount > pointData.liczbaPos) {
 				for (int i = 0; i < terminalCount; i++) {
-					PosData posDataNew
+                    PosData posDataNew
 					PosDataDetails posDataDetailsNew
 					Serializable posDataSer = posData
 					posDataNew = SerializationUtils.clone(posDataSer) // as PosData
@@ -956,6 +956,7 @@ class ProcessService {
 			pdList.each { PosData pd ->
 				if (pd != posData) {
 					pd.parentPosId = posData.id
+                    pd.save(flush: true)
 				}
 			}
 			
@@ -1207,6 +1208,7 @@ class ProcessService {
 			pdList.each { PosData pd ->
 				if (pd != posData) {
 					pd.parentPosId = posData.id
+                    pd.save(flush: true)
 				}
 			}
 
