@@ -56,7 +56,7 @@ class PdfProcessMapper extends AbstractPdfMapper{
             points.findAll { point ->
                 if(point.posDatas){
                     if(point.cbdId == null) {
-                        posesNotFromCBD.addAll(point.posDatas.findAll{ pos -> pos.tpsId == null && pos.parentPosId == null})
+                        posesNotFromCBD.addAll(point.posDatas.findAll{ pos.parentPosId == null})
                     } else {
                         posesNotFromCBD.addAll(point.posDatas.findAll{ pos -> pos.tpsId == null && pos.parentPosId == null})
                     }
