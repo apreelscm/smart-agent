@@ -2,11 +2,7 @@ package com.eservice.eumowy
 
 import com.eservice.eumowy.annotation.DateField
 import com.eservice.eumowy.annotation.Omit
-import com.eservice.eumowy.command.AllPointsCommand
-import com.eservice.eumowy.command.AllPosCommand
-import com.eservice.eumowy.command.HirePaymentCommand
-import com.eservice.eumowy.command.PointCommand
-import com.eservice.eumowy.command.ProcessCommand
+import com.eservice.eumowy.command.*
 import com.eservice.eumowy.util.DateUtils
 import com.eservice.eumowy.util.EumowyCustomEnvironment
 import grails.util.Environment
@@ -686,7 +682,7 @@ class ProcessService {
             def foundData = process.processData.find { it.name == data.name }
             if(!foundData){
                 process.addToProcessData(data)
-                log.debug("process data: ${data.processId?.class} ${data.version?.class} ${data.name?.class} ${data.id?.class}")
+                //log.debug("process data: ${data.processId?.class} ${data.version?.class} ${data.name?.class} ${data.id?.class}")
             }else if(data.value != foundData.value){
                 foundData.value = data.value
             }

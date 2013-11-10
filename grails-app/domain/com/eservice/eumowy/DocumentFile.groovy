@@ -9,6 +9,7 @@ package com.eservice.eumowy
 class DocumentFile implements Serializable {
 
     String name
+    String clientName
     Date dateCreated
     Date lastUpdated
 	Integer pagesCount
@@ -45,6 +46,7 @@ class DocumentFile implements Serializable {
 
     static constraints = {
         name(unique:false,blank:false)
+        clientName(nullable:true)
         dateCreated(nullable:true)
         lastUpdated(nullable:true)
         pagesCount()
