@@ -172,6 +172,15 @@ class ProcessCommand implements Serializable {
     }
 
     @Omit
+    static def checkScoringField = { value, cmd, errors, propertyName, scoringPropertyName, scoringValue ->
+        if (value && scoringValue == DEFAULT_VALUE) {
+            errors.rejectValue(propertyName, "panel.scoring.field.required", [cmd.getMessageForProperty(scoringPropertyName)] as Object[], "")
+            return false
+        }
+        return true
+    }
+
+    @Omit
     static def hirePaymentsValidationClosure =  { value, cmd, errors ->
         def hasError = false
 
@@ -703,132 +712,72 @@ class ProcessCommand implements Serializable {
             return true
         })
 
-        //TODO REFACTORING
+        //TODO REFACTORING - wrzucic to do jednego 'hasScoring' i walidowac wszystkie pola scoringowe od razu
         hasScoringDzialalnosc(nullable: true, validator: { value, cmd, errors ->
-            if (value && cmd.scoringDzialalnosc == DEFAULT_VALUE) {
-                errors.rejectValue("hasScoringDzialalnosc", "panel.scoring.field.required", ["scoringDzialalnosc"] as Object[], "")
-                return false
-            }
-            return true
+            checkScoringField.call(value, cmd, errors, "hasScoringDzialalnosc", "scoringDzialalnosc", cmd.scoringDzialalnosc)
         })
 
         hasScoringWlasnosc(nullable: true, validator: { value, cmd, errors ->
-            if (value && cmd.scoringWlasnosc == DEFAULT_VALUE) {
-                errors.rejectValue("hasScoringWlasnosc", "panel.scoring.field.required", ["scoringWlasnosc"] as Object[], "")
-                return false
-            }
-            return true
+            checkScoringField.call(value, cmd, errors, "hasScoringWlasnosc", "scoringWlasnosc", cmd.scoringWlasnosc)
         })
 
         hasScoringDzialalnoscCzas(nullable: true, validator: { value, cmd, errors ->
-            if (value && cmd.scoringDzialalnoscCzas == DEFAULT_VALUE) {
-                errors.rejectValue("hasScoringDzialalnoscCzas", "panel.scoring.field.required", ["scoringDzialalnoscCzas"] as Object[], "")
-                return false
-            }
-            return true
+            checkScoringField.call(value, cmd, errors, "hasScoringDzialalnoscCzas", "scoringDzialalnoscCzas", cmd.scoringDzialalnoscCzas)
         })
 
         hasScoringKoncesja(nullable: true, validator: { value, cmd, errors ->
-            if (value && cmd.scoringKoncesja == DEFAULT_VALUE) {
-                errors.rejectValue("hasScoringKoncesja", "panel.scoring.field.required", ["scoringKoncesja"] as Object[], "")
-                return false
-            }
-            return true
+            checkScoringField.call(value, cmd, errors, "hasScoringKoncesja", "scoringKoncesja", cmd.scoringKoncesja)
         })
 
         hasScoringCharakterystyka(nullable: true, validator: { value, cmd, errors ->
-            if (value && cmd.scoringCharakterystyka == DEFAULT_VALUE) {
-                errors.rejectValue("hasScoringCharakterystyka", "panel.scoring.field.required", ["scoringCharakterystyka"] as Object[], "")
-                return false
-            }
-            return true
+            checkScoringField.call(value, cmd, errors, "hasScoringCharakterystyka", "scoringCharakterystyka", cmd.scoringCharakterystyka)
         })
 
         hasScoringWielkoscPunktu(nullable: true, validator: { value, cmd, errors ->
-            if (value && cmd.scoringWielkoscPunktu == DEFAULT_VALUE) {
-                errors.rejectValue("hasScoringWielkoscPunktu", "panel.scoring.field.required", ["scoringWielkoscPunktu"] as Object[], "")
-                return false
-            }
-            return true
+            checkScoringField.call(value, cmd, errors, "hasScoringWielkoscPunktu", "scoringWielkoscPunktu", cmd.scoringWielkoscPunktu)
         })
 
         hasScoringAkceptacja(nullable: true, validator: { value, cmd, errors ->
-            if (value && cmd.scoringAkceptacja == DEFAULT_VALUE) {
-                errors.rejectValue("hasScoringAkceptacja", "panel.scoring.field.required", ["scoringAkceptacja"] as Object[], "")
-                return false
-            }
-            return true
+            checkScoringField.call(value, cmd, errors, "hasScoringAkceptacja", "scoringAkceptacja", cmd.scoringAkceptacja)
         })
 
         hasScoringMonitoring(nullable: true, validator: { value, cmd, errors ->
-            if (value && cmd.scoringMonitoring == DEFAULT_VALUE) {
-                errors.rejectValue("hasScoringMonitoring", "panel.scoring.field.required", ["scoringMonitoring"] as Object[], "")
-                return false
-            }
-            return true
+            checkScoringField.call(value, cmd, errors, "hasScoringMonitoring", "scoringMonitoring", cmd.scoringMonitoring)
         })
 
         hasScoringLokalizacjaPunktu(nullable: true, validator: { value, cmd, errors ->
-            if (value && cmd.scoringLokalizacjaPunktu == DEFAULT_VALUE) {
-                errors.rejectValue("hasScoringLokalizacjaPunktu", "panel.scoring.field.required", ["scoringLokalizacjaPunktu"] as Object[], "")
-                return false
-            }
-            return true
+            checkScoringField.call(value, cmd, errors, "hasScoringLokalizacjaPunktu", "scoringLokalizacjaPunktu", cmd.scoringLokalizacjaPunktu)
         })
 
         hasScoringTypPunktu(nullable: true, validator: { value, cmd, errors ->
-            if (value && cmd.scoringTypPunktu == DEFAULT_VALUE) {
-                errors.rejectValue("hasScoringTypPunktu", "panel.scoring.field.required", ["scoringTypPunktu"] as Object[], "")
-                return false
-            }
-            return true
+            checkScoringField.call(value, cmd, errors, "hasScoringTypPunktu", "scoringTypPunktu", cmd.scoringTypPunktu)
         })
 
         hasScoringWielkoscMiejscowosci(nullable: true, validator: { value, cmd, errors ->
-            if (value && cmd.scoringWielkoscMiejscowosci == DEFAULT_VALUE) {
-                errors.rejectValue("hasScoringWielkoscMiejscowosci", "panel.scoring.field.required", ["scoringWielkoscMiejscowosci"] as Object[], "")
-                return false
-            }
-            return true
+            checkScoringField.call(value, cmd, errors, "hasScoringWielkoscMiejscowosci", "scoringWielkoscMiejscowosci", cmd.scoringWielkoscMiejscowosci)
         })
 
         hasScoringOtwartyZamkniety(nullable: true, validator: { value, cmd, errors ->
-            if (value && cmd.scoringOtwartyZamkniety == DEFAULT_VALUE) {
-                errors.rejectValue("hasScoringOtwartyZamkniety", "panel.scoring.field.required", ["scoringOtwartyZamkniety"] as Object[], "")
-                return false
-            }
-            return true
+            checkScoringField.call(value, cmd, errors, "hasScoringOtwartyZamkniety", "scoringOtwartyZamkniety", cmd.scoringOtwartyZamkniety)
         })
 
         hasScoringCzestoscTransakcji(nullable: true, validator: { value, cmd, errors ->
-            if (value && cmd.scoringCzestoscTransakcji == DEFAULT_VALUE) {
-                errors.rejectValue("hasScoringCzestoscTransakcji", "panel.scoring.field.required", ["scoringCzestoscTransakcji"] as Object[], "")
-                return false
-            }
-            return true
+            checkScoringField.call(value, cmd, errors, "hasScoringCzestoscTransakcji", "scoringCzestoscTransakcji", cmd.scoringCzestoscTransakcji)
         })
 
         hasScoringIloscTransakcji(nullable: true, validator: { value, cmd, errors ->
-            if (value && cmd.scoringIloscTransakcji == DEFAULT_VALUE) {
-                errors.rejectValue("hasScoringIloscTransakcji", "panel.scoring.field.required", ["scoringIloscTransakcji"] as Object[], "")
-                return false
-            }
-            return true
+            checkScoringField.call(value, cmd, errors, "hasScoringIloscTransakcji", "scoringIloscTransakcji", cmd.scoringIloscTransakcji)
         })
 
         hasScoringDeklaracjaFinansowa(nullable: true, validator: { value, cmd, errors ->
-            if (value && cmd.scoringDeklaracjaFinansowa == DEFAULT_VALUE) {
-                errors.rejectValue("hasScoringDeklaracjaFinansowa", "panel.scoring.field.required", ["scoringDeklaracjaFinansowa"] as Object[], "")
-                return false
-            }
-            return true
+            checkScoringField.call(value, cmd, errors, "hasScoringDeklaracjaFinansowa", "scoringDeklaracjaFinansowa", cmd.scoringDeklaracjaFinansowa)
         })
 
         hasAtLeastOneIstotneDane(nullable: true, validator: { value, cmd, errors ->
             if(value && !(cmd.scoringSprzedazTowarowEkskluzywnych || cmd.scoringPonad50ProcentObrotowWNocy
                     || cmd.scoringRuchTurystycznyPrzygraniczny || cmd.scoringUslugiPlatneZGory)){
-                    errors.rejectValue("hasAtLeastOneIstotneDane", "default.atLeastOne.required", ["Inne istotne dane"] as Object[], "")
-                    return false
+                errors.rejectValue("hasAtLeastOneIstotneDane", "default.atLeastOne.required", [cmd.getMessageForProperty("scoringSignificantInfo")] as Object[], "")
+                return false
             }
             return true
         })

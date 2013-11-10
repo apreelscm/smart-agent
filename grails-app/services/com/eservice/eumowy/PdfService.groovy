@@ -209,7 +209,7 @@ class PdfService {
 
         singleDocuments.each { sig ->
             log.info "SINGLE DOCUMENT --> SIGNATURE NAME: " + sig.name + " PDF TEMPLATE PATH: " + sig.templatePath
-            totalPagesCount += workWithOneDocument(processInstance, sig, dataFromProcess, sig.filename)
+            totalPagesCount += workWithOneDocument(processInstance, sig, dataFromProcess, sig.templatePath, sig.filename)
         }
 
         processInstance.points.each{ point ->
@@ -223,13 +223,18 @@ class PdfService {
                 data.putAll(dataFromPoint);
 
                 multiDocuments.each { sig ->
-                    def path = sig.filename
+                    def path = sig.templatePath
                     def begin = path.substring(0, path.lastIndexOf('.'));
                     def end = path.substring(path.lastIndexOf('.'));
                     def documentName = begin +  "_" + point.id + end
 
-                    log.info "MULTI DOCUMENT --> SIGNATURE NAME: " + sig.name + " PDF TEMPLATE PATH: " + sig.templatePath + " WITH NEW NAME: " + documentName
-                    totalPagesCount += workWithOneDocument(processInstance, sig, data, documentName)
+                    def pathClient = sig.filename
+                    def beginClient = pathClient.substring(0, pathClient.lastIndexOf('.'));
+                    def endClient = pathClient.substring(pathClient.lastIndexOf('.'));
+                    def documentClientName = beginClient +  "_" + point.id + endClient
+
+                    log.info "MULTI DOCUMENT --> SIGNATURE NAME: " + sig.name + " PDF TEMPLATE PATH: " + sig.templatePath + " WITH NEW NAME: " + documentName +" CLIENT NAME:"+documentClientName
+                    totalPagesCount += workWithOneDocument(processInstance, sig, data, documentName, documentClientName)
                 }
             }
         }
@@ -244,7 +249,7 @@ class PdfService {
         PdfGenerator.cleanValuesContent(dc, fieldsToClean)
     }
 
-    private def workWithOneDocument(def processInstance, def sig, def data, def documentName){
+    private def workWithOneDocument(def processInstance, def sig, def data, def documentName, def documentClientName){
         byte[] documentData = this.fillPdfFormFromURIWithFaksymile(sig.id, data, PdfService.FontType.ARIAL)
         if(!documentData) return 0
 
@@ -252,7 +257,7 @@ class PdfService {
 
         if (processService.findDocumentByName(processInstance.documents, documentName) == null) {
             log.info "Creating new document [${sig.templatePath}]"
-            DocumentFile df = new DocumentFile(name: documentName, dateCreated: new Date(), lastUpdated: new Date(), pagesCount: pc, signature: sig)
+            DocumentFile df = new DocumentFile(name: documentName, clientName:documentClientName, dateCreated: new Date(), lastUpdated: new Date(), pagesCount: pc, signature: sig)
             df.setContent(new DocumentContent(content: documentData))
             df.save(flush: true)
             log.info "DF id: " + df.id + " PageCount: " + df.pagesCount

@@ -1,6 +1,6 @@
 jQuery(function($){
     jQuery.datepicker.regional['pl'] = {
-        closeText: 'Zakoncz',
+        closeText: 'Zakończ',
         prevText: 'Poprz.',
         nextText: 'Nast.',
         currentText: 'Dziś',

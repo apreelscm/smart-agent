@@ -76,9 +76,6 @@ function manageTKAndTPCheckedProperty(){
         telepompkiInPointPanels = jQuery('div.newPointPanel').find("[data-doladowanie='telepompka']"),
         telepompkiInPosPanels = jQuery('div.newPosPanel').find("[data-doladowanie='telepompka']");
 
-    console.log(isMainTKChecked);
-    console.log(isMainTPChecked);
-
     if(isMainTKChecked === undefined || isMainTPChecked === undefined){  //checkboxy nie istnieja
         return;
     }
