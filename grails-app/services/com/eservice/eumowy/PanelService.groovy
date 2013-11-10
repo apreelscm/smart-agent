@@ -23,7 +23,8 @@ class PanelService {
         cmd.doladowania_tk = nullify(cmd.doladowania_tk)
         cmd.isRozszerzenie = cmd.process?.activities?.any{it.code.equals('dodatkowyPunkt')} || cmd.process?.activities?.any{it.code.equals('dodatkowyPos')}
         cmd.hasPrepaid = cbdService.getPrepaidEvoucher(cmd.nip) || cbdService.getPrepaidTopup(cmd.nip)
-        cmd.hasNewUmowaAndPrepaid = cmd.process?.activities?.any{it.code.equals('nowaUmowa')} && cmd.process?.activities?.any{it.code.equals('dodaniePrepaid')}
+        cmd.hasDodaniePrepaid = cmd.process?.activities?.any{it.code.equals('dodaniePrepaid')}
+        cmd.hasNewUmowaAndPrepaid = cmd.process?.activities?.any{it.code.equals('nowaUmowa')} && cmd.hasDodaniePrepaid
 
         cmd.liczbaTerminali = calculatorService.getCalcProperty(calc,"LICZBA_POS_MAX") != null ? calculatorService.getCalcProperty(calc,"LICZBA_POS_MAX") : 0
     }
@@ -147,6 +148,8 @@ class PanelService {
         pointData.gprsCenaPreferencyjna = toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_SSL_TERM_CENA"))
         pointData.gprsPPCenaPreferencyjna = toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_GPRS_PP_CENA"))
 
+        pointData.hasDodaniePrepaid = cmd.hasDodaniePrepaid
+
 		cmd.defaultPosData = pointData
         cmd.czyGift = cbdService.czyGift(cmd.nip)
 		
@@ -186,9 +189,12 @@ class PanelService {
         pointData.gprsCenaPreferencyjna = toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_SSL_TERM_CENA"))
         pointData.gprsPPCenaPreferencyjna = toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_GPRS_PP_CENA"))
 
+        pointData.hasDodaniePrepaid = cmd.hasDodaniePrepaid
+
         cmd.defaultPointData = pointData
         cmd.czyGift = cbdService.czyGift(cmd.nip)
-		
+
+
     }
 
     def getDodatkoweUslugi(ProcessCommand cmd, def calc ) {

@@ -198,6 +198,7 @@
         $j("input.doladowanie").live("click", function(){refreshTelepomkaAndTelekodzikPercentValues()});
 
         refreshTelepomkaAndTelekodzikPercentValues()
+        $j.datepicker.setDefaults( jQuery.datepicker.regional[ "pl" ] );
     </g:javascript>
     <r:require module="validation"/>
     <r:require module="newpoint_panel_setup"/>
@@ -247,6 +248,7 @@
         <g:hiddenField id="hasPrepaid" name="hasPrepaid" value="${data.hasPrepaid}"/>
         <g:hiddenField id="hasNewUmowaAndPrepaid" name="hasNewUmowaAndPrepaid" value="${data.hasNewUmowaAndPrepaid}"/>
         <g:hiddenField name="isRozszerzenie" value="${data.isRozszerzenie}"/>
+        <g:hiddenField id="hasDodaniePrepaid" name="hasDodaniePrepaid" value="${data.hasDodaniePrepaid}"/>
 
         <g:each var="panel" in="${processInstance.panels.sort{p -> p?.orderNo}}" status="i">
 

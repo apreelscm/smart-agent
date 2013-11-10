@@ -342,7 +342,7 @@
                                          name="${panelType}[${id}].gprsTyp" from="[]"
                                          valueMessagePrefix="" value="${pointData?.gprsTyp}"
                                          style="width: 220px"
-                                         onchange="setFieldPropertiesInDodatkoweWyposazenie(this, this.value)"
+                                         onchange="setFieldPropertiesInDodatkoweWyposazenie(this, this.value, false)"
 
                 /></td>
                 <td style="text-align: right;"><g:message code="panel.gprs" /></td>
@@ -455,39 +455,3 @@
 
 </fieldset>
 </div>
-
-<r:require module="jquery_ui" />
-<r:require module="jquery_timepicker_pl" />
-<r:require module="jquery_datepicker_pl" />
-
-<r:script>
-    function setFieldPropertiesInDodatkoweWyposazenie(element, value){
-        var punkt = jQuery(element).closest("div.newPointPanel");
-        if(value == "Verifone Vx670 GPRS"){
-            punkt.find("tr.baseRow").show();
-            setRequiredForSimCard(true, punkt)
-        } else {
-            var id = jQuery(element).attr('id');
-            var bazaXPath = id.substring(0,id.indexOf('.')) + ".bazaIlosc";
-            jQuery("[name='"+bazaXPath+"']").val("");
-            punkt.find("tr.baseRow").hide();
-            if (value !== ""){
-                setRequiredForSimCard(true, punkt)
-            }
-            else {
-                setRequiredForSimCard(false, punkt)
-            }
-        }
-    }
-
-    function setRequiredForSimCard(isRequired, punkt){
-        if(isRequired){
-            punkt.find("select.kartaSimTyp").attr("required", true);
-            punkt.find("input.kartaSimIlosc").attr("required", true);
-        } else {
-            punkt.find("select.kartaSimTyp").removeAttr("required", true).removeClass("error");
-            punkt.find("input.kartaSimIlosc").removeAttr("required", true).removeClass("error");
-        }
-
-    }
-</r:script>

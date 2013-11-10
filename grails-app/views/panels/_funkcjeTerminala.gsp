@@ -1,6 +1,8 @@
 <fieldset class="subpanel-fieldset">
+    <g:hiddenField id="${panelType}[${id}].hasDodaniePrepaid" name="${panelType}[${id}].hasDodaniePrepaid" value="${data.hasDodaniePrepaid}"/>
+
     <legend><g:message code="panel.newpoint.terminaloptions.title" /></legend>
-    <div class="subpanel-fieldset-centercontent" >
+    <div class="subpanel-fieldset-centercontent">
         <p><label for="${panelType}[${id}].terminaloptionsSameForEveryPoint"><g:checkBox name="${panelType}[${id}].funkcjeTerminalaTakSamoDlaWszystkichPunktow" id="${panelType}[${id}].terminaloptionsSameForEveryPoint" value="${pointData?.funkcjeTerminalaTakSamoDlaWszystkichPunktow}"/><g:message code="panel.sameforeverypoint" /></label></p>
 
         <div style="float: left; padding-right: 2em;" >
@@ -32,7 +34,7 @@
                 <p class="bold" ><g:message code="panel.newpoint.terminaloptions.phonecreditsrecharge" /></p>
                 <ul class="table-list vertical-center">
                     <li>
-                        <span>
+                        <span class="${hasErrors(bean:pointData, field:'hasDodaniePrepaid','errorSpan')}">
 
                             <g:set var="hasNewUmowaAndPrepaid" value="${data.hasNewUmowaAndPrepaid}"/>
                             <g:set var="isRozszerzenie" value="${data.isRozszerzenie}"/>

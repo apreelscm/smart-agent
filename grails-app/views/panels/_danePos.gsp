@@ -23,38 +23,3 @@
        	</div>
    	</fieldset>
 </div>
-
-<r:require module="jquery_ui" />
-<r:require module="jquery_timepicker_pl" />
-<r:require module="jquery_datepicker_pl" />
-
-<r:script>
-    function setFieldPropertiesInDodatkoweWyposazenie(element, value){
-        var posPanel = jQuery(element).closest("div.newPosPanel");
-        if(value == "Verifone Vx670 GPRS"){
-            posPanel.find("tr.baseRow").show();
-            setRequiredForSimCard(true, posPanel)
-        } else {
-            var id = jQuery(element).attr('id');
-            var bazaXPath = id.substring(0,id.indexOf('.')) + ".bazaIlosc";
-            jQuery("[name='"+bazaXPath+"']").val("");
-            posPanel.find("tr.baseRow").hide();
-            if (value !== ""){
-                setRequiredForSimCard(true, posPanel)
-            }
-            else {
-                setRequiredForSimCard(false, posPanel)
-            }
-        }
-    }
-
-    function setRequiredForSimCard(isRequired, posPanel){
-        if(isRequired){
-            posPanel.find("select.kartaSimTyp").attr("required", true);
-            posPanel.find("input.kartaSimIlosc").attr("required", true);
-        } else {
-            posPanel.find("select.kartaSimTyp").removeAttr("required", true);
-            posPanel.find("input.kartaSimIlosc").removeAttr("required", true);
-        }
-    }
-</r:script>

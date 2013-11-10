@@ -103,7 +103,7 @@ function setupNewPointPanelHandlers(panelId, prefix) {
         }
     });
 
-    addDateHandlers(prefixPanel, prefix, panelId);
+    addDateHandlers(prefixPanel);
 
     jQuery(prefixPanel + ".dataforprintingAsAbove").on("click", function(e) {
         if(e.target.checked) {
@@ -229,8 +229,6 @@ function unlockStaticAddress(lock, prefixPanel){
 }
 
 function unlockDynamicAddress(lock, prefixPanel){
-    console.log('DynamicAddress lock: ' + lock)
-
     if (lock){
         jQuery(prefixPanel + ".tytulInformatykDynamiczna").prop("disabled", false);
         jQuery(prefixPanel + ".dynamicDeviceSupportContact").prop("disabled", false);
@@ -581,6 +579,7 @@ function clearNewPointData(prefix, prevPanelId, panelId) {
 }
 
 function setupNewPosPanelHandlers(panelId, prefix) {
+    var start = new Date().getTime();
     var prefixPanel = "#"+prefix+"\\["+panelId+"\\]\\";
 
     jQuery(prefixPanel + ".wifiCount").on( "blur", function(e){
@@ -600,25 +599,28 @@ function setupNewPosPanelHandlers(panelId, prefix) {
     unlockStaticAddress(testNumber(jQuery(prefixPanel + ".wifiCount").val()) || testNumber(jQuery(prefixPanel + ".vpnCount").val()) || testNumber(jQuery(prefixPanel + ".sslCount").val()), prefixPanel);
     unlockDynamicAddress(testNumber(jQuery(prefixPanel + ".wifiCount").val()), prefixPanel);
 
-    addDateHandlers(prefixPanel, prefix, panelId);
+    addDateHandlers(prefixPanel);
 
     sameForEveryPoint(prefixPanel + ".sameForEveryPoint", prefix, panelId);
     sameForEveryPoint(prefixPanel + ".possetforselectedpointSameForEveryPoint", prefix, panelId);
     sameForEveryPoint(prefixPanel + ".technicalinformationSameForEveryPoint", prefix, panelId);
     sameForEveryPoint(prefixPanel + ".terminaloptionsSameForEveryPoint", prefix, panelId);
     sameForEveryPoint(prefixPanel + ".additionalequipmentSameForEveryPoint", prefix, panelId);
+
+    console.log("Time setup: " + (new Date().getTime()-start)/1000);
 }
 
-function addDateHandlers(prefixPanel, prefix, panelId){
+function addDateHandlers(prefixPanel){
+    var start = new Date().getTime();
     var dayCloseFrom = jQuery(prefixPanel + ".dayCloseFrom"),
         dayCloseTo = jQuery(prefixPanel + ".dayCloseTo");
 
-    jQuery.datepicker.setDefaults( jQuery.datepicker.regional[ "pl" ] );
     jQuery(prefixPanel + ".plannedInstallationDate").datepicker({ dateFormat: 'yy-mm-dd', minDate: 0 });
+
     dayCloseFrom.timepicker({
         controlType: 'select',
         timeFormat: 'HH:mm',
-        onClose: function(dateText, inst){
+        onClose: function(){
             onCloseDayCloseFrom(dayCloseFrom, dayCloseTo);
         }
     });
@@ -626,12 +628,13 @@ function addDateHandlers(prefixPanel, prefix, panelId){
     dayCloseTo.timepicker({
         controlType: 'select',
         timeFormat: 'HH:mm',
-        onClose: function(dateText, inst){
+        onClose: function(){
             onCloseDayCloseTo(dayCloseTo)
         }
     });
 
     dayCloseTo.val('23:59'); //default value
+    console.log('Time: ' + (new Date().getTime() - start)/1000)
 }
 
 function onCloseDayCloseTo(dayCloseTo) {
@@ -643,8 +646,9 @@ function onCloseDayCloseTo(dayCloseTo) {
 }
 
 function onCloseDayCloseFrom(dayCloseFrom, dayCloseTo) {
-    var dayCloseToValue = dayCloseTo.val();
-    if (dayCloseTo.val() != '') {
+    var dayCloseToValue = dayCloseTo.val(),
+        dayCloseFromValue = dayCloseFrom.val();
+    if (dayCloseToValue != '') {
         var dayCloseFromDate = dayCloseFrom.datetimepicker('getDate'),
             testEndDate = dayCloseTo.datetimepicker('getDate');
 
@@ -654,9 +658,9 @@ function onCloseDayCloseFrom(dayCloseFrom, dayCloseTo) {
         }
     }
     //hack
-    if(dayCloseFrom.val() !== ""){
-        var minimumDate = getDateFromTime(dayCloseFrom.val());
-        dayCloseTo.datetimepicker('option', 'minDateTime', minimumDate);
+    if(dayCloseFromValue !== ""){
+        var minimumDate = getDateFromTime(dayCloseFromValue);
+        dayCloseTo.timepicker('option', 'minDateTime', minimumDate);
         dayCloseTo.val(dayCloseToValue);
     }
 }
@@ -673,7 +677,6 @@ function getDateFromTime(time){
 function sameForEveryPoint(selector, prefix, panelId){
     jQuery(selector).on("click", function(e) {
     	var index = selector.substring(selector.indexOf('.')+1, selector.length);
-    	console.log("INDEX: " + index);
     	var panelJsId = parseInt(jQuery(e.target).parents(".newPointPanel").attr('data-js-id'));
     	if (e.target.checked) {
     		sameForEveryPointSourcePanelId[index] = panelJsId;

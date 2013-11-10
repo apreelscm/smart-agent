@@ -150,7 +150,7 @@
                                      name="${panelType}[${id}].gprsTyp" from="[]"
                                      valueMessagePrefix="" value="${pointData?.gprsTyp}"
                                      style="width: 220px" class="gprsType"
-                                     onchange="setFieldPropertiesInDodatkoweWyposazenie(this, this.value)"
+                                     onchange="setFieldPropertiesInDodatkoweWyposazenie(this, this.value, true)"
 
             /></td>
             <td style="text-align: right;"><g:message code="panel.gprs" /></td>
