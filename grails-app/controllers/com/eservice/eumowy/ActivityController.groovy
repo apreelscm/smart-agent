@@ -1303,14 +1303,14 @@ class ActivityController {
             process.signatures.each { sig ->
                 // Generate documents with black faksymile for PH
                 byte[] documentDataWithBlackFaksymile = pdfService.fillPdfFormFromURIWithBlackFaksymile(sig.id, null, PdfService.FontType.ARIAL)
-                DocumentFile dfwbf = new DocumentFile(name: sig.filename, dateCreated: new Date(), lastUpdated: new Date(), pagesCount: 0)
+                DocumentFile dfwbf = new DocumentFile(name: sig.templatePath, clientName: sig.filename , dateCreated: new Date(), lastUpdated: new Date(), pagesCount: 0)
                 dfwbf.setContent(new DocumentContent(content: documentDataWithBlackFaksymile))
                 dfwbf.discard()
                 documentFilesWithBlackFaksymileList.add(dfwbf)
 
                 // Generate documents without faksymile for acceptant
                 byte[] documentDataWithoutFaksymile = pdfService.fillPdfFormFromURIWithoutFaksymile(sig, null, PdfService.FontType.ARIAL)
-                DocumentFile dfwof = new DocumentFile(name: sig.filename, dateCreated: new Date(), lastUpdated: new Date(), pagesCount: 0)
+                DocumentFile dfwof = new DocumentFile(name: sig.templatePath, clientName: sig.filename, dateCreated: new Date(), lastUpdated: new Date(), pagesCount: 0)
                 dfwof.setContent(new DocumentContent(content: documentDataWithoutFaksymile))
                 dfwof.discard()
                 documentFilesWithoutFaksymileList.add(dfwof)

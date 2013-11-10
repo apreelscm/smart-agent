@@ -39,7 +39,7 @@ class BootStrap {
                 saleSection: 'segment1', phNumber: "12345", observed: true,
                 phSurname: 'Kowalski', calcNumber: '44444' , status: Process.ProcessStatus.ACCEPTED,
                 client: Client.findByName("clientName1"))
-                .addToDocuments(new DocumentFile(name: "pedef.pdf", pagesCount: 1, content: new DocumentContent(content:[95, 96] as byte[]))).save(flush: true);
+                .addToDocuments(new DocumentFile(name: "pedef.pdf",clientName:"pedef.pdf", pagesCount: 1, content: new DocumentContent(content:[95, 96] as byte[]))).save(flush: true);
 
 /*
         Process.get(2) ?: new Process(id: 2, phFirstName: "Wanda",

@@ -69,6 +69,10 @@ class EmailService {
     private def sendMail(def emailTemplate , def recipients, def subjectParams, def bodyParams, def documents){
 
         log.info 'Sending: ' + emailTemplate + ', to: ' + recipients + ', subjectParams: ' + subjectParams + ', bodyParams: ' + bodyParams + ', documents count: ' + documents?.size()
+        documents.each{
+            log.info("document filename:"+(it.clientName ?: it.name))
+        }
+
         StopWatch stopWatch = new Log4JStopWatch();
 
         mailService.sendMail {
@@ -82,7 +86,7 @@ class EmailService {
 
             if (documents){
                 documents.each { doc ->
-                    attachBytes doc.name, 'application/pdf', doc.content.content
+                    attachBytes doc.clientName ?: doc.name , 'application/pdf', doc.content.content
                 }
             }
         }

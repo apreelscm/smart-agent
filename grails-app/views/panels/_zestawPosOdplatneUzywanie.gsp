@@ -30,7 +30,6 @@
         </div>
 
         <div id='one_for_all_terminals' style="text-align: center; width: 950px" class="centre">
-            <div>Wybrano: one_for_all_terminals</div>
             <table class="t">
                 <thead>
                     <tr>
@@ -52,7 +51,6 @@
         </div>
 
         <div id='one_for_all_terminals_in_point' style="text-align: center; width: 950px" class="centre">
-            <div>Wybrano: one_for_all_terminals_in_point</div>
             <table class="t">
                 <thead>
                 <tr>
@@ -90,7 +88,6 @@
             </table>
         </div>
         <div id='other_for_selected_terminals' style="text-align: center; width: 950px" class="centre">
-            <div>Wybrano: other_for_selected_terminals</div>
             <table class="t">
                 <thead>
                     <tr>

@@ -2,6 +2,8 @@ alter table  EUMOWY.SIGNATURE MODIFY TEMPLATE_PATH varchar2(255 char) null;
 
 alter table EUMOWY.SIGNATURE add FILENAME varchar2(255 CHAR) NULL;
 
+alter table EUMOWY.DOCUMENT add CLIENT_NAME varchar2(255 CHAR) NULL;
+
 alter table  EUMOWY.PROCESS MODIFY VERSION NUMBER(3,0);
 
 ALTER TABLE EUMOWY.POS ADD parent_pos_id number(19,0);
