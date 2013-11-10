@@ -609,7 +609,7 @@ class ActivityController {
                       return error();
                   }*/
                 //TEST end
-
+                cmd.calculatorService = calculatorService
                 processInstance.save(flush: true, validate: false)
 
                 log.info "Zapisano dane paneli"
