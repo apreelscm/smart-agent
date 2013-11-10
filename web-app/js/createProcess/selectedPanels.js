@@ -152,3 +152,37 @@ function refreshCityField(code, select){
     }
 }
 
+function setFieldPropertiesInDodatkoweWyposazenie(element, value, setForPosPanel){
+    var panel;
+    if(setForPosPanel){
+        panel = jQuery(element).closest("div.newPosPanel");
+    } else {
+        panel = jQuery(element).closest("div.newPointPanel");
+    }
+    if(value == "Verifone Vx670 GPRS"){
+        panel.find("tr.baseRow").show();
+        setRequiredForSimCard(true, panel)
+    } else {
+        var id = jQuery(element).attr('id');
+        var bazaXPath = id.substring(0,id.indexOf('.')) + ".bazaIlosc";
+        jQuery("[name='"+bazaXPath+"']").val("");
+        panel.find("tr.baseRow").hide();
+        if (value !== ""){
+            setRequiredForSimCard(true, panel)
+        }
+        else {
+            setRequiredForSimCard(false, panel)
+        }
+    }
+
+    function setRequiredForSimCard(isRequired, panel){
+        if(isRequired){
+            panel.find("select.kartaSimTyp").attr("required", true);
+            panel.find("input.kartaSimIlosc").attr("required", true);
+        } else {
+            panel.find("select.kartaSimTyp").removeAttr("required", true).removeClass("error");
+            panel.find("input.kartaSimIlosc").removeAttr("required", true).removeClass("error");
+        }
+    }
+}
+

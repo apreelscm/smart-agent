@@ -661,6 +661,9 @@ class ProcessCommand implements Serializable {
     @Omit
     Boolean hasPrepaid
 
+    @Omit
+    Boolean hasDodaniePrepaid
+
     Boolean korespondencjaJakDlaMerchanta
 
     @Omit
@@ -897,9 +900,8 @@ class ProcessCommand implements Serializable {
         doladowania_tk(nullable: true)
         doladowania_tp(nullable: true)
         hasDoladowania(nullable: true, validator: { value, cmd, errors ->
-
             if(value && (cmd.isDoladowania_tp || cmd.isDoladowania_tk)){
-                if(!cmd.hasAtLeastOneDoladowanie){
+                if(!(cmd.doladowania_tk || cmd.doladowania_tp) && cmd.hasDodaniePrepaid){
                     errors.rejectValue("hasDoladowania", "default.atLeastOne.doladowania")
                     return false
                 }
@@ -1374,11 +1376,15 @@ class ProcessCommand implements Serializable {
         notes(nullable:true, maxSize: 1000) //a1!
         points(nullable:true, validator: { value, cmd, errors ->
             def hasPointErrors = false
+            def atLeastOneFormaDoladowaniaError = false
 
             value.each {  ptCmd ->
                 ptCmd?.validate()
                 if(ptCmd?.hasErrors()){
                     ptCmd.errors.each {
+                        if(it.getFieldError("hasDodaniePrepaid")){
+                            atLeastOneFormaDoladowaniaError = true
+                        }
                         log.info(it)
                     }
                     hasPointErrors = true
@@ -1387,6 +1393,11 @@ class ProcessCommand implements Serializable {
 
             if(cmd.points?.size() > 0 && cmd.hasMoreThanThreePriceGroups(cmd.points)){
                 errors.reject("default.tooMany.groups")
+                return false
+            }
+
+            if(atLeastOneFormaDoladowaniaError) {
+                errors.reject("default.atLeastOne.doladowania.funkcjaTerminala")
                 return false
             }
 

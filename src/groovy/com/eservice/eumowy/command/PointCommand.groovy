@@ -165,6 +165,8 @@ class PointCommand extends BaseCommand {
     BigDecimal pinPadCenaPreferencyjna
     BigDecimal wifiCenaPreferencyjna
 
+    Boolean hasDodaniePrepaid
+
 	static constraints = {
 		phPozysk(nullable:true, blank:false, shared: "alphanumeric")
 		opiekaBiznesowa(nullable:true, blank:false, shared: "alphanumeric")
@@ -202,6 +204,14 @@ class PointCommand extends BaseCommand {
 		kontaktWPunkcieTelKomorkowy(nullable:true, blank:false)
 
 		kontaktWPunkcieEmail(nullable:true, shared: "email")
+
+        hasDodaniePrepaid(nullable: true, validator: {value, cmd, errors ->
+            if(value && !(cmd.telePompka || cmd.teleKodzik)){
+                errors.rejectValue("hasDodaniePrepaid", "default.atLeastOne.doladowania.funkcjaTerminala")
+                return false
+            }
+            return true
+        })
 		terminalIlosc(nullable:true, shared: "natural", validator: {value, cmd, errors ->
            if(value == null){
                return true

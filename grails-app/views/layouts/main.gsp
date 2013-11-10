@@ -33,6 +33,9 @@
     </g:if>
 
     <r:require module="expandable_menu"/>
+    <r:require module="jquery_ui" />
+    <r:require module="jquery_timepicker_pl" />
+    <r:require module="jquery_datepicker_pl" />
 
     <r:layoutResources/>
     <g:layoutHead/>
