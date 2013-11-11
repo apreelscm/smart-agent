@@ -8,7 +8,6 @@ import grails.util.Holders
 import grails.validation.Validateable
 import org.apache.commons.collections.FactoryUtils
 import org.apache.commons.collections.ListUtils
-import org.springframework.context.MessageSource
 
 import java.util.regex.Pattern
 
@@ -653,6 +652,9 @@ class ProcessCommand implements Serializable {
     @Omit
     String liczbaPosZCbd
 
+    @Omit
+    String promObjNaj1
+
     @Omit(inPopulate = true)
     Boolean isDoladowania_tp
 
@@ -672,11 +674,8 @@ class ProcessCommand implements Serializable {
     @Omit
     def defaultPosData
 
-
-
     @Omit
     static constraints = {
-
         oplataZaDzienneZestawienieTransakcji(nullable: false, blank: false,  validator: { value, cmd, errors -> cmd.numberValidationClosure(value, cmd, errors, "oplataZaDzienneZestawienieTransakcji")})
         oplataZaMiesieczneZestawienieTransakcji(nullable: false, blank: false,  validator: { value, cmd, errors -> cmd.numberValidationClosure(value, cmd, errors, "oplataZaMiesieczneZestawienieTransakcji")})
         oplataZaPotwierdzenieWykonaniaPrzelewu(nullable: false, blank: false,  validator: { value, cmd, errors -> cmd.numberValidationClosure(value, cmd, errors, "oplataZaPotwierdzenieWykonaniaPrzelewu")})

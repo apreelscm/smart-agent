@@ -25,6 +25,8 @@ class PanelService {
         cmd.hasPrepaid = cbdService.getPrepaidEvoucher(cmd.nip) || cbdService.getPrepaidTopup(cmd.nip)
         cmd.hasDodaniePrepaid = cmd.process?.activities?.any{it.code.equals('dodaniePrepaid')}
         cmd.hasNewUmowaAndPrepaid = cmd.process?.activities?.any{it.code.equals('nowaUmowa')} && cmd.hasDodaniePrepaid
+        cmd.promObjNaj1 = calculatorService.getCalcProperty(calc,"E_PROM_OBN_NAJ_1")
+
 
         cmd.liczbaTerminali = calculatorService.getCalcProperty(calc,"LICZBA_POS_MAX") != null ? calculatorService.getCalcProperty(calc,"LICZBA_POS_MAX") : 0
     }

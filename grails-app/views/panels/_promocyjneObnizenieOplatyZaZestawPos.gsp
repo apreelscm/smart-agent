@@ -1,4 +1,5 @@
 <div id="posDiscountPanel">
+    <g:hiddenField name="promObjNaj1" value="${data.promObjNaj1}"/>
     <fieldset style="text-align: center">
         <div class="belka-glowna"><g:message code="panel.pos.discount.title"/></div>
         <div style="text-align: center; padding-top: 20px; width: 750px" class="centre">
@@ -55,7 +56,8 @@
 
             new function (s) {
                 s.on("change", function(event){
-                    selectAllFields(new Date(event.target.value), discCount, 1);
+                       var monthsToadd = jQuery("#promObjNaj1").val()
+                    selectAllFields(new Date(event.target.value), discCount, monthsToadd ? parseInt(monthsToadd) : 1);
                 });
             }(start);
 
