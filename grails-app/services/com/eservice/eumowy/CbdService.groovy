@@ -200,8 +200,8 @@ class CbdService {
 	}
 	
 	@Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
-	def checkActivities(def activitiesString, def calcId) {
-		def rowResult = cbdDAO.selectOne(SPRAWDZ_DZIALANIE, [activities: activitiesString, calcid: calcId])
+	def checkActivities(def activitiesString, def calcId, def signaturesString) {
+		def rowResult = cbdDAO.selectOne(SPRAWDZ_DZIALANIE, [activities: activitiesString, calcid: calcId, signatures: signaturesString])
 		return rowResult != null && rowResult.get("result") == 1
 	}
 

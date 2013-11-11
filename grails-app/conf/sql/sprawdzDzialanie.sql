@@ -1,1 +1,1 @@
-select eumowy.sprawdzdzialanie2(:activities, :calcid) as result from dual
+select eumowy.sprawdz_dzialanie(:activities, :calcid, :signatures) as result from dual

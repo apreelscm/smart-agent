@@ -22,15 +22,12 @@ class CalculatorService implements Serializable{
     def isCalcValid(def calcExt, def calcId, def process) {
 
 		def isValidBySigsResult = isCalValidBySignatures(calcExt, process.signatures)
-		def isValidByActivResult = isCalcValidByActivities(calcId, process.activities)
+		def isValidByActivResult = isCalValidExtendedValidation(calcId, process.activities, process.signatures)
         
 		return isValidBySigsResult == true && isValidByActivResult == true
     }
 	
 	def isCalValidBySignatures(def calcExt, def signatures) {
-		// TODO tymczasowo
-		if(Environment.isDevelopmentMode() ||
-				Environment.TEST.getName().equalsIgnoreCase(Environment.getCurrent().name)){ return true }
 
 		Set signaturesCalcNames = []
 		signatures.each{signature ->
@@ -48,7 +45,7 @@ class CalculatorService implements Serializable{
 		return calcKeyList.containsAll(signaturesCalcNames)
 	}
 	
-	def isCalcValidByActivities(def calcId, def activities) {
+	def isCalValidExtendedValidation(def calcId, def activities, def signatures) {
 		def activityString = ""
 		activities.eachWithIndex { activity, idx  ->
 			activityString += activity.code
@@ -56,9 +53,18 @@ class CalculatorService implements Serializable{
 				activityString += ","
 			}
 		}
-		log.info "isCalcValidByActivities - " + activityString
+
+        String signaturesString = ""
+        signatures.eachWithIndex { sig, idx  ->
+            signaturesString += sig.name
+            if (idx < signatures.size() - 1) {
+                signaturesString += ","
+            }
+        }
+
+		log.info "isCalcValidByActivities activities [${activityString}], signatures [${signaturesString}]  "
 		
-		def result = cbdService.checkActivities(activityString, calcId)
+		def result = cbdService.checkActivities(activityString, calcId, signaturesString)
 		
 		return result
 	}
