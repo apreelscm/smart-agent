@@ -441,7 +441,7 @@
                                  href="#">${representative1.name} ${representative1.surname} - Reprezentant</a>
                         </span>
                         <span>
-                        	<a href="eumowysig://data/${representative1.name.encodeAsURL()}/${representative1.surname.encodeAsURL()}/AKCEPTANT1/${message(code:'subscription.agreement').encodeAsURL()}/${createLink(controller: "subscriptionEx", action:"saveSubscription", absolute: true)}"> | PODPISZ</a>
+                        	<a href="eumowysig://data/${representative1.name.encodeAsURL()}/${representative1.surname.encodeAsURL()}/AKCEPTANT1/${message(code:'subscription.agreement').encodeAsURL()}/${session.id}/${createLink(controller: "subscriptionEx", action:"saveSubscription", absolute: true).encodeAsURL()}"> | PODPISZ</a>
                         </span>
                     </li>
 
@@ -449,7 +449,7 @@
                                  data-lastName="${representative2.surname}" data-role="ACCEPTANT2" id="subscribe-REPRESENTATIVE2"
                                  href="#">${representative2.name} ${representative2.surname} - Reprezentant</a></span>
                     <span>
-                        <a href="eumowysig://data/${representative2.name.encodeAsURL()}/${representative2.surname.encodeAsURL()}/AKCEPTANT2/${message(code:'subscription.agreement').encodeAsURL()}/${createLink(controller: "subscriptionEx", action:"saveSubscription", absolute: true)}"> | PODPISZ</a>
+                        <a href="eumowysig://data/${representative2.name.encodeAsURL()}/${representative2.surname.encodeAsURL()}/AKCEPTANT2/${message(code:'subscription.agreement').encodeAsURL()}/${session.id}/${createLink(controller: "subscriptionEx", action:"saveSubscription", absolute: true).encodeAsURL()}"> | PODPISZ</a>
                         </span>             
                     </li>
 						
@@ -457,8 +457,11 @@
                                  data-lastName="${processInstance.phSurname}" data-role="PH" id="subscribe-PH"
                                  href="#">${processInstance.phFirstName} ${processInstance.phSurname} - Pracownik eService</a></span>
                       <span>
-                      	<a href="eumowysig://data/${processInstance.phFirstName.encodeAsURL()}/${processInstance.phSurname.encodeAsURL()}/PH/${message(code:'subscription.agreement.ph').encodeAsURL()}/${createLink(controller: "subscriptionEx", action:"saveSubscription", absolute: true)}"> | PODPISZ</a>
-                      </span>           
+                      	<a href="eumowysig://data/${processInstance.phFirstName.encodeAsURL()}/${processInstance.phSurname.encodeAsURL()}/PH/${message(code:'subscription.agreement.ph').encodeAsURL()}/${session.id}/${createLink(controller: "subscriptionEx", action:"saveSubscription", absolute: true).encodeAsURL()}"> | PODPISZ</a>
+                      </span>
+                    </li>
+                    <li>
+                        <a href="<g:createLink controller="file" action="get" params="[root: 'mobileAppPath', path: 'eumowy-mobile.apk']"/>">${message(code:'subscription.download.mobileApp')}</a>
                     </li>
                 </ul>
             </fieldset>

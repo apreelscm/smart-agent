@@ -355,6 +355,8 @@ class PanelService {
     }
 
     def getPoziomOplatiWarunkiPlatnosciKarty(ProcessCommand cmd, def calc ) {
+
+        // 1
         cmd.visaEUKKOPr = setAtLeastAs(cmd.visaEUKKOPr, calculatorService.getCalcProperty(calc,"OPLATA_MSC_11_PROCENT"))
         cmd.visaEUKKOSt = setAtLeastAs(cmd.visaEUKKOSt,calculatorService.getCalcProperty(calc,"OPLATA_MSC_11_ZL"))
         cmd.visaEUKDPr = setAtLeastAs(cmd.visaEUKDPr, calculatorService.getCalcProperty(calc,"OPLATA_MSC_12_PROCENT"))
@@ -362,6 +364,7 @@ class PanelService {
         cmd.visaEUKBPr = setAtLeastAs(cmd.visaEUKBPr, calculatorService.getCalcProperty(calc,"OPLATA_MSC_13_PROCENT"))
         cmd.visaEUKBSt = setAtLeastAs(cmd.visaEUKBSt,calculatorService.getCalcProperty(calc,"OPLATA_MSC_13_ZL"))
 
+        // 2
         cmd.visaOutEUKKOPr = setAtLeastAs(cmd.visaOutEUKKOPr, calculatorService.getCalcProperty(calc,"OPLATA_MSC_21_PROCENT"))
         cmd.visaOutEUKKOSt = setAtLeastAs(cmd.visaOutEUKKOSt,calculatorService.getCalcProperty(calc,"OPLATA_MSC_21_ZL"))
         cmd.visaOutEUKDPr = setAtLeastAs(cmd.visaOutEUKDPr, calculatorService.getCalcProperty(calc,"OPLATA_MSC_22_PROCENT"))
@@ -369,6 +372,7 @@ class PanelService {
         cmd.visaOutEUKBPr = setAtLeastAs(cmd.visaOutEUKBPr, calculatorService.getCalcProperty(calc,"OPLATA_MSC_23_PROCENT"))
         cmd.visaOutEUKBSt = setAtLeastAs(cmd.visaOutEUKBSt,calculatorService.getCalcProperty(calc,"OPLATA_MSC_23_ZL"))
 
+        // 3
         cmd.visaPolskaKKO1Pr = setAtLeastAs(cmd.visaPolskaKKO1Pr, calculatorService.getCalcProperty(calc,"OPLATA_MSC_311_PROCENT"))
         cmd.visaPolskaKKO1St = setAtLeastAs(cmd.visaPolskaKKO1St, calculatorService.getCalcProperty(calc,"OPLATA_MSC_311_ZL"))
         cmd.visaPolskaKKO2Pr = setAtLeastAs(cmd.visaPolskaKKO2Pr, calculatorService.getCalcProperty(calc,"OPLATA_MSC_312_PROCENT"))
@@ -380,6 +384,7 @@ class PanelService {
         cmd.visaPolskaKBPr = setAtLeastAs(cmd.visaPolskaKBPr, calculatorService.getCalcProperty(calc,"OPLATA_MSC_33_PROCENT"))
         cmd.visaPolskaKBSt = setAtLeastAs(cmd.visaPolskaKBSt,calculatorService.getCalcProperty(calc,"OPLATA_MSC_33_ZL"))
 
+        // 4
         cmd.mastercardEUKKPr = setAtLeastAs(cmd.mastercardEUKKPr, calculatorService.getCalcProperty(calc,"OPLATA_MSC_41_PROCENT"))
         cmd.mastercardEUKKSt = setAtLeastAs(cmd.mastercardEUKKSt,calculatorService.getCalcProperty(calc,"OPLATA_MSC_41_ZL"))
         cmd.mastercardEUKDPr = setAtLeastAs(cmd.mastercardEUKDPr, calculatorService.getCalcProperty(calc,"OPLATA_MSC_42_PROCENT"))
@@ -389,6 +394,7 @@ class PanelService {
         cmd.mastercardEUMPr = setAtLeastAs(cmd.mastercardEUMPr, calculatorService.getCalcProperty(calc,"OPLATA_MSC_44_PROCENT"))
         cmd.mastercardEUMSt = setAtLeastAs(cmd.mastercardEUMSt,calculatorService.getCalcProperty(calc,"OPLATA_MSC_44_ZL"))
 
+        // 5
         cmd.mastercardOutEUKKPr = setAtLeastAs(cmd.mastercardOutEUKKPr, calculatorService.getCalcProperty(calc,"OPLATA_MSC_51_PROCENT"))
         cmd.mastercardOutEUKKSt = setAtLeastAs(cmd.mastercardOutEUKKSt,calculatorService.getCalcProperty(calc,"OPLATA_MSC_51_ZL"))
         cmd.mastercardOutEUKDPr = setAtLeastAs(cmd.mastercardOutEUKDPr, calculatorService.getCalcProperty(calc,"OPLATA_MSC_52_PROCENT"))
@@ -398,6 +404,7 @@ class PanelService {
         cmd.mastercardOutEUMPr = setAtLeastAs(cmd.mastercardOutEUMPr, calculatorService.getCalcProperty(calc,"OPLATA_MSC_54_PROCENT"))
         cmd.mastercardOutEUMSt = setAtLeastAs(cmd.mastercardOutEUMSt,calculatorService.getCalcProperty(calc,"OPLATA_MSC_54_ZL"))
 
+        // 6
         cmd.mastercardPolskaKK1Pr = setAtLeastAs(cmd.mastercardPolskaKK1Pr, calculatorService.getCalcProperty(calc,"OPLATA_MSC_611_PROCENT"))
         cmd.mastercardPolskaKK1St = setAtLeastAs(cmd.mastercardPolskaKK1St, calculatorService.getCalcProperty(calc,"OPLATA_MSC_611_ZL"))
         cmd.mastercardPolskaKK2Pr = setAtLeastAs(cmd.mastercardPolskaKK2Pr, calculatorService.getCalcProperty(calc,"OPLATA_MSC_612_PROCENT"))
@@ -419,6 +426,7 @@ class PanelService {
         cmd.mastercardPolskaM3Pr = setAtLeastAs(cmd.mastercardPolskaM3Pr, calculatorService.getCalcProperty(calc,"OPLATA_MSC_643_PROCENT"))
         cmd.mastercardPolskaM3St = setAtLeastAs(cmd.mastercardPolskaM3St, calculatorService.getCalcProperty(calc,"OPLATA_MSC_643_ZL"))
 
+        // 7
         cmd.visaPKOBPKKO1Pr = setAtLeastAs(cmd.visaPKOBPKKO1Pr, calculatorService.getCalcProperty(calc,"OPLATA_MSC_711_PROCENT"))
         cmd.visaPKOBPKKO1St = setAtLeastAs(cmd.visaPKOBPKKO1St, calculatorService.getCalcProperty(calc,"OPLATA_MSC_711_ZL"))
         cmd.visaPKOBPKKO2Pr = setAtLeastAs(cmd.visaPKOBPKKO2Pr, calculatorService.getCalcProperty(calc,"OPLATA_MSC_712_PROCENT"))
@@ -430,6 +438,7 @@ class PanelService {
         cmd.visaPKOBPKB3Pr = setAtLeastAs(cmd.visaPKOBPKB3Pr, calculatorService.getCalcProperty(calc,"OPLATA_MSC_73_PROCENT"))
         cmd.visaPKOBPKB3St = setAtLeastAs(cmd.visaPKOBPKB3St, calculatorService.getCalcProperty(calc,"OPLATA_MSC_73_ZL"))
 
+        // 8
         cmd.mastercardPKOBPKK1Pr = setAtLeastAs(cmd.mastercardPKOBPKK1Pr, calculatorService.getCalcProperty(calc,"OPLATA_MSC_811_PROCENT"))
         cmd.mastercardPKOBPKK1St = setAtLeastAs(cmd.mastercardPKOBPKK1St, calculatorService.getCalcProperty(calc,"OPLATA_MSC_811_ZL"))
         cmd.mastercardPKOBPKK2Pr = setAtLeastAs(cmd.mastercardPKOBPKK2Pr, calculatorService.getCalcProperty(calc,"OPLATA_MSC_812_PROCENT"))
@@ -451,8 +460,9 @@ class PanelService {
         cmd.mastercardPKOBPM3Pr = setAtLeastAs(cmd.mastercardPKOBPM3Pr, calculatorService.getCalcProperty(calc,"OPLATA_MSC_843_PROCENT"))
         cmd.mastercardPKOBPM3St = setAtLeastAs(cmd.mastercardPKOBPM3St, calculatorService.getCalcProperty(calc,"OPLATA_MSC_843_ZL"))
 
+        //9
         cmd.dinersClubPr = setAtLeastAs(cmd.dinersClubPr, calculatorService.getCalcProperty(calc,"OPLATA_MSC_9_PROCENT"))
-
+        // 10
         cmd.ikoPr = calculatorService.getCalcProperty(calc,"OPLATA_MSC_10_PROCENT")
     }
 

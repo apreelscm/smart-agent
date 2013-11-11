@@ -609,7 +609,7 @@ class ActivityController {
                       return error();
                   }*/
                 //TEST end
-
+                cmd.calculatorService = calculatorService
                 processInstance.save(flush: true, validate: false)
 
                 log.info "Zapisano dane paneli"
@@ -1309,19 +1309,22 @@ class ActivityController {
                 documentFilesWithBlackFaksymileList.add(dfwbf)
 
                 // Generate documents without faksymile for acceptant
-                byte[] documentDataWithoutFaksymile = pdfService.fillPdfFormFromURIWithoutFaksymile(sig, null, PdfService.FontType.ARIAL)
-                DocumentFile dfwof = new DocumentFile(name: sig.templatePath, clientName: sig.filename, dateCreated: new Date(), lastUpdated: new Date(), pagesCount: 0)
-                dfwof.setContent(new DocumentContent(content: documentDataWithoutFaksymile))
-                dfwof.discard()
-                documentFilesWithoutFaksymileList.add(dfwof)
+                if(sig.sendToClient){
+                    byte[] documentDataWithoutFaksymile = pdfService.fillPdfFormFromURIWithoutFaksymile(sig, null, PdfService.FontType.ARIAL)
+                    DocumentFile dfwof = new DocumentFile(name: sig.templatePath, clientName: sig.filename, dateCreated: new Date(), lastUpdated: new Date(), pagesCount: 0)
+                    dfwof.setContent(new DocumentContent(content: documentDataWithoutFaksymile))
+                    dfwof.discard()
+                    documentFilesWithoutFaksymileList.add(dfwof)
+                }
             }
 
-            emailService.sendDocumentsTemplateVersion(process.phEmail, documentFilesWithBlackFaksymileList?.findAll{it.signature?.sendToClient})
+            emailService.sendDocumentsTemplateVersion(process.phEmail, documentFilesWithBlackFaksymileList)
 
             //for acceptant
+            //TODO czy nie powinnismy brac pod uwage rowniez maila z 'emailDoWysylkiDokumentu'?
             def recipientUser = getFromProcessData(process, 'kontaktEmail')
             if(recipientUser != ""){
-                emailService.sendDocumentsTemplateVersion(recipientUser, documentFilesWithoutFaksymileList?.findAll{it.signature?.sendToClient})
+                emailService.sendDocumentsTemplateVersion(recipientUser, documentFilesWithoutFaksymileList)
             }
         }
     }

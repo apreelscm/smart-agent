@@ -185,6 +185,7 @@ class ProcessCommand implements Serializable {
         def hasError = false
 
         value.each { hpCmd ->
+            hpCmd?.calculatorService = cmd.calculatorService
             hpCmd?.validate()
             if(hpCmd?.hasErrors()){
                 hpCmd.errors.each {
@@ -1379,6 +1380,7 @@ class ProcessCommand implements Serializable {
             def atLeastOneFormaDoladowaniaError = false
 
             value.each {  ptCmd ->
+                ptCmd?.calculatorService = cmd.calculatorService
                 ptCmd?.validate()
                 if(ptCmd?.hasErrors()){
                     ptCmd.errors.each {
