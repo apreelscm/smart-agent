@@ -21,7 +21,13 @@ class FileController {
 
 		if (file) {
 			log.info("$root/$path, sending file: $file.absolutePath")
-			response.outputStream << file.bytes
+
+            if (path.contains(".apk")){
+                response.setHeader("Content-type", "application/vnd.android.package-archive");
+                response.setHeader("Content-disposition", "attachment; filename=\"${path}\"");
+            }
+
+            response.outputStream << file.bytes
 		} else {
 			log.info("$root/$path, file not found - dir: $basePath, file: $path")
 			response.status = 404

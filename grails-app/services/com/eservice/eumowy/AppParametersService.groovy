@@ -52,13 +52,18 @@ class AppParametersService {
 		return path
 	}
 
+    def getMobileAppPath() {
+        String basePath = grailsApplication.config.appParametersPaths?.get("mobileAppPath")
+        String path = basePath ? Paths.get(basePath, "subscriptions").normalize().toAbsolutePath().toString() : null
+        return path
+    }
+
 	def getSubscriptionsBlackPrefix() {
 		return AppParameters.findByName("SUBSCRIPTIONS_PATH_BLACKPREFIX")?.value
 	}
 	
 	def createDirectoryIfNotExists(String path) {
 		try {
-			log.info "createDirectoryIfNotExists - Checking dir: " + path
 			def file = new File(path)
 			if (file.exists() == false) {
 				file.mkdirs()
