@@ -36,4 +36,12 @@ insert into EUMOWY.SIGNATURE_PANEL (ID,VERSION,PANEL_ID,SIGNATURE_ID) values ('2
 insert into EUMOWY.ACTIVITY_SIGNATURES (ID,VERSION,ACTIVITY_ID,MANDATORY,NUMBER_OF_LIST,SIGNATURE_ID) values ('51','0','6','1','0','31');
 insert into EUMOWY.ACTIVITY_SIGNATURES (ID,VERSION,ACTIVITY_ID,MANDATORY,NUMBER_OF_LIST,SIGNATURE_ID) values ('52','0','7','1','0','31');
 
-update EUMOWY.SUBSCRIPTION_DEFINITION sd set sd.subscriptionx = 330, sd.subscriptiony = 535 where sd.role = 'ZARZAD1' and sd.signature_id = (select s.id from EUMOWY.SIGNATURE s where s.name = 'AT/USU/FDU/4.004/13-05-22')
+update EUMOWY.SUBSCRIPTION_DEFINITION sd set sd.subscriptionx = 330, sd.subscriptiony = 535 where sd.role = 'ZARZAD1' and sd.signature_id = (select s.id from EUMOWY.SIGNATURE s where s.name = 'AT/USU/FDU/4.004/13-05-22');
+
+-- eUmowy_ext-320
+insert into EUMOWY.mapowaniekalkulatora values('E_LICZBA_ZEST_POS_PROM_CEN_NAJ_1','LICZBA_ZEST_POS_PROM_CEN_NAJ_1','N');
+update EUMOWY.mapowaniekalkulatora set polekalkulator='E_PROM_CENA_NAJ_ZEST_POS_1' where poleapreel='OPLATA_POS_PROM_CENA_NAJMU';
+
+-- eUmowy_ext-279
+insert into eumowy.kalkulatortypurzadzen
+values('AMORT_IPP350','PINPad IPP 350 (system kasowy)','175',21,'PINPAD','PINPad IPP 350 (system kasowy)',1,null);
