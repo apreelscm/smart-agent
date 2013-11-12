@@ -24,8 +24,8 @@ class PdfPosMapper extends AbstractPdfMapper{
 
         def data = [:];
         if (newPoses.size()>0){
-            data.put("dataPoczatkuUzywaniaPOZ", [DateUtils.parseDate(newPoses[0].dataOd)] as String[])
-            data.put("dataKoncaUzywaniaPOZ", [DateUtils.parseDate(newPoses[0].dataDo)] as String[])
+            data.put("dataPoczatkuUzywaniaPOZ", [DateUtils.getFormattedDate(newPoses[0].dataOd, DateUtils.DD_MM_YYYY)] as String[])
+            data.put("dataKoncaUzywaniaPOZ", [DateUtils.getFormattedDate(newPoses[0].dataDo, DateUtils.DD_MM_YYYY)] as String[])
 
             newPoses.eachWithIndex{ pos, i ->
                 data.put("numerPOS"+suffixes[i], [pos.numerZestawuPos] as String[])
