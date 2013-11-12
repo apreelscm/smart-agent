@@ -1297,7 +1297,7 @@ class ActivityController {
         }
         else if (TEMPLATES.equals(requestVersion)) {
             //Documents are already in DB
-            List<DocumentFile> documentFilesWithBlackFaksymileList = new ArrayList<DocumentFile>()
+            /*List<DocumentFile> documentFilesWithBlackFaksymileList = new ArrayList<DocumentFile>()
             List<DocumentFile> documentFilesWithoutFaksymileList = new ArrayList<DocumentFile>()
 
             process.signatures.each { sig ->
@@ -1325,8 +1325,22 @@ class ActivityController {
             def recipientUser = getFromProcessData(process, 'kontaktEmail')
             if(recipientUser != ""){
                 emailService.sendDocumentsTemplateVersion(recipientUser, documentFilesWithoutFaksymileList)
+            }*/
+			List<DocumentFile> documentFilesWithBlackFaksymileList = new ArrayList<DocumentFile>()
+			process.documents.findAll{it.signature?.sendToClient}?.each { DocumentFile doc ->
+				DocumentFile dfwbf = new DocumentFile(name: doc.name, clientName: doc.clientName , dateCreated: doc.dateCreated, lastUpdated: doc.lastUpdated, pagesCount: doc.pagesCount)
+				byte[] newContent = pdfService.addBlackFaksymileToDocument(doc.content.content, doc.signature.id)
+				dfwbf.setContent(new DocumentContent(content: newContent))
+				dfwbf.discard()
+				documentFilesWithBlackFaksymileList.add(dfwbf)
+			}
+
+            def recipient = getFromProcessData(process, 'kontaktEmail') ?: getFromProcessData(process, 'emailDoWysylkiDokumentu')
+
+            if (recipient){
+                emailService.sendDocumentsTemplateVersion(recipient, documentFilesWithBlackFaksymileList)
             }
-        }
+    	}
     }
 
     def _getNewProcessStatus(def params, def requiredNumberOfSubscriptions) {
