@@ -26,11 +26,13 @@ class SubscriptionController {
         log.info "refreshSubscription params: " + params.content
         def uniqueKey = params.processId + params.role
         def subscription  = Subscription.findByUniqueKey(uniqueKey)
-        if (subscription.id != null) {
-            render(text: "{\"status\": \"OK\", \"subscriptionId\": " + subscription.id + "}")
-        } else {
-            render(text: "{\"status\": \"FAIL\", \"text\": \"Nie udało się zapisać podpisu do bazy!\"}")
-        }
+		if (subscription != null) {
+	        if (subscription.id != null) {
+	            render(text: "{\"status\": \"OK\", \"subscriptionId\": " + subscription.id + "}")
+	        } else {
+	            render(text: "{\"status\": \"FAIL\", \"text\": \"Nie udało się zapisać podpisu do bazy!\"}")
+	        }
+		}
 
     }
 	
