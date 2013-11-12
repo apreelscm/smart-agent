@@ -1249,9 +1249,8 @@ class ProcessService {
                     pos = new PosData();
 
                     // Nie znalezlismy punktu z CBD u nas w bazie,
-                    musimy dossac dane z CBD dla tego punktu
-                    def cbdPoint = cbdService.getCbdPointById(cmd.nip,
-                            apc.cbdId)
+                    //musimy dossac dane z CBD dla tego punktu
+                    def cbdPoint = cbdService.getCbdPointById(cmd.nip, apc.cbdId)
                     if (cbdPoint != null) {
                         point.setCbdId(Integer.valueOf(cbdPoint.get("id").toString()))
                         point.setKodPocztowy(cbdPoint.get("kod_pocztowy"))
