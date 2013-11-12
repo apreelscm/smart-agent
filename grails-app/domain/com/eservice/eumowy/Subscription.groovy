@@ -8,6 +8,7 @@ class Subscription implements Serializable {
 	Date signDate
 	//PersonType personType
 	PersonRole personRole
+    String uniqueKey
 	
 	public enum PersonRole {
 		ACCEPTANT1("Akceptant 1"),
@@ -42,6 +43,7 @@ class Subscription implements Serializable {
     static mapping = {
         table name: "SUBSCRIPTION", schema: DomainConsts.SHEMA_NAME
         id generator:'sequence', params:[sequence:DomainConsts.SHEMA_NAME+'.SUBSCRIPTION_SEQ']
+        uniqueKey column: "unique_key"
     }
 	
 	def getFileName() {

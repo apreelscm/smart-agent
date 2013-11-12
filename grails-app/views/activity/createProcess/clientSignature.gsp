@@ -74,7 +74,23 @@
 			return false;
 		});
 	}
-	
+
+	function refreshSignature(processId, role){
+	    jQuery.post("${createLink(controller: 'subscription', action: 'refreshSubscription')}", {processId : processId ,role: role}, function(data) {
+	    		var result = JSON.parse(data);
+	    		if (result.status == "OK") {
+	    			jQuery("#dialogInfoText").html('<h2 class="align-center">Pomyślnie zapisano podpis!</h2>');
+	    			updateSubscriptionStatus("OK", "subscribe-" + role, result.subscriptionId);
+				}
+				else {
+					jQuery("#dialogInfoText").html('<h3 class="align-center" style="color: red;">'+result.text+'</h3>');
+				}
+				jQuery('#dialog').hide();
+				jQuery('#dialogInfo').show();
+			});
+			return false;
+	}
+
 	function showSubscriptionPanel(name, surname, role, linkid) {
 		if (subscriptionDialog != null) {
 			subscriptionLinkId = linkid;
@@ -441,7 +457,10 @@
                                  href="#">${representative1.name} ${representative1.surname} - Reprezentant</a>
                         </span>
                         <span>
-                        	<a href="eumowysig://data/${representative1.name.encodeAsURL()}/${representative1.surname.encodeAsURL()}/AKCEPTANT1/${message(code:'subscription.agreement').encodeAsURL()}/${session.id}/${createLink(controller: "subscriptionEx", action:"saveSubscription", absolute: true).encodeAsURL()}"> | PODPISZ</a>
+                        	<a href="eumowysig://data/${representative1.name.encodeAsURL()}/${representative1.surname.encodeAsURL()}/AKCEPTANT1/${message(code:'subscription.agreement').encodeAsURL()}/${processInstance.id}/${session.id}/${createLink(controller: "subscriptionEx", action:"saveSubscription", absolute: true).encodeAsURL()}"> | Podpis natywny</a>
+                        </span>
+                        <span>
+                            <a href="" onclick="refreshSignature('${processInstance.id}','AKCEPTANT1');return false;" class="button action"><g:message code="subscription.refresh" /></a>
                         </span>
                     </li>
 
@@ -449,15 +468,22 @@
                                  data-lastName="${representative2.surname}" data-role="ACCEPTANT2" id="subscribe-REPRESENTATIVE2"
                                  href="#">${representative2.name} ${representative2.surname} - Reprezentant</a></span>
                     <span>
-                        <a href="eumowysig://data/${representative2.name.encodeAsURL()}/${representative2.surname.encodeAsURL()}/AKCEPTANT2/${message(code:'subscription.agreement').encodeAsURL()}/${session.id}/${createLink(controller: "subscriptionEx", action:"saveSubscription", absolute: true).encodeAsURL()}"> | PODPISZ</a>
-                        </span>             
+                        <a href="eumowysig://data/${representative2.name.encodeAsURL()}/${representative2.surname.encodeAsURL()}/AKCEPTANT2/${message(code:'subscription.agreement').encodeAsURL()}/${processInstance.id}/${session.id}/${createLink(controller: "subscriptionEx", action:"saveSubscription", absolute: true).encodeAsURL()}"> | Podpis natywny</a>
+                    </span>
+                    <span>
+                            <a href="" onclick="refreshSignature('${processInstance.id}','AKCEPTANT2');return false;" class="button action"><g:message code="subscription.refresh" /></a>
+                    </span>
                     </li>
 						
-                    <li><span><a class="big-link showSignatureDialog" data-firstName="${processInstance.phFirstName}"
+                    <li>
+                      <span><a class="big-link showSignatureDialog" data-firstName="${processInstance.phFirstName}"
                                  data-lastName="${processInstance.phSurname}" data-role="PH" id="subscribe-PH"
                                  href="#">${processInstance.phFirstName} ${processInstance.phSurname} - Pracownik eService</a></span>
                       <span>
-                      	<a href="eumowysig://data/${processInstance.phFirstName.encodeAsURL()}/${processInstance.phSurname.encodeAsURL()}/PH/${message(code:'subscription.agreement.ph').encodeAsURL()}/${session.id}/${createLink(controller: "subscriptionEx", action:"saveSubscription", absolute: true).encodeAsURL()}"> | PODPISZ</a>
+                      	<a href="eumowysig://data/${processInstance.phFirstName.encodeAsURL()}/${processInstance.phSurname.encodeAsURL()}/PH/${message(code:'subscription.agreement.ph').encodeAsURL()}/${processInstance.id}/${session.id}/${createLink(controller: "subscriptionEx", action:"saveSubscription", absolute: true).encodeAsURL()}"> | Podpis natywny</a>
+                      </span>
+                      <span>
+                            <a href="" onclick="refreshSignature('${processInstance.id}','PH');return false;" class="button action"><g:message code="subscription.refresh" /></a>
                       </span>
                     </li>
                     <li>
