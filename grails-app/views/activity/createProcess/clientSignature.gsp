@@ -75,12 +75,12 @@
 		});
 	}
 
-	function refreshSignature(processId, role){
+	function refreshSignature(processId, role, linkId){
 	    jQuery.post("${createLink(controller: 'subscription', action: 'refreshSubscription')}", {processId : processId ,role: role}, function(data) {
 	    		var result = JSON.parse(data);
 	    		if (result.status == "OK") {
 	    			jQuery("#dialogInfoText").html('<h2 class="align-center">Pomyślnie zapisano podpis!</h2>');
-	    			updateSubscriptionStatus("OK", "subscribe-" + role, result.subscriptionId);
+	    			updateSubscriptionStatus("OK", linkId, result.subscriptionId);
 				}
 				else {
 					jQuery("#dialogInfoText").html('<h3 class="align-center" style="color: red;">'+result.text+'</h3>');
@@ -452,40 +452,31 @@
                 <ul class="table-list">
                     <li>
                     	<span>
-                    	<a class="big-link showSignatureDialog" data-firstName="${representative1.name}"
-                                 data-lastName="${representative1.surname}" data-role="ACCEPTANT1" id="subscribe-REPRESENTATIVE1"
-                                 href="#">${representative1.name} ${representative1.surname} - Reprezentant</a>
+                    	<a class="big-link" id="subscribe-REPRESENTATIVE1"
+                                 href="eumowysig://data/${representative1.name.encodeAsURL()}/${representative1.surname.encodeAsURL()}/ACCEPTANT1/${message(code:'subscription.agreement').encodeAsURL()}/${processInstance.id}/${session.id}/${createLink(controller: "subscriptionEx", action:"saveSubscription", absolute: true).encodeAsURL()}">${representative1.name} ${representative1.surname} - Reprezentant</a>
                         </span>
                         <span>
-                        	<a href="eumowysig://data/${representative1.name.encodeAsURL()}/${representative1.surname.encodeAsURL()}/AKCEPTANT1/${message(code:'subscription.agreement').encodeAsURL()}/${processInstance.id}/${session.id}/${createLink(controller: "subscriptionEx", action:"saveSubscription", absolute: true).encodeAsURL()}"> | Podpis natywny</a>
-                        </span>
-                        <span>
-                            <a href="" onclick="refreshSignature('${processInstance.id}','AKCEPTANT1');return false;" class="button action"><g:message code="subscription.refresh" /></a>
+                            <a href="" onclick="refreshSignature('${processInstance.id}','ACCEPTANT1','subscribe-REPRESENTATIVE1');return false;" class="button action"><g:message code="subscription.refresh" /></a>
                         </span>
                     </li>
 
-                    <li><span><a class="big-link showSignatureDialog" data-firstName="${representative2.name}"
-                                 data-lastName="${representative2.surname}" data-role="ACCEPTANT2" id="subscribe-REPRESENTATIVE2"
-                                 href="#">${representative2.name} ${representative2.surname} - Reprezentant</a></span>
-                    <span>
-                        <a href="eumowysig://data/${representative2.name.encodeAsURL()}/${representative2.surname.encodeAsURL()}/AKCEPTANT2/${message(code:'subscription.agreement').encodeAsURL()}/${processInstance.id}/${session.id}/${createLink(controller: "subscriptionEx", action:"saveSubscription", absolute: true).encodeAsURL()}"> | Podpis natywny</a>
+                    <li><span><a class="big-link" id="subscribe-REPRESENTATIVE2"
+                                 href="eumowysig://data/${representative2.name.encodeAsURL()}/${representative2.surname.encodeAsURL()}/ACCEPTANT2/${message(code:'subscription.agreement').encodeAsURL()}/${processInstance.id}/${session.id}/${createLink(controller: "subscriptionEx", action:"saveSubscription", absolute: true).encodeAsURL()}">${representative2.name} ${representative2.surname} - Reprezentant</a>
                     </span>
                     <span>
-                            <a href="" onclick="refreshSignature('${processInstance.id}','AKCEPTANT2');return false;" class="button action"><g:message code="subscription.refresh" /></a>
+                            <a href="" onclick="refreshSignature('${processInstance.id}','ACCEPTANT2','REPRESENTATIVE2');return false;" class="button action"><g:message code="subscription.refresh" /></a>
                     </span>
                     </li>
 						
                     <li>
-                      <span><a class="big-link showSignatureDialog" data-firstName="${processInstance.phFirstName}"
-                                 data-lastName="${processInstance.phSurname}" data-role="PH" id="subscribe-PH"
-                                 href="#">${processInstance.phFirstName} ${processInstance.phSurname} - Pracownik eService</a></span>
-                      <span>
-                      	<a href="eumowysig://data/${processInstance.phFirstName.encodeAsURL()}/${processInstance.phSurname.encodeAsURL()}/PH/${message(code:'subscription.agreement.ph').encodeAsURL()}/${processInstance.id}/${session.id}/${createLink(controller: "subscriptionEx", action:"saveSubscription", absolute: true).encodeAsURL()}"> | Podpis natywny</a>
+                      <span><a class="big-link" id="subscribe-PH"
+                                 href="eumowysig://data/${processInstance.phFirstName.encodeAsURL()}/${processInstance.phSurname.encodeAsURL()}/PH/${message(code:'subscription.agreement.ph').encodeAsURL()}/${processInstance.id}/${session.id}/${createLink(controller: "subscriptionEx", action:"saveSubscription", absolute: true).encodeAsURL()}">${processInstance.phFirstName} ${processInstance.phSurname} - Pracownik eService</a>
                       </span>
                       <span>
-                            <a href="" onclick="refreshSignature('${processInstance.id}','PH');return false;" class="button action"><g:message code="subscription.refresh" /></a>
+                            <a href="" onclick="refreshSignature('${processInstance.id}','PH','subscribe-PH');return false;" class="button action"><g:message code="subscription.refresh" /></a>
                       </span>
                     </li>
+
                     <li>
                         <a href="<g:createLink controller="file" action="get" params="[root: 'mobileAppPath', path: 'eumowy-mobile.apk']"/>">${message(code:'subscription.download.mobileApp')}</a>
                     </li>
