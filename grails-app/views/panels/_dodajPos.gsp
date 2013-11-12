@@ -88,6 +88,7 @@
 					{
 						"Tak": function() {
 							jQuery( this ).dialog( "close" );
+							clearNewPointDataAfterParentDeletion("poses", -1, jQuery(e.target).closest(".newPosPanel").attr('data-js-id'));
 							jQuery(e.target).closest(".newPosPanel").remove();
 							panelPosInternalCount--;
 							

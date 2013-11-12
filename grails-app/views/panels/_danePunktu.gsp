@@ -313,6 +313,7 @@
                                  value="${pointData?.sslPPIlosc}" readonly="readonly"
                                  class="half-width integer-number"/> PP. szt.</td>
                 <td><eumowy:currencyField name="${panelType}[${id}].sslCena"
+                				 id="${panelType}[${id}].sslPrice"
                                  value="${pointData?.sslCena}"
                                  validatable="${pointData}"
                                  validateField="sslCena"
