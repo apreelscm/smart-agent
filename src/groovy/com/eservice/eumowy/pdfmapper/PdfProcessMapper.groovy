@@ -106,10 +106,10 @@ class PdfProcessMapper extends AbstractPdfMapper{
             }
         } else if (['one_for_all_terminals_in_point', 'other_for_selected_terminals'].contains(getFromProcessDataSet(pd, "odplatneUzywanie"))){
             def result = [:]
-            processInstance.hirePayments?.findAll{it.isVisible && it.isChoosen}.each{ HirePayment hp ->
+            processInstance.hirePayments?.findAll{it.isVisible}.each{ HirePayment hp ->
 
                 //Gdy bedzie PP trzeba dodac hp.currentPpPayment
-                BigDecimal sum = hp.newTermPayment
+                BigDecimal sum = hp.isChoosen ? hp.newTermPayment : hp.currentTermPayment
                 Integer count = hp.termCount
 
                 if (sum>0){
