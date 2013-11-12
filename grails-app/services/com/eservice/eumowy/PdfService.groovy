@@ -182,6 +182,24 @@ class PdfService {
 
         return updatedContent
     }
+	
+	def addBlackFaksymileToDocument(byte[] documentContent, def sigId) {
+		byte[] updatedContent = documentContent
+		Map<String,Object[]> subscriptionsMap = new HashMap<String, Object[]>()
+		String subscriptionsPath = appParametersService.getSubscriptionsPath()
+		String subscriptionsBlackNamePrefix = appParametersService.getSubscriptionsBlackPrefix()
+		
+		Signature sig = Signature.get(sigId)
+		
+		sig.subscriptionDefinitions.findAll { (it.role == Subscription.PersonRole.ZARZAD1 || it.role == Subscription.PersonRole.ZARZAD2) && it.subscriptionPageNumber != null && it.subscriptionPageNumber > -1}
+		.eachWithIndex{ SubscriptionDefinition it, int i ->
+			subscriptionsMap.put(it.role.name() + i, [new File(subscriptionsPath+File.separator+subscriptionsBlackNamePrefix+it.fileName).toURI().toURL(), "", "signature", it.subscriptionPageNumber.toString(), (it.subscriptionX).toString(), it.subscriptionY.toString(), it.scaleX, it.scaleY] as String[])
+		}
+		
+		updatedContent = PdfGenerator.addImageToPdfContent(sig.templatePath, documentContent, subscriptionsMap)
+		
+		return updatedContent
+	}
 
     private def attachSignatures(Signature sig, Set<Subscription> subscriptions, Subscription.PersonRole personRole) {
         def result = [:]

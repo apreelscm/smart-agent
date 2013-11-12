@@ -1,4 +1,4 @@
-<div class="newPosPanel">
+<div data-js-id="${id}" class="newPosPanel">
 	<input type="hidden" id="${panelType}[${id}].id" name="${panelType}[${id}].id" value="${pointData?.id}" />
 	<input type="hidden" name="${panelType}[${id}].parentPosId" value="${pointData?.parentPosId}" />
     <fieldset style="text-align: center">

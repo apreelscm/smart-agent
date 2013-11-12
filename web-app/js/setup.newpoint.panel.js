@@ -252,98 +252,114 @@ function setupNewPointPanelData(prefix, ppid, pid) {
 
     var nip = jQuery("#akceptantNip").val();
     var globalMCC = jQuery("#globalMCC").val();
-    var mmccode = jQuery("#"+prevPanelId+"mccCode").val();
-    var bankAccount = jQuery("#"+prevPanelId+"bankAccountNumber").val();
+    var mmccode = jQuery("#\\["+sameForEveryPointSourcePanelId['sameForEveryPoint']+"\\]\\.mccCode").val();
+    var bankAccount = jQuery("#\\["+sameForEveryPointSourcePanelId['sameForEveryPoint']+"\\]\\.bankAccountNumber").val();
 
     if (Object.keys(possetforselectedpoint).length == 0) {
-        possetforselectedpoint['possetforselectedpointDialupType'] = jQuery("#"+prevPanelId+"possetforselectedpointDialupType").val();
-        possetforselectedpoint['dialupCount'] = jQuery("#"+prevPanelId+"dialupCount").val();
-        possetforselectedpoint['dialupPPCount'] = jQuery("#"+prevPanelId+"dialupPPCount").val();
-        possetforselectedpoint['dialupPrice'] = jQuery("#"+prevPanelId+"dialupPrice").val();
-        possetforselectedpoint['dialupPPPrice'] = jQuery("#"+prevPanelId+"dialupPPPrice").val();
-        possetforselectedpoint['dialupPricePreferencyjna'] = jQuery("#"+prevPanelId+"dialupPricePreferencyjna").val();
-        possetforselectedpoint['dialupPPPricePreferencyjna'] = jQuery("#"+prevPanelId+"dialupPPPricePreferencyjna").val();
-
-        possetforselectedpoint['possetforselectedpointVpnType'] = jQuery("#"+prevPanelId+"possetforselectedpointVpnType").val();
-        possetforselectedpoint['vpnCount'] = jQuery("#"+prevPanelId+"vpnCount").val();
-        possetforselectedpoint['vpnPPCount'] = jQuery("#"+prevPanelId+"vpnPPCount").val();
-        possetforselectedpoint['vpnPrice'] = jQuery("#"+prevPanelId+"vpnPrice").val();
-        possetforselectedpoint['vpnPPPrice'] = jQuery("#"+prevPanelId+"vpnPPPrice").val();
-        possetforselectedpoint['vpnPricePreferencyjna'] = jQuery("#"+prevPanelId+"vpnPricePreferencyjna").val();
-        possetforselectedpoint['vpnPPPricePreferencyjna'] = jQuery("#"+prevPanelId+"vpnPPPricePreferencyjna").val();
-
-        possetforselectedpoint['possetforselectedpointSslType'] = jQuery("#"+prevPanelId+"possetforselectedpointSslType").val();
-        possetforselectedpoint['sslCount'] = jQuery("#"+prevPanelId+"sslCount").val();
-        possetforselectedpoint['sslPPCount'] = jQuery("#"+prevPanelId+"sslPPCount").val();
-        possetforselectedpoint['sslPrice'] = jQuery("#"+prevPanelId+"sslPrice").val();
-        possetforselectedpoint['sslPPPrice'] = jQuery("#"+prevPanelId+"sslPPPrice").val();
-        possetforselectedpoint['sslPricePreferencyjna'] = jQuery("#"+prevPanelId+"sslPricePreferencyjna").val();
-        possetforselectedpoint['sslPPPricePreferencyjna'] = jQuery("#"+prevPanelId+"sslPPPricePreferencyjna").val();
-
-        possetforselectedpoint['possetforselectedpointWifiType'] = jQuery("#"+prevPanelId+"possetforselectedpointWifiType").val();
-        possetforselectedpoint['wifiCount'] = jQuery("#"+prevPanelId+"wifiCount").val();
-        possetforselectedpoint['wifiPrice'] = jQuery("#"+prevPanelId+"wifiPrice").val();
-        possetforselectedpoint['wifiPricePreferencyjna'] = jQuery("#"+prevPanelId+"wifiPricePreferencyjna").val();
-
-        possetforselectedpoint['possetforselectedpointPinpadType'] = jQuery("#"+prevPanelId+"possetforselectedpointPinpadType").val();
-        possetforselectedpoint['pinpadCount'] = jQuery("#"+prevPanelId+"pinpadCount").val();
-        possetforselectedpoint['pinpadPrice'] = jQuery("#"+prevPanelId+"pinpadPrice").val();
-        possetforselectedpoint['pinpadPricePreferencyjna'] = jQuery("#"+prevPanelId+"pinpadPricePreferencyjna").val();
-
-        possetforselectedpoint['possetforselectedpointGprsType'] = jQuery("#"+prevPanelId+"possetforselectedpointGprsType").val();
-        possetforselectedpoint['gprsCount'] = jQuery("#"+prevPanelId+"gprsCount").val();
-        possetforselectedpoint['gprsPPCount'] = jQuery("#"+prevPanelId+"gprsPPCount").val();
-        possetforselectedpoint['gprsPrice'] = jQuery("#"+prevPanelId+"gprsPrice").val();
-        possetforselectedpoint['gprsPPPrice'] = jQuery("#"+prevPanelId+"gprsPPPrice").val();
-        possetforselectedpoint['gprsPricePreferencyjna'] = jQuery("#"+prevPanelId+"gprsPricePreferencyjna").val();
-        possetforselectedpoint['gprsPPPricePreferencyjna'] = jQuery("#"+prevPanelId+"gprsPPPricePreferencyjna").val();
-    }
+    	if (sameForEveryPointSourcePanelId['possetforselectedpointSameForEveryPoint'] != -1) {
+    		prevPanelId = prefix+"\\["+sameForEveryPointSourcePanelId['possetforselectedpointSameForEveryPoint']+"\\]\\.";
+    	
+	        possetforselectedpoint['possetforselectedpointDialupType'] = jQuery("#"+prevPanelId+"possetforselectedpointDialupType").val();
+	        possetforselectedpoint['dialupCount'] = jQuery("#"+prevPanelId+"dialupCount").val();
+	        possetforselectedpoint['dialupPPCount'] = jQuery("#"+prevPanelId+"dialupPPCount").val();
+	        possetforselectedpoint['dialupPrice'] = jQuery("#"+prevPanelId+"dialupPrice").val();
+	        possetforselectedpoint['dialupPPPrice'] = jQuery("#"+prevPanelId+"dialupPPPrice").val();
+	        possetforselectedpoint['dialupPricePreferencyjna'] = jQuery("#"+prevPanelId+"dialupPricePreferencyjna").val();
+	        possetforselectedpoint['dialupPPPricePreferencyjna'] = jQuery("#"+prevPanelId+"dialupPPPricePreferencyjna").val();
+	
+	        possetforselectedpoint['possetforselectedpointVpnType'] = jQuery("#"+prevPanelId+"possetforselectedpointVpnType").val();
+	        possetforselectedpoint['vpnCount'] = jQuery("#"+prevPanelId+"vpnCount").val();
+	        possetforselectedpoint['vpnPPCount'] = jQuery("#"+prevPanelId+"vpnPPCount").val();
+	        possetforselectedpoint['vpnPrice'] = jQuery("#"+prevPanelId+"vpnPrice").val();
+	        possetforselectedpoint['vpnPPPrice'] = jQuery("#"+prevPanelId+"vpnPPPrice").val();
+	        possetforselectedpoint['vpnPricePreferencyjna'] = jQuery("#"+prevPanelId+"vpnPricePreferencyjna").val();
+	        possetforselectedpoint['vpnPPPricePreferencyjna'] = jQuery("#"+prevPanelId+"vpnPPPricePreferencyjna").val();
+	
+	        possetforselectedpoint['possetforselectedpointSslType'] = jQuery("#"+prevPanelId+"possetforselectedpointSslType").val();
+	        possetforselectedpoint['sslCount'] = jQuery("#"+prevPanelId+"sslCount").val();
+	        possetforselectedpoint['sslPPCount'] = jQuery("#"+prevPanelId+"sslPPCount").val();
+	        possetforselectedpoint['sslPrice'] = jQuery("#"+prevPanelId+"sslPrice").val();
+	        possetforselectedpoint['sslPPPrice'] = jQuery("#"+prevPanelId+"sslPPPrice").val();
+	        possetforselectedpoint['sslPricePreferencyjna'] = jQuery("#"+prevPanelId+"sslPricePreferencyjna").val();
+	        possetforselectedpoint['sslPPPricePreferencyjna'] = jQuery("#"+prevPanelId+"sslPPPricePreferencyjna").val();
+	
+	        possetforselectedpoint['possetforselectedpointWifiType'] = jQuery("#"+prevPanelId+"possetforselectedpointWifiType").val();
+	        possetforselectedpoint['wifiCount'] = jQuery("#"+prevPanelId+"wifiCount").val();
+	        possetforselectedpoint['wifiPrice'] = jQuery("#"+prevPanelId+"wifiPrice").val();
+	        possetforselectedpoint['wifiPricePreferencyjna'] = jQuery("#"+prevPanelId+"wifiPricePreferencyjna").val();
+	
+	        possetforselectedpoint['possetforselectedpointPinpadType'] = jQuery("#"+prevPanelId+"possetforselectedpointPinpadType").val();
+	        possetforselectedpoint['pinpadCount'] = jQuery("#"+prevPanelId+"pinpadCount").val();
+	        possetforselectedpoint['pinpadPrice'] = jQuery("#"+prevPanelId+"pinpadPrice").val();
+	        possetforselectedpoint['pinpadPricePreferencyjna'] = jQuery("#"+prevPanelId+"pinpadPricePreferencyjna").val();
+	
+	        possetforselectedpoint['possetforselectedpointGprsType'] = jQuery("#"+prevPanelId+"possetforselectedpointGprsType").val();
+	        possetforselectedpoint['gprsCount'] = jQuery("#"+prevPanelId+"gprsCount").val();
+	        possetforselectedpoint['gprsPPCount'] = jQuery("#"+prevPanelId+"gprsPPCount").val();
+	        possetforselectedpoint['gprsPrice'] = jQuery("#"+prevPanelId+"gprsPrice").val();
+	        possetforselectedpoint['gprsPPPrice'] = jQuery("#"+prevPanelId+"gprsPPPrice").val();
+	        possetforselectedpoint['gprsPricePreferencyjna'] = jQuery("#"+prevPanelId+"gprsPricePreferencyjna").val();
+	        possetforselectedpoint['gprsPPPricePreferencyjna'] = jQuery("#"+prevPanelId+"gprsPPPricePreferencyjna").val();
+    	}
+	}
 
     if (Object.keys(technicalinformation).length == 0) {
-        technicalinformation['dayCloseFrom'] = jQuery("#"+prevPanelId+"dayCloseFrom").val();
-        technicalinformation['dayCloseTo'] = jQuery("#"+prevPanelId+"dayCloseTo").val();
-        technicalinformation['plannedInstallationDate'] = jQuery("#"+prevPanelId+"plannedInstallationDate").val();
-        technicalinformation['additionalNotes'] = jQuery("#"+prevPanelId+"additionalNotes").val();
+    	if (sameForEveryPointSourcePanelId['technicalinformationSameForEveryPoint'] != -1) {
+    		prevPanelId = prefix+"\\["+sameForEveryPointSourcePanelId['technicalinformationSameForEveryPoint']+"\\]\\.";
+    		
+	        technicalinformation['dayCloseFrom'] = jQuery("#"+prevPanelId+"dayCloseFrom").val();
+	        technicalinformation['dayCloseTo'] = jQuery("#"+prevPanelId+"dayCloseTo").val();
+	        technicalinformation['plannedInstallationDate'] = jQuery("#"+prevPanelId+"plannedInstallationDate").val();
+	        technicalinformation['additionalNotes'] = jQuery("#"+prevPanelId+"additionalNotes").val();
+    	}
     }
 
     if (Object.keys(terminaloptions).length == 0) {
-        terminaloptions['preauthorization'] = jQuery("#"+prevPanelId+"preauthorization").prop("checked");
-        terminaloptions['noreturnfunction'] = jQuery("#"+prevPanelId+"noreturnfunction").prop("checked");
-        terminaloptions['returnWithPassword'] = jQuery("#"+prevPanelId+"returnWithPassword").prop("checked");
-        terminaloptions['setAnalysis'] = jQuery("#"+prevPanelId+"setAnalysis").prop("checked");
-        terminaloptions['cashMachineSystemIntegration'] = jQuery("#"+prevPanelId+"cashMachineSystemIntegration").prop("checked");
-        terminaloptions['returnIKO'] = jQuery("#"+prevPanelId+"returnIKO").prop("checked");
-        terminaloptions['loggingBeforeEveryTransaction'] = jQuery("#"+prevPanelId+"loggingBeforeEveryTransaction").prop("checked");
-        terminaloptions['logginEveryChange'] = jQuery("#"+prevPanelId+"logginEveryChange").prop("checked");
-        terminaloptions['tip1'] = jQuery("#"+prevPanelId+"tip1").prop("checked");
-        terminaloptions['telePompka'] = jQuery("#"+prevPanelId+"telePompka").prop("checked");
-        terminaloptions['teleKodzik'] = jQuery("#"+prevPanelId+"teleKodzik").prop("checked");
-        terminaloptions['giftCard'] = jQuery("#"+prevPanelId+"giftCard").prop("checked");
-        terminaloptions['terminalCount'] = jQuery("#"+prevPanelId+"terminalCount").val();
+    	if (sameForEveryPointSourcePanelId['terminaloptionsSameForEveryPoint'] != -1) {
+    		prevPanelId = prefix+"\\["+sameForEveryPointSourcePanelId['terminaloptionsSameForEveryPoint']+"\\]\\.";
+    		
+	        terminaloptions['preauthorization'] = jQuery("#"+prevPanelId+"preauthorization").prop("checked");
+	        terminaloptions['noreturnfunction'] = jQuery("#"+prevPanelId+"noreturnfunction").prop("checked");
+	        terminaloptions['returnWithPassword'] = jQuery("#"+prevPanelId+"returnWithPassword").prop("checked");
+	        terminaloptions['setAnalysis'] = jQuery("#"+prevPanelId+"setAnalysis").prop("checked");
+	        terminaloptions['cashMachineSystemIntegration'] = jQuery("#"+prevPanelId+"cashMachineSystemIntegration").prop("checked");
+	        terminaloptions['returnIKO'] = jQuery("#"+prevPanelId+"returnIKO").prop("checked");
+	        terminaloptions['loggingBeforeEveryTransaction'] = jQuery("#"+prevPanelId+"loggingBeforeEveryTransaction").prop("checked");
+	        terminaloptions['logginEveryChange'] = jQuery("#"+prevPanelId+"logginEveryChange").prop("checked");
+	        terminaloptions['tip1'] = jQuery("#"+prevPanelId+"tip1").prop("checked");
+	        terminaloptions['telePompka'] = jQuery("#"+prevPanelId+"telePompka").prop("checked");
+	        terminaloptions['teleKodzik'] = jQuery("#"+prevPanelId+"teleKodzik").prop("checked");
+	        terminaloptions['giftCard'] = jQuery("#"+prevPanelId+"giftCard").prop("checked");
+	        terminaloptions['terminalCount'] = jQuery("#"+prevPanelId+"terminalCount").val();
+    	}
     }
 
     if (Object.keys(additionalequipment).length == 0) {
-        additionalequipment['bazaCount'] = jQuery("#"+prevPanelId+"bazaCount").val();
-        additionalequipment['routerCount'] = jQuery("#"+prevPanelId+"routerCount").val();
-        additionalequipment['cardReaderCount'] = jQuery("#"+prevPanelId+"cardReaderCount").val();
-        additionalequipment['simCardCount'] = jQuery("#"+prevPanelId+"simCardCount").val();
-        additionalequipment['simCardType'] = jQuery("#"+prevPanelId+"simCardType").val();
-        additionalequipment['otherAdditionalDevice'] = jQuery("#"+prevPanelId+"otherAdditionalDevice").val();
-        additionalequipment['otherAdditionalDeviceCount'] = jQuery("#"+prevPanelId+"otherAdditionalDeviceCount").val();
+    	if (sameForEveryPointSourcePanelId['additionalequipmentSameForEveryPoint'] != -1) {
+    		prevPanelId = prefix+"\\["+sameForEveryPointSourcePanelId['additionalequipmentSameForEveryPoint']+"\\]\\.";
+		
+			additionalequipment['bazaCount'] = jQuery("#"+prevPanelId+"bazaCount").val();
+	        additionalequipment['routerCount'] = jQuery("#"+prevPanelId+"routerCount").val();
+	        additionalequipment['cardReaderCount'] = jQuery("#"+prevPanelId+"cardReaderCount").val();
+	        additionalequipment['simCardCount'] = jQuery("#"+prevPanelId+"simCardCount").val();
+	        additionalequipment['simCardType'] = jQuery("#"+prevPanelId+"simCardType").val();
+	        additionalequipment['otherAdditionalDevice'] = jQuery("#"+prevPanelId+"otherAdditionalDevice").val();
+	        additionalequipment['otherAdditionalDeviceCount'] = jQuery("#"+prevPanelId+"otherAdditionalDeviceCount").val();
+    	}
     }
 
     jQuery("#"+panelId+"nip").val(nip).keyup();
     jQuery("#"+panelId+"mccCode").val(globalMCC).keyup();
 
     if (panelId != prevPanelId) {
-        if (jQuery("#"+prevPanelId+"sameForEveryPoint").is(':checked')) {
+        if (sameForEveryPointSourcePanelId['sameForEveryPoint'] != -1) {
             jQuery("#"+panelId+"mccCode").val(mmccode).keyup();
             jQuery("#"+panelId+"bankAccountNumber").val(bankAccount).keyup();
             jQuery("#"+panelId+"sameForEveryPoint").prop("checked", true);
             jQuery("#"+panelId+"sameForEveryPoint").prop("disabled", true);
         }
 
-        if (jQuery("#"+prevPanelId+"possetforselectedpointSameForEveryPoint").is(':checked')) {
+        if (sameForEveryPointSourcePanelId['possetforselectedpointSameForEveryPoint'] != -1) {
             jQuery("#"+panelId+"possetforselectedpointDialupType").val(possetforselectedpoint['possetforselectedpointDialupType']);
             jQuery("#"+panelId+"dialupCount").val(possetforselectedpoint['dialupCount']);
             jQuery("#"+panelId+"dialupPPCount").val(possetforselectedpoint['dialupPPCount']);
@@ -390,7 +406,7 @@ function setupNewPointPanelData(prefix, ppid, pid) {
             jQuery("#"+panelId+"possetforselectedpointSameForEveryPoint").prop("disabled", true);
         }
 
-        if (jQuery("#"+prevPanelId+"technicalinformationSameForEveryPoint").is(':checked')) {
+        if (sameForEveryPointSourcePanelId['technicalinformationSameForEveryPoint'] != -1) {
             jQuery("#"+panelId+"dayCloseFrom").val(technicalinformation['dayCloseFrom']).keyup();
             jQuery("#"+panelId+"dayCloseTo").val(technicalinformation['dayCloseTo']).keyup();
             jQuery("#"+panelId+"plannedInstallationDate").val(technicalinformation['plannedInstallationDate']).keyup();
@@ -399,7 +415,7 @@ function setupNewPointPanelData(prefix, ppid, pid) {
             jQuery("#"+panelId+"technicalinformationSameForEveryPoint").prop("disabled", true);
         }
 
-        if (jQuery("#"+prevPanelId+"terminaloptionsSameForEveryPoint").is(':checked')) {
+        if (sameForEveryPointSourcePanelId['terminaloptionsSameForEveryPoint'] != -1) {
             jQuery("#"+panelId+"preauthorization").prop("checked", terminaloptions['preauthorization']);
             jQuery("#"+panelId+"noreturnfunction").prop("checked", terminaloptions['noreturnfunction']);
             jQuery("#"+panelId+"returnWithPassword").prop("checked", terminaloptions['returnWithPassword']);
@@ -417,7 +433,7 @@ function setupNewPointPanelData(prefix, ppid, pid) {
             jQuery("#"+panelId+"terminaloptionsSameForEveryPoint").prop("disabled", true);
         }
 
-        if (jQuery("#"+prevPanelId+"additionalequipmentSameForEveryPoint").is(':checked')) {
+        if (sameForEveryPointSourcePanelId['additionalequipmentSameForEveryPoint'] != -1) {
             jQuery("#"+panelId+"bazaCount").val(additionalequipment['bazaCount']);
             jQuery("#"+panelId+"routerCount").val(additionalequipment['routerCount']);
             jQuery("#"+panelId+"cardReaderCount").val(additionalequipment['cardReaderCount']);
@@ -486,12 +502,65 @@ function setRequiredForSimCardForPanelId(isRequired, panelId){
     }
 }
 
-function clearNewPointData(prefix, prevPanelId, panelId) {
+function clearNewPointDataAfterParentDeletion(prefix, ppid, pid) {
+	if (sameForEveryPointSourcePanelId['sameForEveryPoint'] == pid) {
+		sameForEveryPointSourcePanelId['sameForEveryPoint'] = -1;
+	}
+	
+	if (sameForEveryPointSourcePanelId['possetforselectedpointSameForEveryPoint'] == pid) {
+		sameForEveryPointSourcePanelId['possetforselectedpointSameForEveryPoint'] = -1;
+	}
+	
+	if (sameForEveryPointSourcePanelId['technicalinformationSameForEveryPoint'] == pid) {
+		sameForEveryPointSourcePanelId['technicalinformationSameForEveryPoint'] = -1;
+	}
+	
+	if (sameForEveryPointSourcePanelId['terminaloptionsSameForEveryPoint'] == pid) {
+		sameForEveryPointSourcePanelId['terminaloptionsSameForEveryPoint'] = -1;
+	}
+	
+	if (sameForEveryPointSourcePanelId['additionalequipmentSameForEveryPoint'] == pid) {
+		sameForEveryPointSourcePanelId['additionalequipmentSameForEveryPoint'] = -1;
+	}
+	
+	for(var i = 0; i < getGlobalPanelCount(prefix); i++) {
+        if (i != pid) {
+        	var panelId = prefix + "\\["+i+"\\]\\.";
+        	
+        	if (sameForEveryPointSourcePanelId['sameForEveryPoint'] == -1) {
+        		jQuery("#"+panelId+"sameForEveryPoint").prop("checked", false);
+                jQuery("#"+panelId+"sameForEveryPoint").prop("disabled", false);
+        	}
+        	
+        	if (sameForEveryPointSourcePanelId['possetforselectedpointSameForEveryPoint'] == -1) {
+        		jQuery("#"+panelId+"possetforselectedpointSameForEveryPoint").prop("checked", false);
+                jQuery("#"+panelId+"possetforselectedpointSameForEveryPoint").prop("disabled", false);
+        	}
+        	
+        	if (sameForEveryPointSourcePanelId['technicalinformationSameForEveryPoint'] == -1) {
+        		jQuery("#"+panelId+"technicalinformationSameForEveryPoint").prop("checked", false);
+                jQuery("#"+panelId+"technicalinformationSameForEveryPoint").prop("disabled", false);
+        	}
+        	
+        	if (sameForEveryPointSourcePanelId['terminaloptionsSameForEveryPoint'] == -1) {
+        		jQuery("#"+panelId+"terminaloptionsSameForEveryPoint").prop("checked", false);
+                jQuery("#"+panelId+"terminaloptionsSameForEveryPoint").prop("disabled", false);
+        	}
+        	
+        	if (sameForEveryPointSourcePanelId['additionalequipmentSameForEveryPoint'] == -1) {
+        		jQuery("#"+panelId+"additionalequipmentSameForEveryPoint").prop("checked", false);
+                jQuery("#"+panelId+"additionalequipmentSameForEveryPoint").prop("disabled", false);
+        	}
+        }
+    }
+}
+
+function clearNewPointData(prefix, ppid, pid) {
 	var prevPanelId = prefix+"\\["+ppid+"\\]\\.";
 	var panelId = prefix+"\\["+pid+"\\]\\.";
 	
 	if (panelId != prevPanelId) {
-        if (jQuery("#"+prevPanelId+"sameForEveryPoint").is(':checked') == false) {
+        if (sameForEveryPointSourcePanelId['sameForEveryPoint'] == -1) {
             jQuery("#"+panelId+"nip").val("");
             jQuery("#"+panelId+"mccCode").val("");
             jQuery("#"+panelId+"bussinessTypeInPractice").val("");
@@ -501,7 +570,7 @@ function clearNewPointData(prefix, prevPanelId, panelId) {
             jQuery("#"+panelId+"sameForEveryPoint").prop("disabled", false);
         }
 
-        if (jQuery("#"+prevPanelId+"possetforselectedpointSameForEveryPoint"+prevPanelId).is(':checked') == false) {
+        if (sameForEveryPointSourcePanelId['possetforselectedpointSameForEveryPoint'] == -1) {
             jQuery("#"+panelId+"possetforselectedpointDialupType").val("");
             jQuery("#"+panelId+"dialupCount").val("");
             jQuery("#"+panelId+"dialupPPCount").val("");
@@ -532,7 +601,7 @@ function clearNewPointData(prefix, prevPanelId, panelId) {
             jQuery("#"+panelId+"possetforselectedpointSameForEveryPoint").prop("disabled", false);
         }
 
-        if (jQuery("#"+prevPanelId+"technicalinformationSameForEveryPoint").is(':checked') == false) {
+        if (sameForEveryPointSourcePanelId['technicalinformationSameForEveryPoint'] == -1) {
             jQuery("#"+panelId+"dayCloseFrom").val("");
             jQuery("#"+panelId+"dayCloseTo").val("");
             jQuery("#"+panelId+"plannedInstallationDate").val("");
@@ -541,7 +610,7 @@ function clearNewPointData(prefix, prevPanelId, panelId) {
             jQuery("#"+panelId+"technicalinformationSameForEveryPoint").prop("disabled", false);
         }
 
-        if (jQuery("#"+prevPanelId+"terminaloptionsSameForEveryPoint").is(':checked') == false) {
+        if (sameForEveryPointSourcePanelId['terminaloptionsSameForEveryPoint'] == -1) {
             jQuery("#"+panelId+"preauthorization").prop("checked", false);
             jQuery("#"+panelId+"noreturnfunction").prop("checked", false);
             jQuery("#"+panelId+"returnWithPassword").prop("checked", false);
@@ -559,7 +628,7 @@ function clearNewPointData(prefix, prevPanelId, panelId) {
             jQuery("#"+panelId+"terminaloptionsSameForEveryPoint").prop("disabled", false);
         }
 
-        if (jQuery("#"+prevPanelId+"additionalequipmentSameForEveryPoint").is(':checked') == false) {
+        if (sameForEveryPointSourcePanelId['additionalequipmentSameForEveryPoint'] == -1) {
             jQuery("#"+panelId+"pinPadCount").val("");
             jQuery("#"+panelId+"pinPadPrice").val("");
             jQuery("#"+panelId+"routerCount").val("");
@@ -678,6 +747,7 @@ function sameForEveryPoint(selector, prefix, panelId){
     jQuery(selector).on("click", function(e) {
     	var index = selector.substring(selector.indexOf('.')+1, selector.length);
     	var panelJsId = parseInt(jQuery(e.target).parents(".newPointPanel").attr('data-js-id'));
+    	console.log("Index: " + index + " PID: " + panelJsId);
     	if (e.target.checked) {
     		sameForEveryPointSourcePanelId[index] = panelJsId;
     	}

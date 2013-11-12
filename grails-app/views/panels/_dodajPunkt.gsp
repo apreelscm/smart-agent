@@ -104,6 +104,7 @@
 				buttons: {
 						"Tak": function() {
 							jQuery( this ).dialog( "close" );
+							clearNewPointDataAfterParentDeletion("points", -1, jQuery(e.target).closest(".newPointPanel").attr('data-js-id'));
 							jQuery(e.target).closest(".newPointPanel").remove();
 							panelInternalCount.value--;
 							
