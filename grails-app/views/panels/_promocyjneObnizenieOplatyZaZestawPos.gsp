@@ -1,5 +1,4 @@
 <div id="posDiscountPanel">
-    <g:hiddenField name="promObjNaj1" value="${data.promObjNaj1}"/>
     <fieldset style="text-align: center">
         <div class="belka-glowna"><g:message code="panel.pos.discount.title"/></div>
         <div style="text-align: center; padding-top: 20px; width: 750px" class="centre">
@@ -31,14 +30,20 @@
     </fieldset>
 </div>
 
-
-
-
 <r:require module="jquery_ui"/>
 
 <r:script>
     jQuery(document).ready(function() {
         var discCount = parseInt('${data.allPoses.size()}');
+        var discountTerminalCount = parseInt('${data.promObjNajLiczbaTerminali}');
+        var slotsInDocument = 5;
+
+        var permitedPosesSize;
+        if (isNaN(discountTerminalCount)){
+            permitedPosesSize = slotsInDocument;
+        } else {
+            permitedPosesSize = Math.min(discountTerminalCount, slotsInDocument);
+        }
 
         for (var i =0; i< discCount; i++){
             var start = jQuery('#allPoses\\['+ i +'\\]\\.dataOd');
@@ -56,24 +61,20 @@
 
             new function (s) {
                 s.on("change", function(event){
-                       var monthsToadd = jQuery("#promObjNaj1").val()
+                    var monthsToadd = '${data.promObjNaj1}';
                     selectAllFields(new Date(event.target.value), discCount, monthsToadd ? parseInt(monthsToadd) : 1);
                 });
             }(start);
 
             new function (s) {
-                console.log(s);
                 s.on("change", function (){
-                    var count = getCheckedCount(discCount);
-                    if (count>=5){
-                        disableCheckboxes(discCount);
-                    } else {
-                        enableCheckboxes(discCount);
-                    }
+                    workWithCheckboxes(discCount, permitedPosesSize);
                 });
             } (jQuery('#allPoses\\['+ i +'\\]\\.czyWybrany'));
 
         }
+
+        workWithCheckboxes(discCount, permitedPosesSize);
     });
 
     function getLastDayOfYearAndMonth(year, month, monthsToAdd){
@@ -132,6 +133,15 @@
     function enableCheckboxes(discCount){
         for (var i = 0; i<discCount; i++){
             jQuery('#allPoses\\['+ i +'\\]\\.czyWybrany').removeAttr("disabled");
+        }
+    }
+
+    function workWithCheckboxes(discCount, permitedPosesSize){
+        var count = getCheckedCount(discCount);
+        if (count>=permitedPosesSize){
+            disableCheckboxes(discCount);
+        } else {
+            enableCheckboxes(discCount);
         }
     }
 

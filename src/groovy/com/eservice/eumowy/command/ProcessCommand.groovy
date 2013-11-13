@@ -654,6 +654,7 @@ class ProcessCommand implements Serializable {
 
     @Omit
     String promObjNaj1
+    String promObjNajLiczbaTerminali
 
     @Omit(inPopulate = true)
     Boolean isDoladowania_tp
