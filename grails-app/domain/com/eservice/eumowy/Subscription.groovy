@@ -38,6 +38,7 @@ class Subscription implements Serializable {
         surname(blank: false)
 		//personType(nullable:true)
 		personRole(nullable:true)
+        uniqueKey(nullable:true)
     }
 
     static mapping = {
