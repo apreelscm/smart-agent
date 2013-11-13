@@ -135,27 +135,6 @@
 					}
 			});
 			
-			if (panelInternalCount.value < 10) {
-				jQuery("#addNewPointButton").prop("disabled", false);
-			}
-			
-			if (panelInternalCount.value == 0) {
-				jQuery("#continueButton").prop("disabled", true);
-			}
-			
-			if (getCurrentTerminalCount("points") < maxTerminalCount) {
-				jQuery("#addNewPointButton").prop("disabled", false);
-				jQuery("#addNewPosButton").prop("disabled", false);
-			}
-
-			refreshTelepomkaAndTelekodzikPercentValues();
-			
-			var dbPointId = parseInt(jQuery(e.target).attr('data-point-id'));
-			if (dbPointId) {
-				console.log("Usuwam punkt o id: " + dbPointId);
-				jQuery.post(jQuery(location).attr("href"), {_eventId_deletePoint: "", pointId: dbPointId}, function(data){});			
-			}
-			
 			return false;
 		});
 

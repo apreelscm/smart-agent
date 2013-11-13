@@ -590,7 +590,27 @@ class ActivityController {
                 }
                 flow.data = cmd
                 flow.processInstance = processInstance
-            }.to "saveOnly"
+            }.to "selectedPanels"
+			on("deletePos") {
+				def processInstance = flow.processInstance
+				def cmd = flow.data
+				def pos = PosData.get(Integer.valueOf(params.posId));
+				if (pos != null) {
+					log.info "DeletePos - Usuwam pos o id: " + params.posId
+					PointData point = pos.point
+					pos.removeFromPoint(point)
+					pos.delete()
+					point.save()
+					processInstance.save(flush: true)
+	
+					cmd?.poses?.removeAll { it.id == pos.id }
+				}
+				else {
+					log.info "DeletePos - Nie znalazłem pos o id: " + params.posId
+				}
+				flow.data = cmd
+				flow.processInstance = processInstance
+			}.to "selectedPanels"
             on("saveOnly"){ ProcessCommand cmd ->
                 log.info params
                 log.info params.get('allPoses[0]')
@@ -859,6 +879,26 @@ class ActivityController {
                 flow.data = cmd
                 flow.processInstance = processInstance
             }.to "selectedPanels"
+			on("deletePos") {
+				def processInstance = flow.processInstance
+				def cmd = flow.data
+				def pos = PosData.get(Integer.valueOf(params.posId));
+				if (pos != null) {
+					log.info "DeletePos - Usuwam pos o id: " + params.posId
+					PointData point = pos.point
+					point.posDatas.removeAll { it.id == pos.id }
+					pos.delete()
+					point.save()
+					processInstance.save(flush: true)
+
+					cmd?.poses?.removeAll { it.id == pos.id }
+				}
+				else {
+					log.info "DeletePos - Nie znalazłem pos o id: " + params.posId
+				}
+				flow.data = cmd
+				flow.processInstance = processInstance
+			}.to "selectedPanels"
             on("saveOnly"){ ProcessCommand cmd ->
                 Process processInstance = processService.populateProcessWithData(flow.processInstance,cmd)
 

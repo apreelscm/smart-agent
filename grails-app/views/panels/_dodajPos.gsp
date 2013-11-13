@@ -100,6 +100,12 @@
 							if (panelPosInternalCount == 0) {
 								jQuery("#continueButton").prop("disabled", true);
 							}
+							
+							var dbPosId = parseInt(jQuery(e.target).attr('data-pos-id'));
+							if (dbPosId) {
+								console.log("Usuwam pos o id: " + dbPosId);
+								jQuery.post(jQuery(location).attr("href"), {_eventId_deletePos: "", posId: dbPosId}, function(data){});			
+							}
 						},
 						"Nie": function() {
 							jQuery( this ).dialog( "close" );

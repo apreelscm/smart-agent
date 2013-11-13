@@ -193,14 +193,20 @@ class PdfService {
 
         sig.subscriptionDefinitions.findAll { (it.role == Subscription.PersonRole.ZARZAD1 || it.role == Subscription.PersonRole.ZARZAD2) && it.subscriptionPageNumber != null && it.subscriptionPageNumber > -1}
                 .eachWithIndex{ SubscriptionDefinition it, int i ->
-
-            subscriptionsMap.put(it.role.name() + i, [new File(
-                subscriptionsPath+File.separator+subscriptionsBlackNamePrefix+it.fileName).toURI().toURL(),
-                it.subscriptionPageNumber,
-                it.subscriptionX,
-                it.subscriptionY,
-                it.scaleX,
-                it.scaleY] as Object[])
+			
+			BufferedImage img = SignatureToImage.convertDataToImage(new File(subscriptionsPath+File.separator+subscriptionsBlackNamePrefix+it.fileName).toURI().toURL())
+            if (img != null) {
+				subscriptionsMap.put(it.role.name() + i, [
+					img,
+	                it.subscriptionPageNumber,
+	                it.subscriptionX,
+	                it.subscriptionY,
+	                it.scaleX,
+	                it.scaleY] as Object[])
+            }
+			else {
+				log.info "Couldn't create black faksymile image from URI for " + sig.templatePath
+			}
 
         }
         updatedContent = PdfGenerator.addImageToPdfContent(sig.templatePath, documentContent, subscriptionsMap)

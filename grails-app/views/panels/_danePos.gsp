@@ -5,7 +5,7 @@
         <div class="belka-glowna"><g:message code="panel.newpos.posdata.title" /></div>
         <div style="text-align: center; padding-top: 20px;" class="centre">
         	<div style="float: right;">
-        		<g:submitButton id="removePosButton" name="removePosButton" class="button submit" value="Usuń Pos" style="margin-right: 2em; margin-bottom: 1em;"/>
+        		<g:submitButton data-pos-id="${pointData?.id}" id="removePosButton" name="removePosButton" class="button submit" value="Usuń Pos" style="margin-right: 2em; margin-bottom: 1em;"/>
         	</div>
         	<div style="clear: both;"></div>
         	<fieldset class="subpanel-fieldset">

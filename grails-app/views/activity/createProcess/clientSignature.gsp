@@ -309,7 +309,10 @@
 	
 	jQuery(".showSignatureDialog").on('click', function(e) {
 	    e.preventDefault();
-	
+		if (isSubscriptionDone[linkId] == true) {
+			return false;
+		}
+		
 	    var currentTarget = jQuery(e.currentTarget),
 	        firstName = currentTarget.attr('data-firstName'),
 	        lastName = currentTarget.attr('data-lastName'),
