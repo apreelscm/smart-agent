@@ -259,6 +259,7 @@ class PdfService {
                     def documentName = begin +  "_" + point.id + end
 
                     def pathClient = sig.filename
+					log.info "PAAAAATH: " + pathClient
                     def beginClient = pathClient.substring(0, pathClient.lastIndexOf('.'));
                     def endClient = pathClient.substring(pathClient.lastIndexOf('.'));
                     def documentClientName = beginClient +  "_" + point.id + endClient
