@@ -244,7 +244,7 @@ class PdfService {
 
         processInstance.points.each{ point ->
 
-            if (point.cbdId == null || (point.posDatas && point.posDatas.findAll{ pos -> pos.tpsId == null}.size()>0)){
+            if ((point.cbdId == null && point.pointDetails != null) || (point.posDatas && point.posDatas.findAll{ pos -> pos.tpsId == null}.size()>0)){
                 //generujemy tylko dokumenty dla tych punktow, ktore nie sa z CBD
                 def dataFromPoint = mapperService.mapOnlyPointData(point)
 
@@ -259,7 +259,6 @@ class PdfService {
                     def documentName = begin +  "_" + point.id + end
 
                     def pathClient = sig.filename
-					log.info "PAAAAATH: " + pathClient
                     def beginClient = pathClient.substring(0, pathClient.lastIndexOf('.'));
                     def endClient = pathClient.substring(pathClient.lastIndexOf('.'));
                     def documentClientName = beginClient +  "_" + point.id + endClient

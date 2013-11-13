@@ -317,8 +317,8 @@ class ProcessService {
         def localPoints = []
         process.points.each { PointData point ->
 
-            /* Don't load points from CBD */
-            if (point.cbdId != null) {
+            /* Don't load points from CBD or points that were from CBD, but were removed and left in our DB - they have nulled CbdId but they lack point details */
+            if (point.cbdId != null || (point.cbdId == null && point.pointDetails == null)) {
                 return
             }
 

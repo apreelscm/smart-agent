@@ -258,7 +258,7 @@
                 </g:if>
                 <g:if test="${panel.name.equals('danePunktu')}">
                     <g:each var="point" in="${data.points}" status="j">
-                        <g:render template="/panels/danePunktu" model="[panelType: 'points', id: j, pointData: point]" />
+                       	<g:render template="/panels/danePunktu" model="[panelType: 'points', id: j, pointData: point]" />
                     </g:each>
                 </g:if>
                 <g:if test="${panel.name.equals('danePos')}">
