@@ -3,19 +3,16 @@ package signaturepad;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 import javax.imageio.ImageIO;
 
 import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.validator.UrlValidator;
 import org.apache.log4j.Logger;
 
 import com.google.gson.Gson;
@@ -34,13 +31,9 @@ public class SignatureToImage {
 	
 	public static BufferedImage convertDataToImage(String data) {
 		BufferedImage img = null;
-		UrlValidator validator = new UrlValidator(UrlValidator.ALLOW_ALL_SCHEMES+UrlValidator.ALLOW_2_SLASHES);
 		
 		if (data.contains("data:image/png;base64,")) {
 			img = convertBase64ToImage(data);
-		}
-		else if (validator.isValid(data)) {
-			img = convertURIFileToImage(data);
 		}
 		else {
 			img = convertJsonToImage(data);
@@ -48,10 +41,14 @@ public class SignatureToImage {
 		return img;
 	}
 	
-    public static BufferedImage convertURIFileToImage(String data) {
+	public static BufferedImage convertDataToImage(URL url) {
+		return convertURIFileToImage(url);
+	}
+	
+    public static BufferedImage convertURIFileToImage(URL data) {
 		BufferedImage img = null;
 		try {
-			img = ImageIO.read(new URL(data));
+			img = ImageIO.read(data);
 		} catch (Exception e) {
 			e.printStackTrace();
 			LOG.warn("Error while generating BufferedImage from URL! - " + e);
