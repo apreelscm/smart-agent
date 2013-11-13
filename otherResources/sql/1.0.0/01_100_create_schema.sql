@@ -286,23 +286,6 @@ create table EUMOWY.POS_DETAILS (
   additional_notes varchar2(1000 char),
   constraint PK_POS_DETAILS primary key (id));
 
-
--- NEW COLUMNS
-alter table EUMOWY.POS_DETAILS add (
-  dialup_price_pref number(8,2),
-  dialup_pp_price_pref number(8,2),
-  vpn_price_pref number(8,2),
-  vpn_pp_price_pref number(8,2),
-  ssl_price_pref number(8,2),
-  ssl_pp_price_pref number(8,2),
-  gprs_price_pref number(8,2),
-  gprs_pp_price_pref number(8,2),
-  pin_pad_price_pref number(8,2),
-  wifi_price_pref number(8,2),
-  sim_card_type varchar2(255 char),
-  sim_card_count number(10,0)
-);
-
 create table EUMOWY.PROCESS (
   id number(12,0) not null,
   version number(2,0) not null,

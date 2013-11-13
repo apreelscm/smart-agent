@@ -38,3 +38,34 @@ create table EUMOWY.HIRE_PAYMENT (
   UPDATE EUMOWY.SIGNATURE s set s.SEND_TO_CLIENT = '0', s.SHOW_ON_PREVIEW = '0' where s.filename is null;
 
   ALTER TABLE EUMOWY.SUBSCRIPTION ADD UNIQUE_KEY varchar2(255 char);
+
+-- brakujace rzeczy
+
+alter table EUMOWY.HIRE_PAYMENT add constraint HIRE_PAYMENT_PROCESS_ID_FK foreign key (process_id) references EUMOWY.PROCESS;
+
+  -- NEW COLUMNS
+alter table EUMOWY.POS_DETAILS add (
+  dialup_price_pref number(8,2),
+  dialup_pp_price_pref number(8,2),
+  vpn_price_pref number(8,2),
+  vpn_pp_price_pref number(8,2),
+  ssl_price_pref number(8,2),
+  ssl_pp_price_pref number(8,2),
+  gprs_price_pref number(8,2),
+  gprs_pp_price_pref number(8,2),
+  pin_pad_price_pref number(8,2),
+  wifi_price_pref number(8,2),
+  sim_card_type varchar2(255 char),
+  sim_card_count number(10,0)
+);
+
+alter table
+   EUMOWY.POINT_DETAILS
+modify
+(
+   service_care1 varchar2(12 char),
+   service_care2 varchar2(12 char),
+   service_care3 varchar2(12 char),
+   business_care varchar2(12 char)
+);
+
