@@ -243,17 +243,19 @@ function unlockDynamicAddress(lock, prefixPanel){
 }
 
 function setupNewPointPanelData(prefix, ppid, pid) {
-	var prevPanelId = prefix+"\\["+ppid+"\\]\\.";
-	var panelId = prefix+"\\["+pid+"\\]\\.";
-    var terminaloptions = {};
-    var technicalinformation = {};
-    var possetforselectedpoint = {};
-    var additionalequipment = {};
+	var prevPanelId = prefix+"\\["+ppid+"\\]\\.",
+	    panelId = prefix+"\\["+pid+"\\]\\.",
+        terminaloptions = {},
+        technicalinformation = {},
+        possetforselectedpoint = {},
+        additionalequipment = {};
 
-    var nip = jQuery("#akceptantNip").val();
-    var globalMCC = jQuery("#globalMCC").val();
-    var mmccode = jQuery("#\\["+sameForEveryPointSourcePanelId['sameForEveryPoint']+"\\]\\.mccCode").val();
-    var bankAccount = jQuery("#\\["+sameForEveryPointSourcePanelId['sameForEveryPoint']+"\\]\\.bankAccountNumber").val();
+    var nip = jQuery("#akceptantNip").val(),
+        globalMCC = jQuery("#globalMCC").val();
+
+    var idPrefix = prefix + "\\[" + sameForEveryPointSourcePanelId['sameForEveryPoint'] + "\\]\\.",
+        mmccode = jQuery("#" + idPrefix + "mccCode").val(),
+        bankAccount = jQuery("#" +  idPrefix + "bankAccountNumber").val();
 
     if (Object.keys(possetforselectedpoint).length == 0) {
     	if (sameForEveryPointSourcePanelId['possetforselectedpointSameForEveryPoint'] != -1) {
@@ -741,12 +743,16 @@ function getDateFromTime(time){
 function sameForEveryPoint(selector, prefix, panelId){
     jQuery(selector).on("click", function(e) {
     	var index = selector.substring(selector.indexOf('.')+1, selector.length);
-    	var panelJsId = parseInt(jQuery(e.target).parents(".newPointPanel").attr('data-js-id'));
-        if(!(panelJsId instanceof Number)) {
-            panelJsId = parseInt(jQuery(e.target).parents(".newPosPanel").attr('data-js-id'));
+        var panel,
+            panelJsId;
+
+        if(jQuery(e.target).parents(".newPointPanel").length === 0){ //newPos
+            panel = jQuery(e.target).parents(".newPosPanel");
+        } else { //newPoint
+            panel = jQuery(e.target).parents(".newPointPanel");
         }
-        console.log(panelJsId);
-    	console.log("Index: " + index + " PID: " + panelJsId);
+        panelJsId = panel.attr('data-js-id');
+
     	if (e.target.checked) {
     		sameForEveryPointSourcePanelId[index] = panelJsId;
     	}
