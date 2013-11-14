@@ -437,7 +437,7 @@ class ProcessService {
             point.posDatas?.each { PosData posData ->
 
                 /* Don't load POSes from CBD */
-                if (posData.tpsId != null) {
+                if (!posData || posData.tpsId != null) {
                     return
                 }
 
