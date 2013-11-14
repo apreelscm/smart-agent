@@ -1052,11 +1052,25 @@ class ProcessService {
             ArrayList<PosData> pdList = new ArrayList<PosData>()
 
             if (pc.id == null) {
-                log.info "NOWY PUNKT DLA POS"
-                pointData = new PointData()
-                pointDataDetails = new PointDataDetails()
+                log.info "NOWY POS"
+                //pointData = new PointData()
+                //pointDataDetails = new PointDataDetails()
 
                 if (pc.cbdId != null) {
+					pointData = PointData.findByCbdIdAndProcess(pc.cbdId, process)
+					
+					if (pointData == null) {
+						log.info "NOWY PUNKT DLA POS"
+						pointData = new PointData()
+						pointDataDetails = new PointDataDetails()
+					}
+					else {
+						pointDataDetails = pointData.pointDetails
+						if (pointDataDetails == null) {
+							pointDataDetails = new PointDataDetails()
+						}
+					}
+					
                     log.info "Ustawiam dane z CBD"
                     def cbdPoint = cbdService.getCbdPointById(cmd.nip,
                             pc.cbdId)
@@ -1077,6 +1091,8 @@ class ProcessService {
                 }
                 else {
                     log.info "Punkt nie pochodzi z CBD"
+					pointData = new PointData()
+					pointDataDetails = new PointDataDetails()
                 }
 
                 posData = new PosData()
