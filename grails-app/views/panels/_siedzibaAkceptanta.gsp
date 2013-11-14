@@ -1,9 +1,9 @@
 <r:script>
     jQuery(document).ready(function() {
-        var fields = new Array("akceptantUlica", "akceptantNrDomu", "akceptantMiasto", "akceptantKodPocztowy", "akceptantPoczta"),
-            clientCbdId = ${client?.cbdId ? client?.cbdId : 'null'};
+        var fields = new Array("akceptantUlica", "akceptantNrDomu", "akceptantMiasto", "akceptantKodPocztowy", "akceptantPoczta");
+        var isClientFromCbd = ${data.checkIfClientFromCbd()};
 
-        if(clientCbdId !== null && clientCbdId !== ""){
+        if(isClientFromCbd){
             for(var i in fields){
                 jQuery("#" + fields[i]).removeAttr('required');
             }
@@ -27,12 +27,12 @@
                         <span>
                             <span>
                                 <g:message code="panel.house.number" /></span> <span><eumowy:textField name="akceptantNrDomu"  value="${data.akceptantNrDomu}" validatable="${data}" readonly="${data.checkIfFromCbd('akceptantNrDomu')}" style="width: 50px" maxlength="4" required="true"/>
-                        <g:hiddenField name="akceptantNrDomuCbd" value="${data.akceptantNrDomuCbd}"/>
-                        </span>
+                                <g:hiddenField name="akceptantNrDomuCbd" value="${data.akceptantNrDomuCbd}"/>
+                            </span>
                             <span>
                                 <g:message code="panel.flat.number" /></span> <span><eumowy:textField name="akceptantNrMieszkania" value="${data.akceptantNrMieszkania}" validatable="${data}" readonly="${data.checkIfFromCbd('akceptantNrMieszkania')}" style="width: 50px" maxlength="4"/>
-                        <g:hiddenField name="akceptantNrMieszkaniaCbd" value="${data.akceptantNrMieszkaniaCbd}"/>
-                        </span>
+                                <g:hiddenField name="akceptantNrMieszkaniaCbd" value="${data.akceptantNrMieszkaniaCbd}"/>
+                            </span>
                         </span>
                     </span>
                 </li>
@@ -40,8 +40,8 @@
                     <span>
                         <span>
                             <g:message code="panel.postal.code" /></span> <span><eumowy:textField id="akceptantKodPocztowy" class="postal-code" name="akceptantKodPocztowy" value="${data.akceptantKodPocztowy}" validatable="${data}" readonly="${data.checkIfFromCbd('akceptantKodPocztowy')}" style="width: 50px" maxlength="5" required="true"/>
-                    <g:hiddenField name="akceptantKodPocztowyCbd" value="${data.akceptantKodPocztowyCbd}"/>
-                    </span>
+                            <g:hiddenField name="akceptantKodPocztowyCbd" value="${data.akceptantKodPocztowyCbd}"/>
+                        </span>
                         <span><g:message code="panel.city" /></span>
                         <span>
                             <g:set var="isCityDisabled" value="${data.checkIfFromCbd('akceptantMiasto')}"/>
