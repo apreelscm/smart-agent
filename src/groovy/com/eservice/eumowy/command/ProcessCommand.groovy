@@ -1418,7 +1418,24 @@ class ProcessCommand implements Serializable {
             return true
         })
         allPoints(nullable:true)
-        allPoses(nullable:true)
+        allPoses(nullable:true, validator: { value, cmd, errors ->
+            def hasPointErrors = false
+
+            value.each {  apCmd ->
+                apCmd?.calculatorService = cmd.calculatorService
+				apCmd?.calc = cmd.calc
+                apCmd?.validate()
+                if(apCmd?.hasErrors()){
+                    hasPointErrors = true
+                }
+            }
+
+            if (hasPointErrors) {
+                errors.rejectValue("allPoses", "default.error.allposes",)
+                return false
+            }
+            return true
+        })
         liczbaPosZCbd(nullable:true)
         korespondencjaJakDlaMerchanta(nullable:true)
         serwisZablokowany(nullable: true)

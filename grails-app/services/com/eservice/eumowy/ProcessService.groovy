@@ -157,6 +157,9 @@ class ProcessService {
         cmd.hirePaymentsByPos?.addAll(getHirePaymentByPosCommandList(cmd, calc))
 
         prepareProcessCommand(cmd, calc,)
+		prepareAllPosCommands(cmd.allPoses, calc)
+		
+		cmd
 	}
 
     def getSavedProcessCommand(def process, def calc, def newProcess){
@@ -225,6 +228,7 @@ class ProcessService {
 		
         prepareProcessCommand(cmd, calc, cbdMethods)
 		preparePointCommands(cmd.points, cmd.poses, calc)
+		//prepareAllPosCommands(cmd.allPoses, calc)
 		
 		cmd
     }
@@ -258,6 +262,12 @@ class ProcessService {
 		}
 		poses.each { PointCommand pc ->
 			panelService.setupPointDataFromCalc(pc, calc)
+		}
+	}
+	
+	def prepareAllPosCommands(def allPoses, def calc) {
+		allPoses.each { AllPosCommand apc ->
+			panelService.setupAllPosDataFromCalc(apc, calc)
 		}
 	}
 	
@@ -659,7 +669,7 @@ class ProcessService {
                     apc.dataDo = pos.dataDo ?: apc.dataDo
                     apc.dataOd = pos.dataOd ?: apc.dataOd
                     apc.numerZestawuPos = pos.numerZestawuPos ?: apc.numerZestawuPos
-                    apc.wysokoscOplaty = pos.wysokoscOplaty ?: (apc.wysokoscOplaty ?: calculatorService.getCalcProperty(calc,"E_PROM_OBN_NAJ_1"))
+                    //apc.wysokoscOplaty = pos.wysokoscOplaty ?: (apc.wysokoscOplaty ?: calculatorService.getCalcProperty(calc,"OPLATA_POS_PROM_CENA_NAJMU"))
                     apc.czyCbd = true // Mark for update in local (eumowy) db
 					tpsIdsToRemove.add(apc.tpsId)
                 }
@@ -675,6 +685,13 @@ class ProcessService {
 		}
         result.addAll(cbdPoses)
         result.sort {it.id}
+
+//		Na chwile obecna przeniesione do odrebnej metody i wywolywane w hierarchii wyzej		
+//		BigDecimal price = panelService.toBigDecimal(calculatorService.getCalcProperty(calc, "OPLATA_POS_PROM_CENA_NAJMU"))
+//		result.each { AllPosCommand apc ->
+//			apc.wysokoscOplaty = panelService.setAtLeastAs(apc.wysokoscOplaty, price)
+//		}
+		
         result
     }
 
