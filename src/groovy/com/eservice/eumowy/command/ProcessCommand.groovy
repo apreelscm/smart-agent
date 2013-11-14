@@ -652,7 +652,6 @@ class ProcessCommand implements Serializable {
     @Omit
     String liczbaPosZCbd
 
-    @Omit
     String promObjNaj1
     String promObjNajLiczbaTerminali
 

@@ -20,7 +20,7 @@
                             <td>${pos.numerZestawuPos}<input type="hidden" name="allPoses[${i}].numerZestawuPos" value="${pos.numerZestawuPos}" /></td>
                             <td><eumowy:textField name="allPoses[${i}].dataOd" value="${g.formatDate( format:"yyyy-MM-dd", date:pos.dataOd)}" validatable="${pos.dataOd}" readonly="true"/></td>
                             <td><eumowy:textField name="allPoses[${i}].dataDo" value="${g.formatDate( format:"yyyy-MM-dd", date:pos.dataDo)}" validatable="${pos.dataDo}" readonly="true"/></td>
-                            <td style="white-space: nowrap;line-height: 27px;"><eumowy:currencyField name="allPoses[${i}].wysokoscOplaty" value="${pos.wysokoscOplaty}" class="float-number"  validatable="${pos.wysokoscOplaty}" width="120px"/></td>
+                            <td style="white-space: nowrap;line-height: 27px;"><eumowy:currencyField name="allPoses[${i}].wysokoscOplaty" value="${pos.wysokoscOplaty}" class="float-number"  validatable="${pos}" validateField="wysokoscOplaty" width="120px"/></td>
                             <td><g:checkBox name="allPoses[${i}].czyWybrany" checked="${pos.czyWybrany}"/></td>
                         </tr>
 					</g:each>
