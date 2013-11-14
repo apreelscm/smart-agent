@@ -1431,8 +1431,10 @@ class ActivityController {
 
     private def addCalculatorFields(def commands, def calc){
         commands?.each{
-            it.calc = calc
-            it.calculatorService =calculatorService
+            if (it != null){
+                it.calc = calc
+                it.calculatorService =calculatorService
+            }
         }
     }
 
