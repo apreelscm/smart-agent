@@ -391,7 +391,10 @@
 
         function disableItem (itemId) {
             var item = $('#'+itemId);
-            item.addClass("disabled");
+            if(item.is("input")){
+                item = item.parents(".checkBoxBlock");
+            }
+            item.addClass("disabled-activity");
             item.prop("data-disabled", true);
             item.attr('disabled', 'disabled');
             item.find("input").prop("disabled", true);
@@ -436,7 +439,10 @@
 
         function enableItem (itemId) {
             var item = $('#'+itemId);
-            item.removeClass("disabled");
+            if(item.is("input")){
+                item = item.parents(".checkBoxBlock");
+            }
+            item.removeClass("disabled-activity");
             item.removeAttr('disabled');
             item.prop("data-disabled", false);
             item.find("input").prop("disabled", false);
