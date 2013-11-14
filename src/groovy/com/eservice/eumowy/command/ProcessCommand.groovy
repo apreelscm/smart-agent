@@ -1300,7 +1300,7 @@ class ProcessCommand implements Serializable {
         scoringDeklaracjaFinansowaSredniaTransakcja(nullable: true, blank: true)
         akceptantUlicaTytul(nullable: true, blank: true)
         akceptantUlica(nullable: false, blank: false, shared: "alphanumeric", validator: { value, cmd, errors ->
-            skipAddressValidationClosure.call(value, cmd, errors, "akceptantUlica")
+            skipAddressValidationClosure.call(value, cmd, errors, "akceptantUlica") &&
             maxLengthClosure.call(value, cmd, errors, 40, "akceptantUlica")
         })
         akceptantNrDomu(nullable:false, shared: "alphanumeric", validator: {value, cmd, errors ->
@@ -1308,15 +1308,14 @@ class ProcessCommand implements Serializable {
         })
         akceptantNrMieszkania(nullable: true, blank: false, shared: "alphanumeric")
         akceptantMiasto(nullable: false, shared: "alphanumeric", validator: { value, cmd, errors ->
-            skipAddressValidationClosure.call(value, cmd, errors, "akceptantMiasto")
+            skipAddressValidationClosure.call(value, cmd, errors, "akceptantMiasto") &&
             maxLengthClosure.call(value, cmd, errors, 33, "akceptantMiasto")
         })
         akceptantKodPocztowy(nullable:false, shared: "postalCodeValidator", validator: {value, cmd, errors ->
             skipAddressValidationClosure.call(value, cmd, errors, "akceptantKodPocztowy")
         })
         akceptantPoczta(nullable: false, shared: "alphanumeric", validator: { value, cmd, errors ->
-            skipAddressValidationClosure.call(value, cmd, errors, "akceptantPoczta")
-
+            skipAddressValidationClosure.call(value, cmd, errors, "akceptantPoczta") &&
             maxLengthClosure.call(value, cmd, errors, 33, "akceptantPoczta")
         })
 
