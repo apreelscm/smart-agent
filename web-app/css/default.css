@@ -1179,6 +1179,11 @@ input[readonly]{
     pointer-events: none;
 }
 
+.disabled-activity{
+    pointer-events: none;
+    visibility: hidden;
+}
+
 .disabled input{
     color: #a7a7a7;
 }

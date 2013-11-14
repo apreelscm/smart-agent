@@ -29,7 +29,7 @@
                 <p><label for="${panelType}[${id}].tip1"><g:checkBox name="${panelType}[${id}].napiwek1" id="${panelType}[${id}].tip1" value="${pointData?.napiwek1}"/><g:message code="panel.newpoint.terminaloptions.tipssupport.tip1" /></label></p>
             </div>
         </div>
-        <div>
+        <div style="float: left;  padding-right: 2em; height: 200px;">
             <div>
                 <p class="bold" ><g:message code="panel.newpoint.terminaloptions.phonecreditsrecharge" /></p>
                 <ul class="table-list vertical-center">
