@@ -648,7 +648,6 @@ function clearNewPointData(prefix, ppid, pid) {
 }
 
 function setupNewPosPanelHandlers(panelId, prefix) {
-    var start = new Date().getTime();
     var prefixPanel = "#"+prefix+"\\["+panelId+"\\]\\";
 
     jQuery(prefixPanel + ".wifiCount").on( "blur", function(e){
@@ -675,12 +674,9 @@ function setupNewPosPanelHandlers(panelId, prefix) {
     sameForEveryPoint(prefixPanel + ".technicalinformationSameForEveryPoint", prefix, panelId);
     sameForEveryPoint(prefixPanel + ".terminaloptionsSameForEveryPoint", prefix, panelId);
     sameForEveryPoint(prefixPanel + ".additionalequipmentSameForEveryPoint", prefix, panelId);
-
-    console.log("Time setup: " + (new Date().getTime()-start)/1000);
 }
 
 function addDateHandlers(prefixPanel){
-    var start = new Date().getTime();
     var dayCloseFrom = jQuery(prefixPanel + ".dayCloseFrom"),
         dayCloseTo = jQuery(prefixPanel + ".dayCloseTo");
 
@@ -703,7 +699,6 @@ function addDateHandlers(prefixPanel){
     });
 
     dayCloseTo.val('23:59'); //default value
-    console.log('Time: ' + (new Date().getTime() - start)/1000)
 }
 
 function onCloseDayCloseTo(dayCloseTo) {
@@ -747,6 +742,10 @@ function sameForEveryPoint(selector, prefix, panelId){
     jQuery(selector).on("click", function(e) {
     	var index = selector.substring(selector.indexOf('.')+1, selector.length);
     	var panelJsId = parseInt(jQuery(e.target).parents(".newPointPanel").attr('data-js-id'));
+        if(!(panelJsId instanceof Number)) {
+            panelJsId = parseInt(jQuery(e.target).parents(".newPosPanel").attr('data-js-id'));
+        }
+        console.log(panelJsId);
     	console.log("Index: " + index + " PID: " + panelJsId);
     	if (e.target.checked) {
     		sameForEveryPointSourcePanelId[index] = panelJsId;
