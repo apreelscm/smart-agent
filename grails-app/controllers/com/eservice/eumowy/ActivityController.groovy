@@ -542,6 +542,17 @@ class ActivityController {
                             }
                         }
                     }
+					
+					processInstance.points?.each { point ->
+						point.posDatas?.each { pos ->
+							if (pos.tpsId != null) {
+								def foundApc = processCmd.allPoses?.find { apc -> apc.tpsId == pos.tpsId }
+								if (foundApc != null) {
+									foundApc.id = pos.id
+								}
+							}
+						}
+					}
                 }
                 else{
                     log.info("skipPanelsInit - true")
