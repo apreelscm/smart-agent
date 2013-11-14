@@ -1,5 +1,7 @@
 package com.eservice.eumowy
 
+import com.eservice.eumowy.command.AllPointsCommand
+import com.eservice.eumowy.command.AllPosCommand
 import com.eservice.eumowy.command.PointCommand
 import com.eservice.eumowy.command.ProcessCommand
 import com.eservice.eumowy.util.DateUtils
@@ -674,6 +676,11 @@ class PanelService {
 
         cmd.gprsCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_GPRS_TERM_CENA"))
         cmd.gprsPPCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_GPRS_PP_CENA"))
+	}
+	
+	def setupAllPosDataFromCalc(AllPosCommand apc, def calc) {
+		apc.calc = calc
+		apc.wysokoscOplaty = setAtLeastAs(apc.wysokoscOplaty, toBigDecimal(calculatorService.getCalcProperty(calc,"OPLATA_POS_PROM_CENA_NAJMU")))
 	}
 
     private setSerwisZablokowany(ProcessCommand cmd, def calc, def serwisy){

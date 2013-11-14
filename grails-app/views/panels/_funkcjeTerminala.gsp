@@ -66,7 +66,6 @@
                 </ul>
                 <div>
                     <p class="bold" ><g:message code="panel.newpoint.terminaloptions.marketingproducts" /></p>
-                    <g:hiddenField name="czyGift" value="${data.czyGift}"/>
                     <p><label for="${panelType}[${id}].giftCard"><g:checkBox disabled="${!(data.czyGift && data.isRozszerzenie)}" name="${panelType}[${id}].kartaPodarunkowa" id="${panelType}[${id}].giftCard" value="${pointData?.kartaPodarunkowa}"/><g:message code="panel.newpoint.terminaloptions.marketingproducts.giftcard" /></label></p>
                 </div>
             </div>

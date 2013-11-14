@@ -157,6 +157,9 @@ class ProcessService {
         cmd.hirePaymentsByPos?.addAll(getHirePaymentByPosCommandList(cmd, calc))
 
         prepareProcessCommand(cmd, calc,)
+		prepareAllPosCommands(cmd.allPoses, calc)
+		
+		cmd
 	}
 
     def getSavedProcessCommand(def process, def calc, def newProcess){
@@ -184,6 +187,19 @@ class ProcessService {
 
         //FIXME Optymalizacja usuwania, z uwzglednieniem tego, zeby nie zamykalo sesji, bo potem
 		//		w metodzie prepareProcessCommand jest zamknieta sesja i nie mozna zrobic lazyLoad na liscie paneli
+		cmd.allPoses?.each { AllPosCommand apc ->
+			if (apc.tpsId == -1) {
+				PosData pos = PosData.findById(apc.id)
+				if (pos != null) {
+					log.info "USUWAM POS O ID: " + pos.id
+					PointData point = pos.point
+					point.removeFromPosDatas(pos)
+					point.save()
+				}
+			}
+		}
+		cmd.allPoses?.removeAll { it.tpsId == -1 }
+		process.save()
 		cmd.allPoints?.each { AllPointsCommand apc ->
 			if (apc.cbdId == -1) {
 				PointData point = PointData.findById(apc.id)
@@ -206,21 +222,13 @@ class ProcessService {
 		process.save(flush:true)
 		
 		cmd.allPoints?.removeAll { it.cbdId == -1 }
-		cmd.allPoses?.each { AllPosCommand apc ->
-			if (apc.tpsId == -1) {
-				PosData pos = PosData.findById(apc.id)
-				if (pos != null) {
-					log.info "USUWAM POS O ID: " + pos.id
-					pos.delete(flush: true)
-				}
-			}
-		}
-		cmd.allPoses?.removeAll { it.tpsId == -1 }
+		
 
         cmd.notes = process.notesToCoa
 		
         prepareProcessCommand(cmd, calc, cbdMethods)
 		preparePointCommands(cmd.points, cmd.poses, calc)
+		//prepareAllPosCommands(cmd.allPoses, calc)
 		
 		cmd
     }
@@ -254,6 +262,12 @@ class ProcessService {
 		}
 		poses.each { PointCommand pc ->
 			panelService.setupPointDataFromCalc(pc, calc)
+		}
+	}
+	
+	def prepareAllPosCommands(def allPoses, def calc) {
+		allPoses.each { AllPosCommand apc ->
+			panelService.setupAllPosDataFromCalc(apc, calc)
 		}
 	}
 	
@@ -669,10 +683,11 @@ class ProcessService {
     }
 
     def getPosesToAllPosCommandList(def process, def cmd, def calc) {
-        def localPoses = [], cbdPoses = [], result = []
+        def localPoses = [], cbdPoses = [], tpsIdsToRemove = [], result = []
         getLocalPosesToAllPosesCommandList(process, localPoses)
         getCbdPosesToAllPosesCommandList(cmd, cbdPoses)
 
+		
         /* Merge them with possibly new data from CBD */
         localPoses.each { AllPosCommand apc ->
             if (apc.tpsId != null) {
@@ -683,19 +698,29 @@ class ProcessService {
                     apc.dataDo = pos.dataDo ?: apc.dataDo
                     apc.dataOd = pos.dataOd ?: apc.dataOd
                     apc.numerZestawuPos = pos.numerZestawuPos ?: apc.numerZestawuPos
-                    apc.wysokoscOplaty = pos.wysokoscOplaty ?: (apc.wysokoscOplaty ?: calculatorService.getCalcProperty(calc,"E_PROM_OBN_NAJ_1"))
+                    //apc.wysokoscOplaty = pos.wysokoscOplaty ?: (apc.wysokoscOplaty ?: calculatorService.getCalcProperty(calc,"OPLATA_POS_PROM_CENA_NAJMU"))
                     apc.czyCbd = true // Mark for update in local (eumowy) db
-                    cbdPoses.remove(cbdPoses.findIndexOf { AllPosCommand i -> i.tpsId == apc.tpsId })
+					tpsIdsToRemove.add(apc.tpsId)
                 }
                 else {
                     apc.tpsId = -1 // Mark POS for deletion from local (eumowy) db
                 }
             }
-
+			
             result.add(apc)
         }
+		tpsIdsToRemove.each { Integer tpsId ->
+			cbdPoses.removeAll { AllPosCommand i -> i.tpsId == tpsId}
+		}
         result.addAll(cbdPoses)
         result.sort {it.id}
+
+//		Na chwile obecna przeniesione do odrebnej metody i wywolywane w hierarchii wyzej		
+//		BigDecimal price = panelService.toBigDecimal(calculatorService.getCalcProperty(calc, "OPLATA_POS_PROM_CENA_NAJMU"))
+//		result.each { AllPosCommand apc ->
+//			apc.wysokoscOplaty = panelService.setAtLeastAs(apc.wysokoscOplaty, price)
+//		}
+		
         result
     }
 
@@ -724,7 +749,7 @@ class ProcessService {
             process.addToPoints(point)
         }
 
-		def posDataList = getPointCommandsToPosDataList(cmd)
+		def posDataList = getPointCommandsToPosDataList(cmd, process)
 
 		posDataList?.each { PointData point ->
 			point.save(flush: true)
@@ -1039,7 +1064,7 @@ class ProcessService {
         return pointsList
     }
 
-    def getPointCommandsToPosDataList(def cmd) {
+    def getPointCommandsToPosDataList(def cmd, def process) {
         def pointsList = []
         cmd.poses?.each { PointCommand pc ->
             boolean isNew = false
@@ -1249,7 +1274,7 @@ class ProcessService {
                 log.info "AllPosCommand is NULL - skipping!"
                 return
             }
-            ArrayList<PosData> pdList = new ArrayList<PosData>()
+            //ArrayList<PosData> pdList = new ArrayList<PosData>()
             PosData pos;
             PointData point;
 
@@ -1263,7 +1288,8 @@ class ProcessService {
             }
             else if (apc.cbdId != null) {
                 //pobieramy point z bazy CBD
-                point = PointData.findByCbdId(apc.cbdId)
+                //point = PointData.findByCbdId(apc.cbdId)
+				point = PointData.findByCbdIdAndProcess(apc.cbdId, process)
 
                 if (point != null) {
                     pos = point.posDatas.find{pd -> pd.tpsId == apc.tpsId}
@@ -1310,12 +1336,19 @@ class ProcessService {
                 }
                 pos.czyWybrany = apc.czyWybrany
                 pos.tpsId = apc.tpsId
-                pdList.add(pos)
+                //pdList.add(pos)
 
 
                 point.cbdId = apc.cbdId
                 point.save()
-                point.setPosDatas(pdList)
+				
+				if (point.posDatas){
+					if (point.posDatas.find { PosData pd -> pd.id == pos.id } == null)
+						point.addToPosDatas(pos)
+				} else {
+					point.setPosDatas([pos])
+				}
+                //point.setPosDatas(pdList)
 
                 pos.setPoint(point)
                 pos.save()

@@ -652,7 +652,6 @@ class ProcessCommand implements Serializable {
     @Omit
     String liczbaPosZCbd
 
-    @Omit
     String promObjNaj1
     String promObjNajLiczbaTerminali
 
@@ -1380,6 +1379,10 @@ class ProcessCommand implements Serializable {
             def atLeastOneFormaDoladowaniaError = false
 
             value.each {  ptCmd ->
+                if (ptCmd != null){
+                    return true;
+                }
+
                 ptCmd?.calculatorService = cmd.calculatorService
                 ptCmd?.validate()
                 if(ptCmd?.hasErrors()){
@@ -1418,7 +1421,24 @@ class ProcessCommand implements Serializable {
             return true
         })
         allPoints(nullable:true)
-        allPoses(nullable:true)
+        allPoses(nullable:true, validator: { value, cmd, errors ->
+            def hasPointErrors = false
+
+            value.each {  apCmd ->
+                apCmd?.calculatorService = cmd.calculatorService
+				apCmd?.calc = cmd.calc
+                apCmd?.validate()
+                if(apCmd?.hasErrors()){
+                    hasPointErrors = true
+                }
+            }
+
+            if (hasPointErrors) {
+                errors.rejectValue("allPoses", "default.error.allposes",)
+                return false
+            }
+            return true
+        })
         liczbaPosZCbd(nullable:true)
         korespondencjaJakDlaMerchanta(nullable:true)
         serwisZablokowany(nullable: true)
@@ -1443,19 +1463,22 @@ class ProcessCommand implements Serializable {
         Set<BigDecimal> prefPriceGroups = new HashSet<BigDecimal>()
 
         pointCommands.each { pos ->
-            normalPriceGroups.add(getGroupValue(pos.dialupCena, pos.dialupPPCena))
-            normalPriceGroups.add(getGroupValue(pos.vpnCena, pos.vpnPPCena))
-            normalPriceGroups.add(getGroupValue(pos.sslCena, pos.sslPPCena))
-            normalPriceGroups.add(getGroupValue(pos.gprsCena, pos.gprsPPCena))
-            normalPriceGroups.add(getGroupValue(pos.pinPadCena, BigDecimal.ZERO))
-            normalPriceGroups.add(getGroupValue(pos.wifiCena, BigDecimal.ZERO))
 
-            prefPriceGroups.add(getGroupValue(pos.dialupCenaPreferencyjna, pos.dialupPPCenaPreferencyjna))
-            prefPriceGroups.add(getGroupValue(pos.vpnCenaPreferencyjna, pos.vpnPPCenaPreferencyjna))
-            prefPriceGroups.add(getGroupValue(pos.sslCenaPreferencyjna, pos.sslPPCenaPreferencyjna))
-            prefPriceGroups.add(getGroupValue(pos.gprsCenaPreferencyjna, pos.gprsPPCenaPreferencyjna))
-            prefPriceGroups.add(getGroupValue(pos.pinPadCenaPreferencyjna, BigDecimal.ZERO))
-            prefPriceGroups.add(getGroupValue(pos.wifiCenaPreferencyjna, BigDecimal.ZERO))
+            if (pos != null) {
+                normalPriceGroups.add(getGroupValue(pos.dialupCena, pos.dialupPPCena))
+                normalPriceGroups.add(getGroupValue(pos.vpnCena, pos.vpnPPCena))
+                normalPriceGroups.add(getGroupValue(pos.sslCena, pos.sslPPCena))
+                normalPriceGroups.add(getGroupValue(pos.gprsCena, pos.gprsPPCena))
+                normalPriceGroups.add(getGroupValue(pos.pinPadCena, BigDecimal.ZERO))
+                normalPriceGroups.add(getGroupValue(pos.wifiCena, BigDecimal.ZERO))
+
+                prefPriceGroups.add(getGroupValue(pos.dialupCenaPreferencyjna, pos.dialupPPCenaPreferencyjna))
+                prefPriceGroups.add(getGroupValue(pos.vpnCenaPreferencyjna, pos.vpnPPCenaPreferencyjna))
+                prefPriceGroups.add(getGroupValue(pos.sslCenaPreferencyjna, pos.sslPPCenaPreferencyjna))
+                prefPriceGroups.add(getGroupValue(pos.gprsCenaPreferencyjna, pos.gprsPPCenaPreferencyjna))
+                prefPriceGroups.add(getGroupValue(pos.pinPadCenaPreferencyjna, BigDecimal.ZERO))
+                prefPriceGroups.add(getGroupValue(pos.wifiCenaPreferencyjna, BigDecimal.ZERO))
+            }
         }
 
         normalPriceGroups.removeAll(Collections.singleton(BigDecimal.ZERO)) //jesli obie ceny sa nullem to dostajemy 0
