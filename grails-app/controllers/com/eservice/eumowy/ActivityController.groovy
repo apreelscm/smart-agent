@@ -521,8 +521,9 @@ class ActivityController {
                 def processCmd
                 if(!flow.skipPanelsInit) {
                     log.info("skipPanelsInit - false")
-                    TreeSet activePanels = _getActivePanels(processInstance.signatures)
-                    processInstance.panels = activePanels.toList();
+                    TreeSet beforeExclusionPanels = _getActivePanels(processInstance.signatures)
+                    List<Panel> activePanels = processService.filterExcludedPanels(processInstance, beforeExclusionPanels.toList())
+                    processInstance.panels = activePanels;
                     processCmd = processService.getNewProcessCommand(processInstance, conversation.calc)
 
                     //inicjacyjne zapisanie danych pobranych z cbd i calc
