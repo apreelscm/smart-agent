@@ -306,6 +306,35 @@ class ProcessService {
         cmd
     }
 
+    def filterExcludedPanels(Process process, List<Panel> panelsList){
+        def activePanels = []
+
+        panelsList?.each { it ->
+            // add future checks here
+            def shouldBeExcluded = excludePoziomOplatiWarunkiPlatnosciKarty( process, it.name)
+
+            if (!shouldBeExcluded){
+                activePanels.add(it)
+            }
+
+        }
+
+        activePanels
+    }
+
+    /**
+     * eUmowy_ext-411 Rozszerzenie bez Zmiana prowizji - usuniecie panelu Poziom opłat i warunki płatnosci karty
+     */
+    boolean excludePoziomOplatiWarunkiPlatnosciKarty(def process, def panelName){
+        def hasRozszerzenieDodPunkt = containsActivity(process.activities,"dodatkowyPunkt")
+        def hasZmianaProwizji = containsActivity(process.activities,"zmianaProwizji")
+        if (hasRozszerzenieDodPunkt && ! hasZmianaProwizji && "poziomOplatiWarunkiPlatnosciKarty" == panelName){
+            log.info "excludePoziomOplatiWarunkiPlatnosciKarty - excluding panel [${panelName} from active panel list]"
+            return true
+        }
+        return false
+    }
+
     /**
      *  create data
      * */
