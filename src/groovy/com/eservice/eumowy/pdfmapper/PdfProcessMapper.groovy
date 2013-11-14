@@ -37,10 +37,10 @@ class PdfProcessMapper extends AbstractPdfMapper{
             dataMap.putAll(pointMapper.mapPointsSpecial(points.findAll{ point -> (point.czyWybranyAkceptacjaKart && point.czyWybranyZakresUruchomienia)}, ["nazwa":"punktZakresUruchomienia", "miejscowosc":"adresZakresUruchomienia"]));
 
             //APUPZIF2, APUPZ2, APUPZBS2
-            dataMap.putAll(pointMapper.mapPointsSpecial(points.findAll{ point -> point.cbdId == null || (point.posDatas && point.posDatas.findAll{ pos -> pos.tpsId == null}.size()>0)}, ["nazwa":"punktAkceptacjaKart", "miejscowosc":"adresAkceptacjaKart"]));
+            dataMap.putAll(pointMapper.mapPointsSpecial(points.findAll{ point -> (point.cbdId == null && point.pointDetails != null) || (point.posDatas && point.posDatas.findAll{ pos -> pos.tpsId == null}.size()>0)}, ["nazwa":"punktAkceptacjaKart", "miejscowosc":"adresAkceptacjaKart"]));
 
             //APUPZAWNZBS1, APUPZAWNZS1
-            dataMap.putAll(pointMapper.mapPointsSpecial(points.findAll{ point -> point.cbdId == null || (point.posDatas && point.posDatas.findAll{ pos -> pos.tpsId == null}.size()>0)}, ["nazwa":"punkt", "miejscowosc":"adres"]));
+            dataMap.putAll(pointMapper.mapPointsSpecial(points.findAll{ point -> (point.cbdId == null && point.pointDetails != null) || (point.posDatas && point.posDatas.findAll{ pos -> pos.tpsId == null}.size()>0)}, ["nazwa":"punkt", "miejscowosc":"adres"]));
 
             //APUNTSZAPOU3
             dataMap.putAll(pointMapper.mapPointsSpecial(points.findAll{ point -> point.czyWybranyAkceptacjaKart}, ["nazwa":"punktTN", "miejscowosc":"adresTN", "systemKasowy":"integracjaTN", "uta":"utaTN"]));
@@ -55,7 +55,7 @@ class PdfProcessMapper extends AbstractPdfMapper{
             def posesNotFromCBD = []
             points.findAll { point ->
                 if(point.posDatas){
-                    if(point.cbdId == null) {
+                    if(point.cbdId == null && point.pointDetails != null ) {
                         posesNotFromCBD.addAll(point.posDatas.findAll{ pos -> pos.parentPosId == null})
                     } else {
                         posesNotFromCBD.addAll(point.posDatas.findAll{ pos -> pos.tpsId == null && pos.parentPosId == null})
