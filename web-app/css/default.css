@@ -540,6 +540,10 @@ select {
     padding: 0.2em 0.2em 0.2em 0;
 }
 
+select.time-picker{
+    padding: 0.3em 0.3em 0.3em 0.3em;
+}
+
 select[multiple] {
     vertical-align: top;
 }
@@ -1489,4 +1493,10 @@ label.doladowanieLabel {
 
 .nazwaField {
     width: 300px;
+}
+
+.select-without-arrow{
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
 }

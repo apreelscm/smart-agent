@@ -2,6 +2,22 @@ var globalPanelCount = 0;
 var globalPanelPosCount = 0;
 var panelPosInternalCount = 0;
 
+//for time picker
+var allHoursOptions = [];
+var allMinutesOptions = [];
+
+function getOptions(minValue, maxValue){
+    var options = [];
+    for(var i = minValue; i <= maxValue; i++){
+        options.push("<option value='" + i + "'>" + i + "</option>");
+    }
+    return options;
+}
+
+allHoursOptions.push(getOptions(0, 24));
+allMinutesOptions.push(getOptions(0,59));
+//-for time picker
+
 var sameForEveryPointSourcePanelId = {
 	"sameForEveryPoint": -1,
 	"possetforselectedpointSameForEveryPoint": -1,
@@ -679,65 +695,101 @@ function setupNewPosPanelHandlers(panelId, prefix) {
 }
 
 function addDateHandlers(prefixPanel){
-    var dayCloseFrom = jQuery(prefixPanel + ".dayCloseFrom"),
-        dayCloseTo = jQuery(prefixPanel + ".dayCloseTo");
+    var timeFromHours = jQuery(prefixPanel + ".timeFromHours"), timeFromHoursVal,
+        timeFromMinutes = jQuery(prefixPanel + ".timeFromMinutes"), timeFromMinutesVal,
+        timeToHours = jQuery(prefixPanel + ".timeToHours"), timeToHoursVal,
+        timeToMinutes = jQuery(prefixPanel + ".timeToMinutes"), timeToMinutesVal,
+        hiddenDayCloseFrom = jQuery(prefixPanel + ".dayCloseFrom"),
+        hiddenDayCloseTo = jQuery(prefixPanel + ".dayCloseTo"),
+        compareResult;
 
     jQuery(prefixPanel + ".plannedInstallationDate").datepicker({ dateFormat: 'yy-mm-dd', minDate: 0 });
 
-    dayCloseFrom.timepicker({
-        controlType: 'select',
-        timeFormat: 'HH:mm',
-        onClose: function(){
-            onCloseDayCloseFrom(dayCloseFrom, dayCloseTo);
+    var timeFromChange = function timeFromChangeEvent(){
+        timeFromHoursVal = timeFromHours.val();
+        timeFromMinutesVal = timeFromMinutes.val();
+        if(timeFromHoursVal === '' || timeFromMinutesVal === ''){
+            return false;
         }
-    });
+        hiddenDayCloseFrom.val(getTime(timeFromHoursVal, timeFromMinutesVal));
 
-    dayCloseTo.timepicker({
-        controlType: 'select',
-        timeFormat: 'HH:mm',
-        onClose: function(){
-            onCloseDayCloseTo(dayCloseTo)
+        compareResult = compareTimes(hiddenDayCloseFrom.val(), hiddenDayCloseTo.val());
+        if(compareResult === 1) {
+            timeToHours.val(timeFromHoursVal);
+            timeToMinutes.val(timeFromMinutesVal);
+
+            timeToHours.html(getOptions(timeFromHoursVal, 24));
+            timeToMinutes.html(getOptions(timeFromMinutesVal, 59));
+
+            hiddenDayCloseTo.val(hiddenDayCloseFrom.val());
+        } else if (compareResult === -1) {
+
         }
-    });
+        return false;
+    }
 
-    dayCloseTo.val('23:59'); //default value
+    var timeToChange = function timeToChangeEvent(){
+        timeToHoursVal = timeToHours.val();
+        timeToMinutesVal = timeToMinutes.val();
+        if(timeToHoursVal === '' || timeToMinutesVal === ''){
+            return false;
+        }
+        compareResult = compareTimes(hiddenDayCloseFrom.val(), hiddenDayCloseTo.val()); //tu jest blad - bierze poprzednia wartosc hiddenDayCloseTo
+        console.log(compareResult);
+        if(compareResult === -1){
+            timeToMinutes.html(allMinutesOptions);
+        }
+        hiddenDayCloseTo.val(getTime(timeToHoursVal, timeToMinutesVal));
+        return false;
+    }
+
+    jQuery(timeFromHours).change(timeFromChange);
+    jQuery(timeFromMinutes).change(timeFromChange);
+
+    jQuery(timeToHours).change(timeToChange);
+    jQuery(timeToMinutes).change(timeToChange);
 }
 
-function onCloseDayCloseTo(dayCloseTo) {
-    var hours = jQuery("[data-unit='hour']").val(),
-        minutes = jQuery("[data-unit='minute']").val(),
-        selectedDate = hours+":"+minutes;
+function compareTimes(firstTime, secondTime){
+    console.log(firstTime);
+    console.log(secondTime);
+    var firstDate = getDateFromTime(firstTime),
+        secondDate = getDateFromTime(secondTime);
 
-    dayCloseTo.val(selectedDate);
+    if(firstDate > secondDate){
+        return 1;
+    } else if(firstDate < secondDate){
+        return -1;
+    } else if(firstTime === ''){
+        return -1;
+    } else if (secondTime === ''){
+        return 1;
+    }
+    return 0;
 }
 
-function onCloseDayCloseFrom(dayCloseFrom, dayCloseTo) {
-    var dayCloseToValue = dayCloseTo.val(),
-        dayCloseFromValue = dayCloseFrom.val();
-    if (dayCloseToValue != '') {
-        var dayCloseFromDate = dayCloseFrom.datetimepicker('getDate'),
-            testEndDate = dayCloseTo.datetimepicker('getDate');
+function getTime(hours, minutes){
+    if(hours < 10){
+        hours = '0' + hours;
+    }
+    if(minutes < 10){
+        minutes = '0' + minutes;
+    }
 
-        if (dayCloseFromDate > testEndDate) {
-            dayCloseTo.val(dayCloseFromDate.getHours() + ":" + (dayCloseFromDate.getMinutes() < 10 ? '0' : '') + dayCloseFromDate.getMinutes())
-            dayCloseToValue = dayCloseTo.val();
-        }
-    }
-    //hack
-    if(dayCloseFromValue !== ""){
-        var minimumDate = getDateFromTime(dayCloseFromValue);
-        dayCloseTo.timepicker('option', 'minDateTime', minimumDate);
-        dayCloseTo.val(dayCloseToValue);
-    }
+    return hours + ':' + minutes
 }
 
 function getDateFromTime(time){
-    var hoursAndMinutes = time.split(":");
-    var minimumDate = new Date();
-    minimumDate.setHours(parseInt(hoursAndMinutes[0]));
-    minimumDate.setMinutes(parseInt(hoursAndMinutes[1]));
-    minimumDate.setSeconds(00);
-    return minimumDate;
+    if(time === '' || time === undefined){
+        return;
+    }
+    var hoursAndMinutes = time.split(":"),
+        date = new Date();
+    date.setHours(parseInt(hoursAndMinutes[0]));
+    date.setMinutes(parseInt(hoursAndMinutes[1]));
+    date.setSeconds(00);
+    console.log(date);
+    return date;
 }
 
 function sameForEveryPoint(selector, prefix, panelId){
