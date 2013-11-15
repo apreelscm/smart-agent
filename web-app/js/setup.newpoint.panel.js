@@ -10,6 +10,14 @@ var sameForEveryPointSourcePanelId = {
 	"additionalequipmentSameForEveryPoint": -1
 };
 
+var sameForEveryPointSourcePosId = {
+	"sameForEveryPoint": -1,
+	"possetforselectedpointSameForEveryPoint": -1,
+	"technicalinformationSameForEveryPoint": -1,
+	"terminaloptionsSameForEveryPoint": -1,
+	"additionalequipmentSameForEveryPoint": -1
+};
+
 function getCurrentTerminalCount(prefix) {
 
     var counter = 0;
@@ -249,6 +257,13 @@ function setupNewPointPanelData(prefix, ppid, pid) {
         technicalinformation = {},
         possetforselectedpoint = {},
         additionalequipment = {};
+	var panelIdsContainer;
+	if (prefix == "poses") {
+    	panelIdsContainer = sameForEveryPointSourcePosId;
+    }
+    else {
+    	panelIdsContainer = sameForEveryPointSourcePanelId;
+    }
 
     var nip = jQuery("#akceptantNip").val(),
         globalMCC = jQuery("#globalMCC").val();
@@ -258,8 +273,8 @@ function setupNewPointPanelData(prefix, ppid, pid) {
         bankAccount = jQuery("#" +  idPrefix + "bankAccountNumber").val();
 
     if (Object.keys(possetforselectedpoint).length == 0) {
-    	if (sameForEveryPointSourcePanelId['possetforselectedpointSameForEveryPoint'] != -1) {
-    		prevPanelId = prefix+"\\["+sameForEveryPointSourcePanelId['possetforselectedpointSameForEveryPoint']+"\\]\\.";
+    	if (panelIdsContainer['possetforselectedpointSameForEveryPoint'] != -1) {
+    		prevPanelId = prefix+"\\["+panelIdsContainer['possetforselectedpointSameForEveryPoint']+"\\]\\.";
     	
 	        possetforselectedpoint['possetforselectedpointDialupType'] = jQuery("#"+prevPanelId+"possetforselectedpointDialupType").val();
 	        possetforselectedpoint['dialupCount'] = jQuery("#"+prevPanelId+"dialupCount").val();
@@ -306,8 +321,8 @@ function setupNewPointPanelData(prefix, ppid, pid) {
 	}
 
     if (Object.keys(technicalinformation).length == 0) {
-    	if (sameForEveryPointSourcePanelId['technicalinformationSameForEveryPoint'] != -1) {
-    		prevPanelId = prefix+"\\["+sameForEveryPointSourcePanelId['technicalinformationSameForEveryPoint']+"\\]\\.";
+    	if (panelIdsContainer['technicalinformationSameForEveryPoint'] != -1) {
+    		prevPanelId = prefix+"\\["+panelIdsContainer['technicalinformationSameForEveryPoint']+"\\]\\.";
     		
 	        technicalinformation['dayCloseFrom'] = jQuery("#"+prevPanelId+"dayCloseFrom").val();
 	        technicalinformation['dayCloseTo'] = jQuery("#"+prevPanelId+"dayCloseTo").val();
@@ -317,8 +332,8 @@ function setupNewPointPanelData(prefix, ppid, pid) {
     }
 
     if (Object.keys(terminaloptions).length == 0) {
-    	if (sameForEveryPointSourcePanelId['terminaloptionsSameForEveryPoint'] != -1) {
-    		prevPanelId = prefix+"\\["+sameForEveryPointSourcePanelId['terminaloptionsSameForEveryPoint']+"\\]\\.";
+    	if (panelIdsContainer['terminaloptionsSameForEveryPoint'] != -1) {
+    		prevPanelId = prefix+"\\["+panelIdsContainer['terminaloptionsSameForEveryPoint']+"\\]\\.";
     		
 	        terminaloptions['preauthorization'] = jQuery("#"+prevPanelId+"preauthorization").prop("checked");
 	        terminaloptions['noreturnfunction'] = jQuery("#"+prevPanelId+"noreturnfunction").prop("checked");
@@ -337,8 +352,8 @@ function setupNewPointPanelData(prefix, ppid, pid) {
     }
 
     if (Object.keys(additionalequipment).length == 0) {
-    	if (sameForEveryPointSourcePanelId['additionalequipmentSameForEveryPoint'] != -1) {
-    		prevPanelId = prefix+"\\["+sameForEveryPointSourcePanelId['additionalequipmentSameForEveryPoint']+"\\]\\.";
+    	if (panelIdsContainer['additionalequipmentSameForEveryPoint'] != -1) {
+    		prevPanelId = prefix+"\\["+panelIdsContainer['additionalequipmentSameForEveryPoint']+"\\]\\.";
 		
 			additionalequipment['bazaCount'] = jQuery("#"+prevPanelId+"bazaCount").val();
 	        additionalequipment['routerCount'] = jQuery("#"+prevPanelId+"routerCount").val();
@@ -354,14 +369,14 @@ function setupNewPointPanelData(prefix, ppid, pid) {
     jQuery("#"+panelId+"mccCode").val(globalMCC).keyup();
 
     if (panelId != prevPanelId) {
-        if (sameForEveryPointSourcePanelId['sameForEveryPoint'] != -1) {
+        if (panelIdsContainer['sameForEveryPoint'] != -1) {
             jQuery("#"+panelId+"mccCode").val(mmccode).keyup();
             jQuery("#"+panelId+"bankAccountNumber").val(bankAccount).keyup();
             jQuery("#"+panelId+"sameForEveryPoint").prop("checked", true);
             jQuery("#"+panelId+"sameForEveryPoint").prop("disabled", true);
         }
 
-        if (sameForEveryPointSourcePanelId['possetforselectedpointSameForEveryPoint'] != -1) {
+        if (panelIdsContainer['possetforselectedpointSameForEveryPoint'] != -1) {
             jQuery("#"+panelId+"possetforselectedpointDialupType").val(possetforselectedpoint['possetforselectedpointDialupType']);
             jQuery("#"+panelId+"dialupCount").val(possetforselectedpoint['dialupCount']);
             jQuery("#"+panelId+"dialupPPCount").val(possetforselectedpoint['dialupPPCount']);
@@ -408,7 +423,7 @@ function setupNewPointPanelData(prefix, ppid, pid) {
             jQuery("#"+panelId+"possetforselectedpointSameForEveryPoint").prop("disabled", true);
         }
 
-        if (sameForEveryPointSourcePanelId['technicalinformationSameForEveryPoint'] != -1) {
+        if (panelIdsContainer['technicalinformationSameForEveryPoint'] != -1) {
             jQuery("#"+panelId+"dayCloseFrom").val(technicalinformation['dayCloseFrom']).keyup();
             jQuery("#"+panelId+"dayCloseTo").val(technicalinformation['dayCloseTo']).keyup();
             jQuery("#"+panelId+"plannedInstallationDate").val(technicalinformation['plannedInstallationDate']).keyup();
@@ -417,7 +432,7 @@ function setupNewPointPanelData(prefix, ppid, pid) {
             jQuery("#"+panelId+"technicalinformationSameForEveryPoint").prop("disabled", true);
         }
 
-        if (sameForEveryPointSourcePanelId['terminaloptionsSameForEveryPoint'] != -1) {
+        if (panelIdsContainer['terminaloptionsSameForEveryPoint'] != -1) {
             jQuery("#"+panelId+"preauthorization").prop("checked", terminaloptions['preauthorization']);
             jQuery("#"+panelId+"noreturnfunction").prop("checked", terminaloptions['noreturnfunction']);
             jQuery("#"+panelId+"returnWithPassword").prop("checked", terminaloptions['returnWithPassword']);
@@ -435,7 +450,7 @@ function setupNewPointPanelData(prefix, ppid, pid) {
             jQuery("#"+panelId+"terminaloptionsSameForEveryPoint").prop("disabled", true);
         }
 
-        if (sameForEveryPointSourcePanelId['additionalequipmentSameForEveryPoint'] != -1) {
+        if (panelIdsContainer['additionalequipmentSameForEveryPoint'] != -1) {
             jQuery("#"+panelId+"bazaCount").val(additionalequipment['bazaCount']);
             jQuery("#"+panelId+"routerCount").val(additionalequipment['routerCount']);
             jQuery("#"+panelId+"cardReaderCount").val(additionalequipment['cardReaderCount']);
@@ -505,51 +520,59 @@ function setRequiredForSimCardForPanelId(isRequired, panelId){
 }
 
 function clearNewPointDataAfterParentDeletion(prefix, ppid, pid) {
-	if (sameForEveryPointSourcePanelId['sameForEveryPoint'] == pid) {
-		sameForEveryPointSourcePanelId['sameForEveryPoint'] = -1;
+	var panelIdsContainer;
+	if (prefix == "poses") {
+    	panelIdsContainer = sameForEveryPointSourcePosId;
+    }
+    else {
+    	panelIdsContainer = sameForEveryPointSourcePanelId;
+    }
+	
+	if (panelIdsContainer['sameForEveryPoint'] == pid) {
+		panelIdsContainer['sameForEveryPoint'] = -1;
 	}
 	
-	if (sameForEveryPointSourcePanelId['possetforselectedpointSameForEveryPoint'] == pid) {
-		sameForEveryPointSourcePanelId['possetforselectedpointSameForEveryPoint'] = -1;
+	if (panelIdsContainer['possetforselectedpointSameForEveryPoint'] == pid) {
+		panelIdsContainer['possetforselectedpointSameForEveryPoint'] = -1;
 	}
 	
-	if (sameForEveryPointSourcePanelId['technicalinformationSameForEveryPoint'] == pid) {
-		sameForEveryPointSourcePanelId['technicalinformationSameForEveryPoint'] = -1;
+	if (panelIdsContainer['technicalinformationSameForEveryPoint'] == pid) {
+		panelIdsContainer['technicalinformationSameForEveryPoint'] = -1;
 	}
 	
-	if (sameForEveryPointSourcePanelId['terminaloptionsSameForEveryPoint'] == pid) {
-		sameForEveryPointSourcePanelId['terminaloptionsSameForEveryPoint'] = -1;
+	if (panelIdsContainer['terminaloptionsSameForEveryPoint'] == pid) {
+		panelIdsContainer['terminaloptionsSameForEveryPoint'] = -1;
 	}
 	
-	if (sameForEveryPointSourcePanelId['additionalequipmentSameForEveryPoint'] == pid) {
-		sameForEveryPointSourcePanelId['additionalequipmentSameForEveryPoint'] = -1;
+	if (panelIdsContainer['additionalequipmentSameForEveryPoint'] == pid) {
+		panelIdsContainer['additionalequipmentSameForEveryPoint'] = -1;
 	}
 	
 	for(var i = 0; i < getGlobalPanelCount(prefix); i++) {
         if (i != pid) {
         	var panelId = prefix + "\\["+i+"\\]\\.";
         	
-        	if (sameForEveryPointSourcePanelId['sameForEveryPoint'] == -1) {
+        	if (panelIdsContainer['sameForEveryPoint'] == -1) {
         		jQuery("#"+panelId+"sameForEveryPoint").prop("checked", false);
                 jQuery("#"+panelId+"sameForEveryPoint").prop("disabled", false);
         	}
         	
-        	if (sameForEveryPointSourcePanelId['possetforselectedpointSameForEveryPoint'] == -1) {
+        	if (panelIdsContainer['possetforselectedpointSameForEveryPoint'] == -1) {
         		jQuery("#"+panelId+"possetforselectedpointSameForEveryPoint").prop("checked", false);
                 jQuery("#"+panelId+"possetforselectedpointSameForEveryPoint").prop("disabled", false);
         	}
         	
-        	if (sameForEveryPointSourcePanelId['technicalinformationSameForEveryPoint'] == -1) {
+        	if (panelIdsContainer['technicalinformationSameForEveryPoint'] == -1) {
         		jQuery("#"+panelId+"technicalinformationSameForEveryPoint").prop("checked", false);
                 jQuery("#"+panelId+"technicalinformationSameForEveryPoint").prop("disabled", false);
         	}
         	
-        	if (sameForEveryPointSourcePanelId['terminaloptionsSameForEveryPoint'] == -1) {
+        	if (panelIdsContainer['terminaloptionsSameForEveryPoint'] == -1) {
         		jQuery("#"+panelId+"terminaloptionsSameForEveryPoint").prop("checked", false);
                 jQuery("#"+panelId+"terminaloptionsSameForEveryPoint").prop("disabled", false);
         	}
         	
-        	if (sameForEveryPointSourcePanelId['additionalequipmentSameForEveryPoint'] == -1) {
+        	if (panelIdsContainer['additionalequipmentSameForEveryPoint'] == -1) {
         		jQuery("#"+panelId+"additionalequipmentSameForEveryPoint").prop("checked", false);
                 jQuery("#"+panelId+"additionalequipmentSameForEveryPoint").prop("disabled", false);
         	}
@@ -558,11 +581,18 @@ function clearNewPointDataAfterParentDeletion(prefix, ppid, pid) {
 }
 
 function clearNewPointData(prefix, ppid, pid) {
+	var panelIdsContainer;
 	var prevPanelId = prefix+"\\["+ppid+"\\]\\.";
 	var panelId = prefix+"\\["+pid+"\\]\\.";
+	if (prefix == "poses") {
+    	panelIdsContainer = sameForEveryPointSourcePosId;
+    }
+    else {
+    	panelIdsContainer = sameForEveryPointSourcePanelId;
+    }
 	
 	if (panelId != prevPanelId) {
-        if (sameForEveryPointSourcePanelId['sameForEveryPoint'] == -1) {
+        if (panelIdsContainer['sameForEveryPoint'] == -1) {
             jQuery("#"+panelId+"nip").val("");
             jQuery("#"+panelId+"mccCode").val("");
             jQuery("#"+panelId+"bussinessTypeInPractice").val("");
@@ -572,7 +602,7 @@ function clearNewPointData(prefix, ppid, pid) {
             jQuery("#"+panelId+"sameForEveryPoint").prop("disabled", false);
         }
 
-        if (sameForEveryPointSourcePanelId['possetforselectedpointSameForEveryPoint'] == -1) {
+        if (panelIdsContainer['possetforselectedpointSameForEveryPoint'] == -1) {
             jQuery("#"+panelId+"possetforselectedpointDialupType").val("");
             jQuery("#"+panelId+"dialupCount").val("");
             jQuery("#"+panelId+"dialupPPCount").val("");
@@ -603,7 +633,7 @@ function clearNewPointData(prefix, ppid, pid) {
             jQuery("#"+panelId+"possetforselectedpointSameForEveryPoint").prop("disabled", false);
         }
 
-        if (sameForEveryPointSourcePanelId['technicalinformationSameForEveryPoint'] == -1) {
+        if (panelIdsContainer['technicalinformationSameForEveryPoint'] == -1) {
             jQuery("#"+panelId+"dayCloseFrom").val("");
             jQuery("#"+panelId+"dayCloseTo").val("");
             jQuery("#"+panelId+"plannedInstallationDate").val("");
@@ -612,7 +642,7 @@ function clearNewPointData(prefix, ppid, pid) {
             jQuery("#"+panelId+"technicalinformationSameForEveryPoint").prop("disabled", false);
         }
 
-        if (sameForEveryPointSourcePanelId['terminaloptionsSameForEveryPoint'] == -1) {
+        if (panelIdsContainer['terminaloptionsSameForEveryPoint'] == -1) {
             jQuery("#"+panelId+"preauthorization").prop("checked", false);
             jQuery("#"+panelId+"noreturnfunction").prop("checked", false);
             jQuery("#"+panelId+"returnWithPassword").prop("checked", false);
@@ -630,7 +660,7 @@ function clearNewPointData(prefix, ppid, pid) {
             jQuery("#"+panelId+"terminaloptionsSameForEveryPoint").prop("disabled", false);
         }
 
-        if (sameForEveryPointSourcePanelId['additionalequipmentSameForEveryPoint'] == -1) {
+        if (panelIdsContainer['additionalequipmentSameForEveryPoint'] == -1) {
             jQuery("#"+panelId+"pinPadCount").val("");
             jQuery("#"+panelId+"pinPadPrice").val("");
             jQuery("#"+panelId+"routerCount").val("");
@@ -743,21 +773,29 @@ function getDateFromTime(time){
 function sameForEveryPoint(selector, prefix, panelId){
     jQuery(selector).on("click", function(e) {
     	var index = selector.substring(selector.indexOf('.')+1, selector.length);
-        var panel,
-            panelJsId;
+        var panel, panelJsId;
+        var panelIdsContainer = sameForEveryPointSourcePanelId;
 
-        if(jQuery(e.target).parents(".newPointPanel").length === 0){ //newPos
+        /*if(jQuery(e.target).parents(".newPointPanel").length === 0){ //newPos
             panel = jQuery(e.target).parents(".newPosPanel");
         } else { //newPoint
             panel = jQuery(e.target).parents(".newPointPanel");
+        }*/
+        if (prefix == "poses") {
+        	panel = jQuery(e.target).parents(".newPosPanel");
+        	panelIdsContainer = sameForEveryPointSourcePosId;
+        }
+        else {
+        	panel = jQuery(e.target).parents(".newPointPanel");
+        	panelIdsContainer = sameForEveryPointSourcePanelId;
         }
         panelJsId = panel.attr('data-js-id');
 
     	if (e.target.checked) {
-    		sameForEveryPointSourcePanelId[index] = panelJsId;
+    		panelIdsContainer[index] = panelJsId;
     	}
     	else {
-    		sameForEveryPointSourcePanelId[index] = -1;
+    		panelIdsContainer[index] = -1;
     	}
 
         for(var i = 0; i < getGlobalPanelCount(prefix); i++) {
