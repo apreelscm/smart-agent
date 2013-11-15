@@ -898,7 +898,8 @@ class ActivityController {
 				if (pos != null) {
 					log.info "DeletePos - Usuwam pos o id: " + params.posId
 					PointData point = pos.point
-					point.posDatas.removeAll { it.id == pos.id }
+					//point.posDatas.removeAll { it.id == pos.id }
+					pos.removeFromPoint(pos.point)
 					pos.delete()
 					point.save()
 					processInstance.save(flush: true)

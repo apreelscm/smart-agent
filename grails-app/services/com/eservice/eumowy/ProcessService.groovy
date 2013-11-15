@@ -648,7 +648,7 @@ class ProcessService {
     }
 
     def getPointsToAllPointsCommandList(def process, def cmd) {
-        def localPoints = [], cbdPoints = [], result = []
+        def localPoints = [], cbdPoints = [], cbdIdsToRemove = [], result = []
         getLocalPointsToAllPointsCommandList(process, localPoints)
         getCbdPointsToAllPointsCommandList(cmd, cbdPoints)
 
@@ -668,7 +668,8 @@ class ProcessService {
                     apc.nrBudynku = point.nrBudynku
                     apc.czyCbd = true // Mark for update in local (eumowy) db
 					apc.nip = point.nip
-                    cbdPoints.remove(cbdPoints.findIndexOf { AllPointsCommand i -> i.cbdId == apc.cbdId })
+					cbdIdsToRemove.add(apc.cbdId)
+					//cbdPoints.remove(cbdPoints.findIndexOf { AllPointsCommand i -> i.cbdId == apc.cbdId })
                 }
                 else {
                     apc.cbdId = -1 // Mark the point for deletion from local (eumowy) db
@@ -677,7 +678,9 @@ class ProcessService {
 
             result.add(apc)
         }
-
+		cbdIdsToRemove.each { Integer cbdId ->
+			cbdPoints.removeAll { AllPointsCommand i -> i.cbdId == cbdId}
+		}
         result.addAll(cbdPoints)
         result
     }
@@ -1086,17 +1089,24 @@ class ProcessService {
                 //pointDataDetails = new PointDataDetails()
 
                 if (pc.cbdId != null) {
-					pointData = PointData.findByCbdIdAndProcess(pc.cbdId, process)
-					
-					if (pointData == null) {
-						log.info "NOWY PUNKT DLA POS"
+					if (pointsList.find { PointData pd -> pd.cbdId == pc.cbdId } != null) {
+						log.info "Istnieje juz punkt dla pos o danym cbdId - tworzymy nowy"
 						pointData = new PointData()
 						pointDataDetails = new PointDataDetails()
 					}
 					else {
-						pointDataDetails = pointData.pointDetails
-						if (pointDataDetails == null) {
+						pointData = PointData.findByCbdIdAndProcess(pc.cbdId, process)
+						
+						if (pointData == null) {
+							log.info "NOWY PUNKT DLA POS"
+							pointData = new PointData()
 							pointDataDetails = new PointDataDetails()
+						}
+						else {
+							pointDataDetails = pointData.pointDetails
+							if (pointDataDetails == null) {
+								pointDataDetails = new PointDataDetails()
+							}
 						}
 					}
 					
@@ -1277,6 +1287,7 @@ class ProcessService {
                     pd.save(flush: true)
 				}
 			}
+			
 
             pointsList.add(pointData)
         }

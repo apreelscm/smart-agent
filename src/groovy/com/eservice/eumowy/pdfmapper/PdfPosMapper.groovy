@@ -37,7 +37,6 @@ class PdfPosMapper extends AbstractPdfMapper{
     }
 
     public def mapPosesNotFromCBD(def poses){
-        def data = [:]
         def resultNormalMap = new TreeMap<Integer, BigDecimal>();
         def resultPrefMap = new TreeMap<Integer, BigDecimal>();
         poses?.each { pos ->
@@ -57,10 +56,7 @@ class PdfPosMapper extends AbstractPdfMapper{
                 addToPosMap(resultPrefMap, posDetail.wifiIlosc, posDetail.wifiCenaPreferencyjna, 0)
             }
         }
-        addToData(data, resultNormalMap, "oplatyPOSIlosc", "oplatyPOSCena", ['A', 'B', 'C'])
-        addToData(data, resultPrefMap, "oplatyPOSPrefIlosc", "oplatyPOSPrefCena", ['A', 'B', 'C'])
-
-        return data
+        return [normalResult: resultNormalMap, prefResult: resultPrefMap]
     }
 
     public def mapPosesDataToPDFData(def posesData) {

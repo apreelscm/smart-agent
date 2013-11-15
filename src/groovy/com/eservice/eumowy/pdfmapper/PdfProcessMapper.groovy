@@ -52,22 +52,65 @@ class PdfProcessMapper extends AbstractPdfMapper{
             }
             dataMap.putAll(posMapper.mapPosSpecial(poses))
 
-            def posesNotFromCBD = []
-            points.findAll { point ->
-                if(point.posDatas){
-                    if(point.cbdId == null && point.pointDetails != null ) {
-                        posesNotFromCBD.addAll(point.posDatas.findAll{ pos -> pos.parentPosId == null})
-                    } else {
-                        posesNotFromCBD.addAll(point.posDatas.findAll{ pos -> pos.tpsId == null && pos.parentPosId == null})
+
+    //----- sumowanie oplat z posow i hire payments - start
+            def normalPrefMaps = posMapper.mapPosesNotFromCBD(findPosesNotFromCbd(points));
+
+            def normalResult = normalPrefMaps.normalResult
+            def prefResult = normalPrefMaps.prefResult
+
+            def normalMapFromProcess = [:]
+            if (processInstance.processData.find{"isOdplatneUzywanieShown".equals(it.name) && "tak".equals(it.value)}){
+                normalMapFromProcess = mapOdplatneUzywanie(processInstance)
+            }
+
+            def finalResult = [:]
+            normalResult?.each {
+                finalResult.put(it.key, it.value);
+            }
+
+            normalMapFromProcess?.each {
+                def price = it.key;
+                def count = it.value;
+
+                if (finalResult.containsKey(price)){
+                    finalResult.put(price, finalResult.get(price) + count)
+                } else {
+                    finalResult.put(price, count)
+                }
+            }
+
+            //mamy w pelni zapelnione finalResult
+            def suffixes = ['A', 'B', 'C']
+            finalResult.eachWithIndex { def entry, int i ->
+                if (i<suffixes.size()){
+                    dataMap.put('oplatyPOSIlosc' + suffixes.get(i), [entry.value.toString()] as String[])
+                    dataMap.put('oplatyPOSCena' + suffixes.get(i), [entry.key.toString()] as String[])
+                }
+            }
+            prefResult.eachWithIndex { def entry, int i ->
+                if (i<suffixes.size()){
+                    dataMap.put('oplatyPOSPrefIlosc' + suffixes.get(i), [entry.value.toString()] as String[])
+                    dataMap.put('oplatyPOSPrefCena' + suffixes.get(i), [entry.key.toString()] as String[])
+                }
+            }
+    //----- sumowanie oplat z posow i hire payments - finish
+
+        } else {
+
+            //gdy nie ma zadnych punktow to i tak musimy zmapowac to co jest w HirePayments (jesli oczywiscie jest)
+            if (processInstance.processData.find{"isOdplatneUzywanieShown".equals(it.name) && "tak".equals(it.value)}){
+                def normalMapFromProcess = mapOdplatneUzywanie(processInstance)
+                def suffixes = ['A', 'B', 'C']
+                normalMapFromProcess.eachWithIndex { def entry, int i ->
+                    if (i<suffixes.size()){
+                        dataMap.put('oplatyPOSIlosc' + suffixes.get(i), [entry.value.toString()] as String[])
+                        dataMap.put('oplatyPOSCena' + suffixes.get(i), [entry.key.toString()] as String[])
                     }
                 }
             }
-            dataMap.putAll(posMapper.mapPosesNotFromCBD(posesNotFromCBD))
         }
 
-        if (processInstance.processData.find{"isOdplatneUzywanieShown".equals(it.name) && "tak".equals(it.value)}){
-            dataMap.putAll(mapOdplatneUzywanie(processInstance))
-        }
 
         def additionalToCross = ['aneks']
         def newToCross = ['dodatkowyPunkt', 'dodatkowyPos']
@@ -80,32 +123,47 @@ class PdfProcessMapper extends AbstractPdfMapper{
         return dataMap;
     }
 
+    private def findPosesNotFromCbd(def points){
+        def posesNotFromCBD = []
+        points.findAll { point ->
+            if(point.posDatas){
+                if(point.cbdId == null && point.pointDetails != null ) {
+                    posesNotFromCBD.addAll(point.posDatas.findAll{ pos -> pos.parentPosId == null})
+                } else {
+                    posesNotFromCBD.addAll(point.posDatas.findAll{ pos -> pos.tpsId == null && pos.parentPosId == null})
+                }
+            }
+        }
+        posesNotFromCBD
+    }
 
     private def mapOdplatneUzywanie(def processInstance){
-        def dataMap = [:]
-
+        def sumMap = [:]
         def pd = processInstance.processData;
 
         if ('one_for_all_terminals'.equals(getFromProcessDataSet(pd, "odplatneUzywanie"))) {
-            //mamy tylko jedna opcje wiec zapisujemy ja z suffixem 'A'
-            dataMap.put("oplatyPOSIloscA", [getFromProcessDataSet(pd, "odpUzyTermSzt")] as String[]);
 
-            def sum = 0
-            def termCount = convertToDouble(getFromProcessDataSet(pd, "odpUzyTermMies"));
-            if (termCount.isDigit && termCount.value>0) {
-                sum += termCount.value
+            BigDecimal sum = 0
+            String termPrice = getFromProcessDataSet(pd, "odpUzyTermMies");
+            if (termPrice.isNumber()){
+                def bd = termPrice.toBigDecimal()
+                if (bd > 0){
+                    sum += bd
+                }
             }
 
-            def ppCount = convertToDouble(getFromProcessDataSet(pd, "odpUzyPpMies"));
-            if (ppCount.isDigit && ppCount.value>0) {
-                sum += ppCount.value
+            String ppPrice = getFromProcessDataSet(pd, "odpUzyPpMies");
+            if (ppPrice.isNumber()){
+                def bd = ppPrice.toBigDecimal()
+                if (bd > 0){
+                    sum += bd
+                }
             }
 
             if (sum >0){
-                dataMap.put("oplatyPOSCenaA", [formatDoubleValue(sum)] as String[]);
+                sumMap.put(sum, getFromProcessDataSet(pd, "odpUzyTermSzt").toInteger())
             }
         } else if (['one_for_all_terminals_in_point', 'other_for_selected_terminals'].contains(getFromProcessDataSet(pd, "odplatneUzywanie"))){
-            def result = [:]
             processInstance.hirePayments?.findAll{it.isVisible}.each{ HirePayment hp ->
 
                 //Gdy bedzie PP trzeba dodac hp.currentPpPayment
@@ -113,20 +171,12 @@ class PdfProcessMapper extends AbstractPdfMapper{
                 Integer count = hp.termCount
 
                 if (sum>0){
-                    count+=(result.containsKey(sum)?result.get(sum):0)
-                    result.put(sum, count)
-                }
-            }
-
-            def suffixes = ['A', 'B', 'C']
-            result.eachWithIndex { def entry, int i ->
-                if (i<suffixes.size()){
-                    dataMap.put('oplatyPOSIlosc' + suffixes.get(i), [entry.value.toString()] as String[])
-                    dataMap.put('oplatyPOSCena' + suffixes.get(i), [formatDoubleValue(((BigDecimal)entry.key).toDouble())] as String[])
+                    count+=(sumMap.containsKey(sum)?sumMap.get(sum):0)
+                    sumMap.put(sum, count)
                 }
             }
         }
-        dataMap
+        sumMap
     }
 
 
