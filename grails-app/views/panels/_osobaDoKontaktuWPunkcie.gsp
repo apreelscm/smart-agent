@@ -1,7 +1,7 @@
 <fieldset class="subpanel-fieldset">
    	<legend><g:message code="panel.newpoint.persontocontact.title" /></legend>
 	<div class="subpanel-fieldset-centercontent" >
-		<label for="${panelType}[${id}].persontocontactAsForMerchant"><g:checkBox name="${panelType}[${id}].kontaktWPunkcieJakDlaMerchanta" id="${panelType}[${id}].persontocontactAsForMerchant" value="${pointData?.kontaktWPunkcieJakDlaMerchanta}"/><g:message code="panel.as.merchant" /></label>
+		<label for="${panelType}[${id}].persontocontactAsForMerchant"><g:checkBox class="forMerchant" name="${panelType}[${id}].kontaktWPunkcieJakDlaMerchanta" id="${panelType}[${id}].persontocontactAsForMerchant" value="${pointData?.kontaktWPunkcieJakDlaMerchanta}"/><g:message code="panel.as.merchant" /></label>
 		<ul class="table-list vertical-center">
 			<li>
 				<span><g:select name="${panelType}[${id}].kontaktWPunkcieTytul" id="${panelType}[${id}].contactAtPointTitle" from="['', 'Pan','Pani']" valueMessagePrefix="person.title" value="${pointData?.kontaktWPunkcieTytul}" validatable="${pointData}" required="true" /></span>
@@ -18,3 +18,13 @@
 		</ul>
 	</div>
 </fieldset>
+
+<r:require module="jquery_ui"/>
+<r:script>
+    jQuery(document).ready(function() {
+        if (jQuery("#isPersonToContactPanelVisible").size() == 0){
+            jQuery('.forMerchant').attr('disabled','true');
+        }
+    });
+</r:script>
+

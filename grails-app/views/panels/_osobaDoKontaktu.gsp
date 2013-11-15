@@ -1,4 +1,5 @@
 <div id="personToContactPanel" style="margin: 0">
+    <g:hiddenField name="isPersonToContactPanelVisible" value="true"/>
     <fieldset>
         <div class="belka-glowna"><g:message code="panel.person.contact.title"/> </div>
         <div class="centre" style="text-align: center; padding-top: 20px; width: 800px">
