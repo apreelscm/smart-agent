@@ -1,7 +1,11 @@
 package com.eservice.eumowy
 
 import grails.util.Environment
+
 import java.nio.file.Paths
+
+import org.codehaus.groovy.grails.commons.GrailsApplication;
+
 import com.eservice.eumowy.util.EumowyCustomEnvironment
 
 class AppParametersService {
@@ -60,6 +64,15 @@ class AppParametersService {
 
 	def getSubscriptionsBlackPrefix() {
 		return AppParameters.findByName("SUBSCRIPTIONS_PATH_BLACKPREFIX")?.value
+	}
+	
+	def getPdfPreviewImageResolution() {
+		def resolutionString = AppParameters.findByName("PDFPREVIEW_IMAGE_RESOLUTION")?.value
+		def resolution = grailsApplication.config.pdfPreviewImageDefaultResolution != null ? grailsApplication.config.pdfPreviewImageDefaultResolution : 300
+		if (resolutionString) {
+			resolution = Integer.valueOf(resolutionString)
+		}
+		return resolution.value
 	}
 	
 	def createDirectoryIfNotExists(String path) {

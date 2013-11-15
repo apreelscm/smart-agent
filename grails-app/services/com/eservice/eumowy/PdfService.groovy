@@ -44,7 +44,7 @@ class PdfService {
         StopWatch stopWatch = new Log4JStopWatch()
 		ByteArrayInputStream bis = new ByteArrayInputStream(pdf)
         PDDocument document = PDDocument.load(bis)
-		int resolution = 300
+		int resolution = appParametersService.getPdfPreviewImageResolution()
 		log.info document
 		PDFImageWriter imageWriter = new PDFImageWriter()
 		
@@ -64,7 +64,7 @@ class PdfService {
 	def generateImageFromPDF(String pdfPath, String pdfName, String processId, Integer pageNumber) {
 		PDDocument document = null
 		document = PDDocument.load(pdfPath+pdfName)
-		int resolution = 300
+		int resolution = appParametersService.getPdfPreviewImageResolution()
 
 		PDFImageWriter imageWriter = new PDFImageWriter()
 		boolean success = imageWriter.writeImage(document, "png", "",

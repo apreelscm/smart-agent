@@ -67,8 +67,9 @@ function setupNewPointPanelHandlers(panelId, prefix) {
 
             if (validateAccountNumber(accountNr)){
                 jQuery.get("/eumowy/activity/getBankName", {accountNo: accountNr.replace(/\s+/g, '')}, function(data) {
-                    if (data != undefined && data != null && data != "") {
+                	if (data != undefined && data != null && data != "") {
                         var obj = JSON.parse(data);
+                        console.log("BankData: " + obj.name + " " + obj.id);
                         bankNameInput.val(obj.name).keyup();
                         bankIdInput.val(obj.id);
                     }
