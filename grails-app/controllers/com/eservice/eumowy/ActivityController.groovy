@@ -1235,6 +1235,7 @@ class ActivityController {
                 result.push("\""+row.get("NAME")+"\"")
             }
         }
+		log.info "Dla kodu: " + code + " znaleziono miasta: " + result.toString()
         render(text: result.toString())
     }
 
