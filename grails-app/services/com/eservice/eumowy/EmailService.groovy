@@ -36,7 +36,12 @@ class EmailService {
 		def emailTemplate = getEmailTampletesByName(EmailTemplates.EmailTemplateType.DOCUMENTS_ELECTRONICAL_VERSION)
         sendMail(emailTemplate, recipient, null, null, documents)
 	}
-	
+
+    def sendDocumentsNotNewAggrementElectronicalVersion(def recipient, List<DocumentFile> documents) {
+        def emailTemplate = getEmailTampletesByName(EmailTemplates.EmailTemplateType.DOCUMENTS_NOT_NEW_AGGREMENT_ELECTRONICAL_VERSION)
+        sendMail(emailTemplate, recipient, null, null, documents)
+    }
+
 	def sendDocumentsAccepted(def recipient, List<DocumentFile> documents, def merchantName) {
 		def emailTemplate = getEmailTampletesByName(EmailTemplates.EmailTemplateType.DOCUMENTS_ACCEPTED)
         sendMailWithTryCatch(emailTemplate, recipient, null, [merchantName: merchantName], documents)

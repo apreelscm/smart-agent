@@ -1,7 +1,5 @@
 package com.eservice.eumowy
 
-import org.apache.commons.lang.builder.HashCodeBuilder
-
 class EmailTemplates implements Serializable {
 
     EmailTemplateType name;
@@ -29,6 +27,7 @@ class EmailTemplates implements Serializable {
 		DOCUMENTS_PAPER_VERSION("documentsPaperVersion"),
 		DOCUMENTS_TEMPLATE_VERSION("documentsTemplateVersion"),
 		DOCUMENTS_ELECTRONICAL_VERSION("documentsElectronicalVersion"),
+        DOCUMENTS_NOT_NEW_AGGREMENT_ELECTRONICAL_VERSION("documentNotNewAggrementElectronicalVersion"),
 		DOCUMENTS_ACCEPTED("documentsAccepted"),
         DOCUMENTS_REJECTED("documentsRejected"),
         DOCUMENTS_MISSING_MAIL("documentsMissingMail")

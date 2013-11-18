@@ -1327,7 +1327,12 @@ class ActivityController {
                 def recipient = getFromProcessData(process, 'kontaktEmail') ?: getFromProcessData(process, 'emailDoWysylkiDokumentu')
 
                 if (recipient){
-                    emailService.sendDocumentsElectronicalVersion(recipient, process.documents?.findAll{it.signature?.sendToClient})
+                    def isNewAggrement = process?.activities?.any{it.code.equals('nowaUmowa')}
+                    if (isNewAggrement){
+                        emailService.sendDocumentsElectronicalVersion(recipient, process.documents?.findAll{it.signature?.sendToClient})
+                    } else {
+                        emailService.sendDocumentsNotNewAggrementElectronicalVersion(recipient, process.documents?.findAll{it.signature?.sendToClient})
+                    }
                 } else {
                     def merchantName = getFromProcessData(process, 'akceptantNazwaOficjalna');
                     def merchantNip = getFromProcessData(process, 'nip');
