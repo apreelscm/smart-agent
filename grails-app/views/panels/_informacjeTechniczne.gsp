@@ -9,13 +9,13 @@
         </p>
 		<p>
             <g:message code="panel.from" />
-            <g:select name='${panelType}[${id}].timeFromHours' from="${00..24}" class="select-without-arrow time-picker timeFromHours" required="true" noSelection="${['':'']}"/>:
-            <g:select name='${panelType}[${id}].timeFromMinutes' from="${00..59}" class="select-without-arrow time-picker timeFromMinutes" required="true" noSelection="${['':'']}"/>
+            <g:select id="${panelType}[${id}].timeFromHours" name='${panelType}[${id}].timeFromHours' from="${0..23}" class="select-without-arrow time-picker timeFromHours" required="true" noSelection="${['':'']}"/>:
+            <g:select id="${panelType}[${id}].timeFromMinutes" name='${panelType}[${id}].timeFromMinutes' from="${0..59}" class="select-without-arrow time-picker timeFromMinutes" required="true" noSelection="${['':'']}"/>
             <g:hiddenField name="${panelType}[${id}].zamkniecieDniaOd" id="${panelType}[${id}].dayCloseFrom" value="${pointData?.zamkniecieDniaOd}"/>
 
             <g:message code="panel.to" />
-            <g:select name='${panelType}[${id}].timeToHours' from="${00..24}" class="select-without-arrow time-picker timeToHours" required="true" noSelection="${['':'']}"/>:
-            <g:select name='${panelType}[${id}].timeToMinutes' from="${00..59}" class="select-without-arrow time-picker timeToMinutes" required="true" noSelection="${['':'']}"/>
+            <g:select id="${panelType}[${id}].timeToHours" name='${panelType}[${id}].timeToHours' from="${0..23}" class="select-without-arrow time-picker timeToHours" required="true" noSelection="${['':'']}"/>:
+            <g:select id="${panelType}[${id}].timeToMinutes" name='${panelType}[${id}].timeToMinutes' from="${0..59}" class="select-without-arrow time-picker timeToMinutes" required="true" noSelection="${['':'']}"/>
             <g:hiddenField name="${panelType}[${id}].zamkniecieDniaDo" id="${panelType}[${id}].dayCloseTo" value="${pointData?.zamkniecieDniaDo}"/>
 
             <g:message code="panel.newpoint.technicalinformation.plannedinstallationdate" />

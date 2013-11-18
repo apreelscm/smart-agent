@@ -434,6 +434,11 @@ class ProcessService {
     def getLocalPosesToPointCommandList(def process) {
         def localPoses = []
         process.points.each { PointData point ->
+			
+			/*if (point.cbdId == null && point.pointDetails != null) {
+				return
+			}*/
+			
             point.posDatas?.each { PosData posData ->
 
                 /* Don't load POSes from CBD */

@@ -2,21 +2,18 @@ var globalPanelCount = 0;
 var globalPanelPosCount = 0;
 var panelPosInternalCount = 0;
 
-//for time picker
-var allHoursOptions = [];
-var allMinutesOptions = [];
-
-function getOptions(minValue, maxValue){
-    var options = [];
-    for(var i = minValue; i <= maxValue; i++){
-        options.push("<option value='" + i + "'>" + i + "</option>");
+function getOptions(minValue, maxValue, selected){
+    var options = "";
+    for(var i = minValue; i <= maxValue; i++) {
+    	if (selected != undefined && i == selected) {
+    		options += "<option value='" + i + "' selected>" + i + "</option>";
+    	}
+    	else {
+    		options += "<option value='" + i + "'>" + i + "</option>";
+    	}
     }
     return options;
 }
-
-allHoursOptions.push(getOptions(0, 24));
-allMinutesOptions.push(getOptions(0,59));
-//-for time picker
 
 var sameForEveryPointSourcePanelId = {
 	"sameForEveryPoint": -1,
@@ -85,7 +82,6 @@ function setupNewPointPanelHandlers(panelId, prefix) {
                 jQuery.get("/eumowy/activity/getBankName", {accountNo: accountNr.replace(/\s+/g, '')}, function(data) {
                 	if (data != undefined && data != null && data != "") {
                         var obj = JSON.parse(data);
-                        console.log("BankData: " + obj.name + " " + obj.id);
                         bankNameInput.val(obj.name).keyup();
                         bankIdInput.val(obj.id);
                     }
@@ -341,8 +337,14 @@ function setupNewPointPanelData(prefix, ppid, pid) {
     	if (panelIdsContainer['technicalinformationSameForEveryPoint'] != -1) {
     		prevPanelId = prefix+"\\["+panelIdsContainer['technicalinformationSameForEveryPoint']+"\\]\\.";
     		
-	        technicalinformation['dayCloseFrom'] = jQuery("#"+prevPanelId+"dayCloseFrom").val();
-	        technicalinformation['dayCloseTo'] = jQuery("#"+prevPanelId+"dayCloseTo").val();
+	        technicalinformation['dayCloseFrom'] = jQuery("#"+prevPanelId+"hiddenDayCloseFrom").val();
+	        technicalinformation['dayCloseTo'] = jQuery("#"+prevPanelId+"hiddenDayCloseTo").val();
+	        
+	        technicalinformation['timeFromHours'] = jQuery("#"+prevPanelId+"timeFromHours").val();
+	        technicalinformation['timeFromMinutes'] = jQuery("#"+prevPanelId+"timeFromMinutes").val();
+	        technicalinformation['timeToHours'] = jQuery("#"+prevPanelId+"timeToHours").val();
+	        technicalinformation['timeToMinutes'] = jQuery("#"+prevPanelId+"timeToMinutes").val();
+	        
 	        technicalinformation['plannedInstallationDate'] = jQuery("#"+prevPanelId+"plannedInstallationDate").val();
 	        technicalinformation['additionalNotes'] = jQuery("#"+prevPanelId+"additionalNotes").val();
     	}
@@ -443,6 +445,12 @@ function setupNewPointPanelData(prefix, ppid, pid) {
         if (panelIdsContainer['technicalinformationSameForEveryPoint'] != -1) {
             jQuery("#"+panelId+"dayCloseFrom").val(technicalinformation['dayCloseFrom']).keyup();
             jQuery("#"+panelId+"dayCloseTo").val(technicalinformation['dayCloseTo']).keyup();
+            
+            jQuery("#"+panelId+"timeFromHours").val(technicalinformation['timeFromHours']).change();
+	        jQuery("#"+panelId+"timeFromMinutes").val(technicalinformation['timeFromMinutes']).change();
+	        jQuery("#"+panelId+"timeToHours").val(technicalinformation['timeToHours']).change();
+	        jQuery("#"+panelId+"timeToMinutes").val(technicalinformation['timeToMinutes']).change();
+            
             jQuery("#"+panelId+"plannedInstallationDate").val(technicalinformation['plannedInstallationDate']).keyup();
             jQuery("#"+panelId+"additionalNotes").val(technicalinformation['additionalNotes']).keyup();
             jQuery("#"+panelId+"technicalinformationSameForEveryPoint").prop("checked", true);
@@ -653,6 +661,12 @@ function clearNewPointData(prefix, ppid, pid) {
         if (panelIdsContainer['technicalinformationSameForEveryPoint'] == -1) {
             jQuery("#"+panelId+"dayCloseFrom").val("");
             jQuery("#"+panelId+"dayCloseTo").val("");
+            
+            jQuery("#"+panelId+"timeFromHours").val("");
+	        jQuery("#"+panelId+"timeFromMinutes").val("");
+	        jQuery("#"+panelId+"timeToHours").val("");
+	        jQuery("#"+panelId+"timeToMinutes").val("");
+            
             jQuery("#"+panelId+"plannedInstallationDate").val("");
             jQuery("#"+panelId+"additionalNotes").val("");
             jQuery("#"+panelId+"technicalinformationSameForEveryPoint").prop("checked", false);
@@ -736,36 +750,49 @@ function addDateHandlers(prefixPanel){
 
     jQuery(prefixPanel + ".plannedInstallationDate").datepicker({ dateFormat: 'yy-mm-dd', minDate: 0 });
 
-    var timeFromChange = function timeFromChangeEvent(){
-        timeFromHoursVal = timeFromHours.val();
-        timeFromMinutesVal = timeFromMinutes.val();
+    var timeFromChange = function timeFromChangeEvent(e){
+        timeFromHoursVal = e.data.hoursFrom.val();
+        timeFromMinutesVal = e.data.minutesFrom.val();
+        
+        timeToHours = e.data.hoursTo;
+        timeToMinutes = e.data.minutesTo;
+        
         if(timeFromHoursVal === '' || timeFromMinutesVal === ''){
             return false;
         }
         hiddenDayCloseFrom.val(getTime(timeFromHoursVal, timeFromMinutesVal));
 
         compareResult = compareTimes(hiddenDayCloseFrom.val(), hiddenDayCloseTo.val());
+        console.log("timeFromChange: " + compareResult);
         if(compareResult === 1) {
             timeToHours.val(timeFromHoursVal);
             timeToMinutes.val(timeFromMinutesVal);
 
-            timeToHours.html(getOptions(timeFromHoursVal, 24));
+            timeToHours.html(getOptions(timeFromHoursVal, 23));
             timeToMinutes.html(getOptions(timeFromMinutesVal, 59));
 
             hiddenDayCloseTo.val(hiddenDayCloseFrom.val());
-        } else if (compareResult === -1) {
-
+        } else if (compareResult <= 0) {
+        	console.log("Val: " + timeToMinutes.val());
+        	timeToHours.html(getOptions(timeFromHoursVal, 23, parseInt(timeToHours.val())));
+            timeToMinutes.html(getOptions(timeFromMinutesVal, 59, parseInt(timeToMinutes.val())));
         }
         return false;
     }
 
-    var timeToChange = function timeToChangeEvent(){
-        timeToHoursVal = timeToHours.val();
-        timeToMinutesVal = timeToMinutes.val();
+    var timeToChange = function timeToChangeEvent(e){
+        timeToHoursVal = e.data.hoursTo.val();
+        timeToMinutesVal = e.data.minutesTo.val();
+        
+        timeFromHours = e.data.hoursFrom;
+        timeFromMinutes = e.data.minutesFrom;
+        
         if(timeToHoursVal === '' || timeToMinutesVal === ''){
             return false;
         }
-        compareResult = compareTimes(hiddenDayCloseFrom.val(), hiddenDayCloseTo.val()); //tu jest blad - bierze poprzednia wartosc hiddenDayCloseTo
+        hiddenDayCloseTo.val(getTime(timeToHoursVal, timeToMinutesVal));
+        
+        compareResult = compareTimes(hiddenDayCloseTo.val(), hiddenDayCloseFrom.val());
         console.log(compareResult);
         if(compareResult === -1){
             timeToMinutes.html(allMinutesOptions);
@@ -774,11 +801,29 @@ function addDateHandlers(prefixPanel){
         return false;
     }
 
-    jQuery(timeFromHours).change(timeFromChange);
-    jQuery(timeFromMinutes).change(timeFromChange);
+    jQuery(timeFromHours).change({hoursFrom: timeFromHours, minutesFrom: timeFromMinutes, hoursTo: timeToHours, minutesTo: timeToMinutes}, timeFromChange);
+    jQuery(timeFromMinutes).change({hoursFrom: timeFromHours, minutesFrom: timeFromMinutes, hoursTo: timeToHours, minutesTo: timeToMinutes}, timeFromChange);
 
-    jQuery(timeToHours).change(timeToChange);
-    jQuery(timeToMinutes).change(timeToChange);
+    jQuery(timeToHours).change({hoursTo: timeToHours, minutesTo: timeToMinutes, hoursFrom: timeFromHours, minutesFrom: timeFromMinutes}, timeToChange);
+    jQuery(timeToMinutes).change({hoursTo: timeToHours, minutesTo: timeToMinutes, hoursFrom: timeFromHours, minutesFrom: timeFromMinutes}, timeToChange);
+    
+    jQuery(timeFromHours).val(getHour(jQuery(hiddenDayCloseFrom).val()));
+    jQuery(timeFromMinutes).val(getMinutes(jQuery(hiddenDayCloseFrom).val()));
+    jQuery(timeToHours).val(getHour(jQuery(hiddenDayCloseTo).val()));
+    jQuery(timeToMinutes).val(getMinutes(jQuery(hiddenDayCloseTo).val()));
+    
+    jQuery(timeFromHours).change();
+    jQuery(timeFromMinutes).change();
+    jQuery(timeToHours).change();
+    jQuery(timeToMinutes).change();
+}
+
+function getHour(val) {
+	return val != undefined && val != null && val != '' && val.split(':')[0][0] == "0" ? val.split(':')[0][1] : val.split(':')[0];
+}
+
+function getMinutes(val) {
+	return val != undefined && val != null && val != '' && val.split(':')[1][0] == "0" ? val.split(':')[1][1] : val.split(':')[1];
 }
 
 function compareTimes(firstTime, secondTime){
@@ -786,7 +831,7 @@ function compareTimes(firstTime, secondTime){
     console.log(secondTime);
     var firstDate = getDateFromTime(firstTime),
         secondDate = getDateFromTime(secondTime);
-
+    console.log("Date1: " + firstDate + " Date2: " + secondDate);
     if(firstDate > secondDate){
         return 1;
     } else if(firstDate < secondDate){
@@ -818,7 +863,8 @@ function getDateFromTime(time){
         date = new Date();
     date.setHours(parseInt(hoursAndMinutes[0]));
     date.setMinutes(parseInt(hoursAndMinutes[1]));
-    date.setSeconds(00);
+    date.setSeconds(0);
+    date.setMilliseconds(0);
     console.log(date);
     return date;
 }
