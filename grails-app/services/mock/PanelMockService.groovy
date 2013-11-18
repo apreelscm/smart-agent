@@ -220,7 +220,6 @@ class PanelMockService {
     }
 
     def getOsobaKtoraPozyskalaAkceptanta(ProcessCommand cmd) {
-        cmd.pozyskujacyTytul = "Pan"
         cmd.pozyskujacyImie = "Jan"
         cmd.pozyskujacyNazwisko = "Nowak"
         cmd.pozyskujacyNumer ="1234_A"

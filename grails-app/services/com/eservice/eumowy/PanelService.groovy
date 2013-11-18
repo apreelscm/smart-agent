@@ -323,7 +323,6 @@ class PanelService {
 
     def getOsobaKtoraPozyskalaAkceptanta(ProcessCommand cmd, def calc ) {
         def user = springSecurityService.principal;
-        cmd.pozyskujacyTytul = nullify(cmd.pozyskujacyTytul)
         cmd.pozyskujacyImie =  user.imie
         cmd.pozyskujacyNazwisko = user.nazwisko
         cmd.pozyskujacyNumer =  user.nr

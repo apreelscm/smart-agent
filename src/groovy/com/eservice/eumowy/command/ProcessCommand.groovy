@@ -335,7 +335,6 @@ class ProcessCommand implements Serializable {
     String kontaktEmail = DEFAULT_VALUE
 
 //    osobaKtoraPozyskalaAkceptanta  - FINISH (nie wystepuje w pdfach)
-    String pozyskujacyTytul = DEFAULT_VALUE
     String pozyskujacyImie = DEFAULT_VALUE
     String pozyskujacyNazwisko = DEFAULT_VALUE
     String pozyskujacyNumer = DEFAULT_VALUE
@@ -942,7 +941,6 @@ class ProcessCommand implements Serializable {
         kontaktTelKomorkowy(nullable: true)
         kontaktTelStacjonarny(nullable: true)
         kontaktEmail(nullable: true, blank: true, shared: "email")
-        pozyskujacyTytul(nullable: false, blank: false)
         pozyskujacyImie(nullable: false, blank: false, shared: "lettersOnly", maxSize: 40)
         pozyskujacyNazwisko(nullable: false, blank: false, shared: "lettersOnly", maxSize: 100)
         pozyskujacyNumer(nullable: false, blank: false, maxSize: 12)

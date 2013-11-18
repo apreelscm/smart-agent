@@ -19,5 +19,7 @@ environments {
                 "mail.smtp.socketFactory.class": "javax.net.ssl.SSLSocketFactory",
                 "mail.smtp.socketFactory.fallback": "false",
                 "mail.smtp.ssl.trust": "*"]
+
+        trustAll = true
     }
 }

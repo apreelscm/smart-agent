@@ -14,5 +14,7 @@ environments {
         grails.mail.port = 25
         grails.mail.username = "ldamiecki@testeservice.com"
         grails.mail.password = "Standard1"
+
+        trustAll = true
     }
 }

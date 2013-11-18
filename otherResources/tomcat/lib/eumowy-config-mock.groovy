@@ -48,5 +48,7 @@ environments {
                         password: "eumowy_app"
                 ]
         ]
+
+        trustAll = true
     }
 }

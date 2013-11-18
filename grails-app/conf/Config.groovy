@@ -158,25 +158,11 @@ log4j = {
     }
 
     environments {
-        mock {
-            root { additivity: false; info 'console' }
-            trustAll = true
-        }
-        development {
-            root { additivity: false; info 'console' }
-            trustAll = true
-        }
-        test {
-            root { additivity: false; info 'console','file-roll' }
-            trustAll = true
-        }
-        uat {
-            root { additivity: false; info 'file-roll' }
-            trustAll = true
-        }
-        production {
-            root { additivity: false; info 'file-roll' }
-        }
+        mock { root { additivity: false; info 'console' } }
+        development { root { additivity: false; info 'console' } }
+        test { root { additivity: false; info 'console','file-roll' } }
+        uat { root { additivity: false; info 'file-roll' } }
+        production { root { additivity: false; info 'file-roll' } }
     }
 
     info database: ["audit"]
