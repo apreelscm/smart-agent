@@ -140,9 +140,13 @@ function refreshCityField(code, select){
             var cities = eval('(' + data + ')');
 
             if(cities instanceof Array){
-                $j.each(cities, function(value) {
-                    select.append('<option value="'+cities[value]+'">'+cities[value]+'</option>')
-                });
+                if (cities.length>0){
+                    $j.each(cities, function(value) {
+                        select.append('<option value="'+cities[value]+'">'+cities[value]+'</option>')
+                    });
+                } else {
+                    showNoCitiesDialog(this);
+                }
             }
             select.val(selectValue)
             select.removeClass("error")

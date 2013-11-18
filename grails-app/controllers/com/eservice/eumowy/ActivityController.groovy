@@ -1228,16 +1228,14 @@ class ActivityController {
 
     def getCity() {
         String code = params.code
-
+        def result = []
         def citiesData = cbdService.getMiasto(code)
         if (citiesData) {
-            def result = []
             citiesData.each { GroovyRowResult row ->
                 result.push("\""+row.get("NAME")+"\"")
             }
-            render(text: result.toString())
         }
-        render(text: '')
+        render(text: result.toString())
     }
 
     def getRodzajDzialalnosci() {
