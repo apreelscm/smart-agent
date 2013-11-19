@@ -18,7 +18,6 @@
 <g:hiddenField name="hasScoringCzestoscTransakcji" value="true"/>
 <g:hiddenField name="hasScoringIloscTransakcji" value="true"/>
 <g:hiddenField name="hasScoringDeklaracjaFinansowa" value="true"/>
-<g:hiddenField name="hasAtLeastOneIstotneDane" value="true"/>
 
 <div class="centre" style="text-align: center; padding-top: 20px; width: 500px">
 <fieldset class="border">
@@ -176,7 +175,7 @@
 </fieldset>
 <fieldset class="border">
     <legend><g:message code="panel.important.data.title"/></legend>
-    <div style="text-align: left" class="${hasErrors(bean:data,field:'hasAtLeastOneIstotneDane','errorSpan')}">
+    <div style="text-align: left">
         <p><label><g:checkBox name="scoringSprzedazTowarowEkskluzywnych" value="${data.scoringSprzedazTowarowEkskluzywnych}" /> <g:message code="panel.luxury.goods"/></label></p>
         <p><label><g:checkBox name="scoringPonad50ProcentObrotowWNocy" value="${data.scoringPonad50ProcentObrotowWNocy}" /> <g:message code="panel.nightly.sell"/></label></p>
         <p><label><g:checkBox name="scoringRuchTurystycznyPrzygraniczny" value="${data.scoringRuchTurystycznyPrzygraniczny}" /> <g:message code="panel.tourism"/></label></p>
