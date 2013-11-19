@@ -133,7 +133,10 @@ var $j = jQuery.noConflict();
 }(jQuery));
 
 
-function refreshCityField(code, select){
+function refreshCityField(code, select, spinner){
+    if(spinner){
+        spinner.removeClass('hidden');
+    }
     var selectValue = select.val()
 
     select.empty();
@@ -156,12 +159,15 @@ function refreshCityField(code, select){
     }else{
         select.val('')
     }
+
+    if(spinner){
+        spinner.addClass('hidden');
+    }
 }
 
 function refreshOpiekaSerwisowa(code, opiekaOne, opiekaTwo){
     if (code && code.length == 6){
         $j.get("/eumowy/activity/getOpiekaSerwisowa", {code: code.replace(/\s+/g, '')}, function(data) {
-            console.log(data.opiekaOneCode);
             opiekaOne.val(data.opiekaOneCode);
             opiekaTwo.val(data.opiekaTwoCode);
         });

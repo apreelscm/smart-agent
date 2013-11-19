@@ -1500,3 +1500,16 @@ label.doladowanieLabel {
     -moz-appearance: none;
     appearance: none;
 }
+
+.miasto-spinner {
+    background: url(../images/spinner.gif) 50% 50% no-repeat transparent;
+    padding: 0.5em;
+}
+
+.hidden{
+    display: none !important;
+}
+
+.disabled-label{
+    color: #d8d8d8;
+}
