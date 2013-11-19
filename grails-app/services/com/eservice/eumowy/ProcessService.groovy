@@ -583,8 +583,14 @@ class ProcessService {
             hpc.setName(row.get("nazwa_punktu").toString())
             hpc.setAddress(row.get("adres_posadowienia").toString())
             hpc.setType(row.get("typ"))
-            hpc.setTermCount(Integer.valueOf(row.get("ile").toString()))
-            hpc.setCurrentTermPayment(Double.valueOf(row.get("oplata_za_pos").toString()))
+            def count = row.get("ile");
+            if (count != null && count?.toString().isNumber()){
+                hpc.setTermCount(Integer.valueOf(count.toString()))
+            }
+            def payment = row.get("oplata_za_pos");
+            if (payment != null && payment?.toString().isNumber()){
+                hpc.setCurrentTermPayment(payment.toString().toBigDecimal())
+            }
             def hirePayment = calculatorService.getCalcProperty(calc,"CENA_NAJMU")
             if (hirePayment && hirePayment.toString()?.isNumber()){
                 hpc.setNewTermPayment(hirePayment.toString().toBigDecimal())
@@ -611,8 +617,14 @@ class ProcessService {
             hpc.setName(row.get("nazwa_punktu").toString())
             hpc.setAddress(row.get("adres_posadowienia").toString())
             hpc.setType(row.get("rodzaj_terminala"))
-            hpc.setTermCount(Integer.valueOf(row.get("terminal_count").toString()))
-            hpc.setCurrentTermPayment(Double.valueOf(row.get("oplata_za_pos").toString()))
+            def count = row.get("terminal_count")
+            if (count != null && count?.toString().isNumber()){
+                hpc.setTermCount(Integer.valueOf(count.toString()))
+            }
+            def payment = row.get("oplata_za_pos");
+            if (payment != null && payment?.toString().isNumber()){
+                hpc.setCurrentTermPayment(payment.toString().toBigDecimal())
+            }
             def hirePayment = calculatorService.getCalcProperty(calc,"CENA_NAJMU")
             if (hirePayment && hirePayment.toString()?.isNumber()){
                 hpc.setNewTermPayment(hirePayment.toString().toBigDecimal())

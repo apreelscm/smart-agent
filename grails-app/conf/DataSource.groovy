@@ -1,7 +1,5 @@
 dataSource {
     pooled = true
-    loggingSql = true
-    logSql= true
     formatSql = false
    // hibernate.default_schema = "CBD_UMOWY"
 
@@ -24,7 +22,8 @@ environments {
             password = ""
             dbCreate = "create-drop" // one of 'create', 'create-drop', 'update', 'validate', ''
             url = "jdbc:h2:mem:CbdDb;MODE=Oracle;MVCC=TRUE;LOCK_TIMEOUT=10000;INIT=CREATE SCHEMA IF NOT EXISTS CBD_ADM\\;CREATE SCHEMA IF NOT EXISTS EUMOWY"
-
+            loggingSql = true
+            logSql= true
         }
     }
     development {
@@ -49,24 +48,30 @@ environments {
                 minEvictableIdleTimeMillis = 1000 * 60 * 5
                 timeBetweenEvictionRunsMillis = 1000 * 60 * 5
             }
+            logSql= true
+            loggingSql = true
         }
     }
     test {
         dataSource {
             jndiName ="java:comp/env/jdbc/eumowyDS"
-            pooled = true
+            loggingSql = false
+            logSql= false
         }
     }
     uat {
         dataSource {
             jndiName ="java:comp/env/jdbc/eumowyDS"
-            pooled = true
+            loggingSql = false
+            logSql= false
         }
     }
     production {
         dataSource {
             jndiName ="java:comp/env/jdbc/eumowyDS"
             pooled = true
+            loggingSql = false
+            logSql= false
         }
     }
 }

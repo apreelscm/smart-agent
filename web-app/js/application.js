@@ -33,6 +33,24 @@ function showDeletingAttachmentDialog(current){
     })
 }
 
+function showNoCitiesDialog(current){
+    jQuery(current).removeAttr('href');
+    jQuery("#noCitiesFound").dialog({
+        buttons: [
+            {
+                text: "OK",
+                click: function() {
+                    jQuery( this ).dialog( "close" );
+                }
+            }
+        ],
+        resizable: true,
+        height: 200,
+        width: 300,
+        modal: true
+    })
+}
+
 function hideDeletingAttachmentDialog(){
     jQuery("#deletingAttachment").dialog("close");
 }

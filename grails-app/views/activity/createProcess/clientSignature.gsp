@@ -467,7 +467,7 @@
                                  href="eumowysig://data/${representative2.name.encodeAsURL()}/${representative2.surname.encodeAsURL()}/ACCEPTANT2/${message(code:'subscription.agreement').encodeAsURL()}/${processInstance.id}/${session.id}/${createLink(controller: "subscriptionEx", action:"saveSubscription", absolute: true).encodeAsURL()}">${representative2.name} ${representative2.surname} - Reprezentant</a>
                     </span>
                     <span>
-                            <a href="" onclick="refreshSignature('${processInstance.id}','ACCEPTANT2','REPRESENTATIVE2');return false;" class="button action"><g:message code="subscription.refresh" /></a>
+                            <a href="" onclick="refreshSignature('${processInstance.id}','ACCEPTANT2','subscribe-REPRESENTATIVE2');return false;" class="button action"><g:message code="subscription.refresh" /></a>
                     </span>
                     </li>
 						

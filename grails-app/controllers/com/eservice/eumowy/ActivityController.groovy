@@ -1229,16 +1229,15 @@ class ActivityController {
 
     def getCity() {
         String code = params.code
-
+        def result = []
         def citiesData = cbdService.getMiasto(code)
         if (citiesData) {
-            def result = []
             citiesData.each { GroovyRowResult row ->
                 result.push("\""+row.get("NAME")+"\"")
             }
-            render(text: result.toString())
         }
-        render(text: '')
+		log.info "Dla kodu: " + code + " znaleziono miasta: " + result.toString()
+        render(text: result.toString())
     }
 
     def getOpiekaSerwisowa() {

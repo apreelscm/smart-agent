@@ -5,6 +5,8 @@ import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.util.PDFImageWriter
 import grails.test.mixin.*
 import org.junit.Before
+import org.perf4j.StopWatch
+import org.perf4j.log4j.Log4JStopWatch
 
 import java.awt.image.BufferedImage
 
@@ -748,39 +750,40 @@ class PdfServiceTests {
 	
 	void testFormularzDanychPunktuToImage() {
 		String outFile =  "Formularz danych punktu_zmiany_15.05.2013_edited_out2.pdf"
-		data.put("podpis", [new File(getTemplatePath()+"signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
+		data.put("podpis", [new File(getTemplatePath()+"subscriptions"+File.separator+"signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
 		process("Formularz danych punktu_zmiany_15.05.2013_edited.pdf", outFile, data);
 		processToImage(outFile, 2)
 	}
 
 	void testFormularzScoringowy() {
 		HashMap<String, String[]> data = prepareScoringData()
-		data.put("podpis", [new File(getTemplatePath()+"signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
+		data.put("podpis", [new File(getTemplatePath()+"subscriptions"+File.separator+"signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
 		process("Formularz Scoringowy (oryginal).pdf", "Formularz Scoringowy (oryginal)_out.pdf", data);
 	}
 
 	void testFormularzScoringowyToImage() {
 		String outFile =  "Formularz Scoringowy (oryginal)_out2.pdf"
 		HashMap<String, String[]> data = prepareScoringData()
-		data.put("podpis", [new File(getTemplatePath()+"signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
+		data.put("podpis", [new File(getTemplatePath()+"subscriptions"+File.separator+"signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
 		process("Formularz Scoringowy (oryginal).pdf", outFile, data);
 		processToImage(outFile, 1)
 	}
 
 	void processToImage(pdfName, pageNumber) {
+        log.info('processToImage - start')
 		PDDocument document = null
 		document = PDDocument.load(getTemplateOutPath()+pdfName)
-		int resolution = 300
+		int resolution = 100
 		PDFImageWriter imageWriter = new PDFImageWriter()
 		boolean success = imageWriter.writeImage(document, "png", "",
-				pageNumber, pageNumber, getTemplateOutPath()+pdfName+"-TEST-", BufferedImage.TYPE_INT_RGB, resolution)
+				pageNumber, pageNumber, getTemplateOutPath()+pdfName+"-TEST-"+resolution, BufferedImage.TYPE_INT_RGB, resolution)
 
 		if (!success) {
 			log.error "No writer found for PNG image format"
 		}
 
 		document.close()
-
+        log.info('processToImage - stop')
 	}
 
 	void process(templateName, outName, data){

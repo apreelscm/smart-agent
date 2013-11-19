@@ -4,4 +4,5 @@ SELECT   COUNT (1) ile, tps_oplata_pos top
            AND o.kln_kln_id = m.kln_id
            AND m.kln_nip = :nip
            AND tps_status NOT IN ('N', 'C')
+           AND m.kln_qcards_nr = 1
 GROUP BY   tps_oplata_pos

@@ -234,6 +234,9 @@
 
 <!-- Working with process with id: ${processInstance?.id} , and status ${processInstance?.status?.toString()}-->
 
+    <div id="noCitiesFound" style="display: none;">
+        <p><g:message code="noCityFound" default="Brak miast dla podanego kodu pocztowego w bazie słownikowej"/></p>
+    </div>
 
     <g:form class="panelsForm">
         %{--eUmowy_ext-364--}%
