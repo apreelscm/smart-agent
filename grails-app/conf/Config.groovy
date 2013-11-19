@@ -106,6 +106,7 @@ log4j = {
     info "grails.app.domain"
     info "grails.app.taglib"
     info   performanceStatsAppender: 'org.perf4j.TimingLogger'
+    info   calcAppender: 'com.eservice.eumowy.CbdService'
 
     error  'org.codehaus.groovy.grails.web.servlet',        // controllers
             'org.codehaus.groovy.grails.web.pages',          // GSP
@@ -155,6 +156,14 @@ log4j = {
         )
         performanceStatsAppender.addAppender(performanceStatsFileAppender)
         appender name: 'performanceStatsAppender', performanceStatsAppender
+
+        def calcAppender = new DailyRollingFileAppender(
+                name: 'file-roll',
+                datePattern: "'.'yyyy-MM-dd",
+                fileName: logDirectory+'/eUmowy-kalkulator.log',  //storage path of log file
+                layout: pattern(conversionPattern:'%d [%t] %-5p %c{2} %x - %m%n')
+        )
+        appender name: 'calcAppender', calcAppender
     }
 
     environments {

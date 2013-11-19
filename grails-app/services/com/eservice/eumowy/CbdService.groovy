@@ -51,7 +51,10 @@ class CbdService {
             case EumowyCustomEnvironment.MOCK.getName():
                 return findCalculatorByNipMock(clientNip);
             default:
-                return cbdDAO.selectMany(FIND_CALC_BY_NIP,[nip:clientNip]).collect{ [POLEAPREEL:it.POLE,WARTOSCAPREEL:it.WARTOSC]}//*.POLEAPREEL
+                def calcId = findCalculatorIdByNip(clientNip)
+                def calc = cbdDAO.selectMany(FIND_CALC_BY_NIP,[nip:clientNip]).collect{ [POLEAPREEL:it.POLE,WARTOSCAPREEL:it.WARTOSC]}//*.POLEAPREEL
+                log.info("Getting calculator for NIP ${clientNip}, calculatorId: ${calcId} with values: ${calc}")
+                return calc
         }
     }
 
@@ -61,7 +64,7 @@ class CbdService {
             case EumowyCustomEnvironment.MOCK.getName():
                 return findCalculatorIdByNipMock(clientNip);
             default:
-                return cbdDAO.selectOne(FIND_CALC_ID_BY_NIP,[nip:clientNip])?.get("KAK_ID")
+                return result = cbdDAO.selectOne(FIND_CALC_ID_BY_NIP,[nip:clientNip])?.get("KAK_ID")
         }
     }
 
