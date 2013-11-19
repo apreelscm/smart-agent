@@ -246,7 +246,7 @@ class ActivityController {
                         log.info "PUSTE ID!"
                     }
                     processInstance.addToSubscriptions(sub)
-                    sub.save()
+                    sub.save(flush: true)
                 }
                 else if (params.processStatus.equals("SUBSCRIPTIONS_DONE")) {
                     processInstance.status = Process.ProcessStatus.SUBSCRIPTIONS_DONE
@@ -256,7 +256,7 @@ class ActivityController {
                     }
                     processInstance.addToSubscriptions(sub)
                     //      processInstance.discard()
-                    sub.save()
+                    sub.save(flush: true)
 
                     //w momencie gdy zlozymy ostatni podpis zapisujemy date jako dataUmowy
                     def aggrementDate = DateUtils.formatWithTimezone(DateUtils.getCurrentDate());
