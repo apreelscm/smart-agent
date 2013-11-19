@@ -5,11 +5,15 @@ var panelPosInternalCount = 0;
 function getOptions(minValue, maxValue, selected){
     var options = "";
     for(var i = minValue; i <= maxValue; i++) {
+    	var s = ""+i;
+    	if (i < 10) {
+    		s = "0"+i;
+    	} 
     	if (selected != undefined && i == selected) {
-    		options += "<option value='" + i + "' selected>" + i + "</option>";
+    		options += "<option value='" + i + "' selected>" + s + "</option>";
     	}
     	else {
-    		options += "<option value='" + i + "'>" + i + "</option>";
+    		options += "<option value='" + i + "'>" + s + "</option>";
     	}
     }
     return options;
@@ -778,14 +782,15 @@ function addDateHandlers(prefixPanel){
             	timeToHours.html(getOptions(timeFromHoursVal, 23));
             	timeToMinutes.html(getOptions(timeFromMinutesVal, 59));
             }
-
+            
             hiddenDayCloseTo.val(hiddenDayCloseFrom.val());
+
         } else if (compareResult <= 0) {
         	var minsBetween = getMinutesBetween(hiddenDayCloseTo.val(), hiddenDayCloseFrom.val());
             console.log("MinsBetween: "+minsBetween);
             
         	console.log("Val: " + timeToMinutes.val());
-        	if (minsBetween >= 60) {
+        	if (parseInt(timeFromHoursVal) < parseInt(timeToHours.val())) {
         		timeToHours.html(getOptions(timeFromHoursVal, 23, parseInt(timeToHours.val())));
         		timeToMinutes.html(getOptions(0, 59, parseInt(timeToMinutes.val())));
         	}
@@ -794,7 +799,7 @@ function addDateHandlers(prefixPanel){
         		timeToMinutes.html(getOptions(timeFromMinutesVal, 59, parseInt(timeToMinutes.val())));
         	}
         	
-        	hiddenDayCloseTo.val(hiddenDayCloseFrom.val());
+        	hiddenDayCloseTo.val(getTime(timeToHours.val(), timeToMinutes.val()));
         }
         return false;
     }
@@ -829,6 +834,11 @@ function addDateHandlers(prefixPanel){
 
     jQuery(timeToHours).change({hoursTo: timeToHours, minutesTo: timeToMinutes, hoursFrom: timeFromHours, minutesFrom: timeFromMinutes}, timeToChange);
     jQuery(timeToMinutes).change({hoursTo: timeToHours, minutesTo: timeToMinutes, hoursFrom: timeFromHours, minutesFrom: timeFromMinutes}, timeToChange);
+    
+    jQuery(timeFromHours).html(getOptions(0, 23));
+    jQuery(timeFromMinutes).html(getOptions(0,59));
+    jQuery(timeToHours).html(getOptions(0, 23));
+    jQuery(timeToMinutes).html(getOptions(0,59));
     
     jQuery(timeFromHours).val(getHour(jQuery(hiddenDayCloseFrom).val()));
     jQuery(timeFromMinutes).val(getMinutes(jQuery(hiddenDayCloseFrom).val()));
@@ -883,11 +893,12 @@ function compareTimes(firstTime, secondTime){
 }
 
 function getTime(hours, minutes){
-    if(hours < 10){
-        hours = '0' + hours;
+    var h = parseInt(hours), m = parseInt(minutes);
+	if(h < 10){
+        hours = '0' + h;
     }
-    if(minutes < 10){
-        minutes = '0' + minutes;
+    if(m < 10){
+        minutes = '0' + m;
     }
 
     return hours + ':' + minutes
