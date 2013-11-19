@@ -123,24 +123,17 @@
 	function updateSubscriptionStatus(status, linkid, subId) {
 	    if (status == "OK") {
 	        updateSubscriptionStatusCount++;
-	        
+	        jQuery("#clientSignatureBackButton").addClass("disabled");
+	
+	        jQuery("#"+linkid).parent().addClass("disabled");
+	        isSubscriptionDone[linkid] = true;
 	
 	        if (updateSubscriptionStatusCount >= 1 && updateSubscriptionStatusCount <= requiredSubscriptionsCount - 1) {
-	            jQuery.post(jQuery(location).attr("href"), {_eventId_updateProcessStatus: "", processStatus: "WAIT_FOR_SUBSCRIPTION", subscriptionId: subId}, function(data){
-	            	jQuery("#clientSignatureBackButton").addClass("disabled");
-	
-			        jQuery("#"+linkid).parent().addClass("disabled");
-			        isSubscriptionDone[linkid] = true;
-	            });
+	            jQuery.post(jQuery(location).attr("href"), {_eventId_updateProcessStatus: "", processStatus: "WAIT_FOR_SUBSCRIPTION", subscriptionId: subId}, function(data){});
 	        }
 	
 	        if (updateSubscriptionStatusCount == requiredSubscriptionsCount) {
-	            jQuery.post(jQuery(location).attr("href"), {_eventId_updateProcessStatus: "", processStatus: "SUBSCRIPTIONS_DONE", subscriptionId: subId}, function(data){
-	            	jQuery("#clientSignatureBackButton").addClass("disabled");
-	
-			        jQuery("#"+linkid).parent().addClass("disabled");
-			        isSubscriptionDone[linkid] = true;
-	            });
+	            jQuery.post(jQuery(location).attr("href"), {_eventId_updateProcessStatus: "", processStatus: "SUBSCRIPTIONS_DONE", subscriptionId: subId}, function(data){});
 	        }
 	    }
 	}
@@ -470,7 +463,8 @@
                         </span>
                     </li>
 
-                    <li><span><a class="big-link" id="subscribe-REPRESENTATIVE2" href="eumowysig://data/${representative2.name.encodeAsURL()}/${representative2.surname.encodeAsURL()}/ACCEPTANT2/${message(code:'subscription.agreement').encodeAsURL()}/${processInstance.id}/${session.id}/${createLink(controller: "subscriptionEx", action:"saveSubscription", absolute: true).encodeAsURL()}">${representative2.name} ${representative2.surname} - Reprezentant</a>
+                    <li><span><a class="big-link" id="subscribe-REPRESENTATIVE2"
+                                 href="eumowysig://data/${representative2.name.encodeAsURL()}/${representative2.surname.encodeAsURL()}/ACCEPTANT2/${message(code:'subscription.agreement').encodeAsURL()}/${processInstance.id}/${session.id}/${createLink(controller: "subscriptionEx", action:"saveSubscription", absolute: true).encodeAsURL()}">${representative2.name} ${representative2.surname} - Reprezentant</a>
                     </span>
                     <span>
                             <a href="" onclick="refreshSignature('${processInstance.id}','ACCEPTANT2','subscribe-REPRESENTATIVE2');return false;" class="button action"><g:message code="subscription.refresh" /></a>
@@ -478,7 +472,8 @@
                     </li>
 						
                     <li>
-                      <span><a class="big-link" id="subscribe-PH" href="eumowysig://data/${processInstance.phFirstName.encodeAsURL()}/${processInstance.phSurname.encodeAsURL()}/PH/${message(code:'subscription.agreement.ph').encodeAsURL()}/${processInstance.id}/${session.id}/${createLink(controller: "subscriptionEx", action:"saveSubscription", absolute: true).encodeAsURL()}">${processInstance.phFirstName} ${processInstance.phSurname} - Pracownik eService</a>
+                      <span><a class="big-link" id="subscribe-PH"
+                                 href="eumowysig://data/${processInstance.phFirstName.encodeAsURL()}/${processInstance.phSurname.encodeAsURL()}/PH/${message(code:'subscription.agreement.ph').encodeAsURL()}/${processInstance.id}/${session.id}/${createLink(controller: "subscriptionEx", action:"saveSubscription", absolute: true).encodeAsURL()}">${processInstance.phFirstName} ${processInstance.phSurname} - Pracownik eService</a>
                       </span>
                       <span>
                             <a href="" onclick="refreshSignature('${processInstance.id}','PH','subscribe-PH');return false;" class="button action"><g:message code="subscription.refresh" /></a>
