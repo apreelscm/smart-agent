@@ -64,7 +64,7 @@ class CbdService {
             case EumowyCustomEnvironment.MOCK.getName():
                 return findCalculatorIdByNipMock(clientNip);
             default:
-                return result = cbdDAO.selectOne(FIND_CALC_ID_BY_NIP,[nip:clientNip])?.get("KAK_ID")
+                return cbdDAO.selectOne(FIND_CALC_ID_BY_NIP,[nip:clientNip])?.get("KAK_ID")
         }
     }
 
