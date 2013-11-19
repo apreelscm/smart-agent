@@ -1,0 +1,1 @@
+select kph_numer_sprzedazowy from CBD_ADM.CBT_SL_KODY_POCZTOWE_PH where kph_kod_pocztowy = :kod

@@ -106,10 +106,13 @@ function setupNewPointPanelHandlers(panelId, prefix) {
     //adres dowydruku
     var $codeField2 = jQuery(prefixPanel+".dataforprintingAddressPostalCode")
     var $cityField2 = jQuery(prefixPanel+".dataforprintingAddressCity")
+    var $opiekaSerwisowaOne = jQuery(prefixPanel+".serviceCare1");
+    var $opiekaSerwisowaTwo = jQuery(prefixPanel+".serviceCare2");
 
     refreshCityField( $codeField2.val(),  $cityField2 )
     $codeField2.on("keyup", {p: prefix, pid: panelId}, function(e) {
-        refreshCityField(jQuery(e.target).val(),  $cityField2)
+        refreshCityField(jQuery(e.target).val(),  $cityField2);
+        refreshOpiekaSerwisowa(jQuery(e.target).val(), $opiekaSerwisowaOne, $opiekaSerwisowaTwo);
     });
 
     jQuery(prefixPanel + ".mccCode").on("keyup", {p: prefix, pid: panelId}, function(e) {

@@ -115,6 +115,7 @@ var $j = jQuery.noConflict();
         refreshCityField(jQuery('#akceptantKodPocztowy').val(),  jQuery("#akceptantMiasto"))
         refreshCityField(jQuery('#akceptantKontaktKodPocztowy').val(),  jQuery("#akceptantKontaktMiasto"))
         refreshCityField(jQuery('#wydrukKodPocztowy').val(),  jQuery("#wydrukMiasto"))
+        refreshOpiekaSerwisowa(jQuery('#wydrukKodPocztowy'), jQuery("#opiekaSerwisowaI"), jQuery("#opiekaSerwisowaII"))
 
         $("#akceptantKodPocztowy").on("keyup", function(e) {
             refreshCityField(jQuery(e.target).val(),  jQuery("#akceptantMiasto"))
@@ -126,6 +127,7 @@ var $j = jQuery.noConflict();
 
         $("#wydrukKodPocztowy").on("keyup", function(e) {
             refreshCityField(jQuery(e.target).val(),  jQuery("#wydrukMiasto"))
+            refreshOpiekaSerwisowa(jQuery(e.target).val(), jQuery("#opiekaSerwisowaI"), jQuery("#opiekaSerwisowaII"))
         });
     });
 }(jQuery));
@@ -149,6 +151,19 @@ function refreshCityField(code, select){
         });
     }else{
         select.val('')
+    }
+}
+
+function refreshOpiekaSerwisowa(code, opiekaOne, opiekaTwo){
+    if (code && code.length == 6){
+        $j.get("/eumowy/activity/getOpiekaSerwisowa", {code: code.replace(/\s+/g, '')}, function(data) {
+            console.log(data.opiekaOneCode);
+            opiekaOne.val(data.opiekaOneCode);
+            opiekaTwo.val(data.opiekaTwoCode);
+        });
+    }else{
+        opiekaOne.val('')
+        opiekaTwo.val('')
     }
 }
 
