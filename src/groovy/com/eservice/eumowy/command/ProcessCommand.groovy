@@ -623,8 +623,6 @@ class ProcessCommand implements Serializable {
     String hasScoringIloscTransakcji
     @Omit
     String hasScoringDeklaracjaFinansowa
-    @Omit
-    String hasAtLeastOneIstotneDane
 
     @Omit
     String hasKontaktTel
@@ -773,15 +771,6 @@ class ProcessCommand implements Serializable {
 
         hasScoringDeklaracjaFinansowa(nullable: true, validator: { value, cmd, errors ->
             checkScoringField.call(value, cmd, errors, "hasScoringDeklaracjaFinansowa", "scoringDeklaracjaFinansowa", cmd.scoringDeklaracjaFinansowa)
-        })
-
-        hasAtLeastOneIstotneDane(nullable: true, validator: { value, cmd, errors ->
-            if(value && !(cmd.scoringSprzedazTowarowEkskluzywnych || cmd.scoringPonad50ProcentObrotowWNocy
-                    || cmd.scoringRuchTurystycznyPrzygraniczny || cmd.scoringUslugiPlatneZGory)){
-                errors.rejectValue("hasAtLeastOneIstotneDane", "default.atLeastOne.required", [cmd.getMessageForProperty("scoringSignificantInfo")] as Object[], "")
-                return false
-            }
-            return true
         })
 
 //END REFACTORING

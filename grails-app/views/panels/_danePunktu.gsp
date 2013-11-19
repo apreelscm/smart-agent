@@ -156,6 +156,7 @@
                                style="width: 200px;"  required="required"
                                validateField="wydrukMiasto"/>
                     </span>
+                    <span id="${panelType}[${id}].spinner" class="miasto-spinner hidden"></span>
                 </span>
             </li>
             <li><span><g:message code="panel.postal" />

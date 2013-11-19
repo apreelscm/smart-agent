@@ -1,10 +1,5 @@
 package com.eservice.eumowy
 
-import com.eservice.eumowy.dao.CbdDAO;
-
-import grails.util.Environment
-
-
 /**
  * !!
  * !! OBIEKT SESYJNY DO TRZYMANIA KALKULATORA I OPERACJI NA NIM
@@ -31,16 +26,16 @@ class CalculatorService implements Serializable{
 
 		Set signaturesCalcNames = []
 		signatures.each{signature ->
-			signaturesCalcNames.addAll(signature.calcFieldsSignature?.collect{it.calcField.name});
+            def cfs = CalcFieldSignature.getCalcFieldsBySignature(signature);
+			signaturesCalcNames.addAll(cfs?.collect{it.calcField.name});
 		}
 
 		println(calcExt)
 		def calcKeyList = calcExt.collect { it.POLEAPREEL }
 
-		println("calcKeyList:"+calcKeyList+ " size:"+calcKeyList.size())
-		println("calcNames:"+signaturesCalcNames+ " size:"+signaturesCalcNames.size())
+		println("calcKeyList size:"+calcKeyList.size() + " calcKeyList:"+calcKeyList)
+		println("calcNames size:"+signaturesCalcNames.size() + "calcNames:"+signaturesCalcNames)
 		println("contains ALL:"+calcKeyList.containsAll(signaturesCalcNames))
-
 
 		return calcKeyList.containsAll(signaturesCalcNames)
 	}

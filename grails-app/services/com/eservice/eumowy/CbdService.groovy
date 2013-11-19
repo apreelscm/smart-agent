@@ -42,6 +42,8 @@ class CbdService {
     private static final def GET_HIRE_PAYMENT_BY_PROCESS = "getHirePaymentByProcess"
     private static final def GET_PREPAID_EVOUCHER = "getPrepaidEvoucher"
     private static final def GET_PREPAID_TOPUP = "getPrepaidTopup"
+    private static final def GET_OPIEKA_SERWISOWA_I = "getOpiekaSerwisowa1"
+    private static final def GET_OPIEKA_SERWISOWA_II = "getOpiekaSerwisowa2"
 
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
     def findCalculatorByNip(def clientNip) {
@@ -253,6 +255,18 @@ class CbdService {
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
     def getPrepaidTopup(def nip) {
         return cbdDAO.selectOne(GET_PREPAID_TOPUP, [NIP: nip])
+    }
+
+    @Cacheable(value="getOpiekaSerwisowa1")
+    @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
+    def getOpiekaSerwisowaOne(def code) {
+        return cbdDAO.selectOne(GET_OPIEKA_SERWISOWA_I,[kod: code])
+    }
+
+    @Cacheable(value="getOpiekaSerwisowa2")
+    @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
+    def getOpiekaSerwisowaTwo(def code) {
+        return cbdDAO.selectOne(GET_OPIEKA_SERWISOWA_II,[kod: code])
     }
 
 

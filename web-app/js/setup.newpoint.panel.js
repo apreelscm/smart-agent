@@ -98,22 +98,24 @@ function setupNewPointPanelHandlers(panelId, prefix) {
     });
 
     //adres do korespondencji punktu
-    var $codeField = jQuery(prefixPanel+".contactAddressAddressPostalCode")
-    var $cityField = jQuery(prefixPanel+".contactAddressAddressCity")
+    var $codeField = jQuery(prefixPanel+".contactAddressAddressPostalCode"),
+        $cityField = jQuery(prefixPanel+".contactAddressAddressCity"),
+        $codeField2 = jQuery(prefixPanel+".dataforprintingAddressPostalCode"),
+        $cityField2 = jQuery(prefixPanel+".dataforprintingAddressCity"),
+        $opiekaSerwisowaOne = jQuery(prefixPanel+".serviceCare1"),
+        $opiekaSerwisowaTwo = jQuery(prefixPanel+".serviceCare2"),
+        $spinner = jQuery(prefixPanel + ".spinner");
 
-    refreshCityField( $codeField.val(),  $cityField )
+    refreshCityField( $codeField.val(), $cityField, $spinner)
 
     $codeField.on("keyup", {p: prefix, pid: panelId}, function(e) {
-        refreshCityField(jQuery(e.target).val(),  $cityField)
+        refreshCityField(jQuery(e.target).val(), $cityField, $spinner)
     });
 
-    //adres dowydruku
-    var $codeField2 = jQuery(prefixPanel+".dataforprintingAddressPostalCode")
-    var $cityField2 = jQuery(prefixPanel+".dataforprintingAddressCity")
-
-    refreshCityField( $codeField2.val(),  $cityField2 )
+    refreshCityField( $codeField2.val(), $cityField2, $spinner)
     $codeField2.on("keyup", {p: prefix, pid: panelId}, function(e) {
-        refreshCityField(jQuery(e.target).val(),  $cityField2)
+        refreshCityField(jQuery(e.target).val(), $cityField2, $spinner);
+        refreshOpiekaSerwisowa(jQuery(e.target).val(), $opiekaSerwisowaOne, $opiekaSerwisowaTwo);
     });
 
     jQuery(prefixPanel + ".mccCode").on("keyup", {p: prefix, pid: panelId}, function(e) {

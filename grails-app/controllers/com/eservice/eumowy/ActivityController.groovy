@@ -4,6 +4,7 @@ package com.eservice.eumowy
 import com.eservice.eumowy.command.ProcessCommand
 import com.eservice.eumowy.process.DefineActivityCommand
 import com.eservice.eumowy.util.DateUtils
+import grails.converters.JSON
 import groovy.sql.GroovyRowResult
 import org.codehaus.groovy.grails.web.json.JSONObject
 
@@ -1237,6 +1238,16 @@ class ActivityController {
         }
 		log.info "Dla kodu: " + code + " znaleziono miasta: " + result.toString()
         render(text: result.toString())
+    }
+
+    def getOpiekaSerwisowa() {
+        String code = params.code
+        def result = [:]
+        def opiekaOne = cbdService.getOpiekaSerwisowaOne(code)
+        def opiekaTwo = cbdService.getOpiekaSerwisowaTwo(code)
+        result.put('opiekaOneCode', opiekaOne ? opiekaOne[0] : '')
+        result.put('opiekaTwoCode', opiekaTwo ? opiekaTwo[0] : '')
+        render result as JSON
     }
 
     def getRodzajDzialalnosci() {
