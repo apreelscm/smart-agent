@@ -21,7 +21,6 @@ class CalcFieldSignature implements Serializable {
             eq("signature", signature)
             join 'calcField'
         }
-        println "getCalcFieldsBySignature - signature = ${signature.name} + result size = ${result.size()}"
         return result
     }
 }
