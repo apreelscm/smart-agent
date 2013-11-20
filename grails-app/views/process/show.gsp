@@ -6,6 +6,7 @@
     <meta name="layout" content="main">
     <g:set var="entityName" value="${message(code: 'process.label', default: 'Process')}" />
     <g:set var="isWaitingProcess" value="${processInstance?.status in [Process.ProcessStatus.WAITING,Process.ProcessStatus.WAIT_FOR_SUBSCRIPTION_PAPER_VERSION]}" />
+    <g:set var="isWaitingForSubscriptionProcess" value="${processInstance?.status == Process.ProcessStatus.WAIT_FOR_SUBSCRIPTION_PAPER_VERSION}" />
     <g:set var="isClosedProcess" value="${processInstance?.status in [Process.ProcessStatus.ACCEPTED,Process.ProcessStatus.REJECTED]}" />
     <g:set var="hasDocuments" value="${processInstance?.documents?.size() > 0}" />
 
@@ -16,6 +17,8 @@
                 event.preventDefault();
                 history.back();
             });
+
+            jQuery("#dataUmowy").datepicker({ dateFormat: 'yy-mm-dd', maxDate: new Date() });
         })
     </r:script>
 </head>
@@ -114,6 +117,16 @@
                 >
             </div>
 
+            <g:if test="${isWaitingForSubscriptionProcess}">
+                <div>
+                    <label style="width: 70px; text-align: right;white-space: nowrap;">
+                        <g:message code="fill.aggrement.date" default="Data umowy:"/>
+                    </label>
+                    <input type="text" name="dataUmowy" id="dataUmowy" value="" style="position: relative; top: 3px; left: 3px"
+                        ${isWaitingForSubscriptionProcess ? 'required="true"' : '' }
+                           readonly = "true"/>
+                </div>
+            </g:if>
             <div style="margin-top: 15px">
                 <label style="width: 70px; text-align: right">
                     <g:message code="todo" default="Uwagi:"/>
@@ -144,11 +157,11 @@
                                 style="float: left;margin-right: 1em;display:block"
                                 disabled="${isClosedProcess}"
                                 formnovalidate=""
-                                onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
+                                onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');"/>
                 <g:actionSubmit class="button submit" action="accept" value="Zaakceptuj"
                                 disabled="${!isWaitingProcess || !hasDocuments}"
                                 style="float: right;display:block"
-                                onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
+                                onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');"/>
             </fieldset>
         </nav>
     </g:form>
