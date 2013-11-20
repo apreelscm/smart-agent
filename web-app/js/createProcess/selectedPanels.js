@@ -115,7 +115,8 @@ var $j = jQuery.noConflict();
         refreshCityField(jQuery('#akceptantKodPocztowy').val(),  jQuery("#akceptantMiasto"))
         refreshCityField(jQuery('#akceptantKontaktKodPocztowy').val(),  jQuery("#akceptantKontaktMiasto"))
         refreshCityField(jQuery('#wydrukKodPocztowy').val(),  jQuery("#wydrukMiasto"))
-        refreshOpiekaSerwisowa(jQuery('#wydrukKodPocztowy'), jQuery("#opiekaSerwisowaI"), jQuery("#opiekaSerwisowaII"))
+        //TODO - nie ma pol o takim id !!! To sa pola z punktu!!
+        refreshOpiekaSerwisowa(jQuery('#wydrukKodPocztowy'), jQuery("#opiekaSerwisowaI"), jQuery("#opiekaSerwisowaII"), jQuery("#opiekaSerwisowaIII"))
 
         $("#akceptantKodPocztowy").on("keyup", function(e) {
             refreshCityField(jQuery(e.target).val(),  jQuery("#akceptantMiasto"))
@@ -127,7 +128,8 @@ var $j = jQuery.noConflict();
 
         $("#wydrukKodPocztowy").on("keyup", function(e) {
             refreshCityField(jQuery(e.target).val(),  jQuery("#wydrukMiasto"))
-            refreshOpiekaSerwisowa(jQuery(e.target).val(), jQuery("#opiekaSerwisowaI"), jQuery("#opiekaSerwisowaII"))
+            //TODO - nie ma pol o takim id !!! To sa pola z punktu!!
+            refreshOpiekaSerwisowa(jQuery(e.target).val(), jQuery("#opiekaSerwisowaI"), jQuery("#opiekaSerwisowaII"), jQuery("#opiekaSerwisowaIII"))
         });
     });
 }(jQuery));
@@ -165,15 +167,17 @@ function refreshCityField(code, select, spinner){
     }
 }
 
-function refreshOpiekaSerwisowa(code, opiekaOne, opiekaTwo){
+function refreshOpiekaSerwisowa(code, opiekaOne, opiekaTwo, installer){
     if (code && code.length == 6){
         $j.get("/eumowy/activity/getOpiekaSerwisowa", {code: code.replace(/\s+/g, '')}, function(data) {
             opiekaOne.val(data.opiekaOneCode);
             opiekaTwo.val(data.opiekaTwoCode);
+            installer.val(data.opiekaOneCode);
         });
     }else{
         opiekaOne.val('')
         opiekaTwo.val('')
+        installer.val('')
     }
 }
 

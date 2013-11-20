@@ -104,6 +104,7 @@ function setupNewPointPanelHandlers(panelId, prefix) {
         $cityField2 = jQuery(prefixPanel+".dataforprintingAddressCity"),
         $opiekaSerwisowaOne = jQuery(prefixPanel+".serviceCare1"),
         $opiekaSerwisowaTwo = jQuery(prefixPanel+".serviceCare2"),
+        $installer = jQuery(prefixPanel+".serviceCare3"),
         $spinner = jQuery(prefixPanel + ".spinner");
 
     refreshCityField( $codeField.val(), $cityField, $spinner)
@@ -115,7 +116,7 @@ function setupNewPointPanelHandlers(panelId, prefix) {
     refreshCityField( $codeField2.val(), $cityField2, $spinner)
     $codeField2.on("keyup", {p: prefix, pid: panelId}, function(e) {
         refreshCityField(jQuery(e.target).val(), $cityField2, $spinner);
-        refreshOpiekaSerwisowa(jQuery(e.target).val(), $opiekaSerwisowaOne, $opiekaSerwisowaTwo);
+        refreshOpiekaSerwisowa(jQuery(e.target).val(), $opiekaSerwisowaOne, $opiekaSerwisowaTwo, $installer);
     });
 
     jQuery(prefixPanel + ".mccCode").on("change", {p: prefix, pid: panelId}, function(e) {
