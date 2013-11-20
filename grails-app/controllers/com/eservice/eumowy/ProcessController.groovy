@@ -190,6 +190,18 @@ class ProcessController {
             flash.error = "Można zaakceptować jedynie proces ze statusem - Oczekujący / Oczekujący na podpis"
             redirect(action: "show", params: params)
             return
+        } else if (processInstance.status == Process.ProcessStatus.WAIT_FOR_SUBSCRIPTION_PAPER_VERSION){
+            if (params.dataUmowy) {
+                if (!isDate(params.dataUmowy)){
+                    flash.error = "Można zaakceptować jedynie proces ze statusem Oczekujący na podpis i podaną poprawną datą zawarcia umowy"
+                    redirect(action: "show", params: params)
+                    return
+                }
+            } else {
+                flash.error = "Można zaakceptować jedynie proces ze statusem Oczekujący na podpis i podaną datą zawarcia umowy"
+                redirect(action: "show", params: params)
+                return
+            }
         }
 
         def hasDocuments = processInstance.documents?.size() > 0
@@ -197,6 +209,20 @@ class ProcessController {
             flash.error = "Nie można zaakceptować procesu bez dokumentów"
             redirect(action: "show", params: params)
             return
+        }
+
+        if (processInstance.status == Process.ProcessStatus.WAIT_FOR_SUBSCRIPTION_PAPER_VERSION){
+            log.info('Zapisuje do bazy: dataUmowy -> ' + params.dataUmowy)
+            ProcessData pd = processInstance.processData.find{ProcessData pd -> "dataUmowy".equals(pd.name)}
+            if (pd){
+                pd.value = DateUtils.formatWithTimezoneFromStr(params.dataUmowy)
+                pd.save(flush:true);
+            } else {
+                ProcessData newPd = new ProcessData(name: "dataUmowy", value:"${DateUtils.formatWithTimezoneFromStr(params.dataUmowy)}");
+                newPd.process = processInstance
+                processInstance.addToProcessData(newPd)
+                newPd.save(flush:true)
+            }
         }
 
         log.info("wywolanie synchronizacji dla procesu [${processInstance.id}] oraz auwId [${springSecurityService.principal.auwId}]")
@@ -275,6 +301,10 @@ class ProcessController {
         response.setContentType("application/octet-stream")
         response.setHeader("Content-disposition", "${params.contentDisposition}; filename=\"${MimeUtility.encodeWord(file.name)}\"")
         response.outputStream << file.file.content
+    }
+
+    private boolean isDate(def dateStr){
+        return !"".equals(DateUtils.formatWithTimezoneFromStr(dateStr))
     }
 /*
     private boolean isNotesEmpty(def notes){
