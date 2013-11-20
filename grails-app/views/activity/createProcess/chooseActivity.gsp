@@ -44,7 +44,7 @@
                     <g:hiddenField name="activitySignature_${activity.id}" value="${listM*.id}" />
 
                     <apreel:selectField data-activity="${activity.id}" data-id="sig1" id="act_${activity.id}_sig1" name="activitySignature_${activity.id}"
-                                        title="${message(code:'signature.sygnaturaDokumentu.'+activity.code+'.name', default:'Sygnatura Dokumentu')}"
+                                        title="${message(code:'signature1.sygnaturaDokumentu.'+activity.code+'.name', default:'Sygnatura Dokumentu')}"
                                         from="${list1}"
                                         optionKey="id"
                                         optionValue="signature"
@@ -58,7 +58,7 @@
 					</g:each>
                     <g:if test="${list2?.size() > 0}">
                         <apreel:selectField data-activity="${activity.id}" data-id="sig2" id="act_${activity.id}_sig2"  name="activitySignature_${activity.id}"
-                                            title="${message(code:'signature.sygnaturaDokumentu.name', default:'Sygnatura Dokumentu')}"
+                                            title="${message(code:'signature2.sygnaturaDokumentu.'+activity.code+'.name', default:'Sygnatura Dokumentu')}"
                                             from="${list2}"
                                             optionKey="id"
                                             optionValue="signature"

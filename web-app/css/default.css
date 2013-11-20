@@ -1214,7 +1214,7 @@ input[type="submit"]:disabled, button:disabled
 
 /* chooseActivity*/
 .signature-article {
-    width: 500px;
+    width: 510px;
     margin: 25px auto 0;
     padding: 15px 20px 20px;
 }
@@ -1234,12 +1234,12 @@ input[type="submit"]:disabled, button:disabled
 
 .signature-article > div {
     margin: 0 auto;
-    width: 440px;
+    width: 500px;
     text-align: left
 }
 
 .signature-article > div > .requiredField:not(:first-child) {
-    margin: 15px 0 0 0px;
+    margin: 5px 0 0 0px;
     text-align: center;
 }
 
