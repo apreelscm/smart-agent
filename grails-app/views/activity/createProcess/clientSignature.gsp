@@ -145,18 +145,57 @@
 		setUpSignaturePad();
 	    checkEmailKontakt();
 	
-	    function refreshPdfPageView(pageNum, pid) {
-	        console.log("PageNum: " + pageNum + " PID: " + pid)
-	        if (documentPages[pageNum] == null || documentPages[pageNum] == undefined) {
-	             jQuery.get("/eumowy/activity/getDocumentPage", {processId: pid, pageNumber: pageNum}, function(data) {
-	                 jQuery("#pdfBox-content-loading").hide();
-	                 documentPages[pageNum] = data;
-	                 jQuery("img#pdfPage").attr("src", data).css("display", "block");
-	             });
+		jQuery("img#pdfPage").load(function() {
+			if (documentPages[pageNum].loaded == true) {
+				this.src = documentPages[pageNum].data;
+				jQuery("#nextPdfPage").removeClass("disabled");
+			}
+		});
+	
+		function initDocumentPages() {
+			for(var i = 0; i <= ${totalPagesCount}; i++) {
+				documentPages[i] = {};
+				documentPages[i].data = null;
+				documentPages[i].loaded = false;
+				documentPages[i].isLoading = false;
+			}
+		}
+	
+		function prefetchDocumentPages(index, pid) {
+			var getPage = function(pageNum, pid) {
+				if (documentPages[pageNum].loaded == false && documentPages[pageNum].isLoading == false) {
+					console.log("--> Pobieram strone: " + index + " PID: " + pid);
+					documentPages[pageNum].loaded = false;
+					documentPages[pageNum].isLoading == true;
+		             jQuery.get("/eumowy/activity/getDocumentPage", {processId: pid, pageNumber: pageNum}, function(data) {
+		                 documentPages[pageNum].data = data;
+		                 documentPages[pageNum].isLoading = false;
+		                 documentPages[pageNum].loaded = true;
+		                 console.log("--> Pobralem strone: " + pageNum + " PID: " + pid);
+		                 prefetchDocumentPages(pageNum+1, pid);
+		             });
+				}
+				else {
+					getPage(pageNum+1, pid);
+				}
+			};
+			
+			if (index <= ${totalPagesCount}) {
+				getPage(index, pid);
+			}
+			
+		}
+	
+	    function refreshPdfPageView(pageNum) {
+	        if (documentPages[pageNum].loaded == true) {
+                 jQuery("#pdfBox-content-loading").hide();
+                 jQuery("img#pdfPage").attr("src", documentPages[pageNum].data).css("display", "block");
+                 jQuery("#nextPdfPage").removeClass("disabled");
 	         }
 	         else {
-	             jQuery("#pdfBox-content-loading").hide();
-	             jQuery("img#pdfPage").attr("src", documentPages[pageNum]).css("display", "block");
+          	 	setTimeout(function() {
+          	 		refreshPdfPageView(pageNum);
+          	 	}, 1000);
 	         }
 	    }
 	
@@ -165,42 +204,57 @@
 	            if (pageNum <= 1)
 	                return;
 	            pageNum--;
+	            
+	            if (pageNum == 1) {
+	            	jQuery("#prevPdfPage").addClass("disabled");
+	            }
+	            else {
+	            	jQuery("#prevPdfPage").removeClass("disabled");
+	            }
 	        }
 	        else if (direction == "next") {
+            	jQuery("#prevPdfPage").removeClass("disabled");
+	            
 	            if (pageNum >= totalPagesCount)
 	                return;
 	            pageNum++;
+
+	            if (documentPages[pageNum].loaded == false) {
+	            	jQuery("#nextPdfPage").addClass("disabled");
+            	}
 	        }
 	
 	        jQuery("img#pdfPage").css("display", "none");
 	        jQuery("#pdfBox-content-loading").show();
 	
-	        refreshPdfPageView(pageNum, "${processInstance.id}");
+	        refreshPdfPageView(pageNum);
 			     	
-			     	jQuery("#page_num").html(pageNum);
-				}
+	     	jQuery("#page_num").html(pageNum);
+		}
 				
-				jQuery("#page_num").html(pageNum);
+		jQuery("#page_num").html(pageNum);
+		
+		jQuery("#pdfPage").panzoom({
+			$zoomIn: jQuery("#zoomInPdfPage"),
+			$zoomOut: jQuery("#zoomOutPdfPage"),
+			contain: 'invert'
+		});
+		
+		initDocumentPages();		
+		prefetchDocumentPages(pageNum, "${processInstance.id}");
+		refreshPdfPageView(pageNum);
 				
-				jQuery("#pdfPage").panzoom({
-					$zoomIn: jQuery("#zoomInPdfPage"),
-					$zoomOut: jQuery("#zoomOutPdfPage"),
-					contain: 'invert'
-				});
-				
-				refreshPdfPageView(pageNum, "${processInstance.id}");
-				
-		    	jQuery("#prevPdfPage").on("click", function(e) {
-		    		e.preventDefault();
-		    		navigatePdfPageView("prev", ${totalPagesCount});
-			     	return false;
-		    	});
-		    	
-		    	jQuery("#nextPdfPage").on("click", function(e) {
-		    		e.preventDefault();
-		    		navigatePdfPageView("next", ${totalPagesCount});
-			     	return false;
-		    	});
+    	jQuery("#prevPdfPage").on("click", function(e) {
+    		e.preventDefault();
+    		navigatePdfPageView("prev", ${totalPagesCount});
+	     	return false;
+    	});
+    	
+    	jQuery("#nextPdfPage").on("click", function(e) {
+    		e.preventDefault();
+    		navigatePdfPageView("next", ${totalPagesCount});
+	     	return false;
+    	});
 		    	
 				jQuery("#noaccept").on("click", function(e) {
 					e.preventDefault();
@@ -401,8 +455,8 @@
                 <a id="zoomInPdfPage" class="button submit">+</a>
             </div>
             <div style="display: inline-block; float: right">
-                <a id="nextPdfPage" class="button submit" style="float: right"><g:message code="process.subscriptions.nextPage" /></a>
-                <a id="prevPdfPage" class="button submit"><g:message code="process.subscriptions.previousPage" /></a>
+                <a id="nextPdfPage" class="button submit disabled" style="float: right"><g:message code="process.subscriptions.nextPage" /></a>
+                <a id="prevPdfPage" class="button submit disabled"><g:message code="process.subscriptions.previousPage" /></a>
             </div>
             <div style="text-align: center; padding-left: 165px; padding-top: 5px">
                 <span style="font-weight: bold"><g:message code="process.subscriptions.page" />: <span id="page_num"></span> / <span id="page_count">${totalPagesCount}</span></span>

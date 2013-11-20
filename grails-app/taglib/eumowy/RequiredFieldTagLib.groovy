@@ -41,31 +41,55 @@ class RequiredFieldTagLib {
         def imgBody = """<img src="${icon}" onclick="allertError('${message}')" class="visibility-hidden" style="cursor:pointer; float: right;"/>"""
 
         StringBuilder sb = new StringBuilder();
-
-        if (direction.equals(V_DIRECTION)) {
-            sb << """
-              <div ${id ? 'id = "'+ id +'"': ''} class="requiredField ${isError ? 'error' : ''} display-block" style="disabled:${disabled}">
-                <ul class="table-list" style="margin-bottom: 0;"><li>
-			  	<span class="vertical-center" style="width: 200px;"><label for="${name}" style="margin-bottom:10px">
-               ${title?:''}
-                </label></span>
-               <span class="vertical-center">${inputField} ${imgBody}</span>
-			   </li></ul>
-            </div>
-        """
-        } else {
-            sb << """
-              <div ${id ? 'id = "'+ id +'"' : ''} class="requiredField display-inline-block ${isError ? 'error' : ''}">
-                <ul class="table-list" style="margin-bottom: 0;"><li>
-			  	<span class="vertical-center" style="width: 200px;"><label for="${name}">
-               ${title}
-                </label></span>
-              <span class="vertical-center">${inputField}
-               ${imgBody}</span>
-			</li></ul>
-            </div>
-        """
-        }
+		
+		if (attrs.type == "select") {
+	        if (direction.equals(V_DIRECTION)) {
+	            sb << """
+	              <div ${id ? 'id = "'+ id +'"': ''} class="requiredField ${isError ? 'error' : ''} display-block" style="disabled:${disabled}">
+	                <ul class="table-list" style="margin-bottom: 0;"><li>
+				  	<span class="vertical-center" style="width: 200px;"><label for="${name}" style="margin-bottom:10px">
+	               ${title?:''}
+	                </label></span>
+	               <span class="vertical-center">${inputField} ${imgBody}</span>
+				   </li></ul>
+	            </div>
+	        """
+	        } else {
+	            sb << """
+	              <div ${id ? 'id = "'+ id +'"' : ''} class="requiredField display-inline-block ${isError ? 'error' : ''}">
+	                <ul class="table-list" style="margin-bottom: 0;"><li>
+				  	<span class="vertical-center" style="width: 200px;"><label for="${name}">
+	               ${title}
+	                </label></span>
+	              <span class="vertical-center">${inputField}
+	               ${imgBody}</span>
+				</li></ul>
+	            </div>
+	        """
+	        }
+		}
+		else {
+			if (direction.equals(V_DIRECTION)) {
+				sb << """
+	              <div ${id ? 'id = "'+ id +'"': ''} class="requiredField ${isError ? 'error' : ''} display-block" style="disabled:${disabled}">
+				  	<label for="${name}" style="margin-bottom:10px">
+	               ${title?:''}
+	                </label>
+	               ${inputField} ${imgBody}
+	            </div>
+	        """
+			} else {
+				sb << """
+	              <div ${id ? 'id = "'+ id +'"' : ''} class="requiredField display-inline-block ${isError ? 'error' : ''}">
+				  	<label for="${name}">
+	               ${title}
+	                </label>
+	              ${inputField}
+	               ${imgBody}
+	            </div>
+	        """
+			}
+		}
 
         out << sb.toString()
     }

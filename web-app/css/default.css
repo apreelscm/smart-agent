@@ -1183,6 +1183,14 @@ input[readonly]{
     pointer-events: none;
 }
 
+a.disabled {
+	pointer-events: none;
+	color: #FEF4E9;
+	background: #CCCCCC;
+	background: -moz-linear-gradient(center top , #D1D1D1, #a7a7a7) repeat scroll 0 0 transparent;
+	background: -webkit-gradient(linear, left top, left bottom, from(#D1D1D1), to(#a7a7a7));
+}
+
 .disabled-activity{
     pointer-events: none;
     visibility: hidden;
