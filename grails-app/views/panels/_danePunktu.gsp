@@ -33,12 +33,17 @@
                                                                        validatable="${pointData}"
                                                                        validateField="nipPunktu"/></span></li>
             <li><span class="align-right"><g:message
-                    code="panel.mcccode" /></span> <span><eumowy:textField
+                    code="panel.mcccode" /></span> <span><!--<eumowy:textField
                     name="${panelType}[${id}].kodMCC"
                     id="${panelType}[${id}].mccCode" value="${pointData?.kodMCC}"
                     maxlength="4" required="true"
                     validatable="${pointData}"
-                    validateField="kodMCC" />
+                    validateField="kodMCC" />-->
+                    <dict:mccSelect 
+                    	name="${panelType}[${id}].kodMCC"
+                    	id="${panelType}[${id}].mccCode" value="${pointData?.kodMCC}"
+                    	value="${pointData?.kodMCC}"
+                    />
                 </span>
             </li>
             <li><span class="align-right"><g:message
@@ -46,7 +51,9 @@
                     name="${panelType}[${id}].rodzProwadzDzialalWPraktyce"
                     id="${panelType}[${id}].bussinessTypeInPractice"
                     value="${pointData?.rodzProwadzDzialalWPraktyce}"
-                    maxlength="255" required="true"/></span></li>
+                    maxlength="255" required="true"
+                    style="width: 400px;"
+                    /></span></li>
             <li><span class="align-right"><g:message
                     code="panel.bankaccountnumber" /></span> <span><eumowy:textField
                     class="bank-account"

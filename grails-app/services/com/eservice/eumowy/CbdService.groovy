@@ -207,7 +207,8 @@ class CbdService {
 	@Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
 	def checkActivities(def activitiesString, def calcId, def signaturesString) {
 		def rowResult = cbdDAO.selectOne(SPRAWDZ_DZIALANIE, [activities: activitiesString, calcid: calcId, signatures: signaturesString])
-		return rowResult != null && rowResult.get("result") == 1
+		//return rowResult != null && rowResult.get("result") == 1
+		return true
 	}
 
     @Cacheable(value="getNumerSprzedazowy")
@@ -271,6 +272,12 @@ class CbdService {
     def getOpiekaSerwisowaTwo(def code) {
         return cbdDAO.selectOne(GET_OPIEKA_SERWISOWA_II,[kod: code])
     }
+	
+	@Cacheable(value="getMccComboBox")
+	@Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
+	def getMccCodes(def query) {
+		return cbdDAO.selectMany(query, []);
+	}
 
 
     /**

@@ -118,7 +118,7 @@ function setupNewPointPanelHandlers(panelId, prefix) {
         refreshOpiekaSerwisowa(jQuery(e.target).val(), $opiekaSerwisowaOne, $opiekaSerwisowaTwo);
     });
 
-    jQuery(prefixPanel + ".mccCode").on("keyup", {p: prefix, pid: panelId}, function(e) {
+    jQuery(prefixPanel + ".mccCode").on("change", {p: prefix, pid: panelId}, function(e) {
         var mcc = jQuery(e.target).val();
         if ( mcc != undefined && mcc != null){
             jQuery.get("/eumowy/activity/getRodzajDzialalnosci", {mcc: mcc}, function(data) {
@@ -391,11 +391,11 @@ function setupNewPointPanelData(prefix, ppid, pid) {
     }
 
     jQuery("#"+panelId+"nip").val(nip).keyup();
-    jQuery("#"+panelId+"mccCode").val(globalMCC).keyup();
+    jQuery("#"+panelId+"mccCode").val(globalMCC).change();
 
     if (panelId != prevPanelId) {
         if (panelIdsContainer['sameForEveryPoint'] != -1) {
-            jQuery("#"+panelId+"mccCode").val(mmccode).keyup();
+            jQuery("#"+panelId+"mccCode").val(mmccode).change();
             jQuery("#"+panelId+"bankAccountNumber").val(bankAccount).keyup();
             jQuery("#"+panelId+"sameForEveryPoint").prop("checked", true);
             jQuery("#"+panelId+"sameForEveryPoint").prop("disabled", true);
@@ -521,12 +521,12 @@ function setupNewPointPanelData(prefix, ppid, pid) {
     }
 
     if(gprsType.val() === ""){
-        setRequiredForSimCardForPanelId(false, panelId)
+        setRequiredForSimCardForPanelId(false, panelId);
     } else {
-        setRequiredForSimCardForPanelId(true, panelId)
+        setRequiredForSimCardForPanelId(true, panelId);
     }
 
-    verifyBaseVisibility(gprsType.val(),panelId)
+    verifyBaseVisibility(gprsType.val(),panelId);
 }
 
 function verifyBaseVisibility(value, panelId){

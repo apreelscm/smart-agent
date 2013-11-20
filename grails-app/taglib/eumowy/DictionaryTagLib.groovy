@@ -48,6 +48,12 @@ class DictionaryTagLib {
         attrs.from.add(0,"")
         fieldImpl(out, attrs)
     }
+	
+	Closure mccSelect = { attrs ->
+		attrs.from = dictionaryService.getMccComboBox()*.value
+		attrs.from.add(0,"")
+		fieldImpl(out, attrs)
+	}
 
     def fieldImpl(out, attrs) {
         out << g.select(attrs)

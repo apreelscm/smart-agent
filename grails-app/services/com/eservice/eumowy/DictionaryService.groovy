@@ -20,6 +20,7 @@ class DictionaryService {
     public static final def GET_POS_TYPE_COMBOBOX = "getPosTypeComboBox"
     public static final def GET_CBD_POINTS_COMBOBOX = "getCbdPointsComboBox"
     public static final def GET_SIM_CARD_COMBOBOX = "getSimCardComboBox"
+	public static final def GET_MCC_COMBOBOX = "getMccComboBox"
 
     //@Cacheable(value="getUlicaComboBox")
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_UNCOMMITTED, readOnly = true)
@@ -38,6 +39,10 @@ class DictionaryService {
     def getCbdPointsComboBox(def nip) {
         cbdService.getCbdPoints(DICTIONARY_PATH + GET_CBD_POINTS_COMBOBOX, nip)
     }
+	
+	def getMccComboBox() {
+		cbdService.getMccCodes(DICTIONARY_PATH + GET_MCC_COMBOBOX);
+	}
 
     private def getFromDictionary(def name, def params){
         switch (Environment.getCurrent().getName()) {

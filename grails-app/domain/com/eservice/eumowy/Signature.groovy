@@ -34,6 +34,6 @@ class Signature implements Serializable {
     }
 
     String toString(){
-        return name;
+        return description;
     }
 }
