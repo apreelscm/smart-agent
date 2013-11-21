@@ -23,6 +23,7 @@
                     <span><g:select id="${panelType}[${id}].contactAddressAddressCity" name="${panelType}[${id}].korespondencjaMiasto"
                                     value="${pointData?.korespondencjaMiasto}" from="[pointData?.korespondencjaMiasto ?: '']"
                                     validatable="${pointData}" validateField="korespondencjaMiasto" style="width: 200px;" required="required"/></span>
+                    <span id="${panelType}[${id}].korespondencjaMiastoSpinner" class="miasto-spinner visibility-hidden"></span>
 		  		</span>
 		  	</li>
 		  	<li>
