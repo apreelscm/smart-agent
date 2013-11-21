@@ -19,6 +19,7 @@ class BootStrap {
                 executeSqlScript(projectPath+"grails-app/conf/sql/createData.sql")
                 executeSqlScript(projectPath+"otherResources/sql/1.0.0/02_100_dictionaries.sql")
                 executeSqlScript(projectPath+"otherResources/sql/1.0.0/03_100_params.sql")
+                // TODO wywolac pozostale skrypty ze slownikami
                 createCBDDataForDevProfile();
                 createTestDomains()
                 break;
