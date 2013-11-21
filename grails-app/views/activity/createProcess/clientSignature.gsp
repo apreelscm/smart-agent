@@ -573,7 +573,7 @@
                     <tbody>
                     <tr>
                         <td id="clientSignatureBackButton">
-                            <g:link style="width: 100%" event="back" class="button submit link-button">${message(code:'default.navigation.button.prev', default: 'Wstecz')}</g:link>
+                            <g:link style="width: 100%" event="back" class="button submit link-button ${isUzupelnijPodpisy ? "disabled" : ""}">${message(code:'default.navigation.button.prev', default: 'Wstecz')}</g:link>
                         </td>
                         <td style="text-align: right;">
                             <g:submitButton id="noaccept" name="noaccept" class="button submit display-inline" style="width: 90%"

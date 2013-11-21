@@ -180,6 +180,7 @@ class ActivityController {
                 flow.representative1 = currentEvent.attributes.representative1
                 flow.representative2 = currentEvent.attributes.representative2
                 flow.prevActivityMessage = message(code: 'process.udpated.signatures', args:[flow.processInstance.client.nip])
+                flow.isUzupelnijPodpisy = true
             }.to "clientSignature"
         }
 
@@ -198,6 +199,7 @@ class ActivityController {
         clientSignature {
             onEntry {
                 def processInstance = flow.processInstance
+                def isUzupelnijPodpisy = flow.isUzupelnijPodpisy
                 flow.representative1 = flow.representative1 != null ? flow.representative1 : processService.getRepresentative1(processInstance)
                 flow.representative2 = flow.representative2 != null ? flow.representative2 : processService.getRepresentative2(processInstance)
                 flow.requiredNumberOfSubscriptions = 1 //PH subscription is always required
@@ -230,7 +232,8 @@ class ActivityController {
                     representative1: flow.representative1,
                     representative2: flow.representative2,
                     requiredNumberOfSubscriptions: flow.requiredNumberOfSubscriptions,
-                    clientNip: flow.rejectedDocumentsMessage
+                    clientNip: flow.rejectedDocumentsMessage,
+                    isUzupelnijPodpisy: flow.isUzupelnijPodpisy
             ])
             on("back"){
                 flow.newProcessFlow = false
@@ -1021,6 +1024,7 @@ class ActivityController {
                 log.info("UZUPELNIJ PODPISY - wczytanie procesu - nip = ${flow.nip} , processId = ${processInstance?.id}, status = ${processInstance?.status}")
 
                 flow.processInstance = processInstance
+                flow.isUzupelnijPodpisy = true
             }.to "clientSignature"
         }
 
@@ -1070,6 +1074,7 @@ class ActivityController {
                 process {flow.processInstance}
                 representative1 { flow.representative1 }
                 representative2 { flow.representative2 }
+                isUzupelnijPodpisy { flow.isUzupelnijPodpisy }
             }
         }
 
