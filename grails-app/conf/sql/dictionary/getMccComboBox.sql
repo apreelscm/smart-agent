@@ -1,0 +1,1 @@
+select slm_kod as "value" from cbd_adm.cbt_sl_mcc order by slm_kod
