@@ -213,6 +213,7 @@ class ActivityController {
                 if (!flow.skipDocumentGeneration) {
                     def processWithPages = pdfService.workWithDocuments(processInstance, conversation.calc)
                     flow.totalPagesCount = processWithPages.totalPagesCount
+					pdfService.generateAllPreviews(processInstance.documents, processInstance.id, flow.totalPagesCount)
                     //processInstance.discard()
                     //processInstance.save(flush: true)
                     processInstance = processWithPages.processInstance
@@ -1207,7 +1208,7 @@ class ActivityController {
 
     def getDocumentPage() {
         def process = Process.get(Integer.valueOf(params.processId));
-        String path = pdfService.generateImageFromPDFDocumentFile(process.documents,
+        String path = pdfService.getImageFromPDFDocumentFile(process.documents,
                 params.processId as String,
                 Integer.valueOf(params.pageNumber));
         render(text: path)
