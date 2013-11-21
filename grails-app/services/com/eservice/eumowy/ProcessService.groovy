@@ -451,7 +451,7 @@ class ProcessService {
 
                 point.properties.each { key, value ->
                    // log.info "PointData Key: " + key
-                    if (["class", "posDatas", "errors", "constraints", "processId", "cbdId", "pointDetailsId", "empty"].contains(key) || value == null){
+                    if (["class", "posDatas", "errors", "constraints", "processId", "pointDetailsId", "empty"].contains(key) || value == null){
                         return
                     }
 
@@ -462,7 +462,7 @@ class ProcessService {
 
                 point.pointDetails?.properties.each { key, value ->
 //                    log.info "PointDataDetails Key: " + key
-                    if (["class", "posDatas", "errors", "constraints", "processId", "cbdId", "pointDetailsId", "empty"].contains(key) || value == null){
+                    if (["class", "posDatas", "errors", "constraints", "processId", "pointDetailsId", "empty"].contains(key) || value == null){
                         return
                     }
 
@@ -473,7 +473,7 @@ class ProcessService {
 
                 posData?.properties.each { key, value ->
 //                    log.info "PosData Key: " + key
-                    if (["class", "cbdId", "process", "point", "errors", "constraints", "empty", "", ""].contains(key) || value == null){
+                    if (["class", "process", "point", "errors", "constraints", "empty", "", ""].contains(key) || value == null){
                         return
                     }
 
@@ -484,7 +484,7 @@ class ProcessService {
 
                 posData?.posDetails?.properties.each { key, value ->
 //                    log.info "PosDataDetails Key: " + key
-                    if (["class", "cbdId", "process", "point", "errors", "constraints", "empty", "", ""].contains(key) || value == null){
+                    if (["class", "process", "point", "errors", "constraints", "empty", "", ""].contains(key) || value == null){
                         return
                     }
 
