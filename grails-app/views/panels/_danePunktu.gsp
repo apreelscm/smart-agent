@@ -33,17 +33,11 @@
                                                                        validatable="${pointData}"
                                                                        validateField="nipPunktu"/></span></li>
             <li><span class="align-right"><g:message
-                    code="panel.mcccode" /></span> <span><!--<eumowy:textField
-                    name="${panelType}[${id}].kodMCC"
-                    id="${panelType}[${id}].mccCode" value="${pointData?.kodMCC}"
-                    maxlength="4" required="true"
-                    validatable="${pointData}"
-                    validateField="kodMCC" />-->
+                    code="panel.mcccode" /></span>
+                <span>
                     <dict:mccSelect 
                     	name="${panelType}[${id}].kodMCC"
-                    	id="${panelType}[${id}].mccCode" value="${pointData?.kodMCC}"
-                    	value="${pointData?.kodMCC}"
-                    />
+                    	id="${panelType}[${id}].mccCode" value="${pointData?.kodMCC}"/>
                 </span>
             </li>
             <li><span class="align-right"><g:message
@@ -163,7 +157,7 @@
                                style="width: 200px;"  required="required"
                                validateField="wydrukMiasto"/>
                     </span>
-                    <span id="${panelType}[${id}].spinner" class="miasto-spinner visibility-hidden"></span>
+                    <span id="${panelType}[${id}].wydrukMiastoSpinner" class="miasto-spinner visibility-hidden"></span>
                 </span>
             </li>
             <li><span><g:message code="panel.postal" />

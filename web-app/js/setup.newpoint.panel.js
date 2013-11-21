@@ -105,7 +105,8 @@ function setupNewPointPanelHandlers(panelId, prefix) {
         $opiekaSerwisowaOne = jQuery(prefixPanel+".serviceCare1"),
         $opiekaSerwisowaTwo = jQuery(prefixPanel+".serviceCare2"),
         $installer = jQuery(prefixPanel+".serviceCare3"),
-        $spinner = jQuery(prefixPanel + ".spinner");
+        $spinner = jQuery(prefixPanel + ".korespondencjaMiastoSpinner"),
+        $spinner2 = jQuery(prefixPanel + ".wydrukMiastoSpinner");
 
     refreshCityField( $codeField.val(), $cityField, $spinner)
 
@@ -113,9 +114,9 @@ function setupNewPointPanelHandlers(panelId, prefix) {
         refreshCityField(jQuery(e.target).val(), $cityField, $spinner)
     });
 
-    refreshCityField( $codeField2.val(), $cityField2, $spinner)
+    refreshCityField( $codeField2.val(), $cityField2, $spinner2)
     $codeField2.on("keyup", {p: prefix, pid: panelId}, function(e) {
-        refreshCityField(jQuery(e.target).val(), $cityField2, $spinner);
+        refreshCityField(jQuery(e.target).val(), $cityField2, $spinner2);
         refreshOpiekaSerwisowa(jQuery(e.target).val(), $opiekaSerwisowaOne, $opiekaSerwisowaTwo, $installer);
     });
 
@@ -276,7 +277,9 @@ function setupNewPointPanelData(prefix, ppid, pid) {
         terminaloptions = {},
         technicalinformation = {},
         possetforselectedpoint = {},
-        additionalequipment = {};
+        additionalequipment = {},
+        hasPointId = jQuery("#" + panelId + "id").val() !== '';
+
 	var panelIdsContainer;
 	if (prefix == "poses") {
     	panelIdsContainer = sameForEveryPointSourcePosId;
@@ -392,7 +395,9 @@ function setupNewPointPanelData(prefix, ppid, pid) {
     }
 
     jQuery("#"+panelId+"nip").val(nip).keyup();
-    jQuery("#"+panelId+"mccCode").val(globalMCC).change();
+    if(!hasPointId){
+        jQuery("#"+panelId+"mccCode").val(globalMCC).change();
+    }
 
     if (panelId != prevPanelId) {
         if (panelIdsContainer['sameForEveryPoint'] != -1) {
@@ -770,13 +775,11 @@ function addDateHandlers(prefixPanel){
         hiddenDayCloseFrom.val(getTime(timeFromHoursVal, timeFromMinutesVal));
 
         compareResult = compareTimes(hiddenDayCloseFrom.val(), hiddenDayCloseTo.val());
-        console.log("timeFromChange: " + compareResult);
         if(compareResult === 1) {
             timeToHours.val(timeFromHoursVal);
             timeToMinutes.val(timeFromMinutesVal);
 
             var minsBetween = getMinutesBetween(hiddenDayCloseTo.val(), hiddenDayCloseFrom.val());
-            console.log("MinsBetween: "+minsBetween);
             if (minsBetween >= 60) {
             	timeToHours.html(getOptions(timeFromHoursVal, 23));
             	timeToMinutes.html(getOptions(0, 59));
@@ -790,9 +793,6 @@ function addDateHandlers(prefixPanel){
 
         } else if (compareResult <= 0) {
         	var minsBetween = getMinutesBetween(hiddenDayCloseTo.val(), hiddenDayCloseFrom.val());
-            console.log("MinsBetween: "+minsBetween);
-            
-        	console.log("Val: " + timeToMinutes.val());
         	if (parseInt(timeFromHoursVal) < parseInt(timeToHours.val())) {
         		timeToHours.html(getOptions(timeFromHoursVal, 23, parseInt(timeToHours.val())));
         		timeToMinutes.html(getOptions(0, 59, parseInt(timeToMinutes.val())));
@@ -820,7 +820,6 @@ function addDateHandlers(prefixPanel){
         hiddenDayCloseTo.val(getTime(timeToHoursVal, timeToMinutesVal));
         
         compareResult = compareTimes(hiddenDayCloseTo.val(), hiddenDayCloseFrom.val());
-        console.log(compareResult);
         if(compareResult === -1){
             //timeToMinutes.html(allMinutesOptions);
         	timeFromHours.val(timeToHoursVal);//.change();
@@ -878,11 +877,8 @@ function getMinutesBetween(date1, date2) {
 }
 
 function compareTimes(firstTime, secondTime){
-    console.log(firstTime);
-    console.log(secondTime);
     var firstDate = getDateFromTime(firstTime),
         secondDate = getDateFromTime(secondTime);
-    console.log("Date1: " + firstDate + " Date2: " + secondDate);
     if(firstDate > secondDate){
         return 1;
     } else if(firstDate < secondDate){
@@ -917,7 +913,6 @@ function getDateFromTime(time){
     date.setMinutes(parseInt(hoursAndMinutes[1]));
     date.setSeconds(0);
     date.setMilliseconds(0);
-    console.log(date);
     return date;
 }
 

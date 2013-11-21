@@ -78,7 +78,7 @@ class PdfService {
         if (data.document != null) {
 			result = generateImageFromPDF(data.document.content.content, data.document.id, processId, data.page)
 		}else {
-			log.warn "generateImageFromPDFDocumentFile - document == null"
+			log.error "generateImageFromPDFDocumentFile - document == null"
 		}
 		return result
 	}
@@ -123,19 +123,24 @@ class PdfService {
 	}
 	
 	def getDocumentAndPageCountFromGlobalPageNumber(List<DocumentFile> documents, Integer pageNumber) {
-		Integer pagesCount = 0
 
         def docs = documents.sort(false) {it.signature.signatureOrder}
+        def filteredDocs = docs.findAll{it.signature?.showOnPreview}
 
-		for(DocumentFile doc : docs.findAll{it.signature?.sendToClient}) {
-			log.info "Document: " + doc + " PageCount: " + doc.pagesCount + " Signature_order: " + doc.signature.signatureOrder
-			if (pageNumber >= pagesCount && pageNumber <= pagesCount + doc.pagesCount) {
-				return [document: doc, page: pageNumber - pagesCount]
+        if (filteredDocs.size>0){
+            Integer pagesCount = 0
+            for(DocumentFile doc : filteredDocs) {
+                log.info "Document: " + doc + " PageCount: " + doc.pagesCount + " Signature_order: " + doc.signature.signatureOrder
+                if (pageNumber >= pagesCount && pageNumber <= pagesCount + doc.pagesCount) {
+                    return [document: doc, page: pageNumber - pagesCount]
+                }
+
+                pagesCount += doc.pagesCount
             }
-				
-			pagesCount += doc.pagesCount		
-		}
-		
+        } else {
+            log.warn "No documents to show on preview"
+        }
+
 		return [document: null, page: 0]
 	}
 	
