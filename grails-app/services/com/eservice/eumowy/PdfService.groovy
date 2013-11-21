@@ -1,19 +1,25 @@
 package com.eservice.eumowy
 
+import java.awt.image.BufferedImage
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
+
+import org.apache.commons.io.FileUtils
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.util.PDFImageWriter
 import org.perf4j.StopWatch
 import org.perf4j.log4j.Log4JStopWatch
+
 import pdfgenerator.PdfGenerator
 import signaturepad.SignatureToImage
-
-import java.awt.image.BufferedImage
 
 class PdfService {
 	def appParametersService
     def processService
     def calculatorService
     def mapperService
+	
+	private ExecutorService executor;
 
 	public static enum FontType {
         HELVETICA(""),
@@ -28,6 +34,43 @@ class PdfService {
         }
 	}
 	
+	def generateAllPreviews(List<DocumentFile> documents, Long processId, Integer totalPagesCount) {
+		def imageUris = new HashMap<Integer, String>()
+		executor = Executors.newFixedThreadPool(totalPagesCount);
+		def threadMethod = { content, did, pid, docpage, globalpage ->
+			log.info "GlobalPage: " + globalpage
+			generateImageFromPDF(content, did, pid, docpage)
+			File oldFile = new File(appParametersService.getPdfImagePath("lock-"+did+"-"+pid+"-"+docpage+".png"))
+			File newFile = new File(appParametersService.getPdfImagePath(did+"-"+pid+"-"+docpage+".png"))
+			log.info "Moving from " + oldFile.toString() + " to " + newFile.toString()
+			FileUtils.copyFile(oldFile, newFile) //Overwrites
+			FileUtils.deleteQuietly(oldFile)
+			return
+		}
+		for (int i = 1; i <= totalPagesCount; i++) {
+			def data = getDocumentAndPageCountFromGlobalPageNumber(documents, i)
+			if (data.document != null) {
+				executor.execute { threadMethod(data.document.content.content.clone(), new Long(data.document.id), processId.toString(), new Integer(data.page), new Integer(i)) }
+			} else {
+				log.warn "generateAllPreviews - document == null"
+			}
+		}
+	}
+	
+	def getImageFromPDFDocumentFile(List<DocumentFile> documents, String processId, Integer pageNumber) {
+		String result = ""
+		log.info documents
+		def data = getDocumentAndPageCountFromGlobalPageNumber(documents, pageNumber)
+		if (data.document != null) {
+			File f = new File(appParametersService.getPdfImagePath(data.document.id+"-"+processId+"-"+data.page+".png"))
+			while(f.exists() == false) {}
+			result = appParametersService.getPdfImageUri(data.document.id+"-"+processId+"-"+data.page+".png")
+		}else {
+			log.warn "generateImageFromPDFDocumentFile - document == null"
+		}
+		return result
+	}
+	
 	def generateImageFromPDFDocumentFile(List<DocumentFile> documents, String processId, Integer pageNumber) {
 		String result = ""
 		log.info documents
@@ -35,7 +78,7 @@ class PdfService {
         if (data.document != null) {
 			result = generateImageFromPDF(data.document.content.content, data.document.id, processId, data.page)
 		}else {
-			log.warn "generateImageFromPDFDocumentFile - document == null"
+			log.error "generateImageFromPDFDocumentFile - document == null"
 		}
 		return result
 	}
@@ -49,7 +92,7 @@ class PdfService {
 		PDFImageWriter imageWriter = new PDFImageWriter()
 		
 		boolean success = imageWriter.writeImage(document, "png", "",
-			pageNumber, pageNumber, appParametersService.getPdfImagePath(documentId+"-"+processId+"-"), BufferedImage.TYPE_INT_RGB, resolution)
+			pageNumber, pageNumber, appParametersService.getPdfImagePath("lock-"+documentId+"-"+processId+"-"), BufferedImage.TYPE_INT_RGB, resolution)
 	
 		if (!success) {
 			log.error "No writer found for PNG image format"
@@ -80,19 +123,24 @@ class PdfService {
 	}
 	
 	def getDocumentAndPageCountFromGlobalPageNumber(List<DocumentFile> documents, Integer pageNumber) {
-		Integer pagesCount = 0
 
         def docs = documents.sort(false) {it.signature.signatureOrder}
+        def filteredDocs = docs.findAll{it.signature?.showOnPreview}
 
-		for(DocumentFile doc : docs.findAll{it.signature?.sendToClient}) {
-			log.info "Document: " + doc + " PageCount: " + doc.pagesCount + " Signature_order: " + doc.signature.signatureOrder
-			if (pageNumber >= pagesCount && pageNumber <= pagesCount + doc.pagesCount) {
-				return [document: doc, page: pageNumber - pagesCount]
+        if (filteredDocs.size>0){
+            Integer pagesCount = 0
+            for(DocumentFile doc : filteredDocs) {
+                log.info "Document: " + doc + " PageCount: " + doc.pagesCount + " Signature_order: " + doc.signature.signatureOrder
+                if (pageNumber >= pagesCount && pageNumber <= pagesCount + doc.pagesCount) {
+                    return [document: doc, page: pageNumber - pagesCount]
+                }
+
+                pagesCount += doc.pagesCount
             }
-				
-			pagesCount += doc.pagesCount		
-		}
-		
+        } else {
+            log.warn "No documents to show on preview"
+        }
+
 		return [document: null, page: 0]
 	}
 	
