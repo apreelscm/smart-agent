@@ -261,7 +261,7 @@
                     </tr>
                     <tr>
                         <td class="bold">9. <g:message code="panel.dinersclub.upercase"/></td>
-                        <td><eumowy:percentageField class="percent-number"  name="dinersClubPr" value="${data.dinersClubPr}"/> </td>
+                        <td><eumowy:percentageField class="percent-number"  name="dinersClubPr" value="${data.dinersClubPr}" validatable="${data}"/> </td>
                         <td></td></tr>
                     <tr>
                         <td class="bold">10. <g:message code="panel.iko"/></td>
