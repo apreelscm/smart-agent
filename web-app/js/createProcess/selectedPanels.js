@@ -136,13 +136,13 @@ var $j = jQuery.noConflict();
 
 
 function refreshCityField(code, select, spinner){
-    if(spinner){
-        spinner.removeClass('hidden');
-    }
     var selectValue = select.val()
 
     select.empty();
     if (code && code.length == 6){
+        if(spinner){
+            spinner.removeClass('visibility-hidden');
+        }
         $j.get("/eumowy/activity/getCity", {code: code.replace(/\s+/g, '')}, function(data) {
             var cities = eval('(' + data + ')');
 
@@ -157,13 +157,13 @@ function refreshCityField(code, select, spinner){
             }
             select.val(selectValue)
             select.removeClass("error")
+
+            if(spinner){
+                spinner.addClass('visibility-hidden');
+            }
         });
     }else{
         select.val('')
-    }
-
-    if(spinner){
-        spinner.addClass('hidden');
     }
 }
 
