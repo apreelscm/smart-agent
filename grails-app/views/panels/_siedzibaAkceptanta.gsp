@@ -19,7 +19,16 @@
                     <span>
                         <span><g:message code="panel.street" /></span>
                         <span>
-                            <dict:streetSelect name="akceptantUlicaTytul" value="${data.akceptantUlicaTytul}" readonly="${data.checkIfFromCbd('akceptantUlicaTytul')}" default="UL"/>
+
+                            <g:set var="isUlicaTytulFromCbd" value="${data.checkIfFromCbd('akceptantUlicaTytul')}"/>
+                            <g:if test="${isUlicaTytulFromCbd}">
+                                <dict:streetSelect name="akceptantUlicaTytul" value="${data.akceptantUlicaTytul}" disabled="disabled" default="UL"/>
+                                <g:hiddenField name="akceptantUlicaTytul" value="${data.akceptantUlicaTytul}"/>
+                            </g:if>
+                            <g:else>
+                                <dict:streetSelect name="akceptantUlicaTytul" value="${data.akceptantUlicaTytul}" default="UL"/>
+                            </g:else>
+
                             <g:hiddenField name="akceptantUlicaTytulCbd" value="${data.akceptantUlicaTytulCbd}"/>
                             <eumowy:textField name="akceptantUlica" value="${data.akceptantUlica}" validatable="${data}" readonly="${data.checkIfFromCbd('akceptantUlica')}" style="width: 200px" required="true"/>
                             <g:hiddenField name="akceptantUlicaCbd" value="${data.akceptantUlicaCbd}"/>
