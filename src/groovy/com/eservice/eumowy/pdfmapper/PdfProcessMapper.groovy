@@ -117,7 +117,7 @@ class PdfProcessMapper extends AbstractPdfMapper{
         if (processInstance.activities.findAll { activity -> additionalToCross.contains(activity.code)}.size()>0){
             dataMap.put("crossAdditional", ['_______________'] as String[])
         } else if (processInstance.activities.size()==1 && processInstance.activities.findAll { activity -> newToCross.contains(activity.code)}.size()>0){
-            dataMap.put("crossNew", ['______'] as String[])
+            dataMap.put("crossNew", ['_____'] as String[])
         }
 
         return dataMap;
