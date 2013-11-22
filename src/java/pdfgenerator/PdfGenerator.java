@@ -29,7 +29,7 @@ public class PdfGenerator {
 		try {
 			templateReader = new PdfReader(content);
 			stamp = new PdfStamper(templateReader, baos);
-			
+
 			for(Map.Entry<String, Object[]> dataEntry : imageMap.entrySet()) {
 				try {
 					Integer pageNo = (Integer)dataEntry.getValue()[1];
@@ -198,6 +198,9 @@ public class PdfGenerator {
 
             //konieczne jest zahashowanie tych dwoch opcji, gdy sa odhashowane nie ma mozliwosci
             //ponownej edycji dokumentu (usuniecie pola 'dataUmowy' i jego pochodnych
+
+            // przed wyslaniem dokumentow do klienta trzeba wywolac metode: closeDocumentContent, ktora zamknie dokumenty
+
 			//stamp.setFormFlattening( true );
 			//stamp.getReader().removeAnnotations();
             stamp.getReader().removeUnusedObjects();
@@ -266,6 +269,38 @@ public class PdfGenerator {
 
         dc.setContent(baos.toByteArray());
         return dc;
+    }
+
+
+    public static byte[] closeContent(byte[] dc){
+        PdfReader templateReader = null;
+        PdfStamper stamp = null;
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+        try{
+            templateReader = new PdfReader(dc);
+            stamp = new PdfStamper(templateReader, baos);
+            stamp.setFormFlattening( true );
+            stamp.getReader().removeUnusedObjects();
+            stamp.setFullCompression();
+        } catch (IOException e){
+            LOG.error(e);
+        } catch (DocumentException e) {
+            LOG.error(e);
+        } finally {
+            if (stamp != null){
+                try {
+                    stamp.close();
+                } catch (Exception e) {
+                    LOG.error(e);
+                }
+            }
+            if (templateReader != null){
+                templateReader.close();
+            }
+        }
+
+        return baos.toByteArray();
     }
 
 }

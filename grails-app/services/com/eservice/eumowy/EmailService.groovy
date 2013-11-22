@@ -3,6 +3,7 @@ package com.eservice.eumowy
 import grails.plugin.cache.Cacheable
 import org.perf4j.StopWatch
 import org.perf4j.log4j.Log4JStopWatch
+import pdfgenerator.PdfGenerator
 
 class EmailService {
 
@@ -91,7 +92,7 @@ class EmailService {
 
             if (documents){
                 documents.each { doc ->
-                    attachBytes doc.clientName ?: doc.name , 'application/pdf', doc.content.content
+                    attachBytes doc.clientName ?: doc.name , 'application/pdf', PdfGenerator.closeContent(doc.content.content.clone())
                 }
             }
         }
