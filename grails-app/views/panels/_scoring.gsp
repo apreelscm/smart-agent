@@ -215,9 +215,7 @@
     </ul>
 </fieldset>
 <fieldset class="border">
-    <legend>Liczba dokonywanych dziennie transakcji</legend>
     <ul class="table-list">
-
         <li>
             <div style="text-align: left" class="${hasErrors(bean:data,field:'hasScoringDeklaracjaFinansowa','errorSpan')}">
                 <g:radioGroup name="scoringDeklaracjaFinansowa"

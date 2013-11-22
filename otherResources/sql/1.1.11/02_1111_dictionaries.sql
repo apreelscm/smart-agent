@@ -1,0 +1,2 @@
+-- eUmowy_ext-450
+update eumowy.signature s set s.description = 'UMOWA Najmu Zestawu POS - STANDARDOWA wersja ze stałymi opłatami dodatkowymi - egzemplarz dla Akceptanta' where s.name = 'AP/UNTSA/1.003/12-01-16'
