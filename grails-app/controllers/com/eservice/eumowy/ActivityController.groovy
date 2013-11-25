@@ -1329,12 +1329,14 @@ class ActivityController {
     }
 
     def _processDocumentCreation(Process process, String requestVersion, def requiredNumberOfSubscriptions)	{
+        def dataUmowy = DateUtils.getFormattedDate(DateUtils.parseWithTimezone(process.processData?.find{ pData -> 'dataUmowy'.equals(pData.name)}.value), DateUtils.YYYY_MM_DD)
 
         if (ELECTRIONICAL.equals(requestVersion)) {
 
             if (params?.numberOfSubscriptions?.toInteger() == requiredNumberOfSubscriptions) {
-
                 process.documents.each { DocumentFile doc ->
+                    updateDataUmowy(doc, dataUmowy)
+
                     byte[] newContent = pdfService.addClientSubscriptionsToDocument(doc.content.content, doc.signature.id, process.subscriptions)
                     doc.content.content = newContent
                     doc.content.discard()
@@ -1370,38 +1372,10 @@ class ActivityController {
             emailService.sendDocumentsPaperVersion(process.phEmail, process.documents?.findAll{it.signature?.sendToClient}, merchantName)
         }
         else if (TEMPLATES.equals(requestVersion)) {
-            //Documents are already in DB
-            /*List<DocumentFile> documentFilesWithBlackFaksymileList = new ArrayList<DocumentFile>()
-            List<DocumentFile> documentFilesWithoutFaksymileList = new ArrayList<DocumentFile>()
-
-            process.signatures.each { sig ->
-                // Generate documents with black faksymile for PH
-                byte[] documentDataWithBlackFaksymile = pdfService.fillPdfFormFromURIWithBlackFaksymile(sig.id, null, PdfService.FontType.ARIAL)
-                DocumentFile dfwbf = new DocumentFile(name: sig.templatePath, clientName: sig.filename , dateCreated: new Date(), lastUpdated: new Date(), pagesCount: 0)
-                dfwbf.setContent(new DocumentContent(content: documentDataWithBlackFaksymile))
-                dfwbf.discard()
-                documentFilesWithBlackFaksymileList.add(dfwbf)
-
-                // Generate documents without faksymile for acceptant
-                if(sig.sendToClient){
-                    byte[] documentDataWithoutFaksymile = pdfService.fillPdfFormFromURIWithoutFaksymile(sig, null, PdfService.FontType.ARIAL)
-                    DocumentFile dfwof = new DocumentFile(name: sig.templatePath, clientName: sig.filename, dateCreated: new Date(), lastUpdated: new Date(), pagesCount: 0)
-                    dfwof.setContent(new DocumentContent(content: documentDataWithoutFaksymile))
-                    dfwof.discard()
-                    documentFilesWithoutFaksymileList.add(dfwof)
-                }
-            }
-
-            emailService.sendDocumentsTemplateVersion(process.phEmail, documentFilesWithBlackFaksymileList)
-
-            //for acceptant
-            //TODO czy nie powinnismy brac pod uwage rowniez maila z 'emailDoWysylkiDokumentu'?
-            def recipientUser = getFromProcessData(process, 'kontaktEmail')
-            if(recipientUser != ""){
-                emailService.sendDocumentsTemplateVersion(recipientUser, documentFilesWithoutFaksymileList)
-            }*/
 			List<DocumentFile> documentFilesWithBlackFaksymileList = new ArrayList<DocumentFile>()
 			process.documents.findAll{it.signature?.sendToClient}?.each { DocumentFile doc ->
+                updateDataUmowy(doc, dataUmowy)
+
 				DocumentFile dfwbf = new DocumentFile(name: doc.name, clientName: doc.clientName , dateCreated: doc.dateCreated, lastUpdated: doc.lastUpdated, pagesCount: doc.pagesCount)
 				byte[] newContent = pdfService.addBlackFaksymileToDocument(doc.content.content, doc.signature.id)
 				dfwbf.setContent(new DocumentContent(content: newContent))
@@ -1459,6 +1433,12 @@ class ActivityController {
                 it.calculatorService =calculatorService
             }
         }
+    }
+
+    private def updateDataUmowy(def doc, def dataUmowy){
+        DocumentContent contentWithUpdatedDataUmowy = pdfService.updateDataUmowyOnDocument(doc.content, dataUmowy)
+        doc.setContent(contentWithUpdatedDataUmowy)
+        doc.save(flush: true)
     }
 
 }

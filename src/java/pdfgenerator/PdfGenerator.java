@@ -236,19 +236,18 @@ public class PdfGenerator {
 		return baos.toByteArray();
     }
 
-    public static DocumentContent cleanValuesContent(DocumentContent dc, List<String> fieldsToClean){
-
+    public static DocumentContent updateValuesContent(DocumentContent documentContent, List<String> fieldsToUpdate, String value){
         PdfReader templateReader = null;
         PdfStamper stamp = null;
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
         try{
-            templateReader = new PdfReader(dc.getContent());
+            templateReader = new PdfReader(documentContent.getContent());
             stamp = new PdfStamper(templateReader, baos);
 
             AcroFields form = stamp.getAcroFields();
-            for (String field: fieldsToClean){
-                form.setField(field, "");
+            for (String field: fieldsToUpdate){
+                form.setField(field, value);
             }
         } catch (IOException e){
             LOG.error(e);
@@ -267,8 +266,8 @@ public class PdfGenerator {
             }
         }
 
-        dc.setContent(baos.toByteArray());
-        return dc;
+        documentContent.setContent(baos.toByteArray());
+        return documentContent;
     }
 
 

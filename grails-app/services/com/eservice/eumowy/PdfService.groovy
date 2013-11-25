@@ -324,7 +324,14 @@ class PdfService {
         //pola zapleniane na podstawie 'dataUmowy'
         def fieldsToClean = ['dataUmowy', 'wydrukGrafikiData', 'dzialaniaMatematyczneData',
                 'pierwszaSesjaData', 'systemKasowyData', 'weryfikacjaPINData', 'czasObslugiData'];
-        PdfGenerator.cleanValuesContent(dc, fieldsToClean)
+        PdfGenerator.updateValuesContent(dc, fieldsToClean, "")
+    }
+
+    def updateDataUmowyOnDocument(DocumentContent documentContent, String dataUmowy){
+        def fieldsToUpdate = ['dataUmowy', 'wydrukGrafikiData', 'dzialaniaMatematyczneData',
+                'pierwszaSesjaData', 'systemKasowyData', 'weryfikacjaPINData', 'czasObslugiData'];
+        PdfGenerator.updateValuesContent(documentContent, fieldsToUpdate, dataUmowy)
+
     }
 
     private def workWithOneDocument(def processInstance, def sig, def data, def documentName, def documentClientName){
