@@ -166,8 +166,7 @@
                     id="${panelType}[${id}].dataforprintingAddressPostOffice"
                     value="${pointData?.wydrukPoczta}" style="width: 280px;"
                     validatable="${pointData}"
-                    validateField="wydrukPoczta"
-                    required="true"/>
+                    validateField="wydrukPoczta"/>
             </span></li>
         </ul>
         <p>

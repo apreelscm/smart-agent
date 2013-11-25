@@ -59,9 +59,13 @@ class ProcessCommand implements Serializable {
 
     @Omit
     static def maxLengthClosure = { value, cmd, errors, maxValue, propertyName ->
-        if (value.length() > maxValue) {
-            errors.rejectValue(propertyName, "default.nameTooLong", [cmd.getMessageForProperty(propertyName), maxValue] as Object[], "")
-            return false
+        if (value){
+            if (value.length() > maxValue) {
+                errors.rejectValue(propertyName, "default.nameTooLong", [cmd.getMessageForProperty(propertyName), maxValue] as Object[], "")
+                return false
+            } else {
+                return true
+            }
         }
         return true
     }
@@ -698,7 +702,7 @@ class ProcessCommand implements Serializable {
             maxLengthClosure.call(value, cmd, errors, 33, "akceptantKontaktMiasto")
         })
         akceptantKontaktKodPocztowy(nullable: false, blank: false, shared: "postalCodeValidator")
-        akceptantKontaktPoczta(nullable: false, blank: false, shared: "alphanumeric", validator: { value, cmd, errors ->
+        akceptantKontaktPoczta(nullable: true, blank: true, shared: "alphanumeric", validator: { value, cmd, errors ->
             maxLengthClosure.call(value, cmd, errors, 33, "akceptantKontaktPoczta")
         })
         dataAneksowanejUmowyPos(nullable: false, blank: false, shared: "date")
@@ -811,7 +815,7 @@ class ProcessCommand implements Serializable {
             maxLengthClosure.call(value, cmd, errors, 33, "wydrukMiasto")
         })
         wydrukKodPocztowy(nullable: false, blank: false, shared: "postalCodeValidator")
-        wydrukPoczta(nullable: false, blank: false, shared: "alphanumeric", validator: { value, cmd, errors ->
+        wydrukPoczta(nullable: true, blank: true, shared: "alphanumeric", validator: { value, cmd, errors ->
             maxLengthClosure.call(value, cmd, errors, 33, "wydrukPoczta")
         })
         wydrukLinia1(nullable: true, blank: true)
@@ -1301,8 +1305,7 @@ class ProcessCommand implements Serializable {
         akceptantKodPocztowy(nullable:false, shared: "postalCodeValidator", validator: {value, cmd, errors ->
             skipAddressValidationClosure.call(value, cmd, errors, "akceptantKodPocztowy")
         })
-        akceptantPoczta(nullable: false, shared: "alphanumeric", validator: { value, cmd, errors ->
-            skipAddressValidationClosure.call(value, cmd, errors, "akceptantPoczta") &&
+        akceptantPoczta(nullable: true, shared: "alphanumeric", validator: { value, cmd, errors ->
             maxLengthClosure.call(value, cmd, errors, 33, "akceptantPoczta")
         })
 

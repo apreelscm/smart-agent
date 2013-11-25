@@ -34,7 +34,7 @@
                     </li>
                     <li>
                         <span><g:message code="panel.postal" /></span>
-                        <span><eumowy:textField name="wydrukPoczta" value="${data.wydrukPoczta}" validatable="${data}" style="width: 280px;" required="true"/></span>
+                        <span><eumowy:textField name="wydrukPoczta" value="${data.wydrukPoczta}" validatable="${data}" style="width: 280px;"/></span>
                     </li>
                 </ul>
                 <p><g:message code="panel.newpoint.otherdataforprintingfromterminal" /></p>

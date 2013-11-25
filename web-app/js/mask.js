@@ -16,7 +16,7 @@ function maskFields(element){
     element.find(".mobile-phone").mask('000-000-000');
     element.find(".fax").mask('(00) 000-00-00');
     element.find(".ip").mask('099.099.099.099');
-    element.find(".ph-number").mask('00000');
+    element.find(".ph-number").mask('S9999');
     element.find(".integer-number").mask('099999');
     element.find(".float-number").mask('099999X99', {translation:  {'X': {pattern: /[.]/, optional: true}}});
     element.find(".percent-number").mask('09X999', {translation:  {'X': {pattern: /[.]/}}})
@@ -32,7 +32,7 @@ jQuery(document).ready(function() {
     jQuery(".mobile-phone").mask('000-000-000');
     jQuery(".fax").mask('(00) 000-00-00');
     jQuery(".ip").mask('099.099.099.099');
-    jQuery(".ph-number").mask('00000');
+    jQuery(".ph-number").mask('S9999');
     jQuery(".integer-number").mask('099999');
     jQuery(".float-number").mask('099999X99', {translation:  {'X': {pattern: /[.]/, optional: true}}});
     jQuery(".percent-number").mask('09X999', {translation:  {'X': {pattern: /[.]/}}});

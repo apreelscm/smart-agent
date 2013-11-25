@@ -33,7 +33,7 @@
                 </li>
                 <li>
                     <span><g:message code="panel.postal" /></span>
-                    <span><eumowy:textField name="akceptantKontaktPoczta" value="${data.akceptantKontaktPoczta}" validatable="${data}" style="width: 280px;" required="true"/></span>
+                    <span><eumowy:textField name="akceptantKontaktPoczta" value="${data.akceptantKontaktPoczta}" validatable="${data}" style="width: 280px;" /></span>
                 </li>
             </ul>
         </div>

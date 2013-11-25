@@ -50,8 +50,8 @@ class ProcessService {
                 }
             }
 
-            if(isNumber(filterPhNo)) {
-                eq("phNumber", Integer.valueOf(filterPhNo));
+            if(filterPhNo) {
+                eq("phNumber", filterPhNo);
             }
 
             if(DateUtils.isDate(filterDateFrom, DateUtils.DD_MM_YYYY) && DateUtils.isDate(filterDateTo, DateUtils.DD_MM_YYYY)) {
@@ -745,11 +745,12 @@ class ProcessService {
     }
 
     /** save data */
-    def populateProcessWithData(Process process, def cmd){
+    def populateProcessWithData(Process process, def cmd, def calc){
         def processDataList = getDataFromPanels(cmd)
 
         //zapis obecnej daty na potrzeby dokumentow
         addCurrentDate(processDataList);
+        addFromCalc(processDataList, calc);
 
         //process.processData?.clear()
         processDataList.each { ProcessData data ->
@@ -844,6 +845,10 @@ class ProcessService {
 
     private def addCurrentDate(def processDataList){
         processDataList.add(new ProcessData([name: 'dataUmowy', value: DateUtils.formatWithTimezone(DateUtils.getCurrentDate())]))
+    }
+
+    private def addFromCalc(def processDataList, def calc){
+        processDataList.add(new ProcessData([name: 'liczbaMiesZwolNaj1', value: calculatorService.getCalcProperty(calc,"E_LICZBA_MIES_ZWOL_NAJ_1")]))
     }
 
 // Then, we will write a method to take an object and an annotation class

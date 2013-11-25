@@ -77,7 +77,7 @@
                     <span>
                         <span><g:message code="panel.postal" /></span>
                         <span>
-                            <eumowy:textField name="akceptantPoczta" value="${data.akceptantPoczta}" validatable="${data}" readonly="${data.checkIfFromCbd('akceptantPoczta')}" style="width: 280px;" required="true"/>
+                            <eumowy:textField name="akceptantPoczta" value="${data.akceptantPoczta}" validatable="${data}" readonly="${data.checkIfFromCbd('akceptantPoczta')}" style="width: 280px;" />
                             <g:hiddenField name="akceptantPocztaCbd" value="${data.akceptantPocztaCbd}"/>
                         </span>
                     </span>

@@ -28,7 +28,7 @@
 		  	</li>
 		  	<li>
 		  		<span><g:message code="panel.postal" /></span>
-		  		<span><eumowy:textField name="${panelType}[${id}].korespondencjaPoczta" id="${panelType}[${id}].contactAddressAddressPostOffice" value="${pointData?.korespondencjaPoczta}" validatable="${pointData}" validateField="korespondencjaPoczta" style="width: 280px;" required="true"/></span>
+		  		<span><eumowy:textField name="${panelType}[${id}].korespondencjaPoczta" id="${panelType}[${id}].contactAddressAddressPostOffice" value="${pointData?.korespondencjaPoczta}" validatable="${pointData}" validateField="korespondencjaPoczta" style="width: 280px;"/></span>
 		  	</li>
 	  	</ul>
 	</div>
