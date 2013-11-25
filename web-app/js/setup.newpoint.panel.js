@@ -724,7 +724,12 @@ function clearNewPointData(prefix, ppid, pid) {
 
 function setupNewPosPanelHandlers(panelId, prefix) {
     var prefixPanel = "#"+prefix+"\\["+panelId+"\\]\\";
-
+    
+    // Fix for non-existing panels
+    if (jQuery(prefixPanel+".id").length <= 0) {
+    	return;
+    }
+    
     jQuery(prefixPanel + ".wifiCount").on( "blur", function(e){
         var lock = testNumber(e.target.value) || testNumber(jQuery(prefixPanel + ".vpnCount").val()) || testNumber(jQuery(prefixPanel + ".sslCount").val());
         unlockStaticAddress(lock, prefixPanel);
@@ -752,6 +757,7 @@ function setupNewPosPanelHandlers(panelId, prefix) {
 }
 
 function addDateHandlers(prefixPanel){
+	console.log("PrefixPanel: " + prefixPanel);
     var timeFromHours = jQuery(prefixPanel + ".timeFromHours"), timeFromHoursVal,
         timeFromMinutes = jQuery(prefixPanel + ".timeFromMinutes"), timeFromMinutesVal,
         timeToHours = jQuery(prefixPanel + ".timeToHours"), timeToHoursVal,

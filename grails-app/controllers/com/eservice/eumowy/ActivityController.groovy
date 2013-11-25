@@ -532,7 +532,7 @@ class ActivityController {
                     processCmd = processService.getNewProcessCommand(processInstance, conversation.calc)
 
                     //inicjacyjne zapisanie danych pobranych z cbd i calc
-                    processInstance = processService.populateProcessWithData(processInstance,processCmd)
+                    processInstance = processService.populateProcessWithData(processInstance,processCmd,conversation.calc)
 
                     if (!processInstance.save()){
                         processInstance.errors.each { log.error(it) }
@@ -631,7 +631,7 @@ class ActivityController {
             on("saveOnly"){ ProcessCommand cmd ->
                 log.info params
                 log.info params.get('allPoses[0]')
-                Process processInstance = processService.populateProcessWithData(flow.processInstance, cmd)
+                Process processInstance = processService.populateProcessWithData(flow.processInstance, cmd,conversation.calc)
                 log.info "Zapisuje dane paneli"
 
                 //TEST start
@@ -677,7 +677,7 @@ class ActivityController {
                 def processInstance = flow.processInstance
 
                 clientService.updateClientName(processInstance.client, cmd)
-                processInstance = processService.populateProcessWithData(processInstance,cmd)
+                processInstance = processService.populateProcessWithData(processInstance,cmd, conversation.calc)
                 processInstance.notesToCoa = cmd.notes;
 
                 processInstance.client.name = cmd.akceptantNazwaOficjalna;
@@ -918,7 +918,7 @@ class ActivityController {
 				flow.processInstance = processInstance
 			}.to "selectedPanels"
             on("saveOnly"){ ProcessCommand cmd ->
-                Process processInstance = processService.populateProcessWithData(flow.processInstance,cmd)
+                Process processInstance = processService.populateProcessWithData(flow.processInstance,cmd, conversation.calc)
 
                 processInstance.save(flush: true, validate: false)
 
@@ -949,7 +949,7 @@ class ActivityController {
                 def processInstance = flow.processInstance
 
                 //clientService.updateClientName(processInstance.client, cmd)
-                processInstance = processService.populateProcessWithData(processInstance,cmd)
+                processInstance = processService.populateProcessWithData(processInstance,cmd,conversation.calc)
                 processInstance.notesToCoa = cmd.notes;
 
                 flow.representative1 = [name: cmd.reprezentant1Imie, surname: cmd.reprezentant1Nazwisko]
