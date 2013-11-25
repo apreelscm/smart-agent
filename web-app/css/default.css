@@ -92,6 +92,10 @@ nav, section, article, aside, footer {
     overflow: hidden; /* Fixes Child Float Problem */
 }
 
+select:disabled{
+    background-color: #f0f0f0;
+}
+
 /* Fonts
 -------------------------------------------------------------------*/
 .typeface-js {
