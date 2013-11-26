@@ -275,7 +275,7 @@ class CbdService {
 	@Cacheable(value="getMccComboBox")
 	@Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
 	def getMccCodes(def query) {
-		return cbdDAO.selectMany(query, []);
+		return cbdDAO.selectMany(query, [])
 	}
 
 

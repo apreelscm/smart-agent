@@ -30,6 +30,16 @@ class AppParametersService {
 	def getPdfPreviewUri(String fileName) {
 		return  grailsLinkGenerator.link(controller: 'file', action: 'get', absolute: false, params: [root: "pdfPreviews", path: fileName])
 	}
+	
+	def getPdfPreviewThreadWorkersCount() {
+		def threadCount = 4
+		
+		if (grailsApplication.config.pdfPreviewsThreadWorkers != null) {
+			threadCount = grailsApplication.config.pdfPreviewsThreadWorkers.toInteger()
+		}
+		
+		return threadCount
+	}
 
 	def getPdfImagePath(String fileName) {
 		String basePath = grailsApplication.config.appParametersPaths?.get("pdfImages")

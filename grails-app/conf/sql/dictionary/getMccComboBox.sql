@@ -1,1 +1,1 @@
-select slm_kod as "value" from cbd_adm.cbt_sl_mcc order by slm_kod
+select slm_kod as "code", (slm_kod || ' - ' || slm_nazwa) as "description" from cbd_adm.cbt_sl_mcc

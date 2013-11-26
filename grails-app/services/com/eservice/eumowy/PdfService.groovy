@@ -43,7 +43,8 @@ class PdfService {
 			log.info "Removing old preview image: " + f.toString()
 			FileUtils.deleteQuietly(f)
 		}
-		executor = Executors.newFixedThreadPool(totalPagesCount);
+		log.info "Generating Pdf Previews - " + totalPagesCount + " pages in total!"
+		executor = Executors.newFixedThreadPool(appParametersService.getPdfPreviewThreadWorkersCount());
 		def threadMethod = { content, did, pid, docpage, globalpage ->
 			log.info "GlobalPage: " + globalpage
 			generateImageFromPDF(content, did, pid, docpage)
