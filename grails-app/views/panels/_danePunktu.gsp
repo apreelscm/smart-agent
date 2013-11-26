@@ -131,7 +131,7 @@
                         validatable="${pointData}"
                         validateField="wydrukNrDomu"
                         required="true"
-                        maxlength="4"/></span> <span><g:message
+                        maxlength="6"/></span> <span><g:message
                         code="panel.flat.number" required="true"/></span> <span><eumowy:textField
                         name="${panelType}[${id}].wydrukNrLokalu"
                         id="${panelType}[${id}].dataforprintingAddressFlatNumber"
