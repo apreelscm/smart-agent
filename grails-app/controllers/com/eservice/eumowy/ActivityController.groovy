@@ -7,6 +7,8 @@ import com.eservice.eumowy.util.DateUtils
 import grails.converters.JSON
 import groovy.sql.GroovyRowResult
 import org.codehaus.groovy.grails.web.json.JSONObject
+import org.hibernate.StaleObjectStateException
+import org.springframework.orm.hibernate3.HibernateOptimisticLockingFailureException
 
 class ActivityController {
 
@@ -696,6 +698,8 @@ class ActivityController {
                 flow.processInstance = processInstance
 
             }.to "clientSignature"
+            on(HibernateOptimisticLockingFailureException).to "optimisticLockingHandler"
+            on(StaleObjectStateException).to "optimisticLockingHandler"
         }
 
         clientSignature {
@@ -711,6 +715,15 @@ class ActivityController {
             output {
                 process {flow.processInstance}
             }
+        }
+
+        optimisticLockingHandler {
+            action {
+                log.info("-> OPTIMISTIC LOCKING")
+                flash.errorMessage = message(code: 'optimistic.locking')
+                "success"
+            }
+            on("success").to "backToStart"
         }
 
         backToStart()
@@ -971,6 +984,8 @@ class ActivityController {
                 processInstance.status = Process.ProcessStatus.REJECTED;
                 flow.processInstance = processInstance
             }.to "reject"
+            on(HibernateOptimisticLockingFailureException).to "optimisticLockingHandler"
+            on(StaleObjectStateException).to "optimisticLockingHandler"
         }
 
         clientSignature {
@@ -985,6 +1000,16 @@ class ActivityController {
             output {
                 process {flow.processInstance}
             }
+        }
+
+
+        optimisticLockingHandler {
+            action {
+                log.info("-> OPTIMISTIC LOCKING")
+                flash.errorMessage = message(code: 'optimistic.locking')
+                "success"
+            }
+            on("success").to "backToStart"
         }
 
 
