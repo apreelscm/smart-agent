@@ -29,6 +29,12 @@
 <section>
     <h1 class="ng linia-bottom"><g:message code="chooseActivity.header.title" default="Wybór działania"/></h1>
 
+    <div id="errorBox">
+        <g:if test="${errorMessage}">
+            <g:render template="message/errorMessage" model="[message: errorMessage]"/>
+        </g:if>
+    </div>
+
     <g:form id="signaturesFormId">
         <g:each var="activity" in="${processInstance?.activities}">
             <article id="${activity.code}" class="border-article signature-article">
