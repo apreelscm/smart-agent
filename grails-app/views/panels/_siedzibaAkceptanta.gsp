@@ -19,9 +19,7 @@
                     <span>
                         <span><g:message code="panel.street" /></span>
                         <span>
-
-                            <g:set var="isUlicaTytulFromCbd" value="${data.checkIfFromCbd('akceptantUlicaTytul')}"/>
-                            <g:if test="${isUlicaTytulFromCbd}">
+                            <g:if test="${data.checkIfClientFromCbd()}">
                                 <dict:streetSelect name="akceptantUlicaTytul" value="${data.akceptantUlicaTytul}" disabled="disabled" default="UL"/>
                                 <g:hiddenField name="akceptantUlicaTytul" value="${data.akceptantUlicaTytul}"/>
                             </g:if>
