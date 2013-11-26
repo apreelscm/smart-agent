@@ -11,7 +11,7 @@
                 	<eumowy:textField name="${panelType}[${id}].korespondencjaUlica" id="${panelType}[${id}].contactAddressAddressStreet" value="${pointData?.korespondencjaUlica}" validatable="${pointData}" validateField="korespondencjaUlica" style="width: 200px" required="true"/>
                 </span>
                 <span>
-                	<span><g:message code="panel.house.number" /></span> <span><eumowy:textField name="${panelType}[${id}].korespondencjaNrDomu" id="${panelType}[${id}].contactAddressAddressHomeNumber" value="${pointData?.korespondencjaNrDomu}" validatable="${pointData}" validateField="korespondencjaNrDomu" style="width: 50px" maxlength="4" required="true"/></span>
+                	<span><g:message code="panel.house.number" /></span> <span><eumowy:textField name="${panelType}[${id}].korespondencjaNrDomu" id="${panelType}[${id}].contactAddressAddressHomeNumber" value="${pointData?.korespondencjaNrDomu}" validatable="${pointData}" validateField="korespondencjaNrDomu" style="width: 50px" maxlength="6" required="true"/></span>
                 	<span><g:message code="panel.flat.number" /></span> <span><eumowy:textField name="${panelType}[${id}].korespondencjaNrLokalu" id="${panelType}[${id}].contactAddressAddressFlatNumber" value="${pointData?.korespondencjaNrLokalu}" style="width: 50px" maxlength="4"/></span>
                 </span>
             </li>

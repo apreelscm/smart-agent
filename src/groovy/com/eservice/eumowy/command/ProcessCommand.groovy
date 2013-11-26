@@ -1369,19 +1369,18 @@ class ProcessCommand implements Serializable {
 
             value.each {  ptCmd ->
                 if (ptCmd != null){
-                    return true;
-                }
-
-                ptCmd?.calculatorService = cmd.calculatorService
-                ptCmd?.validate()
-                if(ptCmd?.hasErrors()){
-                    ptCmd.errors.each {
-                        if(it.getFieldError("hasDodaniePrepaid")){
-                            atLeastOneFormaDoladowaniaError = true
-                        }
-                        log.info(it)
-                    }
-                    hasPointErrors = true
+	                ptCmd?.calculatorService = cmd.calculatorService
+					ptCmd?.calc = cmd.calc
+	                ptCmd?.validate()
+	                if(ptCmd?.hasErrors()){
+	                    ptCmd.errors.each {
+	                        if(it.getFieldError("hasDodaniePrepaid")){
+	                            atLeastOneFormaDoladowaniaError = true
+	                        }
+	                        log.info(it)
+	                    }
+	                    hasPointErrors = true
+	                }
                 }
             }
 
@@ -1403,10 +1402,29 @@ class ProcessCommand implements Serializable {
         })
 
         poses(nullable:true, validator: { value, cmd, errors ->
-            if(cmd.poses?.size() > 0 && cmd.hasMoreThanThreePriceGroups(cmd.poses)){
+			def hasPosErrors = false
+			
+			value.each {  ptCmd ->
+				if (ptCmd != null){
+					ptCmd?.calculatorService = cmd.calculatorService
+					ptCmd?.calc = cmd.calc
+					ptCmd?.validate()
+					if(ptCmd?.hasErrors()){
+						hasPosErrors = true
+					}
+				}
+			}
+			
+			if(cmd.poses?.size() > 0 && cmd.hasMoreThanThreePriceGroups(cmd.poses)){
                 errors.reject("default.tooMany.groups")
                 return false
             }
+			
+			if (hasPosErrors) {
+				errors.rejectValue("poses", "default.error.poses",)
+				return false
+			}
+			
             return true
         })
         allPoints(nullable:true)

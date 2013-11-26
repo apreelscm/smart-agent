@@ -264,6 +264,16 @@ class PdfProcessMapper extends AbstractPdfMapper{
         data.put("akceptantNrLokalu", [value] as String[])
     }
 
+    private mapLiczbaMiesZwolNaj1Process(def data, def pd, def key, def value){
+        if (value && value.isInteger()){
+            data.put('oplatyPOSMiesiacNaliczania', [String.valueOf(value.toInteger()+1)] as String[])
+            LOG.info "Mapping " + key + " with value " + value + " => setting " + String.valueOf(value.toInteger()+1)
+        } else {
+            data.put('oplatyPOSMiesiacNaliczania', ["1"] as String[])
+            LOG.info "Mapping " + key + " with value " + value + " => setting 1"
+        }
+    }
+
     private mapAkceptantTelKomorkowyProcess(def data, def pd, def key, def value){
         data.put(key, [value] as String[]);
         mapWithPattern(data, value, ~/\d{3}-\d{3}-\d{3}/, "-", "telKomorkowy");
@@ -364,8 +374,10 @@ class PdfProcessMapper extends AbstractPdfMapper{
         mapFieldWithStartDate(data, pd, key, value, "weryfikacjaPINData");
     }
 
-    private mapCzasObslugiCenaProcess(def data, def pd, def key, def value){
-        mapFieldWithStartDate(data, pd, key, value, "czasObslugiData");
+    private mapObslugaEkonomicznyCenaProcess(def data, def pd, def key, def value){
+        data.put(key, [value] as String[])
+        //pole inaczej nazywa sie na pdfach, inaczej w calej reszcie stad ponizsza linijka
+        mapFieldWithStartDate(data, pd, "czasObslugiCena", value, "czasObslugiData");
     }
 
     private mapUmowaOznOdProcess(def data, def pd, def key, def value){

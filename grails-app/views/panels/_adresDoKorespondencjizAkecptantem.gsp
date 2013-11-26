@@ -13,7 +13,7 @@
                         <eumowy:textField name="akceptantKontaktUlica" style="width: 200px" value="${data.akceptantKontaktUlica}" validatable="${data}" required="true"/>
                     </span>
                     <span>
-                        <span><g:message code="panel.house.number" /></span> <span><eumowy:textField name="akceptantKontaktNrDomu" value="${data.akceptantKontaktNrDomu}" validatable="${data}" style="width: 50px" maxlength ="4" required="true"/></span>
+                        <span><g:message code="panel.house.number" /></span> <span><eumowy:textField name="akceptantKontaktNrDomu" value="${data.akceptantKontaktNrDomu}" validatable="${data}" style="width: 50px" maxlength ="6" required="true"/></span>
                         <span><g:message code="panel.flat.number" /></span> <span><eumowy:textField name="akceptantKontaktNrMieszkania" value="${data.akceptantKontaktNrMieszkania}" validatable="${data}" style="width: 50px" maxlength ="4"/></span>
                     </span>
                 </li>

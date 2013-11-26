@@ -5,6 +5,7 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
 import org.apache.commons.io.FileUtils
+import org.apache.commons.io.filefilter.WildcardFileFilter;
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.util.PDFImageWriter
 import org.perf4j.StopWatch
@@ -36,6 +37,12 @@ class PdfService {
 	
 	def generateAllPreviews(List<DocumentFile> documents, Long processId, Integer totalPagesCount) {
 		def imageUris = new HashMap<Integer, String>()
+		// Cleaning old previews
+		List<File> filesToClean = FileUtils.listFiles(new File(appParametersService.getPdfImagePath("")), new WildcardFileFilter("*-"+processId+"-*.png"), null)
+		filesToClean.each { File f ->
+			log.info "Removing old preview image: " + f.toString()
+			FileUtils.deleteQuietly(f)
+		}
 		executor = Executors.newFixedThreadPool(totalPagesCount);
 		def threadMethod = { content, did, pid, docpage, globalpage ->
 			log.info "GlobalPage: " + globalpage
