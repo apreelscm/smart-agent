@@ -26,7 +26,7 @@ class SubscriptionDefinition implements Serializable{
     }
 
     static mapping = {
-        table name: "SUBSCRIPTION_DEFINITION", schema: DomainConsts.SHEMA_NAME
+        table name: "NEW_SUBSCRIPTION_DEFINITION", schema: DomainConsts.SHEMA_NAME
         id generator:'sequence', params:[sequence:DomainConsts.SHEMA_NAME+'.SUBSCRIPTION_DEFINITION_SEQ']
     }
 }
