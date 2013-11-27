@@ -35,8 +35,10 @@ class AppParametersService {
 		def threadCount = 4
 		
 		if (grailsApplication.config.pdfPreviewsThreadWorkers != null) {
-			threadCount = grailsApplication.config.pdfPreviewsThreadWorkers.toInteger()
-		}
+            threadCount = grailsApplication.config.pdfPreviewsThreadWorkers.toInteger()
+		} else {
+            log.debug("Missing pdfPreviewsThreadWorkers parameter. Setting to default: "  + threadCount)
+        }
 		
 		return threadCount
 	}
