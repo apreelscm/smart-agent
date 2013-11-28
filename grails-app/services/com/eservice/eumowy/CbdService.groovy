@@ -206,9 +206,11 @@ class CbdService {
 	
 	@Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
 	def checkActivities(def activitiesString, def calcId, def signaturesString) {
-		def rowResult = cbdDAO.selectOne(SPRAWDZ_DZIALANIE, [activities: activitiesString, calcid: calcId, signatures: signaturesString])
-		return rowResult != null && rowResult.get("result") == 1
-	}
+        def rowResult = cbdDAO.selectOne(SPRAWDZ_DZIALANIE, [activities: activitiesString, calcid: calcId, signatures: signaturesString])
+        def result = rowResult != null && rowResult.get("result") == 1
+        log.info("Checking activities for calcId ${calcId} with result: ${result}")
+        return result
+    }
 
     @Cacheable(value="getNumerSprzedazowy")
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
