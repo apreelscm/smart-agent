@@ -30,12 +30,12 @@ class CalculatorService implements Serializable{
 			signaturesCalcNames.addAll(cfs?.collect{it.calcField.name});
 		}
 
-		println(calcExt)
+        log.info(calcExt)
 		def calcKeyList = calcExt.collect { it.POLEAPREEL }
 
-		println("calcKeyList size:"+calcKeyList.size() + " calcKeyList:"+calcKeyList)
-		println("calcNames size:"+signaturesCalcNames.size() + "calcNames:"+signaturesCalcNames)
-		println("contains ALL:"+calcKeyList.containsAll(signaturesCalcNames))
+        log.info("calcKeyList size:"+calcKeyList.size() + " calcKeyList:"+calcKeyList)
+        log.info("calcNames size:"+signaturesCalcNames.size() + "calcNames:"+signaturesCalcNames)
+        log.info("contains ALL:"+calcKeyList.containsAll(signaturesCalcNames))
 
 		return calcKeyList.containsAll(signaturesCalcNames)
 	}

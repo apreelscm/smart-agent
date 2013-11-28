@@ -27,7 +27,7 @@ class PdfProcessMapper extends AbstractPdfMapper{
         dataMap.putAll(mapProcessDataToPDFData(processInstance.processData))
 
         def points = processInstance?.points
-        println "Ilosc punktow: " + points?.size()
+        LOG.info("Ilosc punktow: " + points?.size())
 
         if (points != null && points.size()>0){
             //APUNTSS, APUNTZ2

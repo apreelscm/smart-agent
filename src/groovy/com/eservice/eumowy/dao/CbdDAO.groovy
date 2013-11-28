@@ -16,11 +16,10 @@ class CbdDAO {
         try {
             def sql = new Sql(dataSource)
             row = sql.firstRow(getSqlText(sqlName),paramers)
-        }
-        catch (SQLException ex) {
+        } catch (SQLException ex) {
             log.error ex.message, ex
             throw ex
-        }
+            }
         stopWatch.stop('sql-'+sqlName)
         row
     }
@@ -52,7 +51,7 @@ class CbdDAO {
         try {
             sqlFile = new File(this.class.getResource("/sql/${sqlName}.sql").getFile())
         } catch (IOException ex) {
-            println("getSqlText error:"+ex.message)
+            log.error ex.message, ex
             throw ex
         }
 

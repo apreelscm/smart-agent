@@ -788,7 +788,7 @@ class ProcessService {
     private def fillPaymentUsage(def cmd, def process){
         if ('one_for_all_terminals'.equals(cmd.odplatneUzywanie)){
             // dane dla tej opcji trzymamy w procesie
-            println 'Zapisujemy dla one_for_all_terminals'
+            log.info('Zapisujemy dla one_for_all_terminals')
             clearHirePayments(process)
             saveHirePaymets(cmd.hirePaymentsByPoint, process, false)
             saveHirePaymets(cmd.hirePaymentsByPos, process, false)

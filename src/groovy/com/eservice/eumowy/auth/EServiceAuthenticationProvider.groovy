@@ -1,6 +1,5 @@
 package com.eservice.eumowy.auth
 
-import com.eservice.eumowy.CbdService
 import com.eservice.eumowy.util.EumowyCustomEnvironment
 import grails.util.Environment
 import org.apache.commons.logging.LogFactory
@@ -12,7 +11,6 @@ import org.springframework.security.core.Authentication
 import org.springframework.security.core.AuthenticationException
 import org.springframework.security.core.authority.GrantedAuthorityImpl
 import org.springframework.security.core.userdetails.UserDetailsChecker
-import org.springframework.security.core.userdetails.UsernameNotFoundException
 
 class EServiceAuthenticationProvider implements AuthenticationProvider {
 

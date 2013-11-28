@@ -339,7 +339,7 @@ class PanelService {
     }
 
     def setAtLeastAs(def data, def calcValue){
-        //println("data : ${data} , cal : ${calcValue}")
+        //log.info("data : ${data} , cal : ${calcValue}")
         if(!data || data == "null" || !data.toString().isNumber()) {
             return calcValue
         }
@@ -352,7 +352,7 @@ class PanelService {
         def oldNumber = Double.valueOf(data)
         def calcNumber = Double.valueOf(calcValue)
 
-        println("oldNumber : ${oldNumber} , calcNumber : ${calcNumber}")
+        log.info("oldNumber : ${oldNumber} , calcNumber : ${calcNumber}")
 
         oldNumber < calcNumber ? calcValue : data
     }
