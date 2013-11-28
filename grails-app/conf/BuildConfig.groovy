@@ -32,6 +32,8 @@ grails.project.dependency.resolution = {
         mavenLocal()
         mavenCentral()
 
+        mavenRepo "https://repository.apache.org/content/repositories/snapshots/"
+
         // uncomment these (or add new ones) to enable remote dependency resolution from public Maven repositories
         //mavenRepo "http://snapshots.repository.codehaus.org"
         //mavenRepo "http://repository.codehaus.org"
@@ -51,7 +53,8 @@ grails.project.dependency.resolution = {
         runtime 'PDFRenderer:PDFRenderer:0.9.1'
         runtime 'com.google.code.gson:gson:2.2.4'
 		runtime 'com.lowagie:itext:2.1.7'
-		runtime 'org.apache.pdfbox:pdfbox:1.8.2'
+//		runtime 'org.apache.pdfbox:pdfbox:1.8.2'
+		runtime 'org.apache.pdfbox:pdfbox:2.0.0-SNAPSHOT'
         runtime 'joda-time:joda-time:2.3'
         runtime 'com.eservice:e-umowy-sync-ws-client:1.0'
         //runtime 'org.springframework.ws:spring-ws:2.1.2.RELEASE-all'

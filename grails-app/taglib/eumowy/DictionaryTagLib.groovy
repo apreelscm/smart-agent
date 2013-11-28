@@ -50,8 +50,10 @@ class DictionaryTagLib {
     }
 	
 	Closure mccSelect = { attrs ->
-		attrs.from = dictionaryService.getMccComboBox()*.value
-		attrs.from.add(0,"")
+		attrs.from = dictionaryService.getMccComboBox()
+		attrs.optionKey = "code"
+		attrs.optionValue = "description"
+		attrs.from.add(0,new Expando(["code": "", "description": ""]))
 		fieldImpl(out, attrs)
 	}
 
