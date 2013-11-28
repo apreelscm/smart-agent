@@ -3,6 +3,7 @@ import com.eservice.eumowy.dao.CbdDAO
 import com.eservice.eumowy.util.EumowyCustomEnvironment
 import grails.plugin.cache.Cacheable
 import grails.util.Environment
+import org.apache.log4j.Logger
 import org.springframework.transaction.annotation.Isolation
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
@@ -45,15 +46,18 @@ class CbdService {
     private static final def GET_OPIEKA_SERWISOWA_I = "getOpiekaSerwisowa1"
     private static final def GET_OPIEKA_SERWISOWA_II = "getOpiekaSerwisowa2"
 
+//    Logger calcAppender
+    def logggger = Logger.getLogger("calcAppender")
+
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
     def findCalculatorByNip(def clientNip) {
         switch (Environment.getCurrent().getName()) {
             case EumowyCustomEnvironment.MOCK.getName():
-                return findCalculatorByNipMock(clientNip);
+                return null;
             default:
                 def calcId = findCalculatorIdByNip(clientNip)
                 def calc = cbdDAO.selectMany(FIND_CALC_BY_NIP,[nip:clientNip]).collect{ [POLEAPREEL:it.POLE,WARTOSCAPREEL:it.WARTOSC]}//*.POLEAPREEL
-                log.info("Getting calculator for NIP ${clientNip}, calculatorId: ${calcId} with values: ${calc}")
+                logggger.info("Getting calculator for NIP ${clientNip}, calculatorId: ${calcId} with values: ${calc}")
                 return calc
         }
     }
@@ -62,7 +66,7 @@ class CbdService {
     def findCalculatorIdByNip(def clientNip) {
         switch (Environment.getCurrent().getName()) {
             case EumowyCustomEnvironment.MOCK.getName():
-                return findCalculatorIdByNipMock(clientNip);
+                return null;
             default:
                 return cbdDAO.selectOne(FIND_CALC_ID_BY_NIP,[nip:clientNip])?.get("KAK_ID")
         }
@@ -72,7 +76,7 @@ class CbdService {
     def findClientByNip(def clientNip) {
         switch (Environment.getCurrent().getName()) {
             case EumowyCustomEnvironment.MOCK.getName():
-               return findClientIdByNipMock(clientNip);
+               return null;
             default:
                 def rowResult = cbdDAO.selectOne(FIND_CLIENT_ID_BY_NIP,[nip:clientNip])
                 def cbdClient = new Client(rowResult)
@@ -208,7 +212,7 @@ class CbdService {
 	def checkActivities(def activitiesString, def calcId, def signaturesString) {
         def rowResult = cbdDAO.selectOne(SPRAWDZ_DZIALANIE, [activities: activitiesString, calcid: calcId, signatures: signaturesString])
         def result = rowResult != null && rowResult.get("result") == 1
-        log.info("Checking activities for calcId ${calcId} with result: ${result}")
+        logggger.info("Checking activities for calcId ${calcId} with result: ${result}")
         return result
     }
 
@@ -279,89 +283,5 @@ class CbdService {
 	def getMccCodes(def query) {
 		return cbdDAO.selectMany(query, [])
 	}
-
-
-    /**
-     * MOCK
-     * */
-    def findClientIdByNipMock(String nip) {
-        def cbdId;
-        def id
-
-        if(nip.equals("1234567819")){
-            cbdId = "11";
-        }
-        else if(nip.equals( "8946001495")){
-            cbdId = "22";
-        }
-        else if(nip.equals( "7343597142")){
-            cbdId = "33";
-        }
-        else if(nip.equals( "3558335706")){
-            cbdId = "44";
-        }
-
-        //2258064349
-        def client = Client.findByNip(nip);
-
-        if(client == null && cbdId != null){
-            client = new Client(cbdId: cbdId, nip: nip, name: Math.random()+"testName" );
-        }
-
-        log.info("cbdId:"+cbdId)
-        log.info("cl:"+client)
-        log.info("cl1:"+(client == null ))
-        log.info("cl2:"+(cbdId != null))
-
-        return client;
-    }
-
-    def findCalculatorIdByNipMock(def kln_id) {
-        if(kln_id == "1234567819"){
-            return "1111111111111111111";
-        }
-        else if(kln_id == "8946001495"){
-            return "2222222222222222222";
-        }
-        else if(kln_id == "7343597142"){
-            return "1234567890123456789";
-        }
-    }
-
-    def findCalculatorByNipMock(def kln_id) {
-        def calc;
-
-        if(kln_id == "1234567819"){
-            calc = []
-            calc.add([POLEAPREEL:"STAWKA_PP_ORANGE",WARTOSCAPREEL:"BRAK"]);
-            calc.add([POLEAPREEL:"OPLATA_ZA_APL_PP",WARTOSCAPREEL:"BRAK"]);
-            calc.add([POLEAPREEL:"NIP",WARTOSCAPREEL:"BRAK"]);
-            calc.add([POLEAPREEL:"CZY_TELEPOMPKA",WARTOSCAPREEL:"BRAK"]);
-            calc.add([POLEAPREEL:"OPLATA_IFPLUS_DINERSCLUB",WARTOSCAPREEL:"BRAK"]);
-            calc.add([POLEAPREEL:"STAWKA_PP_MUNDIO",WARTOSCAPREEL:"BRAK"]);
-            calc.add([POLEAPREEL:"STAWKA_PP_LYCA",WARTOSCAPREEL:"BRAK"]);
-            calc.add([POLEAPREEL:"STAWKA_PP_T_MOBILE",WARTOSCAPREEL:"BRAK"]);
-            calc.add([POLEAPREEL:"STAWKA_PP_VIRGIN",WARTOSCAPREEL:"BRAK"]);
-            calc.add([POLEAPREEL:"STAWKA_PP_PLAY",WARTOSCAPREEL:"BRAK"]);
-            calc.add([POLEAPREEL:"STAWKA_PP_PLUS",WARTOSCAPREEL:"BRAK"]);
-            calc.add([POLEAPREEL:"STAWKA_PP_GALENA",WARTOSCAPREEL:"BRAK"]);
-            calc.add([POLEAPREEL:"DEKLARACJA_SPRZEDAZY_PP",WARTOSCAPREEL:"BRAK"]);
-            calc.add([POLEAPREEL:"OPLATA_DCC",WARTOSCAPREEL:"BRAK"]);
-            calc.add([POLEAPREEL:"NULL",WARTOSCAPREEL:"BRAK"]);
-        }
-        else if(kln_id == "8946001495"){
-            calc = []
-            calc.add([POLEAPREEL:"STAWKA_PP_PLUS",WARTOSCAPREEL:"BRAK"]);
-            calc.add([POLEAPREEL:"STAWKA_PP_GALENA",WARTOSCAPREEL:"BRAK"]);
-            calc.add([POLEAPREEL:"DEKLARACJA_SPRZEDAZY_PP",WARTOSCAPREEL:"BRAK"]);
-        }
-
-        else if(kln_id == "7343597142"){
-            def calcFields =  CalcField.findAll();
-            calc = calcFields.collect{[POLEAPREEL:it.name,WARTOSCAPREEL:"BRAK"]}
-        }
-
-        return calc;
-    }
 
 }

@@ -106,7 +106,7 @@ log4j = {
     info    "grails.app.domain"
     info    "grails.app.taglib"
     info    performanceStatsAppender: 'org.perf4j.TimingLogger'
-    info    calcAppender: 'grails.app.services.com.eservice.eumowy.CbdService'
+//    info    calcAppender: 'grails.app.services.com.eservice.eumowy.CbdService'
 
     error  'org.codehaus.groovy.grails.web.servlet',        // controllers
             'org.codehaus.groovy.grails.web.pages',          // GSP
