@@ -7,6 +7,8 @@
     <r:require module="filestyle"/>
     <r:require module="jquery_ui" />
     <r:require module="selectedPanels"/>
+    <r:require module="validation"/>
+    <r:require module="newpoint_panel_setup"/>
 
     <g:javascript>
 
@@ -199,9 +201,9 @@
 
         refreshTelepomkaAndTelekodzikPercentValues()
         $j.datepicker.setDefaults( jQuery.datepicker.regional[ "pl" ] );
+        setSameForEveryPropertyInSourceMaps();
+
     </g:javascript>
-    <r:require module="validation"/>
-    <r:require module="newpoint_panel_setup"/>
 </head>
 <body>
 <r:require module="mask"/>

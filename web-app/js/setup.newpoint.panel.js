@@ -72,6 +72,43 @@ function getGlobalPanelCount(prefix) {
     }
 }
 
+//funkcja ta ustawia odpowiednie numery paneli w sameForEveryPointSource... od razu przy wejsciu na widok paneli
+function setSameForEveryPropertyInSourceMaps(){
+    var map = {
+            "sameForEveryPoint" : jQuery("[id $= '.sameForEveryPoint']"),
+            "possetforselectedpointSameForEveryPoint": jQuery("[id $= '.possetforselectedpointSameForEveryPoint']"),
+            "technicalinformationSameForEveryPoint": jQuery("[id $= '.technicalinformationSameForEveryPoint']"),
+            "terminaloptionsSameForEveryPoint": jQuery("[id $= '.terminaloptionsSameForEveryPoint']"),
+            "additionalequipmentSameForEveryPoint": jQuery("[id $= '.additionalequipmentSameForEveryPoint']")
+    }
+
+    for (var record in map){
+        setProperMapValue(map[record], record);
+    }
+}
+
+function setProperMapValue(elements, mapKey){
+    var panel,
+        $element,
+        panelId,
+        sourceMap;
+
+    elements.each(function(index, element) {
+        $element = jQuery(element);
+        if(element.checked && !element.disabled){
+            panel = $element.closest('.newPosPanel');
+            if(panel.length){ //jesli to jest panel pos
+                panelId = panel.attr('data-js-id')
+                sourceMap = sameForEveryPointSourcePosId;
+            } else { // jesli panel point
+                panelId = $element.closest('.newPointPanel').attr('data-js-id');
+                sourceMap = sameForEveryPointSourcePanelId;
+            }
+            sourceMap[mapKey] = panelId;
+        }
+    })
+}
+
 function setupNewPointPanelHandlers(panelId, prefix) {
     var prefixPanel = "#"+prefix+"\\["+panelId+"\\]\\";
 
@@ -724,7 +761,7 @@ function clearNewPointData(prefix, ppid, pid) {
 
 function setupNewPosPanelHandlers(panelId, prefix) {
     var prefixPanel = "#"+prefix+"\\["+panelId+"\\]\\";
-    
+
     // Fix for non-existing panels
     if (jQuery(prefixPanel+".id").length <= 0) {
     	return;
@@ -757,7 +794,6 @@ function setupNewPosPanelHandlers(panelId, prefix) {
 }
 
 function addDateHandlers(prefixPanel){
-	console.log("PrefixPanel: " + prefixPanel);
     var timeFromHours = jQuery(prefixPanel + ".timeFromHours"), timeFromHoursVal,
         timeFromMinutes = jQuery(prefixPanel + ".timeFromMinutes"), timeFromMinutesVal,
         timeToHours = jQuery(prefixPanel + ".timeToHours"), timeToHoursVal,
@@ -924,15 +960,10 @@ function getDateFromTime(time){
 
 function sameForEveryPoint(selector, prefix, panelId){
     jQuery(selector).on("click", function(e) {
-    	var index = selector.substring(selector.indexOf('.')+1, selector.length);
+    	var index = selector.substring(selector.indexOf('.') + 1, selector.length);
         var panel, panelJsId;
         var panelIdsContainer = sameForEveryPointSourcePanelId;
 
-        /*if(jQuery(e.target).parents(".newPointPanel").length === 0){ //newPos
-            panel = jQuery(e.target).parents(".newPosPanel");
-        } else { //newPoint
-            panel = jQuery(e.target).parents(".newPointPanel");
-        }*/
         if (prefix == "poses") {
         	panel = jQuery(e.target).parents(".newPosPanel");
         	panelIdsContainer = sameForEveryPointSourcePosId;
