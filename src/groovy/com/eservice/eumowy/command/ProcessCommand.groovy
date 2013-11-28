@@ -1365,7 +1365,6 @@ class ProcessCommand implements Serializable {
         notes(nullable:true, maxSize: 1000) //a1!
         points(nullable:true, validator: { value, cmd, errors ->
             def hasPointErrors = false
-            def atLeastOneFormaDoladowaniaError = false
 
             value.each {  ptCmd ->
                 if (ptCmd != null){
@@ -1374,9 +1373,9 @@ class ProcessCommand implements Serializable {
 	                ptCmd?.validate()
 	                if(ptCmd?.hasErrors()){
 	                    ptCmd.errors.each {
-	                        if(it.getFieldError("hasDodaniePrepaid")){
-	                            atLeastOneFormaDoladowaniaError = true
-	                        }
+	                        it.fieldErrors.each {fieldError ->
+                                errors.reject(fieldError.getCode())
+                            }
 	                        log.info(it)
 	                    }
 	                    hasPointErrors = true
@@ -1386,12 +1385,6 @@ class ProcessCommand implements Serializable {
 
             if(cmd.points?.size() > 0 && cmd.hasMoreThanThreePriceGroups(cmd.points)){
                 errors.reject("default.tooMany.groups")
-                return false
-            }
-
-            if(atLeastOneFormaDoladowaniaError) {
-                errors.reject("default.atLeastOne.doladowania.funkcjaTerminala")
-                return false
             }
 
             if (hasPointErrors) {
