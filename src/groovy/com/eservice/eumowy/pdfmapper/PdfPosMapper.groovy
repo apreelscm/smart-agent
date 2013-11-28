@@ -10,7 +10,7 @@ class PdfPosMapper extends AbstractPdfMapper{
 	public static final ZERO_VALUES = ["", "0"]
 
     public def mapPosSpecial(def poses) {
-        println 'Zaczynam Mapowac!!!!'
+        LOG.info('Zaczynam Mapowac!!!!')
 
         def suffixes = ['A', 'B', 'C', 'D', 'E']
 
@@ -32,8 +32,8 @@ class PdfPosMapper extends AbstractPdfMapper{
                 data.put("oplataPOS"+suffixes[i], [pos.wysokoscOplaty] as String[])
             }
         }
+        LOG.info('Koncze Mapowac!!!!')
         return data
-        println 'Koncze Mapowac!!!!'
     }
 
     public def mapPosesNotFromCBD(def poses){

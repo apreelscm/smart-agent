@@ -99,14 +99,14 @@ log4j = {
 
 
 // Set level for all application artefacts
-    info "grails.app"
-    debug "grails.app.controller.com.eservice.umowy.activity"
-    debug "grails.app.controller.com.eservice.umowy"
-    debug "grails.app.controller.process"
-    info "grails.app.domain"
-    info "grails.app.taglib"
-    info   performanceStatsAppender: 'org.perf4j.TimingLogger'
-    info   calcAppender: 'com.eservice.eumowy.CbdService'
+    info    "grails.app"
+    debug   "grails.app.controller.com.eservice.umowy.activity"
+    debug   "grails.app.controller.com.eservice.umowy"
+    debug   "grails.app.controller.process"
+    info    "grails.app.domain"
+    info    "grails.app.taglib"
+    info    performanceStatsAppender: 'org.perf4j.TimingLogger'
+//    info    calcAppender: 'grails.app.services.com.eservice.eumowy.CbdService'
 
     error  'org.codehaus.groovy.grails.web.servlet',        // controllers
             'org.codehaus.groovy.grails.web.pages',          // GSP
@@ -170,11 +170,11 @@ log4j = {
     }
 
     environments {
-        mock { root { additivity: false; info 'console' } }
-        development { root { additivity: false; info 'console' } }
-        test { root { additivity: false; info 'console','file-roll' } }
-        uat { root { additivity: false; info 'file-roll','file-calc-roll' } }
-        production { root { additivity: false; info 'file-roll','file-calc-roll' } }
+        mock        { root { additivity: false; info 'console' } }
+        development { root { additivity: false; info 'console', 'file-calc-roll' } }
+        test        { root { additivity: false; info 'console', 'file-roll', 'file-calc-roll' } }
+        uat         { root { additivity: false; info 'file-roll', 'file-calc-roll' } }
+        production  { root { additivity: false; info 'file-roll', 'file-calc-roll' } }
     }
 
     info database: ["audit"]

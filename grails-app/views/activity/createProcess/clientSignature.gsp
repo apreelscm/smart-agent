@@ -448,7 +448,7 @@
 
     <h1 class="ng linia-bottom"><g:message code="clientSignature.header.title" default="Podpis Klienta"/></h1>
 
-    <div id="pdfBox" style="background-color: #F2F2F2; height: 680px; overflow: auto;border: solid 1px; border-radius: 5px;  margin: 20px 15px 0">
+    <!-- <div id="pdfBox" style="background-color: #F2F2F2; height: 680px; overflow: auto;border: solid 1px; border-radius: 5px;  margin: 20px 15px 0">
         <div id="pdfBox-nav" style="padding: 1em; border-bottom: solid 1px;">
             <div style="display: inline-block; float: left">
                 <a id="zoomOutPdfPage" class="button submit">-</a>
@@ -470,7 +470,30 @@
             </div>
             <img id="pdfPage" style="border:1px solid gray; display: none; width: 440px; height: 570px; display: none; margin-left: auto; margin-right: auto; vertical-align: middle; text-align: center;"/>
         </div>
-    </div>
+    </div> -->
+    <table border="0" align="center" cellpadding="3" cellspacing="1" class="table"
+       style="margin: 20px 15px 15px 15px; width: 950px;">
+	    <thead>
+	    <tr>
+	        <th style="text-align: center"><g:message code="process.document"/></th>
+	        <th style="text-align: center"><g:message code="process.update.date"/></th>
+	        <th style="text-align: center"></th>
+	    </tr>
+	    </thead>
+	    <tbody>
+	    <g:each in="${processInstance.documents.sort(false){a,b -> a.signature.signatureOrder.compareTo(b.signature.signatureOrder)} }" status="i" var="document">
+	        <tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
+	            <td class="tableCellLeft" style="vertical-align: middle">${document.name}</td>
+	            <td class="tableCell" style="vertical-align: middle"><g:formatDate date="${document.lastUpdated}" format="yyyy-MM-dd HH:mm"/></td>
+	            <td class="tableCell" style="vertical-align: middle">
+	                <g:link class="button action" style="margin: 0 auto"
+	                        action="downloadDoc"
+	                        params="[id: document.id]">Podgląd</g:link>
+	            </td>
+	        </tr>
+	    </g:each>
+	    </tbody>
+	</table>
 	<div id="subscriptionDialog" style="display: none; padding: 10px; overflow: auto;border: solid 1px; border-radius: 5px;  margin: 20px 15px 15px 15px;">
 		<div id="dialog">
 			<section id="index-subscription">

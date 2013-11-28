@@ -1,14 +1,18 @@
 
 package com.eservice.eumowy
 
-import com.eservice.eumowy.command.ProcessCommand
-import com.eservice.eumowy.process.DefineActivityCommand
-import com.eservice.eumowy.util.DateUtils
 import grails.converters.JSON
 import groovy.sql.GroovyRowResult
+
 import org.codehaus.groovy.grails.web.json.JSONObject
 import org.hibernate.StaleObjectStateException
 import org.springframework.orm.hibernate3.HibernateOptimisticLockingFailureException
+
+import pdfgenerator.PdfGenerator
+
+import com.eservice.eumowy.command.ProcessCommand
+import com.eservice.eumowy.process.DefineActivityCommand
+import com.eservice.eumowy.util.DateUtils
 
 class ActivityController {
 
@@ -27,6 +31,7 @@ class ActivityController {
     def calculatorService
     def messageSource
     def pdfService
+	def documentService
 
     def springSecurityService
 
@@ -217,7 +222,7 @@ class ActivityController {
                 if (!flow.skipDocumentGeneration) {
                     def processWithPages = pdfService.workWithDocuments(processInstance, conversation.calc)
                     flow.totalPagesCount = processWithPages.totalPagesCount
-					pdfService.generateAllPreviews(processInstance.documents, processInstance.id, flow.totalPagesCount)
+					//pdfService.generateAllPreviews(processInstance.documents, processInstance.id, flow.totalPagesCount)
                     //processInstance.discard()
                     //processInstance.save(flush: true)
                     processInstance = processWithPages.processInstance
@@ -522,7 +527,7 @@ class ActivityController {
 
         selectedPanels{
             onEntry {
-                println "selectedPanels enterview"
+                log.info("selectedPanels enterview")
                 def processInstance = flow.processInstance;
 
                 def processCmd
@@ -1217,7 +1222,7 @@ class ActivityController {
         if(msg instanceof AttachmentFile){
             def attachment = msg as AttachmentFile
             attachment.process = Process.read(Long.valueOf(params.processId))
-            println("attachment.processId : ${attachment.processId}")
+            log.info("attachment.processId : ${attachment.processId}")
             attachment.save(flush:true)
             render "";
         }
@@ -1232,7 +1237,7 @@ class ActivityController {
     }
 
     def getAttachmentList(){
-        //println(params)
+        log.info(params)
         render(template:"../attachment/list", model:[files:attachmentService.getListByProcessId(params.processId), processId: params.processId]);
     }
 
@@ -1291,6 +1296,19 @@ class ActivityController {
         }
         render(text: '')
     }
+	
+	def downloadDoc(){
+		log.info( "downloadDoc = " +  params.id);
+		DocumentFile file = documentService.download(params.id)
+
+		if(!(file?.content?.content)){
+			redirect(action: "show")
+		}
+
+		response.setContentType("application/pdf")
+		response.setHeader("Content-disposition", "${params.contentDisposition}; filename=\"${file.name}\"")
+		response.outputStream << PdfGenerator.closeContent(file.content.content)
+	}
 
     def testSql(){
         /*   def result = cbdService.findCalculatorByNip("1570321560")
