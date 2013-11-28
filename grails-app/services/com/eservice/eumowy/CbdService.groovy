@@ -206,9 +206,11 @@ class CbdService {
 	
 	@Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
 	def checkActivities(def activitiesString, def calcId, def signaturesString) {
-		def rowResult = cbdDAO.selectOne(SPRAWDZ_DZIALANIE, [activities: activitiesString, calcid: calcId, signatures: signaturesString])
-		return rowResult != null && rowResult.get("result") == 1
-	}
+        def rowResult = cbdDAO.selectOne(SPRAWDZ_DZIALANIE, [activities: activitiesString, calcid: calcId, signatures: signaturesString])
+        def result = rowResult != null && rowResult.get("result") == 1
+        log.info("Checking activities for calcId ${calcId} with result: ${result}")
+        return result
+    }
 
     @Cacheable(value="getNumerSprzedazowy")
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
@@ -306,10 +308,10 @@ class CbdService {
             client = new Client(cbdId: cbdId, nip: nip, name: Math.random()+"testName" );
         }
 
-        println("cbdId:"+cbdId)
-        println("cl:"+client)
-        println("cl1:"+(client == null ))
-        println("cl2:"+(cbdId != null))
+        log.info("cbdId:"+cbdId)
+        log.info("cl:"+client)
+        log.info("cl1:"+(client == null ))
+        log.info("cl2:"+(cbdId != null))
 
         return client;
     }

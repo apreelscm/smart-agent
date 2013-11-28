@@ -527,7 +527,7 @@ class ActivityController {
 
         selectedPanels{
             onEntry {
-                println "selectedPanels enterview"
+                log.info("selectedPanels enterview")
                 def processInstance = flow.processInstance;
 
                 def processCmd
@@ -1222,7 +1222,7 @@ class ActivityController {
         if(msg instanceof AttachmentFile){
             def attachment = msg as AttachmentFile
             attachment.process = Process.read(Long.valueOf(params.processId))
-            println("attachment.processId : ${attachment.processId}")
+            log.info("attachment.processId : ${attachment.processId}")
             attachment.save(flush:true)
             render "";
         }
@@ -1237,7 +1237,7 @@ class ActivityController {
     }
 
     def getAttachmentList(){
-        //println(params)
+        log.info(params)
         render(template:"../attachment/list", model:[files:attachmentService.getListByProcessId(params.processId), processId: params.processId]);
     }
 

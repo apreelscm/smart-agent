@@ -20,7 +20,7 @@ class PanelController {
 
 
         process.save(flush: true);
-        println("errors:"+process.errors)
+        log.info("errors:"+process.errors)
     }
 
     def list(Integer max) {

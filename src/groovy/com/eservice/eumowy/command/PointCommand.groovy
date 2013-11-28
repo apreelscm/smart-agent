@@ -166,6 +166,7 @@ class PointCommand extends BaseCommand {
     BigDecimal wifiCenaPreferencyjna
 
     Boolean hasDodaniePrepaid
+    Boolean hasTelefonKontaktowy
 
 	static constraints = {
 		phPozysk(nullable:true, blank:false, shared: "alphanumeric")
@@ -212,6 +213,15 @@ class PointCommand extends BaseCommand {
             }
             return true
         })
+
+        hasTelefonKontaktowy(nullable: true, validator: {value, cmd, errors ->
+            if(value && !(cmd.kontaktWPunkcieTelKomorkowy || cmd.kontaktWPunkcieTelStacjonarny)){
+                errors.rejectValue("hasTelefonKontaktowy", "default.atLeastOne.phoneNumber")
+                return false
+            }
+            return true
+        })
+
 		terminalIlosc(nullable:true, shared: "natural", validator: {value, cmd, errors ->
            if(value == null){
                return true
