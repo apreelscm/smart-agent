@@ -37,7 +37,8 @@
                 <span>
                     <dict:mccSelect 
                     	name="${panelType}[${id}].kodMCC"
-                    	id="${panelType}[${id}].mccCode" value="${pointData?.kodMCC}"/>
+                    	id="${panelType}[${id}].mccCode" value="${pointData?.kodMCC}"
+                        required="required"/>
                 </span>
             </li>
             <li><span class="align-right"><g:message
