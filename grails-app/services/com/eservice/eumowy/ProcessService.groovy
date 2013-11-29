@@ -1340,7 +1340,9 @@ class ProcessService {
                 log.debug "Got POS Data!"
                 if (pos != null) {
                     //point = pos.point
+					def proc = process
 					point = PointData.find {
+						process == proc &&
 						posDatas { id == pos.id }
 					}
                 }
