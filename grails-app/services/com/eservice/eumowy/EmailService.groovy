@@ -13,6 +13,8 @@ class EmailService {
     def mailService
     def messageSource
 
+    private static final String COA_MAIL = "coa@eservice.com.pl"
+
 	@Cacheable(value="emailTampletByName", key="#name")
 	def getEmailTampletesByName(def name){
 		return EmailTemplates.findByName(name,[cache:true])
@@ -23,9 +25,9 @@ class EmailService {
         sendMailWithTryCatch(emailTemplate, emailTemplate.recipients , null, [notes: notes, phNumber: phNumber, phName: phName], null)
     }
 
-	def sendDocumentsPaperVersion(def recipient, List<DocumentFile> documents, def merchantName) {
+	def sendDocumentsPaperVersion(List<DocumentFile> documents, def bodyParams) {
         def emailTemplate = getEmailTampletesByName(EmailTemplates.EmailTemplateType.DOCUMENTS_PAPER_VERSION)
-		sendMail(emailTemplate, recipient, null, [merchantName: merchantName], documents)
+		sendMail(emailTemplate, COA_MAIL, null, bodyParams, documents)
 	}
 
     def sendDocumentsTemplateVersion(def recipient, List<DocumentFile> documents) {

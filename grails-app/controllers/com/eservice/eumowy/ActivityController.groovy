@@ -1412,7 +1412,10 @@ class ActivityController {
                 df.setContent(ndc);
                 df.save(flush: true)
             }
-            emailService.sendDocumentsPaperVersion(process.phEmail, process.documents?.findAll{it.signature?.sendToClient}, merchantName)
+
+            def mailBodyParams = [merchantName: merchantName, phNumber: process?.phNumber,
+                    phFirstName: process?.phFirstName, phSurname: process?.phSurname]
+            emailService.sendDocumentsPaperVersion(process.documents?.findAll{it.signature?.sendToClient}, mailBodyParams)
         }
         else if (TEMPLATES.equals(requestVersion)) {
 			List<DocumentFile> documentFilesWithBlackFaksymileList = new ArrayList<DocumentFile>()
