@@ -13,13 +13,16 @@ class CbdDAO {
     def selectOne(String sqlName ,def paramers = []){
         StopWatch stopWatch = new Log4JStopWatch();
         def row
+        def sql
         try {
-            def sql = new Sql(dataSource)
+            sql = new Sql(dataSource)
             row = sql.firstRow(getSqlText(sqlName),paramers)
         } catch (SQLException ex) {
             log.error ex.message, ex
             throw ex
-            }
+        } finally {
+            sql?.close()
+        }
         stopWatch.stop('sql-'+sqlName)
         row
     }
@@ -28,9 +31,10 @@ class CbdDAO {
         StopWatch stopWatch = new Log4JStopWatch();
 
         def rows = []
+        def sql
 
         try {
-            def sql = new Sql(dataSource)
+            sql = new Sql(dataSource)
             sql.eachRow(getSqlText(sqlName),paramers) {
                 rows.add(it.toRowResult())
             }
@@ -40,6 +44,7 @@ class CbdDAO {
             throw ex
         }
         finally{
+            sql?.close()
             stopWatch.stop('sql-'+sqlName)
             return rows;
         }
