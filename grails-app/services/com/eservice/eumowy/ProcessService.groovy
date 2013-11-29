@@ -894,10 +894,10 @@ class ProcessService {
                 return
             }
 
-            PointData pointData
-            PointDataDetails pointDataDetails
-            PosData posData
-            PosDataDetails posDataDetails
+            PointData pointData = null
+            PointDataDetails pointDataDetails = null
+            PosData posData = null
+            PosDataDetails posDataDetails = null
 
             ArrayList<PosData> pdList = new ArrayList<PosData>()
 
@@ -911,7 +911,7 @@ class ProcessService {
             }
             else {
 				log.info "EXISTING POINT!"
-                pointData = PointData.get(pc.id)
+                pointData = PointData.findById(pc.id)
 
                 if (pointData != null) {
                     log.debug "getPointCommandsToPointDataList - Znaleziono punkt o id: " + pc.id
@@ -1053,7 +1053,7 @@ class ProcessService {
 			
 			if (apc.id != null) {
 				log.debug "ZNALAZLEM PUNKT - ALLPOINTS"
-				point = PointData.get(apc.id)
+				point = PointData.findById(apc.id)
 			}
 			else {
 				log.debug "NIE ZNALAZLEM PUNKTU - ALLPOINTS"
@@ -1099,10 +1099,10 @@ class ProcessService {
                 return
             }
 
-            PointData pointData
-            PointDataDetails pointDataDetails
-            PosData posData
-            PosDataDetails posDataDetails
+            PointData pointData = null
+            PointDataDetails pointDataDetails = null
+            PosData posData = null
+            PosDataDetails posDataDetails = null
 
             ArrayList<PosData> pdList = new ArrayList<PosData>()
 
@@ -1134,8 +1134,7 @@ class ProcessService {
 					}
 					
                     log.info "Ustawiam dane z CBD"
-                    def cbdPoint = cbdService.getCbdPointById(cmd.nip,
-                            pc.cbdId)
+                    def cbdPoint = cbdService.getCbdPointById(cmd.nip, pc.cbdId)
                     if (cbdPoint != null) {
 
                         pointData.setCbdId(Integer.valueOf(cbdPoint.get("id").toString()))
@@ -1162,7 +1161,7 @@ class ProcessService {
                 isNew = true
             }
             else {
-                posData = PosData.get(pc.id)
+                posData = PosData.findById(pc.id)
 
                 if (posData != null) {
                     pointData = posData.point
@@ -1298,7 +1297,14 @@ class ProcessService {
             posData.setPoint(pointData)
 
             pointData.setPointDetails(pointDataDetails)
-            pointData.setPosDatas(pdList)
+            //pointData.setPosDatas(pdList)
+			if (pointData.posDatas){
+				pdList.each { PosData pos ->
+					pointData.addToPosDatas(pos)
+				}
+			} else {
+				pointData.setPosDatas(pdList)
+			}
 
             posDataDetails.setPos(posData)
             pointDataDetails.setPoint(pointData)
@@ -1325,15 +1331,18 @@ class ProcessService {
                 return
             }
             //ArrayList<PosData> pdList = new ArrayList<PosData>()
-            PosData pos;
-            PointData point;
+            PosData pos = null
+            PointData point = null
 
             if (apc.id != null) {
                 //poieramy point i pos z naszej bazy
-                pos = PosData.get(apc.id)
+                pos = PosData.findById(apc.id)
                 log.debug "Got POS Data!"
                 if (pos != null) {
-                    point = pos.point
+                    //point = pos.point
+					point = PointData.find {
+						posDatas { id == pos.id }
+					}
                 }
             }
             else if (apc.cbdId != null) {
