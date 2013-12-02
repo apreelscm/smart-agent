@@ -112,14 +112,22 @@ class PdfProcessMapper extends AbstractPdfMapper{
         }
 
 
-        def additionalToCross = ['aneks']
         def newToCross = ['dodatkowyPunkt', 'dodatkowyPos']
-        if (processInstance.activities.findAll { activity -> additionalToCross.contains(activity.code)}.size()>0){
+        if (processInstance.activities.findAll { activity -> 'aneks'.equals(activity.code)}.size()>0){
             dataMap.put("crossAdditional", ['_______________'] as String[])
         } else if (processInstance.activities.size()==1 && processInstance.activities.findAll { activity -> newToCross.contains(activity.code)}.size()>0){
             dataMap.put("crossNew", ['_____'] as String[])
         }
 
+        //Na potrzeby dokumentu: APUPZAWNZBS1.00113-08-06
+        if (processInstance.activities.findAll { activity -> ['dodatkowyPos', 'dodatkowyPunkt'].contains(activity.code)}.size()>0){
+            addCheckbox(dataMap, 'zalacznik2', "true", "true")
+        }
+
+        //Na potrzeby dokumentu: APUPZAWNZBS1.00113-08-06
+        if (processInstance.activities.findAll { activity -> 'zmianaProwizji'.equals(activity.code)}.size()>0){
+            addCheckbox(dataMap, 'zalacznik3', "true", "true")
+        }
         return dataMap;
     }
 
