@@ -419,9 +419,9 @@
 	
 	               if(!kontaktEmail && !emailDoWysylkiDokumentu){
 	                      jQuery("#requestVersionElectronical").attr("disabled","disabled").removeAttr("checked")
-	                      jQuery("#requestVersionPaper").attr("disabled","disabled").removeAttr("checked")
-	                      jQuery("#requestVersionTemplates").attr("checked","checked")
-	
+	                      jQuery("#requestVersionPaper").attr("checked","checked")
+	                      jQuery("#requestVersionTemplates").attr("disabled","disabled").removeAttr("checked")
+
 	                      jQuery("#noaccept").prop("disabled", true);
 	                      jQuery("#subscribe-REPRESENTATIVE1").parent().addClass("disabled");
 	                      jQuery("#subscribe-REPRESENTATIVE2").parent().addClass("disabled");
