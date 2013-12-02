@@ -34,6 +34,8 @@ class PdfService {
             this.field = field;
         }
 	}
+
+    private static final EMPTY_VALUES = ["", "-"]
 	
 	def generateAllPreviews(List<DocumentFile> documents, Long processId, Integer totalPagesCount) {
 		def imageUris = new HashMap<Integer, String>()
@@ -335,9 +337,18 @@ class PdfService {
         PdfGenerator.updateValuesContent(dc, fieldsToClean, "")
     }
 
-    def updateDataUmowyOnDocument(DocumentContent documentContent, String dataUmowy){
-        def fieldsToUpdate = ['dataUmowy', 'wydrukGrafikiData', 'dzialaniaMatematyczneData',
+    def updateDataUmowyOnDocument(DocumentContent documentContent, Process process, String dataUmowy){
+        def candidatesForUpdate = ['dataUmowy', 'wydrukGrafikiData', 'dzialaniaMatematyczneData',
                 'pierwszaSesjaData', 'systemKasowyData', 'weryfikacjaPINData', 'czasObslugiData'];
+        def processData
+        def fieldsToUpdate = []
+
+        candidatesForUpdate.each { field ->
+            processData = process.processData?.find { data -> data.equals(field)}
+            if(processData && !EMPTY_VALUES.contains(processData.value)){
+                fieldsToUpdate.add(field)
+            }
+        }
         PdfGenerator.updateValuesContent(documentContent, fieldsToUpdate, dataUmowy)
 
     }
