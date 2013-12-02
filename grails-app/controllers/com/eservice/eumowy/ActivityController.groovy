@@ -1378,7 +1378,7 @@ class ActivityController {
 
             if (params?.numberOfSubscriptions?.toInteger() == requiredNumberOfSubscriptions) {
                 process.documents.each { DocumentFile doc ->
-                    updateDataUmowy(doc, dataUmowy)
+                    updateDataUmowy(doc, dataUmowy, process)
 
                     byte[] newContent = pdfService.addClientSubscriptionsToDocument(doc.content.content, doc.signature.id, process.subscriptions)
                     doc.content.content = newContent
@@ -1420,7 +1420,7 @@ class ActivityController {
         else if (TEMPLATES.equals(requestVersion)) {
 			List<DocumentFile> documentFilesWithBlackFaksymileList = new ArrayList<DocumentFile>()
 			process.documents.findAll{it.signature?.sendToClient}?.each { DocumentFile doc ->
-                updateDataUmowy(doc, dataUmowy)
+                updateDataUmowy(doc, dataUmowy, process)
 
 				DocumentFile dfwbf = new DocumentFile(name: doc.name, clientName: doc.clientName , dateCreated: doc.dateCreated, lastUpdated: doc.lastUpdated, pagesCount: doc.pagesCount)
 				byte[] newContent = pdfService.addBlackFaksymileToDocument(doc.content.content, doc.signature.id)
@@ -1481,8 +1481,8 @@ class ActivityController {
         }
     }
 
-    private def updateDataUmowy(def doc, def dataUmowy){
-        DocumentContent contentWithUpdatedDataUmowy = pdfService.updateDataUmowyOnDocument(doc.content, dataUmowy)
+    private def updateDataUmowy(def doc, def dataUmowy, def process){
+        DocumentContent contentWithUpdatedDataUmowy = pdfService.updateDataUmowyOnDocument(doc.content, process, dataUmowy)
         doc.setContent(contentWithUpdatedDataUmowy)
         doc.save(flush: true)
     }
