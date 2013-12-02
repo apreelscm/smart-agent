@@ -54,7 +54,7 @@ class PdfPointMapper extends AbstractPdfMapper{
     }
 
     private mapMiejscowoscPoint(def data, def pd, def key, def value, def index) {
-        data.put((index == -1)?key:key+index, [getAddress("", pd.ulica, pd.nrBudynku, pd.nrLokalu, pd.kodPocztowy, value)] as String[])
+        data.put((index == -1)?key:key+index, [getAddress(pd.cbdId == null ? pd.pointDetails?.wydrukUlicaTytul : "", pd.ulica, pd.nrBudynku, pd.nrLokalu, pd.kodPocztowy, value)] as String[])
     }
 
     private mapNazwaPoint(def data, def pd, def key, def value, def index) {
@@ -84,7 +84,7 @@ class PdfPointMapper extends AbstractPdfMapper{
     //------------------PointDataDetails----------------------------
 
     private mapWydrukUlicaPointDataDetails(def data, def pointData, def key, def value){
-        data.put(key, [pointData.cbdId == null ? value : pointData.ulica] as String[]);
+        data.put(key, [pointData.cbdId == null ? pointData.pointDetails.wydrukUlicaTytul + " " + value : pointData.ulica] as String[]);
     }
 
     private mapWydrukMiastoPointDataDetails(def data, def pointData, def key, def value){
