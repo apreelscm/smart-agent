@@ -28,6 +28,7 @@
 </style>
 <r:require module="panzoom" />
 <r:require module="jsignature" />
+<r:require module="pdf" />
 
 <r:script>
 	var updateSubscriptionStatusCount = 0;
@@ -138,12 +139,36 @@
 	    }
 	}
 	jQuery(document).ready(function(){
+	    var pdfDoc = null,
+        scale = 2.0,
+        canvas = document.getElementById('pdfPage'),
+        ctx = canvas.getContext('2d');
+	    
 	    var pageNum = 1;
 	    var documentPages = [];
 		subscriptionDialog = jQuery('#subscriptionDialog');
+		var documentData = [];
+		
+		<g:each in="${processInstance.documents.sort(false){a,b -> a.signature.signatureOrder.compareTo(b.signature.signatureOrder)} }" status="i" var="document">
+	        documentData[${i}] = base64DecToArr('${document?.content?.getPreviewContent().encodeBase64().toString()}').buffer;
+	    </g:each>
 	
 		setUpSignaturePad();
 	    checkEmailKontakt();
+	
+		jQuery('a#previewPdfButton').on('click', function(e) {
+			e.preventDefault();
+			var i = parseInt(jQuery(e.target).attr('data-document-index'));
+			console.log("Showing document: " + i);
+			PDFJS.getDocument(documentData[i]).then(function (_pdfDoc) {
+		      pageNum = 1;
+		      jQuery("#page_num").html(pageNum);
+		      jQuery('#page_count').html(_pdfDoc.numPages);
+		      pdfDoc = _pdfDoc;
+		      refreshPdfPageView(pageNum);
+		    });
+		    return false;
+		});
 	
 		jQuery("img#pdfPage").load(function() {
 			if (documentPages[pageNum].loaded == true) {
@@ -186,8 +211,28 @@
 			
 		}
 	
+		function renderPage(num) {
+	      // Using promise to fetch the page
+	      pdfDoc.getPage(num).then(function(page) {
+	        var viewport = page.getViewport(scale);
+	        canvas.height = viewport.height;
+	        canvas.width = viewport.width;
+	
+	        // Render PDF page into canvas context
+	        var renderContext = {
+	          canvasContext: ctx,
+	          viewport: viewport
+	        };
+	        page.render(renderContext);
+	      });
+	
+	      // Update page counters
+	      //document.getElementById('page_num').textContent = pageNum;
+	      //document.getElementById('page_count').textContent = pdfDoc.numPages;
+	    }
+	
 	    function refreshPdfPageView(pageNum) {
-	        if (documentPages[pageNum].loaded == true) {
+	        /*if (documentPages[pageNum].loaded == true) {
                  jQuery("#pdfBox-content-loading").hide();
                  jQuery("img#pdfPage").attr("src", documentPages[pageNum].data).css("display", "block");
                  jQuery("#nextPdfPage").removeClass("disabled");
@@ -196,7 +241,11 @@
           	 	setTimeout(function() {
           	 		refreshPdfPageView(pageNum);
           	 	}, 1000);
-	         }
+	         }*/
+	         jQuery("#pdfPage").css("display", "block");
+	         jQuery("#pdfBox-content-loading").hide();
+	         jQuery("#nextPdfPage").removeClass("disabled");
+	         renderPage(pageNum);
 	    }
 	
 	    function navigatePdfPageView(direction, totalPagesCount) {
@@ -242,17 +291,23 @@
 		
 		initDocumentPages();		
 		prefetchDocumentPages(pageNum, "${processInstance.id}");
-		refreshPdfPageView(pageNum);
-				
+		PDFJS.getDocument(documentData[0]).then(function getPdfHelloWorld(_pdfDoc) {
+	      pageNum = 1;
+	      jQuery("#page_num").html(pageNum);
+	      jQuery('#page_count').html(_pdfDoc.numPages);
+	      pdfDoc = _pdfDoc;
+	      refreshPdfPageView(pageNum);
+	    });
+    	
     	jQuery("#prevPdfPage").on("click", function(e) {
     		e.preventDefault();
-    		navigatePdfPageView("prev", ${totalPagesCount});
+    		navigatePdfPageView("prev", pdfDoc.numPages);
 	     	return false;
     	});
     	
     	jQuery("#nextPdfPage").on("click", function(e) {
     		e.preventDefault();
-    		navigatePdfPageView("next", ${totalPagesCount});
+    		navigatePdfPageView("next", pdfDoc.numPages);
 	     	return false;
     	});
 		    	
@@ -484,7 +539,7 @@
 	    <tbody>
 	    <g:each in="${processInstance.documents.sort(false){a,b -> a.signature.signatureOrder.compareTo(b.signature.signatureOrder)} }" status="i" var="document">
 	        <tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
-	            <td class="tableCellLeft" style="vertical-align: middle">${document.name}</td>
+	            <td class="tableCellLeft" style="vertical-align: middle"><a id="previewPdfButton" data-document-index="${i}" href="#">${document.name}</a></td>
 	            <td class="tableCell" style="vertical-align: middle"><g:formatDate date="${document.lastUpdated}" format="yyyy-MM-dd HH:mm"/></td>
 	            <td class="tableCell" style="vertical-align: middle">
 	                <g:link class="button action" style="margin: 0 auto"
@@ -495,6 +550,30 @@
 	    </g:each>
 	    </tbody>
 	</table>
+	<div id="pdfBox" style="background-color: #F2F2F2; height: 680px; overflow: auto;border: solid 1px; border-radius: 5px;  margin: 20px 15px 0">
+        <div id="pdfBox-nav" style="padding: 1em; border-bottom: solid 1px;">
+            <div style="display: inline-block; float: left">
+                <a id="zoomOutPdfPage" class="button submit">-</a>
+                <a id="zoomInPdfPage" class="button submit">+</a>
+            </div>
+            <div style="display: inline-block; float: right">
+                <a id="nextPdfPage" class="button submit disabled" style="float: right"><g:message code="process.subscriptions.nextPage" /></a>
+                <a id="prevPdfPage" class="button submit disabled"><g:message code="process.subscriptions.previousPage" /></a>
+            </div>
+            <div style="text-align: center; padding-left: 165px; padding-top: 5px">
+                <span style="font-weight: bold"><g:message code="process.subscriptions.page" />: <span id="page_num"></span> / <span id="page_count">${totalPagesCount}</span></span>
+            </div>
+            <div style="clear: both"></div>
+        </div>
+        <div id="pdfBox-content" style="margin: 1em;">
+            <div id="pdfBox-content-loading" style="text-align: center; width: 200px; display: block; margin: 0 auto;">
+                <h2 style="padding-top: 100px;"><g:message code="process.subscriptions.loadingPage" /></h2>
+                <img style="width: 40px;" src="/eumowy/images/document-loading.gif" />
+            </div>
+            <canvas id="pdfPage" style="border:1px solid gray; display: none; width: 440px; height: 570px; display: none; margin-left: auto; margin-right: auto; vertical-align: middle; text-align: center;"></canvas>
+            <!-- <img id="pdfPage" style="border:1px solid gray; display: none; width: 440px; height: 570px; display: none; margin-left: auto; margin-right: auto; vertical-align: middle; text-align: center;"/> -->
+        </div>
+    </div>
 	<div id="subscriptionDialog" style="display: none; padding: 10px; overflow: auto;border: solid 1px; border-radius: 5px;  margin: 20px 15px 15px 15px;">
 		<div id="dialog">
 			<section id="index-subscription">
