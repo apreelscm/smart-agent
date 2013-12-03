@@ -104,4 +104,17 @@ modules = {
         dependsOn 'jquery'
     }
 	
+	base64utils {
+		resource url: 'js/base64utils.js'
+	}
+	
+	pdfWorker {
+		resource url: 'js/pdf.worker.js'
+	}
+	
+	pdf {
+		resource url: 'js/pdf.js'
+		dependsOn 'base64utils'
+	}
+	
 }

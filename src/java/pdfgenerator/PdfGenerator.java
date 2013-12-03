@@ -1,14 +1,5 @@
 package pdfgenerator;
 
-import com.eservice.eumowy.DocumentContent;
-import com.eservice.eumowy.PdfService;
-import com.lowagie.text.DocumentException;
-import com.lowagie.text.Image;
-import com.lowagie.text.pdf.*;
-import org.apache.log4j.Logger;
-import org.perf4j.StopWatch;
-import org.perf4j.log4j.Log4JStopWatch;
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -17,9 +8,59 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+import org.perf4j.StopWatch;
+import org.perf4j.log4j.Log4JStopWatch;
+
+import com.eservice.eumowy.DocumentContent;
+import com.eservice.eumowy.PdfService;
+import com.lowagie.text.DocumentException;
+import com.lowagie.text.Image;
+import com.lowagie.text.pdf.AcroFields;
+import com.lowagie.text.pdf.BaseFont;
+import com.lowagie.text.pdf.PdfContentByte;
+import com.lowagie.text.pdf.PdfReader;
+import com.lowagie.text.pdf.PdfStamper;
+
 public class PdfGenerator {
 	private static Logger LOG = Logger.getLogger(PdfGenerator.class);
-
+	
+	public static byte[] embbedAllFonts(byte[] content) {
+		/*ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		PdfReader templateReader = null;
+		PdfStamper stamp = null;
+		
+		try {
+			FontFactory.defaultEmbedding = true;
+			Set<String> fonts = FontFactory.getRegisteredFonts();
+			templateReader = new PdfReader(content);
+			stamp = new PdfStamper(templateReader, baos);
+			stamp.getWriter().setPdfVersion(PdfWriter.PDF_VERSION_1_7);
+			stamp.getWriter().setPDFXConformance(PdfWriter.PDFA1A);
+			stamp.getWriter().setFullCompression();
+		}
+		catch (Exception e) {
+			LOG.error("Embedding fonts failed for preview! " + e + " Content: " + content);
+		}
+		finally {
+			if (stamp != null){
+				try {
+					stamp.close();
+				} catch (Exception e) {
+					LOG.error(e);
+				}
+			}
+			if (templateReader != null){
+				templateReader.close();
+			}
+		}
+		FontFactory.defaultEmbedding = false;
+		
+		
+		return baos.toByteArray();*/
+		return content;
+	}
+	
 	public static byte[] addImageToPdfContent(String templatePath, byte[] content, Map<String, Object[]> imageMap) {
 		
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();

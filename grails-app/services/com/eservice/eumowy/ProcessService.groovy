@@ -55,8 +55,8 @@ class ProcessService {
             }
 
             if(DateUtils.isDate(filterDateFrom, DateUtils.DD_MM_YYYY) && DateUtils.isDate(filterDateTo, DateUtils.DD_MM_YYYY)) {
-                ge("dateCreated", DateUtils.parseDate(filterDateFrom, DateUtils.DD_MM_YYYY))
-                le("dateCreated", DateUtils.addDays(DateUtils.parseDate(filterDateTo, DateUtils.DD_MM_YYYY), 1))
+                ge("lastUpdated", DateUtils.parseDate(filterDateFrom, DateUtils.DD_MM_YYYY))
+                le("lastUpdated", DateUtils.addDays(DateUtils.parseDate(filterDateTo, DateUtils.DD_MM_YYYY), 1))
             }
 
             if ("isObserved".equals(filterObserved)){
