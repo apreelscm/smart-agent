@@ -119,6 +119,7 @@
 		if (panelPosInternalCount == 0) {
 			jQuery("#continueButton").prop("disabled", true);
 		}
-		
+
+        setSameForEveryPropertyInSourceMaps();
 	});
 </r:script>
