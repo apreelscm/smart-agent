@@ -121,6 +121,9 @@ class PdfPointMapper extends AbstractPdfMapper{
         mapWithPattern(data, value, ~/\d{2}-\d{3}/, "-", "korespondencjaKodPocztowy");
     }
 
+    private mapKorespondencjaUlicaPointDataDetails(def data, def pointData, def key, def value){
+        data.put(key, [pointData.pointDetails?.korespondencjaUlicaTytul + " " + value] as String[]);
+    }
 
     private mapKontaktWPunkcieTelKomorkowyPointDataDetails(def data, def pointData, def key, def value){
         data.put(key, [value] as String[]);
