@@ -201,8 +201,6 @@
 
         refreshTelepomkaAndTelekodzikPercentValues()
         $j.datepicker.setDefaults( jQuery.datepicker.regional[ "pl" ] );
-        setSameForEveryPropertyInSourceMaps();
-
     </g:javascript>
 </head>
 <body>
@@ -297,3 +295,4 @@
 
 </body>
 </html>
+

@@ -73,40 +73,60 @@ function getGlobalPanelCount(prefix) {
 }
 
 //funkcja ta ustawia odpowiednie numery paneli w sameForEveryPointSource... od razu przy wejsciu na widok paneli
+var firedSetSameForEveryPropertyInSourceMaps = false;
 function setSameForEveryPropertyInSourceMaps(){
-    var map = {
-            "sameForEveryPoint" : jQuery("[id $= '.sameForEveryPoint']"),
-            "possetforselectedpointSameForEveryPoint": jQuery("[id $= '.possetforselectedpointSameForEveryPoint']"),
-            "technicalinformationSameForEveryPoint": jQuery("[id $= '.technicalinformationSameForEveryPoint']"),
-            "terminaloptionsSameForEveryPoint": jQuery("[id $= '.terminaloptionsSameForEveryPoint']"),
-            "additionalequipmentSameForEveryPoint": jQuery("[id $= '.additionalequipmentSameForEveryPoint']")
-    }
+    if(!firedSetSameForEveryPropertyInSourceMaps){
+        var map = {
+                "sameForEveryPoint" : jQuery("[id $= '.sameForEveryPoint']"),
+                "possetforselectedpointSameForEveryPoint": jQuery("[id $= '.possetforselectedpointSameForEveryPoint']"),
+                "technicalinformationSameForEveryPoint": jQuery("[id $= '.technicalinformationSameForEveryPoint']"),
+                "terminaloptionsSameForEveryPoint": jQuery("[id $= '.terminaloptionsSameForEveryPoint']"),
+                "additionalequipmentSameForEveryPoint": jQuery("[id $= '.additionalequipmentSameForEveryPoint']")
+        }
 
-    for (var record in map){
-        setProperMapValue(map[record], record);
+        for (var record in map){
+            setProperMapAndCheckboxesProperties(map[record], record);
+        }
+        firedSetSameForEveryPropertyInSourceMaps = true;
+        console.log('posMap');
+        console.log(sameForEveryPointSourcePosId);
+        console.log('pointMap');
+        console.log(sameForEveryPointSourcePanelId);
     }
 }
 
-function setProperMapValue(elements, mapKey){
+function setProperMapAndCheckboxesProperties(elements, mapKey){
     var panel,
         $element,
         panelId,
-        sourceMap;
+        sourceMap,
+        checkedAndEnabledPosElement = false,
+        checkedAndEnabledPointElement = false;
 
     elements.each(function(index, element) {
         $element = jQuery(element);
         if(element.checked && !element.disabled){
             panel = $element.closest('.newPosPanel');
             if(panel.length){ //jesli to jest panel pos
+                checkedAndEnabledPosElement = $element;
                 panelId = panel.attr('data-js-id')
                 sourceMap = sameForEveryPointSourcePosId;
             } else { // jesli panel point
+                checkedAndEnabledPointElement = $element;
                 panelId = $element.closest('.newPointPanel').attr('data-js-id');
                 sourceMap = sameForEveryPointSourcePanelId;
             }
             sourceMap[mapKey] = panelId;
         }
     })
+
+    if(checkedAndEnabledPosElement){
+        elements.filter("[id ^= 'poses']").not(checkedAndEnabledPosElement).attr('disabled', 'disabled').attr('checked', 'checked');
+    }
+
+    if(checkedAndEnabledPointElement){
+        elements.filter("[id ^= 'points']").not(checkedAndEnabledPointElement).attr('disabled', 'disabled').attr('checked', 'checked');
+    }
 }
 
 function setupNewPointPanelHandlers(panelId, prefix) {
@@ -114,7 +134,7 @@ function setupNewPointPanelHandlers(panelId, prefix) {
 
     jQuery(prefixPanel + ".bankAccountNumber").on("keyup", {p: prefix, pid: panelId}, function(e) {
         var accountNr = jQuery(e.target).val();
-        if ( accountNr != undefined && accountNr != null){
+        if (accountNr != undefined && accountNr != null){
 
             var bankNameInput = jQuery(prefixPanel + ".bankName");
             var bankIdInput = jQuery(prefixPanel + ".bankId");
@@ -209,7 +229,6 @@ function setupNewPointPanelHandlers(panelId, prefix) {
         jQuery(prefixPanel + ".contactAddressAddressHomeNumber").val(jQuery("#akceptantNrDomu").val()).keyup();
         jQuery(prefixPanel + ".contactAddressAddressFlatNumber").val(jQuery("#akceptantNrMieszkania").val()).keyup();
 
-        //jQuery(prefixPanel + ".contactAddressAddressCity").val(jQuery("#akceptantMiasto").val()).keyup();
         var $contactAddressAddressCity =  jQuery(prefixPanel + ".contactAddressAddressCity")
         $contactAddressAddressCity.append('<option value="'+jQuery('#akceptantMiasto').val()+'">'+jQuery('#akceptantMiasto').val()+'</option>')
         $contactAddressAddressCity.val(jQuery('#akceptantMiasto').val()).keyup();
@@ -667,7 +686,7 @@ function clearNewPointData(prefix, ppid, pid) {
 	
 	if (panelId != prevPanelId) {
         if (panelIdsContainer['sameForEveryPoint'] == -1) {
-            jQuery("#"+panelId+"nip").val("");
+//            jQuery("#"+panelId+"nip").val("");
             jQuery("#"+panelId+"mccCode").val("");
             jQuery("#"+panelId+"bussinessTypeInPractice").val("");
             jQuery("#"+panelId+"bankAccountNumber").val("");
@@ -682,26 +701,40 @@ function clearNewPointData(prefix, ppid, pid) {
             jQuery("#"+panelId+"dialupPPCount").val("");
             jQuery("#"+panelId+"dialupPrice").val("");
             jQuery("#"+panelId+"dialupPPPrice").val("");
+            jQuery("#"+panelId+"dialupPricePreferencyjna").val("");
+            jQuery("#"+panelId+"dialupPPPricePreferencyjna").val("");
             jQuery("#"+panelId+"possetforselectedpointVpnType").val("");
             jQuery("#"+panelId+"vpnCount").val("");
             jQuery("#"+panelId+"vpnPPCount").val("");
             jQuery("#"+panelId+"vpnPrice").val("");
             jQuery("#"+panelId+"vpnPPPrice").val("");
+            jQuery("#"+panelId+"vpnPricePreferencyjna").val("");
+            jQuery("#"+panelId+"vpnPPPricePreferencyjna").val("");
             jQuery("#"+panelId+"possetforselectedpointSslType").val("");
             jQuery("#"+panelId+"sslCount").val("");
             jQuery("#"+panelId+"sslPPCount").val("");
             jQuery("#"+panelId+"sslPrice").val("");
-            jQuery("#"+panelId+"sslPPPrice").val("");
+            jQuery("#"+panelId+"sslPPCena").val("");
+            jQuery("#"+panelId+"sslPricePreferencyjna").val("");
+            jQuery("#"+panelId+"sslPPPricePreferencyjna").val("");
             jQuery("#"+panelId+"possetforselectedpointWifiType").val("");
             jQuery("#"+panelId+"wifiCount").val("");
             jQuery("#"+panelId+"wifiPPCount").val("");
             jQuery("#"+panelId+"wifiPrice").val("");
             jQuery("#"+panelId+"wifiPPPrice").val("");
+            jQuery("#"+panelId+"wifiPricePreferencyjna").val("");
+            jQuery("#"+panelId+"possetforselectedpointPinpadType").val("");
+            jQuery("#"+panelId+"pinpadCount").val("");
+            jQuery("#"+panelId+"pinpadPrice").val("");
+            jQuery("#"+panelId+"pinpadPricePreferencyjna").val("");
+            jQuery("#"+panelId+"pinpadPPPricePreferencyjna").val("");
             jQuery("#"+panelId+"possetforselectedpointGprsType").val("");
             jQuery("#"+panelId+"gprsCount").val("");
             jQuery("#"+panelId+"gprsPPCount").val("");
             jQuery("#"+panelId+"gprsPrice").val("");
             jQuery("#"+panelId+"gprsPPPrice").val("");
+            jQuery("#"+panelId+"gprsPricePreferencyjna").val("");
+            jQuery("#"+panelId+"gprsPPPricePreferencyjna").val("");
             jQuery("#"+panelId+"baseCount").val("");
             jQuery("#"+panelId+"possetforselectedpointSameForEveryPoint").prop("checked", false);
             jQuery("#"+panelId+"possetforselectedpointSameForEveryPoint").prop("disabled", false);
@@ -713,9 +746,13 @@ function clearNewPointData(prefix, ppid, pid) {
             
             jQuery("#"+panelId+"timeFromHours").val("");
 	        jQuery("#"+panelId+"timeFromMinutes").val("");
+
+	        jQuery("#"+panelId+"timeToHours").html(getOptions(0, 23));
+	        jQuery("#"+panelId+"timeToMinutes").val(getOptions(0, 59));
+
 	        jQuery("#"+panelId+"timeToHours").val("");
 	        jQuery("#"+panelId+"timeToMinutes").val("");
-            
+
             jQuery("#"+panelId+"plannedInstallationDate").val("");
             jQuery("#"+panelId+"additionalNotes").val("");
             jQuery("#"+panelId+"technicalinformationSameForEveryPoint").prop("checked", false);
