@@ -138,20 +138,212 @@
 	        }
 	    }
 	}
-	jQuery(document).ready(function(){
-	    var pdfDoc = null,
-        scale = 2.0,
-        canvas = document.getElementById('pdfPage'),
-        ctx = canvas.getContext('2d');
-	    
-	    var pageNum = 1;
-	    var documentPages = [];
-		subscriptionDialog = jQuery('#subscriptionDialog');
-		var documentData = [];
+	
+	
+	/* Documents Preview Functions */
+	
+	// PdfPage Object
+	function PPage(scale, num, data) {
+		this.num = num;
+		this.scale = scale;
+		this.page = data;
+		this.viewport = data.getViewport(this.scale);
+        this.buffer = this.renderToBuffer(this.viewport.width, this.viewport.height);
+        this.ctx = this.buffer.getContext('2d');
+        
+        this.isReady = false;
+        
+        this.render();
+	}
+	
+	// PdfPage Object Methods
+	PPage.prototype.renderToBuffer = function(width, height) {
+		var buffer = document.createElement('canvas');
+	    buffer.width = width;
+	    buffer.height = height;
+	    return buffer;
+	}
+	
+	PPage.prototype.render = function() {
+		console.log("Page " + this.num + " rendering...");
 		
-		<g:each in="${processInstance.documents.sort(false){a,b -> a.signature.signatureOrder.compareTo(b.signature.signatureOrder)} }" status="i" var="document">
-	        documentData[${i}] = base64DecToArr('${document?.content?.getPreviewContent().encodeBase64().toString()}').buffer;
+		var that = this;
+		var renderContext = {
+			canvasContext: that.ctx,
+        	viewport: that.viewport
+		};
+		this.page.render(renderContext).then(function() {
+			console.log("Page " + that.num + " rendering complete!");
+			that.isReady = true;
+		});
+	}
+	
+	PPage.prototype.getImage = function() {
+		return this.buffer;
+	}
+	
+	// PdfDocumentObject
+	function PDocument(num, name, scale, pdfData) {
+		this.num = num;
+		this.name = name;
+		this.pdfData = pdfData;
+		this.scale = scale;
+		this.pdf = null;
+		this.pages = [];
+		this.pagesCount = 0;
+		this.currentPage = 1;
+		
+		var that = this;
+		PDFJS.getDocument(this.pdfData).then(function(pdf) {
+			that.pdf = pdf;
+			that.currentPage = 1;
+			that.pagesCount = pdf.numPages;
+			
+			// Prerendering document
+			that.preRender();
+		});
+	}
+	
+	// PdfDocument Object Methods
+	PDocument.prototype.preRender = function() {
+		console.log("Prerendering document["+this.num+"]: " + this.name + " in progress...");
+		var that = this;
+		for (var i = 1; i <= this.pagesCount; i++) {
+			this.pdf.getPage(i).then(function(page) { 
+				var f = function(idx, p, t) {
+					return function() { t.pages.push(new PPage(t.scale, idx, p)); };
+				} (i, page, that);
+				f();
+			});
+		}
+	}
+	
+	PDocument.prototype.getCurrentPage = function() {
+		return this.pages[this.currentPage-1];
+	}
+	
+	// PdfPreviewManager Object
+	function PdfPreviewManager() {
+		this.scale = 2.0;
+		this.currentDocument = 0;
+		
+		this.$currentPageEl = jQuery("#page_num");
+		this.$totalPagesEl = jQuery("#page_count");
+		this.$prevButtonEl = jQuery("#prevPdfPage");
+		this.$nextButtonEl = jQuery("#nextPdfPage");
+		this.$loadingBoxEl = jQuery("#pdfBox-content-loading");
+		
+		this.$pdfBoxEl = jQuery("#pdfPage");
+		this.canvas = document.getElementById('pdfPage');
+		this.globalContext = this.canvas.getContext('2d');
+		
+		var that = this;
+		this.$prevButtonEl.on("click", function(e) {
+    		e.preventDefault();
+    		that.navigatePdfPageView("prev");
+	     	return false;
+    	});
+    	
+    	this.$nextButtonEl.on("click", function(e) {
+    		e.preventDefault();
+    		that.navigatePdfPageView("next");
+	     	return false;
+    	});
+	}
+	
+	PdfPreviewManager.prototype.navigatePdfPageView = function (direction) {
+        if (direction == "prev") {
+            if (this.documents[this.currentDocument].currentPage <= 1)
+                return;
+            
+            this.documents[this.currentDocument].currentPage--;
+            
+            if (this.documents[this.currentDocument].currentPage == 1) {
+            	this.$prevButtonEl.addClass("disabled");
+            }
+            else {
+            	this.$prevButtonEl.removeClass("disabled");
+            }
+        }
+        else if (direction == "next") {
+           	this.$prevButtonEl.removeClass("disabled");
+            
+            if (this.documents[this.currentDocument].currentPage >= this.documents[this.currentDocument].pagesCount) {
+            	this.$nextButtonEl.addClass("disabled");
+                return;
+            }
+            
+            this.documents[this.currentDocument].currentPage++;
+
+            if (this.documents[this.currentDocument].getCurrentPage().isReady == false) {
+            	this.$nextButtonEl.addClass("disabled");
+           	}
+           	
+           	if (this.documents[this.currentDocument].currentPage >= this.documents[this.currentDocument].pagesCount) {
+           		this.$nextButtonEl.addClass("disabled");
+           	}
+        }
+
+        this.$pdfBoxEl.css("display", "none");
+        this.$loadingBoxEl.show();
+
+        this.refreshPreview();
+     	this.$currentPageEl.html(this.documents[this.currentDocument].currentPage);
+	}
+	
+	PdfPreviewManager.prototype.drawPage = function() {
+		//this.$pdfBoxEl.attr('style', '');
+		this.canvas.width = this.documents[this.currentDocument].getCurrentPage().viewport.width;
+	    this.canvas.height = this.documents[this.currentDocument].getCurrentPage().viewport.height;
+		this.globalContext.drawImage(this.documents[this.currentDocument].getCurrentPage().getImage(), 0, 0);
+	}
+	
+	PdfPreviewManager.prototype.refreshPreview = function() {
+		if (this.documents[this.currentDocument].getCurrentPage().isReady == true) {
+			this.$currentPageEl.html(this.documents[this.currentDocument].currentPage);
+			this.$totalPagesEl.html(this.documents[this.currentDocument].pagesCount);
+			this.$loadingBoxEl.hide();
+			this.$pdfBoxEl.css("display", "block");
+			if (this.documents[this.currentDocument].currentPage < this.documents[this.currentDocument].pagesCount) {
+				this.$nextButtonEl.removeClass("disabled");
+			}
+			else {
+				this.$nextButtonEl.addClass("disabled");
+			}
+			this.drawPage();
+			return true;
+		}
+		return false;
+	}
+	
+	PdfPreviewManager.prototype.setDocuments = function(documents) {
+		this.documents = documents;
+	}
+	
+	PdfPreviewManager.prototype.showDocument = function(id) {
+		console.log("Showing document["+id+"]: " + this.documents[id].name);
+		this.currentDocument = id;
+		this.documents[this.currentDocument].currentPage = 1;
+		var that = this;
+		this.$prevButtonEl.addClass("disabled");
+		var intervalId = setInterval(function() {
+			var result = that.refreshPreview();
+			if (result == true) {
+				clearInterval(intervalId);
+			}
+		}, 1000);
+	}
+	
+	jQuery(document).ready(function(){
+	    var previewManager = new PdfPreviewManager(),
+    		documents = [],
+			subscriptionDialog = jQuery('#subscriptionDialog');
+		
+		<g:each in="${processInstance.documents.sort(false){a,b -> a.signature.signatureOrder.compareTo(b.signature.signatureOrder)}?.findAll {it.signature?.showOnPreview} }" status="i" var="document">
+	        documents.push(new PDocument(${i} ,'${document?.clientName}', previewManager.scale, base64DecToArr('${document?.content?.getPreviewContent().encodeBase64().toString()}').buffer));
 	    </g:each>
+	    
+	    previewManager.setDocuments(documents);
 	
 		setUpSignaturePad();
 	    checkEmailKontakt();
@@ -159,157 +351,18 @@
 		jQuery('a#previewPdfButton').on('click', function(e) {
 			e.preventDefault();
 			var i = parseInt(jQuery(e.target).attr('data-document-index'));
-			console.log("Showing document: " + i);
-			PDFJS.getDocument(documentData[i]).then(function (_pdfDoc) {
-		      pageNum = 1;
-		      jQuery("#page_num").html(pageNum);
-		      jQuery('#page_count').html(_pdfDoc.numPages);
-		      pdfDoc = _pdfDoc;
-		      refreshPdfPageView(pageNum);
-		    });
+			previewManager.showDocument(i);
 		    return false;
 		});
 	
-		jQuery("img#pdfPage").load(function() {
-			if (documentPages[pageNum].loaded == true) {
-				this.src = documentPages[pageNum].data;
-				jQuery("#nextPdfPage").removeClass("disabled");
-			}
-		});
-	
-		function initDocumentPages() {
-			for(var i = 0; i <= ${totalPagesCount}; i++) {
-				documentPages[i] = {};
-				documentPages[i].data = null;
-				documentPages[i].loaded = false;
-				documentPages[i].isLoading = false;
-			}
-		}
-	
-		function prefetchDocumentPages(index, pid) {
-			var getPage = function(pageNum, pid) {
-				if (documentPages[pageNum].loaded == false && documentPages[pageNum].isLoading == false) {
-					console.log("--> Pobieram strone: " + index + " PID: " + pid);
-					documentPages[pageNum].loaded = false;
-					documentPages[pageNum].isLoading == true;
-		             jQuery.get("/eumowy/activity/getDocumentPage", {processId: pid, pageNumber: pageNum}, function(data) {
-		                 documentPages[pageNum].data = data;
-		                 documentPages[pageNum].isLoading = false;
-		                 documentPages[pageNum].loaded = true;
-		                 console.log("--> Pobralem strone: " + pageNum + " PID: " + pid);
-		                 prefetchDocumentPages(pageNum+1, pid);
-		             });
-				}
-				else {
-					getPage(pageNum+1, pid);
-				}
-			};
-			
-			if (index <= ${totalPagesCount}) {
-				getPage(index, pid);
-			}
-			
-		}
-	
-		function renderPage(num) {
-	      // Using promise to fetch the page
-	      pdfDoc.getPage(num).then(function(page) {
-	        var viewport = page.getViewport(scale);
-	        canvas.height = viewport.height;
-	        canvas.width = viewport.width;
-	
-	        // Render PDF page into canvas context
-	        var renderContext = {
-	          canvasContext: ctx,
-	          viewport: viewport
-	        };
-	        page.render(renderContext);
-	      });
-	
-	      // Update page counters
-	      //document.getElementById('page_num').textContent = pageNum;
-	      //document.getElementById('page_count').textContent = pdfDoc.numPages;
-	    }
-	
-	    function refreshPdfPageView(pageNum) {
-	        /*if (documentPages[pageNum].loaded == true) {
-                 jQuery("#pdfBox-content-loading").hide();
-                 jQuery("img#pdfPage").attr("src", documentPages[pageNum].data).css("display", "block");
-                 jQuery("#nextPdfPage").removeClass("disabled");
-	         }
-	         else {
-          	 	setTimeout(function() {
-          	 		refreshPdfPageView(pageNum);
-          	 	}, 1000);
-	         }*/
-	         jQuery("#pdfPage").css("display", "block");
-	         jQuery("#pdfBox-content-loading").hide();
-	         jQuery("#nextPdfPage").removeClass("disabled");
-	         renderPage(pageNum);
-	    }
-	
-	    function navigatePdfPageView(direction, totalPagesCount) {
-	        if (direction == "prev") {
-	            if (pageNum <= 1)
-	                return;
-	            pageNum--;
-	            
-	            if (pageNum == 1) {
-	            	jQuery("#prevPdfPage").addClass("disabled");
-	            }
-	            else {
-	            	jQuery("#prevPdfPage").removeClass("disabled");
-	            }
-	        }
-	        else if (direction == "next") {
-            	jQuery("#prevPdfPage").removeClass("disabled");
-	            
-	            if (pageNum >= totalPagesCount)
-	                return;
-	            pageNum++;
-
-	            if (documentPages[pageNum].loaded == false) {
-	            	jQuery("#nextPdfPage").addClass("disabled");
-            	}
-	        }
-	
-	        jQuery("img#pdfPage").css("display", "none");
-	        jQuery("#pdfBox-content-loading").show();
-	
-	        refreshPdfPageView(pageNum);
-			     	
-	     	jQuery("#page_num").html(pageNum);
-		}
-				
-		jQuery("#page_num").html(pageNum);
-		
 		jQuery("#pdfPage").panzoom({
 			$zoomIn: jQuery("#zoomInPdfPage"),
 			$zoomOut: jQuery("#zoomOutPdfPage"),
 			contain: 'invert'
 		});
 		
-		initDocumentPages();		
-		prefetchDocumentPages(pageNum, "${processInstance.id}");
-		PDFJS.getDocument(documentData[0]).then(function getPdfHelloWorld(_pdfDoc) {
-	      pageNum = 1;
-	      jQuery("#page_num").html(pageNum);
-	      jQuery('#page_count').html(_pdfDoc.numPages);
-	      pdfDoc = _pdfDoc;
-	      refreshPdfPageView(pageNum);
-	    });
+		previewManager.showDocument(0);
     	
-    	jQuery("#prevPdfPage").on("click", function(e) {
-    		e.preventDefault();
-    		navigatePdfPageView("prev", pdfDoc.numPages);
-	     	return false;
-    	});
-    	
-    	jQuery("#nextPdfPage").on("click", function(e) {
-    		e.preventDefault();
-    		navigatePdfPageView("next", pdfDoc.numPages);
-	     	return false;
-    	});
 		    	
 				jQuery("#noaccept").on("click", function(e) {
 					e.preventDefault();
@@ -467,22 +520,22 @@
 				});
 	
 				function checkEmailKontakt(){
-	                var kontaktEmail = "${processInstance.processData.find { it.name == 'kontaktEmail'}?.value}"
-	                var emailDoWysylkiDokumentu = "${processInstance.processData.find { it.name == 'emailDoWysylkiDokumentu'}?.value}"
+	                var kontaktEmail = "${processInstance.processData.find { it.name == 'kontaktEmail'}?.value}";
+	                var emailDoWysylkiDokumentu = "${processInstance.processData.find { it.name == 'emailDoWysylkiDokumentu'}?.value}";
 	
 	               // console.info("checkEmailKontakt - kontaktEmail:"+kontaktEmail+" emailDoWysylkiDokumentu:"+emailDoWysylkiDokumentu)
 	
-	               if(!kontaktEmail && !emailDoWysylkiDokumentu){
-	                      jQuery("#requestVersionElectronical").attr("disabled","disabled").removeAttr("checked")
-	                      jQuery("#requestVersionPaper").attr("checked","checked")
-	                      jQuery("#requestVersionTemplates").attr("disabled","disabled").removeAttr("checked")
+	               if(!kontaktEmail && !emailDoWysylkiDokumentu ){
+	                      jQuery("#requestVersionElectronical").attr("disabled","disabled").removeAttr("checked");
+	                      jQuery("#requestVersionPaper").attr("checked","checked");
+	                      jQuery("#requestVersionTemplates").attr("disabled","disabled").removeAttr("checked");
 
 	                      jQuery("#noaccept").prop("disabled", true);
 	                      jQuery("#subscribe-REPRESENTATIVE1").parent().addClass("disabled");
 	                      jQuery("#subscribe-REPRESENTATIVE2").parent().addClass("disabled");
 	                      jQuery("#subscribe-PH").parent().addClass("disabled");
 	               }else{
-	                   jQuery("#requestVersionElectronical").attr("checked","checked")
+	                   jQuery("#requestVersionElectronical").attr("checked","checked");
 	               }
 	          }
 	});
@@ -503,30 +556,6 @@
 <section id="create_clientSignature" >
 
     <h1 class="ng linia-bottom"><g:message code="clientSignature.header.title" default="Podpis Klienta"/></h1>
-
-    <!-- <div id="pdfBox" style="background-color: #F2F2F2; height: 680px; overflow: auto;border: solid 1px; border-radius: 5px;  margin: 20px 15px 0">
-        <div id="pdfBox-nav" style="padding: 1em; border-bottom: solid 1px;">
-            <div style="display: inline-block; float: left">
-                <a id="zoomOutPdfPage" class="button submit">-</a>
-                <a id="zoomInPdfPage" class="button submit">+</a>
-            </div>
-            <div style="display: inline-block; float: right">
-                <a id="nextPdfPage" class="button submit disabled" style="float: right"><g:message code="process.subscriptions.nextPage" /></a>
-                <a id="prevPdfPage" class="button submit disabled"><g:message code="process.subscriptions.previousPage" /></a>
-            </div>
-            <div style="text-align: center; padding-left: 165px; padding-top: 5px">
-                <span style="font-weight: bold"><g:message code="process.subscriptions.page" />: <span id="page_num"></span> / <span id="page_count">${totalPagesCount}</span></span>
-            </div>
-            <div style="clear: both"></div>
-        </div>
-        <div id="pdfBox-content" style="margin: 1em;">
-            <div id="pdfBox-content-loading" style="text-align: center; width: 200px; display: block; margin: 0 auto;">
-                <h2 style="padding-top: 100px;"><g:message code="process.subscriptions.loadingPage" /></h2>
-                <img style="width: 40px;" src="/eumowy/images/document-loading.gif" />
-            </div>
-            <img id="pdfPage" style="border:1px solid gray; display: none; width: 440px; height: 570px; display: none; margin-left: auto; margin-right: auto; vertical-align: middle; text-align: center;"/>
-        </div>
-    </div> -->
     <table border="0" align="center" cellpadding="3" cellspacing="1" class="table"
        style="margin: 20px 15px 15px 15px; width: 950px;">
 	    <thead>
@@ -537,14 +566,12 @@
 	    </tr>
 	    </thead>
 	    <tbody>
-	    <g:each in="${processInstance.documents.sort(false){a,b -> a.signature.signatureOrder.compareTo(b.signature.signatureOrder)} }" status="i" var="document">
+	    <g:each in="${processInstance.documents.sort(false){a,b -> a.signature.signatureOrder.compareTo(b.signature.signatureOrder)}?.findAll {it.signature?.showOnPreview} }" status="i" var="document">
 	        <tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
 	            <td class="tableCellLeft" style="vertical-align: middle"><a id="previewPdfButton" data-document-index="${i}" href="#">${document.name}</a></td>
 	            <td class="tableCell" style="vertical-align: middle"><g:formatDate date="${document.lastUpdated}" format="yyyy-MM-dd HH:mm"/></td>
 	            <td class="tableCell" style="vertical-align: middle">
-	                <g:link class="button action" style="margin: 0 auto"
-	                        action="downloadDoc"
-	                        params="[id: document.id]">Podgląd</g:link>
+	                <g:link class="button action" style="margin: 0 auto" action="downloadDoc" params="[id: document.id]">Pobierz</g:link>
 	            </td>
 	        </tr>
 	    </g:each>
@@ -561,7 +588,7 @@
                 <a id="prevPdfPage" class="button submit disabled"><g:message code="process.subscriptions.previousPage" /></a>
             </div>
             <div style="text-align: center; padding-left: 165px; padding-top: 5px">
-                <span style="font-weight: bold"><g:message code="process.subscriptions.page" />: <span id="page_num"></span> / <span id="page_count">${totalPagesCount}</span></span>
+                <span style="font-weight: bold"><g:message code="process.subscriptions.page" />: <span id="page_num">-</span> / <span id="page_count">-</span></span>
             </div>
             <div style="clear: both"></div>
         </div>

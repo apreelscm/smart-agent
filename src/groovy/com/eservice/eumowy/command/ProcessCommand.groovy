@@ -128,11 +128,11 @@ class ProcessCommand implements Serializable {
             counter += point?.wifiIlosc != null ? point?.wifiIlosc : 0
         }
 
-        if (counter == 0 ){
+        /*if (counter == 0 ){
             // warunek o tyle poprawny ze z poziomu klienta uniemozliwamy przejsie dalej bez dodania jakiegokolwiek punktu lub pos
             log.debug "no points/pos were added"
             return true
-        }
+        }*/
 
 
         log.info "liczba dodanych terminali w eUmowy [${counter}], dozwolona [${max}]"
