@@ -159,7 +159,7 @@
                     <tr>
                         <td class="cardPaymentPanel-padding">6.3 <g:message code="panel.commercial.buisness"/></td>
                         <td><eumowy:percentageField class="percent-number" validatable="${data}"  name="mastercardPolskaKBPr" value="${data.mastercardPolskaKBPr}"/> </td>
-                        <td><eumowy:flatPriceField class="flat-price" validatable="${data}"  name="mastercardPolskaKBSt" readonly="true" value="${data.mastercardPolskaKBSt}"/> </td>
+                        <td><eumowy:flatPriceField class="flat-price" validatable="${data}"  name="mastercardPolskaKBSt" readonly="false" value="${data.mastercardPolskaKBSt}"/> </td>
                     </tr>
                     <tr>
                         <td class="cardPaymentPanel-padding">6.4.1 <g:message code="panel.maestro.to" args="['20,00']"/></td>
@@ -203,7 +203,7 @@
                     <tr>
                         <td class="cardPaymentPanel-padding">7.3 <g:message code="panel.commercial.buisness"/></td>
                         <td><eumowy:percentageField class="percent-number" validatable="${data}"  name="visaPKOBPKB3Pr" value="${data.visaPKOBPKB3Pr}"/> </td>
-                        <td><eumowy:flatPriceField class="flat-price" validatable="${data}"  name="visaPKOBPKB3St" readonly="true" value="${data.visaPKOBPKB3St}"/> </td>
+                        <td><eumowy:flatPriceField class="flat-price" validatable="${data}"  name="visaPKOBPKB3St" readonly="false" value="${data.visaPKOBPKB3St}"/> </td>
                     </tr>
                     <tr>
                         <td class="bold">8. <g:message code="panel.mastercard.pkobp"/></td>
@@ -242,7 +242,7 @@
                     <tr>
                         <td class="cardPaymentPanel-padding">8.3 <g:message code="panel.commercial.buisness"/></td>
                         <td><eumowy:percentageField class="percent-number" validatable="${data}"  name="mastercardPKOBPKBPr" value="${data.mastercardPKOBPKBPr}"/> </td>
-                        <td><eumowy:flatPriceField class="flat-price" validatable="${data}"  name="mastercardPKOBPKBSt" readonly="true" value="${data.mastercardPKOBPKBSt}"/> </td>
+                        <td><eumowy:flatPriceField class="flat-price" validatable="${data}"  name="mastercardPKOBPKBSt" readonly="false" value="${data.mastercardPKOBPKBSt}"/> </td>
                     </tr>
                     <tr>
                         <td class="cardPaymentPanel-padding">8.4.1 <g:message code="panel.maestro.to" args="['20,00']"/></td>
