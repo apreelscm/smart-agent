@@ -988,8 +988,10 @@ class ActivityController {
 				subscriptions?.each { Subscription s ->
 					subscriptionIds.add(s.id)
 				}
-				Subscription.executeUpdate("delete Subscription where id in (:list)",[list: subscriptionIds])
-                
+				
+				if (subscriptionIds.size() > 0) {
+					Subscription.executeUpdate("delete Subscription where id in (:list)",[list: subscriptionIds])
+				}
 				processInstance.subscriptions?.clear()
                 flow.processInstance = processInstance
             }.to "clientSignature"
