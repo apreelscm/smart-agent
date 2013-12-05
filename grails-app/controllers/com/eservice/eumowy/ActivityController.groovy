@@ -219,7 +219,7 @@ class ActivityController {
                     flow.requiredNumberOfSubscriptions++
                 }
 
-                if (!flow.skipDocumentGeneration) {
+                if (!flow.skipDocumentGeneration && !flow.isUzupelnijPodpisy) {
                     def processWithPages = pdfService.workWithDocuments(processInstance, conversation.calc)
                     flow.totalPagesCount = processWithPages.totalPagesCount
 					//pdfService.generateAllPreviews(processInstance.documents, processInstance.id, flow.totalPagesCount)
@@ -981,7 +981,16 @@ class ActivityController {
                 }
 
                 /* Delete subscriptions */
-                processInstance.subscriptions?.clear()
+				def subscriptionIds = []
+				def subscriptions = Subscription.findAll {
+					process == processInstance || uniqueKey =~ processInstance.id.toString()+"%"
+				}
+				subscriptions?.each { Subscription s ->
+					subscriptionIds.add(s.id)
+				}
+				Subscription.executeUpdate("delete Subscription where id in (:list)",[list: subscriptionIds])
+                
+				processInstance.subscriptions?.clear()
                 flow.processInstance = processInstance
             }.to "clientSignature"
             on("reject"){
