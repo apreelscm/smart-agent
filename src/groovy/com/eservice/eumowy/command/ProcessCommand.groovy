@@ -677,40 +677,40 @@ class ProcessCommand implements Serializable {
 
     @Omit
     static constraints = {
-        oplataZaDzienneZestawienieTransakcji(nullable: false, blank: false,  validator: { value, cmd, errors -> cmd.numberValidationClosure(value, cmd, errors, "oplataZaDzienneZestawienieTransakcji")})
-        oplataZaMiesieczneZestawienieTransakcji(nullable: false, blank: false,  validator: { value, cmd, errors -> cmd.numberValidationClosure(value, cmd, errors, "oplataZaMiesieczneZestawienieTransakcji")})
-        oplataZaPotwierdzenieWykonaniaPrzelewu(nullable: false, blank: false,  validator: { value, cmd, errors -> cmd.numberValidationClosure(value, cmd, errors, "oplataZaPotwierdzenieWykonaniaPrzelewu")})
-        oplataZaDostarczeniePapieru(nullable: false, blank: false,  validator: { value, cmd, errors -> cmd.numberValidationClosure(value, cmd, errors, "oplataZaDostarczeniePapieru")})
-        oplataZaZmianeGrafiki(nullable: false, blank: false,  validator: { value, cmd, errors -> cmd.numberValidationClosure(value, cmd, errors, "oplataZaZmianeGrafiki")})
-        oplataZaInstalacjePOS(nullable: false, blank: false,  validator: { value, cmd, errors -> cmd.numberValidationClosure(value, cmd, errors, "oplataZaInstalacjePOS")})
-        oplataZaInstalacjeGPRS(nullable: false, blank: false,  validator: { value, cmd, errors -> cmd.numberValidationClosure(value, cmd, errors, "oplataZaInstalacjeGPRS")})
-        oplataZaUruchomienieWalutyObcej(nullable: false, blank: false,  validator: { value, cmd, errors -> cmd.numberValidationClosure(value, cmd, errors, "oplataZaUruchomienieWalutyObcej")})
+        oplataZaDzienneZestawienieTransakcji(nullable: false, blank: false,  validator: { value, cmd, errors -> cmd.numberValidationClosure(value, cmd, errors, propertyName)})
+        oplataZaMiesieczneZestawienieTransakcji(nullable: false, blank: false,  validator: { value, cmd, errors -> cmd.numberValidationClosure(value, cmd, errors, propertyName)})
+        oplataZaPotwierdzenieWykonaniaPrzelewu(nullable: false, blank: false,  validator: { value, cmd, errors -> cmd.numberValidationClosure(value, cmd, errors, propertyName)})
+        oplataZaDostarczeniePapieru(nullable: false, blank: false,  validator: { value, cmd, errors -> cmd.numberValidationClosure(value, cmd, errors, propertyName)})
+        oplataZaZmianeGrafiki(nullable: false, blank: false,  validator: { value, cmd, errors -> cmd.numberValidationClosure(value, cmd, errors, propertyName)})
+        oplataZaInstalacjePOS(nullable: false, blank: false,  validator: { value, cmd, errors -> cmd.numberValidationClosure(value, cmd, errors, propertyName)})
+        oplataZaInstalacjeGPRS(nullable: false, blank: false,  validator: { value, cmd, errors -> cmd.numberValidationClosure(value, cmd, errors, propertyName)})
+        oplataZaUruchomienieWalutyObcej(nullable: false, blank: false,  validator: { value, cmd, errors -> cmd.numberValidationClosure(value, cmd, errors, propertyName)})
 
         // FIXME pola prezentowane warunkowo na panelu z Kalkulatora do odczytu, ponizsza walidacja nie dziala
-        wydrukGrafikiCena(nullable:true, blank:false,  validator: { value, cmd, errors -> cmd.numberValidationClosure(value, cmd, errors, "wydrukGrafikiCena")})
-        dzialaniaMatematyczneCena(nullable:true, blank:false,  validator: { value, cmd, errors -> cmd.numberValidationClosure(value, cmd, errors, "dzialaniaMatematyczneCena")})
+        wydrukGrafikiCena(nullable:true, blank:false,  validator: { value, cmd, errors -> cmd.numberValidationClosure(value, cmd, errors, propertyName)})
+        dzialaniaMatematyczneCena(nullable:true, blank:false,  validator: { value, cmd, errors -> cmd.numberValidationClosure(value, cmd, errors, propertyName)})
 
-        pierwszaSesjaCena(nullable: false, blank: true,  validator: { value, cmd, errors -> cmd.numberValidationClosure(value, cmd, errors, "pierwszaSesjaCena")})
+        pierwszaSesjaCena(nullable: false, blank: true,  validator: { value, cmd, errors -> cmd.numberValidationClosure(value, cmd, errors, propertyName)})
 
         akceptantKontaktUlicaTytul(nullable: true, blank: true)
         akceptantKontaktUlica(nullable: false, blank: false, shared: "alphanumeric", validator: { value, cmd, errors ->
-            maxLengthClosure.call(value, cmd, errors, 40, "akceptantKontaktUlica")
+            maxLengthClosure.call(value, cmd, errors, 40, propertyName)
         })
         akceptantKontaktNrDomu(nullable: false, blank: false, shared: "alphanumeric")
         akceptantKontaktNrMieszkania(nullable: true, blank: false, shared: "alphanumeric")
         akceptantKontaktMiasto(nullable: false, blank: false, shared: "alphanumeric", validator: { value, cmd, errors ->
-            maxLengthClosure.call(value, cmd, errors, 33, "akceptantKontaktMiasto")
+            maxLengthClosure.call(value, cmd, errors, 33, propertyName)
         })
         akceptantKontaktKodPocztowy(nullable: false, blank: false, shared: "postalCodeValidator")
         akceptantKontaktPoczta(nullable: true, blank: true, shared: "alphanumeric", validator: { value, cmd, errors ->
-            maxLengthClosure.call(value, cmd, errors, 33, "akceptantKontaktPoczta")
+            maxLengthClosure.call(value, cmd, errors, 33, propertyName)
         })
         dataAneksowanejUmowyPos(nullable: false, blank: false, shared: "date")
         dataAneksowanejUmowyPrepaid(nullable: false, blank: false, shared: "date")
 
         hasUmowaCzas(nullable: true, validator: { value, cmd, errors ->
             if (value && cmd.umowaCzas == DEFAULT_VALUE) {
-                errors.rejectValue("hasUmowaCzas", "default.atLeastOne.czasUmowy")
+                errors.rejectValue(propertyName, "default.atLeastOne.czasUmowy")
                 return false
             }
             return true
@@ -718,63 +718,63 @@ class ProcessCommand implements Serializable {
 
         //TODO REFACTORING - wrzucic to do jednego 'hasScoring' i walidowac wszystkie pola scoringowe od razu
         hasScoringDzialalnosc(nullable: true, validator: { value, cmd, errors ->
-            checkScoringField.call(value, cmd, errors, "hasScoringDzialalnosc", "scoringDzialalnosc", cmd.scoringDzialalnosc)
+            checkScoringField.call(value, cmd, errors, propertyName, "scoringDzialalnosc", cmd.scoringDzialalnosc)
         })
 
         hasScoringWlasnosc(nullable: true, validator: { value, cmd, errors ->
-            checkScoringField.call(value, cmd, errors, "hasScoringWlasnosc", "scoringWlasnosc", cmd.scoringWlasnosc)
+            checkScoringField.call(value, cmd, errors, propertyName, "scoringWlasnosc", cmd.scoringWlasnosc)
         })
 
         hasScoringDzialalnoscCzas(nullable: true, validator: { value, cmd, errors ->
-            checkScoringField.call(value, cmd, errors, "hasScoringDzialalnoscCzas", "scoringDzialalnoscCzas", cmd.scoringDzialalnoscCzas)
+            checkScoringField.call(value, cmd, errors, propertyName, "scoringDzialalnoscCzas", cmd.scoringDzialalnoscCzas)
         })
 
         hasScoringKoncesja(nullable: true, validator: { value, cmd, errors ->
-            checkScoringField.call(value, cmd, errors, "hasScoringKoncesja", "scoringKoncesja", cmd.scoringKoncesja)
+            checkScoringField.call(value, cmd, errors, propertyName, "scoringKoncesja", cmd.scoringKoncesja)
         })
 
         hasScoringCharakterystyka(nullable: true, validator: { value, cmd, errors ->
-            checkScoringField.call(value, cmd, errors, "hasScoringCharakterystyka", "scoringCharakterystyka", cmd.scoringCharakterystyka)
+            checkScoringField.call(value, cmd, errors, propertyName, "scoringCharakterystyka", cmd.scoringCharakterystyka)
         })
 
         hasScoringWielkoscPunktu(nullable: true, validator: { value, cmd, errors ->
-            checkScoringField.call(value, cmd, errors, "hasScoringWielkoscPunktu", "scoringWielkoscPunktu", cmd.scoringWielkoscPunktu)
+            checkScoringField.call(value, cmd, errors, propertyName, "scoringWielkoscPunktu", cmd.scoringWielkoscPunktu)
         })
 
         hasScoringAkceptacja(nullable: true, validator: { value, cmd, errors ->
-            checkScoringField.call(value, cmd, errors, "hasScoringAkceptacja", "scoringAkceptacja", cmd.scoringAkceptacja)
+            checkScoringField.call(value, cmd, errors, propertyName, "scoringAkceptacja", cmd.scoringAkceptacja)
         })
 
         hasScoringMonitoring(nullable: true, validator: { value, cmd, errors ->
-            checkScoringField.call(value, cmd, errors, "hasScoringMonitoring", "scoringMonitoring", cmd.scoringMonitoring)
+            checkScoringField.call(value, cmd, errors, propertyName, "scoringMonitoring", cmd.scoringMonitoring)
         })
 
         hasScoringLokalizacjaPunktu(nullable: true, validator: { value, cmd, errors ->
-            checkScoringField.call(value, cmd, errors, "hasScoringLokalizacjaPunktu", "scoringLokalizacjaPunktu", cmd.scoringLokalizacjaPunktu)
+            checkScoringField.call(value, cmd, errors, propertyName, "scoringLokalizacjaPunktu", cmd.scoringLokalizacjaPunktu)
         })
 
         hasScoringTypPunktu(nullable: true, validator: { value, cmd, errors ->
-            checkScoringField.call(value, cmd, errors, "hasScoringTypPunktu", "scoringTypPunktu", cmd.scoringTypPunktu)
+            checkScoringField.call(value, cmd, errors, propertyName, "scoringTypPunktu", cmd.scoringTypPunktu)
         })
 
         hasScoringWielkoscMiejscowosci(nullable: true, validator: { value, cmd, errors ->
-            checkScoringField.call(value, cmd, errors, "hasScoringWielkoscMiejscowosci", "scoringWielkoscMiejscowosci", cmd.scoringWielkoscMiejscowosci)
+            checkScoringField.call(value, cmd, errors, propertyName, "scoringWielkoscMiejscowosci", cmd.scoringWielkoscMiejscowosci)
         })
 
         hasScoringOtwartyZamkniety(nullable: true, validator: { value, cmd, errors ->
-            checkScoringField.call(value, cmd, errors, "hasScoringOtwartyZamkniety", "scoringOtwartyZamkniety", cmd.scoringOtwartyZamkniety)
+            checkScoringField.call(value, cmd, errors, propertyName, "scoringOtwartyZamkniety", cmd.scoringOtwartyZamkniety)
         })
 
         hasScoringCzestoscTransakcji(nullable: true, validator: { value, cmd, errors ->
-            checkScoringField.call(value, cmd, errors, "hasScoringCzestoscTransakcji", "scoringCzestoscTransakcji", cmd.scoringCzestoscTransakcji)
+            checkScoringField.call(value, cmd, errors, propertyName, "scoringCzestoscTransakcji", cmd.scoringCzestoscTransakcji)
         })
 
         hasScoringIloscTransakcji(nullable: true, validator: { value, cmd, errors ->
-            checkScoringField.call(value, cmd, errors, "hasScoringIloscTransakcji", "scoringIloscTransakcji", cmd.scoringIloscTransakcji)
+            checkScoringField.call(value, cmd, errors, propertyName, "scoringIloscTransakcji", cmd.scoringIloscTransakcji)
         })
 
         hasScoringDeklaracjaFinansowa(nullable: true, validator: { value, cmd, errors ->
-            checkScoringField.call(value, cmd, errors, "hasScoringDeklaracjaFinansowa", "scoringDeklaracjaFinansowa", cmd.scoringDeklaracjaFinansowa)
+            checkScoringField.call(value, cmd, errors, propertyName, "scoringDeklaracjaFinansowa", cmd.scoringDeklaracjaFinansowa)
         })
 
 //END REFACTORING
@@ -783,7 +783,7 @@ class ProcessCommand implements Serializable {
 
         umowaOznOd(nullable: true, blank: true, shared: "date", validator: { value, cmd, errors ->
             if (value == null && cmd.umowaCzas == "oznaczony") {
-                errors.rejectValue("umowaOznOd", "default.validation.required.error", "Pole wymagane")
+                errors.rejectValue(propertyName, "default.validation.required.error", "Pole wymagane")
                 return false
             }
             return true
@@ -791,7 +791,7 @@ class ProcessCommand implements Serializable {
 
         umowaOznDo(nullable: true, blank: true, shared: "date", validator: { value, cmd, errors ->
             if (value == null && cmd.umowaCzas == "oznaczony") {
-                errors.rejectValue("umowaOznDo", "default.validation.required.error", "Pole wymagane")
+                errors.rejectValue(propertyName, "default.validation.required.error", "Pole wymagane")
                 return false
             }
             return true
@@ -807,25 +807,25 @@ class ProcessCommand implements Serializable {
         wydrukNazwaDoWyszukwarki(nullable: true)
         wydrukUlicaTytul(nullable: true, blank: true)
         wydrukUlica(nullable: false, blank: false, shared: "alphanumeric", validator: { value, cmd, errors ->
-            maxLengthClosure.call(value, cmd, errors, 40, "wyrdukUlica")
+            maxLengthClosure.call(value, cmd, errors, 40, propertyName)
         })
         wydrukNrDomu(nullable: false, blank: false, shared: "alphanumeric")
         wydrukNrMieszkania(nullable: true, blank: false, shared: "alphanumeric")
         wydrukMiasto(nullable: false, blank: false, shared: "alphanumeric", validator: { value, cmd, errors ->
-            maxLengthClosure.call(value, cmd, errors, 33, "wydrukMiasto")
+            maxLengthClosure.call(value, cmd, errors, 33, propertyName)
         })
         wydrukKodPocztowy(nullable: false, blank: false, shared: "postalCodeValidator")
         wydrukPoczta(nullable: true, blank: true, shared: "alphanumeric", validator: { value, cmd, errors ->
-            maxLengthClosure.call(value, cmd, errors, 33, "wydrukPoczta")
+            maxLengthClosure.call(value, cmd, errors, 33, propertyName)
         })
         wydrukLinia1(nullable: true, blank: true)
         wydrukLinia2(nullable: true, blank: true)
-        oplataVISA(nullable: false, blank: false,  validator: { value, cmd, errors -> cmd.numberValidationClosure(value, cmd, errors, "oplataVISA")})
-        oplataVISAPr(nullable: false, blank: false,  validator: { value, cmd, errors -> cmd.numberValidationClosure(value, cmd, errors, "oplataVISAPr")})
-        oplataMasterCard(nullable: false, blank: false,  validator: { value, cmd, errors -> cmd.numberValidationClosure(value, cmd, errors, "oplataMasterCard")})
-        oplataMasterCardPr(nullable: false, blank: false,  validator: { value, cmd, errors -> cmd.numberValidationClosure(value, cmd, errors, "oplataMasterCardPr")})
-        oplataMaestro(nullable: false, blank: false,  validator: { value, cmd, errors -> cmd.numberValidationClosure(value, cmd, errors, "oplataMaestro")})
-        oplataMaestroPr(nullable: false, blank: false,  validator: { value, cmd, errors -> cmd.numberValidationClosure(value, cmd, errors, "oplataMaestroPr")})
+        oplataVISA(nullable: false, blank: false,  validator: { value, cmd, errors -> cmd.numberValidationClosure(value, cmd, errors, propertyName)})
+        oplataVISAPr(nullable: false, blank: false,  validator: { value, cmd, errors -> cmd.numberValidationClosure(value, cmd, errors, propertyName)})
+        oplataMasterCard(nullable: false, blank: false,  validator: { value, cmd, errors -> cmd.numberValidationClosure(value, cmd, errors, propertyName)})
+        oplataMasterCardPr(nullable: false, blank: false,  validator: { value, cmd, errors -> cmd.numberValidationClosure(value, cmd, errors, propertyName)})
+        oplataMaestro(nullable: false, blank: false,  validator: { value, cmd, errors -> cmd.numberValidationClosure(value, cmd, errors, propertyName)})
+        oplataMaestroPr(nullable: false, blank: false,  validator: { value, cmd, errors -> cmd.numberValidationClosure(value, cmd, errors, propertyName)})
 
         dccZakresUruchomienia(nullable: false, blank: false)
         hasDccZakresUruchomienia(nullable: true, validator: { value, cmd, errors ->
@@ -839,12 +839,12 @@ class ProcessCommand implements Serializable {
         })
         dccZakresUruchomienia(nullable: false, blank: false)
         odplatneUzywanie(nullable: true, blank: false)
-        odplatneUzywanieLiczbaTerminali(nullable: true, blank: false,  validator: { value, cmd, errors -> cmd.numberValidationClosure(value, cmd, errors, "odplatneUzywanieLiczbaTerminali")})
-        odplatneUzywanieCenaTerminal(nullable: true, blank: false,  validator: { value, cmd, errors -> cmd.numberValidationClosure(value, cmd, errors, "odplatneUzywanieCenaTerminal")})
-        odplatneUzywanieCenaPinpad(nullable: true, blank: false,  validator: { value, cmd, errors -> cmd.numberValidationClosure(value, cmd, errors, "odplatneUzywanieCenaPinpad")})
+        odplatneUzywanieLiczbaTerminali(nullable: true, blank: false,  validator: { value, cmd, errors -> cmd.numberValidationClosure(value, cmd, errors, propertyName)})
+        odplatneUzywanieCenaTerminal(nullable: true, blank: false,  validator: { value, cmd, errors -> cmd.numberValidationClosure(value, cmd, errors, propertyName)})
+        odplatneUzywanieCenaPinpad(nullable: true, blank: false,  validator: { value, cmd, errors -> cmd.numberValidationClosure(value, cmd, errors, propertyName)})
 
-        odpUzyTermSzt(nullable: true, blank: false,  validator: { value, cmd, errors -> cmd.numberValidationClosure(value, cmd, errors, "odpUzyTermSzt")})
-        odpUzyPpSzt(nullable: true, blank: false,  validator: { value, cmd, errors -> cmd.numberValidationClosure(value, cmd, errors, "odpUzyPpSzt")})
+        odpUzyTermSzt(nullable: true, blank: false,  validator: { value, cmd, errors -> cmd.numberValidationClosure(value, cmd, errors, propertyName)})
+        odpUzyPpSzt(nullable: true, blank: false,  validator: { value, cmd, errors -> cmd.numberValidationClosure(value, cmd, errors, propertyName)})
         isOdplatneUzywanieShown(nullable: true, blank: true, validator: { value, cmd, errors ->
             if ("tak".equals(value)){
                 if ("one_for_all_terminals".equals(cmd.odplatneUzywanie)){
@@ -863,7 +863,7 @@ class ProcessCommand implements Serializable {
                           atLeastClosure.call(value, cmd, errors, "odpUzyTermMies", "CENA_NAJMU")
               })*/
 
-        odpUzyPpMies(nullable: true, blank: false,  validator: { value, cmd, errors -> cmd.numberValidationClosure(value, cmd, errors, "odpUzyPpMies")})
+        odpUzyPpMies(nullable: true, blank: false,  validator: { value, cmd, errors -> cmd.numberValidationClosure(value, cmd, errors, propertyName)})
 
         informacjaHandlowa(nullable: false, blank: false)
 
@@ -873,7 +873,7 @@ class ProcessCommand implements Serializable {
             }
 
             if (cmd.informacjaHandlowa == DEFAULT_VALUE) {
-                errors.rejectValue("hasInformacjaHandlowa", "default.atLeastOne.informacjaHandlowa")
+                errors.rejectValue(propertyName, "default.atLeastOne.informacjaHandlowa")
                 return false
             }
 
@@ -885,23 +885,23 @@ class ProcessCommand implements Serializable {
             return true
         })
 
-        mudCena(nullable: false, blank: true,  validator: { value, cmd, errors -> cmd.numberValidationClosure(value, cmd, errors, "mudCena")})
-        weryfikacjaPINCena(nullable: true,  validator: { value, cmd, errors -> cmd.numberValidationClosure(value, cmd, errors, "weryfikacjaPINCena")})
-        systemKasowyCena(nullable: true,  validator: { value, cmd, errors -> cmd.numberValidationClosure(value, cmd, errors, "systemKasowyCena")})
+        mudCena(nullable: false, blank: true,  validator: { value, cmd, errors -> cmd.numberValidationClosure(value, cmd, errors, propertyName)})
+        weryfikacjaPINCena(nullable: true,  validator: { value, cmd, errors -> cmd.numberValidationClosure(value, cmd, errors, propertyName)})
+        systemKasowyCena(nullable: true,  validator: { value, cmd, errors -> cmd.numberValidationClosure(value, cmd, errors, propertyName)})
 
         doladowania_tk(nullable: true)
         doladowania_tp(nullable: true)
         hasDoladowania(nullable: true, validator: { value, cmd, errors ->
             if(value && (cmd.isDoladowania_tp || cmd.isDoladowania_tk)){
                 if(!(cmd.doladowania_tk || cmd.doladowania_tp) && cmd.hasDodaniePrepaid){
-                    errors.rejectValue("hasDoladowania", "default.atLeastOne.doladowania")
+                    errors.rejectValue(propertyName, "default.atLeastOne.doladowania")
                     return false
                 }
             }
             return true
         })
 
-        srednia_sprzedaz_doladowan(nullable:false, blank:false,  validator: { value, cmd, errors -> cmd.numberValidationClosure(value, cmd, errors, "srednia_sprzedaz_doladowan")})
+        srednia_sprzedaz_doladowan(nullable:false, blank:false,  validator: { value, cmd, errors -> cmd.numberValidationClosure(value, cmd, errors, propertyName)})
         srednia_sprzedaz_doladowan_slownie(nullable:false, blank:false, shared: "lettersOnly")
         ifOplataVISA(nullable:false, blank:false, shared: "number3Precision") //1.111 %, M
         ifOplataMasterCard(nullable:false, blank:false, shared: "number3Precision") //1.111 %, M
@@ -925,7 +925,7 @@ class ProcessCommand implements Serializable {
             }
 
             if (!process.kontaktTelKomorkowy && !process.kontaktTelStacjonarny) {
-                errors.rejectValue("hasKontaktTel", "default.atLeastOne.phoneNumber")
+                errors.rejectValue(propertyName, "default.atLeastOne.phoneNumber")
                 return false
             }
             return true
@@ -946,318 +946,318 @@ class ProcessCommand implements Serializable {
         emailDoWysylkiDokumentu(nullable: true, blank: true, shared: "email")
 
         visaEUKKOSt(nullable: false, blank: false,  validator: { value, cmd, errors ->
-            cmd.numberValidationClosure(value, cmd, errors, "visaEUKKOSt") &&
-                    atLeastClosure.call(value, cmd, errors, "visaEUKKOSt", "OPLATA_MSC_53_ZL")
+            cmd.numberValidationClosure(value, cmd, errors, propertyName) &&
+                    atLeastClosure.call(value, cmd, errors, propertyName, "OPLATA_MSC_53_ZL")
         })
 
         visaEUKDSt(nullable: false, blank: false,  validator: { value, cmd, errors ->
-            cmd.numberValidationClosure(value, cmd, errors, "visaEUKDSt") &&
-                    atLeastClosure.call(value, cmd, errors, "visaEUKDSt", "OPLATA_MSC_12_ZL")
+            cmd.numberValidationClosure(value, cmd, errors, propertyName) &&
+                    atLeastClosure.call(value, cmd, errors, propertyName, "OPLATA_MSC_12_ZL")
         })
 
         visaEUKBSt(nullable: false, blank: false,  validator: { value, cmd, errors ->
-            cmd.numberValidationClosure(value, cmd, errors, "visaEUKBSt") &&
-                    atLeastClosure.call(value, cmd, errors, "visaEUKBSt", "OPLATA_MSC_13_ZL")
+            cmd.numberValidationClosure(value, cmd, errors, propertyName) &&
+                    atLeastClosure.call(value, cmd, errors, propertyName, "OPLATA_MSC_13_ZL")
         })
 
         visaOutEUKKOSt(nullable: false, blank: false,  validator: { value, cmd, errors ->
-            cmd.numberValidationClosure(value, cmd, errors, "visaOutEUKKOSt") &&
-                    atLeastClosure.call(value, cmd, errors, "visaOutEUKKOSt", "OPLATA_MSC_21_ZL")
+            cmd.numberValidationClosure(value, cmd, errors, propertyName) &&
+                    atLeastClosure.call(value, cmd, errors, propertyName, "OPLATA_MSC_21_ZL")
         })
 
         visaOutEUKDSt(nullable: false, blank: false,  validator: { value, cmd, errors ->
-            cmd.numberValidationClosure(value, cmd, errors, "visaOutEUKDSt") &&
-                    atLeastClosure.call(value, cmd, errors, "visaOutEUKDSt", "OPLATA_MSC_22_ZL")
+            cmd.numberValidationClosure(value, cmd, errors, propertyName) &&
+                    atLeastClosure.call(value, cmd, errors, propertyName, "OPLATA_MSC_22_ZL")
         })
 
         visaOutEUKBSt(nullable: false, blank: false,  validator: { value, cmd, errors ->
-            cmd.numberValidationClosure(value, cmd, errors, "visaOutEUKBSt") &&
-                    atLeastClosure.call(value, cmd, errors, "visaOutEUKBSt", "OPLATA_MSC_23_ZL")
+            cmd.numberValidationClosure(value, cmd, errors, propertyName) &&
+                    atLeastClosure.call(value, cmd, errors, propertyName, "OPLATA_MSC_23_ZL")
         })
 
         visaPolskaKBSt(nullable: false, blank: false, validator: { value, cmd, errors ->
-            cmd.numberValidationClosure(value, cmd, errors, "visaPolskaKBSt") &&
-            atLeastClosure.call(value, cmd, errors, "visaPolskaKBSt", "OPLATA_MSC_33_ZL")
+            cmd.numberValidationClosure(value, cmd, errors, propertyName) &&
+            atLeastClosure.call(value, cmd, errors, propertyName, "OPLATA_MSC_33_ZL")
         })
 
         mastercardEUKKSt(nullable: false, blank: false,  validator: { value, cmd, errors ->
-            cmd.numberValidationClosure(value, cmd, errors, "mastercardEUKKSt") &&
-                    atLeastClosure.call(value, cmd, errors, "mastercardEUKKSt", "OPLATA_MSC_41_ZL")
+            cmd.numberValidationClosure(value, cmd, errors, propertyName) &&
+                    atLeastClosure.call(value, cmd, errors, propertyName, "OPLATA_MSC_41_ZL")
         })
 
         mastercardEUKDSt(nullable: false, blank: false,  validator: { value, cmd, errors ->
-            cmd.numberValidationClosure(value, cmd, errors, "mastercardEUKDSt") &&
-                    atLeastClosure.call(value, cmd, errors, "mastercardEUKDSt", "OPLATA_MSC_42_ZL")
+            cmd.numberValidationClosure(value, cmd, errors, propertyName) &&
+                    atLeastClosure.call(value, cmd, errors, propertyName, "OPLATA_MSC_42_ZL")
         })
         mastercardEUKBLSt(nullable: false, blank: false,  validator: { value, cmd, errors ->
-            cmd.numberValidationClosure(value, cmd, errors, "mastercardEUKBLSt") &&
-                    atLeastClosure.call(value, cmd, errors, "mastercardEUKBLSt", "OPLATA_MSC_43_ZL")
+            cmd.numberValidationClosure(value, cmd, errors, propertyName) &&
+                    atLeastClosure.call(value, cmd, errors, propertyName, "OPLATA_MSC_43_ZL")
         })
         mastercardEUMSt(nullable: false, blank: false,  validator: { value, cmd, errors ->
-            cmd.numberValidationClosure(value, cmd, errors, "mastercardEUMSt") &&
-                    atLeastClosure.call(value, cmd, errors, "mastercardEUMSt", "OPLATA_MSC_44_ZL")
+            cmd.numberValidationClosure(value, cmd, errors, propertyName) &&
+                    atLeastClosure.call(value, cmd, errors, propertyName, "OPLATA_MSC_44_ZL")
         })
         mastercardOutEUKKSt(nullable: false, blank: false,  validator: { value, cmd, errors ->
-            cmd.numberValidationClosure(value, cmd, errors, "mastercardOutEUKKSt") &&
-                    atLeastClosure.call(value, cmd, errors, "mastercardOutEUKKSt", "OPLATA_MSC_51_ZL")
+            cmd.numberValidationClosure(value, cmd, errors, propertyName) &&
+                    atLeastClosure.call(value, cmd, errors, propertyName, "OPLATA_MSC_51_ZL")
         })
         mastercardOutEUKDSt(nullable: false, blank: false,  validator: { value, cmd, errors ->
-            cmd.numberValidationClosure(value, cmd, errors, "mastercardOutEUKDSt") &&
-                    atLeastClosure.call(value, cmd, errors, "mastercardOutEUKDSt", "OPLATA_MSC_52_ZL")
+            cmd.numberValidationClosure(value, cmd, errors, propertyName) &&
+                    atLeastClosure.call(value, cmd, errors, propertyName, "OPLATA_MSC_52_ZL")
         })
         mastercardOutEUKBSt(nullable: false, blank: false,  validator: { value, cmd, errors ->
-            cmd.numberValidationClosure(value, cmd, errors, "mastercardOutEUKBSt") &&
-                    atLeastClosure.call(value, cmd, errors, "mastercardOutEUKBSt", "OPLATA_MSC_53_ZL")
+            cmd.numberValidationClosure(value, cmd, errors, propertyName) &&
+                    atLeastClosure.call(value, cmd, errors, propertyName, "OPLATA_MSC_53_ZL")
         })
         mastercardOutEUMSt(nullable: false, blank: false,  validator: { value, cmd, errors ->
-            cmd.numberValidationClosure(value, cmd, errors, "mastercardOutEUMSt") &&
-                    atLeastClosure.call(value, cmd, errors, "mastercardOutEUMSt", "OPLATA_MSC_54_ZL")
+            cmd.numberValidationClosure(value, cmd, errors, propertyName) &&
+                    atLeastClosure.call(value, cmd, errors, propertyName, "OPLATA_MSC_54_ZL")
         })
 
-        dinersClubSt(nullable: true, blank: true,  validator: { value, cmd, errors -> cmd.numberValidationClosure(value, cmd, errors, "dinersClubSt")
+        dinersClubSt(nullable: true, blank: true,  validator: { value, cmd, errors -> cmd.numberValidationClosure(value, cmd, errors, propertyName)
         })
 
-        ikoSt(nullable: true, blank: true,  validator: { value, cmd, errors -> cmd.numberValidationClosure(value, cmd, errors, "ikoSt")})
-        visaEUKKOPr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> atLeastClosure.call(value, cmd, errors, "visaEUKKOPr", "OPLATA_MSC_11_PROCENT")})
-        visaEUKDPr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> atLeastClosure.call(value, cmd, errors, "visaEUKDPr", "OPLATA_MSC_12_PROCENT")})
-        visaEUKBPr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> atLeastClosure.call(value, cmd, errors, "visaEUKBPr", "OPLATA_MSC_13_PROCENT")})
-        visaOutEUKKOPr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> atLeastClosure.call(value, cmd, errors, "visaOutEUKKOPr", "OPLATA_MSC_21_PROCENT")})
-        visaOutEUKDPr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> atLeastClosure.call(value, cmd, errors, "visaOutEUKDPr", "OPLATA_MSC_22_PROCENT")})
-        visaOutEUKBPr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> atLeastClosure.call(value, cmd, errors, "visaOutEUKBPr", "OPLATA_MSC_23_PROCENT")})
-        visaPolskaKKO1Pr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> atLeastClosure.call(value, cmd, errors, "visaPolskaKKO1Pr", "OPLATA_MSC_311_PROCENT")})
-        visaPolskaKKO2Pr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> atLeastClosure.call(value, cmd, errors, "visaPolskaKKO2Pr", "OPLATA_MSC_312_PROCENT")})
-        visaPolskaKD1Pr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> atLeastClosure.call(value, cmd, errors, "visaPolskaKD1Pr", "OPLATA_MSC_321_PROCENT")})
-        visaPolskaKD2Pr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> atLeastClosure.call(value, cmd, errors, "visaPolskaKD2Pr", "OPLATA_MSC_322_PROCENT")})
-        visaPolskaKBPr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> atLeastClosure.call(value, cmd, errors, "visaPolskaKBPr", "OPLATA_MSC_33_PROCENT")})
-        mastercardEUKKPr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> atLeastClosure.call(value, cmd, errors, "mastercardEUKKPr", "OPLATA_MSC_41_PROCENT")})
-        mastercardEUKDPr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> atLeastClosure.call(value, cmd, errors, "mastercardEUKDPr", "OPLATA_MSC_42_PROCENT")})
-        mastercardEUKBLPr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> atLeastClosure.call(value, cmd, errors, "mastercardEUKBLPr", "OPLATA_MSC_43_PROCENT")})
-        mastercardEUMPr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> atLeastClosure.call(value, cmd, errors, "mastercardEUMPr", "OPLATA_MSC_44_PROCENT")})
-        mastercardOutEUKKPr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> atLeastClosure.call(value, cmd, errors, "mastercardOutEUKKPr", "OPLATA_MSC_51_PROCENT")})
-        mastercardOutEUKDPr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> atLeastClosure.call(value, cmd, errors, "mastercardOutEUKDPr", "OPLATA_MSC_52_PROCENT")})
-        mastercardOutEUKBPr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> atLeastClosure.call(value, cmd, errors, "mastercardOutEUKBPr", "OPLATA_MSC_53_PROCENT")})
-        mastercardOutEUMPr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> atLeastClosure.call(value, cmd, errors, "mastercardOutEUMPr", "OPLATA_MSC_54_PROCENT")})
-        mastercardPolskaKK1Pr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> atLeastClosure.call(value, cmd, errors, "mastercardPolskaKK1Pr", "OPLATA_MSC_611_PROCENT")})
-        mastercardPolskaKK2Pr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> atLeastClosure.call(value, cmd, errors, "mastercardPolskaKK2Pr", "OPLATA_MSC_612_PROCENT")})
-        mastercardPolskaKK3Pr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> atLeastClosure.call(value, cmd, errors, "mastercardPolskaKK3Pr", "OPLATA_MSC_613_PROCENT")})
-        mastercardPolskaKD1Pr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> atLeastClosure.call(value, cmd, errors, "mastercardPolskaKD1Pr", "OPLATA_MSC_621_PROCENT")})
-        mastercardPolskaKD2Pr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> atLeastClosure.call(value, cmd, errors, "mastercardPolskaKD2Pr", "OPLATA_MSC_622_PROCENT")})
-        mastercardPolskaKD3Pr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> atLeastClosure.call(value, cmd, errors, "mastercardPolskaKD3Pr", "OPLATA_MSC_623_PROCENT")})
-        mastercardPolskaKBPr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> atLeastClosure.call(value, cmd, errors, "mastercardPolskaKBPr", "OPLATA_MSC_63_PROCENT")})
-        mastercardPolskaM1Pr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> atLeastClosure.call(value, cmd, errors, "mastercardPolskaM1Pr", "OPLATA_MSC_641_PROCENT")})
-        mastercardPolskaM2Pr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> atLeastClosure.call(value, cmd, errors, "mastercardPolskaM2Pr", "OPLATA_MSC_642_PROCENT")})
-        mastercardPolskaM3Pr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> atLeastClosure.call(value, cmd, errors, "mastercardPolskaM3Pr", "OPLATA_MSC_643_PROCENT")})
-        visaPKOBPKKO1Pr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> atLeastClosure.call(value, cmd, errors, "visaPKOBPKKO1Pr", "OPLATA_MSC_711_PROCENT")})
-        visaPKOBPKKO2Pr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> atLeastClosure.call(value, cmd, errors, "visaPKOBPKKO2Pr", "OPLATA_MSC_712_PROCENT")})
-        visaPKOBPKD1Pr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> atLeastClosure.call(value, cmd, errors, "visaPKOBPKD1Pr", "OPLATA_MSC_721_PROCENT")})
-        visaPKOBPKD2Pr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> atLeastClosure.call(value, cmd, errors, "visaPKOBPKD2Pr", "OPLATA_MSC_722_PROCENT")})
-        visaPKOBPKB3Pr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> atLeastClosure.call(value, cmd, errors, "visaPKOBPKB3Pr", "OPLATA_MSC_73_PROCENT")})
-        mastercardPKOBPKK1Pr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> atLeastClosure.call(value, cmd, errors, "mastercardPKOBPKK1Pr", "OPLATA_MSC_811_PROCENT")})
-        mastercardPKOBPKK2Pr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> atLeastClosure.call(value, cmd, errors, "mastercardPKOBPKK2Pr", "OPLATA_MSC_812_PROCENT")})
-        mastercardPKOBPKK3Pr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> atLeastClosure.call(value, cmd, errors, "mastercardPKOBPKK3Pr", "OPLATA_MSC_813_PROCENT")})
-        mastercardPKOBPKD1Pr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> atLeastClosure.call(value, cmd, errors, "mastercardPKOBPKD1Pr", "OPLATA_MSC_821_PROCENT")})
-        mastercardPKOBPKD2LPr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> atLeastClosure.call(value, cmd, errors, "mastercardPKOBPKD2LPr", "OPLATA_MSC_822_PROCENT")})
-        mastercardPKOBPKD3Pr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> atLeastClosure.call(value, cmd, errors, "mastercardPKOBPKD3Pr", "OPLATA_MSC_823_PROCENT")})
-        mastercardPKOBPKBPr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> atLeastClosure.call(value, cmd, errors, "mastercardPKOBPKBPr", "OPLATA_MSC_83_PROCENT")})
-        mastercardPKOBPM1Pr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> atLeastClosure.call(value, cmd, errors, "mastercardPKOBPM1Pr", "OPLATA_MSC_841_PROCENT")})
-        mastercardPKOBPM2Pr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> atLeastClosure.call(value, cmd, errors, "mastercardPKOBPM2Pr", "OPLATA_MSC_842_PROCENT")})
-        mastercardPKOBPM3Pr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> atLeastClosure.call(value, cmd, errors, "mastercardPKOBPM3Pr", "OPLATA_MSC_843_PROCENT")})
-        dinersClubPr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> atLeastClosure.call(value, cmd, errors, "dinersClubPr", "OPLATA_MSC_9_PROCENT")})
+        ikoSt(nullable: true, blank: true,  validator: { value, cmd, errors -> cmd.numberValidationClosure(value, cmd, errors, propertyName)})
+        visaEUKKOPr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> atLeastClosure.call(value, cmd, errors, propertyName, "OPLATA_MSC_11_PROCENT")})
+        visaEUKDPr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> atLeastClosure.call(value, cmd, errors, propertyName, "OPLATA_MSC_12_PROCENT")})
+        visaEUKBPr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> atLeastClosure.call(value, cmd, errors, propertyName, "OPLATA_MSC_13_PROCENT")})
+        visaOutEUKKOPr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> atLeastClosure.call(value, cmd, errors, propertyName, "OPLATA_MSC_21_PROCENT")})
+        visaOutEUKDPr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> atLeastClosure.call(value, cmd, errors, propertyName, "OPLATA_MSC_22_PROCENT")})
+        visaOutEUKBPr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> atLeastClosure.call(value, cmd, errors, propertyName, "OPLATA_MSC_23_PROCENT")})
+        visaPolskaKKO1Pr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> atLeastClosure.call(value, cmd, errors, propertyName, "OPLATA_MSC_311_PROCENT")})
+        visaPolskaKKO2Pr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> atLeastClosure.call(value, cmd, errors, propertyName, "OPLATA_MSC_312_PROCENT")})
+        visaPolskaKD1Pr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> atLeastClosure.call(value, cmd, errors, propertyName, "OPLATA_MSC_321_PROCENT")})
+        visaPolskaKD2Pr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> atLeastClosure.call(value, cmd, errors, propertyName, "OPLATA_MSC_322_PROCENT")})
+        visaPolskaKBPr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> atLeastClosure.call(value, cmd, errors, propertyName, "OPLATA_MSC_33_PROCENT")})
+        mastercardEUKKPr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> atLeastClosure.call(value, cmd, errors, propertyName, "OPLATA_MSC_41_PROCENT")})
+        mastercardEUKDPr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> atLeastClosure.call(value, cmd, errors, propertyName, "OPLATA_MSC_42_PROCENT")})
+        mastercardEUKBLPr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> atLeastClosure.call(value, cmd, errors, propertyName, "OPLATA_MSC_43_PROCENT")})
+        mastercardEUMPr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> atLeastClosure.call(value, cmd, errors, propertyName, "OPLATA_MSC_44_PROCENT")})
+        mastercardOutEUKKPr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> atLeastClosure.call(value, cmd, errors, propertyName, "OPLATA_MSC_51_PROCENT")})
+        mastercardOutEUKDPr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> atLeastClosure.call(value, cmd, errors, propertyName, "OPLATA_MSC_52_PROCENT")})
+        mastercardOutEUKBPr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> atLeastClosure.call(value, cmd, errors, propertyName, "OPLATA_MSC_53_PROCENT")})
+        mastercardOutEUMPr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> atLeastClosure.call(value, cmd, errors, propertyName, "OPLATA_MSC_54_PROCENT")})
+        mastercardPolskaKK1Pr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> atLeastClosure.call(value, cmd, errors, propertyName, "OPLATA_MSC_611_PROCENT")})
+        mastercardPolskaKK2Pr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> atLeastClosure.call(value, cmd, errors, propertyName, "OPLATA_MSC_612_PROCENT")})
+        mastercardPolskaKK3Pr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> atLeastClosure.call(value, cmd, errors, propertyName, "OPLATA_MSC_613_PROCENT")})
+        mastercardPolskaKD1Pr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> atLeastClosure.call(value, cmd, errors, propertyName, "OPLATA_MSC_621_PROCENT")})
+        mastercardPolskaKD2Pr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> atLeastClosure.call(value, cmd, errors, propertyName, "OPLATA_MSC_622_PROCENT")})
+        mastercardPolskaKD3Pr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> atLeastClosure.call(value, cmd, errors, propertyName, "OPLATA_MSC_623_PROCENT")})
+        mastercardPolskaKBPr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> atLeastClosure.call(value, cmd, errors, propertyName, "OPLATA_MSC_63_PROCENT")})
+        mastercardPolskaM1Pr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> atLeastClosure.call(value, cmd, errors, propertyName, "OPLATA_MSC_641_PROCENT")})
+        mastercardPolskaM2Pr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> atLeastClosure.call(value, cmd, errors, propertyName, "OPLATA_MSC_642_PROCENT")})
+        mastercardPolskaM3Pr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> atLeastClosure.call(value, cmd, errors, propertyName, "OPLATA_MSC_643_PROCENT")})
+        visaPKOBPKKO1Pr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> atLeastClosure.call(value, cmd, errors, propertyName, "OPLATA_MSC_711_PROCENT")})
+        visaPKOBPKKO2Pr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> atLeastClosure.call(value, cmd, errors, propertyName, "OPLATA_MSC_712_PROCENT")})
+        visaPKOBPKD1Pr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> atLeastClosure.call(value, cmd, errors, propertyName, "OPLATA_MSC_721_PROCENT")})
+        visaPKOBPKD2Pr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> atLeastClosure.call(value, cmd, errors, propertyName, "OPLATA_MSC_722_PROCENT")})
+        visaPKOBPKB3Pr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> atLeastClosure.call(value, cmd, errors, propertyName, "OPLATA_MSC_73_PROCENT")})
+        mastercardPKOBPKK1Pr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> atLeastClosure.call(value, cmd, errors, propertyName, "OPLATA_MSC_811_PROCENT")})
+        mastercardPKOBPKK2Pr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> atLeastClosure.call(value, cmd, errors, propertyName, "OPLATA_MSC_812_PROCENT")})
+        mastercardPKOBPKK3Pr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> atLeastClosure.call(value, cmd, errors, propertyName, "OPLATA_MSC_813_PROCENT")})
+        mastercardPKOBPKD1Pr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> atLeastClosure.call(value, cmd, errors, propertyName, "OPLATA_MSC_821_PROCENT")})
+        mastercardPKOBPKD2LPr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> atLeastClosure.call(value, cmd, errors, propertyName, "OPLATA_MSC_822_PROCENT")})
+        mastercardPKOBPKD3Pr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> atLeastClosure.call(value, cmd, errors, propertyName, "OPLATA_MSC_823_PROCENT")})
+        mastercardPKOBPKBPr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> atLeastClosure.call(value, cmd, errors, propertyName, "OPLATA_MSC_83_PROCENT")})
+        mastercardPKOBPM1Pr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> atLeastClosure.call(value, cmd, errors, propertyName, "OPLATA_MSC_841_PROCENT")})
+        mastercardPKOBPM2Pr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> atLeastClosure.call(value, cmd, errors, propertyName, "OPLATA_MSC_842_PROCENT")})
+        mastercardPKOBPM3Pr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> atLeastClosure.call(value, cmd, errors, propertyName, "OPLATA_MSC_843_PROCENT")})
+        dinersClubPr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> atLeastClosure.call(value, cmd, errors, propertyName, "OPLATA_MSC_9_PROCENT")})
         ikoPr(nullable: true, blank: true, shared: "number3Precision")
 
 
         visaPolskaKKO1St(nullable: false, blank: false,  validator: { value, cmd, errors ->
-            cmd.numberValidationClosure(value, cmd, errors, "visaPolskaKKO1St") &&
-            atLeastClosure.call(value, cmd, errors, "visaPolskaKKO1St", "OPLATA_MSC_311_ZL")
+            cmd.numberValidationClosure(value, cmd, errors, propertyName) &&
+            atLeastClosure.call(value, cmd, errors, propertyName, "OPLATA_MSC_311_ZL")
         })
         visaPolskaKKO2St(nullable: false, blank: false, validator: { value, cmd, errors ->
-            cmd.numberValidationClosure(value, cmd, errors, "visaPolskaKKO2St") &&
-            atLeastClosure.call(value, cmd, errors, "visaPolskaKKO2St", "OPLATA_MSC_312_ZL")
+            cmd.numberValidationClosure(value, cmd, errors, propertyName) &&
+            atLeastClosure.call(value, cmd, errors, propertyName, "OPLATA_MSC_312_ZL")
         })
         visaPolskaKD1St(nullable: false, blank: false, validator: { value, cmd, errors ->
-            cmd.numberValidationClosure(value, cmd, errors, "visaPolskaKD1St") &&
-            atLeastClosure.call(value, cmd, errors, "visaPolskaKD1St", "OPLATA_MSC_321_ZL")
+            cmd.numberValidationClosure(value, cmd, errors, propertyName) &&
+            atLeastClosure.call(value, cmd, errors, propertyName, "OPLATA_MSC_321_ZL")
         })
         visaPolskaKD2St(nullable: false, blank: false, validator: { value, cmd, errors ->
-            cmd.numberValidationClosure(value, cmd, errors, "visaPolskaKD2St") &&
-            atLeastClosure.call(value, cmd, errors, "visaPolskaKD2St", "OPLATA_MSC_322_ZL")
+            cmd.numberValidationClosure(value, cmd, errors, propertyName) &&
+            atLeastClosure.call(value, cmd, errors, propertyName, "OPLATA_MSC_322_ZL")
         })
         visaPolskaKBSt(nullable: false, blank: false, validator: { value, cmd, errors ->
-            cmd.numberValidationClosure(value, cmd, errors, "visaPolskaKBSt") &&
-            atLeastClosure.call(value, cmd, errors, "visaPolskaKBSt", "OPLATA_MSC_33_ZL")
+            cmd.numberValidationClosure(value, cmd, errors, propertyName) &&
+            atLeastClosure.call(value, cmd, errors, propertyName, "OPLATA_MSC_33_ZL")
         })
         mastercardPolskaKK1St(nullable: false, blank: false, validator: { value, cmd, errors ->
-            cmd.numberValidationClosure(value, cmd, errors, "mastercardPolskaKK1St") &&
-            atLeastClosure.call(value, cmd, errors, "mastercardPolskaKK1St", "OPLATA_MSC_611_ZL")
+            cmd.numberValidationClosure(value, cmd, errors, propertyName) &&
+            atLeastClosure.call(value, cmd, errors, propertyName, "OPLATA_MSC_611_ZL")
         })
         mastercardPolskaKK2St(nullable: false, blank: false, validator: { value, cmd, errors ->
-            cmd.numberValidationClosure(value, cmd, errors, "mastercardPolskaKK2St") &&
-            atLeastClosure.call(value, cmd, errors, "mastercardPolskaKK2St", "OPLATA_MSC_612_ZL")
+            cmd.numberValidationClosure(value, cmd, errors, propertyName) &&
+            atLeastClosure.call(value, cmd, errors, propertyName, "OPLATA_MSC_612_ZL")
         })
         mastercardPolskaKK3St(nullable: false, blank: false, validator: { value, cmd, errors ->
-            cmd.numberValidationClosure(value, cmd, errors, "mastercardPolskaKK3St") &&
-            atLeastClosure.call(value, cmd, errors, "mastercardPolskaKK3St", "OPLATA_MSC_613_ZL")
+            cmd.numberValidationClosure(value, cmd, errors, propertyName) &&
+            atLeastClosure.call(value, cmd, errors, propertyName, "OPLATA_MSC_613_ZL")
         })
         mastercardPolskaKD1St(nullable: false, blank: false, validator: { value, cmd, errors ->
-            cmd.numberValidationClosure(value, cmd, errors, "mastercardPolskaKD1St") &&
-            atLeastClosure.call(value, cmd, errors, "mastercardPolskaKD1St", "OPLATA_MSC_621_ZL")
+            cmd.numberValidationClosure(value, cmd, errors, propertyName) &&
+            atLeastClosure.call(value, cmd, errors, propertyName, "OPLATA_MSC_621_ZL")
         })
         mastercardPolskaKD2St(nullable: false, blank: false, validator: { value, cmd, errors ->
-            cmd.numberValidationClosure(value, cmd, errors, "mastercardPolskaKD2St") &&
-            atLeastClosure.call(value, cmd, errors, "mastercardPolskaKD2St", "OPLATA_MSC_622_ZL")
+            cmd.numberValidationClosure(value, cmd, errors, propertyName) &&
+            atLeastClosure.call(value, cmd, errors, propertyName, "OPLATA_MSC_622_ZL")
         })
         mastercardPolskaKD3St(nullable: false, blank: false, validator: { value, cmd, errors ->
-            cmd.numberValidationClosure(value, cmd, errors, "mastercardPolskaKD3St") &&
-            atLeastClosure.call(value, cmd, errors, "mastercardPolskaKD3St", "OPLATA_MSC_623_ZL")
+            cmd.numberValidationClosure(value, cmd, errors, propertyName) &&
+            atLeastClosure.call(value, cmd, errors, propertyName, "OPLATA_MSC_623_ZL")
         })
         mastercardPolskaKBSt(nullable: false, blank: false, validator: { value, cmd, errors ->
-            cmd.numberValidationClosure(value, cmd, errors, "mastercardPolskaKBSt") &&
-            atLeastClosure.call(value, cmd, errors, "mastercardPolskaKBSt", "OPLATA_MSC_63_ZL")
+            cmd.numberValidationClosure(value, cmd, errors, propertyName) &&
+            atLeastClosure.call(value, cmd, errors, propertyName, "OPLATA_MSC_63_ZL")
         })
         mastercardPolskaM1St(nullable: false, blank: false, validator: { value, cmd, errors ->
-            cmd.numberValidationClosure(value, cmd, errors, "mastercardPolskaM1St") &&
-            atLeastClosure.call(value, cmd, errors, "mastercardPolskaM1St", "OPLATA_MSC_641_ZL")
+            cmd.numberValidationClosure(value, cmd, errors, propertyName) &&
+            atLeastClosure.call(value, cmd, errors, propertyName, "OPLATA_MSC_641_ZL")
         })
         mastercardPolskaM2St(nullable: false, blank: false, validator: { value, cmd, errors ->
-            cmd.numberValidationClosure(value, cmd, errors, "mastercardPolskaM2St") &&
-            atLeastClosure.call(value, cmd, errors, "mastercardPolskaM2St", "OPLATA_MSC_642_ZL")
+            cmd.numberValidationClosure(value, cmd, errors, propertyName) &&
+            atLeastClosure.call(value, cmd, errors, propertyName, "OPLATA_MSC_642_ZL")
         })
         mastercardPolskaM3St(nullable: false, blank: false, validator: { value, cmd, errors ->
-            cmd.numberValidationClosure(value, cmd, errors, "mastercardPolskaM3St") &&
-            atLeastClosure.call(value, cmd, errors, "mastercardPolskaM3St", "OPLATA_MSC_643_ZL")
+            cmd.numberValidationClosure(value, cmd, errors, propertyName) &&
+            atLeastClosure.call(value, cmd, errors, propertyName, "OPLATA_MSC_643_ZL")
         })
         visaPKOBPKKO1St(nullable: false, blank: false, validator: { value, cmd, errors ->
-            cmd.numberValidationClosure(value, cmd, errors, "visaPKOBPKKO1St") &&
-            atLeastClosure.call(value, cmd, errors, "visaPKOBPKKO1St", "OPLATA_MSC_711_ZL")
+            cmd.numberValidationClosure(value, cmd, errors, propertyName) &&
+            atLeastClosure.call(value, cmd, errors, propertyName, "OPLATA_MSC_711_ZL")
         })
         visaPKOBPKKO2St(nullable: false, blank: false, validator: { value, cmd, errors ->
-            cmd.numberValidationClosure(value, cmd, errors, "visaPKOBPKKO2St") &&
-            atLeastClosure.call(value, cmd, errors, "visaPKOBPKKO2St", "OPLATA_MSC_712_ZL")
+            cmd.numberValidationClosure(value, cmd, errors, propertyName) &&
+            atLeastClosure.call(value, cmd, errors, propertyName, "OPLATA_MSC_712_ZL")
         })
         visaPKOBPKD1St(nullable: false, blank: false, validator: { value, cmd, errors ->
-            cmd.numberValidationClosure(value, cmd, errors, "visaPKOBPKD1St") &&
-            atLeastClosure.call(value, cmd, errors, "visaPKOBPKD1St", "OPLATA_MSC_721_ZL")
+            cmd.numberValidationClosure(value, cmd, errors, propertyName) &&
+            atLeastClosure.call(value, cmd, errors, propertyName, "OPLATA_MSC_721_ZL")
         })
         visaPKOBPKD2St(nullable: false, blank: false, validator: { value, cmd, errors ->
-            cmd.numberValidationClosure(value, cmd, errors, "visaPKOBPKD2St") &&
-            atLeastClosure.call(value, cmd, errors, "visaPKOBPKD2St", "OPLATA_MSC_722_ZL")
+            cmd.numberValidationClosure(value, cmd, errors, propertyName) &&
+            atLeastClosure.call(value, cmd, errors, propertyName, "OPLATA_MSC_722_ZL")
         })
         visaPKOBPKB3St(nullable: false, blank: false, validator: { value, cmd, errors ->
-            cmd.numberValidationClosure(value, cmd, errors, "visaPKOBPKB3St") &&
-            atLeastClosure.call(value, cmd, errors, "visaPKOBPKB3St", "OPLATA_MSC_73_ZL")
+            cmd.numberValidationClosure(value, cmd, errors, propertyName) &&
+            atLeastClosure.call(value, cmd, errors, propertyName, "OPLATA_MSC_73_ZL")
         })
         mastercardPKOBPKK1St(nullable: false, blank: false, validator: { value, cmd, errors ->
-            cmd.numberValidationClosure(value, cmd, errors, "mastercardPKOBPKK1St") &&
-            atLeastClosure.call(value, cmd, errors, "mastercardPKOBPKK1St", "OPLATA_MSC_811_ZL")
+            cmd.numberValidationClosure(value, cmd, errors, propertyName) &&
+            atLeastClosure.call(value, cmd, errors, propertyName, "OPLATA_MSC_811_ZL")
         })
         mastercardPKOBPKK2St(nullable: false, blank: false, validator: { value, cmd, errors ->
-            cmd.numberValidationClosure(value, cmd, errors, "mastercardPKOBPKK2St") &&
-            atLeastClosure.call(value, cmd, errors, "mastercardPKOBPKK2St", "OPLATA_MSC_812_ZL")
+            cmd.numberValidationClosure(value, cmd, errors, propertyName) &&
+            atLeastClosure.call(value, cmd, errors, propertyName, "OPLATA_MSC_812_ZL")
         })
         mastercardPKOBPKK3St(nullable: false, blank: false, validator: { value, cmd, errors ->
-            cmd.numberValidationClosure(value, cmd, errors, "mastercardPKOBPKK3St") &&
-            atLeastClosure.call(value, cmd, errors, "mastercardPKOBPKK3St", "OPLATA_MSC_813_ZL")
+            cmd.numberValidationClosure(value, cmd, errors, propertyName) &&
+            atLeastClosure.call(value, cmd, errors, propertyName, "OPLATA_MSC_813_ZL")
         })
         mastercardPKOBPKD1St(nullable: false, blank: false, validator: { value, cmd, errors ->
-            cmd.numberValidationClosure(value, cmd, errors, "mastercardPKOBPKD1St") &&
-            atLeastClosure.call(value, cmd, errors, "mastercardPKOBPKD1St", "OPLATA_MSC_821_ZL")
+            cmd.numberValidationClosure(value, cmd, errors, propertyName) &&
+            atLeastClosure.call(value, cmd, errors, propertyName, "OPLATA_MSC_821_ZL")
         })
         mastercardPKOBPKD2LSt(nullable: false, blank: false, validator: { value, cmd, errors ->
-            cmd.numberValidationClosure(value, cmd, errors, "mastercardPKOBPKD2LSt") &&
-            atLeastClosure.call(value, cmd, errors, "mastercardPKOBPKD2LSt", "OPLATA_MSC_822_ZL")
+            cmd.numberValidationClosure(value, cmd, errors, propertyName) &&
+            atLeastClosure.call(value, cmd, errors, propertyName, "OPLATA_MSC_822_ZL")
         })
         mastercardPKOBPKD3St(nullable: false, blank: false, validator: { value, cmd, errors ->
-            cmd.numberValidationClosure(value, cmd, errors, "mastercardPKOBPKD3St") &&
-            atLeastClosure.call(value, cmd, errors, "mastercardPKOBPKD3St", "OPLATA_MSC_823_ZL")
+            cmd.numberValidationClosure(value, cmd, errors, propertyName) &&
+            atLeastClosure.call(value, cmd, errors, propertyName, "OPLATA_MSC_823_ZL")
         })
         mastercardPKOBPKBSt(nullable: false, blank: false, validator: { value, cmd, errors ->
-            cmd.numberValidationClosure(value, cmd, errors, "mastercardPKOBPKBSt") &&
-            atLeastClosure.call(value, cmd, errors, "mastercardPKOBPKBSt", "OPLATA_MSC_83_ZL")
+            cmd.numberValidationClosure(value, cmd, errors, propertyName) &&
+            atLeastClosure.call(value, cmd, errors, propertyName, "OPLATA_MSC_83_ZL")
         })
         mastercardPKOBPM1St(nullable: false, blank: false, validator: { value, cmd, errors ->
-            cmd.numberValidationClosure(value, cmd, errors, "mastercardPKOBPM1St") &&
-            atLeastClosure.call(value, cmd, errors, "mastercardPKOBPM1St", "OPLATA_MSC_841_ZL")
+            cmd.numberValidationClosure(value, cmd, errors, propertyName) &&
+            atLeastClosure.call(value, cmd, errors, propertyName, "OPLATA_MSC_841_ZL")
         })
         mastercardPKOBPM2St(nullable: false, blank: false, validator: { value, cmd, errors ->
-            cmd.numberValidationClosure(value, cmd, errors, "mastercardPKOBPM2St") &&
-            atLeastClosure.call(value, cmd, errors, "mastercardPKOBPM2St", "OPLATA_MSC_842_ZL")
+            cmd.numberValidationClosure(value, cmd, errors, propertyName) &&
+            atLeastClosure.call(value, cmd, errors, propertyName, "OPLATA_MSC_842_ZL")
         })
         mastercardPKOBPM3St(nullable: false, blank: false, validator: { value, cmd, errors ->
-            cmd.numberValidationClosure(value, cmd, errors, "mastercardPKOBPM3St") &&
-            atLeastClosure.call(value, cmd, errors, "mastercardPKOBPM3St", "OPLATA_MSC_843_ZL")
+            cmd.numberValidationClosure(value, cmd, errors, propertyName) &&
+            atLeastClosure.call(value, cmd, errors, propertyName, "OPLATA_MSC_843_ZL")
         })
 
 
         pp_orange_tk(nullable: true, blank: true,  validator: { value, cmd, errors ->
-            cmd.percentageValidationClosure(value, cmd, errors, "pp_orange_tk") &&
-                    cmd.checkTelekodzik(value, cmd, errors, "pp_orange_tk")
+            cmd.percentageValidationClosure(value, cmd, errors, propertyName) &&
+                    cmd.checkTelekodzik(value, cmd, errors, propertyName)
         })
         pp_orange_tp(nullable: true, blank: true, validator: { value, cmd, errors ->
-            cmd.percentageValidationClosure(value, cmd, errors, "pp_orange_tp") &&
-                    cmd.checkTelepompka(value, cmd, errors, "pp_orange_tp")
+            cmd.percentageValidationClosure(value, cmd, errors, propertyName) &&
+                    cmd.checkTelepompka(value, cmd, errors, propertyName)
         })
         pp_plus_tk(nullable: true, blank: true,  validator: { value, cmd, errors ->
-            cmd.percentageValidationClosure(value, cmd, errors, "pp_plus_tk") &&
-                    cmd.checkTelekodzik(value, cmd, errors, "pp_plus_tk")
+            cmd.percentageValidationClosure(value, cmd, errors, propertyName) &&
+                    cmd.checkTelekodzik(value, cmd, errors, propertyName)
         })
         pp_plus_tp(nullable: true, blank: true,  validator: { value, cmd, errors ->
-            cmd.percentageValidationClosure(value, cmd, errors, "pp_plus_tp") &&
-                    cmd.checkTelepompka(value, cmd, errors, "pp_plus_tp")
+            cmd.percentageValidationClosure(value, cmd, errors, propertyName) &&
+                    cmd.checkTelepompka(value, cmd, errors, propertyName)
         })
         pp_tmobile_tk(nullable: true, blank: true,  validator: { value, cmd, errors ->
-            cmd.percentageValidationClosure(value, cmd, errors, "pp_tmobile_tk") &&
-                    cmd.checkTelekodzik(value, cmd, errors, "pp_tmobile_tk")
+            cmd.percentageValidationClosure(value, cmd, errors, propertyName) &&
+                    cmd.checkTelekodzik(value, cmd, errors, propertyName)
         })
         pp_tmobile_tp(nullable: true, blank: true,  validator: { value, cmd, errors ->
-            cmd.percentageValidationClosure(value, cmd, errors, "pp_tmobile_tp") &&
-                    cmd.checkTelepompka(value, cmd, errors, "pp_tmobile_tp")
+            cmd.percentageValidationClosure(value, cmd, errors, propertyName) &&
+                    cmd.checkTelepompka(value, cmd, errors, propertyName)
         })
         pp_heyah_tk(nullable: true, blank: true,  validator: { value, cmd, errors ->
-            cmd.percentageValidationClosure(value, cmd, errors, "pp_heyah_tk") &&
-                    cmd.checkTelekodzik(value, cmd, errors, "pp_heyah_tk")
+            cmd.percentageValidationClosure(value, cmd, errors, propertyName) &&
+                    cmd.checkTelekodzik(value, cmd, errors, propertyName)
         })
         pp_heyah_tp(nullable: true, blank: true,  validator: { value, cmd, errors ->
-            cmd.percentageValidationClosure(value, cmd, errors, "pp_heyah_tp") &&
-                    cmd.checkTelepompka(value, cmd, errors, "pp_heyah_tp")
+            cmd.percentageValidationClosure(value, cmd, errors, propertyName) &&
+                    cmd.checkTelepompka(value, cmd, errors, propertyName)
         })
         pp_play_tk(nullable: true, blank: true,  validator: { value, cmd, errors ->
-            cmd.percentageValidationClosure(value, cmd, errors, "pp_play_tk") &&
-                    cmd.checkTelekodzik(value, cmd, errors, "pp_play_tk")
+            cmd.percentageValidationClosure(value, cmd, errors, propertyName) &&
+                    cmd.checkTelekodzik(value, cmd, errors, propertyName)
         })
         pp_play_tp(nullable: true, blank: true,  validator: { value, cmd, errors ->
-            cmd.percentageValidationClosure(value, cmd, errors, "pp_play_tp") &&
-                    cmd.checkTelepompka(value, cmd, errors, "pp_play_tp")
+            cmd.percentageValidationClosure(value, cmd, errors, propertyName) &&
+                    cmd.checkTelepompka(value, cmd, errors, propertyName)
         })
         pp_telegrosik_tk(nullable: true, blank: true,  validator: { value, cmd, errors ->
-            cmd.percentageValidationClosure(value, cmd, errors, "pp_telegrosik_tk") &&
-                    cmd.checkTelekodzik(value, cmd, errors, "pp_telegrosik_tk")
+            cmd.percentageValidationClosure(value, cmd, errors, propertyName) &&
+                    cmd.checkTelekodzik(value, cmd, errors, propertyName)
         })
         pp_virginmobile_tk(nullable: true, blank: true,  validator: { value, cmd, errors ->
-            cmd.percentageValidationClosure(value, cmd, errors, "pp_virginmobile_tk") &&
-                    cmd.checkTelekodzik(value, cmd, errors, "pp_virginmobile_tk")
+            cmd.percentageValidationClosure(value, cmd, errors, propertyName) &&
+                    cmd.checkTelekodzik(value, cmd, errors, propertyName)
         })
         pp_lycamobile_tk(nullable: true, blank: true,  validator: { value, cmd, errors ->
-            cmd.percentageValidationClosure(value, cmd, errors, "pp_lycamobile_tk") &&
-                    cmd.checkTelekodzik(value, cmd, errors, "pp_lycamobile_tk")
+            cmd.percentageValidationClosure(value, cmd, errors, propertyName) &&
+                    cmd.checkTelekodzik(value, cmd, errors, propertyName)
         })
         pp_gtmobile_tk(nullable: true, blank: true,  validator: { value, cmd, errors ->
-            cmd.percentageValidationClosure(value, cmd, errors, "pp_gtmobile_tk") &&
-                    cmd.checkTelekodzik(value, cmd, errors, "pp_gtmobile_tk")
+            cmd.percentageValidationClosure(value, cmd, errors, propertyName) &&
+                    cmd.checkTelekodzik(value, cmd, errors, propertyName)
         })
         pp_vectonemobile_tk(nullable: true, blank: true,  validator: { value, cmd, errors ->
-            cmd.percentageValidationClosure(value, cmd, errors, "pp_vectonemobile_tk") &&
-                    cmd.checkTelekodzik(value, cmd, errors, "pp_vectonemobile_tk")
+            cmd.percentageValidationClosure(value, cmd, errors, propertyName) &&
+                    cmd.checkTelekodzik(value, cmd, errors, propertyName)
         })
         pp_delightmobile_tk(nullable: true, blank: true,  validator: { value, cmd, errors ->
-            cmd.percentageValidationClosure(value, cmd, errors, "pp_delightmobile_tk") &&
-                    cmd.checkTelekodzik(value, cmd, errors, "pp_delightmobile_tk")
+            cmd.percentageValidationClosure(value, cmd, errors, propertyName) &&
+                    cmd.checkTelekodzik(value, cmd, errors, propertyName)
         })
 
-        oplataZaOprogramowanieDoDoladowan(nullable: false, blank: false,  validator: { value, cmd, errors -> cmd.numberValidationClosure(value, cmd, errors, "oplataZaOprogramowanieDoDoladowan")})
+        oplataZaOprogramowanieDoDoladowan(nullable: false, blank: false,  validator: { value, cmd, errors -> cmd.numberValidationClosure(value, cmd, errors, propertyName)})
 
 
         scoringMcc(nullable: false, blank: false, validator: { value, cmd, errors ->
-            cmd.customValidationClosure(value, cmd, errors, "scoringMcc", "~|[0-9]{4}")
+            cmd.customValidationClosure(value, cmd, errors, propertyName, "~|[0-9]{4}")
         })
 
         scoringDzialalnosc(nullable: false, blank: false)
@@ -1291,24 +1291,26 @@ class ProcessCommand implements Serializable {
         scoringDeklaracjaFinansowaSredniaTransakcja(nullable: true, blank: true)
         akceptantUlicaTytul(nullable: true, blank: true)
         akceptantUlica(nullable: false, blank: false, shared: "alphanumeric", validator: { value, cmd, errors ->
-            skipAddressValidationClosure.call(value, cmd, errors, "akceptantUlica") &&
-            maxLengthClosure.call(value, cmd, errors, 40, "akceptantUlica")
+            skipAddressValidationClosure.call(value, cmd, errors, propertyName) &&
+            maxLengthClosure.call(value, cmd, errors, 40, propertyName)
         })
         akceptantNrDomu(nullable:false, shared: "alphanumeric", validator: {value, cmd, errors ->
-            skipAddressValidationClosure.call(value, cmd, errors, "akceptantNrDomu")
+            skipAddressValidationClosure.call(value, cmd, errors, propertyName)
         })
         akceptantNrMieszkania(nullable: true, blank: false, shared: "alphanumeric")
         akceptantMiasto(nullable: false, shared: "alphanumeric", validator: { value, cmd, errors ->
-            skipAddressValidationClosure.call(value, cmd, errors, "akceptantMiasto") &&
-            maxLengthClosure.call(value, cmd, errors, 33, "akceptantMiasto")
+            skipAddressValidationClosure.call(value, cmd, errors, propertyName) &&
+            maxLengthClosure.call(value, cmd, errors, 33, propertyName)
         })
         akceptantKodPocztowy(nullable:false, shared: "postalCodeValidator", validator: {value, cmd, errors ->
-            skipAddressValidationClosure.call(value, cmd, errors, "akceptantKodPocztowy")
+            skipAddressValidationClosure.call(value, cmd, errors, propertyName)
         })
         akceptantPoczta(nullable: true, shared: "alphanumeric", validator: { value, cmd, errors ->
-            maxLengthClosure.call(value, cmd, errors, 33, "akceptantPoczta")
+            maxLengthClosure.call(value, cmd, errors, 33, propertyName)
         })
 
+
+        //TODO - sa dwa wpisy dla hasAkceptantTel
         hasAkceptantTel(validator: { value, process, errors ->
             if (value == null || process.akceptantTelKomorkowy == null) {
                 return true
@@ -1327,7 +1329,7 @@ class ProcessCommand implements Serializable {
             }
 
             if (!process.akceptantTelStacjonarny && !process.akceptantTelKomorkowy) {
-                errors.rejectValue("hasAkceptantTel", "default.atLeastOne.phoneNumber")
+                errors.rejectValue(propertyName, "default.atLeastOne.phoneNumber")
                 return false
             }
             return true
@@ -1352,12 +1354,12 @@ class ProcessCommand implements Serializable {
                 return true;
             }
             if (!cmd.obslugaTyp) {
-                errors.rejectValue("hasObslugaTyp", "default.atLeastOne.obslugaTyp")
+                errors.rejectValue(propertyName, "default.atLeastOne.obslugaTyp")
                 return false
             }
             return true
         })
-        obslugaEkonomicznyCena(nullable:true, blank:false,  validator: { value, cmd, errors -> cmd.numberValidationClosure(value, cmd, errors, "obslugaEkonomicznyCena")}) //TODO VERIFY Mariusz ustawil xxx nie wiedziec czemu
+        obslugaEkonomicznyCena(nullable:true, blank:false,  validator: { value, cmd, errors -> cmd.numberValidationClosure(value, cmd, errors, propertyName)})
         numerRachunkuBankowegoKlienta(nullable:true, blank:false, matches: "~|\\d{2}\\s\\d{4}\\s\\d{4}\\s\\d{4}\\s\\d{4}\\s\\d{4}\\s\\d{4}")
         bankKlienta(nullable:true, blank:false)
         oplataZaUruchomienieDCC(nullable:false, blank:false, matches: "~|\\-|^(?:[1-9]\\d*|0|\\-)?(?:\\.\\d{1,2})?\$")
@@ -1388,7 +1390,7 @@ class ProcessCommand implements Serializable {
             }
 
             if (hasPointErrors) {
-                errors.rejectValue("points", "default.error.points",)
+                errors.rejectValue(propertyName, "default.error.points",)
                 return false
             }
             return true
@@ -1414,7 +1416,7 @@ class ProcessCommand implements Serializable {
             }
 			
 			if (hasPosErrors) {
-				errors.rejectValue("poses", "default.error.poses",)
+				errors.rejectValue(propertyName, "default.error.poses",)
 				return false
 			}
 			
@@ -1434,7 +1436,7 @@ class ProcessCommand implements Serializable {
             }
 
             if (hasPointErrors) {
-                errors.rejectValue("allPoses", "default.error.allposes",)
+                errors.rejectValue(propertyName, "default.error.allposes",)
                 return false
             }
             return true

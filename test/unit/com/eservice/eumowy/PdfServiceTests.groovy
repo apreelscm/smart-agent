@@ -5,8 +5,6 @@ import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.util.PDFImageWriter
 import grails.test.mixin.*
 import org.junit.Before
-import org.perf4j.StopWatch
-import org.perf4j.log4j.Log4JStopWatch
 
 import java.awt.image.BufferedImage
 
@@ -71,8 +69,8 @@ class PdfServiceTests {
 		data.put("dataAneksowanejUmowyPrepaid", ["11.05.2013"] as String[]);
 		data.put("akceptantNazwa", ["Firma Handlowo Usługowa 'HandUs'"] as String[]);
 		data.put("akceptantSiedziba", ["ul. Marszałkowska 3/4; 01-234 Warszawa"] as String[]);
-		data.put("reprezentant1", ["Jan Nowak"] as String[]);
-		data.put("reprezentant2", ["Grażyna Prymek"] as String[]);
+		data.put("reprezentant1", ["Jan Maria Nowak-Zaliwski"] as String[]);
+		data.put("reprezentant2", ["Anna Grażyna Prymek Zduńska"] as String[]);
 		data.put("phNumer", ["12345"] as String[]);
 		return data;
 	}
@@ -93,8 +91,21 @@ class PdfServiceTests {
 			HashMap<String, String[]> data = new HashMap<String, String[]>();
 			data.putAll(this.data);
 			data.put("dataUmowy", ["10-05-2012"] as String[]);
+			data.put("adresTytulPlatnosci13", ["Ul. Zielona 23. Warszawa"] as String[]);
+			data.put("punktTytulPlatnosci13", ["Ala ma kota"] as String[]);
 			data.putAll(prepareDccData())
-			data.putAll(insertSignatures(1, 85, 185, 74, 43))
+
+            //OK
+            def subscriptions = [
+                ["ACCEPTANT1", 4, 65, 165, 74, 43],
+                ["ACCEPTANT2", 4, 185, 165, 74, 43],
+                ["ZARZAD1", 4, 315, 165, 85, 58],
+                ["ZARZAD2", 4, 445, 165, 56, 58],
+                ["PH", 4, 455, 70, 74, 43]
+            ]
+
+            data.putAll(insertSignatures2(subscriptions));
+
 			process("APUNTSA1.00312-01-16.pdf", "APUNTSA1.00312-01-16_out.pdf", data)
 		}
 		
@@ -110,7 +121,17 @@ class PdfServiceTests {
 			data.putAll(this.data);
 			data.put("dataUmowy", ["10-05-2012"] as String[]);
 			data.putAll(prepareDccData())
-			data.putAll(insertSignatures(1, 85, 185, 74, 43))
+			//data.putAll(insertSignatures(1, 85, 185, 74, 43))
+
+            //NOT OK
+            def subscriptions = [
+                ["ACCEPTANT1", 3, 65, 595, 74, 43],
+                ["ACCEPTANT2", 3, 185, 595, 74, 43],
+                ["ZARZAD1", 3, 315, 595, 85, 58],
+                ["ZARZAD2", 3, 445, 595, 56, 58],
+                ["PH", 3, 455, 510, 74, 43]
+            ]
+            data.putAll(insertSignatures2(subscriptions))
 			process("APUPZAWNZBS1.00113-08-06 - Aneks do umowy o przyjm zapl (bez stawek plaskich).pdf", "APUPZAWNZBS1.00113-08-06 - Aneks do umowy o przyjm zapl (bez stawek plaskich)_out.pdf", data)
 		}
 		
@@ -126,7 +147,17 @@ class PdfServiceTests {
 			data.putAll(this.data);
 			data.put("dataUmowy", ["10-05-2012"] as String[]);
 			data.putAll(prepareDccData())
-			data.putAll(insertSignatures(1, 85, 185, 74, 43))
+//			data.putAll(insertSignatures(1, 85, 185, 74, 43))
+
+            def subscriptions = [
+                    ["ACCEPTANT1", 4, 70, 330, 74, 43],
+                    ["ACCEPTANT2", 4, 190, 330, 74, 43],
+                    ["ZARZAD1", 4, 320, 330, 85, 58],
+                    ["ZARZAD2", 4, 450, 330, 56, 58],
+                    ["PH", 4, 450, 230, 74, 43]
+            ]
+            data.putAll(insertSignatures2(subscriptions))
+
 			process("APUPZBS2.00113-08-06 - Umowa o przyjmowanie zaplaty (wersja bez stawek plaskich)_do druku.pdf", "APUPZBS2.00113-08-06 - Umowa o przyjmowanie zaplaty (wersja bez stawek plaskich)_do druku_out.pdf", data)
 		}
 		
@@ -134,7 +165,7 @@ class PdfServiceTests {
 			String outFile =  "APUPZBS2.00113-08-06 - Umowa o przyjmowanie zaplaty (wersja bez stawek plaskich)_do druku_out2.pdf"
 			data.put("podpis", [new File(getTemplatePath()+"signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
 			process("APUPZBS2.00113-08-06 - Umowa o przyjmowanie zaplaty (wersja bez stawek plaskich)_do druku.pdf", outFile, data);
-			processToImage(outFile, 1)
+			processToImage(outFile, 6)
 		}
 		
 		void testAPUPZIFX() {
@@ -142,8 +173,19 @@ class PdfServiceTests {
 			data.putAll(this.data);
 			data.put("dataUmowy", ["10-05-2012"] as String[]);
 			data.putAll(prepareDccData())
-			data.putAll(insertSignatures(1, 85, 185, 74, 43))
-			process("APUPZIF2.00113-08-06 - Umowa o przyjmowanie zaplaty IF+_2013.pdf", "APUPZIF2.00113-08-06 - Umowa o przyjmowanie zaplaty IF+_2013_out.pdf", data)
+
+            //NOT OK
+            def subscriptions = [
+                    ["ACCEPTANT1", 4, 80, 335, 74, 43],
+                    ["ACCEPTANT2", 4, 200, 335, 74, 43],
+                    ["ZARZAD1", 4, 330, 335, 85, 58],
+                    ["ZARZAD2", 4, 460, 335, 56, 58],
+                    ["PH", 4, 455, 230, 74, 43]
+            ]
+            data.putAll(insertSignatures2(subscriptions))
+
+
+            process("APUPZIF2.00113-08-06 - Umowa o przyjmowanie zaplaty IF+_2013.pdf", "APUPZIF2.00113-08-06 - Umowa o przyjmowanie zaplaty IF+_2013_out.pdf", data)
 		}
 		
 		void testAPUPZIFXToImage() {
@@ -158,7 +200,16 @@ class PdfServiceTests {
 			data.putAll(this.data);
 			data.put("dataUmowy", ["10-05-2012"] as String[]);
 			data.putAll(prepareDccData())
-			data.putAll(insertSignatures(1, 85, 185, 74, 43))
+
+            // NOT OK
+            def subscriptions = [
+                    ["ACCEPTANT1", 2, 80, 460, 74, 43],
+                    ["ACCEPTANT2", 2, 200, 460, 74, 43],
+                    ["ZARZAD1", 2, 330, 460, 85, 58],
+                    ["ZARZAD2", 2, 460, 460, 56, 58],
+                    ["PH", 2, 450, 360, 74, 43]
+            ]
+            data.putAll(insertSignatures2(subscriptions))
 			process("APUPZIF2.00213-08-06_Aneks na IF+ i IKO.pdf", "APUPZIF2.00213-08-06_Aneks na IF+ i IKO_out.pdf", data)
 		}
 		
@@ -170,7 +221,7 @@ class PdfServiceTests {
 		}
 		
 	// --------------- podstawowe dokumenty 
-			
+
 	void testAPUNTSS() { //gotowe
 		HashMap<String, String[]> data = new HashMap<String, String[]>();
 		data.putAll(this.data);
@@ -189,13 +240,16 @@ class PdfServiceTests {
 		data.put("obslugaEkonomiczny", ["true", "", "checkbox"] as String[]);
 		data.put("obslugaEkonomicznyCena", ["153"] as String[]);
 		data.putAll(preparePunktyData())
-		//	data.put("reprezentant1_podpis", [new File(getTemplatePath()+"signature1.jpg").toURI().toURL(), "", "signature", "4", "65", "165", "74", "43"] as String[]);
-		//  data.put("reprezentant2_podpis", [new File(getTemplatePath()+"signature2.jpg").toURI().toURL(), "", "signature", "4", "185", "165", "74", "43"] as String[]);
-		//	data.put("zarzad1_podpis", [new File(getTemplatePath()+"signature4.jpg").toURI().toURL(), "", "signature", "4", "305", "165", "85", "56"] as String[]);
-		//  data.put("zarzad2_podpis", [new File(getTemplatePath()+"signature5.jpg").toURI().toURL(), "", "signature", "4", "435", "165", "58", "59"] as String[]);
-		//	process("APUNTSS1.00312-01-16.pdf", "APUNTSS1.00312-01-16_out.pdf", data)
 
-		data.putAll(insertSignatures(4, 65, 165, 74, 43))
+        def subscriptions = [
+                ["ACCEPTANT1", 2, 80, 460, 74, 43],
+                ["ACCEPTANT2", 2, 200, 460, 74, 43],
+                ["ZARZAD1", 2, 330, 460, 85, 58],
+                ["ZARZAD2", 2, 460, 460, 56, 58],
+                ["PH", 2, 450, 360, 74, 43]
+        ]
+        data.putAll(insertSignatures2(subscriptions))
+
 		process("APUNTSS1.00312-01-16.pdf", "APUNTSS1.00312-01-16_out.pdf", data)
 
 	}
@@ -226,7 +280,16 @@ class PdfServiceTests {
 		data.put("oplataPOSD", ["50"] as String[]);
 		data.put("oplataPOSE", ["50"] as String[]);
 		data.putAll(prepareZestawPosOdplatneUzywanieData())
-		data.putAll(insertSignatures(1, 85, 288, 74, 43))
+        //NOT OK
+        def subscriptions = [
+                ["ACCEPTANT1", 1, 85, 288, 74, 43],
+                ["ACCEPTANT2", 1, 205, 288, 74, 43],
+                ["ZARZAD1", 1, 335, 288, 85, 58],
+                ["ZARZAD2", 1, 465, 288, 56, 58],
+                ["PH", 1, 444, 163, 74, 43]
+        ]
+        data.putAll(insertSignatures2(subscriptions))
+
 		process("APUNTSZAPOO3.00212-01-16.pdf", "APUNTSZAPOO3.00212-01-16_out.pdf", data)
 	}
 	
@@ -237,7 +300,103 @@ class PdfServiceTests {
 		processToImage(outFile, 1)
 	}
 
-	void testAPUNTSZAPOU() { //gotowe
+    // New version
+    void testAPUNTSZAPOO2() { //gotowe
+        HashMap<String, String[]> data = new HashMap<String, String[]>();
+        data.putAll(this.data);
+        data.put("dataPoczatkuUzywaniaPOZ", ["11.02.1998"] as String[]);
+        data.put("dataKoncaUzywaniaPOZ", ["11.01.1998"] as String[]);
+        data.put("numerPOSA", ["10"] as String[]);
+        data.put("numerPOSB", ["20"] as String[]);
+        data.put("numerPOSC", ["30"] as String[]);
+        data.put("numerPOSD", ["40"] as String[]);
+        data.put("numerPOSE", ["50"] as String[]);
+
+        data.put("oplataPOSA", ["50"] as String[]);
+        data.put("oplataPOSB", ["50"] as String[]);
+        data.put("oplataPOSC", ["50"] as String[]);
+        data.put("oplataPOSD", ["50"] as String[]);
+        data.put("oplataPOSE", ["50"] as String[]);
+        data.put("okresLojalnosciowy", ["4"] as String[]);
+        data.putAll(prepareZestawPosOdplatneUzywanieData())
+        //NOT OK
+        def subscriptions = [
+                ["ACCEPTANT1", 1, 85, 200, 74, 43],
+                ["ACCEPTANT2", 1, 205, 200, 74, 43],
+                ["ZARZAD1", 1, 335, 200, 85, 58],
+                ["ZARZAD2", 1, 465, 200, 56, 58],
+                ["PH", 1, 444, 100, 74, 43]
+        ]
+        data.putAll(insertSignatures2(subscriptions))
+
+        process("APUNTSZAPOO3.000313-09-26-Aneks do Umowy najmu zestawu POS (okres promocyjny).pdf", "APUNTSZAPOO3.000313-09-26-Aneks do Umowy najmu zestawu POS (okres promocyjny)_out.pdf", data)
+    }
+
+    void testAPUNTSZAPOO2ToImage() {
+        String outFile =  "APUNTSZAPOO3.000313-09-26-Aneks do Umowy najmu zestawu POS (okres promocyjny)_out2.pdf"
+        def subscriptions = [
+                ["ACCEPTANT1", 1, 85, 200, 74, 43],
+                ["ACCEPTANT2", 1, 205, 200, 74, 43],
+                ["ZARZAD1", 1, 335, 200, 85, 58],
+                ["ZARZAD2", 1, 465, 200, 56, 58],
+                ["PH", 1, 444, 100, 74, 43]
+        ]
+        data.putAll(insertSignatures2(subscriptions))
+        process("APUNTSZAPOO3.000313-09-26-Aneks do Umowy najmu zestawu POS (okres promocyjny).pdf", outFile, data);
+        processToImage(outFile, 1)
+    }
+
+
+    void testAPUNTSZOOL() { //gotowe
+        HashMap<String, String[]> data = new HashMap<String, String[]>();
+        data.putAll(this.data);
+        data.put("dataPoczatkuUzywaniaPOZ", ["11.02.1998"] as String[]);
+        data.put("dataKoncaUzywaniaPOZ", ["11.01.1998"] as String[]);
+        data.put("numerPOSA", ["10"] as String[]);
+        data.put("numerPOSB", ["20"] as String[]);
+        data.put("numerPOSC", ["30"] as String[]);
+        data.put("numerPOSD", ["40"] as String[]);
+        data.put("numerPOSE", ["50"] as String[]);
+
+        data.put("oplataPOSA", ["50"] as String[]);
+        data.put("oplataPOSB", ["50"] as String[]);
+        data.put("oplataPOSC", ["50"] as String[]);
+        data.put("oplataPOSD", ["50"] as String[]);
+        data.put("oplataPOSE", ["50"] as String[]);
+        data.put("okresLojalnosciowy", ["4"] as String[]);
+        data.putAll(prepareZestawPosOdplatneUzywanieData())
+        //NOT OK
+        def subscriptions = [
+                ["ACCEPTANT1", 1, 85, 300, 74, 43],
+                ["ACCEPTANT2", 1, 205, 300, 74, 43],
+                ["ZARZAD1", 1, 335, 300, 85, 58],
+                ["ZARZAD2", 1, 465, 300, 56, 58],
+                ["PH", 1, 465, 173, 74, 43]
+        ]
+        data.putAll(insertSignatures2(subscriptions))
+
+        process("APUNTSZOOL1.00013-09-26-Aneks do Umowy najmu zestawu POS (odnowienie okres lojaln.).pdf", "APUNTSZOOL1.00013-09-26-Aneks do Umowy najmu zestawu POS (odnowienie okres lojaln.).pdf", data)
+    }
+
+    void testAPUNTSZAOOLToImage() {
+        String outFile =  "APUNTSZOOL1.00013-09-26-Aneks do Umowy najmu zestawu POS (odnowienie okres lojaln.)_out2.pdf"
+        def subscriptions = [
+                ["ACCEPTANT1", 1, 85, 300, 74, 43],
+                ["ACCEPTANT2", 1, 205, 300, 74, 43],
+                ["ZARZAD1", 1, 335, 300, 85, 58],
+                ["ZARZAD2", 1, 465, 300, 56, 58],
+                ["PH", 1, 465, 173, 74, 43]
+        ]
+        data.putAll(insertSignatures2(subscriptions))
+        process("APUNTSZOOL1.00013-09-26-Aneks do Umowy najmu zestawu POS (odnowienie okres lojaln.).pdf", outFile, data);
+        processToImage(outFile, 1)
+    }
+
+
+
+
+
+    void testAPUNTSZAPOU() { //gotowe
 		HashMap<String, String[]> data = new HashMap<String, String[]>();
 		data.putAll(this.data);
 
@@ -270,8 +429,17 @@ class PdfServiceTests {
 		data.put("utaTN4", ["NIE"] as String[]);
 //        data.put("crossAdditional", ['_______________'] as String[])
         data.put("crossNew", ['______'] as String[])
-		data.putAll(insertSignatures(2, 85, 395, 74, 43))
-		process("APUNTSZAPOU3.00212-01-16_new.pdf", "APUNTSZAPOU3.00212-01-16_out.pdf", data)
+        //NOT OK
+        def subscriptions = [
+                ["ACCEPTANT1", 2, 85, 395, 74, 43],
+                ["ACCEPTANT2", 2, 205, 395, 74, 43],
+                ["ZARZAD1", 2, 335, 395, 85, 58],
+                ["ZARZAD2", 2, 465, 395, 56, 58],
+                ["PH", 2, 455, 275, 74, 43]
+        ]
+        data.putAll(insertSignatures2(subscriptions))
+
+		process("APUNTSZAPOU3.00212-01-16.pdf", "APUNTSZAPOU3.00212-01-16_out.pdf", data)
 	}
 	
 	void testAPUNTSZAPOUToImage() {
@@ -281,6 +449,69 @@ class PdfServiceTests {
 		processToImage(outFile, 1)
 	}
 
+
+    void testAPUNTSZAPOU2() { //gotowe
+        HashMap<String, String[]> data = new HashMap<String, String[]>();
+        data.putAll(this.data);
+
+        data.putAll(prepareZestawPosOdplatneUzywanieData());
+
+        data.put("wydrukGrafikiCena", ["53"] as String[]);
+        data.put("dzialaniaMatematyczneCena", ["53"] as String[]);
+        data.put("systemKasowyCena", ["53"] as String[]);
+        data.put("pierwszaSesjaCena", ["53"] as String[]);
+        data.put("weryfikacjaPINCena", ["53"] as String[]);
+        data.put("punktAkceptacjaKart1", ["To jest pełna czterdziestoczteroliterowa naz"] as String[]);
+        data.put("adresAkceptacjaKart1", ["1234567890123456789012345678901234567890123456789012345"] as String[]);
+        data.put("punktAkceptacjaKart2", ["Pompeczki"] as String[]);
+        data.put("adresAkceptacjaKart2", ["Kaszubska 2"] as String[]);
+        data.put("punktAkceptacjaKart3", ["Orencz"] as String[]);
+        data.put("adresAkceptacjaKart3", ["Pomarańczowa 11"] as String[]);
+        data.put("punktAkceptacjaKart4", ["Timobajl"] as String[]);
+        data.put("adresAkceptacjaKart4", ["Rózowa 1"] as String[]);
+        data.put("platnoscTN1", ["TAK"] as String[]);
+        data.put("platnoscTN2", ["NIE"] as String[]);
+        data.put("platnoscTN3", ["NIE"] as String[]);
+        data.put("platnoscTN4", ["TAK"] as String[]);
+        data.put("integracjaTN1", ["TAK"] as String[]);
+        data.put("integracjaTN2", ["TAK"] as String[]);
+        data.put("integracjaTN3", ["NIE"] as String[]);
+        data.put("integracjaTN4", ["TAK"] as String[]);
+        data.put("utaTN1", ["NIE"] as String[]);
+        data.put("utaTN2", ["NIE"] as String[]);
+        data.put("utaTN3", ["NIE"] as String[]);
+        data.put("utaTN4", ["NIE"] as String[]);
+//        data.put("crossAdditional", ['_______________'] as String[])
+        data.put("crossNew", ['______'] as String[])
+        data.put("okresLojalnosciowy", ['3'] as String[])
+        //NOT OK
+        def subscriptions = [
+                ["ACCEPTANT1", 2, 85, 255, 74, 43],
+                ["ACCEPTANT2", 2, 205, 255, 74, 43],
+                ["ZARZAD1", 2, 335, 255, 85, 58],
+                ["ZARZAD2", 2, 465, 255, 56, 58],
+                ["PH", 2, 455, 110, 74, 43]
+        ]
+        data.putAll(insertSignatures2(subscriptions))
+
+        process("APUNTSZAPOU3.00313-09-26-Aneks do umowy najmu zestawu POS (rozszerz wspolpr i nowe usl).pdf", "APUNTSZAPOU3.00313-09-26-Aneks do umowy najmu zestawu POS (rozszerz wspolpr i nowe usl)_out.pdf", data)
+    }
+
+    void testAPUNTSZAPOU2ToImage() {
+        String outFile =  "APUNTSZAPOU3.00313-09-26-Aneks do umowy najmu zestawu POS (rozszerz wspolpr i nowe usl)_out2.pdf"
+//        data.put("podpis", [new File(getTemplatePath()+"signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
+        def subscriptions = [
+                ["ACCEPTANT1", 2, 85, 255, 74, 43],
+                ["ACCEPTANT2", 2, 205, 255, 74, 43],
+                ["ZARZAD1", 2, 335, 255, 85, 58],
+                ["ZARZAD2", 2, 465, 255, 56, 58],
+                ["PH", 2, 455, 110, 74, 43]
+        ]
+        data.putAll(insertSignatures2(subscriptions))
+        process("APUNTSZAPOU3.00313-09-26-Aneks do umowy najmu zestawu POS (rozszerz wspolpr i nowe usl).pdf", outFile, data);
+        processToImage(outFile, 2)
+    }
+
 	void testAPUNTSZAWNZ() { //gotowe
 		HashMap<String, String[]> data = new HashMap<String, String[]>();
 		data.putAll(this.data);
@@ -288,6 +519,17 @@ class PdfServiceTests {
 		data.putAll(prepareDodatkoweUslugiData())
 
 		data.putAll(insertSignatures(1, 85, 370, 74, 43))
+
+        //NOT OK
+        def subscriptions = [
+                ["ACCEPTANT1", 1, 85, 370, 74, 43],
+                ["ACCEPTANT2", 1, 205, 370, 74, 43],
+                ["ZARZAD1", 1, 335, 370, 85, 58],
+                ["ZARZAD2", 1, 465, 370, 56, 58],
+                ["PH", 1, 457, 206, 74, 43]
+        ]
+        data.putAll(insertSignatures2(subscriptions))
+
 		process("APUNTSZAWNZ3.00212-01-16.pdf", "APUNTSZAWNZ3.00212-01-16_out.pdf", data)
 	}
 	
@@ -304,7 +546,16 @@ class PdfServiceTests {
 		data.put("walutaObcaCena", ["40"] as String[]);
 		data.put("mudCena", ["510"] as String[]);
 		data.put("oplataZaUruchomienieWalutyObcej", ["50"] as String[]);
-		data.putAll(insertSignatures(1, 85, 280, 74, 43))
+//		data.putAll(insertSignatures(1, 85, 280, 74, 43))
+
+        def subscriptions = [
+                ["ACCEPTANT1", 1, 85, 280, 74, 43],
+                ["ACCEPTANT2", 1, 205, 280, 74, 43],
+                ["ZARZAD1", 1, 335, 280, 85, 58],
+                ["ZARZAD2", 1, 465, 280, 56, 58],
+                ["PH", 1, 460, 168, 74, 43],
+        ]
+        data.putAll(insertSignatures2(subscriptions))
 		process("APUNTSZDCC2.00212-01-16.pdf", "APUNTSZDCC2.00212-01-16_out.pdf", data)
 	}
 	
@@ -321,7 +572,17 @@ class PdfServiceTests {
 		data.put("walutaObcaCena", ["40"] as String[]);
 		data.put("mudCena", ["510"] as String[]);
 		data.put("oplataZaUruchomienieWalutyObcej", ["50"] as String[]);
-		data.putAll(insertSignatures(1, 85, 260, 74, 43))
+//		data.putAll(insertSignatures(1, 85, 260, 74, 43))
+
+        def subscriptions = [
+                ["ACCEPTANT1", 1, 85, 260, 74, 43],
+                ["ACCEPTANT2", 1, 205, 260, 74, 43],
+                ["ZARZAD1", 1, 335, 260, 85, 58],
+                ["ZARZAD2", 1, 465, 260, 56, 58],
+                ["PH", 1, 458, 145, 74, 43]
+        ]
+        data.putAll(insertSignatures2(subscriptions))
+
 		process("APUNTSZDCCZ1 00112-10-05_Aneks do UN_DCC zmiana warunkow.pdf", "APUNTSZDCCZ1 00112-10-05_Aneks do UN_DCC zmiana warunkow_out.pdf", data)
 	}
 	
@@ -336,7 +597,15 @@ class PdfServiceTests {
 		HashMap<String, String[]> data = new HashMap<String, String[]>();
 		data.putAll(this.data);
 		data.put("okresLojalnosciowy", ["3"] as String[]);
-		data.putAll(insertSignatures(1, 85, 250, 74, 43))
+
+        def subscriptions = [
+                ["ACCEPTANT1", 1, 85, 250, 74, 43],
+                ["ACCEPTANT2", 1, 205, 250, 74, 43],
+                ["ZARZAD1", 1, 335, 250, 85, 58],
+                ["ZARZAD2", 1, 465, 250, 56, 58],
+                ["PH", 1, 455, 125, 74, 43]
+        ]
+        data.putAll(insertSignatures2(subscriptions))
 		process("APUNTSZOKOD2.00312-01-16.pdf", "APUNTSZOKOD2.00312-01-16_out.pdf", data)
 	}
 	
@@ -350,7 +619,15 @@ class PdfServiceTests {
 	void testAPUNTWAGOK() { //gotowe
 		HashMap<String, String[]> data = new HashMap<String, String[]>();
 		data.putAll(this.data);
-		data.putAll(insertSignatures(1, 85, 245, 74, 43))
+//		data.putAll(insertSignatures(1, 85, 245, 74, 43))
+        def subscriptions = [
+                ["ACCEPTANT1", 1, 85, 245, 74, 43],
+                ["ACCEPTANT2", 1, 205, 245, 74, 43],
+                ["ZARZAD1", 1, 335, 245, 85, 58],
+                ["ZARZAD2", 1, 465, 245, 56, 58],
+                ["PH", 1, 455, 105, 74, 43]
+        ]
+        data.putAll(insertSignatures2(subscriptions))
 		process("APUNTWAGOK1.00212-01-16.pdf", "APUNTWAGOK1.00212-01-16_out.pdf", data)
 	}
 	
@@ -365,7 +642,16 @@ class PdfServiceTests {
 		HashMap<String, String[]> data = new HashMap<String, String[]>();
 		data.put("czasObslugiCena", ["3"] as String[]);
 		data.putAll(this.data);
-		data.putAll(insertSignatures(1, 85, 235, 74, 43))
+//		data.putAll(insertSignatures(1, 85, 235, 74, 43))
+        def subscriptions = [
+                ["ACCEPTANT1", 1, 85, 235, 74, 43],
+                ["ACCEPTANT2", 1, 205, 235, 74, 43],
+                ["ZARZAD1", 1, 335, 235, 85, 58],
+                ["ZARZAD2", 1, 465, 235, 56, 58],
+                ["PH", 1, 460, 96, 74, 43]
+        ]
+        data.putAll(insertSignatures2(subscriptions))
+
 		process("APUNTWAGON1.00212-01-16.pdf", "APUNTWAGON1.00212-01-16_out.pdf", data)
 	}
 	
@@ -379,7 +665,15 @@ class PdfServiceTests {
 	void testAPUNTWAGOP() { //gotowe
 		HashMap<String, String[]> data = new HashMap<String, String[]>();
 		data.putAll(this.data);
-		data.putAll(insertSignatures(1, 80, 245, 74, 43))
+
+        def subscriptions = [
+                ["ACCEPTANT1", 1, 80, 245, 74, 43],
+                ["ACCEPTANT2", 1, 200, 245, 74, 43],
+                ["ZARZAD1", 1, 330, 245, 85, 58],
+                ["ZARZAD2", 1, 460, 245, 56, 58],
+                ["PH", 1, 455, 105, 74, 43],
+        ]
+        data.putAll(insertSignatures2(subscriptions))
 		process("APUNTWAGOP1.00212-01-16.pdf", "APUNTWAGOP1.00212-01-16_out.pdf", data)
 	}
 	
@@ -394,7 +688,17 @@ class PdfServiceTests {
 		HashMap<String, String[]> data = new HashMap<String, String[]>();
 		data.putAll(this.data);
 		data.putAll(generateDataPodpisaniaAneksuPOZField())
-		data.putAll(insertSignatures(1, 85, 225, 74, 43))
+//		data.putAll(insertSignatures(1, 85, 225, 74, 43))
+
+        def subscriptions = [
+                ["ACCEPTANT1", 1, 85, 225, 74, 43],
+                ["ACCEPTANT2", 1, 205, 225, 74, 43],
+                ["ZARZAD1", 1, 335, 225, 85, 58],
+                ["ZARZAD2", 1, 465, 225, 56, 58],
+                ["PH", 1, 458, 62, 74, 43]
+        ]
+        data.putAll(insertSignatures2(subscriptions))
+
 		process("APUNTWANOD1.00312-01-16_Aneks do UN_zmiana Tabeli Oplat.pdf", "APUNTWANOD1.00312-01-16_Aneks do UN_zmiana Tabeli Oplat_out.pdf", data)
 	}
 	
@@ -435,7 +739,16 @@ class PdfServiceTests {
 		data.put("oplataZaInstalacjePOS", ["6575"] as String[]);
 		data.put("oplataZaInstalacjeGPRS", ["987"] as String[]);
 		data.put("oplataZaUruchomienieWalutyObcej", ["1345"] as String[]);
-		data.putAll(insertSignatures(4, 70, 165, 74, 43))
+		//data.putAll(insertSignatures(4, 70, 165, 74, 43))
+        //OK
+        def subscriptions = [
+                ["ACCEPTANT1", 4, 70, 165, 74, 43],
+                ["ACCEPTANT2", 4, 190, 165, 74, 43],
+                ["ZARZAD1", 4, 320, 165, 85, 58],
+                ["ZARZAD2", 4, 450, 165, 56, 58],
+                ["PH", 4, 447, 30, 74, 43]
+        ]
+        data.putAll(insertSignatures2(subscriptions))
 
 		// process("APUNTZ2.00312-01-16.pdf", "APUNTZ2.00312-01-16_out.pdf", result)
 		process("APUNTZ2.00312-01-16.pdf", "APUNTZ2.00312-01-16_out.pdf", data)
@@ -459,8 +772,17 @@ class PdfServiceTests {
 		data.put("srednia_sprzedaz_doladowan", ["450"] as String[]);
 		data.put("srednia_sprzedaz_doladowan_slownie", ["czterysta pięćdziesiąt"] as String[]);
 		data.putAll(preparePoziomOplatIWarunkiPlatnosciData())
-		data.putAll(insertSignatures(2, 80, 545, 74, 43))
+		//data.putAll(insertSignatures(2, 80, 545, 74, 43))
 		//	process("ATUSUFDU4.004.130522.pdf", "ATUSUFDU4.004.130522_out.pdf", result)
+
+        def subscriptions = [
+                ["ACCEPTANT1", 2, 80, 545, 74, 43],
+                ["ACCEPTANT2", 2, 200, 545, 74, 43],
+                ["ZARZAD1", 2, 330, 545, 85, 58],
+                ["ZARZAD2", 2, 460, 545, 56, 58],
+                ["PH", 2, 450, 395, 74, 43]
+        ]
+        data.putAll(insertSignatures2(subscriptions))
 		process("ATUSUFDU4.004.130522.pdf", "ATUSUFDU4.004.130522_out.pdf", data)
 	}
 	
@@ -474,8 +796,18 @@ class PdfServiceTests {
 	void testAPUPZBSAIKO() {
 		HashMap<String, String[]> result = new HashMap<String, String[]>();
 		data.putAll(this.data);
-		data.putAll(insertSignatures(1, 70, 155, 74, 43))
-		result.put("reprezentant1_podpis", [new File(getTemplatePath()+"signature1.jpg").toURI().toURL(), "", "signature", "1", "700", "150", "74", "43"] as String[]);
+//		data.putAll(insertSignatures(1, 70, 155, 74, 43))
+
+        def subscriptions = [
+                ["ACCEPTANT1", 1, 70, 155, 74, 43],
+                ["ACCEPTANT2", 1, 190, 155, 74, 43],
+                ["ZARZAD1", 1, 320, 155, 85, 58],
+                ["ZARZAD2", 1, 450, 155, 56, 58],
+                ["PH", 1, 450, 60, 74, 43]
+        ]
+        data.putAll(insertSignatures2(subscriptions))
+
+//		result.put("reprezentant1_podpis", [new File(getTemplatePath()+"signature1.jpg").toURI().toURL(), "", "signature", "1", "700", "150", "74", "43"] as String[]);
 		// process("APUPZBSAIKO1.00013-03-25 - Aneks IKO.pdf", "APUPZBSAIKO1.00013-03-25 - Aneks IKO_out.pdf", result)
 		process("APUPZBSAIKO1.00013-03-25 - Aneks IKO.pdf", "APUPZBSAIKO1.00013-03-25 - Aneks IKO_out.pdf", data)
 	}
@@ -490,10 +822,21 @@ class PdfServiceTests {
 	//----------------------------------------------------------------------------------------
 
 	void testAPUPZ2ACB() {
+        // brak dokumentu
 		HashMap<String, String[]> data = new HashMap<String, String[]>();
 		data.putAll(this.data);
 //		data.putAll(insertSignatures(2, 80, 145, 74, 43))
-        data.putAll(insertDirectSignature(2, 445, 40, 74, 43))
+//        data.putAll(insertDirectSignature(2, 445, 40, 74, 43))
+
+        // OK
+        def subscriptions = [
+                ["ACCEPTANT1", 2, 80, 145, 74, 43],
+                ["ACCEPTANT2", 2, 200, 145, 74, 43],
+                ["ZARZAD1", 2, 330, 145, 85, 58],
+                ["ZARZAD2", 2, 460, 145, 56, 58],
+                ["PH", 2, 445, 40, 74, 43]
+        ]
+        data.putAll(insertSignatures2(subscriptions))
 		process("APUPZ2ACB1.00013-02-15 - Aneks do Umowy o przyjm po 2013 r (wprow Cashback).pdf", "APUPZ2ACB1.00013-02-15 - Aneks do Umowy o przyjm po 2013 r (wprow Cashback)_out.pdf", data)
 	}
 	
@@ -505,11 +848,12 @@ class PdfServiceTests {
 	}
 
 	void testAPUPZ2DCC() {
+        // brak dokumentu
 		HashMap<String, String[]> data = new HashMap<String, String[]>();
 		data.putAll(this.data);
 		data.putAll(prepareDccData())
 		data.put("noweZestPos", ["true", "", "checkbox"] as String[]);
-		data.put("obecneZestPos", ["true", "", "checkbox"] as String[]);
+		//data.put("obecneZestPos", ["true", "", "checkbox"] as String[]);
 		data.put("phu", ["true", "", "checkbox"] as String[]);
 		data.put("punktZakresUruchomienia1", ["Kodziki"] as String[]);
 		data.put("adresZakresUruchomienia1", ["Wąwozowa 7"] as String[]);
@@ -517,7 +861,18 @@ class PdfServiceTests {
 		data.put("adresZakresUruchomienia2", ["Kaszubska 2"] as String[]);
 		data.put("pos1", ["7"] as String[]);
 		data.put("pos2", ["9"] as String[]);
-		data.putAll(insertSignatures(1, 85, 215, 74, 43))
+		//data.putAll(insertSignatures(1, 85, 215, 74, 43))
+
+        //NOT OK
+        def subscriptions = [
+            ["ACCEPTANT1", 1, 85, 230, 74, 43],
+            ["ACCEPTANT2", 1, 205, 230, 74, 43],
+            ["ZARZAD1", 1, 335, 230, 85, 58],
+            ["ZARZAD2", 1, 465, 230, 56, 58],
+            ["PH", 1, 443, 97, 74, 43]
+        ]
+
+        data.putAll(insertSignatures2(subscriptions))
 		process("APUPZ2DCC1.00013-02-15 - Aneks do Umowy o przyjm po 2013 r (wprow DCC).pdf", "APUPZ2DCC1.00013-02-15 - Aneks do Umowy o przyjm po 2013 r (wprow DCC)_out.pdf", data)
 	}
 	
@@ -529,9 +884,20 @@ class PdfServiceTests {
 	}
 
 	void testAPUPZACB() {
+        // brak dokumentu
 		HashMap<String, String[]> data = new HashMap<String, String[]>();
 		data.putAll(this.data);
-		data.putAll(insertSignatures(2, 85, 220, 74, 43))
+//		data.putAll(insertSignatures(2, 85, 220, 74, 43))
+
+        def subscriptions = [
+            ["ACCEPTANT1", 2, 85, 220, 74, 43],
+            ["ACCEPTANT2", 2, 205, 220, 74, 43],
+            ["ZARZAD1", 2, 335, 220, 85, 58],
+            ["ZARZAD2", 2, 465, 220, 56, 58],
+            ["PH", 2, 445, 105, 74, 43]
+        ]
+        data.putAll(insertSignatures2(subscriptions))
+
 		process("APUPZACB2.00313-02-15 - Aneks do Umowy o przyjm zapl (dod Cashback).pdf", "APUPZACB2.00313-02-15 - Aneks do Umowy o przyjm zapl (dod Cashback)_out.pdf", data)
 	}
 
@@ -543,6 +909,7 @@ class PdfServiceTests {
 	}
 	
 	void testAPUPZAWNZBS() {
+        // brak dokumentu
 		HashMap<String, String[]> data = new HashMap<String, String[]>();
 		data.putAll(this.data);
 
@@ -561,6 +928,7 @@ class PdfServiceTests {
 	}
 
 	void testAPUPZAWNZS() {
+        // brak dokumentu
 		HashMap<String, String[]> data = new HashMap<String, String[]>();
 		data.putAll(this.data);
 		data.putAll(preparePunktyData())
@@ -577,6 +945,7 @@ class PdfServiceTests {
 	}
 		
 	void testAPUPZBS() {
+        //brak dokumentu - stara wersja??
 		HashMap<String, String[]> data = new HashMap<String, String[]>();
 		data.putAll(this.data);
 		data.putAll(prepareAggrementsFields())
@@ -611,9 +980,16 @@ class PdfServiceTests {
 		data.put("numerRachunkuBankowegoKlienta", ["33333333333333"] as String[]);
 		data.put("bankKlienta", ["33333333333333"] as String[]);
 		data.put("miejsceUmowy", ["Kurniki Podlaskie"] as String[]);
-		data.putAll(insertSignatures(3, 80, 580, 74, 43))
-		data.put("reprezentant1_podpis_gora", [new File(getTemplatePath()+"signature1.jpg").toURI().toURL(), "", "signature", 7, 360, 432, 74, 43] as String[]);
-		data.put("reprezentant1_podpis_dol", [new File(getTemplatePath()+"signature1.jpg").toURI().toURL(), "", "signature", 7, 360, 50, 74, 43] as String[]);
+
+        def subscriptions = [
+                ["ACCEPTANT1", 3, 80, 580, 74, 43],
+                ["ACCEPTANT2", 3, 200, 580, 74, 43],
+                ["ZARZAD1", 3, 330, 580, 85, 58],
+                ["ZARZAD2", 3, 460, 580, 56, 58],
+                ["PH", 3, 450, 464, 74, 43]
+        ]
+        data.putAll(insertSignatures2(subscriptions))
+
 		process("ATUSU5.00413-05-22.pdf", "ATUSU5.00413-05-22_out.pdf", data)
 	}
 
@@ -625,6 +1001,7 @@ class PdfServiceTests {
 	}
 	
 	void testAPUPZIF() {
+        // to chyba stary dokument jest; jeszcze nie obrobiony
 		HashMap<String, String[]> data = new HashMap<String, String[]>();
 		data.putAll(this.data);
 		data.putAll(prepareDccData())
@@ -641,6 +1018,7 @@ class PdfServiceTests {
 	}
 
 	void testAPUPZIF2() {
+        // to chyba stary dokument jest; jeszcze nie obrobiony
 		HashMap<String, String[]> data = new HashMap<String, String[]>();
 		data.putAll(this.data);
 		data.putAll(prepareAggrementsFields())
@@ -680,7 +1058,16 @@ class PdfServiceTests {
 		data.put("punkt3", ["SuperTele"] as String[]);
 		data.put("adres3", ["Parówkowa"] as String[]);
 		data.put("pos3", ["9999"] as String[]);
-		data.putAll(insertSignatures(1, 80, 240, 74, 43))
+//		data.putAll(insertSignatures(1, 80, 240, 74, 43))
+        //OK
+        def subscriptions = [
+                ["ACCEPTANT1", 1, 80, 240, 74, 43],
+                ["ACCEPTANT2", 1, 200, 240, 74, 43],
+                ["ZARZAD1", 1, 330, 240, 85, 58],
+                ["ZARZAD2", 1, 460, 240, 56, 58],
+                ["PH", 1, 440, 105, 74, 43]
+        ]
+        data.putAll(insertSignatures2(subscriptions))
 		process("APUPZDCC2.00313-02-15 - Aneks do Umowy o przyjm zapl (wprow DCC).pdf", "APUPZDCC2.00313-02-15 - Aneks do Umowy o przyjm zapl (wprow DCC)_out.pdf", data)
 	}
 	
@@ -696,7 +1083,16 @@ class PdfServiceTests {
 		data.putAll(this.data);
 		data.put("zalNumer", ["6"] as String[]);
 		data.putAll(prepareDccData())
-		data.putAll(insertSignatures(1, 85, 185, 74, 43))
+//		data.putAll(insertSignatures(1, 85, 185, 74, 43))
+        def subscriptions = [
+                ["ACCEPTANT1", 1, 85, 185, 74, 43],
+                ["ACCEPTANT2", 1, 205, 185, 74, 43],
+                ["ZARZAD1", 1, 335, 185, 85, 58],
+                ["ZARZAD2", 1, 465, 185, 56, 58],
+                ["PH", 1, 440, 70, 74, 43]
+        ]
+
+        data.putAll(insertSignatures2(subscriptions))
 		process("APUPZDCCZ1.00213-02-15 - Aneks do Umowy o przyjm zapl. (zm. war. DCC).pdf", "APUPZDCCZ1.00213-02-15 - Aneks do Umowy o przyjm zapl. (zm. war. DCC)_out.pdf", data)
 	}
 	
@@ -718,7 +1114,17 @@ class PdfServiceTests {
 
 		data.put("umowaNieOzn", ["true", "", "checkbox"] as String[]);
 		data.put("umowaOzn", ["true", "", "checkbox"] as String[]);
-		data.putAll(insertSignatures(4, 90, 308, 74, 43))
+//		data.putAll(insertSignatures(4, 90, 308, 74, 43))
+
+        //NOT OK
+        def subscriptions = [
+            ["ACCEPTANT1", 4, 90, 308, 74, 43],
+            ["ACCEPTANT2", 4, 210, 308, 74, 43],
+            ["ZARZAD1", 4, 340, 308, 85, 58],
+            ["ZARZAD2", 4, 470, 308, 56, 58],
+            ["PH", 4, 458, 188, 74, 43]
+        ]
+        data.putAll(insertSignatures2(subscriptions))
 		process("APUPZ2.00013-01-03 - Umowa o przyjmowanie zaplaty v. 2.000_z faksymile.pdf", "APUPZ2.00013-01-03 - Umowa o przyjmowanie zaplaty v. 2.000_z faksymile_out.pdf", data)
 	}
 	
@@ -733,7 +1139,7 @@ class PdfServiceTests {
 	// ---------------------------------------------------------------------------------------
 	void testFormularzAplikacyjny() {
 		HashMap<String, String[]> data = generateFormularzAplikacyjnyFields();
-		data.put("podpis", [new File(getTemplatePath()+"signature1.jpg").toURI().toURL(), "", "signature", "1", "435", "15", "74", "43"] as String[]);
+		//data.put("podpis", [new File(getTemplatePath()+"signature1.jpg").toURI().toURL(), "", "signature", "1", "435", "15", "74", "43"] as String[]);
 		process("Formularz aplikacyjny_po_zmianach_18.01.2012.pdf", "Formularz aplikacyjny_po_zmianach_18.01.2012_out.pdf", data);
 	}
 	
@@ -769,10 +1175,53 @@ class PdfServiceTests {
 		processToImage(outFile, 1)
 	}
 
+    void testInteger(){
+        String value = "23"
+        if (value && value.isInteger()){
+            println 'Dla value: ' + value + ' zwracam: ' + String.valueOf(value.toInteger()+1)
+        } else {
+            println 'Dla value: ' + value + ' ustawiam na sztywno : 1'
+        }
+    }
+
 	void processToImage(pdfName, pageNumber) {
         log.info('processToImage - start')
 		PDDocument document = null
 		document = PDDocument.load(getTemplateOutPath()+pdfName)
+//
+////        String fp = getFontsPath()+"symbol.ttf";
+//
+//        String tp = getTemplatePath();
+//
+//        String fp = "C:\\projects\\eumowy\\otherResources\\pdf_templates\\fonts\\symbol.ttf"
+//
+//        println "Font paht:" + fp
+//        println "Template paht:" + tp
+//
+//        PDTrueTypeFont.loadTTF(document, fp);
+//
+//        List pages = document.getDocumentCatalog().getAllPages();
+//        for( int i=0; i<pages.size(); i++ ){
+//            PDPage page = (PDPage)pages.get( i );
+//
+//            PDResources resource = page.getResources();
+//            Map fonts = resource.getFonts();
+//
+//
+//
+//            resource.addFont()
+//
+//            Iterator keyIterator = fonts.keySet().iterator();
+//            Object key = null;
+//            PDSimpleFont font = null;
+//            System.out.println("Fonts list in page - " + i);
+//            while(keyIterator.hasNext()){
+//                key = keyIterator.next();
+//                font = (PDSimpleFont)fonts.get(key);
+//                System.out.println(key.toString() + " - " + font.getFontDescriptor().getFontName());
+//            }
+//        }
+
 		int resolution = 100
 		PDFImageWriter imageWriter = new PDFImageWriter()
 		boolean success = imageWriter.writeImage(document, "png", "",
@@ -808,9 +1257,26 @@ class PdfServiceTests {
 		return result;
 	}
 
+    private HashMap<String, String[]> insertSignatures2(def signatures){
+		HashMap<String, String[]> result = new HashMap<String, String[]>();
+        //["ACCEPTANT1", 4, 65, 165, 74, 43],
+
+        signatures.each{
+            def person = it.get(0);
+            def pageNo = it.get(1);
+            def x = it.get(2);
+            def y = it.get(3);
+            def scaleX = it.get(4);
+            def scaleY = it.get(5);
+
+            result.put(person, [new File(getTemplatePath()+File.separator+"subscriptions"+File.separator+"signature1.jpg").toURI().toURL(), "", "signature", pageNo, x, y, scaleX, scaleY] as String[])
+        }
+		return result;
+	}
+
     private HashMap<String, String[]> insertDirectSignature(int pageNo, int x, int y, int scaleX, int scaleY){
         HashMap<String, String[]> result = new HashMap<String, String[]>();
-        result.put("czyjs_podpis", [new File(getTemplatePath()+File.separator+"subscriptions"+File.separator+"signature3.jpg").toURI().toURL(), "", "signature", pageNo, x, y, scaleX, scaleY] as String[]);
+        result.put("czyjs_podpis" + random.nextInt(), [new File(getTemplatePath()+File.separator+"subscriptions"+File.separator+"signature3.jpg").toURI().toURL(), "", "signature", pageNo, x, y, scaleX, scaleY] as String[]);
         return result;
     }
 
