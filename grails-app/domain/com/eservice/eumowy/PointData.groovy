@@ -89,7 +89,7 @@ class PointData implements Serializable {
 	}
 	
 	def isLocal() {
-		return czyLokalny == true || (cbdId == null && pointDetails != null && StringUtils.isEmpty(pointDetails.phPozysk) != false && StringUtils.isEmpty(pointDetails.opiekaBiznesowa) != false)
+		return czyLokalny == true || (czyLokalny == null && cbdId == null && pointDetails != null && StringUtils.isEmpty(pointDetails.phPozysk) != false && StringUtils.isEmpty(pointDetails.opiekaBiznesowa) != false)
 	}
 	
 }
