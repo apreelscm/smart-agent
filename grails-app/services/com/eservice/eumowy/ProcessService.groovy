@@ -442,7 +442,7 @@ class ProcessService {
 				return
 			}*/
 			// Don't load POSes that are automatically created for points - this causes panel duplication
-			if (point.isLocal())
+			if (point.isLocal() == true)
 				return
 			
             point.posDatas?.each { PosData posData ->
@@ -946,7 +946,7 @@ class ProcessService {
             pc.properties.each { key, value ->
                 log.debug "PCProperties " + key + ": " + value
 				// Skip auto-mapping of isLocal value
-				if (key == "isLocal")
+				if (key == "czyLokalny")
 					return
 					
                 if (PointData.metaClass.respondsTo(PointData, "set" + key.capitalize())) {

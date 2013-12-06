@@ -371,4 +371,8 @@ class PointCommand extends BaseCommand {
 		
 		parentPosId(nullable:true)
 	}
+	
+	def isChildCopy() {
+		return parentPosId != null
+	}
 }
