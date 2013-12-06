@@ -1,19 +1,19 @@
 jQuery(function($){
-    jQuery.datepicker.regional['pl'] = {
+    $.datepicker.regional['pl'] = {
         closeText: 'Zakończ',
         prevText: 'Poprz.',
         nextText: 'Nast.',
         currentText: 'Dziś',
-        monthNames: ['Styczeń','Luty','Marzec','Kwiecień','Maj','Czerwiec', 'Lipiec', 'Sierpień', 'Wrzesień', 'Październik', 'Listopad', 'Grudzień'],
-        monthNamesShort: ['Sty', 'Lut', 'Marz', 'Kwie', 'Maj', 'Czerw', 'Lip', 'Sie', 'Wrze', 'Paź', 'Lis', 'Gru'],
-        dayNames: ['Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek', 'Sobota', 'Niedziela'],
-        dayNamesShort: ['Pon', 'Wt', 'Śr', 'Czw', 'Pt', 'Sob', 'Nd'],
-        dayNamesMin: ['Pn', 'Wt', 'Śr', 'Cz', 'Pt', 'Sb', 'Nd'],
+        monthNames: ['Styczeń','Luty','Marzec','Kwiecień','Maj','Czerwiec','Lipiec','Sierpień','Wrzesień','Październik','Listopad','Grudzień'],
+        monthNamesShort: ['Sty','Lut','Marz','Kwie','Maj','Czerw','Lip','Sie','Wrze','Paź','Lis','Gru'],
+        dayNames: ['Niedziela','Poniedzialek','Wtorek','Środa','Czwartek','Piątek','Sobota'],
+        dayNamesShort: ['Nie','Pn','Wt','Śr','Czw','Pt','So'],
+        dayNamesMin: ['N','Pn','Wt','Śr','Cz','Pt','So'],
         weekHeader: 'Tydz',
-        dateFormat: 'dd/mm/yy',
-        firstDay: 0,
+        dateFormat: 'yy-mm-dd',
+        firstDay: 1,
         isRTL: false,
         showMonthAfterYear: false,
         yearSuffix: ''};
-    jQuery.datepicker.setDefaults($.datepicker.regional['pl']);
+    $.datepicker.setDefaults($.datepicker.regional['pl']);
 });
