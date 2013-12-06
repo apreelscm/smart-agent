@@ -1,5 +1,6 @@
 package com.eservice.eumowy
 
+import org.apache.commons.lang.StringUtils
 import org.apache.log4j.Logger
 
 class PointData implements Serializable {
@@ -21,6 +22,7 @@ class PointData implements Serializable {
 	Boolean systemKasowy
 	Boolean uta
 	Boolean czyWybranyAkceptacjaKart
+	Boolean czyLokalny
 	
 	List<PosData> posDatas
 	
@@ -50,6 +52,7 @@ class PointData implements Serializable {
         czyWybranyZakresUruchomienia column: "is_selected_range"
 		nazwa column: "name"
 		cbdId column: "cbd_id"
+		czyLokalny column: "is_local"
 	}
 	
 	static constraints = {
@@ -69,6 +72,7 @@ class PointData implements Serializable {
 		uta(nullable:true)
         czyWybranyAkceptacjaKart(nullable:true)
         czyWybranyZakresUruchomienia(nullable:true)
+		czyLokalny(nullable:true)
 		nazwa(nullable:true)
 	}
 	
@@ -82,6 +86,10 @@ class PointData implements Serializable {
 
 	def afterUpdate() {
 		log.info("Aktualizacja punktu [id:${id}]")
+	}
+	
+	def isLocal() {
+		return czyLokalny == true || (cbdId == null && pointDetails != null && StringUtils.isEmpty(pointDetails.phPozysk) != false && StringUtils.isEmpty(pointDetails.opiekaBiznesowa) != false)
 	}
 	
 }

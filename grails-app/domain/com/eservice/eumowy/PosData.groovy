@@ -37,5 +37,13 @@ class PosData implements Serializable {
 		tpsId(nullable:true)
 		parentPosId(nullable:true)
 	}
+	
+	def isLocal() {
+		return tpsId == null
+	}
+	
+	def isChildCopy() {
+		return parentPosId != null
+	}
 
 }

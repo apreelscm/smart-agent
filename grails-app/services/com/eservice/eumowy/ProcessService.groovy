@@ -134,7 +134,7 @@ class ProcessService {
 			if (apc.cbdId == -1) {
 				PointData point = PointData.findById(apc.id)
 				if (point != null) {
-					boolean atLeastOneLocalPos = point.posDatas?.findAll { PosData pos -> pos.tpsId == null } != null
+					boolean atLeastOneLocalPos = point.posDatas?.findAll { PosData pos -> pos.isLocal() == true } != null
 					if (atLeastOneLocalPos == false) {
 						log.info "USUWAM PUNKT O ID: " + point.id
 						process.removeFromPoints(point)
@@ -205,7 +205,7 @@ class ProcessService {
 			if (apc.cbdId == -1) {
 				PointData point = PointData.findById(apc.id)
 				if (point != null) {
-					boolean atLeastOneLocalPos = point.posDatas?.findAll { PosData pos -> pos.tpsId == null } != null
+					boolean atLeastOneLocalPos = point.posDatas?.findAll { PosData pos -> pos.isLocal() == true } != null
 					if (atLeastOneLocalPos == false) {
 						log.info "USUWAM PUNKT O ID: " + point.id
 						process.removeFromPoints(point)
@@ -362,9 +362,11 @@ class ProcessService {
         process.points.each { PointData point ->
 
             /* Don't load points from CBD or points that were from CBD, but were removed and left in our DB - they have nulled CbdId but they lack point details */
-            if (point.cbdId != null || (point.cbdId == null && point.pointDetails == null)) {
+            /*if (point.cbdId != null || (point.cbdId == null && point.pointDetails == null)) {
                 return
-            }
+            }*/
+			if (point.isLocal() == false)
+				return
 
             PointCommand pc = new PointCommand()
 
@@ -402,7 +404,7 @@ class ProcessService {
             }
 
             //def posData = point.posDatas != null && point.posDatas.size() > 0 ? point.posDatas[0] : null
-            def posData = point.posDatas?.find { PosData pd -> pd.tpsId == null }
+            def posData = point.posDatas?.find { PosData pd -> pd.isLocal() == true }
 
             posData?.properties.each { key, value ->
                 log.debug "PosData Key: " + key
@@ -439,11 +441,14 @@ class ProcessService {
 			/*if (point.cbdId == null && point.pointDetails != null) {
 				return
 			}*/
+			// Don't load POSes that are automatically created for points - this causes panel duplication
+			if (point.isLocal())
+				return
 			
             point.posDatas?.each { PosData posData ->
 
                 /* Don't load POSes from CBD */
-                if (!posData || posData.tpsId != null) {
+                if (!posData || posData.isLocal() == false) {
                     return
                 }
 
@@ -908,6 +913,8 @@ class ProcessService {
 
                 posData = new PosData()
                 posDataDetails = new PosDataDetails()
+				
+				pointData.czyLokalny = true
             }
             else {
 				log.info "EXISTING POINT!"
@@ -938,6 +945,10 @@ class ProcessService {
 
             pc.properties.each { key, value ->
                 log.debug "PCProperties " + key + ": " + value
+				// Skip auto-mapping of isLocal value
+				if (key == "isLocal")
+					return
+					
                 if (PointData.metaClass.respondsTo(PointData, "set" + key.capitalize())) {
                     pointData."set${key.capitalize()}"(value)
                 }
@@ -1058,6 +1069,7 @@ class ProcessService {
 			else {
 				log.debug "NIE ZNALAZLEM PUNKTU - ALLPOINTS"
 				point = new PointData()
+				point.czyLokalny = false
 			}
 			
             if (point != null) {
@@ -1116,6 +1128,8 @@ class ProcessService {
 						log.info "Istnieje juz punkt dla pos o danym cbdId - tworzymy nowy"
 						pointData = new PointData()
 						pointDataDetails = new PointDataDetails()
+						
+						pointData.czyLokalny = false
 					}
 					else {
 						pointData = PointData.findByCbdIdAndProcess(pc.cbdId, process)
@@ -1124,6 +1138,8 @@ class ProcessService {
 							log.info "NOWY PUNKT DLA POS"
 							pointData = new PointData()
 							pointDataDetails = new PointDataDetails()
+							
+							pointData.czyLokalny = false
 						}
 						else {
 							pointDataDetails = pointData.pointDetails
@@ -1154,6 +1170,8 @@ class ProcessService {
                     log.info "Punkt nie pochodzi z CBD"
 					pointData = new PointData()
 					pointDataDetails = new PointDataDetails()
+					
+					pointData.czyLokalny = false
                 }
 
                 posData = new PosData()
@@ -1175,6 +1193,8 @@ class ProcessService {
                         log.info "getPointCommandsToPosDataList - Brakujacy punkt dla POS o id: " + pc.id
                         pointData = new PointData()
                         pointDataDetails = new PointDataDetails()
+						
+						pointData.czyLokalny = false
 
                         if (pc.cbdId != null) {
                             def cbdPoint =
@@ -1205,6 +1225,11 @@ class ProcessService {
 
             pc.properties.each { key, value ->
                 log.debug "PCPOSProperties " + key + ": " + value
+				
+				// Skip auto-mapping for this property
+				if (key == "czyLokalny")
+					return
+				
                 if (PointData.metaClass.respondsTo(PointData, "set" +
                         key.capitalize()) && key != 'id') {
                     pointData."set${key.capitalize()}"(value)
@@ -1362,7 +1387,9 @@ class ProcessService {
                 else {
                     log.info "DIDN'T FIND POINT FOR CBD POS"
                     point = new PointData()
-                    pos = new PosData();
+                    pos = new PosData()
+					
+					point.czyLokalny = false
 
                     // Nie znalezlismy punktu z CBD u nas w bazie,
                     //musimy dossac dane z CBD dla tego punktu
@@ -1386,6 +1413,8 @@ class ProcessService {
                 //zupelnie nowe point i pos
                 pos = new PosData()
                 point = new PointData()
+				
+				point.czyLokalny = false
             }
 
             if (pos != null) {

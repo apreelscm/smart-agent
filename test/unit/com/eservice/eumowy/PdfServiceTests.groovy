@@ -97,11 +97,11 @@ class PdfServiceTests {
 
             //OK
             def subscriptions = [
-                ["ACCEPTANT1", 4, 65, 165, 74, 43],
-                ["ACCEPTANT2", 4, 185, 165, 74, 43],
+                ["ACCEPTANT1", 4, 65, 165, 94, 63],
+                ["ACCEPTANT2", 4, 185, 165, 94, 63],
                 ["ZARZAD1", 4, 315, 165, 85, 58],
                 ["ZARZAD2", 4, 445, 165, 56, 58],
-                ["PH", 4, 455, 70, 74, 43]
+                ["PH", 4, 455, 70, 84, 53]
             ]
 
             data.putAll(insertSignatures2(subscriptions));
@@ -125,11 +125,11 @@ class PdfServiceTests {
 
             //NOT OK
             def subscriptions = [
-                ["ACCEPTANT1", 3, 65, 595, 74, 43],
-                ["ACCEPTANT2", 3, 185, 595, 74, 43],
+                ["ACCEPTANT1", 3, 65, 595, 94, 63],
+                ["ACCEPTANT2", 3, 185, 595, 94, 63],
                 ["ZARZAD1", 3, 315, 595, 85, 58],
                 ["ZARZAD2", 3, 445, 595, 56, 58],
-                ["PH", 3, 455, 510, 74, 43]
+                ["PH", 3, 455, 510, 84, 53]
             ]
             data.putAll(insertSignatures2(subscriptions))
 			process("APUPZAWNZBS1.00113-08-06 - Aneks do umowy o przyjm zapl (bez stawek plaskich).pdf", "APUPZAWNZBS1.00113-08-06 - Aneks do umowy o przyjm zapl (bez stawek plaskich)_out.pdf", data)
@@ -150,11 +150,11 @@ class PdfServiceTests {
 //			data.putAll(insertSignatures(1, 85, 185, 74, 43))
 
             def subscriptions = [
-                    ["ACCEPTANT1", 4, 70, 330, 74, 43],
-                    ["ACCEPTANT2", 4, 190, 330, 74, 43],
+                    ["ACCEPTANT1", 4, 70, 330, 94, 63],
+                    ["ACCEPTANT2", 4, 190, 330, 94, 63],
                     ["ZARZAD1", 4, 320, 330, 85, 58],
                     ["ZARZAD2", 4, 450, 330, 56, 58],
-                    ["PH", 4, 450, 230, 74, 43]
+                    ["PH", 4, 450, 230, 84, 53]
             ]
             data.putAll(insertSignatures2(subscriptions))
 
@@ -176,11 +176,11 @@ class PdfServiceTests {
 
             //NOT OK
             def subscriptions = [
-                    ["ACCEPTANT1", 4, 80, 335, 74, 43],
-                    ["ACCEPTANT2", 4, 200, 335, 74, 43],
+                    ["ACCEPTANT1", 4, 80, 335, 94, 63],
+                    ["ACCEPTANT2", 4, 200, 335, 94, 63],
                     ["ZARZAD1", 4, 330, 335, 85, 58],
                     ["ZARZAD2", 4, 460, 335, 56, 58],
-                    ["PH", 4, 455, 230, 74, 43]
+                    ["PH", 4, 455, 230, 84, 53]
             ]
             data.putAll(insertSignatures2(subscriptions))
 
@@ -203,11 +203,11 @@ class PdfServiceTests {
 
             // NOT OK
             def subscriptions = [
-                    ["ACCEPTANT1", 2, 80, 460, 74, 43],
-                    ["ACCEPTANT2", 2, 200, 460, 74, 43],
+                    ["ACCEPTANT1", 2, 80, 460, 94, 63],
+                    ["ACCEPTANT2", 2, 200, 460, 94, 63],
                     ["ZARZAD1", 2, 330, 460, 85, 58],
                     ["ZARZAD2", 2, 460, 460, 56, 58],
-                    ["PH", 2, 450, 360, 74, 43]
+                    ["PH", 2, 450, 360, 84, 53]
             ]
             data.putAll(insertSignatures2(subscriptions))
 			process("APUPZIF2.00213-08-06_Aneks na IF+ i IKO.pdf", "APUPZIF2.00213-08-06_Aneks na IF+ i IKO_out.pdf", data)
@@ -242,11 +242,11 @@ class PdfServiceTests {
 		data.putAll(preparePunktyData())
 
         def subscriptions = [
-                ["ACCEPTANT1", 2, 80, 460, 74, 43],
-                ["ACCEPTANT2", 2, 200, 460, 74, 43],
+                ["ACCEPTANT1", 2, 80, 460, 94, 63],
+                ["ACCEPTANT2", 2, 200, 460, 94, 63],
                 ["ZARZAD1", 2, 330, 460, 85, 58],
                 ["ZARZAD2", 2, 460, 460, 56, 58],
-                ["PH", 2, 450, 360, 74, 43]
+                ["PH", 2, 450, 360, 84, 53]
         ]
         data.putAll(insertSignatures2(subscriptions))
 
@@ -282,11 +282,11 @@ class PdfServiceTests {
 		data.putAll(prepareZestawPosOdplatneUzywanieData())
         //NOT OK
         def subscriptions = [
-                ["ACCEPTANT1", 1, 85, 288, 74, 43],
-                ["ACCEPTANT2", 1, 205, 288, 74, 43],
+                ["ACCEPTANT1", 1, 85, 288, 94, 63],
+                ["ACCEPTANT2", 1, 205, 288, 94, 63],
                 ["ZARZAD1", 1, 335, 288, 85, 58],
                 ["ZARZAD2", 1, 465, 288, 56, 58],
-                ["PH", 1, 444, 163, 74, 43]
+                ["PH", 1, 444, 163, 84, 53]
         ]
         data.putAll(insertSignatures2(subscriptions))
 
@@ -321,11 +321,11 @@ class PdfServiceTests {
         data.putAll(prepareZestawPosOdplatneUzywanieData())
         //NOT OK
         def subscriptions = [
-                ["ACCEPTANT1", 1, 85, 200, 74, 43],
-                ["ACCEPTANT2", 1, 205, 200, 74, 43],
+                ["ACCEPTANT1", 1, 85, 200, 94, 63],
+                ["ACCEPTANT2", 1, 205, 200, 94, 63],
                 ["ZARZAD1", 1, 335, 200, 85, 58],
                 ["ZARZAD2", 1, 465, 200, 56, 58],
-                ["PH", 1, 444, 100, 74, 43]
+                ["PH", 1, 444, 100, 84, 53]
         ]
         data.putAll(insertSignatures2(subscriptions))
 
@@ -335,11 +335,11 @@ class PdfServiceTests {
     void testAPUNTSZAPOO2ToImage() {
         String outFile =  "APUNTSZAPOO3.000313-09-26-Aneks do Umowy najmu zestawu POS (okres promocyjny)_out2.pdf"
         def subscriptions = [
-                ["ACCEPTANT1", 1, 85, 200, 74, 43],
-                ["ACCEPTANT2", 1, 205, 200, 74, 43],
+                ["ACCEPTANT1", 1, 85, 200, 94, 63],
+                ["ACCEPTANT2", 1, 205, 200, 94, 63],
                 ["ZARZAD1", 1, 335, 200, 85, 58],
                 ["ZARZAD2", 1, 465, 200, 56, 58],
-                ["PH", 1, 444, 100, 74, 43]
+                ["PH", 1, 444, 100, 84, 53]
         ]
         data.putAll(insertSignatures2(subscriptions))
         process("APUNTSZAPOO3.000313-09-26-Aneks do Umowy najmu zestawu POS (okres promocyjny).pdf", outFile, data);
@@ -367,11 +367,11 @@ class PdfServiceTests {
         data.putAll(prepareZestawPosOdplatneUzywanieData())
         //NOT OK
         def subscriptions = [
-                ["ACCEPTANT1", 1, 85, 300, 74, 43],
-                ["ACCEPTANT2", 1, 205, 300, 74, 43],
+                ["ACCEPTANT1", 1, 85, 300, 94, 63],
+                ["ACCEPTANT2", 1, 205, 300, 94, 63],
                 ["ZARZAD1", 1, 335, 300, 85, 58],
                 ["ZARZAD2", 1, 465, 300, 56, 58],
-                ["PH", 1, 465, 173, 74, 43]
+                ["PH", 1, 465, 173, 84, 53]
         ]
         data.putAll(insertSignatures2(subscriptions))
 
@@ -381,11 +381,11 @@ class PdfServiceTests {
     void testAPUNTSZAOOLToImage() {
         String outFile =  "APUNTSZOOL1.00013-09-26-Aneks do Umowy najmu zestawu POS (odnowienie okres lojaln.)_out2.pdf"
         def subscriptions = [
-                ["ACCEPTANT1", 1, 85, 300, 74, 43],
-                ["ACCEPTANT2", 1, 205, 300, 74, 43],
+                ["ACCEPTANT1", 1, 85, 300, 94, 63],
+                ["ACCEPTANT2", 1, 205, 300, 94, 63],
                 ["ZARZAD1", 1, 335, 300, 85, 58],
                 ["ZARZAD2", 1, 465, 300, 56, 58],
-                ["PH", 1, 465, 173, 74, 43]
+                ["PH", 1, 465, 173, 84, 53]
         ]
         data.putAll(insertSignatures2(subscriptions))
         process("APUNTSZOOL1.00013-09-26-Aneks do Umowy najmu zestawu POS (odnowienie okres lojaln.).pdf", outFile, data);
@@ -431,11 +431,11 @@ class PdfServiceTests {
         data.put("crossNew", ['______'] as String[])
         //NOT OK
         def subscriptions = [
-                ["ACCEPTANT1", 2, 85, 395, 74, 43],
-                ["ACCEPTANT2", 2, 205, 395, 74, 43],
+                ["ACCEPTANT1", 2, 85, 395, 94, 63],
+                ["ACCEPTANT2", 2, 205, 395, 94, 63],
                 ["ZARZAD1", 2, 335, 395, 85, 58],
                 ["ZARZAD2", 2, 465, 395, 56, 58],
-                ["PH", 2, 455, 275, 74, 43]
+                ["PH", 2, 455, 275, 84, 53]
         ]
         data.putAll(insertSignatures2(subscriptions))
 
@@ -486,11 +486,11 @@ class PdfServiceTests {
         data.put("okresLojalnosciowy", ['3'] as String[])
         //NOT OK
         def subscriptions = [
-                ["ACCEPTANT1", 2, 85, 255, 74, 43],
-                ["ACCEPTANT2", 2, 205, 255, 74, 43],
+                ["ACCEPTANT1", 2, 85, 255, 94, 63],
+                ["ACCEPTANT2", 2, 205, 255, 94, 63],
                 ["ZARZAD1", 2, 335, 255, 85, 58],
                 ["ZARZAD2", 2, 465, 255, 56, 58],
-                ["PH", 2, 455, 110, 74, 43]
+                ["PH", 2, 455, 110, 84, 53]
         ]
         data.putAll(insertSignatures2(subscriptions))
 
@@ -501,11 +501,11 @@ class PdfServiceTests {
         String outFile =  "APUNTSZAPOU3.00313-09-26-Aneks do umowy najmu zestawu POS (rozszerz wspolpr i nowe usl)_out2.pdf"
 //        data.put("podpis", [new File(getTemplatePath()+"signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
         def subscriptions = [
-                ["ACCEPTANT1", 2, 85, 255, 74, 43],
-                ["ACCEPTANT2", 2, 205, 255, 74, 43],
+                ["ACCEPTANT1", 2, 85, 255, 94, 63],
+                ["ACCEPTANT2", 2, 205, 255, 94, 63],
                 ["ZARZAD1", 2, 335, 255, 85, 58],
                 ["ZARZAD2", 2, 465, 255, 56, 58],
-                ["PH", 2, 455, 110, 74, 43]
+                ["PH", 2, 455, 110, 84, 53]
         ]
         data.putAll(insertSignatures2(subscriptions))
         process("APUNTSZAPOU3.00313-09-26-Aneks do umowy najmu zestawu POS (rozszerz wspolpr i nowe usl).pdf", outFile, data);
@@ -522,11 +522,11 @@ class PdfServiceTests {
 
         //NOT OK
         def subscriptions = [
-                ["ACCEPTANT1", 1, 85, 370, 74, 43],
-                ["ACCEPTANT2", 1, 205, 370, 74, 43],
+                ["ACCEPTANT1", 1, 85, 370, 94, 63],
+                ["ACCEPTANT2", 1, 205, 370, 94, 63],
                 ["ZARZAD1", 1, 335, 370, 85, 58],
                 ["ZARZAD2", 1, 465, 370, 56, 58],
-                ["PH", 1, 457, 206, 74, 43]
+                ["PH", 1, 457, 206, 84, 53]
         ]
         data.putAll(insertSignatures2(subscriptions))
 
@@ -549,11 +549,11 @@ class PdfServiceTests {
 //		data.putAll(insertSignatures(1, 85, 280, 74, 43))
 
         def subscriptions = [
-                ["ACCEPTANT1", 1, 85, 280, 74, 43],
-                ["ACCEPTANT2", 1, 205, 280, 74, 43],
+                ["ACCEPTANT1", 1, 85, 280, 94, 63],
+                ["ACCEPTANT2", 1, 205, 280, 94, 63],
                 ["ZARZAD1", 1, 335, 280, 85, 58],
                 ["ZARZAD2", 1, 465, 280, 56, 58],
-                ["PH", 1, 460, 168, 74, 43],
+                ["PH", 1, 460, 168, 84, 53],
         ]
         data.putAll(insertSignatures2(subscriptions))
 		process("APUNTSZDCC2.00212-01-16.pdf", "APUNTSZDCC2.00212-01-16_out.pdf", data)
@@ -575,11 +575,11 @@ class PdfServiceTests {
 //		data.putAll(insertSignatures(1, 85, 260, 74, 43))
 
         def subscriptions = [
-                ["ACCEPTANT1", 1, 85, 260, 74, 43],
-                ["ACCEPTANT2", 1, 205, 260, 74, 43],
+                ["ACCEPTANT1", 1, 85, 260, 94, 63],
+                ["ACCEPTANT2", 1, 205, 260, 94, 63],
                 ["ZARZAD1", 1, 335, 260, 85, 58],
                 ["ZARZAD2", 1, 465, 260, 56, 58],
-                ["PH", 1, 458, 145, 74, 43]
+                ["PH", 1, 458, 145, 84, 53]
         ]
         data.putAll(insertSignatures2(subscriptions))
 
@@ -599,11 +599,11 @@ class PdfServiceTests {
 		data.put("okresLojalnosciowy", ["3"] as String[]);
 
         def subscriptions = [
-                ["ACCEPTANT1", 1, 85, 250, 74, 43],
-                ["ACCEPTANT2", 1, 205, 250, 74, 43],
+                ["ACCEPTANT1", 1, 85, 250, 94, 63],
+                ["ACCEPTANT2", 1, 205, 250, 94, 63],
                 ["ZARZAD1", 1, 335, 250, 85, 58],
                 ["ZARZAD2", 1, 465, 250, 56, 58],
-                ["PH", 1, 455, 125, 74, 43]
+                ["PH", 1, 455, 125, 84, 53]
         ]
         data.putAll(insertSignatures2(subscriptions))
 		process("APUNTSZOKOD2.00312-01-16.pdf", "APUNTSZOKOD2.00312-01-16_out.pdf", data)
@@ -621,11 +621,11 @@ class PdfServiceTests {
 		data.putAll(this.data);
 //		data.putAll(insertSignatures(1, 85, 245, 74, 43))
         def subscriptions = [
-                ["ACCEPTANT1", 1, 85, 245, 74, 43],
-                ["ACCEPTANT2", 1, 205, 245, 74, 43],
+                ["ACCEPTANT1", 1, 85, 245, 94, 63],
+                ["ACCEPTANT2", 1, 205, 245, 94, 63],
                 ["ZARZAD1", 1, 335, 245, 85, 58],
                 ["ZARZAD2", 1, 465, 245, 56, 58],
-                ["PH", 1, 455, 105, 74, 43]
+                ["PH", 1, 455, 105, 84, 53]
         ]
         data.putAll(insertSignatures2(subscriptions))
 		process("APUNTWAGOK1.00212-01-16.pdf", "APUNTWAGOK1.00212-01-16_out.pdf", data)
@@ -644,11 +644,11 @@ class PdfServiceTests {
 		data.putAll(this.data);
 //		data.putAll(insertSignatures(1, 85, 235, 74, 43))
         def subscriptions = [
-                ["ACCEPTANT1", 1, 85, 235, 74, 43],
-                ["ACCEPTANT2", 1, 205, 235, 74, 43],
+                ["ACCEPTANT1", 1, 85, 235, 94, 63],
+                ["ACCEPTANT2", 1, 205, 235, 94, 63],
                 ["ZARZAD1", 1, 335, 235, 85, 58],
                 ["ZARZAD2", 1, 465, 235, 56, 58],
-                ["PH", 1, 460, 96, 74, 43]
+                ["PH", 1, 460, 96, 84, 53]
         ]
         data.putAll(insertSignatures2(subscriptions))
 
@@ -667,11 +667,11 @@ class PdfServiceTests {
 		data.putAll(this.data);
 
         def subscriptions = [
-                ["ACCEPTANT1", 1, 80, 245, 74, 43],
-                ["ACCEPTANT2", 1, 200, 245, 74, 43],
+                ["ACCEPTANT1", 1, 80, 245, 94, 63],
+                ["ACCEPTANT2", 1, 200, 245, 94, 63],
                 ["ZARZAD1", 1, 330, 245, 85, 58],
                 ["ZARZAD2", 1, 460, 245, 56, 58],
-                ["PH", 1, 455, 105, 74, 43],
+                ["PH", 1, 455, 105, 84, 53],
         ]
         data.putAll(insertSignatures2(subscriptions))
 		process("APUNTWAGOP1.00212-01-16.pdf", "APUNTWAGOP1.00212-01-16_out.pdf", data)
@@ -691,11 +691,11 @@ class PdfServiceTests {
 //		data.putAll(insertSignatures(1, 85, 225, 74, 43))
 
         def subscriptions = [
-                ["ACCEPTANT1", 1, 85, 225, 74, 43],
-                ["ACCEPTANT2", 1, 205, 225, 74, 43],
+                ["ACCEPTANT1", 1, 85, 225, 94, 63],
+                ["ACCEPTANT2", 1, 205, 225, 94, 63],
                 ["ZARZAD1", 1, 335, 225, 85, 58],
                 ["ZARZAD2", 1, 465, 225, 56, 58],
-                ["PH", 1, 458, 62, 74, 43]
+                ["PH", 1, 458, 62, 84, 53]
         ]
         data.putAll(insertSignatures2(subscriptions))
 
@@ -742,11 +742,11 @@ class PdfServiceTests {
 		//data.putAll(insertSignatures(4, 70, 165, 74, 43))
         //OK
         def subscriptions = [
-                ["ACCEPTANT1", 4, 70, 165, 74, 43],
-                ["ACCEPTANT2", 4, 190, 165, 74, 43],
+                ["ACCEPTANT1", 4, 70, 165, 94, 63],
+                ["ACCEPTANT2", 4, 190, 165, 94, 63],
                 ["ZARZAD1", 4, 320, 165, 85, 58],
                 ["ZARZAD2", 4, 450, 165, 56, 58],
-                ["PH", 4, 447, 30, 74, 43]
+                ["PH", 4, 447, 30, 84, 53]
         ]
         data.putAll(insertSignatures2(subscriptions))
 
@@ -776,11 +776,11 @@ class PdfServiceTests {
 		//	process("ATUSUFDU4.004.130522.pdf", "ATUSUFDU4.004.130522_out.pdf", result)
 
         def subscriptions = [
-                ["ACCEPTANT1", 2, 80, 545, 74, 43],
-                ["ACCEPTANT2", 2, 200, 545, 74, 43],
+                ["ACCEPTANT1", 2, 80, 545, 94, 63],
+                ["ACCEPTANT2", 2, 200, 545, 94, 63],
                 ["ZARZAD1", 2, 330, 545, 85, 58],
                 ["ZARZAD2", 2, 460, 545, 56, 58],
-                ["PH", 2, 450, 395, 74, 43]
+                ["PH", 2, 450, 395, 84, 53]
         ]
         data.putAll(insertSignatures2(subscriptions))
 		process("ATUSUFDU4.004.130522.pdf", "ATUSUFDU4.004.130522_out.pdf", data)
@@ -799,11 +799,11 @@ class PdfServiceTests {
 //		data.putAll(insertSignatures(1, 70, 155, 74, 43))
 
         def subscriptions = [
-                ["ACCEPTANT1", 1, 70, 155, 74, 43],
-                ["ACCEPTANT2", 1, 190, 155, 74, 43],
+                ["ACCEPTANT1", 1, 70, 155, 94, 63],
+                ["ACCEPTANT2", 1, 190, 155, 94, 63],
                 ["ZARZAD1", 1, 320, 155, 85, 58],
                 ["ZARZAD2", 1, 450, 155, 56, 58],
-                ["PH", 1, 450, 60, 74, 43]
+                ["PH", 1, 450, 60, 84, 53]
         ]
         data.putAll(insertSignatures2(subscriptions))
 
@@ -830,11 +830,11 @@ class PdfServiceTests {
 
         // OK
         def subscriptions = [
-                ["ACCEPTANT1", 2, 80, 145, 74, 43],
-                ["ACCEPTANT2", 2, 200, 145, 74, 43],
+                ["ACCEPTANT1", 2, 80, 145, 94, 63],
+                ["ACCEPTANT2", 2, 200, 145, 94, 63],
                 ["ZARZAD1", 2, 330, 145, 85, 58],
                 ["ZARZAD2", 2, 460, 145, 56, 58],
-                ["PH", 2, 445, 40, 74, 43]
+                ["PH", 2, 445, 40, 84, 53]
         ]
         data.putAll(insertSignatures2(subscriptions))
 		process("APUPZ2ACB1.00013-02-15 - Aneks do Umowy o przyjm po 2013 r (wprow Cashback).pdf", "APUPZ2ACB1.00013-02-15 - Aneks do Umowy o przyjm po 2013 r (wprow Cashback)_out.pdf", data)
@@ -865,11 +865,11 @@ class PdfServiceTests {
 
         //NOT OK
         def subscriptions = [
-            ["ACCEPTANT1", 1, 85, 230, 74, 43],
-            ["ACCEPTANT2", 1, 205, 230, 74, 43],
+            ["ACCEPTANT1", 1, 85, 230, 94, 63],
+            ["ACCEPTANT2", 1, 205, 230, 94, 63],
             ["ZARZAD1", 1, 335, 230, 85, 58],
             ["ZARZAD2", 1, 465, 230, 56, 58],
-            ["PH", 1, 443, 97, 74, 43]
+            ["PH", 1, 443, 97, 84, 53]
         ]
 
         data.putAll(insertSignatures2(subscriptions))
@@ -890,11 +890,11 @@ class PdfServiceTests {
 //		data.putAll(insertSignatures(2, 85, 220, 74, 43))
 
         def subscriptions = [
-            ["ACCEPTANT1", 2, 85, 220, 74, 43],
-            ["ACCEPTANT2", 2, 205, 220, 74, 43],
+            ["ACCEPTANT1", 2, 85, 220, 94, 63],
+            ["ACCEPTANT2", 2, 205, 220, 94, 63],
             ["ZARZAD1", 2, 335, 220, 85, 58],
             ["ZARZAD2", 2, 465, 220, 56, 58],
-            ["PH", 2, 445, 105, 74, 43]
+            ["PH", 2, 445, 105, 84, 53]
         ]
         data.putAll(insertSignatures2(subscriptions))
 
@@ -982,11 +982,11 @@ class PdfServiceTests {
 		data.put("miejsceUmowy", ["Kurniki Podlaskie"] as String[]);
 
         def subscriptions = [
-                ["ACCEPTANT1", 3, 80, 580, 74, 43],
-                ["ACCEPTANT2", 3, 200, 580, 74, 43],
+                ["ACCEPTANT1", 3, 80, 580, 94, 63],
+                ["ACCEPTANT2", 3, 200, 580, 94, 63],
                 ["ZARZAD1", 3, 330, 580, 85, 58],
                 ["ZARZAD2", 3, 460, 580, 56, 58],
-                ["PH", 3, 450, 464, 74, 43]
+                ["PH", 3, 450, 464, 84, 53]
         ]
         data.putAll(insertSignatures2(subscriptions))
 
@@ -1061,11 +1061,11 @@ class PdfServiceTests {
 //		data.putAll(insertSignatures(1, 80, 240, 74, 43))
         //OK
         def subscriptions = [
-                ["ACCEPTANT1", 1, 80, 240, 74, 43],
-                ["ACCEPTANT2", 1, 200, 240, 74, 43],
+                ["ACCEPTANT1", 1, 80, 240, 94, 63],
+                ["ACCEPTANT2", 1, 200, 240, 94, 63],
                 ["ZARZAD1", 1, 330, 240, 85, 58],
                 ["ZARZAD2", 1, 460, 240, 56, 58],
-                ["PH", 1, 440, 105, 74, 43]
+                ["PH", 1, 440, 105, 84, 53]
         ]
         data.putAll(insertSignatures2(subscriptions))
 		process("APUPZDCC2.00313-02-15 - Aneks do Umowy o przyjm zapl (wprow DCC).pdf", "APUPZDCC2.00313-02-15 - Aneks do Umowy o przyjm zapl (wprow DCC)_out.pdf", data)
@@ -1085,11 +1085,11 @@ class PdfServiceTests {
 		data.putAll(prepareDccData())
 //		data.putAll(insertSignatures(1, 85, 185, 74, 43))
         def subscriptions = [
-                ["ACCEPTANT1", 1, 85, 185, 74, 43],
-                ["ACCEPTANT2", 1, 205, 185, 74, 43],
+                ["ACCEPTANT1", 1, 85, 185, 94, 63],
+                ["ACCEPTANT2", 1, 205, 185, 94, 63],
                 ["ZARZAD1", 1, 335, 185, 85, 58],
                 ["ZARZAD2", 1, 465, 185, 56, 58],
-                ["PH", 1, 440, 70, 74, 43]
+                ["PH", 1, 440, 70, 84, 53]
         ]
 
         data.putAll(insertSignatures2(subscriptions))
@@ -1118,11 +1118,11 @@ class PdfServiceTests {
 
         //NOT OK
         def subscriptions = [
-            ["ACCEPTANT1", 4, 90, 308, 74, 43],
-            ["ACCEPTANT2", 4, 210, 308, 74, 43],
+            ["ACCEPTANT1", 4, 90, 308, 94, 63],
+            ["ACCEPTANT2", 4, 210, 308, 94, 63],
             ["ZARZAD1", 4, 340, 308, 85, 58],
             ["ZARZAD2", 4, 470, 308, 56, 58],
-            ["PH", 4, 458, 188, 74, 43]
+            ["PH", 4, 458, 188, 84, 53]
         ]
         data.putAll(insertSignatures2(subscriptions))
 		process("APUPZ2.00013-01-03 - Umowa o przyjmowanie zaplaty v. 2.000_z faksymile.pdf", "APUPZ2.00013-01-03 - Umowa o przyjmowanie zaplaty v. 2.000_z faksymile_out.pdf", data)
@@ -1259,7 +1259,7 @@ class PdfServiceTests {
 
     private HashMap<String, String[]> insertSignatures2(def signatures){
 		HashMap<String, String[]> result = new HashMap<String, String[]>();
-        //["ACCEPTANT1", 4, 65, 165, 74, 43],
+        //["ACCEPTANT1", 4, 65, 165, 84, 53],
 
         signatures.each{
             def person = it.get(0);

@@ -15,6 +15,8 @@ class PointCommand extends BaseCommand {
 
 	Integer id
 	
+	Boolean czyLokalny
+	
 	Long parentPosId
 	
 	String phPozysk
@@ -168,6 +170,10 @@ class PointCommand extends BaseCommand {
     Boolean hasDodaniePrepaid
     Boolean hasTelefonKontaktowy
 
+	def isLocal() {
+		return czyLokalny
+	}
+	
 	static constraints = {
 		phPozysk(nullable:true, blank:false, shared: "alphanumeric")
 		opiekaBiznesowa(nullable:true, blank:false, shared: "alphanumeric")
