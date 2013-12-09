@@ -2,7 +2,7 @@ package com.eservice.eumowy.validator
 
 import com.eservice.eumowy.command.HirePaymentCommand
 
-class HirePaymentValidator extends ValidatorUtils {
+class HirePaymentValidator {
 
     static int MAX_PRICE_GROUP_SIZE = 3
 
@@ -38,9 +38,9 @@ class HirePaymentValidator extends ValidatorUtils {
 
         hirePaymentCommands.each { HirePaymentCommand hpc ->
             if (hpc.isChoosen){
-                normalPriceGroups.add(getGroupValue(hpc.newTermPayment, hpc.newPpPayment))
+                normalPriceGroups.add(ValidatorUtils.getGroupValue(hpc.newTermPayment, hpc.newPpPayment))
             } else {
-                normalPriceGroups.add(getGroupValue(hpc.currentTermPayment, hpc.currentPpPayment))
+                normalPriceGroups.add(ValidatorUtils.getGroupValue(hpc.currentTermPayment, hpc.currentPpPayment))
             }
         }
 

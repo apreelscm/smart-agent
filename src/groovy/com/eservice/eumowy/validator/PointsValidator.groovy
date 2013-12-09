@@ -1,6 +1,6 @@
 package com.eservice.eumowy.validator
 
-public class PointsValidator extends ValidatorUtils {
+public class PointsValidator {
 
     static int MAX_PRICE_GROUP_SIZE = 3
 

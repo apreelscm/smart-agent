@@ -4,7 +4,7 @@ class ValidatorUtils {
 
     static def MESSAGE_PROPERTY_NAME = 'getMessageForProperty'
 
-    private static boolean hasMorePriceGroups(def maxSize, def pointCommands){
+    public static boolean hasMorePriceGroups(def maxSize, def pointCommands){
         Set<BigDecimal> normalPriceGroups = new HashSet<BigDecimal>()
         Set<BigDecimal> prefPriceGroups = new HashSet<BigDecimal>()
 
@@ -35,7 +35,7 @@ class ValidatorUtils {
         return false
     }
 
-    private static def getGroupValue(def normalPrice, def ppPrice){
+    public static def getGroupValue(def normalPrice, def ppPrice){
         if(normalPrice == null){
             normalPrice = BigDecimal.ZERO
         }
@@ -46,22 +46,7 @@ class ValidatorUtils {
     }
 
     public static def getMessage(def cmd, def propertyName){
-
-        println 'Trying to invoke method ' + MESSAGE_PROPERTY_NAME + ' from class: ' + cmd.class + ' for property: ' + propertyName
-
-        def result
-        if (cmd.metaClass.respondsTo(cmd, MESSAGE_PROPERTY_NAME)){
-            println 'Object has ' + MESSAGE_PROPERTY_NAME
-            result = cmd."${MESSAGE_PROPERTY_NAME}"(propertyName)
-        } else {
-            println "Object hasn't " + MESSAGE_PROPERTY_NAME
-            result = propertyName
-        }
-
-        println 'Result: ' + result
-
-        //def aaa = cmd.metaClass.respondsTo(cmd, MESSAGE_PROPERTY_NAME)? cmd."${MESSAGE_PROPERTY_NAME}"(propertyName) : propertyName;
-        return result;
+        return cmd.metaClass.respondsTo(cmd, MESSAGE_PROPERTY_NAME)? cmd."${MESSAGE_PROPERTY_NAME}"(propertyName) : propertyName;
     }
 
 }
