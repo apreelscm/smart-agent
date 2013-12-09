@@ -153,6 +153,7 @@ class ProcessService {
       //  process.save(flush:true)
 		cmd.allPoints?.removeAll { it.cbdId == -1 }
 
+        cmd.hirePaymentsCurrent?.addAll(getHirePaymentCurrentCommandList(cmd))
         cmd.hirePaymentsByPoint?.addAll(getHirePaymentByPointCommandList(cmd, calc))
         cmd.hirePaymentsByPos?.addAll(getHirePaymentByPosCommandList(cmd, calc))
 
@@ -177,7 +178,9 @@ class ProcessService {
         cmd.allPoses?.addAll(getPosesToAllPosCommandList(process, cmd, calc))
         cmd.hirePaymentsByPoint?.clear()
         cmd.hirePaymentsByPos?.clear()
+        cmd.hirePaymentsCurrent.clear()
 
+        cmd.hirePaymentsCurrent?.addAll(getHirePaymentCurrentCommandList(cmd))
         if (newProcess){
             cmd.hirePaymentsByPoint?.addAll(getHirePaymentByPointCommandList(cmd, calc))
             cmd.hirePaymentsByPos?.addAll(getHirePaymentByPosCommandList(cmd, calc))
@@ -577,6 +580,27 @@ class ProcessService {
 
             posesList.add(apc)
         }
+    }
+
+    //metoda do pobierana i przechowywania obecnych wartosci z cbd
+    private def getHirePaymentCurrentCommandList(def cmd) {
+        def hpcResult = []
+
+        def result = cbdService.getTerminalPricesAndCounts(cmd.nip)
+        result.each { GroovyRowResult row ->
+            HirePaymentCommand hpc = new HirePaymentCommand()
+
+            def count = row.get("ile");
+            if (count != null && count?.toString().isNumber()){
+                hpc.setTermCount(Integer.valueOf(count.toString()))
+            }
+            def payment = row.get("top");
+            if (payment != null && payment?.toString().isNumber()){
+                hpc.setCurrentTermPayment(payment.toString().toBigDecimal())
+            }
+            hpcResult.add(hpc)
+        }
+        return hpcResult
     }
 
     private def getHirePaymentByPointCommandList(def cmd, def calc) {

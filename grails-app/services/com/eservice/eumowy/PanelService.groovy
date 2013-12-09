@@ -1,6 +1,5 @@
 package com.eservice.eumowy
 
-import com.eservice.eumowy.command.AllPointsCommand
 import com.eservice.eumowy.command.AllPosCommand
 import com.eservice.eumowy.command.PointCommand
 import com.eservice.eumowy.command.ProcessCommand
@@ -608,16 +607,8 @@ class PanelService {
         cmd.isOdplatneUzywanieShown = nullify(cmd.isOdplatneUzywanieShown)
         cmd.odplatneUzywanie = nullify(cmd.odplatneUzywanie)
 
-        def result = cbdService.getTerminalPricesAndCounts(cmd.nip)
-        cmd.odplatneUzywanieLiczbaTerminali = result?.ile ?: ""
-        cmd.odplatneUzywanieCenaTerminal = result?.top ?: ""
-        //TODO - skad to brac
-        cmd.odplatneUzywanieCenaPinpad = ""
-
-
-        //TODO - pobrac dane z cbd
         def result2 = cbdService.getHirePaymentByProcess(cmd.nip);
-        cmd.odpUzyTermSzt = result?.ile ?: ""
+        cmd.odpUzyTermSzt = result2?.ile ?: ""
         //powinno przyjsc cbd, gdy po stronie eService beda zaimplementowane zmiany
         cmd.odpUzyPpSzt = ""
         cmd.odpUzyTermMies = setAtLeastAs(cmd.odpUzyTermMies,calculatorService.getCalcProperty(calc,"CENA_NAJMU"))

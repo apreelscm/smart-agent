@@ -1,12 +1,14 @@
 package com.eservice.eumowy.command
 
+import com.eservice.eumowy.validator.AtLeastValidator
 import grails.validation.Validateable;
 
-import com.eservice.eumowy.annotation.Omit;
-
 @Validateable
-class AllPosCommand extends BaseCommand {
-	
+class AllPosCommand implements Serializable {
+
+    transient def calculatorService
+    transient def calc
+
 	Integer id
     Boolean czyCbd
 	Integer cbdId
@@ -27,7 +29,7 @@ class AllPosCommand extends BaseCommand {
                 errors.rejectValue("wysokoscOplaty", "default.atLeast.asCalc",["wysokoscOplaty"] as Object[], "")
                 return false
             } else {
-                return atLeastClosure.call(value, cmd, errors, "wysokoscOplaty", "OPLATA_POS_PROM_CENA_NAJMU")
+                return AtLeastValidator.validate(value, cmd, errors, "wysokoscOplaty", "OPLATA_POS_PROM_CENA_NAJMU")
             }
 		})
 	}

@@ -1,7 +1,6 @@
 package com.eservice.eumowy.command
 
-import com.eservice.eumowy.CalculatorService
-import com.eservice.eumowy.annotation.Omit
+import com.eservice.eumowy.validator.AtLeastValidator
 import grails.validation.Validateable
 
 /**
@@ -11,7 +10,10 @@ import grails.validation.Validateable
  */
 
 @Validateable
-class PointCommand extends BaseCommand {
+class PointCommand implements Serializable {
+
+    transient def calculatorService
+    transient def calc
 
 	Integer id
 	
@@ -252,77 +254,77 @@ class PointCommand extends BaseCommand {
 		dialupIlosc(nullable:true,  shared: "natural")
 		dialupPPIlosc(nullable:true,  shared: "natural")
 		dialupCena(nullable:true, shared: "number", validator: { value, cmd, errors ->
-			cmd.dialupTyp ? atLeastClosure.call(value, cmd, errors, "dialupCena", "TYP_DIALUP_TERM_CENA") : true;
+			cmd.dialupTyp ? AtLeastValidator.validate(value, cmd, errors, "dialupCena", "TYP_DIALUP_TERM_CENA") : true;
 		})
 		dialupPPCena(nullable:true, shared: "number", validator: { value, cmd, errors ->
-			cmd.dialupTyp ? atLeastClosure.call(value, cmd, errors, "dialupPPCena", "TYP_DIALUP_PP_CENA") : true;
+			cmd.dialupTyp ? AtLeastValidator.validate(value, cmd, errors, "dialupPPCena", "TYP_DIALUP_PP_CENA") : true;
 		})
 		vpnTyp(nullable:true)
 		vpnIlosc(nullable:true,  shared: "natural")
 		vpnPPIlosc(nullable:true,  shared: "natural")
 		vpnCena(nullable:true, shared: "number", validator: { value, cmd, errors ->
-			cmd.vpnTyp ? atLeastClosure.call(value, cmd, errors, "vpnCena", "TYP_VPN_TERM_CENA") : true;
+			cmd.vpnTyp ? AtLeastValidator.validate(value, cmd, errors, "vpnCena", "TYP_VPN_TERM_CENA") : true;
 		})
 		vpnPPCena(nullable:true, shared: "number", validator: { value, cmd, errors ->
-			cmd.vpnTyp ? atLeastClosure.call(value, cmd, errors, "vpnPPCena", "TYP_VPN_PP_CENA") : true;
+			cmd.vpnTyp ? AtLeastValidator.validate(value, cmd, errors, "vpnPPCena", "TYP_VPN_PP_CENA") : true;
 		})
 		sslTyp(nullable:true)
 		sslIlosc(nullable:true,  shared: "natural")
 		sslPPIlosc(nullable:true,  shared: "natural")
 		sslCena(nullable:true, shared: "number", validator: { value, cmd, errors ->
-			cmd.sslTyp ? atLeastClosure.call(value, cmd, errors, "sslCena", "TYP_SSL_TERM_CENA") : true;
+			cmd.sslTyp ? AtLeastValidator.validate(value, cmd, errors, "sslCena", "TYP_SSL_TERM_CENA") : true;
 		})
 		sslPPCena(nullable:true, shared: "number", validator: { value, cmd, errors ->
-			cmd.sslTyp ? atLeastClosure.call(value, cmd, errors, "sslPPCena", "TYP_SSL_PP_CENA") : true;
+			cmd.sslTyp ? AtLeastValidator.validate(value, cmd, errors, "sslPPCena", "TYP_SSL_PP_CENA") : true;
 		})
 		wifiTyp(nullable:true)
 		wifiIlosc(nullable:true,  shared: "number")
 		wifiPPIlosc(nullable:true,  shared: "natural")
 		wifiCena(nullable:true, shared: "number", validator: { value, cmd, errors ->
-			cmd.wifiTyp ? atLeastClosure.call(value, cmd, errors, "wifiCena", "TYP_WIFI_TERM_CENA") : true;
+			cmd.wifiTyp ? AtLeastValidator.validate(value, cmd, errors, "wifiCena", "TYP_WIFI_TERM_CENA") : true;
 		})
 		wifiPPCena(nullable:true, shared: "number", validator: { value, cmd, errors ->
-			cmd.wifiTyp ? atLeastClosure.call(value, cmd, errors, "wifiPPCena", "TYP_WIFI_PP_CENA") : true;
+			cmd.wifiTyp ? AtLeastValidator.validate(value, cmd, errors, "wifiPPCena", "TYP_WIFI_PP_CENA") : true;
 		})
 		gprsTyp(nullable:true)
 		gprsIlosc(nullable:true,  shared: "natural")
 		gprsPPIlosc(nullable:true,  shared: "number")
 		gprsCena(nullable:true, shared: "number", validator: { value, cmd, errors ->
-			cmd.gprsTyp ? atLeastClosure.call(value, cmd, errors, "gprsCena", "TYP_GPRS_TERM_CENA") : true;
+			cmd.gprsTyp ? AtLeastValidator.validate(value, cmd, errors, "gprsCena", "TYP_GPRS_TERM_CENA") : true;
 		})
 		gprsPPCena(nullable:true, shared: "number", validator: { value, cmd, errors ->
-			cmd.gprsTyp ? atLeastClosure.call(value, cmd, errors, "gprsPPCena", "TYP_GPRS_PP_CENA") : true;
+			cmd.gprsTyp ? AtLeastValidator.validate(value, cmd, errors, "gprsPPCena", "TYP_GPRS_PP_CENA") : true;
 		})
 		bazaIlosc(nullable:true,  shared: "number")
         dialupCenaPreferencyjna(nullable:true, shared: "number", validator: { value, cmd, errors ->
-			cmd.dialupTyp ? atLeastClosure.call(value, cmd, errors, "dialupCenaPreferencyjna", "TYP_DIALUP_CENA") : true;
+			cmd.dialupTyp ? AtLeastValidator.validate(value, cmd, errors, "dialupCenaPreferencyjna", "TYP_DIALUP_CENA") : true;
 		})
         dialupPPCenaPreferencyjna(nullable:true, shared: "number", validator: { value, cmd, errors ->
-			cmd.dialupTyp ? atLeastClosure.call(value, cmd, errors, "dialupPPCenaPreferencyjna", "TYP_DIALUP_PP_CENA") : true;
+			cmd.dialupTyp ? AtLeastValidator.validate(value, cmd, errors, "dialupPPCenaPreferencyjna", "TYP_DIALUP_PP_CENA") : true;
 		})
         vpnCenaPreferencyjna(nullable:true, shared: "number", validator: { value, cmd, errors ->
-			cmd.vpnTyp ? atLeastClosure.call(value, cmd, errors, "vpnCenaPreferencyjna", "TYP_VPN_CENA") : true;
+			cmd.vpnTyp ? AtLeastValidator.validate(value, cmd, errors, "vpnCenaPreferencyjna", "TYP_VPN_CENA") : true;
 		})
         vpnPPCenaPreferencyjna(nullable:true, shared: "number", validator: { value, cmd, errors ->
-			cmd.vpnTyp ? atLeastClosure.call(value, cmd, errors, "vpnPPCenaPreferencyjna", "TYP_VPN_PP_CENA") : true;
+			cmd.vpnTyp ? AtLeastValidator.validate(value, cmd, errors, "vpnPPCenaPreferencyjna", "TYP_VPN_PP_CENA") : true;
 		})
         sslCenaPreferencyjna(nullable:true, shared: "number", validator: { value, cmd, errors ->
-			cmd.sslTyp ? atLeastClosure.call(value, cmd, errors, "sslCenaPreferencyjna", "TYP_SSL_CENA") : true;
+			cmd.sslTyp ? AtLeastValidator.validate(value, cmd, errors, "sslCenaPreferencyjna", "TYP_SSL_CENA") : true;
 		})
         sslPPCenaPreferencyjna(nullable:true, shared: "number", validator: { value, cmd, errors ->
-			cmd.sslTyp ? atLeastClosure.call(value, cmd, errors, "sslPPCenaPreferencyjna", "TYP_SSL_PP_CENA") : true;
+			cmd.sslTyp ? AtLeastValidator.validate(value, cmd, errors, "sslPPCenaPreferencyjna", "TYP_SSL_PP_CENA") : true;
 		})
         gprsCenaPreferencyjna(nullable:true, shared: "number", validator: { value, cmd, errors ->
-			cmd.gprsTyp ? atLeastClosure.call(value, cmd, errors, "gprsCenaPreferencyjna", "TYP_GPRS_CENA") : true;
+			cmd.gprsTyp ? AtLeastValidator.validate(value, cmd, errors, "gprsCenaPreferencyjna", "TYP_GPRS_CENA") : true;
 		})
         gprsPPCenaPreferencyjna(nullable:true, shared: "number", validator: { value, cmd, errors ->
-			cmd.gprsTyp ? atLeastClosure.call(value, cmd, errors, "gprsPPCenaPreferencyjna", "TYP_GPRS_PP_CENA") : true;
+			cmd.gprsTyp ? AtLeastValidator.validate(value, cmd, errors, "gprsPPCenaPreferencyjna", "TYP_GPRS_PP_CENA") : true;
 		})
         pinPadCenaPreferencyjna(nullable:true, shared: "number", validator: { value, cmd, errors ->
-			cmd.pinPadTyp ? atLeastClosure.call(value, cmd, errors, "pinPadCenaPreferencyjna", "TYP_PINPAD_CENA") : true;
+			cmd.pinPadTyp ? AtLeastValidator.validate(value, cmd, errors, "pinPadCenaPreferencyjna", "TYP_PINPAD_CENA") : true;
 		})
         wifiCenaPreferencyjna(nullable:true, shared: "number", validator: { value, cmd, errors ->
-			cmd.wifiTyp ? atLeastClosure.call(value, cmd, errors, "wifiCenaPreferencyjna", "TYP_WIFI_CENA") : true;
+			cmd.wifiTyp ? AtLeastValidator.validate(value, cmd, errors, "wifiCenaPreferencyjna", "TYP_WIFI_CENA") : true;
 		})
 		//zamkniecieDniaOd(nullable:true, blank:false, shared: "date")
 		//zamkniecieDniaDo(nullable:true, blank:false, shared: "date")
