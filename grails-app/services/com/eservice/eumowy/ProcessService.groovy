@@ -365,7 +365,7 @@ class ProcessService {
             /*if (point.cbdId != null || (point.cbdId == null && point.pointDetails == null)) {
                 return
             }*/
-			if (point.isLocal() == false)
+			if (!point || point.isLocal() == false)
 				return
 
             PointCommand pc = new PointCommand()
@@ -442,7 +442,7 @@ class ProcessService {
 				return
 			}*/
 			// Don't load POSes that are automatically created for points - this causes panel duplication
-			if (point.isLocal() == true)
+			if (!point || point.isLocal() == true)
 				return
 			
             point.posDatas?.each { PosData posData ->
@@ -507,7 +507,8 @@ class ProcessService {
 
     def getLocalPointsToAllPointsCommandList(def process, def pointsList) {
         process.points?.each { PointData point ->
-
+			if (point == null)
+				return
             AllPointsCommand apc = new AllPointsCommand()
             apc.id = point.id
             apc.setCzyCbd(false)
@@ -534,12 +535,16 @@ class ProcessService {
 
     def getLocalPosesToAllPosesCommandList(def process, def posesList) {
         process.points?.each { PointData point ->
+			if (point == null)
+				return
             point.posDatas?.each { PosData posData ->
+				if (posData == null)
+					return
                 AllPosCommand apc = new AllPosCommand()
                 DataBindingUtils.bindObjectToInstance(apc, posData.properties
                         , ["id","tpsId", "numerZestawuPos", "dataOd", "dataDo", "wysokoscOplaty", "czyWybrany"], [], null)
                 apc.setCzyCbd(false)
-                apc.id = posData.id;
+                apc.id = posData.id
                 posesList.add(apc)
             }
         }
