@@ -808,8 +808,7 @@ class ProcessCommand implements Serializable {
         })
 
         visaPolskaKBSt(nullable: false, blank: false, validator: { value, cmd, errors ->
-            NumberValidator.validate(value, cmd, errors, propertyName) &&
-            AtLeastValidator.validate(value, cmd, errors, propertyName, "OPLATA_MSC_33_ZL")
+            NumberValidator.validate(value, cmd, errors, propertyName)
         })
 
         mastercardEUKKSt(nullable: false, blank: false,  validator: { value, cmd, errors ->
@@ -943,8 +942,7 @@ class ProcessCommand implements Serializable {
             AtLeastValidator.validate(value, cmd, errors, propertyName, "OPLATA_MSC_623_ZL")
         })
         mastercardPolskaKBSt(nullable: false, blank: false, validator: { value, cmd, errors ->
-            NumberValidator.validate(value, cmd, errors, propertyName) &&
-            AtLeastValidator.validate(value, cmd, errors, propertyName, "OPLATA_MSC_63_ZL")
+            NumberValidator.validate(value, cmd, errors, propertyName)
         })
         mastercardPolskaM1St(nullable: false, blank: false, validator: { value, cmd, errors ->
             NumberValidator.validate(value, cmd, errors, propertyName) &&
@@ -975,8 +973,7 @@ class ProcessCommand implements Serializable {
             AtLeastValidator.validate(value, cmd, errors, propertyName, "OPLATA_MSC_722_ZL")
         })
         visaPKOBPKB3St(nullable: false, blank: false, validator: { value, cmd, errors ->
-            NumberValidator.validate(value, cmd, errors, propertyName) &&
-            AtLeastValidator.validate(value, cmd, errors, propertyName, "OPLATA_MSC_73_ZL")
+            NumberValidator.validate(value, cmd, errors, propertyName)
         })
         mastercardPKOBPKK1St(nullable: false, blank: false, validator: { value, cmd, errors ->
             NumberValidator.validate(value, cmd, errors, propertyName) &&
@@ -1003,8 +1000,7 @@ class ProcessCommand implements Serializable {
             AtLeastValidator.validate(value, cmd, errors, propertyName, "OPLATA_MSC_823_ZL")
         })
         mastercardPKOBPKBSt(nullable: false, blank: false, validator: { value, cmd, errors ->
-            NumberValidator.validate(value, cmd, errors, propertyName) &&
-            AtLeastValidator.validate(value, cmd, errors, propertyName, "OPLATA_MSC_83_ZL")
+            NumberValidator.validate(value, cmd, errors, propertyName)
         })
         mastercardPKOBPM1St(nullable: false, blank: false, validator: { value, cmd, errors ->
             NumberValidator.validate(value, cmd, errors, propertyName) &&
