@@ -1,5 +1,6 @@
 package com.eservice.eumowy.command
 
+import com.eservice.eumowy.validator.AtLeastValidator
 import grails.validation.Validateable
 
 /**
@@ -8,7 +9,10 @@ import grails.validation.Validateable
  * Time: 14:23
  */
 @Validateable
-class HirePaymentCommand extends BaseCommand{
+class HirePaymentCommand implements Serializable{
+
+    transient def calculatorService
+    transient def calc
 
     Integer id
     Integer tpsId
@@ -28,10 +32,10 @@ class HirePaymentCommand extends BaseCommand{
 
     static constraints = {
         newTermPayment(nullable:true, shared: "number", validator: { value, cmd, errors ->
-            cmd.newTermPayment ? atLeastClosure.call(value, cmd, errors, "newTermPayment", "CENA_NAJMU") : true;
+            cmd.newTermPayment ? AtLeastValidator.validate(value, cmd, errors, "newTermPayment", "CENA_NAJMU") : true;
         })
         newPpPayment(nullable:true, shared: "number", validator: { value, cmd, errors ->
-            cmd.newPpPayment ? atLeastClosure.call(value, cmd, errors, "newPpPayment", "CENA_NAJMU_PP") : true;
+            cmd.newPpPayment ? AtLeastValidator.validate(value, cmd, errors, "newPpPayment", "CENA_NAJMU_PP") : true;
         })
     }
 

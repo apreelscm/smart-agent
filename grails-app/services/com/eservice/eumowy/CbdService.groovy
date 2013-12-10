@@ -233,7 +233,7 @@ class CbdService {
     @Cacheable(value="getTerminalPricesAndCounts")
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
     def getTerminalPricesAndCounts(def nip) {
-        return cbdDAO.selectOne(GET_TERMINAL_PRICES_AND_COUNTS, [nip: nip])
+        return cbdDAO.selectMany(GET_TERMINAL_PRICES_AND_COUNTS, [nip: nip])
     }
 
     @Cacheable(value="getHirePaymentByPoint")

@@ -1,0 +1,27 @@
+package com.eservice.eumowy.validator
+
+public class AtLeastValidator {
+
+    static def DEFAULT_VALUE = "~"
+
+    public static def validate = { value, cmd, errors, property, calcProperty ->
+        def calcValue = cmd.calculatorService.getCalcProperty(cmd.calc, calcProperty)
+
+        log.info("property: ${property}, value: ${value}, cal:${calcValue}")
+
+        //warunek na brak wartości w kalkulatorze lub wartość domyślną w panelu
+        if (DEFAULT_VALUE.equals(value) || !calcValue) {
+            return true
+        }
+
+        def minValue = calcValue?.toString()?.isNumber() ? calcValue.toString().toBigDecimal() : BigDecimal.ZERO
+        def currValue = value?.toString()?.isNumber() ? value.toString().toBigDecimal() : BigDecimal.ZERO
+
+        if (currValue.compareTo(minValue) < 0) {
+            errors.rejectValue(property, "default.atLeast.asCalc",[ValidatorUtils.getMessage(cmd, property)] as Object[], ValidatorUtils.getMessage(cmd, property))
+            return false
+        }
+        return true
+    }
+
+}
