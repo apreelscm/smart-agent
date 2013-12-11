@@ -148,12 +148,11 @@
 		this.scale = scale;
 		this.page = data;
 		this.viewport = data.getViewport(this.scale);
-        this.buffer = this.renderToBuffer(this.viewport.width, this.viewport.height);
-        this.ctx = this.buffer.getContext('2d');
+        this.buffer = null;
+        this.ctx = null;
         
         this.isReady = false;
-        
-        this.render();
+       	//this.render();
 	}
 	
 	// PdfPage Object Methods
@@ -164,8 +163,17 @@
 	    return buffer;
 	}
 	
-	PPage.prototype.render = function() {
+	PPage.prototype.render = function(buffer) {
+		//if(this.isReady == true)
+		//	return;
 		console.log("Page " + this.num + " rendering...");
+		
+		//this.buffer = this.renderToBuffer(this.viewport.width, this.viewport.height);
+		this.buffer = buffer.buff;
+        this.ctx = buffer.ctx;
+        
+        this.buffer.width = this.viewport.width;
+        this.buffer.height = this.viewport.height;
 		
 		var that = this;
 		var renderContext = {
@@ -174,12 +182,20 @@
 		};
 		this.page.render(renderContext).then(function() {
 			console.log("Page " + that.num + " rendering complete!");
+			//that.buffer = null;
+			that.ctx = null;
 			that.isReady = true;
 		});
 	}
 	
 	PPage.prototype.getImage = function() {
 		return this.buffer;
+	}
+	
+	PPage.prototype.release = function() {
+		delete this.buffer;
+        delete this.ctx;
+        this.isReady = false;
 	}
 	
 	// PdfDocumentObject
@@ -192,13 +208,16 @@
 		this.pages = [];
 		this.pagesCount = 0;
 		this.currentPage = 1;
-		
+		this.isReady = false;
+	}
+	
+	PDocument.prototype.init = function() {
 		var that = this;
 		PDFJS.getDocument(this.pdfData).then(function(pdf) {
 			that.pdf = pdf;
 			that.currentPage = 1;
 			that.pagesCount = pdf.numPages;
-			
+			that.isReady = true;
 			// Prerendering document
 			that.preRender();
 		});
@@ -207,6 +226,8 @@
 	// PdfDocument Object Methods
 	PDocument.prototype.preRender = function() {
 		console.log("Prerendering document["+this.num+"]: " + this.name + " in progress...");
+		if (this.pages == undefined)
+			this.pages = [];
 		var that = this;
 		for (var i = 1; i <= this.pagesCount; i++) {
 			this.pdf.getPage(i).then(function(page) { 
@@ -219,13 +240,38 @@
 	}
 	
 	PDocument.prototype.getCurrentPage = function() {
-		return this.pages[this.currentPage-1];
+		return this.pages != undefined ? this.pages[this.currentPage-1] : undefined;
+	}
+	
+	PDocument.prototype.renderAll = function(buffers) {
+		this.init();
+		var that = this;
+		var intervalId = setInterval(function() {
+			if (that.isReady == true) {
+				for(var i = 0; i < that.pagesCount; i++)
+					that.pages[i].render(buffers[i]);
+				clearInterval(intervalId);
+			}
+		}, 1000);
+	}
+	
+	PDocument.prototype.releaseAll = function() {
+		//delete this.pdfData;
+		delete this.pdf;
+		if (this.pages != undefined) {
+			for(var i = 0; i < this.pagesCount; i++) {
+				this.pages[i].release();
+			}
+			delete this.pages;
+		}
+		this.isReady = false;
 	}
 	
 	// PdfPreviewManager Object
 	function PdfPreviewManager() {
-		this.scale = 2.0;
+		this.scale = 1.5;
 		this.currentDocument = 0;
+		this.buffers = [];
 		
 		this.$currentPageEl = jQuery("#page_num");
 		this.$totalPagesEl = jQuery("#page_count");
@@ -295,11 +341,12 @@
 		//this.$pdfBoxEl.attr('style', '');
 		this.canvas.width = this.documents[this.currentDocument].getCurrentPage().viewport.width;
 	    this.canvas.height = this.documents[this.currentDocument].getCurrentPage().viewport.height;
+	    this.globalContext.clearRect( 0, 0, this.canvas.width, this.canvas.height );
 		this.globalContext.drawImage(this.documents[this.currentDocument].getCurrentPage().getImage(), 0, 0);
 	}
 	
 	PdfPreviewManager.prototype.refreshPreview = function() {
-		if (this.documents[this.currentDocument].getCurrentPage().isReady == true) {
+		if (this.documents[this.currentDocument].getCurrentPage() != undefined && this.documents[this.currentDocument].getCurrentPage().isReady == true) {
 			this.$currentPageEl.html(this.documents[this.currentDocument].currentPage);
 			this.$totalPagesEl.html(this.documents[this.currentDocument].pagesCount);
 			this.$loadingBoxEl.hide();
@@ -322,8 +369,33 @@
 	
 	PdfPreviewManager.prototype.showDocument = function(id) {
 		console.log("Showing document["+id+"]: " + this.documents[id].name);
+		this.$loadingBoxEl.show();
+		this.$pdfBoxEl.css("display", "none");
 		this.currentDocument = id;
+		
+		for(var i = 0; i < this.documents.length; i++) {
+			if(i != this.currentDocument) {
+				this.documents[i].releaseAll();
+			}
+		}
+		
 		this.documents[this.currentDocument].currentPage = 1;
+		
+		for(var i = 0; i < this.buffers.length; i++) {
+			//this.buffers[i].ctx.clearRect(0,0, this.buffers[i].buff.width, this.buffers[i].buff.height);
+			//this.buffers.pop();
+			delete this.buffers[i]
+		}
+		this.buffers = [];
+		for(var i = 0; i < 12; i++) {
+			var buff = {};
+			
+			buff.buff = document.createElement('canvas');
+			buff.ctx = buff.buff.getContext('2d');
+			this.buffers.push(buff);
+		}
+		
+		this.documents[this.currentDocument].renderAll(this.buffers);
 		var that = this;
 		this.$prevButtonEl.addClass("disabled");
 		var intervalId = setInterval(function() {
@@ -339,8 +411,8 @@
     		documents = [],
 			subscriptionDialog = jQuery('#subscriptionDialog');
 		
-		<g:each in="${processInstance.documents.sort(false){a,b -> a.signature.signatureOrder.compareTo(b.signature.signatureOrder)}?.findAll {it.signature?.showOnPreview} }" status="i" var="document">
-	        documents.push(new PDocument(${i} ,'${document?.clientName}', previewManager.scale, base64DecToArr('${document?.content?.getPreviewContent().encodeBase64().toString()}').buffer));
+		<g:each in="${processInstance.documents.sort(false){a,b -> a.signature.signatureOrder.compareTo(b.signature.signatureOrder)}?.findAll {it.signature?.showOnPreview} }" status="i" var="document"> 
+        	documents.push(new PDocument(${i} ,'${document?.clientName}', previewManager.scale, base64DecToArr('${document?.content?.getPreviewContent().encodeBase64().toString()}').buffer));
 	    </g:each>
 	    
 	    previewManager.setDocuments(documents);
@@ -362,7 +434,6 @@
 		});
 		
 		previewManager.showDocument(0);
-    	
 		    	
 				jQuery("#noaccept").on("click", function(e) {
 					e.preventDefault();
