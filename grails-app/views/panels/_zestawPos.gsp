@@ -178,7 +178,9 @@
 
             <td><eumowy:currencyField name="${panelType}[${id}].gprsCenaPreferencyjna"
                              id="${panelType}[${id}].gprsPricePreferencyjna"
-                             value="${pointData?.gprsCenaPreferencyjna}" 
+                             value="${pointData?.gprsCenaPreferencyjna}"
+                             validatable="${pointData}"
+                             validateField="gprsCenaPreferencyjna"
                              class="half-width float-number pref-price"/></td>
             <td><eumowy:currencyField name="${panelType}[${id}].gprsPPCenaPreferencyjna"
                              id="${panelType}[${id}].gprsPPPricePreferencyjna"

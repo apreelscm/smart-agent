@@ -297,25 +297,28 @@ class PointCommand implements Serializable {
 		})
 		bazaIlosc(nullable:true,  shared: "number")
         dialupCenaPreferencyjna(nullable:true, shared: "number", validator: { value, cmd, errors ->
-			cmd.dialupTyp ? AtLeastValidator.validate(value, cmd, errors, "dialupCenaPreferencyjna", "TYP_DIALUP_CENA") : true;
+			cmd.dialupTyp ? AtLeastValidator.validate(value, cmd, errors, "dialupCenaPreferencyjna", "TYP_DIALUP_TERM_CENA") : true;
 		})
         dialupPPCenaPreferencyjna(nullable:true, shared: "number", validator: { value, cmd, errors ->
 			cmd.dialupTyp ? AtLeastValidator.validate(value, cmd, errors, "dialupPPCenaPreferencyjna", "TYP_DIALUP_PP_CENA") : true;
 		})
         vpnCenaPreferencyjna(nullable:true, shared: "number", validator: { value, cmd, errors ->
-			cmd.vpnTyp ? AtLeastValidator.validate(value, cmd, errors, "vpnCenaPreferencyjna", "TYP_VPN_CENA") : true;
+			cmd.vpnTyp ? AtLeastValidator.validate(value, cmd, errors, "vpnCenaPreferencyjna", "TYP_VPN_TERM_CENA") : true;
 		})
         vpnPPCenaPreferencyjna(nullable:true, shared: "number", validator: { value, cmd, errors ->
 			cmd.vpnTyp ? AtLeastValidator.validate(value, cmd, errors, "vpnPPCenaPreferencyjna", "TYP_VPN_PP_CENA") : true;
 		})
         sslCenaPreferencyjna(nullable:true, shared: "number", validator: { value, cmd, errors ->
-			cmd.sslTyp ? AtLeastValidator.validate(value, cmd, errors, "sslCenaPreferencyjna", "TYP_SSL_CENA") : true;
+			cmd.sslTyp ? AtLeastValidator.validate(value, cmd, errors, "sslCenaPreferencyjna", "TYP_SSL_TERM_CENA") : true;
 		})
         sslPPCenaPreferencyjna(nullable:true, shared: "number", validator: { value, cmd, errors ->
 			cmd.sslTyp ? AtLeastValidator.validate(value, cmd, errors, "sslPPCenaPreferencyjna", "TYP_SSL_PP_CENA") : true;
 		})
         gprsCenaPreferencyjna(nullable:true, shared: "number", validator: { value, cmd, errors ->
-			cmd.gprsTyp ? AtLeastValidator.validate(value, cmd, errors, "gprsCenaPreferencyjna", "TYP_GPRS_CENA") : true;
+
+            println 'PSZKUP: waliduje: gprsCenaPreferencyjna'
+
+            cmd.gprsTyp ? AtLeastValidator.validate(value, cmd, errors, "gprsCenaPreferencyjna", "TYP_GPRS_TERM_CENA") : true;
 		})
         gprsPPCenaPreferencyjna(nullable:true, shared: "number", validator: { value, cmd, errors ->
 			cmd.gprsTyp ? AtLeastValidator.validate(value, cmd, errors, "gprsPPCenaPreferencyjna", "TYP_GPRS_PP_CENA") : true;
@@ -324,7 +327,7 @@ class PointCommand implements Serializable {
 			cmd.pinPadTyp ? AtLeastValidator.validate(value, cmd, errors, "pinPadCenaPreferencyjna", "TYP_PINPAD_CENA") : true;
 		})
         wifiCenaPreferencyjna(nullable:true, shared: "number", validator: { value, cmd, errors ->
-			cmd.wifiTyp ? AtLeastValidator.validate(value, cmd, errors, "wifiCenaPreferencyjna", "TYP_WIFI_CENA") : true;
+			cmd.wifiTyp ? AtLeastValidator.validate(value, cmd, errors, "wifiCenaPreferencyjna", "TYP_WIFI_TERM_CENA") : true;
 		})
 		//zamkniecieDniaOd(nullable:true, blank:false, shared: "date")
 		//zamkniecieDniaDo(nullable:true, blank:false, shared: "date")
