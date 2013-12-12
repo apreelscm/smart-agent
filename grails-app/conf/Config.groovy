@@ -70,13 +70,21 @@ isPanelsValidationOn = true;
 
 
 grails.cache.config = {
-    cache {
-        name 'eumowycache'
-        maxElementsInMemory 1000
-        eternal false
-        timeToLiveSeconds 120
-        overflowToDisk false
-        memoryStoreEvictionPolicy 'LRU'
+    cache = {
+        name = 'eumowyCacheShort'
+        maxElementsInMemory = 2000
+        eternal = false
+        timeToLiveSeconds = 600
+        overflowToDisk = false
+        memoryStoreEvictionPolicy = 'LRU'
+    }
+    cache = {
+        name = 'eumowyCacheLong'
+        maxElementsInMemory = 1000
+        eternal = false
+        timeToLiveSeconds = 36000
+        overflowToDisk = false
+        memoryStoreEvictionPolicy = 'LRU'
     }
 }
 

@@ -315,9 +315,6 @@ class PointCommand implements Serializable {
 			cmd.sslTyp ? AtLeastValidator.validate(value, cmd, errors, "sslPPCenaPreferencyjna", "TYP_SSL_PP_CENA") : true;
 		})
         gprsCenaPreferencyjna(nullable:true, shared: "number", validator: { value, cmd, errors ->
-
-            println 'PSZKUP: waliduje: gprsCenaPreferencyjna'
-
             cmd.gprsTyp ? AtLeastValidator.validate(value, cmd, errors, "gprsCenaPreferencyjna", "TYP_GPRS_TERM_CENA") : true;
 		})
         gprsPPCenaPreferencyjna(nullable:true, shared: "number", validator: { value, cmd, errors ->

@@ -31,10 +31,10 @@ class CbdService {
     private static final def GET_WYKAZ_PUNKTOW_GRID = "getWykazPunktowGrid"
     private static final def GET_ZAKRES_URUCHOMIENIA_PUNKTY_GRID = "getZakresUruchomieniaPunktyGrid"
     private static final def GET_RODZAJ_DZIALALNOSCI_BY_MCC = "getRodzajDzialanosciByMCC"
-	private static final def GET_ANEKS_DO_UMOWY_NAJMU_ZESTAWU_POS = "getAneksDoUmowyNajmuZestawuPos"
-	private static final def GET_ANEKS_DO_UMOWY_PREPAID = "getAneksDoUmowyPrepaid"
-	private static final def GET_CBD_POINT_BY_ID = "getCbdPointById"
-	private static final def SPRAWDZ_DZIALANIE = "sprawdzDzialanie"
+    private static final def GET_ANEKS_DO_UMOWY_NAJMU_ZESTAWU_POS = "getAneksDoUmowyNajmuZestawuPos"
+    private static final def GET_ANEKS_DO_UMOWY_PREPAID = "getAneksDoUmowyPrepaid"
+    private static final def GET_CBD_POINT_BY_ID = "getCbdPointById"
+    private static final def SPRAWDZ_DZIALANIE = "sprawdzDzialanie"
     private static final def GET_NUMER_SPRZEDAZOWY = "getNumerSprzedazowy"
     private static final def CZY_GIFT = "czyGift"
     private static final def GET_TERMINAL_PRICES_AND_COUNTS = "getTerminalPriceAndCountByNip"
@@ -76,7 +76,7 @@ class CbdService {
     def findClientByNip(def clientNip) {
         switch (Environment.getCurrent().getName()) {
             case EumowyCustomEnvironment.MOCK.getName():
-               return null;
+                return null;
             default:
                 def rowResult = cbdDAO.selectOne(FIND_CLIENT_ID_BY_NIP,[nip:clientNip])
                 def cbdClient = new Client(rowResult)
@@ -84,204 +84,206 @@ class CbdService {
         }
     }
 
-    @Cacheable(value="getAdresDaneDoWydruku")
+    @Cacheable(value="eumowyCacheShort", key = "'getAdresDaneDoWydruku_'.concat(#clientNip)")
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
     def  getAdresDaneDoWydruku(def clientNip) {
         return cbdDAO.selectOne(GET_ADRES_DANE_DO_WYDRUKU,[nip:clientNip])
     }
 
-    @Cacheable(value="getAdresDoKorespondencji")
+    @Cacheable(value="eumowyCacheShort", key = "'getAdresDoKorespondencji_'.concat(#clientNip)")
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
     def getAdresDoKorespondencji(def clientNip) {
         return cbdDAO.selectOne(GET_ADRES_DO_KORESPONDENCJI,[nip:clientNip])
     }
 
-    @Cacheable(value="getAdresDoKorespondencjizAkceptantem")
+    @Cacheable(value="eumowyCacheShort", key = "'getAdresDoKorespondencjizAkceptantem_'.concat(#clientNip)")
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
     def getAdresDoKorespondencjizAkceptantem(def clientNip) {
         return cbdDAO.selectOne(GET_ADRES_DO_KORESPONDENCJIZ_AKCEPTANTEM,[nip:clientNip])
     }
 
-    @Cacheable(value="getDaneAkceptanta")
+    @Cacheable(value="eumowyCacheShort", key = "'getDaneAkceptanta_'.concat(#clientNip)")
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
     def getDaneAkceptanta(def clientNip) {
         return cbdDAO.selectOne(GET_DANE_AKCEPTANTA,[nip:clientNip])
     }
 
-    @Cacheable(value="getNazwaBanku")
+    @Cacheable(value="eumowyCacheShort", key = "'getNazwaBanku_'.concat(#accountShortNum)")
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
     def getNazwaBanku(def accountShortNum) {
         return cbdDAO.selectOne(GET_NAZWA_BANKU,[num: accountShortNum])
     }
 
+    @Cacheable(value="eumowyCacheLong", key = "'getMiasto_'.concat(#code)")
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
     def getMiasto(def code) {
         return cbdDAO.selectMany(GET_MIASTO,[code: code])
     }
 
-    @Cacheable(value="getNumerRachunkuBankowego")
+    @Cacheable(value="eumowyCacheShort", key = "'getNumerRachunkuBankowego_'.concat(#clientNip)")
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
     def getNumerRachunkuBankowego(def clientNip) {
         return cbdDAO.selectOne(GET_NUMER_RACHUNKU_BANKOWEGO,[nip:clientNip])
     }
 
-    @Cacheable(value="getOsoba1UprawnionaDoPodpisaniaUmowy")
+    @Cacheable(value="eumowyCacheShort", key = "'getOsoba1UprawnionaDoPodpisaniaUmowy_'.concat(#clientNip)")
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
     def getOsoba1UprawnionaDoPodpisaniaUmowy(def clientNip) {
         return cbdDAO.selectOne(GET_OSOBA1_UPRAWNIONA_DO_PODPISANIA_UMOWY,[nip:clientNip])
     }
 
-    @Cacheable(value="getOsoba2UprawnionaDoPodpisaniaUmowy")
+    @Cacheable(value="eumowyCacheShort", key = "'getOsoba2UprawnionaDoPodpisaniaUmowy_'.concat(#clientNip)")
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
     def getOsoba2UprawnionaDoPodpisaniaUmowy(def clientNip) {
         return cbdDAO.selectOne(GET_OSOBA2_UPRAWNIONA_DO_PODPISANIA_UMOWY,[nip:clientNip])
     }
 
-    @Cacheable(value="getOsobaDoKontaktu")
+    @Cacheable(value="eumowyCacheShort", key = "'getOsobaDoKontaktu_'.concat(#clientNip)")
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
     def getOsobaDoKontaktu(def clientNip) {
         return cbdDAO.selectOne(GET_OSOBA_DO_KONTAKTU,[nip:clientNip])
     }
 
-    @Cacheable(value="getOsobaKtoraPozyskalaAkceptanta")
+    @Cacheable(value="eumowyCacheShort", key = "'getOsobaKtoraPozyskalaAkceptanta_'.concat(#clientNip)")
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
     def getOsobaKtoraPozyskalaAkceptanta(def clientNip) {
         return cbdDAO.selectOne(GET_OSOBA_KTORA_POZYSKALA_AKCEPTANTA,[nip:clientNip])
     }
 
-    @Cacheable(value="getPromocyjneObinzenieOplatGrid")
+    @Cacheable(value="eumowyCacheShort", key = "'getPromocyjneObinzenieOplatGrid_'.concat(#clientNip)")
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
     def getPromocyjneObinzenieOplatGrid(def clientNip) {
         return cbdDAO.selectMany(GET_PROMOCYJNE_OBINZENIE_OPLAT_GRID,[nip:clientNip])
     }
 
-  //  @Cacheable(value="getSiedzibaAkceptanta")
+    @Cacheable(value="eumowyCacheShort", key = "'getSiedzibaAkceptanta_'.concat(#clientNip)")
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
     def getSiedzibaAkceptanta(def clientNip) {
         return cbdDAO.selectOne(GET_SIEDZIBA_AKCEPTANTA,[nip:clientNip])
     }
 
-    @Cacheable(value="getWykazPunktowGrid")
+    @Cacheable(value="eumowyCacheShort", key = "'getWykazPunktowGrid_'.concat(#clientNip)")
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
     def getWykazPunktowGrid(def clientNip) {
         return cbdDAO.selectMany(GET_WYKAZ_PUNKTOW_GRID,[nip:clientNip])
     }
 
-    @Cacheable(value="getZakresUruchomieniaPunktyGrid")
+    @Cacheable(value="eumowyCacheShort", key = "'getZakresUruchomieniaPunktyGrid_'.concat(#clientNip)")
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
     def getZakresUruchomieniaPunktyGrid(def clientNip) {
         return cbdDAO.selectMany(GET_ZAKRES_URUCHOMIENIA_PUNKTY_GRID,[nip:clientNip])
     }
 
+    @Cacheable(value="eumowyCacheLong", key = "'getRodzajDzialalnosciByMCC_'.concat(#mcc)")
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
     def getRodzajDzialalnosciByMCC(def mcc) {
         return cbdDAO.selectOne(GET_RODZAJ_DZIALALNOSCI_BY_MCC,[mcc: mcc])
     }
-	
-	@Cacheable(value="getAneksDoUmowyNajmuZestawuPos")
-	@Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
-	def getAneksDoUmowyNajmuZestawuPos(def clientNip) {
-		return cbdDAO.selectOne(GET_ANEKS_DO_UMOWY_NAJMU_ZESTAWU_POS,[nip:clientNip])
-	}
-	
-	@Cacheable(value="getAneksDoUmowyPrepaid")
-	@Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
-	def getAneksDoUmowyPrepaid(def clientNip) {
-		return cbdDAO.selectOne(GET_ANEKS_DO_UMOWY_PREPAID,[nip:clientNip])
-	}
 
-    @Cacheable(value="getPosTypes")
+    @Cacheable(value="eumowyCacheShort", key = "'getAneksDoUmowyNajmuZestawuPos_'.concat(#clientNip)")
+    @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
+    def getAneksDoUmowyNajmuZestawuPos(def clientNip) {
+        return cbdDAO.selectOne(GET_ANEKS_DO_UMOWY_NAJMU_ZESTAWU_POS,[nip:clientNip])
+    }
+
+    @Cacheable(value="eumowyCacheShort", key = "'getAneksDoUmowyPrepaid_'.concat(#clientNip)")
+    @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
+    def getAneksDoUmowyPrepaid(def clientNip) {
+        return cbdDAO.selectOne(GET_ANEKS_DO_UMOWY_PREPAID,[nip:clientNip])
+    }
+
+    @Cacheable(value="eumowyCacheLong", key = "'getPosTypes_'.concat(#medium)")
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
     def getPosTypes(def query, def medium) {
         return cbdDAO.selectMany(query,[medium: medium]);
     }
 
-    @Cacheable(value="getCbdPoints")
+    @Cacheable(value="eumowyCacheShort", key = "'getCbdPoints_'.concat(#clientNip)")
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
     def getCbdPoints(def query, def clientNip) {
         return cbdDAO.selectMany(query,[nip:clientNip]);
     }
-	
-	@Cacheable(value="getCbdPointById")
-	@Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
-	def getCbdPointById(def clientNip, def cbdId) {
-		return cbdDAO.selectOne(GET_CBD_POINT_BY_ID, [nip: clientNip, cbdid: cbdId])
-	}
-	
-	@Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
-	def checkActivities(def activitiesString, def calcId, def signaturesString) {
+
+    @Cacheable(value="eumowyCacheShort", key = "'getCbdPointById_'.concat(#clientNip).concat('_').concat(#cbdId)")
+    @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
+    def getCbdPointById(def clientNip, def cbdId) {
+        return cbdDAO.selectOne(GET_CBD_POINT_BY_ID, [nip: clientNip, cbdid: cbdId])
+    }
+
+    @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
+    def checkActivities(def activitiesString, def calcId, def signaturesString) {
         def rowResult = cbdDAO.selectOne(SPRAWDZ_DZIALANIE, [activities: activitiesString, calcid: calcId, signatures: signaturesString])
         def result = rowResult != null && rowResult.get("result") == 1
         logggger.info("Checking activities for calcId ${calcId} with result: ${result}")
         return result
     }
 
-    @Cacheable(value="getNumerSprzedazowy")
+    @Cacheable(value="eumowyCacheShort", key = "'getNumerSprzedazowy_'.concat(#auwId)")
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
     def getNumerSprzedazowy(def auwId) {
         def rowResult = cbdDAO.selectOne(GET_NUMER_SPRZEDAZOWY, [auwId: auwId])
         return rowResult.get("numer")
     }
 
-    @Cacheable(value="czyGift")
+    @Cacheable(value="eumowyCacheShort", key = "'czyGift_'.concat(#nip)")
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
     def czyGift(def nip) {
         def rowResult = cbdDAO.selectOne(CZY_GIFT, [nip: nip])
         return rowResult != null && rowResult.get("result") == 1
     }
 
-    @Cacheable(value="getTerminalPricesAndCounts")
+    @Cacheable(value="eumowyCacheShort", key = "'getTerminalPricesAndCounts_'.concat(#nip)")
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
     def getTerminalPricesAndCounts(def nip) {
         return cbdDAO.selectMany(GET_TERMINAL_PRICES_AND_COUNTS, [nip: nip])
     }
 
-    @Cacheable(value="getHirePaymentByPoint")
+    @Cacheable(value="eumowyCacheShort", key = "'getHirePaymentByPoint_'.concat(#nip)")
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
     def getHirePaymentByPoint(def nip) {
         return cbdDAO.selectMany(GET_HIRE_PAYMENT_BY_POINT, [nip: nip])
     }
 
-    @Cacheable(value="getHirePaymentByPos")
+    @Cacheable(value="eumowyCacheShort", key = "'getHirePaymentByPos_'.concat(#nip)")
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
     def getHirePaymentByPos(def nip) {
         return cbdDAO.selectMany(GET_HIRE_PAYMENT_BY_POS, [nip: nip])
     }
 
-    @Cacheable(value="getHirePaymentByProcess")
+    @Cacheable(value="eumowyCacheShort", key = "'getHirePaymentByProcess_'.concat(#nip)")
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
     def getHirePaymentByProcess(def nip) {
         return cbdDAO.selectMany(GET_HIRE_PAYMENT_BY_PROCESS, [nip: nip])
     }
 
-    @Cacheable(value="getPrepaidEvoucher")
+    @Cacheable(value="eumowyCacheShort", key = "'getPrepaidEvoucher_'.concat(#nip)")
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
     def getPrepaidEvoucher(def nip) {
         return cbdDAO.selectOne(GET_PREPAID_EVOUCHER, [NIP: nip])
     }
 
-    @Cacheable(value="getPrepaidTopup")
+    @Cacheable(value="eumowyCacheShort", key = "'getPrepaidTopup_'.concat(#nip)")
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
     def getPrepaidTopup(def nip) {
         return cbdDAO.selectOne(GET_PREPAID_TOPUP, [NIP: nip])
     }
 
-    @Cacheable(value="getOpiekaSerwisowa1")
+    @Cacheable(value="eumowyCacheShort", key = "'getOpiekaSerwisowa1_'.concat(#code)")
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
     def getOpiekaSerwisowaOne(def code) {
         return cbdDAO.selectOne(GET_OPIEKA_SERWISOWA_I,[kod: code])
     }
 
-    @Cacheable(value="getOpiekaSerwisowa2")
+    @Cacheable(value="eumowyCacheShort", key = "'getOpiekaSerwisowa2_'.concat(#code)")
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
     def getOpiekaSerwisowaTwo(def code) {
         return cbdDAO.selectOne(GET_OPIEKA_SERWISOWA_II,[kod: code])
     }
-	
-	@Cacheable(value="getMccComboBox")
-	@Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
-	def getMccCodes(def query) {
-		return cbdDAO.selectMany(query, [])
-	}
+
+    @Cacheable(value="eumowyCacheLong", key = "'getMccComboBox'")
+    @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
+    def getMccCodes(def query) {
+        return cbdDAO.selectMany(query, [])
+    }
 
 }
