@@ -24,4 +24,8 @@ public class AtLeastValidator {
         return true
     }
 
+    public static def validateWithNull = { value, cmd, errors, property, calcProperty ->
+        return (value == null) ? true: AtLeastValidator.validate(value, cmd, errors, property, calcProperty)
+    }
+
 }
