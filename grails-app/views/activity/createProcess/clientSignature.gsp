@@ -639,7 +639,7 @@
 	    <tbody>
 	    <g:each in="${processInstance.documents.sort(false){a,b -> a.signature.signatureOrder.compareTo(b.signature.signatureOrder)}?.findAll {it.signature?.showOnPreview} }" status="i" var="document">
 	        <tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
-	            <td class="tableCellLeft" style="vertical-align: middle"><a id="previewPdfButton" data-document-index="${i}" href="#">${document.name}</a></td>
+	            <td class="tableCellLeft" style="vertical-align: middle"><a id="previewPdfButton" data-document-index="${i}" href="#">${document.clientName}</td>
 	            <td class="tableCell" style="vertical-align: middle"><g:formatDate date="${document.lastUpdated}" format="yyyy-MM-dd HH:mm"/></td>
 	            <td class="tableCell" style="vertical-align: middle">
 	                <g:link class="button action" style="margin: 0 auto" action="downloadDoc" params="[id: document.id]">Pobierz</g:link>

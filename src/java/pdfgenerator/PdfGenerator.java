@@ -317,9 +317,9 @@ public class PdfGenerator {
         PdfReader templateReader = null;
         PdfStamper stamp = null;
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-
+        byte[] newContent = dc.clone();
         try{
-            templateReader = new PdfReader(dc);
+            templateReader = new PdfReader(newContent);
             stamp = new PdfStamper(templateReader, baos);
             stamp.setFormFlattening( true );
             stamp.getReader().removeUnusedObjects();

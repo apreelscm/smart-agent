@@ -254,21 +254,21 @@
         <g:hiddenField id="hasDodaniePrepaid" name="hasDodaniePrepaid" value="${data.hasDodaniePrepaid}"/>
         <g:hiddenField name="czyGift" value="${data.czyGift}"/>
 
-        <g:each var="panel" in="${processInstance.panels.sort{p -> p?.orderNo}}" status="i">
+        <g:each var="panel" in="${processInstance.panels.sort(false){p -> p?.orderNo}}" status="i">
 
             <g:if test="${panel != null}">
                 <g:if test="${panel.name.equals('danePunktu') == false && panel.name.equals('danePos') == false}">
                     <g:render template="/panels/${panel.name}"/>
                 </g:if>
                 <g:if test="${panel.name.equals('danePunktu')}">
-                    <g:each var="point" in="${data.points}" status="j">
+                    <g:each var="point" in="${data.points.sort(false){p -> p?.id }}" status="j">
                     	<g:if test="${point != null}" >
                        		<g:render template="/panels/danePunktu" model="[panelType: 'points', id: j, pointData: point]" />
                     	</g:if>
                     </g:each>
                 </g:if>
                 <g:if test="${panel.name.equals('danePos')}">
-                    <g:each var="pos" in="${data.poses}" status="j">
+                    <g:each var="pos" in="${data.poses.sort(false){p -> p?.id }}" status="j">
                         <g:if test="${pos != null && pos.isChildCopy() == false}" >
                         	<g:render template="/panels/danePos" model="[panelType: 'poses', id: j, pointData: pos]" />
                         </g:if>

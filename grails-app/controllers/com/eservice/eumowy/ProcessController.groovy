@@ -1,9 +1,14 @@
 package com.eservice.eumowy
 
+import grails.plugins.springsecurity.Secured
+
+import org.codehaus.groovy.grails.web.mime.MimeUtility
+
+import pdfgenerator.PdfGenerator
+
 import com.eservice.eum.ws.xml.Result
 import com.eservice.eumowy.util.DateUtils
-import com.sun.xml.internal.messaging.saaj.packaging.mime.internet.MimeUtility
-import grails.plugins.springsecurity.Secured
+
 
 class ProcessController {
 
@@ -280,14 +285,14 @@ class ProcessController {
     def downloadDoc(){
         log.info( "downloadDoc = " +  params.id);
         DocumentFile file = documentService.download(params.id)
-
+		
         if(!(file?.content?.content)){
             redirect(action: "show")
         }
 
         response.setContentType("application/pdf")
         response.setHeader("Content-disposition", "${params.contentDisposition}; filename=\"${file.name}\"")
-        response.outputStream << file.content.content
+        response.outputStream << PdfGenerator.closeContent(file.content.content)
     }
 
     def downloadAttachment(){

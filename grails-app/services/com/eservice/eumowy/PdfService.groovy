@@ -95,7 +95,7 @@ class PdfService {
 	
 	def generateImageFromPDF(byte[] pdf, Long documentId, String processId, Integer pageNumber) {
         StopWatch stopWatch = new Log4JStopWatch()
-		ByteArrayInputStream bis = new ByteArrayInputStream(PdfGenerator.closeContent(pdf.clone()))
+		ByteArrayInputStream bis = new ByteArrayInputStream(PdfGenerator.closeContent(pdf))
         PDDocument document = PDDocument.load(bis)
 		int resolution = appParametersService.getPdfPreviewImageResolution()
 		log.info document

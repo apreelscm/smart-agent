@@ -20,7 +20,7 @@ class DocumentContent implements Serializable {
 	}
 	
 	public byte[] getPreviewContent() {
-		return PdfGenerator.embbedAllFonts(content)
+		return PdfGenerator.closeContent(content)
 	}
 	
 }
