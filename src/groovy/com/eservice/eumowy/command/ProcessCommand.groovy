@@ -913,10 +913,6 @@ class ProcessCommand implements Serializable {
             NumberValidator.validate(value, cmd, errors, propertyName) &&
             AtLeastValidator.validate(value, cmd, errors, propertyName, "OPLATA_MSC_322_ZL")
         })
-        visaPolskaKBSt(nullable: false, blank: false, validator: { value, cmd, errors ->
-            NumberValidator.validate(value, cmd, errors, propertyName) &&
-            AtLeastValidator.validate(value, cmd, errors, propertyName, "OPLATA_MSC_33_ZL")
-        })
         mastercardPolskaKK1St(nullable: false, blank: false, validator: { value, cmd, errors ->
             NumberValidator.validate(value, cmd, errors, propertyName) &&
             AtLeastValidator.validate(value, cmd, errors, propertyName, "OPLATA_MSC_611_ZL")
