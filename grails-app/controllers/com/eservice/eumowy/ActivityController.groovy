@@ -226,9 +226,6 @@ class ActivityController {
                     //processInstance.discard()
                     //processInstance.save(flush: true)
                     processInstance = processWithPages.processInstance
-                    processInstance.save(flush: true)
-                    //flow.processInstance = processInstance
-
                 }
                 flow.skipDocumentGeneration = false
                 flow.processInstance = processInstance
