@@ -169,11 +169,6 @@ public class PdfGenerator {
 				if (dataEntry.getValue().length > 1 && dataEntry.getValue()[1].isEmpty() == false){
 					form.setFieldProperty(dataEntry.getKey(), "textsize", Float.valueOf(dataEntry.getValue()[1]), null);
 				}
-				
-/*
-                Zakomentowalem dodawanie czcionek, bo jest to (chyba) nie potrzebne.
-                Czcionki dodawane sa do pol. Pla natomiast mamy teraz w Helvetice.
-                Waga dokumentu spada przez to o ok. 400k.
 
                 if (fontsPathMap != null && fontsPathMap.containsKey(dataEntry.getKey())){
 					BaseFont bf = null;
@@ -199,7 +194,7 @@ public class PdfGenerator {
 						form.setFieldProperty(dataEntry.getKey(), "textfont", bf, null);
 						form.addSubstitutionFont(bf);
 					}
-				}*/
+				}
 				
 				if (dataEntry.getValue().length > 2) {
 					
