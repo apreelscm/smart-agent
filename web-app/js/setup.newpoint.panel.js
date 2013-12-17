@@ -933,12 +933,24 @@ function addDateHandlers(prefixPanel){
 }
 
 function getHour(val) {
-	return val != undefined && val != null && val != '' && val.split(':')[0][0] == "0" ? val.split(':')[0][1] : val.split(':')[0];
+	if (val != undefined && val != null) {
+		return val != '' && val.split(':')[0][0] == "0" ? val.split(':')[0][1] : val.split(':')[0];
+	}
+	else {
+		return "0";
+	}
+	//return val != undefined && val != null && val != '' && val.split(':')[0][0] == "0" ? val.split(':')[0][1] : val.split(':')[0];
 }
 
 function getMinutes(val) {
-	return val != undefined && val != null && val != '' && val.split(':')[1][0] == "0" ? val.split(':')[1][1] : val.split(':')[1];
+	if (val != undefined && val != null) {
+		return val != '' && val.split(':')[1][0] == "0" ? val.split(':')[1][1] : val.split(':')[1];
+	}
+	else {
+		return "0";
+	}
 }
+	
 
 function getMinutesBetween(date1, date2) {
 	var timeOneArr, timeTwoArr;
