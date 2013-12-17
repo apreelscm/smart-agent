@@ -1213,6 +1213,10 @@ class ProcessService {
                 if (posData != null) {
                     pointData = posData.point
                     posDataDetails = posData.posDetails
+					
+					if (posDataDetails == null) {
+						posDataDetails = new PosDataDetails()
+					}
 
                     if (pointData != null) {
                         log.info "getPointCommandsToPosDataList - Znaleziono punkt o id: " + pointData.id + " dla POS o id: " + pc.id
