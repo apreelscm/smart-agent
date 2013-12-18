@@ -433,7 +433,8 @@
 			contain: 'invert'
 		});
 		
-		previewManager.showDocument(0);
+		//jQuery("#pdfBox-content-loading").show();
+		//previewManager.showDocument(0);
 		    	
 				jQuery("#noaccept").on("click", function(e) {
 					e.preventDefault();
@@ -664,7 +665,7 @@
             <div style="clear: both"></div>
         </div>
         <div id="pdfBox-content" style="margin: 1em;">
-            <div id="pdfBox-content-loading" style="text-align: center; width: 200px; display: block; margin: 0 auto;">
+            <div id="pdfBox-content-loading" style="text-align: center; width: 200px; display: none; margin: 0 auto;">
                 <h2 style="padding-top: 100px;"><g:message code="process.subscriptions.loadingPage" /></h2>
                 <img style="width: 40px;" src="/eumowy/images/document-loading.gif" />
             </div>
