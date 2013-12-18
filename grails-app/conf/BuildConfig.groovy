@@ -70,6 +70,7 @@ grails.project.dependency.resolution = {
         runtime ":resources:1.2"
         runtime ":spring-security-core:1.2.7.3"
         runtime ":modernizr:2.6.2"
+        compile ":quartz:1.0.1"
         /*runtime ":prototype:1.0"*/
 
         // Uncomment these (or add new ones) to enable additional resources capabilities

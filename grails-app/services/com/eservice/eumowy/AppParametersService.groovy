@@ -1,12 +1,6 @@
 package com.eservice.eumowy
 
-import grails.util.Environment
-
 import java.nio.file.Paths
-
-import org.codehaus.groovy.grails.commons.GrailsApplication;
-
-import com.eservice.eumowy.util.EumowyCustomEnvironment
 
 class AppParametersService {
 
@@ -26,6 +20,10 @@ class AppParametersService {
 		createDirectoryIfNotExists(basePath)
 		return path
 	}
+
+    def getPdfPreviewPath() {
+        return grailsApplication.config.appParametersPaths?.get("pdfPreviews")
+    }
 
 	def getPdfPreviewUri(String fileName) {
 		return  grailsLinkGenerator.link(controller: 'file', action: 'get', absolute: false, params: [root: "pdfPreviews", path: fileName])
@@ -72,6 +70,14 @@ class AppParametersService {
         String basePath = grailsApplication.config.appParametersPaths?.get("mobileAppPath")
         String path = basePath ? Paths.get(basePath, "subscriptions").normalize().toAbsolutePath().toString() : null
         return path
+    }
+
+    def getAgeToRemove(){
+        //in hours
+        int defaultValue = 24;
+        def returnValue = AppParameters.findByName("FILES_TO_REMOVE_AGE_IN_HOUR")?.value.toInteger()
+
+        return returnValue?:defaultValue
     }
 
 	def getSubscriptionsBlackPrefix() {
