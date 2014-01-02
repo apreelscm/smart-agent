@@ -36,7 +36,7 @@
     </div>
 
     <g:form id="signaturesFormId">
-        <g:each var="activity" in="${processInstance?.activities}">
+        <g:each var="activity" in="${processInstance?.activities?.sort(false){it.numerPozycji}}">
             <article id="${activity.code}" class="border-article signature-article">
                 <g:set var="list1" value="${activity?.activitySignatures?.findAll { it.numberOfList == 1 && it.signature.active}}"/>
                 <g:set var="list2" value="${activity?.activitySignatures?.findAll { it.numberOfList == 2 && it.signature.active}}"/>

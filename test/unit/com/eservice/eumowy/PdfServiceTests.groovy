@@ -1431,8 +1431,187 @@ class PdfServiceTests {
         data.putAll(insertSignatures2(subscriptions))
 		process("APUPZ2.00013-01-03 - Umowa o przyjmowanie zaplaty v. 2.000_z faksymile.pdf", "APUPZ2.00013-01-03 - Umowa o przyjmowanie zaplaty v. 2.000_z faksymile_out.pdf", data)
 	}
-	
-	void testAPUPZToImage() {
+
+    void testNr1() {
+        HashMap<String, String[]> data = new HashMap<String, String[]>();
+        data.putAll(this.data);
+        data.putAll(prepareAggrementsFields())
+        data.put("umowaOznOd", ["06.10.2003"] as String[]);
+        data.put("umowaOznDo", ["06.10.2010"] as String[]);
+        data.putAll(preparePunktyData())
+        data.putAll(preparePozopmOplatIWarunkiPlatnosciKartyData())
+
+        data.put("umowaNieOzn", ["true", "", "checkbox"] as String[]);
+        data.put("umowaOzn", ["true", "", "checkbox"] as String[]);
+//		data.putAll(insertSignatures(4, 90, 308, 74, 43))
+
+        //NOT OK
+        def subscriptions = [
+                ["ACCEPTANT1", 5, 90, 272, 94, 63],
+                ["ACCEPTANT2", 5, 210, 272, 94, 63],
+                ["ZARZAD1", 5, 340, 272, 85, 58],
+                ["ZARZAD2", 5, 470, 272, 56, 58],
+                ["PH", 5, 458, 152, 84, 53]
+        ]
+        data.putAll(insertSignatures2(subscriptions))
+        process("APUPZT2.1000.13-12-23.pdf", "APUPZT2.1000.13-12-23_out.pdf", data)
+    }
+
+
+    void testNr2() {
+        HashMap<String, String[]> data = new HashMap<String, String[]>();
+        data.putAll(this.data);
+        data.putAll(prepareAggrementsFields())
+        data.put("umowaOznOd", ["06.10.2003"] as String[]);
+        data.put("umowaOznDo", ["06.10.2010"] as String[]);
+        data.putAll(preparePunktyData())
+        data.putAll(preparePozopmOplatIWarunkiPlatnosciKartyData())
+
+        data.put("umowaNieOzn", ["true", "", "checkbox"] as String[]);
+        data.put("umowaOzn", ["true", "", "checkbox"] as String[]);
+//		data.putAll(insertSignatures(4, 90, 308, 74, 43))
+
+        //NOT OK
+        def subscriptions = [
+                ["ACCEPTANT1", 5, 90, 242, 94, 63],
+                ["ACCEPTANT2", 5, 210, 242, 94, 63],
+                ["ZARZAD1", 5, 340, 242, 85, 58],
+                ["ZARZAD2", 5, 470, 242, 56, 58],
+                ["PH", 5, 458, 122, 84, 53]
+        ]
+        data.putAll(insertSignatures2(subscriptions))
+        process("APUPZT1.1000.13-12-23.pdf", "APUPZT1.1000.13-12-23_out.pdf", data)
+    }
+
+
+    void testNr3() {
+        HashMap<String, String[]> data = new HashMap<String, String[]>();
+        data.putAll(this.data);
+        data.putAll(prepareAggrementsFields())
+        data.put("umowaOznOd", ["06.10.2003"] as String[]);
+        data.put("umowaOznDo", ["06.10.2010"] as String[]);
+        data.putAll(preparePunktyData())
+        data.putAll(preparePozopmOplatIWarunkiPlatnosciKartyData())
+
+        data.put("umowaNieOzn", ["true", "", "checkbox"] as String[]);
+        data.put("umowaOzn", ["true", "", "checkbox"] as String[]);
+//		data.putAll(insertSignatures(4, 90, 308, 74, 43))
+
+        //NOT OK
+        def subscriptions = [
+                ["ACCEPTANT1", 1, 90, 110, 94, 63],
+                ["ACCEPTANT2", 1, 210, 110, 94, 63],
+                ["ZARZAD1", 1, 340, 110, 85, 58],
+                ["ZARZAD2", 1, 470, 110, 56, 58],
+                ["PH", 1, 447, 2, 84, 53]
+        ]
+        data.putAll(insertSignatures2(subscriptions))
+        process("APUPZT12IF.1000.13-12-23.pdf", "APUPZT12IF.1000.13-12-23_out.pdf", data)
+    }
+
+
+    void testNr4() {
+        HashMap<String, String[]> data = new HashMap<String, String[]>();
+        data.putAll(this.data);
+        data.putAll(prepareAggrementsFields())
+        data.put("umowaOznOd", ["06.10.2003"] as String[]);
+        data.put("umowaOznDo", ["06.10.2010"] as String[]);
+        data.putAll(preparePunktyData())
+        data.putAll(preparePozopmOplatIWarunkiPlatnosciKartyData())
+
+        data.put("umowaNieOzn", ["true", "", "checkbox"] as String[]);
+        data.put("umowaOzn", ["true", "", "checkbox"] as String[]);
+//		data.putAll(insertSignatures(4, 90, 308, 74, 43))
+
+        //NOT OK
+        def subscriptions = [
+                ["ACCEPTANT1", 2, 90, 130, 94, 63],
+                ["ACCEPTANT2", 2, 210, 130, 94, 63],
+                ["ZARZAD1", 2, 340, 130, 85, 58],
+                ["ZARZAD2", 2, 470, 130, 56, 58],
+                ["PH", 2, 447, 42, 84, 53]
+        ]
+        data.putAll(insertSignatures2(subscriptions))
+        process("APUPZT12ACB.1000.13-12-23.pdf", "APUPZT12ACB.1000.13-12-23_out.pdf", data)
+    }
+
+
+    void testNr5() {
+        HashMap<String, String[]> data = new HashMap<String, String[]>();
+        data.putAll(this.data);
+        data.putAll(prepareAggrementsFields())
+        data.put("umowaOznOd", ["06.10.2003"] as String[]);
+        data.put("umowaOznDo", ["06.10.2010"] as String[]);
+        data.putAll(preparePunktyData())
+        data.putAll(preparePozopmOplatIWarunkiPlatnosciKartyData())
+
+        data.put("umowaNieOzn", ["true", "", "checkbox"] as String[]);
+        data.put("umowaOzn", ["true", "", "checkbox"] as String[]);
+//		data.putAll(insertSignatures(4, 90, 308, 74, 43))
+
+        //NOT OK
+        def subscriptions = [
+                ["ACCEPTANT1", 1, 90, 155, 94, 63],
+                ["ACCEPTANT2", 1, 210, 155, 94, 63],
+                ["ZARZAD1", 1, 340, 155, 85, 58],
+                ["ZARZAD2", 1, 470, 155, 56, 58],
+                ["PH", 1, 447, 62, 84, 53]
+        ]
+        data.putAll(insertSignatures2(subscriptions))
+        process("APUPZT12AWNZ1.1000.13-12-23.pdf", "APUPZT12AWNZ1.1000.13-12-23_out.pdf", data)
+    }
+
+    void testNr6() {
+        HashMap<String, String[]> data = new HashMap<String, String[]>();
+        data.putAll(this.data);
+        data.putAll(prepareAggrementsFields())
+        data.put("umowaOznOd", ["06.10.2003"] as String[]);
+        data.put("umowaOznDo", ["06.10.2010"] as String[]);
+        data.putAll(preparePunktyData())
+        data.putAll(preparePozopmOplatIWarunkiPlatnosciKartyData())
+
+        data.put("umowaNieOzn", ["true", "", "checkbox"] as String[]);
+        data.put("umowaOzn", ["true", "", "checkbox"] as String[]);
+//		data.putAll(insertSignatures(4, 90, 308, 74, 43))
+
+        //NOT OK
+        def subscriptions = [
+                ["ACCEPTANT1", 1, 90, 185, 94, 63],
+                ["ACCEPTANT2", 1, 210, 185, 94, 63],
+                ["ZARZAD1", 1, 340, 185, 85, 58],
+                ["ZARZAD2", 1, 470, 185, 56, 58],
+                ["PH", 1, 447, 92, 84, 53]
+        ]
+        data.putAll(insertSignatures2(subscriptions))
+        process("APUPZT12DCC.1000.13-12-23.pdf", "APUPZT12DCC.1000.13-12-23_out.pdf", data)
+    }
+
+    void testNr7() {
+        HashMap<String, String[]> data = new HashMap<String, String[]>();
+        data.putAll(this.data);
+        data.putAll(prepareAggrementsFields())
+        data.put("umowaOznOd", ["06.10.2003"] as String[]);
+        data.put("umowaOznDo", ["06.10.2010"] as String[]);
+        data.putAll(preparePunktyData())
+        data.putAll(preparePozopmOplatIWarunkiPlatnosciKartyData())
+
+        data.put("umowaNieOzn", ["true", "", "checkbox"] as String[]);
+        data.put("umowaOzn", ["true", "", "checkbox"] as String[]);
+//		data.putAll(insertSignatures(4, 90, 308, 74, 43))
+
+        //NOT OK
+        def subscriptions = [
+                ["ACCEPTANT1", 1, 90, 162, 94, 63],
+                ["ACCEPTANT2", 1, 210, 162, 94, 63],
+                ["ZARZAD1", 1, 340, 162, 85, 58],
+                ["ZARZAD2", 1, 470, 162, 56, 58],
+                ["PH", 1, 447, 72, 84, 53]
+        ]
+        data.putAll(insertSignatures2(subscriptions))
+        process("APUPZT12DCCZ.1000.13-12-23.pdf", "APUPZT12DCCZ.1000.13-12-23_out.pdf", data)
+    }
+
+    void testAPUPZToImage() {
 		String outFile =  "APUPZ2.00013-01-03 - Umowa o przyjmowanie zaplaty v. 2.000_z faksymile_out2.pdf"
 		data.put("podpis", [new File(getTemplatePath()+"signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
 		process("APUPZ2.00013-01-03 - Umowa o przyjmowanie zaplaty v. 2.000_z faksymile.pdf", outFile, data);
