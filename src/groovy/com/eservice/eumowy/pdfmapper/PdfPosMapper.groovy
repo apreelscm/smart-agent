@@ -40,6 +40,9 @@ class PdfPosMapper extends AbstractPdfMapper{
         def resultNormalMap = new TreeMap<Integer, BigDecimal>();
         def resultPrefMap = new TreeMap<Integer, BigDecimal>();
         poses?.each { pos ->
+			if (pos == null)
+				return
+				
             pos.posDetails?.each { posDetail ->
                 addToPosMap(resultNormalMap, posDetail.dialupIlosc, posDetail.dialupCena, posDetail.dialupPPCena)
                 addToPosMap(resultNormalMap, posDetail.vpnIlosc, posDetail.vpnCena, posDetail.vpnPPCena)
@@ -62,6 +65,8 @@ class PdfPosMapper extends AbstractPdfMapper{
     public def mapPosesDataToPDFData(def posesData) {
         def data = [:]
         posesData?.each { pos ->
+			if (pos == null)
+				return
             //gdy bedzie potrzeba pobrania danych bezposrednio z POS, trzeba odhashowac ponizsza linijke
             //mapperClosure(pos.properties, data, "Pos", EXCLUDE_FROM_POS, pos);
             mapperClosure(pos.posDetails?.properties, data, "PosDataDetails", EXCLUDE_FROM_POS_DETAILS, pos);

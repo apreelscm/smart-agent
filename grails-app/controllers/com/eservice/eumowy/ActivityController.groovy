@@ -556,7 +556,7 @@ class ActivityController {
 					
 					processInstance.points?.each { point ->
 						point.posDatas?.each { pos ->
-							if (pos.tpsId != null) {
+							if (pos?.tpsId != null) {
 								def foundApc = processCmd.allPoses?.find { apc -> apc.tpsId == pos.tpsId }
 								if (foundApc != null) {
 									foundApc.id = pos.id
@@ -620,12 +620,24 @@ class ActivityController {
 				if (pos != null) {
 					log.info "DeletePos - Usuwam pos o id: " + params.posId
 					PointData point = pos.point
-					pos.removeFromPoint(point)
-					pos.delete()
-					point.save()
-					processInstance.save(flush: true)
+					//pos.removeFromPoint(point)
+					
+					if (point == null) {
+						point = PointData.find {
+							process == processInstance &&
+							posDatas { id == pos.id }
+						}
+					}
+					
+					if (point) {
+						point.posDatas?.removeAll { it == null || it?.id == pos?.id }
+						//point.removeFromPosDatas(pos)
+						pos.delete()
+						point.save()
+						processInstance.save(flush: true)
+					}
 	
-					cmd?.poses?.removeAll { it.id == pos.id }
+					cmd?.poses?.removeAll { it == null || it.id == pos.id }
 				}
 				else {
 					log.info "DeletePos - Nie znalazłem pos o id: " + params.posId
@@ -663,6 +675,17 @@ class ActivityController {
                         foundApc?.id = point.id
                     }
                 }
+				
+				processInstance.points?.each { point ->
+					point.posDatas?.each { pos ->
+						if (pos.tpsId != null) {
+							def foundApc = cmd.allPoses?.find { apc -> apc.tpsId == pos.tpsId }
+							if (foundApc != null) {
+								foundApc.id = pos.id
+							}
+						}
+					}
+				}
 
                 flow.processInstance = processInstance
                 flow.skipPanelsInit = true;
@@ -920,12 +943,23 @@ class ActivityController {
 					log.info "DeletePos - Usuwam pos o id: " + params.posId
 					PointData point = pos.point
 					//point.posDatas.removeAll { it.id == pos.id }
-					pos.removeFromPoint(pos.point)
-					pos.delete()
-					point.save()
-					processInstance.save(flush: true)
+					//pos.removeFromPoint(pos.point)
+					if (point == null) {
+						point = PointData.find {
+							process == processInstance &&
+							posDatas { id == pos.id }
+						}
+					}
+					
+					if (point) {
+						point.posDatas?.removeAll { it == null || it?.id == pos?.id }
+						//point.removeFromPosDatas(pos)
+						pos.delete()
+						point.save()
+						processInstance.save(flush: true)
+					}
 
-					cmd?.poses?.removeAll { it.id == pos.id }
+					cmd?.poses?.removeAll { it == null || it.id == pos.id }
 				}
 				else {
 					log.info "DeletePos - Nie znalazłem pos o id: " + params.posId
@@ -947,6 +981,17 @@ class ActivityController {
                         foundApc?.id = point.id
                     }
                 }
+				
+				processInstance.points?.each { point ->
+					point.posDatas?.each { pos ->
+						if (pos?.tpsId != null) {
+							def foundApc = cmd.allPoses?.find { apc -> apc.tpsId == pos.tpsId }
+							if (foundApc != null) {
+								foundApc.id = pos.id
+							}
+						}
+					}
+				}
 
                 flow.processInstance = processInstance
                 //  flow.data = cmd

@@ -34,21 +34,21 @@ class PdfProcessMapper extends AbstractPdfMapper{
             //TODO - nie uzupelniamy tabelek w tych dokumentach
 
             //APUPZDCC2, APUPZ2DC1
-            dataMap.putAll(pointMapper.mapPointsSpecial(points.findAll{ point -> (point.czyWybranyAkceptacjaKart && point.czyWybranyZakresUruchomienia)}, ["nazwa":"punktZakresUruchomienia", "miejscowosc":"adresZakresUruchomienia"]));
+            dataMap.putAll(pointMapper.mapPointsSpecial(points.findAll{ point -> (point != null && point.czyWybranyAkceptacjaKart && point.czyWybranyZakresUruchomienia)}, ["nazwa":"punktZakresUruchomienia", "miejscowosc":"adresZakresUruchomienia"]));
 
             //APUPZIF2, APUPZ2, APUPZBS2
-            dataMap.putAll(pointMapper.mapPointsSpecial(points.findAll{ point -> (point.isLocal() == true) || (point.posDatas && point.posDatas.findAll{ pos -> pos.isLocal() == true}.size()>0)}, ["nazwa":"punktAkceptacjaKart", "miejscowosc":"adresAkceptacjaKart"]));
+            dataMap.putAll(pointMapper.mapPointsSpecial(points.findAll{ point -> point != null && ((point.isLocal() == true) || (point.posDatas && point.posDatas.findAll{ pos -> pos != null && pos?.isLocal() == true}.size()>0))}, ["nazwa":"punktAkceptacjaKart", "miejscowosc":"adresAkceptacjaKart"]));
 
             //APUPZAWNZBS1, APUPZAWNZS1
-            dataMap.putAll(pointMapper.mapPointsSpecial(points.findAll{ point -> (point.isLocal() == true) || (point.posDatas && point.posDatas.findAll{ pos -> pos.isLocal() == true}.size()>0)}, ["nazwa":"punkt", "miejscowosc":"adres"]));
+            dataMap.putAll(pointMapper.mapPointsSpecial(points.findAll{ point -> point != null && ((point.isLocal() == true) || (point.posDatas && point.posDatas.findAll{ pos -> pos != null && pos?.isLocal() == true}.size()>0))}, ["nazwa":"punkt", "miejscowosc":"adres"]));
 
             //APUNTSZAPOU3
-            dataMap.putAll(pointMapper.mapPointsSpecial(points.findAll{ point -> point.czyWybranyAkceptacjaKart}, ["nazwa":"punktTN", "miejscowosc":"adresTN", "systemKasowy":"integracjaTN", "uta":"utaTN"]));
+            dataMap.putAll(pointMapper.mapPointsSpecial(points.findAll{ point -> point?.czyWybranyAkceptacjaKart}, ["nazwa":"punktTN", "miejscowosc":"adresTN", "systemKasowy":"integracjaTN", "uta":"utaTN"]));
 
             //APUNTSZAPOO3
             def poses = []
             points.each{ p ->
-                poses.addAll(p?.posDatas.findAll {pos -> pos.czyWybrany})
+                poses.addAll(p?.posDatas.findAll {pos -> pos != null && pos?.czyWybrany})
             }
             dataMap.putAll(posMapper.mapPosSpecial(poses))
 
@@ -136,9 +136,9 @@ class PdfProcessMapper extends AbstractPdfMapper{
         points.findAll { point ->
             if(point.posDatas){
                 if(point.isLocal() == true) {
-                    posesNotFromCBD.addAll(point.posDatas.findAll{ pos -> pos.isChildCopy() == false})
+                    posesNotFromCBD.addAll(point.posDatas?.findAll{ pos -> pos != null && pos?.isChildCopy() == false})
                 } else {
-                    posesNotFromCBD.addAll(point.posDatas.findAll{ pos -> pos.isLocal() == true && pos.isChildCopy() == false})
+                    posesNotFromCBD.addAll(point.posDatas?.findAll{ pos -> pos != null && pos?.isLocal() == true && pos?.isChildCopy() == false})
                 }
             }
         }

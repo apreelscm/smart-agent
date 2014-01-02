@@ -134,7 +134,7 @@ class ProcessService {
 			if (apc.cbdId == -1) {
 				PointData point = PointData.findById(apc.id)
 				if (point != null) {
-					boolean atLeastOneLocalPos = point.posDatas?.findAll { PosData pos -> pos.isLocal() == true } != null
+					boolean atLeastOneLocalPos = point.posDatas?.findAll { PosData pos -> pos != null && pos.isLocal() == true } != null
 					if (atLeastOneLocalPos == false) {
 						log.info "USUWAM PUNKT O ID: " + point.id
 						process.removeFromPoints(point)
@@ -208,7 +208,7 @@ class ProcessService {
 			if (apc.cbdId == -1) {
 				PointData point = PointData.findById(apc.id)
 				if (point != null) {
-					boolean atLeastOneLocalPos = point.posDatas?.findAll { PosData pos -> pos.isLocal() == true } != null
+					boolean atLeastOneLocalPos = point.posDatas?.findAll { PosData pos -> pos != null && pos.isLocal() == true } != null
 					if (atLeastOneLocalPos == false) {
 						log.info "USUWAM PUNKT O ID: " + point.id
 						process.removeFromPoints(point)
@@ -451,7 +451,7 @@ class ProcessService {
             point.posDatas?.each { PosData posData ->
 
                 /* Don't load POSes from CBD */
-                if (!posData || posData.isLocal() == false) {
+                if (posData == null || posData?.isLocal() == false) {
                     return
                 }
 
@@ -1356,9 +1356,11 @@ class ProcessService {
 
             pointData.setPointDetails(pointDataDetails)
             //pointData.setPosDatas(pdList)
-			if (pointData.posDatas){
+			if (pointData.posDatas != null && pointData.posDatas.size() > 0){
 				pdList.each { PosData pos ->
-					pointData.addToPosDatas(pos)
+					if (pointData.posDatas.find { it?.id == pos.id } == null) {
+						pointData.addToPosDatas(pos)
+					}
 				}
 			} else {
 				pointData.setPosDatas(pdList)
