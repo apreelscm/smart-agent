@@ -715,7 +715,7 @@
                                  href="eumowysig://data/${representative1.name.encodeAsURL()}/${representative1.surname.encodeAsURL()}/ACCEPTANT1/${message(code:'subscription.agreement').encodeAsURL()}/${processInstance.id}/${session.id}/${createLink(controller: "subscriptionEx", action:"saveSubscription", absolute: true).encodeAsURL()}">${representative1.name} ${representative1.surname} - Reprezentant</a>
                         </span>
                         <span>
-                            <a href="" id="sgnRep1" onclick="if (!jQuery('#sgnPh').hasClass('visited')){refreshSignature('${processInstance.id}','ACCEPTANT1','subscribe-REPRESENTATIVE1'); jQuery('#sgnRep1').addClass('visited');} return false;" class="button action"><g:message code="subscription.refresh" /></a>
+                            <a href="" id="sgnRep1" onclick="if (!jQuery('#sgnPh').hasClass('action_visited')){refreshSignature('${processInstance.id}','ACCEPTANT1','subscribe-REPRESENTATIVE1'); jQuery('#sgnRep1').removeClass('action').addClass('action_visited');} return false;" class="button action"><g:message code="subscription.refresh" /></a>
                         </span>
                     </li>
 
@@ -723,7 +723,7 @@
                                  href="eumowysig://data/${representative2.name.encodeAsURL()}/${representative2.surname.encodeAsURL()}/ACCEPTANT2/${message(code:'subscription.agreement').encodeAsURL()}/${processInstance.id}/${session.id}/${createLink(controller: "subscriptionEx", action:"saveSubscription", absolute: true).encodeAsURL()}">${representative2.name} ${representative2.surname} - Reprezentant</a>
                     </span>
                     <span>
-                            <a href="" id="sgnRep2" onclick="if (!jQuery('#sgnPh').hasClass('visited')){refreshSignature('${processInstance.id}','ACCEPTANT2','subscribe-REPRESENTATIVE2'); jQuery('#sgnRep2').addClass('visited');} return false;" class="button action"><g:message code="subscription.refresh" /></a>
+                            <a href="" id="sgnRep2" onclick="if (!jQuery('#sgnPh').hasClass('action_visited')){refreshSignature('${processInstance.id}','ACCEPTANT2','subscribe-REPRESENTATIVE2'); jQuery('#sgnRep2').removeClass('action').addClass('action_visited');} return false;" class="button action"><g:message code="subscription.refresh" /></a>
                     </span>
                     </li>
 						
@@ -732,7 +732,7 @@
                                  href="eumowysig://data/${processInstance.phFirstName.encodeAsURL()}/${processInstance.phSurname.encodeAsURL()}/PH/${message(code:'subscription.agreement.ph').encodeAsURL()}/${processInstance.id}/${session.id}/${createLink(controller: "subscriptionEx", action:"saveSubscription", absolute: true).encodeAsURL()}">${processInstance.phFirstName} ${processInstance.phSurname} - Pracownik eService</a>
                       </span>
                       <span>
-                            <a href="" id="sgnPh" onclick="if (!jQuery('#sgnPh').hasClass('visited')){ refreshSignature('${processInstance.id}','PH','subscribe-PH'); jQuery('#sgnPh').addClass('visited');} return false;" class="button action"><g:message code="subscription.refresh" /></a>
+                            <a href="" id="sgnPh" onclick="if (!jQuery('#sgnPh').hasClass('action_visited')){ refreshSignature('${processInstance.id}','PH','subscribe-PH'); jQuery('#sgnPh').removeClass('action').addClass('action_visited');} return false;" class="button action"><g:message code="subscription.refresh" /></a>
                       </span>
                     </li>
 
