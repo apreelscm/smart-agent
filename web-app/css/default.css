@@ -1016,6 +1016,11 @@ input[readonly]{
     /*filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#0078a5', endColorstr='#00adee')*/
 }
 
+.action_visited {
+    color: #616161;
+    background: #A5A5A5;
+}
+
 /* Ui separator
 -------------------------------------------------------------------*/
 
