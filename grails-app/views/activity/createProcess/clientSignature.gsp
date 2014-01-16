@@ -77,11 +77,13 @@
 	}
 
 	function refreshSignature(processId, role, linkId){
+		jQuery("#dialogInfoText").html('<h2 class="align-center">Zapisywanie...</h2>');
+		jQuery("#dialoginfo").show();
 	    jQuery.post("${createLink(controller: 'subscription', action: 'refreshSubscription')}", {processId : processId ,role: role}, function(data) {
 	    		var result = JSON.parse(data);
 	    		if (result.status == "OK") {
 	    			jQuery("#dialogInfoText").html('<h2 class="align-center">Pomyślnie zapisano podpis!</h2>');
-	    			updateSubscriptionStatus("OK", linkId, result.subscriptionId);
+	    			updateSubscriptionStatus("OK", linkId, result.subscriptionId, role);
 				}
 				else {
 					jQuery("#dialogInfoText").html('<h3 class="align-center" style="color: red;">'+result.text+'</h3>');
@@ -121,7 +123,7 @@
 		}
 	}
 	
-	function updateSubscriptionStatus(status, linkid, subId) {
+	function updateSubscriptionStatus(status, linkid, subId, role) {
 	    if (status == "OK") {
 	        updateSubscriptionStatusCount++;
 	        jQuery("#clientSignatureBackButton").addClass("disabled");
@@ -136,6 +138,18 @@
 	        if (updateSubscriptionStatusCount == requiredSubscriptionsCount) {
 	            jQuery.post(jQuery(location).attr("href"), {_eventId_updateProcessStatus: "", processStatus: "SUBSCRIPTIONS_DONE", subscriptionId: subId}, function(data){});
 	        }
+	        
+	        if (linkid == "subscribe-REPRESENTATIVE1") {
+	        	jQuery('#sgnRep1').removeClass('action').addClass('action_visited');
+	        }
+	        else if (linkid == "subscribe-REPRESENTATIVE2") {
+	        	jQuery('#sgnRep2').removeClass('action').addClass('action_visited');
+	        }
+	        else if (linkid == "subscribe-PH") {
+	        	jQuery('#sgnPh').removeClass('action').addClass('action_visited');
+	        }
+	        
+	        jQuery('#dialogInfo').hide();
 	    }
 	}
 	
@@ -406,6 +420,28 @@
 		}, 1000);
 	}
 	
+	function allSubscriptionsReady() {
+		if (requiredSubscriptionsCount == 3) {
+			if (isSubscriptionDone["subscribe-REPRESENTATIVE1"] == true &&
+				isSubscriptionDone["subscribe-REPRESENTATIVE2"] == true &&
+				isSubscriptionDone["subscribe-PH"] == true)
+				return true;
+		}
+		else if (requiredSubscriptionsCount == 2) {
+			if ((isSubscriptionDone["subscribe-REPRESENTATIVE1"] == true &&
+				isSubscriptionDone["subscribe-PH"] == true) || 
+				(isSubscriptionDone["subscribe-REPRESENTATIVE2"] == true &&
+				isSubscriptionDone["subscribe-PH"] == true))
+				return true;
+		}
+		else if (requiredSubscriptionsCount == 0) {
+			if (isSubscriptionDone["subscribe-PH"] == true)
+				return true;
+		}
+		
+		return false;
+	}
+	
 	jQuery(document).ready(function(){
 	    var previewManager = new PdfPreviewManager(),
     		documents = [],
@@ -463,7 +499,7 @@
 				jQuery("#continueButton").on("click", function(e) {
 					e.preventDefault();
 	
-					if (updateSubscriptionStatusCount != requiredSubscriptionsCount && jQuery("#requestVersionElectronical").is(":checked") == true) {
+					if (allSubscriptionsReady() == false && jQuery("#requestVersionElectronical").is(":checked") == true) {
 						result = false;
 						jQuery("#confirm-submit-without-subscription-dialog").dialog({
 							resizable: true,
@@ -730,7 +766,7 @@
                                  href="eumowysig://data/${processInstance.phFirstName.encodeAsURL()}/${processInstance.phSurname.encodeAsURL()}/PH/${message(code:'subscription.agreement.ph').encodeAsURL()}/${processInstance.id}/${session.id}/${createLink(controller: "subscriptionEx", action:"saveSubscription", absolute: true).encodeAsURL()}">${processInstance.phFirstName} ${processInstance.phSurname} - Pracownik eService</a>
                       </span>
                       <span>
-                            <a href="" id="sgnPh" onclick="if (!jQuery('#sgnPh').hasClass('action_visited')){ refreshSignature('${processInstance.id}','PH','subscribe-PH'); jQuery('#sgnPh').removeClass('action').addClass('action_visited');} return false;" class="button action"><g:message code="subscription.refresh" /></a>
+                            <a href="" id="sgnPh" onclick="if (!jQuery('#sgnPh').hasClass('action_visited')){ refreshSignature('${processInstance.id}','PH','subscribe-PH');} return false;" class="button action"><g:message code="subscription.refresh" /></a>
                       </span>
                     </li>
 
