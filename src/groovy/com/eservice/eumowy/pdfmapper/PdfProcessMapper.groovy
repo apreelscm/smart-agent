@@ -34,7 +34,9 @@ class PdfProcessMapper extends AbstractPdfMapper{
             //TODO - nie uzupelniamy tabelek w tych dokumentach
 
             //APUPZDCC2, APUPZ2DC1
-            dataMap.putAll(pointMapper.mapPointsSpecial(points.findAll{ point -> (point != null && point.czyWybranyAkceptacjaKart && point.czyWybranyZakresUruchomienia)}, ["nazwa":"punktZakresUruchomienia", "miejscowosc":"adresZakresUruchomienia"]));
+            if ("wskazane".equals(getFromProcessDataSet(processInstance?.processData, "dccZakresUruchomienia"))){
+                dataMap.putAll(pointMapper.mapPointsSpecial(points.findAll{ point -> (point != null && point.czyWybranyZakresUruchomienia)}, ["nazwa":"punktZakresUruchomienia", "miejscowosc":"adresZakresUruchomienia", "liczbaPos":"pos"]));
+            }
 
             //APUPZIF2, APUPZ2, APUPZBS2
             dataMap.putAll(pointMapper.mapPointsSpecial(points.findAll{ point -> point != null && ((point.isLocal() == true) || (point.posDatas && point.posDatas.findAll{ pos -> pos != null && pos?.isLocal() == true}.size()>0))}, ["nazwa":"punktAkceptacjaKart", "miejscowosc":"adresAkceptacjaKart"]));

@@ -61,6 +61,10 @@ class PdfPointMapper extends AbstractPdfMapper{
         data.put((index == -1)?key:key+index, [value] as String[])
     }
 
+    private mapLiczbaPosPoint(def data, def pd, def key, def value, def index) {
+        data.put((index == -1)?key:key+index, [value] as String[])
+    }
+
     private mapNrMerchantaPoint(def data, def pd, def key, def value, def index) {
         data.put(key+"1", [value.substring(0, 5)] as String[])
         data.put(key+"2", [value.substring(5, 10)] as String[])
