@@ -12,6 +12,7 @@ import com.eservice.eumowy.util.DateUtils
 
 class ProcessController {
 
+    def cbdService
     def messageSource
     def attachmentService
     def documentService
@@ -24,6 +25,12 @@ class ProcessController {
 
     def index() {
         redirect(action: "list", params: params)
+    }
+
+    @Secured(['EUM_ZRD'])
+    def invalidateCaches(def params){
+        cbdService.invalidateCaches()
+        render(text: '')
     }
 
     @Secured(['EUM_ZRD'])

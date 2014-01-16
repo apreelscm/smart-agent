@@ -19,6 +19,9 @@
         <div class="message" role="status">${flash.message}</div>
     </g:if>
 
+    <div class="" style="margin: .8em .5em; text-align: center">
+        <a id="invalidateCache" href="<g:createLink controller="process" action="invalidateCaches" absolute="true"/>">Wyczyść cache</a>
+    </div>
     <div class="search-bar" style="margin: .8em .5em; text-align: center">
         <g:form action="list" style="vertical-align: middle">
             <div class="display-inline">

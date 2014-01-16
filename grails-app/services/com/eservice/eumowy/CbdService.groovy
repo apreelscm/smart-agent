@@ -1,6 +1,7 @@
 package com.eservice.eumowy
 import com.eservice.eumowy.dao.CbdDAO
 import com.eservice.eumowy.util.EumowyCustomEnvironment
+import grails.plugin.cache.CacheEvict
 import grails.plugin.cache.Cacheable
 import grails.util.Environment
 import org.apache.log4j.Logger
@@ -286,4 +287,8 @@ class CbdService {
         return cbdDAO.selectMany(query, [])
     }
 
+    @CacheEvict(value=["eumowyCacheShort","eumowyCacheLong"], allEntries=true)
+    def invalidateCaches(){
+        log.info("Invalidating caches!!!")
+    }
 }
