@@ -518,22 +518,20 @@
 				}
 	
 	<g:each in="${processInstance.subscriptions}">
-	    console.log("${it.name + ' ' + it.surname} - Reprezentant");
-					console.log("${it.name + ' ' + it.surname} - Reprezentant");
-					console.log("${it.name + ' ' + it.surname} - Pracownik eService");
-					if(jQuery("#subscribe-REPRESENTATIVE1").text() == "${it.name + ' ' + it.surname} - Reprezentant") {
+					console.log("${it.personRole}");
+					if(jQuery("#subscribe-REPRESENTATIVE1").attr("data-type") == "${it.personRole}") {
 						jQuery("#subscribe-REPRESENTATIVE1").parent().addClass("disabled");
 						updateSubscriptionStatusCount++;
 						jQuery("#clientSignatureBackButton").addClass("disabled");
 						isSubscriptionDone["subscribe-REPRESENTATIVE1"] = true;
 					}
-					if(jQuery("#subscribe-REPRESENTATIVE2").text() == "${it.name + ' ' + it.surname} - Reprezentant") {
+					if(jQuery("#subscribe-REPRESENTATIVE2").attr("data-type") == "${it.personRole}") {
 						jQuery("#subscribe-REPRESENTATIVE2").parent().addClass("disabled");
 						updateSubscriptionStatusCount++;
 						jQuery("#clientSignatureBackButton").addClass("disabled");
 						isSubscriptionDone["subscribe-REPRESENTATIVE2"] = true;
 					}
-					if(jQuery("#subscribe-PH").text() == "${it.name + ' ' + it.surname} - Pracownik eService") {
+					if(jQuery("#subscribe-PH").attr("data-type") == "${it.personRole}") {
 						jQuery("#subscribe-PH").parent().addClass("disabled");
 						updateSubscriptionStatusCount++;
 						jQuery("#clientSignatureBackButton").addClass("disabled");
@@ -711,7 +709,7 @@
                 <ul class="table-list">
                     <li>
                     	<span>
-                    	<a class="big-link" id="subscribe-REPRESENTATIVE1"
+                    	<a class="big-link" id="subscribe-REPRESENTATIVE1" data-type="ACCEPTANT1"
                                  href="eumowysig://data/${representative1.name.encodeAsURL()}/${representative1.surname.encodeAsURL()}/ACCEPTANT1/${message(code:'subscription.agreement').encodeAsURL()}/${processInstance.id}/${session.id}/${createLink(controller: "subscriptionEx", action:"saveSubscription", absolute: true).encodeAsURL()}">${representative1.name} ${representative1.surname} - Reprezentant</a>
                         </span>
                         <span>
@@ -719,7 +717,7 @@
                         </span>
                     </li>
 
-                    <li><span><a class="big-link" id="subscribe-REPRESENTATIVE2"
+                    <li><span><a class="big-link" id="subscribe-REPRESENTATIVE2" data-type="ACCEPTANT2"
                                  href="eumowysig://data/${representative2.name.encodeAsURL()}/${representative2.surname.encodeAsURL()}/ACCEPTANT2/${message(code:'subscription.agreement').encodeAsURL()}/${processInstance.id}/${session.id}/${createLink(controller: "subscriptionEx", action:"saveSubscription", absolute: true).encodeAsURL()}">${representative2.name} ${representative2.surname} - Reprezentant</a>
                     </span>
                     <span>
@@ -728,7 +726,7 @@
                     </li>
 						
                     <li>
-                      <span><a class="big-link" id="subscribe-PH"
+                      <span><a class="big-link" id="subscribe-PH" data-type="PH"
                                  href="eumowysig://data/${processInstance.phFirstName.encodeAsURL()}/${processInstance.phSurname.encodeAsURL()}/PH/${message(code:'subscription.agreement.ph').encodeAsURL()}/${processInstance.id}/${session.id}/${createLink(controller: "subscriptionEx", action:"saveSubscription", absolute: true).encodeAsURL()}">${processInstance.phFirstName} ${processInstance.phSurname} - Pracownik eService</a>
                       </span>
                       <span>

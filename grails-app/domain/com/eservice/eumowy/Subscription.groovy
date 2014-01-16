@@ -11,8 +11,8 @@ class Subscription implements Serializable {
     String uniqueKey
 	
 	public enum PersonRole {
-		ACCEPTANT1("Akceptant 1"),
-		ACCEPTANT2("Akceptant 2"),
+		ACCEPTANT1("ACCEPTANT1"),
+		ACCEPTANT2("ACCEPTANT2"),
 		PH("PH"),
         ZARZAD1(""),
         ZARZAD2("")
@@ -27,6 +27,7 @@ class Subscription implements Serializable {
 		public String toString() {
 			return text
 		}
+		
 	}
 
     static belongsTo = [process:Process]
