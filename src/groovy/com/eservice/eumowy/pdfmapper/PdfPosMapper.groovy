@@ -273,7 +273,7 @@ class PdfPosMapper extends AbstractPdfMapper{
 	//----------------------CHECKBOX PRZENOSNY-------------------------
 	
 	private mapGprsTypPosDataDetails(def data, def posesData, def key, def value){
-		if ("Verifone Vx670 GPRS".equals(value)){
+		if (["INGENICO IWL220C", "Verifone Vx670 GPRS"].contains(value)){
 			addCheckbox(data, "przenosnyDol", true, true);
 		}
 	}

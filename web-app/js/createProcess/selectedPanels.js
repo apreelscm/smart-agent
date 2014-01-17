@@ -188,7 +188,7 @@ function setFieldPropertiesInDodatkoweWyposazenie(element, value, setForPosPanel
     } else {
         panel = jQuery(element).closest("div.newPointPanel");
     }
-    if(value == "Verifone Vx670 GPRS"){
+    if(value == "Verifone Vx670 GPRS" || value == "INGENICO IWL220C"){
         panel.find("tr.baseRow").show();
         setRequiredForSimCard(true, panel)
     } else {

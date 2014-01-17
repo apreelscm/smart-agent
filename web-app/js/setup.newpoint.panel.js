@@ -594,7 +594,7 @@ function setupNewPointPanelData(prefix, ppid, pid) {
 function verifyBaseVisibility(value, panelId){
 
     var str = panelId.replace(".","")
-    if(value == "Verifone Vx670 GPRS"){
+    if(value == "Verifone Vx670 GPRS" || value == "INGENICO IWL220C"){
         $j('tr[name="'+str+'.trBase"]').show()
     }
     else{
