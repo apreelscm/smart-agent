@@ -420,7 +420,7 @@ class PanelService {
         cmd.mastercardPolskaKD3Pr = setAtLeastAs(cmd.mastercardPolskaKD3Pr, calculatorService.getCalcProperty(calc,"OPLATA_MSC_623_PROCENT"))
         cmd.mastercardPolskaKD3St = setAtLeastAs(cmd.mastercardPolskaKD3St, calculatorService.getCalcProperty(calc,"OPLATA_MSC_623_ZL"))
         cmd.mastercardPolskaKBPr = setAtLeastAs(cmd.mastercardPolskaKBPr, calculatorService.getCalcProperty(calc,"OPLATA_MSC_63_PROCENT"))
-        cmd.mastercardPolskaKBSt = setAtLeastAs(cmd.mastercardPolskaKBSt, calculatorService.getCalcProperty(calc,"OPLATA_MSC_63_ZL"))
+        cmd.mastercardPolskaKBSt = (cmd.mastercardPolskaKBSt && cmd.mastercardPolskaKBSt.toString().isNumber())? cmd.mastercardPolskaKBSt : calculatorService.getCalcProperty(calc,"OPLATA_MSC_63_ZL");
         cmd.mastercardPolskaM1Pr = setAtLeastAs(cmd.mastercardPolskaM1Pr, calculatorService.getCalcProperty(calc,"OPLATA_MSC_641_PROCENT"))
         cmd.mastercardPolskaM1St = setAtLeastAs(cmd.mastercardPolskaM1St, calculatorService.getCalcProperty(calc,"OPLATA_MSC_641_ZL"))
         cmd.mastercardPolskaM2Pr = setAtLeastAs(cmd.mastercardPolskaM2Pr, calculatorService.getCalcProperty(calc,"OPLATA_MSC_642_PROCENT"))
@@ -438,7 +438,7 @@ class PanelService {
         cmd.visaPKOBPKD2Pr = setAtLeastAs(cmd.visaPKOBPKD2Pr, calculatorService.getCalcProperty(calc,"OPLATA_MSC_722_PROCENT"))
         cmd.visaPKOBPKD2St = setAtLeastAs(cmd.visaPKOBPKD2St, calculatorService.getCalcProperty(calc,"OPLATA_MSC_722_ZL"))
         cmd.visaPKOBPKB3Pr = setAtLeastAs(cmd.visaPKOBPKB3Pr, calculatorService.getCalcProperty(calc,"OPLATA_MSC_73_PROCENT"))
-        cmd.visaPKOBPKB3St = setAtLeastAs(cmd.visaPKOBPKB3St, calculatorService.getCalcProperty(calc,"OPLATA_MSC_73_ZL"))
+        cmd.visaPKOBPKB3St = (cmd.visaPKOBPKB3St && cmd.visaPKOBPKB3St.toString().isNumber())? cmd.visaPKOBPKB3St : calculatorService.getCalcProperty(calc,"OPLATA_MSC_73_ZL");
 
         // 8
         cmd.mastercardPKOBPKK1Pr = setAtLeastAs(cmd.mastercardPKOBPKK1Pr, calculatorService.getCalcProperty(calc,"OPLATA_MSC_811_PROCENT"))
@@ -454,7 +454,7 @@ class PanelService {
         cmd.mastercardPKOBPKD3Pr = setAtLeastAs(cmd.mastercardPKOBPKD3Pr, calculatorService.getCalcProperty(calc,"OPLATA_MSC_823_PROCENT"))
         cmd.mastercardPKOBPKD3St = setAtLeastAs(cmd.mastercardPKOBPKD3St, calculatorService.getCalcProperty(calc,"OPLATA_MSC_823_ZL"))
         cmd.mastercardPKOBPKBPr   = setAtLeastAs(cmd.mastercardPKOBPKBPr, calculatorService.getCalcProperty(calc,"OPLATA_MSC_83_PROCENT"))
-        cmd.mastercardPKOBPKBSt   = setAtLeastAs(cmd.mastercardPKOBPKBSt, calculatorService.getCalcProperty(calc,"OPLATA_MSC_83_ZL"))
+        cmd.mastercardPKOBPKBSt = (cmd.mastercardPKOBPKBSt && cmd.mastercardPKOBPKBSt.toString().isNumber())? cmd.mastercardPKOBPKBSt : calculatorService.getCalcProperty(calc,"OPLATA_MSC_83_ZL");
         cmd.mastercardPKOBPM1Pr = setAtLeastAs(cmd.mastercardPKOBPM1Pr, calculatorService.getCalcProperty(calc,"OPLATA_MSC_841_PROCENT"))
         cmd.mastercardPKOBPM1St = setAtLeastAs(cmd.mastercardPKOBPM1St, calculatorService.getCalcProperty(calc,"OPLATA_MSC_841_ZL"))
         cmd.mastercardPKOBPM2Pr = setAtLeastAs(cmd.mastercardPKOBPM2Pr, calculatorService.getCalcProperty(calc,"OPLATA_MSC_842_PROCENT"))
