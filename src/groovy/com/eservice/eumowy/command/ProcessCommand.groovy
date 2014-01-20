@@ -679,8 +679,7 @@ class ProcessCommand implements Serializable {
         isOdplatneUzywanieShown(nullable: true, blank: true, validator: { value, cmd, errors ->
             if ("tak".equals(value)){
                 if ("one_for_all_terminals".equals(cmd.odplatneUzywanie)){
-                    //TODO sprawdzic walidacje
-                    //AtLeastValidator.validate(cmd.odpUzyTermMies, cmd, errors, "odpUzyTermMies", "CENA_NAJMU")
+                    AtLeastValidator.validate(cmd.odpUzyTermMies, cmd, errors, "odpUzyTermMies", "CENA_NAJMU")
                 } else if ("one_for_all_terminals_in_point".equals(cmd.odplatneUzywanie)){
                     HirePaymentValidator.validate(cmd.hirePaymentsByPoint, cmd, errors)
                 } else if ("other_for_selected_terminals".equals(cmd.odplatneUzywanie)){
