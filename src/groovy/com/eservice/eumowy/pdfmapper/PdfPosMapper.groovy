@@ -12,7 +12,7 @@ class PdfPosMapper extends AbstractPdfMapper{
     public def mapPosSpecial(def poses) {
         LOG.info('Zaczynam Mapowac!!!!')
 
-        def suffixes = ['A', 'B', 'C', 'D', 'E']
+        def suffixes = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
 
         def newPoses = [];
         if (poses.size()>suffixes.size()){

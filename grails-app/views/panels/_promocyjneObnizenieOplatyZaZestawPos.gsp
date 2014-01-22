@@ -36,7 +36,7 @@
     jQuery(document).ready(function() {
         var discCount = parseInt('${data.allPoses.size()}');
         var discountTerminalCount = parseInt('${data.promObjNajLiczbaTerminali}');
-        var slotsInDocument = 5;
+        var slotsInDocument = 10;
 
         var permitedPosesSize;
         if (isNaN(discountTerminalCount)){
