@@ -327,9 +327,44 @@ class PdfService {
                 }
             }
         }
+
+        //usuwamy dokumenty, ktore byly wygenerowane dla obecnie usunietych posow
+        processInstance.documents.findAll{it.signature.forPoint}.each {
+            long idFromName = fetchIdFromName(it.clientName)
+
+            if (idFromName != -1){
+                def toDelete = true;
+                for (PointData pd : processInstance.points){
+                    if (idFromName == pd.id){
+                        toDelete = false;
+                        break;
+                    }
+                }
+
+                if (toDelete){
+                    println 'Usuwam plik dla nieistniejacego POSa: ' + idFromName + ' (' + it.clientName + ')'
+                    processInstance.removeFromDocuments(it)
+                    processInstance.save(flush: true)
+                }
+            }
+        }
+
 		processInstance.discard()
         ['totalPagesCount': totalPagesCount, 'processInstance': processInstance]
     }
+
+    def fetchIdFromName(String name){
+        long result = -1l;
+
+        try {
+            result = Long.valueOf(name.substring(name.lastIndexOf('_')+1, name.lastIndexOf(".pdf")));
+        } catch (Exception e) {
+            log.info('Nie udalo sie pobrac ID POSa z nazwy: ' + name)
+        }
+
+        return result;
+    }
+
 
     def cleanAgrementDateContent(DocumentContent dc){
         //pola zapleniane na podstawie 'dataUmowy'
