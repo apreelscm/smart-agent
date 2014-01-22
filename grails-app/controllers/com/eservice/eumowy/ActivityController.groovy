@@ -1442,11 +1442,21 @@ class ActivityController {
                 def recipient = getFromProcessData(process, 'kontaktEmail') ?: getFromProcessData(process, 'emailDoWysylkiDokumentu')
 
                 if (recipient){
+                    def recipients = [];
+                    recipients.add(recipient)
+
+                    def user = springSecurityService.principal
+                    if (user.email) {
+                        recipients.add(user.email)
+                    } else {
+                        log.info 'Brak emaila dla zalogowanego usera.'
+                    }
+
                     def isNewAggrement = process?.activities?.any{it.code.equals('nowaUmowa')}
                     if (isNewAggrement){
-                        emailService.sendDocumentsElectronicalVersion(recipient, process.documents?.findAll{it.signature?.sendToClient})
+                        emailService.sendDocumentsElectronicalVersion(recipients, process.documents?.findAll{it.signature?.sendToClient})
                     } else {
-                        emailService.sendDocumentsNotNewAggrementElectronicalVersion(recipient, process.documents?.findAll{it.signature?.sendToClient})
+                        emailService.sendDocumentsNotNewAggrementElectronicalVersion(recipients, process.documents?.findAll{it.signature?.sendToClient})
                     }
                 } else {
                     def merchantName = getFromProcessData(process, 'akceptantNazwaOficjalna');
