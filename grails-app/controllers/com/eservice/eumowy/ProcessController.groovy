@@ -311,7 +311,7 @@ class ProcessController {
         }
 
         response.setContentType("application/octet-stream")
-        response.setHeader("Content-disposition", "${params.contentDisposition}; filename=\"${MimeUtility.encodeWord(file.name)}\"")
+        response.setHeader("Content-disposition", "${params.contentDisposition}; filename=\"${URLEncoder.encode(file.name, "UTF-8")}\"")
         response.outputStream << file.file.content
     }
 
