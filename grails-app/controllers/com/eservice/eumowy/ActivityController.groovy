@@ -630,9 +630,17 @@ class ActivityController {
 					}
 					
 					if (point) {
-						point.posDatas?.removeAll { it == null || it?.id == pos?.id }
+						point.posDatas?.each {
+							if (it?.parentPosId == pos?.id) {
+								it.delete()
+							}
+						}
+						point.posDatas?.removeAll { it == null || it?.id == pos?.id || it?.parentPosId == pos?.id }
 						//point.removeFromPosDatas(pos)
 						pos.delete()
+						if (point.posDatas != null) {
+							point.liczbaPos = point.posDatas.size()
+						}
 						point.save()
 						processInstance.save(flush: true)
 					}
@@ -952,9 +960,18 @@ class ActivityController {
 					}
 					
 					if (point) {
-						point.posDatas?.removeAll { it == null || it?.id == pos?.id }
+						point.posDatas?.each {
+							if (it?.parentPosId == pos?.id) {
+								it.delete()
+							}
+						}
+						point.posDatas?.removeAll { it == null || it?.id == pos?.id || it?.parentPosId == pos?.id }
 						//point.removeFromPosDatas(pos)
 						pos.delete()
+						if (point.posDatas != null) {
+							point.liczbaPos = point.posDatas.size()
+						}
+						
 						point.save()
 						processInstance.save(flush: true)
 					}

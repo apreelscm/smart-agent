@@ -1002,7 +1002,6 @@ class ProcessService {
                     posDataDetails."set${key.capitalize()}"(value)
                 }
             }
-			
 			updateChildPosData(posData, pointData.posDatas)
 
 			// Create POSes with same values
@@ -1056,7 +1055,9 @@ class ProcessService {
             pointData.miejscowosc = pointDataDetails.wydrukMiasto
             pointData.kodPocztowy = pointDataDetails.wydrukKodPocztowy
             pointData.poczta = pointDataDetails.wydrukPoczta
-            pointData.liczbaPos = pdList.size()
+            if (pointData.posDatas?.size() < pdList?.size()) {
+				pointData.liczbaPos = pdList.size()
+			}
             pointData.save()
             //if (isNew == true) {
             posData.setPosDetails(posDataDetails)
@@ -1213,7 +1214,16 @@ class ProcessService {
                 posData = PosData.findById(pc.id)
 
                 if (posData != null) {
-                    pointData = posData.point
+                    //pointData = posData.point
+					//pointData = PointData.find { id == posData.point.id }
+					def proc = process
+					pointData = PointData.find {
+						process == proc &&
+						posDatas { id == posData.id }
+					}
+					if (pointData.liczbaPos == null) {
+						pointData.liczbaPos = pointData.posDatas?.size()
+					}
                     posDataDetails = posData.posDetails
 					
 					if (posDataDetails == null) {
@@ -1350,7 +1360,9 @@ class ProcessService {
                 }
             }
 
-            pointData.liczbaPos = pdList.size()
+			if (pointData.posDatas?.size() < pdList?.size()) {
+				pointData.liczbaPos = pdList.size()
+			}
             pointData.save()
             //if (isNew == true) {
             posData.setPosDetails(posDataDetails)
@@ -1488,10 +1500,13 @@ class ProcessService {
     }
 	
 	def updateChildPosData(PosData parent, List<PosData> children) {
+		if (parent.tpsId != null) {
+			return
+		}
 		children?.each { PosData child ->
 			if (child != null && child != parent) {
 				parent?.properties.each { key, value ->
-					if (["id", "version", "posDetails"].contains(key)) {
+					if (["id", "version", "posDetails", "parentPosId"].contains(key)) {
 						return
 					}
 					if (PosData.metaClass.respondsTo(PosData, "set" + key.capitalize())) {
