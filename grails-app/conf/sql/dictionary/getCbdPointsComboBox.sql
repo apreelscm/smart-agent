@@ -1,5 +1,5 @@
 SELECT k.kln_id AS "id",
-  (k.kln_nazwa || ' ' || a.adr_ulica || ' ' || a.adr_nr_budynku || ', ' || a.adr_miejscowosc || ' ' || adr_kod_pocztowy) AS "value"
+  (k.kln_nazwa || ' ' || a.adr_ulica || ' ' || a.adr_nr_budynku || ' ' || a.adr_nr_lokalu || ', ' || a.adr_miejscowosc || ' ' || adr_kod_pocztowy) AS "value"
 FROM CBD_ADM.cbt_adresy a
 JOIN CBD_ADM.cbt_klienci k
 ON a.adr_kln_id       = k.kln_id
