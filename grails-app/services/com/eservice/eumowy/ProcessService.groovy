@@ -1002,7 +1002,7 @@ class ProcessService {
                     posDataDetails."set${key.capitalize()}"(value)
                 }
             }
-			updateChildPosData(posData, pointData.posDatas)
+			updateChildPosData(posData, posDataDetails, pointData.posDatas)
 
 			// Create POSes with same values
 			def terminalCount = 0
@@ -1013,7 +1013,7 @@ class ProcessService {
 			terminalCount += posDataDetails?.wifiIlosc != null ? posDataDetails?.wifiIlosc : 0
 
             // Create cloned poses only when they are not already cloned
-			if (terminalCount > 1 && terminalCount > pointData.liczbaPos) {
+			if (terminalCount > 1 && terminalCount > pointData.posDatas.findAll { it != null && it.tpsId == null }?.size()) {
 				for (int i = 0; i < terminalCount; i++) {
                     PosData posDataNew
 					PosDataDetails posDataDetailsNew
@@ -1301,7 +1301,7 @@ class ProcessService {
                     posDataDetails."set${key.capitalize()}"(value)
                 }
             }
-			updateChildPosData(posData, pointData.posDatas)
+			updateChildPosData(posData, posDataDetails, pointData.posDatas)
 
             // Create POSes with same values
             def terminalCount = 0
@@ -1317,7 +1317,7 @@ class ProcessService {
                 posDataDetails?.wifiIlosc : 0
 
             // Create cloned poses only when they are not already cloned
-            if (terminalCount > 1 && terminalCount > pointData.liczbaPos) {
+            if (terminalCount > 1 && terminalCount > pointData.posDatas.findAll { it != null && it.tpsId == null }?.size()) {
                 for (int i = 0; i < terminalCount; i++) {
                     PosData posDataNew
                     PosDataDetails posDataDetailsNew
@@ -1499,14 +1499,15 @@ class ProcessService {
         return pointsList
     }
 	
-	def updateChildPosData(PosData parent, List<PosData> children) {
+	def updateChildPosData(PosData parent, PosDataDetails parentDetails, List<PosData> children) {
 		if (parent.tpsId != null) {
 			return
 		}
-		children?.each { PosData child ->
+		children?.findAll { it != null && it.tpsId == null }?.each { PosData child ->
 			if (child != null && child != parent) {
+				def childDetails = child.posDetails
 				parent?.properties.each { key, value ->
-					if (["id", "version", "posDetails", "parentPosId"].contains(key)) {
+					if (["id", "version", "posDetails", "parentPosId", "errors"].contains(key)) {
 						return
 					}
 					if (PosData.metaClass.respondsTo(PosData, "set" + key.capitalize())) {
@@ -1515,6 +1516,19 @@ class ProcessService {
 	
 					if (PosDataDetails.metaClass.respondsTo(PosDataDetails, "set" + key.capitalize()) && key != 'id') {
 						child.posDetails?."set${key.capitalize()}"(value)
+					}
+				}
+				
+				parentDetails?.properties.each { key, value ->
+					if (["id", "pos", "posId", "version", "parentPosId", "errors"].contains(key)) {
+						return
+					}
+					if (PosData.metaClass.respondsTo(PosData, "set" + key.capitalize())) {
+							childDetails?."set${key.capitalize()}"(value)
+					}
+	
+					if (PosDataDetails.metaClass.respondsTo(PosDataDetails, "set" + key.capitalize()) && key != 'id') {
+						childDetails?."set${key.capitalize()}"(value)
 					}
 				}
 			}
