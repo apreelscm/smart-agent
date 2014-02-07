@@ -15,6 +15,7 @@ class DefineActivityCommand {
 
     def dodatkowyPunkt
     def nowaUmowa
+    def wymianaUmowyZaplaty
     def zmianaProwizji
     def dodanieDcc
     def zmianaTabeliOplatDodatkowych
@@ -46,11 +47,6 @@ class DefineActivityCommand {
             obj.selectedActivities = tmpList;
 
             if(tmpList.size() == 0 && !obj.notes){
-
-              /*  obj.errors.rejectValue(
-                        'selectedActivities',
-                        'DefineActivityCommand.selectedActivities.validator.invalid')*/
-
                 return 'DefineActivityCommand.selectedActivities.validator.invalid'
             }
         }

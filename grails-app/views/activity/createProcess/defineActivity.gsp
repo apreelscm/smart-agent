@@ -59,8 +59,18 @@
              <div class="content nesting-sub1" style="display: block;">
 
                  <div class="checkBoxBlock">
-                     <g:checkBox id="zmianaProwizjiCB" name="zmianaProwizji" data-selected="${(processInstance?.activities*.code)?.contains('zmianaProwizji')}"/>
-                     <label for="zmianaProwizjiCB"><g:message code="activity.zmianaProwizji.name" default="Zmiana prowizji"/></label>
+                     <a class="expander expanderSub expanded" href="#"><g:message code="activity.zmianaProwizjiAneks.name" default="Zmiana prowizji"/></a>
+                     <div class="content nesting-sub2" style="display: block;">
+                         <div class="checkBoxBlock">
+                             <g:checkBox id="wymianaUmowyZaplatyCB" name="wymianaUmowyZaplaty" data-selected="${(processInstance?.activities*.code)?.contains('wymianaUmowyZaplaty')}"/>
+                             <label for="wymianaUmowyZaplatyCB"><g:message code="activity.wymianaUmowyZaplaty.name" default="Wymiana Umowy o przyjmowanie zapłaty"/></label>
+                         </div>
+                         <div class="checkBoxBlock">
+                             <!-- 'Aneks' to dawne dzialanie 'Zmiana prowizji' -->
+                             <g:checkBox id="zmianaProwizjiCB" name="zmianaProwizji" data-selected="${(processInstance?.activities*.code)?.contains('zmianaProwizji')}"/>
+                             <label for="zmianaProwizjiCB"> <g:message code="activity.zmianaProwizji.name" default="Aneks (d. Zmiana Prowizji)"/></label>
+                         </div>
+                     </div>
                  </div>
 
                  <div class="checkBoxBlock">

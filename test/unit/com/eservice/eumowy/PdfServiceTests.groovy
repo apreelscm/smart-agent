@@ -1611,6 +1611,35 @@ class PdfServiceTests {
         process("APUPZT12DCCZ.1000.13-12-23.pdf", "APUPZT12DCCZ.1000.13-12-23_out.pdf", data)
     }
 
+    void testAPUPZT1() {
+        HashMap<String, String[]> data = new HashMap<String, String[]>();
+        data.putAll(this.data);
+        //NOT OK
+        def subscriptions = [
+                ["ACCEPTANT1", 5, 90, 195, 94, 63],
+                ["ACCEPTANT2", 5, 210, 195, 94, 63],
+                ["ZARZAD1", 5, 340, 195, 85, 58],
+                ["ZARZAD2", 5, 470, 195, 56, 58],
+                ["PH", 5, 458, 72, 84, 53]
+        ]
+        data.putAll(insertSignatures2(subscriptions))
+        process("APUPZT1.1001.14-01-31.pdf", "APUPZT1.1001.14-01-31_out.pdf", data)
+    }
+
+    void testAPUPZT2() {
+        HashMap<String, String[]> data = new HashMap<String, String[]>();
+        data.putAll(this.data);
+        def subscriptions = [
+                ["ACCEPTANT1", 5, 90, 195, 94, 63],
+                ["ACCEPTANT2", 5, 210, 195, 94, 63],
+                ["ZARZAD1", 5, 340, 195, 85, 58],
+                ["ZARZAD2", 5, 470, 195, 56, 58],
+                ["PH", 5, 458, 72, 84, 53]
+        ]
+        data.putAll(insertSignatures2(subscriptions))
+        process("APUPZT2.1001.14-01-31.pdf", "APUPZT2.1001.14-01-31_out.pdf", data)
+    }
+
     void testAPUPZToImage() {
 		String outFile =  "APUPZ2.00013-01-03 - Umowa o przyjmowanie zaplaty v. 2.000_z faksymile_out2.pdf"
 		data.put("podpis", [new File(getTemplatePath()+"signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);

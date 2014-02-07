@@ -113,6 +113,9 @@ class PanelService {
         cmd.dccZakresUruchomienia = nullify(cmd.dccZakresUruchomienia)
     }
 
+    def getListaAktywnychPunktow(ProcessCommand cmd, def calc ) {
+    }
+
     def getDeklaracjeAkceptanta(ProcessCommand cmd, def calc ) {
         cmd.informacjaHandlowa = nullify(cmd.informacjaHandlowa)
     }

@@ -23,6 +23,7 @@ class PointData implements Serializable {
 	Boolean uta
 	Boolean czyWybranyAkceptacjaKart
 	Boolean czyLokalny
+    Boolean czyWybranyWymianaUmowy
 	
 	List<PosData> posDatas
 	
@@ -53,6 +54,7 @@ class PointData implements Serializable {
 		nazwa column: "name"
 		cbdId column: "cbd_id"
 		czyLokalny column: "is_local"
+        czyWybranyWymianaUmowy column: "is_selected_aggrement_change"
 	}
 	
 	static constraints = {
@@ -73,6 +75,7 @@ class PointData implements Serializable {
         czyWybranyAkceptacjaKart(nullable:true)
         czyWybranyZakresUruchomienia(nullable:true)
 		czyLokalny(nullable:true)
+		czyWybranyWymianaUmowy(nullable:true)
 		nazwa(nullable:true)
 	}
 	

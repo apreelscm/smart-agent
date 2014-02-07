@@ -34,6 +34,9 @@ class PanelMockService {
         cmd.dataAneksowanejUmowyPrepaid = DateUtils.getCurrentFormattedDate()
     }
 
+    def getListaAktywnychPunktow(ProcessCommand cmd) {
+    }
+
     def getCzasObowiazywaniaUmowy(ProcessCommand cmd) {
         cmd.umowaCzas = "nieoznaczony" //TODO -  MOZLIWE, ze pdfach jest to umowaOzn, umowaNieOzn
         cmd.umowaOznOd = "" //DateUtils.getCurrentFormattedDate()

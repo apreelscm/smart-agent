@@ -15,6 +15,7 @@ class AllPointsCommand implements Serializable {
 	Boolean systemKasowy
 	Boolean uta
 	Boolean czyWybranyAkceptacjaKart
+    Boolean czyWybranyWymianaUmowy
 
 	def setNazwa(String value) {
 		nazwa = formatProperty(value)
@@ -59,6 +60,7 @@ class AllPointsCommand implements Serializable {
 		uta(nullable:true)
 		czyWybranyAkceptacjaKart(nullable:true)
 		czyWybranyZakresUruchomienia(nullable:true)
+        czyWybranyWymianaUmowy(nullable:true)
 	}
 	
 	

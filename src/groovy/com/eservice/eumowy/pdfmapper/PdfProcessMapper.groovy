@@ -39,6 +39,10 @@ class PdfProcessMapper extends AbstractPdfMapper{
             }
 
             //APUPZIF2, APUPZ2, APUPZBS2
+
+            //Robi sie coraz wiekszy sajgon, w przypadku wymiany umowy przenosimy punkty stare...
+            dataMap.putAll(pointMapper.mapPointsSpecial(points.findAll{ point -> point != null && !point.isLocal() && point.czyWybranyWymianaUmowy}, ["nazwa":"punktAkceptacjaKart", "miejscowosc":"adresAkceptacjaKart"]));
+            //...a w przypadku nowej umowy punkty nowe
             dataMap.putAll(pointMapper.mapPointsSpecial(points.findAll{ point -> point != null && ((point.isLocal() == true) || (point.posDatas && point.posDatas.findAll{ pos -> pos != null && pos?.isLocal() == true}.size()>0))}, ["nazwa":"punktAkceptacjaKart", "miejscowosc":"adresAkceptacjaKart"]));
 
             //APUPZAWNZBS1, APUPZAWNZS1
