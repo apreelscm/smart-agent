@@ -854,12 +854,17 @@ class ActivityController {
                             default:"Brak otwartego procesu dla Akceptant" + flow.nip);
                     log.info(message(code:"process.openNotFound.error") + " - " + flow.nip)
                     return error()
-                }
-                else if (Process.ProcessStatus.ACCEPTED.equals(lastProcess?.status)){
+                } else if (Process.ProcessStatus.ACCEPTED.equals(lastProcess?.status)){
                     /* ostatni proces jest zaakceptowany */
                     flash.nipErrorMessage = message(code:"process.youngerAcceptedProcess.error",
-                            default:"Brak możliwości poprawy danych, istnieją inne nowsze zaakceptowane procesy dla tego Akceptanta");
+                            default:"Brak możliwości poprawy danych, proces jest juz zaakceptowany w CBD");
                     log.info(message(code:"process.youngerAcceptedProcess.error") + " - " + flow.nip)
+                    return error()
+                } else if (Process.ProcessStatus.WAITING.equals(lastProcess?.status)){
+                    /* ostatni proces oczekuje na akceptacje - brak mozliwosci edycji */
+                    flash.nipErrorMessage = message(code:"process.waitingForAccept.error",
+                            default:"Brak możliwości poprawy danych, proces oczekuje na akceptacje w CBD");
+                    log.info(message(code:"process.waitingForAccept.error") + " - " + flow.nip)
                     return error()
                 }
 
