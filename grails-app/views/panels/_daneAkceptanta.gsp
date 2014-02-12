@@ -6,7 +6,7 @@
                 <li><span><g:message code="panel.acceptor.full.name"/></span></li>
                 <li>
                     <span>
-                        <eumowy:textField name="akceptantNazwaOficjalna" value="${data.akceptantNazwaOficjalna}" validatable="${data}" readonly="${data.checkIfFromCbd('akceptantNazwaOficjalna')}" style="width: 400px" required="true" maxlength="88"/>
+                        <eumowy:textField name="akceptantNazwaOficjalna" value="${data.akceptantNazwaOficjalna}" validatable="${data}" readonly="${data.checkIfFromCbd('akceptantNazwaOficjalna')}" style="width: 400px" required="true" maxlength="128"/>
                         <g:hiddenField name="akceptantNazwaOficjalnaCbd" value="${data.akceptantNazwaOficjalnaCbd}"/>
                     </span>
                 </li>
