@@ -2,30 +2,11 @@ package com.eservice.eumowy
 
 class SubscriptionController {
 
-    private static int MIN_SIGNATURE_LENGHT = 700
-
-	def saveSubscription() {
-		
-		if (params.nativeContent.length() < MIN_SIGNATURE_LENGHT) {
-			render(text: "{\"status\": \"FAIL\", \"text\": \"Niewyraźny podpis. Proszę spróbować jeszcze raz.\"}")
-			return
-		}
-		log.info "CONTENT: " + params.content
-		def subscription = new Subscription(params)
-		subscription.signDate = new Date()
-		subscription.save(flush: true)
-
-		if (subscription?.id != null) {
-			render(text: "{\"status\": \"OK\", \"subscriptionId\": " + subscription.id + "}")
-		} else {
-			render(text: "{\"status\": \"FAIL\", \"text\": \"Nie udało się zapisać podpisu do bazy!\"}")
-		}
-	}
-
     def refreshSubscription(){
-        log.info "refreshSubscription params: " + params.content
+        log.info "Saving subscription for processId: " + params.processId + " and role: " + params.role
         def uniqueKey = params.processId + params.role
-        def subscription  = Subscription.findByUniqueKey(uniqueKey)
+        def subscription  = Subscription.find("from Subscription as s where s.uniqueKey=? order by s.signDate desc", [uniqueKey])
+
 		if (subscription != null) {
 	        if (subscription.id != null) {
 	            render(text: "{\"status\": \"OK\", \"subscriptionId\": " + subscription.id + "}")
@@ -33,7 +14,6 @@ class SubscriptionController {
 	            render(text: "{\"status\": \"FAIL\", \"text\": \"Nie udało się zapisać podpisu do bazy!\"}")
 	        }
 		}
-
     }
 	
 	def preview() {

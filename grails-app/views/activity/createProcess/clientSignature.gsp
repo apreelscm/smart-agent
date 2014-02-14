@@ -60,18 +60,6 @@
 	    	e.preventDefault();
 	    	jQuery("#sigContent").val(jQuery('#padPlaceholder').jSignature("getData"));
 	    	jQuery("#nativeContent").val(JSON.stringify(jQuery('#padPlaceholder').jSignature("getData", "native")));
-	    	jQuery.post("${createLink(controller: 'subscription', action: 'saveSubscription')}", jQuery(this).serialize(), function(data) {
-	    		var result = JSON.parse(data);
-	    		if (result.status == "OK") {
-	    			jQuery("#dialogInfoText").html('<h2 class="align-center">Pomyślnie zapisano podpis!</h2>');
-	    			updateSubscriptionStatus("OK", subscriptionLinkId, result.subscriptionId);
-				}
-				else {
-					jQuery("#dialogInfoText").html('<h3 class="align-center" style="color: red;">'+result.text+'</h3>');
-				}
-				jQuery('#dialog').hide();
-				jQuery('#dialogInfo').show();
-			});
 			return false;
 		});
 	}
@@ -442,18 +430,17 @@
 		return false;
 	}
 	
-	jQuery(document).ready(function(){
+	jQuery(document).ready(function() {
 	    var previewManager = new PdfPreviewManager(),
     		documents = [],
 			subscriptionDialog = jQuery('#subscriptionDialog');
 		
-		<g:each in="${processInstance.documents.sort(false){a,b -> a.signature.signatureOrder.compareTo(b.signature.signatureOrder)}?.findAll {it.signature?.showOnPreview} }" status="i" var="document"> 
+		<g:each in="${processInstance.documents?.sort(false){a,b -> a.signature.signatureOrder.compareTo(b.signature.signatureOrder)}?.findAll {it.signature?.showOnPreview} }" status="i" var="document">
         	documents.push(new PDocument(${i} ,'${document?.clientName}', previewManager.scale, base64DecToArr('${document?.content?.getPreviewContent().encodeBase64().toString()}').buffer));
 	    </g:each>
 	    
 	    previewManager.setDocuments(documents);
 	
-		setUpSignaturePad();
 	    checkEmailKontakt();
 	
 		jQuery('a#previewPdfButton').on('click', function(e) {
@@ -472,88 +459,88 @@
 		//jQuery("#pdfBox-content-loading").show();
 		//previewManager.showDocument(0);
 		    	
-				jQuery("#noaccept").on("click", function(e) {
-					e.preventDefault();
-					jQuery("#confirm-noaccept-dialog").dialog({
-						resizable: true,
-						height:200,
-						width: 450,
-						modal: true,
-						buttons: 
-							{
-								"Tak": function() {
-									jQuery( this ).dialog( "close" );
-									jQuery.post(jQuery(location).attr('href'), {_eventId_noaccept:""}, function(data) {
-										window.location.href = '<g:createLink controller="activity" action="createProcess" params="[message: rejectedDocumentsMessage]"/>';
-									});
-								},
-								"Nie": function() {
-									jQuery( this ).dialog( "close" );
-								}
-							}
-					});
-					
-					return false;
-				});
-				
-				jQuery("#continueButton").on("click", function(e) {
-					e.preventDefault();
+        jQuery("#noaccept").on("click", function(e) {
+            e.preventDefault();
+            jQuery("#confirm-noaccept-dialog").dialog({
+                resizable: true,
+                height:200,
+                width: 450,
+                modal: true,
+                buttons:
+                    {
+                        "Tak": function() {
+                            jQuery( this ).dialog( "close" );
+                            jQuery.post(jQuery(location).attr('href'), {_eventId_noaccept:""}, function(data) {
+                                window.location.href = '<g:createLink controller="activity" action="createProcess" params="[message: rejectedDocumentsMessage]"/>';
+                            });
+                        },
+                        "Nie": function() {
+                            jQuery( this ).dialog( "close" );
+                        }
+                    }
+            });
+
+            return false;
+        });
+
+        jQuery("#continueButton").on("click", function(e) {
+            e.preventDefault();
+
+            if (allSubscriptionsReady() == false && jQuery("#requestVersionElectronical").is(":checked") == true) {
+                result = false;
+                jQuery("#confirm-submit-without-subscription-dialog").dialog({
+                    resizable: true,
+                    height:200,
+                    width: 450,
+                    modal: true,
+                    buttons:
+                        {
+                            "Tak": function() {
+                                jQuery( this ).dialog( "close" );
+                                jQuery('#confirm-pleasewait h2').text("${message(code: "process.subscriptions.sendingEmails")}");
+                                jQuery('#confirm-pleasewait img').show();
+                                jQuery('#confirm-pleasewait').dialog({resizable: true,
+                                                                        height:200,
+                                                                        width: 450,
+                                                                        modal: true});
+                                jQuery.post(jQuery(location).attr('href'), {_eventId_submit:"",requestVersion: jQuery("input[name=requestVersion]:checked").val(), numberOfSubscriptions: updateSubscriptionStatusCount}, function(data, textStatus, jqXHR) {
+                                    window.location.href = '<g:createLink controller="activity" action="createProcess" params="[message: prevActivityMessage]"/>';
+                                })
+                                .fail(function() { jQuery("#confirm-pleasewait h2").text("${message(code: "process.subscriptions.sendingEmails.error")}"); jQuery("#confirm-pleasewait img").hide() });
+
+                                result = true;
+                            },
+                            "Nie": function() {
+                                jQuery( this ).dialog( "close" );
+                            }
+                        }
+                });
+            }
+            else {
+
+                jQuery('#confirm-pleasewait h2').text("${message(code: "process.subscriptions.sendingEmails")}");
+                jQuery('#confirm-pleasewait img').show();
+                jQuery('#confirm-pleasewait').dialog({resizable: true,
+                                                        height:200,
+                                                        width: 450,
+                                                        modal: true});
+                jQuery.post(jQuery(location).attr('href'), {_eventId_submit:"",requestVersion: jQuery("input[name=requestVersion]:checked").val(), numberOfSubscriptions: updateSubscriptionStatusCount}, function(data, textStatus, jqXHR) {
+                    window.location.href = '<g:createLink controller="activity" action="createProcess" params="[message: prevActivityMessage]"/>';
+                })
+                .fail(function() { jQuery("#confirm-pleasewait h2").text("${message(code: "process.subscriptions.sendingEmails.error")}"); jQuery("#confirm-pleasewait img").hide() });
+            }
+            return false;
+        });
+
+        if (jQuery("#subscribe-REPRESENTATIVE1").text() == "  - Reprezentant") {
+            jQuery("#subscribe-REPRESENTATIVE1").parent().parent().hide();
+        }
+
+        if (jQuery("#subscribe-REPRESENTATIVE2").text() == "  - Reprezentant") {
+            jQuery("#subscribe-REPRESENTATIVE2").parent().parent().hide();
+        }
 	
-					if (allSubscriptionsReady() == false && jQuery("#requestVersionElectronical").is(":checked") == true) {
-						result = false;
-						jQuery("#confirm-submit-without-subscription-dialog").dialog({
-							resizable: true,
-							height:200,
-							width: 450,
-							modal: true,
-							buttons: 
-								{
-									"Tak": function() {
-										jQuery( this ).dialog( "close" );
-										jQuery('#confirm-pleasewait h2').text("${message(code: "process.subscriptions.sendingEmails")}");
-										jQuery('#confirm-pleasewait img').show();
-										jQuery('#confirm-pleasewait').dialog({resizable: true,
-																				height:200,
-																				width: 450,
-																				modal: true});
-										jQuery.post(jQuery(location).attr('href'), {_eventId_submit:"",requestVersion: jQuery("input[name=requestVersion]:checked").val(), numberOfSubscriptions: updateSubscriptionStatusCount}, function(data, textStatus, jqXHR) {
-											window.location.href = '<g:createLink controller="activity" action="createProcess" params="[message: prevActivityMessage]"/>';
-										})
-										.fail(function() { jQuery("#confirm-pleasewait h2").text("${message(code: "process.subscriptions.sendingEmails.error")}"); jQuery("#confirm-pleasewait img").hide() });
-										
-										result = true;
-									},
-									"Nie": function() {
-										jQuery( this ).dialog( "close" );
-									}
-								}
-						});
-					}
-					else {
-	
-						jQuery('#confirm-pleasewait h2').text("${message(code: "process.subscriptions.sendingEmails")}");
-						jQuery('#confirm-pleasewait img').show();
-						jQuery('#confirm-pleasewait').dialog({resizable: true,
-																height:200,
-																width: 450,
-																modal: true});
-						jQuery.post(jQuery(location).attr('href'), {_eventId_submit:"",requestVersion: jQuery("input[name=requestVersion]:checked").val(), numberOfSubscriptions: updateSubscriptionStatusCount}, function(data, textStatus, jqXHR) {
-							window.location.href = '<g:createLink controller="activity" action="createProcess" params="[message: prevActivityMessage]"/>';
-						})
-						.fail(function() { jQuery("#confirm-pleasewait h2").text("${message(code: "process.subscriptions.sendingEmails.error")}"); jQuery("#confirm-pleasewait img").hide() });
-					}
-					return false;
-				});
-				
-				if (jQuery("#subscribe-REPRESENTATIVE1").text() == "  - Reprezentant") {
-					jQuery("#subscribe-REPRESENTATIVE1").parent().parent().hide();
-				}
-				
-				if (jQuery("#subscribe-REPRESENTATIVE2").text() == "  - Reprezentant") {
-					jQuery("#subscribe-REPRESENTATIVE2").parent().parent().hide();
-				}
-	
-	<g:each in="${processInstance.subscriptions}">
+        <g:each in="${processInstance.subscriptions}">
 					console.log("${it.personRole}");
 					if(jQuery("#subscribe-REPRESENTATIVE1").attr("data-type") == "${it.personRole}") {
 						jQuery("#subscribe-REPRESENTATIVE1").parent().addClass("disabled");
@@ -573,77 +560,77 @@
 						jQuery("#clientSignatureBackButton").addClass("disabled");
 						isSubscriptionDone["subscribe-PH"] = true;
 					}
-	</g:each>
+	    </g:each>
 	
-	jQuery(".showSignatureDialog").on('click', function(e) {
-	    e.preventDefault();
-		if (isSubscriptionDone[linkId] == true) {
-			return false;
-		}
-		
-	    var currentTarget = jQuery(e.currentTarget),
-	        firstName = currentTarget.attr('data-firstName'),
-	        lastName = currentTarget.attr('data-lastName'),
-	        role = currentTarget.attr('data-role'),
-	        linkId = currentTarget.attr('id');
-		
-		if (isSubscriptionDone[linkId] != true) {
-			showSubscriptionPanel(firstName, lastName, role, linkId);
-        }
-		return false;
-	});
-				
-				jQuery("#requestVersionTemplates").on("change", function(e) {
-					if (jQuery(e.target).is(":checked")) {
-						jQuery("#noaccept").prop("disabled", true);
-						jQuery("a.big-link").parent().addClass("disabled");
-					}
-				});
-	
-				jQuery("#requestVersionPaper").on("change", function(e) {
-				    if (jQuery(e.target).is(":checked")) {
-						jQuery("#noaccept").prop("disabled", false);
-	                    jQuery("a.big-link").parent().removeClass("disabled");
-					}
-				});
-				
-				jQuery("#requestVersionElectronical").on("change", function(e) {
-					if (jQuery(e.target).is(":checked")) {
-						jQuery("#noaccept").prop("disabled", false);
-						
-						if (isSubscriptionDone["subscribe-REPRESENTATIVE1"] != true) {
-							jQuery("#subscribe-REPRESENTATIVE1").parent().removeClass("disabled");
-						}
-						
-						if (isSubscriptionDone["subscribe-REPRESENTATIVE2"] != true) {
-							jQuery("#subscribe-REPRESENTATIVE2").parent().removeClass("disabled");
-						}
-						
-						if (isSubscriptionDone["subscribe-PH"] != true) {
-							jQuery("#subscribe-PH").parent().removeClass("disabled");
-						}
-					}
-				});
-	
-				function checkEmailKontakt(){
-	                var kontaktEmail = "${processInstance.processData.find { it.name == 'kontaktEmail'}?.value}";
-	                var emailDoWysylkiDokumentu = "${processInstance.processData.find { it.name == 'emailDoWysylkiDokumentu'}?.value}";
-	
-	               // console.info("checkEmailKontakt - kontaktEmail:"+kontaktEmail+" emailDoWysylkiDokumentu:"+emailDoWysylkiDokumentu)
-	
-	               if(!kontaktEmail && !emailDoWysylkiDokumentu ){
-	                      jQuery("#requestVersionElectronical").attr("disabled","disabled").removeAttr("checked");
-	                      jQuery("#requestVersionPaper").attr("checked","checked");
-	                      jQuery("#requestVersionTemplates").attr("disabled","disabled").removeAttr("checked");
+        jQuery(".showSignatureDialog").on('click', function(e) {
+            e.preventDefault();
+            if (isSubscriptionDone[linkId] == true) {
+                return false;
+            }
 
-	                      jQuery("#noaccept").prop("disabled", true);
-	                      jQuery("#subscribe-REPRESENTATIVE1").parent().addClass("disabled");
-	                      jQuery("#subscribe-REPRESENTATIVE2").parent().addClass("disabled");
-	                      jQuery("#subscribe-PH").parent().addClass("disabled");
-	               }else{
-	                   jQuery("#requestVersionElectronical").attr("checked","checked");
-	               }
-	          }
+            var currentTarget = jQuery(e.currentTarget),
+                firstName = currentTarget.attr('data-firstName'),
+                lastName = currentTarget.attr('data-lastName'),
+                role = currentTarget.attr('data-role'),
+                linkId = currentTarget.attr('id');
+
+            if (isSubscriptionDone[linkId] != true) {
+                showSubscriptionPanel(firstName, lastName, role, linkId);
+            }
+            return false;
+        });
+
+        jQuery("#requestVersionTemplates").on("change", function(e) {
+            if (jQuery(e.target).is(":checked")) {
+                jQuery("#noaccept").prop("disabled", true);
+                jQuery("a.big-link").parent().addClass("disabled");
+            }
+        });
+
+        jQuery("#requestVersionPaper").on("change", function(e) {
+            if (jQuery(e.target).is(":checked")) {
+                jQuery("#noaccept").prop("disabled", false);
+                jQuery("a.big-link").parent().removeClass("disabled");
+            }
+        });
+
+        jQuery("#requestVersionElectronical").on("change", function(e) {
+            if (jQuery(e.target).is(":checked")) {
+                jQuery("#noaccept").prop("disabled", false);
+
+                if (isSubscriptionDone["subscribe-REPRESENTATIVE1"] != true) {
+                    jQuery("#subscribe-REPRESENTATIVE1").parent().removeClass("disabled");
+                }
+
+                if (isSubscriptionDone["subscribe-REPRESENTATIVE2"] != true) {
+                    jQuery("#subscribe-REPRESENTATIVE2").parent().removeClass("disabled");
+                }
+
+                if (isSubscriptionDone["subscribe-PH"] != true) {
+                    jQuery("#subscribe-PH").parent().removeClass("disabled");
+                }
+            }
+        });
+
+        function checkEmailKontakt() {
+            var kontaktEmail = "${processInstance.processData.find { it.name == 'kontaktEmail'}?.value}";
+            var emailDoWysylkiDokumentu = "${processInstance.processData.find { it.name == 'emailDoWysylkiDokumentu'}?.value}";
+
+           // console.info("checkEmailKontakt - kontaktEmail:"+kontaktEmail+" emailDoWysylkiDokumentu:"+emailDoWysylkiDokumentu)
+
+           if(!kontaktEmail && !emailDoWysylkiDokumentu ) {
+                  jQuery("#requestVersionElectronical").attr("disabled","disabled").removeAttr("checked");
+                  jQuery("#requestVersionPaper").attr("checked","checked");
+                  jQuery("#requestVersionTemplates").attr("disabled","disabled").removeAttr("checked");
+
+                  jQuery("#noaccept").prop("disabled", true);
+                  jQuery("#subscribe-REPRESENTATIVE1").parent().addClass("disabled");
+                  jQuery("#subscribe-REPRESENTATIVE2").parent().addClass("disabled");
+                  jQuery("#subscribe-PH").parent().addClass("disabled");
+           } else{
+               jQuery("#requestVersionElectronical").attr("checked","checked");
+           }
+        }
 	});
 </r:script>
 </head>
@@ -672,7 +659,7 @@
 	    </tr>
 	    </thead>
 	    <tbody>
-	    <g:each in="${processInstance.documents.sort(false){a,b -> a.signature.signatureOrder.compareTo(b.signature.signatureOrder)}?.findAll {it.signature?.showOnPreview} }" status="i" var="document">
+	    <g:each in="${processInstance.documents?.sort(false){a,b -> a.signature.signatureOrder.compareTo(b.signature.signatureOrder)}?.findAll {it.signature?.showOnPreview} }" status="i" var="document">
 	        <tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
 	            <td class="tableCellLeft" style="vertical-align: middle"><a id="previewPdfButton" data-document-index="${i}" href="#">${document.clientName}</td>
 	            <td class="tableCell" style="vertical-align: middle"><g:formatDate date="${document.lastUpdated}" format="yyyy-MM-dd HH:mm"/></td>
@@ -707,37 +694,6 @@
             <!-- <img id="pdfPage" style="border:1px solid gray; display: none; width: 440px; height: 570px; display: none; margin-left: auto; margin-right: auto; vertical-align: middle; text-align: center;"/> -->
         </div>
     </div>
-	<div id="subscriptionDialog" style="display: none; padding: 10px; overflow: auto;border: solid 1px; border-radius: 5px;  margin: 20px 15px 15px 15px;">
-		<div id="dialog">
-			<section id="index-subscription">
-			    <h3 id="subscriberData" style="margin-top: 20px"></h3>
-			
-			    <g:form data-id="subscriptionForm"  id="subscriptionForm" action="saveSubscription" class="sigPad">
-			        <p>
-			            <g:checkBox name="agreement" required="required"/>
-			            <label id="agreementLabel" for="agreement"></label>
-			        </p>
-			        <div id="padPlaceholder" class="sig sigWrapper" style="border: 1px solid black; height: 300px; width: 700px; margin-top: 20px" ></div>
-			
-					<input id="subscriberName" type="hidden" name="name" value="" />
-					<input id="subscriberSurname" type="hidden" name="surname" value="" />
-					<input id="subscriberRole" type="hidden" name="personRole" value="" />
-					<input id="sigContent" type="hidden" name="content" value="" />
-					<input id="nativeContent" type="hidden" name="nativeContent" value="" />
-			        <fieldset style="margin-top: 20px;">
-			            <a href="#clear" class="button action clearButton"><g:message code="subscription.clear" /></a>
-			            <g:submitButton id="submitSubscription" name="Złożono podpis" value="Złożono podpis" class="button submit"/>
-			            <a href="#close" class="button submit closeButton"><g:message code="subscription.close" /></a>
-			        </fieldset>
-			
-			    </g:form>
-			</section>
-		</div>
-		<div id="dialogInfo">
-			<span id="dialogInfoText"></span>
-			<a id="closeSubscriptionDialog" href="#close" class="button submit closeButton" style="float: right;"><g:message code="subscription.close" /></a>
-		</div>
-	</div>
     <nav>
         <g:form>
             <fieldset id="clientSignaturePersons" class="subpanel-fieldset">
@@ -749,7 +705,7 @@
                                  href="eumowysig://data/${representative1.name.encodeAsURL()}/${representative1.surname.encodeAsURL()}/ACCEPTANT1/${message(code:'subscription.agreement').encodeAsURL()}/${processInstance.id}/${session.id}/${createLink(controller: "subscriptionEx", action:"saveSubscription", absolute: true).encodeAsURL()}">${representative1.name} ${representative1.surname} - Reprezentant</a>
                         </span>
                         <span>
-                            <a href="" id="sgnRep1" onclick="if (!jQuery('#sgnPh').hasClass('action_visited')){refreshSignature('${processInstance.id}','ACCEPTANT1','subscribe-REPRESENTATIVE1'); jQuery('#sgnRep1').removeClass('action').addClass('action_visited');} return false;" class="button action"><g:message code="subscription.refresh" /></a>
+                            <a href="" id="sgnRep1" onclick="if (!jQuery('#sgnRep1').hasClass('action_visited')){refreshSignature('${processInstance.id}','ACCEPTANT1','subscribe-REPRESENTATIVE1'); jQuery('#sgnRep1').removeClass('action').addClass('action_visited');} return false;" class="button action"><g:message code="subscription.refresh" /></a>
                         </span>
                     </li>
 
@@ -757,7 +713,7 @@
                                  href="eumowysig://data/${representative2.name.encodeAsURL()}/${representative2.surname.encodeAsURL()}/ACCEPTANT2/${message(code:'subscription.agreement').encodeAsURL()}/${processInstance.id}/${session.id}/${createLink(controller: "subscriptionEx", action:"saveSubscription", absolute: true).encodeAsURL()}">${representative2.name} ${representative2.surname} - Reprezentant</a>
                     </span>
                     <span>
-                            <a href="" id="sgnRep2" onclick="if (!jQuery('#sgnPh').hasClass('action_visited')){refreshSignature('${processInstance.id}','ACCEPTANT2','subscribe-REPRESENTATIVE2'); jQuery('#sgnRep2').removeClass('action').addClass('action_visited');} return false;" class="button action"><g:message code="subscription.refresh" /></a>
+                            <a href="" id="sgnRep2" onclick="if (!jQuery('#sgnRep2').hasClass('action_visited')){refreshSignature('${processInstance.id}','ACCEPTANT2','subscribe-REPRESENTATIVE2'); jQuery('#sgnRep2').removeClass('action').addClass('action_visited');} return false;" class="button action"><g:message code="subscription.refresh" /></a>
                     </span>
                     </li>
 						
