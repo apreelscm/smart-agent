@@ -330,11 +330,13 @@ class ProcessService {
 
     /**
      * eUmowy_ext-411 Rozszerzenie bez Zmiana prowizji - usuniecie panelu Poziom opłat i warunki płatnosci karty
+     * eUmowy_ext-558 Rozszerzenie warunku o wymiane umowy zaplaty.
      */
     boolean excludePoziomOplatiWarunkiPlatnosciKarty(def process, def panelName){
         def hasRozszerzenieDodPunkt = containsActivity(process.activities,"dodatkowyPunkt")
         def hasZmianaProwizji = containsActivity(process.activities,"zmianaProwizji")
-        if (hasRozszerzenieDodPunkt && ! hasZmianaProwizji && "poziomOplatiWarunkiPlatnosciKarty" == panelName){
+        def hasWymianaUmowyZaplaty = containsActivity(process.activities,"wymianaUmowyZaplaty")
+        if (!hasWymianaUmowyZaplaty && hasRozszerzenieDodPunkt && ! hasZmianaProwizji && "poziomOplatiWarunkiPlatnosciKarty" == panelName){
             log.info "excludePoziomOplatiWarunkiPlatnosciKarty - excluding panel [${panelName} from active panel list]"
             return true
         }
