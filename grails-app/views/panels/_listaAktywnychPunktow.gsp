@@ -1,7 +1,7 @@
-<div id="dccRangePanel">
+<div id="activePointsPanel">
     <fieldset>
         <div class="belka-glowna"><g:message code="panel.active.points.list.title" default="Lista Aktywnych Punktów"/> </div>
-        <div id="dccRange" class="centre" style="text-align: center; padding-top: 20px; width: 800px; max-width: 950px">
+        <div id="activePoints" class="centre" style="text-align: center; padding-top: 20px; width: 800px; max-width: 950px">
             <table class="t">
                 <thead>
                 <tr>
