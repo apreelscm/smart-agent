@@ -10,6 +10,17 @@
     <br><br>
     Dziękujemy za okazane zaufanie i zapewniamy, że dołożymy wszelkich starań aby byli Państwo zadowoleni z jakości i zakresu świadczonych usług.
     <br><br>
+
+    Nip: ${merchantNip}
+    <br>
+    Nazwa akceptanta: ${merchantName}
+    <br>
+    Działania:
+    <g:each in="${activities}">
+    - ${it}<br>
+    </g:each>
+    <br><br>
+
     Z wyrazami szacunku,<br>
     Zespół eService
 </p>

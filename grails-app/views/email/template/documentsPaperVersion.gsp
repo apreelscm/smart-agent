@@ -4,9 +4,15 @@
 	<p>
         Witaj,
         <br><br>
-        Klient – ${merchantName} chce podpisać umowę w wersji papierowej.
+        Klient – ${merchantName} (NIP: ${merchantNip}) chce podpisać umowę w wersji papierowej.
         <br><br>
         Wydrukuj dwa egzemplarze dokumentów i wyślij do przedstawiciela handlowego ${phNumber} ${phFirstName} ${phSurname}.
+
+        Działania:
+        <g:each in="${activities}">
+        - ${it}<br>
+        </g:each>
+
         <br><br>
         Pozdrawiamy,<br>
         Zespół Wsparcia Sprzedaży

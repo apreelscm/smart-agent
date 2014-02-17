@@ -165,13 +165,9 @@ class ProcessController {
 		
         flash.message = message(code: 'default.rejected.message', args:[ message(code: 'process.label', default: 'proces'), processInstance.id])
 
-        List<String> activities = new ArrayList<String>();
-        processInstance.activities.each {a ->
-            def key = 'activity.' + a.code + '.name'
-            activities.add(messageSource.getMessage(key, [] as Object[], request.locale))
-        }
+        def mailBodyParams = [merchantName: processInstance.client.name, merchantNip: processInstance.client.nip, activities: getActivities(processInstance), rejectReason: params.notesFromZrd]
 
-        if(!emailService.sendDocumentsRejected(processInstance.phEmail, processInstance.client.name, processInstance.client.nip, params.notesFromZrd, activities)){
+        if(!emailService.sendDocumentsRejected(processInstance.phEmail, processInstance.client.name, processInstance.client.nip, mailBodyParams)){
             flash.error = "Błąd podczas wysyłania maila na adres ${processInstance.phEmail}"
             redirect(action: "show", params: params)
             return
@@ -258,7 +254,8 @@ class ProcessController {
         flash.message = message(code: 'default.accepted.message', args:[ message(code: 'process.label', default: 'proces'), processInstance.id])
 
 
-        if(!emailService.sendDocumentsAccepted(processInstance.phEmail, null , processInstance.client.name)){
+        def mailBodyParams = [merchantName: processInstance.client.name, merchantNip: processInstance.client.nip, activities: getActivities(processInstance), rejectReason: params.notesFromZrd]
+        if(!emailService.sendDocumentsAccepted(processInstance.phEmail, null , mailBodyParams)){
             flash.error = "Błąd podczas wysyłania maila na adres ${processInstance.phEmail}"
             redirect(action: "show", params: params)
             return
@@ -317,6 +314,10 @@ class ProcessController {
 
     private boolean isDate(def dateStr){
         return !"".equals(DateUtils.formatWithTimezoneFromStr(dateStr))
+    }
+
+    def getActivities(def process){
+        process.activities.collect {messageSource.getMessage('activity.' + it.code + '.name', [] as Object[], request.locale)}
     }
 /*
     private boolean isNotesEmpty(def notes){

@@ -127,7 +127,8 @@ class ActivityController {
                 log.info("wysyłanie wiadomości email z uwagami do COA [notes: ${notes}]")
 
                 def user = springSecurityService.principal
-                if(!emailService.sendNotesToCOA(notes, user.nr, user.imie + ' ' + user.nazwisko)){
+                def bodyParams = [notes: notes, phNumber: user.nr, phName: user.imie + ' ' + user.nazwisko, merchantName: getFromProcessData(processInstance, 'akceptantNazwaOficjalna'), merchantNip: getFromProcessData(processInstance, 'nip'), activities: getActivities(processInstance)]
+                if(!emailService.sendNotesToCOA(bodyParams)){
                     return error()
                 }
             }
@@ -330,7 +331,8 @@ class ActivityController {
                 if (processInstance.notesToCoa) {
                     log.info("wysyłanie wiadomości email z uwagami do COA [notes: ${processInstance.notesToCoa}]")
                     def user = springSecurityService.principal
-                    emailService.sendNotesToCOA(processInstance.notesToCoa, user.nr, user.imie + ' ' + user.nazwisko)
+                    def bodyParams = [notes: processInstance.notesToCoa, phNumber: user.nr, phName: user.imie + ' ' + user.nazwisko, merchantName: getFromProcessData(processInstance, 'akceptantNazwaOficjalna'), merchantNip: getFromProcessData(processInstance, 'nip'), activities: getActivities(processInstance)]
+                    emailService.sendNotesToCOA(bodyParams)
                 }
 
                 flow.processInstance = null;
@@ -1463,6 +1465,12 @@ class ActivityController {
 
                 def recipient = getFromProcessData(process, 'kontaktEmail') ?: getFromProcessData(process, 'emailDoWysylkiDokumentu')
 
+                def merchantName = getFromProcessData(process, 'akceptantNazwaOficjalna');
+                def merchantNip = getFromProcessData(process, 'nip');
+                def activities = getActivities(process);
+
+                def mailBodyParams = [merchantName: merchantName, merchantNip: merchantNip, activities: activities]
+
                 if (recipient){
                     def recipients = [];
                     recipients.add(recipient)
@@ -1476,20 +1484,20 @@ class ActivityController {
 
                     def isNewAggrement = process?.activities?.any{it.code.equals('nowaUmowa')}
                     if (isNewAggrement){
-                        emailService.sendDocumentsElectronicalVersion(recipients, process.documents?.findAll{it.signature?.sendToClient})
+                        emailService.sendDocumentsElectronicalVersion(recipients, process.documents?.findAll{it.signature?.sendToClient}, mailBodyParams)
                     } else {
-                        emailService.sendDocumentsNotNewAggrementElectronicalVersion(recipients, process.documents?.findAll{it.signature?.sendToClient})
+                        emailService.sendDocumentsNotNewAggrementElectronicalVersion(recipients, process.documents?.findAll{it.signature?.sendToClient}, mailBodyParams)
                     }
                 } else {
-                    def merchantName = getFromProcessData(process, 'akceptantNazwaOficjalna');
-                    def merchantNip = getFromProcessData(process, 'nip');
-                    emailService.sendDocumentsAcceptedToPostSend(process.documents, merchantName, merchantNip)
+                    emailService.sendDocumentsAcceptedToPostSend(process.documents, mailBodyParams)
                 }
             }
         }
         else if (PAPER.equals(requestVersion)) {
             //Documents are already in DB
             def merchantName = getFromProcessData(process, 'akceptantNazwaOficjalna');
+            def merchantNip = getFromProcessData(process, 'nip');
+            def activities = getActivities(process);
 
             process.documents.each { DocumentFile df ->
                 DocumentContent ndc = pdfService.cleanAgrementDateContent(df.content);
@@ -1499,8 +1507,8 @@ class ActivityController {
                 df.save(flush: true)
             }
 
-            def mailBodyParams = [merchantName: merchantName, phNumber: process?.phNumber,
-                    phFirstName: process?.phFirstName, phSurname: process?.phSurname]
+            def mailBodyParams = [merchantName: merchantName, merchantNip: merchantNip, phNumber: process?.phNumber,
+                    phFirstName: process?.phFirstName, phSurname: process?.phSurname, activities: activities]
             emailService.sendDocumentsPaperVersion(process.documents?.findAll{it.signature?.sendToClient}, mailBodyParams)
         }
         else if (TEMPLATES.equals(requestVersion)) {
@@ -1518,7 +1526,13 @@ class ActivityController {
             def recipient = getFromProcessData(process, 'kontaktEmail') ?: getFromProcessData(process, 'emailDoWysylkiDokumentu')
 
             if (recipient){
-                emailService.sendDocumentsTemplateVersion(recipient, documentFilesWithBlackFaksymileList)
+                def merchantName = getFromProcessData(process, 'akceptantNazwaOficjalna')
+                def merchantNip = getFromProcessData(process, 'nip')
+                def activities = getActivities(process)
+
+                def mailBodyParams = [merchantName: merchantName, merchantNip: merchantNip, activities: activities]
+
+                emailService.sendDocumentsTemplateVersion(recipient, documentFilesWithBlackFaksymileList, mailBodyParams)
             }
     	}
     }
@@ -1544,6 +1558,10 @@ class ActivityController {
     def getFromProcessData(def process, def key){
         def result = process.processData.find{ pd -> pd.name.equals(key)}
         return (result && result?.value)?result?.value:""
+    }
+
+    def getActivities(def process){
+        process.activities.collect {messageSource.getMessage('activity.' + it.code + '.name', [] as Object[], request.locale)}
     }
 
     private def crateProcessCommand(def params, def calc) {

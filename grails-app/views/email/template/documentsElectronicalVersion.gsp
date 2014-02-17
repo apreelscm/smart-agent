@@ -10,6 +10,17 @@
         <br><br>
         Wierzymy, że nasza współpraca przyczyni się do efektywnego działania Państwa firmy i zapewni komfort i bezpieczeństwo korzystania z dostarczanych usług.
         <br><br>
+
+        Nip: ${merchantNip}
+        <br>
+        Nazwa akceptanta: ${merchantName}
+        <br>
+        Działania:
+        <g:each in="${activities}">
+        - ${it}<br>
+        </g:each>
+        <br><br>
+
         Z wyrazami szacunku,<br>
         Zespół eService
 	</p>
