@@ -1663,9 +1663,26 @@ class PdfServiceTests {
 	}
 
 	void testFormularzDanychPunktu() {
-		process("Formularz danych punktu_zmiany_15.05.2013_edited.pdf", "Formularz danych punktu_zmiany_15.05.2013_edited_out.pdf", generateFormularzDanychPunktuFields());
+        def data = [:]
+        def subscriptions = [
+                ["PH", 2, 190, 175,	84,	53],
+                ["PH", 2, 60, 175, 84,	53],
+                ["ACCEPTANT1", 2, 370, 225, 94, 63],
+                ["ACCEPTANT2", 2, 470, 225, 94, 63]
+        ]
+        data.putAll(insertSignatures2(subscriptions))
+		process("Formularz danych punktu_zmiany_15.05.2013_edited.pdf", "Formularz danych punktu_zmiany_15.05.2013_edited_out.pdf", data);
 	}
-	
+
+    void testAPFZMP() {
+        def data = [:]
+        def subscriptions = [
+                ["PH", 1, 50, 175,	84,	53]
+        ]
+        data.putAll(insertSignatures2(subscriptions))
+        process("APFZMP2.000.08-12-03.pdf", "APFZMP2.000.08-12-03_out.pdf", data);
+    }
+
 	void testFormularzDanychPunktuToImage() {
 		String outFile =  "Formularz danych punktu_zmiany_15.05.2013_edited_out2.pdf"
 		data.put("podpis", [new File(getTemplatePath()+"subscriptions"+File.separator+"signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);

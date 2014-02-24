@@ -387,6 +387,9 @@ class PanelMockService {
 		cmd.allPoses = [p1, p2, p3]*/
     }
 
+    def getZestawPosWymianaTerminala(ProcessCommand cmd){
+    }
+
     def getRachunekBankowyKlienta(ProcessCommand cmd) {
         cmd.numerRachunkuBankowegoKlienta = "11 1160 2202 0000 0001 9389 8247"
         cmd.bankKlienta = "3"

@@ -37,34 +37,37 @@
         var that = this;
 
         var restrictionsMap = {}
-        restrictionsMap["nowaUmowaCB"] = ["rozszerzenie", "zmianaWarunkow", "poprawDane", "odrzucDokumenty","uzupelnijPodpisy", "pakietSerwisowy", "dodanieIkoCB", "wymianaUmowyZaplaty"];
 
-        restrictionsMap["dodatkowyPunktCB"] = ["nowaUmowa","poprawDane","odrzucDokumenty", "uzupelnijPodpisy"];
-        restrictionsMap["dodatkowyPosCB"] =  ["nowaUmowa","poprawDane","odrzucDokumenty", "uzupelnijPodpisy"];
+        restrictionsMap["nowaUmowaCB"] = ["rozszerzenie", "zmianaWarunkow", "poprawDane", "odrzucDokumenty","uzupelnijPodpisy", "pakietSerwisowy", "dodanieIkoCB", "wymianaUmowyZaplaty", "wymianaTerminalaCB"];
 
-        restrictionsMap["zmianaProwizjiCB"] =  ["nowaUmowa","poprawDane","odrzucDokumenty", "uzupelnijPodpisy", "dodanieIkoCB"];
-        restrictionsMap["zmianaWarunkowDccCB"] =  ["nowaUmowa","poprawDane","odrzucDokumenty", "uzupelnijPodpisy"];
-        restrictionsMap["wymianaUmowyNajmuCB"] =  ["nowaUmowa","poprawDane","odrzucDokumenty", "uzupelnijPodpisy"];
-        restrictionsMap["dodanieAneksuKosztyPlusCB"] = ["nowaUmowa","poprawDane","odrzucDokumenty", "uzupelnijPodpisy", "dodanieIkoCB"];
-        restrictionsMap["aneksCB"] =  ["nowaUmowa","poprawDane","odrzucDokumenty", "uzupelnijPodpisy"];
-        restrictionsMap["wymianaUmowyZaplatyCB"] =  ["nowaUmowa","poprawDane","odrzucDokumenty", "uzupelnijPodpisy"];
-        restrictionsMap["zmianaTabeliOplatDodatkowychCB"] =  ["nowaUmowa","poprawDane","odrzucDokumenty", "uzupelnijPodpisy"];
-        restrictionsMap["zmianaWarunkowPrepaidCB"] =  ["nowaUmowa","poprawDane","odrzucDokumenty", "uzupelnijPodpisy"];
-        restrictionsMap["zmianaOkresuLojalnosciowegoCB"] =  ["nowaUmowa","poprawDane","odrzucDokumenty", "uzupelnijPodpisy"];
-        restrictionsMap["promocyjneObnizenieNajmuCB"] =  ["nowaUmowa","poprawDane","odrzucDokumenty", "uzupelnijPodpisy"];
+        restrictionsMap["dodatkowyPunktCB"] = ["nowaUmowa","poprawDane","odrzucDokumenty", "uzupelnijPodpisy", "wymianaTerminalaCB"];
+        restrictionsMap["dodatkowyPosCB"] =  ["nowaUmowa","poprawDane","odrzucDokumenty", "uzupelnijPodpisy", "wymianaTerminalaCB"];
 
-        restrictionsMap["dodaniePrepaidCB"] =  ["poprawDane","odrzucDokumenty", "uzupelnijPodpisy"];
-        restrictionsMap["dodanieDccCB"] =  ["poprawDane","odrzucDokumenty", "uzupelnijPodpisy"];
-        restrictionsMap["dodanieCashBackCB"] =  ["poprawDane","odrzucDokumenty", "uzupelnijPodpisy"];
-        restrictionsMap["dodanieIkoCB"] =  ["poprawDane","odrzucDokumenty", "uzupelnijPodpisy", "dodanieAneksuKosztyPlusCB", "zmianaProwizjiCB", "nowaUmowa"];
+        restrictionsMap["zmianaProwizjiCB"] =  ["nowaUmowa","poprawDane","odrzucDokumenty", "uzupelnijPodpisy", "dodanieIkoCB", "wymianaTerminalaCB"];
+        restrictionsMap["zmianaWarunkowDccCB"] =  ["nowaUmowa","poprawDane","odrzucDokumenty", "uzupelnijPodpisy", "wymianaTerminalaCB"];
+        restrictionsMap["wymianaUmowyNajmuCB"] =  ["nowaUmowa","poprawDane","odrzucDokumenty", "uzupelnijPodpisy", "wymianaTerminalaCB"];
+        restrictionsMap["dodanieAneksuKosztyPlusCB"] = ["nowaUmowa","poprawDane","odrzucDokumenty", "uzupelnijPodpisy", "dodanieIkoCB", "wymianaTerminalaCB"];
+        restrictionsMap["aneksCB"] =  ["nowaUmowa","poprawDane","odrzucDokumenty", "uzupelnijPodpisy", "wymianaTerminalaCB"];
+        restrictionsMap["wymianaUmowyZaplatyCB"] =  ["nowaUmowa","poprawDane","odrzucDokumenty", "uzupelnijPodpisy", "wymianaTerminalaCB"];
+        restrictionsMap["zmianaTabeliOplatDodatkowychCB"] =  ["nowaUmowa","poprawDane","odrzucDokumenty", "uzupelnijPodpisy", "wymianaTerminalaCB"];
+        restrictionsMap["zmianaWarunkowPrepaidCB"] =  ["nowaUmowa","poprawDane","odrzucDokumenty", "uzupelnijPodpisy", "wymianaTerminalaCB"];
+        restrictionsMap["zmianaOkresuLojalnosciowegoCB"] =  ["nowaUmowa","poprawDane","odrzucDokumenty", "uzupelnijPodpisy", "wymianaTerminalaCB"];
+        restrictionsMap["promocyjneObnizenieNajmuCB"] =  ["nowaUmowa","poprawDane","odrzucDokumenty", "uzupelnijPodpisy", "wymianaTerminalaCB"];
 
-        restrictionsMap["ekonomicznyCB"] =  ["nowaUmowa", "komfort", "prestiz", "uzupelnijPodpisy", "poprawDane","odrzucDokumenty"];
-        restrictionsMap["komfortCB"] =  ["nowaUmowa", "ekonomiczny", "prestiz", "uzupelnijPodpisy", "poprawDane","odrzucDokumenty"];
-        restrictionsMap["prestizCB"] =  ["nowaUmowa", "ekonomiczny", "komfort", "uzupelnijPodpisy", "poprawDane","odrzucDokumenty"];
+        restrictionsMap["dodaniePrepaidCB"] =  ["poprawDane","odrzucDokumenty", "uzupelnijPodpisy", "wymianaTerminalaCB"];
+        restrictionsMap["dodanieDccCB"] =  ["poprawDane","odrzucDokumenty", "uzupelnijPodpisy", "wymianaTerminalaCB"];
+        restrictionsMap["dodanieCashBackCB"] =  ["poprawDane","odrzucDokumenty", "uzupelnijPodpisy", "wymianaTerminalaCB"];
+        restrictionsMap["dodanieIkoCB"] =  ["poprawDane","odrzucDokumenty", "uzupelnijPodpisy", "dodanieAneksuKosztyPlusCB", "zmianaProwizjiCB", "nowaUmowa", "wymianaTerminalaCB"];
 
-        restrictionsMap["poprawDaneCB"] = ["nowaUmowa", "rozszerzenie", "zmianaWarunkow", "odrzucDokumenty","uzupelnijPodpisy", "pakietSerwisowy", "dodatkoweFuncjonalnosci"];
-        restrictionsMap["odrzucDokumentyCB"] = ["nowaUmowa","rozszerzenie", "zmianaWarunkow", "poprawDane", "pakietSerwisowy","uzupelnijPodpisy", "dodatkoweFuncjonalnosci"];
-        restrictionsMap["uzupelnijPodpisyCB"] = ["nowaUmowa","rozszerzenie", "zmianaWarunkow", "poprawDane","odrzucDokumenty", "pakietSerwisowy", "dodatkoweFuncjonalnosci"];
+        restrictionsMap["ekonomicznyCB"] =  ["nowaUmowa", "komfort", "prestiz", "uzupelnijPodpisy", "poprawDane","odrzucDokumenty", "wymianaTerminalaCB"];
+        restrictionsMap["komfortCB"] =  ["nowaUmowa", "ekonomiczny", "prestiz", "uzupelnijPodpisy", "poprawDane","odrzucDokumenty", "wymianaTerminalaCB"];
+        restrictionsMap["prestizCB"] =  ["nowaUmowa", "ekonomiczny", "komfort", "uzupelnijPodpisy", "poprawDane","odrzucDokumenty", "wymianaTerminalaCB"];
+
+        restrictionsMap["poprawDaneCB"] = ["nowaUmowa", "rozszerzenie", "zmianaWarunkow", "odrzucDokumenty","uzupelnijPodpisy", "pakietSerwisowy", "dodatkoweFuncjonalnosci", "wymianaTerminalaCB"];
+        restrictionsMap["odrzucDokumentyCB"] = ["nowaUmowa","rozszerzenie", "zmianaWarunkow", "poprawDane", "pakietSerwisowy","uzupelnijPodpisy", "dodatkoweFuncjonalnosci", "wymianaTerminalaCB"];
+        restrictionsMap["uzupelnijPodpisyCB"] = ["nowaUmowa","rozszerzenie", "zmianaWarunkow", "poprawDane","odrzucDokumenty", "pakietSerwisowy", "dodatkoweFuncjonalnosci", "wymianaTerminalaCB"];
+
+        restrictionsMap["wymianaTerminalaCB"] = ["nowaUmowa","rozszerzenie", "zmianaWarunkow", "dodatkoweFuncjonalnosci", "poprawDane","odrzucDokumenty", "uzupelnijPodpisy"];
 
         var restrictions = new Array();
 
@@ -339,6 +342,7 @@
             $('#poprawDane').change(changeActivityEvent);
             $('#odrzucDokumenty').change(changeActivityEvent);
             $('#uzupelnijPodpisyCB').change(changeActivityEvent);
+            $('#wymianaTerminalaCB').change(changeActivityEvent);
 
             $('input:checkbox[data-selected="true"]').each(function( index ) {
                 $(this).attr('checked', true);

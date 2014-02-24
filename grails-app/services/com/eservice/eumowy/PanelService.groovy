@@ -482,6 +482,9 @@ class PanelService {
     def getPromocyjneObnizenieOplatyZaZestawPos(ProcessCommand cmd, def calc ) {
     }
 
+    def getZestawPosWymianaTerminala(ProcessCommand cmd, def calc ){
+    }
+
     def getRachunekBankowyKlienta(ProcessCommand cmd, def calc ) {
         cmd.numerRachunkuBankowegoKlienta = nullify(cmd.numerRachunkuBankowegoKlienta)
         cmd.bankKlienta = nullify(cmd.bankKlienta)

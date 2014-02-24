@@ -32,6 +32,7 @@ class ActivityController {
     def messageSource
     def pdfService
 	def documentService
+    def dictionaryService
 
     def springSecurityService
 
@@ -212,12 +213,16 @@ class ActivityController {
                 flow.representative2 = flow.representative2 != null ? flow.representative2 : processService.getRepresentative2(processInstance)
                 flow.requiredNumberOfSubscriptions = 1 //PH subscription is always required
 
-                if (flow.representative1.name != null && flow.representative1.surname != null) {
-                    flow.requiredNumberOfSubscriptions++
-                }
+                def isWymianaTerminalaOnly = processService.containsActivity(flow.processInstance.activities,"wymianaTerminala") && flow.processInstance.activities.size()==1
 
-                if (flow.representative2.name != null && flow.representative2.surname != null) {
-                    flow.requiredNumberOfSubscriptions++
+                if (!isWymianaTerminalaOnly){
+                    if (flow.representative1.name != null && flow.representative1.surname != null) {
+                        flow.requiredNumberOfSubscriptions++
+                    }
+
+                    if (flow.representative2.name != null && flow.representative2.surname != null) {
+                        flow.requiredNumberOfSubscriptions++
+                    }
                 }
 
                 if (!flow.skipDocumentGeneration && !flow.isUzupelnijPodpisy) {
@@ -491,30 +496,36 @@ class ActivityController {
                 lastProcess?.discard() // drop it from session
 
                 /** pobieranie danych o kalkulatorze */
-                def calcId = cbdService.findCalculatorIdByNip(client.nip)
+                def omitCalculator = processService.containsActivity(flow.processInstance.activities,"wymianaTerminala") && flow.processInstance.activities.size()==1
+                if (omitCalculator){
+                    conversation.calc = [:]
+                    flow.calcNumber = -1
+                    flash.calcInfoMessage = message(code:"calc.not.needed.info", default:"Kalkulator nie jest wymagany");
+                } else {
+                    def calcId = cbdService.findCalculatorIdByNip(client.nip)
 
-                if(!calcId){
-                    flash.calcErrorMessage = message(code:"calc.notFound.error", default:"Kalkulator nie istnieje");
-                    return error();
+                    if(!calcId){
+                        flash.calcErrorMessage = message(code:"calc.notFound.error", default:"Kalkulator nie istnieje");
+                        return error();
+                    }
+
+                    def calc = cbdService.findCalculatorByNip(client.nip)
+
+                    if(calc == []){
+                        flash.calcErrorMessage = message(code:"calc.fetch.error", default:"Wystąpił błąd podczas próby pobrania kalkulatora");
+                        return error();
+                    }
+
+                    // Validation 1 & 2
+                    if(!calculatorService.isCalcValid(calc,calcId,processInstance)){
+                        flash.calcErrorMessage =  message(code:"calc.notEnough.error", default:"Kalkulator nie pozwala na wykonanie wszystkich zaznaczonych czynności");
+                        return error();
+                    }
+
+                    conversation.calc = calc
+                    flow.calcNumber =  calcId;
+                    flash.calcInfoMessage = message(code:"calc.found.info", default:"Znaleziono");
                 }
-
-                def calc = cbdService.findCalculatorByNip(client.nip)
-
-                if(calc == []){
-                    flash.calcErrorMessage = message(code:"calc.fetch.error", default:"Wystąpił błąd podczas próby pobrania kalkulatora");
-                    return error();
-                }
-
-                // Validation 1 & 2
-                if(!calculatorService.isCalcValid(calc,calcId,processInstance)){
-                    flash.calcErrorMessage =  message(code:"calc.notEnough.error", default:"Kalkulator nie pozwala na wykonanie wszystkich zaznaczonych czynności");
-                    return error();
-                }
-
-
-                conversation.calc = calc
-                flow.calcNumber =  calcId;
-                flash.calcInfoMessage = message(code:"calc.found.info", default:"Znaleziono");
             }
             on("success"){
                 flow.isContinueEnabled = true
@@ -536,7 +547,7 @@ class ActivityController {
                     TreeSet beforeExclusionPanels = _getActivePanels(processInstance.signatures)
                     List<Panel> activePanels = processService.filterExcludedPanels(processInstance, beforeExclusionPanels.toList())
                     processInstance.panels = activePanels;
-                    processCmd = processService.getNewProcessCommand(processInstance, conversation.calc)
+                    processCmd = processService.getNewProcessCommand(processInstance, flow.calcNumber, conversation.calc)
 
                     //inicjacyjne zapisanie danych pobranych z cbd i calc
                     processInstance = processService.populateProcessWithData(processInstance, processCmd, conversation.calc)
@@ -566,11 +577,15 @@ class ActivityController {
 							}
 						}
 					}
+
+                    processInstance.posExchanges?.each { PosExchange pe ->
+                        processCmd.posExchanges.find {it.tpsId == pe.tpsId}?.setId(pe.id)
+                    }
                 }
                 else{
                     log.info("skipPanelsInit - true")
                     flow.skipPanelsInit = false
-                    processCmd = processService.getSavedProcessCommand(processInstance, conversation.calc, flow.newProcessFlow)
+                    processCmd = processService.getSavedProcessCommand(processInstance, processInstance.calcNumber, conversation.calc, flow.newProcessFlow)
                     processCmd.nip = processInstance.client.nip
                 }
 
@@ -871,33 +886,40 @@ class ActivityController {
                 }
 
                 /** pobieranie danych o kalkulatorze */
-                def calcId = cbdService.findCalculatorIdByNip(client.nip)
+                def omitCalculator = processService.containsActivity(lastProcess.activities,"wymianaTerminala") && lastProcess.activities.size()==1
+                if (omitCalculator){
+                    conversation.calc = [:]
+                    flow.calcNumber = -1
+                    flash.calcInfoMessage = message(code:"calc.not.needed.info", default:"Kalkulator nie jest wymagany");
+                } else {
+                    def calcId = cbdService.findCalculatorIdByNip(client.nip)
 
-                if(!calcId){
-                    flash.calcErrorMessage = message(code:"calc.notFound.error", default:"Kalkulator nie istnieje");
-                    log.info(message(code:"calc.notFound.error") + " - " + client.nip)
-                    return error()
-                }
+                    if(!calcId){
+                        flash.calcErrorMessage = message(code:"calc.notFound.error", default:"Kalkulator nie istnieje");
+                        log.info(message(code:"calc.notFound.error") + " - " + client.nip)
+                        return error()
+                    }
 
-                def calc = cbdService.findCalculatorByNip(client.nip)
+                    def calc = cbdService.findCalculatorByNip(client.nip)
 
-                log.info("pobrano kalkulator " + calcId)
+                    log.info("pobrano kalkulator " + calcId)
 
-                if(!calculatorService.isCalcValid(calc,calcId,lastProcess)){
-                    flash.calcErrorMessage =  message(code:"calc.notEnough.error", default:"Kalkulator nie pozwala na wykonanie wszystkich zaznaczonych czynności");
-                    return error()
+                    if(!calculatorService.isCalcValid(calc,calcId,lastProcess)){
+                        flash.calcErrorMessage =  message(code:"calc.notEnough.error", default:"Kalkulator nie pozwala na wykonanie wszystkich zaznaczonych czynności");
+                        return error()
+                    }
+
+                    conversation.calc = calc
+                    flow.calcNumber =  calcId;
+                    flash.calcInfoMessage = message(code:"calc.found.info", default:"Znaleziono");
                 }
                 lastProcess?.discard() // drop it from session
 
-                conversation.calc = calc
-                flow.calcNumber =  calcId;
                 flow.savedProcess = lastProcess
 
                 // aktualizacja danych klienta w procesie danymi z CBD
                 lastProcess.client = client
                 flow.client = lastProcess.client;
-
-                flash.calcInfoMessage = message(code:"calc.found.info", default:"Znaleziono");
             }
             on("success"){
                 flow.isContinueEnabled = true
@@ -912,7 +934,7 @@ class ActivityController {
             onEntry {
                 log.info "SkipPanelsInit: " + flow.skipPanelsInit
                 def processInstance = flow.processInstance;
-                def processCmd = processService.getSavedProcessCommand(processInstance, conversation.calc, flow.newProcessFlow);
+                def processCmd = processService.getSavedProcessCommand(processInstance, flow.calcNumber, conversation.calc, flow.newProcessFlow);
 
                 // Calculate pos count from cbd
                 def counter = 0
@@ -1374,7 +1396,15 @@ class ActivityController {
         }
         render(text: '')
     }
-	
+
+    def getTerminalModels(){
+        log.info( "getTerminalModels nip = " +  params.nip + ", type: " + params.type);
+
+        def result = dictionaryService.getPosTypeComboBox(params.nip, params.type)*.value;
+        result.add(0,"")
+        render result as JSON
+    }
+
 	def downloadDoc(){
 		log.info( "downloadDoc = " +  params.id);
 		DocumentFile file = documentService.download(params.id)

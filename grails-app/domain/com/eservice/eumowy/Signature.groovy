@@ -6,6 +6,7 @@ class Signature implements Serializable {
     Boolean active = true;
 	String templatePath;
     Boolean forPoint = true;
+    Boolean forPos = true;
 	String description;
     String filename;
     Integer signatureOrder;

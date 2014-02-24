@@ -39,7 +39,7 @@ class DictionaryTagLib {
 		attrs.optionValue = "value"
 		fieldImpl(out, attrs)
 	}
-
+	
     Closure citySelect = { attrs ->
 
         def nipNum = attrs.nip
@@ -48,7 +48,7 @@ class DictionaryTagLib {
         attrs.from.add(0,"")
         fieldImpl(out, attrs)
     }
-	
+
 	Closure mccSelect = { attrs ->
 		attrs.from = dictionaryService.getMccComboBox()
 		attrs.optionKey = "code"

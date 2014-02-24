@@ -422,7 +422,8 @@
 				isSubscriptionDone["subscribe-PH"] == true))
 				return true;
 		}
-		else if (requiredSubscriptionsCount == 0) {
+		else if (requiredSubscriptionsCount == 1 || requiredSubscriptionsCount == 0) {
+            // TODO - czy w powyzszym warunku jest konieczne sprawdzanie czy jest rowne 0?
 			if (isSubscriptionDone["subscribe-PH"] == true)
 				return true;
 		}
@@ -531,6 +532,11 @@
             }
             return false;
         });
+
+        if (requiredSubscriptionsCount == 1){
+            jQuery("#subscribe-REPRESENTATIVE1").parent().parent().hide();
+            jQuery("#subscribe-REPRESENTATIVE2").parent().parent().hide();
+        }
 
         if (jQuery("#subscribe-REPRESENTATIVE1").text() == "  - Reprezentant") {
             jQuery("#subscribe-REPRESENTATIVE1").parent().parent().hide();

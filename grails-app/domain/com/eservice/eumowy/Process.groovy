@@ -53,7 +53,8 @@ class Process implements Serializable {
             subscriptions:Subscription,
             points: PointData,
             processData: ProcessData,
-            hirePayments: HirePayment
+            hirePayments: HirePayment,
+            posExchanges: PosExchange
     ]
 
     static constraints = {
@@ -79,6 +80,7 @@ class Process implements Serializable {
         notesToCoa(nullable: true, maxSize: 1000)
         notesFromZrd(nullable: true, maxSize: 300)
         hirePayments(nullable: true)
+        posExchanges(nullable: true)
     }
 
     static mapping = {
@@ -93,6 +95,7 @@ class Process implements Serializable {
         points cascade:"all-delete-orphan"
         processData cascade:"all-delete-orphan"
         hirePayments cascade:"all-delete-orphan"
+        posExchanges cascade:"all-delete-orphan"
     }
 
     def afterInsert() {

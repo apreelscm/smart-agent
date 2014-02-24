@@ -126,9 +126,9 @@ class ProcessService {
         return activities?.any{it.code.equals(activityCode)};
     }
 
-    def getNewProcessCommand(def process, def calc){
+    def getNewProcessCommand(def process, def calcId, def calc){
         log.info("getNewProcessCommand processId = ${process.id}")
-        def cmd = initProcessCommand(process)
+        def cmd = initProcessCommand(process, calcId)
         cmd.allPoints?.addAll(getPointsToAllPointsCommandList(process, cmd))
         cmd.allPoses?.addAll(getPosesToAllPosCommandList(process, cmd, calc))
 		
@@ -158,6 +158,7 @@ class ProcessService {
         cmd.hirePaymentsCurrent?.addAll(getHirePaymentCurrentCommandList(cmd))
         cmd.hirePaymentsByPoint?.addAll(getHirePaymentByPointCommandList(cmd, calc))
         cmd.hirePaymentsByPos?.addAll(getHirePaymentByPosCommandList(cmd, calc))
+        cmd.posExchanges?.addAll(getPosExchangeCommandList(cmd))
 
         prepareProcessCommand(cmd, calc,)
 		preparePointCommands(cmd.points, cmd.poses, calc)
@@ -166,9 +167,9 @@ class ProcessService {
 		cmd
 	}
 
-    def getSavedProcessCommand(def process, def calc, def newProcess){
+    def getSavedProcessCommand(def process, def calcId, def calc, def newProcess){
         log.info("getSavedProcessCommand processId = ${process.id}")
-        def cmd = initProcessCommand(process)
+        def cmd = initProcessCommand(process, calcId)
         loadProcessData(process,cmd)
         cmd.points?.clear()
         cmd.poses?.clear()
@@ -190,6 +191,8 @@ class ProcessService {
             cmd.hirePaymentsByPoint?.addAll(getHirePaymentCommandFromHirePayments(process.hirePayments.findAll{ it.tpsId == null}))
             cmd.hirePaymentsByPos?.addAll(getHirePaymentCommandFromHirePayments(process.hirePayments.findAll{ it.tpsId != null}))
         }
+
+        cmd.posExchanges = mergePosExchanges(process, getPosExchangeCommandList(cmd), getPosExchangeCommandFromPosExchanges(process.posExchanges))
 
         //FIXME Optymalizacja usuwania, z uwzglednieniem tego, zeby nie zamykalo sesji, bo potem
 		//		w metodzie prepareProcessCommand jest zamknieta sesja i nie mozna zrobic lazyLoad na liscie paneli
@@ -239,6 +242,50 @@ class ProcessService {
 		cmd
     }
 
+    List<PosExchangeCommand> mergePosExchanges(Process processInstance, List<PosExchangeCommand> fromCbd, List<PosExchangeCommand> fromEumowy) {
+        def toAdd = [];
+        fromCbd.each { peCbd ->
+
+            if (fromEumowy.any { peEumowy -> peEumowy.tpsId == peCbd.tpsId }){
+                //update
+                PosExchangeCommand foundEumowy = fromEumowy.find { peEumowy -> peEumowy.tpsId == peCbd.tpsId }
+
+                foundEumowy.setTpsId(peCbd.tpsId)
+                foundEumowy.setPosNumber(peCbd.posNumber)
+                foundEumowy.setName(peCbd.name)
+                foundEumowy.setAddress(peCbd.address)
+                foundEumowy.setType(peCbd.type)
+                foundEumowy.setModel(peCbd.model)
+            } else {
+                //add
+                log.info "Adding PosExchange with tpsId: " + peCbd.tpsId + ' from Process: ' + processInstance.id
+                toAdd.add(peCbd)
+            }
+        }
+
+        fromEumowy.addAll(toAdd)
+
+        def toRemove = []
+        fromEumowy.each { peEumowy ->
+            if (!fromCbd.any{it.tpsId == peEumowy.tpsId}){
+                 toRemove.add(peEumowy)
+            }
+        }
+
+        toRemove.each{
+            log.info "Removing PosExchange with id: " + it.id + ", tpsId: " + it.tpsId + ' from Process: ' + processInstance.id
+
+            fromEumowy.remove(it)
+
+            PosExchange peRem = PosExchange.findById(it.id)
+            processInstance.removeFromPosExchanges(peRem)
+        }
+
+        log.info "fromEumowy size = " + fromEumowy.size()
+
+        fromEumowy
+    }
+
     def getRepresentative1(def process) {
         return [name: process?.processData?.find { pd -> pd.name == "reprezentant1Imie" }?.value, surname: process?.processData?.find { pd -> pd.name == "reprezentant1Nazwisko" }?.value]
     }
@@ -251,9 +298,10 @@ class ProcessService {
      *  init data
      * */
 
-    def initProcessCommand(def process) {
+    def initProcessCommand(def process, def calcId) {
         def cmd = new ProcessCommand();
         cmd.process = process
+        cmd.calcId = String.valueOf(calcId)
         cmd.nip = process.client.nip
         cmd.notes = process.notesToCoa ?: "";
         cmd
@@ -703,6 +751,53 @@ class ProcessService {
         return result
     }
 
+    private def getPosExchangeCommandList(def cmd) {
+        def peResult = []
+
+        def result = cbdService.getHirePaymentByPos(cmd.nip)
+        result.each { GroovyRowResult row ->
+            PosExchangeCommand pe = new PosExchangeCommand()
+            pe.setTpsId(Integer.valueOf(row.get("pos_id").toString()))
+            pe.setPosNumber(Integer.valueOf(row.get("tid").toString()))
+            pe.setCbdId(Integer.valueOf(row.get("point_id").toString()))
+            pe.setName(row.get("nazwa_punktu").toString())
+            pe.setAddress(row.get("adres_posadowienia").toString())
+            pe.setType("UNKNOWN")
+            pe.setModel(row.get("rodzaj_terminala"))
+            pe.setNewType("")
+            pe.setNewModel("")
+            pe.setSimType("")
+            pe.setIsChoosen(false)
+            peResult.add(pe)
+        }
+        return peResult
+    }
+
+    private def getPosExchangeCommandFromPosExchanges(def dataSet){
+        def result = []
+        dataSet.each{ PosExchange pe ->
+            PosExchangeCommand pec = new PosExchangeCommand()
+
+            pec.setId(pe.id)
+            pec.setTpsId(pe.tpsId)
+            pec.setPosNumber(pe.posNumber)
+            pec.setCbdId(pe.cbdId)
+            pec.setName(pe.name)
+            pec.setAddress(pe.address)
+            pec.setModel(pe.model)
+            pec.setType(pe.type)
+            pec.setModel(pe.model)
+            pec.setNewType(pe.newType)
+            pec.setNewModel(pe.newModel)
+            pec.setSimType(pe.simType)
+            pec.setIsChoosen(pe.isChoosen)
+
+            result.add(pec)
+        }
+        return result
+    }
+
+
     def getPointsToAllPointsCommandList(def process, def cmd) {
         def localPoints = [], cbdPoints = [], cbdIdsToRemove = [], result = []
         getLocalPointsToAllPointsCommandList(process, localPoints)
@@ -812,11 +907,13 @@ class ProcessService {
 		def posDataList = getPointCommandsToPosDataList(cmd, process)
 
 		posDataList?.each { PointData point ->
-			point.save(flush: true)
+            point.save(flush: true)
 			process.addToPoints(point);
 		}
 
         fillPaymentUsage(cmd, process);
+
+        fillPosExchange(cmd, process);
 
         process.notesToCoa = cmd.notes //notesToCOA
 
@@ -881,6 +978,37 @@ class ProcessService {
         }
         process
     }
+
+    private def fillPosExchange(def cmd, def process){
+        cmd.posExchanges.each { PosExchangeCommand pec ->
+            log.info "Saving PosExchange with id: " + pec.id + " and tpsId: " + pec.tpsId
+
+            PosExchange pe = PosExchange.findById(pec.id)
+            if (!pe){
+                log.info "Not found!! Creating new PosExchange!!"
+                pe = new PosExchange()
+                pe.setId(pec.id)
+            }
+
+            pe.setTpsId(pec.tpsId)
+            pe.setPosNumber(pec.posNumber)
+            pe.setCbdId(pec.cbdId)
+            pe.setName(pec.name)
+            pe.setAddress(pec.address)
+            pe.setType(pec.type)
+            pe.setModel(pec.model)
+            pe.setNewType(pec.newType)
+            pe.setNewModel(pec.newModel)
+            pe.setSimType(pec.simType)
+            pe.setIsChoosen(pec.isChoosen)
+
+            //pe.setProcess(process)
+
+            process.addToPosExchanges(pe)
+            pe.save(flush: true)
+        }
+        process
+    };
 
     private def addCurrentDate(def processDataList){
         processDataList.add(new ProcessData([name: 'dataUmowy', value: DateUtils.formatWithTimezone(DateUtils.getCurrentDate())]))

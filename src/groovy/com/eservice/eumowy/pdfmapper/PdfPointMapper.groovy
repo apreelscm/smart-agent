@@ -28,27 +28,57 @@ class PdfPointMapper extends AbstractPdfMapper{
 
     public def mapPointDataToPDFData(def pointData) {
         def data = [:];
-        mapperClosure(pointData.properties, data, "Point", EXCLUDE_FROM_POINT, ALLOW_NULL_POINT, pointData, true)
-        mapperClosure(pointData.pointDetails?.properties, data, "PointDataDetails", EXCLUDE_FROM_POINT_DATA_DETAILS, ALLOW_NULL_POINT_DATA_DETAILS, pointData, false)
+        mapperClosure(pointData.properties, data, "Point", EXCLUDE_FROM_POINT, ALLOW_NULL_POINT, pointData, true, null)
+        mapperClosure(pointData.pointDetails?.properties, data, "PointDataDetails", EXCLUDE_FROM_POINT_DATA_DETAILS, ALLOW_NULL_POINT_DATA_DETAILS, pointData, false, null)
         return data
     }
 
-    private def mapperClosure = {source, data, methodSuffix, exclude, allowNull, pd, withIndex ->
+    public def mapPointAddresDataToPDFData(def pointData){
+        def data = [:];
+        def addresKeys = ["ulica", "nrLokalu", "nrBudynku", "miejscowosc", "kodPocztowy", "poczta", "nip", "nazwa"];
+        mapperClosure(pointData.properties, data, "Address", EXCLUDE_FROM_POINT_DATA_DETAILS, ALLOW_NULL_POINT_DATA_DETAILS, pointData, false, addresKeys)
+
+        println 'Zmapowane dane adresowe:'
+        data.each{key, value ->
+            println key + ' --> ' + value
+        }
+
+        return data
+    }
+
+    private def mapperClosure = {source, data, methodSuffix, exclude, allowNull, pd, withIndex, allowOnly ->
         source.each { key, value ->
-            if ((!allowNull.contains(key) && value == null) || exclude.contains(key)){
-                return
-            } else {
-                def methodName = "map" + key.capitalize() + methodSuffix
-                if (PdfPointMapper.metaClass.respondsTo(this, methodName)) {
-                    if (withIndex){
-                        this."${methodName}"(data, pd, key, value, -1)
-                    } else {
-                        this."${methodName}"(data, pd, key, value)
-                    }
+            if (allowOnly == null || allowOnly.contains(key)){
+                if ((!allowNull.contains(key) && value == null) || exclude.contains(key)){
                     return
+                } else {
+                    def methodName = "map" + key.capitalize() + methodSuffix
+                    if (PdfPointMapper.metaClass.respondsTo(this, methodName)) {
+                        if (withIndex){
+                            this."${methodName}"(data, pd, key, value, -1)
+                        } else {
+                            this."${methodName}"(data, pd, key, value)
+                        }
+                        return
+                    }
+                    data.put(key, [value] as String[])
                 }
-                data.put(key, [value] as String[])
             }
+
+//            if ((!allowNull.contains(key) && value == null) || exclude.contains(key)){
+//                return
+//            } else {
+//                def methodName = "map" + key.capitalize() + methodSuffix
+//                if (PdfPointMapper.metaClass.respondsTo(this, methodName)) {
+//                    if (withIndex){
+//                        this."${methodName}"(data, pd, key, value, -1)
+//                    } else {
+//                        this."${methodName}"(data, pd, key, value)
+//                    }
+//                    return
+//                }
+//                data.put(key, [value] as String[])
+//            }
         }
         return data
     }
@@ -84,6 +114,41 @@ class PdfPointMapper extends AbstractPdfMapper{
         mapYesNoField(data, (index == -1)?key:key+index, value);
     }
 
+    //----------------- Point (metody do Adresu)--------------------
+
+    private mapUlicaAddress(def data, def pd, def key, def value) {
+        data.put("wydrukUlica", [value] as String[])
+    }
+
+    private mapMiejscowoscAddress(def data, def pd, def key, def value) {
+        data.put("wydrukMiasto", [value] as String[])
+    }
+
+    private mapWydrukPocztaAddress(def data, def pd, def key, def value) {
+        data.put("wydrukPoczta", [value] as String[])
+    }
+
+    private mapNrBudynkuAddress(def data, def pd, def key, def value) {
+        data.put("wydrukNrDomu", [value] as String[])
+    }
+
+    private mapNrLokaluAddress(def data, def pd, def key, def value) {
+        data.put("wydrukNrLokalu", [value] as String[])
+    }
+
+    private mapKodPocztowyAddress(def data, def pd, def key, def value) {
+        if (value != null){
+            mapWithPattern(data, value, ~/\d{2}-\d{3}/, "-", "wydrukKodPocztowy");
+        }
+    }
+
+    private mapNipAddress(def data, def pd, def key, def value) {
+        data.put("nipPunktu", [value] as String[])
+    }
+
+    private mapNazwaAddress(def data, def pd, def key, def value) {
+        data.put("nazwaDoWyszukiwarki", [value] as String[])
+    }
 
     //------------------PointDataDetails----------------------------
 

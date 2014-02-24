@@ -1,6 +1,7 @@
 package com.eservice.eumowy
 
 import com.eservice.eumowy.pdfmapper.PdfPointMapper
+import com.eservice.eumowy.pdfmapper.PdfPosExchangeMapper
 import com.eservice.eumowy.pdfmapper.PdfPosMapper
 import com.eservice.eumowy.pdfmapper.PdfProcessMapper
 
@@ -21,4 +22,13 @@ class MapperService {
         data.putAll(processMapper.mapOnlyProcessData(processInstance))
         data
     }
+
+    def mapOnlyPosExchangeData(PosExchange posExchange){
+        new PdfPosExchangeMapper().mapOnlySelectedPosExchanges(posExchange)
+    }
+
+    def mapOnlyPointAddress(def point){
+        new PdfPointMapper().mapPointAddresDataToPDFData(point)
+    }
+
 }

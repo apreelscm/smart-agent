@@ -34,6 +34,10 @@ class ProcessCommand implements Serializable {
     transient def calculatorService
     @Omit
     transient def calc
+
+    @Omit
+    String calcId
+
     @Omit()
     transient def messageSource = Holders.applicationContext.messageSource
 
@@ -425,6 +429,8 @@ class ProcessCommand implements Serializable {
     List<HirePaymentCommand> hirePaymentsByPos = ListUtils.lazyList([], FactoryUtils.instantiateFactory(HirePaymentCommand))
     @Omit(inSave = true, inPopulate = true)
     List<HirePaymentCommand> hirePaymentsCurrent = ListUtils.lazyList([], FactoryUtils.instantiateFactory(HirePaymentCommand))
+    @Omit(inSave = true, inPopulate = true)
+    List<PosExchangeCommand> posExchanges = ListUtils.lazyList([], FactoryUtils.instantiateFactory(PosExchangeCommand))
 
     @Omit
     String hasObslugaTyp

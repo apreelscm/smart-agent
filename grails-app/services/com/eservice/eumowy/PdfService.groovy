@@ -292,8 +292,9 @@ class PdfService {
         def dataFromProcess = mapperService.mapOnlyProcessData(processInstance, calc);
 
         //takie rozbicie bylo konieczne aby ograniczyc wywolania wolnego mappera
-        def singleDocuments = processInstance.signatures.findAll{ sig -> !sig.forPoint}
-        def multiDocuments = processInstance.signatures.findAll{ sig -> sig.forPoint}
+        def singleDocuments = processInstance.signatures.findAll{ sig -> !sig.forPoint && !sig.forPos}
+        def multiPointDocuments = processInstance.signatures.findAll{ sig -> sig.forPoint}
+        def multiPosDocuments = processInstance.signatures.findAll{ sig -> sig.forPos}
 
         singleDocuments.each { sig ->
             log.info "SINGLE DOCUMENT --> SIGNATURE NAME: " + sig.name + " PDF TEMPLATE PATH: " + sig.templatePath
@@ -311,7 +312,7 @@ class PdfService {
                 data.putAll(dataFromProcess);
                 data.putAll(dataFromPoint);
 
-                multiDocuments.each { sig ->
+                multiPointDocuments.each { sig ->
                     def path = sig.templatePath
                     def begin = path.substring(0, path.lastIndexOf('.'));
                     def end = path.substring(path.lastIndexOf('.'));
@@ -328,9 +329,32 @@ class PdfService {
             }
         }
 
-        //usuwamy dokumenty, ktore byly wygenerowane dla obecnie usunietych posow
+        multiPosDocuments.each { sig ->
+            processInstance.posExchanges.findAll{it.isChoosen}.each {
+                PointData point = PointData.findByCbdIdAndProcess(it.cbdId, processInstance)
+
+                def data = [:]
+                data.putAll(mapperService.mapOnlyPointAddress(point))
+                data.putAll(mapperService.mapOnlyPosExchangeData(it))
+
+                def path = sig.templatePath
+                def begin = path.substring(0, path.lastIndexOf('.'));
+                def end = path.substring(path.lastIndexOf('.'));
+                def documentName = begin +  "_" + point.id + "_" + it.id + "-p" + end
+
+                def pathClient = sig.filename
+                def beginClient = pathClient.substring(0, pathClient.lastIndexOf('.'));
+                def endClient = pathClient.substring(pathClient.lastIndexOf('.'));
+                def documentClientName = beginClient +  "_" + point.id + "_" + it.id +"-p"+ endClient
+
+                log.info "MULTI POS DOCUMENT --> SIGNATURE NAME: " + sig.name + " PDF TEMPLATE PATH: " + sig.templatePath + " WITH NEW NAME: " + documentName +" CLIENT NAME:"+documentClientName
+                totalPagesCount += workWithOneDocument(processInstance, sig, data, documentName, documentClientName)
+            }
+        }
+
+        //usuwamy dokumenty, ktore byly wygenerowane dla obecnie usunietych punktow/posow
         processInstance.documents.findAll{it.signature.forPoint}.each {
-            long idFromName = fetchIdFromName(it.clientName)
+            long idFromName = fetchPointIdFromName(it.clientName)
 
             if (idFromName != -1){
                 def toDelete = true;
@@ -349,22 +373,54 @@ class PdfService {
             }
         }
 
+        //usuwamy dokumenty, ktore byly wygenerowane dla obecnie usunietych posExchange
+        processInstance.documents.findAll{it.signature.forPos}.each {
+            long idFromName = fetchPosExchangeIdFromName(it.clientName)
+
+            if (idFromName != -1){
+                def toDelete = true;
+                for (PosExchange pe : processInstance.posExchanges){
+                    if (idFromName == pe.id){
+                        toDelete = false;
+                        break;
+                    }
+                }
+
+                if (toDelete){
+                    println 'Usuwam plik dla nieistniejacego Pos Exchange: ' + idFromName + ' (' + it.clientName + ')'
+                    processInstance.removeFromDocuments(it)
+                    processInstance.save(flush: true)
+                }
+            }
+        }
+
 		processInstance.discard()
         ['totalPagesCount': totalPagesCount, 'processInstance': processInstance]
     }
 
-    def fetchIdFromName(String name){
+    def fetchPointIdFromName(String name){
         long result = -1l;
 
         try {
             result = Long.valueOf(name.substring(name.lastIndexOf('_')+1, name.lastIndexOf(".pdf")));
         } catch (Exception e) {
-            log.info('Nie udalo sie pobrac ID POSa z nazwy: ' + name)
+            log.info('Nie udalo sie pobrac ID Punktu z nazwy: ' + name)
         }
 
         return result;
     }
 
+    def fetchPosExchangeIdFromName(String name){
+        long result = -1l;
+
+        try {
+            result = Long.valueOf(name.substring(name.lastIndexOf('_')+1, name.lastIndexOf("-p.pdf")));
+        } catch (Exception e) {
+            log.info('Nie udalo sie pobrac ID PosExchange z nazwy: ' + name)
+        }
+
+        return result;
+    }
 
     def cleanAgrementDateContent(DocumentContent dc){
         //pola zapleniane na podstawie 'dataUmowy'

@@ -172,6 +172,13 @@
              </div>
          </div>
 
+         <div id="wymianaTerminala" class="expendable">
+             <div class="checkBoxBlock">
+                 <g:checkBox id="wymianaTerminalaCB" name="wymianaTerminala" data-selected="${(processInstance?.activities*.code)?.contains('wymianaTerminala')}"/>
+                 <a class="expandHeader expanded" href="#">  <label for="wymianaTerminalaCB"><g:message code="activity.wymianaTerminala.name" default="Wymiana modelowa Terminala POS"/> </label></a>
+             </div>
+         </div>
+
          <div id="poprawDane" class="expendable">
              <div class="checkBoxBlock">
                  <g:checkBox id="poprawDaneCB" name="poprawDane" data-selected="${(processInstance?.activities*.code)?.contains('poprawDane')}"/>

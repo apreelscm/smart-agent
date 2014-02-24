@@ -36,6 +36,7 @@ class DefineActivityCommand {
     def komfort
     def aneks
     def ekonomiczny
+    def wymianaTerminala
     String notes
 
     def selectedActivities = []
