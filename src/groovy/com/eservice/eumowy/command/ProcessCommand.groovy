@@ -1200,7 +1200,6 @@ class ProcessCommand implements Serializable {
 
         poses(nullable:true, validator: { value, cmd, errors ->
             return PosesValidator.validate(value, cmd, errors)
-
         })
         allPoints(nullable:true)
         allPoses(nullable:true, validator: { value, cmd, errors ->

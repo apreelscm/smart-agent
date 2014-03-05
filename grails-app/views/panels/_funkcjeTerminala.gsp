@@ -34,8 +34,7 @@
                 <p class="bold" ><g:message code="panel.newpoint.terminaloptions.phonecreditsrecharge" /></p>
                 <ul class="table-list vertical-center">
                     <li>
-                        <span class="${hasErrors(bean:pointData, field:'hasDodaniePrepaid','errorSpan')}">
-
+                        <span>
                             <g:set var="hasNewUmowaAndPrepaid" value="${data.hasNewUmowaAndPrepaid}"/>
                             <g:set var="isRozszerzenie" value="${data.isRozszerzenie}"/>
                             <g:set var="tpFromCalcEnabled" value="${data.isDoladowania_tp}"/>
@@ -45,10 +44,16 @@
                             <g:set var="tkEnabled" value="${hasNewUmowaAndPrepaid || (data.hasDodaniePrepaid && tkFromCalcEnabled) || (tkFromCalcEnabled && isRozszerzenie && hasPrepaid)}"/>
 
                             <div>
-                                <label for="${panelType}[${id}].teleKodzik" class="doladowanieLabel"><g:checkBox name="${panelType}[${id}].teleKodzik" value="${pointData?.teleKodzik}"  disabled="${!tkEnabled}" class="doladowanie" data-doladowanie="telekodzik"/><g:message code="panel.newpoint.terminaloptions.phonecreditsrecharge.telekodzik" /></label>
+                                <label for="${panelType}[${id}].teleKodzik" class="doladowanieLabel">
+                                    <g:checkBox name="${panelType}[${id}].teleKodzik" value="${pointData?.teleKodzik}"  disabled="${!tkEnabled}" class="doladowanie" data-doladowanie="telekodzik"/>
+                                    <g:message code="panel.newpoint.terminaloptions.phonecreditsrecharge.telekodzik" />
+                                </label>
                             </div>
                             <div>
-                                <label for="${panelType}[${id}].telePompka" class="doladowanieLabel"><g:checkBox name="${panelType}[${id}].telePompka" value="${pointData?.telePompka}"  disabled="${!tpEnabled}" class="doladowanie" data-doladowanie="telepompka"/><g:message code="panel.newpoint.terminaloptions.phonecreditsrecharge.telepompka" /></label>
+                                <label for="${panelType}[${id}].telePompka" class="doladowanieLabel">
+                                    <g:checkBox name="${panelType}[${id}].telePompka" value="${pointData?.telePompka}"  disabled="${!tpEnabled}" class="doladowanie" data-doladowanie="telepompka"/>
+                                    <g:message code="panel.newpoint.terminaloptions.phonecreditsrecharge.telepompka" />
+                                </label>
                             </div>
                         </span>
                         <span style="padding-left: 6em;display: inline-block">
