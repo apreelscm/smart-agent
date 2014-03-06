@@ -44,9 +44,6 @@ class ProcessCommand implements Serializable {
     @Omit
     static int MAX_PRICE_GROUP_SIZE = 3
 
-    //UWAGA - kazde nowe pole, ktore ma byc pomijane w zapisie do bazy trzeba dodac tez w
-    //ProcessService.getDataFromPanels(). Gdy sie tego nie zrobi zapisuja sie dane a pozniej leci
-    // NoSuchFieldException z ProcessService.loadProcessData() przy probie usuniecia zbednej metody
     @Omit
     static def nullableTrueBlankFalse = {/** puste ale potrzebne */}
 
@@ -431,6 +428,9 @@ class ProcessCommand implements Serializable {
     List<HirePaymentCommand> hirePaymentsCurrent = ListUtils.lazyList([], FactoryUtils.instantiateFactory(HirePaymentCommand))
     @Omit(inSave = true, inPopulate = true)
     List<PosExchangeCommand> posExchanges = ListUtils.lazyList([], FactoryUtils.instantiateFactory(PosExchangeCommand))
+
+    @Omit
+    transient Integer pointsAndPosesWithoutFormaDoladowania //eUmowy_ext-557
 
     @Omit
     String hasObslugaTyp
@@ -1228,6 +1228,18 @@ class ProcessCommand implements Serializable {
             TerminalNumberValidator.validate(value, cmd, errors)
         })
 
+        pointsAndPosesWithoutFormaDoladowania(nullable: true, validator: {value, cmd, errors ->
+            int posesWithoutFormaDoladowania = PosesValidator.countOfPosesWithoutFormaDoladowania(cmd.poses)
+            int pointsWithoutFormaDoladowania = PointsValidator.countOfPointsWithoutFormaDoladowania(cmd.points)
+            int elementsWithoutFormaDoladowaniaTotal = posesWithoutFormaDoladowania + pointsWithoutFormaDoladowania
+            int elementsTotal = cmd.poses.size() + cmd.points.size()
+
+            if(elementsTotal > 0 && (elementsTotal == elementsWithoutFormaDoladowaniaTotal)) {
+                errors.reject("default.atLeastOne.doladowania.funkcjaTerminala")
+            }
+
+            return true
+        })
     }
 
     def checkIfFromCbd(def property) {
