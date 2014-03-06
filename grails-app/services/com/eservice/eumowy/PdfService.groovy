@@ -236,6 +236,8 @@ class PdfService {
 
         if (!subscriptionsMap.isEmpty()) {
             updatedContent = PdfGenerator.addImageToPdfContent(sig.templatePath, documentContent, subscriptionsMap)
+        } else {
+            log.info("There is no subscription definitions for signature: " + sig.name)
         }
 
         return updatedContent

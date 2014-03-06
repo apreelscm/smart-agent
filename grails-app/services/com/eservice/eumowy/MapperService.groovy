@@ -8,6 +8,7 @@ import com.eservice.eumowy.pdfmapper.PdfProcessMapper
 class MapperService {
 
     def calculatorService
+    def cbdService
 
     def mapOnlyPointData(def point){
         def data = [:]
@@ -28,7 +29,13 @@ class MapperService {
     }
 
     def mapOnlyPointAddress(def point){
-        new PdfPointMapper().mapPointAddresDataToPDFData(point)
+        def data = [:]
+        data.putAll(new PdfPointMapper().mapPointAddresDataToPDFData(point))
+
+        // zapisanie danych, ktore nie sa pobrane bezposrednio z pdfow (czy to moze tak zostac)
+        def opiekaOne = cbdService.getOpiekaSerwisowaOne(point.kodPocztowy)
+        data.put("opiekaSerwisowaIII", [opiekaOne ? opiekaOne[0] : ''] as String[])
+        data
     }
 
 }

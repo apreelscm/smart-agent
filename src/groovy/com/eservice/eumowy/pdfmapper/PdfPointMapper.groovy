@@ -37,12 +37,6 @@ class PdfPointMapper extends AbstractPdfMapper{
         def data = [:];
         def addresKeys = ["ulica", "nrLokalu", "nrBudynku", "miejscowosc", "kodPocztowy", "poczta", "nip", "nazwa"];
         mapperClosure(pointData.properties, data, "Address", EXCLUDE_FROM_POINT_DATA_DETAILS, ALLOW_NULL_POINT_DATA_DETAILS, pointData, false, addresKeys)
-
-        println 'Zmapowane dane adresowe:'
-        data.each{key, value ->
-            println key + ' --> ' + value
-        }
-
         return data
     }
 
@@ -64,21 +58,6 @@ class PdfPointMapper extends AbstractPdfMapper{
                     data.put(key, [value] as String[])
                 }
             }
-
-//            if ((!allowNull.contains(key) && value == null) || exclude.contains(key)){
-//                return
-//            } else {
-//                def methodName = "map" + key.capitalize() + methodSuffix
-//                if (PdfPointMapper.metaClass.respondsTo(this, methodName)) {
-//                    if (withIndex){
-//                        this."${methodName}"(data, pd, key, value, -1)
-//                    } else {
-//                        this."${methodName}"(data, pd, key, value)
-//                    }
-//                    return
-//                }
-//                data.put(key, [value] as String[])
-//            }
         }
         return data
     }
