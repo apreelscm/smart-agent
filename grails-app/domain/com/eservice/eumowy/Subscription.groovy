@@ -1,6 +1,11 @@
 package com.eservice.eumowy
 
+import org.apache.commons.logging.LogFactory
+import org.apache.log4j.MDC
+
 class Subscription implements Serializable {
+
+    private static final auditLogger = LogFactory.getLog("audit")
 
     String content
 	String name
@@ -51,5 +56,13 @@ class Subscription implements Serializable {
 	def getFileName() {
 		return "sign-"+name+"-"+surname+"-"+id+".png"
 	}
+
+    def afterInsert() {
+        auditLogger.info("Zapisano podpis [id:${id}, role: ${personRole.text}, signDate: ${signDate}, uniqueKey: ${uniqueKey}, name: ${name}, lastName: ${surname}]")
+    }
+
+    def afterUpdate() {
+        auditLogger.info("Aktualizacja podpisu [id:${id}, role: ${personRole.text}, signDate: ${signDate}, uniqueKey: ${uniqueKey}, name: ${name}, lastName: ${surname}]")
+    }
 	
 }

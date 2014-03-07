@@ -18,6 +18,13 @@ modules = {
 		resource url: 'js/jsignature/jSignature.min.noconflict.patch.js', disposition: 'head'
 		dependsOn 'jquery'
 	}
+
+    documentPreview {
+        resource url: 'js/documentPreview/PdfPreviewManager.js', disposition: 'head'
+        resource url: 'js/documentPreview/PDocument.js', disposition: 'head'
+        resource url: 'js/documentPreview/PPage.js', disposition: 'head'
+        dependsOn 'jquery'
+    }
 	
 	mask {
         resource url: 'js/jquery.mask.js', disposition: 'head'
