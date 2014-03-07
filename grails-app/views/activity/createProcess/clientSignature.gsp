@@ -97,12 +97,20 @@
         jQuery("#" + subscriberName).parent().addClass("disabled");
         isSubscriptionDone[subscriberName] = true;
 
+        jQuery("#savingSubscriptionPopup").dialog({
+            height: 100,
+            width: 220,
+            modal: true
+        })
+
         if (updateSubscriptionStatusCount >= 1 && updateSubscriptionStatusCount <= requiredSubscriptionsCount - 1) {
             jQuery.post(url, {_eventId_updateProcessStatus: "", processStatus: "WAIT_FOR_SUBSCRIPTION", subscriptionId: subId})
                     .done(function() {
                         jQuery(subscriberSubmitButtonName[subscriberName]).removeClass('action').addClass('action_visited');
+                        jQuery("#savingSubscriptionPopup").dialog("close");
                     })
                     .fail(function() {
+                        jQuery("#savingSubscriptionPopup").dialog("close");
                         alert('Wystapil blad podczas zapisywania podpisu. Sprawdz swoje polaczenie internetowe i sprobuj ponownie pozniej.');
                         jQuery(subscriberSubmitButtonName[subscriberName]).removeClass('action_visited').addClass('action');
                     });
@@ -112,8 +120,10 @@
             jQuery.post(url, {_eventId_updateProcessStatus: "", processStatus: "SUBSCRIPTIONS_DONE", subscriptionId: subId})
                     .done(function() {
                         jQuery(subscriberSubmitButtonName[subscriberName]).removeClass('action').addClass('action_visited');
+                        jQuery("#savingSubscriptionPopup").dialog("close");
                     })
                     .fail(function() {
+                        jQuery("#savingSubscriptionPopup").dialog("close");
                         alert('Wystapil blad podczas zapisywania podpisu. Sprawdz swoje polaczenie internetowe i sprobuj ponownie pozniej. ');
                         jQuery(subscriberSubmitButtonName[subscriberName]).removeClass('action_visited').addClass('action');
                     });
@@ -409,6 +419,9 @@
 </head>
 
 <body>
+
+<div id="savingSubscriptionPopup">Trwa zapisywanie podpisu...</div>
+
 <div id="confirm-noaccept-dialog" style="display: none;">
     <p><g:message code="process.subscriptions.noaccept.confirm" /></p>
 </div>
