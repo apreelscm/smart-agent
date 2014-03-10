@@ -326,21 +326,21 @@
             console.log("${it.personRole}");
             if(jQuery("#subscribe-REPRESENTATIVE1").attr("data-type") == "${it.personRole}") {
                 jQuery("#subscribe-REPRESENTATIVE1").parent().addClass("disabled");
-                jQuery("#sgnRep1").removeClass('action').addClass('action-visited');
+                jQuery("#sgnRep1").removeClass('action').addClass('action_visited');
                 updateSubscriptionStatusCount++;
                 jQuery("#clientSignatureBackButton").addClass("disabled");
                 isSubscriptionDone["subscribe-REPRESENTATIVE1"] = true;
             }
             if(jQuery("#subscribe-REPRESENTATIVE2").attr("data-type") == "${it.personRole}") {
                 jQuery("#subscribe-REPRESENTATIVE2").parent().addClass("disabled");
-                jQuery("#sgnRep2").removeClass('action').addClass('action-visited');
+                jQuery("#sgnRep2").removeClass('action').addClass('action_visited');
                 updateSubscriptionStatusCount++;
                 jQuery("#clientSignatureBackButton").addClass("disabled");
                 isSubscriptionDone["subscribe-REPRESENTATIVE2"] = true;
             }
             if(jQuery("#subscribe-PH").attr("data-type") == "${it.personRole}") {
                 jQuery("#subscribe-PH").parent().addClass("disabled");
-                jQuery("#sgnPh").removeClass('action').addClass('action-visited');
+                jQuery("#sgnPh").removeClass('action').addClass('action_visited');
                 updateSubscriptionStatusCount++;
                 jQuery("#clientSignatureBackButton").addClass("disabled");
                 isSubscriptionDone["subscribe-PH"] = true;
@@ -420,7 +420,7 @@
 
 <body>
 
-<div id="savingSubscriptionPopup">Trwa zapisywanie podpisu...</div>
+<div id="savingSubscriptionPopup" style="display: none">Trwa zapisywanie podpisu...</div>
 
 <div id="confirm-noaccept-dialog" style="display: none;">
     <p><g:message code="process.subscriptions.noaccept.confirm" /></p>

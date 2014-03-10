@@ -438,13 +438,12 @@ class PdfService {
         def fieldsToUpdate = []
 
         candidatesForUpdate.each { field ->
-            processData = process.processData?.find { data -> data.equals(field)}
+            processData = process.processData?.find { data -> data.name.equals(field)}
             if(processData && !EMPTY_VALUES.contains(processData.value)){
                 fieldsToUpdate.add(field)
             }
         }
         PdfGenerator.updateValuesContent(documentContent, fieldsToUpdate, dataUmowy)
-
     }
 
     private def workWithOneDocument(def processInstance, def sig, def data, def documentName, def documentClientName){
