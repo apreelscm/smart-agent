@@ -27,6 +27,8 @@ class PosExchangeCommand implements Serializable{
 
     String simType
 
+    BigDecimal currentPrice
+
     Boolean isChoosen
 
     static constraints = {

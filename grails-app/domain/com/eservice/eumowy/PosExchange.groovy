@@ -21,11 +21,11 @@ class PosExchange implements Serializable{
 
     String simType
 
+    BigDecimal currentPrice
+
     Boolean isChoosen
 
     static belongsTo = [process: Process]
-
-//    static transients = ['simType']
 
     static mapping = {
         sort "ID"
@@ -42,6 +42,7 @@ class PosExchange implements Serializable{
         newType column: "NEW_TYPE"
         newModel column: "NEW_MODEL"
         simType column: "SIM_TYPE"
+        currentPrice column: "CURRENT_PRICE"
         isChoosen column: "IS_CHOOSEN"
     }
 
@@ -56,6 +57,7 @@ class PosExchange implements Serializable{
         newType(nullable: true)
         newModel(nullable: true)
         simType(nullable: true)
+        currentPrice(nullable: true)
         isChoosen(nullable: true)
     }
 }
