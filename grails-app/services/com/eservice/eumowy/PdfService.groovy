@@ -2,14 +2,7 @@ package com.eservice.eumowy
 
 import java.awt.image.BufferedImage
 import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
-
-import org.apache.commons.io.FileUtils
-import org.apache.commons.io.filefilter.WildcardFileFilter;
 import org.apache.pdfbox.pdmodel.PDDocument
-import org.apache.pdfbox.util.PDFImageWriter
-import org.perf4j.StopWatch
-import org.perf4j.log4j.Log4JStopWatch
 
 import pdfgenerator.PdfGenerator
 import signaturepad.SignatureToImage
@@ -37,36 +30,6 @@ class PdfService {
 
     private static final EMPTY_VALUES = ["", "-"]
 	
-	def generateAllPreviews(List<DocumentFile> documents, Long processId, Integer totalPagesCount) {
-		def imageUris = new HashMap<Integer, String>()
-		// Cleaning old previews
-		List<File> filesToClean = FileUtils.listFiles(new File(appParametersService.getPdfImagePath("")), new WildcardFileFilter("*-"+processId+"-*.png"), null)
-		filesToClean.each { File f ->
-			log.info "Removing old preview image: " + f.toString()
-			FileUtils.deleteQuietly(f)
-		}
-		log.info "Generating Pdf Previews - " + totalPagesCount + " pages in total!"
-		executor = Executors.newFixedThreadPool(appParametersService.getPdfPreviewThreadWorkersCount());
-		def threadMethod = { content, did, pid, docpage, globalpage ->
-			log.info "GlobalPage: " + globalpage
-			generateImageFromPDF(content, did, pid, docpage)
-			File oldFile = new File(appParametersService.getPdfImagePath("lock-"+did+"-"+pid+"-"+docpage+".png"))
-			File newFile = new File(appParametersService.getPdfImagePath(did+"-"+pid+"-"+docpage+".png"))
-			log.info "Moving from " + oldFile.toString() + " to " + newFile.toString()
-			FileUtils.copyFile(oldFile, newFile) //Overwrites
-			FileUtils.deleteQuietly(oldFile)
-			return
-		}
-		for (int i = 1; i <= totalPagesCount; i++) {
-			def data = getDocumentAndPageCountFromGlobalPageNumber(documents, i)
-			if (data.document != null) {
-				executor.execute { threadMethod(data.document.content.content.clone(), new Long(data.document.id), processId.toString(), new Integer(data.page), new Integer(i)) }
-			} else {
-				log.warn "generateAllPreviews - document == null"
-			}
-		}
-	}
-	
 	def getImageFromPDFDocumentFile(List<DocumentFile> documents, String processId, Integer pageNumber) {
 		String result = ""
 		log.info documents
@@ -79,57 +42,6 @@ class PdfService {
 			log.warn "generateImageFromPDFDocumentFile - document == null"
 		}
 		return result
-	}
-	
-	def generateImageFromPDFDocumentFile(List<DocumentFile> documents, String processId, Integer pageNumber) {
-		String result = ""
-		log.info documents
-		def data = getDocumentAndPageCountFromGlobalPageNumber(documents, pageNumber)
-        if (data.document != null) {
-			result = generateImageFromPDF(data.document.content.content, data.document.id, processId, data.page)
-		}else {
-			log.error "generateImageFromPDFDocumentFile - document == null"
-		}
-		return result
-	}
-	
-	def generateImageFromPDF(byte[] pdf, Long documentId, String processId, Integer pageNumber) {
-        StopWatch stopWatch = new Log4JStopWatch()
-		ByteArrayInputStream bis = new ByteArrayInputStream(PdfGenerator.closeContent(pdf))
-        PDDocument document = PDDocument.load(bis)
-		int resolution = appParametersService.getPdfPreviewImageResolution()
-		log.info document
-		PDFImageWriter imageWriter = new PDFImageWriter()
-		
-		boolean success = imageWriter.writeImage(document, "png", "",
-			pageNumber, pageNumber, appParametersService.getPdfImagePath("lock-"+documentId+"-"+processId+"-"), BufferedImage.TYPE_INT_RGB, resolution)
-	
-		if (!success) {
-			log.error "No writer found for PNG image format"
-		}
-		
-		document.close()
-        stopWatch.stop('generateImageFromPDF')
-		return appParametersService.getPdfImageUri(documentId+"-"+processId+"-"+pageNumber+".png")
-	}
-
-    //METODA PRAWDOPODOBNIE NIE UZYWANA
-	def generateImageFromPDF(String pdfPath, String pdfName, String processId, Integer pageNumber) {
-		PDDocument document = null
-		document = PDDocument.load(pdfPath+pdfName)
-		int resolution = appParametersService.getPdfPreviewImageResolution()
-
-		PDFImageWriter imageWriter = new PDFImageWriter()
-		boolean success = imageWriter.writeImage(document, "png", "",
-				pageNumber, pageNumber, appParametersService.getPdfImagePath(pdfName+"-"+processId+"-"), BufferedImage.TYPE_INT_RGB, resolution)
-		
-		if (!success) {
-			log.error "No writer found for PNG image format"
-		}
-		
-		document.close()
-		
-		return appParametersService.getPdfImageUri(pdfName+"-"+processId+"-"+pageNumber+".png")
 	}
 	
 	def getDocumentAndPageCountFromGlobalPageNumber(List<DocumentFile> documents, Integer pageNumber) {
