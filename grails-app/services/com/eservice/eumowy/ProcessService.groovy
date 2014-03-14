@@ -256,6 +256,7 @@ class ProcessService {
                 foundEumowy.setAddress(peCbd.address)
                 foundEumowy.setType(peCbd.type)
                 foundEumowy.setModel(peCbd.model)
+                foundEumowy.setCurrentPrice(peCbd.currentPrice)
             } else {
                 //add
                 log.info "Adding PosExchange with tpsId: " + peCbd.tpsId + ' from Process: ' + processInstance.id
@@ -764,6 +765,7 @@ class ProcessService {
             pe.setAddress(row.get("adres_posadowienia").toString())
             pe.setType("UNKNOWN")
             pe.setModel(row.get("rodzaj_terminala"))
+            pe.setCurrentPrice(row.get("oplata_za_pos").toString().toBigDecimal())
             pe.setNewType("")
             pe.setNewModel("")
             pe.setSimType("")
@@ -790,6 +792,7 @@ class ProcessService {
             pec.setNewType(pe.newType)
             pec.setNewModel(pe.newModel)
             pec.setSimType(pe.simType)
+            pec.setCurrentPrice(pe.currentPrice)
             pec.setIsChoosen(pe.isChoosen)
 
             result.add(pec)
@@ -1000,6 +1003,7 @@ class ProcessService {
             pe.setNewType(pec.newType)
             pe.setNewModel(pec.newModel)
             pe.setSimType(pec.simType)
+            pe.setCurrentPrice(pec.currentPrice)
             pe.setIsChoosen(pec.isChoosen)
 
             //pe.setProcess(process)

@@ -1,4 +1,4 @@
-<div id="posUsagePanel">
+<div id="posChangeTerminalPanel">
     <fieldset>
         <div class="belka-glowna"><g:message code="panel.pos.exchange.title"/></div>
         <g:hiddenField name="isWymianaTermianlaShown" value="tak"/>
@@ -12,6 +12,7 @@
                         <td class="align-center">Numer terminala</td>
                         <td class="align-center">Typ</td>
                         <td class="align-center">Model</td>
+                        <td class="align-center">Opłata</td>
                         <td class="align-center">Nowy typ</td>
                         <td class="align-center">Nowy model</td>
                         <td class="align-center">Karta sim</td>
@@ -31,6 +32,7 @@
                         <td class="align-center">${pe.posNumber} <g:hiddenField name="posExchanges[${i}].posNumber" value="${pe.posNumber}" /></td>
                         <td class="align-center">${pe.type} <g:hiddenField name="posExchanges[${i}].type" value="${pe.type}" /></td>
                         <td class="align-center">${pe.model} <g:hiddenField id="oldModel_${i}" name="posExchanges[${i}].model" value="${pe.model}" /></td>
+                        <td class="align-center">${pe.currentPrice} <g:hiddenField id="posExchanges${i}.currentPrice" name="posExchanges[${i}].currentPrice" value="${pe.currentPrice}" /></td>
                         <td class="align-center"><g:select class="typeSelect" id="selectType_${i}" data-index="${i}" name="posExchanges[${i}].newType" from="['DIALUP','VPN','SSL','GPRS','PINPAD','WiFi']" valueMessagePrefix="panel" value="${pe.newType}" noSelection="['':'']"/></td>
                         <g:if test="${pe.newType}">
                             <td class="align-center"><dict:typeSelect nip="${data.nip}" medium="${pe.newType}" data-index="${i}" id="selectModel_${i}" name="posExchanges[${i}].newModel" from="[]" valueMessagePrefix="" value="${pe.newModel}" style="width: 120px" /></td>
@@ -96,12 +98,12 @@
             var oldModel = jQuery('#oldModel_'+this.dataset.index).val();
             var newModel = jQuery('#selectModel_'+this.dataset.index).val();
 
-            if (calcId ==-1 && (oldModel.indexOf('Verifone Vx510') != -1 || oldModel.indexOf('Verifone Vx520') != -1) && newModel.indexOf('IWL220C') != -1){
+            if (calcId ==-1 && (oldModel.toUpperCase().indexOf('VX510') != -1 || oldModel.toUpperCase().indexOf('VX520') != -1) && newModel.toUpperCase().indexOf('IWL220C') != -1){
                 alert('Dla wybranej wymiany modelowej wymagany jest Kalkulator')
                 jQuery(this).attr('checked', false);
             }
 
-            if (oldModel.indexOf('Verifone Vx670') != -1 && newModel.indexOf('IWL220C') != -1){
+            if (oldModel.toUpperCase().indexOf('VX670') != -1 && newModel.toUpperCase().indexOf('IWL220C') != -1){
                 alert('Dla wybranej wymiany modelowej brak możliwości wymiany')
                 jQuery(this).attr('checked', false);
             }
