@@ -1,24 +1,23 @@
 package com.eservice.eumowy.util
 
 import org.apache.poi.hssf.usermodel.HSSFCellStyle
+import org.apache.poi.hssf.usermodel.HSSFPalette
 import org.apache.poi.hssf.usermodel.HSSFSheet
 import org.apache.poi.hssf.usermodel.HSSFWorkbook
+import org.apache.poi.hssf.util.HSSFColor
 import org.apache.poi.hssf.util.HSSFRegionUtil
 import org.apache.poi.ss.usermodel.Cell
 import org.apache.poi.ss.usermodel.CellStyle
 import org.apache.poi.ss.usermodel.Font
+import org.apache.poi.ss.usermodel.IndexedColors
 import org.apache.poi.ss.usermodel.Row
 import org.apache.poi.ss.usermodel.Sheet
 import org.apache.poi.ss.usermodel.Workbook
 import org.apache.poi.ss.util.CellRangeAddress
 
 class ExcelHelper {
-
-    public static void borderWholeRegion(Integer borderWidth, CellRangeAddress region, Sheet sheet, Workbook workbook) {
-        HSSFRegionUtil.setBorderBottom(borderWidth, region, sheet, workbook)
-        HSSFRegionUtil.setBorderTop(borderWidth, region, sheet, workbook)
-        HSSFRegionUtil.setBorderLeft(borderWidth, region, sheet, workbook)
-        HSSFRegionUtil.setBorderRight(borderWidth, region, sheet, workbook)
+    public static enum Border {
+        TOP, RIGHT, BOTTOM, LEFT, WHOLE
     }
 
     public static Font createBoldFont(Workbook workbook, Integer fontHeight) {
@@ -26,6 +25,14 @@ class ExcelHelper {
         font.setFontHeightInPoints((short)fontHeight)
         font.setBoldweight(Font.BOLDWEIGHT_BOLD)
         return font
+    }
+
+    public static CellStyle addBold(Workbook workbook, CellStyle style) {
+        Font font = workbook.createFont()
+        font.setBoldweight((Font.BOLDWEIGHT_BOLD))
+        style.setFont(font)
+
+        return style
     }
 
     public static CellStyle createCenteredCellStyle(Workbook workbook, Font font = null) {
@@ -36,6 +43,16 @@ class ExcelHelper {
             centeredStyle.setFont(font)
         }
         return centeredStyle
+    }
+
+    public static CellStyle createBorderedCellStyle(Workbook workbook, Integer borderWidth, Border border) {
+        CellStyle style = workbook.createCellStyle()
+        return addBorder(style, borderWidth, border)
+    }
+
+    public static CellStyle createCellStyleWithBackground(Workbook workbook, short colorIndex) {
+        CellStyle style = workbook.createCellStyle()
+        return addBackground(style, colorIndex)
     }
 
     public static void setAllColumnsWidth(Sheet sheet, Integer columnsCount, Integer columnSize) {
@@ -89,5 +106,59 @@ class ExcelHelper {
             cell.setCellStyle(style)
         }
         return cell
+    }
+
+    public static CellStyle addBorder(CellStyle cellStyle, Integer borderWidth, Border border) {
+        short shortBorderWidth = (short) borderWidth
+
+        switch (border) {
+            case Border.TOP:
+                cellStyle.setBorderTop(shortBorderWidth)
+                break
+            case Border.RIGHT:
+                cellStyle.setBorderRight(shortBorderWidth)
+                break
+            case Border.BOTTOM:
+                cellStyle.setBorderBottom(shortBorderWidth)
+                break
+            case Border.LEFT:
+                cellStyle.setBorderLeft(shortBorderWidth)
+                break
+            case Border.WHOLE:
+                cellStyle.setBorderTop(shortBorderWidth)
+                cellStyle.setBorderRight(shortBorderWidth)
+                cellStyle.setBorderBottom(shortBorderWidth)
+                cellStyle.setBorderLeft(shortBorderWidth)
+        }
+
+        return cellStyle
+    }
+
+    public static CellRangeAddress addBorder(Workbook workbook, Sheet sheet, CellRangeAddress region, Integer borderWidth, Border border) {
+        switch (border) {
+            case Border.TOP:
+                HSSFRegionUtil.setBorderTop(borderWidth, region, sheet, workbook)
+                break
+            case Border.RIGHT:
+                HSSFRegionUtil.setBorderRight(borderWidth, region, sheet, workbook)
+                break
+            case Border.BOTTOM:
+                HSSFRegionUtil.setBorderBottom(borderWidth, region, sheet, workbook)
+                break
+            case Border.LEFT:
+                HSSFRegionUtil.setBorderLeft(borderWidth, region, sheet, workbook)
+                break
+            case Border.WHOLE:
+                HSSFRegionUtil.setBorderBottom(borderWidth, region, sheet, workbook)
+                HSSFRegionUtil.setBorderTop(borderWidth, region, sheet, workbook)
+                HSSFRegionUtil.setBorderLeft(borderWidth, region, sheet, workbook)
+                HSSFRegionUtil.setBorderRight(borderWidth, region, sheet, workbook)
+        }
+    }
+
+    public static CellStyle addBackground(CellStyle cellStyle, short colorIndex) {
+        cellStyle.setFillForegroundColor(colorIndex)
+        cellStyle.setFillPattern(CellStyle.SOLID_FOREGROUND)
+        return cellStyle
     }
 }

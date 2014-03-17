@@ -30,10 +30,6 @@ class ProcessService {
         def filterDateFrom = params.filterDateFrom
         def filterDateTo = params.filterDateTo
 
-//        log.info(filterObserved + " --- " + filterStatus);
-//        log.info("max: " + params.max + "; offset: " + params.offset + "; sort: " + params.sort + "; order: " + params.order);
-//        log.info("filterPhNo: " + params.filterPhNo + "; filterDateFrom: " + params.filterDateFrom + "; filterDateTo: " + params.filterDateTo)
-
         def clientCriteria = Process.createCriteria()
         def searchResults = clientCriteria.list(
                 max: params.max,

@@ -39,8 +39,6 @@ class ProcessController {
 
         params.max = Math.min(params.max ? params.int('max') : 10, 100)
 
-//        log.info("PSZKUP in Controller --> filterPhNo: " + params.filterPhNo + "; filterDateFrom: " + params.filterDateFrom + "; filterDateTo: " + params.filterDateTo)
-
         if(params.filterStatus == null){
             params.filterStatus = Process.ProcessStatus.WAITING.name()
         }

@@ -1,82 +1,151 @@
 package com.eservice.eumowy
 
-import com.eservice.eumowy.dto.SalesmanAcceptedActivitiesDTO
-import com.eservice.eumowy.dto.SalesmanStatusesDTO
+import com.eservice.eumowy.data.SalesmenReportData
 import com.eservice.eumowy.util.ExcelHelper
 import org.apache.poi.hssf.usermodel.HSSFCellStyle
 import org.apache.poi.hssf.usermodel.HSSFSheet
 import org.apache.poi.hssf.usermodel.HSSFWorkbook
 import org.apache.poi.ss.usermodel.CellStyle
 import org.apache.poi.ss.usermodel.Font
+import org.apache.poi.ss.usermodel.IndexedColors
 import org.apache.poi.ss.usermodel.Row
+import org.apache.poi.ss.usermodel.Sheet
 import org.apache.poi.ss.usermodel.Workbook
 import org.apache.poi.ss.util.CellRangeAddress
 
 class ExcelService {
-    private static final PROCESS_STATUS_COLUMNS_COUNT = 10
-    private static final ACCEPTED_ACTIVITIES_SHEET_WIDTH = 21
-    private HSSFCellStyle HEADER_CELL_STYLE
+    def messageSource
+
+    private static final Integer PH_COLUMNS_COUNT = 3
+    private static final Integer COLUMN_WIDTH = 3500
+
+    private Integer PROCESS_STATUS_COLUMNS_COUNT
+    private Integer ACCEPTED_ACTIVITIES_COLUMNS_COUNT
+    private CellStyle HEADER_CELL_STYLE
+    private CellStyle SUMMARY_CELL_STYLE
+    private CellStyle BORDERED_CELL_STYLE
+    private CellStyle COLUMN_HEADER_STYLE
     private Workbook workbook
 
-    public Workbook createSalesmenReportWorkBook(List<SalesmanStatusesDTO> statuses, List<SalesmanAcceptedActivitiesDTO> salesmanAcceptedActivities) {
+    public Workbook createSalesmenReportWorkBook(SalesmenReportData reportData) {
         workbook = new HSSFWorkbook()
 
-        Font headerFont = ExcelHelper.createBoldFont(workbook, 16)
-        HEADER_CELL_STYLE = ExcelHelper.createCenteredCellStyle(workbook, headerFont)
+        PROCESS_STATUS_COLUMNS_COUNT = PH_COLUMNS_COUNT + reportData.processStatusesCount()
+        ACCEPTED_ACTIVITIES_COLUMNS_COUNT = PH_COLUMNS_COUNT + reportData.allActivitiesCount()
 
-        HSSFSheet processStatus = workbook.createSheet("Procesy status")
-        HSSFSheet acceptedActivities = workbook.createSheet("Działania zaakceptowane")
+        initializeCellStyles()
 
-        fillProcessStatusSheet(processStatus, statuses)
-        fillAcceptedActivitiesSheet(acceptedActivities, salesmanAcceptedActivities)
+        HSSFSheet processStatus = workbook.createSheet(getMessage("salesman.report.processStatus"))
+        HSSFSheet acceptedActivities = workbook.createSheet(getMessage("salesman.report.acceptedActivities"))
+
+        fillProcessStatusSheet(processStatus, reportData)
+        fillAcceptedActivitiesSheet(acceptedActivities, reportData)
 
         return workbook
     }
 
-    private void fillProcessStatusSheet(HSSFSheet processStatusSheet, List<SalesmanStatusesDTO> salesmenStatuses) {
+    private void initializeCellStyles() {
+        Font headerFont = ExcelHelper.createBoldFont(workbook, 16)
+        HEADER_CELL_STYLE = ExcelHelper.createCenteredCellStyle(workbook, headerFont)
+
+        CellStyle sumCellStyle = ExcelHelper.createBorderedCellStyle(workbook, 1, ExcelHelper.Border.WHOLE)
+        ExcelHelper.addBackground(sumCellStyle, IndexedColors.AQUA.getIndex())
+        ExcelHelper.addBold(workbook, sumCellStyle)
+        SUMMARY_CELL_STYLE = sumCellStyle
+
+        BORDERED_CELL_STYLE = ExcelHelper.createBorderedCellStyle(workbook, 1, ExcelHelper.Border.WHOLE)
+
+        Font columnHeaderFont = ExcelHelper.createBoldFont(workbook, 9)
+        CellStyle columnHeaderStyle = ExcelHelper.createCenteredCellStyle(workbook, columnHeaderFont)
+        ExcelHelper.addBorder(columnHeaderStyle, 2, ExcelHelper.Border.WHOLE)
+        COLUMN_HEADER_STYLE = columnHeaderStyle
+    }
+
+    private void fillProcessStatusSheet(HSSFSheet processStatusSheet, SalesmenReportData reportData) {
+
         Integer subHeaderLeftOffset = 3
         Integer subHeaderWidth = PROCESS_STATUS_COLUMNS_COUNT - subHeaderLeftOffset
+
+        Font subHeaderFont = ExcelHelper.createBoldFont(workbook, 9)
+        CellStyle subHeaderCellStyle = ExcelHelper.createCenteredCellStyle(workbook, subHeaderFont)
+
+        ExcelHelper.createHeader(processStatusSheet, reportData.getReportHeader(), HEADER_CELL_STYLE, PROCESS_STATUS_COLUMNS_COUNT, 2)
+
+        CellRangeAddress subHeader = ExcelHelper.createHeader(processStatusSheet, getMessage("salesman.report.statusProcess"), subHeaderCellStyle,
+                subHeaderWidth, 1, subHeaderLeftOffset, 0)
+        ExcelHelper.addBorder(workbook, processStatusSheet, subHeader, 2, ExcelHelper.Border.WHOLE)
 
         List<String> columnsHeaders = ["Nazwisko PH", "Imię PH", "Nr PH"]
         Process.ProcessStatus.values().each { status ->
             columnsHeaders.add(status.toString())
         }
+        createColumnsHeaders(ExcelHelper.createNextRow(processStatusSheet), columnsHeaders)
 
-        Font subHeaderFont = ExcelHelper.createBoldFont(workbook, 9)
-        CellStyle subHeaderCellStyle = ExcelHelper.createCenteredCellStyle(subHeaderFont)
-
-        CellRangeAddress mainHeader = ExcelHelper.createHeader(processStatusSheet, "Test", HEADER_CELL_STYLE, PROCESS_STATUS_COLUMNS_COUNT, 2)
-        CellRangeAddress subHeader = ExcelHelper.createHeader(processStatusSheet, "Status procesu", subHeaderCellStyle, subHeaderWidth, 1, subHeaderLeftOffset, 0)
-        ExcelHelper.borderWholeRegion(2, subHeader, processStatusSheet, workbook)
-
-        createColumnsHeaders(processStatusSheet, columnsHeaders)
-
-        salesmenStatuses.each { salesmanStatus ->
+        reportData.salesmenStatuses.each { salesman ->
             Row salesmanRow = ExcelHelper.createNextRow(processStatusSheet)
-            ExcelHelper.createCell(salesmanRow, salesmanStatus.phSurname)
-            ExcelHelper.createCell(salesmanRow, salesmanStatus.phFirstName)
-            ExcelHelper.createCell(salesmanRow, salesmanStatus.phNumber)
-            salesmanStatus.statusesCount.each { statusCount ->
-                ExcelHelper.createCell(salesmanRow, statusCount.value)
+            ExcelHelper.createCell(salesmanRow, salesman.phSurname, BORDERED_CELL_STYLE)
+            ExcelHelper.createCell(salesmanRow, salesman.phFirstName, BORDERED_CELL_STYLE)
+            ExcelHelper.createCell(salesmanRow, salesman.phNumber, BORDERED_CELL_STYLE)
+            salesman.statusesCount.each {
+                ExcelHelper.createCell(salesmanRow, it.value, BORDERED_CELL_STYLE)
             }
         }
 
-        ExcelHelper.setAllColumnsWidth(processStatusSheet, PROCESS_STATUS_COLUMNS_COUNT, 3500)
+        createSummaryRow(processStatusSheet, reportData.salesmenStatusesTotal)
+
+        ExcelHelper.setAllColumnsWidth(processStatusSheet, PROCESS_STATUS_COLUMNS_COUNT, COLUMN_WIDTH)
     }
 
-    private void fillAcceptedActivitiesSheet(HSSFSheet acceptedActivities, List<SalesmanAcceptedActivitiesDTO> salesmanAcceptedActivities) {
-        ExcelHelper.createHeader(acceptedActivities, "TEST", HEADER_CELL_STYLE, ACCEPTED_ACTIVITIES_SHEET_WIDTH, 2)
-    }
+    private void fillAcceptedActivitiesSheet(HSSFSheet acceptedActivitiesSheet, SalesmenReportData reportData) {
+        Integer subHeaderLeftOffset = 3
+        Integer subHeaderWidth = ACCEPTED_ACTIVITIES_COLUMNS_COUNT - subHeaderLeftOffset
 
-    private void createColumnsHeaders(HSSFSheet sheet, List<String> columnsHeaders) {
-        Integer headersRowNumber = sheet.lastRowNum + 1
-        Row headersRow = sheet.createRow(headersRowNumber)
+        ExcelHelper.createHeader(acceptedActivitiesSheet, reportData.getReportHeader(), HEADER_CELL_STYLE, ACCEPTED_ACTIVITIES_COLUMNS_COUNT, 2)
 
-        Font headerFont = ExcelHelper.createBoldFont(workbook, 9)
-        HSSFCellStyle headerCellStyle = ExcelHelper.createCenteredCellStyle(workbook, headerFont)
+        Font subHeaderFont = ExcelHelper.createBoldFont(workbook, 12)
+        CellStyle subHeaderCellStyle = ExcelHelper.createCenteredCellStyle(workbook, subHeaderFont)
 
-        columnsHeaders.each { header ->
-            ExcelHelper.createCell(headersRow, header, headerCellStyle)
+        ExcelHelper.createHeader(acceptedActivitiesSheet, getMessage("salesman.report.activitiesWithStatusAccepted"),
+                subHeaderCellStyle, subHeaderWidth, 1, subHeaderLeftOffset, 0)
+
+        List<String> columnsHeaders = ["Nazwisko PH", "Imię PH", "Nr PH"]
+        reportData.allActivities.each { activityCode ->
+            columnsHeaders.add(getMessage("salesman.report." + activityCode + ".label"))
         }
+        createColumnsHeaders(ExcelHelper.createNextRow(acceptedActivitiesSheet), columnsHeaders)
+
+        reportData.salesmanAcceptedActivities.each { salesman ->
+            Row salesmanRow = ExcelHelper.createNextRow(acceptedActivitiesSheet)
+            ExcelHelper.createCell(salesmanRow, salesman.phSurname, BORDERED_CELL_STYLE)
+            ExcelHelper.createCell(salesmanRow, salesman.phFirstName, BORDERED_CELL_STYLE)
+            ExcelHelper.createCell(salesmanRow, salesman.phNumber, BORDERED_CELL_STYLE)
+            salesman.activitiesCount.each {
+                ExcelHelper.createCell(salesmanRow, it.value, BORDERED_CELL_STYLE)
+            }
+        }
+
+        createSummaryRow(acceptedActivitiesSheet, reportData.acceptedActivitiesTotal)
+
+        ExcelHelper.setAllColumnsWidth(acceptedActivitiesSheet, PROCESS_STATUS_COLUMNS_COUNT, COLUMN_WIDTH)
+    }
+
+    private void createColumnsHeaders(Row headersRow, List<String> columnsHeaders) {
+        columnsHeaders.each { header ->
+            ExcelHelper.createCell(headersRow, header, COLUMN_HEADER_STYLE)
+        }
+    }
+
+    private void createSummaryRow(Sheet sheet, Map summaryData) {
+        Row sumRow = ExcelHelper.createNextRow(sheet)
+        ExcelHelper.createCell(sumRow, getMessage("salesman.report.sumBS"), SUMMARY_CELL_STYLE)
+        ExcelHelper.createCell(sumRow, "", SUMMARY_CELL_STYLE)
+        ExcelHelper.createCell(sumRow, getMessage("salesman.report.sum"), SUMMARY_CELL_STYLE)
+        summaryData.each { entry ->
+            ExcelHelper.createCell(sumRow, entry.value, SUMMARY_CELL_STYLE)
+        }
+    }
+
+    private String getMessage(String code) {
+        return messageSource.getMessage(code, null, Locale.getDefault())
     }
 }

@@ -1376,3 +1376,16 @@ a.submit{
 .text-center{
     text-align: center;
 }
+
+#generateReportButton {
+    width: 110px;
+    margin-top: 15px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#generateReport {
+    float: right;
+    margin-right: 10px;
+    margin-top: 10px;
+}

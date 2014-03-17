@@ -1,5 +1,6 @@
 package com.eservice.eumowy
 
+import com.eservice.eumowy.data.SalesmenReportData
 import com.eservice.eumowy.dto.SalesmanAcceptedActivitiesDTO
 import com.eservice.eumowy.dto.SalesmanStatusesDTO
 import com.eservice.eumowy.Process.ProcessStatus
@@ -12,15 +13,21 @@ class ReportService {
     def excelService
 
     public void generateSalesmanStatusReport(HttpServletResponse response, Date startDate, Date endDate) {
-        List<SalesmanStatusesDTO> statuses = salesmenStatuses(startDate, endDate)
-        Map<ProcessStatus, Integer> statusesTotal = statusesCount(startDate, endDate)
-        List<SalesmanAcceptedActivitiesDTO> salesmanAcceptedActivities = salesmenAcceptedActivities(startDate, endDate)
+        SalesmenReportData reportData = new SalesmenReportData()
+        reportData.setReportDateSpan(startDate, endDate)
+
+        reportData.salesmenStatuses = salesmenStatuses(startDate, endDate)
+        reportData.salesmenStatusesTotal =  statusesCount(startDate, endDate)
+
+        reportData.salesmanAcceptedActivities = salesmenAcceptedActivities(startDate, endDate)
+        reportData.acceptedActivitiesTotal = acceptedActivitiesCount(startDate, endDate)
+        reportData.allActivities = allActivities()
 
         response.contentType = 'application/vnd.ms-excel'
         response.setHeader("Content-disposition", "attachment; filename=ProjectReport.xls")
         OutputStream outputStream = response.getOutputStream()
 
-        Workbook workbook = excelService.createSalesmenReportWorkBook(statuses, salesmanAcceptedActivities)
+        Workbook workbook = excelService.createSalesmenReportWorkBook(reportData)
 
         workbook.write(outputStream)
         outputStream.close()
@@ -29,12 +36,7 @@ class ReportService {
     private List<SalesmanStatusesDTO> salesmenStatuses(Date startDate, Date endDate) {
         def processCriteria = Process.createCriteria()
         def resultsOfProcessCriteria = processCriteria.list {
-            if(startDate) {
-                ge('lastUpdated', startDate)
-            }
-            if(endDate) {
-                le('lastUpdated', endDate)
-            }
+            between("lastUpdated", startDate, endDate)
             projections {
                 groupProperty("phNumber")
                 groupProperty("phFirstName")
@@ -62,12 +64,7 @@ class ReportService {
     private Map<ProcessStatus, Integer> statusesCount(Date startDate, Date endDate) {
         def processCriteria = Process.createCriteria()
         def resultsOfProcessCriteria = processCriteria.list {
-            if(startDate) {
-                ge('lastUpdated', startDate)
-            }
-            if(endDate) {
-                le('lastUpdated', endDate)
-            }
+            between("lastUpdated", startDate, endDate)
             projections {
                 groupProperty("status")
                 count("status")
@@ -76,8 +73,12 @@ class ReportService {
 
         Map<ProcessStatus, Integer> statusesCount = [:]
 
+        ProcessStatus.values().each { status ->
+            statusesCount.put(status, 0)
+        }
+
         resultsOfProcessCriteria.each { result ->
-            statusesCount.put(result[0], result[1])
+            statusesCount[result[0]] = result[1]
         }
 
         return statusesCount
@@ -88,12 +89,7 @@ class ReportService {
         def resultsOfProcessCriteria = processCriteria.list {
             createAlias('activities', 'ac')
             eq('status', ProcessStatus.ACCEPTED)
-            if(startDate) {
-                ge('lastUpdated', startDate)
-            }
-            if(endDate) {
-                le('lastUpdated', endDate)
-            }
+            between("lastUpdated", startDate, endDate)
             projections {
                 groupProperty("phNumber")
                 groupProperty("phFirstName")
@@ -111,10 +107,51 @@ class ReportService {
             if(acceptedActivities.containsKey(phNumber)) {
                 acceptedActivities[phNumber].addActivity(result)
             } else {
-                acceptedActivities.put(phNumber, new SalesmanAcceptedActivitiesDTO(result))
+                acceptedActivities.put(phNumber, new SalesmanAcceptedActivitiesDTO(result, allActivities()))
             }
         }
 
         return acceptedActivities.collect { it.value }
+    }
+
+    private Map<String, Integer> acceptedActivitiesCount(Date startDate, Date endDate) {
+        def processCriteria = Process.createCriteria()
+        def resultsOfProcessCriteria = processCriteria.list {
+            createAlias('activities', 'ac')
+            eq('status', ProcessStatus.ACCEPTED)
+            between("lastUpdated", startDate, endDate)
+            projections {
+                groupProperty("ac.code")
+                count('ac.code')
+            }
+        }
+
+        Map<String, Integer> activitiesCount = [:]
+
+        allActivities().each { activityCode ->
+            activitiesCount.put(activityCode, 0)
+        }
+
+        resultsOfProcessCriteria.each { result ->
+            if(activitiesCount.containsKey(result[0])) {
+                activitiesCount[result[0]] = result[1]
+            }
+        }
+
+        return activitiesCount
+    }
+
+    private List<String> allActivities() {
+        List<String> allActivities = []
+        List<String> excludedFields = ["zmianaWarunkowDcc", "ekonomiczny", "komfort", "prestiz", "poprawDane",
+                "odrzucDokumenty", "uzupelnijPodpisy", "wymianaTerminala", "wymianaUmowyZaplaty"]
+
+        Activity.findAll().each { activity ->
+            if(!excludedFields.contains(activity.code)) {
+                allActivities.add(activity.code)
+            }
+        }
+
+        return allActivities
     }
 }

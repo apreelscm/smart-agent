@@ -6,14 +6,21 @@ class SalesmanAcceptedActivitiesDTO {
     String phSurname
     Map<String, Integer> activitiesCount = [:]
 
-    public SalesmanAcceptedActivitiesDTO(Object processDetails) {
+    public SalesmanAcceptedActivitiesDTO(Object processDetails, List<String> possibleActivities) {
         phNumber = processDetails[0]
         phFirstName = processDetails[1]
         phSurname = processDetails[2]
-        activitiesCount.put(processDetails[3], processDetails[4])
+
+        possibleActivities.each {
+            activitiesCount.put(it, 0)
+        }
+
+        addActivity(processDetails)
     }
 
     public addActivity(Object processDetails) {
-        activitiesCount.put(processDetails[3], processDetails[4])
+        if(activitiesCount.containsKey(processDetails[3])) {
+            activitiesCount[processDetails[3]] = processDetails[4]
+        }
     }
 }

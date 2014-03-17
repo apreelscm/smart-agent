@@ -7,8 +7,6 @@
     <title><g:message code="process.list.label"  /></title>
     <r:require module="listProcess"/>
     <r:require module="mask"/>
-
-
 </head>
 <body class="processListPage">
 
@@ -31,7 +29,6 @@
                           noSelection="['': '']"
                           value="${filterStatus}"
                           style="width:200px;"/>
-                %{--onchange="${remoteFunction(action: 'filterByStatus', update: 'tableBox', params: '\'status=\' + this.value')}"--}%
             </div>
 
             <div class="display-inline" style="margin-left: .4em">
@@ -45,15 +42,14 @@
             </div>
 
             <div class="display-inline-block" style="margin-left: .4em">
-
                 <div>
                     <label for="filterDateFromDF"><g:message code="process.dateFrom.label" default="Data od:" /></label>
-                    <g:textField id="filterDateFromDF" name="filterDateFrom" readonly="true" style="width: 70px;" value="${filterDateFrom}"/>
+                    <g:textField id="filterDateFromDF" name="filterDateFrom" class="dateFromDatepicker" readonly="true" style="width: 70px;" value="${filterDateFrom}"/>
                 </div>
 
                 <div style="margin-top: .2em">
                     <label for="filterDateToDF"><g:message code="process.dateTo.label" default="Data do:" /></label>
-                    <g:textField id="filterDateToDF" name="filterDateTo" readonly="true" style="width: 70px;" value="${filterDateTo}"/>
+                    <g:textField id="filterDateToDF" name="filterDateTo" class="dateToDatepicker" readonly="true" style="width: 70px;" value="${filterDateTo}"/>
                 </div>
             </div>
 
@@ -73,7 +69,22 @@
         <g:render template="table/listTable"/>
     </div>
 
-</section>
+    <div id="generateReportButton">
+        <input type="button" value="Generuj raport" class="button action"/>
+    </div>
 
+    <div class="display-none" id="reportDialog">
+        <g:form controller="report" action="salesmenStatus">
+            <label for="startDate"><g:message code="process.dateFrom.label" default="Data od:" /></label>
+            <g:textField name="startDate" class="dateFromDatepicker" required="required" autocomplete="off"/>
+
+            <label for="endDate"><g:message code="process.dateTo.label" default="Data do:" /></label>
+            <g:textField name="endDate" class="dateToDatepicker" required="required" autocomplete="off"/>
+
+            <g:submitButton name="generateReport" value="Generuj" class="button action"/>
+        </g:form>
+    </div>
+
+</section>
 </body>
 </html>

@@ -1,9 +1,8 @@
 (function ($) {
-
     $(function() {
-
-        var dateFrom =  $("#filterDateFromDF");
-        var dateTo =  $("#filterDateToDF");
+        var dateFrom =  $(".dateFromDatepicker"),
+            dateTo =  $(".dateToDatepicker"),
+            reportDialog = $("#reportDialog");
 
         dateFrom.datepicker({ dateFormat: 'dd-mm-yy', maxDate: new Date()});
         dateTo.datepicker({ dateFormat: 'dd-mm-yy', maxDate: new Date()});
@@ -23,7 +22,17 @@
             });
         })
 
+        $("#generateReportButton").on("click", function() {
+            reportDialog.dialog({
+                height: 135,
+                width: 455,
+                modal: true
+            });
+        });
 
-    }); //end ready
+        $("#generateReport").on('click', function() {
+            reportDialog.dialog("close");
+        });
+    });
 
 }(jQuery));
