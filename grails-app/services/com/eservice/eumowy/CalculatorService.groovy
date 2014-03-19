@@ -33,10 +33,6 @@ class CalculatorService implements Serializable{
         log.info(calcExt)
 		def calcKeyList = calcExt.collect { it.POLEAPREEL }
 
-        log.info("calcKeyList size:"+calcKeyList.size() + " calcKeyList:"+calcKeyList)
-        log.info("calcNames size:"+signaturesCalcNames.size() + "calcNames:"+signaturesCalcNames)
-        log.info("contains ALL:"+calcKeyList.containsAll(signaturesCalcNames))
-
 		return calcKeyList.containsAll(signaturesCalcNames)
 	}
 	

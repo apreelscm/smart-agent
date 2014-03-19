@@ -12,14 +12,17 @@ import org.codehaus.groovy.grails.web.binding.DataBindingUtils
 import serializationutils.SerializationUtils
 
 class ProcessService {
-
-    //Test
-
+    def messageSource
     def sessionFactory
     def panelService
     def cbdService
     def panelMockService
     def calculatorService
+    def pdfService
+
+    void invalidateCaches() {
+        cbdService.invalidateCaches()
+    }
 
     def searchProcessByFilters(def params) {
         def filterObserved = params.filterObserved
@@ -38,7 +41,6 @@ class ProcessService {
                 order: params.order){
 
             if (filterStatus){
-                //jesli filterStatus nie jest pusty to po nim ograniczamy
                 eq("status", Process.ProcessStatus.valueOf(filterStatus))
             }
 
@@ -118,7 +120,11 @@ class ProcessService {
         result ?: new Process(result)
     }
 
-    def containsActivity(def activities, def activityCode) {
+    Boolean isProcessHasActivity(Process process, String activityCode) {
+        return containsActivity(process.activities, activityCode)
+    }
+
+    Boolean containsActivity(def activities, def activityCode) {
         return activities?.any{it.code.equals(activityCode)};
     }
 
@@ -283,12 +289,24 @@ class ProcessService {
         fromEumowy
     }
 
-    def getRepresentative1(def process) {
-        return [name: process?.processData?.find { pd -> pd.name == "reprezentant1Imie" }?.value, surname: process?.processData?.find { pd -> pd.name == "reprezentant1Nazwisko" }?.value]
+    def getRepresentative1(Process process) {
+        Map representative = [name: process?.processData?.find { pd -> pd.name == "reprezentant1Imie" }?.value, surname: process?.processData?.find { pd -> pd.name == "reprezentant1Nazwisko" }?.value]
+
+        if(representative.name && representative.surname) {
+            return representative
+        } else {
+            return null
+        }
     }
 
-    def getRepresentative2(def process) {
-        return [name: process?.processData?.find { pd -> pd.name == "reprezentant2Imie" }?.value, surname: process?.processData?.find { pd -> pd.name == "reprezentant2Nazwisko" }?.value]
+    def getRepresentative2(Process process) {
+        Map representative = [name: process?.processData?.find { pd -> pd.name == "reprezentant2Imie" }?.value, surname: process?.processData?.find { pd -> pd.name == "reprezentant2Nazwisko" }?.value]
+
+        if(representative.name && representative.surname) {
+            return representative
+        } else {
+            return null
+        }
     }
 
     /**
@@ -1666,16 +1684,70 @@ class ProcessService {
 		}
 	}
 
+    Map createMailParametersForPaperVersion(Process process) {
+        String merchantName = getFromProcessData(process, 'akceptantNazwaOficjalna')
+        String merchantNip = getFromProcessData(process, 'nip')
+        List<String> activities = getActivities(process)
 
-    def findDocumentByName(def documents, def name) {
-        if (documents != null) {
-            for(DocumentFile df : documents) {
-                if (df.name.equals(name))
-                    return df
+        return [merchantName: merchantName, merchantNip: merchantNip, phNumber: process?.phNumber,
+                phFirstName: process?.phFirstName, phSurname: process?.phSurname, activities: activities]
+    }
+
+    Map createMailParametersForElectronicalVersion(Process process) {
+        String recipient = getFromProcessData(process, 'kontaktEmail') ?: getFromProcessData(process, 'emailDoWysylkiDokumentu')
+        String merchantName = getFromProcessData(process, 'akceptantNazwaOficjalna')
+        String merchantNip = getFromProcessData(process, 'nip')
+        List<String> activities = getActivities(process)
+
+        return [merchantName: merchantName, merchantNip: merchantNip, activities: activities, recipient: recipient]
+    }
+
+    List<String> getActivities(Process process){
+        return process.activities.collect {messageSource.getMessage('activity.' + it.code + '.name', [] as Object[], Locale.getDefault())}
+    }
+
+    Boolean hasWymianaTermianalaOnly(Process process) {
+        return containsActivity(process.activities, "wymianaTerminala") && process.activities.size() == 1
+    }
+
+    String getFromProcessData(Process process, String key){
+        def result = process.processData.find{ processData -> processData.name.equals(key)}
+        return (result && result?.value) ? result?.value : ""
+    }
+
+    Integer requiredNumberOfSubscriptions(Process process) {
+        Integer requiredSubscriptionsCount = 1 //PH
+
+        if(!hasWymianaTermianalaOnly(process)) {
+            if(getRepresentative1(process)) {
+                requiredSubscriptionsCount++
+            }
+
+            if(getRepresentative2(process)) {
+                requiredSubscriptionsCount++
             }
         }
 
-        return null
+        return requiredSubscriptionsCount
     }
 
+    Integer savedSubscriptionsCount(Process process) {
+        List<Subscription> subscriptions = Subscription.findAllByProcess(process)
+        return subscriptions.size()
+    }
+
+    void reloadDataAndSubscriptionsOnDocuments(Process process) {
+        log.info("Renewing documents")
+        def calculator = cbdService.findCalculatorByNip(process.client.nip)
+        Map processWithPages = pdfService.workWithDocuments(process, calculator)
+        process = processWithPages.processInstance
+        process.save(flush: true)
+
+        process.documents.each { DocumentFile doc ->
+            byte[] newContent = pdfService.addClientSubscriptionsToDocument(doc.content.content, doc.signature.id, process.subscriptions)
+            doc.content.content = newContent
+            doc.content.discard()
+        }
+        log.info("Subscriptions and documents data renewed.")
+    }
 }

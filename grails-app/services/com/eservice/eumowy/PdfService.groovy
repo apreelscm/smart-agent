@@ -9,9 +9,9 @@ import signaturepad.SignatureToImage
 
 class PdfService {
 	def appParametersService
-    def processService
     def calculatorService
     def mapperService
+    def documentService
 	
 	private ExecutorService executor;
 
@@ -364,7 +364,7 @@ class PdfService {
 
         int pc = this.getPageCountFromPdf(documentData)
 
-        if (processService.findDocumentByName(processInstance.documents, documentName) == null) {
+        if (documentService.findDocumentByName(processInstance.documents, documentName) == null) {
             log.info "Creating new document [${sig.templatePath}]"
             DocumentFile df = new DocumentFile(name: documentName, clientName:documentClientName, dateCreated: new Date(), lastUpdated: new Date(), pagesCount: pc, signature: sig)
             df.setContent(new DocumentContent(content: documentData))
@@ -375,7 +375,7 @@ class PdfService {
             processInstance.save(flush: true)
         } else {
             log.info "Updating existing document [${sig.templatePath}]"
-            DocumentFile df = processService.findDocumentByName(processInstance.documents, documentName)
+            DocumentFile df = documentService.findDocumentByName(processInstance.documents, documentName)
             df.content.setContent(documentData)
             df.lastUpdated = new Date()
             df.save(flush: true)

@@ -48,8 +48,8 @@ environments {
                 minEvictableIdleTimeMillis = 1000 * 60 * 5
                 timeBetweenEvictionRunsMillis = 1000 * 60 * 5
             }
-            logSql= true
-            loggingSql = true
+            logSql= false
+            loggingSql = false
         }
     }
     test {

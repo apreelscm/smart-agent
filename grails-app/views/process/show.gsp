@@ -5,6 +5,7 @@
 <head>
     <meta name="layout" content="main">
     <g:set var="entityName" value="${message(code: 'process.label', default: 'Process')}" />
+    <g:set var="isWaitingOnlyProcess" value="${processInstance?.status.equals(Process.ProcessStatus.WAITING)}"/>
     <g:set var="isWaitingProcess" value="${processInstance?.status in [Process.ProcessStatus.WAITING,Process.ProcessStatus.WAIT_FOR_SUBSCRIPTION_PAPER_VERSION]}" />
     <g:set var="isWaitingForSubscriptionProcess" value="${processInstance?.status == Process.ProcessStatus.WAIT_FOR_SUBSCRIPTION_PAPER_VERSION}" />
     <g:set var="isClosedProcess" value="${processInstance?.status in [Process.ProcessStatus.ACCEPTED,Process.ProcessStatus.REJECTED]}" />
@@ -18,11 +19,36 @@
                 history.back();
             });
 
+            jQuery(".renewSubscriptions").click(function(event) {
+                var confirmed = confirm('${message(code: 'default.button.renewSubscriptions.confirm.message')}');
+
+                if(confirmed) {
+                    jQuery("#renewingSubsriptionsInProgress").dialog({
+                        height: 100,
+                        width: 350,
+                        modal: true
+                    })
+                } else {
+                    event.preventDefault();
+                }
+            });
+
+            jQuery(".resendEmails").click(function(event) {
+                jQuery("#resendingEmailsInProgress").dialog({
+                    height: 100,
+                    width: 300,
+                    modal: true
+                })
+            });
+
             jQuery("#dataUmowy").datepicker({ dateFormat: 'yy-mm-dd', maxDate: new Date() });
         })
     </r:script>
 </head>
 <body>
+
+<div id="renewingSubsriptionsInProgress" style="display: none"><g:message code="renewSubscriptions.in.progress"/></div>
+<div id="resendingEmailsInProgress" style="display: none"><g:message code="resendEmails.in.progress"/></div>
 
 <section id="show-process">
     <h1 class="ng linia-bottom">Id Procesu: ${processInstance?.id}</h1>
@@ -157,11 +183,25 @@
                                 style="float: left;margin-right: 1em;display:block"
                                 disabled="${isClosedProcess}"
                                 formnovalidate=""
-                                onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');"/>
+                                onclick="return confirm('${message(code: 'default.button.delete.confirm.message')}');"/>
+
                 <g:actionSubmit class="button submit" action="accept" value="Zaakceptuj"
                                 disabled="${!isWaitingProcess || !hasDocuments}"
                                 style="float: right;display:block"
-                                onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');"/>
+                                onclick="return confirm('${message(code: 'default.button.delete.confirm.message')}');"/>
+
+                <g:if test="${isWaitingOnlyProcess && hasDocuments}">
+                    <g:link class="button submit renewSubscriptions" action="reloadDocuments" id="${processInstance.id}">
+                        Wygeneruj ponownie dokumenty
+                    </g:link>
+                </g:if>
+
+                <g:if test="${isWaitingForSubscriptionProcess}">
+                    <g:link class="button submit resendEmails" action="resendEmail" id="${processInstance.id}">
+                        Wyślij ponownie emaila
+                    </g:link>
+                </g:if>
+
             </fieldset>
         </nav>
     </g:form>

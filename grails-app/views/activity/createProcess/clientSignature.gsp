@@ -369,33 +369,44 @@
             if (jQuery(e.target).is(":checked")) {
                 jQuery("#noaccept").prop("disabled", true);
                 jQuery("a.big-link").parent().addClass("disabled");
+
+                jQuery("#sgnRep1").addClass("disabled");
+                jQuery("#sgnRep2").addClass("disabled");
+                jQuery("#sgnPh").addClass("disabled");
             }
         });
 
         jQuery("#requestVersionPaper").on("change", function(e) {
             if (jQuery(e.target).is(":checked")) {
-                jQuery("#noaccept").prop("disabled", false);
-                jQuery("a.big-link").parent().removeClass("disabled");
+                manageAvailability()
             }
         });
 
         jQuery("#requestVersionElectronical").on("change", function(e) {
             if (jQuery(e.target).is(":checked")) {
-                jQuery("#noaccept").prop("disabled", false);
-
-                if (isSubscriptionDone["subscribe-REPRESENTATIVE1"] != true) {
-                    jQuery("#subscribe-REPRESENTATIVE1").parent().removeClass("disabled");
-                }
-
-                if (isSubscriptionDone["subscribe-REPRESENTATIVE2"] != true) {
-                    jQuery("#subscribe-REPRESENTATIVE2").parent().removeClass("disabled");
-                }
-
-                if (isSubscriptionDone["subscribe-PH"] != true) {
-                    jQuery("#subscribe-PH").parent().removeClass("disabled");
-                }
+                manageAvailability()
             }
         });
+
+        function manageAvailability() {
+            jQuery("#noaccept").prop("disabled", false);
+
+            jQuery("#sgnRep1").removeClass("disabled");
+            jQuery("#sgnRep2").removeClass("disabled");
+            jQuery("#sgnPh").removeClass("disabled");
+
+            if (isSubscriptionDone["subscribe-REPRESENTATIVE1"] != true) {
+                jQuery("#subscribe-REPRESENTATIVE1").parent().removeClass("disabled");
+            }
+
+            if (isSubscriptionDone["subscribe-REPRESENTATIVE2"] != true) {
+                jQuery("#subscribe-REPRESENTATIVE2").parent().removeClass("disabled");
+            }
+
+            if (isSubscriptionDone["subscribe-PH"] != true) {
+                jQuery("#subscribe-PH").parent().removeClass("disabled");
+            }
+        }
 
         function checkEmailKontakt() {
             var kontaktEmail = "${processInstance.processData.find { it.name == 'kontaktEmail'}?.value}";

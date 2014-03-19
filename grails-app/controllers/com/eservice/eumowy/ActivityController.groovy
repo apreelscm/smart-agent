@@ -29,7 +29,6 @@ class ActivityController {
     def clientService
     def processService
     def calculatorService
-    def messageSource
     def pdfService
 	def documentService
     def dictionaryService
@@ -128,7 +127,7 @@ class ActivityController {
                 log.info("wysyłanie wiadomości email z uwagami do COA [notes: ${notes}]")
 
                 def user = springSecurityService.principal
-                def bodyParams = [notes: notes, phNumber: user.nr, phName: user.imie + ' ' + user.nazwisko, merchantName: getFromProcessData(processInstance, 'akceptantNazwaOficjalna'), merchantNip: getFromProcessData(processInstance, 'nip'), activities: getActivities(processInstance)]
+                def bodyParams = [notes: notes, phNumber: user.nr, phName: user.imie + ' ' + user.nazwisko, merchantName: processService.getFromProcessData(processInstance, 'akceptantNazwaOficjalna'), merchantNip: processService.getFromProcessData(processInstance, 'nip'), activities: processService.getActivities(processInstance)]
                 if(!emailService.sendNotesToCOA(bodyParams)){
                     return error()
                 }
@@ -216,11 +215,11 @@ class ActivityController {
                 def isWymianaTerminalaOnly = processService.containsActivity(flow.processInstance.activities,"wymianaTerminala") && flow.processInstance.activities.size()==1
 
                 if (!isWymianaTerminalaOnly){
-                    if (flow.representative1.name != null && flow.representative1.surname != null) {
+                    if (flow.representative1?.name != null && flow.representative1?.surname != null) {
                         flow.requiredNumberOfSubscriptions++
                     }
 
-                    if (flow.representative2.name != null && flow.representative2.surname != null) {
+                    if (flow.representative2?.name != null && flow.representative2?.surname != null) {
                         flow.requiredNumberOfSubscriptions++
                     }
                 }
@@ -228,9 +227,6 @@ class ActivityController {
                 if (!flow.skipDocumentGeneration && !flow.isUzupelnijPodpisy) {
                     def processWithPages = pdfService.workWithDocuments(processInstance, conversation.calc)
                     flow.totalPagesCount = processWithPages.totalPagesCount
-					//pdfService.generateAllPreviews(processInstance.documents, processInstance.id, flow.totalPagesCount)
-                    //processInstance.discard()
-                    //processInstance.save(flush: true)
                     processInstance = processWithPages.processInstance
                     processInstance.save(flush: true)
                 }
@@ -334,7 +330,7 @@ class ActivityController {
                 if (processInstance.notesToCoa) {
                     log.info("wysyłanie wiadomości email z uwagami do COA [notes: ${processInstance.notesToCoa}]")
                     def user = springSecurityService.principal
-                    def bodyParams = [notes: processInstance.notesToCoa, phNumber: user.nr, phName: user.imie + ' ' + user.nazwisko, merchantName: getFromProcessData(processInstance, 'akceptantNazwaOficjalna'), merchantNip: getFromProcessData(processInstance, 'nip'), activities: getActivities(processInstance)]
+                    def bodyParams = [notes: processInstance.notesToCoa, phNumber: user.nr, phName: user.imie + ' ' + user.nazwisko, merchantName: processService.getFromProcessData(processInstance, 'akceptantNazwaOficjalna'), merchantNip: processService.getFromProcessData(processInstance, 'nip'), activities: processService.getActivities(processInstance)]
                     emailService.sendNotesToCOA(bodyParams)
                 }
 
@@ -674,18 +670,6 @@ class ActivityController {
                 Process processInstance = processService.populateProcessWithData(flow.processInstance, cmd, conversation.calc)
                 log.info "Zapisuje dane paneli"
 
-                //TEST start
-                /*  cmd.calc = conversation.calc
-                  cmd.calculatorService = calculatorService
-                  cmd.validate()
-                  flow.data = cmd
-                  if(cmd.hasErrors()){
-                      cmd.errors.each {
-                          log.error(it)
-                      }
-                      return error();
-                  }*/
-                //TEST end
                 cmd.calculatorService = calculatorService
                 processInstance.save(flush: true, validate: false)
 
@@ -1315,7 +1299,7 @@ class ActivityController {
 
     def upload() {
         def config = grailsApplication.config.fileuploader[params.upload]
-        def msg = attachmentService.uploadFile(config,request, messageSource);
+        def msg = attachmentService.uploadFile(config,request);
 
         if(msg instanceof AttachmentFile){
             def attachment = msg as AttachmentFile
@@ -1491,13 +1475,10 @@ class ActivityController {
                     doc.content.discard()
                 }
 
-                def recipient = getFromProcessData(process, 'kontaktEmail') ?: getFromProcessData(process, 'emailDoWysylkiDokumentu')
+                log.info "ELECTRONICAL VERSION for process" + process.id
 
-                def merchantName = getFromProcessData(process, 'akceptantNazwaOficjalna');
-                def merchantNip = getFromProcessData(process, 'nip');
-                def activities = getActivities(process);
-
-                def mailBodyParams = [merchantName: merchantName, merchantNip: merchantNip, activities: activities]
+                Map mailBodyParams = processService.createMailParametersForElectronicalVersion(process)
+                String recipient = mailBodyParams.recipient
 
                 if (recipient){
                     def recipients = [];
@@ -1510,11 +1491,12 @@ class ActivityController {
                         log.info 'Brak emaila dla zalogowanego usera.'
                     }
 
-                    def isNewAggrement = process?.activities?.any{it.code.equals('nowaUmowa')}
-                    if (isNewAggrement){
-                        emailService.sendDocumentsElectronicalVersion(recipients, process.documents?.findAll{it.signature?.sendToClient}, mailBodyParams)
+                    Boolean isNewAgreement = processService.isProcessHasActivity(process, "nowaUmowa")
+                    List<DocumentFile> documents = process.documents?.findAll{it.signature?.sendToClient}
+                    if (isNewAgreement){
+                        emailService.sendDocumentsElectronicalVersion(recipients, documents, mailBodyParams)
                     } else {
-                        emailService.sendDocumentsNotNewAggrementElectronicalVersion(recipients, process.documents?.findAll{it.signature?.sendToClient}, mailBodyParams)
+                        emailService.sendDocumentsNotNewAggrementElectronicalVersion(recipients, documents, mailBodyParams)
                     }
                 } else {
                     emailService.sendDocumentsAcceptedToPostSend(process.documents, mailBodyParams)
@@ -1522,11 +1504,6 @@ class ActivityController {
             }
         }
         else if (PAPER.equals(requestVersion)) {
-            //Documents are already in DB
-            def merchantName = getFromProcessData(process, 'akceptantNazwaOficjalna');
-            def merchantNip = getFromProcessData(process, 'nip');
-            def activities = getActivities(process);
-
             process.documents.each { DocumentFile df ->
                 DocumentContent ndc = pdfService.cleanAgrementDateContent(df.content);
                 ndc.setDocument(df)
@@ -1535,9 +1512,11 @@ class ActivityController {
                 df.save(flush: true)
             }
 
-            def mailBodyParams = [merchantName: merchantName, merchantNip: merchantNip, phNumber: process?.phNumber,
-                    phFirstName: process?.phFirstName, phSurname: process?.phSurname, activities: activities]
-            emailService.sendDocumentsPaperVersion(process.documents?.findAll{it.signature?.sendToClient}, mailBodyParams)
+            log.info "PAPER VERSION for process" + process.id
+
+            Map mailBodyParams = processService.createMailParametersForPaperVersion(process)
+            List<DocumentFile> documents = process.documents?.findAll{it.signature?.sendToClient}
+            emailService.sendDocumentsPaperVersion(documents, mailBodyParams)
         }
         else if (TEMPLATES.equals(requestVersion)) {
 			List<DocumentFile> documentFilesWithBlackFaksymileList = new ArrayList<DocumentFile>()
@@ -1551,15 +1530,12 @@ class ActivityController {
 				documentFilesWithBlackFaksymileList.add(dfwbf)
 			}
 
-            def recipient = getFromProcessData(process, 'kontaktEmail') ?: getFromProcessData(process, 'emailDoWysylkiDokumentu')
+            log.info "TEMPLATE VERSION for process" + process.id
+
+            Map mailBodyParams = processService.createMailParametersForElectronicalVersion(process)
+            String recipient = mailBodyParams.recipient
 
             if (recipient){
-                def merchantName = getFromProcessData(process, 'akceptantNazwaOficjalna')
-                def merchantNip = getFromProcessData(process, 'nip')
-                def activities = getActivities(process)
-
-                def mailBodyParams = [merchantName: merchantName, merchantNip: merchantNip, activities: activities]
-
                 emailService.sendDocumentsTemplateVersion(recipient, documentFilesWithBlackFaksymileList, mailBodyParams)
             }
     	}
@@ -1581,15 +1557,6 @@ class ActivityController {
         }
 
         return newStatus
-    }
-
-    def getFromProcessData(def process, def key){
-        def result = process.processData.find{ pd -> pd.name.equals(key)}
-        return (result && result?.value)?result?.value:""
-    }
-
-    def getActivities(def process){
-        process.activities.collect {messageSource.getMessage('activity.' + it.code + '.name', [] as Object[], request.locale)}
     }
 
     private def crateProcessCommand(def params, def calc) {

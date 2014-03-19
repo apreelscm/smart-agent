@@ -25,42 +25,6 @@ import com.lowagie.text.pdf.PdfStamper;
 public class PdfGenerator {
 	private static Logger LOG = Logger.getLogger(PdfGenerator.class);
 	
-	public static byte[] embbedAllFonts(byte[] content) {
-		/*ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		PdfReader templateReader = null;
-		PdfStamper stamp = null;
-		
-		try {
-			FontFactory.defaultEmbedding = true;
-			Set<String> fonts = FontFactory.getRegisteredFonts();
-			templateReader = new PdfReader(content);
-			stamp = new PdfStamper(templateReader, baos);
-			stamp.getWriter().setPdfVersion(PdfWriter.PDF_VERSION_1_7);
-			stamp.getWriter().setPDFXConformance(PdfWriter.PDFA1A);
-			stamp.getWriter().setFullCompression();
-		}
-		catch (Exception e) {
-			LOG.error("Embedding fonts failed for preview! " + e + " Content: " + content);
-		}
-		finally {
-			if (stamp != null){
-				try {
-					stamp.close();
-				} catch (Exception e) {
-					LOG.error(e);
-				}
-			}
-			if (templateReader != null){
-				templateReader.close();
-			}
-		}
-		FontFactory.defaultEmbedding = false;
-		
-		
-		return baos.toByteArray();*/
-		return content;
-	}
-	
 	public static byte[] addImageToPdfContent(String templatePath, byte[] content, Map<String, Object[]> imageMap) {
 		
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -118,13 +82,7 @@ public class PdfGenerator {
 	//		document.close();
 		return baos.toByteArray();
 	}
-	
-	/**
-	 * 
-	 * @param urlTemplatePath
-	 * @param dataMap
-	 * @return
-	 */
+
 	public static byte[] generatePdfContentFromURI(String urlTemplatePath, Map<String,String[]> dataMap, PdfService.FontType fontType, String fPath) {
         Map<String,PdfService.FontType> fontsPathMap = new HashMap<String, PdfService.FontType>();
 		if (fontType != null && dataMap != null){
@@ -134,14 +92,7 @@ public class PdfGenerator {
 		}
 		return generatePdfContentFromURI(urlTemplatePath,dataMap,fontsPathMap, fPath);
 	}
-	
-	/**
-	 * 
-	 * @param urlTemplatePath
-	 * @param dataMap
-	 * @param fontsPathMap
-	 * @return
-	 */
+
 	private static byte[] generatePdfContentFromURI(String urlTemplatePath, Map<String,String[]> dataMap, Map<String,PdfService.FontType> fontsPathMap, String fPath) {
         if (urlTemplatePath == null){
 			throw new IllegalArgumentException("urlTemplatePath param shouldn't be null");

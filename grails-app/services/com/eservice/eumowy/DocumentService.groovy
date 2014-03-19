@@ -14,4 +14,15 @@ class DocumentService {
 
         file
     }
+
+    def findDocumentByName(List<DocumentFile> documents, String name) {
+        if (documents != null) {
+            for(DocumentFile df : documents) {
+                if (df.name.equals(name))
+                    return df
+            }
+        }
+
+        return null
+    }
 }

@@ -4,6 +4,7 @@ import org.perf4j.StopWatch
 import org.perf4j.log4j.Log4JStopWatch
 
 class AttachmentService {
+    def messageSource
 
     def deleteFile(def id, def processId) {
 
@@ -34,7 +35,7 @@ class AttachmentService {
         searchResult
     }
 
-    def uploadFile( def config, def request, def messageSource) {
+    def uploadFile( def config, def request) {
 
         StopWatch stopWatch = new Log4JStopWatch();
         def file = request.getFile("file")
@@ -88,7 +89,7 @@ class AttachmentService {
         return ufile;
     }
 
-    def download(def id, def request, def messageSource) {
+    def download(def id, def request) {
         AttachmentFile ufile =  AttachmentFile.get(id)
 
         if (!ufile) {

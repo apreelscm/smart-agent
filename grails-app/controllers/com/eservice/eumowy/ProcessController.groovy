@@ -2,8 +2,6 @@ package com.eservice.eumowy
 
 import grails.plugins.springsecurity.Secured
 
-import org.codehaus.groovy.grails.web.mime.MimeUtility
-
 import pdfgenerator.PdfGenerator
 
 import com.eservice.eum.ws.xml.Result
@@ -11,15 +9,13 @@ import com.eservice.eumowy.util.DateUtils
 
 
 class ProcessController {
-
-    def cbdService
-    def messageSource
     def attachmentService
     def documentService
     def emailService
 	def appParametersService
     def springSecurityService
     def acceptUmowaWSClient
+    def processService
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
@@ -28,8 +24,8 @@ class ProcessController {
     }
 
     @Secured(['EUM_ZRD'])
-    def invalidateCaches(def params){
-        cbdService.invalidateCaches()
+    def invalidateCaches(){
+        processService.invalidateCaches()
         render(text: '')
     }
 
@@ -43,7 +39,7 @@ class ProcessController {
             params.filterStatus = Process.ProcessStatus.WAITING.name()
         }
 
-        def processes = new ProcessService().searchProcessByFilters(params)
+        def processes = processService.searchProcessByFilters(params)
         [
             filterStatus: params.filterStatus,
             filterObserved:params.filterObserved,
@@ -163,7 +159,7 @@ class ProcessController {
 		
         flash.message = message(code: 'default.rejected.message', args:[ message(code: 'process.label', default: 'proces'), processInstance.id])
 
-        def mailBodyParams = [merchantName: processInstance.client.name, merchantNip: processInstance.client.nip, activities: getActivities(processInstance), rejectReason: params.notesFromZrd]
+        def mailBodyParams = [merchantName: processInstance.client.name, merchantNip: processInstance.client.nip, activities: processService.getActivities(processInstance), rejectReason: params.notesFromZrd]
 
         if(!emailService.sendDocumentsRejected(processInstance.phEmail, processInstance.client.name, processInstance.client.nip, mailBodyParams)){
             flash.error = "Błąd podczas wysyłania maila na adres ${processInstance.phEmail}"
@@ -252,7 +248,7 @@ class ProcessController {
         flash.message = message(code: 'default.accepted.message', args:[ message(code: 'process.label', default: 'proces'), processInstance.id])
 
 
-        def mailBodyParams = [merchantName: processInstance.client.name, merchantNip: processInstance.client.nip, activities: getActivities(processInstance), rejectReason: params.notesFromZrd]
+        def mailBodyParams = [merchantName: processInstance.client.name, merchantNip: processInstance.client.nip, activities: processService.getActivities(processInstance), rejectReason: params.notesFromZrd]
         if(!emailService.sendDocumentsAccepted(processInstance.phEmail, null , mailBodyParams)){
             flash.error = "Błąd podczas wysyłania maila na adres ${processInstance.phEmail}"
             redirect(action: "show", params: params)
@@ -260,6 +256,93 @@ class ProcessController {
         }
 
         redirect(action: "list", params: params)
+    }
+
+    @Secured(['EUM_ZRD'])
+    def reloadDocuments() {
+        Process processInstance = Process.get(params.id)
+
+        log.info("Trying to reload documents for process " + params.id + " with status " + processInstance.status)
+
+        if (!processInstance) {
+            flash.message = message(code: 'default.not.found.message', args:[ message(code: 'process.label', default: 'proces'), processInstance.id])
+            redirect(action: "list", params: params)
+            return
+        }
+
+        Boolean isWaitingProcess = processInstance.status.equals(Process.ProcessStatus.WAITING)
+        if (!isWaitingProcess){
+            flash.error = g.message(code: 'renewSubscriptions.wrong.status')
+            redirect(action: "show", params: params)
+            return
+        }
+
+        Integer requiredNumberOfSubscriptions = processService.requiredNumberOfSubscriptions(processInstance)
+        Integer savedSubscriptionsCount = processService.savedSubscriptionsCount(processInstance)
+        Boolean hasRequiredNumberOfSubscriptions = (requiredNumberOfSubscriptions == savedSubscriptionsCount)
+        if(!hasRequiredNumberOfSubscriptions) {
+            log.error("Niewystarczajaca liczba podpisow. Wymaganych: " + requiredNumberOfSubscriptions + " Zapisanych w bazie: " + savedSubscriptionsCount)
+            flash.error = g.message(code: 'renewSubscriptions.subscriptions.deficit', args: [requiredNumberOfSubscriptions, savedSubscriptionsCount])
+            redirect(action: "show", params: params)
+            return
+        }
+
+        processService.reloadDataAndSubscriptionsOnDocuments(processInstance)
+
+        Map mailParametersForElectronicalVersion = processService.createMailParametersForElectronicalVersion(processInstance)
+        String recipient = mailParametersForElectronicalVersion.recipient
+        String phEmail = processInstance.phEmail
+
+        if (recipient) {
+            List<String> recipients = []
+            recipients.add(recipient)
+
+            if (phEmail) {
+                recipients.add(phEmail)
+            }
+
+            Boolean isNewAgreement = processService.isProcessHasActivity(processInstance, "nowaUmowa")
+            List<DocumentFile> documents = processInstance.documents?.findAll{it.signature?.sendToClient}
+            if (isNewAgreement){
+                emailService.sendDocumentsElectronicalVersion(recipients, documents, mailParametersForElectronicalVersion)
+            } else {
+                emailService.sendDocumentsNotNewAggrementElectronicalVersion(recipients, documents, mailParametersForElectronicalVersion)
+            }
+        } else {
+            emailService.sendDocumentsAcceptedToPostSend(processInstance.documents, mailParametersForElectronicalVersion)
+        }
+
+        log.info("Reloading documents successful.")
+        flash.message = g.message(code: 'renewSubscriptions.success')
+        redirect(action: "show", params: params)
+    }
+
+    @Secured(['EUM_ZRD'])
+    def resendEmail() {
+        Process processInstance = Process.get(params.id)
+
+        log.info("Trying to resend emails for process " + params.id + " with status " + processInstance.status)
+
+        if (!processInstance) {
+            flash.error = message(code: 'default.not.found.message', args:[ message(code: 'process.label', default: 'proces'), processInstance.id])
+            redirect(action: "list", params: params)
+            return
+        }
+
+        Boolean isProcessWaitingForPaperVersion = processInstance.status.equals(Process.ProcessStatus.WAIT_FOR_SUBSCRIPTION_PAPER_VERSION)
+
+        if(!isProcessWaitingForPaperVersion) {
+            flash.error = g.message(code: 'resendEmails.wrong.status')
+            redirect(action: "show", params: params)
+            return
+        }
+
+        Map mailParametersForPaperVersion = processService.createMailParametersForPaperVersion(processInstance)
+        List documents = processInstance.documents?.findAll{it.signature?.sendToClient}
+        emailService.sendDocumentsPaperVersion(documents, mailParametersForPaperVersion)
+
+        flash.message = g.message(code: 'resendEmails.success')
+        redirect(action: "show", params: params)
     }
 
     //---------------------------------
@@ -299,7 +382,7 @@ class ProcessController {
 
     def downloadAttachment(){
         log.info( "downloadAttachment = " +  params.id);
-        AttachmentFile file = attachmentService.download( params.id, request , messageSource)
+        AttachmentFile file = attachmentService.download( params.id, request)
 
         if(!(file?.file?.content)){
             redirect(action: "show")
@@ -313,15 +396,4 @@ class ProcessController {
     private boolean isDate(def dateStr){
         return !"".equals(DateUtils.formatWithTimezoneFromStr(dateStr))
     }
-
-    def getActivities(def process){
-        process.activities.collect {messageSource.getMessage('activity.' + it.code + '.name', [] as Object[], request.locale)}
-    }
-/*
-    private boolean isNotesEmpty(def notes){
-        if(notes == null || notes == ""){
-            return true
-        }
-        return false
-    }*/
 }
