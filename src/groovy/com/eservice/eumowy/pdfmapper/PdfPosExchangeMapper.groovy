@@ -9,13 +9,27 @@ class PdfPosExchangeMapper extends AbstractPdfMapper{
         data.put("numerPos1", [posExchange.posNumber] as String[])
         log.info "PosExchange numerPos1: " + posExchange.posNumber
 
-        data.put(getCorrectPlaceholder(posExchange.newType, posExchange.newModel, "Typ"), [posExchange.newModel] as String[])
-        data.put(getCorrectPlaceholder(posExchange.newType, posExchange.newModel, "Ilosc"), ["1"] as String[])
-        data.putAll(mapSimType(posExchange.newModel, posExchange.simType))
-        addCheckbox(data, "posStacjonarny", false, isPortable(posExchange.newModel))
-        addCheckbox(data, "posPrzenosny", true, isPortable(posExchange.newModel))
+        if ("PINPAD".equals(posExchange.newType)){
+            // ustawiamy PINPAD w pierwszym wolnym polu... :|
+            // logiki nie ma tu zadnej, w PDF wyglada tragicznie i nie wiadomo o co chodzi - Klient nasz pan...
+            // https://ext.apreel.com/youtrack/issue/eUmowy_ext-552#comment=61-11776
+            data.put('dialupTyp', [posExchange.newModel] as String[])
+            data.put('dialupPPIlosc', ['1'] as String[])
+        } else {
+            data.put(getCorrectPlaceholder(posExchange.newType, posExchange.newModel, "Typ"), [posExchange.newModel] as String[])
+            data.put(getCorrectPlaceholder(posExchange.newType, posExchange.newModel, "Ilosc"), ["1"] as String[])
+            data.putAll(mapSimType(posExchange.newModel, posExchange.simType))
 
-        //TODO - jak zapelnic ilosc pinpadow???
+            boolean isPortable = isPortable(posExchange.newModel)
+
+            addCheckbox(data, "posStacjonarny", false, isPortable)
+            addCheckbox(data, "posPrzenosny", true, isPortable)
+
+            if (isPortable){
+                data.put('przenosnyBaza', ['1'] as String[])
+            }
+        }
+
         data
     }
 

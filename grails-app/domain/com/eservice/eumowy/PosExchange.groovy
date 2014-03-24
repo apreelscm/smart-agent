@@ -13,7 +13,6 @@ class PosExchange implements Serializable{
     String name
     String address
 
-    String type
     String model
 
     String newType
@@ -37,7 +36,6 @@ class PosExchange implements Serializable{
         posNumber column: "POS_NUMBER"
         name column: "FULL_NAME"
         address column: "ADDRESS"
-        type column: "TYPE"
         model column: "MODEL"
         newType column: "NEW_TYPE"
         newModel column: "NEW_MODEL"
@@ -52,7 +50,6 @@ class PosExchange implements Serializable{
         posNumber(nullable: true)
         name(nullable: true)
         address(nullable: true)
-        type(nullable: true)
         model(nullable: true)
         newType(nullable: true)
         newModel(nullable: true)

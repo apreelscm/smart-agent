@@ -19,7 +19,6 @@ class PosExchangeCommand implements Serializable{
     String name
     String address
 
-    String type
     String model
 
     String newType

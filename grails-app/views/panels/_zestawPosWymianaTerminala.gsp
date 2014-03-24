@@ -10,7 +10,6 @@
                         <td class="align-center">Pełna nazwa punktu</td>
                         <td class="align-center">Adres punktu</td>
                         <td class="align-center">Numer terminala</td>
-                        <td class="align-center">Typ</td>
                         <td class="align-center">Model</td>
                         <td class="align-center">Opłata</td>
                         <td class="align-center">Nowy typ</td>
@@ -30,7 +29,6 @@
                         </td>
                         <td>${pe.address} <g:hiddenField name="posExchanges[${i}].address" value="${pe.address}" /></td>
                         <td class="align-center">${pe.posNumber} <g:hiddenField name="posExchanges[${i}].posNumber" value="${pe.posNumber}" /></td>
-                        <td class="align-center">${pe.type} <g:hiddenField name="posExchanges[${i}].type" value="${pe.type}" /></td>
                         <td class="align-center">${pe.model} <g:hiddenField id="oldModel_${i}" name="posExchanges[${i}].model" value="${pe.model}" /></td>
                         <td class="align-center">${pe.currentPrice} <g:hiddenField id="posExchanges${i}.currentPrice" name="posExchanges[${i}].currentPrice" value="${pe.currentPrice}" /></td>
                         <td class="align-center"><g:select class="typeSelect" id="selectType_${i}" data-index="${i}" name="posExchanges[${i}].newType" from="['DIALUP','VPN','SSL','GPRS','PINPAD','WiFi']" valueMessagePrefix="panel" value="${pe.newType}" noSelection="['':'']"/></td>
@@ -59,7 +57,6 @@
     jQuery(function() {
         var count = ${data.posExchanges.size()}
         for (var i=0; i<count; i++){
-            debugger
             if (jQuery('#selectType_'+i).val() == 'GPRS'){
                 jQuery('#selectSim_'+i).prop('disabled', false);
             }
@@ -74,7 +71,6 @@
         jQuery('#acceptModel_'+this.dataset.index).attr('checked', false);
 
         //aktywacja sima
-        debugger;
         var simSelect = jQuery('#selectSim_'+this.dataset.index);
         if (jQuery(this).val() == 'GPRS'){
             simSelect.prop('disabled', false);
@@ -98,7 +94,7 @@
             var oldModel = jQuery('#oldModel_'+this.dataset.index).val();
             var newModel = jQuery('#selectModel_'+this.dataset.index).val();
 
-            if (calcId ==-1 && (oldModel.toUpperCase().indexOf('VX510') != -1 || oldModel.toUpperCase().indexOf('VX520') != -1) && newModel.toUpperCase().indexOf('IWL220C') != -1){
+            if (calcId ==-1 && (oldModel.toUpperCase().indexOf('VX51') != -1 || oldModel.toUpperCase().indexOf('VX52') != -1) && newModel.toUpperCase().indexOf('IWL220C') != -1){
                 alert('Dla wybranej wymiany modelowej wymagany jest Kalkulator')
                 jQuery(this).attr('checked', false);
             }
