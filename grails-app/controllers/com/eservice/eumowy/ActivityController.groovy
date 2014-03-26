@@ -1480,26 +1480,31 @@ class ActivityController {
                 Map mailBodyParams = processService.createMailParametersForElectronicalVersion(process)
                 String recipient = mailBodyParams.recipient
 
-                if (recipient){
-                    def recipients = [];
-                    recipients.add(recipient)
+                List<DocumentFile> documents = process.documents?.findAll{it.signature?.sendToClient}
 
-                    def user = springSecurityService.principal
-                    if (user.email) {
-                        recipients.add(user.email)
-                    } else {
-                        log.info 'Brak emaila dla zalogowanego usera.'
-                    }
-
-                    Boolean isNewAgreement = processService.isProcessHasActivity(process, "nowaUmowa")
-                    List<DocumentFile> documents = process.documents?.findAll{it.signature?.sendToClient}
-                    if (isNewAgreement){
-                        emailService.sendDocumentsElectronicalVersion(recipients, documents, mailBodyParams)
-                    } else {
-                        emailService.sendDocumentsNotNewAggrementElectronicalVersion(recipients, documents, mailBodyParams)
-                    }
+                def recipients = [];
+                def user = springSecurityService.principal
+                if (user.email) {
+                    recipients.add(user.email)
                 } else {
-                    emailService.sendDocumentsAcceptedToPostSend(process.documents, mailBodyParams)
+                    log.info 'Brak emaila dla zalogowanego usera.'
+                }
+
+                if (processService.isProcessHasActivity(process, "wymianaTerminala")){
+                    emailService.sendDocumentsElectronicalVersion(recipients, documents, mailBodyParams)
+                } else {
+                    if (recipient){
+                        recipients.add(recipient)
+
+                        Boolean isNewAgreement = processService.isProcessHasActivity(process, "nowaUmowa")
+                        if (isNewAgreement){
+                            emailService.sendDocumentsElectronicalVersion(recipients, documents, mailBodyParams)
+                        } else {
+                            emailService.sendDocumentsNotNewAggrementElectronicalVersion(recipients, documents, mailBodyParams)
+                        }
+                    } else {
+                        emailService.sendDocumentsAcceptedToPostSend(process.documents, mailBodyParams)
+                    }
                 }
             }
         }
@@ -1516,7 +1521,18 @@ class ActivityController {
 
             Map mailBodyParams = processService.createMailParametersForPaperVersion(process)
             List<DocumentFile> documents = process.documents?.findAll{it.signature?.sendToClient}
-            emailService.sendDocumentsPaperVersion(documents, mailBodyParams)
+
+            def isWymianaTerminala = processService.isProcessHasActivity(process, "wymianaTerminala")
+            if (isWymianaTerminala){
+                def user = springSecurityService.principal
+                if (user.email) {
+                    emailService.sendDocumentsPaperVersion(user.email, documents, mailBodyParams)
+                } else {
+                    log.info 'Brak emaila dla zalogowanego usera.'
+                }
+            } else {
+                emailService.sendDocumentsPaperVersion(documents, mailBodyParams)
+            }
         }
         else if (TEMPLATES.equals(requestVersion)) {
 			List<DocumentFile> documentFilesWithBlackFaksymileList = new ArrayList<DocumentFile>()
@@ -1533,7 +1549,19 @@ class ActivityController {
             log.info "TEMPLATE VERSION for process" + process.id
 
             Map mailBodyParams = processService.createMailParametersForElectronicalVersion(process)
+
             String recipient = mailBodyParams.recipient
+            def isWymianaTerminala = processService.isProcessHasActivity(process, "wymianaTerminala")
+            if (isWymianaTerminala){
+                def user = springSecurityService.principal
+                if (user.email) {
+                    recipient = user.email
+                } else {
+                    log.info 'Brak emaila dla zalogowanego usera.'
+                }
+            } else {
+                recipient = mailBodyParams.recipient
+            }
 
             if (recipient){
                 emailService.sendDocumentsTemplateVersion(recipient, documentFilesWithBlackFaksymileList, mailBodyParams)

@@ -11,7 +11,6 @@ class PdfPosExchangeMapper extends AbstractPdfMapper{
 
         if ("PINPAD".equals(posExchange.newType)){
             // ustawiamy PINPAD w pierwszym wolnym polu... :|
-            // logiki nie ma tu zadnej, w PDF wyglada tragicznie i nie wiadomo o co chodzi - Klient nasz pan...
             // https://ext.apreel.com/youtrack/issue/eUmowy_ext-552#comment=61-11776
             data.put('dialupTyp', [posExchange.newModel] as String[])
             data.put('dialupPPIlosc', ['1'] as String[])

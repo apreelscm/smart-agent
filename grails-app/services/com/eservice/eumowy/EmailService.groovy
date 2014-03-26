@@ -30,6 +30,11 @@ class EmailService {
 		sendMail(emailTemplate, COA_MAIL, null, bodyParams, documents)
 	}
 
+    def sendDocumentsPaperVersion(def recipient, List<DocumentFile> documents, def bodyParams) {
+        def emailTemplate = getEmailTampletesByName(EmailTemplates.EmailTemplateType.DOCUMENTS_PAPER_VERSION)
+        sendMail(emailTemplate, recipient, null, bodyParams, documents)
+    }
+
     def sendDocumentsTemplateVersion(def recipient, List<DocumentFile> documents, def bodyParams) {
         def emailTemplate = getEmailTampletesByName(EmailTemplates.EmailTemplateType.DOCUMENTS_TEMPLATE_VERSION)
         sendMail(emailTemplate, recipient, null, bodyParams, documents)
