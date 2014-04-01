@@ -211,7 +211,7 @@ class PanelService {
         cmd.oplataZaZmianeGrafiki = nullify(cmd.oplataZaZmianeGrafiki)
         cmd.oplataZaInstalacjePOS = nullify(cmd.oplataZaInstalacjePOS)
         cmd.oplataZaInstalacjeGPRS = nullify(cmd.oplataZaInstalacjeGPRS)
-        cmd.oplataZaUruchomienieWalutyObcej = nullify(cmd.oplataZaUruchomienieWalutyObcej)
+        cmd.oplataZaUruchomienieWalutyObcej = calculatorService.getCalcProperty(calc,"DCC_OPLATA_URUCHOMIENIE")
     }
 
     def getDodatkoweUslugi2(ProcessCommand cmd, def calc ) {
@@ -297,7 +297,7 @@ class PanelService {
 
     def getOplataDCCZaUruchomienie(ProcessCommand cmd, def calc ) {
         setCzyDcc(cmd,calc)
-        cmd.oplataZaUruchomienieDCC = cmd.czyDcc ? nullify(cmd.oplataZaUruchomienieDCC) : "-"
+        cmd.oplataZaUruchomienieDCC = cmd.czyDcc ? calculatorService.getCalcProperty(calc,"DCC_OPLATA_URUCHOMIENIE") : "-"
     }
 
     def getOplatyDCC(ProcessCommand cmd, def calc ) {

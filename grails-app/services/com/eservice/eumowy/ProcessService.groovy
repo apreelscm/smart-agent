@@ -18,7 +18,6 @@ class ProcessService {
     def cbdService
     def panelMockService
     def calculatorService
-    def pdfService
 
     void invalidateCaches() {
         cbdService.invalidateCaches()
@@ -1731,18 +1730,7 @@ class ProcessService {
         return subscriptions.size()
     }
 
-    void reloadDataAndSubscriptionsOnDocuments(Process process) {
-        log.info("Renewing documents")
-        def calculator = cbdService.findCalculatorByNip(process.client.nip)
-        Map processWithPages = pdfService.workWithDocuments(process, calculator)
-        process = processWithPages.processInstance
-        process.save(flush: true)
-
-        process.documents.each { DocumentFile doc ->
-            byte[] newContent = pdfService.addClientSubscriptionsToDocument(doc.content.content, doc.signature.id, process.subscriptions)
-            doc.content.content = newContent
-            doc.content.discard()
-        }
-        log.info("Subscriptions and documents data renewed.")
+    def calculatorForProcess(Process process) {
+        return cbdService.findCalculatorByNip(process.client.nip)
     }
 }

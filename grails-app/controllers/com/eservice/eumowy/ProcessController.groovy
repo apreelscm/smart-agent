@@ -287,7 +287,8 @@ class ProcessController {
             return
         }
 
-        processService.reloadDataAndSubscriptionsOnDocuments(processInstance)
+        def calculator = processService.calculatorForProcess(processInstance)
+        documentService.reloadDataAndSubscriptionsOnDocuments(processInstance, calculator)
 
         Map mailParametersForElectronicalVersion = processService.createMailParametersForElectronicalVersion(processInstance)
         String recipient = mailParametersForElectronicalVersion.recipient
