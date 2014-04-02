@@ -358,6 +358,20 @@ class PdfService {
         PdfGenerator.updateValuesContent(documentContent, fieldsToUpdate, dataUmowy)
     }
 
+    void reloadDataAndSubscriptionsOnDocuments(Process process, def calculator) {
+        log.info("Renewing documents")
+        Map processWithPages = workWithDocuments(process, calculator)
+        process = processWithPages.processInstance
+        process.save(flush: true)
+
+        process.documents.each { DocumentFile doc ->
+            byte[] newContent = addClientSubscriptionsToDocument(doc.content.content, doc.signature.id, process.subscriptions)
+            doc.content.content = newContent
+            doc.content.discard()
+        }
+        log.info("Subscriptions and documents data renewed.")
+    }
+
     private def workWithOneDocument(def processInstance, def sig, def data, def documentName, def documentClientName){
         byte[] documentData = this.fillPdfFormFromURIWithFaksymile(sig.id, data, PdfService.FontType.ARIAL)
         if(!documentData) return 0

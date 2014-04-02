@@ -16,6 +16,7 @@ class ProcessController {
     def springSecurityService
     def acceptUmowaWSClient
     def processService
+    def pdfService
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
@@ -288,7 +289,7 @@ class ProcessController {
         }
 
         def calculator = processService.calculatorForProcess(processInstance)
-        documentService.reloadDataAndSubscriptionsOnDocuments(processInstance, calculator)
+        pdfService.reloadDataAndSubscriptionsOnDocuments(processInstance, calculator)
 
         Map mailParametersForElectronicalVersion = processService.createMailParametersForElectronicalVersion(processInstance)
         String recipient = mailParametersForElectronicalVersion.recipient
