@@ -3,7 +3,7 @@
 <html>
 <head>
     <meta name="layout" content="main">
-    <g:set var="entityName" value="${message(code: 'process.label', default: 'Proces')}" />
+    <g:set var="entityName" value="${message(code: 'process.label')}" />
     <title><g:message code="process.list.label"  /></title>
 </head>
 <body>
@@ -12,7 +12,7 @@
 %{--<r:require module="mask"/>--}%
 
 <section id="create-activity">
-    <h1 class="ng linia-bottom"><g:message code="selectedPanels.header.title" default="Lista paneli"/></h1>
+    <h1 class="ng linia-bottom"><g:message code="selectedPanels.header.title"/></h1>
 
     <g:hasErrors bean="${data}">
         <ul class="errors" role="alert">

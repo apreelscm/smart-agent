@@ -4,7 +4,7 @@
 <head>
 <meta name="layout" content="main">
 <meta name="viewport" content="width=960, initial-scale=1, maximum-scale=1"/>
-<title><g:message code="clientSignature.header.title" default="Podpis Klienta"/></title>
+<title><g:message code="clientSignature.header.title"/></title>
 
 <style>
 
@@ -445,7 +445,7 @@
 </div>
 <section id="create_clientSignature" >
 
-    <h1 class="ng linia-bottom"><g:message code="clientSignature.header.title" default="Podpis Klienta"/></h1>
+    <h1 class="ng linia-bottom"><g:message code="clientSignature.header.title"/></h1>
     <table border="0" align="center" cellpadding="3" cellspacing="1" class="table"
            style="margin: 20px 15px 15px 15px; width: 950px;">
         <thead>
@@ -494,7 +494,7 @@
     <nav>
         <g:form>
             <fieldset id="clientSignaturePersons" class="subpanel-fieldset">
-                <legend><g:message code="clientSignature.signing.people" default="Osoby podpisujące" /></legend>
+                <legend><g:message code="clientSignature.signing.people"/></legend>
                 <ul class="table-list">
                     <li>
                         <span>
@@ -529,13 +529,13 @@
                 </ul>
             </fieldset>
             <fieldset class="subpanel-fieldset" id="clientSignatureDocType">
-                <legend><g:message code="clientSignature.version.title" default="Forma" /></legend>
+                <legend><g:message code="clientSignature.version.title"/></legend>
                 <ul class="table-list">
                     <li>
                         <span>
                             <label>
                                 <g:radio id="requestVersionElectronical" name="requestVersion" value="electronical"/>
-                                <g:message code="clientSignature.electronicalVersion.radio" default="Elektroniczna" />
+                                <g:message code="clientSignature.electronicalVersion.radio"/>
                             </label>
                         </span>
                     </li>
@@ -543,7 +543,7 @@
                         <span>
                             <label>
                                 <g:radio id="requestVersionPaper" name="requestVersion" value="paper" />
-                                <g:message code="clientSignature.paperVersion.radio" default="Papierowa" />
+                                <g:message code="clientSignature.paperVersion.radio"/>
                             </label>
                         </span>
                     </li>
@@ -551,7 +551,7 @@
                         <span>
                             <label>
                                 <g:radio id="requestVersionTemplates" name="requestVersion" value="templates" />
-                                <g:message code="clientSignature.templatesVersion.radio" default="Żądanie wzorów dokumentów" />
+                                <g:message code="clientSignature.templatesVersion.radio"/>
                             </label>
                         </span>
                     </li>

@@ -4,7 +4,7 @@
 <html>
 <head>
     <meta name="layout" content="main">
-    <g:set var="entityName" value="${message(code: 'process.label', default: 'Process')}" />
+    <g:set var="entityName" value="${message(code: 'process.label')}" />
     <g:set var="isWaitingOnlyProcess" value="${processInstance?.status.equals(Process.ProcessStatus.WAITING)}"/>
     <g:set var="isWaitingProcess" value="${processInstance?.status in [Process.ProcessStatus.WAITING,Process.ProcessStatus.WAIT_FOR_SUBSCRIPTION_PAPER_VERSION]}" />
     <g:set var="isWaitingForSubscriptionProcess" value="${processInstance?.status == Process.ProcessStatus.WAIT_FOR_SUBSCRIPTION_PAPER_VERSION}" />
@@ -51,7 +51,7 @@
 <div id="resendingEmailsInProgress" style="display: none"><g:message code="resendEmails.in.progress"/></div>
 
 <section id="show-process">
-    <h1 class="ng linia-bottom">Id Procesu: ${processInstance?.id}</h1>
+    <h1 class="ng linia-bottom"><g:message code='process.id.label'/>: ${processInstance?.id}</h1>
 
     <div id="notesMessageBox">
         <g:if test="${flash.message}">
@@ -65,7 +65,7 @@
     <ul class="property-list" style="text-align: center">
         <li style="margin:0em 0em 1em 0em;">
             <label for="clientName" style="display: inline ">
-                <g:message code="process.clientName.label" default="Nazwa Klienta" />
+                <g:message code="client.name.label"/>
             </label>
             <g:textField name="clientName" value="${processInstance?.client?.name}" disabled="disabled"
                          style="width: 89%;display: inline"/>
@@ -73,7 +73,7 @@
 
         <li style="margin:0em 0em 0em 0em;display:inline;">
             <label for="clientNip"  style="display: inline ">
-                <g:message code="process.clientNip.label" default="NIP" />
+                <g:message code="process.nip.label" />
 
             </label>
             <g:textField name="clientNip" value="${processInstance?.client?.nip}" disabled="disabled"/>
@@ -81,7 +81,7 @@
 
         <li style="margin:0em 0em 0em 0em;display:inline;">
             <label for="phNumber">
-                <g:message code="process.phNumber.label" default="Numer Przedstawiciela" />
+                <g:message code="process.phNumber.label"/>
 
             </label>
             <g:textField name="phNumber" value="${processInstance?.phNumber}" disabled="disabled"/>
@@ -89,7 +89,7 @@
 
         <li style="margin:0em 0em 0em 0em;display:inline;">
             <label for="phFirstName">
-                <g:message code="process.phFirstName.label" default="Imię i Naziwsko" />
+                <g:message code="process.fullName.label"/>
             </label>
             <g:textField name="phFirstName" value="${processInstance?.phFirstName + " " + processInstance?.phSurname}"
                          disabled="disabled" style="width: 250px"/>
@@ -108,7 +108,6 @@
 
     <div id="pdfBox" class="display-block"
          style="height: 500px; width: 98% ;overflow: hidden;border: solid 1px; border-radius: 5px; display: none; margin: 20px auto">
-        %{--tutaj zostanie render pdf template--}%
     </div>
 
     <div class="clear"/>
@@ -118,7 +117,7 @@
             %{--ACTIVITIES--}%
             <div>
                 <label style="width: 70px; text-align: right;vertical-align: top;">
-                    <g:message code="todo" default="Aktywności:"/>
+                    <g:message code="activities.label"/>
                 </label>
 
                 <ul style="padding: 0; margin: 0px;display: inline-block;top: -10px; position: relative;">
@@ -133,9 +132,8 @@
 
             <div>
                 <label style="width: 70px; text-align: right">
-                    <g:message code="todo" default="Obserwuj:"/>
+                    <g:message code="observe.label"/>
                 </label>
-             %{--   <g:checkBox name="observed" checked="true" style="position: relative; top: 3px; left: 3px"/>--}%
 
                 <input type="checkbox" id="observed" style="position: relative; top: 3px; left: 3px" name="observed"
                     ${processInstance?.observed ? 'checked' : ''}
@@ -146,7 +144,7 @@
             <g:if test="${isWaitingForSubscriptionProcess}">
                 <div>
                     <label style="width: 70px; text-align: right;white-space: nowrap;">
-                        <g:message code="fill.aggrement.date" default="Data umowy:"/>
+                        <g:message code="fill.aggrement.date"/>
                     </label>
                     <input type="text" name="dataUmowy" id="dataUmowy" value="" style="position: relative; top: 3px; left: 3px"
                         ${isWaitingForSubscriptionProcess ? 'required="true"' : '' }
@@ -155,7 +153,7 @@
             </g:if>
             <div style="margin-top: 15px">
                 <label style="width: 70px; text-align: right">
-                    <g:message code="todo" default="Uwagi:"/>
+                    <g:message code="notes.label"/>
                 </label>
 
                 <textarea id="notes" maxlength="300" style="margin-left: 8px; height: 100px; min-width: 400px" name="notesFromZrd"
@@ -177,31 +175,30 @@
                 <g:if test="${params.order}"><g:hiddenField name="order" value="${params.order}"/></g:if>
                 <g:if test="${params.max}"><g:hiddenField name="max" value="${params.max}"/></g:if>
                 <g:if test="${params.offset}"><g:hiddenField name="offset" value="${params.offset}"/></g:if>
-                <a href="#" id="back" class="button submit float-left">Wróć</a>
+                <a href="#" id="back" class="button submit float-left"><g:message code="back.label"/></a>
 
-                <g:actionSubmit class="button submit" action="reject" value="Odrzuć"
+                <g:actionSubmit class="button submit" action="reject" value="${message(code: 'default.navigation.button.reject')}"
                                 style="float: left;margin-right: 1em;display:block"
                                 disabled="${isClosedProcess}"
                                 formnovalidate=""
                                 onclick="return confirm('${message(code: 'default.button.delete.confirm.message')}');"/>
 
-                <g:actionSubmit class="button submit" action="accept" value="Zaakceptuj"
+                <g:actionSubmit class="button submit" action="accept" value="${message(code: 'default.navigation.button.accept')}"
                                 disabled="${!isWaitingProcess || !hasDocuments}"
                                 style="float: right;display:block"
                                 onclick="return confirm('${message(code: 'default.button.delete.confirm.message')}');"/>
 
                 <g:if test="${isWaitingOnlyProcess && hasDocuments}">
                     <g:link class="button submit renewSubscriptions" action="reloadDocuments" id="${processInstance.id}">
-                        Wygeneruj ponownie dokumenty
+                        <g:message code="generate.again.documents.label"/>
                     </g:link>
                 </g:if>
 
                 <g:if test="${isWaitingForSubscriptionProcess}">
                     <g:link class="button submit resendEmails" action="resendEmail" id="${processInstance.id}">
-                        Wyślij ponownie emaila
+                        <g:message code="resend.email.label"/>
                     </g:link>
                 </g:if>
-
             </fieldset>
         </nav>
     </g:form>

@@ -3,7 +3,7 @@
     <fieldset style="text-align: center">
         <div class="belka-glowna"><g:message code="panel.addnewpos.title"/> </div>
         <div style="text-align: center; padding-top: 20px; width: 350px" class="centre">
-            <div style="display:inline-block;"><g:submitButton id="addNewPosButton" name="addNewPos" class="button submit" value="Dodaj kolejny Pos"/></div>
+            <div style="display:inline-block;"><g:submitButton id="addNewPosButton" name="addNewPos" class="button submit" value="${message(code: 'add.another.pos')}"/></div>
         </div>
         <div>
         	<g:hiddenField name="newPosPanelCount" value="0"/>

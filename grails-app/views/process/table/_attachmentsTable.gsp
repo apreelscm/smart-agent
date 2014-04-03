@@ -17,7 +17,7 @@
             <td class="tableCell">
                 <g:link class="button action float-left" style="margin: 0 auto"
                         action="downloadAttachment"
-                        id="${attachment.id}">Pobierz</g:link>
+                        id="${attachment.id}"><g:message code="download.label"/></g:link>
             </td>
         </tr>
     </g:each>

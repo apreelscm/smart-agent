@@ -3,7 +3,7 @@
 <html>
 <head>
     <meta name="layout" content="main">
-    <title> <g:message code="chooseCalc.header.title" default="Wybierz klienta"/></title>
+    <title> <g:message code="chooseCalc.header.title"/></title>
     <r:require module="mask"/>
     <r:require module="jquery_ui" />
     <r:script>
@@ -38,19 +38,19 @@
 <body>
 
 <section id="create_chooseCalc">
-    <h1 class="ng linia-bottom"><g:message code="chooseCalc.header.title" default="Wybierz klienta"/></h1>
+    <h1 class="ng linia-bottom"><g:message code="chooseCalc.header.title"/></h1>
 
     <g:form class="calcForm">
         <div>
             <div class="display-inline-block">
                 <apreel:textField  id="nipField" name="nip" class="nip"
-                                   title="${message(code:'client.nip.label', default:'Wprowadź NIP klienta')}"
+                                   title="${message(code:'client.nip.label')}"
                                    value="${nip}" direction="vertical"
                 />
             </div>
 
             <g:submitButton name="getCalculator" class="button action display-inline getCalculator"
-                            value="${message(code:'default.search.button.name', default: 'Wyszukaj')}"/>
+                            value="${message(code:'default.search.button.name')}"/>
 
             <div id="nipMessageBox">
                  <g:if test="${nipInfoMessage}">
@@ -63,7 +63,7 @@
         </div>
 
         <div>
-            <apreel:textField  name="calc" title="${message(code:'client.lastAcceptedCalc.label', default:'Ostatni zaakceptowany kalkulator')}"
+            <apreel:textField  name="calc" title="${message(code:'client.lastAcceptedCalc.label')}"
                                direction="vertical"  disabled="true" value="${calcNumber}"/>
             <div id="calcMessageBox">
                  <g:if test="${calcInfoMessage}">

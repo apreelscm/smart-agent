@@ -27,18 +27,9 @@
                 </li>
             </ul>
             <span>
-                <span><g:message code="todo" default="Adres email do wysyłki dokumentu"/>:</span>
+                <span><g:message code="email.receiver.address.label"/>:</span>
                 <span><g:textField id="emailDoWysylkiDokumentu" class="" name="emailDoWysylkiDokumentu" value="${data.emailDoWysylkiDokumentu}" validatable="${data}" style="width: 150px" email="true"/></span>
             </span>
         </div>
     </fieldset>
 </div>
-
-<r:script>
-  /*  jQuery(document).ready(function() {
-        alert(jQuery("#kontaktEmail").val())
-        if(jQuery("#kontaktEmail").length){
-            jQuery("#emailDoWysylkiDokumentu").val(jQuery("#kontaktEmail").val()).attr("readonly","true")
-        }
-    });*/
-</r:script>

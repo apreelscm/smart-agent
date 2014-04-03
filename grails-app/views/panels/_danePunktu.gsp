@@ -6,7 +6,7 @@
 <div style="text-align: center; padding-top: 20px;" class="centre">
 <div style="float: right;">
     <g:submitButton data-point-id="${pointData?.id}" id="removePointButton" name="removePointButton"
-                    class="button submit" value="Usuń punkt"
+                    class="button submit" value="${message(code: 'delete.point.label')}"
                     style="margin-right: 2em; margin-bottom: 1em;" />
 </div>
 <div style="clear: both;"></div>

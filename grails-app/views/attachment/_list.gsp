@@ -27,5 +27,5 @@
     </tbody>
 </table>
 <div id="deletingAttachment" style="display: none;">
-    <p><g:message code="deletingAttachment" default="Trwa usuwanie załącznika..."/></p>
+    <p><g:message code="deletingAttachment"/></p>
 </div>

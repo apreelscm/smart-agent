@@ -220,7 +220,7 @@
     %{--empty--}%
     </g:if>
     <g:else>
-        <a href="/eumowy/calculator?nip=${data.nip}" target="_blank">Zobacz kalkulator</a>
+        <a href="/eumowy/calculator?nip=${data.nip}" target="_blank"><g:message code='calculator.overview.label'/></a>
     </g:else>
     <h1 class="ng linia-bottom"><g:message code="selectedPanels.header.title" default="Lista paneli"/></h1>
 

@@ -59,8 +59,8 @@
         <ul id="mainMenu">
             <li><a href="#" class="submit">Menu</a>
                 <ul>
-                    <li><a id="saveProcessLink" href="#" style="display: none;">Zapisz</a></li>
-                    <li><a id="logoutLink" href="#">Wyloguj</a>
+                    <li><a id="saveProcessLink" href="#" style="display: none;"><g:message code="save.label"/></a></li>
+                    <li><a id="logoutLink" href="#"><g:message code="logout.label"/></a>
                     </li>
                 </ul></li>
         </ul>
@@ -86,7 +86,7 @@
 </div>--}%
 
 <div id="loadingDialog" style="display: none;">
-    <p><g:message code="loading" default="Trwa ładowanie danych..."/></p>
+    <p><g:message code="loading"/></p>
 </div>
 
 <div id="confirm-logout-dialog"  style="display: none;">
