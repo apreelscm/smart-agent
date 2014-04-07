@@ -3,7 +3,7 @@
 <html>
 <head>
     <meta name="layout" content="main">
-    <title><g:message code="selectedPanels.header.title" default="Lista paneli"/></title>
+    <title><g:message code="selectedPanels.header.title"/></title>
     <r:require module="filestyle"/>
     <r:require module="jquery_ui" />
     <r:require module="selectedPanels"/>
@@ -222,7 +222,7 @@
     <g:else>
         <a href="/eumowy/calculator?nip=${data.nip}" target="_blank"><g:message code='calculator.overview.label'/></a>
     </g:else>
-    <h1 class="ng linia-bottom"><g:message code="selectedPanels.header.title" default="Lista paneli"/></h1>
+    <h1 class="ng linia-bottom"><g:message code="selectedPanels.header.title"/></h1>
 
     <g:hasErrors bean="${data}">
         <ul class="errors" role="alert">
@@ -235,7 +235,7 @@
 <!-- Working with process with id: ${processInstance?.id} , and status ${processInstance?.status?.toString()}-->
 
     <div id="noCitiesFound" style="display: none;">
-        <p><g:message code="noCityFound" default="Brak miast dla podanego kodu pocztowego w bazie słownikowej"/></p>
+        <p><g:message code="noCityFound"/></p>
     </div>
 
     <g:form class="panelsForm">
@@ -287,7 +287,7 @@
             <button id="continueButton" class="button submit float-right">${message(code:'default.navigation.button.next', default: 'Dalej')}</button>
         </fieldset>
         <div id="loadingDialog" style="display: none;">
-            <p><g:message code="loading" default="Trwa ładowanie danych..."/></p>
+            <p><g:message code="loading"/></p>
         </div>
     </nav>
 

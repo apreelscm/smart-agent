@@ -11,15 +11,15 @@
             </tr>
             <tr>
                 <td colspan="4"></td>
-                <td>Term./mies</td>
-                <td>PP./mies.</td>
-                <td>Term./mies</td>
-                <td>PP./mies.</td>
+                <td><g:message code="panel.term.price.per.month"/></td>
+                <td><g:message code="panel.pp.price.per.month"/></td>
+                <td><g:message code="panel.term.price.per.month"/></td>
+                <td><g:message code="panel.pp.price.per.month"/></td>
             </tr>
             </thead>
         <tbody>
         <tr>
-            <td>typ <dict:typeSelect nip="${nip}"
+            <td><g:message code="type.label"/> <dict:typeSelect nip="${nip}"
                                      medium="DIALUP"
                                      id="${panelType}[${id}].possetforselectedpointDialupType"
                                      name="${panelType}[${id}].dialupTyp" from="[]"
@@ -29,11 +29,11 @@
             <td><g:textField name="${panelType}[${id}].dialupIlosc"
                              id="${panelType}[${id}].dialupCount"
                              value="${pointData?.dialupIlosc}" 
-                             class="half-width integer-number"/> szt.</td>
+                             class="half-width integer-number"/> <g:message code="panel.unit"/></td>
             <td><g:textField name="${panelType}[${id}].dialupPPIlosc"
                              id="${panelType}[${id}].dialupPPCount"
                              value="${pointData?.dialupPPIlosc}" readonly="readonly"
-                             class="half-width integer-number"/> PP. szt.</td>
+                             class="half-width integer-number"/> PP. <g:message code="panel.unit"/></td>
 
             <td><eumowy:currencyField name="${panelType}[${id}].dialupCena"
                              id="${panelType}[${id}].dialupPrice"
@@ -59,7 +59,7 @@
                              class="half-width float-number pref-price"/></td>
         </tr>
         <tr>
-            <td>typ <dict:typeSelect nip="${nip}"
+            <td><g:message code="type.label"/> <dict:typeSelect nip="${nip}"
                                      medium="VPN"
                                      id="${panelType}[${id}].possetforselectedpointVpnType"
                                      name="${panelType}[${id}].vpnTyp" from="[]"
@@ -69,11 +69,11 @@
             <td><g:textField name="${panelType}[${id}].vpnIlosc"
                              id="${panelType}[${id}].vpnCount"
                              value="${pointData?.vpnIlosc}" 
-                             class="half-width integer-number"/> szt.</td>
+                             class="half-width integer-number"/> <g:message code="panel.unit"/></td>
             <td><g:textField name="${panelType}[${id}].vpnPPIlosc"
                              id="${panelType}[${id}].vpnPPCount"
                              value="${pointData?.vpnPPIlosc}" readonly="readonly"
-                             class="half-width integer-number"/> PP. szt.</td>
+                             class="half-width integer-number"/> PP. <g:message code="panel.unit"/></td>
 
             <td><eumowy:currencyField name="${panelType}[${id}].vpnCena"
                              id="${panelType}[${id}].vpnPrice"
@@ -102,7 +102,7 @@
                              class="half-width float-number pref-price"/></td>
         </tr>
         <tr>
-            <td>typ <dict:typeSelect nip="${nip}"
+            <td><g:message code="type.label"/> <dict:typeSelect nip="${nip}"
                                      medium="SSL"
                                      id="${panelType}[${id}].possetforselectedpointSslType"
                                      name="${panelType}[${id}].sslTyp" from="[]"
@@ -112,11 +112,11 @@
             <td><g:textField name="${panelType}[${id}].sslIlosc"
                              id="${panelType}[${id}].sslCount"
                              value="${pointData?.sslIlosc}" 
-                             class="half-width integer-number"/> szt.</td>
+                             class="half-width integer-number"/> <g:message code="panel.unit"/></td>
             <td><g:textField name="${panelType}[${id}].sslPPIlosc"
                              id="${panelType}[${id}].sslPPCount"
                              value="${pointData?.sslPPIlosc}" readonly="readonly"
-                             class="half-width integer-number"/> PP. szt.</td>
+                             class="half-width integer-number"/> PP. <g:message code="panel.unit"/></td>
             <td><eumowy:currencyField name="${panelType}[${id}].sslCena"
                              id="${panelType}[${id}].sslPrice"
                              value="${pointData?.sslCena}" 
@@ -144,7 +144,7 @@
                              class="half-width float-number pref-price"/></td>
         </tr>
         <tr>
-            <td>typ <dict:typeSelect nip="${nip}"
+            <td><g:message code="type.label"/> <dict:typeSelect nip="${nip}"
                                      medium="GPRS"
                                      id="${panelType}[${id}].possetforselectedpointGprsType"
                                      name="${panelType}[${id}].gprsTyp" from="[]"
@@ -157,11 +157,11 @@
             <td><g:textField name="${panelType}[${id}].gprsIlosc"
                              id="${panelType}[${id}].gprsCount"
                              value="${pointData?.gprsIlosc}" 
-                             class="half-width integer-number"/> szt.</td>
+                             class="half-width integer-number"/> <g:message code="panel.unit"/></td>
             <td><g:textField name="${panelType}[${id}].gprsPPIlosc"
                              id="${panelType}[${id}].gprsPPCount"
                              value="${pointData?.gprsPPIlosc}" readonly="readonly"
-                             class="half-width integer-number"/> PP. szt.</td>
+                             class="half-width integer-number"/> PP. <g:message code="panel.unit"/></td>
 
             <td><eumowy:currencyField name="${panelType}[${id}].gprsCena"
                              id="${panelType}[${id}].gprsPrice"
@@ -190,7 +190,7 @@
                              class="half-width float-number pref-price"/></td>
         </tr>
         <tr>
-            <td>typ <dict:typeSelect nip="${nip}"
+            <td><g:message code="type.label"/> <dict:typeSelect nip="${nip}"
                                      medium="PINPAD"
                                      id="${panelType}[${id}].possetforselectedpointPinpadType"
                                      name="${panelType}[${id}].pinPadTyp" from="[]"
@@ -202,7 +202,7 @@
             <td><g:textField name="${panelType}[${id}].pinPadIlosc"
                              id="${panelType}[${id}].pinpadCount"
                              value="${pointData?.pinPadIlosc}" 
-                             class="half-width integer-number"/> szt.</td>
+                             class="half-width integer-number"/> <g:message code="panel.unit"/></td>
             <td></td>
 
             <td><eumowy:currencyField name="${panelType}[${id}].pinPadCena"
@@ -222,7 +222,7 @@
             <td></td>
         </tr>
         <tr>
-            <td>typ <dict:typeSelect nip="${nip}"
+            <td><g:message code="type.label"/> <dict:typeSelect nip="${nip}"
                                      medium="WiFi"
                                      id="${panelType}[${id}].possetforselectedpointWifiType"
                                      name="${panelType}[${id}].wifiTyp" from="[]"
@@ -232,7 +232,7 @@
             <td><g:textField name="${panelType}[${id}].wifiIlosc"
                              id="${panelType}[${id}].wifiCount"
                              value="${pointData?.wifiIlosc}" 
-                             class="half-width integer-number"/> szt.</td>
+                             class="half-width integer-number"/> <g:message code="panel.unit"/></td>
             <td></td>
 
             <td><eumowy:currencyField name="${panelType}[${id}].wifiCena"

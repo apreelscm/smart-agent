@@ -461,7 +461,7 @@
                 <td class="tableCellLeft" style="vertical-align: middle"><a id="previewPdfButton" data-document-index="${i}" href="#">${document.clientName}</td>
                 <td class="tableCell" style="vertical-align: middle"><g:formatDate date="${document.lastUpdated}" format="yyyy-MM-dd HH:mm"/></td>
                 <td class="tableCell" style="vertical-align: middle">
-                    <g:link class="button action" style="margin: 0 auto" action="downloadDoc" params="[id: document.id]">Pobierz</g:link>
+                    <g:link class="button action" style="margin: 0 auto" action="downloadDoc" params="[id: document.id]"><g:message code="download.label"/></g:link>
                 </td>
             </tr>
         </g:each>

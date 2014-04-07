@@ -61,7 +61,7 @@ beans = {
     }
 
     webServiceTemplate(WebServiceTemplate, ref('messageFactory')){
-        defaultUri = grailsApplication.config.eumowySyncWSAddress
+        defaultUri = "${grailsApplication.config.eumowySyncWSAddress}"
         marshaller = ref('marshaller')
         unmarshaller = ref('marshaller')
     }
