@@ -76,8 +76,8 @@
         </div>
 
         <fieldset style="margin-top: 20px; left: -32px">
-            <g:link event="back" class="button submit">${message(code:'default.navigation.button.prev', default: 'Wstecz')}</g:link>
-            <input id="continueButton" class="button submit" type="submit" value="Dalej" name="_eventId_continue" ${(!isContinueEnabled)?"disabled":""} />
+            <g:link event="back" class="button submit">${message(code:'default.navigation.button.prev')}</g:link>
+            <input id="continueButton" class="button submit" type="submit" value="${message(code:'default.navigation.button.next')}" name="_eventId_continue" ${(!isContinueEnabled)?"disabled":""} />
         </fieldset>
     </g:form>
 

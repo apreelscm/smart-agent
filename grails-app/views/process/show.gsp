@@ -152,7 +152,7 @@
                 </div>
             </g:if>
             <div style="margin-top: 15px">
-                <label style="width: 70px; text-align: right">
+                <label style="width: 140px; text-align: right">
                     <g:message code="notes.label"/>
                 </label>
 

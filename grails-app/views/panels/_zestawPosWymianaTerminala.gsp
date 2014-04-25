@@ -36,7 +36,7 @@
                             <td class="align-center"><dict:typeSelect nip="${data.nip}" medium="${pe.newType}" data-index="${i}" id="selectModel_${i}" name="posExchanges[${i}].newModel" from="[]" valueMessagePrefix="" value="${pe.newModel}" style="width: 120px" /></td>
                         </g:if>
                         <g:else>
-                            <td class="align-center"><select data-index="${i}" id="selectModel_${i}" name="posExchanges[${i}].newModel" style="width: 120px"></select></td>
+                            <td class="align-center"><select class="selectModel" data-index="${i}" id="selectModel_${i}" name="posExchanges[${i}].newModel" style="width: 120px"></select></td>
                         </g:else>
                         <td class="align-center"><dict:simCardSelect name="posExchanges[${i}].simType" id="selectSim_${i}" value="${pe.simType}" style="width: 70px;" disabled="true"/></td>
                         <td class="align-center"><g:checkBox class="acceptModel" data-index="${i}" id="acceptModel_${i}" name="posExchanges[${i}].isChoosen" checked="${pe.isChoosen}"/></td>
@@ -51,8 +51,7 @@
 
 <r:require module="jquery_ui"/>
 
-<r:script>
-
+<script type="text/javascript">
     //aktywacja selectow sima dla GPRS
     jQuery(function() {
         var count = ${data.posExchanges.size()}
@@ -79,30 +78,80 @@
             simSelect.val('');
         }
 
-        jQuery.get("/eumowy/activity/getTerminalModels", {nip: ${data.nip}, type: this.value}, function(data) {
-            if (data != undefined && data != null && data != "") {
-                jQuery.each( data, function( index, value ) {
-                  modelSelect.append('<option value="'+value+'">'+value+'</option>')
-                });
-            }
+        jQuery.get("/eumowy/activity/getTerminalModels", {type: this.value}, function(data) {
+            modelSelect.append("<option value='0'></option>")
+            jQuery.each( data, function( index, value ) {
+                modelSelect.append(prepareOptionForModelSelect(value))
+            });
         });
     });
 
     jQuery('.acceptModel').change(function(){
         var calcId = ${data.calcId};
         if (this.checked){
-            var oldModel = jQuery('#oldModel_'+this.dataset.index).val();
-            var newModel = jQuery('#selectModel_'+this.dataset.index).val();
+            var oldModel = jQuery('#oldModel_'+this.dataset.index).val(),
+                newModel = jQuery('#selectModel_'+this.dataset.index).val();
 
             if (calcId ==-1 && (oldModel.toUpperCase().indexOf('VX51') != -1 || oldModel.toUpperCase().indexOf('VX52') != -1) && newModel.toUpperCase().indexOf('IWL220C') != -1){
-                alert('Dla wybranej wymiany modelowej wymagany jest Kalkulator')
+                alert('Dla wybranej wymiany modelowej wymagany jest Kalkulator');
                 jQuery(this).attr('checked', false);
             }
 
             if (oldModel.toUpperCase().indexOf('VX670') != -1 && newModel.toUpperCase().indexOf('IWL220C') != -1){
-                alert('Dla wybranej wymiany modelowej brak możliwości wymiany')
+                alert('Dla wybranej wymiany modelowej brak możliwości wymiany');
                 jQuery(this).attr('checked', false);
             }
         }
     });
-</r:script>
+
+    jQuery('.selectModel').change(function() {
+        var select = jQuery(this),
+            selectedOption = select.find(":selected"),
+            isSelectedOptionMobile = selectedOption.data('mobile'),
+            isPinpadSelected = selectedOption.text().indexOf('PINPad') === 0,
+            posNumber = jQuery("#posExchanges\\[" + this.dataset.index + "\\]\\.posNumber").val();
+
+        if(isSelectedOptionMobile && isCalculatorRequiredForMobile(posNumber)) {
+            alert('Dla wybranej wymiany modelowej wymagany jest Kalkulator');
+            return;
+        }
+
+        if(isPinpadSelected && isCalculatorRequiredForPinpad(posNumber)) {
+            alert('Dla wybranej wymiany modelowej wymagany jest Kalkulator');
+        }
+
+    });
+
+    function prepareOptionForModelSelect(data) {
+        var isMobile = data["is_mobile"] == 1;
+
+        return "<option value='" + data.value + "' data-mobile='" + isMobile + "'>" + data.value + "</option>";
+    }
+
+    function isCalculatorRequiredForMobile(terminalNumber) {
+        var terminalsFirstNumbers = ['288', '258', '26', '256', '280', '3'];
+
+        return isCalculatorRequired(terminalsFirstNumbers, terminalNumber);
+    }
+
+    function isCalculatorRequiredForPinpad(terminalNumber) {
+        var terminalsFirstNumbers = ['288', '258', '26', '256', '280', '27', '287'];
+
+        return isCalculatorRequired(terminalsFirstNumbers, terminalNumber);
+    }
+
+    function isCalculatorRequired(numbers, terminalNumber) {
+        var calculatorRequired = false,
+            numberLength;
+
+        jQuery.each(numbers, function(index, value) {
+            numberLength = value.length;
+            if(value === terminalNumber.substring(0, numberLength)) {
+                calculatorRequired = true;
+                return false;
+            }
+        });
+
+        return calculatorRequired;
+    }
+</script>

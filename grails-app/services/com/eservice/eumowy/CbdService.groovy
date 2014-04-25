@@ -34,6 +34,7 @@ class CbdService {
     private static final def GET_RODZAJ_DZIALALNOSCI_BY_MCC = "getRodzajDzialanosciByMCC"
     private static final def GET_ANEKS_DO_UMOWY_NAJMU_ZESTAWU_POS = "getAneksDoUmowyNajmuZestawuPos"
     private static final def GET_ANEKS_DO_UMOWY_PREPAID = "getAneksDoUmowyPrepaid"
+    private static final def GET_KALKULATOR_TYP_URZADZEN = "getKalkulatorTypUrzadzen"
     private static final def GET_CBD_POINT_BY_ID = "getCbdPointById"
     private static final def SPRAWDZ_DZIALANIE = "sprawdzDzialanie"
     private static final def GET_NUMER_SPRZEDAZOWY = "getNumerSprzedazowy"
@@ -197,6 +198,12 @@ class CbdService {
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
     def getPosTypes(def query, def medium) {
         return cbdDAO.selectMany(query,[medium: medium]);
+    }
+
+    @Cacheable(value="eumowyCacheLong", key="'getCalculatorDevicesTypes_'.concat(#medium)")
+    @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
+    def getCalculatorDevicesTypes(def medium) {
+        return cbdDAO.selectMany(GET_KALKULATOR_TYP_URZADZEN, [medium: medium])
     }
 
     @Cacheable(value="eumowyCacheShort", key = "'getCbdPoints_'.concat(#clientNip)")

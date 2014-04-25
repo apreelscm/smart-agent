@@ -1382,9 +1382,7 @@ class ActivityController {
     def getTerminalModels(){
         log.info( "getTerminalModels nip = " +  params.nip + ", type: " + params.type);
 
-        def result = dictionaryService.getPosTypeComboBox(params.nip, params.type)*.value;
-        result.add(0,"")
-        render result as JSON
+        render dictionaryService.getCalculatorDevicesTypes(params.type) as JSON
     }
 
 	def downloadDoc(){

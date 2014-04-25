@@ -36,6 +36,10 @@ class DictionaryService {
         cbdService.getPosTypes(DICTIONARY_PATH + GET_POS_TYPE_COMBOBOX, medium)
     }
 
+    def getCalculatorDevicesTypes(def medium) {
+        cbdService.getCalculatorDevicesTypes(medium)
+    }
+
     def getCbdPointsComboBox(def nip) {
         cbdService.getCbdPoints(DICTIONARY_PATH + GET_CBD_POINTS_COMBOBOX, nip)
     }
