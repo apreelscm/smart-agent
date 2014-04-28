@@ -33,7 +33,7 @@
                         <td class="align-center">${pe.currentPrice} <g:hiddenField id="posExchanges${i}.currentPrice" name="posExchanges[${i}].currentPrice" value="${pe.currentPrice}" /></td>
                         <td class="align-center"><g:select class="typeSelect" id="selectType_${i}" data-index="${i}" name="posExchanges[${i}].newType" from="['DIALUP','VPN','SSL','GPRS','PINPAD','WiFi']" valueMessagePrefix="panel" value="${pe.newType}" noSelection="['':'']"/></td>
                         <g:if test="${pe.newType}">
-                            <td class="align-center"><dict:typeSelect nip="${data.nip}" medium="${pe.newType}" data-index="${i}" id="selectModel_${i}" name="posExchanges[${i}].newModel" from="[]" valueMessagePrefix="" value="${pe.newModel}" style="width: 120px" /></td>
+                            <td class="align-center"><dict:typeSelect class="selectModel" nip="${data.nip}" medium="${pe.newType}" data-index="${i}" id="selectModel_${i}" name="posExchanges[${i}].newModel" from="[]" valueMessagePrefix="" value="${pe.newModel}" style="width: 120px" /></td>
                         </g:if>
                         <g:else>
                             <td class="align-center"><select class="selectModel" data-index="${i}" id="selectModel_${i}" name="posExchanges[${i}].newModel" style="width: 120px"></select></td>
