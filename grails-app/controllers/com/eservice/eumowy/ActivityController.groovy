@@ -1,6 +1,7 @@
 
 package com.eservice.eumowy
 
+import com.eservice.eumowy.dto.BisnodeMerchantDetailsDTO
 import grails.converters.JSON
 import groovy.sql.GroovyRowResult
 
@@ -32,6 +33,7 @@ class ActivityController {
     def pdfService
 	def documentService
     def dictionaryService
+    def bisnodeService
 
     def springSecurityService
 
@@ -519,6 +521,15 @@ class ActivityController {
                     conversation.calc = calc
                     flow.calcNumber =  calcId;
                     flash.calcInfoMessage = message(code:"calc.found.info", default:"Znaleziono");
+                }
+
+                if(hasNowaUmowa) {
+                    BisnodeMerchantDetailsDTO merchantDetails = bisnodeService.getMerchantDetails(flow.nip)
+                    if (merchantDetails) {
+                        flash.bisnodeMessage = message(code: 'bisnode.merchant.found')
+                    } else {
+                        flash.bisnodeMessage = message(code: 'bisnode.merchant.not.found')
+                    }
                 }
             }
             on("success"){
