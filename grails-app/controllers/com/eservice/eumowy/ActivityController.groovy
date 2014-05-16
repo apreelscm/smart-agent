@@ -523,14 +523,14 @@ class ActivityController {
                     flash.calcInfoMessage = message(code:"calc.found.info", default:"Znaleziono");
                 }
 
-                if(hasNowaUmowa) {
+//                if(hasNowaUmowa) {
                     BisnodeMerchantDetailsDTO merchantDetails = bisnodeService.getMerchantDetails(flow.nip)
                     if (merchantDetails) {
                         flash.bisnodeMessage = message(code: 'bisnode.merchant.found')
                     } else {
                         flash.bisnodeMessage = message(code: 'bisnode.merchant.not.found')
                     }
-                }
+//                }
             }
             on("success"){
                 flow.isContinueEnabled = true

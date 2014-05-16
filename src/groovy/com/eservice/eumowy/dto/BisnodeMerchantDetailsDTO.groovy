@@ -30,7 +30,7 @@ class BisnodeMerchantDetailsDTO {
         opisMerchanta = merchantData.getDescription()
 
         if (merchantData.merchAddressDatas.size() > 0) {
-            addMerchantAddressData(merchantData.merchAddressDatas[0])
+            addMerchantAddressData(merchantData.merchAddressDatas.asList().first())
         }
 
         representatives = merchantData.merchRepresentDatas
