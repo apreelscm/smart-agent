@@ -34,6 +34,8 @@ class Process implements Serializable {
     List<DocumentFile> documents
     Set<ProcessData> processData
 
+//    boolean allDataFromBisnode
+
     String getStringId() {
         return String.format('%06d',this.id)
     }
@@ -81,6 +83,8 @@ class Process implements Serializable {
         notesFromZrd(nullable: true, maxSize: 300)
         hirePayments(nullable: true)
         posExchanges(nullable: true)
+
+//        allDataFromBisnode column: 'IS_BISNODE'
     }
 
     static mapping = {

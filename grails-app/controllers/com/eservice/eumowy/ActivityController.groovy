@@ -1,7 +1,7 @@
 
 package com.eservice.eumowy
 
-import com.eservice.eumowy.dto.BisnodeMerchantDetailsDTO
+import com.eservice.eumowy.dto.MerchantDetailsDTO
 import grails.converters.JSON
 import groovy.sql.GroovyRowResult
 
@@ -408,7 +408,6 @@ class ActivityController {
             on("back").to "chooseActivity"
             on("getCalculator").to "getCalculator"
             on("continue"){
-
                 Process processInstance = flow.processInstance
 
                 processInstance.calcNumber =  flow.calcNumber
@@ -427,6 +426,7 @@ class ActivityController {
                 processInstance.phEmail = user.email
                 processInstance.client =  client
                 processInstance.status = Process.ProcessStatus.NEW
+//                processInstance.allDataFromBisnode = flow.isDatasFromBisnode
 
                 if (!processInstance.save(flush:true)){
                     processInstance.errors.each { log.error(it) }
@@ -524,9 +524,10 @@ class ActivityController {
                 }
 
 //                if(hasNowaUmowa) {
-                    BisnodeMerchantDetailsDTO merchantDetails = bisnodeService.getMerchantDetails(flow.nip)
+                    MerchantDetailsDTO merchantDetails = bisnodeService.getMerchantDetails(flow.nip)
                     if (merchantDetails) {
                         flash.bisnodeMessage = message(code: 'bisnode.merchant.found')
+                        flow.bisnodeMerchantDetails = merchantDetails
                     } else {
                         flash.bisnodeMessage = message(code: 'bisnode.merchant.not.found')
                     }
@@ -551,8 +552,13 @@ class ActivityController {
                     log.info("skipPanelsInit - false")
                     TreeSet beforeExclusionPanels = _getActivePanels(processInstance.signatures)
                     List<Panel> activePanels = processService.filterExcludedPanels(processInstance, beforeExclusionPanels.toList())
-                    processInstance.panels = activePanels;
+                    processInstance.panels = activePanels
                     processCmd = processService.getNewProcessCommand(processInstance, flow.calcNumber, conversation.calc)
+
+                    if(flow.bisnodeMerchantDetails) {
+                        processCmd.isFromBisnode = true
+                        processCmd.fillWithBisnodeData(flow.bisnodeMerchantDetails)
+                    }
 
                     //inicjacyjne zapisanie danych pobranych z cbd i calc
                     processInstance = processService.populateProcessWithData(processInstance, processCmd, conversation.calc)

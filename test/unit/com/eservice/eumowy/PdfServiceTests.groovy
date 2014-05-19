@@ -2,7 +2,6 @@ package com.eservice.eumowy
 
 import com.eservice.eumowy.util.ProjectPathHelper
 import org.apache.pdfbox.pdmodel.PDDocument
-import org.apache.pdfbox.util.PDFImageWriter
 import grails.test.mixin.*
 import org.junit.Before
 
@@ -1752,9 +1751,9 @@ class PdfServiceTests {
 //        }
 
 		int resolution = 100
-		PDFImageWriter imageWriter = new PDFImageWriter()
-		boolean success = imageWriter.writeImage(document, "png", "",
-				pageNumber, pageNumber, getTemplateOutPath()+pdfName+"-TEST-"+resolution, BufferedImage.TYPE_INT_RGB, resolution)
+//		PDFImageWriter imageWriter = new PDFImageWriter()
+//		boolean success = imageWriter.writeImage(document, "png", "",
+//				pageNumber, pageNumber, getTemplateOutPath()+pdfName+"-TEST-"+resolution, BufferedImage.TYPE_INT_RGB, resolution)
 
 		if (!success) {
 			log.error "No writer found for PNG image format"

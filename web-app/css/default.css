@@ -1530,3 +1530,7 @@ label.doladowanieLabel {
 .disabled-label{
     color: #d8d8d8;
 }
+
+#acceptorsPanel .centre div {
+    margin-bottom: 15px;
+}

@@ -59,6 +59,9 @@
                  <g:if test="${nipErrorMessage}">
                      <g:render template="message/errorMessage" model="[message: nipErrorMessage]"/>
                  </g:if>
+                <g:if test="${bisnodeMessage}">
+                    <g:render template="message/infoMessage" model="[message: bisnodeMessage]"/>
+                </g:if>
             </div>
         </div>
 

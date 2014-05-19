@@ -3,6 +3,7 @@ package com.eservice.eumowy.command
 import com.eservice.eumowy.Process
 import com.eservice.eumowy.annotation.DateField
 import com.eservice.eumowy.annotation.Omit
+import com.eservice.eumowy.dto.MerchantDetailsDTO
 import com.eservice.eumowy.validator.AtLeastValidator
 import com.eservice.eumowy.validator.CustomValidator
 import com.eservice.eumowy.validator.HirePaymentValidator
@@ -183,9 +184,15 @@ class ProcessCommand implements Serializable {
     String reprezentant1Tytul = DEFAULT_VALUE
     String reprezentant1Imie = DEFAULT_VALUE
     String reprezentant1Nazwisko = DEFAULT_VALUE
+    String reprezentant1Stanowisko = DEFAULT_VALUE
     String reprezentant2Tytul = DEFAULT_VALUE
     String reprezentant2Imie = DEFAULT_VALUE
     String reprezentant2Nazwisko = DEFAULT_VALUE
+    String reprezentant2Stanowisko = DEFAULT_VALUE
+    String reprezentant3Tytul = DEFAULT_VALUE
+    String reprezentant3Imie = DEFAULT_VALUE
+    String reprezentant3Nazwisko = DEFAULT_VALUE
+    String reprezentant3Stanowisko = DEFAULT_VALUE
     String emailDoWysylkiDokumentu = DEFAULT_VALUE
 
 //    poziomOplatiWarunkiPlatnosciKarty - FINISH
@@ -404,6 +411,8 @@ class ProcessCommand implements Serializable {
 //    liczbaMiesiecyZwolnieniaZNajm
 
     String nip = DEFAULT_VALUE
+
+    boolean isFromBisnode = false
 
 //    uwagi
     @Omit
@@ -779,9 +788,15 @@ class ProcessCommand implements Serializable {
         reprezentant1Tytul(nullable: false, blank: false)
         reprezentant1Imie(nullable: false, blank: false, shared: "lettersOnly")
         reprezentant1Nazwisko(nullable: false, blank: false, shared: "lettersOnly")
+        reprezentant1Stanowisko(blank: true)
         reprezentant2Tytul(nullable: false, blank: false)
         reprezentant2Imie(nullable: true, blank: true, shared: "lettersOnly")
         reprezentant2Nazwisko(nullable: true, blank: true, shared: "lettersOnly")
+        reprezentant2Stanowisko(blank: true)
+        reprezentant3Tytul(nullable: false, blank: false)
+        reprezentant3Imie(nullable: true, blank: true, shared: "lettersOnly")
+        reprezentant3Nazwisko(nullable: true, blank: true, shared: "lettersOnly")
+        reprezentant3Stanowisko(blank: true)
         emailDoWysylkiDokumentu(nullable: true, blank: true, shared: "email")
 
         visaEUKKOSt(nullable: false, blank: false,  validator: { value, cmd, errors ->
@@ -1259,6 +1274,20 @@ class ProcessCommand implements Serializable {
     public String getMessageForProperty(String property){
         //metoda musi zostac, jest uzywana m. in. w validatorach
         return messageSource.getMessage("com.eservice.eumowy.command.ProcessCommand." + property + ".label", [] as Object[], property, Locale.getDefault())
+    }
+
+    public void fillWithBisnodeData(MerchantDetailsDTO merchantDetailsDTO) {
+        akceptantNazwaOficjalna = merchantDetailsDTO.akceptantNazwaOficjalna
+        akceptantRegon = merchantDetailsDTO.akceptantRegon
+        akceptantUlicaTytul = merchantDetailsDTO.akceptantUlicaTytul
+        akceptantUlica = merchantDetailsDTO.akceptantUlica
+        akceptantNrDomu = merchantDetailsDTO.akceptantNrDomu
+        akceptantNrMieszkania = merchantDetailsDTO.akceptantNrMieszkania
+        akceptantKodPocztowy = merchantDetailsDTO.akceptantKodPocztowy
+        akceptantMiasto = merchantDetailsDTO.akceptantMiasto
+        akceptantTelStacjonarny = merchantDetailsDTO.akceptantTelStacjonarny
+        akceptantTelKomorkowy = merchantDetailsDTO.akceptantTelKomorkowy
+        akceptantFax = merchantDetailsDTO.akceptantFax
     }
 
 }

@@ -1,35 +1,28 @@
 <div id="acceptorsPanel" style="margin: 0">
     <fieldset>
         <div class="belka-glowna"><g:message code="panel.acceptor.title"/></div>
-        <div class="centre" style="text-align: center; padding-top: 20px; width: 750px">
-            <ul class="table-list centre">
-                <li>
-                    <span>
-                        <span><g:select name="reprezentant1Tytul" from="['Pan','Pani']" valueMessagePrefix="person.title" value="${data.reprezentant1Tytul}"/></span>
-                        <span><g:message code="panel.first.name"/>: </span>
-                        <span><eumowy:textField name="reprezentant1Imie" value="${data.reprezentant1Imie}" validatable="${data}" maxlength ="13" required="true"/></span>
-                    </span>
-                    <span>
-                        <span><g:message code="panel.last.name"/>: </span>
-                        <span><eumowy:textField name="reprezentant1Nazwisko" value="${data.reprezentant1Nazwisko}" validatable="${data}" maxlength ="35" required="true" class="nazwiskoField"/></span>
-                    </span>
-                </li>
-                <li>
-                    <span>
-                        <span><g:select name="reprezentant2Tytul" from="['Pan','Pani']" valueMessagePrefix="person.title" value="${data.reprezentant2Tytul}"/></span>
-                        <span><g:message code="panel.first.name"/>: </span>
-                        <span><g:textField name="reprezentant2Imie" value="${data.reprezentant2Imie}" maxlength ="13"/></span>
-                    </span>
-                    <span>
-                        <span><g:message code="panel.last.name"/>: </span>
-                        <span><g:textField name="reprezentant2Nazwisko" value="${data.reprezentant2Nazwisko}" maxlength ="35" class="nazwiskoField"/></span>
-                    </span>
-                </li>
-            </ul>
-            <span>
-                <span><g:message code="email.receiver.address.label"/>:</span>
-                <span><g:textField id="emailDoWysylkiDokumentu" class="" name="emailDoWysylkiDokumentu" value="${data.emailDoWysylkiDokumentu}" validatable="${data}" style="width: 150px" email="true"/></span>
-            </span>
+        <div class="centre" style="padding-top: 20px; width: 915px">
+
+            <g:if test="${data.isFromBisnode}">
+                <div>
+                    <g:checkBox name="representativesChange"/> <g:message code="representatives.change"/>
+                </div>
+
+                <div style="margin-bottom: 20px">
+                    <label for="poleOpisowe" style="margin-top: 20px">Pole opisowe</label>
+                    <g:textArea name="poleOpisowe" maxlength ="1000" rows="3" cols="70" style="height: auto; width: auto"/>
+                </div>
+
+                <g:render template="../panels/reprezentaciDropdowns"/>
+            </g:if>
+            <g:else>
+                <g:render template="../panels/reprezentaciTextfields"/>
+            </g:else>
+
+            <div style="margin-top: 30px; margin-bottom: 0">
+                <label for="emailDoWysylkiDokumentu"><g:message code="email.receiver.address.label"/>:</label>
+                <g:textField id="emailDoWysylkiDokumentu" class="" name="emailDoWysylkiDokumentu" value="${data.emailDoWysylkiDokumentu}" validatable="${data}" style="width: 150px" email="true"/>
+            </div>
         </div>
     </fieldset>
 </div>

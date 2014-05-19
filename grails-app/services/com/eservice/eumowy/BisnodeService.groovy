@@ -1,15 +1,14 @@
 package com.eservice.eumowy
 
-import com.eservice.eumowy.dto.BisnodeMerchantDetailsDTO
+import com.eservice.eumowy.dto.MerchantDetailsDTO
 import com.eservice.webs.dto.MerchantKRSDataDTO
 import com.eservice.webs.wsclient.bisnode.BisnodeWebServiceClient
 import org.apache.commons.lang.exception.ExceptionUtils
-import org.h2.util.StringUtils
 
 class BisnodeService {
     BisnodeWebServiceClient bisnodeWebServiceClient
 
-    public BisnodeMerchantDetailsDTO getMerchantDetails(String nip) {
+    public MerchantDetailsDTO getMerchantDetails(String nip) {
         MerchantKRSDataDTO merchantDetails
 
         try {
@@ -25,7 +24,7 @@ class BisnodeService {
         }
 
         log.info(String.format("Client with NIP %s found in Bisnode", nip))
-        return new BisnodeMerchantDetailsDTO(merchantDetails)
+        return new MerchantDetailsDTO(merchantDetails)
     }
 
     private isMerchantDetailsValid(MerchantKRSDataDTO merchantDetails) {

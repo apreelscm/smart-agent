@@ -2,7 +2,6 @@ package com.eservice.eumowy
 
 import com.eservice.eumowy.util.ProjectPathHelper
 import org.apache.pdfbox.pdmodel.PDDocument
-import org.apache.pdfbox.util.PDFImageWriter
 import org.junit.Before
 
 import java.awt.image.BufferedImage
@@ -392,10 +391,10 @@ class PdfServiceIntegrTests extends GroovyTestCase {
 		PDDocument document = null
 		document = PDDocument.load(getTemplateOutPath()+pdfName)
 		int resolution = 300
-		PDFImageWriter imageWriter = new PDFImageWriter()
-		boolean success = imageWriter.writeImage(document, "png", "",
-				pageNumber, pageNumber, getTemplateOutPath()+pdfName+"-TEST-", BufferedImage.TYPE_INT_RGB, resolution)
-		
+//		PDFImageWriter imageWriter = new PDFImageWriter()
+//		boolean success = imageWriter.writeImage(document, "png", "",
+//				pageNumber, pageNumber, getTemplateOutPath()+pdfName+"-TEST-", BufferedImage.TYPE_INT_RGB, resolution)
+//
 		if (!success) {
 			log.error "No writer found for PNG image format"
 		}
