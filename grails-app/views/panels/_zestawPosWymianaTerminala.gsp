@@ -104,23 +104,66 @@
         }
     });
 
+
     jQuery('.selectModel').change(function() {
-        var select = jQuery(this),
-            selectedOption = select.find(":selected"),
-            isSelectedOptionMobile = selectedOption.data('mobile'),
-            isPinpadSelected = selectedOption.text().indexOf('PINPad') === 0,
-            posNumber = jQuery("#posExchanges\\[" + this.dataset.index + "\\]\\.posNumber").val();
+        var posNumber = jQuery("#posExchanges\\[" + this.dataset.index + "\\]\\.posNumber").val(),
+            $selectModel = jQuery(this);
 
-        if(isSelectedOptionMobile && isCalculatorRequiredForMobile(posNumber)) {
-            alert('Dla wybranej wymiany modelowej wymagany jest Kalkulator');
-            return;
-        }
-
-        if(isPinpadSelected && isCalculatorRequiredForPinpad(posNumber)) {
+        if(isMobileRequireCalculator($selectModel, posNumber) || isPinpadRequireCalculator($selectModel, posNumber)) {
             alert('Dla wybranej wymiany modelowej wymagany jest Kalkulator');
         }
 
+        manageStateOfContinueButton();
     });
+
+    function manageStateOfContinueButton() {
+        var continueButton = jQuery("#continueButton");
+
+        if(hasModelRequiredForCalculator()) {
+            continueButton.attr('disabled', 'disabled');
+        } else {
+            continueButton.removeAttr('disabled');
+        }
+    }
+
+    function hasModelRequiredForCalculator() {
+        var hasModelRequiredForCalculator = false,
+            $selectModel,
+            posNumber;
+
+        jQuery.each(jQuery(".selectModel"), function(index, value) {
+            console.log(value);
+            $selectModel = jQuery(value);
+            posNumber = jQuery("#posExchanges\\[" + value.dataset.index + "\\]\\.posNumber").val();
+
+            if(isMobileRequireCalculator($selectModel, posNumber) || isPinpadRequireCalculator($selectModel, posNumber)) {
+                hasModelRequiredForCalculator = true;
+                return false;
+            }
+        });
+
+        return hasModelRequiredForCalculator;
+    }
+
+    function isMobileRequireCalculator($select, posNumber) {
+        return isMobileSelected($select) && isCalculatorRequiredForMobile(posNumber);
+    }
+
+    function isPinpadRequireCalculator($select, posNumber) {
+        return isPinpadSelected($select) && isCalculatorRequiredForPinpad(posNumber);
+    }
+
+    function isMobileSelected(select) {
+        var selectedOption = select.find(":selected");
+
+        return selectedOption.data('mobile');
+    }
+
+    function isPinpadSelected(select) {
+        var selectedOption = select.find(":selected");
+
+        return selectedOption.text().indexOf('PINPad') === 0;
+    }
 
     function prepareOptionForModelSelect(data) {
         var isMobile = data["is_mobile"] == 1;
