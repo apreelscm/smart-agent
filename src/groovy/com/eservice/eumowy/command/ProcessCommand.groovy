@@ -4,6 +4,7 @@ import com.eservice.eumowy.Process
 import com.eservice.eumowy.annotation.DateField
 import com.eservice.eumowy.annotation.Omit
 import com.eservice.eumowy.dto.MerchantDetailsDTO
+import com.eservice.eumowy.dto.MerchantRepresentativeDTO
 import com.eservice.eumowy.validator.AtLeastValidator
 import com.eservice.eumowy.validator.CustomValidator
 import com.eservice.eumowy.validator.HirePaymentValidator
@@ -412,7 +413,8 @@ class ProcessCommand implements Serializable {
 
     String nip = DEFAULT_VALUE
 
-    boolean isFromBisnode = false
+    Boolean isFromBisnode = false
+    Boolean isRepresentativesChangedManually = false
 
 //    uwagi
     @Omit
@@ -785,15 +787,15 @@ class ProcessCommand implements Serializable {
         pozyskujacyImie(nullable: false, blank: false, shared: "lettersOnly", maxSize: 40)
         pozyskujacyNazwisko(nullable: false, blank: false, shared: "lettersOnly", maxSize: 100)
         pozyskujacyNumer(nullable: false, blank: false, maxSize: 12)
-        reprezentant1Tytul(nullable: false, blank: false)
+        reprezentant1Tytul(nullable: true)
         reprezentant1Imie(nullable: false, blank: false, shared: "lettersOnly")
         reprezentant1Nazwisko(nullable: false, blank: false, shared: "lettersOnly")
         reprezentant1Stanowisko(blank: true)
-        reprezentant2Tytul(nullable: false, blank: false)
+        reprezentant2Tytul(nullable: true)
         reprezentant2Imie(nullable: true, blank: true, shared: "lettersOnly")
         reprezentant2Nazwisko(nullable: true, blank: true, shared: "lettersOnly")
         reprezentant2Stanowisko(blank: true)
-        reprezentant3Tytul(nullable: false, blank: false)
+        reprezentant3Tytul(nullable: true)
         reprezentant3Imie(nullable: true, blank: true, shared: "lettersOnly")
         reprezentant3Nazwisko(nullable: true, blank: true, shared: "lettersOnly")
         reprezentant3Stanowisko(blank: true)
@@ -1213,6 +1215,8 @@ class ProcessCommand implements Serializable {
                 NumberValidator.validate(value, cmd, errors, propertyName) && AtLeastValidator.validate(value, cmd, errors, propertyName, "DCC_OPLATA_URUCHOMIENIE")
         })
         nip(nullable:true)
+        isFromBisnode(nullable:true)
+        isRepresentativesChangedManually(nullable:true)
         notes(nullable:true, maxSize: 1000) //a1!
         points(nullable:true, validator: { value, cmd, errors ->
             return PointsValidator.validate(value, cmd, errors)
@@ -1275,19 +1279,4 @@ class ProcessCommand implements Serializable {
         //metoda musi zostac, jest uzywana m. in. w validatorach
         return messageSource.getMessage("com.eservice.eumowy.command.ProcessCommand." + property + ".label", [] as Object[], property, Locale.getDefault())
     }
-
-    public void fillWithBisnodeData(MerchantDetailsDTO merchantDetailsDTO) {
-        akceptantNazwaOficjalna = merchantDetailsDTO.akceptantNazwaOficjalna
-        akceptantRegon = merchantDetailsDTO.akceptantRegon
-        akceptantUlicaTytul = merchantDetailsDTO.akceptantUlicaTytul
-        akceptantUlica = merchantDetailsDTO.akceptantUlica
-        akceptantNrDomu = merchantDetailsDTO.akceptantNrDomu
-        akceptantNrMieszkania = merchantDetailsDTO.akceptantNrMieszkania
-        akceptantKodPocztowy = merchantDetailsDTO.akceptantKodPocztowy
-        akceptantMiasto = merchantDetailsDTO.akceptantMiasto
-        akceptantTelStacjonarny = merchantDetailsDTO.akceptantTelStacjonarny
-        akceptantTelKomorkowy = merchantDetailsDTO.akceptantTelKomorkowy
-        akceptantFax = merchantDetailsDTO.akceptantFax
-    }
-
 }

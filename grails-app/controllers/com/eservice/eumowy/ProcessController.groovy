@@ -106,25 +106,15 @@ class ProcessController {
             return
         }
 
-        def result = [
-            processInstance: processInstance,
-            filterStatus: params.filterStatus,
-            filterObserved:params.filterObserved,
-            filterNip:params.filterNip,
-            filterPhNo:params.filterPhNo,
-            filterDateFrom: params.filterDateFrom?params.filterDateFrom: DateUtils.getFormattedDate(DateUtils.addDays(new Date(), -30), DateUtils.DD_MM_YYYY),
-            filterDateTo: params.filterDateTo?params.filterDateTo: DateUtils.getFormattedDate(new Date(), DateUtils.DD_MM_YYYY)
-        ]
+        boolean isRepresentativesChangedManually = processInstance.processData.find {"isRepresentativesChangedManually".equals(it.name)}?.value
 
-        if (params.sort){
-            result.put('sort', params.sort)
+        if(isRepresentativesChangedManually) {
+            flash.message = message(code: 'representatives.changed.manually')
         }
-        if (params.order){
-            result.put('order', params.order)
-        }
-        if (params.offset){
-            result.put('offset', params.offset)
-        }
+
+        def result = [
+            processInstance: processInstance
+        ]
         result
     }
 

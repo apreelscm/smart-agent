@@ -334,9 +334,15 @@ class PanelService {
         cmd.reprezentant1Tytul = nullify(cmd.reprezentant1Tytul)
         cmd.reprezentant1Imie = nullify(cmd.reprezentant1Imie)
         cmd.reprezentant1Nazwisko = nullify(cmd.reprezentant1Nazwisko)
+        cmd.reprezentant1Stanowisko = nullify(cmd.reprezentant1Stanowisko)
         cmd.reprezentant2Tytul = nullify(cmd.reprezentant2Tytul)
         cmd.reprezentant2Imie = nullify(cmd.reprezentant2Imie)
         cmd.reprezentant2Nazwisko = nullify(cmd.reprezentant2Nazwisko)
+        cmd.reprezentant2Stanowisko = nullify(cmd.reprezentant2Stanowisko)
+        cmd.reprezentant3Tytul = nullify(cmd.reprezentant3Tytul)
+        cmd.reprezentant3Imie = nullify(cmd.reprezentant3Imie)
+        cmd.reprezentant3Nazwisko = nullify(cmd.reprezentant3Nazwisko)
+        cmd.reprezentant3Stanowisko = nullify(cmd.reprezentant3Stanowisko)
         cmd.emailDoWysylkiDokumentu = nullify(cmd.emailDoWysylkiDokumentu)
     }
 

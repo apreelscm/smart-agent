@@ -1504,6 +1504,14 @@ label.doladowanieLabel {
 	width: 50px;
 }
 
+.tytulField {
+    width: 55px;
+}
+
+.imieField, .positionField {
+    width: 150px;
+}
+
 .nazwiskoField {
     width: 250px;
 }

@@ -6,7 +6,7 @@
                 <li><span><g:message code="panel.acceptor.full.name"/></span></li>
                 <li>
                     <span>
-                        <eumowy:textField name="akceptantNazwaOficjalna" value="${data.akceptantNazwaOficjalna}" validatable="${data}" readonly="${data.checkIfFromCbd('akceptantNazwaOficjalna')}" style="width: 400px" required="true" maxlength="128"/>
+                        <eumowy:textField name="akceptantNazwaOficjalna" value="${data.akceptantNazwaOficjalna}" validatable="${data}" readonly="${data.checkIfFromCbd('akceptantNazwaOficjalna') || data.isFromBisnode}" style="width: 400px" required="true" maxlength="128"/>
                         <g:hiddenField name="akceptantNazwaOficjalnaCbd" value="${data.akceptantNazwaOficjalnaCbd}"/>
                     </span>
                 </li>
@@ -22,7 +22,7 @@
                         %{--required="true" minlength="10" maxlength="10" digits="true"--}%
                         <span style="padding-left: 8px"><g:message code="panel.acceptor.regon"/></span>
                         <span>
-                            <eumowy:textField class="regon" name="akceptantRegon" value="${data.akceptantRegon}" validatable="${data}" readonly="${data.checkIfFromCbd('akceptantRegon')}" required="true" minlength="9" maxlength="9" digits="true"/>
+                            <eumowy:textField class="regon" name="akceptantRegon" value="${data.akceptantRegon}" validatable="${data}" readonly="${data.checkIfFromCbd('akceptantRegon') || data.isFromBisnode}" required="true" minlength="9" maxlength="9" digits="true"/>
                             <g:hiddenField name="akceptantRegonCbd" value="${data.akceptantRegonCbd}"/>
                         </span>
                     </span>

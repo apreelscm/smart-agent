@@ -2,10 +2,10 @@
     <fieldset>
         <div class="belka-glowna"><g:message code="panel.acceptor.title"/></div>
         <div class="centre" style="padding-top: 20px; width: 915px">
-
+            <g:hiddenField name="isFromBisnode" value="${data.isFromBisnode}"/>
             <g:if test="${data.isFromBisnode}">
                 <div>
-                    <g:checkBox name="representativesChange"/> <g:message code="representatives.change"/>
+                    <g:checkBox name="isRepresentativesChangedManually" value="${data.isRepresentativesChangedManually}" readonly="readonly"/> <g:message code="representatives.change"/>
                 </div>
 
                 <div style="margin-bottom: 20px">
@@ -13,10 +13,23 @@
                     <g:textArea name="poleOpisowe" maxlength ="1000" rows="3" cols="70" style="height: auto; width: auto"/>
                 </div>
 
-                <g:render template="../panels/reprezentaciDropdowns"/>
+                <div id="representativesContainer">
+                    <g:render template="../panels/reprezentaciDropdowns"/>
+                </div>
+
+
+                <div id="representativesDropdowns" class="hidden">
+                    <g:render template="../panels/reprezentaciDropdowns"/>
+                </div>
+
+                <div id="representativesTextfields" class="hidden">
+                    <g:render template="../panels/reprezentaciTextfields"/>
+                </div>
             </g:if>
             <g:else>
-                <g:render template="../panels/reprezentaciTextfields"/>
+                <div id="representativesContainer">
+                    <g:render template="../panels/reprezentaciTextfields"/>
+                </div>
             </g:else>
 
             <div style="margin-top: 30px; margin-bottom: 0">
@@ -26,3 +39,30 @@
         </div>
     </fieldset>
 </div>
+
+<script type="text/javascript">
+    var $representativesContainer = jQuery("#representativesContainer"),
+        $representativesDropdows = jQuery("#representativesDropdowns"),
+        $representativesTextfields = jQuery("#representativesTextfields");
+
+    disableHiddenInputs();
+    setRepresentativesView();
+
+    jQuery("#isRepresentativesChangedManually").change(setRepresentativesView);
+
+    function disableHiddenInputs() {
+        jQuery("#representativesDropdowns input, #representativesDropdowns select, #representativesTextfields input, #representativesTextfields select").attr('disabled', 'disabled');
+    }
+
+    function setRepresentativesView() {
+        var isChecked = jQuery("#isRepresentativesChangedManually").is(":checked");
+
+        if (isChecked) {
+            $representativesContainer.html($representativesTextfields.html());
+        } else {
+            $representativesContainer.html($representativesDropdows.html());
+        }
+
+        $representativesContainer.find("input, select").removeAttr('disabled');
+    }
+</script>

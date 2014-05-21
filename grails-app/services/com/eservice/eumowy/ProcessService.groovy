@@ -3,6 +3,8 @@ package com.eservice.eumowy
 import com.eservice.eumowy.annotation.DateField
 import com.eservice.eumowy.annotation.Omit
 import com.eservice.eumowy.command.*
+import com.eservice.eumowy.dto.MerchantDetailsDTO
+import com.eservice.eumowy.dto.MerchantRepresentativeDTO
 import com.eservice.eumowy.util.DateUtils
 import com.eservice.eumowy.util.EumowyCustomEnvironment
 import grails.util.Environment
@@ -18,6 +20,7 @@ class ProcessService {
     def cbdService
     def panelMockService
     def calculatorService
+    def bisnodeService
 
     void invalidateCaches() {
         cbdService.invalidateCaches()
@@ -170,7 +173,7 @@ class ProcessService {
 
     def getSavedProcessCommand(def process, def calcId, def calc, def newProcess){
         log.info("getSavedProcessCommand processId = ${process.id}")
-        def cmd = initProcessCommand(process, calcId)
+        ProcessCommand cmd = initProcessCommand(process, calcId)
         loadProcessData(process,cmd)
         cmd.points?.clear()
         cmd.poses?.clear()
@@ -1732,5 +1735,21 @@ class ProcessService {
 
     def calculatorForProcess(Process process) {
         return cbdService.findCalculatorByNip(process.client.nip)
+    }
+
+    public void fillCommandWithBisnodeData(ProcessCommand command, MerchantDetailsDTO merchantDetailsDTO) {
+        command.isFromBisnode = true
+
+        command.akceptantNazwaOficjalna = merchantDetailsDTO.akceptantNazwaOficjalna
+        command.akceptantRegon = merchantDetailsDTO.akceptantRegon
+        command.akceptantUlicaTytul = merchantDetailsDTO.akceptantUlicaTytul
+        command.akceptantUlica = merchantDetailsDTO.akceptantUlica
+        command.akceptantNrDomu = merchantDetailsDTO.akceptantNrDomu
+        command.akceptantNrMieszkania = merchantDetailsDTO.akceptantNrMieszkania
+        command.akceptantKodPocztowy = merchantDetailsDTO.akceptantKodPocztowy
+        command.akceptantMiasto = merchantDetailsDTO.akceptantMiasto
+        command.akceptantTelStacjonarny = merchantDetailsDTO.akceptantTelStacjonarny
+        command.akceptantTelKomorkowy = merchantDetailsDTO.akceptantTelKomorkowy
+        command.akceptantFax = merchantDetailsDTO.akceptantFax
     }
 }

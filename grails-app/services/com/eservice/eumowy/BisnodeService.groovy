@@ -1,12 +1,32 @@
 package com.eservice.eumowy
 
 import com.eservice.eumowy.dto.MerchantDetailsDTO
+import com.eservice.eumowy.dto.MerchantRepresentativeDTO
 import com.eservice.webs.dto.MerchantKRSDataDTO
 import com.eservice.webs.wsclient.bisnode.BisnodeWebServiceClient
 import org.apache.commons.lang.exception.ExceptionUtils
 
 class BisnodeService {
     BisnodeWebServiceClient bisnodeWebServiceClient
+
+    public List<MerchantRepresentativeDTO> getRepresentatives(String nip) {
+        MerchantDetailsDTO merchantDetails = getMerchantDetails(nip)
+
+        if(!merchantDetails) {
+            log.error(String.format("Merchant details not found for NIP %s. Returning empty representatives list.", nip))
+            return Collections.emptyList()
+        }
+
+        return merchantDetails.representatives
+    }
+
+    public List<MerchantRepresentativeDTO> getRepresentatives(MerchantDetailsDTO merchantDetails) {
+        if(!merchantDetails) {
+            return Collections.emptyList()
+        }
+
+        return merchantDetails.representatives
+    }
 
     public MerchantDetailsDTO getMerchantDetails(String nip) {
         MerchantKRSDataDTO merchantDetails

@@ -523,15 +523,16 @@ class ActivityController {
                     flash.calcInfoMessage = message(code:"calc.found.info", default:"Znaleziono");
                 }
 
-//                if(hasNowaUmowa) {
+                if(hasNowaUmowa) {
                     MerchantDetailsDTO merchantDetails = bisnodeService.getMerchantDetails(flow.nip)
                     if (merchantDetails) {
                         flash.bisnodeMessage = message(code: 'bisnode.merchant.found')
                         flow.bisnodeMerchantDetails = merchantDetails
+                        flow.representativesBisnode = bisnodeService.getRepresentatives(merchantDetails)
                     } else {
                         flash.bisnodeMessage = message(code: 'bisnode.merchant.not.found')
                     }
-//                }
+                }
             }
             on("success"){
                 flow.isContinueEnabled = true
@@ -547,7 +548,7 @@ class ActivityController {
                 log.info("selectedPanels enterview")
                 def processInstance = flow.processInstance;
 
-                def processCmd
+                ProcessCommand processCmd
                 if(!flow.skipPanelsInit) {
                     log.info("skipPanelsInit - false")
                     TreeSet beforeExclusionPanels = _getActivePanels(processInstance.signatures)
@@ -556,8 +557,7 @@ class ActivityController {
                     processCmd = processService.getNewProcessCommand(processInstance, flow.calcNumber, conversation.calc)
 
                     if(flow.bisnodeMerchantDetails) {
-                        processCmd.isFromBisnode = true
-                        processCmd.fillWithBisnodeData(flow.bisnodeMerchantDetails)
+                        processService.fillCommandWithBisnodeData(processCmd, flow.bisnodeMerchantDetails)
                     }
 
                     //inicjacyjne zapisanie danych pobranych z cbd i calc
@@ -592,11 +592,16 @@ class ActivityController {
                     processInstance.posExchanges?.each { PosExchange pe ->
                         processCmd.posExchanges.find {it.tpsId == pe.tpsId}?.setId(pe.id)
                     }
-                }
-                else{
+                } else {
                     log.info("skipPanelsInit - true")
                     flow.skipPanelsInit = false
                     processCmd = processService.getSavedProcessCommand(processInstance, processInstance.calcNumber, conversation.calc, flow.newProcessFlow)
+
+                    if(processCmd.isFromBisnode && !flow.representativesBisnode) {
+                        log.info(String.format("Process with ID %s and NIP %s is from BISNODE. Filling flow with representatives from BISNODE.", processInstance.id, processCmd.nip))
+                        flow.representativesBisnode = bisnodeService.getRepresentatives(processCmd.nip)
+                    }
+
                     processCmd.nip = processInstance.client.nip
                 }
 
@@ -932,8 +937,13 @@ class ActivityController {
         selectedPanels{
             onEntry {
                 log.info "SkipPanelsInit: " + flow.skipPanelsInit
-                def processInstance = flow.processInstance;
-                def processCmd = processService.getSavedProcessCommand(processInstance, flow.calcNumber, conversation.calc, flow.newProcessFlow);
+                Process processInstance = flow.processInstance;
+                ProcessCommand processCmd = processService.getSavedProcessCommand(processInstance, flow.calcNumber, conversation.calc, flow.newProcessFlow)
+
+                if(processCmd.isFromBisnode && !flow.representativesBisnode) {
+                    log.info(String.format("Process with ID %s and NIP %s is from BISNODE. Filling flow with representatives from BISNODE.", processInstance.id, processCmd.nip))
+                    flow.representativesBisnode = bisnodeService.getRepresentatives(processCmd.nip)
+                }
 
                 // Calculate pos count from cbd
                 def counter = 0
