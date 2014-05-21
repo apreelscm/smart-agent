@@ -46,7 +46,7 @@ class PdfPosExchangeMapper extends AbstractPdfMapper{
     }
 
     private def isPortable(String posModel) {
-        return (posModel.contains("VX670") || posModel.contains("IWL220C"))
+        return posModel.contains("przenośny")
     }
 
     private def mapSimType(def posModel, def value){
