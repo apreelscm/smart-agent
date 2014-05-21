@@ -3,7 +3,7 @@
         <div class="belka-glowna"><g:message code="panel.acceptor.title"/></div>
         <div class="centre" style="padding-top: 20px; width: 915px">
             <g:hiddenField name="isFromBisnode" value="${data.isFromBisnode}"/>
-            <g:if test="${data.isFromBisnode}">
+            <g:if test="${data.isFromBisnode && representativesBisnode?.size() > 0}">
                 <div>
                     <g:checkBox name="isRepresentativesChangedManually" value="${data.isRepresentativesChangedManually}" readonly="readonly"/> <g:message code="representatives.change"/>
                 </div>

@@ -529,6 +529,10 @@ class ActivityController {
                         flash.bisnodeMessage = message(code: 'bisnode.merchant.found')
                         flow.bisnodeMerchantDetails = merchantDetails
                         flow.representativesBisnode = bisnodeService.getRepresentatives(merchantDetails)
+
+                        if(merchantDetails?.representatives.size() == 0) {
+                            flash.representativesNotFound = message(code: 'bisnode.representatives.not.found')
+                        }
                     } else {
                         flash.bisnodeMessage = message(code: 'bisnode.merchant.not.found')
                     }

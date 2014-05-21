@@ -62,6 +62,9 @@
                 <g:if test="${bisnodeMessage}">
                     <g:render template="message/infoMessage" model="[message: bisnodeMessage]"/>
                 </g:if>
+                <g:if test="${representativesNotFound}">
+                    <g:render template="message/infoMessage" model="[message: representativesNotFound]"/>
+                </g:if>
             </div>
         </div>
 
