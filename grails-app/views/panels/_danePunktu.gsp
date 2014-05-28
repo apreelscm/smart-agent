@@ -86,7 +86,8 @@
                     value="${pointData?.nazwaDoWydrukuZTerminalaPos}"
                     validatable="${pointData}"
                     validateField="nazwaDoWydrukuZTerminalaPos"
-                    required="true" class="nazwaField"/>
+                    required="true" class="nazwaField"
+                    maxlength="25"/>
         </p>
         <p>
             <g:message code="panel.newpoint.pointnameforsearchengine" />

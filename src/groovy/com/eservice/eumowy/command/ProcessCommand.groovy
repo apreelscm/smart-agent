@@ -656,7 +656,7 @@ class ProcessCommand implements Serializable {
         akceptantNazwaOficjalnaCbd(nullable: true)
         akceptantNazwaSieciowaCbd(nullable: true)
         akceptantRegonCbd(nullable: true)
-        nazwaDoWydrukuZTerminalaPos(nullable: true)
+        nazwaDoWydrukuZTerminalaPos(nullable: true, maxSize: 25)
         wydrukNazwaDoWyszukwarki(nullable: true)
         wydrukUlicaTytul(nullable: true, blank: true)
         wydrukUlica(nullable: false, blank: false, shared: "alphanumeric", validator: { value, cmd, errors ->
