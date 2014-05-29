@@ -310,6 +310,33 @@ class ProcessController {
     }
 
     @Secured(['EUM_ZRD'])
+    def saveNotes() {
+        Process processInstance = Process.findById(params.id)
+        params.remove('_action_saveNotes')
+
+        log.info(String.format("Trying to save notes for process %s", processInstance.id))
+
+        if (!processInstance) {
+            flash.message = message(code: 'default.not.found.message', args:[ message(code: 'process.label', default: 'proces'), processInstance.id])
+            redirect(action: "list", params: params)
+            return
+        }
+
+        processInstance.notesFromZrd = params.notesFromZrd
+
+        if(!processInstance.save()) {
+            flash.error = processInstance.errors.getFieldError().defaultMessage
+            redirect(action: "show", params: params)
+            return
+        }
+
+        log.info(String.format("Notes for process %s saved successfully", processInstance.id))
+
+        flash.message = g.message(code: 'notes.saved.successfully')
+        redirect(action: "show", params: params)
+    }
+
+    @Secured(['EUM_ZRD'])
     def resendEmail() {
         Process processInstance = Process.get(params.id)
 

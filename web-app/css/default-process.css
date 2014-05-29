@@ -1348,6 +1348,10 @@ a.submit{
 	font-size: large;
 }
 
+.hidden {
+    display: none;
+}
+
 #clientSignatureBackButton {
 }
 
@@ -1377,6 +1381,18 @@ a.submit{
     text-align: center;
 }
 
+.display-inline-block {
+    display: inline-block;
+}
+
+.width49 {
+    width: 49%;
+}
+
+#show-process input[type=submit] {
+    height: 35px;
+}
+
 #generateReportButton {
     width: 110px;
     margin-top: 15px;
@@ -1388,4 +1404,105 @@ a.submit{
     float: right;
     margin-right: 10px;
     margin-top: 10px;
+}
+
+#clientDetails {
+    margin: 1em 2em;
+}
+
+#clientDetails #bottomInfo {
+    margin-top: 10px;
+    text-align: center;
+    margin-top: 15px;
+}
+
+#clientDetails #bottomInfo div {
+    margin-right: 20px;
+}
+
+#clientDetails #clientName {
+    width: 89%;
+}
+
+#clientDetails #phName {
+    width: 250px;
+}
+
+#notesContainer {
+    margin-top: 15px;
+    position: relative;
+}
+
+#notesContainer label {
+    width: 70px;
+    text-align: right
+}
+
+#notesContainer #notes {
+    margin-left: 8px;
+    height: 100px;
+    max-width: 400px;
+    width: 400px
+}
+
+#notesContainer #saveNotes {
+    position: absolute;
+    float: right;
+    bottom: 0;
+    margin-left: 10px;
+}
+
+#pdfBox {
+    height: 500px;
+    width: 98%;
+    overflow: hidden;
+    border: solid 1px;
+    border-radius: 5px;
+    display: none;
+    margin: 20px auto;
+}
+
+#processDetails {
+    margin: 10px auto;
+    width: 610px;
+    padding-top: 15px;
+}
+
+#processDetails label {
+    width: 70px;
+    text-align: right;
+}
+
+#processActivities label {
+    vertical-align: top;
+}
+
+#processActivities ul {
+    padding: 0;
+    margin: 0px;
+    display: inline-block;
+    top: -10px;
+    position: relative;
+}
+
+#processActivities ul li {
+    list-style: none;
+    padding: 0;
+    font-weight: bold;
+}
+
+#processObserved input {
+    position: relative;
+    top: 3px;
+    left: 3px
+}
+
+#contractDate label {
+    white-space: nowrap;
+}
+
+#contractDate input {
+    position: relative;
+    top: 3px;
+    left: 3px
 }

@@ -12,43 +12,16 @@
     <g:set var="hasDocuments" value="${processInstance?.documents?.size() > 0}" />
 
     <title>${entityName}</title>
-    <r:script>
-        jQuery(document).ready(function(){
-            jQuery("#back").click(function(event) {
-                event.preventDefault();
-                history.back();
-            });
 
-            jQuery(".renewSubscriptions").click(function(event) {
-                var confirmed = confirm('${message(code: 'default.button.renewSubscriptions.confirm.message')}');
-
-                if(confirmed) {
-                    jQuery("#renewingSubsriptionsInProgress").dialog({
-                        height: 100,
-                        width: 350,
-                        modal: true
-                    })
-                } else {
-                    event.preventDefault();
-                }
-            });
-
-            jQuery(".resendEmails").click(function(event) {
-                jQuery("#resendingEmailsInProgress").dialog({
-                    height: 100,
-                    width: 300,
-                    modal: true
-                })
-            });
-
-            jQuery("#dataUmowy").datepicker({ dateFormat: 'yy-mm-dd', maxDate: new Date() });
-        })
-    </r:script>
+    <script type="text/javascript">
+        var confirmRenewSubscriptionsMessage = '${message(code: 'default.button.renewSubscriptions.confirm.message')}';
+    </script>
+    <g:javascript src="process/show.js"/>
 </head>
 <body>
 
-<div id="renewingSubsriptionsInProgress" style="display: none"><g:message code="renewSubscriptions.in.progress"/></div>
-<div id="resendingEmailsInProgress" style="display: none"><g:message code="resendEmails.in.progress"/></div>
+<div id="renewingSubsriptionsInProgress" class="hidden"><g:message code="renewSubscriptions.in.progress"/></div>
+<div id="resendingEmailsInProgress" class="hidden"><g:message code="resendEmails.in.progress"/></div>
 
 <section id="show-process">
     <h1 class="ng linia-bottom"><g:message code='process.id.label'/>: ${processInstance?.id}</h1>
@@ -62,104 +35,85 @@
         </g:if>
     </div>
 
-    <ul class="property-list" style="text-align: center">
-        <li style="margin:0em 0em 1em 0em;">
-            <label for="clientName" style="display: inline ">
-                <g:message code="client.name.label"/>
-            </label>
-            <g:textField name="clientName" value="${processInstance?.client?.name}" disabled="disabled"
-                         style="width: 89%;display: inline"/>
-        </li>
-
-        <li style="margin:0em 0em 0em 0em;display:inline;">
-            <label for="clientNip"  style="display: inline ">
-                <g:message code="process.nip.label" />
-
-            </label>
-            <g:textField name="clientNip" value="${processInstance?.client?.nip}" disabled="disabled"/>
-        </li>
-
-        <li style="margin:0em 0em 0em 0em;display:inline;">
-            <label for="phNumber">
-                <g:message code="process.phNumber.label"/>
-
-            </label>
-            <g:textField name="phNumber" value="${processInstance?.phNumber}" disabled="disabled"/>
-        </li>
-
-        <li style="margin:0em 0em 0em 0em;display:inline;">
-            <label for="phFirstName">
-                <g:message code="process.fullName.label"/>
-            </label>
-            <g:textField name="phFirstName" value="${processInstance?.phFirstName + " " + processInstance?.phSurname}"
-                         disabled="disabled" style="width: 250px"/>
-        </li>
-    </ul>
-
-    <div>
-        <div id="documentsBox" class="float-left" style="width: 49%">
-            <g:render template="table/documentsTable"/>
+    <section id="clientDetails">
+        <div>
+            <label for="clientName"><g:message code="client.name.label"/></label>
+            <g:textField name="clientName" value="${processInstance?.client?.name}" disabled="disabled"/>
         </div>
 
-        <div id="attachmentsBox" class="float-right" style="width: 49%">
-            <g:render template="table/attachmentsTable"/>
-        </div>
-    </div>
-
-    <div id="pdfBox" class="display-block"
-         style="height: 500px; width: 98% ;overflow: hidden;border: solid 1px; border-radius: 5px; display: none; margin: 20px auto">
-    </div>
-
-    <div class="clear"/>
-
-    <g:form>
-        <div style="margin: 10px auto; width: 600px;padding-top: 15px;">
-            %{--ACTIVITIES--}%
-            <div>
-                <label style="width: 70px; text-align: right;vertical-align: top;">
-                    <g:message code="activities.label"/>
-                </label>
-
-                <ul style="padding: 0; margin: 0px;display: inline-block;top: -10px; position: relative;">
-                <g:each var="activity" in="${processInstance?.activities}">
-                    <li style="list-style: none;padding: 0;font-weight: bold;">
-                        <g:message code="activity.${activity.code}.name"/>
-                    </li>
-                </g:each>
-                </ul>
-
+        <div id="bottomInfo">
+            <div class="display-inline-block">
+                <label for="clientNip"><g:message code="process.nip.label" /></label>
+                <g:textField name="clientNip" value="${processInstance?.client?.nip}" disabled="disabled"/>
             </div>
 
-            <div>
-                <label style="width: 70px; text-align: right">
-                    <g:message code="observe.label"/>
-                </label>
+            <div class="display-inline-block">
+                <label for="phNumber"><g:message code="process.phNumber.label"/></label>
+                <g:textField name="phNumber" value="${processInstance?.phNumber}" disabled="disabled"/>
+            </div>
 
-                <input type="checkbox" id="observed" style="position: relative; top: 3px; left: 3px" name="observed"
+            <div class="display-inline-block">
+                <label for="phName"><g:message code="process.fullName.label"/></label>
+                <g:textField name="phName" value="${processInstance?.phFirstName + " " + processInstance?.phSurname}"
+                             disabled="disabled"/>
+            </div>
+        </div>
+    </section>
+
+    <div id="documentsBox" class="float-left width49">
+        <g:render template="table/documentsTable"/>
+    </div>
+
+    <div id="attachmentsBox" class="float-right width49">
+        <g:render template="table/attachmentsTable"/>
+    </div>
+
+    <div id="pdfBox"></div>
+
+    <div class="ui-helper-clearfix"></div>
+
+    <g:form>
+        <div id="processDetails">
+            <div id="processActivities">
+                <label><g:message code="activities.label"/></label>
+                <ul>
+                    <g:each var="activity" in="${processInstance?.activities}">
+                        <li>
+                            <g:message code="activity.${activity.code}.name"/>
+                        </li>
+                    </g:each>
+                </ul>
+            </div>
+
+            <div id="processObserved">
+                <label><g:message code="observe.label"/></label>
+                <input type="checkbox" id="observed" name="observed"
                     ${processInstance?.observed ? 'checked' : ''}
                     ${isClosedProcess ? 'disabled' : ''}
                 >
             </div>
 
             <g:if test="${isWaitingForSubscriptionProcess}">
-                <div>
-                    <label style="width: 70px; text-align: right;white-space: nowrap;">
-                        <g:message code="fill.aggrement.date"/>
-                    </label>
-                    <input type="text" name="dataUmowy" id="dataUmowy" value="" style="position: relative; top: 3px; left: 3px"
+                <div id="contractDate">
+                    <label><g:message code="fill.aggrement.date"/></label>
+                    <input type="text" name="dataUmowy" id="dataUmowy" value=""
                         ${isWaitingForSubscriptionProcess ? 'required="true"' : '' }
                            readonly = "true"/>
                 </div>
             </g:if>
-            <div style="margin-top: 15px">
-                <label style="width: 140px; text-align: right">
-                    <g:message code="notes.label"/>
-                </label>
 
-                <textarea id="notes" maxlength="300" style="margin-left: 8px; height: 100px; min-width: 400px" name="notesFromZrd"
+            <div id="notesContainer">
+                <label><g:message code="notes.label"/></label>
+
+                <textarea id="notes" maxlength="300" name="notesFromZrd"
                     ${isClosedProcess ? 'disabled' : ''}
                     ${!params.notesFromZrd ? 'required' : '' }>${processInstance?.notesFromZrd}</textarea>
+
+                <g:actionSubmit id="saveNotes" value="${message(code: 'save.notes.label')}" action="saveNotes" class="button submit"
+                                disabled="${isClosedProcess}"/>
             </div>
+
+            <div class="ui-helper-clearfix"></div>
         </div>
 
         <nav>
@@ -177,15 +131,14 @@
                 <g:if test="${params.offset}"><g:hiddenField name="offset" value="${params.offset}"/></g:if>
                 <a href="#" id="back" class="button submit float-left"><g:message code="back.label"/></a>
 
-                <g:actionSubmit class="button submit" action="reject" value="${message(code: 'default.navigation.button.reject')}"
-                                style="float: left;margin-right: 1em;display:block"
+                <g:actionSubmit class="button submit float-left" action="reject" value="${message(code: 'default.navigation.button.reject')}"
+                                style="margin-right: 1em"
                                 disabled="${isClosedProcess}"
                                 formnovalidate=""
                                 onclick="return confirm('${message(code: 'default.button.delete.confirm.message')}');"/>
 
-                <g:actionSubmit class="button submit" action="accept" value="${message(code: 'default.navigation.button.accept')}"
+                <g:actionSubmit class="button submit float-right" action="accept" value="${message(code: 'default.navigation.button.accept')}"
                                 disabled="${!isWaitingProcess || !hasDocuments}"
-                                style="float: right;display:block"
                                 onclick="return confirm('${message(code: 'default.button.delete.confirm.message')}');"/>
 
                 <g:if test="${isWaitingOnlyProcess && hasDocuments}">
@@ -202,7 +155,6 @@
             </fieldset>
         </nav>
     </g:form>
-
 </section>
 </body>
 </html>
