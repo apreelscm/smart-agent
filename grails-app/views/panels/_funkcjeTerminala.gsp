@@ -56,17 +56,6 @@
                                 </label>
                             </div>
                         </span>
-                        <span style="padding-left: 6em;display: inline-block">
-                            <div><g:message code="panel.newpoint.terminaloptions.phonecreditsrecharge.terminalcount" /></div>
-                            <eumowy:textField name="${panelType}[${id}].terminalIlosc"
-                            					class="integer-number"
-                                                id="${panelType}[${id}].terminalCount"
-                                                value="${pointData?.terminalIlosc}"
-                                                validatable="${pointData}"
-                                                validateField="terminalIlosc" disabled="${!tkEnabled && !tpEnabled}"
-                                                style="width: 50px;"  />
-
-                        </span>
                     </li>
                 </ul>
                 <div>

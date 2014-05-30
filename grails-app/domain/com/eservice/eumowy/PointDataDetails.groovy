@@ -42,12 +42,12 @@ class PointDataDetails implements Serializable {
 	String kontaktWPunkcieTytul
 	String kontaktWPunkcieImie
 	String kontaktWPunkcieNazwisko
-	String kontaktWPunkcieFax
+	String kontaktWPunkcieFax //property removed in eUmowy_ext-605
 	String kontaktWPunkcieTelStacjonarny
 	String kontaktWPunkcieTelKomorkowy
 	String kontaktWPunkcieEmail
 	
-	Integer terminalIlosc
+	Integer terminalIlosc //property removed in eUmowy_ext-605
 	
 	Boolean takSamoDlaWszystkichPunktow
 	Boolean zestawPosTakSamoDlaWszystkichPunktow

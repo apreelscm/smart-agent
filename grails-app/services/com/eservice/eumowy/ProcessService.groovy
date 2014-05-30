@@ -1177,20 +1177,6 @@ class ProcessService {
 					pdList.add(posDataNew)
 				}
 			}
-			
-			// Set telePomka and teleKodzik based on terminalIlosc
-			if (pc.terminalIlosc != null && pc.terminalIlosc > 0 && terminalCount > pointData.liczbaPos) {
-				for (int i = 0; i < pc.terminalIlosc && i < pdList.size; i++) {
-					pdList.get(i).posDetails?.telePompka = posData.posDetails?.telePompka
-					pdList.get(i).posDetails?.teleKodzik = posData.posDetails?.teleKodzik
-				}
-			}
-			else if (pc.terminalIlosc != null && pc.terminalIlosc > 0 && terminalCount == pointData.liczbaPos) {
-				for (int i = 0; i < pc.terminalIlosc && i < pointData.posDatas.size(); i++) {
-					pointData.posDatas?.get(i).posDetails?.telePompka = posData.posDetails?.telePompka
-					pointData.posDatas?.get(i).posDetails?.teleKodzik = posData.posDetails?.teleKodzik
-				}
-			}
 
             pointData.nip = pointDataDetails.nipPunktu
             pointData.nazwa = pointDataDetails.nazwaDoWydrukuZTerminalaPos
@@ -1481,28 +1467,6 @@ class ProcessService {
                     posDataDetailsNew.setPos(posDataNew)
 
                     pdList.add(posDataNew)
-                }
-            }
-
-            // Set telePomka and teleKodzik based on terminalIlosc
-            if (pc.terminalIlosc != null && pc.terminalIlosc > 0 &&
-                    terminalCount > pointData.liczbaPos) {
-                for (int i = 0; i < pc.terminalIlosc && i <
-                        pdList.size; i++) {
-                    pdList.get(i).posDetails?.telePompka =
-                        posData.posDetails?.telePompka
-                    pdList.get(i).posDetails?.teleKodzik =
-                        posData.posDetails?.teleKodzik
-                }
-            }
-            else if (pc.terminalIlosc != null && pc.terminalIlosc > 0
-                    && terminalCount == pointData.liczbaPos) {
-                for (int i = 0; i < pc.terminalIlosc && i <
-                        pointData.posDatas.size(); i++) {
-                    pointData.posDatas?.get(i).posDetails?.telePompka =
-                        posData.posDetails?.telePompka
-                    pointData.posDatas?.get(i).posDetails?.teleKodzik =
-                        posData.posDetails?.teleKodzik
                 }
             }
 

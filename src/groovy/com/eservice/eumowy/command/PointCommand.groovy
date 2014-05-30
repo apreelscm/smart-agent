@@ -59,7 +59,6 @@ class PointCommand implements Serializable {
 	String kontaktWPunkcieTytul	
 	String kontaktWPunkcieImie
 	String kontaktWPunkcieNazwisko
-	String kontaktWPunkcieFax
 	String kontaktWPunkcieTelStacjonarny
 	String kontaktWPunkcieTelKomorkowy
 	String kontaktWPunkcieEmail
@@ -82,10 +81,6 @@ class PointCommand implements Serializable {
 	Integer sslPPIlosc
 	BigDecimal sslCena
 	BigDecimal sslPPCena
-	String wifiTyp
-	Integer wifiIlosc
-	BigDecimal wifiCena
-	BigDecimal wifiPPCena
 	String gprsTyp
 	Integer gprsIlosc
 	Integer gprsPPIlosc
@@ -113,7 +108,6 @@ class PointCommand implements Serializable {
 	Boolean teleKodzik
 	
 	Boolean kartaPodarunkowa
-	Integer terminalIlosc
 	
 	// polskie nazwy
 	String pinPadTyp
@@ -125,7 +119,6 @@ class PointCommand implements Serializable {
 	Integer routerIlosc
 	BigDecimal routerCena
 	String czytnikKartTyp
-	Integer czytnikKartIlosc
 	BigDecimal czytnikKartCena
 	
 	String inneWyposazenie
@@ -143,11 +136,6 @@ class PointCommand implements Serializable {
 	String imieInformatykStatyczna
 	String nazwiskoInformatykStatyczna
 	
-	String tytulInformatykDynamiczna
-	String kontaktInformatykDynamiczna
-	String imieInformatykDynamiczna
-	String nazwiskoInformatykDynamiczna	
-	
 	Boolean takSamoDlaWszystkichPunktow
 	Boolean zestawPosTakSamoDlaWszystkichPunktow
 	Boolean wydrukJakDlaMerchanta
@@ -157,17 +145,6 @@ class PointCommand implements Serializable {
 	Boolean informacjeTechniczneTakSamoDlaWszystkichPunktow
 	Boolean kontaktWPunkcieJakDlaMerchanta
 	Boolean korespondencjaJakDlaMerchantaLubWydruku
-
-    BigDecimal dialupCenaPreferencyjna
-    BigDecimal dialupPPCenaPreferencyjna
-    BigDecimal vpnCenaPreferencyjna
-    BigDecimal vpnPPCenaPreferencyjna
-    BigDecimal sslCenaPreferencyjna
-    BigDecimal sslPPCenaPreferencyjna
-    BigDecimal gprsCenaPreferencyjna
-    BigDecimal gprsPPCenaPreferencyjna
-    BigDecimal pinPadCenaPreferencyjna
-    BigDecimal wifiCenaPreferencyjna
 
     Boolean hasDodaniePrepaid
     Boolean hasTelefonKontaktowy
@@ -214,7 +191,6 @@ class PointCommand implements Serializable {
 		kontaktWPunkcieTytul(nullable:true)
 		kontaktWPunkcieImie(nullable:true, blank:false, shared: "lettersOnly")
 		kontaktWPunkcieNazwisko(nullable:true, blank:false, shared: "lettersOnly")
-		kontaktWPunkcieFax(nullable:true, blank:true)
 		kontaktWPunkcieTelStacjonarny(nullable:true, blank:false)
 		kontaktWPunkcieTelKomorkowy(nullable:true, blank:false)
 
@@ -236,24 +212,6 @@ class PointCommand implements Serializable {
             return true
         })
 
-		terminalIlosc(nullable:true, shared: "natural", validator: {value, cmd, errors ->
-           if(value == null){
-               return true
-           }
-           def terminalsCount = 0
-            terminalsCount += cmd?.dialupIlosc != null ? cmd?.dialupIlosc : 0
-            terminalsCount += cmd?.vpnIlosc != null ? cmd?.vpnIlosc : 0
-            terminalsCount += cmd?.sslIlosc != null ? cmd?.sslIlosc : 0
-            terminalsCount += cmd?.gprsIlosc != null ? cmd?.gprsIlosc : 0
-            terminalsCount += cmd?.pinPadIlosc != null ? cmd?.pinPadIlosc : 0
-            terminalsCount += cmd?.wifiIlosc != null ? cmd?.wifiIlosc : 0
-
-            if(value && value > terminalsCount){
-                errors.rejectValue("terminalIlosc", "panel.tooMany.terminalIlosc", [value, terminalsCount] as Object[], "")
-                return false
-            }
-            return true
-        })
 		bankId(nullable:true)
 		
 		dialupTyp(nullable:true)
@@ -283,15 +241,6 @@ class PointCommand implements Serializable {
 		sslPPCena(nullable:true, shared: "number", validator: { value, cmd, errors ->
 			cmd.sslTyp ? AtLeastValidator.validate(value, cmd, errors, "sslPPCena", "TYP_SSL_PP_CENA") : true;
 		})
-		wifiTyp(nullable:true)
-		wifiIlosc(nullable:true,  shared: "number")
-		wifiPPIlosc(nullable:true,  shared: "natural")
-		wifiCena(nullable:true, shared: "number", validator: { value, cmd, errors ->
-			cmd.wifiTyp ? AtLeastValidator.validate(value, cmd, errors, "wifiCena", "TYP_WIFI_TERM_CENA") : true;
-		})
-		wifiPPCena(nullable:true, shared: "number", validator: { value, cmd, errors ->
-			cmd.wifiTyp ? AtLeastValidator.validate(value, cmd, errors, "wifiPPCena", "TYP_WIFI_PP_CENA") : true;
-		})
 		gprsTyp(nullable:true)
 		gprsIlosc(nullable:true,  shared: "natural")
 		gprsPPIlosc(nullable:true,  shared: "number")
@@ -302,41 +251,6 @@ class PointCommand implements Serializable {
 			cmd.gprsTyp ? AtLeastValidator.validate(value, cmd, errors, "gprsPPCena", "TYP_GPRS_PP_CENA") : true;
 		})
 		bazaIlosc(nullable:true,  shared: "number")
-        dialupCenaPreferencyjna(nullable:true, shared: "number", validator: { value, cmd, errors ->
-			cmd.dialupTyp ? AtLeastValidator.validateWithNull(value, cmd, errors, "dialupCenaPreferencyjna", "TYP_DIALUP_TERM_CENA") : true;
-		})
-        dialupPPCenaPreferencyjna(nullable:true, shared: "number", validator: { value, cmd, errors ->
-			cmd.dialupTyp ? AtLeastValidator.validate(value, cmd, errors, "dialupPPCenaPreferencyjna", "TYP_DIALUP_PP_CENA") : true;
-		})
-        vpnCenaPreferencyjna(nullable:true, shared: "number", validator: { value, cmd, errors ->
-			cmd.vpnTyp ? AtLeastValidator.validateWithNull(value, cmd, errors, "vpnCenaPreferencyjna", "TYP_VPN_TERM_CENA") : true;
-		})
-        vpnPPCenaPreferencyjna(nullable:true, shared: "number", validator: { value, cmd, errors ->
-			cmd.vpnTyp ? AtLeastValidator.validate(value, cmd, errors, "vpnPPCenaPreferencyjna", "TYP_VPN_PP_CENA") : true;
-		})
-        sslCenaPreferencyjna(nullable:true, shared: "number", validator: { value, cmd, errors ->
-			cmd.sslTyp ? AtLeastValidator.validateWithNull(value, cmd, errors, "sslCenaPreferencyjna", "TYP_SSL_TERM_CENA") : true;
-		})
-        sslPPCenaPreferencyjna(nullable:true, shared: "number", validator: { value, cmd, errors ->
-			cmd.sslTyp ? AtLeastValidator.validate(value, cmd, errors, "sslPPCenaPreferencyjna", "TYP_SSL_PP_CENA") : true;
-		})
-        gprsCenaPreferencyjna(nullable:true, shared: "number", validator: { value, cmd, errors ->
-            cmd.gprsTyp ? AtLeastValidator.validateWithNull(value, cmd, errors, "gprsCenaPreferencyjna", "TYP_GPRS_TERM_CENA") : true;
-		})
-        gprsPPCenaPreferencyjna(nullable:true, shared: "number", validator: { value, cmd, errors ->
-			cmd.gprsTyp ? AtLeastValidator.validate(value, cmd, errors, "gprsPPCenaPreferencyjna", "TYP_GPRS_PP_CENA") : true;
-		})
-        pinPadCenaPreferencyjna(nullable:true, shared: "number", validator: { value, cmd, errors ->
-            //TODO - pole 'TYP_PINPAD_CENA' nie wystepuje w kalkulatorze, gdy zostanie dodane pole w kalkulatorze
-            //nalezy poprawic ta wartosc
-			cmd.pinPadTyp ? AtLeastValidator.validateWithNull(value, cmd, errors, "pinPadCenaPreferencyjna", "TYP_PINPAD_CENA") : true;
-		})
-        wifiCenaPreferencyjna(nullable:true, shared: "number", validator: { value, cmd, errors ->
-			cmd.wifiTyp ? AtLeastValidator.validateWithNull(value, cmd, errors, "wifiCenaPreferencyjna", "TYP_WIFI_TERM_CENA") : true;
-		})
-		//zamkniecieDniaOd(nullable:true, blank:false, shared: "date")
-		//zamkniecieDniaDo(nullable:true, blank:false, shared: "date")
-		//planowanaDataInstalacji(nullable:true, blank:true, shared: "date")
 		uwagiDodatkowe(nullable:true)
 		preautoryzacja(nullable:true)
 		brakFunkcjiZwrotu(nullable:true)
@@ -359,7 +273,6 @@ class PointCommand implements Serializable {
 		routerIlosc(nullable:true,  shared: "natural")
 		routerCena(nullable:true,  shared: "number")
 		czytnikKartTyp(nullable:true)
-		czytnikKartIlosc(nullable:true,  shared: "natural")
 		czytnikKartCena(nullable:true,  shared: "number")
 		inneWyposazenie(nullable:true, blank:true)
 		inneWyposazenieSsl(nullable:true)
@@ -374,10 +287,6 @@ class PointCommand implements Serializable {
         tytulInformatykStatyczna(nullable:true, blank:false)
         imieInformatykStatyczna(nullable:true, blank:false, shared: "lettersOnly")
 		nazwiskoInformatykStatyczna(nullable:true, blank:false, shared: "lettersOnly")
-		kontaktInformatykDynamiczna(nullable:true, blank:false)
-        tytulInformatykDynamiczna(nullable:true, blank:false)
-		imieInformatykDynamiczna(nullable:true, blank:false, shared: "lettersOnly")
-		nazwiskoInformatykDynamiczna(nullable:true, blank:false, shared: "lettersOnly")
 		
 		parentPosId(nullable:true)
 	}

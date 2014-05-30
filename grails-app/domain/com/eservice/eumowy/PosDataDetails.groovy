@@ -79,11 +79,12 @@ class PosDataDetails implements Serializable {
 	String imieInformatykStatyczna
 	String nazwiskoInformatykStatyczna
 	
-	String tytulInformatykDynamiczna
-	String kontaktInformatykDynamiczna
-	String imieInformatykDynamiczna
-	String nazwiskoInformatykDynamiczna
+	String tytulInformatykDynamiczna //property removed in eUmowy_ext-605
+	String kontaktInformatykDynamiczna //property removed in eUmowy_ext-605
+	String imieInformatykDynamiczna //property removed in eUmowy_ext-605
+	String nazwiskoInformatykDynamiczna //property removed in eUmowy_ext-605
 
+    //ceny preferencyjne removed in eUmowy_ext-605
     BigDecimal dialupCenaPreferencyjna
     BigDecimal dialupPPCenaPreferencyjna
     BigDecimal vpnCenaPreferencyjna

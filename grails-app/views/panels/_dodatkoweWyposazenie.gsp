@@ -14,11 +14,6 @@
                     <td colspan="2"></td>
                     <td><eumowy:textField name="${panelType}[${id}].routerIlosc" id="${panelType}[${id}].routerCount" class="integer-number" style="width: 50px" value="${pointData?.routerIlosc}"/> <g:message code="panel.unit"/></td>
                 </tr>
-				<tr>
-                    <td><g:message code="panel.newpoint.additionalequipment.cardreader" /></td>
-                    <td colspan="2"></td>
-                    <td><eumowy:textField name="${panelType}[${id}].czytnikKartIlosc" id="${panelType}[${id}].cardReaderCount" class="integer-number" style="width: 50px" value="${pointData?.czytnikKartIlosc}"/> <g:message code="panel.unit"/></td>
-                </tr>
                 <tr>
                     <td><g:message code="panel.sim.card" /></td>
                     <td></td>
