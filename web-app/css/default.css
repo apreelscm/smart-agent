@@ -1542,3 +1542,21 @@ label.doladowanieLabel {
 #acceptorsPanel .centre div {
     margin-bottom: 15px;
 }
+
+.posHeaderType {
+    text-align: center;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+#zestawPOSTable {
+    margin: 0 50px;
+}
+
+#zestawPOSTable .posTypeColumn {
+    width: 350px;
+}
+
+#zestawPOSTable .posTypeColumn select{
+    width: 300px;
+}

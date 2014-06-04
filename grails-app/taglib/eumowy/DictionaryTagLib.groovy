@@ -25,12 +25,17 @@ class DictionaryTagLib {
     }
 	
 	Closure typeSelect = { attrs ->
-		def nipNum = attrs.nip
-        def medium = attrs.medium
-		attrs.from = dictionaryService.getPosTypeComboBox(nipNum, medium)*.value
+        String medium = attrs.medium
+		attrs.from = dictionaryService.getPosTypeComboBox(medium)*.value
         attrs.from.add(0,"")
 		fieldImpl(out, attrs)
 	}
+
+    Closure extendedTypeSelect = { attrs ->
+        attrs.from = dictionaryService.getPosTypeComboBox(attrs.medium, attrs.type, attrs.isPINPad)*.value
+        attrs.from.add(0,"")
+        fieldImpl(out, attrs)
+    }
 	
 	Closure cbdPointsSelect = { attrs ->
 		def nipNum = attrs.nip
@@ -39,15 +44,6 @@ class DictionaryTagLib {
 		attrs.optionValue = "value"
 		fieldImpl(out, attrs)
 	}
-	
-    Closure citySelect = { attrs ->
-
-        def nipNum = attrs.nip
-        def medium = attrs.medium
-        attrs.from = dictionaryService.getPosTypeComboBox(nipNum, medium)*.value
-        attrs.from.add(0,"")
-        fieldImpl(out, attrs)
-    }
 
 	Closure mccSelect = { attrs ->
 		attrs.from = dictionaryService.getMccComboBox()

@@ -200,6 +200,12 @@ class CbdService {
         return cbdDAO.selectMany(query,[medium: medium]);
     }
 
+    @Cacheable(value="eumowyCacheLong", key = "'getExtPosTypes_'.concat(#medium).concat(#type)")
+    @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
+    def getPosTypes(def query, def medium, def type ) {
+        return cbdDAO.selectMany(query,[medium: medium, type: type]);
+    }
+
     @Cacheable(value="eumowyCacheLong", key="'getCalculatorDevicesTypes_'.concat(#medium)")
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
     def getCalculatorDevicesTypes(def medium) {

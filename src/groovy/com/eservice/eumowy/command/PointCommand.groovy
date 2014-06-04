@@ -67,25 +67,16 @@ class PointCommand implements Serializable {
 	
 	String dialupTyp
 	Integer dialupIlosc
-	Integer dialupPPIlosc
-    Integer wifiPPIlosc
 	BigDecimal dialupCena
-	BigDecimal dialupPPCena
 	String vpnTyp
 	Integer vpnIlosc
-	Integer vpnPPIlosc
 	BigDecimal vpnCena
-	BigDecimal vpnPPCena
 	String sslTyp
 	Integer sslIlosc
-	Integer sslPPIlosc
 	BigDecimal sslCena
-	BigDecimal sslPPCena
 	String gprsTyp
 	Integer gprsIlosc
-	Integer gprsPPIlosc
 	BigDecimal gprsCena
-	BigDecimal gprsPPCena
 	Integer bazaIlosc
 	
 	String zamkniecieDniaOd
@@ -216,39 +207,23 @@ class PointCommand implements Serializable {
 		
 		dialupTyp(nullable:true)
 		dialupIlosc(nullable:true,  shared: "natural")
-		dialupPPIlosc(nullable:true,  shared: "natural")
 		dialupCena(nullable:true, shared: "number", validator: { value, cmd, errors ->
 			cmd.dialupTyp ? AtLeastValidator.validate(value, cmd, errors, "dialupCena", "TYP_DIALUP_TERM_CENA") : true;
 		})
-		dialupPPCena(nullable:true, shared: "number", validator: { value, cmd, errors ->
-			cmd.dialupTyp ? AtLeastValidator.validate(value, cmd, errors, "dialupPPCena", "TYP_DIALUP_PP_CENA") : true;
-		})
 		vpnTyp(nullable:true)
 		vpnIlosc(nullable:true,  shared: "natural")
-		vpnPPIlosc(nullable:true,  shared: "natural")
 		vpnCena(nullable:true, shared: "number", validator: { value, cmd, errors ->
 			cmd.vpnTyp ? AtLeastValidator.validate(value, cmd, errors, "vpnCena", "TYP_VPN_TERM_CENA") : true;
 		})
-		vpnPPCena(nullable:true, shared: "number", validator: { value, cmd, errors ->
-			cmd.vpnTyp ? AtLeastValidator.validate(value, cmd, errors, "vpnPPCena", "TYP_VPN_PP_CENA") : true;
-		})
 		sslTyp(nullable:true)
 		sslIlosc(nullable:true,  shared: "natural")
-		sslPPIlosc(nullable:true,  shared: "natural")
 		sslCena(nullable:true, shared: "number", validator: { value, cmd, errors ->
 			cmd.sslTyp ? AtLeastValidator.validate(value, cmd, errors, "sslCena", "TYP_SSL_TERM_CENA") : true;
 		})
-		sslPPCena(nullable:true, shared: "number", validator: { value, cmd, errors ->
-			cmd.sslTyp ? AtLeastValidator.validate(value, cmd, errors, "sslPPCena", "TYP_SSL_PP_CENA") : true;
-		})
 		gprsTyp(nullable:true)
 		gprsIlosc(nullable:true,  shared: "natural")
-		gprsPPIlosc(nullable:true,  shared: "number")
 		gprsCena(nullable:true, shared: "number", validator: { value, cmd, errors ->
 			cmd.gprsTyp ? AtLeastValidator.validate(value, cmd, errors, "gprsCena", "TYP_GPRS_TERM_CENA") : true;
-		})
-		gprsPPCena(nullable:true, shared: "number", validator: { value, cmd, errors ->
-			cmd.gprsTyp ? AtLeastValidator.validate(value, cmd, errors, "gprsPPCena", "TYP_GPRS_PP_CENA") : true;
 		})
 		bazaIlosc(nullable:true,  shared: "number")
 		uwagiDodatkowe(nullable:true)
