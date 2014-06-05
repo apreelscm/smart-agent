@@ -6,7 +6,6 @@ class ValidatorUtils {
 
     public static boolean hasMorePriceGroups(def maxSize, def pointCommands){
         Set<BigDecimal> normalPriceGroups = new HashSet<BigDecimal>()
-        Set<BigDecimal> prefPriceGroups = new HashSet<BigDecimal>()
 
         pointCommands.each { pos ->
 
@@ -16,20 +15,11 @@ class ValidatorUtils {
                 normalPriceGroups.add(getGroupValue(pos.sslCena, pos.sslPPCena))
                 normalPriceGroups.add(getGroupValue(pos.gprsCena, pos.gprsPPCena))
                 normalPriceGroups.add(getGroupValue(pos.pinPadCena, BigDecimal.ZERO))
-                normalPriceGroups.add(getGroupValue(pos.wifiCena, BigDecimal.ZERO))
-
-                prefPriceGroups.add(getGroupValue(pos.dialupCenaPreferencyjna, pos.dialupPPCenaPreferencyjna))
-                prefPriceGroups.add(getGroupValue(pos.vpnCenaPreferencyjna, pos.vpnPPCenaPreferencyjna))
-                prefPriceGroups.add(getGroupValue(pos.sslCenaPreferencyjna, pos.sslPPCenaPreferencyjna))
-                prefPriceGroups.add(getGroupValue(pos.gprsCenaPreferencyjna, pos.gprsPPCenaPreferencyjna))
-                prefPriceGroups.add(getGroupValue(pos.pinPadCenaPreferencyjna, BigDecimal.ZERO))
-                prefPriceGroups.add(getGroupValue(pos.wifiCenaPreferencyjna, BigDecimal.ZERO))
             }
         }
 
         normalPriceGroups.removeAll(Collections.singleton(BigDecimal.ZERO)) //jesli obie ceny sa nullem to dostajemy 0
-        prefPriceGroups.removeAll(Collections.singleton(BigDecimal.ZERO))
-        if(normalPriceGroups.size() > maxSize || prefPriceGroups.size() > maxSize){
+        if(normalPriceGroups.size() > maxSize){
             return true
         }
         return false

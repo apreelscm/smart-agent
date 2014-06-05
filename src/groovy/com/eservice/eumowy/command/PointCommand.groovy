@@ -3,12 +3,6 @@ package com.eservice.eumowy.command
 import com.eservice.eumowy.validator.AtLeastValidator
 import grails.validation.Validateable
 
-/**
- * User: Dominik Walczak
- * Date: 20.08.13 Time: 10:28
- *
- */
-
 @Validateable
 class PointCommand implements Serializable {
 
@@ -68,16 +62,44 @@ class PointCommand implements Serializable {
 	String dialupTyp
 	Integer dialupIlosc
 	BigDecimal dialupCena
+
+    String dialupPPTyp
+    Integer dialupPPIlosc
+    BigDecimal dialupPPCena
+
 	String vpnTyp
 	Integer vpnIlosc
 	BigDecimal vpnCena
+
+    String vpnPPTyp
+    Integer vpnPPIlosc
+    BigDecimal vpnPPCena
+
 	String sslTyp
 	Integer sslIlosc
 	BigDecimal sslCena
+
+    String sslPPTyp
+    Integer sslPPIlosc
+    BigDecimal sslPPCena
+
 	String gprsTyp
 	Integer gprsIlosc
 	BigDecimal gprsCena
-	Integer bazaIlosc
+
+    String gprsPPTyp
+    Integer gprsPPIlosc
+    BigDecimal gprsPPCena
+
+    String gprsTypPortable
+    Integer gprsIloscPortable
+    BigDecimal gprsCenaPortable
+
+    String pinPadTyp
+    Integer pinPadIlosc
+    BigDecimal pinPadCena
+
+    Integer bazaIlosc
 	
 	String zamkniecieDniaOd
 	String zamkniecieDniaDo
@@ -101,11 +123,8 @@ class PointCommand implements Serializable {
 	Boolean kartaPodarunkowa
 	
 	// polskie nazwy
-	String pinPadTyp
     String kartaSimTyp
-	Integer pinPadIlosc
     Integer kartaSimIlosc
-	BigDecimal pinPadCena
 	String routerTyp
 	Integer routerIlosc
 	BigDecimal routerCena
@@ -210,21 +229,59 @@ class PointCommand implements Serializable {
 		dialupCena(nullable:true, shared: "number", validator: { value, cmd, errors ->
 			cmd.dialupTyp ? AtLeastValidator.validate(value, cmd, errors, "dialupCena", "TYP_DIALUP_TERM_CENA") : true;
 		})
+
+        dialupPPTyp(nullable:true)
+        dialupPPIlosc(nullable:true,  shared: "natural")
+        dialupPPCena(nullable:true, shared: "number", validator: { value, cmd, errors ->
+            cmd.dialupPPTyp ? AtLeastValidator.validate(value, cmd, errors, "dialupPPCena", "TYP_DIALUP_PP_CENA") : true;
+        })
+
 		vpnTyp(nullable:true)
 		vpnIlosc(nullable:true,  shared: "natural")
 		vpnCena(nullable:true, shared: "number", validator: { value, cmd, errors ->
 			cmd.vpnTyp ? AtLeastValidator.validate(value, cmd, errors, "vpnCena", "TYP_VPN_TERM_CENA") : true;
 		})
+
+        vpnPPTyp(nullable:true)
+        vpnPPIlosc(nullable:true,  shared: "natural")
+        vpnPPCena(nullable:true, shared: "number", validator: { value, cmd, errors ->
+            cmd.vpnPPTyp ? AtLeastValidator.validate(value, cmd, errors, "vpnPPCena", "TYP_VPN_PP_CENA") : true;
+        })
+
 		sslTyp(nullable:true)
 		sslIlosc(nullable:true,  shared: "natural")
 		sslCena(nullable:true, shared: "number", validator: { value, cmd, errors ->
 			cmd.sslTyp ? AtLeastValidator.validate(value, cmd, errors, "sslCena", "TYP_SSL_TERM_CENA") : true;
 		})
+
+        sslPPTyp(nullable:true)
+        sslPPIlosc(nullable:true,  shared: "natural")
+        sslPPCena(nullable:true, shared: "number", validator: { value, cmd, errors ->
+            cmd.sslPPTyp ? AtLeastValidator.validate(value, cmd, errors, "sslPPCena", "TYP_SSL_PP_CENA") : true;
+        })
+
 		gprsTyp(nullable:true)
 		gprsIlosc(nullable:true,  shared: "natural")
 		gprsCena(nullable:true, shared: "number", validator: { value, cmd, errors ->
 			cmd.gprsTyp ? AtLeastValidator.validate(value, cmd, errors, "gprsCena", "TYP_GPRS_TERM_CENA") : true;
 		})
+
+        gprsPPTyp(nullable:true)
+        gprsPPIlosc(nullable:true,  shared: "natural")
+        gprsPPCena(nullable:true, shared: "number", validator: { value, cmd, errors ->
+            cmd.gprsPPTyp ? AtLeastValidator.validate(value, cmd, errors, "gprsPPCena", "TYP_GPRS_PP_CENA") : true;
+        })
+
+        gprsTypPortable(nullable:true)
+        gprsIloscPortable(nullable:true,  shared: "natural")
+        gprsCenaPortable(nullable:true, shared: "number", validator: { value, cmd, errors ->
+            cmd.gprsTypPortable ? AtLeastValidator.validate(value, cmd, errors, "gprsCenaPortable", "TYP_GPRS_TERM_CENA") : true;
+        })
+
+		pinPadTyp(nullable:true)
+		pinPadIlosc(nullable:true,  shared: "natural")
+		pinPadCena(nullable:true,  shared: "number")
+
 		bazaIlosc(nullable:true,  shared: "number")
 		uwagiDodatkowe(nullable:true)
 		preautoryzacja(nullable:true)
@@ -239,11 +296,8 @@ class PointCommand implements Serializable {
 		telePompka(nullable:true)
 		teleKodzik(nullable:true)
 		kartaPodarunkowa(nullable:true)
-		pinPadTyp(nullable:true)
         kartaSimTyp(nullable:true)
-		pinPadIlosc(nullable:true,  shared: "natural")
         kartaSimIlosc(nullable: true, shared: "natural")
-		pinPadCena(nullable:true,  shared: "number")
 		routerTyp(nullable:true)
 		routerIlosc(nullable:true,  shared: "natural")
 		routerCena(nullable:true,  shared: "number")

@@ -50,13 +50,6 @@ class PdfPosMapper extends AbstractPdfMapper{
                 addToPosMap(resultNormalMap, posDetail.gprsIlosc, posDetail.gprsCena, posDetail.gprsPPCena)
                 addToPosMap(resultNormalMap, posDetail.pinPadIlosc, posDetail.pinPadCena, 0)
                 addToPosMap(resultNormalMap, posDetail.wifiIlosc, posDetail.wifiCena, 0)
-
-                addToPosMap(resultPrefMap, posDetail.dialupIlosc, posDetail.dialupCenaPreferencyjna, posDetail.dialupPPCenaPreferencyjna)
-                addToPosMap(resultPrefMap, posDetail.vpnIlosc, posDetail.vpnCenaPreferencyjna, posDetail.vpnPPCenaPreferencyjna)
-                addToPosMap(resultPrefMap, posDetail.sslIlosc, posDetail.sslCenaPreferencyjna, posDetail.sslPPCenaPreferencyjna)
-                addToPosMap(resultPrefMap, posDetail.gprsIlosc, posDetail.gprsCenaPreferencyjna, posDetail.gprsPPCenaPreferencyjna)
-                addToPosMap(resultPrefMap, posDetail.pinPadIlosc, posDetail.pinPadCenaPreferencyjna, 0)
-                addToPosMap(resultPrefMap, posDetail.wifiIlosc, posDetail.wifiCenaPreferencyjna, 0)
             }
         }
         return [normalResult: resultNormalMap, prefResult: resultPrefMap]
@@ -159,6 +152,10 @@ class PdfPosMapper extends AbstractPdfMapper{
 
     private mapImieInformatykDynamicznaPosDataDetails(def data, def posesData, def key, def value){
         data.put("imieINazwiskoInformatykDynamiczna", [value + " " + getFromPosDataDetails(posesData, 'nazwiskoInformatykDynamiczna')] as String[]);
+    }
+
+    private mapPlanowanaDataInstalacjiPosDataDetails(def data, def posesData, def key, def value) {
+        addDateField(data, key, DateUtils.formatWithTimezone(value))
     }
 
     private getFromPosDataDetails(def posesData, def key){
@@ -271,12 +268,6 @@ class PdfPosMapper extends AbstractPdfMapper{
     }
 
 	//----------------------CHECKBOX PRZENOSNY-------------------------
-	
-	private mapGprsTypPosDataDetails(def data, def posesData, def key, def value){
-		if (["INGENICO IWL220C", "Verifone Vx670 GPRS"].contains(value)){
-			addCheckbox(data, "przenosnyDol", true, true);
-		}
-	}
 
     private def addToPosMap(def resultMap, def count, def price, def pricePP) {
 

@@ -31,7 +31,9 @@
                                                  id="${panelType}[${id}].possetforselectedpointDialupType"
                                                  name="${panelType}[${id}].dialupTyp" from="[]"
                                                  valueMessagePrefix="" value="${pointData?.dialupTyp}"/></td>
+
                     <td style="text-align: right;"><g:message code="panel.dialup"/></td>
+
                     <td><g:textField name="${panelType}[${id}].dialupIlosc"
                                      id="${panelType}[${id}].dialupCount"
                                      value="${pointData?.dialupIlosc}"
@@ -48,20 +50,22 @@
                 <tr>
                     <td class="posTypeColumn"><g:message code="type.label"/>
                         <dict:extendedTypeSelect medium="DIALUP" type="STATIONARY" isPINPad="true"
-                                                 id="${panelType}[${id}].possetforselectedpointDialupType"
-                                                 name="${panelType}[${id}].dialupTyp" from="[]"
-                                                 valueMessagePrefix="" value="${pointData?.dialupTyp}"/></td>
+                                                 id="${panelType}[${id}].possetforselectedpointDialupPPType"
+                                                 name="${panelType}[${id}].dialupPPTyp" from="[]"
+                                                 valueMessagePrefix="" value="${pointData?.dialupPPTyp}"/></td>
+
                     <td style="text-align: right;"><g:message code="panel.dialup"/></td>
-                    <td><g:textField name="${panelType}[${id}].dialupIlosc"
-                                     id="${panelType}[${id}].dialupCount"
-                                     value="${pointData?.dialupIlosc}"
+
+                    <td><g:textField name="${panelType}[${id}].dialupPPIlosc"
+                                     id="${panelType}[${id}].dialupPPCount"
+                                     value="${pointData?.dialupPPIlosc}"
                                      class="half-width integer-number"/> <g:message code="panel.unit"/></td>
 
-                    <td><eumowy:currencyField name="${panelType}[${id}].dialupCena"
-                                              id="${panelType}[${id}].dialupPrice"
-                                              value="${pointData?.dialupCena}"
+                    <td><eumowy:currencyField name="${panelType}[${id}].dialupPPCena"
+                                              id="${panelType}[${id}].dialupPPPrice"
+                                              value="${pointData?.dialupPPCena}"
                                               validatable="${pointData}"
-                                              validateField="dialupCena"
+                                              validateField="dialupPPCena"
                                               class="half-width float-number"/></td>
                 </tr>
 
@@ -71,7 +75,9 @@
                                                  id="${panelType}[${id}].possetforselectedpointVpnType"
                                                  name="${panelType}[${id}].vpnTyp" from="[]"
                                                  valueMessagePrefix="" value="${pointData?.vpnTyp}"/></td>
+
                     <td style="text-align: right;"><g:message code="panel.vpn"/></td>
+
                     <td><g:textField name="${panelType}[${id}].vpnIlosc"
                                      id="${panelType}[${id}].vpnCount"
                                      value="${pointData?.vpnIlosc}"
@@ -88,20 +94,22 @@
                 <tr>
                     <td class="posTypeColumn"><g:message code="type.label"/>
                         <dict:extendedTypeSelect medium="VPN" type="STATIONARY" isPINPad="true"
-                                                 id="${panelType}[${id}].possetforselectedpointVpnType"
-                                                 name="${panelType}[${id}].vpnTyp" from="[]"
-                                                 valueMessagePrefix="" value="${pointData?.vpnTyp}"/></td>
+                                                 id="${panelType}[${id}].possetforselectedpointVpnPPType"
+                                                 name="${panelType}[${id}].vpnPPTyp" from="[]"
+                                                 valueMessagePrefix="" value="${pointData?.vpnPPTyp}"/></td>
+
                     <td style="text-align: right;"><g:message code="panel.vpn"/></td>
-                    <td><g:textField name="${panelType}[${id}].vpnIlosc"
-                                     id="${panelType}[${id}].vpnCount"
-                                     value="${pointData?.vpnIlosc}"
+
+                    <td><g:textField name="${panelType}[${id}].vpnPPIlosc"
+                                     id="${panelType}[${id}].vpnPPCount"
+                                     value="${pointData?.vpnPPIlosc}"
                                      class="half-width integer-number"/> <g:message code="panel.unit"/></td>
 
-                    <td><eumowy:currencyField name="${panelType}[${id}].vpnCena"
-                                              id="${panelType}[${id}].vpnPrice"
-                                              value="${pointData?.vpnCena}"
+                    <td><eumowy:currencyField name="${panelType}[${id}].vpnPPCena"
+                                              id="${panelType}[${id}].vpnPPPrice"
+                                              value="${pointData?.vpnPPCena}"
                                               validatable="${pointData}"
-                                              validateField="vpnCena"
+                                              validateField="vpnPPCena"
                                               class="half-width float-number"/></td>
                 </tr>
 
@@ -111,7 +119,9 @@
                                          id="${panelType}[${id}].possetforselectedpointSslType"
                                          name="${panelType}[${id}].sslTyp" from="[]"
                                          valueMessagePrefix="" value="${pointData?.sslTyp}"/></td>
+
                     <td style="text-align: right;"><g:message code="panel.ssl"/></td>
+
                     <td><g:textField name="${panelType}[${id}].sslIlosc"
                                      id="${panelType}[${id}].sslCount"
                                      value="${pointData?.sslIlosc}"
@@ -128,20 +138,22 @@
                 <tr>
                     <td class="posTypeColumn"><g:message code="type.label"/>
                         <dict:extendedTypeSelect medium="SSL" type="STATIONARY" isPINPad="true"
-                                         id="${panelType}[${id}].possetforselectedpointSslType"
-                                         name="${panelType}[${id}].sslTyp" from="[]"
-                                         valueMessagePrefix="" value="${pointData?.sslTyp}"/></td>
+                                         id="${panelType}[${id}].possetforselectedpointSslPPType"
+                                         name="${panelType}[${id}].sslPPTyp" from="[]"
+                                         valueMessagePrefix="" value="${pointData?.sslPPTyp}"/></td>
+
                     <td style="text-align: right;"><g:message code="panel.ssl"/></td>
-                    <td><g:textField name="${panelType}[${id}].sslIlosc"
-                                     id="${panelType}[${id}].sslCount"
-                                     value="${pointData?.sslIlosc}"
+
+                    <td><g:textField name="${panelType}[${id}].sslPPIlosc"
+                                     id="${panelType}[${id}].sslPPCount"
+                                     value="${pointData?.sslPPIlosc}"
                                      class="half-width integer-number"/> <g:message code="panel.unit"/></td>
 
-                    <td><eumowy:currencyField name="${panelType}[${id}].sslCena"
-                                              id="${panelType}[${id}].sslPrice"
-                                              value="${pointData?.sslCena}"
+                    <td><eumowy:currencyField name="${panelType}[${id}].sslPPCena"
+                                              id="${panelType}[${id}].sslPPPrice"
+                                              value="${pointData?.sslPPCena}"
                                               validatable="${pointData}"
-                                              validateField="sslCena"
+                                              validateField="sslPPCena"
                                               class="half-width float-number"/></td>
                 </tr>
 
@@ -152,7 +164,9 @@
                                                  name="${panelType}[${id}].gprsTyp" from="[]"
                                                  valueMessagePrefix="" value="${pointData?.gprsTyp}"
                                                  onchange="setFieldPropertiesInDodatkoweWyposazenie(this, this.value, false)"/></td>
+
                     <td style="text-align: right;"><g:message code="panel.gprs"/></td>
+
                     <td><g:textField name="${panelType}[${id}].gprsIlosc"
                                      id="${panelType}[${id}].gprsCount"
                                      value="${pointData?.gprsIlosc}"
@@ -169,21 +183,23 @@
                 <tr>
                     <td class="posTypeColumn"><g:message code="type.label"/>
                         <dict:extendedTypeSelect medium="GPRS" type="STATIONARY" isPINPad="true"
-                                                 id="${panelType}[${id}].possetforselectedpointGprsType"
-                                                 name="${panelType}[${id}].gprsTyp" from="[]"
-                                                 valueMessagePrefix="" value="${pointData?.gprsTyp}"
+                                                 id="${panelType}[${id}].possetforselectedpointGprsPPType"
+                                                 name="${panelType}[${id}].gprsPPTyp" from="[]"
+                                                 valueMessagePrefix="" value="${pointData?.gprsPPTyp}"
                                                  onchange="setFieldPropertiesInDodatkoweWyposazenie(this, this.value, false)"/></td>
+
                     <td style="text-align: right;"><g:message code="panel.gprs"/></td>
-                    <td><g:textField name="${panelType}[${id}].gprsIlosc"
-                                     id="${panelType}[${id}].gprsCount"
-                                     value="${pointData?.gprsIlosc}"
+
+                    <td><g:textField name="${panelType}[${id}].gprsPPIlosc"
+                                     id="${panelType}[${id}].gprsPPCount"
+                                     value="${pointData?.gprsPPIlosc}"
                                      class="half-width integer-number"/> <g:message code="panel.unit"/></td>
 
-                    <td><eumowy:currencyField name="${panelType}[${id}].gprsCena"
-                                              id="${panelType}[${id}].gprsPrice"
-                                              value="${pointData?.gprsCena}"
+                    <td><eumowy:currencyField name="${panelType}[${id}].gprsPPCena"
+                                              id="${panelType}[${id}].gprsPPPrice"
+                                              value="${pointData?.gprsPPCena}"
                                               validatable="${pointData}"
-                                              validateField="gprsCena"
+                                              validateField="gprsPPCena"
                                               class="half-width float-number"/></td>
                 </tr>
 
@@ -194,21 +210,23 @@
                 <tr>
                     <td class="posTypeColumn"><g:message code="type.label"/>
                         <dict:extendedTypeSelect medium="GPRS" type="PORTABLE" isPINPad="true"
-                                                 id="${panelType}[${id}].possetforselectedpointGprsType"
-                                                 name="${panelType}[${id}].gprsTyp" from="[]"
-                                                 valueMessagePrefix="" value="${pointData?.gprsTyp}"
+                                                 id="${panelType}[${id}].possetforselectedpointGprsTypePortable"
+                                                 name="${panelType}[${id}].gprsTypPortable" from="[]"
+                                                 valueMessagePrefix="" value="${pointData?.gprsTypPortable}"
                                                  onchange="setFieldPropertiesInDodatkoweWyposazenie(this, this.value, false)"/></td>
+
                     <td style="text-align: right;"><g:message code="panel.gprs"/></td>
-                    <td><g:textField name="${panelType}[${id}].gprsIlosc"
-                                     id="${panelType}[${id}].gprsCount"
-                                     value="${pointData?.gprsIlosc}"
+
+                    <td><g:textField name="${panelType}[${id}].gprsIloscPortable"
+                                     id="${panelType}[${id}].gprsCountPortable"
+                                     value="${pointData?.gprsIloscPortable}"
                                      class="half-width integer-number"/> <g:message code="panel.unit"/></td>
 
-                    <td><eumowy:currencyField name="${panelType}[${id}].gprsCena"
-                                              id="${panelType}[${id}].gprsPrice"
-                                              value="${pointData?.gprsCena}"
+                    <td><eumowy:currencyField name="${panelType}[${id}].gprsCenaPortable"
+                                              id="${panelType}[${id}].gprsPricePortable"
+                                              value="${pointData?.gprsCenaPortable}"
                                               validatable="${pointData}"
-                                              validateField="gprsCena"
+                                              validateField="gprsCenaPortable"
                                               class="half-width float-number"/></td>
                 </tr>
 
