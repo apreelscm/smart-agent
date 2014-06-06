@@ -157,7 +157,7 @@ class PdfPosMapper extends AbstractPdfMapper{
     private mapPlanowanaDataInstalacjiPosDataDetails(def data, def posesData, def key, def value) {
         addDateField(data, key, DateUtils.formatWithTimezone(value))
 
-        addSeparatedDateFields(data, data.get(key)[0], "planowanaDataInstalacji")
+        addSeparatedDateFields(data, data.get(key)[0], "dataInstalacji")
     }
 
     private getFromPosDataDetails(def posesData, def key){
