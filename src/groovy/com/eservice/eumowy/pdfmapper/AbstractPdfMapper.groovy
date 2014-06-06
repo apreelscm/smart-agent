@@ -41,6 +41,19 @@ public abstract class AbstractPdfMapper {
         data.put(key, [value?.trim()?DateUtils.getFormattedDate(DateUtils.parseWithTimezone(value), DateUtils.YYYY_MM_DD):""] as String[])
     }
 
+    void addSeparatedDateFields(Map data, String formattedDate, String prefix) {
+        if (formattedDate != null && !"".equals(formattedDate)) {
+            def pattern = ~/\d{4}-\d{2}-\d{2}/
+
+            if (pattern.matcher(formattedDate).matches()) {
+                final String[] split = formattedDate.split("-")
+                data.put(prefix + "1", [split[2]] as String[]);
+                data.put(prefix + "2", [split[1]] as String[]);
+                data.put(prefix + "3", [split[0]] as String[]);
+            }
+        }
+    }
+
     def addCheckboxes(def data, def pdfKeyValue, def value){
         pdfKeyValue.each{ k, v ->  data.put(k, [v.equals(value), "", "checkbox"] as String[])}
     }

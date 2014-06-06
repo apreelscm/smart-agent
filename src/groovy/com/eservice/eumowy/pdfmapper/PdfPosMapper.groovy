@@ -36,23 +36,23 @@ class PdfPosMapper extends AbstractPdfMapper{
         return data
     }
 
-    public def mapPosesNotFromCBD(def poses){
-        def resultNormalMap = new TreeMap<Integer, BigDecimal>();
-        def resultPrefMap = new TreeMap<Integer, BigDecimal>();
+    public Map mapPosesNotFromCBD(def poses){
+        Map result = new TreeMap<Integer, BigDecimal>()
+
         poses?.each { pos ->
 			if (pos == null)
 				return
 				
             pos.posDetails?.each { posDetail ->
-                addToPosMap(resultNormalMap, posDetail.dialupIlosc, posDetail.dialupCena, posDetail.dialupPPCena)
-                addToPosMap(resultNormalMap, posDetail.vpnIlosc, posDetail.vpnCena, posDetail.vpnPPCena)
-                addToPosMap(resultNormalMap, posDetail.sslIlosc, posDetail.sslCena, posDetail.sslPPCena)
-                addToPosMap(resultNormalMap, posDetail.gprsIlosc, posDetail.gprsCena, posDetail.gprsPPCena)
-                addToPosMap(resultNormalMap, posDetail.pinPadIlosc, posDetail.pinPadCena, 0)
-                addToPosMap(resultNormalMap, posDetail.wifiIlosc, posDetail.wifiCena, 0)
+                addToPosMap(result, posDetail.dialupIlosc, posDetail.dialupCena)
+                addToPosMap(result, posDetail.vpnIlosc, posDetail.vpnCena)
+                addToPosMap(result, posDetail.sslIlosc, posDetail.sslCena)
+                addToPosMap(result, posDetail.gprsIlosc, posDetail.gprsCena)
+                addToPosMap(result, posDetail.pinPadIlosc, posDetail.pinPadCena)
             }
         }
-        return [normalResult: resultNormalMap, prefResult: resultPrefMap]
+
+        return result
     }
 
     public def mapPosesDataToPDFData(def posesData) {
@@ -156,6 +156,8 @@ class PdfPosMapper extends AbstractPdfMapper{
 
     private mapPlanowanaDataInstalacjiPosDataDetails(def data, def posesData, def key, def value) {
         addDateField(data, key, DateUtils.formatWithTimezone(value))
+
+        addSeparatedDateFields(data, data.get(key)[0], "planowanaDataInstalacji")
     }
 
     private getFromPosDataDetails(def posesData, def key){
@@ -174,8 +176,8 @@ class PdfPosMapper extends AbstractPdfMapper{
 	private mapDialupIloscPPPosDataDetails(def data, def posesData, def key, def value){
 		if(value !=null && !ZERO_VALUES.contains(value)){
 			data.put(key, [value] as String[]);
-			data.put("dialupCena", [(getFromPosDataDetails(posesData, 'dialupCena'))] as String[])
-			data.put("dialupTyp", [(getFromPosDataDetails(posesData, 'dialupTyp'))] as String[])
+			data.put("dialupPPCena", [(getFromPosDataDetails(posesData, 'dialupPPCena'))] as String[])
+			data.put("dialupPPTyp", [(getFromPosDataDetails(posesData, 'dialupPPTyp'))] as String[])
 		}
 	}
 	
@@ -190,8 +192,8 @@ class PdfPosMapper extends AbstractPdfMapper{
 	private mapVpnIloscPPPosDataDetails(def data, def posesData, def key, def value){
 		if(value !=null && !ZERO_VALUES.contains(value)){
 			data.put(key, [value] as String[]);
-			data.put("vpnCena", [(getFromPosDataDetails(posesData, 'vpnCena'))] as String[])
-			data.put("vpnTyp", [(getFromPosDataDetails(posesData, 'vpnTyp'))] as String[])
+			data.put("vpnPPCena", [(getFromPosDataDetails(posesData, 'vpnPPCena'))] as String[])
+			data.put("vpnPPTyp", [(getFromPosDataDetails(posesData, 'vpnPPTyp'))] as String[])
 		}
 	}
 	
@@ -206,24 +208,8 @@ class PdfPosMapper extends AbstractPdfMapper{
 	private mapSslIloscPPPosDataDetails(def data, def posesData, def key, def value){
 		if(value !=null && !ZERO_VALUES.contains(value)){
 			data.put(key, [value] as String[]);
-			data.put("sslCena", [(getFromPosDataDetails(posesData, 'sslCena'))] as String[])
-			data.put("sslTyp", [(getFromPosDataDetails(posesData, 'sslTyp'))] as String[])
-		}
-	}
-	
-	private mapWifiIloscPosDataDetails(def data, def posesData, def key, def value){
-		if(value !=null && !ZERO_VALUES.contains(value)){
-			data.put(key, [value] as String[]);
-			data.put("wifiCena", [(getFromPosDataDetails(posesData, 'wifiCena'))] as String[])
-			data.put("wifiTyp", [(getFromPosDataDetails(posesData, 'wifiTyp'))] as String[])
-		}
-	}
-	
-	private mapWifiIloscPPPosDataDetails(def data, def posesData, def key, def value){
-		if(value !=null && !ZERO_VALUES.contains(value)){
-			data.put(key, [value] as String[]);
-			data.put("wifiCena", [(getFromPosDataDetails(posesData, 'wifiCena'))] as String[])
-			data.put("wifiTyp", [(getFromPosDataDetails(posesData, 'wifiTyp'))] as String[])
+			data.put("sslPPCena", [(getFromPosDataDetails(posesData, 'sslPPCena'))] as String[])
+			data.put("sslPPTyp", [(getFromPosDataDetails(posesData, 'sslPPTyp'))] as String[])
 		}
 	}
 	
@@ -238,10 +224,18 @@ class PdfPosMapper extends AbstractPdfMapper{
 	private mapGprsIloscPPPosDataDetails(def data, def posesData, def key, def value){
 		if(value !=null && !ZERO_VALUES.contains(value)){
 			data.put(key, [value] as String[]);
-			data.put("gprsCena", [(getFromPosDataDetails(posesData, 'gprsCena'))] as String[])
-			data.put("gprsTyp", [(getFromPosDataDetails(posesData, 'gprsTyp'))] as String[])
+			data.put("gprsPPCena", [(getFromPosDataDetails(posesData, 'gprsPPCena'))] as String[])
+			data.put("gprsPPTyp", [(getFromPosDataDetails(posesData, 'gprsPPTyp'))] as String[])
 		}
 	}
+
+    private mapGprsIloscPortablePosDataDetails(def data, def posesData, def key, def value){
+        if(value !=null && !ZERO_VALUES.contains(value)){
+            data.put(key, [value] as String[]);
+            data.put("gprsCenaPortable", [(getFromPosDataDetails(posesData, 'gprsCenaPortable'))] as String[])
+            data.put("gprsTypPortable", [(getFromPosDataDetails(posesData, 'gprsTypPortable'))] as String[])
+        }
+    }
 	
 	private mapBazaIloscPosDataDetails(def data, def posesData, def key, def value){
 		if(value !=null && !ZERO_VALUES.contains(value)){
@@ -269,28 +263,16 @@ class PdfPosMapper extends AbstractPdfMapper{
 
 	//----------------------CHECKBOX PRZENOSNY-------------------------
 
-    private def addToPosMap(def resultMap, def count, def price, def pricePP) {
+    private def addToPosMap(def resultMap, def count, def price) {
 
         if (count > 0){
             def priceSum = 0;
             if (price > 0){
                 priceSum += price
             }
-            if (pricePP > 0){
-                priceSum += pricePP
-            }
 
-            if (priceSum > 0){
+            if (priceSum > 0) {
                 resultMap.put(priceSum, count + (resultMap.containsKey(priceSum) ? resultMap.get(priceSum) : 0))
-            }
-        }
-    }
-
-    private def addToData(def data, def resultMap, def countPdfFieldName, def pricePdfFieldName, def suffixes) {
-        resultMap.eachWithIndex{ key, value, index ->
-            if (index < suffixes.size()){
-                data.put(countPdfFieldName+suffixes[index], [value.toString()] as String[])
-                data.put(pricePdfFieldName+suffixes[index], [key.toString()] as String[])
             }
         }
     }

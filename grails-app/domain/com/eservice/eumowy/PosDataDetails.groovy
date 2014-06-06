@@ -6,7 +6,7 @@ class PosDataDetails implements Serializable {
 	Integer dialupIlosc
 	BigDecimal dialupCena
 
-//    String dialupPPTyp
+    String dialupPPTyp
 	Integer dialupPPIlosc
 	BigDecimal dialupPPCena
 
@@ -14,15 +14,15 @@ class PosDataDetails implements Serializable {
 	Integer vpnIlosc
 	BigDecimal vpnCena
 
-//    String vpnPPTyp
+    String vpnPPTyp
 	Integer vpnPPIlosc
 	BigDecimal vpnPPCena
 
-//	String sslTyp
+	String sslTyp
 	Integer sslIlosc
 	BigDecimal sslCena
 
-//    String sslPPTyp
+    String sslPPTyp
 	Integer sslPPIlosc
 	BigDecimal sslPPCena
 
@@ -36,35 +36,35 @@ class PosDataDetails implements Serializable {
 	Integer gprsIlosc
 	BigDecimal gprsCena
 
-//    String gprsPPTyp
+    String gprsPPTyp
 	Integer gprsPPIlosc
 	BigDecimal gprsPPCena
 
-//    String gprsTypPortable
-//    Integer gprsIloscPortable
-//    BigDecimal gprsCenaPortable
+    String gprsTypPortable
+    Integer gprsIloscPortable
+    BigDecimal gprsCenaPortable
 
 	Integer bazaIlosc
-	
+
 	String zamkniecieDniaOd
 	String zamkniecieDniaDo
 	Date planowanaDataInstalacji
 	String uwagiDodatkowe
-	
+
 	Boolean preautoryzacja
 	Boolean brakFunkcjiZwrotu
 	Boolean zwrotNaHaslo
 	Boolean analizaZbioru
 	Boolean integracjaZSysKas
 	Boolean zwrotyIKO
-	
+
 	Boolean logowaniePrzedKazdaTransakcja
 	Boolean logowanieZmianowe
-	
+
 	Boolean napiwek1
 	Boolean telePompka
 	Boolean teleKodzik
-	
+
 	Boolean kartaPodarunkowa
 
 	String pinPadTyp
@@ -78,14 +78,14 @@ class PosDataDetails implements Serializable {
 	BigDecimal czytnikKartCena
     String kartaSimTyp
     Integer kartaSimIlosc
-	
+
 	String inneWyposazenie
 	Boolean inneWyposazenieSsl
 	Boolean inneWyposazenieGprs
 	String inneWyposazenieTyp
 	Integer inneWyposazenieIlosc
 	BigDecimal inneWyposazenieCena
-	
+
 	String maska
 	String bramka
 	String adresIp
@@ -93,9 +93,9 @@ class PosDataDetails implements Serializable {
 	String kontaktInformatykStatyczna
 	String imieInformatykStatyczna
 	String nazwiskoInformatykStatyczna
-	
+
 	static belongsTo = [pos: PosData]
-	
+
 	static mapping = {
 		table name: "POS_DETAILS", schema:DomainConsts.SHEMA_NAME
 		id generator:'sequence', params:[sequence:DomainConsts.SHEMA_NAME+'.POS_DETAILS_SEQ']
@@ -104,7 +104,7 @@ class PosDataDetails implements Serializable {
 		dialupIlosc column: "dialup_count"
 		dialupCena column: "dialup_price"
 
-//        dialupPPTyp column: "dialup_pp_type"
+        dialupPPTyp column: "dialup_pp_type"
 		dialupPPIlosc column: "dialup_pp_count"
 		dialupPPCena column: "dialup_pp_price"
 
@@ -112,15 +112,15 @@ class PosDataDetails implements Serializable {
 		vpnIlosc column: "vpn_count"
 		vpnCena column: "vpn_price"
 
-//        vpnPPTyp column: "vpn_pp_type"
+        vpnPPTyp column: "vpn_pp_type"
 		vpnPPIlosc column: "vpn_pp_count"
 		vpnPPCena column: "vpn_pp_price"
 
-//		sslTyp column: "ssl_type"
+		sslTyp column: "ssl_type"
 		sslIlosc column: "ssl_count"
 		sslCena column: "ssl_price"
 
-//        sslPPTyp column: "ssl_pp_type"
+        sslPPTyp column: "ssl_pp_type"
 		sslPPIlosc column: "ssl_pp_count"
 		sslPPCena column: "ssl_pp_price"
 
@@ -134,13 +134,13 @@ class PosDataDetails implements Serializable {
 		gprsIlosc column: "gprs_count"
 		gprsCena column: "gprs_price"
 
-//        gprsPPTyp column: "gprs_pp_type"
+        gprsPPTyp column: "gprs_pp_type"
 		gprsPPIlosc column: "gprs_pp_count"
 		gprsPPCena column: "gprs_pp_price"
 
-//        gprsTypPortable column: "gprs_type_portable"
-//        gprsIloscPortable column: "gprs_count_portable"
-//        gprsCenaPortable column: "gprs_price_portable"
+        gprsTypPortable column: "gprs_typ_portable"
+        gprsIloscPortable column: "gprs_ilosc_portable"
+        gprsCenaPortable column: "gprs_cena_portable"
 
 		bazaIlosc column: "base_count"
 		zamkniecieDniaOd column: "day_close_from"
@@ -184,7 +184,7 @@ class PosDataDetails implements Serializable {
 		imieInformatykStatyczna column: "statdevicesupp_contactname"
 		nazwiskoInformatykStatyczna column: "statdevicesupp_contactsurname"
 	}
-	
+
     static constraints = {
 		pos(nullable:true)
 
@@ -192,7 +192,7 @@ class PosDataDetails implements Serializable {
 		dialupIlosc(nullable:true)
 		dialupCena(nullable:true)
 
-//        dialupPPTyp(nullable: true)
+        dialupPPTyp(nullable: true)
 		dialupPPIlosc(nullable:true)
 		dialupPPCena(nullable:true)
 
@@ -200,15 +200,15 @@ class PosDataDetails implements Serializable {
 		vpnIlosc(nullable:true)
 		vpnCena(nullable:true)
 
-//        vpnPPTyp(nullable:true)
+        vpnPPTyp(nullable:true)
 		vpnPPIlosc(nullable:true)
 		vpnPPCena(nullable:true)
 
-//		sslTyp(nullable:true)
+		sslTyp(nullable:true)
 		sslIlosc(nullable:true)
 		sslCena(nullable:true)
 
-//        sslPPTyp(nullable:true)
+        sslPPTyp(nullable:true)
 		sslPPIlosc(nullable:true)
 		sslPPCena(nullable:true)
 
@@ -222,13 +222,13 @@ class PosDataDetails implements Serializable {
 		gprsIlosc(nullable:true)
 		gprsCena(nullable:true)
 
-//        gprsPPTyp(nullable: true)
+        gprsPPTyp(nullable: true)
 		gprsPPIlosc(nullable:true)
 		gprsPPCena(nullable:true)
 
-//        gprsTypPortable(nullable: true)
-//        gprsIloscPortable(nullable: true)
-//        gprsCenaPortable(nullable: true)
+        gprsTypPortable(nullable: true)
+        gprsIloscPortable(nullable: true)
+        gprsCenaPortable(nullable: true)
 
 		bazaIlosc(nullable:true)
 		zamkniecieDniaOd(nullable:true)
@@ -272,5 +272,4 @@ class PosDataDetails implements Serializable {
         kartaSimTyp(nullable:true)
         kartaSimIlosc(nullable:true)
     }
-	
 }

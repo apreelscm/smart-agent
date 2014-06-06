@@ -2,37 +2,44 @@ package com.eservice.eumowy.validator
 
 class ValidatorUtils {
 
-    static def MESSAGE_PROPERTY_NAME = 'getMessageForProperty'
+    private static final String MESSAGE_PROPERTY_NAME = 'getMessageForProperty'
 
     public static boolean hasMorePriceGroups(def maxSize, def pointCommands){
         Set<BigDecimal> normalPriceGroups = new HashSet<BigDecimal>()
 
         pointCommands.each { pos ->
-
             if (pos != null) {
-                normalPriceGroups.add(getGroupValue(pos.dialupCena, pos.dialupPPCena))
-                normalPriceGroups.add(getGroupValue(pos.vpnCena, pos.vpnPPCena))
-                normalPriceGroups.add(getGroupValue(pos.sslCena, pos.sslPPCena))
-                normalPriceGroups.add(getGroupValue(pos.gprsCena, pos.gprsPPCena))
-                normalPriceGroups.add(getGroupValue(pos.pinPadCena, BigDecimal.ZERO))
+                normalPriceGroups.add(getGroupValue(pos.dialupCena))
+                normalPriceGroups.add(getGroupValue(pos.dialupPPCena))
+
+                normalPriceGroups.add(getGroupValue(pos.vpnCena))
+                normalPriceGroups.add(getGroupValue(pos.vpnPPCena))
+
+                normalPriceGroups.add(getGroupValue(pos.sslCena))
+                normalPriceGroups.add(getGroupValue(pos.sslPPCena))
+
+                normalPriceGroups.add(getGroupValue(pos.gprsCena))
+                normalPriceGroups.add(getGroupValue(pos.gprsPPCena))
+                normalPriceGroups.add(getGroupValue(pos.gprsCenaPortable))
+
+                normalPriceGroups.add(getGroupValue(pos.pinPadCena))
             }
         }
 
-        normalPriceGroups.removeAll(Collections.singleton(BigDecimal.ZERO)) //jesli obie ceny sa nullem to dostajemy 0
+        normalPriceGroups.removeAll(Collections.singleton(BigDecimal.ZERO))
+
         if(normalPriceGroups.size() > maxSize){
             return true
         }
+
         return false
     }
 
-    public static def getGroupValue(def normalPrice, def ppPrice){
-        if(normalPrice == null){
-            normalPrice = BigDecimal.ZERO
+    public static def getGroupValue(BigDecimal price) {
+        if(price == null){
+            price = BigDecimal.ZERO
         }
-        if (ppPrice == null){
-            ppPrice = BigDecimal.ZERO
-        }
-        return normalPrice + ppPrice
+        return price
     }
 
     public static def getMessage(def cmd, def propertyName){

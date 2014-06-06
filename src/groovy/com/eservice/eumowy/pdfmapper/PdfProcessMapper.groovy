@@ -62,10 +62,7 @@ class PdfProcessMapper extends AbstractPdfMapper{
 
 
     //----- sumowanie oplat z posow i hire payments - start
-            def normalPrefMaps = posMapper.mapPosesNotFromCBD(findPosesNotFromCbd(points));
-
-            def normalResult = normalPrefMaps.normalResult
-            def prefResult = normalPrefMaps.prefResult
+            def normalResult = posMapper.mapPosesNotFromCBD(findPosesNotFromCbd(points))
 
             def normalMapFromProcess = [:]
             if (processInstance.processData.find{"isOdplatneUzywanieShown".equals(it.name) && "tak".equals(it.value)}){
@@ -94,12 +91,6 @@ class PdfProcessMapper extends AbstractPdfMapper{
                 if (i<suffixes.size()){
                     dataMap.put('oplatyPOSIlosc' + suffixes.get(i), [entry.value.toString()] as String[])
                     dataMap.put('oplatyPOSCena' + suffixes.get(i), [entry.key.toString()] as String[])
-                }
-            }
-            prefResult.eachWithIndex { def entry, int i ->
-                if (i<suffixes.size()){
-                    dataMap.put('oplatyPOSPrefIlosc' + suffixes.get(i), [entry.value.toString()] as String[])
-                    dataMap.put('oplatyPOSPrefCena' + suffixes.get(i), [entry.key.toString()] as String[])
                 }
             }
     //----- sumowanie oplat z posow i hire payments - finish
