@@ -575,7 +575,7 @@ class ActivityController {
                     // Update
                     processInstance.points?.each { point ->
                         if (point.cbdId != null) {
-                            def foundApc = processCmd.allPoints?.find { apc -> apc.cbdId == point.cbdId }
+                            def foundApc = processCmd.allPoints?.find { apc -> apc.cbdId == point?.cbdId }
                             if (foundApc != null) {
                                 foundApc.id = point.id
                             }
@@ -704,7 +704,7 @@ class ActivityController {
                 // Update
                 processInstance.points?.each { point ->
                     if (point.cbdId != null) {
-                        def foundApc = cmd.allPoints?.find { apc -> apc.cbdId == point.cbdId }
+                        def foundApc = cmd.allPoints?.find { apc -> apc.cbdId == point?.cbdId }
                         foundApc?.id = point.id
                     }
                 }
@@ -1036,7 +1036,7 @@ class ActivityController {
                 // Update
                 processInstance.points?.each { point ->
                     if (point.cbdId != null) {
-                        def foundApc = cmd.allPoints?.find { apc -> apc.cbdId == point.cbdId }
+                        def foundApc = cmd.allPoints?.find { apc -> apc.cbdId == point?.cbdId }
                         foundApc?.id = point.id
                     }
                 }
