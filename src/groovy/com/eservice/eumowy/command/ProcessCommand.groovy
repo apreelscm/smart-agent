@@ -414,8 +414,6 @@ class ProcessCommand implements Serializable {
     Boolean isFromBisnode = false
     Boolean isRepresentativesChangedManually = false
 
-    AcceptorLocation acceptorLocation
-
 //    uwagi
     @Omit
     String notes = DEFAULT_VALUE

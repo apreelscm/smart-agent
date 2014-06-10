@@ -231,6 +231,10 @@ object, a:focus {
 
 }
 
+.bold {
+    font-weight: bold;
+}
+
 
 /* Table
 -------------------------------------------------------------------*/
@@ -1606,5 +1610,39 @@ div.acceptor:first-child:before {
     content: '';
     display: block;
     border: 1px solid gainsboro;
+    margin-bottom: 15px;
+}
+
+#cantEstablishBeneficiary {
+    margin-bottom: 20px;
+}
+
+#cantEstablishBeneficiary input[type=checkbox] {
+    vertical-align: top;
+}
+
+#cantEstablishBeneficiary label {
+    max-width: 905px;
+}
+
+#cantEstablishBeneficiary div {
+    margin-top: 15px;
+}
+
+#nazwaGieldy {
+    margin-right: 50px;
+}
+
+header.belka-glowna {
+    margin-bottom: 20px;
+}
+
+#verificationDocuments {
+    width: 350px;
+    margin: 0 auto;
+    text-align: left;
+}
+
+#verificationDocuments div {
     margin-bottom: 15px;
 }

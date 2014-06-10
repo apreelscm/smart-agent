@@ -33,14 +33,14 @@
         </div>
     </g:else>
 
-    <div class="acceptorCountry">
+    <div class="acceptorCountry hidden">
         <div class="acceptorPESELWrapper">
             <label for="${representative} + PESEL"><g:message code="pesel.label"/></label>
             <g:textField name="${representative} + PESEL" maxlength="11"/>
         </div>
     </div>
 
-    <div class="acceptorAbroad">
+    <div class="acceptorAbroad hidden">
         <div class="acceptorPESELCountryWrapper">
             <eumowy:enumRadioGroup values="${AcceptorPESELCountry.values()}" name="${representative + "PESELKraj"}" required="true"
                                    additionalView="akceptantPESELKraj" radioWrapperClass="acceptorPESELCountryRadioWrapper"/>

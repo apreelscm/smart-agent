@@ -1,4 +1,5 @@
 <%@ page import="enums.AcceptorLocation" %>
+
 <div id="acceptorsPanel" style="margin: 0">
     <fieldset>
         <div class="belka-glowna"><g:message code="panel.acceptor.title"/></div>
@@ -15,13 +16,12 @@
                     <g:textArea name="poleOpisowe" maxlength ="1000" rows="3" cols="70" style="height: auto; width: auto"/>
                 </div>
 
-                <eumowy:enumRadioGroup values="${AcceptorLocation.values()}" name="akceptantLokalizacja" value="${data.acceptorLocation}"
+                <eumowy:enumRadioGroup values="${AcceptorLocation.values()}" name="akceptantLokalizacja"
                                        radioWrapperClass="acceptorLocationRadioWrapper" required="true"/>
 
                 <div id="representativesContainer">
                     <g:render template="../panels/reprezentaciDropdowns"/>
                 </div>
-
 
                 <div id="representativesDropdowns" class="hidden">
                     <g:render template="../panels/reprezentaciDropdowns"/>
@@ -44,6 +44,9 @@
         </div>
     </fieldset>
 </div>
+
+<g:render template="/panels/beneficjenciRzeczywisci"/>
+<g:render template="/panels/dokumentyWeryfikacyjne"/>
 
 <script type="text/javascript">
     var $representativesContainer = jQuery("#representativesContainer"),
