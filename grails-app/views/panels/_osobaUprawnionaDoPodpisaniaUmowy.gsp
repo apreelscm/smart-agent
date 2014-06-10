@@ -1,8 +1,10 @@
+<%@ page import="enums.AcceptorLocation" %>
 <div id="acceptorsPanel" style="margin: 0">
     <fieldset>
         <div class="belka-glowna"><g:message code="panel.acceptor.title"/></div>
         <div class="centre" style="padding-top: 20px; width: 915px">
             <g:hiddenField name="isFromBisnode" value="${data.isFromBisnode}"/>
+            
             <g:if test="${data.isFromBisnode && representativesBisnode?.size() > 0}">
                 <div>
                     <g:checkBox name="isRepresentativesChangedManually" value="${data.isRepresentativesChangedManually}" readonly="readonly"/> <g:message code="representatives.change"/>
@@ -12,6 +14,9 @@
                     <label for="poleOpisowe" style="margin-top: 20px">Pole opisowe</label>
                     <g:textArea name="poleOpisowe" maxlength ="1000" rows="3" cols="70" style="height: auto; width: auto"/>
                 </div>
+
+                <eumowy:enumRadioGroup values="${AcceptorLocation.values()}" name="akceptantLokalizacja" value="${data.acceptorLocation}"
+                                       radioWrapperClass="acceptorLocationRadioWrapper" required="true"/>
 
                 <div id="representativesContainer">
                     <g:render template="../panels/reprezentaciDropdowns"/>
@@ -65,4 +70,7 @@
 
         $representativesContainer.find("input, select").removeAttr('disabled');
     }
+
+    $("#reprezentant1Imie").attr('required', 'required');
+    $("#reprezentant1Nazwisko").attr('required', 'required');
 </script>

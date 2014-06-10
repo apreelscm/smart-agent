@@ -1,44 +1,6 @@
-<g:set var="firstNames" value="${[""] + representativesBisnode?.collect {it.firstName}}"/>
-<g:set var="lastNames" value="${[""] + representativesBisnode?.collect {it.lastName}}"/>
-
-<div>
-    <eumowy:textField name="reprezentant1Tytul" value="${data.reprezentant1Tytul}" validatable="${data}" readonly="readonly" class="tytulField"/>
-
-    <label for="reprezentant1Imie"><g:message code="panel.first.name"/>:</label>
-    <g:select name="reprezentant1Imie" from="${firstNames}" value="${data.reprezentant1Imie}" validatable="${data}" class="imieField" required="required"/>
-
-    <label for="reprezentant1Nazwisko"><g:message code="panel.last.name"/>:</label>
-    <g:select name="reprezentant1Nazwisko" from="${lastNames}" value="${data.reprezentant1Nazwisko}" validatable="${data}" class="nazwiskoField" required="required"/>
-
-    <label for="reprezentant1Stanowisko"><g:message code="panel.position"/>:</label>
-    <eumowy:textField name="reprezentant1Stanowisko" value="${data.reprezentant1Stanowisko}" validatable="${data}" readonly="readonly" class="positionField"/>
-</div>
-
-<div>
-    <eumowy:textField name="reprezentant2Tytul" value="${data.reprezentant2Tytul}" validatable="${data}" readonly="readonly" class="tytulField"/>
-
-    <label for="reprezentant2Imie"><g:message code="panel.first.name"/>:</label>
-    <g:select name="reprezentant2Imie" from="${firstNames}" value="${data.reprezentant2Imie}" class="imieField"/>
-
-    <label for="reprezentant2Nazwisko"><g:message code="panel.last.name"/>:</label>
-    <g:select name="reprezentant2Nazwisko" from="${lastNames}" value="${data.reprezentant2Nazwisko}" class="nazwiskoField"/>
-
-    <label for="reprezentant2Stanowisko"><g:message code="panel.position"/>:</label>
-    <eumowy:textField name="reprezentant2Stanowisko" value="${data.reprezentant2Stanowisko}" validatable="${data}" readonly="readonly" class="positionField"/>
-</div>
-
-<div>
-    <eumowy:textField name="reprezentant3Tytul" value="${data.reprezentant3Tytul}" validatable="${data}" readonly="readonly" class="tytulField"/>
-
-    <label for="reprezentant3Imie"><g:message code="panel.first.name"/>:</label>
-    <g:select name="reprezentant3Imie" from="${firstNames}" value="${data.reprezentant3Imie}" class="imieField"/>
-
-    <label for="reprezentant3Nazwisko"><g:message code="panel.last.name"/>:</label>
-    <g:select name="reprezentant3Nazwisko" from="${lastNames}" value="${data.reprezentant3Nazwisko}" class="nazwiskoField"/>
-
-    <label for="reprezentant3Stanowisko"><g:message code="panel.position"/>:</label>
-    <eumowy:textField name="reprezentant3Stanowisko" value="${data.reprezentant3Stanowisko}" validatable="${data}" readonly="readonly" class="positionField"/>
-</div>
+<g:each in="${1..3}">
+    <g:render template="/common/acceptor" model="['representative': 'reprezentant' + it, 'dropdowns': true]"/>
+</g:each>
 
 <script type="text/javascript">
     var representatives = {};

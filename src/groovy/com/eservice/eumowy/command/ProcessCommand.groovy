@@ -18,6 +18,7 @@ import com.eservice.eumowy.validator.SkipAddressValidator
 import com.eservice.eumowy.validator.TelekodzikValidator
 import com.eservice.eumowy.validator.TelepompkaValidator
 import com.eservice.eumowy.validator.TerminalNumberValidator
+import enums.AcceptorLocation
 import grails.util.Holders
 import grails.validation.Validateable
 import org.apache.commons.collections.FactoryUtils
@@ -104,8 +105,6 @@ class ProcessCommand implements Serializable {
     String wydrukLinia2 = DEFAULT_VALUE
 
 //    danePunktu
-
-    //TODO - co to jest???
     boolean czyDcc
 
     String oplataVISA = DEFAULT_VALUE
@@ -406,7 +405,6 @@ class ProcessCommand implements Serializable {
     String bankKlienta = DEFAULT_VALUE
 
 //    oplataDCCZaUruchomienie
-    //TODO - to w pdfach sie nazywa inaczej - nie wiem jak...	 = DEFAULT_VALUE
     String oplataZaUruchomienieDCC = DEFAULT_VALUE
 
 //    liczbaMiesiecyZwolnieniaZNajm
@@ -415,6 +413,8 @@ class ProcessCommand implements Serializable {
 
     Boolean isFromBisnode = false
     Boolean isRepresentativesChangedManually = false
+
+    AcceptorLocation acceptorLocation
 
 //    uwagi
     @Omit

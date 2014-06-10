@@ -1560,3 +1560,51 @@ label.doladowanieLabel {
 #zestawPOSTable .posTypeColumn select{
     width: 300px;
 }
+
+.acceptorLocationRadioWrapper {
+    width: 450px;
+    display: inline-block;
+    vertical-align: top;
+}
+
+#acceptorsPanel div.acceptorPESELCountryWrapper, #acceptorsPanel div.acceptorDocumentTypeWrapper,
+#acceptorsPanel div.acceptorLocationRadioWrapper, #acceptorsPanel div.acceptorPESELWrapper {
+    margin-bottom: 0;
+}
+
+.acceptorPESELCountryRadioWrapper {
+    display: inline-block;
+}
+
+.acceptorPESELCountryRadioWrapper .label {
+    display: inline;
+}
+
+.acceptorPESELCountryRadioWrapper:first-child {
+    margin-right: 100px;
+}
+
+.acceptorPESELCountryRadioWrapper input {
+    margin-top: 7px;
+}
+
+.acceptorDocumentTypeRadioWrapper .label {
+    display: inline;
+}
+
+.acceptorDocumentTypeRadioWrapper:first-child {
+    margin-right: 50px;
+}
+
+div.acceptor:after {
+    content: '';
+    border-bottom: 2px solid gainsboro;
+    display: block;
+}
+
+div.acceptor:first-child:before {
+    content: '';
+    display: block;
+    border: 1px solid gainsboro;
+    margin-bottom: 15px;
+}

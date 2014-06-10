@@ -77,6 +77,23 @@ class EumowyFieldTagLib {
         fieldImpl(out, attrs)
     }
 
+    Closure enumRadioGroup = { attrs, body ->
+        if(!attrs.values || !attrs.name) {
+            throwTagError("Attributes 'values' and 'name' are required!")
+        }
+
+        createField(attrs, body, "/common/tags/enumRadioGroup")
+    }
+
+    private def createField(attrs, body, template) {
+        Map props = [:]
+
+        props.template = template
+        props.model = attrs
+
+        out << render(props, body)
+    }
+
 
     def fieldImpl(out, attrs) {
         if (!attrs.containsKey('name')) {
