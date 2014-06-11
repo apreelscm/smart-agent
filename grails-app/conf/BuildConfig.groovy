@@ -62,6 +62,8 @@ grails.project.dependency.resolution = {
         runtime 'org.springframework.ws:spring-xml:2.1.3.RELEASE'
         runtime 'org.springframework.ws:spring-oxm:3.2.2.RELEASE'
         runtime 'org.apache.poi:poi:3.10-FINAL'
+
+        test 'org.easymock:easymock:3.2'
     }
 
     plugins {

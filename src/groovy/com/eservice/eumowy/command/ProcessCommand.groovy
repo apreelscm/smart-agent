@@ -3,8 +3,6 @@ package com.eservice.eumowy.command
 import com.eservice.eumowy.Process
 import com.eservice.eumowy.annotation.DateField
 import com.eservice.eumowy.annotation.Omit
-import com.eservice.eumowy.dto.MerchantDetailsDTO
-import com.eservice.eumowy.dto.MerchantRepresentativeDTO
 import com.eservice.eumowy.validator.AtLeastValidator
 import com.eservice.eumowy.validator.CustomValidator
 import com.eservice.eumowy.validator.HirePaymentValidator
@@ -18,7 +16,6 @@ import com.eservice.eumowy.validator.SkipAddressValidator
 import com.eservice.eumowy.validator.TelekodzikValidator
 import com.eservice.eumowy.validator.TelepompkaValidator
 import com.eservice.eumowy.validator.TerminalNumberValidator
-import enums.AcceptorLocation
 import grails.util.Holders
 import grails.validation.Validateable
 import org.apache.commons.collections.FactoryUtils
@@ -181,19 +178,10 @@ class ProcessCommand implements Serializable {
     String pozyskujacyNumer = DEFAULT_VALUE
 
 //    osobaUprawnionaDoPodpisaniaUmowy - FINISH
-    String reprezentant1Tytul = DEFAULT_VALUE
-    String reprezentant1Imie = DEFAULT_VALUE
-    String reprezentant1Nazwisko = DEFAULT_VALUE
-    String reprezentant1Stanowisko = DEFAULT_VALUE
-    String reprezentant2Tytul = DEFAULT_VALUE
-    String reprezentant2Imie = DEFAULT_VALUE
-    String reprezentant2Nazwisko = DEFAULT_VALUE
-    String reprezentant2Stanowisko = DEFAULT_VALUE
-    String reprezentant3Tytul = DEFAULT_VALUE
-    String reprezentant3Imie = DEFAULT_VALUE
-    String reprezentant3Nazwisko = DEFAULT_VALUE
-    String reprezentant3Stanowisko = DEFAULT_VALUE
+    Boolean isFromBisnode = false
+    Boolean isRepresentativesChangedManually = false
     String emailDoWysylkiDokumentu = DEFAULT_VALUE
+
 
 //    poziomOplatiWarunkiPlatnosciKarty - FINISH
     String visaEUKKOPr = DEFAULT_VALUE
@@ -411,9 +399,6 @@ class ProcessCommand implements Serializable {
 
     String nip = DEFAULT_VALUE
 
-    Boolean isFromBisnode = false
-    Boolean isRepresentativesChangedManually = false
-
 //    uwagi
     @Omit
     String notes = DEFAULT_VALUE
@@ -437,6 +422,10 @@ class ProcessCommand implements Serializable {
     List<HirePaymentCommand> hirePaymentsCurrent = ListUtils.lazyList([], FactoryUtils.instantiateFactory(HirePaymentCommand))
     @Omit(inSave = true, inPopulate = true)
     List<PosExchangeCommand> posExchanges = ListUtils.lazyList([], FactoryUtils.instantiateFactory(PosExchangeCommand))
+    @Omit(inPopulate = true)
+    List<RepresentativeCommand> representatives = ListUtils.lazyList([], FactoryUtils.instantiateFactory(RepresentativeCommand))
+    @Omit(inPopulate = true)
+    List<RepresentativeCommand> beneficiaries = ListUtils.lazyList([], FactoryUtils.instantiateFactory(RepresentativeCommand))
 
     @Omit
     transient Integer pointsAndPosesWithoutFormaDoladowania //eUmowy_ext-557
@@ -537,7 +526,6 @@ class ProcessCommand implements Serializable {
             NumberValidator.validate(value, cmd, errors, propertyName) && AtLeastValidator.validate(value, cmd, errors, propertyName, "DCC_OPLATA_URUCHOMIENIE")
         })
 
-        // FIXME pola prezentowane warunkowo na panelu z Kalkulatora do odczytu, ponizsza walidacja nie dziala
         wydrukGrafikiCena(nullable:true, blank:false,  validator: { value, cmd, errors -> NumberValidator.validate(value, cmd, errors, propertyName)})
         dzialaniaMatematyczneCena(nullable:true, blank:false,  validator: { value, cmd, errors -> NumberValidator.validate(value, cmd, errors, propertyName)})
 
@@ -785,18 +773,6 @@ class ProcessCommand implements Serializable {
         pozyskujacyImie(nullable: false, blank: false, shared: "lettersOnly", maxSize: 40)
         pozyskujacyNazwisko(nullable: false, blank: false, shared: "lettersOnly", maxSize: 100)
         pozyskujacyNumer(nullable: false, blank: false, maxSize: 12)
-        reprezentant1Tytul(nullable: true)
-        reprezentant1Imie(nullable: false, blank: false, shared: "lettersOnly")
-        reprezentant1Nazwisko(nullable: false, blank: false, shared: "lettersOnly")
-        reprezentant1Stanowisko(blank: true)
-        reprezentant2Tytul(nullable: true)
-        reprezentant2Imie(nullable: true, blank: true, shared: "lettersOnly")
-        reprezentant2Nazwisko(nullable: true, blank: true, shared: "lettersOnly")
-        reprezentant2Stanowisko(blank: true)
-        reprezentant3Tytul(nullable: true)
-        reprezentant3Imie(nullable: true, blank: true, shared: "lettersOnly")
-        reprezentant3Nazwisko(nullable: true, blank: true, shared: "lettersOnly")
-        reprezentant3Stanowisko(blank: true)
         emailDoWysylkiDokumentu(nullable: true, blank: true, shared: "email")
 
         visaEUKKOSt(nullable: false, blank: false,  validator: { value, cmd, errors ->

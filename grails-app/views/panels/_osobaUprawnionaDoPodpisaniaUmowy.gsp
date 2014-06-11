@@ -1,4 +1,4 @@
-<%@ page import="enums.AcceptorLocation" %>
+<%@ page import="com.eservice.eumowy.enums.AcceptorLocation" %>
 
 <div id="acceptorsPanel" style="margin: 0">
     <fieldset>
@@ -56,7 +56,7 @@
         $representativesTextfields = jQuery("#acceptorsPanel #representativesTextfields"),
         $representativesChangedManually = jQuery("#acceptorsPanel #isRepresentativesChangedManually"),
         $representativeLocation = jQuery("#acceptorsPanel input[name='akceptantLokalizacja']"),
-        $representativePESELKraj = jQuery("#representativesContainer input[name$='PESELKraj']"),
+        $representativePESELKraj = jQuery("#representativesContainer input[name$='lokalizacjaPesel']"),
         $acceptorsAdditionalPanels = jQuery("#acceptorsAdditionalPanels");
 
     disableHiddenInputs();
@@ -114,9 +114,9 @@
     function setAcceptorState() {
         var $this = jQuery(this),
             acceptor = $this.parents("div.acceptor"),
-            passportDocumentTypeRadio = acceptor.find("input[type='radio'][name$='TypDokumentu'][value='PASSPORT']"),
-            birthDateField = acceptor.find("input[type='text'][name$='DataUrodzenia']"),
-            politicalField = acceptor.find("input[type='checkbox'][name$='StanowiskoPolityczne']"),
+            passportDocumentTypeRadio = acceptor.find("input[type='radio'][name$='typDokumentu'][value='PASSPORT']"),
+            birthDateField = acceptor.find("input[type='text'][name$='dataUrodzenia']"),
+            politicalField = acceptor.find("input[type='checkbox'][name$='czyStanowiskoPolityczne']"),
             selectedOption = this.value;
 
         if(selectedOption === "COUNTRY") {

@@ -1,3 +1,3 @@
-<g:each in="${1..3}">
-    <g:render template="/common/acceptor" model="['representative': 'reprezentant' + it, 'dropdowns': false]"/>
+<g:each in="${0..2}">
+    <g:render template="/common/representative" model="['prefix': 'representatives', 'seqNo': it, 'dropdowns': false]"/>
 </g:each>

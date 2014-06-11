@@ -1,5 +1,3 @@
-<%@ page import="enums.ActualBeneficiary" %>
-
 <fieldset>
     <header class="belka-glowna"><g:message code="panel.actual.beneficiaries.title"/></header>
         <input type="radio" name="czyBeneficjentRzeczywisty" value="false" required="required">

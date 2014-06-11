@@ -1,4 +1,4 @@
-package enums;
+package com.eservice.eumowy.enums;
 
 public enum AcceptorLocation {
     COUNTRY("acceptor.location.country"), ABROAD("acceptor.location.abroad");
