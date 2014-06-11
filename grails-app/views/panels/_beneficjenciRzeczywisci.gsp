@@ -17,7 +17,7 @@
                 <g:textField name="nazwaGieldy" maxlength="50"/>
 
                 <label for="isinAkceptanta"><g:message code="acceptor.isin.code.label"/></label>
-                <g:textField name="isinAkceptanta" maxlength="12"/>
+                <g:textField name="isinAkceptanta" maxlength="12" class="isin-field"/>
             </div>
             
             <div>
@@ -42,8 +42,13 @@
         <input type="radio" name="czyBeneficjentRzeczywisty" value="true" required="required">
         <span class="bold"><g:message code="beneficiary.data.label"/></span>
 
-        <section>
-
-
+        <section id="actualBeneficiaryData">
+            %{--<g:each in="${1..3}">--}%
+                %{--<g:render template="/common/acceptor" model="['representative': 'beneficjent' + it, 'dropdowns': false]"/>--}%
+            %{--</g:each>--}%
         </section>
 </fieldset>
+
+<script type="text/javascript">
+
+</script>

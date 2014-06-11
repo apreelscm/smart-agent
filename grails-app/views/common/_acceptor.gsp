@@ -1,8 +1,5 @@
 <%@ page import="enums.AcceptorPESELCountry; enums.IdentityDocumentType" %>
 
-<g:set var="firstNames" value="${[""] + representativesBisnode?.collect {it.firstName}}"/>
-<g:set var="lastNames" value="${[""] + representativesBisnode?.collect {it.lastName}}"/>
-
 <div class="acceptor">
     <g:if test="${dropdowns}">
         <div>
@@ -35,15 +32,26 @@
 
     <div class="acceptorCountry hidden">
         <div class="acceptorPESELWrapper">
-            <label for="${representative} + PESEL"><g:message code="pesel.label"/></label>
-            <g:textField name="${representative} + PESEL" maxlength="11"/>
+            <label for="${representative + "PESELCountry"}"><g:message code="pesel.label"/></label>
+            <g:textField name="${representative + "PESELCountry"}" maxlength="11" class="pesel-field"/>
         </div>
     </div>
 
     <div class="acceptorAbroad hidden">
         <div class="acceptorPESELCountryWrapper">
-            <eumowy:enumRadioGroup values="${AcceptorPESELCountry.values()}" name="${representative + "PESELKraj"}" required="true"
-                                   additionalView="akceptantPESELKraj" radioWrapperClass="acceptorPESELCountryRadioWrapper"/>
+            <div class="acceptorPESELCountryRadioWrapper">
+                <g:radio name="${representative + "PESELKraj"}" value="PESEL" required="required"/>
+                <div class="label"><g:message code="pesel.label"/></div>
+
+                <g:textField name="${representative + "PESEL"}" maxlength="11" class="pesel-field display-block" disabled="disabled"/>
+            </div>
+
+            <div class="acceptorPESELCountryRadioWrapper">
+                <g:radio name="${representative + "PESELKraj"}" value="COUNTRY" required="required"/>
+                <div class="label"><g:message code="country.label"/></div>
+
+                <g:textField name="${representative + "Kraj"}" maxlength="30" class="display-block" disabled="disabled"/>
+            </div>
         </div>
 
         <div class="acceptorDocumentTypeWrapper">
@@ -56,7 +64,7 @@
             <g:textField name="${representative + "SeriaNrDokumentu"}"/>
 
             <label for="${representative + "DataUrodzenia"}"><g:message code="birth.date.label"/></label>
-            <g:textField name="${representative + "DataUrodzenia"}" maxlength="10"/>
+            <g:textField name="${representative + "DataUrodzenia"}" maxlength="10" class="date-field"/>
 
             <label for="${representative + "Obywatelstwo"}"><g:message code="citizenship.label"/></label>
             <g:textField name="${representative + "Obywatelstwo"}" maxlength="30"/>

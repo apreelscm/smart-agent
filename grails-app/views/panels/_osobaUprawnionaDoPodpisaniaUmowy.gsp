@@ -45,25 +45,34 @@
     </fieldset>
 </div>
 
-<g:render template="/panels/beneficjenciRzeczywisci"/>
-<g:render template="/panels/dokumentyWeryfikacyjne"/>
+<div id="acceptorsAdditionalPanels" class="hidden">
+    <g:render template="/panels/beneficjenciRzeczywisci"/>
+    <g:render template="/panels/dokumentyWeryfikacyjne"/>
+</div>
 
 <script type="text/javascript">
-    var $representativesContainer = jQuery("#representativesContainer"),
-        $representativesDropdows = jQuery("#representativesDropdowns"),
-        $representativesTextfields = jQuery("#representativesTextfields");
+    var $representativesContainer = jQuery("#acceptorsPanel #representativesContainer"),
+        $representativesDropdows = jQuery("#acceptorsPanel #representativesDropdowns"),
+        $representativesTextfields = jQuery("#acceptorsPanel #representativesTextfields"),
+        $representativesChangedManually = jQuery("#acceptorsPanel #isRepresentativesChangedManually"),
+        $representativeLocation = jQuery("#acceptorsPanel input[name='akceptantLokalizacja']"),
+        $representativePESELKraj = jQuery("#representativesContainer input[name$='PESELKraj']"),
+        $acceptorsAdditionalPanels = jQuery("#acceptorsAdditionalPanels");
 
     disableHiddenInputs();
     setRepresentativesView();
+    setReprezentantImieAndNazwiskoRequired();
 
-    jQuery("#isRepresentativesChangedManually").change(setRepresentativesView);
+    $representativesChangedManually.change(setRepresentativesView);
+    $representativeLocation.change(setAdditionalInformationState);
+    $representativePESELKraj.live("change", setAcceptorState);
 
     function disableHiddenInputs() {
         jQuery("#representativesDropdowns input, #representativesDropdowns select, #representativesTextfields input, #representativesTextfields select").attr('disabled', 'disabled');
     }
 
     function setRepresentativesView() {
-        var isChecked = jQuery("#isRepresentativesChangedManually").is(":checked");
+        var isChecked = $representativesChangedManually.is(":checked");
 
         if (isChecked) {
             $representativesContainer.html($representativesTextfields.html());
@@ -74,6 +83,55 @@
         $representativesContainer.find("input, select").removeAttr('disabled');
     }
 
-    $("#reprezentant1Imie").attr('required', 'required');
-    $("#reprezentant1Nazwisko").attr('required', 'required');
+    function setReprezentantImieAndNazwiskoRequired() {
+        $("#reprezentant1Imie").attr('required', 'required');
+        $("#reprezentant1Nazwisko").attr('required', 'required');
+    }
+
+    function setAdditionalInformationState() {
+        var isAbroad = $representativeLocation.filter(":checked").val() === "ABROAD",
+            acceptorCountryWrapper = $representativesContainer.find(".acceptorCountry"),
+            acceptorAbroadWrapper = $representativesContainer.find(".acceptorAbroad");
+
+        if(isAbroad) {
+            $acceptorsAdditionalPanels.removeClass('hidden');
+
+            acceptorCountryWrapper.addClass("hidden");
+            acceptorAbroadWrapper.removeClass("hidden");
+
+            clearFields(acceptorCountryWrapper);
+        } else {
+            $acceptorsAdditionalPanels.addClass('hidden');
+
+            $representativesContainer.find(".acceptorCountry").removeClass("hidden");
+            $representativesContainer.find(".acceptorAbroad").addClass("hidden");
+
+            clearFields($acceptorsAdditionalPanels);
+            clearFields(acceptorAbroadWrapper);
+        }
+    }
+
+    function setAcceptorState() {
+        var $this = jQuery(this),
+            acceptor = $this.parents("div.acceptor"),
+            passportDocumentTypeRadio = acceptor.find("input[type='radio'][name$='TypDokumentu'][value='PASSPORT']"),
+            birthDateField = acceptor.find("input[type='text'][name$='DataUrodzenia']"),
+            politicalField = acceptor.find("input[type='checkbox'][name$='StanowiskoPolityczne']"),
+            selectedOption = this.value;
+
+        if(selectedOption === "COUNTRY") {
+            passportDocumentTypeRadio.attr("checked", "checked");
+            birthDateField.attr("required", "required");
+            politicalField.attr("required", "required");
+        } else { //selectedOption === "PESEL"
+            birthDateField.removeAttr("required");
+            politicalField.removeAttr("required");
+        }
+    }
+
+    function clearFields(fieldsContainer) {
+        fieldsContainer.find("input[type='checkbox']").removeAttr("checked");
+        fieldsContainer.find("input[type='radio']").removeAttr("checked");
+        fieldsContainer.find("input[type='text']").val('');
+    }
 </script>

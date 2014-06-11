@@ -37,4 +37,7 @@ jQuery(document).ready(function() {
     jQuery(".float-number").mask('099999X99', {translation:  {'X': {pattern: /[.]/, optional: true}}});
     jQuery(".percent-number").mask('09X999', {translation:  {'X': {pattern: /[.]/}}});
     jQuery(".flat-price").mask('XXXXX', {translation: {'X': {pattern: /[a-zA-Z0-9.-]/}}});
+    jQuery(".date-field").mask('0000-00-00');
+    jQuery(".pesel-field").mask('00000000000');
+    jQuery(".isin-field").mask('XXAAAAAAAAA0', {translation: {'X': {pattern: /[A-Z]/}}});
 });
