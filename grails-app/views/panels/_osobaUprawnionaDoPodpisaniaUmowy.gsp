@@ -16,7 +16,7 @@
                     <g:textArea name="poleOpisowe" maxlength ="1000" rows="3" cols="70" style="height: auto; width: auto"/>
                 </div>
 
-                <eumowy:enumRadioGroup values="${AcceptorLocation.values()}" name="akceptantLokalizacja"
+                <eumowy:enumRadioGroup values="${AcceptorLocation.values()}" name="akceptantLokalizacja" value="${data.akceptantLokalizacja}"
                                        radioWrapperClass="acceptorLocationRadioWrapper" required="true"/>
 
                 <div id="representativesContainer">

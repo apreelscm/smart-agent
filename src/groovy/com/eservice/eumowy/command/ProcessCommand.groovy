@@ -3,6 +3,7 @@ package com.eservice.eumowy.command
 import com.eservice.eumowy.Process
 import com.eservice.eumowy.annotation.DateField
 import com.eservice.eumowy.annotation.Omit
+import com.eservice.eumowy.enums.AcceptorLocation
 import com.eservice.eumowy.validator.AtLeastValidator
 import com.eservice.eumowy.validator.CustomValidator
 import com.eservice.eumowy.validator.HirePaymentValidator
@@ -20,6 +21,7 @@ import grails.util.Holders
 import grails.validation.Validateable
 import org.apache.commons.collections.FactoryUtils
 import org.apache.commons.collections.ListUtils
+import org.apache.commons.lang.StringUtils
 
 /**
  * User: Dominik Walczak
@@ -50,7 +52,7 @@ class ProcessCommand implements Serializable {
     @Omit
     static def DEFAULT_VALUE = "~"
 
-    //adresDoKorespondencjizAkecptantem - FINISH
+    //adresDoKorespondencjizAkecptantem - 
     String akceptantKontaktUlicaTytul = DEFAULT_VALUE
     String akceptantKontaktUlica = DEFAULT_VALUE
     String akceptantKontaktNrDomu = DEFAULT_VALUE
@@ -60,15 +62,15 @@ class ProcessCommand implements Serializable {
     String akceptantKontaktKodPocztowy = DEFAULT_VALUE
     String akceptantKontaktPoczta = DEFAULT_VALUE
 
-//    aneksDoUmowyNajmuZestawuPos - FINISH
+//    aneksDoUmowyNajmuZestawuPos - 
     @DateField
     String dataAneksowanejUmowyPos = DEFAULT_VALUE
 
-//    aneksDoUmowyPrepaid - FINISH
+//    aneksDoUmowyPrepaid - 
     @DateField
     String dataAneksowanejUmowyPrepaid = DEFAULT_VALUE
 
-//    czasObowiazywaniaUmowy - FINISH
+//    czasObowiazywaniaUmowy - 
     String umowaCzas = DEFAULT_VALUE
     @DateField
     String umowaOznOd = DEFAULT_VALUE
@@ -114,11 +116,11 @@ class ProcessCommand implements Serializable {
 //    dccZakresUruchomienia
     String dccZakresUruchomienia = DEFAULT_VALUE
 
-//    deklaracjeAkceptanta - FINISH
+//    deklaracjeAkceptanta - 
     String informacjaHandlowa = DEFAULT_VALUE
 
 //    dodajPunkt
-//    dodatkoweUslugi - FINISH
+//    dodatkoweUslugi - 
     String oplataZaDzienneZestawienieTransakcji = DEFAULT_VALUE
     String oplataZaMiesieczneZestawienieTransakcji = DEFAULT_VALUE
     String oplataZaPotwierdzenieWykonaniaPrzelewu = DEFAULT_VALUE
@@ -133,27 +135,27 @@ class ProcessCommand implements Serializable {
     String dzialaniaMatematyczneCena = DEFAULT_VALUE
     String pierwszaSesjaCena = DEFAULT_VALUE
 
-//    dodatkoweUslugiMud - FINISH
+//    dodatkoweUslugiMud - 
     String mudCena = DEFAULT_VALUE
 
 //    dodatkoweUslugiUTAIntegracja
     String weryfikacjaPINCena = DEFAULT_VALUE
     String systemKasowyCena = DEFAULT_VALUE
 
-//    formaDoladowania - FINISH
+//    formaDoladowania - 
     Boolean doladowania_tp
     Boolean doladowania_tk
     String srednia_sprzedaz_doladowan = DEFAULT_VALUE
     String srednia_sprzedaz_doladowan_slownie = DEFAULT_VALUE
 
-//    ifplus - FINISH
+//    ifplus - 
     String ifOplataVISA = DEFAULT_VALUE
     String ifOplataMasterCard = DEFAULT_VALUE
     String ifOplataDinersClub = DEFAULT_VALUE
     String ifOplataIKO = DEFAULT_VALUE
     String ifOplataPKOPB = DEFAULT_VALUE
 
-//    informacjeDodatkowe - FINISH
+//    informacjeDodatkowe - 
     String dzialalnoscForma = DEFAULT_VALUE
     String dzialalnoscFormaInna = DEFAULT_VALUE
     String dzialalnoscDokument = DEFAULT_VALUE
@@ -172,18 +174,12 @@ class ProcessCommand implements Serializable {
     String kontaktTelKomorkowy = DEFAULT_VALUE
     String kontaktEmail = DEFAULT_VALUE
 
-//    osobaKtoraPozyskalaAkceptanta  - FINISH (nie wystepuje w pdfach)
+//    osobaKtoraPozyskalaAkceptanta  -  (nie wystepuje w pdfach)
     String pozyskujacyImie = DEFAULT_VALUE
     String pozyskujacyNazwisko = DEFAULT_VALUE
     String pozyskujacyNumer = DEFAULT_VALUE
 
-//    osobaUprawnionaDoPodpisaniaUmowy - FINISH
-    Boolean isFromBisnode = false
-    Boolean isRepresentativesChangedManually = false
-    String emailDoWysylkiDokumentu = DEFAULT_VALUE
-
-
-//    poziomOplatiWarunkiPlatnosciKarty - FINISH
+//    poziomOplatiWarunkiPlatnosciKarty - 
     String visaEUKKOPr = DEFAULT_VALUE
     String visaEUKDPr = DEFAULT_VALUE
     String visaEUKBPr = DEFAULT_VALUE
@@ -277,7 +273,7 @@ class ProcessCommand implements Serializable {
     String dinersClubSt = DEFAULT_VALUE
     String ikoSt = DEFAULT_VALUE
 
-//    poziomOplatIWarunkiPlatnosciPP - FINISH
+//    poziomOplatIWarunkiPlatnosciPP - 
     String pp_orange_tk = DEFAULT_VALUE
     String pp_orange_tp = DEFAULT_VALUE
     String pp_plus_tk = DEFAULT_VALUE
@@ -336,11 +332,11 @@ class ProcessCommand implements Serializable {
     String progrnozaMiesieczna = DEFAULT_VALUE
     String liczbaPtkCbd = DEFAULT_VALUE
 
-//    serwisEkonomiczny - FINISH
-//    serwisKomfort - FINISH
-//    serwisPrzestiz - FINISH
+//    serwisEkonomiczny - 
+//    serwisKomfort - 
+//    serwisPrzestiz - 
 
-//    siedzibaAkceptanta - FINISH
+//    siedzibaAkceptanta - 
     String akceptantUlicaTytul = DEFAULT_VALUE
     String akceptantUlica = DEFAULT_VALUE
     String akceptantNrDomu = DEFAULT_VALUE
@@ -367,7 +363,7 @@ class ProcessCommand implements Serializable {
     String akceptantFaxCbd = DEFAULT_VALUE
     String akceptantTelKomorkowyCbd = DEFAULT_VALUE
 
-//    umowa2 - FINISH
+//    umowa2 - 
     String miejsceUmowy //nie jest uzywane w pdf
 
 //    zestawPosOdplatneUzywanie
@@ -383,7 +379,7 @@ class ProcessCommand implements Serializable {
     String odpUzyTermMies = DEFAULT_VALUE
     String odpUzyPpMies = DEFAULT_VALUE
 
-//    serwis - FINISH
+//    serwis - 
     Boolean serwisZablokowany
     String obslugaTyp = DEFAULT_VALUE
     String obslugaEkonomicznyCena = DEFAULT_VALUE
@@ -394,6 +390,30 @@ class ProcessCommand implements Serializable {
 
 //    oplataDCCZaUruchomienie
     String oplataZaUruchomienieDCC = DEFAULT_VALUE
+
+    //osobaUprawnionaDoPodpisaniaUmowy
+    Boolean isFromBisnode = false
+    Boolean isRepresentativesChangedManually = false
+    AcceptorLocation akceptantLokalizacja
+    String emailDoWysylkiDokumentu = DEFAULT_VALUE
+
+    //beneficjenciRzeczywisci
+    Boolean czyBeneficjentRzeczywisty
+    Boolean akceptantJestSpolka
+    String nazwaGieldy
+    String isinAkceptanta
+    Boolean akceptantJestPodmiotem
+    Boolean akceptantJestOrganem
+    Boolean akceptantNieMaBeneficjenta
+
+    //dokumentyWeryfikacyjne
+    Boolean beneficjentWeryfikacjaKRS
+    String beneficjentKRS = DEFAULT_VALUE
+    Boolean beneficjentWeryfikacjaDokumentTozsamosci
+    Boolean beneficjentWeryfikacjaGielda
+    Boolean beneficjentWeryfikacjaSpolka
+    Boolean beneficjentWeryfikacjaKsiega
+    Boolean beneficjentWeryfikacjaSchemat
 
 //    liczbaMiesiecyZwolnieniaZNajm
 
@@ -425,7 +445,7 @@ class ProcessCommand implements Serializable {
     @Omit(inPopulate = true)
     List<RepresentativeCommand> representatives = ListUtils.lazyList([], FactoryUtils.instantiateFactory(RepresentativeCommand))
     @Omit(inPopulate = true)
-    List<RepresentativeCommand> beneficiaries = ListUtils.lazyList([], FactoryUtils.instantiateFactory(RepresentativeCommand))
+    List<BeneficiaryCommand> beneficiaries = ListUtils.lazyList([], FactoryUtils.instantiateFactory(BeneficiaryCommand))
 
     @Omit
     transient Integer pointsAndPosesWithoutFormaDoladowania //eUmowy_ext-557
@@ -694,11 +714,6 @@ class ProcessCommand implements Serializable {
             return true
         })
 
-        /*      odpUzyTermMies(nullable: false, blank: false, validator: { value, cmd, errors ->
-                  NumberValidator.validate(value, cmd, errors, "odpUzyTermMies") &&
-                          AtLeastValidator.validate(value, cmd, errors, "odpUzyTermMies", "CENA_NAJMU")
-              })*/
-
         odpUzyPpMies(nullable: true, blank: false,  validator: { value, cmd, errors -> NumberValidator.validate(value, cmd, errors, propertyName)})
 
         informacjaHandlowa(nullable: false, blank: false)
@@ -713,11 +728,6 @@ class ProcessCommand implements Serializable {
                 return false
             }
 
-            /*CR - uncomment when ready*/
-            /*if (cmd.informacjaHandlowa == "true" && (!cmd.kontaktEmail || cmd.kontaktEmail == DEFAULT_VALUE)) {
-                    errors.rejectValue("hasInformacjaHandlowa", "default.noEmail.informacjaHandlowa")
-                    return false
-                }*/
             return true
         })
 
@@ -1188,6 +1198,40 @@ class ProcessCommand implements Serializable {
             value, cmd, errors ->
                 NumberValidator.validate(value, cmd, errors, propertyName) && AtLeastValidator.validate(value, cmd, errors, propertyName, "DCC_OPLATA_URUCHOMIENIE")
         })
+
+        akceptantLokalizacja(nullable: false)
+
+        czyBeneficjentRzeczywisty(nullable: true, validator: {value, cmd, errors ->
+            if(!cmd.isAkceptantAbroad()) {
+                return true
+            }
+
+            if(cmd.isAkceptantAbroad() && (value == null)) {
+                errors.rejectValue("czyBeneficjentRzeczywisty", "beneficiary.radio.required")
+                return false
+            }
+
+            if(!value && !cmd.akceptantJestSpolka && !cmd.akceptantJestPodmiotem && !cmd.akceptantJestOrganem && !cmd.akceptantNieMaBeneficjenta) {
+                errors.rejectValue("czyBeneficjentRzeczywisty", "atleast.one.option.required")
+                return false
+            }
+
+            return true
+        })
+
+        akceptantJestSpolka(nullable: true)
+        nazwaGieldy(nullable: true, maxSize: 50, validator: {value, cmd, errors ->
+            if(cmd.akceptantJestSpolka && StringUtils.isEmpty(value)) {
+                errors.rejectValue("nazwaGieldy", "nazwaGieldy.required")
+                return false
+            }
+
+            return true
+        })
+        isinAkceptanta(nullable: true, maxSize: 12, validator: {value, cmd, errors ->
+            return !(cmd.akceptantJestSpolka && NumberValidator.validateIsin(value, cmd, errors, "isinAkceptanta"))
+        })
+
         nip(nullable:true)
         isFromBisnode(nullable:true)
         isRepresentativesChangedManually(nullable:true)
@@ -1195,7 +1239,6 @@ class ProcessCommand implements Serializable {
         points(nullable:true, validator: { value, cmd, errors ->
             return PointsValidator.validate(value, cmd, errors)
         })
-
         poses(nullable:true, validator: { value, cmd, errors ->
             return PosesValidator.validate(value, cmd, errors)
         })
@@ -1247,6 +1290,10 @@ class ProcessCommand implements Serializable {
 
     private boolean checkIfClientFromCbd(){
         return this.checkIfFromCbd("akceptantNazwaOficjalna")
+    }
+
+    public boolean isAkceptantAbroad() {
+        return AcceptorLocation.ABROAD.equals(this.akceptantLokalizacja)
     }
 
     public String getMessageForProperty(String property){

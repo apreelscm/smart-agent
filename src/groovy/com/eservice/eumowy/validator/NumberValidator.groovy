@@ -2,8 +2,9 @@ package com.eservice.eumowy.validator
 
 import org.apache.commons.lang.StringUtils
 
-public class NumberValidator {
+import java.util.regex.Pattern
 
+public class NumberValidator {
     public static def validate = {value, cmd,  errors, propertyName ->
         RegexpValidator.validate(cmd, value, errors, propertyName, '~|\\-|^(?:[1-9]\\d*|0)?(?:\\.\\d{1,2})?$',"default.validation.number.error")
     }
@@ -26,7 +27,7 @@ public class NumberValidator {
         int controlSum = peselNumber.substring(length - 1) as int
 
         int sum = 0
-        for (int i = 0; i < length - 1; i++) {
+        for (int i = 0; i < 10; i++) {
             sum += (peselNumber[i] as int) * weights[i];
         }
 
@@ -37,6 +38,22 @@ public class NumberValidator {
 
         if(control != controlSum) {
             errors.rejectValue(propertyName, "pesel.invalid")
+            return false
+        }
+
+        return true
+    }
+
+    public static def validateIsin = {isin, cmd, errors, propertyName ->
+        Pattern ISIN_PATTERN = Pattern.compile("[A-Z]{2}([A-Z0-9]){9}[0-9]")
+
+        if(StringUtils.isEmpty(isin)) {
+            errors.rejectValue(propertyName, "isin.empty")
+            return false
+        }
+
+        if(!ISIN_PATTERN.matcher(isin).matches()) {
+            errors.rejectValue(propertyName, "wrong.isin.format")
             return false
         }
 

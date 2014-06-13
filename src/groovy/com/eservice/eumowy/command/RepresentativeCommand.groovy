@@ -1,12 +1,15 @@
 package com.eservice.eumowy.command
 
 import com.eservice.eumowy.enums.IdentityDocumentType
-import com.eservice.eumowy.enums.LocationType
+import com.eservice.eumowy.enums.AcceptorLocation
+import com.eservice.eumowy.validator.CustomValidator
 import com.eservice.eumowy.validator.NumberValidator
 import grails.validation.Validateable
 
 @Validateable
 class RepresentativeCommand implements Serializable{
+    transient ProcessCommand processCommand
+
     String tytul
     String imie
     String nazwisko
@@ -14,14 +17,14 @@ class RepresentativeCommand implements Serializable{
 
     String pesel
 
-    LocationType typLokalizacji
+    AcceptorLocation typLokalizacji
     String lokalizacjaPesel
     String lokalizacjaKraj
 
     IdentityDocumentType typDokumentu
 
     String seriaNrDokumentu
-    String dataUrodzenia
+    Date dataUrodzenia
     String obywatelstwo
     String adres
 
@@ -34,29 +37,51 @@ class RepresentativeCommand implements Serializable{
         stanowisko(nullable: true)
 
         pesel(nullable: true, shared: "number", validator: {value, cmd, errors ->
-            cmd.pesel ? NumberValidator.validatePesel(value, cmd, errors, "pesel") : true
+            !cmd.processCommand.isAkceptantAbroad() ? NumberValidator.validatePesel(value, cmd, errors, "pesel") : true
         })
 
-        typLokalizacji(nullable: false)
-        lokalizacjaPesel(shared: "number", validator: {value, cmd, errors ->
-            !cmd.isLocationTypeAbroad() ? NumberValidator.validatePesel(value, cmd, errors, "lokalizacjaPesel") : true
+        typLokalizacji(nullable: true, validator: {value, cmd, errors ->
+            CustomValidator.validateRequired(value, errors, cmd.processCommand.isAkceptantAbroad(),
+                    "typLokalizacji", "representative.typLokalizacji.required")
         })
-        lokalizacjaKraj(maxSize: 30, validator: { value, cmd, erros ->
-            return !(cmd.isLocationTypeAbroad() && !value)
+        lokalizacjaPesel(nullable: true, shared: "number", validator: {value, cmd, errors ->
+            cmd.processCommand.isAkceptantAbroad() && !cmd.isRepresentativeLocationAbroad() ?
+                NumberValidator.validatePesel(value, cmd, errors, "lokalizacjaPesel") : true
+        })
+        lokalizacjaKraj(nullable: true, maxSize: 30, validator: { value, cmd, errors ->
+            CustomValidator.validateRequired(value, errors, (cmd.processCommand.isAkceptantAbroad() && cmd.isRepresentativeLocationAbroad()),
+                    "lokalizacjaKraj", "representative.lokalizacjaKraj.required")
         })
 
-        seriaNrDokumentu(blank: false, maxSize: 20, shared: "alphanumeric")
-        dataUrodzenia(shared: "date", validator: { value, cmd, errors ->
-            return !(cmd.isLocationTypeAbroad() && !value)
+        typDokumentu(nullable: true, validator: {value, cmd, errors ->
+            CustomValidator.validateRequired(value, errors, cmd.processCommand.isAkceptantAbroad(), "typDokumentu",
+                    "representative.typDokumentu.required")
         })
-        obywatelstwo(blank: false, maxSize: 30)
 
-        czyStanowiskoPolityczne(validator: {value, cmd, errors ->
-            return !(cmd.isLocationTypeAbroad() && !value)
+        seriaNrDokumentu(nullable: true, maxSize: 20, shared: "alphanumeric", validator: {value, cmd, errors ->
+            CustomValidator.validateRequired(value, errors, cmd.processCommand.isAkceptantAbroad(),
+                    "seriaNrDokumentu", "representative.seriaNrDokumentu.required")
+        })
+        dataUrodzenia(nullable: true, shared: "date", validator: { value, cmd, errors ->
+            CustomValidator.validateRequired(value, errors, (cmd.processCommand.isAkceptantAbroad() && cmd.isRepresentativeLocationAbroad()),
+                    "dataUrodzenia", "representative.dataUrodzenia.required")
+        })
+        obywatelstwo(nullable: true, maxSize: 30, validator: {value, cmd, errors ->
+            CustomValidator.validateRequired(value, errors, cmd.processCommand.isAkceptantAbroad(),
+                    "obywatelstwo", "representative.obywatelstwo.required")
+        })
+        adres(nullable: true, maxSize: 100, validator: {value, cmd, errors ->
+            CustomValidator.validateRequired(value, errors, cmd.processCommand.isAkceptantAbroad(),
+                    "adres", "representative.adres.required")
+        })
+
+        czyStanowiskoPolityczne(nullable: true, validator: {value, cmd, errors ->
+            CustomValidator.validateRequired(value, errors, (cmd.processCommand.isAkceptantAbroad() && cmd.isRepresentativeLocationAbroad()),
+                    "czyStanowiskoPolityczne", "representative.czyStanowiskoPolityczne.required")
         })
     }
 
-    private boolean isLocationTypeAbroad() {
-        return LocationType.ABROAD.equals(typLokalizacji)
+    private boolean isRepresentativeLocationAbroad() {
+        return AcceptorLocation.ABROAD.equals(typLokalizacji)
     }
 }

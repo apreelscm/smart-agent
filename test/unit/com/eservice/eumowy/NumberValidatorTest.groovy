@@ -1,6 +1,6 @@
 package com.eservice.eumowy
 
-import static org.easymock.EasyMock.*
+import static org.mockito.Mockito.*;
 import static org.junit.Assert.*
 
 import com.eservice.eumowy.command.RepresentativeCommand
@@ -17,18 +17,18 @@ class NumberValidatorTest{
 
     @BeforeClass
     public static void setup() {
-        COMMAND = createMock(RepresentativeCommand.class)
-        ERRORS = createMock(Errors.class)
+        COMMAND = mock(RepresentativeCommand.class)
+        ERRORS = mock(Errors.class)
         PROPERTYNAME = "whatever"
     }
 
     @Test
-    public void shouldNotValidatePesels() {
+    public void shouldNotValidateNullPesel() {
         //given
         String peselNumber
 
         //when
-        Boolean validationResult = NumberValidator.validatePesel(peselNumber, COMMAND, ERRORS, PROPERTYNAME)
+        Boolean validationResult = validatePesel(peselNumber)
 
         //then
         assertEquals(false, validationResult)
@@ -40,7 +40,7 @@ class NumberValidatorTest{
         String peselNumber = "12345"
 
         //when
-        Boolean validationResult = NumberValidator.validatePesel(peselNumber, COMMAND, ERRORS, PROPERTYNAME)
+        Boolean validationResult = validatePesel(peselNumber)
 
         //then
         assertEquals(false, validationResult)
@@ -52,7 +52,7 @@ class NumberValidatorTest{
         String peselNumber = "12341234123"
 
         //when
-        Boolean validationResult = NumberValidator.validatePesel(peselNumber, COMMAND, ERRORS, PROPERTYNAME)
+        Boolean validationResult = validatePesel(peselNumber)
 
         //then
         assertEquals(false, validationResult)
@@ -64,9 +64,55 @@ class NumberValidatorTest{
         String peselNumber = "91101706333"
 
         //when
-        Boolean validationResult = NumberValidator.validatePesel(peselNumber, COMMAND, ERRORS, PROPERTYNAME)
+        Boolean validationResult = validatePesel(peselNumber)
 
         //then
         assertEquals(true, validationResult)
     }
+
+    @Test
+    public void shouldNotValidateEmptyIsin() {
+        //given
+        String isin
+
+        //when
+        Boolean validationResult = validateIsin(isin)
+
+        //then
+        assertEquals(false, validationResult)
+    }
+
+    @Test
+    public void shouldNotValidateInvalidIsin() {
+        //given
+        String isin = "US594918133q"
+
+        //when
+        Boolean validationResult = validateIsin(isin)
+
+        //then
+        assertEquals(false, validationResult)
+    }
+
+    @Test
+    public void shouldValidateIsin() {
+        //given
+        String isin = "US0378331005"
+
+        //when
+        Boolean validationResult = validateIsin(isin)
+
+        //then
+        assertEquals(true, validationResult)
+    }
+
+    private boolean validatePesel(String pesel) {
+        return NumberValidator.validatePesel(pesel, COMMAND, ERRORS, PROPERTYNAME)
+    }
+
+    private boolean validateIsin(String isin) {
+        return NumberValidator.validateIsin(isin, COMMAND, ERRORS, PROPERTYNAME)
+    }
+
+
 }

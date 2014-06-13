@@ -3,34 +3,34 @@
 
     <section id="verificationDocuments">
         <div>
-            <input type="checkbox" name="beneficjentWeryfikacjaKRS">
+            <g:checkBox name="beneficjentWeryfikacjaKRS" value="${data.beneficjentWeryfikacjaKRS}"/>
             <label><g:message code="beneficiary.verification.krs.label"/></label>
 
-            <g:textField name="beneficjentKRS" maxlength="20"/>
+            <g:textField name="beneficjentKRS" maxlength="20" value="${data.beneficjentKRS}"/>
         </div>
 
         <div>
-            <input type="checkbox" name="beneficjentWeryfikacjaDokumentTozsamosci">
+            <g:checkBox name="beneficjentWeryfikacjaDokumentTozsamosci" value="${data.beneficjentWeryfikacjaDokumentTozsamosci}"/>
             <label><g:message code="beneficiary.verification.ids.label"/></label>
         </div>
 
         <div>
-            <input type="checkbox" name="beneficjentWeryfikacjaGielda">
+            <g:checkBox name="beneficjentWeryfikacjaGielda" value="${data.beneficjentWeryfikacjaGielda}"/>
             <label><g:message code="beneficiary.verification.stack.label"/></label>
         </div>
 
         <div>
-            <input type="checkbox" name="beneficjentWeryfikacjaSpolka">
+            <g:checkBox name="beneficjentWeryfikacjaSpolka" value="${data.beneficjentWeryfikacjaSpolka}"/>
             <label><g:message code="beneficiary.verification.company.label"/></label>
         </div>
 
         <div>
-            <input type="checkbox" name="beneficjentWeryfikacjaKsiega">
+            <g:checkBox name="beneficjentWeryfikacjaKsiega" value="${data.beneficjentWeryfikacjaKsiega}"/>
             <label><g:message code="beneficiary.verification.stock.paper.label"/></label>
         </div>
 
         <div>
-            <input type="checkbox" name="beneficjentWeryfikacjaSchemat">
+            <g:checkBox name="beneficjentWeryfikacjaSchemat" value="${data.beneficjentWeryfikacjaSchemat}"/>
             <label><g:message code="beneficiary.verification.schema.label"/></label>
         </div>
 

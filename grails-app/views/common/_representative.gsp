@@ -40,7 +40,7 @@
     <div class="acceptorAbroad hidden">
         <div class="acceptorPESELCountryWrapper">
             <div class="acceptorPESELCountryRadioWrapper">
-                <g:radio name="${prefix}[${seqNo}].typLokalizacji" value="PESEL" required="required"/>
+                <g:radio name="${prefix}[${seqNo}].typLokalizacji" value="COUNTRY" required="required"/>
                 <div class="label"><g:message code="pesel.label"/></div>
 
                 <g:textField name="${prefix}[${seqNo}].lokalizacjaPesel" value="${representative?.lokalizacjaPesel}" validatable="${representative}"
@@ -48,7 +48,7 @@
             </div>
 
             <div class="acceptorPESELCountryRadioWrapper">
-                <g:radio name="${prefix}[${seqNo}].typLokalizacji" value="COUNTRY" required="required"/>
+                <g:radio name="${prefix}[${seqNo}].typLokalizacji" value="ABROAD" required="required"/>
                 <div class="label"><g:message code="country.label"/></div>
 
                 <g:textField name="${prefix}[${seqNo}].lokalizacjaKraj" value="${representative?.lokalizacjaKraj}" validatable="${representative}"

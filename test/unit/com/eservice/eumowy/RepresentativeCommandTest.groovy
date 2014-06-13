@@ -1,6 +1,9 @@
 package com.eservice.eumowy
 
-import com.eservice.eumowy.enums.LocationType
+import com.eservice.eumowy.command.ProcessCommand
+import com.eservice.eumowy.enums.AcceptorLocation
+import com.eservice.eumowy.enums.IdentityDocumentType
+import com.eservice.eumowy.helpers.CommandHelpers
 import org.junit.Test
 
 import static org.junit.Assert.*
@@ -16,6 +19,7 @@ class RepresentativeCommandTest extends ControllerUnitTestMixin {
     @Before
     void setUp() {
         command = mockCommandObject(RepresentativeCommand)
+        command.processCommand = mockCommandObject(ProcessCommand)
     }
 
     @Test
@@ -25,25 +29,81 @@ class RepresentativeCommandTest extends ControllerUnitTestMixin {
     }
 
     @Test
-    void shouldNotValidatePesel() {
+    void shouldValidatePeselWithAkceptantLokalizacjaCountry() {
         //given
-        Map properties = [pesel: "12345"]
+        Map properties = [pesel: "91101706333"]
 
         //when
         setProperties(properties)
+        CommandHelpers.setProperties(command.processCommand, [akceptantLokalizacja: AcceptorLocation.COUNTRY])
         command.validate()
 
         //then
-        assertNotNull(command.errors['pesel'])
+        assertEquals(command.errors.errorCount, 0)
+        assertNull(command.errors['pesel'])
+    }
+
+    //from now on AKCEPTANT_LOKALIZACJA = ABROAD
+    @Test
+    void shouldNotValidateEmptyFieldsWithAkceptantLokalizacjaAbroad() {
+        //when
+        CommandHelpers.setProperties(command.processCommand, [akceptantLokalizacja: AcceptorLocation.ABROAD])
+        command.validate()
+
+        //then
+        assertNotNull(command.errors['typLokalizacji'])
+        assertNotNull(command.errors['typDokumentu'])
+        assertNotNull(command.errors['seriaNrDokumentu'])
+        assertNotNull(command.errors['obywatelstwo'])
+        assertNotNull(command.errors['adres'])
     }
 
     @Test
-    void shouldNotValidateEmptyPropertiesRelatedToAbroadLocationType() {
+    void shouldValidateFilledFieldsWithAkceptantLokalizacjaAbroad() {
         //given
-        Map properties = [typLokalizacji: LocationType.ABROAD]
+        Map properties = [typLokalizacji: AcceptorLocation.ABROAD, typDokumentu: IdentityDocumentType.IDENTITY_CARD,
+                          seriaNrDokumentu: "TEST", obywatelstwo: "TEST", adres: "TEST", dataUrodzenia: new Date(),
+                          czyStanowiskoPolityczne: true, lokalizacjaKraj: "TEST"]
 
         //when
         setProperties(properties)
+        CommandHelpers.setProperties(command.processCommand, [akceptantLokalizacja: AcceptorLocation.ABROAD])
+        command.validate()
+
+        //then
+        assertEquals(command.errors.errorCount, 0)
+        assertNull(command.errors['typLokalizacji'])
+        assertNull(command.errors['typDokumentu'])
+        assertNull(command.errors['seriaNrDokumentu'])
+        assertNull(command.errors['obywatelstwo'])
+        assertNull(command.errors['adres'])
+        assertNull(command.errors['dataUrodzenia'])
+        assertNull(command.errors['czyStanowiskoPolityczne'])
+        assertNull(command.errors['lokalizacjaKraj'])
+    }
+
+    @Test
+    void shouldValidatePeselWithTypLokalizacjiCountry() {
+        //given
+        Map properties = [lokalizacjaPesel: '91101706333']
+
+        //when
+        setProperties(properties)
+        CommandHelpers.setProperties(command.processCommand, [akceptantLokalizacja: AcceptorLocation.ABROAD])
+        command.validate()
+
+        //then
+        assertNull(command.errors['lokalizacjaPesel'])
+    }
+
+    @Test
+    void shouldNotValidateEmptyFieldsWithTypLokalizacjiAbroad() {
+        //given
+        Map properties = [typLokalizacji: AcceptorLocation.ABROAD]
+
+        //when
+        setProperties(properties)
+        CommandHelpers.setProperties(command.processCommand, [akceptantLokalizacja: AcceptorLocation.ABROAD])
         command.validate()
 
         //then
@@ -52,53 +112,8 @@ class RepresentativeCommandTest extends ControllerUnitTestMixin {
         assertNotNull(command.errors['czyStanowiskoPolityczne'])
     }
 
-    @Test
-    void shouldValidateFilledPropertiesRelatedToAbroadLocationType() {
-        //given
-        Map properties = [typLokalizacji: LocationType.ABROAD, lokalizacjaKraj: "Norwegia", dataUrodzenia: "2014-06-20",
-                          czyStanowiskoPolityczne: true]
-
-        //when
-        setProperties(properties)
-        command.validate()
-
-        //then
-        assertNull(command.errors['lokalizacjaKraj'])
-        assertNull(command.errors['dataUrodzenia'])
-        assertNull(command.errors['czyStanowiskoPolityczne'])
-    }
-
-    @Test
-    void shouldNotValidateEmptyPropertiesRelatedToCountryLocationType() {
-        //given
-        Map properties = [typLokalizacji: LocationType.COUNTRY]
-
-        //when
-        setProperties(properties)
-        command.validate()
-
-        //then
-        assertNotNull(command.errors['lokalizacjaPesel'])
-    }
-
-    @Test
-    void shouldValidateFilledPropertiesRelatedToCountryLocationType() {
-        //given
-        Map properties = [typLokalizacji: LocationType.COUNTRY, lokalizacjaPesel: "66666666666"]
-
-        //when
-        setProperties(properties)
-        command.validate()
-
-        //then
-        assertNull(command.errors['lokalizacjaPesel'])
-
-    }
-
     private void setProperties(Map properties) {
-        properties.each {
-            command[it.key] = it.value
-        }
+        CommandHelpers.setProperties(command, properties)
     }
 
 }

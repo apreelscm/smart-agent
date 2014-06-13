@@ -63,7 +63,9 @@ grails.project.dependency.resolution = {
         runtime 'org.springframework.ws:spring-oxm:3.2.2.RELEASE'
         runtime 'org.apache.poi:poi:3.10-FINAL'
 
-        test 'org.easymock:easymock:3.2'
+        test 'org.mockito:mockito-all:1.9.5'
+        test 'org.powermock:powermock-core:1.5.5'
+        test 'org.powermock:powermock-api-mockito:1.5.5'
     }
 
     plugins {
