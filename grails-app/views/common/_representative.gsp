@@ -1,4 +1,4 @@
-<%@ page import="com.eservice.eumowy.enums.AcceptorPESELCountry; com.eservice.eumowy.enums.IdentityDocumentType" %>
+<%@ page import="com.eservice.eumowy.enums.IdentityDocumentType" %>
 
 <div class="acceptor">
     <g:if test="${dropdowns}">
@@ -32,7 +32,7 @@
 
     <div class="acceptorCountry hidden">
         <div class="acceptorPESELWrapper">
-            <label for="${prefix}[${seqNo}].pesel"}"><g:message code="pesel.label"/></label>
+            <label for="${prefix}[${seqNo}].pesel"><g:message code="pesel.label"/></label>
             <g:textField name="${prefix}[${seqNo}].pesel" value="${representative?.pesel}" maxlength="11" class="pesel-field" validatable="${representative}"/>
         </div>
     </div>
@@ -63,7 +63,7 @@
 
         <div>
             <label for="${prefix}[${seqNo}].seriaNrDokumentu"><g:message code="identity.card.details"/></label>
-            <g:textField name="${prefix}[${seqNo}].seriaNrDokumentu}" value="${representative?.seriaNrDokumentu}" validatable="${representative}"/>
+            <g:textField name="${prefix}[${seqNo}].seriaNrDokumentu}" value="${representative?.seriaNrDokumentu}" validatable="${representative}" maxlength="20"/>
 
             <label for="${prefix}[${seqNo}].dataUrodzenia"><g:message code="birth.date.label"/></label>
             <g:textField name="${prefix}[${seqNo}].dataUrodzenia" value="${representative?.dataUrodzenia}" validatable="${representative}"

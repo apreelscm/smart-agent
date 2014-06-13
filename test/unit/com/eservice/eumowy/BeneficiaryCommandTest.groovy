@@ -33,58 +33,58 @@ class BeneficiaryCommandTest extends ControllerUnitTestMixin {
         command.validate()
 
         //then
-        assertEquals(command.errors['ownsAcceptor'].code, "atleast.one.relation.required")
+        assertEquals(command.errors['posiadaAkceptanta'].code, "atleast.one.relation.required")
     }
 
     @Test
     void shouldValidateWithTwoOptionsSelected() {
         //given
-        Map properties = [ownsAcceptor: true, controlAcceptor: true]
+        Map properties = [posiadaAkceptanta: true, kontrolujeAkceptanta: true]
 
         //when
         CommandHelpers.setProperties(command, properties)
         command.validate()
 
         //then
-        assertNull(command.errors['ownsAcceptor'])
+        assertNull(command.errors['posiadaAkceptanta'])
     }
 
     @Test
     void shouldNotValidateEmptyPercentOfVotes() {
         //given
-        Map properties = [overQuarterOfVotes: true]
+        Map properties = [znaczaceUdzialy: true]
 
         //when
         CommandHelpers.setProperties(command, properties)
         command.validate()
 
         //then
-        assertEquals(command.errors['percentOfVotes'].code, "beneficiary.percentOfVotes.required")
+        assertEquals(command.errors['procentUdzialow'].code, "beneficiary.percentOfVotes.required")
     }
 
     @Test
     void shouldNotValidateLowPercentOfVotes() {
         //given
-        Map properties = [overQuarterOfVotes: true, percentOfVotes: 22]
+        Map properties = [znaczaceUdzialy: true, procentUdzialow: 22]
 
         //when
         CommandHelpers.setProperties(command, properties)
         command.validate()
 
         //then
-        assertEquals(command.errors['percentOfVotes'].code, "min.notmet")
+        assertEquals(command.errors['procentUdzialow'].code, "min.notmet")
     }
 
     @Test
     void shouldValidateFilledPercentOfVotes() {
         //given
-        Map properties = [overQuarterOfVotes: true, percentOfVotes: 44]
+        Map properties = [znaczaceUdzialy: true, procentUdzialow: 44]
 
         //when
         CommandHelpers.setProperties(command, properties)
         command.validate()
 
         //then
-        assertNull(command.errors['percentOfVotes'])
+        assertNull(command.errors['procentUdzialow'])
     }
 }

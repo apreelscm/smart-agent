@@ -72,14 +72,6 @@ class ProcessService {
         return value?.toString()?.isNumber()
     }
 
-    /**
-     * sprawdzanie, czy w eUmowy istnieje dla danego Akceptanta niezakończony Proces
-     **/
-
-/*    def isProcessWithStatus(Client client, def statusList) {
-        return client.id != null && Process.findByClientAndStatusInList(client, statusList)
-    }*/
-
     def getLastProcessWhenInStatus(def nip, def statusList) {
         sessionFactory.currentSession.clear()
         def crit = Process.createCriteria()
@@ -152,11 +144,9 @@ class ProcessService {
 						point.save()
 						apc.cbdId = null
 					}
-					//point.delete(flush: true)
 				}
 			}
 		}
-      //  process.save(flush:true)
 		cmd.allPoints?.removeAll { it.cbdId == -1 }
 
         cmd.hirePaymentsCurrent?.addAll(getHirePaymentCurrentCommandList(cmd))
@@ -431,11 +421,6 @@ class ProcessService {
     def getLocalPointsToPointCommandList(def process) {
         def localPoints = []
         process.points.each { PointData point ->
-
-            /* Don't load points from CBD or points that were from CBD, but were removed and left in our DB - they have nulled CbdId but they lack point details */
-            /*if (point.cbdId != null || (point.cbdId == null && point.pointDetails == null)) {
-                return
-            }*/
 			if (!point || point.isLocal() == false)
 				return
 
@@ -700,9 +685,6 @@ class ProcessService {
             }
             hpc.setIsChoosen(false)
 
-            //gdy dojdzie PP trzeba zapisac te dane tutaj
-//            hpc.setPpCount()
-//            hpc.setCurrentPpPayment()
             hpcResult.add(hpc)
         }
         return hpcResult
@@ -733,10 +715,6 @@ class ProcessService {
                 hpc.setNewTermPayment(hirePayment.toString().toBigDecimal())
             }
             hpc.setIsChoosen(false)
-
-            //gdy dojdzie PP trzeba zapisac te dane tutaj
-//            hpc.setPpCount()
-//            hpc.setCurrentPpPayment()
 
             hpcResult.add(hpc)
         }
@@ -835,7 +813,6 @@ class ProcessService {
                     apc.czyCbd = true // Mark for update in local (eumowy) db
 					apc.nip = point.nip
 					cbdIdsToRemove.add(apc.cbdId)
-					//cbdPoints.remove(cbdPoints.findIndexOf { AllPointsCommand i -> i.cbdId == apc.cbdId })
                 }
                 else {
                     apc.cbdId = -1 // Mark the point for deletion from local (eumowy) db
@@ -867,7 +844,6 @@ class ProcessService {
                     apc.dataDo = pos.dataDo ?: apc.dataDo
                     apc.dataOd = pos.dataOd ?: apc.dataOd
                     apc.numerZestawuPos = pos.numerZestawuPos ?: apc.numerZestawuPos
-                    //apc.wysokoscOplaty = pos.wysokoscOplaty ?: (apc.wysokoscOplaty ?: calculatorService.getCalcProperty(calc,"OPLATA_POS_PROM_CENA_NAJMU"))
                     apc.czyCbd = true // Mark for update in local (eumowy) db
 					tpsIdsToRemove.add(apc.tpsId)
                 }
@@ -883,12 +859,6 @@ class ProcessService {
 		}
         result.addAll(cbdPoses)
         result.sort {it.id}
-
-//		Na chwile obecna przeniesione do odrebnej metody i wywolywane w hierarchii wyzej		
-//		BigDecimal price = panelService.toBigDecimal(calculatorService.getCalcProperty(calc, "OPLATA_POS_PROM_CENA_NAJMU"))
-//		result.each { AllPosCommand apc ->
-//			apc.wysokoscOplaty = panelService.setAtLeastAs(apc.wysokoscOplaty, price)
-//		}
 		
         result
     }
@@ -901,12 +871,10 @@ class ProcessService {
         addCurrentDate(processDataList);
         addFromCalc(processDataList, calc);
 
-        //process.processData?.clear()
         processDataList.each { ProcessData data ->
             def foundData = process.processData.find { it.name == data.name }
             if(!foundData){
                 process.addToProcessData(data)
-                //log.debug("process data: ${data.processId?.class} ${data.version?.class} ${data.name?.class} ${data.id?.class}")
             }else if(data.value != foundData.value){
                 foundData.value = data.value
             }
@@ -1190,7 +1158,7 @@ class ProcessService {
 				pointData.liczbaPos = pdList.size()
 			}
             pointData.save()
-            //if (isNew == true) {
+
             posData.setPosDetails(posDataDetails)
             posData.setPoint(pointData)
 
@@ -1201,7 +1169,6 @@ class ProcessService {
             pointDataDetails.setPoint(pointData)
             pointDataDetails.save()
             posData.save()
-            //}
 
 			pdList.each { PosData pd ->
 				if (pd != posData) {
@@ -1211,13 +1178,10 @@ class ProcessService {
 			}
 			
             pointsList.add(pointData)
-			
-			
         }
 
         /* Save points from AllPointsCommand */
         cmd.allPoints?.each { AllPointsCommand apc ->
-            //boolean isNew = false
             if (apc == null) {
                 log.debug "AllPointCommand is NULL - skipping!"
                 return
@@ -1254,9 +1218,7 @@ class ProcessService {
                 point.systemKasowy = apc.systemKasowy
                 point.uta = apc.uta
 
-                //if (isNew == true) {
                 pointsList.add(point)
-                //}
             }
             else {
                 log.info "Nie znaleziono punktu o id: " + apc.id
@@ -1284,8 +1246,6 @@ class ProcessService {
 
             if (pc.id == null) {
                 log.info "NOWY POS"
-                //pointData = new PointData()
-                //pointDataDetails = new PointDataDetails()
 
                 if (pc.cbdId != null) {
 					if (pointsList.find { PointData pd -> pd.cbdId == pc.cbdId } != null) {
@@ -1319,7 +1279,6 @@ class ProcessService {
 
                         pointData.setCbdId(Integer.valueOf(cbdPoint.get("id").toString()))
                         pointData.setKodPocztowy(cbdPoint.get("kod_pocztowy"))
-                        //pointData.setLiczbaPos(Integer.valueOf(cbdPoint.get("liczba_pos").toString()))
                         pointData.setMiejscowosc(cbdPoint.get("miejscowosc"))
                         pointData.setNazwa(cbdPoint.get("nazwa"))
                         pointData.setNrBudynku(cbdPoint.get("nr_budynku"))
@@ -1346,8 +1305,6 @@ class ProcessService {
                 posData = PosData.findById(pc.id)
 
                 if (posData != null) {
-                    //pointData = posData.point
-					//pointData = PointData.find { id == posData.point.id }
 					def proc = process
 					pointData = PointData.find {
 						process == proc &&
@@ -1379,7 +1336,6 @@ class ProcessService {
                             if (cbdPoint != null) {
                                 pointData.setCbdId(Integer.valueOf(cbdPoint.get("id").toString()))
                                 pointData.setKodPocztowy(cbdPoint.get("kod_pocztowy"))
-								//pointData.setLiczbaPos(Integer.valueOf(cbdPoint.get("liczba_pos").toString()))
                                 pointData.setMiejscowosc(cbdPoint.get("miejscowosc"))
                                 pointData.setNazwa(cbdPoint.get("nazwa"))
                                 pointData.setNrBudynku(cbdPoint.get("nr_budynku"))
@@ -1474,7 +1430,6 @@ class ProcessService {
 				pointData.liczbaPos = pdList.size()
 			}
             pointData.save()
-            //if (isNew == true) {
             posData.setPosDetails(posDataDetails)
             posData.setPoint(pointData)
 
@@ -1514,7 +1469,7 @@ class ProcessService {
                 log.info "AllPosCommand is NULL - skipping!"
                 return
             }
-            //ArrayList<PosData> pdList = new ArrayList<PosData>()
+
             PosData pos = null
             PointData point = null
 
@@ -1533,7 +1488,6 @@ class ProcessService {
             }
             else if (apc.cbdId != null) {
                 //pobieramy point z bazy CBD
-                //point = PointData.findByCbdId(apc.cbdId)
 				point = PointData.findByCbdIdAndProcess(apc.cbdId, process)
 
                 if (point != null) {
@@ -1585,8 +1539,6 @@ class ProcessService {
                 }
                 pos.czyWybrany = apc.czyWybrany
                 pos.tpsId = apc.tpsId
-                //pdList.add(pos)
-
 
                 point.cbdId = apc.cbdId
                 point.save()
@@ -1597,7 +1549,6 @@ class ProcessService {
 				} else {
 					point.setPosDatas([pos])
 				}
-                //point.setPosDatas(pdList)
 
                 pos.setPoint(point)
                 pos.save()

@@ -1,6 +1,7 @@
 
 package com.eservice.eumowy
 
+import com.eservice.eumowy.command.RepresentativeCommand
 import com.eservice.eumowy.dto.MerchantDetailsDTO
 import grails.converters.JSON
 import groovy.sql.GroovyRowResult
@@ -744,8 +745,11 @@ class ActivityController {
                 processInstance.client.name = cmd.akceptantNazwaOficjalna;
                 processInstance.saleSection = calculatorService.getCalcProperty(conversation.calc,'SEGMENT_SPRZEDAZOWY')
 
-                flow.representative1 = [name: cmd.reprezentant1Imie, surname: cmd.reprezentant1Nazwisko]
-                flow.representative2 = [name: cmd.reprezentant2Imie, surname: cmd.reprezentant2Nazwisko]
+                RepresentativeCommand representative1 = cmd.representatives[0]
+                RepresentativeCommand representative2 = cmd.representatives[1]
+
+                flow.representative1 = [name: representative1.imie, surname: representative1.nazwisko]
+                flow.representative2 = [name: representative2.imie, surname: representative2.nazwisko]
 
                 if (!processInstance.save()){
                     processInstance.errors.each {
@@ -1072,8 +1076,11 @@ class ActivityController {
                 processInstance = processService.populateProcessWithData(processInstance, cmd, conversation.calc)
                 processInstance.notesToCoa = cmd.notes;
 
-                flow.representative1 = [name: cmd.reprezentant1Imie, surname: cmd.reprezentant1Nazwisko]
-                flow.representative2 = [name: cmd.reprezentant2Imie, surname: cmd.reprezentant2Nazwisko]
+                RepresentativeCommand representative1 = cmd.representatives[0]
+                RepresentativeCommand representative2 = cmd.representatives[1]
+
+                flow.representative1 = [name: representative1.imie, surname: representative1.nazwisko]
+                flow.representative2 = [name: representative2.imie, surname: representative2.nazwisko]
 
                 if (!processInstance.save()){
                     processInstance.errors.each {

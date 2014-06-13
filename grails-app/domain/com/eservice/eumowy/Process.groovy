@@ -54,7 +54,8 @@ class Process implements Serializable {
             points: PointData,
             processData: ProcessData,
             hirePayments: HirePayment,
-            posExchanges: PosExchange
+            posExchanges: PosExchange,
+            representatives: Representative
     ]
 
     static constraints = {
@@ -81,7 +82,7 @@ class Process implements Serializable {
         notesFromZrd(nullable: true, maxSize: 300)
         hirePayments(nullable: true)
         posExchanges(nullable: true)
-
+        representatives(nullable: true)
     }
 
     static mapping = {
@@ -97,6 +98,7 @@ class Process implements Serializable {
         processData cascade:"all-delete-orphan"
         hirePayments cascade:"all-delete-orphan"
         posExchanges cascade:"all-delete-orphan"
+        representatives cascade:"all-delete-orphan"
     }
 
     def afterInsert() {

@@ -40,9 +40,9 @@
         <span class="bold"><g:message code="beneficiary.data.label"/></span>
 
         <section id="actualBeneficiaryData">
-            %{--<g:each in="${1..3}">--}%
-                %{--<g:render template="/common/acceptor" model="['representative': 'beneficjent' + it, 'dropdowns': false]"/>--}%
-            %{--</g:each>--}%
+            <g:each in="${0..2}">
+                <g:render template="/common/representative" model="['prefix': 'beneficiaries', 'seqNo': it, 'dropdowns': false]"/>
+            </g:each>
         </section>
 </fieldset>
 

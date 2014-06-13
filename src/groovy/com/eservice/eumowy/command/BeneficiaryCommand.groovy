@@ -1,28 +1,29 @@
 package com.eservice.eumowy.command
 
 import com.eservice.eumowy.validator.CustomValidator
+import grails.validation.Validateable
 
+@Validateable
+class BeneficiaryCommand extends RepresentativeCommand implements Serializable {
+    Boolean posiadaAkceptanta
+    Boolean kontrolujeAkceptanta
 
-class BeneficiaryCommand extends RepresentativeCommand {
-    Boolean ownsAcceptor
-    Boolean controlAcceptor
-
-    Boolean overQuarterOfVotes
-    Integer percentOfVotes
+    Boolean znaczaceUdzialy
+    Integer procentUdzialow
 
     static constraints = {
         importFrom RepresentativeCommand
 
-        ownsAcceptor(nullable: true, validator: {value, cmd, errors ->
-            if(!value && !cmd.controlAcceptor && !cmd.overQuarterOfVotes) {
-                errors.rejectValue("ownsAcceptor", "atleast.one.relation.required")
+        posiadaAkceptanta(nullable: true, validator: {value, cmd, errors ->
+            if(!value && !cmd.kontrolujeAkceptanta && !cmd.znaczaceUdzialy) {
+                errors.rejectValue("posiadaAkceptanta", "atleast.one.relation.required")
                 return false
             }
             return true
         })
 
-        percentOfVotes(nullable: true, min: 26, shared: "percentage", validator: {value, cmd, errors ->
-            CustomValidator.validateRequired(value, errors, cmd.overQuarterOfVotes, "percentOfVotes", "beneficiary.percentOfVotes.required")
+        procentUdzialow(nullable: true, min: 26, shared: "percentage", validator: {value, cmd, errors ->
+            CustomValidator.validateRequired(value, errors, cmd.znaczaceUdzialy, "procentUdzialow", "beneficiary.percentOfVotes.required")
         })
     }
 }

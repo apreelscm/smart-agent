@@ -12,6 +12,7 @@ import com.eservice.eumowy.validator.NumberValidator
 import com.eservice.eumowy.validator.PercentageValidator
 import com.eservice.eumowy.validator.PointsValidator
 import com.eservice.eumowy.validator.PosesValidator
+import com.eservice.eumowy.validator.RepresentativesValidator
 import com.eservice.eumowy.validator.ScoringValidator
 import com.eservice.eumowy.validator.SkipAddressValidator
 import com.eservice.eumowy.validator.TelekodzikValidator
@@ -1242,6 +1243,14 @@ class ProcessCommand implements Serializable {
         poses(nullable:true, validator: { value, cmd, errors ->
             return PosesValidator.validate(value, cmd, errors)
         })
+
+        representatives(nullable: true, validator: {value, cmd, errors ->
+            return RepresentativesValidator.validate(value, cmd, errors, "representatives")
+        })
+        beneficiaries(nullable: true, validator: {value, cmd, errors ->
+            return RepresentativesValidator.validate(value, cmd, errors, "beneficiaries")
+        })
+
         allPoints(nullable:true)
         allPoses(nullable:true, validator: { value, cmd, errors ->
             def hasPointErrors = false
