@@ -161,7 +161,7 @@ class ProcessService {
 		cmd
 	}
 
-    def getSavedProcessCommand(def process, def calcId, def calc, def newProcess){
+    def getSavedProcessCommand(Process process, def calcId, def calc, def newProcess){
         log.info("getSavedProcessCommand processId = ${process.id}")
         ProcessCommand cmd = initProcessCommand(process, calcId)
         loadProcessData(process,cmd)
@@ -169,10 +169,14 @@ class ProcessService {
         cmd.poses?.clear()
         cmd.allPoints?.clear()
         cmd.allPoses?.clear()
+        cmd.representatives?.clear()
+        cmd.beneficiaries?.clear()
         cmd.points?.addAll(getLocalPointsToPointCommandList(process))
         cmd.poses?.addAll(getLocalPosesToPointCommandList(process))
         cmd.allPoints?.addAll(getPointsToAllPointsCommandList(process, cmd))
         cmd.allPoses?.addAll(getPosesToAllPosCommandList(process, cmd, calc))
+        cmd.representatives?.addAll(process.representatives.findAll {Representative.Type.REPRESENTATIVE.equals(it.type)})
+        cmd.beneficiaries?.addAll(process.representatives.findAll {Representative.Type.BENEFICIARY.equals(it.type)})
         cmd.hirePaymentsByPoint?.clear()
         cmd.hirePaymentsByPos?.clear()
         cmd.hirePaymentsCurrent.clear()
@@ -894,9 +898,13 @@ class ProcessService {
 			process.addToPoints(point);
 		}
 
-        fillPaymentUsage(cmd, process);
+        fillPaymentUsage(cmd, process)
 
-        fillPosExchange(cmd, process);
+        fillPosExchange(cmd, process)
+
+        fillRepresentatives(cmd, process)
+
+        fillBeneficiaries(cmd, process)
 
         process.notesToCoa = cmd.notes //notesToCOA
 
@@ -992,6 +1000,34 @@ class ProcessService {
         }
         process
     };
+
+    private void fillRepresentatives(ProcessCommand processCommand, Process process) {
+        processCommand.representatives.each { representativeCmd ->
+            Representative representative = new Representative(representativeCmd.properties)
+            representative.type = Representative.Type.REPRESENTATIVE
+
+            log.info(String.format("Saving new %s %s %s connected with process %s", representative.type,
+                                    representative.imie, representative.nazwisko, process.id))
+
+            process.addToRepresentatives(representative)
+
+            representative.save(flush: true)
+        }
+    }
+
+    private void fillBeneficiaries(ProcessCommand processCommand, Process process) {
+        processCommand.beneficiaries.each { representativeCmd ->
+            Representative representative = new Representative(representativeCmd.properties)
+            representative.type = Representative.Type.BENEFICIARY
+
+            log.info(String.format("Saving new %s %s %s connected with process %s", representative.type,
+                    representative.imie, representative.nazwisko, process.id))
+
+            process.addToRepresentatives(representative)
+
+            representative.save(flush: true)
+        }
+    }
 
     private def addCurrentDate(def processDataList){
         processDataList.add(new ProcessData([name: 'dataUmowy', value: DateUtils.formatWithTimezone(DateUtils.getCurrentDate())]))

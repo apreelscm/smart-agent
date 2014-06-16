@@ -71,7 +71,6 @@ class Representative {
     }
 
     static constraints = {
-       type(nullable: true)
        tytul(nullable: true)
        imie(nullable: true)
        nazwisko(nullable: true)

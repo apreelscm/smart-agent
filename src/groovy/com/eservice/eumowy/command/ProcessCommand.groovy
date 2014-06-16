@@ -395,7 +395,7 @@ class ProcessCommand implements Serializable {
     //osobaUprawnionaDoPodpisaniaUmowy
     Boolean isFromBisnode = false
     Boolean isRepresentativesChangedManually = false
-    AcceptorLocation akceptantLokalizacja
+    String akceptantLokalizacja
     String emailDoWysylkiDokumentu = DEFAULT_VALUE
 
     //beneficjenciRzeczywisci
