@@ -19,7 +19,8 @@ function maskFields(element){
     element.find(".ph-number").mask('S9999');
     element.find(".integer-number").mask('099999');
     element.find(".float-number").mask('099999X99', {translation:  {'X': {pattern: /[.]/, optional: true}}});
-    element.find(".percent-number").mask('09X999', {translation:  {'X': {pattern: /[.]/}}})
+    element.find(".percent-number").mask('09X999', {translation:  {'X': {pattern: /[.]/}}});
+    element.find(".percent-short").mask('09');
     element.find(".flat-price").mask('AAAAA');
 }
 

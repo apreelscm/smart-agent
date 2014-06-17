@@ -1,51 +1,74 @@
 <fieldset>
     <header class="belka-glowna"><g:message code="panel.actual.beneficiaries.title"/></header>
-        <g:radio name="czyBeneficjentRzeczywisty" value="false" required="required"/>
-        <span class="bold"><g:message code="beneficiary.cant.establish.label"/></span>
+    <g:radio name="czyBeneficjentRzeczywisty" value="false" required="required"/>
+    <span class="bold"><g:message code="beneficiary.cant.establish.label"/></span>
 
-        <section id="cantEstablishBeneficiary">
-            <div>
-                <g:checkBox name="akceptantJestSpolka" value="${data.akceptantJestSpolka}"/>
-                <label><g:message code="acceptor.listed.company.label"/></label>
-            </div>
-            
-            <div>
-                <label for="nazwaGieldy"><g:message code="stock.exchange.name.label"/></label>
-                <g:textField name="nazwaGieldy" value="${data.nazwaGieldy}" maxlength="50"/>
+    <section id="cantEstablishBeneficiary">
+        <div>
+            <g:checkBox name="akceptantJestSpolka" value="${data.akceptantJestSpolka}"/>
+            <label><g:message code="acceptor.listed.company.label"/></label>
+        </div>
 
-                <label for="isinAkceptanta"><g:message code="acceptor.isin.code.label"/></label>
-                <g:textField name="isinAkceptanta" value="${data.isinAkceptanta}" maxlength="12" class="isin-field"/>
-            </div>
-            
-            <div>
-                <g:checkBox name="akceptantJestPodmiotem" value="${data.akceptantJestPodmiotem}"/>
-                <label><g:message code="acceptor.subject.label"/></label>
-            </div>
-            
-            <div>
-                <g:checkBox name="akceptantJestOrganem" value="${data.akceptantJestOrganem}"/>
-                <label><g:message code="acceptor.organ.label"/></label>
-            </div>
-            
-            <div>
-                <g:checkBox name="akceptantNieMaBeneficjenta" value="${data.akceptantNieMaBeneficjenta}"/>
-                <label><g:message code="acceptor.no.physical.beneficiary.label"/></label>
-                <label class="display-block"><g:message code="acceptor.no.physical.beneficiary.a.label"/></label>
-                <label class="display-block"><g:message code="acceptor.no.physical.beneficiary.b.label"/></label>
-                <label class="display-block" style="max-width: inherit"><g:message code="acceptor.no.physical.beneficiary.c.label"/></label>
-            </div>
-        </section>
+        <div>
+            <label for="nazwaGieldy"><g:message code="stock.exchange.name.label"/></label>
+            <g:textField name="nazwaGieldy" value="${data.nazwaGieldy}" maxlength="50"/>
 
+            <label for="isinAkceptanta"><g:message code="acceptor.isin.code.label"/></label>
+            <g:textField name="isinAkceptanta" value="${data.isinAkceptanta}" maxlength="12" class="isin-field"/>
+        </div>
+
+        <div>
+            <g:checkBox name="akceptantJestPodmiotem" value="${data.akceptantJestPodmiotem}"/>
+            <label><g:message code="acceptor.subject.label"/></label>
+        </div>
+
+        <div>
+            <g:checkBox name="akceptantJestOrganem" value="${data.akceptantJestOrganem}"/>
+            <label><g:message code="acceptor.organ.label"/></label>
+        </div>
+
+        <div>
+            <g:checkBox name="akceptantNieMaBeneficjenta" value="${data.akceptantNieMaBeneficjenta}"/>
+            <label><g:message code="acceptor.no.physical.beneficiary.label"/></label>
+            <label class="display-block"><g:message code="acceptor.no.physical.beneficiary.a.label"/></label>
+            <label class="display-block"><g:message code="acceptor.no.physical.beneficiary.b.label"/></label>
+            <label class="display-block" style="max-width: inherit"><g:message code="acceptor.no.physical.beneficiary.c.label"/></label>
+        </div>
+    </section>
+
+    <div style="margin-bottom: 10px">
         <g:radio name="czyBeneficjentRzeczywisty" value="true" required="required"/>
         <span class="bold"><g:message code="beneficiary.data.label"/></span>
+    </div>
 
-        <section id="actualBeneficiaryData">
-            <g:each in="${0..2}">
-                <g:render template="/common/representative" model="['prefix': 'beneficiaries', 'seqNo': it, 'dropdowns': false]"/>
-            </g:each>
-        </section>
+    <section id="actualBeneficiaryData" class="hidden">
+        <button type="button" id="copyFromRepresentatives" class="button"><g:message code="beneficiary.copy.from.representatives.label"/></button>
+
+        <g:each in="${0..2}">
+            <g:render template="/common/representative" model="['prefix': 'beneficiaries', 'seqNo': it,
+                    'dropdowns': false, acceptorAbroadVisible: true]"/>
+
+            <p><g:message code="beneficiary.relation.with.acceptor.label"/></p>
+
+            <div>
+                <g:checkBox name="beneficiaries[${it}].posiadaAkceptanta"/>
+                <label for="beneficiaries[${it}].posiadaAkceptanta"><g:message code="beneficiary.owns.acceptor.label"/></label>
+            </div>
+
+            <div>
+                <g:checkBox name="beneficiaries[${it}].kontrolujeAkceptanta"/>
+                <label for="beneficiaries[${it}].kontrolujeAkceptanta"><g:message code="beneficiary.controls.acceptor.label"/></label>
+            </div>
+
+            <div>
+                <g:checkBox name="beneficiaries[${it}].znaczaceUdzialy"/>
+                <label for="beneficiaries[${it}].znaczaceUdzialy"><g:message code="beneficiary.majority.acceptor.label"/></label>
+
+                <g:textField name="beneficiaries[${it}].procentUdzialow" class="percent-short"/>
+                <g:message code="beneficiary.majority.acceptor.closing.label"/>
+            </div>
+        </g:each>
+    </section>
 </fieldset>
 
-<script type="text/javascript">
-
-</script>
+<g:javascript src="panels/beneficjenciRzeczywisci.js"/>

@@ -1547,6 +1547,10 @@ label.doladowanieLabel {
     margin-bottom: 15px;
 }
 
+#actualBeneficiaryData div {
+    margin-bottom: 5px;
+}
+
 .posHeaderType {
     text-align: center;
     font-size: 14px;
@@ -1645,4 +1649,13 @@ header.belka-glowna {
 
 #verificationDocuments div {
     margin-bottom: 15px;
+}
+
+#actualBeneficiaryData .acceptor {
+    padding: 15px 0;
+}
+
+#actualBeneficiaryData .percent-short {
+    width: 30px;
+    text-align: center;
 }

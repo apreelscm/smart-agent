@@ -88,10 +88,6 @@ function setSameForEveryPropertyInSourceMaps(){
             setProperMapAndCheckboxesProperties(map[record], record);
         }
         firedSetSameForEveryPropertyInSourceMaps = true;
-        console.log('posMap');
-        console.log(sameForEveryPointSourcePosId);
-        console.log('pointMap');
-        console.log(sameForEveryPointSourcePanelId);
     }
 }
 

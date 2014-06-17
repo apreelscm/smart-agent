@@ -10,10 +10,6 @@ var panelInternalCount = {
 function evaluateSredniObrot(){
     var divideBy = parseInt($j("#liczbaPtkCbd").val()) + panelInternalCount.value
     var sredniObrot = divideBy ? parseFloat($j("#progrnozaMiesieczna").val()) / divideBy : 0
-    console.info("progrnozaMiesieczna:"+$j("#progrnozaMiesieczna").val())
-    console.info("liczbaPtkCbd:"+$j("#liczbaPtkCbd").val())
-    console.info("panelInternalCount:"+panelInternalCount.value)
-    console.info("sredniObrot:"+sredniObrot)
     $j("#scoringDeklaracjaFinansowaSredniObrot").val(Math.round(sredniObrot * 100)/100)
 }
 

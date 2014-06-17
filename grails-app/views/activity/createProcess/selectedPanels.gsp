@@ -202,6 +202,8 @@
         refreshTelepomkaAndTelekodzikPercentValues()
         $j.datepicker.setDefaults( jQuery.datepicker.regional[ "pl" ] );
     </g:javascript>
+
+    <g:javascript src="panels/common.js"/>
 </head>
 <body>
 <r:require module="mask"/>

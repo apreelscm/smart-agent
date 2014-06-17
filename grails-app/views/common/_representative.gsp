@@ -30,14 +30,16 @@
         </div>
     </g:else>
 
-    <div class="acceptorCountry hidden">
-        <div class="acceptorPESELWrapper">
-            <label for="${prefix}[${seqNo}].pesel"><g:message code="pesel.label"/></label>
-            <g:textField name="${prefix}[${seqNo}].pesel" value="${representative?.pesel}" maxlength="11" class="pesel-field" validatable="${representative}"/>
+    <g:if test="${"representatives".equals(prefix)}">
+        <div class="acceptorCountry hidden">
+            <div class="acceptorPESELWrapper">
+                <label for="${prefix}[${seqNo}].pesel"><g:message code="pesel.label"/></label>
+                <g:textField name="${prefix}[${seqNo}].pesel" value="${representative?.pesel}" maxlength="11" class="pesel-field" validatable="${representative}"/>
+            </div>
         </div>
-    </div>
+    </g:if>
 
-    <div class="acceptorAbroad hidden">
+    <div class="acceptorAbroad ${acceptorAbroadVisible ?: 'hidden'}">
         <div class="acceptorPESELCountryWrapper">
             <div class="acceptorPESELCountryRadioWrapper">
                 <g:radio name="${prefix}[${seqNo}].typLokalizacji" value="COUNTRY" required="required"/>
@@ -63,7 +65,7 @@
 
         <div>
             <label for="${prefix}[${seqNo}].seriaNrDokumentu"><g:message code="identity.card.details"/></label>
-            <g:textField name="${prefix}[${seqNo}].seriaNrDokumentu}" value="${representative?.seriaNrDokumentu}" validatable="${representative}" maxlength="20"/>
+            <g:textField name="${prefix}[${seqNo}].seriaNrDokumentu" value="${representative?.seriaNrDokumentu}" validatable="${representative}" maxlength="20"/>
 
             <label for="${prefix}[${seqNo}].dataUrodzenia"><g:message code="birth.date.label"/></label>
             <g:textField name="${prefix}[${seqNo}].dataUrodzenia" value="${representative?.dataUrodzenia}" validatable="${representative}"
