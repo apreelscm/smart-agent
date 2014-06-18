@@ -2,13 +2,14 @@ package com.eservice.eumowy
 
 import com.eservice.eumowy.enums.AcceptorLocation
 import com.eservice.eumowy.enums.IdentityDocumentType
+import org.apache.commons.logging.LogFactory
 
-class Representative {
-    private enum Type{
+class Representative implements Serializable {
+    public enum Type{
         REPRESENTATIVE, BENEFICIARY
     }
 
-    Type type
+    Type typ
 
     String tytul
     String imie
@@ -67,7 +68,7 @@ class Representative {
         znaczaceUdzialy column: "OVER_QUARTER_VOTES"
         procentUdzialow column: "PERCENT_VOTES"
 
-        type column: "TYPE"
+        typ column: "TYPE"
     }
 
     static constraints = {

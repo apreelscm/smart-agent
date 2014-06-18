@@ -10,6 +10,8 @@ import grails.validation.Validateable
 class RepresentativeCommand implements Serializable{
     transient ProcessCommand processCommand
 
+    Long id
+
     String tytul
     String imie
     String nazwisko
@@ -81,7 +83,20 @@ class RepresentativeCommand implements Serializable{
         })
     }
 
-    private boolean isRepresentativeLocationAbroad() {
+    public boolean isRepresentativeLocationAbroad() {
+        if(typLokalizacji == null) {
+            return null
+        }
+
         return AcceptorLocation.ABROAD.equals(typLokalizacji)
     }
+
+    public boolean isIdentityDocumentPassport() {
+        if(typDokumentu == null) {
+            return null
+        }
+
+        return IdentityDocumentType.PASSPORT.equals(typDokumentu)
+    }
+
 }

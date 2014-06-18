@@ -4,7 +4,6 @@ import com.eservice.eumowy.annotation.DateField
 import com.eservice.eumowy.annotation.Omit
 import com.eservice.eumowy.command.*
 import com.eservice.eumowy.dto.MerchantDetailsDTO
-import com.eservice.eumowy.dto.MerchantRepresentativeDTO
 import com.eservice.eumowy.util.DateUtils
 import com.eservice.eumowy.util.EumowyCustomEnvironment
 import grails.util.Environment
@@ -175,8 +174,8 @@ class ProcessService {
         cmd.poses?.addAll(getLocalPosesToPointCommandList(process))
         cmd.allPoints?.addAll(getPointsToAllPointsCommandList(process, cmd))
         cmd.allPoses?.addAll(getPosesToAllPosCommandList(process, cmd, calc))
-        cmd.representatives?.addAll(process.representatives.findAll {Representative.Type.REPRESENTATIVE.equals(it.type)})
-        cmd.beneficiaries?.addAll(process.representatives.findAll {Representative.Type.BENEFICIARY.equals(it.type)})
+        cmd.representatives?.addAll(getRepresentativesCommand(process, Representative.Type.REPRESENTATIVE))
+        cmd.beneficiaries?.addAll(getRepresentativesCommand(process, Representative.Type.BENEFICIARY))
         cmd.hirePaymentsByPoint?.clear()
         cmd.hirePaymentsByPos?.clear()
         cmd.hirePaymentsCurrent.clear()
@@ -238,6 +237,33 @@ class ProcessService {
 		//prepareAllPosCommands(cmd.allPoses, calc)
 		
 		cmd
+    }
+
+    List<RepresentativeCommand> getRepresentativesCommand(Process process, Representative.Type type) {
+        List<Representative> representatives = process.representatives?.findAll {type.equals(it.typ)}.sort {it.id}
+        Map representativeProperties
+
+        List<RepresentativeCommand> result = []
+        representatives.each {
+            representativeProperties = [:]
+            representativeProperties.putAll(it.properties)
+            representativeProperties.remove("typ")
+
+            if(Representative.Type.REPRESENTATIVE.equals(type)) {
+                representativeProperties.remove("posiadaAkceptanta")
+                representativeProperties.remove("kontrolujeAkceptanta")
+                representativeProperties.remove("znaczaceUdzialy")
+                representativeProperties.remove("procentUdzialow")
+
+                result.add(new RepresentativeCommand(representativeProperties))
+            } else {
+                result.add(new BeneficiaryCommand(representativeProperties))
+            }
+
+            representativeProperties = null
+        }
+
+        return result
     }
 
     List<PosExchangeCommand> mergePosExchanges(Process processInstance, List<PosExchangeCommand> fromCbd, List<PosExchangeCommand> fromEumowy) {
@@ -1004,28 +1030,36 @@ class ProcessService {
     private void fillRepresentatives(ProcessCommand processCommand, Process process) {
         processCommand.representatives.each { representativeCmd ->
             Representative representative = new Representative(representativeCmd.properties)
-            representative.type = Representative.Type.REPRESENTATIVE
+            representative.typ = Representative.Type.REPRESENTATIVE
 
-            log.info(String.format("Saving new %s %s %s connected with process %s", representative.type,
-                                    representative.imie, representative.nazwisko, process.id))
+            if(!representative.imie && !representative.nazwisko) {
+                log.info(String.format("Not saving %s to process - empty first name and last name", representative.typ))
+            } else {
+                log.info(String.format("Saving new %s %s %s connected with process %s", representative.typ,
+                                        representative.imie, representative.nazwisko, process.id))
 
-            process.addToRepresentatives(representative)
+                process.addToRepresentatives(representative)
 
-            representative.save(flush: true)
+                representative.save(flush: true)
+            }
         }
     }
 
     private void fillBeneficiaries(ProcessCommand processCommand, Process process) {
         processCommand.beneficiaries.each { representativeCmd ->
             Representative representative = new Representative(representativeCmd.properties)
-            representative.type = Representative.Type.BENEFICIARY
+            representative.typ = Representative.Type.BENEFICIARY
 
-            log.info(String.format("Saving new %s %s %s connected with process %s", representative.type,
-                    representative.imie, representative.nazwisko, process.id))
+            if(!representative.imie && !representative.nazwisko) {
+                log.info(String.format("Not saving %s - empty first name and last name", representative.typ))
+            } else {
+                log.info(String.format("Saving new %s %s %s connected with process %s", representative.typ,
+                        representative.imie, representative.nazwisko, process.id))
 
-            process.addToRepresentatives(representative)
+                process.addToRepresentatives(representative)
 
-            representative.save(flush: true)
+                representative.save(flush: true)
+            }
         }
     }
 

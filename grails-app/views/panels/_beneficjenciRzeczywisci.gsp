@@ -1,11 +1,12 @@
 <fieldset>
     <header class="belka-glowna"><g:message code="panel.actual.beneficiaries.title"/></header>
-    <g:radio name="czyBeneficjentRzeczywisty" value="false" required="required"/>
+
+    <g:radio name="czyBeneficjentRzeczywisty" value="false" required="required" checked="${data.czyBeneficjentRzeczywisty}"/>
     <span class="bold"><g:message code="beneficiary.cant.establish.label"/></span>
 
-    <section id="cantEstablishBeneficiary">
+    <section id="cantEstablishBeneficiary" class="${!data.czyBeneficjentRzeczywisty ? "hidden" : ""}">
         <div>
-            <g:checkBox name="akceptantJestSpolka" value="${data.akceptantJestSpolka}"/>
+            <g:checkBox name="akceptantJestSpolka" checked="${data.akceptantJestSpolka}"/>
             <label><g:message code="acceptor.listed.company.label"/></label>
         </div>
 
@@ -18,12 +19,12 @@
         </div>
 
         <div>
-            <g:checkBox name="akceptantJestPodmiotem" value="${data.akceptantJestPodmiotem}"/>
+            <g:checkBox name="akceptantJestPodmiotem" checked="${data.akceptantJestPodmiotem}"/>
             <label><g:message code="acceptor.subject.label"/></label>
         </div>
 
         <div>
-            <g:checkBox name="akceptantJestOrganem" value="${data.akceptantJestOrganem}"/>
+            <g:checkBox name="akceptantJestOrganem" checked="${data.akceptantJestOrganem}"/>
             <label><g:message code="acceptor.organ.label"/></label>
         </div>
 
@@ -36,39 +37,30 @@
         </div>
     </section>
 
-    <div style="margin-bottom: 10px">
-        <g:radio name="czyBeneficjentRzeczywisty" value="true" required="required"/>
+    <div style="margin: 10px 0">
+        <g:radio name="czyBeneficjentRzeczywisty" value="true" required="required" checked="${data.czyBeneficjentRzeczywisty}"/>
         <span class="bold"><g:message code="beneficiary.data.label"/></span>
     </div>
 
-    <section id="actualBeneficiaryData" class="hidden">
-        <button type="button" id="copyFromRepresentatives" class="button"><g:message code="beneficiary.copy.from.representatives.label"/></button>
+    <section id="actualBeneficiaryData" class="${data.czyBeneficjentRzeczywisty ?: "hidden"}">
+        <button type="button" id="copyFromRepresentatives" class="button submit"><g:message code="beneficiary.copy.from.representatives.label"/></button>
 
         <g:each in="${0..2}">
-            <g:render template="/common/representative" model="['prefix': 'beneficiaries', 'seqNo': it,
-                    'dropdowns': false, acceptorAbroadVisible: true]"/>
+            <div class="acceptor">
+                <g:render template="/common/representative/basicData" model="[prefix: 'beneficiaries', seqNo: it,
+                        representative: data.beneficiaries[it]]"/>
 
-            <p><g:message code="beneficiary.relation.with.acceptor.label"/></p>
+                <g:render template="/common/representative/acceptorAbroad" model="[prefix: 'beneficiaries', seqNo: it,
+                        representative: data.beneficiaries[it]]"/>
 
-            <div>
-                <g:checkBox name="beneficiaries[${it}].posiadaAkceptanta"/>
-                <label for="beneficiaries[${it}].posiadaAkceptanta"><g:message code="beneficiary.owns.acceptor.label"/></label>
-            </div>
-
-            <div>
-                <g:checkBox name="beneficiaries[${it}].kontrolujeAkceptanta"/>
-                <label for="beneficiaries[${it}].kontrolujeAkceptanta"><g:message code="beneficiary.controls.acceptor.label"/></label>
-            </div>
-
-            <div>
-                <g:checkBox name="beneficiaries[${it}].znaczaceUdzialy"/>
-                <label for="beneficiaries[${it}].znaczaceUdzialy"><g:message code="beneficiary.majority.acceptor.label"/></label>
-
-                <g:textField name="beneficiaries[${it}].procentUdzialow" class="percent-short"/>
-                <g:message code="beneficiary.majority.acceptor.closing.label"/>
+                <div style="margin-top: 25px">
+                    <g:render template="/common/representative/relationWithAcceptor" model="[seqNo: it,
+                            representative: data.beneficiaries[it]]"/>
+                </div>
             </div>
         </g:each>
     </section>
+
+    <g:javascript src="panels/beneficjenciRzeczywisci.js"/>
 </fieldset>
 
-<g:javascript src="panels/beneficjenciRzeczywisci.js"/>

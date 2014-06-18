@@ -8,7 +8,8 @@
             
             <g:if test="${data.isFromBisnode && representativesBisnode?.size() > 0}">
                 <div>
-                    <g:checkBox name="isRepresentativesChangedManually" value="${data.isRepresentativesChangedManually}" readonly="readonly"/> <g:message code="representatives.change"/>
+                    <g:checkBox name="isRepresentativesChangedManually" value="${data.isRepresentativesChangedManually}" readonly="readonly"/>
+                    <g:message code="representatives.change"/>
                 </div>
 
                 <div style="margin-bottom: 20px">
@@ -32,6 +33,9 @@
                 </div>
             </g:if>
             <g:else>
+                <eumowy:enumRadioGroup values="${AcceptorLocation.values()}" name="akceptantLokalizacja" value="${data.akceptantLokalizacja}"
+                                       radioWrapperClass="acceptorLocationRadioWrapper" required="true"/>
+
                 <div id="representativesContainer">
                     <g:render template="../panels/reprezentaciTextfields"/>
                 </div>
@@ -45,9 +49,40 @@
     </fieldset>
 </div>
 
-<div id="acceptorsAdditionalPanels" class="hidden">
+<div id="acceptorsAdditionalPanels" class="${data.isAkceptantAbroad() ?: "hidden"}">
     <g:render template="/panels/beneficjenciRzeczywisci"/>
     <g:render template="/panels/dokumentyWeryfikacyjne"/>
 </div>
 
 <g:javascript src="panels/osobaUprawnionaDoPodpisaniaUmowy.js"/>
+
+<g:if test="${data.isFromBisnode}">
+    <script type="text/javascript">
+        var representatives = {};
+
+        <g:each in="${representativesBisnode}" var="representative" status="i">
+        representatives[${i}] = {title: '${representative.title}', fistName: '${representative.firstName}', lastName: '${representative.lastName}', position: '${representative.position}'};
+        </g:each>
+
+        jQuery(".imieField, .nazwiskoField").change(function() {
+            var $this = jQuery(this),
+                    selectedOptionNo = $this[0].selectedIndex,
+                    parentDiv = $this.parent('div'),
+                    firstNameSelect = parentDiv.find('.imieField'),
+                    lastNameSelect = parentDiv.find('.nazwiskoField'),
+                    titleInput = parentDiv.find('.tytulField'),
+                    positionInput = parentDiv.find('.positionField');
+
+            firstNameSelect[0].selectedIndex = selectedOptionNo;
+            lastNameSelect[0].selectedIndex = selectedOptionNo;
+
+            if(selectedOptionNo === 0) {
+                positionInput.val('');
+                titleInput.val('')
+            } else {
+                positionInput.val(representatives[selectedOptionNo - 1].position);
+                titleInput.val(representatives[selectedOptionNo - 1].title);
+            }
+        });
+    </script>
+</g:if>

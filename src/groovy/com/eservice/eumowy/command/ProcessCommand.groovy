@@ -1302,7 +1302,19 @@ class ProcessCommand implements Serializable {
     }
 
     public boolean isAkceptantAbroad() {
-        return AcceptorLocation.ABROAD.equals(this.akceptantLokalizacja)
+        if(this.akceptantLokalizacja == null) {
+            return null
+        }
+
+        return AcceptorLocation.ABROAD.name().equals(this.akceptantLokalizacja)
+    }
+
+    public boolean isAkceptantCountry() {
+        if(this.akceptantLokalizacja == null) {
+            return null
+        }
+
+        return AcceptorLocation.COUNTRY.name().equals(this.akceptantLokalizacja)
     }
 
     public String getMessageForProperty(String property){

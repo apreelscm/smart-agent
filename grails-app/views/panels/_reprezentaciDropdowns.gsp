@@ -2,34 +2,14 @@
 <g:set var="lastNames" value="${[""] + representativesBisnode?.collect {it.lastName}}"/>
 
 <g:each in="${0..2}">
-    <g:render template="/common/representative" model="['prefix': 'representatives', 'seqNo': it, 'dropdowns': true]"/>
+    <div class="acceptor">
+        <g:render template="/common/representative/basicData" model="[prefix: 'representatives', seqNo: it, dropdowns: true,
+            representative: data.representatives[it]]"/>
+
+        <g:render template="/common/representative/acceptorCountry" model="[prefix: 'representatives', seqNo: it,
+                additionalClass: data.isAkceptantCountry() ?: 'hidden', representative: data.representatives[it]]"/>
+
+        <g:render template="/common/representative/acceptorAbroad" model="[prefix: 'representatives', seqNo: it,
+                additionalClass: data.isAkceptantAbroad() ?: 'hidden', representative: data.representatives[it]]"/>
+    </div>
 </g:each>
-
-<script type="text/javascript">
-    var representatives = {};
-
-    <g:each in="${representativesBisnode}" var="representative" status="i">
-        representatives[${i}] = {title: '${representative.title}', fistName: '${representative.firstName}', lastName: '${representative.lastName}', position: '${representative.position}'};
-    </g:each>
-
-    jQuery(".imieField, .nazwiskoField").change(function() {
-        var $this = jQuery(this),
-            selectedOptionNo = $this[0].selectedIndex,
-            parentDiv = $this.parent('div'),
-            firstNameSelect = parentDiv.find('.imieField'),
-            lastNameSelect = parentDiv.find('.nazwiskoField'),
-            titleInput = parentDiv.find('.tytulField'),
-            positionInput = parentDiv.find('.positionField');
-
-        firstNameSelect[0].selectedIndex = selectedOptionNo;
-        lastNameSelect[0].selectedIndex = selectedOptionNo;
-
-        if(selectedOptionNo === 0) {
-            positionInput.val('');
-            titleInput.val('')
-        } else {
-            positionInput.val(representatives[selectedOptionNo - 1].position);
-            titleInput.val(representatives[selectedOptionNo - 1].title);
-        }
-    });
-</script>

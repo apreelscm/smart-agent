@@ -3,36 +3,53 @@
 
     <section id="verificationDocuments">
         <div>
-            <g:checkBox name="beneficjentWeryfikacjaKRS" value="${data.beneficjentWeryfikacjaKRS}"/>
+            <g:checkBox name="beneficjentWeryfikacjaKRS" checked="${data.beneficjentWeryfikacjaKRS}"/>
             <label><g:message code="beneficiary.verification.krs.label"/></label>
 
-            <g:textField name="beneficjentKRS" maxlength="20" value="${data.beneficjentKRS}"/>
+            <g:if test="${data.beneficjentWeryfikacjaKRS}">
+                <g:textField name="beneficjentKRS" maxlength="20" value="${data.beneficjentKRS}" disabled="disabled"/>
+            </g:if>
+            <g:else>
+                <g:textField name="beneficjentKRS" maxlength="20" value="${data.beneficjentKRS}"/>
+            </g:else>
         </div>
 
         <div>
-            <g:checkBox name="beneficjentWeryfikacjaDokumentTozsamosci" value="${data.beneficjentWeryfikacjaDokumentTozsamosci}"/>
+            <g:checkBox name="beneficjentWeryfikacjaDokumentTozsamosci" checked="${data.beneficjentWeryfikacjaDokumentTozsamosci}"/>
             <label><g:message code="beneficiary.verification.ids.label"/></label>
         </div>
 
         <div>
-            <g:checkBox name="beneficjentWeryfikacjaGielda" value="${data.beneficjentWeryfikacjaGielda}"/>
+            <g:checkBox name="beneficjentWeryfikacjaGielda" checked="${data.beneficjentWeryfikacjaGielda}"/>
             <label><g:message code="beneficiary.verification.stack.label"/></label>
         </div>
 
         <div>
-            <g:checkBox name="beneficjentWeryfikacjaSpolka" value="${data.beneficjentWeryfikacjaSpolka}"/>
+            <g:checkBox name="beneficjentWeryfikacjaSpolka" checked="${data.beneficjentWeryfikacjaSpolka}"/>
             <label><g:message code="beneficiary.verification.company.label"/></label>
         </div>
 
         <div>
-            <g:checkBox name="beneficjentWeryfikacjaKsiega" value="${data.beneficjentWeryfikacjaKsiega}"/>
+            <g:checkBox name="beneficjentWeryfikacjaKsiega" checked="${data.beneficjentWeryfikacjaKsiega}"/>
             <label><g:message code="beneficiary.verification.stock.paper.label"/></label>
         </div>
 
         <div>
-            <g:checkBox name="beneficjentWeryfikacjaSchemat" value="${data.beneficjentWeryfikacjaSchemat}"/>
+            <g:checkBox name="beneficjentWeryfikacjaSchemat" checked="${data.beneficjentWeryfikacjaSchemat}"/>
             <label><g:message code="beneficiary.verification.schema.label"/></label>
         </div>
 
     </section>
 </fieldset>
+
+<script type="text/javascript">
+    jQuery("#verificationDocuments input[type=checkbox][id=beneficjentWeryfikacjaKRS]").change(function() {
+        var beneficjentKRS = jQuery("#verificationDocuments #beneficjentKRS");
+
+        if(this.checked) {
+            beneficjentKRS.removeAttr('disabled');
+        } else {
+            beneficjentKRS.attr('disabled', 'disabled');
+        }
+    });
+</script>

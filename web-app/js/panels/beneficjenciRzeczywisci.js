@@ -1,15 +1,23 @@
 var actualBeneficiaryData = jQuery("#actualBeneficiaryData"),
     beneficiaries = actualBeneficiaryData.find(".acceptor"),
+    cantEstablishSection = jQuery("#cantEstablishBeneficiary"),
     representatives;
 
 jQuery("input[name='czyBeneficjentRzeczywisty']").change(function() {
     if(this.value == "true") {
         actualBeneficiaryData.removeClass("hidden");
+        cantEstablishSection.addClass("hidden");
+
+        clearFields(cantEstablishSection)
+        disableFields(cantEstablishSection);
         enableFields(actualBeneficiaryData);
     } else {
         actualBeneficiaryData.addClass("hidden");
+        cantEstablishSection.removeClass("hidden");
+
         clearFields(actualBeneficiaryData);
         disableFields(actualBeneficiaryData);
+        enableFields(cantEstablishSection);
     }
 });
 
@@ -26,13 +34,13 @@ jQuery("#copyFromRepresentatives").click(function() {
 });
 
 function setBeneficiaryFieldValue(beneficiaryIndex, representativeField) {
-    var fieldName, fieldType, beneficiary, bebeficiaryField, value;
+    var fieldName, fieldType, beneficiary, beneficiaryField, value;
 
     fieldName = representativeField.name.split(".")[1];
     fieldType = representativeField.type;
 
     beneficiary = jQuery(beneficiaries[beneficiaryIndex]);
-    bebeficiaryField = beneficiary.find("[name$=" + fieldName + "]");
+    beneficiaryField = beneficiary.find("[name$=" + fieldName + "]").not("input[type=hidden]");
 
     if(fieldType === "radio") {
         value = jQuery(representatives[beneficiaryIndex]).find("[name$=" + fieldName + "]:checked").val();
@@ -43,15 +51,15 @@ function setBeneficiaryFieldValue(beneficiaryIndex, representativeField) {
     switch (fieldType) {
         case "text":
         case "select-one":
-            bebeficiaryField.val(value);
+            beneficiaryField.val(value);
             break;
         case "checkbox":
-            bebeficiaryField[0].checked = representativeField.checked
+            beneficiaryField[0].checked = representativeField.checked
             break;
         case "radio":
             value ?
                 beneficiary.find("[name$=" + fieldName + "][value=" + value + "]").attr("checked", "checked")
                 :
-                bebeficiaryField.removeAttr("checked");
+                beneficiaryField.removeAttr("checked");
     }
 }
