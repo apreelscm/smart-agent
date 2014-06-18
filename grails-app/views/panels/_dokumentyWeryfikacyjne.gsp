@@ -50,6 +50,7 @@
             beneficjentKRS.removeAttr('disabled');
         } else {
             beneficjentKRS.attr('disabled', 'disabled');
+            beneficjentKRS.val('');
         }
     });
 </script>

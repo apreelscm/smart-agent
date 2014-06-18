@@ -21,7 +21,12 @@
                                        radioWrapperClass="acceptorLocationRadioWrapper" required="true"/>
 
                 <div id="representativesContainer">
-                    <g:render template="../panels/reprezentaciDropdowns"/>
+                    <g:if test="${data.isRepresentativesChangedManually}">
+                        <g:render template="../panels/reprezentaciTextfields"/>
+                    </g:if>
+                    <g:else>
+                        <g:render template="../panels/reprezentaciDropdowns"/>
+                    </g:else>
                 </div>
 
                 <div id="representativesDropdowns" class="hidden">
@@ -54,9 +59,10 @@
     <g:render template="/panels/dokumentyWeryfikacyjne"/>
 </div>
 
-<g:javascript src="panels/osobaUprawnionaDoPodpisaniaUmowy.js"/>
 
 <g:if test="${data.isFromBisnode}">
+    <g:javascript src="panels/osobaUprawnionaDoPodpisaniaUmowy.js"/>
+
     <script type="text/javascript">
         var representatives = {};
 

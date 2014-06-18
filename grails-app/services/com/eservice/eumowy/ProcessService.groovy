@@ -247,6 +247,8 @@ class ProcessService {
         representatives.each {
             representativeProperties = [:]
             representativeProperties.putAll(it.properties)
+            representativeProperties.put("id", it.id)
+
             representativeProperties.remove("typ")
 
             if(Representative.Type.REPRESENTATIVE.equals(type)) {
@@ -930,8 +932,6 @@ class ProcessService {
 
         fillRepresentatives(cmd, process)
 
-        fillBeneficiaries(cmd, process)
-
         process.notesToCoa = cmd.notes //notesToCOA
 
         process
@@ -1029,38 +1029,43 @@ class ProcessService {
 
     private void fillRepresentatives(ProcessCommand processCommand, Process process) {
         processCommand.representatives.each { representativeCmd ->
-            Representative representative = new Representative(representativeCmd.properties)
-            representative.typ = Representative.Type.REPRESENTATIVE
+            Representative representative = saveRepresentative(Representative.Type.REPRESENTATIVE, representativeCmd)
 
-            if(!representative.imie && !representative.nazwisko) {
-                log.info(String.format("Not saving %s to process - empty first name and last name", representative.typ))
-            } else {
-                log.info(String.format("Saving new %s %s %s connected with process %s", representative.typ,
-                                        representative.imie, representative.nazwisko, process.id))
-
+            if(representative) {
+                log.info(String.format("Representative %s %s saved/updated (process: %s)", representative.imie, representative.nazwisko, process.id))
                 process.addToRepresentatives(representative)
+            }
+        }
 
-                representative.save(flush: true)
+        processCommand.beneficiaries.each { beneficiaryCmd ->
+            Representative beneficiary = saveRepresentative(Representative.Type.BENEFICIARY, beneficiaryCmd)
+
+            if(beneficiary) {
+                log.info(String.format("Beneficiary %s %s saved/updated (process: %s)", beneficiary.imie, beneficiary.nazwisko, process.id))
+                process.addToRepresentatives(beneficiary)
             }
         }
     }
 
-    private void fillBeneficiaries(ProcessCommand processCommand, Process process) {
-        processCommand.beneficiaries.each { representativeCmd ->
-            Representative representative = new Representative(representativeCmd.properties)
-            representative.typ = Representative.Type.BENEFICIARY
+    private Representative saveRepresentative(Representative.Type type, RepresentativeCommand representativeCmd) {
+        Representative representative = Representative.findById(representativeCmd.properties.id)
 
-            if(!representative.imie && !representative.nazwisko) {
-                log.info(String.format("Not saving %s - empty first name and last name", representative.typ))
-            } else {
-                log.info(String.format("Saving new %s %s %s connected with process %s", representative.typ,
-                        representative.imie, representative.nazwisko, process.id))
-
-                process.addToRepresentatives(representative)
-
-                representative.save(flush: true)
-            }
+        if(!representative && !representativeCmd.imie && !representativeCmd.nazwisko) {
+            log.info("Not saving representative - empty name and surname")
+            return null
         }
+
+        if(!representative) {
+            representative = new Representative()
+            representative.typ = type
+
+            log.info(String.format("Saving new %s %s %s", representative.typ, representativeCmd.imie, representativeCmd.nazwisko))
+        }
+
+        representativeCmd.properties.remove("id")
+        representative.properties = representativeCmd.properties
+
+        return representative.save(flush: true)
     }
 
     private def addCurrentDate(def processDataList){

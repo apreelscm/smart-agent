@@ -29,7 +29,7 @@
         <g:textField name="${prefix}[${seqNo}].seriaNrDokumentu" value="${representative?.seriaNrDokumentu}" maxlength="20"/>
 
         <label for="${prefix}[${seqNo}].dataUrodzenia"><g:message code="birth.date.label"/></label>
-        <g:textField name="${prefix}[${seqNo}].dataUrodzenia" value="${representative?.dataUrodzenia}" maxlength="10" class="date-field"/>
+        <g:textField name="${prefix}[${seqNo}].dataUrodzenia" value="${formatDate(format: 'yyyy-MM-dd', date: representative?.dataUrodzenia)}" maxlength="10" class="date-field"/>
 
         <label for="${prefix}[${seqNo}].obywatelstwo"><g:message code="citizenship.label"/></label>
         <g:textField name="${prefix}[${seqNo}].obywatelstwo" value="${representative?.obywatelstwo}" maxlength="30"/>

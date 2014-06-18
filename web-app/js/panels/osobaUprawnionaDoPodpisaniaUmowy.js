@@ -6,10 +6,11 @@ var $representativesContainer = jQuery("#acceptorsPanel #representativesContaine
     $representativePESELKraj = jQuery("#representativesContainer input[name$='lokalizacjaPesel']"),
     $acceptorsAdditionalPanels = jQuery("#acceptorsAdditionalPanels");
 
+attachDatepickers();
+
 disableFields($representativesDropdows);
 disableFields($representativesTextfields);
 
-setRepresentativesView();
 setReprezentantImieAndNazwiskoRequired();
 
 $representativesChangedManually.change(setRepresentativesView);
@@ -45,6 +46,7 @@ function setAdditionalInformationState() {
         acceptorAbroadWrapper.removeClass("hidden");
 
         clearFields(acceptorCountryWrapper);
+        attachDatepickers();
     } else {
         $acceptorsAdditionalPanels.addClass('hidden');
 
@@ -72,4 +74,8 @@ function setAcceptorState() {
         birthDateField.removeAttr("required");
         politicalField.removeAttr("required");
     }
+}
+
+function attachDatepickers() {
+    $representativesContainer.find(".date-field").datepicker({dateFormat: 'yy-mm-dd', maxDate: new Date()});
 }
