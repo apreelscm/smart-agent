@@ -3,6 +3,8 @@ var actualBeneficiaryData = jQuery("#actualBeneficiaryData"),
     cantEstablishSection = jQuery("#cantEstablishBeneficiary"),
     representatives;
 
+actualBeneficiaryData.find(".percent-short").mask('09');
+
 jQuery("input[name='czyBeneficjentRzeczywisty']").change(function() {
     if(this.value == "true") {
         actualBeneficiaryData.removeClass("hidden");

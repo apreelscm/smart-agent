@@ -22,6 +22,7 @@ function maskFields(element){
     element.find(".percent-number").mask('09X999', {translation:  {'X': {pattern: /[.]/}}});
     element.find(".percent-short").mask('09');
     element.find(".flat-price").mask('AAAAA');
+    element.find(".krs-number").mask('09999999999999999999');
 }
 
 jQuery(document).ready(function() {

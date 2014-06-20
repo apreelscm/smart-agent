@@ -313,20 +313,20 @@ class ProcessService {
     }
 
     def getRepresentative1(Process process) {
-        Map representative = [name: process?.processData?.find { pd -> pd.name == "reprezentant1Imie" }?.value, surname: process?.processData?.find { pd -> pd.name == "reprezentant1Nazwisko" }?.value]
+        Representative representative = process.representatives[0]
 
-        if(representative.name && representative.surname) {
-            return representative
+        if(representative?.imie && representative?.nazwisko) {
+            return [name: representative?.imie, surname: representative?.nazwisko]
         } else {
             return null
         }
     }
 
     def getRepresentative2(Process process) {
-        Map representative = [name: process?.processData?.find { pd -> pd.name == "reprezentant2Imie" }?.value, surname: process?.processData?.find { pd -> pd.name == "reprezentant2Nazwisko" }?.value]
+        Representative representative = process.representatives[1]
 
-        if(representative.name && representative.surname) {
-            return representative
+        if(representative.imie && representative.nazwisko) {
+            return [name: representative?.imie, surname: representative?.nazwisko]
         } else {
             return null
         }

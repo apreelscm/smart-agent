@@ -31,4 +31,25 @@ public class AtLeastValidator {
         return (value == null) ? true: AtLeastValidator.validate(value, cmd, errors, property, calcProperty)
     }
 
+    public static def atLeastOneBeneficiaryOption = { value, cmd, errors ->
+        if(!value && !cmd.kontrolujeAkceptanta && !cmd.znaczaceUdzialy) {
+            errors.rejectValue("posiadaAkceptanta", "atleast.one.relation.required")
+            return false
+        }
+        return true
+    }
+
+    public static def oneVerificationDocument = {value, cmd, errors ->
+        List<Boolean> fieldsToCheck = [cmd.beneficjentWeryfikacjaKRS, cmd.beneficjentWeryfikacjaDokumentTozsamosci,
+                cmd.beneficjentWeryfikacjaGielda, cmd.beneficjentWeryfikacjaSpolka, cmd.beneficjentWeryfikacjaKsiega,
+                cmd.beneficjentWeryfikacjaSchemat]
+
+        if(cmd.isAkceptantAbroad() && ValidatorUtils.hasNotFilledField(fieldsToCheck)) {
+            errors.reject("atleast.one.verification.document.required")
+            return false
+        }
+
+        return true
+    }
+
 }

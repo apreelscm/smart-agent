@@ -6,12 +6,8 @@
             <g:checkBox name="beneficjentWeryfikacjaKRS" checked="${data.beneficjentWeryfikacjaKRS}"/>
             <label><g:message code="beneficiary.verification.krs.label"/></label>
 
-            <g:if test="${data.beneficjentWeryfikacjaKRS}">
-                <g:textField name="beneficjentKRS" maxlength="20" value="${data.beneficjentKRS}" disabled="disabled"/>
-            </g:if>
-            <g:else>
-                <g:textField name="beneficjentKRS" maxlength="20" value="${data.beneficjentKRS}"/>
-            </g:else>
+            <eumowy:textField name="beneficjentKRS" maxlength="20" value="${data.beneficjentWeryfikacjaKRS ? data.beneficjentKRS : ""}" validatable="${data}"
+                              class="krs-number"/>
         </div>
 
         <div>
@@ -42,15 +38,4 @@
     </section>
 </fieldset>
 
-<script type="text/javascript">
-    jQuery("#verificationDocuments input[type=checkbox][id=beneficjentWeryfikacjaKRS]").change(function() {
-        var beneficjentKRS = jQuery("#verificationDocuments #beneficjentKRS");
-
-        if(this.checked) {
-            beneficjentKRS.removeAttr('disabled');
-        } else {
-            beneficjentKRS.attr('disabled', 'disabled');
-            beneficjentKRS.val('');
-        }
-    });
-</script>
+<g:javascript src="panels/dokumentyWeryfikacyjne.js"/>

@@ -745,11 +745,8 @@ class ActivityController {
                 processInstance.client.name = cmd.akceptantNazwaOficjalna;
                 processInstance.saleSection = calculatorService.getCalcProperty(conversation.calc,'SEGMENT_SPRZEDAZOWY')
 
-                RepresentativeCommand representative1 = cmd.representatives[0]
-                RepresentativeCommand representative2 = cmd.representatives[1]
-
-                flow.representative1 = [name: representative1.imie, surname: representative1.nazwisko]
-                flow.representative2 = [name: representative2.imie, surname: representative2.nazwisko]
+                flow.representative1 = processService.getRepresentative1(processInstance)
+                flow.representative2 = processService.getRepresentative2(processInstance)
 
                 if (!processInstance.save()){
                     processInstance.errors.each {
@@ -1074,13 +1071,10 @@ class ActivityController {
 
                 //clientService.updateClientName(processInstance.client, cmd)
                 processInstance = processService.populateProcessWithData(processInstance, cmd, conversation.calc)
-                processInstance.notesToCoa = cmd.notes;
+                processInstance.notesToCoa = cmd.notes
 
-                RepresentativeCommand representative1 = cmd.representatives[0]
-                RepresentativeCommand representative2 = cmd.representatives[1]
-
-                flow.representative1 = [name: representative1.imie, surname: representative1.nazwisko]
-                flow.representative2 = [name: representative2.imie, surname: representative2.nazwisko]
+                flow.representative1 = processService.getRepresentative1(processInstance)
+                flow.representative2 = processService.getRepresentative2(processInstance)
 
                 if (!processInstance.save()){
                     processInstance.errors.each {

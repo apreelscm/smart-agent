@@ -7,14 +7,17 @@
             <g:hiddenField name="isFromBisnode" value="${data.isFromBisnode}"/>
             
             <g:if test="${data.isFromBisnode && representativesBisnode?.size() > 0}">
+                <g:set var="firstNames" value="${[""] + representativesBisnode?.collect {it.firstName}}"/>
+                <g:set var="lastNames" value="${[""] + representativesBisnode?.collect {it.lastName}}"/>
+
                 <div>
                     <g:checkBox name="isRepresentativesChangedManually" value="${data.isRepresentativesChangedManually}" readonly="readonly"/>
                     <g:message code="representatives.change"/>
                 </div>
 
                 <div style="margin-bottom: 20px">
-                    <label for="poleOpisowe" style="margin-top: 20px">Pole opisowe</label>
-                    <g:textArea name="poleOpisowe" maxlength ="1000" rows="3" cols="70" style="height: auto; width: auto"/>
+                    <label for="poleOpisowe" style="margin-top: 20px"><g:message code="description.field.label"/></label>
+                    <g:textArea name="poleOpisowe" maxlength ="1000" rows="3" cols="70"/>
                 </div>
 
                 <eumowy:enumRadioGroup values="${AcceptorLocation.values()}" name="akceptantLokalizacja" value="${data.akceptantLokalizacja}"
@@ -22,19 +25,19 @@
 
                 <div id="representativesContainer">
                     <g:if test="${data.isRepresentativesChangedManually}">
-                        <g:render template="../panels/reprezentaciTextfields"/>
+                        <g:render template="../panels/reprezentanci" model="[hasDropdowns: false]"/>
                     </g:if>
                     <g:else>
-                        <g:render template="../panels/reprezentaciDropdowns"/>
+                        <g:render template="../panels/reprezentanci" model="[hasDropdowns: true]"/>
                     </g:else>
                 </div>
 
                 <div id="representativesDropdowns" class="hidden">
-                    <g:render template="../panels/reprezentaciDropdowns"/>
+                    <g:render template="../panels/reprezentanci" model="[hasDropdowns: true]"/>
                 </div>
 
                 <div id="representativesTextfields" class="hidden">
-                    <g:render template="../panels/reprezentaciTextfields"/>
+                    <g:render template="../panels/reprezentanci" model="[hasDropdowns: false]"/>
                 </div>
             </g:if>
             <g:else>
@@ -42,7 +45,7 @@
                                        radioWrapperClass="acceptorLocationRadioWrapper" required="true"/>
 
                 <div id="representativesContainer">
-                    <g:render template="../panels/reprezentaciTextfields"/>
+                    <g:render template="../panels/reprezentanci" model="[hasDropdowns: false]"/>
                 </div>
             </g:else>
 
@@ -60,6 +63,7 @@
 </div>
 
 
+%{--is nowa umowa--}%
 <g:if test="${data.isFromBisnode}">
     <g:javascript src="panels/osobaUprawnionaDoPodpisaniaUmowy.js"/>
 

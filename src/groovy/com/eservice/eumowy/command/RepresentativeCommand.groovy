@@ -64,7 +64,7 @@ class RepresentativeCommand implements Serializable{
             CustomValidator.validateRequired(value, errors, cmd.processCommand.isAkceptantAbroad(),
                     "seriaNrDokumentu", "representative.seriaNrDokumentu.required")
         })
-        dataUrodzenia(nullable: true, shared: "date", validator: { value, cmd, errors ->
+        dataUrodzenia(nullable: true, validator: { value, cmd, errors ->
             CustomValidator.validateRequired(value, errors, (cmd.processCommand.isAkceptantAbroad() && cmd.isRepresentativeLocationAbroad()),
                     "dataUrodzenia", "representative.dataUrodzenia.required")
         })
@@ -89,6 +89,14 @@ class RepresentativeCommand implements Serializable{
         }
 
         return AcceptorLocation.ABROAD.equals(typLokalizacji)
+    }
+
+    public boolean isRepresentativeLocationCountry() {
+        if(typLokalizacji == null) {
+            return null
+        }
+
+        return AcceptorLocation.COUNTRY.equals(typLokalizacji)
     }
 
     public boolean isIdentityDocumentPassport() {

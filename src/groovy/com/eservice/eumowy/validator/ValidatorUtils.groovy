@@ -46,4 +46,17 @@ class ValidatorUtils {
         return cmd.metaClass.respondsTo(cmd, MESSAGE_PROPERTY_NAME)? cmd."${MESSAGE_PROPERTY_NAME}"(propertyName) : propertyName;
     }
 
+    private static Boolean hasNotFilledField(List fieldsToCheck) {
+        Boolean hasNotFilledField = true
+
+        fieldsToCheck.each { field ->
+            if(field) {
+                hasNotFilledField = false
+                return
+            }
+        }
+
+        return hasNotFilledField
+    }
+
 }

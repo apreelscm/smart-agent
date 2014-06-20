@@ -409,7 +409,7 @@ class ProcessCommand implements Serializable {
 
     //dokumentyWeryfikacyjne
     Boolean beneficjentWeryfikacjaKRS
-    String beneficjentKRS = DEFAULT_VALUE
+    String beneficjentKRS
     Boolean beneficjentWeryfikacjaDokumentTozsamosci
     Boolean beneficjentWeryfikacjaGielda
     Boolean beneficjentWeryfikacjaSpolka
@@ -1219,6 +1219,12 @@ class ProcessCommand implements Serializable {
 
             return true
         })
+
+        beneficjentKRS(shared: "natural", maxSize: 20, validator: {value, cmd, errors ->
+            CustomValidator.validateRequired(value, errors, cmd.beneficjentWeryfikacjaKRS, propertyName, "Podaj numer KRS Beneficjenta.")
+        })
+
+        beneficjentWeryfikacjaDokumentTozsamosci validator: AtLeastValidator.oneVerificationDocument
 
         akceptantJestSpolka(nullable: true)
         nazwaGieldy(nullable: true, maxSize: 50, validator: {value, cmd, errors ->

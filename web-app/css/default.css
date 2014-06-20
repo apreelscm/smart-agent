@@ -474,6 +474,23 @@ h3 a, h3 a:hover {
 
 /* Forms
 -------------------------------------------------------------------*/
+.errorNotification {
+    cursor:pointer;
+    position:absolute;
+    margin:2px
+}
+
+p.error-message {
+    color: red;
+    text-align: left;
+    margin: 0;
+    font-size: 12px;
+}
+
+.error-wrapper {
+    padding-right: 2em;
+    display: inline;
+}
 
 .panelForm{
     margin: 0 auto;
@@ -665,12 +682,12 @@ fieldset.embedded legend {
     padding: 3px 2px;
 }
 
-.errorSpan{
+div.errorSpan{
     border: 1px solid #FF0000 !important;
-    padding-top: .8em !important;
-    padding-right: .5em !important;
-    padding-left: .5em !important;
-    padding-bottom: .5em !important;
+    padding-top: .8em;
+    padding-right: .5em;
+    padding-left: .5em;
+    padding-bottom: .5em;
 }
 
 .error input, .error select, .error textarea {
@@ -1543,6 +1560,10 @@ label.doladowanieLabel {
     color: #d8d8d8;
 }
 
+#acceptorsPanel .errorSpan, #actualBeneficiaries .errorSpan {
+    padding: 0;
+}
+
 #acceptorsPanel .centre div {
     margin-bottom: 15px;
 }
@@ -1582,6 +1603,10 @@ label.doladowanieLabel {
 
 .acceptorPESELCountryRadioWrapper {
     display: inline-block;
+}
+
+.acceptorPESELCountryRadioWrapper .errorNotification {
+    margin-top: 9px;
 }
 
 .acceptorPESELCountryRadioWrapper .label {
@@ -1658,4 +1683,9 @@ header.belka-glowna {
 #actualBeneficiaryData .percent-short {
     width: 30px;
     text-align: center;
+}
+
+#poleOpisowe {
+    height: auto;
+    width: auto;
 }

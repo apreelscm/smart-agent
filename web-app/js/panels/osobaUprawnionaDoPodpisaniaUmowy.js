@@ -2,8 +2,9 @@ var $representativesContainer = jQuery("#acceptorsPanel #representativesContaine
     $representativesDropdows = jQuery("#acceptorsPanel #representativesDropdowns"),
     $representativesTextfields = jQuery("#acceptorsPanel #representativesTextfields"),
     $representativesChangedManually = jQuery("#acceptorsPanel #isRepresentativesChangedManually"),
-    $representativeLocation = jQuery("#acceptorsPanel input[name='akceptantLokalizacja']"),
+    $acceptorLocation = jQuery("#acceptorsPanel input[name='akceptantLokalizacja']"),
     $representativePESELKraj = jQuery("#representativesContainer input[name$='lokalizacjaPesel']"),
+    $representativeTypLokalizacji = jQuery("#representativesContainer input[type=radio][name$='typLokalizacji']"),
     $acceptorsAdditionalPanels = jQuery("#acceptorsAdditionalPanels");
 
 attachDatepickers();
@@ -14,7 +15,8 @@ disableFields($representativesTextfields);
 setReprezentantImieAndNazwiskoRequired();
 
 $representativesChangedManually.change(setRepresentativesView);
-$representativeLocation.change(setAdditionalInformationState);
+$acceptorLocation.change(setAdditionalInformationState);
+$representativeTypLokalizacji.change(typLokalizacjiChanged);
 $representativePESELKraj.live("change", setAcceptorState);
 
 function setRepresentativesView() {
@@ -30,12 +32,12 @@ function setRepresentativesView() {
 }
 
 function setReprezentantImieAndNazwiskoRequired() {
-    $("#reprezentant1Imie").attr('required', 'required');
-    $("#reprezentant1Nazwisko").attr('required', 'required');
+    $("#representatives\\[0\\]\\.imie").attr('required', 'required');
+    $("#representatives\\[0\\]\\.nazwisko").attr('required', 'required');
 }
 
 function setAdditionalInformationState() {
-    var isAbroad = $representativeLocation.filter(":checked").val() === "ABROAD",
+    var isAbroad = $acceptorLocation.filter(":checked").val() === "ABROAD",
         acceptorCountryWrapper = $representativesContainer.find(".acceptorCountry"),
         acceptorAbroadWrapper = $representativesContainer.find(".acceptorAbroad");
 
@@ -55,6 +57,24 @@ function setAdditionalInformationState() {
 
         clearFields($acceptorsAdditionalPanels);
         clearFields(acceptorAbroadWrapper);
+    }
+}
+
+function typLokalizacjiChanged() {
+    var $this = jQuery(this),
+        acceptor = $this.parents("div.acceptor"),
+        peselField = acceptor.find("input[type='text'][name$='lokalizacjaPesel']"),
+        countryField = acceptor.find("input[type='text'][name$='lokalizacjaKraj']"),
+        selectedOption = this.value;
+
+    if(selectedOption === "ABROAD") {
+        peselField.val('');
+        peselField.attr('disabled', 'disabled');
+        countryField.removeAttr('disabled');
+    } else {
+        countryField.val('');
+        countryField.attr('disabled', 'disabled');
+        peselField.removeAttr('disabled');
     }
 }
 
