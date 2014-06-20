@@ -1560,8 +1560,17 @@ label.doladowanieLabel {
     color: #d8d8d8;
 }
 
+#acceptorsPanel {
+    margin: 0;
+}
+
 #acceptorsPanel .errorSpan, #actualBeneficiaries .errorSpan {
     padding: 0;
+}
+
+#acceptorsPanel .centre {
+    padding-top: 20px;
+    width: 915px
 }
 
 #acceptorsPanel .centre div {
@@ -1688,4 +1697,9 @@ header.belka-glowna {
 #poleOpisowe {
     height: auto;
     width: auto;
+}
+
+#email-documents {
+    margin-top: 30px;
+    margin-bottom: 0;
 }

@@ -961,6 +961,7 @@ class ActivityController {
                 processCmd.liczbaPosZCbd = Integer.valueOf(processCmd.liczbaPosZCbd) != null ? Integer.valueOf(processCmd.liczbaPosZCbd) + counter : counter
 
                 flow.data = processCmd
+                flow.czyNowaUmowa = processService.isProcessHasActivity(processInstance, "nowaUmowa")
             }
             render(view: "../createProcess/selectedPanels")
             on("back").to "chooseCalc"
