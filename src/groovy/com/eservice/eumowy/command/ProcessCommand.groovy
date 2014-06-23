@@ -505,6 +505,8 @@ class ProcessCommand implements Serializable {
     Boolean isRozszerzenie
     @Omit
     Boolean hasNewUmowaAndPrepaid
+    @Omit
+    Boolean hasNewUmowa
 
     @Omit
     String liczbaTerminali
@@ -1200,7 +1202,9 @@ class ProcessCommand implements Serializable {
                 NumberValidator.validate(value, cmd, errors, propertyName) && AtLeastValidator.validate(value, cmd, errors, propertyName, "DCC_OPLATA_URUCHOMIENIE")
         })
 
-        akceptantLokalizacja(nullable: false)
+        akceptantLokalizacja(nullable: true, validator: {value, cmd, errors ->
+            CustomValidator.validateRequired(value, errors, cmd.hasNewUmowa, propertyName, "company.operations.location.required")
+        })
 
         czyBeneficjentRzeczywisty(nullable: true, validator: {value, cmd, errors ->
             if(!cmd.isAkceptantAbroad()) {
@@ -1220,11 +1224,11 @@ class ProcessCommand implements Serializable {
             return true
         })
 
-        beneficjentKRS(shared: "natural", maxSize: 20, validator: {value, cmd, errors ->
-            CustomValidator.validateRequired(value, errors, cmd.beneficjentWeryfikacjaKRS, propertyName, "Podaj numer KRS Beneficjenta.")
+        beneficjentKRS(nullable: true, shared: "natural", maxSize: 20, validator: {value, cmd, errors ->
+            CustomValidator.validateRequired(value, errors, cmd.beneficjentWeryfikacjaKRS, propertyName, "beneficiary.krs.required")
         })
 
-        beneficjentWeryfikacjaDokumentTozsamosci validator: AtLeastValidator.oneVerificationDocument
+        beneficjentWeryfikacjaDokumentTozsamosci(nullable: true, validator: AtLeastValidator.oneVerificationDocument)
 
         akceptantJestSpolka(nullable: true)
         nazwaGieldy(nullable: true, maxSize: 50, validator: {value, cmd, errors ->

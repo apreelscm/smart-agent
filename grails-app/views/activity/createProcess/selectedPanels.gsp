@@ -252,6 +252,7 @@
         <g:hiddenField id="liczbaPtkCbd" name="liczbaPtkCbd" value="${data.liczbaPtkCbd}"/>
         <g:hiddenField id="hasPrepaid" name="hasPrepaid" value="${data.hasPrepaid}"/>
         <g:hiddenField id="hasNewUmowaAndPrepaid" name="hasNewUmowaAndPrepaid" value="${data.hasNewUmowaAndPrepaid}"/>
+        <g:hiddenField name="hasNewUmowa" value="${czyNowaUmowa}"/>
         <g:hiddenField name="isRozszerzenie" value="${data.isRozszerzenie}"/>
         <g:hiddenField id="hasDodaniePrepaid" name="hasDodaniePrepaid" value="${data.hasDodaniePrepaid}"/>
         <g:hiddenField name="czyGift" value="${data.czyGift}"/>
