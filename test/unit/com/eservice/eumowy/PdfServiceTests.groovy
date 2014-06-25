@@ -86,27 +86,56 @@ class PdfServiceTests {
 	
 	//-------------------------- nowe sygnatury --------------------------
 	
-		void testAPUNTSA() {
-			HashMap<String, String[]> data = new HashMap<String, String[]>();
-			data.putAll(this.data);
-			data.put("dataUmowy", ["10-05-2012"] as String[]);
-			data.put("adresTytulPlatnosci13", ["Ul. Zielona 23. Warszawa"] as String[]);
-			data.put("punktTytulPlatnosci13", ["Ala ma kota"] as String[]);
-			data.putAll(prepareDccData())
+    void testAPUNTSA() {
+        HashMap<String, String[]> data = new HashMap<String, String[]>();
+        data.putAll(this.data);
+        data.put("dataUmowy", ["10-05-2012"] as String[]);
+        data.put("adresTytulPlatnosci13", ["Ul. Zielona 23. Warszawa"] as String[]);
+        data.put("punktTytulPlatnosci13", ["Ala ma kota"] as String[]);
+        data.putAll(prepareDccData())
 
-            //OK
-            def subscriptions = [
-                ["ACCEPTANT1", 4, 65, 165, 94, 63],
-                ["ACCEPTANT2", 4, 185, 165, 94, 63],
-                ["ZARZAD1", 4, 315, 165, 85, 58],
-                ["ZARZAD2", 4, 445, 165, 56, 58],
-                ["PH", 4, 455, 70, 84, 53]
-            ]
+        //OK
+        def subscriptions = [
+            ["ACCEPTANT1", 4, 65, 165, 94, 63],
+            ["ACCEPTANT2", 4, 185, 165, 94, 63],
+            ["ZARZAD1", 4, 315, 165, 85, 58],
+            ["ZARZAD2", 4, 445, 165, 56, 58],
+            ["PH", 4, 455, 70, 84, 53]
+        ]
 
-            data.putAll(insertSignatures2(subscriptions));
+        data.putAll(insertSignatures2(subscriptions));
 
-			process("APUNTSA1.00312-01-16.pdf", "APUNTSA1.00312-01-16_out.pdf", data)
-		}
+        process("APUNTSA1.00312-01-16.pdf", "APUNTSA1.00312-01-16_out.pdf", data)
+    }
+
+    void testFormularzPABR() {
+        HashMap<String, String[]> data = new HashMap<String, String[]>();
+        data.put("dataUmowy", ["10-05-2012"] as String[]);
+
+        def subscriptions = [
+                ["ACCEPTANT1", 2, 380, 350, 74, 43],
+                ["ACCEPTANT2", 2, 470, 350, 74, 43],
+                ["PH", 2, 455, 225, 84, 53],
+                ["PH1", 2, 455, 70, 84, 53]
+        ]
+
+        data.putAll(insertSignatures2(subscriptions));
+
+        process("Formularz_PABR.pdf", "Formularz_PABR_out.pdf", data)
+    }
+
+    void testOswiadczeniePEP() {
+        HashMap<String, String[]> data = new HashMap<String, String[]>();
+        data.put("dataUmowy", ["10-05-2012"] as String[]);
+
+        def subscriptions = [
+                ["ACCEPTANT", 1, 360, 292, 74, 43]
+        ]
+
+        data.putAll(insertSignatures2(subscriptions));
+
+        process("Oswiadczenie_PEP.pdf", "Oswiadczenie_PEP_out.pdf", data)
+    }
 
     void testAPUNTSA2() {
         HashMap<String, String[]> data = new HashMap<String, String[]>();
@@ -475,10 +504,6 @@ class PdfServiceTests {
         process("APUNTSZOOL1.00013-09-26-Aneks do Umowy najmu zestawu POS (odnowienie okres lojaln.).pdf", outFile, data);
         processToImage(outFile, 1)
     }
-
-
-
-
 
     void testAPUNTSZAPOU() { //gotowe
 		HashMap<String, String[]> data = new HashMap<String, String[]>();
@@ -1386,7 +1411,6 @@ class PdfServiceTests {
 		data.putAll(this.data);
 		data.put("zalNumer", ["6"] as String[]);
 		data.putAll(prepareDccData())
-//		data.putAll(insertSignatures(1, 85, 185, 74, 43))
         def subscriptions = [
                 ["ACCEPTANT1", 1, 85, 185, 94, 63],
                 ["ACCEPTANT2", 1, 205, 185, 94, 63],
@@ -1417,7 +1441,6 @@ class PdfServiceTests {
 
 		data.put("umowaNieOzn", ["true", "", "checkbox"] as String[]);
 		data.put("umowaOzn", ["true", "", "checkbox"] as String[]);
-//		data.putAll(insertSignatures(4, 90, 308, 74, 43))
 
         //NOT OK
         def subscriptions = [
@@ -1442,7 +1465,6 @@ class PdfServiceTests {
 
         data.put("umowaNieOzn", ["true", "", "checkbox"] as String[]);
         data.put("umowaOzn", ["true", "", "checkbox"] as String[]);
-//		data.putAll(insertSignatures(4, 90, 308, 74, 43))
 
         //NOT OK
         def subscriptions = [
@@ -1468,7 +1490,6 @@ class PdfServiceTests {
 
         data.put("umowaNieOzn", ["true", "", "checkbox"] as String[]);
         data.put("umowaOzn", ["true", "", "checkbox"] as String[]);
-//		data.putAll(insertSignatures(4, 90, 308, 74, 43))
 
         //NOT OK
         def subscriptions = [
@@ -1494,7 +1515,6 @@ class PdfServiceTests {
 
         data.put("umowaNieOzn", ["true", "", "checkbox"] as String[]);
         data.put("umowaOzn", ["true", "", "checkbox"] as String[]);
-//		data.putAll(insertSignatures(4, 90, 308, 74, 43))
 
         //NOT OK
         def subscriptions = [
@@ -1520,7 +1540,6 @@ class PdfServiceTests {
 
         data.put("umowaNieOzn", ["true", "", "checkbox"] as String[]);
         data.put("umowaOzn", ["true", "", "checkbox"] as String[]);
-//		data.putAll(insertSignatures(4, 90, 308, 74, 43))
 
         //NOT OK
         def subscriptions = [
@@ -1546,7 +1565,6 @@ class PdfServiceTests {
 
         data.put("umowaNieOzn", ["true", "", "checkbox"] as String[]);
         data.put("umowaOzn", ["true", "", "checkbox"] as String[]);
-//		data.putAll(insertSignatures(4, 90, 308, 74, 43))
 
         //NOT OK
         def subscriptions = [
@@ -1571,7 +1589,6 @@ class PdfServiceTests {
 
         data.put("umowaNieOzn", ["true", "", "checkbox"] as String[]);
         data.put("umowaOzn", ["true", "", "checkbox"] as String[]);
-//		data.putAll(insertSignatures(4, 90, 308, 74, 43))
 
         //NOT OK
         def subscriptions = [
@@ -1596,7 +1613,6 @@ class PdfServiceTests {
 
         data.put("umowaNieOzn", ["true", "", "checkbox"] as String[]);
         data.put("umowaOzn", ["true", "", "checkbox"] as String[]);
-//		data.putAll(insertSignatures(4, 90, 308, 74, 43))
 
         //NOT OK
         def subscriptions = [
@@ -1650,7 +1666,6 @@ class PdfServiceTests {
 	// ---------------------------------------------------------------------------------------
 	void testFormularzAplikacyjny() {
 		HashMap<String, String[]> data = generateFormularzAplikacyjnyFields();
-		//data.put("podpis", [new File(getTemplatePath()+"signature1.jpg").toURI().toURL(), "", "signature", "1", "435", "15", "74", "43"] as String[]);
 		process("Formularz aplikacyjny_po_zmianach_18.01.2012.pdf", "Formularz aplikacyjny_po_zmianach_18.01.2012_out.pdf", data);
 	}
 	
@@ -1716,44 +1731,8 @@ class PdfServiceTests {
         log.info('processToImage - start')
 		PDDocument document = null
 		document = PDDocument.load(getTemplateOutPath()+pdfName)
-//
-////        String fp = getFontsPath()+"symbol.ttf";
-//
-//        String tp = getTemplatePath();
-//
-//        String fp = "C:\\projects\\eumowy\\otherResources\\pdf_templates\\fonts\\symbol.ttf"
-//
-//        println "Font paht:" + fp
-//        println "Template paht:" + tp
-//
-//        PDTrueTypeFont.loadTTF(document, fp);
-//
-//        List pages = document.getDocumentCatalog().getAllPages();
-//        for( int i=0; i<pages.size(); i++ ){
-//            PDPage page = (PDPage)pages.get( i );
-//
-//            PDResources resource = page.getResources();
-//            Map fonts = resource.getFonts();
-//
-//
-//
-//            resource.addFont()
-//
-//            Iterator keyIterator = fonts.keySet().iterator();
-//            Object key = null;
-//            PDSimpleFont font = null;
-//            System.out.println("Fonts list in page - " + i);
-//            while(keyIterator.hasNext()){
-//                key = keyIterator.next();
-//                font = (PDSimpleFont)fonts.get(key);
-//                System.out.println(key.toString() + " - " + font.getFontDescriptor().getFontName());
-//            }
-//        }
 
 		int resolution = 100
-//		PDFImageWriter imageWriter = new PDFImageWriter()
-//		boolean success = imageWriter.writeImage(document, "png", "",
-//				pageNumber, pageNumber, getTemplateOutPath()+pdfName+"-TEST-"+resolution, BufferedImage.TYPE_INT_RGB, resolution)
 
 		if (!success) {
 			log.error "No writer found for PNG image format"
@@ -1777,7 +1756,6 @@ class PdfServiceTests {
 
 	private HashMap<String, String[]> insertSignatures(int pageNo, int x, int y, int scaleX, int scaleY){
 		HashMap<String, String[]> result = new HashMap<String, String[]>();
-		//	result.put("reprezentant1_podpis", [new File(getTemplatePath()+"signature1.jpg").toURI().toURL(), "", "signature", pageNo, x, y, scaleX, scaleY] as String[]);
 		result.put("reprezentant1_podpis", [new File(getTemplatePath()+File.separator+"subscriptions"+File.separator+"signature1.jpg").toURI().toURL(), "", "signature", pageNo, x, y, scaleX, scaleY] as String[]);
 		result.put("reprezentant2_podpis", [new File(getTemplatePath()+File.separator+"subscriptions"+File.separator+"signature2.jpg").toURI().toURL(), "", "signature", pageNo, x+120, y, scaleX, scaleY] as String[]);
 		result.put("zarzad1_podpis", [new File(getTemplatePath()+File.separator+"subscriptions"+File.separator+"signature1.jpg").toURI().toURL(), "", "signature", pageNo, x+250, y, BOARD_MEMBER_1_X, BOARD_MEMBER_1_Y] as String[]);
@@ -1787,7 +1765,6 @@ class PdfServiceTests {
 
     private HashMap<String, String[]> insertSignatures2(def signatures){
 		HashMap<String, String[]> result = new HashMap<String, String[]>();
-        //["ACCEPTANT1", 4, 65, 165, 84, 53],
 
         signatures.each{
             def person = it.get(0);

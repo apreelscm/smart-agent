@@ -2,11 +2,9 @@ package com.eservice.eumowy
 
 import com.eservice.eumowy.enums.AcceptorLocation
 import com.eservice.eumowy.helpers.CommandHelpers
-import org.powermock.api.mockito.PowerMockito
 import org.powermock.core.classloader.annotations.PrepareForTest
 
 import static org.junit.Assert.*
-import static org.mockito.Mockito.*;
 
 import com.eservice.eumowy.command.ProcessCommand
 import grails.test.mixin.web.ControllerUnitTestMixin
@@ -29,7 +27,11 @@ class ProcessCommandTest extends ControllerUnitTestMixin{
 
     @Test
     public void shouldNotValidateWithNullAkceptantLokalizacja() {
+        //given
+        Map properties = [hasNewUmowa: true]
+
         //when
+        setProperties(properties)
         Boolean validationResult = command.validate()
 
         //then
@@ -53,7 +55,7 @@ class ProcessCommandTest extends ControllerUnitTestMixin{
     @Test
     public void shouldNotValidateWitEmptyPropertiesRelatedToAkceptantLokalizacjaAbroad() {
         //given
-        Map properties = [akceptantLokalizacja: AcceptorLocation.ABROAD]
+        Map properties = [hasNewUmowa: true, akceptantLokalizacja: AcceptorLocation.ABROAD]
 
         //when
         setProperties(properties)
@@ -158,6 +160,56 @@ class ProcessCommandTest extends ControllerUnitTestMixin{
         //then
         assertNull(command.errors['nazwaGieldy'])
         assertNull(command.errors['isinAkceptanta'])
+    }
+
+    @Test
+    public void shouldNotIndicateLegalForm() {
+        //then
+        assertFalse(command.isOsobaPrawna())
+        assertFalse(command.isOsobaFizyczna())
+        assertFalse(command.isJednostkaNieposiadajacaOsobyPrawnej())
+    }
+
+    @Test
+    public void shouldIndicateOsobaPrawna() {
+        //given
+        Map properties = [dzialalnoscForma: "spolka_akcyjna"]
+
+        //when
+        setProperties(properties)
+
+        //then
+        assertTrue(command.isOsobaPrawna())
+        assertFalse(command.isOsobaFizyczna())
+        assertFalse(command.isJednostkaNieposiadajacaOsobyPrawnej())
+    }
+
+    @Test
+    public void shouldIndicateOsobaFizyczna() {
+        //given
+        Map properties = [dzialalnoscForma: "spolka_cywilna"]
+
+        //when
+        setProperties(properties)
+
+        //then
+        assertTrue(command.isOsobaFizyczna())
+        assertFalse(command.isOsobaPrawna())
+        assertFalse(command.isJednostkaNieposiadajacaOsobyPrawnej())
+    }
+
+    @Test
+    public void shouldIndicateJednostkaNieposiadajacaOsobyPrawnej() {
+        //given
+        Map properties = [dzialalnoscFormaInna: "whatever"]
+
+        //when
+        setProperties(properties)
+
+        //then
+        assertTrue(command.isJednostkaNieposiadajacaOsobyPrawnej())
+        assertFalse(command.isOsobaFizyczna())
+        assertFalse(command.isOsobaPrawna())
     }
 
     private void setProperties(Map properties) {

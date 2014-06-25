@@ -3,13 +3,6 @@ package com.eservice.eumowy.pdfmapper
 import com.eservice.eumowy.util.DateUtils
 import org.apache.log4j.Logger
 
-/**
- * Created with IntelliJ IDEA.
- * User: user
- * Date: 14.10.13
- * Time: 16:21
- * To change this template use File | Settings | File Templates.
- */
 public abstract class AbstractPdfMapper {
 
     static Logger LOG = Logger.getLogger(AbstractPdfMapper.class)
@@ -33,9 +26,14 @@ public abstract class AbstractPdfMapper {
         }
     }
 
+    def addCheckbox(def data, def fieldName) {
+        addCheckbox(data, fieldName, true, true)
+    }
+
     def addCheckbox(def data, def pdfName, def fieldValue, def value){
         data.put(pdfName, [fieldValue.equals(value), "", "checkbox"] as String[])
     }
+
 
     def addDateField(def data, def key, def value){
         data.put(key, [value?.trim()?DateUtils.getFormattedDate(DateUtils.parseWithTimezone(value), DateUtils.YYYY_MM_DD):""] as String[])

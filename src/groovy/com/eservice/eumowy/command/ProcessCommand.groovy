@@ -4,6 +4,7 @@ import com.eservice.eumowy.Process
 import com.eservice.eumowy.annotation.DateField
 import com.eservice.eumowy.annotation.Omit
 import com.eservice.eumowy.enums.AcceptorLocation
+
 import com.eservice.eumowy.validator.AtLeastValidator
 import com.eservice.eumowy.validator.CustomValidator
 import com.eservice.eumowy.validator.HirePaymentValidator
@@ -157,7 +158,7 @@ class ProcessCommand implements Serializable {
     String ifOplataPKOPB = DEFAULT_VALUE
 
 //    informacjeDodatkowe - 
-    String dzialalnoscForma = DEFAULT_VALUE
+    String dzialalnoscForma = DEFAULT_VALUE //TODO: ZAMIENIC NA ENUMA
     String dzialalnoscFormaInna = DEFAULT_VALUE
     String dzialalnoscDokument = DEFAULT_VALUE
     String dzialalnoscDokumentInny = DEFAULT_VALUE
@@ -1325,6 +1326,22 @@ class ProcessCommand implements Serializable {
         }
 
         return AcceptorLocation.COUNTRY.name().equals(this.akceptantLokalizacja)
+    }
+
+    public boolean isOsobaPrawna() {
+        List<String> osobaPrawnaIndicators = ["spolka_akcyjna", "spolka_zoo", "spolka_komandytowa", "spolka_jawna"]
+
+        return osobaPrawnaIndicators.contains(dzialalnoscForma)
+    }
+
+    public boolean isOsobaFizyczna() {
+        List<String> osobaFizycznaIndicators = ["spolka_cywilna", "osoba_fizyczna"]
+
+        return osobaFizycznaIndicators.contains(dzialalnoscForma)
+    }
+
+    public boolean isJednostkaNieposiadajacaOsobyPrawnej() {
+        return StringUtils.isNotEmpty(dzialalnoscFormaInna) && !DEFAULT_VALUE.equals(dzialalnoscFormaInna)
     }
 
     public String getMessageForProperty(String property){
