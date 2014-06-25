@@ -4,7 +4,7 @@ import com.eservice.eumowy.command.ProcessCommand
 import com.eservice.eumowy.command.RepresentativeCommand
 import com.eservice.eumowy.enums.AcceptorLocation
 import com.eservice.eumowy.enums.IdentityDocumentType
-import com.eservice.eumowy.helpers.CommandHelpers
+import com.eservice.eumowy.helpers.CommandHelper
 import com.eservice.eumowy.pdfmapper.representative.RepresentativesMapper
 import grails.test.mixin.web.ControllerUnitTestMixin
 import org.junit.Before
@@ -39,8 +39,8 @@ class RepresentativesMapperTests extends ControllerUnitTestMixin {
                 lokalizacjaKraj: "Daleko", adres: "JakisAdres", seriaNrDokumentu: "PL123", obywatelstwo: "Polskie"]
 
         //when
-        CommandHelpers.setProperties(processCommand, processProperties)
-        CommandHelpers.setProperties(representativeCommand, beneficiaryProperties)
+        CommandHelper.setProperties(processCommand, processProperties)
+        CommandHelper.setProperties(representativeCommand, beneficiaryProperties)
         processCommand.representatives.add(representativeCommand)
         Map data = new RepresentativesMapper(processCommand).getDataForMapping()
         
@@ -62,8 +62,8 @@ class RepresentativesMapperTests extends ControllerUnitTestMixin {
                 typLokalizacji: AcceptorLocation.ABROAD, lokalizacjaPesel: "91101706344"]
 
         //when
-        CommandHelpers.setProperties(processCommand, processProperties)
-        CommandHelpers.setProperties(representativeCommand, beneficiaryProperties)
+        CommandHelper.setProperties(processCommand, processProperties)
+        CommandHelper.setProperties(representativeCommand, beneficiaryProperties)
         processCommand.representatives.add(representativeCommand)
         Map data = new RepresentativesMapper(processCommand).getDataForMapping()
 

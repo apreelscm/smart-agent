@@ -1,7 +1,7 @@
 package com.eservice.eumowy
 
 import com.eservice.eumowy.enums.AcceptorLocation
-import com.eservice.eumowy.helpers.CommandHelpers
+import com.eservice.eumowy.helpers.CommandHelper
 import org.powermock.core.classloader.annotations.PrepareForTest
 
 import static org.junit.Assert.*
@@ -213,7 +213,7 @@ class ProcessCommandTest extends ControllerUnitTestMixin{
     }
 
     private void setProperties(Map properties) {
-        CommandHelpers.setProperties(command, properties)
+        CommandHelper.setProperties(command, properties)
     }
 
 }

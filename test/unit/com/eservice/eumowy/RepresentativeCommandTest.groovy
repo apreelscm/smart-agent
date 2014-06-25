@@ -3,7 +3,7 @@ package com.eservice.eumowy
 import com.eservice.eumowy.command.ProcessCommand
 import com.eservice.eumowy.enums.AcceptorLocation
 import com.eservice.eumowy.enums.IdentityDocumentType
-import com.eservice.eumowy.helpers.CommandHelpers
+import com.eservice.eumowy.helpers.CommandHelper
 import org.junit.Test
 
 import static org.junit.Assert.*
@@ -35,7 +35,7 @@ class RepresentativeCommandTest extends ControllerUnitTestMixin {
 
         //when
         setProperties(properties)
-        CommandHelpers.setProperties(command.processCommand, [akceptantLokalizacja: AcceptorLocation.COUNTRY])
+        CommandHelper.setProperties(command.processCommand, [akceptantLokalizacja: AcceptorLocation.COUNTRY])
         command.validate()
 
         //then
@@ -47,7 +47,7 @@ class RepresentativeCommandTest extends ControllerUnitTestMixin {
     @Test
     void shouldNotValidateEmptyFieldsWithAkceptantLokalizacjaAbroad() {
         //when
-        CommandHelpers.setProperties(command.processCommand, [akceptantLokalizacja: AcceptorLocation.ABROAD])
+        CommandHelper.setProperties(command.processCommand, [akceptantLokalizacja: AcceptorLocation.ABROAD])
         command.validate()
 
         //then
@@ -67,7 +67,7 @@ class RepresentativeCommandTest extends ControllerUnitTestMixin {
 
         //when
         setProperties(properties)
-        CommandHelpers.setProperties(command.processCommand, [akceptantLokalizacja: AcceptorLocation.ABROAD])
+        CommandHelper.setProperties(command.processCommand, [akceptantLokalizacja: AcceptorLocation.ABROAD])
         command.validate()
 
         //then
@@ -89,7 +89,7 @@ class RepresentativeCommandTest extends ControllerUnitTestMixin {
 
         //when
         setProperties(properties)
-        CommandHelpers.setProperties(command.processCommand, [akceptantLokalizacja: AcceptorLocation.ABROAD])
+        CommandHelper.setProperties(command.processCommand, [akceptantLokalizacja: AcceptorLocation.ABROAD])
         command.validate()
 
         //then
@@ -103,7 +103,7 @@ class RepresentativeCommandTest extends ControllerUnitTestMixin {
 
         //when
         setProperties(properties)
-        CommandHelpers.setProperties(command.processCommand, [akceptantLokalizacja: AcceptorLocation.ABROAD])
+        CommandHelper.setProperties(command.processCommand, [akceptantLokalizacja: AcceptorLocation.ABROAD])
         command.validate()
 
         //then
@@ -113,7 +113,7 @@ class RepresentativeCommandTest extends ControllerUnitTestMixin {
     }
 
     private void setProperties(Map properties) {
-        CommandHelpers.setProperties(command, properties)
+        CommandHelper.setProperties(command, properties)
     }
 
 }

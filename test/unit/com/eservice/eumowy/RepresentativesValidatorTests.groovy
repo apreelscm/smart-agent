@@ -2,7 +2,7 @@ package com.eservice.eumowy
 
 import com.eservice.eumowy.command.ProcessCommand
 import com.eservice.eumowy.command.RepresentativeCommand
-import com.eservice.eumowy.helpers.CommandHelpers
+import com.eservice.eumowy.helpers.CommandHelper
 import com.eservice.eumowy.validator.RepresentativesValidator
 import grails.test.mixin.web.ControllerUnitTestMixin
 import org.junit.Before
@@ -56,7 +56,7 @@ class RepresentativesValidatorTests extends ControllerUnitTestMixin {
 
     private RepresentativeCommand addRepresentative(Map parameters) {
         RepresentativeCommand command = mockCommandObject(RepresentativeCommand)
-        CommandHelpers.setProperties(command, parameters)
+        CommandHelper.setProperties(command, parameters)
 
         representatives.add(command)
 

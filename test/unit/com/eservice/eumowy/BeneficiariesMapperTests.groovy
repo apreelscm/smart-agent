@@ -3,7 +3,7 @@ package com.eservice.eumowy
 import com.eservice.eumowy.command.BeneficiaryCommand
 import com.eservice.eumowy.command.ProcessCommand
 import com.eservice.eumowy.enums.IdentityDocumentType
-import com.eservice.eumowy.helpers.CommandHelpers
+import com.eservice.eumowy.helpers.CommandHelper
 import com.eservice.eumowy.pdfmapper.representative.BeneficiariesMapper
 import grails.test.mixin.web.ControllerUnitTestMixin
 import org.junit.Before
@@ -38,7 +38,7 @@ class BeneficiariesMapperTests extends ControllerUnitTestMixin {
                 procentUdzialow: 59, posiadaAkceptanta: true, znaczaceUdzialy: true]
 
         //when
-        CommandHelpers.setProperties(beneficiaryCommand, beneficiaryProperties)
+        CommandHelper.setProperties(beneficiaryCommand, beneficiaryProperties)
         processCommand.beneficiaries.add(beneficiaryCommand)
         Map data = new BeneficiariesMapper(processCommand).getDataForMapping()
 

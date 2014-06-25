@@ -2,7 +2,7 @@ package com.eservice.eumowy
 
 import com.eservice.eumowy.command.BeneficiaryCommand
 import com.eservice.eumowy.command.ProcessCommand
-import com.eservice.eumowy.helpers.CommandHelpers
+import com.eservice.eumowy.helpers.CommandHelper
 import grails.test.mixin.web.ControllerUnitTestMixin
 import org.junit.Before
 import org.junit.Test
@@ -42,7 +42,7 @@ class BeneficiaryCommandTest extends ControllerUnitTestMixin {
         Map properties = [posiadaAkceptanta: true, kontrolujeAkceptanta: true]
 
         //when
-        CommandHelpers.setProperties(command, properties)
+        CommandHelper.setProperties(command, properties)
         command.validate()
 
         //then
@@ -55,7 +55,7 @@ class BeneficiaryCommandTest extends ControllerUnitTestMixin {
         Map properties = [znaczaceUdzialy: true]
 
         //when
-        CommandHelpers.setProperties(command, properties)
+        CommandHelper.setProperties(command, properties)
         command.validate()
 
         //then
@@ -68,7 +68,7 @@ class BeneficiaryCommandTest extends ControllerUnitTestMixin {
         Map properties = [znaczaceUdzialy: true, procentUdzialow: 22]
 
         //when
-        CommandHelpers.setProperties(command, properties)
+        CommandHelper.setProperties(command, properties)
         command.validate()
 
         //then
@@ -81,7 +81,7 @@ class BeneficiaryCommandTest extends ControllerUnitTestMixin {
         Map properties = [znaczaceUdzialy: true, procentUdzialow: 44]
 
         //when
-        CommandHelpers.setProperties(command, properties)
+        CommandHelper.setProperties(command, properties)
         command.validate()
 
         //then
