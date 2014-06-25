@@ -1,4 +1,4 @@
-<g:each in="${0..2}">
+<g:each in="${0..3}">
     <div class="acceptor">
         <g:render template="/common/representative/basicData" model="[prefix: 'representatives', seqNo: it, dropdowns: hasDropdowns,
                 representative: data.representatives[it]]"/>

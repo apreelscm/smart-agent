@@ -45,7 +45,7 @@
     <section id="actualBeneficiaryData" class="${data.czyBeneficjentRzeczywisty ?: "hidden"}">
         <button type="button" id="copyFromRepresentatives" class="button submit"><g:message code="beneficiary.copy.from.representatives.label"/></button>
 
-        <g:each in="${0..2}">
+        <g:each in="${0..3}">
             <div class="acceptor">
                 <g:render template="/common/representative/basicData" model="[prefix: 'beneficiaries', seqNo: it,
                         representative: data.beneficiaries[it]]"/>
