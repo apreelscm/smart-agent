@@ -1,31 +1,31 @@
 package com.eservice.eumowy
 
-import com.eservice.eumowy.command.ProcessCommand
-import com.eservice.eumowy.command.RepresentativeCommand
 import com.eservice.eumowy.enums.AcceptorLocation
 import com.eservice.eumowy.enums.IdentityDocumentType
 import com.eservice.eumowy.helpers.CommandHelper
 import com.eservice.eumowy.pdfmapper.representative.RepresentativesMapper
-import grails.test.mixin.web.ControllerUnitTestMixin
 import org.junit.Before
 import org.junit.Test
 
 import static org.junit.Assert.*
 
-class RepresentativesMapperTests extends ControllerUnitTestMixin {
-    private ProcessCommand processCommand
-    private RepresentativeCommand representativeCommand
+class RepresentativesMapperTests {
+    private Process process
+    private Representative representative
 
     @Before
     void setUp() {
-        representativeCommand = mockCommandObject(RepresentativeCommand)
-        processCommand = mockCommandObject(ProcessCommand)
+        process = new Process()
+        process.processData = new HashSet<ProcessData>()
+        process.representatives = new HashSet<Representative>()
+
+        representative = new Representative(typ: Representative.Type.REPRESENTATIVE)
     }
 
     @Test
     void shouldNotCreateData() {
         //when
-        Map data = new RepresentativesMapper(processCommand).getDataForMapping()
+        Map data = new RepresentativesMapper(process).getDataForMapping()
 
         //then
         assertEquals(0, data.size())
@@ -34,21 +34,21 @@ class RepresentativesMapperTests extends ControllerUnitTestMixin {
     @Test
     void shouldCreateDataForOsobaFizyczna() {
         //given
-        Map processProperties = [dzialalnoscForma: "spolka_cywilna"]
-        Map representativeProperties = [imie: "Jan", nazwisko: "Kowalski", typDokumentu: IdentityDocumentType.PASSPORT,
-                lokalizacjaKraj: "Daleko", adres: "JakisAdres", seriaNrDokumentu: "PL123", obywatelstwo: "Polskie"]
+        Map representativeProperties = [imie: "Jan", nazwisko: "Kowalski",
+                typDokumentu: IdentityDocumentType.PASSPORT, lokalizacjaKraj: "Daleko", adres: "JakisAdres",
+                seriaNrDokumentu: "PL123", obywatelstwo: "Polskie"]
 
         //when
-        CommandHelper.setProperties(processCommand, processProperties)
-        CommandHelper.setProperties(representativeCommand, representativeProperties)
-        processCommand.representatives.add(representativeCommand)
-        Map data = new RepresentativesMapper(processCommand).getDataForMapping()
+        process.processData.add(new ProcessData(name: 'dzialalnoscForma', value: 'spolka_cywilna'))
+        CommandHelper.setProperties(representative, representativeProperties)
+        process.representatives.add(representative)
+        Map data = new RepresentativesMapper(process).getDataForMapping()
         
         //then
         assertEquals(data["osFiz_reprezentant1Nazwa"], ["Jan Kowalski"] as String[])
         assertEquals(data["osFiz_reprezentant1LokalizacjaDane"], ["Daleko"] as String[])
-        assertEquals(data["osFiz_reprezentant1DowOsob"], [false, "", "checkbox"] as String[])
-        assertEquals(data["osFiz_reprezentant1Paszport"], [true, "", "checkbox"] as String[])
+        assertEquals(data["osFiz_reprezentant1DowOsob"], [true, "", "checkbox"] as String[])
+        assertEquals(data["osFiz_reprezentant1Paszport"], [false, "", "checkbox"] as String[])
         assertEquals(data["osFiz_reprezentant1SeriaNrDokumentu"], ["PL123"] as String[])
         assertEquals(data["osFiz_reprezentant1Obywatelstwo"], ["Polskie"] as String[])
     }
@@ -56,20 +56,20 @@ class RepresentativesMapperTests extends ControllerUnitTestMixin {
     @Test
     void shouldCreateDataForOsobaPrawna() {
         //given
-        Map processProperties = [dzialalnoscForma: "spolka_zoo"]
-        Map representativeProperties = [imie: "Jan", nazwisko: "Kowalski", typDokumentu: IdentityDocumentType.IDENTITY_CARD,
-                lokalizacjaKraj: "Daleko", adres: "JakisAdres", seriaNrDokumentu: "PL123", obywatelstwo: "Polskie",
-                typLokalizacji: AcceptorLocation.ABROAD, lokalizacjaPesel: "91101706344"]
+        Map representativeProperties = [imie: "Jan", nazwisko: "Kowalski",
+                typDokumentu: IdentityDocumentType.IDENTITY_CARD, lokalizacjaKraj: "Daleko", adres: "JakisAdres",
+                seriaNrDokumentu: "PL123", obywatelstwo: "Polskie", typLokalizacji: AcceptorLocation.ABROAD,
+                lokalizacjaPesel: "91101706344"]
 
         //when
-        CommandHelper.setProperties(processCommand, processProperties)
-        CommandHelper.setProperties(representativeCommand, representativeProperties)
-        processCommand.representatives.add(representativeCommand)
-        Map data = new RepresentativesMapper(processCommand).getDataForMapping()
+        process.processData.add(new ProcessData(name: 'dzialalnoscForma', value: 'spolka_zoo'))
+        CommandHelper.setProperties(representative, representativeProperties)
+        process.representatives.add(representative)
+        Map data = new RepresentativesMapper(process).getDataForMapping()
 
         //then
         assertEquals(data["osPraw_reprezentant1Nazwa"], ["Jan Kowalski"] as String[])
         assertEquals(data["osPraw_reprezentant1LokalizacjaDane"], ["91101706344"] as String[])
-        assertEquals(data["osPraw_reprezentant1PozaRP"], [true, "", "checkbox"] as String[])
+        assertEquals(data["osPraw_reprezentant1PozaRP"], [false, "", "checkbox"] as String[])
     }
 }

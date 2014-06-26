@@ -107,8 +107,4 @@ class RepresentativeCommand implements Serializable{
         return IdentityDocumentType.PASSPORT.equals(typDokumentu)
     }
 
-    public String getFullName() {
-        return imie + " " + nazwisko
-    }
-
 }

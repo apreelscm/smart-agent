@@ -1,57 +1,62 @@
 package com.eservice.eumowy.pdfmapper.representative
 
-import com.eservice.eumowy.command.ProcessCommand
-import com.eservice.eumowy.command.RepresentativeCommand
+import com.eservice.eumowy.Representative
+import com.eservice.eumowy.enums.AcceptorLocation
 import com.eservice.eumowy.enums.IdentityDocumentType
 import com.eservice.eumowy.pdfmapper.AbstractPdfMapper
 import com.eservice.eumowy.pdfmapper.Mapper
 import org.apache.commons.lang.StringUtils
+import com.eservice.eumowy.Process
 
 
 class RepresentativesMapper extends AbstractPdfMapper implements Mapper {
-    private ProcessCommand processCommand
+    private Process process
 
-    public RepresentativesMapper(ProcessCommand processCommand) {
-        this.processCommand = processCommand
+    public RepresentativesMapper(Process process) {
+        this.process = process
     }
 
     @Override
     public Map getDataForMapping() {
         Map representativesData = [:]
 
-        String prefix = getPrefix(processCommand)
+        String prefix = getPrefix()
 
-        processCommand.representatives.eachWithIndex { representative, i->
-            representativesData.put(getFieldName(prefix, i, "Nazwa"), [representative.getFullName()] as String[])
+        allRepresentatives.eachWithIndex { representative, i->
+            representativesData.put(getFieldName(prefix, i, "Nazwa"), [representative.fullName] as String[])
             representativesData.put(getFieldName(prefix, i, "LokalizacjaDane"), [getLokalizacjaDane(representative)] as String[])
 
-            if(processCommand.isOsobaFizyczna()) {
+            if(process.akceptantOsobaFizyczna) {
                 representativesData.put(getFieldName(prefix, i, "DowOsob"), getCheckboxData(IdentityDocumentType.IDENTITY_CARD.equals(representative.typDokumentu)))
                 representativesData.put(getFieldName(prefix, i, "Paszport"), getCheckboxData(IdentityDocumentType.PASSPORT.equals(representative.typDokumentu)))
                 representativesData.put(getFieldName(prefix, i, "SeriaNrDokumentu"), [representative.seriaNrDokumentu] as String[])
                 representativesData.put(getFieldName(prefix, i, "Adres"), [representative.adres] as String[])
                 representativesData.put(getFieldName(prefix, i, "Obywatelstwo"), [representative.obywatelstwo] as String[])
             } else {
-                representativesData.put(getFieldName(prefix, i, "PozaRP"), getCheckboxData(representative.isRepresentativeLocationAbroad()))
+                representativesData.put(getFieldName(prefix, i, "PozaRP"), getCheckboxData(AcceptorLocation.ABROAD.equals(representative.typLokalizacji)))
             }
         }
 
         return representativesData
     }
+    
+    private Set<Representative> getAllRepresentatives() {
+        return process.representatives.findAll{Representative.Type.REPRESENTATIVE.equals(it.typ)}
+    }
 
-    private String getPrefix(ProcessCommand processCommand) {
+    private String getPrefix() {
         String prefix
 
-        if(processCommand.isOsobaFizyczna()) {
+        if(process.akceptantOsobaFizyczna) {
             prefix = "osFiz_"
-        } else if (processCommand.isOsobaPrawna() || processCommand.isJednostkaNieposiadajacaOsobyPrawnej()) {
+        } else if (process.akceptantOsobaPrawna || process.akceptantJednostkaNieposiadajacaOsobyPrawnej) {
             prefix = "osPraw_"
         }
 
         return prefix
     }
 
-    public String getLokalizacjaDane(RepresentativeCommand representative) {
+    public String getLokalizacjaDane(Representative representative) {
         String peselNumber = StringUtils.isEmpty(representative.pesel) ? representative.lokalizacjaPesel : representative.pesel
 
         if(IdentityDocumentType.PASSPORT.equals(representative.typDokumentu)) {

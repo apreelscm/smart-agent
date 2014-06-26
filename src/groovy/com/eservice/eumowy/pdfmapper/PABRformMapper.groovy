@@ -1,6 +1,5 @@
 package com.eservice.eumowy.pdfmapper
 
-import com.eservice.eumowy.command.ProcessCommand
 import com.eservice.eumowy.pdfmapper.representative.ActualBeneficiaryMapper
 import com.eservice.eumowy.pdfmapper.representative.BeneficiariesMapper
 import com.eservice.eumowy.pdfmapper.representative.EmployeeAnnotationsMapper
@@ -8,21 +7,21 @@ import com.eservice.eumowy.pdfmapper.representative.LegalFormMapper
 import com.eservice.eumowy.pdfmapper.representative.RepresentativesMapper
 
 class PABRformMapper implements Mapper {
-    private ProcessCommand processCommand
+    private Process process
 
-    public PABRformMapper(ProcessCommand processCommand) {
-        this.processCommand = processCommand
+    public PABRformMapper(Process process) {
+        this.process = process
     }
 
     @Override
     public Map getDataForMapping() {
-        def data = [:]
+        Map data = [:]
 
-        data.putAll(new LegalFormMapper(processCommand).getDataForMapping())
-        data.putAll(new RepresentativesMapper(processCommand).getDataForMapping())
-        data.putAll(new ActualBeneficiaryMapper(processCommand).getDataForMapping())
-        data.putAll(new BeneficiariesMapper(processCommand).getDataForMapping())
-        data.putAll(new EmployeeAnnotationsMapper(processCommand).getDataForMapping())
+        data.putAll(new LegalFormMapper(process).getDataForMapping())
+        data.putAll(new RepresentativesMapper(process).getDataForMapping())
+        data.putAll(new ActualBeneficiaryMapper(process).getDataForMapping())
+        data.putAll(new BeneficiariesMapper(process).getDataForMapping())
+        data.putAll(new EmployeeAnnotationsMapper(process).getDataForMapping())
 
         return data
     }

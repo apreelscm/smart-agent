@@ -1,25 +1,25 @@
 package com.eservice.eumowy.pdfmapper.representative
 
-import com.eservice.eumowy.command.BeneficiaryCommand
-import com.eservice.eumowy.command.ProcessCommand
+import com.eservice.eumowy.Representative
 import com.eservice.eumowy.enums.IdentityDocumentType
 import com.eservice.eumowy.pdfmapper.AbstractPdfMapper
 import com.eservice.eumowy.pdfmapper.Mapper
+import com.eservice.eumowy.Process
 
 
 class BeneficiariesMapper extends AbstractPdfMapper implements Mapper {
-    private ProcessCommand processCommand
+    private Process process
 
-    public BeneficiariesMapper(ProcessCommand processCommand) {
-        this.processCommand = processCommand
+    public BeneficiariesMapper(Process process) {
+        this.process = process
     }
 
     @Override
     public Map getDataForMapping() {
         Map beneficiariesData = [:]
 
-        processCommand.beneficiaries.eachWithIndex { beneficiary, i ->
-            beneficiariesData.put(getFieldName(i, "Nazwa"), [beneficiary.getFullName()] as String[])
+        allBeneficiaries.eachWithIndex { beneficiary, i ->
+            beneficiariesData.put(getFieldName(i, "Nazwa"), [beneficiary.fullName] as String[])
             beneficiariesData.put(getFieldName(i, "LokalizacjaDane"), [getLokalizacjaDane(beneficiary)] as String[])
             beneficiariesData.put(getFieldName(i, "Adres"), [beneficiary.adres] as String[])
             beneficiariesData.put(getFieldName(i, "SeriaNrDokumentu"), [beneficiary.seriaNrDokumentu] as String[])
@@ -36,7 +36,11 @@ class BeneficiariesMapper extends AbstractPdfMapper implements Mapper {
         return beneficiariesData
     }
 
-    public String getLokalizacjaDane(BeneficiaryCommand beneficiary) {
+    private Set<Representative> getAllBeneficiaries() {
+        return process.representatives.findAll{Representative.Type.BENEFICIARY.equals(it.typ)}
+    }
+
+    public String getLokalizacjaDane(Representative beneficiary) {
         if(IdentityDocumentType.PASSPORT.equals(beneficiary.typDokumentu)) {
             return beneficiary.lokalizacjaKraj
         }

@@ -91,4 +91,8 @@ class Representative implements Serializable {
        znaczaceUdzialy(nullable: true)
        procentUdzialow(nullable: true)
     }
+
+    public String getFullName() {
+        return imie + " " + nazwisko
+    }
 }

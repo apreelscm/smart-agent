@@ -1,6 +1,7 @@
 package com.eservice.eumowy
 
 import groovy.transform.ToString
+import org.apache.commons.lang.StringUtils
 import org.apache.commons.lang.builder.EqualsBuilder
 import org.apache.commons.lang.builder.HashCodeBuilder
 import org.apache.commons.logging.LogFactory
@@ -151,6 +152,27 @@ class Process implements Serializable {
 					  .isEquals();
 	}
 	
-	
-	
+	public String getData(String key) {
+        return processData.find{it.name.equals(key)}?.value
+    }
+
+    public boolean getBooleanData(String key) {
+        return Boolean.parseBoolean(getData(key))
+    }
+
+    public boolean isAkceptantOsobaPrawna() {
+        List<String> osobaPrawnaIndicators = ["spolka_akcyjna", "spolka_zoo", "spolka_komandytowa", "spolka_jawna"]
+
+        return osobaPrawnaIndicators.contains(getData("dzialalnoscForma"))
+    }
+
+    public boolean isAkceptantOsobaFizyczna() {
+        List<String> osobaFizycznaIndicators = ["spolka_cywilna", "osoba_fizyczna"]
+
+        return osobaFizycznaIndicators.contains(getData("dzialalnoscForma"))
+    }
+
+    public boolean isAkceptantJednostkaNieposiadajacaOsobyPrawnej() {
+        return StringUtils.isNotEmpty(getData("dzialalnoscFormaInna"))
+    }
 }

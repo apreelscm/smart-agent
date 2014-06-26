@@ -1328,22 +1328,6 @@ class ProcessCommand implements Serializable {
         return AcceptorLocation.COUNTRY.name().equals(this.akceptantLokalizacja)
     }
 
-    public boolean isOsobaPrawna() {
-        List<String> osobaPrawnaIndicators = ["spolka_akcyjna", "spolka_zoo", "spolka_komandytowa", "spolka_jawna"]
-
-        return osobaPrawnaIndicators.contains(dzialalnoscForma)
-    }
-
-    public boolean isOsobaFizyczna() {
-        List<String> osobaFizycznaIndicators = ["spolka_cywilna", "osoba_fizyczna"]
-
-        return osobaFizycznaIndicators.contains(dzialalnoscForma)
-    }
-
-    public boolean isJednostkaNieposiadajacaOsobyPrawnej() {
-        return StringUtils.isNotEmpty(dzialalnoscFormaInna) && !DEFAULT_VALUE.equals(dzialalnoscFormaInna)
-    }
-
     public String getMessageForProperty(String property){
         //metoda musi zostac, jest uzywana m. in. w validatorach
         return messageSource.getMessage("com.eservice.eumowy.command.ProcessCommand." + property + ".label", [] as Object[], property, Locale.getDefault())

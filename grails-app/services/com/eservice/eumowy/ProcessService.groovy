@@ -8,6 +8,7 @@ import com.eservice.eumowy.util.DateUtils
 import com.eservice.eumowy.util.EumowyCustomEnvironment
 import grails.util.Environment
 import groovy.sql.GroovyRowResult
+import org.apache.commons.lang.StringUtils
 import org.apache.commons.lang.WordUtils
 import org.codehaus.groovy.grails.web.binding.DataBindingUtils
 import serializationutils.SerializationUtils

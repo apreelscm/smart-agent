@@ -162,56 +162,6 @@ class ProcessCommandTest extends ControllerUnitTestMixin{
         assertNull(command.errors['isinAkceptanta'])
     }
 
-    @Test
-    public void shouldNotIndicateLegalForm() {
-        //then
-        assertFalse(command.isOsobaPrawna())
-        assertFalse(command.isOsobaFizyczna())
-        assertFalse(command.isJednostkaNieposiadajacaOsobyPrawnej())
-    }
-
-    @Test
-    public void shouldIndicateOsobaPrawna() {
-        //given
-        Map properties = [dzialalnoscForma: "spolka_akcyjna"]
-
-        //when
-        setProperties(properties)
-
-        //then
-        assertTrue(command.isOsobaPrawna())
-        assertFalse(command.isOsobaFizyczna())
-        assertFalse(command.isJednostkaNieposiadajacaOsobyPrawnej())
-    }
-
-    @Test
-    public void shouldIndicateOsobaFizyczna() {
-        //given
-        Map properties = [dzialalnoscForma: "spolka_cywilna"]
-
-        //when
-        setProperties(properties)
-
-        //then
-        assertTrue(command.isOsobaFizyczna())
-        assertFalse(command.isOsobaPrawna())
-        assertFalse(command.isJednostkaNieposiadajacaOsobyPrawnej())
-    }
-
-    @Test
-    public void shouldIndicateJednostkaNieposiadajacaOsobyPrawnej() {
-        //given
-        Map properties = [dzialalnoscFormaInna: "whatever"]
-
-        //when
-        setProperties(properties)
-
-        //then
-        assertTrue(command.isJednostkaNieposiadajacaOsobyPrawnej())
-        assertFalse(command.isOsobaFizyczna())
-        assertFalse(command.isOsobaPrawna())
-    }
-
     private void setProperties(Map properties) {
         CommandHelper.setProperties(command, properties)
     }
