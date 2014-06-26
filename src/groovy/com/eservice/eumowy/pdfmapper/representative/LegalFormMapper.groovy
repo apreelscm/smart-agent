@@ -16,9 +16,9 @@ class LegalFormMapper extends AbstractPdfMapper implements Mapper {
     public Map getDataForMapping() {
         Map legalFormData = [:]
 
-        addCheckbox(legalFormData, "osobaFizyczna", true, [processCommand.isOsobaFizyczna()])
-        addCheckbox(legalFormData, "osobaPrawna", true, [processCommand.isOsobaPrawna()])
-        addCheckbox(legalFormData, "jednostkaOrg", true, [processCommand.isJednostkaNieposiadajacaOsobyPrawnej()])
+        legalFormData.put("osobaFizyczna", getCheckboxData(processCommand.isOsobaFizyczna()))
+        legalFormData.put("osobaPrawna", getCheckboxData(processCommand.isOsobaPrawna()))
+        legalFormData.put("jednostkaOrg", getCheckboxData(processCommand.isJednostkaNieposiadajacaOsobyPrawnej()))
 
         return legalFormData
     }

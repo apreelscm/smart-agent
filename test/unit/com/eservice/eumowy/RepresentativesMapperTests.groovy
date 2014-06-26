@@ -35,12 +35,12 @@ class RepresentativesMapperTests extends ControllerUnitTestMixin {
     void shouldCreateDataForOsobaFizyczna() {
         //given
         Map processProperties = [dzialalnoscForma: "spolka_cywilna"]
-        Map beneficiaryProperties = [imie: "Jan", nazwisko: "Kowalski", typDokumentu: IdentityDocumentType.PASSPORT,
+        Map representativeProperties = [imie: "Jan", nazwisko: "Kowalski", typDokumentu: IdentityDocumentType.PASSPORT,
                 lokalizacjaKraj: "Daleko", adres: "JakisAdres", seriaNrDokumentu: "PL123", obywatelstwo: "Polskie"]
 
         //when
         CommandHelper.setProperties(processCommand, processProperties)
-        CommandHelper.setProperties(representativeCommand, beneficiaryProperties)
+        CommandHelper.setProperties(representativeCommand, representativeProperties)
         processCommand.representatives.add(representativeCommand)
         Map data = new RepresentativesMapper(processCommand).getDataForMapping()
         
@@ -54,16 +54,16 @@ class RepresentativesMapperTests extends ControllerUnitTestMixin {
     }
 
     @Test
-    void shouldCreateDataForNotOsobaFizyczna() {
+    void shouldCreateDataForOsobaPrawna() {
         //given
         Map processProperties = [dzialalnoscForma: "spolka_zoo"]
-        Map beneficiaryProperties = [imie: "Jan", nazwisko: "Kowalski", typDokumentu: IdentityDocumentType.IDENTITY_CARD,
+        Map representativeProperties = [imie: "Jan", nazwisko: "Kowalski", typDokumentu: IdentityDocumentType.IDENTITY_CARD,
                 lokalizacjaKraj: "Daleko", adres: "JakisAdres", seriaNrDokumentu: "PL123", obywatelstwo: "Polskie",
                 typLokalizacji: AcceptorLocation.ABROAD, lokalizacjaPesel: "91101706344"]
 
         //when
         CommandHelper.setProperties(processCommand, processProperties)
-        CommandHelper.setProperties(representativeCommand, beneficiaryProperties)
+        CommandHelper.setProperties(representativeCommand, representativeProperties)
         processCommand.representatives.add(representativeCommand)
         Map data = new RepresentativesMapper(processCommand).getDataForMapping()
 

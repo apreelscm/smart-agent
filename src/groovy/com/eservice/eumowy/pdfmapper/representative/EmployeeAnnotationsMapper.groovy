@@ -16,18 +16,18 @@ class EmployeeAnnotationsMapper extends AbstractPdfMapper implements Mapper{
         Map employeeAnnotations = [:]
 
         if(processCommand.isOsobaFizyczna() || processCommand.isJednostkaNieposiadajacaOsobyPrawnej()) {
-            addCheckbox(employeeAnnotations, "akceptantWeryfikacjaDokumenty")
+            employeeAnnotations.put("akceptantWeryfikacjaDokumenty", getCheckboxData(true))
         } else if (processCommand.isOsobaPrawna()) {
-            addCheckbox(employeeAnnotations, "akceptantWeryfikacjaKRS")
+            employeeAnnotations.put("akceptantWeryfikacjaKRS", getCheckboxData(true))
         }
 
-        addCheckbox(employeeAnnotations, "beneficjentWeryfikacjaKRS", true, processCommand.beneficjentWeryfikacjaKRS)
+        employeeAnnotations.put("beneficjentWeryfikacjaKRS", getCheckboxData(processCommand.beneficjentWeryfikacjaKRS))
         employeeAnnotations.put("beneficjentKRS", [processCommand.beneficjentKRS] as String[])
-        addCheckbox(employeeAnnotations, "beneficjentWeryfikacjaDokumentTozsamosci", true, processCommand.beneficjentWeryfikacjaDokumentTozsamosci)
-        addCheckbox(employeeAnnotations, "beneficjentWeryfikacjaGielda", true, processCommand.beneficjentWeryfikacjaGielda)
-        addCheckbox(employeeAnnotations, "beneficjentWeryfikacjaSpolka", true, processCommand.beneficjentWeryfikacjaSpolka)
-        addCheckbox(employeeAnnotations, "beneficjentWeryfikacjaKsiega", true, processCommand.beneficjentWeryfikacjaKsiega)
-        addCheckbox(employeeAnnotations, "beneficjentWeryfikacjaSchemat", true, processCommand.beneficjentWeryfikacjaSchemat)
+        employeeAnnotations.put("beneficjentWeryfikacjaDokumentTozsamosci", getCheckboxData(processCommand.beneficjentWeryfikacjaDokumentTozsamosci))
+        employeeAnnotations.put("beneficjentWeryfikacjaGielda", getCheckboxData(processCommand.beneficjentWeryfikacjaGielda))
+        employeeAnnotations.put("beneficjentWeryfikacjaSpolka", getCheckboxData(processCommand.beneficjentWeryfikacjaSpolka))
+        employeeAnnotations.put("beneficjentWeryfikacjaKsiega", getCheckboxData(processCommand.beneficjentWeryfikacjaKsiega))
+        employeeAnnotations.put("beneficjentWeryfikacjaSchemat", getCheckboxData(processCommand.beneficjentWeryfikacjaSchemat))
 
         return employeeAnnotations
     }

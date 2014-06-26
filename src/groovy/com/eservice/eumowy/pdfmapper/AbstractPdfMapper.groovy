@@ -26,8 +26,8 @@ public abstract class AbstractPdfMapper {
         }
     }
 
-    def addCheckbox(def data, def fieldName) {
-        addCheckbox(data, fieldName, true, true)
+    String[] getCheckboxData(Boolean checkCondition) {
+        return [!checkCondition, "", "checkbox"] as String[]
     }
 
     def addCheckbox(def data, def pdfName, def fieldValue, def value){

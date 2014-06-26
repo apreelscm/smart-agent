@@ -26,12 +26,13 @@ class RepresentativesMapper extends AbstractPdfMapper implements Mapper {
             representativesData.put(getFieldName(prefix, i, "LokalizacjaDane"), [getLokalizacjaDane(representative)] as String[])
 
             if(processCommand.isOsobaFizyczna()) {
-                addCheckbox(representativesData, getFieldName(prefix, i, "DowOsob"), true, IdentityDocumentType.IDENTITY_CARD.equals(representative.typDokumentu))
-                addCheckbox(representativesData, getFieldName(prefix, i, "Paszport"), true, IdentityDocumentType.PASSPORT.equals(representative.typDokumentu))
+                representativesData.put(getFieldName(prefix, i, "DowOsob"), getCheckboxData(IdentityDocumentType.IDENTITY_CARD.equals(representative.typDokumentu)))
+                representativesData.put(getFieldName(prefix, i, "Paszport"), getCheckboxData(IdentityDocumentType.PASSPORT.equals(representative.typDokumentu)))
                 representativesData.put(getFieldName(prefix, i, "SeriaNrDokumentu"), [representative.seriaNrDokumentu] as String[])
+                representativesData.put(getFieldName(prefix, i, "Adres"), [representative.adres] as String[])
                 representativesData.put(getFieldName(prefix, i, "Obywatelstwo"), [representative.obywatelstwo] as String[])
             } else {
-                addCheckbox(representativesData, getFieldName(prefix, i, "PozaRP"), true, representative.isRepresentativeLocationAbroad())
+                representativesData.put(getFieldName(prefix, i, "PozaRP"), getCheckboxData(representative.isRepresentativeLocationAbroad()))
             }
         }
 

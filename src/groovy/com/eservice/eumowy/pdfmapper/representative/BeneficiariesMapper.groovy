@@ -26,11 +26,11 @@ class BeneficiariesMapper extends AbstractPdfMapper implements Mapper {
             beneficiariesData.put(getFieldName(i, "Obywatelstwo"), [beneficiary.obywatelstwo] as String[])
             beneficiariesData.put(getFieldName(i, "ProcentUdzialow"), [beneficiary.procentUdzialow] as String[])
 
-            addCheckbox(beneficiariesData, getFieldName(i, "DowOsob"), true, IdentityDocumentType.IDENTITY_CARD.equals(beneficiary.typDokumentu))
-            addCheckbox(beneficiariesData, getFieldName(i, "Paszport"), true, IdentityDocumentType.PASSPORT.equals(beneficiary.typDokumentu))
-            addCheckbox(beneficiariesData, getFieldName(i, "PosiadaAkceptanta"), true, beneficiary.posiadaAkceptanta)
-            addCheckbox(beneficiariesData, getFieldName(i, "KontrolujeAkceptanta"), true, beneficiary.kontrolujeAkceptanta)
-            addCheckbox(beneficiariesData, getFieldName(i, "ZnaczaceUdzialy"), true, beneficiary.znaczaceUdzialy)
+            beneficiariesData.put(getFieldName(i, "DowOsob"), getCheckboxData(IdentityDocumentType.IDENTITY_CARD.equals(beneficiary.typDokumentu)))
+            beneficiariesData.put(getFieldName(i, "Paszport"), getCheckboxData(IdentityDocumentType.PASSPORT.equals(beneficiary.typDokumentu)))
+            beneficiariesData.put(getFieldName(i, "PosiadaAkceptanta"), getCheckboxData(beneficiary.posiadaAkceptanta))
+            beneficiariesData.put(getFieldName(i, "KontrolujeAkceptanta"), getCheckboxData(beneficiary.kontrolujeAkceptanta))
+            beneficiariesData.put(getFieldName(i, "ZnaczaceUdzialy"), getCheckboxData(beneficiary.znaczaceUdzialy))
         }
 
         return beneficiariesData

@@ -15,13 +15,13 @@ class ActualBeneficiaryMapper extends AbstractPdfMapper implements Mapper {
     public Map getDataForMapping() {
         Map actualBeneficiaryData = [:]
 
-        addCheckbox(actualBeneficiaryData, "akceptantJestSpolka", true, processCommand.akceptantJestSpolka)
         actualBeneficiaryData.put("nazwaGieldy", [processCommand.nazwaGieldy] as String[])
         actualBeneficiaryData.put("isinAkceptanta", [processCommand.isinAkceptanta] as String[])
 
-        addCheckbox(actualBeneficiaryData, "akceptantJestPodmiotem", true, processCommand.akceptantJestPodmiotem)
-        addCheckbox(actualBeneficiaryData, "akceptantJestOrganem", true, processCommand.akceptantJestOrganem)
-        addCheckbox(actualBeneficiaryData, "akceptantNieMaBeneficjenta", true, processCommand.akceptantNieMaBeneficjenta)
+        actualBeneficiaryData.put("akceptantJestSpolka", getCheckboxData(processCommand.akceptantJestSpolka))
+        actualBeneficiaryData.put("akceptantJestPodmiotem", getCheckboxData(processCommand.akceptantJestPodmiotem))
+        actualBeneficiaryData.put("akceptantJestOrganem", getCheckboxData(processCommand.akceptantJestOrganem))
+        actualBeneficiaryData.put("akceptantNieMaBeneficjenta", getCheckboxData(processCommand.akceptantNieMaBeneficjenta))
 
         return actualBeneficiaryData
     }
