@@ -334,10 +334,6 @@ class ProcessCommand implements Serializable {
     String progrnozaMiesieczna = DEFAULT_VALUE
     String liczbaPtkCbd = DEFAULT_VALUE
 
-//    serwisEkonomiczny - 
-//    serwisKomfort - 
-//    serwisPrzestiz - 
-
 //    siedzibaAkceptanta - 
     String akceptantUlicaTytul = DEFAULT_VALUE
     String akceptantUlica = DEFAULT_VALUE

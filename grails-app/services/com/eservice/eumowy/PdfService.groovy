@@ -1,5 +1,9 @@
 package com.eservice.eumowy
 
+import com.eservice.eumowy.enums.AcceptorLocation
+import com.eservice.eumowy.pdfmapper.PABRformMapper
+import com.eservice.eumowy.pdfmapper.PEPdeclarationMapper
+
 import java.awt.image.BufferedImage
 import java.util.concurrent.ExecutorService
 import org.apache.pdfbox.pdmodel.PDDocument
@@ -12,6 +16,7 @@ class PdfService {
     def calculatorService
     def mapperService
     def documentService
+    def processService
 	
 	private ExecutorService executor;
 
@@ -84,58 +89,6 @@ class PdfService {
 		return PdfGenerator.generatePdfContentFromURI(urlTemplatePath, dataMap, fontType, appParametersService.getFontUri())
 	}
 
-    def fillPdfFormFromURIWithoutFaksymile(Signature sig, Map<String,String[]> panelData, FontType fontType) {
-        if (! sig.templatePath) {
-            log.debug('skiping virtual signature')
-            return
-        }
-
-        Map<String,String[]> dataMap = new HashMap<String, String[]>()
-
-        if (panelData != null) {
-            dataMap.putAll(panelData)
-        }
-
-        String pdfTemplatePath = appParametersService.getPdfTemplatePath(sig.templatePath)
-
-        return PdfGenerator.generatePdfContentFromURI(pdfTemplatePath, dataMap, fontType, appParametersService.getFontUri())
-    }
-
-	def fillPdfFormFromURIWithFaksymile(def sigId, Map<String,String[]> panelData, FontType fontType) {
-        fillPdfFormFromURI2(sigId, panelData, fontType, false)
-	}
-
-	def fillPdfFormFromURIWithBlackFaksymile(def sigId, Map<String,String[]> panelData, FontType fontType) {
-        fillPdfFormFromURI2(sigId, panelData, fontType, true)
-	}
-
-    private def fillPdfFormFromURI2(def sigId, Map<String,String[]> panelData, FontType fontType, boolean withBlackFaksymile) {
-
-        String subscriptionsPath = appParametersService.getSubscriptionsPath()
-        String subscriptionsBlackNamePrefix = withBlackFaksymile ? appParametersService.getSubscriptionsBlackPrefix() : "";
-
-        Map<String,String[]> dataMap = new HashMap<String, String[]>()
-
-        Signature sig = Signature.get(sigId);
-        if (! sig.templatePath){
-            log.debug('skiping virtual signature')
-            return
-        }
-
-        sig.subscriptionDefinitions.findAll { (it.role == Subscription.PersonRole.ZARZAD1 || it.role == Subscription.PersonRole.ZARZAD2) && it.subscriptionPageNumber != null && it.subscriptionPageNumber > -1}
-            .eachWithIndex{ SubscriptionDefinition it, int i ->
-                dataMap.put(it.role.name() + i, [new File(subscriptionsPath+File.separator+subscriptionsBlackNamePrefix+it.fileName).toURI().toURL(), "", "signature", it.subscriptionPageNumber.toString(), (it.subscriptionX).toString(), it.subscriptionY.toString(), it.scaleX, it.scaleY] as String[])
-        }
-
-        if (panelData != null) {
-            dataMap.putAll(panelData)
-        }
-
-        String pdfTemplatePath = appParametersService.getPdfTemplatePath(sig.templatePath)
-
-        return PdfGenerator.generatePdfContentFromURI(pdfTemplatePath, dataMap, fontType, appParametersService.getFontUri())
-    }
-
     def addClientSubscriptionsToDocument(byte[] documentContent, def sigId, Set<Subscription> subscriptions) {
         byte[] updatedContent = documentContent
         Map<String,Object[]> subscriptionsMap = new HashMap<String, Object[]>()
@@ -156,7 +109,6 @@ class PdfService {
     }
 	
 	def addBlackFaksymileToDocument(byte[] documentContent, def sigId) {
-		byte[] updatedContent = documentContent
 		Map<String,Object[]> subscriptionsMap = new HashMap<String, Object[]>()
 		String subscriptionsPath = appParametersService.getSubscriptionsPath()
 		String subscriptionsBlackNamePrefix = appParametersService.getSubscriptionsBlackPrefix()
@@ -181,12 +133,12 @@ class PdfService {
 			}
 
         }
-        updatedContent = PdfGenerator.addImageToPdfContent(sig.templatePath, documentContent, subscriptionsMap)
-        return updatedContent
+
+        return PdfGenerator.addImageToPdfContent(sig.templatePath, documentContent, subscriptionsMap)
     }
 
     private def attachSignatures(Signature sig, Set<Subscription> subscriptions, Subscription.PersonRole personRole) {
-        def result = [:]
+        Map result = [:]
         Subscription s = subscriptions.find { it.personRole == personRole }
         Set<SubscriptionDefinition> definitions = sig.subscriptionDefinitions.findAll { it.role == personRole && it.subscriptionPageNumber != null && it.subscriptionPageNumber > -1}
         if (s?.content != null && !definitions.isEmpty()) {
@@ -201,41 +153,44 @@ class PdfService {
         result;
     }
 
-    def workWithDocuments(def processInstance, def calc){
-        def totalPagesCount = 0
-        def dataFromProcess = mapperService.mapOnlyProcessData(processInstance, calc);
+    def workWithDocuments(Process processInstance, def calc){
+        Integer totalPagesCount = 0
+        Map dataFromProcess = mapperService.mapOnlyProcessData(processInstance, calc)
+
+        if(processService.hasNowaUmowa(processInstance)) {
+            dataFromProcess.putAll(new PABRformMapper(processInstance).getDataForMapping())
+        }
 
         //takie rozbicie bylo konieczne aby ograniczyc wywolania wolnego mappera
-        def singleDocuments = processInstance.signatures.findAll{ sig -> !sig.forPoint && !sig.forPos}
-        def multiPointDocuments = processInstance.signatures.findAll{ sig -> sig.forPoint}
-        def multiPosDocuments = processInstance.signatures.findAll{ sig -> sig.forPos}
+        Set singleDocuments = processInstance.signatures.findAll{ sig -> !sig.hasDetails()}
+        Set multiPointDocuments = processInstance.signatures.findAll{ sig -> sig.hasPurpose(SignatureDetail.SignaturePurpose.POINT)}
+        Signature posSignature = processInstance.signatures.find{ sig -> sig.hasPurpose(SignatureDetail.SignaturePurpose.POS)}
+        Signature pepSignature = processInstance.signatures.find{ sig -> sig.hasPurpose(SignatureDetail.SignaturePurpose.REPRESENTATIVE)}
 
         singleDocuments.each { sig ->
             log.info "SINGLE DOCUMENT --> SIGNATURE NAME: " + sig.name + " PDF TEMPLATE PATH: " + sig.templatePath
-            totalPagesCount += workWithOneDocument(processInstance, sig, dataFromProcess, sig.templatePath, sig.filename)
+            totalPagesCount += workWithOneDocument(processInstance, sig, dataFromProcess)
         }
 
         processInstance.points.each{ PointData point ->
-
-            //if ((point.cbdId == null && point.pointDetails != null) || (point.posDatas && point.posDatas.findAll{ pos -> pos.tpsId == null}.size()>0)){
 			if ((point?.isLocal()) || (point.posDatas && point.posDatas?.findAll{ pos -> pos != null && pos?.isLocal() == true}.size()>0)){
                 //generujemy tylko dokumenty dla tych punktow, ktore nie sa z CBD
-                def dataFromPoint = mapperService.mapOnlyPointData(point)
+                Map dataFromPoint = mapperService.mapOnlyPointData(point)
 
                 final Map<String, String> data = new HashMap<String, String>();
                 data.putAll(dataFromProcess);
                 data.putAll(dataFromPoint);
 
                 multiPointDocuments.each { sig ->
-                    def path = sig.templatePath
-                    def begin = path.substring(0, path.lastIndexOf('.'));
-                    def end = path.substring(path.lastIndexOf('.'));
-                    def documentName = begin +  "_" + point.id + end
+                    String path = sig.templatePath
+                    String begin = path.substring(0, path.lastIndexOf('.'));
+                    String end = path.substring(path.lastIndexOf('.'));
+                    String documentName = begin +  "_" + point.id + end
 
-                    def pathClient = sig.filename
-                    def beginClient = pathClient.substring(0, pathClient.lastIndexOf('.'));
-                    def endClient = pathClient.substring(pathClient.lastIndexOf('.'));
-                    def documentClientName = beginClient +  "_" + point.id + endClient
+                    String pathClient = sig.filename
+                    String beginClient = pathClient.substring(0, pathClient.lastIndexOf('.'));
+                    String endClient = pathClient.substring(pathClient.lastIndexOf('.'));
+                    String documentClientName = beginClient +  "_" + point.id + endClient
 
                     log.info "MULTI DOCUMENT --> SIGNATURE NAME: " + sig.name + " PDF TEMPLATE PATH: " + sig.templatePath + " WITH NEW NAME: " + documentName +" CLIENT NAME:"+documentClientName
                     totalPagesCount += workWithOneDocument(processInstance, sig, data, documentName, documentClientName)
@@ -243,31 +198,41 @@ class PdfService {
             }
         }
 
-        multiPosDocuments.each { sig ->
+        if(posSignature) {
             processInstance.posExchanges.findAll{it.isChoosen}.each {
                 PointData point = PointData.findByCbdIdAndProcess(it.cbdId, processInstance)
 
-                def data = [:]
+                Map data = [:]
                 data.putAll(mapperService.mapOnlyPointAddress(point))
                 data.putAll(mapperService.mapOnlyPosExchangeData(it))
 
-                def path = sig.templatePath
-                def begin = path.substring(0, path.lastIndexOf('.'));
-                def end = path.substring(path.lastIndexOf('.'));
-                def documentName = begin +  "_" + point.id + "_" + it.id + "-p" + end
+                String path = posSignature.templatePath
+                String begin = path.substring(0, path.lastIndexOf('.'));
+                String end = path.substring(path.lastIndexOf('.'));
+                String documentName = String.format("%s_%s_%s-p%s", begin, point.id, it.id, end)
 
-                def pathClient = sig.filename
-                def beginClient = pathClient.substring(0, pathClient.lastIndexOf('.'));
-                def endClient = pathClient.substring(pathClient.lastIndexOf('.'));
-                def documentClientName = beginClient +  "_" + point.id + "_" + it.id +"-p"+ endClient
+                String pathClient = posSignature.filename
+                String beginClient = pathClient.substring(0, pathClient.lastIndexOf('.'));
+                String endClient = pathClient.substring(pathClient.lastIndexOf('.'));
+                String documentClientName = String.format("%s_%s_%s-p%s", beginClient, point.id, it.id, endClient)
 
-                log.info "MULTI POS DOCUMENT --> SIGNATURE NAME: " + sig.name + " PDF TEMPLATE PATH: " + sig.templatePath + " WITH NEW NAME: " + documentName +" CLIENT NAME:"+documentClientName
-                totalPagesCount += workWithOneDocument(processInstance, sig, data, documentName, documentClientName)
+                log.info "MULTI POS DOCUMENT --> SIGNATURE NAME: " + posSignature.name + " PDF TEMPLATE PATH: " + posSignature.templatePath + " WITH NEW NAME: " + documentName +" CLIENT NAME:"+documentClientName
+                totalPagesCount += workWithOneDocument(processInstance, posSignature, data, documentName, documentClientName)
+            }
+        }
+
+        if(pepSignature) {
+            processInstance.representatives.findAll{AcceptorLocation.ABROAD.equals(it.typLokalizacji)}.each { representative ->
+                Map pepData = new PEPdeclarationMapper(processInstance, representative).getDataForMapping()
+
+                String documentName = String.format("Oswiadczenie PEP_%s.pdf", representative.id)
+
+                totalPagesCount += workWithOneDocument(processInstance, pepSignature, pepData, documentName, documentName)
             }
         }
 
         //usuwamy dokumenty, ktore byly wygenerowane dla obecnie usunietych punktow/posow
-        processInstance.documents.findAll{it.signature.forPoint}.each {
+        processInstance.documents.findAll{it.signature.hasPurpose(SignatureDetail.SignaturePurpose.POINT)}.each {
             long idFromName = fetchPointIdFromName(it.clientName)
 
             if (idFromName != -1){
@@ -288,7 +253,7 @@ class PdfService {
         }
 
         //usuwamy dokumenty, ktore byly wygenerowane dla obecnie usunietych posExchange
-        processInstance.documents.findAll{it.signature.forPos}.each {
+        processInstance.documents.findAll{it.signature.hasPurpose(SignatureDetail.SignaturePurpose.POS)}.each {
             long idFromName = fetchPosExchangeIdFromName(it.clientName)
 
             if (idFromName != -1){
@@ -372,7 +337,11 @@ class PdfService {
         log.info("Subscriptions and documents data renewed.")
     }
 
-    private def workWithOneDocument(def processInstance, def sig, def data, def documentName, def documentClientName){
+    private Integer workWithOneDocument(Process processInstance, Signature signature, Map data) {
+        return workWithOneDocument(processInstance, signature, data, signature.templatePath, signature.filename)
+    }
+
+    private Integer workWithOneDocument(Process processInstance, Signature sig, Map data, String documentName, String documentClientName){
         byte[] documentData = this.fillPdfFormFromURIWithFaksymile(sig.id, data, PdfService.FontType.ARIAL)
         if(!documentData) return 0
 
@@ -380,11 +349,11 @@ class PdfService {
 
         if (documentService.findDocumentByName(processInstance.documents, documentName) == null) {
             log.info "Creating new document [${sig.templatePath}]"
-            DocumentFile df = new DocumentFile(name: documentName, clientName:documentClientName, dateCreated: new Date(), lastUpdated: new Date(), pagesCount: pc, signature: sig)
+            DocumentFile df = new DocumentFile(name: documentName, clientName:documentClientName, dateCreated: new Date(),
+                    lastUpdated: new Date(), pagesCount: pc, signature: sig)
             df.setContent(new DocumentContent(content: documentData))
             df.save(flush: true)
-            log.info "DF id: " + df.id + " PageCount: " + df.pagesCount
-            log.info "Process ID: " + processInstance.id
+            log.info "DF id: " + df.id + " PageCount: " + df.pagesCount + " ProcessID: " + processInstance.id
             processInstance.addToDocuments(df)
             processInstance.save(flush: true)
         } else {
@@ -396,6 +365,36 @@ class PdfService {
             processInstance.save(flush: true)
         }
         return sig.showOnPreview ? pc : 0
+    }
+
+    def fillPdfFormFromURIWithFaksymile(def sigId, Map<String,String[]> panelData, FontType fontType) {
+        fillPdfFormFromURI2(sigId, panelData, fontType, false)
+    }
+
+    private def fillPdfFormFromURI2(def sigId, Map<String,String[]> panelData, FontType fontType, boolean withBlackFaksymile) {
+        String subscriptionsPath = appParametersService.getSubscriptionsPath()
+        String subscriptionsBlackNamePrefix = withBlackFaksymile ? appParametersService.getSubscriptionsBlackPrefix() : "";
+
+        Map<String,String[]> dataMap = new HashMap<String, String[]>()
+
+        Signature sig = Signature.get(sigId);
+        if (!sig.templatePath){
+            log.debug('skiping virtual signature')
+            return
+        }
+
+        sig.subscriptionDefinitions.findAll { (it.role == Subscription.PersonRole.ZARZAD1 || it.role == Subscription.PersonRole.ZARZAD2) && it.subscriptionPageNumber != null && it.subscriptionPageNumber > -1}
+                .eachWithIndex{ SubscriptionDefinition it, int i ->
+            dataMap.put(it.role.name() + i, [new File(subscriptionsPath+File.separator+subscriptionsBlackNamePrefix+it.fileName).toURI().toURL(), "", "signature", it.subscriptionPageNumber.toString(), (it.subscriptionX).toString(), it.subscriptionY.toString(), it.scaleX, it.scaleY] as String[])
+        }
+
+        if (panelData != null) {
+            dataMap.putAll(panelData)
+        }
+
+        String pdfTemplatePath = appParametersService.getPdfTemplatePath(sig.templatePath)
+
+        return PdfGenerator.generatePdfContentFromURI(pdfTemplatePath, dataMap, fontType, appParametersService.getFontUri())
     }
 
 }

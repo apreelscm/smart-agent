@@ -29,7 +29,7 @@ class Representative implements Serializable {
     String obywatelstwo
     String adres
 
-    Boolean czyStanowiskoPolityczne
+    Boolean czyStanowiskoPolityczne = false
 
     Boolean posiadaAkceptanta
     Boolean kontrolujeAkceptanta

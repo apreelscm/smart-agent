@@ -5,6 +5,7 @@ import com.eservice.eumowy.pdfmapper.representative.BeneficiariesMapper
 import com.eservice.eumowy.pdfmapper.representative.EmployeeAnnotationsMapper
 import com.eservice.eumowy.pdfmapper.representative.LegalFormMapper
 import com.eservice.eumowy.pdfmapper.representative.RepresentativesMapper
+import com.eservice.eumowy.Process
 
 class PABRformMapper implements Mapper {
     private Process process

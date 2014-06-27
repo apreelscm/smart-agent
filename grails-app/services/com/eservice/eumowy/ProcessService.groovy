@@ -114,6 +114,10 @@ class ProcessService {
         result ?: new Process(result)
     }
 
+    Boolean hasNowaUmowa(Process process) {
+        return isProcessHasActivity(process, "nowaUmowa")
+    }
+
     Boolean isProcessHasActivity(Process process, String activityCode) {
         return containsActivity(process.activities, activityCode)
     }
