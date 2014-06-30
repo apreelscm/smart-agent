@@ -20,7 +20,6 @@ class ProcessService {
     def cbdService
     def panelMockService
     def calculatorService
-    def bisnodeService
 
     void invalidateCaches() {
         cbdService.invalidateCaches()
@@ -255,6 +254,7 @@ class ProcessService {
             representativeProperties.put("id", it.id)
 
             representativeProperties.remove("typ")
+            representativeProperties.remove("fullName")
 
             if(Representative.Type.REPRESENTATIVE.equals(type)) {
                 representativeProperties.remove("posiadaAkceptanta")
@@ -317,24 +317,16 @@ class ProcessService {
         fromEumowy
     }
 
-    def getRepresentative1(Process process) {
-        Representative representative = process.representatives[0]
+    Representative getRepresentative(Process process, Integer index) {
+        ArrayList representatives = process.representatives.toArray(false).sort{it.id}
 
-        if(representative?.imie && representative?.nazwisko) {
+        Representative representative = representatives[index]
+
+        if(representative) {
             return [name: representative?.imie, surname: representative?.nazwisko]
-        } else {
-            return null
         }
-    }
 
-    def getRepresentative2(Process process) {
-        Representative representative = process.representatives[1]
-
-        if(representative.imie && representative.nazwisko) {
-            return [name: representative?.imie, surname: representative?.nazwisko]
-        } else {
-            return null
-        }
+        return null
     }
 
     /**
@@ -1711,11 +1703,11 @@ class ProcessService {
         Integer requiredSubscriptionsCount = 1 //PH
 
         if(!hasWymianaTermianalaOnly(process)) {
-            if(getRepresentative1(process)) {
+            if(getRepresentative(process, 0)) {
                 requiredSubscriptionsCount++
             }
 
-            if(getRepresentative2(process)) {
+            if(getRepresentative(process, 1)) {
                 requiredSubscriptionsCount++
             }
         }

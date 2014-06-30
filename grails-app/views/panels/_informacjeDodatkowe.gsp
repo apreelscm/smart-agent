@@ -8,7 +8,7 @@
                         <span>
                             <g:select name="dzialalnoscForma"
                                       from="['', 'Spółka akcyjna', 'Spółka z o.o.', 'Spółka cywilna', 'Osoba fizyczna', 'Spółka komandytowa', 'Spółka Jawna']"
-                                      keys="['inne', 'spolka_akcyjna', 'spolka_zoo', 'spolka_cywilna', 'osoba_fizyczna', 'spolka_komandytowa', 'spolka_jawna']"
+                                      keys="['', 'spolka_akcyjna', 'spolka_zoo', 'spolka_cywilna', 'osoba_fizyczna', 'spolka_komandytowa', 'spolka_jawna']"
                                       value="${data.dzialalnoscForma}"
                                       style="width: 200px;"/>
                         </span>

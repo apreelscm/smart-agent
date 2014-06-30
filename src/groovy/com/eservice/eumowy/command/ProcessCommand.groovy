@@ -754,8 +754,14 @@ class ProcessCommand implements Serializable {
         ifOplataDinersClub(nullable:false, blank:false, shared: "number3Precision") //1.111 %, M
         ifOplataIKO(nullable:false, blank:false, shared: "number3Precision") //1.111 %, M
         ifOplataPKOPB(nullable:false, blank:false, shared: "number3Precision") //1.111 %, M
-        dzialalnoscForma(nullable:false, blank:true)
-        dzialalnoscFormaInna(nullable:true, blank:true, shared: "alphanumeric")
+        dzialalnoscForma(nullable:false, blank:true, validator: {value, cmd, errors ->
+            CustomValidator.validateRequired(value, errors, cmd.hasNewUmowa && !cmd.dzialalnoscFormaInna && !errors.hasFieldErrors("dzialalnoscForma")
+                    , "dzialalnoscForma", "dzialanoscForma.required")
+        })
+        dzialalnoscFormaInna(nullable:true, blank:true, shared: "alphanumeric", validator: {value, cmd, errors ->
+            CustomValidator.validateRequired(value, errors, cmd.hasNewUmowa && !cmd.dzialalnoscForma && !errors.hasFieldErrors("dzialalnoscForma"),
+                    "dzialalnoscForma", "dzialanoscForma.required")
+        })
         dzialalnoscDokument(nullable:false, blank:true)
         dzialalnoscDokumentInny(nullable:true, blank:true, shared: "alphanumeric")
 
@@ -1255,7 +1261,8 @@ class ProcessCommand implements Serializable {
             return RepresentativesValidator.validate(value, cmd, errors, "representatives")
         })
         beneficiaries(nullable: true, validator: {value, cmd, errors ->
-            return RepresentativesValidator.validate(value, cmd, errors, "beneficiaries")
+            AcceptorLocation.ABROAD.equals(cmd.akceptantLokalizacja) ?
+                RepresentativesValidator.validate(value, cmd, errors, "beneficiaries") : true
         })
 
         allPoints(nullable:true)

@@ -209,20 +209,19 @@ class ActivityController {
 
         clientSignature {
             onEntry {
-                def processInstance = flow.processInstance
-                def isUzupelnijPodpisy = flow.isUzupelnijPodpisy
-                flow.representative1 = flow.representative1 != null ? flow.representative1 : processService.getRepresentative1(processInstance)
-                flow.representative2 = flow.representative2 != null ? flow.representative2 : processService.getRepresentative2(processInstance)
+                Process processInstance = flow.processInstance
+                flow.representative1 = flow.representative1 != null ? flow.representative1 : processService.getRepresentative(processInstance, 0)
+                flow.representative2 = flow.representative2 != null ? flow.representative2 : processService.getRepresentative(processInstance, 1)
                 flow.requiredNumberOfSubscriptions = 1 //PH subscription is always required
 
                 def isWymianaTerminalaOnly = processService.containsActivity(flow.processInstance.activities,"wymianaTerminala") && flow.processInstance.activities.size()==1
 
                 if (!isWymianaTerminalaOnly){
-                    if (flow.representative1?.name != null && flow.representative1?.surname != null) {
+                    if (flow.representative1) {
                         flow.requiredNumberOfSubscriptions++
                     }
 
-                    if (flow.representative2?.name != null && flow.representative2?.surname != null) {
+                    if (flow.representative2) {
                         flow.requiredNumberOfSubscriptions++
                     }
                 }
@@ -622,6 +621,7 @@ class ActivityController {
 
                 flow.data = processCmd
                 flow.processInstance = processInstance
+                flow.czyNowaUmowa = processService.isProcessHasActivity(processInstance, "nowaUmowa")
             }
             render(view: "../createProcess/selectedPanels")
             on("reject"){
@@ -745,8 +745,8 @@ class ActivityController {
                 processInstance.client.name = cmd.akceptantNazwaOficjalna;
                 processInstance.saleSection = calculatorService.getCalcProperty(conversation.calc,'SEGMENT_SPRZEDAZOWY')
 
-                flow.representative1 = processService.getRepresentative1(processInstance)
-                flow.representative2 = processService.getRepresentative2(processInstance)
+                flow.representative1 = processService.getRepresentative(processInstance, 0)
+                flow.representative2 = processService.getRepresentative(processInstance, 1)
 
                 if (!processInstance.save()){
                     processInstance.errors.each {
@@ -1074,8 +1074,8 @@ class ActivityController {
                 processInstance = processService.populateProcessWithData(processInstance, cmd, conversation.calc)
                 processInstance.notesToCoa = cmd.notes
 
-                flow.representative1 = processService.getRepresentative1(processInstance)
-                flow.representative2 = processService.getRepresentative2(processInstance)
+                flow.representative1 = processService.getRepresentative(processInstance, 0)
+                flow.representative2 = processService.getRepresentative(processInstance, 1)
 
                 if (!processInstance.save()){
                     processInstance.errors.each {

@@ -1,6 +1,6 @@
 package com.eservice.eumowy
 
-class SignatureDetail {
+class SignatureDetail implements Serializable{
 
     SignaturePurpose typ
 
