@@ -1,7 +1,6 @@
 
 package com.eservice.eumowy
 
-import com.eservice.eumowy.command.RepresentativeCommand
 import com.eservice.eumowy.dto.MerchantDetailsDTO
 import grails.converters.JSON
 import groovy.sql.GroovyRowResult
@@ -34,7 +33,6 @@ class ActivityController {
     def pdfService
 	def documentService
     def dictionaryService
-    def bisnodeService
 
     def springSecurityService
 
@@ -1493,20 +1491,20 @@ class ActivityController {
     }
 
     def _processDocumentCreation(Process process, String requestVersion, def requiredNumberOfSubscriptions)	{
-        def dataUmowy = DateUtils.getFormattedDate(DateUtils.parseWithTimezone(process.processData?.find{ pData -> 'dataUmowy'.equals(pData.name)}.value), DateUtils.YYYY_MM_DD)
 
         if (ELECTRIONICAL.equals(requestVersion)) {
-
             if (params?.numberOfSubscriptions?.toInteger() == requiredNumberOfSubscriptions) {
-                process.documents.each { DocumentFile doc ->
-                    updateDataUmowy(doc, dataUmowy, process)
+                process.documents.findAll{!it.signature.hasPurpose(SignatureDetail.SignaturePurpose.REPRESENTATIVE)}.each { DocumentFile doc ->
+                    pdfService.updateDataUmowyOnDocument(doc, process)
 
-                    byte[] newContent = pdfService.addClientSubscriptionsToDocument(doc.content.content, doc.signature.id, process.subscriptions)
+                    byte[] newContent = pdfService.getDocumentWithSubscriptions(doc, process.subscriptions)
                     doc.content.content = newContent
                     doc.content.discard()
                 }
 
-                log.info "ELECTRONICAL VERSION for process" + process.id
+                pdfService.addSubscriptionsToRepresentativeDocuments(process)
+
+                log.info "ELECTRONICAL VERSION for process " + process.id
 
                 Map mailBodyParams = processService.createMailParametersForElectronicalVersion(process)
                 String recipient = mailBodyParams.recipient
@@ -1538,8 +1536,7 @@ class ActivityController {
                     }
                 }
             }
-        }
-        else if (PAPER.equals(requestVersion)) {
+        } else if (PAPER.equals(requestVersion)) {
             process.documents.each { DocumentFile df ->
                 DocumentContent ndc = pdfService.cleanAgrementDateContent(df.content);
                 ndc.setDocument(df)
@@ -1564,11 +1561,10 @@ class ActivityController {
             } else {
                 emailService.sendDocumentsPaperVersion(documents, mailBodyParams)
             }
-        }
-        else if (TEMPLATES.equals(requestVersion)) {
+        } else if (TEMPLATES.equals(requestVersion)) {
 			List<DocumentFile> documentFilesWithBlackFaksymileList = new ArrayList<DocumentFile>()
 			process.documents.findAll{it.signature?.sendToClient}?.each { DocumentFile doc ->
-                updateDataUmowy(doc, dataUmowy, process)
+                pdfService.updateDataUmowyOnDocument(doc, process)
 
 				DocumentFile dfwbf = new DocumentFile(name: doc.name, clientName: doc.clientName , dateCreated: doc.dateCreated, lastUpdated: doc.lastUpdated, pagesCount: doc.pagesCount)
 				byte[] newContent = pdfService.addBlackFaksymileToDocument(doc.content.content, doc.signature.id)
@@ -1637,12 +1633,6 @@ class ActivityController {
                 it.calculatorService =calculatorService
             }
         }
-    }
-
-    private def updateDataUmowy(def doc, def dataUmowy, def process){
-        DocumentContent contentWithUpdatedDataUmowy = pdfService.updateDataUmowyOnDocument(doc.content, process, dataUmowy)
-        doc.setContent(contentWithUpdatedDataUmowy)
-        doc.save(flush: true)
     }
 
 }

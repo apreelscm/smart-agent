@@ -39,7 +39,7 @@ class PEPdeclarationMapper extends AbstractPdfMapper implements Mapper{
 
         sb.append(" ").append(process.getData("akceptantMiasto")).append(" ")
                 .append(process.getData("akceptantKodPocztowy")).append(" ")
-                .append("akceptantPoczta")
+                .append(process.getData("akceptantPoczta"))
 
         return sb.toString()
     }

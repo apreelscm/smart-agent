@@ -98,6 +98,14 @@ class Representative implements Serializable {
         return imie + " " + nazwisko
     }
 
+    public boolean isRepresentative() {
+        return Type.REPRESENTATIVE.equals(typ)
+    }
+
+    public boolean isBeneficiary() {
+        return Type.BENEFICIARY.equals(typ)
+    }
+
     def afterInsert() {
         LOG.info(String.format("Utworzono %s - %s (id: %s)", typ, fullName, id))
     }

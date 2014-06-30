@@ -255,6 +255,8 @@ class ProcessService {
 
             representativeProperties.remove("typ")
             representativeProperties.remove("fullName")
+            representativeProperties.remove("representative")
+            representativeProperties.remove("beneficiary")
 
             if(Representative.Type.REPRESENTATIVE.equals(type)) {
                 representativeProperties.remove("posiadaAkceptanta")
@@ -317,8 +319,8 @@ class ProcessService {
         fromEumowy
     }
 
-    Representative getRepresentative(Process process, Integer index) {
-        Representative representative = process.representatives[index]
+    Map getRepresentative(Process process, Integer index) {
+        Representative representative = process.representatives.findAll{Representative.Type.REPRESENTATIVE.equals(it.typ)}[index]
 
         if(representative) {
             return [name: representative?.imie, surname: representative?.nazwisko]

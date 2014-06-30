@@ -500,7 +500,7 @@
                     <li>
                         <span>
                             <a class="big-link" id="subscribe-REPRESENTATIVE1" data-type="ACCEPTANT1"
-                               href="eumowysig://data/${representative1.imie.encodeAsURL()}/${representative1.nazwisko.encodeAsURL()}/ACCEPTANT1/${message(code:'subscription.agreement').encodeAsURL()}/${processInstance.id}/${session.id}/${createLink(controller: "subscriptionEx", action:"saveSubscription", absolute: true).encodeAsURL()}">${representative1.imie} ${representative1.nazwisko} - Reprezentant</a>
+                               href="eumowysig://data/${representative1.name.encodeAsURL()}/${representative1.surname.encodeAsURL()}/ACCEPTANT1/${message(code:'subscription.agreement').encodeAsURL()}/${processInstance.id}/${session.id}/${createLink(controller: "subscriptionEx", action:"saveSubscription", absolute: true).encodeAsURL()}">${representative1.name} ${representative1.surname} - Reprezentant</a>
                         </span>
                         <span>
                             <a href="" id="sgnRep1" class="button action"><g:message code="subscription.refresh" /></a>
@@ -508,7 +508,7 @@
                     </li>
 
                     <li><span><a class="big-link" id="subscribe-REPRESENTATIVE2" data-type="ACCEPTANT2"
-                                 href="eumowysig://data/${representative2?.imie.encodeAsURL()}/${representative2?.nazwisko.encodeAsURL()}/ACCEPTANT2/${message(code:'subscription.agreement').encodeAsURL()}/${processInstance.id}/${session.id}/${createLink(controller: "subscriptionEx", action:"saveSubscription", absolute: true).encodeAsURL()}">${representative2?.imie} ${representative2?.nazwisko} - Reprezentant</a>
+                                 href="eumowysig://data/${representative2?.name.encodeAsURL()}/${representative2?.surname.encodeAsURL()}/ACCEPTANT2/${message(code:'subscription.agreement').encodeAsURL()}/${processInstance.id}/${session.id}/${createLink(controller: "subscriptionEx", action:"saveSubscription", absolute: true).encodeAsURL()}">${representative2?.name} ${representative2?.surname} - Reprezentant</a>
                     </span>
                         <span>
                             <a href="" id="sgnRep2" class="button action"><g:message code="subscription.refresh" /></a>
