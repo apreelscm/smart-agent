@@ -318,9 +318,7 @@ class ProcessService {
     }
 
     Representative getRepresentative(Process process, Integer index) {
-        ArrayList representatives = process.representatives.toArray(false).sort{it.id}
-
-        Representative representative = representatives[index]
+        Representative representative = process.representatives[index]
 
         if(representative) {
             return [name: representative?.imie, surname: representative?.nazwisko]
@@ -1025,28 +1023,27 @@ class ProcessService {
     };
 
     private void fillRepresentatives(ProcessCommand processCommand, Process process) {
-        processCommand.representatives.each { representativeCmd ->
-            Representative representative = saveRepresentative(Representative.Type.REPRESENTATIVE, representativeCmd)
+        updateRepresentatives(process, processCommand.representatives, Representative.Type.REPRESENTATIVE)
+        updateRepresentatives(process, processCommand.beneficiaries, Representative.Type.BENEFICIARY)
+    }
 
-            if(representative) {
-                log.info(String.format("Representative %s %s saved/updated (process: %s)", representative.imie, representative.nazwisko, process.id))
-                process.addToRepresentatives(representative)
-            }
-        }
+    private void updateRepresentatives(Process process, List<RepresentativeCommand> representatives, Representative.Type type) {
+        representatives.each { representativeCmd ->
+            Representative representative = Representative.findById(representativeCmd.properties.id)
 
-        processCommand.beneficiaries.each { beneficiaryCmd ->
-            Representative beneficiary = saveRepresentative(Representative.Type.BENEFICIARY, beneficiaryCmd)
-
-            if(beneficiary) {
-                log.info(String.format("Beneficiary %s %s saved/updated (process: %s)", beneficiary.imie, beneficiary.nazwisko, process.id))
-                process.addToRepresentatives(beneficiary)
+            if (representative && !representativeCmd.imie && !representativeCmd.nazwisko) {
+                log.info(String.format("Removing %s %s - empty name", type, representative.id))
+                process.removeFromRepresentatives(representative)
+            } else {
+                representative = saveRepresentative(type, representativeCmd, representative)
+                if (representative && !process.representatives?.contains(representative)) {
+                    process.addToRepresentatives(representative)
+                }
             }
         }
     }
 
-    private Representative saveRepresentative(Representative.Type type, RepresentativeCommand representativeCmd) {
-        Representative representative = Representative.findById(representativeCmd.properties.id)
-
+    private Representative saveRepresentative(Representative.Type type, RepresentativeCommand representativeCmd, Representative representative) {
         if(!representative && !representativeCmd.imie && !representativeCmd.nazwisko) {
             log.info("Not saving representative - empty name and surname")
             return null
@@ -1055,8 +1052,6 @@ class ProcessService {
         if(!representative) {
             representative = new Representative()
             representative.typ = type
-
-            log.info(String.format("Saving new %s %s %s", representative.typ, representativeCmd.imie, representativeCmd.nazwisko))
         }
 
         representativeCmd.properties.remove("id")

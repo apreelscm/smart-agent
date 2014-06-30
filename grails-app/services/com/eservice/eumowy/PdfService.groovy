@@ -3,6 +3,7 @@ package com.eservice.eumowy
 import com.eservice.eumowy.enums.AcceptorLocation
 import com.eservice.eumowy.pdfmapper.PABRformMapper
 import com.eservice.eumowy.pdfmapper.PEPdeclarationMapper
+import org.apache.log4j.Logger
 
 import java.awt.image.BufferedImage
 import java.util.concurrent.ExecutorService
@@ -19,6 +20,7 @@ class PdfService {
     def processService
 	
 	private ExecutorService executor;
+    private static final Logger LOG = Logger.getLogger(PdfService.class)
 
 	public static enum FontType {
         HELVETICA(""),
@@ -245,9 +247,8 @@ class PdfService {
                 }
 
                 if (toDelete){
-                    println 'Usuwam plik dla nieistniejacego POSa: ' + idFromName + ' (' + it.clientName + ')'
+                    LOG.info('Usuwam plik dla nieistniejacego POSa: ' + idFromName + ' (' + it.clientName + ')')
                     processInstance.removeFromDocuments(it)
-                    processInstance.save(flush: true)
                 }
             }
         }
@@ -266,14 +267,33 @@ class PdfService {
                 }
 
                 if (toDelete){
-                    println 'Usuwam plik dla nieistniejacego Pos Exchange: ' + idFromName + ' (' + it.clientName + ')'
+                    LOG.info('Usuwam plik dla nieistniejacego Pos Exchange: ' + idFromName + ' (' + it.clientName + ')')
                     processInstance.removeFromDocuments(it)
-                    processInstance.save(flush: true)
                 }
             }
         }
 
-		processInstance.discard()
+        processInstance.documents.findAll{it.signature.hasPurpose(SignatureDetail.SignaturePurpose.REPRESENTATIVE)}.each {
+            String representativeId = it.name.substring(it.name.indexOf('_') + 1, it.name.indexOf('.pdf'))
+
+            boolean toDelete = true
+            for (Representative representative : processInstance.representatives){
+                if(AcceptorLocation.COUNTRY.equals(representative.typLokalizacji)) { //oswiadczenie PEP generowane jest tylko dla AceeptorLocation.ABROAD
+                    break
+                } else if (representativeId.equals(representative.id.toString())) {
+                    toDelete = false
+                    break
+                }
+            }
+
+            if (toDelete) {
+                LOG.info(String.format("Usuwam plik dla Reprezentanta: %s (%s)", representativeId, it.clientName))
+                processInstance.removeFromDocuments(it)
+            }
+        }
+
+        processInstance.save(flush: true)
+
         ['totalPagesCount': totalPagesCount, 'processInstance': processInstance]
     }
 

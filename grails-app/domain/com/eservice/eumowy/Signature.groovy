@@ -49,7 +49,9 @@ class Signature implements Serializable {
         boolean hasPurpose = false
 
         signatureDetails.each { detail ->
-            purpose.equals(detail.typ)
+            if (purpose.equals(detail.typ)) {
+                hasPurpose = true
+            }
         }
 
         return hasPurpose

@@ -5,6 +5,8 @@ import com.eservice.eumowy.enums.IdentityDocumentType
 import org.apache.commons.logging.LogFactory
 
 class Representative implements Serializable {
+    private static final LOG = LogFactory.getLog(Representative.class)
+
     public enum Type{
         REPRESENTATIVE, BENEFICIARY
     }
@@ -94,5 +96,13 @@ class Representative implements Serializable {
 
     public String getFullName() {
         return imie + " " + nazwisko
+    }
+
+    def afterInsert() {
+        LOG.info(String.format("Utworzono %s - %s (id: %s)", typ, fullName, id))
+    }
+
+    def afterUpdate() {
+        LOG.info(String.format("Zaktualizowano %s - %s (id: %s)", typ, fullName, id))
     }
 }
