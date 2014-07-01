@@ -4,9 +4,15 @@ import com.eservice.eumowy.enums.AcceptorLocation
 import com.eservice.eumowy.pdfmapper.PABRformMapper
 import com.eservice.eumowy.pdfmapper.PEPdeclarationMapper
 import com.eservice.eumowy.util.DateUtils
+import com.lowagie.text.Document
+import com.lowagie.text.pdf.PdfCopy
+import com.lowagie.text.pdf.PdfReader
+import org.apache.commons.io.FileUtils
 import org.apache.log4j.Logger
 
 import java.awt.image.BufferedImage
+import java.nio.file.Files
+import java.nio.file.Paths
 import java.util.concurrent.ExecutorService
 import org.apache.pdfbox.pdmodel.PDDocument
 
@@ -368,6 +374,52 @@ class PdfService {
         return name.substring(name.lastIndexOf('_') + 1, name.lastIndexOf('.pdf'))
     }
 
+    void createMergedBeneficiaryPDF(Process process) {
+        List<DocumentFile> documentsToMerge = process.documents.findAll{it.signature.hasPurpose(SignatureDetail.SignaturePurpose.REPRESENTATIVE)}
+        documentsToMerge.add(process.documents.find{it.name.startsWith("Formularz_PABR")})
+
+        log.info(String.format("Found %s documents in process %s for merging into single beneficiary document.",
+                documentsToMerge.size(), process.id))
+
+        if(documentsToMerge.size() == 0) {
+            return
+        }
+
+        Document mergedDocument = new Document()
+        try {
+            String outputFilename = getBeneficiaryPDFfilepath(process)
+
+            PdfCopy copy = new PdfCopy(mergedDocument, new FileOutputStream(outputFilename))
+
+            mergedDocument.open()
+
+            log.info(String.format("Trying to create merged beneficiary document in location %s for process %s", outputFilename, process.id))
+
+            PdfReader reader
+            int numberOfPages
+
+            documentsToMerge.each { document ->
+                reader = new PdfReader(document?.content?.content)
+                numberOfPages = reader.getNumberOfPages()
+
+                for (int pageNo = 0; pageNo < numberOfPages; ) {
+                    copy.addPage(copy.getImportedPage(reader, ++pageNo));
+                }
+            }
+        } catch (IOException e) {
+            throw e
+        } finally {
+            mergedDocument?.close()
+        }
+    }
+
+    private String getBeneficiaryPDFfilepath(Process process) {
+        String nip = process.getData("nip")
+        String dataUmowy = DateUtils.getFormattedDate(DateUtils.parseWithTimezone(process.getData("dataUmowy")), "yyyyMMdd")
+
+        return appParametersService.getBeneficiaryPath(String.format("%s-%s.pdf", nip, dataUmowy))
+    }
+
     def cleanAgrementDateContent(DocumentContent dc){
         //pola zapleniane na podstawie 'dataUmowy'
         def fieldsToClean = ['dataUmowy', 'wydrukGrafikiData', 'dzialaniaMatematyczneData',
@@ -376,7 +428,7 @@ class PdfService {
     }
 
     def updateDataUmowyOnDocument(DocumentFile document, Process process){
-        String dataUmowy = DateUtils.getFormattedDate(DateUtils.parseWithTimezone(process.processData?.find{ pData -> 'dataUmowy'.equals(pData.name)}.value), DateUtils.YYYY_MM_DD)
+        String dataUmowy = DateUtils.getFormattedDate(DateUtils.parseWithTimezone(process.getData("dataUmowy")), DateUtils.YYYY_MM_DD)
 
         List candidatesForUpdate = ['dataUmowy', 'wydrukGrafikiData', 'dzialaniaMatematyczneData',
                 'pierwszaSesjaData', 'systemKasowyData', 'weryfikacjaPINData', 'czasObslugiData'];

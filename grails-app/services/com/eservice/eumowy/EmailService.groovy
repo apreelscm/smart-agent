@@ -3,6 +3,7 @@ package com.eservice.eumowy
 import grails.plugin.cache.Cacheable
 import org.perf4j.StopWatch
 import org.perf4j.log4j.Log4JStopWatch
+import org.springframework.mail.MailException
 import pdfgenerator.PdfGenerator
 
 class EmailService {
@@ -12,11 +13,12 @@ class EmailService {
 
     def mailService
     def messageSource
+    def processService
 
     private static final String COA_MAIL = "coa@eservice.com.pl"
 
 	@Cacheable(value="emailTampletByName", key="#name")
-	def getEmailTampletesByName(def name){
+	EmailTemplates getEmailTampletesByName(def name){
 		return EmailTemplates.findByName(name,[cache:true])
 	}
 
@@ -50,10 +52,36 @@ class EmailService {
         sendMail(emailTemplate, recipient, null, bodyParams, documents)
     }
 
-	def sendDocumentsAccepted(def recipient, List<DocumentFile> documents, def bodyParams) {
-		def emailTemplate = getEmailTampletesByName(EmailTemplates.EmailTemplateType.DOCUMENTS_ACCEPTED)
-        sendMailWithTryCatch(emailTemplate, recipient, null, bodyParams, documents)
+	boolean sendProcessAcceptedMails(Process processInstance, String notesFromZrd) {
+        try {
+            if (processService.hasPEPdeclarations(processInstance)) {
+                sendPEPnotificationEmail(processInstance)
+            }
+            sendDocumentsAcceptedInfoMail(processInstance, notesFromZrd)
+            return true
+        } catch (MailException e) {
+            e.printStackTrace()
+            return false
+        }
 	}
+
+    void sendDocumentsAcceptedInfoMail(Process processInstance, String notesFromZrd) {
+        EmailTemplates emailTemplate = getEmailTampletesByName(EmailTemplates.EmailTemplateType.DOCUMENTS_ACCEPTED)
+
+        Map mailBodyParams = [merchantName: processInstance.client.name, merchantNip: processInstance.client.nip,
+                activities: processService.getActivities(processInstance), rejectReason: notesFromZrd]
+
+        sendMail(emailTemplate, processInstance.phEmail, null, mailBodyParams, null)
+    }
+
+    void sendPEPnotificationEmail(Process process) {
+        EmailTemplates template = getEmailTampletesByName(EmailTemplates.EmailTemplateType.PEP_NOTIFICATION)
+
+        Map bodyParams = [merchantName: process.client.name, merchantNip: process.client.nip]
+        Map subjectParams = [process.client.nip, process.client.name]
+
+        sendMail(template, template.recipient, subjectParams, bodyParams, null)
+    }
 
     def sendDocumentsAcceptedToPostSend(List<DocumentFile> documents, def bodyParams) {
         def emailTemplate = getEmailTampletesByName(EmailTemplates.EmailTemplateType.DOCUMENTS_MISSING_MAIL)

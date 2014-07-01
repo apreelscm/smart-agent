@@ -1691,6 +1691,12 @@ class ProcessService {
         return containsActivity(process.activities, "wymianaTerminala") && process.activities.size() == 1
     }
 
+    Boolean hasPEPdeclarations(Process process) {
+        List<DocumentFile> pepDeclarations = process.documents.findAll {it.signature.hasPurpose(SignatureDetail.SignaturePurpose.REPRESENTATIVE)}
+
+        return pepDeclarations.size() > 0
+    }
+
     String getFromProcessData(Process process, String key){
         def result = process.processData.find{ processData -> processData.name.equals(key)}
         return (result && result?.value) ? result?.value : ""
