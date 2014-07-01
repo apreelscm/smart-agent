@@ -15,7 +15,7 @@ class PEPdeclarationMapperTest {
     void setUp() {
         process = new Process()
         process.processData = new HashSet<ProcessData>()
-        process.representatives = new HashSet<Representative>()
+        process.representatives = new ArrayList<Representative>()
 
         representative = new Representative(typ: Representative.Type.REPRESENTATIVE)
     }
@@ -28,7 +28,12 @@ class PEPdeclarationMapperTest {
         //when
         process.processData.add(new ProcessData(name: 'nip', value: '1234'))
         process.processData.add(new ProcessData(name: 'akceptantNazwaOficjalna', value: 'NAZWA'))
-        process.processData.add(new ProcessData(name: 'akceptantAdres', value: 'ADRES'))
+        process.processData.add(new ProcessData(name: 'akceptantUlicaTytul', value: 'UL'))
+        process.processData.add(new ProcessData(name: 'akceptantUlica', value: 'JAKASTAM'))
+        process.processData.add(new ProcessData(name: 'akceptantNrDomu', value: '15'))
+        process.processData.add(new ProcessData(name: 'akceptantMiasto', value: 'WARSZAWA'))
+        process.processData.add(new ProcessData(name: 'akceptantKodPocztowy', value: '02-222'))
+        process.processData.add(new ProcessData(name: 'akceptantPoczta', value: 'WARSZAWA'))
 
         CommandHelper.setProperties(representative, representativeProperties)
         process.representatives.add(representative)
@@ -38,7 +43,7 @@ class PEPdeclarationMapperTest {
         //then
         assertEquals(data["nip"], ["1234"] as String[])
         assertEquals(data["akceptantNazwaOficjalna"], ["NAZWA"] as String[])
-        assertEquals(data["akceptantAdres"], ["ADRES"] as String[])
+        assertEquals(data["siedzibaAkceptanta"], ["UL JAKASTAM 15 WARSZAWA 02-222 WARSZAWA"] as String[])
         assertEquals(data["PEP_true"], [false, "", "checkbox"] as String[])
         assertEquals(data["PEP_false"], [true, "", "checkbox"] as String[])
     }

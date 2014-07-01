@@ -18,37 +18,37 @@ class EmailService {
     private static final String COA_MAIL = "coa@eservice.com.pl"
 
 	@Cacheable(value="emailTampletByName", key="#name")
-	EmailTemplates getEmailTampletesByName(def name){
+	EmailTemplates getEmailTemplatesByName(def name){
 		return EmailTemplates.findByName(name,[cache:true])
 	}
 
     def sendNotesToCOA(def bodyParams) {
-        def emailTemplate = getEmailTampletesByName(EmailTemplates.EmailTemplateType.NOTES_TO_COA)
+        def emailTemplate = getEmailTemplatesByName(EmailTemplates.EmailTemplateType.NOTES_TO_COA)
         sendMailWithTryCatch(emailTemplate, emailTemplate.recipients , null, bodyParams, null)
     }
 
 	def sendDocumentsPaperVersion(List<DocumentFile> documents, def bodyParams) {
-        def emailTemplate = getEmailTampletesByName(EmailTemplates.EmailTemplateType.DOCUMENTS_PAPER_VERSION)
+        def emailTemplate = getEmailTemplatesByName(EmailTemplates.EmailTemplateType.DOCUMENTS_PAPER_VERSION)
 		sendMail(emailTemplate, COA_MAIL, null, bodyParams, documents)
 	}
 
     def sendDocumentsPaperVersion(def recipient, List<DocumentFile> documents, def bodyParams) {
-        def emailTemplate = getEmailTampletesByName(EmailTemplates.EmailTemplateType.DOCUMENTS_PAPER_VERSION)
+        def emailTemplate = getEmailTemplatesByName(EmailTemplates.EmailTemplateType.DOCUMENTS_PAPER_VERSION)
         sendMail(emailTemplate, recipient, null, bodyParams, documents)
     }
 
     def sendDocumentsTemplateVersion(def recipient, List<DocumentFile> documents, def bodyParams) {
-        def emailTemplate = getEmailTampletesByName(EmailTemplates.EmailTemplateType.DOCUMENTS_TEMPLATE_VERSION)
+        def emailTemplate = getEmailTemplatesByName(EmailTemplates.EmailTemplateType.DOCUMENTS_TEMPLATE_VERSION)
         sendMail(emailTemplate, recipient, null, bodyParams, documents)
     }
 
 	def sendDocumentsElectronicalVersion(def recipient, List<DocumentFile> documents, def bodyParams) {
-		def emailTemplate = getEmailTampletesByName(EmailTemplates.EmailTemplateType.DOCUMENTS_ELECTRONICAL_VERSION)
+		def emailTemplate = getEmailTemplatesByName(EmailTemplates.EmailTemplateType.DOCUMENTS_ELECTRONICAL_VERSION)
         sendMail(emailTemplate, recipient, null, bodyParams, documents)
 	}
 
     def sendDocumentsNotNewAggrementElectronicalVersion(def recipient, List<DocumentFile> documents, def bodyParams) {
-        def emailTemplate = getEmailTampletesByName(EmailTemplates.EmailTemplateType.DOCUMENTS_NOT_NEW_AGGREMENT_ELECTRONICAL_VERSION)
+        def emailTemplate = getEmailTemplatesByName(EmailTemplates.EmailTemplateType.DOCUMENTS_NOT_NEW_AGGREMENT_ELECTRONICAL_VERSION)
         sendMail(emailTemplate, recipient, null, bodyParams, documents)
     }
 
@@ -66,7 +66,7 @@ class EmailService {
 	}
 
     void sendDocumentsAcceptedInfoMail(Process processInstance, String notesFromZrd) {
-        EmailTemplates emailTemplate = getEmailTampletesByName(EmailTemplates.EmailTemplateType.DOCUMENTS_ACCEPTED)
+        EmailTemplates emailTemplate = getEmailTemplatesByName(EmailTemplates.EmailTemplateType.DOCUMENTS_ACCEPTED)
 
         Map mailBodyParams = [merchantName: processInstance.client.name, merchantNip: processInstance.client.nip,
                 activities: processService.getActivities(processInstance), rejectReason: notesFromZrd]
@@ -75,7 +75,7 @@ class EmailService {
     }
 
     void sendPEPnotificationEmail(Process process) {
-        EmailTemplates template = getEmailTampletesByName(EmailTemplates.EmailTemplateType.PEP_NOTIFICATION)
+        EmailTemplates template = getEmailTemplatesByName(EmailTemplates.EmailTemplateType.PEP_NOTIFICATION)
 
         Map bodyParams = [merchantName: process.client.name, merchantNip: process.client.nip]
         Map subjectParams = [process.client.nip, process.client.name]
@@ -84,12 +84,12 @@ class EmailService {
     }
 
     def sendDocumentsAcceptedToPostSend(List<DocumentFile> documents, def bodyParams) {
-        def emailTemplate = getEmailTampletesByName(EmailTemplates.EmailTemplateType.DOCUMENTS_MISSING_MAIL)
+        def emailTemplate = getEmailTemplatesByName(EmailTemplates.EmailTemplateType.DOCUMENTS_MISSING_MAIL)
         sendMail(emailTemplate, emailTemplate.recipients, null, bodyParams, documents)
     }
 
     def sendDocumentsRejected(def recipient, def merchantName, def merchantNip, def bodyParams) {
-        def emailTemplate = getEmailTampletesByName(EmailTemplates.EmailTemplateType.DOCUMENTS_REJECTED)
+        def emailTemplate = getEmailTemplatesByName(EmailTemplates.EmailTemplateType.DOCUMENTS_REJECTED)
         sendMailWithTryCatch(emailTemplate, recipient, [merchantNip, merchantName] as Object[], bodyParams, null)
     }
 
