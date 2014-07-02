@@ -1,7 +1,5 @@
-import grails.plugins.springsecurity.SecurityConfigType
+import grails.plugin.springsecurity.SecurityConfigType
 import org.apache.log4j.DailyRollingFileAppender
-import com.apache.log4j.jdbc.EumowyJDBCAppender
-import org.codehaus.groovy.grails.commons.ConfigurationHolder
 
 // locations to search for config files that get merged into the main config;
 // config files can be ConfigSlurper scripts, Java properties files, or classes
@@ -191,13 +189,13 @@ log4j = {
 
 
 // Added by the Spring Security Core plugin:
-grails.plugins.springsecurity.userLookup.userDomainClassName = 'com.eservice.eumowy.secure.SecUser'
-grails.plugins.springsecurity.userLookup.authorityJoinClassName = 'com.eservice.eumowy.secure.SecUserSecRole'
-grails.plugins.springsecurity.authority.className = 'com.eservice.eumowy.secure.SecRole'
+grails.plugin.springsecurity.userLookup.userDomainClassName = 'com.eservice.eumowy.secure.SecUser'
+grails.plugin.springsecurity.userLookup.authorityJoinClassName = 'com.eservice.eumowy.secure.SecUserSecRole'
+grails.plugin.springsecurity.authority.className = 'com.eservice.eumowy.secure.SecRole'
 
 
-grails.plugins.springsecurity.securityConfigType = SecurityConfigType.InterceptUrlMap
-grails.plugins.springsecurity.interceptUrlMap = [
+grails.plugin.springsecurity.securityConfigType = SecurityConfigType.InterceptUrlMap
+grails.plugin.springsecurity.interceptUrlMap = [
         '/process/**':	['hasRole("EUM_ZRD")'],
         '/activity/**': ['hasRole("EUM_PH_BZOS")'],
         '/login/**':	['IS_AUTHENTICATED_ANONYMOUSLY'],
@@ -213,7 +211,7 @@ grails.plugins.springsecurity.interceptUrlMap = [
 
 fileuploader {
     attachments {
-        maxSize =  10 * FileUploaderTagLib._mbyte;
+        maxSize =  10 * (1*1000*1024)
         allowedExtensions = ["jpg", "tiff", "pdf", "gif", "doc", "docx"]
         //path = "/tmp/attachment/"
     }

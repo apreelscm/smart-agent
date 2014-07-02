@@ -1,11 +1,9 @@
 package com.eservice.eumowy
 
 import com.eservice.eumowy.util.ProjectPathHelper
+import grails.test.mixin.TestFor
 import org.apache.pdfbox.pdmodel.PDDocument
-import grails.test.mixin.*
 import org.junit.Before
-
-import java.awt.image.BufferedImage
 
 import static com.eservice.eumowy.PdfTestDataBuilder.*
 

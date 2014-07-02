@@ -1,7 +1,5 @@
 package eumowy
 
-import com.eservice.eumowy.DomainConsts
-
 class EumowyFieldTagLib {
 
     static namespace = "eumowy"

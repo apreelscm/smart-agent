@@ -1,19 +1,16 @@
 
 package com.eservice.eumowy
 
-import com.eservice.eumowy.dto.MerchantDetailsDTO
-import grails.converters.JSON
-import groovy.sql.GroovyRowResult
-
-import org.codehaus.groovy.grails.web.json.JSONObject
-import org.hibernate.StaleObjectStateException
-import org.springframework.orm.hibernate3.HibernateOptimisticLockingFailureException
-
-import pdfgenerator.PdfGenerator
-
 import com.eservice.eumowy.command.ProcessCommand
+import com.eservice.eumowy.dto.MerchantDetailsDTO
 import com.eservice.eumowy.process.DefineActivityCommand
 import com.eservice.eumowy.util.DateUtils
+import grails.converters.JSON
+import groovy.sql.GroovyRowResult
+import org.codehaus.groovy.grails.web.json.JSONObject
+import org.hibernate.StaleObjectStateException
+import org.springframework.orm.hibernate4.HibernateOptimisticLockingFailureException
+import pdfgenerator.PdfGenerator
 
 class ActivityController {
 

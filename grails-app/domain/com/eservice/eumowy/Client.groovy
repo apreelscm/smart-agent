@@ -1,7 +1,6 @@
 package com.eservice.eumowy
-import groovy.transform.ToString
 
-import org.apache.commons.lang.builder.HashCodeBuilder
+import groovy.transform.ToString
 
 @ToString
 class Client implements Serializable{

@@ -2,8 +2,6 @@ package com.eservice.eumowy
 
 import groovy.transform.ToString
 
-import org.apache.commons.lang.builder.HashCodeBuilder
-
 @ToString
 class Panel implements Serializable{
 

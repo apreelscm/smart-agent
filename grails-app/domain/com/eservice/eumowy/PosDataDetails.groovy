@@ -1,7 +1,5 @@
 package com.eservice.eumowy
 
-import org.apache.commons.lang.builder.HashCodeBuilder
-
 class PosDataDetails implements Serializable {
 
 	String dialupTyp

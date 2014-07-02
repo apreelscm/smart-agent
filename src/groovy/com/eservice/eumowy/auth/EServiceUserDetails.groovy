@@ -1,14 +1,8 @@
 package com.eservice.eumowy.auth
 
-import org.codehaus.groovy.grails.plugins.springsecurity.GrailsUser
+import grails.plugin.springsecurity.userdetails.GrailsUser
 import org.springframework.security.core.GrantedAuthority
-/**
- * Created with IntelliJ IDEA.
- * User: mariusz.kaczkowski
- * Date: 16.07.13
- * Time: 11:25
- * To change this template use File | Settings | File Templates.
- */
+
 public class EServiceUserDetails extends GrailsUser {
 
     final String name;
