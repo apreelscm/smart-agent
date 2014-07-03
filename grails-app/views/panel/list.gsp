@@ -8,9 +8,6 @@
 </head>
 <body>
 
-%{--<r:require module="newpoint_panel_setup"/>--}%
-%{--<r:require module="mask"/>--}%
-
 <section id="create-activity">
     <h1 class="ng linia-bottom"><g:message code="selectedPanels.header.title"/></h1>
 

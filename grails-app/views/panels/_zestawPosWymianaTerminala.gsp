@@ -49,8 +49,6 @@
 </div>
 
 
-<r:require module="jquery_ui"/>
-
 <script type="text/javascript">
     //aktywacja selectow sima dla GPRS
     jQuery(function() {

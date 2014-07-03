@@ -32,7 +32,7 @@ class EumowyFieldTagLib {
             if(isError){
 
                 def message = attrs.errorMessage ?: message(error:cmd.errors.getFieldError(validateField));
-                def icon = g.resource(dir: "images/skin", file: "exclamation.png");
+                def icon = asset.assetPath(src: "skin/exclamation.png")
 
                 def imgBody = """<img src="${icon}" class="errorNotification" data-message="${message}" style="cursor:pointer; position:absolute; margin:2px;"/>"""
                 sb.append(imgBody)
@@ -101,7 +101,7 @@ class EumowyFieldTagLib {
             def isError = attrs.class.contains("error")
             if(isError){
                 def message = attrs.errorMessage ?: message(error:cmd.errors.getFieldError(validateField));
-                def icon = g.resource(dir: "images/skin", file: "exclamation.png");
+                def icon = asset.assetPath(src: "skin/exclamation.png")
                 def imgBody = """<img src="${icon}" class="errorNotification" data-message="${message}" style="cursor:pointer; position:absolute; margin:2px;"/>"""
                 sb.append(imgBody)
             }

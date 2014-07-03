@@ -25,8 +25,7 @@
 			</p>
 
 			<p  style="margin-left: 1.5em">
-                <g:actionSubmit class="button submit" value='${message(code: "springSecurity.login.button")}'
-               />
+                <g:actionSubmit class="button submit" value='${message(code: "springSecurity.login.button")}'/>
 			</p>
 		</form>
 	</div>

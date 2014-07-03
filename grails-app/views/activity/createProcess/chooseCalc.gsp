@@ -4,9 +4,9 @@
 <head>
     <meta name="layout" content="main">
     <title> <g:message code="chooseCalc.header.title"/></title>
-    <r:require module="mask"/>
-    <r:require module="jquery_ui" />
-    <r:script>
+
+    <asset:javascript src="apreel/mask.js"/>
+    <script type="text/javascript">
         jQuery(document).ready(function(){
             jQuery("#nipField").bind('input', function(){
                 jQuery("#continueButton").attr('disabled', 'disabled');
@@ -33,7 +33,7 @@
                 return false;
             });
         })
-    </r:script>
+    </script>
 </head>
 <body>
 

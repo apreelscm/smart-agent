@@ -9,7 +9,7 @@ import grails.validation.Validateable
  *
  */
 
-@Validateable
+@Validateable(nullable = true)
 class PointCommand implements Serializable {
 
     transient def calculatorService

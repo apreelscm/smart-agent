@@ -16,9 +16,8 @@
 <div id="removePosConfirmDialog" style="display: none;">
 	<g:message code="panel.addnewpos.confirmRemoval"/>
 </div>
-<r:require module="jquery_ui"/>
-	
-<r:script>
+
+<script type="text/javascript">
 	
 	jQuery(document).ready(function() {
 		jQuery("#continueButton").prop("disabled", true);
@@ -122,4 +121,4 @@
 
         setSameForEveryPropertyInSourceMaps();
 	});
-</r:script>
+</script>

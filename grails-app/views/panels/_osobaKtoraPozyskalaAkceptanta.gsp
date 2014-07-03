@@ -9,7 +9,7 @@
                     <span style="padding-left: 10px"><g:message code="panel.last.name"/>: </span>
                     <span><eumowy:textField name="pozyskujacyNazwisko" value="${data.pozyskujacyNazwisko}" validatable="${data}" readonly="true" class="nazwiskoField"/></span>
                     <span style="padding-left: 10px"><g:message code="panel.number"/>: </span>
-                    <span><eumowy:textField name="pozyskujacyNumer" value="${data.pozyskujacyNumer}" validatable="${data}"" readonly="true" style="width: 100px"/></span>
+                    <span><eumowy:textField name="pozyskujacyNumer" value="${data.pozyskujacyNumer}" validatable="${data}" readonly="true" style="width: 100px"/></span>
                 </li>
             </ul>
         </div>

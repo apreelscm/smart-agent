@@ -41,7 +41,7 @@
 </div>
 
 
-<r:script>
+<script type="text/javascript">
     jQuery(document).ready(function() {
 
         jQuery("#correspondenceAsMerchant").click(function() {
@@ -66,4 +66,4 @@
             }
         });
     });
-</r:script>
+</script>

@@ -4,9 +4,9 @@
 <head>
     <meta name="layout" content="main">
     <title><g:message code="chooseActivity.header.title"/></title>
-    <r:require module="chooseActivity"/>
+    <asset:javascript src="apreel/createProcess/chooseActivity.js"/>
 
-    <r:script>
+    <script type="text/javascript">
     	jQuery(document).ready(function() {
     		jQuery('select[data-id="sig1"], select[data-id="sig2"]').on('change', function(e) { 
     			var id = jQuery(e.target).val();
@@ -20,7 +20,7 @@
     			jQuery('#sig_'+id+'_desc').show();
     		});
     	});
-    </r:script>
+    </script>
 
 </head>
 

@@ -64,11 +64,9 @@ grails.project.dependency.resolution = {
         compile ':asset-pipeline:1.8.3'
 
         runtime ':database-migration:1.4.0'
-        runtime ':hibernate4:4.3.5.4'
+        runtime ':hibernate4:4.3.5.3'
 
-        runtime ":jquery:1.11.1"
         runtime ":spring-security-core:2.0-RC3"
-        runtime ":modernizr:2.6.2"
 
         compile ":quartz:1.0.1"
         compile ":build-info-tag:0.3.1"

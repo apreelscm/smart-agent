@@ -9,13 +9,7 @@ import grails.validation.Validateable
 import org.apache.commons.collections.FactoryUtils
 import org.apache.commons.collections.ListUtils
 
-/**
- * User: Dominik Walczak
- * Date: 20.08.13 Time: 10:22
- *
- */
-
-@Validateable
+@Validateable(nullable = true)
 class ProcessCommand implements Serializable {
 
     @Omit()
@@ -780,11 +774,11 @@ class ProcessCommand implements Serializable {
         reprezentant2Tytul(nullable: true)
         reprezentant2Imie(nullable: true, blank: true, shared: "lettersOnly")
         reprezentant2Nazwisko(nullable: true, blank: true, shared: "lettersOnly")
-        reprezentant2Stanowisko(blank: true)
+        reprezentant2Stanowisko(nullable: true, blank: true)
         reprezentant3Tytul(nullable: true)
         reprezentant3Imie(nullable: true, blank: true, shared: "lettersOnly")
         reprezentant3Nazwisko(nullable: true, blank: true, shared: "lettersOnly")
-        reprezentant3Stanowisko(blank: true)
+        reprezentant3Stanowisko(nullable: true, blank: true)
         emailDoWysylkiDokumentu(nullable: true, blank: true, shared: "email")
 
         visaEUKKOSt(nullable: false, blank: false,  validator: { value, cmd, errors ->

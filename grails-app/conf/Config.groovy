@@ -35,9 +35,6 @@ grails.mime.types = [
 // URL Mapping Cache Max Size, defaults to 5000
 //grails.urlmapping.cache.maxsize = 1000
 
-// What URL patterns should be processed by the resources plugin
-grails.resources.adhoc.patterns = ['/images/*', '/css/*', '/js/*', '/plugins/*', '/tmp/*']
-
 // The default codec used to encode data with ${}
 grails.views.default.codec = "none" // none, html, base64
 grails.views.gsp.encoding = "UTF-8"
@@ -200,10 +197,8 @@ grails.plugin.springsecurity.interceptUrlMap = [
         '/activity/**': ['hasRole("EUM_PH_BZOS")'],
         '/login/**':	['IS_AUTHENTICATED_ANONYMOUSLY'],
         '/logout/**':	['IS_AUTHENTICATED_ANONYMOUSLY'],  //leave the page open
-        '/images*/**':	['IS_AUTHENTICATED_ANONYMOUSLY'],
-        '/css*/**':		['IS_AUTHENTICATED_ANONYMOUSLY'],
         '/fonts*/**':	['IS_AUTHENTICATED_ANONYMOUSLY'],
-        '/js*/**':		['IS_AUTHENTICATED_ANONYMOUSLY'],
+        '/assets*/**':  ['IS_AUTHENTICATED_ANONYMOUSLY'],
         '/tmp/**':		['IS_AUTHENTICATED_FULLY'],
         '/**':			['IS_AUTHENTICATED_FULLY']
 ]
