@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=960, initial-scale=1, maximum-scale=1"/>
     <title><g:message code="clientSignature.header.title"/></title>
 
-
     <asset:javascript src="apreel/createProcess/clientSubscription.js"/>
 
     <style>
@@ -42,7 +41,8 @@
                 kontaktEmail = "${processInstance.getData("kontaktEmail")}",
                 emailDoWysylkiDokumentu = "${processInstance.getData("emailDoWysylkiDokumentu")}",
                 sendingEmailsErrorMsg = "${message(code: "process.subscriptions.sendingEmails.error")}",
-                sendingEmailsMsg = "${message(code: "process.subscriptions.sendingEmails")}";
+                sendingEmailsMsg = "${message(code: "process.subscriptions.sendingEmails")}",
+                refreshSubscriptionUrl = '${createLink(controller: 'subscription', action: 'refreshSubscription')}';
 
         function getDocuments(scale) {
             var documents = [];
@@ -82,8 +82,6 @@
 
 
     </script>
-
-
 </head>
 
 <body>

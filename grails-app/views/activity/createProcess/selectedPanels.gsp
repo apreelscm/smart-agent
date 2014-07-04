@@ -7,7 +7,7 @@
 
     <asset:javascript src="apreel/createProcess/selectedPanels.js"/>
 
-    <g:javascript>
+    <script type="text/javascript">
     jQuery(function(){
         console.log('JS Validation starting...');
         jQuery(".panelsForm").validate({
@@ -139,7 +139,7 @@
     });
 
         function refreshAttachmentList(){
-    ${remoteFunction(
+        ${remoteFunction(
             action:'getAttachmentList',
             update:'attachmentsBox',
             params: [processId: processInstance.id])}
@@ -195,7 +195,7 @@
 
         refreshTelepomkaAndTelekodzikPercentValues()
         jQuery.datepicker.setDefaults( jQuery.datepicker.regional[ "pl" ] );
-    </g:javascript>
+    </script>
 </head>
 <body>
 

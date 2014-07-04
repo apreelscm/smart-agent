@@ -1501,7 +1501,7 @@ class ActivityController {
                     doc.content.discard()
                 }
 
-                log.info "ELECTRONICAL VERSION for process" + process.id
+                log.info "ELECTRONICAL VERSION for process " + process.id
 
                 Map mailBodyParams = processService.createMailParametersForElectronicalVersion(process)
                 String recipient = mailBodyParams.recipient
