@@ -848,7 +848,7 @@ function addDateHandlers(prefixPanel){
         timeToHours = e.data.hoursTo;
         timeToMinutes = e.data.minutesTo;
         
-        if(timeFromHoursVal === '' || timeFromMinutesVal === ''){
+        if (isTimePartEmpty(timeFromHoursVal) || isTimePartEmpty(timeFromMinutesVal)) {
             return false;
         }
         hiddenDayCloseFrom.val(getTime(timeFromHoursVal, timeFromMinutesVal));
@@ -930,6 +930,10 @@ function addDateHandlers(prefixPanel){
     jQuery(timeFromMinutes).change();
     jQuery(timeToHours).change();
     jQuery(timeToMinutes).change();
+}
+
+function isTimePartEmpty(timePart) {
+    return timePart === '' || timePart === undefined || timePart === null
 }
 
 function getHour(val) {
