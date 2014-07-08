@@ -1187,8 +1187,10 @@ class ProcessCommand implements Serializable {
             }
             return true
         })
-        obslugaEkonomicznyCena(nullable:true, blank:false,  validator: { value, cmd, errors -> NumberValidator.validate(value, cmd, errors, propertyName)})
-        numerRachunkuBankowegoKlienta(nullable:true, blank:false, matches: "~|\\d{2}\\s\\d{4}\\s\\d{4}\\s\\d{4}\\s\\d{4}\\s\\d{4}\\s\\d{4}")
+        obslugaEkonomicznyCena(nullable:true, blank:false, validator: { value, cmd, errors -> NumberValidator.validate(value, cmd, errors, propertyName)})
+        numerRachunkuBankowegoKlienta(nullable:true, blank:false, validator: {value, cmd, errors ->
+            DEFAULT_VALUE.equals(value) ?: NumberValidator.accountNumber(value, cmd, errors, propertyName)
+        })
         bankKlienta(nullable:true, blank:false)
         oplataZaUruchomienieDCC(nullable:false, blank:false, validator: {
             value, cmd, errors ->
