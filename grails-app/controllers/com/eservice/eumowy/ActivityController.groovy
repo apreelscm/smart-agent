@@ -37,12 +37,18 @@ class ActivityController {
     def springSecurityService
 
     def index() {
+        params.remove("errorMessage")
         redirect(action: "createProcess", params: params)
     }
 
     def list(Integer max) {
         params.max = Math.min(max ?: 10, 100)
         [activityInstanceList: Activity.list(params), activityInstanceTotal: Activity.count()]
+    }
+
+    def flowExceptionHandler() {
+        String message = message(code: 'flow.excecution.exception')
+        redirect(action: "createProcess", params: [errorMessage: message])
     }
 
     /**
@@ -58,8 +64,11 @@ class ActivityController {
                 log.info("init flow.message:"+ flow.message)
                 log.info("init flash.message:"+ flash.message)
                 log.info("init flow.prevActivityMessage:"+flow.prevActivityMessage)
-                if (params.message != null) {
+                if (params.message) {
                     flow.prevActivityMessage = params.message
+                }
+                if(params.errorMessage) {
+                    flash.errorMessage = params.errorMessage
                 }
                 flash.infoMessage =  flow.prevActivityMessage
                 flow.isGoBack = false
