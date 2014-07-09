@@ -247,9 +247,7 @@
 </div>
 </div>
 
-<r:require module="jquery_ui"/>
-
-<r:script>
+<script type="text/javascript">
     jQuery(document).ready(function() {
         var concessionName = jQuery('#rodzajZezwolenia');
         if (jQuery('input[name="scoringKoncesja"]:checked').val() != 'true'){
@@ -302,4 +300,4 @@
         evaluateSredniObrot()
 
     });
-</r:script>
+</script>

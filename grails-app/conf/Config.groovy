@@ -1,7 +1,5 @@
-import grails.plugins.springsecurity.SecurityConfigType
+import grails.plugin.springsecurity.SecurityConfigType
 import org.apache.log4j.DailyRollingFileAppender
-import com.apache.log4j.jdbc.EumowyJDBCAppender
-import org.codehaus.groovy.grails.commons.ConfigurationHolder
 
 // locations to search for config files that get merged into the main config;
 // config files can be ConfigSlurper scripts, Java properties files, or classes
@@ -36,9 +34,6 @@ grails.mime.types = [
 
 // URL Mapping Cache Max Size, defaults to 5000
 //grails.urlmapping.cache.maxsize = 1000
-
-// What URL patterns should be processed by the resources plugin
-grails.resources.adhoc.patterns = ['/images/*', '/css/*', '/js/*', '/plugins/*', '/tmp/*']
 
 // The default codec used to encode data with ${}
 grails.views.default.codec = "none" // none, html, base64
@@ -191,21 +186,19 @@ log4j = {
 
 
 // Added by the Spring Security Core plugin:
-grails.plugins.springsecurity.userLookup.userDomainClassName = 'com.eservice.eumowy.secure.SecUser'
-grails.plugins.springsecurity.userLookup.authorityJoinClassName = 'com.eservice.eumowy.secure.SecUserSecRole'
-grails.plugins.springsecurity.authority.className = 'com.eservice.eumowy.secure.SecRole'
+grails.plugin.springsecurity.userLookup.userDomainClassName = 'com.eservice.eumowy.secure.SecUser'
+grails.plugin.springsecurity.userLookup.authorityJoinClassName = 'com.eservice.eumowy.secure.SecUserSecRole'
+grails.plugin.springsecurity.authority.className = 'com.eservice.eumowy.secure.SecRole'
 
 
-grails.plugins.springsecurity.securityConfigType = SecurityConfigType.InterceptUrlMap
-grails.plugins.springsecurity.interceptUrlMap = [
+grails.plugin.springsecurity.securityConfigType = SecurityConfigType.InterceptUrlMap
+grails.plugin.springsecurity.interceptUrlMap = [
         '/process/**':	['hasRole("EUM_ZRD")'],
         '/activity/**': ['hasRole("EUM_PH_BZOS")'],
         '/login/**':	['IS_AUTHENTICATED_ANONYMOUSLY'],
         '/logout/**':	['IS_AUTHENTICATED_ANONYMOUSLY'],  //leave the page open
-        '/images*/**':	['IS_AUTHENTICATED_ANONYMOUSLY'],
-        '/css*/**':		['IS_AUTHENTICATED_ANONYMOUSLY'],
         '/fonts*/**':	['IS_AUTHENTICATED_ANONYMOUSLY'],
-        '/js*/**':		['IS_AUTHENTICATED_ANONYMOUSLY'],
+        '/assets*/**':  ['IS_AUTHENTICATED_ANONYMOUSLY'],
         '/tmp/**':		['IS_AUTHENTICATED_FULLY'],
         '/**':			['IS_AUTHENTICATED_FULLY']
 ]
@@ -213,7 +206,7 @@ grails.plugins.springsecurity.interceptUrlMap = [
 
 fileuploader {
     attachments {
-        maxSize =  10 * FileUploaderTagLib._mbyte;
+        maxSize =  10 * (1*1000*1024)
         allowedExtensions = ["jpg", "tiff", "pdf", "gif", "doc", "docx"]
         //path = "/tmp/attachment/"
     }

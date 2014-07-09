@@ -1,7 +1,8 @@
 package com.eservice.eumowy
 
-import grails.test.mixin.*
-import org.junit.*
+import grails.test.mixin.TestFor
+import org.junit.Before
+import org.junit.Test
 
 /**
  * See the API for {@link grails.test.mixin.services.ServiceUnitTestMixin} for usage instructions

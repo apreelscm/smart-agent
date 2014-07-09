@@ -49,10 +49,7 @@
 </div>
 
 
-<r:require module="jquery_ui"/>
-
 <script type="text/javascript">
-    //aktywacja selectow sima dla GPRS
     jQuery(function() {
         var count = ${data.posExchanges.size()}
         for (var i=0; i<count; i++){
@@ -62,15 +59,18 @@
         }
     });
 
-    jQuery('.typeSelect').on('change', function() {
-        var modelSelect = jQuery('#selectModel_'+this.dataset.index);
-        //usuniecie obecnych opcji
+    jQuery('.typeSelect').change(typeSelectChanged);
+    jQuery('.acceptModel').change(acceptModelChanged);
+    jQuery('.selectModel').change(selectModelChanged);
+
+    function typeSelectChanged() {
+        var modelSelect = jQuery('#selectModel_' + this.dataset.index),
+                simSelect = jQuery('#selectSim_'+this.dataset.index);
+
         modelSelect.find('option').remove().end();
-        //odznaczenie checkboxa
+
         jQuery('#acceptModel_'+this.dataset.index).attr('checked', false);
 
-        //aktywacja sima
-        var simSelect = jQuery('#selectSim_'+this.dataset.index);
         if (jQuery(this).val() == 'GPRS'){
             simSelect.prop('disabled', false);
         } else {
@@ -84,46 +84,67 @@
                 modelSelect.append(prepareOptionForModelSelect(value))
             });
         });
-    });
+    }
 
-    jQuery('.acceptModel').change(function(){
-        var calcId = ${data.calcId};
-        if (this.checked){
+    function acceptModelChanged() {
+        var calcId = '${data.calcId}';
+
+        if (this.checked) {
             var oldModel = jQuery('#oldModel_'+this.dataset.index).val(),
-                newModel = jQuery('#selectModel_'+this.dataset.index).val();
+                newModel = jQuery('#selectModel_'+this.dataset.index).val(),
+                withoutCalc = (calcId == -1);
 
-            if (calcId ==-1 && (oldModel.toUpperCase().indexOf('VX51') != -1 || oldModel.toUpperCase().indexOf('VX52') != -1) && newModel.toUpperCase().indexOf('IWL220C') != -1){
+            if (withoutCalc && (isModelEqual('VX51', oldModel) || isModelEqual('VX52', oldModel)) && isModelEqual('IWL220C', newModel)) {
                 alert('Dla wybranej wymiany modelowej wymagany jest Kalkulator');
                 jQuery(this).attr('checked', false);
             }
 
-            if (oldModel.toUpperCase().indexOf('VX670') != -1 && newModel.toUpperCase().indexOf('IWL220C') != -1){
+            if (isModelEqual('VX670', oldModel) && isModelEqual('IWL220C', newModel)) {
                 alert('Dla wybranej wymiany modelowej brak możliwości wymiany');
                 jQuery(this).attr('checked', false);
             }
         }
-    });
 
+        manageStateOfContinueButton();
+    }
 
-    jQuery('.selectModel').change(function() {
+    function isModelEqual(expectedModelName, actualModelName) {
+        return actualModelName.toUpperCase().indexOf(expectedModelName) != -1
+    }
+
+    function selectModelChanged() {
         var posNumber = jQuery("#posExchanges\\[" + this.dataset.index + "\\]\\.posNumber").val(),
-            $selectModel = jQuery(this);
+                $selectModel = jQuery(this);
 
         if(isMobileRequireCalculator($selectModel, posNumber) || isPinpadRequireCalculator($selectModel, posNumber)) {
             alert('Dla wybranej wymiany modelowej wymagany jest Kalkulator');
         }
 
         manageStateOfContinueButton();
-    });
+    }
 
     function manageStateOfContinueButton() {
         var continueButton = jQuery("#continueButton");
 
-        if(hasModelRequiredForCalculator()) {
+        if(hasModelRequiredForCalculator() || !hasAtLeastOneModelSelected()) {
             continueButton.attr('disabled', 'disabled');
         } else {
             continueButton.removeAttr('disabled');
         }
+    }
+
+    function hasAtLeastOneModelSelected() {
+        var acceptModelCheckboxes = jQuery("[id^='acceptModel']"),
+                hasOneCheckboxSelected = false;
+
+        for(var i = 0; i < acceptModelCheckboxes.length; i++) {
+            if (acceptModelCheckboxes[i].checked) {
+                hasOneCheckboxSelected = true;
+                break;
+            }
+        }
+
+        return hasOneCheckboxSelected;
     }
 
     function hasModelRequiredForCalculator() {
@@ -132,7 +153,6 @@
             posNumber;
 
         jQuery.each(jQuery(".selectModel"), function(index, value) {
-            console.log(value);
             $selectModel = jQuery(value);
             posNumber = jQuery("#posExchanges\\[" + value.dataset.index + "\\]\\.posNumber").val();
 

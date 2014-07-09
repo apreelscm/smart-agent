@@ -4,19 +4,13 @@
 <head>
     <meta name="layout" content="main">
     <title><g:message code="selectedPanels.header.title"/></title>
-    <r:require module="filestyle"/>
-    <r:require module="jquery_ui" />
-    <r:require module="selectedPanels"/>
-    <r:require module="validation"/>
-    <r:require module="newpoint_panel_setup"/>
 
-    <g:javascript>
+    <asset:javascript src="apreel/createProcess/selectedPanels.js"/>
 
-    var $j = jQuery.noConflict();
-
-    $j(function(){
+    <script type="text/javascript">
+    jQuery(function(){
         console.log('JS Validation starting...');
-        $j(".panelsForm").validate({
+        jQuery(".panelsForm").validate({
             errorElement: 'img',
             errorPlacement: function(error, element) {
             },
@@ -27,23 +21,23 @@
                 if (!validator.numberOfInvalids())
                     return;
 
-                $j('html, body').animate({
-                    scrollTop: $j(validator.errorList[0].element).offset().top
+                jQuery('html, body').animate({
+                    scrollTop: jQuery(validator.errorList[0].element).offset().top
                 }, 100);
             }
         });
         console.log('JS Validation started...');
 
-        $j("#hackishSubmit").click(function(event) {
+        jQuery("#hackishSubmit").click(function(event) {
             //eUmowy_ext-364
             console.log('click');
             return false;
         });
 
 	  showSaveLink();
-      $j("#saveProcessLink").click(function() {
-            var input = $j("<input>").attr("type", "hidden").attr("name", "_eventId_saveOnly").val(""),
-                form = $j('.panelsForm');
+      jQuery("#saveProcessLink").click(function() {
+            var input = jQuery("<input>").attr("type", "hidden").attr("name", "_eventId_saveOnly").val(""),
+                form = jQuery('.panelsForm');
 
             form.data("validator").cancelSubmit = true;
             submitForm(form,input, true)
@@ -51,9 +45,9 @@
             return false
         });
 
-        $j("#acceptPointsButton").click(function() {
-              var input = $j("<input>").attr("type", "hidden").attr("name", "_eventId_saveOnly").val(""),
-                form = $j('.panelsForm');
+        jQuery("#acceptPointsButton").click(function() {
+              var input = jQuery("<input>").attr("type", "hidden").attr("name", "_eventId_saveOnly").val(""),
+                form = jQuery('.panelsForm');
 
             if ( form.valid()){
                 submitForm(form,input,true)
@@ -62,20 +56,20 @@
         });
 
 
-        $j("#continueButton").click(function() {
-            var input = $j("<input>").attr("type", "hidden").attr("name", "_eventId_continue").val("");
-            var form = $j(".panelsForm");
+        jQuery("#continueButton").click(function() {
+            var input = jQuery("<input>").attr("type", "hidden").attr("name", "_eventId_continue").val("");
+            var form = jQuery(".panelsForm");
 
             if ( form.valid()){
 
-              var kontaktEmail = $j("#kontaktEmail").val()
-              var emailDoWysylkiDokumentu = $j("#emailDoWysylkiDokumentu").val()
+              var kontaktEmail = jQuery("#kontaktEmail").val()
+              var emailDoWysylkiDokumentu = jQuery("#emailDoWysylkiDokumentu").val()
 
                if(emailDoWysylkiDokumentu || kontaktEmail){
                     submitForm(form,input, true)
                }else{
                     //sprawdzanie maila akceptanta
-                     $j("#confirm-submit-without-emailKontakt-dialog").dialog({
+                     jQuery("#confirm-submit-without-emailKontakt-dialog").dialog({
                         resizable: true,
                         height:200,
                         width: 450,
@@ -83,12 +77,12 @@
                         buttons:
                             {
                                 "Dalej": function() {
-                                    $j( this ).dialog( "close" );
+                                    jQuery( this ).dialog( "close" );
                                     submitForm(form,input, true)
 
                                 },
                                 "Popraw": function() {
-                                    $j( this ).dialog( "close" );
+                                    jQuery( this ).dialog( "close" );
                                 }
                             }
                     });
@@ -99,10 +93,10 @@
         });
 
         function submitForm(form, input, disableButtons){
-           var submitButtons = $j("input[type='submit']")
-           var continueButton = $j("#continueButton")
+           var submitButtons = jQuery("input[type='submit']")
+           var continueButton = jQuery("#continueButton")
 
-                form.append($j(input))
+                form.append(jQuery(input))
 
                 if(disableButtons){
                   submitButtons.attr('disabled', 'disabled');
@@ -119,72 +113,72 @@
 
         refreshAttachmentList()
 
-        $j("#fileUploadInput").change(function (){
-                 $j('#spinner2').removeClass("display-none");
-                 $j('#uploadForm').submit();
+        jQuery("#fileUploadInput").change(function (){
+                 jQuery('#spinner2').removeClass("display-none");
+                 jQuery('#uploadForm').submit();
              });
 
-         $j("#hidden-upload-frame").load(function(){
+         jQuery("#hidden-upload-frame").load(function(){
 
-         $j('#spinner2').addClass("display-none");
+         jQuery('#spinner2').addClass("display-none");
 
          var content = this.contentDocument.body.innerHTML
 
          //resetting file input
-         $j('#uploadForm').each(function(){
+         jQuery('#uploadForm').each(function(){
              this.reset();
          });
 
 
-         $j('#statusBox').html(content);
+         jQuery('#statusBox').html(content);
 
-         var isError = $j('#statusBox ul').hasClass("errors")
+         var isError = jQuery('#statusBox ul').hasClass("errors")
          if(!isError){
               refreshAttachmentList()
          }
     });
 
         function refreshAttachmentList(){
-    ${remoteFunction(
+        ${remoteFunction(
             action:'getAttachmentList',
             update:'attachmentsBox',
             params: [processId: processInstance.id])}
         }
     });
 
-         $j("#mockBtn").click(function() {
+         jQuery("#mockBtn").click(function() {
          var possibleLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
          var possibleNumbers = "123456789";
 
-         $j( "#addNewPointButton" ).trigger( "click" );
-              $j(":required").each(function(){
-                var type = $j(this).attr("type")
-                var name = $j(this).attr("name")
+         jQuery( "#addNewPointButton" ).trigger( "click" );
+              jQuery(":required").each(function(){
+                var type = jQuery(this).attr("type")
+                var name = jQuery(this).attr("name")
 
-                if( $j(this).attr("value")){return}
+                if( jQuery(this).attr("value")){return}
 
                 if( name == "akceptantRegon"){
-                   $j(this).attr("value",randomString(possibleNumbers,9))
+                   jQuery(this).attr("value",randomString(possibleNumbers,9))
                 }
                 else if( name.indexOf("KodPocztowy") != -1 ){
-                   $j(this).attr("value",randomString(possibleNumbers,5))
+                   jQuery(this).attr("value",randomString(possibleNumbers,5))
                 }
                  else if(name.indexOf("kodMCC") != -1){
-                   $j(this).attr("value",randomString(possibleNumbers,4))
+                   jQuery(this).attr("value",randomString(possibleNumbers,4))
                 }
                   else if(name.indexOf("TelKomorkowy") != -1){
-                   $j(this).attr("value",randomString(possibleNumbers,9))
+                   jQuery(this).attr("value",randomString(possibleNumbers,9))
                 }
                else if( name == "akceptantNrDomu" || name ==  "akceptantKontaktNrDomu" || name.indexOf("korespondencjaNrDomu") != -1){
-                   $j(this).attr("value",randomString(possibleNumbers,1))
+                   jQuery(this).attr("value",randomString(possibleNumbers,1))
                 }
                 else if(type == "text"){
-                 $j(this).attr("value",randomString(possibleLetters,Math.floor((Math.random()+0.1)*10)))
+                 jQuery(this).attr("value",randomString(possibleLetters,Math.floor((Math.random()+0.1)*10)))
                 }
                 else if(type == "number"){
-                  $j(this).attr("value",randomString(possibleNumbers,2))
+                  jQuery(this).attr("value",randomString(possibleNumbers,2))
                 }
-                console.info("2:"+$j(this).attr("type"))
+                console.info("2:"+jQuery(this).attr("type"))
               })
         });
 
@@ -197,16 +191,15 @@
             return result
         }
 
-        $j("input.doladowanie").live("click", function(){refreshTelepomkaAndTelekodzikPercentValues()});
+        jQuery(document).on("click", "input.doladowanie", refreshTelepomkaAndTelekodzikPercentValues);
 
         refreshTelepomkaAndTelekodzikPercentValues()
-        $j.datepicker.setDefaults( jQuery.datepicker.regional[ "pl" ] );
-    </g:javascript>
+        jQuery.datepicker.setDefaults( jQuery.datepicker.regional[ "pl" ] );
+    </script>
 
-    <g:javascript src="panels/common.js"/>
+    <asset:javascript src="panels/common.js"/>
 </head>
 <body>
-<r:require module="mask"/>
 
 <div id="confirm-submit-without-emailKontakt-dialog"  style="display: none;">
     <p><g:message code="process.subscriptions.submit.without.emailKontakt.confirm" /></p>
@@ -252,7 +245,6 @@
         <g:hiddenField id="liczbaPtkCbd" name="liczbaPtkCbd" value="${data.liczbaPtkCbd}"/>
         <g:hiddenField id="hasPrepaid" name="hasPrepaid" value="${data.hasPrepaid}"/>
         <g:hiddenField id="hasNewUmowaAndPrepaid" name="hasNewUmowaAndPrepaid" value="${data.hasNewUmowaAndPrepaid}"/>
-        <g:hiddenField name="hasNewUmowa" value="${czyNowaUmowa}"/>
         <g:hiddenField name="isRozszerzenie" value="${data.isRozszerzenie}"/>
         <g:hiddenField id="hasDodaniePrepaid" name="hasDodaniePrepaid" value="${data.hasDodaniePrepaid}"/>
         <g:hiddenField name="czyGift" value="${data.czyGift}"/>

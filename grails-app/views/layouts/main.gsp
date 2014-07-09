@@ -9,120 +9,92 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title><g:layoutTitle default="Grails"/></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="${assetPath(src: 'favicon.png')}" type="image/x-icon">
 
-    <link rel="shortcut icon" href="${resource(dir: 'images', file: 'favicon.png')}" type="image/x-icon">
-    <link rel="apple-touch-icon" href="${resource(dir: 'images', file: 'apple-touch-icon.png')}">
-    <link rel="apple-touch-icon" sizes="114x114" href="${resource(dir: 'images', file: 'apple-touch-icon-retina.png')}">
-
-    <link rel="stylesheet" href="${resource(dir: 'css', file: 'bootstrap.min.css')}" type="text/css">
     <g:if test="${params.controller == 'process'}">
-        <link rel="stylesheet" href="${resource(dir: 'css', file: 'default-process.css')}" type="text/css">
+        <asset:stylesheet src="default-process.css"/>
     </g:if>
     <g:else>
-        <link rel="stylesheet" href="${resource(dir: 'css', file: 'default.css')}" type="text/css">
+        <asset:stylesheet src="default.css"/>
     </g:else>
-    <link rel="stylesheet" href="${resource(dir: 'css', file: 'mobile/mobile.css')}" type="text/css">
 
-    <g:javascript library="jquery" plugin="jquery"/>
-    <r:require module="jquery_ui" />
+    <asset:javascript src="application.js"/>
 
-
-    <r:require module="modernizr"/>
     <g:if test="${params.controller != 'login' && grails.util.Environment.getCurrentEnvironment() != grails.util.Environment.DEVELOPMENT}">
-        <r:require module="session_utils"/>
+        <asset:javascript src="apreel/session_utils.js"/>
     </g:if>
 
-    <r:require module="expandable_menu"/>
-    <r:require module="jquery_ui" />
-    <r:require module="jquery_datepicker_pl" />
-
-    <r:layoutResources/>
     <g:layoutHead/>
 </head>
 
+    <body id="mainBody">
+        <header id="mainHeader" style="position:relative">
+            <figure id="smallLogo"/>
+            <sec:ifLoggedIn>
+                <div class="userInfoBar">
+                    <g:set var="phFullName" value="${sec.loggedInUserInfo(field: 'name')}"/>
+                    <g:set var="phId" value="${sec.loggedInUserInfo(field: 'nr')}"/>
+                    <span id="userNameLabel">${phFullName}</span>
+                    <span id="userIdLabel">${phId}</span>
+                </div>
+            </sec:ifLoggedIn>
 
-<body id="mainBody">
+            <sec:ifLoggedIn>
+                <ul id="mainMenu">
+                    <li><a href="#" class="submit">Menu</a>
+                        <ul>
+                            <li><a id="saveProcessLink" href="#" style="display: none;"><g:message code="save.label"/></a></li>
+                            <li><a id="logoutLink" href="#"><g:message code="logout.label"/></a>
+                            </li>
+                        </ul></li>
+                </ul>
+            </sec:ifLoggedIn>
+        </header>
 
-<header id="mainHeader" style="position:relative">
+        <g:layoutBody/>
 
-    <figure id="smallLogo"/>
-    <sec:ifLoggedIn>
-        <div class="userInfoBar">
-            <g:set var="phFullName" value="${sec.loggedInUserInfo(field: 'name')}"/>
-            <g:set var="phId" value="${sec.loggedInUserInfo(field: 'nr')}"/>
-            <span id="userNameLabel">${phFullName}</span>
-            <span id="userIdLabel">${phId}</span>
+        <footer class="rel" id="stopka">
+            <g:if test="${grails.util.Environment.getCurrentEnvironment() != grails.util.Environment.PRODUCTION}">
+                <build:buildInfo/> ENV: ${grails.util.Environment.getCurrentEnvironment().name}
+            </g:if>
+        </footer>
+
+        <g:if test="${params.controller != 'login'}">
+            <p id="clock"/>
+        </g:if>
+
+        <div id="loadingDialog" style="display: none;">
+            <p><g:message code="loading"/></p>
         </div>
-    </sec:ifLoggedIn>
 
-    <sec:ifLoggedIn>
-        <ul id="mainMenu">
-            <li><a href="#" class="submit">Menu</a>
-                <ul>
-                    <li><a id="saveProcessLink" href="#" style="display: none;"><g:message code="save.label"/></a></li>
-                    <li><a id="logoutLink" href="#"><g:message code="logout.label"/></a>
-                    </li>
-                </ul></li>
-        </ul>
-    </sec:ifLoggedIn>
+        <div id="confirm-logout-dialog" style="display: none;">
+            <p><g:message code="logout.confirm"/></p>
+        </div>
+    </body>
 
-</header>
+    <script type="text/javascript">
+        var $j = jQuery.noConflict();
+        $j(function(){
+            $j("#logoutLink").click(function() {
+                $j("#confirm-logout-dialog").dialog({
+                    resizable: true,
+                    height:200,
+                    width: 450,
+                    modal: true,
+                    buttons:
+                    {
+                        "Tak": function() {
+                            $j( this ).dialog( "close" );
+                            window.location.href = '<g:createLink controller="logout"/>'
 
-<g:layoutBody/>
-
-<footer class="rel" id="stopka">
-    <g:if test="${grails.util.Environment.getCurrentEnvironment() != grails.util.Environment.PRODUCTION}">
-        <build:buildInfo/> ENV: ${grails.util.Environment.getCurrentEnvironment().name}
-    </g:if>
-
-</footer>
-
-<g:if test="${params.controller != 'login'}">
-    <p id="clock"/>
-</g:if>
-
-%{--<div id="spinner" class="spinner">
-    <g:message code="spinner.alt" default="Proszę czekać..."/>
-</div>--}%
-
-<div id="loadingDialog" style="display: none;">
-    <p><g:message code="loading"/></p>
-</div>
-
-<div id="confirm-logout-dialog"  style="display: none;">
-    <p><g:message code="logout.confirm" /></p>
-</div>
-
-<g:javascript library="application"/>
-<g:javascript>
-
- var $j = jQuery.noConflict();
-    $j(function(){
-          $j("#logoutLink").click(function() {
-            $j("#confirm-logout-dialog").dialog({
-                resizable: true,
-                height:200,
-                width: 450,
-                modal: true,
-                buttons:
-                {
-                    "Tak": function() {
-                        $j( this ).dialog( "close" );
-                        window.location.href = '<g:createLink controller="logout"/>'
-
-                    },
-                    "Nie": function() {
-                        $j( this ).dialog( "close" );
+                        },
+                        "Nie": function() {
+                            $j( this ).dialog( "close" );
+                        }
                     }
-                }
+                })
+                return false
             })
-            return false
-    })
-})
-
-</g:javascript>
-
-<r:layoutResources/>
-
-</body>
+        })
+    </script>
 </html>

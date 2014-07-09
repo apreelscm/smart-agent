@@ -2,21 +2,9 @@
 <head>
     <meta name="layout" content="main">
     <title><g:message code="subscription.title" /></title>
-    <r:require module="signaturepad" />
-    <r:require module="jquery_ui" />
+    <asset:javascript src="subscription.js"/>
 </head>
 <body>
-<r:script>
-
-    jQuery(document).ready(function() {
-      jQuery('.sigPad').signaturePad({errorMessageDraw: '<g:message code="subscription.error" />'});
-      jQuery('#dialog').dialog({
-      	modal: true,
-      	width: 750
-      });
-    });
-
-</r:script>
 
 <div id="dialog">
 <section id="index-subscription">

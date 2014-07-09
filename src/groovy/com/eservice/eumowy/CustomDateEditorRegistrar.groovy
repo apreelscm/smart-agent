@@ -1,9 +1,10 @@
 package com.eservice.eumowy
-import java.text.SimpleDateFormat
 
 import org.springframework.beans.PropertyEditorRegistrar
 import org.springframework.beans.PropertyEditorRegistry
 import org.springframework.beans.propertyeditors.CustomDateEditor
+
+import java.text.SimpleDateFormat
 
 class CustomDateEditorRegistrar implements PropertyEditorRegistrar {
     public void registerCustomEditors(PropertyEditorRegistry registry) {

@@ -15,9 +15,11 @@ import java.nio.file.Files
 import java.nio.file.Paths
 import java.util.concurrent.ExecutorService
 import org.apache.pdfbox.pdmodel.PDDocument
-
 import pdfgenerator.PdfGenerator
 import signaturepad.SignatureToImage
+
+import java.awt.image.BufferedImage
+import java.util.concurrent.ExecutorService
 
 class PdfService {
 	def appParametersService
@@ -206,7 +208,7 @@ class PdfService {
         return result
     }
 
-    def workWithDocuments(Process processInstance, def calc){
+    Map workWithDocuments(Process processInstance, def calc){
         Integer totalPagesCount = 0
         Map dataFromProcess = mapperService.mapOnlyProcessData(processInstance, calc)
 

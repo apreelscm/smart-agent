@@ -75,7 +75,7 @@ class CbdService {
     }
 
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
-    def findClientByNip(def clientNip) {
+    Client findClientByNip(def clientNip) {
         switch (Environment.getCurrent().getName()) {
             case EumowyCustomEnvironment.MOCK.getName():
                 return null;

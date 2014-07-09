@@ -1,7 +1,5 @@
 package com.eservice.eumowy
 
-import org.apache.commons.lang.time.DateUtils
-
 class ReportController {
 
     def reportService

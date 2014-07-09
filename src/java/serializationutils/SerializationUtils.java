@@ -16,20 +16,12 @@ package serializationutils;
     * See the License for the specific language governing permissions and
     * limitations under the License.
     */
-   
-   import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.OutputStream;
-import java.io.Serializable;
-
-import org.apache.commons.lang.SerializationException;
 
 import com.eservice.eumowy.PosData;
 import com.eservice.eumowy.PosDataDetails;
+import org.apache.commons.lang.SerializationException;
+
+import java.io.*;
    
    /**
     * <p>Assists with the serialization process and performs additional functionality based 

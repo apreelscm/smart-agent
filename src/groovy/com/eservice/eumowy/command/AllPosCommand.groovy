@@ -3,7 +3,7 @@ package com.eservice.eumowy.command
 import com.eservice.eumowy.validator.AtLeastValidator
 import grails.validation.Validateable;
 
-@Validateable
+@Validateable(nullable = true)
 class AllPosCommand implements Serializable {
 
     transient def calculatorService

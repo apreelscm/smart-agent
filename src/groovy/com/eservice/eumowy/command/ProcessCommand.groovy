@@ -3,35 +3,15 @@ package com.eservice.eumowy.command
 import com.eservice.eumowy.Process
 import com.eservice.eumowy.annotation.DateField
 import com.eservice.eumowy.annotation.Omit
-import com.eservice.eumowy.enums.AcceptorLocation
-
-import com.eservice.eumowy.validator.AtLeastValidator
-import com.eservice.eumowy.validator.CustomValidator
-import com.eservice.eumowy.validator.HirePaymentValidator
-import com.eservice.eumowy.validator.MaxLengthValidator
-import com.eservice.eumowy.validator.NumberValidator
-import com.eservice.eumowy.validator.PercentageValidator
-import com.eservice.eumowy.validator.PointsValidator
-import com.eservice.eumowy.validator.PosesValidator
-import com.eservice.eumowy.validator.RepresentativesValidator
-import com.eservice.eumowy.validator.ScoringValidator
-import com.eservice.eumowy.validator.SkipAddressValidator
-import com.eservice.eumowy.validator.TelekodzikValidator
-import com.eservice.eumowy.validator.TelepompkaValidator
-import com.eservice.eumowy.validator.TerminalNumberValidator
+import com.eservice.eumowy.validator.*
 import grails.util.Holders
 import grails.validation.Validateable
 import org.apache.commons.collections.FactoryUtils
 import org.apache.commons.collections.ListUtils
+import org.apache.commons.collections.ListUtils
 import org.apache.commons.lang.StringUtils
 
-/**
- * User: Dominik Walczak
- * Date: 20.08.13 Time: 10:22
- *
- */
-
-@Validateable
+@Validateable(nullable = true)
 class ProcessCommand implements Serializable {
 
     @Omit()
@@ -176,7 +156,6 @@ class ProcessCommand implements Serializable {
     String kontaktTelKomorkowy = DEFAULT_VALUE
     String kontaktEmail = DEFAULT_VALUE
 
-//    osobaKtoraPozyskalaAkceptanta  -  (nie wystepuje w pdfach)
     String pozyskujacyImie = DEFAULT_VALUE
     String pozyskujacyNazwisko = DEFAULT_VALUE
     String pozyskujacyNumer = DEFAULT_VALUE
@@ -789,6 +768,18 @@ class ProcessCommand implements Serializable {
         pozyskujacyImie(nullable: false, blank: false, shared: "lettersOnly", maxSize: 40)
         pozyskujacyNazwisko(nullable: false, blank: false, shared: "lettersOnly", maxSize: 100)
         pozyskujacyNumer(nullable: false, blank: false, maxSize: 12)
+        reprezentant1Tytul(nullable: true)
+        reprezentant1Imie(nullable: false, blank: false, shared: "lettersOnly")
+        reprezentant1Nazwisko(nullable: false, blank: false, shared: "lettersOnly")
+        reprezentant1Stanowisko(blank: true)
+        reprezentant2Tytul(nullable: true)
+        reprezentant2Imie(nullable: true, blank: true, shared: "lettersOnly")
+        reprezentant2Nazwisko(nullable: true, blank: true, shared: "lettersOnly")
+        reprezentant2Stanowisko(nullable: true, blank: true)
+        reprezentant3Tytul(nullable: true)
+        reprezentant3Imie(nullable: true, blank: true, shared: "lettersOnly")
+        reprezentant3Nazwisko(nullable: true, blank: true, shared: "lettersOnly")
+        reprezentant3Stanowisko(nullable: true, blank: true)
         emailDoWysylkiDokumentu(nullable: true, blank: true, shared: "email")
 
         visaEUKKOSt(nullable: false, blank: false,  validator: { value, cmd, errors ->
@@ -1197,8 +1188,10 @@ class ProcessCommand implements Serializable {
             }
             return true
         })
-        obslugaEkonomicznyCena(nullable:true, blank:false,  validator: { value, cmd, errors -> NumberValidator.validate(value, cmd, errors, propertyName)})
-        numerRachunkuBankowegoKlienta(nullable:true, blank:false, matches: "~|\\d{2}\\s\\d{4}\\s\\d{4}\\s\\d{4}\\s\\d{4}\\s\\d{4}\\s\\d{4}")
+        obslugaEkonomicznyCena(nullable:true, blank:false, validator: { value, cmd, errors -> NumberValidator.validate(value, cmd, errors, propertyName)})
+        numerRachunkuBankowegoKlienta(nullable:true, blank:false, validator: {value, cmd, errors ->
+            DEFAULT_VALUE.equals(value) ?: NumberValidator.accountNumber(value, cmd, errors, propertyName)
+        })
         bankKlienta(nullable:true, blank:false)
         oplataZaUruchomienieDCC(nullable:false, blank:false, validator: {
             value, cmd, errors ->
@@ -1284,6 +1277,7 @@ class ProcessCommand implements Serializable {
             }
             return true
         })
+        posExchanges(nullable: true, validator: PosExchangeValidator.validate)
         liczbaPosZCbd(nullable:true)
         korespondencjaJakDlaMerchanta(nullable:true)
         serwisZablokowany(nullable: true)
@@ -1334,5 +1328,17 @@ class ProcessCommand implements Serializable {
     public String getMessageForProperty(String property){
         //metoda musi zostac, jest uzywana m. in. w validatorach
         return messageSource.getMessage("com.eservice.eumowy.command.ProcessCommand." + property + ".label", [] as Object[], property, Locale.getDefault())
+    }
+
+    public Integer getPosCountFromCBD() {
+        Integer counter = 0
+
+        allPoints?.each { allPoint ->
+            if (allPoint?.cbdId != null) {
+                counter += allPoint?.liczbaPos != null ? allPoint?.liczbaPos : 0
+            }
+        }
+
+        return counter
     }
 }

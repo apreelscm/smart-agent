@@ -45,7 +45,7 @@
     </fieldset>
 </div>
 
-<r:script>
+<script type="text/javascript">
     jQuery(document).ready(function() {
 
         jQuery("#wydrukJakWyzej").click(function() {
@@ -71,4 +71,4 @@
             }
         });
     });
-</r:script>
+</script>

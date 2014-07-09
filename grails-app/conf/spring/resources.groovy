@@ -1,5 +1,4 @@
 import com.eservice.dao.emetrics.UserDAO
-import com.eservice.eum.ws.client.AcceptUmowaWSClient
 import com.eservice.eumowy.CustomDateEditorRegistrar
 import com.eservice.eumowy.auth.EServiceAuthenticationProvider
 import com.eservice.eumowy.dao.CbdDAO

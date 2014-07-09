@@ -6,11 +6,11 @@ class ClientService {
 
     static transactional = false;
 
-    def isClientNipValid(def nip) {
+    boolean isClientNipInvalid(def nip) {
 
         // TODO tymczasowo
         if(Environment.isDevelopmentMode() || Environment.TEST.getName().equalsIgnoreCase(Environment.getCurrent().name)) {
-            return true
+            return false
         }
 
         if (nip.length() == 13) {
@@ -26,9 +26,9 @@ class ClientService {
             }
             return (sum % 11) == Integer.parseInt(aNip[10]);
         } catch (NumberFormatException e) {
-            return false;
+            return true
         }
-        return true
+        return false
     }
 
     def clientExists(Client client) {

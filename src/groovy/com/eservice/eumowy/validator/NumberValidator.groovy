@@ -1,6 +1,7 @@
 package com.eservice.eumowy.validator
 
 import org.apache.commons.lang.StringUtils
+import com.eservice.eumowy.validator.models.AccountNumber
 
 import java.util.regex.Pattern
 
@@ -54,6 +55,17 @@ public class NumberValidator {
 
         if(!ISIN_PATTERN.matcher(isin).matches()) {
             errors.rejectValue(propertyName, "wrong.isin.format")
+            return false
+        }
+
+        return true
+    }
+
+    public static def accountNumber = {value, cmd, errors, propertyName ->
+        AccountNumber accountNumber = new AccountNumber(value)
+
+        if (!accountNumber.isValid()) {
+            errors.rejectValue(propertyName, "account.number.invalid.message")
             return false
         }
 

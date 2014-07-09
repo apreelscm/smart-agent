@@ -28,9 +28,7 @@
     </fieldset>
 </div>
 
-<r:require module="jquery_ui"/>
-
-<r:script>
+<script type="text/javascript">
     jQuery(document).ready(function() {
         var servicePayment = jQuery('#servicePayment');
 
@@ -48,4 +46,4 @@
             }
         });
     });
-</r:script>
+</script>

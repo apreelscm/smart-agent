@@ -1,5 +1,4 @@
 <%@ page import="com.eservice.eumowy.Process" %>
-<r:require module="jquery" />
 <g:javascript>
     function showPdfBox(obj) {
         var el = document.getElementById(obj);
@@ -16,8 +15,8 @@
     
     function showPdfBoxSpinner(obj) {
     	console.log("Loading...");
-    	jQuery("#"+obj).show().html('<div style="text-align: center; width: 200px; display: block; margin: 0 auto;"><h2 style="padding-top: 100px;"><g:message code="process.subscriptions.loadingPage" /></h2><img style="width: 40px;" src="/eumowy/images/document-loading.gif" /></div>')
-    }
+    	jQuery("#"+obj).show().html('<div style="text-align: center; width: 200px; display: block; margin: 0 auto;"><h2 style="padding-top: 100px;"><g:message code="process.subscriptions.loadingPage" /></h2><asset:image src="document-loading.gif" style="width: 40px;"/></div>')
+        }
 </g:javascript>
 
 <table border="0" align="center" cellpadding="3" cellspacing="1" class="table"

@@ -34,7 +34,7 @@
     </fieldset>
 </div>
 
-<r:script>
+<script type="text/javascript">
     jQuery(document).ready(function() {
         jQuery('#dzialalnoscForma').change(function(){
 
@@ -95,4 +95,4 @@
             }
         });
     });
-</r:script>
+</script>

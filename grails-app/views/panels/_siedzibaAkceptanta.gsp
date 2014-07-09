@@ -1,4 +1,4 @@
-<r:script>
+<script type="text/javascript">
     jQuery(document).ready(function() {
         var fields = new Array("akceptantUlica", "akceptantNrDomu", "akceptantMiasto", "akceptantKodPocztowy", "akceptantPoczta");
         var isClientFromCbd = ${data.checkIfClientFromCbd()};
@@ -9,7 +9,8 @@
             }
         }
     });
-</r:script>
+</script>
+
 <div id="acceptorAddressPanel">
     <fieldset>
         <div class="belka-glowna"><g:message code="panel.acceptor.address.title"/> </div>

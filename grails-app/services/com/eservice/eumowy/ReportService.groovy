@@ -1,9 +1,9 @@
 package com.eservice.eumowy
 
+import com.eservice.eumowy.Process.ProcessStatus
 import com.eservice.eumowy.data.SalesmenReportData
 import com.eservice.eumowy.dto.SalesmanAcceptedActivitiesDTO
 import com.eservice.eumowy.dto.SalesmanStatusesDTO
-import com.eservice.eumowy.Process.ProcessStatus
 import org.apache.poi.ss.usermodel.Workbook
 
 import javax.servlet.http.HttpServletResponse

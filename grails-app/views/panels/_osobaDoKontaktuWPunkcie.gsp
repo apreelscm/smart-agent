@@ -33,13 +33,12 @@
 	</div>
 </fieldset>
 
-<r:require module="jquery_ui"/>
-<r:script>
+<script type="text/javascript">
     jQuery(document).ready(function() {
         if (jQuery("#isPersonToContactPanelVisible").size() == 0){
             jQuery('.forMerchant').attr('disabled','true');
             jQuery('.forMerchantLabel').addClass('disabled-label');
         }
     });
-</r:script>
+</script>
 
