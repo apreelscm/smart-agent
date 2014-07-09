@@ -1226,6 +1226,7 @@ class ProcessCommand implements Serializable {
             }
             return true
         })
+        posExchanges(nullable: true, validator: PosExchangeValidator.validate)
         liczbaPosZCbd(nullable:true)
         korespondencjaJakDlaMerchanta(nullable:true)
         serwisZablokowany(nullable: true)
