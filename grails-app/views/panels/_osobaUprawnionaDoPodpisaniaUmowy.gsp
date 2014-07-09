@@ -65,7 +65,7 @@
         <g:render template="/panels/dokumentyWeryfikacyjne"/>
     </div>
 
-    <g:javascript src="panels/osobaUprawnionaDoPodpisaniaUmowy.js"/>
+    <asset:javascript src="apreel/panels/osobaUprawnionaDoPodpisaniaUmowy.js"/>
 </g:if>
 
 <g:if test="${data.isFromBisnode}">

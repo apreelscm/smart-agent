@@ -1,3 +1,5 @@
+<asset:javascript src="apreel/panels/beneficjenciRzeczywisci.js"/>
+
 <fieldset id="actualBeneficiaries">
     <header class="belka-glowna"><g:message code="panel.actual.beneficiaries.title"/></header>
 
@@ -60,7 +62,5 @@
             </div>
         </g:each>
     </section>
-
-    <g:javascript src="panels/beneficjenciRzeczywisci.js"/>
 </fieldset>
 

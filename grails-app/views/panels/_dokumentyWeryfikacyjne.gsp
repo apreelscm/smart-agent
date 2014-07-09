@@ -1,3 +1,5 @@
+<asset:javascript src="apreel/panels/dokumentyWeryfikacyjne.js"/>
+
 <fieldset>
     <header class="belka-glowna"><g:message code="panel.verifications.documents.title"/></header>
 
@@ -37,5 +39,3 @@
 
     </section>
 </fieldset>
-
-<g:javascript src="panels/dokumentyWeryfikacyjne.js"/>
