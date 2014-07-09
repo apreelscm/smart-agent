@@ -5,8 +5,9 @@
     <meta name="layout" content="main">
     <g:set var="entityName" value="${message(code: 'process.label')}" />
     <title><g:message code="process.list.label"  /></title>
-    <r:require module="listProcess"/>
-    <r:require module="mask"/>
+
+    <asset:javascript src="apreel/process/listProcess.js"/>
+    <asset:javascript src="apreel/mask.js"/>
 </head>
 <body class="processListPage">
 

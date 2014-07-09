@@ -1,7 +1,6 @@
 package com.eservice.eumowy
 
 import groovy.transform.ToString
-import org.apache.commons.lang.builder.HashCodeBuilder
 
 @ToString(includeNames = true, ignoreNulls = true)
 class Activity implements Serializable {

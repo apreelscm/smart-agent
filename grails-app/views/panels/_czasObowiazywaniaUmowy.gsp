@@ -28,9 +28,7 @@
     </fieldset>
 </div>
 
-<r:require module="jquery_ui"/>
-
-<r:script>
+<script type="text/javascript">
     jQuery(document).ready(function() {
         var aggDates = jQuery('#aggrementDates');
         var umowaOznOd = jQuery('#umowaOznOd');
@@ -72,4 +70,4 @@
             _aggrementStart.datepicker("option", "maxDate",  _aggrementEnd.val());
         });
     });
-</r:script>
+</script>

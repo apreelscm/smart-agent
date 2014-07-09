@@ -11,11 +11,3 @@
         </div>
     </fieldset>
 </div>
-
-%{--<r:require module="jquery_ui"/>--}%
-%{--
-<r:script>
-    jQuery(document).ready(function() {
-        jQuery("#dataAneksowanejUmowyPos").datepicker({ dateFormat: 'yy-mm-dd', maxDate: new Date() });
-    });
-</r:script>--}%

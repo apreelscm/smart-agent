@@ -1,10 +1,10 @@
 package com.eservice.eumowy.util
 
-import java.text.SimpleDateFormat
-
 import org.apache.log4j.Logger
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
+
+import java.text.SimpleDateFormat
 
 /**
  * Created with IntelliJ IDEA.

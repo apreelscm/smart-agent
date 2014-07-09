@@ -1,3 +1,5 @@
+import org.springframework.webflow.core.FlowException
+
 class UrlMappings {
 
 	static mappings = {
@@ -13,5 +15,6 @@ class UrlMappings {
 		"/ping"(view:'/ping')
         /*"500"(view:'/error')*/
         "500"(controller: 'error', action: 'handle')
+        "500"(controller: 'activity', action: 'flowExceptionHandler', exception: FlowException)
 	}
 }

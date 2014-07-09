@@ -16,7 +16,8 @@
     <script type="text/javascript">
         var confirmRenewSubscriptionsMessage = '${message(code: 'default.button.renewSubscriptions.confirm.message')}';
     </script>
-    <g:javascript src="process/show.js"/>
+
+    <asset:javascript src="apreel/process/show.js"/>
 </head>
 <body>
 
@@ -104,10 +105,9 @@
 
             <div id="notesContainer">
                 <label><g:message code="notes.label"/></label>
-
                 <textarea id="notes" maxlength="300" name="notesFromZrd"
                     ${isClosedProcess ? 'disabled' : ''}
-                    ${!params.notesFromZrd ? 'required' : '' }>${processInstance?.notesFromZrd}</textarea>
+                    ${!params.notesFromZrd ? 'required' : ''}>${processInstance?.notesFromZrd}</textarea>
 
                 <g:actionSubmit id="saveNotes" value="${message(code: 'save.notes.label')}" action="saveNotes" class="button submit"
                                 disabled="${isClosedProcess}"/>

@@ -4,8 +4,6 @@ import com.eservice.eumowy.util.ProjectPathHelper
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.junit.Before
 
-import java.awt.image.BufferedImage
-
 import static com.eservice.eumowy.PdfTestDataBuilder.*
 
 class PdfServiceIntegrTests extends GroovyTestCase {

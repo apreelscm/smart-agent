@@ -48,9 +48,7 @@
     </fieldset>
 </div>
 
-<r:require module="jquery_ui"/>
-
-<r:script>
+<script type="text/javascript">
     jQuery(document).ready(function() {
 
         var dccRange = jQuery('#dccRange');
@@ -85,4 +83,4 @@
             }
         }
     });
-</r:script>
+</script>

@@ -1,6 +1,7 @@
 package com.eservice.eumowy
 
 import groovy.transform.ToString
+import org.apache.commons.lang.StringUtils
 import org.apache.commons.lang.builder.EqualsBuilder
 import org.apache.commons.lang.builder.HashCodeBuilder
 import org.apache.commons.logging.LogFactory
@@ -148,6 +149,19 @@ class Process implements Serializable {
 					  .append(version, rhs.version)
 					  .isEquals();
 	}
+
+    public String getData(String key) {
+        return processData.find{it.name.equals(key)}?.value
+    }
+
+    public ProcessData getProcessData(String key) {
+        return processData.find {it.name.equals(key)}
+    }
+
+    public List<DocumentFile> getDocumentsForPreview() {
+        return documents?.findAll{it.signature.showOnPreview}
+                .sort(false){a,b -> a.signature.signatureOrder.compareTo(b.signature.signatureOrder)}
+    }
 	
 	
 	

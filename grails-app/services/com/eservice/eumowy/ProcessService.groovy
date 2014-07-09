@@ -2,9 +2,9 @@ package com.eservice.eumowy
 
 import com.eservice.eumowy.annotation.DateField
 import com.eservice.eumowy.annotation.Omit
+import com.eservice.eumowy.auth.EServiceUserDetails
 import com.eservice.eumowy.command.*
 import com.eservice.eumowy.dto.MerchantDetailsDTO
-import com.eservice.eumowy.dto.MerchantRepresentativeDTO
 import com.eservice.eumowy.util.DateUtils
 import com.eservice.eumowy.util.EumowyCustomEnvironment
 import grails.util.Environment
@@ -94,8 +94,7 @@ class ProcessService {
         return (result && nip && (result.status in statusList)) ? result : null
     }
 
-    def getLastProcessWhenNotInStatus(def nip, def statusList) {
-        //sessionFactory.currentSession.clear()
+    Process getLastProcessWhenNotInStatus(def nip, def statusList) {
         def crit = Process.createCriteria()
         def result = crit.get {
             client {
@@ -128,6 +127,10 @@ class ProcessService {
 
     Boolean containsActivity(def activities, def activityCode) {
         return activities?.any{it.code.equals(activityCode)};
+    }
+
+    boolean hasOnlyConcreteActivity(Process process, String activityName) {
+        return containsActivity(process.activities, activityName) && process.activities.size() == 1
     }
 
     def getNewProcessCommand(def process, def calcId, def calc){
@@ -288,6 +291,33 @@ class ProcessService {
         log.info "fromEumowy size = " + fromEumowy.size()
 
         fromEumowy
+    }
+
+    public void updatePointAndPosIds(Process process, ProcessCommand processCommand) {
+        process.points?.each { existingPoint ->
+            if (existingPoint?.cbdId) {
+                AllPointsCommand createdPoint = processCommand.allPoints?.find { allPointsCommand -> allPointsCommand?.cbdId == existingPoint?.cbdId }
+                if (createdPoint) {
+                    createdPoint.id = existingPoint.id
+                }
+            }
+
+            existingPoint.posDatas?.each { existingPos ->
+                if (existingPos?.tpsId) {
+                    AllPosCommand createdPos = processCommand.allPoses?.find { allPosCommand -> allPosCommand.tpsId == existingPos.tpsId }
+                    if (createdPos) {
+                        createdPos.id = existingPos.id
+                    }
+                }
+            }
+        }
+    }
+    
+    public void setPhDetailsFromUser(Process process, EServiceUserDetails user) {
+        process.phNumber = user.nr
+        process.phFirstName = user.imie
+        process.phSurname = user.nazwisko
+        process.phEmail = user.email
     }
 
     def getRepresentative1(Process process) {

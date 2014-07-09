@@ -7,7 +7,7 @@ import grails.validation.Validateable
  * Date: 30.10.13
  * Time: 14:23
  */
-@Validateable
+@Validateable(nullable = true)
 class PosExchangeCommand implements Serializable{
 
     Long id

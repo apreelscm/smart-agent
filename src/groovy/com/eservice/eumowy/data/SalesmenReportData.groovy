@@ -1,8 +1,8 @@
 package com.eservice.eumowy.data
 
+import com.eservice.eumowy.Process.ProcessStatus
 import com.eservice.eumowy.dto.SalesmanAcceptedActivitiesDTO
 import com.eservice.eumowy.dto.SalesmanStatusesDTO
-import com.eservice.eumowy.Process.ProcessStatus
 import org.apache.commons.lang.time.DateFormatUtils
 
 class SalesmenReportData {

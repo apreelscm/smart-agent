@@ -13,10 +13,8 @@
     </fieldset>
 </div>
 
-<r:require module="jquery_ui"/>
-
-<r:script>
+<script type="text/javascript">
     jQuery(document).ready(function() {
         jQuery("#dataAneksowanejUmowyPrepaid").datepicker({ dateFormat: 'yy-mm-dd', maxDate: new Date() });
     });
-</r:script>
+</script>

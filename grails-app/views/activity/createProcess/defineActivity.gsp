@@ -4,13 +4,13 @@
 <head>
     <meta name="layout" content="main">
     <title><g:message code="defineActivity.header.title"/></title>
-    <r:require module="expandable_tree"/>
+    <asset:javascript src="apreel/expandable-tree.js"/>
 
-    <r:script>
+    <script type="text/javascript">
 		jQuery('input[type="checkbox"]').on("change", function() {
 			jQuery("ul.errors").remove();
 		});
-    </r:script>
+    </script>
 </head>
 
 <body>

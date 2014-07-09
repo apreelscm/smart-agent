@@ -1,19 +1,12 @@
 package com.eservice.eumowy.auth
 
-import org.codehaus.groovy.grails.plugins.springsecurity.GrailsUserDetailsService
-import org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils
+import grails.plugin.springsecurity.SpringSecurityUtils
+import grails.plugin.springsecurity.userdetails.GrailsUserDetailsService
 import org.springframework.security.core.authority.GrantedAuthorityImpl
 import org.springframework.security.core.userdetails.User
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 
-/**
- * Created with IntelliJ IDEA.
- * User: mariusz.kaczkowski
- * Date: 16.07.13
- * Time: 11:26
- * To change this template use File | Settings | File Templates.
- */
 public class EServiceUserDetailsService implements GrailsUserDetailsService {
 
     /**

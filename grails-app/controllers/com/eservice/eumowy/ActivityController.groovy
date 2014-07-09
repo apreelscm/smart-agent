@@ -1,14 +1,16 @@
 
 package com.eservice.eumowy
 
+import com.eservice.eumowy.auth.EServiceUserDetails
+import com.eservice.eumowy.command.ProcessCommand
 import com.eservice.eumowy.dto.MerchantDetailsDTO
+import com.eservice.eumowy.process.DefineActivityCommand
+import com.eservice.eumowy.util.DateUtils
 import grails.converters.JSON
 import groovy.sql.GroovyRowResult
-
 import org.codehaus.groovy.grails.web.json.JSONObject
 import org.hibernate.StaleObjectStateException
-import org.springframework.orm.hibernate3.HibernateOptimisticLockingFailureException
-
+import org.springframework.orm.hibernate4.HibernateOptimisticLockingFailureException
 import pdfgenerator.PdfGenerator
 
 import com.eservice.eumowy.command.ProcessCommand
@@ -34,16 +36,23 @@ class ActivityController {
 	def documentService
     def dictionaryService
     def bisnodeService
+    def mailBodyCreatorService
 
     def springSecurityService
 
     def index() {
+        params.remove("errorMessage")
         redirect(action: "createProcess", params: params)
     }
 
     def list(Integer max) {
         params.max = Math.min(max ?: 10, 100)
         [activityInstanceList: Activity.list(params), activityInstanceTotal: Activity.count()]
+    }
+
+    def flowExceptionHandler() {
+        String message = message(code: 'flow.excecution.exception')
+        redirect(action: "createProcess", params: [errorMessage: message])
     }
 
     /**
@@ -59,8 +68,11 @@ class ActivityController {
                 log.info("init flow.message:"+ flow.message)
                 log.info("init flash.message:"+ flash.message)
                 log.info("init flow.prevActivityMessage:"+flow.prevActivityMessage)
-                if (params.message != null) {
+                if (params.message) {
                     flow.prevActivityMessage = params.message
+                }
+                if(params.errorMessage) {
+                    flash.errorMessage = params.errorMessage
                 }
                 flash.infoMessage =  flow.prevActivityMessage
                 flow.isGoBack = false
@@ -124,21 +136,20 @@ class ActivityController {
         /** send email only subflow*/
         emailOnly {
             action{
-                def processInstance = flow.processInstance
-                def notes = processInstance.notesToCoa
-                log.info("wysyłanie wiadomości email z uwagami do COA [notes: ${notes}]")
+                Process processInstance = flow.processInstance
+                log.info("wysyłanie wiadomości email z uwagami do COA [notes: ${processInstance.notesToCoa}]")
 
-                def user = springSecurityService.principal
-                def bodyParams = [notes: notes, phNumber: user.nr, phName: user.imie + ' ' + user.nazwisko, merchantName: processService.getFromProcessData(processInstance, 'akceptantNazwaOficjalna'), merchantNip: processService.getFromProcessData(processInstance, 'nip'), activities: processService.getActivities(processInstance)]
-                if(!emailService.sendNotesToCOA(bodyParams)){
+                EServiceUserDetails user = springSecurityService.principal
+                Map bodyParams = mailBodyCreatorService.notesToCoa(processInstance, user)
+                if (!emailService.sendNotesToCOA(bodyParams)) {
                     return error()
                 }
             }
             on("error"){
-                flash.errorMessage = message(code:"email.send.error", default:"Wystąpił błąd podczas wysyłania wiadomości");
+                flash.errorMessage = message(code:"email.send.error")
             }to "defineActivity"
             on("success"){
-                flow.prevActivityMessage = message(code:"email.notesToCOA.send.complete", default:"Wysłano wiadomość z uwagami do COA");
+                flow.prevActivityMessage = message(code:"email.notesToCOA.send.complete")
             }to "beforeRestart"
         }
 
@@ -208,26 +219,26 @@ class ActivityController {
 
         clientSignature {
             onEntry {
-                def processInstance = flow.processInstance
-                def isUzupelnijPodpisy = flow.isUzupelnijPodpisy
-                flow.representative1 = flow.representative1 != null ? flow.representative1 : processService.getRepresentative1(processInstance)
-                flow.representative2 = flow.representative2 != null ? flow.representative2 : processService.getRepresentative2(processInstance)
+                Process processInstance = flow.processInstance
+                
+                setRepresentatives(flow)
+                
                 flow.requiredNumberOfSubscriptions = 1 //PH subscription is always required
 
-                def isWymianaTerminalaOnly = processService.containsActivity(flow.processInstance.activities,"wymianaTerminala") && flow.processInstance.activities.size()==1
+                boolean isWymianaTerminalaOnly = processService.hasOnlyConcreteActivity(processInstance, "wymianaTermianala")
 
                 if (!isWymianaTerminalaOnly){
-                    if (flow.representative1?.name != null && flow.representative1?.surname != null) {
+                    if (isRepresentativeExists(flow.representative1)) {
                         flow.requiredNumberOfSubscriptions++
                     }
 
-                    if (flow.representative2?.name != null && flow.representative2?.surname != null) {
+                    if (isRepresentativeExists(flow.representative2)) {
                         flow.requiredNumberOfSubscriptions++
                     }
                 }
 
                 if (!flow.skipDocumentGeneration && !flow.isUzupelnijPodpisy) {
-                    def processWithPages = pdfService.workWithDocuments(processInstance, conversation.calc)
+                    Map processWithPages = pdfService.workWithDocuments(processInstance, conversation.calc)
                     flow.totalPagesCount = processWithPages.totalPagesCount
                     processInstance = processWithPages.processInstance
                     processInstance.save(flush: true)
@@ -251,7 +262,7 @@ class ActivityController {
             on("subscribe").to "clientSignature"
             on("updateProcessStatus") {
                 log.info params
-                def processInstance = flow.processInstance
+                Process processInstance = flow.processInstance
                 if (params.processStatus.equals("WAIT_FOR_SUBSCRIPTION")) {
                     processInstance.status = Process.ProcessStatus.WAIT_FOR_SUBSCRIPTION
                     Subscription sub = Subscription.get(params.subscriptionId)
@@ -262,32 +273,26 @@ class ActivityController {
                     sub.save(flush: true)
                 } else if (params.processStatus.equals("SUBSCRIPTIONS_DONE")) {
                     processInstance.status = Process.ProcessStatus.SUBSCRIPTIONS_DONE
-                    Subscription sub = Subscription.get(params.subscriptionId)
-                    if (sub == null) {
-                        log.info "PUSTE ID!"
+                    Subscription subscription = Subscription.get(params.subscriptionId)
+
+                    if (!subscription) {
+                        log.error String.format("Nie znaleziono podpisu o id %s dla procesu %s", params.subscriptionId, processInstance.id)
                     }
-                    processInstance.addToSubscriptions(sub)
-                    //      processInstance.discard()
-                    sub.save(flush: true)
 
-                    //w momencie gdy zlozymy ostatni podpis zapisujemy date jako dataUmowy
-                    def aggrementDate = DateUtils.formatWithTimezone(DateUtils.getCurrentDate());
-                    log.info 'Zapisuje formatowana dateUmowy: ' + aggrementDate
+                    processInstance.addToSubscriptions(subscription)
+                    subscription.save(flush: true)
 
-                    def aggrementDateProcessData = processInstance.processData?.find { pData -> 'dataUmowy'.equals(pData.name) };
-                    if (aggrementDateProcessData) {
-                        aggrementDateProcessData.value = aggrementDate
+                    String currentDate = DateUtils.formatWithTimezone(DateUtils.getCurrentDate());
+                    log.info 'Zapisuje formatowana dateUmowy: ' + currentDate
+
+                    ProcessData savedAgreementDate = processInstance.getProcessData("dataUmowy")
+
+                    if (savedAgreementDate) {
+                        savedAgreementDate.value = currentDate
                     } else {
+                        ProcessData actualDataUmowy = new ProcessData(name: "dataUmowy", value: currentDate)
 
-                        def dataUmowyPD = new ProcessData(name: 'dataUmowy', value: aggrementDate)
-
-                        ProcessData foundData = processInstance.processData.find { it.name == dataUmowyPD.name }
-                        if (!foundData) {
-                            processInstance.addToProcessData(dataUmowyPD)
-                        } else if (dataUmowyPD.value != foundData.value) {
-                            foundData.value = dataUmowyPD.value
-                        }
-
+                        processInstance.addToProcessData(actualDataUmowy)
                     }
                 } else if (params.processStatus.equals("REJECTED")) {
                     processInstance.status = Process.ProcessStatus.REJECTED
@@ -304,13 +309,13 @@ class ActivityController {
                 flow.processInstance = processInstance
             }.to "clientSignature"
             on("noaccept") {
-                def processInstance = flow.processInstance
+                Process processInstance = flow.processInstance
                 processInstance.status = Process.ProcessStatus.REJECTED
                 flow.processInstance = processInstance
             }.to "finish"
             on("submit") {
                 log.info "PARAMS: " + params
-                def processInstance = flow.processInstance
+                Process processInstance = flow.processInstance
                 _processDocumentCreation(processInstance, params.requestVersion, flow.requiredNumberOfSubscriptions)
                 processInstance.status = _getNewProcessStatus(params, flow.requiredNumberOfSubscriptions)
                 flow.processInstance = processInstance
@@ -330,9 +335,9 @@ class ActivityController {
                 }
 
                 if (processInstance.notesToCoa) {
-                    log.info("wysyłanie wiadomości email z uwagami do COA [notes: ${processInstance.notesToCoa}]")
-                    def user = springSecurityService.principal
-                    def bodyParams = [notes: processInstance.notesToCoa, phNumber: user.nr, phName: user.imie + ' ' + user.nazwisko, merchantName: processService.getFromProcessData(processInstance, 'akceptantNazwaOficjalna'), merchantNip: processService.getFromProcessData(processInstance, 'nip'), activities: processService.getActivities(processInstance)]
+                    log.info(String.format("Wysyłanie wiadomości email z uwagami do COA [notes: %s]", ${processInstance.notesToCoa}))
+                    EServiceUserDetails user = springSecurityService.principal
+                    Map bodyParams = mailBodyCreatorService.notesToCoa(processInstance, user)
                     emailService.sendNotesToCOA(bodyParams)
                 }
 
@@ -355,8 +360,7 @@ class ActivityController {
 
         restartFlow()
     }
-
-    /**
+/**
      * DEFAULT FULL SUBFLOW
      * */
     def normalFlow = {
@@ -380,12 +384,11 @@ class ActivityController {
         chooseActivity {
             render(view: "../createProcess/chooseActivity")
             on("continue"){
-                def processInstance = flow.processInstance
+                Process processInstance = flow.processInstance
 
-                //SIGNATURES
-                def signatures =  _getSignatures(processInstance.activities)
+                Set<Signature> signatures =  _getSignatures(processInstance.activities)
 
-                log.info("signatures:"+signatures);
+                log.info(String.format("Found signatures: %s", signatures))
 
                 processInstance.signatures = signatures
 
@@ -410,23 +413,21 @@ class ActivityController {
             on("continue"){
                 Process processInstance = flow.processInstance
 
-                processInstance.calcNumber =  flow.calcNumber
+                processInstance.calcNumber = flow.calcNumber
 
                 Client client = flow.client
-                log.info("flow client id:"+client)
-                if (!client.id && !client.save(flush:true)){
+
+                log.info(String.format("Found client: ", client))
+
+                if (!client.id && !client.save(flush:true)) {
                     client.errors.each { log.error(it) }
                     return "error"
                 }
 
-                def user = springSecurityService.principal
-                processInstance.phNumber = user.nr
-                processInstance.phFirstName = user.imie
-                processInstance.phSurname = user.nazwisko
-                processInstance.phEmail = user.email
+                processService.setPhDetailsFromUser(processInstance, springSecurityService.principal)
+
                 processInstance.client =  client
                 processInstance.status = Process.ProcessStatus.NEW
-//                processInstance.allDataFromBisnode = flow.isDatasFromBisnode
 
                 if (!processInstance.save(flush:true)){
                     processInstance.errors.each { log.error(it) }
@@ -445,17 +446,16 @@ class ActivityController {
             action {
                 flow.nip = params.nip;
 
-                def processInstance = flow.processInstance
+                Process processInstance = flow.processInstance
 
-                if(!clientService.isClientNipValid(flow.nip)){
+                if(clientService.isClientNipInvalid(flow.nip)){
                     flash.nipErrorMessage= message(code: 'GetCalculatorCommand.nip.validator.invalid');
                     return error();
                 }
 
-                def client = cbdService.findClientByNip(flow.nip);
-                log.info(flow?.processInstance)
-                /** pobranie wartości, czy to jest nowa umowa*/
-                def hasNowaUmowa = processService.containsActivity(processInstance.activities,"nowaUmowa")
+                Client client = cbdService.findClientByNip(flow.nip)
+
+                boolean hasNowaUmowa = processService.containsActivity(processInstance.activities,"nowaUmowa")
 
                 if(client?.cbdId){
                     /** sprawdzanie, czy to nie jest nowa umowa dla klienta CBD*/
@@ -463,18 +463,16 @@ class ActivityController {
                         flash.nipErrorMessage = message(code:"client.newAgreementAndClientCBD.error", default:"Nowa umowa dla klienta CBD");
                         log.info(message(code:"client.newAgreementAndClientCBD.error") + " - " + flow.nip)
                         return error();
+                    } else {
+                        flash.nipInfoMessage = message(code:"client.found.info")
                     }
-                    else{
-                        flash.nipInfoMessage =  message(code:"client.found.info", default:"Znaleziono klienta w CBD");
-                    }
-
-                }else {
+                } else {
                     /** sprawdzanie, czy to nie jest nowa umowa */
                     if(hasNowaUmowa){
-                        flash.nipInfoMessage =  message(code:"client.new.info", default:"Nowy klient");
+                        flash.nipInfoMessage =  message(code:"client.new.info")
                         client = new Client(nip:params.nip)
-                    }else{
-                        flash.nipErrorMessage = message(code:"client.notFound.error", default:"Brak klienta");
+                    } else {
+                        flash.nipErrorMessage = message(code:"client.notFound.error")
                         log.info(message(code:"client.notFound.error") + " - " + flow.nip)
                         return error();
                     }
@@ -483,44 +481,46 @@ class ActivityController {
                 flow.client = client;
 
                 /** sprawdzanie, czy w eUmowy istnieje dla danego Akceptanta niezakończony Proces */
-                def lastProcess = processService.getLastProcessWhenNotInStatus(params.nip,[Process.ProcessStatus.REJECTED,Process.ProcessStatus.ACCEPTED])
-                if(lastProcess){
-                    flash.nipErrorMessage = message(code:"client.unfinishedProcess.error", default:"Dla Akceptanta istnieje niezakończony Proces");
+                Process lastProcess = processService.getLastProcessWhenNotInStatus(params.nip,[Process.ProcessStatus.REJECTED,Process.ProcessStatus.ACCEPTED])
+
+                if (lastProcess) {
+                    flash.nipErrorMessage = message(code:"client.unfinishedProcess.error")
                     lastProcess?.discard() // drop it from session
                     return error();
                 }
+
                 lastProcess?.discard() // drop it from session
 
                 /** pobieranie danych o kalkulatorze */
-                def omitCalculator = processService.containsActivity(flow.processInstance.activities,"wymianaTerminala") && flow.processInstance.activities.size()==1
-                if (omitCalculator){
+                boolean hasOnlyWymianaTerminala = processService.hasOnlyConcreteActivity(processInstance, "wymianaTerminala")
+
+                if (hasOnlyWymianaTerminala){
                     conversation.calc = [:]
                     flow.calcNumber = -1
-                    flash.calcInfoMessage = message(code:"calc.not.needed.info", default:"Kalkulator nie jest wymagany");
+                    flash.calcInfoMessage = message(code:"calc.not.needed.info")
                 } else {
                     def calcId = cbdService.findCalculatorIdByNip(client.nip)
 
                     if(!calcId){
-                        flash.calcErrorMessage = message(code:"calc.notFound.error", default:"Kalkulator nie istnieje");
+                        flash.calcErrorMessage = message(code:"calc.notFound.error")
                         return error();
                     }
 
                     def calc = cbdService.findCalculatorByNip(client.nip)
 
-                    if(calc == []){
-                        flash.calcErrorMessage = message(code:"calc.fetch.error", default:"Wystąpił błąd podczas próby pobrania kalkulatora");
+                    if(calc == []) {
+                        flash.calcErrorMessage = message(code:"calc.fetch.error")
                         return error();
                     }
 
-                    // Validation 1 & 2
                     if(!calculatorService.isCalcValid(calc,calcId,processInstance)){
-                        flash.calcErrorMessage =  message(code:"calc.notEnough.error", default:"Kalkulator nie pozwala na wykonanie wszystkich zaznaczonych czynności");
+                        flash.calcErrorMessage =  message(code:"calc.notEnough.error")
                         return error();
                     }
 
                     conversation.calc = calc
-                    flow.calcNumber =  calcId;
-                    flash.calcInfoMessage = message(code:"calc.found.info", default:"Znaleziono");
+                    flow.calcNumber =  calcId
+                    flash.calcInfoMessage = message(code:"calc.found.info")
                 }
 
                 if(hasNowaUmowa) {
@@ -549,82 +549,54 @@ class ActivityController {
 
         selectedPanels{
             onEntry {
-                log.info("selectedPanels enterview")
-                def processInstance = flow.processInstance;
+                Process processInstance = flow.processInstance
 
-                ProcessCommand processCmd
+                ProcessCommand processCommand
+
                 if(!flow.skipPanelsInit) {
                     log.info("skipPanelsInit - false")
                     TreeSet beforeExclusionPanels = _getActivePanels(processInstance.signatures)
-                    List<Panel> activePanels = processService.filterExcludedPanels(processInstance, beforeExclusionPanels.toList())
-                    processInstance.panels = activePanels
-                    processCmd = processService.getNewProcessCommand(processInstance, flow.calcNumber, conversation.calc)
+                    processInstance.panels = processService.filterExcludedPanels(processInstance, beforeExclusionPanels.toList())
+                    processCommand = processService.getNewProcessCommand(processInstance, flow.calcNumber, conversation.calc)
 
                     if(flow.bisnodeMerchantDetails) {
-                        processService.fillCommandWithBisnodeData(processCmd, flow.bisnodeMerchantDetails)
+                        processService.fillCommandWithBisnodeData(processCommand, flow.bisnodeMerchantDetails)
                     }
 
                     //inicjacyjne zapisanie danych pobranych z cbd i calc
-                    processInstance = processService.populateProcessWithData(processInstance, processCmd, conversation.calc)
+                    processInstance = processService.populateProcessWithData(processInstance, processCommand, conversation.calc)
 
-                    if (!processInstance.save()){
+                    if (!processInstance.save()) {
                         processInstance.errors.each { log.error(it) }
                         return error();
                     }
 
-                    // Update
-                    processInstance.points?.each { point ->
-                        if (point.cbdId != null) {
-                            def foundApc = processCmd.allPoints?.find { apc -> apc.cbdId == point?.cbdId }
-                            if (foundApc != null) {
-                                foundApc.id = point.id
-                            }
-                        }
-                    }
-					
-					processInstance.points?.each { point ->
-						point.posDatas?.each { pos ->
-							if (pos?.tpsId != null) {
-								def foundApc = processCmd.allPoses?.find { apc -> apc.tpsId == pos.tpsId }
-								if (foundApc != null) {
-									foundApc.id = pos.id
-								}
-							}
-						}
-					}
+                    processService.updatePointAndPosIds(processInstance, processCommand)
 
                     processInstance.posExchanges?.each { PosExchange pe ->
-                        processCmd.posExchanges.find {it.tpsId == pe.tpsId}?.setId(pe.id)
+                        processCommand.posExchanges.find {it.tpsId == pe.tpsId}?.setId(pe.id)
                     }
                 } else {
                     log.info("skipPanelsInit - true")
                     flow.skipPanelsInit = false
-                    processCmd = processService.getSavedProcessCommand(processInstance, processInstance.calcNumber, conversation.calc, flow.newProcessFlow)
+                    processCommand = processService.getSavedProcessCommand(processInstance, processInstance.calcNumber, conversation.calc, flow.newProcessFlow)
 
-                    if(processCmd.isFromBisnode && !flow.representativesBisnode) {
-                        log.info(String.format("Process with ID %s and NIP %s is from BISNODE. Filling flow with representatives from BISNODE.", processInstance.id, processCmd.nip))
-                        flow.representativesBisnode = bisnodeService.getRepresentatives(processCmd.nip)
+                    if(processCommand.isFromBisnode && !flow.representativesBisnode) {
+                        log.info(String.format("Process with ID %s and NIP %s is from BISNODE. Filling flow with representatives from BISNODE.", processInstance.id, processCommand.nip))
+                        flow.representativesBisnode = bisnodeService.getRepresentatives(processCommand.nip)
                     }
 
-                    processCmd.nip = processInstance.client.nip
+                    processCommand.nip = processInstance.client.nip
                 }
 
-                // Calculate pos count from cbd
-                def counter = 0
-                processCmd.liczbaPosZCbd = 0
-                processCmd.allPoints?.each { allPoint ->
-                    if (allPoint.cbdId != null) {
-                        counter += allPoint?.liczbaPos != null ? allPoint?.liczbaPos : 0
-                    }
-                }
-                processCmd.liczbaPosZCbd = Integer.valueOf(processCmd.liczbaPosZCbd) != null ? Integer.valueOf(processCmd.liczbaPosZCbd) + counter : counter
+                processCommand.liczbaPosZCbd = processCommand.getPosCountFromCBD()
 
-                flow.data = processCmd
+                flow.data = processCommand
                 flow.processInstance = processInstance
             }
             render(view: "../createProcess/selectedPanels")
             on("reject"){
-                def processInstance = flow.processInstance;
+                Process processInstance = flow.processInstance;
                 processInstance.status = Process.ProcessStatus.REJECTED;
                 flow.processInstance = processInstance
             }.to "reject"
@@ -633,28 +605,30 @@ class ActivityController {
                 log.info "acceptPointsButton TRIGGERED"
             }.to "selectedPanels"
             on("deletePoint") {
-                def processInstance = flow.processInstance
-                def cmd = flow.data
-                def point = PointData.get(Integer.valueOf(params.pointId));
+                Process processInstance = flow.processInstance
+                ProcessCommand processCommand = flow.data
+                PointData point = PointData.get(Integer.valueOf(params.pointId))
+
                 if (point != null) {
                     log.info "DeletePoint - Usuwam punkt o id: " + params.pointId
                     processInstance.removeFromPoints(point)
                     point.delete()
                     processInstance.save(flush: true)
 
-                    cmd?.points?.removeAll { it.id == point.id }
-                }
-                else {
+                    processCommand?.points?.removeAll { it.id == point.id }
+                } else {
                     log.info "DeletePoint - Nie znalazłem punktu o id: " + params.pointId
                 }
-                flow.data = cmd
+
+                flow.data = processCommand
                 flow.processInstance = processInstance
             }.to "selectedPanels"
 			on("deletePos") {
-				def processInstance = flow.processInstance
-				def cmd = flow.data
-				def pos = PosData.get(Integer.valueOf(params.posId));
-				if (pos != null) {
+				Process processInstance = flow.processInstance
+				ProcessCommand processCommand = flow.data
+				PosData pos = PosData.get(Integer.valueOf(params.posId))
+
+				if (pos) {
 					log.info "DeletePos - Usuwam pos o id: " + params.posId
 					PointData point = pos.point
 					//pos.removeFromPoint(point)
@@ -682,60 +656,43 @@ class ActivityController {
 						processInstance.save(flush: true)
 					}
 	
-					cmd?.poses?.removeAll { it == null || it.id == pos.id }
-				}
-				else {
+					processCommand?.poses?.removeAll { it == null || it.id == pos.id }
+				} else {
 					log.info "DeletePos - Nie znalazłem pos o id: " + params.posId
 				}
-				flow.data = cmd
+				flow.data = processCommand
 				flow.processInstance = processInstance
 			}.to "selectedPanels"
-            on("saveOnly"){ ProcessCommand cmd ->
+            on("saveOnly"){ ProcessCommand processCommand ->
                 log.info params
                 log.info params.get('allPoses[0]')
-                Process processInstance = processService.populateProcessWithData(flow.processInstance, cmd, conversation.calc)
+                Process processInstance = processService.populateProcessWithData(flow.processInstance, processCommand, conversation.calc)
                 log.info "Zapisuje dane paneli"
 
-                cmd.calculatorService = calculatorService
+                processCommand.calculatorService = calculatorService
                 processInstance.save(flush: true, validate: false)
 
                 log.info "Zapisano dane paneli"
 
                 // Update
-                processInstance.points?.each { point ->
-                    if (point.cbdId != null) {
-                        def foundApc = cmd.allPoints?.find { apc -> apc.cbdId == point?.cbdId }
-                        foundApc?.id = point.id
-                    }
-                }
-				
-				processInstance.points?.each { point ->
-					point.posDatas?.each { pos ->
-						if (pos.tpsId != null) {
-							def foundApc = cmd.allPoses?.find { apc -> apc.tpsId == pos.tpsId }
-							if (foundApc != null) {
-								foundApc.id = pos.id
-							}
-						}
-					}
-				}
+                processService.updatePointAndPosIds(processInstance, processCommand)
 
                 flow.processInstance = processInstance
                 flow.skipPanelsInit = true;
             }to "selectedPanels"
             on("continue"){
-                def cmd = crateProcessCommand(params, conversation.calc)
-                cmd.validate()
-                flow.data = cmd
+                ProcessCommand processCommand = crateProcessCommand(params, conversation.calc)
+                processCommand.validate()
+                flow.data = processCommand
 
-                if(grailsApplication.config.isPanelsValidationOn && cmd.hasErrors()){
-                    cmd.errors.each {
+                if(grailsApplication.config.isPanelsValidationOn && processCommand.hasErrors()){
+                    processCommand.errors.each {
                         log.error(it)
                     }
                     return error();
                 }
 
-                def processInstance = flow.processInstance
+                Process processInstance = flow.processInstance
 
                 clientService.updateClientName(processInstance.client, cmd)
                 processInstance = processService.populateProcessWithData(processInstance, cmd, conversation.calc)
@@ -778,7 +735,7 @@ class ActivityController {
 
         optimisticLockingHandler {
             action {
-                log.info("-> OPTIMISTIC LOCKING")
+                log.info(String.format("Optimistic locking for process %s", flow?.processInstance?.id))
                 flash.errorMessage = message(code: 'optimistic.locking')
                 "success"
             }
@@ -823,14 +780,12 @@ class ActivityController {
             on("back").to "backToStart"
             on("getCalculator").to "getCalculator"
             on("continue"){
-                def processInstance = flow.savedProcess
+                Process processInstance = flow.savedProcess
 
                 log.info("POPRAW DANE - wczytanie procesu - nip = ${flow.nip} , processId = ${processInstance?.id}, status = ${processInstance?.status}")
 
-                def user = springSecurityService.principal
-                processInstance.phNumber = user.nr
-                processInstance.phFirstName = user.imie
-                processInstance.phSurname = user.nazwisko
+                processService.setPhDetailsFromUser(processInstance, springSecurityService.principal)
+
                 processInstance.calcNumber =  flow.calcNumber
                 if (!processInstance.save(flush:true)){
                     processInstance.errors.each { log.error(it) }
@@ -844,26 +799,26 @@ class ActivityController {
 
         getCalculator {
             action {
-                flow.nip = params.nip;
+                flow.nip = params.nip
 
-                if(!clientService.isClientNipValid(flow.nip)){
+                if(clientService.isClientNipInvalid(flow.nip)){
                     flash.nipErrorMessage= message(code: 'GetCalculatorCommand.nip.validator.invalid');
                     return error();
                 }
 
-                def client = cbdService.findClientByNip(flow.nip);
-                def lastProcess = processService.getLastProcessForClient(params.nip)
+                Client client = cbdService.findClientByNip(flow.nip);
+                Process lastProcess = processService.getLastProcessForClient(params.nip)
 
                 log.info("POPRAW DANE - Znaleziono proces - nip = ${flow.nip} , processId = ${lastProcess?.id}, status = ${lastProcess?.status}")
 
-                if(! client?.cbdId){
+                if(!client?.cbdId){
                     /** sprawdzanie, czy to nie jest nowa umowa */
-                    def hasNowaUmowa = processService.containsActivity(lastProcess.activities,"nowaUmowa")
+                    boolean hasNowaUmowa = processService.containsActivity(lastProcess.activities,"nowaUmowa")
                     if(hasNowaUmowa){
-                        flash.nipInfoMessage =  message(code:"client.new.info", default:"Nowy klient");
+                        flash.nipInfoMessage =  message(code:"client.new.info")
                         client = new Client(nip:params.nip)
                     }else {
-                        flash.nipErrorMessage = message(code:"client.notFound.error", default:"Brak klienta");
+                        flash.nipErrorMessage = message(code:"client.notFound.error")
                         log.info(message(code:"client.notFound.error") + " - " + flow.nip)
                         return error();
                     }
@@ -872,38 +827,32 @@ class ActivityController {
                     flash.nipInfoMessage =  message(code:"client.found.info", default:"Znaleziono klienta w CBD");
                 }
 
-
-                if (! lastProcess?.id){
-                    /* brak otwartego procesu */
-                    flash.nipErrorMessage = message(code:"process.openNotFound.error",
-                            default:"Brak otwartego procesu dla Akceptant" + flow.nip);
+                if (!lastProcess?.id){
+                    flash.nipErrorMessage = message(code:"process.openNotFound.error")
                     log.info(message(code:"process.openNotFound.error") + " - " + flow.nip)
                     return error()
                 } else if (Process.ProcessStatus.ACCEPTED.equals(lastProcess?.status)){
-                    /* ostatni proces jest zaakceptowany */
-                    flash.nipErrorMessage = message(code:"process.youngerAcceptedProcess.error",
-                            default:"Brak możliwości poprawy danych, proces jest juz zaakceptowany w CBD");
+                    flash.nipErrorMessage = message(code:"process.youngerAcceptedProcess.error")
                     log.info(message(code:"process.youngerAcceptedProcess.error") + " - " + flow.nip)
                     return error()
                 } else if (Process.ProcessStatus.WAITING.equals(lastProcess?.status)){
-                    /* ostatni proces oczekuje na akceptacje - brak mozliwosci edycji */
-                    flash.nipErrorMessage = message(code:"process.waitingForAccept.error",
-                            default:"Brak możliwości poprawy danych, proces oczekuje na akceptacje w CBD");
+                    flash.nipErrorMessage = message(code:"process.waitingForAccept.error")
                     log.info(message(code:"process.waitingForAccept.error") + " - " + flow.nip)
                     return error()
                 }
 
                 /** pobieranie danych o kalkulatorze */
-                def omitCalculator = processService.containsActivity(lastProcess.activities,"wymianaTerminala") && lastProcess.activities.size()==1
-                if (omitCalculator){
+                boolean hasOnlyWymianaTerminala = processService.hasOnlyConcreteActivity(lastProcess, "wymianaTerminala")
+
+                if (hasOnlyWymianaTerminala){
                     conversation.calc = [:]
                     flow.calcNumber = -1
-                    flash.calcInfoMessage = message(code:"calc.not.needed.info", default:"Kalkulator nie jest wymagany");
+                    flash.calcInfoMessage = message(code:"calc.not.needed.info")
                 } else {
                     def calcId = cbdService.findCalculatorIdByNip(client.nip)
 
                     if(!calcId){
-                        flash.calcErrorMessage = message(code:"calc.notFound.error", default:"Kalkulator nie istnieje");
+                        flash.calcErrorMessage = message(code:"calc.notFound.error");
                         log.info(message(code:"calc.notFound.error") + " - " + client.nip)
                         return error()
                     }
@@ -913,13 +862,13 @@ class ActivityController {
                     log.info("pobrano kalkulator " + calcId)
 
                     if(!calculatorService.isCalcValid(calc,calcId,lastProcess)){
-                        flash.calcErrorMessage =  message(code:"calc.notEnough.error", default:"Kalkulator nie pozwala na wykonanie wszystkich zaznaczonych czynności");
+                        flash.calcErrorMessage =  message(code:"calc.notEnough.error")
                         return error()
                     }
 
                     conversation.calc = calc
                     flow.calcNumber =  calcId;
-                    flash.calcInfoMessage = message(code:"calc.found.info", default:"Znaleziono");
+                    flash.calcInfoMessage = message(code:"calc.found.info")
                 }
                 lastProcess?.discard() // drop it from session
 
@@ -949,15 +898,7 @@ class ActivityController {
                     flow.representativesBisnode = bisnodeService.getRepresentatives(processCmd.nip)
                 }
 
-                // Calculate pos count from cbd
-                def counter = 0
-                processCmd.liczbaPosZCbd = 0
-                processCmd.allPoints?.each { allPoint ->
-                    if (allPoint.cbdId != null) {
-                        counter += allPoint?.liczbaPos != null ? allPoint?.liczbaPos : 0
-                    }
-                }
-                processCmd.liczbaPosZCbd = Integer.valueOf(processCmd.liczbaPosZCbd) != null ? Integer.valueOf(processCmd.liczbaPosZCbd) + counter : counter
+                processCmd.liczbaPosZCbd = processCmd.getPosCountFromCBD()
 
                 flow.data = processCmd
             }
@@ -968,33 +909,33 @@ class ActivityController {
                 log.info "acceptPointsButton TRIGGERED"
             }.to "selectedPanels"
             on("deletePoint") {
-                def processInstance = flow.processInstance
-                def cmd = flow.data
-                def point = PointData.get(Integer.valueOf(params.pointId));
-                if (point != null) {
+                Process processInstance = flow.processInstance
+                ProcessCommand processCommand = flow.data
+                PointData point = PointData.get(Integer.valueOf(params.pointId))
+
+                if (point) {
                     log.info "DeletePoint - Usuwam punkt o id: " + params.pointId
                     processInstance.removeFromPoints(point)
                     point.delete()
                     processInstance.save(flush: true)
 
-                    cmd?.points?.removeAll { it.id == point.id }
+                    processCommand?.points?.removeAll { it.id == point.id }
                 }
                 else {
                     log.info "DeletePoint - Nie znalazłem punktu o id: " + params.pointId
                 }
-                flow.data = cmd
+                flow.data = processCommand
                 flow.processInstance = processInstance
             }.to "selectedPanels"
 			on("deletePos") {
-				def processInstance = flow.processInstance
-				def cmd = flow.data
-				def pos = PosData.get(Integer.valueOf(params.posId));
-				if (pos != null) {
+				Process processInstance = flow.processInstance
+				ProcessCommand processCommand = flow.data
+				PosData pos = PosData.get(Integer.valueOf(params.posId))
+
+				if (pos) {
 					log.info "DeletePos - Usuwam pos o id: " + params.posId
 					PointData point = pos.point
-					//point.posDatas.removeAll { it.id == pos.id }
-					//pos.removeFromPoint(pos.point)
-					if (point == null) {
+					if (point) {
 						point = PointData.find {
 							process == processInstance &&
 							posDatas { id == pos.id }
@@ -1008,7 +949,6 @@ class ActivityController {
 							}
 						}
 						point.posDatas?.removeAll { it == null || it?.id == pos?.id || it?.parentPosId == pos?.id }
-						//point.removeFromPosDatas(pos)
 						pos.delete()
 						if (point.posDatas != null) {
 							point.liczbaPos = point.posDatas.size()
@@ -1018,12 +958,12 @@ class ActivityController {
 						processInstance.save(flush: true)
 					}
 
-					cmd?.poses?.removeAll { it == null || it.id == pos.id }
+                    processCommand?.poses?.removeAll { it == null || it.id == pos.id }
 				}
 				else {
 					log.info "DeletePos - Nie znalazłem pos o id: " + params.posId
 				}
-				flow.data = cmd
+				flow.data = processCommand
 				flow.processInstance = processInstance
 			}.to "selectedPanels"
             on("saveOnly"){ ProcessCommand cmd ->
@@ -1036,7 +976,7 @@ class ActivityController {
                 // Update
                 processInstance.points?.each { point ->
                     if (point.cbdId != null) {
-                        def foundApc = cmd.allPoints?.find { apc -> apc.cbdId == point?.cbdId }
+                        def foundApc = cmd.allPoints?.find { apc -> apc.cbdId == point.cbdId }
                         foundApc?.id = point.id
                     }
                 }
@@ -1057,23 +997,22 @@ class ActivityController {
                 flow.skipPanelsInit = true;
             }to "selectedPanels"
             on("continue"){
-                def cmd = crateProcessCommand(params, conversation.calc)
-                cmd.validate()
-                flow.data = cmd
+                ProcessCommand processCommand = crateProcessCommand(params, conversation.calc)
+                processCommand.validate()
+                flow.data = processCommand
 
-                if(cmd?.hasErrors()){
+                if(processCommand?.hasErrors()){
                     log.info(params)
                     return error();
                 }
 
-                def processInstance = flow.processInstance
+                Process processInstance = flow.processInstance
 
-                //clientService.updateClientName(processInstance.client, cmd)
-                processInstance = processService.populateProcessWithData(processInstance, cmd, conversation.calc)
-                processInstance.notesToCoa = cmd.notes;
+                processInstance = processService.populateProcessWithData(processInstance, processCommand, conversation.calc)
+                processInstance.notesToCoa = processCommand.notes;
 
-                flow.representative1 = [name: cmd.reprezentant1Imie, surname: cmd.reprezentant1Nazwisko]
-                flow.representative2 = [name: cmd.reprezentant2Imie, surname: cmd.reprezentant2Nazwisko]
+                flow.representative1 = [name: processCommand.reprezentant1Imie, surname: processCommand.reprezentant1Nazwisko]
+                flow.representative2 = [name: processCommand.reprezentant2Imie, surname: processCommand.reprezentant2Nazwisko]
 
                 if (!processInstance.save()){
                     processInstance.errors.each {
@@ -1083,23 +1022,21 @@ class ActivityController {
                 }
 
                 /* Delete subscriptions */
-				def subscriptionIds = []
-				def subscriptions = Subscription.findAll {
+				List<Subscription> subscriptions = Subscription.findAll {
 					process == processInstance || uniqueKey =~ processInstance.id.toString()+"%"
 				}
-				subscriptions?.each { Subscription s ->
-					subscriptionIds.add(s.id)
-				}
-				
+				List subscriptionIds = subscriptions*.collect {subscription -> subscription.id}.flatten()
+
 				if (subscriptionIds.size() > 0) {
 					Subscription.executeUpdate("delete Subscription where id in (:list)",[list: subscriptionIds])
 				}
+
 				processInstance.subscriptions?.clear()
                 flow.processInstance = processInstance
             }.to "clientSignature"
             on("reject"){
                 def processInstance = flow.processInstance;
-                processInstance.status = Process.ProcessStatus.REJECTED;
+                processInstance.status = Process.ProcessStatus.REJECTED
                 flow.processInstance = processInstance
             }.to "reject"
             on(HibernateOptimisticLockingFailureException).to "optimisticLockingHandler"
@@ -1123,7 +1060,7 @@ class ActivityController {
 
         optimisticLockingHandler {
             action {
-                log.info("-> OPTIMISTIC LOCKING")
+                log.info(String.format("Optimistic locking for process %s", flow?.processInstance?.id))
                 flash.errorMessage = message(code: 'optimistic.locking')
                 "success"
             }
@@ -1176,35 +1113,31 @@ class ActivityController {
             action {
                 flow.nip = params.nip;
 
-                def processInstance = flow.processInstance
-
-                if(!clientService.isClientNipValid(params.nip)){
+                if(clientService.isClientNipInvalid(params.nip)){
                     flash.nipErrorMessage= message(code: 'GetCalculatorCommand.nip.validator.invalid');
                     return error();
                 }
 
-                def client = cbdService.findClientByNip(flow.nip);
+                Client client = cbdService.findClientByNip(flow.nip)
                 if(client?.cbdId){
-                    flash.nipInfoMessage =  message(code:"client.found.info", default:"Znaleziono klienta w CBD");
+                    flash.nipInfoMessage =  message(code:"client.found.info")
                 }
 
                 /** sprawdzanie, czy w eUmowy istnieje dla danego Akceptanta Proces w statusie oczekiwania na podpis */
-                def lastProcess = processService.getLastProcessForClient(params.nip)
+                Process lastProcess = processService.getLastProcessForClient(params.nip)
                 log.info("UZUPELNIJ PODPISY - znaleziono proces - nip = ${flow.nip} , processId = ${lastProcess?.id}, status = ${lastProcess?.status}")
 
-                if(! Process.ProcessStatus.WAIT_FOR_SUBSCRIPTION.equals(lastProcess?.status)){
-                    flash.nipErrorMessage = message(code:"client.addSignatures.error",
-                            default:"Brak możliwości uzupełnienia podpisów");
+                if(!Process.ProcessStatus.WAIT_FOR_SUBSCRIPTION.equals(lastProcess?.status)){
+                    flash.nipErrorMessage = message(code:"client.addSignatures.error")
                     log.info(message(code:"client.addSignatures.error") + " - " + flow.nip)
                     return error()
                 }
 
                 flow.savedProcess = lastProcess
                 flow.client = lastProcess.client
-
             }
             on("success"){
-                flash.calcInfoMessage = message(code:"calc.omitting.info", default:"Pomijanie kalkulatora");
+                flash.calcInfoMessage = message(code:"calc.omitting.info")
                 flow.isContinueEnabled = true
                 flow.getCalculatorSucces = true
             }.to "chooseCalc"
@@ -1265,39 +1198,37 @@ class ActivityController {
 
         getCalculator {
             action {
-                flow.nip = params.nip;
+                flow.nip = params.nip
 
-                if(!clientService.isClientNipValid(params.nip)){
+                if(clientService.isClientNipInvalid(params.nip)) {
                     flash.nipErrorMessage= message(code: 'GetCalculatorCommand.nip.validator.invalid');
                     return error();
                 }
 
-                def client = cbdService.findClientByNip(flow.nip);
+                Client client = cbdService.findClientByNip(flow.nip)
+
                 if(client?.cbdId){
-                    flash.nipInfoMessage =  message(code:"client.found.info", default:"Znaleziono klienta w CBD");
+                    flash.nipInfoMessage = message(code:"client.found.info")
                 }
 
                 /** sprawdzanie, czy w eUmowy istnieje dla danego Akceptanta jakis Proces */
-                def lastProcess = processService.getLastProcessForClient(params.nip)
+                Process lastProcess = processService.getLastProcessForClient(params.nip)
                 log.info("ODRZUCENIE PROCESU - znaleziono proces - nip = ${flow.nip} , processId = ${lastProcess?.id}, status = ${lastProcess?.status}")
 
-                if(! lastProcess?.id){
-                    flash.nipErrorMessage = message(code:"client.eUmowyNotFound.error", default:"Brak klienta w eUmowy");
+                if(!lastProcess?.id){
+                    flash.nipErrorMessage = message(code:"client.eUmowyNotFound.error")
                     log.info(message(code:"client.eUmowyNotFound.error") + " - " + flow.nip)
                     return error();
                 }
                 /** sprawdzanie, czy w eUmowy istnieje dla danego Akceptanta niezakończony Proces */
                 else if (Process.ProcessStatus.ACCEPTED.equals(lastProcess?.status)){
                     /* ostatni proces jest zaakceptowany */
-                    flash.nipErrorMessage = message(code:"process.rejectAccepted.error",
-                            default:"Nie można odrzucić dokumentów już zaakceptowanych")
+                    flash.nipErrorMessage = message(code:"process.rejectAccepted.error")
                     log.info(message(code:"process.rejectAccepted.error") + " - " + flow.nip)
                     return error()
-
                 }
                 else if (Process.ProcessStatus.REJECTED.equals(lastProcess?.status)){
-                    flash.nipErrorMessage = message(code:"process.openNotFound.error",
-                            default:"Brak otwartego procesu dla tego Akceptanta")
+                    flash.nipErrorMessage = message(code:"process.openNotFound.error")
                     log.info(message(code:"process.openNotFound.error") + " - " + flow.nip)
                     return error()
                 }
@@ -1305,7 +1236,7 @@ class ActivityController {
                 flow.client = lastProcess.client;
             }
             on("success"){
-                flash.calcInfoMessage = message(code:"calc.omitting.info", default:"Pomijanie kalkulatora");
+                flash.calcInfoMessage = message(code:"calc.omitting.info")
                 flow.isContinueEnabled = true
                 flow.getCalculatorSucces = true
             }.to "chooseCalc"
@@ -1458,8 +1389,8 @@ class ActivityController {
         return activePanels;
     }
 
-    def _getSignatures(def activities) {
-        def signatures = []
+    Set<Signature> _getSignatures(def activities) {
+        Set<Signature> signatures = []
         activities.each() { activity ->
 
             def activitySignatureParam = params["activitySignature_${activity.id}"];
@@ -1504,7 +1435,7 @@ class ActivityController {
                     doc.content.discard()
                 }
 
-                log.info "ELECTRONICAL VERSION for process" + process.id
+                log.info "ELECTRONICAL VERSION for process " + process.id
 
                 Map mailBodyParams = processService.createMailParametersForElectronicalVersion(process)
                 String recipient = mailBodyParams.recipient
@@ -1641,6 +1572,15 @@ class ActivityController {
         DocumentContent contentWithUpdatedDataUmowy = pdfService.updateDataUmowyOnDocument(doc.content, process, dataUmowy)
         doc.setContent(contentWithUpdatedDataUmowy)
         doc.save(flush: true)
+    }
+
+    private boolean isRepresentativeExists(Map representative) {
+        return representative?.name != null && representative?.surname != null
+    }
+
+    private void setRepresentatives(Map flow) {
+        flow.representative1 = flow.representative1 != null ? flow.representative1 : processService.getRepresentative1(processInstance)
+        flow.representative2 = flow.representative2 != null ? flow.representative2 : processService.getRepresentative2(processInstance)
     }
 
 }

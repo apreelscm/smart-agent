@@ -1,12 +1,9 @@
 package com.eservice.eumowy
 
-import grails.plugins.springsecurity.Secured
-
-import pdfgenerator.PdfGenerator
-
 import com.eservice.eum.ws.xml.Result
 import com.eservice.eumowy.util.DateUtils
-
+import org.springframework.security.access.annotation.Secured
+import pdfgenerator.PdfGenerator
 
 class ProcessController {
     def attachmentService

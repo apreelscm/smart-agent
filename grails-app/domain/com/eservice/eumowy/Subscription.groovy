@@ -1,7 +1,6 @@
 package com.eservice.eumowy
 
 import org.apache.commons.logging.LogFactory
-import org.apache.log4j.MDC
 
 class Subscription implements Serializable {
 
