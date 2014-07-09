@@ -479,7 +479,7 @@ class ActivityController {
                 lastProcess?.discard() // drop it from session
 
                 /** pobieranie danych o kalkulatorze */
-                boolean hasOnlyWymianaTerminala = processService.hasOnlyConcreteActivity("wymianaTerminala")
+                boolean hasOnlyWymianaTerminala = processService.hasOnlyConcreteActivity(processInstance, "wymianaTerminala")
 
                 if (hasOnlyWymianaTerminala){
                     conversation.calc = [:]
