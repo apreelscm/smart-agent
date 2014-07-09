@@ -40,6 +40,10 @@ class SecUser {
 		}
 	}
 
+    public transient String getFullName() {
+        return String.format("%s %s", imie, nazwisko)
+    }
+
 	protected void encodePassword() {
 		password = springSecurityService.encodePassword(password)
 	}

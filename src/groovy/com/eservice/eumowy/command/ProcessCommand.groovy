@@ -1262,4 +1262,16 @@ class ProcessCommand implements Serializable {
         //metoda musi zostac, jest uzywana m. in. w validatorach
         return messageSource.getMessage("com.eservice.eumowy.command.ProcessCommand." + property + ".label", [] as Object[], property, Locale.getDefault())
     }
+
+    public Integer getPosCountFromCBD() {
+        Integer counter = 0
+
+        allPoints?.each { allPoint ->
+            if (allPoint?.cbdId != null) {
+                counter += allPoint?.liczbaPos != null ? allPoint?.liczbaPos : 0
+            }
+        }
+
+        return counter
+    }
 }

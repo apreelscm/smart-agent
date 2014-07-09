@@ -35,4 +35,8 @@ public class EServiceUserDetails extends GrailsUser {
         this.name = imie +" "+nazwisko
         this.email = email
     }
+
+    public transient getFullName() {
+        return String.format("%s %s", imie, nazwisko)
+    }
 }

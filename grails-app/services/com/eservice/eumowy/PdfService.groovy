@@ -201,7 +201,7 @@ class PdfService {
         result;
     }
 
-    def workWithDocuments(def processInstance, def calc){
+    Map workWithDocuments(def processInstance, def calc){
         def totalPagesCount = 0
         def dataFromProcess = mapperService.mapOnlyProcessData(processInstance, calc);
 
