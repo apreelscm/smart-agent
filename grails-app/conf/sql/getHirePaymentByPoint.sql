@@ -11,4 +11,5 @@ WHERE t.tps_kln_id = o.kln_id
   AND md.smt_id = tps_smt_id
   AND m.kln_nip = :nip
   AND tps_status NOT IN ('N', 'C')
+  and m.kln_qcards_nr =1
 GROUP BY o.kln_nazwa, tps_oplata_pos, md.smt_nazwa, o.kln_id

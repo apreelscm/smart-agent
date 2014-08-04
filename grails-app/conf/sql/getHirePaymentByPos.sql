@@ -10,5 +10,6 @@ SELECT
 FROM   cbt_terminale_pos ss, cbt_klienci o, cbt_klienci m
   WHERE       tps_kln_id = o.kln_id
     AND o.kln_kln_id = m.kln_id
+    AND m.kln_qcards_nr =1
     AND m.kln_nip = :nip
     AND tps_status NOT IN ('N', 'C')
