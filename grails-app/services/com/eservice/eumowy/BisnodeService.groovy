@@ -3,14 +3,11 @@ package com.eservice.eumowy
 import com.eservice.eumowy.auth.EServiceUserDetails
 import com.eservice.eumowy.dto.MerchantDetailsDTO
 import com.eservice.eumowy.dto.MerchantRepresentativeDTO
-import com.eservice.webs.client.WebsClient
 import com.eservice.webs.client.govsync.dto.MerchantKRSDataDTO
-import grails.plugin.springsecurity.SpringSecurityService
 
 class BisnodeService {
     def websWebServiceClient
     def springSecurityService
-    def webServiceClient
 
     public List<MerchantRepresentativeDTO> getRepresentatives(String nip) {
         MerchantDetailsDTO merchantDetails = getMerchantDetails(nip)
@@ -42,7 +39,7 @@ class BisnodeService {
             return null
         }
 
-        if (isMerchantDetailsInvalid(merchantDetails)) {
+        if (isMerchantDetailsValid(merchantDetails)) {
             log.info(String.format("Client with NIP %s not found in Bisnode.", nip))
             return null
         }
@@ -51,7 +48,7 @@ class BisnodeService {
         return new MerchantDetailsDTO(merchantDetails)
     }
 
-    private isMerchantDetailsInvalid(MerchantKRSDataDTO merchantDetails) {
-        return !merchantDetails || !merchantDetails?.id
+    private isMerchantDetailsValid(MerchantKRSDataDTO merchantDetails) {
+        return !merchantDetails && !merchantDetails?.id
     }
 }
