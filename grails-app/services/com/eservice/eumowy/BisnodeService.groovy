@@ -48,6 +48,6 @@ class BisnodeService {
     }
 
     private isMerchantDetailsValid(MerchantKRSDataDTO merchantDetails) {
-        return !merchantDetails && !merchantDetails.id
+        return !merchantDetails && !merchantDetails?.id
     }
 }
