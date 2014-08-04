@@ -1,13 +1,15 @@
 package com.eservice.eumowy
 
+import com.eservice.eumowy.auth.EServiceUserDetails
 import com.eservice.eumowy.dto.MerchantDetailsDTO
 import com.eservice.eumowy.dto.MerchantRepresentativeDTO
-import com.eservice.webs.dto.MerchantKRSDataDTO
-import com.eservice.webs.wsclient.bisnode.BisnodeWebServiceClient
-import org.apache.commons.lang.exception.ExceptionUtils
+import com.eservice.webs.client.WebsClient
+import com.eservice.webs.client.govsync.dto.MerchantKRSDataDTO
+import grails.plugin.springsecurity.SpringSecurityService
 
 class BisnodeService {
-    BisnodeWebServiceClient bisnodeWebServiceClient
+    WebsClient websClient
+    SpringSecurityService springSecurityService
 
     public List<MerchantRepresentativeDTO> getRepresentatives(String nip) {
         MerchantDetailsDTO merchantDetails = getMerchantDetails(nip)
@@ -30,15 +32,16 @@ class BisnodeService {
 
     public MerchantDetailsDTO getMerchantDetails(String nip) {
         MerchantKRSDataDTO merchantDetails
+        Long userId = ((EServiceUserDetails)springSecurityService.principal).auwId
 
         try {
-            merchantDetails = bisnodeWebServiceClient.searchMerchantData(nip)
+            merchantDetails = websClient.searchMerchantData(nip, userId)
         } catch (Exception e) {
-            log.error(ExceptionUtils.getFullStackTrace(e))
+            log.error("Error during data fetch from bisnode", e)
             return null
         }
 
-        if (isMerchantDetailsValid(merchantDetails)) {
+        if (isMerchantDetailsInvalid(merchantDetails)) {
             log.info(String.format("Client with NIP %s not found in Bisnode.", nip))
             return null
         }
@@ -47,7 +50,7 @@ class BisnodeService {
         return new MerchantDetailsDTO(merchantDetails)
     }
 
-    private isMerchantDetailsValid(MerchantKRSDataDTO merchantDetails) {
-        return !merchantDetails && !merchantDetails.id
+    private isMerchantDetailsInvalid(MerchantKRSDataDTO merchantDetails) {
+        return !merchantDetails || !merchantDetails?.id
     }
 }

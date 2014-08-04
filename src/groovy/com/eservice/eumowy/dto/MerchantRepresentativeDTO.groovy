@@ -1,7 +1,6 @@
 package com.eservice.eumowy.dto
 
-import com.eservice.webs.dto.MerchantRepresentativeDataDTO
-
+import com.eservice.webs.client.govsync.dto.MerchantRepresentativeDataDTO
 
 class MerchantRepresentativeDTO implements Serializable{
     String title

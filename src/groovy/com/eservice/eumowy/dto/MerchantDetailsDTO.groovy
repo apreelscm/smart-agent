@@ -1,9 +1,8 @@
 package com.eservice.eumowy.dto
 
-import com.eservice.webs.dto.MerchantAddressDataDTO
-import com.eservice.webs.dto.MerchantKRSDataDTO
-import com.eservice.webs.dto.MerchantRepresentativeDataDTO
-
+import com.eservice.webs.client.govsync.dto.MerchantAddressDataDTO
+import com.eservice.webs.client.govsync.dto.MerchantKRSDataDTO
+import com.eservice.webs.client.govsync.dto.MerchantRepresentativeDataDTO
 
 class MerchantDetailsDTO implements Serializable {
     String nip

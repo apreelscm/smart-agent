@@ -2,14 +2,14 @@ import com.eservice.dao.emetrics.UserDAO
 import com.eservice.eumowy.CustomDateEditorRegistrar
 import com.eservice.eumowy.auth.EServiceAuthenticationProvider
 import com.eservice.eumowy.dao.CbdDAO
-import com.eservice.eumowy.mocks.BisnodeWebServiceClientMock
+import com.eservice.eumowy.mocks.WebsClientMock
 import com.eservice.eumowy.propEditors.CustomPropertyEditorRegistrar
 import com.eservice.eumowy.util.EumowyCustomEnvironment
 import com.eservice.eumowy.ws.AcceptUmowaWSClientFactory
 import com.eservice.service.security.ECbdRoleService
 import com.eservice.service.security.NoRoleService
 import com.eservice.service.security.UserService
-import com.eservice.webs.wsclient.bisnode.BisnodeWebServiceClient
+import com.eservice.webs.client.WebsClient
 import grails.util.Environment
 import org.jasypt.digest.config.SimpleDigesterConfig
 import org.jasypt.salt.RandomSaltGenerator
@@ -45,7 +45,7 @@ beans = {
 
     switch (Environment.getCurrent().getName()) {
         case Environment.DEVELOPMENT.name:
-            bisnodeWebServiceClient(BisnodeWebServiceClientMock){}
+            websClient(WebsClientMock){}
             roleService(ECbdRoleService){
                 sessionFactory = ref('sessionFactory')
             }
@@ -54,7 +54,7 @@ beans = {
             roleService(NoRoleService){}
             break;
         default:
-            bisnodeWebServiceClient(BisnodeWebServiceClient){}
+            websClient(WebsClient){}
             roleService(ECbdRoleService){
                 sessionFactory = ref('sessionFactory')
             }

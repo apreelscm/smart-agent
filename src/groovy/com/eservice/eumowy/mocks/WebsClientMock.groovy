@@ -1,16 +1,16 @@
 package com.eservice.eumowy.mocks
 
-import com.eservice.webs.dto.MerchantAddressDataDTO
-import com.eservice.webs.dto.MerchantKRSDataDTO
-import com.eservice.webs.dto.MerchantRepresentativeDataDTO
-import com.eservice.webs.wsclient.bisnode.BisnodeWebServiceClient
+import com.eservice.webs.client.WebsClient
+import com.eservice.webs.client.govsync.dto.MerchantAddressDataDTO
+import com.eservice.webs.client.govsync.dto.MerchantKRSDataDTO
+import com.eservice.webs.client.govsync.dto.MerchantRepresentativeDataDTO
 import org.apache.commons.lang.RandomStringUtils
 
-class BisnodeWebServiceClientMock extends BisnodeWebServiceClient {
-    public BisnodeWebServiceClientMock() {}
+class WebsClientMock extends WebsClient {
+    public WebsClientMock() {}
 
     @Override
-    MerchantKRSDataDTO searchMerchantData(String nip) {
+    MerchantKRSDataDTO searchMerchantData(String nip, Long userId) {
         MerchantKRSDataDTO merchantKRSDataDTO = new MerchantKRSDataDTO()
         merchantKRSDataDTO.id = 1
         merchantKRSDataDTO.nip = nip
