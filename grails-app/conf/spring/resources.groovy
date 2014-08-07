@@ -2,14 +2,12 @@ import com.eservice.dao.emetrics.UserDAO
 import com.eservice.eumowy.CustomDateEditorRegistrar
 import com.eservice.eumowy.auth.EServiceAuthenticationProvider
 import com.eservice.eumowy.dao.CbdDAO
-import com.eservice.eumowy.mocks.WebsClientMock
+//import com.eservice.eumowy.mocks.WebsClientMock
 import com.eservice.eumowy.propEditors.CustomPropertyEditorRegistrar
 import com.eservice.eumowy.util.EumowyCustomEnvironment
-import com.eservice.eumowy.ws.AcceptUmowaWSClientFactory
 import com.eservice.service.security.ECbdRoleService
 import com.eservice.service.security.NoRoleService
 import com.eservice.service.security.UserService
-import com.eservice.webs.client.WebsClient
 import grails.util.Environment
 import org.jasypt.digest.config.SimpleDigesterConfig
 import org.jasypt.salt.RandomSaltGenerator
@@ -35,7 +33,7 @@ beans = {
     }
 
     passwordEncryptor(ConfigurablePasswordEncryptor){
-       config  = ref('simpleDigesterConfig')
+        config  = ref('simpleDigesterConfig')
         stringOutputType = 'base64'
     }
 
@@ -43,21 +41,19 @@ beans = {
         sessionFactory = ref('sessionFactory')
     }
 
+    roleService(ECbdRoleService){
+        sessionFactory = ref('sessionFactory')
+    }
+
     switch (Environment.getCurrent().getName()) {
         case Environment.DEVELOPMENT.name:
-            websClient(WebsClientMock){}
-            roleService(ECbdRoleService){
-                sessionFactory = ref('sessionFactory')
-            }
+//            websClient(WebsClientMock){}
             break;
         case EumowyCustomEnvironment.MOCK.getName():
             roleService(NoRoleService){}
             break;
         default:
-            websClient(WebsClient){}
-            roleService(ECbdRoleService){
-                sessionFactory = ref('sessionFactory')
-            }
+//            websClient(WebsClient){}
             break;
     }
 
@@ -67,18 +63,6 @@ beans = {
         passwordEncryptor = ref('passwordEncryptor')
         sessionFactory = ref('sessionFactory')
     }
-
-    webServiceTemplate(WebServiceTemplate, ref('messageFactory')){
-        defaultUri = "${grailsApplication.config.eumowySyncWSAddress}"
-        marshaller = ref('marshaller')
-        unmarshaller = ref('marshaller')
-    }
-
-    acceptUmowaWSClientFactory(AcceptUmowaWSClientFactory) {
-        webServiceClient = ref('webServiceClient')
-    }
-
-    acceptUmowaWSClient(acceptUmowaWSClientFactory: "getInstance"){}
 
     /**
      * LOGIN BEANS
@@ -97,6 +81,6 @@ beans = {
     cbdDAO(CbdDAO){
         dataSource = ref('dataSource')
     }
-	
+
 
 }
