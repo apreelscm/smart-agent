@@ -37,6 +37,7 @@
                 },
                 createProcessRejectLink = '<g:createLink controller="activity" action="createProcess" params="[message: rejectedDocumentsMessage]"/>',
                 createProcessPrevActivityMessage = '<g:createLink controller="activity" action="createProcess" params="[message: prevActivityMessage]"/>',
+                refreshSubscriptionLink = '${createLink(controller: 'subscription', action: 'refreshSubscription')}',
                 processId = '${processInstance.id}',
                 kontaktEmail = "${processInstance.getData("kontaktEmail")}",
                 emailDoWysylkiDokumentu = "${processInstance.getData("emailDoWysylkiDokumentu")}",

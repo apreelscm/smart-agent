@@ -1,8 +1,7 @@
 //= require vendors/panzoom.min
 //= require_tree vendors/jsignature
 //= require vendors/base64utils
-//= require vendors/pdf.worker
-//= require vendors/pdf
+//= require vendors/pdf.js
 //= require apreel/document-preview/PdfPreviewManager
 
 var updateSubscriptionStatusCount = 0,
@@ -40,7 +39,7 @@ function setUpSignaturePad() {
 function refreshSignature(processId, role, subscriberName) {
     jQuery("#dialogInfoText").html('<h2 class="align-center">Zapisywanie...</h2>');
     jQuery("#dialoginfo").show();
-    jQuery.post(refreshSubscriptionUrl, {processId: processId, role: role}, function (result) {
+    jQuery.post(refreshSubscriptionLink, {processId: processId, role: role}, function (result) {
         if (result.success) {
             jQuery("#dialogInfoText").html('<h2 class="align-center">Pomyślnie zapisano podpis!</h2>');
             updateSubscriptionStatus(subscriberName, result.subscriptionId);
