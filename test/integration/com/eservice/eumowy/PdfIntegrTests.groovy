@@ -35,7 +35,7 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
     public void setUp() {
         process = new Process()
         process.processData = new HashSet<ProcessData>()
-        process.representatives = new HashSet<Representative>()
+        process.representatives = new ArrayList<Representative>()
 
         representative = new Representative(typ: Representative.Type.REPRESENTATIVE)
         beneficiary = new Representative(typ: Representative.Type.BENEFICIARY)
@@ -98,6 +98,38 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
         data.putAll(insertSignatures2(subscriptions));
 
         process("APUNTSA1.00312-01-16.pdf", "APUNTSA1.00312-01-16_out.pdf", data)
+    }
+
+    @Test
+    void pakiet_UmowaWspolpracy() {
+        //given
+        def subscriptions = [
+                ["ACCEPTANT1", 2, 50, 262, 59, 28],
+                ["ACCEPTANT2", 2, 50, 292, 59, 28],
+                ["PH", 2, 165, 199, 59, 28]
+        ]
+
+        //when
+        data.putAll(PdfHelper.insertSignatures(subscriptions))
+
+        //then
+        process("Umowa_wspolpracy_Pakiet Start.pdf", "Umowa_wspolpracy_Pakiet Start_out.pdf", data)
+    }
+
+    @Test
+    void pakiet_PrzyjmowanieZaplaty() {
+        //given
+        def subscriptions = [
+                ["ACCEPTANT1", 5, 150, 310, 64, 33],
+                ["ACCEPTANT2", 5, 150, 270, 64, 33],
+                ["PH", 5, 450, 130, 84, 53]
+        ]
+
+        //when
+        data.putAll(PdfHelper.insertSignatures(subscriptions))
+
+        //then
+        process("Przyjmowanie_zaplaty_Pakiet Start.pdf", "Przyjmowanie_zaplaty_Pakiet Start_out.pdf", data)
     }
 
     @Test
