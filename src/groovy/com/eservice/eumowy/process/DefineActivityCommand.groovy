@@ -37,6 +37,9 @@ class DefineActivityCommand {
     def aneks
     def ekonomiczny
     def wymianaTerminala
+    def pakietStart
+    def pakietStartPlus
+    def pakietMobilny
     String notes
 
     def selectedActivities = []

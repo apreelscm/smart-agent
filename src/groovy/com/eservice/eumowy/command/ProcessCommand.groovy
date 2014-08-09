@@ -60,10 +60,27 @@ class ProcessCommand implements Serializable {
     @DateField
     String umowaOznDo = DEFAULT_VALUE
 
+    //cenaPakietu
+    String cenaPakietu = DEFAULT_VALUE
+
+    //oplataDeinstalacyjna
+    String oplataDeinstalacyjna = DEFAULT_VALUE
+
+    //cashbackInfo
+    String cashbackUpust = DEFAULT_VALUE
+    String cashbackAbonament = DEFAULT_VALUE
+
+    //poziomOplatIWarunkiPlatnosci
+    String oplatyIPlatnosciDo = DEFAULT_VALUE
+    String oplatyIPlatnosciPowyzej = DEFAULT_VALUE
+    String oplataPrDo = DEFAULT_VALUE
+    String oplataPrPowyzej = DEFAULT_VALUE
+    String dinersClubDo = DEFAULT_VALUE
+    String dinersClubPowyzej = DEFAULT_VALUE
+
 //    daneAkceptanta
     String akceptantNazwaOficjalna = DEFAULT_VALUE
     String akceptantNazwaSieciowa = DEFAULT_VALUE
-    //String akceptantNip - trzymane we wspolnym polu nip
     String akceptantRegon = DEFAULT_VALUE
 
     String akceptantNazwaOficjalnaCbd = DEFAULT_VALUE

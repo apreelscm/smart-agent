@@ -2,10 +2,7 @@
 package com.eservice.eumowy
 
 import com.eservice.eumowy.auth.EServiceUserDetails
-import com.eservice.eumowy.command.ProcessCommand
 import com.eservice.eumowy.dto.MerchantDetailsDTO
-import com.eservice.eumowy.process.DefineActivityCommand
-import com.eservice.eumowy.util.DateUtils
 import grails.converters.JSON
 import groovy.sql.GroovyRowResult
 import org.codehaus.groovy.grails.web.json.JSONObject
@@ -455,10 +452,9 @@ class ActivityController {
 
                 Client client = cbdService.findClientByNip(flow.nip)
 
-                boolean hasNowaUmowa = processService.containsActivity(processInstance.activities,"nowaUmowa")
+                boolean hasNowaUmowa = ActivityHelper.isNewAgreement(processInstance)
 
                 if(client?.cbdId){
-                    /** sprawdzanie, czy to nie jest nowa umowa dla klienta CBD*/
                     if(hasNowaUmowa){
                         flash.nipErrorMessage = message(code:"client.newAgreementAndClientCBD.error", default:"Nowa umowa dla klienta CBD");
                         log.info(message(code:"client.newAgreementAndClientCBD.error") + " - " + flow.nip)
@@ -467,8 +463,7 @@ class ActivityController {
                         flash.nipInfoMessage = message(code:"client.found.info")
                     }
                 } else {
-                    /** sprawdzanie, czy to nie jest nowa umowa */
-                    if(hasNowaUmowa){
+                    if(hasNowaUmowa || ActivityHelper.isClientRedundant(processInstance)) {
                         flash.nipInfoMessage =  message(code:"client.new.info")
                         client = new Client(nip:params.nip)
                     } else {
@@ -492,9 +487,7 @@ class ActivityController {
                 lastProcess?.discard() // drop it from session
 
                 /** pobieranie danych o kalkulatorze */
-                boolean hasOnlyWymianaTerminala = processService.hasOnlyConcreteActivity(processInstance, "wymianaTerminala")
-
-                if (hasOnlyWymianaTerminala){
+                if (ActivityHelper.isCalculatorRedundant(processInstance)){
                     conversation.calc = [:]
                     flow.calcNumber = -1
                     flash.calcInfoMessage = message(code:"calc.not.needed.info")
@@ -814,7 +807,7 @@ class ActivityController {
 
                 if(!client?.cbdId){
                     /** sprawdzanie, czy to nie jest nowa umowa */
-                    boolean hasNowaUmowa = processService.containsActivity(lastProcess.activities,"nowaUmowa")
+                    boolean hasNowaUmowa = ActivityHelper.isNewAgreement(lastProcess)
                     if(hasNowaUmowa){
                         flash.nipInfoMessage =  message(code:"client.new.info")
                         client = new Client(nip:params.nip)
@@ -843,9 +836,7 @@ class ActivityController {
                 }
 
                 /** pobieranie danych o kalkulatorze */
-                boolean hasOnlyWymianaTerminala = processService.hasOnlyConcreteActivity(lastProcess, "wymianaTerminala")
-
-                if (hasOnlyWymianaTerminala){
+                if (ActivityHelper.isCalculatorRedundant(lastProcess)){
                     conversation.calc = [:]
                     flow.calcNumber = -1
                     flash.calcInfoMessage = message(code:"calc.not.needed.info")

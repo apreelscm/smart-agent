@@ -464,7 +464,7 @@ class PanelService {
         cmd.scoringDzialalnosc = nullify(cmd.scoringDzialalnosc)
 
         //scoringMcc pobierany jest globalnie w metodzie init()
-        def result = cbdService.getRodzajDzialalnosciByMCC(cmd.scoringMcc);
+        def result = cmd.scoringMcc ? cbdService.getRodzajDzialalnosciByMCC(cmd.scoringMcc) : null
         cmd.scoringSzczegolyDzialalnosci = result?.slm_nazwa ?: ""
 
         cmd.scoringIloscTransakcji = nullify(cmd.scoringIloscTransakcji)
@@ -596,6 +596,21 @@ class PanelService {
 
         //nie mniej niz z kalkulatora powinno byc
         cmd.odpUzyPpMies = ""
+    }
+
+    def getCenaPakietu(ProcessCommand cmd, def calc) {
+
+    }
+
+    def getCashbackInfo(ProcessCommand cmd, def calc) {
+
+    }
+
+    def getOplataDeinstalacyjna(ProcessCommand cmd, def calc) {
+
+    }
+
+    def getPoziomOplatIWarunkiPlatnosci(ProcessCommand cmd, def calc) {
 
     }
 

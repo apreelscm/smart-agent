@@ -161,7 +161,7 @@ class ProcessService {
         cmd.hirePaymentsByPos?.addAll(getHirePaymentByPosCommandList(cmd, calc))
         cmd.posExchanges?.addAll(getPosExchangeCommandList(cmd))
 
-        prepareProcessCommand(cmd, calc,)
+        prepareProcessCommand(cmd, calc)
 		preparePointCommands(cmd.points, cmd.poses, calc)
 		prepareAllPosCommands(cmd.allPoses, calc)
 		

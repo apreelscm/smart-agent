@@ -16,6 +16,7 @@ grails.config.locations = ["classpath:${appName}-config-${grails.util.Environmen
 grails.project.groupId = appName // change this to alter the default package name and Maven publishing destination
 grails.mime.file.extensions = true // enables the parsing of file extensions from URLs into the request format
 grails.mime.use.accept.header = false
+grails.reload.enabled = true
 grails.mime.types = [
         all:           '*/*',
         atom:          'application/atom+xml',
