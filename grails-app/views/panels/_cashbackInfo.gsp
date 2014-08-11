@@ -6,11 +6,11 @@
             <tbody>
                 <tr>
                     <td><g:message code="cashback.payment.discount.label"/></td>
-                    <td>0,00 zł</td>
+                    <td>${data.cashbackUpust} zł</td>
                 </tr>
                 <tr>
                     <td><g:message code="cashback.subscription.label"/></td>
-                    <td>5 zł</td>
+                    <td>${data.cashbackAbonament} zł</td>
                 </tr>
             </tbody>
         </table>

@@ -10,10 +10,6 @@ class PanelService {
     def cbdService
     def calculatorService
     def springSecurityService
-    //domainClass
-    //def calcMethods = ["getDcc","getDodatkoweUslugi2","getFormaDoladowania","getIfplus","","","","","","","","","","","",]
-
-    def cbdMethods = ["getAdresDoKorespondencjizAkecptantem","getDaneAkceptanta","getSiedzibaAkceptanta","getSerwis"]
 
     def init(ProcessCommand cmd, def calc){
         cmd.scoringMcc = calculatorService.getCalcProperty(calc,"MCC")
@@ -22,10 +18,11 @@ class PanelService {
         cmd.isDoladowania_tk = calculatorService.getCalcProperty(calc,"CZY_TELEKODZIK")
         cmd.doladowania_tp = nullify(cmd.doladowania_tp)
         cmd.doladowania_tk = nullify(cmd.doladowania_tk)
-        cmd.isRozszerzenie = cmd.process?.activities?.any{it.code.equals('dodatkowyPunkt')} || cmd.process?.activities?.any{it.code.equals('dodatkowyPos')}
+        cmd.isRozszerzenie = ActivityHelper.containsActivity(cmd.process, 'dodatkowyPunkt') || ActivityHelper.containsActivity(cmd.process, 'dodatkowyPos')
         cmd.hasPrepaid = cbdService.getPrepaidEvoucher(cmd.nip) || cbdService.getPrepaidTopup(cmd.nip)
-        cmd.hasDodaniePrepaid = cmd.process?.activities?.any{it.code.equals('dodaniePrepaid')}
-        cmd.hasNewUmowaAndPrepaid = cmd.process?.activities?.any{it.code.equals('nowaUmowa')} && cmd.hasDodaniePrepaid
+        cmd.hasDodaniePrepaid = ActivityHelper.containsActivity(cmd.process, 'dodaniePrepaid')
+        cmd.hasNewUmowaAndPrepaid = ActivityHelper.isNewAgreement(cmd.process) && cmd.hasDodaniePrepaid
+        cmd.isBundleActivity = ActivityHelper.isBundleActivity(cmd.process)
         cmd.promObjNaj1 = calculatorService.getCalcProperty(calc,"E_PROM_OBN_NAJ_1")
         cmd.promObjNajLiczbaTerminali = calculatorService.getCalcProperty(calc,"LICZBA_ZEST_POS_PROM_CEN_NAJ_1")
 
@@ -599,19 +596,25 @@ class PanelService {
     }
 
     def getCenaPakietu(ProcessCommand cmd, def calc) {
-
+        cmd.cenaPakietu = "150"
     }
 
     def getCashbackInfo(ProcessCommand cmd, def calc) {
-
+        cmd.cashbackUpust = "0"
+        cmd.cashbackAbonament = "5"
     }
 
     def getOplataDeinstalacyjna(ProcessCommand cmd, def calc) {
-
+        cmd.oplataDeinstalacyjna = "5"
     }
 
     def getPoziomOplatIWarunkiPlatnosci(ProcessCommand cmd, def calc) {
-
+        cmd.oplatyIPlatnosciDo = "5"
+        cmd.oplatyIPlatnosciPowyzej = "10"
+        cmd.oplataPrDo = "2"
+        cmd.oplataPrPowyzej = "7"
+        cmd.dinersClubDo = "3.5"
+        cmd.dinersClubPowyzej = "3.5"
     }
 
     def nullify(def value){

@@ -5,6 +5,7 @@ import com.eservice.eumowy.annotation.Omit
 import com.eservice.eumowy.auth.EServiceUserDetails
 import com.eservice.eumowy.command.*
 import com.eservice.eumowy.dto.MerchantDetailsDTO
+import com.eservice.eumowy.factory.ProcessCommandDefaultValuesFactory
 import com.eservice.eumowy.util.DateUtils
 import com.eservice.eumowy.util.EumowyCustomEnvironment
 import grails.util.Environment
@@ -408,6 +409,8 @@ class ProcessService {
                 populateMethod = {command, calculator, functionName ->
                     panelService."${functionName}"(command, calculator)
                 }
+                ProcessCommandDefaultValuesFactory.getDefaultValuesSetter(cmd.process).setDefaultValues(cmd)
+
                 break;
         }
 

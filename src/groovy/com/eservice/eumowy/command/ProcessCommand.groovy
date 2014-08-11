@@ -501,6 +501,8 @@ class ProcessCommand implements Serializable {
     Boolean hasNewUmowaAndPrepaid
     @Omit
     Boolean hasNewUmowa
+    @Omit
+    boolean isBundleActivity
 
     @Omit
     String liczbaTerminali

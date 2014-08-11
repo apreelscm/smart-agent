@@ -21,9 +21,9 @@
                 </tr>
                 <tr>
                     <td><g:message code="diners.club.label"/></td>
-                    <td>3,20%</td>
+                    <td><g:formatNumber number="${data.dinersClubDo}" type="percent"/></td>
                     <td></td>
-                    <td>3,20%</td>
+                    <td><g:formatNumber number="${data.dinersClubPowyzej}" type="percent"/></td>
                 </tr>
             </tbody>
         </table>

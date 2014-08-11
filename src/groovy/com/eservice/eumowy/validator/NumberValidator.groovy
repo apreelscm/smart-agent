@@ -10,6 +10,10 @@ public class NumberValidator {
         RegexpValidator.validate(cmd, value, errors, propertyName, '~|\\-|^(?:[1-9]\\d*|0)?(?:\\.\\d{1,2})?$',"default.validation.number.error")
     }
 
+    public static def validateWithDash = { value, cmd, errors, propertyName ->
+
+    }
+
     public static def validatePesel = {pesel, cmd, errors, propertyName ->
         if(!pesel) {
             errors.rejectValue(propertyName, "pesel.invalid")

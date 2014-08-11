@@ -22,8 +22,12 @@ class ActivityHelper {
     }
 
     static boolean isClientRedundant(Process process) {
-        List<String> activitiesWithoutClient = ["pakietStart", "pakietStartPlus", "pakietMobilny"]
+        return isBundleActivity(process)
+    }
 
-        return activitiesWithoutClient.any{hasOnlyConcreteActivity(process, it)}
+    static boolean isBundleActivity(Process process) {
+        List<String> bundleActivities = ["pakietStart", "pakietStartPlus", "pakietMobilny"]
+
+        return bundleActivities.any{hasOnlyConcreteActivity(process, it)}
     }
 }
