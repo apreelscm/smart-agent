@@ -11,7 +11,14 @@ public class NumberValidator {
     }
 
     public static def validateWithDash = { value, cmd, errors, propertyName ->
+        Pattern pattern = Pattern.compile("~|\\-|^(?:[1-9]\\d*|0)?(?:\\.\\d{1,2})?\$")
 
+        if(!pattern.matcher(value).matches() || value != "-") {
+            errors.rejectValue(propertyName, "default.validation.number.error", [value, ValidatorUtils.getMessage(cmd, propertyName)] as Object[], "")
+            return false
+        }
+
+        return true
     }
 
     public static def validatePesel = {pesel, cmd, errors, propertyName ->

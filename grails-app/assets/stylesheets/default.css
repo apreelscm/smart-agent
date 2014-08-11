@@ -678,6 +678,10 @@ input:invalid:focus, select:invalid:focus, textarea:invalid:focus {
 }
 
 input[readonly]{
+    background-color: #F7F7F7;
+}
+
+input[disabled] {
     background-color: #f0f0f0;
 }
 

@@ -1,4 +1,3 @@
-<%@ page import="com.eservice.eumowy.Constants" %>
 <fieldset id="feesAndPaymentsTerms">
     <header class="belka-glowna"><g:message code="fees.level.and.payment.terms.title"/></header>
 
@@ -21,9 +20,9 @@
                 </tr>
                 <tr>
                     <td><g:message code="diners.club.label"/></td>
-                    <td><g:formatNumber number="${data.dinersClubDo}" type="percent"/></td>
+                    <td><eumowy:percentageField name="dinersClubDo" validatable="${data}" value="${data.dinersClubDo}" readonly="readonly"/></td>
                     <td></td>
-                    <td><g:formatNumber number="${data.dinersClubPowyzej}" type="percent"/></td>
+                    <td><eumowy:percentageField name="dinersClubPowyzej" validatable="${data}" value="${data.dinersClubPowyzej}" readonly="readonly"/></td>
                 </tr>
             </tbody>
         </table>

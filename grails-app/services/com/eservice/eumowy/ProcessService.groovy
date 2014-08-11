@@ -409,13 +409,9 @@ class ProcessService {
                 populateMethod = {command, calculator, functionName ->
                     panelService."${functionName}"(command, calculator)
                 }
-                ProcessCommandDefaultValuesFactory.getDefaultValuesSetter(cmd.process).setDefaultValues(cmd)
-
-                break;
         }
 
         cmd.process.panels.each { Panel panel ->
-
             if (panel!=null){
                 //po usunieciu panelu z procesu w jego miesjsce wchodzi null, trzeba to obsluzyc.
                 String panelFunctionName = "get${WordUtils.capitalize(panel.name)}"
@@ -425,6 +421,8 @@ class ProcessService {
                 populateMethod.call(cmd, calc, panelFunctionName)
             }
         }
+
+        ProcessCommandDefaultValuesFactory.getDefaultValuesSetter(cmd.process)?.setDefaultValues(cmd)
 
         cmd
     }

@@ -23,7 +23,7 @@
 
 
     <g:form class="someForm">
-        <g:render template="../panels/adresacjaSeciowa"/>
+        <g:render template="../panels/danePunktu/adresacjaSeciowa"/>
         %{--<g:render template="../panels/adresDoKorespondencjiPunktu"/>--}%
         <g:render template="../panels/adresDoKorespondencjizAkecptantem"/>
         <g:render template="../panels/aneksDoUmowyNajmuZestawuPos"/>
@@ -40,7 +40,7 @@
         <g:render template="../panels/dodatkoweUslugi2"/>
         <g:render template="../panels/dodatkoweUslugiMud"/>
         <g:render template="../panels/dodatkoweUslugiUTAIntegracja"/>
-        <g:render template="../panels/dodatkoweWyposazenie"/>
+        <g:render template="../panels/danePunktu/dodatkoweWyposazenie"/>
         %{--<g:render template="../panels/formaDoladowania"/>--}%
         %{--<g:render template="../panels/funkcjeTerminala"/>--}%
         <g:render template="../panels/ifplus"/>
@@ -50,7 +50,7 @@
         %{--<g:render template="../panels/opieka"/>--}%
         <g:render template="../panels/oplatyDCC"/>
         <g:render template="../panels/osobaDoKontaktu"/>
-        <g:render template="../panels/osobaDoKontaktuWPunkcie"/>
+        <g:render template="../panels/danePunktu/osobaDoKontaktuWPunkcie"/>
         <g:render template="../panels/osobaKtoraPozyskalaAkceptanta"/>
         <g:render template="../panels/osobaUprawnionaDoPodpisaniaUmowy"/>
         <g:render template="../panels/poziomOplatiWarunkiPlatnosciKarty"/>

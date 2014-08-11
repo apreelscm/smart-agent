@@ -4,12 +4,16 @@ import com.eservice.eumowy.Process
 
 class ProcessCommandDefaultValuesFactory {
     public static ProcessCommandDefaultValuesSetter getDefaultValuesSetter(Process processInstance) {
-        switch (processInstance.activities) {
-            case ["pakietStart", "pakietStartPlus", "pakietMobilny"]:
+        if(processInstance.activities.size() > 1) {
+            return null
+        }
+
+        switch (processInstance.activities[0].code) {
+            case "pakietStart":
+            case "pakietStartPlus":
+            case "pakietMobilny":
                 return new PackageDefaultValuesSetter()
                 break
-            default:
-                return new DefaultValuesSetter()
         }
     }
 }

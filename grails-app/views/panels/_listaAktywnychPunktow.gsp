@@ -15,7 +15,7 @@
                 </thead>
                 <tbody>
                 <g:each status="i" var="point" in="${data.allPoints}">
-                    <g:if test="${point.czyCbd}">
+                    <g:if test="${point?.czyCbd}">
                         <tr>
                             <td>${point.nazwa}
                                 <input type="hidden" name="allPoints[${i}].nazwa" value="${point.nazwa}" />

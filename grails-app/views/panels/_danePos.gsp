@@ -15,11 +15,11 @@
         			<dict:cbdPointsSelect id="${panelType}[${id}].cbdId" name="${panelType}[${id}].cbdId" nip="${data.nip}" value="${pointData?.cbdId}"/>
         		</div>
         	</fieldset>
-        	<g:render template="../panels/zestawPos" />
-            <g:render template="../panels/informacjeTechniczne" />
-            <g:render template="../panels/funkcjeTerminala" />
-            <g:render template="../panels/dodatkoweWyposazenie" />
-            <g:render template="../panels/adresacjaSeciowa" />
+        	<g:render template="../panels/danePunktu/zestawPos" />
+            <g:render template="../panels/danePunktu/informacjeTechniczne" />
+            <g:render template="../panels/danePunktufunkcjeTerminala" />
+            <g:render template="../panels/danePunktu/dodatkoweWyposazenie" />
+            <g:render template="../panels/danePunktu/adresacjaSeciowa" />
        	</div>
    	</fieldset>
 </div>
