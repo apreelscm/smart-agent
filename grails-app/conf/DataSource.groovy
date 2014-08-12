@@ -30,12 +30,12 @@ environments {
         dataSource {
             driverClassName = "oracle.jdbc.driver.OracleDriver"
             dialect = "org.hibernate.dialect.Oracle10gDialect"
-            username = "eumowy_app"
-            password = "eumowy_app"
+            username = "EUMOWY_APP"
+            password = 'WsMQ8h2$'
             dbCreate = ""
            // url = "jdbc:oracle:thin:@192.168.9.22:1523:tstcbd"
            //url = "jdbc:oracle:thin:@db-eservice.apreel.lan:1521:cbd01out"
-            url = "jdbc:oracle:thin:@192.168.9.22:1523:tstcbd"
+            url = "jdbc:oracle:thin:@192.168.9.22:1521:cbd"
             properties {
                 maxActive = -1
                 initialSize = 1
