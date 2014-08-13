@@ -247,6 +247,7 @@
         <g:hiddenField name="isRozszerzenie" value="${data.isRozszerzenie}"/>
         <g:hiddenField id="hasDodaniePrepaid" name="hasDodaniePrepaid" value="${data.hasDodaniePrepaid}"/>
         <g:hiddenField name="czyGift" value="${data.czyGift}"/>
+        <g:hiddenField name="isBundleActivity" value="${data.isBundleActivity}"/>
 
         <g:each var="panel" in="${processInstance.panels.sort(false){p -> p?.orderNo}}" status="i">
 

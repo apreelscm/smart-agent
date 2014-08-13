@@ -455,7 +455,7 @@ class ActivityController {
                 boolean hasNowaUmowa = ActivityHelper.isNewAgreement(processInstance)
 
                 if(client?.cbdId){
-                    if(hasNowaUmowa){
+                    if(hasNowaUmowa || ActivityHelper.isBundleActivity(processInstance)) {
                         flash.nipErrorMessage = message(code:"client.newAgreementAndClientCBD.error", default:"Nowa umowa dla klienta CBD");
                         log.info(message(code:"client.newAgreementAndClientCBD.error") + " - " + flow.nip)
                         return error();
@@ -814,10 +814,8 @@ class ActivityController {
                     }else {
                         flash.nipErrorMessage = message(code:"client.notFound.error")
                         log.info(message(code:"client.notFound.error") + " - " + flow.nip)
-                        return error();
                     }
-                }
-                else {
+                } else {
                     flash.nipInfoMessage =  message(code:"client.found.info", default:"Znaleziono klienta w CBD");
                 }
 

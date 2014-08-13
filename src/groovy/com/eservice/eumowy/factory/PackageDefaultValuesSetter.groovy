@@ -16,8 +16,9 @@ class PackageDefaultValuesSetter implements ProcessCommandDefaultValuesSetter{
         command.oplataMasterCardPr = "0"
         command.oplataMasterCard = "0"
         command.oplataMaestroPr = "0"
-        command.oplataMasterCard = "0"
+        command.oplataMaestro = "0"
         command.okresLojalnosciowy = "12"
         command.liczbaTerminali = "10"
+        command.dccZakresUruchomienia = "obecne_i_nowe"
     }
 }

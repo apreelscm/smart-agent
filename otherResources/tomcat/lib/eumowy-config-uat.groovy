@@ -17,5 +17,7 @@ environments {
         grails.mail.password = "Standard1"
 
         trustAll = true
+
+        email.sending.enabled = true
     }
 }

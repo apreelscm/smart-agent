@@ -50,6 +50,8 @@ environments {
                 ]
         ]
 
+        email.sending.enabled = false
+
         trustAll = true
     }
 }

@@ -25,7 +25,7 @@
     <td colspan="4" class="posHeaderType"><g:message code="stationary.label"/></td>
 </tr>
 
-<tr>
+<tr class="stationary">
     <td class="posTypeColumn"><g:message code="type.label"/>
         <dict:extendedTypeSelect medium="DIALUP" type="STATIONARY" isPINPad="false"
                                  id="${panelType}[${id}].possetforselectedpointDialupType"
@@ -47,7 +47,7 @@
                               class="half-width float-number"/></td>
 </tr>
 
-<tr>
+<tr class="stationary">
     <td class="posTypeColumn"><g:message code="type.label"/>
         <dict:extendedTypeSelect medium="DIALUP" type="STATIONARY" isPINPad="true"
                                  id="${panelType}[${id}].possetforselectedpointDialupPPType"
@@ -69,7 +69,7 @@
                               class="half-width float-number"/></td>
 </tr>
 
-<tr>
+<tr class="stationary">
     <td class="posTypeColumn"><g:message code="type.label"/>
         <dict:extendedTypeSelect medium="VPN" type="STATIONARY" isPINPad="false"
                                  id="${panelType}[${id}].possetforselectedpointVpnType"
@@ -91,7 +91,7 @@
                               class="half-width float-number"/></td>
 </tr>
 
-<tr>
+<tr class="stationary">
     <td class="posTypeColumn"><g:message code="type.label"/>
         <dict:extendedTypeSelect medium="VPN" type="STATIONARY" isPINPad="true"
                                  id="${panelType}[${id}].possetforselectedpointVpnPPType"
@@ -113,7 +113,7 @@
                               class="half-width float-number"/></td>
 </tr>
 
-<tr>
+<tr class="stationary">
     <td class="posTypeColumn"><g:message code="type.label"/>
         <dict:extendedTypeSelect medium="SSL" type="STATIONARY" isPINPad="false"
                                  id="${panelType}[${id}].possetforselectedpointSslType"
@@ -135,7 +135,7 @@
                               class="half-width float-number"/></td>
 </tr>
 
-<tr>
+<tr class="stationary">
     <td class="posTypeColumn"><g:message code="type.label"/>
         <dict:extendedTypeSelect medium="SSL" type="STATIONARY" isPINPad="true"
                                  id="${panelType}[${id}].possetforselectedpointSslPPType"
@@ -157,7 +157,7 @@
                               class="half-width float-number"/></td>
 </tr>
 
-<tr>
+<tr class="stationary">
     <td class="posTypeColumn"><g:message code="type.label"/>
         <dict:extendedTypeSelect medium="GPRS" type="STATIONARY" isPINPad="false"
                                  id="${panelType}[${id}].possetforselectedpointGprsType"
@@ -180,7 +180,7 @@
                               class="half-width float-number"/></td>
 </tr>
 
-<tr>
+<tr class="stationary">
     <td class="posTypeColumn"><g:message code="type.label"/>
         <dict:extendedTypeSelect medium="GPRS" type="STATIONARY" isPINPad="true"
                                  id="${panelType}[${id}].possetforselectedpointGprsPPType"
@@ -256,3 +256,22 @@
 </table>
 </div>
 </fieldset>
+
+<script type="text/javascript">
+    var posTable = jQuery("#zestawPOSTable"),
+        stationaryPOSes = posTable.find("tr.stationary");
+
+    jQuery("#zestawPOSTable select").change(function() {
+        var $this = jQuery(this),
+            row = $this.parents('tr');
+
+        if(this.value === '') {
+            stationaryPOSes.find('select').removeAttr('disabled');
+            row.find('input').attr('disabled', 'disabled');
+        } else {
+            stationaryPOSes.find('input,select').attr('disabled', 'disabled');
+            row.find('input').removeAttr('disabled');
+            row.find('select').removeAttr('disabled');
+        }
+    });
+</script>

@@ -7,10 +7,14 @@
                 <g:radioGroup name="dccZakresUruchomienia"
                               labels="['panel.dcc.range.current.and.new','panel.dcc.range.current', 'panel.dcc.range.direct']"
                               values="['obecne_i_nowe', 'obecne', 'wskazane']"
-                              value="${data.dccZakresUruchomienia}">
+                              value="${data.dccZakresUruchomienia}" disabled="${data.isBundleActivity}">
                     <p><label> ${it.radio} <g:message code="${it.label}"/></label></p>
                 </g:radioGroup>
             </div>
+
+            <g:if test="${data.isBundleActivity}">
+                <g:hiddenField name="dccZakresUruchomienia" value="${data.dccZakresUruchomienia}"/>
+            </g:if>
         </div>
         <div id="dccRange" class="centre" style="text-align: center; padding-top: 20px; width: 800px; max-width: 950px">
             <table class="t">
@@ -56,8 +60,6 @@
         if (jQuery('input[name="dccZakresUruchomienia"]:checked').val() != 'wskazane'){
             enableCheckbox(false);
             dccRange.hide();
-        } else {
-            console.log(jQuery('input[name="dccZakresUruchomienia"]:checked').val());
         }
 
         jQuery('input[name="dccZakresUruchomienia"]').change(function(e){
