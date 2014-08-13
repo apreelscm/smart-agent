@@ -523,7 +523,7 @@ class ProcessCommand implements Serializable {
         wydrukGrafikiCena(nullable:true, blank:false,  validator: { value, cmd, errors -> NumberValidator.validate(value, cmd, errors, propertyName)})
         dzialaniaMatematyczneCena(nullable:true, blank:false,  validator: { value, cmd, errors -> NumberValidator.validate(value, cmd, errors, propertyName)})
 
-        pierwszaSesjaCena(blank: true,  validator: { value, cmd, errors -> NumberValidator.validate(value, cmd, errors, propertyName)})
+        pierwszaSesjaCena(nullable: true, validator: { value, cmd, errors -> NumberValidator.validate(value, cmd, errors, propertyName)})
 
         akceptantKontaktUlicaTytul(nullable: true, blank: true)
         akceptantKontaktUlica(nullable: false, blank: false, shared: "alphanumeric", validator: { value, cmd, errors ->
@@ -1226,7 +1226,6 @@ class ProcessCommand implements Serializable {
             }
             return true
         })
-        posExchanges(nullable: true, validator: PosExchangeValidator.validate)
         liczbaPosZCbd(nullable:true)
         korespondencjaJakDlaMerchanta(nullable:true)
         serwisZablokowany(nullable: true)
