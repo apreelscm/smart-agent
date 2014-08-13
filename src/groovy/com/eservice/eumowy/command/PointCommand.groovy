@@ -4,12 +4,6 @@ import com.eservice.eumowy.validator.AtLeastValidator
 import com.eservice.eumowy.validator.NumberValidator
 import grails.validation.Validateable
 
-/**
- * User: Dominik Walczak
- * Date: 20.08.13 Time: 10:28
- *
- */
-
 @Validateable(nullable = true)
 class PointCommand implements Serializable {
 
@@ -96,6 +90,7 @@ class PointCommand implements Serializable {
 	
 	String zamkniecieDniaOd
 	String zamkniecieDniaDo
+
 	Date planowanaDataInstalacji
 	String uwagiDodatkowe
 	
@@ -188,13 +183,7 @@ class PointCommand implements Serializable {
 		rodzProwadzDzialalWPraktyce(nullable:true, blank:false)
 		numerRachunkuBankowego(nullable:true, blank:false, validator: {value, cmd, errors -> NumberValidator.accountNumber(value, cmd, errors, propertyName)})
 		bank(nullable:true, blank:false)
-		nazwaDoWydrukuZTerminalaPos(nullable:true, validator: {value, cmd, errors ->
-            if(value && value.length() > 25) {
-                errors.rejectValue("nazwaDoWydrukuZTerminalaPos", "nazwaDoWydrukuZTerminalaPos.maxSize.exceeded")
-                return false
-            }
-            return true
-        })
+		nazwaDoWydrukuZTerminalaPos(nullable:true)
 		nazwaDoWyszukiwarki(nullable:true)
 		wydrukUlicaTytul(nullable:true)
 		wydrukUlica(nullable:true, blank:false, shared:"alphanumeric")

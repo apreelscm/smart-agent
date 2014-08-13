@@ -64,7 +64,6 @@ grails.logging.jul.usebridge = true
 isPanelsValidationOn = true;
 grails.databinding.dateFormats = ['yyyy-MM-dd']
 
-
 grails.cache.config = {
     cache = {
         name = 'eumowyCacheShort'
