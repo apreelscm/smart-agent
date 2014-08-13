@@ -43,10 +43,17 @@ class DictionaryService {
     def getCbdPointsComboBox(def nip) {
         cbdService.getCbdPoints(DICTIONARY_PATH + GET_CBD_POINTS_COMBOBOX, nip)
     }
-	
-	def getMccComboBox() {
-		cbdService.getMccCodes(DICTIONARY_PATH + GET_MCC_COMBOBOX);
-	}
+
+    def getMccComboBox() {
+        List mccCodes = cbdService.getMccCodes(DICTIONARY_PATH + GET_MCC_COMBOBOX);
+        List mccCodesWithoutEmptyValues = []
+
+        mccCodes.each {
+            if(it.code != '') mccCodesWithoutEmptyValues.add(it)
+        }
+
+        return mccCodesWithoutEmptyValues
+    }
 
     private def getFromDictionary(def name, def params){
         switch (Environment.getCurrent().getName()) {

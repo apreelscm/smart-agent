@@ -43,6 +43,9 @@ grails.project.dependency.resolution = {
 
     dependencies {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes e.g.
+        compile 'org.springframework:spring-oxm:4.0.5.RELEASE'
+        compile 'org.springframework.ws:spring-ws-core:2.2.0.RELEASE'
+        compile 'org.springframework.ws:spring-xml:2.2.0.RELEASE'
 
         runtime 'com.google.code.gson:gson:2.2.4'
 //		runtime 'org.apache.pdfbox:pdfbox:1.8.2'

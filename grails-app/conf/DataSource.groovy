@@ -1,6 +1,7 @@
 dataSource {
     pooled = true
     formatSql = false
+    dialect = "org.hibernate.dialect.Oracle10gDialect"
    // hibernate.default_schema = "CBD_UMOWY"
 
 }

@@ -204,17 +204,8 @@
 </div>
 
 <section id="create-activity">
+    <a href="/eumowy/calculator?nip=${data.nip}" target="_blank"><g:message code='calculator.overview.label'/></a>
 
-    <g:if env="development">
-        <button id="mockBtn">MOCK</button>
-    </g:if>
-
-    <g:if env="production">
-    %{--empty--}%
-    </g:if>
-    <g:else>
-        <a href="/eumowy/calculator?nip=${data.nip}" target="_blank"><g:message code='calculator.overview.label'/></a>
-    </g:else>
     <h1 class="ng linia-bottom"><g:message code="selectedPanels.header.title"/></h1>
 
     <g:hasErrors bean="${data}">
