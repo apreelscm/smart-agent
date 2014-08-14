@@ -548,7 +548,7 @@ class ProcessCommand implements Serializable {
         wydrukGrafikiCena(nullable:true, blank:false,  validator: { value, cmd, errors -> NumberValidator.validate(value, cmd, errors, propertyName)})
         dzialaniaMatematyczneCena(nullable:true, blank:false,  validator: { value, cmd, errors -> NumberValidator.validate(value, cmd, errors, propertyName)})
 
-        pierwszaSesjaCena(nullable: false, blank: true,  validator: { value, cmd, errors -> NumberValidator.validate(value, cmd, errors, propertyName)})
+        pierwszaSesjaCena(nullable: true, blank: true,  validator: { value, cmd, errors -> NumberValidator.validate(value, cmd, errors, propertyName)})
 
         akceptantKontaktUlicaTytul(nullable: true, blank: true)
         akceptantKontaktUlica(nullable: false, blank: false, shared: "alphanumeric", validator: { value, cmd, errors ->
@@ -656,7 +656,7 @@ class ProcessCommand implements Serializable {
         })
 
         akceptantNazwaOficjalna(blank: false)
-        akceptantNazwaSieciowa(blank: true)
+        akceptantNazwaSieciowa(nullable: true, blank: true)
         akceptantRegon(nullable: false, blank: false, matches: "~|[0-9]{9}")
         akceptantNazwaOficjalnaCbd(nullable: true)
         akceptantNazwaSieciowaCbd(nullable: true)
@@ -730,7 +730,7 @@ class ProcessCommand implements Serializable {
             return true
         })
 
-        mudCena(nullable: false, blank: true,  validator: { value, cmd, errors -> NumberValidator.validate(value, cmd, errors, propertyName)})
+        mudCena(nullable: true, blank: true,  validator: { value, cmd, errors -> NumberValidator.validate(value, cmd, errors, propertyName)})
         weryfikacjaPINCena(nullable: true,  validator: { value, cmd, errors -> NumberValidator.validate(value, cmd, errors, propertyName)})
         systemKasowyCena(nullable: true,  validator: { value, cmd, errors -> NumberValidator.validate(value, cmd, errors, propertyName)})
 
@@ -753,7 +753,7 @@ class ProcessCommand implements Serializable {
         ifOplataDinersClub(nullable:false, blank:false, shared: "number3Precision") //1.111 %, M
         ifOplataIKO(nullable:false, blank:false, shared: "number3Precision") //1.111 %, M
         ifOplataPKOPB(nullable:false, blank:false, shared: "number3Precision") //1.111 %, M
-        dzialalnoscForma(nullable:false, blank:true, validator: {value, cmd, errors ->
+        dzialalnoscForma(nullable:true, blank:true, validator: {value, cmd, errors ->
             CustomValidator.validateRequired(value, errors, cmd.hasNewUmowa && !cmd.dzialalnoscFormaInna && !errors.hasFieldErrors("dzialalnoscForma")
                     , "dzialalnoscForma", "dzialanoscForma.required")
         })
@@ -761,7 +761,7 @@ class ProcessCommand implements Serializable {
             CustomValidator.validateRequired(value, errors, cmd.hasNewUmowa && !cmd.dzialalnoscForma && !errors.hasFieldErrors("dzialalnoscForma"),
                     "dzialalnoscForma", "dzialanoscForma.required")
         })
-        dzialalnoscDokument(nullable:false, blank:true)
+        dzialalnoscDokument(nullable:true, blank:true)
         dzialalnoscDokumentInny(nullable:true, blank:true, shared: "alphanumeric")
 
         //okresLojalnosciowy(nullable:false, blank:false) FIXME do wyjasnienia znaczenie BRAK vs 0

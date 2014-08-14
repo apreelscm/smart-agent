@@ -324,4 +324,8 @@ class PointCommand implements Serializable {
 	def isChildCopy() {
 		return parentPosId != null
 	}
+
+    boolean hasStationaryTypeChoosen() {
+        return dialupTyp || dialupPPTyp || vpnTyp || vpnPPTyp || sslTyp || sslPPTyp || gprsTyp || gprsPPTyp
+    }
 }

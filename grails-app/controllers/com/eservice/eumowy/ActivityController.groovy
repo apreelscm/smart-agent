@@ -455,7 +455,7 @@ class ActivityController {
                 boolean hasNowaUmowa = ActivityHelper.isNewAgreement(processInstance)
 
                 if(client?.cbdId){
-                    if(hasNowaUmowa || ActivityHelper.isBundleActivity(processInstance)) {
+                    if(hasNowaUmowa) {
                         flash.nipErrorMessage = message(code:"client.newAgreementAndClientCBD.error", default:"Nowa umowa dla klienta CBD");
                         log.info(message(code:"client.newAgreementAndClientCBD.error") + " - " + flow.nip)
                         return error();
