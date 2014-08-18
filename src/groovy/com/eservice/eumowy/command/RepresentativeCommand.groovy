@@ -6,7 +6,7 @@ import com.eservice.eumowy.validator.CustomValidator
 import com.eservice.eumowy.validator.NumberValidator
 import grails.validation.Validateable
 
-@Validateable
+@Validateable(nullable = true)
 class RepresentativeCommand implements Serializable{
     transient ProcessCommand processCommand
 
@@ -39,7 +39,10 @@ class RepresentativeCommand implements Serializable{
         stanowisko(nullable: true)
 
         pesel(nullable: true, shared: "number", validator: {value, cmd, errors ->
-            !cmd.processCommand.isAkceptantAbroad() ? NumberValidator.validatePesel(value, cmd, errors, "pesel") : true
+            if(cmd.processCommand.hasNewUmowa) {
+                 return !cmd.processCommand.isAkceptantAbroad() ? NumberValidator.validatePesel(value, cmd, errors, "pesel") : true
+            }
+            return true
         })
 
         typLokalizacji(nullable: true, validator: {value, cmd, errors ->

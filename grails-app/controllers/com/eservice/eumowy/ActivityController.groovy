@@ -34,6 +34,7 @@ class ActivityController {
     def dictionaryService
     def bisnodeService
     def mailBodyCreatorService
+    def sessionFactory
 
     def springSecurityService
 
@@ -65,6 +66,9 @@ class ActivityController {
                 log.info("init flow.message:"+ flow.message)
                 log.info("init flash.message:"+ flash.message)
                 log.info("init flow.prevActivityMessage:"+flow.prevActivityMessage)
+
+                sessionFactory.getCurrentSession().clear()
+
                 if (params.message) {
                     flow.prevActivityMessage = params.message
                 }
@@ -688,11 +692,11 @@ class ActivityController {
 
                 Process processInstance = flow.processInstance
 
-                clientService.updateClientName(processInstance.client, cmd)
-                processInstance = processService.populateProcessWithData(processInstance, cmd, conversation.calc)
-                processInstance.notesToCoa = cmd.notes;
+                clientService.updateClientName(processInstance.client, processCommand)
+                processInstance = processService.populateProcessWithData(processInstance, processCommand, conversation.calc)
+                processInstance.notesToCoa = processCommand.notes;
 
-                processInstance.client.name = cmd.akceptantNazwaOficjalna;
+                processInstance.client.name = processCommand.akceptantNazwaOficjalna;
                 processInstance.saleSection = calculatorService.getCalcProperty(conversation.calc,'SEGMENT_SPRZEDAZOWY')
 
                 flow.representative1 = processService.getRepresentative(processInstance, 0)

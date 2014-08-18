@@ -191,4 +191,12 @@ class Process implements Serializable {
         return documents?.findAll{it.signature.showOnPreview}
                          .sort(false){a,b -> a.signature.signatureOrder.compareTo(b.signature.signatureOrder)}
     }
+
+    public List<Representative> getAllRepresentatives() {
+        return representatives.findAll{Representative.Type.REPRESENTATIVE.equals(it.typ)}
+    }
+
+    public Set<PointData> getLocalPoints() {
+        return points.findAll {it.czyLokalny}
+    }
 }

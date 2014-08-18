@@ -26,8 +26,5 @@
                 </tr>
             </tbody>
         </table>
-
-        <g:hiddenField name="dinersClubDo" value="3.2"/>
-        <g:hiddenField name="dinersClubPowyzej" value="3.2"/>
     </div>
 </fieldset>

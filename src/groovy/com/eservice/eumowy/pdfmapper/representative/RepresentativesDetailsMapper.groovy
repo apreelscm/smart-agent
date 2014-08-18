@@ -9,39 +9,35 @@ import org.apache.commons.lang.StringUtils
 import com.eservice.eumowy.Process
 
 
-class RepresentativesMapper extends AbstractPdfMapper implements Mapper {
+class RepresentativesDetailsMapper extends AbstractPdfMapper implements Mapper {
     private Process process
+    private String prefix
 
-    public RepresentativesMapper(Process process) {
+    public RepresentativesDetailsMapper(Process process) {
         this.process = process
+        prefix = getPrefix()
     }
 
     @Override
     public Map getDataForMapping() {
         Map representativesData = [:]
 
-        String prefix = getPrefix()
-
-        allRepresentatives.eachWithIndex { representative, i->
-            representativesData.put(getFieldName(prefix, i, "Nazwa"), [representative.fullName] as String[])
-            representativesData.put(getFieldName(prefix, i, "LokalizacjaDane"), [getLokalizacjaDane(representative)] as String[])
+        process.allRepresentatives.eachWithIndex { representative, i->
+            representativesData.put(getFieldName(i, "Nazwa"), [representative.fullName] as String[])
+            representativesData.put(getFieldName(i, "LokalizacjaDane"), [getLokalizacjaDane(representative)] as String[])
 
             if(process.akceptantOsobaFizyczna) {
-                representativesData.put(getFieldName(prefix, i, "DowOsob"), getCheckboxData(IdentityDocumentType.IDENTITY_CARD.equals(representative.typDokumentu)))
-                representativesData.put(getFieldName(prefix, i, "Paszport"), getCheckboxData(IdentityDocumentType.PASSPORT.equals(representative.typDokumentu)))
-                representativesData.put(getFieldName(prefix, i, "SeriaNrDokumentu"), [representative.seriaNrDokumentu] as String[])
-                representativesData.put(getFieldName(prefix, i, "Adres"), [representative.adres] as String[])
-                representativesData.put(getFieldName(prefix, i, "Obywatelstwo"), [representative.obywatelstwo] as String[])
+                representativesData.put(getFieldName(i, "DowOsob"), getCheckboxData(IdentityDocumentType.IDENTITY_CARD.equals(representative.typDokumentu)))
+                representativesData.put(getFieldName(i, "Paszport"), getCheckboxData(IdentityDocumentType.PASSPORT.equals(representative.typDokumentu)))
+                representativesData.put(getFieldName(i, "SeriaNrDokumentu"), [representative.seriaNrDokumentu] as String[])
+                representativesData.put(getFieldName(i, "Adres"), [representative.adres] as String[])
+                representativesData.put(getFieldName(i, "Obywatelstwo"), [representative.obywatelstwo] as String[])
             } else {
-                representativesData.put(getFieldName(prefix, i, "PozaRP"), getCheckboxData(AcceptorLocation.ABROAD.equals(representative.typLokalizacji)))
+                representativesData.put(getFieldName(i, "PozaRP"), getCheckboxData(AcceptorLocation.ABROAD.equals(representative.typLokalizacji)))
             }
         }
 
         return representativesData
-    }
-    
-    private Set<Representative> getAllRepresentatives() {
-        return process.representatives.findAll{Representative.Type.REPRESENTATIVE.equals(it.typ)}
     }
 
     private String getPrefix() {
@@ -68,7 +64,7 @@ class RepresentativesMapper extends AbstractPdfMapper implements Mapper {
         return peselNumber ?: representative.dataUrodzenia
     }
 
-    private String getFieldName(String prefix, Integer index, String fieldName) {
+    private String getFieldName(Integer index, String fieldName) {
         return prefix + "reprezentant" + (index+1) + fieldName
     }
 }

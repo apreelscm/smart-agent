@@ -1,7 +1,9 @@
 package com.eservice.eumowy.pdfmapper
 
+import com.eservice.eumowy.PointData
 import com.eservice.eumowy.util.DateUtils
 import org.apache.log4j.Logger
+import com.eservice.eumowy.Process
 
 public abstract class AbstractPdfMapper {
 
@@ -85,5 +87,44 @@ public abstract class AbstractPdfMapper {
                 LOG.error('[key ' + key + '] nie spelnia warunku: (d{2}) d{3}-d{2}-d{2} value = ' + phoneNumber )
             }
         }
+    }
+
+    public String getAdresAkceptanta(Process process) {
+        StringBuilder sb = new StringBuilder()
+
+        sb.append(process.getData("akceptantUlicaTytul")).append(" ")
+                .append(process.getData("akceptantUlica")).append(" ")
+                .append(process.getData("akceptantNrDomu"))
+
+        if(process.getData("akceptantNrMieszkania")) {
+            sb.append("/").append(process.getData("akceptantNrMieszkania"))
+        }
+
+        sb.append(" ").append(process.getData("akceptantMiasto")).append(" ")
+                .append(process.getData("akceptantKodPocztowy")).append(" ")
+
+        if(process.getData("akceptantPoczta")) {
+            sb.append(process.getData("akceptantPoczta"))
+        }
+
+        return sb.toString()
+    }
+
+    public String getAdresPunktu(PointData point) {
+        StringBuilder sb = new StringBuilder()
+
+        sb.append(point.ulica).append(" ").append(point.nrBudynku)
+
+        if(point.nrLokalu) {
+            sb.append("/").append(point.nrLokalu)
+        }
+
+        sb.append(" ").append(point.miejscowosc).append(" ").append(point.kodPocztowy).append(" ")
+
+        if(point.poczta) {
+            sb.append(point.poczta)
+        }
+
+        return sb.toString()
     }
 }

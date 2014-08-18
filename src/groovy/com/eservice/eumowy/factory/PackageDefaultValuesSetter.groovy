@@ -18,7 +18,8 @@ class PackageDefaultValuesSetter implements ProcessCommandDefaultValuesSetter{
         command.oplataMaestroPr = "0"
         command.oplataMaestro = "0"
         command.okresLojalnosciowy = "12"
-        command.liczbaTerminali = "10"
+        command.liczbaTerminali = "5"
         command.dccZakresUruchomienia = "obecne_i_nowe"
+        command.scoringMcc = "1234"
     }
 }

@@ -6,7 +6,7 @@ import org.apache.commons.lang.StringUtils
 class AddressValidator {
     public static def isAcceptorHouseNumberValid = { value, cmd, errors ->
         if(!cmd.hasNewUmowa && cmd.checkIfClientFromCbd()) {
-            return StringUtils.isNotEmpty() && StringUtils.isAlphanumeric(value)
+            return StringUtils.isNotEmpty(value) && StringUtils.isAlphanumeric(value)
         }
 
         if(StringUtils.isEmpty(value) || !StringUtils.isNumeric(value)) {

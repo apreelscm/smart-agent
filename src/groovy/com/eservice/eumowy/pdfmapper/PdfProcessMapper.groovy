@@ -1,9 +1,10 @@
 package com.eservice.eumowy.pdfmapper
 
 import com.eservice.eumowy.HirePayment
-
+import com.eservice.eumowy.Process
 import java.text.DecimalFormat
 import java.text.NumberFormat
+
 
 class PdfProcessMapper extends AbstractPdfMapper{
 
@@ -21,10 +22,11 @@ class PdfProcessMapper extends AbstractPdfMapper{
         this.posMapper = posMapper
     }
 
-    protected def mapOnlyProcessData(def processInstance){
+    protected def mapOnlyProcessData(Process processInstance){
         def dataMap = [:]
         dataMap.putAll(mapProcessToPDFData(processInstance))
         dataMap.putAll(mapProcessDataToPDFData(processInstance.processData))
+        dataMap.put("siedzibaAkceptanta", [getAdresAkceptanta(processInstance)] as String[])
 
         def points = processInstance?.points
         LOG.info("Ilosc punktow: " + points?.size())

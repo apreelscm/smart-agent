@@ -1,8 +1,10 @@
 package com.eservice.eumowy
 
 import com.eservice.eumowy.enums.AcceptorLocation
+import com.eservice.eumowy.pdfmapper.FacilitiesMapper
 import com.eservice.eumowy.pdfmapper.PABRformMapper
 import com.eservice.eumowy.pdfmapper.PEPdeclarationMapper
+import com.eservice.eumowy.pdfmapper.representative.RepresentativesNamesMapper
 import com.eservice.eumowy.util.DateUtils
 import com.lowagie.text.Document
 import com.lowagie.text.pdf.PdfCopy
@@ -194,7 +196,7 @@ class PdfService {
     private Map attachSubscription(Signature signature, Subscription subscription) {
         Map result = [:]
 
-        Set<SubscriptionDefinition> definitions = signature.subscriptionDefinitions.findAll { it.role == subscription.personRole && it.subscriptionPageNumber != null && it.subscriptionPageNumber > -1}
+        Set<SubscriptionDefinition> definitions = signature.subscriptionDefinitions.findAll { it.role == subscription?.personRole && it.subscriptionPageNumber != null && it.subscriptionPageNumber > -1}
 
         if (subscription?.content != null && !definitions.isEmpty()) {
             definitions.each{
@@ -202,7 +204,7 @@ class PdfService {
                 result.put("subscriber_"+it.id, [img, it.subscriptionPageNumber, it.subscriptionX, it.subscriptionY, it.scaleX, it.scaleY] as Object[])
             }
         } else {
-            log.error "Subscription without definitions or subscription content found for" + subscription.personRole.name() +"! Template path: " + signature.templatePath
+            log.error "Subscription without definitions or subscription content found for " + subscription?.personRole?.name() +"! Template path: " + signature.templatePath
         }
 
         return result
@@ -214,6 +216,11 @@ class PdfService {
 
         if(processService.hasNowaUmowa(processInstance)) {
             dataFromProcess.putAll(new PABRformMapper(processInstance).getDataForMapping())
+        }
+
+        if(ActivityHelper.isBundleActivity(processInstance)) {
+            dataFromProcess.putAll(new RepresentativesNamesMapper(processInstance).getDataForMapping())
+            dataFromProcess.putAll(new FacilitiesMapper(processInstance).getDataForMapping())
         }
 
         //takie rozbicie bylo konieczne aby ograniczyc wywolania wolnego mappera

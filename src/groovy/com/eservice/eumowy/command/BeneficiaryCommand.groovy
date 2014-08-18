@@ -4,7 +4,7 @@ import com.eservice.eumowy.validator.AtLeastValidator
 import com.eservice.eumowy.validator.CustomValidator
 import grails.validation.Validateable
 
-@Validateable
+@Validateable(nullable = true)
 class BeneficiaryCommand extends RepresentativeCommand implements Serializable {
     Boolean posiadaAkceptanta
     Boolean kontrolujeAkceptanta
