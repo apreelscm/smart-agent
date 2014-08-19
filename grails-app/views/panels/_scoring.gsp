@@ -20,34 +20,14 @@
 <g:hiddenField name="hasScoringDeklaracjaFinansowa" value="true"/>
 
 <div class="centre" style="text-align: center; padding-top: 20px; width: 500px">
-<fieldset class="border">
-    <legend><g:message code="panel.activity.title"/></legend>
-    <div style="text-align: center">
-        <ul>
-            <li>
-                <span><g:message code="panel.mcc"/></span>
-                <span> <eumowy:textField name="scoringMcc" value="${data.scoringMcc}" validatable="${data}" readonly="true"/></span>
-            </li>
-        </ul>
-    </div>
-    <div style="text-align: left" class="${hasErrors(bean:data,field:'hasScoringDzialalnosc','errorSpan')}">
-        <g:radioGroup name="scoringDzialalnosc"
-                      labels="['panel.activity.trade','panel.activity.services']"
-                      values="['handel','uslugi']"
-                      value="${data.scoringDzialalnosc}">
-            <p><label> ${it.radio} <g:message code="${it.label}"/></label></p>
-        </g:radioGroup>
-    </div>
-    <div style="text-align: center">
-        <ul>
-            <li>
-                <span><g:message code="panel.activity.details"/></span>
-                <span> <g:textField name="scoringSzczegolyDzialalnosci" value="${data.scoringSzczegolyDzialalnosci}" readonly="true"/></span>
-            </li>
-        </ul>
-    </div>
 
-</fieldset>
+<g:if test="${data.isBundleActivity}">
+    <g:render template="../panels/scoringDzialalnoscPakiet"/>
+</g:if>
+<g:else>
+    <g:render template="../panels/scoringDzialalnosc"/>
+</g:else>
+
 <fieldset class="border">
     <legend><g:message code="panel.ownership.title"/></legend>
     <div style="text-align: left" class="${hasErrors(bean:data,field:'hasScoringWlasnosc','errorSpan')}">

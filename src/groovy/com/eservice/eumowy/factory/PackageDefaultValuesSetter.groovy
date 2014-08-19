@@ -11,15 +11,8 @@ class PackageDefaultValuesSetter implements ProcessCommandDefaultValuesSetter{
         command.mudCena = "0"
         command.pierwszaSesjaCena = "-"
         command.oplataZaPlatnoscWInnejWalucie = "5"
-        command.oplataVISAPr = "0"
-        command.oplataVISA = "0"
-        command.oplataMasterCardPr = "0"
-        command.oplataMasterCard = "0"
-        command.oplataMaestroPr = "0"
-        command.oplataMaestro = "0"
         command.okresLojalnosciowy = "12"
         command.liczbaTerminali = "5"
         command.dccZakresUruchomienia = "obecne_i_nowe"
-        command.scoringMcc = "1234"
     }
 }
