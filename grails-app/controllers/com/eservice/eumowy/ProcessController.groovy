@@ -217,15 +217,15 @@ class ProcessController {
 
         log.info("wywolanie synchronizacji dla procesu [${processInstance.id}] oraz auwId [${springSecurityService.principal.auwId}]")
         Result result = webServiceClient.acceptUmowa(processInstance.id, springSecurityService.principal.auwId)
-        if (result.wynik < 0){
+        if (result.wynik < 0 || !result.wynikString){
             flash.error = result.wynikString
-            log.error("wynik synchronizacji procesu : " + result.wynikString)
+            log.error("Wystąpił błąd poczas synchronizacji procesu. WynikString: " + result.wynikString)
             log.error(result.stackString)
             redirect(action: "show", params: params)
             return
-        } else {
-            log.info("wynik synchronizacji procesu [" + processInstance.id + "] : " + result.wynikString)
         }
+
+        log.info("Wynik synchronizacji procesu [" + processInstance.id + "] : " + result.wynikString)
 
         processInstance.status = Process.ProcessStatus.ACCEPTED;
         processInstance.observed = (params.observed == "on")
