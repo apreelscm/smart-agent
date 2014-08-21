@@ -4,6 +4,7 @@ package com.eservice.eumowy
 import com.eservice.eumowy.auth.EServiceUserDetails
 import com.eservice.eumowy.dto.MerchantDetailsDTO
 import grails.converters.JSON
+import groovy.sql.GroovyRowResult
 import org.codehaus.groovy.grails.web.json.JSONObject
 import org.hibernate.HibernateException
 import org.hibernate.NonUniqueObjectException
