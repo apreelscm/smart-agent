@@ -84,11 +84,11 @@ class PointData implements Serializable {
 	}
 
 	def afterInsert() {
-		log.info("Utworzono punkt [id:${id}]")
+		log.info("Utworzono punkt [id:${id}].")
 	}
 
 	def afterUpdate() {
-		log.info("Aktualizacja punktu [id:${id}]")
+		log.info("Aktualizacja punktu [id:${id}].")
 	}
 	
 	def isLocal() {

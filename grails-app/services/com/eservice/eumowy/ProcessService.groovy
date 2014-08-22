@@ -892,12 +892,11 @@ class ProcessService {
             if (apc.tpsId != null) {
                 AllPosCommand pos = cbdPoses.find { AllPosCommand i -> i.tpsId == apc.tpsId	}
 
-                /* Update field data */
                 if (pos) {
                     apc.dataDo = pos.dataDo ?: apc.dataDo
                     apc.dataOd = pos.dataOd ?: apc.dataOd
                     apc.numerZestawuPos = pos.numerZestawuPos ?: apc.numerZestawuPos
-                    //apc.wysokoscOplaty = pos.wysokoscOplaty ?: (apc.wysokoscOplaty ?: calculatorService.getCalcProperty(calc,"OPLATA_POS_PROM_CENA_NAJMU"))
+                    apc.cbdId = pos.cbdId
                     apc.czyCbd = true // Mark for update in local (eumowy) db
 					tpsIdsToRemove.add(apc.tpsId)
                 }
@@ -913,12 +912,6 @@ class ProcessService {
 		}
         result.addAll(cbdPoses)
         result.sort {it.id}
-
-//		Na chwile obecna przeniesione do odrebnej metody i wywolywane w hierarchii wyzej		
-//		BigDecimal price = panelService.toBigDecimal(calculatorService.getCalcProperty(calc, "OPLATA_POS_PROM_CENA_NAJMU"))
-//		result.each { AllPosCommand apc ->
-//			apc.wysokoscOplaty = panelService.setAtLeastAs(apc.wysokoscOplaty, price)
-//		}
 		
         result
     }
@@ -931,12 +924,10 @@ class ProcessService {
         addCurrentDate(processDataList);
         addFromCalc(processDataList, calc);
 
-        //process.processData?.clear()
         processDataList.each { ProcessData data ->
             def foundData = process.processData.find { it.name == data.name }
             if(!foundData){
                 process.addToProcessData(data)
-                //log.debug("process data: ${data.processId?.class} ${data.version?.class} ${data.name?.class} ${data.id?.class}")
             }else if(data.value != foundData.value){
                 foundData.value = data.value
             }
@@ -1390,8 +1381,6 @@ class ProcessService {
                 posData = PosData.findById(pc.id)
 
                 if (posData != null) {
-                    //pointData = posData.point
-					//pointData = PointData.find { id == posData.point.id }
 					def proc = process
 					pointData = PointData.find {
 						process == proc &&
@@ -1540,12 +1529,10 @@ class ProcessService {
 				pointData.liczbaPos = pdList.size()
 			}
             pointData.save()
-            //if (isNew == true) {
             posData.setPosDetails(posDataDetails)
             posData.setPoint(pointData)
 
             pointData.setPointDetails(pointDataDetails)
-            //pointData.setPosDatas(pdList)
 			if (pointData.posDatas != null && pointData.posDatas.size() > 0){
 				pdList.each { PosData pos ->
 					if (pointData.posDatas.find { it?.id == pos.id } == null) {
@@ -1653,17 +1640,17 @@ class ProcessService {
                 pos.tpsId = apc.tpsId
                 //pdList.add(pos)
 
+                if(apc.cbdId) {
+                    point.cbdId = apc.cbdId
+                    point.save()
+                }
 
-                point.cbdId = apc.cbdId
-                point.save()
-				
 				if (point.posDatas){
 					if (point.posDatas.find { PosData pd -> pd.id == pos.id } == null)
 						point.addToPosDatas(pos)
 				} else {
 					point.setPosDatas([pos])
 				}
-                //point.setPosDatas(pdList)
 
                 pos.setPoint(point)
                 pos.save()
