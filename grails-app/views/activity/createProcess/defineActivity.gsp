@@ -103,11 +103,6 @@
                  </div>
 
                  <div class="checkBoxBlock">
-                     <g:checkBox id="zmianaTabeliOplatDodatkowychCB" name="zmianaTabeliOplatDodatkowych" data-selected="${activities?.contains('zmianaTabeliOplatDodatkowych')}"/>
-                     <label for="zmianaTabeliOplatDodatkowychCB"><g:message code="activity.zmianaTabeliOplatDodatkowych.name"/></label>
-                 </div>
-
-                 <div class="checkBoxBlock">
                      <g:checkBox id="zmianaWarunkowPrepaidCB" name="zmianaWarunkowPrepaid" data-selected="${activities?.contains('zmianaWarunkowPrepaid')}"/>
                      <label for="zmianaWarunkowPrepaidCB"><g:message code="activity.zmianaWarunkowPrepaid.name"/></label>
                  </div>
@@ -145,8 +140,8 @@
                  </div>
 
                  <div class="checkBoxBlock">
-                     <g:checkBox id="dodanieIkoCB" name="dodanieIko" data-selected="${activities?.contains('dodanieIko')}"/>
-                     <label for="dodanieIkoCB"><g:message code="activity.dodanieIko.name"/></label>
+                     <g:checkBox id="logoKalkulatorSesjaCB" name="logoKalkulatorSesja" data-selected="${activities?.contains('logoKalkulatorSesja')}"/>
+                     <label for="logoKalkulatorSesjaCB"><g:message code="activity.logoKalkulatorSesja.name"/></label>
                  </div>
 
 

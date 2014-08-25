@@ -18,7 +18,6 @@ class ActivityTree {
     def dodanieDcc
     def zmianaTabeliOplatDodatkowych
     def dodanieCashBack
-    def DodanieIko
     def zmianaWarunkowPrepaid
     def poprawDane
     def dodatkowyPos
