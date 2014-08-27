@@ -2,16 +2,18 @@
 package com.eservice.eumowy
 
 import com.eservice.eumowy.auth.EServiceUserDetails
-import com.eservice.eumowy.command.ProcessCommand
 import com.eservice.eumowy.dto.MerchantDetailsDTO
-import com.eservice.eumowy.process.DefineActivityCommand
-import com.eservice.eumowy.util.DateUtils
 import grails.converters.JSON
-import groovy.sql.GroovyRowResult
 import org.codehaus.groovy.grails.web.json.JSONObject
+import org.hibernate.HibernateException
+import org.hibernate.NonUniqueObjectException
 import org.hibernate.StaleObjectStateException
 import org.springframework.orm.hibernate4.HibernateOptimisticLockingFailureException
+import org.springframework.orm.hibernate4.HibernateSystemException
 import pdfgenerator.PdfGenerator
+import com.eservice.eumowy.command.ProcessCommand
+import com.eservice.eumowy.process.DefineActivityCommand
+import com.eservice.eumowy.util.DateUtils
 
 class ActivityController {
 
@@ -64,12 +66,10 @@ class ActivityController {
                 log.info("init flow.message:"+ flow.message)
                 log.info("init flash.message:"+ flash.message)
                 log.info("init flow.prevActivityMessage:"+flow.prevActivityMessage)
-                if (params.message) {
-                    flow.prevActivityMessage = params.message
-                }
-                if(params.errorMessage) {
-                    flash.errorMessage = params.errorMessage
-                }
+
+                flow.prevActivityMessage = params.message ?: null
+                flash.errorMessage = params.errorMessage ?: null
+                
                 flash.infoMessage =  flow.prevActivityMessage
                 flow.isGoBack = false
             }
@@ -101,9 +101,9 @@ class ActivityController {
         chooseSubFlow {
             action {
                 def processInstance = flow.processInstance
-                def hasPoprawDane = processService.containsActivity(processInstance.activities,"poprawDane")
-                def hasUzupelnijPodpisy = processService.containsActivity(processInstance.activities,"uzupelnijPodpisy")
-                def hasOdrzucDokumenty = processService.containsActivity(processInstance.activities,"odrzucDokumenty")
+                def hasPoprawDane = processService.containsActivity(flow.processInstance.activities,"poprawDane")
+                def hasUzupelnijPodpisy = processService.containsActivity(flow.processInstance.activities,"uzupelnijPodpisy")
+                def hasOdrzucDokumenty = processService.containsActivity(flow.processInstance.activities,"odrzucDokumenty")
 
                 if(processInstance.activities?.size() == 0){
                     emailOnly();
@@ -216,7 +216,7 @@ class ActivityController {
         clientSignature {
             onEntry {
                 Process processInstance = flow.processInstance
-                
+        
                 setRepresentatives(flow)
                 
                 flow.requiredNumberOfSubscriptions = 1 //PH subscription is always required
@@ -316,6 +316,17 @@ class ActivityController {
                 processInstance.status = _getNewProcessStatus(params, flow.requiredNumberOfSubscriptions)
                 flow.processInstance = processInstance
             }.to "finish"
+            on(HibernateOptimisticLockingFailureException).to "optimisticLockingHandler"
+            on(StaleObjectStateException).to "optimisticLockingHandler"
+        }
+
+        optimisticLockingHandler {
+            action {
+                log.error("Optimistic locking failure...")
+                flow.prevActivityMessage = message(code: 'optimistic.locking')
+                "success"
+            }
+            on("success").to "restartFlow"
         }
 
         /** final operations and process save*/
@@ -356,7 +367,8 @@ class ActivityController {
 
         restartFlow()
     }
-/**
+
+    /**
      * DEFAULT FULL SUBFLOW
      * */
     def normalFlow = {
@@ -710,8 +722,10 @@ class ActivityController {
                 flow.processInstance = processInstance
 
             }.to "clientSignature"
+            on(HibernateException).to "optimisticLockingHandler" //HibernateException is needed to catch StaleObjectStateException
             on(HibernateOptimisticLockingFailureException).to "optimisticLockingHandler"
-            on(StaleObjectStateException).to "optimisticLockingHandler"
+            on(NonUniqueObjectException).to "optimisticLockingHandler"
+            on(HibernateSystemException).to "optimisticLockingHandler"
         }
 
         clientSignature {
@@ -731,7 +745,7 @@ class ActivityController {
 
         optimisticLockingHandler {
             action {
-                log.info(String.format("Optimistic locking for process %s", flow?.processInstance?.id))
+                log.error("Optimistic locking failure...")
                 flash.errorMessage = message(code: 'optimistic.locking')
                 "success"
             }
@@ -1019,8 +1033,10 @@ class ActivityController {
                 processInstance.status = Process.ProcessStatus.REJECTED
                 flow.processInstance = processInstance
             }.to "reject"
+            on(HibernateException).to "optimisticLockingHandler" //HibernateException is needed to catch StaleObjectStateException
             on(HibernateOptimisticLockingFailureException).to "optimisticLockingHandler"
-            on(StaleObjectStateException).to "optimisticLockingHandler"
+            on(NonUniqueObjectException).to "optimisticLockingHandler"
+            on(HibernateSystemException).to "optimisticLockingHandler"
         }
 
         clientSignature {
@@ -1040,7 +1056,7 @@ class ActivityController {
 
         optimisticLockingHandler {
             action {
-                log.info(String.format("Optimistic locking for process %s", flow?.processInstance?.id))
+                log.error("Optimistic locking failure...")
                 flash.errorMessage = message(code: 'optimistic.locking')
                 "success"
             }
