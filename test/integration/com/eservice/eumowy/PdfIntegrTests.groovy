@@ -56,6 +56,7 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
     static HashMap<String, String[]> generateCommonFields(){
         HashMap<String, String[]> data = new HashMap<String, String[]>();
         data.put("dataUmowy", ["21-03-2013"] as String[]);
+        data.put("nip", ["65032615970"] as String[]);
         data.put("dataAneksowanejUmowyPos", ["22.04.2013"] as String[]);
         data.put("dataAneksowanejUmowyPrepaid", ["11.05.2013"] as String[]);
         data.put("akceptantNazwa", ["Firma Handlowo Usługowa 'HandUs'"] as String[]);
@@ -76,28 +77,103 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
         data.put(pdfName, [fieldValue.equals(value), "", "checkbox"] as String[])
     }
 
-    //-------------------------- nowe sygnatury --------------------------
-
-    void testAPUNTSA() {
-        HashMap<String, String[]> data = new HashMap<String, String[]>();
-        data.putAll(this.data);
-        data.put("dataUmowy", ["10-05-2012"] as String[]);
-        data.put("adresTytulPlatnosci13", ["Ul. Zielona 23. Warszawa"] as String[]);
-        data.put("punktTytulPlatnosci13", ["Ala ma kota"] as String[]);
-        data.putAll(prepareDccData())
-
-        //OK
+    @Test
+    void APUW1000140707() {  //AP/UW/1.000/14-07-07
+        //given
         def subscriptions = [
-                ["ACCEPTANT1", 4, 65, 165, 94, 63],
-                ["ACCEPTANT2", 4, 185, 165, 94, 63],
-                ["ZARZAD1", 4, 315, 165, 85, 58],
-                ["ZARZAD2", 4, 445, 165, 56, 58],
-                ["PH", 4, 455, 70, 84, 53]
+                ["ACCEPTANT1", 2, 50, 305, 59, 28],
+                ["PH", 2, 165, 230, 59, 28]
         ]
 
-        data.putAll(insertSignatures2(subscriptions));
+        //when
+        data.putAll(akceptantaIReprezentanciFields())
+        data.putAll(umowaOznaczonaFields())
+        data.putAll(uslugiDodatkoweFields())
+        data.putAll(wykazTerminaliPOSFields())
+        data.putAll(okresLojalnosciowyIOplataDeinstalacyjnaFields())
+        data.putAll(PdfHelper.insertSignatures(subscriptions))
+        data.put("zalacznikNr4", ["4 - Nazwa zalacznika nr 4"] as String[]);
+        data.put("zalacznikNr5", ["5 - Nazwa zalacznika nr 5"] as String[]);
 
-        process("APUNTSA1.00312-01-16.pdf", "APUNTSA1.00312-01-16_out.pdf", data)
+        //then
+        process("APUW1.00014-07-07.pdf", "APUW1.00014-07-07_out.pdf", data)
+    }
+
+    @Test
+    void APUWUDJ1000140707() { //AP/UW/UDJ/1.000/14-07-07
+        //given
+        def subscriptions = [
+                ["PH", 1, 150, 370, 59, 28]
+        ]
+
+        //when
+        data.putAll(okresLojalnosciowyIOplataDeinstalacyjnaFields())
+        data.putAll(PdfHelper.insertSignatures(subscriptions))
+
+        //then
+        process("APUWUDJ1.00014-07-07.pdf", "APUWUDJ1.00014-07-07_out.pdf", data)
+    }
+
+    @Test
+    void APUWRWT1000140707() { //AP/UW/RWT/1.000/14-07-07
+        //given
+        def subscriptions = [
+                ["PH", 1, 150, 215, 59, 28]
+        ]
+
+        //when
+        data.putAll(wykazTerminaliPOSFields())
+        data.putAll(PdfHelper.insertSignatures(subscriptions))
+
+        //then
+        process("APUWRWT1.00014-07-07.pdf", "APUWRWT1.00014-07-07_out.pdf", data)
+    }
+
+    @Test
+    void APUWUD1000140707() { //AP/UW/UD/1.000/14-07-07
+        //given
+        def subscriptions = [
+                ["PH", 1, 150, 180, 59, 28]
+        ]
+
+        //when
+        data.putAll(uslugiDodatkoweFields())
+        data.putAll(PdfHelper.insertSignatures(subscriptions))
+
+        //then
+        process("APUWUD1.00014-07-07.pdf", "APUWUD1.00014-07-07_out.pdf", data)
+    }
+
+    @Test
+    void APUWPON1000140707() { //AP/UW/PON/1.000/14-07-07
+        //given
+        def subscriptions = [
+                ["PH", 1, 150, 182, 59, 28]
+        ]
+
+        //when
+        data.putAll(wykazTerminaliPOSObjetychObnizkaNajmuFields())
+        data.putAll(PdfHelper.insertSignatures(subscriptions))
+
+        //then
+        process("APUWPON1.00014-07-07.pdf", "APUWPON1.00014-07-07_out.pdf", data)
+    }
+
+    @Test
+    void APUWDED1000140707() { //AP/UW/DED/1.000/14-07-07
+        //given
+        def subscriptions = [
+                ["PH", 3, 113, 277, 59, 28]
+        ]
+
+        //when
+        data.putAll(warunkiHandlowePompkaIKodzikFields())
+        data.putAll(upustPompkaIKodzikFields())
+        data.put("oplataZaOprogramowanieDoDoladowan", ["123"] as String[]);
+        data.putAll(PdfHelper.insertSignatures(subscriptions))
+
+        //then
+        process("APUWDED1.00014-07-07.pdf", "APUWDED1.00014-07-07_out.pdf", data)
     }
 
     @Test
@@ -180,62 +256,6 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
 
         //then
         process("Oswiadczenie_PEP.pdf", "Oswiadczenie_PEP_out.pdf", data)
-    }
-
-    void testAPUNTSA2() {
-        HashMap<String, String[]> data = new HashMap<String, String[]>();
-        data.putAll(this.data);
-        data.put("dataUmowy", ["10-05-2012"] as String[]);
-        data.put("adresTytulPlatnosci13", ["Ul. Zielona 23. Warszawa"] as String[]);
-        data.put("punktTytulPlatnosci13", ["Ala ma kota"] as String[]);
-        data.putAll(prepareDccData())
-
-        //NOT OK
-        def subscriptions = [
-                ["ACCEPTANT1", 4, 65, 160, 94, 63],
-                ["ACCEPTANT2", 4, 185, 160, 94, 63],
-                ["ZARZAD1", 4, 315, 160, 85, 58],
-                ["ZARZAD2", 4, 445, 160, 56, 58],
-                ["PH", 4, 455, 50, 84, 53]
-        ]
-
-        data.putAll(insertSignatures2(subscriptions));
-
-        process("APUNTSA1.00513-12-16_Umowa Najmu Zestawu POS_dla Akceptanta.pdf", "APUNTSA1.00513-12-16_Umowa Najmu Zestawu POS_dla Akceptanta_out.pdf", data)
-    }
-
-
-    void testAPUNTSAToImage() {
-        String outFile =  "APUNTSA1.00312-01-16_out2.pdf"
-        data.put("podpis", [new File(PdfHelper.getTemplatePath()+"signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
-        process("APUNTSA1.00312-01-16.pdf", outFile, data);
-        processToImage(outFile, 1)
-    }
-
-    void testAPUPZAWNZBSX() {
-        HashMap<String, String[]> data = new HashMap<String, String[]>();
-        data.putAll(this.data);
-        data.put("dataUmowy", ["10-05-2012"] as String[]);
-        data.putAll(prepareDccData())
-        //data.putAll(insertSignatures(1, 85, 185, 74, 43))
-
-        //NOT OK
-        def subscriptions = [
-                ["ACCEPTANT1", 3, 65, 595, 94, 63],
-                ["ACCEPTANT2", 3, 185, 595, 94, 63],
-                ["ZARZAD1", 3, 315, 595, 85, 58],
-                ["ZARZAD2", 3, 445, 595, 56, 58],
-                ["PH", 3, 455, 510, 84, 53]
-        ]
-        data.putAll(insertSignatures2(subscriptions))
-        process("APUPZAWNZBS1.00113-08-06 - Aneks do umowy o przyjm zapl (bez stawek plaskich).pdf", "APUPZAWNZBS1.00113-08-06 - Aneks do umowy o przyjm zapl (bez stawek plaskich)_out.pdf", data)
-    }
-
-    void testAPUPZAWNZBSXToImage() {
-        String outFile =  "APUPZAWNZBS1.00113-08-06 - Aneks do umowy o przyjm zapl (bez stawek plaskich)_out2.pdf"
-        data.put("podpis", [new File(PdfHelper.getTemplatePath()+"signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
-        process("APUPZAWNZBS1.00113-08-06 - Aneks do umowy o przyjm zapl (bez stawek plaskich).pdf", outFile, data);
-        processToImage(outFile, 1)
     }
 
     void testAPUPZBSX() {
@@ -1822,5 +1842,131 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
             result.put(person, [new File(PdfHelper.getTemplatePath()+File.separator+"subscriptions"+File.separator+"signature1.jpg").toURI().toURL(), "", "signature", pageNo, x, y, scaleX, scaleY] as String[])
         }
         return result;
+    }
+
+    private HashMap<String, String[]> uslugiDodatkoweFields(){
+        HashMap<String, String[]> data = new HashMap<String, String[]>();
+        data.put("wydrukGrafikiCena", ["123"] as String[]);
+        data.put("dzialaniaMatematyczneCena", ["123"] as String[]);
+        data.put("oplataZaPlatnoscWInnejWalucie", ["123"] as String[]);
+        data.put("oplataZaUruchomienieDCC", ["123"] as String[]);
+        data.put("mudCena", ["123"] as String[]);
+        data.put("pierwszaSesjaCena", ["123"] as String[]);
+        data.put("obslugaEkonomicznyCena", ["123"] as String[]);
+
+        return data;
+    }
+
+    private HashMap<String, String[]> wykazTerminaliPOSFields(){
+        HashMap<String, String[]> data = new HashMap<String, String[]>();
+        data.put("oplatyPOSIloscA", ["123"] as String[]);
+        data.put("oplatyPOSIloscB", ["123"] as String[]);
+        data.put("oplatyPOSIloscC", ["123"] as String[]);
+        data.put("oplatyPOSIloscD", ["123"] as String[]);
+        data.put("oplatyPOSIloscE", ["123"] as String[]);
+
+        data.put("oplatyPOSCenaA", ["123"] as String[]);
+        data.put("oplatyPOSCenaB", ["123"] as String[]);
+        data.put("oplatyPOSCenaC", ["123"] as String[]);
+        data.put("oplatyPOSCenaD", ["123"] as String[]);
+        data.put("oplatyPOSCenaE", ["123"] as String[]);
+
+        return data;
+    }
+
+    private HashMap<String, String[]> wykazTerminaliPOSObjetychObnizkaNajmuFields(){
+        HashMap<String, String[]> data = new HashMap<String, String[]>();
+
+        data.put("dataPoczatkuUzywaniaPOZ", ["2014-08-01"] as String[]);
+        data.put("dataKoncaUzywaniaPOZ", ["2014-08-30"] as String[]);
+
+        data.put("numerPOSA", ["123"] as String[]);
+        data.put("numerPOSB", ["123"] as String[]);
+        data.put("numerPOSC", ["123"] as String[]);
+        data.put("numerPOSD", ["123"] as String[]);
+        data.put("numerPOSE", ["123"] as String[]);
+        data.put("numerPOSF", ["123"] as String[]);
+        data.put("numerPOSG", ["123"] as String[]);
+        data.put("numerPOSH", ["123"] as String[]);
+        data.put("numerPOSI", ["123"] as String[]);
+        data.put("numerPOSJ", ["123"] as String[]);
+
+        data.put("oplataPOSA", ["123"] as String[]);
+        data.put("oplataPOSB", ["123"] as String[]);
+        data.put("oplataPOSC", ["123"] as String[]);
+        data.put("oplataPOSD", ["123"] as String[]);
+        data.put("oplataPOSE", ["123"] as String[]);
+        data.put("oplataPOSF", ["123"] as String[]);
+        data.put("oplataPOSG", ["123"] as String[]);
+        data.put("oplataPOSH", ["123"] as String[]);
+        data.put("oplataPOSI", ["123"] as String[]);
+        data.put("oplataPOSJ", ["123"] as String[]);
+
+        return data;
+    }
+
+    private HashMap<String, String[]> akceptantaIReprezentanciFields(){
+        HashMap<String, String[]> data = new HashMap<String, String[]>();
+        data.put("akceptantNazwaOficjalna", ["Jan Kowalski nazwa oficjalna"] as String[]);
+        data.put("siedzibaAkceptanta", ["Siedziba Akceptanta"] as String[]);
+
+        data.put("reprezentant1", ["Jan Kowalski"] as String[]);
+        data.put("reprezentant2", ["Tomek Nowak"] as String[]);
+        data.put("reprezentant3", ["Andrzej Jakistam"] as String[]);
+        data.put("reprezentant4", ["Zenona Aloska"] as String[]);
+
+        return data;
+    }
+
+    private HashMap<String, String[]> umowaOznaczonaFields(){
+        HashMap<String, String[]> data = new HashMap<String, String[]>();
+        data.put("umowaOznOd", ["2014-08-01"] as String[]);
+        data.put("umowaOznDo", ["2014-08-30"] as String[]);
+
+        return data;
+    }
+
+    private HashMap<String, String[]> okresLojalnosciowyIOplataDeinstalacyjnaFields(){
+        HashMap<String, String[]> data = new HashMap<String, String[]>();
+        data.put("okresLojalnosciowy", ["12"] as String[]);
+        data.put("oplataDeinstalacyjna", ["123"] as String[]);
+
+        return data;
+    }
+
+    private HashMap<String, String[]> warunkiHandlowePompkaIKodzikFields() {
+        HashMap<String, String[]> data = new HashMap<String, String[]>();
+        data.put("srednia_sprzedaz_doladowan", ["12345"] as String[]);
+        data.put("srednia_sprzedaz_doladowan_slownie", ["To jest srednia sprzedaz pisana slownie"] as String[]);
+
+        return data;
+    }
+
+    private HashMap<String, String[]> upustPompkaIKodzikFields(){
+        HashMap<String, String[]> data = new HashMap<String, String[]>();
+
+        data.put("pp_orange_tk", ["12"] as String[]);
+        data.put("pp_orange_tp", ["123"] as String[]);
+
+        data.put("pp_plus_tk", ["12"] as String[]);
+        data.put("pp_plus_tp", ["123"] as String[]);
+
+        data.put("pp_tmobile_tk", ["12"] as String[]);
+        data.put("pp_tmobile_tp", ["123"] as String[]);
+
+        data.put("pp_heyah_tk", ["12"] as String[]);
+        data.put("pp_heyah_tp", ["123"] as String[]);
+
+        data.put("pp_play_tk", ["12"] as String[]);
+        data.put("pp_play_tp", ["123"] as String[]);
+
+        data.put("pp_telegrosik_tk", ["12"] as String[]);
+        data.put("pp_virginmobile_tk", ["123"] as String[]);
+        data.put("pp_lycamobile_tk", ["123"] as String[]);
+        data.put("pp_gtmobile_tk", ["123"] as String[]);
+        data.put("pp_vectonemobile_tk", ["123"] as String[]);
+        data.put("pp_delightmobile_tk", ["123"] as String[]);
+
+        return data;
     }
 }
