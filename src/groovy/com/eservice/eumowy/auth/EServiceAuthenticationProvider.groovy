@@ -14,7 +14,7 @@ import org.springframework.security.core.userdetails.UserDetailsChecker
 
 class EServiceAuthenticationProvider implements AuthenticationProvider {
 
-    private static final auditLogger = LogFactory.getLog("audit");
+    private static final log = LogFactory.getLog("audit");
 
     public static final String EUM_PH_BZOS = "EUM_PH_BZOS";
     public static final String EUM_ZRD = "EUM_ZRD";
@@ -27,7 +27,6 @@ class EServiceAuthenticationProvider implements AuthenticationProvider {
 
     Authentication authenticate(Authentication auth) throws AuthenticationException {
         UsernamePasswordAuthenticationToken authentication = auth
-        Exception exception = null
 
         String password = authentication.credentials
         String username = authentication.name
@@ -36,20 +35,15 @@ class EServiceAuthenticationProvider implements AuthenticationProvider {
         List<GrantedAuthorityImpl> authorities
 
         def userDTO
-        try{
+
+        try {
             userDTO = userService.loginToEUmowy(username,password);
-			println(userDTO.getRoles())
-        }catch(Exception e){
-            exception = e
-            log.error(e.message)
-            e.printStackTrace();
+        } catch(Exception e) {
+            log.error(e.message, e)
+            throw new AuthenticationServiceException(e.getMessage())
         }
 
         authorities = new ArrayList<GrantedAuthorityImpl>()
-
-        if (!userDTO) {
-            throw new AuthenticationServiceException(exception.getMessage())
-        }
 
         switch (Environment.getCurrent().getName()) {
             case EumowyCustomEnvironment.MOCK.getName():
@@ -93,7 +87,7 @@ class EServiceAuthenticationProvider implements AuthenticationProvider {
         MDC.clear()
         MDC.put("sessionUserName", userDetails.username);
 
-        auditLogger.info("Poprawne logowanie")
+        log.info("Poprawne logowanie")
 
         def result = new UsernamePasswordAuthenticationToken(userDetails, authentication.credentials, authorities)
         result.details = authentication.details
