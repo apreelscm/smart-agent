@@ -177,6 +177,96 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
     }
 
     @Test
+    void APUPZT1DC1000140707() { //AP/UPZT1DC/1.000/14-07-07
+        //given
+        def subscriptions = [
+                ["ACCEPTANT1", 5, 150, 282, 59, 28],
+                ["ACCEPTANT2", 5, 150, 245, 59, 28],
+                ["PH", 5, 462, 106, 59, 28]
+        ]
+
+        //when
+        data.putAll(akceptantaIReprezentanciFields())
+        data.putAll(umowaOznaczonaFields())
+        data.putAll(listaPlacowekFields())
+        data.putAll(poziomOplatIWarunkiPlatnosciFields())
+        data.putAll(PdfHelper.insertSignatures(subscriptions))
+
+        //then
+        process("APUPZT1DC1.00014-07-07.pdf", "APUPZT1DC1.00014-07-07_out.pdf", data)
+    }
+
+    @Test
+    void APUPZT2DC1000140707() { //AP/UPZT2DC/1.000/14-07-07
+        //given
+        def subscriptions = [
+                ["ACCEPTANT1", 5, 150, 299, 59, 28],
+                ["ACCEPTANT2", 5, 150, 263, 59, 28],
+                ["PH", 5, 462, 125, 59, 28]
+        ]
+
+        //when
+        data.putAll(akceptantaIReprezentanciFields())
+        data.putAll(umowaOznaczonaFields())
+        data.putAll(listaPlacowekFields())
+        data.putAll(specyfikacjaPoziomuOplatIWarunkowPlatnosciFields())
+        data.putAll(PdfHelper.insertSignatures(subscriptions))
+
+        //then
+        process("APUPZT2DC1.00014-07-07.pdf", "APUPZT2DC1.00014-07-07_out.pdf", data)
+    }
+
+    @Test
+    void APIUPZRWP1000140707() { //AP/IUPZ/RWP/1.000/14-07-07
+        //given
+        def subscriptions = [
+                ["PH", 1, 150, 145, 59, 28]
+        ]
+
+        //when
+        data.putAll(listaPunktowPlacowekFields())
+        data.putAll(PdfHelper.insertSignatures(subscriptions))
+
+        //then
+        process("APIUPZRWP1.00014-07-07.pdf", "APIUPZRWP1.00014-07-07_out.pdf", data)
+    }
+
+    @Test
+    void APUPZZSNT11000140707() { //AP/UPZ/ZSNT1/1.000/14-07-07
+        //given
+        def subscriptions = [
+                ["PH", 2, 150, 535, 59, 28]
+        ]
+
+        //when
+        data.putAll(poziomOplatIWarunkiPlatnosciFields())
+        data.put("upustCashback", ["5"] as String[])
+        data.put("dccKartyZagranicznePr", ["12"] as String[])
+        data.putAll(PdfHelper.insertSignatures(subscriptions))
+
+        //then
+        process("APUPZZSNT11.00014-07-07.pdf", "APUPZZSNT11.00014-07-07_out.pdf", data)
+    }
+
+    @Test
+    void APUPZZSNT21000140707() { //AP/UPZ/ZSNT2/1.000/14-07-07
+        //given
+        def subscriptions = [
+                ["PH", 1, 150, 158, 59, 28]
+        ]
+
+        //when
+        data.putAll(specyfikacjaPoziomuOplatIWarunkowPlatnosciFields())
+        data.put("upustCashback", ["5"] as String[])
+        data.put("dccKartyZagranicznePr", ["12"] as String[])
+        data.putAll(PdfHelper.insertSignatures(subscriptions))
+
+        //then
+        process("APUPZZSNT21.00014-07-07.pdf", "APUPZZSNT21.00014-07-07_out.pdf", data)
+    }
+
+
+    @Test
     void pakiet_UmowaWspolpracy() {
         //given
         def subscriptions = [
@@ -1783,15 +1873,6 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
         processToImage(outFile, 1)
     }
 
-    void testInteger(){
-        String value = "23"
-        if (value && value.isInteger()){
-            println 'Dla value: ' + value + ' zwracam: ' + String.valueOf(value.toInteger()+1)
-        } else {
-            println 'Dla value: ' + value + ' ustawiam na sztywno : 1'
-        }
-    }
-
     void processToImage(pdfName, pageNumber) {
         log.info('processToImage - start')
         PDDocument document = null
@@ -1966,6 +2047,174 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
         data.put("pp_gtmobile_tk", ["123"] as String[]);
         data.put("pp_vectonemobile_tk", ["123"] as String[]);
         data.put("pp_delightmobile_tk", ["123"] as String[]);
+
+        return data;
+    }
+
+    private HashMap<String, String[]> listaPlacowekFields(){
+        HashMap<String, String[]> data = new HashMap<String, String[]>();
+
+        data.put("punktAkceptacjaKart1", ["Nazwa placówki"] as String[]);
+        data.put("adresAkceptacjaKart1", ["Adres placówki"] as String[]);
+
+        data.put("punktAkceptacjaKart2", ["Nazwa placówki"] as String[]);
+        data.put("adresAkceptacjaKart2", ["Adres placówki"] as String[]);
+
+        data.put("punktAkceptacjaKart3", ["Nazwa placówki"] as String[]);
+        data.put("adresAkceptacjaKart3", ["Adres placówki"] as String[]);
+
+        data.put("punktAkceptacjaKart4", ["Nazwa placówki"] as String[]);
+        data.put("adresAkceptacjaKart4", ["Adres placówki"] as String[]);
+
+        data.put("punktAkceptacjaKart5", ["Nazwa placówki"] as String[]);
+        data.put("adresAkceptacjaKart5", ["Adres placówki"] as String[]);
+
+        data.put("punktAkceptacjaKart6", ["Nazwa placówki"] as String[]);
+        data.put("adresAkceptacjaKart6", ["Adres placówki"] as String[]);
+
+        data.put("punktAkceptacjaKart7", ["Nazwa placówki"] as String[]);
+        data.put("adresAkceptacjaKart7", ["Adres placówki"] as String[]);
+
+        data.put("punktAkceptacjaKart8", ["Nazwa placówki"] as String[]);
+        data.put("adresAkceptacjaKart8", ["Adres placówki"] as String[]);
+
+        return data;
+    }
+
+    private HashMap<String, String[]> specyfikacjaPoziomuOplatIWarunkowPlatnosciFields() {
+        HashMap<String, String[]> data = new HashMap<String, String[]>();
+
+        data.put("ifOplataVISA", ["5"] as String[]);
+        data.put("ifOplataMasterCard", ["5"] as String[]);
+        data.put("ifOplataDinersClub", ["5"] as String[]);
+        data.put("upustCashback", ["5"] as String[]);
+        data.put("dccKartyZagranicznePr", ["5"] as String[]);
+        data.put("ifOplataPKOPB", ["5"] as String[]);
+
+        return data
+    }
+
+    private HashMap<String, String[]> poziomOplatIWarunkiPlatnosciFields(){
+        HashMap<String, String[]> data = new HashMap<String, String[]>();
+
+        data.put("visaEUKKOPr", ["5%"] as String[]);
+        data.put("visaEUKKOSt", ["12zł"] as String[]);
+        data.put("visaEUKDPr", ["5%"] as String[]);
+        data.put("visaEUKDSt", ["12zł"] as String[]);
+        data.put("visaEUKBPr", ["5%"] as String[]);
+        data.put("visaEUKBSt", ["12zł"] as String[]);
+
+        data.put("visaOutEUKKOPr", ["5%"] as String[]);
+        data.put("visaOutEUKKOSt", ["12zł"] as String[]);
+        data.put("visaOutEUKDPr", ["5%"] as String[]);
+        data.put("visaOutEUKDSt", ["12zł"] as String[]);
+        data.put("visaOutEUKBPr", ["5%"] as String[]);
+        data.put("visaOutEUKBSt", ["12zł"] as String[]);
+
+        data.put("visaPolskaKKO1Pr", ["5%"] as String[]);
+        data.put("visaPolskaKKO1St", ["12zł"] as String[]);
+        data.put("visaPolskaKKO2Pr", ["5%"] as String[]);
+        data.put("visaPolskaKKO2St", ["12zł"] as String[]);
+        data.put("visaPolskaKD1Pr", ["5%"] as String[]);
+        data.put("visaPolskaKD1St", ["12zł"] as String[]);
+        data.put("visaPolskaKD2Pr", ["5%"] as String[]);
+        data.put("visaPolskaKD2St", ["12zł"] as String[]);
+        data.put("visaPolskaKBPr", ["5%"] as String[]);
+        data.put("visaPolskaKBSt", ["12zł"] as String[]);
+
+        data.put("mastercardEUKKPr", ["5%"] as String[]);
+        data.put("mastercardEUKKSt", ["12zł"] as String[]);
+        data.put("mastercardEUKDPr", ["5%"] as String[]);
+        data.put("mastercardEUKDSt", ["12zł"] as String[]);
+        data.put("mastercardEUKBLPr", ["5%"] as String[]);
+        data.put("mastercardEUKBLSt", ["12zł"] as String[]);
+        data.put("mastercardEUMPr", ["5%"] as String[]);
+        data.put("mastercardEUMSt", ["12zł"] as String[]);
+
+        data.put("mastercardOutEUKKPr", ["5%"] as String[]);
+        data.put("mastercardOutEUKKSt", ["12zł"] as String[]);
+        data.put("mastercardOutEUKDPr", ["5%"] as String[]);
+        data.put("mastercardOutEUKDSt", ["12zł"] as String[]);
+        data.put("mastercardOutEUKBPr", ["5%"] as String[]);
+        data.put("mastercardOutEUKBSt", ["12zł"] as String[]);
+        data.put("mastercardOutEUMPr", ["5%"] as String[]);
+        data.put("mastercardOutEUMSt", ["12zł"] as String[]);
+
+        data.put("mastercardPolskaKK1Pr", ["5%"] as String[]);
+        data.put("mastercardPolskaKK1St", ["12zł"] as String[]);
+        data.put("mastercardPolskaKK2Pr", ["5%"] as String[]);
+        data.put("mastercardPolskaKK2St", ["12zł"] as String[]);
+        data.put("mastercardPolskaKK3Pr", ["5%"] as String[]);
+        data.put("mastercardPolskaKK3St", ["12zł"] as String[]);
+        data.put("mastercardPolskaKD1Pr", ["5%"] as String[]);
+        data.put("mastercardPolskaKD1St", ["12zł"] as String[]);
+        data.put("mastercardPolskaKD2Pr", ["5%"] as String[]);
+        data.put("mastercardPolskaKD2St", ["12zł"] as String[]);
+        data.put("mastercardPolskaKD3Pr", ["5%"] as String[]);
+        data.put("mastercardPolskaKD3St", ["12zł"] as String[]);
+        data.put("mastercardPolskaKBPr", ["5%"] as String[]);
+        data.put("mastercardPolskaKBSt", ["12zł"] as String[]);
+        data.put("mastercardPolskaM1Pr", ["5%"] as String[]);
+        data.put("mastercardPolskaM1St", ["12zł"] as String[]);
+        data.put("mastercardPolskaM2Pr", ["5%"] as String[]);
+        data.put("mastercardPolskaM2St", ["12zł"] as String[]);
+        data.put("mastercardPolskaM3Pr", ["5%"] as String[]);
+        data.put("mastercardPolskaM3St", ["12zł"] as String[]);
+
+        data.put("visaPKOBPKKO1Pr", ["5%"] as String[]);
+        data.put("visaPKOBPKKO1St", ["12zł"] as String[]);
+        data.put("visaPKOBPKKO2Pr", ["5%"] as String[]);
+        data.put("visaPKOBPKKO2St", ["12zł"] as String[]);
+        data.put("visaPKOBPKD1Pr", ["5%"] as String[]);
+        data.put("visaPKOBPKD1St", ["12zł"] as String[]);
+        data.put("visaPKOBPKD2Pr", ["5%"] as String[]);
+        data.put("visaPKOBPKD2St", ["12zł"] as String[]);
+        data.put("visaPKOBPKB3Pr", ["5%"] as String[]);
+        data.put("visaPKOBPKB3St", ["12zł"] as String[]);
+
+        data.put("mastercardPKOBPKK1Pr", ["5%"] as String[]);
+        data.put("mastercardPKOBPKK1St", ["12zł"] as String[]);
+        data.put("mastercardPKOBPKK2Pr", ["5%"] as String[]);
+        data.put("mastercardPKOBPKK2St", ["12zł"] as String[]);
+        data.put("mastercardPKOBPKK3Pr", ["5%"] as String[]);
+        data.put("mastercardPKOBPKK3St", ["12zł"] as String[]);
+        data.put("mastercardPKOBPKD1Pr", ["5%"] as String[]);
+        data.put("mastercardPKOBPKD1St", ["12zł"] as String[]);
+        data.put("mastercardPKOBPKD2LPr", ["5%"] as String[]);
+        data.put("mastercardPKOBPKD2LSt", ["12zł"] as String[]);
+        data.put("mastercardPKOBPKD3Pr", ["5%"] as String[]);
+        data.put("mastercardPKOBPKD3St", ["12zł"] as String[]);
+        data.put("mastercardPKOBPKBPr", ["5%"] as String[]);
+        data.put("mastercardPKOBPKBSt", ["12zł"] as String[]);
+        data.put("mastercardPKOBPM1Pr", ["5%"] as String[]);
+        data.put("mastercardPKOBPM1St", ["12zł"] as String[]);
+        data.put("mastercardPKOBPM2Pr", ["5%"] as String[]);
+        data.put("mastercardPKOBPM2St", ["12zł"] as String[]);
+        data.put("mastercardPKOBPM3Pr", ["5%"] as String[]);
+        data.put("mastercardPKOBPM3St", ["12zł"] as String[]);
+
+        data.put("dinersClubPr", ["5%"] as String[]);
+
+        return data;
+    }
+
+    private HashMap<String, String[]> listaPunktowPlacowekFields(){
+        HashMap<String, String[]> data = new HashMap<String, String[]>();
+
+        data.put("punkt1", ["Nazwa placówki"] as String[]);
+        data.put("adres1", ["Adres placówki"] as String[]);
+
+        data.put("punkt2", ["Nazwa placówki"] as String[]);
+        data.put("adres2", ["Adres placówki"] as String[]);
+
+        data.put("punkt3", ["Nazwa placówki"] as String[]);
+        data.put("adres3", ["Adres placówki"] as String[]);
+
+        data.put("punkt4", ["Nazwa placówki"] as String[]);
+        data.put("adres4", ["Adres placówki"] as String[]);
+
+        data.put("punkt5", ["Nazwa placówki"] as String[]);
+        data.put("adres5", ["Adres placówki"] as String[]);
 
         return data;
     }
