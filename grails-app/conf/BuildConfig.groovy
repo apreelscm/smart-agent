@@ -63,7 +63,7 @@ grails.project.dependency.resolution = {
         build ":tomcat:7.0.54"
 
         compile ":scaffolding:2.1.1"
-        compile ':cache:1.1.6'
+        compile ':cache:1.1.7'
         compile ':asset-pipeline:1.8.3'
         compile ":mail:1.0.6"
 
