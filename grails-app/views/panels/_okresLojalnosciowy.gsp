@@ -6,9 +6,15 @@
                 <li>
                     <span class="align-right"><g:message code="panel.loyality.period"/></span>
                     <span class="align-left">
-                        %{--<g:field type="number" step="any" name="okresLojalnosciowy" readonly="true" style="width: 100px"/> --}%
-                        <eumowy:textField name="okresLojalnosciowy" validatable="${data}" value="${data.okresLojalnosciowy}"  readonly="true"
+                        <eumowy:textField name="okresLojalnosciowy" validatable="${data}" value="${data.okresLojalnosciowy}" readonly="true"
                                             postfix="${message(code:"panel.months")}"/>
+                    </span>
+                </li>
+
+                <li>
+                    <span class="align-right"><g:message code="uninstall.price.title"/></span>
+                    <span class="align-left">
+                        <eumowy:currencyField name="oplataDeinstalacyjna" validatable="${data}" value="${data.oplataDeinstalacyjna}" readonly="readonly"/>
                     </span>
                 </li>
             </ul>

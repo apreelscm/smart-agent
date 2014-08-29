@@ -5,18 +5,14 @@
         	<g:hiddenField name="hasDccZakresUruchomienia" value="true"/>
             <div class="${hasErrors(bean:data,field:'dccZakresUruchomienia','errorContainer')}" style="text-align: left">
                 <g:radioGroup name="dccZakresUruchomienia"
-                              labels="['panel.dcc.range.current.and.new','panel.dcc.range.current', 'panel.dcc.range.direct']"
-                              values="['obecne_i_nowe', 'obecne', 'wskazane']"
-                              value="${data.dccZakresUruchomienia}" disabled="${data.isBundleActivity}">
+                              labels="['panel.dcc.range.current.and.new']"
+                              values="['obecne_i_nowe']"
+                              value="obecne_i_nowe" readonly="readonly">
                     <p><label> ${it.radio} <g:message code="${it.label}"/></label></p>
                 </g:radioGroup>
             </div>
-
-            <g:if test="${data.isBundleActivity}">
-                <g:hiddenField name="dccZakresUruchomienia" value="${data.dccZakresUruchomienia}"/>
-            </g:if>
         </div>
-        <div id="dccRange" class="centre" style="text-align: center; padding-top: 20px; width: 800px; max-width: 950px">
+        <div id="dccRange" class="centre hidden" style="text-align: center; padding-top: 20px; width: 800px; max-width: 950px">
             <table class="t">
                 <thead>
                 <tr>
@@ -51,38 +47,3 @@
         </div>
     </fieldset>
 </div>
-
-<script type="text/javascript">
-    jQuery(document).ready(function() {
-
-        var dccRange = jQuery('#dccRange');
-
-        if (jQuery('input[name="dccZakresUruchomienia"]:checked').val() != 'wskazane'){
-            enableCheckbox(false);
-            dccRange.hide();
-        }
-
-        jQuery('input[name="dccZakresUruchomienia"]').change(function(e){
-            if (e.target.value == 'obecne_i_nowe'){
-                enableCheckbox(false);
-                dccRange.hide();
-            } else if (e.target.value == 'obecne'){
-                enableCheckbox(false);
-                dccRange.hide();
-            } else {
-                enableCheckbox(true);
-                dccRange.show();
-            }
-        });
-
-        function enableCheckbox(checked) {
-            var checkboxes = jQuery('input[name="dccRangePOS"]');
-            if (checked) {
-                checkboxes.removeAttr("disabled");
-            } else {
-                checkboxes.attr("disabled", true);
-                checkboxes.attr("checked", false);
-            }
-        }
-    });
-</script>

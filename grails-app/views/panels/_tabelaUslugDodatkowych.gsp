@@ -21,6 +21,12 @@
                         <eumowy:currencyField type="text" name="pierwszaSesjaCena" validatable="${data}" value="${data.pierwszaSesjaCena}"/>
                     </td>
                 </tr>
+                <tr>
+                    <td><g:message code="panel.payment.mud"/></td>
+                    <td>
+                        <eumowy:currencyField type="text" class="float-number" name="mudCena" readonly="${data.isBundleActivity}" validatable="${data}" value="${data.mudCena}" />
+                    </td>
+                </tr>
             </table>
         </div>
     </fieldset>
