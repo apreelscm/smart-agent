@@ -327,7 +327,7 @@ class PointCommand implements Serializable {
 		//zamkniecieDniaOd(nullable:true, blank:false, shared: "date")
 		//zamkniecieDniaDo(nullable:true, blank:false, shared: "date")
 		//planowanaDataInstalacji(nullable:true, blank:true, shared: "date")
-		uwagiDodatkowe(nullable:true)
+		uwagiDodatkowe(nullable:true, shared: "alphanumeric")
 		preautoryzacja(nullable:true)
 		brakFunkcjiZwrotu(nullable:true)
 		zwrotNaHaslo(nullable:true)
