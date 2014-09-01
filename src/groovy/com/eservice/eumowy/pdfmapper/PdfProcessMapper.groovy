@@ -1,5 +1,6 @@
 package com.eservice.eumowy.pdfmapper
 
+import com.eservice.eumowy.ActivityHelper
 import com.eservice.eumowy.HirePayment
 import com.eservice.eumowy.Process
 import java.text.DecimalFormat
@@ -122,14 +123,19 @@ class PdfProcessMapper extends AbstractPdfMapper{
         }
 
         //Na potrzeby dokumentu: APUPZAWNZBS1.00113-08-06
-        if (processInstance.activities.any { activity -> ['dodatkowyPos', 'dodatkowyPunkt'].contains(activity.code)}){
+        if (ActivityHelper.containsActivities(processInstance, ['dodatkowyPos', 'dodatkowyPunkt'])) {
             addCheckbox(dataMap, 'zalacznik2', "true", "true")
         }
 
         //Na potrzeby dokumentu: APUPZAWNZBS1.00113-08-06
-        if (processInstance.activities.any { activity -> 'zmianaProwizji'.equals(activity.code)}){
+        if (ActivityHelper.containsActivity(processInstance, "zmianaProwizji")){
             addCheckbox(dataMap, 'zalacznik3', "true", "true")
         }
+
+        if(ActivityHelper.containsActivities(processInstance, ["dodanieDcc", "zmianaWarunkowDcc"])) {
+            dataMap.put("czyTransakcjeDCC", getCheckboxData(true))
+        }
+
         return dataMap;
     }
 

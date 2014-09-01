@@ -604,6 +604,10 @@ class PanelService {
         cmd.cashbackAbonament = "5"
     }
 
+    def getUpustCashback(ProcessCommand cmd, def calc) {
+        cmd.cashbackUpust = "9999" //ma byc z kalkulatora
+    }
+
     def getOplataDeinstalacyjna(ProcessCommand cmd, def calc) {
         cmd.oplataDeinstalacyjna = "5"
     }

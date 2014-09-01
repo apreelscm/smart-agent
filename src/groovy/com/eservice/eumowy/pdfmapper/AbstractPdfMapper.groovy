@@ -28,7 +28,7 @@ public abstract class AbstractPdfMapper {
         }
     }
 
-    String[] getCheckboxData(Boolean checkCondition) {
+    String[] getCheckboxData(boolean checkCondition) {
         return [!checkCondition, "", "checkbox"] as String[]
     }
 

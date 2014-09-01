@@ -214,7 +214,7 @@ class PdfService {
         Integer totalPagesCount = 0
         Map dataFromProcess = mapperService.mapOnlyProcessData(processInstance, calc)
 
-        if(processService.hasNowaUmowa(processInstance)) {
+        if(ActivityHelper.isNewAgreement(processInstance)) {
             dataFromProcess.putAll(new PABRformMapper(processInstance).getDataForMapping())
         }
 

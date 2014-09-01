@@ -3,6 +3,7 @@ package com.eservice.eumowy
 
 import com.eservice.eumowy.auth.EServiceUserDetails
 import com.eservice.eumowy.dto.MerchantDetailsDTO
+import com.eservice.eumowy.validator.NumberValidator
 import grails.converters.JSON
 import groovy.sql.GroovyRowResult
 import org.codehaus.groovy.grails.web.json.JSONObject
@@ -66,8 +67,6 @@ class ActivityController {
                 log.info("init flow.message:"+ flow.message)
                 log.info("init flash.message:"+ flash.message)
                 log.info("init flow.prevActivityMessage:"+flow.prevActivityMessage)
-
-                sessionFactory.getCurrentSession().clear()
 
                 if (params.message) {
                     flow.prevActivityMessage = params.message
@@ -449,7 +448,7 @@ class ActivityController {
 
                 Process processInstance = flow.processInstance
 
-                if(clientService.isClientNipInvalid(flow.nip)){
+                if(NumberValidator.validateNip(flow.nip)) {
                     flash.nipErrorMessage= message(code: 'GetCalculatorCommand.nip.validator.invalid');
                     return error();
                 }
@@ -460,7 +459,7 @@ class ActivityController {
 
                 if(client?.cbdId){
                     if(hasNowaUmowa) {
-                        flash.nipErrorMessage = message(code:"client.newAgreementAndClientCBD.error", default:"Nowa umowa dla klienta CBD");
+                        flash.nipErrorMessage = message(code:"client.newAgreementAndClientCBD.error")
                         log.info(message(code:"client.newAgreementAndClientCBD.error") + " - " + flow.nip)
                         return error();
                     } else {
@@ -513,6 +512,11 @@ class ActivityController {
                     if(!calculatorService.isCalcValid(calc,calcId,processInstance)){
                         flash.calcErrorMessage =  message(code:"calc.notEnough.error")
                         return error();
+                    }
+
+                    if(processService.isCashbackActivityRequired(processInstance, calc)) {
+                        flash.calcErrorMessage = messgae(code: "cashback.activity.required")
+                        return error()
                     }
 
                     conversation.calc = calc
@@ -799,7 +803,7 @@ class ActivityController {
             action {
                 flow.nip = params.nip
 
-                if(clientService.isClientNipInvalid(flow.nip)){
+                if(NumberValidator.validateNip(flow.nip)){
                     flash.nipErrorMessage= message(code: 'GetCalculatorCommand.nip.validator.invalid');
                     return error();
                 }
@@ -856,7 +860,7 @@ class ActivityController {
                     log.info("pobrano kalkulator " + calcId)
 
                     if(!calculatorService.isCalcValid(calc,calcId,lastProcess)){
-                        flash.calcErrorMessage =  message(code:"calc.notEnough.error")
+                        flash.calcErrorMessage = message(code:"calc.notEnough.error")
                         return error()
                     }
 
@@ -1108,7 +1112,7 @@ class ActivityController {
             action {
                 flow.nip = params.nip;
 
-                if(clientService.isClientNipInvalid(params.nip)){
+                if(NumberValidator.validateNip(params.nip)){
                     flash.nipErrorMessage= message(code: 'GetCalculatorCommand.nip.validator.invalid');
                     return error();
                 }
@@ -1195,7 +1199,7 @@ class ActivityController {
             action {
                 flow.nip = params.nip
 
-                if(clientService.isClientNipInvalid(params.nip)) {
+                if(NumberValidator.validateNip(params.nip)) {
                     flash.nipErrorMessage= message(code: 'GetCalculatorCommand.nip.validator.invalid');
                     return error();
                 }

@@ -6,35 +6,6 @@ class ClientService {
 
     static transactional = false;
 
-    boolean isClientNipInvalid(def nip) {
-
-        // TODO tymczasowo
-        if(Environment.isDevelopmentMode() || Environment.TEST.getName().equalsIgnoreCase(Environment.getCurrent().name)) {
-            return false
-        }
-
-        if (nip.length() == 13) {
-            nip = nip.replaceAll("-", "");
-        }
-        if (nip.length() != 10) return false;
-        def weights = [6, 5, 7, 2, 3, 4, 5, 6, 7];
-        String[] aNip = nip.split("");
-        try {
-            int sum = 0;
-            for (int i = 0; i < weights.size(); i++) {
-                sum += Integer.parseInt(aNip[i + 1]) * weights[i];
-            }
-            return (sum % 11) == Integer.parseInt(aNip[10]);
-        } catch (NumberFormatException e) {
-            return true
-        }
-        return false
-    }
-
-    def clientExists(Client client) {
-        return client?.id != null || client?.cbdId != null
-    }
-
     def updateClientName(def client, def cmd) {
 
         if(!client || cmd.akceptantNazwaOficjalnaCbd ){

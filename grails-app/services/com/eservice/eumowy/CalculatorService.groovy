@@ -65,7 +65,7 @@ class CalculatorService implements Serializable{
     }
 
 
-    def getCalcProperty(  def calc,def key){
+    def getCalcProperty(def calc,def key){
         calc?.findResult{ (it.POLEAPREEL == key && !(it.WARTOSCAPREEL in [BRAK_LABEL,FALSE_LABEL])  ) ? it.WARTOSCAPREEL : null }
     }
 

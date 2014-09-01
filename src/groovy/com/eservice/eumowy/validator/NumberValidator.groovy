@@ -82,4 +82,27 @@ public class NumberValidator {
 
         return true
     }
+
+    public static def validateNip = { nip ->
+        int[] weights = [6, 5, 7, 2, 3, 4, 5, 6, 7]
+        int sum = 0
+        int controlNumber
+
+        nip = nip.replaceAll("-", "")
+
+        if (nip.length() != 10) return false
+
+        try {
+            for (int i = 0; i < 9; i++) {
+                sum += Integer.parseInt(nip[i]) * weights[i];
+            }
+            controlNumber = (sum % 11 == 10) ? 0 : sum % 11
+
+            return controlNumber == Integer.parseInt(nip[9]);
+        } catch (NumberFormatException e) {
+            return false
+        }
+
+        return true
+    }
 }

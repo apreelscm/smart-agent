@@ -1774,4 +1774,10 @@ class ProcessService {
         command.akceptantTelKomorkowy = merchantDetailsDTO.akceptantTelKomorkowy
         command.akceptantFax = merchantDetailsDTO.akceptantFax
     }
+
+    public boolean isCashbackActivityRequired(Process process, def calc) {
+        if (ActivityHelper.isNewAgreement() || ActivityHelper.containsActivity(process, "wymianaUmowyZaplaty")) return false
+
+        return calculatorService.hasCalcProperty("uslugaCashback", "TAK", calc) && !ActivityHelper.containsActivity(process, "dodanieCashBack")
+    }
 }
