@@ -223,8 +223,7 @@ class ProcessController {
             log.error(result.stackString)
             redirect(action: "show", params: params)
             return
-        }
-        else {
+        } else {
             log.info("wynik synchronizacji procesu [" + processInstance.id + "] : " + result.wynikString)
         }
 

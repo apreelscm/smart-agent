@@ -1,10 +1,13 @@
 import com.eservice.dao.emetrics.UserDAO
+import com.eservice.eum.ws.client.WebServiceClient
+import com.eservice.eum.ws.xml.AcceptUmowaRequest
+import com.eservice.eum.ws.xml.AcceptUmowaResponse
 import com.eservice.eumowy.CustomDateEditorRegistrar
 import com.eservice.eumowy.auth.EServiceAuthenticationProvider
 import com.eservice.eumowy.dao.CbdDAO
-//import com.eservice.eumowy.mocks.WebsClientMock
 import com.eservice.eumowy.propEditors.CustomPropertyEditorRegistrar
 import com.eservice.eumowy.util.EumowyCustomEnvironment
+import com.eservice.eumowy.ws.AcceptUmowaWSClientFactory
 import com.eservice.service.security.ECbdRoleService
 import com.eservice.service.security.NoRoleService
 import com.eservice.service.security.UserService
@@ -12,6 +15,7 @@ import grails.util.Environment
 import org.jasypt.digest.config.SimpleDigesterConfig
 import org.jasypt.salt.RandomSaltGenerator
 import org.jasypt.util.password.ConfigurablePasswordEncryptor
+import org.springframework.oxm.jaxb.Jaxb2Marshaller
 import org.springframework.ws.client.core.WebServiceTemplate
 
 // Place your Spring DSL code here
@@ -63,6 +67,24 @@ beans = {
         passwordEncryptor = ref('passwordEncryptor')
         sessionFactory = ref('sessionFactory')
     }
+
+    marshaller(Jaxb2Marshaller) {
+        classesToBeBound = [AcceptUmowaRequest, AcceptUmowaResponse]
+    }
+
+    webServiceTemplate(WebServiceTemplate, ref('messageFactory')){
+        defaultUri = grailsApplication.config.eumowySyncWSAddress
+        marshaller = ref('marshaller')
+        unmarshaller = ref('marshaller')
+    }
+
+    webServiceClient(WebServiceClient) {
+        webServiceTemplate = ref('webServiceTemplate')
+    }
+
+    acceptUmowaWSClientFactory(AcceptUmowaWSClientFactory, ref('webServiceClient')) {}
+
+    acceptUmowaWSClient(acceptUmowaWSClientFactory: "getInstance"){}
 
     /**
      * LOGIN BEANS

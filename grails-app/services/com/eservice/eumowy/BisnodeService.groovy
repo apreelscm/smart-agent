@@ -8,8 +8,8 @@ import com.eservice.webs.client.govsync.dto.MerchantKRSDataDTO
 import grails.plugin.springsecurity.SpringSecurityService
 
 class BisnodeService {
-    WebsClient websClient
-    SpringSecurityService springSecurityService
+    def websWebServiceClient
+    def springSecurityService
 
     public List<MerchantRepresentativeDTO> getRepresentatives(String nip) {
         MerchantDetailsDTO merchantDetails = getMerchantDetails(nip)
@@ -35,7 +35,7 @@ class BisnodeService {
         Long userId = ((EServiceUserDetails)springSecurityService.principal).auwId
 
         try {
-            merchantDetails = websClient.searchMerchantData(nip, userId)
+            merchantDetails = websWebServiceClient.searchMerchantData(nip, userId)
         } catch (Exception e) {
             log.error("Error during data fetch from bisnode", e)
             return null

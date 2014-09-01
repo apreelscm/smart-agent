@@ -54,7 +54,9 @@
         <g:layoutBody/>
 
         <footer class="rel" id="stopka">
-            <build:buildInfo/> ENV: ${grails.util.Environment.getCurrentEnvironment().name}
+            <g:meta name="app.name"/>
+            <g:meta name="app.grails.version"/>
+            ENV: ${grails.util.Environment.getCurrentEnvironment().name}
         </footer>
 
         <g:if test="${params.controller != 'login'}">
