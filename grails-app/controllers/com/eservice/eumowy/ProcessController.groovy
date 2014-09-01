@@ -11,7 +11,7 @@ class ProcessController {
     def emailService
 	def appParametersService
     def springSecurityService
-    def acceptUmowaWSClient
+    def webServiceClient
     def processService
     def pdfService
 
@@ -216,7 +216,7 @@ class ProcessController {
         }
 
         log.info("wywolanie synchronizacji dla procesu [${processInstance.id}] oraz auwId [${springSecurityService.principal.auwId}]")
-        Result result = acceptUmowaWSClient.acceptEUmowa(processInstance.id, springSecurityService.principal.auwId)
+        Result result = webServiceClient.acceptUmowa(processInstance.id, springSecurityService.principal.auwId)
         if (result.wynik < 0){
             flash.error = result.wynikString
             log.error("wynik synchronizacji procesu : " + result.wynikString)

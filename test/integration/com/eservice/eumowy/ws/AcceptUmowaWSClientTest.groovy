@@ -20,7 +20,7 @@ class AcceptUmowaWSClientTest extends GroovyTestCase {
        System.out.println("userService " + userService)
        System.out.println("webServiceTemplate " + webServiceTemplate)
        System.out.println("webServiceClient " + webServiceClient)
-       System.out.println("acceptUmowaWSClient " + acceptUmowaWSClient)
+       System.out.println("webServiceClient " + acceptUmowaWSClient)
     }
 
     void testClient() {

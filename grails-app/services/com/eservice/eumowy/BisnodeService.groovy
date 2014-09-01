@@ -10,6 +10,7 @@ import grails.plugin.springsecurity.SpringSecurityService
 class BisnodeService {
     def websWebServiceClient
     def springSecurityService
+    def webServiceClient
 
     public List<MerchantRepresentativeDTO> getRepresentatives(String nip) {
         MerchantDetailsDTO merchantDetails = getMerchantDetails(nip)

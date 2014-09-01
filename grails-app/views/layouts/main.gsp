@@ -56,7 +56,7 @@
         <footer class="rel" id="stopka">
             <g:meta name="app.name"/>
             <g:meta name="app.grails.version"/>
-            ENV: ${grails.util.Environment.getCurrentEnvironment().name}
+            ENV: ${grails.util.Environment.current?.name}
         </footer>
 
         <g:if test="${params.controller != 'login'}">

@@ -1,1 +1,2 @@
 1. Skopiowac pliki profili z /otherResources/tomcat/lib do katalogu domowego $USER_HOME/.grails
+2. Skopiowac plik conf.properties do /opt/settings
