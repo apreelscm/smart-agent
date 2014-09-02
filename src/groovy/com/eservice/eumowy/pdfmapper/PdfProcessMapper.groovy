@@ -116,23 +116,24 @@ class PdfProcessMapper extends AbstractPdfMapper{
         def newToCross = ['dodatkowyPunkt', 'dodatkowyPos']
         def additonalToCross = ['aneks', 'wymianaUmowyNajmu']
 
-        if (processInstance.activities.any { activity -> additonalToCross.contains(activity.code)}){
+        if (processInstance.activities.any { activity -> additonalToCross.contains(activity.code)}) {
             dataMap.put("crossAdditional", ['_______________'] as String[])
-        } else if (processInstance.activities.any { activity -> newToCross.contains(activity.code)}){
+        } else if (processInstance.activities.any { activity -> newToCross.contains(activity.code)}) {
             dataMap.put("crossNew", ['_____'] as String[])
         }
 
-        //Na potrzeby dokumentu: APUPZAWNZBS1.00113-08-06
-        if (ActivityHelper.containsActivities(processInstance, ['dodatkowyPos', 'dodatkowyPunkt'])) {
-            addCheckbox(dataMap, 'zalacznik2', "true", "true")
+        if (ActivityHelper.hasCombination(processInstance, ['nowaUmowa', 'wymianaUmowyNajmu'], ['dodaniePrepaid', 'zmianaWarunkowPrepaid'])) {
+            dataMap.put("zalacznikNr4",
+                    ["4 - Załącznik do Umowy Współpracy w zakresie sprzedaży i dystrybucji elektronicznych doładowań"])
         }
 
-        //Na potrzeby dokumentu: APUPZAWNZBS1.00113-08-06
-        if (ActivityHelper.containsActivity(processInstance, "zmianaProwizji")){
-            addCheckbox(dataMap, 'zalacznik3', "true", "true")
+        if (ActivityHelper.hasCombination(processInstance, ['nowaUmowa', 'wymianaUmowyNajmu'], ['dodaniePrepaid', 'zmianaWarunkowPrepaid'])) {
+            int attachmentNumber = dataMap.containsKey("zalacznikNr4") ? 5 : 4
+            dataMap.put("zalacznikNr" + attachmentNumber,
+                    [attachmentNumber + " - Załącznik do Umowy Współpracy w zakresie sprzedaży i dystrybucji elektronicznych doładowań"])
         }
 
-        if(ActivityHelper.containsActivities(processInstance, ["dodanieDcc", "zmianaWarunkowDcc"])) {
+        if(ActivityHelper.contains(processInstance, ["dodanieDcc", "zmianaWarunkowDcc"])) {
             dataMap.put("czyTransakcjeDCC", getCheckboxData(true))
         }
 

@@ -17,7 +17,7 @@
         	</fieldset>
         	<g:render template="../panels/danePunktu/zestawPos" />
             <g:render template="../panels/danePunktu/informacjeTechniczne" />
-            <g:render template="../panels/danePunktufunkcjeTerminala" />
+            <g:render template="../panels/danePunktu/funkcjeTerminala" />
             <g:render template="../panels/danePunktu/dodatkoweWyposazenie" />
             <g:render template="../panels/danePunktu/adresacjaSeciowa" />
        	</div>

@@ -1,11 +1,8 @@
 package com.eservice.eumowy
 
-/**
- * !!
- * !! OBIEKT SESYJNY DO TRZYMANIA KALKULATORA I OPERACJI NA NIM
- * !!
- * */
-class CalculatorService implements Serializable{
+import com.eservice.eumowy.exception.CalculatorException
+
+class CalculatorService implements Serializable {
 
     static transactional = false
 
@@ -14,12 +11,13 @@ class CalculatorService implements Serializable{
 	
 	def cbdService
 
-    def isCalcValid(def calcExt, def calcId, def process) {
+    def isCalcValid(def calcExt, def calcId, Process process) {
+        if(ActivityHelper.isCalculatorRedundant(process)) return true
 
-		def isValidBySigsResult = isCalValidBySignatures(calcExt, process.signatures)
-		def isValidByActivResult = isCalValidExtendedValidation(calcId, process.activities, process.signatures)
+		boolean isCalculatorSignaturesValid = isCalValidBySignatures(calcExt, process.signatures)
+		boolean isCalculaotrActivitiesValid = isCalValidExtendedValidation(calcId, process.activities, process.signatures)
         
-		return isValidBySigsResult == true && isValidByActivResult == true
+		return isCalculatorSignaturesValid && isCalculaotrActivitiesValid
     }
 	
 	def isCalValidBySignatures(def calcExt, def signatures) {
@@ -69,5 +67,31 @@ class CalculatorService implements Serializable{
         calc?.findResult{ (it.POLEAPREEL == key && !(it.WARTOSCAPREEL in [BRAK_LABEL,FALSE_LABEL])  ) ? it.WARTOSCAPREEL : null }
     }
 
+    List getCalculator(Process process, Client client) {
+        if(ActivityHelper.isCalculatorRedundant(process)) return [:]
 
+        List calc = cbdService.findCalculatorByNip(client.nip)
+
+        if(calc.isEmpty()) {
+            throw new CalculatorException("calc.fetch.error")
+        }
+
+        if(isCashbackActivityRequired(process, calc)) {
+            throw new CalculatorException("cashback.activity.required")
+        }
+
+        return calc
+    }
+
+    long getCalculatorId(Process process, Client client) {
+        if(ActivityHelper.isCalculatorRedundant(process)) return -1
+
+        return cbdService.findCalculatorIdByNip(client.nip)
+    }
+
+    private boolean isCashbackActivityRequired(Process process, def calc) {
+        if (ActivityHelper.isNewAgreement(process) || ActivityHelper.contains(process, "wymianaUmowyZaplaty")) return false
+
+        return hasCalcProperty("uslugaCashback", "TAK", calc) && !ActivityHelper.contains(process, "dodanieCashBack")
+    }
 }

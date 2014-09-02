@@ -53,37 +53,22 @@ class CbdService {
 
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
     def findCalculatorByNip(def clientNip) {
-        switch (Environment.getCurrent().getName()) {
-            case EumowyCustomEnvironment.MOCK.getName():
-                return null;
-            default:
-                def calcId = findCalculatorIdByNip(clientNip)
-                def calc = cbdDAO.selectMany(FIND_CALC_BY_NIP,[nip:clientNip]).collect{ [POLEAPREEL:it.POLE,WARTOSCAPREEL:it.WARTOSC]}//*.POLEAPREEL
-                logggger.info("Getting calculator for NIP ${clientNip}, calculatorId: ${calcId} with values: ${calc}")
-                return calc
-        }
+        def calcId = findCalculatorIdByNip(clientNip)
+        def calc = cbdDAO.selectMany(FIND_CALC_BY_NIP,[nip:clientNip]).collect{ [POLEAPREEL:it.POLE,WARTOSCAPREEL:it.WARTOSC]}//*.POLEAPREEL
+        logggger.info("Getting calculator for NIP ${clientNip}, calculatorId: ${calcId} with values: ${calc}")
+        return calc
     }
 
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
     def findCalculatorIdByNip(def clientNip) {
-        switch (Environment.getCurrent().getName()) {
-            case EumowyCustomEnvironment.MOCK.getName():
-                return null;
-            default:
-                return cbdDAO.selectOne(FIND_CALC_ID_BY_NIP,[nip:clientNip])?.get("KAK_ID")
-        }
+        return cbdDAO.selectOne(FIND_CALC_ID_BY_NIP,[nip:clientNip])?.get("KAK_ID")
     }
 
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
     Client findClientByNip(def clientNip) {
-        switch (Environment.getCurrent().getName()) {
-            case EumowyCustomEnvironment.MOCK.getName():
-                return null;
-            default:
-                def rowResult = cbdDAO.selectOne(FIND_CLIENT_ID_BY_NIP,[nip:clientNip])
-                def cbdClient = new Client(rowResult)
-                return cbdClient
-        }
+        def rowResult = cbdDAO.selectOne(FIND_CLIENT_ID_BY_NIP,[nip:clientNip])
+        def cbdClient = new Client(rowResult)
+        return cbdClient
     }
 
     @Cacheable(value="eumowyCacheShort", key = "'getAdresDaneDoWydruku_'.concat(#clientNip)")

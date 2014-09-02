@@ -3,6 +3,7 @@ package com.eservice.eumowy
 
 import com.eservice.eumowy.auth.EServiceUserDetails
 import com.eservice.eumowy.dto.MerchantDetailsDTO
+import com.eservice.eumowy.exception.CalculatorException
 import com.eservice.eumowy.validator.NumberValidator
 import grails.converters.JSON
 import groovy.sql.GroovyRowResult
@@ -448,7 +449,7 @@ class ActivityController {
 
                 Process processInstance = flow.processInstance
 
-                if(NumberValidator.validateNip(flow.nip)) {
+                if(!NumberValidator.validateNip(flow.nip)) {
                     flash.nipErrorMessage= message(code: 'GetCalculatorCommand.nip.validator.invalid');
                     return error();
                 }
@@ -490,38 +491,22 @@ class ActivityController {
                 lastProcess?.discard() // drop it from session
 
                 /** pobieranie danych o kalkulatorze */
-                if (ActivityHelper.isCalculatorRedundant(processInstance)){
-                    conversation.calc = [:]
-                    flow.calcNumber = -1
-                    flash.calcInfoMessage = message(code:"calc.not.needed.info")
-                } else {
-                    def calcId = cbdService.findCalculatorIdByNip(client.nip)
+                try {
+                    List calculator = calculatorService.getCalculator(processInstance, client)
+                    long calculatorId = calculatorService.getCalculatorId(processInstance, client)
 
-                    if(!calcId){
-                        flash.calcErrorMessage = message(code:"calc.notFound.error")
-                        return error();
-                    }
-
-                    def calc = cbdService.findCalculatorByNip(client.nip)
-
-                    if(calc == []) {
-                        flash.calcErrorMessage = message(code:"calc.fetch.error")
-                        return error();
-                    }
-
-                    if(!calculatorService.isCalcValid(calc,calcId,processInstance)){
+                    if(!calculatorService.isCalcValid(calculator, calculatorId, processInstance)) {
                         flash.calcErrorMessage =  message(code:"calc.notEnough.error")
-                        return error();
-                    }
-
-                    if(processService.isCashbackActivityRequired(processInstance, calc)) {
-                        flash.calcErrorMessage = messgae(code: "cashback.activity.required")
                         return error()
                     }
 
-                    conversation.calc = calc
-                    flow.calcNumber =  calcId
-                    flash.calcInfoMessage = message(code:"calc.found.info")
+                    conversation.calc = calculator
+                    flow.calcNumber = calculatorId
+
+                    flash.calcInfoMessage = calculator.isEmpty() ? message(code:"calc.not.needed.info") : message(code:"calc.found.info")
+                } catch (CalculatorException e) {
+                    flash.calcErrorMessage = message(code: e.message)
+                    return error()
                 }
 
                 if(hasNowaUmowa) {
@@ -803,7 +788,7 @@ class ActivityController {
             action {
                 flow.nip = params.nip
 
-                if(NumberValidator.validateNip(flow.nip)){
+                if(!NumberValidator.validateNip(flow.nip)){
                     flash.nipErrorMessage= message(code: 'GetCalculatorCommand.nip.validator.invalid');
                     return error();
                 }
@@ -842,32 +827,24 @@ class ActivityController {
                 }
 
                 /** pobieranie danych o kalkulatorze */
-                if (ActivityHelper.isCalculatorRedundant(lastProcess)){
-                    conversation.calc = [:]
-                    flow.calcNumber = -1
-                    flash.calcInfoMessage = message(code:"calc.not.needed.info")
-                } else {
-                    def calcId = cbdService.findCalculatorIdByNip(client.nip)
+                try {
+                    Map calculator = calculatorService.getCalculator(lastProcess, client)
+                    long calculatorId = calculatorService.getCalculatorId(lastProcess, client)
 
-                    if(!calcId){
-                        flash.calcErrorMessage = message(code:"calc.notFound.error");
-                        log.info(message(code:"calc.notFound.error") + " - " + client.nip)
+                    if(!calculatorService.isCalcValid(calculator, calculatorId, lastProcess)) {
+                        flash.calcErrorMessage =  message(code:"calc.notEnough.error")
                         return error()
                     }
 
-                    def calc = cbdService.findCalculatorByNip(client.nip)
+                    conversation.calc = calculator
+                    flow.calcNumber = calculatorId
 
-                    log.info("pobrano kalkulator " + calcId)
-
-                    if(!calculatorService.isCalcValid(calc,calcId,lastProcess)){
-                        flash.calcErrorMessage = message(code:"calc.notEnough.error")
-                        return error()
-                    }
-
-                    conversation.calc = calc
-                    flow.calcNumber =  calcId;
-                    flash.calcInfoMessage = message(code:"calc.found.info")
+                    flash.calcInfoMessage = calculator.isEmpty() ? message(code:"calc.not.needed.info") : message(code:"calc.found.info")
+                } catch (CalculatorException e) {
+                    flash.calcErrorMessage = message(code: e.message)
+                    return error()
                 }
+
                 lastProcess?.discard() // drop it from session
 
                 flow.savedProcess = lastProcess
@@ -1112,7 +1089,7 @@ class ActivityController {
             action {
                 flow.nip = params.nip;
 
-                if(NumberValidator.validateNip(params.nip)){
+                if(!NumberValidator.validateNip(params.nip)){
                     flash.nipErrorMessage= message(code: 'GetCalculatorCommand.nip.validator.invalid');
                     return error();
                 }
@@ -1199,7 +1176,7 @@ class ActivityController {
             action {
                 flow.nip = params.nip
 
-                if(NumberValidator.validateNip(params.nip)) {
+                if(!NumberValidator.validateNip(params.nip)) {
                     flash.nipErrorMessage= message(code: 'GetCalculatorCommand.nip.validator.invalid');
                     return error();
                 }

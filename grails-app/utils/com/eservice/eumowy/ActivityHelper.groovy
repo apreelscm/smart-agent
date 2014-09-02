@@ -1,25 +1,23 @@
 package com.eservice.eumowy
 
-import com.eservice.eumowy.Process
-
 class ActivityHelper {
     static boolean isNewAgreement(Process process) {
-        return containsActivity(process, "nowaUmowa")
+        return contains(process, "nowaUmowa")
     }
 
     static boolean hasOnlyConcreteActivity(Process process, String activityName) {
-        return containsActivity(process, activityName) && process.activities.size() == 1
+        return contains(process, activityName) && process.activities.size() == 1
     }
 
-    static boolean containsActivity(Process process, String activityCode) {
+    static boolean contains(Process process, String activityCode) {
         return process.activities?.any{it.code.equals(activityCode)}
     }
 
-    static boolean containsActivities(Process process, List<String> activities) {
+    static boolean contains(Process process, List<String> activities) {
         boolean hasAllActivities = true
 
         for(String activityCode : activities) {
-            if(!containsActivity(process, activityCode)) {
+            if(!contains(process, activityCode)) {
                 hasAllActivities = false
                 break
             }
@@ -28,8 +26,26 @@ class ActivityHelper {
         return hasAllActivities
     }
 
+    static boolean hasAtLeastOne(Process process, List<String> activities) {
+        boolean hasAtLeastOneActivity = false
+
+        for(String activity : activities) {
+            if(contains(process, activity)) {
+                hasAtLeastOneActivity = true
+                break
+            }
+        }
+
+        return hasAtLeastOneActivity
+    }
+
+    static boolean hasCombination(Process process, List<String> requiredActivities, List<String> optionalActivities) {
+               return hasAtLeastOne(process, requiredActivities) && hasAtLeastOne(process, optionalActivities)
+    }
+
     static boolean isCalculatorRedundant(Process process) {
-        List<String> activitiesWithoutCalculator = ["wymianaTerminala", "pakietStart", "pakietStartPlus", "pakietMobilny"]
+        List<String> activitiesWithoutCalculator = ["wymianaTerminala", "pakietStart", "pakietStartPlus",
+                "pakietMobilny", "dodatkowyPunkt", "dodatkowyPos"]
 
         return activitiesWithoutCalculator.any{hasOnlyConcreteActivity(process, it)}
     }

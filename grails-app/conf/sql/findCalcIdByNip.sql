@@ -1,1 +1,1 @@
-Select max(kak_id) as kak_id from CBD_ADM.cbt_kalk where kak_nip=:nip and kak_status='Zaakceptowany'
+select eumowy.eum_kalk.GETKAKID (:nip) as kak_id from dual

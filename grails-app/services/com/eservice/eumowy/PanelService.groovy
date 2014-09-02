@@ -18,9 +18,9 @@ class PanelService {
         cmd.isDoladowania_tk = calculatorService.getCalcProperty(calc,"CZY_TELEKODZIK")
         cmd.doladowania_tp = nullify(cmd.doladowania_tp)
         cmd.doladowania_tk = nullify(cmd.doladowania_tk)
-        cmd.isRozszerzenie = ActivityHelper.containsActivity(cmd.process, 'dodatkowyPunkt') || ActivityHelper.containsActivity(cmd.process, 'dodatkowyPos')
+        cmd.isRozszerzenie = ActivityHelper.contains(cmd.process, 'dodatkowyPunkt') || ActivityHelper.contains(cmd.process, 'dodatkowyPos')
         cmd.hasPrepaid = cbdService.getPrepaidEvoucher(cmd.nip) || cbdService.getPrepaidTopup(cmd.nip)
-        cmd.hasDodaniePrepaid = ActivityHelper.containsActivity(cmd.process, 'dodaniePrepaid')
+        cmd.hasDodaniePrepaid = ActivityHelper.contains(cmd.process, 'dodaniePrepaid')
         cmd.hasNewUmowaAndPrepaid = ActivityHelper.isNewAgreement(cmd.process) && cmd.hasDodaniePrepaid
         cmd.isBundleActivity = ActivityHelper.isBundleActivity(cmd.process)
         cmd.promObjNaj1 = calculatorService.getCalcProperty(calc,"E_PROM_OBN_NAJ_1")
