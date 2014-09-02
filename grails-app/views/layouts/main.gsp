@@ -55,7 +55,7 @@
 
         <footer class="rel" id="stopka">
             <g:meta name="app.name"/>
-            <g:meta name="app.grails.version"/>
+            <g:meta name="app.version"/> -
             ENV: ${grails.util.Environment.current?.name}
         </footer>
 
