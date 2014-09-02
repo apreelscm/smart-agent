@@ -492,7 +492,7 @@ class ActivityController {
 
                 /** pobieranie danych o kalkulatorze */
                 try {
-                    List calculator = calculatorService.getCalculator(processInstance, client)
+                    def calculator = calculatorService.getCalculator(processInstance, client)
                     long calculatorId = calculatorService.getCalculatorId(processInstance, client)
 
                     if(!calculatorService.isCalcValid(calculator, calculatorId, processInstance)) {
@@ -828,7 +828,7 @@ class ActivityController {
 
                 /** pobieranie danych o kalkulatorze */
                 try {
-                    Map calculator = calculatorService.getCalculator(lastProcess, client)
+                    def calculator = calculatorService.getCalculator(lastProcess, client)
                     long calculatorId = calculatorService.getCalculatorId(lastProcess, client)
 
                     if(!calculatorService.isCalcValid(calculator, calculatorId, lastProcess)) {

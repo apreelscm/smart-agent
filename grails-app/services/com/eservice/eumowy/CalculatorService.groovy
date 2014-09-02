@@ -67,10 +67,10 @@ class CalculatorService implements Serializable {
         calc?.findResult{ (it.POLEAPREEL == key && !(it.WARTOSCAPREEL in [BRAK_LABEL,FALSE_LABEL])  ) ? it.WARTOSCAPREEL : null }
     }
 
-    List getCalculator(Process process, Client client) {
+    def getCalculator(Process process, Client client) {
         if(ActivityHelper.isCalculatorRedundant(process)) return [:]
 
-        List calc = cbdService.findCalculatorByNip(client.nip)
+        def calc = cbdService.findCalculatorByNip(client.nip)
 
         if(calc.isEmpty()) {
             throw new CalculatorException("calc.fetch.error")

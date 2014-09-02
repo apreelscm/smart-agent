@@ -817,7 +817,7 @@ class ProcessService {
             pe.setName(row.get("nazwa_punktu").toString())
             pe.setAddress(row.get("adres_posadowienia").toString())
             pe.setModel(row.get("rodzaj_terminala"))
-            pe.setCurrentPrice(row.get("oplata_za_pos").toString().toBigDecimal())
+            pe.setCurrentPrice(row.get("oplata_za_pos")?.toString()?.toBigDecimal())
             pe.setNewType("")
             pe.setNewModel("")
             pe.setSimType("")
