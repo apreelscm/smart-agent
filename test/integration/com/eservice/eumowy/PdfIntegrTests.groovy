@@ -14,6 +14,7 @@ import org.apache.pdfbox.pdmodel.PDDocument
 import grails.test.mixin.*
 import org.junit.Before
 import org.junit.Test
+import pdfgenerator.PdfGenerator
 
 import static com.eservice.eumowy.PdfTestDataBuilder.*
 
@@ -1889,7 +1890,7 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
     }
 
     void process(templateName, outName, data){
-        byte[] pdf = service.fillPdfFormFromURI(PdfHelper.getTemplatePath()+templateName, data, PdfService.FontType.ARIAL)
+        byte[] pdf = service.fillPdfFormFromURI(PdfHelper.getTemplatePath()+templateName, data, PdfGenerator.FontType.ARIAL)
 
         assert pdf != null
 

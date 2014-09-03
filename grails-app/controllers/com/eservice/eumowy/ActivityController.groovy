@@ -239,10 +239,8 @@ class ActivityController {
                 }
 
                 if (!flow.skipDocumentGeneration && !flow.isUzupelnijPodpisy) {
-                    Map processWithPages = pdfService.workWithDocuments(processInstance, conversation.calc)
-                    flow.totalPagesCount = processWithPages.totalPagesCount
-                    processInstance = processWithPages.processInstance
-                    processInstance.save(flush: true)
+                    Set<DocumentFile> documents = documentService.getSavedDocumentsInProcess(processInstance, conversation.calc)
+                    flow.totalPagesCount = documentService.getDocumentsPageCount(documents)
                 }
                 flow.skipDocumentGeneration = false
                 flow.processInstance = processInstance

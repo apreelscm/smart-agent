@@ -1,9 +1,12 @@
 package com.eservice.eumowy
 
+import com.eservice.eumowy.pdfmapper.FacilitiesMapper
+import com.eservice.eumowy.pdfmapper.PABRformMapper
 import com.eservice.eumowy.pdfmapper.PdfPointMapper
 import com.eservice.eumowy.pdfmapper.PdfPosExchangeMapper
 import com.eservice.eumowy.pdfmapper.PdfPosMapper
 import com.eservice.eumowy.pdfmapper.PdfProcessMapper
+import com.eservice.eumowy.pdfmapper.representative.RepresentativesNamesMapper
 
 class MapperService {
 
@@ -17,10 +20,21 @@ class MapperService {
         data
     }
 
-    def mapOnlyProcessData(def processInstance, def calc){
+    def mapOnlyProcessData(Process processInstance, def calc){
         PdfProcessMapper processMapper = new PdfProcessMapper(calculatorService, calc, new PdfPointMapper(), new PdfPosMapper())
         def data = [:]
+
         data.putAll(processMapper.mapOnlyProcessData(processInstance))
+
+        if(ActivityHelper.isNewAgreement(processInstance)) {
+            data.putAll(new PABRformMapper(processInstance).getDataForMapping())
+        }
+
+        if(ActivityHelper.isBundleActivity(processInstance)) {
+            data.putAll(new RepresentativesNamesMapper(processInstance).getDataForMapping())
+            data.putAll(new FacilitiesMapper(processInstance).getDataForMapping())
+        }
+
         data
     }
 

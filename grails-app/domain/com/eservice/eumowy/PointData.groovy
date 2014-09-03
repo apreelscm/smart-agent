@@ -91,8 +91,14 @@ class PointData implements Serializable {
 		log.info("Aktualizacja punktu [id:${id}]")
 	}
 	
-	def isLocal() {
+	boolean isLocal() {
 		return czyLokalny == true || (czyLokalny == null && cbdId == null && pointDetails != null && StringUtils.isNotEmpty(pointDetails.phPozysk) && StringUtils.isNotEmpty(pointDetails.opiekaBiznesowa))
 	}
+
+    boolean hasLocalPoses() {
+        List<PosData> localPoses = posDatas?.findAll{ pos -> pos?.isLocal()}
+
+        return localPoses ? localPoses.size() > 0 : false
+    }
 	
 }

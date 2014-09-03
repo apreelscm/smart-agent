@@ -19,6 +19,19 @@ import java.util.Map;
 
 public class PdfGenerator {
 	private static Logger LOG = Logger.getLogger(PdfGenerator.class);
+
+    public static enum FontType {
+        HELVETICA(""),
+        ARIAL("arial.ttf"),
+        ARIALBOLD("arialbd.ttf"),
+        TIMES_NEW_ROMAN_PSMT("TimesNewRomanPSMT.ttf");
+
+        public String field;
+
+        FontType(final String field){
+            this.field = field;
+        }
+    }
 	
 	public static byte[] addImageToPdfContent(String templatePath, byte[] content, Map<String, Object[]> imageMap) {
 		
@@ -78,8 +91,8 @@ public class PdfGenerator {
 		return baos.toByteArray();
 	}
 
-	public static byte[] generatePdfContentFromURI(String urlTemplatePath, Map<String,String[]> dataMap, PdfService.FontType fontType, String fPath) {
-        Map<String,PdfService.FontType> fontsPathMap = new HashMap<String, PdfService.FontType>();
+	public static byte[] generatePdfContentFromURI(String urlTemplatePath, Map<String,String[]> dataMap, FontType fontType, String fPath) {
+        Map<String, FontType> fontsPathMap = new HashMap<String, FontType>();
 		if (fontType != null && dataMap != null){
 			for (Map.Entry<String, String[]> dataEntry : dataMap.entrySet()){
 				fontsPathMap.put(dataEntry.getKey(), fontType);
@@ -88,7 +101,7 @@ public class PdfGenerator {
 		return generatePdfContentFromURI(urlTemplatePath,dataMap,fontsPathMap, fPath);
 	}
 
-	private static byte[] generatePdfContentFromURI(String urlTemplatePath, Map<String,String[]> dataMap, Map<String,PdfService.FontType> fontsPathMap, String fPath) {
+	private static byte[] generatePdfContentFromURI(String urlTemplatePath, Map<String,String[]> dataMap, Map<String, FontType> fontsPathMap, String fPath) {
         if (urlTemplatePath == null){
 			throw new IllegalArgumentException("urlTemplatePath param shouldn't be null");
 		}
@@ -118,7 +131,7 @@ public class PdfGenerator {
 
                 if (fontsPathMap != null && fontsPathMap.containsKey(dataEntry.getKey())){
 					BaseFont bf = null;
-                    PdfService.FontType fontType = fontsPathMap.get(dataEntry.getKey());
+                    FontType fontType = fontsPathMap.get(dataEntry.getKey());
 
                     switch(fontType){
                         case HELVETICA:
@@ -126,7 +139,6 @@ public class PdfGenerator {
                             break;
                         case ARIAL:
                         case ARIALBOLD:
-//                            LOG.info("Searching font: " + fontType.field + " in: " + fPath+File.separator+fontType.field);
                             bf = BaseFont.createFont(fPath+File.separator+fontType.field, BaseFont.CP1250, BaseFont.EMBEDDED);
                             break;
                         case TIMES_NEW_ROMAN_PSMT:
@@ -182,14 +194,6 @@ public class PdfGenerator {
 				}
 
 			}
-
-            //konieczne jest zahashowanie tych dwoch opcji, gdy sa odhashowane nie ma mozliwosci
-            //ponownej edycji dokumentu (usuniecie pola 'dataUmowy' i jego pochodnych
-
-            // przed wyslaniem dokumentow do klienta trzeba wywolac metode: closeDocumentContent, ktora zamknie dokumenty
-
-			//stamp.setFormFlattening( true );
-			//stamp.getReader().removeAnnotations();
             stamp.getReader().removeUnusedObjects();
 			stamp.setFullCompression();
 
@@ -219,7 +223,7 @@ public class PdfGenerator {
             stopWatch.stop("generatePdfContentFromURI");
 
         }
-//			document.close();
+
 		return baos.toByteArray();
     }
 
