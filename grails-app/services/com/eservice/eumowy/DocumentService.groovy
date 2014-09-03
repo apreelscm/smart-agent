@@ -2,6 +2,7 @@ package com.eservice.eumowy
 
 import com.eservice.eumowy.enums.AcceptorLocation
 import com.eservice.eumowy.pdfmapper.PEPdeclarationMapper
+import com.google.common.collect.Lists
 import com.lowagie.text.pdf.PdfReader
 import pdfgenerator.PdfGenerator
 import pdfgenerator.PdfGenerator.FontType
@@ -36,7 +37,8 @@ class DocumentService {
         Set<DocumentFile> documents = []
         Map dataFromProcess = mapperService.mapOnlyProcessData(processInstance, calc)
 
-//        Signature rentReductionSignature = processInstance.signatures.find{ sig -> sig.hasPurpose(SignatureDetail.SignaturePurpose.RENT_REDUCTION)}
+        Set<DocumentFile> rentReductionDocuments = getRentReductionDocuments(processInstance, dataFromProcess)
+        documents.addAll(rentReductionDocuments)
 
         Set<DocumentFile> documentsWithoutPurpose = getDocumentsWithoutPurpose(processInstance, dataFromProcess)
         documents.addAll(documentsWithoutPurpose)
@@ -55,6 +57,30 @@ class DocumentService {
         removeObsoleteDocuments(processInstance)
 
         processInstance.save(flush: true)
+
+        return documents
+    }
+
+    private Set<DocumentFile> getRentReductionDocuments(Process processInstance, Map dataFromProcess) {
+        Signature rentReductionSignature = processInstance.signatures.find{ sig -> sig.hasPurpose(SignatureDetail.SignaturePurpose.RENT_REDUCTION)}
+        Set<DocumentFile> documents = []
+
+        if(!rentReductionSignature) return documents
+
+        List chosenPoses = []
+        processInstance.points.each{ PointData point ->
+            chosenPoses.addAll(point?.posDatas.findAll {pos -> pos && pos?.czyWybrany})
+        }
+
+        if(chosenPoses.size() > 10) {
+            log.info(String.format("Pos exchange count is larger than 10 for process %s", processInstance.id))
+        }
+
+        Lists.partition(chosenPoses, 10).each { List<PosData> poses ->
+            Map posData = mapperService.mapPosExchangeData(poses)
+            posData.putAll(dataFromProcess)
+            documents.add(getDocumentFile(processInstance, rentReductionSignature, posData))
+        }
 
         return documents
     }

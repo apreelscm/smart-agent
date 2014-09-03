@@ -56,13 +56,6 @@ class PdfProcessMapper extends AbstractPdfMapper{
             //APUNTSZAPOU3
             dataMap.putAll(pointMapper.mapPointsSpecial(points.findAll{ point -> point?.czyWybranyAkceptacjaKart}, ["nazwa":"punktTN", "miejscowosc":"adresTN", "systemKasowy":"integracjaTN", "uta":"utaTN"]));
 
-            //APUNTSZAPOO3
-            def poses = []
-            points.each{ p ->
-                poses.addAll(p?.posDatas.findAll {pos -> pos != null && pos?.czyWybrany})
-            }
-            dataMap.putAll(posMapper.mapPosSpecial(poses))
-
 
     //----- sumowanie oplat z posow i hire payments - start
             def normalResult = posMapper.mapPosesNotFromCBD(findPosesNotFromCbd(points))

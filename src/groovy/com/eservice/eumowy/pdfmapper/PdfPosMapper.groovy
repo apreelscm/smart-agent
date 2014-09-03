@@ -1,40 +1,13 @@
 package com.eservice.eumowy.pdfmapper
 
+import com.eservice.eumowy.PosData
 import com.eservice.eumowy.util.DateUtils
 
 class PdfPosMapper extends AbstractPdfMapper{
 
-    private static EXCLUDE_FROM_POS = ["class", "cbdId", "process", "point", "errors", "constraints", "empty", ""]
     private static EXCLUDE_FROM_POS_DETAILS = ["class", "cbdId", "process", "point", "errors", "constraints", "empty", "dialupTyp", "dialupCena", "vpnTyp", "vpnCena", "sslTyp", "sslCena", "wifiTyp", "wifiCena", "gprsCena"]
 
 	public static final ZERO_VALUES = ["", "0"]
-
-    public def mapPosSpecial(def poses) {
-        LOG.info('Zaczynam Mapowac!!!!')
-
-        def suffixes = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
-
-        def newPoses = [];
-        if (poses.size()>suffixes.size()){
-            LOG.info('To much poses - ' + poses.size() + '. Trimming to: ' + suffixes.size());
-            newPoses.addAll(poses.subList(0, suffixes.size()))
-        } else {
-            newPoses.addAll(poses)
-        }
-
-        def data = [:];
-        if (newPoses.size()>0){
-            data.put("dataPoczatkuUzywaniaPOZ", [DateUtils.getFormattedDate(newPoses[0].dataOd, DateUtils.DD_MM_YYYY)] as String[])
-            data.put("dataKoncaUzywaniaPOZ", [DateUtils.getFormattedDate(newPoses[0].dataDo, DateUtils.DD_MM_YYYY)] as String[])
-
-            newPoses.eachWithIndex{ pos, i ->
-                data.put("numerPOS"+suffixes[i], [pos.numerZestawuPos] as String[])
-                data.put("oplataPOS"+suffixes[i], [pos.wysokoscOplaty] as String[])
-            }
-        }
-        LOG.info('Koncze Mapowac!!!!')
-        return data
-    }
 
     public Map mapPosesNotFromCBD(def poses){
         Map result = new TreeMap<Integer, BigDecimal>()
@@ -58,10 +31,7 @@ class PdfPosMapper extends AbstractPdfMapper{
     public def mapPosesDataToPDFData(def posesData) {
         def data = [:]
         posesData?.each { pos ->
-			if (pos == null)
-				return
-            //gdy bedzie potrzeba pobrania danych bezposrednio z POS, trzeba odhashowac ponizsza linijke
-            //mapperClosure(pos.properties, data, "Pos", EXCLUDE_FROM_POS, pos);
+			if (!pos) return
             mapperClosure(pos.posDetails?.properties, data, "PosDataDetails", EXCLUDE_FROM_POS_DETAILS, pos);
         }
         data

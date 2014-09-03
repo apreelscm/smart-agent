@@ -49,11 +49,10 @@ grails.project.dependency.resolution = {
         compile 'org.springframework.ws:spring-xml:2.2.0.RELEASE'
 
         runtime 'com.google.code.gson:gson:2.2.4'
-//		runtime 'org.apache.pdfbox:pdfbox:1.8.2'
-//        runtime 'org.apache.pdfbox:pdfbox:2.0.0-SNAPSHOT'
         runtime 'joda-time:joda-time:2.3'
         runtime 'com.lowagie:itext:2.1.7'
         runtime 'org.apache.poi:poi:3.10-FINAL'
+        runtime 'com.google.guava:guava:18.0'
 
         test 'org.mockito:mockito-all:1.9.5'
         test 'org.powermock:powermock-core:1.5.5'
