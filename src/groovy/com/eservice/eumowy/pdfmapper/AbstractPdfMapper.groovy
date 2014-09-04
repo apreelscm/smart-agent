@@ -3,13 +3,6 @@ package com.eservice.eumowy.pdfmapper
 import com.eservice.eumowy.util.DateUtils
 import org.apache.log4j.Logger
 
-/**
- * Created with IntelliJ IDEA.
- * User: user
- * Date: 14.10.13
- * Time: 16:21
- * To change this template use File | Settings | File Templates.
- */
 public abstract class AbstractPdfMapper {
 
     static Logger LOG = Logger.getLogger(AbstractPdfMapper.class)
@@ -33,12 +26,30 @@ public abstract class AbstractPdfMapper {
         }
     }
 
+    String[] getCheckboxData(Boolean checkCondition) {
+        return [!checkCondition, "", "checkbox"] as String[]
+    }
+
     def addCheckbox(def data, def pdfName, def fieldValue, def value){
         data.put(pdfName, [fieldValue.equals(value), "", "checkbox"] as String[])
     }
 
+
     def addDateField(def data, def key, def value){
         data.put(key, [value?.trim()?DateUtils.getFormattedDate(DateUtils.parseWithTimezone(value), DateUtils.YYYY_MM_DD):""] as String[])
+    }
+
+    void addSeparatedDateFields(Map data, String formattedDate, String prefix) {
+        if (formattedDate != null && !"".equals(formattedDate)) {
+            def pattern = ~/\d{4}-\d{2}-\d{2}/
+
+            if (pattern.matcher(formattedDate).matches()) {
+                final String[] split = formattedDate.split("-")
+                data.put(prefix + "1", [split[2]] as String[]);
+                data.put(prefix + "2", [split[1]] as String[]);
+                data.put(prefix + "3", [split[0]] as String[]);
+            }
+        }
     }
 
     def addCheckboxes(def data, def pdfKeyValue, def value){

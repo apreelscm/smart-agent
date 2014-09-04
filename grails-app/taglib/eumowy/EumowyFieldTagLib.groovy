@@ -6,25 +6,28 @@ class EumowyFieldTagLib {
 
 
     Closure textField = { attrs ->
+        out << createErrorTag(g.textField(attrs), attrs)
+    }
 
+    Closure select = { attrs ->
+        out << createErrorTag(g.select(attrs), attrs)
+    }
+
+    private String createErrorTag(def tag, def attrs) {
         if (!attrs.containsKey('name')) {
-            throwTagError("Tag [textArea] is missing required attribute [name]")
+            throwTagError("Tag is missing required attribute name")
         }
 
         StringBuilder sb = new StringBuilder()
 
-        //def style = attrs.remove("style")
-        //sb.append("""<div ${style?' style=\"'+ style+'\"':''}">""");
-
         def validateField = attrs.remove("validateField") ?: attrs.name
         attrs.class = attrs.class + " " + hasErrors(bean:attrs.validatable,field:validateField,'error')
 
+        if (attrs.class?.indexOf("error") != -1) {
+            sb.append("<div class=\"error-wrapper\">")
+        }
 
-		if (attrs.class?.indexOf("error") != -1) {
-			sb.append("<div style=\"padding-right: 2em; display: inline;\">")
-		}
-        //attrs.style = "width:100%"
-        sb.append(g.textField(attrs))
+        sb.append(tag)
 
         def cmd = attrs.remove("validatable")
         if(cmd){
@@ -34,14 +37,15 @@ class EumowyFieldTagLib {
                 def message = attrs.errorMessage ?: message(error:cmd.errors.getFieldError(validateField));
                 def icon = asset.assetPath(src: "skin/exclamation.png")
 
-                def imgBody = """<img src="${icon}" class="errorNotification" data-message="${message}" style="cursor:pointer; position:absolute; margin:2px;"/>"""
+                def imgBody = """<img src="${icon}" class="errorNotification" data-message="${message}"/>"""
                 sb.append(imgBody)
             }
         }
-		if (attrs.class?.indexOf("error") != -1) {
-			sb.append("""</div>""")
-		}
-        out << sb.toString()
+        if (attrs.class?.indexOf("error") != -1) {
+            sb.append("""</div>""")
+        }
+
+        return sb.toString()
     }
 
     Closure flatPriceField = { attrs ->
@@ -73,6 +77,23 @@ class EumowyFieldTagLib {
         attrs.step="any"
 
         fieldImpl(out, attrs)
+    }
+
+    Closure enumRadioGroup = { attrs, body ->
+        if(!attrs.values || !attrs.name) {
+            throwTagError("Attributes 'values' and 'name' are required!")
+        }
+
+        createField(attrs, body, "/common/tags/enumRadioGroup")
+    }
+
+    private def createField(attrs, body, template) {
+        Map props = [:]
+
+        props.template = template
+        props.model = attrs
+
+        out << render(props, body)
     }
 
 

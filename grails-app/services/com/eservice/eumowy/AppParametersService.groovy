@@ -7,19 +7,46 @@ class AppParametersService {
 	def grailsApplication
 	def grailsLinkGenerator
 
-	def getPdfTemplatePath(String fileName) {
-		String basePath = grailsApplication.config.appParametersPaths?.get("pdfTemplates")
-		String path = basePath ? Paths.get(basePath, fileName).normalize().toAbsolutePath().toString() : null
-		createDirectoryIfNotExists(basePath)
-		return path
+	String getPdfTemplatePath(String fileName) {
+        return getPath("pdfTemplates", fileName)
 	}
 
-	def getPdfPreviewPath(String fileName) {
-		String basePath = grailsApplication.config.appParametersPaths?.get("pdfPreviews")
-		String path = basePath ? Paths.get(basePath, fileName).normalize().toAbsolutePath().toString() : null
-		createDirectoryIfNotExists(basePath)
-		return path
+	String getPdfPreviewPath(String fileName) {
+        return getPath("pdfPreviews", fileName)
 	}
+
+    String getPdfImagePath(String fileName) {
+        return getPath("pdfImages", fileName)
+    }
+
+    String getFontUri() {
+        return getPath("pdfTemplates", "fonts")
+    }
+
+    String getSubscriptionsPath() {
+        return getPath("pdfTemplates", "subscriptions")
+    }
+
+    String getBeneficiaryPath(String filename) {
+        return getPath("beneficiary", filename, false)
+    }
+
+    private String getPath(String parameterName, String filename) {
+        getPath(parameterName, filename, true)
+    }
+
+    private String getPath(String parameterName, String filename, Boolean createDirectories) {
+        String basePath = grailsApplication.config.appParametersPaths?.get(parameterName)
+        String path = basePath ? Paths.get(basePath, filename).normalize().toAbsolutePath().toString() : null
+        if(createDirectories) {
+            createDirectoryIfNotExists(path)
+        }
+        return path
+    }
+
+    def getPdfImageUri(String fileName) {
+        return grailsLinkGenerator.link(controller: 'file', action: 'get', absolute: false, params: [root: "pdfImages", path: fileName])
+    }
 
     def getPdfPreviewPath() {
         return grailsApplication.config.appParametersPaths?.get("pdfPreviews")
@@ -40,37 +67,6 @@ class AppParametersService {
 		
 		return threadCount
 	}
-
-	def getPdfImagePath(String fileName) {
-		String basePath = grailsApplication.config.appParametersPaths?.get("pdfImages")
-		String path = basePath ? Paths.get(basePath, fileName).normalize().toAbsolutePath().toString() : null
-		createDirectoryIfNotExists(basePath)
-		return path
-	}
-
-	def getPdfImageUri(String fileName) {
-		return grailsLinkGenerator.link(controller: 'file', action: 'get', absolute: false, params: [root: "pdfImages", path: fileName])
-	}
-
-	def getFontUri() {
-		String basePath = grailsApplication.config.appParametersPaths?.get("pdfTemplates")
-		String path = basePath ? Paths.get(basePath, "fonts").normalize().toAbsolutePath().toString() : null
-		createDirectoryIfNotExists(path)
-		return path
-	}
-
-	def getSubscriptionsPath() {
-		String basePath = grailsApplication.config.appParametersPaths?.get("pdfTemplates")
-		String path = basePath ? Paths.get(basePath, "subscriptions").normalize().toAbsolutePath().toString() : null
-		createDirectoryIfNotExists(path)
-		return path
-	}
-
-    def getMobileAppPath() {
-        String basePath = grailsApplication.config.appParametersPaths?.get("mobileAppPath")
-        String path = basePath ? Paths.get(basePath, "subscriptions").normalize().toAbsolutePath().toString() : null
-        return path
-    }
 
     def getAgeToRemove(){
         //in hours

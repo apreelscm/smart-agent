@@ -44,7 +44,7 @@ class EmailServiceTests extends GroovyTestCase {
 
     @Test
     void testSendDocumentsAccepted() {
-        Assert.assertTrue(emailService.sendDocumentsAccepted(RECIPIENT, [], MERCHANT_NAME))
+        Assert.assertTrue(emailService.sendProcessAcceptedMails(RECIPIENT, [], MERCHANT_NAME))
     }
 
     @Test

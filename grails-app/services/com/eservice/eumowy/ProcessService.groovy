@@ -9,6 +9,7 @@ import com.eservice.eumowy.util.DateUtils
 import com.eservice.eumowy.util.EumowyCustomEnvironment
 import grails.util.Environment
 import groovy.sql.GroovyRowResult
+import org.apache.commons.lang.StringUtils
 import org.apache.commons.lang.WordUtils
 import org.codehaus.groovy.grails.web.binding.DataBindingUtils
 import serializationutils.SerializationUtils
@@ -20,7 +21,6 @@ class ProcessService {
     def cbdService
     def panelMockService
     def calculatorService
-    def bisnodeService
 
     void invalidateCaches() {
         cbdService.invalidateCaches()
@@ -72,14 +72,6 @@ class ProcessService {
         return value?.toString()?.isNumber()
     }
 
-    /**
-     * sprawdzanie, czy w eUmowy istnieje dla danego Akceptanta niezakończony Proces
-     **/
-
-/*    def isProcessWithStatus(Client client, def statusList) {
-        return client.id != null && Process.findByClientAndStatusInList(client, statusList)
-    }*/
-
     def getLastProcessWhenInStatus(def nip, def statusList) {
         sessionFactory.currentSession.clear()
         def crit = Process.createCriteria()
@@ -121,6 +113,10 @@ class ProcessService {
         result ?: new Process(result)
     }
 
+    Boolean hasNowaUmowa(Process process) {
+        return isProcessHasActivity(process, "nowaUmowa")
+    }
+
     Boolean isProcessHasActivity(Process process, String activityCode) {
         return containsActivity(process.activities, activityCode)
     }
@@ -155,11 +151,9 @@ class ProcessService {
 						point.save()
 						apc.cbdId = null
 					}
-					//point.delete(flush: true)
 				}
 			}
 		}
-      //  process.save(flush:true)
 		cmd.allPoints?.removeAll { it.cbdId == -1 }
 
         cmd.hirePaymentsCurrent?.addAll(getHirePaymentCurrentCommandList(cmd))
@@ -174,7 +168,7 @@ class ProcessService {
 		cmd
 	}
 
-    def getSavedProcessCommand(def process, def calcId, def calc, def newProcess){
+    def getSavedProcessCommand(Process process, def calcId, def calc, def newProcess){
         log.info("getSavedProcessCommand processId = ${process.id}")
         ProcessCommand cmd = initProcessCommand(process, calcId)
         loadProcessData(process,cmd)
@@ -182,10 +176,14 @@ class ProcessService {
         cmd.poses?.clear()
         cmd.allPoints?.clear()
         cmd.allPoses?.clear()
+        cmd.representatives?.clear()
+        cmd.beneficiaries?.clear()
         cmd.points?.addAll(getLocalPointsToPointCommandList(process))
         cmd.poses?.addAll(getLocalPosesToPointCommandList(process))
         cmd.allPoints?.addAll(getPointsToAllPointsCommandList(process, cmd))
         cmd.allPoses?.addAll(getPosesToAllPosCommandList(process, cmd, calc))
+        cmd.representatives?.addAll(getRepresentativesCommand(process, Representative.Type.REPRESENTATIVE))
+        cmd.beneficiaries?.addAll(getRepresentativesCommand(process, Representative.Type.BENEFICIARY))
         cmd.hirePaymentsByPoint?.clear()
         cmd.hirePaymentsByPos?.clear()
         cmd.hirePaymentsCurrent.clear()
@@ -247,6 +245,38 @@ class ProcessService {
 		//prepareAllPosCommands(cmd.allPoses, calc)
 		
 		cmd
+    }
+
+    List<RepresentativeCommand> getRepresentativesCommand(Process process, Representative.Type type) {
+        List<Representative> representatives = process.representatives?.findAll {type.equals(it.typ)}.sort {it.id}
+        Map representativeProperties
+
+        List<RepresentativeCommand> result = []
+        representatives.each {
+            representativeProperties = [:]
+            representativeProperties.putAll(it.properties)
+            representativeProperties.put("id", it.id)
+
+            representativeProperties.remove("typ")
+            representativeProperties.remove("fullName")
+            representativeProperties.remove("representative")
+            representativeProperties.remove("beneficiary")
+
+            if(Representative.Type.REPRESENTATIVE.equals(type)) {
+                representativeProperties.remove("posiadaAkceptanta")
+                representativeProperties.remove("kontrolujeAkceptanta")
+                representativeProperties.remove("znaczaceUdzialy")
+                representativeProperties.remove("procentUdzialow")
+
+                result.add(new RepresentativeCommand(representativeProperties))
+            } else {
+                result.add(new BeneficiaryCommand(representativeProperties))
+            }
+
+            representativeProperties = null
+        }
+
+        return result
     }
 
     List<PosExchangeCommand> mergePosExchanges(Process processInstance, List<PosExchangeCommand> fromCbd, List<PosExchangeCommand> fromEumowy) {
@@ -320,24 +350,14 @@ class ProcessService {
         process.phEmail = user.email
     }
 
-    def getRepresentative1(Process process) {
-        Map representative = [name: process?.processData?.find { pd -> pd.name == "reprezentant1Imie" }?.value, surname: process?.processData?.find { pd -> pd.name == "reprezentant1Nazwisko" }?.value]
+    Map getRepresentative(Process process, Integer index) {
+        Representative representative = process.representatives.findAll{Representative.Type.REPRESENTATIVE.equals(it.typ)}[index]
 
-        if(representative.name && representative.surname) {
-            return representative
-        } else {
-            return null
+        if(representative) {
+            return [name: representative?.imie, surname: representative?.nazwisko]
         }
-    }
 
-    def getRepresentative2(Process process) {
-        Map representative = [name: process?.processData?.find { pd -> pd.name == "reprezentant2Imie" }?.value, surname: process?.processData?.find { pd -> pd.name == "reprezentant2Nazwisko" }?.value]
-
-        if(representative.name && representative.surname) {
-            return representative
-        } else {
-            return null
-        }
+        return null
     }
 
     /**
@@ -461,11 +481,6 @@ class ProcessService {
     def getLocalPointsToPointCommandList(def process) {
         def localPoints = []
         process.points.each { PointData point ->
-
-            /* Don't load points from CBD or points that were from CBD, but were removed and left in our DB - they have nulled CbdId but they lack point details */
-            /*if (point.cbdId != null || (point.cbdId == null && point.pointDetails == null)) {
-                return
-            }*/
 			if (!point || point.isLocal() == false)
 				return
 
@@ -730,9 +745,6 @@ class ProcessService {
             }
             hpc.setIsChoosen(false)
 
-            //gdy dojdzie PP trzeba zapisac te dane tutaj
-//            hpc.setPpCount()
-//            hpc.setCurrentPpPayment()
             hpcResult.add(hpc)
         }
         return hpcResult
@@ -763,10 +775,6 @@ class ProcessService {
                 hpc.setNewTermPayment(hirePayment.toString().toBigDecimal())
             }
             hpc.setIsChoosen(false)
-
-            //gdy dojdzie PP trzeba zapisac te dane tutaj
-//            hpc.setPpCount()
-//            hpc.setCurrentPpPayment()
 
             hpcResult.add(hpc)
         }
@@ -865,7 +873,6 @@ class ProcessService {
                     apc.czyCbd = true // Mark for update in local (eumowy) db
 					apc.nip = point.nip
 					cbdIdsToRemove.add(apc.cbdId)
-					//cbdPoints.remove(cbdPoints.findIndexOf { AllPointsCommand i -> i.cbdId == apc.cbdId })
                 }
                 else {
                     apc.cbdId = -1 // Mark the point for deletion from local (eumowy) db
@@ -947,9 +954,11 @@ class ProcessService {
 			process.addToPoints(point);
 		}
 
-        fillPaymentUsage(cmd, process);
+        fillPaymentUsage(cmd, process)
 
-        fillPosExchange(cmd, process);
+        fillPosExchange(cmd, process)
+
+        fillRepresentatives(cmd, process)
 
         process.notesToCoa = cmd.notes //notesToCOA
 
@@ -1045,6 +1054,44 @@ class ProcessService {
         }
         process
     };
+
+    private void fillRepresentatives(ProcessCommand processCommand, Process process) {
+        updateRepresentatives(process, processCommand.representatives, Representative.Type.REPRESENTATIVE)
+        updateRepresentatives(process, processCommand.beneficiaries, Representative.Type.BENEFICIARY)
+    }
+
+    private void updateRepresentatives(Process process, List<RepresentativeCommand> representatives, Representative.Type type) {
+        representatives.each { representativeCmd ->
+            Representative representative = Representative.findById(representativeCmd.properties.id)
+
+            if (representative && !representativeCmd.imie && !representativeCmd.nazwisko) {
+                log.info(String.format("Removing %s %s - empty name", type, representative.id))
+                process.removeFromRepresentatives(representative)
+            } else {
+                representative = saveRepresentative(type, representativeCmd, representative)
+                if (representative && !process.representatives?.contains(representative)) {
+                    process.addToRepresentatives(representative)
+                }
+            }
+        }
+    }
+
+    private Representative saveRepresentative(Representative.Type type, RepresentativeCommand representativeCmd, Representative representative) {
+        if(!representative && !representativeCmd.imie && !representativeCmd.nazwisko) {
+            log.info("Not saving representative - empty name and surname")
+            return null
+        }
+
+        if(!representative) {
+            representative = new Representative()
+            representative.typ = type
+        }
+
+        representativeCmd.properties.remove("id")
+        representative.properties = representativeCmd.properties
+
+        return representative.save(flush: true)
+    }
 
     private def addCurrentDate(def processDataList){
         processDataList.add(new ProcessData([name: 'dataUmowy', value: DateUtils.formatWithTimezone(DateUtils.getCurrentDate())]))
@@ -1198,20 +1245,6 @@ class ProcessService {
 					pdList.add(posDataNew)
 				}
 			}
-			
-			// Set telePomka and teleKodzik based on terminalIlosc
-			if (pc.terminalIlosc != null && pc.terminalIlosc > 0 && terminalCount > pointData.liczbaPos) {
-				for (int i = 0; i < pc.terminalIlosc && i < pdList.size; i++) {
-					pdList.get(i).posDetails?.telePompka = posData.posDetails?.telePompka
-					pdList.get(i).posDetails?.teleKodzik = posData.posDetails?.teleKodzik
-				}
-			}
-			else if (pc.terminalIlosc != null && pc.terminalIlosc > 0 && terminalCount == pointData.liczbaPos) {
-				for (int i = 0; i < pc.terminalIlosc && i < pointData.posDatas.size(); i++) {
-					pointData.posDatas?.get(i).posDetails?.telePompka = posData.posDetails?.telePompka
-					pointData.posDatas?.get(i).posDetails?.teleKodzik = posData.posDetails?.teleKodzik
-				}
-			}
 
             pointData.nip = pointDataDetails.nipPunktu
             pointData.nazwa = pointDataDetails.nazwaDoWydrukuZTerminalaPos
@@ -1225,7 +1258,7 @@ class ProcessService {
 				pointData.liczbaPos = pdList.size()
 			}
             pointData.save()
-            //if (isNew == true) {
+
             posData.setPosDetails(posDataDetails)
             posData.setPoint(pointData)
 
@@ -1236,7 +1269,6 @@ class ProcessService {
             pointDataDetails.setPoint(pointData)
             pointDataDetails.save()
             posData.save()
-            //}
 
 			pdList.each { PosData pd ->
 				if (pd != posData) {
@@ -1246,13 +1278,10 @@ class ProcessService {
 			}
 			
             pointsList.add(pointData)
-			
-			
         }
 
         /* Save points from AllPointsCommand */
         cmd.allPoints?.each { AllPointsCommand apc ->
-            //boolean isNew = false
             if (apc == null) {
                 log.debug "AllPointCommand is NULL - skipping!"
                 return
@@ -1289,9 +1318,7 @@ class ProcessService {
                 point.systemKasowy = apc.systemKasowy
                 point.uta = apc.uta
 
-                //if (isNew == true) {
                 pointsList.add(point)
-                //}
             }
             else {
                 log.info "Nie znaleziono punktu o id: " + apc.id
@@ -1319,8 +1346,6 @@ class ProcessService {
 
             if (pc.id == null) {
                 log.info "NOWY POS"
-                //pointData = new PointData()
-                //pointDataDetails = new PointDataDetails()
 
                 if (pc.cbdId != null) {
 					if (pointsList.find { PointData pd -> pd.cbdId == pc.cbdId } != null) {
@@ -1354,7 +1379,6 @@ class ProcessService {
 
                         pointData.setCbdId(Integer.valueOf(cbdPoint.get("id").toString()))
                         pointData.setKodPocztowy(cbdPoint.get("kod_pocztowy"))
-                        //pointData.setLiczbaPos(Integer.valueOf(cbdPoint.get("liczba_pos").toString()))
                         pointData.setMiejscowosc(cbdPoint.get("miejscowosc"))
                         pointData.setNazwa(cbdPoint.get("nazwa"))
                         pointData.setNrBudynku(cbdPoint.get("nr_budynku"))
@@ -1412,7 +1436,6 @@ class ProcessService {
                             if (cbdPoint != null) {
                                 pointData.setCbdId(Integer.valueOf(cbdPoint.get("id").toString()))
                                 pointData.setKodPocztowy(cbdPoint.get("kod_pocztowy"))
-								//pointData.setLiczbaPos(Integer.valueOf(cbdPoint.get("liczba_pos").toString()))
                                 pointData.setMiejscowosc(cbdPoint.get("miejscowosc"))
                                 pointData.setNazwa(cbdPoint.get("nazwa"))
                                 pointData.setNrBudynku(cbdPoint.get("nr_budynku"))
@@ -1503,28 +1526,6 @@ class ProcessService {
                 }
             }
 
-            // Set telePomka and teleKodzik based on terminalIlosc
-            if (pc.terminalIlosc != null && pc.terminalIlosc > 0 &&
-                    terminalCount > pointData.liczbaPos) {
-                for (int i = 0; i < pc.terminalIlosc && i <
-                        pdList.size; i++) {
-                    pdList.get(i).posDetails?.telePompka =
-                        posData.posDetails?.telePompka
-                    pdList.get(i).posDetails?.teleKodzik =
-                        posData.posDetails?.teleKodzik
-                }
-            }
-            else if (pc.terminalIlosc != null && pc.terminalIlosc > 0
-                    && terminalCount == pointData.liczbaPos) {
-                for (int i = 0; i < pc.terminalIlosc && i <
-                        pointData.posDatas.size(); i++) {
-                    pointData.posDatas?.get(i).posDetails?.telePompka =
-                        posData.posDetails?.telePompka
-                    pointData.posDatas?.get(i).posDetails?.teleKodzik =
-                        posData.posDetails?.teleKodzik
-                }
-            }
-
 			if (pointData.posDatas?.size() < pdList?.size()) {
 				pointData.liczbaPos = pdList.size()
 			}
@@ -1567,7 +1568,7 @@ class ProcessService {
                 log.info "AllPosCommand is NULL - skipping!"
                 return
             }
-            //ArrayList<PosData> pdList = new ArrayList<PosData>()
+
             PosData pos = null
             PointData point = null
 
@@ -1586,7 +1587,6 @@ class ProcessService {
             }
             else if (apc.cbdId != null) {
                 //pobieramy point z bazy CBD
-                //point = PointData.findByCbdId(apc.cbdId)
 				point = PointData.findByCbdIdAndProcess(apc.cbdId, process)
 
                 if (point != null) {
@@ -1638,7 +1638,6 @@ class ProcessService {
                 }
                 pos.czyWybrany = apc.czyWybrany
                 pos.tpsId = apc.tpsId
-                //pdList.add(pos)
 
                 if(apc.cbdId) {
                     point.cbdId = apc.cbdId
@@ -1724,6 +1723,12 @@ class ProcessService {
         return containsActivity(process.activities, "wymianaTerminala") && process.activities.size() == 1
     }
 
+    Boolean hasPEPdeclarations(Process process) {
+        List<DocumentFile> pepDeclarations = process.documents.findAll {it.signature.hasPurpose(SignatureDetail.SignaturePurpose.REPRESENTATIVE)}
+
+        return pepDeclarations.size() > 0
+    }
+
     String getFromProcessData(Process process, String key){
         def result = process.processData.find{ processData -> processData.name.equals(key)}
         return (result && result?.value) ? result?.value : ""
@@ -1733,11 +1738,11 @@ class ProcessService {
         Integer requiredSubscriptionsCount = 1 //PH
 
         if(!hasWymianaTermianalaOnly(process)) {
-            if(getRepresentative1(process)) {
+            if(getRepresentative(process, 0)) {
                 requiredSubscriptionsCount++
             }
 
-            if(getRepresentative2(process)) {
+            if(getRepresentative(process, 1)) {
                 requiredSubscriptionsCount++
             }
         }

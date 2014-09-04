@@ -16,6 +16,10 @@ import com.eservice.eumowy.command.ProcessCommand
 import com.eservice.eumowy.process.DefineActivityCommand
 import com.eservice.eumowy.util.DateUtils
 
+import com.eservice.eumowy.command.ProcessCommand
+import com.eservice.eumowy.process.DefineActivityCommand
+import com.eservice.eumowy.util.DateUtils
+
 class ActivityController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
@@ -146,7 +150,7 @@ class ActivityController {
                 flash.errorMessage = message(code:"email.send.error")
             }to "defineActivity"
             on("success"){
-                flow.prevActivityMessage = message(code:"email.notesToCOA.send.complete");
+                flow.prevActivityMessage = message(code:"email.notesToCOA.send.complete")
             }to "beforeRestart"
         }
 
@@ -225,11 +229,11 @@ class ActivityController {
                 boolean isWymianaTerminalaOnly = processService.hasOnlyConcreteActivity(processInstance, "wymianaTermianala")
 
                 if (!isWymianaTerminalaOnly){
-                    if (isRepresentativeExists(flow.representative1)) {
+                    if (flow.representative1) {
                         flow.requiredNumberOfSubscriptions++
                     }
 
-                    if (isRepresentativeExists(flow.representative2)) {
+                    if (flow.representative2) {
                         flow.requiredNumberOfSubscriptions++
                     }
                 }
@@ -602,6 +606,7 @@ class ActivityController {
 
                 flow.data = processCommand
                 flow.processInstance = processInstance
+                flow.czyNowaUmowa = processService.isProcessHasActivity(processInstance, "nowaUmowa")
             }
             render(view: "../createProcess/selectedPanels")
             on("reject"){
@@ -703,15 +708,15 @@ class ActivityController {
 
                 Process processInstance = flow.processInstance
 
-                clientService.updateClientName(processInstance.client, processCommand)
-                processInstance = processService.populateProcessWithData(processInstance, processCommand, conversation.calc)
-                processInstance.notesToCoa = processCommand.notes;
+                clientService.updateClientName(processInstance.client, cmd)
+                processInstance = processService.populateProcessWithData(processInstance, cmd, conversation.calc)
+                processInstance.notesToCoa = cmd.notes;
 
-                processInstance.client.name = processCommand.akceptantNazwaOficjalna;
+                processInstance.client.name = cmd.akceptantNazwaOficjalna;
                 processInstance.saleSection = calculatorService.getCalcProperty(conversation.calc,'SEGMENT_SPRZEDAZOWY')
 
-                flow.representative1 = [name: processCommand.reprezentant1Imie, surname: processCommand.reprezentant1Nazwisko]
-                flow.representative2 = [name: processCommand.reprezentant2Imie, surname: processCommand.reprezentant2Nazwisko]
+                flow.representative1 = processService.getRepresentative(processInstance, 0)
+                flow.representative2 = processService.getRepresentative(processInstance, 1)
 
                 if (!processInstance.save()){
                     processInstance.errors.each {
@@ -912,6 +917,7 @@ class ActivityController {
                 processCmd.liczbaPosZCbd = processCmd.getPosCountFromCBD()
 
                 flow.data = processCmd
+                flow.czyNowaUmowa = processService.isProcessHasActivity(processInstance, "nowaUmowa")
             }
             render(view: "../createProcess/selectedPanels")
             on("back").to "chooseCalc"
@@ -985,7 +991,23 @@ class ActivityController {
                 log.info "Zapisano dane paneli"
 
                 // Update
-                processService.updatePointAndPosIds(processInstance, cmd)
+                processInstance.points?.each { point ->
+                    if (point.cbdId != null) {
+                        def foundApc = cmd.allPoints?.find { apc -> apc.cbdId == point.cbdId }
+                        foundApc?.id = point.id
+                    }
+                }
+				
+				processInstance.points?.each { point ->
+					point.posDatas?.each { pos ->
+						if (pos?.tpsId != null) {
+							def foundApc = cmd.allPoses?.find { apc -> apc.tpsId == pos.tpsId }
+							if (foundApc != null) {
+								foundApc.id = pos.id
+							}
+						}
+					}
+				}
 
                 flow.processInstance = processInstance
                 //  flow.data = cmd
@@ -1006,8 +1028,8 @@ class ActivityController {
                 processInstance = processService.populateProcessWithData(processInstance, processCommand, conversation.calc)
                 processInstance.notesToCoa = processCommand.notes;
 
-                flow.representative1 = [name: processCommand.reprezentant1Imie, surname: processCommand.reprezentant1Nazwisko]
-                flow.representative2 = [name: processCommand.reprezentant2Imie, surname: processCommand.reprezentant2Nazwisko]
+                flow.representative1 = processService.getRepresentative(processInstance, 0)
+                flow.representative2 = processService.getRepresentative(processInstance, 1)
 
                 if (!processInstance.save()){
                     processInstance.errors.each {
@@ -1030,7 +1052,7 @@ class ActivityController {
                 flow.processInstance = processInstance
             }.to "clientSignature"
             on("reject"){
-                def processInstance = flow.processInstance;
+                Process processInstance = flow.processInstance;
                 processInstance.status = Process.ProcessStatus.REJECTED
                 flow.processInstance = processInstance
             }.to "reject"
@@ -1419,18 +1441,19 @@ class ActivityController {
     }
 
     def _processDocumentCreation(Process process, String requestVersion, def requiredNumberOfSubscriptions)	{
-        def dataUmowy = DateUtils.getFormattedDate(DateUtils.parseWithTimezone(process.processData?.find{ pData -> 'dataUmowy'.equals(pData.name)}.value), DateUtils.YYYY_MM_DD)
 
         if (ELECTRIONICAL.equals(requestVersion)) {
-
             if (params?.numberOfSubscriptions?.toInteger() == requiredNumberOfSubscriptions) {
-                process.documents.each { DocumentFile doc ->
-                    updateDataUmowy(doc, dataUmowy, process)
+                process.documents.findAll{!it.signature.hasPurpose(SignatureDetail.SignaturePurpose.REPRESENTATIVE)}.each { DocumentFile doc ->
+                    pdfService.updateDataUmowyOnDocument(doc, process)
 
-                    byte[] newContent = pdfService.addClientSubscriptionsToDocument(doc.content.content, doc.signature.id, process.subscriptions)
+                    byte[] newContent = pdfService.getDocumentWithSubscriptions(doc, process.subscriptions)
                     doc.content.content = newContent
                     doc.content.discard()
                 }
+
+                log.info "ELECTRONICAL VERSION for process " + process.id
+                pdfService.addSubscriptionsToRepresentativeDocuments(process)
 
                 log.info "ELECTRONICAL VERSION for process " + process.id
 
@@ -1464,8 +1487,7 @@ class ActivityController {
                     }
                 }
             }
-        }
-        else if (PAPER.equals(requestVersion)) {
+        } else if (PAPER.equals(requestVersion)) {
             process.documents.each { DocumentFile df ->
                 DocumentContent ndc = pdfService.cleanAgrementDateContent(df.content);
                 ndc.setDocument(df)
@@ -1490,11 +1512,10 @@ class ActivityController {
             } else {
                 emailService.sendDocumentsPaperVersion(documents, mailBodyParams)
             }
-        }
-        else if (TEMPLATES.equals(requestVersion)) {
+        } else if (TEMPLATES.equals(requestVersion)) {
 			List<DocumentFile> documentFilesWithBlackFaksymileList = new ArrayList<DocumentFile>()
 			process.documents.findAll{it.signature?.sendToClient}?.each { DocumentFile doc ->
-                updateDataUmowy(doc, dataUmowy, process)
+                pdfService.updateDataUmowyOnDocument(doc, process)
 
 				DocumentFile dfwbf = new DocumentFile(name: doc.name, clientName: doc.clientName , dateCreated: doc.dateCreated, lastUpdated: doc.lastUpdated, pagesCount: doc.pagesCount)
 				byte[] newContent = pdfService.addBlackFaksymileToDocument(doc.content.content, doc.signature.id)
@@ -1565,19 +1586,9 @@ class ActivityController {
         }
     }
 
-    private def updateDataUmowy(def doc, def dataUmowy, def process){
-        DocumentContent contentWithUpdatedDataUmowy = pdfService.updateDataUmowyOnDocument(doc.content, process, dataUmowy)
-        doc.setContent(contentWithUpdatedDataUmowy)
-        doc.save(flush: true)
-    }
-
-    private boolean isRepresentativeExists(Map representative) {
-        return representative?.name != null && representative?.surname != null
-    }
-
     private void setRepresentatives(Map flow) {
-        flow.representative1 = flow.representative1 != null ? flow.representative1 : processService.getRepresentative1(processInstance)
-        flow.representative2 = flow.representative2 != null ? flow.representative2 : processService.getRepresentative2(processInstance)
+        flow.representative1 = flow.representative1 != null ? flow.representative1 : processService.getRepresentative(flow.processInstance, 0)
+        flow.representative2 = flow.representative2 != null ? flow.representative2 : processService.getRepresentative(flow.processInstance, 1)
     }
 
 }

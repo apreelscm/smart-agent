@@ -20,8 +20,10 @@ function maskFields(element){
     element.find(".ph-number").mask('S9999');
     element.find(".integer-number").mask('099999');
     element.find(".float-number").mask('099999X99', {translation:  {'X': {pattern: /[.]/, optional: true}}});
-    element.find(".percent-number").mask('09X999', {translation:  {'X': {pattern: /[.]/}}})
+    element.find(".percent-number").mask('09X999', {translation:  {'X': {pattern: /[.]/}}});
+    element.find(".percent-short").mask('09');
     element.find(".flat-price").mask('AAAAA');
+    element.find(".krs-number").mask('09999999999999999999');
 }
 
 jQuery(document).ready(function() {
@@ -38,4 +40,7 @@ jQuery(document).ready(function() {
     jQuery(".float-number").mask('099999X99', {translation:  {'X': {pattern: /[.]/, optional: true}}});
     jQuery(".percent-number").mask('09X999', {translation:  {'X': {pattern: /[.]/}}});
     jQuery(".flat-price").mask('XXXXX', {translation: {'X': {pattern: /[a-zA-Z0-9.-]/}}});
+    jQuery(".date-field").mask('0000-00-00');
+    jQuery(".pesel-field").mask('00000000000');
+    jQuery(".isin-field").mask('XXAAAAAAAAA0', {translation: {'X': {pattern: /[A-Z]/}}});
 });

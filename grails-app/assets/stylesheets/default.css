@@ -186,6 +186,10 @@ object, a:focus {
 
 }
 
+.bold {
+    font-weight: bold;
+}
+
 
 /* Table
 -------------------------------------------------------------------*/
@@ -425,6 +429,23 @@ h3 a, h3 a:hover {
 
 /* Forms
 -------------------------------------------------------------------*/
+.errorNotification {
+    cursor:pointer;
+    position:absolute;
+    margin:2px
+}
+
+p.error-message {
+    color: red;
+    text-align: left;
+    margin: 0;
+    font-size: 12px;
+}
+
+.error-wrapper {
+    padding-right: 2em;
+    display: inline;
+}
 
 .panelForm{
     margin: 0 auto;
@@ -616,12 +637,12 @@ fieldset.embedded legend {
     padding: 3px 2px;
 }
 
-.errorSpan{
+div.errorSpan{
     border: 1px solid #FF0000 !important;
-    padding-top: .8em !important;
-    padding-right: .5em !important;
-    padding-left: .5em !important;
-    padding-bottom: .5em !important;
+    padding-top: .8em;
+    padding-right: .5em;
+    padding-left: .5em;
+    padding-bottom: .5em;
 }
 
 .error input, .error select, .error textarea {
@@ -1494,6 +1515,146 @@ label.doladowanieLabel {
     color: #d8d8d8;
 }
 
+#acceptorsPanel {
+    margin: 0;
+}
+
+#acceptorsPanel .errorSpan, #actualBeneficiaries .errorSpan {
+    padding: 0;
+}
+
+#acceptorsPanel .centre {
+    padding-top: 20px;
+    width: 915px
+}
+
 #acceptorsPanel .centre div {
     margin-bottom: 15px;
+}
+
+#actualBeneficiaryData div {
+    margin-bottom: 5px;
+}
+
+.posHeaderType {
+    text-align: center;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+#zestawPOSTable {
+    margin: 0 50px;
+}
+
+#zestawPOSTable .posTypeColumn {
+    width: 350px;
+}
+
+#zestawPOSTable .posTypeColumn select{
+    width: 300px;
+}
+
+.acceptorLocationRadioWrapper {
+    width: 450px;
+    display: inline-block;
+    vertical-align: top;
+}
+
+#acceptorsPanel div.acceptorPESELCountryWrapper, #acceptorsPanel div.acceptorDocumentTypeWrapper,
+#acceptorsPanel div.acceptorLocationRadioWrapper, #acceptorsPanel div.acceptorPESELWrapper {
+    margin-bottom: 0;
+}
+
+.acceptorPESELCountryRadioWrapper {
+    display: inline-block;
+}
+
+.acceptorPESELCountryRadioWrapper .errorNotification {
+    margin-top: 9px;
+}
+
+.acceptorPESELCountryRadioWrapper .label {
+    display: inline;
+}
+
+.acceptorPESELCountryRadioWrapper:first-child {
+    margin-right: 100px;
+}
+
+.acceptorPESELCountryRadioWrapper input {
+    margin-top: 7px;
+}
+
+.acceptorDocumentTypeRadioWrapper .label {
+    display: inline;
+}
+
+.acceptorDocumentTypeRadioWrapper:first-child {
+    margin-right: 50px;
+}
+
+div.acceptor:after {
+    content: '';
+    border-bottom: 2px solid gainsboro;
+    display: block;
+}
+
+div.acceptor:first-child:before {
+    content: '';
+    display: block;
+    border: 1px solid gainsboro;
+    margin-bottom: 15px;
+}
+
+#cantEstablishBeneficiary {
+    margin-bottom: 20px;
+}
+
+#cantEstablishBeneficiary input[type=checkbox] {
+    vertical-align: top;
+}
+
+#cantEstablishBeneficiary label {
+    max-width: 905px;
+}
+
+#cantEstablishBeneficiary div {
+    margin-top: 15px;
+}
+
+#nazwaGieldy {
+    margin-right: 50px;
+}
+
+header.belka-glowna {
+    margin-bottom: 20px;
+}
+
+#verificationDocuments {
+    width: 350px;
+    margin: 0 auto;
+    text-align: left;
+}
+
+#verificationDocuments div {
+    margin-bottom: 15px;
+}
+
+#actualBeneficiaryData .acceptor {
+    padding: 15px 0;
+}
+
+#actualBeneficiaryData .percent-short {
+    width: 30px;
+    text-align: center;
+}
+
+#poleOpisowe {
+    height: auto;
+    width: auto;
+}
+
+#email-documents {
+    margin-top: 30px;
+    margin-bottom: 0;
 }

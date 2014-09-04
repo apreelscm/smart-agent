@@ -30,7 +30,8 @@ class EmailTemplates implements Serializable {
         DOCUMENTS_NOT_NEW_AGGREMENT_ELECTRONICAL_VERSION("documentNotNewAggrementElectronicalVersion"),
 		DOCUMENTS_ACCEPTED("documentsAccepted"),
         DOCUMENTS_REJECTED("documentsRejected"),
-        DOCUMENTS_MISSING_MAIL("documentsMissingMail")
+        DOCUMENTS_MISSING_MAIL("documentsMissingMail"),
+        PEP_NOTIFICATION("pepNotification")
 
         private final String text;
 

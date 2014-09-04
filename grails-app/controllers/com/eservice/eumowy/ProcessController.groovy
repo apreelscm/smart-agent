@@ -160,15 +160,17 @@ class ProcessController {
 
     @Secured(['EUM_ZRD'])
     def accept() {
-        def processInstance = Process.get(params.id)
+        Process processInstance = Process.get(params.id)
         params.remove('_action_accept')
 
         log.info(params)
+
         if (!processInstance) {
             flash.message = message(code: 'default.not.found.message', args:[ message(code: 'process.label', default: 'proces'), id])
             redirect(action: "list", params: params)
             return
         }
+
         if (!params.notesFromZrd){
             flash.error = message(code: 'notes.empty')
             redirect(action: "show", params: params)
@@ -199,6 +201,10 @@ class ProcessController {
             flash.error = "Nie można zaakceptować procesu bez dokumentów"
             redirect(action: "show", params: params)
             return
+        }
+
+        if(processService.hasNowaUmowa(processInstance)) {
+            pdfService.createMergedBeneficiaryPDF(processInstance)
         }
 
         if (processInstance.status == Process.ProcessStatus.WAIT_FOR_SUBSCRIPTION_PAPER_VERSION){
@@ -235,9 +241,8 @@ class ProcessController {
         flash.message = message(code: 'default.accepted.message', args:[ message(code: 'process.label', default: 'proces'), processInstance.id])
 
 
-        def mailBodyParams = [merchantName: processInstance.client.name, merchantNip: processInstance.client.nip, activities: processService.getActivities(processInstance), rejectReason: params.notesFromZrd]
-        if(!emailService.sendDocumentsAccepted(processInstance.phEmail, null , mailBodyParams)){
-            flash.error = "Błąd podczas wysyłania maila na adres ${processInstance.phEmail}"
+        if(!emailService.sendProcessAcceptedMails(processInstance, params.notesFromZrd)){
+            flash.error = "Błąd podczas wysyłania wiadomości email."
             redirect(action: "show", params: params)
             return
         }

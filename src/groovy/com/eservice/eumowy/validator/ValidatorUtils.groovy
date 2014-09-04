@@ -2,51 +2,61 @@ package com.eservice.eumowy.validator
 
 class ValidatorUtils {
 
-    static def MESSAGE_PROPERTY_NAME = 'getMessageForProperty'
+    private static final String MESSAGE_PROPERTY_NAME = 'getMessageForProperty'
 
     public static boolean hasMorePriceGroups(def maxSize, def pointCommands){
         Set<BigDecimal> normalPriceGroups = new HashSet<BigDecimal>()
-        Set<BigDecimal> prefPriceGroups = new HashSet<BigDecimal>()
 
         pointCommands.each { pos ->
-
             if (pos != null) {
-                normalPriceGroups.add(getGroupValue(pos.dialupCena, pos.dialupPPCena))
-                normalPriceGroups.add(getGroupValue(pos.vpnCena, pos.vpnPPCena))
-                normalPriceGroups.add(getGroupValue(pos.sslCena, pos.sslPPCena))
-                normalPriceGroups.add(getGroupValue(pos.gprsCena, pos.gprsPPCena))
-                normalPriceGroups.add(getGroupValue(pos.pinPadCena, BigDecimal.ZERO))
-                normalPriceGroups.add(getGroupValue(pos.wifiCena, BigDecimal.ZERO))
+                normalPriceGroups.add(getGroupValue(pos.dialupCena))
+                normalPriceGroups.add(getGroupValue(pos.dialupPPCena))
 
-                prefPriceGroups.add(getGroupValue(pos.dialupCenaPreferencyjna, pos.dialupPPCenaPreferencyjna))
-                prefPriceGroups.add(getGroupValue(pos.vpnCenaPreferencyjna, pos.vpnPPCenaPreferencyjna))
-                prefPriceGroups.add(getGroupValue(pos.sslCenaPreferencyjna, pos.sslPPCenaPreferencyjna))
-                prefPriceGroups.add(getGroupValue(pos.gprsCenaPreferencyjna, pos.gprsPPCenaPreferencyjna))
-                prefPriceGroups.add(getGroupValue(pos.pinPadCenaPreferencyjna, BigDecimal.ZERO))
-                prefPriceGroups.add(getGroupValue(pos.wifiCenaPreferencyjna, BigDecimal.ZERO))
+                normalPriceGroups.add(getGroupValue(pos.vpnCena))
+                normalPriceGroups.add(getGroupValue(pos.vpnPPCena))
+
+                normalPriceGroups.add(getGroupValue(pos.sslCena))
+                normalPriceGroups.add(getGroupValue(pos.sslPPCena))
+
+                normalPriceGroups.add(getGroupValue(pos.gprsCena))
+                normalPriceGroups.add(getGroupValue(pos.gprsPPCena))
+                normalPriceGroups.add(getGroupValue(pos.gprsCenaPortable))
+
+                normalPriceGroups.add(getGroupValue(pos.pinPadCena))
             }
         }
 
-        normalPriceGroups.removeAll(Collections.singleton(BigDecimal.ZERO)) //jesli obie ceny sa nullem to dostajemy 0
-        prefPriceGroups.removeAll(Collections.singleton(BigDecimal.ZERO))
-        if(normalPriceGroups.size() > maxSize || prefPriceGroups.size() > maxSize){
+        normalPriceGroups.removeAll(Collections.singleton(BigDecimal.ZERO))
+
+        if(normalPriceGroups.size() > maxSize){
             return true
         }
+
         return false
     }
 
-    public static def getGroupValue(def normalPrice, def ppPrice){
-        if(normalPrice == null){
-            normalPrice = BigDecimal.ZERO
+    public static def getGroupValue(BigDecimal price) {
+        if(price == null){
+            price = BigDecimal.ZERO
         }
-        if (ppPrice == null){
-            ppPrice = BigDecimal.ZERO
-        }
-        return normalPrice + ppPrice
+        return price
     }
 
     public static def getMessage(def cmd, def propertyName){
         return cmd.metaClass.respondsTo(cmd, MESSAGE_PROPERTY_NAME)? cmd."${MESSAGE_PROPERTY_NAME}"(propertyName) : propertyName;
+    }
+
+    private static Boolean hasNotFilledField(List fieldsToCheck) {
+        Boolean hasNotFilledField = true
+
+        fieldsToCheck.each { field ->
+            if(field) {
+                hasNotFilledField = false
+                return
+            }
+        }
+
+        return hasNotFilledField
     }
 
 }

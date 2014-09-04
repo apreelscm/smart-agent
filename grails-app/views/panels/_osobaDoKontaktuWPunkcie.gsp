@@ -11,8 +11,6 @@
 
 				<span><g:message code="panel.last.name" />:</span>
                 <span><eumowy:textField name="${panelType}[${id}].kontaktWPunkcieNazwisko" id="${panelType}[${id}].contactAtPointLastName" value="${pointData?.kontaktWPunkcieNazwisko}" validatable="${pointData}" validateField="kontaktWPunkcieNazwisko" style="width: 120px" maxlength="35" required="true" class="nazwiskoField"/></span>
-
-				<span><g:message code="panel.fax" />:</span><span><g:textField class="fax" name="${panelType}[${id}].kontaktWPunkcieFax" id="${panelType}[${id}].contactAtPointFax" value="${pointData?.kontaktWPunkcieFax}" style="width: 120px" maxlength="9"/></span>
 			</li>
 			<li>
                 <g:hiddenField id="${panelType}[${id}].hasTelefonKontaktowy" name="${panelType}[${id}].hasTelefonKontaktowy" value="true"/>

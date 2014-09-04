@@ -62,10 +62,7 @@ class PdfProcessMapper extends AbstractPdfMapper{
 
 
     //----- sumowanie oplat z posow i hire payments - start
-            def normalPrefMaps = posMapper.mapPosesNotFromCBD(findPosesNotFromCbd(points));
-
-            def normalResult = normalPrefMaps.normalResult
-            def prefResult = normalPrefMaps.prefResult
+            def normalResult = posMapper.mapPosesNotFromCBD(findPosesNotFromCbd(points))
 
             def normalMapFromProcess = [:]
             if (processInstance.processData.find{"isOdplatneUzywanieShown".equals(it.name) && "tak".equals(it.value)}){
@@ -94,12 +91,6 @@ class PdfProcessMapper extends AbstractPdfMapper{
                 if (i<suffixes.size()){
                     dataMap.put('oplatyPOSIlosc' + suffixes.get(i), [entry.value.toString()] as String[])
                     dataMap.put('oplatyPOSCena' + suffixes.get(i), [entry.key.toString()] as String[])
-                }
-            }
-            prefResult.eachWithIndex { def entry, int i ->
-                if (i<suffixes.size()){
-                    dataMap.put('oplatyPOSPrefIlosc' + suffixes.get(i), [entry.value.toString()] as String[])
-                    dataMap.put('oplatyPOSPrefCena' + suffixes.get(i), [entry.key.toString()] as String[])
                 }
             }
     //----- sumowanie oplat z posow i hire payments - finish
@@ -339,18 +330,6 @@ class PdfProcessMapper extends AbstractPdfMapper{
         addCheckboxes(data, ["panDoKontaktu": "Pan", "paniDoKontaktu": "Pani"], value)
     }
 
-    private mapReprezentant1TytulProcess(def data, def pd, def key, def value){
-        data.put(key, [value] as String[]);
-        addCheckboxes(data, ["pan1": "Pan", "pani1": "Pani"], value)
-    }
-
-    private mapReprezentant2TytulProcess(def data, def pd, def key, def value){
-        if ((getFromProcessDataSet(pd, 'reprezentant2Imie')) != null && !"".equals(getFromProcessDataSet(pd, 'reprezentant2Imie')) && (getFromProcessDataSet(pd, 'reprezentant2Nazwisko')) && !"".equals(getFromProcessDataSet(pd, 'reprezentant2Nazwisko'))){
-            data.put(key, [value] as String[]);
-            addCheckboxes(data, ["pan2": "Pan", "pani2": "Pani"], value)
-        }
-    }
-
     private mapKontaktEmailProcess(def data, def pd, def key, def value) {
         data.put("email", [value] as String[])
     }
@@ -440,14 +419,6 @@ class PdfProcessMapper extends AbstractPdfMapper{
 
     private mapScoringDochodowoscProcess(def data, def pd, def key, def value) {
         data.put("dochodowosc", [value] as String[])
-    }
-
-    private mapReprezentant1ImieProcess(def data, def pd, def key, def value) {
-        data.put("reprezentant1", [value + " " + getFromProcessDataSet(pd, 'reprezentant1Nazwisko')] as String[])
-    }
-
-    private mapReprezentant2ImieProcess(def data, def pd, def key, def value) {
-        data.put("reprezentant2", [value + " " + getFromProcessDataSet(pd, 'reprezentant2Nazwisko')] as String[])
     }
 
     private mapPozyskujacyImieProcess(def data, def pd, def key, def value){

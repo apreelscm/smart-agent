@@ -31,8 +31,10 @@ class Process implements Serializable {
     Client client
 	
     List<Panel> panels
-    Set<AttachmentFile> attachments
     List<DocumentFile> documents
+    List<Representative> representatives
+
+    Set<AttachmentFile> attachments
     Set<ProcessData> processData
 
     String getStringId() {
@@ -55,7 +57,8 @@ class Process implements Serializable {
             points: PointData,
             processData: ProcessData,
             hirePayments: HirePayment,
-            posExchanges: PosExchange
+            posExchanges: PosExchange,
+            representatives: Representative
     ]
 
     static constraints = {
@@ -82,7 +85,7 @@ class Process implements Serializable {
         notesFromZrd(nullable: true, maxSize: 300)
         hirePayments(nullable: true)
         posExchanges(nullable: true)
-
+        representatives(nullable: true)
     }
 
     static mapping = {
@@ -98,6 +101,7 @@ class Process implements Serializable {
         processData cascade:"all-delete-orphan"
         hirePayments cascade:"all-delete-orphan"
         posExchanges cascade:"all-delete-orphan"
+        representatives cascade:"all-delete-orphan"
     }
 
     def afterInsert() {
@@ -162,6 +166,37 @@ class Process implements Serializable {
         return documents?.findAll{it.signature.showOnPreview}?.sort(false){a,b -> a.signature.signatureOrder.compareTo(b.signature.signatureOrder)}
     }
 	
-	
-	
+	public String getData(String key) {
+        return processData.find{it.name.equals(key)}?.value
+    }
+
+    public boolean getBooleanData(String key) {
+        return Boolean.parseBoolean(getData(key))
+    }
+
+    public boolean isAkceptantOsobaPrawna() {
+        List<String> osobaPrawnaIndicators = ["spolka_akcyjna", "spolka_zoo", "spolka_komandytowa", "spolka_jawna"]
+
+        return osobaPrawnaIndicators.contains(getData("dzialalnoscForma"))
+    }
+
+    public boolean isAkceptantOsobaFizyczna() {
+        List<String> osobaFizycznaIndicators = ["spolka_cywilna", "osoba_fizyczna"]
+
+        return osobaFizycznaIndicators.contains(getData("dzialalnoscForma"))
+    }
+
+    public boolean isAkceptantJednostkaNieposiadajacaOsobyPrawnej() {
+        return StringUtils.isNotEmpty(getData("dzialalnoscFormaInna"))
+    }
+
+    public List<DocumentFile> getDocumentsForZRD() {
+        return documents.findAll{it.signature.showOnZRD}
+                        .sort(false){a,b -> a.signature.signatureOrder.compareTo(b.signature.signatureOrder)}
+    }
+
+    public List<DocumentFile> getDocumentsForPreview() {
+        return documents?.findAll{it.signature.showOnPreview}
+                         .sort(false){a,b -> a.signature.signatureOrder.compareTo(b.signature.signatureOrder)}
+    }
 }

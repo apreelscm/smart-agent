@@ -2,22 +2,24 @@ package com.eservice.eumowy
 
 class Signature implements Serializable {
 
-    String name;
-    Boolean active = true;
-	String templatePath;
-    Boolean forPoint = true;
-    Boolean forPos = true;
-	String description;
-    String filename;
-    Integer signatureOrder;
-    Boolean sendToClient = true;
-    Boolean showOnPreview = true;
+    String name
+    Boolean active = true
+	String templatePath
+    Boolean forPoint = true
+    Boolean forPos = true
+	String description
+    String filename
+    Integer signatureOrder
+    Boolean sendToClient = true
+    Boolean showOnPreview = true
+    Boolean showOnZRD = true
 
     static hasMany = [
-            calcFieldsSignature:CalcFieldSignature,
-            panelsSignature:SignaturePanel,
-			documentFile:DocumentFile,
-            subscriptionDefinitions:SubscriptionDefinition
+            calcFieldsSignature: CalcFieldSignature,
+            panelsSignature: SignaturePanel,
+			documentFile: DocumentFile,
+            subscriptionDefinitions: SubscriptionDefinition,
+            signatureDetails: SignatureDetail
     ]
 
     static constraints = {
@@ -32,9 +34,26 @@ class Signature implements Serializable {
         id generator:'sequence', params:[sequence:DomainConsts.SHEMA_NAME+'.SIGNATURE_SEQ']
         sendToClient column: "SEND_TO_CLIENT"
         showOnPreview column: "SHOW_ON_PREVIEW"
+        showOnZRD column: "SHOW_ON_ZRD"
     }
 
     String toString(){
         return description;
+    }
+
+    boolean hasDetails() {
+        return signatureDetails.size() > 0
+    }
+
+    boolean hasPurpose(SignatureDetail.SignaturePurpose purpose) {
+        boolean hasPurpose = false
+
+        signatureDetails.each { detail ->
+            if (purpose.equals(detail.typ)) {
+                hasPurpose = true
+            }
+        }
+
+        return hasPurpose
     }
 }
