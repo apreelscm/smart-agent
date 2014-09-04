@@ -12,6 +12,6 @@ class SignatureDetail implements Serializable{
     }
 
     public enum SignaturePurpose {
-        POINT, POS, REPRESENTATIVE, RENT_PRICE_REDUCTION
+        POINT, POS, REPRESENTATIVE, RENT_REDUCTION
     }
 }

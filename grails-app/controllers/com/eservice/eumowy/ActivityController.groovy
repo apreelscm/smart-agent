@@ -381,6 +381,10 @@ class ActivityController {
         }
 
         chooseActivity {
+            onEntry {
+                flow.firstListSignatures = "asd"
+                flow.secondListSignatures = "qwe"
+            }
             render(view: "../createProcess/chooseActivity")
             on("continue"){
                 Process processInstance = flow.processInstance

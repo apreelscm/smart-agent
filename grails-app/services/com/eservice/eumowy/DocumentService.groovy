@@ -12,6 +12,8 @@ class DocumentService {
     def mapperService
     def appParametersService
 
+    private static final int POSES_COUNT_ON_RENT_REDUCTION = 10
+
     def download(def id) {
 
         log.info "Download document id=[${id}]"
@@ -26,7 +28,7 @@ class DocumentService {
     }
 
     boolean isDocumentExistsInProcess(DocumentFile documentFile, Process process) {
-        return DocumentFile.findByNameAndProcess(documentFile.name, process) != null
+        return DocumentFile.findByNameAndProcess(documentFile?.name, process) != null
     }
 
     public String getRepresentativeIdFromDocumentName(String name) {
@@ -62,7 +64,7 @@ class DocumentService {
     }
 
     private Set<DocumentFile> getRentReductionDocuments(Process processInstance, Map dataFromProcess) {
-        Signature rentReductionSignature = processInstance.signatures.find{ sig -> sig.hasPurpose(SignatureDetail.SignaturePurpose.RENT_PRICE_REDUCTION)}
+        Signature rentReductionSignature = processInstance.signatures.find{ sig -> sig.hasPurpose(SignatureDetail.SignaturePurpose.RENT_REDUCTION)}
         Set<DocumentFile> documents = []
 
         if(!rentReductionSignature) return documents
@@ -72,12 +74,12 @@ class DocumentService {
             chosenPoses.addAll(point?.posDatas.findAll {pos -> pos && pos?.czyWybrany})
         }
 
-        if(chosenPoses.size() > 10) {
+        if(chosenPoses.size() > POSES_COUNT_ON_RENT_REDUCTION) {
             log.info(String.format("Pos exchange count is larger than 10 for process %s", processInstance.id))
         }
 
-        Lists.partition(chosenPoses, 10).each { List<PosData> poses ->
-            Map posData = mapperService.mapPosExchangeData(poses)
+        Lists.partition(chosenPoses, POSES_COUNT_ON_RENT_REDUCTION).each { List<PosData> poses ->
+            Map posData = mapperService.mapPosData(poses)
             posData.putAll(dataFromProcess)
             documents.add(getDocumentFile(processInstance, rentReductionSignature, posData))
         }
@@ -194,8 +196,8 @@ class DocumentService {
     }
 
     private DocumentFile getDocumentFile(Process processInstance, Signature sig, Map data, String documentName, String documentClientName) {
-        byte[] documentData = getDocumentContentWithFaksymile(sig.id, data, FontType.ARIAL)
-        if(!documentData) return 0
+        byte[] documentData = getDocumentContent(sig.id, data)
+        if(!documentData) return null
 
         DocumentFile documentFile = DocumentFile.findByNameAndProcess(documentName, processInstance)
 
@@ -216,7 +218,7 @@ class DocumentService {
         return documentFile
     }
 
-    byte[] getDocumentContentWithFaksymile(Long sigId, Map<String,String[]> panelData, FontType fontType) {
+    byte[] getDocumentContent(Long sigId, Map<String,String[]> panelData) {
         String subscriptionsPath = appParametersService.getSubscriptionsPath()
         Signature signature = Signature.findById(sigId)
 
@@ -238,7 +240,7 @@ class DocumentService {
 
         String pdfTemplatePath = appParametersService.getPdfTemplatePath(signature.templatePath)
 
-        return PdfGenerator.generatePdfContentFromURI(pdfTemplatePath, dataMap, fontType, appParametersService.getFontUri())
+        return PdfGenerator.generatePdfContentFromURI(pdfTemplatePath, dataMap, FontType.ARIAL, appParametersService.getFontUri())
     }
 
     int getDocumentPageCount(byte[] content) {
@@ -257,7 +259,7 @@ class DocumentService {
 
     private void addNewDocumentsToProcess(Set<DocumentFile> documents, Process process) {
         documents.each { DocumentFile file ->
-            if(!isDocumentExistsInProcess(file, process)) {
+            if(file != null && !isDocumentExistsInProcess(file, process)) {
                 process.addToDocuments(file)
             }
         }

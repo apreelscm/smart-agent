@@ -53,7 +53,7 @@ class MapperService {
         data
     }
 
-    public def mapPosExchangeData(List<PosData> poses) {
+    public def mapPosData(List<PosData> poses) {
         log.info(String.format("Found %s poses for promocyjneObnizenieNajmu", poses.size()))
 
         Map data = [:]

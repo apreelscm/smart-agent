@@ -1,0 +1,1 @@
+<g:hiddenField name="activitySignature_${activity.id}" value="${mandatorySignaturesIds}" />
