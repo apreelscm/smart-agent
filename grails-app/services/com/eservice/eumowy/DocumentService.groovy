@@ -62,7 +62,7 @@ class DocumentService {
     }
 
     private Set<DocumentFile> getRentReductionDocuments(Process processInstance, Map dataFromProcess) {
-        Signature rentReductionSignature = processInstance.signatures.find{ sig -> sig.hasPurpose(SignatureDetail.SignaturePurpose.RENT_REDUCTION)}
+        Signature rentReductionSignature = processInstance.signatures.find{ sig -> sig.hasPurpose(SignatureDetail.SignaturePurpose.RENT_PRICE_REDUCTION)}
         Set<DocumentFile> documents = []
 
         if(!rentReductionSignature) return documents
@@ -255,7 +255,7 @@ class DocumentService {
         return numberOfPages
     }
 
-    public void addNewDocumentsToProcess(Set<DocumentFile> documents, Process process) {
+    private void addNewDocumentsToProcess(Set<DocumentFile> documents, Process process) {
         documents.each { DocumentFile file ->
             if(!isDocumentExistsInProcess(file, process)) {
                 process.addToDocuments(file)
