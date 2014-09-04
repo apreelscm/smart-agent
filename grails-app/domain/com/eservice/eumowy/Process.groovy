@@ -162,14 +162,6 @@ class Process implements Serializable {
         return processData.find {it.name.equals(key)}
     }
 
-    public List<DocumentFile> getDocumentsForPreview() {
-        return documents?.findAll{it.signature.showOnPreview}?.sort(false){a,b -> a.signature.signatureOrder.compareTo(b.signature.signatureOrder)}
-    }
-	
-	public String getData(String key) {
-        return processData.find{it.name.equals(key)}?.value
-    }
-
     public boolean getBooleanData(String key) {
         return Boolean.parseBoolean(getData(key))
     }

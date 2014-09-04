@@ -1,1 +1,1 @@
-select eumowy.eum_kalk.GETKAKID (:nip) as kak_id from dual;
+select eumowy.eum_kalk.GETKAKID (:nip) as kak_id from dual
