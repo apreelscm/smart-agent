@@ -42,9 +42,9 @@
                 <div>
                     <sig:mandatory activity="${activity}"/>
 
-                    <sig:list activity="${activity}" listNumber="1"/>
+                    <sig:list activity="${activity}" process="${processInstance}" listNumber="1"/>
 
-                    <sig:list activity="${activity}" listNumber="2"/>
+                    <sig:list activity="${activity}" process="${processInstance}" listNumber="2"/>
                 </div>
             </article>
         </g:each>

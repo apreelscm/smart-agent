@@ -265,10 +265,12 @@ class DocumentService {
         }
     }
 
-    int getDocumentsPageCount(Set<DocumentFile> documents) {
+    int getPreviewDocumentsPageCount(Set<DocumentFile> documents) {
         int totalPageCount = 0
 
-        documents.each { DocumentFile document -> totalPageCount += document.pagesCount }
+        documents.each { DocumentFile document ->
+            totalPageCount += (document.signature.showOnPreview ? document.pagesCount : 0)
+        }
 
         return totalPageCount
     }

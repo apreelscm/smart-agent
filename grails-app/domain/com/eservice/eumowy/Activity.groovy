@@ -27,22 +27,4 @@ class Activity implements Serializable {
         table name: "ACTIVITY", schema: DomainConsts.SHEMA_NAME
         id generator: 'sequence', params: [sequence: DomainConsts.SHEMA_NAME + '.ACTIVITY_SEQ']
     }
-
-    enum ClientType {
-        REPRESENTIVE("Reprezentant"),
-        OTHER("Inny");
-
-        private final String text;
-
-        private ClientType(final String text) {
-            this.text = text;
-        }
-
-        @Override
-        public String toString() {
-            return text;
-
-        }
-    }
-
 }

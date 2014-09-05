@@ -1,22 +1,30 @@
 package com.eservice.eumowy
 
-import com.eservice.eumowy.Process
-
 class SignatureService {
 
-    Set<Signature> getSignatures(Activity activity, int listNumber) {
-        Set<Signature> signatures = []
+    Set<ActivitySignatures> getActivitySignatures(Process process, Activity activity, int listNumber) {
+        Set<ActivitySignatures> activeSignaturesFromList = activity.activitySignatures.findAll {
+            it.numberOfList == listNumber && it.signature.active
+        }
 
-        signatures.addAll(activity.activitySignatures.findAll{it.numberOfList == listNumber && it.signature.active})
+        Set<ActivitySignatures> activitySignaturesWithRequiredActivity = activeSignaturesFromList.findAll{
+            isSignatureFulfillRequirements(it, process)
+        }
 
-        return signatures
+        if(activitySignaturesWithRequiredActivity.size() > 0) {
+            return activitySignaturesWithRequiredActivity
+        }
+
+        return activeSignaturesFromList.findAll {!it.required}
     }
 
-    Set<Signature> getMandatorySignatures(Activity activity) {
-        Set<Signature> signatures = []
+    private boolean isSignatureFulfillRequirements(ActivitySignatures activitySignature, Process process) {
+        if(!activitySignature.required) return false
 
-        signatures.addAll(activity.activitySignatures.findAll{it.mandatory && it.signature.active})
+        return process.activities.contains(activitySignature.required)
+    }
 
-        return signatures
+    Set<ActivitySignatures> getMandatoryActivitySignatures(Activity activity) {
+        return activity.activitySignatures.findAll {it.mandatory && it.signature.active}
     }
 }

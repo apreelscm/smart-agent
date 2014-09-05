@@ -240,7 +240,7 @@ class ActivityController {
 
                 if (!flow.skipDocumentGeneration && !flow.isUzupelnijPodpisy) {
                     Set<DocumentFile> documents = documentService.getSavedDocumentsInProcess(processInstance, conversation.calc)
-                    flow.totalPagesCount = documentService.getDocumentsPageCount(documents)
+                    flow.totalPagesCount = documentService.getPreviewDocumentsPageCount(documents)
                 }
                 flow.skipDocumentGeneration = false
                 flow.processInstance = processInstance
@@ -381,10 +381,6 @@ class ActivityController {
         }
 
         chooseActivity {
-            onEntry {
-                flow.firstListSignatures = "asd"
-                flow.secondListSignatures = "qwe"
-            }
             render(view: "../createProcess/chooseActivity")
             on("continue"){
                 Process processInstance = flow.processInstance
@@ -1369,17 +1365,16 @@ class ActivityController {
 
     Set<Signature> _getSignatures(def activities) {
         Set<Signature> signatures = []
+
         activities.each() { activity ->
+            String[] activitySignatureParam = params["activitySignature_${activity.id}"];
 
-            def activitySignatureParam = params["activitySignature_${activity.id}"];
+            if (activitySignatureParam) {
+                List activitySignaturesIds = (activitySignatureParam.flatten().findAll { it != "null" && it != "" })
 
-            if (activitySignatureParam != null) {
-
-                def activitySignaturesIdsMap = ([activitySignatureParam].flatten().findAll { it != "null" && it != "[]" })
-
-                def activitySignaturesIdsList = [];
-                activitySignaturesIdsMap.each { item ->
-                    def evalItem = Eval.me(item);
+                List activitySignaturesIdsList = []
+                activitySignaturesIds.each { activityId ->
+                    Integer evalItem = Integer.valueOf(activityId)
                     if (evalItem instanceof ArrayList) {
                         activitySignaturesIdsList.addAll(evalItem)
                     } else {
@@ -1396,7 +1391,8 @@ class ActivityController {
                 activity.selectedActivitySignatures = activitySignatures;
             }
         }
-        return signatures;
+
+        return signatures
     }
 
     def _processDocumentCreation(Process process, String requestVersion, def requiredNumberOfSubscriptions)	{

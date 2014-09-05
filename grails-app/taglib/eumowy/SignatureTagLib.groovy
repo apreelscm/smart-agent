@@ -2,6 +2,7 @@ package eumowy
 
 import com.eservice.eumowy.Activity
 import com.eservice.eumowy.Signature
+import com.eservice.eumowy.Process
 
 class SignatureTagLib {
     def signatureService
@@ -11,8 +12,9 @@ class SignatureTagLib {
     Closure list = { attrs ->
         int listNumber = Integer.valueOf(attrs.listNumber)
         Activity activity = attrs.activity
+        Process process = attrs.process
 
-        Set<Signature> signaturesList = signatureService.getSignatures(activity, listNumber)
+        Set<Signature> signaturesList = signatureService.getActivitySignatures(process, activity, listNumber)
         Long selectedOption = activity?.selectedActivitySignatures?.find { it.numberOfList == listNumber }?.id
 
         out << render(template: '/tagLib/sig/list',
@@ -23,7 +25,7 @@ class SignatureTagLib {
     Closure mandatory = { attrs ->
         Activity activity = attrs.activity
 
-        Set<Long> mandatorySignaturesIds = signatureService.getMandatorySignatures(activity)*.id
+        Set<Long> mandatorySignaturesIds = signatureService.getMandatoryActivitySignatures(activity)*.id
 
         out << render(template: '/tagLib/sig/mandatory', model: [activity: activity, mandatorySignatures: mandatorySignaturesIds])
     }
