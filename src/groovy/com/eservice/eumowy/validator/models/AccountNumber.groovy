@@ -19,13 +19,13 @@ class AccountNumber {
             return false
         }
 
-        String testableAccountNumber = getTestableAccountNumber(accountNumber)
+        String testableAccountNumber = getTestableAccountNumber()
         Integer weightsSum = getAccountNumberWeightSum(testableAccountNumber)
 
         return weightsSum % 97 == 1
     }
 
-    private String getTestableAccountNumber(String accountNumber) {
+    private String getTestableAccountNumber() {
         String trimmedAccountNumber = StringUtils.deleteWhitespace(accountNumber)
         String controlSum = StringUtils.left(trimmedAccountNumber, 2)
 

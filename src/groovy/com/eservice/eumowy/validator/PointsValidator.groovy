@@ -1,6 +1,7 @@
 package com.eservice.eumowy.validator
 
 import com.eservice.eumowy.command.PointCommand
+import grails.validation.ValidationErrors
 
 public class PointsValidator {
 
@@ -43,7 +44,7 @@ public class PointsValidator {
         int pointsWithoutFormaDoladowania = 0;
 
         points.each { point ->
-            point.errors.each { error ->  //error is grails.validation.ValidationErrors
+            point.errors.each { ValidationErrors error ->
                 if (error.getAt("hasDodaniePrepaid")) {
                     pointsWithoutFormaDoladowania++;
                 }

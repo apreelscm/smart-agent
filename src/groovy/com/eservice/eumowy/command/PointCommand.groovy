@@ -173,7 +173,9 @@ class PointCommand implements Serializable {
 		nipPunktu(nullable:true, blank:false, shared: "natural")
 		kodMCC(nullable:true, shared: "natural")
 		rodzProwadzDzialalWPraktyce(nullable:true, blank:false)
-		numerRachunkuBankowego(nullable:true, blank:false, validator: {value, cmd, errors -> NumberValidator.accountNumber(value, cmd, errors, propertyName)})
+		numerRachunkuBankowego(nullable:true, blank:false, validator: {value, cmd, errors ->
+            value ? NumberValidator.accountNumber(value, cmd, errors, propertyName) : true
+        })
 		bank(nullable:true, blank:false)
 		nazwaDoWydrukuZTerminalaPos(nullable:true, validator: {value, cmd, errors ->
             if(value && value.length() > 25) {

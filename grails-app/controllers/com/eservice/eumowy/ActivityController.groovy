@@ -37,6 +37,7 @@ class ActivityController {
     def bisnodeService
     def mailBodyCreatorService
     def sessionFactory
+    def signatureService
 
     def springSecurityService
 
@@ -68,6 +69,8 @@ class ActivityController {
                 log.info("init flow.message:"+ flow.message)
                 log.info("init flash.message:"+ flash.message)
                 log.info("init flow.prevActivityMessage:"+flow.prevActivityMessage)
+
+                sessionFactory.getCurrentSession()?.clear()
 
                 if (params.message) {
                     flow.prevActivityMessage = params.message
@@ -385,7 +388,7 @@ class ActivityController {
             on("continue"){
                 Process processInstance = flow.processInstance
 
-                Set<Signature> signatures =  _getSignatures(processInstance.activities)
+                Set<Signature> signatures =  signatureService.getProcessSignatures(processInstance, params)
 
                 log.info(String.format("Found signatures: %s", signatures))
 
@@ -1361,38 +1364,6 @@ class ActivityController {
         })
 
         return activePanels;
-    }
-
-    Set<Signature> _getSignatures(def activities) {
-        Set<Signature> signatures = []
-
-        activities.each() { activity ->
-            String[] activitySignatureParam = params["activitySignature_${activity.id}"];
-
-            if (activitySignatureParam) {
-                List activitySignaturesIds = (activitySignatureParam.flatten().findAll { it != "null" && it != "" })
-
-                List activitySignaturesIdsList = []
-                activitySignaturesIds.each { activityId ->
-                    Integer evalItem = Integer.valueOf(activityId)
-                    if (evalItem instanceof ArrayList) {
-                        activitySignaturesIdsList.addAll(evalItem)
-                    } else {
-                        activitySignaturesIdsList.add(evalItem)
-                    }
-                }
-
-                def activitySignatures = ActivitySignatures.findAllByIdInList(activitySignaturesIdsList.findResults { new Long(it) });
-
-                if (!signatures.contains(activitySignatures*.signature)) {
-                    signatures.addAll(activitySignatures.signature)
-                }
-
-                activity.selectedActivitySignatures = activitySignatures;
-            }
-        }
-
-        return signatures
     }
 
     def _processDocumentCreation(Process process, String requestVersion, def requiredNumberOfSubscriptions)	{
