@@ -120,13 +120,13 @@ class PdfProcessMapper extends AbstractPdfMapper{
                     ["4 - Załącznik do Umowy Współpracy w zakresie sprzedaży i dystrybucji elektronicznych doładowań"])
         }
 
-        if (ActivityHelper.hasCombination(processInstance, ['nowaUmowa', 'wymianaUmowyNajmu'], ['dodaniePrepaid', 'zmianaWarunkowPrepaid'])) {
+        if (ActivityHelper.hasCombination(processInstance, ['nowaUmowa', 'wymianaUmowyNajmu'], ['promocyjneObnizenieNajmu'])) {
             int attachmentNumber = dataMap.containsKey("zalacznikNr4") ? 5 : 4
             dataMap.put("zalacznikNr" + attachmentNumber,
                     [attachmentNumber + " - Załącznik do Umowy Współpracy w zakresie sprzedaży i dystrybucji elektronicznych doładowań"])
         }
 
-        if(ActivityHelper.contains(processInstance, ["dodanieDcc", "zmianaWarunkowDcc"])) {
+        if(ActivityHelper.hasAtLeastOne(processInstance, ["dodanieDcc", "zmianaWarunkowDcc"])) {
             dataMap.put("czyTransakcjeDCC", getCheckboxData(true))
         }
 

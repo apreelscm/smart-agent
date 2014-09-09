@@ -248,9 +248,9 @@
         <g:hiddenField id="hasDodaniePrepaid" name="hasDodaniePrepaid" value="${data.hasDodaniePrepaid}"/>
         <g:hiddenField name="czyGift" value="${data.czyGift}"/>
         <g:hiddenField name="isBundleActivity" value="${data.isBundleActivity}"/>
+        <g:hiddenField name="minCenaNajmu" value="${data.minCenaNajmu}"/>
 
         <g:each var="panel" in="${processInstance.panels.sort(false){p -> p?.orderNo}}" status="i">
-
             <g:if test="${panel != null}">
                 <g:if test="${panel.name.equals('danePunktu') == false && panel.name.equals('danePos') == false}">
                     <g:render template="/panels/${panel.name}"/>

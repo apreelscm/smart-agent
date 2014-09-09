@@ -1,4 +1,4 @@
-package com.eservice.eumowy
+package com.eservice.eumowy.helpers
 
 import java.text.DecimalFormat
 

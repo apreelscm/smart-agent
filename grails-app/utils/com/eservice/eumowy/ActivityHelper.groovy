@@ -5,7 +5,7 @@ class ActivityHelper {
         return contains(process, "nowaUmowa")
     }
 
-    static boolean hasOnlyConcreteActivity(Process process, String activityName) {
+    static boolean isOnlyActivity(Process process, String activityName) {
         return contains(process, activityName) && process.activities.size() == 1
     }
 
@@ -13,7 +13,7 @@ class ActivityHelper {
         return process.activities?.any{it.code.equals(activityCode)}
     }
 
-    static boolean contains(Process process, List<String> activities) {
+    static boolean containsAll(Process process, List<String> activities) {
         boolean hasAllActivities = true
 
         for(String activityCode : activities) {
@@ -47,7 +47,7 @@ class ActivityHelper {
         List<String> activitiesWithoutCalculator = ["wymianaTerminala", "pakietStart", "pakietStartPlus",
                 "pakietMobilny", "dodatkowyPunkt", "dodatkowyPos"]
 
-        return activitiesWithoutCalculator.any{hasOnlyConcreteActivity(process, it)}
+        return activitiesWithoutCalculator.any{isOnlyActivity(process, it)}
     }
 
     static boolean isClientRedundant(Process process) {
@@ -57,6 +57,6 @@ class ActivityHelper {
     static boolean isBundleActivity(Process process) {
         List<String> bundleActivities = ["pakietStart", "pakietStartPlus", "pakietMobilny"]
 
-        return bundleActivities.any{hasOnlyConcreteActivity(process, it)}
+        return bundleActivities.any{isOnlyActivity(process, it)}
     }
 }

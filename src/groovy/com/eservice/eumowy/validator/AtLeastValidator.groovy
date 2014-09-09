@@ -24,6 +24,16 @@ public class AtLeastValidator {
         return true
     }
 
+    public static def validateAgainstMinValue = { currentValue, minValue, cmd, errors, propertyName ->
+        if (currentValue.compareTo(minValue) < 0) {
+            errors.rejectValue(propertyName, "default.atLeast.minValue",
+                    [ValidatorUtils.getMessage(cmd, propertyName), minValue] as Object[], ValidatorUtils.getMessage(cmd, propertyName))
+            return false
+        }
+
+        return true
+    }
+
     /**
      * Wersja przepuszczajaca takze nulle.
      */

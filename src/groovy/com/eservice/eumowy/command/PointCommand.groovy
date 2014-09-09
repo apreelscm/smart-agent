@@ -100,6 +100,8 @@ class PointCommand implements Serializable {
     Integer pinPadIlosc
     BigDecimal pinPadCena
 
+    BigDecimal minCenaNajmu //injected during validation
+
     Integer bazaIlosc
 	
 	String zamkniecieDniaOd
@@ -230,55 +232,109 @@ class PointCommand implements Serializable {
 		dialupTyp(nullable:true)
 		dialupIlosc(nullable:true,  shared: "natural")
 		dialupCena(nullable:true, shared: "number", validator: { value, cmd, errors ->
-			cmd.dialupTyp ? AtLeastValidator.validate(value, cmd, errors, "dialupCena", "TYP_DIALUP_TERM_CENA") : true;
+            if(!cmd.dialupTyp) return true
+
+            if(cmd.minCenaNajmu) {
+                return AtLeastValidator.validateAgainstMinValue(value, cmd.minCenaNajmu, cmd, errors, propertyName)
+            }
+
+			return AtLeastValidator.validate(value, cmd, errors, propertyName, "TYP_DIALUP_TERM_CENA")
 		})
 
         dialupPPTyp(nullable:true)
         dialupPPIlosc(nullable:true,  shared: "natural")
         dialupPPCena(nullable:true, shared: "number", validator: { value, cmd, errors ->
-            cmd.dialupPPTyp ? AtLeastValidator.validate(value, cmd, errors, "dialupPPCena", "TYP_DIALUP_PP_CENA") : true;
+            if(!cmd.dialupPPTyp) return true
+            
+            if(cmd.minCenaNajmu) {
+                return AtLeastValidator.validateAgainstMinValue(value, cmd.minCenaNajmu, cmd, errors, propertyName)
+            }
+
+            return AtLeastValidator.validate(value, cmd, errors, propertyName, "TYP_DIALUP_PP_CENA")
         })
 
 		vpnTyp(nullable:true)
 		vpnIlosc(nullable:true,  shared: "natural")
 		vpnCena(nullable:true, shared: "number", validator: { value, cmd, errors ->
-			cmd.vpnTyp ? AtLeastValidator.validate(value, cmd, errors, "vpnCena", "TYP_VPN_TERM_CENA") : true;
+            if(!cmd.vpnTyp) return true
+            
+            if(cmd.minCenaNajmu) {
+                return AtLeastValidator.validateAgainstMinValue(value, cmd.minCenaNajmu, cmd, errors, propertyName)
+            }
+
+			return AtLeastValidator.validate(value, cmd, errors, propertyName, "TYP_VPN_TERM_CENA")
 		})
 
         vpnPPTyp(nullable:true)
         vpnPPIlosc(nullable:true,  shared: "natural")
         vpnPPCena(nullable:true, shared: "number", validator: { value, cmd, errors ->
-            cmd.vpnPPTyp ? AtLeastValidator.validate(value, cmd, errors, "vpnPPCena", "TYP_VPN_PP_CENA") : true;
+            if(!cmd.vpnPPTyp) return true
+            
+            if(cmd.minCenaNajmu) {
+                return AtLeastValidator.validateAgainstMinValue(value, cmd.minCenaNajmu, cmd, errors, propertyName)
+            }
+
+            return AtLeastValidator.validate(value, cmd, errors, propertyName, "TYP_VPN_PP_CENA")
         })
 
 		sslTyp(nullable:true)
 		sslIlosc(nullable:true,  shared: "natural")
 		sslCena(nullable:true, shared: "number", validator: { value, cmd, errors ->
-			cmd.sslTyp ? AtLeastValidator.validate(value, cmd, errors, "sslCena", "TYP_SSL_TERM_CENA") : true;
+            if(!cmd.sslTyp) return true
+            
+            if(cmd.minCenaNajmu) {
+                return AtLeastValidator.validateAgainstMinValue(value, cmd.minCenaNajmu, cmd, errors, propertyName)
+            }
+
+			return AtLeastValidator.validate(value, cmd, errors, propertyName, "TYP_SSL_TERM_CENA")
 		})
 
         sslPPTyp(nullable:true)
         sslPPIlosc(nullable:true,  shared: "natural")
         sslPPCena(nullable:true, shared: "number", validator: { value, cmd, errors ->
-            cmd.sslPPTyp ? AtLeastValidator.validate(value, cmd, errors, "sslPPCena", "TYP_SSL_PP_CENA") : true;
+            if(!cmd.sslPPTyp) return true
+            
+            if(cmd.minCenaNajmu) {
+                return AtLeastValidator.validateAgainstMinValue(value, cmd.minCenaNajmu, cmd, errors, propertyName)
+            }
+
+            return AtLeastValidator.validate(value, cmd, errors, propertyName, "TYP_SSL_PP_CENA")
         })
 
 		gprsTyp(nullable:true)
 		gprsIlosc(nullable:true,  shared: "natural")
 		gprsCena(nullable:true, shared: "number", validator: { value, cmd, errors ->
-			cmd.gprsTyp ? AtLeastValidator.validate(value, cmd, errors, "gprsCena", "TYP_GPRS_TERM_CENA") : true;
+            if(!cmd.gprsTyp) return true
+            
+            if(cmd.minCenaNajmu) {
+                return AtLeastValidator.validateAgainstMinValue(value, cmd.minCenaNajmu, cmd, errors, propertyName)
+            }
+
+			return AtLeastValidator.validate(value, cmd, errors, propertyName, "TYP_GPRS_TERM_CENA")
 		})
 
         gprsPPTyp(nullable:true)
         gprsPPIlosc(nullable:true,  shared: "natural")
         gprsPPCena(nullable:true, shared: "number", validator: { value, cmd, errors ->
-            cmd.gprsPPTyp ? AtLeastValidator.validate(value, cmd, errors, "gprsPPCena", "TYP_GPRS_PP_CENA") : true;
+            if(!cmd.gprsPPTyp) return true
+            
+            if(cmd.minCenaNajmu) {
+                return AtLeastValidator.validateAgainstMinValue(value, cmd.minCenaNajmu, cmd, errors, propertyName)
+            }
+
+            return AtLeastValidator.validate(value, cmd, errors, propertyName, "TYP_GPRS_PP_CENA")
         })
 
         gprsTypPortable(nullable:true)
         gprsIloscPortable(nullable:true,  shared: "natural")
         gprsCenaPortable(nullable:true, shared: "number", validator: { value, cmd, errors ->
-            cmd.gprsTypPortable ? AtLeastValidator.validate(value, cmd, errors, "gprsCenaPortable", "TYP_GPRS_TERM_CENA") : true;
+            if(!cmd.gprsTypPortable) return true
+            
+            if(cmd.minCenaNajmu) {
+                return AtLeastValidator.validateAgainstMinValue(value, cmd.minCenaNajmu, cmd, errors, propertyName)
+            }
+
+            return AtLeastValidator.validate(value, cmd, errors, propertyName, "TYP_GPRS_TERM_CENA")
         })
 
 		pinPadTyp(nullable:true)
@@ -327,7 +383,7 @@ class PointCommand implements Serializable {
 		return parentPosId != null
 	}
 
-    boolean hasStationaryTypeChoosen() {
+    boolean hasStationaryTypeChosen() {
         return dialupTyp || dialupPPTyp || vpnTyp || vpnPPTyp || sslTyp || sslPPTyp || gprsTyp || gprsPPTyp
     }
 }

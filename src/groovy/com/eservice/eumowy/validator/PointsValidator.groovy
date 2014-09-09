@@ -3,6 +3,8 @@ package com.eservice.eumowy.validator
 import com.eservice.eumowy.command.PointCommand
 import grails.validation.ValidationErrors
 
+import java.text.DecimalFormat
+
 public class PointsValidator {
 
     static int MAX_PRICE_GROUP_SIZE = 3
@@ -14,6 +16,7 @@ public class PointsValidator {
             if (ptCmd != null) {
                 ptCmd?.calculatorService = cmd.calculatorService
                 ptCmd?.calc = cmd.calc
+                ptCmd?.minCenaNajmu = cmd.minCenaNajmu ? new BigDecimal(cmd.minCenaNajmu) : null
                 ptCmd?.validate()
                 if (ptCmd?.hasErrors()) {
                     ptCmd.errors.each { error ->
@@ -21,7 +24,6 @@ public class PointsValidator {
                             if (!fieldError.getField().equals("hasDodaniePrepaid")) { //eUmowy_ext-557
                                 errors.reject(fieldError.getCode())
                                 hasPointErrors = true
-                                log.info(error)
                             }
                         }
                     }

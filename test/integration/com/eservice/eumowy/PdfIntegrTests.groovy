@@ -1,8 +1,5 @@
 package com.eservice.eumowy
 
-import com.eservice.eumowy.Process
-import com.eservice.eumowy.command.BeneficiaryCommand
-import com.eservice.eumowy.command.RepresentativeCommand
 import com.eservice.eumowy.enums.AcceptorLocation
 import com.eservice.eumowy.enums.IdentityDocumentType
 import com.eservice.eumowy.helpers.CommandHelper
@@ -16,7 +13,7 @@ import org.junit.Before
 import org.junit.Test
 import pdfgenerator.PdfGenerator
 
-import static com.eservice.eumowy.PdfTestDataBuilder.*
+import static com.eservice.eumowy.helpers.PdfTestDataBuilder.*
 
 @TestFor(PdfService)
 class PdfIntegrTests extends ControllerUnitTestMixin{

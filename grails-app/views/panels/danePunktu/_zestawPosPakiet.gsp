@@ -30,7 +30,7 @@
         <dict:extendedTypeSelect medium="DIALUP" type="STATIONARY" isPINPad="false"
                                  id="${panelType}[${id}].possetforselectedpointDialupType"
                                  name="${panelType}[${id}].dialupTyp" from="[]"
-                                 disabled="${pointData?.hasStationaryTypeChoosen() && !pointData?.dialupTyp}"
+                                 disabled="${pointData?.hasStationaryTypeChosen() && !pointData?.dialupTyp}"
                                  valueMessagePrefix="" value="${pointData?.dialupTyp}"/></td>
 
     <td style="text-align: right;"><g:message code="panel.dialup"/></td>
@@ -53,7 +53,7 @@
         <dict:extendedTypeSelect medium="DIALUP" type="STATIONARY" isPINPad="true"
                                  id="${panelType}[${id}].possetforselectedpointDialupPPType"
                                  name="${panelType}[${id}].dialupPPTyp" from="[]"
-                                 disabled="${pointData?.hasStationaryTypeChoosen() && !pointData?.dialupPPTyp}"
+                                 disabled="${pointData?.hasStationaryTypeChosen() && !pointData?.dialupPPTyp}"
                                  valueMessagePrefix="" value="${pointData?.dialupPPTyp}"/></td>
 
     <td style="text-align: right;"><g:message code="panel.dialup"/></td>
@@ -76,7 +76,7 @@
         <dict:extendedTypeSelect medium="VPN" type="STATIONARY" isPINPad="false"
                                  id="${panelType}[${id}].possetforselectedpointVpnType"
                                  name="${panelType}[${id}].vpnTyp" from="[]"
-                                 disabled="${pointData?.hasStationaryTypeChoosen() && !pointData?.vpnTyp}"
+                                 disabled="${pointData?.hasStationaryTypeChosen() && !pointData?.vpnTyp}"
                                  valueMessagePrefix="" value="${pointData?.vpnTyp}"/></td>
 
     <td style="text-align: right;"><g:message code="panel.vpn"/></td>
@@ -99,7 +99,7 @@
         <dict:extendedTypeSelect medium="VPN" type="STATIONARY" isPINPad="true"
                                  id="${panelType}[${id}].possetforselectedpointVpnPPType"
                                  name="${panelType}[${id}].vpnPPTyp" from="[]"
-                                 disabled="${pointData?.hasStationaryTypeChoosen() && !pointData?.vpnPPTyp}"
+                                 disabled="${pointData?.hasStationaryTypeChosen() && !pointData?.vpnPPTyp}"
                                  valueMessagePrefix="" value="${pointData?.vpnPPTyp}"/></td>
 
     <td style="text-align: right;"><g:message code="panel.vpn"/></td>
@@ -122,7 +122,7 @@
         <dict:extendedTypeSelect medium="SSL" type="STATIONARY" isPINPad="false"
                                  id="${panelType}[${id}].possetforselectedpointSslType"
                                  name="${panelType}[${id}].sslTyp" from="[]"
-                                 disabled="${pointData?.hasStationaryTypeChoosen() && !pointData?.sslTyp}"
+                                 disabled="${pointData?.hasStationaryTypeChosen() && !pointData?.sslTyp}"
                                  valueMessagePrefix="" value="${pointData?.sslTyp}"/></td>
 
     <td style="text-align: right;"><g:message code="panel.ssl"/></td>
@@ -145,7 +145,7 @@
         <dict:extendedTypeSelect medium="SSL" type="STATIONARY" isPINPad="true"
                                  id="${panelType}[${id}].possetforselectedpointSslPPType"
                                  name="${panelType}[${id}].sslPPTyp" from="[]"
-                                 disabled="${pointData?.hasStationaryTypeChoosen() && !pointData?.sslPPTyp}"
+                                 disabled="${pointData?.hasStationaryTypeChosen() && !pointData?.sslPPTyp}"
                                  valueMessagePrefix="" value="${pointData?.sslPPTyp}"/></td>
 
     <td style="text-align: right;"><g:message code="panel.ssl"/></td>
@@ -169,7 +169,7 @@
                                  id="${panelType}[${id}].possetforselectedpointGprsType"
                                  name="${panelType}[${id}].gprsTyp" from="[]"
                                  valueMessagePrefix="" value="${pointData?.gprsTyp}"
-                                 disabled="${pointData?.hasStationaryTypeChoosen() && !pointData?.gprsTyp}"
+                                 disabled="${pointData?.hasStationaryTypeChosen() && !pointData?.gprsTyp}"
                                  onchange="setFieldPropertiesInDodatkoweWyposazenie(this, this.value, false)"/></td>
 
     <td style="text-align: right;"><g:message code="panel.gprs"/></td>
@@ -193,7 +193,7 @@
                                  id="${panelType}[${id}].possetforselectedpointGprsPPType"
                                  name="${panelType}[${id}].gprsPPTyp" from="[]"
                                  valueMessagePrefix="" value="${pointData?.gprsPPTyp}"
-                                 disabled="${pointData?.hasStationaryTypeChoosen() && !pointData?.gprsPPTyp}"
+                                 disabled="${pointData?.hasStationaryTypeChosen() && !pointData?.gprsPPTyp}"
                                  onchange="setFieldPropertiesInDodatkoweWyposazenie(this, this.value, false)"/></td>
 
     <td style="text-align: right;"><g:message code="panel.gprs"/></td>

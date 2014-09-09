@@ -414,6 +414,8 @@ class ProcessCommand implements Serializable {
 
     String nip = DEFAULT_VALUE
 
+    String minCenaNajmu
+
 //    uwagi
     @Omit
     String notes = DEFAULT_VALUE

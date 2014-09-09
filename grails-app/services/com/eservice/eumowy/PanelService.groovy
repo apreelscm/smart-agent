@@ -26,6 +26,10 @@ class PanelService {
         cmd.promObjNaj1 = calculatorService.getCalcProperty(calc,"E_PROM_OBN_NAJ_1")
         cmd.promObjNajLiczbaTerminali = calculatorService.getCalcProperty(calc,"LICZBA_ZEST_POS_PROM_CEN_NAJ_1")
 
+        if(ActivityHelper.isOnlyActivity(cmd.process, 'dodatkowyPunkt') || ActivityHelper.isOnlyActivity(cmd.process, 'dodatkowyPos')) {
+            cmd.minCenaNajmu = cbdService.getMinRentPrice(cmd.nip)
+        }
+
         cmd.liczbaTerminali = calculatorService.getCalcProperty(calc,"LICZBA_POS_MAX") ?: 0
     }
 
@@ -122,19 +126,19 @@ class PanelService {
 		
 		pointData.calc = calc
 		
-		pointData.dialupTyp = calculatorService.getCalcProperty(calc,"TYP_DIALUP") //K RW
+		pointData.dialupTyp = calculatorService.getCalcProperty(calc,"TYP_DIALUP")
 		pointData.dialupCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_DIALUP_TERM_CENA"))
 		pointData.dialupPPCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_DIALUP_PP_CENA"))
 
-		pointData.vpnTyp = calculatorService.getCalcProperty(calc,"TYP_VPN") //K RW
+		pointData.vpnTyp = calculatorService.getCalcProperty(calc,"TYP_VPN")
 		pointData.vpnCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_VPN_TERM_CENA"))
 		pointData.vpnPPCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_VPN_PP_CENA"))
 
-		pointData.sslTyp = calculatorService.getCalcProperty(calc,"TYP_SSL") //K RW
+		pointData.sslTyp = calculatorService.getCalcProperty(calc,"TYP_SSL")
 		pointData.sslCena = toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_SSL_TERM_CENA"))
 		pointData.sslPPCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_SSL_PP_CENA"))
 
-		pointData.gprsTyp = calculatorService.getCalcProperty(calc,"TYP_GPRS") //K RW
+		pointData.gprsTyp = calculatorService.getCalcProperty(calc,"TYP_GPRS")
 		pointData.gprsCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_GPRS_TERM_CENA"))
 		pointData.gprsPPCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_GPRS_PP_CENA"))
 
@@ -170,8 +174,6 @@ class PanelService {
 
         cmd.defaultPointData = pointData
         cmd.czyGift = cbdService.czyGift(cmd.nip)
-
-
     }
 
     def getDodatkoweUslugi(ProcessCommand cmd, def calc ) {
