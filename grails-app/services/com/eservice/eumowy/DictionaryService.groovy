@@ -1,6 +1,9 @@
 package com.eservice.eumowy
 import com.eservice.eumowy.dao.CbdDAO
 import com.eservice.eumowy.util.EumowyCustomEnvironment
+import com.google.common.base.Predicates
+import com.google.common.collect.Iterables
+import com.google.common.collect.Lists
 import grails.util.Environment
 import org.apache.commons.collections.CollectionUtils
 import org.apache.commons.collections.Predicate
@@ -80,8 +83,9 @@ class DictionaryService {
         cbdService.getCbdPoints(DICTIONARY_PATH + GET_CBD_POINTS_COMBOBOX, nip)
     }
 	
-	def getMccComboBox() {
-		cbdService.getMccCodes(DICTIONARY_PATH + GET_MCC_COMBOBOX);
+	List getMccComboBox() {
+		List mccCodes = cbdService.getMccCodes(DICTIONARY_PATH + GET_MCC_COMBOBOX)
+        return Lists.newArrayList(Iterables.filter(mccCodes, Predicates.notNull()))
 	}
 
     private def getFromDictionary(def name, def params){

@@ -1,9 +1,7 @@
 package com.eservice.eumowy
 import com.eservice.eumowy.dao.CbdDAO
-import com.eservice.eumowy.util.EumowyCustomEnvironment
 import grails.plugin.cache.CacheEvict
 import grails.plugin.cache.Cacheable
-import grails.util.Environment
 import groovy.sql.GroovyRowResult
 import org.apache.log4j.Logger
 import org.springframework.transaction.annotation.Isolation
