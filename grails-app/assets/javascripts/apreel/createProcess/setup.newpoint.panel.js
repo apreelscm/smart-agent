@@ -334,7 +334,7 @@ function setupNewPointPanelData(prefix, ppid, pid) {
     if (Object.keys(possetforselectedpoint).length == 0) {
     	if (panelIdsContainer['possetforselectedpointSameForEveryPoint'] != -1) {
     		prevPanelId = prefix+"\\["+panelIdsContainer['possetforselectedpointSameForEveryPoint']+"\\]\\.";
-    	
+
 	        possetforselectedpoint['possetforselectedpointDialupType'] = jQuery("#"+prevPanelId+"possetforselectedpointDialupType").val();
 	        possetforselectedpoint['dialupCount'] = jQuery("#"+prevPanelId+"dialupCount").val();
 	        possetforselectedpoint['dialupPPCount'] = jQuery("#"+prevPanelId+"dialupPPCount").val();
@@ -368,15 +368,15 @@ function setupNewPointPanelData(prefix, ppid, pid) {
     if (Object.keys(technicalinformation).length == 0) {
     	if (panelIdsContainer['technicalinformationSameForEveryPoint'] != -1) {
     		prevPanelId = prefix+"\\["+panelIdsContainer['technicalinformationSameForEveryPoint']+"\\]\\.";
-    		
+
 	        technicalinformation['dayCloseFrom'] = jQuery("#"+prevPanelId+"hiddenDayCloseFrom").val();
 	        technicalinformation['dayCloseTo'] = jQuery("#"+prevPanelId+"hiddenDayCloseTo").val();
-	        
+
 	        technicalinformation['timeFromHours'] = jQuery("#"+prevPanelId+"timeFromHours").val();
 	        technicalinformation['timeFromMinutes'] = jQuery("#"+prevPanelId+"timeFromMinutes").val();
 	        technicalinformation['timeToHours'] = jQuery("#"+prevPanelId+"timeToHours").val();
 	        technicalinformation['timeToMinutes'] = jQuery("#"+prevPanelId+"timeToMinutes").val();
-	        
+
 	        technicalinformation['plannedInstallationDate'] = jQuery("#"+prevPanelId+"plannedInstallationDate").val();
 	        technicalinformation['additionalNotes'] = jQuery("#"+prevPanelId+"additionalNotes").val();
     	}
@@ -385,7 +385,7 @@ function setupNewPointPanelData(prefix, ppid, pid) {
     if (Object.keys(terminaloptions).length == 0) {
     	if (panelIdsContainer['terminaloptionsSameForEveryPoint'] != -1) {
     		prevPanelId = prefix+"\\["+panelIdsContainer['terminaloptionsSameForEveryPoint']+"\\]\\.";
-    		
+
 	        terminaloptions['preauthorization'] = jQuery("#"+prevPanelId+"preauthorization").prop("checked");
 	        terminaloptions['noreturnfunction'] = jQuery("#"+prevPanelId+"noreturnfunction").prop("checked");
 	        terminaloptions['returnWithPassword'] = jQuery("#"+prevPanelId+"returnWithPassword").prop("checked");
@@ -405,7 +405,7 @@ function setupNewPointPanelData(prefix, ppid, pid) {
     if (Object.keys(additionalequipment).length == 0) {
     	if (panelIdsContainer['additionalequipmentSameForEveryPoint'] != -1) {
     		prevPanelId = prefix+"\\["+panelIdsContainer['additionalequipmentSameForEveryPoint']+"\\]\\.";
-		
+
 			additionalequipment['bazaCount'] = jQuery("#"+prevPanelId+"bazaCount").val();
 	        additionalequipment['routerCount'] = jQuery("#"+prevPanelId+"routerCount").val();
 	        additionalequipment['cardReaderCount'] = jQuery("#"+prevPanelId+"cardReaderCount").val();
@@ -465,12 +465,12 @@ function setupNewPointPanelData(prefix, ppid, pid) {
         if (panelIdsContainer['technicalinformationSameForEveryPoint'] != -1) {
             jQuery("#"+panelId+"dayCloseFrom").val(technicalinformation['dayCloseFrom']).keyup();
             jQuery("#"+panelId+"dayCloseTo").val(technicalinformation['dayCloseTo']).keyup();
-            
+
             jQuery("#"+panelId+"timeFromHours").val(technicalinformation['timeFromHours']).change();
 	        jQuery("#"+panelId+"timeFromMinutes").val(technicalinformation['timeFromMinutes']).change();
 	        jQuery("#"+panelId+"timeToHours").val(technicalinformation['timeToHours']).change();
 	        jQuery("#"+panelId+"timeToMinutes").val(technicalinformation['timeToMinutes']).change();
-            
+
             jQuery("#"+panelId+"plannedInstallationDate").val(technicalinformation['plannedInstallationDate']).keyup();
             jQuery("#"+panelId+"additionalNotes").val(technicalinformation['additionalNotes']).keyup();
             jQuery("#"+panelId+"technicalinformationSameForEveryPoint").prop("checked", true);
@@ -508,26 +508,7 @@ function setupNewPointPanelData(prefix, ppid, pid) {
         }
     }
 
-    var dialupType = jQuery("#"+panelId+"possetforselectedpointDialupType"),
-        vpnType = jQuery("#"+panelId+"possetforselectedpointVpnType"),
-        sslType = jQuery("#"+panelId+"possetforselectedpointSslType"),
-        gprsType = jQuery("#"+panelId+"possetforselectedpointGprsType");
-
-    if(dialupType.val() == ''){
-        dialupType.closest('tr').find('input.float-number').removeAttr('value');
-    }
-
-    if(vpnType.val() == ''){
-        vpnType.closest('tr').find('input.float-number').removeAttr('value');
-    }
-
-    if(sslType.val() == ''){
-        sslType.closest('tr').find('input.float-number').removeAttr('value');
-    }
-
-    if(gprsType.val() == ''){
-        gprsType.closest('tr').find('input.float-number').removeAttr('value');
-    }
+    var gprsType = jQuery("#"+panelId+"possetforselectedpointGprsType");
 
     if(gprsType.val() === ""){
         setRequiredForSimCardForPanelId(false, panelId);

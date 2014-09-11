@@ -106,12 +106,7 @@ class ProcessCommand implements Serializable {
 //    danePunktu
     boolean czyDcc
 
-    String oplataVISA = DEFAULT_VALUE
-    String oplataVISAPr = DEFAULT_VALUE
-    String oplataMasterCard = DEFAULT_VALUE
-    String oplataMasterCardPr = DEFAULT_VALUE
-    String oplataMaestro = DEFAULT_VALUE
-    String oplataMaestroPr = DEFAULT_VALUE
+    String dccKartyZagranicznePr = DEFAULT_VALUE
 
 //    dccZakresUruchomienia
     String dccZakresUruchomienia = DEFAULT_VALUE
@@ -680,12 +675,7 @@ class ProcessCommand implements Serializable {
         })
         wydrukLinia1(nullable: true, blank: true)
         wydrukLinia2(nullable: true, blank: true)
-        oplataVISA(nullable: false, blank: false,  validator: { value, cmd, errors -> NumberValidator.validate(value, cmd, errors, propertyName)})
-        oplataVISAPr(nullable: false, blank: false,  validator: { value, cmd, errors -> NumberValidator.validate(value, cmd, errors, propertyName)})
-        oplataMasterCard(nullable: false, blank: false,  validator: { value, cmd, errors -> NumberValidator.validate(value, cmd, errors, propertyName)})
-        oplataMasterCardPr(nullable: false, blank: false,  validator: { value, cmd, errors -> NumberValidator.validate(value, cmd, errors, propertyName)})
-        oplataMaestro(nullable: false, blank: false,  validator: { value, cmd, errors -> NumberValidator.validate(value, cmd, errors, propertyName)})
-        oplataMaestroPr(nullable: false, blank: false,  validator: { value, cmd, errors -> NumberValidator.validate(value, cmd, errors, propertyName)})
+        dccKartyZagranicznePr(nullable: false, blank: false,  validator: { value, cmd, errors -> NumberValidator.validate(value, cmd, errors, propertyName)})
 
         dccZakresUruchomienia(nullable: false, blank: false)
         hasDccZakresUruchomienia(nullable: true, validator: { value, cmd, errors ->

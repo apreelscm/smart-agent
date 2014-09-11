@@ -18,7 +18,8 @@
                 <tr>
                      <td><g:message code="panel.payment.first.session"/></td>
                      <td>
-                        <eumowy:currencyField type="text" name="pierwszaSesjaCena" validatable="${data}" value="${data.pierwszaSesjaCena}"/>
+                        <eumowy:currencyField type="text" name="pierwszaSesjaCena" validatable="${data}" value="${data.pierwszaSesjaCena}"
+                            readonly="${data.isBundleActivity}"/>
                     </td>
                 </tr>
                 <tr>

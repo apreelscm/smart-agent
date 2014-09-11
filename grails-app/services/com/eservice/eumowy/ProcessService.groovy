@@ -248,7 +248,7 @@ class ProcessService {
     }
 
     List<RepresentativeCommand> getRepresentativesCommand(Process process, Representative.Type type) {
-        List<Representative> representatives = process.representatives?.findAll {type.equals(it.typ)}.sort {it.id}
+        List<Representative> representatives = process.representatives?.findAll {type.equals(it.typ)}?.sort {it.id}
         Map representativeProperties
 
         List<RepresentativeCommand> result = []

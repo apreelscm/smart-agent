@@ -102,12 +102,7 @@ class PanelService {
     }
 
     def getDcc(ProcessCommand cmd, def calc ) {
-        cmd.oplataVISA = calculatorService.getCalcProperty(calc,"OPLATA_DCC_VISA_ZL")
-        cmd.oplataVISAPr =calculatorService.getCalcProperty(calc,"OPLATA_DCC_VISA_PR")
-        cmd.oplataMasterCard = calculatorService.getCalcProperty(calc,"OPLATA_DCC_MASTERCARD_ZL")
-        cmd.oplataMasterCardPr = calculatorService.getCalcProperty(calc,"OPLATA_DCC_MASTERCARD_PR")
-        cmd.oplataMaestro = calculatorService.getCalcProperty(calc,"OPLATA_DCC_MAESTRO_ZL")
-        cmd.oplataMaestroPr =calculatorService.getCalcProperty(calc,"OPLATA_DCC_MAESTRO_PR")
+
     }
 
     def getDccZakresUruchomienia(ProcessCommand cmd, def calc ) {

@@ -682,7 +682,7 @@ input[readonly]{
 }
 
 input[disabled] {
-    background-color: #f0f0f0;
+    background-color: #D6D5D5;
 }
 
 /*  Navigation

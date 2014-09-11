@@ -38,6 +38,7 @@ class ActivityController {
     def mailBodyCreatorService
     def sessionFactory
     def signatureService
+    def subscriptionService
 
     def springSecurityService
 
@@ -998,17 +999,8 @@ class ActivityController {
                     return error();
                 }
 
-                /* Delete subscriptions */
-				List<Subscription> subscriptions = Subscription.findAll {
-					process == processInstance || uniqueKey =~ processInstance.id.toString()+"%"
-				}
-				List subscriptionIds = subscriptions*.collect {subscription -> subscription.id}.flatten()
+                subscriptionService.deleteSubscriptionsFromProcess(processInstance)
 
-				if (subscriptionIds.size() > 0) {
-					Subscription.executeUpdate("delete Subscription where id in (:list)",[list: subscriptionIds])
-				}
-
-				processInstance.subscriptions?.clear()
                 flow.processInstance = processInstance
             }.to "clientSignature"
             on("reject"){
