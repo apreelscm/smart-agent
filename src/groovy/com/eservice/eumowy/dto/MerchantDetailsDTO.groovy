@@ -28,7 +28,7 @@ class MerchantDetailsDTO implements Serializable {
     public MerchantDetailsDTO(MerchantKRSDataDTO merchantData) {
         nip = merchantData.getNip()
         akceptantRegon = merchantData.getRegon()
-        akceptantNazwaOficjalna = merchantData.getName()
+        akceptantNazwaOficjalna = getAlphanumericName(merchantData.getName())
         opisMerchanta = merchantData.getDescription()
 
         if (merchantData.merchAddressDatas.size() > 0) {
@@ -58,5 +58,9 @@ class MerchantDetailsDTO implements Serializable {
         for(MerchantRepresentativeDataDTO merchantRepresentative: merchantData.merchRepresentDatas) {
             representatives.add(new MerchantRepresentativeDTO(merchantRepresentative))
         }
+    }
+
+    private String getAlphanumericName(String value) {
+        return value?.replaceAll("[^A-Za-z0-9 ]", "")
     }
 }

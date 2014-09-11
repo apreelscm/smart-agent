@@ -652,8 +652,14 @@ class ProcessCommand implements Serializable {
             return true
         })
 
-        akceptantNazwaOficjalna(blank: false)
-        akceptantNazwaSieciowa(nullable: true, blank: true)
+        akceptantNazwaOficjalna(blank: false, validator: { value, cmd, errors ->
+            TextValidator.isAlphanumeric(value, cmd, errors, propertyName)
+        })
+        akceptantNazwaSieciowa(nullable: true, blank: true, validator: { value, cmd, errors ->
+            if(StringUtils.isEmpty(value)) return true
+
+            return TextValidator.isAlphanumeric(value, cmd, errors, propertyName)
+        })
         akceptantRegon(nullable: false, blank: false, matches: "~|[0-9]{9}")
         akceptantNazwaOficjalnaCbd(nullable: true)
         akceptantNazwaSieciowaCbd(nullable: true)
