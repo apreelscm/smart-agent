@@ -125,7 +125,7 @@ class EmailService {
 
                 if (documents){
                     documents.each { doc ->
-                        attachBytes doc.clientName ?: doc.name , 'application/pdf', PdfGenerator.closeContent(doc.content.content)
+                        attachBytes doc.clientName ?: doc.name , 'application/pdf', PdfGenerator.getClosedContent(doc.content.content)
                     }
                 }
             }

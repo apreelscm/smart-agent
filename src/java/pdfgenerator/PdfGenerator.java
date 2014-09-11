@@ -262,7 +262,7 @@ public class PdfGenerator {
     }
 
 
-    public static byte[] closeContent(byte[] dc){
+    public static byte[] getClosedContent(byte[] dc){
         PdfReader templateReader = null;
         PdfStamper stamp = null;
         ByteArrayOutputStream baos = new ByteArrayOutputStream();

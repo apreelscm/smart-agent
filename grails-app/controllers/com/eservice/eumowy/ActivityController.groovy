@@ -7,6 +7,7 @@ import com.eservice.eumowy.exception.CalculatorException
 import com.eservice.eumowy.validator.NumberValidator
 import grails.converters.JSON
 import groovy.sql.GroovyRowResult
+import org.apache.catalina.connector.ClientAbortException
 import org.codehaus.groovy.grails.web.json.JSONObject
 import org.hibernate.StaleObjectStateException
 import org.springframework.orm.hibernate4.HibernateOptimisticLockingFailureException
@@ -1326,7 +1327,15 @@ class ActivityController {
 
 		response.setContentType("application/pdf")
 		response.setHeader("Content-disposition", "${params.contentDisposition}; filename=\"${file.name}\"")
-		response.outputStream << PdfGenerator.closeContent(file.content.content)
+        response.setStatus(200)
+        response.flushBuffer()
+
+        try {
+		    response.outputStream << PdfGenerator.getClosedContent(file.content.content)
+        } catch(ClientAbortException e) {
+            log.info("Application on android device tried to download document and triggered 2 download requests " +
+                    "(one from browser, second from download manager). This is common bug, nothing to worry about - document was download.")
+        }
 	}
 
     def testSql(){

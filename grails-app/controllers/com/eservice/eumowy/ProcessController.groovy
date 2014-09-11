@@ -398,7 +398,7 @@ class ProcessController {
 
         response.setContentType("application/pdf")
         response.setHeader("Content-disposition", "${params.contentDisposition}; filename=\"${file.name}\"")
-        response.outputStream << PdfGenerator.closeContent(file.content.content)
+        response.outputStream << PdfGenerator.getClosedContent(file.content.content)
     }
 
     def downloadAttachment(){
