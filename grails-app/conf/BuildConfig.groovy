@@ -64,7 +64,7 @@ grails.project.dependency.resolution = {
 
         compile ":scaffolding:2.1.1"
         compile ':cache:1.1.7'
-        compile ':asset-pipeline:1.8.3'
+        compile ':asset-pipeline:1.9.9'
         compile ":mail:1.0.6"
 
         runtime ':hibernate4:4.3.5.3'
