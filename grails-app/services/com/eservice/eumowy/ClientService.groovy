@@ -1,18 +1,10 @@
 package com.eservice.eumowy
 
-import grails.util.Environment
-
 class ClientService {
 
     static transactional = false;
 
     boolean isClientNipInvalid(def nip) {
-
-        // TODO tymczasowo
-        if(Environment.isDevelopmentMode() || Environment.TEST.getName().equalsIgnoreCase(Environment.getCurrent().name)) {
-            return false
-        }
-
         if (nip.length() == 13) {
             nip = nip.replaceAll("-", "");
         }
@@ -24,7 +16,7 @@ class ClientService {
             for (int i = 0; i < weights.size(); i++) {
                 sum += Integer.parseInt(aNip[i + 1]) * weights[i];
             }
-            return (sum % 11) == Integer.parseInt(aNip[10]);
+            return (sum % 11) != Integer.parseInt(aNip[10]);
         } catch (NumberFormatException e) {
             return true
         }
@@ -44,5 +36,4 @@ class ClientService {
         client.name = cmd.akceptantNazwaOficjalna
         client.save()
     }
-
 }
