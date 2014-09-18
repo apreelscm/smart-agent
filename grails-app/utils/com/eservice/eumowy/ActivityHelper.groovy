@@ -1,6 +1,8 @@
 package com.eservice.eumowy
 
 class ActivityHelper {
+    //TODO: przeniesc tego helpera do Process jako trait
+
     static boolean isNewAgreement(Process process) {
         return contains(process, "nowaUmowa")
     }
@@ -40,7 +42,11 @@ class ActivityHelper {
     }
 
     static boolean hasCombination(Process process, List<String> requiredActivities, List<String> optionalActivities) {
-               return hasAtLeastOne(process, requiredActivities) && hasAtLeastOne(process, optionalActivities)
+        return hasAtLeastOne(process, requiredActivities) && hasAtLeastOne(process, optionalActivities)
+    }
+
+    static boolean hasNoCombination(Process process, List<String> activites, List<String> excludingActivities) {
+        return hasAtLeastOne(process, activites) && !hasAtLeastOne(process, excludingActivities)
     }
 
     static boolean isCalculatorRedundant(Process process) {

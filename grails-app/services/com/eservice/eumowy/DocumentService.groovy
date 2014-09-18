@@ -95,7 +95,11 @@ class DocumentService {
 
         signaturesWithoutPurpose.each { Signature signature ->
             log.info(String.format("New single document from signature %s.", signature.name))
-            documents.add(getDocumentFile(processInstance, signature, dataFromProcess))
+            DocumentFile documentFile = getDocumentFile(processInstance, signature, dataFromProcess)
+
+            if(documentFile) {
+                documents.add(documentFile)
+            }
         }
 
         return documents
@@ -128,7 +132,9 @@ class DocumentService {
             log.info(String.format("New Pos Exchange document %s from signature %s.", documentClientName, posSignature.name))
 
             DocumentFile documentFile = getDocumentFile(processInstance, posSignature, data, documentName, documentClientName)
-            documents.add(documentFile)
+            if(documentFile) {
+                documents.add(documentFile)
+            }
         }
 
         return documents
@@ -148,7 +154,9 @@ class DocumentService {
             log.info(String.format("New representative document %s from signature %s.", documentName, pepSignature.name))
 
             DocumentFile documentFile = getDocumentFile(processInstance, pepSignature, pepData, documentName, documentName)
-            documents.add(documentFile)
+            if(documentFile) {
+                documents.add(documentFile)
+            }
         }
 
         return documents
@@ -183,7 +191,9 @@ class DocumentService {
                     log.info(String.format("New Point document %s from signature %s.", documentClientName, signature.name))
 
                     DocumentFile documentFile = getDocumentFile(processInstance, signature, data, documentName, documentClientName)
-                    documents.add(documentFile)
+                    if(documentFile) {
+                        documents.add(documentFile)
+                    }
                 }
             }
         }
@@ -225,7 +235,7 @@ class DocumentService {
         Map<String,String[]> dataMap = new HashMap<String, String[]>()
 
         if (!signature.templatePath){
-            log.debug("Signature %s is virtual signature. Skipping...", signature.name)
+            log.debug(String.format("Signature %s is virtual signature. Skipping...", signature.name))
             return
         }
 
@@ -269,7 +279,7 @@ class DocumentService {
         int totalPageCount = 0
 
         documents.each { DocumentFile document ->
-            totalPageCount += (document.signature.showOnPreview ? document.pagesCount : 0)
+            totalPageCount += (document.signature?.showOnPreview ? document.pagesCount : 0)
         }
 
         return totalPageCount

@@ -26,13 +26,13 @@ class MapperService {
         def data = [:]
 
         data.putAll(processMapper.mapOnlyProcessData(processInstance))
+        data.putAll(new RepresentativesNamesMapper(processInstance).getDataForMapping())
 
         if(ActivityHelper.isNewAgreement(processInstance)) {
             data.putAll(new PABRformMapper(processInstance).getDataForMapping())
         }
 
         if(ActivityHelper.isBundleActivity(processInstance)) {
-            data.putAll(new RepresentativesNamesMapper(processInstance).getDataForMapping())
             data.putAll(new FacilitiesMapper(processInstance).getDataForMapping())
         }
 

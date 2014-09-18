@@ -28,6 +28,10 @@ public abstract class AbstractPdfMapper {
         }
     }
 
+    String[] getCheckedCheckbox() {
+        return [true, "", "checkbox"] as String[]
+    }
+
     String[] getCheckboxData(boolean checkCondition) {
         return [!checkCondition, "", "checkbox"] as String[]
     }
@@ -126,5 +130,9 @@ public abstract class AbstractPdfMapper {
         }
 
         return sb.toString()
+    }
+
+    public String[] getPdfValue(String value) {
+        return [value] as String[]
     }
 }

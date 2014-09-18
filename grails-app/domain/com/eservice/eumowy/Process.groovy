@@ -154,6 +154,10 @@ class Process implements Serializable {
 					  .isEquals();
 	}
 
+    public boolean hasData(String key) {
+        return getData(key) != null
+    }
+
     public String getData(String key) {
         return processData.find{it.name.equals(key)}?.value
     }
