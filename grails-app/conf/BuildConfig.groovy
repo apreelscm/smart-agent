@@ -70,7 +70,6 @@ grails.project.dependency.resolution = {
         compile ":build-info-tag:0.3.1"
         compile ":webflow:2.1.0"
 
-        runtime ":database-migration:1.4.0"
         runtime ":hibernate4:4.3.5.3"
         runtime ":jquery:1.11.1"
         runtime ":spring-security-core:2.0-RC4"
