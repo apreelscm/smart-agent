@@ -7,9 +7,13 @@ import com.eservice.eumowy.exception.CalculatorException
 import com.eservice.eumowy.validator.NumberValidator
 import grails.converters.JSON
 import groovy.sql.GroovyRowResult
+import org.apache.catalina.connector.ClientAbortException
 import org.codehaus.groovy.grails.web.json.JSONObject
+import org.hibernate.HibernateException
+import org.hibernate.NonUniqueObjectException
 import org.hibernate.StaleObjectStateException
 import org.springframework.orm.hibernate4.HibernateOptimisticLockingFailureException
+import org.springframework.orm.hibernate4.HibernateSystemException
 import pdfgenerator.PdfGenerator
 
 import com.eservice.eumowy.command.ProcessCommand
