@@ -34,11 +34,11 @@
                         </span>
                         <span>
                             <span>
-                                <g:message code="panel.house.number" /></span> <span><eumowy:textField name="akceptantNrDomu"  value="${data.akceptantNrDomu}" validatable="${data}" readonly="${data.checkIfFromCbd('akceptantNrDomu')}" style="width: 50px" maxlength="6" required="true"/>
+                                <g:message code="panel.house.number" /></span> <span><eumowy:textField name="akceptantNrDomu"  value="${data.akceptantNrDomu}" validatable="${data}" readonly="${data.checkIfFromCbd('akceptantNrDomu')}" style="width: 50px" maxlength="8" required="true"/>
                                 <g:hiddenField name="akceptantNrDomuCbd" value="${data.akceptantNrDomuCbd}"/>
                             </span>
                             <span>
-                                <g:message code="panel.flat.number" /></span> <span><eumowy:textField name="akceptantNrMieszkania" value="${data.akceptantNrMieszkania}" validatable="${data}" readonly="${data.checkIfFromCbd('akceptantNrMieszkania')}" style="width: 50px" maxlength="4"/>
+                                <g:message code="panel.flat.number" /></span> <span><eumowy:textField name="akceptantNrMieszkania" value="${data.akceptantNrMieszkania}" validatable="${data}" readonly="${data.checkIfFromCbd('akceptantNrMieszkania')}" style="width: 50px" maxlength="8"/>
                                 <g:hiddenField name="akceptantNrMieszkaniaCbd" value="${data.akceptantNrMieszkaniaCbd}"/>
                             </span>
                         </span>

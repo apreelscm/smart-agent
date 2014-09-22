@@ -9,7 +9,7 @@
                 </li>
                 <li>
                     <span class="align-right"><g:message code="panel.bank.name"/></span>
-                    <span class="align-left"><eumowy:textField name="bankKlienta" value="${data.bankKlienta}" validatable="${data}" style="width: 250px"/></span>
+                    <span class="align-left"><eumowy:textField name="bankKlienta" value="${data.bankKlienta}" validatable="${data}" style="width: 250px" readonly="readonly"/></span>
                 </li>
             </ul>
         </div>

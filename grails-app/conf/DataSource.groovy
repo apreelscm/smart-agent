@@ -31,7 +31,7 @@ environments {
         dataSource {
             driverClassName = "oracle.jdbc.driver.OracleDriver"
             dialect = "org.hibernate.dialect.Oracle10gDialect"
-            username = 'EUMOWY_APP'
+            username = "EUMOWY_APP"
             password = 'WsMQ8h2$'
             dbCreate = ""
             url = "jdbc:oracle:thin:@192.168.9.22:1521:cbd"

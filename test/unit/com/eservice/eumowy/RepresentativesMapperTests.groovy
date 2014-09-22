@@ -3,7 +3,7 @@ package com.eservice.eumowy
 import com.eservice.eumowy.enums.AcceptorLocation
 import com.eservice.eumowy.enums.IdentityDocumentType
 import com.eservice.eumowy.helpers.CommandHelper
-import com.eservice.eumowy.pdfmapper.representative.RepresentativesMapper
+import com.eservice.eumowy.pdfmapper.representative.RepresentativesDetailsMapper
 import org.junit.Before
 import org.junit.Test
 
@@ -25,7 +25,7 @@ class RepresentativesMapperTests {
     @Test
     void shouldNotCreateData() {
         //when
-        Map data = new RepresentativesMapper(process).getDataForMapping()
+        Map data = new RepresentativesDetailsMapper(process).getDataForMapping()
 
         //then
         assertEquals(0, data.size())
@@ -42,7 +42,7 @@ class RepresentativesMapperTests {
         process.processData.add(new ProcessData(name: 'dzialalnoscForma', value: 'spolka_cywilna'))
         CommandHelper.setProperties(representative, representativeProperties)
         process.representatives.add(representative)
-        Map data = new RepresentativesMapper(process).getDataForMapping()
+        Map data = new RepresentativesDetailsMapper(process).getDataForMapping()
         
         //then
         assertEquals(data["osFiz_reprezentant1Nazwa"], ["Jan Kowalski"] as String[])
@@ -65,7 +65,7 @@ class RepresentativesMapperTests {
         process.processData.add(new ProcessData(name: 'dzialalnoscForma', value: 'spolka_zoo'))
         CommandHelper.setProperties(representative, representativeProperties)
         process.representatives.add(representative)
-        Map data = new RepresentativesMapper(process).getDataForMapping()
+        Map data = new RepresentativesDetailsMapper(process).getDataForMapping()
 
         //then
         assertEquals(data["osPraw_reprezentant1Nazwa"], ["Jan Kowalski"] as String[])

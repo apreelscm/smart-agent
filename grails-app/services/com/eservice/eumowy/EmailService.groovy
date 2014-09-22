@@ -14,6 +14,7 @@ class EmailService {
     def mailService
     def messageSource
     def processService
+    def grailsApplication
 
     private static final String COA_MAIL = "coa@eservice.com.pl"
 
@@ -112,21 +113,26 @@ class EmailService {
 
         StopWatch stopWatch = new Log4JStopWatch();
 
-        mailService.sendMail {
-            if (documents) {
-                multipart true
-            }
-            from emailTemplate.sender
-            to recipients
-            subject messageSource.getMessage("${emailTemplate.name}.email.subject", subjectParams, Locale.default)
-            body( view: "/email/template/${emailTemplate.name}", model: bodyParams)
+        if(grailsApplication.config.email.sending.enabled) {
+            mailService.sendMail {
+                if (documents) {
+                    multipart true
+                }
+                from emailTemplate.sender
+                to recipients
+                subject messageSource.getMessage("${emailTemplate.name}.email.subject", subjectParams, Locale.default)
+                body( view: "/email/template/${emailTemplate.name}", model: bodyParams)
 
-            if (documents){
-                documents.each { doc ->
-                    attachBytes doc.clientName ?: doc.name , 'application/pdf', PdfGenerator.closeContent(doc.content.content)
+                if (documents){
+                    documents.each { doc ->
+                        attachBytes doc.clientName ?: doc.name , 'application/pdf', PdfGenerator.getClosedContent(doc.content.content)
+                    }
                 }
             }
+        } else {
+            log.warn("Email sending disabled... If you want to enable it set 'email.sending.enabled=true' in config file.")
         }
+
         stopWatch.stop('sendMail')
     }
 }

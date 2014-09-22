@@ -5,6 +5,7 @@ grails.project.test.reports.dir = "target/test-reports"
 grails.project.test.otherResources
 grails.project.target.level = 1.6
 grails.project.source.level = 1.6
+grails.reload.enabled = true
 //grails.project.war.file = "target/${appName}-${appVersion}.war"
 
 // uncomment (and adjust settings) to fork the JVM to isolate classpaths
@@ -48,11 +49,10 @@ grails.project.dependency.resolution = {
         compile 'org.springframework.ws:spring-xml:2.2.0.RELEASE'
 
         runtime 'com.google.code.gson:gson:2.2.4'
-//		runtime 'org.apache.pdfbox:pdfbox:1.8.2'
-        runtime 'org.apache.pdfbox:pdfbox:2.0.0-SNAPSHOT'
         runtime 'joda-time:joda-time:2.3'
         runtime 'com.lowagie:itext:2.1.7'
         runtime 'org.apache.poi:poi:3.10-FINAL'
+        runtime 'com.google.guava:guava:18.0'
 
         test 'org.mockito:mockito-all:1.9.5'
         test 'org.powermock:powermock-core:1.5.5'
@@ -63,16 +63,16 @@ grails.project.dependency.resolution = {
         build ":tomcat:7.0.54"
 
         compile ":scaffolding:2.1.1"
-        compile ':cache:1.1.7'
-        compile ':asset-pipeline:1.9.9'
+        compile ":cache:1.1.7"
+        compile ":asset-pipeline:1.9.9"
         compile ":mail:1.0.6"
-
-        runtime ':hibernate4:4.3.5.3'
-        runtime ":spring-security-core:2.0-RC4"
-        runtime ":jquery:1.11.1"
-
         compile ":quartz:1.0.1"
         compile ":build-info-tag:0.3.1"
-        compile ':webflow:2.1.0-SNAPSHOT'
+        compile ":webflow:2.1.0"
+
+        runtime ":database-migration:1.4.0"
+        runtime ":hibernate4:4.3.5.3"
+        runtime ":jquery:1.11.1"
+        runtime ":spring-security-core:2.0-RC4"
     }
 }

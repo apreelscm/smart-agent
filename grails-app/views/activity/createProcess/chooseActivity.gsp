@@ -38,46 +38,14 @@
     <g:form id="signaturesFormId">
         <g:each var="activity" in="${processInstance?.activities?.sort(false){it.numerPozycji}}">
             <article id="${activity.code}" class="border-article signature-article">
-                <g:set var="list1" value="${activity?.activitySignatures?.findAll { it.numberOfList == 1 && it.signature.active}}"/>
-                <g:set var="list2" value="${activity?.activitySignatures?.findAll { it.numberOfList == 2 && it.signature.active}}"/>
-                <g:set var="listM" value="${activity?.activitySignatures?.findAll { it.mandatory == true && it.signature.active}}"/>
-
-                <g:set var="selectedValue1" value="${activity?.selectedActivitySignatures?.find { it.numberOfList == 1 }}"/>
-                <g:set var="selectedValue2" value="${activity?.selectedActivitySignatures?.find { it.numberOfList == 2 }}"/>
-
                 <h3 class="linia-bottom"><g:message code="activity.${activity.code}.name"/></h3>
                 <div>
-                    <g:hiddenField name="activitySignature_${activity.id}" value="${listM*.id}" />
+                    <sig:mandatory activity="${activity}"/>
 
-                    <apreel:selectField data-activity="${activity.id}" data-id="sig1" id="act_${activity.id}_sig1" name="activitySignature_${activity.id}"
-                                        title="${message(code:'signature1.sygnaturaDokumentu.'+activity.code+'.name')}"
-                                        from="${list1}"
-                                        optionKey="id"
-                                        optionValue="signature"
-                                        value="${selectedValue1?.id}"
-                                        noSelection="[null: '']"/>
-                    
-                    <g:each var="sig" in="${list1}">
-                   		<g:if test="${sig.signature.description != null}">                
-							<p class="sig-${activity.id}-description-1" id="sig_${sig.id}_desc" style="display: none;">${sig.signature.description}</p>
-						</g:if>
-					</g:each>
-                    <g:if test="${list2?.size() > 0}">
-                        <apreel:selectField data-activity="${activity.id}" data-id="sig2" id="act_${activity.id}_sig2"  name="activitySignature_${activity.id}"
-                                            title="${message(code:'signature2.sygnaturaDokumentu.'+activity.code+'.name')}"
-                                            from="${list2}"
-                                            optionKey="id"
-                                            optionValue="signature"
-                                            value="${selectedValue2?.id}"
-                                            noSelection="[null: '']"/>
-                    	<g:each var="sig" in="${list2}">
-                    		<g:if test="${sig.signature.description != null}">
-                    			<p class="sig-${activity.id}-description-2" id="sig_${sig.id}_desc" style="display: none;">${sig.signature.description}</p>
-                    		</g:if>
-                    	</g:each>
-                    </g:if>
+                    <sig:list activity="${activity}" process="${processInstance}" listNumber="1"/>
+
+                    <sig:list activity="${activity}" process="${processInstance}" listNumber="2"/>
                 </div>
-
             </article>
         </g:each>
         <fieldset style="margin-top: 20px;">

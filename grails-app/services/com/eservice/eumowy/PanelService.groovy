@@ -10,10 +10,6 @@ class PanelService {
     def cbdService
     def calculatorService
     def springSecurityService
-    //domainClass
-    //def calcMethods = ["getDcc","getDodatkoweUslugi2","getFormaDoladowania","getIfplus","","","","","","","","","","","",]
-
-    def cbdMethods = ["getAdresDoKorespondencjizAkecptantem","getDaneAkceptanta","getSiedzibaAkceptanta","getSerwis"]
 
     def init(ProcessCommand cmd, def calc){
         cmd.scoringMcc = calculatorService.getCalcProperty(calc,"MCC")
@@ -22,14 +18,19 @@ class PanelService {
         cmd.isDoladowania_tk = calculatorService.getCalcProperty(calc,"CZY_TELEKODZIK")
         cmd.doladowania_tp = nullify(cmd.doladowania_tp)
         cmd.doladowania_tk = nullify(cmd.doladowania_tk)
-        cmd.isRozszerzenie = cmd.process?.activities?.any{it.code.equals('dodatkowyPunkt')} || cmd.process?.activities?.any{it.code.equals('dodatkowyPos')}
+        cmd.isRozszerzenie = ActivityHelper.contains(cmd.process, 'dodatkowyPunkt') || ActivityHelper.contains(cmd.process, 'dodatkowyPos')
         cmd.hasPrepaid = cbdService.getPrepaidEvoucher(cmd.nip) || cbdService.getPrepaidTopup(cmd.nip)
-        cmd.hasDodaniePrepaid = cmd.process?.activities?.any{it.code.equals('dodaniePrepaid')}
-        cmd.hasNewUmowaAndPrepaid = cmd.process?.activities?.any{it.code.equals('nowaUmowa')} && cmd.hasDodaniePrepaid
+        cmd.hasDodaniePrepaid = ActivityHelper.contains(cmd.process, 'dodaniePrepaid')
+        cmd.hasNewUmowaAndPrepaid = ActivityHelper.isNewAgreement(cmd.process) && cmd.hasDodaniePrepaid
+        cmd.isBundleActivity = ActivityHelper.isBundleActivity(cmd.process)
         cmd.promObjNaj1 = calculatorService.getCalcProperty(calc,"E_PROM_OBN_NAJ_1")
         cmd.promObjNajLiczbaTerminali = calculatorService.getCalcProperty(calc,"LICZBA_ZEST_POS_PROM_CEN_NAJ_1")
 
-        cmd.liczbaTerminali = calculatorService.getCalcProperty(calc,"LICZBA_POS_MAX") != null ? calculatorService.getCalcProperty(calc,"LICZBA_POS_MAX") : 0
+        if(ActivityHelper.isOnlyActivity(cmd.process, 'dodatkowyPunkt') || ActivityHelper.isOnlyActivity(cmd.process, 'dodatkowyPos')) {
+            cmd.minCenaNajmu = cbdService.getMinRentPrice(cmd.nip)
+        }
+
+        cmd.liczbaTerminali = calculatorService.getCalcProperty(calc,"LICZBA_POS_MAX") ?: 0
     }
 
     def getAdresacjaSeciowa(ProcessCommand cmd, def calc ) {
@@ -69,7 +70,7 @@ class PanelService {
     def getDaneAkceptanta(ProcessCommand cmd, def calc ) {
         def result = cbdService.getDaneAkceptanta(cmd.nip);
 
-        cmd.akceptantNazwaOficjalna = result?.nazwa ?: ""
+        cmd.akceptantNazwaOficjalna = getAlphanumericName(result?.nazwa) ?: ""
         cmd.akceptantNazwaSieciowa = nullify(cmd.akceptantNazwaSieciowa)
         cmd.akceptantRegon = result?.regon ?: ""
 
@@ -101,12 +102,7 @@ class PanelService {
     }
 
     def getDcc(ProcessCommand cmd, def calc ) {
-        cmd.oplataVISA = calculatorService.getCalcProperty(calc,"OPLATA_DCC_VISA_ZL")
-        cmd.oplataVISAPr =calculatorService.getCalcProperty(calc,"OPLATA_DCC_VISA_PR")
-        cmd.oplataMasterCard = calculatorService.getCalcProperty(calc,"OPLATA_DCC_MASTERCARD_ZL")
-        cmd.oplataMasterCardPr = calculatorService.getCalcProperty(calc,"OPLATA_DCC_MASTERCARD_PR")
-        cmd.oplataMaestro = calculatorService.getCalcProperty(calc,"OPLATA_DCC_MAESTRO_ZL")
-        cmd.oplataMaestroPr =calculatorService.getCalcProperty(calc,"OPLATA_DCC_MAESTRO_PR")
+
     }
 
     def getDccZakresUruchomienia(ProcessCommand cmd, def calc ) {
@@ -125,19 +121,19 @@ class PanelService {
 		
 		pointData.calc = calc
 		
-		pointData.dialupTyp = calculatorService.getCalcProperty(calc,"TYP_DIALUP") //K RW
+		pointData.dialupTyp = calculatorService.getCalcProperty(calc,"TYP_DIALUP")
 		pointData.dialupCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_DIALUP_TERM_CENA"))
 		pointData.dialupPPCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_DIALUP_PP_CENA"))
 
-		pointData.vpnTyp = calculatorService.getCalcProperty(calc,"TYP_VPN") //K RW
+		pointData.vpnTyp = calculatorService.getCalcProperty(calc,"TYP_VPN")
 		pointData.vpnCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_VPN_TERM_CENA"))
 		pointData.vpnPPCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_VPN_PP_CENA"))
 
-		pointData.sslTyp = calculatorService.getCalcProperty(calc,"TYP_SSL") //K RW
+		pointData.sslTyp = calculatorService.getCalcProperty(calc,"TYP_SSL")
 		pointData.sslCena = toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_SSL_TERM_CENA"))
 		pointData.sslPPCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_SSL_PP_CENA"))
 
-		pointData.gprsTyp = calculatorService.getCalcProperty(calc,"TYP_GPRS") //K RW
+		pointData.gprsTyp = calculatorService.getCalcProperty(calc,"TYP_GPRS")
 		pointData.gprsCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_GPRS_TERM_CENA"))
 		pointData.gprsPPCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_GPRS_PP_CENA"))
 
@@ -173,8 +169,6 @@ class PanelService {
 
         cmd.defaultPointData = pointData
         cmd.czyGift = cbdService.czyGift(cmd.nip)
-
-
     }
 
     def getDodatkoweUslugi(ProcessCommand cmd, def calc ) {
@@ -188,10 +182,11 @@ class PanelService {
         cmd.oplataZaUruchomienieWalutyObcej = calculatorService.getCalcProperty(calc,"DCC_OPLATA_URUCHOMIENIE")
     }
 
-    def getDodatkoweUslugi2(ProcessCommand cmd, def calc ) {
+    def getTabelaUslugDodatkowych(ProcessCommand cmd, def calc ) {
         cmd.wydrukGrafikiCena = calculatorService.getCalcProperty(calc,"OPLATA_LOGO")
         cmd.dzialaniaMatematyczneCena = calculatorService.getCalcProperty(calc,"OPLATA_KALKULATOR")
         cmd.pierwszaSesjaCena = nullify(cmd.pierwszaSesjaCena)
+        cmd.mudCena = nullify(cmd.mudCena)
     }
 
     def getDodatkoweUslugiMud(ProcessCommand cmd, def calc ) {
@@ -259,6 +254,7 @@ class PanelService {
 
     def getOkresLojalnosciowy(ProcessCommand cmd, def calc ) {
         cmd.okresLojalnosciowy = calculatorService.getCalcProperty(calc,"LICZBA_MIESIECY_LOJ") ?: ""
+        cmd.oplataDeinstalacyjna = calculatorService.getCalcProperty(calc, "OPLATA_DEINST_WARTOSC")
     }
 
     def getOpieka(ProcessCommand cmd, def calc ) {
@@ -464,7 +460,7 @@ class PanelService {
         cmd.scoringDzialalnosc = nullify(cmd.scoringDzialalnosc)
 
         //scoringMcc pobierany jest globalnie w metodzie init()
-        def result = cbdService.getRodzajDzialalnosciByMCC(cmd.scoringMcc);
+        def result = cmd.scoringMcc ? cbdService.getRodzajDzialalnosciByMCC(cmd.scoringMcc) : null
         cmd.scoringSzczegolyDzialalnosci = result?.slm_nazwa ?: ""
 
         cmd.scoringIloscTransakcji = nullify(cmd.scoringIloscTransakcji)
@@ -596,7 +592,31 @@ class PanelService {
 
         //nie mniej niz z kalkulatora powinno byc
         cmd.odpUzyPpMies = ""
+    }
 
+    def getCenaPakietu(ProcessCommand cmd, def calc) {
+        cmd.cenaPakietu = "150"
+    }
+
+    def getCashbackInfo(ProcessCommand cmd, def calc) {
+        String calcCashbackUpust = calculatorService.getCalcProperty(calc, "CASHBACK_D")
+        cmd.cashbackUpust = calcCashbackUpust == "0" ? "-" : calcCashbackUpust
+        cmd.cashbackAbonament = "5"
+    }
+
+    def getUpustCashback(ProcessCommand cmd, def calc) {
+        String calcCashbackUpust = calculatorService.getCalcProperty(calc, "CASHBACK_D")
+        cmd.isCashbackUpustEditable = calculatorService.hasCalcProperty("CASHBACK_A", "TAK", calc) && calcCashbackUpust != "0"
+        cmd.cashbackUpust = calcCashbackUpust == "0" ? "-" : calcCashbackUpust
+    }
+
+    def getPoziomOplatIWarunkiPlatnosci(ProcessCommand cmd, def calc) {
+        cmd.oplatyIPlatnosciDo = "5"
+        cmd.oplatyIPlatnosciPowyzej = "10"
+        cmd.oplataPrDo = "2"
+        cmd.oplataPrPowyzej = "7"
+        cmd.dinersClubDo = "3.5"
+        cmd.dinersClubPowyzej = "3.5"
     }
 
     def nullify(def value){
@@ -653,5 +673,9 @@ class PanelService {
         }
 
         cmd.serwisZablokowany = results.size() == 3
+    }
+
+    private String getAlphanumericName(String value) {
+        return value?.replaceAll("[^A-Za-z0-9 ]", "")
     }
 }

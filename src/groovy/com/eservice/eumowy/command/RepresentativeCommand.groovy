@@ -38,10 +38,11 @@ class RepresentativeCommand implements Serializable{
         nazwisko(nullable: true, shared: "lettersOnly")
         stanowisko(nullable: true)
 
-        pesel(nullable: true, blank: true, validator: {value, cmd, errors ->
-            if(!value || cmd.processCommand.isAkceptantAbroad()) return true
-
-            return NumberValidator.validatePesel(value, cmd, errors, "pesel")
+        pesel(nullable: true, shared: "number", validator: {value, cmd, errors ->
+            if(cmd.processCommand.hasNewUmowa) {
+                 return !cmd.processCommand.isAkceptantAbroad() ? NumberValidator.validatePesel(value, cmd, errors, "pesel") : true
+            }
+            return true
         })
 
         typLokalizacji(nullable: true, validator: {value, cmd, errors ->

@@ -1,6 +1,9 @@
 package com.eservice.eumowy.validator
 
 import com.eservice.eumowy.command.PointCommand
+import grails.validation.ValidationErrors
+
+import java.text.DecimalFormat
 
 public class PointsValidator {
 
@@ -13,14 +16,14 @@ public class PointsValidator {
             if (ptCmd != null) {
                 ptCmd?.calculatorService = cmd.calculatorService
                 ptCmd?.calc = cmd.calc
+                ptCmd?.minCenaNajmu = cmd.minCenaNajmu ? new BigDecimal(cmd.minCenaNajmu) : null
                 ptCmd?.validate()
                 if (ptCmd?.hasErrors()) {
                     ptCmd.errors.each { error ->
                         error.fieldErrors.each { fieldError ->
                             if (!fieldError.getField().equals("hasDodaniePrepaid")) { //eUmowy_ext-557
-                                errors.reject(fieldError.getCode())
+                                errors.reject(fieldError.code, fieldError.arguments, fieldError.defaultMessage)
                                 hasPointErrors = true
-                                log.info(error)
                             }
                         }
                     }
@@ -43,7 +46,7 @@ public class PointsValidator {
         int pointsWithoutFormaDoladowania = 0;
 
         points.each { point ->
-            point.errors.each { error ->  //error is grails.validation.ValidationErrors
+            point.errors.each { ValidationErrors error ->
                 if (error.getAt("hasDodaniePrepaid")) {
                     pointsWithoutFormaDoladowania++;
                 }

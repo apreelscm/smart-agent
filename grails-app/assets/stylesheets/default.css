@@ -678,7 +678,11 @@ input:invalid:focus, select:invalid:focus, textarea:invalid:focus {
 }
 
 input[readonly]{
-    background-color: #f0f0f0;
+    background-color: #F7F7F7;
+}
+
+input[disabled] {
+    background-color: #D6D5D5;
 }
 
 /*  Navigation
@@ -1657,4 +1661,9 @@ header.belka-glowna {
 #email-documents {
     margin-top: 30px;
     margin-bottom: 0;
+}
+
+#feesAndPaymentsTerms table, #cashbackInfo table {
+    width: 720px;
+    padding-left: 120px;
 }

@@ -1,6 +1,6 @@
 package com.eservice.eumowy.command
 
-import com.eservice.eumowy.validator.AtLeastValidator
+import com.eservice.eumowy.validator.ConditionValidator
 import grails.validation.Validateable;
 
 @Validateable(nullable = true)
@@ -29,7 +29,7 @@ class AllPosCommand implements Serializable {
                 errors.rejectValue("wysokoscOplaty", "default.atLeast.asCalc",["wysokoscOplaty"] as Object[], "")
                 return false
             } else {
-                return AtLeastValidator.validate(value, cmd, errors, "wysokoscOplaty", "OPLATA_POS_PROM_CENA_NAJMU")
+                return ConditionValidator.atLeastCalcValue(value, cmd, errors, "wysokoscOplaty", "OPLATA_POS_PROM_CENA_NAJMU")
             }
 		})
 	}

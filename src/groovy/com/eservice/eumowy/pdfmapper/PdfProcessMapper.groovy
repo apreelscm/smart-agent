@@ -1,9 +1,11 @@
 package com.eservice.eumowy.pdfmapper
 
+import static com.eservice.eumowy.ActivityHelper.*
 import com.eservice.eumowy.HirePayment
-
+import com.eservice.eumowy.Process
 import java.text.DecimalFormat
 import java.text.NumberFormat
+
 
 class PdfProcessMapper extends AbstractPdfMapper{
 
@@ -21,18 +23,16 @@ class PdfProcessMapper extends AbstractPdfMapper{
         this.posMapper = posMapper
     }
 
-    protected def mapOnlyProcessData(def processInstance){
+    protected def mapOnlyProcessData(Process processInstance){
         def dataMap = [:]
         dataMap.putAll(mapProcessToPDFData(processInstance))
         dataMap.putAll(mapProcessDataToPDFData(processInstance.processData))
+        dataMap.put("siedzibaAkceptanta", [getAdresAkceptanta(processInstance)] as String[])
 
         def points = processInstance?.points
         LOG.info("Ilosc punktow: " + points?.size())
 
         if (points != null && points.size()>0){
-            //APUNTSS, APUNTZ2
-            //TODO - nie uzupelniamy tabelek w tych dokumentach
-
             //APUPZDCC2, APUPZ2DC1
             if ("wskazane".equals(getFromProcessDataSet(processInstance?.processData, "dccZakresUruchomienia"))){
                 dataMap.putAll(pointMapper.mapPointsSpecial(points.findAll{ point -> (point != null && point.czyWybranyZakresUruchomienia)}, ["nazwa":"punktZakresUruchomienia", "miejscowosc":"adresZakresUruchomienia", "liczbaPos":"pos"]));
@@ -52,13 +52,6 @@ class PdfProcessMapper extends AbstractPdfMapper{
 
             //APUNTSZAPOU3
             dataMap.putAll(pointMapper.mapPointsSpecial(points.findAll{ point -> point?.czyWybranyAkceptacjaKart}, ["nazwa":"punktTN", "miejscowosc":"adresTN", "systemKasowy":"integracjaTN", "uta":"utaTN"]));
-
-            //APUNTSZAPOO3
-            def poses = []
-            points.each{ p ->
-                poses.addAll(p?.posDatas.findAll {pos -> pos != null && pos?.czyWybrany})
-            }
-            dataMap.putAll(posMapper.mapPosSpecial(poses))
 
 
     //----- sumowanie oplat z posow i hire payments - start
@@ -113,22 +106,125 @@ class PdfProcessMapper extends AbstractPdfMapper{
         def newToCross = ['dodatkowyPunkt', 'dodatkowyPos']
         def additonalToCross = ['aneks', 'wymianaUmowyNajmu']
 
-        if (processInstance.activities.any { activity -> additonalToCross.contains(activity.code)}){
+        if (processInstance.activities.any { activity -> additonalToCross.contains(activity.code)}) {
             dataMap.put("crossAdditional", ['_______________'] as String[])
-        } else if (processInstance.activities.any { activity -> newToCross.contains(activity.code)}){
+        } else if (processInstance.activities.any { activity -> newToCross.contains(activity.code)}) {
             dataMap.put("crossNew", ['_____'] as String[])
         }
 
-        //Na potrzeby dokumentu: APUPZAWNZBS1.00113-08-06
-        if (processInstance.activities.any { activity -> ['dodatkowyPos', 'dodatkowyPunkt'].contains(activity.code)}){
-            addCheckbox(dataMap, 'zalacznik2', "true", "true")
+        setAttachmentsNames(processInstance, dataMap)
+
+        setFirstAttachmentCheckbox(processInstance, dataMap)
+
+        setSecondAttachmentCheckbox(processInstance, dataMap)
+
+        setTransactionsCheckboxes(processInstance, dataMap)
+
+        setServicesData(processInstance, dataMap)
+
+        return dataMap;
+    }
+
+    private void setAttachmentsNames(Process processInstance, Map dataMap) {
+        if (hasCombination(processInstance, ['nowaUmowa', 'wymianaUmowyNajmu'], ['dodaniePrepaid', 'zmianaWarunkowPrepaid'])) {
+            dataMap.put("zalacznikNr4",
+                    ["4 - Załącznik do Umowy Współpracy w zakresie sprzedaży i dystrybucji elektronicznych doładowań"] as String[])
         }
 
-        //Na potrzeby dokumentu: APUPZAWNZBS1.00113-08-06
-        if (processInstance.activities.any { activity -> 'zmianaProwizji'.equals(activity.code)}){
-            addCheckbox(dataMap, 'zalacznik3', "true", "true")
+        if (hasCombination(processInstance, ['nowaUmowa', 'wymianaUmowyNajmu'], ['promocyjneObnizenieNajmu'])) {
+            int attachmentNumber = dataMap.containsKey("zalacznikNr4") ? 5 : 4
+            dataMap.put("zalacznikNr" + attachmentNumber,
+                    [attachmentNumber + " - Załącznik do Umowy Współpracy w zakresie sprzedaży i dystrybucji elektronicznych doładowań"] as String[])
         }
-        return dataMap;
+    }
+
+    private void setFirstAttachmentCheckbox(Process process, Map dataMap) {
+        if(hasAtLeastOne(process, ["dodatkowyPunkt", "dodatkowyPos"])) {
+            dataMap.put("dodatkowyZalacznik1", checkedCheckbox)
+        }
+
+        if(contains(process, "aneks")) {
+            dataMap.put("nowyZalacznik1", checkedCheckbox)
+        }
+    }
+
+    private void setSecondAttachmentCheckbox(Process process, Map dataMap) {
+        if(hasNoCombination(process, ["dodanieDcc"], ["logoKalkulatorSesja", "ekonomiczny", "komfort", "prestiz"]) ||
+            isOnlyActivity(process, "logoKalkulatorSesja") ||
+            isOnlyActivity(process, "ekonomiczny") ||
+            isOnlyActivity(process, "komfort") ||
+            isOnlyActivity(process, "prestiz"))
+        {
+            dataMap.put("dodatkowyZalacznik2", checkedCheckbox)
+            return
+        }
+
+        if(hasNoCombination(process, ["zmianaWarunkowDcc"], ["logoKalkulatorSesja", "ekonomiczny", "komfort", "prestiz"]) ||
+            hasCombination(process, ["logoKalkulatorSesja"], ["dodanieDcc", "zmianaWarunkowDcc"]) ||
+            hasCombination(process, ["logoKalkulatorSesja"], ["ekonomiczny", "komfort", "prestiz"]) ||
+            hasCombination(process, ["ekonomiczny"], ["dodanieDcc", "zmianaWarunkowDcc", "logoKalkulatorSesja"]) ||
+            hasCombination(process, ["komfort"], ["dodanieDcc", "zmianaWarunkowDcc", "logoKalkulatorSesja"]) ||
+            hasCombination(process, ["prestiz"], ["dodanieDcc", "zmianaWarunkowDcc", "logoKalkulatorSesja"]))
+        {
+            dataMap.put("nowyZalacznik2", checkedCheckbox)
+        }
+    }
+
+    private void setTransactionsCheckboxes(Process processInstance, Map dataMap) {
+        if (hasAtLeastOne(processInstance, ["dodanieDcc", "zmianaWarunkowDcc"])) {
+            dataMap.put("dccTransaction", checkedCheckbox)
+        }
+        if (hasAtLeastOne(processInstance, ["dodanieCashBack", "nowaUmowa"])) {
+            dataMap.put("cashbackTransaction", checkedCheckbox)
+        }
+        if (hasAtLeastOne(processInstance, ["dodanieAneksuKosztyPlus", "zmianaProwizji", "nowaUmowa"])) {
+            dataMap.put("paymentTransaction", checkedCheckbox)
+        }
+    }
+
+    private void setServicesData(Process process, Map dataMap) {
+        //TODO: zamiast tych elsow zrobic adnotacje w ProcessCommand z defaultMappperValue or smth
+
+        if(process.hasData("wydrukGrafikiCena")) {
+            dataMap.put("czyUslugaLogo", checkedCheckbox)
+        } else {
+            dataMap.put("wydrukGrafikiCena", getPdfValue("-"))
+        }
+
+        if(process.hasData("dzialaniaMatematyczneCena")) {
+            dataMap.put("czyUslugaKalkulator", checkedCheckbox)
+        } else {
+            dataMap.put("dzialaniaMatematyczneCena", getPdfValue("-"))
+        }
+
+        if(process.hasData("mudCena")) {
+            dataMap.put("czyUslugaMUD", checkedCheckbox)
+        } else {
+            dataMap.put("mudCena", getPdfValue("-"))
+        }
+
+        if(process.hasData("pierwszaSesjaCena")) {
+            dataMap.put("czyUslugaPrzelew", checkedCheckbox)
+        } else {
+            dataMap.put("pierwszaSesjaCena", getPdfValue("-"))
+        }
+
+        if(process.hasData("oplataZaPlatnoscWInnejWalucie") || process.hasData("oplataZaUruchomienieDCC")) {
+            dataMap.put("czyUslugaDcc", checkedCheckbox)
+        } else {
+            dataMap.put("oplataZaPlatnoscWInnejWalucie", getPdfValue("-"))
+            dataMap.put("oplataZaUruchomienieDCC", getPdfValue("-"))
+        }
+
+        if(contains(process, "prestiz")) {
+            dataMap.put("obslugaPrestiz", checkedCheckbox)
+        }
+        if(contains(process, "komfort")) {
+            dataMap.put("obslugaKomfort", checkedCheckbox)
+        }
+        if(contains(process, "ekonomiczny") || process.hasData("obslugaEkonomicznyCena")) {
+            dataMap.put("obslugaEkonomiczny", checkedCheckbox)
+        }
     }
 
     private def findPosesNotFromCbd(def points){

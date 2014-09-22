@@ -10,6 +10,17 @@ public class NumberValidator {
         RegexpValidator.validate(cmd, value, errors, propertyName, '~|\\-|^(?:[1-9]\\d*|0)?(?:\\.\\d{1,2})?$',"default.validation.number.error")
     }
 
+    public static def validateWithDash = { value, cmd, errors, propertyName ->
+        Pattern pattern = Pattern.compile("~|\\-|^(?:[1-9]\\d*|0)?(?:\\.\\d{1,2})?\$")
+
+        if(!pattern.matcher(value).matches() || value != "-") {
+            errors.rejectValue(propertyName, "default.validation.number.error", [value, ValidatorUtils.getMessage(cmd, propertyName)] as Object[], "")
+            return false
+        }
+
+        return true
+    }
+
     public static def validatePesel = {pesel, cmd, errors, propertyName ->
         if(!pesel) {
             errors.rejectValue(propertyName, "pesel.invalid")
@@ -66,6 +77,29 @@ public class NumberValidator {
 
         if (!accountNumber.isValid()) {
             errors.rejectValue(propertyName, "account.number.invalid.message")
+            return false
+        }
+
+        return true
+    }
+
+    public static def validateNip = { nip ->
+        int[] weights = [6, 5, 7, 2, 3, 4, 5, 6, 7]
+        int sum = 0
+        int controlNumber
+
+        nip = nip.replaceAll("-", "")
+
+        if (nip.length() != 10) return false
+
+        try {
+            for (int i = 0; i < 9; i++) {
+                sum += Integer.parseInt(nip[i]) * weights[i];
+            }
+            controlNumber = (sum % 11 == 10) ? 0 : sum % 11
+
+            return controlNumber == Integer.parseInt(nip[9]);
+        } catch (NumberFormatException e) {
             return false
         }
 

@@ -1,9 +1,13 @@
 package com.eservice.eumowy
 
+import com.eservice.eumowy.pdfmapper.FacilitiesMapper
+import com.eservice.eumowy.pdfmapper.PABRformMapper
 import com.eservice.eumowy.pdfmapper.PdfPointMapper
 import com.eservice.eumowy.pdfmapper.PdfPosExchangeMapper
 import com.eservice.eumowy.pdfmapper.PdfPosMapper
 import com.eservice.eumowy.pdfmapper.PdfProcessMapper
+import com.eservice.eumowy.pdfmapper.representative.RepresentativesNamesMapper
+import com.eservice.eumowy.util.DateUtils
 
 class MapperService {
 
@@ -17,10 +21,21 @@ class MapperService {
         data
     }
 
-    def mapOnlyProcessData(def processInstance, def calc){
+    def mapOnlyProcessData(Process processInstance, def calc){
         PdfProcessMapper processMapper = new PdfProcessMapper(calculatorService, calc, new PdfPointMapper(), new PdfPosMapper())
         def data = [:]
+
         data.putAll(processMapper.mapOnlyProcessData(processInstance))
+        data.putAll(new RepresentativesNamesMapper(processInstance).getDataForMapping())
+
+        if(ActivityHelper.isNewAgreement(processInstance)) {
+            data.putAll(new PABRformMapper(processInstance).getDataForMapping())
+        }
+
+        if(ActivityHelper.isBundleActivity(processInstance)) {
+            data.putAll(new FacilitiesMapper(processInstance).getDataForMapping())
+        }
+
         data
     }
 
@@ -36,6 +51,24 @@ class MapperService {
         def opiekaOne = cbdService.getOpiekaSerwisowaOne(point.kodPocztowy)
         data.put("opiekaSerwisowaIII", [opiekaOne ? opiekaOne[0] : ''] as String[])
         data
+    }
+
+    public def mapPosData(List<PosData> poses) {
+        log.info(String.format("Found %s poses for promocyjneObnizenieNajmu", poses.size()))
+
+        Map data = [:]
+
+        if (poses.size() > 0) {
+            data.put("dataPoczatkuUzywaniaPOZ", [DateUtils.getFormattedDate(poses[0].dataOd, DateUtils.DD_MM_YYYY)] as String[])
+            data.put("dataKoncaUzywaniaPOZ", [DateUtils.getFormattedDate(poses[0].dataDo, DateUtils.DD_MM_YYYY)] as String[])
+
+            poses.eachWithIndex{ pos, i ->
+                data.put("numerPOS" + i, [pos.numerZestawuPos] as String[])
+                data.put("oplataPOS" + i, [pos.wysokoscOplaty] as String[])
+            }
+        }
+
+        return data
     }
 
 }

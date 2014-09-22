@@ -18,9 +18,7 @@ class DefineActivityCommand {
     def wymianaUmowyZaplaty
     def zmianaProwizji
     def dodanieDcc
-    def zmianaTabeliOplatDodatkowych
     def dodanieCashBack
-    def dodanieIko
     def zmianaWarunkowPrepaid
     def poprawDane
     def dodatkowyPos
@@ -37,6 +35,10 @@ class DefineActivityCommand {
     def aneks
     def ekonomiczny
     def wymianaTerminala
+    def pakietStart
+    def pakietStartPlus
+    def pakietMobilny
+    def logoKalkulatorSesja
     String notes
 
     def selectedActivities = []

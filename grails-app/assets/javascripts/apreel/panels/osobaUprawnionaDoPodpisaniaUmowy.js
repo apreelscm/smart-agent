@@ -17,7 +17,7 @@ setReprezentantImieAndNazwiskoRequired();
 $representativesChangedManually.change(setRepresentativesView);
 $acceptorLocation.change(setAdditionalInformationState);
 $representativeTypLokalizacji.change(typLokalizacjiChanged);
-$representativePESELKraj.live("change", setAcceptorState);
+$representativePESELKraj.on("change", setAcceptorState);
 
 function setRepresentativesView() {
     var isChecked = $representativesChangedManually.is(":checked");
@@ -32,8 +32,8 @@ function setRepresentativesView() {
 }
 
 function setReprezentantImieAndNazwiskoRequired() {
-    $("#representatives\\[0\\]\\.imie").attr('required', 'required');
-    $("#representatives\\[0\\]\\.nazwisko").attr('required', 'required');
+    jQuery("#representatives\\[0\\]\\.imie").attr('required', 'required');
+    jQuery("#representatives\\[0\\]\\.nazwisko").attr('required', 'required');
 }
 
 function setAdditionalInformationState() {

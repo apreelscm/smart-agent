@@ -1,9 +1,8 @@
 package com.eservice.eumowy
 import com.eservice.eumowy.dao.CbdDAO
-import com.eservice.eumowy.util.EumowyCustomEnvironment
 import grails.plugin.cache.CacheEvict
 import grails.plugin.cache.Cacheable
-import grails.util.Environment
+import groovy.sql.GroovyRowResult
 import org.apache.log4j.Logger
 import org.springframework.transaction.annotation.Isolation
 import org.springframework.transaction.annotation.Propagation
@@ -47,43 +46,28 @@ class CbdService {
     private static final def GET_PREPAID_TOPUP = "getPrepaidTopup"
     private static final def GET_OPIEKA_SERWISOWA_I = "getOpiekaSerwisowa1"
     private static final def GET_OPIEKA_SERWISOWA_II = "getOpiekaSerwisowa2"
+    private static final def MIN_CENA_NAJMU = "minCenaNajmu"
 
-//    Logger calcAppender
     def logggger = Logger.getLogger("calcAppender")
 
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
     def findCalculatorByNip(def clientNip) {
-        switch (Environment.getCurrent().getName()) {
-            case EumowyCustomEnvironment.MOCK.getName():
-                return null;
-            default:
-                def calcId = findCalculatorIdByNip(clientNip)
-                def calc = cbdDAO.selectMany(FIND_CALC_BY_NIP,[nip:clientNip]).collect{ [POLEAPREEL:it.POLE,WARTOSCAPREEL:it.WARTOSC]}//*.POLEAPREEL
-                logggger.info("Getting calculator for NIP ${clientNip}, calculatorId: ${calcId} with values: ${calc}")
-                return calc
-        }
+        def calcId = findCalculatorIdByNip(clientNip)
+        def calc = cbdDAO.selectMany(FIND_CALC_BY_NIP,[nip:clientNip]).collect{ [POLEAPREEL:it.POLE,WARTOSCAPREEL:it.WARTOSC]}
+        logggger.info("Getting calculator for NIP ${clientNip}, calculatorId: ${calcId} with values: ${calc}")
+        return calc
     }
 
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
     def findCalculatorIdByNip(def clientNip) {
-        switch (Environment.getCurrent().getName()) {
-            case EumowyCustomEnvironment.MOCK.getName():
-                return null;
-            default:
-                return cbdDAO.selectOne(FIND_CALC_ID_BY_NIP,[nip:clientNip])?.get("KAK_ID")
-        }
+        return cbdDAO.selectOne(FIND_CALC_ID_BY_NIP,[nip:clientNip])?.get("KAK_ID")
     }
 
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
     Client findClientByNip(def clientNip) {
-        switch (Environment.getCurrent().getName()) {
-            case EumowyCustomEnvironment.MOCK.getName():
-                return null;
-            default:
-                def rowResult = cbdDAO.selectOne(FIND_CLIENT_ID_BY_NIP,[nip:clientNip])
-                def cbdClient = new Client(rowResult)
-                return cbdClient
-        }
+        def rowResult = cbdDAO.selectOne(FIND_CLIENT_ID_BY_NIP,[nip:clientNip])
+        def cbdClient = new Client(rowResult)
+        return cbdClient
     }
 
     @Cacheable(value="eumowyCacheShort", key = "'getAdresDaneDoWydruku_'.concat(#clientNip)")
@@ -298,6 +282,13 @@ class CbdService {
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
     def getMccCodes(def query) {
         return cbdDAO.selectMany(query, [])
+    }
+
+    @Cacheable(value="eumowyCacheShort", key = "'minCenaNajmu_'.concat(#nip)")
+    @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
+    BigDecimal getMinRentPrice(def nip) {
+        GroovyRowResult cena = cbdDAO.selectOne(MIN_CENA_NAJMU, [nip: nip])
+        return cena ? cena[0] : BigDecimal.ZERO
     }
 
     @CacheEvict(value=["eumowyCacheShort","eumowyCacheLong"], allEntries=true)

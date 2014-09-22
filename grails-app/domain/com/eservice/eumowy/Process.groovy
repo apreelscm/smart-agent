@@ -154,6 +154,11 @@ class Process implements Serializable {
 					  .isEquals();
 	}
 
+    public boolean hasData(String key) {
+        def value = getData(key)
+        return value != null && value != "-" && !value.isEmpty()
+    }
+
     public String getData(String key) {
         return processData.find{it.name.equals(key)}?.value
     }
@@ -190,5 +195,13 @@ class Process implements Serializable {
     public List<DocumentFile> getDocumentsForPreview() {
         return documents?.findAll{it.signature.showOnPreview}
                          .sort(false){a,b -> a.signature.signatureOrder.compareTo(b.signature.signatureOrder)}
+    }
+
+    public List<Representative> getAllRepresentatives() {
+        return representatives.findAll{Representative.Type.REPRESENTATIVE.equals(it.typ)}
+    }
+
+    public Set<PointData> getLocalPoints() {
+        return points.findAll {it.czyLokalny}
     }
 }

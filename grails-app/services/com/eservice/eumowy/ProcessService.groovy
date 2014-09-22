@@ -5,11 +5,11 @@ import com.eservice.eumowy.annotation.Omit
 import com.eservice.eumowy.auth.EServiceUserDetails
 import com.eservice.eumowy.command.*
 import com.eservice.eumowy.dto.MerchantDetailsDTO
+import com.eservice.eumowy.factory.ProcessCommandDefaultValuesFactory
 import com.eservice.eumowy.util.DateUtils
 import com.eservice.eumowy.util.EumowyCustomEnvironment
 import grails.util.Environment
 import groovy.sql.GroovyRowResult
-import org.apache.commons.lang.StringUtils
 import org.apache.commons.lang.WordUtils
 import org.codehaus.groovy.grails.web.binding.DataBindingUtils
 import serializationutils.SerializationUtils
@@ -125,10 +125,6 @@ class ProcessService {
         return activities?.any{it.code.equals(activityCode)};
     }
 
-    boolean hasOnlyConcreteActivity(Process process, String activityName) {
-        return containsActivity(process.activities, activityName) && process.activities.size() == 1
-    }
-
     def getNewProcessCommand(def process, def calcId, def calc){
         log.info("getNewProcessCommand processId = ${process.id}")
         def cmd = initProcessCommand(process, calcId)
@@ -161,7 +157,7 @@ class ProcessService {
         cmd.hirePaymentsByPos?.addAll(getHirePaymentByPosCommandList(cmd, calc))
         cmd.posExchanges?.addAll(getPosExchangeCommandList(cmd))
 
-        prepareProcessCommand(cmd, calc,)
+        prepareProcessCommand(cmd, calc)
 		preparePointCommands(cmd.points, cmd.poses, calc)
 		prepareAllPosCommands(cmd.allPoses, calc)
 		
@@ -248,7 +244,7 @@ class ProcessService {
     }
 
     List<RepresentativeCommand> getRepresentativesCommand(Process process, Representative.Type type) {
-        List<Representative> representatives = process.representatives?.findAll {type.equals(it.typ)}.sort {it.id}
+        List<Representative> representatives = process.representatives?.findAll {type.equals(it.typ)}?.sort {it.id}
         Map representativeProperties
 
         List<RepresentativeCommand> result = []
@@ -408,11 +404,9 @@ class ProcessService {
                 populateMethod = {command, calculator, functionName ->
                     panelService."${functionName}"(command, calculator)
                 }
-                break;
         }
 
         cmd.process.panels.each { Panel panel ->
-
             if (panel!=null){
                 //po usunieciu panelu z procesu w jego miesjsce wchodzi null, trzeba to obsluzyc.
                 String panelFunctionName = "get${WordUtils.capitalize(panel.name)}"
@@ -422,6 +416,8 @@ class ProcessService {
                 populateMethod.call(cmd, calc, panelFunctionName)
             }
         }
+
+        ProcessCommandDefaultValuesFactory.getDefaultValuesSetter(cmd.process)?.setDefaultValues(cmd)
 
         cmd
     }
@@ -817,7 +813,7 @@ class ProcessService {
             pe.setName(row.get("nazwa_punktu").toString())
             pe.setAddress(row.get("adres_posadowienia").toString())
             pe.setModel(row.get("rodzaj_terminala"))
-            pe.setCurrentPrice(row.get("oplata_za_pos").toString().toBigDecimal())
+            pe.setCurrentPrice(row.get("oplata_za_pos")?.toString()?.toBigDecimal())
             pe.setNewType("")
             pe.setNewModel("")
             pe.setSimType("")

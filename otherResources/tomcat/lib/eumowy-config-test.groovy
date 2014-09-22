@@ -22,5 +22,7 @@ environments {
                 "mail.smtp.ssl.trust": "*"]
 
         trustAll = true
+
+        email.sending.enabled = false
     }
 }
