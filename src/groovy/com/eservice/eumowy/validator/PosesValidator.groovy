@@ -18,9 +18,8 @@ public class PosesValidator {
                     ptCmd.errors.each { error ->  //error is grails.validation.ValidationErrors
                         error.fieldErrors.each { fieldError ->
                             if (!fieldError.getField().equals("hasDodaniePrepaid")) { //eUmowy_ext-557
-                                errors.reject(fieldError.getCode())
+                                errors.reject(fieldError.code, fieldError.arguments, fieldError.defaultMessage)
                                 hasPosErrors = true
-                                log.info(error)
                             }
                         }
                     }

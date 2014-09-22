@@ -5,7 +5,7 @@
             <ul class="table-list">
                 <li>
                     <span class="align-right"><g:message code="panel.payment.startup"/></span>
-                    <span class="align-left">
+                    <span class="align-right">
                         <eumowy:textField name="oplataZaUruchomienieDCC" validatable="${data}" value="${data.oplataZaUruchomienieDCC}" required="true"/>
                         <g:message code="panel.polish.currency"/>
                     </span>

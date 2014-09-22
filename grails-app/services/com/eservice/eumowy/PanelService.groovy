@@ -254,6 +254,7 @@ class PanelService {
 
     def getOkresLojalnosciowy(ProcessCommand cmd, def calc ) {
         cmd.okresLojalnosciowy = calculatorService.getCalcProperty(calc,"LICZBA_MIESIECY_LOJ") ?: ""
+        cmd.oplataDeinstalacyjna = calculatorService.getCalcProperty(calc, "OPLATA_DEINST_WARTOSC")
     }
 
     def getOpieka(ProcessCommand cmd, def calc ) {
@@ -598,16 +599,15 @@ class PanelService {
     }
 
     def getCashbackInfo(ProcessCommand cmd, def calc) {
-        cmd.cashbackUpust = "0"
+        String calcCashbackUpust = calculatorService.getCalcProperty(calc, "CASHBACK_D")
+        cmd.cashbackUpust = calcCashbackUpust == "0" ? "-" : calcCashbackUpust
         cmd.cashbackAbonament = "5"
     }
 
     def getUpustCashback(ProcessCommand cmd, def calc) {
-        cmd.cashbackUpust = "9999" //ma byc z kalkulatora
-    }
-
-    def getOplataDeinstalacyjna(ProcessCommand cmd, def calc) {
-        cmd.oplataDeinstalacyjna = "5"
+        String calcCashbackUpust = calculatorService.getCalcProperty(calc, "CASHBACK_D")
+        cmd.isCashbackUpustEditable = calculatorService.hasCalcProperty("CASHBACK_A", "TAK", calc) && calcCashbackUpust != "0"
+        cmd.cashbackUpust = calcCashbackUpust == "0" ? "-" : calcCashbackUpust
     }
 
     def getPoziomOplatIWarunkiPlatnosci(ProcessCommand cmd, def calc) {

@@ -1,6 +1,6 @@
 package com.eservice.eumowy.command
 
-import com.eservice.eumowy.validator.AtLeastValidator
+import com.eservice.eumowy.validator.ConditionValidator
 import com.eservice.eumowy.validator.NumberValidator
 import grails.validation.Validateable
 
@@ -235,10 +235,10 @@ class PointCommand implements Serializable {
             if(!cmd.dialupTyp) return true
 
             if(cmd.minCenaNajmu) {
-                return AtLeastValidator.validateAgainstMinValue(value, cmd.minCenaNajmu, cmd, errors, propertyName)
+                return ConditionValidator.atLeastMinValue(value, cmd, errors, propertyName, cmd.minCenaNajmu)
             }
 
-			return AtLeastValidator.validate(value, cmd, errors, propertyName, "TYP_DIALUP_TERM_CENA")
+			return ConditionValidator.atLeastCalcValue(value, cmd, errors, propertyName, "TYP_DIALUP_TERM_CENA")
 		})
 
         dialupPPTyp(nullable:true)
@@ -247,10 +247,10 @@ class PointCommand implements Serializable {
             if(!cmd.dialupPPTyp) return true
             
             if(cmd.minCenaNajmu) {
-                return AtLeastValidator.validateAgainstMinValue(value, cmd.minCenaNajmu, cmd, errors, propertyName)
+                return ConditionValidator.atLeastMinValue(value, cmd, errors, propertyName, cmd.minCenaNajmu)
             }
 
-            return AtLeastValidator.validate(value, cmd, errors, propertyName, "TYP_DIALUP_PP_CENA")
+            return ConditionValidator.atLeastCalcValue(value, cmd, errors, propertyName, "TYP_DIALUP_PP_CENA")
         })
 
 		vpnTyp(nullable:true)
@@ -259,10 +259,10 @@ class PointCommand implements Serializable {
             if(!cmd.vpnTyp) return true
             
             if(cmd.minCenaNajmu) {
-                return AtLeastValidator.validateAgainstMinValue(value, cmd.minCenaNajmu, cmd, errors, propertyName)
+                return ConditionValidator.atLeastMinValue(value, cmd, errors, propertyName, cmd.minCenaNajmu)
             }
 
-			return AtLeastValidator.validate(value, cmd, errors, propertyName, "TYP_VPN_TERM_CENA")
+			return ConditionValidator.atLeastCalcValue(value, cmd, errors, propertyName, "TYP_VPN_TERM_CENA")
 		})
 
         vpnPPTyp(nullable:true)
@@ -271,10 +271,10 @@ class PointCommand implements Serializable {
             if(!cmd.vpnPPTyp) return true
             
             if(cmd.minCenaNajmu) {
-                return AtLeastValidator.validateAgainstMinValue(value, cmd.minCenaNajmu, cmd, errors, propertyName)
+                return ConditionValidator.atLeastMinValue(value, cmd, errors, propertyName, cmd.minCenaNajmu)
             }
 
-            return AtLeastValidator.validate(value, cmd, errors, propertyName, "TYP_VPN_PP_CENA")
+            return ConditionValidator.atLeastCalcValue(value, cmd, errors, propertyName, "TYP_VPN_PP_CENA")
         })
 
 		sslTyp(nullable:true)
@@ -283,10 +283,10 @@ class PointCommand implements Serializable {
             if(!cmd.sslTyp) return true
             
             if(cmd.minCenaNajmu) {
-                return AtLeastValidator.validateAgainstMinValue(value, cmd.minCenaNajmu, cmd, errors, propertyName)
+                return ConditionValidator.atLeastMinValue(value, cmd, errors, propertyName, cmd.minCenaNajmu)
             }
 
-			return AtLeastValidator.validate(value, cmd, errors, propertyName, "TYP_SSL_TERM_CENA")
+			return ConditionValidator.atLeastCalcValue(value, cmd, errors, propertyName, "TYP_SSL_TERM_CENA")
 		})
 
         sslPPTyp(nullable:true)
@@ -295,10 +295,10 @@ class PointCommand implements Serializable {
             if(!cmd.sslPPTyp) return true
             
             if(cmd.minCenaNajmu) {
-                return AtLeastValidator.validateAgainstMinValue(value, cmd.minCenaNajmu, cmd, errors, propertyName)
+                return ConditionValidator.atLeastMinValue(value, cmd, errors, propertyName, cmd.minCenaNajmu)
             }
 
-            return AtLeastValidator.validate(value, cmd, errors, propertyName, "TYP_SSL_PP_CENA")
+            return ConditionValidator.atLeastCalcValue(value, cmd, errors, propertyName, "TYP_SSL_PP_CENA")
         })
 
 		gprsTyp(nullable:true)
@@ -307,10 +307,10 @@ class PointCommand implements Serializable {
             if(!cmd.gprsTyp) return true
             
             if(cmd.minCenaNajmu) {
-                return AtLeastValidator.validateAgainstMinValue(value, cmd.minCenaNajmu, cmd, errors, propertyName)
+                return ConditionValidator.atLeastMinValue(value, cmd, errors, propertyName, cmd.minCenaNajmu)
             }
 
-			return AtLeastValidator.validate(value, cmd, errors, propertyName, "TYP_GPRS_TERM_CENA")
+			return ConditionValidator.atLeastCalcValue(value, cmd, errors, propertyName, "TYP_GPRS_TERM_CENA")
 		})
 
         gprsPPTyp(nullable:true)
@@ -319,10 +319,10 @@ class PointCommand implements Serializable {
             if(!cmd.gprsPPTyp) return true
             
             if(cmd.minCenaNajmu) {
-                return AtLeastValidator.validateAgainstMinValue(value, cmd.minCenaNajmu, cmd, errors, propertyName)
+                return ConditionValidator.atLeastMinValue(value, cmd, errors, propertyName, cmd.minCenaNajmu)
             }
 
-            return AtLeastValidator.validate(value, cmd, errors, propertyName, "TYP_GPRS_PP_CENA")
+            return ConditionValidator.atLeastCalcValue(value, cmd, errors, propertyName, "TYP_GPRS_PP_CENA")
         })
 
         gprsTypPortable(nullable:true)
@@ -331,10 +331,10 @@ class PointCommand implements Serializable {
             if(!cmd.gprsTypPortable) return true
             
             if(cmd.minCenaNajmu) {
-                return AtLeastValidator.validateAgainstMinValue(value, cmd.minCenaNajmu, cmd, errors, propertyName)
+                return ConditionValidator.atLeastMinValue(value, cmd, errors, propertyName, cmd.minCenaNajmu)
             }
 
-            return AtLeastValidator.validate(value, cmd, errors, propertyName, "TYP_GPRS_TERM_CENA")
+            return ConditionValidator.atLeastCalcValue(value, cmd, errors, propertyName, "TYP_GPRS_TERM_CENA")
         })
 
 		pinPadTyp(nullable:true)

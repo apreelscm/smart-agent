@@ -125,10 +125,6 @@ class ProcessService {
         return activities?.any{it.code.equals(activityCode)};
     }
 
-    boolean hasOnlyConcreteActivity(Process process, String activityName) {
-        return containsActivity(process.activities, activityName) && process.activities.size() == 1
-    }
-
     def getNewProcessCommand(def process, def calcId, def calc){
         log.info("getNewProcessCommand processId = ${process.id}")
         def cmd = initProcessCommand(process, calcId)

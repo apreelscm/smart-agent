@@ -92,6 +92,6 @@ class CalculatorService implements Serializable {
     private boolean isCashbackActivityRequired(Process process, def calc) {
         if (ActivityHelper.isNewAgreement(process) || ActivityHelper.contains(process, "wymianaUmowyZaplaty")) return false
 
-        return hasCalcProperty("uslugaCashback", "TAK", calc) && !ActivityHelper.contains(process, "dodanieCashBack")
+        return hasCalcProperty("CASHBACK_A", "TAK", calc) && !ActivityHelper.contains(process, "dodanieCashBack")
     }
 }

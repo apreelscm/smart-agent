@@ -22,7 +22,7 @@ public class PointsValidator {
                     ptCmd.errors.each { error ->
                         error.fieldErrors.each { fieldError ->
                             if (!fieldError.getField().equals("hasDodaniePrepaid")) { //eUmowy_ext-557
-                                errors.reject(fieldError.getCode())
+                                errors.reject(fieldError.code, fieldError.arguments, fieldError.defaultMessage)
                                 hasPointErrors = true
                             }
                         }

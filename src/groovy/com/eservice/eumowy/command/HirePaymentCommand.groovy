@@ -1,6 +1,6 @@
 package com.eservice.eumowy.command
 
-import com.eservice.eumowy.validator.AtLeastValidator
+import com.eservice.eumowy.validator.ConditionValidator
 import grails.validation.Validateable
 
 /**
@@ -32,10 +32,10 @@ class HirePaymentCommand implements Serializable{
 
     static constraints = {
         newTermPayment(nullable:true, shared: "number", validator: { value, cmd, errors ->
-            cmd.newTermPayment ? AtLeastValidator.validate(value, cmd, errors, "newTermPayment", "CENA_NAJMU") : true;
+            cmd.newTermPayment ? ConditionValidator.atLeastCalcValue(value, cmd, errors, "newTermPayment", "CENA_NAJMU") : true;
         })
         newPpPayment(nullable:true, shared: "number", validator: { value, cmd, errors ->
-            cmd.newPpPayment ? AtLeastValidator.validate(value, cmd, errors, "newPpPayment", "CENA_NAJMU_PP") : true;
+            cmd.newPpPayment ? ConditionValidator.atLeastCalcValue(value, cmd, errors, "newPpPayment", "CENA_NAJMU_PP") : true;
         })
     }
 

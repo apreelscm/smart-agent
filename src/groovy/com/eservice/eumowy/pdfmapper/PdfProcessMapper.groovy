@@ -128,13 +128,13 @@ class PdfProcessMapper extends AbstractPdfMapper{
     private void setAttachmentsNames(Process processInstance, Map dataMap) {
         if (hasCombination(processInstance, ['nowaUmowa', 'wymianaUmowyNajmu'], ['dodaniePrepaid', 'zmianaWarunkowPrepaid'])) {
             dataMap.put("zalacznikNr4",
-                    ["4 - Załącznik do Umowy Współpracy w zakresie sprzedaży i dystrybucji elektronicznych doładowań"])
+                    ["4 - Załącznik do Umowy Współpracy w zakresie sprzedaży i dystrybucji elektronicznych doładowań"] as String[])
         }
 
         if (hasCombination(processInstance, ['nowaUmowa', 'wymianaUmowyNajmu'], ['promocyjneObnizenieNajmu'])) {
             int attachmentNumber = dataMap.containsKey("zalacznikNr4") ? 5 : 4
             dataMap.put("zalacznikNr" + attachmentNumber,
-                    [attachmentNumber + " - Załącznik do Umowy Współpracy w zakresie sprzedaży i dystrybucji elektronicznych doładowań"])
+                    [attachmentNumber + " - Załącznik do Umowy Współpracy w zakresie sprzedaży i dystrybucji elektronicznych doładowań"] as String[])
         }
     }
 
@@ -174,10 +174,10 @@ class PdfProcessMapper extends AbstractPdfMapper{
         if (hasAtLeastOne(processInstance, ["dodanieDcc", "zmianaWarunkowDcc"])) {
             dataMap.put("dccTransaction", checkedCheckbox)
         }
-        if (hasAtLeastOne(processInstance, ["dodanieCashBack"])) {
+        if (hasAtLeastOne(processInstance, ["dodanieCashBack", "nowaUmowa"])) {
             dataMap.put("cashbackTransaction", checkedCheckbox)
         }
-        if (hasAtLeastOne(processInstance, ["dodanieAneksuKosztyPlus", "zmianaProwizji"])) {
+        if (hasAtLeastOne(processInstance, ["dodanieAneksuKosztyPlus", "zmianaProwizji", "nowaUmowa"])) {
             dataMap.put("paymentTransaction", checkedCheckbox)
         }
     }
@@ -209,7 +209,7 @@ class PdfProcessMapper extends AbstractPdfMapper{
             dataMap.put("pierwszaSesjaCena", getPdfValue("-"))
         }
 
-        if(hasAtLeastOne(process, ["dodanieDcc", "zmianaWarunkowDcc"])) {
+        if(process.hasData("oplataZaPlatnoscWInnejWalucie") || process.hasData("oplataZaUruchomienieDCC")) {
             dataMap.put("czyUslugaDcc", checkedCheckbox)
         } else {
             dataMap.put("oplataZaPlatnoscWInnejWalucie", getPdfValue("-"))
@@ -222,7 +222,7 @@ class PdfProcessMapper extends AbstractPdfMapper{
         if(contains(process, "komfort")) {
             dataMap.put("obslugaKomfort", checkedCheckbox)
         }
-        if(contains(process, "ekonomiczny")) {
+        if(contains(process, "ekonomiczny") || process.hasData("obslugaEkonomicznyCena")) {
             dataMap.put("obslugaEkonomiczny", checkedCheckbox)
         }
     }

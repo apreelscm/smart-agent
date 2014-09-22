@@ -59,8 +59,7 @@ public class PdfGenerator {
 					pdfContent.addImage(img);
 				}
 				catch (Exception e) {
-					LOG.info("Error while adding signature to document! Template path: " + templatePath);
-					e.printStackTrace();
+					LOG.error("Error while adding signature to document! Template path: " + templatePath, e);
 				}
 			}
 			

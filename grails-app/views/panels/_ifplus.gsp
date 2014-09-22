@@ -37,7 +37,6 @@
                 <li>
                     <span class="align-right"><g:message code="panel.payment.for.pkopb"/></span>
                     <span class="align-left">
-                        %{--TODO readonly = true--}%
                         <eumowy:percentageField  name="ifOplataPKOPB" value="${data.ifOplataPKOPB}" readonly="true" validatable="${data}" />
                     </span>
                 </li>

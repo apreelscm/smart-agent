@@ -155,7 +155,8 @@ class Process implements Serializable {
 	}
 
     public boolean hasData(String key) {
-        return getData(key) != null
+        def value = getData(key)
+        return value != null && value != "-" && !value.isEmpty()
     }
 
     public String getData(String key) {

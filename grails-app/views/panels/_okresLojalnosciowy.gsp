@@ -14,7 +14,7 @@
                 <li>
                     <span class="align-right"><g:message code="uninstall.price.title"/></span>
                     <span class="align-left">
-                        <eumowy:currencyField name="oplataDeinstalacyjna" validatable="${data}" value="${data.oplataDeinstalacyjna}" readonly="readonly"/>
+                        <eumowy:currencyField name="oplataDeinstalacyjna" validatable="${data}" value="${data.oplataDeinstalacyjna}"/>
                     </span>
                 </li>
             </ul>

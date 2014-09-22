@@ -226,22 +226,10 @@ class ActivityController {
         clientSignature {
             onEntry {
                 Process processInstance = flow.processInstance
-                
+
                 setRepresentatives(flow)
                 
-                flow.requiredNumberOfSubscriptions = 1 //PH subscription is always required
-
-                boolean isWymianaTerminalaOnly = processService.hasOnlyConcreteActivity(processInstance, "wymianaTermianala")
-
-                if (!isWymianaTerminalaOnly){
-                    if (flow.representative1) {
-                        flow.requiredNumberOfSubscriptions++
-                    }
-
-                    if (flow.representative2) {
-                        flow.requiredNumberOfSubscriptions++
-                    }
-                }
+                flow.requiredNumberOfSubscriptions = subscriptionService.getRequiredSubscriptionsCount(processInstance)
 
                 if (!flow.skipDocumentGeneration && !flow.isUzupelnijPodpisy) {
                     Set<DocumentFile> documents = documentService.getSavedDocumentsInProcess(processInstance, conversation.calc)
