@@ -15,6 +15,10 @@ class ActivityHelper {
         return process.activities?.any{it.code.equals(activityCode)}
     }
 
+    static boolean containsOnly(Process process, List<String> activities) {
+        return containsAll(process, activities) && process.activities.size() == activities.size()
+    }
+
     static boolean containsAll(Process process, List<String> activities) {
         boolean hasAllActivities = true
 
@@ -40,6 +44,7 @@ class ActivityHelper {
 
         return hasAtLeastOneActivity
     }
+
 
     static boolean hasCombination(Process process, List<String> requiredActivities, List<String> optionalActivities) {
         return hasAtLeastOne(process, requiredActivities) && hasAtLeastOne(process, optionalActivities)
