@@ -6,7 +6,7 @@
                 <li>
                     <span class="align-right"><g:message code="panel.loyality.period"/></span>
                     <span class="align-left">
-                        <eumowy:textField name="okresLojalnosciowy" validatable="${data}" value="${data.okresLojalnosciowy}" readonly="true"
+                        <eumowy:textField name="okresLojalnosciowy" validatable="${data}" value="${data.okresLojalnosciowy}"
                                             postfix="${message(code:"panel.months")}" class="align-right"/>
                     </span>
                 </li>

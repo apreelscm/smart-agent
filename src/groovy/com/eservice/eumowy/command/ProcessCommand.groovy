@@ -762,7 +762,9 @@ class ProcessCommand implements Serializable {
         dzialalnoscDokument(nullable:true, blank:true)
         dzialalnoscDokumentInny(nullable:true, blank:true, shared: "alphanumeric")
 
-        //okresLojalnosciowy(nullable:false, blank:false) FIXME do wyjasnienia znaczenie BRAK vs 0
+        okresLojalnosciowy(nullable:true, blank:true, validator: {value, cmd, errors ->
+            return ConditionValidator.atLeastCalcValue(value, cmd, errors, propertyName, "LICZBA_MIESIECY_LOJ")
+        })
         oplataZaPlatnoscWInnejWalucie(nullable: false, blank: false)
         kontaktTytul(nullable: false, blank: false)
         kontaktImie(nullable: false, blank: false, shared: "lettersOnly")

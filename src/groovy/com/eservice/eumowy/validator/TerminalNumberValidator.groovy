@@ -20,7 +20,6 @@ public class TerminalNumberValidator {
             counter += point?.sslIlosc != null ? point?.sslIlosc : 0
             counter += point?.gprsIlosc != null ? point?.gprsIlosc : 0
             counter += point?.pinPadIlosc != null ? point?.pinPadIlosc : 0
-            counter += point?.wifiIlosc != null ? point?.wifiIlosc : 0
         }
 
         cmd.poses?.each { point ->
@@ -29,7 +28,6 @@ public class TerminalNumberValidator {
             counter += point?.sslIlosc != null ? point?.sslIlosc : 0
             counter += point?.gprsIlosc != null ? point?.gprsIlosc : 0
             counter += point?.pinPadIlosc != null ? point?.pinPadIlosc : 0
-            counter += point?.wifiIlosc != null ? point?.wifiIlosc : 0
         }
 
         log.info "liczba dodanych terminali w eUmowy [${counter}], dozwolona [${max}]"

@@ -168,24 +168,24 @@
              </div>
          </div>
 
-         <div id="pakiet" class="expendable">
-             <a class="expander expandHeader expanded" href="#"><g:message code="activity.pakiet.name"/></a>
+         %{--<div id="pakiet" class="expendable">--} chwilowo ukryte na prosbe eService%
+             %{--<a class="expander expandHeader expanded" href="#"><g:message code="activity.pakiet.name"/></a>--}%
 
-             <div class="content nesting-sub1">
-                 <div class="checkBoxBlock">
-                     <g:checkBox id="pakietStartCB" name="pakietStart" data-selected="${activities?.contains('pakietStart')}"/>
-                     <label for="pakietStartCB"><g:message code="activity.pakietStart.name"/></label>
-                 </div>
-                 <div class="checkBoxBlock">
-                     <g:checkBox id="pakietStartPlusCB" name="pakietStartPlus" data-selected="${activities?.contains('pakietStartPlus')}"/>
-                     <label for="pakietStartPlusCB"><g:message code="activity.pakietStartPlus.name"/></label>
-                 </div>
-                 <div class="checkBoxBlock">
-                     <g:checkBox id="pakietMobilnyCB" name="pakietMobilny" data-selected="${activities?.contains('pakietMobilny')}"/>
-                     <label for="pakietMobilnyCB"><g:message code="activity.pakietMobilny.name"/></label>
-                 </div>
-             </div>
-         </div>
+             %{--<div class="content nesting-sub1">--}%
+                 %{--<div class="checkBoxBlock">--}%
+                     %{--<g:checkBox id="pakietStartCB" name="pakietStart" data-selected="${activities?.contains('pakietStart')}"/>--}%
+                     %{--<label for="pakietStartCB"><g:message code="activity.pakietStart.name"/></label>--}%
+                 %{--</div>--}%
+                 %{--<div class="checkBoxBlock">--}%
+                     %{--<g:checkBox id="pakietStartPlusCB" name="pakietStartPlus" data-selected="${activities?.contains('pakietStartPlus')}"/>--}%
+                     %{--<label for="pakietStartPlusCB"><g:message code="activity.pakietStartPlus.name"/></label>--}%
+                 %{--</div>--}%
+                 %{--<div class="checkBoxBlock">--}%
+                     %{--<g:checkBox id="pakietMobilnyCB" name="pakietMobilny" data-selected="${activities?.contains('pakietMobilny')}"/>--}%
+                     %{--<label for="pakietMobilnyCB"><g:message code="activity.pakietMobilny.name"/></label>--}%
+                 %{--</div>--}%
+             %{--</div>--}%
+         %{--</div>--}%
 
          <div id="wymianaTerminala" class="expendable">
              <div class="checkBoxBlock">
