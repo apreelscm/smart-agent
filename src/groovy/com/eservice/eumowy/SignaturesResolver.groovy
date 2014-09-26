@@ -2,14 +2,19 @@ package com.eservice.eumowy
 
 import com.google.common.collect.Lists
 
-class ActivitySignaturesResolver {
-    private Process process
-    private Activity activity
-    private int listNumber
+class SignaturesResolver {
+    protected Process process
+    protected Activity activity
+    protected int listNumber
 
-    public ActivitySignaturesResolver(Process process, Activity activity, int listNumber) {
+    public SignaturesResolver(Process process, Activity activity) {
         this.process = process
         this.activity = activity
+        this.listNumber = 0
+    }
+
+    public SignaturesResolver(Process process, Activity activity, int listNumber) {
+        this(process, activity)
         this.listNumber = listNumber
     }
 
@@ -28,7 +33,7 @@ class ActivitySignaturesResolver {
             List<String> activities = Lists.newArrayList(activity.code)
             activities.addAll(signature.requiredActivities.split(","))
 
-            if(ActivityHelper.containsOnly(process, activities)) {
+            if(ActivityHelper.containsAll(process, activities)) {
                 return signature.requiredActivities
             }
         }

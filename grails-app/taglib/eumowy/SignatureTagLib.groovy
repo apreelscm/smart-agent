@@ -24,8 +24,9 @@ class SignatureTagLib {
 
     Closure mandatory = { attrs ->
         Activity activity = attrs.activity
+        Process process = attrs.process
 
-        Set<Long> mandatorySignaturesIds = signatureService.getMandatoryActivitySignatures(activity)*.id
+        Set<Long> mandatorySignaturesIds = signatureService.getMandatoryActivitySignatures(process, activity)*.id
 
         out << render(template: '/tagLib/sig/mandatory', model: [activity: activity, mandatorySignatures: mandatorySignaturesIds])
     }

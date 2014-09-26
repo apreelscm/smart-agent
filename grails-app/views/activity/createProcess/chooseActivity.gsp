@@ -40,7 +40,7 @@
             <article id="${activity.code}" class="border-article signature-article">
                 <h3 class="linia-bottom"><g:message code="activity.${activity.code}.name"/></h3>
                 <div>
-                    <sig:mandatory activity="${activity}"/>
+                    <sig:mandatory activity="${activity}" process="${processInstance}"/>
 
                     <sig:list activity="${activity}" process="${processInstance}" listNumber="1"/>
 

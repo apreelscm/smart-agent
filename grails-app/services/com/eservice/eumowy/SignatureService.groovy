@@ -5,11 +5,11 @@ import org.codehaus.groovy.grails.web.servlet.mvc.GrailsParameterMap
 class SignatureService {
 
     Set<ActivitySignatures> getActivitySignatures(Process process, Activity activity, int listNumber) {
-        return new ActivitySignaturesResolver(process, activity, listNumber).resolve()
+        return new SignaturesResolver(process, activity, listNumber).resolve()
     }
 
-    Set<ActivitySignatures> getMandatoryActivitySignatures(Activity activity) {
-        return activity.activitySignatures.findAll {it.mandatory && it.signature.active}
+    Set<ActivitySignatures> getMandatoryActivitySignatures(Process process, Activity activity) {
+        return new MandatorySignaturesResolver(process, activity).resolve()
     }
 
     Set<Signature> getProcessSignatures(Process process, GrailsParameterMap params) {
