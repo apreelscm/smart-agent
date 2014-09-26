@@ -15,19 +15,11 @@ public class TerminalNumberValidator {
         def counter = 0
 
         cmd.points?.each { point ->
-            counter += point?.dialupIlosc != null ? point?.dialupIlosc : 0
-            counter += point?.vpnIlosc != null ? point?.vpnIlosc : 0
-            counter += point?.sslIlosc != null ? point?.sslIlosc : 0
-            counter += point?.gprsIlosc != null ? point?.gprsIlosc : 0
-            counter += point?.pinPadIlosc != null ? point?.pinPadIlosc : 0
+            counter += getTerminalCount(point)
         }
 
         cmd.poses?.each { point ->
-            counter += point?.dialupIlosc != null ? point?.dialupIlosc : 0
-            counter += point?.vpnIlosc != null ? point?.vpnIlosc : 0
-            counter += point?.sslIlosc != null ? point?.sslIlosc : 0
-            counter += point?.gprsIlosc != null ? point?.gprsIlosc : 0
-            counter += point?.pinPadIlosc != null ? point?.pinPadIlosc : 0
+            counter += getTerminalCount(point)
         }
 
         log.info "liczba dodanych terminali w eUmowy [${counter}], dozwolona [${max}]"
@@ -37,6 +29,23 @@ public class TerminalNumberValidator {
             return false
         }
         return true
+    }
+
+    private static int getTerminalCount(def point) {
+        int counter = 0
+
+        counter += point.dialupIlosc ?: 0
+        counter += point.dialupPPIlosc ?: 0
+        counter += point.vpnIlosc ?: 0
+        counter += point.vpnPPIlosc ?: 0
+        counter += point.sslIlosc ?: 0
+        counter += point.sslPPIlosc ?: 0
+        counter += point.gprsIlosc ?: 0
+        counter += point.gprsPPIlosc ?: 0
+        counter += point.pinPadIlosc ?: 0
+        counter += point.gprsIloscPortable ?: 0
+
+        return counter
     }
 
 }

@@ -117,7 +117,7 @@ class PanelService {
     }
 
     def getDodajPos(ProcessCommand cmd, def calc ) {
-		def pointData = new PointCommand()
+		PointCommand pointData = new PointCommand()
 		
 		pointData.calc = calc
 		
@@ -137,6 +137,9 @@ class PanelService {
 		pointData.gprsCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_GPRS_TERM_CENA"))
 		pointData.gprsPPCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_GPRS_PP_CENA"))
 
+        pointData.gprsTypPortable = calculatorService.getCalcProperty(calc,"TYP_GPRS")
+        pointData.gprsCenaPortable =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_GPRS_TERM_CENA"))
+
         pointData.hasDodaniePrepaid = cmd.hasDodaniePrepaid
 
 		cmd.defaultPosData = pointData
@@ -145,7 +148,7 @@ class PanelService {
     }
 
     def getDodajPunkt(ProcessCommand cmd, def calc ) {
-        def pointData = new PointCommand()
+        PointCommand pointData = new PointCommand()
 
 		pointData.calc = calc
 		
@@ -164,6 +167,9 @@ class PanelService {
         pointData.gprsTyp = calculatorService.getCalcProperty(calc,"TYP_GPRS")
         pointData.gprsCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_GPRS_TERM_CENA"))
         pointData.gprsPPCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_GPRS_PP_CENA"))
+
+        pointData.gprsTypPortable = calculatorService.getCalcProperty(calc,"TYP_GPRS")
+        pointData.gprsCenaPortable =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_GPRS_TERM_CENA"))
 
         pointData.hasDodaniePrepaid = cmd.hasDodaniePrepaid
 
