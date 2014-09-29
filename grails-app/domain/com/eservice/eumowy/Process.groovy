@@ -204,4 +204,14 @@ class Process implements Serializable {
     public Set<PointData> getLocalPoints() {
         return points.findAll {it.czyLokalny}
     }
+
+    public List<PosData> getChosenPoses() {
+        List<PosData> chosenPoses = []
+
+        points.each{ PointData point ->
+            chosenPoses.addAll(point?.posDatas.findAll {pos -> pos && pos?.czyWybrany})
+        }
+
+        return chosenPoses
+    }
 }

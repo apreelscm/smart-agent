@@ -4,6 +4,7 @@ import com.eservice.eumowy.enums.AcceptorLocation
 import com.eservice.eumowy.pdfmapper.PEPdeclarationMapper
 import com.google.common.collect.Lists
 import com.lowagie.text.pdf.PdfReader
+import org.apache.commons.lang.StringUtils
 import pdfgenerator.PdfGenerator
 import pdfgenerator.PdfGenerator.FontType
 
@@ -69,19 +70,21 @@ class DocumentService {
 
         if(!rentReductionSignature) return documents
 
-        List chosenPoses = []
-        processInstance.points.each{ PointData point ->
-            chosenPoses.addAll(point?.posDatas.findAll {pos -> pos && pos?.czyWybrany})
-        }
+        List<PosData> chosenPoses = processInstance.getChosenPoses()
 
         if(chosenPoses.size() > POSES_COUNT_ON_RENT_REDUCTION) {
             log.info(String.format("Pos exchange count is larger than 10 for process %s", processInstance.id))
         }
 
-        Lists.partition(chosenPoses, POSES_COUNT_ON_RENT_REDUCTION).each { List<PosData> poses ->
+        Lists.partition(chosenPoses, POSES_COUNT_ON_RENT_REDUCTION).eachWithIndex { List<PosData> poses, int i ->
             Map posData = mapperService.mapPosData(poses)
+            String documentName = i == 0 ? rentReductionSignature.templatePath : i + "_" + rentReductionSignature.templatePath
+            String clientDocumentName = i == 0 ? rentReductionSignature.filename : i + "_" + rentReductionSignature.filename
+
             posData.putAll(dataFromProcess)
-            documents.add(getDocumentFile(processInstance, rentReductionSignature, posData))
+
+            documents.add(getDocumentFile(processInstance, rentReductionSignature, posData,
+                    documentName, clientDocumentName))
         }
 
         return documents
@@ -286,20 +289,13 @@ class DocumentService {
     }
 
     public void removeObsoleteDocuments(Process processInstance) {
-        Set<DocumentFile> pointDocuments = getObsoletePointDocuments(processInstance)
-        Set<DocumentFile> posExchangeDocuments = getObsoletePosExchangeDocuments(processInstance)
-        Set<DocumentFile> representativeDocuments = getObsoleteRepresentativesDocuments(processInstance)
+        Set<DocumentFile> obsoleteDocuments = getObsoletePointDocuments(processInstance)
+        obsoleteDocuments.addAll(getObsoletePosExchangeDocuments(processInstance))
+        obsoleteDocuments.addAll(getObsoleteRepresentativesDocuments(processInstance))
+        obsoleteDocuments.addAll(getObsoleteRentReducutionDocuments(processInstance))
 
-        pointDocuments.each {DocumentFile file ->
-            log.info(String.format("Removing obsolete point document: %s from process %s", file.id, processInstance.id))
-            processInstance.removeFromDocuments(file)
-        }
-        posExchangeDocuments.each {DocumentFile file ->
-            log.info(String.format("Removing obsolete pos exchange document: %s from process %s", file.id, processInstance.id))
-            processInstance.removeFromDocuments(file)
-        }
-        representativeDocuments.each {DocumentFile file ->
-            log.info(String.format("Removing obsolete representative document: %s from process %s", file.id, processInstance.id))
+        obsoleteDocuments.each { DocumentFile file ->
+            log.info(String.format("Removing obsolete document %s with id %s from process %s", file.name, file.id, processInstance.id))
             processInstance.removeFromDocuments(file)
         }
     }
@@ -372,6 +368,25 @@ class DocumentService {
         }
 
         return documents
+    }
+
+    private Set<DocumentFile> getObsoleteRentReducutionDocuments(Process processInstance) {
+        Set<DocumentFile> documents = processInstance.documents.findAll { it.signature.hasPurpose(SignatureDetail.SignaturePurpose.RENT_REDUCTION) }
+        Set<DocumentFile> obsoleteDocuments = []
+
+        if(!documents) return obsoleteDocuments
+
+        List<PosData> chosenPoses = processInstance.getChosenPoses()
+        int maxDocumentOrdinalNumber = Math.floor((chosenPoses.size() - 1) / POSES_COUNT_ON_RENT_REDUCTION) as int
+
+        //if chosePoses.size() > 100 then this will fail
+        documents.findAll {StringUtils.isNumeric(it.name[0])}.each { DocumentFile file ->
+            int ordinal = file.name[0] as int
+
+            if(ordinal > maxDocumentOrdinalNumber) obsoleteDocuments.add(file)
+        }
+
+        return obsoleteDocuments
     }
 
     private long fetchPointIdFromName(String name){

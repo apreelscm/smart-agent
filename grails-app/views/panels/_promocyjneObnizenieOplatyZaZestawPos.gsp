@@ -32,18 +32,9 @@
 
 <script type="text/javascript">
     jQuery(document).ready(function() {
-        var discCount = parseInt('${data.allPoses.size()}');
-        var discountTerminalCount = parseInt('${data.promObjNajLiczbaTerminali}');
-        var slotsInDocument = 10;
+        var disccount = parseInt('${data.allPoses.size()}');
 
-        var permitedPosesSize;
-        if (isNaN(discountTerminalCount)){
-            permitedPosesSize = slotsInDocument;
-        } else {
-            permitedPosesSize = Math.min(discountTerminalCount, slotsInDocument);
-        }
-
-        for (var i =0; i< discCount; i++){
+        for (var i =0; i< disccount; i++){
             var start = jQuery('#allPoses\\['+ i +'\\]\\.dataOd');
             start.datepicker({
                 dateFormat: 'yy-mm-dd',
@@ -60,19 +51,10 @@
             new function (s) {
                 s.on("change", function(event){
                     var monthsToadd = '${data.promObjNaj1}';
-                    selectAllFields(new Date(event.target.value), discCount, monthsToadd ? parseInt(monthsToadd) : 1);
+                    selectAllFields(new Date(event.target.value), disccount, monthsToadd ? parseInt(monthsToadd) : 1);
                 });
             }(start);
-
-            new function (s) {
-                s.on("change", function (){
-                    workWithCheckboxes(discCount, permitedPosesSize);
-                });
-            } (jQuery('#allPoses\\['+ i +'\\]\\.czyWybrany'));
-
         }
-
-        workWithCheckboxes(discCount, permitedPosesSize);
     });
 
     function getLastDayOfYearAndMonth(year, month, monthsToAdd){
@@ -133,14 +115,4 @@
             jQuery('#allPoses\\['+ i +'\\]\\.czyWybrany').removeAttr("disabled");
         }
     }
-
-    function workWithCheckboxes(discCount, permitedPosesSize){
-        var count = getCheckedCount(discCount);
-        if (count>=permitedPosesSize){
-            disableCheckboxes(discCount);
-        } else {
-            enableCheckboxes(discCount);
-        }
-    }
-
 </script>
