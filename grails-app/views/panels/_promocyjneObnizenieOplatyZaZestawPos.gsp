@@ -32,9 +32,10 @@
 
 <script type="text/javascript">
     jQuery(document).ready(function() {
-        var disccount = parseInt('${data.allPoses.size()}');
+        var currentTerminalsCount = parseInt('${data.allPoses.size()}'),
+            maxTerminalsCount = parseInt('${data.promObjNajLiczbaTerminali}');
 
-        for (var i =0; i< disccount; i++){
+        for (var i =0; i < currentTerminalsCount; i++){
             var start = jQuery('#allPoses\\['+ i +'\\]\\.dataOd');
             start.datepicker({
                 dateFormat: 'yy-mm-dd',
@@ -51,10 +52,18 @@
             new function (s) {
                 s.on("change", function(event){
                     var monthsToadd = '${data.promObjNaj1}';
-                    selectAllFields(new Date(event.target.value), disccount, monthsToadd ? parseInt(monthsToadd) : 1);
+                    selectAllFields(new Date(event.target.value), currentTerminalsCount, monthsToadd ? parseInt(monthsToadd) : 1);
                 });
             }(start);
+
+            new function (s) {
+                s.on("change", function (){
+                    workWithCheckboxes(currentTerminalsCount, maxTerminalsCount);
+                });
+            } (jQuery('#allPoses\\['+ i +'\\]\\.czyWybrany'));
         }
+
+        workWithCheckboxes(currentTerminalsCount, maxTerminalsCount);
     });
 
     function getLastDayOfYearAndMonth(year, month, monthsToAdd){
@@ -114,5 +123,16 @@
         for (var i = 0; i<discCount; i++){
             jQuery('#allPoses\\['+ i +'\\]\\.czyWybrany').removeAttr("disabled");
         }
+    }
+
+    function workWithCheckboxes(discCount, permitedPosesSize){
+        var count = getCheckedCount(discCount);
+
+        if (count >= permitedPosesSize){
+            disableCheckboxes(discCount);
+            return false;
+        }
+
+        enableCheckboxes(discCount);
     }
 </script>

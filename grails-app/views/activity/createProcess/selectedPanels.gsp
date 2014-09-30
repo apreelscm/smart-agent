@@ -242,6 +242,7 @@
         <g:hiddenField name="czyGift" value="${data.czyGift}"/>
         <g:hiddenField name="isBundleActivity" value="${data.isBundleActivity}"/>
         <g:hiddenField name="minCenaNajmu" value="${data.minCenaNajmu}"/>
+        <g:hiddenField name="promObjNajLiczbaTerminali" value="${data.promObjNajLiczbaTerminali}"/>
 
         <g:each var="panel" in="${processInstance.panels.sort(false){p -> p?.orderNo}}" status="i">
             <g:if test="${panel != null}">

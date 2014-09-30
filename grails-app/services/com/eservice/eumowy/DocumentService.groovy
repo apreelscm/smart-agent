@@ -37,6 +37,7 @@ class DocumentService {
     }
 
     public Set<DocumentFile> getSavedDocumentsInProcess(Process processInstance, def calc) {
+        //TODO: refactoring generowania dokumentow - porodzielac to ladnie na klasy
         Set<DocumentFile> documents = []
         Map dataFromProcess = mapperService.mapOnlyProcessData(processInstance, calc)
 
