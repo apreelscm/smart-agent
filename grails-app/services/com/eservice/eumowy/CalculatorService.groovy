@@ -79,8 +79,10 @@ class CalculatorService implements Serializable {
             throw new CalculatorException("calc.fetch.error")
         }
 
-        if(isCashbackActivityRequired(process, calc)) {
-            throw new CalculatorException("cashback.activity.required")
+        ActivitiesRequirements requirements = new ActivitiesRequirements(process, calc)
+
+        if(requirements.invalid) {
+            throw new CalculatorException(requirements.errorMessage)
         }
 
         return calc
@@ -90,11 +92,5 @@ class CalculatorService implements Serializable {
         if(ActivityHelper.isCalculatorRedundant(process)) return -1
 
         return cbdService.findCalculatorIdByNip(client.nip)
-    }
-
-    private boolean isCashbackActivityRequired(Process process, def calc) {
-        if (ActivityHelper.isNewAgreement(process) || ActivityHelper.contains(process, "wymianaUmowyZaplaty")) return false
-
-        return hasCalcProperty("CASHBACK_A", "TAK", calc) && !ActivityHelper.contains(process, "dodanieCashBack")
     }
 }
