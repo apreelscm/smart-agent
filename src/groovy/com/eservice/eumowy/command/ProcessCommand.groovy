@@ -4,6 +4,7 @@ import com.eservice.eumowy.Process
 import com.eservice.eumowy.annotation.DateField
 import com.eservice.eumowy.annotation.Omit
 import com.eservice.eumowy.enums.AcceptorLocation
+import com.eservice.eumowy.enums.Disposition
 import com.eservice.eumowy.validator.*
 import grails.util.Holders
 import grails.validation.Validateable
@@ -410,6 +411,9 @@ class ProcessCommand implements Serializable {
     String nip = DEFAULT_VALUE
 
     String minCenaNajmu
+
+    //uzgodnienie dyspozycji
+    String dyspozycja
 
 //    uwagi
     @Omit

@@ -22,10 +22,10 @@ class MapperService {
     }
 
     def mapOnlyProcessData(Process processInstance, def calc){
-        PdfProcessMapper processMapper = new PdfProcessMapper(calculatorService, calc, new PdfPointMapper(), new PdfPosMapper())
+        PdfProcessMapper processMapper = new PdfProcessMapper(processInstance, calculatorService, calc)
         def data = [:]
 
-        data.putAll(processMapper.mapOnlyProcessData(processInstance))
+        data.putAll(processMapper.mapOnlyProcessData())
         data.putAll(new RepresentativesNamesMapper(processInstance).getDataForMapping())
 
         if(ActivityHelper.isNewAgreement(processInstance)) {

@@ -299,6 +299,10 @@ class PanelService {
 
     }
 
+    def getUzgodnienieDyspozycji(ProcessCommand cmd, def calc) {
+
+    }
+
     def getOsobaKtoraPozyskalaAkceptanta(ProcessCommand cmd, def calc ) {
         def user = springSecurityService.principal;
         cmd.pozyskujacyImie =  user.imie

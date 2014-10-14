@@ -1,31 +1,37 @@
 package com.eservice.eumowy.pdfmapper
 
+import com.eservice.eumowy.enums.Disposition
+
 import static com.eservice.eumowy.ActivityHelper.*
 import com.eservice.eumowy.HirePayment
-import com.eservice.eumowy.Process
+
 import java.text.DecimalFormat
 import java.text.NumberFormat
+import com.eservice.eumowy.Process
 
 
 class PdfProcessMapper extends AbstractPdfMapper{
 
     def calculatorService
     def calc
-    def pointMapper
-    def posMapper
+    PdfPointMapper pointMapper
+    PdfPosMapper posMapper
+    Process processInstance
+    Map dataMap = [:]
 	
 	private static final EMPTY_VALUES = ["", "-"]
 
-    public PdfProcessMapper (def calculatorService, def calc, def pointMapper, def posMapper){
+    public PdfProcessMapper (Process processInstance, def calculatorService, def calc){
         this.calculatorService = calculatorService
         this.calc = calc
-        this.pointMapper = pointMapper
-        this.posMapper = posMapper
+        this.processInstance = processInstance
+
+        pointMapper = new PdfPointMapper()
+        posMapper = new PdfPosMapper()
     }
 
-    protected def mapOnlyProcessData(Process processInstance){
-        def dataMap = [:]
-        dataMap.putAll(mapProcessToPDFData(processInstance))
+    protected def mapOnlyProcessData(){
+        dataMap.putAll(mapProcessToPDFData())
         dataMap.putAll(mapProcessDataToPDFData(processInstance.processData))
         dataMap.put("siedzibaAkceptanta", [getAdresAkceptanta(processInstance)] as String[])
 
@@ -59,7 +65,7 @@ class PdfProcessMapper extends AbstractPdfMapper{
 
             def normalMapFromProcess = [:]
             if (processInstance.processData.find{"isOdplatneUzywanieShown".equals(it.name) && "tak".equals(it.value)}){
-                normalMapFromProcess = mapOdplatneUzywanie(processInstance)
+                normalMapFromProcess = mapOdplatneUzywanie()
             }
 
             def finalResult = [:]
@@ -92,7 +98,7 @@ class PdfProcessMapper extends AbstractPdfMapper{
 
             //gdy nie ma zadnych punktow to i tak musimy zmapowac to co jest w HirePayments (jesli oczywiscie jest)
             if (processInstance.processData.find{"isOdplatneUzywanieShown".equals(it.name) && "tak".equals(it.value)}){
-                def normalMapFromProcess = mapOdplatneUzywanie(processInstance)
+                def normalMapFromProcess = mapOdplatneUzywanie()
                 def suffixes = ['A', 'B', 'C']
                 normalMapFromProcess.eachWithIndex { def entry, int i ->
                     if (i<suffixes.size()){
@@ -112,20 +118,22 @@ class PdfProcessMapper extends AbstractPdfMapper{
             dataMap.put("crossNew", ['_____'] as String[])
         }
 
-        setAttachmentsNames(processInstance, dataMap)
+        setAttachmentsNames()
 
-        setFirstAttachmentCheckbox(processInstance, dataMap)
+        setFirstAttachmentCheckbox()
 
-        setSecondAttachmentCheckbox(processInstance, dataMap)
+        setSecondAttachmentCheckbox()
 
-        setTransactionsCheckboxes(processInstance, dataMap)
+        setTransactionsCheckboxes()
 
-        setServicesData(processInstance, dataMap)
+        setServicesData()
+
+        setDistributionDetails()
 
         return dataMap;
     }
 
-    private void setAttachmentsNames(Process processInstance, Map dataMap) {
+    private void setAttachmentsNames() {
         if (hasCombination(processInstance, ['nowaUmowa', 'wymianaUmowyNajmu'], ['dodaniePrepaid', 'zmianaWarunkowPrepaid'])) {
             dataMap.put("zalacznikNr4",
                     ["4 - Załącznik do Umowy Współpracy w zakresie sprzedaży i dystrybucji elektronicznych doładowań"] as String[])
@@ -138,39 +146,39 @@ class PdfProcessMapper extends AbstractPdfMapper{
         }
     }
 
-    private void setFirstAttachmentCheckbox(Process process, Map dataMap) {
-        if(hasAtLeastOne(process, ["dodatkowyPunkt", "dodatkowyPos"])) {
+    private void setFirstAttachmentCheckbox() {
+        if(hasAtLeastOne(processInstance, ["dodatkowyPunkt", "dodatkowyPos"])) {
             dataMap.put("dodatkowyZalacznik1", checkedCheckbox)
         }
 
-        if(contains(process, "aneks")) {
+        if(contains(processInstance, "aneks")) {
             dataMap.put("nowyZalacznik1", checkedCheckbox)
         }
     }
 
-    private void setSecondAttachmentCheckbox(Process process, Map dataMap) {
-        if(hasNoCombination(process, ["dodanieDcc"], ["logoKalkulatorSesja", "ekonomiczny", "komfort", "prestiz"]) ||
-            isOnlyActivity(process, "logoKalkulatorSesja") ||
-            isOnlyActivity(process, "ekonomiczny") ||
-            isOnlyActivity(process, "komfort") ||
-            isOnlyActivity(process, "prestiz"))
+    private void setSecondAttachmentCheckbox() {
+        if(hasNoCombination(processInstance, ["dodanieDcc"], ["logoKalkulatorSesja", "ekonomiczny", "komfort", "prestiz"]) ||
+            isOnlyActivity(processInstance, "logoKalkulatorSesja") ||
+            isOnlyActivity(processInstance, "ekonomiczny") ||
+            isOnlyActivity(processInstance, "komfort") ||
+            isOnlyActivity(processInstance, "prestiz"))
         {
             dataMap.put("dodatkowyZalacznik2", checkedCheckbox)
             return
         }
 
-        if(hasNoCombination(process, ["zmianaWarunkowDcc"], ["logoKalkulatorSesja", "ekonomiczny", "komfort", "prestiz"]) ||
-            hasCombination(process, ["logoKalkulatorSesja"], ["dodanieDcc", "zmianaWarunkowDcc"]) ||
-            hasCombination(process, ["logoKalkulatorSesja"], ["ekonomiczny", "komfort", "prestiz"]) ||
-            hasCombination(process, ["ekonomiczny"], ["dodanieDcc", "zmianaWarunkowDcc", "logoKalkulatorSesja"]) ||
-            hasCombination(process, ["komfort"], ["dodanieDcc", "zmianaWarunkowDcc", "logoKalkulatorSesja"]) ||
-            hasCombination(process, ["prestiz"], ["dodanieDcc", "zmianaWarunkowDcc", "logoKalkulatorSesja"]))
+        if(hasNoCombination(processInstance, ["zmianaWarunkowDcc"], ["logoKalkulatorSesja", "ekonomiczny", "komfort", "prestiz"]) ||
+            hasCombination(processInstance, ["logoKalkulatorSesja"], ["dodanieDcc", "zmianaWarunkowDcc"]) ||
+            hasCombination(processInstance, ["logoKalkulatorSesja"], ["ekonomiczny", "komfort", "prestiz"]) ||
+            hasCombination(processInstance, ["ekonomiczny"], ["dodanieDcc", "zmianaWarunkowDcc", "logoKalkulatorSesja"]) ||
+            hasCombination(processInstance, ["komfort"], ["dodanieDcc", "zmianaWarunkowDcc", "logoKalkulatorSesja"]) ||
+            hasCombination(processInstance, ["prestiz"], ["dodanieDcc", "zmianaWarunkowDcc", "logoKalkulatorSesja"]))
         {
             dataMap.put("nowyZalacznik2", checkedCheckbox)
         }
     }
 
-    private void setTransactionsCheckboxes(Process processInstance, Map dataMap) {
+    private void setTransactionsCheckboxes() {
         if (hasAtLeastOne(processInstance, ["dodanieDcc", "zmianaWarunkowDcc"])) {
             dataMap.put("dccTransaction", checkedCheckbox)
         }
@@ -182,48 +190,62 @@ class PdfProcessMapper extends AbstractPdfMapper{
         }
     }
 
-    private void setServicesData(Process process, Map dataMap) {
+    private void setServicesData() {
         //TODO: zamiast tych elsow zrobic adnotacje w ProcessCommand z defaultMappperValue or smth
 
-        if(process.hasData("wydrukGrafikiCena")) {
+        if(processInstance.hasData("wydrukGrafikiCena")) {
             dataMap.put("czyUslugaLogo", checkedCheckbox)
         } else {
             dataMap.put("wydrukGrafikiCena", getPdfValue("-"))
         }
 
-        if(process.hasData("dzialaniaMatematyczneCena")) {
+        if(processInstance.hasData("dzialaniaMatematyczneCena")) {
             dataMap.put("czyUslugaKalkulator", checkedCheckbox)
         } else {
             dataMap.put("dzialaniaMatematyczneCena", getPdfValue("-"))
         }
 
-        if(process.hasData("mudCena")) {
+        if(processInstance.hasData("mudCena")) {
             dataMap.put("czyUslugaMUD", checkedCheckbox)
         } else {
             dataMap.put("mudCena", getPdfValue("-"))
         }
 
-        if(process.hasData("pierwszaSesjaCena")) {
+        if(processInstance.hasData("pierwszaSesjaCena")) {
             dataMap.put("czyUslugaPrzelew", checkedCheckbox)
         } else {
             dataMap.put("pierwszaSesjaCena", getPdfValue("-"))
         }
 
-        if(process.hasData("oplataZaPlatnoscWInnejWalucie") || process.hasData("oplataZaUruchomienieDCC")) {
+        if(processInstance.hasData("oplataZaPlatnoscWInnejWalucie") || processInstance.hasData("oplataZaUruchomienieDCC")) {
             dataMap.put("czyUslugaDcc", checkedCheckbox)
         } else {
             dataMap.put("oplataZaPlatnoscWInnejWalucie", getPdfValue("-"))
             dataMap.put("oplataZaUruchomienieDCC", getPdfValue("-"))
         }
 
-        if(contains(process, "prestiz")) {
+        if(contains(processInstance, "prestiz")) {
             dataMap.put("obslugaPrestiz", checkedCheckbox)
         }
-        if(contains(process, "komfort")) {
+        if(contains(processInstance, "komfort")) {
             dataMap.put("obslugaKomfort", checkedCheckbox)
         }
-        if(contains(process, "ekonomiczny") || process.hasData("obslugaEkonomicznyCena")) {
+        if(contains(processInstance, "ekonomiczny") || processInstance.hasData("obslugaEkonomicznyCena")) {
             dataMap.put("obslugaEkonomiczny", checkedCheckbox)
+        }
+    }
+
+    private void setDistributionDetails() {
+        String value = processInstance.getData("dyspozycja")
+        String dispositionFieldName
+
+        if(!value) return;
+
+        Disposition.values().each { disposition ->
+            if(!value.equals(disposition.name())) {
+                dispositionFieldName = String.format("dyspozycja%s", disposition.name())
+                dataMap.put(dispositionFieldName, ['_______________'] as String[])
+            }
         }
     }
 
@@ -241,7 +263,7 @@ class PdfProcessMapper extends AbstractPdfMapper{
         posesNotFromCBD
     }
 
-    private def mapOdplatneUzywanie(def processInstance){
+    private def mapOdplatneUzywanie(){
         def sumMap = [:]
         def pd = processInstance.processData;
 
@@ -334,7 +356,7 @@ class PdfProcessMapper extends AbstractPdfMapper{
         return data
     }
 
-    private def mapProcessToPDFData(def processInstance){
+    private def mapProcessToPDFData(){
         Map<String, String[]> data = new HashMap<String, String[]>()
 
         def phNumber = processInstance?.phNumber

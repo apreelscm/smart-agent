@@ -1667,3 +1667,9 @@ header.belka-glowna {
     width: 720px;
     padding-left: 120px;
 }
+
+#uzgodnienieDyspozycji div.label {
+    display: inline-block;
+    margin-bottom: 15px;
+    padding-left: 10px;
+}
