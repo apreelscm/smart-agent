@@ -1,6 +1,8 @@
 package com.eservice.eumowy
 
+import com.eservice.eumowy.auth.EServiceUserDetails
 import grails.plugin.cache.Cacheable
+import org.apache.commons.lang.StringUtils
 import org.perf4j.StopWatch
 import org.perf4j.log4j.Log4JStopWatch
 import org.springframework.mail.MailException
@@ -15,6 +17,7 @@ class EmailService {
     def messageSource
     def processService
     def grailsApplication
+    def springSecurityService
 
     private static final String COA_MAIL = "coa@eservice.com.pl"
 
@@ -30,7 +33,19 @@ class EmailService {
 
 	def sendDocumentsPaperVersion(List<DocumentFile> documents, def bodyParams) {
         def emailTemplate = getEmailTemplatesByName(EmailTemplates.EmailTemplateType.DOCUMENTS_PAPER_VERSION)
-		sendMail(emailTemplate, COA_MAIL, null, bodyParams, documents)
+
+        String mailAddress = COA_MAIL
+        EServiceUserDetails user = springSecurityService.principal
+
+        if(StringUtils.startsWith(user.nr, "98")) {
+            if(user.email) {
+                mailAddress = user.email
+            } else {
+                log.info(String.format("Sales number of user %s starts with 98 but user has no email. Sending email to coa@eservice.com.pl...", user.fullName));
+            }
+        }
+
+		sendMail(emailTemplate, mailAddress, null, bodyParams, documents)
 	}
 
     def sendDocumentsPaperVersion(def recipient, List<DocumentFile> documents, def bodyParams) {
