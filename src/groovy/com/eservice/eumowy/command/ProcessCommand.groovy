@@ -671,7 +671,7 @@ class ProcessCommand implements Serializable {
         nazwaDoWydrukuZTerminalaPos(nullable: true, maxSize: 25)
         wydrukNazwaDoWyszukwarki(nullable: true)
         wydrukUlicaTytul(nullable: true, blank: true)
-        wydrukUlica(nullable: false, blank: false, shared: "alphanumeric", validator: { value, cmd, errors ->
+        wydrukUlica(nullable: false, blank: false, validator: { value, cmd, errors ->
             MaxLengthValidator.validate(value, cmd, errors, 40, propertyName)
         })
         wydrukNrDomu(nullable: false, blank: false, shared: "alphanumeric")

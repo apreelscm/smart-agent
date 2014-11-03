@@ -213,20 +213,38 @@ class PdfPosMapper extends AbstractPdfMapper{
 		}
 	}
 
-    private mapKartaSimTypPosDataDetails(def data, def posesData, def key, def value){
-        if (value !=null) {
-            if ("Centertel".equals(value)){
-                //Orange
-                data.put('simPlus', ['_____'] as String[]);
-                data.put('simEra', ['_____'] as String[]);
-            } else if ("Polkomtel".equals(value)){
-                //Polkomtel
-                data.put('simOrange', ['_____'] as String[]);
-                data.put('simEra', ['_____'] as String[]);
-            } else if ("ERA".equals(value)){
-                //T-Mobile
-                data.put('simPlus', ['_____'] as String[]);
-                data.put('simOrange', ['_____'] as String[]);
+    private mapKartaSimTypPosDataDetails(Map data, PosData posData, String key, String value) {
+        boolean isStationary = posData.posDetails.isStationary()
+        boolean isPortable = posData.posDetails.isPortable()
+
+        if (isStationary || isPortable) {
+            if ("Centertel".equals(value)) {
+                if (isStationary) {
+                    data.put('simPlus', ['_____'] as String[]);
+                    data.put('simEra', ['_____'] as String[]);
+                }
+                if (isPortable) {
+                    data.put('simPlusPortable', ['_____'] as String[]);
+                    data.put('simEraPortable', ['_____'] as String[]);
+                }
+            } else if ("Polkomtel".equals(value)) {
+                if (isStationary) {
+                    data.put('simOrange', ['_____'] as String[]);
+                    data.put('simEra', ['_____'] as String[]);
+                }
+                if (isPortable) {
+                    data.put('simOrangePortable', ['_____'] as String[]);
+                    data.put('simEraPortable', ['_____'] as String[]);
+                }
+            } else if ("ERA".equals(value)) {
+                if (isStationary) {
+                    data.put('simPlus', ['_____'] as String[]);
+                    data.put('simOrange', ['_____'] as String[]);
+                }
+                if (isPortable) {
+                    data.put('simPlusPortable', ['_____'] as String[]);
+                    data.put('simOrangePortable', ['_____'] as String[]);
+                }
             }
         }
     }

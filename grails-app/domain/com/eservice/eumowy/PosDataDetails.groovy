@@ -1,5 +1,7 @@
 package com.eservice.eumowy
 
+import org.apache.commons.lang.StringUtils
+
 class PosDataDetails implements Serializable {
 
 	String dialupTyp
@@ -271,5 +273,19 @@ class PosDataDetails implements Serializable {
 		nazwiskoInformatykStatyczna(nullable:true)
         kartaSimTyp(nullable:true)
         kartaSimIlosc(nullable:true)
+    }
+
+    public boolean isPortable() {
+        return StringUtils.isNotEmpty(gprsTypPortable)
+    }
+
+    public boolean isPinpad() {
+        return StringUtils.isNotEmpty(pinPadTyp)
+    }
+
+    public boolean isStationary() {
+        return StringUtils.isNotEmpty(dialupTyp) || StringUtils.isNotEmpty(dialupPPTyp) || StringUtils.isNotEmpty(vpnTyp) ||
+                StringUtils.isNotEmpty(vpnPPTyp) || StringUtils.isNotEmpty(sslTyp) || StringUtils.isNotEmpty(sslPPTyp) ||
+                StringUtils.isNotEmpty(gprsTyp) || StringUtils.isNotEmpty(gprsPPTyp)
     }
 }
