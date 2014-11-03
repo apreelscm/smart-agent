@@ -1,6 +1,7 @@
 package com.eservice.eumowy.pdfmapper
 
 import com.eservice.eumowy.PosData
+import com.eservice.eumowy.PosDataDetails
 import com.eservice.eumowy.util.DateUtils
 
 class PdfPosMapper extends AbstractPdfMapper{
@@ -9,18 +10,23 @@ class PdfPosMapper extends AbstractPdfMapper{
 
 	public static final ZERO_VALUES = ["", "0"]
 
-    public Map mapPosesNotFromCBD(def poses){
+    public Map mapPosesNotFromCBD(List<PosData> poses){
         Map result = new TreeMap<Integer, BigDecimal>()
 
         poses?.each { pos ->
 			if (pos == null)
 				return
 				
-            pos.posDetails?.each { posDetail ->
+            pos.posDetails?.each { PosDataDetails posDetail ->
                 addToPosMap(result, posDetail.dialupIlosc, posDetail.dialupCena)
+                addToPosMap(result, posDetail.dialupPPIlosc, posDetail.dialupPPCena)
                 addToPosMap(result, posDetail.vpnIlosc, posDetail.vpnCena)
+                addToPosMap(result, posDetail.vpnPPIlosc, posDetail.vpnPPCena)
                 addToPosMap(result, posDetail.sslIlosc, posDetail.sslCena)
+                addToPosMap(result, posDetail.sslPPIlosc, posDetail.sslPPCena)
                 addToPosMap(result, posDetail.gprsIlosc, posDetail.gprsCena)
+                addToPosMap(result, posDetail.gprsPPIlosc, posDetail.gprsPPCena)
+                addToPosMap(result, posDetail.gprsIloscPortable, posDetail.gprsCenaPortable)
                 addToPosMap(result, posDetail.pinPadIlosc, posDetail.pinPadCena)
             }
         }

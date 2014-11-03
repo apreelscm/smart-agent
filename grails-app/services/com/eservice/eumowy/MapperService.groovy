@@ -14,7 +14,7 @@ class MapperService {
     def calculatorService
     def cbdService
 
-    def mapOnlyPointData(def point){
+    def mapOnlyPointData(PointData point){
         def data = [:]
         data.putAll(new PdfPointMapper().mapPointDataToPDFData(point))
         data.putAll(new PdfPosMapper().mapPosesDataToPDFData(point.posDatas))
@@ -53,9 +53,7 @@ class MapperService {
         data
     }
 
-    public def mapPosData(List<PosData> poses) {
-        log.info(String.format("Found %s poses for promocyjneObnizenieNajmu", poses.size()))
-
+    public Map mapPosData(List<PosData> poses) {
         Map data = [:]
 
         if (poses.size() > 0) {

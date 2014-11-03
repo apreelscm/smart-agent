@@ -74,7 +74,7 @@ class DocumentService {
         List<PosData> chosenPoses = processInstance.getChosenPoses()
 
         if(chosenPoses.size() > POSES_COUNT_ON_RENT_REDUCTION) {
-            log.info(String.format("Pos exchange count is larger than 10 for process %s", processInstance.id))
+            log.info(String.format("Pos exchange count is larger than %s for process %s", POSES_COUNT_ON_RENT_REDUCTION, processInstance.id))
         }
 
         Lists.partition(chosenPoses, POSES_COUNT_ON_RENT_REDUCTION).eachWithIndex { List<PosData> poses, int i ->

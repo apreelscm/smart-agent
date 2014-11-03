@@ -84,28 +84,10 @@ class PdfProcessMapper extends AbstractPdfMapper{
                 }
             }
 
-            //mamy w pelni zapelnione finalResult
-            def suffixes = ['A', 'B', 'C']
-            finalResult.eachWithIndex { def entry, int i ->
-                if (i<suffixes.size()){
-                    dataMap.put('oplatyPOSIlosc' + suffixes.get(i), [entry.value.toString()] as String[])
-                    dataMap.put('oplatyPOSCena' + suffixes.get(i), [entry.key.toString()] as String[])
-                }
-            }
-    //----- sumowanie oplat z posow i hire payments - finish
-
+            mapPosesPayments(finalResult)
         } else {
-
-            //gdy nie ma zadnych punktow to i tak musimy zmapowac to co jest w HirePayments (jesli oczywiscie jest)
-            if (processInstance.processData.find{"isOdplatneUzywanieShown".equals(it.name) && "tak".equals(it.value)}){
-                def normalMapFromProcess = mapOdplatneUzywanie()
-                def suffixes = ['A', 'B', 'C']
-                normalMapFromProcess.eachWithIndex { def entry, int i ->
-                    if (i<suffixes.size()){
-                        dataMap.put('oplatyPOSIlosc' + suffixes.get(i), [entry.value.toString()] as String[])
-                        dataMap.put('oplatyPOSCena' + suffixes.get(i), [entry.key.toString()] as String[])
-                    }
-                }
+            if (processInstance.processData.find{"isOdplatneUzywanieShown".equals(it.name) && "tak".equals(it.value)}) {
+                mapPosesPayments(mapOdplatneUzywanie())
             }
         }
 
@@ -131,6 +113,17 @@ class PdfProcessMapper extends AbstractPdfMapper{
         setDistributionDetails()
 
         return dataMap;
+    }
+
+    private void mapPosesPayments(LinkedHashMap poses) {
+        List<String> suffixes = ['A', 'B', 'C', 'D', 'E']
+
+        poses.eachWithIndex { def entry, int i ->
+            if (i < suffixes.size()) {
+                dataMap.put('oplatyPOSIlosc' + suffixes.get(i), [entry.value.toString()] as String[])
+                dataMap.put('oplatyPOSCena' + suffixes.get(i), [entry.key.toString()] as String[])
+            }
+        }
     }
 
     private void setAttachmentsNames() {
