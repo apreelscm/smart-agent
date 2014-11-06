@@ -259,8 +259,8 @@ class PanelService {
     }
 
     def getOkresLojalnosciowy(ProcessCommand cmd, def calc ) {
-        cmd.okresLojalnosciowy = calculatorService.getCalcProperty(calc,"LICZBA_MIESIECY_LOJ") ?: ""
-        cmd.oplataDeinstalacyjna = calculatorService.getCalcProperty(calc, "OPLATA_DEINST_WARTOSC")
+        cmd.okresLojalnosciowy = cmd.okresLojalnosciowy ?: calculatorService.getCalcProperty(calc,"LICZBA_MIESIECY_LOJ")
+        cmd.oplataDeinstalacyjna = cmd.oplataDeinstalacyjna ?: calculatorService.getCalcProperty(calc, "OPLATA_DEINST_WARTOSC")
     }
 
     def getOpieka(ProcessCommand cmd, def calc ) {

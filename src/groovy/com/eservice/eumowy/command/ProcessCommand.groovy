@@ -781,13 +781,6 @@ class ProcessCommand implements Serializable {
         })
 
         oplataDeinstalacyjna(nullable: true, blank: true, validator: { value, cmd, errors ->
-            if(DEFAULT_VALUE.equals(value)) return true
-
-            if(!value) {
-                errors.rejectValue(propertyName, "default.null.message", [propertyName] as Object[], "" )
-                return false
-            }
-
             return ConditionValidator.atLeastCalcValue(value, cmd, errors, propertyName, "OPLATA_DEINST_WARTOSC")
         })
 
