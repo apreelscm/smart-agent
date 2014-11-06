@@ -66,8 +66,13 @@ class CalculatorService implements Serializable {
     }
 
 
-    def getCalcProperty(def calc,def key){
+    def getCalcProperty(def calc, String key){
         calc?.findResult{ (it.POLEAPREEL == key && !(it.WARTOSCAPREEL in [BRAK_LABEL,FALSE_LABEL])  ) ? it.WARTOSCAPREEL : null }
+    }
+
+    def getDecimalCalcProperty(def calc, String key) {
+        def value = getCalcProperty(calc, key)
+        return value ? new BigDecimal(value) : null
     }
 
     def getCalculator(Process process, Client client) {

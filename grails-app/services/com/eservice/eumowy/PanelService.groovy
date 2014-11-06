@@ -102,7 +102,7 @@ class PanelService {
     }
 
     def getDcc(ProcessCommand cmd, def calc ) {
-
+        cmd.dccKartyZagranicznePr = calculatorService.getDecimalCalcProperty(calc, "OPLATA_DCC_MASTERCARD_PR")
     }
 
     def getDccZakresUruchomienia(ProcessCommand cmd, def calc ) {
@@ -122,23 +122,23 @@ class PanelService {
 		pointData.calc = calc
 		
 		pointData.dialupTyp = calculatorService.getCalcProperty(calc,"TYP_DIALUP")
-		pointData.dialupCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_DIALUP_TERM_CENA"))
-		pointData.dialupPPCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_DIALUP_PP_CENA"))
+		pointData.dialupCena =  calculatorService.getDecimalCalcProperty(calc,"TYP_DIALUP_TERM_CENA")
+		pointData.dialupPPCena =  calculatorService.getDecimalCalcProperty(calc,"TYP_DIALUP_PP_CENA")
 
 		pointData.vpnTyp = calculatorService.getCalcProperty(calc,"TYP_VPN")
-		pointData.vpnCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_VPN_TERM_CENA"))
-		pointData.vpnPPCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_VPN_PP_CENA"))
+		pointData.vpnCena =  calculatorService.getDecimalCalcProperty(calc,"TYP_VPN_TERM_CENA")
+		pointData.vpnPPCena =  calculatorService.getDecimalCalcProperty(calc,"TYP_VPN_PP_CENA")
 
 		pointData.sslTyp = calculatorService.getCalcProperty(calc,"TYP_SSL")
-		pointData.sslCena = toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_SSL_TERM_CENA"))
-		pointData.sslPPCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_SSL_PP_CENA"))
+		pointData.sslCena = calculatorService.getDecimalCalcProperty(calc,"TYP_SSL_TERM_CENA")
+		pointData.sslPPCena =  calculatorService.getDecimalCalcProperty(calc,"TYP_SSL_PP_CENA")
 
 		pointData.gprsTyp = calculatorService.getCalcProperty(calc,"TYP_GPRS")
-		pointData.gprsCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_GPRS_TERM_CENA"))
-		pointData.gprsPPCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_GPRS_PP_CENA"))
+		pointData.gprsCena =  calculatorService.getDecimalCalcProperty(calc,"TYP_GPRS_TERM_CENA")
+		pointData.gprsPPCena =  calculatorService.getDecimalCalcProperty(calc,"TYP_GPRS_PP_CENA")
 
         pointData.gprsTypPortable = calculatorService.getCalcProperty(calc,"TYP_GPRS")
-        pointData.gprsCenaPortable =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_GPRS_TERM_CENA"))
+        pointData.gprsCenaPortable =  calculatorService.getDecimalCalcProperty(calc,"TYP_GPRS_TERM_CENA")
 
         pointData.hasDodaniePrepaid = cmd.hasDodaniePrepaid
 
@@ -153,23 +153,23 @@ class PanelService {
 		pointData.calc = calc
 		
         pointData.dialupTyp = calculatorService.getCalcProperty(calc,"TYP_DIALUP")
-        pointData.dialupCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_DIALUP_TERM_CENA"))
-        pointData.dialupPPCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_DIALUP_PP_CENA"))
+        pointData.dialupCena =  calculatorService.getDecimalCalcProperty(calc,"TYP_DIALUP_TERM_CENA")
+        pointData.dialupPPCena =  calculatorService.getDecimalCalcProperty(calc,"TYP_DIALUP_PP_CENA")
 
         pointData.vpnTyp = calculatorService.getCalcProperty(calc,"TYP_VPN")
-        pointData.vpnCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_VPN_TERM_CENA"))
-        pointData.vpnPPCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_VPN_PP_CENA"))
+        pointData.vpnCena =  calculatorService.getDecimalCalcProperty(calc,"TYP_VPN_TERM_CENA")
+        pointData.vpnPPCena =  calculatorService.getDecimalCalcProperty(calc,"TYP_VPN_PP_CENA")
 
         pointData.sslTyp = calculatorService.getCalcProperty(calc,"TYP_SSL")
-        pointData.sslCena = toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_SSL_TERM_CENA"))
-        pointData.sslPPCena = toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_SSL_PP_CENA"))
+        pointData.sslCena = calculatorService.getDecimalCalcProperty(calc,"TYP_SSL_TERM_CENA")
+        pointData.sslPPCena = calculatorService.getDecimalCalcProperty(calc,"TYP_SSL_PP_CENA")
 
         pointData.gprsTyp = calculatorService.getCalcProperty(calc,"TYP_GPRS")
-        pointData.gprsCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_GPRS_TERM_CENA"))
-        pointData.gprsPPCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_GPRS_PP_CENA"))
+        pointData.gprsCena =  calculatorService.getDecimalCalcProperty(calc,"TYP_GPRS_TERM_CENA")
+        pointData.gprsPPCena =  calculatorService.getDecimalCalcProperty(calc,"TYP_GPRS_PP_CENA")
 
         pointData.gprsTypPortable = calculatorService.getCalcProperty(calc,"TYP_GPRS")
-        pointData.gprsCenaPortable =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_GPRS_TERM_CENA"))
+        pointData.gprsCenaPortable =  calculatorService.getDecimalCalcProperty(calc,"TYP_GPRS_TERM_CENA")
 
         pointData.hasDodaniePrepaid = cmd.hasDodaniePrepaid
 
@@ -643,38 +643,38 @@ class PanelService {
 	
 	def setupPointDataFromCalc(PointCommand cmd, def calc) {
 		cmd.calc = calc
-		cmd.dialupCena =  setAtLeastAs(cmd.dialupCena, toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_DIALUP_TERM_CENA")))
-		cmd.dialupPPCena =  setAtLeastAs(cmd.dialupPPCena, toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_DIALUP_PP_CENA")))
+		cmd.dialupCena =  setAtLeastAs(cmd.dialupCena, calculatorService.getDecimalCalcProperty(calc,"TYP_DIALUP_TERM_CENA"))
+		cmd.dialupPPCena =  setAtLeastAs(cmd.dialupPPCena, calculatorService.getDecimalCalcProperty(calc,"TYP_DIALUP_PP_CENA"))
 
-		cmd.vpnCena =  setAtLeastAs(cmd.vpnCena, toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_VPN_TERM_CENA")))
-		cmd.vpnPPCena =  setAtLeastAs(cmd.vpnPPCena, toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_VPN_PP_CENA")))
+		cmd.vpnCena =  setAtLeastAs(cmd.vpnCena, calculatorService.getDecimalCalcProperty(calc,"TYP_VPN_TERM_CENA"))
+		cmd.vpnPPCena =  setAtLeastAs(cmd.vpnPPCena, calculatorService.getDecimalCalcProperty(calc,"TYP_VPN_PP_CENA"))
 
-		cmd.sslCena = setAtLeastAs(cmd.sslCena, toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_SSL_TERM_CENA")))
-		cmd.sslPPCena =  setAtLeastAs(cmd.sslPPCena, toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_SSL_PP_CENA")))
+		cmd.sslCena = setAtLeastAs(cmd.sslCena, calculatorService.getDecimalCalcProperty(calc,"TYP_SSL_TERM_CENA"))
+		cmd.sslPPCena =  setAtLeastAs(cmd.sslPPCena, calculatorService.getDecimalCalcProperty(calc,"TYP_SSL_PP_CENA"))
 
-		cmd.gprsCena =  setAtLeastAs(cmd.gprsCena, toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_GPRS_TERM_CENA")))
-		cmd.gprsPPCena =  setAtLeastAs(cmd.gprsPPCena, toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_GPRS_PP_CENA")))
+		cmd.gprsCena =  setAtLeastAs(cmd.gprsCena, calculatorService.getDecimalCalcProperty(calc,"TYP_GPRS_TERM_CENA"))
+		cmd.gprsPPCena =  setAtLeastAs(cmd.gprsPPCena, calculatorService.getDecimalCalcProperty(calc,"TYP_GPRS_PP_CENA"))
 	}
 	
 	def setupPosDataFromCalc(PointCommand cmd, def calc) {
 		cmd.calc = calc
 
-        cmd.dialupCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_DIALUP_TERM_CENA"))
-        cmd.dialupPPCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_DIALUP_PP_CENA"))
+        cmd.dialupCena =  calculatorService.getDecimalCalcProperty(calc,"TYP_DIALUP_TERM_CENA")
+        cmd.dialupPPCena =  calculatorService.getDecimalCalcProperty(calc,"TYP_DIALUP_PP_CENA")
 
-        cmd.vpnCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_VPN_TERM_CENA"))
-        cmd.vpnPPCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_VPN_PP_CENA"))
+        cmd.vpnCena =  calculatorService.getDecimalCalcProperty(calc,"TYP_VPN_TERM_CENA")
+        cmd.vpnPPCena =  calculatorService.getDecimalCalcProperty(calc,"TYP_VPN_PP_CENA")
 
-        cmd.sslCena = toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_SSL_TERM_CENA"))
-        cmd.sslPPCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_SSL_PP_CENA"))
+        cmd.sslCena = calculatorService.getDecimalCalcProperty(calc,"TYP_SSL_TERM_CENA")
+        cmd.sslPPCena =  calculatorService.getDecimalCalcProperty(calc,"TYP_SSL_PP_CENA")
 
-        cmd.gprsCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_GPRS_TERM_CENA"))
-        cmd.gprsPPCena =  toBigDecimal(calculatorService.getCalcProperty(calc,"TYP_GPRS_PP_CENA"))
+        cmd.gprsCena =  calculatorService.getDecimalCalcProperty(calc,"TYP_GPRS_TERM_CENA")
+        cmd.gprsPPCena =  calculatorService.getDecimalCalcProperty(calc,"TYP_GPRS_PP_CENA")
 	}
 	
 	def setupAllPosDataFromCalc(AllPosCommand apc, def calc) {
 		apc.calc = calc
-		apc.wysokoscOplaty = setAtLeastAs(apc.wysokoscOplaty, toBigDecimal(calculatorService.getCalcProperty(calc,"OPLATA_POS_PROM_CENA_NAJMU")))
+		apc.wysokoscOplaty = setAtLeastAs(apc.wysokoscOplaty, calculatorService.getDecimalCalcProperty(calc,"OPLATA_POS_PROM_CENA_NAJMU"))
 	}
 
     private setSerwisZablokowany(ProcessCommand cmd, def calc, def serwisy){
