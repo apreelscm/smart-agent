@@ -178,7 +178,7 @@ class PdfProcessMapper extends AbstractPdfMapper{
         if (hasAtLeastOne(processInstance, ["dodanieCashBack", "nowaUmowa"])) {
             dataMap.put("cashbackTransaction", checkedCheckbox)
         }
-        if (hasAtLeastOne(processInstance, ["dodanieAneksuKosztyPlus", "zmianaProwizji", "nowaUmowa"])) {
+        if (hasAtLeastOne(processInstance, ["dodanieAneksuKosztyPlus", "zmianaProwizji", "nowaUmowa", "wymianaUmowyZaplaty"])) {
             dataMap.put("paymentTransaction", checkedCheckbox)
         }
     }
