@@ -1295,34 +1295,7 @@ class ProcessCommand implements Serializable {
         })
 
         allPoints(nullable:true)
-        allPoses(nullable:true, validator: { value, cmd, errors ->
-            String maxCalcValue = cmd.calculatorService.getCalcProperty(cmd.calc, "LICZBA_ZEST_POS_PROM_CEN_NAJ_1")
-            int max = maxCalcValue?.isNumber() ? (maxCalcValue as int) : 0
-
-            int chosenPoses = value?.findAll {it.czyWybrany}?.size()
-
-            def hasPointErrors = false
-
-            if(chosenPoses > max) {
-                errors.reject("default.promo.rent.reduction.error")
-                hasPointErrors = true
-            }
-
-            value.each {  apCmd ->
-                apCmd?.calculatorService = cmd.calculatorService
-				apCmd?.calc = cmd.calc
-                apCmd?.validate()
-                if(apCmd?.hasErrors()){
-                    hasPointErrors = true
-                }
-            }
-
-            if (hasPointErrors) {
-                errors.rejectValue(propertyName, "default.error.allposes",)
-                return false
-            }
-            return true
-        })
+        allPoses(nullable:true, validator: AllPosesValidator.validate)
         posExchanges(nullable: true, validator: PosExchangeValidator.validate)
         liczbaPosZCbd(nullable:true)
         korespondencjaJakDlaMerchanta(nullable:true)
@@ -1333,8 +1306,8 @@ class ProcessCommand implements Serializable {
         })
 
         pointsAndPosesWithoutFormaDoladowania(nullable: true, validator: {value, cmd, errors ->
-            int posesWithoutFormaDoladowania = PosesValidator.countOfPosesWithoutFormaDoladowania(cmd.poses)
-            int pointsWithoutFormaDoladowania = PointsValidator.countOfPointsWithoutFormaDoladowania(cmd.points)
+            int posesWithoutFormaDoladowania = ValidatorUtils.pointsWithoutFormaDoladowania(cmd.poses)
+            int pointsWithoutFormaDoladowania = ValidatorUtils.pointsWithoutFormaDoladowania(cmd.points)
             int elementsWithoutFormaDoladowaniaTotal = posesWithoutFormaDoladowania + pointsWithoutFormaDoladowania
             int elementsTotal = cmd.poses.size() + cmd.points.size()
 

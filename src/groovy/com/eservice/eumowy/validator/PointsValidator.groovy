@@ -41,18 +41,4 @@ public class PointsValidator {
         }
         return true
     }
-
-    public static int countOfPointsWithoutFormaDoladowania(List<PointCommand> points) {
-        int pointsWithoutFormaDoladowania = 0;
-
-        points.each { point ->
-            point.errors.each { ValidationErrors error ->
-                if (error.getAt("hasDodaniePrepaid")) {
-                    pointsWithoutFormaDoladowania++;
-                }
-            }
-        }
-
-        return pointsWithoutFormaDoladowania
-    }
 }

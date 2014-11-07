@@ -39,18 +39,4 @@ public class PosesValidator {
 
         return true
     }
-
-    public static int countOfPosesWithoutFormaDoladowania(List<PointCommand> poses) {
-        int posesWithoutFormaDoladowania = 0;
-
-        poses.each { point ->
-            point.errors.each { error ->  //error is grails.validation.ValidationErrors
-                if (error.getAt("hasDodaniePrepaid")) {
-                    posesWithoutFormaDoladowania++;
-                }
-            }
-        }
-
-        return posesWithoutFormaDoladowania
-    }
 }
