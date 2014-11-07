@@ -144,22 +144,19 @@ function refreshCityField(code, select, spinner){
         if(spinner){
             spinner.removeClass('visibility-hidden');
         }
-        $j.get("/eumowy/activity/getCity", {code: code.replace(/\s+/g, '')}, function(data) {
-            var cities = eval('(' + data + ')');
-
-            if(cities instanceof Array){
-                if (cities.length>0){
-                    $j.each(cities, function(value) {
-                        select.append('<option value="'+cities[value]+'">'+cities[value]+'</option>')
-                    });
-                } else {
-                    showNoCitiesDialog(this);
-                }
+        $j.get("/eumowy/activity/getCity", {code: code.replace(/\s+/g, '')}, function(cities) {
+            if (cities.length > 0) {
+                $j.each(cities, function (city) {
+                    select.append('<option value="' + cities[city] + '">' + cities[city] + '</option>')
+                });
+            } else {
+                showNoCitiesDialog(this);
             }
+
             select.val(selectValue)
             select.removeClass("error")
 
-            if(spinner){
+            if (spinner) {
                 spinner.addClass('visibility-hidden');
             }
         });

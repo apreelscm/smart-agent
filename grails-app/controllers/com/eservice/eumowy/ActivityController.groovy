@@ -1285,15 +1285,13 @@ class ActivityController {
 
     def getCity() {
         String code = params.code
-        def result = []
-        def citiesData = cbdService.getMiasto(code)
-        if (citiesData) {
-            citiesData.each { GroovyRowResult row ->
-                result.push("\""+row.get("NAME")+"\"")
-            }
+        List result = []
+        List<GroovyRowResult> citiesData = cbdService.getMiasto(code)
+        citiesData.each { GroovyRowResult row ->
+            result.push(row.get("NAME"))
         }
-		log.info "Dla kodu: " + code + " znaleziono miasta: " + result.toString()
-        render(text: result.toString())
+		log.info(String.format("Dla kodu %s znaleziono miasta %s", code, result))
+        render result as JSON
     }
 
     def getOpiekaSerwisowa() {
@@ -1343,17 +1341,6 @@ class ActivityController {
                     "(one from browser, second from download manager). This is common bug, nothing to worry about - document was download.")
         }
 	}
-
-    def testSql(){
-        /*   def result = cbdService.findCalculatorByNip("1570321560")
-           log.info("findCalculatorByNip result:"+result)*/
-
-        def process = new Process()
-        process.save(flush:true)
-
-        process.status = Process.ProcessStatus.EDIT;
-        process.save(flush:true)
-    }
 
 
 //--------------
