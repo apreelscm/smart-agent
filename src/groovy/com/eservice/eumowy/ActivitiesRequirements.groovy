@@ -27,7 +27,7 @@ final class ActivitiesRequirements {
     }
 
     private boolean isCashBackActivityRequired() {
-        return hasCalcProperty("CASHBACK_A", "TAK") && !ActivityHelper.contains(process, "dodanieCashBack")
+        return hasCalcProperty("CASHBACK_A", "TAK") && !ActivityHelper.hasAtLeastOne(process, ["dodanieCashBack", "zmianaWarunkowCashback"])
     }
 
     private boolean hasCalcProperty(String key, String value){
