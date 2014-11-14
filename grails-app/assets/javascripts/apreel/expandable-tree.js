@@ -51,6 +51,7 @@
         restrictionsMap["wymianaUmowyZaplatyCB"] =  ["nowaUmowa","pakiet","poprawDane","odrzucDokumenty", "uzupelnijPodpisy", "wymianaTerminalaCB"];
         restrictionsMap["zmianaWarunkowPrepaidCB"] =  ["nowaUmowa","pakiet","poprawDane","odrzucDokumenty", "uzupelnijPodpisy", "wymianaTerminalaCB"];
         restrictionsMap["zmianaOkresuLojalnosciowegoCB"] =  ["nowaUmowa","pakiet","poprawDane","odrzucDokumenty", "uzupelnijPodpisy", "wymianaTerminalaCB"];
+        restrictionsMap["zmianaWarunkowCashbackCB"] =  ["nowaUmowa","pakiet","poprawDane","odrzucDokumenty", "uzupelnijPodpisy", "wymianaTerminalaCB"];
         restrictionsMap["promocyjneObnizenieNajmuCB"] =  ["nowaUmowa","pakiet","poprawDane","odrzucDokumenty", "uzupelnijPodpisy", "wymianaTerminalaCB"];
 
         restrictionsMap["dodaniePrepaidCB"] =  ["poprawDane","pakiet","odrzucDokumenty", "uzupelnijPodpisy", "wymianaTerminalaCB"];

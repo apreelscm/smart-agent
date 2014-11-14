@@ -172,7 +172,7 @@ class PdfProcessMapper extends AbstractPdfMapper{
     }
 
     private void setTransactionsCheckboxes() {
-        if (hasAtLeastOne(processInstance, ["dodanieDcc", "zmianaWarunkowDcc"])) {
+        if (hasAtLeastOne(processInstance, ["dodanieDcc", "zmianaWarunkowDcc", "zmianaWarunkowCashback"])) {
             dataMap.put("dccTransaction", checkedCheckbox)
         }
         if (hasAtLeastOne(processInstance, ["dodanieCashBack", "nowaUmowa"])) {

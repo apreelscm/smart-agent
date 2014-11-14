@@ -113,6 +113,11 @@
                  </div>
 
                  <div class="checkBoxBlock">
+                     <g:checkBox id="zmianaWarunkowCashbackCB" name="zmianaWarunkowCashback" data-selected="${activities?.contains('zmianaWarunkowCashback')}"/>
+                     <label for="zmianaWarunkowCashbackCB"><g:message code="activity.zmianaWarunkowCashback.name"/></label>
+                 </div>
+
+                 <div class="checkBoxBlock">
                      <g:checkBox id="promocyjneObnizenieNajmuCB" name="promocyjneObnizenieNajmu" data-selected="${activities?.contains('promocyjneObnizenieNajmu')}"/>
                      <label for="promocyjneObnizenieNajmuCB"> <g:message code="activity.promocyjneObnizenieNajmu.name"/></label>
                  </div>

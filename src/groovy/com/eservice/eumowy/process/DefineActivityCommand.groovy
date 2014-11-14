@@ -39,6 +39,7 @@ class DefineActivityCommand {
     def pakietStartPlus
     def pakietMobilny
     def logoKalkulatorSesja
+    def zmianaWarunkowCashback
     String notes
 
     def selectedActivities = []
