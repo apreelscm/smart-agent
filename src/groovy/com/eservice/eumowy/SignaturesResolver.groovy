@@ -18,15 +18,15 @@ class SignaturesResolver {
         this.listNumber = listNumber
     }
 
-    public Set<ActivitySignatures> resolve() {
-        Set<ActivitySignatures> activitySignaturesFromList = activity.activitySignatures.findAll {
+    public List<ActivitySignatures> resolve() {
+        List<ActivitySignatures> activitySignaturesFromList = Lists.newArrayList(activity.activitySignatures.findAll {
             it.numberOfList == listNumber && it.signature.active
-        }
+        }).sort {it.requiredActivities?.split(",")?.length}.reverse(true)
 
         return activitySignaturesFromList.findAll {it.requiredActivities == getRequiredActivities(activitySignaturesFromList)}
     }
 
-    protected String getRequiredActivities(Set<ActivitySignatures> signatures) {
+    protected String getRequiredActivities(List<ActivitySignatures> signatures) {
         for (ActivitySignatures signature : signatures) {
             if(!signature.requiredActivities) continue
 

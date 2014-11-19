@@ -38,7 +38,7 @@ class Signature implements Serializable {
     }
 
     String toString(){
-        return description;
+        return description
     }
 
     boolean hasDetails() {
