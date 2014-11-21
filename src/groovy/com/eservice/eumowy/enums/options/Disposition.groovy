@@ -1,7 +1,7 @@
-package com.eservice.eumowy.enums
+package com.eservice.eumowy.enums.options
 
 
-public enum Disposition {
+public enum Disposition implements RadioOption {
     PHONE("disposition.phone"), EMAIL("disposition.email"), PAPER("disposition.paper"), FAX("disposition.fax"),
     PERSONALLY("disposition.personally");
 

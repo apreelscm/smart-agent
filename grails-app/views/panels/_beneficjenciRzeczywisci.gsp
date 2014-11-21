@@ -52,7 +52,7 @@
                 <g:render template="/common/representative/basicData" model="[prefix: 'beneficiaries', seqNo: it,
                         representative: data.beneficiaries[it]]"/>
 
-                <g:render template="/common/representative/acceptorAbroad" model="[prefix: 'beneficiaries', seqNo: it,
+                <g:render template="/common/representative/company" model="[prefix: 'beneficiaries', seqNo: it,
                         representative: data.beneficiaries[it]]"/>
 
                 <div style="margin-top: 25px">

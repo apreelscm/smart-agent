@@ -1,7 +1,5 @@
 package com.eservice.eumowy.pdfmapper.representative
 
-import com.eservice.eumowy.enums.AcceptorLocation
-import com.eservice.eumowy.enums.IdentityDocumentType
 import com.eservice.eumowy.pdfmapper.Mapper
 import com.eservice.eumowy.Process
 

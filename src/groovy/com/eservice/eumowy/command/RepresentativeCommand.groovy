@@ -2,6 +2,8 @@ package com.eservice.eumowy.command
 
 import com.eservice.eumowy.enums.IdentityDocumentType
 import com.eservice.eumowy.enums.AcceptorLocation
+import com.eservice.eumowy.enums.options.AcceptorLocation
+import com.eservice.eumowy.enums.options.IdentityDocumentType
 import com.eservice.eumowy.validator.CustomValidator
 import com.eservice.eumowy.validator.NumberValidator
 import grails.validation.Validateable

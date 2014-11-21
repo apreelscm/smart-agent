@@ -1,7 +1,7 @@
 package com.eservice.eumowy
 
-import com.eservice.eumowy.enums.AcceptorLocation
-import com.eservice.eumowy.enums.IdentityDocumentType
+import com.eservice.eumowy.enums.options.AcceptorLocation
+import com.eservice.eumowy.enums.options.IdentityDocumentType
 import org.apache.commons.logging.LogFactory
 
 class Representative implements Serializable {
@@ -30,8 +30,6 @@ class Representative implements Serializable {
     Date dataUrodzenia
     String obywatelstwo
     String adres
-
-    Boolean czyStanowiskoPolityczne = false
 
     Boolean posiadaAkceptanta
     Boolean kontrolujeAkceptanta
@@ -63,8 +61,6 @@ class Representative implements Serializable {
         obywatelstwo column: "CITIZENSHIP"
         adres column: "ADDRESS"
 
-        czyStanowiskoPolityczne column: "POLITICAL_POSITION"
-
         posiadaAkceptanta column: "OWNS_ACCEPTOR"
         kontrolujeAkceptanta column: "CONTROL_ACCEPTOR"
         znaczaceUdzialy column: "OVER_QUARTER_VOTES"
@@ -87,7 +83,6 @@ class Representative implements Serializable {
        dataUrodzenia(nullable: true)
        obywatelstwo(nullable: true)
        adres(nullable: true)
-       czyStanowiskoPolityczne(nullable: true)
        posiadaAkceptanta(nullable: true)
        kontrolujeAkceptanta(nullable: true)
        znaczaceUdzialy(nullable: true)

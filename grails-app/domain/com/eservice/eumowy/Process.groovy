@@ -1,5 +1,6 @@
 package com.eservice.eumowy
 
+import com.eservice.eumowy.enums.options.LegalForm
 import groovy.transform.ToString
 import org.apache.commons.lang.StringUtils
 import org.apache.commons.lang.builder.EqualsBuilder
@@ -172,15 +173,15 @@ class Process implements Serializable {
     }
 
     public boolean isAkceptantOsobaPrawna() {
-        List<String> osobaPrawnaIndicators = ["spolka_akcyjna", "spolka_zoo", "spolka_komandytowa", "spolka_jawna"]
+        List<String> companyIndicators = [LegalForm.STOCK_COMPANY.name(), LegalForm.ZOO_COMPANY, LegalForm.LIMITED_COMPANY.name(), LegalForm.OPEN_COMPANY.name()]
 
-        return osobaPrawnaIndicators.contains(getData("dzialalnoscForma"))
+        return companyIndicators.contains(getData("dzialalnoscForma"))
     }
 
     public boolean isAkceptantOsobaFizyczna() {
-        List<String> osobaFizycznaIndicators = ["spolka_cywilna", "osoba_fizyczna"]
+        List<String> personIndicators = [LegalForm.PARTNERSHIP_COMPANY.name(), LegalForm.PERSON.name()]
 
-        return osobaFizycznaIndicators.contains(getData("dzialalnoscForma"))
+        return personIndicators.contains(getData("dzialalnoscForma"))
     }
 
     public boolean isAkceptantJednostkaNieposiadajacaOsobyPrawnej() {

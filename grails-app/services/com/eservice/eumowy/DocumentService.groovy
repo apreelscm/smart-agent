@@ -1,6 +1,6 @@
 package com.eservice.eumowy
 
-import com.eservice.eumowy.enums.AcceptorLocation
+import com.eservice.eumowy.enums.options.AcceptorLocation
 import com.eservice.eumowy.pdfmapper.PEPdeclarationMapper
 import com.google.common.collect.Lists
 import com.lowagie.text.pdf.PdfReader

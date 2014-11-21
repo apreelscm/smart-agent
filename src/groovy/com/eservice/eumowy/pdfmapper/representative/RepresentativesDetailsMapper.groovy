@@ -1,8 +1,8 @@
 package com.eservice.eumowy.pdfmapper.representative
 
 import com.eservice.eumowy.Representative
-import com.eservice.eumowy.enums.AcceptorLocation
-import com.eservice.eumowy.enums.IdentityDocumentType
+import com.eservice.eumowy.enums.options.AcceptorLocation
+import com.eservice.eumowy.enums.options.IdentityDocumentType
 import com.eservice.eumowy.pdfmapper.AbstractPdfMapper
 import com.eservice.eumowy.pdfmapper.Mapper
 import org.apache.commons.lang.StringUtils

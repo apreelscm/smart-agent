@@ -1,4 +1,4 @@
-<%@ page import="com.eservice.eumowy.enums.Disposition" %>
+<%@ page import="com.eservice.eumowy.enums.options.Disposition" %>
 
 <fieldset id="uzgodnienieDyspozycji">
     <header class="belka-glowna"><g:message code="disposition.info.title"/></header>

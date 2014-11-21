@@ -3,8 +3,7 @@ package com.eservice.eumowy.command
 import com.eservice.eumowy.Process
 import com.eservice.eumowy.annotation.DateField
 import com.eservice.eumowy.annotation.Omit
-import com.eservice.eumowy.enums.AcceptorLocation
-import com.eservice.eumowy.enums.Disposition
+import com.eservice.eumowy.enums.options.AcceptorLocation
 import com.eservice.eumowy.validator.*
 import grails.util.Holders
 import grails.validation.Validateable

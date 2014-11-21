@@ -1533,7 +1533,7 @@ label.doladowanieLabel {
 }
 
 #acceptorsPanel .centre div {
-    margin-bottom: 15px;
+    margin-bottom: 10px;
 }
 
 #actualBeneficiaryData div {
@@ -1564,36 +1564,31 @@ label.doladowanieLabel {
     vertical-align: top;
 }
 
-#acceptorsPanel div.acceptorPESELCountryWrapper, #acceptorsPanel div.acceptorDocumentTypeWrapper,
-#acceptorsPanel div.acceptorLocationRadioWrapper, #acceptorsPanel div.acceptorPESELWrapper {
-    margin-bottom: 0;
-}
-
-.acceptorPESELCountryRadioWrapper {
+.acceptorRadioWrapper {
     display: inline-block;
 }
 
-.acceptorPESELCountryRadioWrapper .errorNotification {
+.acceptorRadioWrapper .errorNotification {
     margin-top: 9px;
 }
 
-.acceptorPESELCountryRadioWrapper .label {
+.acceptorRadioWrapper .label {
     display: inline;
 }
 
-.acceptorPESELCountryRadioWrapper:first-child {
+.acceptorRadioWrapper:first-child {
     margin-right: 100px;
 }
 
-.acceptorPESELCountryRadioWrapper input {
+.acceptorRadioWrapper input {
     margin-top: 7px;
 }
 
-.acceptorDocumentTypeRadioWrapper .label {
+.inlineRadioWrapper .label {
     display: inline;
 }
 
-.acceptorDocumentTypeRadioWrapper:first-child {
+.inlineRadioWrapper:first-child {
     margin-right: 50px;
 }
 

@@ -1,3 +1,5 @@
+<%@ page import="com.eservice.eumowy.enums.options.LegalForm" %>
+
 <div id="additionalInformationPanel">
     <fieldset>
         <div class="belka-glowna"><g:message code="panel.additional.information.title"/> </div>
@@ -6,9 +8,8 @@
                     <li>
                         <span class="align-left"><g:message code="panel.legal.form"/></span>
                         <span>
-                            <g:select name="dzialalnoscForma"
-                                      from="['', 'Spółka akcyjna', 'Spółka z o.o.', 'Spółka cywilna', 'Osoba fizyczna', 'Spółka komandytowa', 'Spółka Jawna']"
-                                      keys="['', 'spolka_akcyjna', 'spolka_zoo', 'spolka_cywilna', 'osoba_fizyczna', 'spolka_komandytowa', 'spolka_jawna']"
+                            <g:select name="dzialalnoscForma" noSelection="${['': '']}"
+                                      from="${LegalForm.values()}" valueMessagePrefix="legal.form"
                                       value="${data.dzialalnoscForma}"
                                       style="width: 200px;"/>
                         </span>
@@ -40,31 +41,27 @@
 
             var result = jQuery("#dzialalnoscForma option:selected").val();
             switch(result){
-                case 'inne':
-                    selectDoc('inne');
-                    clearAndReadonlyOtherFields(false, false);
-                    break;
-                case 'spolka_akcyjna':
+                case 'STOCK_COMPANY':
                     selectDoc('krs');
                     clearAndReadonlyOtherFields(true, true);
                     break;
-                case 'spolka_zoo':
+                case 'ZOO_COMPANY':
                     selectDoc('krs');
                     clearAndReadonlyOtherFields(true, true);
                     break;
-                case 'spolka_cywilna':
+                case 'PARTNERSHIP_COMPANY':
                     selectDoc('umowa_spolki_cywilnej');
                     clearAndReadonlyOtherFields(true, true);
                     break;
-                case 'osoba_fizyczna':
+                case 'PERSON':
                     selectDoc('ewidencja');
                     clearAndReadonlyOtherFields(true, true);
                     break;
-                case 'spolka_komandytowa':
+                case 'LIMITED_COMPANY':
                     selectDoc('krs');
                     clearAndReadonlyOtherFields(true, true);
                     break;
-                case 'spolka_jawna':
+                case 'OPEN_COMPANY':
                     selectDoc('krs');
                     clearAndReadonlyOtherFields(true, true);
                     break;

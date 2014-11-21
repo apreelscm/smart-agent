@@ -1,4 +1,4 @@
-package com.eservice.eumowy.enums;
+package com.eservice.eumowy.enums.options;
 
 public enum IdentityDocumentType {
     IDENTITY_CARD("identity.card.label"), PASSPORT("passport.label");

@@ -5,7 +5,10 @@ var $representativesContainer = jQuery("#acceptorsPanel #representativesContaine
     $acceptorLocation = jQuery("#acceptorsPanel input[name='akceptantLokalizacja']"),
     $representativePESELKraj = jQuery("#representativesContainer input[name$='lokalizacjaPesel']"),
     $representativeTypLokalizacji = jQuery("#representativesContainer input[type=radio][name$='typLokalizacji']"),
-    $acceptorsAdditionalPanels = jQuery("#acceptorsAdditionalPanels");
+    $acceptorsAdditionalPanels = jQuery("#acceptorsAdditionalPanels"),
+    $additionalInfoSelect = jQuery("div#additionalInformationPanel select[name='dzialalnoscForma']"),
+    $companyData = jQuery("div#acceptorsPanel div#companyData"),
+    $personData = jQuery("div#acceptorsPanel div#personData");
 
 attachDatepickers();
 
@@ -16,6 +19,7 @@ setReprezentantImieAndNazwiskoRequired();
 
 $representativesChangedManually.change(setRepresentativesView);
 $acceptorLocation.change(setAdditionalInformationState);
+$additionalInfoSelect.change(legalFormChanged);
 $representativeTypLokalizacji.change(typLokalizacjiChanged);
 $representativePESELKraj.on("change", setAcceptorState);
 
@@ -60,21 +64,47 @@ function setAdditionalInformationState() {
     }
 }
 
+function legalFormChanged() {
+    if(this.value === "") {
+        $personData.addClass('hidden');
+        $companyData.addClass('hidden');
+        return false;
+    }
+
+    var isCompany = ["STOCK_COMPANY", "ZOO_COMPANY", "LIMITED_COMPANY", "OPEN_COMPANY"].indexOf(this.value) > -1;
+
+    if(isCompany) {
+        $personData.addClass('hidden');
+        $companyData.removeClass('hidden');
+
+        disableFields($personData);
+        enableFields($companyData);
+    } else {
+        $personData.removeClass('hidden');
+        $companyData.addClass('hidden');
+
+        disableFields($companyData);
+        enableFields($personData);
+    }
+}
+
 function typLokalizacjiChanged() {
     var $this = jQuery(this),
         acceptor = $this.parents("div.acceptor"),
-        peselField = acceptor.find("input[type='text'][name$='lokalizacjaPesel']"),
-        countryField = acceptor.find("input[type='text'][name$='lokalizacjaKraj']"),
+        politicianDeclaration = acceptor.find("div.isPolitician"),
+        citizenship = acceptor.find("input[name$='obywatelstwo']"),
+        radios = politicianDeclaration.find("input"),
         selectedOption = this.value;
 
     if(selectedOption === "ABROAD") {
-        peselField.val('');
-        peselField.attr('disabled', 'disabled');
-        countryField.removeAttr('disabled');
+        politicianDeclaration.removeClass('hidden');
+        radios.attr('required', 'required');
+        citizenship.val('').removeAttr('readonly');
     } else {
-        countryField.val('');
-        countryField.attr('disabled', 'disabled');
-        peselField.removeAttr('disabled');
+        politicianDeclaration.addClass('hidden');
+        radios.removeAttr('required');
+        radios.removeAttr('checked');
+        citizenship.val('polskie').attr('readonly', 'readonly');
     }
 }
 

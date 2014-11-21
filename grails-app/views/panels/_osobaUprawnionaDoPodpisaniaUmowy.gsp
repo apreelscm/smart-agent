@@ -1,4 +1,4 @@
-<%@ page import="com.eservice.eumowy.enums.AcceptorLocation" %>
+<%@ page import="com.eservice.eumowy.enums.options.AcceptorLocation" %>
 
 <div id="acceptorsPanel">
     <fieldset>
@@ -41,11 +41,6 @@
                 </div>
             </g:if>
             <g:else>
-                <g:if test="${czyNowaUmowa}">
-                    <eumowy:enumRadioGroup values="${AcceptorLocation.values()}" name="akceptantLokalizacja" value="${data.akceptantLokalizacja}"
-                                           radioWrapperClass="acceptorLocationRadioWrapper" required="true"/>
-                </g:if>
-
                 <div id="representativesContainer">
                     <g:render template="../panels/reprezentanci" model="[hasDropdowns: false]"/>
                 </div>

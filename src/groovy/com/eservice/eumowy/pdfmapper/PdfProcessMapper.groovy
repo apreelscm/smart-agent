@@ -1,6 +1,7 @@
 package com.eservice.eumowy.pdfmapper
 
-import com.eservice.eumowy.enums.Disposition
+import com.eservice.eumowy.enums.options.Disposition
+import com.eservice.eumowy.enums.options.LegalForm
 
 import static com.eservice.eumowy.ActivityHelper.*
 import com.eservice.eumowy.HirePayment
@@ -641,21 +642,22 @@ class PdfProcessMapper extends AbstractPdfMapper{
 
     private mapDzialalnoscFormaProcess(def data, def pd, def key, def value) {
         if (value != null){
-            if ("spolka_akcyjna".equals(value)){
+            if (LegalForm.STOCK_COMPANY.name().equals(value)){
                 value = "spolka";
                 data.put("spolkaText", ["akcyjna"] as String[])
-            } else if ("spolka_zoo".equals(value)){
+            } else if (LegalForm.ZOO_COMPANY.name().equals(value)){
                 value = "spolka";
                 data.put("spolkaText", ["z o.o."] as String[])
-            } else if ("spolka_komandytowa".equals(value)){
+            } else if (LegalForm.LIMITED_COMPANY.name().equals(value)){
                 value = "spolka";
                 data.put("spolkaText", ["komandytowa"] as String[])
-            } else if ("spolka_jawna".equals(value)){
+            } else if (LegalForm.OPEN_COMPANY.name().equals(value)){
                 value = "spolka";
                 data.put("spolkaText", ["jawna"] as String[])
             }
 
-            addCheckboxes(data, ["spolkaCywilna":"spolka_cywilna", "osobaFizyczna":"osoba_fizyczna", "spolka":"spolka", "inne1":"inne"], value)
+            addCheckboxes(data, ["spolkaCywilna": LegalForm.PARTNERSHIP_COMPANY.name(), "osobaFizyczna": LegalForm.PERSON.name(),
+                    "spolka":"spolka", "inne1":"inne"], value)
 
             if ("inne".equals(value)){
                 data.put("inneText", [getFromProcessDataSet(pd, "dzialalnoscFormaInna")] as String[])

@@ -1,7 +1,7 @@
 package com.eservice.eumowy.pdfmapper.representative
 
 import com.eservice.eumowy.Representative
-import com.eservice.eumowy.enums.IdentityDocumentType
+import com.eservice.eumowy.enums.options.IdentityDocumentType
 import com.eservice.eumowy.pdfmapper.AbstractPdfMapper
 import com.eservice.eumowy.pdfmapper.Mapper
 import com.eservice.eumowy.Process
