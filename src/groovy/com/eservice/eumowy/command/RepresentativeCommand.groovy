@@ -2,6 +2,7 @@ package com.eservice.eumowy.command
 
 import com.eservice.eumowy.enums.IdentityDocumentType
 import com.eservice.eumowy.enums.AcceptorLocation
+import com.eservice.eumowy.enums.options.AcceptorDetail
 import com.eservice.eumowy.enums.options.AcceptorLocation
 import com.eservice.eumowy.enums.options.IdentityDocumentType
 import com.eservice.eumowy.validator.CustomValidator
@@ -20,15 +21,14 @@ class RepresentativeCommand implements Serializable{
     String stanowisko
 
     String pesel
+    String kodKraju
+    Date dataUrodzenia
 
     AcceptorLocation typLokalizacji
-    String lokalizacjaPesel
-    String lokalizacjaKraj
 
     IdentityDocumentType typDokumentu
 
     String seriaNrDokumentu
-    Date dataUrodzenia
     String obywatelstwo
     String adres
 
@@ -51,11 +51,7 @@ class RepresentativeCommand implements Serializable{
             CustomValidator.validateRequired(value, errors, cmd.processCommand.isAkceptantAbroad(),
                     "typLokalizacji", "representative.typLokalizacji.required")
         })
-        lokalizacjaPesel(nullable: true, shared: "number", validator: {value, cmd, errors ->
-            cmd.processCommand.isAkceptantAbroad() && !cmd.isRepresentativeLocationAbroad() ?
-                NumberValidator.validatePesel(value, cmd, errors, "lokalizacjaPesel") : true
-        })
-        lokalizacjaKraj(nullable: true, maxSize: 30, validator: { value, cmd, errors ->
+        kodKraju(nullable: true, maxSize: 30, validator: { value, cmd, errors ->
             CustomValidator.validateRequired(value, errors, (cmd.processCommand.isAkceptantAbroad() && cmd.isRepresentativeLocationAbroad()),
                     "lokalizacjaKraj", "representative.lokalizacjaKraj.required")
         })

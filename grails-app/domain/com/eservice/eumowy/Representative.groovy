@@ -19,15 +19,14 @@ class Representative implements Serializable {
     String stanowisko
 
     String pesel
+    String kodKraju
+    Date dataUrodzenia
 
     AcceptorLocation typLokalizacji
-    String lokalizacjaPesel
-    String lokalizacjaKraj
 
     IdentityDocumentType typDokumentu
 
     String seriaNrDokumentu
-    Date dataUrodzenia
     String obywatelstwo
     String adres
 
@@ -51,8 +50,8 @@ class Representative implements Serializable {
         pesel column: "PESEL"
 
         typLokalizacji column: "LOCATION_TYPE"
-        lokalizacjaPesel column: "LOCATION_PESEL"
-        lokalizacjaKraj column: "LOCATION_COUNTRY"
+        pesel column: "LOCATION_PESEL"
+        kodKraju column: "LOCATION_COUNTRY"
 
         typDokumentu column: "ID_DOCUMENT_TYPE"
 
@@ -76,8 +75,8 @@ class Representative implements Serializable {
        stanowisko(nullable: true)
        pesel(nullable: true)
        typLokalizacji(nullable: true)
-       lokalizacjaPesel(nullable: true)
-       lokalizacjaKraj(nullable: true)
+       pesel(nullable: true)
+       kodKraju(nullable: true)
        typDokumentu(nullable: true)
        seriaNrDokumentu(nullable: true)
        dataUrodzenia(nullable: true)
