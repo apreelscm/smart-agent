@@ -4,6 +4,7 @@ import com.eservice.eumowy.Process
 import com.eservice.eumowy.annotation.DateField
 import com.eservice.eumowy.annotation.Omit
 import com.eservice.eumowy.enums.options.AcceptorLocation
+import com.eservice.eumowy.enums.options.LegalForm
 import com.eservice.eumowy.validator.*
 import grails.util.Holders
 import grails.validation.Validateable
@@ -151,7 +152,7 @@ class ProcessCommand implements Serializable {
     String ifOplataPKOPB = DEFAULT_VALUE
 
 //    informacjeDodatkowe - 
-    String dzialalnoscForma = DEFAULT_VALUE //TODO: ZAMIENIC NA ENUMA
+    String dzialalnoscForma = DEFAULT_VALUE
     String dzialalnoscFormaInna = DEFAULT_VALUE
     String dzialalnoscDokument = DEFAULT_VALUE
     String dzialalnoscDokumentInny = DEFAULT_VALUE
@@ -384,7 +385,6 @@ class ProcessCommand implements Serializable {
     //osobaUprawnionaDoPodpisaniaUmowy
     Boolean isFromBisnode = false
     Boolean isRepresentativesChangedManually = false
-    String akceptantLokalizacja
     String emailDoWysylkiDokumentu = DEFAULT_VALUE
 
     //beneficjenciRzeczywisci
@@ -1233,16 +1233,12 @@ class ProcessCommand implements Serializable {
                 NumberValidator.validate(value, cmd, errors, propertyName) && ConditionValidator.atLeastCalcValue(value, cmd, errors, propertyName, "DCC_OPLATA_URUCHOMIENIE")
         })
 
-        akceptantLokalizacja(nullable: true, validator: {value, cmd, errors ->
-            CustomValidator.validateRequired(value, errors, cmd.hasNewUmowa, propertyName, "company.operations.location.required")
-        })
-
         czyBeneficjentRzeczywisty(nullable: true, validator: {value, cmd, errors ->
-            if(!cmd.isAkceptantAbroad()) {
+            if(!cmd.hasAtLeastOneRepresentativeAbroad()) {
                 return true
             }
 
-            if(cmd.isAkceptantAbroad() && (value == null)) {
+            if(cmd.hasAtLeastOneRepresentativeAbroad() && (value == null)) {
                 errors.rejectValue("czyBeneficjentRzeczywisty", "beneficiary.radio.required")
                 return false
             }
@@ -1289,7 +1285,7 @@ class ProcessCommand implements Serializable {
             return RepresentativesValidator.validate(value, cmd, errors, "representatives")
         })
         beneficiaries(nullable: true, validator: {value, cmd, errors ->
-            AcceptorLocation.ABROAD.equals(cmd.akceptantLokalizacja) ?
+            cmd.hasAtLeastOneRepresentativeAbroad() ?
                 RepresentativesValidator.validate(value, cmd, errors, "beneficiaries") : true
         })
 
@@ -1327,20 +1323,8 @@ class ProcessCommand implements Serializable {
         return this.checkIfFromCbd("akceptantNazwaOficjalna")
     }
 
-    public boolean isAkceptantAbroad() {
-        if(this.akceptantLokalizacja == null) {
-            return null
-        }
-
-        return AcceptorLocation.ABROAD.name().equals(this.akceptantLokalizacja)
-    }
-
-    public boolean isAkceptantCountry() {
-        if(this.akceptantLokalizacja == null) {
-            return null
-        }
-
-        return AcceptorLocation.COUNTRY.name().equals(this.akceptantLokalizacja)
+    public boolean hasAtLeastOneRepresentativeAbroad() {
+        return representatives.any {AcceptorLocation.ABROAD.name().equals(it.typLokalizacji)}
     }
 
     public String getMessageForProperty(String property){
@@ -1358,5 +1342,13 @@ class ProcessCommand implements Serializable {
         }
 
         return counter
+    }
+
+    public boolean isPersonForm() {
+        return LegalForm.valueOf(dzialalnoscForma)?.isPerson()
+    }
+
+    public boolean isCompanyForm() {
+        return LegalForm.valueOf(dzialalnoscForma)?.isCompany()
     }
 }

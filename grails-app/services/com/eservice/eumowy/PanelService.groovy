@@ -311,7 +311,6 @@ class PanelService {
     }
 
     def getOsobaUprawnionaDoPodpisaniaUmowy(ProcessCommand cmd, def calc ){
-        cmd.akceptantLokalizacja = cmd.akceptantLokalizacja ?: null
         cmd.emailDoWysylkiDokumentu = nullify(cmd.emailDoWysylkiDokumentu)
         cmd.beneficjentKRS = nullify(cmd.beneficjentKRS)
     }

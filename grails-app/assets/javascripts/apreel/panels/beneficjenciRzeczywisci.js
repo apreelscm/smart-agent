@@ -3,16 +3,25 @@ var isActualBeneficiary = jQuery("input[name='czyBeneficjentRzeczywisty']"),
     beneficiaries = actualBeneficiaryData.find(".acceptor"),
     cantEstablishSection = jQuery("#cantEstablishBeneficiary"),
     copyFromRepresentativesButton = jQuery("button#copyFromRepresentatives"),
+    beneficiariesDetails = actualBeneficiaryData.find("input[type=radio][name$='detail']"),
     representatives;
 
-actualBeneficiaryData.find(".percent-short").mask('09');
 
-isActualBeneficiary.change(function() {
+jQuery(function() {
+    actualBeneficiaryData.find(".date-field").datepicker({dateFormat: 'yy-mm-dd', maxDate: new Date()});
+    actualBeneficiaryData.find(".percent-short").mask('09');
+});
+
+isActualBeneficiary.change(toggleBeneficiariesPanelsVisibility);
+copyFromRepresentativesButton.click(copyRepresentativesData);
+beneficiariesDetails.change(clearOtherBeneficiaryDetail);
+
+function toggleBeneficiariesPanelsVisibility() {
     if(this.value == "true") {
         actualBeneficiaryData.removeClass("hidden");
         cantEstablishSection.addClass("hidden");
 
-        clearFields(cantEstablishSection)
+        clearFields(cantEstablishSection);
         disableFields(cantEstablishSection);
         enableFields(actualBeneficiaryData);
 
@@ -25,9 +34,9 @@ isActualBeneficiary.change(function() {
         disableFields(actualBeneficiaryData);
         enableFields(cantEstablishSection);
     }
-});
+}
 
-copyFromRepresentativesButton.click(function() {
+function copyRepresentativesData() {
     representatives = jQuery("#representativesContainer").find(".acceptor");
 
     representatives.each(function(representativeIndex, value) {
@@ -37,7 +46,19 @@ copyFromRepresentativesButton.click(function() {
     });
 
     this.disabled = true;
-});
+}
+
+function clearOtherBeneficiaryDetail() {
+    var $this = jQuery(this),
+        acceptor = $this.parents("div.acceptor"),
+        value = this.value;
+
+    if(value == 'PESEL') {
+        acceptor.find("input[type=text][name$='kodKraju']").val('');
+    } else {
+        acceptor.find("input[type=text][name$='pesel']").val('');
+    }
+}
 
 function setBeneficiaryFieldValue(beneficiaryIndex, representativeField) {
     var fieldName, fieldType, beneficiary, beneficiaryField, value;

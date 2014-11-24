@@ -27,7 +27,7 @@
 
         <div class="acceptorRadioWrapper">
             <g:radio name="${prefix}[${seqNo}].detail" value="PESEL"
-                     checked="${!representative?.pesel?.empty}"/>
+                     checked="${representative?.detail}"/>
             <div class="label"><g:message code="pesel.label"/></div>
 
             <eumowy:textField name="${prefix}[${seqNo}].pesel" value="${representative?.pesel}"
@@ -37,7 +37,7 @@
 
         <div class="acceptorRadioWrapper">
             <g:radio name="${prefix}[${seqNo}].detail" value="COUNTRY_CODE"
-                     checked="${!representative?.kodKraju?.empty}"/>
+                     checked="${representative?.detail}"/>
             <div class="label"><g:message code="country.label"/></div>
 
             <eumowy:textField name="${prefix}[${seqNo}].kodKraju" value="${representative?.kodKraju}"

@@ -50,13 +50,8 @@
                 <g:render template="/common/representative/basicData" model="[prefix: 'beneficiaries', seqNo: it,
                         representative: data.beneficiaries[it]]"/>
 
-                <g:render template="/common/representative/company" model="[prefix: 'beneficiaries', seqNo: it,
+                <g:render template="/common/representative/beneficiary" model="[seqNo: it,
                         representative: data.beneficiaries[it]]"/>
-
-                <div style="margin-top: 25px">
-                    <g:render template="/common/representative/relationWithAcceptor" model="[seqNo: it,
-                            representative: data.beneficiaries[it]]"/>
-                </div>
             </div>
         </g:each>
     </section>

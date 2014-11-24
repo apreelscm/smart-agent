@@ -59,7 +59,7 @@ public class ConditionValidator {
                 cmd.beneficjentWeryfikacjaGielda, cmd.beneficjentWeryfikacjaSpolka, cmd.beneficjentWeryfikacjaKsiega,
                 cmd.beneficjentWeryfikacjaSchemat]
 
-        if(cmd.isAkceptantAbroad() && ValidatorUtils.hasNotFilledField(fieldsToCheck)) {
+        if(cmd.hasAtLeastOneRepresentativeAbroad() && ValidatorUtils.hasNotFilledField(fieldsToCheck)) {
             errors.reject("atleast.one.verification.document.required")
             return false
         }

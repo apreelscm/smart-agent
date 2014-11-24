@@ -62,13 +62,10 @@ function clearOtherDetail() {
         case 'COUNTRY_CODE':
             acceptor.find("input[type=text][name$='dataUrodzenia']").val('');
             acceptor.find("input[type=text][name$='pesel']").val('');
-            console.log('C');
             break;
         case 'BIRTH_DATE':
             acceptor.find("input[type=text][name$='pesel']").val('');
             acceptor.find("input[type=text][name$='kodKraju']").val('');
-            console.log('B');
-            break;
     }
 }
 
@@ -142,7 +139,8 @@ function showNextAcceptor() {
 
 function attachDatepickers() {
     $representativesContainer.find(".date-field").datepicker({dateFormat: 'yy-mm-dd', maxDate: new Date()});
-}
+}                                                                                                                                                                                                            4
+
 function disableHiddenRepresentativesFields() {
     disableFields($representativesContainer.find('div.acceptor.hidden'));
 }

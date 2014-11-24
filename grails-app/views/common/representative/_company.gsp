@@ -9,7 +9,7 @@
 
         <div class="acceptorRadioWrapper">
             <g:radio name="${prefix}[${seqNo}].detail" value="PESEL"
-                     checked="${!representative?.pesel?.empty}"/>
+                     checked="${representative?.detail}"/>
             <div class="label"><g:message code="pesel.label"/></div>
 
             <eumowy:textField name="${prefix}[${seqNo}].pesel" value="${representative?.pesel}"
@@ -19,7 +19,7 @@
 
         <div class="acceptorRadioWrapper">
             <g:radio name="${prefix}[${seqNo}].detail" value="BIRTH_DATE"
-                     checked="${representative?.birthDate}"/>
+                     checked="${representative?.detail}"/>
             <label for="${prefix}[${seqNo}].dataUrodzenia"><g:message code="birth.date.label"/></label>
 
             <g:textField name="${prefix}[${seqNo}].dataUrodzenia" value="${formatDate(format: 'yyyy-MM-dd', date: representative?.dataUrodzenia)}" maxlength="10" class="date-field"/>
