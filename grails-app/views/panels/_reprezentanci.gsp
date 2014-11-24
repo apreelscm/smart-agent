@@ -1,5 +1,5 @@
 <g:each in="${0..3}">
-    <div class="acceptor">
+    <div class="acceptor ${it > data.representatives.size() ? 'hidden' : ''}">
         <g:render template="/common/representative/basicData" model="[prefix: 'representatives', seqNo: it, dropdowns: hasDropdowns,
                 representative: data.representatives[it]]"/>
 
@@ -12,3 +12,7 @@
         </g:if>
     </div>
 </g:each>
+
+<div class="text-center" style="margin-bottom: 15px">
+    <button type="button" id="addAnotherAcceptor" class="button submit"><g:message code="add.acceptor.button"/></button>
+</div>

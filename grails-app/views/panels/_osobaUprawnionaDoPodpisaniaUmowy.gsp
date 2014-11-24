@@ -45,11 +45,6 @@
                     <g:render template="../panels/reprezentanci" model="[hasDropdowns: false]"/>
                 </div>
             </g:else>
-
-            <div id="email-documents">
-                <label for="emailDoWysylkiDokumentu"><g:message code="email.receiver.address.label"/>:</label>
-                <g:textField id="emailDoWysylkiDokumentu" class="" name="emailDoWysylkiDokumentu" value="${data.emailDoWysylkiDokumentu}" validatable="${data}" style="width: 150px" email="true"/>
-            </div>
         </div>
     </fieldset>
 </div>
@@ -62,6 +57,11 @@
 
     <asset:javascript src="apreel/panels/osobaUprawnionaDoPodpisaniaUmowy.js"/>
 </g:if>
+
+<div id="email-documents" class="text-center">
+    <label for="emailDoWysylkiDokumentu"><g:message code="email.receiver.address.label"/>:</label>
+    <g:textField id="emailDoWysylkiDokumentu" class="" name="emailDoWysylkiDokumentu" value="${data.emailDoWysylkiDokumentu}" validatable="${data}" style="width: 150px" email="true"/>
+</div>
 
 <g:if test="${data.isFromBisnode}">
     <script type="text/javascript">

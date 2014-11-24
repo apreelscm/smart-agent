@@ -1,6 +1,6 @@
 package com.eservice.eumowy
 
-import com.eservice.eumowy.enums.AcceptorLocation
+import com.eservice.eumowy.enums.options.AcceptorLocation
 import com.eservice.eumowy.helpers.CommandHelper
 import org.powermock.core.classloader.annotations.PrepareForTest
 

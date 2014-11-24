@@ -1,7 +1,7 @@
 package com.eservice.eumowy
 
-import com.eservice.eumowy.enums.AcceptorLocation
-import com.eservice.eumowy.enums.IdentityDocumentType
+import com.eservice.eumowy.enums.options.AcceptorLocation
+import com.eservice.eumowy.enums.options.IdentityDocumentType
 import com.eservice.eumowy.helpers.CommandHelper
 import com.eservice.eumowy.helpers.PdfHelper
 import com.eservice.eumowy.pdfmapper.PABRformMapper

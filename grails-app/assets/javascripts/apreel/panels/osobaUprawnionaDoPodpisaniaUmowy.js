@@ -7,6 +7,7 @@ var $representativesContainer = jQuery("#acceptorsPanel #representativesContaine
     $representativeTypLokalizacji = jQuery("#representativesContainer input[type=radio][name$='typLokalizacji']"),
     $acceptorsAdditionalPanels = jQuery("#acceptorsAdditionalPanels"),
     $additionalInfoSelect = jQuery("div#additionalInformationPanel select[name='dzialalnoscForma']"),
+    $addAnotherAcceptorButton = jQuery("button#addAnotherAcceptor"),
     $companyData = jQuery("div#acceptorsPanel div#companyData"),
     $personData = jQuery("div#acceptorsPanel div#personData");
 
@@ -14,6 +15,7 @@ attachDatepickers();
 
 disableFields($representativesDropdows);
 disableFields($representativesTextfields);
+disableHiddenRepresentativesFields();
 
 setReprezentantImieAndNazwiskoRequired();
 
@@ -21,6 +23,7 @@ $representativesChangedManually.change(setRepresentativesView);
 $acceptorLocation.change(setAdditionalInformationState);
 $additionalInfoSelect.change(legalFormChanged);
 $representativeTypLokalizacji.change(typLokalizacjiChanged);
+$addAnotherAcceptorButton.click(showNextAcceptor);
 $representativePESELKraj.on("change", setAcceptorState);
 
 function setRepresentativesView() {
@@ -108,6 +111,18 @@ function typLokalizacjiChanged() {
     }
 }
 
+function showNextAcceptor() {
+    var acceptor = $representativesContainer.find('div.acceptor.hidden').first();
+
+    if(acceptor.length === 0) {
+        jQuery(this).attr('disabled', 'disabled');
+        return false;
+    }
+
+    acceptor.removeClass('hidden');
+    enableFields(acceptor);
+}
+
 function setAcceptorState() {
     var $this = jQuery(this),
         acceptor = $this.parents("div.acceptor"),
@@ -128,4 +143,7 @@ function setAcceptorState() {
 
 function attachDatepickers() {
     $representativesContainer.find(".date-field").datepicker({dateFormat: 'yy-mm-dd', maxDate: new Date()});
+}
+function disableHiddenRepresentativesFields() {
+    disableFields($representativesContainer.find('div.acceptor.hidden'));
 }

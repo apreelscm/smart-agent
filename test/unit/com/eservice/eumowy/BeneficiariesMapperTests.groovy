@@ -1,11 +1,8 @@
 package com.eservice.eumowy
 
-import com.eservice.eumowy.command.BeneficiaryCommand
-import com.eservice.eumowy.command.ProcessCommand
-import com.eservice.eumowy.enums.IdentityDocumentType
+import com.eservice.eumowy.enums.options.IdentityDocumentType
 import com.eservice.eumowy.helpers.CommandHelper
 import com.eservice.eumowy.pdfmapper.representative.BeneficiariesMapper
-import grails.test.mixin.web.ControllerUnitTestMixin
 import org.junit.Before
 import org.junit.Test
 
