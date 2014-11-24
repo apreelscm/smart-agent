@@ -1,11 +1,13 @@
-var actualBeneficiaryData = jQuery("#actualBeneficiaryData"),
+var isActualBeneficiary = jQuery("input[name='czyBeneficjentRzeczywisty']"),
+    actualBeneficiaryData = jQuery("#actualBeneficiaryData"),
     beneficiaries = actualBeneficiaryData.find(".acceptor"),
     cantEstablishSection = jQuery("#cantEstablishBeneficiary"),
+    copyFromRepresentativesButton = jQuery("button#copyFromRepresentatives"),
     representatives;
 
 actualBeneficiaryData.find(".percent-short").mask('09');
 
-jQuery("input[name='czyBeneficjentRzeczywisty']").change(function() {
+isActualBeneficiary.change(function() {
     if(this.value == "true") {
         actualBeneficiaryData.removeClass("hidden");
         cantEstablishSection.addClass("hidden");
@@ -13,6 +15,8 @@ jQuery("input[name='czyBeneficjentRzeczywisty']").change(function() {
         clearFields(cantEstablishSection)
         disableFields(cantEstablishSection);
         enableFields(actualBeneficiaryData);
+
+        copyFromRepresentativesButton.removeAttr('disabled');
     } else {
         actualBeneficiaryData.addClass("hidden");
         cantEstablishSection.removeClass("hidden");
@@ -23,7 +27,7 @@ jQuery("input[name='czyBeneficjentRzeczywisty']").change(function() {
     }
 });
 
-jQuery("#copyFromRepresentatives").click(function() {
+copyFromRepresentativesButton.click(function() {
     representatives = jQuery("#representativesContainer").find(".acceptor");
 
     representatives.each(function(representativeIndex, value) {

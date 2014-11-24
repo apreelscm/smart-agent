@@ -2,9 +2,8 @@ var $representativesContainer = jQuery("#acceptorsPanel #representativesContaine
     $representativesDropdows = jQuery("#acceptorsPanel #representativesDropdowns"),
     $representativesTextfields = jQuery("#acceptorsPanel #representativesTextfields"),
     $representativesChangedManually = jQuery("#acceptorsPanel #isRepresentativesChangedManually"),
-    $acceptorLocation = jQuery("#acceptorsPanel input[name='akceptantLokalizacja']"),
-    $representativePESELKraj = jQuery("#representativesContainer input[name$='lokalizacjaPesel']"),
     $representativeTypLokalizacji = jQuery("#representativesContainer input[type=radio][name$='typLokalizacji']"),
+    $representativeDetail = jQuery("#representativesContainer input[type=radio][name$='detail']"),
     $acceptorsAdditionalPanels = jQuery("#acceptorsAdditionalPanels"),
     $additionalInfoSelect = jQuery("div#additionalInformationPanel select[name='dzialalnoscForma']"),
     $addAnotherAcceptorButton = jQuery("button#addAnotherAcceptor"),
@@ -17,14 +16,14 @@ disableFields($representativesDropdows);
 disableFields($representativesTextfields);
 disableHiddenRepresentativesFields();
 
-setReprezentantImieAndNazwiskoRequired();
+setAdditionalInformationPanelsVisibility();
 
 $representativesChangedManually.change(setRepresentativesView);
-$acceptorLocation.change(setAdditionalInformationState);
 $additionalInfoSelect.change(legalFormChanged);
 $representativeTypLokalizacji.change(typLokalizacjiChanged);
+$representativeTypLokalizacji.change(setAdditionalInformationPanelsVisibility);
+$representativeDetail.change(clearOtherDetail);
 $addAnotherAcceptorButton.click(showNextAcceptor);
-$representativePESELKraj.on("change", setAcceptorState);
 
 function setRepresentativesView() {
     var isChecked = $representativesChangedManually.is(":checked");
@@ -38,32 +37,38 @@ function setRepresentativesView() {
     enableFields($representativesContainer)
 }
 
-function setReprezentantImieAndNazwiskoRequired() {
-    jQuery("#representatives\\[0\\]\\.imie").attr('required', 'required');
-    jQuery("#representatives\\[0\\]\\.nazwisko").attr('required', 'required');
-}
-
-function setAdditionalInformationState() {
-    var isAbroad = $acceptorLocation.filter(":checked").val() === "ABROAD",
-        acceptorCountryWrapper = $representativesContainer.find(".acceptorCountry"),
-        acceptorAbroadWrapper = $representativesContainer.find(".acceptorAbroad");
+function setAdditionalInformationPanelsVisibility() {
+    var isAbroad = $representativeTypLokalizacji.filter(":checked").val() === "ABROAD";
 
     if(isAbroad) {
+        enableFields($acceptorsAdditionalPanels);
         $acceptorsAdditionalPanels.removeClass('hidden');
-
-        acceptorCountryWrapper.addClass("hidden");
-        acceptorAbroadWrapper.removeClass("hidden");
-
-        clearFields(acceptorCountryWrapper);
-        attachDatepickers();
     } else {
+        disableFields($acceptorsAdditionalPanels);
         $acceptorsAdditionalPanels.addClass('hidden');
+    }
+}
 
-        $representativesContainer.find(".acceptorCountry").removeClass("hidden");
-        $representativesContainer.find(".acceptorAbroad").addClass("hidden");
+function clearOtherDetail() {
+    var $this = jQuery(this),
+        acceptor = $this.parents("div.acceptor"),
+        value = this.value;
 
-        clearFields($acceptorsAdditionalPanels);
-        clearFields(acceptorAbroadWrapper);
+    switch(value) {
+        case 'PESEL':
+            acceptor.find("input[type=text][name$='dataUrodzenia']").val('');
+            acceptor.find("input[type=text][name$='kodKraju']").val('');
+            break;
+        case 'COUNTRY_CODE':
+            acceptor.find("input[type=text][name$='dataUrodzenia']").val('');
+            acceptor.find("input[type=text][name$='pesel']").val('');
+            console.log('C');
+            break;
+        case 'BIRTH_DATE':
+            acceptor.find("input[type=text][name$='pesel']").val('');
+            acceptor.find("input[type=text][name$='kodKraju']").val('');
+            console.log('B');
+            break;
     }
 }
 
@@ -71,6 +76,12 @@ function legalFormChanged() {
     if(this.value === "") {
         $personData.addClass('hidden');
         $companyData.addClass('hidden');
+
+        clearFields($personData);
+        clearFields($companyData);
+
+        setAdditionalInformationPanelsVisibility();
+
         return false;
     }
 
@@ -81,14 +92,20 @@ function legalFormChanged() {
         $companyData.removeClass('hidden');
 
         disableFields($personData);
+        clearFields($personData);
         enableFields($companyData);
     } else {
         $personData.removeClass('hidden');
         $companyData.addClass('hidden');
 
         disableFields($companyData);
+        clearFields($companyData);
         enableFields($personData);
+
+        jQuery("input#akceptantNieMaBeneficjenta").attr("checked", "checked");
     }
+
+    setAdditionalInformationPanelsVisibility();
 }
 
 function typLokalizacjiChanged() {
@@ -121,24 +138,6 @@ function showNextAcceptor() {
 
     acceptor.removeClass('hidden');
     enableFields(acceptor);
-}
-
-function setAcceptorState() {
-    var $this = jQuery(this),
-        acceptor = $this.parents("div.acceptor"),
-        passportDocumentTypeRadio = acceptor.find("input[type='radio'][name$='typDokumentu'][value='PASSPORT']"),
-        birthDateField = acceptor.find("input[type='text'][name$='dataUrodzenia']"),
-        politicalField = acceptor.find("input[type='checkbox'][name$='czyStanowiskoPolityczne']"),
-        selectedOption = this.value;
-
-    if(selectedOption === "COUNTRY") {
-        passportDocumentTypeRadio.attr("checked", "checked");
-        birthDateField.attr("required", "required");
-        politicalField.attr("required", "required");
-    } else {
-        birthDateField.removeAttr("required");
-        politicalField.removeAttr("required");
-    }
 }
 
 function attachDatepickers() {

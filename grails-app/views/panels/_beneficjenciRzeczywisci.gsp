@@ -1,12 +1,18 @@
-<asset:javascript src="apreel/panels/beneficjenciRzeczywisci.js"/>
-
 <fieldset id="actualBeneficiaries">
     <header class="belka-glowna"><g:message code="panel.actual.beneficiaries.title"/></header>
 
-    <g:radio name="czyBeneficjentRzeczywisty" value="false" required="required" checked="${data.czyBeneficjentRzeczywisty}"/>
+    <g:radio name="czyBeneficjentRzeczywisty" value="false" required="required" checked="${data.czyBeneficjentRzeczywisty != true}"/>
     <span class="bold"><g:message code="beneficiary.cant.establish.label"/></span>
 
     <section id="cantEstablishBeneficiary" class="${data.czyBeneficjentRzeczywisty ? "hidden" : ""}">
+        <div>
+            <g:checkBox name="akceptantNieMaBeneficjenta" value="${data.akceptantNieMaBeneficjenta}"/>
+            <label><g:message code="acceptor.no.physical.beneficiary.label"/></label>
+            <label class="display-block"><g:message code="acceptor.no.physical.beneficiary.a.label"/></label>
+            <label class="display-block"><g:message code="acceptor.no.physical.beneficiary.b.label"/></label>
+            <label class="display-block" style="max-width: inherit"><g:message code="acceptor.no.physical.beneficiary.c.label"/></label>
+        </div>
+
         <div>
             <g:checkBox name="akceptantJestSpolka" checked="${data.akceptantJestSpolka}"/>
             <label><g:message code="acceptor.listed.company.label"/></label>
@@ -28,14 +34,6 @@
         <div>
             <g:checkBox name="akceptantJestOrganem" checked="${data.akceptantJestOrganem}"/>
             <label><g:message code="acceptor.organ.label"/></label>
-        </div>
-
-        <div>
-            <g:checkBox name="akceptantNieMaBeneficjenta" value="${data.akceptantNieMaBeneficjenta}"/>
-            <label><g:message code="acceptor.no.physical.beneficiary.label"/></label>
-            <label class="display-block"><g:message code="acceptor.no.physical.beneficiary.a.label"/></label>
-            <label class="display-block"><g:message code="acceptor.no.physical.beneficiary.b.label"/></label>
-            <label class="display-block" style="max-width: inherit"><g:message code="acceptor.no.physical.beneficiary.c.label"/></label>
         </div>
     </section>
 

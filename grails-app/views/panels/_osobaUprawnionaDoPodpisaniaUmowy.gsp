@@ -47,21 +47,22 @@
             </g:else>
         </div>
     </fieldset>
+
+    <div id="email-documents" class="text-center">
+        <label for="emailDoWysylkiDokumentu"><g:message code="email.receiver.address.label"/>:</label>
+        <g:textField id="emailDoWysylkiDokumentu" class="" name="emailDoWysylkiDokumentu" value="${data.emailDoWysylkiDokumentu}" validatable="${data}" style="width: 150px" email="true"/>
+    </div>
 </div>
 
 <g:if test="${czyNowaUmowa}">
-    <div id="acceptorsAdditionalPanels" class="${data.isAkceptantAbroad() ?: "hidden"}">
+    <div id="acceptorsAdditionalPanels">
         <g:render template="/panels/beneficjenciRzeczywisci"/>
         <g:render template="/panels/dokumentyWeryfikacyjne"/>
     </div>
 
+    <asset:javascript src="apreel/panels/beneficjenciRzeczywisci.js"/>
     <asset:javascript src="apreel/panels/osobaUprawnionaDoPodpisaniaUmowy.js"/>
 </g:if>
-
-<div id="email-documents" class="text-center">
-    <label for="emailDoWysylkiDokumentu"><g:message code="email.receiver.address.label"/>:</label>
-    <g:textField id="emailDoWysylkiDokumentu" class="" name="emailDoWysylkiDokumentu" value="${data.emailDoWysylkiDokumentu}" validatable="${data}" style="width: 150px" email="true"/>
-</div>
 
 <g:if test="${data.isFromBisnode}">
     <script type="text/javascript">

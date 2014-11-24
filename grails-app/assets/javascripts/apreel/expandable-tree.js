@@ -376,7 +376,6 @@
 
         function changeActivity (target) {
             var elements = restrictionsMap[target.id]
-            console.log(elements);
 
             if(target.checked){
                 $.each(elements,function(index, value){

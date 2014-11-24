@@ -8,17 +8,20 @@
         </g:hasErrors>
 
         <div class="acceptorRadioWrapper">
-            <g:radio name="${prefix}[${seqNo}].typLokalizacji" value="COUNTRY"
-                     checked="${representative?.isRepresentativeLocationCountry()}"/>
+            <g:radio name="${prefix}[${seqNo}].detail" value="PESEL"
+                     checked="${!representative?.pesel?.empty}"/>
             <div class="label"><g:message code="pesel.label"/></div>
 
-            <eumowy:textField name="${prefix}[${seqNo}].lokalizacjaPesel" value="${representative?.lokalizacjaPesel}"
+            <eumowy:textField name="${prefix}[${seqNo}].pesel" value="${representative?.pesel}"
                               maxlength="11" class="pesel-field display-inline-block" disabled="${representative?.isRepresentativeLocationAbroad()}"
                               validatable="${representative}" validateField="lokalizacjaPesel"/>
         </div>
 
         <div class="acceptorRadioWrapper">
+            <g:radio name="${prefix}[${seqNo}].detail" value="BIRTH_DATE"
+                     checked="${representative?.birthDate}"/>
             <label for="${prefix}[${seqNo}].dataUrodzenia"><g:message code="birth.date.label"/></label>
+
             <g:textField name="${prefix}[${seqNo}].dataUrodzenia" value="${formatDate(format: 'yyyy-MM-dd', date: representative?.dataUrodzenia)}" maxlength="10" class="date-field"/>
         </div>
     </div>

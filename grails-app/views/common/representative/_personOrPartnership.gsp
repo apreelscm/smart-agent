@@ -26,21 +26,21 @@
         </g:hasErrors>
 
         <div class="acceptorRadioWrapper">
-            <g:radio name="${prefix}[${seqNo}].typLokalizacji" value="COUNTRY"
-                     checked="${representative?.isRepresentativeLocationCountry()}"/>
+            <g:radio name="${prefix}[${seqNo}].detail" value="PESEL"
+                     checked="${!representative?.pesel?.empty}"/>
             <div class="label"><g:message code="pesel.label"/></div>
 
-            <eumowy:textField name="${prefix}[${seqNo}].lokalizacjaPesel" value="${representative?.lokalizacjaPesel}"
+            <eumowy:textField name="${prefix}[${seqNo}].pesel" value="${representative?.pesel}"
                               maxlength="11" class="pesel-field display-inline-block" disabled="${representative?.isRepresentativeLocationAbroad()}"
                               validatable="${representative}" validateField="lokalizacjaPesel"/>
         </div>
 
         <div class="acceptorRadioWrapper">
-            <g:radio name="${prefix}[${seqNo}].typLokalizacji" value="ABROAD"
-                     checked="${representative?.isRepresentativeLocationAbroad()}"/>
+            <g:radio name="${prefix}[${seqNo}].detail" value="COUNTRY_CODE"
+                     checked="${!representative?.kodKraju?.empty}"/>
             <div class="label"><g:message code="country.label"/></div>
 
-            <eumowy:textField name="${prefix}[${seqNo}].lokalizacjaKraj" value="${representative?.lokalizacjaKraj}"
+            <eumowy:textField name="${prefix}[${seqNo}].kodKraju" value="${representative?.kodKraju}"
                          maxlength="30" class="display-inline-block" disabled="${representative?.isRepresentativeLocationAbroad() == false}"
                          validatable="${representative}" validateField="lokalizacjaKraj"/>
         </div>
