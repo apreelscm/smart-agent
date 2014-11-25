@@ -18,8 +18,8 @@ class RepresentativeCommandTest extends ControllerUnitTestMixin {
 
     @Before
     void setUp() {
-        command = mockCommandObject(RepresentativeCommand)
-        command.processCommand = mockCommandObject(ProcessCommand)
+        command = mockCommandObject(RepresentativeCommand.class)
+        command.processCommand = mockCommandObject(ProcessCommand.class)
     }
 
     @Test

@@ -37,7 +37,7 @@ function toggleBeneficiariesPanelsVisibility() {
 }
 
 function copyRepresentativesData() {
-    representatives = jQuery("#representativesContainer").find(".acceptor");
+    representatives = jQuery("#representativesContainer").find(".acceptor:not(.hidden)");
 
     representatives.each(function(representativeIndex, value) {
         jQuery(this).find("input, select").each(function() {
@@ -61,6 +61,8 @@ function clearOtherBeneficiaryDetail() {
 }
 
 function setBeneficiaryFieldValue(beneficiaryIndex, representativeField) {
+    if(representativeField.disabled) return false
+
     var fieldName, fieldType, beneficiary, beneficiaryField, value;
 
     fieldName = representativeField.name.split(".")[1];

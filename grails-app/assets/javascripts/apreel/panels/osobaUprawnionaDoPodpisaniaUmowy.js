@@ -7,8 +7,8 @@ var $representativesContainer = jQuery("#acceptorsPanel #representativesContaine
     $acceptorsAdditionalPanels = jQuery("#acceptorsAdditionalPanels"),
     $additionalInfoSelect = jQuery("div#additionalInformationPanel select[name='dzialalnoscForma']"),
     $addAnotherAcceptorButton = jQuery("button#addAnotherAcceptor"),
-    $companyData = jQuery("div#acceptorsPanel div#companyData"),
-    $personData = jQuery("div#acceptorsPanel div#personData");
+    $companyData = jQuery("div#acceptorsPanel div.companyData"),
+    $personData = jQuery("div#acceptorsPanel div.personData");
 
 attachDatepickers();
 
@@ -143,4 +143,6 @@ function attachDatepickers() {
 
 function disableHiddenRepresentativesFields() {
     disableFields($representativesContainer.find('div.acceptor.hidden'));
+    disableFields($representativesContainer.find('div.companyData.hidden'));
+    disableFields($representativesContainer.find('div.personData.hidden'));
 }

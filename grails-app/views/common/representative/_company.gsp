@@ -1,5 +1,5 @@
 <%@ page import="com.eservice.eumowy.enums.options.AcceptorLocation" %>
-<div id="companyData" class="acceptorCountry ${additionalClass}">
+<div class="companyData ${additionalClass}">
     <div class="acceptorPESELCountryWrapper ${hasErrors(bean: representative, field: 'locationType', 'errorSpan')}">
         <g:hasErrors bean="${representative}" field="locationType">
             <g:eachError bean="${representative}" field="locationType">
@@ -9,7 +9,7 @@
 
         <div class="acceptorRadioWrapper">
             <g:radio name="${prefix}[${seqNo}].verification" value="PESEL"
-                     checked="${representative?.verification}"/>
+                     checked="${"PESEL".equals(representative?.verification?.name())}"/>
             <div class="label"><g:message code="pesel.label"/></div>
 
             <eumowy:textField name="${prefix}[${seqNo}].pesel" value="${representative?.pesel}"
@@ -19,7 +19,7 @@
 
         <div class="acceptorRadioWrapper">
             <g:radio name="${prefix}[${seqNo}].verification" value="BIRTH_DATE"
-                     checked="${representative?.verification}"/>
+                     checked="${"BIRTH_DATE".equals(representative?.verification?.name())}"/>
             <label for="${prefix}[${seqNo}].birthDate"><g:message code="birth.date.label"/></label>
 
             <g:textField name="${prefix}[${seqNo}].birthDate" value="${formatDate(format: 'yyyy-MM-dd', date: representative?.birthDate)}" maxlength="10" class="date-field"/>
@@ -50,6 +50,6 @@
     <div>
         <label for="${prefix}[${seqNo}].citizenship"><g:message code="citizenship.label"/></label>
         <eumowy:textField name="${prefix}[${seqNo}].citizenship" value="${representative?.citizenship}" maxlength="30"
-                          validatable="${representative}" validateField="citizenship"/>
+                          validatable="${representative}" validateField="citizenship" readonly="${!representative?.isRepresentativeLocationAbroad()}"/>
     </div>
 </div>

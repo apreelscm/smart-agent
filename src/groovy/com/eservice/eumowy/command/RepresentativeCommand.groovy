@@ -47,7 +47,7 @@ class RepresentativeCommand implements Serializable{
         })
 
         pesel(nullable: true, shared: "number", validator: {value, cmd, errors ->
-            return AcceptorVerification.PESEL.equals(verification) ? NumberValidator.validatePesel(value, cmd, errors, "pesel") : true
+            return AcceptorVerification.PESEL.equals(cmd.verification) ? NumberValidator.validatePesel(value, cmd, errors, "pesel") : true
         })
 
         locationType(nullable: true, validator: {value, cmd, errors ->
@@ -55,8 +55,8 @@ class RepresentativeCommand implements Serializable{
                     "representative.typLokalizacji.required")
         })
         countryCode(nullable: true, maxSize: 30, validator: { value, cmd, errors ->
-            CustomValidator.validateRequired(value, errors, AcceptorVerification.COUNTRY_CODE.equals(verification),
-                    "lokalizacjaKraj", "representative.lokalizacjaKraj.required")
+            CustomValidator.validateRequired(value, errors, AcceptorVerification.COUNTRY_CODE.equals(cmd.verification),
+                    "countryCode", "representative.lokalizacjaKraj.required")
         })
 
         documentType(nullable: true, validator: {value, cmd, errors ->
@@ -65,7 +65,7 @@ class RepresentativeCommand implements Serializable{
         })
 
         documentNumber(nullable: true, maxSize: 20, shared: "alphanumeric", validator: {value, cmd, errors ->
-            CustomValidator.validateRequired(value, errors, cmd.processCommand.isPerson(),
+            CustomValidator.validateRequired(value, errors, cmd.processCommand.isPersonForm(),
                     "documentNumber", "representative.seriaNrDokumentu.required")
         })
         birthDate(nullable: true, validator: { value, cmd, errors ->

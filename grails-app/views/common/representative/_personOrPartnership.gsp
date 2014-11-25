@@ -1,6 +1,6 @@
 <%@ page import="com.eservice.eumowy.enums.options.AcceptorLocation; com.eservice.eumowy.enums.options.IdentityDocumentType" %>
 
-<div id="personData" class="acceptorAbroad ${additionalClass}">
+<div class="personData ${additionalClass}">
     <div class="acceptorDocumentTypeWrapper ${hasErrors(bean: representative, field: 'documentType', 'errorSpan')}">
         <g:hasErrors bean="${representative}" field="documentType">
             <g:eachError bean="${representative}" field="documentType">
@@ -27,7 +27,7 @@
 
         <div class="acceptorRadioWrapper">
             <g:radio name="${prefix}[${seqNo}].verification" value="PESEL"
-                     checked="${representative?.verification}"/>
+                     checked="${"PESEL".equals(representative?.verification?.name())}"/>
             <div class="label"><g:message code="pesel.label"/></div>
 
             <eumowy:textField name="${prefix}[${seqNo}].pesel" value="${representative?.pesel}"
@@ -37,12 +37,12 @@
 
         <div class="acceptorRadioWrapper">
             <g:radio name="${prefix}[${seqNo}].verification" value="COUNTRY_CODE"
-                     checked="${representative?.verification}"/>
+                     checked="${"COUNTRY_CODE".equals(representative?.verification?.name())}"/>
             <div class="label"><g:message code="country.label"/></div>
 
             <eumowy:textField name="${prefix}[${seqNo}].countryCode" value="${representative?.countryCode}"
                          maxlength="30" class="display-inline-block"
-                         validatable="${representative}" validateField="lokalizacjaKraj"/>
+                         validatable="${representative}" validateField="countryCode"/>
         </div>
     </div>
 

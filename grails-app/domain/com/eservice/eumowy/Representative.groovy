@@ -53,16 +53,16 @@ class Representative implements Serializable {
         surname column: "SURNAME"
         position column: "POSITION"
 
+        verification column: "VERIFICATION"
         pesel column: "PESEL"
+        countryCode column: "COUNTRY_CODE"
+        birthDate column: "BIRTH_DATE"
 
         locationType column: "LOCATION_TYPE"
-        pesel column: "LOCATION_PESEL"
-        countryCode column: "LOCATION_COUNTRY"
 
         documentType column: "ID_DOCUMENT_TYPE"
 
         documentNumber column: "ID_NUMBER"
-        birthDate column: "BIRTH_DATE"
         citizenship column: "CITIZENSHIP"
         address column: "ADDRESS"
 

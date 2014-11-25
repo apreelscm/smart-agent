@@ -20,9 +20,6 @@
                     <g:textArea name="poleOpisowe" maxlength ="1000" rows="3" cols="70"/>
                 </div>
 
-                <eumowy:enumRadioGroup values="${AcceptorLocation.values()}" name="akceptantLokalizacja" value="${data.akceptantLokalizacja}"
-                                       radioWrapperClass="acceptorLocationRadioWrapper" required="true"/>
-
                 <div id="representativesContainer">
                     <g:if test="${data.isRepresentativesChangedManually}">
                         <g:render template="../panels/reprezentanci" model="[hasDropdowns: false]"/>

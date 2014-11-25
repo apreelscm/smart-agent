@@ -1345,10 +1345,10 @@ class ProcessCommand implements Serializable {
     }
 
     public boolean isPersonForm() {
-        return LegalForm.valueOf(dzialalnoscForma)?.isPerson()
+        return dzialalnoscForma ? LegalForm.valueOf(dzialalnoscForma).isPerson() : null
     }
 
     public boolean isCompanyForm() {
-        return LegalForm.valueOf(dzialalnoscForma)?.isCompany()
+        return dzialalnoscForma ? LegalForm.valueOf(dzialalnoscForma).isCompany() : null
     }
 }

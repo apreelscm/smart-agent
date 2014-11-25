@@ -10,7 +10,7 @@
 
         <div class="acceptorRadioWrapper">
             <g:radio name="${prefix}[${seqNo}].verification" value="PESEL"
-                     checked="${representative?.verification}"/>
+                     checked="${"PESEL".equals(representative?.verification?.name())}"/>
             <div class="label"><g:message code="pesel.label"/></div>
 
             <eumowy:textField name="${prefix}[${seqNo}].pesel" value="${representative?.pesel}"
@@ -20,9 +20,8 @@
 
         <div class="acceptorRadioWrapper">
             <g:radio name="${prefix}[${seqNo}].verification" value="COUNTRY_CODE"
-                     checked="${representative?.verification}"/>
+                     checked="${"COUNTRY_CODE".equals(representative?.verification?.name())}"/>
             <div class="label"><g:message code="country.label"/></div>
-
             <eumowy:textField name="${prefix}[${seqNo}].countryCode" value="${representative?.countryCode}"
                               maxlength="30" class="display-inline-block"
                               validatable="${representative}" validateField="countryCode"/>

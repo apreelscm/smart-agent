@@ -2,37 +2,37 @@
 
 <g:if test="${dropdowns}">
     <div>
-        <eumowy:textField name="${prefix}[${seqNo}].tytul" value="${representative?.tytul}" readonly="readonly" class="tytulField"
-                          validatable="${representative}" validateField="tytul" />
+        <eumowy:textField name="${prefix}[${seqNo}].salutation" value="${representative?.salutation}" readonly="readonly" class="salutationField"
+                          validatable="${representative}" validateField="salutation" />
 
-        <label for="${prefix}[${seqNo}].imie"><g:message code="panel.first.name"/>:</label>
-        <eumowy:select name="${prefix}[${seqNo}].imie" from="${firstNames}" value="${representative?.imie}" class="imieField"
-                       validatable="${representative}" validateField="imie"/>
+        <label for="${prefix}[${seqNo}].name"><g:message code="panel.first.name"/>:</label>
+        <eumowy:select name="${prefix}[${seqNo}].name" from="${firstNames}" value="${representative?.name}" class="nameField"
+                       validatable="${representative}" validateField="name"/>
 
-        <label for="${prefix}[${seqNo}].nazwisko"><g:message code="panel.last.name"/>:</label>
-        <eumowy:select name="${prefix}[${seqNo}].nazwisko" from="${lastNames}" value="${representative?.nazwisko}" class="nazwiskoField"
-                       validatable="${representative}" validateField="nazwisko"/>
+        <label for="${prefix}[${seqNo}].surname"><g:message code="panel.last.name"/>:</label>
+        <eumowy:select name="${prefix}[${seqNo}].surname" from="${lastNames}" value="${representative?.surname}" class="surnameField"
+                       validatable="${representative}" validateField="surname"/>
 
-        <label for="${prefix}[${seqNo}].stanowisko"><g:message code="panel.position"/>:</label>
-        <eumowy:textField name="${prefix}[${seqNo}].stanowisko" value="${representative?.stanowisko}" readonly="readonly" class="positionField"
-                          validatable="${representative}" validateField="stanowisko"/>
+        <label for="${prefix}[${seqNo}].position"><g:message code="panel.position"/>:</label>
+        <eumowy:textField name="${prefix}[${seqNo}].position" value="${representative?.position}" readonly="readonly" class="positionField"
+                          validatable="${representative}" validateField="position"/>
     </div>
 </g:if>
 <g:else>
     <div>
-        <g:select name="${prefix}[${seqNo}].tytul" from="['Pan','Pani']" valueMessagePrefix="person.title" value="${representative?.tytul}"
-                  validatable="${representative}" validateField="tytul"/>
+        <g:select name="${prefix}[${seqNo}].salutation" from="['Pan','Pani']" valueMessagePrefix="person.title" value="${representative?.salutation}"
+                  validatable="${representative}" validateField="salutation"/>
 
-        <label for="${prefix}[${seqNo}].imie"><g:message code="panel.first.name"/>:</label>
-        <eumowy:textField name="${prefix}[${seqNo}].imie" value="${representative?.imie}" maxlength ="13"
-                          validatable="${representative}" validateField="imie"/>
+        <label for="${prefix}[${seqNo}].name"><g:message code="panel.first.name"/>:</label>
+        <eumowy:textField name="${prefix}[${seqNo}].name" value="${representative?.name}" maxlength ="13"
+                          validatable="${representative}" validateField="name"/>
 
-        <label for="${prefix}[${seqNo}].nazwisko"><g:message code="panel.last.name"/>:</label>
-        <eumowy:textField name="${prefix}[${seqNo}].nazwisko" value="${representative?.nazwisko}" maxlength ="35" class="nazwiskoField"
-                          validatable="${representative}" validateField="nazwisko"/>
+        <label for="${prefix}[${seqNo}].surname"><g:message code="panel.last.name"/>:</label>
+        <eumowy:textField name="${prefix}[${seqNo}].surname" value="${representative?.surname}" maxlength ="35" class="surnameField"
+                          validatable="${representative}" validateField="surname"/>
 
-        <label for="${prefix}[${seqNo}].stanowisko"><g:message code="panel.position"/>:</label>
-        <eumowy:textField name="${prefix}[${seqNo}].stanowisko" value="${representative?.stanowisko}"
-                          validatable="${representative}" validateField="stanowisko"/>
+        <label for="${prefix}[${seqNo}].position"><g:message code="panel.position"/>:</label>
+        <eumowy:textField name="${prefix}[${seqNo}].position" value="${representative?.position}"
+                          validatable="${representative}" validateField="position"/>
     </div>
 </g:else>

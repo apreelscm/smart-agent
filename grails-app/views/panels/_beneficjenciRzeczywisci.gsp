@@ -50,7 +50,7 @@
                 <g:render template="/common/representative/basicData" model="[prefix: 'beneficiaries', seqNo: it,
                         representative: data.beneficiaries[it]]"/>
 
-                <g:render template="/common/representative/beneficiary" model="[seqNo: it,
+                <g:render template="/common/representative/beneficiary" model="[prefix: 'beneficiaries', seqNo: it,
                         representative: data.beneficiaries[it]]"/>
             </div>
         </g:each>
