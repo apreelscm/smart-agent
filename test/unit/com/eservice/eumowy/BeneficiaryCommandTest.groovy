@@ -33,7 +33,7 @@ class BeneficiaryCommandTest extends ControllerUnitTestMixin {
         command.validate()
 
         //then
-        assertEquals(command.errors['posiadaAkceptanta'].code, "atleast.one.relation.required")
+        assertEquals(command.errors['ownsAcceptor'].code, "atleast.one.relation.required")
     }
 
     @Test
@@ -46,7 +46,7 @@ class BeneficiaryCommandTest extends ControllerUnitTestMixin {
         command.validate()
 
         //then
-        assertNull(command.errors['posiadaAkceptanta'])
+        assertNull(command.errors['ownsAcceptor'])
     }
 
     @Test
@@ -59,7 +59,7 @@ class BeneficiaryCommandTest extends ControllerUnitTestMixin {
         command.validate()
 
         //then
-        assertEquals(command.errors['procentUdzialow'].code, "beneficiary.percentOfVotes.required")
+        assertEquals(command.errors['votesPercentage'].code, "beneficiary.percentOfVotes.required")
     }
 
     @Test
@@ -72,7 +72,7 @@ class BeneficiaryCommandTest extends ControllerUnitTestMixin {
         command.validate()
 
         //then
-        assertEquals(command.errors['procentUdzialow'].code, "min.notmet")
+        assertEquals(command.errors['votesPercentage'].code, "min.notmet")
     }
 
     @Test
@@ -85,6 +85,6 @@ class BeneficiaryCommandTest extends ControllerUnitTestMixin {
         command.validate()
 
         //then
-        assertNull(command.errors['procentUdzialow'])
+        assertNull(command.errors['votesPercentage'])
     }
 }

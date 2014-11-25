@@ -150,7 +150,7 @@ class DocumentService {
 
         if(!pepSignature) return []
 
-        processInstance.representatives.findAll { AcceptorLocation.ABROAD.equals(it.typLokalizacji) && it.isRepresentative() }.each { representative ->
+        processInstance.representatives.findAll { AcceptorLocation.ABROAD.equals(it.locationType) && it.isRepresentative() }.each { representative ->
             Map pepData = new PEPdeclarationMapper(processInstance, representative).getDataForMapping()
 
             String documentName = String.format("Oswiadczenie PEP_%s.pdf", representative.id)

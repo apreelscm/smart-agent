@@ -18,7 +18,7 @@ class BeneficiariesMapperTests {
         process.processData = new HashSet<ProcessData>()
         process.representatives = new HashSet<Representative>()
 
-        representative = new Representative(typ: Representative.Type.BENEFICIARY)
+        representative = new Representative(type: Representative.Type.BENEFICIARY)
     }
 
     @Test

@@ -36,8 +36,8 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
         process.processData = new HashSet<ProcessData>()
         process.representatives = new ArrayList<Representative>()
 
-        representative = new Representative(typ: Representative.Type.REPRESENTATIVE)
-        beneficiary = new Representative(typ: Representative.Type.BENEFICIARY)
+        representative = new Representative(type: Representative.Type.REPRESENTATIVE)
+        beneficiary = new Representative(type: Representative.Type.BENEFICIARY)
         process.representatives.add(representative)
         process.representatives.add(beneficiary)
 

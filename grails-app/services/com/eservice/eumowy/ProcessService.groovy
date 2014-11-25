@@ -244,7 +244,7 @@ class ProcessService {
     }
 
     List<RepresentativeCommand> getRepresentativesCommand(Process process, Representative.Type type) {
-        List<Representative> representatives = process.representatives?.findAll {type.equals(it.typ)}?.sort {it.id}
+        List<Representative> representatives = process.representatives?.findAll {type.equals(it.type)}?.sort {it.id}
         Map representativeProperties
 
         List<RepresentativeCommand> result = []
@@ -253,16 +253,16 @@ class ProcessService {
             representativeProperties.putAll(it.properties)
             representativeProperties.put("id", it.id)
 
-            representativeProperties.remove("typ")
+            representativeProperties.remove("type")
             representativeProperties.remove("fullName")
             representativeProperties.remove("representative")
             representativeProperties.remove("beneficiary")
 
             if(Representative.Type.REPRESENTATIVE.equals(type)) {
-                representativeProperties.remove("posiadaAkceptanta")
-                representativeProperties.remove("kontrolujeAkceptanta")
-                representativeProperties.remove("znaczaceUdzialy")
-                representativeProperties.remove("procentUdzialow")
+                representativeProperties.remove("ownsAcceptor")
+                representativeProperties.remove("controlsAcceptor")
+                representativeProperties.remove("overQuarterOfVotes")
+                representativeProperties.remove("votesPercentage")
 
                 result.add(new RepresentativeCommand(representativeProperties))
             } else {
@@ -347,10 +347,10 @@ class ProcessService {
     }
 
     Map getRepresentative(Process process, Integer index) {
-        Representative representative = process.representatives.findAll{Representative.Type.REPRESENTATIVE.equals(it.typ)}[index]
+        Representative representative = process.representatives.findAll{Representative.Type.REPRESENTATIVE.equals(it.type)}[index]
 
         if(representative) {
-            return [name: representative?.imie, surname: representative?.nazwisko]
+            return [name: representative?.name, surname: representative?.surname]
         }
 
         return null
@@ -726,7 +726,7 @@ class ProcessService {
             hpc.setCbdId(Integer.valueOf(row.get("point_id").toString()))
             hpc.setName(row.get("nazwa_punktu").toString())
             hpc.setAddress(row.get("adres_posadowienia").toString())
-            hpc.setType(row.get("typ"))
+            hpc.setType(row.get("type"))
             def count = row.get("ile");
             if (count != null && count?.toString().isNumber()){
                 hpc.setTermCount(Integer.valueOf(count.toString()))
@@ -1060,7 +1060,7 @@ class ProcessService {
         representatives.each { representativeCmd ->
             Representative representative = Representative.findById(representativeCmd.properties.id)
 
-            if (representative && !representativeCmd.imie && !representativeCmd.nazwisko) {
+            if (representative && !representativeCmd.name && !representativeCmd.surname) {
                 log.info(String.format("Removing %s %s - empty name", type, representative.id))
                 process.removeFromRepresentatives(representative)
             } else {
@@ -1073,14 +1073,14 @@ class ProcessService {
     }
 
     private Representative saveRepresentative(Representative.Type type, RepresentativeCommand representativeCmd, Representative representative) {
-        if(!representative && !representativeCmd.imie && !representativeCmd.nazwisko) {
+        if(!representative && !representativeCmd.name && !representativeCmd.surname) {
             log.info("Not saving representative - empty name and surname")
             return null
         }
 
         if(!representative) {
             representative = new Representative()
-            representative.typ = type
+            representative.type = type
         }
 
         representativeCmd.properties.remove("id")

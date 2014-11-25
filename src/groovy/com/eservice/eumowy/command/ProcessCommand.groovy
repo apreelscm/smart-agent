@@ -1324,7 +1324,7 @@ class ProcessCommand implements Serializable {
     }
 
     public boolean hasAtLeastOneRepresentativeAbroad() {
-        return representatives.any {AcceptorLocation.ABROAD.name().equals(it.typLokalizacji)}
+        return representatives.any {AcceptorLocation.ABROAD.name().equals(it.locationType)}
     }
 
     public String getMessageForProperty(String property){

@@ -2,8 +2,8 @@ var $representativesContainer = jQuery("#acceptorsPanel #representativesContaine
     $representativesDropdows = jQuery("#acceptorsPanel #representativesDropdowns"),
     $representativesTextfields = jQuery("#acceptorsPanel #representativesTextfields"),
     $representativesChangedManually = jQuery("#acceptorsPanel #isRepresentativesChangedManually"),
-    $representativeTypLokalizacji = jQuery("#representativesContainer input[type=radio][name$='typLokalizacji']"),
-    $representativeDetail = jQuery("#representativesContainer input[type=radio][name$='detail']"),
+    $representativeTypLokalizacji = jQuery("#representativesContainer input[type=radio][name$='locationType']"),
+    $representativeDetail = jQuery("#representativesContainer input[type=radio][name$='verification']"),
     $acceptorsAdditionalPanels = jQuery("#acceptorsAdditionalPanels"),
     $additionalInfoSelect = jQuery("div#additionalInformationPanel select[name='dzialalnoscForma']"),
     $addAnotherAcceptorButton = jQuery("button#addAnotherAcceptor"),
@@ -56,16 +56,16 @@ function clearOtherDetail() {
 
     switch(value) {
         case 'PESEL':
-            acceptor.find("input[type=text][name$='dataUrodzenia']").val('');
-            acceptor.find("input[type=text][name$='kodKraju']").val('');
+            acceptor.find("input[type=text][name$='birthDate']").val('');
+            acceptor.find("input[type=text][name$='countryCode']").val('');
             break;
         case 'COUNTRY_CODE':
-            acceptor.find("input[type=text][name$='dataUrodzenia']").val('');
+            acceptor.find("input[type=text][name$='birthDate']").val('');
             acceptor.find("input[type=text][name$='pesel']").val('');
             break;
         case 'BIRTH_DATE':
             acceptor.find("input[type=text][name$='pesel']").val('');
-            acceptor.find("input[type=text][name$='kodKraju']").val('');
+            acceptor.find("input[type=text][name$='countryCode']").val('');
     }
 }
 
@@ -109,7 +109,7 @@ function typLokalizacjiChanged() {
     var $this = jQuery(this),
         acceptor = $this.parents("div.acceptor"),
         politicianDeclaration = acceptor.find("div.isPolitician"),
-        citizenship = acceptor.find("input[name$='obywatelstwo']"),
+        citizenship = acceptor.find("input[name$='citizenship']"),
         radios = politicianDeclaration.find("input"),
         selectedOption = this.value;
 

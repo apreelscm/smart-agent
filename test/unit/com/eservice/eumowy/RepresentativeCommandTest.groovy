@@ -51,11 +51,11 @@ class RepresentativeCommandTest extends ControllerUnitTestMixin {
         command.validate()
 
         //then
-        assertNotNull(command.errors['typLokalizacji'])
-        assertNotNull(command.errors['typDokumentu'])
-        assertNotNull(command.errors['seriaNrDokumentu'])
-        assertNotNull(command.errors['obywatelstwo'])
-        assertNotNull(command.errors['adres'])
+        assertNotNull(command.errors['locationType'])
+        assertNotNull(command.errors['documentType'])
+        assertNotNull(command.errors['documentNumber'])
+        assertNotNull(command.errors['citizenship'])
+        assertNotNull(command.errors['address'])
     }
 
     @Test
@@ -72,13 +72,13 @@ class RepresentativeCommandTest extends ControllerUnitTestMixin {
 
         //then
         assertEquals(command.errors.errorCount, 0)
-        assertNull(command.errors['typLokalizacji'])
-        assertNull(command.errors['typDokumentu'])
-        assertNull(command.errors['seriaNrDokumentu'])
-        assertNull(command.errors['obywatelstwo'])
-        assertNull(command.errors['adres'])
-        assertNull(command.errors['dataUrodzenia'])
-        assertNull(command.errors['czyStanowiskoPolityczne'])
+        assertNull(command.errors['locationType'])
+        assertNull(command.errors['documentType'])
+        assertNull(command.errors['documentNumber'])
+        assertNull(command.errors['citizenship'])
+        assertNull(command.errors['address'])
+        assertNull(command.errors['birthDate'])
+        assertNull(command.errors['isPolitician'])
         assertNull(command.errors['lokalizacjaKraj'])
     }
 
@@ -108,8 +108,8 @@ class RepresentativeCommandTest extends ControllerUnitTestMixin {
 
         //then
         assertNotNull(command.errors['lokalizacjaKraj'])
-        assertNotNull(command.errors['dataUrodzenia'])
-        assertNotNull(command.errors['czyStanowiskoPolityczne'])
+        assertNotNull(command.errors['birthDate'])
+        assertNotNull(command.errors['isPolitician'])
     }
 
     private void setProperties(Map properties) {

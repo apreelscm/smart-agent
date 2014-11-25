@@ -47,8 +47,8 @@ public class ConditionValidator {
     }
 
     public static def atLeastOneBeneficiaryOption = { value, cmd, errors ->
-        if(!value && !cmd.kontrolujeAkceptanta && !cmd.znaczaceUdzialy) {
-            errors.rejectValue("posiadaAkceptanta", "atleast.one.relation.required")
+        if(!value && !cmd.controlsAcceptor && !cmd.overQuarterOfVotes) {
+            errors.rejectValue("ownsAcceptor", "atleast.one.relation.required")
             return false
         }
         return true

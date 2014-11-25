@@ -199,7 +199,7 @@ class Process implements Serializable {
     }
 
     public List<Representative> getAllRepresentatives() {
-        return representatives.findAll{Representative.Type.REPRESENTATIVE.equals(it.typ)}
+        return representatives.findAll{Representative.Type.REPRESENTATIVE.equals(it.type)}
     }
 
     public Set<PointData> getLocalPoints() {

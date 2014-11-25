@@ -8,7 +8,7 @@ class RepresentativesValidator {
         boolean representativesHasErrors = false
 
         value.each { representativeCommand ->
-            if(representativeCommand.imie && representativeCommand.nazwisko) {
+            if(representativeCommand.name && representativeCommand.surname) {
                 representativeCommand.processCommand = cmd
                 representativeCommand.validate()
 
@@ -21,7 +21,7 @@ class RepresentativesValidator {
         if(value.size() > 0) {
             RepresentativeCommand firstRepresentative = value[0]
 
-            if(!(firstRepresentative.imie && firstRepresentative.nazwisko)) {
+            if(!(firstRepresentative.name && firstRepresentative.surname)) {
                 errors.reject(String.format("%s.atleast.one.required", prefix))
                 return false
             }

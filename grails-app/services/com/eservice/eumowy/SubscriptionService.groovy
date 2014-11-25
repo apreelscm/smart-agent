@@ -3,7 +3,7 @@ package com.eservice.eumowy
 class SubscriptionService {
 
     public Subscription getRepresentativeSubscription(Process process, Representative representative) {
-        Subscription subscription = process.subscriptions.find{it.name.equals(representative?.imie) && it.surname.equals(representative?.nazwisko)}
+        Subscription subscription = process.subscriptions.find{it.name.equals(representative?.name) && it.surname.equals(representative?.surname)}
 
         if(!subscription) {
             log.error(String.format("Cannot find subscription for representative with id: %s", representative.id))

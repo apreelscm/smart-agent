@@ -214,7 +214,7 @@ function setFieldPropertiesInDodatkoweWyposazenie(element, value, setForPosPanel
 }
 
 jQuery(function() {
-    jQuery("#representatives\\[0\\]\\.imie").attr('required', 'required');
-    jQuery("#representatives\\[0\\]\\.nazwisko").attr('required', 'required');
+    jQuery("#representatives\\[0\\]\\.name").attr('required', 'required');
+    jQuery("#representatives\\[0\\]\\.surname").attr('required', 'required');
 });
 

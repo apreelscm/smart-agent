@@ -21,27 +21,27 @@ class BeneficiariesMapper extends AbstractPdfMapper implements Mapper {
         allBeneficiaries.eachWithIndex { beneficiary, i ->
             beneficiariesData.put(getFieldName(i, "Nazwa"), [beneficiary.fullName] as String[])
             beneficiariesData.put(getFieldName(i, "LokalizacjaDane"), [getLokalizacjaDane(beneficiary)] as String[])
-            beneficiariesData.put(getFieldName(i, "Adres"), [beneficiary.adres] as String[])
-            beneficiariesData.put(getFieldName(i, "SeriaNrDokumentu"), [beneficiary.seriaNrDokumentu] as String[])
-            beneficiariesData.put(getFieldName(i, "Obywatelstwo"), [beneficiary.obywatelstwo] as String[])
-            beneficiariesData.put(getFieldName(i, "ProcentUdzialow"), [beneficiary.procentUdzialow] as String[])
+            beneficiariesData.put(getFieldName(i, "Adres"), [beneficiary.address] as String[])
+            beneficiariesData.put(getFieldName(i, "SeriaNrDokumentu"), [beneficiary.documentNumber] as String[])
+            beneficiariesData.put(getFieldName(i, "Obywatelstwo"), [beneficiary.citizenship] as String[])
+            beneficiariesData.put(getFieldName(i, "ProcentUdzialow"), [beneficiary.votesPercentage] as String[])
 
-            beneficiariesData.put(getFieldName(i, "DowOsob"), getCheckboxData(IdentityDocumentType.IDENTITY_CARD.equals(beneficiary.typDokumentu)))
-            beneficiariesData.put(getFieldName(i, "Paszport"), getCheckboxData(IdentityDocumentType.PASSPORT.equals(beneficiary.typDokumentu)))
-            beneficiariesData.put(getFieldName(i, "PosiadaAkceptanta"), getCheckboxData(beneficiary.posiadaAkceptanta))
-            beneficiariesData.put(getFieldName(i, "KontrolujeAkceptanta"), getCheckboxData(beneficiary.kontrolujeAkceptanta))
-            beneficiariesData.put(getFieldName(i, "ZnaczaceUdzialy"), getCheckboxData(beneficiary.znaczaceUdzialy))
+            beneficiariesData.put(getFieldName(i, "DowOsob"), getCheckboxData(IdentityDocumentType.IDENTITY_CARD.equals(beneficiary.documentType)))
+            beneficiariesData.put(getFieldName(i, "Paszport"), getCheckboxData(IdentityDocumentType.PASSPORT.equals(beneficiary.documentType)))
+            beneficiariesData.put(getFieldName(i, "PosiadaAkceptanta"), getCheckboxData(beneficiary.ownsAcceptor))
+            beneficiariesData.put(getFieldName(i, "KontrolujeAkceptanta"), getCheckboxData(beneficiary.controlsAcceptor))
+            beneficiariesData.put(getFieldName(i, "ZnaczaceUdzialy"), getCheckboxData(beneficiary.overQuarterOfVotes))
         }
 
         return beneficiariesData
     }
 
     private Set<Representative> getAllBeneficiaries() {
-        return process.representatives.findAll{Representative.Type.BENEFICIARY.equals(it.typ)}
+        return process.representatives.findAll{Representative.Type.BENEFICIARY.equals(it.type)}
     }
 
     public String getLokalizacjaDane(Representative beneficiary) {
-        if(IdentityDocumentType.PASSPORT.equals(beneficiary.typDokumentu)) {
+        if(IdentityDocumentType.PASSPORT.equals(beneficiary.documentType)) {
             return beneficiary.lokalizacjaKraj
         }
 

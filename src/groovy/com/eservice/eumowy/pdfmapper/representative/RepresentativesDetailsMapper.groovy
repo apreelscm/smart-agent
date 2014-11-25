@@ -5,7 +5,6 @@ import com.eservice.eumowy.enums.options.AcceptorLocation
 import com.eservice.eumowy.enums.options.IdentityDocumentType
 import com.eservice.eumowy.pdfmapper.AbstractPdfMapper
 import com.eservice.eumowy.pdfmapper.Mapper
-import org.apache.commons.lang.StringUtils
 import com.eservice.eumowy.Process
 
 
@@ -27,13 +26,13 @@ class RepresentativesDetailsMapper extends AbstractPdfMapper implements Mapper {
             representativesData.put(getFieldName(i, "LokalizacjaDane"), [getLokalizacjaDane(representative)] as String[])
 
             if(process.akceptantOsobaFizyczna) {
-                representativesData.put(getFieldName(i, "DowOsob"), getCheckboxData(IdentityDocumentType.IDENTITY_CARD.equals(representative.typDokumentu)))
-                representativesData.put(getFieldName(i, "Paszport"), getCheckboxData(IdentityDocumentType.PASSPORT.equals(representative.typDokumentu)))
-                representativesData.put(getFieldName(i, "SeriaNrDokumentu"), [representative.seriaNrDokumentu] as String[])
-                representativesData.put(getFieldName(i, "Adres"), [representative.adres] as String[])
-                representativesData.put(getFieldName(i, "Obywatelstwo"), [representative.obywatelstwo] as String[])
+                representativesData.put(getFieldName(i, "DowOsob"), getCheckboxData(IdentityDocumentType.IDENTITY_CARD.equals(representative.documentType)))
+                representativesData.put(getFieldName(i, "Paszport"), getCheckboxData(IdentityDocumentType.PASSPORT.equals(representative.documentType)))
+                representativesData.put(getFieldName(i, "SeriaNrDokumentu"), [representative.documentNumber] as String[])
+                representativesData.put(getFieldName(i, "Adres"), [representative.address] as String[])
+                representativesData.put(getFieldName(i, "Obywatelstwo"), [representative.citizenship] as String[])
             } else {
-                representativesData.put(getFieldName(i, "PozaRP"), getCheckboxData(AcceptorLocation.ABROAD.equals(representative.typLokalizacji)))
+                representativesData.put(getFieldName(i, "PozaRP"), getCheckboxData(AcceptorLocation.ABROAD.equals(representative.locationType)))
             }
         }
 
@@ -41,27 +40,23 @@ class RepresentativesDetailsMapper extends AbstractPdfMapper implements Mapper {
     }
 
     private String getPrefix() {
-        String prefix
-
         if(process.akceptantOsobaFizyczna) {
-            prefix = "osFiz_"
+            return  "osFiz_"
         } else if (process.akceptantOsobaPrawna || process.akceptantJednostkaNieposiadajacaOsobyPrawnej) {
-            prefix = "osPraw_"
+            return  "osPraw_"
         }
 
-        return prefix
+        throw new IllegalStateException("Nie wybrano prefixu")
     }
 
     public String getLokalizacjaDane(Representative representative) {
-        String peselNumber = StringUtils.isEmpty(representative.pesel) ? representative.lokalizacjaPesel : representative.pesel
-
-        if(IdentityDocumentType.PASSPORT.equals(representative.typDokumentu)) {
-            return representative.lokalizacjaKraj
-        } else if (IdentityDocumentType.IDENTITY_CARD.equals(representative.typDokumentu)) {
-            return peselNumber
+        if(IdentityDocumentType.PASSPORT.equals(representative.documentType)) {
+            return representative.countryCode
+        } else if (IdentityDocumentType.IDENTITY_CARD.equals(representative.documentType)) {
+            return representative.pesel
         }
 
-        return peselNumber ?: representative.dataUrodzenia
+        return representative.pesel ?: representative.birthDate
     }
 
     private String getFieldName(Integer index, String fieldName) {

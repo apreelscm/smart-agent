@@ -6,19 +6,21 @@ import grails.validation.Validateable
 
 @Validateable(nullable = true)
 class BeneficiaryCommand extends RepresentativeCommand implements Serializable {
-    Boolean posiadaAkceptanta
-    Boolean kontrolujeAkceptanta
+    Boolean ownsAcceptor
+    Boolean controlsAcceptor
 
-    Boolean znaczaceUdzialy
-    Integer procentUdzialow
+    Boolean overQuarterOfVotes
+    Integer votesPercentage
 
     static constraints = {
         importFrom RepresentativeCommand
 
-        posiadaAkceptanta(nullable: true, validator: ConditionValidator.atLeastOneBeneficiaryOption)
+        documentNumber(nullable: false, maxSize: 20, shared: "alphanumeric")
 
-        procentUdzialow(nullable: true, min: 26, shared: "percentage", validator: {value, cmd, errors ->
-            CustomValidator.validateRequired(value, errors, cmd.znaczaceUdzialy, "procentUdzialow", "beneficiary.percentOfVotes.required")
+        ownsAcceptor(nullable: true, validator: ConditionValidator.atLeastOneBeneficiaryOption)
+
+        votesPercentage(nullable: true, min: 26, shared: "percentage", validator: {value, cmd, errors ->
+            CustomValidator.validateRequired(value, errors, cmd.overQuarterOfVotes, "votesPercentage", "beneficiary.percentOfVotes.required")
         })
     }
 }

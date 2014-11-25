@@ -17,7 +17,7 @@ class PEPdeclarationMapperTest {
         process.processData = new HashSet<ProcessData>()
         process.representatives = new ArrayList<Representative>()
 
-        representative = new Representative(typ: Representative.Type.REPRESENTATIVE)
+        representative = new Representative(type: Representative.Type.REPRESENTATIVE)
     }
 
     @Test

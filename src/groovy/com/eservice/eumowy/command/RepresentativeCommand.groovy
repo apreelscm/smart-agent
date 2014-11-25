@@ -2,10 +2,9 @@ package com.eservice.eumowy.command
 
 import com.eservice.eumowy.enums.IdentityDocumentType
 import com.eservice.eumowy.enums.AcceptorLocation
-import com.eservice.eumowy.enums.options.AcceptorDetail
 import com.eservice.eumowy.enums.options.AcceptorLocation
+import com.eservice.eumowy.enums.options.AcceptorVerification
 import com.eservice.eumowy.enums.options.IdentityDocumentType
-import com.eservice.eumowy.enums.options.LegalForm
 import com.eservice.eumowy.validator.CustomValidator
 import com.eservice.eumowy.validator.NumberValidator
 import grails.validation.Validateable
@@ -16,79 +15,79 @@ class RepresentativeCommand implements Serializable{
 
     Long id
 
-    String tytul
-    String imie
-    String nazwisko
-    String stanowisko
+    String salutation
+    String name
+    String surname
+    String position
 
-    AcceptorDetail detail
+    AcceptorVerification verification
     String pesel
-    String kodKraju
-    Date dataUrodzenia
+    String countryCode
+    Date birthDate
 
-    AcceptorLocation typLokalizacji
+    AcceptorLocation locationType
 
-    IdentityDocumentType typDokumentu
+    IdentityDocumentType documentType
 
-    String seriaNrDokumentu
-    String obywatelstwo
-    String adres
+    String documentNumber
+    String citizenship
+    String address
 
-    Boolean czyStanowiskoPolityczne
+    Boolean isPolitician
 
     static constraints = {
-        tytul(nullable: true)
-        imie(nullable: true, shared: "lettersOnly")
-        nazwisko(nullable: true, shared: "lettersOnly")
-        stanowisko(nullable: true)
+        salutation(nullable: true)
+        name(nullable: true, shared: "lettersOnly")
+        surname(nullable: true, shared: "lettersOnly")
+        position(nullable: true)
 
-        detail(nullable: true, validator: { value, cmd, errors ->
-            return CustomValidator.validateRequired(value, errors, cmd.processCommand.hasNewUmowa, "detail",
+        verification(nullable: true, validator: { value, cmd, errors ->
+            return CustomValidator.validateRequired(value, errors, cmd.processCommand.hasNewUmowa, "verification",
                     "representative.option.required")
         })
 
         pesel(nullable: true, shared: "number", validator: {value, cmd, errors ->
-            return AcceptorDetail.PESEL.equals(detail) ? NumberValidator.validatePesel(value, cmd, errors, "pesel") : true
+            return AcceptorVerification.PESEL.equals(verification) ? NumberValidator.validatePesel(value, cmd, errors, "pesel") : true
         })
 
-        typLokalizacji(nullable: true, validator: {value, cmd, errors ->
-            return CustomValidator.validateRequired(value, errors, cmd.processCommand.hasNewUmowa, "typLokalizacji",
+        locationType(nullable: true, validator: {value, cmd, errors ->
+            return CustomValidator.validateRequired(value, errors, cmd.processCommand.hasNewUmowa, "locationType",
                     "representative.typLokalizacji.required")
         })
-        kodKraju(nullable: true, maxSize: 30, validator: { value, cmd, errors ->
-            CustomValidator.validateRequired(value, errors, AcceptorDetail.COUNTRY_CODE.equals(detail),
+        countryCode(nullable: true, maxSize: 30, validator: { value, cmd, errors ->
+            CustomValidator.validateRequired(value, errors, AcceptorVerification.COUNTRY_CODE.equals(verification),
                     "lokalizacjaKraj", "representative.lokalizacjaKraj.required")
         })
 
-        typDokumentu(nullable: true, validator: {value, cmd, errors ->
-            CustomValidator.validateRequired(value, errors, cmd.processCommand.hasNewUmowa, "typDokumentu",
+        documentType(nullable: true, validator: {value, cmd, errors ->
+            CustomValidator.validateRequired(value, errors, cmd.processCommand.hasNewUmowa, "documentType",
                     "representative.typDokumentu.required")
         })
 
-        seriaNrDokumentu(nullable: true, maxSize: 20, shared: "alphanumeric", validator: {value, cmd, errors ->
+        documentNumber(nullable: true, maxSize: 20, shared: "alphanumeric", validator: {value, cmd, errors ->
             CustomValidator.validateRequired(value, errors, cmd.processCommand.isPerson(),
-                    "seriaNrDokumentu", "representative.seriaNrDokumentu.required")
+                    "documentNumber", "representative.seriaNrDokumentu.required")
         })
-        dataUrodzenia(nullable: true, validator: { value, cmd, errors ->
-            CustomValidator.validateRequired(value, errors, AcceptorDetail.BIRTH_DATE.equals(cmd.detail),
-                    "dataUrodzenia", "representative.dataUrodzenia.required")
+        birthDate(nullable: true, validator: { value, cmd, errors ->
+            CustomValidator.validateRequired(value, errors, AcceptorVerification.BIRTH_DATE.equals(cmd.verification),
+                    "birthDate", "representative.dataUrodzenia.required")
         })
-        obywatelstwo(nullable: true, maxSize: 30, validator: {value, cmd, errors ->
+        citizenship(nullable: true, maxSize: 30, validator: {value, cmd, errors ->
             CustomValidator.validateRequired(value, errors, cmd.processCommand.hasNewUmowa,
-                    "obywatelstwo", "representative.obywatelstwo.required")
+                    "citizenship", "representative.obywatelstwo.required")
         })
-        adres(nullable: true, maxSize: 100, validator: {value, cmd, errors ->
-            CustomValidator.validateRequired(value, errors, AcceptorLocation.COUNTRY.equals(cmd.typLokalizacji),
-                    "adres", "representative.adres.required")
+        address(nullable: true, maxSize: 100, validator: {value, cmd, errors ->
+            CustomValidator.validateRequired(value, errors, AcceptorLocation.COUNTRY.equals(cmd.locationType),
+                    "address", "representative.adres.required")
         })
 
-        czyStanowiskoPolityczne(nullable: true, validator: {value, cmd, errors ->
-            CustomValidator.validateRequired(value, errors, AcceptorLocation.ABROAD.equals(cmd.typLokalizacji),
-                    "czyStanowiskoPolityczne", "representative.czyStanowiskoPolityczne.required")
+        isPolitician(nullable: true, validator: {value, cmd, errors ->
+            CustomValidator.validateRequired(value, errors, AcceptorLocation.ABROAD.equals(cmd.locationType),
+                    "isPolitician", "representative.czyStanowiskoPolityczne.required")
         })
     }
 
     public boolean isRepresentativeLocationAbroad() {
-        return AcceptorLocation.ABROAD.equals(typLokalizacji)
+        return AcceptorLocation.ABROAD.equals(locationType)
     }
 }

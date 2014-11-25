@@ -19,7 +19,7 @@ class RepresentativesMapperTests {
         process.processData = new HashSet<ProcessData>()
         process.representatives = new HashSet<Representative>()
 
-        representative = new Representative(typ: Representative.Type.REPRESENTATIVE)
+        representative = new Representative(type: Representative.Type.REPRESENTATIVE)
     }
 
     @Test

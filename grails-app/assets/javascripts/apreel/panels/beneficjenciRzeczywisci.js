@@ -3,7 +3,7 @@ var isActualBeneficiary = jQuery("input[name='czyBeneficjentRzeczywisty']"),
     beneficiaries = actualBeneficiaryData.find(".acceptor"),
     cantEstablishSection = jQuery("#cantEstablishBeneficiary"),
     copyFromRepresentativesButton = jQuery("button#copyFromRepresentatives"),
-    beneficiariesDetails = actualBeneficiaryData.find("input[type=radio][name$='detail']"),
+    beneficiariesDetails = actualBeneficiaryData.find("input[type=radio][name$='verification']"),
     representatives;
 
 
@@ -54,7 +54,7 @@ function clearOtherBeneficiaryDetail() {
         value = this.value;
 
     if(value == 'PESEL') {
-        acceptor.find("input[type=text][name$='kodKraju']").val('');
+        acceptor.find("input[type=text][name$='countryCode']").val('');
     } else {
         acceptor.find("input[type=text][name$='pesel']").val('');
     }

@@ -1,6 +1,7 @@
 package com.eservice.eumowy
 
 import com.eservice.eumowy.enums.options.AcceptorLocation
+import com.eservice.eumowy.enums.options.AcceptorVerification
 import com.eservice.eumowy.enums.options.IdentityDocumentType
 import org.apache.commons.logging.LogFactory
 
@@ -11,29 +12,32 @@ class Representative implements Serializable {
         REPRESENTATIVE, BENEFICIARY
     }
 
-    Type typ
+    Type type
 
-    String tytul
-    String imie
-    String nazwisko
-    String stanowisko
+    String salutation
+    String name
+    String surname
+    String position
 
+    AcceptorVerification verification
     String pesel
-    String kodKraju
-    Date dataUrodzenia
+    String countryCode
+    Date birthDate
 
-    AcceptorLocation typLokalizacji
+    AcceptorLocation locationType
 
-    IdentityDocumentType typDokumentu
+    IdentityDocumentType documentType
 
-    String seriaNrDokumentu
-    String obywatelstwo
-    String adres
+    String documentNumber
+    String citizenship
+    String address
 
-    Boolean posiadaAkceptanta
-    Boolean kontrolujeAkceptanta
-    Boolean znaczaceUdzialy
-    Integer procentUdzialow
+    Boolean ownsAcceptor
+    Boolean controlsAcceptor
+    Boolean overQuarterOfVotes
+    Integer votesPercentage
+
+    Boolean isPolitician = false
 
     static belongsTo = [Process]
 
@@ -42,69 +46,72 @@ class Representative implements Serializable {
         table name: "REPRESENTATIVE", schema:DomainConsts.SHEMA_NAME
         id generator:'sequence', params:[sequence:DomainConsts.SHEMA_NAME+'.REPRESENTATIVE_SEQ']
 
-        tytul column: "SALUTATION"
-        imie column: "NAME"
-        nazwisko column: "SURNAME"
-        stanowisko column: "POSITION"
+        type column: "TYPE"
+
+        salutation column: "SALUTATION"
+        name column: "NAME"
+        surname column: "SURNAME"
+        position column: "POSITION"
 
         pesel column: "PESEL"
 
-        typLokalizacji column: "LOCATION_TYPE"
+        locationType column: "LOCATION_TYPE"
         pesel column: "LOCATION_PESEL"
-        kodKraju column: "LOCATION_COUNTRY"
+        countryCode column: "LOCATION_COUNTRY"
 
-        typDokumentu column: "ID_DOCUMENT_TYPE"
+        documentType column: "ID_DOCUMENT_TYPE"
 
-        seriaNrDokumentu column: "ID_NUMBER"
-        dataUrodzenia column: "BIRTH_DATE"
-        obywatelstwo column: "CITIZENSHIP"
-        adres column: "ADDRESS"
+        documentNumber column: "ID_NUMBER"
+        birthDate column: "BIRTH_DATE"
+        citizenship column: "CITIZENSHIP"
+        address column: "ADDRESS"
 
-        posiadaAkceptanta column: "OWNS_ACCEPTOR"
-        kontrolujeAkceptanta column: "CONTROL_ACCEPTOR"
-        znaczaceUdzialy column: "OVER_QUARTER_VOTES"
-        procentUdzialow column: "PERCENT_VOTES"
+        ownsAcceptor column: "OWNS_ACCEPTOR"
+        controlsAcceptor column: "CONTROL_ACCEPTOR"
+        overQuarterOfVotes column: "OVER_QUARTER_VOTES"
+        votesPercentage column: "PERCENT_VOTES"
 
-        typ column: "TYPE"
+        isPolitician column: "POLITICAL_POSITION"
     }
 
     static constraints = {
-       tytul(nullable: true)
-       imie(nullable: true)
-       nazwisko(nullable: true)
-       stanowisko(nullable: true)
+       salutation(nullable: true)
+       name(nullable: true)
+       surname(nullable: true)
+       position(nullable: true)
        pesel(nullable: true)
-       typLokalizacji(nullable: true)
+       locationType(nullable: true)
        pesel(nullable: true)
-       kodKraju(nullable: true)
-       typDokumentu(nullable: true)
-       seriaNrDokumentu(nullable: true)
-       dataUrodzenia(nullable: true)
-       obywatelstwo(nullable: true)
-       adres(nullable: true)
-       posiadaAkceptanta(nullable: true)
-       kontrolujeAkceptanta(nullable: true)
-       znaczaceUdzialy(nullable: true)
-       procentUdzialow(nullable: true)
+       countryCode(nullable: true)
+       documentType(nullable: true)
+       documentNumber(nullable: true)
+       birthDate(nullable: true)
+       citizenship(nullable: true)
+       address(nullable: true)
+       ownsAcceptor(nullable: true)
+       controlsAcceptor(nullable: true)
+       overQuarterOfVotes(nullable: true)
+       votesPercentage(nullable: true)
+       isPolitician(nullable: true)
     }
 
     public String getFullName() {
-        return imie + " " + nazwisko
+        return name + " " + surname
     }
 
     public boolean isRepresentative() {
-        return Type.REPRESENTATIVE.equals(typ)
+        return Type.REPRESENTATIVE.equals(type)
     }
 
     public boolean isBeneficiary() {
-        return Type.BENEFICIARY.equals(typ)
+        return Type.BENEFICIARY.equals(type)
     }
 
     def afterInsert() {
-        LOG.info(String.format("Utworzono %s - %s (id: %s)", typ, fullName, id))
+        LOG.info(String.format("Utworzono %s - %s (id: %s)", type, fullName, id))
     }
 
     def afterUpdate() {
-        LOG.info(String.format("Zaktualizowano %s - %s (id: %s)", typ, fullName, id))
+        LOG.info(String.format("Zaktualizowano %s - %s (id: %s)", type, fullName, id))
     }
 }
