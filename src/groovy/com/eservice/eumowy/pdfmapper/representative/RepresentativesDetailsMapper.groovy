@@ -50,13 +50,7 @@ class RepresentativesDetailsMapper extends AbstractPdfMapper implements Mapper {
     }
 
     public String getLokalizacjaDane(Representative representative) {
-        if(IdentityDocumentType.PASSPORT.equals(representative.documentType)) {
-            return representative.countryCode
-        } else if (IdentityDocumentType.IDENTITY_CARD.equals(representative.documentType)) {
-            return representative.pesel
-        }
-
-        return representative.pesel ?: representative.birthDate
+        return representative.pesel
     }
 
     private String getFieldName(Integer index, String fieldName) {

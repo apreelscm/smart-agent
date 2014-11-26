@@ -41,11 +41,7 @@ class BeneficiariesMapper extends AbstractPdfMapper implements Mapper {
     }
 
     public String getLokalizacjaDane(Representative beneficiary) {
-        if(IdentityDocumentType.PASSPORT.equals(beneficiary.documentType)) {
-            return beneficiary.lokalizacjaKraj
-        }
-
-        return beneficiary.lokalizacjaPesel
+        return beneficiary.pesel
     }
 
     private String getFieldName(Integer index, String fieldName) {

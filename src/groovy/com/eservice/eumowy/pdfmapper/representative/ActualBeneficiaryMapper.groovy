@@ -18,7 +18,6 @@ class ActualBeneficiaryMapper extends AbstractPdfMapper implements Mapper {
         actualBeneficiaryData.put("nazwaGieldy", [process.getData("nazwaGieldy")] as String[])
         actualBeneficiaryData.put("isinAkceptanta", [process.getData("isinAkceptanta")] as String[])
 
-
         actualBeneficiaryData.put("akceptantJestSpolka", getCheckboxData(process.getBooleanData("akceptantJestSpolka")))
         actualBeneficiaryData.put("akceptantJestPodmiotem", getCheckboxData(process.getBooleanData("akceptantJestPodmiotem")))
         actualBeneficiaryData.put("akceptantJestOrganem", getCheckboxData(process.getBooleanData("akceptantJestOrganem")))
