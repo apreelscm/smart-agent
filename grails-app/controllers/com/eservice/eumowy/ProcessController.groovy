@@ -325,7 +325,7 @@ class ProcessController {
 
         processInstance.notesFromZrd = params.notesFromZrd
 
-        if(!processInstance.save()) {
+        if(!processInstance.save(flush: true)) {
             flash.error = processInstance.errors.getFieldError().defaultMessage
             redirect(action: "show", params: params)
             return
