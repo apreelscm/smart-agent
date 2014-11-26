@@ -34,7 +34,7 @@ class EumowyFieldTagLib {
             def isError = attrs.class.contains("error")
             if(isError){
 
-                def message = attrs.errorMessage ?: message(error:cmd.errors.getFieldError(validateField));
+                def message = attrs.getErrorMessageCode ?: message(error:cmd.errors.getFieldError(validateField));
                 def icon = asset.assetPath(src: "skin/exclamation.png")
 
                 def imgBody = """<img src="${icon}" class="errorNotification" data-message="${message}"/>"""

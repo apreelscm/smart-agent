@@ -1,0 +1,2 @@
+--minimum 1 OUT i 1 POS ze statusem "aktywny", "kompletny", "rejestrowany"
+select m.kln_mid from cbt_klienci m where m.kln_mid = :mid and exists (select 1 from cbt_klienci o, cbt_terminale_pos where o.kln_kln_id = m.kln_id and o.kln_id = tps_kln_id and tps_status in ('A','R') and o.kln_status in ('Q','R','K'));

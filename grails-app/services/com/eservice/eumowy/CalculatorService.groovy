@@ -1,6 +1,8 @@
 package com.eservice.eumowy
 
 import com.eservice.eumowy.exception.CalculatorException
+import com.eservice.eumowy.validator.cbd.ProcessCBDValidator
+import com.eservice.eumowy.validator.cbd.Validator
 
 class CalculatorService implements Serializable {
 
@@ -84,10 +86,10 @@ class CalculatorService implements Serializable {
             throw new CalculatorException("calc.fetch.error")
         }
 
-        ActivitiesRequirements requirements = new ActivitiesRequirements(process, calc)
+        ProcessCBDValidator processCBDValidator = new ProcessCBDValidator(process, calc)
 
-        if(requirements.invalid) {
-            throw new CalculatorException(requirements.errorMessage)
+        if(!processCBDValidator.isValid()) {
+            throw new CalculatorException(processCBDValidator.getErrorCode())
         }
 
         return calc
