@@ -4,23 +4,22 @@ import com.eservice.eumowy.CbdService
 import com.eservice.eumowy.Process
 import grails.util.Holders
 
-
-final class MIDValidator extends Validator {
-    private final CbdService cbdService
+final class PKOBPtrilateralValidator extends Validator{
     private final Process process
+    private final CbdService cbdService
 
-    public MIDValidator(Process process) {
+    public PKOBPtrilateralValidator(Process process) {
         this.process = process
         cbdService = Holders.grailsApplication.mainContext.getBean("cbdService")
     }
 
     @Override
     protected boolean isValid() {
-        return cbdService.isMidCorrect(process.client.mid)
+        return false  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
     protected String getErrorMessageCode() {
-        return "client.mid.incorrect"
+        return null  //To change body of implemented methods use File | Settings | File Templates.
     }
 }

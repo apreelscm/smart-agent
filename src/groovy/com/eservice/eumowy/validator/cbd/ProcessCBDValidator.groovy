@@ -19,7 +19,8 @@ final class ProcessCBDValidator {
 
     private Validator createValidatorsChain() {
         return new DccValidator(process, calc).
-            addNext(new CashbackValidator(process, calc))
+            addNext(new CashbackValidator(process, calc)).
+            addNext(new MIDValidator(process))
     }
 
     public boolean isValid() {

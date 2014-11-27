@@ -12,41 +12,42 @@ class CbdService {
 
     CbdDAO cbdDAO
 
-    private static final def FIND_CLIENT_ID_BY_NIP = "findClientIdByNip"
-    private static final def FIND_CALC_ID_BY_NIP = "findCalcIdByNip"
-    private static final def FIND_CALC_BY_NIP = "findCalcByNip"
-    private static final def GET_ADRES_DANE_DO_WYDRUKU = "getAdresDaneDoWydruku"
-    private static final def GET_ADRES_DO_KORESPONDENCJI = "getAdresDoKorespondencji"
-    private static final def GET_ADRES_DO_KORESPONDENCJIZ_AKCEPTANTEM = "getAdresDoKorespondencjizAkceptantem"
-    private static final def GET_SIEDZIBA_AKCEPTANTA = "getSiedzibaAkceptanta"
-    private static final def GET_DANE_AKCEPTANTA = "getDaneAkceptanta"
-    private static final def GET_NAZWA_BANKU = "getNazwaBanku"
-    private static final def GET_MIASTO = "getMiastoComboBox"
-    private static final def GET_NUMER_RACHUNKU_BANKOWEGO = "getNumerRachunkuBankowego"
-    private static final def GET_OSOBA1_UPRAWNIONA_DO_PODPISANIA_UMOWY = "getOsoba1UprawnionaDoPodpisaniaUmowy"
-    private static final def GET_OSOBA2_UPRAWNIONA_DO_PODPISANIA_UMOWY = "getOsoba2UprawnionaDoPodpisaniaUmowy"
-    private static final def GET_OSOBA_DO_KONTAKTU = "getOsobaDoKontaktu"
-    private static final def GET_OSOBA_KTORA_POZYSKALA_AKCEPTANTA = "getOsobaKtoraPozyskalaAkceptanta"
-    private static final def GET_PROMOCYJNE_OBINZENIE_OPLAT_GRID = "getPromocyjneObinzenieOplatGrid"
-    private static final def GET_WYKAZ_PUNKTOW_GRID = "getWykazPunktowGrid"
-    private static final def GET_ZAKRES_URUCHOMIENIA_PUNKTY_GRID = "getZakresUruchomieniaPunktyGrid"
-    private static final def GET_RODZAJ_DZIALALNOSCI_BY_MCC = "getRodzajDzialanosciByMCC"
-    private static final def GET_ANEKS_DO_UMOWY_NAJMU_ZESTAWU_POS = "getAneksDoUmowyNajmuZestawuPos"
-    private static final def GET_ANEKS_DO_UMOWY_PREPAID = "getAneksDoUmowyPrepaid"
-    private static final def GET_KALKULATOR_TYP_URZADZEN = "getKalkulatorTypUrzadzen"
-    private static final def GET_CBD_POINT_BY_ID = "getCbdPointById"
-    private static final def SPRAWDZ_DZIALANIE = "sprawdzDzialanie"
-    private static final def GET_NUMER_SPRZEDAZOWY = "getNumerSprzedazowy"
-    private static final def CZY_GIFT = "czyGift"
-    private static final def GET_TERMINAL_PRICES_AND_COUNTS = "getTerminalPriceAndCountByNip"
-    private static final def GET_HIRE_PAYMENT_BY_POINT = "getHirePaymentByPoint"
-    private static final def GET_HIRE_PAYMENT_BY_POS = "getHirePaymentByPos"
-    private static final def GET_HIRE_PAYMENT_BY_PROCESS = "getHirePaymentByProcess"
-    private static final def GET_PREPAID_EVOUCHER = "getPrepaidEvoucher"
-    private static final def GET_PREPAID_TOPUP = "getPrepaidTopup"
-    private static final def GET_OPIEKA_SERWISOWA_I = "getOpiekaSerwisowa1"
-    private static final def GET_OPIEKA_SERWISOWA_II = "getOpiekaSerwisowa2"
-    private static final def MIN_CENA_NAJMU = "minCenaNajmu"
+    private static final String FIND_CLIENT_ID_BY_NIP = "findClientIdByNip"
+    private static final String FIND_CALC_ID_BY_NIP = "findCalcIdByNip"
+    private static final String FIND_CALC_BY_NIP = "findCalcByNip"
+    private static final String GET_ADRES_DANE_DO_WYDRUKU = "getAdresDaneDoWydruku"
+    private static final String GET_ADRES_DO_KORESPONDENCJI = "getAdresDoKorespondencji"
+    private static final String GET_ADRES_DO_KORESPONDENCJIZ_AKCEPTANTEM = "getAdresDoKorespondencjizAkceptantem"
+    private static final String GET_SIEDZIBA_AKCEPTANTA = "getSiedzibaAkceptanta"
+    private static final String GET_DANE_AKCEPTANTA = "getDaneAkceptanta"
+    private static final String GET_NAZWA_BANKU = "getNazwaBanku"
+    private static final String GET_MIASTO = "getMiastoComboBox"
+    private static final String GET_NUMER_RACHUNKU_BANKOWEGO = "getNumerRachunkuBankowego"
+    private static final String GET_OSOBA1_UPRAWNIONA_DO_PODPISANIA_UMOWY = "getOsoba1UprawnionaDoPodpisaniaUmowy"
+    private static final String GET_OSOBA2_UPRAWNIONA_DO_PODPISANIA_UMOWY = "getOsoba2UprawnionaDoPodpisaniaUmowy"
+    private static final String GET_OSOBA_DO_KONTAKTU = "getOsobaDoKontaktu"
+    private static final String GET_OSOBA_KTORA_POZYSKALA_AKCEPTANTA = "getOsobaKtoraPozyskalaAkceptanta"
+    private static final String GET_PROMOCYJNE_OBINZENIE_OPLAT_GRID = "getPromocyjneObinzenieOplatGrid"
+    private static final String GET_WYKAZ_PUNKTOW_GRID = "getWykazPunktowGrid"
+    private static final String GET_ZAKRES_URUCHOMIENIA_PUNKTY_GRID = "getZakresUruchomieniaPunktyGrid"
+    private static final String GET_RODZAJ_DZIALALNOSCI_BY_MCC = "getRodzajDzialanosciByMCC"
+    private static final String GET_ANEKS_DO_UMOWY_NAJMU_ZESTAWU_POS = "getAneksDoUmowyNajmuZestawuPos"
+    private static final String GET_ANEKS_DO_UMOWY_PREPAID = "getAneksDoUmowyPrepaid"
+    private static final String GET_KALKULATOR_TYP_URZADZEN = "getKalkulatorTypUrzadzen"
+    private static final String GET_CBD_POINT_BY_ID = "getCbdPointById"
+    private static final String SPRAWDZ_DZIALANIE = "sprawdzDzialanie"
+    private static final String GET_NUMER_SPRZEDAZOWY = "getNumerSprzedazowy"
+    private static final String CZY_GIFT = "czyGift"
+    private static final String GET_TERMINAL_PRICES_AND_COUNTS = "getTerminalPriceAndCountByNip"
+    private static final String GET_HIRE_PAYMENT_BY_POINT = "getHirePaymentByPoint"
+    private static final String GET_HIRE_PAYMENT_BY_POS = "getHirePaymentByPos"
+    private static final String GET_HIRE_PAYMENT_BY_PROCESS = "getHirePaymentByProcess"
+    private static final String GET_PREPAID_EVOUCHER = "getPrepaidEvoucher"
+    private static final String GET_PREPAID_TOPUP = "getPrepaidTopup"
+    private static final String GET_OPIEKA_SERWISOWA_I = "getOpiekaSerwisowa1"
+    private static final String GET_OPIEKA_SERWISOWA_II = "getOpiekaSerwisowa2"
+    private static final String MIN_CENA_NAJMU = "minCenaNajmu"
+    private static final String CZY_POPRAWNY_MID = "czyPoprawnyMid"
 
     def logggger = Logger.getLogger("calcAppender")
 
@@ -289,6 +290,13 @@ class CbdService {
     BigDecimal getMinRentPrice(def nip) {
         GroovyRowResult cena = cbdDAO.selectOne(MIN_CENA_NAJMU, [nip: nip])
         return cena ? cena[0] : BigDecimal.ZERO
+    }
+
+    @Cacheable(value="eumowyCacheShort", key = "'czyPoprawnyMid_'.concat(#mid)")
+    @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
+    boolean isMidCorrect(String mid) {
+        GroovyRowResult midNumber = cbdDAO.selectOne(CZY_POPRAWNY_MID, [mid: mid])
+        return !midNumber.isEmpty()
     }
 
     @CacheEvict(value=["eumowyCacheShort","eumowyCacheLong"], allEntries=true)

@@ -1,26 +1,26 @@
 package com.eservice.eumowy.validator.cbd
 
 import com.eservice.eumowy.CbdService
-import com.eservice.eumowy.Process
 import grails.util.Holders
+import com.eservice.eumowy.Process
 
 
-final class MIDValidator extends Validator {
+final class PKOBPbilateralValidator extends Validator {
     private final CbdService cbdService
     private final Process process
 
-    public MIDValidator(Process process) {
+    public PKOBPbilateralValidator(Process process) {
         this.process = process
         cbdService = Holders.grailsApplication.mainContext.getBean("cbdService")
     }
 
     @Override
     protected boolean isValid() {
-        return cbdService.isMidCorrect(process.client.mid)
+        return false  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
     protected String getErrorMessageCode() {
-        return "client.mid.incorrect"
+        return null  //To change body of implemented methods use File | Settings | File Templates.
     }
 }
