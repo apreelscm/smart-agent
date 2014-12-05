@@ -14,11 +14,20 @@ final class DccValidator extends ActivityValidator {
 
     @Override
     protected boolean isValid() {
-        return hasCalcProperty("S_DCC", "TAK") && !ActivityHelper.hasAtLeastOne(process, ["dodanieDcc", "zmianaWarunkowDcc"])
+        if(hasCalcProperty("S_DCC", "TAK")) {
+            return ActivityHelper.hasAtLeastOne(process, ["dodanieDcc", "zmianaWarunkowDcc"])
+        }
+
+        return true
     }
 
     @Override
     protected String getErrorMessageCode() {
         return "dcc.activity.required"
+    }
+
+    //TODO: korzystac z hasCalcProperty z AcitivyValidatora
+    protected boolean hasCalcProperty(String key, String value){
+        return calc?.contains([POLEAPREEL:key, WARTOSCAPREEL:value])
     }
 }

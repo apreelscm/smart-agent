@@ -15,11 +15,20 @@ final class CashbackValidator extends ActivityValidator {
 
     @Override
     protected boolean isValid() {
-        return hasCalcProperty("CASHBACK_A", "TAK") && !ActivityHelper.hasAtLeastOne(process, ["dodanieCashBack", "zmianaWarunkowCashback"])
+        if(hasCalcProperty("CASHBACK_A", "TAK")) {
+            return ActivityHelper.hasAtLeastOne(process, ["dodanieCashBack", "zmianaWarunkowCashback"])
+        }
+
+        return true
     }
 
     @Override
     protected String getErrorMessageCode() {
         return "cashback.activity.required"
+    }
+
+    //TODO: korzystac z hasCalcProperty z AcitivyValidatora
+    protected boolean hasCalcProperty(String key, String value){
+        return calc?.contains([POLEAPREEL:key, WARTOSCAPREEL:value])
     }
 }
