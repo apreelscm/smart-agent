@@ -4,16 +4,19 @@ var isActualBeneficiary = jQuery("input[name='czyBeneficjentRzeczywisty']"),
     cantEstablishSection = jQuery("#cantEstablishBeneficiary"),
     copyFromRepresentativesButton = jQuery("button#copyFromRepresentatives"),
     beneficiariesDetails = actualBeneficiaryData.find("input[type=radio][name$='verification']"),
+    addBeneficiaryButton = jQuery("#addAnotherBeneficiary"),
     representatives;
 
 
 jQuery(function() {
     actualBeneficiaryData.find(".date-field").datepicker({dateFormat: 'yy-mm-dd', maxDate: new Date()});
     actualBeneficiaryData.find(".percent-short").mask('09');
+    disableHiddenBeneficiaryFields();
 });
 
 isActualBeneficiary.change(toggleBeneficiariesPanelsVisibility);
 copyFromRepresentativesButton.click(copyRepresentativesData);
+addBeneficiaryButton.click(showAnotherBeneficiary);
 beneficiariesDetails.change(clearOtherBeneficiaryDetail);
 
 function toggleBeneficiariesPanelsVisibility() {
@@ -46,6 +49,20 @@ function copyRepresentativesData() {
     });
 
     this.disabled = true;
+}
+
+function showAnotherBeneficiary() {
+    var beneficiary = actualBeneficiaryData.find('div.acceptor.hidden').first();
+
+    if(beneficiary.length === 0) {
+        jQuery(this).attr('disabled', 'disabled');
+        return false;
+    }
+
+    beneficiary.removeClass('hidden');
+    enableFields(beneficiary);
+
+    return false;
 }
 
 function clearOtherBeneficiaryDetail() {
@@ -91,4 +108,8 @@ function setBeneficiaryFieldValue(beneficiaryIndex, representativeField) {
                 :
                 beneficiaryField.removeAttr("checked");
     }
+}
+
+function disableHiddenBeneficiaryFields() {
+    disableFields(actualBeneficiaryData.find('div.acceptor.hidden'));
 }

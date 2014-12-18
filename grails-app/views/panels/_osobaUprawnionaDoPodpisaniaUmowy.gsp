@@ -66,7 +66,7 @@
         var representatives = {};
 
         <g:each in="${representativesBisnode}" var="representative" status="i">
-        representatives[${i}] = {title: '${representative.title}', fistName: '${representative.firstName}', lastName: '${representative.lastName}', position: '${representative.position}'};
+            representatives[${i}] = {title: '${representative.title}', fistName: '${representative.firstName}', lastName: '${representative.lastName}', position: '${representative.position}'};
         </g:each>
 
         jQuery(".imieField, .nazwiskoField").change(function() {

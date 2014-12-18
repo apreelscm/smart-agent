@@ -64,7 +64,7 @@ grails.project.dependency.resolution = {
 
         compile ":scaffolding:2.1.1"
         compile ":cache:1.1.7"
-        compile ":asset-pipeline:1.9.9"
+        compile ":asset-pipeline:2.0.19"
         compile ":mail:1.0.6"
         compile ":quartz:1.0.1"
         compile ":build-info-tag:0.3.1"

@@ -9,7 +9,7 @@
 
         <div class="acceptorRadioWrapper">
             <g:radio name="${prefix}[${seqNo}].verification" value="PESEL"
-                     checked="${"PESEL".equals(representative?.verification?.name())}"/>
+                     checked="${data.isCompanyForm() && "PESEL".equals(representative?.verification?.name())}"/>
             <div class="label"><g:message code="pesel.label"/></div>
 
             <eumowy:textField name="${prefix}[${seqNo}].pesel" value="${representative?.pesel}"
@@ -19,7 +19,7 @@
 
         <div class="acceptorRadioWrapper">
             <g:radio name="${prefix}[${seqNo}].verification" value="BIRTH_DATE"
-                     checked="${"BIRTH_DATE".equals(representative?.verification?.name())}"/>
+                     checked="${data.isCompanyForm() && "BIRTH_DATE".equals(representative?.verification?.name())}"/>
             <label for="${prefix}[${seqNo}].birthDate"><g:message code="birth.date.label"/></label>
 
             <g:textField name="${prefix}[${seqNo}].birthDate" value="${formatDate(format: 'yyyy-MM-dd', date: representative?.birthDate)}" maxlength="10" class="date-field"/>
@@ -27,12 +27,14 @@
     </div>
 
     <div>
-        <eumowy:enumRadioGroup values="${AcceptorLocation.values()}" name="${prefix}[${seqNo}].locationType" value="${representative?.locationType}"
+        <eumowy:enumRadioGroup values="${AcceptorLocation.values()}" name="${prefix}[${seqNo}].locationType"
+                               value="${data.isPersonForm() ?: representative?.locationType}"
                                radioWrapperClass="acceptorLocationRadioWrapper"/>
     </div>
 
     <div class="isPolitician ${representative?.isRepresentativeLocationAbroad() ?: 'hidden'}">
-        <g:radioGroup values="[true, false]" name="${prefix}[${seqNo}].isPolitician" value="${representative?.isPolitician}"
+        <g:radioGroup values="[true, false]" name="${prefix}[${seqNo}].isPolitician"
+                      value="${data.isPersonForm() ?: representative?.isPolitician}"
                       labels="['i.am', 'i.am.not']">
             <div class="acceptorRadioWrapper">
                 ${it.radio}

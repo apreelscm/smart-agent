@@ -12,7 +12,7 @@ abstract class Validator {
     public Validator addNext(Validator validator) {
         next = validator
 
-        return validator
+        return this
     }
 
     public final String getValidationErrorCode() {

@@ -9,7 +9,8 @@
         </g:hasErrors>
 
         <eumowy:enumRadioGroup values="${IdentityDocumentType.values()}" name="${prefix}[${seqNo}].documentType"
-                               radioWrapperClass="inlineRadioWrapper display-inline-block" value="${representative?.documentType}"/>
+                               radioWrapperClass="inlineRadioWrapper display-inline-block"
+                               value="${data.isCompanyForm() ?: representative?.documentType}"/>
     </div>
 
     <div>
@@ -27,7 +28,7 @@
 
         <div class="acceptorRadioWrapper">
             <g:radio name="${prefix}[${seqNo}].verification" value="PESEL"
-                     checked="${"PESEL".equals(representative?.verification?.name())}"/>
+                     checked="${data.isPersonForm() && "PESEL".equals(representative?.verification?.name())}"/>
             <div class="label"><g:message code="pesel.label"/></div>
 
             <eumowy:textField name="${prefix}[${seqNo}].pesel" value="${representative?.pesel}"
@@ -37,7 +38,7 @@
 
         <div class="acceptorRadioWrapper">
             <g:radio name="${prefix}[${seqNo}].verification" value="COUNTRY_CODE"
-                     checked="${"COUNTRY_CODE".equals(representative?.verification?.name())}"/>
+                     checked="${data.isPersonForm() && "COUNTRY_CODE".equals(representative?.verification?.name())}"/>
             <div class="label"><g:message code="country.label"/></div>
 
             <eumowy:textField name="${prefix}[${seqNo}].countryCode" value="${representative?.countryCode}"
@@ -47,12 +48,13 @@
     </div>
 
     <div>
-        <eumowy:enumRadioGroup values="${AcceptorLocation.values()}" name="${prefix}[${seqNo}].locationType" value="${representative?.locationType}"
+        <eumowy:enumRadioGroup values="${AcceptorLocation.values()}" name="${prefix}[${seqNo}].locationType"
+                               value="${data.isCompanyForm() ?: representative?.locationType}"
                                radioWrapperClass="acceptorLocationRadioWrapper"/>
     </div>
 
     <div class="isPolitician ${representative?.isRepresentativeLocationAbroad() ?: 'hidden'}">
-        <g:radioGroup values="[true, false]" name="${prefix}[${seqNo}].isPolitician" value="${representative?.isPolitician}"
+        <g:radioGroup values="[true, false]" name="${prefix}[${seqNo}].isPolitician" value="${data.isCompanyForm() ?: representative?.isPolitician}"
                       labels="['i.am', 'i.am.not']">
             <div class="acceptorRadioWrapper">
                 ${it.radio}
