@@ -3,7 +3,13 @@
 <div id="additionalInformationPanel">
     <fieldset>
         <div class="belka-glowna"><g:message code="panel.additional.information.title"/> </div>
-            <div class="centre" style="text-align: center; padding-top: 20px; width: 750px">
+            <div class="centre ${hasErrors(bean: data, field: 'dzialalnoscForma', 'errorSpan')}" style="text-align: center; padding-top: 20px; width: 750px">
+                <g:hasErrors bean="${data}" field="dzialalnoscForma">
+                    <g:eachError bean="${data}" field="dzialalnoscForma">
+                        <p class="error-message"><g:message error="${it}"/></p>
+                    </g:eachError>
+                </g:hasErrors>
+
                 <ul class="table-list centre">
                     <li>
                         <span class="align-left"><g:message code="panel.legal.form"/></span>

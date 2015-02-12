@@ -1,10 +1,8 @@
 <%@ page import="com.eservice.eumowy.enums.options.AcceptorLocation" %>
 <div class="companyData ${additionalClass}">
-    <div class="acceptorPESELCountryWrapper ${hasErrors(bean: representative, field: 'locationType', 'errorSpan')}">
-        <g:hasErrors bean="${representative}" field="locationType">
-            <g:eachError bean="${representative}" field="locationType">
-                <p class="error-message"><g:message error="${it}"/></p>
-            </g:eachError>
+    <div class="acceptorPESELCountryWrapper ${hasErrors(bean: representative, field: 'verification', 'errorSpan')}">
+        <g:hasErrors bean="${representative}" field="verification">
+            <p class="error-message"><g:message code="representative.option.required"/></p>
         </g:hasErrors>
 
         <div class="acceptorRadioWrapper">
@@ -26,13 +24,21 @@
         </div>
     </div>
 
-    <div>
+    <div class="${hasErrors(bean: representative, field: 'locationType', 'errorSpan')}">
+        <g:hasErrors bean="${representative}" field="locationType">
+            <p class="error-message"><g:message code="representative.option.required"/></p>
+        </g:hasErrors>
+
         <eumowy:enumRadioGroup values="${AcceptorLocation.values()}" name="${prefix}[${seqNo}].locationType"
                                value="${data.isPersonForm() ?: representative?.locationType}"
                                radioWrapperClass="acceptorLocationRadioWrapper"/>
     </div>
 
-    <div class="isPolitician ${representative?.isRepresentativeLocationAbroad() ?: 'hidden'}">
+    <div class="isPolitician ${representative?.isRepresentativeLocationAbroad() ?: 'hidden'} ${hasErrors(bean: representative, field: 'isPolitician', 'errorSpan')}">
+        <g:hasErrors bean="${representative}" field="isPolitician">
+            <p class="error-message"><g:message code="representative.option.required"/></p>
+        </g:hasErrors>
+
         <g:radioGroup values="[true, false]" name="${prefix}[${seqNo}].isPolitician"
                       value="${data.isPersonForm() ?: representative?.isPolitician}"
                       labels="['i.am', 'i.am.not']">

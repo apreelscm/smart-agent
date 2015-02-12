@@ -47,13 +47,21 @@
         </div>
     </div>
 
-    <div>
+    <div class="${hasErrors(bean: representative, field: 'locationType', 'errorSpan')}">
+        <g:hasErrors bean="${representative}" field="locationType">
+            <p class="error-message"><g:message code="representative.option.required"/></p>
+        </g:hasErrors>
+
         <eumowy:enumRadioGroup values="${AcceptorLocation.values()}" name="${prefix}[${seqNo}].locationType"
                                value="${data.isCompanyForm() ?: representative?.locationType}"
                                radioWrapperClass="acceptorLocationRadioWrapper"/>
     </div>
 
-    <div class="isPolitician ${representative?.isRepresentativeLocationAbroad() ?: 'hidden'}">
+    <div class="isPolitician ${representative?.isRepresentativeLocationAbroad() ?: 'hidden'} ${hasErrors(bean: representative, field: 'isPolitician', 'errorSpan')}">
+        <g:hasErrors bean="${representative}" field="isPolitician">
+            <p class="error-message"><g:message code="representative.option.required"/></p>
+        </g:hasErrors>
+
         <g:radioGroup values="[true, false]" name="${prefix}[${seqNo}].isPolitician" value="${data.isCompanyForm() ?: representative?.isPolitician}"
                       labels="['i.am', 'i.am.not']">
             <div class="acceptorRadioWrapper">

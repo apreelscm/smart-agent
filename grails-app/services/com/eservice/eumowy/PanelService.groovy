@@ -21,6 +21,7 @@ class PanelService {
         cmd.isRozszerzenie = ActivityHelper.contains(cmd.process, 'dodatkowyPunkt') || ActivityHelper.contains(cmd.process, 'dodatkowyPos')
         cmd.hasPrepaid = cbdService.getPrepaidEvoucher(cmd.nip) || cbdService.getPrepaidTopup(cmd.nip)
         cmd.hasDodaniePrepaid = ActivityHelper.contains(cmd.process, 'dodaniePrepaid')
+        cmd.hasNewUmowa = ActivityHelper.isNewAgreement(cmd.process)
         cmd.hasNewUmowaAndPrepaid = ActivityHelper.isNewAgreement(cmd.process) && cmd.hasDodaniePrepaid
         cmd.isBundleActivity = ActivityHelper.isBundleActivity(cmd.process)
         cmd.promObjNaj1 = calculatorService.getCalcProperty(calc,"E_PROM_OBN_NAJ_1")

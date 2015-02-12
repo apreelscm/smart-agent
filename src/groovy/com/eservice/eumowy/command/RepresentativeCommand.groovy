@@ -82,7 +82,7 @@ class RepresentativeCommand implements Serializable{
         })
 
         isPolitician(nullable: true, validator: {value, cmd, errors ->
-            CustomValidator.validateRequired(value, errors, AcceptorLocation.ABROAD.equals(cmd.locationType),
+            CustomValidator.validateRequired(value != null, errors, AcceptorLocation.ABROAD.equals(cmd.locationType),
                     "isPolitician", "representative.czyStanowiskoPolityczne.required")
         })
     }
