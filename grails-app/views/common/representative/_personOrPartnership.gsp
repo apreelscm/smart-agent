@@ -10,7 +10,7 @@
 
         <eumowy:enumRadioGroup values="${IdentityDocumentType.values()}" name="${prefix}[${seqNo}].documentType"
                                radioWrapperClass="inlineRadioWrapper display-inline-block"
-                               value="${data.isCompanyForm() ?: representative?.documentType}"/>
+                               value="${data.isPersonForm() ? representative?.documentType : null}"/>
     </div>
 
     <div>
@@ -53,7 +53,7 @@
         </g:hasErrors>
 
         <eumowy:enumRadioGroup values="${AcceptorLocation.values()}" name="${prefix}[${seqNo}].locationType"
-                               value="${data.isCompanyForm() ?: representative?.locationType}"
+                               value="${data.isPersonForm() ? representative?.locationType : null}"
                                radioWrapperClass="acceptorLocationRadioWrapper"/>
     </div>
 
@@ -62,13 +62,13 @@
             <p class="error-message"><g:message code="representative.option.required"/></p>
         </g:hasErrors>
 
-        <g:radioGroup values="[true, false]" name="${prefix}[${seqNo}].isPolitician" value="${data.isCompanyForm() ?: representative?.isPolitician}"
-                      labels="['i.am', 'i.am.not']">
-            <div class="acceptorRadioWrapper">
-                ${it.radio}
-                <div class="label"><g:message code="${it.label}"/></div>
-            </div>
-        </g:radioGroup>
+        <g:radio name="${prefix}[${seqNo}].isPolitician" value="true"
+                 checked="${data.isPersonForm() && representative?.isPolitician}"/>
+        <label for="${prefix}[${seqNo}].isPolitician"><g:message code="i.am"/></label>
+
+        <g:radio name="${prefix}[${seqNo}].isPolitician" value="false"
+                 checked="${data.isPersonForm() && !representative?.isPolitician}"/>
+        <label for="${prefix}[${seqNo}].isPolitician"><g:message code="i.am.not"/></label>
     </div>
 
     <div>
