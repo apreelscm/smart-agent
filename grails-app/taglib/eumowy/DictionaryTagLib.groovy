@@ -31,6 +31,15 @@ class DictionaryTagLib {
 		fieldImpl(out, attrs)
 	}
 
+    Closure countrySelect = { attrs ->
+        attrs.from = dictionaryService.getCountries()*.value
+        if (!attrs.value && attrs.default){
+            attrs.value = attrs.default
+        }
+        attrs.from.add(0,"")
+        fieldImpl(out, attrs)
+    }
+
     Closure extendedTypeSelect = { attrs ->
         attrs.from = dictionaryService.getPosTypeComboBox(attrs.medium, attrs.type, attrs.isPINPad)*.value
         attrs.from.add(0,"")

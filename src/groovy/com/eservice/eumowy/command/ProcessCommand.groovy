@@ -1285,7 +1285,7 @@ class ProcessCommand implements Serializable {
             return RepresentativesValidator.validate(value, cmd, errors, "representatives")
         })
         beneficiaries(nullable: true, validator: {value, cmd, errors ->
-            cmd.hasAtLeastOneRepresentativeAbroad() ?
+            cmd.czyBeneficjentRzeczywisty ?
                 RepresentativesValidator.validate(value, cmd, errors, "beneficiaries") : true
         })
 
@@ -1324,7 +1324,7 @@ class ProcessCommand implements Serializable {
     }
 
     public boolean hasAtLeastOneRepresentativeAbroad() {
-        return representatives.any {AcceptorLocation.ABROAD.name().equals(it.locationType)}
+        return representatives.any {AcceptorLocation.ABROAD.name().equals(it.locationType?.name())}
     }
 
     public String getMessageForProperty(String property){

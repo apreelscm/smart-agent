@@ -28,23 +28,28 @@ class DictionaryService {
         }
     }
 
-    private static final def DICTIONARY_PATH = "dictionary/"
+    private static final String DICTIONARY_PATH = "dictionary/"
 
-    public static final def GET_ULICA_COMBOBOX = "getUlicaComboBox"
-    public static final def GET_POS_TYPE_COMBOBOX = "getPosTypeComboBox"
-    public static final def GET_EXT_POS_TYPE_COMBOBOX = "getExtendedPosTypeComboBox"
-    public static final def GET_CBD_POINTS_COMBOBOX = "getCbdPointsComboBox"
-    public static final def GET_SIM_CARD_COMBOBOX = "getSimCardComboBox"
-	public static final def GET_MCC_COMBOBOX = "getMccComboBox"
+    private static final String GET_ULICA_COMBOBOX = "getUlicaComboBox"
+    private static final String GET_POS_TYPE_COMBOBOX = "getPosTypeComboBox"
+    private static final String GET_EXT_POS_TYPE_COMBOBOX = "getExtendedPosTypeComboBox"
+    private static final String GET_CBD_POINTS_COMBOBOX = "getCbdPointsComboBox"
+    private static final String GET_SIM_CARD_COMBOBOX = "getSimCardComboBox"
+	private static final String GET_MCC_COMBOBOX = "getMccComboBox"
+    private static final String GET_COUNTRIES = "getCountries"
 
     //@Cacheable(value="getUlicaComboBox")
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_UNCOMMITTED, readOnly = true)
     def getUlicaComboBox() {
-        getFromDictionary(GET_ULICA_COMBOBOX, [])
+        getFromDictionary(GET_ULICA_COMBOBOX)
     }
 
     def getSimCardComboBox() {
-        getFromDictionary(GET_SIM_CARD_COMBOBOX, [])
+        getFromDictionary(GET_SIM_CARD_COMBOBOX)
+    }
+
+    List getCountries() {
+        getFromDictionary(GET_COUNTRIES)
     }
 
     List getPosTypeComboBox(def medium) {
@@ -88,7 +93,11 @@ class DictionaryService {
         return Lists.newArrayList(Iterables.filter(mccCodes, Predicates.notNull()))
 	}
 
-    private def getFromDictionary(def name, def params){
+    private def getFromDictionary(String name) {
+        return getFromDictionary(name, [])
+    }
+
+    private def getFromDictionary(String name, def params){
         switch (Environment.getCurrent().getName()) {
             case EumowyCustomEnvironment.MOCK.getName():
                 return []

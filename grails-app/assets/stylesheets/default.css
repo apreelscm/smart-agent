@@ -637,7 +637,7 @@ fieldset.embedded legend {
     padding: 3px 2px;
 }
 
-div.errorSpan{
+.errorSpan{
     border: 1px solid #FF0000 !important;
     padding-top: .8em;
     padding-right: .5em;

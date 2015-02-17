@@ -57,24 +57,32 @@
                                radioWrapperClass="acceptorLocationRadioWrapper"/>
     </div>
 
-    <div class="isPolitician ${representative?.isRepresentativeLocationAbroad() ?: 'hidden'} ${hasErrors(bean: representative, field: 'isPolitician', 'errorSpan')}">
-        <g:hasErrors bean="${representative}" field="isPolitician">
-            <p class="error-message"><g:message code="representative.option.required"/></p>
-        </g:hasErrors>
-
-        <g:radio name="${prefix}[${seqNo}].isPolitician" value="true"
-                 checked="${data.isPersonForm() && representative?.isPolitician}"/>
-        <label for="${prefix}[${seqNo}].isPolitician"><g:message code="i.am"/></label>
-
-        <g:radio name="${prefix}[${seqNo}].isPolitician" value="false"
-                 checked="${data.isPersonForm() && !representative?.isPolitician}"/>
-        <label for="${prefix}[${seqNo}].isPolitician"><g:message code="i.am.not"/></label>
-    </div>
-
     <div>
         <label for="${prefix}[${seqNo}].address"><g:message code="address.label"/></label>
         <eumowy:textField name="${prefix}[${seqNo}].address" value="${representative?.address}" maxlength="100" style="width: 750px"
                           validatable="${representative}" validateField="address"/>
+    </div>
+
+    <div class="${hasErrors(bean: representative, field: 'country', 'errorSpan')}">
+        <label for="${prefix}[${seqNo}].country"><g:message code="country.name.label"/></label>
+        <dict:countrySelect name="${prefix}[${seqNo}].country" value="${representative?.country}"
+                            validatable="${representative}" validateField="country"/>
+    </div>
+
+    <div class="isPolitician ${representative?.isFromPolandOrEmpty() ? 'hidden' : ''} ${hasErrors(bean: representative, field: 'isPolitician', 'errorSpan')}">
+        <g:hasErrors bean="${representative}" field="isPolitician">
+            <p class="error-message"><g:message code="representative.option.required"/></p>
+        </g:hasErrors>
+
+        <span><g:message code="is.political.position.label"/></span>
+
+        <g:radio name="${prefix}[${seqNo}].isPolitician" value="true"
+                 checked="${data.isPersonForm() && representative?.isPolitician && !representative?.isFromPolandOrEmpty()}"/>
+        <label for="${prefix}[${seqNo}].isPolitician"><g:message code="yes"/></label>
+
+        <g:radio name="${prefix}[${seqNo}].isPolitician" value="false"
+                 checked="${data.isPersonForm() && !representative?.isPolitician && !representative?.isFromPolandOrEmpty()}"/>
+        <label for="${prefix}[${seqNo}].isPolitician"><g:message code="no"/></label>
     </div>
 
     <div>

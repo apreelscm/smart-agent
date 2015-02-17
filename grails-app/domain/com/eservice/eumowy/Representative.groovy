@@ -31,6 +31,7 @@ class Representative implements Serializable {
     String documentNumber
     String citizenship
     String address
+    String country
 
     Boolean ownsAcceptor
     Boolean controlsAcceptor
@@ -65,6 +66,7 @@ class Representative implements Serializable {
         documentNumber column: "ID_NUMBER"
         citizenship column: "CITIZENSHIP"
         address column: "ADDRESS"
+        country column: "COUNTRY"
 
         ownsAcceptor column: "OWNS_ACCEPTOR"
         controlsAcceptor column: "CONTROL_ACCEPTOR"
@@ -88,6 +90,7 @@ class Representative implements Serializable {
        birthDate(nullable: true)
        citizenship(nullable: true)
        address(nullable: true)
+       country(nullable: true)
        ownsAcceptor(nullable: true)
        controlsAcceptor(nullable: true)
        overQuarterOfVotes(nullable: true)

@@ -4,7 +4,11 @@
     <g:radio name="czyBeneficjentRzeczywisty" value="false" required="required" checked="${data.czyBeneficjentRzeczywisty != true}"/>
     <span class="bold"><g:message code="beneficiary.cant.establish.label"/></span>
 
-    <section id="cantEstablishBeneficiary" class="${data.czyBeneficjentRzeczywisty ? "hidden" : ""}">
+    <section id="cantEstablishBeneficiary" class="${data.czyBeneficjentRzeczywisty ? "hidden" : ""} ${hasErrors(bean: data, field: 'czyBeneficjentRzeczywisty', 'errorSpan')}">
+        <g:hasErrors bean="${data}" field="czyBeneficjentRzeczywisty">
+            <p class="error-message"><g:message error="default.atLeastOne.option"/></p>
+        </g:hasErrors>
+
         <div>
             <g:checkBox name="akceptantNieMaBeneficjenta" value="${data.akceptantNieMaBeneficjenta}"/>
             <label><g:message code="acceptor.no.physical.beneficiary.label"/></label>

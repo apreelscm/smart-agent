@@ -8,6 +8,7 @@ import com.eservice.eumowy.enums.options.IdentityDocumentType
 import com.eservice.eumowy.validator.CustomValidator
 import com.eservice.eumowy.validator.NumberValidator
 import grails.validation.Validateable
+import org.apache.commons.lang.StringUtils
 
 @Validateable(nullable = true)
 class RepresentativeCommand implements Serializable{
@@ -32,6 +33,7 @@ class RepresentativeCommand implements Serializable{
     String documentNumber
     String citizenship
     String address
+    String country
 
     Boolean isPolitician
 
@@ -76,18 +78,20 @@ class RepresentativeCommand implements Serializable{
             CustomValidator.validateRequired(value, errors, cmd.processCommand.hasNewUmowa,
                     "citizenship", "representative.obywatelstwo.required")
         })
-        address(nullable: true, maxSize: 100, validator: {value, cmd, errors ->
-            CustomValidator.validateRequired(value, errors, AcceptorLocation.COUNTRY.equals(cmd.locationType),
-                    "address", "representative.adres.required")
-        })
+        address(nullable: false, maxSize: 100, blank: false)
+        country(nullable: false, blank: false)
 
         isPolitician(nullable: true, validator: {value, cmd, errors ->
-            CustomValidator.validateRequired(value != null, errors, AcceptorLocation.ABROAD.equals(cmd.locationType),
+            CustomValidator.validateRequired(value != null, errors, !"Polska".equals(cmd.country),
                     "isPolitician", "representative.czyStanowiskoPolityczne.required")
         })
     }
 
     public boolean isRepresentativeLocationAbroad() {
         return AcceptorLocation.ABROAD.equals(locationType)
+    }
+
+    public boolean isFromPolandOrEmpty() {
+        return "Polska".equals(country) || StringUtils.isEmpty(country)
     }
 }

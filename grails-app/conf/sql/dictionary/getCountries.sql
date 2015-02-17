@@ -1,0 +1,1 @@
+SELECT name as "value" FROM EUMOWY.COUNTRY ORDER BY name ASC
