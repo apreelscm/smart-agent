@@ -1,9 +1,9 @@
 <%@ page import="com.eservice.eumowy.enums.options.AcceptorLocation; com.eservice.eumowy.enums.options.IdentityDocumentType" %>
 
 <div>
-    <div class="acceptorPESELCountryWrapper ${hasErrors(bean: representative, field: 'locationType', 'errorSpan')}">
-        <g:hasErrors bean="${representative}" field="locationType">
-            <g:eachError bean="${representative}" field="locationType">
+    <div class="acceptorPESELCountryWrapper ${hasErrors(bean: representative, field: 'verification', 'errorSpan')}">
+        <g:hasErrors bean="${representative}" field="verification">
+            <g:eachError bean="${representative}" field="verification">
                 <p class="error-message"><g:message error="${it}"/></p>
             </g:eachError>
         </g:hasErrors>

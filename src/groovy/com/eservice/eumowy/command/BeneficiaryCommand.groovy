@@ -22,5 +22,9 @@ class BeneficiaryCommand extends RepresentativeCommand implements Serializable {
         votesPercentage(nullable: true, min: 26, shared: "percentage", validator: {value, cmd, errors ->
             CustomValidator.validateRequired(value, errors, cmd.overQuarterOfVotes, "votesPercentage", "beneficiary.percentOfVotes.required")
         })
+
+        locationType(nullable: true, validator: { return true })
+
+        country(nullable: true, blank: true)
     }
 }
