@@ -62,7 +62,7 @@ class RepresentativeCommand implements Serializable{
         })
 
         documentType(nullable: true, validator: {value, cmd, errors ->
-            CustomValidator.validateRequired(value, errors, cmd.processCommand.hasNewUmowa, "documentType",
+            CustomValidator.validateRequired(value, errors, cmd.processCommand.isPersonForm(), "documentType",
                     "representative.typDokumentu.required")
         })
 
@@ -91,7 +91,7 @@ class RepresentativeCommand implements Serializable{
         return AcceptorLocation.ABROAD.equals(locationType)
     }
 
-    public boolean isFromPolandOrEmpty() {
-        return "Polska".equals(country) || StringUtils.isEmpty(country)
+    public boolean isFromPoland() {
+        return "Polska".equals(country)
     }
 }

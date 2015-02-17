@@ -173,7 +173,7 @@ class Process implements Serializable {
     }
 
     public boolean isAkceptantOsobaPrawna() {
-        List<String> companyIndicators = [LegalForm.STOCK_COMPANY.name(), LegalForm.ZOO_COMPANY, LegalForm.LIMITED_COMPANY.name(), LegalForm.OPEN_COMPANY.name()]
+        List<String> companyIndicators = [LegalForm.STOCK_COMPANY.name(), LegalForm.ZOO_COMPANY.name(), LegalForm.LIMITED_COMPANY.name(), LegalForm.OPEN_COMPANY.name()]
 
         return companyIndicators.contains(getData("dzialalnoscForma"))
     }

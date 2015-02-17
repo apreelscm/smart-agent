@@ -69,7 +69,7 @@
                             validatable="${representative}" validateField="country"/>
     </div>
 
-    <div class="isPolitician ${representative?.isFromPolandOrEmpty() ? 'hidden' : ''} ${hasErrors(bean: representative, field: 'isPolitician', 'errorSpan')}">
+    <div class="isPolitician ${(representative?.isFromPoland() || !representative?.country) ? 'hidden' : ''} ${hasErrors(bean: representative, field: 'isPolitician', 'errorSpan')}">
         <g:hasErrors bean="${representative}" field="isPolitician">
             <p class="error-message"><g:message code="representative.option.required"/></p>
         </g:hasErrors>
@@ -77,11 +77,11 @@
         <span><g:message code="is.political.position.label"/></span>
 
         <g:radio name="${prefix}[${seqNo}].isPolitician" value="true"
-                 checked="${data.isPersonForm() && representative?.isPolitician && !representative?.isFromPolandOrEmpty()}"/>
+                 checked="${data.isPersonForm() && representative?.isPolitician && !representative?.isFromPoland()}"/>
         <label for="${prefix}[${seqNo}].isPolitician"><g:message code="yes"/></label>
 
         <g:radio name="${prefix}[${seqNo}].isPolitician" value="false"
-                 checked="${data.isPersonForm() && !representative?.isPolitician && !representative?.isFromPolandOrEmpty()}"/>
+                 checked="${data.isPersonForm() && !representative?.isPolitician && !representative?.isFromPoland()}"/>
         <label for="${prefix}[${seqNo}].isPolitician"><g:message code="no"/></label>
     </div>
 

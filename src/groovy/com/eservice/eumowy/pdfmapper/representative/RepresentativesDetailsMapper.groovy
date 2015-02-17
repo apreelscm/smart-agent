@@ -7,6 +7,8 @@ import com.eservice.eumowy.pdfmapper.AbstractPdfMapper
 import com.eservice.eumowy.pdfmapper.Mapper
 import com.eservice.eumowy.Process
 
+import java.text.SimpleDateFormat
+
 
 class RepresentativesDetailsMapper extends AbstractPdfMapper implements Mapper {
     private Process process
@@ -50,7 +52,11 @@ class RepresentativesDetailsMapper extends AbstractPdfMapper implements Mapper {
     }
 
     public String getLokalizacjaDane(Representative representative) {
-        return representative.pesel
+        if (representative.pesel) return representative.pesel
+
+        if (representative.countryCode) return representative.countryCode
+
+        return new SimpleDateFormat("yyyy-MM-dd").format(representative.birthDate)
     }
 
     private String getFieldName(Integer index, String fieldName) {
