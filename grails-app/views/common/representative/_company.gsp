@@ -37,12 +37,12 @@
     <div>
         <label for="${prefix}[${seqNo}].address"><g:message code="address.label"/></label>
         <eumowy:textField name="${prefix}[${seqNo}].address" value="${representative?.address}" maxlength="100" style="width: 750px"
-                          validatable="${representative}" validateField="address"/>
+                          validatable="${representative}" validateField="address" required="required"/>
     </div>
 
     <div class="${hasErrors(bean: representative, field: 'country', 'errorSpan')}">
         <label for="${prefix}[${seqNo}].country"><g:message code="country.name.label"/></label>
-        <dict:countrySelect name="${prefix}[${seqNo}].country" value="${representative?.country}"
+        <dict:countrySelect name="${prefix}[${seqNo}].country" value="${representative?.country}" required="required"
                             validatable="${representative}" validateField="country"/>
     </div>
     <div class="isPolitician ${(representative?.isFromPoland() || !representative?.country) ? 'hidden' : ''} ${hasErrors(bean: representative, field: 'isPolitician', 'errorSpan')}">
@@ -63,7 +63,7 @@
 
     <div>
         <label for="${prefix}[${seqNo}].citizenship"><g:message code="citizenship.label"/></label>
-        <eumowy:textField name="${prefix}[${seqNo}].citizenship" value="${representative?.citizenship}" maxlength="30"
+        <eumowy:textField name="${prefix}[${seqNo}].citizenship" value="${representative?.citizenship}" maxlength="30" required="required"
                           validatable="${representative}" validateField="citizenship" readonly="${!representative?.isRepresentativeLocationAbroad()}"/>
     </div>
 </div>

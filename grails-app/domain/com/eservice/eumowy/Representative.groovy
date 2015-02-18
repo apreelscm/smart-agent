@@ -78,10 +78,10 @@ class Representative implements Serializable {
 
     static constraints = {
        salutation(nullable: true)
-       name(nullable: true)
-       surname(nullable: true)
+       name(nullable: false)
+       surname(nullable: false)
        position(nullable: true)
-       pesel(nullable: true)
+       verification(nullable: true)
        locationType(nullable: true)
        pesel(nullable: true)
        countryCode(nullable: true)

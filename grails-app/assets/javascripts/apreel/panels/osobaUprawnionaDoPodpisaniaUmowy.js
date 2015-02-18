@@ -43,7 +43,12 @@
     }
 
     function setAdditionalInformationPanelsVisibility() {
-        var isAbroad = $representativeTypLokalizacji.filter(":checked").val() === "ABROAD";
+        var isAbroad = false;
+        $representativeTypLokalizacji.filter(":checked").each(function(i, input) {
+            if (input.value === "ABROAD") {
+                isAbroad = true;
+            }
+        });
 
         if(isAbroad) {
             enableFields($acceptorsAdditionalPanels);

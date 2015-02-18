@@ -726,7 +726,7 @@ class ProcessService {
             hpc.setCbdId(Integer.valueOf(row.get("point_id").toString()))
             hpc.setName(row.get("nazwa_punktu").toString())
             hpc.setAddress(row.get("adres_posadowienia").toString())
-            hpc.setType(row.get("type"))
+            hpc.setType(row.get("typ"))
             def count = row.get("ile");
             if (count != null && count?.toString().isNumber()){
                 hpc.setTermCount(Integer.valueOf(count.toString()))
@@ -1065,7 +1065,8 @@ class ProcessService {
                 process.removeFromRepresentatives(representative)
             } else {
                 representative = saveRepresentative(type, representativeCmd, representative)
-                if (representative && !process.representatives?.contains(representative)) {
+                if (representative != null && !process.representatives?.contains(representative)) {
+                    log.info(String.format("Saved new representative: %s", representative.fullName))
                     process.addToRepresentatives(representative)
                 }
             }

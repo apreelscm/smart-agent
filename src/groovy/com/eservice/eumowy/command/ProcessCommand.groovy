@@ -1282,11 +1282,11 @@ class ProcessCommand implements Serializable {
         })
 
         representatives(nullable: true, validator: {value, cmd, errors ->
-            return RepresentativesValidator.validate(value, cmd, errors, "representatives")
+            return RepresentativesValidator.validate(value, cmd, errors, propertyName)
         })
         beneficiaries(nullable: true, validator: {value, cmd, errors ->
             cmd.czyBeneficjentRzeczywisty ?
-                RepresentativesValidator.validate(value, cmd, errors, "beneficiaries") : true
+                RepresentativesValidator.validate(value, cmd, errors, propertyName) : true
         })
 
         allPoints(nullable:true)
@@ -1345,10 +1345,10 @@ class ProcessCommand implements Serializable {
     }
 
     public boolean isPersonForm() {
-        return dzialalnoscForma ? LegalForm.valueOf(dzialalnoscForma).isPerson() : null
+        return dzialalnoscForma && !DEFAULT_VALUE.equals(dzialalnoscForma) ? LegalForm.valueOf(dzialalnoscForma).isPerson() : null
     }
 
     public boolean isCompanyForm() {
-        return dzialalnoscForma ? LegalForm.valueOf(dzialalnoscForma).isCompany() : null
+        return dzialalnoscForma && !DEFAULT_VALUE.equals(dzialalnoscForma) ? LegalForm.valueOf(dzialalnoscForma).isCompany() : null
     }
 }

@@ -78,12 +78,17 @@ class RepresentativeCommand implements Serializable{
             CustomValidator.validateRequired(value, errors, cmd.processCommand.hasNewUmowa,
                     "citizenship", "representative.obywatelstwo.required")
         })
-        address(nullable: false, maxSize: 100, blank: false)
-        country(nullable: false, blank: false)
-
+        address(nullable: true, maxSize: 100, validator: { value, cmd, errors ->
+            CustomValidator.validateRequired(value, errors, cmd.processCommand.hasNewUmowa,
+                    propertyName, "representative.adres.required")
+        })
+        country(nullable: true, validator: { value, cmd, errors ->
+            CustomValidator.validateRequired(value, errors, cmd.processCommand.hasNewUmowa,
+                    propertyName, "representative.kraj.required")
+        })
         isPolitician(nullable: true, validator: {value, cmd, errors ->
-            CustomValidator.validateRequired(value != null, errors, !"Polska".equals(cmd.country),
-                    "isPolitician", "representative.czyStanowiskoPolityczne.required")
+            CustomValidator.validateRequired(value != null, errors, !"Polska".equals(cmd.country) && cmd.processCommand.hasNewUmowa,
+                    propertyName, "representative.czyStanowiskoPolityczne.required")
         })
     }
 

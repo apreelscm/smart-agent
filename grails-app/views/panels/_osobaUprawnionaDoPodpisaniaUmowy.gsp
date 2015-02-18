@@ -21,12 +21,7 @@
                 </div>
 
                 <div id="representativesContainer">
-                    <g:if test="${data.isRepresentativesChangedManually}">
-                        <g:render template="../panels/reprezentanci" model="[hasDropdowns: false]"/>
-                    </g:if>
-                    <g:else>
-                        <g:render template="../panels/reprezentanci" model="[hasDropdowns: true]"/>
-                    </g:else>
+                    <g:render template="../panels/reprezentanci" model="[hasDropdowns: !data.isRepresentativesChangedManually]"/>
                 </div>
 
                 <div id="representativesDropdowns" class="hidden">
