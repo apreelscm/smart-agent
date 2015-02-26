@@ -26,5 +26,7 @@ class BeneficiaryCommand extends RepresentativeCommand implements Serializable {
         locationType(nullable: true, validator: { return true })
 
         country(nullable: true, blank: true, validator: { return true })
+
+        isPolitician(nullable: true, validator: { return true })
     }
 }

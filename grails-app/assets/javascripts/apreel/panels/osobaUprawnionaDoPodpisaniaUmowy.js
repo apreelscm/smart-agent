@@ -144,7 +144,9 @@
     }
 
     function showNextAcceptor() {
-        var acceptor = $representativesContainer.find('div.acceptor.hidden').first();
+        var acceptor = $representativesContainer.find('div.acceptor.hidden').first(),
+            companyData = acceptor.find('.companyData'),
+            personData = acceptor.find('.personData');
 
         if(acceptor.length === 0) {
             jQuery(this).attr('disabled', 'disabled');
@@ -153,6 +155,12 @@
 
         acceptor.removeClass('hidden');
         enableFields(acceptor);
+
+        if (companyData.hasClass('hidden')) {
+            disableFields(companyData);
+        } else if (personData.hasClass('hidden')) {
+            disableFields(personData);
+        }
     }
 
     function attachDatepickers() {

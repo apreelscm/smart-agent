@@ -58,27 +58,6 @@
         <eumowy:textField name="${prefix}[${seqNo}].address" value="${representative?.address}" maxlength="100" style="width: 750px"
                           validatable="${representative}" validateField="address"/>
     </div>
-
-    <div class="isPolitician ${representative?.isRepresentativeLocationAbroad() ?: 'hidden'}">
-        <g:radioGroup values="[true, false]" name="${prefix}[${seqNo}].isPolitician" value="${representative?.isPolitician}"
-                      labels="['i.am', 'i.am.not']">
-            <div class="acceptorRadioWrapper">
-                ${it.radio}
-                <div class="label"><g:message code="${it.label}"/></div>
-            </div>
-        </g:radioGroup>
-    </div>
-
-    <div class="${hasErrors(bean: representative, field: 'isPolitician', 'errorSpan')}">
-        <g:hasErrors bean="${representative}" field="isPolitician">
-            <g:eachError bean="${representative}" field="isPolitician">
-                <p class="error-message"><g:message error="${it}"/></p>
-            </g:eachError>
-        </g:hasErrors>
-
-        <label><g:message code="political.position.label"/></label>
-        <g:checkBox name="${prefix}[${seqNo}].isPolitician" checked="${representative?.isPolitician}"/>
-    </div>
 </div>
 
 <div style="margin-top: 25px">
