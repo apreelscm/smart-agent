@@ -2,8 +2,8 @@
     'use strict';
 
     var $representativesContainer = jQuery("#acceptorsPanel #representativesContainer"),
-        $representativesDropdows = jQuery("#acceptorsPanel #representativesDropdowns"),
-        $representativesTextfields = jQuery("#acceptorsPanel #representativesTextfields"),
+        $bisnodeRepresentatives = jQuery("#acceptorsPanel #bisnodeRepresentatives"),
+        $customRepresentatives = jQuery("#acceptorsPanel #customRepresentatives"),
         $representativesChangedManually = jQuery("#acceptorsPanel #isRepresentativesChangedManually"),
         $representativeTypLokalizacji = jQuery("#representativesContainer input[type=radio][name$='locationType']"),
         $representativeDetail = jQuery("#representativesContainer input[type=radio][name$='verification']"),
@@ -16,8 +16,8 @@
 
     attachDatepickers();
 
-    disableFields($representativesDropdows);
-    disableFields($representativesTextfields);
+    disableFields($bisnodeRepresentatives);
+    disableFields($customRepresentatives);
     disableHiddenRepresentativesFields();
 
     setAdditionalInformationPanelsVisibility();
@@ -31,15 +31,26 @@
     $addAnotherAcceptorButton.click(showNextAcceptor);
 
     function setRepresentativesView() {
-        var isChecked = $representativesChangedManually.is(":checked");
+        var isChecked = $representativesChangedManually.is(":checked"),
+            basicData = $representativesContainer.find('div.basicRepresentativeData'),
+            template = isChecked ? $customRepresentatives.html() : $bisnodeRepresentatives.html();
 
-        if (isChecked) {
-            $representativesContainer.html($representativesTextfields.html());
-        } else {
-            $representativesContainer.html($representativesDropdows.html());
-        }
+        basicData.each(function (index, value) {
+            var acceptorBasicData = jQuery(value),
+                isAcceptorActive = !acceptorBasicData.parent().hasClass('hidden');
 
-        enableFields($representativesContainer)
+            if (isAcceptorActive) {
+                var id = acceptorBasicData.find('input[name$=id]').val(),
+                    name = acceptorBasicData.find('input').first().attr('name').split('.')[0],
+                    newTemplate = jQuery(template.replace(/representative\[null]/g, name));
+
+                newTemplate[0].value = id;
+
+                acceptorBasicData.html(newTemplate);
+                enableFields(acceptorBasicData);
+                attachBisnodeNameChangeEvent();
+            }
+        });
     }
 
     function setAdditionalInformationPanelsVisibility() {

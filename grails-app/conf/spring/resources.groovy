@@ -2,6 +2,7 @@ import com.eservice.dao.emetrics.UserDAO
 import com.eservice.eumowy.CustomDateEditorRegistrar
 import com.eservice.eumowy.auth.EServiceAuthenticationProvider
 import com.eservice.eumowy.dao.CbdDAO
+import com.eservice.eumowy.mocks.WebsClientMock
 import com.eservice.eumowy.propEditors.CustomPropertyEditorRegistrar
 import com.eservice.eumowy.util.EumowyCustomEnvironment
 import com.eservice.service.security.ECbdRoleService
@@ -47,7 +48,7 @@ beans = {
 
     switch (Environment.getCurrent().getName()) {
         case Environment.DEVELOPMENT.name:
-//            websClient(WebsClientMock){}
+            websWebServiceClient(WebsClientMock){}
             break;
         case EumowyCustomEnvironment.MOCK.getName():
             roleService(NoRoleService){}

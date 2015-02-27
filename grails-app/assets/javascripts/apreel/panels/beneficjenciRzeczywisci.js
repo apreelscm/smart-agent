@@ -79,7 +79,7 @@
     }
 
     function setBeneficiaryFieldValue(beneficiaryIndex, representativeField) {
-        if(representativeField.disabled) return false
+        if(representativeField.disabled) return false;
 
         var fieldName, fieldType, beneficiary, beneficiaryField, value;
 
@@ -88,6 +88,10 @@
 
         beneficiary = jQuery(beneficiaries[beneficiaryIndex]);
         beneficiaryField = beneficiary.find("[name$=" + fieldName + "]").not("input[type=hidden]");
+
+        if (!!beneficiaryField.attr('disabled')) {
+            return false;
+        }
 
         if(fieldType === "radio") {
             value = jQuery(representatives[beneficiaryIndex]).find("[name$=" + fieldName + "]:checked").val();

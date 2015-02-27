@@ -24,12 +24,13 @@
                     <g:render template="../panels/reprezentanci" model="[hasDropdowns: !data.isRepresentativesChangedManually]"/>
                 </div>
 
-                <div id="representativesDropdowns" class="hidden">
-                    <g:render template="../panels/reprezentanci" model="[hasDropdowns: true]"/>
+                %{--Below field will be switched with javascript when user check 'Zmiana danych reprezentacji'--}%
+                <div id="bisnodeRepresentatives" class="hidden">
+                    <g:render template="/common/representative/basicData" model="[prefix: 'representative', dropdowns: true]"/>
                 </div>
 
-                <div id="representativesTextfields" class="hidden">
-                    <g:render template="../panels/reprezentanci" model="[hasDropdowns: false]"/>
+                <div id="customRepresentatives" class="hidden">
+                    <g:render template="/common/representative/basicData" model="[prefix: 'representative', dropdowns: false]"/>
                 </div>
             </g:if>
             <g:else>
@@ -64,25 +65,33 @@
             representatives[${i}] = {title: '${representative.title}', fistName: '${representative.firstName}', lastName: '${representative.lastName}', position: '${representative.position}'};
         </g:each>
 
-        jQuery(".imieField, .nazwiskoField").change(function() {
-            var $this = jQuery(this),
-                    selectedOptionNo = $this[0].selectedIndex,
-                    parentDiv = $this.parent('div'),
-                    firstNameSelect = parentDiv.find('.imieField'),
-                    lastNameSelect = parentDiv.find('.nazwiskoField'),
-                    titleInput = parentDiv.find('.tytulField'),
-                    positionInput = parentDiv.find('.positionField');
+        attachBisnodeNameChangeEvent();
 
-            firstNameSelect[0].selectedIndex = selectedOptionNo;
-            lastNameSelect[0].selectedIndex = selectedOptionNo;
+        function attachBisnodeNameChangeEvent() {
+            jQuery(".nameField, .surnameField").change(function() {
+                var $this = jQuery(this),
+                        selectedOptionNo = $this[0].selectedIndex,
+                        parentDiv = $this.parent('div'),
+                        firstNameSelect = parentDiv.find('.nameField'),
+                        lastNameSelect = parentDiv.find('.surnameField'),
+                        titleInput = parentDiv.find('.salutationField'),
+                        positionInput = parentDiv.find('.positionField');
 
-            if(selectedOptionNo === 0) {
-                positionInput.val('');
-                titleInput.val('')
-            } else {
-                positionInput.val(representatives[selectedOptionNo - 1].position);
-                titleInput.val(representatives[selectedOptionNo - 1].title);
-            }
-        });
+                if (!firstNameSelect[0] || !lastNameSelect[0]) {
+                    return false;
+                }
+
+                firstNameSelect[0].selectedIndex = selectedOptionNo;
+                lastNameSelect[0].selectedIndex = selectedOptionNo;
+
+                if(selectedOptionNo === 0) {
+                    positionInput.val('');
+                    titleInput.val('')
+                } else {
+                    positionInput.val(representatives[selectedOptionNo - 1].position);
+                    titleInput.val(representatives[selectedOptionNo - 1].title);
+                }
+            });
+        }
     </script>
 </g:if>
