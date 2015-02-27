@@ -1144,24 +1144,8 @@ class ProcessCommand implements Serializable {
             SkipAddressValidator.validate(value, cmd, errors, propertyName) &&
             MaxLengthValidator.validate(value, cmd, errors, 40, propertyName)
         })
-        akceptantNrDomu(nullable:false, validator: {value, cmd, errors ->
-            if(DEFAULT_VALUE.equals(value)) return true
-
-            if(!AddressValidator.isAcceptorHouseNumberValid(value, cmd, errors)) {
-                errors.rejectValue(propertyName, "house.number.invalid")
-                return false
-            }
-            return true
-        })
-        akceptantNrMieszkania(nullable: true, blank: false, validator: {value, cmd, errors ->
-            if(DEFAULT_VALUE.equals(value)) return true
-
-            if(!AddressValidator.isAcceptorApartmentNumberValid(value, cmd, errors)) {
-                errors.rejectValue(propertyName, "apartment.number.invalid")
-                return false
-            }
-            return true
-        })
+        akceptantNrDomu(nullable:false, shared: 'alphanumericWithSlash')
+        akceptantNrMieszkania(nullable: true, shared: 'alphanumericWithSlash')
         akceptantMiasto(nullable: false, shared: "alphanumeric", validator: { value, cmd, errors ->
             SkipAddressValidator.validate(value, cmd, errors, propertyName) &&
             MaxLengthValidator.validate(value, cmd, errors, 33, propertyName)

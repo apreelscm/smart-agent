@@ -94,6 +94,7 @@ grails.gorm.default.constraints = {
     number3Precision(matches:'~|\\-|^(?:[1-9]\\d*|0)?(?:\\.\\d{1,3})?$')
     natural(matches:'~|\\-|^[0-9]*')
     lettersOnly(matches:'~|^[A-Za-z\\-\\\'\\s\\u0104-\\u017c\\u00d3\\u00f3]*')
+    alphanumericWithSlash(matches:'~|^[A-Za-z0-9\\s.\\-,/\\u0104-\\u017c\\u00d3\\u00f3]*')
     alphanumeric(matches:'~|^[A-Za-z0-9\\s.\\-,\\u0104-\\u017c\\u00d3\\u00f3]*')
     date(matches:'~|^\\d{4}$|^\\d{4}[\\-]((((0[13578])|([13578])|(1[02]))[\\-](([1-9])|([0-2][0-9])|(3[01])))|(((0[469])|([469])|(11))[\\-](([1-9])|([0-2][0-9])|(30)))|((2|02)[\\-](([1-9])|([0-2][0-9]))))$')
     email(matches:'~|^(.+)@(.+)$')
