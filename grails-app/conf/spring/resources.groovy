@@ -8,6 +8,7 @@ import com.eservice.eumowy.util.EumowyCustomEnvironment
 import com.eservice.service.security.ECbdRoleService
 import com.eservice.service.security.NoRoleService
 import com.eservice.service.security.UserService
+import com.eservice.webs.client.WebsClient
 import grails.util.Environment
 import org.jasypt.digest.config.SimpleDigesterConfig
 import org.jasypt.salt.RandomSaltGenerator
@@ -49,12 +50,6 @@ beans = {
     switch (Environment.getCurrent().getName()) {
         case Environment.DEVELOPMENT.name:
             websWebServiceClient(WebsClientMock){}
-            break;
-        case EumowyCustomEnvironment.MOCK.getName():
-            roleService(NoRoleService){}
-            break;
-        default:
-//            websClient(WebsClient){}
             break;
     }
 
