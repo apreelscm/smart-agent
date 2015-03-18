@@ -221,6 +221,7 @@ class ProcessCommand implements Serializable {
     String mastercardPKOBPM3Pr = DEFAULT_VALUE
     String dinersClubPr = DEFAULT_VALUE
     String ikoPr = DEFAULT_VALUE
+    String blikPr = DEFAULT_VALUE
     String visaEUKKOSt = DEFAULT_VALUE
     String visaEUKDSt = DEFAULT_VALUE
     String visaEUKBSt = DEFAULT_VALUE
@@ -921,6 +922,7 @@ class ProcessCommand implements Serializable {
         mastercardPKOBPM3Pr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> ConditionValidator.atLeastCalcValue(value, cmd, errors, propertyName, "OPLATA_MSC_843_PROCENT")})
         dinersClubPr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> ConditionValidator.atLeastCalcValue(value, cmd, errors, propertyName, "OPLATA_MSC_9_PROCENT")})
         ikoPr(nullable: true, blank: true, shared: "number3Precision")
+        blikPr(nullable: true, blank: true, shared: "number3Precision")
 
 
         visaPolskaKKO1St(nullable: false, blank: false,  validator: { value, cmd, errors ->
