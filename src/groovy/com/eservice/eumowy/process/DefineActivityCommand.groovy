@@ -26,7 +26,6 @@ class DefineActivityCommand {
     def dodaniePrepaid
     def zmianaWarunkowDcc
 	def dodanieAneksuKosztyPlus
-    def zmianaOkresuLojalnosciowego
     def prestiz
     def promocyjneObnizenieNajmu
     def odrzucDokumenty

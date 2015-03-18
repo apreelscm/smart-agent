@@ -108,11 +108,6 @@
                  </div>
 
                  <div class="checkBoxBlock">
-                     <g:checkBox id="zmianaOkresuLojalnosciowegoCB" name="zmianaOkresuLojalnosciowego" data-selected="${activities?.contains('zmianaOkresuLojalnosciowego')}"/>
-                     <label for="zmianaOkresuLojalnosciowegoCB"><g:message code="activity.zmianaOkresuLojalnosciowego.name"/></label>
-                 </div>
-
-                 <div class="checkBoxBlock">
                      <g:checkBox id="zmianaWarunkowCashbackCB" name="zmianaWarunkowCashback" data-selected="${activities?.contains('zmianaWarunkowCashback')}"/>
                      <label for="zmianaWarunkowCashbackCB"><g:message code="activity.zmianaWarunkowCashback.name"/></label>
                  </div>
