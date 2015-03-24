@@ -62,7 +62,7 @@
                                 <eumowy:textField name="akceptantMiasto" value="${data.akceptantMiasto}" validatable="${data}" readonly="true" style="width: 280px;" required="true"/>
                             </g:if>
                             <g:else>
-                                <g:select id="akceptantMiasto" name="akceptantMiasto" value="${data.akceptantMiasto}" from="[data.akceptantMiasto]"
+                                <g:select id="akceptantMiasto" name="akceptantMiasto" value="${data.akceptantMiasto}" from="[data.akceptantMiasto ?: []]"
                                           style="width: 280px;"  required="required"/>
                             </g:else>
                         </span>
