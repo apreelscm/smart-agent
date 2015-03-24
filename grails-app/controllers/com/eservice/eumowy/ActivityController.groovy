@@ -516,7 +516,7 @@ class ActivityController {
 
                 if(hasNowaUmowa) {
                     MerchantDetailsDTO merchantDetails = bisnodeService.getMerchantDetails(flow.nip)
-                    if (merchantDetails) {
+                    if (merchantDetails?.isValid()) {
                         flash.bisnodeMessage = message(code: 'bisnode.merchant.found')
                         flow.bisnodeMerchantDetails = merchantDetails
                         flow.representativesBisnode = bisnodeService.getRepresentatives(merchantDetails)

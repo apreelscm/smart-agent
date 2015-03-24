@@ -4,6 +4,8 @@ import com.eservice.webs.client.govsync.dto.MerchantAddressDataDTO
 import com.eservice.webs.client.govsync.dto.MerchantKRSDataDTO
 import com.eservice.webs.client.govsync.dto.MerchantRepresentativeDataDTO
 
+import static org.apache.commons.lang.StringUtils.*;
+
 class MerchantDetailsDTO implements Serializable {
     String nip
     String akceptantRegon
@@ -20,8 +22,6 @@ class MerchantDetailsDTO implements Serializable {
     String akceptantTelKomorkowy
     String akceptantFax
 
-    boolean allBisnodeDatasFound
-
     List<MerchantRepresentativeDTO> representatives
 
     public MerchantDetailsDTO(MerchantKRSDataDTO merchantData) {
@@ -35,8 +35,10 @@ class MerchantDetailsDTO implements Serializable {
         }
 
         createRepresentativesList(merchantData)
+    }
 
-        allBisnodeDatasFound = merchantData.merchAddressDatas && merchantData.merchRepresentDatas
+    public boolean isValid() {
+        return isNotEmpty(nip) && isNotEmpty(akceptantRegon) && isNotEmpty(akceptantNazwaOficjalna)
     }
 
     private void addMerchantAddressData(MerchantAddressDataDTO addressDataDTO) {
