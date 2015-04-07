@@ -4,13 +4,10 @@ import com.eservice.eumowy.CbdService
 import com.eservice.eumowy.Process
 import grails.util.Holders
 
-final class PKOBPtrilateralValidator extends Validator{
-    private final Process process
-    private final CbdService cbdService
+final class PKOBPtrilateralValidator extends Validator {
 
-    public PKOBPtrilateralValidator(Process process) {
-        this.process = process
-        cbdService = Holders.grailsApplication.mainContext.getBean("cbdService")
+    PKOBPtrilateralValidator(Process process, List calculator) {
+        super(process, calculator)
     }
 
     @Override

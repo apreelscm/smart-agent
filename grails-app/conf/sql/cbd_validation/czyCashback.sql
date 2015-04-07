@@ -1,0 +1,1 @@
+select * from CBT_STD, CG_REF_CODES where OKP_KLN_ID = :clientId and RV_DOMAIN = 'LW_TYPY_TRANSAKCJI' and RV_LOW_VALUE = 'C' and OKP_TYP_TRANSAKCJI = rv_low_value;

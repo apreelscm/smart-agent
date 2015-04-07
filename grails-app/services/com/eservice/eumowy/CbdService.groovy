@@ -48,6 +48,11 @@ class CbdService {
     private static final String GET_OPIEKA_SERWISOWA_II = "getOpiekaSerwisowa2"
     private static final String MIN_CENA_NAJMU = "minCenaNajmu"
     private static final String CZY_POPRAWNY_MID = "czyPoprawnyMid"
+    private static final String GET_LW_TYP_UMOWY = "getLwTypUmowy"
+    private static final String CZY_CASHBACK = "czyCashback"
+    private static final String CZY_PROWIZJA_DLA_AKCEPTANTA = "czyProwizjaDlaAkceptanta"
+    private static final String CZY_TERMINAL_CASHBACK = "czyTerminalCashback"
+    private static final String CZY_TERMINAL_DCC = "czyTerminalDCC"
 
     def logggger = Logger.getLogger("calcAppender")
 
@@ -297,6 +302,41 @@ class CbdService {
     boolean isMidCorrect(String mid) {
         GroovyRowResult midNumber = cbdDAO.selectOne(CZY_POPRAWNY_MID, [mid: mid])
         return !midNumber.isEmpty()
+    }
+
+    @Cacheable(value="eumowyCacheShort", key = "'getLwTypUmowy_'.concat(#mid)")
+    @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
+    String getLwTypUmowy(String mid) {
+        GroovyRowResult type = cbdDAO.selectOne(GET_LW_TYP_UMOWY, [mid: mid]);
+        return type
+    }
+
+    @Cacheable(value="eumowyCacheShort", key = "'czyCashback_'.concat(#clientId)")
+    @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
+    boolean czyCashback(Long clientId) {
+        GroovyRowResult result = cbdDAO.selectOne(CZY_CASHBACK, [clientId: clientId])
+        return !result.isEmpty()
+    }
+
+    @Cacheable(value="eumowyCacheShort", key = "'czyProwizjaDlaAkceptanta_'.concat(#clientId)")
+    @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
+    boolean czyProwizjaDlaAkceptanta(Long clientId) {
+        GroovyRowResult result = cbdDAO.selectOne(CZY_PROWIZJA_DLA_AKCEPTANTA, [clientId: clientId])
+        return !result.isEmpty()
+    }
+
+    @Cacheable(value="eumowyCacheShort", key = "'czyTerminalCashback_'.concat(#mid)")
+    @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
+    boolean czyTermialCashback(String mid) {
+        GroovyRowResult result = cbdDAO.selectOne(CZY_TERMINAL_CASHBACK, [mid: mid])
+        return !result.isEmpty()
+    }
+
+    @Cacheable(value="eumowyCacheShort", key = "'czyTerminalDcc_'.concat(#mid)")
+    @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
+    boolean czyTermialDcc(String mid) {
+        GroovyRowResult result = cbdDAO.selectOne(CZY_TERMINAL_DCC, [mid: mid])
+        return !result.isEmpty()
     }
 
     @CacheEvict(value=["eumowyCacheShort","eumowyCacheLong"], allEntries=true)

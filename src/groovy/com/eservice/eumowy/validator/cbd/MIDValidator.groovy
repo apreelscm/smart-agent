@@ -6,12 +6,9 @@ import grails.util.Holders
 
 
 final class MIDValidator extends Validator {
-    private final CbdService cbdService
-    private final Process process
 
-    public MIDValidator(Process process) {
-        this.process = process
-        cbdService = Holders.grailsApplication.mainContext.getBean("cbdService")
+    MIDValidator(Process process) {
+        super(process)
     }
 
     @Override

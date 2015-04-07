@@ -6,12 +6,9 @@ import com.eservice.eumowy.Process
 
 
 final class PKOBPbilateralValidator extends Validator {
-    private final CbdService cbdService
-    private final Process process
 
-    public PKOBPbilateralValidator(Process process) {
-        this.process = process
-        cbdService = Holders.grailsApplication.mainContext.getBean("cbdService")
+    PKOBPbilateralValidator(Process process, List calculator) {
+        super(process, calculator)
     }
 
     @Override
