@@ -556,7 +556,7 @@ class ProcessCommand implements Serializable {
         })
         akceptantKontaktNrDomu(nullable: false, blank: false, shared: "alphanumeric")
         akceptantKontaktNrMieszkania(nullable: true, blank: false, shared: "alphanumeric")
-        akceptantKontaktMiasto(nullable: false, blank: false, shared: "alphanumeric", validator: { value, cmd, errors ->
+        akceptantKontaktMiasto(nullable: false, blank: false, shared: "alphanumericWithBrackets", validator: { value, cmd, errors ->
             MaxLengthValidator.validate(value, cmd, errors, 33, propertyName)
         })
         akceptantKontaktKodPocztowy(nullable: false, blank: false, shared: "postalCodeValidator")
@@ -675,7 +675,7 @@ class ProcessCommand implements Serializable {
         })
         wydrukNrDomu(nullable: false, blank: false, shared: "alphanumeric")
         wydrukNrMieszkania(nullable: true, blank: false, shared: "alphanumeric")
-        wydrukMiasto(nullable: false, blank: false, shared: "alphanumeric", validator: { value, cmd, errors ->
+        wydrukMiasto(nullable: false, blank: false, shared: "alphanumericWithBrackets", validator: { value, cmd, errors ->
             MaxLengthValidator.validate(value, cmd, errors, 33, propertyName)
         })
         wydrukKodPocztowy(nullable: false, blank: false, shared: "postalCodeValidator")
@@ -1146,7 +1146,7 @@ class ProcessCommand implements Serializable {
         })
         akceptantNrDomu(nullable:false, shared: 'alphanumericWithSlash')
         akceptantNrMieszkania(nullable: true, shared: 'alphanumericWithSlash')
-        akceptantMiasto(nullable: false, shared: "alphanumeric", validator: { value, cmd, errors ->
+        akceptantMiasto(nullable: false, shared: "alphanumericWithBrackets", validator: { value, cmd, errors ->
             SkipAddressValidator.validate(value, cmd, errors, propertyName) &&
             MaxLengthValidator.validate(value, cmd, errors, 33, propertyName)
         })
