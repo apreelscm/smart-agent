@@ -9,7 +9,7 @@ import com.eservice.eumowy.Process;
 
 abstract class Validator {
     protected Validator next
-    protected final CbdService cbdService;
+    protected CbdService cbdService;
     protected final Process process;
     protected final List calculator;
 
