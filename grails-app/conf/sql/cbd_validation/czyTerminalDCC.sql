@@ -5,4 +5,4 @@ WHERE rownum <= 1 AND EXISTS
          FROM cbt_terminale_pos t
          WHERE tps_kln_id = o.kln_id AND tps_funkcje LIKE '%DCC%' AND tps_status NOT IN ('N', 'C')
         )
- AND o.kln_mid = :mid AND m.kln_id = o.kln_kln_id;
+ AND o.kln_mid = :mid AND m.kln_id = o.kln_kln_id

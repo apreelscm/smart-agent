@@ -1,1 +1,1 @@
-select * from CBT_STD, CG_REF_CODES where OKP_KLN_ID = :clientId and RV_DOMAIN = 'LW_ZNAK_OPLATY' and RV_LOW_VALUE = 'CR' and OKP_ZNAK_OPLATY = rv_low_value;
+select * from CBT_STD, CG_REF_CODES where OKP_KLN_ID = :clientId and RV_DOMAIN = 'LW_ZNAK_OPLATY' and RV_LOW_VALUE = 'CR' and OKP_ZNAK_OPLATY = rv_low_value
