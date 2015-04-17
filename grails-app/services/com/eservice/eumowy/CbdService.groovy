@@ -47,7 +47,13 @@ class CbdService {
     private static final String GET_OPIEKA_SERWISOWA_I = "getOpiekaSerwisowa1"
     private static final String GET_OPIEKA_SERWISOWA_II = "getOpiekaSerwisowa2"
     private static final String MIN_CENA_NAJMU = "minCenaNajmu"
-    private static final String CZY_POPRAWNY_MID = "czyPoprawnyMid"
+    private static final String CZY_POPRAWNY_MID = "cbd_validation/czyPoprawnyMid"
+    private static final String CZY_CASHBACK = "cbd_validation/czyCashback"
+    private static final String CZY_PROWIZJA_DLA_AKCEPTANTA = "cbd_validation/czyProwizjaDlaAkceptanta"
+    private static final String CZY_TERMINAL_CASHBACK = "cbd_validation/czyTerminalCashback"
+    private static final String CZY_TERMINAL_DCC = "cbd_validation/czyTerminalDCC"
+    private static final String GET_RODZAJ_UMOWY = "cbd_validation/getRodzajUmowy"
+    private static final String GET_UMW_TYP = "cbd_validation/getUmwTyp"
 
     def logggger = Logger.getLogger("calcAppender")
 
@@ -292,11 +298,64 @@ class CbdService {
         return cena ? cena[0] : BigDecimal.ZERO
     }
 
-    @Cacheable(value="eumowyCacheShort", key = "'czyPoprawnyMid_'.concat(#mid)")
+    @Cacheable(value="eumowyCacheLong", key = "'czyPoprawnyMid_'.concat(#mid)")
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
     boolean isMidCorrect(String mid) {
-        GroovyRowResult midNumber = cbdDAO.selectOne(CZY_POPRAWNY_MID, [mid: mid])
-        return !midNumber.isEmpty()
+        GroovyRowResult result = cbdDAO.selectOne(CZY_POPRAWNY_MID, [mid: mid])
+        return result ? !result.isEmpty() : false
+    }
+
+    @Cacheable(value="eumowyCacheLong", key = "'czyCashback_'.concat(#clientId)")
+    @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
+    boolean czyCashback(Long clientId) {
+        GroovyRowResult result = cbdDAO.selectOne(CZY_CASHBACK, [clientId: clientId])
+        return result ? !result.isEmpty() : false
+    }
+
+    @Cacheable(value="eumowyCacheLong", key = "'czyProwizjaDlaAkceptanta_'.concat(#clientId)")
+    @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
+    boolean czyProwizjaDlaAkceptanta(Long clientId) {
+        GroovyRowResult result = cbdDAO.selectOne(CZY_PROWIZJA_DLA_AKCEPTANTA, [clientId: clientId])
+        return result ? !result?.isEmpty() : false
+    }
+
+    @Cacheable(value="eumowyCacheLong", key = "'czyTerminalCashback_'.concat(#mid)")
+    @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
+    boolean czyTermialCashback(String mid) {
+        GroovyRowResult result = cbdDAO.selectOne(CZY_TERMINAL_CASHBACK, [mid: mid])
+        return result ? !result?.isEmpty() : false
+    }
+
+    @Cacheable(value="eumowyCacheLong", key = "'czyTerminalDcc_'.concat(#mid)")
+    @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
+    boolean czyTerminalDcc(String mid) {
+        GroovyRowResult result = cbdDAO.selectOne(CZY_TERMINAL_DCC, [mid: mid])
+        return result ? !result?.isEmpty() : false
+    }
+
+    @Cacheable(value="eumowyCacheLong", key = "'getRodzajUmowy_'.concat(#clientId)")
+    @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
+    String getRodzajUmowy(Long clientId) {
+        GroovyRowResult result = cbdDAO.selectOne(GET_RODZAJ_UMOWY, [clientId: clientId])
+
+        if (result?.containsKey("KDD_RODZAJ_UMOWY")) {
+            return result.getProperty("KDD_RODZAJ_UMOWY")
+        }
+
+        return ""
+    }
+
+
+    @Cacheable(value="eumowyCacheLong", key = "'getUmwTyp_'.concat(#clientId)")
+    @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
+    String getUmwTyp(Long clientId) {
+        GroovyRowResult result = cbdDAO.selectOne(GET_UMW_TYP, [clientId: clientId])
+
+        if (result?.containsKey("UMW_TYP")) {
+            return result.getProperty("UMW_TYP")
+        }
+
+        return ""
     }
 
     @CacheEvict(value=["eumowyCacheShort","eumowyCacheLong"], allEntries=true)

@@ -86,7 +86,7 @@ class CalculatorService implements Serializable {
             throw new CalculatorException("calc.fetch.error")
         }
 
-        ProcessCBDValidator processCBDValidator = new ProcessCBDValidator(process, calc)
+        ProcessCBDValidator processCBDValidator = new ProcessCBDValidator(process, client, calc)
 
         if(!processCBDValidator.isValid()) {
             throw new CalculatorException(processCBDValidator.getErrorCode())

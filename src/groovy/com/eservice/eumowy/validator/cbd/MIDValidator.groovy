@@ -1,22 +1,20 @@
 package com.eservice.eumowy.validator.cbd
 
 import com.eservice.eumowy.CbdService
+import com.eservice.eumowy.Client
 import com.eservice.eumowy.Process
 import grails.util.Holders
 
 
 final class MIDValidator extends Validator {
-    private final CbdService cbdService
-    private final Process process
 
-    public MIDValidator(Process process) {
-        this.process = process
-        cbdService = Holders.grailsApplication.mainContext.getBean("cbdService")
+    MIDValidator(Process process, Client client) {
+        super(process, client)
     }
 
     @Override
     protected boolean isValid() {
-        return cbdService.isMidCorrect(process.client.mid)
+        return cbdService.isMidCorrect(client.mid)
     }
 
     @Override
