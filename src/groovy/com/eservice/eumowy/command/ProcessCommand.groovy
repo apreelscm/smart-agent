@@ -59,6 +59,8 @@ class ProcessCommand implements Serializable {
     String umowaOznOd = DEFAULT_VALUE
     @DateField
     String umowaOznDo = DEFAULT_VALUE
+    Boolean czyAneks
+    String liczbaMiesiecyLojalnosciowych = DEFAULT_VALUE
 
     //cenaPakietu
     String cenaPakietu = DEFAULT_VALUE
