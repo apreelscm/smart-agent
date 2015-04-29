@@ -1,5 +1,5 @@
 <ul class="errors" role="alert" style="left: -4px">
     <li>
-        ${message}
+        <g:message code="${message}"/>
     </li>
 </ul>

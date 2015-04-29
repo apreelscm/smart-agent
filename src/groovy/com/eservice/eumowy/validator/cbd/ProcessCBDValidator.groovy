@@ -13,7 +13,7 @@ public final class ProcessCBDValidator {
     private final Client client
     private final List calc
     private final List<Validator> validators
-    private String errorCode
+    private List<String> errorCodes
 
     public ProcessCBDValidator(Process process, Client client, List calc) {
         this.process = process
@@ -33,7 +33,6 @@ public final class ProcessCBDValidator {
             validators.add(new PkoBpValidator(process, client))
             validators.add(new ExchangeLeaseToCooperationValidator(process, client))
             validators.add(new PrepaidValidator(process, client))
-            validators.add(new com.eservice.eumowy.validator.cbd.CashbackValidator(process, client, calc))
             validators.add(new CashbackTerminalValidator(process, client, calc))
             validators.add(new DccTerminalValidator(process, client, calc))
         }
@@ -42,19 +41,20 @@ public final class ProcessCBDValidator {
     }
 
     public boolean isValid() {
-        return StringUtils.isEmpty(getErrorCode())
+        return getErrorCodes().empty
     }
 
-    public String getErrorCode() {
-        if(errorCode) return errorCode
+    public List<String> getErrorCodes() {
+        if(errorCodes) return errorCodes
+
+        errorCodes = Lists.newArrayList()
 
         for (Validator validator : validators) {
             if (!validator.isValid()) {
-                errorCode = validator.getErrorMessageCode()
-                break
+                errorCodes.add(validator.getErrorMessageCode())
             }
         }
 
-        return errorCode
+        return errorCodes
     }
 }

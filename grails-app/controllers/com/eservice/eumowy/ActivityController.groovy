@@ -5,6 +5,7 @@ import com.eservice.eumowy.auth.EServiceUserDetails
 import com.eservice.eumowy.dto.MerchantDetailsDTO
 import com.eservice.eumowy.exception.CalculatorException
 import com.eservice.eumowy.validator.NumberValidator
+import com.google.common.collect.Lists
 import grails.converters.JSON
 import groovy.sql.GroovyRowResult
 import org.apache.catalina.connector.ClientAbortException
@@ -501,7 +502,7 @@ class ActivityController {
                     long calculatorId = calculatorService.getCalculatorId(processInstance, client)
 
                     if(!calculatorService.isCalcValid(calculator, calculatorId, processInstance)) {
-                        flash.calcErrorMessage =  message(code:"calc.notEnough.error")
+                        flash.calcErrors = Lists.newArrayList("calc.notEnough.error")
                         return error()
                     }
 
@@ -510,7 +511,7 @@ class ActivityController {
 
                     flash.calcInfoMessage = calculator.isEmpty() ? message(code:"calc.not.needed.info") : message(code:"calc.found.info")
                 } catch (CalculatorException e) {
-                    flash.calcErrorMessage = message(code: e.message)
+                    flash.calcErrors = e.getErrors()
                     return error()
                 }
 
@@ -839,7 +840,7 @@ class ActivityController {
                     long calculatorId = calculatorService.getCalculatorId(lastProcess, client)
 
                     if(!calculatorService.isCalcValid(calculator, calculatorId, lastProcess)) {
-                        flash.calcErrorMessage =  message(code:"calc.notEnough.error")
+                        flash.calcErrors = Lists.newArrayList("calc.notEnough.error")
                         return error()
                     }
 
@@ -848,7 +849,7 @@ class ActivityController {
 
                     flash.calcInfoMessage = calculator.isEmpty() ? message(code:"calc.not.needed.info") : message(code:"calc.found.info")
                 } catch (CalculatorException e) {
-                    flash.calcErrorMessage = message(code: e.message)
+                    flash.calcErrors = e.getErrors()
                     return error()
                 }
 

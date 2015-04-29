@@ -2,7 +2,6 @@ package com.eservice.eumowy
 
 import com.eservice.eumowy.exception.CalculatorException
 import com.eservice.eumowy.validator.cbd.ProcessCBDValidator
-import com.eservice.eumowy.validator.cbd.Validator
 
 class CalculatorService implements Serializable {
 
@@ -89,7 +88,7 @@ class CalculatorService implements Serializable {
         ProcessCBDValidator processCBDValidator = new ProcessCBDValidator(process, client, calc)
 
         if(!processCBDValidator.isValid()) {
-            throw new CalculatorException(processCBDValidator.getErrorCode())
+            throw new CalculatorException(processCBDValidator.getErrorCodes())
         }
 
         return calc

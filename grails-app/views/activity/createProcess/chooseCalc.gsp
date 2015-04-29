@@ -75,8 +75,10 @@
                  <g:if test="${calcInfoMessage}">
                      <g:render template="message/infoMessage" model="[message: calcInfoMessage]"/>
                  </g:if>
-                 <g:if test="${calcErrorMessage}">
-                     <g:render template="message/errorMessage" model="[message: calcErrorMessage]"/>
+                 <g:if test="${calcErrors}">
+                     <g:each in="${calcErrors}">
+                        <g:render template="message/errorMessage" model="[message: it]"/>
+                     </g:each>
                  </g:if>
             </div>
         </div>

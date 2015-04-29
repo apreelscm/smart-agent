@@ -9,6 +9,7 @@ import com.google.common.collect.Lists
 
 final class PrepaidValidator extends Validator {
     private static final String LEASE = "UNA" //UMOWA NAJMU
+    private static final String ATP_LEASE = "ATP"
     private static final String COOPERATION = "WUN" //UMOWA WSPOLPRACY
 
     PrepaidValidator(Process process, Client client) {
@@ -20,16 +21,20 @@ final class PrepaidValidator extends Validator {
         boolean hasActivity = ActivityHelper.hasAtLeastOne(process, Lists.newArrayList("dodaniePrepaid", "zmianaWarunkowPrepaid"))
         String umwType = cbdService.getUmwTyp(client.cbdId)
 
-        if (COOPERATION.equals(umwType) || (!LEASE.equals(umwType) && !COOPERATION.equals(umwType))) {
+        if (COOPERATION.equals(umwType) || (!isLeaseType(umwType) && !COOPERATION.equals(umwType))) {
             return true
         }
 
-        return !hasActivity && LEASE.equals(umwType)
+        return !hasActivity && isLeaseType(umwType)
     }
 
     @Override
     protected String getErrorMessageCode() {
         return 'exchange.lease.cooperation.required'
+    }
+
+    private static boolean isLeaseType(String umwType) {
+        return LEASE.equals(umwType) || ATP_LEASE.equals(umwType)
     }
 
 }
