@@ -21,7 +21,7 @@ final class PrepaidValidator extends Validator {
         boolean hasActivity = ActivityHelper.hasAtLeastOne(process, Lists.newArrayList("dodaniePrepaid", "zmianaWarunkowPrepaid"))
         String umwType = cbdService.getUmwTyp(client.cbdId)
 
-        if (COOPERATION.equals(umwType) || (!isLeaseType(umwType) && !COOPERATION.equals(umwType))) {
+        if (COOPERATION.equals(umwType) || LEASE.equals(umwType)) {
             return true
         }
 
