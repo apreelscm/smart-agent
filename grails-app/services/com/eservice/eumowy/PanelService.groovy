@@ -67,7 +67,7 @@ class PanelService {
         cmd.umowaOznOd = nullify(cmd.umowaOznOd)
         cmd.umowaOznDo = nullify(cmd.umowaOznDo)
         cmd.czyAneks = "TAK".equals(calculatorService.getCalcProperty(calc, "S_DATA_PODPISANIA_ANEKSU"))
-        cmd.liczbaMiesiecyLojalnosciowych = calculatorService.getCalcProperty(calc, "E_LICZBA MIESIECY_LOJ")
+        cmd.liczbaMiesiecyLojalnosciowych = calculatorService.getCalcProperty(calc, "E_LICZBA_MIESIECY_LOJ")
     }
 
     def getDaneAkceptanta(ProcessCommand cmd, def calc ) {
