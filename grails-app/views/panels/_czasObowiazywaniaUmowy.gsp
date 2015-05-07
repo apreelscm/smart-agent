@@ -1,3 +1,5 @@
+<asset:javascript src="vendors/moment/moment.min.js"/>
+
 <div id="aggrementTimePanel">
     <fieldset>
         <div class="belka-glowna"><g:message code="panel.aggrement.time.title"/> </div>
@@ -5,22 +7,34 @@
             <ul class="table-list centre">
                 <div class="${hasErrors(bean:data,field:'hasUmowaCzas','errorContainer')}">
                     <g:hiddenField name="hasUmowaCzas" value="true"/>
-                    <g:radioGroup name="umowaCzas"
-                                  labels="['panel.aggrement.time.not.defined','panel.aggrement.time.defined']"
-                                  values="['nieoznaczony', 'oznaczony']"
-                                  value="${data.umowaCzas != com.eservice.eumowy.command.ProcessCommand.DEFAULT_VALUE ? data.umowaCzas : '' }">
-                        <li><span class="align-left"><label> ${it.radio} <g:message code="${it.label}"/></label></span></li>
-                    </g:radioGroup>
+                    <g:hiddenField name="czyAneks" value="${data.czyAneks}"/>
+                    <g:hiddenField name="liczbaMiesiecyLojalnosciowych" value="${data.liczbaMiesiecyLojalnosciowych}"/>
+
+                    <li>
+                        <span class="align-left">
+                            <label>
+                                <g:radio name="umowaCzas" value="nieoznaczony" checked="${data.czyAneks}" disabled="${data.czyAneks}"/>
+                                <g:message code="panel.aggrement.time.not.defined"/>
+                            </label>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="align-left">
+                            <label>
+                                <g:radio name="umowaCzas" value="oznaczony" checked="${data.czyAneks}" disabled="${!data.czyAneks}"/>
+                                <g:message code="panel.aggrement.time.defined"/>
+                            </label>
+                        </span>
+                    </li>
                 </div>
             </ul>
             <ul>
                 <li id="aggrementDates">
-                    <!-- czas: ${data.umowaCzas} od: ${data.umowaOznOd} do: ${data.umowaOznDo} -->
                     <span>
                         <span><g:message code="panel.from"/></span>
-                        <span><eumowy:textField name="umowaOznOd" value="${data.umowaOznOd}" validatable="${data}"  style="width: 120px;"/></span>
+                        <span><eumowy:textField name="umowaOznOd" value="${data.umowaOznOd}" validatable="${data}" style="width: 120px;"/></span>
                         <span><g:message code="panel.to"/></span>
-                        <span><eumowy:textField name="umowaOznDo" value="${data.umowaOznDo}" validatable="${data}"  style="width: 120px;"/></span>
+                        <span><eumowy:textField name="umowaOznDo" value="${data.umowaOznDo}" validatable="${data}" readonly="readonly" style="width: 120px;"/></span>
                     </span>
                 </li>
             </ul>
@@ -60,14 +74,11 @@
         var _aggrementEnd = jQuery("#umowaOznDo");
 
         _aggrementStart.datepicker({ dateFormat: 'yy-mm-dd', minDate: new Date() });
-        _aggrementEnd.datepicker({ dateFormat: 'yy-mm-dd', minDate: new Date() });
 
         _aggrementStart.on("change", function(){
-            _aggrementEnd.datepicker("option", "minDate",  _aggrementStart.val());
-        });
-
-        _aggrementEnd.on("change", function(){
-            _aggrementStart.datepicker("option", "maxDate",  _aggrementEnd.val());
+            var date = _aggrementStart.datepicker("getDate"),
+                    monthsToAdd = '${data.liczbaMiesiecyLojalnosciowych}';
+            _aggrementEnd.val(moment(date).add(monthsToAdd, 'M').format("YYYY-MM-DD"));
         });
     });
 </script>

@@ -244,8 +244,6 @@
         <g:hiddenField name="isBundleActivity" value="${data.isBundleActivity}"/>
         <g:hiddenField name="minCenaNajmu" value="${data.minCenaNajmu}"/>
         <g:hiddenField name="promObjNajLiczbaTerminali" value="${data.promObjNajLiczbaTerminali}"/>
-        <g:hiddenField name="czyAneks" value="${data.czyAneks}"/>
-        <g:hiddenField name="liczbaMiesiecyLojalnosciowych" value="${data.liczbaMiesiecyLojalnosciowych}"/>
 
         <g:each var="panel" in="${processInstance.panels.sort(false){p -> p?.orderNo}}" status="i">
             <g:if test="${panel != null}">
