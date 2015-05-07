@@ -77,11 +77,11 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
     }
 
     @Test
-    void APUW1000140707() {  //AP/UW/1.000/14-07-07
+    void APUW1000150305() {  //AP/UW/1.001/15-07-07
         //given
         def subscriptions = [
                 ["ACCEPTANT1", 2, 50, 305, 59, 28],
-                ["PH", 2, 165, 230, 59, 28]
+                ["PH", 2, 165, 240, 59, 28]
         ]
 
         //when
@@ -92,10 +92,9 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
         data.putAll(okresLojalnosciowyIOplataDeinstalacyjnaFields())
         data.putAll(PdfHelper.insertSignatures(subscriptions))
         data.put("zalacznikNr4", ["4 - Nazwa zalacznika nr 4"] as String[]);
-        data.put("zalacznikNr5", ["5 - Nazwa zalacznika nr 5"] as String[]);
 
         //then
-        process("APUW1.00014-07-07.pdf", "APUW1.00014-07-07_out.pdf", data)
+        process("APUW1.00115-03-05.pdf", "APUW1.00115-03-05_out.pdf", data)
     }
 
     @Test
@@ -114,10 +113,10 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
     }
 
     @Test
-    void APUWRWT1000140707() { //AP/UW/RWT/1.000/14-07-07
+    void APUWRWT1001150305() { //AP/UW/RWT/1.001/15-03-05
         //given
         def subscriptions = [
-                ["PH", 1, 150, 215, 59, 28]
+                ["PH", 1, 150, 165, 59, 28]
         ]
 
         //when
@@ -125,7 +124,7 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
         data.putAll(PdfHelper.insertSignatures(subscriptions))
 
         //then
-        process("APUWRWT1.00014-07-07.pdf", "APUWRWT1.00014-07-07_out.pdf", data)
+        process("APUWRWT1.00115-03-05.pdf", "APUWRWT1.00115-03-05_out.pdf", data)
     }
 
     @Test
@@ -176,12 +175,12 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
     }
 
     @Test
-    void APUPZT1DC1000140707() { //AP/UPZT1DC/1.000/14-07-07
+    void APUPZT11000150305() { //AP/UPZT1/1.000/15-03-05
         //given
         def subscriptions = [
-                ["ACCEPTANT1", 5, 150, 282, 59, 28],
-                ["ACCEPTANT2", 5, 150, 245, 59, 28],
-                ["PH", 5, 462, 106, 59, 28]
+                ["ACCEPTANT1", 5, 150, 337, 59, 28],
+                ["ACCEPTANT2", 5, 150, 300, 59, 28],
+                ["PH", 5, 462, 160, 59, 28]
         ]
 
         //when
@@ -192,11 +191,11 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
         data.putAll(PdfHelper.insertSignatures(subscriptions))
 
         //then
-        process("APUPZT1DC1.00014-07-07.pdf", "APUPZT1DC1.00014-07-07_out.pdf", data)
+        process("APUPZT11.00015-03-05.pdf", "APUPZT11.00015-03-05_out.pdf", data)
     }
 
     @Test
-    void APUPZT2DC1000140707() { //AP/UPZT2DC/1.000/14-07-07
+    void APUPZT21000150303() { //AP/UPZT2/1.000/15-03-05
         //given
         def subscriptions = [
                 ["ACCEPTANT1", 5, 150, 299, 59, 28],
@@ -212,7 +211,7 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
         data.putAll(PdfHelper.insertSignatures(subscriptions))
 
         //then
-        process("APUPZT2DC1.00014-07-07.pdf", "APUPZT2DC1.00014-07-07_out.pdf", data)
+        process("APUPZT21.00015-03-05.pdf", "APUPZT21.00015-03-05_out.pdf", data)
     }
 
     @Test
@@ -231,10 +230,10 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
     }
 
     @Test
-    void APUPZZSNT11000140707() { //AP/UPZ/ZSNT1/1.000/14-07-07
+    void APUPZZSNT11001150305() { //AP/UPZ/ZSNT1/1.001/15-03-05
         //given
         def subscriptions = [
-                ["PH", 2, 150, 535, 59, 28]
+                ["PH", 1, 110, 72, 59, 28]
         ]
 
         //when
@@ -244,14 +243,14 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
         data.putAll(PdfHelper.insertSignatures(subscriptions))
 
         //then
-        process("APUPZZSNT11.00014-07-07.pdf", "APUPZZSNT11.00014-07-07_out.pdf", data)
+        process("APUPZZSNT11.00115-03-05.pdf", "APUPZZSNT11.00115-03-05_out.pdf", data)
     }
 
     @Test
-    void APUPZZSNT21000140707() { //AP/UPZ/ZSNT2/1.000/14-07-07
+    void APUPZZSNT21001150305() { //AP/UPZ/ZSNT2/1.001/15-03-05
         //given
         def subscriptions = [
-                ["PH", 1, 150, 158, 59, 28]
+                ["PH", 1, 150, 140, 59, 28]
         ]
 
         //when
@@ -261,7 +260,7 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
         data.putAll(PdfHelper.insertSignatures(subscriptions))
 
         //then
-        process("APUPZZSNT21.00014-07-07.pdf", "APUPZZSNT21.00014-07-07_out.pdf", data)
+        process("APUPZZSNT21.00115-03-05.pdf", "APUPZZSNT21.00115-03-05_out.pdf", data)
     }
 
 

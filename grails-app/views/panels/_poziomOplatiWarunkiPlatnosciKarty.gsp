@@ -264,8 +264,17 @@
                         <td><eumowy:percentageField class="percent-number"  name="dinersClubPr" value="${data.dinersClubPr}" validatable="${data}"/> </td>
                         <td></td></tr>
                     <tr>
-                        <td class="bold">10. <g:message code="panel.iko"/></td>
-                        <td><eumowy:percentageField class="percent-number"  name="ikoPr" value="${data.ikoPr}" readonly="true"/> </td>
+                        <td class="bold">10. <g:message code="panel.mobile"/></td>
+                        <td colspan="2"></td>
+                    </tr>
+                    <tr>
+                        <td class="cardPaymentPanel-padding">10a <g:message code="panel.iko"/></td>
+                        <td><eumowy:percentageField class="percent-number" name="ikoPr" readonly="true" value="${data.ikoPr}" validatable="${data}"/></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td class="cardPaymentPanel-padding">10b <g:message code="panel.blik"/></td>
+                        <td><eumowy:percentageField class="percent-number" name="blikPr" readonly="true" value="${data.blikPr}" validatable="${data}"/></td>
                         <td></td>
                     </tr>
                 </tbody>

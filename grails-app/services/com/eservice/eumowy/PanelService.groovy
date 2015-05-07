@@ -66,6 +66,8 @@ class PanelService {
         cmd.umowaCzas = nullify(cmd.umowaCzas)
         cmd.umowaOznOd = nullify(cmd.umowaOznOd)
         cmd.umowaOznDo = nullify(cmd.umowaOznDo)
+        cmd.czyAneks = "TAK".equals(calculatorService.getCalcProperty(calc, "S_DATA_PODPISANIA_ANEKSU"))
+        cmd.liczbaMiesiecyLojalnosciowych = calculatorService.getCalcProperty(calc, "E_LICZBA_MIESIECY_LOJ")
     }
 
     def getDaneAkceptanta(ProcessCommand cmd, def calc ) {
@@ -447,8 +449,10 @@ class PanelService {
 
         //9
         cmd.dinersClubPr = setAtLeastAs(cmd.dinersClubPr, calculatorService.getCalcProperty(calc,"OPLATA_MSC_9_PROCENT"))
-        // 10
-        cmd.ikoPr = calculatorService.getCalcProperty(calc,"OPLATA_MSC_10_PROCENT")
+        // 10a
+        cmd.ikoPr = "0.39"
+        // 10b
+        cmd.blikPr = "0.39"
     }
 
     def getPoziomOplatIWarunkiPlatnosciPP(ProcessCommand cmd, def calc ) {
