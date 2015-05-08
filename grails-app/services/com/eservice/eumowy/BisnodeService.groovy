@@ -4,6 +4,7 @@ import com.eservice.eumowy.auth.EServiceUserDetails
 import com.eservice.eumowy.dto.MerchantDetailsDTO
 import com.eservice.eumowy.dto.MerchantRepresentativeDTO
 import com.eservice.webs.client.govsync.dto.MerchantKRSDataDTO
+import com.google.common.base.MoreObjects
 
 class BisnodeService {
     def websWebServiceClient
@@ -29,23 +30,27 @@ class BisnodeService {
     }
 
     public MerchantDetailsDTO getMerchantDetails(String nip) {
-        MerchantKRSDataDTO merchantDetails
+        MerchantKRSDataDTO bisnodeMerchantDetails
         Long userId = ((EServiceUserDetails)springSecurityService.principal).auwId
 
         try {
-            merchantDetails = websWebServiceClient.searchMerchantData(nip, userId)
+            bisnodeMerchantDetails = websWebServiceClient.searchMerchantData(nip, userId)
         } catch (Exception e) {
             log.error("Error during data fetch from bisnode", e)
             return null
         }
 
-        if (isMerchantDetailsValid(merchantDetails)) {
+        if (isMerchantDetailsValid(bisnodeMerchantDetails)) {
             log.info(String.format("Client with NIP %s not found in Bisnode.", nip))
             return null
         }
 
         log.info(String.format("Client with NIP %s found in Bisnode", nip))
-        return new MerchantDetailsDTO(merchantDetails)
+
+        MerchantDetailsDTO merchantDetails = new MerchantDetailsDTO(bisnodeMerchantDetails)
+        log.info("Merchant details: " + merchantDetails.toString())
+
+        return merchantDetails
     }
 
     private isMerchantDetailsValid(MerchantKRSDataDTO merchantDetails) {

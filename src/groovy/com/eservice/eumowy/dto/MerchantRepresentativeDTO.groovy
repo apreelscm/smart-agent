@@ -1,6 +1,7 @@
 package com.eservice.eumowy.dto
 
 import com.eservice.webs.client.govsync.dto.MerchantRepresentativeDataDTO
+import com.google.common.base.MoreObjects
 
 class MerchantRepresentativeDTO implements Serializable{
     String title
@@ -15,5 +16,15 @@ class MerchantRepresentativeDTO implements Serializable{
         firstName = merchantRepresentativeDTO.firstName
         lastName = merchantRepresentativeDTO.lastName
         position = merchantRepresentativeDTO.position
+    }
+
+    @Override
+    String toString() {
+        return MoreObjects.toStringHelper(this)
+        .add("title", title)
+        .add("firstName", firstName)
+        .add("lastName", lastName)
+        .add("position", position)
+        .toString()
     }
 }

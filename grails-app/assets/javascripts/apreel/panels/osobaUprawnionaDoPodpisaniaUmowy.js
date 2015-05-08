@@ -145,12 +145,14 @@
         var $this = jQuery(this),
             acceptor = $this.parents("div.acceptor"),
             citizenship = acceptor.find("input[name$='citizenship']"),
+            country = acceptor.find("select[name$='country']"),
             selectedOption = this.value;
 
         if(selectedOption === "ABROAD") {
             citizenship.val('').removeAttr('readonly');
         } else {
             citizenship.val('polskie').attr('readonly', 'readonly');
+            country.val('Polska');
         }
     }
 

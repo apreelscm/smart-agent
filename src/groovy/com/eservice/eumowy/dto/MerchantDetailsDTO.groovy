@@ -3,10 +3,12 @@ package com.eservice.eumowy.dto
 import com.eservice.webs.client.govsync.dto.MerchantAddressDataDTO
 import com.eservice.webs.client.govsync.dto.MerchantKRSDataDTO
 import com.eservice.webs.client.govsync.dto.MerchantRepresentativeDataDTO
+import com.google.common.base.MoreObjects
 
 import static org.apache.commons.lang.StringUtils.*;
 
 class MerchantDetailsDTO implements Serializable {
+    Long id
     String nip
     String akceptantRegon
     String akceptantNazwaOficjalna
@@ -25,6 +27,7 @@ class MerchantDetailsDTO implements Serializable {
     List<MerchantRepresentativeDTO> representatives
 
     public MerchantDetailsDTO(MerchantKRSDataDTO merchantData) {
+        id = merchantData.getId()
         nip = merchantData.getNip()
         akceptantRegon = merchantData.getRegon()
         akceptantNazwaOficjalna = getAlphanumericName(merchantData.getName())
@@ -63,5 +66,27 @@ class MerchantDetailsDTO implements Serializable {
 
     private String getAlphanumericName(String value) {
         return value?.replaceAll("[^A-Za-z0-9 ]", "")
+    }
+
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+        .add("id", id)
+        .add("nip", nip)
+        .add("akceptantRegon", akceptantRegon)
+        .add("akceptantNazwaOficjalna", akceptantNazwaOficjalna)
+        .add("opisMerchanta", opisMerchanta)
+        .add("akceptantUlicaTytul", akceptantUlicaTytul)
+        .add("akceptantUlica", akceptantUlica)
+        .add("akceptantNrDomu", akceptantNrDomu)
+        .add("akceptantNrMieszkania", akceptantNrMieszkania)
+        .add("akceptantKodPocztowy", akceptantKodPocztowy)
+        .add("akceptantMiasto", akceptantMiasto)
+        .add("akceptantTelStacjonarny", akceptantTelStacjonarny)
+        .add("akceptantTelKomorkowy", akceptantTelKomorkowy)
+        .add("akceptantFax", akceptantFax)
+        .add("representatives", representatives.toString())
+        .toString();
     }
 }

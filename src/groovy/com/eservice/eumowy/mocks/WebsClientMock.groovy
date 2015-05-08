@@ -13,44 +13,36 @@ class WebsClientMock extends WebsClient {
     MerchantKRSDataDTO searchMerchantData(String nip, Long userId) {
         MerchantKRSDataDTO merchantKRSDataDTO = new MerchantKRSDataDTO()
         merchantKRSDataDTO.id = 1
-        merchantKRSDataDTO.nip = nip
-        merchantKRSDataDTO.regon = "317411108"
-        merchantKRSDataDTO.name = "Testowy merchant"
+        merchantKRSDataDTO.nip = "5841003695"
+        merchantKRSDataDTO.regon = "190431244"
+        merchantKRSDataDTO.name = "PPHU DRUK"
         merchantKRSDataDTO.description = "Opis testowego merchanta"
 
-        merchantKRSDataDTO.merchAddressDatas = new HashSet<MerchantAddressDataDTO>(Arrays.asList(createAddressDTO(), createAddressDTO()))
-        merchantKRSDataDTO.merchRepresentDatas = new HashSet<MerchantRepresentativeDataDTO>(Arrays.asList(createMerchantRepresentative(), createMerchantRepresentative()))
+        merchantKRSDataDTO.merchAddressDatas = new HashSet<MerchantAddressDataDTO>(Arrays.asList(createAddressDTO()))
+        merchantKRSDataDTO.merchRepresentDatas = new HashSet<MerchantRepresentativeDataDTO>(Arrays.asList(createMerchantRepresentative()))
 
         return merchantKRSDataDTO
     }
 
     private MerchantAddressDataDTO createAddressDTO() {
         MerchantAddressDataDTO merchantAddressDataDTO = new MerchantAddressDataDTO()
-        merchantAddressDataDTO.id = Random.newInstance().nextLong()
-        merchantAddressDataDTO.suffix = "UL"
-        merchantAddressDataDTO.street = "Przykladowa"
-        merchantAddressDataDTO.streetNbr = RandomStringUtils.randomNumeric(2)
-        merchantAddressDataDTO.flatNbr = RandomStringUtils.randomNumeric(2)
-        merchantAddressDataDTO.postalCode = "01-650"
+        merchantAddressDataDTO.suffix = "Ul."
+        merchantAddressDataDTO.street = "Lektykarska"
+        merchantAddressDataDTO.streetNbr = "25"
+        merchantAddressDataDTO.flatNbr = "8"
+        merchantAddressDataDTO.postalCode = "01-687"
         merchantAddressDataDTO.city = "Warszawa"
-        merchantAddressDataDTO.phone = RandomStringUtils.randomNumeric(7)
-        merchantAddressDataDTO.mobilePhone = RandomStringUtils.randomNumeric(9)
-        merchantAddressDataDTO.fax = RandomStringUtils.randomNumeric(9)
-        merchantAddressDataDTO.addressType = "JakisTam"
+        merchantAddressDataDTO.addressType = "Adres operacyjny"
 
         return merchantAddressDataDTO
     }
 
     private MerchantRepresentativeDataDTO createMerchantRepresentative() {
         MerchantRepresentativeDataDTO merchantRepresentativeDataDTO = new MerchantRepresentativeDataDTO()
-        merchantRepresentativeDataDTO.id = Random.newInstance().nextLong()
-        merchantRepresentativeDataDTO.email = "test@email.com"
-        merchantRepresentativeDataDTO.firstName = RandomStringUtils.randomAlphabetic(7)
-        merchantRepresentativeDataDTO.lastName = RandomStringUtils.randomAlphabetic(10)
-        merchantRepresentativeDataDTO.mobilePhone = RandomStringUtils.randomNumeric(9)
+        merchantRepresentativeDataDTO.firstName = "Piotr"
+        merchantRepresentativeDataDTO.lastName = "Lewicki"
         merchantRepresentativeDataDTO.title = "Pan"
-        merchantRepresentativeDataDTO.phone = RandomStringUtils.randomNumeric(7)
-        merchantRepresentativeDataDTO.position = RandomStringUtils.randomAlphabetic(5)
+        merchantRepresentativeDataDTO.position = "Właściciel"
 
         return merchantRepresentativeDataDTO
     }
