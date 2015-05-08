@@ -1,3 +1,4 @@
+<%@ page import="com.google.common.collect.Lists; com.eservice.eumowy.ActivityHelper" %>
 <fieldset class="subpanel-fieldset">
     <g:hiddenField id="${panelType}[${id}].hasDodaniePrepaid" name="${panelType}[${id}].hasDodaniePrepaid" value="${data.hasDodaniePrepaid}"/>
 
@@ -40,8 +41,10 @@
                             <g:set var="tpFromCalcEnabled" value="${data.isDoladowania_tp}"/>
                             <g:set var="tkFromCalcEnabled" value="${data.isDoladowania_tk}"/>
                             <g:set var="hasPrepaid" value="${data.hasPrepaid}"/>
-                            <g:set var="tpEnabled" value="${hasNewUmowaAndPrepaid || (data.hasDodaniePrepaid && tpFromCalcEnabled) || (tpFromCalcEnabled && isRozszerzenie && hasPrepaid)}"/>
-                            <g:set var="tkEnabled" value="${hasNewUmowaAndPrepaid || (data.hasDodaniePrepaid && tkFromCalcEnabled) || (tkFromCalcEnabled && isRozszerzenie && hasPrepaid)}"/>
+                            <g:set var="tpEnabled" value="${hasNewUmowaAndPrepaid || (data.hasDodaniePrepaid && tpFromCalcEnabled) ||
+                                    (tpFromCalcEnabled && isRozszerzenie && hasPrepaid) || (data.isOnlyRozszerzenie && hasPrepaid)}"/>
+                            <g:set var="tkEnabled" value="${hasNewUmowaAndPrepaid || (data.hasDodaniePrepaid && tkFromCalcEnabled) ||
+                                    (tkFromCalcEnabled && isRozszerzenie && hasPrepaid) || (data.isOnlyRozszerzenie && hasPrepaid)}"/>
 
                             <div>
                                 <label for="${panelType}[${id}].teleKodzik" class="doladowanieLabel">

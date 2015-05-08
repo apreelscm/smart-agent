@@ -4,6 +4,7 @@ import com.eservice.eumowy.command.AllPosCommand
 import com.eservice.eumowy.command.PointCommand
 import com.eservice.eumowy.command.ProcessCommand
 import com.eservice.eumowy.util.DateUtils
+import com.google.common.collect.Lists
 
 class PanelService {
 
@@ -19,6 +20,7 @@ class PanelService {
         cmd.doladowania_tp = nullify(cmd.doladowania_tp)
         cmd.doladowania_tk = nullify(cmd.doladowania_tk)
         cmd.isRozszerzenie = ActivityHelper.contains(cmd.process, 'dodatkowyPunkt') || ActivityHelper.contains(cmd.process, 'dodatkowyPos')
+        cmd.isOnlyRozszerzenie = ActivityHelper.containsOnly(cmd.process, Lists.newArrayList('dodatkowyPunkt')) || ActivityHelper.containsOnly(cmd.process, Lists.newArrayList('dodatkowyPos'))
         cmd.hasPrepaid = cbdService.getPrepaidEvoucher(cmd.nip) || cbdService.getPrepaidTopup(cmd.nip)
         cmd.hasDodaniePrepaid = ActivityHelper.contains(cmd.process, 'dodaniePrepaid')
         cmd.hasNewUmowa = ActivityHelper.isNewAgreement(cmd.process)

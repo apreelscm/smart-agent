@@ -501,6 +501,8 @@ class ProcessCommand implements Serializable {
     @Omit
     Boolean isRozszerzenie
     @Omit
+    Boolean isOnlyRozszerzenie
+    @Omit
     Boolean hasNewUmowaAndPrepaid
     @Omit
     Boolean hasNewUmowa
