@@ -12,6 +12,7 @@
             <g:sortableColumn property="phFirstName"  title="${message(code: 'ph.firstName.label')}" params="[filterStatus:filterStatus,filterObserved:filterObserved,filterNip:filterNip,filterPhNo:filterPhNo,filterDateFrom:filterDateFrom,filterDateTo:filterDateTo]"/>
             <g:sortableColumn property="phSurname"  title="${message(code: 'ph.lastName.label')}" params="[filterStatus:filterStatus,filterObserved:filterObserved,filterNip:filterNip,filterPhNo:filterPhNo,filterDateFrom:filterDateFrom,filterDateTo:filterDateTo]"/>
             <g:sortableColumn property="status"  title="${message(code: 'status.label')}" params="[filterStatus:filterStatus,filterObserved:filterObserved,filterNip:filterNip,filterPhNo:filterPhNo,filterDateFrom:filterDateFrom,filterDateTo:filterDateTo]"/>
+            <g:sortableColumn property="isRepresentativesChangedManually" title="${message(code: 'representative.changed.manually')}" params="[filterStatus:filterStatus,filterObserved:filterObserved,filterNip:filterNip,filterPhNo:filterPhNo,filterDateFrom:filterDateFrom,filterDateTo:filterDateTo]"/>
         </tr>
     </thead>
     <tbody>
@@ -26,6 +27,11 @@
             <td class="tableCell">${fieldValue(bean: processInstance, field: "phFirstName")}</td>
             <td class="tableCell">${fieldValue(bean: processInstance, field: "phSurname")}</td>
             <td class="tableCell">${fieldValue(bean: processInstance, field: "status")}</td>
+            <td class="tableCell">
+                <g:if test="${processInstance.getBooleanData("isRepresentativesChangedManually")}">
+                    <g:checkBox name="isRepresentativesChangedManually" value="true" checked="true" disabled="disabled"/>
+                </g:if>
+            </td>
         </tr>
     </g:each>
     </tbody>
