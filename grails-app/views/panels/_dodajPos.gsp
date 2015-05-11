@@ -24,6 +24,7 @@
 		var panelPosTemplate = jQuery("#hiddenPosPanel").html();
 		var maxTerminalCount = parseInt(jQuery("#liczbaTerminali").val());
 		var panelPosCount = ${data.poses.size()};
+        var isRozszerzenieOnly = '${data.isOnlyRozszerzenie}' === 'true';
 		panelPosInternalCount = ${data.poses.size()};
 		globalPanelPosCount = ${data.poses.size()};
 		jQuery("#hiddenPosPanel").remove();
@@ -45,6 +46,11 @@
 			jQuery("#addNewPointButton").prop("disabled", false);
 			jQuery("#addNewPosButton").prop("disabled", false);
 		}
+
+        if (isRozszerzenieOnly) {
+            jQuery("#addNewPointButton").prop("disabled", false);
+            jQuery("#addNewPosButton").prop("disabled", false);
+        }
 			
 		jQuery("#addNewPosButton").on("click", function(e) {
 			e.preventDefault();

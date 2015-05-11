@@ -14,10 +14,6 @@ class ProcessCommandDefaultValuesFactory {
             case "pakietMobilny":
                 return new PackageDefaultValuesSetter()
                 break
-            case "dodatkowyPunkt":
-            case "dodatkowyPos":
-                return new PointDefaultValuesSetter()
-                break
         }
     }
 }

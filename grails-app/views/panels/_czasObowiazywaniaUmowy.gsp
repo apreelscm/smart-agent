@@ -13,7 +13,7 @@
                     <li>
                         <span class="align-left">
                             <label>
-                                <g:radio name="umowaCzas" value="nieoznaczony" checked="${data.czyAneks}" disabled="${data.czyAneks}"/>
+                                <g:radio name="umowaCzas" value="nieoznaczony" checked="${!data.czyAneks}" disabled="${data.czyAneks}"/>
                                 <g:message code="panel.aggrement.time.not.defined"/>
                             </label>
                         </span>

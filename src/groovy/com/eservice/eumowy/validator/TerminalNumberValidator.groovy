@@ -5,12 +5,6 @@ import grails.util.Environment
 public class TerminalNumberValidator {
 
     static def validate = { value, cmd, errors ->
-        if (Environment.getCurrent().equals(Environment.TEST)) {
-            return true
-        } else if (Environment.getCurrent().equals(Environment.DEVELOPMENT)){
-            return true
-        }
-
         def max = value ? Integer.valueOf(value) : 0
         def counter = 0
 
@@ -28,6 +22,7 @@ public class TerminalNumberValidator {
             errors.rejectValue("liczbaTerminali", "default.notEqual.liczbaTerminali",[counter, max] as Object[], "")
             return false
         }
+
         return true
     }
 

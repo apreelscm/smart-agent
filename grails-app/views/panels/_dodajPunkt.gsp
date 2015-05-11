@@ -28,6 +28,7 @@
 		var maxTerminalCount = parseInt(jQuery("#liczbaTerminali").val());
 		var panelTemplate = jQuery("#hiddenPanel").html();
 		var panelCount = ${data.points.size()};
+        var isRozszerzenieOnly = '${data.isOnlyRozszerzenie}' === 'true';
 		panelInternalCount.value = ${data.points.size()};
 		globalPanelCount = ${data.points.size()};
 		jQuery("#newPointPanelCount").val(panelCount);
@@ -44,11 +45,15 @@
 		if (getCurrentTerminalCount("points") == maxTerminalCount) {
 			jQuery("#addNewPointButton").prop("disabled", true);
 			jQuery("#addNewPosButton").prop("disabled", true);
-		}
-		else if (getCurrentTerminalCount("points") != maxTerminalCount) {
+		} else if (getCurrentTerminalCount("points") != maxTerminalCount) {
 			jQuery("#addNewPointButton").prop("disabled", false);
 			jQuery("#addNewPosButton").prop("disabled", false);
 		}
+
+        if (isRozszerzenieOnly) {
+            jQuery("#addNewPointButton").prop("disabled", false);
+            jQuery("#addNewPosButton").prop("disabled", false);
+        }
 		
 		for (var i = 0; i < panelCount; i++) {
 			setupNewPointPanelHandlers(i, "points");
