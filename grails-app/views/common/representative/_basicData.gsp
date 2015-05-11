@@ -7,11 +7,11 @@
 
         <label for="${prefix}[${seqNo}].name"><g:message code="panel.first.name"/>:</label>
         <eumowy:select name="${prefix}[${seqNo}].name" from="${firstNames}" value="${representative?.name}" class="nameField"
-                       validatable="${representative}" validateField="name"/>
+                       validatable="${representative}" style="min-width: 150px" validateField="name"/>
 
         <label for="${prefix}[${seqNo}].surname"><g:message code="panel.last.name"/>:</label>
         <eumowy:select name="${prefix}[${seqNo}].surname" from="${lastNames}" value="${representative?.surname}" class="surnameField"
-                       validatable="${representative}" validateField="surname"/>
+                       validatable="${representative}" style="min-width: 150px" validateField="surname"/>
 
         <label for="${prefix}[${seqNo}].position"><g:message code="panel.position"/>:</label>
         <eumowy:textField name="${prefix}[${seqNo}].position" value="${representative?.position}" readonly="readonly" class="positionField"
