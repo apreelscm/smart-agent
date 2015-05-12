@@ -3,8 +3,6 @@ package com.eservice.eumowy.validator.cbd
 import com.eservice.eumowy.ActivityHelper
 import com.eservice.eumowy.Client
 import com.eservice.eumowy.Process
-import com.google.common.collect.Lists
-
 
 final class ExchangeLeaseToCooperationValidator extends Validator {
     private static final String LEASE = "UNA" //UMOWA NAJMU
@@ -18,21 +16,17 @@ final class ExchangeLeaseToCooperationValidator extends Validator {
     @Override
     protected boolean isValid() {
         boolean hasActivity = ActivityHelper.contains(process, "wymianaUmowyNajmu")
-        String umwType = cbdService.getUmwTyp(client.cbdId)
+        List<String> umwTypes = cbdService.getUmwTypes(client.cbdId)
 
-        if (COOPERATION.equals(umwType) || LEASE.equals(umwType)) {
+        if (umwTypes.contains(COOPERATION) || umwTypes.contains(LEASE)) {
             return true
         }
 
-        return hasActivity && isLeaseType(umwType)
+        return hasActivity && umwTypes.contains(ATP_LEASE)
     }
 
     @Override
     protected String getErrorMessageCode() {
         return 'exchange.lease.cooperation.required'
-    }
-
-    private static boolean isLeaseType(String umwType) {
-        return LEASE.equals(umwType) || ATP_LEASE.equals(umwType)
     }
 }

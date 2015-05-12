@@ -1,5 +1,8 @@
 package com.eservice.eumowy
 import com.eservice.eumowy.dao.CbdDAO
+import com.google.common.base.Function
+import com.google.common.base.Predicate
+import com.google.common.collect.FluentIterable
 import grails.plugin.cache.CacheEvict
 import grails.plugin.cache.Cacheable
 import groovy.sql.GroovyRowResult
@@ -7,6 +10,8 @@ import org.apache.log4j.Logger
 import org.springframework.transaction.annotation.Isolation
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
+
+import javax.annotation.Nullable
 
 class CbdService {
 
@@ -348,14 +353,18 @@ class CbdService {
 
     @Cacheable(value="eumowyCacheLong", key = "'getUmwTyp_'.concat(#clientId)")
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
-    String getUmwTyp(Long clientId) {
-        GroovyRowResult result = cbdDAO.selectOne(GET_UMW_TYP, [clientId: clientId])
+    List<String> getUmwTypes(Long clientId) {
+        ArrayList<GroovyRowResult> result = cbdDAO.selectMany(GET_UMW_TYP, [clientId: clientId])
 
-        if (result?.containsKey("UMW_TYP")) {
-            return result.getProperty("UMW_TYP")
-        }
-
-        return ""
+        return FluentIterable
+            .from(result)
+            .transform(new Function<GroovyRowResult, String>() {
+                @Override
+                String apply(@Nullable GroovyRowResult groovyRowResult) {
+                    return groovyRowResult.getProperty("UMW_TYP")
+                }
+             })
+            .toList()
     }
 
     @CacheEvict(value=["eumowyCacheShort","eumowyCacheLong"], allEntries=true)

@@ -31,7 +31,7 @@ class ExchangeLeaseToCooperationValidatorTest {
     public void shouldValidateWithCooperationType() {
         //given
         ExchangeLeaseToCooperationValidator validator = new ExchangeLeaseToCooperationValidator(process)
-        validator.cbdService = [getUmwTyp: {arg -> return "WUN"}] as CbdService
+        validator.cbdService = [getUmwTypes: {arg -> return "WUN"}] as CbdService
 
         //then
         assertEquals(true, validator.isValid())
@@ -41,7 +41,7 @@ class ExchangeLeaseToCooperationValidatorTest {
     public void shouldValidateWithoutExpectedType() {
         //given
         ExchangeLeaseToCooperationValidator validator = new ExchangeLeaseToCooperationValidator(process)
-        validator.cbdService = [getUmwTyp: {arg -> return "DUNNO"}] as CbdService
+        validator.cbdService = [getUmwTypes: {arg -> return "DUNNO"}] as CbdService
 
         //then
         assertEquals(true, validator.isValid())
@@ -52,7 +52,7 @@ class ExchangeLeaseToCooperationValidatorTest {
         //given
         process.activities = Sets.newSet(new Activity(code: "wymianaUmowyNajmu"))
         ExchangeLeaseToCooperationValidator validator = new ExchangeLeaseToCooperationValidator(process)
-        validator.cbdService = [getUmwTyp: {arg -> return "UNA"}] as CbdService
+        validator.cbdService = [getUmwTypes: {arg -> return "UNA"}] as CbdService
 
         //then
         assertEquals(true, validator.isValid())
@@ -62,7 +62,7 @@ class ExchangeLeaseToCooperationValidatorTest {
     public void shouldNotValidateWithoutProperActivity() {
         //given
         ExchangeLeaseToCooperationValidator validator = new ExchangeLeaseToCooperationValidator(process)
-        validator.cbdService = [getUmwTyp: {arg -> return "UNA"}] as CbdService
+        validator.cbdService = [getUmwTypes: {arg -> return "UNA"}] as CbdService
 
         //then
         assertEquals(false, validator.isValid())

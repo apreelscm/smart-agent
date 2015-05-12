@@ -12,9 +12,6 @@ import org.junit.Test
 import org.mockito.internal.util.collections.Sets
 
 import static org.junit.Assert.assertEquals
-import static org.junit.Assert.assertEquals
-import static org.junit.Assert.assertEquals
-import static org.junit.Assert.assertEquals
 
 @TestMixin(GrailsUnitTestMixin)
 class PrepaidValidatorTest {
@@ -34,7 +31,7 @@ class PrepaidValidatorTest {
     public void shouldValidateWithCooperationType() {
         //given
         PrepaidValidator validator = new PrepaidValidator(process)
-        validator.cbdService = [getUmwTyp: {arg -> return "WUN"}] as CbdService
+        validator.cbdService = [getUmwTypes: {arg -> return "WUN"}] as CbdService
 
         //then
         assertEquals(true, validator.isValid())
@@ -44,7 +41,7 @@ class PrepaidValidatorTest {
     public void shouldValidateWithoutExpectedType() {
         //given
         PrepaidValidator validator = new PrepaidValidator(process)
-        validator.cbdService = [getUmwTyp: {arg -> return "DUNNO"}] as CbdService
+        validator.cbdService = [getUmwTypes: {arg -> return "DUNNO"}] as CbdService
 
         //then
         assertEquals(true, validator.isValid())
@@ -55,7 +52,7 @@ class PrepaidValidatorTest {
         //given
         process.activities = Sets.newSet(new Activity(code: "wymianaUmowyNajmu"))
         PrepaidValidator validator = new PrepaidValidator(process)
-        validator.cbdService = [getUmwTyp: {arg -> return "UNA"}] as CbdService
+        validator.cbdService = [getUmwTypes: {arg -> return "UNA"}] as CbdService
 
         //then
         assertEquals(true, validator.isValid())
@@ -65,7 +62,7 @@ class PrepaidValidatorTest {
     public void shouldValidateWithoutPrepaidActivity() {
         //given
         PrepaidValidator validator = new PrepaidValidator(process)
-        validator.cbdService = [getUmwTyp: {arg -> return "UNA"}] as CbdService
+        validator.cbdService = [getUmwTypes: {arg -> return "UNA"}] as CbdService
 
         //then
         assertEquals(true, validator.isValid())
