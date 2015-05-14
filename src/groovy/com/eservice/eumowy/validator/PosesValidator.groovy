@@ -13,6 +13,7 @@ public class PosesValidator {
             if (ptCmd != null) {
                 ptCmd?.calculatorService = cmd.calculatorService
                 ptCmd?.calc = cmd.calc
+                ptCmd?.minCenaNajmu = cmd.minCenaNajmu ? new BigDecimal(cmd.minCenaNajmu) : null
                 ptCmd?.validate()
                 if (ptCmd?.hasErrors()) {
                     ptCmd.errors.each { error ->  //error is grails.validation.ValidationErrors
