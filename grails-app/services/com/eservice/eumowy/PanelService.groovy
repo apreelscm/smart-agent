@@ -26,7 +26,7 @@ class PanelService {
         cmd.hasNewUmowa = ActivityHelper.isNewAgreement(cmd.process)
         cmd.hasNewUmowaAndPrepaid = ActivityHelper.isNewAgreement(cmd.process) && cmd.hasDodaniePrepaid
         cmd.isBundleActivity = ActivityHelper.isBundleActivity(cmd.process)
-        cmd.promObjNaj1 = calculatorService.getCalcProperty(calc,"E_PROM_OBN_NAJ_1")
+        cmd.promObjNaj1 = calculatorService.getCalcProperty(calc,"E_PROM_OBN_NAJ_1") ?: 1
         cmd.promObjNajLiczbaTerminali = calculatorService.getCalcProperty(calc,"LICZBA_ZEST_POS_PROM_CEN_NAJ_1")
 
         if(ActivityHelper.isOnlyActivity(cmd.process, 'dodatkowyPunkt') || ActivityHelper.isOnlyActivity(cmd.process, 'dodatkowyPos')) {
