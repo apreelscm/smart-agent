@@ -316,7 +316,6 @@ class PanelService {
     }
 
     def getOsobaUprawnionaDoPodpisaniaUmowy(ProcessCommand cmd, def calc ){
-        cmd.emailDoWysylkiDokumentu = nullify(cmd.emailDoWysylkiDokumentu)
         cmd.beneficjentKRS = nullify(cmd.beneficjentKRS)
     }
 
@@ -573,6 +572,8 @@ class PanelService {
         cmd.akceptantTelStacjonarnyCbd = cmd.akceptantTelStacjonarny
         cmd.akceptantFaxCbd = cmd.akceptantFax
         cmd.akceptantTelKomorkowyCbd = cmd.akceptantTelKomorkowy
+
+        cmd.emailDoWysylkiDokumentu = nullify(cmd.emailDoWysylkiDokumentu)
     }
 
     def getUmowa2(ProcessCommand cmd, def calc ) {

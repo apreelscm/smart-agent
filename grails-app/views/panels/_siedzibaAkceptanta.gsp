@@ -102,4 +102,9 @@
             </ul>
         </div>
     </fieldset>
+
+    <div id="email-documents" class="text-center">
+        <label for="emailDoWysylkiDokumentu"><g:message code="email.receiver.address.label"/>:</label>
+        <g:textField id="emailDoWysylkiDokumentu" class="" name="emailDoWysylkiDokumentu" value="${data.emailDoWysylkiDokumentu}" validatable="${data}" style="width: 150px" email="true"/>
+    </div>
 </div>
