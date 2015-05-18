@@ -49,17 +49,18 @@ class PdfProcessMapper extends AbstractPdfMapper{
 
             def sum = [];
             //Robi sie coraz wiekszy sajgon, w przypadku wymiany umowy przenosimy punkty stare...
-            sum.addAll(points.findAll{ point -> point != null && !point.isLocal() && point.czyWybranyWymianaUmowy})
+            sum.addAll(points.findAll{ point -> !point?.isLocal() && point?.czyWybranyWymianaUmowy})
             //...a w przypadku nowej umowy punkty nowe
-            sum.addAll(points.findAll{ point -> point != null && (point.isLocal() || (point.posDatas && point.posDatas.any{ pos -> pos != null && pos?.isLocal()}))})
+            sum.addAll(points.findAll{ point -> point?.isLocal() || point?.posDatas?.any{ pos -> pos?.isLocal()}})
 
-            dataMap.putAll(pointMapper.mapPointsSpecial(sum, ["nazwa":"punktAkceptacjaKart", "miejscowosc":"adresAkceptacjaKart"]));
+            dataMap.putAll(pointMapper.mapPointsSpecial(points.findAll{ point -> point?.isLocal() || point?.posDatas?.any{ pos -> pos?.isLocal()}},
+                    ["nazwa":"punktAkceptacjaKart", "miejscowosc":"adresAkceptacjaKart"]));
 
-            //AP/UPZ/RWP/1.000/14-07-07
-            dataMap.putAll(pointMapper.mapPointsSpecial(points.findAll{ point -> point != null && point.isLocal()}, ["nazwa":"punkt", "miejscowosc":"adres"]));
+            dataMap.putAll(pointMapper.mapPointsSpecial(points.findAll{ point -> point?.isLocal()},
+                    ["nazwa":"punkt", "miejscowosc":"adres"]));
 
-            //APUNTSZAPOU3
-            dataMap.putAll(pointMapper.mapPointsSpecial(points.findAll{ point -> point?.czyWybranyAkceptacjaKart}, ["nazwa":"punktTN", "miejscowosc":"adresTN", "systemKasowy":"integracjaTN", "uta":"utaTN"]));
+            dataMap.putAll(pointMapper.mapPointsSpecial(points.findAll{ point -> point?.czyWybranyAkceptacjaKart},
+                    ["nazwa":"punktTN", "miejscowosc":"adresTN", "systemKasowy":"integracjaTN", "uta":"utaTN"]));
 
 
     //----- sumowanie oplat z posow i hire payments - start
