@@ -155,7 +155,7 @@
                     <li>
                         <span>
                             <a class="big-link" id="subscribe-REPRESENTATIVE1" data-type="ACCEPTANT1"
-                               href="eumowysig://data/${representative1.name.encodeAsURL()}/${representative1.surname.encodeAsURL()}/ACCEPTANT1/${message(code:'subscription.agreement').encodeAsURL()}/${processInstance.id}/${session.id}/${createLink(controller: "subscriptionEx", action:"saveSubscription", absolute: true).encodeAsURL()}">${representative1.name} ${representative1.surname} - Reprezentant</a>
+                               href="eumowysig://data/${representative1?.name.encodeAsURL()}/${representative1?.surname.encodeAsURL()}/ACCEPTANT1/${message(code:'subscription.agreement').encodeAsURL()}/${processInstance.id}/${session.id}/${createLink(controller: "subscriptionEx", action:"saveSubscription", absolute: true).encodeAsURL()}">${representative1?.name} ${representative1?.surname} - Reprezentant</a>
                         </span>
                         <span>
                             <a href="" id="sgnRep1" class="button action"><g:message code="subscription.refresh" /></a>
