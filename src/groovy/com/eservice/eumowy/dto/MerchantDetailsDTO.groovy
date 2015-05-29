@@ -60,7 +60,11 @@ class MerchantDetailsDTO implements Serializable {
         representatives = new ArrayList<MerchantRepresentativeDTO>()
 
         for(MerchantRepresentativeDataDTO merchantRepresentative: merchantData.merchRepresentDatas) {
-            representatives.add(new MerchantRepresentativeDTO(merchantRepresentative))
+            MerchantRepresentativeDTO representative = new MerchantRepresentativeDTO(merchantRepresentative)
+
+            if (representative.isValid()) {
+                representatives.add(new MerchantRepresentativeDTO(merchantRepresentative))
+            }
         }
     }
 

@@ -2,6 +2,7 @@ package com.eservice.eumowy.dto
 
 import com.eservice.webs.client.govsync.dto.MerchantRepresentativeDataDTO
 import com.google.common.base.MoreObjects
+import com.google.common.base.Strings
 
 class MerchantRepresentativeDTO implements Serializable{
     String title
@@ -26,5 +27,10 @@ class MerchantRepresentativeDTO implements Serializable{
         .add("lastName", lastName)
         .add("position", position)
         .toString()
+    }
+
+    public boolean isValid() {
+        return !(Strings.isNullOrEmpty(title) || Strings.isNullOrEmpty(firstName) || Strings.isNullOrEmpty(lastName) ||
+                Strings.isNullOrEmpty(position))
     }
 }
