@@ -1,10 +1,18 @@
 package com.eservice.eumowy
 
+import com.google.common.collect.Lists
+
 class ActivityHelper {
-    //TODO: przeniesc tego helpera do Process jako trait
+    public static final String NOWA_UMOWA = "nowaUmowa"
+    public static final String DODATKOWY_POS = "dodatkowyPos"
+    public static final String DODATKOWY_PUNKT = "dodatkowyPunkt"
+    public static final String WYMIANA_TERMINALA = "wymianaTerminala"
+    public static final String PAKIET_START = "pakietStart"
+    public static final String PAKIET_START_PLUS = "pakietStartPlus"
+    public static final String PAKIET_MOBILNY = "pakietMobilny"
 
     static boolean isNewAgreement(Process process) {
-        return contains(process, "nowaUmowa")
+        return contains(process, NOWA_UMOWA)
     }
 
     static boolean isOnlyActivity(Process process, String activityName) {
@@ -55,10 +63,11 @@ class ActivityHelper {
     }
 
     static boolean isCalculatorRedundant(Process process) {
-        List<String> activitiesWithoutCalculator = ["wymianaTerminala", "pakietStart", "pakietStartPlus",
-                "pakietMobilny", "dodatkowyPunkt", "dodatkowyPos"]
+        List<String> activitiesWithoutCalculator = [WYMIANA_TERMINALA, PAKIET_START, PAKIET_START_PLUS,
+                PAKIET_MOBILNY, DODATKOWY_PUNKT, DODATKOWY_POS]
+        List<String> pointAndPosCombo = Lists.newArrayList(DODATKOWY_PUNKT, DODATKOWY_POS)
 
-        return activitiesWithoutCalculator.any{isOnlyActivity(process, it)}
+        return activitiesWithoutCalculator.any{isOnlyActivity(process, it)} || containsOnly(process, pointAndPosCombo)
     }
 
     static boolean isClientRedundant(Process process) {
