@@ -8,6 +8,8 @@ import org.perf4j.log4j.Log4JStopWatch
 import org.springframework.mail.MailException
 import pdfgenerator.PdfGenerator
 
+import static com.eservice.eumowy.EmailTemplates.EmailTemplateType.*
+
 class EmailService {
 
     boolean transactional = false
@@ -27,21 +29,23 @@ class EmailService {
 	}
 
     def sendNotesToCOA(def bodyParams) {
-        def emailTemplate = getEmailTemplatesByName(EmailTemplates.EmailTemplateType.NOTES_TO_COA)
+        def emailTemplate = getEmailTemplatesByName(NOTES_TO_COA)
         sendMailWithTryCatch(emailTemplate, emailTemplate.recipients , null, bodyParams, null)
     }
 
 	def sendDocumentsPaperVersion(List<DocumentFile> documents, def bodyParams) {
-        def emailTemplate = getEmailTemplatesByName(EmailTemplates.EmailTemplateType.DOCUMENTS_PAPER_VERSION)
+        def emailTemplate = getEmailTemplatesByName(DOCUMENTS_PAPER_VERSION)
 
         String mailAddress = COA_MAIL
         EServiceUserDetails user = springSecurityService.principal
+        Process process = documents?.size() > 0 ? documents.get(0).process : null
 
-        if(StringUtils.startsWith(user.nr, "98")) {
+        if(StringUtils.startsWith(user.nr, "98") && process && ActivityHelper.isNewAgreement(process)) {
             if(user.email) {
                 mailAddress = user.email
             } else {
-                log.info(String.format("Sales number of user %s starts with 98 but user has no email. Sending email to coa@eservice.com.pl...", user.fullName));
+                log.info(String.format("Sales number of user %s starts with 98 and process has new agreement but user " +
+                        "has no email. Sending email to coa@eservice.com.pl...", user.fullName));
             }
         }
 
@@ -49,22 +53,22 @@ class EmailService {
 	}
 
     def sendDocumentsPaperVersion(def recipient, List<DocumentFile> documents, def bodyParams) {
-        def emailTemplate = getEmailTemplatesByName(EmailTemplates.EmailTemplateType.DOCUMENTS_PAPER_VERSION)
+        def emailTemplate = getEmailTemplatesByName(DOCUMENTS_PAPER_VERSION)
         sendMail(emailTemplate, recipient, null, bodyParams, documents)
     }
 
     def sendDocumentsTemplateVersion(def recipient, List<DocumentFile> documents, def bodyParams) {
-        def emailTemplate = getEmailTemplatesByName(EmailTemplates.EmailTemplateType.DOCUMENTS_TEMPLATE_VERSION)
+        def emailTemplate = getEmailTemplatesByName(DOCUMENTS_TEMPLATE_VERSION)
         sendMail(emailTemplate, recipient, null, bodyParams, documents)
     }
 
 	def sendDocumentsElectronicalVersion(def recipient, List<DocumentFile> documents, def bodyParams) {
-		def emailTemplate = getEmailTemplatesByName(EmailTemplates.EmailTemplateType.DOCUMENTS_ELECTRONICAL_VERSION)
+		def emailTemplate = getEmailTemplatesByName(DOCUMENTS_ELECTRONICAL_VERSION)
         sendMail(emailTemplate, recipient, null, bodyParams, documents)
 	}
 
     def sendDocumentsNotNewAggrementElectronicalVersion(def recipient, List<DocumentFile> documents, def bodyParams) {
-        def emailTemplate = getEmailTemplatesByName(EmailTemplates.EmailTemplateType.DOCUMENTS_NOT_NEW_AGGREMENT_ELECTRONICAL_VERSION)
+        def emailTemplate = getEmailTemplatesByName(DOCUMENTS_NOT_NEW_AGGREMENT_ELECTRONICAL_VERSION)
         sendMail(emailTemplate, recipient, null, bodyParams, documents)
     }
 
@@ -82,7 +86,7 @@ class EmailService {
 	}
 
     void sendDocumentsAcceptedInfoMail(Process processInstance, String notesFromZrd) {
-        EmailTemplates emailTemplate = getEmailTemplatesByName(EmailTemplates.EmailTemplateType.DOCUMENTS_ACCEPTED)
+        EmailTemplates emailTemplate = getEmailTemplatesByName(DOCUMENTS_ACCEPTED)
 
         Map mailBodyParams = [merchantName: processInstance.client.name, merchantNip: processInstance.client.nip,
                 activities: processService.getActivities(processInstance), rejectReason: notesFromZrd]
@@ -91,7 +95,7 @@ class EmailService {
     }
 
     void sendPEPnotificationEmail(Process process) {
-        EmailTemplates template = getEmailTemplatesByName(EmailTemplates.EmailTemplateType.PEP_NOTIFICATION)
+        EmailTemplates template = getEmailTemplatesByName(PEP_NOTIFICATION)
 
         Map bodyParams = [merchantName: process.client.name, merchantNip: process.client.nip]
         Map subjectParams = [process.client.nip, process.client.name]
@@ -100,12 +104,12 @@ class EmailService {
     }
 
     def sendDocumentsAcceptedToPostSend(List<DocumentFile> documents, def bodyParams) {
-        def emailTemplate = getEmailTemplatesByName(EmailTemplates.EmailTemplateType.DOCUMENTS_MISSING_MAIL)
+        def emailTemplate = getEmailTemplatesByName(DOCUMENTS_MISSING_MAIL)
         sendMail(emailTemplate, emailTemplate.recipients, null, bodyParams, documents)
     }
 
     def sendDocumentsRejected(def recipient, def merchantName, def merchantNip, def bodyParams) {
-        def emailTemplate = getEmailTemplatesByName(EmailTemplates.EmailTemplateType.DOCUMENTS_REJECTED)
+        def emailTemplate = getEmailTemplatesByName(DOCUMENTS_REJECTED)
         sendMailWithTryCatch(emailTemplate, recipient, [merchantNip, merchantName] as Object[], bodyParams, null)
     }
 
