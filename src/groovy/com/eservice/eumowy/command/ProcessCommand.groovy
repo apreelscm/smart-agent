@@ -1213,7 +1213,7 @@ class ProcessCommand implements Serializable {
             }
             return true
         })
-        obslugaEkonomicznyCena(nullable:true, blank:false, validator: { value, cmd, errors -> NumberValidator.validate(value, cmd, errors, propertyName)})
+        obslugaEkonomicznyCena(nullable:true, blank:false)
         numerRachunkuBankowegoKlienta(nullable:true, blank:false, validator: {value, cmd, errors ->
             DEFAULT_VALUE.equals(value) ?: NumberValidator.accountNumber(value, cmd, errors, propertyName)
         })
