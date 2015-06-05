@@ -6,6 +6,16 @@ import com.eservice.eumowy.command.ProcessCommand
 import com.eservice.eumowy.util.DateUtils
 import com.google.common.collect.Lists
 
+import static com.eservice.eumowy.ActivityHelper.DODATKOWY_POS
+import static com.eservice.eumowy.ActivityHelper.DODATKOWY_PUNKT
+import static com.eservice.eumowy.ActivityHelper.contains
+import static com.eservice.eumowy.ActivityHelper.containsOnly
+import static com.eservice.eumowy.ActivityHelper.isBundleActivity
+import static com.eservice.eumowy.ActivityHelper.isNewAgreement
+import static com.eservice.eumowy.ActivityHelper.isOnlyActivity
+import static com.google.common.collect.Lists.newArrayList
+import static java.lang.Integer.parseInt
+
 class PanelService {
 
     def cbdService
@@ -19,18 +29,20 @@ class PanelService {
         cmd.isDoladowania_tk = calculatorService.getCalcProperty(calc,"CZY_TELEKODZIK")
         cmd.doladowania_tp = nullify(cmd.doladowania_tp)
         cmd.doladowania_tk = nullify(cmd.doladowania_tk)
-        cmd.isRozszerzenie = ActivityHelper.contains(cmd.process, 'dodatkowyPunkt') || ActivityHelper.contains(cmd.process, 'dodatkowyPos')
-        cmd.isOnlyRozszerzenie = ActivityHelper.containsOnly(cmd.process, Lists.newArrayList('dodatkowyPunkt')) || ActivityHelper.containsOnly(cmd.process, Lists.newArrayList('dodatkowyPos'))
+        cmd.isRozszerzenie = contains(cmd.process, DODATKOWY_PUNKT) || contains(cmd.process, DODATKOWY_POS)
+        cmd.isOnlyRozszerzenie = containsOnly(cmd.process, newArrayList(DODATKOWY_PUNKT)) ||
+                containsOnly(cmd.process, newArrayList(DODATKOWY_POS)) ||
+                containsOnly(cmd.process, newArrayList(DODATKOWY_POS, DODATKOWY_PUNKT))
         cmd.hasPrepaid = cbdService.getPrepaidEvoucher(cmd.nip) || cbdService.getPrepaidTopup(cmd.nip)
-        cmd.hasDodaniePrepaid = ActivityHelper.contains(cmd.process, 'dodaniePrepaid')
-        cmd.hasNewUmowa = ActivityHelper.isNewAgreement(cmd.process)
-        cmd.hasNewUmowaAndPrepaid = ActivityHelper.isNewAgreement(cmd.process) && cmd.hasDodaniePrepaid
-        cmd.isBundleActivity = ActivityHelper.isBundleActivity(cmd.process)
+        cmd.hasDodaniePrepaid = contains(cmd.process, 'dodaniePrepaid')
+        cmd.hasNewUmowa = isNewAgreement(cmd.process)
+        cmd.hasNewUmowaAndPrepaid = isNewAgreement(cmd.process) && cmd.hasDodaniePrepaid
+        cmd.isBundleActivity = isBundleActivity(cmd.process)
         cmd.promObjNaj1 = calculatorService.getCalcProperty(calc,"E_PROM_OBN_NAJ_1")
-        cmd.promObjNaj1 = cmd.promObjNaj1 ? (cmd.promObjNaj1 + 1) : 1
+        cmd.promObjNaj1 = cmd.promObjNaj1 ? (parseInt(cmd.promObjNaj1.trim()) + 1) : 1
         cmd.promObjNajLiczbaTerminali = calculatorService.getCalcProperty(calc,"LICZBA_ZEST_POS_PROM_CEN_NAJ_1")
 
-        if(ActivityHelper.isOnlyActivity(cmd.process, 'dodatkowyPunkt') || ActivityHelper.isOnlyActivity(cmd.process, 'dodatkowyPos')) {
+        if(isOnlyActivity(cmd.process, DODATKOWY_PUNKT) || isOnlyActivity(cmd.process, DODATKOWY_POS)) {
             cmd.minCenaNajmu = cbdService.getMinRentPrice(cmd.nip)
         }
 
