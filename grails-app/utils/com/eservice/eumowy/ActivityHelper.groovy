@@ -3,6 +3,7 @@ package com.eservice.eumowy
 import com.google.common.collect.Lists
 
 class ActivityHelper {
+    //TODO: enum
     public static final String NOWA_UMOWA = "nowaUmowa"
     public static final String DODATKOWY_POS = "dodatkowyPos"
     public static final String DODATKOWY_PUNKT = "dodatkowyPunkt"
@@ -10,6 +11,7 @@ class ActivityHelper {
     public static final String PAKIET_START = "pakietStart"
     public static final String PAKIET_START_PLUS = "pakietStartPlus"
     public static final String PAKIET_MOBILNY = "pakietMobilny"
+    public static final String WYMIANA_UMOWY_NAJMU_NA_UMOWE_WSPOLPRACY = "wymianaUmowyNajmu"
 
     static boolean isNewAgreement(Process process) {
         return contains(process, NOWA_UMOWA)

@@ -5,6 +5,10 @@ import com.eservice.eumowy.Client
 import com.eservice.eumowy.Process
 import com.google.common.collect.Lists
 
+import static com.eservice.eumowy.ActivityHelper.WYMIANA_UMOWY_NAJMU_NA_UMOWE_WSPOLPRACY
+import static com.eservice.eumowy.ActivityHelper.contains
+import static com.eservice.eumowy.ActivityHelper.hasAtLeastOne
+
 
 final class PrepaidValidator extends Validator {
     private static final String LEASE = "UNA" //UMOWA NAJMU
@@ -17,10 +21,11 @@ final class PrepaidValidator extends Validator {
 
     @Override
     protected boolean isValid() {
-        boolean hasActivity = ActivityHelper.hasAtLeastOne(process, Lists.newArrayList("dodaniePrepaid", "zmianaWarunkowPrepaid"))
+        boolean hasActivity = hasAtLeastOne(process, Lists.newArrayList("dodaniePrepaid", "zmianaWarunkowPrepaid"))
+        boolean hasExchangeLeaseActivity = contains(process, WYMIANA_UMOWY_NAJMU_NA_UMOWE_WSPOLPRACY)
         List<String> umwTypes = cbdService.getUmwTypes(client.cbdId)
 
-        if (umwTypes.contains(COOPERATION) || umwTypes.contains(LEASE)) {
+        if (umwTypes.contains(COOPERATION) || umwTypes.contains(LEASE) || hasExchangeLeaseActivity) {
             return true
         }
 
