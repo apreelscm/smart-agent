@@ -1,4 +1,4 @@
-<%@ page import="com.eservice.eumowy.Process" %>
+<%@ page import="com.eservice.eumowy.ActivityHelper; com.eservice.eumowy.Process" %>
 
 <table border="0" align="center" cellpadding="3" cellspacing="1" class="table" style="table-layout: fixed; width: 100%">
     <thead>
@@ -28,7 +28,8 @@
             <td class="tableCell">${fieldValue(bean: processInstance, field: "phSurname")}</td>
             <td class="tableCell">${fieldValue(bean: processInstance, field: "status")}</td>
             <td class="tableCell">
-                <g:if test="${processInstance.getBooleanData("isRepresentativesChangedManually")}">
+                <g:if test="${processInstance.getBooleanData("isRepresentativesChangedManually") ||
+                        (!processInstance.getBooleanData("isFromBisnode") && ActivityHelper.isNewAgreement(processInstance))}">
                     <g:checkBox name="isRepresentativesChangedManually" value="true" checked="true" disabled="disabled"/>
                 </g:if>
             </td>
