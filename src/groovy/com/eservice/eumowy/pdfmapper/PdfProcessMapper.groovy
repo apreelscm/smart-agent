@@ -53,8 +53,7 @@ class PdfProcessMapper extends AbstractPdfMapper{
             //...a w przypadku nowej umowy punkty nowe
             sum.addAll(points.findAll{ point -> point?.isLocal() || point?.posDatas?.any{ pos -> pos?.isLocal()}})
 
-            dataMap.putAll(pointMapper.mapPointsSpecial(points.findAll{ point -> point?.isLocal() || point?.posDatas?.any{ pos -> pos?.isLocal()}},
-                    ["nazwa":"punktAkceptacjaKart", "miejscowosc":"adresAkceptacjaKart"]));
+            dataMap.putAll(pointMapper.mapPointsSpecial(sum,  ["nazwa":"punktAkceptacjaKart", "miejscowosc":"adresAkceptacjaKart"]));
 
             dataMap.putAll(pointMapper.mapPointsSpecial(points.findAll{ point -> point?.isLocal()},
                     ["nazwa":"punkt", "miejscowosc":"adres"]));
