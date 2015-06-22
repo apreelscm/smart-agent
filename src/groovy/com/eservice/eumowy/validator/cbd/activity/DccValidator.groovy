@@ -12,7 +12,7 @@ final class DccValidator extends ActivityValidator {
 
     @Override
     protected boolean isValid() {
-        if(hasCalcProperty("S_DCC", "TAK")) {
+        if(hasCalcProperty("CZY_DCC", "TAK")) {
             return ActivityHelper.hasAtLeastOne(process, ["dodanieDcc", "zmianaWarunkowDcc"])
         }
 
