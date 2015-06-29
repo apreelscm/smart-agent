@@ -40,7 +40,7 @@ class EmailService {
         EServiceUserDetails user = springSecurityService.principal
         Process process = documents?.size() > 0 ? documents.get(0).process : null
 
-        if(StringUtils.startsWith(user.nr, "98") && process && ActivityHelper.isNewAgreement(process)) {
+        if(StringUtils.startsWith(user.nr, "98") && process) {
             if(user.email) {
                 mailAddress = user.email
             } else {
