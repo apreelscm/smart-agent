@@ -1842,10 +1842,9 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
     void testFormularzDanychPunktu() {
         def data = [:]
         def subscriptions = [
-                ["PH", 2, 190, 175,	84,	53],
-                ["PH", 2, 60, 175, 84,	53],
-                ["ACCEPTANT1", 2, 370, 225, 94, 63],
-                ["ACCEPTANT2", 2, 470, 225, 94, 63]
+                ["PH", 1, 70, 80, 84,	53],
+                ["ACCEPTANT1", 1, 330, 95, 94, 63],
+                ["ACCEPTANT2", 1, 430, 95, 94, 63]
         ]
         data.putAll(insertSignatures2(subscriptions))
         process("Formularz danych punktu_zmiany_15.05.2013_edited.pdf", "Formularz danych punktu_zmiany_15.05.2013_edited_out.pdf", data);
