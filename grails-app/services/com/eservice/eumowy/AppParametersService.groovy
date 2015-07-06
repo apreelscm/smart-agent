@@ -91,9 +91,9 @@ class AppParametersService {
 	
 	def createDirectoryIfNotExists(String path) {
 		try {
-			def file = new File(path)
-			if (file.exists() == false) {
-				file.mkdirs()
+			File parentDirectory = new File(path).getParentFile()
+			if (!parentDirectory.exists()) {
+				parentDirectory.mkdirs()
 				log.info "createDirectoryIfNotExists - Creating dir: " + path
 			}
 		}
