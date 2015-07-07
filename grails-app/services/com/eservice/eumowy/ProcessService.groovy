@@ -14,6 +14,8 @@ import org.apache.commons.lang.WordUtils
 import org.codehaus.groovy.grails.web.binding.DataBindingUtils
 import serializationutils.SerializationUtils
 
+import java.math.RoundingMode
+
 class ProcessService {
     def messageSource
     def sessionFactory
@@ -130,7 +132,7 @@ class ProcessService {
         def cmd = initProcessCommand(process, calcId)
         cmd.allPoints?.addAll(getPointsToAllPointsCommandList(process, cmd))
         cmd.allPoses?.addAll(getPosesToAllPosCommandList(process, cmd, calc))
-		
+
 		cmd.allPoints?.each { AllPointsCommand apc ->
 			if (apc.cbdId == -1) {
 				PointData point = PointData.findById(apc.id)
@@ -160,7 +162,7 @@ class ProcessService {
         prepareProcessCommand(cmd, calc)
 		preparePointCommands(cmd.points, cmd.poses, calc)
 		prepareAllPosCommands(cmd.allPoses, calc)
-		
+
 		cmd
 	}
 
@@ -230,16 +232,16 @@ class ProcessService {
 			}
 		}
 		process.save(flush:true)
-		
+
 		cmd.allPoints?.removeAll { it.cbdId == -1 }
-		
+
 
         cmd.notes = process.notesToCoa
-		
+
         prepareProcessCommand(cmd, calc, cbdMethods)
 		preparePointCommands(cmd.points, cmd.poses, calc)
 		//prepareAllPosCommands(cmd.allPoses, calc)
-		
+
 		cmd
     }
 
@@ -338,7 +340,7 @@ class ProcessService {
             }
         }
     }
-    
+
     public void setPhDetailsFromUser(Process process, EServiceUserDetails user) {
         process.phNumber = user.nr
         process.phFirstName = user.imie
@@ -380,13 +382,13 @@ class ProcessService {
 			panelService.setupPointDataFromCalc(pc, calc)
 		}
 	}
-	
+
 	def prepareAllPosCommands(def allPoses, def calc) {
 		allPoses.each { AllPosCommand apc ->
 			panelService.setupAllPosDataFromCalc(apc, calc)
 		}
 	}
-	
+
     def prepareProcessCommand(def cmd, def calc, def restrictedMethods = []) {
         def exclusions = defaultMethods + restrictedMethods
 
@@ -549,14 +551,14 @@ class ProcessService {
     def getLocalPosesToPointCommandList(def process) {
         def localPoses = []
         process.points.each { PointData point ->
-			
+
 			/*if (point.cbdId == null && point.pointDetails != null) {
 				return
 			}*/
 			// Don't load POSes that are automatically created for points - this causes panel duplication
 			if (!point || point.isLocal() == true)
 				return
-			
+
             point.posDatas?.each { PosData posData ->
 
                 /* Don't load POSes from CBD */
@@ -889,7 +891,7 @@ class ProcessService {
         getLocalPosesToAllPosesCommandList(process, localPoses)
         getCbdPosesToAllPosesCommandList(cmd, cbdPoses)
 
-		
+
         /* Merge them with possibly new data from CBD */
         localPoses.each { AllPosCommand apc ->
             if (apc.tpsId != null) {
@@ -907,7 +909,7 @@ class ProcessService {
                     apc.tpsId = -1 // Mark POS for deletion from local (eumowy) db
                 }
             }
-			
+
             result.add(apc)
         }
 		tpsIdsToRemove.each { Integer tpsId ->
@@ -915,7 +917,7 @@ class ProcessService {
 		}
         result.addAll(cbdPoses)
         result.sort {it.id}
-		
+
         result
     }
 
@@ -990,10 +992,10 @@ class ProcessService {
             hp.setType(hpc.type)
             hp.setTermCount(hpc.termCount)
             hp.setPpCount(hpc.ppCount)
-            hp.setCurrentTermPayment(hpc.currentTermPayment)
-            hp.setCurrentPpPayment(hpc.currentPpPayment)
-            hp.setNewTermPayment(hpc.newTermPayment)
-            hp.setNewPpPayment(hpc.newPpPayment)
+            hp.setCurrentTermPayment(hpc.currentTermPayment?.setScale(2, RoundingMode.HALF_UP))
+            hp.setCurrentPpPayment(hpc.currentPpPayment?.setScale(2, RoundingMode.HALF_UP))
+            hp.setNewTermPayment(hpc.newTermPayment?.setScale(2, RoundingMode.HALF_UP))
+            hp.setNewPpPayment(hpc.newPpPayment?.setScale(2, RoundingMode.HALF_UP))
             hp.setIsChoosen(hpc.isChoosen)
             hp.setIsVisible(choosen)
 
@@ -1154,7 +1156,7 @@ class ProcessService {
 
                 posData = new PosData()
                 posDataDetails = new PosDataDetails()
-				
+
 				pointData.czyLokalny = true
             }
             else {
@@ -1189,7 +1191,7 @@ class ProcessService {
 				// Skip auto-mapping of isLocal value
 				if (key == "czyLokalny")
 					return
-					
+
                 if (PointData.metaClass.respondsTo(PointData, "set" + key.capitalize())) {
                     pointData."set${key.capitalize()}"(value)
                 }
@@ -1234,7 +1236,7 @@ class ProcessService {
 					posDataDetailsNew = SerializationUtils.clone(posDataDetails)  // as PosDataDetails
 					posDataDetailsNew.id = null
 					posDataDetailsNew.version = 0
-					
+
 					posDataNew.setPosDetails(posDataDetailsNew)
 					posDataNew.setPoint(pointData)
 					posDataDetailsNew.setPos(posDataNew)
@@ -1273,7 +1275,7 @@ class ProcessService {
                     pd.save(flush: true)
 				}
 			}
-			
+
             pointsList.add(pointData)
         }
 
@@ -1283,9 +1285,9 @@ class ProcessService {
                 log.debug "AllPointCommand is NULL - skipping!"
                 return
             }
-			
+
 			PointData point
-			
+
 			if (apc.id != null) {
 				log.debug "ZNALAZLEM PUNKT - ALLPOINTS"
 				point = PointData.findById(apc.id)
@@ -1295,7 +1297,7 @@ class ProcessService {
 				point = new PointData()
 				point.czyLokalny = false
 			}
-			
+
             if (point != null) {
                 // Update data from CBD
                 if (apc.cbdId != null) {
@@ -1349,17 +1351,17 @@ class ProcessService {
 						log.info "Istnieje juz punkt dla pos o danym cbdId - tworzymy nowy"
 						pointData = new PointData()
 						pointDataDetails = new PointDataDetails()
-						
+
 						pointData.czyLokalny = false
 					}
 					else {
 						pointData = PointData.findByCbdIdAndProcess(pc.cbdId, process)
-						
+
 						if (pointData == null) {
 							log.info "NOWY PUNKT DLA POS"
 							pointData = new PointData()
 							pointDataDetails = new PointDataDetails()
-							
+
 							pointData.czyLokalny = false
 						}
 						else {
@@ -1369,7 +1371,7 @@ class ProcessService {
 							}
 						}
 					}
-					
+
                     log.info "Ustawiam dane z CBD"
                     def cbdPoint = cbdService.getCbdPointById(cmd.nip, pc.cbdId)
                     if (cbdPoint != null) {
@@ -1390,7 +1392,7 @@ class ProcessService {
                     log.info "Punkt nie pochodzi z CBD"
 					pointData = new PointData()
 					pointDataDetails = new PointDataDetails()
-					
+
 					pointData.czyLokalny = false
                 }
 
@@ -1411,7 +1413,7 @@ class ProcessService {
 						pointData.liczbaPos = pointData.posDatas?.size()
 					}
                     posDataDetails = posData.posDetails
-					
+
 					if (posDataDetails == null) {
 						posDataDetails = new PosDataDetails()
 					}
@@ -1424,7 +1426,7 @@ class ProcessService {
                         log.info "getPointCommandsToPosDataList - Brakujacy punkt dla POS o id: " + pc.id
                         pointData = new PointData()
                         pointDataDetails = new PointDataDetails()
-						
+
 						pointData.czyLokalny = false
 
                         if (pc.cbdId != null) {
@@ -1450,16 +1452,16 @@ class ProcessService {
                     return
                 }
             }
-			
+
             pdList.add(posData)
 
             pc.properties.each { key, value ->
                 log.debug "PCPOSProperties " + key + ": " + value
-				
+
 				// Skip auto-mapping for this property
 				if (key == "czyLokalny")
 					return
-				
+
                 if (PointData.metaClass.respondsTo(PointData, "set" +
                         key.capitalize()) && key != 'id') {
                     pointData."set${key.capitalize()}"(value)
@@ -1551,7 +1553,7 @@ class ProcessService {
                     pd.save(flush: true)
 				}
 			}
-			
+
 
             pointsList.add(pointData)
         }
@@ -1597,7 +1599,7 @@ class ProcessService {
                     log.info "DIDN'T FIND POINT FOR CBD POS"
                     point = new PointData()
                     pos = new PosData()
-					
+
 					point.czyLokalny = false
 
                     // Nie znalezlismy punktu z CBD u nas w bazie,
@@ -1622,7 +1624,7 @@ class ProcessService {
                 //zupelnie nowe point i pos
                 pos = new PosData()
                 point = new PointData()
-				
+
 				point.czyLokalny = false
             }
 
@@ -1657,7 +1659,7 @@ class ProcessService {
 
         return pointsList
     }
-	
+
 	def updateChildPosData(PosData parent, PosDataDetails parentDetails, List<PosData> children) {
 		if (parent.tpsId != null) {
 			return
@@ -1672,12 +1674,12 @@ class ProcessService {
 					if (PosData.metaClass.respondsTo(PosData, "set" + key.capitalize())) {
 							child."set${key.capitalize()}"(value)
 					}
-	
+
 					if (PosDataDetails.metaClass.respondsTo(PosDataDetails, "set" + key.capitalize()) && key != 'id') {
 						child.posDetails?."set${key.capitalize()}"(value)
 					}
 				}
-				
+
 				parentDetails?.properties.each { key, value ->
 					if (["id", "pos", "posId", "version", "parentPosId", "errors"].contains(key)) {
 						return
@@ -1685,7 +1687,7 @@ class ProcessService {
 					if (PosData.metaClass.respondsTo(PosData, "set" + key.capitalize())) {
 							childDetails?."set${key.capitalize()}"(value)
 					}
-	
+
 					if (PosDataDetails.metaClass.respondsTo(PosDataDetails, "set" + key.capitalize()) && key != 'id') {
 						childDetails?."set${key.capitalize()}"(value)
 					}
