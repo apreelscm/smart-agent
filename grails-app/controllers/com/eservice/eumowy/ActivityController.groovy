@@ -1431,7 +1431,7 @@ class ActivityController {
                     log.info 'Brak emaila dla zalogowanego usera.'
                 }
             } else {
-                emailService.sendDocumentsPaperVersion(documents, mailBodyParams)
+                emailService.sendDocumentsPaperVersion(process.documents, mailBodyParams)
             }
         } else if (TEMPLATES.equals(requestVersion)) {
 			List<DocumentFile> documentFilesWithBlackFaksymileList = new ArrayList<DocumentFile>()
