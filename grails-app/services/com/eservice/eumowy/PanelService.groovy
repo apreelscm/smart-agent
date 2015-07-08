@@ -39,7 +39,11 @@ class PanelService {
         cmd.hasNewUmowaAndPrepaid = isNewAgreement(cmd.process) && cmd.hasDodaniePrepaid
         cmd.isBundleActivity = isBundleActivity(cmd.process)
         cmd.promObjNaj1 = calculatorService.getCalcProperty(calc,"E_PROM_OBN_NAJ_1")
-        cmd.promObjNaj1 = cmd.promObjNaj1 ? (parseInt(cmd.promObjNaj1.trim()) + 1) : 1
+
+        if (SignatureHelper.containsAtLeastOne(cmd.process, newArrayList("AP/UW/1.001/15-03-05", "AP/UW/RWT/1.001/15-03-05"))) {
+            cmd.promObjNaj1 = cmd.promObjNaj1 ? (parseInt(cmd.promObjNaj1.trim()) + 1) : 1
+        }
+
         cmd.promObjNajLiczbaTerminali = calculatorService.getCalcProperty(calc,"LICZBA_ZEST_POS_PROM_CEN_NAJ_1")
 
         if(isOnlyActivity(cmd.process, DODATKOWY_PUNKT) || isOnlyActivity(cmd.process, DODATKOWY_POS)) {
