@@ -25,16 +25,21 @@ public final class ProcessCBDValidator {
     private List<Validator> getValidators() {
         List<Validator> validators = Lists.newArrayList()
 
-        validators.add(new CashbackValidator(process, client, calc))
-        validators.add(new DccValidator(process, client, calc))
+        if (!calc.isEmpty()) {
+            validators.add(new CashbackValidator(process, client, calc))
+            validators.add(new DccValidator(process, client, calc))
+        }
 
         if (!ActivityHelper.isNewAgreement(process)) {
             validators.add(new MIDValidator(process, client))
             validators.add(new PkoBpValidator(process, client))
             validators.add(new ExchangeLeaseToCooperationValidator(process, client))
             validators.add(new PrepaidValidator(process, client))
-            validators.add(new CashbackTerminalValidator(process, client, calc))
-            validators.add(new DccTerminalValidator(process, client, calc))
+
+            if (!calc.isEmpty()) {
+                validators.add(new CashbackTerminalValidator(process, client, calc))
+                validators.add(new DccTerminalValidator(process, client, calc))
+            }
         }
 
         return validators

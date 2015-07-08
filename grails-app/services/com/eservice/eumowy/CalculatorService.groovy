@@ -77,21 +77,24 @@ class CalculatorService implements Serializable {
     }
 
     def getCalculator(Process process, Client client) {
-        if(ActivityHelper.isCalculatorRedundant(process)) return [:]
+        boolean isCalculatorNeeded = !ActivityHelper.isCalculatorRedundant(process);
+        List calculator = [];
 
-        def calc = cbdService.findCalculatorByNip(client.nip)
+        if (isCalculatorNeeded) {
+            calculator = cbdService.findCalculatorByNip(client.nip)
 
-        if(calc.isEmpty()) {
-            throw new CalculatorException("calc.fetch.error")
+            if(calculator.isEmpty()) {
+                throw new CalculatorException("calc.fetch.error")
+            }
         }
 
-        ProcessCBDValidator processCBDValidator = new ProcessCBDValidator(process, client, calc)
+        ProcessCBDValidator processCBDValidator = new ProcessCBDValidator(process, client, calculator)
 
         if(!processCBDValidator.isValid()) {
             throw new CalculatorException(processCBDValidator.getErrorCodes())
         }
 
-        return calc
+        return calculator
     }
 
     long getCalculatorId(Process process, Client client) {
