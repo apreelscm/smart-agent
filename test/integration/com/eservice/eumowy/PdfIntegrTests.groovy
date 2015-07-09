@@ -80,8 +80,9 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
     void APUW1000150305() {  //AP/UW/1.001/15-07-07
         //given
         def subscriptions = [
-                ["ACCEPTANT1", 2, 50, 305, 59, 28],
-                ["PH", 2, 165, 240, 59, 28]
+                ["ACCEPTANT1", 2, 50, 265, 59, 28],
+                ["ACCEPTANT2", 2, 50, 300, 59, 28],
+                ["PH", 2, 165, 215, 59, 28]
         ]
 
         //when
