@@ -92,7 +92,7 @@ class PanelService {
     def getDaneAkceptanta(ProcessCommand cmd, def calc ) {
         def result = cbdService.getDaneAkceptanta(cmd.nip);
 
-        cmd.akceptantNazwaOficjalna = getAlphanumericName(result?.nazwa) ?: ""
+        cmd.akceptantNazwaOficjalna = result?.nazwa ?: ""
         cmd.akceptantNazwaSieciowa = nullify(cmd.akceptantNazwaSieciowa)
         cmd.akceptantRegon = result?.regon ?: ""
 
@@ -707,9 +707,5 @@ class PanelService {
         }
 
         cmd.serwisZablokowany = results.size() == 3
-    }
-
-    private String getAlphanumericName(String value) {
-        return value?.replaceAll("[^A-Za-z0-9 ]", "")
     }
 }
