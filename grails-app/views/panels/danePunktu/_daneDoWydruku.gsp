@@ -52,6 +52,7 @@
                     style="width: 200px" value="${pointData?.wydrukUlica}"
                     validatable="${pointData}"
                     validateField="wydrukUlica"
+                    maxlength="40"
                     required="true"/>
             </span> <span> <span><g:message code="panel.house.number" /></span>
                 <span><eumowy:textField
