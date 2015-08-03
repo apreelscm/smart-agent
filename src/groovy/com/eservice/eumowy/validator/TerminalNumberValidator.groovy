@@ -29,16 +29,16 @@ public class TerminalNumberValidator {
     private static int getTerminalCount(def point) {
         int counter = 0
 
-        counter += point.dialupIlosc ?: 0
-        counter += point.dialupPPIlosc ?: 0
-        counter += point.vpnIlosc ?: 0
-        counter += point.vpnPPIlosc ?: 0
-        counter += point.sslIlosc ?: 0
-        counter += point.sslPPIlosc ?: 0
-        counter += point.gprsIlosc ?: 0
-        counter += point.gprsPPIlosc ?: 0
-        counter += point.pinPadIlosc ?: 0
-        counter += point.gprsIloscPortable ?: 0
+        counter += point?.dialupIlosc ?: 0
+        counter += point?.dialupPPIlosc ?: 0
+        counter += point?.vpnIlosc ?: 0
+        counter += point?.vpnPPIlosc ?: 0
+        counter += point?.sslIlosc ?: 0
+        counter += point?.sslPPIlosc ?: 0
+        counter += point?.gprsIlosc ?: 0
+        counter += point?.gprsPPIlosc ?: 0
+        counter += point?.pinPadIlosc ?: 0
+        counter += point?.gprsIloscPortable ?: 0
 
         return counter
     }
