@@ -146,21 +146,29 @@ class PdfService {
     private Map attachSubscriptions(Signature signature, Set<Subscription> subscriptions, Subscription.PersonRole personRole) {
         Subscription subscription = subscriptions.find { it.personRole == personRole }
 
+        if (subscription?.content == null) {
+            log.error(String.format("Looking for subscription for role %s and cannot find subscription content for " +
+                    "signature %s and subscription with id %s and role %s", personRole.name(), signature.name,
+                    subscription?.id, subscription?.personRole?.name()))
+            return [:]
+        }
+
         return attachSubscription(signature, subscription)
     }
 
     private Map attachSubscription(Signature signature, Subscription subscription) {
         Map result = [:]
 
-        Set<SubscriptionDefinition> definitions = signature.subscriptionDefinitions.findAll { it.role == subscription?.personRole && it.subscriptionPageNumber != null && it.subscriptionPageNumber > -1}
+        Set<SubscriptionDefinition> definitions = signature.subscriptionDefinitions.findAll { it.role == subscription?.personRole && it?.subscriptionPageNumber > -1}
 
-        if (subscription?.content != null && !definitions.isEmpty()) {
-            definitions.each{
-                BufferedImage img = SignatureToImage.convertDataToImage(subscription.content)
-                result.put("subscriber_"+it.id, [img, it.subscriptionPageNumber, it.subscriptionX, it.subscriptionY, it.scaleX, it.scaleY] as Object[])
-            }
-        } else {
-            log.error "Subscription without definitions or subscription content found for " + subscription?.personRole?.name() +"! Template path: " + signature.templatePath
+        if (definitions.isEmpty()) {
+            log.error(String.format("Cannot find definitions for signature %s and subscription role %s", signature.name, subscription?.personRole?.name()))
+            return result
+        }
+
+        definitions.each{
+            BufferedImage img = SignatureToImage.convertDataToImage(subscription.content)
+            result.put("subscriber_"+it.id, [img, it.subscriptionPageNumber, it.subscriptionX, it.subscriptionY, it.scaleX, it.scaleY] as Object[])
         }
 
         return result

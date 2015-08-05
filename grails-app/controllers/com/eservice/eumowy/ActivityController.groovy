@@ -21,6 +21,8 @@ import com.eservice.eumowy.command.ProcessCommand
 import com.eservice.eumowy.process.DefineActivityCommand
 import com.eservice.eumowy.util.DateUtils
 
+import static com.eservice.eumowy.SignatureDetail.SignaturePurpose.REPRESENTATIVE
+
 class ActivityController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
@@ -1365,7 +1367,11 @@ class ActivityController {
 
         if (ELECTRIONICAL.equals(requestVersion)) {
             if (params?.numberOfSubscriptions?.toInteger() == requiredNumberOfSubscriptions) {
-                process.documents.findAll{!it.signature.hasPurpose(SignatureDetail.SignaturePurpose.REPRESENTATIVE)}.each { DocumentFile doc ->
+                if (process.subscriptions.isEmpty()) {
+                    throw new IllegalStateException("Cannot find subscriptions for process " + process.id)
+                }
+
+                process.documents.findAll{!it.signature.hasPurpose(REPRESENTATIVE)}.each { DocumentFile doc ->
                     pdfService.updateDataUmowyOnDocument(doc, process)
 
                     byte[] newContent = pdfService.getDocumentWithSubscriptions(doc, process.subscriptions)

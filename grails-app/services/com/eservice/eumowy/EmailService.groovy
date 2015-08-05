@@ -123,9 +123,9 @@ class EmailService {
         return true
     }
 
-    private def sendMail(def emailTemplate , def recipients, def subjectParams, def bodyParams, def documents){
+    private def sendMail(EmailTemplates emailTemplate , def recipients, def subjectParams, def bodyParams, def documents){
 
-        log.info 'Sending: ' + emailTemplate + ', to: ' + recipients + ', subjectParams: ' + subjectParams + ', bodyParams: ' + bodyParams + ', documents count: ' + documents?.size()
+        log.info 'Sending: ' + emailTemplate.name.name() + ', to: ' + recipients + ', subjectParams: ' + subjectParams + ', bodyParams: ' + bodyParams + ', documents count: ' + documents?.size()
         documents.each{
             log.info("document filename:"+(it.clientName ?: it.name))
         }
