@@ -29,6 +29,8 @@
 		var panelTemplate = jQuery("#hiddenPanel").html();
 		var panelCount = ${data.points.size()};
         var isRozszerzenieOnly = '${data.isOnlyRozszerzenie}' === 'true';
+		var MAX_POINTS_COUNT = 99;
+
 		panelInternalCount.value = ${data.points.size()};
 		globalPanelCount = ${data.points.size()};
 		jQuery("#newPointPanelCount").val(panelCount);
@@ -63,7 +65,7 @@
 		jQuery("#addNewPointButton").on("click", function(e) {
 			e.preventDefault();
 			
-			if (panelInternalCount.value < 10) {
+			if (panelInternalCount.value < MAX_POINTS_COUNT) {
 				var data = panelTemplate.replace(/%ID%/gm, panelCount);
 				jQuery("#addNewPointPanelPlaceholder").append(data);
 				setupNewPointPanelHandlers(panelCount, "points");
@@ -75,7 +77,7 @@
                 maskNewPointRefresh();
 			}
 			
-			if (panelInternalCount.value == 10) {
+			if (panelInternalCount.value == MAX_POINTS_COUNT) {
 				jQuery(e.target).prop("disabled", true);
 			}
 			
@@ -112,7 +114,7 @@
 							jQuery(e.target).closest(".newPointPanel").remove();
 							panelInternalCount.value--;
 							
-							if (panelInternalCount.value < 10) {
+							if (panelInternalCount.value < MAX_POINTS_COUNT) {
 								jQuery("#addNewPointButton").prop("disabled", false);
 							}
 							
