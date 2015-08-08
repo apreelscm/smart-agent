@@ -1,4 +1,10 @@
+<asset:javascript src="apreel/panels/daneAkceptanta.js"/>
+
 <div id="acceptorDataPanel" style="margin: 0">
+    <g:if test="${data.isFromBisnode}">
+        <g:hiddenField name="isAcceptorDataChanged" value="${data.isAcceptorDataChanged}"/>
+    </g:if>
+
     <fieldset>
         <div class="belka-glowna"><g:message code="panel.acceptor.data.title"/></div>
         <div class="centre" style="text-align: center; padding-top: 20px; width: 750px">
@@ -6,7 +12,7 @@
                 <li><span><g:message code="panel.acceptor.full.name"/></span></li>
                 <li>
                     <span>
-                        <eumowy:textField name="akceptantNazwaOficjalna" value="${data.akceptantNazwaOficjalna}" validatable="${data}" readonly="${data.checkIfFromCbd('akceptantNazwaOficjalna') || data.isFromBisnode}" style="width: 400px" required="true" maxlength="128"/>
+                        <eumowy:textField name="akceptantNazwaOficjalna" value="${data.akceptantNazwaOficjalna}" validatable="${data}" readonly="${data.checkIfFromCbd('akceptantNazwaOficjalna')}" style="width: 400px" required="true" maxlength="128"/>
                         <g:hiddenField name="akceptantNazwaOficjalnaCbd" value="${data.akceptantNazwaOficjalnaCbd}"/>
                     </span>
                 </li>

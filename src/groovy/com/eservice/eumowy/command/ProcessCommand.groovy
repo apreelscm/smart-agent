@@ -90,6 +90,8 @@ class ProcessCommand implements Serializable {
     String akceptantNazwaSieciowaCbd = DEFAULT_VALUE
     String akceptantRegonCbd = DEFAULT_VALUE
 
+    Boolean isAcceptorDataChanged = false
+
 //    daneDoWydruku
     String nazwaDoWydrukuZTerminalaPos = DEFAULT_VALUE
     String wydrukNazwaDoWyszukwarki = DEFAULT_VALUE

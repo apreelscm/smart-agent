@@ -92,6 +92,8 @@ class PanelService {
     def getDaneAkceptanta(ProcessCommand cmd, def calc ) {
         def result = cbdService.getDaneAkceptanta(cmd.nip);
 
+        cmd.isAcceptorDataChanged = nullify(cmd.isAcceptorDataChanged, false)
+
         cmd.akceptantNazwaOficjalna = result?.nazwa ?: ""
         cmd.akceptantNazwaSieciowa = nullify(cmd.akceptantNazwaSieciowa)
         cmd.akceptantRegon = result?.regon ?: ""
