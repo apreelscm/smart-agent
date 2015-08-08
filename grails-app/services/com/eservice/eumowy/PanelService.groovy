@@ -219,6 +219,14 @@ class PanelService {
         cmd.mudCena = nullify(cmd.mudCena)
     }
 
+    @Deprecated
+    def getDodatkoweUslugi2(ProcessCommand cmd, def calc) {
+        cmd.wydrukGrafikiCena = calculatorService.getCalcProperty(calc,"OPLATA_LOGO")
+        cmd.dzialaniaMatematyczneCena = calculatorService.getCalcProperty(calc,"OPLATA_KALKULATOR")
+        cmd.pierwszaSesjaCena = nullify(cmd.pierwszaSesjaCena)
+        cmd.mudCena = nullify(cmd.mudCena)
+    }
+
     def getDodatkoweUslugiMud(ProcessCommand cmd, def calc ) {
         cmd.mudCena = nullify(cmd.mudCena)
     }
