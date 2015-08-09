@@ -80,9 +80,11 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
     void APUW1000150305() {  //AP/UW/1.001/15-07-07
         //given
         def subscriptions = [
-                ["ACCEPTANT1", 2, 50, 265, 59, 28],
-                ["ACCEPTANT2", 2, 50, 300, 59, 28],
-                ["PH", 2, 165, 215, 59, 28]
+                ["ACCEPTANT1", 2, 35, 220, 59, 28],
+                ["ACCEPTANT2", 2, 35, 185, 59, 28],
+                ["ACCEPTANT3", 2, 35, 145, 59, 28],
+                ["ACCEPTANT4", 2, 35, 100, 59, 28],
+                ["PH", 2, 170, 45, 59, 28]
         ]
 
         //when
@@ -179,9 +181,11 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
     void APUPZT11000150305() { //AP/UPZT1/1.000/15-03-05
         //given
         def subscriptions = [
-                ["ACCEPTANT1", 5, 150, 337, 59, 28],
-                ["ACCEPTANT2", 5, 150, 300, 59, 28],
-                ["PH", 5, 462, 160, 59, 28]
+                ["ACCEPTANT1", 5, 253, 355, 59, 28],
+                ["ACCEPTANT2", 5, 253, 325, 59, 28],
+                ["ACCEPTANT3", 5, 251, 290, 59, 28],
+                ["ACCEPTANT4", 5, 253, 250, 59, 28],
+                ["PH", 5, 460, 125, 59, 28]
         ]
 
         //when
@@ -199,9 +203,11 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
     void APUPZT21000150303() { //AP/UPZT2/1.000/15-03-05
         //given
         def subscriptions = [
-                ["ACCEPTANT1", 5, 150, 299, 59, 28],
-                ["ACCEPTANT2", 5, 150, 263, 59, 28],
-                ["PH", 5, 462, 125, 59, 28]
+                ["ACCEPTANT1", 5, 253, 355, 59, 28],
+                ["ACCEPTANT2", 5, 253, 325, 59, 28],
+                ["ACCEPTANT3", 5, 251, 290, 59, 28],
+                ["ACCEPTANT4", 5, 253, 250, 59, 28],
+                ["PH", 5, 460, 125, 59, 28]
         ]
 
         //when

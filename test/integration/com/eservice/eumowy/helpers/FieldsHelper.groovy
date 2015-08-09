@@ -69,10 +69,15 @@ class FieldsHelper {
         data.put("akceptantNazwaOficjalna", ["Jan Kowalski nazwa oficjalna"] as String[]);
         data.put("siedzibaAkceptanta", ["Siedziba Akceptanta"] as String[]);
 
-        data.put("reprezentant1", ["Jan Kowalski"] as String[]);
+        data.put("reprezentant1", ["Grzegorz Brzęszczyszczykiewicz"] as String[]);
         data.put("reprezentant2", ["Tomek Nowak"] as String[]);
         data.put("reprezentant3", ["Andrzej Jakistam"] as String[]);
         data.put("reprezentant4", ["Zenona Aloska"] as String[]);
+
+        data.put("reprezentant1Full", ["Grzegorz Brzęszczyszczykiewicz - Prezes zarządu"] as String[]);
+        data.put("reprezentant2Full", ["Tomek Nowak - Zastępca szeryfa i prezesa"] as String[]);
+        data.put("reprezentant3Full", ["Andrzej Jakistam - Szeryf wszechświata i Anglii"] as String[]);
+        data.put("reprezentant4Full", ["Zenona Aloska - Konserwatorka powierchni płaskich"] as String[]);
 
         return data;
     }
