@@ -80,6 +80,8 @@ class PdfService {
 
         subscriptionsData.putAll(attachSubscriptions(document.signature, subscriptions, Subscription.PersonRole.ACCEPTANT1))
         subscriptionsData.putAll(attachSubscriptions(document.signature, subscriptions, Subscription.PersonRole.ACCEPTANT2))
+        subscriptionsData.putAll(attachSubscriptions(document.signature, subscriptions, Subscription.PersonRole.ACCEPTANT3))
+        subscriptionsData.putAll(attachSubscriptions(document.signature, subscriptions, Subscription.PersonRole.ACCEPTANT4))
         subscriptionsData.putAll(attachSubscriptions(document.signature, subscriptions, Subscription.PersonRole.PH))
 
         if (subscriptionsData.isEmpty()) {

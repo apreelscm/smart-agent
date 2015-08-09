@@ -27,25 +27,7 @@ class SubscriptionService {
 
     public int getRequiredSubscriptionsCount(Process process) {
         int count = 1 //one subscription is always required for PH
-        Integer representativesCount = process.representatives?.size()
 
-        if(!representativesCount) return count
-
-        boolean isFirstAcceptorSubscriptionDefinitionPresent = process.signatures.any {
-            it.subscriptionDefinitions.any {Subscription.PersonRole.ACCEPTANT1.equals(it.role)}
-        }
-        boolean isSecondAcceptorSubscriptionDefinitionPresent = process.signatures.any {
-            it.subscriptionDefinitions.any {Subscription.PersonRole.ACCEPTANT2.equals(it.role)}
-        }
-
-        if(isFirstAcceptorSubscriptionDefinitionPresent && representativesCount >= 1) {
-            count++
-        }
-
-        if(isSecondAcceptorSubscriptionDefinitionPresent && representativesCount == 2) {
-            count++
-        }
-
-        return count
+        return count + (process.representatives?.size() ?: 0)
     }
 }

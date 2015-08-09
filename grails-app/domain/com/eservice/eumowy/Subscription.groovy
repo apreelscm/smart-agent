@@ -17,6 +17,8 @@ class Subscription implements Serializable {
 	public enum PersonRole {
 		ACCEPTANT1("ACCEPTANT1"),
 		ACCEPTANT2("ACCEPTANT2"),
+		ACCEPTANT3("ACCEPTANT3"),
+		ACCEPTANT4("ACCEPTANT4"),
 		PH("PH"),
         ZARZAD1(""),
         ZARZAD2("")

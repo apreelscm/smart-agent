@@ -175,6 +175,8 @@ class ActivityController {
                 flow.processInstance = currentEvent.attributes.process
                 flow.representative1 = currentEvent.attributes.representative1
                 flow.representative2 = currentEvent.attributes.representative2
+                flow.representative3 = currentEvent.attributes.representative3
+                flow.representative4 = currentEvent.attributes.representative4
                 flow.calcId = currentEvent.attributes.calcId
                 flow.prevActivityMessage = message(code: 'process.completed', args:[flow.processInstance.client.nip])
             }.to "clientSignature"
@@ -194,6 +196,8 @@ class ActivityController {
                 flow.processInstance = currentEvent.attributes.process
                 flow.representative1 = currentEvent.attributes.representative1
                 flow.representative2 = currentEvent.attributes.representative2
+                flow.representative3 = currentEvent.attributes.representative3
+                flow.representative4 = currentEvent.attributes.representative4
                 flow.prevActivityMessage = message(code: 'process.udpated', args:[flow.processInstance.client.nip])
             }.to "clientSignature"
             on("reject"){
@@ -212,6 +216,8 @@ class ActivityController {
                 flow.processInstance = currentEvent.attributes.process
                 flow.representative1 = currentEvent.attributes.representative1
                 flow.representative2 = currentEvent.attributes.representative2
+                flow.representative3 = currentEvent.attributes.representative3
+                flow.representative4 = currentEvent.attributes.representative4
                 flow.prevActivityMessage = message(code: 'process.udpated.signatures', args:[flow.processInstance.client.nip])
                 flow.isUzupelnijPodpisy = true
             }.to "clientSignature"
@@ -250,6 +256,8 @@ class ActivityController {
                     totalPagesCount: flow.totalPagesCount,
                     representative1: flow.representative1,
                     representative2: flow.representative2,
+                    representative3: flow.representative3,
+                    representative4: flow.representative4,
                     requiredNumberOfSubscriptions: flow.requiredNumberOfSubscriptions,
                     clientNip: flow.rejectedDocumentsMessage,
                     isUzupelnijPodpisy: flow.isUzupelnijPodpisy
@@ -698,6 +706,8 @@ class ActivityController {
 
                 flow.representative1 = processService.getRepresentative(processInstance, 0)
                 flow.representative2 = processService.getRepresentative(processInstance, 1)
+                flow.representative3 = processService.getRepresentative(processInstance, 2)
+                flow.representative4 = processService.getRepresentative(processInstance, 3)
 
                 if (!processInstance.save()){
                     processInstance.errors.each {
@@ -720,6 +730,8 @@ class ActivityController {
                 process {flow.processInstance}
                 representative1 { flow.representative1 }
                 representative2 { flow.representative2 }
+                representative3 { flow.representative3 }
+                representative4 { flow.representative4 }
                 calcId { flow.calcId }
             }
         }
@@ -999,6 +1011,8 @@ class ActivityController {
 
                 flow.representative1 = processService.getRepresentative(processInstance, 0)
                 flow.representative2 = processService.getRepresentative(processInstance, 1)
+                flow.representative3 = processService.getRepresentative(processInstance, 2)
+                flow.representative4 = processService.getRepresentative(processInstance, 3)
 
                 if (!processInstance.save()){
                     processInstance.errors.each {
@@ -1027,6 +1041,8 @@ class ActivityController {
                 process {flow.processInstance}
                 representative1 { flow.representative1 }
                 representative2 { flow.representative2 }
+                representative3 { flow.representative3 }
+                representative4 { flow.representative4 }
             }
         }
 
@@ -1130,6 +1146,8 @@ class ActivityController {
                 process {flow.processInstance}
                 representative1 { flow.representative1 }
                 representative2 { flow.representative2 }
+                representative3 { flow.representative3 }
+                representative4 { flow.representative4 }
                 isUzupelnijPodpisy { flow.isUzupelnijPodpisy }
             }
         }
@@ -1516,6 +1534,8 @@ class ActivityController {
     private void setRepresentatives(Map flow) {
         flow.representative1 = flow.representative1 != null ? flow.representative1 : processService.getRepresentative(flow.processInstance, 0)
         flow.representative2 = flow.representative2 != null ? flow.representative2 : processService.getRepresentative(flow.processInstance, 1)
+        flow.representative3 = flow.representative3 != null ? flow.representative3 : processService.getRepresentative(flow.processInstance, 2)
+        flow.representative4 = flow.representative4 != null ? flow.representative4 : processService.getRepresentative(flow.processInstance, 3)
     }
 
 }

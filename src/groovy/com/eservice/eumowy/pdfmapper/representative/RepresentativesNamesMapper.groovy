@@ -3,6 +3,8 @@ package com.eservice.eumowy.pdfmapper.representative
 import com.eservice.eumowy.pdfmapper.Mapper
 import com.eservice.eumowy.Process
 
+import static java.lang.String.format
+
 
 class RepresentativesNamesMapper implements Mapper{
     private Process process
@@ -16,7 +18,8 @@ class RepresentativesNamesMapper implements Mapper{
         Map representativesData = [:]
 
         process.allRepresentatives.eachWithIndex { representative, i->
-            representativesData.put("reprezentant" + (i+1), [representative.fullName] as String[])
+            representativesData.put(format("reprezentant%d", (i+1)), [representative.fullName] as String[])
+            representativesData.put(format("reprezentant%dFull", (i+1)) , [representative.description] as String[])
         }
 
         return representativesData

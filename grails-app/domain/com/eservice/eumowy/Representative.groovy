@@ -5,6 +5,8 @@ import com.eservice.eumowy.enums.options.AcceptorVerification
 import com.eservice.eumowy.enums.options.IdentityDocumentType
 import org.apache.commons.logging.LogFactory
 
+import static java.lang.String.format
+
 class Representative implements Serializable {
     private static final LOG = LogFactory.getLog(Representative.class)
 
@@ -99,7 +101,11 @@ class Representative implements Serializable {
     }
 
     public String getFullName() {
-        return name + " " + surname
+        return format("%s %s", name, surname);
+    }
+
+    public String getDescription() {
+        return format("%s %s - %s", name, surname, position);
     }
 
     public boolean isRepresentative() {
@@ -111,10 +117,10 @@ class Representative implements Serializable {
     }
 
     def afterInsert() {
-        LOG.info(String.format("Utworzono %s - %s (id: %s)", type, fullName, id))
+        LOG.info(format("Utworzono %s - %s (id: %s)", type, fullName, id))
     }
 
     def afterUpdate() {
-        LOG.info(String.format("Zaktualizowano %s - %s (id: %s)", type, fullName, id))
+        LOG.info(format("Zaktualizowano %s - %s (id: %s)", type, fullName, id))
     }
 }
