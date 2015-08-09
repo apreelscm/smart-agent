@@ -167,45 +167,55 @@
             <fieldset id="clientSignaturePersons" class="subpanel-fieldset">
                 <legend><g:message code="clientSignature.signing.people"/></legend>
                 <ul class="table-list">
-                    <li>
-                        <span>
-                            <a class="big-link" id="subscribe-REPRESENTATIVE1" data-type="ACCEPTANT1"
-                               href="eumowysig://data/${representative1?.name.encodeAsURL()}/${representative1?.surname.encodeAsURL()}/ACCEPTANT1/${message(code: 'subscription.agreement').encodeAsURL()}/${processInstance.id}/${session.id}/${createLink(controller: "subscriptionEx", action: "saveSubscription", absolute: true).encodeAsURL()}">${representative1?.fullName} - Reprezentant</a>
-                        </span>
-                        <span>
-                            <a href="" id="sgnRep1" class="button action"><g:message code="subscription.refresh"/></a>
-                        </span>
-                    </li>
+                    <g:if test="${representative1}">
+                        <li>
+                            <span>
+                                <a class="big-link" id="subscribe-REPRESENTATIVE1" data-type="ACCEPTANT1"
+                                   href="eumowysig://data/${representative1.name.encodeAsURL()}/${representative1.surname.encodeAsURL()}/ACCEPTANT1/${message(code: 'subscription.agreement').encodeAsURL()}/${processInstance.id}/${session.id}/${createLink(controller: "subscriptionEx", action: "saveSubscription", absolute: true).encodeAsURL()}">${representative1.name} ${representative1.surname} - Reprezentant</a>
+                            </span>
+                            <span>
+                                <a href="" id="sgnRep1" class="button action"><g:message code="subscription.refresh"/></a>
+                            </span>
+                        </li>
+                    </g:if>
 
-                    <li>
-                        <span>
-                            <a class="big-link" id="subscribe-REPRESENTATIVE2" data-type="ACCEPTANT2"
-                               href="eumowysig://data/${representative2?.name.encodeAsURL()}/${representative2?.surname.encodeAsURL()}/ACCEPTANT2/${message(code: 'subscription.agreement').encodeAsURL()}/${processInstance.id}/${session.id}/${createLink(controller: "subscriptionEx", action: "saveSubscription", absolute: true).encodeAsURL()}">${representative2?.fullName} - Reprezentant</a>
-                        </span>
-                        <span>
-                            <a href="" id="sgnRep2" class="button action"><g:message code="subscription.refresh"/></a>
-                        </span>
-                    </li>
+                    <g:if test="${representative2}">
+                        <li>
+                            <span>
+                                <a class="big-link" id="subscribe-REPRESENTATIVE2" data-type="ACCEPTANT2"
+                                   href="eumowysig://data/${representative2.name.encodeAsURL()}/${representative2.surname.encodeAsURL()}/ACCEPTANT2/${message(code: 'subscription.agreement').encodeAsURL()}/${processInstance.id}/${session.id}/${createLink(controller: "subscriptionEx", action: "saveSubscription", absolute: true).encodeAsURL()}">${representative2.name} ${representative2.surname} - Reprezentant</a>
+                            </span>
+                            <span>
+                                <a href="" id="sgnRep2" class="button action"><g:message code="subscription.refresh"/></a>
+                            </span>
+                        </li>
+                    </g:if>
 
-                    <li>
-                        <span>
-                            <a class="big-link" id="subscribe-REPRESENTATIVE3" data-type="ACCEPTANT3"
-                               href="eumowysig://data/${representative3?.name.encodeAsURL()}/${representative3?.surname.encodeAsURL()}/ACCEPTANT3/${message(code: 'subscription.agreement').encodeAsURL()}/${processInstance.id}/${session.id}/${createLink(controller: "subscriptionEx", action: "saveSubscription", absolute: true).encodeAsURL()}">${representative3?.fullName} - Reprezentant</a>
-                        </span>
-                        <span>
-                            <a href="" id="sgnRep3" class="button action"><g:message code="subscription.refresh"/></a>
-                        </span>
-                    </li>
 
-                    <li>
-                        <span>
-                            <a class="big-link" id="subscribe-REPRESENTATIVE4" data-type="ACCEPTANT4"
-                               href="eumowysig://data/${representative4?.name.encodeAsURL()}/${representative4?.surname.encodeAsURL()}/ACCEPTANT4/${message(code: 'subscription.agreement').encodeAsURL()}/${processInstance.id}/${session.id}/${createLink(controller: "subscriptionEx", action: "saveSubscription", absolute: true).encodeAsURL()}">${representative4?.fullName} - Reprezentant</a>
-                        </span>
-                        <span>
-                            <a href="" id="sgnRep4" class="button action"><g:message code="subscription.refresh"/></a>
-                        </span>
-                    </li>
+                    <g:if test="${representative3}">
+                        <li>
+                            <span>
+                                <a class="big-link" id="subscribe-REPRESENTATIVE3" data-type="ACCEPTANT3"
+                                   href="eumowysig://data/${representative3.name.encodeAsURL()}/${representative3.surname.encodeAsURL()}/ACCEPTANT3/${message(code: 'subscription.agreement').encodeAsURL()}/${processInstance.id}/${session.id}/${createLink(controller: "subscriptionEx", action: "saveSubscription", absolute: true).encodeAsURL()}">${representative3.name} ${representative3.surname} - Reprezentant</a>
+                            </span>
+                            <span>
+                                <a href="" id="sgnRep3" class="button action"><g:message code="subscription.refresh"/></a>
+                            </span>
+                        </li>
+                    </g:if>
+
+
+                    <g:if test="${representative4}">
+                        <li>
+                            <span>
+                                <a class="big-link" id="subscribe-REPRESENTATIVE4" data-type="ACCEPTANT4"
+                                   href="eumowysig://data/${representative4.name.encodeAsURL()}/${representative4.surname.encodeAsURL()}/ACCEPTANT4/${message(code: 'subscription.agreement').encodeAsURL()}/${processInstance.id}/${session.id}/${createLink(controller: "subscriptionEx", action: "saveSubscription", absolute: true).encodeAsURL()}">${representative4.name} ${representative4.surname} - Reprezentant</a>
+                            </span>
+                            <span>
+                                <a href="" id="sgnRep4" class="button action"><g:message code="subscription.refresh"/></a>
+                            </span>
+                        </li>
+                    </g:if>
 
                     <li>
                         <span>

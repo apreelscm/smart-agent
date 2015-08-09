@@ -1379,6 +1379,7 @@ a.submit{
 	margin-right: 1em;
 	height: 200px;
 	width: 70%;
+    overflow: auto;
 }
 
 #clientSignatureDocType {
