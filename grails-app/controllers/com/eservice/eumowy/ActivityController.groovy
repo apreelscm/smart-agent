@@ -22,6 +22,7 @@ import com.eservice.eumowy.process.DefineActivityCommand
 import com.eservice.eumowy.util.DateUtils
 
 import static com.eservice.eumowy.SignatureDetail.SignaturePurpose.REPRESENTATIVE
+import static java.lang.String.format
 
 class ActivityController {
 
@@ -282,7 +283,7 @@ class ActivityController {
                     Subscription subscription = Subscription.get(params.subscriptionId)
 
                     if (!subscription) {
-                        log.error String.format("Nie znaleziono podpisu o id %s dla procesu %s", params.subscriptionId, processInstance.id)
+                        log.error format("Nie znaleziono podpisu o id %s dla procesu %s", params.subscriptionId, processInstance.id)
                     }
 
                     processInstance.addToSubscriptions(subscription)
@@ -352,7 +353,7 @@ class ActivityController {
                 }
 
                 if (processInstance.notesToCoa) {
-                    log.info(String.format("Wysyłanie wiadomości email z uwagami do COA [notes: %s]", ${processInstance.notesToCoa}))
+                    log.info(format("Wysyłanie wiadomości email z uwagami do COA [notes: %s]", ${processInstance.notesToCoa}))
                     EServiceUserDetails user = springSecurityService.principal
                     Map bodyParams = mailBodyCreatorService.notesToCoa(processInstance, user)
                     emailService.sendNotesToCOA(bodyParams)
@@ -405,7 +406,7 @@ class ActivityController {
 
                 Set<Signature> signatures =  signatureService.getProcessSignatures(processInstance, params)
 
-                log.info(String.format("Found signatures: %s", signatures))
+                log.info(format("Found signatures: %s", signatures))
 
                 processInstance.signatures = signatures
 
@@ -434,7 +435,7 @@ class ActivityController {
 
                 Client client = flow.client
 
-                log.info(String.format("Found client: ", client))
+                log.info(format("Found client: ", client))
 
                 if (!client.id && !client.save(flush:true)) {
                     client.errors.each { log.error(it) }
@@ -584,7 +585,7 @@ class ActivityController {
                     processCommand = processService.getSavedProcessCommand(processInstance, processInstance.calcNumber, conversation.calc, flow.newProcessFlow)
 
                     if(processCommand.isFromBisnode && !flow.representativesBisnode) {
-                        log.info(String.format("Process with ID %s and NIP %s is from BISNODE. Filling flow with representatives from BISNODE.", processInstance.id, processCommand.nip))
+                        log.info(format("Process with ID %s and NIP %s is from BISNODE. Filling flow with representatives from BISNODE.", processInstance.id, processCommand.nip))
                         flow.representativesBisnode = bisnodeService.getRepresentatives(processCommand.nip)
                     }
 
@@ -791,7 +792,8 @@ class ActivityController {
             on("continue"){
                 Process processInstance = flow.savedProcess
 
-                log.info("POPRAW DANE - wczytanie procesu - nip = ${flow.nip} , processId = ${processInstance?.id}, status = ${processInstance?.status}")
+                log.info(format("POPRAW DANE - wczytanie procesu - nip = %s, processId = %s, status = %s. USER AGENT: %s",
+                        ${flow.nip}, ${processInstance?.id}, ${processInstance?.status}, request?.getHeader("user-agent")))
 
                 processService.setPhDetailsFromUser(processInstance, springSecurityService.principal)
 
@@ -818,7 +820,8 @@ class ActivityController {
                 Client client = cbdService.findClientByNip(flow.nip);
                 Process lastProcess = processService.getLastProcessForClient(params.nip)
 
-                log.info("POPRAW DANE - Znaleziono proces - nip = ${flow.nip} , processId = ${lastProcess?.id}, status = ${lastProcess?.status}")
+                log.info(format("POPRAW DANE - znaleziono proces - nip = %s, processId = %s, status = %s. USER AGENT: %s",
+                        ${flow.nip}, ${lastProcess?.id}, ${lastProcess?.status}, request?.getHeader("user-agent")))
 
                 if(!client?.cbdId){
                     /** sprawdzanie, czy to nie jest nowa umowa */
@@ -891,7 +894,7 @@ class ActivityController {
                 ProcessCommand processCmd = processService.getSavedProcessCommand(processInstance, flow.calcNumber, conversation.calc, flow.newProcessFlow)
 
                 if(processCmd.isFromBisnode && !flow.representativesBisnode) {
-                    log.info(String.format("Process with ID %s and NIP %s is from BISNODE. Filling flow with representatives from BISNODE.", processInstance.id, processCmd.nip))
+                    log.info(format("Process with ID %s and NIP %s is from BISNODE. Filling flow with representatives from BISNODE.", processInstance.id, processCmd.nip))
                     flow.representativesBisnode = bisnodeService.getRepresentatives(processCmd.nip)
                 }
 
@@ -1311,7 +1314,7 @@ class ActivityController {
         citiesData.each { GroovyRowResult row ->
             result.push(row.get("NAME"))
         }
-		log.info(String.format("Dla kodu %s znaleziono miasta %s", code, result))
+		log.info(format("Dla kodu %s znaleziono miasta %s", code, result))
         render result as JSON
     }
 
