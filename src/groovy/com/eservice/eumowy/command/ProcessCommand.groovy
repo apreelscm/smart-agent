@@ -6,11 +6,15 @@ import com.eservice.eumowy.annotation.Omit
 import com.eservice.eumowy.enums.options.AcceptorLocation
 import com.eservice.eumowy.enums.options.LegalForm
 import com.eservice.eumowy.validator.*
+import com.google.common.base.Strings
 import grails.util.Holders
 import grails.validation.Validateable
 import org.apache.commons.collections.FactoryUtils
 import org.apache.commons.collections.ListUtils
 import org.apache.commons.lang.StringUtils
+import org.apache.commons.validator.routines.EmailValidator
+
+import static com.google.common.base.Strings.isNullOrEmpty
 
 @Validateable(nullable = true)
 class ProcessCommand implements Serializable {
@@ -798,11 +802,29 @@ class ProcessCommand implements Serializable {
 
         kontaktTelKomorkowy(nullable: true)
         kontaktTelStacjonarny(nullable: true)
-        kontaktEmail(nullable: true, blank: true, shared: "email")
+        kontaktEmail(nullable: true, blank: true, validator: { value, cmd, errors ->
+            if (value == DEFAULT_VALUE || isNullOrEmpty(value)) return true
+
+            if (!EmailValidator.instance.isValid(value)) {
+                errors.rejectValue(propertyName, "email.invalid", [value] as Object[], "")
+                return false
+            }
+
+            return true
+        })
         pozyskujacyImie(nullable: false, blank: false, shared: "lettersOnly", maxSize: 40)
         pozyskujacyNazwisko(nullable: false, blank: false, shared: "lettersOnly", maxSize: 100)
         pozyskujacyNumer(nullable: false, blank: false, maxSize: 12)
-        emailDoWysylkiDokumentu(nullable: true, blank: true, shared: "email")
+        emailDoWysylkiDokumentu(nullable: true, blank: true, validator: { value, cmd, errors ->
+            if (value == DEFAULT_VALUE || isNullOrEmpty(value)) return true
+
+            if (!EmailValidator.instance.isValid(value)) {
+                errors.rejectValue(propertyName, "email.invalid", [value] as Object[], "")
+                return false
+            }
+
+            return true
+        })
 
         visaEUKKOSt(nullable: false, blank: false,  validator: { value, cmd, errors ->
             NumberValidator.validate(value, cmd, errors, propertyName) &&

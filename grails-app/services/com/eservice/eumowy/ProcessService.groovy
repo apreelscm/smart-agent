@@ -265,6 +265,7 @@ class ProcessService {
                 representativeProperties.remove("controlsAcceptor")
                 representativeProperties.remove("overQuarterOfVotes")
                 representativeProperties.remove("votesPercentage")
+                representativeProperties.remove("description")
 
                 result.add(new RepresentativeCommand(representativeProperties))
             } else {
