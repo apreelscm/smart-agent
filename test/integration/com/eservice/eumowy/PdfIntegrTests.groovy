@@ -270,6 +270,23 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
         process("APUPZZSNT21.00115-03-05.pdf", "APUPZZSNT21.00115-03-05_out.pdf", data)
     }
 
+    @Test
+    void APAGFDF2004150914() { //AP-AG/F/DF/2.004/15-09-14
+        //given
+        def subscriptions = [
+                ["PH", 2, 260, 370, 59, 28],
+                ["ACCEPTANT1", 2, 450, 370, 59, 28]
+        ]
+
+        //when
+        data.putAll(akceptantIReprezentanciFields())
+        data.put("emailDoWysylkiDokumentu", ["jan.kowalski@gmail.com"] as String[])
+        data.putAll(PdfHelper.insertSignatures(subscriptions))
+
+        //then
+        process("APAGFDF2.00415-09-14.pdf", "APAGFDF2.00415-09-14_out.pdf", data)
+    }
+
 
     @Test
     void pakiet_UmowaWspolpracy() {

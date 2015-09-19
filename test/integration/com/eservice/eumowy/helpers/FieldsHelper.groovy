@@ -67,7 +67,11 @@ class FieldsHelper {
     public static HashMap<String, String[]> akceptantIReprezentanciFields() {
         HashMap<String, String[]> data = new HashMap<String, String[]>();
         data.put("akceptantNazwaOficjalna", ["Jan Kowalski nazwa oficjalna"] as String[]);
+        data.put("akceptantNazwaSieciowa", ["Jan Kowalski nazwa sieciowa"] as String[]);
         data.put("siedzibaAkceptanta", ["Siedziba Akceptanta"] as String[]);
+
+        data.put("akceptantNip", ["1234567890"] as String[]);
+        data.put("akceptantRegon", ["123456789"] as String[]);
 
         data.put("reprezentant1", ["Grzegorz Brzęszczyszczykiewicz"] as String[]);
         data.put("reprezentant2", ["Tomek Nowak"] as String[]);
