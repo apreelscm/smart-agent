@@ -62,6 +62,20 @@ class EmailService {
         sendMail(emailTemplate, recipient, null, bodyParams, documents)
     }
 
+    def sendNewAgreementDocuments(def recipient, List<DocumentFile> documents, def bodyParams) {
+        sendDocumentsElectronicalVersion(recipient, documents, bodyParams)
+
+        EmailTemplates emailTemplate = getEmailTemplatesByName(DOCUMENTS_NEW_AGREEMENT)
+        List<DocumentFile> acceptanceForm = documents.findAll { "AP-AG/F/DF/2.004/15-09-14".equals(it.signature.name) }
+        String email = acceptanceForm.first()?.process?.getProcessData("emailDoWysylkiDokumentu")?.name
+
+        if (!email.isEmpty()) {
+            sendMail(emailTemplate, email, null, bodyParams, acceptanceForm)
+        } else {
+            log.warn "Cannot find email for sending acceptance form"
+        }
+    }
+
 	def sendDocumentsElectronicalVersion(def recipient, List<DocumentFile> documents, def bodyParams) {
 		def emailTemplate = getEmailTemplatesByName(DOCUMENTS_ELECTRONICAL_VERSION)
         sendMail(emailTemplate, recipient, null, bodyParams, documents)

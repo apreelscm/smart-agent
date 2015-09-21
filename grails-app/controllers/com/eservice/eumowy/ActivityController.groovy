@@ -1425,8 +1425,8 @@ class ActivityController {
                         recipients.add(recipient)
 
                         Boolean isNewAgreement = processService.isProcessHasActivity(process, "nowaUmowa")
-                        if (isNewAgreement){
-                            emailService.sendDocumentsElectronicalVersion(recipients, documents, mailBodyParams)
+                        if (isNewAgreement) {
+                            emailService.sendNewAgreementDocuments(recipients, documents, mailBodyParams)
                         } else {
                             emailService.sendDocumentsNotNewAggrementElectronicalVersion(recipients, documents, mailBodyParams)
                         }
