@@ -1,6 +1,7 @@
 package com.eservice.eumowy
 
 import com.eservice.eumowy.auth.EServiceUserDetails
+import com.google.common.collect.Lists
 import grails.plugin.cache.Cacheable
 import org.apache.commons.lang.StringUtils
 import org.perf4j.StopWatch
@@ -62,14 +63,28 @@ class EmailService {
         sendMail(emailTemplate, recipient, null, bodyParams, documents)
     }
 
-    def sendNewAgreementDocuments(def recipient, List<DocumentFile> documents, def bodyParams) {
-        sendDocumentsElectronicalVersion(recipient, documents, bodyParams)
+    def sendNewAgreementDocuments(List recipients, List<DocumentFile> documents, def bodyParams) {
+        String acceptanceEmail;
 
+        if (recipients.size() == 1) { //only acceptor
+            acceptanceEmail = recipients.get(0)
+        } else {
+            acceptanceEmail = recipients.get(1)
+            sendDocumentsElectronicalVersion(Lists.newArrayList(recipients.get(0)), documents, bodyParams)
+        }
+
+        sendAcceptanceForm(acceptanceEmail, documents, bodyParams)
+    }
+
+    private void sendAcceptanceForm(String recipient, List<DocumentFile> documents, def bodyParams) {
         EmailTemplates emailTemplate = getEmailTemplatesByName(DOCUMENTS_NEW_AGREEMENT)
-        List<DocumentFile> acceptanceForm = documents.findAll { "AP-AG/F/DF/2.004/15-09-14".equals(it.signature.name) }
-        String email = acceptanceForm.first()?.process?.getProcessData("emailDoWysylkiDokumentu")?.name
+        List<DocumentFile> acceptanceForm = documents.findAll { "Formularz Akceptanta.pdf".equals(it.clientName) }
+        List<String> email = Lists.newArrayList(recipient);
+
+        log.info "Trying to send acceptance form"
 
         if (!email.isEmpty()) {
+            log.info "Sending acceptance form to " + email
             sendMail(emailTemplate, email, null, bodyParams, acceptanceForm)
         } else {
             log.warn "Cannot find email for sending acceptance form"
