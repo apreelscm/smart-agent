@@ -179,7 +179,7 @@ class PointCommand implements Serializable {
             value ? NumberValidator.accountNumber(value, cmd, errors, propertyName) : true
         })
 		bank(nullable:true, blank:false)
-		nazwaDoWydrukuZTerminalaPos(nullable:true, maxSize: 25)
+		nazwaDoWydrukuZTerminalaPos(nullable:true, maxSize: 44)
 		nazwaDoWyszukiwarki(nullable:true)
 		wydrukUlicaTytul(nullable:true)
 		wydrukUlica(nullable:true, blank:false, shared:"alphanumeric")
