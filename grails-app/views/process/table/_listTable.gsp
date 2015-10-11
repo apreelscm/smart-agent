@@ -12,8 +12,8 @@
             <g:sortableColumn property="phFirstName"  title="${message(code: 'ph.firstName.label')}" params="[filterStatus:filterStatus,filterObserved:filterObserved,filterNip:filterNip,filterPhNo:filterPhNo,filterDateFrom:filterDateFrom,filterDateTo:filterDateTo]"/>
             <g:sortableColumn property="phSurname"  title="${message(code: 'ph.lastName.label')}" params="[filterStatus:filterStatus,filterObserved:filterObserved,filterNip:filterNip,filterPhNo:filterPhNo,filterDateFrom:filterDateFrom,filterDateTo:filterDateTo]"/>
             <g:sortableColumn property="status"  title="${message(code: 'status.label')}" params="[filterStatus:filterStatus,filterObserved:filterObserved,filterNip:filterNip,filterPhNo:filterPhNo,filterDateFrom:filterDateFrom,filterDateTo:filterDateTo]"/>
-            <g:sortableColumn property="isRepresentativesChangedManually" title="${message(code: 'representative.changed.manually')}" params="[filterStatus:filterStatus,filterObserved:filterObserved,filterNip:filterNip,filterPhNo:filterPhNo,filterDateFrom:filterDateFrom,filterDateTo:filterDateTo]"/>
             <g:sortableColumn property="isAcceptorDataChanged" title="${message(code: 'acceptor.changed.manually')}" params="[filterStatus:filterStatus,filterObserved:filterObserved,filterNip:filterNip,filterPhNo:filterPhNo,filterDateFrom:filterDateFrom,filterDateTo:filterDateTo]"/>
+            <g:sortableColumn property="isFromBisnode" title="${message(code: 'is.from.bisnode')}" params="[filterStatus:filterStatus,filterObserved:filterObserved,filterNip:filterNip,filterPhNo:filterPhNo,filterDateFrom:filterDateFrom,filterDateTo:filterDateTo]"/>
         </tr>
     </thead>
     <tbody>
