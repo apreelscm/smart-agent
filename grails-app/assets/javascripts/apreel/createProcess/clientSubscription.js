@@ -11,6 +11,8 @@ var updateSubscriptionStatusCount = 0,
     subscriberSubmitButtonName = {
         "subscribe-REPRESENTATIVE1" : "#sgnRep1",
         "subscribe-REPRESENTATIVE2" : "#sgnRep2",
+        "subscribe-REPRESENTATIVE3" : "#sgnRep3",
+        "subscribe-REPRESENTATIVE4" : "#sgnRep4",
         "subscribe-PH" : "#sgnPh"
     };
 
@@ -65,7 +67,7 @@ function updateSubscriptionStatus(subscriberName, subId) {
         height: 100,
         width: 220,
         modal: true
-    })
+    });
 
     if (updateSubscriptionStatusCount >= 1 && updateSubscriptionStatusCount <= requiredSubscriptionsCount - 1) {
         jQuery.post(url, {_eventId_updateProcessStatus: "", processStatus: "WAIT_FOR_SUBSCRIPTION", subscriptionId: subId})
@@ -126,25 +128,17 @@ function hideSubscriptionPanel() {
 }
 
 function allSubscriptionsReady() {
-    if (requiredSubscriptionsCount == 3) {
-        if (isSubscriptionDone["subscribe-REPRESENTATIVE1"] == true &&
-            isSubscriptionDone["subscribe-REPRESENTATIVE2"] == true &&
-            isSubscriptionDone["subscribe-PH"] == true)
-            return true;
-    }
-    else if (requiredSubscriptionsCount == 2) {
-        if ((isSubscriptionDone["subscribe-REPRESENTATIVE1"] == true &&
-            isSubscriptionDone["subscribe-PH"] == true) ||
-            (isSubscriptionDone["subscribe-REPRESENTATIVE2"] == true &&
-                isSubscriptionDone["subscribe-PH"] == true))
-            return true;
-    }
-    else if (requiredSubscriptionsCount == 1 || requiredSubscriptionsCount == 0) {
-        if (isSubscriptionDone["subscribe-PH"] == true)
-            return true;
+    if (requiredSubscriptionsCount == 0) return isSubscriptionDone["subscribe-PH"];
+
+    var subscriptions = 0;
+
+    for (var key in subscriberSubmitButtonName) {
+        if (subscriberSubmitButtonName.hasOwnProperty(key) && isSubscriptionDone[key]) {
+            subscriptions++;
+        }
     }
 
-    return false;
+    return requiredSubscriptionsCount == subscriptions;
 }
 
 jQuery(document).ready(function() {
@@ -210,6 +204,24 @@ jQuery(document).ready(function() {
         return false;
     });
 
+    jQuery('#sgnRep3').click(function(e) {
+        e.preventDefault();
+        var $this = jQuery(this);
+        if (!$this.hasClass('action_visited')) {
+            refreshSignature(processId,'ACCEPTANT3','subscribe-REPRESENTATIVE3');
+        }
+        return false;
+    });
+
+    jQuery('#sgnRep4').click(function(e) {
+        e.preventDefault();
+        var $this = jQuery(this);
+        if (!$this.hasClass('action_visited')) {
+            refreshSignature(processId,'ACCEPTANT4','subscribe-REPRESENTATIVE4');
+        }
+        return false;
+    });
+
     jQuery("#sgnPh").click(function(e) {
         e.preventDefault();
         var $this = jQuery(this);
@@ -271,15 +283,14 @@ jQuery(document).ready(function() {
     if (requiredSubscriptionsCount == 1){
         jQuery("#subscribe-REPRESENTATIVE1").parent().parent().hide();
         jQuery("#subscribe-REPRESENTATIVE2").parent().parent().hide();
+        jQuery("#subscribe-REPRESENTATIVE3").parent().parent().hide();
+        jQuery("#subscribe-REPRESENTATIVE4").parent().parent().hide();
     }
 
-    if (jQuery("#subscribe-REPRESENTATIVE1").text() == "  - Reprezentant") {
-        jQuery("#subscribe-REPRESENTATIVE1").parent().parent().hide();
-    }
-
-    if (jQuery("#subscribe-REPRESENTATIVE2").text() == "  - Reprezentant") {
-        jQuery("#subscribe-REPRESENTATIVE2").parent().parent().hide();
-    }
+    hideIfNoRepresentativeData("#subscribe-REPRESENTATIVE1");
+    hideIfNoRepresentativeData("#subscribe-REPRESENTATIVE2");
+    hideIfNoRepresentativeData("#subscribe-REPRESENTATIVE3");
+    hideIfNoRepresentativeData("#subscribe-REPRESENTATIVE4");
 
     setSubscriptions();
 
@@ -308,6 +319,8 @@ jQuery(document).ready(function() {
 
             jQuery("#sgnRep1").addClass("disabled");
             jQuery("#sgnRep2").addClass("disabled");
+            jQuery("#sgnRep3").addClass("disabled");
+            jQuery("#sgnRep4").addClass("disabled");
             jQuery("#sgnPh").addClass("disabled");
         }
     });
@@ -324,11 +337,19 @@ jQuery(document).ready(function() {
         }
     });
 
+    function hideIfNoRepresentativeData(id) {
+        if (jQuery(id).text() == "  - Reprezentant") {
+            jQuery(id).parent().parent().hide();
+        }
+    }
+
     function manageAvailability() {
         jQuery("#noaccept").prop("disabled", false);
 
         jQuery("#sgnRep1").removeClass("disabled");
         jQuery("#sgnRep2").removeClass("disabled");
+        jQuery("#sgnRep3").removeClass("disabled");
+        jQuery("#sgnRep4").removeClass("disabled");
         jQuery("#sgnPh").removeClass("disabled");
 
         if (isSubscriptionDone["subscribe-REPRESENTATIVE1"] != true) {
@@ -337,6 +358,14 @@ jQuery(document).ready(function() {
 
         if (isSubscriptionDone["subscribe-REPRESENTATIVE2"] != true) {
             jQuery("#subscribe-REPRESENTATIVE2").parent().removeClass("disabled");
+        }
+
+        if (isSubscriptionDone["subscribe-REPRESENTATIVE3"] != true) {
+            jQuery("#subscribe-REPRESENTATIVE3").parent().removeClass("disabled");
+        }
+
+        if (isSubscriptionDone["subscribe-REPRESENTATIVE4"] != true) {
+            jQuery("#subscribe-REPRESENTATIVE4").parent().removeClass("disabled");
         }
 
         if (isSubscriptionDone["subscribe-PH"] != true) {
@@ -353,6 +382,8 @@ jQuery(document).ready(function() {
             jQuery("#noaccept").prop("disabled", true);
             jQuery("#subscribe-REPRESENTATIVE1").parent().addClass("disabled");
             jQuery("#subscribe-REPRESENTATIVE2").parent().addClass("disabled");
+            jQuery("#subscribe-REPRESENTATIVE3").parent().addClass("disabled");
+            jQuery("#subscribe-REPRESENTATIVE4").parent().addClass("disabled");
             jQuery("#subscribe-PH").parent().addClass("disabled");
         } else{
             jQuery("#requestVersionElectronical").attr("checked","checked");

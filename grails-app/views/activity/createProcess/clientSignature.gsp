@@ -32,7 +32,9 @@
                 agreementLabel = {
                     "PH": "${message(code:'subscription.agreement.ph')}",
                     "ACCEPTANT1": "${message(code:'subscription.agreement')}",
-                    "ACCEPTANT2": "${message(code:'subscription.agreement')}"
+                    "ACCEPTANT2": "${message(code:'subscription.agreement')}",
+                    "ACCEPTANT3": "${message(code:'subscription.agreement')}",
+                    "ACCEPTANT4": "${message(code:'subscription.agreement')}"
                 },
                 createProcessRejectLink = '<g:createLink controller="activity" action="createProcess" params="[message: rejectedDocumentsMessage]"/>',
                 createProcessPrevActivityMessage = '<g:createLink controller="activity" action="createProcess" params="[message: prevActivityMessage]"/>',
@@ -63,6 +65,7 @@
                 jQuery("#clientSignatureBackButton").addClass("disabled");
                 isSubscriptionDone["subscribe-REPRESENTATIVE1"] = true;
             }
+
             if (jQuery("#subscribe-REPRESENTATIVE2").attr("data-type") == "${it.personRole}") {
                 jQuery("#subscribe-REPRESENTATIVE2").parent().addClass("disabled");
                 jQuery("#sgnRep2").removeClass('action').addClass('action_visited');
@@ -70,6 +73,23 @@
                 jQuery("#clientSignatureBackButton").addClass("disabled");
                 isSubscriptionDone["subscribe-REPRESENTATIVE2"] = true;
             }
+
+            if (jQuery("#subscribe-REPRESENTATIVE3").attr("data-type") == "${it.personRole}") {
+                jQuery("#subscribe-REPRESENTATIVE3").parent().addClass("disabled");
+                jQuery("#sgnRep3").removeClass('action').addClass('action_visited');
+                updateSubscriptionStatusCount++;
+                jQuery("#clientSignatureBackButton").addClass("disabled");
+                isSubscriptionDone["subscribe-REPRESENTATIVE3"] = true;
+            }
+
+            if (jQuery("#subscribe-REPRESENTATIVE4").attr("data-type") == "${it.personRole}") {
+                jQuery("#subscribe-REPRESENTATIVE4").parent().addClass("disabled");
+                jQuery("#sgnRep4").removeClass('action').addClass('action_visited');
+                updateSubscriptionStatusCount++;
+                jQuery("#clientSignatureBackButton").addClass("disabled");
+                isSubscriptionDone["subscribe-REPRESENTATIVE4"] = true;
+            }
+
             if (jQuery("#subscribe-PH").attr("data-type") == "${it.personRole}") {
                 jQuery("#subscribe-PH").parent().addClass("disabled");
                 jQuery("#sgnPh").removeClass('action').addClass('action_visited');

@@ -164,7 +164,6 @@ class PdfService {
         Set<SubscriptionDefinition> definitions = signature.subscriptionDefinitions.findAll { it.role == subscription?.personRole && it?.subscriptionPageNumber > -1}
 
         if (definitions.isEmpty()) {
-            log.error(String.format("Cannot find definitions for signature %s and subscription role %s", signature.name, subscription?.personRole?.name()))
             return result
         }
 
