@@ -274,7 +274,7 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
     void APAGFDF2004150914() { //AP-AG/F/DF/2.004/15-09-14
         //given
         def subscriptions = [
-                ["PH", 2, 260, 370, 59, 28],
+                ["PH", 2, 135, 370, 59, 28],
                 ["ACCEPTANT1", 2, 450, 370, 59, 28]
         ]
 
