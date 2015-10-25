@@ -69,4 +69,17 @@ class MapperService {
         return data
     }
 
+    public Map mapPointData(List<PointData> points) {
+        if (points.size() < 0) return [:]
+
+        Map data = [:]
+
+        points.eachWithIndex{ point, i ->
+            data.put("punktAkceptacjaKart" + i, [point.nazwa] as String[])
+            data.put("adresAkceptacjaKart" + i, [point.getAddress()] as String[])
+        }
+
+        return data
+    }
+
 }

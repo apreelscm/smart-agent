@@ -1,7 +1,10 @@
 package com.eservice.eumowy
 
+import com.google.common.base.Strings
 import org.apache.commons.lang.StringUtils
 import org.apache.log4j.Logger
+
+import javax.persistence.Transient
 
 class PointData implements Serializable {
 	
@@ -100,5 +103,18 @@ class PointData implements Serializable {
 
         return localPoses ? localPoses.size() > 0 : false
     }
+
+	@Transient
+	String getAddress() {
+		StringBuilder sb = new StringBuilder();
+
+		sb.append(pointDetails?.wydrukUlicaTytul ?: "").append(" ").append(ulica).append(" ").append(nrBudynku);
+		if (!Strings.isNullOrEmpty(nrLokalu)) {
+			sb.append("/").append(nrLokalu);
+		}
+		sb.append(", ").append(kodPocztowy).append(" ").append(miejscowosc);
+
+		return sb.toString();
+	}
 	
 }

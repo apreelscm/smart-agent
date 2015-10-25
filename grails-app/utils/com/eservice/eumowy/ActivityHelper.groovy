@@ -12,6 +12,7 @@ class ActivityHelper {
     public static final String PAKIET_START_PLUS = "pakietStartPlus"
     public static final String PAKIET_MOBILNY = "pakietMobilny"
     public static final String WYMIANA_UMOWY_NAJMU_NA_UMOWE_WSPOLPRACY = "wymianaUmowyNajmu"
+    public static final String WYMIANA_UMOWY_PLATNICZEJ = "wymianaUmowyZaplaty"
 
     static boolean isNewAgreement(Process process) {
         return contains(process, NOWA_UMOWA)

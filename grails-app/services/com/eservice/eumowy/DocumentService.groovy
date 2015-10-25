@@ -8,12 +8,19 @@ import org.apache.commons.lang.StringUtils
 import pdfgenerator.PdfGenerator
 import pdfgenerator.PdfGenerator.FontType
 
+import static com.eservice.eumowy.ActivityHelper.NOWA_UMOWA
+import static com.eservice.eumowy.ActivityHelper.WYMIANA_UMOWY_NAJMU_NA_UMOWE_WSPOLPRACY
+import static com.eservice.eumowy.ActivityHelper.WYMIANA_UMOWY_PLATNICZEJ
+import static com.eservice.eumowy.ActivityHelper.hasAtLeastOne
+import static com.eservice.eumowy.SignatureDetail.SignaturePurpose.ADDITIONAL_POINTS
+
 class DocumentService {
 
     def mapperService
     def appParametersService
 
     private static final int POSES_COUNT_ON_RENT_REDUCTION = 10
+    private static final int POINTS_COUNT_ON_DOCUMENT = 2
 
     def download(def id) {
 
@@ -56,6 +63,9 @@ class DocumentService {
         Set<DocumentFile> representativesDocuments = getRepresentativesDocuments(processInstance)
         documents.addAll(representativesDocuments)
 
+        Set<DocumentFile> pointsDocuments = getAdditionalPointsDocuments(processInstance)
+        documents.addAll(pointsDocuments)
+
         addNewDocumentsToProcess(documents, processInstance)
 
         removeObsoleteDocuments(processInstance)
@@ -66,10 +76,10 @@ class DocumentService {
     }
 
     private Set<DocumentFile> getRentReductionDocuments(Process processInstance, Map dataFromProcess) {
-        Signature rentReductionSignature = processInstance.signatures.find{ sig -> sig.hasPurpose(SignatureDetail.SignaturePurpose.RENT_REDUCTION)}
+        Signature signature = processInstance.signatures.find{ sig -> sig.hasPurpose(SignatureDetail.SignaturePurpose.RENT_REDUCTION)}
         Set<DocumentFile> documents = []
 
-        if(!rentReductionSignature) return documents
+        if(!signature) return documents
 
         List<PosData> chosenPoses = processInstance.getChosenPoses()
 
@@ -79,13 +89,44 @@ class DocumentService {
 
         Lists.partition(chosenPoses, POSES_COUNT_ON_RENT_REDUCTION).eachWithIndex { List<PosData> poses, int i ->
             Map posData = mapperService.mapPosData(poses)
-            String documentName = i == 0 ? rentReductionSignature.templatePath : i + "_" + rentReductionSignature.templatePath
-            String clientDocumentName = i == 0 ? rentReductionSignature.filename : i + "_" + rentReductionSignature.filename
+            String name = i == 0 ? signature.templatePath : i + "_" + signature.templatePath
+            String clientName = i == 0 ? signature.filename : i + "_" + signature.filename
 
             posData.putAll(dataFromProcess)
 
-            documents.add(getDocumentFile(processInstance, rentReductionSignature, posData,
-                    documentName, clientDocumentName))
+            documents.add(getDocumentFile(processInstance, signature, posData, name, clientName))
+        }
+
+        return documents
+    }
+
+    private Set<DocumentFile> getAdditionalPointsDocuments(Process process) {
+        if (process.localPoints.size() <= POINTS_COUNT_ON_DOCUMENT || !hasAtLeastOne(process, [NOWA_UMOWA, WYMIANA_UMOWY_PLATNICZEJ])) {
+            return [];
+        }
+
+        log.info(String.format("Points count is larger than %s for process %s", POINTS_COUNT_ON_DOCUMENT, process.id))
+
+        Signature signature = Signature.findAll().find {it.hasPurpose(ADDITIONAL_POINTS)}
+        String[] listNumbers = ["a", "b", "c", "d", "e", "f"]
+
+        List<PointData> localPoints = process.points.findAll {it.czyLokalny || it.hasLocalPoses()}.toList()
+        int localPointsCount = localPoints.size()
+        List<PointData> points = localPoints
+                .sort { it.nazwa }
+                .subList(POINTS_COUNT_ON_DOCUMENT, localPointsCount)
+
+        Set<DocumentFile> documents = []
+
+        Lists.partition(points, POINTS_COUNT_ON_DOCUMENT).eachWithIndex { List<PointData> data, int i ->
+            Map pointData = mapperService.mapPointData(points)
+
+            pointData.put("numerListy", [listNumbers[i]] as String[])
+
+            String name = String.format("%s_%s", listNumbers[i], signature.templatePath)
+            String clientName = signature.filename + listNumbers[i]
+
+            documents.add(getDocumentFile(process, signature, pointData, name, clientName))
         }
 
         return documents
@@ -294,6 +335,7 @@ class DocumentService {
         obsoleteDocuments.addAll(getObsoletePosExchangeDocuments(processInstance))
         obsoleteDocuments.addAll(getObsoleteRepresentativesDocuments(processInstance))
         obsoleteDocuments.addAll(getObsoleteRentReducutionDocuments(processInstance))
+        obsoleteDocuments.addAll(getObsoleteAdditionalPointsDocuments(processInstance))
 
         obsoleteDocuments.each { DocumentFile file ->
             log.info(String.format("Removing obsolete document %s with id %s from process %s", file.name, file.id, processInstance.id))
@@ -385,6 +427,28 @@ class DocumentService {
             int ordinal = file.name[0] as int
 
             if(ordinal > maxDocumentOrdinalNumber) obsoleteDocuments.add(file)
+        }
+
+        return obsoleteDocuments
+    }
+
+    private Set<DocumentFile> getObsoleteAdditionalPointsDocuments(Process process) {
+        Set<DocumentFile> documents = process.documents.findAll { it.signature.hasPurpose(ADDITIONAL_POINTS) }
+        Set<DocumentFile> obsoleteDocuments = []
+        int localPointsCount = process.points.findAll {it.czyLokalny || it.hasLocalPoses()}.size()
+
+        if (!documents) {
+            return obsoleteDocuments
+        } else if (localPointsCount <= POINTS_COUNT_ON_DOCUMENT) {
+            return documents
+        }
+
+        int listsCount = Math.ceil((localPointsCount - POINTS_COUNT_ON_DOCUMENT) / POINTS_COUNT_ON_DOCUMENT) as int
+
+        documents.eachWithIndex{ DocumentFile doc, int i ->
+            if (i + 1 > listsCount) {
+                obsoleteDocuments.add(doc)
+            }
         }
 
         return obsoleteDocuments
