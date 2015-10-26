@@ -20,7 +20,7 @@ class DocumentService {
     def appParametersService
 
     private static final int POSES_COUNT_ON_RENT_REDUCTION = 10
-    private static final int POINTS_COUNT_ON_DOCUMENT = 2
+    private static final int POINTS_COUNT_ON_DOCUMENT = 30
 
     def download(def id) {
 
