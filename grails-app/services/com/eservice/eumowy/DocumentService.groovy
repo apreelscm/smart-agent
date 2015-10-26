@@ -101,8 +101,10 @@ class DocumentService {
     }
 
     private Set<DocumentFile> getAdditionalPointsDocuments(Process process) {
-        if (process.localPoints.size() <= POINTS_COUNT_ON_DOCUMENT || !hasAtLeastOne(process, [NOWA_UMOWA, WYMIANA_UMOWY_PLATNICZEJ])) {
-            return [];
+        List<PointData> localPoints = process.points.findAll {it.czyLokalny || it.hasLocalPoses() || it.czyWybranyWymianaUmowy}.toList()
+
+        if (localPoints.size() <= POINTS_COUNT_ON_DOCUMENT || !hasAtLeastOne(process, [NOWA_UMOWA, WYMIANA_UMOWY_PLATNICZEJ])) {
+            return []
         }
 
         log.info(String.format("Points count is larger than %s for process %s", POINTS_COUNT_ON_DOCUMENT, process.id))
@@ -110,7 +112,6 @@ class DocumentService {
         Signature signature = Signature.findAll().find {it.hasPurpose(ADDITIONAL_POINTS)}
         String[] listNumbers = ["a", "b", "c", "d", "e", "f"]
 
-        List<PointData> localPoints = process.points.findAll {it.czyLokalny || it.hasLocalPoses()}.toList()
         int localPointsCount = localPoints.size()
         List<PointData> points = localPoints
                 .sort { it.nazwa }
@@ -124,7 +125,7 @@ class DocumentService {
             pointData.put("numerListy", [listNumbers[i]] as String[])
 
             String name = String.format("%s_%s", listNumbers[i], signature.templatePath)
-            String clientName = signature.filename + listNumbers[i]
+            String clientName = signature.filename.split('\\.')[0] + listNumbers[i] + ".pdf"
 
             documents.add(getDocumentFile(process, signature, pointData, name, clientName))
         }
@@ -435,7 +436,7 @@ class DocumentService {
     private Set<DocumentFile> getObsoleteAdditionalPointsDocuments(Process process) {
         Set<DocumentFile> documents = process.documents.findAll { it.signature.hasPurpose(ADDITIONAL_POINTS) }
         Set<DocumentFile> obsoleteDocuments = []
-        int localPointsCount = process.points.findAll {it.czyLokalny || it.hasLocalPoses()}.size()
+        int localPointsCount = process.points.findAll {it.czyLokalny || it.hasLocalPoses() || it.czyWybranyWymianaUmowy}.size()
 
         if (!documents) {
             return obsoleteDocuments
