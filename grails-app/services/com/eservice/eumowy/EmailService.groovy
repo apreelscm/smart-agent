@@ -64,16 +64,18 @@ class EmailService {
     }
 
     def sendNewAgreementDocuments(List recipients, List<DocumentFile> documents, def bodyParams) {
-        String acceptanceEmail;
+        Process process = documents.first()?.process
+        String acceptanceEmail = process?.getProcessData("emailDoWysylkiDokumentu")?.name
 
-        if (recipients.size() == 1) { //only acceptor
-            acceptanceEmail = recipients.get(0)
+        log.info "Sending new agreement documents to " + recipients
+
+        if (acceptanceEmail.isEmpty()) {
+            log.warn "Cannot find email for sending acceptance form for process " + process.id
         } else {
-            acceptanceEmail = recipients.get(1)
-            sendDocumentsElectronicalVersion(Lists.newArrayList(recipients.get(0)), documents, bodyParams)
+            sendAcceptanceForm(acceptanceEmail, documents, bodyParams)
         }
 
-        sendAcceptanceForm(acceptanceEmail, documents, bodyParams)
+        sendDocumentsElectronicalVersion(recipients, documents, bodyParams)
     }
 
     private void sendAcceptanceForm(String recipient, List<DocumentFile> documents, def bodyParams) {
