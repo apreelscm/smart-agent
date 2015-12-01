@@ -1102,6 +1102,11 @@ class ActivityController {
 
                 log.info("UZUPELNIJ PODPISY - wczytanie procesu - nip = ${flow.nip} , processId = ${processInstance?.id}, status = ${processInstance?.status}")
 
+                flow.representative1 = processService.getRepresentative(processInstance, 0)
+                flow.representative2 = processService.getRepresentative(processInstance, 1)
+                flow.representative3 = processService.getRepresentative(processInstance, 2)
+                flow.representative4 = processService.getRepresentative(processInstance, 3)
+
                 flow.processInstance = processInstance
                 flow.isUzupelnijPodpisy = true
             }.to "clientSignature"
@@ -1314,7 +1319,6 @@ class ActivityController {
         citiesData.each { GroovyRowResult row ->
             result.push(row.get("NAME"))
         }
-		log.info(format("Dla kodu %s znaleziono miasta %s", code, result))
         render result as JSON
     }
 

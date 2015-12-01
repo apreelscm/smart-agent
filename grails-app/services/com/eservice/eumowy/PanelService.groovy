@@ -364,8 +364,6 @@ class PanelService {
         def oldNumber = Double.valueOf(data)
         def calcNumber = Double.valueOf(calcValue)
 
-        log.info("oldNumber : ${oldNumber} , calcNumber : ${calcNumber}")
-
         oldNumber < calcNumber ? calcValue : data
     }
 
