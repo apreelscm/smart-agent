@@ -63,8 +63,8 @@ class DocumentService {
         Set<DocumentFile> representativesDocuments = getRepresentativesDocuments(processInstance)
         documents.addAll(representativesDocuments)
 
-        Set<DocumentFile> pointsDocuments = getAdditionalPointsDocuments(processInstance)
-        documents.addAll(pointsDocuments)
+//        Set<DocumentFile> pointsDocuments = getAdditionalPointsDocuments(processInstance)
+//        documents.addAll(pointsDocuments)
 
         addNewDocumentsToProcess(documents, processInstance)
 
@@ -336,7 +336,7 @@ class DocumentService {
         obsoleteDocuments.addAll(getObsoletePosExchangeDocuments(processInstance))
         obsoleteDocuments.addAll(getObsoleteRepresentativesDocuments(processInstance))
         obsoleteDocuments.addAll(getObsoleteRentReducutionDocuments(processInstance))
-        obsoleteDocuments.addAll(getObsoleteAdditionalPointsDocuments(processInstance))
+//        obsoleteDocuments.addAll(getObsoleteAdditionalPointsDocuments(processInstance))
 
         obsoleteDocuments.each { DocumentFile file ->
             log.info(String.format("Removing obsolete document %s with id %s from process %s", file.name, file.id, processInstance.id))
