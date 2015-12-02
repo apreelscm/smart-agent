@@ -65,7 +65,7 @@ class EmailService {
 
     def sendNewAgreementDocuments(List recipients, List<DocumentFile> documents, def bodyParams) {
         Process process = documents.first()?.process
-        String acceptanceEmail = process?.getProcessData("emailDoWysylkiDokumentu")?.name
+        String acceptanceEmail = process?.getProcessData("emailDoWysylkiDokumentu")?.value
 
         log.info "Sending new agreement documents to " + recipients
 
