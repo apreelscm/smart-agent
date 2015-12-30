@@ -1,6 +1,7 @@
 package com.eservice.eumowy
 
 import com.eservice.eumowy.auth.EServiceUserDetails
+import com.google.common.base.Strings
 import com.google.common.collect.Lists
 import grails.plugin.cache.Cacheable
 import org.apache.commons.lang.StringUtils
@@ -69,7 +70,7 @@ class EmailService {
 
         log.info "Sending new agreement documents to " + recipients
 
-        if (acceptanceEmail.isEmpty()) {
+        if (Strings.isNullOrEmpty(acceptanceEmail)) {
             log.warn "Cannot find email for sending acceptance form for process " + process.id
         } else {
             sendAcceptanceForm(acceptanceEmail, documents, bodyParams)
