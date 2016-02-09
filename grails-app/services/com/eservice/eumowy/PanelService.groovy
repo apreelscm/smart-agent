@@ -476,9 +476,9 @@ class PanelService {
         //9
         cmd.dinersClubPr = setAtLeastAs(cmd.dinersClubPr, calculatorService.getCalcProperty(calc,"OPLATA_MSC_9_PROCENT"))
         // 10a
-        cmd.ikoPr = "0.39"
+        cmd.ikoPr = calculatorService.getCalcProperty(calc,"E_PKO_6")
         // 10b
-        cmd.blikPr = "0.39"
+        cmd.blikPr = calculatorService.getCalcProperty(calc,"E_PKO_6")
     }
 
     def getPoziomOplatIWarunkiPlatnosciPP(ProcessCommand cmd, def calc ) {
