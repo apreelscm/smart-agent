@@ -289,8 +289,8 @@
                     </tr>
                     <tr>
                         <td class="cardPaymentPanel-padding">13 <g:message code="panel.payment.for.autorisation"/></td>
-                        <td></td>
-                        <td><eumowy:flatPriceField class="flat-price" validatable="${data}"  name="oplataAutoryzacyjnaSt" readonly="true" value="${data.oplataAutoryzacyjnaSt}"/></td>
+                        <td><eumowy:percentageField class="percent-number" name="oplataAutoryzacyjnaPr" readonly="true" value="-"/></td>
+                        <td><eumowy:flatPriceField class="flat-price" validatable="${data}" name="oplataAutoryzacyjnaSt" readonly="true" value="${data.oplataAutoryzacyjnaSt}"/></td>
                     </tr>
                     <tr>
                         <td class="cardPaymentPanel-padding">14 <g:message code="panel.payment.for.visaMcOutEUIKartyBiznesoweEUPr"/></td>
