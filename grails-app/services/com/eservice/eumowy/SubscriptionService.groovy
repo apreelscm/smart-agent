@@ -28,6 +28,6 @@ class SubscriptionService {
     public int getRequiredSubscriptionsCount(Process process) {
         int count = 1 //one subscription is always required for PH
 
-        return count + (process.representatives?.size() ?: 0)
+        return count + (process.representatives?.count {it.type == Representative.Type.REPRESENTATIVE} ?: 0)
     }
 }
