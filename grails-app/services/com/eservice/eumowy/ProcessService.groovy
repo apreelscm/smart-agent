@@ -259,13 +259,13 @@ class ProcessService {
             representativeProperties.remove("fullName")
             representativeProperties.remove("representative")
             representativeProperties.remove("beneficiary")
+            representativeProperties.remove("description")
 
             if(Representative.Type.REPRESENTATIVE.equals(type)) {
                 representativeProperties.remove("ownsAcceptor")
                 representativeProperties.remove("controlsAcceptor")
                 representativeProperties.remove("overQuarterOfVotes")
                 representativeProperties.remove("votesPercentage")
-                representativeProperties.remove("description")
 
                 result.add(new RepresentativeCommand(representativeProperties))
             } else {

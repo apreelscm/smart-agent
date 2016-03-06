@@ -40,6 +40,18 @@
                         <eumowy:percentageField  name="ifOplataPKOPB" value="${data.ifOplataPKOPB}" readonly="true" validatable="${data}" />
                     </span>
                 </li>
+                <li>
+                    <span class="align-right"><g:message code="panel.payment.for.jcb"/></span>
+                    <span class="align-left">
+                        <eumowy:percentageField  name="ifJCB" value="${data.ifJCB}" readonly="true" validatable="${data}" />
+                    </span>
+                </li>
+                <li>
+                    <span class="align-right"><g:message code="panel.payment.for.upi"/></span>
+                    <span class="align-left">
+                        <eumowy:percentageField  name="ifUPI" value="${data.ifUPI}" readonly="true" validatable="${data}" />
+                    </span>
+                </li>
             </ul>
         </div>
     </fieldset>

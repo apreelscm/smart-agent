@@ -158,6 +158,8 @@ class ProcessCommand implements Serializable {
     String ifOplataDinersClub = DEFAULT_VALUE
     String ifOplataIKO = DEFAULT_VALUE
     String ifOplataPKOPB = DEFAULT_VALUE
+    String ifJCB = DEFAULT_VALUE
+    String ifUPI = DEFAULT_VALUE
 
 //    informacjeDodatkowe - 
     String dzialalnoscForma = DEFAULT_VALUE
@@ -276,6 +278,10 @@ class ProcessCommand implements Serializable {
     String mastercardPKOBPM3St = DEFAULT_VALUE
     String dinersClubSt = DEFAULT_VALUE
     String ikoSt = DEFAULT_VALUE
+    String jcbPr = DEFAULT_VALUE
+    String upiPr = DEFAULT_VALUE
+    String oplataAutoryzacyjnaSt = DEFAULT_VALUE
+    String visaMcOutEUIKartyBiznesoweEUPr = DEFAULT_VALUE
 
 //    poziomOplatIWarunkiPlatnosciPP - 
     String pp_orange_tk = DEFAULT_VALUE
@@ -759,6 +765,8 @@ class ProcessCommand implements Serializable {
         ifOplataDinersClub(nullable:false, blank:false, shared: "number3Precision") //1.111 %, M
         ifOplataIKO(nullable:false, blank:false, shared: "number3Precision") //1.111 %, M
         ifOplataPKOPB(nullable:false, blank:false, shared: "number3Precision") //1.111 %, M
+        ifJCB(nullable:false, blank:false)
+        ifUPI(nullable:false, blank:false)
         dzialalnoscForma(nullable:true, blank:true, validator: {value, cmd, errors ->
             CustomValidator.validateRequired(value, errors, cmd.hasNewUmowa && !cmd.dzialalnoscFormaInna && !errors.hasFieldErrors("dzialalnoscForma")
                     , "dzialalnoscForma", "dzialanoscForma.required")
@@ -945,7 +953,11 @@ class ProcessCommand implements Serializable {
         dinersClubPr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> ConditionValidator.atLeastCalcValue(value, cmd, errors, propertyName, "OPLATA_MSC_9_PROCENT")})
         ikoPr(nullable: true, blank: true, shared: "number3Precision")
         blikPr(nullable: true, blank: true, shared: "number3Precision")
-
+        ikoSt(nullable: true, blank: true, shared: "number3Precision")
+        jcbPr(nullable: false, blank: false)
+        upiPr(nullable: false, blank: false)
+        oplataAutoryzacyjnaSt(nullable: false, blank: false)
+        visaMcOutEUIKartyBiznesoweEUPr(nullable: false, blank: false)
 
         visaPolskaKKO1St(nullable: false, blank: false,  validator: { value, cmd, errors ->
             NumberValidator.validate(value, cmd, errors, propertyName) &&

@@ -277,6 +277,26 @@
                         <td><eumowy:percentageField class="percent-number" name="blikPr" readonly="true" value="${data.blikPr}" validatable="${data}"/></td>
                         <td></td>
                     </tr>
+                    <tr>
+                        <td class="cardPaymentPanel-padding">11 <g:message code="panel.payment.for.jcb"/></td>
+                        <td><eumowy:percentageField class="percent-number" name="jcbPr" readonly="true" value="${data.jcbPr}" validatable="${data}"/></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td class="cardPaymentPanel-padding">12 <g:message code="panel.payment.for.upi"/></td>
+                        <td><eumowy:percentageField class="percent-number" name="upiPr" readonly="true" value="${data.upiPr}" validatable="${data}"/></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td class="cardPaymentPanel-padding">13 <g:message code="panel.payment.for.autorisation"/></td>
+                        <td></td>
+                        <td><eumowy:flatPriceField class="flat-price" validatable="${data}" name="oplataAutoryzacyjnaSt" readonly="true" value="${data.oplataAutoryzacyjnaSt}"/></td>
+                    </tr>
+                    <tr>
+                        <td class="cardPaymentPanel-padding">14 <g:message code="panel.payment.for.visaMcOutEUIKartyBiznesoweEUPr"/></td>
+                        <td><eumowy:percentageField class="percent-number" name="visaMcOutEUIKartyBiznesoweEUPr" readonly="true" value="${data.visaMcOutEUIKartyBiznesoweEUPr}" validatable="${data}"/></td>
+                        <td></td>
+                    </tr>
                 </tbody>
             </table>
         </div>

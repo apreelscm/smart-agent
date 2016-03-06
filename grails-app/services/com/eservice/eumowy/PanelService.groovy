@@ -277,6 +277,8 @@ class PanelService {
         cmd.ifOplataDinersClub = calculatorService.getCalcProperty(calc,"OPLATA_IFPLUS_DINERSCLUB")
         cmd.ifOplataIKO = calculatorService.getCalcProperty(calc,"OPLATA_IFPLUS_IKO")
         cmd.ifOplataPKOPB = calculatorService.getCalcProperty(calc,"OPLATA_IFPLUS_PKOBP")
+        cmd.ifJCB = calculatorService.getCalcProperty(calc,"E_JCB")
+        cmd.ifUPI = calculatorService.getCalcProperty(calc,"E_UPI")
     }
 
     def getInformacjeDodatkowe(ProcessCommand cmd, def calc ) {
@@ -479,6 +481,11 @@ class PanelService {
         cmd.ikoPr = calculatorService.getCalcProperty(calc,"E_PKO_6")
         // 10b
         cmd.blikPr = calculatorService.getCalcProperty(calc,"E_PKO_6")
+
+        cmd.jcbPr = calculatorService.getCalcProperty(calc,"E_JCB")
+        cmd.upiPr = calculatorService.getCalcProperty(calc,"E_UPI")
+        cmd.oplataAutoryzacyjnaSt = calculatorService.getCalcProperty(calc,"E_OPLATA_ZA_AUTORYZACJE")
+        cmd.visaMcOutEUIKartyBiznesoweEUPr = calculatorService.getCalcProperty(calc,"E_DOD_OPL_VISA_MASTERCARD")
     }
 
     def getPoziomOplatIWarunkiPlatnosciPP(ProcessCommand cmd, def calc ) {
