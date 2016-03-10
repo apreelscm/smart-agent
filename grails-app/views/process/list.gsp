@@ -82,7 +82,7 @@
             </div>
             <div class="row">
                 <label for="dateTo"><g:message code="salesman.report.update.dateTo"/></label>
-                <g:textField name="dateTo" class="dateFromDatepicker" autocomplete="off"/>
+                <g:textField name="dateTo" class="dateToDatepicker" autocomplete="off"/>
             </div>
             <div class="row">
                 <label for="nip"><g:message code="salesman.report.nip"/></label>
