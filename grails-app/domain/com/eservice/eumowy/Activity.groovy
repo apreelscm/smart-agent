@@ -27,4 +27,8 @@ class Activity implements Serializable {
         table name: "ACTIVITY", schema: DomainConsts.SHEMA_NAME
         id generator: 'sequence', params: [sequence: DomainConsts.SHEMA_NAME + '.ACTIVITY_SEQ']
     }
+
+    public String getUserFriendlyCode() {
+        return code.capitalize().split("(?<=[a-z])(?=[A-Z])").join(" ")
+    }
 }

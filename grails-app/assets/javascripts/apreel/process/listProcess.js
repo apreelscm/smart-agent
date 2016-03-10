@@ -20,12 +20,11 @@
             $.get($(this).attr('href'), function() {
                 alert("Cache został wyczyszczony");
             });
-        })
+        });
 
         $("#generateReportButton").on("click", function() {
             reportDialog.dialog({
-                height: 135,
-                width: 455,
+                width: 550,
                 modal: true
             });
         });

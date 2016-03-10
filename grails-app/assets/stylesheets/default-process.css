@@ -1348,6 +1348,19 @@ a.submit{
     height: 35px;
 }
 
+div#reportDialog .row {
+    margin: 0.5em 0;
+}
+
+div#reportDialog .row label {
+    width: 200px;
+}
+
+div#reportDialog .row select {
+    width: 183px;
+    vertical-align: top;
+}
+
 #generateReportButton {
     width: 110px;
     margin-top: 15px;

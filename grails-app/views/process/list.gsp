@@ -1,4 +1,4 @@
-<%@ page import="com.eservice.eumowy.Process" %>
+<%@ page import="com.eservice.eumowy.Activity; com.eservice.eumowy.Process" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -76,11 +76,48 @@
 
     <div class="display-none" id="reportDialog">
         <g:form controller="report" action="salesmenStatus">
-            <label for="startDate"><g:message code="process.dateFrom.label"/></label>
-            <g:textField name="startDate" class="dateFromDatepicker" required="required" autocomplete="off"/>
-
-            <label for="endDate"><g:message code="process.dateTo.label"/></label>
-            <g:textField name="endDate" class="dateToDatepicker" required="required" autocomplete="off"/>
+            <div class="row">
+                <label for="dateFrom"><g:message code="salesman.report.update.dateFrom"/></label>
+                <g:textField name="dateFrom" class="dateFromDatepicker" autocomplete="off"/>
+            </div>
+            <div class="row">
+                <label for="dateTo"><g:message code="salesman.report.update.dateTo"/></label>
+                <g:textField name="dateTo" class="dateFromDatepicker" autocomplete="off"/>
+            </div>
+            <div class="row">
+                <label for="nip"><g:message code="salesman.report.nip"/></label>
+                <g:textField name="nip"/>
+            </div>
+            <div class="row">
+                <label for="salesSegment"><g:message code="salesman.report.sales.segment"/></label>
+                <g:select from="${1..7}" name="salesSegment" noSelection="['':'Wszystkie']"/>
+            </div>
+            <div class="row">
+                <label for="phNumber"><g:message code="salesman.report.ph.number"/></label>
+                <g:textField name="phNumber"/>
+            </div>
+            <div class="row">
+                <label for="phSurname"><g:message code="salesman.report.ph.surname"/></label>
+                <g:textField name="phSurname"/>
+            </div>
+            <div class="row">
+                <label for="status"><g:message code="salesman.report.status"/></label>
+                <g:select from="${com.eservice.eumowy.Process.ProcessStatus}" name="status" noSelection="['':'Wszystkie']"/>
+            </div>
+            <div class="row">
+                <label for="bisnode"><g:message code="salesman.report.bisnode"/></label>
+                <g:select from="${[true: 'TAK', 'false': 'NIE']}" optionKey="key" optionValue="value" noSelection="['':'']"
+                          name="bisnode"/>
+            </div>
+            <div class="row">
+                <label for="acceptorChange"><g:message code="salesman.report.acceptor.change"/></label>
+                <g:select from="${[true: 'TAK', 'false': 'NIE']}" optionKey="key" optionValue="value" noSelection="['':'']"
+                          name="acceptorChange"/>
+            </div>
+            <div class="row">
+                <label for="activity"><g:message code="salesman.report.activity"/></label>
+                <g:select from="${com.eservice.eumowy.Activity.list()}" name="activity" optionKey="id" optionValue="userFriendlyCode" noSelection="['':'Wszystkie']"/>
+            </div>
 
             <g:submitButton name="generateReport" value="${message(code: 'generate.label')}" class="button action"/>
         </g:form>
