@@ -1,35 +1,30 @@
 package com.eservice.eumowy.data
 
+import com.eservice.eumowy.Activity
+import com.eservice.eumowy.Process
 import com.eservice.eumowy.Process.ProcessStatus
 import com.eservice.eumowy.dto.SalesmanAcceptedActivitiesDTO
 import com.eservice.eumowy.dto.SalesmanStatusesDTO
 import org.apache.commons.lang.time.DateFormatUtils
 
 class SalesmenReportData {
-    String startDate
-    String endDate
+    private final String dateFrom
+    private final String dateTo
+    private final List<Process> processes
 
-    List<SalesmanStatusesDTO> salesmenStatuses
-    Map<ProcessStatus, Integer> salesmenStatusesTotal
-
-    List<SalesmanAcceptedActivitiesDTO> salesmanAcceptedActivities
-    List<String> allActivities
-    Map<String, Integer> acceptedActivitiesTotal
-
-    public void setReportDateSpan(Date startDate, Date endDate) {
-        this.startDate = DateFormatUtils.format(startDate, "dd-MM-yyyy")
-        this.endDate = DateFormatUtils.format(endDate, "dd-MM-yyyy")
-    }
-
-    public Integer processStatusesCount() {
-        return ProcessStatus.values().size()
-    }
-
-    public Integer allActivitiesCount() {
-        return allActivities.size()
+    SalesmenReportData(String dateFrom, String dateTo, List<Process> processes) {
+        this.dateFrom = dateFrom
+        this.dateTo = dateTo
+        this.processes = processes
     }
 
     public String getReportHeader() {
-        return "Data raportu " + startDate + " - " + endDate
+        return String.format("Data raportu %s - %s", dateFrom, dateTo)
     }
+
+    public List<String> qwe() {
+        return processes.collect { it.status.toString() }.unique()
+    }
+
+
 }

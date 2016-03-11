@@ -78,11 +78,11 @@
         <g:form controller="report" action="salesmenStatus">
             <div class="row">
                 <label for="dateFrom"><g:message code="salesman.report.update.dateFrom"/></label>
-                <g:textField name="dateFrom" class="dateFromDatepicker" autocomplete="off"/>
+                <g:textField name="dateFrom" class="dateFromDatepicker" required="required" autocomplete="off"/>
             </div>
             <div class="row">
                 <label for="dateTo"><g:message code="salesman.report.update.dateTo"/></label>
-                <g:textField name="dateTo" class="dateToDatepicker" autocomplete="off"/>
+                <g:textField name="dateTo" class="dateToDatepicker" required="required" autocomplete="off"/>
             </div>
             <div class="row">
                 <label for="nip"><g:message code="salesman.report.nip"/></label>

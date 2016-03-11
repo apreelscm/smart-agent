@@ -14,7 +14,6 @@ class ExcelService {
     private static final Integer COLUMN_WIDTH = 3500
 
     private Integer PROCESS_STATUS_COLUMNS_COUNT
-    private Integer ACCEPTED_ACTIVITIES_COLUMNS_COUNT
     private CellStyle HEADER_CELL_STYLE
     private CellStyle SUMMARY_CELL_STYLE
     private CellStyle BORDERED_CELL_STYLE
@@ -24,16 +23,10 @@ class ExcelService {
     public Workbook createSalesmenReportWorkBook(SalesmenReportData reportData) {
         workbook = new HSSFWorkbook()
 
-        PROCESS_STATUS_COLUMNS_COUNT = PH_COLUMNS_COUNT + reportData.processStatusesCount()
-        ACCEPTED_ACTIVITIES_COLUMNS_COUNT = PH_COLUMNS_COUNT + reportData.allActivitiesCount()
-
         initializeCellStyles()
 
         HSSFSheet processStatus = workbook.createSheet(getMessage("salesman.report.processStatus"))
-        HSSFSheet acceptedActivities = workbook.createSheet(getMessage("salesman.report.acceptedActivities"))
-
-        fillProcessStatusSheet(processStatus, reportData)
-        fillAcceptedActivitiesSheet(acceptedActivities, reportData)
+        getReportSheet(processStatus, reportData)
 
         return workbook
     }
@@ -55,7 +48,7 @@ class ExcelService {
         COLUMN_HEADER_STYLE = columnHeaderStyle
     }
 
-    private void fillProcessStatusSheet(HSSFSheet processStatusSheet, SalesmenReportData reportData) {
+    private HSSFSheet getReportSheet(HSSFSheet processStatusSheet, SalesmenReportData reportData) {
 
         Integer subHeaderLeftOffset = 3
         Integer subHeaderWidth = PROCESS_STATUS_COLUMNS_COUNT - subHeaderLeftOffset
@@ -88,39 +81,6 @@ class ExcelService {
         createSummaryRow(processStatusSheet, reportData.salesmenStatusesTotal)
 
         ExcelHelper.setAllColumnsWidth(processStatusSheet, PROCESS_STATUS_COLUMNS_COUNT, COLUMN_WIDTH)
-    }
-
-    private void fillAcceptedActivitiesSheet(HSSFSheet acceptedActivitiesSheet, SalesmenReportData reportData) {
-        Integer subHeaderLeftOffset = 3
-        Integer subHeaderWidth = ACCEPTED_ACTIVITIES_COLUMNS_COUNT - subHeaderLeftOffset
-
-        ExcelHelper.createHeader(acceptedActivitiesSheet, reportData.getReportHeader(), HEADER_CELL_STYLE, ACCEPTED_ACTIVITIES_COLUMNS_COUNT, 2)
-
-        Font subHeaderFont = ExcelHelper.createBoldFont(workbook, 12)
-        CellStyle subHeaderCellStyle = ExcelHelper.createCenteredCellStyle(workbook, subHeaderFont)
-
-        ExcelHelper.createHeader(acceptedActivitiesSheet, getMessage("salesman.report.activitiesWithStatusAccepted"),
-                subHeaderCellStyle, subHeaderWidth, 1, subHeaderLeftOffset, 0)
-
-        List<String> columnsHeaders = ["Nazwisko PH", "Imię PH", "Nr PH"]
-        reportData.allActivities.each { activityCode ->
-            columnsHeaders.add(getMessage("salesman.report." + activityCode + ".label"))
-        }
-        createColumnsHeaders(ExcelHelper.createNextRow(acceptedActivitiesSheet), columnsHeaders)
-
-        reportData.salesmanAcceptedActivities.each { salesman ->
-            Row salesmanRow = ExcelHelper.createNextRow(acceptedActivitiesSheet)
-            ExcelHelper.createCell(salesmanRow, salesman.phSurname, BORDERED_CELL_STYLE)
-            ExcelHelper.createCell(salesmanRow, salesman.phFirstName, BORDERED_CELL_STYLE)
-            ExcelHelper.createCell(salesmanRow, salesman.phNumber, BORDERED_CELL_STYLE)
-            salesman.activitiesCount.each {
-                ExcelHelper.createCell(salesmanRow, it.value, BORDERED_CELL_STYLE)
-            }
-        }
-
-        createSummaryRow(acceptedActivitiesSheet, reportData.acceptedActivitiesTotal)
-
-        ExcelHelper.setAllColumnsWidth(acceptedActivitiesSheet, PROCESS_STATUS_COLUMNS_COUNT, COLUMN_WIDTH)
     }
 
     private void createColumnsHeaders(Row headersRow, List<String> columnsHeaders) {
