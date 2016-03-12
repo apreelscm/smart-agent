@@ -46,6 +46,10 @@ class Process implements Serializable {
         return phNumber
     }
 
+    String getPhFullInfo() {
+        return String.format("%s - %s %s", phNumber, phFirstName, phSurname)
+    }
+
     static transients = ['stringId']
 
     static hasMany = [

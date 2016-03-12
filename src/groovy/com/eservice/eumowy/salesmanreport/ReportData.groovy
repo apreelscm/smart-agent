@@ -1,4 +1,4 @@
-package com.eservice.eumowy.data
+package com.eservice.eumowy.salesmanreport
 
 import com.eservice.eumowy.Activity
 import com.eservice.eumowy.Process
@@ -7,24 +7,22 @@ import com.eservice.eumowy.dto.SalesmanAcceptedActivitiesDTO
 import com.eservice.eumowy.dto.SalesmanStatusesDTO
 import org.apache.commons.lang.time.DateFormatUtils
 
-class SalesmenReportData {
+class ReportData {
     private final String dateFrom
     private final String dateTo
-    private final List<Process> processes
+    private final List<Row> rows
 
-    SalesmenReportData(String dateFrom, String dateTo, List<Process> processes) {
-        this.dateFrom = dateFrom
-        this.dateTo = dateTo
-        this.processes = processes
+    ReportData(Date dateFrom, Date dateTo, List<Row> rows) {
+        this.dateFrom = dateFrom.format("dd-MM-yyyy")
+        this.dateTo = dateTo.format("dd-MM-yyyy")
+        this.rows = rows
     }
 
     public String getReportHeader() {
         return String.format("Data raportu %s - %s", dateFrom, dateTo)
     }
 
-    public List<String> qwe() {
-        return processes.collect { it.status.toString() }.unique()
+    List<Row> getRows() {
+        return rows
     }
-
-
 }

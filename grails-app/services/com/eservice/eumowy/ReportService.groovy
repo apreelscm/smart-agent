@@ -1,29 +1,27 @@
 package com.eservice.eumowy
 
-import com.eservice.eumowy.Process.ProcessStatus
-import com.eservice.eumowy.data.SalesmenReportData
 import com.eservice.eumowy.report.ReportRequest
+import com.eservice.eumowy.salesmanreport.ProcessDetails
+import com.eservice.eumowy.salesmanreport.ReportData
+import com.eservice.eumowy.salesmanreport.Row
+import com.eservice.eumowy.salesmanreport.SalesmenReportCreator
 import org.apache.poi.ss.usermodel.Workbook
-import org.hibernate.criterion.Restrictions
-
-import javax.servlet.http.HttpServletResponse
 
 class ReportService {
 
-    def excelService
+    def messageSource
 
     public Workbook generateSalesmenReport(ReportRequest request) {
-//        SalesmenReportData reportData = new SalesmenReportData()
-//        reportData.setReportDateSpan(request.dateFrom, request.dateTo)
-//
-//        reportData.salesmenStatuses = salesmenStatuses(request)
-
-        getProcesses(request)
-//        return excelService.createSalesmenReportWorkBook(reportData)
-        return null
+        return new SalesmenReportCreator(messageSource, getReportData(request)).createAndGetWorkbook()
     }
 
-    private List<Process> getProcesses(ReportRequest request) {
+    public ReportData getReportData(ReportRequest request) {
+        Map<String, List<Process>> processes = getProcessesGroupedByPh(request)
+        List<Row> rows =  processes.collect { new Row(it.key, it.value.collect { new ProcessDetails(it) }) }
+        return new ReportData(request.dateFrom, request.dateTo, rows)
+    }
+
+    private Map<String, List<Process>> getProcessesGroupedByPh(ReportRequest request) {
         List<Process> processes = Process.createCriteria().list {
             between("lastUpdated", request.dateFrom, request.dateTo)
             if (request.phNumber) eq("phNumber", request.phNumber)
@@ -47,23 +45,6 @@ class ReportService {
             processes = processes.findAll { it.getBooleanData("isAcceptorDataChanged") }
         }
 
-        Map<String, List<Process>> byPhNumber = processes.groupBy { it.phNumber }
-
-        return []
-    }
-
-    private def get() {
-            between("lastUpdated", request.dateFrom, request.dateTo)
-            if (request.phNumber) eq("phNumber", request.phNumber)
-            if (request.phSurname) eq("phSurname", request.phSurname)
-            if (request.nip) eq("c.nip", request.nip)
-            if (request.segment) eq("saleSection", "SEGMENT " + request.segment)
-            if (request.status) eq("status", request.status)
-            if (request.activityId) {
-                activities {
-                    idEq(request.activityId)
-                }
-            }
-            order('phSurname', 'asc')
+        return processes.groupBy { it.phFullInfo }
     }
 }

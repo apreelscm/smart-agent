@@ -1,6 +1,6 @@
 package com.eservice.eumowy
 
-import com.eservice.eumowy.data.SalesmenReportData
+import com.eservice.eumowy.salesmanreport.ReportData
 import com.eservice.eumowy.util.ExcelHelper
 import org.apache.poi.hssf.usermodel.HSSFSheet
 import org.apache.poi.hssf.usermodel.HSSFWorkbook
@@ -10,7 +10,6 @@ import org.apache.poi.ss.util.CellRangeAddress
 class ExcelService {
     def messageSource
 
-    private static final Integer PH_COLUMNS_COUNT = 3
     private static final Integer COLUMN_WIDTH = 3500
 
     private Integer PROCESS_STATUS_COLUMNS_COUNT
@@ -20,12 +19,12 @@ class ExcelService {
     private CellStyle COLUMN_HEADER_STYLE
     private Workbook workbook
 
-    public Workbook createSalesmenReportWorkBook(SalesmenReportData reportData) {
+    public Workbook createSalesmenReportWorkBook(ReportData reportData) {
         workbook = new HSSFWorkbook()
 
         initializeCellStyles()
 
-        HSSFSheet processStatus = workbook.createSheet(getMessage("salesman.report.processStatus"))
+        HSSFSheet processStatus = workbook.createSheet(getMessage("salesman.report.process"))
         getReportSheet(processStatus, reportData)
 
         return workbook
@@ -48,7 +47,7 @@ class ExcelService {
         COLUMN_HEADER_STYLE = columnHeaderStyle
     }
 
-    private HSSFSheet getReportSheet(HSSFSheet processStatusSheet, SalesmenReportData reportData) {
+    private HSSFSheet getReportSheet(HSSFSheet processStatusSheet, ReportData reportData) {
 
         Integer subHeaderLeftOffset = 3
         Integer subHeaderWidth = PROCESS_STATUS_COLUMNS_COUNT - subHeaderLeftOffset
