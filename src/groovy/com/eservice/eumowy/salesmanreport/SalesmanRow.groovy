@@ -2,11 +2,11 @@ package com.eservice.eumowy.salesmanreport
 
 import com.eservice.eumowy.Process
 
-class Row {
+class SalesmanRow {
     private final String ph
     private final List<ProcessDetails> details
 
-    public Row(String ph, List<ProcessDetails> details) {
+    public SalesmanRow(String ph, List<ProcessDetails> details) {
         this.ph = ph
         this.details = details
     }

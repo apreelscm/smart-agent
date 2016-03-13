@@ -1361,6 +1361,10 @@ div#reportDialog .row select {
     vertical-align: top;
 }
 
+div#reportDialog .row input {
+    width: 171px;
+}
+
 #generateReportButton {
     width: 110px;
     margin-top: 15px;

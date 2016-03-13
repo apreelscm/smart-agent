@@ -24,8 +24,8 @@ class ReportRequest {
         this.phNumber = params.get("phNumber")
         this.phSurname = params.get("phSurname")
         this.status = params.get("status")
-        this.bisnode = params.get("bisnode").empty ? null : params.get("bisnode")
-        this.acceptorChange = params.get("acceptorChange").empty ? null : params.get("acceptorChange")
+        this.bisnode = params.get("bisnode").empty ? null : params.boolean("bisnode")
+        this.acceptorChange = params.get("acceptorChange").empty ? null : params.boolean("acceptorChange")
         this.activityId = params.long("acceptorChange")
     }
 

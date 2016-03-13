@@ -1,6 +1,7 @@
 package com.eservice.eumowy.salesmanreport
 
 class ProcessDetails {
+    private final String clientNip
     private final String salesSegment
     private final Boolean bisnode
     private final Boolean acceptorChange
@@ -8,11 +9,16 @@ class ProcessDetails {
     private final String activities
 
     public ProcessDetails(com.eservice.eumowy.Process process) {
+        this.clientNip = process.client.nip
         this.salesSegment = process.saleSection
         this.bisnode = process.getBooleanData("isFromBisnode")
         this.acceptorChange = process.getBooleanData("isAcceptorDataChanged")
         this.status = process.status.toString()
-        this.activities = process.activities.join(", ")
+        this.activities = process.activities.collect { it.userFriendlyCode }.join(", ")
+    }
+
+    String getClientNip() {
+        return clientNip
     }
 
     String getSalesSegment() {
