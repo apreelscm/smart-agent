@@ -399,6 +399,33 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
         process("APUPZBS2.00113-08-06 - Umowa o przyjmowanie zaplaty (wersja bez stawek plaskich)_do druku.pdf", "APUPZBS2.00113-08-06 - Umowa o przyjmowanie zaplaty (wersja bez stawek plaskich)_do druku_out.pdf", data)
     }
 
+    @Test
+    void testAPUWZOR1000140707() { //AP/UW/ZOR/1.000/14-07-07
+        //given
+        HashMap<String, String[]> properties = new HashMap<String, String[]>();
+        properties.put("doladowania_tp", ["true", "", "checkbox"] as String[]);
+        properties.put("doladowania_tk", ["true", "", "checkbox"] as String[]);
+        properties.put("srednia_sprzedaz_doladowan", ["450"] as String[]);
+        properties.put("srednia_sprzedaz_doladowan_slownie", ["czterysta pięćdziesiąt"] as String[]);
+        properties.putAll(preparePoziomOplatIWarunkiPlatnosciData())
+        properties.put("akceptantNip", ["3004005003"] as String[]);
+        properties.put("numerRachunkuBankowegoKlienta", ["33333333333333"] as String[]);
+        properties.put("bankKlienta", ["33333333333333"] as String[]);
+        properties.put("miejsceUmowy", ["Kurniki Podlaskie"] as String[]);
+
+        def subscriptions = [
+//                ["ACCEPTANT1", 1, 370, 90, 59, 28]
+                ["ACCEPTANT1", 1, 370, 465, 59, 28]
+        ]
+
+        //when
+        data.putAll(insertSignatures2(subscriptions))
+        data.putAll(properties)
+
+        //then
+        process("APUWZOR1.00014-07-07.pdf", "APUWZOR1.00014-07-07_out.pdf", data)
+    }
+
     void testAPUPZBSXToImage() {
         String outFile =  "APUPZBS2.00113-08-06 - Umowa o przyjmowanie zaplaty (wersja bez stawek plaskich)_do druku_out2.pdf"
         data.put("podpis", [new File(PdfHelper.getTemplatePath()+"signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
