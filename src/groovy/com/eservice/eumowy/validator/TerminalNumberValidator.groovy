@@ -16,8 +16,8 @@ public class TerminalNumberValidator {
             counter += getTerminalCount(point)
         }
 
-        cmd.hirePaymentsByPoint?.each { point ->
-            counter += getTerminalCount(point)
+        cmd.hirePaymentsByPoint?.each { hirePayment ->
+            counter += hirePayment?.termCount ?: 0
         }
 
         log.info "liczba dodanych terminali w eUmowy [${counter}], dozwolona [${max}]"
