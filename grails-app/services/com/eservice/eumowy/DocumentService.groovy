@@ -263,7 +263,8 @@ class DocumentService {
             documentFile.lastUpdated = new Date()
             documentFile.save(flush: true)
         } else {
-            documentFile = new DocumentFile(name: documentName, clientName:documentClientName, dateCreated: new Date(),
+            String nameWithNip = String.format("NIP %s %s", processInstance.client.nip, documentName)
+            documentFile = new DocumentFile(name: nameWithNip, clientName:documentClientName, dateCreated: new Date(),
                     lastUpdated: new Date(), pagesCount: getDocumentPageCount(documentData), signature: sig)
             documentFile.setContent(new DocumentContent(content: documentData))
             documentFile.save(flush: true)
