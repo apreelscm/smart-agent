@@ -13,3 +13,6 @@ FROM   cbt_terminale_pos ss, cbt_klienci o, cbt_klienci m
     AND m.kln_qcards_nr =1
     AND m.kln_nip = :nip
     AND tps_status NOT IN ('N', 'C')
+	and o.kln_mid not like '371%'
+	and ss.tps_numer_logiczny not like '371%'
+	and m.kln_mid not like '371%'

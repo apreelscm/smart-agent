@@ -18,7 +18,9 @@ SELECT   umw_kln_id, upp_wh_topup, upp_wh_evoucher
                     WHERE       kln_nip = :NIP
                             AND kln_poziom = 'MRC'
                             AND kln_status NOT IN ('N', 'O')
-                            AND kln_qcards_nr = 1)
+                            AND kln_qcards_nr = 1
+							AND kln_mid not like '371%'
+							)
          AND NOT EXISTS
                (SELECT   1
                   FROM   cbt_wypowiedzenia, cbt_umowy u2

@@ -9,6 +9,7 @@ SELECT k.kln_id     AS "id",
   FROM CBD_ADM.cbt_terminale_pos
   WHERE tps_status NOT IN ('N', 'C')
   AND tps_kln_id        = k.kln_id
+  AND tps_numer_logiczny not like '371%'
   ) AS "liczba_pos"
 FROM CBD_ADM.cbt_adresy a
 JOIN CBD_ADM.cbt_klienci k
@@ -18,11 +19,13 @@ AND a.adr_rodzaj    ='SGL'
 AND kln_nip         =:nip
 AND kln_status NOT IN ('N', 'O')
 AND kln_qcards_nr   = 1
+AND k.kln_mid not like '371%'
 AND EXISTS
   (SELECT 1
   FROM CBD_ADM.cbt_terminale_pos
   WHERE tps_kln_id    = k.kln_id
   AND tps_status NOT IN ('N','C')
+  AND tps_numer_logiczny not like '371%'
   )
 AND a.adr_czy_aktywny = 'T'
 ORDER BY k.kln_id

@@ -11,7 +11,9 @@ AND EXISTS
   FROM CBD_ADM.cbt_terminale_pos
   WHERE k.kln_id      = tps_kln_id
   AND tps_status NOT IN ('N', 'C')
+  AND tps_numer_logiczny not like '371%'
   )
 AND k.kln_poziom      = 'OUT'
 AND a.adr_rodzaj      = 'SGL'
 AND A.adr_czy_aktywny = 'T'
+AND k.kln_mid not like '371%'

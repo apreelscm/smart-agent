@@ -13,4 +13,9 @@ WHERE umw_typ = 'PRP'
         FROM cbt_klienci o, cbt_terminale_pos
         WHERE o.kln_kln_id = m.kln_id
           AND o.kln_id = tps_kln_id
-          AND tps_status NOT IN ('N', 'C')))
+          AND tps_status NOT IN ('N', 'C')
+		  AND o.kln_mid not like '371%'
+          AND tps_numer_logiczny not like '371%'
+		)
+	and m.kln_mid not like '371%'		
+	)

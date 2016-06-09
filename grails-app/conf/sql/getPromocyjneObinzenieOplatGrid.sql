@@ -14,3 +14,5 @@ SELECT   tps_numer_logiczny as "numer_logiczny", tps_id, k.kln_id as "cbd_id"
          AND k.kln_poziom = 'OUT'
          AND NVL(tp.tps_oplata_kwota, 0) > 0
          AND tps_oplata_data_od IS NOT NULL
+		 AND k.kln_mid not like '371%'
+		 AND tp.tps_numer_logiczny not like '371%'

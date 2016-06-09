@@ -5,4 +5,7 @@ SELECT   COUNT (1) ile, tps_oplata_pos top
            AND m.kln_nip = :nip
            AND tps_status NOT IN ('N', 'C')
            AND m.kln_qcards_nr = 1
+		   AND o.kln_mid not like '371%'
+		   AND tps_numer_logiczny not like '371%'
+		   AND m.kln_mid not like '371%'
 GROUP BY   tps_oplata_pos

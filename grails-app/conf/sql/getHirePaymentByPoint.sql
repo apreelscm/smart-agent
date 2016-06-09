@@ -12,4 +12,7 @@ WHERE t.tps_kln_id = o.kln_id
   AND m.kln_nip = :nip
   AND tps_status NOT IN ('N', 'C')
   and m.kln_qcards_nr =1
+  and o.kln_mid not like '371%'
+  and t.tps_numer_logiczny not like '371%' 
+  and m.kln_mid not like '371%'
 GROUP BY o.kln_nazwa, tps_oplata_pos, md.smt_nazwa, o.kln_id
