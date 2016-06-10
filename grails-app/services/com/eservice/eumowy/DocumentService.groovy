@@ -253,9 +253,17 @@ class DocumentService {
 
     private DocumentFile getDocumentFile(Process processInstance, Signature sig, Map data, String documentName, String documentClientName) {
         byte[] documentData = getDocumentContent(sig.id, data)
-        if(!documentData) return null
 
-        DocumentFile documentFile = DocumentFile.findByNameAndProcess(documentName, processInstance)
+        if(!documentData) {
+            return null
+        }
+
+        String nameWithNip = String.format("NIP %s %s", processInstance.client.nip, documentClientName)
+        DocumentFile documentFile = DocumentFile.findByNameAndProcess(nameWithNip, processInstance)
+
+        if (!documentFile) {
+            documentFile = DocumentFile.findByNameAndProcess(documentName, processInstance) //compatibility
+        }
 
         if (documentFile) {
             log.info(String.format("Updating existing document file %s", documentFile.id))
@@ -263,8 +271,7 @@ class DocumentService {
             documentFile.lastUpdated = new Date()
             documentFile.save(flush: true)
         } else {
-            String nameWithNip = String.format("NIP %s %s", processInstance.client.nip, documentName)
-            documentFile = new DocumentFile(name: nameWithNip, clientName:documentClientName, dateCreated: new Date(),
+            documentFile = new DocumentFile(name: nameWithNip, clientName: nameWithNip, dateCreated: new Date(),
                     lastUpdated: new Date(), pagesCount: getDocumentPageCount(documentData), signature: sig)
             documentFile.setContent(new DocumentContent(content: documentData))
             documentFile.save(flush: true)
