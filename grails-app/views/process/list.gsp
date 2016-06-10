@@ -77,12 +77,20 @@
     <div class="display-none" id="reportDialog">
         <g:form controller="report" action="salesmenStatus">
             <div class="row">
-                <label for="dateFrom"><g:message code="salesman.report.update.dateFrom"/></label>
-                <g:textField name="dateFrom" class="dateFromDatepicker" required="required" autocomplete="off"/>
+                <label for="createDateFrom"><g:message code="salesman.report.create.dateFrom"/></label>
+                <g:textField name="createDateFrom" class="createDateFromDatepicker" required="required" autocomplete="off"/>
             </div>
             <div class="row">
-                <label for="dateTo"><g:message code="salesman.report.update.dateTo"/></label>
-                <g:textField name="dateTo" class="dateToDatepicker" required="required" autocomplete="off"/>
+                <label for="createDateTo"><g:message code="salesman.report.create.dateTo"/></label>
+                <g:textField name="createDateTo" class="createDateToDatepicker" required="required" autocomplete="off"/>
+            </div>
+            <div class="row">
+                <label for="updateDateFrom"><g:message code="salesman.report.update.dateFrom"/></label>
+                <g:textField name="updateDateFrom" class="updateDateFromDatepicker" autocomplete="off"/>
+            </div>
+            <div class="row">
+                <label for="updateDateTo"><g:message code="salesman.report.update.dateTo"/></label>
+                <g:textField name="updateDateTo" class="updateDateToDatepicker" autocomplete="off"/>
             </div>
             <div class="row">
                 <label for="nip"><g:message code="salesman.report.nip"/></label>

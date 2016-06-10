@@ -18,7 +18,7 @@ class ReportService {
 
     public ReportData getReportData(ReportRequest request) {
         List<Process> processes = getProcesses(request)
-        return new ReportData(request.dateFrom, request.dateTo, getRows(processes))
+        return new ReportData(request.createDateFrom, request.createDateTo, getRows(processes))
     }
 
     private List<SalesmanRow> getRows(final List<Process> processes) {
@@ -39,7 +39,8 @@ class ReportService {
     private List<Process> getProcesses(ReportRequest request) {
         List<Process> processes = Process.createCriteria().list {
             createAlias("client", "c")
-            between("lastUpdated", request.dateFrom, request.dateTo)
+            between("dateCreated", request.createDateFrom, request.createDateTo)
+            if (request.updateDateFrom && request.updateDateTo) between("lastUpdated", request.updateDateFrom, request.updateDateTo)
             if (request.phNumber) eq("phNumber", request.phNumber)
             if (request.phSurname) eq("phSurname", request.phSurname)
             if (request.nip) eq("c.nip", request.nip)

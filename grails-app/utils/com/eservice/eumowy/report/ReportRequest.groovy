@@ -1,12 +1,12 @@
 package com.eservice.eumowy.report
 
-import com.eservice.eumowy.Activity
 import org.codehaus.groovy.grails.web.servlet.mvc.GrailsParameterMap
-import com.eservice.eumowy.Process.ProcessStatus;
 
 class ReportRequest {
-    private final Date dateFrom
-    private final Date dateTo
+    private final Date createDateFrom
+    private final Date createDateTo
+    private final Date updateDateFrom
+    private final Date updateDateTo
     private final String nip
     private final Integer segment
     private final String phNumber
@@ -17,8 +17,10 @@ class ReportRequest {
     private final Long activityId
 
     public ReportRequest(GrailsParameterMap params) {
-        this.dateFrom = params.date("dateFrom", "dd-MM-yyyy")
-        this.dateTo = params.date("dateTo", "dd-MM-yyyy")
+        this.createDateFrom = params.date("createDateFrom", "dd-MM-yyyy")
+        this.createDateTo = params.date("createDateTo", "dd-MM-yyyy")
+        this.updateDateFrom = params.date("updateDateFrom", "dd-MM-yyyy")
+        this.updateDateTo = params.date("updateDateTo", "dd-MM-yyyy")
         this.nip = params.get("nip")
         this.segment = params.getInt("salesSegment")
         this.phNumber = params.get("phNumber")
@@ -29,12 +31,20 @@ class ReportRequest {
         this.activityId = params.long("acceptorChange")
     }
 
-    Date getDateFrom() {
-        return dateFrom
+    Date getCreateDateFrom() {
+        return createDateFrom
     }
 
-    Date getDateTo() {
-        return dateTo
+    Date getCreateDateTo() {
+        return createDateTo
+    }
+
+    Date getUpdateDateFrom() {
+        return updateDateFrom
+    }
+
+    Date getUpdateDateTo() {
+        return updateDateTo
     }
 
     String getNip() {

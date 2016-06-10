@@ -1,18 +1,30 @@
 (function ($) {
     $(function() {
-        var dateFrom =  $(".dateFromDatepicker"),
-            dateTo =  $(".dateToDatepicker"),
+        var updateDateFrom =  $(".updateDateFromDatepicker"),
+            updateDateTo =  $(".updateDateToDatepicker"),
+            createDateFrom =  $(".createDateFromDatepicker"),
+            createDateTo =  $(".createDateToDatepicker"),
             reportDialog = $("#reportDialog");
 
-        dateFrom.datepicker({ dateFormat: 'dd-mm-yy', maxDate: new Date()});
-        dateTo.datepicker({ dateFormat: 'dd-mm-yy', maxDate: new Date()});
+        updateDateFrom.datepicker({ dateFormat: 'dd-mm-yy', maxDate: new Date()});
+        updateDateTo.datepicker({ dateFormat: 'dd-mm-yy', maxDate: new Date()});
+        createDateFrom.datepicker({ dateFormat: 'dd-mm-yy', maxDate: new Date()});
+        createDateTo.datepicker({ dateFormat: 'dd-mm-yy', maxDate: new Date()});
 
-        dateTo.bind('input change',function(e){
-            dateFrom.datepicker( "option", "maxDate", $(this).datepicker( "getDate" ) );
+        updateDateTo.bind('input change',function(e){
+            updateDateFrom.datepicker( "option", "maxDate", $(this).datepicker( "getDate" ) );
         });
 
-        dateFrom.bind('input change',function(e){
-            dateTo.datepicker( "option", "minDate", $(this).datepicker( "getDate" ) );
+        updateDateFrom.bind('input change',function(e){
+            updateDateTo.datepicker( "option", "minDate", $(this).datepicker( "getDate" ) );
+        });
+
+        createDateTo.bind('input change',function(e){
+            createDateFrom.datepicker( "option", "maxDate", $(this).datepicker( "getDate" ) );
+        });
+
+        createDateFrom.bind('input change',function(e){
+            createDateTo.datepicker( "option", "minDate", $(this).datepicker( "getDate" ) );
         });
 
         $("#invalidateCache").on("click", function(e){
