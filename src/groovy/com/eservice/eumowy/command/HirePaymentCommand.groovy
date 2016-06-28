@@ -24,10 +24,10 @@ class HirePaymentCommand implements Serializable{
     String type
     Integer termCount
     Integer ppCount
-    BigDecimal currentTermPayment
-    BigDecimal currentPpPayment
-    BigDecimal newTermPayment
-    BigDecimal newPpPayment
+    Integer currentTermPayment
+    Integer currentPpPayment
+    Integer newTermPayment
+    Integer newPpPayment
     Boolean isChoosen
 
     static constraints = {

@@ -49,6 +49,13 @@ class ValidatorUtils {
         return normalPrice + ppPrice
     }
 
+    public static def getGroupValue(Integer normalPrice, Integer ppPrice){
+        normalPrice = normalPrice ?: 0
+        ppPrice = ppPrice ?: 0
+
+        return normalPrice + ppPrice
+    }
+
     public static def getMessage(def cmd, def propertyName){
         return cmd.metaClass.respondsTo(cmd, MESSAGE_PROPERTY_NAME)? cmd."${MESSAGE_PROPERTY_NAME}"(propertyName) : propertyName;
     }

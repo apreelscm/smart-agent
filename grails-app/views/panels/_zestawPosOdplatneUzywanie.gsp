@@ -24,8 +24,8 @@
                 <g:each status="i" var="hp" in="${data.hirePaymentsCurrent}">
                     <li>
                         <span><g:field name="hirePaymentsCurrent[${i}].termCount" type="text" class="integer-number" value="${hp.termCount}" style="width: 70px" readonly="true"/></span>
-                        <span><g:field name="hirePaymentsCurrent[${i}].currentTermPayment" type="text" class="float-number" value="${hp.currentTermPayment}" style="width: 70px" readonly="true"/></span>
-                        <span><g:field name="hirePaymentsCurrent[${i}].currentPpPayment" type="text" class="float-number" value="${hp.currentPpPayment}" style="width: 70px" readonly="true"/></span>
+                        <span><g:field name="hirePaymentsCurrent[${i}].currentTermPayment" type="text" class="integer-number" value="${hp.currentTermPayment}" style="width: 70px" readonly="true"/></span>
+                        <span><g:field name="hirePaymentsCurrent[${i}].currentPpPayment" type="text" class="integer-number" value="${hp.currentPpPayment}" style="width: 70px" readonly="true"/></span>
                     </li>
                 </g:each>
             </ul>
