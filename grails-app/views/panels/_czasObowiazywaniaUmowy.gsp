@@ -76,9 +76,17 @@
         _aggrementStart.datepicker({ dateFormat: 'yy-mm-dd', minDate: new Date() });
 
         _aggrementStart.on("change", function(){
-            var date = _aggrementStart.datepicker("getDate"),
-                    monthsToAdd = '${data.liczbaMiesiecyLojalnosciowych}';
-            _aggrementEnd.val(moment(date).add(monthsToAdd, 'M').format("YYYY-MM-DD"));
+            var startDate = _aggrementStart.datepicker("getDate"),
+                    monthsToAdd = '${data.liczbaMiesiecyLojalnosciowych}',
+                    endDate = moment(startDate).add(monthsToAdd, 'M');
+
+            if (moment(startDate).date() === 1) {
+                endDate = endDate.subtract(1, 'days');
+            } else {
+                endDate = endDate.endOf('month');
+            }
+
+            _aggrementEnd.val(endDate.format("YYYY-MM-DD"));
         });
     });
 </script>
