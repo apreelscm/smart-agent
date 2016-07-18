@@ -7,7 +7,7 @@ environments {
 			"pdfImages": "/opt/eumowy/pdf_images/",
 			"pdfPreviews": "/opt/eumowy/pdf_previews/",
             "mobileAppPath":"/opt/eumowy/mobile/",
-            "beneficiary": "/home/eumowy/beneficiary/"
+            "beneficiary": "/opt/eumowy/beneficiary/"
 		]
 		appParametersDisallowDownloads = ["pdfTemplates"]
 

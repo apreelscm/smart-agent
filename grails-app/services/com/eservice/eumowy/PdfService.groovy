@@ -177,7 +177,7 @@ class PdfService {
 
     void createMergedBeneficiaryPDF(Process process) {
         List<DocumentFile> documentsToMerge = process.documents.findAll{it.signature.hasPurpose(SignatureDetail.SignaturePurpose.REPRESENTATIVE)}
-        documentsToMerge.add(process.documents.find{it.name.startsWith("Formularz_PABR")})
+        documentsToMerge.add(process.documents.find{it.name.contains("Formularz_PABR")})
 
         log.info(String.format("Found %s documents in process %s for merging into single beneficiary document.",
                 documentsToMerge.size(), process.id))
