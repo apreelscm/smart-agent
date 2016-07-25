@@ -5,6 +5,8 @@ import com.eservice.eumowy.util.DateUtils
 import org.springframework.security.access.annotation.Secured
 import pdfgenerator.PdfGenerator
 
+import java.nio.charset.Charset
+
 class ProcessController {
     def attachmentService
     def documentService
@@ -395,8 +397,10 @@ class ProcessController {
             redirect(action: "show")
         }
 
+        String filename = URLEncoder.encode(file.name, "UTF-8").replaceAll("\\+", " ")
+
         response.setContentType("application/pdf")
-        response.setHeader("Content-disposition", "${params.contentDisposition}; filename=\"${file.name}\"")
+        response.setHeader("Content-disposition", "${params.contentDisposition}; filename=\"${filename}\"")
         response.outputStream << PdfGenerator.getClosedContent(file.content.content)
     }
 
