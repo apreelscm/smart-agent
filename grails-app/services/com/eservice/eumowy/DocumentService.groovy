@@ -8,6 +8,8 @@ import org.apache.commons.lang.StringUtils
 import pdfgenerator.PdfGenerator
 import pdfgenerator.PdfGenerator.FontType
 
+import static com.eservice.eumowy.ActivityHelper.DODATKOWY_POS
+import static com.eservice.eumowy.ActivityHelper.DODATKOWY_PUNKT
 import static com.eservice.eumowy.ActivityHelper.NOWA_UMOWA
 import static com.eservice.eumowy.ActivityHelper.WYMIANA_UMOWY_NAJMU_NA_UMOWE_WSPOLPRACY
 import static com.eservice.eumowy.ActivityHelper.WYMIANA_UMOWY_PLATNICZEJ
@@ -210,10 +212,13 @@ class DocumentService {
 
     private Set<DocumentFile> getPointDocuments(Process processInstance, Map dataFromProcess) {
         Set<DocumentFile> documents = []
-        Set pointSignatures = processInstance.signatures.findAll{ sig -> sig.hasPurpose(SignatureDetail.SignaturePurpose.POINT)}
+        Set<Signature> pointSignatures = processInstance.signatures.findAll{ sig -> sig.hasPurpose(SignatureDetail.SignaturePurpose.POINT)}
 
         if(pointSignatures.size() == 0) return documents
 
+        if (ActivityHelper.containsAll(processInstance, Lists.newArrayList(DODATKOWY_POS, DODATKOWY_PUNKT))) {
+            pointSignatures.remove(pointSignatures.find {sig -> sig.name.equals("virtualPos")})
+        }
 
         processInstance.points.each { PointData point ->
             if ((point?.isLocal()) || point?.hasLocalPoses()) {

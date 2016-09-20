@@ -1,5 +1,6 @@
 package com.eservice.eumowy.util
 
+import com.google.common.base.Strings
 import org.apache.log4j.Logger
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
@@ -42,16 +43,16 @@ public class DateUtils {
         date ? new SimpleDateFormat(DEFAULT_DATE_FORMAT).format(date) : ""
     }
 
-    static def Date parseDate(def dateStr, def dateFormat){
-        Date date
+    static def Date parseDate(String dateStr, String dateFormat){
+        if (Strings.isNullOrEmpty(dateStr)) return null
+
 		try {
-			date = new SimpleDateFormat(dateFormat).parse(dateStr)
+			return new SimpleDateFormat(dateFormat).parse(dateStr)
         }
 		catch (Exception e) {
-            log.info "parseDate - Error parsing date string: [" + dateStr + "] with date format: " + dateFormat
-			date = null
+            log.error "parseDate - Error parsing date string: [" + dateStr + "] with date format: " + dateFormat
+			return null
 		}
-		date
     }
 
     static def Date parseDate(def dateStr){

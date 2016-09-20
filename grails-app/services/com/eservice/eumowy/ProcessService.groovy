@@ -793,10 +793,10 @@ class ProcessService {
             hpc.setType(hp.type)
             hpc.setTermCount(hp.termCount)
             hpc.setPpCount(hp.ppCount)
-            hpc.setCurrentTermPayment(hp.currentTermPayment.toInteger())
-            hpc.setCurrentPpPayment(hp.currentPpPayment.toInteger())
-            hpc.setNewTermPayment(hp.newTermPayment.toInteger())
-            hpc.setNewPpPayment(hp.newPpPayment.toInteger())
+            hpc.setCurrentTermPayment(hp.currentTermPayment?.toInteger())
+            hpc.setCurrentPpPayment(hp.currentPpPayment?.toInteger())
+            hpc.setNewTermPayment(hp.newTermPayment?.toInteger())
+            hpc.setNewPpPayment(hp.newPpPayment?.toInteger())
             hpc.setIsChoosen(hp.isChoosen)
 
             result.add(hpc)
@@ -1078,7 +1078,7 @@ class ProcessService {
 
     private Representative saveRepresentative(Representative.Type type, RepresentativeCommand representativeCmd, Representative representative) {
         if(!representative && !representativeCmd.name && !representativeCmd.surname) {
-            log.info("Not saving representative - empty name and surname")
+            log.debug("Not saving representative - empty name and surname")
             return null
         }
 
