@@ -10,8 +10,6 @@ import org.apache.poi.ss.usermodel.Workbook
 import org.apache.poi.ss.util.CellRangeAddress
 import org.springframework.context.MessageSource
 
-import static com.eservice.eumowy.util.ExcelHelper.writeDataCell
-
 class SalesmenReportCreator {
     private static final String[] HEADERS = ["salesmen.report.header.ph", "salesmen.report.header.nip",
                                              "salesmen.report.header.segment", "salesmen.report.header.status",
@@ -23,17 +21,19 @@ class SalesmenReportCreator {
     private final ReportData reportData
     private final Workbook workbook
     private final Sheet sheet
+    private final ExcelHelper excelHelper
 
     public SalesmenReportCreator(MessageSource messageSource, ReportData reportData) {
         this.messageSource = messageSource
         this.reportData = reportData
         this.workbook = new HSSFWorkbook()
         this.sheet = workbook.createSheet(getMessage("salesman.report.process"))
+        this.excelHelper = new ExcelHelper(this.workbook)
     }
 
     public Workbook getWorkbook() {
-        ExcelHelper.writeBigHeader(sheet, reportData.reportHeader, HEADERS.length, TITLE_HEADER_HEIGHT)
-        ExcelHelper.writeHeadersToNextRow(sheet, translatedHeaders)
+        excelHelper.writeBigHeader(sheet, reportData.reportHeader, HEADERS.length, TITLE_HEADER_HEIGHT)
+        excelHelper.writeHeadersToNextRow(sheet, translatedHeaders)
 
         reportData.rows.each { writeRow(it) }
 
@@ -41,7 +41,7 @@ class SalesmenReportCreator {
     }
 
     private void writeRow(SalesmanRow salesmanRow) {
-        Row firstRow = ExcelHelper.createNextRow(sheet)
+        Row firstRow = excelHelper.createNextRow(sheet)
 
         writePhDetails(firstRow, salesmanRow.ph, salesmanRow.detailsCount)
 
@@ -50,20 +50,20 @@ class SalesmenReportCreator {
 
             if (!row) {
                 row = sheet.createRow(firstRow.rowNum + i)
-                writeDataCell(sheet, row, "")
+                excelHelper.writeDataCell(row, "")
             }
 
-            writeDataCell(sheet, row, details.clientNip)
-            writeDataCell(sheet, row, details.salesSegment)
-            writeDataCell(sheet, row, details.status)
-            writeDataCell(sheet, row, getText(details.bisnode))
-            writeDataCell(sheet, row, getText(details.acceptorChange))
-            writeDataCell(sheet, row, details.activities)
+            excelHelper.writeDataCell(row, details.clientNip)
+            excelHelper.writeDataCell(row, details.salesSegment)
+            excelHelper.writeDataCell(row, details.status)
+            excelHelper.writeDataCell(row, getText(details.bisnode))
+            excelHelper.writeDataCell(row, getText(details.acceptorChange))
+            excelHelper.writeDataCell(row, details.activities)
         }
     }
 
     private void writePhDetails(Row row, String phDetails, int height) {
-        Cell cell = writeDataCell(sheet, row, phDetails)
+        Cell cell = excelHelper.writeDataCell(row, phDetails)
         cell.getCellStyle().setVerticalAlignment(CellStyle.VERTICAL_CENTER)
         sheet.addMergedRegion(new CellRangeAddress(row.rowNum, row.rowNum + height - 1, 0, 0))
     }
