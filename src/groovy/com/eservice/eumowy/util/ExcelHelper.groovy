@@ -1,10 +1,7 @@
 package com.eservice.eumowy.util
 
-import org.apache.poi.hssf.util.HSSFRegionUtil
 import org.apache.poi.ss.usermodel.*
 import org.apache.poi.ss.util.CellRangeAddress
-
-import static com.eservice.eumowy.util.ExcelHelper.Border.WHOLE
 
 class ExcelHelper {
     private final CellStyle mainHeaderStyle
