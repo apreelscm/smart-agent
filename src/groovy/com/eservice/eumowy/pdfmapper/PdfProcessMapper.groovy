@@ -435,6 +435,8 @@ class PdfProcessMapper extends AbstractPdfMapper{
     }
 
     private mapKontaktImieProcess(def data, def pd, def key, def value) {
+        data.put("imieOsobyDoKontaktu", [value] as String[])
+        data.put("nazwiskoOsobyDoKontaktu", [getFromProcessDataSet(pd, 'kontaktNazwisko')] as String[])
         data.put("imieINazwiskoOsobyDoKontaktu", [value + " " + getFromProcessDataSet(pd, 'kontaktNazwisko')] as String[])
     }
 

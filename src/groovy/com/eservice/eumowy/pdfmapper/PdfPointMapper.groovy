@@ -190,6 +190,8 @@ class PdfPointMapper extends AbstractPdfMapper{
 
     private mapKontaktWPunkcieImiePointDataDetails(def data, def pointData, def key, def value){
         data.put(key, [value] as String[]);
+        data.put("kontaktPunktImie", [value] as String[])
+        data.put("kontaktPunktNazwisko", [getFromPointDataDetails(pointData, 'kontaktWPunkcieNazwisko')] as String[])
         data.put("imieINazwisko", [value + " " + getFromPointDataDetails(pointData, 'kontaktWPunkcieNazwisko')] as String[]);
     }
 

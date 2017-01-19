@@ -5,7 +5,7 @@ import com.eservice.eumowy.validator.models.AccountNumber
 
 import java.util.regex.Pattern
 
-public class NumberValidator {
+public class    NumberValidator {
     public static def validate = {value, cmd,  errors, propertyName ->
         RegexpValidator.validate(cmd, value, errors, propertyName, '~|\\-|^(?:[1-9]\\d*|0)?(?:\\.\\d{1,2})?$',"default.validation.number.error")
     }

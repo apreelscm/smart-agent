@@ -18,8 +18,11 @@ class PEPdeclarationMapper extends AbstractPdfMapper implements Mapper{
         Map data = [:]
 
         data.put("nip", [process.getData("nip")] as String[])
-        data.put("akceptantNazwaOficjalna", [process.getData("akceptantNazwaOficjalna")] as String[])
-        data.put("siedzibaAkceptanta", [getAdresAkceptanta(process)] as String[])
+        data.put("akceptantNrDomu", [process.getData("akceptantNrDomu")] as String[])
+        data.put("akceptantMiasto", [process.getData("akceptantMiasto")] as String[])
+        if (process.hasData("akceptantPoczta")) {
+            data.put("akceptantPoczta", [process.getData("akceptantPoczta")] as String[])
+        }
 
         if (representative.isPolitician) {
             data.put("PEP_true", getCheckboxData(true))
