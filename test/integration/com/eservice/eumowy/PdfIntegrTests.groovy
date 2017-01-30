@@ -2,6 +2,7 @@ package com.eservice.eumowy
 
 import com.eservice.eumowy.enums.options.AcceptorLocation
 import com.eservice.eumowy.enums.options.IdentityDocumentType
+import com.eservice.eumowy.enums.options.LegalForm
 import com.eservice.eumowy.helpers.CommandHelper
 import com.eservice.eumowy.helpers.PdfHelper
 import com.eservice.eumowy.pdfmapper.PABRformMapper
@@ -77,14 +78,14 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
     }
 
     @Test
-    void APUW1000150305() {  //AP/UW/1.001/15-03-05
+    void APUW1002160331() {  //AP/UW/1.002/16-03-31
         //given
         def subscriptions = [
-                ["ACCEPTANT1", 2, 35, 220, 59, 28],
-                ["ACCEPTANT2", 2, 35, 185, 59, 28],
-                ["ACCEPTANT3", 2, 35, 145, 59, 28],
-                ["ACCEPTANT4", 2, 35, 100, 59, 28],
-                ["PH", 2, 170, 45, 59, 28]
+                ["ACCEPTANT1", 2, 345, 370, 59, 28],
+                ["ACCEPTANT2", 2, 345, 317, 59, 28],
+                ["ACCEPTANT3", 2, 345, 265, 59, 28],
+                ["ACCEPTANT4", 2, 345, 212, 59, 28],
+                ["PH", 2, 465, 115, 59, 28]
         ]
 
         //when
@@ -97,7 +98,7 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
         data.put("zalacznikNr4", ["4 - Nazwa zalacznika nr 4"] as String[]);
 
         //then
-        process("APUW1.00115-03-05.pdf", "APUW1.00115-03-05_out.pdf", data)
+        process("APUW1.00216-03-31.pdf", "APUW1.00216-03-31_out.pdf", data)
     }
 
     @Test
@@ -119,7 +120,7 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
     void APUWRWT1001150305() { //AP/UW/RWT/1.001/15-03-05
         //given
         def subscriptions = [
-                ["PH", 1, 150, 165, 59, 28]
+                ["PH", 1, 260, 145, 59, 28]
         ]
 
         //when
@@ -134,7 +135,7 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
     void APUWUD1000140707() { //AP/UW/UD/1.000/14-07-07
         //given
         def subscriptions = [
-                ["PH", 1, 150, 180, 59, 28]
+                ["PH", 1, 280, 161, 59, 28]
         ]
 
         //when
@@ -149,7 +150,7 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
     void APUWPON1000140707() { //AP/UW/PON/1.000/14-07-07
         //given
         def subscriptions = [
-                ["PH", 1, 150, 182, 59, 28]
+                ["PH", 1, 270, 125, 59, 28]
         ]
 
         //when
@@ -164,7 +165,7 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
     void APUWDED1000140707() { //AP/UW/DED/1.000/14-07-07
         //given
         def subscriptions = [
-                ["PH", 3, 113, 277, 59, 28]
+                ["PH", 2, 260, 68, 59, 28]
         ]
 
         //when
@@ -181,11 +182,11 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
     void APUPZT11000150305() { //AP/UPZT1/1.001/16-02-01
         //given
         def subscriptions = [
-                ["ACCEPTANT1", 5, 170, 360, 59, 28],
-                ["ACCEPTANT2", 5, 170, 319, 59, 28],
-                ["ACCEPTANT3", 5, 170, 278, 59, 28],
-                ["ACCEPTANT4", 5, 170, 237, 59, 28],
-                ["PH", 5, 460, 135, 59, 28]
+                ["ACCEPTANT1", 4, 160, 310, 59, 28],
+                ["ACCEPTANT2", 4, 160, 267, 59, 28],
+                ["ACCEPTANT3", 4, 160, 225, 59, 28],
+                ["ACCEPTANT4", 4, 160, 183, 59, 28],
+                ["PH", 4, 180, 68, 59, 28]
         ]
 
         //when
@@ -203,11 +204,11 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
     void APUPZT21000150303() { //AP/UPZT2/1.001/16-02-01
         //given
         def subscriptions = [
-                ["ACCEPTANT1", 5, 170, 356, 59, 28],
-                ["ACCEPTANT2", 5, 170, 315, 59, 28],
-                ["ACCEPTANT3", 5, 170, 274, 59, 28],
-                ["ACCEPTANT4", 5, 170, 233, 59, 28],
-                ["PH", 5, 460, 105, 59, 28]
+                ["ACCEPTANT1", 4, 160, 460, 59, 28],
+                ["ACCEPTANT2", 4, 160, 415, 59, 28],
+                ["ACCEPTANT3", 4, 160, 373, 59, 28],
+                ["ACCEPTANT4", 4, 160, 332, 59, 28],
+                ["PH", 4, 190, 220, 59, 28]
         ]
 
         //when
@@ -222,10 +223,54 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
     }
 
     @Test
-    void APIUPZRWP1000140707() { //AP/IUPZ/RWP/1.000/14-07-07
+    void APUPZT31000150303() { //AP/UPZT3/1.001/16-02-01
         //given
         def subscriptions = [
-                ["PH", 1, 150, 145, 59, 28]
+                ["ACCEPTANT1", 4, 160, 310, 59, 28],
+                ["ACCEPTANT2", 4, 160, 267, 59, 28],
+                ["ACCEPTANT3", 4, 160, 225, 59, 28],
+                ["ACCEPTANT4", 4, 160, 182, 59, 28],
+                ["PH", 4, 190, 67, 59, 28]
+        ]
+
+        //when
+        data.putAll(akceptantIReprezentanciFields())
+        data.putAll(umowaOznaczonaFields())
+        data.putAll(listaPlacowekAkceptujacychFields())
+        data.putAll(specyfikacjaPoziomuOplatIWarunkowPlatnosciFields())
+        data.putAll(PdfHelper.insertSignatures(subscriptions))
+
+        //then
+        process("APUPZT31.00116-02-01.pdf", "APUPZT31.00116-02-01_out.pdf", data)
+    }
+
+    @Test
+    void APUPZT41000150303() { //AP/UPZT4/1.001/16-02-01
+        //given
+        def subscriptions = [
+                ["ACCEPTANT1", 4, 160, 460, 59, 28],
+                ["ACCEPTANT2", 4, 160, 415, 59, 28],
+                ["ACCEPTANT3", 4, 160, 373, 59, 28],
+                ["ACCEPTANT4", 4, 160, 332, 59, 28],
+                ["PH", 4, 190, 205, 59, 28]
+        ]
+
+        //when
+        data.putAll(akceptantIReprezentanciFields())
+        data.putAll(umowaOznaczonaFields())
+        data.putAll(listaPlacowekAkceptujacychFields())
+        data.putAll(specyfikacjaPoziomuOplatIWarunkowPlatnosciFields())
+        data.putAll(PdfHelper.insertSignatures(subscriptions))
+
+        //then
+        process("APUPZT41.00116-02-01.pdf", "APUPZT41.00116-02-01_out.pdf", data)
+    }
+
+    @Test
+    void APUPZRWP1000140707() { //AP/UPZ/RWP/1.000/14-07-07
+        //given
+        def subscriptions = [
+                ["PH", 1, 190, 115, 59, 28]
         ]
 
         //when
@@ -233,14 +278,14 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
         data.putAll(PdfHelper.insertSignatures(subscriptions))
 
         //then
-        process("APIUPZRWP1.00014-07-07.pdf", "APIUPZRWP1.00014-07-07_out.pdf", data)
+        process("APUPZRWP1.00014-07-07.pdf", "APUPZRWP1.00014-07-07_out.pdf", data)
     }
 
     @Test
     void APUPZZSNT11001150305() { //AP/UPZ/ZSNT1/1.002/16-02-01
         //given
         def subscriptions = [
-                ["PH", 1, 500, 30, 59, 28]
+                ["PH", 1, 480, 105, 59, 28]
         ]
 
         //when
@@ -257,7 +302,7 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
     void APUPZZSNT21001150305() { //AP/UPZ/ZSNT2/1.002/16-02-01
         //given
         def subscriptions = [
-                ["PH", 1, 500, 50, 59, 28]
+                ["PH", 1, 260, 85, 59, 28]
         ]
 
         //when
@@ -271,11 +316,45 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
     }
 
     @Test
+    void APUPZZSNT31001150305() { //AP/UPZ/ZSNT3/1.002/16-02-01
+        //given
+        def subscriptions = [
+                ["PH", 1, 480, 85, 59, 28]
+        ]
+
+        //when
+        data.putAll(specyfikacjaPoziomuOplatIWarunkowPlatnosciFields())
+        data.put("upustCashback", ["5"] as String[])
+        data.put("dccKartyZagranicznePr", ["12"] as String[])
+        data.putAll(PdfHelper.insertSignatures(subscriptions))
+
+        //then
+        process("APUPZZSNT31.00216-02-01.pdf", "APUPZZSNT31.00216-02-01_out.pdf", data)
+    }
+
+    @Test
+    void APUPZZSNT41001150305() { //AP/UPZ/ZSNT4/1.002/16-02-01
+        //given
+        def subscriptions = [
+                ["PH", 1, 260, 80, 59, 28]
+        ]
+
+        //when
+        data.putAll(specyfikacjaPoziomuOplatIWarunkowPlatnosciFields())
+        data.put("upustCashback", ["5"] as String[])
+        data.put("dccKartyZagranicznePr", ["12"] as String[])
+        data.putAll(PdfHelper.insertSignatures(subscriptions))
+
+        //then
+        process("APUPZZSNT41.00216-02-01.pdf", "APUPZZSNT41.00216-02-01_out.pdf", data)
+    }
+
+    @Test
     void APAGFDF2004150914() { //AP-AG/F/DF/2.004/15-09-14
         //given
         def subscriptions = [
-                ["PH", 2, 135, 370, 59, 28],
-                ["ACCEPTANT1", 2, 450, 370, 59, 28]
+                ["ACCEPTANT1", 2, 115, 355, 59, 28],
+                ["PH", 2, 415, 255, 59, 28]
         ]
 
         //when
@@ -331,27 +410,28 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
     }
 
     @Test
-    void testFormularzPABR() {
+    void APAGFPABR1000150409() { //AP-AG/F/PABR/1.000/15-04-09
         //given
-        Map representativeProperties = [imie: "Jan", nazwisko: "Kowalski", typDokumentu: IdentityDocumentType.IDENTITY_CARD,
-                lokalizacjaKraj: "Daleko", adres: "JakisAdres", seriaNrDokumentu: "PL123", obywatelstwo: "Polskie",
-                typLokalizacji: AcceptorLocation.ABROAD, lokalizacjaPesel: "91101706344"]
+        Map representativeProperties = [name: "Jan", surname: "Kowalski", documentType: IdentityDocumentType.IDENTITY_CARD,
+                country: "Daleko", address: "JakisAdres", documentNumber: "PL123", citizenship: "Polskie",
+                locationType: AcceptorLocation.ABROAD, pesel: "91101706344"]
 
-        Map beneficiaryProperties = [imie: "Jan", nazwisko: "Kowalski", typDokumentu: IdentityDocumentType.PASSPORT,
-                lokalizacjaKraj: "Daleko", adres: "JakisAdres", seriaNrDokumentu: "PL123", obywatelstwo: "Polskie",
-                procentUdzialow: 59, posiadaAkceptanta: true, znaczaceUdzialy: true]
+        Map beneficiaryProperties = [name: "Jan", surname: "Kowalski", documentType: IdentityDocumentType.PASSPORT,
+                country: "Daleko", address: "JakisAdres", documentNumber: "PL123", citizenship: "Polskie",
+                 votesPercentage: 59, ownsAcceptor: true, controlsAcceptor: false, overQuarterOfVotes: true]
 
         def subscriptions = [
-                ["ACCEPTANT1", 2, 380, 350, 74, 43],
-                ["ACCEPTANT2", 2, 470, 350, 74, 43],
-                ["PH", 2, 455, 225, 84, 53],
-                ["PH1", 2, 455, 70, 84, 53]
+                ["ACCEPTANT1", 2, 270, 416, 59, 28],
+                ["ACCEPTANT2", 2, 360, 416, 59, 28],
+                ["PH", 2, 440, 275, 59, 28],
+                ["PH1", 2, 440, 96, 59, 28]
         ]
 
         //when
         process.processData.add(new ProcessData(id: 1, version: 0, name: 'dzialalnoscForma', value: 'spolka_cywilna'))
         process.processData.add(new ProcessData(name: 'dataUmowy', value: '10-05-2012'))
         process.processData.add(new ProcessData(name: 'nip', value: '12345'))
+        process.processData.add(new ProcessData(name: 'dzialalnoscForma', value: LegalForm.PARTNERSHIP_COMPANY.name()))
         CommandHelper.setProperties(representative, representativeProperties)
         CommandHelper.setProperties(beneficiary, beneficiaryProperties)
 
@@ -359,15 +439,15 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
         data.putAll(PdfHelper.insertSignatures(subscriptions))
 
         //then
-        process("Formularz_PABR.pdf", "Formularz_PABR_out.pdf", data)
+        process("APAGFPABR1.00015-04-09.pdf", "APAGFPABR1.00015-04-09_out.pdf", data)
     }
 
     @Test
-    void testOswiadczeniePEP() {
+    void APAGFPEP1000150409() { //AP-AG/F/PEP/1.000/15-04-09
         //given
-        Map representativeProperties = [czyStanowiskoPolityczne: true, typLokalizacji: AcceptorLocation.ABROAD]
+        Map representativeProperties = [isPolitician: true, locationType: AcceptorLocation.ABROAD]
         def subscriptions = [
-                ["ACCEPTANT", 1, 360, 292, 74, 43]
+                ["ACCEPTANT", 1, 350, 257, 74, 43]
         ]
 
         //when
@@ -377,7 +457,7 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
         data.putAll(PdfHelper.insertSignatures(subscriptions))
 
         //then
-        process("Oswiadczenie_PEP.pdf", "Oswiadczenie_PEP_out.pdf", data)
+        process("APAGFPEP1.00015-04-09.pdf", "APAGFPEP1.00015-04-09_out.pdf", data)
     }
 
     void testAPUPZBSX() {
@@ -414,8 +494,8 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
         properties.put("miejsceUmowy", ["Kurniki Podlaskie"] as String[]);
 
         def subscriptions = [
-//                ["ACCEPTANT1", 1, 370, 90, 59, 28]
-                ["ACCEPTANT1", 1, 370, 465, 59, 28]
+                ["ACCEPTANT1", 1, 345, 450, 59, 28],
+                ["ACCEPTANT11", 1, 345, 93, 59, 28]
         ]
 
         //when
@@ -424,6 +504,56 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
 
         //then
         process("APUWZOR1.00014-07-07.pdf", "APUWZOR1.00014-07-07_out.pdf", data)
+    }
+
+    @Test
+    void testAPUWOOL1001161230() { //AP/UW/OOL/1.001/16-12-30
+        //given
+        HashMap<String, String[]> data = new HashMap<String, String[]>();
+        data.putAll(this.data);
+        data.put("dataUmowy", ["10-05-2012"] as String[]);
+
+        def subscriptions = [
+                ["PH", 1, 277, 378, 59, 28]
+        ]
+
+        //when
+        data.putAll(insertSignatures2(subscriptions))
+        data.putAll(data)
+
+        //then
+        process("APUWOOL1.00116-12-30.pdf", "APUWOOL1.00116-12-30_out.pdf", data)
+    }
+
+    @Test
+    void APAGFDP2005161011() { //AP-AG/F/DP/2.005/16-10-11
+        def data = [:]
+        def subscriptions = [
+                ["ACCEPTANT1", 1, 263, 111, 59, 28],
+                ["PH", 1, 90, 65, 59, 28]
+        ]
+        data.putAll(insertSignatures2(subscriptions))
+        process("APAGFDP2.00516-10-11.pdf", "APAGFDP2.00516-10-11_out.pdf", data);
+    }
+
+    @Test
+    void APFDS2001161011() { //AP/F/DS/2.001/16-10-11
+        HashMap<String, String[]> data = prepareScoringData()
+        def subscriptions = [
+                ["PH", 1, 90, 100, 59, 28]
+        ]
+        data.putAll(insertSignatures2(subscriptions))
+        process("APFDS2.00116-10-11.pdf", "APFDS2.00116-10-11_out.pdf", data);
+    }
+
+    @Test
+    void APFZMP3000161011() { //AP/F/ZMP/3.000/16-10-11
+        def data = [:]
+        def subscriptions = [
+                ["PH", 1, 90, 200,	59,	28]
+        ]
+        data.putAll(insertSignatures2(subscriptions))
+        process("APFZMP3.00016-10-11.pdf", "APFZMP3.00016-10-11_out.pdf", data);
     }
 
     void testAPUPZBSXToImage() {
@@ -1890,17 +2020,6 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
         processToImage(outFile, 1)
     }
 
-    void testFormularzDanychPunktu() {
-        def data = [:]
-        def subscriptions = [
-                ["PH", 1, 70, 80, 84,	53],
-                ["ACCEPTANT1", 1, 330, 95, 94, 63],
-                ["ACCEPTANT2", 1, 430, 95, 94, 63]
-        ]
-        data.putAll(insertSignatures2(subscriptions))
-        process("Formularz danych punktu_zmiany_15.05.2013_edited.pdf", "Formularz danych punktu_zmiany_15.05.2013_edited_out.pdf", data);
-    }
-
     void testAPFZMP() {
         def data = [:]
         def subscriptions = [
@@ -1951,9 +2070,12 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
 
         assert pdf != null
 
-        new File(PdfHelper.fileTemplateOutPath+outName).withOutputStream {
+        new File(PdfHelper.fileTemplateOutPath).mkdirs()
+
+        new File(PdfHelper.fileTemplateOutPath + outName).withOutputStream {
             it.write pdf
         }
+
         println 'Writing pdf to: ' + PdfHelper.fileTemplateOutPath+outName
     }
 
