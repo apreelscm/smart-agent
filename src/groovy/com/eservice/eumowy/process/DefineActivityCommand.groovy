@@ -20,6 +20,7 @@ class DefineActivityCommand {
     def dodanieDcc
     def dodanieCashBack
     def zmianaWarunkowPrepaid
+    def odnowienieLojalnosci
     def poprawDane
     def dodatkowyPos
     def wymianaUmowyNajmu
