@@ -125,6 +125,7 @@ class Process implements Serializable {
         WAIT_FOR_SUBSCRIPTION_PAPER_VERSION("Oczekiwanie na podpis w wersji papierowej"),
         SUBSCRIPTIONS_DONE("Złożono podpisy"),
         WAITING("Oczekujący"),
+        CORRECTION("Przekazano do korekty"),
         ACCEPTED("Zaakceptowany");
 
         private final String text;

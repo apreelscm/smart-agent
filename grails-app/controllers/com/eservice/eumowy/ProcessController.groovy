@@ -161,6 +161,35 @@ class ProcessController {
     }
 
     @Secured(['EUM_ZRD'])
+    def correction() {
+        def processInstance = Process.get(params.id)
+        params.remove('_action_correction')
+        if (!processInstance) {
+            flash.message = message(code: 'default.not.found.message', args:[ message(code: 'process.label', default: 'proces'), params.id])
+            redirect(action: "list", params: params)
+            return
+        }
+
+        processInstance.status = Process.ProcessStatus.CORRECTION
+        processInstance.observed = (params.observed == "on")
+
+        processInstance.save(flush: true, validate: false)
+
+        flash.message = message(code: 'default.correction.message', args:[ message(code: 'process.label', default: 'proces'), processInstance.id])
+
+        def mailBodyParams = [merchantName: processInstance.client.name, merchantNip: processInstance.client.nip,
+                              activities: processService.getActivities(processInstance), rejectReason: message(code: 'correction.email.body')]
+
+        if(!emailService.sendDocumentsRejected(processInstance.phEmail, processInstance.client.name, processInstance.client.nip, mailBodyParams)){
+            flash.error = "Błąd podczas wysyłania maila na adres ${processInstance.phEmail}"
+            redirect(action: "show", params: params)
+            return
+        }
+
+        redirect(action: "list", params: params)
+    }
+
+    @Secured(['EUM_ZRD'])
     def accept() {
         Process processInstance = Process.get(params.id)
         params.remove('_action_accept')

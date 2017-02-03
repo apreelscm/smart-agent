@@ -117,6 +117,16 @@
         </div>
 
         <nav>
+            <fieldset>
+                <g:if test="${isWaitingOnlyProcess && hasDocuments}">
+                    <g:link class="button submit renewSubscriptions" action="reloadDocuments" id="${processInstance.id}">
+                        <g:message code="generate.again.documents.label"/>
+                    </g:link>
+                </g:if>
+            </fieldset>
+        </nav>
+
+        <nav>
             <fieldset class="przyciski">
                 <g:hiddenField name="id" value="${processInstance.id}"/>
                 <g:hiddenField name="filterStatus" value="${params.filterStatus}"/>
@@ -129,9 +139,15 @@
                 <g:if test="${params.order}"><g:hiddenField name="order" value="${params.order}"/></g:if>
                 <g:if test="${params.max}"><g:hiddenField name="max" value="${params.max}"/></g:if>
                 <g:if test="${params.offset}"><g:hiddenField name="offset" value="${params.offset}"/></g:if>
-                <a href="#" id="back" class="button submit float-left"><g:message code="back.label"/></a>
+
+                <a href="#" id="back" class="button submit float-left" style="margin-right: 1em"><g:message code="back.label"/></a>
 
                 <g:actionSubmit class="button submit float-left" action="reject" value="${message(code: 'default.navigation.button.reject')}"
+                                disabled="${isClosedProcess}"
+                                formnovalidate=""
+                                onclick="return confirm('${message(code: 'default.button.delete.confirm.message')}');"/>
+
+                <g:actionSubmit class="button submit float-left" action="correction" value="${message(code: 'default.navigation.button.correction')}"
                                 style="margin-right: 1em"
                                 disabled="${isClosedProcess}"
                                 formnovalidate=""
@@ -140,12 +156,6 @@
                 <g:actionSubmit class="button submit float-right" action="accept" value="${message(code: 'default.navigation.button.accept')}"
                                 disabled="${!isWaitingProcess || !hasDocuments}"
                                 onclick="return confirm('${message(code: 'default.button.delete.confirm.message')}');"/>
-
-                <g:if test="${isWaitingOnlyProcess && hasDocuments}">
-                    <g:link class="button submit renewSubscriptions" action="reloadDocuments" id="${processInstance.id}">
-                        <g:message code="generate.again.documents.label"/>
-                    </g:link>
-                </g:if>
 
                 <g:if test="${isWaitingForSubscriptionProcess}">
                     <g:link class="button submit resendEmails" action="resendEmail" id="${processInstance.id}">
