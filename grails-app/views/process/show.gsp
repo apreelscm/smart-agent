@@ -103,6 +103,11 @@
                 </div>
             </g:if>
 
+            <div id="coaNotes">
+                <label><g:message code="com.eservice.eumowy.Process.notesToCoa.label"/>:</label>
+                <span>${processInstance.notesToCoa}</span>
+            </div>
+
             <div id="notesContainer">
                 <label><g:message code="notes.label"/></label>
                 <textarea id="notes" maxlength="300" name="notesFromZrd"
