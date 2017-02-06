@@ -272,6 +272,7 @@ class ActivityController {
                 Process processInstance = flow.processInstance
                 if (params.processStatus.equals("WAIT_FOR_SUBSCRIPTION")) {
                     processInstance.status = Process.ProcessStatus.WAIT_FOR_SUBSCRIPTION
+                    processInstance.signingDate = new Date()
                     Subscription sub = Subscription.get(params.subscriptionId)
                     if (sub == null) {
                         log.info "PUSTE ID!"
@@ -280,6 +281,7 @@ class ActivityController {
                     sub.save(flush: true)
                 } else if (params.processStatus.equals("SUBSCRIPTIONS_DONE")) {
                     processInstance.status = Process.ProcessStatus.SUBSCRIPTIONS_DONE
+                    processInstance.signingDate = new Date()
                     Subscription subscription = Subscription.get(params.subscriptionId)
 
                     if (!subscription) {
@@ -303,6 +305,7 @@ class ActivityController {
                     }
                 } else if (params.processStatus.equals("REJECTED")) {
                     processInstance.status = Process.ProcessStatus.REJECTED
+                    processInstance.updateDate = new Date()
                 }
 
                 if (!processInstance.save(flush: true)) {
@@ -318,6 +321,7 @@ class ActivityController {
             on("noaccept") {
                 Process processInstance = flow.processInstance
                 processInstance.status = Process.ProcessStatus.REJECTED
+                processInstance.updateDate = new Date()
                 flow.processInstance = processInstance
             }.to "finish"
             on("submit") {
@@ -325,6 +329,7 @@ class ActivityController {
                 Process processInstance = flow.processInstance
                 _processDocumentCreation(processInstance, params.requestVersion, flow.requiredNumberOfSubscriptions)
                 processInstance.status = _getNewProcessStatus(params, flow.requiredNumberOfSubscriptions)
+                processInstance.signingDate = new Date()
                 flow.processInstance = processInstance
             }.to "finish"
             on(HibernateOptimisticLockingFailureException).to "optimisticLockingHandler"
@@ -446,6 +451,7 @@ class ActivityController {
 
                 processInstance.client =  client
                 processInstance.status = Process.ProcessStatus.NEW
+                processInstance.updateDate = new Date()
 
                 if (!processInstance.save(flush:true)){
                     processInstance.errors.each { log.error(it) }
@@ -602,6 +608,7 @@ class ActivityController {
             on("reject"){
                 Process processInstance = flow.processInstance;
                 processInstance.status = Process.ProcessStatus.REJECTED;
+                processInstance.updateDate = new Date()
                 flow.processInstance = processInstance
             }.to "reject"
             on("error").to "selectedPanels"
@@ -1031,6 +1038,7 @@ class ActivityController {
             on("reject"){
                 Process processInstance = flow.processInstance;
                 processInstance.status = Process.ProcessStatus.REJECTED
+                processInstance.updateDate = new Date()
                 flow.processInstance = processInstance
             }.to "reject"
             on(HibernateException).to "optimisticLockingHandler" //HibernateException is needed to catch StaleObjectStateException
@@ -1197,6 +1205,7 @@ class ActivityController {
                 log.info("ODRZUCENIE PROCESU - wczytanie procesu - nip = ${flow.nip} , processId = ${processInstance?.id}, status = ${processInstance?.status}")
 
                 processInstance.status = Process.ProcessStatus.REJECTED;
+                processInstance.updateDate = new Date()
                 flow.processInstance = processInstance
             }.to "finish"
         }

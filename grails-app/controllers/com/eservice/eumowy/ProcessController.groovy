@@ -140,6 +140,7 @@ class ProcessController {
         }
 
         processInstance.status = Process.ProcessStatus.REJECTED
+        processInstance.updateDate = new Date()
         processInstance.observed = (params.observed == "on")
         processInstance.notesFromZrd = params.notesFromZrd
 
@@ -171,6 +172,7 @@ class ProcessController {
         }
 
         processInstance.status = Process.ProcessStatus.CORRECTION
+        processInstance.updateDate = new Date()
         processInstance.observed = (params.observed == "on")
 
         processInstance.save(flush: true, validate: false)
@@ -265,6 +267,7 @@ class ProcessController {
         log.info("Wynik synchronizacji procesu [" + processInstance.id + "] : " + result.wynikString)
 
         processInstance.status = Process.ProcessStatus.ACCEPTED;
+        processInstance.acceptanceDate = new Date()
         processInstance.observed = (params.observed == "on")
         processInstance.notesFromZrd = params.notesFromZrd
 

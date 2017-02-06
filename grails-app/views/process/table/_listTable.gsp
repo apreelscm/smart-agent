@@ -11,6 +11,9 @@
             <g:sortableColumn property="phNumber"  title="${message(code: 'ph.number.label')}" params="[filterStatus:filterStatus,filterObserved:filterObserved,filterNip:filterNip,filterPhNo:filterPhNo,filterDateFrom:filterDateFrom,filterDateTo:filterDateTo]"/>
             <g:sortableColumn property="phFirstName"  title="${message(code: 'ph.firstName.label')}" params="[filterStatus:filterStatus,filterObserved:filterObserved,filterNip:filterNip,filterPhNo:filterPhNo,filterDateFrom:filterDateFrom,filterDateTo:filterDateTo]"/>
             <g:sortableColumn property="phSurname"  title="${message(code: 'ph.lastName.label')}" params="[filterStatus:filterStatus,filterObserved:filterObserved,filterNip:filterNip,filterPhNo:filterPhNo,filterDateFrom:filterDateFrom,filterDateTo:filterDateTo]"/>
+            <g:sortableColumn property="signingDate"  title="${message(code: 'signing.date.label')}" params="[filterStatus:filterStatus,filterObserved:filterObserved,filterNip:filterNip,filterPhNo:filterPhNo,filterDateFrom:filterDateFrom,filterDateTo:filterDateTo]"/>
+            <g:sortableColumn property="acceptanceDate"  title="${message(code: 'acceptance.date.label')}" params="[filterStatus:filterStatus,filterObserved:filterObserved,filterNip:filterNip,filterPhNo:filterPhNo,filterDateFrom:filterDateFrom,filterDateTo:filterDateTo]"/>
+            <g:sortableColumn property="updateDate"  title="${message(code: 'update.date.label')}" params="[filterStatus:filterStatus,filterObserved:filterObserved,filterNip:filterNip,filterPhNo:filterPhNo,filterDateFrom:filterDateFrom,filterDateTo:filterDateTo]"/>
             <g:sortableColumn property="status"  title="${message(code: 'status.label')}" params="[filterStatus:filterStatus,filterObserved:filterObserved,filterNip:filterNip,filterPhNo:filterPhNo,filterDateFrom:filterDateFrom,filterDateTo:filterDateTo]"/>
             <g:sortableColumn property="isAcceptorDataChanged" title="${message(code: 'acceptor.changed.manually')}" params="[filterStatus:filterStatus,filterObserved:filterObserved,filterNip:filterNip,filterPhNo:filterPhNo,filterDateFrom:filterDateFrom,filterDateTo:filterDateTo]"/>
             <g:sortableColumn property="isFromBisnode" title="${message(code: 'is.from.bisnode')}" params="[filterStatus:filterStatus,filterObserved:filterObserved,filterNip:filterNip,filterPhNo:filterPhNo,filterDateFrom:filterDateFrom,filterDateTo:filterDateTo]"/>
@@ -27,6 +30,9 @@
             <td class="tableCell">${fieldValue(bean: processInstance, field: "stringPhNumber")}</td>
             <td class="tableCell">${fieldValue(bean: processInstance, field: "phFirstName")}</td>
             <td class="tableCell">${fieldValue(bean: processInstance, field: "phSurname")}</td>
+            <td class="tableCell"><g:formatDate date="${processInstance.signingDate}" format="yyyy-MM-dd HH:mm"/></td>
+            <td class="tableCell"><g:formatDate date="${processInstance.acceptanceDate}" format="yyyy-MM-dd HH:mm"/></td>
+            <td class="tableCell"><g:formatDate date="${processInstance.updateDate}" format="yyyy-MM-dd HH:mm"/></td>
             <td class="tableCell">${fieldValue(bean: processInstance, field: "status")}</td>
             <td class="tableCell">
                 <g:if test="${processInstance.getBooleanData("isRepresentativesChangedManually") ||

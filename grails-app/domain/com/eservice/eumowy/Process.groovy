@@ -27,6 +27,10 @@ class Process implements Serializable {
     String notesToCoa
     String notesFromZrd
 
+    Date signingDate // data nadania statusu Oczekujący/Oczekiwanie na podpis w wersji papierowej/Złożono podpisy/Oczekiwanie na podpis
+    Date acceptanceDate // data nadania statusu Zaakceptowany
+    Date updateDate // data nadania statusu Edycja/Odrzucony/Przekazane do korekty
+
     boolean observed = false
 
     Client client
@@ -88,6 +92,9 @@ class Process implements Serializable {
         processData(nullable: true)
         notesToCoa(nullable: true, maxSize: 1000)
         notesFromZrd(nullable: true, maxSize: 300)
+        signingDate(nullable: true)
+        acceptanceDate(nullable: true)
+        updateDate(nullable: true)
         hirePayments(nullable: true)
         posExchanges(nullable: true)
         representatives(nullable: true)
