@@ -95,7 +95,7 @@ class PanelService {
         cmd.isAcceptorDataChanged = nullify(cmd.isAcceptorDataChanged, false)
 
         cmd.akceptantNazwaOficjalna = result?.nazwa ?: ""
-        cmd.akceptantNazwaSieciowa = nullify(cmd.akceptantNazwaSieciowa)
+        cmd.akceptantNazwaSieciowa = calculatorService.getCalcProperty(calc, "S_POROZUMIENIA")
         cmd.akceptantRegon = result?.regon ?: ""
 
         cmd.akceptantNazwaOficjalnaCbd= cmd.akceptantNazwaOficjalna
