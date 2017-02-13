@@ -60,6 +60,11 @@ class PosDataDetails implements Serializable {
 	Boolean integracjaZSysKas
 	Boolean zwrotyIKO
 
+	Boolean integracjaRs
+	Boolean integracjaUsb
+	Boolean integracjaEth
+	String dostawcaSystemuKasowego
+
 	Boolean logowaniePrzedKazdaTransakcja
 	Boolean logowanieZmianowe
 
@@ -155,6 +160,10 @@ class PosDataDetails implements Serializable {
 		analizaZbioru column: "set_analysis"
 		integracjaZSysKas column: "cashmachine_systemintegration"
 		zwrotyIKO column: "returnIKO"
+		integracjaRs column: "rs_integration"
+		integracjaUsb column: "usb_integration"
+		integracjaEth column: "eth_integration"
+		dostawcaSystemuKasowego column: "pos_system_supplier"
 		logowaniePrzedKazdaTransakcja column: "log_beforeeverytransaction"
 		logowanieZmianowe column: "log_everychange"
 		napiwek1 column: "tip1"

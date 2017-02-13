@@ -1,5 +1,6 @@
 package com.eservice.eumowy.command
 
+import com.eservice.eumowy.enums.options.PosSystemSupplier
 import com.eservice.eumowy.validator.ConditionValidator
 import com.eservice.eumowy.validator.NumberValidator
 import grails.validation.Validateable
@@ -115,7 +116,12 @@ class PointCommand implements Serializable {
 	Boolean analizaZbioru
 	Boolean integracjaZSysKas
 	Boolean zwrotyIKO
-	
+
+	Boolean integracjaRs
+	Boolean integracjaUsb
+	Boolean integracjaEth
+	PosSystemSupplier dostawcaSystemuKasowego
+
 	Boolean logowaniePrzedKazdaTransakcja
 	Boolean logowanieZmianowe
 	
@@ -343,6 +349,18 @@ class PointCommand implements Serializable {
 		analizaZbioru(nullable:true)
 		integracjaZSysKas(nullable:true)
 		zwrotyIKO(nullable:true)
+
+		integracjaRs(nullable:true)
+		integracjaUsb(nullable:true)
+		integracjaEth(nullable: true)
+		dostawcaSystemuKasowego(nullable:true, validator: { value, cmd, errors ->
+			if (cmd.integracjaRs || cmd.integracjaUsb || cmd.integracjaEth) {
+				return value != null
+			}
+
+			return true
+		})
+
 		logowaniePrzedKazdaTransakcja(nullable:true)
 		logowanieZmianowe(nullable:true)
 		napiwek1(nullable:true)

@@ -399,6 +399,11 @@ function setupNewPointPanelData(prefix, ppid, pid) {
 	        terminaloptions['teleKodzik'] = jQuery("#"+prevPanelId+"teleKodzik").prop("checked");
 	        terminaloptions['giftCard'] = jQuery("#"+prevPanelId+"giftCard").prop("checked");
 	        terminaloptions['terminalCount'] = jQuery("#"+prevPanelId+"terminalCount").val();
+
+            terminaloptions['rsIntegration'] = jQuery("#"+prevPanelId+"rsIntegration").prop("checked");
+            terminaloptions['usbIntegration'] = jQuery("#"+prevPanelId+"usbIntegration").prop("checked");
+            terminaloptions['ethIntegration'] = jQuery("#"+prevPanelId+"ethIntegration").prop("checked");
+            terminaloptions['posSystemSupplier'] = jQuery("#"+prevPanelId+"posSystemSupplier").val();
     	}
     }
 
@@ -491,6 +496,12 @@ function setupNewPointPanelData(prefix, ppid, pid) {
             jQuery("#"+panelId+"teleKodzik").prop("checked", terminaloptions['teleKodzik']);
             jQuery("#"+panelId+"giftCard").prop("checked", terminaloptions['giftCard']);
             jQuery("#"+panelId+"terminalCount").val(terminaloptions['terminalCount']);
+
+            jQuery("#"+panelId+"rsIntegration").prop("checked", terminaloptions['rsIntegration']);
+            jQuery("#"+panelId+"usbIntegration").prop("checked", terminaloptions['usbIntegration']);
+            jQuery("#"+panelId+"ethIntegration").prop("checked", terminaloptions['ethIntegration']);
+            jQuery("#"+panelId+"posSystemSupplier").val(terminaloptions['posSystemSupplier']);
+
             jQuery("#"+panelId+"terminaloptionsSameForEveryPoint").prop("checked", true);
             jQuery("#"+panelId+"terminaloptionsSameForEveryPoint").prop("disabled", true);
         }
@@ -521,7 +532,7 @@ function setupNewPointPanelData(prefix, ppid, pid) {
 
 function verifyBaseVisibility(value, panelId){
 
-    var str = panelId.replace(".","")
+    var str = panelId.replace(".","");
     if(value == "Verifone Vx670 GPRS" || value == "INGENICO IWL220C"){
         $j('tr[name="'+str+'.trBase"]').show()
     }
@@ -685,6 +696,11 @@ function clearNewPointData(prefix, ppid, pid) {
             jQuery("#"+panelId+"teleKodzik").prop("checked", false);
             jQuery("#"+panelId+"giftCard").prop("checked", false);
             jQuery("#"+panelId+"terminalCount").val("");
+            jQuery("#"+panelId+"rsIntegration").prop("checked", false);
+            jQuery("#"+panelId+"usbIntegration").prop("checked", false);
+            jQuery("#"+panelId+"ethIntegration").prop("checked", false);
+            jQuery("#"+panelId+"posSystemSupplier").val("");
+
             jQuery("#"+panelId+"terminaloptionsSameForEveryPoint").prop("checked", false);
             jQuery("#"+panelId+"terminaloptionsSameForEveryPoint").prop("disabled", false);
         }

@@ -82,6 +82,18 @@ class PdfPosMapper extends AbstractPdfMapper{
         addCheckbox(data, key, true, value);
     }
 
+    private mapIntegracjaRsPosDataDetails(def data, def posesData, def key, def value) {
+        addCheckbox(data, key, true, value);
+    }
+
+    private mapIntegracjaUsbPosDataDetails(def data, def posesData, def key, def value) {
+        addCheckbox(data, key, true, value);
+    }
+
+    private mapIntegracjaEthPosDataDetails(def data, def posesData, def key, def value) {
+        addCheckbox(data, key, true, value);
+    }
+
     private mapLogowaniePrzedKazdaTransakcjaPosDataDetails(def data, def posesData, def key, def value) {
         addCheckbox(data, key, true, value);
     }
