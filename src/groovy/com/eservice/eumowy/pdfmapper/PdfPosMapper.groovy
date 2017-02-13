@@ -27,6 +27,7 @@ class PdfPosMapper extends AbstractPdfMapper{
                 addToPosMap(result, posDetail.gprsIlosc, posDetail.gprsCena)
                 addToPosMap(result, posDetail.gprsPPIlosc, posDetail.gprsPPCena)
                 addToPosMap(result, posDetail.gprsIloscPortable, posDetail.gprsCenaPortable)
+                addToPosMap(result, posDetail.wifiIloscPortable, posDetail.wifiCenaPortable)
                 addToPosMap(result, posDetail.pinPadIlosc, posDetail.pinPadCena)
             }
         }
@@ -222,6 +223,14 @@ class PdfPosMapper extends AbstractPdfMapper{
             data.put(key, [value] as String[]);
             data.put("gprsCenaPortable", [(getFromPosDataDetails(posesData, 'gprsCenaPortable'))] as String[])
             data.put("gprsTypPortable", [(getFromPosDataDetails(posesData, 'gprsTypPortable'))] as String[])
+        }
+    }
+
+    private mapWifiIloscPortablePosDataDetails(def data, def posesData, def key, def value){
+        if(value !=null && !ZERO_VALUES.contains(value)){
+            data.put(key, [value] as String[]);
+            data.put("wifiCenaPortable", [(getFromPosDataDetails(posesData, 'wifiCenaPortable'))] as String[])
+            data.put("wifiTypPortable", [(getFromPosDataDetails(posesData, 'wifiTypPortable'))] as String[])
         }
     }
 	

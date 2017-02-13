@@ -195,6 +195,9 @@ class PanelService {
         pointData.gprsTypPortable = calculatorService.getCalcProperty(calc,"TYP_GPRS")
         pointData.gprsCenaPortable =  calculatorService.getDecimalCalcProperty(calc,"TYP_GPRS_TERM_CENA")
 
+        pointData.wifiTypPortable = calculatorService.getCalcProperty(calc,"TYP_WIFI")
+        pointData.wifiCenaPortable =  calculatorService.getDecimalCalcProperty(calc,"TYP_WIFI_TERM_CENA")
+
         pointData.hasDodaniePrepaid = cmd.hasDodaniePrepaid
 
         cmd.defaultPointData = pointData

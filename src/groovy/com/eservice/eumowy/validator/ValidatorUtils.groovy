@@ -25,6 +25,8 @@ class ValidatorUtils {
                 normalPriceGroups.add(getGroupValue(pos.gprsPPCena))
                 normalPriceGroups.add(getGroupValue(pos.gprsCenaPortable))
 
+                normalPriceGroups.add(getGroupValue(pos.wifiCenaPortable))
+
                 normalPriceGroups.add(getGroupValue(pos.pinPadCena))
             }
         }

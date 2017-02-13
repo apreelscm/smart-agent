@@ -238,6 +238,28 @@
 </tr>
 
 <tr>
+    <td class="posTypeColumn"><g:message code="type.label"/>
+        <dict:extendedTypeSelect medium="WiFi" type="PORTABLE" isPINPad="true"
+                                 id="${panelType}[${id}].possetforselectedpointWifiTypePortable"
+                                 name="${panelType}[${id}].wifiTypPortable" from="[]"
+                                 valueMessagePrefix="" value="${pointData?.wifiTypPortable}"/></td>
+
+    <td style="text-align: right;"><g:message code="panel.wifi"/></td>
+
+    <td><g:textField name="${panelType}[${id}].wifiIloscPortable"
+                     id="${panelType}[${id}].wifiCountPortable"
+                     value="${pointData?.wifiIloscPortable}"
+                     class="half-width integer-number"/> <g:message code="panel.unit"/></td>
+
+    <td><eumowy:currencyField name="${panelType}[${id}].wifiCenaPortable"
+                              id="${panelType}[${id}].wifiPricePortable"
+                              value="${pointData?.wifiCenaPortable}"
+                              validatable="${pointData}"
+                              validateField="wifiCenaPortable"
+                              class="half-width float-number"/></td>
+</tr>
+
+<tr>
     <td colspan="4" class="posHeaderType"><g:message code="pinpad.label"/></td>
 </tr>
 

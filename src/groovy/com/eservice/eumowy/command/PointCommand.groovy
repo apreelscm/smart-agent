@@ -97,6 +97,10 @@ class PointCommand implements Serializable {
     Integer gprsIloscPortable
     BigDecimal gprsCenaPortable
 
+	String wifiTypPortable
+	Integer wifiIloscPortable
+	BigDecimal wifiCenaPortable
+
     String pinPadTyp
     Integer pinPadIlosc
     BigDecimal pinPadCena
@@ -336,6 +340,18 @@ class PointCommand implements Serializable {
 
             return ConditionValidator.atLeastCalcValue(value, cmd, errors, propertyName, "TYP_GPRS_TERM_CENA")
         })
+
+		wifiTypPortable(nullable:true)
+		wifiIloscPortable(nullable:true,  shared: "natural")
+		wifiCenaPortable(nullable:true, shared: "number", validator: { value, cmd, errors ->
+			if(!cmd.wifiTypPortable) return true
+
+			if(cmd.minCenaNajmu) {
+				return ConditionValidator.atLeastMinValue(value, cmd, errors, propertyName, cmd.minCenaNajmu)
+			}
+
+			return ConditionValidator.atLeastCalcValue(value, cmd, errors, propertyName, "TYP_WIFI_TERM_CENA")
+		})
 
 		pinPadTyp(nullable:true)
 		pinPadIlosc(nullable:true,  shared: "natural")

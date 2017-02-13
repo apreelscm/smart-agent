@@ -46,6 +46,10 @@ class PosDataDetails implements Serializable {
     Integer gprsIloscPortable
     BigDecimal gprsCenaPortable
 
+	String wifiTypPortable
+	Integer wifiIloscPortable
+	BigDecimal wifiCenaPortable
+
 	Integer bazaIlosc
 
 	String zamkniecieDniaOd
@@ -148,6 +152,10 @@ class PosDataDetails implements Serializable {
         gprsTypPortable column: "gprs_typ_portable"
         gprsIloscPortable column: "gprs_ilosc_portable"
         gprsCenaPortable column: "gprs_cena_portable"
+
+		wifiTypPortable column: "wifi_typ_portable"
+		wifiIloscPortable column: "wifi_ilosc_portable"
+		wifiCenaPortable column: "wifi_cena_portable"
 
 		bazaIlosc column: "base_count"
 		zamkniecieDniaOd column: "day_close_from"
