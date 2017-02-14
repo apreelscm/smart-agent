@@ -1,3 +1,4 @@
+<%@ page import="com.eservice.eumowy.enums.options.PosSystemSupplier" %>
 <div id="posChangeTerminalPanel">
     <fieldset>
         <div class="belka-glowna"><g:message code="panel.pos.exchange.title"/></div>
@@ -16,6 +17,9 @@
                         <td class="align-center">Nowy model</td>
                         <td class="align-center">Karta sim</td>
                         <td class="align-center"><g:message code="panel.label.choosen" /></td>
+                        <td class="align-center"><g:message code="panel.label.integration" /></td>
+                        <td class="align-center"><g:message code="panel.label.integration.type" /></td>
+                        <td class="align-center"><g:message code="panel.label.integration.system.supplier" /></td>
                     </tr>
                 </thead>
                 <tbody>
@@ -40,6 +44,20 @@
                         </g:else>
                         <td class="align-center"><dict:simCardSelect name="posExchanges[${i}].simType" id="selectSim_${i}" value="${pe.simType}" style="width: 70px;" disabled="true"/></td>
                         <td class="align-center"><g:checkBox class="acceptModel" data-index="${i}" id="acceptModel_${i}" name="posExchanges[${i}].isChoosen" checked="${pe.isChoosen}"/></td>
+
+                        <td class="align-center"><g:checkBox class="integration" data-index="${i}" id="integration_${i}" name="posExchanges[${i}].integrationWithCashSystem" checked="${pe.integrationWithCashSystem}"/></td>
+                        <td class="align-center">
+                            <g:select class="integrationTypeSelect" id="integrationType_${i}" data-index="${i}"
+                                      disabled="${!pe.integrationWithCashSystem}"
+                                      name="posExchanges[${i}].integrationType" from="['RS','USB','ETH']"
+                                      value="${pe.integrationType}" noSelection="['':'']"/>
+                        </td>
+                        <td class="align-center" width="50px">
+                            <g:select id="systemSupplier_${i}" name="posExchanges[${i}].integrationSystemSupplier"
+                                      disabled="${!pe.integrationWithCashSystem}" style="width: 50px"
+                                      from="${PosSystemSupplier.values()}" valueMessagePrefix="pos.supplier"
+                                      noSelection="['':'']" value="${pe.integrationSystemSupplier}"/>
+                        </td>
                     </tr>
                 </g:each>
                 </tbody>
@@ -62,6 +80,7 @@
     jQuery('.typeSelect').change(typeSelectChanged);
     jQuery('.acceptModel').change(acceptModelChanged);
     jQuery('.selectModel').change(selectModelChanged);
+    jQuery('.integration').change(cashSystemIntegrationChanged);
 
     function typeSelectChanged() {
         var modelSelect = jQuery('#selectModel_' + this.dataset.index),
@@ -121,6 +140,23 @@
         }
 
         manageStateOfContinueButton();
+    }
+
+    function cashSystemIntegrationChanged() {
+        var index = this.dataset.index,
+            isChecked = this.checked,
+            integrationType = jQuery("#integrationType_" + index),
+            systemSupplier = jQuery("#systemSupplier_" + index);
+
+        console.log(index, isChecked);
+
+        integrationType.prop('disabled', !isChecked);
+        systemSupplier.prop('disabled', !isChecked);
+
+        if (!isChecked) {
+            integrationType.val('');
+            systemSupplier.val('');
+        }
     }
 
     function manageStateOfContinueButton() {

@@ -24,6 +24,10 @@ class PosExchange implements Serializable{
 
     Boolean isChoosen
 
+    Boolean integrationWithCashSystem
+    String integrationType
+    String integrationSystemSupplier
+
     static belongsTo = [process: Process]
 
     static mapping = {
@@ -42,6 +46,10 @@ class PosExchange implements Serializable{
         simType column: "SIM_TYPE"
         currentPrice column: "CURRENT_PRICE"
         isChoosen column: "IS_CHOOSEN"
+
+        integrationWithCashSystem column: "CASH_SYSTEM_INTEGRATION"
+        integrationType column: "INTEGRATION_TYPE"
+        integrationSystemSupplier column: "INTEGRATION_SYSTEM_SUPPLIER"
     }
 
     static constraints = {
@@ -56,5 +64,8 @@ class PosExchange implements Serializable{
         simType(nullable: true)
         currentPrice(nullable: true)
         isChoosen(nullable: true)
+        integrationWithCashSystem (nullable: true)
+        integrationType (nullable: true)
+        integrationSystemSupplier (nullable: true)
     }
 }

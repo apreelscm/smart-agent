@@ -1,5 +1,6 @@
 package com.eservice.eumowy.command
 
+import com.google.common.base.Strings
 import grails.validation.Validateable
 
 /**
@@ -30,8 +31,22 @@ class PosExchangeCommand implements Serializable{
 
     Boolean isChoosen
 
-    static constraints = {
+    Boolean integrationWithCashSystem
+    String integrationType
+    String integrationSystemSupplier
 
+    static constraints = {
+        integrationType(nullable:true, validator: { value, cmd, errors ->
+            if(!cmd.integrationWithCashSystem) return true
+
+            return !Strings.isNullOrEmpty(value)
+        })
+
+        integrationSystemSupplier(nullable:true, validator: { value, cmd, errors ->
+            if(!cmd.integrationWithCashSystem) return true
+
+            return !Strings.isNullOrEmpty(value)
+        })
     }
 
 }

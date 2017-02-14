@@ -843,6 +843,9 @@ class ProcessService {
             pec.setSimType(pe.simType)
             pec.setCurrentPrice(pe.currentPrice)
             pec.setIsChoosen(pe.isChoosen)
+            pec.setIntegrationWithCashSystem(pe.integrationWithCashSystem)
+            pec.setIntegrationType(pe.integrationType)
+            pec.setIntegrationSystemSupplier(pe.integrationSystemSupplier)
 
             result.add(pec)
         }
@@ -1045,6 +1048,9 @@ class ProcessService {
             pe.setSimType(pec.simType)
             pe.setCurrentPrice(pec.currentPrice)
             pe.setIsChoosen(pec.isChoosen)
+            pe.setIntegrationWithCashSystem(pec.integrationWithCashSystem)
+            pe.setIntegrationType(pec.integrationType)
+            pe.setIntegrationSystemSupplier(pec.integrationSystemSupplier)
 
             //pe.setProcess(process)
 
