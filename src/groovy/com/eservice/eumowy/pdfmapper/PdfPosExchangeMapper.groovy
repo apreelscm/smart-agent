@@ -29,6 +29,13 @@ class PdfPosExchangeMapper extends AbstractPdfMapper{
             }
         }
 
+        addCheckbox(data, "integracjaZSystemKasowym", true, posExchange.integrationWithCashSystem)
+        addCheckbox(data, "integracjaRs", true, posExchange.integrationType == "RS")
+        addCheckbox(data, "integracjaUsb", true, posExchange.integrationType == "USB")
+        addCheckbox(data, "integracjaEth", true, posExchange.integrationType == "ETH")
+
+        data.put("dostawcaSystemuKasowego", [posExchange.integrationSystemSupplier] as String[])
+
         data
     }
 
