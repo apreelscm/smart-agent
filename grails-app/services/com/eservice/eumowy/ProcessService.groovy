@@ -467,7 +467,8 @@ class ProcessService {
 
     boolean shouldShowDiscountDccPanel(Process process) {
         if (ActivityHelper.containsAny(process, newArrayList(DODANIE_DCC, ZMIANA_WARUNKOW_DCC))) {
-            return process.signatures.any { it.name.startsWith("AP/UPZT") || it.name.startsWith("AP/UPZ/ZSNT") }
+            return process.signatures.any { it.name.startsWith("AP/UPZT3") || it.name.startsWith("AP/UPZT4") ||
+                    it.name.startsWith("AP/UPZ/ZSNT3") || it.name.startsWith("AP/UPZ/ZSNT4") }
         }
 
         return false
