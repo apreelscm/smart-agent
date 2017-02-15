@@ -8,6 +8,7 @@ import com.eservice.eumowy.dto.MerchantDetailsDTO
 import com.eservice.eumowy.factory.ProcessCommandDefaultValuesFactory
 import com.eservice.eumowy.util.DateUtils
 import com.eservice.eumowy.util.EumowyCustomEnvironment
+import com.google.common.collect.Lists
 import grails.util.Environment
 import groovy.sql.GroovyRowResult
 import org.apache.commons.lang.WordUtils
@@ -15,6 +16,10 @@ import org.codehaus.groovy.grails.web.binding.DataBindingUtils
 import serializationutils.SerializationUtils
 
 import java.math.RoundingMode
+
+import static com.eservice.eumowy.ActivityHelper.DODANIE_DCC
+import static com.eservice.eumowy.ActivityHelper.ZMIANA_WARUNKOW_DCC
+import static com.google.common.collect.Lists.newArrayList
 
 class ProcessService {
     def messageSource
@@ -426,7 +431,7 @@ class ProcessService {
     }
 
     def filterExcludedPanels(Process process, List<Panel> panelsList){
-        def activePanels = []
+        List<Panel> activePanels = []
 
         panelsList?.each { it ->
             // add future checks here
@@ -435,7 +440,11 @@ class ProcessService {
             if (!shouldBeExcluded){
                 activePanels.add(it)
             }
+        }
 
+        if (shouldShowDiscountDccPanel(process)) {
+            activePanels.removeAll { it.name.equals("dcc") }
+            activePanels.add(Panel.findByName("upustDcc"))
         }
 
         activePanels
@@ -453,6 +462,14 @@ class ProcessService {
             log.info "excludePoziomOplatiWarunkiPlatnosciKarty - excluding panel [${panelName} from active panel list]"
             return true
         }
+        return false
+    }
+
+    boolean shouldShowDiscountDccPanel(Process process) {
+        if (ActivityHelper.containsAny(process, newArrayList(DODANIE_DCC, ZMIANA_WARUNKOW_DCC))) {
+            return process.signatures.any { it.name.startsWith("AP/UPZT") || it.name.startsWith("AP/UPZ/ZSNT") }
+        }
+
         return false
     }
 

@@ -13,6 +13,8 @@ class ActivityHelper {
     public static final String PAKIET_MOBILNY = "pakietMobilny"
     public static final String WYMIANA_UMOWY_NAJMU_NA_UMOWE_WSPOLPRACY = "wymianaUmowyNajmu"
     public static final String WYMIANA_UMOWY_PLATNICZEJ = "wymianaUmowyZaplaty"
+    public static final String DODANIE_DCC = "dodanieDcc"
+    public static final String ZMIANA_WARUNKOW_DCC = "zmianaWarunkowDcc"
 
     static boolean isNewAgreement(Process process) {
         return contains(process, NOWA_UMOWA)
@@ -41,6 +43,12 @@ class ActivityHelper {
         }
 
         return hasAllActivities
+    }
+
+    static boolean containsAny(Process process, List<String> activities) {
+        return activities.any {
+            return contains(process, it)
+        }
     }
 
     static boolean hasAtLeastOne(Process process, List<String> activities) {
