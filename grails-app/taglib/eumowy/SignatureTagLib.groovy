@@ -1,6 +1,7 @@
 package eumowy
 
 import com.eservice.eumowy.Activity
+import com.eservice.eumowy.ActivitySignatures
 import com.eservice.eumowy.Signature
 import com.eservice.eumowy.Process
 
@@ -14,11 +15,12 @@ class SignatureTagLib {
         Activity activity = attrs.activity
         Process process = attrs.process
 
-        Set<Signature> signaturesList = signatureService.getActivitySignatures(process, activity, listNumber)
+        def activitySignatures = signatureService.getActivitySignatures(process, activity, listNumber)
+                .sort { it.signature.description }
         Long selectedOption = activity?.selectedActivitySignatures?.find { it.numberOfList == listNumber }?.id
 
         out << render(template: '/tagLib/sig/list',
-                model: [activity: activity, signaturesList: signaturesList, selectedOption: selectedOption,
+                model: [activity: activity, signaturesList: activitySignatures, selectedOption: selectedOption,
                         listNumber: listNumber])
     }
 
