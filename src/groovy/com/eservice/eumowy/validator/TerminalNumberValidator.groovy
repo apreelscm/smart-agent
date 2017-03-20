@@ -1,5 +1,6 @@
 package com.eservice.eumowy.validator
 
+import com.eservice.eumowy.command.PointCommand
 import grails.util.Environment
 
 public class TerminalNumberValidator {
@@ -30,7 +31,7 @@ public class TerminalNumberValidator {
         return true
     }
 
-    private static int getTerminalCount(def point) {
+    private static int getTerminalCount(PointCommand point) {
         int counter = 0
 
         counter += point?.dialupIlosc ?: 0
@@ -43,6 +44,7 @@ public class TerminalNumberValidator {
         counter += point?.gprsPPIlosc ?: 0
         counter += point?.pinPadIlosc ?: 0
         counter += point?.gprsIloscPortable ?: 0
+        counter += point?.wifiIloscPortable ?: 0
 
         return counter
     }
