@@ -142,8 +142,8 @@ class ProcessService {
 			if (apc.cbdId == -1) {
 				PointData point = PointData.findById(apc.id)
 				if (point != null) {
-					boolean atLeastOneLocalPos = point.posDatas?.findAll { PosData pos -> pos != null && pos.isLocal() == true } != null
-					if (atLeastOneLocalPos == false) {
+					boolean atLeastOneLocalPos = point.posDatas?.findAll { PosData pos -> pos != null && pos.isLocal() } != null
+					if (!atLeastOneLocalPos) {
 						log.info "USUWAM PUNKT O ID: " + point.id
 						process.removeFromPoints(point)
 						process.discard()
@@ -221,8 +221,8 @@ class ProcessService {
 			if (apc.cbdId == -1) {
 				PointData point = PointData.findById(apc.id)
 				if (point != null) {
-					boolean atLeastOneLocalPos = point.posDatas?.findAll { PosData pos -> pos != null && pos.isLocal() == true } != null
-					if (atLeastOneLocalPos == false) {
+					boolean atLeastOneLocalPos = point.posDatas?.findAll { PosData pos -> pos != null && pos.isLocal() } != null
+					if (!atLeastOneLocalPos) {
 						log.info "USUWAM PUNKT O ID: " + point.id
 						process.removeFromPoints(point)
 						point.delete(flush: true)
@@ -443,7 +443,7 @@ class ProcessService {
         }
 
         if (shouldShowDiscountDccPanel(process)) {
-            activePanels.removeAll { it.name.equals("dcc") }
+            activePanels.removeAll { "dcc".equals(it.name) }
             activePanels.add(Panel.findByName("upustDcc"))
         }
 
