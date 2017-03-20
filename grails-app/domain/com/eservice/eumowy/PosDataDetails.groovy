@@ -249,6 +249,10 @@ class PosDataDetails implements Serializable {
         gprsIloscPortable(nullable: true)
         gprsCenaPortable(nullable: true)
 
+		wifiTypPortable(nullable: true)
+		wifiIloscPortable(nullable: true)
+		wifiCenaPortable(nullable: true)
+
 		bazaIlosc(nullable:true)
 		zamkniecieDniaOd(nullable:true)
 		zamkniecieDniaDo(nullable:true)
@@ -260,6 +264,10 @@ class PosDataDetails implements Serializable {
 		analizaZbioru(nullable:true)
 		integracjaZSysKas(nullable:true)
 		zwrotyIKO(nullable:true)
+		integracjaRs(nullable: true)
+		integracjaUsb(nullable: true)
+		integracjaEth(nullable: true)
+		dostawcaSystemuKasowego(nullable: true)
 		logowaniePrzedKazdaTransakcja(nullable:true)
 		logowanieZmianowe(nullable:true)
 		napiwek1(nullable:true)
