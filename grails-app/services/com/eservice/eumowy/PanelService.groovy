@@ -40,7 +40,7 @@ class PanelService {
         cmd.isBundleActivity = isBundleActivity(cmd.process)
         cmd.promObjNaj1 = calculatorService.getCalcProperty(calc,"E_PROM_OBN_NAJ_1")
 
-        if (SignatureHelper.containsAtLeastOne(cmd.process, newArrayList("AP/UW/1.002/15-03-05", "AP/UW/RWT/1.001/15-03-05"))) {
+        if (SignatureHelper.containsAtLeastOne(cmd.process, newArrayList("AP/UW/1.003/17-04-01", "AP/UW/RWT/1.001/15-03-05"))) {
             cmd.promObjNaj1 = cmd.promObjNaj1 ? (parseInt(cmd.promObjNaj1.trim()) + 1) : 1
         }
 
