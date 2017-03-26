@@ -3,12 +3,19 @@ package com.eservice.eumowy.pdfmapper
 import com.eservice.eumowy.PosData
 import com.eservice.eumowy.PosDataDetails
 import com.eservice.eumowy.util.DateUtils
+import grails.util.Holders
 
 class PdfPosMapper extends AbstractPdfMapper{
 
     private static EXCLUDE_FROM_POS_DETAILS = ["class", "cbdId", "process", "point", "errors", "constraints", "empty", "dialupTyp", "dialupCena", "vpnTyp", "vpnCena", "sslTyp", "sslCena", "wifiTyp", "wifiCena", "gprsCena"]
 
 	public static final ZERO_VALUES = ["", "0"]
+
+    def messageSource
+
+    public PdfPosMapper(messageSource) {
+        this.messageSource = messageSource
+    }
 
     public Map mapPosesNotFromCBD(List<PosData> poses){
         Map result = new TreeMap<Integer, BigDecimal>()
@@ -273,6 +280,12 @@ class PdfPosMapper extends AbstractPdfMapper{
                     data.put('simOrangePortable', ['_____'] as String[]);
                 }
             }
+        }
+    }
+
+    private mapDostawcaSystemuKasowegoPosDataDetails(Map data, PosData posData, String key, String value) {
+        if(value !=null && !ZERO_VALUES.contains(value)){
+            data.put(key, [messageSource.getMessage("pos.supplier." + value, null, Locale.getDefault())] as String[])
         }
     }
 

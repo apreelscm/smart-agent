@@ -13,11 +13,12 @@ class MapperService {
 
     def calculatorService
     def cbdService
+    def messageSource
 
     def mapOnlyPointData(PointData point){
         def data = [:]
         data.putAll(new PdfPointMapper().mapPointDataToPDFData(point))
-        data.putAll(new PdfPosMapper().mapPosesDataToPDFData(point.posDatas))
+        data.putAll(new PdfPosMapper(messageSource).mapPosesDataToPDFData(point.posDatas))
         data
     }
 

@@ -124,7 +124,7 @@ class PointCommand implements Serializable {
 	Boolean integracjaRs
 	Boolean integracjaUsb
 	Boolean integracjaEth
-	PosSystemSupplier dostawcaSystemuKasowego
+	String dostawcaSystemuKasowego
 
 	Boolean logowaniePrzedKazdaTransakcja
 	Boolean logowanieZmianowe
