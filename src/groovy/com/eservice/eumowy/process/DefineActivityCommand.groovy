@@ -20,13 +20,12 @@ class DefineActivityCommand {
     def dodanieDcc
     def dodanieCashBack
     def zmianaWarunkowPrepaid
-    def odnowienieLojalnosci
     def poprawDane
     def dodatkowyPos
     def wymianaUmowyNajmu
     def dodaniePrepaid
     def zmianaWarunkowDcc
-	def dodanieAneksuKosztyPlus
+    def dodanieAneksuKosztyPlus
     def prestiz
     def promocyjneObnizenieNajmu
     def odrzucDokumenty
@@ -39,6 +38,7 @@ class DefineActivityCommand {
     def pakietStartPlus
     def pakietMobilny
     def logoKalkulatorSesja
+    def odnowienieLojalnosci
     def zmianaWarunkowCashback
     String notes
 

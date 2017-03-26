@@ -108,7 +108,7 @@
                  </div>
 
                  <div class="checkBoxBlock">
-                     <g:checkBox id="odnowienieLojalnosciCB" name="odnowienieLojalnosci" data-selected="${activities?.contains('odnowienieLojalnosciCB')}"/>
+                     <g:checkBox id="odnowienieLojalnosciCB" name="odnowienieLojalnosci" data-selected="${activities?.contains('odnowienieLojalnosci')}"/>
                      <label for="odnowienieLojalnosciCB"><g:message code="activity.odnowienieLojalnosci.name"/></label>
                  </div>
 
