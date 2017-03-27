@@ -130,7 +130,7 @@ class PanelService {
     }
 
     def getUpustDcc(ProcessCommand cmd, def calc ) {
-        cmd.dccKartyZagranicznePr = calculatorService.getDecimalCalcProperty(calc, "OPLATA_DCC_MASTERCARD_PR")
+        cmd.dccKartyZagranicznePr = calculatorService.getDecimalCalcProperty(calc, "DCC_UPUST")
     }
 
     def getDccZakresUruchomienia(ProcessCommand cmd, def calc ) {
