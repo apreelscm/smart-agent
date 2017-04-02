@@ -33,6 +33,7 @@ public final class ProcessCBDValidator {
         if (!ActivityHelper.isNewAgreement(process)) {
             validators.add(new MIDValidator(process, client))
             validators.add(new PkoBpValidator(process, client))
+            validators.add(new ExchangePaymentContractValidator(process, client))
             validators.add(new ExchangeLeaseToCooperationValidator(process, client))
             validators.add(new PrepaidValidator(process, client))
 
