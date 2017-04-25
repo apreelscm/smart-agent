@@ -21,7 +21,7 @@ class DocumentService {
     def mapperService
     def appParametersService
 
-    private static final int POSES_COUNT_ON_RENT_REDUCTION = 10
+    private static final int POSES_COUNT_ON_RENT_REDUCTION = 20
     private static final int POINTS_COUNT_ON_DOCUMENT = 30
 
     def download(def id) {
