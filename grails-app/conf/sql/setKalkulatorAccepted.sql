@@ -1,0 +1,1 @@
+select eumowy.eum_kalk.SET_KALKULATOR_ACCEPTED(:calcId) as result from dual

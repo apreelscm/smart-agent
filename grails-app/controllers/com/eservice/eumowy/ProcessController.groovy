@@ -5,8 +5,6 @@ import com.eservice.eumowy.util.DateUtils
 import org.springframework.security.access.annotation.Secured
 import pdfgenerator.PdfGenerator
 
-import java.nio.charset.Charset
-
 class ProcessController {
     def attachmentService
     def documentService
@@ -16,6 +14,7 @@ class ProcessController {
     def webServiceClient
     def processService
     def pdfService
+    def cbdService
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
@@ -135,6 +134,12 @@ class ProcessController {
 
         if (processInstance.status in [Process.ProcessStatus.ACCEPTED,Process.ProcessStatus.REJECTED]){
             flash.error = "Nie można odrzucić zakończonego procesu"
+            redirect(action: "show", params: params)
+            return
+        }
+
+        if (!cbdService.acceptKalkulatorAndGetResult(processInstance.calcNumber)) {
+            flash.error = "Nie udało się zaakceptować kalkulatora"
             redirect(action: "show", params: params)
             return
         }

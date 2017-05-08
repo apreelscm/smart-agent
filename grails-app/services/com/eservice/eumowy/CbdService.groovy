@@ -1,7 +1,6 @@
 package com.eservice.eumowy
 import com.eservice.eumowy.dao.CbdDAO
 import com.google.common.base.Function
-import com.google.common.base.Predicate
 import com.google.common.collect.FluentIterable
 import grails.plugin.cache.CacheEvict
 import grails.plugin.cache.Cacheable
@@ -43,6 +42,7 @@ class CbdService {
     private static final String SPRAWDZ_DZIALANIE = "sprawdzDzialanie"
     private static final String GET_NUMER_SPRZEDAZOWY = "getNumerSprzedazowy"
     private static final String CZY_GIFT = "czyGift"
+    private static final String SET_KALKULATOR_ACCEPTED = "setKalkulatorAccepted"
     private static final String GET_TERMINAL_PRICES_AND_COUNTS = "getTerminalPriceAndCountByNip"
     private static final String GET_HIRE_PAYMENT_BY_POINT = "getHirePaymentByPoint"
     private static final String GET_HIRE_PAYMENT_BY_POS = "getHirePaymentByPos"
@@ -240,6 +240,13 @@ class CbdService {
     def czyGift(def nip) {
         def rowResult = cbdDAO.selectOne(CZY_GIFT, [nip: nip])
         return rowResult != null && rowResult.get("result") == 1
+    }
+
+    @Cacheable(value="eumowyCacheShort", key = "'setKalkulatorAccepted_'.concat(#calcId)")
+    @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
+    boolean acceptKalkulatorAndGetResult(String calcId) {
+        def rowResult = cbdDAO.selectOne(SET_KALKULATOR_ACCEPTED, [calcid: calcId])
+        return rowResult != null && rowResult.get("result") == 0
     }
 
     @Cacheable(value="eumowyCacheShort", key = "'getTerminalPricesAndCounts_'.concat(#nip)")
