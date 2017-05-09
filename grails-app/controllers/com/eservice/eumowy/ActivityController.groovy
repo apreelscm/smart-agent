@@ -2,8 +2,11 @@
 package com.eservice.eumowy
 
 import com.eservice.eumowy.auth.EServiceUserDetails
+import com.eservice.eumowy.command.ProcessCommand
 import com.eservice.eumowy.dto.MerchantDetailsDTO
 import com.eservice.eumowy.exception.CalculatorException
+import com.eservice.eumowy.process.DefineActivityCommand
+import com.eservice.eumowy.util.DateUtils
 import com.eservice.eumowy.validator.NumberValidator
 import com.google.common.collect.Lists
 import grails.converters.JSON
@@ -16,10 +19,6 @@ import org.hibernate.StaleObjectStateException
 import org.springframework.orm.hibernate4.HibernateOptimisticLockingFailureException
 import org.springframework.orm.hibernate4.HibernateSystemException
 import pdfgenerator.PdfGenerator
-
-import com.eservice.eumowy.command.ProcessCommand
-import com.eservice.eumowy.process.DefineActivityCommand
-import com.eservice.eumowy.util.DateUtils
 
 import static com.eservice.eumowy.SignatureDetail.SignaturePurpose.REPRESENTATIVE
 import static java.lang.String.format
@@ -320,6 +319,13 @@ class ActivityController {
             }.to "clientSignature"
             on("noaccept") {
                 Process processInstance = flow.processInstance
+
+                if (!cbdService.acceptKalkulatorAndGetResult(processInstance.calcNumber)) {
+                    log.error("Nie udało się zaakceptować kalkulatora o numerze " + processInstance.calcNumber)
+                    flash.errorMessage = "Nie udało się zaakceptować kalkulatora"
+                    return error()
+                }
+
                 processInstance.status = Process.ProcessStatus.REJECTED
                 processInstance.updateDate = new Date()
                 flow.processInstance = processInstance
@@ -606,8 +612,15 @@ class ActivityController {
             }
             render(view: "../createProcess/selectedPanels")
             on("reject"){
-                Process processInstance = flow.processInstance;
-                processInstance.status = Process.ProcessStatus.REJECTED;
+                Process processInstance = flow.processInstance
+
+                if (!cbdService.acceptKalkulatorAndGetResult(processInstance.calcNumber)) {
+                    log.error("Nie udało się zaakceptować kalkulatora o numerze " + processInstance.calcNumber)
+                    flash.errorMessage = "Nie udało się zaakceptować kalkulatora"
+                    return error()
+                }
+
+                processInstance.status = Process.ProcessStatus.REJECTED
                 processInstance.updateDate = new Date()
                 flow.processInstance = processInstance
             }.to "reject"
@@ -1037,6 +1050,13 @@ class ActivityController {
             }.to "clientSignature"
             on("reject"){
                 Process processInstance = flow.processInstance;
+
+                if (!cbdService.acceptKalkulatorAndGetResult(processInstance.calcNumber)) {
+                    log.error("Nie udało się zaakceptować kalkulatora o numerze " + processInstance.calcNumber)
+                    flash.errorMessage = "Nie udało się zaakceptować kalkulatora"
+                    return error()
+                }
+
                 processInstance.status = Process.ProcessStatus.REJECTED
                 processInstance.updateDate = new Date()
                 flow.processInstance = processInstance
@@ -1203,6 +1223,12 @@ class ActivityController {
                 Process processInstance = flow.savedProcess
 
                 log.info("ODRZUCENIE PROCESU - wczytanie procesu - nip = ${flow.nip} , processId = ${processInstance?.id}, status = ${processInstance?.status}")
+
+                if (!cbdService.acceptKalkulatorAndGetResult(processInstance.calcNumber)) {
+                    log.error("Nie udało się zaakceptować kalkulatora o numerze " + processInstance.calcNumber)
+                    flash.errorMessage = "Nie udało się zaakceptować kalkulatora"
+                    return error()
+                }
 
                 processInstance.status = Process.ProcessStatus.REJECTED;
                 processInstance.updateDate = new Date()
