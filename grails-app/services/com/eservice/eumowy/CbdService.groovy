@@ -43,6 +43,7 @@ class CbdService {
     private static final String GET_NUMER_SPRZEDAZOWY = "getNumerSprzedazowy"
     private static final String CZY_GIFT = "czyGift"
     private static final String SET_KALKULATOR_ACCEPTED = "setKalkulatorAccepted"
+    private static final String SET_KALKULATOR_USED = "setKalkulatorUsed"
     private static final String GET_TERMINAL_PRICES_AND_COUNTS = "getTerminalPriceAndCountByNip"
     private static final String GET_HIRE_PAYMENT_BY_POINT = "getHirePaymentByPoint"
     private static final String GET_HIRE_PAYMENT_BY_POS = "getHirePaymentByPos"
@@ -242,11 +243,17 @@ class CbdService {
         return rowResult != null && rowResult.get("result") == 1
     }
 
-    @Cacheable(value="eumowyCacheShort", key = "'setKalkulatorAccepted_'.concat(#calcId)")
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
     boolean acceptKalkulatorAndGetResult(String calcId) {
         def rowResult = cbdDAO.selectOne(SET_KALKULATOR_ACCEPTED, [calcid: calcId])
         return rowResult != null && rowResult.get("result") == 0
+    }
+
+    @Cacheable(value="eumowyCacheShort", key = "'setKalkulatorUsed_'.concat(#calcId)")
+    @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
+    def setKalkulatorUsed(def calcId) {
+        def rowResult = cbdDAO.selectOne(SET_KALKULATOR_USED, [calcid: calcId])
+        return rowResult != null && rowResult.get("result")
     }
 
     @Cacheable(value="eumowyCacheShort", key = "'getTerminalPricesAndCounts_'.concat(#nip)")

@@ -443,6 +443,7 @@ class ActivityController {
                 Process processInstance = flow.processInstance
 
                 processInstance.calcNumber = flow.calcNumber
+                cbdService.setKalkulatorUsed(flow.calcNumber)
 
                 Client client = flow.client
 
@@ -818,6 +819,7 @@ class ActivityController {
                 processService.setPhDetailsFromUser(processInstance, springSecurityService.principal)
 
                 processInstance.calcNumber =  flow.calcNumber
+                cbdService.setKalkulatorUsed(flow.calcNumber)
                 if (!processInstance.save(flush:true)){
                     processInstance.errors.each { log.error(it) }
                     return "error"
