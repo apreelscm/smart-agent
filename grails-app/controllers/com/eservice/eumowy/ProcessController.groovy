@@ -155,7 +155,8 @@ class ProcessController {
 		
         flash.message = message(code: 'default.rejected.message', args:[ message(code: 'process.label', default: 'proces'), processInstance.id])
 
-        def mailBodyParams = [merchantName: processInstance.client.name, merchantNip: processInstance.client.nip, activities: processService.getActivities(processInstance), rejectReason: params.notesFromZrd]
+        def mailBodyParams = [merchantName: processInstance.client.name, merchantNip: processInstance.client.nip,
+                              activities: processService.getActivities(processInstance), rejectReason: params.notesFromZrd]
 
         if(!emailService.sendDocumentsRejected(processInstance.phEmail, processInstance.client.name, processInstance.client.nip, mailBodyParams)){
             flash.error = "Błąd podczas wysyłania maila na adres ${processInstance.phEmail}"
@@ -185,7 +186,7 @@ class ProcessController {
         flash.message = message(code: 'default.correction.message', args:[ message(code: 'process.label', default: 'proces'), processInstance.id])
 
         def mailBodyParams = [merchantName: processInstance.client.name, merchantNip: processInstance.client.nip,
-                              activities: processService.getActivities(processInstance), rejectReason: message(code: 'correction.email.body')]
+                              activities: processService.getActivities(processInstance), rejectReason: params.notesFromZrd]
 
         if(!emailService.sendDocumentsRejected(processInstance.phEmail, processInstance.client.name, processInstance.client.nip, mailBodyParams)){
             flash.error = "Błąd podczas wysyłania maila na adres ${processInstance.phEmail}"
