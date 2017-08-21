@@ -32,9 +32,9 @@ environments {
             driverClassName = "oracle.jdbc.driver.OracleDriver"
             dialect = "org.hibernate.dialect.Oracle10gDialect"
             username = "EUMOWY_APP"
-            password = 'WsMQ8h2$'
+            password = 'Ahfopcvy$aU3'
             dbCreate = ""
-            url = "jdbc:oracle:thin:@192.168.9.22:1521:cbd"
+            url = "jdbc:oracle:thin:@192.168.9.22:1521:cbd_dev"
             properties {
                 maxActive = -1
                 initialSize = 1
