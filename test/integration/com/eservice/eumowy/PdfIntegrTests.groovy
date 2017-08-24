@@ -7,15 +7,15 @@ import com.eservice.eumowy.helpers.CommandHelper
 import com.eservice.eumowy.helpers.PdfHelper
 import com.eservice.eumowy.pdfmapper.PABRformMapper
 import com.eservice.eumowy.pdfmapper.PEPdeclarationMapper
+import grails.test.mixin.TestFor
 import grails.test.mixin.web.ControllerUnitTestMixin
 import org.apache.pdfbox.pdmodel.PDDocument
-import grails.test.mixin.*
 import org.junit.Before
 import org.junit.Test
 import pdfgenerator.PdfGenerator
 
-import static com.eservice.eumowy.helpers.PdfTestDataBuilder.*
 import static com.eservice.eumowy.helpers.FieldsHelper.*
+import static com.eservice.eumowy.helpers.PdfTestDataBuilder.*
 
 @TestFor(PdfService)
 class PdfIntegrTests extends ControllerUnitTestMixin{
@@ -354,7 +354,7 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
         //given
         def subscriptions = [
                 ["ACCEPTANT1", 2, 115, 355, 59, 28],
-                ["PH", 2, 415, 255, 59, 28]
+                ["PH", 2, 230, 255, 59, 28]
         ]
 
         //when
