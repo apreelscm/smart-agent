@@ -4,15 +4,8 @@ import com.eservice.eumowy.command.AllPosCommand
 import com.eservice.eumowy.command.PointCommand
 import com.eservice.eumowy.command.ProcessCommand
 import com.eservice.eumowy.util.DateUtils
-import com.google.common.collect.Lists
 
-import static com.eservice.eumowy.ActivityHelper.DODATKOWY_POS
-import static com.eservice.eumowy.ActivityHelper.DODATKOWY_PUNKT
-import static com.eservice.eumowy.ActivityHelper.contains
-import static com.eservice.eumowy.ActivityHelper.containsOnly
-import static com.eservice.eumowy.ActivityHelper.isBundleActivity
-import static com.eservice.eumowy.ActivityHelper.isNewAgreement
-import static com.eservice.eumowy.ActivityHelper.isOnlyActivity
+import static com.eservice.eumowy.ActivityHelper.*
 import static com.google.common.collect.Lists.newArrayList
 import static java.lang.Integer.parseInt
 
@@ -40,7 +33,7 @@ class PanelService {
         cmd.isBundleActivity = isBundleActivity(cmd.process)
         cmd.promObjNaj1 = calculatorService.getCalcProperty(calc,"E_PROM_OBN_NAJ_1")
 
-        if (SignatureHelper.containsAtLeastOne(cmd.process, newArrayList("AP/UW/1.003/17-04-01", "AP/UW/RWT/1.001/15-03-05"))) {
+        if (SignatureHelper.containsAtLeastOne(cmd.process, newArrayList("AP/UW/1.004/17-10-01", "AP/UW/RWT/1.002/17-10-01"))) {
             cmd.promObjNaj1 = cmd.promObjNaj1 ? (parseInt(cmd.promObjNaj1.trim()) + 1) : 1
         }
 

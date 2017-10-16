@@ -8,18 +8,16 @@ import com.eservice.eumowy.dto.MerchantDetailsDTO
 import com.eservice.eumowy.factory.ProcessCommandDefaultValuesFactory
 import com.eservice.eumowy.util.DateUtils
 import com.eservice.eumowy.util.EumowyCustomEnvironment
-import com.google.common.collect.Lists
 import grails.util.Environment
 import groovy.sql.GroovyRowResult
 import org.apache.commons.lang.WordUtils
 import org.codehaus.groovy.grails.web.binding.DataBindingUtils
 import serializationutils.SerializationUtils
 
-import java.math.RoundingMode
-
 import static com.eservice.eumowy.ActivityHelper.DODANIE_DCC
 import static com.eservice.eumowy.ActivityHelper.ZMIANA_WARUNKOW_DCC
 import static com.google.common.collect.Lists.newArrayList
+import static java.lang.Integer.parseInt
 
 class ProcessService {
     def messageSource
@@ -947,9 +945,8 @@ class ProcessService {
     def populateProcessWithData(Process process, def cmd, def calc){
         def processDataList = getDataFromPanels(cmd)
 
-        //zapis obecnej daty na potrzeby dokumentow
-        addCurrentDate(processDataList);
-        addFromCalc(processDataList, calc);
+        addCurrentDate(processDataList)
+        addLiczbaMiesZwolNaj1ProcessData(process, processDataList, calc)
 
         processDataList.each { ProcessData data ->
             def foundData = process.processData.find { it.name == data.name }
@@ -1121,8 +1118,14 @@ class ProcessService {
         processDataList.add(new ProcessData([name: 'dataUmowy', value: DateUtils.formatWithTimezone(DateUtils.getCurrentDate())]))
     }
 
-    private def addFromCalc(def processDataList, def calc){
-        processDataList.add(new ProcessData([name: 'liczbaMiesZwolNaj1', value: calculatorService.getCalcProperty(calc,"E_LICZBA_MIES_ZWOL_NAJ_1")]))
+    private def addLiczbaMiesZwolNaj1ProcessData(Process process, def processDataList, def calc){
+        def liczbaMiesZwolNaj1 = calculatorService.getCalcProperty(calc,"E_LICZBA_MIES_ZWOL_NAJ_1")
+
+        if (SignatureHelper.contains(process, "AP/UW/1.004/17-10-01")) {
+            liczbaMiesZwolNaj1 = liczbaMiesZwolNaj1 ? (parseInt(liczbaMiesZwolNaj1.trim()) + 1) : liczbaMiesZwolNaj1
+        }
+
+        processDataList.add(new ProcessData([name: 'liczbaMiesZwolNaj1', value: liczbaMiesZwolNaj1]))
     }
 
 // Then, we will write a method to take an object and an annotation class
