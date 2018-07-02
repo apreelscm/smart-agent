@@ -316,6 +316,23 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
     }
 
     @Test
+    void KI_RODO() { //KI-RODO
+        //given
+        def subscriptions = [
+                ["ACCEPTANT1", 2, 70, 135, 59, 28],
+                ["ACCEPTANT2", 2, 70, 65, 59, 28],
+                ["ACCEPTANT3", 2, 280, 135, 59, 28],
+                ["ACCEPTANT4", 2, 280, 65, 59, 28],
+        ]
+
+        //when
+        data.putAll(PdfHelper.insertSignatures(subscriptions))
+
+        //then
+        process("KI_RODO.pdf", "KI_RODO_out.pdf", data)
+    }
+
+    @Test
     void APUPZZSNT31001150305() { //AP/UPZ/ZSNT3/1.002/16-02-01
         //given
         def subscriptions = [
