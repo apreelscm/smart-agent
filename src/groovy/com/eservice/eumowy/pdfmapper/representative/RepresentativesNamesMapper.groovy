@@ -18,6 +18,7 @@ class RepresentativesNamesMapper implements Mapper{
         Map representativesData = [:]
 
         process.allRepresentatives.eachWithIndex { representative, i->
+            representativesData.put(format("reprezentant%dSalutation", (i+1)), [representative.fullNameWithSalutation] as String[])
             representativesData.put(format("reprezentant%d", (i+1)), [representative.fullName] as String[])
             representativesData.put(format("reprezentant%dFull", (i+1)) , [representative.description] as String[])
         }

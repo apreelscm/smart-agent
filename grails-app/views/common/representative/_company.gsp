@@ -7,7 +7,7 @@
 
         <div class="acceptorRadioWrapper">
             <g:radio name="${prefix}[${seqNo}].verification" value="PESEL"
-                     checked="${(!data.dzialalnoscForma || data.isCompanyForm()) && "PESEL".equals(representative?.verification?.name())}"/>
+                     checked="${(!data.dzialalnoscForma || data.isCompanyForm()) && representative?.verification?.name() == "PESEL"}"/>
             <div class="label"><g:message code="pesel.label"/></div>
 
             <eumowy:textField name="${prefix}[${seqNo}].pesel" value="${representative?.pesel}"
@@ -17,21 +17,13 @@
 
         <div class="acceptorRadioWrapper">
             <g:radio name="${prefix}[${seqNo}].verification" value="BIRTH_DATE"
-                     checked="${(!data.dzialalnoscForma || data.isCompanyForm()) && "BIRTH_DATE".equals(representative?.verification?.name())}"/>
-            <label for="${prefix}[${seqNo}].birthDate"><g:message code="birth.date.label"/></label>
+                     checked="${(!data.dzialalnoscForma || data.isCompanyForm()) && representative?.verification?.name() == "BIRTH_DATE"}"/>
+            <label for="${prefix}[${seqNo}].birthDate"><g:message code="birth.date.country.label"/></label>
 
             <g:textField name="${prefix}[${seqNo}].birthDate" value="${formatDate(format: 'yyyy-MM-dd', date: representative?.birthDate)}" maxlength="10" class="date-field"/>
+            <dict:countrySelect name="${prefix}[${seqNo}].birthCountry" value="${representative?.birthCountry}"
+                                validatable="${representative}" validateField="birthCountry"/>
         </div>
-    </div>
-
-    <div class="${hasErrors(bean: representative, field: 'locationType', 'errorSpan')}">
-        <g:hasErrors bean="${representative}" field="locationType">
-            <p class="error-message"><g:message code="representative.option.required"/></p>
-        </g:hasErrors>
-
-        <eumowy:enumRadioGroup values="${AcceptorLocation.values()}" name="${prefix}[${seqNo}].locationType"
-                               value="${(!data.dzialalnoscForma || data.isCompanyForm()) ? representative?.locationType : null}"
-                               radioWrapperClass="acceptorLocationRadioWrapper"/>
     </div>
 
     <div>
@@ -45,25 +37,25 @@
         <dict:countrySelect name="${prefix}[${seqNo}].country" value="${representative?.country}" required="required"
                             validatable="${representative}" validateField="country"/>
     </div>
-    <div class="isPolitician ${(representative?.isFromPoland() || !representative?.country) ? 'hidden' : ''} ${hasErrors(bean: representative, field: 'isPolitician', 'errorSpan')}">
+    <div class="isPolitician ${hasErrors(bean: representative, field: 'isPolitician', 'errorSpan')}">
         <g:hasErrors bean="${representative}" field="isPolitician">
             <p class="error-message"><g:message code="representative.option.required"/></p>
         </g:hasErrors>
 
         <span><g:message code="is.political.position.label"/></span>
 
-        <g:radio name="${prefix}[${seqNo}].isPolitician" value="true"
-                 checked="${(!data.dzialalnoscForma || data.isCompanyForm()) && representative?.isPolitician && !representative?.isFromPoland()}"/>
+        <g:radio name="${prefix}[${seqNo}].isPolitician" value="true" required="required"
+                 checked="${(!data.dzialalnoscForma || data.isCompanyForm()) && representative?.isPolitician == true}"/>
         <label for="${prefix}[${seqNo}].isPolitician"><g:message code="yes"/></label>
 
-        <g:radio name="${prefix}[${seqNo}].isPolitician" value="false"
-                 checked="${(!data.dzialalnoscForma || data.isCompanyForm()) && !representative?.isPolitician && !representative?.isFromPoland()}"/>
+        <g:radio name="${prefix}[${seqNo}].isPolitician" value="false" required="required"
+                 checked="${(!data.dzialalnoscForma || data.isCompanyForm()) && representative?.isPolitician == false}"/>
         <label for="${prefix}[${seqNo}].isPolitician"><g:message code="no"/></label>
     </div>
 
     <div>
         <label for="${prefix}[${seqNo}].citizenship"><g:message code="citizenship.label"/></label>
         <eumowy:textField name="${prefix}[${seqNo}].citizenship" value="${representative?.citizenship}" maxlength="30" required="required"
-                          validatable="${representative}" validateField="citizenship" readonly="${!representative?.isRepresentativeLocationAbroad()}"/>
+                          validatable="${representative}" validateField="citizenship"/>
     </div>
 </div>

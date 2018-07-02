@@ -23,7 +23,6 @@ class EmployeeAnnotationsMapper extends AbstractPdfMapper implements Mapper{
 
         employeeAnnotations.put("beneficjentWeryfikacjaKRS", getCheckboxData(process.getBooleanData("beneficjentWeryfikacjaKRS")))
         employeeAnnotations.put("beneficjentKRS", [process.getData("beneficjentKRS")] as String[])
-        employeeAnnotations.put("beneficjentWeryfikacjaDokumentTozsamosci", getCheckboxData(process.getBooleanData("beneficjentWeryfikacjaDokumentTozsamosci")))
         employeeAnnotations.put("beneficjentWeryfikacjaGielda", getCheckboxData(process.getBooleanData("beneficjentWeryfikacjaGielda")))
         employeeAnnotations.put("beneficjentWeryfikacjaSpolka", getCheckboxData(process.getBooleanData("beneficjentWeryfikacjaSpolka")))
         employeeAnnotations.put("beneficjentWeryfikacjaKsiega", getCheckboxData(process.getBooleanData("beneficjentWeryfikacjaKsiega")))

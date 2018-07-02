@@ -367,11 +367,11 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
     }
 
     @Test
-    void APAGFDF2004150914() { //AP-AG/F/DF/2.004/15-09-14
+    void APAGFDF2005180701() { //AP-AG/F/DF/2.005/18-07-01
         //given
         def subscriptions = [
-                ["ACCEPTANT1", 2, 115, 355, 59, 28],
-                ["PH", 2, 230, 255, 59, 28]
+                ["ACCEPTANT1", 2, 115, 335, 59, 28],
+                ["PH", 2, 230, 235, 59, 28]
         ]
 
         //when
@@ -380,7 +380,7 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
         data.putAll(PdfHelper.insertSignatures(subscriptions))
 
         //then
-        process("APAGFDF2.00415-09-14.pdf", "APAGFDF2.00415-09-14_out.pdf", data)
+        process("APAGFDF2.00518-07-01.pdf", "APAGFDF2.00518-07-01_out.pdf", data)
     }
 
 
@@ -427,7 +427,7 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
     }
 
     @Test
-    void APAGFPABR1000150409() { //AP-AG/F/PABR/1.000/15-04-09
+    void APAGFPABR1001180701() { //AP-AG/F/PABR/1.001/18-07-01
         //given
         Map representativeProperties = [name: "Jan", surname: "Kowalski", documentType: IdentityDocumentType.IDENTITY_CARD,
                 country: "Daleko", address: "JakisAdres", documentNumber: "PL123", citizenship: "Polskie",
@@ -438,10 +438,10 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
                  votesPercentage: 59, ownsAcceptor: true, controlsAcceptor: false, overQuarterOfVotes: true]
 
         def subscriptions = [
-                ["ACCEPTANT1", 2, 270, 416, 59, 28],
-                ["ACCEPTANT2", 2, 360, 416, 59, 28],
-                ["PH", 2, 440, 275, 59, 28],
-                ["PH1", 2, 440, 96, 59, 28]
+                ["ACCEPTANT1", 2, 270, 652, 59, 28],
+                ["ACCEPTANT2", 2, 360, 652, 59, 28],
+                ["PH", 2, 440, 510, 59, 28],
+                ["PH1", 2, 440, 355, 59, 28]
         ]
 
         //when
@@ -456,15 +456,15 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
         data.putAll(PdfHelper.insertSignatures(subscriptions))
 
         //then
-        process("APAGFPABR1.00015-04-09.pdf", "APAGFPABR1.00015-04-09_out.pdf", data)
+        process("APAGFPABR1.00118-07-01.pdf", "APAGFPABR1.00118-07-01_out.pdf", data)
     }
 
     @Test
-    void APAGFPEP1000150409() { //AP-AG/F/PEP/1.000/15-04-09
+    void APAGFPEP1001180701() { //AP-AG/F/PEP/1.001/18-07-01
         //given
         Map representativeProperties = [isPolitician: true, locationType: AcceptorLocation.ABROAD]
         def subscriptions = [
-                ["ACCEPTANT", 1, 350, 257, 74, 43]
+                ["ACCEPTANT", 1, 350, 295, 59, 28]
         ]
 
         //when
@@ -474,7 +474,7 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
         data.putAll(PdfHelper.insertSignatures(subscriptions))
 
         //then
-        process("APAGFPEP1.00015-04-09.pdf", "APAGFPEP1.00015-04-09_out.pdf", data)
+        process("APAGFPEP1.00118-07-01.pdf", "APAGFPEP1.00118-07-01_out.pdf", data)
     }
 
     void testAPUPZBSX() {

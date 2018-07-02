@@ -402,15 +402,6 @@ class ProcessCommand implements Serializable {
     Boolean isRepresentativesChangedManually = false
     String emailDoWysylkiDokumentu = DEFAULT_VALUE
 
-    //beneficjenciRzeczywisci
-    Boolean czyBeneficjentRzeczywisty
-    Boolean akceptantJestSpolka
-    String nazwaGieldy
-    String isinAkceptanta
-    Boolean akceptantJestPodmiotem
-    Boolean akceptantJestOrganem
-    Boolean akceptantNieMaBeneficjenta
-
     //dokumentyWeryfikacyjne
     Boolean beneficjentWeryfikacjaKRS
     String beneficjentKRS
@@ -1253,41 +1244,8 @@ class ProcessCommand implements Serializable {
                 NumberValidator.validate(value, cmd, errors, propertyName) && ConditionValidator.atLeastCalcValue(value, cmd, errors, propertyName, "DCC_OPLATA_URUCHOMIENIE")
         })
 
-        czyBeneficjentRzeczywisty(nullable: true, validator: {value, cmd, errors ->
-            if(!cmd.hasAtLeastOneRepresentativeAbroad()) {
-                return true
-            }
-
-            if(cmd.hasAtLeastOneRepresentativeAbroad() && (value == null)) {
-                errors.rejectValue("czyBeneficjentRzeczywisty", "beneficiary.radio.required")
-                return false
-            }
-
-            if(!value && !cmd.akceptantJestSpolka && !cmd.akceptantJestPodmiotem && !cmd.akceptantJestOrganem && !cmd.akceptantNieMaBeneficjenta) {
-                errors.rejectValue("czyBeneficjentRzeczywisty", "atleast.one.option.required")
-                return false
-            }
-
-            return true
-        })
-
         beneficjentKRS(nullable: true, shared: "natural", maxSize: 20, validator: {value, cmd, errors ->
             CustomValidator.validateRequired(value, errors, cmd.beneficjentWeryfikacjaKRS, propertyName, "beneficiary.krs.required")
-        })
-
-        beneficjentWeryfikacjaDokumentTozsamosci(nullable: true, validator: ConditionValidator.oneVerificationDocument)
-
-        akceptantJestSpolka(nullable: true)
-        nazwaGieldy(nullable: true, maxSize: 50, validator: {value, cmd, errors ->
-            if(cmd.akceptantJestSpolka && StringUtils.isEmpty(value)) {
-                errors.rejectValue("nazwaGieldy", "nazwaGieldy.required")
-                return false
-            }
-
-            return true
-        })
-        isinAkceptanta(nullable: true, maxSize: 12, validator: {value, cmd, errors ->
-            return !(cmd.akceptantJestSpolka && NumberValidator.validateIsin(value, cmd, errors, "isinAkceptanta"))
         })
 
         nip(nullable:true)
@@ -1305,8 +1263,7 @@ class ProcessCommand implements Serializable {
             return RepresentativesValidator.validate(value, cmd, errors, propertyName)
         })
         beneficiaries(nullable: true, validator: {value, cmd, errors ->
-            cmd.czyBeneficjentRzeczywisty ?
-                RepresentativesValidator.validate(value, cmd, errors, propertyName) : true
+            return RepresentativesValidator.validate(value, cmd, errors, propertyName)
         })
 
         allPoints(nullable:true)
@@ -1341,10 +1298,6 @@ class ProcessCommand implements Serializable {
 
     private boolean checkIfClientFromCbd(){
         return this.checkIfFromCbd("akceptantNazwaOficjalna")
-    }
-
-    public boolean hasAtLeastOneRepresentativeAbroad() {
-        return representatives.any {AcceptorLocation.ABROAD.name().equals(it.locationType?.name())}
     }
 
     public String getMessageForProperty(String property){

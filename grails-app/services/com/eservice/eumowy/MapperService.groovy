@@ -2,6 +2,7 @@ package com.eservice.eumowy
 
 import com.eservice.eumowy.pdfmapper.FacilitiesMapper
 import com.eservice.eumowy.pdfmapper.PABRformMapper
+import com.eservice.eumowy.pdfmapper.PEPdeclarationMapper
 import com.eservice.eumowy.pdfmapper.PdfPointMapper
 import com.eservice.eumowy.pdfmapper.PdfPosExchangeMapper
 import com.eservice.eumowy.pdfmapper.PdfPosMapper
@@ -31,6 +32,7 @@ class MapperService {
 
         if(ActivityHelper.isNewAgreement(processInstance)) {
             data.putAll(new PABRformMapper(processInstance).getDataForMapping())
+            data.putAll(new PEPdeclarationMapper(processInstance).getDataForMapping())
         }
 
         if(ActivityHelper.isBundleActivity(processInstance)) {

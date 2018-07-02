@@ -1,8 +1,5 @@
 package com.eservice.eumowy.command
 
-import com.eservice.eumowy.enums.IdentityDocumentType
-import com.eservice.eumowy.enums.AcceptorLocation
-import com.eservice.eumowy.enums.options.AcceptorLocation
 import com.eservice.eumowy.enums.options.AcceptorVerification
 import com.eservice.eumowy.enums.options.IdentityDocumentType
 import com.eservice.eumowy.validator.CustomValidator
@@ -23,14 +20,12 @@ class RepresentativeCommand implements Serializable{
 
     AcceptorVerification verification
     String pesel
-    String countryCode
     Date birthDate
-
-    AcceptorLocation locationType
+    String birthCountry
 
     IdentityDocumentType documentType
-
     String documentNumber
+
     String citizenship
     String address
     String country
@@ -52,51 +47,42 @@ class RepresentativeCommand implements Serializable{
             return AcceptorVerification.PESEL.equals(cmd.verification) ? NumberValidator.validatePesel(value, cmd, errors, "pesel") : true
         })
 
-        locationType(nullable: true, validator: {value, cmd, errors ->
-            return CustomValidator.validateRequired(value, errors, cmd.processCommand.hasNewUmowa, "locationType",
-                    "representative.typLokalizacji.required")
-        })
-        countryCode(nullable: true, maxSize: 30, validator: { value, cmd, errors ->
-            CustomValidator.validateRequired(value, errors, AcceptorVerification.COUNTRY_CODE.equals(cmd.verification),
-                    "countryCode", "representative.lokalizacjaKraj.required")
-        })
-
         documentType(nullable: true, validator: {value, cmd, errors ->
             CustomValidator.validateRequired(value, errors, cmd.processCommand.isPersonForm(), "documentType",
                     "representative.typDokumentu.required")
         })
-
         documentNumber(nullable: true, maxSize: 20, shared: "alphanumeric", validator: {value, cmd, errors ->
             CustomValidator.validateRequired(value, errors, cmd.processCommand.isPersonForm(),
                     "documentNumber", "representative.seriaNrDokumentu.required")
         })
+
         birthDate(nullable: true, validator: { value, cmd, errors ->
             CustomValidator.validateRequired(value, errors, AcceptorVerification.BIRTH_DATE.equals(cmd.verification),
                     "birthDate", "representative.dataUrodzenia.required")
         })
-        citizenship(nullable: true, maxSize: 30, validator: {value, cmd, errors ->
-            CustomValidator.validateRequired(value, errors, cmd.processCommand.hasNewUmowa,
-                    "citizenship", "representative.obywatelstwo.required")
+        birthCountry(nullable: true, validator: { value, cmd, errors ->
+            CustomValidator.validateRequired(value, errors, AcceptorVerification.BIRTH_DATE.equals(cmd.verification),
+                    "birthCountry", "representative.krajUrodzenia.required")
         })
+
         address(nullable: true, maxSize: 100, validator: { value, cmd, errors ->
             CustomValidator.validateRequired(value, errors, cmd.processCommand.hasNewUmowa,
                     propertyName, "representative.adres.required")
         })
+
         country(nullable: true, validator: { value, cmd, errors ->
             CustomValidator.validateRequired(value, errors, cmd.processCommand.hasNewUmowa,
                     propertyName, "representative.kraj.required")
         })
+
         isPolitician(nullable: true, validator: {value, cmd, errors ->
-            CustomValidator.validateRequired(value != null, errors, !"Polska".equals(cmd.country) && cmd.processCommand.hasNewUmowa,
+            CustomValidator.validateRequired(value != null, errors, cmd.processCommand.hasNewUmowa,
                     propertyName, "representative.czyStanowiskoPolityczne.required")
         })
-    }
 
-    public boolean isRepresentativeLocationAbroad() {
-        return AcceptorLocation.ABROAD.equals(locationType)
-    }
-
-    public boolean isFromPoland() {
-        return "Polska".equals(country)
+        citizenship(nullable: true, maxSize: 30, validator: {value, cmd, errors ->
+            CustomValidator.validateRequired(value, errors, cmd.processCommand.hasNewUmowa,
+                    "citizenship", "representative.obywatelstwo.required")
+        })
     }
 }

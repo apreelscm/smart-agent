@@ -260,9 +260,12 @@ class ProcessService {
 
             representativeProperties.remove("type")
             representativeProperties.remove("fullName")
+            representativeProperties.remove("fullNameWithSalutation")
             representativeProperties.remove("representative")
             representativeProperties.remove("beneficiary")
             representativeProperties.remove("description")
+            representativeProperties.remove("countryCode")
+            representativeProperties.remove("locationType")
 
             if(Representative.Type.REPRESENTATIVE.equals(type)) {
                 representativeProperties.remove("ownsAcceptor")
@@ -1082,7 +1085,7 @@ class ProcessService {
 
     private void updateRepresentatives(Process process, List<RepresentativeCommand> representatives, Representative.Type type) {
         representatives.each { representativeCmd ->
-            Representative representative = Representative.findById(representativeCmd.properties.id)
+             Representative representative = Representative.findById(representativeCmd.properties.id)
 
             if (representative && !representativeCmd.name && !representativeCmd.surname) {
                 log.info(String.format("Removing %s %s - empty name", type, representative.id))

@@ -54,19 +54,6 @@ public class ConditionValidator {
         return true
     }
 
-    public static def oneVerificationDocument = {value, cmd, errors ->
-        List<Boolean> fieldsToCheck = [cmd.beneficjentWeryfikacjaKRS, cmd.beneficjentWeryfikacjaDokumentTozsamosci,
-                cmd.beneficjentWeryfikacjaGielda, cmd.beneficjentWeryfikacjaSpolka, cmd.beneficjentWeryfikacjaKsiega,
-                cmd.beneficjentWeryfikacjaSchemat]
-
-        if(cmd.hasAtLeastOneRepresentativeAbroad() && ValidatorUtils.hasNotFilledField(fieldsToCheck)) {
-            errors.reject("atleast.one.verification.document.required")
-            return false
-        }
-
-        return true
-    }
-
     private static BigDecimal getBigDecimalValue(def value) {
         return value?.toString()?.isNumber() ? value.toString().toBigDecimal() : BigDecimal.ZERO
     }

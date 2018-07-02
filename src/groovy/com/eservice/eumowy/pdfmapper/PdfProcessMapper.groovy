@@ -644,27 +644,27 @@ class PdfProcessMapper extends AbstractPdfMapper{
     }
 
     private mapDzialalnoscFormaProcess(def data, def pd, def key, def value) {
-        if (value != null){
-            if (LegalForm.STOCK_COMPANY.name().equals(value)){
-                value = "spolka";
-                data.put("spolkaText", ["akcyjna"] as String[])
-            } else if (LegalForm.ZOO_COMPANY.name().equals(value)){
-                value = "spolka";
-                data.put("spolkaText", ["z o.o."] as String[])
-            } else if (LegalForm.LIMITED_COMPANY.name().equals(value)){
-                value = "spolka";
-                data.put("spolkaText", ["komandytowa"] as String[])
-            } else if (LegalForm.OPEN_COMPANY.name().equals(value)){
-                value = "spolka";
-                data.put("spolkaText", ["jawna"] as String[])
-            }
+        if (value == null) return
 
-            addCheckboxes(data, ["spolkaCywilna": LegalForm.PARTNERSHIP_COMPANY.name(), "osobaFizyczna": LegalForm.PERSON.name(),
-                    "spolka":"spolka", "inne1":"inne"], value)
-
-            if ("inne".equals(value)){
-                data.put("inneText", [getFromProcessDataSet(pd, "dzialalnoscFormaInna")] as String[])
-            }
+        [
+                "osobaFizyczna": LegalForm.PERSON.name(),
+                "spolkaZoo": LegalForm.ZOO_COMPANY.name(),
+                "spolkaAkcyjna": LegalForm.STOCK_COMPANY.name(),
+                "spolkaCywilna": LegalForm.PARTNERSHIP_COMPANY.name(),
+                "spolkaKomandytowa": LegalForm.LIMITED_COMPANY.name(),
+                "spolkaKomandytowoAkcyjna": LegalForm.LIMITED_STOCK_COMPANY.name(),
+                "spolkaJawna": LegalForm.OPEN_COMPANY.name(),
+                "spolkaPartnerska": LegalForm.PARTNERSHIP.name(),
+                "spoldzielnia": LegalForm.COOPERATIVE.name(),
+                "fundacja": LegalForm.FOUNDATION.name(),
+                "zakladOpiekiZdrowotnej": LegalForm.HEALTHCARE_CENTER.name(),
+                "instytut": LegalForm.INSTITUTE.name(),
+                "instytucjaKultury": LegalForm.CULTURAL_INSTITUTION.name(),
+                "jednostkaBudzetowa": LegalForm.BUDGETARY_UNIT.name(),
+                "jednostkaOswiaty": LegalForm.EDUCATION_UNIT.name(),
+                "samorzadGospodarczy": LegalForm.ECONOMIC_SELF_GOVERNMENT.name(),
+        ].each {
+            data.put(it.key, getCheckboxData(it.value != value))
         }
     }
 

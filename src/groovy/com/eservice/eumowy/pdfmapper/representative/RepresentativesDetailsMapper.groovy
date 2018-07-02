@@ -6,11 +6,16 @@ import com.eservice.eumowy.enums.options.IdentityDocumentType
 import com.eservice.eumowy.pdfmapper.AbstractPdfMapper
 import com.eservice.eumowy.pdfmapper.Mapper
 import com.eservice.eumowy.Process
+import com.google.common.base.Strings
 
 import java.text.SimpleDateFormat
 
+import static com.google.common.base.Strings.isNullOrEmpty
+
 
 class RepresentativesDetailsMapper extends AbstractPdfMapper implements Mapper {
+
+    private static final SimpleDateFormat DATE_FORMATATER = new SimpleDateFormat("yyyy-MM-dd")
     private Process process
     private String prefix
 
@@ -25,7 +30,15 @@ class RepresentativesDetailsMapper extends AbstractPdfMapper implements Mapper {
 
         process.allRepresentatives.eachWithIndex { representative, i->
             representativesData.put(getFieldName(i, "Nazwa"), [representative.fullName] as String[])
-            representativesData.put(getFieldName(i, "LokalizacjaDane"), [getLokalizacjaDane(representative)] as String[])
+            representativesData.put(getFieldName(i, "CzyPesel"), getCheckboxData(!isNullOrEmpty(representative.pesel)))
+            representativesData.put(getFieldName(i, "Pesel"), [representative.pesel] as String[])
+            representativesData.put(getFieldName(i, "CzyDataUrodzenia"), getCheckboxData(representative.birthDate != null))
+            representativesData.put(getFieldName(i, "CzyPanstwoUrodzenia"), getCheckboxData(!isNullOrEmpty(representative.birthCountry)))
+            representativesData.put(getFieldName(i, "PanstwoUrodzenia"), [representative.birthCountry] as String[])
+
+            if (representative.birthDate) {
+                representativesData.put(getFieldName(i, "DataUrodzenia"), [DATE_FORMATATER.format(representative.birthDate)] as String[])
+            }
 
             if(process.akceptantOsobaFizyczna) {
                 representativesData.put(getFieldName(i, "DowOsob"), getCheckboxData(IdentityDocumentType.IDENTITY_CARD.equals(representative.documentType)))
@@ -33,8 +46,6 @@ class RepresentativesDetailsMapper extends AbstractPdfMapper implements Mapper {
                 representativesData.put(getFieldName(i, "SeriaNrDokumentu"), [representative.documentNumber] as String[])
                 representativesData.put(getFieldName(i, "Adres"), [representative.address] as String[])
                 representativesData.put(getFieldName(i, "Obywatelstwo"), [representative.citizenship] as String[])
-            } else {
-                representativesData.put(getFieldName(i, "PozaRP"), getCheckboxData(AcceptorLocation.ABROAD.equals(representative.locationType)))
             }
         }
 
@@ -49,14 +60,6 @@ class RepresentativesDetailsMapper extends AbstractPdfMapper implements Mapper {
         }
 
         throw new IllegalStateException("Nie wybrano prefixu")
-    }
-
-    public String getLokalizacjaDane(Representative representative) {
-        if (representative.pesel) return representative.pesel
-
-        if (representative.countryCode) return representative.countryCode
-
-        return new SimpleDateFormat("yyyy-MM-dd").format(representative.birthDate)
     }
 
     private String getFieldName(Integer index, String fieldName) {
