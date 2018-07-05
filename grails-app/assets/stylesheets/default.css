@@ -1578,7 +1578,7 @@ label.doladowanieLabel {
 }
 
 .acceptorRadioWrapper:first-child {
-    margin-right: 100px;
+    margin-right: 40px;
 }
 
 .acceptorRadioWrapper input {
@@ -1604,26 +1604,6 @@ div.acceptor:first-child:before {
     display: block;
     border: 1px solid gainsboro;
     margin-bottom: 15px;
-}
-
-#cantEstablishBeneficiary {
-    margin-bottom: 20px;
-}
-
-#cantEstablishBeneficiary input[type=checkbox] {
-    vertical-align: top;
-}
-
-#cantEstablishBeneficiary label {
-    max-width: 905px;
-}
-
-#cantEstablishBeneficiary div {
-    margin-top: 15px;
-}
-
-#nazwaGieldy {
-    margin-right: 50px;
 }
 
 header.belka-glowna {

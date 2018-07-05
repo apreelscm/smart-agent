@@ -25,6 +25,7 @@ class Representative implements Serializable {
     String pesel
     String countryCode
     Date birthDate
+    String birthCountry
 
     AcceptorLocation locationType
 
@@ -40,7 +41,7 @@ class Representative implements Serializable {
     Boolean overQuarterOfVotes
     Integer votesPercentage
 
-    Boolean isPolitician = false
+    Boolean isPolitician
 
     static belongsTo = [Process]
 
@@ -60,6 +61,7 @@ class Representative implements Serializable {
         pesel column: "PESEL"
         countryCode column: "COUNTRY_CODE"
         birthDate column: "BIRTH_DATE"
+        birthCountry column: "BIRTH_COUNTRY"
 
         locationType column: "LOCATION_TYPE"
 
@@ -90,6 +92,7 @@ class Representative implements Serializable {
        documentType(nullable: true)
        documentNumber(nullable: true)
        birthDate(nullable: true)
+       birthCountry(nullable: true)
        citizenship(nullable: true)
        address(nullable: true)
        country(nullable: true)
@@ -98,6 +101,10 @@ class Representative implements Serializable {
        overQuarterOfVotes(nullable: true)
        votesPercentage(nullable: true)
        isPolitician(nullable: true)
+    }
+
+    public String getFullNameWithSalutation() {
+        return format("%s %s %s", salutation, name, surname);
     }
 
     public String getFullName() {

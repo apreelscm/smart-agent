@@ -2,7 +2,7 @@ package com.eservice.eumowy.enums.options
 
 
 public enum AcceptorVerification implements RadioOption{
-    PESEL("pesel.label"), BIRTH_DATE("birth.date.label"), COUNTRY_CODE("country.label")
+    PESEL("pesel.label"), BIRTH_DATE("birth.date.country.label"), COUNTRY_CODE("country.label")
 
     String messageCode
 

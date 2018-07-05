@@ -1,6 +1,5 @@
 package com.eservice.eumowy.pdfmapper
 
-import com.eservice.eumowy.pdfmapper.representative.ActualBeneficiaryMapper
 import com.eservice.eumowy.pdfmapper.representative.BeneficiariesMapper
 import com.eservice.eumowy.pdfmapper.representative.EmployeeAnnotationsMapper
 import com.eservice.eumowy.pdfmapper.representative.LegalFormMapper
@@ -20,7 +19,6 @@ class PABRformMapper implements Mapper {
 
         data.putAll(new LegalFormMapper(process).getDataForMapping())
         data.putAll(new RepresentativesDetailsMapper(process).getDataForMapping())
-        data.putAll(new ActualBeneficiaryMapper(process).getDataForMapping())
         data.putAll(new BeneficiariesMapper(process).getDataForMapping())
         data.putAll(new EmployeeAnnotationsMapper(process).getDataForMapping())
 

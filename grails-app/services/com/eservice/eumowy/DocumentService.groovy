@@ -62,9 +62,6 @@ class DocumentService {
         Set<DocumentFile> posExchangeDocuments = getPosExchangeDocuments(processInstance)
         documents.addAll(posExchangeDocuments)
 
-        Set<DocumentFile> representativesDocuments = getRepresentativesDocuments(processInstance)
-        documents.addAll(representativesDocuments)
-
 //        Set<DocumentFile> pointsDocuments = getAdditionalPointsDocuments(processInstance)
 //        documents.addAll(pointsDocuments)
 
@@ -180,28 +177,6 @@ class DocumentService {
             log.info(String.format("New Pos Exchange document %s from signature %s.", documentClientName, posSignature.name))
 
             DocumentFile documentFile = getDocumentFile(processInstance, posSignature, data, documentName, documentClientName)
-            if(documentFile) {
-                documents.add(documentFile)
-            }
-        }
-
-        return documents
-    }
-
-    private Set<DocumentFile> getRepresentativesDocuments(Process processInstance) {
-        Set<DocumentFile> documents = []
-        Signature pepSignature = processInstance.signatures.find{ sig -> sig.hasPurpose(SignatureDetail.SignaturePurpose.REPRESENTATIVE)}
-
-        if(!pepSignature) return []
-
-        processInstance.representatives.findAll { AcceptorLocation.ABROAD.equals(it.locationType) && it.isRepresentative() }.each { representative ->
-            Map pepData = new PEPdeclarationMapper(processInstance, representative).getDataForMapping()
-
-            String documentName = String.format("Oswiadczenie PEP_%s.pdf", representative.id)
-
-            log.info(String.format("New representative document %s from signature %s.", documentName, pepSignature.name))
-
-            DocumentFile documentFile = getDocumentFile(processInstance, pepSignature, pepData, documentName, documentName)
             if(documentFile) {
                 documents.add(documentFile)
             }
