@@ -14,9 +14,20 @@ class BeneficiaryCommand extends RepresentativeCommand implements Serializable {
     static constraints = {
         importFrom RepresentativeCommand
 
-        salutation(nullable: true)
-        name(nullable: true, shared: "lettersOnly")
-        surname(nullable: true, shared: "lettersOnly")
+        salutation(nullable: true, validator: {value, cmd, errors ->
+            CustomValidator.validateRequired(value, errors, cmd.processCommand.hasNewUmowa,
+                    "salutation", "beneficiary.salutation.required")
+        })
+
+        name(nullable: true, shared: "lettersOnly", validator: {value, cmd, errors ->
+            CustomValidator.validateRequired(value, errors, cmd.processCommand.hasNewUmowa,
+                    "name", "beneficiary.name.required")
+        })
+
+        surname(nullable: true, shared: "lettersOnly", validator: {value, cmd, errors ->
+            CustomValidator.validateRequired(value, errors, cmd.processCommand.hasNewUmowa,
+                    "surname", "beneficiary.surname.required")
+        })
 
         citizenship(nullable: true, maxSize: 30, validator: {value, cmd, errors ->
             CustomValidator.validateRequired(value, errors, cmd.processCommand.hasNewUmowa,

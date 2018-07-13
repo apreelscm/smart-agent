@@ -4,21 +4,21 @@
 
 <div>
     <g:select name="${prefix}[${seqNo}].salutation" from="['Pan','Pani']" valueMessagePrefix="person.title" value="${representative?.salutation}"
-              validatable="${representative}" validateField="salutation"/>
+              validatable="${representative}" validateField="salutation" required="required"/>
 
     <label style="margin-left: 10px" for="${prefix}[${seqNo}].name"><g:message code="panel.first.name"/>:</label>
     <eumowy:textField name="${prefix}[${seqNo}].name" value="${representative?.name}" maxlength ="13"
-                      validatable="${representative}" validateField="name"/>
+                      validatable="${representative}" validateField="name" required="required"/>
 
     <label for="${prefix}[${seqNo}].surname"><g:message code="panel.last.name"/>:</label>
     <eumowy:textField name="${prefix}[${seqNo}].surname" value="${representative?.surname}" maxlength ="35" class="surnameField"
-                      validatable="${representative}" validateField="surname"/>
+                      validatable="${representative}" validateField="surname" required="required"/>
 </div>
 
 <div style="margin-top: 15px">
     <label for="${prefix}[${seqNo}].citizenship"><g:message code="citizenship.label"/></label>
     <eumowy:textField name="${prefix}[${seqNo}].citizenship" value="${representative?.citizenship}" maxlength="30"
-                      validatable="${representative}" validateField="citizenship"/>
+                      validatable="${representative}" validateField="citizenship" required="required"/>
 </div>
 
 <div style="margin-top: 15px">

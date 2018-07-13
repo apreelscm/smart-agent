@@ -1,7 +1,10 @@
 <fieldset id="actualBeneficiaries">
     <header class="belka-glowna"><g:message code="panel.actual.beneficiaries.title"/></header>
 
+    <button type="button" id="copyFromRepresentatives" class="button submit"><g:message code="beneficiary.copy.from.representatives.label"/></button>
+
     <section id="actualBeneficiaryData">
+
         <g:each in="${0..3}">
             <div class="acceptor ${it != 0 && (it >= data.beneficiaries.size()) ? 'hidden' : ''}">
                 <g:render template="/common/representative/beneficiary" model="[prefix: 'beneficiaries', seqNo: it,

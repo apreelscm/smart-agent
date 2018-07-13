@@ -19,13 +19,7 @@
                           validatable="${representative}" validateField="documentNumber"/>
     </div>
 
-    <div class="acceptorPESELCountryWrapper ${hasErrors(bean: representative, field: 'locationType', 'errorSpan')}">
-        <g:hasErrors bean="${representative}" field="locationType">
-            <g:eachError bean="${representative}" field="locationType">
-                <p class="error-message"><g:message error="${it}"/></p>
-            </g:eachError>
-        </g:hasErrors>
-
+    <div class="acceptorPESELCountryWrapper ${hasErrors(bean: representative, field: 'verification', 'errorSpan')}">
         <div class="acceptorRadioWrapper">
             <g:radio name="${prefix}[${seqNo}].verification" value="PESEL"
                      checked="${data.isPersonForm() && representative?.verification?.name() == "PESEL"}"/>

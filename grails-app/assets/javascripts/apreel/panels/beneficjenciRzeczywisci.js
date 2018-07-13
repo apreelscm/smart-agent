@@ -3,7 +3,7 @@
 
     var actualBeneficiaryData = jQuery("#actualBeneficiaryData"),
         beneficiaries = actualBeneficiaryData.find(".acceptor"),
-        beneficiariesDetails = actualBeneficiaryData.find("input[type=radio][name$='verification']"),
+        copyFromRepresentativesButton = jQuery("button#copyFromRepresentatives"),
         addBeneficiaryButton = jQuery("#addAnotherBeneficiary"),
         representatives;
 
@@ -15,6 +15,7 @@
     });
 
     addBeneficiaryButton.click(showAnotherBeneficiary);
+    copyFromRepresentativesButton.click(copyRepresentativesData);
 
     function copyRepresentativesData() {
         representatives = jQuery("#representativesContainer").find(".acceptor:not(.hidden)");
@@ -24,8 +25,6 @@
                 setBeneficiaryFieldValue(representativeIndex, this);
             });
         });
-
-        this.disabled = true;
     }
 
     function showAnotherBeneficiary() {

@@ -26,17 +26,6 @@
         </div>
     </div>
 
-    <div>
-        <label for="${prefix}[${seqNo}].address"><g:message code="address.label"/></label>
-        <eumowy:textField name="${prefix}[${seqNo}].address" value="${representative?.address}" maxlength="100" style="width: 750px"
-                          validatable="${representative}" validateField="address" required="required"/>
-    </div>
-
-    <div class="${hasErrors(bean: representative, field: 'country', 'errorSpan')}">
-        <label for="${prefix}[${seqNo}].country"><g:message code="country.name.label"/></label>
-        <dict:countrySelect name="${prefix}[${seqNo}].country" value="${representative?.country}" required="required"
-                            validatable="${representative}" validateField="country"/>
-    </div>
     <div class="isPolitician ${hasErrors(bean: representative, field: 'isPolitician', 'errorSpan')}">
         <g:hasErrors bean="${representative}" field="isPolitician">
             <p class="error-message"><g:message code="representative.option.required"/></p>
@@ -51,11 +40,5 @@
         <g:radio name="${prefix}[${seqNo}].isPolitician" value="false" required="required"
                  checked="${(!data.dzialalnoscForma || data.isCompanyForm()) && representative?.isPolitician == false}"/>
         <label for="${prefix}[${seqNo}].isPolitician"><g:message code="no"/></label>
-    </div>
-
-    <div>
-        <label for="${prefix}[${seqNo}].citizenship"><g:message code="citizenship.label"/></label>
-        <eumowy:textField name="${prefix}[${seqNo}].citizenship" value="${representative?.citizenship}" maxlength="30" required="required"
-                          validatable="${representative}" validateField="citizenship"/>
     </div>
 </div>

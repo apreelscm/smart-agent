@@ -66,12 +66,12 @@ class RepresentativeCommand implements Serializable{
         })
 
         address(nullable: true, maxSize: 100, validator: { value, cmd, errors ->
-            CustomValidator.validateRequired(value, errors, cmd.processCommand.hasNewUmowa,
+            CustomValidator.validateRequired(value, errors, cmd.processCommand.isPersonForm() && cmd.processCommand.hasNewUmowa,
                     propertyName, "representative.adres.required")
         })
 
         country(nullable: true, validator: { value, cmd, errors ->
-            CustomValidator.validateRequired(value, errors, cmd.processCommand.hasNewUmowa,
+            CustomValidator.validateRequired(value, errors, cmd.processCommand.isPersonForm() && cmd.processCommand.hasNewUmowa,
                     propertyName, "representative.kraj.required")
         })
 
@@ -81,7 +81,7 @@ class RepresentativeCommand implements Serializable{
         })
 
         citizenship(nullable: true, maxSize: 30, validator: {value, cmd, errors ->
-            CustomValidator.validateRequired(value, errors, cmd.processCommand.hasNewUmowa,
+            CustomValidator.validateRequired(value, errors, cmd.processCommand.isPersonForm() && cmd.processCommand.hasNewUmowa,
                     "citizenship", "representative.obywatelstwo.required")
         })
     }
