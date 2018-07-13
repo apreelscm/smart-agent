@@ -464,13 +464,16 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
         //given
         Map representativeProperties = [isPolitician: true, locationType: AcceptorLocation.ABROAD]
         def subscriptions = [
-                ["ACCEPTANT", 1, 350, 295, 59, 28]
+                ["ACCEPTANT1", 1, 380, 295, 59, 28],
+                ["ACCEPTANT2", 1, 320, 295, 59, 28],
+                ["ACCEPTANT3", 1, 260, 295, 59, 28],
+                ["ACCEPTANT4", 1, 440, 295, 59, 28]
         ]
 
         //when
         CommandHelper.setProperties(representative, representativeProperties)
 
-        data.putAll(new PEPdeclarationMapper(process, representative).getDataForMapping())
+        data.putAll(new PEPdeclarationMapper(process).getDataForMapping())
         data.putAll(PdfHelper.insertSignatures(subscriptions))
 
         //then
