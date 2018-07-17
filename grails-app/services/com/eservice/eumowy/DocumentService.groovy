@@ -5,6 +5,7 @@ import com.eservice.eumowy.pdfmapper.PEPdeclarationMapper
 import com.google.common.collect.Lists
 import com.lowagie.text.pdf.PdfReader
 import org.apache.commons.lang.StringUtils
+import org.apache.log4j.Logger
 import pdfgenerator.PdfGenerator
 import pdfgenerator.PdfGenerator.FontType
 
@@ -17,6 +18,8 @@ import static com.eservice.eumowy.ActivityHelper.hasAtLeastOne
 import static com.eservice.eumowy.SignatureDetail.SignaturePurpose.ADDITIONAL_POINTS
 
 class DocumentService {
+
+    private static Logger LOG = Logger.getLogger(DocumentService.class)
 
     def mapperService
     def appParametersService
@@ -46,9 +49,12 @@ class DocumentService {
     }
 
     public Set<DocumentFile> getSavedDocumentsInProcess(Process processInstance, def calc) {
-        //TODO: refactoring generowania dokumentow - porodzielac to ladnie na klasy
         Set<DocumentFile> documents = []
         Map dataFromProcess = mapperService.mapOnlyProcessData(processInstance, calc)
+
+        dataFromProcess.each { key, value ->
+            LOG.info "Mapping < " + key + " : " + value + " >"
+        }
 
         Set<DocumentFile> rentReductionDocuments = getRentReductionDocuments(processInstance, dataFromProcess)
         documents.addAll(rentReductionDocuments)

@@ -30,7 +30,7 @@ class MapperService {
         data.putAll(processMapper.mapOnlyProcessData())
         data.putAll(new RepresentativesNamesMapper(processInstance).getDataForMapping())
 
-        if(ActivityHelper.isNewAgreement(processInstance)) {
+        if (ActivityHelper.isNewAgreement(processInstance)) {
             data.putAll(new PABRformMapper(processInstance).getDataForMapping())
             data.putAll(new PEPdeclarationMapper(processInstance).getDataForMapping())
         }

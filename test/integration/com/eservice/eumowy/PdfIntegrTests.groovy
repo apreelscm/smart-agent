@@ -462,7 +462,7 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
     @Test
     void APAGFPEP1001180701() { //AP-AG/F/PEP/1.001/18-07-01
         //given
-        Map representativeProperties = [isPolitician: true, locationType: AcceptorLocation.ABROAD]
+        Map representativeProperties = [isPolitician: false, locationType: AcceptorLocation.ABROAD]
         def subscriptions = [
                 ["ACCEPTANT1", 1, 380, 295, 59, 28],
                 ["ACCEPTANT2", 1, 320, 295, 59, 28],

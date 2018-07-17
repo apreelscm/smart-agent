@@ -330,10 +330,6 @@ class PdfProcessMapper extends AbstractPdfMapper{
             }
         }
 
-        data.each { key, value ->
-            LOG.info "Mapping < " + key + " : " + value + " >"
-        }
-
         def result = data.findAll {
             def value = it.value;
             if (value != null && value.size()==1){
