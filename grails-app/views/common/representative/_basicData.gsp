@@ -32,7 +32,7 @@
                           validatable="${representative}" validateField="surname"/>
 
         <label for="${prefix}[${seqNo}].position"><g:message code="panel.position"/>:</label>
-        <eumowy:textField name="${prefix}[${seqNo}].position" value="${representative?.position}"
-                          validatable="${representative}" validateField="position"/>
+        <dict:positionSelect class="positionField" medium="${representative?.position}" data-index="${seqNo}"
+                             id="${prefix}[${seqNo}].position" name="${prefix}[${seqNo}].position" from="[]" valueMessagePrefix="" value="${representative?.position}" />
     </div>
 </g:else>

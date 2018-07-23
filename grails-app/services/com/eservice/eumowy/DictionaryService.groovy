@@ -4,6 +4,7 @@ import com.eservice.eumowy.util.EumowyCustomEnvironment
 import com.google.common.base.Predicates
 import com.google.common.collect.Iterables
 import com.google.common.collect.Lists
+import grails.plugin.cache.Cacheable
 import grails.util.Environment
 import org.apache.commons.collections.CollectionUtils
 import org.apache.commons.collections.Predicate
@@ -31,6 +32,7 @@ class DictionaryService {
     private static final String DICTIONARY_PATH = "dictionary/"
 
     private static final String GET_ULICA_COMBOBOX = "getUlicaComboBox"
+    private static final String GET_POSITIONS_COMBOBOX = "getPositions"
     private static final String GET_POS_TYPE_COMBOBOX = "getPosTypeComboBox"
     private static final String GET_EXT_POS_TYPE_COMBOBOX = "getExtendedPosTypeComboBox"
     private static final String GET_CBD_POINTS_COMBOBOX = "getCbdPointsComboBox"
@@ -46,6 +48,12 @@ class DictionaryService {
 
     def getSimCardComboBox() {
         getFromDictionary(GET_SIM_CARD_COMBOBOX)
+    }
+
+    @Cacheable(value="getPositionsComboBox")
+    @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_UNCOMMITTED, readOnly = true)
+    def getPositionsComboBox() {
+        getFromDictionary(GET_POSITIONS_COMBOBOX)
     }
 
     List getCountries() {

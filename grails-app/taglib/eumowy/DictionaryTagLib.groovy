@@ -23,6 +23,15 @@ class DictionaryTagLib {
         attrs.from.add(0,"")
         fieldImpl(out, attrs)
     }
+
+    Closure positionSelect = { attrs ->
+        attrs.from = dictionaryService.getPositionsComboBox()*.value
+        if (!attrs.value && attrs.default){
+            attrs.value = attrs.default
+        }
+        attrs.from.add(0,"")
+        fieldImpl(out, attrs)
+    }
 	
 	Closure typeSelect = { attrs ->
         String medium = attrs.medium
