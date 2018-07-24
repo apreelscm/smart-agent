@@ -1,14 +1,18 @@
 package com.eservice.eumowy
 
 import com.eservice.eumowy.auth.EServiceUserDetails
+import com.eservice.eumowy.email.EmailAttachment
 import com.google.common.base.Strings
 import com.google.common.collect.Lists
 import grails.plugin.cache.Cacheable
 import org.apache.commons.lang.StringUtils
+import org.apache.poi.ss.usermodel.Workbook
 import org.perf4j.StopWatch
 import org.perf4j.log4j.Log4JStopWatch
 import org.springframework.mail.MailException
 import pdfgenerator.PdfGenerator
+
+import java.text.SimpleDateFormat
 
 import static com.eservice.eumowy.EmailTemplates.EmailTemplateType.*
 
@@ -79,6 +83,19 @@ class EmailService {
         sendDocumentsElectronicalVersion(recipients, documents, bodyParams)
     }
 
+    def sendSerialIdReport(Workbook workbook) {
+        EmailTemplates emailTemplate = getEmailTemplatesByName(SERIAL_ID_REPORT)
+        String recipient = "mmalanowicz@apreel.com"
+
+        ByteArrayOutputStream bos = new ByteArrayOutputStream()
+        workbook.write(bos)
+
+        String attachmentName = "eU_pozsykCWK_${new SimpleDateFormat("ddmmyyyy").format(new Date())}.xls"
+
+        EmailAttachment attachment = new EmailAttachment(attachmentName, "application/vnd.ms-excel", bos.toByteArray())
+        sendMail(emailTemplate, recipient, null, [:], [attachment])
+    }
+
     private void sendAcceptanceForm(String recipient, List<DocumentFile> documents, def bodyParams) {
         EmailTemplates emailTemplate = getEmailTemplatesByName(DOCUMENTS_NEW_AGREEMENT)
         List<DocumentFile> acceptanceForm = documents.findAll { "Formularz Akceptanta.pdf".equals(it.clientName) }
@@ -145,28 +162,36 @@ class EmailService {
         sendMailWithTryCatch(emailTemplate, recipient, [merchantNip, merchantName] as Object[], bodyParams, null)
     }
 
-    private def sendMailWithTryCatch(def emailTemplate, def recipients,  def subjectParams, def bodyParams, def documents){
-        try{
-            sendMail(emailTemplate, recipients, subjectParams, bodyParams, documents);
-        }catch(Exception ex){
+    private def sendMailWithTryCatch(def emailTemplate, def recipients,  def subjectParams, def bodyParams, List<DocumentFile> documents){
+        try {
+            sendMailDocuments(emailTemplate, recipients, subjectParams, bodyParams, documents)
+        } catch(Exception ex) {
             log.error(ex)
             return false
         }
         return true
     }
 
-    private def sendMail(EmailTemplates emailTemplate , def recipients, def subjectParams, def bodyParams, def documents){
-
-        log.info 'Sending: ' + emailTemplate.name.name() + ', to: ' + recipients + ', subjectParams: ' + subjectParams + ', bodyParams: ' + bodyParams + ', documents count: ' + documents?.size()
-        documents.each{
-            log.info("document filename:"+(it.clientName ?: it.name))
+    private def sendMailDocuments(EmailTemplates emailTemplate, def recipients, def subjectParams, def bodyParams, List<DocumentFile> documents) {
+        List<EmailAttachment> attachments = []
+        documents.each {
+            EmailAttachment attachment = new EmailAttachment(it.clientName ?: it.name, 'application/pdf', PdfGenerator.getClosedContent(it.content.content))
+            attachments.add(attachment)
         }
 
-        StopWatch stopWatch = new Log4JStopWatch();
+        sendMail(emailTemplate, recipients, subjectParams, bodyParams, attachments)
+    }
 
-        if(grailsApplication.config.email.sending.enabled) {
+    private def sendMail(EmailTemplates emailTemplate, def recipients, def subjectParams, def bodyParams, List<EmailAttachment> attachments) {
+        log.info "Sending ${emailTemplate.name.name()}, to: ${recipients}, subjectParams: ${subjectParams}, bodyParams: ${bodyParams}, attachments count: ${attachments.size()}"
+
+        attachments.each { log.info("Attachment filename: ${it.name}") }
+
+        StopWatch stopWatch = new Log4JStopWatch()
+
+//        if (grailsApplication.config.email.sending.enabled) {
             mailService.sendMail {
-                if (documents) {
+                if (attachments) {
                     multipart true
                 }
                 from emailTemplate.sender
@@ -174,15 +199,15 @@ class EmailService {
                 subject messageSource.getMessage("${emailTemplate.name}.email.subject", subjectParams, Locale.default)
                 body( view: "/email/template/${emailTemplate.name}", model: bodyParams)
 
-                if (documents){
-                    documents.each { doc ->
-                        attachBytes doc.clientName ?: doc.name , 'application/pdf', PdfGenerator.getClosedContent(doc.content.content)
+                if (attachments) {
+                    attachments.each { attachment ->
+                        attachBytes attachment.name , attachment.contentType, attachment.content
                     }
                 }
             }
-        } else {
-            log.warn("Email sending disabled... If you want to enable it set 'email.sending.enabled=true' in config file.")
-        }
+//        } else {
+//            log.warn("Email sending disabled... If you want to enable it set 'email.sending.enabled=true' in config file.")
+//        }
 
         stopWatch.stop('sendMail')
     }

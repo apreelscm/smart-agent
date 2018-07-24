@@ -32,7 +32,8 @@ class EmailTemplates implements Serializable {
 		DOCUMENTS_ACCEPTED("documentsAccepted"),
         DOCUMENTS_REJECTED("documentsRejected"),
         DOCUMENTS_MISSING_MAIL("documentsMissingMail"),
-        PEP_NOTIFICATION("pepNotification")
+        PEP_NOTIFICATION("pepNotification"),
+        SERIAL_ID_REPORT("serialIdReport")
 
         private final String text;
 
