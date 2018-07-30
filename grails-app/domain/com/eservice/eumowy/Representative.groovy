@@ -26,12 +26,16 @@ class Representative implements Serializable {
     String countryCode
     Date birthDate
     String birthCountry
+    String birthCity
 
     AcceptorLocation locationType
 
     IdentityDocumentType documentType
 
     String documentNumber
+    Date documentIssueDate
+    Date documentExpirationDate
+
     String citizenship
     String address
     String country
@@ -62,12 +66,16 @@ class Representative implements Serializable {
         countryCode column: "COUNTRY_CODE"
         birthDate column: "BIRTH_DATE"
         birthCountry column: "BIRTH_COUNTRY"
+        birthCity column: "BIRTH_CITY"
 
         locationType column: "LOCATION_TYPE"
 
         documentType column: "ID_DOCUMENT_TYPE"
 
         documentNumber column: "ID_NUMBER"
+        documentIssueDate column: "ID_ISSUE_DATE"
+        documentExpirationDate column: "ID_EXPIRATION_DATE"
+
         citizenship column: "CITIZENSHIP"
         address column: "ADDRESS"
         country column: "COUNTRY"
@@ -91,8 +99,11 @@ class Representative implements Serializable {
        countryCode(nullable: true)
        documentType(nullable: true)
        documentNumber(nullable: true)
+       documentIssueDate(nullable: true)
+       documentExpirationDate(nullable: true)
        birthDate(nullable: true)
        birthCountry(nullable: true)
+       birthCity(nullable: true)
        citizenship(nullable: true)
        address(nullable: true)
        country(nullable: true)

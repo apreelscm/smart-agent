@@ -22,9 +22,12 @@ class RepresentativeCommand implements Serializable{
     String pesel
     Date birthDate
     String birthCountry
+    String birthCity
 
     IdentityDocumentType documentType
     String documentNumber
+    Date documentIssueDate
+    Date documentExpirationDate
 
     String citizenship
     String address
@@ -48,12 +51,20 @@ class RepresentativeCommand implements Serializable{
         })
 
         documentType(nullable: true, validator: {value, cmd, errors ->
-            CustomValidator.validateRequired(value, errors, cmd.processCommand.isPersonForm(), "documentType",
+            CustomValidator.validateRequired(value, errors, cmd.processCommand.isPersonForm() || cmd.position == "Pełnomocnik", "documentType",
                     "representative.typDokumentu.required")
         })
         documentNumber(nullable: true, maxSize: 20, shared: "alphanumeric", validator: {value, cmd, errors ->
-            CustomValidator.validateRequired(value, errors, cmd.processCommand.isPersonForm(),
+            CustomValidator.validateRequired(value, errors, cmd.processCommand.isPersonForm() || cmd.position == "Pełnomocnik",
                     "documentNumber", "representative.seriaNrDokumentu.required")
+        })
+        documentIssueDate(nullable: true, validator: {value, cmd, errors ->
+            CustomValidator.validateRequired(value, errors, cmd.documentType == IdentityDocumentType.IDENTITY_CARD,
+                    "documentIssueDate", "representative.dataWydaniaDokumentu.required")
+        })
+        documentExpirationDate(nullable: true, validator: {value, cmd, errors ->
+            CustomValidator.validateRequired(value, errors, cmd.documentType == IdentityDocumentType.IDENTITY_CARD,
+                    "documentExpirationDate", "representative.dataWaznosciDokumentu.required")
         })
 
         birthDate(nullable: true, validator: { value, cmd, errors ->
@@ -61,8 +72,12 @@ class RepresentativeCommand implements Serializable{
                     "birthDate", "representative.dataUrodzenia.required")
         })
         birthCountry(nullable: true, validator: { value, cmd, errors ->
-            CustomValidator.validateRequired(value, errors, AcceptorVerification.BIRTH_DATE.equals(cmd.verification),
+            CustomValidator.validateRequired(value, errors, cmd.processCommand.hasNewUmowa,
                     "birthCountry", "representative.krajUrodzenia.required")
+        })
+        birthCity(nullable: true, maxSize: 255, shared: "alphanumeric", validator: {value, cmd, errors ->
+            CustomValidator.validateRequired(value != null, errors, cmd.processCommand.hasNewUmowa,
+                    "birthCity", "representative.miastoUrodzenia.required")
         })
 
         address(nullable: true, maxSize: 100, validator: { value, cmd, errors ->

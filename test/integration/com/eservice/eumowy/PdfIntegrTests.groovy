@@ -438,10 +438,10 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
                  votesPercentage: 59, ownsAcceptor: true, controlsAcceptor: false, overQuarterOfVotes: true]
 
         def subscriptions = [
-                ["ACCEPTANT1", 2, 270, 652, 59, 28],
-                ["ACCEPTANT2", 2, 360, 652, 59, 28],
-                ["PH", 2, 440, 510, 59, 28],
-                ["PH1", 2, 440, 355, 59, 28]
+                ["ACCEPTANT1", 2, 270, 508, 59, 28],
+                ["ACCEPTANT2", 2, 360, 508, 59, 28],
+                ["PH", 2, 440, 368, 59, 28],
+                ["PH1", 2, 440, 210, 59, 28]
         ]
 
         //when

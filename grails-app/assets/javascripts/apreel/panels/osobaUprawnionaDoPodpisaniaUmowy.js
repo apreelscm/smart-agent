@@ -5,7 +5,9 @@
         $bisnodeRepresentatives = jQuery("#acceptorsPanel #bisnodeRepresentatives"),
         $customRepresentatives = jQuery("#acceptorsPanel #customRepresentatives"),
         $representativesChangedManually = jQuery("#acceptorsPanel #isRepresentativesChangedManually"),
-        $representativeDetail = jQuery("#representativesContainer input[type=radio][name$='verification']"),
+        $representativeDocumentType = jQuery("#representativesContainer input[type=radio][name$='documentType']"),
+        $representativeVerification = jQuery("#representativesContainer input[type=radio][name$='verification']"),
+        $representativePosition = jQuery("#representativesContainer select[name$='position']"),
         $additionalInfoSelect = jQuery("div#additionalInformationPanel select[name='dzialalnoscForma']"),
         $addAnotherAcceptorButton = jQuery("button#addAnotherAcceptor"),
         $companyData = jQuery("div#acceptorsPanel div.companyData"),
@@ -19,7 +21,9 @@
 
     $representativesChangedManually.change(setRepresentativesView);
     $additionalInfoSelect.change(legalFormChanged);
-    $representativeDetail.change(clearOtherDetail);
+    $representativePosition.change(onPositionChange);
+    $representativeDocumentType.change(onDocumentTypeChange);
+    $representativeVerification.change(clearOtherDetail);
     $addAnotherAcceptorButton.click(showNextAcceptor);
 
     function setRepresentativesView() {
@@ -43,6 +47,26 @@
                 attachBisnodeNameChangeEvent();
             }
         });
+    }
+
+    function onPositionChange() {
+        manageVisibilityOfDocumentInfo(jQuery(this).parents("div.acceptor"));
+    }
+
+    function onDocumentTypeChange() {
+        var $this = jQuery(this),
+            acceptorIdDates = $this.parents("div.acceptor").find('div.acceptorIdDatesWrapper');
+
+        clearFields(acceptorIdDates);
+
+        switch (this.value) {
+            case 'IDENTITY_CARD':
+                acceptorIdDates.removeClass('hidden');
+                break;
+            case 'PASSPORT':
+                acceptorIdDates.addClass('hidden');
+                break;
+        }
     }
 
     function clearOtherDetail() {
@@ -89,6 +113,25 @@
             clearFields($personData);
             enableFields($companyData);
         }
+
+        $representativesContainer.find('div.acceptor').each(function (_, value) {
+            manageVisibilityOfDocumentInfo(jQuery(value));
+        });
+    }
+
+    function manageVisibilityOfDocumentInfo($acceptor) {
+        var documentInfo = $acceptor.find('div.acceptorDocumentInfoWrapper'),
+            position = $acceptor.find("select[name$='position']").val();
+
+        clearFields(documentInfo);
+
+        var isPerson = ["PARTNERSHIP_COMPANY", "PERSON"].indexOf($additionalInfoSelect.val()) > -1;
+
+        if (position === 'Pełnomocnik' || isPerson) {
+            documentInfo.removeClass('hidden');
+        } else {
+            documentInfo.addClass('hidden');
+        }
     }
 
     function showNextAcceptor() {
@@ -113,7 +156,6 @@
 
     function attachDatepickers() {
         $representativesContainer.find(".date-field").each(function (index, input) {
-            console.log(input);
             jQuery(input).datepicker({ altField: "input[name='" + input.name + "']", dateFormat: 'yy-mm-dd', maxDate: new Date()});
         });
     }
