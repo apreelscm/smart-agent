@@ -55,8 +55,8 @@ class SerialIdReportCreator {
 
             excelHelper.writeDataCell(row, entry.name)
             excelHelper.writeDataCell(row, entry.documentNumber)
-//            excelHelper.writeDataCell(row, DATE_FORMATTER.format(entry.expirationDate))
-//            excelHelper.writeDataCell(row, DATE_FORMATTER.format(entry.issueDate))
+            if (entry.expirationDate) excelHelper.writeDataCell(row, DATE_FORMATTER.format(entry.expirationDate))
+            if (entry.issueDate) excelHelper.writeDataCell(row, DATE_FORMATTER.format(entry.issueDate))
         }
     }
 

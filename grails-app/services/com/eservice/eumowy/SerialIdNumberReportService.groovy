@@ -46,7 +46,7 @@ class SerialIdNumberReportService {
         List<RepresentativeInfo> representatives = []
 
         process.representatives.each {
-            representatives.add(new RepresentativeInfo(it.fullName, it.getDocumentNumber(), new Date(), new Date()))
+            representatives.add(new RepresentativeInfo(it.fullName, it.getDocumentNumber(), it.documentIssueDate, it.documentExpirationDate))
         }
 
         return representatives
