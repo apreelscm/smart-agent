@@ -85,7 +85,7 @@ class EmailService {
 
     def sendSerialIdReport(Workbook workbook) {
         EmailTemplates emailTemplate = getEmailTemplatesByName(SERIAL_ID_REPORT)
-        String recipient = "mmalanowicz@apreel.com"
+        String recipient = emailTemplate.recipient
 
         ByteArrayOutputStream bos = new ByteArrayOutputStream()
         workbook.write(bos)
