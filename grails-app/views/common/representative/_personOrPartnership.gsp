@@ -22,10 +22,10 @@
 
         <div class="acceptorIdDatesWrapper ${representative?.documentType == 'IDENTITY_CARD' ?: 'hidden'}">
             <label for="${prefix}[${seqNo}].documentExpirationDate"><g:message code="document.expiration.label"/></label>
-            <g:textField name="${prefix}[${seqNo}].documentExpirationDate" value="${formatDate(format: 'yyyy-MM-dd', date: representative?.documentExpirationDate)}" maxlength="10" class="date-field" required="required"/>
+            <g:textField name="${prefix}[${seqNo}].documentExpirationDate" value="${formatDate(format: 'yyyy-MM-dd', date: representative?.documentExpirationDate)}" maxlength="10" class="date-field date-future" required="required"/>
 
             <label for="${prefix}[${seqNo}].documentIssueDate"><g:message code="document.issue.label"/></label>
-            <g:textField name="${prefix}[${seqNo}].documentIssueDate" value="${formatDate(format: 'yyyy-MM-dd', date: representative?.documentIssueDate)}" maxlength="10" class="date-field" required="required"/>
+            <g:textField name="${prefix}[${seqNo}].documentIssueDate" value="${formatDate(format: 'yyyy-MM-dd', date: representative?.documentIssueDate)}" maxlength="10" class="date-field date-past" required="required"/>
         </div>
     </div>
 
@@ -45,7 +45,7 @@
                      checked="${data.isPersonForm() && representative?.verification?.name() == "BIRTH_DATE"}"/>
 
             <label for="${prefix}[${seqNo}].birthDate"><g:message code="birth.date.country.label"/></label>
-            <g:textField name="${prefix}[${seqNo}].birthDate" value="${formatDate(format: 'yyyy-MM-dd', date: representative?.birthDate)}" maxlength="10" class="date-field"/>
+            <g:textField name="${prefix}[${seqNo}].birthDate" value="${formatDate(format: 'yyyy-MM-dd', date: representative?.birthDate)}" maxlength="10" class="date-field date-past"/>
         </div>
     </div>
 
