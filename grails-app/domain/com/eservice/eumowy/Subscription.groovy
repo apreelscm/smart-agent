@@ -20,6 +20,7 @@ class Subscription implements Serializable {
 		ACCEPTANT3("ACCEPTANT3"),
 		ACCEPTANT4("ACCEPTANT4"),
 		PH("PH"),
+		PH1("PH1"),
         ZARZAD1(""),
         ZARZAD2("")
 		
