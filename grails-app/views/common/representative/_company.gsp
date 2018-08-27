@@ -11,7 +11,7 @@
 
             <eumowy:enumRadioGroup values="${IdentityDocumentType.values()}" name="${prefix}[${seqNo}].documentType"
                                    radioWrapperClass="inlineRadioWrapper display-inline-block"
-                                   value="${data.isPersonForm() ? representative?.documentType : null}"/>
+                                   value="${representative?.documentType}"/>
         </div>
 
         <div>
@@ -20,7 +20,7 @@
                               validatable="${representative}" validateField="documentNumber"/>
         </div>
 
-        <div class="acceptorIdDatesWrapper ${representative?.documentType == 'IDENTITY_CARD' ?: 'hidden'}">
+        <div class="acceptorIdDatesWrapper ${representative?.documentType == IdentityDocumentType.IDENTITY_CARD ?: 'hidden'}">
             <label for="${prefix}[${seqNo}].documentExpirationDate"><g:message code="document.expiration.label"/></label>
             <g:textField name="${prefix}[${seqNo}].documentExpirationDate" value="${formatDate(format: 'yyyy-MM-dd', date: representative?.documentExpirationDate)}" maxlength="10" class="date-field date-future" required="required"/>
 
