@@ -157,16 +157,18 @@
     function attachDatepickers() {
         $representativesContainer.find(".date-field").each(function (index, input) {
             var config = {
-                altField: "input[name='" + input.name + "']",
-                dateFormat: 'yy-mm-dd'
+                altField: "input#" + input.id,
+                dateFormat: 'yy-mm-dd',
+                changeYear: true
             };
+            var $input = jQuery(input);
             var minDate = input.className.indexOf('date-future') !== -1 ? new Date() : null;
             var maxDate = input.className.indexOf('date-past') !== -1 ? new Date() : null;
 
             if (minDate) config.minDate = minDate;
             if (maxDate) config.maxDate = maxDate;
 
-            jQuery(input).datepicker(config);
+            $input.datepicker(config);
         });
     }
 

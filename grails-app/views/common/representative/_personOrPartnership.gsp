@@ -20,12 +20,12 @@
                               validatable="${representative}" validateField="documentNumber"/>
         </div>
 
-        <div class="acceptorIdDatesWrapper ${representative?.documentType == IdentityDocumentType.IDENTITY_CARD ?: 'hidden'}">
-            <label for="${prefix}[${seqNo}].documentExpirationDate"><g:message code="document.expiration.label"/></label>
-            <g:textField name="${prefix}[${seqNo}].documentExpirationDate" value="${formatDate(format: 'yyyy-MM-dd', date: representative?.documentExpirationDate)}" maxlength="10" class="date-field date-future" required="required"/>
+        <div class="acceptorIdDatesWrapper ${representative?.documentType == IdentityDocumentType.IDENTITY_CARD ?: 'hidden'} ${hasErrors(bean: representative, field: 'documentExpirationDate', 'errorSpan')} ${hasErrors(bean: representative, field: 'documentIssueDate', 'errorSpan')}">
+            <label for="${prefix}[${seqNo}].personDocumentExpirationDate"><g:message code="document.expiration.label"/></label>
+            <g:textField id="${prefix}[${seqNo}].personDocumentExpirationDate" name="${prefix}[${seqNo}].documentExpirationDate" value="${formatDate(format: 'yyyy-MM-dd', date: representative?.documentExpirationDate)}" maxlength="10" class="date-field date-future" required="required"/>
 
-            <label for="${prefix}[${seqNo}].documentIssueDate"><g:message code="document.issue.label"/></label>
-            <g:textField name="${prefix}[${seqNo}].documentIssueDate" value="${formatDate(format: 'yyyy-MM-dd', date: representative?.documentIssueDate)}" maxlength="10" class="date-field date-past" required="required"/>
+            <label for="${prefix}[${seqNo}].personDocumentIssueDate"><g:message code="document.issue.label"/></label>
+            <g:textField id="${prefix}[${seqNo}].personDocumentIssueDate" name="${prefix}[${seqNo}].documentIssueDate" value="${formatDate(format: 'yyyy-MM-dd', date: representative?.documentIssueDate)}" maxlength="10" class="date-field date-past" required="required"/>
         </div>
     </div>
 
@@ -44,12 +44,12 @@
             <g:radio name="${prefix}[${seqNo}].verification" value="BIRTH_DATE"
                      checked="${data.isPersonForm() && representative?.verification?.name() == "BIRTH_DATE"}"/>
 
-            <label for="${prefix}[${seqNo}].birthDate"><g:message code="birth.date.country.label"/></label>
-            <g:textField name="${prefix}[${seqNo}].birthDate" value="${formatDate(format: 'yyyy-MM-dd', date: representative?.birthDate)}" maxlength="10" class="date-field date-past"/>
+            <label for="${prefix}[${seqNo}].personBirthDate"><g:message code="birth.date.country.label"/></label>
+            <g:textField id="${prefix}[${seqNo}].personBirthDate" name="${prefix}[${seqNo}].birthDate" value="${formatDate(format: 'yyyy-MM-dd', date: representative?.birthDate)}" maxlength="10" class="date-field date-past"/>
         </div>
     </div>
 
-    <div class="acceptorBirthCountryAndCity">
+    <div class="acceptorBirthCountryAndCity ${hasErrors(bean: representative, field: 'birthCountry', 'errorSpan')} ${hasErrors(bean: representative, field: 'birthCity', 'errorSpan')}">
         <label for="${prefix}[${seqNo}].birthCountry"><g:message code="birth.country.label"/></label>
         <dict:countrySelect name="${prefix}[${seqNo}].birthCountry" value="${representative?.birthCountry}"
                             required="required"
