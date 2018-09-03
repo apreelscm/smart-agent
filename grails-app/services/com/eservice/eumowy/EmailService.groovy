@@ -55,17 +55,17 @@ class EmailService {
             }
         }
 
-		sendMail(emailTemplate, mailAddress, null, bodyParams, documents)
+		sendMailDocuments(emailTemplate, mailAddress, null, bodyParams, documents)
 	}
 
     def sendDocumentsPaperVersion(def recipient, List<DocumentFile> documents, def bodyParams) {
         def emailTemplate = getEmailTemplatesByName(DOCUMENTS_PAPER_VERSION)
-        sendMail(emailTemplate, recipient, null, bodyParams, documents)
+        sendMailDocuments(emailTemplate, recipient, null, bodyParams, documents)
     }
 
     def sendDocumentsTemplateVersion(def recipient, List<DocumentFile> documents, def bodyParams) {
         def emailTemplate = getEmailTemplatesByName(DOCUMENTS_TEMPLATE_VERSION)
-        sendMail(emailTemplate, recipient, null, bodyParams, documents)
+        sendMailDocuments(emailTemplate, recipient, null, bodyParams, documents)
     }
 
     def sendNewAgreementDocuments(List recipients, List<DocumentFile> documents, def bodyParams) {
@@ -105,7 +105,7 @@ class EmailService {
 
         if (!email.isEmpty()) {
             log.info "Sending acceptance form to " + email
-            sendMail(emailTemplate, email, null, bodyParams, acceptanceForm)
+            sendMailDocuments(emailTemplate, email, null, bodyParams, acceptanceForm)
         } else {
             log.warn "Cannot find email for sending acceptance form"
         }
@@ -113,12 +113,12 @@ class EmailService {
 
 	def sendDocumentsElectronicalVersion(def recipient, List<DocumentFile> documents, def bodyParams) {
 		def emailTemplate = getEmailTemplatesByName(DOCUMENTS_ELECTRONICAL_VERSION)
-        sendMail(emailTemplate, recipient, null, bodyParams, documents)
+        sendMailDocuments(emailTemplate, recipient, null, bodyParams, documents)
 	}
 
     def sendDocumentsNotNewAggrementElectronicalVersion(def recipient, List<DocumentFile> documents, def bodyParams) {
         def emailTemplate = getEmailTemplatesByName(DOCUMENTS_NOT_NEW_AGGREMENT_ELECTRONICAL_VERSION)
-        sendMail(emailTemplate, recipient, null, bodyParams, documents)
+        sendMailDocuments(emailTemplate, recipient, null, bodyParams, documents)
     }
 
 	boolean sendProcessAcceptedMails(Process processInstance, String notesFromZrd) {
@@ -154,7 +154,7 @@ class EmailService {
 
     def sendDocumentsAcceptedToPostSend(List<DocumentFile> documents, def bodyParams) {
         def emailTemplate = getEmailTemplatesByName(DOCUMENTS_MISSING_MAIL)
-        sendMail(emailTemplate, emailTemplate.recipients, null, bodyParams, documents)
+        sendMailDocuments(emailTemplate, emailTemplate.recipients, null, bodyParams, documents)
     }
 
     def sendDocumentsRejected(def recipient, def merchantName, def merchantNip, def bodyParams) {
@@ -162,7 +162,7 @@ class EmailService {
         sendMailWithTryCatch(emailTemplate, recipient, [merchantNip, merchantName] as Object[], bodyParams, null)
     }
 
-    private def sendMailWithTryCatch(def emailTemplate, def recipients,  def subjectParams, def bodyParams, List<DocumentFile> documents){
+    private def sendMailWithTryCatch(EmailTemplates emailTemplate, def recipients,  def subjectParams, def bodyParams, List<DocumentFile> documents){
         try {
             sendMailDocuments(emailTemplate, recipients, subjectParams, bodyParams, documents)
         } catch(Exception ex) {
@@ -173,10 +173,8 @@ class EmailService {
     }
 
     private def sendMailDocuments(EmailTemplates emailTemplate, def recipients, def subjectParams, def bodyParams, List<DocumentFile> documents) {
-        List<EmailAttachment> attachments = []
-        documents.each {
-            EmailAttachment attachment = new EmailAttachment(it.clientName ?: it.name, 'application/pdf', PdfGenerator.getClosedContent(it.content.content))
-            attachments.add(attachment)
+        List<EmailAttachment> attachments = documents.collect {
+            new EmailAttachment(it.clientName ?: it.name, "application/pdf", PdfGenerator.getClosedContent(it.content.content))
         }
 
         sendMail(emailTemplate, recipients, subjectParams, bodyParams, attachments)
@@ -189,7 +187,7 @@ class EmailService {
 
         StopWatch stopWatch = new Log4JStopWatch()
 
-//        if (grailsApplication.config.email.sending.enabled) {
+        if (grailsApplication.config.email.sending.enabled) {
             mailService.sendMail {
                 if (attachments) {
                     multipart true
@@ -205,9 +203,9 @@ class EmailService {
                     }
                 }
             }
-//        } else {
-//            log.warn("Email sending disabled... If you want to enable it set 'email.sending.enabled=true' in config file.")
-//        }
+        } else {
+            log.warn("Email sending disabled... If you want to enable it set 'email.sending.enabled=true' in config file.")
+        }
 
         stopWatch.stop('sendMail')
     }
