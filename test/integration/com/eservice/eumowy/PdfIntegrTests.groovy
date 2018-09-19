@@ -18,7 +18,7 @@ import static com.eservice.eumowy.helpers.FieldsHelper.*
 import static com.eservice.eumowy.helpers.PdfTestDataBuilder.*
 
 @TestFor(PdfService)
-class PdfIntegrTests extends ControllerUnitTestMixin{
+class PdfIntegrTests extends ControllerUnitTestMixin {
     private Process process
     private Representative representative
     private Representative beneficiary
@@ -46,14 +46,14 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
         data.putAll(generateCommonFields())
 
         def mockAppParametersService = mockFor(AppParametersService, true)
-        mockAppParametersService.demand.getFontUri(){
+        mockAppParametersService.demand.getFontUri() {
             -> PdfHelper.fontsPath
         }
 
-        service.appParametersService =  mockAppParametersService.createMock()
+        service.appParametersService = mockAppParametersService.createMock()
     }
 
-    static HashMap<String, String[]> generateCommonFields(){
+    static HashMap<String, String[]> generateCommonFields() {
         HashMap<String, String[]> data = new HashMap<String, String[]>();
         data.put("dataUmowy", ["21-03-2013"] as String[]);
         data.put("nip", ["65032615970"] as String[]);
@@ -67,13 +67,13 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
         return data;
     }
 
-    static HashMap<String, String[]> generateDataPodpisaniaAneksuPOZField(){
+    static HashMap<String, String[]> generateDataPodpisaniaAneksuPOZField() {
         HashMap<String, String[]> result = new HashMap<String, String[]>();
         result.put("dataPodpisaniaAneksuPOZ", ["23.04.2013"] as String[]);
         return result;
     }
 
-    private static addCheckbox(def data, def pdfName, def fieldValue, def value){
+    private static addCheckbox(def data, def pdfName, def fieldValue, def value) {
         data.put(pdfName, [fieldValue.equals(value), "", "checkbox"] as String[])
     }
 
@@ -177,6 +177,294 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
         //then
         process("APUWDED1.00014-07-07.pdf", "APUWDED1.00014-07-07_out.pdf", data)
     }
+
+    @Test
+    void shouldGenerateDocumentAPUPZT11004180720() {
+        given:
+        def subscriptions = [
+                ["ACCEPTANT1", 4, 185, 505, 59, 28],
+                ["ACCEPTANT2", 4, 185, 455, 59, 28],
+                ["ACCEPTANT3", 4, 185, 405, 59, 28],
+                ["ACCEPTANT4", 4, 185, 355, 59, 28],
+                ["PH", 4, 185, 240, 59, 28]
+        ]
+
+        when:
+        data.putAll(akceptantIReprezentanciFields())
+        data.putAll(umowaOznaczonaFields())
+        data.putAll(markedDeliveryType())
+        data.putAll(listaPlacowekAkceptujacychFields())
+        data.putAll(poziomOplatIWarunkiPlatnosciFields())
+        data.putAll(specyfikacjaPoziomuOplatIWarunkowPlatnosciFields())
+        data.putAll(PdfHelper.insertSignatures(subscriptions))
+
+        then:
+        process(PdfHelper.JULY_20TH_DAY_2018_DOCUMENTS_PATH + "APUPZT11.00418-07-20.pdf",
+                PdfHelper.JULY_20TH_DAY_2018_DOCUMENTS_PATH,
+                "APUPZT11.00418-07-20_out.pdf",
+                data)
+    }
+
+    @Test
+    void shouldGenerateDocumentAPUPZT21004180720() {
+        given:
+        def subscriptions = [
+                ["ACCEPTANT1", 4, 185, 505, 59, 28],
+                ["ACCEPTANT2", 4, 185, 455, 59, 28],
+                ["ACCEPTANT3", 4, 185, 405, 59, 28],
+                ["ACCEPTANT4", 4, 185, 355, 59, 28],
+                ["PH", 4, 185, 240, 59, 28]
+        ]
+
+        when:
+        data.putAll(akceptantIReprezentanciFields())
+        data.putAll(umowaOznaczonaFields())
+        data.putAll(markedDeliveryType())
+        data.putAll(listaPlacowekAkceptujacychFields())
+        data.putAll(poziomOplatIWarunkiPlatnosciFields())
+        data.putAll(specyfikacjaPoziomuOplatIWarunkowPlatnosciFields())
+        data.putAll(PdfHelper.insertSignatures(subscriptions))
+
+        then:
+        process(PdfHelper.JULY_20TH_DAY_2018_DOCUMENTS_PATH + "APUPZT21.00418-07-20.pdf",
+                PdfHelper.JULY_20TH_DAY_2018_DOCUMENTS_PATH,
+                "APUPZT21.00418-07-20_out.pdf",
+                data)
+    }
+
+    @Test
+    void shouldGenerateDocumentAPUPZT31004180720() {
+        given:
+        def subscriptions = [
+                ["ACCEPTANT1", 4, 185, 457, 59, 28],
+                ["ACCEPTANT2", 4, 185, 405, 59, 28],
+                ["ACCEPTANT3", 4, 185, 355, 59, 28],
+                ["ACCEPTANT4", 4, 185, 305, 59, 28],
+                ["PH", 4, 185, 193, 59, 28]
+        ]
+
+        when:
+        data.putAll(akceptantIReprezentanciFields())
+        data.putAll(umowaOznaczonaFields())
+        data.putAll(markedDeliveryType())
+        data.putAll(listaPlacowekAkceptujacychFields())
+        data.putAll(poziomOplatIWarunkiPlatnosciFields())
+        data.putAll(specyfikacjaPoziomuOplatIWarunkowPlatnosciFields())
+        data.putAll(PdfHelper.insertSignatures(subscriptions))
+
+        then:
+        process(PdfHelper.JULY_20TH_DAY_2018_DOCUMENTS_PATH + "APUPZT31.00418-07-20.pdf",
+                PdfHelper.JULY_20TH_DAY_2018_DOCUMENTS_PATH,
+                "APUPZT31.00418-07-20_out.pdf",
+                data)
+    }
+
+
+    @Test
+    void shouldGenerateDocumentAPUPZT41004180720() {
+        given:
+        def subscriptions = [
+                ["ACCEPTANT1", 4, 185, 505, 59, 28],
+                ["ACCEPTANT2", 4, 185, 455, 59, 28],
+                ["ACCEPTANT3", 4, 185, 405, 59, 28],
+                ["ACCEPTANT4", 4, 185, 355, 59, 28],
+                ["PH", 4, 185, 240, 59, 28]
+        ]
+
+        when:
+        data.putAll(akceptantIReprezentanciFields())
+        data.putAll(umowaOznaczonaFields())
+        data.putAll(markedDeliveryType())
+        data.putAll(listaPlacowekAkceptujacychFields())
+        data.putAll(poziomOplatIWarunkiPlatnosciFields())
+        data.putAll(specyfikacjaPoziomuOplatIWarunkowPlatnosciFields())
+        data.putAll(PdfHelper.insertSignatures(subscriptions))
+
+        then:
+        process(PdfHelper.JULY_20TH_DAY_2018_DOCUMENTS_PATH + "APUPZT41.00418-07-20.pdf",
+                PdfHelper.JULY_20TH_DAY_2018_DOCUMENTS_PATH,
+                "APUPZT41.00418-07-20_out.pdf",
+                data)
+    }
+
+    @Test
+    void shouldGenerateDocumentAPUPZZSNT11004180720() {
+        when:
+        data.putAll(umowaOznaczonaFields())
+        data.putAll(poziomOplatIWarunkiPlatnosciFields())
+        data.putAll(specyfikacjaPoziomuOplatIWarunkowPlatnosciFields())
+
+        then:
+        process(PdfHelper.JULY_20TH_DAY_2018_DOCUMENTS_PATH + "APUPZZSNT11.00418-07-20.pdf",
+                PdfHelper.JULY_20TH_DAY_2018_DOCUMENTS_PATH,
+                "APUPZZSNT11.00418-07-20_out.pdf",
+                data)
+    }
+
+    @Test
+    void shouldGenerateDocumentAPUPZZSNT21004180720() {
+        when:
+        data.putAll(umowaOznaczonaFields())
+        data.putAll(poziomOplatIWarunkiPlatnosciFields())
+        data.putAll(specyfikacjaPoziomuOplatIWarunkowPlatnosciFields())
+
+        then:
+        process(PdfHelper.JULY_20TH_DAY_2018_DOCUMENTS_PATH + "APUPZZSNT21.00418-07-20.pdf",
+                PdfHelper.JULY_20TH_DAY_2018_DOCUMENTS_PATH,
+                "APUPZZSNT21.00418-07-20_out.pdf",
+                data)
+    }
+
+    @Test
+    void shouldGenerateDocumentAPUPZZSNT31003180720() {
+        given:
+        def subscriptions = [
+                ["ACCEPTANT1", 4, 235, 490, 59, 28],
+                ["ACCEPTANT2", 4, 235, 440, 59, 28],
+                ["ACCEPTANT3", 4, 235, 390, 59, 28],
+                ["ACCEPTANT4", 4, 235, 340, 59, 28],
+                ["PH", 4, 190, 240, 59, 28]
+        ]
+
+        when:
+        data.putAll(akceptantIReprezentanciFields())
+        data.putAll(umowaOznaczonaFields())
+        data.putAll(markedDeliveryType())
+        data.putAll(listaPlacowekAkceptujacychFields())
+        data.putAll(poziomOplatIWarunkiPlatnosciFields())
+        data.putAll(specyfikacjaPoziomuOplatIWarunkowPlatnosciFields())
+        data.putAll(PdfHelper.insertSignatures(subscriptions))
+
+        then:
+        process(PdfHelper.JULY_20TH_DAY_2018_DOCUMENTS_PATH + "APUPZZSNT31.00318-07-20.pdf",
+                PdfHelper.JULY_20TH_DAY_2018_DOCUMENTS_PATH,
+                "APUPZZSNT31.00318-07-20_out.pdf",
+                data)
+    }
+
+    @Test
+    void shouldGenerateDocumentAPUPZZSNT41003180720() {
+        given:
+        def subscriptions = [
+                ["ACCEPTANT1", 4, 235, 490, 59, 28],
+                ["ACCEPTANT2", 4, 235, 440, 59, 28],
+                ["ACCEPTANT3", 4, 235, 390, 59, 28],
+                ["ACCEPTANT4", 4, 235, 340, 59, 28],
+                ["PH", 4, 190, 240, 59, 28]
+        ]
+
+        when:
+        data.putAll(akceptantIReprezentanciFields())
+        data.putAll(umowaOznaczonaFields())
+        data.putAll(listaPlacowekAkceptujacychFields())
+        data.putAll(markedDeliveryType())
+        data.putAll(poziomOplatIWarunkiPlatnosciFields())
+        data.putAll(specyfikacjaPoziomuOplatIWarunkowPlatnosciFields())
+        data.putAll(PdfHelper.insertSignatures(subscriptions))
+
+        then:
+        process(PdfHelper.JULY_20TH_DAY_2018_DOCUMENTS_PATH + "APUPZZSNT41.00318-07-20.pdf",
+                PdfHelper.JULY_20TH_DAY_2018_DOCUMENTS_PATH,
+                "APUPZZSNT41.00318-07-20_out.pdf",
+                data)
+    }
+
+
+    @Test
+    void shouldGenerateDocumentAPUW1006180720() {
+        given:
+        def subscriptions = [
+                ["ACCEPTANT1", 4, 235, 490, 59, 28],
+                ["ACCEPTANT2", 4, 235, 440, 59, 28],
+                ["ACCEPTANT3", 4, 235, 390, 59, 28],
+                ["ACCEPTANT4", 4, 235, 340, 59, 28],
+                ["PH", 4, 190, 240, 59, 28]
+        ]
+
+        when:
+        data.putAll(akceptantIReprezentanciFields())
+        data.putAll(umowaOznaczonaFields())
+        data.putAll(listaPlacowekAkceptujacychFields())
+        data.putAll(poziomOplatIWarunkiPlatnosciFields())
+        data.putAll(specyfikacjaPoziomuOplatIWarunkowPlatnosciFields())
+        data.putAll(wykazTerminaliPOSFields())
+        data.putAll(markedDeliveryType())
+        data.putAll(uslugiDodatkoweFields())
+        data.putAll(PdfHelper.insertSignatures(subscriptions))
+
+        then:
+        process(PdfHelper.JULY_20TH_DAY_2018_DOCUMENTS_PATH + "APUW1.00618-07-20.pdf",
+                PdfHelper.JULY_20TH_DAY_2018_DOCUMENTS_PATH,
+                "APUW1.00618-07-20_out.pdf",
+                data)
+    }
+
+    @Test
+    void shouldGenerateDocumentAPUWOOL1003180720() {
+        given:
+        def subscriptions = [
+                ["ACCEPTANT1", 4, 235, 490, 59, 28],
+                ["ACCEPTANT2", 4, 235, 440, 59, 28],
+                ["ACCEPTANT3", 4, 235, 390, 59, 28],
+                ["ACCEPTANT4", 4, 235, 340, 59, 28],
+                ["PH", 4, 190, 240, 59, 28]
+        ]
+
+        when:
+        data.putAll(akceptantIReprezentanciFields())
+        data.putAll(umowaOznaczonaFields())
+        data.putAll(markedDeliveryType())
+        data.putAll(uslugiDodatkoweFields())
+        data.putAll(PdfHelper.insertSignatures(subscriptions))
+
+        then:
+        process(PdfHelper.JULY_20TH_DAY_2018_DOCUMENTS_PATH + "APUWOOL1.00318-07-20.pdf",
+                PdfHelper.JULY_20TH_DAY_2018_DOCUMENTS_PATH,
+                "APUWOOL1.00318-07-20_out.pdf",
+                data)
+    }
+
+    @Test
+    void shouldGenerateDocumentAPUWPON1002180720() {
+        when:
+        data.putAll(wykazTerminaliPOSObjetychObnizkaNajmuFields())
+        data.putAll(markedDeliveryType())
+
+        then:
+        process(PdfHelper.JULY_20TH_DAY_2018_DOCUMENTS_PATH + "APUWPON1.00218-07-20.pdf",
+                PdfHelper.JULY_20TH_DAY_2018_DOCUMENTS_PATH,
+                "APUWPON1.00218-07-20_out.pdf",
+                data)
+    }
+
+    @Test
+    void shouldGenerateDocumentAPUWRWT1003180720() {
+        when:
+        data.putAll(wykazTerminaliPOSObjetychObnizkaNajmuFields())
+        data.putAll(wykazTerminaliPOSFields())
+        data.putAll(promObjFields())
+        data.putAll(markedDeliveryType())
+
+        then:
+        process(PdfHelper.JULY_20TH_DAY_2018_DOCUMENTS_PATH + "APUWRWT1.00318-07-20.pdf",
+                PdfHelper.JULY_20TH_DAY_2018_DOCUMENTS_PATH,
+                "APUWRWT1.00318-07-20_out.pdf",
+                data)
+    }
+
+    @Test
+    void shouldGenerateDocumentAPUWUD1002180720() {
+        when:
+        data.putAll(uslugiDodatkoweFields())
+        data.putAll(markedDeliveryType())
+
+        then:
+        process(PdfHelper.JULY_20TH_DAY_2018_DOCUMENTS_PATH + "APUWUD1.00218-07-20.pdf",
+                PdfHelper.JULY_20TH_DAY_2018_DOCUMENTS_PATH,
+                "APUWUD1.00218-07-20_out.pdf",
+                data)
+    }
+
 
     @Test
     void APUPZT11000150305() { //AP/UPZT1/1.001/16-02-01
@@ -429,13 +717,13 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
     @Test
     void APAGFPABR1001180701() { //AP-AG/F/PABR/1.001/18-07-01
         //given
-        Map representativeProperties = [name: "Jan", surname: "Kowalski", documentType: IdentityDocumentType.IDENTITY_CARD,
-                country: "Daleko", address: "JakisAdres", documentNumber: "PL123", citizenship: "Polskie",
-                locationType: AcceptorLocation.ABROAD, pesel: "91101706344"]
+        Map representativeProperties = [name        : "Jan", surname: "Kowalski", documentType: IdentityDocumentType.IDENTITY_CARD,
+                                        country     : "Daleko", address: "JakisAdres", documentNumber: "PL123", citizenship: "Polskie",
+                                        locationType: AcceptorLocation.ABROAD, pesel: "91101706344"]
 
-        Map beneficiaryProperties = [name: "Jan", surname: "Kowalski", documentType: IdentityDocumentType.PASSPORT,
-                country: "Daleko", address: "JakisAdres", documentNumber: "PL123", citizenship: "Polskie",
-                 votesPercentage: 59, ownsAcceptor: true, controlsAcceptor: false, overQuarterOfVotes: true]
+        Map beneficiaryProperties = [name           : "Jan", surname: "Kowalski", documentType: IdentityDocumentType.PASSPORT,
+                                     country        : "Daleko", address: "JakisAdres", documentNumber: "PL123", citizenship: "Polskie",
+                                     votesPercentage: 59, ownsAcceptor: true, controlsAcceptor: false, overQuarterOfVotes: true]
 
         def subscriptions = [
                 ["ACCEPTANT1", 2, 270, 508, 59, 28],
@@ -570,15 +858,15 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
     void APFZMP3000161011() { //AP/F/ZMP/3.000/16-10-11
         def data = [:]
         def subscriptions = [
-                ["PH", 1, 90, 200,	59,	28]
+                ["PH", 1, 90, 200, 59, 28]
         ]
         data.putAll(insertSignatures2(subscriptions))
         process("APFZMP3.00016-10-11.pdf", "APFZMP3.00016-10-11_out.pdf", data);
     }
 
     void testAPUPZBSXToImage() {
-        String outFile =  "APUPZBS2.00113-08-06 - Umowa o przyjmowanie zaplaty (wersja bez stawek plaskich)_do druku_out2.pdf"
-        data.put("podpis", [new File(PdfHelper.getTemplatePath()+"signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
+        String outFile = "APUPZBS2.00113-08-06 - Umowa o przyjmowanie zaplaty (wersja bez stawek plaskich)_do druku_out2.pdf"
+        data.put("podpis", [new File(PdfHelper.getTemplatePath() + "signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
         process("APUPZBS2.00113-08-06 - Umowa o przyjmowanie zaplaty (wersja bez stawek plaskich)_do druku.pdf", outFile, data);
         processToImage(outFile, 6)
     }
@@ -604,8 +892,8 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
     }
 
     void testAPUPZIFXToImage() {
-        String outFile =  "APUPZIF2.00113-08-06 - Umowa o przyjmowanie zaplaty IF+_2013_out2.pdf"
-        data.put("podpis", [new File(PdfHelper.getTemplatePath()+"signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
+        String outFile = "APUPZIF2.00113-08-06 - Umowa o przyjmowanie zaplaty IF+_2013_out2.pdf"
+        data.put("podpis", [new File(PdfHelper.getTemplatePath() + "signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
         process("APUPZIF2.00113-08-06 - Umowa o przyjmowanie zaplaty IF+_2013.pdf", outFile, data);
         processToImage(outFile, 1)
     }
@@ -629,8 +917,8 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
     }
 
     void testAPUPZIF2XToImage() {
-        String outFile =  "APUPZIF2.00213-08-06_Aneks na IF+ i IKO_out2.pdf"
-        data.put("podpis", [new File(PdfHelper.getTemplatePath()+"signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
+        String outFile = "APUPZIF2.00213-08-06_Aneks na IF+ i IKO_out2.pdf"
+        data.put("podpis", [new File(PdfHelper.getTemplatePath() + "signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
         process("APUPZIF2.00213-08-06_Aneks na IF+ i IKO.pdf", outFile, data);
         processToImage(outFile, 1)
     }
@@ -648,7 +936,7 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
         data.put("dzialaniaMatematyczneCena", ["53"] as String[]);
         data.put("pierwszaSesjaCena", ["53"] as String[]);
         data.put("walutaObcaCena", ["53"] as String[]);
-        data.put("oplataZaUruchomienieDCC", ["200"] as String []);
+        data.put("oplataZaUruchomienieDCC", ["200"] as String[]);
         data.put("mudCena", ["53"] as String[]);
         data.put("obslugaPrestiz", ["true", "", "checkbox"] as String[]);
         data.put("obslugaKomfort", ["true", "", "checkbox"] as String[]);
@@ -670,12 +958,11 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
     }
 
     void testAPUNTSSToImage() {
-        String outFile =  "APUNTSS1.00312-01-16_out2.pdf"
-        data.put("podpis", [new File(PdfHelper.getTemplatePath()+"signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
+        String outFile = "APUNTSS1.00312-01-16_out2.pdf"
+        data.put("podpis", [new File(PdfHelper.getTemplatePath() + "signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
         process("APUNTSS1.00312-01-16.pdf", outFile, data);
         processToImage(outFile, 1)
     }
-
 
 
     void testAPUNTSZAPOO() { //gotowe
@@ -739,8 +1026,8 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
     }
 
     void testAPUNTSZAPOOToImage() {
-        String outFile =  "APUNTSZAPOO3.00212-01-16_out2.pdf"
-        data.put("podpis", [new File(PdfHelper.getTemplatePath()+"signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
+        String outFile = "APUNTSZAPOO3.00212-01-16_out2.pdf"
+        data.put("podpis", [new File(PdfHelper.getTemplatePath() + "signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
         process("APUNTSZAPOO3.00212-01-16.pdf", outFile, data);
         processToImage(outFile, 1)
     }
@@ -778,7 +1065,7 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
     }
 
     void testAPUNTSZAPOO2ToImage() {
-        String outFile =  "APUNTSZAPOO3.000313-09-26-Aneks do Umowy najmu zestawu POS (okres promocyjny)_out2.pdf"
+        String outFile = "APUNTSZAPOO3.000313-09-26-Aneks do Umowy najmu zestawu POS (okres promocyjny)_out2.pdf"
         def subscriptions = [
                 ["ACCEPTANT1", 1, 85, 200, 94, 63],
                 ["ACCEPTANT2", 1, 205, 200, 94, 63],
@@ -856,7 +1143,7 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
 
 
     void testAPUNTSZAOOLToImage() {
-        String outFile =  "APUNTSZOOL1.00013-09-26-Aneks do Umowy najmu zestawu POS (odnowienie okres lojaln.)_out2.pdf"
+        String outFile = "APUNTSZOOL1.00013-09-26-Aneks do Umowy najmu zestawu POS (odnowienie okres lojaln.)_out2.pdf"
         def subscriptions = [
                 ["ACCEPTANT1", 1, 85, 300, 94, 63],
                 ["ACCEPTANT2", 1, 205, 300, 94, 63],
@@ -916,8 +1203,8 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
     }
 
     void testAPUNTSZAPOUToImage() {
-        String outFile =  "APUNTSZAPOU3.00212-01-16_out2.pdf"
-        data.put("podpis", [new File(PdfHelper.getTemplatePath()+"signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
+        String outFile = "APUNTSZAPOU3.00212-01-16_out2.pdf"
+        data.put("podpis", [new File(PdfHelper.getTemplatePath() + "signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
         process("APUNTSZAPOU3.00212-01-16.pdf", outFile, data);
         processToImage(outFile, 1)
     }
@@ -1020,7 +1307,7 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
 
 
     void testAPUNTSZAPOU2ToImage() {
-        String outFile =  "APUNTSZAPOU3.00313-09-26-Aneks do umowy najmu zestawu POS (rozszerz wspolpr i nowe usl)_out2.pdf"
+        String outFile = "APUNTSZAPOU3.00313-09-26-Aneks do umowy najmu zestawu POS (rozszerz wspolpr i nowe usl)_out2.pdf"
 //        data.put("podpis", [new File(PdfHelper.getTemplatePath()+"signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
         def subscriptions = [
                 ["ACCEPTANT1", 2, 85, 255, 94, 63],
@@ -1077,8 +1364,8 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
     }
 
     void testAPUNTSZAWNZToImage() {
-        String outFile =  "APUNTSZAWNZ3.00212-01-16_out2.pdf"
-        data.put("podpis", [new File(PdfHelper.getTemplatePath()+"signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
+        String outFile = "APUNTSZAWNZ3.00212-01-16_out2.pdf"
+        data.put("podpis", [new File(PdfHelper.getTemplatePath() + "signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
         process("APUNTSZAWNZ3.00212-01-16.pdf", outFile, data);
         processToImage(outFile, 1)
     }
@@ -1122,8 +1409,8 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
     }
 
     void testAPUNTSZDCCToImage() {
-        String outFile =  "APUNTSZDCC2.00212-01-16_out2.pdf"
-        data.put("podpis", [new File(PdfHelper.getTemplatePath()+"signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
+        String outFile = "APUNTSZDCC2.00212-01-16_out2.pdf"
+        data.put("podpis", [new File(PdfHelper.getTemplatePath() + "signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
         process("APUNTSZDCC2.00212-01-16.pdf", outFile, data);
         processToImage(outFile, 1)
     }
@@ -1149,8 +1436,8 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
     }
 
     void testAPUNTSZDCCZToImage() {
-        String outFile =  "APUNTSZDCCZ1 00112-10-05_Aneks do UN_DCC zmiana warunkow_out2.pdf"
-        data.put("podpis", [new File(PdfHelper.getTemplatePath()+"signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
+        String outFile = "APUNTSZDCCZ1 00112-10-05_Aneks do UN_DCC zmiana warunkow_out2.pdf"
+        data.put("podpis", [new File(PdfHelper.getTemplatePath() + "signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
         process("APUNTSZDCCZ1 00112-10-05_Aneks do UN_DCC zmiana warunkow.pdf", outFile, data);
         processToImage(outFile, 1)
     }
@@ -1172,8 +1459,8 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
     }
 
     void testAPUNTSZOKODToImage() {
-        String outFile =  "APUNTSZOKOD2.00312-01-16_out2.pdf"
-        data.put("podpis", [new File(PdfHelper.getTemplatePath()+"signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
+        String outFile = "APUNTSZOKOD2.00312-01-16_out2.pdf"
+        data.put("podpis", [new File(PdfHelper.getTemplatePath() + "signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
         process("APUNTSZOKOD2.00312-01-16.pdf", outFile, data);
         processToImage(outFile, 1)
     }
@@ -1194,8 +1481,8 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
     }
 
     void testAPUNTWAGOKToImage() {
-        String outFile =  "APUNTWAGOK1.00212-01-16_out2.pdf"
-        data.put("podpis", [new File(PdfHelper.getTemplatePath()+"signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
+        String outFile = "APUNTWAGOK1.00212-01-16_out2.pdf"
+        data.put("podpis", [new File(PdfHelper.getTemplatePath() + "signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
         process("APUNTWAGOK1.00212-01-16.pdf", outFile, data);
         processToImage(outFile, 1)
     }
@@ -1218,8 +1505,8 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
     }
 
     void testAPUNTWAGONToImage() {
-        String outFile =  "APUNTWAGON1.00212-01-16_out2.pdf"
-        data.put("podpis", [new File(PdfHelper.getTemplatePath()+"signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
+        String outFile = "APUNTWAGON1.00212-01-16_out2.pdf"
+        data.put("podpis", [new File(PdfHelper.getTemplatePath() + "signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
         process("APUNTWAGON1.00212-01-16.pdf", outFile, data);
         processToImage(outFile, 1)
     }
@@ -1240,8 +1527,8 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
     }
 
     void testAPUNTWAGOPToImage() {
-        String outFile =  "APUNTWAGOP1.00212-01-16_out2.pdf"
-        data.put("podpis", [new File(PdfHelper.getTemplatePath()+"signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
+        String outFile = "APUNTWAGOP1.00212-01-16_out2.pdf"
+        data.put("podpis", [new File(PdfHelper.getTemplatePath() + "signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
         process("APUNTWAGOP1.00212-01-16.pdf", outFile, data);
         processToImage(outFile, 1)
     }
@@ -1265,8 +1552,8 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
     }
 
     void testAPUNTWANODToImage() {
-        String outFile =  "APUNTWANOD1.00312-01-16_Aneks do UN_zmiana Tabeli Oplat_out2.pdf"
-        data.put("podpis", [new File(PdfHelper.getTemplatePath()+"signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
+        String outFile = "APUNTWANOD1.00312-01-16_Aneks do UN_zmiana Tabeli Oplat_out2.pdf"
+        data.put("podpis", [new File(PdfHelper.getTemplatePath() + "signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
         process("APUNTWANOD1.00312-01-16_Aneks do UN_zmiana Tabeli Oplat.pdf", outFile, data);
         processToImage(outFile, 1)
     }
@@ -1363,8 +1650,8 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
 
 
     void testAPUNTZToImage() {
-        String outFile =  "APUNTZ2.00312-01-16.pdf_out2.pdf"
-        data.put("podpis", [new File(PdfHelper.getTemplatePath()+"signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
+        String outFile = "APUNTZ2.00312-01-16.pdf_out2.pdf"
+        data.put("podpis", [new File(PdfHelper.getTemplatePath() + "signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
         process("APUNTZ2.00312-01-16.pdf", outFile, data);
         processToImage(outFile, 1)
     }
@@ -1422,8 +1709,8 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
 
 
     void testATUSUFDUToImage() {
-        String outFile =  "ATUSUFDU4.004.130522_out2.pdf"
-        data.put("podpis", [new File(PdfHelper.getTemplatePath()+"signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
+        String outFile = "ATUSUFDU4.004.130522_out2.pdf"
+        data.put("podpis", [new File(PdfHelper.getTemplatePath() + "signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
         process("ATUSUFDU4.004.130522.pdf", outFile, data);
         processToImage(outFile, 1)
     }
@@ -1448,8 +1735,8 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
     }
 
     void testAPUPZBSAIKOToImage() {
-        String outFile =  "APUPZBSAIKO1.00013-03-25 - Aneks IKO_out2.pdf"
-        data.put("podpis", [new File(PdfHelper.getTemplatePath()+"signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
+        String outFile = "APUPZBSAIKO1.00013-03-25 - Aneks IKO_out2.pdf"
+        data.put("podpis", [new File(PdfHelper.getTemplatePath() + "signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
         process("APUPZBSAIKO1.00013-03-25 - Aneks IKO.pdf", outFile, data);
         processToImage(outFile, 1)
     }
@@ -1476,8 +1763,8 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
     }
 
     void testAPUPZ2ACBToImage() {
-        String outFile =  "APUPZ2ACB1.00013-02-15 - Aneks do Umowy o przyjm po 2013 r (wprow Cashback)_out2.pdf"
-        data.put("podpis", [new File(PdfHelper.getTemplatePath()+"signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
+        String outFile = "APUPZ2ACB1.00013-02-15 - Aneks do Umowy o przyjm po 2013 r (wprow Cashback)_out2.pdf"
+        data.put("podpis", [new File(PdfHelper.getTemplatePath() + "signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
         process("APUPZ2ACB1.00013-02-15 - Aneks do Umowy o przyjm po 2013 r (wprow Cashback).pdf", outFile, data);
         processToImage(outFile, 1)
     }
@@ -1541,8 +1828,8 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
     }
 
     void testAPUP2DCCToImage() {
-        String outFile =  "APUPZ2DCC1.00013-02-15 - Aneks do Umowy o przyjm po 2013 r (wprow DCC)_out2.pdf"
-        data.put("podpis", [new File(PdfHelper.getTemplatePath()+File.separator+"subscriptions"+File.separator+"signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
+        String outFile = "APUPZ2DCC1.00013-02-15 - Aneks do Umowy o przyjm po 2013 r (wprow DCC)_out2.pdf"
+        data.put("podpis", [new File(PdfHelper.getTemplatePath() + File.separator + "subscriptions" + File.separator + "signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
         process("APUPZ2DCC1.00013-02-15 - Aneks do Umowy o przyjm po 2013 r (wprow DCC).pdf", outFile, data);
         processToImage(outFile, 2)
     }
@@ -1566,8 +1853,8 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
     }
 
     void testAPUPZACBToImage() {
-        String outFile =  "APUPZACB2.00313-02-15 - Aneks do Umowy o przyjm zapl (dod Cashback)_out2.pdf"
-        data.put("podpis", [new File(PdfHelper.getTemplatePath()+"signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
+        String outFile = "APUPZACB2.00313-02-15 - Aneks do Umowy o przyjm zapl (dod Cashback)_out2.pdf"
+        data.put("podpis", [new File(PdfHelper.getTemplatePath() + "signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
         process("APUPZACB2.00313-02-15 - Aneks do Umowy o przyjm zapl (dod Cashback).pdf", outFile, data);
         processToImage(outFile, 1)
     }
@@ -1585,8 +1872,8 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
     }
 
     void testAPUPZAWNZBSToImage() {
-        String outFile =  "APUPZAWNZBS1.00013-01-25 - Aneks do umowy o przyjm zapl (bez stawek plaskich)_out2.pdf"
-        data.put("podpis", [new File(PdfHelper.getTemplatePath()+"signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
+        String outFile = "APUPZAWNZBS1.00013-01-25 - Aneks do umowy o przyjm zapl (bez stawek plaskich)_out2.pdf"
+        data.put("podpis", [new File(PdfHelper.getTemplatePath() + "signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
         process("APUPZAWNZBS1.00013-01-25 - Aneks do umowy o przyjm zapl (bez stawek plaskich).pdf", outFile, data);
         processToImage(outFile, 1)
     }
@@ -1602,8 +1889,8 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
     }
 
     void testAPUPZAWNZSToImage() {
-        String outFile =  "APUPZAWNZS1.00013-01-25 - Aneks do umowy o przyjm zapl (narzucone stawki plaskie)_out2.pdf"
-        data.put("podpis", [new File(PdfHelper.getTemplatePath()+"signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
+        String outFile = "APUPZAWNZS1.00013-01-25 - Aneks do umowy o przyjm zapl (narzucone stawki plaskie)_out2.pdf"
+        data.put("podpis", [new File(PdfHelper.getTemplatePath() + "signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
         process("APUPZAWNZS1.00013-01-25 - Aneks do umowy o przyjm zapl (narzucone stawki plaskie).pdf", outFile, data);
         processToImage(outFile, 1)
     }
@@ -1625,8 +1912,8 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
     }
 
     void testAPUPZBSToImage() {
-        String outFile =  "APUPZBS2.00013-01-25 - Umowa o przyjmowanie zaplaty (wersja bez stawek plaskich)_do druku_out2.pdf"
-        data.put("podpis", [new File(PdfHelper.getTemplatePath()+"signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
+        String outFile = "APUPZBS2.00013-01-25 - Umowa o przyjmowanie zaplaty (wersja bez stawek plaskich)_do druku_out2.pdf"
+        data.put("podpis", [new File(PdfHelper.getTemplatePath() + "signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
         process("APUPZBS2.00013-01-25 - Umowa o przyjmowanie zaplaty (wersja bez stawek plaskich)_do druku.pdf", outFile, data);
         processToImage(outFile, 1)
     }
@@ -1686,8 +1973,8 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
 
 
     void testATUSUToImage() {
-        String outFile =  "ATUSU5.00413-05-22_out2.pdf"
-        data.put("podpis", [new File(PdfHelper.getTemplatePath()+"signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
+        String outFile = "ATUSU5.00413-05-22_out2.pdf"
+        data.put("podpis", [new File(PdfHelper.getTemplatePath() + "signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
         process("ATUSU5.00413-05-22.pdf", outFile, data);
         processToImage(outFile, 1)
     }
@@ -1703,8 +1990,8 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
     } // gotowe
 
     void testAPUPZIFToImage() {
-        String outFile =  "APUPZIF2.00113-04-05_out2.pdf"
-        data.put("podpis", [new File(PdfHelper.getTemplatePath()+"signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
+        String outFile = "APUPZIF2.00113-04-05_out2.pdf"
+        data.put("podpis", [new File(PdfHelper.getTemplatePath() + "signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
         process("APUPZIF2.00113-04-05.pdf", outFile, data);
         processToImage(outFile, 1)
     }
@@ -1727,8 +2014,8 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
     }
 
     void testAPUPZIF2ToImage() {
-        String outFile =  "APUPZIF2.00013-03-26 - Umowa o przyjmowanie zaplaty IF+_2013_out2.pdf"
-        data.put("podpis", [new File(PdfHelper.getTemplatePath()+"signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
+        String outFile = "APUPZIF2.00013-03-26 - Umowa o przyjmowanie zaplaty IF+_2013_out2.pdf"
+        data.put("podpis", [new File(PdfHelper.getTemplatePath() + "signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
         process("APUPZIF2.00013-03-26 - Umowa o przyjmowanie zaplaty IF+_2013.pdf", outFile, data);
         processToImage(outFile, 1)
     }
@@ -1764,8 +2051,8 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
     }
 
     void testAPUPZDCCToImage() {
-        String outFile =  "APUPZDCC2.00313-02-15 - Aneks do Umowy o przyjm zapl (wprow DCC)_out2.pdf"
-        data.put("podpis", [new File(PdfHelper.getTemplatePath()+"signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
+        String outFile = "APUPZDCC2.00313-02-15 - Aneks do Umowy o przyjm zapl (wprow DCC)_out2.pdf"
+        data.put("podpis", [new File(PdfHelper.getTemplatePath() + "signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
         process("APUPZDCC2.00313-02-15 - Aneks do Umowy o przyjm zapl (wprow DCC).pdf", outFile, data);
         processToImage(outFile, 1)
     }
@@ -1788,8 +2075,8 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
     }
 
     void testAPUPZDCCZToImage() {
-        String outFile =  "APUPZDCCZ1.00213-02-15 - Aneks do Umowy o przyjm zapl. (zm. war. DCC)_out2.pdf"
-        data.put("podpis", [new File(PdfHelper.getTemplatePath()+"signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
+        String outFile = "APUPZDCCZ1.00213-02-15 - Aneks do Umowy o przyjm zapl. (zm. war. DCC)_out2.pdf"
+        data.put("podpis", [new File(PdfHelper.getTemplatePath() + "signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
         process("APUPZDCCZ1.00213-02-15 - Aneks do Umowy o przyjm zapl. (zm. war. DCC).pdf", outFile, data);
         processToImage(outFile, 1)
     }
@@ -2020,12 +2307,11 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
     }
 
     void testAPUPZToImage() {
-        String outFile =  "APUPZ2.00013-01-03 - Umowa o przyjmowanie zaplaty v. 2.000_z faksymile_out2.pdf"
-        data.put("podpis", [new File(PdfHelper.getTemplatePath()+"signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
+        String outFile = "APUPZ2.00013-01-03 - Umowa o przyjmowanie zaplaty v. 2.000_z faksymile_out2.pdf"
+        data.put("podpis", [new File(PdfHelper.getTemplatePath() + "signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
         process("APUPZ2.00013-01-03 - Umowa o przyjmowanie zaplaty v. 2.000_z faksymile.pdf", outFile, data);
         processToImage(outFile, 1)
     }
-
 
     // ---------------------------------------------------------------------------------------
     void testFormularzAplikacyjny() {
@@ -2034,8 +2320,8 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
     }
 
     void testFormularzAplikacyjnyToImage() {
-        String outFile =  "Formularz aplikacyjny_po_zmianach_18.01.2012_out2.pdf"
-        data.put("podpis", [new File(PdfHelper.getTemplatePath()+"signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
+        String outFile = "Formularz aplikacyjny_po_zmianach_18.01.2012_out2.pdf"
+        data.put("podpis", [new File(PdfHelper.getTemplatePath() + "signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
         process("Formularz aplikacyjny_po_zmianach_18.01.2012.pdf", outFile, data);
         processToImage(outFile, 1)
     }
@@ -2043,29 +2329,29 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
     void testAPFZMP() {
         def data = [:]
         def subscriptions = [
-                ["PH", 1, 50, 175,	84,	53]
+                ["PH", 1, 50, 175, 84, 53]
         ]
         data.putAll(insertSignatures2(subscriptions))
         process("APFZMP2.000.08-12-03.pdf", "APFZMP2.000.08-12-03_out.pdf", data);
     }
 
     void testFormularzDanychPunktuToImage() {
-        String outFile =  "Formularz danych punktu_zmiany_15.05.2013_edited_out2.pdf"
-        data.put("podpis", [new File(PdfHelper.getTemplatePath()+"subscriptions"+File.separator+"signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
+        String outFile = "Formularz danych punktu_zmiany_15.05.2013_edited_out2.pdf"
+        data.put("podpis", [new File(PdfHelper.getTemplatePath() + "subscriptions" + File.separator + "signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
         process("Formularz danych punktu_zmiany_15.05.2013_edited.pdf", outFile, data);
         processToImage(outFile, 2)
     }
 
     void testFormularzScoringowy() {
         HashMap<String, String[]> data = prepareScoringData()
-        data.put("podpis", [new File(PdfHelper.getTemplatePath()+"subscriptions"+File.separator+"signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
+        data.put("podpis", [new File(PdfHelper.getTemplatePath() + "subscriptions" + File.separator + "signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
         process("Formularz Scoringowy (oryginal).pdf", "Formularz Scoringowy (oryginal)_out.pdf", data);
     }
 
     void testFormularzScoringowyToImage() {
-        String outFile =  "Formularz Scoringowy (oryginal)_out2.pdf"
+        String outFile = "Formularz Scoringowy (oryginal)_out2.pdf"
         HashMap<String, String[]> data = prepareScoringData()
-        data.put("podpis", [new File(PdfHelper.getTemplatePath()+"subscriptions"+File.separator+"signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
+        data.put("podpis", [new File(PdfHelper.getTemplatePath() + "subscriptions" + File.separator + "signature1.jpg").toURI().toURL(), "", "signature", "1", "415", "16", "58", "59"] as String[]);
         process("Formularz Scoringowy (oryginal).pdf", outFile, data);
         processToImage(outFile, 1)
     }
@@ -2073,7 +2359,7 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
     void processToImage(pdfName, pageNumber) {
         log.info('processToImage - start')
         PDDocument document = null
-        document = PDDocument.load(PdfHelper.fileTemplateOutPath+pdfName)
+        document = PDDocument.load(PdfHelper.fileTemplateOutPath + pdfName)
 
         int resolution = 100
 
@@ -2085,8 +2371,8 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
         log.info('processToImage - stop')
     }
 
-    void process(templateName, outName, data){
-        byte[] pdf = service.fillPdfFormFromURI(PdfHelper.getTemplatePath()+templateName, data, PdfGenerator.FontType.ARIAL)
+    void process(templateName, outName, data) {
+        byte[] pdf = service.fillPdfFormFromURI(PdfHelper.fileTemplatePath + templateName, data, PdfGenerator.FontType.ARIAL)
 
         assert pdf != null
 
@@ -2096,23 +2382,31 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
             it.write pdf
         }
 
-        println 'Writing pdf to: ' + PdfHelper.fileTemplateOutPath+outName
+        println 'Writing pdf to: ' + PdfHelper.fileTemplateOutPath + outName
+    }
+
+    void process(templateName, nestedOutputFolder, outName, data) {
+        if (nestedOutputFolder) {
+            new File(PdfHelper.fileTemplateOutPath + nestedOutputFolder).mkdirs()
+        }
+
+        process(templateName, nestedOutputFolder + outName, data)
     }
 
 
-    private HashMap<String, String[]> insertSignatures(int pageNo, int x, int y, int scaleX, int scaleY){
+    private HashMap<String, String[]> insertSignatures(int pageNo, int x, int y, int scaleX, int scaleY) {
         HashMap<String, String[]> result = new HashMap<String, String[]>();
-        result.put("reprezentant1_podpis", [new File(PdfHelper.getTemplatePath()+File.separator+"subscriptions"+File.separator+"signature1.jpg").toURI().toURL(), "", "signature", pageNo, x, y, scaleX, scaleY] as String[]);
-        result.put("reprezentant2_podpis", [new File(PdfHelper.getTemplatePath()+File.separator+"subscriptions"+File.separator+"signature2.jpg").toURI().toURL(), "", "signature", pageNo, x+120, y, scaleX, scaleY] as String[]);
-        result.put("zarzad1_podpis", [new File(PdfHelper.getTemplatePath()+File.separator+"subscriptions"+File.separator+"signature1.jpg").toURI().toURL(), "", "signature", pageNo, x+250, y, BOARD_MEMBER_1_X, BOARD_MEMBER_1_Y] as String[]);
-        result.put("zarzad2_podpis", [new File(PdfHelper.getTemplatePath()+File.separator+"subscriptions"+File.separator+"signature3.jpg").toURI().toURL(), "", "signature", pageNo, x+380, y, BOARD_MEMBER_2_X, BOARD_MEMBER_2_Y] as String[]);
+        result.put("reprezentant1_podpis", [new File(PdfHelper.getTemplatePath() + File.separator + "subscriptions" + File.separator + "signature1.jpg").toURI().toURL(), "", "signature", pageNo, x, y, scaleX, scaleY] as String[]);
+        result.put("reprezentant2_podpis", [new File(PdfHelper.getTemplatePath() + File.separator + "subscriptions" + File.separator + "signature2.jpg").toURI().toURL(), "", "signature", pageNo, x + 120, y, scaleX, scaleY] as String[]);
+        result.put("zarzad1_podpis", [new File(PdfHelper.getTemplatePath() + File.separator + "subscriptions" + File.separator + "signature1.jpg").toURI().toURL(), "", "signature", pageNo, x + 250, y, BOARD_MEMBER_1_X, BOARD_MEMBER_1_Y] as String[]);
+        result.put("zarzad2_podpis", [new File(PdfHelper.getTemplatePath() + File.separator + "subscriptions" + File.separator + "signature3.jpg").toURI().toURL(), "", "signature", pageNo, x + 380, y, BOARD_MEMBER_2_X, BOARD_MEMBER_2_Y] as String[]);
         return result;
     }
 
-    private HashMap<String, String[]> insertSignatures2(def signatures){
+    private HashMap<String, String[]> insertSignatures2(def signatures) {
         HashMap<String, String[]> result = new HashMap<String, String[]>();
 
-        signatures.each{
+        signatures.each {
             def person = it.get(0);
             def pageNo = it.get(1);
             def x = it.get(2);
@@ -2120,7 +2414,7 @@ class PdfIntegrTests extends ControllerUnitTestMixin{
             def scaleX = it.get(4);
             def scaleY = it.get(5);
 
-            result.put(person, [new File(PdfHelper.getTemplatePath()+File.separator+"subscriptions"+File.separator+"signature1.jpg").toURI().toURL(), "", "signature", pageNo, x, y, scaleX, scaleY] as String[])
+            result.put(person, [new File(PdfHelper.getTemplatePath() + File.separator + "subscriptions" + File.separator + "signature1.jpg").toURI().toURL(), "", "signature", pageNo, x, y, scaleX, scaleY] as String[])
         }
         return result;
     }
