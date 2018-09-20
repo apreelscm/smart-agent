@@ -16,16 +16,23 @@
 
         <div>
             <label for="${prefix}[${seqNo}].documentNumber"><g:message code="identity.card.details"/></label>
-            <eumowy:textField name="${prefix}[${seqNo}].documentNumber" value="${representative?.documentNumber}" maxlength="20"
+            <eumowy:textField name="${prefix}[${seqNo}].documentNumber" value="${representative?.documentNumber}"
+                              maxlength="20"
                               validatable="${representative}" validateField="documentNumber"/>
         </div>
 
         <div class="acceptorIdDatesWrapper ${representative?.documentType == IdentityDocumentType.IDENTITY_CARD ?: 'hidden'} ${hasErrors(bean: representative, field: 'documentExpirationDate', 'errorSpan')} ${hasErrors(bean: representative, field: 'documentIssueDate', 'errorSpan')}">
-            <label for="${prefix}[${seqNo}].companyDocumentExpirationDate"><g:message code="document.expiration.label"/></label>
-            <g:textField id="${prefix}[${seqNo}].companyDocumentExpirationDate" name="${prefix}[${seqNo}].documentExpirationDate" value="${formatDate(format: 'yyyy-MM-dd', date: representative?.documentExpirationDate)}" maxlength="10" class="date-field date-future" required="required"/>
+            <label for="${prefix}[${seqNo}].companyDocumentExpirationDate"><g:message
+                    code="document.expiration.label"/></label>
+            <g:textField id="${prefix}[${seqNo}].companyDocumentExpirationDate"
+                         name="${prefix}[${seqNo}].documentExpirationDate"
+                         value="${formatDate(format: 'yyyy-MM-dd', date: representative?.documentExpirationDate)}"
+                         maxlength="10" class="date-field date-future" required="required"/>
 
             <label for="${prefix}[${seqNo}].companyDocumentIssueDate"><g:message code="document.issue.label"/></label>
-            <g:textField id="${prefix}[${seqNo}].companyDocumentIssueDate" name="${prefix}[${seqNo}].documentIssueDate" value="${formatDate(format: 'yyyy-MM-dd', date: representative?.documentIssueDate)}" maxlength="10" class="date-field date-past" required="required"/>
+            <g:textField id="${prefix}[${seqNo}].companyDocumentIssueDate" name="${prefix}[${seqNo}].documentIssueDate"
+                         value="${formatDate(format: 'yyyy-MM-dd', date: representative?.documentIssueDate)}"
+                         maxlength="10" class="date-field date-past" required="required"/>
         </div>
     </div>
 
@@ -49,7 +56,9 @@
                      checked="${(!data.dzialalnoscForma || data.isCompanyForm()) && representative?.verification?.name() == "BIRTH_DATE"}"/>
 
             <label for="${prefix}[${seqNo}].companyBirthDate"><g:message code="birth.date.country.label"/></label>
-            <g:textField id="${prefix}[${seqNo}].companyBirthDate" name="${prefix}[${seqNo}].birthDate" value="${formatDate(format: 'yyyy-MM-dd', date: representative?.birthDate)}" maxlength="10" class="date-field date-past"/>
+            <g:textField id="${prefix}[${seqNo}].companyBirthDate" name="${prefix}[${seqNo}].birthDate"
+                         value="${formatDate(format: 'yyyy-MM-dd', date: representative?.birthDate)}" maxlength="10"
+                         class="date-field date-past"/>
         </div>
     </div>
 
@@ -79,5 +88,27 @@
         <g:radio name="${prefix}[${seqNo}].isPolitician" value="false" required="required"
                  checked="${(!data.dzialalnoscForma || data.isCompanyForm()) && representative?.isPolitician == false}"/>
         <label for="${prefix}[${seqNo}].isPolitician"><g:message code="no"/></label>
+    </div>
+
+    <div class="isDirectPep ${hasErrors(bean: representative, field: 'isDirectPep', 'errorSpan')} ${representative?.isPolitician ?: 'hidden'}">
+        <g:hasErrors bean="${representative}" field="isDirectPep">
+            <p class="error-message"><g:message code="representative.option.required"/></p>
+        </g:hasErrors>
+
+        <g:radio name="${prefix}[${seqNo}].isDirectPep" value="true" required="required"
+                 checked="${(!data.dzialalnoscForma || data.isCompanyForm()) && representative?.isDirectPep == true}"/>
+        <label for="${prefix}[${seqNo}].isDirectPep">
+            <g:message code="representative.pep.direct"/>
+            <strong class="tooltip" title="${g.message(code: 'representative.pep.direct.description')}"><g:message
+                    code="representative.pep.description"/></strong>
+        </label>
+
+        <g:radio name="${prefix}[${seqNo}].isDirectPep" value="false" required="required"
+                 checked="${(!data.dzialalnoscForma || data.isCompanyForm()) && representative?.isDirectPep == false}"/>
+        <label for="${prefix}[${seqNo}].isDirectPep">
+            <g:message code="representative.pep.related"/>
+            <strong class="tooltip" title="${g.message(code: 'representative.pep.related.description')}"><g:message
+                    code="representative.pep.description"/></strong>
+        </label>
     </div>
 </div>

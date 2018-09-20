@@ -6,6 +6,7 @@
         $customRepresentatives = jQuery("#acceptorsPanel #customRepresentatives"),
         $representativesChangedManually = jQuery("#acceptorsPanel #isRepresentativesChangedManually"),
         $representativeDocumentType = jQuery("#representativesContainer input[type=radio][name$='documentType']"),
+        $representativeIsPolitician = jQuery("#representativesContainer input[type=radio][name$='isPolitician']"),
         $representativeVerification = jQuery("#representativesContainer input[type=radio][name$='verification']"),
         $representativePosition = jQuery("#representativesContainer select[name$='position']"),
         $additionalInfoSelect = jQuery("div#additionalInformationPanel select[name='dzialalnoscForma']"),
@@ -14,6 +15,7 @@
         $personData = jQuery("div#acceptorsPanel div.personData");
 
     attachDatepickers();
+    attachTooltips();
 
     disableFields($bisnodeRepresentatives);
     disableFields($customRepresentatives);
@@ -23,6 +25,7 @@
     $additionalInfoSelect.change(legalFormChanged);
     $representativePosition.change(onPositionChange);
     $representativeDocumentType.change(onDocumentTypeChange);
+    $representativeIsPolitician.change(onIsPoliticianChange);
     $representativeVerification.change(clearOtherDetail);
     $addAnotherAcceptorButton.click(showNextAcceptor);
 
@@ -66,6 +69,19 @@
             case 'PASSPORT':
                 acceptorIdDates.addClass('hidden');
                 break;
+        }
+    }
+
+    function onIsPoliticianChange() {
+        var $this = jQuery(this),
+            isDirectPep = $this.parents("div.acceptor").find('div.isDirectPep');
+
+        clearFields(isDirectPep);
+
+        if (this.value === 'true') {
+            isDirectPep.removeClass('hidden');
+        } else {
+            isDirectPep.addClass('hidden');
         }
     }
 
@@ -169,6 +185,12 @@
             if (maxDate) config.maxDate = maxDate;
 
             $input.datepicker(config);
+        });
+    }
+
+    function attachTooltips() {
+        $representativesContainer.find(".tooltip").tooltip({
+            'tooltipClass': 'representative-tooltip'
         });
     }
 

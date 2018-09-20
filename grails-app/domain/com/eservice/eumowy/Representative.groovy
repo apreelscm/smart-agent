@@ -46,6 +46,7 @@ class Representative implements Serializable {
     Integer votesPercentage
 
     Boolean isPolitician
+    Boolean isDirectPep
 
     static belongsTo = [Process]
 
@@ -86,6 +87,7 @@ class Representative implements Serializable {
         votesPercentage column: "PERCENT_VOTES"
 
         isPolitician column: "POLITICAL_POSITION"
+        isDirectPep column: "DIRECT_PEP"
     }
 
     static constraints = {
@@ -112,6 +114,7 @@ class Representative implements Serializable {
        overQuarterOfVotes(nullable: true)
        votesPercentage(nullable: true)
        isPolitician(nullable: true)
+       isDirectPep(nullable: true)
     }
 
     public String getFullNameWithSalutation() {
