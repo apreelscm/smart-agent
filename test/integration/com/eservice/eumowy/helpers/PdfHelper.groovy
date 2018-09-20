@@ -11,6 +11,7 @@ class PdfHelper {
     static String fontsPath = fileTemplatePath + File.separator + "fonts" + File.separator
 
     static String JULY_20TH_DAY_2018_DOCUMENTS_PATH = "20_07_2018/"
+    static String JULY_1_DAY_2018_DOCUMENTS_PATH = "01_07_2018/"
 
     static HashMap<String, String[]> insertSignatures(def signatures) {
         HashMap<String, String[]> result = new HashMap<String, String[]>();

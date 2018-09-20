@@ -289,10 +289,16 @@ class PdfIntegrTests extends ControllerUnitTestMixin {
 
     @Test
     void shouldGenerateDocumentAPUPZZSNT11004180720() {
+        given:
+        def subscriptions = [
+                ["PH", 1, 480, 75, 59, 28]
+        ]
+
         when:
         data.putAll(umowaOznaczonaFields())
         data.putAll(poziomOplatIWarunkiPlatnosciFields())
         data.putAll(specyfikacjaPoziomuOplatIWarunkowPlatnosciFields())
+        data.putAll(PdfHelper.insertSignatures(subscriptions))
 
         then:
         process(PdfHelper.JULY_20TH_DAY_2018_DOCUMENTS_PATH + "APUPZZSNT11.00418-07-20.pdf",
@@ -303,10 +309,16 @@ class PdfIntegrTests extends ControllerUnitTestMixin {
 
     @Test
     void shouldGenerateDocumentAPUPZZSNT21004180720() {
+        given:
+        def subscriptions = [
+                ["PH", 1, 260, 109, 59, 28]
+        ]
+
         when:
         data.putAll(umowaOznaczonaFields())
         data.putAll(poziomOplatIWarunkiPlatnosciFields())
         data.putAll(specyfikacjaPoziomuOplatIWarunkowPlatnosciFields())
+        data.putAll(PdfHelper.insertSignatures(subscriptions))
 
         then:
         process(PdfHelper.JULY_20TH_DAY_2018_DOCUMENTS_PATH + "APUPZZSNT21.00418-07-20.pdf",
@@ -319,11 +331,7 @@ class PdfIntegrTests extends ControllerUnitTestMixin {
     void shouldGenerateDocumentAPUPZZSNT31003180720() {
         given:
         def subscriptions = [
-                ["ACCEPTANT1", 4, 235, 490, 59, 28],
-                ["ACCEPTANT2", 4, 235, 440, 59, 28],
-                ["ACCEPTANT3", 4, 235, 390, 59, 28],
-                ["ACCEPTANT4", 4, 235, 340, 59, 28],
-                ["PH", 4, 190, 240, 59, 28]
+                ["PH", 1, 480, 103, 59, 28]
         ]
 
         when:
@@ -346,11 +354,7 @@ class PdfIntegrTests extends ControllerUnitTestMixin {
     void shouldGenerateDocumentAPUPZZSNT41003180720() {
         given:
         def subscriptions = [
-                ["ACCEPTANT1", 4, 235, 490, 59, 28],
-                ["ACCEPTANT2", 4, 235, 440, 59, 28],
-                ["ACCEPTANT3", 4, 235, 390, 59, 28],
-                ["ACCEPTANT4", 4, 235, 340, 59, 28],
-                ["PH", 4, 190, 240, 59, 28]
+                ["PH", 1, 260, 92, 59, 28]
         ]
 
         when:
@@ -374,11 +378,11 @@ class PdfIntegrTests extends ControllerUnitTestMixin {
     void shouldGenerateDocumentAPUW1006180720() {
         given:
         def subscriptions = [
-                ["ACCEPTANT1", 4, 235, 490, 59, 28],
-                ["ACCEPTANT2", 4, 235, 440, 59, 28],
-                ["ACCEPTANT3", 4, 235, 390, 59, 28],
-                ["ACCEPTANT4", 4, 235, 340, 59, 28],
-                ["PH", 4, 190, 240, 59, 28]
+                ["ACCEPTANT1", 2, 375, 272, 59, 28],
+                ["ACCEPTANT2", 2, 375, 232, 59, 28],
+                ["ACCEPTANT3", 2, 375, 192, 59, 28],
+                ["ACCEPTANT4", 2, 375, 152, 59, 28],
+                ["PH", 2, 460, 95, 59, 28]
         ]
 
         when:
@@ -403,11 +407,7 @@ class PdfIntegrTests extends ControllerUnitTestMixin {
     void shouldGenerateDocumentAPUWOOL1003180720() {
         given:
         def subscriptions = [
-                ["ACCEPTANT1", 4, 235, 490, 59, 28],
-                ["ACCEPTANT2", 4, 235, 440, 59, 28],
-                ["ACCEPTANT3", 4, 235, 390, 59, 28],
-                ["ACCEPTANT4", 4, 235, 340, 59, 28],
-                ["PH", 4, 190, 240, 59, 28]
+                ["PH", 1, 285, 380, 55, 24]
         ]
 
         when:
@@ -426,9 +426,15 @@ class PdfIntegrTests extends ControllerUnitTestMixin {
 
     @Test
     void shouldGenerateDocumentAPUWPON1002180720() {
+        given:
+        def subscriptions = [
+                ["PH", 1, 275, 125, 55, 24]
+        ]
+
         when:
         data.putAll(wykazTerminaliPOSObjetychObnizkaNajmuFields())
         data.putAll(markedDeliveryType())
+        data.putAll(PdfHelper.insertSignatures(subscriptions))
 
         then:
         process(PdfHelper.JULY_20TH_DAY_2018_DOCUMENTS_PATH + "APUWPON1.00218-07-20.pdf",
@@ -439,11 +445,17 @@ class PdfIntegrTests extends ControllerUnitTestMixin {
 
     @Test
     void shouldGenerateDocumentAPUWRWT1003180720() {
+        given:
+        def subscriptions = [
+                ["PH", 1, 260, 160, 55, 24]
+        ]
+
         when:
         data.putAll(wykazTerminaliPOSObjetychObnizkaNajmuFields())
         data.putAll(wykazTerminaliPOSFields())
         data.putAll(promObjFields())
         data.putAll(markedDeliveryType())
+        data.putAll(PdfHelper.insertSignatures(subscriptions))
 
         then:
         process(PdfHelper.JULY_20TH_DAY_2018_DOCUMENTS_PATH + "APUWRWT1.00318-07-20.pdf",
@@ -454,9 +466,15 @@ class PdfIntegrTests extends ControllerUnitTestMixin {
 
     @Test
     void shouldGenerateDocumentAPUWUD1002180720() {
+        given:
+        def subscriptions = [
+                ["PH", 1, 285, 180, 55, 24]
+        ]
+
         when:
         data.putAll(uslugiDodatkoweFields())
         data.putAll(markedDeliveryType())
+        data.putAll(PdfHelper.insertSignatures(subscriptions))
 
         then:
         process(PdfHelper.JULY_20TH_DAY_2018_DOCUMENTS_PATH + "APUWUD1.00218-07-20.pdf",
@@ -464,7 +482,6 @@ class PdfIntegrTests extends ControllerUnitTestMixin {
                 "APUWUD1.00218-07-20_out.pdf",
                 data)
     }
-
 
     @Test
     void APUPZT11000150305() { //AP/UPZT1/1.001/16-02-01
@@ -658,8 +675,11 @@ class PdfIntegrTests extends ControllerUnitTestMixin {
     void APAGFDF2005180701() { //AP-AG/F/DF/2.005/18-07-01
         //given
         def subscriptions = [
-                ["ACCEPTANT1", 2, 115, 335, 59, 28],
-                ["PH", 2, 230, 235, 59, 28]
+                ["ACCEPTANT1", 2, 80, 355, 59, 28],
+                ["ACCEPTANT2", 2, 145, 355, 59, 28],
+                ["ACCEPTANT3", 2, 80, 310, 59, 28],
+                ["ACCEPTANT4", 2, 145, 310, 59, 28],
+                ["PH", 2, 230, 250, 59, 28]
         ]
 
         //when
@@ -668,7 +688,9 @@ class PdfIntegrTests extends ControllerUnitTestMixin {
         data.putAll(PdfHelper.insertSignatures(subscriptions))
 
         //then
-        process("APAGFDF2.00518-07-01.pdf", "APAGFDF2.00518-07-01_out.pdf", data)
+        process(PdfHelper.JULY_1_DAY_2018_DOCUMENTS_PATH + "APAGFDF2.00518-07-01.pdf",
+                PdfHelper.JULY_1_DAY_2018_DOCUMENTS_PATH,
+                "APAGFDF2.00518-07-01_out.pdf", data)
     }
 
 
@@ -837,8 +859,11 @@ class PdfIntegrTests extends ControllerUnitTestMixin {
     void APAGFDP2005161011() { //AP-AG/F/DP/2.005/16-10-11
         def data = [:]
         def subscriptions = [
-                ["ACCEPTANT1", 1, 263, 111, 59, 28],
-                ["PH", 1, 90, 65, 59, 28]
+                ["ACCEPTANT1", 1, 170, 120, 54, 24],
+                ["ACCEPTANT2", 1, 235, 120, 54, 24],
+                ["ACCEPTANT3", 1, 315, 120, 54, 24],
+                ["ACCEPTANT4", 1, 405, 120, 54, 24],
+                ["PH", 1, 95, 65, 59, 28]
         ]
         data.putAll(insertSignatures2(subscriptions))
         process("APAGFDP2.00516-10-11.pdf", "APAGFDP2.00516-10-11_out.pdf", data);
@@ -851,7 +876,8 @@ class PdfIntegrTests extends ControllerUnitTestMixin {
                 ["PH", 1, 90, 100, 59, 28]
         ]
         data.putAll(insertSignatures2(subscriptions))
-        process("APFDS2.00116-10-11.pdf", "APFDS2.00116-10-11_out.pdf", data);
+        process(PdfHelper.JULY_1_DAY_2018_DOCUMENTS_PATH + "APFDS2.00116-10-11.pdf",
+                "APFDS2.00116-10-11_out.pdf", data);
     }
 
     @Test
@@ -934,7 +960,6 @@ class PdfIntegrTests extends ControllerUnitTestMixin {
 
         data.put("wydrukGrafikiCena", ["53"] as String[]);
         data.put("dzialaniaMatematyczneCena", ["53"] as String[]);
-        data.put("pierwszaSesjaCena", ["53"] as String[]);
         data.put("walutaObcaCena", ["53"] as String[]);
         data.put("oplataZaUruchomienieDCC", ["200"] as String[]);
         data.put("mudCena", ["53"] as String[]);
@@ -1165,7 +1190,6 @@ class PdfIntegrTests extends ControllerUnitTestMixin {
         data.put("wydrukGrafikiCena", ["53"] as String[]);
         data.put("dzialaniaMatematyczneCena", ["53"] as String[]);
         data.put("systemKasowyCena", ["53"] as String[]);
-        data.put("pierwszaSesjaCena", ["53"] as String[]);
         data.put("weryfikacjaPINCena", ["53"] as String[]);
         data.put("punktAkceptacjaKart1", ["To jest pełna czterdziestoczteroliterowa naz"] as String[]);
         data.put("adresAkceptacjaKart1", ["1234567890123456789012345678901234567890123456789012345"] as String[]);
@@ -1219,7 +1243,6 @@ class PdfIntegrTests extends ControllerUnitTestMixin {
         data.put("wydrukGrafikiCena", ["53"] as String[]);
         data.put("dzialaniaMatematyczneCena", ["53"] as String[]);
         data.put("systemKasowyCena", ["53"] as String[]);
-        data.put("pierwszaSesjaCena", ["53"] as String[]);
         data.put("weryfikacjaPINCena", ["53"] as String[]);
         data.put("punktAkceptacjaKart1", ["To jest pełna czterdziestoczteroliterowa naz"] as String[]);
         data.put("adresAkceptacjaKart1", ["1234567890123456789012345678901234567890123456789012345"] as String[]);
@@ -1267,7 +1290,6 @@ class PdfIntegrTests extends ControllerUnitTestMixin {
         data.put("wydrukGrafikiCena", ["53"] as String[]);
         data.put("dzialaniaMatematyczneCena", ["53"] as String[]);
         data.put("systemKasowyCena", ["53"] as String[]);
-        data.put("pierwszaSesjaCena", ["53"] as String[]);
         data.put("weryfikacjaPINCena", ["53"] as String[]);
         data.put("punktAkceptacjaKart1", ["To jest pełna czterdziestoczteroliterowa naz"] as String[]);
         data.put("adresAkceptacjaKart1", ["1234567890123456789012345678901234567890123456789012345"] as String[]);
@@ -1569,7 +1591,6 @@ class PdfIntegrTests extends ControllerUnitTestMixin {
         data.put("pierwszaSecjaCena", ["53"] as String[]);
         data.put("walutaObcaCena", ["53"] as String[]);
         data.put("mudCena", ["53"] as String[]);
-        data.put("pierwszaSesjaCena", ["53"] as String[]);
         data.put("informacjaHandlowaNie", ["true", "", "checkbox"] as String[]);
         data.put("okresLojalnosciowy", ["3"] as String[]);
         data.putAll(prepareAggrementsFields())
@@ -1614,7 +1635,6 @@ class PdfIntegrTests extends ControllerUnitTestMixin {
         data.put("pierwszaSecjaCena", ["53"] as String[]);
         data.put("walutaObcaCena", ["53"] as String[]);
         data.put("mudCena", ["53"] as String[]);
-        data.put("pierwszaSesjaCena", ["53"] as String[]);
         data.put("informacjaHandlowaNie", ["true", "", "checkbox"] as String[]);
         data.put("okresLojalnosciowy", ["3"] as String[]);
         data.putAll(prepareAggrementsFields())

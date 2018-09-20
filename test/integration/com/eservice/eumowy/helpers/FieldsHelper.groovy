@@ -10,7 +10,6 @@ class FieldsHelper {
         data.put("oplataZaPlatnoscWInnejWalucie", ["123"] as String[]);
         data.put("oplataZaUruchomienieDCC", ["123"] as String[]);
         data.put("mudCena", ["123"] as String[]);
-        data.put("pierwszaSesjaCena", ["123"] as String[]);
         data.put("obslugaEkonomicznyCena", ["123"] as String[]);
 
         return data;
