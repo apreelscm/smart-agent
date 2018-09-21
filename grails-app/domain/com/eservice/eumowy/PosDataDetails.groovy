@@ -88,6 +88,7 @@ class PosDataDetails implements Serializable {
 	Integer czytnikKartIlosc
 	BigDecimal czytnikKartCena
     String kartaSimTyp
+    BigDecimal kartaSimCena
     Integer kartaSimIlosc
 
 	String inneWyposazenie
@@ -180,6 +181,7 @@ class PosDataDetails implements Serializable {
 		kartaPodarunkowa column: "gift_card"
 		pinPadTyp column: "pin_pad_type"
         kartaSimTyp column: "sim_card_type"
+        kartaSimCena column: "sim_card_price"
         kartaSimIlosc column: "sim_card_count"
 		pinPadIlosc column: "pin_pad_count"
 		pinPadCena column: "pin_pad_price"
@@ -297,6 +299,7 @@ class PosDataDetails implements Serializable {
 		imieInformatykStatyczna(nullable:true)
 		nazwiskoInformatykStatyczna(nullable:true)
         kartaSimTyp(nullable:true)
+        kartaSimCena(nullable:true)
         kartaSimIlosc(nullable:true)
     }
 

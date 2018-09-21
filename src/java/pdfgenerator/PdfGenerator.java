@@ -124,7 +124,7 @@ public class PdfGenerator {
 			AcroFields form = stamp.getAcroFields();
 			for (Map.Entry<String, String[]> dataEntry : dataMap.entrySet()){
 				
-				if (dataEntry.getValue().length > 1 && dataEntry.getValue()[1].isEmpty() == false){
+				if (dataEntry.getValue().length > 1 && !dataEntry.getValue()[1].isEmpty()){
 					form.setFieldProperty(dataEntry.getKey(), "textsize", Float.valueOf(dataEntry.getValue()[1]), null);
 				}
 
@@ -175,10 +175,12 @@ public class PdfGenerator {
 							Image img = Image.getInstance(new URL(dataEntry.getValue()[0]));
 							
 							PdfContentByte content = stamp.getOverContent(pageNo);
-							
-							img.setAbsolutePosition(x,y);
-							img.scaleAbsolute(xScale,yScale);
-							content.addImage(img);
+
+							if (content != null) {
+								img.setAbsolutePosition(x, y);
+								img.scaleAbsolute(xScale, yScale);
+								content.addImage(img);
+							}
 						}
 						catch (Exception e) {
 							LOG.info("Error while adding signature to document! URI Template Path: " + urlTemplatePath );

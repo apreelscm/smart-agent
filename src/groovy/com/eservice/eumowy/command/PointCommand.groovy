@@ -114,7 +114,6 @@ class PointCommand implements Serializable {
 	Date planowanaDataInstalacji
 	String uwagiDodatkowe
 	
-	Boolean preautoryzacja
 	Boolean brakFunkcjiZwrotu
 	Boolean zwrotNaHaslo
 	Boolean analizaZbioru
@@ -137,6 +136,7 @@ class PointCommand implements Serializable {
 	
 	// polskie nazwy
     String kartaSimTyp
+    BigDecimal kartaSimCena
     Integer kartaSimIlosc
 	String routerTyp
 	Integer routerIlosc
@@ -359,7 +359,6 @@ class PointCommand implements Serializable {
 
 		bazaIlosc(nullable:true,  shared: "number")
 		uwagiDodatkowe(nullable:true)
-		preautoryzacja(nullable:true)
 		brakFunkcjiZwrotu(nullable:true)
 		zwrotNaHaslo(nullable:true)
 		analizaZbioru(nullable:true)
@@ -384,6 +383,7 @@ class PointCommand implements Serializable {
 		teleKodzik(nullable:true)
 		kartaPodarunkowa(nullable:true)
         kartaSimTyp(nullable:true)
+        kartaSimCena(nullable: true, shared: "number")
         kartaSimIlosc(nullable: true, shared: "natural")
 		routerTyp(nullable:true)
 		routerIlosc(nullable:true,  shared: "natural")

@@ -137,7 +137,6 @@ class ProcessCommand implements Serializable {
 //    dodatkoweUslugi2
     String wydrukGrafikiCena = DEFAULT_VALUE
     String dzialaniaMatematyczneCena = DEFAULT_VALUE
-    String pierwszaSesjaCena = DEFAULT_VALUE
 
 //    dodatkoweUslugiMud - 
     String mudCena = DEFAULT_VALUE
@@ -555,8 +554,6 @@ class ProcessCommand implements Serializable {
 
         wydrukGrafikiCena(nullable:true, blank:false,  validator: { value, cmd, errors -> NumberValidator.validate(value, cmd, errors, propertyName)})
         dzialaniaMatematyczneCena(nullable:true, blank:false,  validator: { value, cmd, errors -> NumberValidator.validate(value, cmd, errors, propertyName)})
-
-        pierwszaSesjaCena(nullable: true, blank: true,  validator: { value, cmd, errors -> NumberValidator.validate(value, cmd, errors, propertyName)})
 
         akceptantKontaktUlicaTytul(nullable: true, blank: true)
         akceptantKontaktUlica(nullable: false, blank: false, shared: "alphanumeric", validator: { value, cmd, errors ->

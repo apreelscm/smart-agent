@@ -15,11 +15,6 @@
         <div style="float: left; padding-right: 2em;">
             <p class="bold"><g:message code="panel.newpoint.terminaloptions.paymentoptions"/></p>
             <ul class="table-list vertical-center">
-                <li><label for="${panelType}[${id}].preauthorization"><g:checkBox
-                        name="${panelType}[${id}].preautoryzacja" id="${panelType}[${id}].preauthorization"
-                        value="${pointData?.preautoryzacja}"/><g:message
-                        code="panel.newpoint.terminaloptions.paymentoptions.preauthorization"/></label></li>
-
                 <li><label for="${panelType}[${id}].noreturnfunction"><g:checkBox
                         name="${panelType}[${id}].brakFunkcjiZwrotu" id="${panelType}[${id}].noreturnfunction"
                         value="${pointData?.brakFunkcjiZwrotu}"/><g:message

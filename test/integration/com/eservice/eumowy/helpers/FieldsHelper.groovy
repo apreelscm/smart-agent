@@ -10,7 +10,6 @@ class FieldsHelper {
         data.put("oplataZaPlatnoscWInnejWalucie", ["123"] as String[]);
         data.put("oplataZaUruchomienieDCC", ["123"] as String[]);
         data.put("mudCena", ["123"] as String[]);
-        data.put("pierwszaSesjaCena", ["123"] as String[]);
         data.put("obslugaEkonomicznyCena", ["123"] as String[]);
 
         return data;
@@ -39,27 +38,27 @@ class FieldsHelper {
         data.put("dataPoczatkuUzywaniaPOZ", ["2014-08-01"] as String[]);
         data.put("dataKoncaUzywaniaPOZ", ["2014-08-30"] as String[]);
 
-        data.put("numerPOSA", ["123"] as String[]);
-        data.put("numerPOSB", ["123"] as String[]);
-        data.put("numerPOSC", ["123"] as String[]);
-        data.put("numerPOSD", ["123"] as String[]);
-        data.put("numerPOSE", ["123"] as String[]);
-        data.put("numerPOSF", ["123"] as String[]);
-        data.put("numerPOSG", ["123"] as String[]);
-        data.put("numerPOSH", ["123"] as String[]);
-        data.put("numerPOSI", ["123"] as String[]);
-        data.put("numerPOSJ", ["123"] as String[]);
+        data.put("numerPOS0", ["123"] as String[]);
+        data.put("numerPOS1", ["123"] as String[]);
+        data.put("numerPOS2", ["123"] as String[]);
+        data.put("numerPOS3", ["123"] as String[]);
+        data.put("numerPOS4", ["123"] as String[]);
+        data.put("numerPOS5", ["123"] as String[]);
+        data.put("numerPOS6", ["123"] as String[]);
+        data.put("numerPOS7", ["123"] as String[]);
+        data.put("numerPOS8", ["123"] as String[]);
+        data.put("numerPOS9", ["123"] as String[]);
 
-        data.put("oplataPOSA", ["123"] as String[]);
-        data.put("oplataPOSB", ["123"] as String[]);
-        data.put("oplataPOSC", ["123"] as String[]);
-        data.put("oplataPOSD", ["123"] as String[]);
-        data.put("oplataPOSE", ["123"] as String[]);
-        data.put("oplataPOSF", ["123"] as String[]);
-        data.put("oplataPOSG", ["123"] as String[]);
-        data.put("oplataPOSH", ["123"] as String[]);
-        data.put("oplataPOSI", ["123"] as String[]);
-        data.put("oplataPOSJ", ["123"] as String[]);
+        data.put("oplataPOS0", ["123"] as String[]);
+        data.put("oplataPOS1", ["123"] as String[]);
+        data.put("oplataPOS2", ["123"] as String[]);
+        data.put("oplataPOS3", ["123"] as String[]);
+        data.put("oplataPOS4", ["123"] as String[]);
+        data.put("oplataPOS5", ["123"] as String[]);
+        data.put("oplataPOS6", ["123"] as String[]);
+        data.put("oplataPOS7", ["123"] as String[]);
+        data.put("oplataPOS8", ["123"] as String[]);
+        data.put("oplataPOS9", ["123"] as String[]);
 
         return data;
     }
@@ -106,6 +105,13 @@ class FieldsHelper {
         HashMap<String, String[]> data = new HashMap<String, String[]>();
         data.put("srednia_sprzedaz_doladowan", ["12345"] as String[]);
         data.put("srednia_sprzedaz_doladowan_slownie", ["To jest srednia sprzedaz pisana slownie"] as String[]);
+
+        return data;
+    }
+
+    static HashMap<String, String[]> promObjFields(){
+        HashMap<String, String[]> data = new HashMap<String, String[]>();
+        data.put("promObjNaj1", ["12"] as String[]);
 
         return data;
     }
@@ -195,11 +201,17 @@ class FieldsHelper {
         data.put("ifOplataVISA", ["5"] as String[]);
         data.put("ifOplataMasterCard", ["5"] as String[]);
         data.put("ifOplataDinersClub", ["5"] as String[]);
-        data.put("upustCashback", ["5"] as String[]);
+        data.put("cashbackUpust", ["5"] as String[]);
         data.put("dccKartyZagranicznePr", ["5"] as String[]);
         data.put("ifOplataPKOPB", ["5"] as String[]);
 
         return data
+    }
+
+    static HashMap<String, String[]> markedDeliveryType(){
+        HashMap<String, String[]> data = new HashMap<String, String[]>();
+        data.put("dyspozycjaPHONE", ["_______"] as String[]);
+        return data;
     }
 
     public static HashMap<String, String[]> poziomOplatIWarunkiPlatnosciFields() {
