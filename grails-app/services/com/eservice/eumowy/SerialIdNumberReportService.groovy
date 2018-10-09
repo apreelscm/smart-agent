@@ -5,6 +5,8 @@ import com.eservice.eumowy.serialidreport.SerialIdReportCreator
 import com.eservice.eumowy.serialidreport.SerialIdRow
 import grails.transaction.Transactional
 import org.apache.poi.ss.usermodel.Workbook
+import org.joda.time.DateTime
+import org.joda.time.DateTimeZone
 import org.joda.time.LocalDateTime
 
 class SerialIdNumberReportService {
@@ -12,8 +14,9 @@ class SerialIdNumberReportService {
     def messageSource
 
     public Workbook getReport() {
-        Date start = LocalDateTime.now().withTime(0, 0, 0, 0).toDate()
-        Date end = LocalDateTime.now().withTime(23, 59, 59, 999).toDate()
+        DateTime now = DateTime.now(DateTimeZone.getDefault())
+        Date start = now.withTime(0, 0, 0, 0).toDate()
+        Date end = now.withTime(23, 59, 59, 0).toDate()
         List<Process> processes = Process.createCriteria().list {
             createAlias("client", "c")
             between("acceptanceDate", start, end)
