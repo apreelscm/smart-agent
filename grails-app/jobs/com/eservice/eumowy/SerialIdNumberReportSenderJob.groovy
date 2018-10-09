@@ -8,7 +8,7 @@ class SerialIdNumberReportSenderJob {
     def emailService
 
     static triggers = {
-        cron name: 'serialIdNumberReportSenderTrigger', cronExpression: '0 59 23 1/1 * ? *'
+        cron name: 'serialIdNumberReportSenderTrigger', cronExpression: '0 59 21 1/1 * ? *'
     }
 
     def execute() {
