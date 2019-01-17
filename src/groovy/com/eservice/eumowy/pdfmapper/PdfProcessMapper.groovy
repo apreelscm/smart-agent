@@ -206,12 +206,6 @@ class PdfProcessMapper extends AbstractPdfMapper{
             dataMap.put("mudCena", getPdfValue("-"))
         }
 
-        if(processInstance.hasData("pierwszaSesjaCena")) {
-            dataMap.put("czyUslugaPrzelew", checkedCheckbox)
-        } else {
-            dataMap.put("pierwszaSesjaCena", getPdfValue("-"))
-        }
-
         if(processInstance.hasData("oplataZaPlatnoscWInnejWalucie") || processInstance.hasData("oplataZaUruchomienieDCC")) {
             dataMap.put("czyUslugaDcc", checkedCheckbox)
         } else {
@@ -471,10 +465,6 @@ class PdfProcessMapper extends AbstractPdfMapper{
     private mapTytulPlatnosciCenaProcess(def data, def pd, def key, def value){
         //TODO co tutaj zrobic, bo to pole zostalo usuniete???
 //        mapFieldWithStartDate(data, pd, key, value, "tytulPlatnosciData");
-    }
-
-    private mapPierwszaSesjaCenaProcess(def data, def pd, def key, def value){
-        mapFieldWithStartDate(data, pd, key, value, "pierwszaSesjaData");
     }
 
     private mapSystemKasowyCenaProcess(def data, def pd, def key, def value){

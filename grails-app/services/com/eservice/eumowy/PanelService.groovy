@@ -197,6 +197,8 @@ class PanelService {
 
         pointData.hasDodaniePrepaid = cmd.hasDodaniePrepaid
 
+        pointData.kartaSimCena =  calculatorService.getDecimalCalcProperty(calc,"E_OPLATA_SIM")
+
         cmd.defaultPointData = pointData
         cmd.czyGift = cbdService.czyGift(cmd.nip)
     }
@@ -215,7 +217,6 @@ class PanelService {
     def getTabelaUslugDodatkowych(ProcessCommand cmd, def calc ) {
         cmd.wydrukGrafikiCena = calculatorService.getCalcProperty(calc,"OPLATA_LOGO")
         cmd.dzialaniaMatematyczneCena = calculatorService.getCalcProperty(calc,"OPLATA_KALKULATOR")
-        cmd.pierwszaSesjaCena = nullify(cmd.pierwszaSesjaCena)
         cmd.mudCena = nullify(cmd.mudCena)
     }
 
@@ -223,7 +224,6 @@ class PanelService {
     def getDodatkoweUslugi2(ProcessCommand cmd, def calc) {
         cmd.wydrukGrafikiCena = calculatorService.getCalcProperty(calc,"OPLATA_LOGO")
         cmd.dzialaniaMatematyczneCena = calculatorService.getCalcProperty(calc,"OPLATA_KALKULATOR")
-        cmd.pierwszaSesjaCena = nullify(cmd.pierwszaSesjaCena)
         cmd.mudCena = nullify(cmd.mudCena)
     }
 

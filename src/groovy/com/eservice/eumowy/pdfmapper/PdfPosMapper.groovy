@@ -66,10 +66,6 @@ class PdfPosMapper extends AbstractPdfMapper{
         }
     }
 
-    private mapPreautoryzacjaPosDataDetails(def data, def posesData, def key, def value) {
-        addCheckbox(data, key, true, value);
-    }
-
     private mapBrakFunkcjiZwrotuPosDataDetails(def data, def posesData, def key, def value) {
         addCheckbox(data, key, true, value);
     }

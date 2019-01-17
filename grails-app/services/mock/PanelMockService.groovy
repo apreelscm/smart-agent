@@ -146,7 +146,6 @@ class PanelMockService {
     def getDodatkoweUslugi2(ProcessCommand cmd) {
         cmd.wydrukGrafikiCena = "1.40"
         cmd.dzialaniaMatematyczneCena = "0.32"
-        cmd.pierwszaSesjaCena = "1.34"
     }
 
     def getDodatkoweUslugiMud(ProcessCommand cmd) {

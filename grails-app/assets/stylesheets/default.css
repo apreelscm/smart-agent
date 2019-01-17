@@ -1648,3 +1648,8 @@ header.belka-glowna {
     margin-bottom: 15px;
     padding-left: 10px;
 }
+
+.representative-tooltip {
+    white-space: pre-line;
+    max-width: 980px;
+}
