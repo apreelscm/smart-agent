@@ -30,9 +30,7 @@
                 <td><dict:simCardSelect name="${panelType}[${id}].kartaSimTyp" id="${panelType}[${id}].simCardType"
                                         value="${pointData?.kartaSimTyp}" class="kartaSimTyp"
                                         style="width: 163px;"/></td>
-                <td><eumowy:textField name="${panelType}[${id}].kartaSimCena" id="${panelType}[${id}].simCardPrice"
-                                      class="float-number kartaSimCena" style="width: 50px"
-                                      value="${pointData?.kartaSimCena}"/> <g:message code="panel.polish.currency"/></td>
+                <td></td>
                 <td><eumowy:textField name="${panelType}[${id}].kartaSimIlosc" id="${panelType}[${id}].simCardCount"
                                       class="integer-number kartaSimIlosc" style="width: 50px"
                                       value="${pointData?.kartaSimIlosc}"/> <g:message code="panel.unit"/></td>

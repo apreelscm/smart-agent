@@ -206,11 +206,9 @@ function setFieldPropertiesInDodatkoweWyposazenie(element, value, setForPosPanel
         if(isRequired){
             panel.find("select.kartaSimTyp").attr("required", true);
             panel.find("input.kartaSimIlosc").attr("required", true);
-            panel.find("input.kartaSimCena").attr("required", true);
         } else {
             panel.find("select.kartaSimTyp").removeAttr("required", true).removeClass("error");
             panel.find("input.kartaSimIlosc").removeAttr("required", true).removeClass("error");
-            panel.find("input.kartaSimCena").removeAttr("required", true).removeClass("error");
         }
     }
 }
