@@ -181,7 +181,7 @@ class EmailService {
     }
 
     private def sendMail(EmailTemplates emailTemplate, def recipients, def subjectParams, def bodyParams, List<EmailAttachment> attachments) {
-        log.info "Sending ${emailTemplate.name.name()}, to: ${recipients}, subjectParams: ${subjectParams}, bodyParams: ${bodyParams}, attachments count: ${attachments.size()}"
+        log.info "Sending ${emailTemplate.name.name()}, to: ${recipients}, subjectParams: ${subjectParams}, bodyParams: ${bodyParams}, attachments count: ${attachments?.size() ?: 0}"
 
         attachments.each { log.info("Attachment filename: ${it.name}") }
 
