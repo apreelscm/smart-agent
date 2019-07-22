@@ -11,7 +11,8 @@ import java.text.SimpleDateFormat
 
 class SerialIdReportCreator {
     private static final String[] HEADERS = ["serialid.report.header.nip", "serialid.report.header.name", "serialid.report.header.ph",
-                                             "serialid.report.header.representative.name", "serialid.report.header.representative.document"]
+                                             "serialid.report.header.representative.name", "serialid.report.header.representative.document",
+                                             "serialid.report.header.representative.expiration", "serialid.report.header.representative.issue"]
     private static final int TITLE_HEADER_HEIGHT = 2
     private static final SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat("dd-MM-yyyy")
 
