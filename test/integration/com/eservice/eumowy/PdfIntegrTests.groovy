@@ -394,6 +394,15 @@ class PdfIntegrTests extends ControllerUnitTestMixin {
         data.putAll(wykazTerminaliPOSFields())
         data.putAll(markedDeliveryType())
         data.putAll(uslugiDodatkoweFields())
+        data.put("umowaNieOzn", ["true", "", "checkbox"] as String[]);
+        data.put("czyUslugaLogo", ["true", "", "checkbox"] as String[]);
+        data.put("czyUslugaLogo", ["true", "", "checkbox"] as String[]);
+        data.put("czyUslugaKalkulator", ["true", "", "checkbox"] as String[]);
+        data.put("czyUslugaDcc", ["true", "", "checkbox"] as String[]);
+        data.put("czyUslugaMUD", ["true", "", "checkbox"] as String[]);
+        data.put("obslugaPrestiz", ["true", "", "checkbox"] as String[]);
+        data.put("obslugaKomfort", ["true", "", "checkbox"] as String[]);
+        data.put("obslugaEkonomiczny", ["true", "", "checkbox"] as String[]);
         data.putAll(PdfHelper.insertSignatures(subscriptions))
 
         then:

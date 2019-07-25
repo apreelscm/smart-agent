@@ -87,6 +87,7 @@ class FieldsHelper {
 
     public static HashMap<String, String[]> umowaOznaczonaFields() {
         HashMap<String, String[]> data = new HashMap<String, String[]>();
+        data.put("umowaOzn", ["true", "", "checkbox"] as String[]);
         data.put("umowaOznOd", ["2014-08-01"] as String[]);
         data.put("umowaOznDo", ["2014-08-30"] as String[]);
 
