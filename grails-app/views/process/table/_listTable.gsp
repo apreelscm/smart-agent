@@ -4,6 +4,7 @@
     <thead>
         <tr>
             <g:sortableColumn property="id"  title="${message(code: 'process.id.label')}" params="[filterStatus:filterStatus,filterObserved:filterObserved,filterNip:filterNip,filterPhNo:filterPhNo,filterDateFrom:filterDateFrom,filterDateTo:filterDateTo]"/>
+            <g:sortableColumn property="calcNumber"  title="${message(code: 'calculator.id.label')}" params="[filterStatus:filterStatus,filterObserved:filterObserved,filterNip:filterNip,filterPhNo:filterPhNo,filterDateFrom:filterDateFrom,filterDateTo:filterDateTo]"/>
             <g:sortableColumn property="lastUpdated"  title="${message(code: 'last.updated.label')}" params="[filterStatus:filterStatus,filterObserved:filterObserved,filterNip:filterNip,filterPhNo:filterPhNo,filterDateFrom:filterDateFrom,filterDateTo:filterDateTo]"/>
             <g:sortableColumn property="client.nip"  title="${message(code: 'client.list.nip.label')}" params="[filterStatus:filterStatus,filterObserved:filterObserved,filterNip:filterNip,filterPhNo:filterPhNo,filterDateFrom:filterDateFrom,filterDateTo:filterDateTo]"/>
             <g:sortableColumn property="client.name"  title="${message(code: 'client.name.label')}" params="[filterStatus:filterStatus,filterObserved:filterObserved,filterNip:filterNip,filterPhNo:filterPhNo,filterDateFrom:filterDateFrom,filterDateTo:filterDateTo]"/>
@@ -23,10 +24,11 @@
     <g:each in="${processInstanceList}" status="i" var="processInstance">
         <tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
             <td class="tableCell" style="word-wrap:break-word;"><g:link action="show" id="${processInstance.id}" params="[filterStatus:filterStatus,filterObserved:filterObserved,filterNip:filterNip,filterPhNo:filterPhNo,filterDateFrom:filterDateFrom,filterDateTo:filterDateTo,sort:sort,order:order,max:max,offset:offset]">${fieldValue(bean: processInstance, field: "stringId")}</g:link></td>
+            <td class="tableCell">${processInstance.calcNumber != "-1" ? processInstance.calcNumber : "n/d"}</td>
             <td class="tableCell"><g:formatDate date="${processInstance.lastUpdated}" format="yyyy-MM-dd HH:mm"/></td>
             <td class="tableCell">${fieldValue(bean: processInstance.client ?: null, field: "nip")}</td>
             <td class="tableCell" style="word-wrap: break-word;">${fieldValue(bean: processInstance.client ?: null, field: "name")}</td>
-            <td class="tableCell">${fieldValue(bean: processInstance, field: "saleSection")}
+            <td class="tableCell">${fieldValue(bean: processInstance, field: "saleSection")}</td>
             <td class="tableCell">${fieldValue(bean: processInstance, field: "stringPhNumber")}</td>
             <td class="tableCell">${fieldValue(bean: processInstance, field: "phFirstName")}</td>
             <td class="tableCell">${fieldValue(bean: processInstance, field: "phSurname")}</td>
