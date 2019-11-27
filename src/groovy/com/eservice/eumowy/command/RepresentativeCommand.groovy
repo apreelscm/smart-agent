@@ -47,7 +47,7 @@ class RepresentativeCommand implements Serializable{
                     "representative.option.required")
         })
 
-        pesel(nullable: true, shared: "number", validator: {value, cmd, errors ->
+        pesel(nullable: true, validator: {value, cmd, errors ->
             return AcceptorVerification.PESEL.equals(cmd.verification) ? NumberValidator.validatePesel(value, cmd, errors, "pesel") : true
         })
 
