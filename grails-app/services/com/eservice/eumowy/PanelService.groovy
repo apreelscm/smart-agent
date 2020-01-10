@@ -636,8 +636,8 @@ class PanelService {
         cmd.odpUzyTermSzt = result2?.ile ?: ""
         //powinno przyjsc cbd, gdy po stronie eService beda zaimplementowane zmiany
         cmd.odpUzyPpSzt = ""
-        cmd.odpUzyTermMies = setAtLeastAs(cmd.odpUzyTermMies,calculatorService.getCalcProperty(calc,"CENA_NAJMU"))
-        cmd.odpUzyTermCalc = calculatorService.getCalcProperty(calc,"CENA_NAJMU")
+        cmd.odpUzyTermMies = setAtLeastAs(cmd.odpUzyTermMies,calculatorService.getDecimalCalcProperty(calc,"CENA_NAJMU"))
+        cmd.odpUzyTermCalc = calculatorService.getDecimalCalcProperty(calc,"CENA_NAJMU")
 
         //nie mniej niz z kalkulatora powinno byc
         cmd.odpUzyPpMies = ""
