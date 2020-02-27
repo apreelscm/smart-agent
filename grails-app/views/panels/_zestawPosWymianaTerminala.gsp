@@ -234,7 +234,7 @@
     }
 
     function isCalculatorRequiredForPinpad(terminalNumber) {
-        var terminalsFirstNumbers = ['288', '258', '26', '256', '280', '27', '287'];
+        var terminalsFirstNumbers = ['288', '289', '258', '26', '256', '280', '27', '287', '297'];
 
         return isCalculatorRequired(terminalsFirstNumbers, terminalNumber);
     }
