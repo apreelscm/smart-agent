@@ -311,6 +311,12 @@ class PdfProcessMapper extends AbstractPdfMapper{
                 return
             }
 
+            //kwoty bez suffixu (tam, gdzie suffix jest podany w szablonie na sztywno)
+            if (processDataItem.name.endsWith('Nr')) {
+                formatDoubleValue(data, processDataItem)
+                return
+            }
+
             def methodName = "map" + processDataItem.name.capitalize()+"Process"
             if (isMappingMethodExists(methodName)) {
                 this."${methodName}"(data, processData, processDataItem.name, processDataItem.value)
@@ -454,12 +460,24 @@ class PdfProcessMapper extends AbstractPdfMapper{
         data.put("akceptantNip", [value] as String[]);
     }
 
-    private mapWydrukGrafikiCenaProcess(def data, def pd, def key, def value){
-        mapFieldWithStartDate(data, pd, key, value, "wydrukGrafikiData");
+    private mapWydrukGrafikiCenaProcess(def data, def pd, def key, def value) {
+        if (value != null && !EMPTY_VALUES.contains(value)) {
+            data.put(key, [formatDoubleValue(value.toDouble()) + ' zł'] as String[])
+        }
+        mapFieldWithStartDateWithoutSettingValue(data, pd, key, value, "wydrukGrafikiData");
     }
 
-    private mapDzialaniaMatematyczneCenaProcess(def data, def pd, def key, def value){
-        mapFieldWithStartDate(data, pd, key, value, "dzialaniaMatematyczneData");
+    private mapDzialaniaMatematyczneCenaProcess(def data, def pd, def key, def value) {
+        if (value == null && EMPTY_VALUES.contains(value)) {
+            return
+        }
+
+        if (value == '0') {
+            data.put('dzialaniaMatematyczneCenaTxt', ['ujęta w cenie najmu'] as String[])
+        } else {
+            data.put(key, [formatDoubleValue(value.toDouble()) + ' zł'] as String[])
+        }
+        mapFieldWithStartDateWithoutSettingValue(data, pd, key, value, "dzialaniaMatematyczneData");
     }
 
     private mapTytulPlatnosciCenaProcess(def data, def pd, def key, def value){
@@ -476,7 +494,12 @@ class PdfProcessMapper extends AbstractPdfMapper{
     }
 
     private mapObslugaEkonomicznyCenaProcess(def data, def pd, def key, def value){
-        data.put(key, [value] as String[])
+        if (value == '0') {
+            data.put('obslugaEkonomicznyCenaTxt', ['ujęta w cenie najmu'] as String[])
+        } else {
+            data.put(key, [formatDoubleValue(value.toDouble()) + ' zł'] as String[])
+        }
+
         //pole inaczej nazywa sie na pdfach, inaczej w calej reszcie stad ponizsza linijka
         mapFieldWithStartDate(data, pd, "czasObslugiCena", value, "czasObslugiData");
     }
@@ -665,8 +688,20 @@ class PdfProcessMapper extends AbstractPdfMapper{
         if (value == null && calculatorService != null && "NIE".equals(calculatorService.getCalcProperty(calc,'CZY_DCC'))){
             data.put('oplataZaUruchomienieDCC', ['-'] as String[]);
         } else {
-            data.put('oplataZaUruchomienieDCC', [value] as String[]);
+            data.put('oplataZaUruchomienieDCC', [formatDoubleValue(value.toDouble()) + ' zł'] as String[]);
         }
+    }
+
+    private def mapCardsOutOfEUProcess(def data, def pd, def key, def value) {
+        addCheckbox(data, 'cardsOutOfEU', 'true', value == 'TAK' ? 'true' : 'false');
+    }
+
+    private def mapCardsInEUNotInPLProcess(def data, def pd, def key, def value) {
+        addCheckbox(data, 'cardsInEUNotInPL', 'true', value == 'TAK' ? 'true' : 'false');
+    }
+
+    private def mapCardsInPLProcess(def data, def pd, def key, def value) {
+        addCheckbox(data, 'cardsInPL', 'true', value == 'TAK' ? 'true' : 'false');
     }
 
     private def mapPp_orange_tkProcess(def data, def process, def key, def value){
@@ -763,6 +798,14 @@ class PdfProcessMapper extends AbstractPdfMapper{
         }
     }
 
+    private def formatDoubleValue(def data, def processData) {
+        if (processData && processData.value && processData.value.isDouble()){
+            data.put(processData.name, [formatDoubleValue(processData.value.toDouble())] as String[])
+        } else if ("-".equals(processData.value)){
+            data.put(processData.name, [processData.value] as String[])
+        }
+    }
+
     private def formatDoubleValue(def value){
         ((DecimalFormat)NumberFormat.getNumberInstance(new Locale("pl", "PL"))).format(value)
     }
@@ -770,6 +813,12 @@ class PdfProcessMapper extends AbstractPdfMapper{
     private mapFieldWithStartDate(def data, def pd, def key, def value, def dateFieldName){
         if (value !=null && !EMPTY_VALUES.contains(value)){
             data.put(key, [value] as String[])
+            addDateField(data, dateFieldName, getFromProcessDataSet(pd, "dataUmowy"));
+        }
+    }
+
+    private mapFieldWithStartDateWithoutSettingValue(def data, def pd, def key, def value, def dateFieldName){
+        if (value !=null && !EMPTY_VALUES.contains(value)){
             addDateField(data, dateFieldName, getFromProcessDataSet(pd, "dataUmowy"));
         }
     }

@@ -16,7 +16,12 @@ class SignatureService {
         Set<Signature> signatures = []
 
         process.activities.each() { activity ->
-            String[] activitySignatureParam = params["activitySignature_${activity.id}"];
+            String[] activitySignatureParam
+            if (params["activitySignature_${activity.id}"] instanceof String[]) {
+                activitySignatureParam = params["activitySignature_${activity.id}"];
+            } else if (params["activitySignature_${activity.id}"] instanceof String) {
+                activitySignatureParam = [params["activitySignature_${activity.id}"]] as String[]
+            }
 
             if (activitySignatureParam) {
                 List activitySignaturesIds = (activitySignatureParam.flatten().findAll { it != "null" && it != "" })

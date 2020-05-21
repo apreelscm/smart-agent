@@ -31,11 +31,7 @@ class PanelService {
         cmd.hasNewUmowa = isNewAgreement(cmd.process)
         cmd.hasNewUmowaAndPrepaid = isNewAgreement(cmd.process) && cmd.hasDodaniePrepaid
         cmd.isBundleActivity = isBundleActivity(cmd.process)
-        cmd.promObjNaj1 = calculatorService.getCalcProperty(calc,"E_PROM_OBN_NAJ_1")
-
-        if (SignatureHelper.containsAtLeastOne(cmd.process, newArrayList("AP/UW/1.006/18-07-20", "AP/UW/RWT/1.003/18-07-20"))) {
-            cmd.promObjNaj1 = cmd.promObjNaj1 ? (parseInt(cmd.promObjNaj1.trim()) + 1) : 1
-        }
+        cmd.promObjNaj1 = calculatorService.getCalcProperty(calc,"E_MIES_NAL_OPL_NAJ")
 
         cmd.promObjNajLiczbaTerminali = calculatorService.getCalcProperty(calc,"LICZBA_ZEST_POS_PROM_CEN_NAJ_1")
 
@@ -216,7 +212,7 @@ class PanelService {
 
     def getTabelaUslugDodatkowych(ProcessCommand cmd, def calc ) {
         cmd.wydrukGrafikiCena = calculatorService.getCalcProperty(calc,"OPLATA_LOGO")
-        cmd.dzialaniaMatematyczneCena = calculatorService.getCalcProperty(calc,"OPLATA_KALKULATOR")
+        cmd.dzialaniaMatematyczneCena = calculatorService.getCalcProperty(calc,"E_OPLATA_KARTA_SIM")
         cmd.mudCena = nullify(cmd.mudCena)
     }
 
@@ -485,7 +481,9 @@ class PanelService {
         cmd.jcbPr = calculatorService.getCalcProperty(calc,"E_JCB")
         cmd.upiPr = calculatorService.getCalcProperty(calc,"E_UPI")
         cmd.oplataAutoryzacyjnaSt = calculatorService.getCalcProperty(calc,"E_OPLATA_ZA_AUTORYZACJE")
-        cmd.visaMcOutEUIKartyBiznesoweEUPr = calculatorService.getCalcProperty(calc,"E_DOD_OPL_VISA_MASTERCARD")
+        cmd.cardsOutOfEU = calculatorService.getCalcProperty(calc, "SELECT_DOD_OPL_VISA_MASTERCARD")
+        cmd.cardsInEUNotInPL = calculatorService.getCalcProperty(calc, "SELECT_DOD_OPL_VISA_MASTERCARD_BIZNUE")
+        cmd.cardsInPL = calculatorService.getCalcProperty(calc, "SELECT_DO_OPL_VISA_MASTERCARD_BIZNPOL")
     }
 
     def getPoziomOplatIWarunkiPlatnosciPP(ProcessCommand cmd, def calc ) {

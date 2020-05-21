@@ -7,10 +7,12 @@ class FieldsHelper {
         HashMap<String, String[]> data = new HashMap<String, String[]>();
         data.put("wydrukGrafikiCena", ["123"] as String[]);
         data.put("dzialaniaMatematyczneCena", ["123"] as String[]);
-        data.put("oplataZaPlatnoscWInnejWalucie", ["123"] as String[]);
+        //data.put("dzialaniaMatematyczneCenaTxt", ["ujęta w cenie najmu"] as String[]);
+        data.put("oplataZaPlatnoscWInnejWalucieSt", ["123"] as String[]);
         data.put("oplataZaUruchomienieDCC", ["123"] as String[]);
-        data.put("mudCena", ["123"] as String[]);
+        data.put("mudCenaSt", ["123"] as String[]);
         data.put("obslugaEkonomicznyCena", ["123"] as String[]);
+        //data.put("obslugaEkonomicznyCenaTxt", ["ujęta w cenie najmu"] as String[]);
 
         return data;
     }
@@ -196,6 +198,16 @@ class FieldsHelper {
         return data;
     }
 
+    public static HashMap<String, String[]> platnoscZaTypKarty() {
+        HashMap<String, String[]> data = new HashMap<String, String[]>()
+
+        data.put("cardsOutOfEU", [true, "", "checkbox"] as String[])
+        data.put("cardsInEUNotInPL", [true, "", "checkbox"] as String[])
+        data.put("cardsInPL", [true, "", "checkbox"] as String[])
+
+        return data
+    }
+
     public static HashMap<String, String[]> specyfikacjaPoziomuOplatIWarunkowPlatnosciFields() {
         HashMap<String, String[]> data = new HashMap<String, String[]>();
 
@@ -204,6 +216,8 @@ class FieldsHelper {
         data.put("ifOplataDinersClub", ["5"] as String[]);
         data.put("cashbackUpust", ["5"] as String[]);
         data.put("dccKartyZagranicznePr", ["5"] as String[]);
+        data.put("oplataAutoryzacyjnaSt", ["5"] as String[]);
+        data.put("oplataAutoryzacyjnaNr", ["5"] as String[]);
         data.put("ifOplataPKOPB", ["5"] as String[]);
 
         return data
@@ -212,6 +226,10 @@ class FieldsHelper {
     static HashMap<String, String[]> markedDeliveryType(){
         HashMap<String, String[]> data = new HashMap<String, String[]>();
         data.put("dyspozycjaPHONE", ["_______"] as String[]);
+        data.put("dyspozycjaEMAIL", ["_______"] as String[]);
+        data.put("dyspozycjaPAPER", ["_______"] as String[]);
+        data.put("dyspozycjaFAX", ["_______"] as String[]);
+        data.put("dyspozycjaPERSONALLY", ["_______"] as String[]);
         return data;
     }
 

@@ -3,15 +3,12 @@ package com.eservice.eumowy.command
 import com.eservice.eumowy.Process
 import com.eservice.eumowy.annotation.DateField
 import com.eservice.eumowy.annotation.Omit
-import com.eservice.eumowy.enums.options.AcceptorLocation
 import com.eservice.eumowy.enums.options.LegalForm
 import com.eservice.eumowy.validator.*
-import com.google.common.base.Strings
 import grails.util.Holders
 import grails.validation.Validateable
 import org.apache.commons.collections.FactoryUtils
 import org.apache.commons.collections.ListUtils
-import org.apache.commons.lang.StringUtils
 import org.apache.commons.validator.routines.EmailValidator
 
 import static com.google.common.base.Strings.isNullOrEmpty
@@ -280,7 +277,9 @@ class ProcessCommand implements Serializable {
     String jcbPr = DEFAULT_VALUE
     String upiPr = DEFAULT_VALUE
     String oplataAutoryzacyjnaSt = DEFAULT_VALUE
-    String visaMcOutEUIKartyBiznesoweEUPr = DEFAULT_VALUE
+    String cardsOutOfEU = DEFAULT_VALUE
+    String cardsInEUNotInPL = DEFAULT_VALUE
+    String cardsInPL = DEFAULT_VALUE
 
 //    poziomOplatIWarunkiPlatnosciPP - 
     String pp_orange_tk = DEFAULT_VALUE
@@ -945,7 +944,9 @@ class ProcessCommand implements Serializable {
         jcbPr(nullable: false, blank: false)
         upiPr(nullable: false, blank: false)
         oplataAutoryzacyjnaSt(nullable: false, blank: false)
-        visaMcOutEUIKartyBiznesoweEUPr(nullable: false, blank: false)
+        cardsOutOfEU(nullable: false, blank: false)
+        cardsInEUNotInPL(nullable: false, blank: false)
+        cardsInPL(nullable: false, blank: false)
 
         visaPolskaKKO1St(nullable: false, blank: false,  validator: { value, cmd, errors ->
             NumberValidator.validate(value, cmd, errors, propertyName) &&

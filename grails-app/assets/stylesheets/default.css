@@ -1653,3 +1653,12 @@ header.belka-glowna {
     white-space: pre-line;
     max-width: 980px;
 }
+
+.flat-price, .percent-number {
+    width: 70%;
+    margin-right: 0.4em;
+}
+
+td.flat-price-col, td.percent-number-col {
+    text-align: center;
+}
