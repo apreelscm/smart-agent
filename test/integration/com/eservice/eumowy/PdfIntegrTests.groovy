@@ -962,6 +962,25 @@ class PdfIntegrTests extends ControllerUnitTestMixin {
     }
 
     @Test
+    void KI_RODO200718() { //KI-RODO20-07-18
+        //given
+        def subscriptions = [
+                ["ACCEPTANT1", 2, 350, 357, 59, 28],
+                ["ACCEPTANT2", 2, 350, 307, 59, 28],
+                ["ACCEPTANT3", 2, 350, 258, 59, 28],
+                ["ACCEPTANT4", 2, 350, 209, 59, 28],
+        ]
+
+        //when
+        data.putAll(akceptantIReprezentanciFields())
+        data.putAll(PdfHelper.insertSignatures(subscriptions))
+
+        //then
+        process(PdfHelper.JULY_18TH_2020_DOCUMENTS_PATH + "KI_RODO20-07-18.pdf",
+                PdfHelper.JULY_18TH_2020_DOCUMENTS_PATH,"KI_RODO20-07-18_out.pdf", data)
+    }
+
+    @Test
     void KI_RODO() { //KI-RODO
         //given
         def subscriptions = [
@@ -1010,6 +1029,28 @@ class PdfIntegrTests extends ControllerUnitTestMixin {
 
         //then
         process("APUPZZSNT41.00216-02-01.pdf", "APUPZZSNT41.00216-02-01_out.pdf", data)
+    }
+
+    @Test
+    void APAGFDF2006180701() { //AP-AG/F/DF/2.006/18-07-01
+        //given
+        def subscriptions = [
+                ["ACCEPTANT1", 2, 405, 296, 59, 28],
+                ["ACCEPTANT2", 2, 405, 267, 59, 28],
+                ["ACCEPTANT3", 2, 405, 239, 59, 28],
+                ["ACCEPTANT4", 2, 405, 210, 59, 28],
+                ["PH", 2, 230, 125, 59, 28]
+        ]
+
+        //when
+        data.putAll(akceptantIReprezentanciFields())
+        data.put("emailDoWysylkiDokumentu", ["jan.kowalski@gmail.com"] as String[])
+        data.putAll(PdfHelper.insertSignatures(subscriptions))
+
+        //then
+        process(PdfHelper.JULY_18TH_2020_DOCUMENTS_PATH + "APAGFDF2.00618-07-01.pdf",
+                PdfHelper.JULY_18TH_2020_DOCUMENTS_PATH,
+                "APAGFDF2.00618-07-01_out.pdf", data)
     }
 
     @Test
@@ -1078,6 +1119,43 @@ class PdfIntegrTests extends ControllerUnitTestMixin {
     }
 
     @Test
+    void APAGFPABR1002180701() { //AP-AG/F/PABR/1.002/18-07-01
+        //given
+        Map representativeProperties = [name        : "Jan", surname: "Kowalski", documentType: IdentityDocumentType.IDENTITY_CARD,
+                                        country     : "Daleko", address: "JakisAdres", documentNumber: "PL123", citizenship: "Polskie",
+                                        locationType: AcceptorLocation.ABROAD, pesel: "91101706344"]
+
+        Map beneficiaryProperties = [name           : "Jan", surname: "Kowalski", documentType: IdentityDocumentType.PASSPORT,
+                                     country        : "Daleko", address: "JakisAdres", documentNumber: "PL123", citizenship: "Polskie",
+                                     votesPercentage: 59, ownsAcceptor: true, controlsAcceptor: false, overQuarterOfVotes: true]
+
+        def subscriptions = [
+                ["ACCEPTANT1", 2, 460, 485, 59, 28],
+                ["ACCEPTANT2", 2, 460, 455, 59, 28],
+                ["ACCEPTANT3", 2, 460, 425, 59, 28],
+                ["ACCEPTANT4", 2, 460, 395, 59, 28],
+                ["PH", 2, 440, 261, 59, 28],
+                ["PH1", 2, 440, 103, 59, 28]
+        ]
+
+        //when
+        process.processData.add(new ProcessData(id: 1, version: 0, name: 'dzialalnoscForma', value: 'spolka_cywilna'))
+        process.processData.add(new ProcessData(name: 'dataUmowy', value: '10-05-2012'))
+        process.processData.add(new ProcessData(name: 'nip', value: '12345'))
+        process.processData.add(new ProcessData(name: 'dzialalnoscForma', value: LegalForm.PARTNERSHIP_COMPANY.name()))
+        CommandHelper.setProperties(representative, representativeProperties)
+        CommandHelper.setProperties(beneficiary, beneficiaryProperties)
+
+        data.putAll(new PABRformMapper(process).getDataForMapping())
+        data.putAll(akceptantIReprezentanciFields())
+        data.putAll(PdfHelper.insertSignatures(subscriptions))
+
+        //then
+        process(PdfHelper.JULY_18TH_2020_DOCUMENTS_PATH + "APAGFPABR1.00218-07-01.pdf",
+                PdfHelper.JULY_18TH_2020_DOCUMENTS_PATH,"APAGFPABR1.00218-07-01_out.pdf", data)
+    }
+
+    @Test
     void APAGFPABR1001180701() { //AP-AG/F/PABR/1.001/18-07-01
         //given
         Map representativeProperties = [name        : "Jan", surname: "Kowalski", documentType: IdentityDocumentType.IDENTITY_CARD,
@@ -1109,6 +1187,29 @@ class PdfIntegrTests extends ControllerUnitTestMixin {
         //then
         process(PdfHelper.JULY_1_DAY_2018_DOCUMENTS_PATH + "APAGFPABR1.00118-07-01.pdf",
                 PdfHelper.JULY_1_DAY_2018_DOCUMENTS_PATH,"APAGFPABR1.00118-07-01_out.pdf", data)
+    }
+
+    @Test
+    void APAGFPEP1002180701() { //AP-AG/F/PEP/1.002/18-07-01
+        //given
+        Map representativeProperties = [isPolitician: false, locationType: AcceptorLocation.ABROAD]
+        def subscriptions = [
+                ["ACCEPTANT1", 1, 445, 335, 59, 28],
+                ["ACCEPTANT2", 1, 500, 315, 59, 28],
+                ["ACCEPTANT3", 1, 445, 292, 59, 28],
+                ["ACCEPTANT4", 1, 500, 270, 59, 28]
+        ]
+
+        //when
+        CommandHelper.setProperties(representative, representativeProperties)
+
+        data.putAll(new PEPdeclarationMapper(process).getDataForMapping())
+        data.putAll(akceptantIReprezentanciFields())
+        data.putAll(PdfHelper.insertSignatures(subscriptions))
+
+        //then
+        process(PdfHelper.JULY_18TH_2020_DOCUMENTS_PATH + "APAGFPEP1.00218-07-01.pdf",
+                PdfHelper.JULY_18TH_2020_DOCUMENTS_PATH,"APAGFPEP1.00218-07-01_out.pdf", data)
     }
 
     @Test
@@ -1195,6 +1296,23 @@ class PdfIntegrTests extends ControllerUnitTestMixin {
 
         //then
         process("APUWOOL1.00116-12-30.pdf", "APUWOOL1.00116-12-30_out.pdf", data)
+    }
+
+    @Test
+    void APAGFDP2006161011() { //AP-AG/F/DP/2.006/16-10-11
+        def data = [:]
+        def subscriptions = [
+                ["ACCEPTANT1", 1, 405, 144, 54, 24],
+                ["ACCEPTANT2", 1, 460, 125, 54, 24],
+                ["ACCEPTANT3", 1, 405, 104, 54, 24],
+                ["ACCEPTANT4", 1, 460, 85, 54, 24],
+                ["PH", 1, 95, 45, 59, 28]
+        ]
+
+        data.putAll(akceptantIReprezentanciFields())
+        data.putAll(PdfHelper.insertSignatures(subscriptions))
+        process(PdfHelper.JULY_18TH_2020_DOCUMENTS_PATH + "APAGFDP2.00616-10-11.pdf",
+                PdfHelper.JULY_18TH_2020_DOCUMENTS_PATH,"APAGFDP2.00616-10-11_out.pdf", data);
     }
 
     @Test
