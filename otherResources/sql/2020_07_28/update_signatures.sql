@@ -3,72 +3,238 @@ select eumowy.signature_seq.nextval, 0, 1, 'AP/UW/1.007/20-02-28', 'APUW1.00720-
 update eumowy.signature set active = 0 where name = 'AP/UW/1.006/18-07-20';
 insert into eumowy.activity_signatures (ID, VERSION, ACTIVITY_ID, MANDATORY, NUMBER_OF_LIST, SIGNATURE_ID, REQUIRED_ACTIVITIES) SELECT eumowy.activity_signatures_seq.nextval, 0, oas.activity_id, oas.mandatory, oas.number_of_list, (select id from eumowy.signature where name = 'AP/UW/1.007/20-02-28'), oas.REQUIRED_ACTIVITIES FROM eumowy.activity_signatures oas WHERE oas.signature_id = (select id from eumowy.signature where name = 'AP/UW/1.006/18-07-20');
 
+insert into eumowy.calcfield_signature (ID, VERSION, CALC_FIELD_ID, SIGNATURE_ID)
+select eumowy.calcfield_signature_seq.nextval, 0, calc_field_id, (select id from eumowy.signature where name = 'AP/UW/1.007/20-02-28')
+from eumowy.calcfield_signature where signature_id = (select id from eumowy.signature where name = 'AP/UW/1.006/18-07-20');
+
+insert into eumowy.signature_panel (ID, VERSION, PANEL_ID, SIGNATURE_ID)
+select eumowy.signature_panel_seq.nextval, 0, panel_id, (select id from eumowy.signature where name = 'AP/UW/1.007/20-02-28')
+from eumowy.signature_panel where signature_id = (select id from eumowy.signature where name = 'AP/UW/1.006/18-07-20');
+
+insert into eumowy.signature_signature_detail (SIGNATURE_SIGNATURE_DETAILS_ID, SIGNATURE_DETAIL_ID)
+select (select id from eumowy.signature where name = 'AP/UW/1.007/20-02-28'), signature_detail_id
+from eumowy.signature_signature_detail where SIGNATURE_SIGNATURE_DETAILS_ID = (select id from eumowy.signature where name = 'AP/UW/1.006/18-07-20');
+
 insert into eumowy.signature (ID, VERSION, ACTIVE, NAME, TEMPLATE_PATH, FOR_POINT, SIGNATURE_ORDER, DESCRIPTION, FILENAME, SEND_TO_CLIENT, SHOW_ON_PREVIEW, FOR_POS, SHOW_ON_ZRD)
 select eumowy.signature_seq.nextval, 0, 1, 'AP/UPZT1/1.005/20-02-28', 'APUPZT11.00520-02-28.pdf', os.FOR_POINT, os.SIGNATURE_ORDER, os.DESCRIPTION, os.FILENAME, os.SEND_TO_CLIENT, os.SHOW_ON_PREVIEW, os.FOR_POS, os.SHOW_ON_ZRD from eumowy.signature os where os.name = 'AP/UPZT1/1.004/18-07-20';
 update eumowy.signature set active = 0 where name = 'AP/UPZT1/1.004/18-07-20';
 insert into eumowy.activity_signatures (ID, VERSION, ACTIVITY_ID, MANDATORY, NUMBER_OF_LIST, SIGNATURE_ID, REQUIRED_ACTIVITIES) SELECT eumowy.activity_signatures_seq.nextval, 0, oas.activity_id, oas.mandatory, oas.number_of_list, (select id from eumowy.signature where name = 'AP/UPZT1/1.005/20-02-28'), oas.REQUIRED_ACTIVITIES FROM eumowy.activity_signatures oas WHERE oas.signature_id = (select id from eumowy.signature where name = 'AP/UPZT1/1.004/18-07-20');
+
+insert into eumowy.calcfield_signature (ID, VERSION, CALC_FIELD_ID, SIGNATURE_ID)
+select eumowy.calcfield_signature_seq.nextval, 0, calc_field_id, (select id from eumowy.signature where name = 'AP/UPZT1/1.005/20-02-28')
+from eumowy.calcfield_signature where signature_id = (select id from eumowy.signature where name = 'AP/UPZT1/1.004/18-07-20');
+
+insert into eumowy.signature_panel (ID, VERSION, PANEL_ID, SIGNATURE_ID)
+select eumowy.signature_panel_seq.nextval, 0, panel_id, (select id from eumowy.signature where name = 'AP/UPZT1/1.005/20-02-28')
+from eumowy.signature_panel where signature_id = (select id from eumowy.signature where name = 'AP/UPZT1/1.004/18-07-20');
+
+insert into eumowy.signature_signature_detail (SIGNATURE_SIGNATURE_DETAILS_ID, SIGNATURE_DETAIL_ID)
+select (select id from eumowy.signature where name = 'AP/UPZT1/1.005/20-02-28'), signature_detail_id
+from eumowy.signature_signature_detail where SIGNATURE_SIGNATURE_DETAILS_ID = (select id from eumowy.signature where name = 'AP/UPZT1/1.004/18-07-20');
 
 insert into eumowy.signature (ID, VERSION, ACTIVE, NAME, TEMPLATE_PATH, FOR_POINT, SIGNATURE_ORDER, DESCRIPTION, FILENAME, SEND_TO_CLIENT, SHOW_ON_PREVIEW, FOR_POS, SHOW_ON_ZRD)
 select eumowy.signature_seq.nextval, 0, 1, 'AP/UPZT2/1.005/20-02-28', 'APUPZT21.00520-02-28.pdf', os.FOR_POINT, os.SIGNATURE_ORDER, os.DESCRIPTION, os.FILENAME, os.SEND_TO_CLIENT, os.SHOW_ON_PREVIEW, os.FOR_POS, os.SHOW_ON_ZRD from eumowy.signature os where os.name = 'AP/UPZT2/1.004/18-07-20';
 update eumowy.signature set active = 0 where name = 'AP/UPZT2/1.004/18-07-20';
 insert into eumowy.activity_signatures (ID, VERSION, ACTIVITY_ID, MANDATORY, NUMBER_OF_LIST, SIGNATURE_ID, REQUIRED_ACTIVITIES) SELECT eumowy.activity_signatures_seq.nextval, 0, oas.activity_id, oas.mandatory, oas.number_of_list, (select id from eumowy.signature where name = 'AP/UPZT2/1.005/20-02-28'), oas.REQUIRED_ACTIVITIES FROM eumowy.activity_signatures oas WHERE oas.signature_id = (select id from eumowy.signature where name = 'AP/UPZT2/1.004/18-07-20');
 
+insert into eumowy.calcfield_signature (ID, VERSION, CALC_FIELD_ID, SIGNATURE_ID)
+select eumowy.calcfield_signature_seq.nextval, 0, calc_field_id, (select id from eumowy.signature where name = 'AP/UPZT2/1.005/20-02-28')
+from eumowy.calcfield_signature where signature_id = (select id from eumowy.signature where name = 'AP/UPZT2/1.004/18-07-20');
+
+insert into eumowy.signature_panel (ID, VERSION, PANEL_ID, SIGNATURE_ID)
+select eumowy.signature_panel_seq.nextval, 0, panel_id, (select id from eumowy.signature where name = 'AP/UPZT2/1.005/20-02-28')
+from eumowy.signature_panel where signature_id = (select id from eumowy.signature where name = 'AP/UPZT2/1.004/18-07-20');
+
+insert into eumowy.signature_signature_detail (SIGNATURE_SIGNATURE_DETAILS_ID, SIGNATURE_DETAIL_ID)
+select (select id from eumowy.signature where name = 'AP/UPZT2/1.005/20-02-28'), signature_detail_id
+from eumowy.signature_signature_detail where SIGNATURE_SIGNATURE_DETAILS_ID = (select id from eumowy.signature where name = 'AP/UPZT2/1.004/18-07-20');
+
 insert into eumowy.signature (ID, VERSION, ACTIVE, NAME, TEMPLATE_PATH, FOR_POINT, SIGNATURE_ORDER, DESCRIPTION, FILENAME, SEND_TO_CLIENT, SHOW_ON_PREVIEW, FOR_POS, SHOW_ON_ZRD)
 select eumowy.signature_seq.nextval, 0, 1, 'AP/UPZT3/1.005/20-02-28', 'APUPZT31.00520-02-28.pdf', os.FOR_POINT, os.SIGNATURE_ORDER, os.DESCRIPTION, os.FILENAME, os.SEND_TO_CLIENT, os.SHOW_ON_PREVIEW, os.FOR_POS, os.SHOW_ON_ZRD from eumowy.signature os where os.name = 'AP/UPZT3/1.004/18-07-20';
 update eumowy.signature set active = 0 where name = 'AP/UPZT3/1.004/18-07-20';
 insert into eumowy.activity_signatures (ID, VERSION, ACTIVITY_ID, MANDATORY, NUMBER_OF_LIST, SIGNATURE_ID, REQUIRED_ACTIVITIES) SELECT eumowy.activity_signatures_seq.nextval, 0, oas.activity_id, oas.mandatory, oas.number_of_list, (select id from eumowy.signature where name = 'AP/UPZT3/1.005/20-02-28'), oas.REQUIRED_ACTIVITIES FROM eumowy.activity_signatures oas WHERE oas.signature_id = (select id from eumowy.signature where name = 'AP/UPZT3/1.004/18-07-20');
+
+insert into eumowy.calcfield_signature (ID, VERSION, CALC_FIELD_ID, SIGNATURE_ID)
+select eumowy.calcfield_signature_seq.nextval, 0, calc_field_id, (select id from eumowy.signature where name = 'AP/UPZT3/1.005/20-02-28')
+from eumowy.calcfield_signature where signature_id = (select id from eumowy.signature where name = 'AP/UPZT3/1.004/18-07-20');
+
+insert into eumowy.signature_panel (ID, VERSION, PANEL_ID, SIGNATURE_ID)
+select eumowy.signature_panel_seq.nextval, 0, panel_id, (select id from eumowy.signature where name = 'AP/UPZT3/1.005/20-02-28')
+from eumowy.signature_panel where signature_id = (select id from eumowy.signature where name = 'AP/UPZT3/1.004/18-07-20');
+
+insert into eumowy.signature_signature_detail (SIGNATURE_SIGNATURE_DETAILS_ID, SIGNATURE_DETAIL_ID)
+select (select id from eumowy.signature where name = 'AP/UPZT3/1.005/20-02-28'), signature_detail_id
+from eumowy.signature_signature_detail where SIGNATURE_SIGNATURE_DETAILS_ID = (select id from eumowy.signature where name = 'AP/UPZT3/1.004/18-07-20');
 
 insert into eumowy.signature (ID, VERSION, ACTIVE, NAME, TEMPLATE_PATH, FOR_POINT, SIGNATURE_ORDER, DESCRIPTION, FILENAME, SEND_TO_CLIENT, SHOW_ON_PREVIEW, FOR_POS, SHOW_ON_ZRD)
 select eumowy.signature_seq.nextval, 1, 1, 'AP/UPZT4/1.005/20-02-28', 'APUPZT41.00520-02-28.pdf', os.FOR_POINT, os.SIGNATURE_ORDER, os.DESCRIPTION, os.FILENAME, os.SEND_TO_CLIENT, os.SHOW_ON_PREVIEW, os.FOR_POS, os.SHOW_ON_ZRD from eumowy.signature os where os.name = 'AP/UPZT4/1.004/18-07-20';
 update eumowy.signature set active = 0 where name = 'AP/UPZT4/1.004/18-07-20';
 insert into eumowy.activity_signatures (ID, VERSION, ACTIVITY_ID, MANDATORY, NUMBER_OF_LIST, SIGNATURE_ID, REQUIRED_ACTIVITIES) SELECT eumowy.activity_signatures_seq.nextval, 0, oas.activity_id, oas.mandatory, oas.number_of_list, (select id from eumowy.signature where name = 'AP/UPZT4/1.005/20-02-28'), oas.REQUIRED_ACTIVITIES FROM eumowy.activity_signatures oas WHERE oas.signature_id = (select id from eumowy.signature where name = 'AP/UPZT4/1.004/18-07-20');
 
+insert into eumowy.calcfield_signature (ID, VERSION, CALC_FIELD_ID, SIGNATURE_ID)
+select eumowy.calcfield_signature_seq.nextval, 0, calc_field_id, (select id from eumowy.signature where name = 'AP/UPZT4/1.005/20-02-28')
+from eumowy.calcfield_signature where signature_id = (select id from eumowy.signature where name = 'AP/UPZT4/1.004/18-07-20');
+
+insert into eumowy.signature_panel (ID, VERSION, PANEL_ID, SIGNATURE_ID)
+select eumowy.signature_panel_seq.nextval, 0, panel_id, (select id from eumowy.signature where name = 'AP/UPZT4/1.005/20-02-28')
+from eumowy.signature_panel where signature_id = (select id from eumowy.signature where name = 'AP/UPZT4/1.004/18-07-20');
+
+insert into eumowy.signature_signature_detail (SIGNATURE_SIGNATURE_DETAILS_ID, SIGNATURE_DETAIL_ID)
+select (select id from eumowy.signature where name = 'AP/UPZT4/1.005/20-02-28'), signature_detail_id
+from eumowy.signature_signature_detail where SIGNATURE_SIGNATURE_DETAILS_ID = (select id from eumowy.signature where name = 'AP/UPZT4/1.004/18-07-20');
+
 insert into eumowy.signature (ID, VERSION, ACTIVE, NAME, TEMPLATE_PATH, FOR_POINT, SIGNATURE_ORDER, DESCRIPTION, FILENAME, SEND_TO_CLIENT, SHOW_ON_PREVIEW, FOR_POS, SHOW_ON_ZRD)
 select eumowy.signature_seq.nextval, 0, 1, 'AP/UPZ/ZSNT1/1.005/20-02-28', 'APUPZZSNT11.00520-02-28.pdf', os.FOR_POINT, os.SIGNATURE_ORDER, os.DESCRIPTION, os.FILENAME, os.SEND_TO_CLIENT, os.SHOW_ON_PREVIEW, os.FOR_POS, os.SHOW_ON_ZRD from eumowy.signature os where os.name = 'AP/UPZ/ZSNT1/1.004/18-07-20';
 update eumowy.signature set active = 0 where name = 'AP/UPZ/ZSNT1/1.004/18-07-20';
 insert into eumowy.activity_signatures (ID, VERSION, ACTIVITY_ID, MANDATORY, NUMBER_OF_LIST, SIGNATURE_ID, REQUIRED_ACTIVITIES) SELECT eumowy.activity_signatures_seq.nextval, 0, oas.activity_id, oas.mandatory, oas.number_of_list, (select id from eumowy.signature where name = 'AP/UPZ/ZSNT1/1.005/20-02-28'), oas.REQUIRED_ACTIVITIES FROM eumowy.activity_signatures oas WHERE oas.signature_id = (select id from eumowy.signature where name = 'AP/UPZ/ZSNT1/1.004/18-07-20');
+
+insert into eumowy.calcfield_signature (ID, VERSION, CALC_FIELD_ID, SIGNATURE_ID)
+select eumowy.calcfield_signature_seq.nextval, 0, calc_field_id, (select id from eumowy.signature where name = 'AP/UPZ/ZSNT1/1.005/20-02-28')
+from eumowy.calcfield_signature where signature_id = (select id from eumowy.signature where name = 'AP/UPZ/ZSNT1/1.004/18-07-20');
+
+insert into eumowy.signature_panel (ID, VERSION, PANEL_ID, SIGNATURE_ID)
+select eumowy.signature_panel_seq.nextval, 0, panel_id, (select id from eumowy.signature where name = 'AP/UPZ/ZSNT1/1.005/20-02-28')
+from eumowy.signature_panel where signature_id = (select id from eumowy.signature where name = 'AP/UPZ/ZSNT1/1.004/18-07-20');
+
+insert into eumowy.signature_signature_detail (SIGNATURE_SIGNATURE_DETAILS_ID, SIGNATURE_DETAIL_ID)
+select (select id from eumowy.signature where name = 'AP/UPZ/ZSNT1/1.005/20-02-28'), signature_detail_id
+from eumowy.signature_signature_detail where SIGNATURE_SIGNATURE_DETAILS_ID = (select id from eumowy.signature where name = 'AP/UPZ/ZSNT1/1.004/18-07-20');
 
 insert into eumowy.signature (ID, VERSION, ACTIVE, NAME, TEMPLATE_PATH, FOR_POINT, SIGNATURE_ORDER, DESCRIPTION, FILENAME, SEND_TO_CLIENT, SHOW_ON_PREVIEW, FOR_POS, SHOW_ON_ZRD)
 select eumowy.signature_seq.nextval, 0, 1, 'AP/UPZ/ZSNT2/1.005/20-02-28', 'APUPZZSNT21.00520-02-28.pdf', os.FOR_POINT, os.SIGNATURE_ORDER, os.DESCRIPTION, os.FILENAME, os.SEND_TO_CLIENT, os.SHOW_ON_PREVIEW, os.FOR_POS, os.SHOW_ON_ZRD from eumowy.signature os where os.name = 'AP/UPZ/ZSNT2/1.004/18-07-20';
 update eumowy.signature set active = 0 where name = 'AP/UPZ/ZSNT2/1.004/18-07-20';
 insert into eumowy.activity_signatures (ID, VERSION, ACTIVITY_ID, MANDATORY, NUMBER_OF_LIST, SIGNATURE_ID, REQUIRED_ACTIVITIES) SELECT eumowy.activity_signatures_seq.nextval, 0, oas.activity_id, oas.mandatory, oas.number_of_list, (select id from eumowy.signature where name = 'AP/UPZ/ZSNT2/1.005/20-02-28'), oas.REQUIRED_ACTIVITIES FROM eumowy.activity_signatures oas WHERE oas.signature_id = (select id from eumowy.signature where name = 'AP/UPZ/ZSNT2/1.004/18-07-20');
 
+insert into eumowy.calcfield_signature (ID, VERSION, CALC_FIELD_ID, SIGNATURE_ID)
+select eumowy.calcfield_signature_seq.nextval, 0, calc_field_id, (select id from eumowy.signature where name = 'AP/UPZ/ZSNT2/1.005/20-02-28')
+from eumowy.calcfield_signature where signature_id = (select id from eumowy.signature where name = 'AP/UPZ/ZSNT2/1.004/18-07-20');
+
+insert into eumowy.signature_panel (ID, VERSION, PANEL_ID, SIGNATURE_ID)
+select eumowy.signature_panel_seq.nextval, 0, panel_id, (select id from eumowy.signature where name = 'AP/UPZ/ZSNT2/1.005/20-02-28')
+from eumowy.signature_panel where signature_id = (select id from eumowy.signature where name = 'AP/UPZ/ZSNT2/1.004/18-07-20');
+
+insert into eumowy.signature_signature_detail (SIGNATURE_SIGNATURE_DETAILS_ID, SIGNATURE_DETAIL_ID)
+select (select id from eumowy.signature where name = 'AP/UPZ/ZSNT2/1.005/20-02-28'), signature_detail_id
+from eumowy.signature_signature_detail where SIGNATURE_SIGNATURE_DETAILS_ID = (select id from eumowy.signature where name = 'AP/UPZ/ZSNT2/1.004/18-07-20');
+
 insert into eumowy.signature (ID, VERSION, ACTIVE, NAME, TEMPLATE_PATH, FOR_POINT, SIGNATURE_ORDER, DESCRIPTION, FILENAME, SEND_TO_CLIENT, SHOW_ON_PREVIEW, FOR_POS, SHOW_ON_ZRD)
 select eumowy.signature_seq.nextval, 0, 1, 'AP/UPZ/ZSNT3/1.004/20-02-28', 'APUPZZSNT31.00420-02-28.pdf', os.FOR_POINT, os.SIGNATURE_ORDER, os.DESCRIPTION, os.FILENAME, os.SEND_TO_CLIENT, os.SHOW_ON_PREVIEW, os.FOR_POS, os.SHOW_ON_ZRD from eumowy.signature os where os.name = 'AP/UPZ/ZSNT3/1.003/18-07-20';
 update eumowy.signature set active = 0 where name = 'AP/UPZ/ZSNT3/1.003/18-07-20';
 insert into eumowy.activity_signatures (ID, VERSION, ACTIVITY_ID, MANDATORY, NUMBER_OF_LIST, SIGNATURE_ID, REQUIRED_ACTIVITIES) SELECT eumowy.activity_signatures_seq.nextval, 0, oas.activity_id, oas.mandatory, oas.number_of_list, (select id from eumowy.signature where name = 'AP/UPZ/ZSNT3/1.004/20-02-28'), oas.REQUIRED_ACTIVITIES FROM eumowy.activity_signatures oas WHERE oas.signature_id = (select id from eumowy.signature where name = 'AP/UPZ/ZSNT3/1.003/18-07-20');
+
+insert into eumowy.calcfield_signature (ID, VERSION, CALC_FIELD_ID, SIGNATURE_ID)
+select eumowy.calcfield_signature_seq.nextval, 0, calc_field_id, (select id from eumowy.signature where name = 'AP/UPZ/ZSNT3/1.004/20-02-28')
+from eumowy.calcfield_signature where signature_id = (select id from eumowy.signature where name = 'AP/UPZ/ZSNT3/1.003/18-07-20');
+
+insert into eumowy.signature_panel (ID, VERSION, PANEL_ID, SIGNATURE_ID)
+select eumowy.signature_panel_seq.nextval, 0, panel_id, (select id from eumowy.signature where name = 'AP/UPZ/ZSNT3/1.004/20-02-28')
+from eumowy.signature_panel where signature_id = (select id from eumowy.signature where name = 'AP/UPZ/ZSNT3/1.003/18-07-20');
+
+insert into eumowy.signature_signature_detail (SIGNATURE_SIGNATURE_DETAILS_ID, SIGNATURE_DETAIL_ID)
+select (select id from eumowy.signature where name = 'AP/UPZ/ZSNT3/1.004/20-02-28'), signature_detail_id
+from eumowy.signature_signature_detail where SIGNATURE_SIGNATURE_DETAILS_ID = (select id from eumowy.signature where name = 'AP/UPZ/ZSNT3/1.003/18-07-20');
 
 insert into eumowy.signature (ID, VERSION, ACTIVE, NAME, TEMPLATE_PATH, FOR_POINT, SIGNATURE_ORDER, DESCRIPTION, FILENAME, SEND_TO_CLIENT, SHOW_ON_PREVIEW, FOR_POS, SHOW_ON_ZRD)
 select eumowy.signature_seq.nextval, 0, 1, 'AP/UPZ/ZSNT4/1.00420-02-28', 'APUPZZSNT41.00420-02-28.pdf', os.FOR_POINT, os.SIGNATURE_ORDER, os.DESCRIPTION, os.FILENAME, os.SEND_TO_CLIENT, os.SHOW_ON_PREVIEW, os.FOR_POS, os.SHOW_ON_ZRD from eumowy.signature os where os.name = 'AP/UPZ/ZSNT4/1.003/18-07-20';
 update eumowy.signature set active = 0 where name = 'AP/UPZ/ZSNT4/1.003/18-07-20';
 insert into eumowy.activity_signatures (ID, VERSION, ACTIVITY_ID, MANDATORY, NUMBER_OF_LIST, SIGNATURE_ID, REQUIRED_ACTIVITIES) SELECT eumowy.activity_signatures_seq.nextval, 0, oas.activity_id, oas.mandatory, oas.number_of_list, (select id from eumowy.signature where name = 'AP/UPZ/ZSNT4/1.00420-02-28'), oas.REQUIRED_ACTIVITIES FROM eumowy.activity_signatures oas WHERE oas.signature_id = (select id from eumowy.signature where name = 'AP/UPZ/ZSNT4/1.003/18-07-20');
 
+insert into eumowy.calcfield_signature (ID, VERSION, CALC_FIELD_ID, SIGNATURE_ID)
+select eumowy.calcfield_signature_seq.nextval, 0, calc_field_id, (select id from eumowy.signature where name = 'AP/UPZ/ZSNT4/1.00420-02-28')
+from eumowy.calcfield_signature where signature_id = (select id from eumowy.signature where name = 'AP/UPZ/ZSNT4/1.003/18-07-20');
+
+insert into eumowy.signature_panel (ID, VERSION, PANEL_ID, SIGNATURE_ID)
+select eumowy.signature_panel_seq.nextval, 0, panel_id, (select id from eumowy.signature where name = 'AP/UPZ/ZSNT4/1.00420-02-28')
+from eumowy.signature_panel where signature_id = (select id from eumowy.signature where name = 'AP/UPZ/ZSNT4/1.003/18-07-20');
+
+insert into eumowy.signature_signature_detail (SIGNATURE_SIGNATURE_DETAILS_ID, SIGNATURE_DETAIL_ID)
+select (select id from eumowy.signature where name = 'AP/UPZ/ZSNT4/1.00420-02-28'), signature_detail_id
+from eumowy.signature_signature_detail where SIGNATURE_SIGNATURE_DETAILS_ID = (select id from eumowy.signature where name = 'AP/UPZ/ZSNT4/1.003/18-07-20');
+
 insert into eumowy.signature (ID, VERSION, ACTIVE, NAME, TEMPLATE_PATH, FOR_POINT, SIGNATURE_ORDER, DESCRIPTION, FILENAME, SEND_TO_CLIENT, SHOW_ON_PREVIEW, FOR_POS, SHOW_ON_ZRD)
 select eumowy.signature_seq.nextval, 0, 1, 'AP/UW/OOL/1.004/20-02-28', 'APUWOOL1.00420-02-28.pdf', os.FOR_POINT, os.SIGNATURE_ORDER, os.DESCRIPTION, os.FILENAME, os.SEND_TO_CLIENT, os.SHOW_ON_PREVIEW, os.FOR_POS, os.SHOW_ON_ZRD from eumowy.signature os where os.name = 'AP/UW/OOL/1.003/18-07-20';
 update eumowy.signature set active = 0 where name = 'AP/UW/OOL/1.003/18-07-20';
 insert into eumowy.activity_signatures (ID, VERSION, ACTIVITY_ID, MANDATORY, NUMBER_OF_LIST, SIGNATURE_ID, REQUIRED_ACTIVITIES) SELECT eumowy.activity_signatures_seq.nextval, 0, oas.activity_id, oas.mandatory, oas.number_of_list, (select id from eumowy.signature where name = 'AP/UW/OOL/1.004/20-02-28'), oas.REQUIRED_ACTIVITIES FROM eumowy.activity_signatures oas WHERE oas.signature_id = (select id from eumowy.signature where name = 'AP/UW/OOL/1.003/18-07-20');
+
+insert into eumowy.calcfield_signature (ID, VERSION, CALC_FIELD_ID, SIGNATURE_ID)
+select eumowy.calcfield_signature_seq.nextval, 0, calc_field_id, (select id from eumowy.signature where name = 'AP/UW/OOL/1.004/20-02-28')
+from eumowy.calcfield_signature where signature_id = (select id from eumowy.signature where name = 'AP/UW/OOL/1.003/18-07-20');
+
+insert into eumowy.signature_panel (ID, VERSION, PANEL_ID, SIGNATURE_ID)
+select eumowy.signature_panel_seq.nextval, 0, panel_id, (select id from eumowy.signature where name = 'AP/UW/OOL/1.004/20-02-28')
+from eumowy.signature_panel where signature_id = (select id from eumowy.signature where name = 'AP/UW/OOL/1.003/18-07-20');
+
+insert into eumowy.signature_signature_detail (SIGNATURE_SIGNATURE_DETAILS_ID, SIGNATURE_DETAIL_ID)
+select (select id from eumowy.signature where name = 'AP/UW/OOL/1.004/20-02-28'), signature_detail_id
+from eumowy.signature_signature_detail where SIGNATURE_SIGNATURE_DETAILS_ID = (select id from eumowy.signature where name = 'AP/UW/OOL/1.003/18-07-20');
 
 insert into eumowy.signature (ID, VERSION, ACTIVE, NAME, TEMPLATE_PATH, FOR_POINT, SIGNATURE_ORDER, DESCRIPTION, FILENAME, SEND_TO_CLIENT, SHOW_ON_PREVIEW, FOR_POS, SHOW_ON_ZRD)
 select eumowy.signature_seq.nextval, 0, 1, 'AP/UW/PON/1.003/20-02-28', 'APUWPON1.00320-02-28.pdf', os.FOR_POINT, os.SIGNATURE_ORDER, os.DESCRIPTION, os.FILENAME, os.SEND_TO_CLIENT, os.SHOW_ON_PREVIEW, os.FOR_POS, os.SHOW_ON_ZRD from eumowy.signature os where os.name = 'AP/UW/PON/1.002/18-07-20';
 update eumowy.signature set active = 0 where name = 'AP/UW/PON/1.002/18-07-20';
 insert into eumowy.activity_signatures (ID, VERSION, ACTIVITY_ID, MANDATORY, NUMBER_OF_LIST, SIGNATURE_ID, REQUIRED_ACTIVITIES) SELECT eumowy.activity_signatures_seq.nextval, 0, oas.activity_id, oas.mandatory, oas.number_of_list, (select id from eumowy.signature where name = 'AP/UW/PON/1.003/20-02-28'), oas.REQUIRED_ACTIVITIES FROM eumowy.activity_signatures oas WHERE oas.signature_id = (select id from eumowy.signature where name = 'AP/UW/PON/1.002/18-07-20');
 
+insert into eumowy.calcfield_signature (ID, VERSION, CALC_FIELD_ID, SIGNATURE_ID)
+select eumowy.calcfield_signature_seq.nextval, 0, calc_field_id, (select id from eumowy.signature where name = 'AP/UW/PON/1.003/20-02-28')
+from eumowy.calcfield_signature where signature_id = (select id from eumowy.signature where name = 'AP/UW/PON/1.002/18-07-20');
+
+insert into eumowy.signature_panel (ID, VERSION, PANEL_ID, SIGNATURE_ID)
+select eumowy.signature_panel_seq.nextval, 0, panel_id, (select id from eumowy.signature where name = 'AP/UW/PON/1.003/20-02-28')
+from eumowy.signature_panel where signature_id = (select id from eumowy.signature where name = 'AP/UW/PON/1.002/18-07-20');
+
+insert into eumowy.signature_signature_detail (SIGNATURE_SIGNATURE_DETAILS_ID, SIGNATURE_DETAIL_ID)
+select (select id from eumowy.signature where name = 'AP/UW/PON/1.003/20-02-28'), signature_detail_id
+from eumowy.signature_signature_detail where SIGNATURE_SIGNATURE_DETAILS_ID = (select id from eumowy.signature where name = 'AP/UW/PON/1.002/18-07-20');
+
 insert into eumowy.signature (ID, VERSION, ACTIVE, NAME, TEMPLATE_PATH, FOR_POINT, SIGNATURE_ORDER, DESCRIPTION, FILENAME, SEND_TO_CLIENT, SHOW_ON_PREVIEW, FOR_POS, SHOW_ON_ZRD)
 select eumowy.signature_seq.nextval, 0, 1, 'AP/UW/RWT/1.004/20-02-28', 'APUWRWT1.00420-02-28.pdf', os.FOR_POINT, os.SIGNATURE_ORDER, os.DESCRIPTION, os.FILENAME, os.SEND_TO_CLIENT, os.SHOW_ON_PREVIEW, os.FOR_POS, os.SHOW_ON_ZRD from eumowy.signature os where os.name = 'AP/UW/RWT/1.003/18-07-20';
 update eumowy.signature set active = 0 where name = 'AP/UW/RWT/1.003/18-07-20';
 insert into eumowy.activity_signatures (ID, VERSION, ACTIVITY_ID, MANDATORY, NUMBER_OF_LIST, SIGNATURE_ID, REQUIRED_ACTIVITIES) SELECT eumowy.activity_signatures_seq.nextval, 0, oas.activity_id, oas.mandatory, oas.number_of_list, (select id from eumowy.signature where name = 'new'), oas.REQUIRED_ACTIVITIES FROM eumowy.activity_signatures oas WHERE oas.signature_id = (select id from eumowy.signature where name = 'AP/UW/RWT/1.003/18-07-20');
+
+insert into eumowy.calcfield_signature (ID, VERSION, CALC_FIELD_ID, SIGNATURE_ID)
+select eumowy.calcfield_signature_seq.nextval, 0, calc_field_id, (select id from eumowy.signature where name = 'AP/UW/RWT/1.004/20-02-28')
+from eumowy.calcfield_signature where signature_id = (select id from eumowy.signature where name = 'AP/UW/RWT/1.003/18-07-20');
+
+insert into eumowy.signature_panel (ID, VERSION, PANEL_ID, SIGNATURE_ID)
+select eumowy.signature_panel_seq.nextval, 0, panel_id, (select id from eumowy.signature where name = 'AP/UW/RWT/1.004/20-02-28')
+from eumowy.signature_panel where signature_id = (select id from eumowy.signature where name = 'AP/UW/RWT/1.003/18-07-20');
+
+insert into eumowy.signature_signature_detail (SIGNATURE_SIGNATURE_DETAILS_ID, SIGNATURE_DETAIL_ID)
+select (select id from eumowy.signature where name = 'AP/UW/RWT/1.004/20-02-28'), signature_detail_id
+from eumowy.signature_signature_detail where SIGNATURE_SIGNATURE_DETAILS_ID = (select id from eumowy.signature where name = 'AP/UW/RWT/1.003/18-07-20');
 
 insert into eumowy.signature (ID, VERSION, ACTIVE, NAME, TEMPLATE_PATH, FOR_POINT, SIGNATURE_ORDER, DESCRIPTION, FILENAME, SEND_TO_CLIENT, SHOW_ON_PREVIEW, FOR_POS, SHOW_ON_ZRD)
 select eumowy.signature_seq.nextval, 0, 1, 'AP/UW/UD/1.003/20-02-28', 'APUWUD1.00320-02-28.pdf', os.FOR_POINT, os.SIGNATURE_ORDER, os.DESCRIPTION, os.FILENAME, os.SEND_TO_CLIENT, os.SHOW_ON_PREVIEW, os.FOR_POS, os.SHOW_ON_ZRD from eumowy.signature os where os.name = 'AP/UW/UD/1.002/18-07-20';
 update eumowy.signature set active = 0 where name = 'AP/UW/UD/1.002/18-07-20';
 insert into eumowy.activity_signatures (ID, VERSION, ACTIVITY_ID, MANDATORY, NUMBER_OF_LIST, SIGNATURE_ID, REQUIRED_ACTIVITIES) SELECT eumowy.activity_signatures_seq.nextval, 0, oas.activity_id, oas.mandatory, oas.number_of_list, (select id from eumowy.signature where name = 'new'), oas.REQUIRED_ACTIVITIES FROM eumowy.activity_signatures oas WHERE oas.signature_id = (select id from eumowy.signature where name = 'AP/UW/UD/1.002/18-07-20');
 
+insert into eumowy.calcfield_signature (ID, VERSION, CALC_FIELD_ID, SIGNATURE_ID)
+select eumowy.calcfield_signature_seq.nextval, 0, calc_field_id, (select id from eumowy.signature where name = 'AP/UW/UD/1.003/20-02-28')
+from eumowy.calcfield_signature where signature_id = (select id from eumowy.signature where name = 'AP/UW/UD/1.002/18-07-20');
+
+insert into eumowy.signature_panel (ID, VERSION, PANEL_ID, SIGNATURE_ID)
+select eumowy.signature_panel_seq.nextval, 0, panel_id, (select id from eumowy.signature where name = 'AP/UW/UD/1.003/20-02-28')
+from eumowy.signature_panel where signature_id = (select id from eumowy.signature where name = 'AP/UW/UD/1.002/18-07-20');
+
+insert into eumowy.signature_signature_detail (SIGNATURE_SIGNATURE_DETAILS_ID, SIGNATURE_DETAIL_ID)
+select (select id from eumowy.signature where name = 'AP/UW/UD/1.003/20-02-28'), signature_detail_id
+from eumowy.signature_signature_detail where SIGNATURE_SIGNATURE_DETAILS_ID = (select id from eumowy.signature where name = 'AP/UW/UD/1.002/18-07-20');
+
 insert into eumowy.signature (ID, VERSION, ACTIVE, NAME, TEMPLATE_PATH, FOR_POINT, SIGNATURE_ORDER, DESCRIPTION, FILENAME, SEND_TO_CLIENT, SHOW_ON_PREVIEW, FOR_POS, SHOW_ON_ZRD)
 select eumowy.signature_seq.nextval, 1, 1, 'AP/UPZ/RWP/1.002/20-02-28', 'APUPZRWP1.00220-02-28.pdf', os.FOR_POINT, os.SIGNATURE_ORDER, os.DESCRIPTION, os.FILENAME, os.SEND_TO_CLIENT, os.SHOW_ON_PREVIEW, os.FOR_POS, os.SHOW_ON_ZRD from eumowy.signature os where os.name = 'AP/UPZ/RWP/1.001/17-10-01';
 update eumowy.signature set active = 0 where name = 'AP/UPZ/RWP/1.001/17-10-01';
 insert into eumowy.activity_signatures (ID, VERSION, ACTIVITY_ID, MANDATORY, NUMBER_OF_LIST, SIGNATURE_ID, REQUIRED_ACTIVITIES) SELECT eumowy.activity_signatures_seq.nextval, 0, oas.activity_id, oas.mandatory, oas.number_of_list, (select id from eumowy.signature where name = 'AP/UPZ/RWP/1.002/20-02-28'), oas.REQUIRED_ACTIVITIES FROM eumowy.activity_signatures oas WHERE oas.signature_id = (select id from eumowy.signature where name = 'AP/UPZ/RWP/1.001/17-10-01');
 
+insert into eumowy.calcfield_signature (ID, VERSION, CALC_FIELD_ID, SIGNATURE_ID)
+select eumowy.calcfield_signature_seq.nextval, 0, calc_field_id, (select id from eumowy.signature where name = 'AP/UPZ/RWP/1.002/20-02-28')
+from eumowy.calcfield_signature where signature_id = (select id from eumowy.signature where name = 'AP/UPZ/RWP/1.001/17-10-01');
 
+insert into eumowy.signature_panel (ID, VERSION, PANEL_ID, SIGNATURE_ID)
+select eumowy.signature_panel_seq.nextval, 0, panel_id, (select id from eumowy.signature where name = 'AP/UPZ/RWP/1.002/20-02-28')
+from eumowy.signature_panel where signature_id = (select id from eumowy.signature where name = 'AP/UPZ/RWP/1.001/17-10-01');
+
+insert into eumowy.signature_signature_detail (SIGNATURE_SIGNATURE_DETAILS_ID, SIGNATURE_DETAIL_ID)
+select (select id from eumowy.signature where name = 'AP/UPZ/RWP/1.002/20-02-28'), signature_detail_id
+from eumowy.signature_signature_detail where SIGNATURE_SIGNATURE_DETAILS_ID = (select id from eumowy.signature where name = 'AP/UPZ/RWP/1.001/17-10-01');
 
 insert into EUMOWY.subscription_definition (ID, VERSION, SIGNATURE_ID, ROLE, FILE_NAME, SUBSCRIPTION_PAGE_NUMBER, SUBSCRIPTIONX, SUBSCRIPTIONY, SCALEX, SCALEY)
 VALUES ((select max(id) + 1 from EUMOWY.subscription_definition), 0, (select id from eumowy.signature where name = 'AP/UW/1.007/20-02-28'), 'PH', null, 2, 460, 80, 59, 28);

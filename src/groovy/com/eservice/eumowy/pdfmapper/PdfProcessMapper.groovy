@@ -468,7 +468,7 @@ class PdfProcessMapper extends AbstractPdfMapper{
     }
 
     private mapDzialaniaMatematyczneCenaProcess(def data, def pd, def key, def value) {
-        if (value == null && EMPTY_VALUES.contains(value)) {
+        if (value == null || EMPTY_VALUES.contains(value)) {
             return
         }
 

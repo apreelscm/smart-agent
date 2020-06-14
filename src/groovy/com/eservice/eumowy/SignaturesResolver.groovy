@@ -20,7 +20,7 @@ class SignaturesResolver {
 
     public List<ActivitySignatures> resolve() {
         List<ActivitySignatures> activitySignaturesFromList = Lists.newArrayList(activity.activitySignatures.findAll {
-            it.numberOfList == listNumber && it.signature.active
+            it.numberOfList == listNumber && it.signature?.active
         }).sort {it.requiredActivities?.split(",")?.length}.reverse(true)
 
         return activitySignaturesFromList.findAll {it.requiredActivities == getRequiredActivities(activitySignaturesFromList)}
