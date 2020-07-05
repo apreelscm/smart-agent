@@ -156,12 +156,12 @@ public class PdfGenerator {
 				if (dataEntry.getValue().length > 2) {
 					
 					if ("checkbox".equals(dataEntry.getValue()[2])) {
-						String[] states = form.getAppearanceStates(dataEntry.getKey());
-                        if (states != null){
+						PdfCheckBox chb = getPdfCheckBox(form, dataEntry.getKey());
+                        if (chb != null){
                             if ("false".equals(dataEntry.getValue()[0])) {
-                                form.setField(dataEntry.getKey(), states[0]);
+                                form.setField(dataEntry.getKey(), chb.unchecked());
                             } else {
-                                form.setField(dataEntry.getKey(), states[1]);
+                                form.setField(dataEntry.getKey(), chb.checked());
                             }
                         }
 					}
@@ -228,7 +228,11 @@ public class PdfGenerator {
 		return baos.toByteArray();
     }
 
-    public static DocumentContent updateValuesContent(DocumentContent documentContent, List<String> fieldsToUpdate, String value){
+	private static PdfCheckBox getPdfCheckBox(AcroFields form, String fieldName) {
+		return PdfCheckBox.create(form.getAppearanceStates(fieldName));
+	}
+
+	public static DocumentContent updateValuesContent(DocumentContent documentContent, List<String> fieldsToUpdate, String value){
         PdfReader templateReader = null;
         PdfStamper stamp = null;
         ByteArrayOutputStream baos = new ByteArrayOutputStream();

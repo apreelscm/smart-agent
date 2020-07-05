@@ -481,9 +481,9 @@ class PanelService {
         cmd.jcbPr = calculatorService.getCalcProperty(calc,"E_JCB")
         cmd.upiPr = calculatorService.getCalcProperty(calc,"E_UPI")
         cmd.oplataAutoryzacyjnaSt = calculatorService.getCalcProperty(calc,"E_OPLATA_ZA_AUTORYZACJE")
-        cmd.cardsOutOfEU = calculatorService.getCalcProperty(calc, "SELECT_DOD_OPL_VISA_MASTERCARD")
-        cmd.cardsInEUNotInPL = calculatorService.getCalcProperty(calc, "SELECT_DOD_OPL_VISA_MASTERCARD_BIZNUE")
-        cmd.cardsInPL = calculatorService.getCalcProperty(calc, "SELECT_DO_OPL_VISA_MASTERCARD_BIZNPOL")
+        cmd.cardsOutOfEU = calculatorService.getRawCalcPropertyOr(calc, 'SELECT_DOD_OPL_VISA_MASTERCARD', 'NIE')
+        cmd.cardsInEUNotInPL = calculatorService.getRawCalcPropertyOr(calc, 'SELECT_DOD_OPL_VISA_MASTERCARD_BIZNUE', 'NIE')
+        cmd.cardsInPL = calculatorService.getRawCalcPropertyOr(calc, 'SELECT_DO_OPL_VISA_MASTERCARD_BIZNPOL', 'NIE')
     }
 
     def getPoziomOplatIWarunkiPlatnosciPP(ProcessCommand cmd, def calc ) {
@@ -561,12 +561,14 @@ class PanelService {
 
         cmd.obslugaTyp = result?.value ?: "";
         //serwis ekonomiczny zaczytujemy w dwoch panelach
-        cmd.obslugaEkonomicznyCena = nullify(cmd.obslugaEkonomicznyCena, "5");
+        def obslugaEkonomicznyCenaCalc = calculatorService.getCalcProperty(calc, 'E_PAKIET_SERWIS_2')
+        cmd.obslugaEkonomicznyCena = obslugaEkonomicznyCenaCalc ? obslugaEkonomicznyCenaCalc : nullify(cmd.obslugaEkonomicznyCena, "5");
     }
 
     def getSerwisEkonomiczny(ProcessCommand cmd, def calc ) {
         //serwis ekonomiczny zaczytujemy w dwoch panelach
-        cmd.obslugaEkonomicznyCena = nullify(cmd.obslugaEkonomicznyCena, "5");
+        def obslugaEkonomicznyCenaCalc = calculatorService.getCalcProperty(calc, 'E_PAKIET_SERWIS_2')
+        cmd.obslugaEkonomicznyCena = obslugaEkonomicznyCenaCalc ? obslugaEkonomicznyCenaCalc : nullify(cmd.obslugaEkonomicznyCena, "5");
     }
 
     def getSerwisKomfort(ProcessCommand cmd, def calc ) {
