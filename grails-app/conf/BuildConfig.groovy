@@ -32,7 +32,7 @@ grails.project.dependency.resolution = {
 
         mavenLocal()
         mavenCentral()
-
+        mavenRepo "https://repo1.maven.org/maven2/" // TODO check if should stay
         mavenRepo "https://repository.apache.org/content/repositories/snapshots/"
 
         // uncomment these (or add new ones) to enable remote dependency resolution from public Maven repositories
@@ -47,6 +47,10 @@ grails.project.dependency.resolution = {
         compile 'org.springframework:spring-oxm:4.0.5.RELEASE'
         compile 'org.springframework.ws:spring-ws-core:2.2.0.RELEASE'
         compile 'org.springframework.ws:spring-xml:2.2.0.RELEASE'
+
+        compile "com.fasterxml.jackson.core:jackson-databind:2.5.1"
+        compile "com.fasterxml.jackson.core:jackson-core:2.5.1"
+        compile "com.fasterxml.jackson.core:jackson-annotations:2.5.1"
 
         runtime 'com.google.code.gson:gson:2.2.4'
         runtime 'joda-time:joda-time:2.3'

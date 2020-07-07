@@ -65,6 +65,12 @@
                 <g:if test="${representativesNotFound}">
                     <g:render template="message/infoMessage" model="[message: representativesNotFound]"/>
                 </g:if>
+                 <g:if test="${beneficiariesNotFound}">
+                     <g:render template="message/infoMessage" model="[message: beneficiariesNotFound]"/>
+                 </g:if>
+                 <g:if test="${bisnodeErrorMessage}">
+                     <g:render template="message/errorMessage" model="[message: bisnodeErrorMessage]"/>
+                 </g:if>
             </div>
         </div>
 

@@ -5,6 +5,8 @@ import com.eservice.eumowy.auth.EServiceUserDetails
 import com.eservice.eumowy.command.ProcessCommand
 import com.eservice.eumowy.dto.MerchantDetailsDTO
 import com.eservice.eumowy.exception.CalculatorException
+import com.eservice.eumowy.microbisnode.BisnodeConnectionException
+import com.eservice.eumowy.microbisnode.BisnodeMappingException
 import com.eservice.eumowy.process.DefineActivityCommand
 import com.eservice.eumowy.util.DateUtils
 import com.eservice.eumowy.validator.NumberValidator
@@ -42,6 +44,7 @@ class ActivityController {
 	def documentService
     def dictionaryService
     def bisnodeService
+    def microBisnodeService
     def mailBodyCreatorService
     def sessionFactory
     def signatureService
@@ -540,19 +543,31 @@ class ActivityController {
                 }
 
                 if(hasNowaUmowa) {
-                    MerchantDetailsDTO merchantDetails = bisnodeService.getMerchantDetails(flow.nip)
-                    if (merchantDetails?.isValid()) {
-                        flash.bisnodeMessage = message(code: 'bisnode.merchant.found')
-                        flow.bisnodeMerchantDetails = merchantDetails
-                        flow.representativesBisnode = bisnodeService.getRepresentatives(merchantDetails)
+                    try {
+                        MerchantDetailsDTO merchantDetails = microBisnodeService.getMerchantDetailsByIdentifier(flow.nip)
+                        if (merchantDetails?.isValid()) {
+                            flash.bisnodeMessage = message(code: 'bisnode.merchant.found')
+                            flow.bisnodeMerchantDetails = merchantDetails
+                            flow.representativesBisnode = merchantDetails.representatives
+                            flow.beneficiaresBisnode = merchantDetails.beneficiaries
 
-                        if(merchantDetails?.representatives?.size() == 0) {
-                            flash.representativesNotFound = message(code: 'bisnode.representatives.not.found')
+                            if (merchantDetails?.beneficiaries?.isEmpty() && merchantDetails?.representatives?.isEmpty()){
+                                flash.bisnodeMessage = message(code: 'bisnode.merchant.missing.data')
+                            } else if(merchantDetails?.representatives?.isEmpty()){
+                                flash.representativesNotFound = message(code: 'bisnode.representatives.not.found')
+                            } else if (merchantDetails?.beneficiaries?.isEmpty()){
+                                flash.beneficiariesNotFound = message(code: 'bisnode.beneficiaries.not.found')
+                            }
+                        } else {
+                            flash.bisnodeMessage = message(code: 'bisnode.merchant.not.found')
                         }
-                    } else {
-                        flash.bisnodeMessage = message(code: 'bisnode.merchant.not.found')
+                    } catch (BisnodeMappingException e){
+                        flash.bisnodeErrorMessage = message(code: 'bisnode.mapping.error')
+                    } catch (BisnodeConnectionException e){
+                        flash.bisnodeErrorMessage = message(code: 'bisnode.connection.error')
                     }
                 }
+
             }
             on("success"){
                 flow.isContinueEnabled = true
@@ -575,7 +590,7 @@ class ActivityController {
                     processInstance.panels = processService.filterExcludedPanels(processInstance, beforeExclusionPanels.toList())
                     processCommand = processService.getNewProcessCommand(processInstance, flow.calcNumber, conversation.calc)
 
-                    if(flow.bisnodeMerchantDetails) {
+                    if(flow.bisnodeMerchantDetails) { //
                         processService.fillCommandWithBisnodeData(processCommand, flow.bisnodeMerchantDetails)
                     }
 

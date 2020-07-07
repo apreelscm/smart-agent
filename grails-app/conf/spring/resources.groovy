@@ -2,6 +2,8 @@ import com.eservice.dao.emetrics.UserDAO
 import com.eservice.eumowy.CustomDateEditorRegistrar
 import com.eservice.eumowy.auth.EServiceAuthenticationProvider
 import com.eservice.eumowy.dao.CbdDAO
+import com.eservice.eumowy.microbisnode.MicroBisnodeClientImpl
+import com.eservice.eumowy.mocks.MicroBisnodeClientMock
 import com.eservice.eumowy.mocks.WebsClientMock
 import com.eservice.eumowy.propEditors.CustomPropertyEditorRegistrar
 import com.eservice.eumowy.util.EumowyCustomEnvironment
@@ -50,7 +52,10 @@ beans = {
     switch (Environment.getCurrent().getName()) {
         case Environment.DEVELOPMENT.name:
             websWebServiceClient(WebsClientMock){}
+            microBisnodeClient(MicroBisnodeClientMock, "/opt/settings/mock/microbisnode/"){}
             break;
+        default:
+            microBisnodeClient(MicroBisnodeClientImpl, '${microBisnode.service.uri}'){}
     }
 
     userService(UserService){

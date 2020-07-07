@@ -10,9 +10,12 @@ class MerchantRepresentativeDTO implements Serializable{
     String lastName
     String position
 
-    public MerchantRepresentativeDTO() {}
+    String pesel
+    String nationality
 
-    public MerchantRepresentativeDTO(MerchantRepresentativeDataDTO merchantRepresentativeDTO) {
+    MerchantRepresentativeDTO() {}
+
+    MerchantRepresentativeDTO(MerchantRepresentativeDataDTO merchantRepresentativeDTO) {
         title = merchantRepresentativeDTO.title
         firstName = merchantRepresentativeDTO.firstName
         lastName = merchantRepresentativeDTO.lastName
@@ -29,8 +32,8 @@ class MerchantRepresentativeDTO implements Serializable{
         .toString()
     }
 
-    public boolean isValid() {
+    boolean isValid() {
         return !(Strings.isNullOrEmpty(title) || Strings.isNullOrEmpty(firstName) || Strings.isNullOrEmpty(lastName) ||
-                Strings.isNullOrEmpty(position))
+                Strings.isNullOrEmpty(position) || Strings.isNullOrEmpty(pesel))
     }
 }

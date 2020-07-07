@@ -24,8 +24,8 @@ class CalculatorService implements Serializable {
 	def isCalValidBySignatures(def calcExt, def signatures) {
 		Set signaturesCalcNames = []
 		signatures.each{signature ->
-            def cfs = CalcFieldSignature.getCalcFieldsBySignature(signature);
-			signaturesCalcNames.addAll(cfs?.collect{it.calcField.name});
+            def cfs = CalcFieldSignature.getCalcFieldsBySignature(signature)
+			signaturesCalcNames.addAll(cfs?.collect{it.calcField.name})
 		}
 
         log.info(calcExt)
@@ -35,7 +35,11 @@ class CalculatorService implements Serializable {
         log.info("calcNames size:"+signaturesCalcNames.size() + "calcNames:"+signaturesCalcNames)
         log.info("contains ALL:"+calcKeyList.containsAll(signaturesCalcNames))
 
-		return calcKeyList.containsAll(signaturesCalcNames)
+        List missing = new ArrayList(signaturesCalcNames)
+        missing.removeAll(calcKeyList)
+        log.info("missing signatures calc names " + missing)
+
+        return calcKeyList.containsAll(signaturesCalcNames)
 	}
 	
 	def isCalValidExtendedValidation(def calcId, def activities, def signatures) {
@@ -77,8 +81,8 @@ class CalculatorService implements Serializable {
     }
 
     def getCalculator(Process process, Client client) {
-        boolean isCalculatorNeeded = !ActivityHelper.isCalculatorRedundant(process);
-        List calculator = [];
+        boolean isCalculatorNeeded = !ActivityHelper.isCalculatorRedundant(process)
+        List calculator = []
 
         if (isCalculatorNeeded) {
             calculator = cbdService.findCalculatorByNip(client.nip)
