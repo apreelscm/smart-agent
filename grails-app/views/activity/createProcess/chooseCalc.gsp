@@ -49,6 +49,13 @@
                 />
             </div>
 
+            <div class="display-inline-block" style="margin-top: 15px">
+                <apreel:textField  id="regonField" name="regon" class="regon"
+                                   title="${message(code:'client.regon.label')}"
+                                   value="${regon}" direction="vertical"
+                />
+            </div>
+
             <g:submitButton name="getCalculator" class="button action display-inline getCalculator"
                             value="${message(code:'default.search.button.name')}"/>
 

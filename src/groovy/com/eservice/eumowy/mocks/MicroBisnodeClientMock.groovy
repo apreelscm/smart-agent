@@ -1,6 +1,7 @@
 package com.eservice.eumowy.mocks
 
 import com.eservice.eumowy.microbisnode.MicroBisnodeClient
+import com.eservice.eumowy.microbisnode.OrganizationNotFoundException
 import com.eservice.eumowy.microbisnode.model.Organization
 import groovy.json.JsonSlurper
 import org.apache.log4j.Logger
@@ -35,6 +36,8 @@ class MicroBisnodeClientMock implements MicroBisnodeClient {
 
         } else {
             log.info("no mock data for identifier " + identifierNumber + " -> generate")
+
+            throw new OrganizationNotFoundException(identifierNumber) // or create fake data as alternative
 
         }
         return organization

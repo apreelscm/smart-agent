@@ -545,6 +545,10 @@ class ActivityController {
                 if(hasNowaUmowa) {
                     try {
                         MerchantDetailsDTO merchantDetails = microBisnodeService.getMerchantDetailsByIdentifier(flow.nip)
+                        if (! merchantDetails?.isValid() && params.regon){
+                            merchantDetails = microBisnodeService.getMerchantDetailsByIdentifier((String)params.regon)
+                        }
+
                         if (merchantDetails?.isValid()) {
                             flash.bisnodeMessage = message(code: 'bisnode.merchant.found')
                             flow.bisnodeMerchantDetails = merchantDetails
