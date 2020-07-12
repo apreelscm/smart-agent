@@ -277,6 +277,7 @@ class ProcessCommand implements Serializable {
     String jcbPr = DEFAULT_VALUE
     String upiPr = DEFAULT_VALUE
     String oplataAutoryzacyjnaSt = DEFAULT_VALUE
+    String oplataAutoryzacyjnaNr = DEFAULT_VALUE
     String cardsOutOfEU = DEFAULT_VALUE
     String cardsInEUNotInPL = DEFAULT_VALUE
     String cardsInPL = DEFAULT_VALUE
@@ -944,6 +945,7 @@ class ProcessCommand implements Serializable {
         jcbPr(nullable: false, blank: false)
         upiPr(nullable: false, blank: false)
         oplataAutoryzacyjnaSt(nullable: false, blank: false)
+        oplataAutoryzacyjnaNr(nullable: false, blank: false)
         cardsOutOfEU(nullable: false, blank: false)
         cardsInEUNotInPL(nullable: false, blank: false)
         cardsInPL(nullable: false, blank: false)

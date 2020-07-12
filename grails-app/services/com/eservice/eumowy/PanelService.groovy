@@ -31,7 +31,12 @@ class PanelService {
         cmd.hasNewUmowa = isNewAgreement(cmd.process)
         cmd.hasNewUmowaAndPrepaid = isNewAgreement(cmd.process) && cmd.hasDodaniePrepaid
         cmd.isBundleActivity = isBundleActivity(cmd.process)
-        cmd.promObjNaj1 = calculatorService.getCalcProperty(calc,"E_MIES_NAL_OPL_NAJ")
+        cmd.promObjNaj1 = calculatorService.getCalcProperty(calc,"E_PROM_OBN_NAJ_1")
+
+        if (SignatureHelper.containsAtLeastOne(cmd.process, newArrayList("AP/UW/1.007/20-02-28", "AP/UW/RWT/1.004/20-02-28"))) {
+            def val = calculatorService.getCalcProperty(calc,"E_MIES_NAL_OPL_NAJ")
+            cmd.promObjNaj1 = val ? val : 1
+        }
 
         cmd.promObjNajLiczbaTerminali = calculatorService.getCalcProperty(calc,"LICZBA_ZEST_POS_PROM_CEN_NAJ_1")
 
@@ -298,7 +303,11 @@ class PanelService {
     }
 
     def setCzyDcc(ProcessCommand cmd, def calc){
-        cmd.czyDcc = "TAK".equalsIgnoreCase(calculatorService.getCalcProperty(calc,"CZY_DCC")) ? true : false
+        def czyDcc = calculatorService.getCalcProperty(calc,"CZY_DCC")
+        if (czyDcc != null) {
+            czyDcc = ((String)czyDcc).trim()
+        }
+        cmd.czyDcc = "TAK".equalsIgnoreCase(czyDcc)
     }
 
     def getOplataDCCZaUruchomienie(ProcessCommand cmd, def calc ) {
@@ -308,11 +317,11 @@ class PanelService {
 
     def getOplatyDCC(ProcessCommand cmd, def calc ) {
         setCzyDcc(cmd,calc)
-        if (! cmd.czyDcc && ! calculatorService.getCalcProperty(calc,"OPLATA_DCC")){
+        if (!cmd.czyDcc && calculatorService.getCalcProperty(calc,"OPLATA_DCC") == null) {
             cmd.oplataZaPlatnoscWInnejWalucie = "-"
-        }
-        else {
-            cmd.oplataZaPlatnoscWInnejWalucie = calculatorService.getCalcProperty(calc,"OPLATA_DCC") ?: ""
+        } else {
+            def oplataDcc = calculatorService.getCalcProperty(calc,"OPLATA_DCC")
+            cmd.oplataZaPlatnoscWInnejWalucie = oplataDcc != null ? oplataDcc : ""
         }
     }
 
@@ -481,6 +490,7 @@ class PanelService {
         cmd.jcbPr = calculatorService.getCalcProperty(calc,"E_JCB")
         cmd.upiPr = calculatorService.getCalcProperty(calc,"E_UPI")
         cmd.oplataAutoryzacyjnaSt = calculatorService.getCalcProperty(calc,"E_OPLATA_ZA_AUTORYZACJE")
+        cmd.oplataAutoryzacyjnaNr = cmd.oplataAutoryzacyjnaSt //Used for documents with currency fixed in the template
         cmd.cardsOutOfEU = calculatorService.getRawCalcPropertyOr(calc, 'SELECT_DOD_OPL_VISA_MASTERCARD', 'NIE')
         cmd.cardsInEUNotInPL = calculatorService.getRawCalcPropertyOr(calc, 'SELECT_DOD_OPL_VISA_MASTERCARD_BIZNUE', 'NIE')
         cmd.cardsInPL = calculatorService.getRawCalcPropertyOr(calc, 'SELECT_DO_OPL_VISA_MASTERCARD_BIZNPOL', 'NIE')

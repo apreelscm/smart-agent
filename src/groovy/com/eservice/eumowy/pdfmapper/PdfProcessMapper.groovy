@@ -452,7 +452,18 @@ class PdfProcessMapper extends AbstractPdfMapper{
 
     private mapIfOplataVISAProcess(def data, def pd, def key, def value) {
         data.put(key, [value] as String[])
-        data.put("ifOplataVisa", [value] as String[])
+        data.put("ifOplataVisa", [value + ' %'] as String[])
+        data.put("ifOplataVISA", [value + ' %'] as String[])
+    }
+
+    private mapIfOplataMasterCardProcess(def data, def pd, def key, def value) {
+        data.put(key, [value] as String[])
+        data.put("ifOplataMasterCard", [value + ' %'] as String[])
+    }
+
+    private mapIfOplataDinersClubProcess(def data, def pd, def key, def value) {
+        data.put(key, [value] as String[])
+        data.put("ifOplataDinersClub", [value + ' %'] as String[])
     }
 
     private mapNipProcess(def data, def pd, def key, def value){
@@ -685,10 +696,16 @@ class PdfProcessMapper extends AbstractPdfMapper{
     }
 
     private def mapOplataZaUruchomienieDCCProcess(def data, def pd, def key, def value){
-        if (value == null && calculatorService != null && "NIE".equals(calculatorService.getCalcProperty(calc,'CZY_DCC'))){
+        if ((value == null || EMPTY_VALUES.contains(value)) && calculatorService != null && "NIE".equals(calculatorService.getCalcProperty(calc,'CZY_DCC'))){
             data.put('oplataZaUruchomienieDCC', ['-'] as String[]);
         } else {
-            data.put('oplataZaUruchomienieDCC', [formatDoubleValue(value.toDouble()) + ' zł'] as String[]);
+            def formattedValue = value
+            try {
+                formattedValue = formatDoubleValue(value.toDouble())
+            } catch (NumberFormatException ignored) {
+                //Do nothing
+            }
+            data.put('oplataZaUruchomienieDCC', [formattedValue + ' zł'] as String[]);
         }
     }
 

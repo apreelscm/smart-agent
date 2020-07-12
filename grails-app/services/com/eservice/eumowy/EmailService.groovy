@@ -27,7 +27,7 @@ class EmailService {
     def grailsApplication
     def springSecurityService
 
-    private static final String COA_MAIL = "coa@eservice.com.pl"
+    private static final String COA_DEFAULT_MAIL = "coa@eservice.com.pl"
 
 	@Cacheable(value="emailTampletByName", key="#name")
 	EmailTemplates getEmailTemplatesByName(def name){
@@ -42,7 +42,7 @@ class EmailService {
 	def sendDocumentsPaperVersion(List<DocumentFile> documents, def bodyParams) {
         def emailTemplate = getEmailTemplatesByName(DOCUMENTS_PAPER_VERSION)
 
-        String mailAddress = COA_MAIL
+        String mailAddress = grailsApplication.config.eumowyCOAEmail ? grailsApplication.config.eumowyCOAEmail : COA_DEFAULT_MAIL
         EServiceUserDetails user = springSecurityService.principal
         Process process = documents?.size() > 0 ? documents.get(0).process : null
 
