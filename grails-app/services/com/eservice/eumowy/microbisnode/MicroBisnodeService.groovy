@@ -10,10 +10,10 @@ class MicroBisnodeService {
 
     private OrganizationToMerchantDetailsDTOMapper dtoMapper = new OrganizationToMerchantDetailsDTOMapper()
 
-    List<MerchantRepresentativeDTO> getRepresentatives(String nip) throws BisnodeConnectionException, BisnodeMappingException {
+    List<MerchantRepresentativeDTO> getRepresentatives(String nip) {
         MerchantDetailsDTO merchantDetails = getMerchantDetailsByIdentifier(nip)
 
-        if(!merchantDetails) {
+        if(!merchantDetails || !merchantDetails.success()) {
             log.error(String.format("Merchant details not found for NIP %s. Returning empty representatives list.", nip))
             return Collections.emptyList()
         }
@@ -21,7 +21,7 @@ class MicroBisnodeService {
         return merchantDetails.representatives
     }
 
-    MerchantDetailsDTO getMerchantDetailsByIdentifier(String identifier) throws BisnodeConnectionException, BisnodeMappingException {
+    MerchantDetailsDTO getMerchantDetailsByIdentifier(String identifier) {
 
         Organization organization
         try {
@@ -32,8 +32,15 @@ class MicroBisnodeService {
             return merchantDetailsDTO
         } catch (OrganizationNotFoundException e){
             log.info(String.format("Client with identifier %s not found in MicroBisnode", identifier))
+            return MerchantDetailsDTO.notFound()
+        } catch (BisnodeConnectionException e){
+            return MerchantDetailsDTO.errorResult()
+        } catch (BisnodeMappingException e){
+            return MerchantDetailsDTO.mappingProblem()
+        } catch (Exception e) {
+            log.error(e)
+            return MerchantDetailsDTO.errorResult()
         }
-        return null
     }
 
 }

@@ -24,10 +24,20 @@ class MerchantDetailsDTO implements Serializable {
     String akceptantFax
 
     List<MerchantRepresentativeDTO> representatives = new ArrayList<MerchantRepresentativeDTO>()
-    List<MerchantRepresentativeDTO> beneficiaries = new ArrayList<MerchantRepresentativeDTO>()
+    List<MerchantBeneficiaryDTO> beneficiaries = new ArrayList<MerchantBeneficiaryDTO>()
+
+    MerchantSearchStatus status
+
+    MerchantDetailsDTO() {
+        status = MerchantSearchStatus.SUCCESS
+    }
+
+    MerchantDetailsDTO(MerchantSearchStatus status) {
+        this.status = status
+    }
 
     boolean isValid() {
-        return isNotEmpty(nip) && isNotEmpty(akceptantRegon) && isNotEmpty(akceptantNazwaOficjalna)
+        return success() && isNotEmpty(nip) && isNotEmpty(akceptantRegon) && isNotEmpty(akceptantNazwaOficjalna)
     }
 
     @Override
@@ -48,6 +58,24 @@ class MerchantDetailsDTO implements Serializable {
         .add("akceptantTelKomorkowy", akceptantTelKomorkowy)
         .add("akceptantFax", akceptantFax)
         .add("representatives", representatives.toString())
+        .add("beneficiaries", beneficiaries.toString())
         .toString()
+    }
+
+
+    static MerchantDetailsDTO errorResult() {
+        new MerchantDetailsDTO(MerchantSearchStatus.ERROR)
+    }
+
+    static MerchantDetailsDTO mappingProblem() {
+        new MerchantDetailsDTO(MerchantSearchStatus.MAPPING_ERROR)
+    }
+
+    static MerchantDetailsDTO notFound() {
+        new MerchantDetailsDTO(MerchantSearchStatus.NOT_FOUND)
+    }
+
+    boolean success(){
+        return MerchantSearchStatus.SUCCESS == status
     }
 }

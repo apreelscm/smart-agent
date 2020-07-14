@@ -1803,5 +1803,8 @@ class ProcessService {
         command.akceptantTelStacjonarny = merchantDetailsDTO.akceptantTelStacjonarny
         command.akceptantTelKomorkowy = merchantDetailsDTO.akceptantTelKomorkowy
         command.akceptantFax = merchantDetailsDTO.akceptantFax
+
+        MerchantDetailsDTOToBeneficiaryCommandMapper.map(merchantDetailsDTO.beneficiaries, command.beneficiaries)
+
     }
 }

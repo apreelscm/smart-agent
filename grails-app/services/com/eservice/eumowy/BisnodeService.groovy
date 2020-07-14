@@ -17,7 +17,7 @@ class BisnodeService {
     List<MerchantRepresentativeDTO> getRepresentatives(String nip) {
         MerchantDetailsDTO merchantDetails = getMerchantDetails(nip)
 
-        if(!merchantDetails) {
+        if(!merchantDetails || ! merchantDetails.success()) {
             log.error(String.format("Merchant details not found for NIP %s. Returning empty representatives list.", nip))
             return Collections.emptyList()
         }
@@ -33,12 +33,12 @@ class BisnodeService {
             bisnodeMerchantDetails = websWebServiceClient.searchMerchantData(nip, userId)
         } catch (Exception e) {
             log.error("Error during data fetch from bisnode", e)
-            return null
+            return MerchantDetailsDTO.errorResult()
         }
 
         if (isMerchantDetailsValid(bisnodeMerchantDetails)) {
             log.info(String.format("Client with NIP %s not found in Bisnode.", nip))
-            return null
+            return MerchantDetailsDTO.notFound()
         }
 
         log.info(String.format("Client with NIP %s found in Bisnode", nip))

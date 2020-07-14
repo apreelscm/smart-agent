@@ -1,5 +1,6 @@
 package com.eservice.eumowy.microbisnode
 
+import com.eservice.eumowy.dto.MerchantBeneficiaryDTO
 import com.eservice.eumowy.dto.MerchantDetailsDTO
 import com.eservice.eumowy.dto.MerchantRepresentativeDTO
 import com.eservice.eumowy.microbisnode.model.BeneficialOwner
@@ -46,7 +47,7 @@ class OrganizationToMerchantDetailsDTOMapper {
 
     }
 
-    private List<MerchantRepresentativeDTO> createRepresentativesList(PrincipalsAndManagement principalsAndManagement) {
+    private static List<MerchantRepresentativeDTO> createRepresentativesList(PrincipalsAndManagement principalsAndManagement) {
         List<MerchantRepresentativeDTO> representatives = new ArrayList<>()
         for(Principal principal: principalsAndManagement?.currentPrincipal) {
             MerchantRepresentativeDTO representative = new MerchantRepresentativeDTO()
@@ -64,11 +65,11 @@ class OrganizationToMerchantDetailsDTOMapper {
         return representatives
     }
 
-    private List<MerchantRepresentativeDTO> createBeneficiariesList(BeneficialOwnership beneficialOwnership){
-        List<MerchantRepresentativeDTO> beneficiaries = new ArrayList<>()
+    private static List<MerchantBeneficiaryDTO> createBeneficiariesList(BeneficialOwnership beneficialOwnership){
+        List<MerchantBeneficiaryDTO> beneficiaries = new ArrayList<>()
         List<BeneficialOwner> filteredBeneficiaries = beneficialOwnership?.beneficialOwners?.findAll{ BeneficialOwner it -> it.isSignificant() }
         for (BeneficialOwner beneficialOwner : filteredBeneficiaries){
-            MerchantRepresentativeDTO beneficiary = new MerchantRepresentativeDTO()
+            MerchantBeneficiaryDTO beneficiary = new MerchantBeneficiaryDTO()
             if (beneficialOwner.primaryName && beneficialOwner.primaryName.contains("|")){
                 String[] primaryNameArray = beneficialOwner.primaryName?.split("\\|")
                 beneficiary.title = primaryNameArray[0]
@@ -77,6 +78,7 @@ class OrganizationToMerchantDetailsDTOMapper {
             }
             beneficiary.nationality = beneficialOwner.nationality
             beneficiary.pesel = beneficialOwner.personId
+            beneficiary.ownershipPercentage = beneficialOwner.beneficialOwnershipPercentage.toInteger()
             if (beneficiary.isValid()){
                 beneficiaries.add(beneficiary)
             }
@@ -84,11 +86,11 @@ class OrganizationToMerchantDetailsDTOMapper {
         return beneficiaries
     }
 
-    private List<MerchantRepresentativeDTO> createBeneficiariesListForSOHO(PrincipalsAndManagement principalsAndManagement) {
-        List<MerchantRepresentativeDTO> beneficiaries = new ArrayList<>()
+    private static List<MerchantBeneficiaryDTO> createBeneficiariesListForSOHO(PrincipalsAndManagement principalsAndManagement) {
+        List<MerchantBeneficiaryDTO> beneficiaries = new ArrayList<>()
         Principal owner = principalsAndManagement?.currentPrincipal?.find{ Principal it -> it.isOwner() }
         if (owner){
-            MerchantRepresentativeDTO beneficiary = new MerchantRepresentativeDTO()
+            MerchantBeneficiaryDTO beneficiary = new MerchantBeneficiaryDTO()
             beneficiary.title = owner.principalName?.title
             beneficiary.firstName = owner.principalName?.firstName
             beneficiary.lastName = owner.principalName?.lastName

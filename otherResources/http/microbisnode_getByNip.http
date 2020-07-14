@@ -1,2 +1,2 @@
-GET http://192.168.9.26:8114/bisnode/organizations?countryISOAlpha2Code=PL&organizationIdentificationNumber=8222520997
+GET http://192.168.9.26:8114/bisnode/organizations?countryISOAlpha2Code=PL&organizationIdentificationNumber=5252709433
 Accept: application/json

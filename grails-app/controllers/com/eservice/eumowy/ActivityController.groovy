@@ -4,9 +4,8 @@ package com.eservice.eumowy
 import com.eservice.eumowy.auth.EServiceUserDetails
 import com.eservice.eumowy.command.ProcessCommand
 import com.eservice.eumowy.dto.MerchantDetailsDTO
+import com.eservice.eumowy.dto.MerchantSearchStatus
 import com.eservice.eumowy.exception.CalculatorException
-import com.eservice.eumowy.microbisnode.BisnodeConnectionException
-import com.eservice.eumowy.microbisnode.BisnodeMappingException
 import com.eservice.eumowy.process.DefineActivityCommand
 import com.eservice.eumowy.util.DateUtils
 import com.eservice.eumowy.validator.NumberValidator
@@ -43,7 +42,6 @@ class ActivityController {
     def pdfService
 	def documentService
     def dictionaryService
-    def bisnodeService
     def microBisnodeService
     def mailBodyCreatorService
     def sessionFactory
@@ -543,31 +541,28 @@ class ActivityController {
                 }
 
                 if(hasNowaUmowa) {
-                    try {
-                        MerchantDetailsDTO merchantDetails = microBisnodeService.getMerchantDetailsByIdentifier(flow.nip)
-                        if (! merchantDetails?.isValid() && params.regon){
-                            merchantDetails = microBisnodeService.getMerchantDetailsByIdentifier((String)params.regon)
-                        }
+                    MerchantDetailsDTO merchantDetails = microBisnodeService.getMerchantDetailsByIdentifier(flow.nip)
+                    if (!merchantDetails?.isValid() && params.regon) {
+                        merchantDetails = microBisnodeService.getMerchantDetailsByIdentifier((String) params.regon)
+                    }
 
-                        if (merchantDetails?.isValid()) {
-                            flash.bisnodeMessage = message(code: 'bisnode.merchant.found')
-                            flow.bisnodeMerchantDetails = merchantDetails
-                            flow.representativesBisnode = merchantDetails.representatives
-                            flow.beneficiaresBisnode = merchantDetails.beneficiaries
+                    if (merchantDetails?.isValid()) {
+                        flash.bisnodeMessage = message(code: 'bisnode.merchant.found')
+                        flow.bisnodeMerchantDetails = merchantDetails
+                        flow.representativesBisnode = merchantDetails.representatives
 
-                            if (merchantDetails?.beneficiaries?.isEmpty() && merchantDetails?.representatives?.isEmpty()){
-                                flash.bisnodeMessage = message(code: 'bisnode.merchant.missing.data')
-                            } else if(merchantDetails?.representatives?.isEmpty()){
-                                flash.representativesNotFound = message(code: 'bisnode.representatives.not.found')
-                            } else if (merchantDetails?.beneficiaries?.isEmpty()){
-                                flash.beneficiariesNotFound = message(code: 'bisnode.beneficiaries.not.found')
-                            }
-                        } else {
-                            flash.bisnodeMessage = message(code: 'bisnode.merchant.not.found')
+                        if (merchantDetails?.beneficiaries?.isEmpty() && merchantDetails?.representatives?.isEmpty()) {
+                            flash.bisnodeMessage = message(code: 'bisnode.merchant.missing.data')
+                        } else if (merchantDetails?.representatives?.isEmpty()) {
+                            flash.representativesNotFound = message(code: 'bisnode.representatives.not.found')
+                        } else if (merchantDetails?.beneficiaries?.isEmpty()) {
+                            flash.beneficiariesNotFound = message(code: 'bisnode.beneficiaries.not.found')
                         }
-                    } catch (BisnodeMappingException e){
+                    } else if (merchantDetails.status == MerchantSearchStatus.NOT_FOUND) {
+                        flash.bisnodeMessage = message(code: 'bisnode.merchant.not.found')
+                    } else if (merchantDetails.status == MerchantSearchStatus.MAPPING_ERROR) {
                         flash.bisnodeErrorMessage = message(code: 'bisnode.mapping.error')
-                    } catch (BisnodeConnectionException e){
+                    } else if (merchantDetails.status == MerchantSearchStatus.ERROR) {
                         flash.bisnodeErrorMessage = message(code: 'bisnode.connection.error')
                     }
                 }
@@ -594,7 +589,7 @@ class ActivityController {
                     processInstance.panels = processService.filterExcludedPanels(processInstance, beforeExclusionPanels.toList())
                     processCommand = processService.getNewProcessCommand(processInstance, flow.calcNumber, conversation.calc)
 
-                    if(flow.bisnodeMerchantDetails) { //
+                    if(flow.bisnodeMerchantDetails) {
                         processService.fillCommandWithBisnodeData(processCommand, flow.bisnodeMerchantDetails)
                     }
 
@@ -618,7 +613,7 @@ class ActivityController {
 
                     if(processCommand.isFromBisnode && !flow.representativesBisnode) {
                         log.info(format("Process with ID %s and NIP %s is from BISNODE. Filling flow with representatives from BISNODE.", processInstance.id, processCommand.nip))
-                        flow.representativesBisnode = bisnodeService.getRepresentatives(processCommand.nip)
+                        flow.representativesBisnode = microBisnodeService.getRepresentatives(processCommand.nip)
                     }
 
                     processCommand.nip = processInstance.client.nip
@@ -936,7 +931,7 @@ class ActivityController {
 
                 if(processCmd.isFromBisnode && !flow.representativesBisnode) {
                     log.info(format("Process with ID %s and NIP %s is from BISNODE. Filling flow with representatives from BISNODE.", processInstance.id, processCmd.nip))
-                    flow.representativesBisnode = bisnodeService.getRepresentatives(processCmd.nip)
+                    flow.representativesBisnode = microBisnodeService.getRepresentatives(processCmd.nip)
                 }
 
                 processCmd.liczbaPosZCbd = processCmd.getPosCountFromCBD()
