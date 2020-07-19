@@ -33,7 +33,8 @@ class PanelService {
         cmd.isBundleActivity = isBundleActivity(cmd.process)
         cmd.promObjNaj1 = calculatorService.getCalcProperty(calc,"E_PROM_OBN_NAJ_1")
 
-        if (SignatureHelper.containsAtLeastOne(cmd.process, newArrayList("AP/UW/1.007/20-02-28", "AP/UW/RWT/1.004/20-02-28"))) {
+        if (SignatureHelper.containsAtLeastOne(cmd.process, newArrayList("AP/UW/1.007/20-02-28")) &&
+            !contains(cmd.process, WYMIANA_UMOWY_NAJMU_NA_UMOWE_WSPOLPRACY)) {
             def val = calculatorService.getCalcProperty(calc,"E_MIES_NAL_OPL_NAJ")
             cmd.promObjNaj1 = val ? val : 1
         }

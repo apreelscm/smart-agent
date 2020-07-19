@@ -1,6 +1,6 @@
 package com.eservice.eumowy.pdfmapper.representative
 
-import com.eservice.eumowy.command.ProcessCommand
+
 import com.eservice.eumowy.pdfmapper.AbstractPdfMapper
 import com.eservice.eumowy.pdfmapper.Mapper
 import com.eservice.eumowy.Process
@@ -17,9 +17,9 @@ class LegalFormMapper extends AbstractPdfMapper implements Mapper {
     public Map getDataForMapping() {
         Map legalFormData = [:]
 
-        legalFormData.put("formaOsobaFizyczna", getCheckboxData(process.akceptantOsobaFizyczna))
-        legalFormData.put("formaOsobaPrawna", getCheckboxData(process.akceptantOsobaPrawna))
-        legalFormData.put("formaJednostkaOrg", getCheckboxData(process.akceptantJednostkaNieposiadajacaOsobyPrawnej))
+        legalFormData.put("formaOsobaFizyczna", getCheckedCheckbox(process.akceptantOsobaFizyczna))
+        legalFormData.put("formaOsobaPrawna", getCheckedCheckbox(process.akceptantOsobaPrawna))
+        legalFormData.put("formaJednostkaOrg", getCheckedCheckbox(process.akceptantJednostkaNieposiadajacaOsobyPrawnej))
 
         return legalFormData
     }

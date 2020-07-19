@@ -16,17 +16,17 @@ class EmployeeAnnotationsMapper extends AbstractPdfMapper implements Mapper{
         Map employeeAnnotations = [:]
 
         if(process.akceptantOsobaFizyczna || process.akceptantJednostkaNieposiadajacaOsobyPrawnej) {
-            employeeAnnotations.put("akceptantWeryfikacjaDokumenty", getCheckboxData(true))
+            employeeAnnotations.put("akceptantWeryfikacjaDokumenty", getCheckedCheckbox(true))
         } else if (process.akceptantOsobaPrawna) {
-            employeeAnnotations.put("akceptantWeryfikacjaKRS", getCheckboxData(true))
+            employeeAnnotations.put("akceptantWeryfikacjaKRS", getCheckedCheckbox(true))
         }
 
-        employeeAnnotations.put("beneficjentWeryfikacjaKRS", getCheckboxData(process.getBooleanData("beneficjentWeryfikacjaKRS")))
+        employeeAnnotations.put("beneficjentWeryfikacjaKRS", getCheckedCheckbox(process.getBooleanData("beneficjentWeryfikacjaKRS")))
         employeeAnnotations.put("beneficjentKRS", [process.getData("beneficjentKRS")] as String[])
-        employeeAnnotations.put("beneficjentWeryfikacjaGielda", getCheckboxData(process.getBooleanData("beneficjentWeryfikacjaGielda")))
-        employeeAnnotations.put("beneficjentWeryfikacjaSpolka", getCheckboxData(process.getBooleanData("beneficjentWeryfikacjaSpolka")))
-        employeeAnnotations.put("beneficjentWeryfikacjaKsiega", getCheckboxData(process.getBooleanData("beneficjentWeryfikacjaKsiega")))
-        employeeAnnotations.put("beneficjentWeryfikacjaSchemat", getCheckboxData(process.getBooleanData("beneficjentWeryfikacjaSchemat")))
+        employeeAnnotations.put("beneficjentWeryfikacjaGielda", getCheckedCheckbox(process.getBooleanData("beneficjentWeryfikacjaGielda")))
+        employeeAnnotations.put("beneficjentWeryfikacjaSpolka", getCheckedCheckbox(process.getBooleanData("beneficjentWeryfikacjaSpolka")))
+        employeeAnnotations.put("beneficjentWeryfikacjaKsiega", getCheckedCheckbox(process.getBooleanData("beneficjentWeryfikacjaKsiega")))
+        employeeAnnotations.put("beneficjentWeryfikacjaSchemat", getCheckedCheckbox(process.getBooleanData("beneficjentWeryfikacjaSchemat")))
 
         return employeeAnnotations
     }

@@ -29,13 +29,13 @@ class RepresentativesDetailsMapper extends AbstractPdfMapper implements Mapper {
         process.allRepresentatives.eachWithIndex { representative, i->
             representativesData.put(getFieldName(i, "Nazwa"), [representative.fullName] as String[])
             representativesData.put(getFieldName(i, "Stanowisko"), [representative.position] as String[])
-            representativesData.put(getFieldName(i, "CzyPesel"), getCheckboxData(!isNullOrEmpty(representative.pesel)))
+            representativesData.put(getFieldName(i, "CzyPesel"), getCheckedCheckbox(!isNullOrEmpty(representative.pesel)))
             representativesData.put(getFieldName(i, "Pesel"), [representative.pesel] as String[])
-            representativesData.put(getFieldName(i, "CzyDataUrodzenia"), getCheckboxData(representative.birthDate != null))
+            representativesData.put(getFieldName(i, "CzyDataUrodzenia"), getCheckedCheckbox(representative.birthDate != null))
             representativesData.put(getFieldName(i, "PanstwoUrodzenia"), [representative.birthCountry] as String[])
             representativesData.put(getFieldName(i, "MiejscowoscUrodzenia"), [representative.birthCity] as String[])
-            representativesData.put(getFieldName(i, "DowOsob"), getCheckboxData(IdentityDocumentType.IDENTITY_CARD.equals(representative.documentType)))
-            representativesData.put(getFieldName(i, "Paszport"), getCheckboxData(IdentityDocumentType.PASSPORT.equals(representative.documentType)))
+            representativesData.put(getFieldName(i, "DowOsob"), getCheckedCheckbox(IdentityDocumentType.IDENTITY_CARD.equals(representative.documentType)))
+            representativesData.put(getFieldName(i, "Paszport"), getCheckedCheckbox(IdentityDocumentType.PASSPORT.equals(representative.documentType)))
             representativesData.put(getFieldName(i, "SeriaNrDokumentu"), [representative.documentNumber] as String[])
 
             if (representative.birthDate) {
