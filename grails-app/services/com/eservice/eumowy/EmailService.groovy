@@ -55,17 +55,17 @@ class EmailService {
             }
         }
 
-		sendMailDocuments(emailTemplate, mailAddress, null, bodyParams, documents)
+        sendMailWithTryCatch(emailTemplate, mailAddress, null, bodyParams, documents)
 	}
 
     def sendDocumentsPaperVersion(def recipient, List<DocumentFile> documents, def bodyParams) {
         def emailTemplate = getEmailTemplatesByName(DOCUMENTS_PAPER_VERSION)
-        sendMailDocuments(emailTemplate, recipient, null, bodyParams, documents)
+        sendMailWithTryCatch(emailTemplate, recipient, null, bodyParams, documents)
     }
 
     def sendDocumentsTemplateVersion(def recipient, List<DocumentFile> documents, def bodyParams) {
         def emailTemplate = getEmailTemplatesByName(DOCUMENTS_TEMPLATE_VERSION)
-        sendMailDocuments(emailTemplate, recipient, null, bodyParams, documents)
+        sendMailWithTryCatch(emailTemplate, recipient, null, bodyParams, documents)
     }
 
     def sendNewAgreementDocuments(List recipients, List<DocumentFile> documents, def bodyParams) {
@@ -105,7 +105,7 @@ class EmailService {
 
         if (!email.isEmpty()) {
             log.info "Sending acceptance form to " + email
-            sendMailDocuments(emailTemplate, email, null, bodyParams, acceptanceForm)
+            sendMailWithTryCatch(emailTemplate, email, null, bodyParams, acceptanceForm)
         } else {
             log.warn "Cannot find email for sending acceptance form"
         }
@@ -113,12 +113,12 @@ class EmailService {
 
 	def sendDocumentsElectronicalVersion(def recipient, List<DocumentFile> documents, def bodyParams) {
 		def emailTemplate = getEmailTemplatesByName(DOCUMENTS_ELECTRONICAL_VERSION)
-        sendMailDocuments(emailTemplate, recipient, null, bodyParams, documents)
+        sendMailWithTryCatch(emailTemplate, recipient, null, bodyParams, documents)
 	}
 
     def sendDocumentsNotNewAggrementElectronicalVersion(def recipient, List<DocumentFile> documents, def bodyParams) {
         def emailTemplate = getEmailTemplatesByName(DOCUMENTS_NOT_NEW_AGGREMENT_ELECTRONICAL_VERSION)
-        sendMailDocuments(emailTemplate, recipient, null, bodyParams, documents)
+        sendMailWithTryCatch(emailTemplate, recipient, null, bodyParams, documents)
     }
 
 	boolean sendProcessAcceptedMails(Process processInstance, String notesFromZrd) {
@@ -154,7 +154,7 @@ class EmailService {
 
     def sendDocumentsAcceptedToPostSend(List<DocumentFile> documents, def bodyParams) {
         def emailTemplate = getEmailTemplatesByName(DOCUMENTS_MISSING_MAIL)
-        sendMailDocuments(emailTemplate, emailTemplate.recipients, null, bodyParams, documents)
+        sendMailWithTryCatch(emailTemplate, emailTemplate.recipients, null, bodyParams, documents)
     }
 
     def sendDocumentsRejected(def recipient, def merchantName, def merchantNip, def bodyParams) {

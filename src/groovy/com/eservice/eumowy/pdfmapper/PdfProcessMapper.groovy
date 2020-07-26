@@ -107,7 +107,7 @@ class PdfProcessMapper extends AbstractPdfMapper{
 
         if (SignatureHelper.containsAtLeastOne(processInstance, newArrayList("AP/UW/1.007/20-02-28")) &&
                 contains(processInstance, WYMIANA_UMOWY_NAJMU_NA_UMOWE_WSPOLPRACY)) {
-            dataMap.put("promObjNaj1", "")
+            dataMap.put("promObjNaj1", [""] as String[])
         }
 
         setAttachmentsNames()
@@ -729,6 +729,20 @@ class PdfProcessMapper extends AbstractPdfMapper{
                 //Do nothing
             }
             data.put('oplataZaPlatnoscWInnejWalucie', [formattedValue + ' zł'] as String[]);
+        }
+    }
+
+    private def mapMudCenaProcess(def data, def pd, def key, def value) {
+        if ((value == null || EMPTY_VALUES.contains(value))) {
+            data.put('mudCena', ['-'] as String[]);
+        } else {
+            def formattedValue = value
+            try {
+                formattedValue = formatDoubleValue(value.toDouble())
+            } catch (NumberFormatException ignored) {
+                //Do nothing
+            }
+            data.put('mudCena', [formattedValue + ' zł'] as String[])
         }
     }
 

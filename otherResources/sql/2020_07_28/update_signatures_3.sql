@@ -1,0 +1,1 @@
+update eumowy.subscription_definition set role = 'PH' where signature_id = (select id from eumowy.signature where name = 'AP-AG/F/PABR/1.002/18-07-01') and role = 'PH1';
