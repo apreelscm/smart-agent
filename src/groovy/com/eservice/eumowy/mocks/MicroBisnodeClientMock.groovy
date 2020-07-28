@@ -1,7 +1,6 @@
 package com.eservice.eumowy.mocks
 
 import com.eservice.eumowy.microbisnode.MicroBisnodeClient
-import com.eservice.eumowy.microbisnode.OrganizationNotFoundException
 import com.eservice.eumowy.microbisnode.model.Organization
 import groovy.json.JsonSlurper
 import org.apache.log4j.Logger
@@ -21,7 +20,7 @@ class MicroBisnodeClientMock implements MicroBisnodeClient {
     @Override
     Organization getOrganizationByIdentifier(String identifierNumber) {
 
-        Organization organization = null
+        Organization organization
         String jsonFilePath = mockResponseDirectory  +identifierNumber + ".json"
         File file = new File(jsonFilePath)
         log.debug("looking for mock response file " + jsonFilePath)
@@ -36,8 +35,11 @@ class MicroBisnodeClientMock implements MicroBisnodeClient {
 
         } else {
             log.info("no mock data for identifier " + identifierNumber + " -> generate")
-
-            throw new OrganizationNotFoundException(identifierNumber) // or create fake data as alternative
+            organization = new OrganizationBuilder()
+                    .withAddress("05-500","Nowa Iwiczna","Ul.","Kwiatowa","1")
+                    .withRepresentative("Jan", "Kowalski", "81060952258", "Prezes")
+                    .withBeneficiary("Piotr","Nowak", "88070539732", 30)
+                    .build()
 
         }
         return organization

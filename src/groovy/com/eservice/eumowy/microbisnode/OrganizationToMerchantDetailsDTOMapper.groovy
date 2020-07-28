@@ -24,10 +24,12 @@ class OrganizationToMerchantDetailsDTOMapper {
 
         if (organization.location.firstPrimaryAddress.streetAddressLine?.size() > 0){
             String[] streetAddressLine = organization.location.firstPrimaryAddress.streetAddressLine.get(0).split("\\|")
-            merchantDetailsDTO.akceptantUlicaTytul = streetAddressLine[0]
+            merchantDetailsDTO.akceptantUlicaTytul = mapStreetType(streetAddressLine[0])
             merchantDetailsDTO.akceptantUlica = streetAddressLine[1]
             merchantDetailsDTO.akceptantNrDomu = streetAddressLine[2]
-            merchantDetailsDTO.akceptantNrMieszkania = streetAddressLine[3]
+            if (streetAddressLine.size() > 3){
+                merchantDetailsDTO.akceptantNrMieszkania = streetAddressLine[3]
+            }
         }
 
         merchantDetailsDTO.akceptantKodPocztowy = organization.location.firstPrimaryAddress.postalCode
@@ -35,16 +37,21 @@ class OrganizationToMerchantDetailsDTOMapper {
 
         merchantDetailsDTO.representatives = createRepresentativesList(organization.principalsAndManagement)
 
-        if (organization.legalFormKnown){
-            if (organization.isSOHO()){
-                merchantDetailsDTO.beneficiaries = createBeneficiariesListForSOHO(organization.principalsAndManagement)
-            } else if (organization.linkage?.beneficialOwnership) {
-                merchantDetailsDTO.beneficiaries = createBeneficiariesList(organization.linkage.beneficialOwnership)
-            }
+        if (organization.isSOHO()){
+            merchantDetailsDTO.beneficiaries = createBeneficiariesListForSOHO(organization.principalsAndManagement)
+        } else if (organization.linkage?.beneficialOwnership) {
+            merchantDetailsDTO.beneficiaries = createBeneficiariesList(organization.linkage.beneficialOwnership)
         }
 
         return merchantDetailsDTO
 
+    }
+
+    private static mapStreetType(String streetType){
+        if (streetType?.contains(".")){
+            streetType = streetType.replaceAll(".", "")
+        }
+        return streetType.toUpperCase()
     }
 
     private static List<MerchantRepresentativeDTO> createRepresentativesList(PrincipalsAndManagement principalsAndManagement) {

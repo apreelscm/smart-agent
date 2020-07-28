@@ -1,5 +1,7 @@
 package com.eservice.eumowy.dto
 
+import com.google.common.base.Strings
+
 class MerchantBeneficiaryDTO extends MerchantRepresentativeDTO {
 
     Integer ownershipPercentage
@@ -10,5 +12,10 @@ class MerchantBeneficiaryDTO extends MerchantRepresentativeDTO {
 
     void setOwnershipPercentage(Integer ownershipPercentage) {
         this.ownershipPercentage = ownershipPercentage
+    }
+
+    boolean isValid() {
+        return !(Strings.isNullOrEmpty(title) || Strings.isNullOrEmpty(firstName) || Strings.isNullOrEmpty(lastName)
+               || Strings.isNullOrEmpty(pesel))
     }
 }
