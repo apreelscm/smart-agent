@@ -48,6 +48,10 @@ grails.project.dependency.resolution = {
         compile 'org.springframework.ws:spring-ws-core:2.2.0.RELEASE'
         compile 'org.springframework.ws:spring-xml:2.2.0.RELEASE'
 
+        compile "com.fasterxml.jackson.core:jackson-databind:2.5.1"
+        compile "com.fasterxml.jackson.core:jackson-core:2.5.1"
+        compile "com.fasterxml.jackson.core:jackson-annotations:2.5.1"
+
         runtime 'com.google.code.gson:gson:2.2.4'
         runtime 'joda-time:joda-time:2.3'
         runtime 'com.lowagie:itext:2.1.7'

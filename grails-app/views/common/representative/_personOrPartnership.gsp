@@ -1,4 +1,4 @@
-<%@ page import="com.eservice.eumowy.enums.options.AcceptorLocation; com.eservice.eumowy.enums.options.IdentityDocumentType" %>
+<%@ page import="com.eservice.eumowy.enums.options.TelephoneType; com.eservice.eumowy.enums.options.AcceptorLocation; com.eservice.eumowy.enums.options.IdentityDocumentType" %>
 
 <div class="personData ${additionalClass}">
     <div class="acceptorDocumentInfoWrapper">
@@ -77,10 +77,42 @@
                           validatable="${representative}" validateField="address" required="required"/>
     </div>
 
-    <div class="${hasErrors(bean: representative, field: 'country', 'errorSpan')}">
-        <label for="${prefix}[${seqNo}].country"><g:message code="country.name.label"/></label>
+    <div class="${hasErrors(bean: representative, field: 'country', 'errorSpan')} ${hasErrors(bean: representative, field: 'phoneNumber', 'errorSpan')}">
+
+        <g:radio class="telephone-type" name="${prefix}[${seqNo}].telephoneType" value="${TelephoneType.LANDLINE.name()}"
+                 checked="${data.isPersonForm() && representative?.telephoneType == TelephoneType.LANDLINE}"/>
+        <label for="${prefix}[${seqNo}].telephoneType"><g:message code="panel.landline.phone.number"/></label>
+
+        <g:radio class="telephone-type" name="${prefix}[${seqNo}].telephoneType" value="${TelephoneType.MOBILE.name()}"
+                 checked="${data.isPersonForm() && representative?.telephoneType == TelephoneType.MOBILE}"/>
+        <label for="${prefix}[${seqNo}].telephoneType"><g:message code="panel.mobile.phone.number"/></label>
+
+        <label style="margin-left: 10px" for="${prefix}[${seqNo}].phoneNumber"><g:message code="panel.number"/>: </label>
+        <eumowy:textField name="${prefix}[${seqNo}].phoneNumber" value="${representative?.phoneNumber}" maxlength="20" style="width: 150px"
+                          validatable="${representative}" validateField="phoneNumber" class="phone-number ${representative?.telephoneType == TelephoneType.LANDLINE ? 'phone' : 'mobile-phone' }"/>
+
+        <label style="margin-left: 20px" for="${prefix}[${seqNo}].country"><g:message code="country.name.label"/></label>
         <dict:countrySelect name="${prefix}[${seqNo}].country" value="${representative?.country}" required="required"
                             validatable="${representative}" validateField="country"/>
+    </div>
+
+    <div>
+        <span>
+            <g:message code="panel.email"/>: <g:textField name="${prefix}[${seqNo}].email" value="${representative?.email}" validatable="${representative}" style="width: 150px" email="true"/>
+        </span>
+    </div>
+
+    <div class="hasSignedContract ${hasErrors(bean: representative, field: 'hasSignedContract', 'errorSpan')}">
+
+        <span><g:message code="person.signed.contract"/></span>
+
+        <g:radio name="${prefix}[${seqNo}].hasSignedContract" value="true"
+                 checked="${data.isPersonForm() && representative?.hasSignedContract == true}"/>
+        <label for="${prefix}[${seqNo}].hasSignedContract"><g:message code="yes"/></label>
+
+        <g:radio name="${prefix}[${seqNo}].hasSignedContract" value="false"
+                 checked="${data.isPersonForm() && representative?.hasSignedContract == false}"/>
+        <label for="${prefix}[${seqNo}].hasSignedContract"><g:message code="no"/></label>
     </div>
 
     <div class="isPolitician ${hasErrors(bean: representative, field: 'isPolitician', 'errorSpan')}">

@@ -1322,4 +1322,8 @@ class ProcessCommand implements Serializable {
     public boolean isCompanyForm() {
         return dzialalnoscForma && !DEFAULT_VALUE.equals(dzialalnoscForma) ? LegalForm.valueOf(dzialalnoscForma).isCompany() : null
     }
+
+    List<RepresentativeCommand> getProcurators(){
+        representatives?.findAll{ RepresentativeCommand it -> it.isProcuratorPosition() }
+    }
 }

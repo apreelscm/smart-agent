@@ -4,9 +4,11 @@ package com.eservice.eumowy
 import com.eservice.eumowy.auth.EServiceUserDetails
 import com.eservice.eumowy.command.ProcessCommand
 import com.eservice.eumowy.dto.MerchantDetailsDTO
+import com.eservice.eumowy.dto.MerchantSearchStatus
 import com.eservice.eumowy.exception.CalculatorException
 import com.eservice.eumowy.process.DefineActivityCommand
 import com.eservice.eumowy.util.DateUtils
+import com.eservice.eumowy.validator.AttachmentsValidator
 import com.eservice.eumowy.validator.NumberValidator
 import com.google.common.collect.Lists
 import grails.converters.JSON
@@ -41,7 +43,7 @@ class ActivityController {
     def pdfService
 	def documentService
     def dictionaryService
-    def bisnodeService
+    def microBisnodeService
     def mailBodyCreatorService
     def sessionFactory
     def signatureService
@@ -540,19 +542,32 @@ class ActivityController {
                 }
 
                 if(hasNowaUmowa) {
-                    MerchantDetailsDTO merchantDetails = bisnodeService.getMerchantDetails(flow.nip)
+                    MerchantDetailsDTO merchantDetails = microBisnodeService.getMerchantDetailsByIdentifier(flow.nip)
+                    if (!merchantDetails?.isValid() && params.regon) {
+                        merchantDetails = microBisnodeService.getMerchantDetailsByIdentifier((String) params.regon)
+                    }
+
                     if (merchantDetails?.isValid()) {
                         flash.bisnodeMessage = message(code: 'bisnode.merchant.found')
                         flow.bisnodeMerchantDetails = merchantDetails
-                        flow.representativesBisnode = bisnodeService.getRepresentatives(merchantDetails)
+                        flow.representativesBisnode = merchantDetails.representatives
 
-                        if(merchantDetails?.representatives?.size() == 0) {
+                        if (merchantDetails?.beneficiaries?.isEmpty() && merchantDetails?.representatives?.isEmpty()) {
+                            flash.bisnodeMessage = message(code: 'bisnode.merchant.missing.data')
+                        } else if (merchantDetails?.representatives?.isEmpty()) {
                             flash.representativesNotFound = message(code: 'bisnode.representatives.not.found')
+                        } else if (merchantDetails?.beneficiaries?.isEmpty()) {
+                            flash.beneficiariesNotFound = message(code: 'bisnode.beneficiaries.not.found')
                         }
-                    } else {
+                    } else if (merchantDetails.status == MerchantSearchStatus.NOT_FOUND) {
                         flash.bisnodeMessage = message(code: 'bisnode.merchant.not.found')
+                    } else if (merchantDetails.status == MerchantSearchStatus.MAPPING_ERROR) {
+                        flash.bisnodeErrorMessage = message(code: 'bisnode.mapping.error')
+                    } else if (merchantDetails.status == MerchantSearchStatus.ERROR) {
+                        flash.bisnodeErrorMessage = message(code: 'bisnode.integration.error')
                     }
                 }
+
             }
             on("success"){
                 flow.isContinueEnabled = true
@@ -599,7 +614,7 @@ class ActivityController {
 
                     if(processCommand.isFromBisnode && !flow.representativesBisnode) {
                         log.info(format("Process with ID %s and NIP %s is from BISNODE. Filling flow with representatives from BISNODE.", processInstance.id, processCommand.nip))
-                        flow.representativesBisnode = bisnodeService.getRepresentatives(processCommand.nip)
+                        flow.representativesBisnode = microBisnodeService.getRepresentatives(processCommand.nip)
                     }
 
                     processCommand.nip = processInstance.client.nip
@@ -715,6 +730,11 @@ class ActivityController {
                         log.error(it)
                     }
                     return error();
+                } else if (grailsApplication.config.isPanelsValidationOn){
+                    new AttachmentsValidator(attachmentService).validate(processCommand, params.processId)
+                    if (processCommand.hasErrors()){
+                        return error()
+                    }
                 }
 
                 Process processInstance = flow.processInstance
@@ -917,7 +937,7 @@ class ActivityController {
 
                 if(processCmd.isFromBisnode && !flow.representativesBisnode) {
                     log.info(format("Process with ID %s and NIP %s is from BISNODE. Filling flow with representatives from BISNODE.", processInstance.id, processCmd.nip))
-                    flow.representativesBisnode = bisnodeService.getRepresentatives(processCmd.nip)
+                    flow.representativesBisnode = microBisnodeService.getRepresentatives(processCmd.nip)
                 }
 
                 processCmd.liczbaPosZCbd = processCmd.getPosCountFromCBD()
@@ -1026,7 +1046,12 @@ class ActivityController {
 
                 if(processCommand?.hasErrors()){
                     log.info(params)
-                    return error();
+                    return error()
+                } else {
+                    new AttachmentsValidator(attachmentService).validate(processCommand, params.processId)
+                    if (processCommand.hasErrors()){
+                        return error()
+                    }
                 }
 
                 Process processInstance = flow.processInstance

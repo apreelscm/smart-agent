@@ -5,6 +5,7 @@ import com.eservice.eumowy.annotation.Omit
 import com.eservice.eumowy.auth.EServiceUserDetails
 import com.eservice.eumowy.command.*
 import com.eservice.eumowy.dto.MerchantDetailsDTO
+import com.eservice.eumowy.enums.options.TelephoneType
 import com.eservice.eumowy.factory.ProcessCommandDefaultValuesFactory
 import com.eservice.eumowy.util.DateUtils
 import com.eservice.eumowy.util.EumowyCustomEnvironment
@@ -1803,5 +1804,8 @@ class ProcessService {
         command.akceptantTelStacjonarny = merchantDetailsDTO.akceptantTelStacjonarny
         command.akceptantTelKomorkowy = merchantDetailsDTO.akceptantTelKomorkowy
         command.akceptantFax = merchantDetailsDTO.akceptantFax
+
+        MerchantDetailsDTOToBeneficiaryCommandMapper.map(merchantDetailsDTO.beneficiaries, command.beneficiaries)
+
     }
 }

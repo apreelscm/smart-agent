@@ -24,18 +24,25 @@ class CalculatorService implements Serializable {
 	def isCalValidBySignatures(def calcExt, def signatures) {
 		Set signaturesCalcNames = []
 		signatures.each{signature ->
-            def cfs = CalcFieldSignature.getCalcFieldsBySignature(signature);
-			signaturesCalcNames.addAll(cfs?.collect{it.calcField.name});
+            def cfs = CalcFieldSignature.getCalcFieldsBySignature(signature)
+			signaturesCalcNames.addAll(cfs?.collect{it.calcField.name})
 		}
 
         log.info(calcExt)
 		def calcKeyList = calcExt.collect { it.POLEAPREEL }
 
-        log.info("calcKeyList size:"+calcKeyList.size() + " calcKeyList:"+calcKeyList)
-        log.info("calcNames size:"+signaturesCalcNames.size() + "calcNames:"+signaturesCalcNames)
-        log.info("contains ALL:"+calcKeyList.containsAll(signaturesCalcNames))
+        log.debug("calcKeyList size:"+calcKeyList.size() + " calcKeyList:"+calcKeyList)
+        log.debug("calcNames size:"+signaturesCalcNames.size() + "calcNames:"+signaturesCalcNames)
 
-		return calcKeyList.containsAll(signaturesCalcNames)
+        boolean isCalcNotMissingKeys = calcKeyList.containsAll(signaturesCalcNames)
+        log.info("contains ALL:"+isCalcNotMissingKeys)
+        if (!isCalcNotMissingKeys){
+            List missing = new ArrayList(signaturesCalcNames)
+            missing.removeAll(calcKeyList)
+            log.info("missing signatures calc names " + missing)
+        }
+
+		return isCalcNotMissingKeys
 	}
 	
 	def isCalValidExtendedValidation(def calcId, def activities, def signatures) {
@@ -77,8 +84,8 @@ class CalculatorService implements Serializable {
     }
 
     def getCalculator(Process process, Client client) {
-        boolean isCalculatorNeeded = !ActivityHelper.isCalculatorRedundant(process);
-        List calculator = [];
+        boolean isCalculatorNeeded = !ActivityHelper.isCalculatorRedundant(process)
+        List calculator = []
 
         if (isCalculatorNeeded) {
             calculator = cbdService.findCalculatorByNip(client.nip)

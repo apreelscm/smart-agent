@@ -10,7 +10,9 @@
 
     jQuery(function () {
         actualBeneficiaryData.find(".date-field").datepicker({dateFormat: 'yy-mm-dd', maxDate: new Date()});
-        actualBeneficiaryData.find(".percent-short").mask('09');
+        actualBeneficiaryData.find(".percent-short").mask(PERCENT_SHORT_FORMAT);
+        actualBeneficiaryData.find("input[type=radio][name$='isPolitician']").change(onIsPoliticianChange);
+        actualBeneficiaryData.find("input[type=radio][name$='verification']").change(clearVerificationDetail);
         disableHiddenBeneficiaryFields();
     });
 

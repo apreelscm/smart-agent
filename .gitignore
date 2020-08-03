@@ -4,3 +4,4 @@ out
 .idea
 logs
 *.iml
+/.slcache/*.bytes

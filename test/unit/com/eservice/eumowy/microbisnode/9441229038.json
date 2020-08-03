@@ -1,0 +1,143 @@
+{
+  "subjectHeader": {
+    "dunsNumber": "422391170",
+    "organizationSummaryText": "Naprawa i konserwacja elektronicznego sprzÄ™tu powszechnego uÅ¼ytku; PozostaÅ‚a sprzedaÅ¼ detaliczna prowadzona w niewyspecjalizowanych sklepach; SprzedaÅ¼ detaliczna prowadzona przez domy sprzedaÅ¼y wysyÅ‚kowej lub Internet; Naprawa i konserwacja komputerÃ³w i urzÄ…dzeÅ„ peryferyjnych; Naprawa pozostaÅ‚ych artykuÅ‚Ã³w uÅ¼ytku osobistego i domowego"
+  },
+  "location": {
+    "primaryAddress": [
+      {
+        "streetAddressLine": [
+          "Ul.|Lea|22B|null"
+        ],
+        "primaryTownName": "KrakÃ³w",
+        "countryISOAlpha2Code": "PL",
+        "countryName": "Polska",
+        "postalCode": "30-052",
+        "territoryOfficialName": "MAÅOPOLSKIE"
+      }
+    ]
+  },
+  "organizationName": {
+    "organizationPrimaryName": [
+      "J M Z ELEKTRONIK MAREK MAKUÅA"
+    ]
+  },
+  "organizationDetail": {
+    "organizationStartYear": "1994"
+  },
+  "registeredDetail": {
+    "legalFormDetails": {
+      "code": 10,
+      "legalFormText": "Jednoosobowa wÅ‚asnoÅ›Ä‡ prywatna"
+    },
+    "organizationIdentificationNumberDetail": [
+      {
+        "id": 2,
+        "typeText": "Numer Identyfikacji Podatkowej (NIP)",
+        "organizationIdentificationNumber": "9441229038"
+      },
+      {
+        "id": 1,
+        "typeText": "REGON",
+        "organizationIdentificationNumber": "350701705"
+      }
+    ]
+  },
+  "principalsAndManagement": {
+    "currentPrincipal": [
+      {
+        "principalName": {
+          "title": "Pan",
+          "firstName": "Marek",
+          "lastName": "MakuÅ‚a",
+          "fullName": "MakuÅ‚a Marek"
+        },
+        "nationality": null,
+        "jobTitle": [
+          "WÅ‚aÅ›ciciel"
+        ],
+        "currentManagementResponsibility": [
+          "WÅ‚aÅ›ciciel"
+        ],
+        "principalIdentificationNumberDetail": null,
+        "politicallyExposedPersons": null
+      }
+    ]
+  },
+  "linkage": {
+    "beneficialOwnership": {
+      "beneficialOwners": [
+        {
+          "beneficiaryIndicator": false,
+          "memberId": "15267773",
+          "legalFormText": {
+            "code": 10,
+            "legalFormText": "Jednoosobowa wÅ‚asnoÅ›Ä‡ prywatna"
+          },
+          "dunsNumber": "422391170",
+          "primaryAddress": {
+            "streetAddressLine": [
+              "Ul.|Lea|22B|null"
+            ],
+            "primaryTownName": "KrakÃ³w",
+            "countryISOAlpha2Code": "PL",
+            "countryName": "Polska",
+            "postalCode": "30-052",
+            "territoryOfficialName": "MAÅOPOLSKIE"
+          },
+          "organizationIdentificationNumberDetail": [
+            {
+              "id": 2,
+              "typeText": "Numer Identyfikacji Podatkowej (NIP)",
+              "organizationIdentificationNumber": "9441229038"
+            },
+            {
+              "id": 1,
+              "typeText": "REGON",
+              "organizationIdentificationNumber": "350701705"
+            }
+          ],
+          "primaryName": "J M Z ELEKTRONIK MAREK MAKUÅA",
+          "subjectTypeDescription": {
+            "code": 118,
+            "value": "Businesses"
+          },
+          "personId": null,
+          "birthDate": null,
+          "nationality": null,
+          "degreeOfSeparation": 0,
+          "directOwnershipPercentage": null,
+          "beneficialOwnershipPercentage": null,
+          "politicallyExposedPersons": null
+        },
+        {
+          "beneficiaryIndicator": true,
+          "memberId": "523583283",
+          "legalFormText": null,
+          "dunsNumber": null,
+          "primaryAddress": null,
+          "organizationIdentificationNumberDetail": null,
+          "primaryName": "Pan|Marek|MakuÅ‚a",
+          "subjectTypeDescription": {
+            "code": 119,
+            "value": "Individuals"
+          },
+          "personId": null,
+          "birthDate": null,
+          "nationality": null,
+          "degreeOfSeparation": 1,
+          "directOwnershipPercentage": 100.0,
+          "beneficialOwnershipPercentage": 100.0,
+          "politicallyExposedPersons": null
+        }
+      ],
+      "relationships": [
+        {
+          "relationshipID": "30120939",
+          "sourceMemberID": "15267773",
+          "targetMemberID": "523583283"
+        }
+      ]
+    }
+  }
+}
