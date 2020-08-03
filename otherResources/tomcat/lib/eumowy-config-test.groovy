@@ -1,6 +1,7 @@
 environments {
     test{
         eumowySyncWSAddress="http://uat-eumowy.apreel.net:8080/e-umowy-sync-ws/acceptUmowa/"
+        eumowyCOAEmail="coa@eservice.com.pl"
 
 		appParametersPaths = [
 			"pdfTemplates": "/opt/eumowy/pdf_templates/",

@@ -1,5 +1,6 @@
 package com.eservice.eumowy.pdfmapper
 
+import com.eservice.eumowy.SignatureHelper
 import com.eservice.eumowy.enums.options.Disposition
 import com.eservice.eumowy.enums.options.LegalForm
 
@@ -9,6 +10,8 @@ import com.eservice.eumowy.HirePayment
 import java.text.DecimalFormat
 import java.text.NumberFormat
 import com.eservice.eumowy.Process
+
+import static com.google.common.collect.Lists.newArrayList
 
 
 class PdfProcessMapper extends AbstractPdfMapper{
@@ -100,6 +103,11 @@ class PdfProcessMapper extends AbstractPdfMapper{
             dataMap.put("crossAdditional", ['_______________'] as String[])
         } else if (processInstance.activities.any { activity -> newToCross.contains(activity.code)}) {
             dataMap.put("crossNew", ['_____'] as String[])
+        }
+
+        if (SignatureHelper.containsAtLeastOne(processInstance, newArrayList("AP/UW/1.007/20-02-28")) &&
+                contains(processInstance, WYMIANA_UMOWY_NAJMU_NA_UMOWE_WSPOLPRACY)) {
+            dataMap.put("promObjNaj1", [""] as String[])
         }
 
         setAttachmentsNames()
@@ -219,7 +227,7 @@ class PdfProcessMapper extends AbstractPdfMapper{
         if(contains(processInstance, "komfort")) {
             dataMap.put("obslugaKomfort", checkedCheckbox)
         }
-        if(contains(processInstance, "ekonomiczny") || processInstance.hasData("obslugaEkonomicznyCena")) {
+        if(contains(processInstance, "ekonomiczny")) {
             dataMap.put("obslugaEkonomiczny", checkedCheckbox)
         }
     }
@@ -448,11 +456,23 @@ class PdfProcessMapper extends AbstractPdfMapper{
     private mapIfOplataPKOPBProcess(def data, def pd, def key, def value) {
         data.put(key, [value] as String[])
         data.put("ifOplataPKOBP", [value] as String[])
+        data.put("ifOplataPKOBPPr", [value + ' %'] as String[])
     }
 
     private mapIfOplataVISAProcess(def data, def pd, def key, def value) {
         data.put(key, [value] as String[])
-        data.put("ifOplataVisa", [value] as String[])
+        data.put("ifOplataVisa", [value + ' %'] as String[])
+        data.put("ifOplataVISA", [value + ' %'] as String[])
+    }
+
+    private mapIfOplataMasterCardProcess(def data, def pd, def key, def value) {
+        data.put(key, [value] as String[])
+        data.put("ifOplataMasterCard", [value + ' %'] as String[])
+    }
+
+    private mapIfOplataDinersClubProcess(def data, def pd, def key, def value) {
+        data.put(key, [value] as String[])
+        data.put("ifOplataDinersClub", [value + ' %'] as String[])
     }
 
     private mapNipProcess(def data, def pd, def key, def value){
@@ -673,7 +693,7 @@ class PdfProcessMapper extends AbstractPdfMapper{
                 "jednostkaOswiaty": LegalForm.EDUCATION_UNIT.name(),
                 "samorzadGospodarczy": LegalForm.ECONOMIC_SELF_GOVERNMENT.name(),
         ].each {
-            data.put(it.key, getCheckboxData(it.value != value))
+            data.put(it.key, getUncheckedCheckbox(it.value != value))
         }
     }
 
@@ -685,10 +705,44 @@ class PdfProcessMapper extends AbstractPdfMapper{
     }
 
     private def mapOplataZaUruchomienieDCCProcess(def data, def pd, def key, def value){
-        if (value == null && calculatorService != null && "NIE".equals(calculatorService.getCalcProperty(calc,'CZY_DCC'))){
+        if ((value == null || EMPTY_VALUES.contains(value)) && calculatorService != null && "NIE".equals(calculatorService.getCalcProperty(calc,'CZY_DCC'))){
             data.put('oplataZaUruchomienieDCC', ['-'] as String[]);
         } else {
-            data.put('oplataZaUruchomienieDCC', [formatDoubleValue(value.toDouble()) + ' zł'] as String[]);
+            def formattedValue = value
+            try {
+                formattedValue = formatDoubleValue(value.toDouble())
+            } catch (NumberFormatException ignored) {
+                //Do nothing
+            }
+            data.put('oplataZaUruchomienieDCC', [formattedValue + ' zł'] as String[]);
+        }
+    }
+
+    private def mapOplataZaPlatnoscWInnejWalucieProcess(def data, def pd, def key, def value) {
+        if ((value == null || EMPTY_VALUES.contains(value)) && calculatorService != null && "NIE".equals(calculatorService.getCalcProperty(calc,'CZY_DCC'))){
+            data.put('oplataZaPlatnoscWInnejWalucie', ['-'] as String[]);
+        } else {
+            def formattedValue = value
+            try {
+                formattedValue = formatDoubleValue(value.toDouble())
+            } catch (NumberFormatException ignored) {
+                //Do nothing
+            }
+            data.put('oplataZaPlatnoscWInnejWalucie', [formattedValue + ' zł'] as String[]);
+        }
+    }
+
+    private def mapMudCenaProcess(def data, def pd, def key, def value) {
+        if ((value == null || EMPTY_VALUES.contains(value))) {
+            data.put('mudCena', ['-'] as String[]);
+        } else {
+            def formattedValue = value
+            try {
+                formattedValue = formatDoubleValue(value.toDouble())
+            } catch (NumberFormatException ignored) {
+                //Do nothing
+            }
+            data.put('mudCena', [formattedValue + ' zł'] as String[])
         }
     }
 

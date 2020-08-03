@@ -298,12 +298,12 @@
                         <td></td>
                     </tr>
                     <tr>
-                        <td class="cardPaymentPanel-padding">14 <g:message code="panel.payment.for.cardsInEUNotInPL"/></td>
+                        <td class="cardPaymentPanel-padding">15 <g:message code="panel.payment.for.cardsInEUNotInPL"/></td>
                         <td><eumowy:textField name="cardsInEUNotInPL" readonly="true" value="${data.cardsInEUNotInPL}" validatable="${data}"/></td>
                         <td></td>
                     </tr>
                     <tr>
-                        <td class="cardPaymentPanel-padding">14 <g:message code="panel.payment.for.cardsInPL"/></td>
+                        <td class="cardPaymentPanel-padding">16 <g:message code="panel.payment.for.cardsInPL"/></td>
                         <td><eumowy:textField name="cardsInPL" readonly="true" value="${data.cardsInPL}" validatable="${data}"/></td>
                         <td></td>
                     </tr>

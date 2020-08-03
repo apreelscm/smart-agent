@@ -1,7 +1,6 @@
 package com.eservice.eumowy.pdfmapper.representative
 
 import com.eservice.eumowy.Representative
-import com.eservice.eumowy.enums.options.IdentityDocumentType
 import com.eservice.eumowy.pdfmapper.AbstractPdfMapper
 import com.eservice.eumowy.pdfmapper.Mapper
 import com.eservice.eumowy.Process
@@ -22,9 +21,9 @@ class BeneficiariesMapper extends AbstractPdfMapper implements Mapper {
             beneficiariesData.put(getFieldName(i, "Nazwa"), [beneficiary.fullName] as String[])
             beneficiariesData.put(getFieldName(i, "Obywatelstwo"), [beneficiary.citizenship] as String[])
 
-            beneficiariesData.put(getFieldName(i, "PosiadaAkceptanta"), getCheckboxData(beneficiary.ownsAcceptor))
-            beneficiariesData.put(getFieldName(i, "KontrolujeAkceptanta"), getCheckboxData(beneficiary.controlsAcceptor))
-            beneficiariesData.put(getFieldName(i, "ZnaczaceUdzialy"), getCheckboxData(beneficiary.overQuarterOfVotes))
+            beneficiariesData.put(getFieldName(i, "PosiadaAkceptanta"), getCheckedCheckbox(beneficiary.ownsAcceptor))
+            beneficiariesData.put(getFieldName(i, "KontrolujeAkceptanta"), getCheckedCheckbox(beneficiary.controlsAcceptor))
+            beneficiariesData.put(getFieldName(i, "ZnaczaceUdzialy"), getCheckedCheckbox(beneficiary.overQuarterOfVotes))
             beneficiariesData.put(getFieldName(i, "ProcentUdzialow"), [beneficiary.votesPercentage] as String[])
         }
 
