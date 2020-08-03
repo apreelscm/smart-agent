@@ -1,0 +1,351 @@
+{
+  "subjectHeader": {
+    "dunsNumber": "438278436",
+    "organizationSummaryText": "Działalność agentów zajmujących się sprzedażą płodów rolnych, żywych zwierząt, surowców dla przemysłu tekstylnego i półproduktów; Działalność agentów zajmujących się sprzedażą paliw, rud, metali i chemikaliów przemysłowych; Działalność agentów zajmujących się sprzedażą drewna i materiałów budowlanych; Działalność agentów zajmujących się sprzedażą maszyn, urządzeń przemysłowych, statków i samolotów; Działalność agentów zajmujących się sprzedażą mebli, artykułów gospodarstwa domowego i drobnych wyrobów metalowych; Działalność agentów zajmujących się sprzedażą wyrobów tekstylnych, odzieży, wyrobów futrzarskich, obuwia i artykułów skórzanych; Działalność agentów zajmujących się sprzedażą żywności, napojów i wyrobów tytoniowych; Działalność agentów specjalizujących się w sprzedaży pozostałych określonych towarów; Działalność agentów zajmujących się sprzedażą towarów różnego rodzaju; Sprzedaż hurtowa zboża, nieprzetworzonego tytoniu, nasion i pasz dla zwierząt; Sprzedaż hurtowa kwiatów i roślin; Sprzedaż hurtowa żywych zwierząt; Sprzedaż hurtowa skór; Sprzedaż hurtowa owoców i warzyw; Sprzedaż hurtowa mięsa i wyrobów z mięsa; Sprzedaż hurtowa mleka, wyrobów mleczarskich, jaj, olejów i tłuszczów jadalnych; Sprzedaż hurtowa napojów alkoholowych; Sprzedaż hurtowa napojów bezalkoholowych; Sprzedaż hurtowa wyrobów tytoniowych; Sprzedaż hurtowa cukru, czekolady, wyrobów cukierniczych i piekarskich; Sprzedaż hurtowa herbaty, kawy, kakao i przypraw; Sprzedaż hurtowa pozostałej żywności, włączając ryby, skorupiaki i mięczaki; Sprzedaż hurtowa niewyspecjalizowana żywności, napojów i wyrobów tytoniowych; Sprzedaż hurtowa wyrobów tekstylnych; Sprzedaż hurtowa odzieży i obuwia; Sprzedaż hurtowa elektrycznych artykułów użytku domowego; Sprzedaż hurtowa wyrobów porcelanowych, ceramicznych i szklanych oraz środków czyszczących; Sprzedaż hurtowa perfum i kosmetyków; Sprzedaż hurtowa wyrobów farmaceutycznych i medycznych; Sprzedaż hurtowa mebli, dywanów i sprzętu oświetleniowego; Sprzedaż hurtowa zegarków, zegarów i biżuterii; Sprzedaż hurtowa pozostałych artykułów użytku domowego; Sprzedaż hurtowa komputerów, urządzeń peryferyjnych i oprogramowania; Sprzedaż hurtowa sprzętu elektronicznego i telekomunikacyjnego oraz części do niego; Sprzedaż hurtowa maszyn i urządzeń rolniczych oraz dodatkowego wyposażenia; Sprzedaż hurtowa obrabiarek; Sprzedaż hurtowa maszyn wykorzystywanych w górnictwie, budownictwie oraz inżynierii lądowej i wodnej; Sprzedaż hurtowa maszyn dla przemysłu tekstylnego oraz maszyn do szycia i maszyn dziewiarskich; Sprzedaż hurtowa mebli biurowych; Sprzedaż hurtowa pozostałych maszyn i urządzeń biurowych; Sprzedaż hurtowa pozostałych maszyn i urządzeń; Sprzedaż hurtowa paliw i produktów pochodnych; Sprzedaż hurtowa metali i rud metali; Sprzedaż hurtowa drewna, materiałów budowlanych i wyposażenia sanitarnego; Sprzedaż hurtowa wyrobów metalowych oraz sprzętu i dodatkowego wyposażenia hydraulicznego i grzejnego; Sprzedaż hurtowa wyrobów chemicznych; Sprzedaż hurtowa pozostałych półproduktów; Sprzedaż hurtowa odpadów i złomu; Sprzedaż hurtowa niewyspecjalizowana; Sprzedaż detaliczna prowadzona w niewyspecjalizowanych sklepach z przewagą żywności, napojów i wyrobów tytoniowych; Pozostała sprzedaż detaliczna prowadzona w niewyspecjalizowanych sklepach; Sprzedaż detaliczna owoców i warzyw prowadzona w wyspecjalizowanych sklepach; Sprzedaż detaliczna mięsa i wyrobów z mięsa prowadzona w wyspecjalizowanych sklepach; Sprzedaż detaliczna ryb, skorupiaków i mięczaków prowadzona w wyspecjalizowanych sklepach; Sprzedaż detaliczna pieczywa, ciast, wyrobów ciastkarskich i cukierniczych prowadzona w wyspecjalizowanych sklepach; Sprzedaż detaliczna napojów alkoholowych i bezalkoholowych prowadzona w wyspecjalizowanych sklepach; Sprzedaż detaliczna wyrobów tytoniowych prowadzona w wyspecjalizowanych sklepach; Sprzedaż detaliczna pozostałej żywności prowadzona w wyspecjalizowanych sklepach; Sprzedaż detaliczna paliw do pojazdów silnikowych na stacjach paliw; Sprzedaż detaliczna komputerów, urządzeń peryferyjnych i oprogramowania prowadzona w wyspecjalizowanych sklepach; Sprzedaż detaliczna sprzętu telekomunikacyjnego prowadzona w wyspecjalizowanych sklepach; Sprzedaż detaliczna sprzętu audiowizualnego prowadzona w wyspecjalizowanych sklepach; Sprzedaż detaliczna wyrobów tekstylnych prowadzona w wyspecjalizowanych sklepach; Sprzedaż detaliczna drobnych wyrobów metalowych, farb i szkła prowadzona w wyspecjalizowanych sklepach; Sprzedaż detaliczna dywanów, chodników i innych pokryć podłogowych oraz pokryć ściennych prowadzona w wyspecjalizowanych sklepach; Sprzedaż detaliczna elektrycznego sprzętu gospodarstwa domowego prowadzona w wyspecjalizowanych sklepach; Sprzedaż detaliczna mebli, sprzętu oświetleniowego i pozostałych artykułów użytku domowego prowadzona w wyspecjalizowanych sklepach; Sprzedaż detaliczna książek prowadzona w wyspecjalizowanych sklepach; Sprzedaż detaliczna gazet i artykułów piśmiennych prowadzona w wyspecjalizowanych sklepach; Sprzedaż detaliczna nagrań dźwiękowych i audiowizualnych prowadzona w wyspecjalizowanych sklepach; Sprzedaż detaliczna sprzętu sportowego prowadzona w wyspecjalizowanych sklepach; Sprzedaż detaliczna gier i zabawek prowadzona w wyspecjalizowanych sklepach; Sprzedaż detaliczna odzieży prowadzona w wyspecjalizowanych sklepach; Sprzedaż detaliczna obuwia i wyrobów skórzanych prowadzona w wyspecjalizowanych sklepach; Sprzedaż detaliczna wyrobów farmaceutycznych prowadzona w wyspecjalizowanych sklepach; Sprzedaż detaliczna wyrobów medycznych, włączając ortopedyczne, prowadzona w wyspecjalizowanych sklepach; Sprzedaż detaliczna kosmetyków i artykułów toaletowych prowadzona w wyspecjalizowanych sklepach; Sprzedaż detaliczna kwiatów, roślin, nasion, nawozów, żywych zwierząt domowych, karmy dla zwierząt domowych prowadzona w wyspecjalizowanych sklepach; Sprzedaż detaliczna zegarków, zegarów i biżuterii prowadzona w wyspecjalizowanych sklepach; Sprzedaż detaliczna pozostałych nowych wyrobów prowadzona w wyspecjalizowanych sklepach; Sprzedaż detaliczna artykułów używanych prowadzona w wyspecjalizowanych sklepach; Sprzedaż detaliczna żywności, napojów i wyrobów tytoniowych prowadzona na straganach i targowiskach; Sprzedaż detaliczna wyrobów tekstylnych, odzieży i obuwia prowadzona na straganach i targowiskach; Sprzedaż detaliczna pozostałych wyrobów prowadzona na straganach i targowiskach; Sprzedaż detaliczna prowadzona przez domy sprzedaży wysyłkowej lub Internet; Pozostała sprzedaż detaliczna prowadzona poza siecią sklepową, straganami i targowiskami; Działalność związana z produkcją filmów, nagrań wideo i programów telewizyjnych; Działalność postprodukcyjna związana z filmami, nagraniami wideo i programami telewizyjnymi; Działalność związana z dystrybucją filmów, nagrań wideo i programów telewizyjnych; Działalność związana z projekcją filmów; Działalność w zakresie nagrań dźwiękowych i muzycznych; Przetwarzanie danych; zarządzanie stronami internetowymi (hosting) i podobna działalność; Działalność portali internetowych; Działalność agencji informacyjnych; Pozostała działalność usługowa w zakresie informacji, gdzie indziej niesklasyfikowana; Kupno i sprzedaż nieruchomości na własny rachunek; Wynajem i zarządzanie nieruchomościami własnymi lub dzierżawionymi; Pośrednictwo w obrocie nieruchomościami; Zarządzanie nieruchomościami wykonywane na zlecenie; Działalność firm centralnych (head offices) i holdingów, z wyłączeniem holdingów finansowych; Stosunki międzyludzkie (public relations) i komunikacja; Pozostałe doradztwo w zakresie prowadzenia działalności gospodarczej i zarządzania; Działalność agencji reklamowych; Pośrednictwo w sprzedaży czasu i miejsca na cele reklamowe w radio i telewizji; Pośrednictwo w sprzedaży miejsca na cele reklamowe w mediach drukowanych; Pośrednictwo w sprzedaży miejsca na cele reklamowe w mediach elektronicznych (Internet); Pośrednictwo w sprzedaży miejsca na cele reklamowe w pozostałych mediach; Badanie rynku i opinii publicznej; Działalność w zakresie specjalistycznego projektowania; Działalność fotograficzna; Działalność związana z tłumaczeniami; Pozostała działalność profesjonalna, naukowa i techniczna, gdzie indziej niesklasyfikowana; Działalność związana z wystawianiem przedstawień artystycznych; Działalność wspomagająca wystawianie przedstawień artystycznych; Artystyczna i literacka działalność twórcza; Działalność obiektów kulturalnych; Nauka języków obcych"
+  },
+  "location": {
+    "primaryAddress": [
+      {
+        "streetAddressLine": [
+          "Al.|Solidarności |117|null"
+        ],
+        "primaryTownName": "Warszawa",
+        "countryISOAlpha2Code": "PL",
+        "countryName": "Polska",
+        "postalCode": "00-140",
+        "territoryOfficialName": "MAZOWIECKIE"
+      }
+    ]
+  },
+  "organizationName": {
+    "organizationPrimaryName": [
+      "SPEAK UP LEARNING SP Z O O"
+    ]
+  },
+  "organizationDetail": {
+    "organizationStartYear": "2017"
+  },
+  "registeredDetail": {
+    "legalFormDetails": {
+      "code": 1,
+      "legalFormText": "Spółka z ograniczoną odpowiedzialnością"
+    },
+    "organizationIdentificationNumberDetail": [
+      {
+        "id": 2,
+        "typeText": "Numer Identyfikacji Podatkowej (NIP)",
+        "organizationIdentificationNumber": "5252709433"
+      },
+      {
+        "id": 1,
+        "typeText": "REGON",
+        "organizationIdentificationNumber": "367189295"
+      },
+      {
+        "id": 4,
+        "typeText": "Krajowy Rejestr Sądowy",
+        "organizationIdentificationNumber": "0000673344"
+      }
+    ]
+  },
+  "principalsAndManagement": {
+    "currentPrincipal": [
+      {
+        "principalName": {
+          "title": "Pani",
+          "firstName": "Bogusława Elżbieta",
+          "lastName": "Matuszewska",
+          "fullName": "Bogusława Elżbieta Matuszewska"
+        },
+        "nationality": null,
+        "currentManagementResponsibility": [
+          "Prezes Zarządu"
+        ],
+        "principalIdentificationNumberDetail": [
+          {
+            "typeText": "PESEL",
+            "principalIdentificationNumber": "60021302367"
+          }
+        ],
+        "politicallyExposedPersons": [
+          {
+            "primaryName": "Boguslawa Matuszewska",
+            "entityMatchScore": 96,
+            "supplierRiskScore": 90,
+            "personDetail": {
+              "entityTypeText": "Person",
+              "eventDetail": [
+                {
+                  "eventTypeText": "PEP",
+                  "eventSubTypeText": "ASC",
+                  "eventText": [
+                    "On List [PEP Connect - Poland]"
+                  ],
+                  "eventDate": "2017-05-30"
+                }
+              ],
+              "name": {
+                "primaryName": "Boguslawa Matuszewska",
+                "knownByName": [
+                  "Boguslawa Elzbieta Matuszewska"
+                ]
+              },
+              "address": {
+                "birthAddress": null,
+                "primaryAddress": null,
+                "nonspecificAddress": [
+                  {
+                    "countryName": "POLAND",
+                    "streetAddressLine": [
+                      "ul. Nowogrodzka 56/7"
+                    ],
+                    "primaryTownName": "Warsaw",
+                    "territoryName": "Mazowieckie",
+                    "postalCode": "00-695"
+                  }
+                ]
+              },
+              "personalDetail": [
+                {
+                  "birthDate": [
+                    "1960-00-01"
+                  ]
+                }
+              ],
+              "nonspecificParameterDetail": [
+                {
+                  "parameterDescription": "IMG",
+                  "parameterValue": "https://d1dmfej9n5lgmh.cloudfront.net/gsmonline/articles/photo1s/85075/large/Boguslawa-Matuszewska-2000.jpg?1435071765"
+                },
+                {
+                  "parameterDescription": "SEX",
+                  "parameterValue": "F"
+                },
+                {
+                  "parameterDescription": "PTY",
+                  "parameterValue": "GCO:L2"
+                },
+                {
+                  "parameterDescription": "RID",
+                  "parameterValue": "R114609314"
+                },
+                {
+                  "parameterDescription": "PRT",
+                  "parameterValue": "B:07/29/2016"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "principalName": {
+          "title": "Pan",
+          "firstName": "Rafał Czesław",
+          "lastName": "Zborowski",
+          "fullName": "Rafał Czesław Zborowski"
+        },
+        "nationality": null,
+        "currentManagementResponsibility": [
+          "Członek zarządu"
+        ],
+        "principalIdentificationNumberDetail": [
+          {
+            "typeText": "PESEL",
+            "principalIdentificationNumber": "75020900959"
+          }
+        ],
+        "politicallyExposedPersons": null
+      },
+      {
+        "principalName": {
+          "title": "Pan",
+          "firstName": "Łukasz",
+          "lastName": "Waszak",
+          "fullName": "Łukasz Waszak"
+        },
+        "nationality": null,
+        "currentManagementResponsibility": [
+          "Członek rady nadzorczej"
+        ],
+        "principalIdentificationNumberDetail": [
+          {
+            "typeText": "PESEL",
+            "principalIdentificationNumber": "82050806157"
+          }
+        ],
+        "politicallyExposedPersons": null
+      },
+      {
+        "principalName": {
+          "title": "Pan",
+          "firstName": "Adam Krzysztof",
+          "lastName": "Imiełowski",
+          "fullName": "Adam Krzysztof Imiełowski"
+        },
+        "nationality": null,
+        "currentManagementResponsibility": [
+          "Członek rady nadzorczej"
+        ],
+        "principalIdentificationNumberDetail": [
+          {
+            "typeText": "PESEL",
+            "principalIdentificationNumber": "77040500476"
+          }
+        ],
+        "politicallyExposedPersons": null
+      },
+      {
+        "principalName": {
+          "title": "Pani",
+          "firstName": "Agata Iwona",
+          "lastName": "Gac",
+          "fullName": "Agata Iwona Gac"
+        },
+        "nationality": null,
+        "currentManagementResponsibility": [
+          "Członek rady nadzorczej"
+        ],
+        "principalIdentificationNumberDetail": [
+          {
+            "typeText": "PESEL",
+            "principalIdentificationNumber": "65111100245"
+          }
+        ],
+        "politicallyExposedPersons": null
+      }
+    ]
+  },
+  "linkage": {
+    "beneficialOwnership": {
+      "beneficialOwners": [
+        {
+          "beneficiaryIndicator": false,
+          "memberId": "299665667",
+          "legalFormDetails": {
+            "code": 1,
+            "legalFormText": "Spółka z ograniczoną odpowiedzialnością"
+          },
+          "dunsNumber": "438278436",
+          "primaryAddress": {
+            "streetAddressLine": [
+              "Al.|Solidarności |117|null"
+            ],
+            "primaryTownName": "Warszawa",
+            "countryISOAlpha2Code": "PL",
+            "countryName": "Polska",
+            "postalCode": "00-140",
+            "territoryOfficialName": "MAZOWIECKIE"
+          },
+          "organizationIdentificationNumberDetail": [
+            {
+              "id": 2,
+              "typeText": "Numer Identyfikacji Podatkowej (NIP)",
+              "organizationIdentificationNumber": "5252709433"
+            },
+            {
+              "id": 1,
+              "typeText": "REGON",
+              "organizationIdentificationNumber": "367189295"
+            },
+            {
+              "id": 4,
+              "typeText": "Krajowy Rejestr Sądowy",
+              "organizationIdentificationNumber": "0000673344"
+            }
+          ],
+          "primaryName": "SPEAK UP LEARNING SP Z O O",
+          "subjectTypeDescription": {
+            "code": 118,
+            "value": "Businesses"
+          },
+          "personId": null,
+          "birthDate": null,
+          "nationality": null,
+          "degreeOfSeparation": 0,
+          "directOwnershipPercentage": null,
+          "beneficialOwnershipPercentage": null,
+          "politicallyExposedPersons": null
+        },
+        {
+          "beneficiaryIndicator": false,
+          "memberId": "78257593",
+          "legalFormDetails": {
+            "code": 1,
+            "legalFormText": "Spółka z ograniczoną odpowiedzialnością"
+          },
+          "dunsNumber": "565560801",
+          "primaryAddress": {
+            "streetAddressLine": [
+              "C&I CENTER, Floor 2, 212",
+              "Agias Fylaxeos & Polygnostou"
+            ],
+            "primaryTownName": "Limassol",
+            "countryISOAlpha2Code": "CY",
+            "countryName": "Cyprus",
+            "postalCode": "3082",
+            "territoryOfficialName": null
+          },
+          "organizationIdentificationNumberDetail": null,
+          "primaryName": "BOOKZZ HOLDINGS LIMITED",
+          "subjectTypeDescription": {
+            "code": 118,
+            "value": "Businesses"
+          },
+          "personId": null,
+          "birthDate": null,
+          "nationality": null,
+          "degreeOfSeparation": 1,
+          "directOwnershipPercentage": 100.0,
+          "beneficialOwnershipPercentage": null,
+          "politicallyExposedPersons": null
+        },
+        {
+          "beneficiaryIndicator": true,
+          "memberId": "178428741",
+          "legalFormDetails": {
+            "code": 1,
+            "legalFormText": "Spółka z ograniczoną odpowiedzialnością"
+          },
+          "dunsNumber": "218780742",
+          "primaryAddress": {
+            "streetAddressLine": [
+              "Third Floor, Osprey House",
+              "5-7 Old Street, St. Helier"
+            ],
+            "primaryTownName": "JERSEY",
+            "countryISOAlpha2Code": "GB",
+            "countryName": "United Kingdom",
+            "postalCode": "JE2 3RG",
+            "territoryOfficialName": null
+          },
+          "organizationIdentificationNumberDetail": null,
+          "primaryName": "PENTA INVESTMENTS LIMITED",
+          "subjectTypeDescription": {
+            "code": 118,
+            "value": "Businesses"
+          },
+          "personId": null,
+          "birthDate": null,
+          "nationality": null,
+          "degreeOfSeparation": 2,
+          "directOwnershipPercentage": null,
+          "beneficialOwnershipPercentage": 100.0,
+          "politicallyExposedPersons": null
+        }
+      ],
+      "relationships": [
+        {
+          "relationshipID": "191005467",
+          "sourceMemberID": "299665667",
+          "targetMemberID": "78257593"
+        },
+        {
+          "relationshipID": "48700042",
+          "sourceMemberID": "78257593",
+          "targetMemberID": "178428741"
+        }
+      ]
+    }
+  }
+}

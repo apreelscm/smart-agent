@@ -5,6 +5,7 @@
         $bisnodeRepresentatives = jQuery("#acceptorsPanel #bisnodeRepresentatives"),
         $customRepresentatives = jQuery("#acceptorsPanel #customRepresentatives"),
         $representativesChangedManually = jQuery("#acceptorsPanel #isRepresentativesChangedManually"),
+        $representativeTelephoneType = jQuery("#representativesContainer input[type=radio][name$='telephoneType']"),
         $representativeDocumentType = jQuery("#representativesContainer input[type=radio][name$='documentType']"),
         $representativeIsPolitician = jQuery("#representativesContainer input[type=radio][name$='isPolitician']"),
         $representativeVerification = jQuery("#representativesContainer input[type=radio][name$='verification']"),
@@ -26,7 +27,8 @@
     $representativePosition.change(onPositionChange);
     $representativeDocumentType.change(onDocumentTypeChange);
     $representativeIsPolitician.change(onIsPoliticianChange);
-    $representativeVerification.change(clearOtherDetail);
+    $representativeVerification.change(clearVerificationDetail);
+    $representativeTelephoneType.change(phoneTypeChanged);
     $addAnotherAcceptorButton.click(showNextAcceptor);
 
     function setRepresentativesView() {
@@ -69,34 +71,6 @@
             case 'PASSPORT':
                 acceptorIdDates.addClass('hidden');
                 break;
-        }
-    }
-
-    function onIsPoliticianChange() {
-        var $this = jQuery(this),
-            isDirectPep = $this.parents("div.acceptor").find('div.isDirectPep');
-
-        clearFields(isDirectPep);
-
-        if (this.value === 'true') {
-            isDirectPep.removeClass('hidden');
-        } else {
-            isDirectPep.addClass('hidden');
-        }
-    }
-
-    function clearOtherDetail() {
-        var $this = jQuery(this),
-            acceptor = $this.parents("div.acceptor"),
-            value = this.value;
-
-        switch (value) {
-            case 'PESEL':
-                acceptor.find("input[type=text][name$='birthDate']").val('');
-                acceptor.find("select[name$='birthCountry']").val('');
-                break;
-            case 'BIRTH_DATE':
-                acceptor.find("input[type=text][name$='pesel']").val('');
         }
     }
 
@@ -199,4 +173,18 @@
         disableFields($representativesContainer.find('div.companyData.hidden'));
         disableFields($representativesContainer.find('div.personData.hidden'));
     }
+
+    function phoneTypeChanged(){
+        let phoneNumberSelector = jQuery(this).closest("div").find("input.phone-number");
+        if (this.value === 'LANDLINE') {
+            phoneNumberSelector.removeClass('mobile-phone');
+            phoneNumberSelector.addClass('phone');
+            phoneNumberSelector.mask(LANDLINE_PHONE_FORMAT);
+        } else {
+            phoneNumberSelector.removeClass('phone');
+            phoneNumberSelector.addClass('mobile-phone');
+            phoneNumberSelector.mask(MOBILE_PHONE_FORMAT);
+        }
+    }
+
 })();

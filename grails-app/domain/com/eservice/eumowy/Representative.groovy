@@ -47,6 +47,11 @@ class Representative implements Serializable {
 
     Boolean isPolitician
     Boolean isDirectPep
+    Boolean hasSignedContract
+
+    String email
+    String mobilePhone
+    String landlinePhone
 
     static belongsTo = [Process]
 
@@ -88,6 +93,11 @@ class Representative implements Serializable {
 
         isPolitician column: "POLITICAL_POSITION"
         isDirectPep column: "DIRECT_PEP"
+        hasSignedContract column: "CONTRACT_SIGNED"
+
+        email column : "EMAIL"
+        landlinePhone column : "LANDLINE_PHONE"
+        mobilePhone column : "MOBILE_PHONE"
     }
 
     static constraints = {
@@ -115,6 +125,10 @@ class Representative implements Serializable {
        votesPercentage(nullable: true)
        isPolitician(nullable: true)
        isDirectPep(nullable: true)
+       hasSignedContract(nullable: true)
+       email(nullable: true)
+       landlinePhone(nullable: true)
+       mobilePhone(nullable: true)
     }
 
     public String getFullNameWithSalutation() {

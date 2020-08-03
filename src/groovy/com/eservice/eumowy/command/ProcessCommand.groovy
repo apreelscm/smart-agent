@@ -3,15 +3,12 @@ package com.eservice.eumowy.command
 import com.eservice.eumowy.Process
 import com.eservice.eumowy.annotation.DateField
 import com.eservice.eumowy.annotation.Omit
-import com.eservice.eumowy.enums.options.AcceptorLocation
 import com.eservice.eumowy.enums.options.LegalForm
 import com.eservice.eumowy.validator.*
-import com.google.common.base.Strings
 import grails.util.Holders
 import grails.validation.Validateable
 import org.apache.commons.collections.FactoryUtils
 import org.apache.commons.collections.ListUtils
-import org.apache.commons.lang.StringUtils
 import org.apache.commons.validator.routines.EmailValidator
 
 import static com.google.common.base.Strings.isNullOrEmpty
@@ -1320,5 +1317,9 @@ class ProcessCommand implements Serializable {
 
     public boolean isCompanyForm() {
         return dzialalnoscForma && !DEFAULT_VALUE.equals(dzialalnoscForma) ? LegalForm.valueOf(dzialalnoscForma).isCompany() : null
+    }
+
+    List<RepresentativeCommand> getProcurators(){
+        representatives?.findAll{ RepresentativeCommand it -> it.isProcuratorPosition() }
     }
 }

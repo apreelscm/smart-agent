@@ -31,15 +31,18 @@ class CalculatorService implements Serializable {
         log.info(calcExt)
 		def calcKeyList = calcExt.collect { it.POLEAPREEL }
 
-        log.info("calcKeyList size:"+calcKeyList.size() + " calcKeyList:"+calcKeyList)
-        log.info("calcNames size:"+signaturesCalcNames.size() + "calcNames:"+signaturesCalcNames)
-        log.info("contains ALL:"+calcKeyList.containsAll(signaturesCalcNames))
+        log.debug("calcKeyList size:"+calcKeyList.size() + " calcKeyList:"+calcKeyList)
+        log.debug("calcNames size:"+signaturesCalcNames.size() + "calcNames:"+signaturesCalcNames)
 
-        List missing = new ArrayList(signaturesCalcNames)
-        missing.removeAll(calcKeyList)
-        log.info("missing signatures calc names " + missing)
+        boolean isCalcNotMissingKeys = calcKeyList.containsAll(signaturesCalcNames)
+        log.info("contains ALL:"+isCalcNotMissingKeys)
+        if (!isCalcNotMissingKeys){
+            List missing = new ArrayList(signaturesCalcNames)
+            missing.removeAll(calcKeyList)
+            log.info("missing signatures calc names " + missing)
+        }
 
-        return calcKeyList.containsAll(signaturesCalcNames)
+		return isCalcNotMissingKeys
 	}
 	
 	def isCalValidExtendedValidation(def calcId, def activities, def signatures) {

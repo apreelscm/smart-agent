@@ -8,6 +8,7 @@ import com.eservice.eumowy.dto.MerchantSearchStatus
 import com.eservice.eumowy.exception.CalculatorException
 import com.eservice.eumowy.process.DefineActivityCommand
 import com.eservice.eumowy.util.DateUtils
+import com.eservice.eumowy.validator.AttachmentsValidator
 import com.eservice.eumowy.validator.NumberValidator
 import com.google.common.collect.Lists
 import grails.converters.JSON
@@ -563,7 +564,7 @@ class ActivityController {
                     } else if (merchantDetails.status == MerchantSearchStatus.MAPPING_ERROR) {
                         flash.bisnodeErrorMessage = message(code: 'bisnode.mapping.error')
                     } else if (merchantDetails.status == MerchantSearchStatus.ERROR) {
-                        flash.bisnodeErrorMessage = message(code: 'bisnode.connection.error')
+                        flash.bisnodeErrorMessage = message(code: 'bisnode.integration.error')
                     }
                 }
 
@@ -729,6 +730,11 @@ class ActivityController {
                         log.error(it)
                     }
                     return error();
+                } else if (grailsApplication.config.isPanelsValidationOn){
+                    new AttachmentsValidator(attachmentService).validate(processCommand, params.processId)
+                    if (processCommand.hasErrors()){
+                        return error()
+                    }
                 }
 
                 Process processInstance = flow.processInstance
@@ -1040,7 +1046,12 @@ class ActivityController {
 
                 if(processCommand?.hasErrors()){
                     log.info(params)
-                    return error();
+                    return error()
+                } else {
+                    new AttachmentsValidator(attachmentService).validate(processCommand, params.processId)
+                    if (processCommand.hasErrors()){
+                        return error()
+                    }
                 }
 
                 Process processInstance = flow.processInstance

@@ -1,4 +1,4 @@
-<%@ page import="com.eservice.eumowy.Activity" %>
+<%@ page import="com.eservice.eumowy.Activity;com.eservice.eumowy.ActivityHelper" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -49,12 +49,14 @@
                 />
             </div>
 
+            <g:if test="${ActivityHelper.isNewAgreement(processInstance)}">
             <div class="display-inline-block" style="margin-top: 15px">
                 <apreel:textField  id="regonField" name="regon" class="regon"
                                    title="${message(code:'client.regon.label')}"
                                    value="${regon}" direction="vertical"
                 />
             </div>
+            </g:if>
 
             <g:submitButton name="getCalculator" class="button action display-inline getCalculator"
                             value="${message(code:'default.search.button.name')}"/>

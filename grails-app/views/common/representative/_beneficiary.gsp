@@ -21,6 +21,64 @@
                       validatable="${representative}" validateField="citizenship" required="required"/>
 </div>
 
+<div class="acceptorPESELCountryWrapper ${hasErrors(bean: representative, field: 'verification', 'errorSpan')}">
+    <div class="acceptorRadioWrapper">
+        <g:radio name="${prefix}[${seqNo}].verification" value="PESEL"
+                 checked="${representative?.verification?.name() == "PESEL"}"/>
+        <div class="label"><g:message code="pesel.label"/></div>
+
+        <eumowy:textField name="${prefix}[${seqNo}].pesel" value="${representative?.pesel}"
+                          maxlength="11" class="pesel-field display-inline-block"
+                          validatable="${representative}" validateField="pesel"/>
+    </div>
+
+    <div class="acceptorRadioWrapper">
+        <g:radio name="${prefix}[${seqNo}].verification" value="BIRTH_DATE"
+                 checked="${representative?.verification?.name() == "BIRTH_DATE"}"/>
+
+        <label for="${prefix}[${seqNo}].personBirthDate"><g:message code="birth.date.country.label"/></label>
+        <g:textField id="${prefix}[${seqNo}].personBirthDate" name="${prefix}[${seqNo}].birthDate"
+                     value="${formatDate(format: 'yyyy-MM-dd', date: representative?.birthDate)}" maxlength="10"
+                     class="date-field date-past"/>
+    </div>
+</div>
+
+<div class="isPolitician ${hasErrors(bean: representative, field: 'isPolitician', 'errorSpan')}">
+    <g:hasErrors bean="${representative}" field="isPolitician">
+        <p class="error-message"><g:message code="representative.option.required"/></p>
+    </g:hasErrors>
+
+    <span><g:message code="is.political.position.label"/></span>
+
+    <g:radio name="${prefix}[${seqNo}].isPolitician" value="true"
+             checked="${representative?.isPolitician == true}"/>
+    <label for="${prefix}[${seqNo}].isPolitician"><g:message code="yes"/></label>
+
+    <g:radio name="${prefix}[${seqNo}].isPolitician" value="false"
+             checked="${representative?.isPolitician == false}"/>
+    <label for="${prefix}[${seqNo}].isPolitician"><g:message code="no"/></label>
+</div>
+
+<div class="isDirectPep ${hasErrors(bean: representative, field: 'isDirectPep', 'errorSpan')} ${representative?.isPolitician ?: 'hidden'}">
+    <g:hasErrors bean="${representative}" field="isDirectPep">
+        <p class="error-message"><g:message code="representative.option.required"/></p>
+    </g:hasErrors>
+
+    <g:radio name="${prefix}[${seqNo}].isDirectPep" value="true" required="required"
+             checked="${representative?.isDirectPep == true}"/>
+    <label for="${prefix}[${seqNo}].isDirectPep">
+        <g:message code="representative.pep.direct"/>
+        <strong class="tooltip" title="${g.message(code: 'representative.pep.direct.description')}"><g:message code="representative.pep.description"/></strong>
+    </label>
+
+    <g:radio name="${prefix}[${seqNo}].isDirectPep" value="false" required="required"
+             checked="${representative?.isDirectPep == false}"/>
+    <label for="${prefix}[${seqNo}].isDirectPep">
+        <g:message code="representative.pep.related"/>
+        <strong class="tooltip" title="${g.message(code: 'representative.pep.related.description')}"><g:message code="representative.pep.description"/></strong>
+    </label>
+</div>
+
 <div style="margin-top: 15px">
     <p><g:message code="beneficiary.relation.with.acceptor.label"/></p>
 

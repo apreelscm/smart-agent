@@ -38,6 +38,7 @@ class MicroBisnodeClientMock implements MicroBisnodeClient {
             organization = new OrganizationBuilder()
                     .withAddress("05-500","Nowa Iwiczna","Ul.","Kwiatowa","1")
                     .withRepresentative("Jan", "Kowalski", "81060952258", "Prezes")
+                    .withRepresentative("Jan", "Kowalski", "81060952258", "Pełnomocnik")
                     .withBeneficiary("Piotr","Nowak", "88070539732", 30)
                     .build()
 
