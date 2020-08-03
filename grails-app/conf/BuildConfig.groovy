@@ -32,7 +32,7 @@ grails.project.dependency.resolution = {
 
         mavenLocal()
         mavenCentral()
-        //mavenRepo "https://repo1.maven.org/maven2/"
+        mavenRepo "https://repo1.maven.org/maven2/"
         mavenRepo "https://repository.apache.org/content/repositories/snapshots/"
 
         // uncomment these (or add new ones) to enable remote dependency resolution from public Maven repositories
