@@ -33,12 +33,12 @@
                             <g:hiddenField name="akceptantUlicaCbd" value="${data.akceptantUlicaCbd}"/>
                         </span>
                         <span>
-                            <span>
-                                <g:message code="panel.house.number" /></span> <span><eumowy:textField name="akceptantNrDomu"  value="${data.akceptantNrDomu}" validatable="${data}" readonly="${data.checkIfFromCbd('akceptantNrDomu')}" style="width: 50px" maxlength="8" required="true"/>
+                            <span><g:message code="panel.house.number" /></span>
+                            <span><eumowy:textField name="akceptantNrDomu"  value="${data.akceptantNrDomu}" validatable="${data}" readonly="${data.checkIfFromCbd('akceptantNrDomu')}" style="width: 50px" maxlength="8" required="true"/>
                                 <g:hiddenField name="akceptantNrDomuCbd" value="${data.akceptantNrDomuCbd}"/>
                             </span>
-                            <span>
-                                <g:message code="panel.flat.number" /></span> <span><eumowy:textField name="akceptantNrMieszkania" value="${data.akceptantNrMieszkania}" validatable="${data}" readonly="${data.checkIfFromCbd('akceptantNrMieszkania')}" style="width: 50px" maxlength="8"/>
+                            <span><g:message code="panel.flat.number" /></span>
+                            <span><eumowy:textField name="akceptantNrMieszkania" value="${data.akceptantNrMieszkania}" validatable="${data}" readonly="${data.checkIfFromCbd('akceptantNrMieszkania')}" style="width: 50px" maxlength="8"/>
                                 <g:hiddenField name="akceptantNrMieszkaniaCbd" value="${data.akceptantNrMieszkaniaCbd}"/>
                             </span>
                         </span>
@@ -46,8 +46,8 @@
                 </li>
                 <li>
                     <span>
-                        <span>
-                            <g:message code="panel.postal.code" /></span> <span><eumowy:textField id="akceptantKodPocztowy" class="postal-code" name="akceptantKodPocztowy" value="${data.akceptantKodPocztowy}" validatable="${data}" readonly="${data.checkIfFromCbd('akceptantKodPocztowy')}" style="width: 50px" maxlength="5" required="true"/>
+                        <span><g:message code="panel.postal.code" /></span>
+                        <span><eumowy:textField id="akceptantKodPocztowy" class="postal-code" name="akceptantKodPocztowy" value="${data.akceptantKodPocztowy}" validatable="${data}" readonly="${data.checkIfFromCbd('akceptantKodPocztowy')}" style="width: 50px" maxlength="6" required="true"/>
                             <g:hiddenField name="akceptantKodPocztowyCbd" value="${data.akceptantKodPocztowyCbd}"/>
                         </span>
                         <span><g:message code="panel.city" /></span>
@@ -66,11 +66,7 @@
                                           style="width: 280px;"  required="required"/>
                             </g:else>
                         </span>
-                        <span>
-
-                        </span>
                     </span>
-                </span>
                 </li>
                 <li>
                     <span>
