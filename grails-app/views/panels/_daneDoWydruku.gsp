@@ -22,7 +22,7 @@
                     </li>
                     <li>
                         <span>
-                            <span><g:message code="panel.postal.code" /></span> <span><eumowy:textField id="wydrukKodPocztowy" class="postal-code" name="wydrukKodPocztowy" value="${data.wydrukKodPocztowy}" validatable="${data}" style="width: 50px" maxlength ="5" required="true"/></span>
+                            <span><g:message code="panel.postal.code" /></span> <span><eumowy:textField id="wydrukKodPocztowy" class="postal-code" name="wydrukKodPocztowy" value="${data.wydrukKodPocztowy}" validatable="${data}" style="width: 50px" maxlength ="6" required="true"/></span>
                         </span>
                         <span><g:message code="panel.city" /></span>
                         <span>

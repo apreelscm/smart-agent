@@ -47,7 +47,7 @@
                 <li>
                     <span>
                         <span><g:message code="panel.postal.code" /></span>
-                        <span><eumowy:textField id="akceptantKodPocztowy" class="postal-code" name="akceptantKodPocztowy" value="${data.akceptantKodPocztowy}" validatable="${data}" readonly="${data.checkIfFromCbd('akceptantKodPocztowy')}" style="width: 50px" maxlength="5" required="true"/>
+                        <span><eumowy:textField id="akceptantKodPocztowy" class="postal-code" name="akceptantKodPocztowy" value="${data.akceptantKodPocztowy}" validatable="${data}" readonly="${data.checkIfFromCbd('akceptantKodPocztowy')}" style="width: 50px" maxlength="6" required="true"/>
                             <g:hiddenField name="akceptantKodPocztowyCbd" value="${data.akceptantKodPocztowyCbd}"/>
                         </span>
                         <span><g:message code="panel.city" /></span>
