@@ -8,9 +8,9 @@ function maskNewPosRefresh() {
     maskFields(jQuery("#addNewPosPanelPlaceholder"));
 }
 
-const LANDLINE_PHONE_FORMAT = '(00) 000-00-00';
-const MOBILE_PHONE_FORMAT = '000-000-000';
-const PERCENT_SHORT_FORMAT = '09';
+var LANDLINE_PHONE_FORMAT = '(00) 000-00-00';
+var MOBILE_PHONE_FORMAT = '000-000-000';
+var PERCENT_SHORT_FORMAT = '09';
 
 function maskFields(element){
     element.find(".bank-account").mask('00 0000 0000 0000 0000 0000 0000');

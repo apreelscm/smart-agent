@@ -175,7 +175,7 @@
     }
 
     function phoneTypeChanged(){
-        let phoneNumberSelector = jQuery(this).closest("div").find("input.phone-number");
+        var phoneNumberSelector = jQuery(this).closest("div").find("input.phone-number");
         if (this.value === 'LANDLINE') {
             phoneNumberSelector.removeClass('mobile-phone');
             phoneNumberSelector.addClass('phone');
