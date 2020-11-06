@@ -1,6 +1,7 @@
 import com.eservice.dao.emetrics.UserDAO
 import com.eservice.eumowy.CustomDateEditorRegistrar
 import com.eservice.eumowy.auth.EServiceAuthenticationProvider
+import com.eservice.eumowy.auth.microldap.MicroLDAPClientImpl
 import com.eservice.eumowy.dao.CbdDAO
 import com.eservice.eumowy.microbisnode.MicroBisnodeClientImpl
 import com.eservice.eumowy.mocks.MicroBisnodeClientMock
@@ -56,6 +57,7 @@ beans = {
             break;
         default:
             microBisnodeClient(MicroBisnodeClientImpl, '${microBisnode.service.uri}'){}
+            microLDAPClient(MicroLDAPClientImpl, '${microLDAP.service.uri}'){}
     }
 
     userService(UserService){
@@ -72,7 +74,7 @@ beans = {
     customDateEditorRegistrar(CustomDateEditorRegistrar)
 
     // custom authentication
-    daoAuthenticationProvider(EServiceAuthenticationProvider) {
+    daoAuthenticationProvider(EServiceAuthenticationProvider) { // TODO
         preAuthenticationChecks = ref('preAuthenticationChecks')
         postAuthenticationChecks = ref('postAuthenticationChecks')
         userService = ref('userService')

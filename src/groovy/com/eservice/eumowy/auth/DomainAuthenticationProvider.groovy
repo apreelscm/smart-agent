@@ -1,7 +1,8 @@
 package com.eservice.eumowy.auth
 
-import com.eservice.eumowy.util.EumowyCustomEnvironment
-import grails.util.Environment
+import com.eservice.eumowy.auth.microldap.AuthResponse
+import com.eservice.eumowy.auth.microldap.MicroLDAPClient
+import com.eservice.eumowy.auth.microldap.User
 import org.apache.commons.logging.LogFactory
 import org.apache.log4j.MDC
 import org.springframework.security.authentication.AuthenticationProvider
@@ -9,11 +10,11 @@ import org.springframework.security.authentication.AuthenticationServiceExceptio
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.AuthenticationException
+import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.GrantedAuthorityImpl
 import org.springframework.security.core.userdetails.UserDetailsChecker
 
-@Deprecated
-class EServiceAuthenticationProvider implements AuthenticationProvider {
+class DomainAuthenticationProvider implements AuthenticationProvider {
 
     private static final log = LogFactory.getLog("audit");
 
@@ -23,7 +24,7 @@ class EServiceAuthenticationProvider implements AuthenticationProvider {
 
     UserDetailsChecker preAuthenticationChecks
     UserDetailsChecker postAuthenticationChecks
-    def userService
+    MicroLDAPClient microLDAPClient
     def cbdService
 
     Authentication authenticate(Authentication auth) throws AuthenticationException {
@@ -33,54 +34,36 @@ class EServiceAuthenticationProvider implements AuthenticationProvider {
         String username = authentication.name
 
         EServiceUserDetails userDetails
-        List<GrantedAuthorityImpl> authorities
 
-        def userDTO
+        def User userDTO
 
         try {
-            userDTO = userService.loginToEUmowy(username,password);
+            AuthResponse authResponse = microLDAPClient.authAdUser(username, password)
+            if (authResponse.isSuccess()){
+                userDTO = authResponse.getUser()
+            } else {
+                log.error("authentication failed for login " + username)
+                throw new AuthenticationServiceException(authResponse.getResponseMsg())
+            }
         } catch(Exception e) {
-            log.error(e.message, e)
+            log.error("authentication error",  e)
             throw new AuthenticationServiceException(e.getMessage())
         }
 
-        authorities = new ArrayList<GrantedAuthorityImpl>()
+        def roles = [EUM_ADMINISTRATOR, EUM_ZRD, EUM_PH_BZOS] // TODO
+        List<GrantedAuthority> authorities = buildAuthorities(roles)
 
-        switch (Environment.getCurrent().getName()) {
-            case EumowyCustomEnvironment.MOCK.getName():
-				userDTO.setEmail("pszkup@apreel.com")
-                if(username == "ph"){
-                    authorities.add(new GrantedAuthorityImpl(EUM_PH_BZOS))
-                }
-
-                if(username == "admin"){
-                    authorities.add(new GrantedAuthorityImpl(EUM_ZRD))
-                }
-
-                if(username == "admin"){
-                    authorities.add(new GrantedAuthorityImpl(EUM_ADMINISTRATOR))
-                }
-                break;
-           default:
-                if(userDTO.roles.any{ it.name == EUM_ADMINISTRATOR }){
-                    authorities.add(new GrantedAuthorityImpl(EUM_ADMINISTRATOR))
-                }
-                if(userDTO.roles.any{ it.name == EUM_ZRD }){
-                    authorities.add(new GrantedAuthorityImpl(EUM_ZRD))
-                }
-                if(userDTO.roles.any{ it.name == EUM_PH_BZOS }){
-                    authorities.add(new GrantedAuthorityImpl(EUM_PH_BZOS))
-                }
-                break;
-        }
 
         if(!authorities.any{ it.getAuthority() in [EUM_PH_BZOS,EUM_ZRD] }) {
             throw new AuthenticationServiceException("Użytkownik nie posiada uprawnień do aplikacji.")
         }
 
+        def sellingNumber = cbdService.getNumerSprzedazowy(userDTO.getAuwId())
+
         userDetails = new EServiceUserDetails(userDTO.getLogin(), "pass",
                 true, true, true, true, authorities, 1, userDTO.getFirstName(), userDTO.getLastName(),
                 cbdService.getNumerSprzedazowy(userDTO.getAuwId()),userDTO.getAuwId(), userDTO.getEmail()); //userDTO.getUzyId())
+        // TODO pobranie nr sprzedazowego
 
         preAuthenticationChecks.check userDetails
         postAuthenticationChecks.check userDetails
@@ -98,5 +81,19 @@ class EServiceAuthenticationProvider implements AuthenticationProvider {
 
     boolean supports(Class<? extends Object> authenticationClass) {
         UsernamePasswordAuthenticationToken.isAssignableFrom authenticationClass
+    }
+
+    private List<GrantedAuthority> buildAuthorities(List<String> roles){
+        List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>()
+        if(roles?.any{ it.name == EUM_ADMINISTRATOR }){
+            authorities.add(new GrantedAuthorityImpl(EUM_ADMINISTRATOR))
+        }
+        if(roles?.any{ it.name == EUM_ZRD }){
+            authorities.add(new GrantedAuthorityImpl(EUM_ZRD))
+        }
+        if(roles?.any{ it.name == EUM_PH_BZOS }){
+            authorities.add(new GrantedAuthorityImpl(EUM_PH_BZOS))
+        }
+        return authorities
     }
 }
