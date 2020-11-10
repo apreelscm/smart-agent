@@ -37,7 +37,15 @@ class Representative implements Serializable {
     Date documentExpirationDate
 
     String citizenship
+    @Deprecated
     String address
+    String streetTitle
+    String street
+    String houseNumber
+    String flatNumber
+    String city
+    String postalCode
+    String postOffice
     String country
 
     Boolean ownsAcceptor
@@ -84,6 +92,13 @@ class Representative implements Serializable {
 
         citizenship column: "CITIZENSHIP"
         address column: "ADDRESS"
+        streetTitle column: "STREET_TITLE"
+        street column: "STREET"
+        houseNumber column: "HOUSE_NUMBER"
+        flatNumber column: "FLAT_NUMBER"
+        city column: "CITY"
+        postalCode column: "POSTAL_CODE"
+        postOffice column: "POST_OFFICE"
         country column: "COUNTRY"
 
         ownsAcceptor column: "OWNS_ACCEPTOR"
@@ -118,6 +133,13 @@ class Representative implements Serializable {
        birthCity(nullable: true)
        citizenship(nullable: true)
        address(nullable: true)
+       streetTitle(nullable: true)
+       street(nullable: true)
+       houseNumber(nullable: true)
+       flatNumber(nullable: true)
+       city(nullable: true)
+       postalCode(nullable: true)
+       postOffice(nullable: true)
        country(nullable: true)
        ownsAcceptor(nullable: true)
        controlsAcceptor(nullable: true)
@@ -129,6 +151,22 @@ class Representative implements Serializable {
        email(nullable: true)
        landlinePhone(nullable: true)
        mobilePhone(nullable: true)
+    }
+
+   String getAddress(){
+        if (isOldAddress()){
+            return address
+        }
+        StringBuilder sb= new StringBuilder(format("%s. %s %s", streetTitle?.toLowerCase(), street, houseNumber))
+        if (flatNumber){
+            sb.append(" m. ").append(flatNumber)
+        }
+        sb.append(format(", %s %s", postalCode, city))
+        return sb.toString()
+    }
+
+    def isOldAddress(){
+        return address && ! (city && street)
     }
 
     public String getFullNameWithSalutation() {
