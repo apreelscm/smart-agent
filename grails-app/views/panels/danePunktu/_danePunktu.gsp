@@ -16,8 +16,11 @@
                                                                        maxlength="10" required="true" readonly="true"
                                                                        validatable="${pointData}"
                                                                        validateField="nipPunktu"/></span></li>
-            <li><span class="align-right"><g:message
-                    code="panel.mcccode" /></span>
+            <li>
+                <g:hiddenField id="${panelType}[${id}].risk" name="${panelType}[${id}].ryzyko"
+                               value="${pointData?.ryzyko}"/>
+
+                <span class="align-right"><g:message code="panel.mcccode" /></span>
                 <span>
                     <dict:mccSelect
                             name="${panelType}[${id}].kodMCC"

@@ -10,7 +10,6 @@ class Subscription implements Serializable {
 	String name
 	String surname
 	Date signDate
-	//PersonType personType
 	PersonRole personRole
     String uniqueKey
 	
@@ -19,8 +18,16 @@ class Subscription implements Serializable {
 		ACCEPTANT2("ACCEPTANT2"),
 		ACCEPTANT3("ACCEPTANT3"),
 		ACCEPTANT4("ACCEPTANT4"),
+		ACCEPTANT1_1("ACCEPTANT1_1"),
+		ACCEPTANT2_1("ACCEPTANT2_1"),
+		ACCEPTANT3_1("ACCEPTANT3_1"),
+		ACCEPTANT4_1("ACCEPTANT4_1"),
+		ACCEPTANT1_APUW_ZAL4("ACCEPTANT1_APUW_ZAL4"),
+		ACCEPTANT2_APUW_ZAL4("ACCEPTANT2_APUW_ZAL4"),
+		ACCEPTANT3_APUW_ZAL4("ACCEPTANT3_APUW_ZAL4"),
+		ACCEPTANT4_APUW_ZAL4("ACCEPTANT4_APUW_ZAL4"),
 		PH("PH"),
-		PH1("PH1"),
+		PH_1("PH_1"),
         ZARZAD1(""),
         ZARZAD2("")
 		

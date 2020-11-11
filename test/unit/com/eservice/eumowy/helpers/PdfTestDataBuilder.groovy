@@ -68,10 +68,6 @@ class PdfTestDataBuilder {
         data.put("pp_play_tp", ["72"] as String[]);
         data.put("pp_telegrosik_tk", ["13"] as String[]);
         data.put("pp_virginmobile_tk", ["14"] as String[]);
-        data.put("pp_lycamobile_tk", ["15"] as String[]);
-        data.put("pp_gtmobile_tk", ["60"] as String[]);
-        data.put("pp_vectonemobile_tk", ["71"] as String[]);
-        data.put("pp_delightmobile_tk", ["99"] as String[]);
         data.put("oplataZaOprogramowanieDoDoladowan", ["300"] as String[]);
         return data
     }

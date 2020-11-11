@@ -131,6 +131,9 @@ class ProcessCommand implements Serializable {
     String oplataZaInstalacjeGPRS = DEFAULT_VALUE
     String oplataZaUruchomienieWalutyObcej = DEFAULT_VALUE
 
+//    kategoriaRyzykaKlienta
+    String kategoriaRyzykaKlienta = DEFAULT_VALUE
+
 //    dodatkoweUslugi2
     String wydrukGrafikiCena = DEFAULT_VALUE
     String dzialaniaMatematyczneCena = DEFAULT_VALUE
@@ -295,10 +298,6 @@ class ProcessCommand implements Serializable {
     String pp_play_tp = DEFAULT_VALUE
     String pp_telegrosik_tk = DEFAULT_VALUE
     String pp_virginmobile_tk = DEFAULT_VALUE
-    String pp_lycamobile_tk = DEFAULT_VALUE
-    String pp_gtmobile_tk = DEFAULT_VALUE
-    String pp_vectonemobile_tk = DEFAULT_VALUE
-    String pp_delightmobile_tk = DEFAULT_VALUE
     String oplataZaOprogramowanieDoDoladowan = DEFAULT_VALUE
 
 //    promocyjneObnizenieOplatyZaZestawPos
@@ -418,6 +417,8 @@ class ProcessCommand implements Serializable {
 
     //uzgodnienie dyspozycji
     String dyspozycja
+
+    Boolean zadanieRozpoczeciaWykonaniaUslugi
 
 //    uwagi
     @Omit
@@ -550,6 +551,15 @@ class ProcessCommand implements Serializable {
         oplataZaInstalacjeGPRS(nullable: false, blank: false,  validator: { value, cmd, errors -> NumberValidator.validate(value, cmd, errors, propertyName)})
         oplataZaUruchomienieWalutyObcej(nullable: false, blank: false,  validator: { value, cmd, errors ->
             NumberValidator.validate(value, cmd, errors, propertyName) && ConditionValidator.atLeastCalcValue(value, cmd, errors, propertyName, "DCC_OPLATA_URUCHOMIENIE")
+        })
+        kategoriaRyzykaKlienta(nullable:true, blank:true, validator: {value, cmd, errors ->
+            CustomValidator.validateRequired(value, errors, cmd.hasNewUmowa && !errors.hasFieldErrors("kategoriaRyzykaKlienta")
+                    , "kategoriaRyzykaKlienta", "kategoriaRyzykaKlienta.required")
+        })
+
+        zadanieRozpoczeciaWykonaniaUslugi(nullable: true, validator: {value, cmd, errors ->
+            CustomValidator.validateRequired(value != null, errors, cmd.hasNewUmowa && cmd.isPersonForm(),
+                    'zadanieRozpoczeciaWykonaniaUslugi', "default.validation.required.error")
         })
 
         wydrukGrafikiCena(nullable:true, blank:false,  validator: { value, cmd, errors -> NumberValidator.validate(value, cmd, errors, propertyName)})
@@ -1110,22 +1120,6 @@ class ProcessCommand implements Serializable {
                     TelekodzikValidator.validate(value, cmd, errors, propertyName)
         })
         pp_virginmobile_tk(nullable: true, blank: true,  validator: { value, cmd, errors ->
-            PercentageValidator.validate(value, cmd, errors, propertyName) &&
-                    TelekodzikValidator.validate(value, cmd, errors, propertyName)
-        })
-        pp_lycamobile_tk(nullable: true, blank: true,  validator: { value, cmd, errors ->
-            PercentageValidator.validate(value, cmd, errors, propertyName) &&
-                    TelekodzikValidator.validate(value, cmd, errors, propertyName)
-        })
-        pp_gtmobile_tk(nullable: true, blank: true,  validator: { value, cmd, errors ->
-            PercentageValidator.validate(value, cmd, errors, propertyName) &&
-                    TelekodzikValidator.validate(value, cmd, errors, propertyName)
-        })
-        pp_vectonemobile_tk(nullable: true, blank: true,  validator: { value, cmd, errors ->
-            PercentageValidator.validate(value, cmd, errors, propertyName) &&
-                    TelekodzikValidator.validate(value, cmd, errors, propertyName)
-        })
-        pp_delightmobile_tk(nullable: true, blank: true,  validator: { value, cmd, errors ->
             PercentageValidator.validate(value, cmd, errors, propertyName) &&
                     TelekodzikValidator.validate(value, cmd, errors, propertyName)
         })

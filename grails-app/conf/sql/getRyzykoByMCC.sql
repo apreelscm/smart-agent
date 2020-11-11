@@ -1,0 +1,1 @@
+select SLM_POZIOM_RYZYKA as "slm_ryzyko" from CBD_ADM.cbt_sl_mcc where SLM_KOD = :mcc

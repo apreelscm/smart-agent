@@ -35,6 +35,7 @@ class CbdService {
     private static final String GET_WYKAZ_PUNKTOW_GRID = "getWykazPunktowGrid"
     private static final String GET_ZAKRES_URUCHOMIENIA_PUNKTY_GRID = "getZakresUruchomieniaPunktyGrid"
     private static final String GET_RODZAJ_DZIALALNOSCI_BY_MCC = "getRodzajDzialanosciByMCC"
+    private static final String GET_RYZYKO_BY_MCC = "getRyzykoByMCC"
     private static final String GET_ANEKS_DO_UMOWY_NAJMU_ZESTAWU_POS = "getAneksDoUmowyNajmuZestawuPos"
     private static final String GET_ANEKS_DO_UMOWY_PREPAID = "getAneksDoUmowyPrepaid"
     private static final String GET_KALKULATOR_TYP_URZADZEN = "getKalkulatorTypUrzadzen"
@@ -177,6 +178,12 @@ class CbdService {
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
     def getRodzajDzialalnosciByMCC(def mcc) {
         return cbdDAO.selectOne(GET_RODZAJ_DZIALALNOSCI_BY_MCC,[mcc: mcc])
+    }
+
+    @Cacheable(value="eumowyCacheLong", key = "'getRyzykoByMCC_'.concat(#mcc)")
+    @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
+    def getRyzykoByMCC(def mcc) {
+        return cbdDAO.selectOne(GET_RYZYKO_BY_MCC, [mcc: mcc])
     }
 
     @Cacheable(value="eumowyCacheShort", key = "'getAneksDoUmowyNajmuZestawuPos_'.concat(#clientNip)")

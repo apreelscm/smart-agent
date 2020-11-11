@@ -9,6 +9,7 @@ class PointDataDetails implements Serializable {
 	String opiekaSerwisowaIII
 
 	String nipPunktu
+	Risk ryzyko
 	String kodMCC
 	String rodzProwadzDzialalWPraktyce
 	String numerRachunkuBankowego
@@ -68,6 +69,7 @@ class PointDataDetails implements Serializable {
 		opiekaSerwisowaII column: "service_care2"
 		opiekaSerwisowaIII column: "service_care3"
 		nipPunktu column: "nip"
+		ryzyko column: "risk", enumType: 'string'
 		kodMCC column: "mcc_code"
 		rodzProwadzDzialalWPraktyce column: "bussiness_type_in_practice"
 		numerRachunkuBankowego column: "bank_account_number"
@@ -119,6 +121,7 @@ class PointDataDetails implements Serializable {
 		opiekaSerwisowaII(nullable:true)
 		opiekaSerwisowaIII(nullable:true)
 		nipPunktu(nullable:true)
+		ryzyko(nullable:true)
 		kodMCC(nullable:true)
 		rodzProwadzDzialalWPraktyce(nullable:true)
 		numerRachunkuBankowego(nullable:true)
@@ -159,6 +162,11 @@ class PointDataDetails implements Serializable {
 		informacjeTechniczneTakSamoDlaWszystkichPunktow(nullable:true)
 		kontaktWPunkcieJakDlaMerchanta(nullable:true)
 		korespondencjaJakDlaMerchantaLubWydruku(nullable:true)
+	}
+
+	enum Risk {
+		LOW,
+		HIGH
 	}
 	
 }
