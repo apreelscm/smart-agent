@@ -8,8 +8,6 @@ import com.eservice.eumowy.validator.NumberValidator
 import grails.validation.Validateable
 import org.apache.commons.validator.routines.EmailValidator
 
-import static com.google.common.base.Strings.isNullOrEmpty
-
 @Validateable(nullable = true)
 class RepresentativeCommand implements Serializable{
     transient ProcessCommand processCommand
@@ -34,8 +32,16 @@ class RepresentativeCommand implements Serializable{
     Date documentIssueDate
     Date documentExpirationDate
 
-    String citizenship
+    @Deprecated
     String address
+    String citizenship
+    String streetTitle
+    String street
+    String houseNumber
+    String flatNumber
+    String city
+    String postalCode
+    String postOffice
     String country
 
     Boolean isPolitician = Boolean.FALSE
@@ -117,10 +123,31 @@ class RepresentativeCommand implements Serializable{
                     "birthCity", "representative.miastoUrodzenia.required")
         })
 
-        address(nullable: true, maxSize: 100, validator: { value, cmd, errors ->
+        streetTitle(nullable: true, maxSize: 4, blank: true);
+
+        street(nullable: true, maxSize: 40, shared: "alphanumeric", validator: { value, cmd, errors ->
             CustomValidator.validateRequired(value, errors, cmd.processCommand.isPersonForm() && cmd.processCommand.hasNewUmowa,
-                    propertyName, "representative.adres.required")
+                    propertyName, "representative.street.required")
         })
+
+        houseNumber(nullable: true, maxSize: 6, shared: 'alphanumericWithSlash', validator: { value, cmd, errors ->
+            CustomValidator.validateRequired(value, errors, cmd.processCommand.isPersonForm() && cmd.processCommand.hasNewUmowa,
+                    propertyName, "representative.houseNumber.required")
+        })
+
+        flatNumber(nullable: true, maxSize: 4, shared: 'alphanumericWithSlash')
+
+        city(nullable: true, maxSize: 33, shared: "alphanumericWithBrackets", validator: { value, cmd, errors ->
+            CustomValidator.validateRequired(value, errors, cmd.processCommand.isPersonForm() && cmd.processCommand.hasNewUmowa,
+                    propertyName, "representative.city.required")
+        })
+
+        postalCode(nullable: true, maxSize: 6, shared: "postalCodeValidator", validator: { value, cmd, errors ->
+            CustomValidator.validateRequired(value, errors, cmd.processCommand.isPersonForm() && cmd.processCommand.hasNewUmowa,
+                    propertyName, "representative.postalCode.required")
+        })
+
+        postOffice(nullable: true, maxSize: 33, shared: "alphanumeric")
 
         country(nullable: true, validator: { value, cmd, errors ->
             CustomValidator.validateRequired(value, errors, cmd.processCommand.isPersonForm() && cmd.processCommand.hasNewUmowa,
@@ -148,7 +175,7 @@ class RepresentativeCommand implements Serializable{
         })
 
         email(nullable: true, blank: true, validator: { value, cmd, errors ->
-            if (isNullOrEmpty(value)) return true
+            if (value == null || value.size() == 0) return true
 
             if (!EmailValidator.instance.isValid(value)) {
                 errors.rejectValue("email", "email.invalid", [value] as Object[], "")

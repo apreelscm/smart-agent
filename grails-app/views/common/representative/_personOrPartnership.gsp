@@ -1,4 +1,4 @@
-<%@ page import="com.eservice.eumowy.enums.options.TelephoneType; com.eservice.eumowy.enums.options.AcceptorLocation; com.eservice.eumowy.enums.options.IdentityDocumentType" %>
+<%@ page import="com.eservice.eumowy.enums.options.TelephoneType; com.eservice.eumowy.enums.options.AcceptorLocation; com.eservice.eumowy.enums.options.IdentityDocumentType; java.util.Collections" %>
 
 <div class="personData ${additionalClass}">
     <div class="acceptorDocumentInfoWrapper">
@@ -71,10 +71,43 @@
     </div>
 
     <div>
-        <label for="${prefix}[${seqNo}].address"><g:message code="address.label"/></label>
-        <eumowy:textField name="${prefix}[${seqNo}].address" value="${representative?.address}" maxlength="100"
-                          style="width: 750px"
-                          validatable="${representative}" validateField="address" required="required"/>
+        <ul class="table-list-rep">
+            <li>
+                <span>
+                    <span><label for="${prefix}[${seqNo}].street"><g:message code="panel.street" /></label></span>
+                    <span>
+                        <dict:streetSelect class="streetTitle" name="${prefix}[${seqNo}].streetTitle" value="${representative?.streetTitle}" default="UL"/>
+                        <eumowy:textField name="${prefix}[${seqNo}].street" style="width: 200px" value="${representative?.street}" validatable="${representative}" validateField="street" required="true"/>
+                    </span>
+                    <span>
+                        <span><label for="${prefix}[${seqNo}].houseNumber"><g:message code="panel.house.number" /></label></span>
+                        <span><eumowy:textField name="${prefix}[${seqNo}].houseNumber" value="${representative?.houseNumber}" validatable="${representative}" validateField="houseNumber" style="width: 50px" maxlength ="6" required="true"/></span>
+                        <span><label for="${prefix}[${seqNo}].flatNumber"><g:message code="panel.flat.number" /></label></span>
+                        <span><eumowy:textField name="${prefix}[${seqNo}].flatNumber" value="${representative?.flatNumber}" validatable="${representative}" validateField="flatNumber" style="width: 50px" maxlength ="4"/></span>
+                    </span>
+                </span>
+            </li>
+
+            <li>
+                <span>
+                    <span><label for="${prefix}[${seqNo}].postalCode"><g:message code="panel.postal.code" /></label></span>
+                    <span><eumowy:textField class="postal-code" name="${prefix}[${seqNo}].postalCode" value="${representative?.postalCode}" validatable="${representative}" validateField="postalCode" style="width: 50px" maxlength ="6" required="true"/></span>
+                    <span><label for="${prefix}[${seqNo}].city"><g:message code="panel.city" /></label></span>
+                    <span> <g:select name="${prefix}[${seqNo}].city"
+                                     value="${representative?.city}"
+                                     from="[representative?.city ?: '']"
+                                     style="width: 280px;" required="required"/></span>
+                </span>
+            </li>
+
+            <li>
+                <span>
+                    <span><label for="${prefix}[${seqNo}].postOffice"><g:message code="panel.postal" /></label></span>
+                    <span><eumowy:textField name="${prefix}[${seqNo}].postOffice" value="${representative?.postOffice}" validatable="${representative}" validateField="postOffice" style="width: 280px;" /></span>
+                </span>
+            </li>
+        </ul>
+
     </div>
 
     <div class="${hasErrors(bean: representative, field: 'country', 'errorSpan')} ${hasErrors(bean: representative, field: 'phoneNumber', 'errorSpan')}">
