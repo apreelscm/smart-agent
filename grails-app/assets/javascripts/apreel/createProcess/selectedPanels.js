@@ -132,6 +132,19 @@ var $j = jQuery.noConflict();
             //TODO - nie ma pol o takim id !!! To sa pola z punktu!!
             refreshOpiekaSerwisowa(jQuery(e.target).val(), jQuery("#opiekaSerwisowaI"), jQuery("#opiekaSerwisowaII"), jQuery("#opiekaSerwisowaIII"))
         });
+
+        jQuery("#representativesContainer").each(function (representativeIndex, value) {
+            jQuery(this).find("input.postal-code").each(function () {
+                console.log("parent " + jQuery(this).parent().parent());
+                var representativeCityElement = jQuery(this).parent().parent().find("select[name$='city']");
+                refreshCityField(jQuery(this).val(),  representativeCityElement);
+            });
+        });
+
+        jQuery("input.postal-code").on("keyup", function(e) {
+            var representativeCityElement = jQuery(e.target).parent().parent().find("select[name$='city']");
+            refreshCityField(jQuery(e.target).val(),  representativeCityElement)
+        });
     });
 }(jQuery));
 

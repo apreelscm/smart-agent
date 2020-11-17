@@ -53,6 +53,8 @@ grails.project.dependency.resolution = {
         //compile "com.fasterxml.jackson.core:jackson-core:2.5.1"
         //compile "com.fasterxml.jackson.core:jackson-annotations:2.5.1"
 
+        //compile "org.apache.httpcomponents:httpclient:4.5.12" when detailed logging needed
+
         runtime 'com.google.code.gson:gson:2.2.4'
         runtime 'joda-time:joda-time:2.3'
         runtime 'com.lowagie:itext:2.1.7'

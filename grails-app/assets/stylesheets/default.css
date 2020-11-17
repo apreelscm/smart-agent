@@ -1334,6 +1334,9 @@ a.submit{
 	padding-bottom: 1em;
 }
 
+.table-list-rep li {
+    margin-bottom: 1em;
+}
 .align-right {
 	text-align: right;
 }

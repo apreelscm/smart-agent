@@ -5,57 +5,36 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 @JsonIgnoreProperties(ignoreUnknown = true)
 class AuthResponse {
 
-    private Long correlationID
-    private String responseCode
-    private String responseMsg
-    private String version
-    private List<User> users
+    private ResponseMessage message
+
+    AuthResponse() {
+    }
 
     Long getCorrelationID() {
-        return correlationID
-    }
-
-    void setCorrelationID(Long correlationID) {
-        this.correlationID = correlationID
-    }
-
-    String getResponseCode() {
-        return responseCode
-    }
-
-    void setResponseCode(String responseCode) {
-        this.responseCode = responseCode
-    }
-
-    String getResponseMsg() {
-        return responseMsg
-    }
-
-    void setResponseMsg(String responseMsg) {
-        this.responseMsg = responseMsg
-    }
-
-    String getVersion() {
-        return version
-    }
-
-    void setVersion(String version) {
-        this.version = version
-    }
-
-    List<User> getUsers() {
-        return users
+        return message?.getCorrelationID()
     }
 
     User getUser() {
-        return users?.size() > 0 ? users.get(0) : null
-    }
-
-    void setUsers(List<User> users) {
-        this.users = users
+        return message?.getUser()?.size() > 0 ? message.getUser().get(0) : null
     }
 
     boolean isSuccess(){
-        return responseCode = "0"
+        return message?.isSuccess()
+    }
+
+    String getResponseCode() {
+        return message?.getResponseCode()
+    }
+
+    String getResponseMsg() {
+        return message?.getResponseMsg()
+    }
+
+    ResponseMessage getMessage() {
+        return message
+    }
+
+    void setMessage(ResponseMessage message) {
+        this.message = message
     }
 }

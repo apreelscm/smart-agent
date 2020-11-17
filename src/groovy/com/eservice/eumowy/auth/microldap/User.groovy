@@ -5,18 +5,22 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 @JsonIgnoreProperties(ignoreUnknown = true)
 class User {
 
-    private String username
+    private String userName
     private String password
     private String firstName
     private String lastName
     private String email
+    private String system
+    private String domain
+    private String groups
+    private String department
 
-    String getUsername() {
-        return username
+    String getUserName() {
+        return userName
     }
 
-    void setUsername(String username) {
-        this.username = username
+    void setUserName(String userName) {
+        this.userName = userName
     }
 
     String getPassword() {
@@ -49,5 +53,37 @@ class User {
 
     void setEmail(String email) {
         this.email = email
+    }
+
+    String getSystem() {
+        return system
+    }
+
+    void setSystem(String system) {
+        this.system = system
+    }
+
+    String getDomain() {
+        return domain
+    }
+
+    void setDomain(String domain) {
+        this.domain = domain
+    }
+
+    String getGroups() {
+        return groups
+    }
+
+    void setGroups(String groups) {
+        this.groups = groups
+    }
+
+    String getDepartment() {
+        return department
+    }
+
+    void setDepartment(String department) {
+        this.department = department
     }
 }

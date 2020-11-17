@@ -1,8 +1,9 @@
 package com.eservice.eumowy.auth
 
+import com.eservice.eumowy.DomainUserDetailsService
 import com.eservice.eumowy.auth.microldap.AuthResponse
-import com.eservice.eumowy.auth.microldap.MicroLDAPClient
 import com.eservice.eumowy.auth.microldap.User
+import com.eservice.eumowy.auth.microldap.MicroLDAPClient
 import org.apache.commons.logging.LogFactory
 import org.apache.log4j.MDC
 import org.springframework.security.authentication.AuthenticationProvider
@@ -14,6 +15,9 @@ import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.GrantedAuthorityImpl
 import org.springframework.security.core.userdetails.UserDetailsChecker
 
+/**
+ * Based on EServiceAuthenticationProvider with domain authentication changes
+ */
 class DomainAuthenticationProvider implements AuthenticationProvider {
 
     private static final log = LogFactory.getLog("audit");
@@ -21,11 +25,14 @@ class DomainAuthenticationProvider implements AuthenticationProvider {
     public static final String EUM_PH_BZOS = "EUM_PH_BZOS";
     public static final String EUM_ZRD = "EUM_ZRD";
     public static final String EUM_ADMINISTRATOR = "EUM_ADMINISTRATOR";
+    def msgParams = [].toArray()
 
     UserDetailsChecker preAuthenticationChecks
     UserDetailsChecker postAuthenticationChecks
     MicroLDAPClient microLDAPClient
+    DomainUserDetailsService userDetailsService
     def cbdService
+    def messagesSource
 
     Authentication authenticate(Authentication auth) throws AuthenticationException {
         UsernamePasswordAuthenticationToken authentication = auth
@@ -33,37 +40,40 @@ class DomainAuthenticationProvider implements AuthenticationProvider {
         String password = authentication.credentials
         String username = authentication.name
 
+        if(!username || !password){
+            throw new AuthenticationServiceException(messagesSource.getMessage("login.fail", msgParams, Locale.default))
+        }
+
         EServiceUserDetails userDetails
 
-        def User userDTO
-
+        def User user
+        AuthResponse authResponse
         try {
-            AuthResponse authResponse = microLDAPClient.authAdUser(username, password)
-            if (authResponse.isSuccess()){
-                userDTO = authResponse.getUser()
-            } else {
-                log.error("authentication failed for login " + username)
-                throw new AuthenticationServiceException(authResponse.getResponseMsg())
-            }
+            authResponse = microLDAPClient.authAdUser(username, password)
         } catch(Exception e) {
             log.error("authentication error",  e)
-            throw new AuthenticationServiceException(e.getMessage())
+            throw new AuthenticationServiceException(messagesSource.getMessage("login.exception", msgParams, Locale.default))
+        }
+        if (authResponse.isSuccess()){
+            user = authResponse.getUser()
+        } else {
+            log.error("authentication failed [" + authResponse.getResponseCode() + "]" + authResponse.getResponseMsg() + " for login [" + username + "]")
+            throw new AuthenticationServiceException(messagesSource.getMessage("login.fail", msgParams, Locale.default))
         }
 
-        def roles = [EUM_ADMINISTRATOR, EUM_ZRD, EUM_PH_BZOS] // TODO
+        List roles = userDetailsService.findUserRoles(username)
         List<GrantedAuthority> authorities = buildAuthorities(roles)
 
-
         if(!authorities.any{ it.getAuthority() in [EUM_PH_BZOS,EUM_ZRD] }) {
-            throw new AuthenticationServiceException("Użytkownik nie posiada uprawnień do aplikacji.")
+            throw new AuthenticationServiceException(messagesSource.getMessage("login.notPermitted", msgParams, Locale.default))
         }
 
-        def sellingNumber = cbdService.getNumerSprzedazowy(userDTO.getAuwId())
+        Long auwId = userDetailsService.findUserAuwId(username)
+        def sellingNumber = cbdService.getNumerSprzedazowy(auwId)
 
-        userDetails = new EServiceUserDetails(userDTO.getLogin(), "pass",
-                true, true, true, true, authorities, 1, userDTO.getFirstName(), userDTO.getLastName(),
-                cbdService.getNumerSprzedazowy(userDTO.getAuwId()),userDTO.getAuwId(), userDTO.getEmail()); //userDTO.getUzyId())
-        // TODO pobranie nr sprzedazowego
+        userDetails = new EServiceUserDetails(username, "pass",
+                true, true, true, true, authorities, 1, user.getFirstName(), user.getLastName(),
+                sellingNumber, auwId, user.getEmail())
 
         preAuthenticationChecks.check userDetails
         postAuthenticationChecks.check userDetails
@@ -85,13 +95,13 @@ class DomainAuthenticationProvider implements AuthenticationProvider {
 
     private List<GrantedAuthority> buildAuthorities(List<String> roles){
         List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>()
-        if(roles?.any{ it.name == EUM_ADMINISTRATOR }){
+        if(roles?.any{ it == EUM_ADMINISTRATOR }){
             authorities.add(new GrantedAuthorityImpl(EUM_ADMINISTRATOR))
         }
-        if(roles?.any{ it.name == EUM_ZRD }){
+        if(roles?.any{ it == EUM_ZRD }){
             authorities.add(new GrantedAuthorityImpl(EUM_ZRD))
         }
-        if(roles?.any{ it.name == EUM_PH_BZOS }){
+        if(roles?.any{ it == EUM_PH_BZOS }){
             authorities.add(new GrantedAuthorityImpl(EUM_PH_BZOS))
         }
         return authorities
