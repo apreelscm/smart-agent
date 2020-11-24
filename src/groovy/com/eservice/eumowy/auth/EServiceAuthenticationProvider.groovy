@@ -12,6 +12,7 @@ import org.springframework.security.core.AuthenticationException
 import org.springframework.security.core.authority.GrantedAuthorityImpl
 import org.springframework.security.core.userdetails.UserDetailsChecker
 
+@Deprecated
 class EServiceAuthenticationProvider implements AuthenticationProvider {
 
     private static final log = LogFactory.getLog("audit");

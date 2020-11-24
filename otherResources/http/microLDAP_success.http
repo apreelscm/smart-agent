@@ -1,0 +1,11 @@
+POST http://uat-eumowy.apreel.net:8080/microLDAP/authAdUser
+Content-Type: application/json
+Accept: application/json
+
+{
+  "message" : {
+    "correlationID": "123235454577776643",
+    "user": [{"userName":  "askonieczny", "password":  "Eservice12345$", "domain":  "tescik", "groups":  "gr_EUM", "system":  "EUM", "department": "gr_EUM"}]
+  }
+}
+###
