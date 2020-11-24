@@ -212,6 +212,7 @@ grails.plugin.springsecurity.interceptUrlMap = [
         '/**':			['IS_AUTHENTICATED_FULLY']
 ]
 
+xssSanitizer.enabled = true
 
 fileuploader {
     attachments {
