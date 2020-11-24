@@ -48,7 +48,7 @@ class MicroLDAPClientImpl implements MicroLDAPClient {
     @Override
     AuthResponse authAdUser(String login, String password) {
         log.info("try to authenticate user " + login)
-        URI url = new URI("http://uat-eumowy.apreel.net:8080/microLDAP/authAdUser")
+        URI url = new URI(microLdapServiceURI + "authAdUser")
         def correlationId = generateCorrelationID()
         def body = createAuthRequestBody(login, password, correlationId)
         HttpEntity<String> request = new HttpEntity<String>(body, headers)
