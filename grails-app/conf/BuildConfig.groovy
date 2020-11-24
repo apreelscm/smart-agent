@@ -80,5 +80,6 @@ grails.project.dependency.resolution = {
         runtime ":hibernate4:4.3.5.3"
         runtime ":jquery:1.11.1"
         runtime ":spring-security-core:2.0-RC4"
+        runtime ":xss-sanitizer:0.4.1"
     }
 }

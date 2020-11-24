@@ -4,6 +4,7 @@ import com.eservice.eumowy.DomainUserDetailsService
 import com.eservice.eumowy.auth.microldap.AuthResponse
 import com.eservice.eumowy.auth.microldap.User
 import com.eservice.eumowy.auth.microldap.MicroLDAPClient
+import org.apache.commons.lang.StringEscapeUtils
 import org.apache.commons.logging.LogFactory
 import org.apache.log4j.MDC
 import org.springframework.security.authentication.AuthenticationProvider
@@ -37,8 +38,8 @@ class DomainAuthenticationProvider implements AuthenticationProvider {
     Authentication authenticate(Authentication auth) throws AuthenticationException {
         UsernamePasswordAuthenticationToken authentication = auth
 
-        String password = authentication.credentials
-        String username = authentication.name
+        String password = StringEscapeUtils.escapeHtml(authentication.credentials)
+        String username = StringEscapeUtils.escapeHtml(authentication.name)
 
         if(!username || !password){
             throw new AuthenticationServiceException(messagesSource.getMessage("login.fail", msgParams, Locale.default))
