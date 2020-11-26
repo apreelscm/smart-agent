@@ -37,6 +37,7 @@ class RepresentativesDetailsMapper extends AbstractPdfMapper implements Mapper {
             representativesData.put(getFieldName(i, "DowOsob"), getCheckedCheckbox(IdentityDocumentType.IDENTITY_CARD.equals(representative.documentType)))
             representativesData.put(getFieldName(i, "Paszport"), getCheckedCheckbox(IdentityDocumentType.PASSPORT.equals(representative.documentType)))
             representativesData.put(getFieldName(i, "SeriaNrDokumentu"), [representative.documentNumber] as String[])
+            representativesData.put(getFieldName(i, "Obywatelstwo"), [representative.citizenship] as String[])
 
             if (representative.birthDate) {
                 representativesData.put(getFieldName(i, "DataUrodzenia"), [DATE_FORMATTER.format(representative.birthDate)] as String[])
@@ -52,7 +53,6 @@ class RepresentativesDetailsMapper extends AbstractPdfMapper implements Mapper {
 
             if (process.akceptantOsobaFizyczna) {
                 representativesData.put(getFieldName(i, "Adres"), [representative.address] as String[])
-                representativesData.put(getFieldName(i, "Obywatelstwo"), [representative.citizenship] as String[])
             }
         }
 
