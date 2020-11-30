@@ -25,6 +25,7 @@ class RepresentativeCommand implements Serializable{
     String pesel
     Date birthDate
     String birthCountry
+    @Deprecated
     String birthCity
 
     IdentityDocumentType documentType
@@ -118,10 +119,6 @@ class RepresentativeCommand implements Serializable{
             CustomValidator.validateRequired(value, errors, cmd.processCommand.hasNewUmowa,
                     "birthCountry", "representative.krajUrodzenia.required")
         })
-        birthCity(nullable: true, maxSize: 255, shared: "alphanumeric", validator: {value, cmd, errors ->
-            CustomValidator.validateRequired(value != null, errors, cmd.processCommand.hasNewUmowa,
-                    "birthCity", "representative.miastoUrodzenia.required")
-        })
 
         streetTitle(nullable: true, maxSize: 4, blank: true);
 
@@ -165,7 +162,8 @@ class RepresentativeCommand implements Serializable{
         })
 
         citizenship(nullable: true, maxSize: 30, validator: {value, cmd, errors ->
-            CustomValidator.validateRequired(value, errors, cmd.processCommand.isPersonForm() && cmd.processCommand.hasNewUmowa,
+            CustomValidator.validateRequired(value, errors, cmd.processCommand.hasNewUmowa &&
+                    (cmd.processCommand.isPersonForm() || (cmd.processCommand.isCompanyForm() && cmd.isProcuratorPosition())),
                     "citizenship", "representative.obywatelstwo.required")
         })
 

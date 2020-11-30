@@ -135,7 +135,7 @@ var $j = jQuery.noConflict();
 
         jQuery("#representativesContainer").each(function (representativeIndex, value) {
             jQuery(this).find("input.postal-code").each(function () {
-                console.log("parent " + jQuery(this).parent().parent());
+                //console.log("parent " + jQuery(this).parent().parent());
                 var representativeCityElement = jQuery(this).parent().parent().find("select[name$='city']");
                 refreshCityField(jQuery(this).val(),  representativeCityElement);
             });

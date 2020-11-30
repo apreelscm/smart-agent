@@ -70,8 +70,8 @@
                         firstNameSelect = parentDiv.find('.nameField'),
                         lastNameSelect = parentDiv.find('.surnameField'),
                         titleInput = parentDiv.find('.salutationField'),
-                        positionInput = parentDiv.find('.positionField');
-
+                        positionInput = parentDiv.find('.positionField'),
+                        citizenShipFieldSet = parentDiv.closest('div.acceptor').find('.citizenShipDiv');
                 if (!firstNameSelect[0] || !lastNameSelect[0]) {
                     return false;
                 }
@@ -84,6 +84,10 @@
                     titleInput.val('')
                 } else {
                     positionInput.val(representatives[selectedOptionNo - 1].position);
+                    menageVisibilityOfCitizenship(jQuery("div#additionalInformationPanel select[name='dzialalnoscForma']").val(),
+                        positionInput.val(),
+                        citizenShipFieldSet
+                    );
                     titleInput.val(representatives[selectedOptionNo - 1].title);
                 }
             });

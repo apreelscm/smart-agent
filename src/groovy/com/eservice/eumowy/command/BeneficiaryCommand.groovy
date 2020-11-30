@@ -59,7 +59,6 @@ class BeneficiaryCommand extends RepresentativeCommand implements Serializable {
                     "birthDate", "beneficiary.dataUrodzenia.required")
         })
         birthCountry(nullable: true, validator: { return true })
-        birthCity(nullable: true, validator: { return true })
         streetTitle(nullable: true, validator: { return true })
         street(nullable: true, validator: { return true })
         houseNumber(nullable: true, validator: { return true })
