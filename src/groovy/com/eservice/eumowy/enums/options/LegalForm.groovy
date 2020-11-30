@@ -4,28 +4,22 @@ import org.apache.commons.lang.NullArgumentException
 
 
 public enum LegalForm implements RadioOption {
-    PERSON("legal.form.person"),
-    ZOO_COMPANY("legal.form.zoo_company"),
-    STOCK_COMPANY("legal.form.stock_company"),
-    PARTNERSHIP_COMPANY("legal.form.partnership_company"),
-    LIMITED_COMPANY("legal.form.limited_company"),
-    LIMITED_STOCK_COMPANY("legal.form.limited_stock_company"),
-    OPEN_COMPANY("legal.form.open_company"),
-    PARTNERSHIP("legal.form.partnership"),
-    COOPERATIVE("legal.form.cooperative"),
-    FOUNDATION("legal.form.foundation"),
-    HEALTHCARE_CENTER("legal.form.healthcare_center"),
-    INSTITUTE("legal.form.institute"),
-    CULTURAL_INSTITUTION("legal.form.cultural_institution"),
-    BUDGETARY_UNIT("legal.form.budgetary_unit"),
-    EDUCATION_UNIT("legal.form.education_unit"),
-    ECONOMIC_SELF_GOVERNMENT("legal.form.economic_self_government")
-
-    String messageCode
-
-    public LegalForm(String messageCode) {
-        this.messageCode = messageCode
-    }
+    PERSON(),
+    ZOO_COMPANY(),
+    STOCK_COMPANY(),
+    PARTNERSHIP_COMPANY(),
+    LIMITED_COMPANY(),
+    LIMITED_STOCK_COMPANY(),
+    OPEN_COMPANY(),
+    PARTNERSHIP(),
+    COOPERATIVE(),
+    FOUNDATION(),
+    HEALTHCARE_CENTER(),
+    INSTITUTE(),
+    CULTURAL_INSTITUTION(),
+    BUDGETARY_UNIT(),
+    EDUCATION_UNIT(),
+    ECONOMIC_SELF_GOVERNMENT()
 
     public boolean isCompany() {
         return !(isPerson())
@@ -33,6 +27,10 @@ public enum LegalForm implements RadioOption {
 
     public boolean isPerson() {
         return EnumSet.of(PARTNERSHIP_COMPANY, PERSON).contains(this)
+    }
+
+    String getMessageCode(){
+        return "legal.form." + this.name()
     }
 
 }

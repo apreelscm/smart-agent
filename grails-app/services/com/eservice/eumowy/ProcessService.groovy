@@ -5,6 +5,7 @@ import com.eservice.eumowy.annotation.Omit
 import com.eservice.eumowy.auth.EServiceUserDetails
 import com.eservice.eumowy.command.*
 import com.eservice.eumowy.dto.MerchantDetailsDTO
+import com.eservice.eumowy.enums.options.LegalForm
 import com.eservice.eumowy.enums.options.TelephoneType
 import com.eservice.eumowy.factory.ProcessCommandDefaultValuesFactory
 import com.eservice.eumowy.util.DateUtils
@@ -1792,7 +1793,7 @@ class ProcessService {
 
     public void fillCommandWithBisnodeData(ProcessCommand command, MerchantDetailsDTO merchantDetailsDTO) {
         command.isFromBisnode = true
-
+        command.dzialalnoscForma = merchantDetailsDTO.formaPrawna?.name()
         command.akceptantNazwaOficjalna = merchantDetailsDTO.akceptantNazwaOficjalna
         command.akceptantRegon = merchantDetailsDTO.akceptantRegon
         command.akceptantUlicaTytul = merchantDetailsDTO.akceptantUlicaTytul

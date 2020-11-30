@@ -1,5 +1,6 @@
 package com.eservice.eumowy.dto
 
+import com.eservice.eumowy.enums.options.LegalForm
 import com.google.common.base.MoreObjects
 
 import static org.apache.commons.lang.StringUtils.*
@@ -11,7 +12,7 @@ class MerchantDetailsDTO implements Serializable {
     String akceptantNazwaOficjalna
     String opisMerchanta
 
-    String formaPrawna
+    LegalForm formaPrawna
 
     String akceptantUlicaTytul
     String akceptantUlica
@@ -58,6 +59,7 @@ class MerchantDetailsDTO implements Serializable {
         .add("akceptantTelKomorkowy", akceptantTelKomorkowy)
         .add("akceptantFax", akceptantFax)
         .add("representatives", representatives.toString())
+        .add("formaPrawna", formaPrawna)
         .add("beneficiaries", beneficiaries.toString())
         .toString()
     }

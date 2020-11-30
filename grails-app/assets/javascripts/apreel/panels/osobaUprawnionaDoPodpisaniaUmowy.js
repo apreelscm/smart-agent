@@ -55,7 +55,9 @@
     }
 
     function onPositionChange() {
-        manageVisibilityOfDocumentInfo(jQuery(this).parents("div.acceptor"));
+        var $acceptor = jQuery(this).parents("div.acceptor");
+        manageVisibilityOfDocumentInfo($acceptor);
+        menageVisibilityOfCitizenship($additionalInfoSelect.val(), jQuery(this).val(), $acceptor.find('.citizenShipDiv'));
     }
 
     function onDocumentTypeChange() {
@@ -85,7 +87,7 @@
             return false;
         }
 
-        var isPerson = ["PARTNERSHIP_COMPANY", "PERSON"].indexOf(this.value) > -1;
+        var isPerson = isLegalFormPerson(this.value);
 
         if (isPerson) {
             $personData.removeClass('hidden');
@@ -115,7 +117,7 @@
 
         clearFields(documentInfo);
 
-        var isPerson = ["PARTNERSHIP_COMPANY", "PERSON"].indexOf($additionalInfoSelect.val()) > -1;
+        var isPerson = isLegalFormPerson($additionalInfoSelect.val());
 
         if (position === 'Pełnomocnik' || isPerson) {
             documentInfo.removeClass('hidden');

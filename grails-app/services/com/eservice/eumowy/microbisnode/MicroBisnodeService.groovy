@@ -3,12 +3,12 @@ package com.eservice.eumowy.microbisnode
 import com.eservice.eumowy.dto.MerchantDetailsDTO
 import com.eservice.eumowy.dto.MerchantRepresentativeDTO
 import com.eservice.eumowy.microbisnode.model.Organization
+import org.springframework.context.MessageSource
 
 class MicroBisnodeService {
 
     MicroBisnodeClient microBisnodeClient
-
-    private OrganizationToMerchantDetailsDTOMapper dtoMapper = new OrganizationToMerchantDetailsDTOMapper()
+    MessageSource messageSource
 
     List<MerchantRepresentativeDTO> getRepresentatives(String nip) {
         MerchantDetailsDTO merchantDetails = getMerchantDetailsByIdentifier(nip)
@@ -27,7 +27,7 @@ class MicroBisnodeService {
         try {
             organization = microBisnodeClient.getOrganizationByIdentifier(identifier)
             log.debug(String.format("Client with identifier %s found in MicroBisnode", identifier))
-            MerchantDetailsDTO merchantDetailsDTO = dtoMapper.map(organization)
+            MerchantDetailsDTO merchantDetailsDTO = new OrganizationToMerchantDetailsDTOMapper(messageSource).map(organization)
             log.debug(merchantDetailsDTO)
             return merchantDetailsDTO
         } catch (OrganizationNotFoundException e){

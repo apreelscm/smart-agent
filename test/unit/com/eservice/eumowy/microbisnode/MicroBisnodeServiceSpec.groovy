@@ -1,8 +1,11 @@
 package com.eservice.eumowy.microbisnode
 
 import com.eservice.eumowy.dto.MerchantDetailsDTO
+import com.eservice.eumowy.dto.MerchantSearchStatus
 import com.eservice.eumowy.microbisnode.model.Organization
 import grails.test.mixin.TestFor
+import org.springframework.context.support.StaticMessageSource
+import spock.lang.Shared
 import spock.lang.Specification
 /**
  * See the API for {@link grails.test.mixin.services.ServiceUnitTestMixin} for usage instructions
@@ -10,15 +13,20 @@ import spock.lang.Specification
 @TestFor(MicroBisnodeService)
 class MicroBisnodeServiceSpec extends Specification {
 
+    @Shared
+    def messageSource = new StaticMessageSource()
+
     def NON_EXISTING_NIP = "9591582323"
 
     def setup() {
-        MicroBisnodeClient.metaClass.getOrganizationByIdentifier = { def nip ->
+        def microBisnodeClient = mockFor(MicroBisnodeClient)
+        microBisnodeClient.demand.getOrganizationByIdentifier { String nip ->
             if (nip != NON_EXISTING_NIP){
                 return new Organization()
             }
-            return null
+            throw new OrganizationNotFoundException(nip)
         }
+        service.microBisnodeClient = microBisnodeClient.createMock()
     }
 
     def cleanup() {
@@ -31,7 +39,7 @@ class MicroBisnodeServiceSpec extends Specification {
 
         then:
         noExceptionThrown()
-        merchantDetailsDTO == null
+        merchantDetailsDTO.status == MerchantSearchStatus.NOT_FOUND
 
     }
 }
