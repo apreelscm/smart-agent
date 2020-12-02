@@ -1,0 +1,204 @@
+{
+  "subjectHeader": {
+    "dunsNumber": "426585813",
+    "organizationSummaryText": "Działalność w zakresie specjalistycznego projektowania; Działalność usługowa związana z przygotowywaniem do druku; Działalność związana z produkcją filmów, nagrań wideo i programów telewizyjnych; Działalność postprodukcyjna związana z filmami, nagraniami wideo i programami telewizyjnymi; Działalność związana z oprogramowaniem"
+  },
+  "location": {
+    "primaryAddress": [
+      {
+        "streetAddressLine": [
+          "Ul.|Harmonijna|2|86"
+        ],
+        "primaryTownName": "Borkowo, Pruszcz Gdański",
+        "countryISOAlpha2Code": "PL",
+        "countryName": "Polska",
+        "postalCode": "80-180",
+        "territoryOfficialName": "POMORSKIE"
+      }
+    ]
+  },
+  "organizationName": {
+    "organizationPrimaryName": [
+      "ADLER STUDIO ŁUKASZ SZUMOWSKI"
+    ]
+  },
+  "organizationDetail": {
+    "organizationStartYear": "2011"
+  },
+  "registeredDetail": {
+    "legalFormDetails": {
+      "code": 10,
+      "legalFormText": "Jednoosobowa własność prywatna"
+    },
+    "organizationIdentificationNumberDetail": [
+      {
+        "id": 2,
+        "typeText": "Numer Identyfikacji Podatkowej (NIP)",
+        "organizationIdentificationNumber": "7451771312"
+      },
+      {
+        "id": 1,
+        "typeText": "REGON",
+        "organizationIdentificationNumber": "281088860"
+      }
+    ]
+  },
+  "principalsAndManagement": {
+    "currentPrincipal": [
+      {
+        "principalName": {
+          "title": "Pan",
+          "firstName": "Łukasz",
+          "lastName": "Szumowski",
+          "fullName": "Łukasz Szumowski"
+        },
+        "nationality": null,
+        "currentManagementResponsibility": [
+          "Właściciel"
+        ],
+        "principalIdentificationNumberDetail": null,
+        "politicallyExposedPersons": [
+          {
+            "primaryName": "Lukasz Jan Szumowski",
+            "entityMatchScore": 95,
+            "supplierRiskScore": 90,
+            "personDetail": {
+              "entityTypeText": "Person",
+              "eventDetail": [
+                {
+                  "eventTypeText": "PEP",
+                  "eventSubTypeText": "ASC",
+                  "eventText": [
+                    "On List [PEP Connect - Poland]"
+                  ],
+                  "eventDate": "2020-11-18"
+                },
+                {
+                  "eventTypeText": "BRB",
+                  "eventSubTypeText": "CMP",
+                  "eventText": [
+                    "Wpolityce listed an article on May 29, 2020, re: Candidate for president Robert Biedron has submitted complaints to the CBA for inspections at the Ministry of Health, National Center for Research and Development and the Ministry of Science regarding possible corruption during the activities of the current Minister of Health Lukasz Szumowski."
+                  ],
+                  "eventDate": "2020-05-29"
+                },
+                {
+                  "eventTypeText": "FRD",
+                  "eventSubTypeText": "PRB",
+                  "eventText": [
+                    "Tvp Info listed an article on June 9, 2020, re: Minister of Health Lukasz Szumowski was interrogated at the Warsaw prosecutor's office about the purchase of masks that did not meet the standards. The investigation has been opened into fraud and extortion to the detriment of the Ministry of Health."
+                  ],
+                  "eventDate": "2020-06-09"
+                },
+                {
+                  "eventTypeText": "TFT",
+                  "eventSubTypeText": "PRB",
+                  "eventText": [
+                    "Tvp Info listed an article on June 9, 2020, re: Minister of Health Lukasz Szumowski was interrogated at the Warsaw prosecutor's office about the purchase of masks that did not meet the standards. The investigation has been opened into fraud and extortion to the detriment of the Ministry of Health."
+                  ],
+                  "eventDate": "2020-06-09"
+                }
+              ],
+              "name": {
+                "primaryName": "Lukasz Jan Szumowski",
+                "knownByName": [
+                  "Łukasz Szumowski",
+                  "Lukasz Szumowski",
+                  "Lukasz Szumowski"
+                ]
+              },
+              "address": {
+                "birthAddress": null,
+                "primaryAddress": null,
+                "nonspecificAddress": [
+                  {
+                    "countryName": "POLAND",
+                    "streetAddressLine": null,
+                    "primaryTownName": null,
+                    "territoryName": null,
+                    "postalCode": null
+                  },
+                  {
+                    "countryName": "POLAND",
+                    "streetAddressLine": [
+                      "ul. Wiejska 4/6/8"
+                    ],
+                    "primaryTownName": "Warsaw",
+                    "territoryName": "Masovian",
+                    "postalCode": "00-902"
+                  },
+                  {
+                    "countryName": "POLAND",
+                    "streetAddressLine": [
+                      "ul. Miodowa 15"
+                    ],
+                    "primaryTownName": "Warsaw",
+                    "territoryName": "Masovian",
+                    "postalCode": "00-952"
+                  }
+                ]
+              },
+              "personalDetail": [
+                {
+                  "birthDate": [
+                    "1972-06-03"
+                  ]
+                }
+              ],
+              "nonspecificParameterDetail": [
+                {
+                  "parameterDescription": "URL",
+                  "parameterValue": "https://wpolityce.pl/polityka/502475-biedron-zlozyl-wnioski-do-cba-o-kontrole-min-w-mz-i-ncbir"
+                },
+                {
+                  "parameterDescription": "IMG",
+                  "parameterValue": "https://media.wplm.pl/thumbs/375/OTYwL3VfMS9jY19kNzcxNy9wLzIwMjAvMDUvMjkvODI1LzUzNy9lNzZhZTU1NzM2NjI0YzZlOGFhZWE0NDA2ZTYyNmNhOS5qcGVn.jpeg"
+                },
+                {
+                  "parameterDescription": "URL",
+                  "parameterValue": "https://www.tvp.info/48450882/minister-szumowski-przesluchany-w-prokuraturze-mamy-jego-komentarz"
+                },
+                {
+                  "parameterDescription": "IMG",
+                  "parameterValue": "http://nczas.com/wp-content/uploads/2018/01/lukasz_szumowski-696x495.jpg"
+                },
+                {
+                  "parameterDescription": "SEX",
+                  "parameterValue": "Male"
+                },
+                {
+                  "parameterDescription": "PTY",
+                  "parameterValue": "NIO:L1"
+                },
+                {
+                  "parameterDescription": "PTY",
+                  "parameterValue": "LEG:L2"
+                },
+                {
+                  "parameterDescription": "PTY",
+                  "parameterValue": "CAB:L2"
+                },
+                {
+                  "parameterDescription": "PTY",
+                  "parameterValue": "CAB:L1"
+                },
+                {
+                  "parameterDescription": "RID",
+                  "parameterValue": "R120055301"
+                },
+                {
+                  "parameterDescription": "PRT",
+                  "parameterValue": "D:09/26/2020"
+                },
+                {
+                  "parameterDescription": "PRT",
+                  "parameterValue": "C:05/15/2018"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "linkage": null
+}

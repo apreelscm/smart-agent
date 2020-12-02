@@ -1043,18 +1043,16 @@ class ActivityController {
                 ProcessCommand processCommand = crateProcessCommand(params, conversation.calc)
                 processCommand.validate()
                 flow.data = processCommand
-
+                Process processInstance = flow.processInstance
                 if(processCommand?.hasErrors()){
                     log.info(params)
                     return error()
                 } else {
-                    new AttachmentsValidator(attachmentService).validate(processCommand, params.processId)
+                    new AttachmentsValidator(attachmentService).validate(processCommand, processInstance.id)
                     if (processCommand.hasErrors()){
                         return error()
                     }
                 }
-
-                Process processInstance = flow.processInstance
 
                 processInstance = processService.populateProcessWithData(processInstance, processCommand, conversation.calc)
                 processInstance.notesToCoa = processCommand.notes;

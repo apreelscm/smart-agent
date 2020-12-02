@@ -15,7 +15,6 @@ class MerchantBeneficiaryDTO extends MerchantRepresentativeDTO {
     }
 
     boolean isValid() {
-        return !(Strings.isNullOrEmpty(title) || Strings.isNullOrEmpty(firstName) || Strings.isNullOrEmpty(lastName)
-               || Strings.isNullOrEmpty(pesel))
+        return !(Strings.isNullOrEmpty(title) || Strings.isNullOrEmpty(firstName) || Strings.isNullOrEmpty(lastName))
     }
 }
