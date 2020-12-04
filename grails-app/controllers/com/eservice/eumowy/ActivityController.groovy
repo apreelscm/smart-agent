@@ -724,6 +724,7 @@ class ActivityController {
                 ProcessCommand processCommand = crateProcessCommand(params, conversation.calc)
                 processCommand.validate()
                 flow.data = processCommand
+                Process processInstance = flow.processInstance
 
                 if(grailsApplication.config.isPanelsValidationOn && processCommand.hasErrors()){
                     processCommand.errors.each {
@@ -731,13 +732,11 @@ class ActivityController {
                     }
                     return error();
                 } else if (grailsApplication.config.isPanelsValidationOn){
-                    new AttachmentsValidator(attachmentService).validate(processCommand, params.processId)
+                    new AttachmentsValidator(attachmentService).validate(processCommand, processInstance.id)
                     if (processCommand.hasErrors()){
                         return error()
                     }
                 }
-
-                Process processInstance = flow.processInstance
 
                 clientService.updateClientName(processInstance.client, processCommand)
                 processInstance = processService.populateProcessWithData(processInstance, processCommand, conversation.calc)
