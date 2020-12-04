@@ -3,13 +3,22 @@ package com.eservice.eumowy.microbisnode
 import com.eservice.eumowy.dto.MerchantBeneficiaryDTO
 import com.eservice.eumowy.dto.MerchantDetailsDTO
 import com.eservice.eumowy.dto.MerchantRepresentativeDTO
+import com.eservice.eumowy.enums.options.LegalForm
 import com.eservice.eumowy.microbisnode.model.BeneficialOwner
 import com.eservice.eumowy.microbisnode.model.BeneficialOwnership
 import com.eservice.eumowy.microbisnode.model.Organization
 import com.eservice.eumowy.microbisnode.model.Principal
 import com.eservice.eumowy.microbisnode.model.PrincipalsAndManagement
+import org.springframework.context.MessageSource
 
 class OrganizationToMerchantDetailsDTOMapper {
+
+    private MessageSource messageSource
+    def msgParams = [].toArray()
+
+    OrganizationToMerchantDetailsDTOMapper(MessageSource messageSource) {
+        this.messageSource = messageSource
+    }
 
     MerchantDetailsDTO map(Organization organization){
         MerchantDetailsDTO merchantDetailsDTO = new MerchantDetailsDTO()
@@ -20,7 +29,7 @@ class OrganizationToMerchantDetailsDTOMapper {
 
         merchantDetailsDTO.nip = organization.registeredDetail.nipIdentifier?.organizationIdentificationNumber
         merchantDetailsDTO.akceptantRegon = organization.registeredDetail.regonIdentifier?.organizationIdentificationNumber
-        merchantDetailsDTO.formaPrawna = organization.registeredDetail.legalFormDetails?.legalFormText
+        merchantDetailsDTO.formaPrawna = mapLegalForm(organization.registeredDetail.legalFormDetails?.legalFormText)
 
         if (organization.location.firstPrimaryAddress.streetAddressLine?.size() > 0){
             String[] streetAddressLine = organization.location.firstPrimaryAddress.streetAddressLine.get(0).split("\\|")
@@ -47,14 +56,26 @@ class OrganizationToMerchantDetailsDTOMapper {
 
     }
 
-    private static mapStreetType(String streetType){
+    private String mapLegalForm(String legalFormValue){
+        if (legalFormValue){
+            for (LegalForm form : LegalForm.values()){
+                def existingFormDescription = messageSource.getMessage(form.getMessageCode(), msgParams, Locale.default)
+                if (existingFormDescription == legalFormValue){
+                    return form
+                }
+            }
+        }
+        return null
+    }
+
+    private mapStreetType(String streetType){
         if (streetType?.contains(".")){
             streetType = streetType.replaceAll(".", "")
         }
         return streetType.toUpperCase()
     }
 
-    private static List<MerchantRepresentativeDTO> createRepresentativesList(PrincipalsAndManagement principalsAndManagement) {
+    private List<MerchantRepresentativeDTO> createRepresentativesList(PrincipalsAndManagement principalsAndManagement) {
         List<MerchantRepresentativeDTO> representatives = new ArrayList<>()
         for(Principal principal: principalsAndManagement?.currentPrincipal) {
             MerchantRepresentativeDTO representative = new MerchantRepresentativeDTO()
@@ -72,7 +93,7 @@ class OrganizationToMerchantDetailsDTOMapper {
         return representatives
     }
 
-    private static List<MerchantBeneficiaryDTO> createBeneficiariesList(BeneficialOwnership beneficialOwnership){
+    private List<MerchantBeneficiaryDTO> createBeneficiariesList(BeneficialOwnership beneficialOwnership){
         List<MerchantBeneficiaryDTO> beneficiaries = new ArrayList<>()
         List<BeneficialOwner> filteredBeneficiaries = beneficialOwnership?.beneficialOwners?.findAll{ BeneficialOwner it -> it.isSignificant() }
         for (BeneficialOwner beneficialOwner : filteredBeneficiaries){
@@ -93,7 +114,7 @@ class OrganizationToMerchantDetailsDTOMapper {
         return beneficiaries
     }
 
-    private static List<MerchantBeneficiaryDTO> createBeneficiariesListForSOHO(PrincipalsAndManagement principalsAndManagement) {
+    private List<MerchantBeneficiaryDTO> createBeneficiariesListForSOHO(PrincipalsAndManagement principalsAndManagement) {
         List<MerchantBeneficiaryDTO> beneficiaries = new ArrayList<>()
         Principal owner = principalsAndManagement?.currentPrincipal?.find{ Principal it -> it.isOwner() }
         if (owner){

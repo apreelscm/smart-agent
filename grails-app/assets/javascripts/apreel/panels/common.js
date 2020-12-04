@@ -26,6 +26,29 @@ function onIsPoliticianChange() {
     }
 }
 
+function isProcurator(position){
+    return position === "Pełnomocnik"
+}
+
+function isLegalFormPerson(legalForm){
+    return ["PARTNERSHIP_COMPANY", "PERSON"].indexOf(legalForm) > -1
+}
+
+function isLegalFormCompany(legalForm){
+    return ! isLegalFormPerson(legalForm);
+}
+
+function menageVisibilityOfCitizenship(legalForm, position, citizenShipFieldSet){
+    if (isLegalFormCompany(legalForm)){
+        if (isProcurator(position)){
+            jQuery(citizenShipFieldSet).removeClass('hidden');
+        } else {
+            jQuery(citizenShipFieldSet).addClass('hidden');
+            jQuery(citizenShipFieldSet).find('.citizenship').val('');
+        }
+    }
+}
+
 function clearVerificationDetail() {
     var $this = jQuery(this),
         acceptor = $this.parents("div.acceptor"),

@@ -130,6 +130,10 @@ log4j = {
 
     trace 'grails.plugin.mail'
 
+    // http REST logging
+    //debug 'org.springframework.web.client'
+    //debug 'org.apache.http' use with HttpComponentsClientHttpRequestFactory
+
     //show sql values
     //trace 'org.hibernate.type' , "org.codehaus.groovy.grails.orm.hibernate", 'org.hibernate.SQL'
 
@@ -208,6 +212,7 @@ grails.plugin.springsecurity.interceptUrlMap = [
         '/**':			['IS_AUTHENTICATED_FULLY']
 ]
 
+xssSanitizer.enabled = true
 
 fileuploader {
     attachments {

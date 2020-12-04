@@ -2,6 +2,7 @@ package com.eservice.eumowy.auth
 
 import com.eservice.eumowy.util.EumowyCustomEnvironment
 import grails.util.Environment
+import org.apache.commons.lang.StringEscapeUtils
 import org.apache.commons.logging.LogFactory
 import org.apache.log4j.MDC
 import org.springframework.security.authentication.AuthenticationProvider
@@ -12,6 +13,7 @@ import org.springframework.security.core.AuthenticationException
 import org.springframework.security.core.authority.GrantedAuthorityImpl
 import org.springframework.security.core.userdetails.UserDetailsChecker
 
+@Deprecated
 class EServiceAuthenticationProvider implements AuthenticationProvider {
 
     private static final log = LogFactory.getLog("audit");
@@ -28,8 +30,8 @@ class EServiceAuthenticationProvider implements AuthenticationProvider {
     Authentication authenticate(Authentication auth) throws AuthenticationException {
         UsernamePasswordAuthenticationToken authentication = auth
 
-        String password = authentication.credentials
-        String username = authentication.name
+        String password = StringEscapeUtils.escapeHtml(authentication.credentials)
+        String username = StringEscapeUtils.escapeHtml(authentication.name)
 
         EServiceUserDetails userDetails
         List<GrantedAuthorityImpl> authorities

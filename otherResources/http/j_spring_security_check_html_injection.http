@@ -1,0 +1,7 @@
+POST http://localhost:8080/eumowy/j_spring_security_check
+Content-Type: application/x-www-form-urlencoded
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
+
+j_username=<b>user</b>&j_password=Eservice12345%24&_action_Zaloguj=Zaloguj
+
+###
