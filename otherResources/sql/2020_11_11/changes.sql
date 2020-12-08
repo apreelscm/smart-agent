@@ -209,3 +209,5 @@ DELETE FROM eumowy.subscription_definition WHERE signature_id = (SELECT id FROM 
 INSERT INTO eumowy.subscription_definition (ID, VERSION, SIGNATURE_ID, ROLE, FILE_NAME, SUBSCRIPTION_PAGE_NUMBER, SUBSCRIPTIONX, SUBSCRIPTIONY, SCALEX, SCALEY)
 VALUES ((SELECT max(id) + 1 FROM eumowy.subscription_definition), 0, (SELECT id FROM eumowy.signature WHERE name = 'AP/UW/UD/1.004/21-01-01'), 'PH', null, 1, 285, 225, 55, 24);
 --
+
+UPDATE eumowy.subscription_definition SET role = 'PH_1' WHERE role = 'PH1';

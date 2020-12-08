@@ -515,6 +515,7 @@ class PdfIntegrTests extends ControllerUnitTestMixin {
         //when
         data.putAll(akceptantIReprezentanciFields())
         data.put("emailDoWysylkiDokumentu", ["jan.kowalski@gmail.com"] as String[])
+        data.put("kategoriaRyzykaKlienta", ["Wysokie ryzyko"] as String[])
         data.putAll(PdfHelper.insertSignatures(subscriptions))
 
         //then
