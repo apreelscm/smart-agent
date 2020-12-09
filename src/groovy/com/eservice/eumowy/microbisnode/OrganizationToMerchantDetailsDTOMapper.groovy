@@ -36,7 +36,7 @@ class OrganizationToMerchantDetailsDTOMapper {
             merchantDetailsDTO.akceptantUlicaTytul = mapStreetType(streetAddressLine[0])
             merchantDetailsDTO.akceptantUlica = streetAddressLine[1]
             merchantDetailsDTO.akceptantNrDomu = streetAddressLine[2]
-            if (streetAddressLine.size() > 3){
+            if (streetAddressLine.size() > 3 && streetAddressLine[3] != "null"){
                 merchantDetailsDTO.akceptantNrMieszkania = streetAddressLine[3]
             }
         }
@@ -59,7 +59,7 @@ class OrganizationToMerchantDetailsDTOMapper {
     private String mapLegalForm(String legalFormValue){
         if (legalFormValue){
             for (LegalForm form : LegalForm.values()){
-                def existingFormDescription = messageSource.getMessage(form.getMessageCode(), msgParams, Locale.default)
+                def existingFormDescription = messageSource.getMessage(form.getMessageCodeForBisnode(), msgParams, Locale.default)
                 if (existingFormDescription == legalFormValue){
                     return form
                 }

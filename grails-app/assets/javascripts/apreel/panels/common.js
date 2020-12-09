@@ -38,10 +38,11 @@ function isLegalFormCompany(legalForm){
     return ! isLegalFormPerson(legalForm);
 }
 
-function menageVisibilityOfCitizenship(legalForm, position, citizenShipFieldSet){
+function menageVisibilityOfCitizenship(legalForm, position, citizenShipFieldSet, citizenship){
     if (isLegalFormCompany(legalForm)){
         if (isProcurator(position)){
             jQuery(citizenShipFieldSet).removeClass('hidden');
+            jQuery(citizenShipFieldSet).find('.citizenship').val(citizenship);
         } else {
             jQuery(citizenShipFieldSet).addClass('hidden');
             jQuery(citizenShipFieldSet).find('.citizenship').val('');

@@ -34,6 +34,6 @@ class MerchantRepresentativeDTO implements Serializable{
 
     boolean isValid() {
         return !(Strings.isNullOrEmpty(title) || Strings.isNullOrEmpty(firstName) || Strings.isNullOrEmpty(lastName) ||
-                Strings.isNullOrEmpty(position) || Strings.isNullOrEmpty(pesel))
+                Strings.isNullOrEmpty(position))
     }
 }

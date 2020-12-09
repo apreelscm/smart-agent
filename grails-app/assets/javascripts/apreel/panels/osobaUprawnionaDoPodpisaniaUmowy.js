@@ -57,7 +57,7 @@
     function onPositionChange() {
         var $acceptor = jQuery(this).parents("div.acceptor");
         manageVisibilityOfDocumentInfo($acceptor);
-        menageVisibilityOfCitizenship($additionalInfoSelect.val(), jQuery(this).val(), $acceptor.find('.citizenShipDiv'));
+        menageVisibilityOfCitizenship($additionalInfoSelect.val(), jQuery(this).val(), $acceptor.find('.citizenShipDiv'),'');
     }
 
     function onDocumentTypeChange() {

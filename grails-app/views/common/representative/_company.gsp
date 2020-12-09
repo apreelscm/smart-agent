@@ -42,7 +42,7 @@
         </g:hasErrors>
 
         <div class="acceptorRadioWrapper">
-            <g:radio name="${prefix}[${seqNo}].verification" value="PESEL"
+            <g:radio name="${prefix}[${seqNo}].verification" value="PESEL" class="pesel-verification"
                      checked="${(!data.dzialalnoscForma || data.isCompanyForm()) && representative?.verification?.name() == "PESEL"}"/>
             <div class="label"><g:message code="pesel.label"/></div>
 

@@ -33,4 +33,8 @@ public enum LegalForm implements RadioOption {
         return "legal.form." + this.name()
     }
 
+    String getMessageCodeForBisnode(){
+        return "legal.form.bisnode." + this.name()
+    }
+
 }
