@@ -57,7 +57,7 @@
         var representatives = {};
 
         <g:each in="${representativesBisnode}" var="representative" status="i">
-            representatives[${i}] = {title: '${representative.title}', fistName: '${representative.firstName}', lastName: '${representative.lastName}', position: '${representative.position}'};
+            representatives[${i}] = {title: '${representative.title}', fistName: '${representative.firstName}', lastName: '${representative.lastName}', position: '${representative.position}', pesel: '${representative.pesel}', nationality: '${representative.nationality}'};
         </g:each>
 
         attachBisnodeNameChangeEvent();
@@ -71,6 +71,9 @@
                         lastNameSelect = parentDiv.find('.surnameField'),
                         titleInput = parentDiv.find('.salutationField'),
                         positionInput = parentDiv.find('.positionField'),
+                        peselInput = parentDiv.closest('div.acceptor').find('.pesel-field:visible'),
+                        peselVerificationInput = parentDiv.closest('div.acceptor').find('.pesel-verification:visible'),
+                        nationalityInput = parentDiv.closest('div.acceptor').find('.citizenship:visible'),
                         citizenShipFieldSet = parentDiv.closest('div.acceptor').find('.citizenShipDiv');
                 if (!firstNameSelect[0] || !lastNameSelect[0]) {
                     return false;
@@ -81,14 +84,25 @@
 
                 if(selectedOptionNo === 0) {
                     positionInput.val('');
-                    titleInput.val('')
+                    titleInput.val('');
+                    peselInput.val('');
+                    nationalityInput.val('');
+                    peselVerificationInput.prop( "checked", false );
                 } else {
                     positionInput.val(representatives[selectedOptionNo - 1].position);
                     menageVisibilityOfCitizenship(jQuery("div#additionalInformationPanel select[name='dzialalnoscForma']").val(),
                         positionInput.val(),
-                        citizenShipFieldSet
+                        citizenShipFieldSet,
+                        representatives[selectedOptionNo - 1].nationality
                     );
                     titleInput.val(representatives[selectedOptionNo - 1].title);
+                    if (representatives[selectedOptionNo - 1].pesel){
+                        peselInput.val(representatives[selectedOptionNo - 1].pesel);
+                        peselVerificationInput.prop( "checked", true );
+                    } else {
+                        peselInput.val('');
+                        peselVerificationInput.prop( "checked", false );
+                    }
                 }
             });
         }

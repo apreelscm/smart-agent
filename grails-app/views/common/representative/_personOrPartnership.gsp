@@ -38,7 +38,7 @@
 
     <div class="acceptorPESELCountryWrapper ${hasErrors(bean: representative, field: 'verification', 'errorSpan')}">
         <div class="acceptorRadioWrapper">
-            <g:radio name="${prefix}[${seqNo}].verification" value="PESEL"
+            <g:radio name="${prefix}[${seqNo}].verification" value="PESEL" class="pesel-verification"
                      checked="${data.isPersonForm() && representative?.verification?.name() == "PESEL"}"/>
             <div class="label"><g:message code="pesel.label"/></div>
 
