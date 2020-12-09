@@ -33,7 +33,7 @@ class ServiceStartRequestMapper extends AbstractPdfMapper implements Mapper {
         data.put("ssr_akceptantKodPocztowy", [process.getData("akceptantKodPocztowy")] as String[])
         data.put("ssr_dataUmowy", [date] as String[])
 
-        if (process.getBooleanData("zadanieRozpoczeciaWykonaniaUslugi")) {
+        if (process.getBooleanData("klauWykonaniaUslugi")) {
             data.put("ssr_true", checkedCheckbox)
         } else {
             data.put("ssr_false", checkedCheckbox)

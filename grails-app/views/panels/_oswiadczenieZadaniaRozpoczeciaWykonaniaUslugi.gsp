@@ -6,21 +6,21 @@
     <fieldset style="text-align: center">
         <div class="belka-glowna"><g:message code="panel.statementOfRequestToStartTheService.title"/></div>
         <div style="text-align: center; padding-top: 20px; width: 750px" class="centre">
-            <g:hasErrors bean="${data}" field="zadanieRozpoczeciaWykonaniaUslugi">
-                <g:eachError bean="${data}" field="zadanieRozpoczeciaWykonaniaUslugi">
+            <g:hasErrors bean="${data}" field="klauWykonaniaUslugi">
+                <g:eachError bean="${data}" field="klauWykonaniaUslugi">
                     <p class="error-message"><g:message error="${it}"/></p>
                 </g:eachError>
             </g:hasErrors>
 
             <ul class="table-list centre">
                 <li>
-                    <div class="${hasErrors(bean:data,field:'zadanieRozpoczeciaWykonaniaUslugi','errorContainer')}">
+                    <div class="${hasErrors(bean:data,field:'klauWykonaniaUslugi','errorContainer')}">
                         <div><g:message code="panel.statementOfRequestToStartTheService.description1"/></div>
                         <div style="margin: 8px 0">
-                            <g:radioGroup name="zadanieRozpoczeciaWykonaniaUslugi"
+                            <g:radioGroup name="klauWykonaniaUslugi"
                                           labels="['panel.statementOfRequestToStartTheService.true','panel.statementOfRequestToStartTheService.false']"
                                           values="['true', 'false']"
-                                          value="${data.zadanieRozpoczeciaWykonaniaUslugi}">
+                                          value="${data.klauWykonaniaUslugi}">
                                 <div><label> ${it.radio} <g:message code="${it.label}"/></label></div>
                             </g:radioGroup>
                         </div>
@@ -35,8 +35,8 @@
 <script type="text/javascript">
     jQuery(document).ready(function() {
         var panel = jQuery('div#statementOfRequestToStartTheService'),
-            requestToStartTheServiceRadio = jQuery('input[type=radio][name="zadanieRozpoczeciaWykonaniaUslugi"]'),
-            requestToStartTheServiceRadioTrue = jQuery('input[type=radio][name="zadanieRozpoczeciaWykonaniaUslugi"][value="true"]');
+            requestToStartTheServiceRadio = jQuery('input[type=radio][name="klauWykonaniaUslugi"]'),
+            requestToStartTheServiceRadioTrue = jQuery('input[type=radio][name="klauWykonaniaUslugi"][value="true"]');
 
         jQuery('select#dzialalnoscForma').on('change', function (e) {
             if (e.target.value === 'PERSON' || e.target.value === 'PARTNERSHIP_COMPANY') {

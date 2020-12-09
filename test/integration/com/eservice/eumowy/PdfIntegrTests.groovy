@@ -335,7 +335,7 @@ class PdfIntegrTests extends ControllerUnitTestMixin {
         data.put("obslugaPrestiz", ["true", "", "checkbox"] as String[]);
         data.put("obslugaKomfort", ["true", "", "checkbox"] as String[]);
         data.put("obslugaEkonomiczny", ["true", "", "checkbox"] as String[]);
-        data.put("zadanieRozpoczeciaWykonaniaUslugi_true", ["true", "", "checkbox"] as String[]);
+        data.put("ssr_true", ["true", "", "checkbox"] as String[]);
         data.putAll(PdfHelper.insertSignatures(subscriptions))
 
         then:
@@ -378,7 +378,7 @@ class PdfIntegrTests extends ControllerUnitTestMixin {
             data.put("obslugaPrestiz", ["true", "", "checkbox"] as String[]);
             data.put("obslugaKomfort", ["true", "", "checkbox"] as String[]);
             data.put("obslugaEkonomiczny", ["true", "", "checkbox"] as String[]);
-            data.put("zadanieRozpoczeciaWykonaniaUslugi_true", ["true", "", "checkbox"] as String[]);
+            data.put("ssr_true", ["true", "", "checkbox"] as String[]);
             data.putAll(PdfHelper.insertSignatures(subscriptions))
 
         then:
@@ -515,7 +515,7 @@ class PdfIntegrTests extends ControllerUnitTestMixin {
         //when
         data.putAll(akceptantIReprezentanciFields())
         data.put("emailDoWysylkiDokumentu", ["jan.kowalski@gmail.com"] as String[])
-        data.put("kategoriaRyzykaKlienta", ["Wysokie ryzyko"] as String[])
+        data.put("katRyzykaKlientaWartosc", ["Wysokie ryzyko"] as String[])
         data.putAll(PdfHelper.insertSignatures(subscriptions))
 
         //then

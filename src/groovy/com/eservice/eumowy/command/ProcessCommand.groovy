@@ -1,5 +1,6 @@
 package com.eservice.eumowy.command
 
+import com.eservice.eumowy.PointDataDetails
 import com.eservice.eumowy.Process
 import com.eservice.eumowy.annotation.DateField
 import com.eservice.eumowy.annotation.Omit
@@ -132,7 +133,8 @@ class ProcessCommand implements Serializable {
     String oplataZaUruchomienieWalutyObcej = DEFAULT_VALUE
 
 //    kategoriaRyzykaKlienta
-    String kategoriaRyzykaKlienta = DEFAULT_VALUE
+    String katRyzykaKlienta = DEFAULT_VALUE
+    String katRyzykaKlientaWartosc = DEFAULT_VALUE
 
 //    dodatkoweUslugi2
     String wydrukGrafikiCena = DEFAULT_VALUE
@@ -418,7 +420,7 @@ class ProcessCommand implements Serializable {
     //uzgodnienie dyspozycji
     String dyspozycja
 
-    Boolean zadanieRozpoczeciaWykonaniaUslugi
+    Boolean klauWykonaniaUslugi
 
 //    uwagi
     @Omit
@@ -552,14 +554,14 @@ class ProcessCommand implements Serializable {
         oplataZaUruchomienieWalutyObcej(nullable: false, blank: false,  validator: { value, cmd, errors ->
             NumberValidator.validate(value, cmd, errors, propertyName) && ConditionValidator.atLeastCalcValue(value, cmd, errors, propertyName, "DCC_OPLATA_URUCHOMIENIE")
         })
-        kategoriaRyzykaKlienta(nullable:true, blank:true, validator: {value, cmd, errors ->
-            CustomValidator.validateRequired(value, errors, cmd.hasNewUmowa && !errors.hasFieldErrors("kategoriaRyzykaKlienta")
-                    , "kategoriaRyzykaKlienta", "kategoriaRyzykaKlienta.required")
+        katRyzykaKlienta(nullable:true, blank:true, validator: { value, cmd, errors ->
+            CustomValidator.validateRequired(value, errors, cmd.hasNewUmowa && !errors.hasFieldErrors("katRyzykaKlienta")
+                    , "katRyzykaKlienta", "kategoriaRyzykaKlienta.required")
         })
 
-        zadanieRozpoczeciaWykonaniaUslugi(nullable: true, validator: {value, cmd, errors ->
+        klauWykonaniaUslugi(nullable: true, validator: {value, cmd, errors ->
             CustomValidator.validateRequired(value != null, errors, cmd.hasNewUmowa && cmd.isPersonForm(),
-                    'zadanieRozpoczeciaWykonaniaUslugi', "default.validation.required.error")
+                    'klauWykonaniaUslugi', "default.validation.required.error")
         })
 
         wydrukGrafikiCena(nullable:true, blank:false,  validator: { value, cmd, errors -> NumberValidator.validate(value, cmd, errors, propertyName)})

@@ -7,7 +7,6 @@ import com.eservice.eumowy.util.DateUtils
 
 import static com.eservice.eumowy.ActivityHelper.*
 import static com.google.common.collect.Lists.newArrayList
-import static java.lang.Integer.parseInt
 
 class PanelService {
 
@@ -217,11 +216,11 @@ class PanelService {
     }
 
     def getKategoriaRyzykaKlienta(ProcessCommand cmd, def calc ) {
-        cmd.kategoriaRyzykaKlienta = nullify(cmd.kategoriaRyzykaKlienta)
+        cmd.katRyzykaKlienta = nullify(cmd.katRyzykaKlienta)
     }
 
     def getOswiadczenieZadaniaRozpoczeciaWykonaniaUslugi(ProcessCommand cmd, def calc ) {
-        cmd.zadanieRozpoczeciaWykonaniaUslugi = nullify(cmd.zadanieRozpoczeciaWykonaniaUslugi)
+        cmd.klauWykonaniaUslugi = nullify(cmd.klauWykonaniaUslugi)
     }
 
     def getTabelaUslugDodatkowych(ProcessCommand cmd, def calc ) {
