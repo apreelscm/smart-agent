@@ -787,6 +787,10 @@ class PdfProcessMapper extends AbstractPdfMapper{
         setUpustDlaTypuDoladowania(data, process, key, value, "doladowania_tk")
     }
 
+    private def mapPp_lycamobile_tkProcess(def data, def process, def key, def value){
+        setUpustDlaTypuDoladowania(data, process, key, value, "doladowania_tk")
+    }
+
     private def mapPp_orange_tpProcess(def data, def process, def key, def value){
         setUpustDlaTypuDoladowania(data, process, key, value, "doladowania_tp")
     }

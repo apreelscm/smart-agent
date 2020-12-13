@@ -300,6 +300,7 @@ class ProcessCommand implements Serializable {
     String pp_play_tp = DEFAULT_VALUE
     String pp_telegrosik_tk = DEFAULT_VALUE
     String pp_virginmobile_tk = DEFAULT_VALUE
+    String pp_lycamobile_tk = DEFAULT_VALUE
     String oplataZaOprogramowanieDoDoladowan = DEFAULT_VALUE
 
 //    promocyjneObnizenieOplatyZaZestawPos
@@ -1122,6 +1123,10 @@ class ProcessCommand implements Serializable {
                     TelekodzikValidator.validate(value, cmd, errors, propertyName)
         })
         pp_virginmobile_tk(nullable: true, blank: true,  validator: { value, cmd, errors ->
+            PercentageValidator.validate(value, cmd, errors, propertyName) &&
+                    TelekodzikValidator.validate(value, cmd, errors, propertyName)
+        })
+        pp_lycamobile_tk(nullable: true, blank: true,  validator: { value, cmd, errors ->
             PercentageValidator.validate(value, cmd, errors, propertyName) &&
                     TelekodzikValidator.validate(value, cmd, errors, propertyName)
         })

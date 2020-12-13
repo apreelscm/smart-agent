@@ -211,3 +211,7 @@ VALUES ((SELECT max(id) + 1 FROM eumowy.subscription_definition), 0, (SELECT id 
 --
 
 UPDATE eumowy.subscription_definition SET role = 'PH_1' WHERE role = 'PH1';
+
+DELETE FROM eumowy.activity_signatures WHERE activity_id = (SELECT id FROM eumowy.activity WHERE code = 'dodaniePrepaid');
+INSERT INTO eumowy.activity_signatures(ID, VERSION, ACTIVITY_ID, MANDATORY, NUMBER_OF_LIST, SIGNATURE_ID, REQUIRED_ACTIVITIES)
+VALUES (EUMOWY.ACTIVITY_SIGNATURES_SEQ.nextval, 0, (SELECT id FROM eumowy.activity WHERE code = 'dodaniePrepaid'), 0, 1, (SELECT id FROM EUMOWY.SIGNATURE WHERE name = 'AP/UW/DED/1.002/21-01-01'), null);
