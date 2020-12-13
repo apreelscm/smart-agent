@@ -420,7 +420,7 @@ class ProcessCommand implements Serializable {
     //uzgodnienie dyspozycji
     String dyspozycja
 
-    Boolean klauWykonaniaUslugi
+    String klauWykonaniaUslugi = DEFAULT_VALUE
 
 //    uwagi
     @Omit
