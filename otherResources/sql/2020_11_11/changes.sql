@@ -115,18 +115,18 @@ INSERT INTO eumowy.subscription_definition (ID, VERSION, SIGNATURE_ID, ROLE, FIL
 VALUES ((SELECT max(id) + 1 FROM eumowy.subscription_definition), 0, (SELECT id FROM eumowy.signature WHERE name = 'AP/UPZ/ZSNT2/1.006/21-01-01'), 'PH', null, 1, 200, 115, 59, 28);
 --
 
--- AP/UPZ/ZSNT3/1.006/21-01-01;
-DELETE FROM eumowy.subscription_definition WHERE signature_id = (SELECT id FROM eumowy.signature WHERE name = 'AP/UPZ/ZSNT3/1.006/21-01-01');
+-- AP/UPZ/ZSNT3/1.005/21-01-01;
+DELETE FROM eumowy.subscription_definition WHERE signature_id = (SELECT id FROM eumowy.signature WHERE name = 'AP/UPZ/ZSNT3/1.005/21-01-01');
 
 INSERT INTO eumowy.subscription_definition (ID, VERSION, SIGNATURE_ID, ROLE, FILE_NAME, SUBSCRIPTION_PAGE_NUMBER, SUBSCRIPTIONX, SUBSCRIPTIONY, SCALEX, SCALEY)
-VALUES ((SELECT max(id) + 1 FROM eumowy.subscription_definition), 0, (SELECT id FROM eumowy.signature WHERE name = 'AP/UPZ/ZSNT3/1.006/21-01-01'), 'PH', null, 1, 460, 92, 59, 28);
+VALUES ((SELECT max(id) + 1 FROM eumowy.subscription_definition), 0, (SELECT id FROM eumowy.signature WHERE name = 'AP/UPZ/ZSNT3/1.005/21-01-01'), 'PH', null, 1, 460, 92, 59, 28);
 --
 
--- AP/UPZ/ZSNT4/1.006/21-01-01;
-DELETE FROM eumowy.subscription_definition WHERE signature_id = (SELECT id FROM eumowy.signature WHERE name = 'AP/UPZ/ZSNT4/1.006/21-01-01');
+-- AP/UPZ/ZSNT4/1.005/21-01-01;
+DELETE FROM eumowy.subscription_definition WHERE signature_id = (SELECT id FROM eumowy.signature WHERE name = 'AP/UPZ/ZSNT4/1.005/21-01-01');
 
 INSERT INTO eumowy.subscription_definition (ID, VERSION, SIGNATURE_ID, ROLE, FILE_NAME, SUBSCRIPTION_PAGE_NUMBER, SUBSCRIPTIONX, SUBSCRIPTIONY, SCALEX, SCALEY)
-VALUES ((SELECT max(id) + 1 FROM eumowy.subscription_definition), 0, (SELECT id FROM eumowy.signature WHERE name = 'AP/UPZ/ZSNT4/1.006/21-01-01'), 'PH', null, 1, 200, 117, 59, 28);
+VALUES ((SELECT max(id) + 1 FROM eumowy.subscription_definition), 0, (SELECT id FROM eumowy.signature WHERE name = 'AP/UPZ/ZSNT4/1.005/21-01-01'), 'PH', null, 1, 200, 117, 59, 28);
 --
 
 -- AP/UW/1.007/20-02-28 -> AP/UW/1.008/21-01-01
