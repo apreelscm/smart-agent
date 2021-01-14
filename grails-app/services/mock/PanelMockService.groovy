@@ -336,26 +336,6 @@ class PanelMockService {
         cmd.ikoSt = "0.02"
     }
 
-    def getPoziomOplatIWarunkiPlatnosciPP(ProcessCommand cmd) {
-        cmd.pp_orange_tk = "2.31"
-        cmd.pp_orange_tp = "1.35"
-        cmd.pp_plus_tk = "0.48"
-        cmd.pp_plus_tp = "23.21"
-        cmd.pp_tmobile_tk = "0.01"
-        cmd.pp_tmobile_tp = "0.32"
-        cmd.pp_heyah_tk = "0.45"
-        cmd.pp_heyah_tp = "0.03"
-        cmd.pp_play_tk = "34.01"
-        cmd.pp_play_tp = "0.25"
-        cmd.pp_telegrosik_tk = "1.05"
-        cmd.pp_virginmobile_tk = "3"
-        cmd.pp_lycamobile_tk = "2.50"
-        cmd.pp_gtmobile_tk = "5.02"
-        cmd.pp_vectonemobile_tk = "2.34"
-        cmd.pp_delightmobile_tk = "1.23"
-        cmd.oplataZaOprogramowanieDoDoladowan = "0.03"
-    }
-
     def getPromocyjneObnizenieOplatyZaZestawPos(ProcessCommand cmd) {
 
 		/*def p1 = new AllPosCommand()

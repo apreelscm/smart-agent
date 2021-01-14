@@ -7,6 +7,7 @@ import com.eservice.eumowy.pdfmapper.PdfPointMapper
 import com.eservice.eumowy.pdfmapper.PdfPosExchangeMapper
 import com.eservice.eumowy.pdfmapper.PdfPosMapper
 import com.eservice.eumowy.pdfmapper.PdfProcessMapper
+import com.eservice.eumowy.pdfmapper.ServiceStartRequestMapper
 import com.eservice.eumowy.pdfmapper.representative.RepresentativesNamesMapper
 import com.eservice.eumowy.util.DateUtils
 
@@ -31,6 +32,7 @@ class MapperService {
         data.putAll(new RepresentativesNamesMapper(processInstance).getDataForMapping())
 
         if (ActivityHelper.isNewAgreement(processInstance)) {
+            data.putAll(new ServiceStartRequestMapper(processInstance).getDataForMapping())
             data.putAll(new PABRformMapper(processInstance).getDataForMapping())
             data.putAll(new PEPdeclarationMapper(processInstance).getDataForMapping())
         }

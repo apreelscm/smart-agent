@@ -1,6 +1,7 @@
 package com.eservice.eumowy.pdfmapper
 
 import com.eservice.eumowy.SignatureHelper
+import com.eservice.eumowy.SignatureName
 import com.eservice.eumowy.enums.options.Disposition
 import com.eservice.eumowy.enums.options.LegalForm
 
@@ -105,7 +106,7 @@ class PdfProcessMapper extends AbstractPdfMapper{
             dataMap.put("crossNew", ['_____'] as String[])
         }
 
-        if (SignatureHelper.containsAtLeastOne(processInstance, newArrayList("AP/UW/1.007/20-02-28")) &&
+        if (SignatureHelper.containsAtLeastOne(processInstance, newArrayList(SignatureName.APUW.currentVersion)) &&
                 contains(processInstance, WYMIANA_UMOWY_NAJMU_NA_UMOWE_WSPOLPRACY)) {
             dataMap.put("promObjNaj1", [""] as String[])
         }
@@ -787,18 +788,6 @@ class PdfProcessMapper extends AbstractPdfMapper{
     }
 
     private def mapPp_lycamobile_tkProcess(def data, def process, def key, def value){
-        setUpustDlaTypuDoladowania(data, process, key, value, "doladowania_tk")
-    }
-
-    private def mapPp_gtmobile_tkProcess(def data, def process, def key, def value){
-        setUpustDlaTypuDoladowania(data, process, key, value, "doladowania_tk")
-    }
-
-    private def mapPp_vectonemobile_tkProcess(def data, def process, def key, def value){
-        setUpustDlaTypuDoladowania(data, process, key, value, "doladowania_tk")
-    }
-
-    private def mapPp_delightmobile_tkProcess(def data, def process, def key, def value){
         setUpustDlaTypuDoladowania(data, process, key, value, "doladowania_tk")
     }
 

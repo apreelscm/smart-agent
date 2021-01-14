@@ -186,7 +186,7 @@ class Process implements Serializable {
     }
 
     public boolean isAkceptantOsobaPrawna() {
-        return !Sets.newHashSet(LegalForm.PARTNERSHIP_COMPANY.name(), LegalForm.PERSON.name()).contains(getData("dzialalnoscForma"))
+        return !isAkceptantOsobaFizyczna()
     }
 
     public boolean isAkceptantOsobaFizyczna() {

@@ -1,5 +1,6 @@
 package com.eservice.eumowy.command
 
+import com.eservice.eumowy.PointDataDetails
 import com.eservice.eumowy.enums.options.PosSystemSupplier
 import com.eservice.eumowy.validator.ConditionValidator
 import com.eservice.eumowy.validator.NumberValidator
@@ -24,6 +25,7 @@ class PointCommand implements Serializable {
 	String opiekaSerwisowaIII
 
 	String nipPunktu
+	PointDataDetails.Risk ryzyko
 	String kodMCC
 	String rodzProwadzDzialalWPraktyce
 	String numerRachunkuBankowego
@@ -183,6 +185,7 @@ class PointCommand implements Serializable {
 		opiekaSerwisowaII(nullable:true, blank:true, shared: "alphanumeric")
 		opiekaSerwisowaIII(nullable:true, blank:true, shared: "alphanumeric")
 		nipPunktu(nullable:true, blank:false, shared: "natural")
+		ryzyko(nullable:true)
 		kodMCC(nullable:true, shared: "natural")
 		rodzProwadzDzialalWPraktyce(nullable:true, blank:false)
 		numerRachunkuBankowego(nullable:true, blank:false, validator: {value, cmd, errors ->

@@ -7,7 +7,6 @@ import com.eservice.eumowy.util.DateUtils
 
 import static com.eservice.eumowy.ActivityHelper.*
 import static com.google.common.collect.Lists.newArrayList
-import static java.lang.Integer.parseInt
 
 class PanelService {
 
@@ -33,7 +32,7 @@ class PanelService {
         cmd.isBundleActivity = isBundleActivity(cmd.process)
         cmd.promObjNaj1 = calculatorService.getCalcProperty(calc,"E_PROM_OBN_NAJ_1")
 
-        if (SignatureHelper.containsAtLeastOne(cmd.process, newArrayList("AP/UW/1.007/20-02-28")) &&
+        if (SignatureHelper.containsAtLeastOne(cmd.process, newArrayList(SignatureName.APUW.currentVersion)) &&
             !contains(cmd.process, WYMIANA_UMOWY_NAJMU_NA_UMOWE_WSPOLPRACY)) {
             def val = calculatorService.getCalcProperty(calc,"E_MIES_NAL_OPL_NAJ")
             cmd.promObjNaj1 = val ? val : 1
@@ -216,6 +215,14 @@ class PanelService {
         cmd.oplataZaUruchomienieWalutyObcej = calculatorService.getCalcProperty(calc,"DCC_OPLATA_URUCHOMIENIE")
     }
 
+    def getKategoriaRyzykaKlienta(ProcessCommand cmd, def calc ) {
+        cmd.katRyzykaKlienta = nullify(cmd.katRyzykaKlienta)
+    }
+
+    def getOswiadczenieZadaniaRozpoczeciaWykonaniaUslugi(ProcessCommand cmd, def calc ) {
+        cmd.klauWykonaniaUslugi = nullify(cmd.klauWykonaniaUslugi)
+    }
+
     def getTabelaUslugDodatkowych(ProcessCommand cmd, def calc ) {
         cmd.wydrukGrafikiCena = calculatorService.getCalcProperty(calc,"OPLATA_LOGO")
         cmd.dzialaniaMatematyczneCena = calculatorService.getCalcProperty(calc,"E_OPLATA_KARTA_SIM")
@@ -263,9 +270,6 @@ class PanelService {
         cmd.pp_telegrosik_tk = calculatorService.getCalcProperty(calc,"STAWKA_TELEKODZIK_GALENA")
         cmd.pp_virginmobile_tk = calculatorService.getCalcProperty(calc,"STAWKA_TELEKODZIK_VIRGIN")
         cmd.pp_lycamobile_tk = calculatorService.getCalcProperty(calc,"STAWKA_TELEKODZIK_LYCA")
-        cmd.pp_gtmobile_tk =calculatorService.getCalcProperty(calc,"STAWKA_TELEKODZIK_GTMOBILE")
-        cmd.pp_vectonemobile_tk =  calculatorService.getCalcProperty(calc,"STAWKA_TELEKODZIK_VECTOBE")
-        cmd.pp_delightmobile_tk =  calculatorService.getCalcProperty(calc,"STAWKA_TELEKODZIK_DELIGHT")
         cmd.oplataZaOprogramowanieDoDoladowan = calculatorService.getCalcProperty(calc,"OPLATA_ZA_APL_PP")
     }
 

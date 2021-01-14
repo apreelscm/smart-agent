@@ -7,12 +7,14 @@ class FieldsHelper {
         HashMap<String, String[]> data = new HashMap<String, String[]>();
         data.put("wydrukGrafikiCena", ["123"] as String[]);
         data.put("dzialaniaMatematyczneCena", ["123"] as String[]);
-        //data.put("dzialaniaMatematyczneCenaTxt", ["ujęta w cenie najmu"] as String[]);
-        data.put("oplataZaPlatnoscWInnejWalucieSt", ["123"] as String[]);
+//        data.put("dzialaniaMatematyczneCenaTxt", ["ujęta w cenie najmu"] as String[]);
+        data.put("oplataZaPlatnoscWInnejWalucieSt", ["123"] as String[])
+        data.put("oplataZaPlatnoscWInnejWalucie", ["123"] as String[])
         data.put("oplataZaUruchomienieDCC", ["123"] as String[]);
         data.put("mudCenaSt", ["123"] as String[]);
+        data.put("mudCena", ["123"] as String[]);
         data.put("obslugaEkonomicznyCena", ["123"] as String[]);
-        //data.put("obslugaEkonomicznyCenaTxt", ["ujęta w cenie najmu"] as String[]);
+//        data.put("obslugaEkonomicznyCenaTxt", ["ujęta w cenie najmu"] as String[]);
 
         return data;
     }
@@ -139,10 +141,6 @@ class FieldsHelper {
 
         data.put("pp_telegrosik_tk", ["12"] as String[]);
         data.put("pp_virginmobile_tk", ["123"] as String[]);
-        data.put("pp_lycamobile_tk", ["123"] as String[]);
-        data.put("pp_gtmobile_tk", ["123"] as String[]);
-        data.put("pp_vectonemobile_tk", ["123"] as String[]);
-        data.put("pp_delightmobile_tk", ["123"] as String[]);
 
         return data;
     }
@@ -219,6 +217,7 @@ class FieldsHelper {
         data.put("oplataAutoryzacyjnaSt", ["5"] as String[]);
         data.put("oplataAutoryzacyjnaNr", ["5"] as String[]);
         data.put("ifOplataPKOPB", ["5"] as String[]);
+        data.put("ifOplataPKOBPPr", ["5"] as String[]);
 
         return data
     }

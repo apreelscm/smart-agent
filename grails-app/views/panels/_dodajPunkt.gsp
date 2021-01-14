@@ -128,6 +128,10 @@
 							}
 				
 							refreshTelepomkaAndTelekodzikPercentValues();
+
+							if (typeof refreshKategorieRyzyka === 'function') {
+								refreshKategorieRyzyka();
+							}
 							
 							var dbPointId = parseInt(jQuery(e.target).attr('data-point-id'));
 							if (dbPointId) {

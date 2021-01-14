@@ -1402,6 +1402,17 @@ class ActivityController {
         render(text: '')
     }
 
+    def getRyzyko() {
+        String mcc = params.mcc
+        def result = cbdService.getRyzykoByMCC(mcc)
+        if (result != null) {
+            JSONObject data = new JSONObject()
+            data.put("id", result.slm_ryzyko)
+            render(text: data.toString())
+        }
+        render(text: '')
+    }
+
     def getTerminalModels(){
         log.info( "getTerminalModels nip = " +  params.nip + ", type: " + params.type);
 
@@ -1458,7 +1469,7 @@ class ActivityController {
                 process.documents.findAll{!it.signature.hasPurpose(REPRESENTATIVE)}.each { DocumentFile doc ->
                     pdfService.updateDataUmowyOnDocument(doc, process)
 
-                    byte[] newContent = pdfService.getDocumentWithSubscriptions(doc, process.subscriptions)
+                    byte[] newContent = pdfService.getDocumentWithSubscriptions(process, doc)
                     doc.content.content = newContent
                     doc.content.discard()
                 }

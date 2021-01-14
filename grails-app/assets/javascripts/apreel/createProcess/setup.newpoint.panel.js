@@ -175,11 +175,18 @@ function setupNewPointPanelHandlers(panelId, prefix) {
 
     jQuery(prefixPanel + ".mccCode").on("change", {p: prefix, pid: panelId}, function(e) {
         var mcc = jQuery(e.target).val();
-        if ( mcc != undefined && mcc != null){
+        if (mcc != undefined && mcc != null) {
             jQuery.get("/eumowy/activity/getRodzajDzialalnosci", {mcc: mcc}, function(data) {
                 if (data != undefined && data != null && data != "") {
                     var obj = JSON.parse(data);
                     jQuery(prefixPanel + ".bussinessTypeInPractice").val(obj.id);
+                }
+            });
+
+            jQuery.get("/eumowy/activity/getRyzyko", {mcc: mcc}, function(data) {
+                if (data != undefined && data != null && data != "") {
+                    var obj = JSON.parse(data);
+                    jQuery(prefixPanel + ".risk").val(obj.id).change();
                 }
             });
         }
