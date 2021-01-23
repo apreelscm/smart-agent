@@ -38,8 +38,8 @@ class DomainAuthenticationProvider implements AuthenticationProvider {
     Authentication authenticate(Authentication auth) throws AuthenticationException {
         UsernamePasswordAuthenticationToken authentication = auth
 
-        String password = StringEscapeUtils.escapeHtml(authentication.credentials)
-        String username = StringEscapeUtils.escapeHtml(authentication.name)
+        String password = authentication.credentials
+        String username = authentication.name
 
         if(!username || !password){
             throw new AuthenticationServiceException(messagesSource.getMessage("login.fail", msgParams, Locale.default))
