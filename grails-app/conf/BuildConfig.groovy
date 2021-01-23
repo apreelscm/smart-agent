@@ -48,6 +48,7 @@ grails.project.dependency.resolution = {
         compile 'org.springframework:spring-oxm:4.0.5.RELEASE'
         compile 'org.springframework.ws:spring-ws-core:2.2.0.RELEASE'
         compile 'org.springframework.ws:spring-xml:2.2.0.RELEASE'
+        compile 'org.owasp.esapi:esapi:2.1.0'
 
         // TODO jenkins problem Failed to read artifact descriptor for com.fasterxml.jackson.core:jackson-databind:jar:2.5.1
         //compile "com.fasterxml.jackson.core:jackson-databind:2.5.1"
@@ -81,6 +82,5 @@ grails.project.dependency.resolution = {
         runtime ":hibernate4:4.3.5.3"
         runtime ":jquery:1.11.1"
         runtime ":spring-security-core:2.0-RC4"
-        runtime ":xss-sanitizer:0.4.1"
     }
 }
