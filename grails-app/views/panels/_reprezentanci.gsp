@@ -11,6 +11,9 @@
 
             <g:render template="/common/representative/personOrPartnership" model="[prefix: 'representatives', seqNo: it,
                     additionalClass: (data.isPersonForm() == true) ? '' : 'hidden', representative: data.representatives[it]]"/>
+
+            <g:render template="/common/representative/shared" model="[prefix: 'representatives', seqNo: it,
+                    representative: data.representatives[it]]"/>
         </g:if>
     </div>
 </g:each>

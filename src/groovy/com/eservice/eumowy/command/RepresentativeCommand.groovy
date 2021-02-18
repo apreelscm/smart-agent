@@ -47,7 +47,7 @@ class RepresentativeCommand implements Serializable{
 
     Boolean isPolitician = Boolean.FALSE
     Boolean isDirectPep
-    Boolean hasSignedContract = Boolean.FALSE
+    Boolean hasSignedContract
 
     String email
     String phoneNumber
