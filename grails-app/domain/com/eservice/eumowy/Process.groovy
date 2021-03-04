@@ -213,6 +213,16 @@ class Process implements Serializable {
         return points.findAll {it.czyLokalny}
     }
 
+    List<Signature> getAllSelectedSignatures() {
+        List<Signature> allSelectedSignatures = []
+        activities?.each { activity ->
+            activity.selectedActivitySignatures?.each {
+                allSelectedSignatures.addAll(it.signature)
+            }
+        }
+        return allSelectedSignatures
+    }
+
     public List<PosData> getChosenPoses() {
         List<PosData> chosenPoses = []
 

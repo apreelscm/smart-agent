@@ -13,6 +13,10 @@ class BeneficiaryCommand extends RepresentativeCommand implements Serializable {
     Boolean overQuarterOfVotes
     Integer votesPercentage
 
+    BeneficiaryCommand() {
+        validateHasSignedContract = false
+    }
+
     static constraints = {
         importFrom RepresentativeCommand
 

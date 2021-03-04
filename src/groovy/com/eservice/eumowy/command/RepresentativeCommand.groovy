@@ -48,6 +48,7 @@ class RepresentativeCommand implements Serializable{
     Boolean isPolitician = Boolean.FALSE
     Boolean isDirectPep
     Boolean hasSignedContract
+    boolean validateHasSignedContract = true
 
     String email
     String phoneNumber
@@ -168,6 +169,8 @@ class RepresentativeCommand implements Serializable{
         })
 
         hasSignedContract(nullable: true, validator: {value, cmd, errors ->
+            if (!cmd.validateHasSignedContract) return
+
             CustomValidator.validateRequired(value != null, errors, cmd.processCommand.hasNewUmowa,
                     "hasSignedContract", "representative.hasSignedContract.required")
         })

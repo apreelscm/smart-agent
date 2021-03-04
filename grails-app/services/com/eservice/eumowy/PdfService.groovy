@@ -59,20 +59,30 @@ class PdfService {
     byte[] getDocumentWithSubscriptions(Process process, DocumentFile document) {
         Map<String,Object[]> subscriptionsData = new HashMap<String, Object[]>()
         Set<Subscription> subscriptions = process.subscriptions
-
+        boolean hasNewAgreement = ActivityHelper.isNewAgreement(process)
         Signature signature = document.signature
 
-        subscriptionsData.putAll(getSubscriptions(document.signature, subscriptions, Subscription.PersonRole.ACCEPTANT1, [Subscription.PersonRole.ACCEPTANT1, Subscription.PersonRole.ACCEPTANT1_1]))
-        subscriptionsData.putAll(getSubscriptions(document.signature, subscriptions, Subscription.PersonRole.ACCEPTANT2, [Subscription.PersonRole.ACCEPTANT2, Subscription.PersonRole.ACCEPTANT2_1]))
-        subscriptionsData.putAll(getSubscriptions(document.signature, subscriptions, Subscription.PersonRole.ACCEPTANT3, [Subscription.PersonRole.ACCEPTANT3, Subscription.PersonRole.ACCEPTANT3_1]))
-        subscriptionsData.putAll(getSubscriptions(document.signature, subscriptions, Subscription.PersonRole.ACCEPTANT4, [Subscription.PersonRole.ACCEPTANT4, Subscription.PersonRole.ACCEPTANT4_1]))
-        subscriptionsData.putAll(getSubscriptions(document.signature, subscriptions, Subscription.PersonRole.PH, [Subscription.PersonRole.PH, Subscription.PersonRole.PH_1]))
+        Map<Integer, Representative> representativesToSignDocuments = [:]
 
-        if (ActivityHelper.isNewAgreement(process) && process.isAkceptantOsobaFizyczna()) {
-            subscriptionsData.putAll(getSubscriptions(document.signature, subscriptions, Subscription.PersonRole.ACCEPTANT1, [Subscription.PersonRole.ACCEPTANT1_APUW_ZAL4]))
-            subscriptionsData.putAll(getSubscriptions(document.signature, subscriptions, Subscription.PersonRole.ACCEPTANT2, [Subscription.PersonRole.ACCEPTANT2_APUW_ZAL4]))
-            subscriptionsData.putAll(getSubscriptions(document.signature, subscriptions, Subscription.PersonRole.ACCEPTANT3, [Subscription.PersonRole.ACCEPTANT3_APUW_ZAL4]))
-            subscriptionsData.putAll(getSubscriptions(document.signature, subscriptions, Subscription.PersonRole.ACCEPTANT4, [Subscription.PersonRole.ACCEPTANT4_APUW_ZAL4]))
+        if (hasNewAgreement) {
+            process.allRepresentatives.eachWithIndex { representative, index ->
+                if (Boolean.TRUE == representative.hasSignedContract) {
+                    representativesToSignDocuments.put(index, representative)
+                }
+            }
+        }
+
+        subscriptionsData.putAll(getSubscriptions(document.signature, subscriptions, Subscription.PersonRole.ACCEPTANT1, [Subscription.PersonRole.ACCEPTANT1, Subscription.PersonRole.ACCEPTANT1_1], representativesToSignDocuments.containsKey(0)))
+        subscriptionsData.putAll(getSubscriptions(document.signature, subscriptions, Subscription.PersonRole.ACCEPTANT2, [Subscription.PersonRole.ACCEPTANT2, Subscription.PersonRole.ACCEPTANT2_1], representativesToSignDocuments.containsKey(1)))
+        subscriptionsData.putAll(getSubscriptions(document.signature, subscriptions, Subscription.PersonRole.ACCEPTANT3, [Subscription.PersonRole.ACCEPTANT3, Subscription.PersonRole.ACCEPTANT3_1], representativesToSignDocuments.containsKey(2)))
+        subscriptionsData.putAll(getSubscriptions(document.signature, subscriptions, Subscription.PersonRole.ACCEPTANT4, [Subscription.PersonRole.ACCEPTANT4, Subscription.PersonRole.ACCEPTANT4_1], representativesToSignDocuments.containsKey(3)))
+        subscriptionsData.putAll(getSubscriptions(document.signature, subscriptions, Subscription.PersonRole.PH, [Subscription.PersonRole.PH, Subscription.PersonRole.PH_1], true))
+
+        if (hasNewAgreement && process.isAkceptantOsobaFizyczna()) {
+            subscriptionsData.putAll(getSubscriptions(document.signature, subscriptions, Subscription.PersonRole.ACCEPTANT1, [Subscription.PersonRole.ACCEPTANT1_APUW_ZAL4], representativesToSignDocuments.containsKey(0)))
+            subscriptionsData.putAll(getSubscriptions(document.signature, subscriptions, Subscription.PersonRole.ACCEPTANT2, [Subscription.PersonRole.ACCEPTANT2_APUW_ZAL4], representativesToSignDocuments.containsKey(1)))
+            subscriptionsData.putAll(getSubscriptions(document.signature, subscriptions, Subscription.PersonRole.ACCEPTANT3, [Subscription.PersonRole.ACCEPTANT3_APUW_ZAL4], representativesToSignDocuments.containsKey(2)))
+            subscriptionsData.putAll(getSubscriptions(document.signature, subscriptions, Subscription.PersonRole.ACCEPTANT4, [Subscription.PersonRole.ACCEPTANT4_APUW_ZAL4], representativesToSignDocuments.containsKey(3)))
         }
 
         if (subscriptionsData.isEmpty()) {
@@ -208,9 +218,16 @@ class PdfService {
         return document.content.content
     }
 
-    private Map getSubscriptions(Signature signature, Set<Subscription> subscriptions,
-                                 Subscription.PersonRole subscriptionRole, List<Subscription.PersonRole> subscriptionDefinitionRoles) {
+    private Map getSubscriptions(
+            Signature signature, Set<Subscription> subscriptions,
+                                 Subscription.PersonRole subscriptionRole, List<Subscription.PersonRole> subscriptionDefinitionRoles,
+            boolean shouldSignDocument
+    ) {
         Subscription subscription = subscriptions.find { it.personRole == subscriptionRole }
+
+        if (!shouldSignDocument) {
+            return [:]
+        }
 
         if (subscription?.content == null) {
             log.error(String.format("Looking for subscription for role %s and cannot find subscription content for " +
