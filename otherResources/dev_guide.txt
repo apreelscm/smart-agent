@@ -10,3 +10,8 @@ Hasło: Eservice12345$
 
 Login: dtestowy
 Hasło: Eservice12345$
+
+//TODO
+grails.tomcat.keyAlias='GrailsApp'
+grails.tomcat.keystorePath="/path/to/keystore"
+grails.tomcat.keystorePassword="yourPasswordHere"

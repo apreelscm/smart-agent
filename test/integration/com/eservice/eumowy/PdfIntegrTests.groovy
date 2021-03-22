@@ -505,11 +505,11 @@ class PdfIntegrTests extends ControllerUnitTestMixin {
     void AP_AGF_DF() {
         //given
         def subscriptions = [
-                ["ACCEPTANT1", 2, 405, 281, 59, 28],
-                ["ACCEPTANT2", 2, 405, 252, 59, 28],
-                ["ACCEPTANT3", 2, 405, 225, 59, 28],
-                ["ACCEPTANT4", 2, 405, 195, 59, 28],
-                ["PH", 2, 230, 115, 59, 28]
+                ["ACCEPTANT1", 2, 405, 261, 59, 28],
+                ["ACCEPTANT2", 2, 405, 232, 59, 28],
+                ["ACCEPTANT3", 2, 405, 205, 59, 28],
+                ["ACCEPTANT4", 2, 405, 175, 59, 28],
+                ["PH", 2, 230, 95, 59, 28]
         ]
 
         //when
@@ -519,9 +519,9 @@ class PdfIntegrTests extends ControllerUnitTestMixin {
         data.putAll(PdfHelper.insertSignatures(subscriptions))
 
         //then
-        process(PdfHelper.DOCUMENTS_PATH_21_01_01 + "APAGFDF2.00721-01-01.pdf",
+        process(PdfHelper.DOCUMENTS_PATH_21_01_01 + "APAGFDF2.00821-01-01.pdf",
                 PdfHelper.DOCUMENTS_PATH_21_01_01,
-                "APAGFDF2.00721-01-01_out.pdf", data)
+                "APAGFDF2.00821-01-01_out.pdf", data)
     }
 
 

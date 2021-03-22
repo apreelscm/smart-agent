@@ -1,4 +1,4 @@
-<%@ page import="com.eservice.eumowy.enums.options.AcceptorLocation; com.eservice.eumowy.enums.options.IdentityDocumentType" %>
+<%@ page import="com.eservice.eumowy.enums.options.TelephoneType; com.eservice.eumowy.enums.options.AcceptorLocation; com.eservice.eumowy.enums.options.IdentityDocumentType; java.util.Collections" %>
 
 <div class="companyData ${additionalClass}">
     <div class="acceptorDocumentInfoWrapper ${representative?.position == 'Pełnomocnik' ?: 'hidden'}">
@@ -68,6 +68,27 @@
                             required="required"
                             validatable="${representative}" validateField="birthCountry"/>
 
+    </div>
+
+    <div class="${hasErrors(bean: representative, field: 'country', 'errorSpan')} ${hasErrors(bean: representative, field: 'phoneNumber', 'errorSpan')}">
+
+        <g:radio class="telephone-type" name="${prefix}[${seqNo}].telephoneType" value="${TelephoneType.LANDLINE.name()}"
+                 checked="${data.isPersonForm() && representative?.telephoneType == TelephoneType.LANDLINE}"/>
+        <label for="${prefix}[${seqNo}].telephoneType"><g:message code="panel.landline.phone.number"/></label>
+
+        <g:radio class="telephone-type" name="${prefix}[${seqNo}].telephoneType" value="${TelephoneType.MOBILE.name()}"
+                 checked="${data.isPersonForm() && representative?.telephoneType == TelephoneType.MOBILE}"/>
+        <label for="${prefix}[${seqNo}].telephoneType"><g:message code="panel.mobile.phone.number"/></label>
+
+        <label style="margin-left: 10px" for="${prefix}[${seqNo}].phoneNumber"><g:message code="panel.number"/>: </label>
+        <eumowy:textField name="${prefix}[${seqNo}].phoneNumber" value="${representative?.phoneNumber}" maxlength="20" style="width: 150px"
+                          validatable="${representative}" validateField="phoneNumber" class="phone-number ${representative?.telephoneType == TelephoneType.LANDLINE ? 'phone' : 'mobile-phone' }"/>
+    </div>
+
+    <div>
+        <span>
+            <g:message code="panel.email"/>: <eumowy:textField name="${prefix}[${seqNo}].email" value="${representative?.email}" validatable="${representative}" validateField="email" style="width: 150px" email="true"/>
+        </span>
     </div>
 
     <div class="isPolitician ${hasErrors(bean: representative, field: 'isPolitician', 'errorSpan')}">

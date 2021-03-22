@@ -127,7 +127,7 @@
 
     <div>
         <span>
-            <g:message code="panel.email"/>: <g:textField name="${prefix}[${seqNo}].email" value="${representative?.email}" validatable="${representative}" style="width: 150px" email="true"/>
+            <g:message code="panel.email"/>: <eumowy:textField name="${prefix}[${seqNo}].email" value="${representative?.email}" validatable="${representative}" validateField="email" style="width: 150px" email="true"/>
         </span>
     </div>
 

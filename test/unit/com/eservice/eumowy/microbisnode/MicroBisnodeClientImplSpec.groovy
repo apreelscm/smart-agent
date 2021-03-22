@@ -8,7 +8,7 @@ import spock.lang.Specification
 @TestMixin(GrailsUnitTestMixin)
 class MicroBisnodeClientImplSpec extends Specification {
 
-    MicroBisnodeClient tested = new MicroBisnodeClientImpl("http://192.168.9.26:8114/bisnode/")
+    MicroBisnodeClient tested = new MicroBisnodeClientImpl("http://10.9.23.29:8114/bisnode/")
 
     def "should throw OrganizationNotFoundException when organization not found"(){
 

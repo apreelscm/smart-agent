@@ -2,9 +2,11 @@ package com.eservice.eumowy.command
 
 import com.eservice.eumowy.enums.options.AcceptorVerification
 import com.eservice.eumowy.enums.options.IdentityDocumentType
+import com.eservice.eumowy.enums.options.LegalForm
 import com.eservice.eumowy.enums.options.TelephoneType
 import com.eservice.eumowy.validator.CustomValidator
 import com.eservice.eumowy.validator.NumberValidator
+import com.google.common.collect.Sets
 import grails.validation.Validateable
 import org.apache.commons.validator.routines.EmailValidator
 
@@ -176,6 +178,12 @@ class RepresentativeCommand implements Serializable{
         })
 
         email(nullable: true, blank: true, validator: { value, cmd, errors ->
+            /*Sets.newHashSet(LegalForm.PARTNERSHIP_COMPANY.name(), LegalForm.PERSON.name()).contains(cmd.processCommand.dzialalnoscForma) && cmd.hasSignedContract*/
+            if (!CustomValidator.validateRequired(value != null, errors, cmd.hasSignedContract,
+                    "email", "representative.email.required")) {
+                return false
+            }
+
             if (value == null || value.size() == 0) return true
 
             if (!EmailValidator.instance.isValid(value)) {
@@ -186,7 +194,18 @@ class RepresentativeCommand implements Serializable{
             return true
         })
 
-        phoneNumber(nullable: true, maxSize: 20)
-        telephoneType(nullable: true)
+        phoneNumber(nullable: true, maxSize: 20, validator: { value, cmd, errors ->
+            if (!CustomValidator.validateRequired(value != null, errors, cmd.hasSignedContract,
+                    "phoneNumber", "representative.phoneNumber.required")) {
+                return false
+            }
+        })
+        
+        telephoneType(nullable: true, validator: { value, cmd, errors ->
+            if (!CustomValidator.validateRequired(value != null, errors, cmd.hasSignedContract,
+                    "telephoneType", "representative.telephoneType.required")) {
+                return false
+            }
+        })
     }
 }

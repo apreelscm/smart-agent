@@ -1,3 +1,3 @@
 ## for not found data 404 respose code is returned
-GET http://192.168.9.26:8114/bisnode/organizations?countryISOAlpha2Code=PL&organizationIdentificationNumber=7553141023
+GET http://10.9.23.29:8114/bisnode/organizations?countryISOAlpha2Code=PL&organizationIdentificationNumber=7553141023
 Accept: application/json

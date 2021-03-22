@@ -34,7 +34,7 @@ environments {
             username = "EUMOWY_APP"
             password = 'Ahfopcvy$aU3'
             dbCreate = ""
-            url = "jdbc:oracle:thin:@192.168.9.22:1521:cbd_dev"
+            url = "jdbc:oracle:thin:@10.9.192.59:1521:cbd_dev"
             properties {
                 maxActive = -1
                 initialSize = 1

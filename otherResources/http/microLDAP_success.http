@@ -5,7 +5,7 @@ Accept: application/json
 {
   "message" : {
     "correlationID": "123235454577776643",
-    "user": [{"userName":  "askonieczny", "password":  "Eservice12345$", "domain":  "tescik", "groups":  "gr_EUM", "system":  "EUM", "department": "gr_EUM"}]
+    "user": [{"userName":  "askonieczny", "password":  "ssddRTY235689%%", "domain":  "tescik", "groups":  "gr_EUM", "system":  "EUM", "department": "gr_EUM"}]
   }
 }
 ###

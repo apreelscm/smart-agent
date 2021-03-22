@@ -81,10 +81,25 @@ class FieldsHelper {
         data.put("reprezentant3", ["Andrzej Jakistam"] as String[]);
         data.put("reprezentant4", ["Zenona Aloska"] as String[]);
 
+        data.put("reprezentant1Salutation", ["Grzegorz Brzęszczyszczykiewicz"] as String[]);
+        data.put("reprezentant2Salutation", ["Tomek Nowak"] as String[]);
+        data.put("reprezentant3Salutation", ["Andrzej Jakistam"] as String[]);
+        data.put("reprezentant4Salutation", ["Zenona Aloska"] as String[]);
+
         data.put("reprezentant1Full", ["Grzegorz Brzęszczyszczykiewicz - Prezes zarządu"] as String[]);
         data.put("reprezentant2Full", ["Tomek Nowak - Zastępca szeryfa i prezesa"] as String[]);
         data.put("reprezentant3Full", ["Andrzej Jakistam - Szeryf wszechświata i Anglii"] as String[]);
         data.put("reprezentant4Full", ["Zenona Aloska - Konserwatorka powierchni płaskich"] as String[]);
+
+        data.put("reprezentant1Email", ["grzegorz.b@mail.com"] as String[]);
+        data.put("reprezentant2Email", ["tomeknowak@mail.com"] as String[]);
+        data.put("reprezentant3Email", ["ajakistam@mail.com"] as String[]);
+        data.put("reprezentant4Email", ["zenona.aloska@mail.com"] as String[]);
+
+        data.put("reprezentant1TelKom", ["123-123-123"] as String[]);
+        data.put("reprezentant2TelKom", ["456-456-456"] as String[]);
+        data.put("reprezentant3TelKom", ["789-789-789"] as String[]);
+        data.put("reprezentant4TelKom", ["257-257-257"] as String[]);
 
         return data;
     }

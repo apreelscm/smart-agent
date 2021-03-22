@@ -32,12 +32,16 @@ class RepresentativesNamesMapper implements Mapper{
                     representativesData.put(format("reprezentant%dSalutation", (i + 1)), [representative.fullNameWithSalutation] as String[])
                     representativesData.put(format("reprezentant%d", (i + 1)), [representative.fullName] as String[])
                     representativesData.put(format("reprezentant%dFull", (i + 1)), [representative.description] as String[])
+                    representativesData.put(format("reprezentant%dEmail", (i + 1)), [representative.email] as String[])
+                    representativesData.put(format("reprezentant%dTelKom", (i + 1)), [representative.mobilePhone] as String[])
                     index++
                 }
             } else {
                 representativesData.put(format("reprezentant%dSalutation", (i + 1)), [representative.fullNameWithSalutation] as String[])
                 representativesData.put(format("reprezentant%d", (i + 1)), [representative.fullName] as String[])
                 representativesData.put(format("reprezentant%dFull", (i + 1)), [representative.description] as String[])
+                representativesData.put(format("reprezentant%dEmail", (i + 1)), [representative.email] as String[])
+                representativesData.put(format("reprezentant%dTelKom", (i + 1)), [representative.mobilePhone] as String[])
                 index++
             }
         }

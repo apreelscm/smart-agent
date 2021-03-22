@@ -34,7 +34,7 @@ environments {
                         dialect : "org.hibernate.dialect.Oracle10gDialect",
                         maxActive: "8",
                         maxIdle: "4",
-                        url: "jdbc:oracle:thin:@192.168.9.22:1523:tstcbd",
+                        url: "jdbc:oracle:thin:@10.9.192.59:1523:tstcbd",
                         username: "eumowy_app",
                         password: "eumowy_app"
                 ],
@@ -45,7 +45,7 @@ environments {
                         dialect : "org.hibernate.dialect.Oracle10gDialect",
                         maxActive: "8",
                         maxIdle: "4",
-                        url: "jdbc:oracle:thin:@192.168.9.22:1523:tstcbd",
+                        url: "jdbc:oracle:thin:@10.9.192.59:1523:tstcbd",
                         username: "eumowy_app",
                         password: "eumowy_app"
                 ]
