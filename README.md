@@ -87,3 +87,9 @@ Hasło: `Ahfopcvy$aU3`
   INSERT INTO eumowy.subscription_definition (ID, VERSION, SIGNATURE_ID, ROLE, FILE_NAME, SUBSCRIPTION_PAGE_NUMBER, SUBSCRIPTIONX, SUBSCRIPTIONY, SCALEX, SCALEY)
   VALUES ((SELECT max(id) + 1 FROM eumowy.subscription_definition), 0, (SELECT id FROM eumowy.signature WHERE name = 'AP/UPZ/ZSNT1/1.005/20-02-28'), 'PH', null, 1, 390, 382, 59, 28);
   ```
+
+## LDAP
+Aktualna dokumentacje mozna wygenerowac pod adresem
+http://uat-eumowy.apreel.net:8080/microLDAP/jsondoc-ui.html#
+wprowadzajac url uslugi
+http://uat-eumowy.apreel.net:8080/microLDAP/jsondoc
