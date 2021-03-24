@@ -37,8 +37,7 @@ Hasło: `Ahfopcvy$aU3`
 | Login        | Hasło           | Rola     |
 | -----------  | --------------- | -------- |
 | askonieczny  | ssddRTY235689%% | PH       |
-| kwysmolinska | nieznane        | Admin    |
-| dtestowy     | nieznane        | nieznane |
+| mmelissa     | QQww123@456@789 | Admin    |
 
 ## Przydatne zapytania SQL
 
