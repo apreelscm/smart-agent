@@ -13,5 +13,22 @@
         <g:radio name="${prefix}[${seqNo}].hasSignedContract" value="false"
                  checked="${data.isPersonForm() && representative?.hasSignedContract == false}"/>
         <label for="${prefix}[${seqNo}].hasSignedContract"><g:message code="no"/></label>
+
+        <script type="text/javascript">
+
+            jQuery('input[name="${prefix}[${seqNo}].hasSignedContract"]').change(function(e) {
+                var val = jQuery(this).val();
+                if (val === 'false') {
+                    jQuery('.phone-container-${prefix}-${seqNo}').hide();
+                    jQuery('.phone-container-${prefix}-${seqNo} .telephone-type').val(null);
+                    jQuery('.phone-container-${prefix}-${seqNo} .phone-number').val(null);
+                    jQuery('.email-container-${prefix}-${seqNo}').hide();
+                    jQuery('.email-container-${prefix}-${seqNo} input').val(null);
+                } else {
+                    jQuery('.phone-container-${prefix}-${seqNo}').show();
+                    jQuery('.email-container-${prefix}-${seqNo}').show();
+                }
+            });
+        </script>
     </div>
 </div>

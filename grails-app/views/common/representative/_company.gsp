@@ -70,7 +70,7 @@
 
     </div>
 
-    <div class="${hasErrors(bean: representative, field: 'country', 'errorSpan')} ${hasErrors(bean: representative, field: 'phoneNumber', 'errorSpan')}">
+    <div class="phone-container-${prefix}-${seqNo} ${hasErrors(bean: representative, field: 'country', 'errorSpan')} ${hasErrors(bean: representative, field: 'phoneNumber', 'errorSpan')}" style="${data.isPersonForm() && representative?.hasSignedContract != true ? 'display: none;' : ''}>
 
         <g:radio class="telephone-type" name="${prefix}[${seqNo}].telephoneType" value="${TelephoneType.LANDLINE.name()}"
                  checked="${data.isPersonForm() && representative?.telephoneType == TelephoneType.LANDLINE}"/>
@@ -85,7 +85,7 @@
                           validatable="${representative}" validateField="phoneNumber" class="phone-number ${representative?.telephoneType == TelephoneType.LANDLINE ? 'phone' : 'mobile-phone' }"/>
     </div>
 
-    <div>
+    <div class="email-container-${prefix}-${seqNo}" style="${data.isPersonForm() && representative?.hasSignedContract != true ? 'display: none;' : ''}">
         <span>
             <g:message code="panel.email"/>: <eumowy:textField name="${prefix}[${seqNo}].email" value="${representative?.email}" validatable="${representative}" validateField="email" style="width: 150px" email="true"/>
         </span>

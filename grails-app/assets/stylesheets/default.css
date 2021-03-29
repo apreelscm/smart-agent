@@ -1665,3 +1665,7 @@ header.belka-glowna {
 td.flat-price-col, td.percent-number-col {
     text-align: center;
 }
+
+.phone-container-company {
+    display: inline-block;
+}
