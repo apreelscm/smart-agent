@@ -97,6 +97,7 @@ class ProcessCommand implements Serializable {
 //    daneDoWydruku
     String nazwaDoWydrukuZTerminalaPos = DEFAULT_VALUE
     String wydrukNazwaDoWyszukwarki = DEFAULT_VALUE
+    String idPartnerISV = DEFAULT_VALUE
 
     String wydrukUlicaTytul = DEFAULT_VALUE
     String wydrukUlica = DEFAULT_VALUE
