@@ -93,3 +93,16 @@ Aktualna dokumentacje mozna wygenerowac pod adresem
 http://uat-eumowy.apreel.net:8080/microLDAP/jsondoc-ui.html#
 wprowadzajac url uslugi
 http://uat-eumowy.apreel.net:8080/microLDAP/jsondoc
+
+## Wydawanie paczki
+Na Jenkinsie stworzony jest [task do releasowania nowych wersji](http://jenkins.apreel.net/job/eService/job/eumowy%20release/).
+Przy wydawaniu należy uruchomić dwa zadania jako prefix podając numer wersji większy od parametru `app.version` z pliku `application.properties`, 
+a jako sufix podać parametry - `uat` i `prod` (dla każdego zadania inny).
+Przykładowo jeżeli obecny `app.version` to `1.15.1` to należy stworzyć dwa zadania w Jenkinsie - w jednym podać w `releaseVersion` `1.15.2-uat`, a w drugim `1.15.2-prod`.
+
+Po zbudowaniu paczek należy uruchomić [taska do kopiowania zbudowanych paczek](http://jenkins.apreel.net/job/eService/job/eumowy%20copy%20package/) na serwer eService. 
+Podobnie jak przy releasie należy stworzyć dwa zadania. 
+Jako targetSystem podajemy środowisko UAT, a w `releaseVersion` wpisujemy paczki zbudowane w poprzednim kroku (czyli np. `1.15.2-uat` i `1.15.2-prod`).
+
+Po zakończeniu zadań należy napisać maila do [Mariusza Adwenta](Mariusz.Adwent@eservice.com.pl) i [Małgorzaty Melissy](malgorzata.melissa@eservice.com.pl) 
+z informacją o tym, że nowa paczka znajduje się na ich serwerze.
