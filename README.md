@@ -15,7 +15,8 @@
    ![Grails SDK](./readme/grails_sdk.png)
 5. Skopiować pliki z katalogu `otherResources/tomcat/lib` do `$USER_HOME/.grails`
 6. Skopiować plik `otherResources/conf.properties` do `/opt/settings`
-7. Uruchomić projekt z argumentami `-Dgrails.env=development -Dgrails.reload.enabled=true run-app`
+7. Przekopiowac katalog `otherResources/pdf_templates` do lokalizacji `/opt/eumowy`
+8. Uruchomić projekt z argumentami `-Dgrails.env=development -Dgrails.reload.enabled=true run-app`
    ![Run Config](./readme/run_config.png)
 
 # 3. Linki

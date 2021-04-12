@@ -5,8 +5,10 @@
             <div class="align-left">
                 <p><g:message code="panel.newpoint.pointnameforprintingfromposterminal" /></p>
                 <p><eumowy:textField name="nazwaDoWydrukuZTerminalaPos" value="${data.nazwaDoWydrukuZTerminalaPos}" validatable="${data}" maxlength ="44" required="true" class="nazwaField"/></p>
+                <p><g:message code="panel.newpoint.pointIdPartner" /></p>
+                <p><eumowy:textField name="idPartnerISV" value="${data.idPartnerISV}" validatable="${data}" maxlength ="44" required="false" class="nazwaField"/></p>
                 <p><g:message code="panel.newpoint.pointnameforsearchengine" /> <label for="wydrukJakWyzej"><g:checkBox name="wydrukJakWyzej" id="wydrukJakWyzej" /><g:message code="panel.as.above" /></label></p>
-                <p><eumowy:textField name="wydrukNazwaDoWyszukwarki" value="${data.wydrukNazwaDoWyszukwarki}" validatable="${data}" maxlength ="40" required="true" class="nazwaField"/></p>
+                <p><eumowy:textField name="wydrukNazwaDoWyszukwarki" value="${data.wydrukNazwaDoWyszukwarki}" validatable="${data}" maxlength ="40" class="nazwaField"/></p>
                 <p><label for="wydrukJakMerchant"><g:checkBox name="wydrukJakMerchant"/><g:message code="panel.as.merchant" /></label></p>
                 <ul class="table-list">
                     <li>

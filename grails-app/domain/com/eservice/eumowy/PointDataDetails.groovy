@@ -18,6 +18,7 @@ class PointDataDetails implements Serializable {
 	
 	String nazwaDoWydrukuZTerminalaPos
 	String nazwaDoWyszukiwarki
+	String idPartnerISV
 	 
 	String wydrukUlicaTytul
 	String wydrukUlica
@@ -77,6 +78,7 @@ class PointDataDetails implements Serializable {
 		bankId column: "bank_id"
 		nazwaDoWydrukuZTerminalaPos column: "name_print_posterminal"
 		nazwaDoWyszukiwarki column: "name_search_engine"
+		idPartnerISV column: "id_partner_ISV"
 		wydrukUlicaTytul column: "print_addressstreet_type"
 		wydrukUlica column: "print_addr_street"
 		wydrukNrDomu column: "print_addr_home_number"
@@ -128,6 +130,7 @@ class PointDataDetails implements Serializable {
 		bank(nullable:true)
 		nazwaDoWydrukuZTerminalaPos(nullable:true)
 		nazwaDoWyszukiwarki(nullable:true)
+		idPartnerISV(nullable:true)
 		wydrukUlicaTytul(nullable:true)
 		wydrukUlica(nullable:true)
 		wydrukNrDomu(nullable:true)

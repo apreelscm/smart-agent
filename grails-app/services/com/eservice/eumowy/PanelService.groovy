@@ -100,6 +100,7 @@ class PanelService {
     def getDaneDoWydruku(ProcessCommand cmd, def calc ) {
         cmd.nazwaDoWydrukuZTerminalaPos = nullify(cmd.nazwaDoWydrukuZTerminalaPos)
         cmd.wydrukNazwaDoWyszukwarki = nullify(cmd.wydrukNazwaDoWyszukwarki)
+        cmd.idPartnerISV = nullify(cmd.idPartnerISV)
         cmd.wydrukUlicaTytul = nullify(cmd.wydrukUlicaTytul, "UL")
         cmd.wydrukUlica = nullify(cmd.wydrukUlica)
         cmd.wydrukNrDomu = nullify(cmd.wydrukNrDomu)

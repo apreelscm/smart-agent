@@ -1,22 +1,39 @@
 <fieldset class="subpanel-fieldset">
     <legend>
-        <g:message code="panel.newpoint.dataforprinting" />
+        <g:message code="panel.newpoint.dataforprinting"/>
     </legend>
     <div class="subpanel-fieldset-centercontent">
-        <p>
-            <g:message
-                    code="panel.newpoint.pointnameforprintingfromposterminal" />
-        </p>
-        <p>
-            <eumowy:textField
-                    name="${panelType}[${id}].nazwaDoWydrukuZTerminalaPos"
-                    id="${panelType}[${id}].pointNameForPrintingFromPOSTerminal"
-                    value="${pointData?.nazwaDoWydrukuZTerminalaPos}"
-                    validatable="${pointData}"
-                    validateField="nazwaDoWydrukuZTerminalaPos"
-                    required="true" class="nazwaField"
-                    maxlength="44"/>
-        </p>
+        <ul class="table-list">
+            <li>
+                <span>
+                    <g:message
+                            code="panel.newpoint.pointnameforprintingfromposterminal"/>
+
+                    <eumowy:textField
+                            name="${panelType}[${id}].nazwaDoWydrukuZTerminalaPos"
+                            id="${panelType}[${id}].pointNameForPrintingFromPOSTerminal"
+                            value="${pointData?.nazwaDoWydrukuZTerminalaPos}"
+                            validatable="${pointData}"
+                            validateField="nazwaDoWydrukuZTerminalaPos"
+                            required="true" class="nazwaField"
+                            maxlength="44"/>
+                </span>
+                <span>
+                    <g:message
+                            code="panel.newpoint.pointIdPartner"/>
+
+                    <eumowy:textField
+                            name="${panelType}[${id}].idPartnerISV"
+                            id="${panelType}[${id}].panel.newpoint.pointIdPartner"
+                            value="${pointData?.idPartnerISV}"
+                            validatable="${pointData}"
+                            validateField="idPartnerISV"
+                            style="width: 300px"
+                            maxlength="240"/>
+                </span>
+            </li>
+        </ul>
+
         <p>
             <g:message code="panel.newpoint.pointnameforsearchengine" />
             <label for="${panelType}[${id}].dataforprintingAsAbove"><g:checkBox
