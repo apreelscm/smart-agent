@@ -1,5 +1,6 @@
 package com.eservice.eumowy.pdfmapper
 
+import com.eservice.eumowy.ActivityHelper
 import com.eservice.eumowy.Process
 import com.eservice.eumowy.util.DateUtils
 
@@ -39,8 +40,22 @@ class ServiceStartRequestMapper extends AbstractPdfMapper implements Mapper {
             data.put("ssr_false", checkedCheckbox)
         }
 
+        boolean hasNewAgreement = ActivityHelper.isNewAgreement(process)
+        boolean hasPABRDocument = process.documents?.any {it.signature.name.contains("PABR") }
+        boolean hasAPUPZorAPUW = process.documents?.any {it.signature.name.contains("AP/UPZT") || it.name.contains("AP/UW") }
+
+        int index = 0 //TODO Replace i -> index, to skip empty rows in document, but then you need to adjust subscriptions positions and that requires bigger refactoring
+
         process.allRepresentatives.eachWithIndex { representative, i->
-            data.put(format("ssr_reprezentant%d", (i+1)), [representative.fullName] as String[])
+            if (hasPABRDocument || hasNewAgreement || hasAPUPZorAPUW) {
+                if (Boolean.TRUE == representative.hasSignedContract) {
+                    data.put(format("ssr_reprezentant%d", (i + 1)), [representative.fullName] as String[])
+                    index++
+                }
+            } else {
+                data.put(format("ssr_reprezentant%d", (i + 1)), [representative.fullName] as String[])
+                index++
+            }
         }
 
         return data
