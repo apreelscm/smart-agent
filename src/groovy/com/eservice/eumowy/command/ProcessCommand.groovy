@@ -1173,7 +1173,6 @@ class ProcessCommand implements Serializable {
             SkipAddressValidator.validate(value, cmd, errors, propertyName) &&
             MaxLengthValidator.validate(value, cmd, errors, 40, propertyName)
         })
-//        akceptantNrDomu(nullable:false, shared: 'alphanumericWithSlash')
         akceptantNrDomu(nullable: false)
         akceptantNrMieszkania(nullable: true)
         akceptantMiasto(nullable: false, shared: "alphanumericWithBrackets", validator: { value, cmd, errors ->

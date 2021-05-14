@@ -19,10 +19,10 @@ public class PointsValidator {
                     ptCmd?.minCenaNajmu = cmd.minCenaNajmu ? new BigDecimal(cmd.minCenaNajmu) : null
                     ptCmd?.validate()
                     if (ptCmd?.hasErrors()) {
-//                        log.info(ptCmd.errors)
+                        log.info(ptCmd.errors)
                         ptCmd.errors.each {
                             error ->
-//                                log.info(error)
+                                log.info(error)
                                 error.fieldErrors.each { fieldError ->
                                     if (!fieldError.getField().equals("hasDodaniePrepaid")) { //eUmowy_ext-557
                                         errors.reject(fieldError.code, fieldError.arguments, fieldError.defaultMessage)
