@@ -6,49 +6,49 @@ class PosDataDetails implements Serializable {
 
 	String dialupTyp
 	Integer dialupIlosc
-	BigDecimal dialupCena
+	BigDecimal dialupCenaPosData
 
     String dialupPPTyp
 	Integer dialupPPIlosc
-	BigDecimal dialupPPCena
+	BigDecimal dialupPPCenaPosData
 
 	String vpnTyp
 	Integer vpnIlosc
-	BigDecimal vpnCena
+	BigDecimal vpnCenaPosData
 
     String vpnPPTyp
 	Integer vpnPPIlosc
-	BigDecimal vpnPPCena
+	BigDecimal vpnPPCenaPosData
 
 	String sslTyp
 	Integer sslIlosc
-	BigDecimal sslCena
+	BigDecimal sslCenaPosData
 
     String sslPPTyp
 	Integer sslPPIlosc
-	BigDecimal sslPPCena
+	BigDecimal sslPPCenaPosData
 
 	String wifiTyp
 	Integer wifiIlosc
 	Integer wifiPPIlosc
-	BigDecimal wifiCena
-	BigDecimal wifiPPCena
+	BigDecimal wifiCenaPosData
+	BigDecimal wifiPPCenaPosData
 
 	String gprsTyp
 	Integer gprsIlosc
-	BigDecimal gprsCena
+	BigDecimal gprsCenaPosData
 
     String gprsPPTyp
 	Integer gprsPPIlosc
-	BigDecimal gprsPPCena
+	BigDecimal gprsPPCenaPosData
 
     String gprsTypPortable
     Integer gprsIloscPortable
-    BigDecimal gprsCenaPortable
+    BigDecimal gprsCenaPortablePosData
 
 	String wifiTypPortable
 	Integer wifiIloscPortable
-	BigDecimal wifiCenaPortable
+	BigDecimal wifiCenaPortablePosData
 
 	Integer bazaIlosc
 
@@ -80,7 +80,7 @@ class PosDataDetails implements Serializable {
 
 	String pinPadTyp
 	Integer pinPadIlosc
-	BigDecimal pinPadCena
+	BigDecimal pinPadCenaPosData
 	String routerTyp
 	Integer routerIlosc
 	BigDecimal routerCena
@@ -114,49 +114,49 @@ class PosDataDetails implements Serializable {
 
 		dialupTyp column: "dialup_type"
 		dialupIlosc column: "dialup_count"
-		dialupCena column: "dialup_price"
+		dialupCenaPosData column: "dialup_price"
 
         dialupPPTyp column: "dialup_pp_type"
 		dialupPPIlosc column: "dialup_pp_count"
-		dialupPPCena column: "dialup_pp_price"
+		dialupPPCenaPosData column: "dialup_pp_price"
 
 		vpnTyp column: "vpn_type"
 		vpnIlosc column: "vpn_count"
-		vpnCena column: "vpn_price"
+		vpnCenaPosData column: "vpn_price"
 
         vpnPPTyp column: "vpn_pp_type"
 		vpnPPIlosc column: "vpn_pp_count"
-		vpnPPCena column: "vpn_pp_price"
+		vpnPPCenaPosData column: "vpn_pp_price"
 
 		sslTyp column: "ssl_type"
 		sslIlosc column: "ssl_count"
-		sslCena column: "ssl_price"
+		sslCenaPosData column: "ssl_price"
 
         sslPPTyp column: "ssl_pp_type"
 		sslPPIlosc column: "ssl_pp_count"
-		sslPPCena column: "ssl_pp_price"
+		sslPPCenaPosData column: "ssl_pp_price"
 
 		wifiTyp column: "wifi_type"
 		wifiIlosc column: "wifi_count"
 		wifiPPIlosc column: "wifi_pp_count"
-		wifiCena column: "wifi_price"
-        wifiPPCena column: "wifi_pp_price"
+		wifiCenaPosData column: "wifi_price"
+        wifiPPCenaPosData column: "wifi_pp_price"
 
 		gprsTyp column: "gprs_type"
 		gprsIlosc column: "gprs_count"
-		gprsCena column: "gprs_price"
+		gprsCenaPosData column: "gprs_price"
 
         gprsPPTyp column: "gprs_pp_type"
 		gprsPPIlosc column: "gprs_pp_count"
-		gprsPPCena column: "gprs_pp_price"
+		gprsPPCenaPosData column: "gprs_pp_price"
 
         gprsTypPortable column: "gprs_typ_portable"
         gprsIloscPortable column: "gprs_ilosc_portable"
-        gprsCenaPortable column: "gprs_cena_portable"
+        gprsCenaPortablePosData column: "gprs_cena_portable"
 
 		wifiTypPortable column: "wifi_typ_portable"
 		wifiIloscPortable column: "wifi_ilosc_portable"
-		wifiCenaPortable column: "wifi_cena_portable"
+		wifiCenaPortablePosData column: "wifi_cena_portable"
 
 		bazaIlosc column: "base_count"
 		zamkniecieDniaOd column: "day_close_from"
@@ -184,7 +184,7 @@ class PosDataDetails implements Serializable {
         kartaSimCena column: "sim_card_price"
         kartaSimIlosc column: "sim_card_count"
 		pinPadIlosc column: "pin_pad_count"
-		pinPadCena column: "pin_pad_price"
+		pinPadCenaPosData column: "pin_pad_price"
         routerTyp column: "router_type"
 		routerIlosc column: "router_count"
 		routerCena column: "router_price"
@@ -211,49 +211,49 @@ class PosDataDetails implements Serializable {
 
         dialupTyp(nullable:true)
 		dialupIlosc(nullable:true)
-		dialupCena(nullable:true)
+		dialupCenaPosData(nullable:true)
 
         dialupPPTyp(nullable: true)
 		dialupPPIlosc(nullable:true)
-		dialupPPCena(nullable:true)
+		dialupPPCenaPosData(nullable:true)
 
 		vpnTyp(nullable:true)
 		vpnIlosc(nullable:true)
-		vpnCena(nullable:true)
+		vpnCenaPosData(nullable:true)
 
         vpnPPTyp(nullable:true)
 		vpnPPIlosc(nullable:true)
-		vpnPPCena(nullable:true)
+		vpnPPCenaPosData(nullable:true)
 
 		sslTyp(nullable:true)
 		sslIlosc(nullable:true)
-		sslCena(nullable:true)
+		sslCenaPosData(nullable:true)
 
         sslPPTyp(nullable:true)
 		sslPPIlosc(nullable:true)
-		sslPPCena(nullable:true)
+		sslPPCenaPosData(nullable:true)
 
 		wifiTyp(nullable:true)
 		wifiIlosc(nullable:true)
 		wifiPPIlosc(nullable:true)
-		wifiCena(nullable:true)
-		wifiPPCena(nullable:true)
+		wifiCenaPosData(nullable:true)
+		wifiPPCenaPosData(nullable:true)
 
 		gprsTyp(nullable:true)
 		gprsIlosc(nullable:true)
-		gprsCena(nullable:true)
+		gprsCenaPosData(nullable:true)
 
         gprsPPTyp(nullable: true)
 		gprsPPIlosc(nullable:true)
-		gprsPPCena(nullable:true)
+		gprsPPCenaPosData(nullable:true)
 
         gprsTypPortable(nullable: true)
         gprsIloscPortable(nullable: true)
-        gprsCenaPortable(nullable: true)
+        gprsCenaPortablePosData(nullable: true)
 
 		wifiTypPortable(nullable: true)
 		wifiIloscPortable(nullable: true)
-		wifiCenaPortable(nullable: true)
+		wifiCenaPortablePosData(nullable: true)
 
 		bazaIlosc(nullable:true)
 		zamkniecieDniaOd(nullable:true)
@@ -278,7 +278,7 @@ class PosDataDetails implements Serializable {
 		kartaPodarunkowa(nullable:true)
 		pinPadTyp(nullable:true)
 		pinPadIlosc(nullable:true)
-		pinPadCena(nullable:true)
+		pinPadCenaPosData(nullable:true)
 		routerTyp(nullable:true)
 		routerIlosc(nullable:true)
 		routerCena(nullable:true)

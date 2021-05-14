@@ -25,17 +25,17 @@ class PdfPosMapper extends AbstractPdfMapper{
 				return
 				
             pos.posDetails?.each { PosDataDetails posDetail ->
-                addToPosMap(result, posDetail.dialupIlosc, posDetail.dialupCena)
-                addToPosMap(result, posDetail.dialupPPIlosc, posDetail.dialupPPCena)
-                addToPosMap(result, posDetail.vpnIlosc, posDetail.vpnCena)
-                addToPosMap(result, posDetail.vpnPPIlosc, posDetail.vpnPPCena)
-                addToPosMap(result, posDetail.sslIlosc, posDetail.sslCena)
-                addToPosMap(result, posDetail.sslPPIlosc, posDetail.sslPPCena)
-                addToPosMap(result, posDetail.gprsIlosc, posDetail.gprsCena)
-                addToPosMap(result, posDetail.gprsPPIlosc, posDetail.gprsPPCena)
-                addToPosMap(result, posDetail.gprsIloscPortable, posDetail.gprsCenaPortable)
-                addToPosMap(result, posDetail.wifiIloscPortable, posDetail.wifiCenaPortable)
-                addToPosMap(result, posDetail.pinPadIlosc, posDetail.pinPadCena)
+                addToPosMap(result, posDetail.dialupIlosc, posDetail.dialupCenaPosData)
+                addToPosMap(result, posDetail.dialupPPIlosc, posDetail.dialupPPCenaPosData)
+                addToPosMap(result, posDetail.vpnIlosc, posDetail.vpnCenaPosData)
+                addToPosMap(result, posDetail.vpnPPIlosc, posDetail.vpnPPCenaPosData)
+                addToPosMap(result, posDetail.sslIlosc, posDetail.sslCenaPosData)
+                addToPosMap(result, posDetail.sslPPIlosc, posDetail.sslPPCenaPosData)
+                addToPosMap(result, posDetail.gprsIlosc, posDetail.gprsCenaPosData)
+                addToPosMap(result, posDetail.gprsPPIlosc, posDetail.gprsPPCenaPosData)
+                addToPosMap(result, posDetail.gprsIloscPortable, posDetail.gprsCenaPortablePosData)
+                addToPosMap(result, posDetail.wifiIloscPortable, posDetail.wifiCenaPortablePosData)
+                addToPosMap(result, posDetail.pinPadIlosc, posDetail.pinPadCenaPosData)
             }
         }
 

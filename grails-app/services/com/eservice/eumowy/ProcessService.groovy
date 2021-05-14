@@ -1202,6 +1202,18 @@ class ProcessService {
 
                     posData = pointData.posDatas?.getAt(0)
                     posDataDetails = posData?.posDetails
+                    posDataDetails.setRouterCena(pc.routerCena)
+                    posDataDetails.setDialupCenaPosData(pc.getDialupCena()?.toString()?.toBigDecimal())
+                    posDataDetails.setDialupPPCenaPosData(pc.getDialupPPCena()?.toString()?.toBigDecimal())
+                    posDataDetails.setVpnCenaPosData(pc.getVpnCena()?.toString()?.toBigDecimal())
+                    posDataDetails.setVpnPPCenaPosData(pc.getVpnPPCena()?.toString()?.toBigDecimal())
+                    posDataDetails.setSslCenaPosData(pc.getSslCena()?.toString()?.toBigDecimal())
+                    posDataDetails.setSslPPCenaPosData(pc.getSslPPCena()?.toString()?.toBigDecimal())
+                    posDataDetails.setGprsPPCenaPosData(pc.getGprsPPCena()?.toString()?.toBigDecimal())
+                    posDataDetails.setGprsCenaPortablePosData(pc.getGprsCenaPortable()?.toString()?.toBigDecimal())
+                    posDataDetails.setWifiCenaPortablePosData(pc.getWifiCenaPortable()?.toString()?.toBigDecimal())
+                    posDataDetails.setPinPadCenaPosData(pc.getPinPadCena()?.toString()?.toBigDecimal())
+                    log.info(posDataDetails)
 
                     if (posData == null) {
                         log.debug "getPointCommandsToPointDataList - Brakujacy POS dla Danych punktu o id: " + pc.id + " - Tworzę nowy!"

@@ -13,11 +13,11 @@ class PointCommand implements Serializable {
     transient def calc
 
 	Integer id
-	
+
 	Boolean czyLokalny
-	
+
 	Long parentPosId
-	
+
 	String phPozysk
 	String opiekaBiznesowa
 	String opiekaSerwisowaI
@@ -31,11 +31,11 @@ class PointCommand implements Serializable {
 	String numerRachunkuBankowego
 	String bank
 	Integer bankId
-				 
+
 	String nazwaDoWydrukuZTerminalaPos
 	String nazwaDoWyszukiwarki
 	String idPartnerISV
-	 
+
 	String wydrukUlicaTytul
 	String wydrukUlica
 	String wydrukNrDomu
@@ -43,10 +43,10 @@ class PointCommand implements Serializable {
 	String wydrukMiasto
 	String wydrukKodPocztowy
 	String wydrukPoczta
-	 
+
 	String wydrukLinia1
 	String wydrukLinia2
-	
+
 	String korespondencjaUlicaTytul
 	String korespondencjaUlica
 	String korespondencjaNrDomu
@@ -54,16 +54,16 @@ class PointCommand implements Serializable {
 	String korespondencjaMiasto
 	String korespondencjaKodPocztowy
 	String korespondencjaPoczta
-	
-	String kontaktWPunkcieTytul	
+
+	String kontaktWPunkcieTytul
 	String kontaktWPunkcieImie
 	String kontaktWPunkcieNazwisko
 	String kontaktWPunkcieTelStacjonarny
 	String kontaktWPunkcieTelKomorkowy
 	String kontaktWPunkcieEmail
-	
+
 	Integer cbdId
-	
+
 	String dialupTyp
 	Integer dialupIlosc
 	BigDecimal dialupCena
@@ -72,105 +72,105 @@ class PointCommand implements Serializable {
     Integer dialupPPIlosc
     BigDecimal dialupPPCena
 
-	String vpnTyp
-	Integer vpnIlosc
-	BigDecimal vpnCena
+    String vpnTyp
+    Integer vpnIlosc
+    String vpnCena
 
     String vpnPPTyp
     Integer vpnPPIlosc
-    BigDecimal vpnPPCena
+    String vpnPPCena
 
-	String sslTyp
-	Integer sslIlosc
-	BigDecimal sslCena
+    String sslTyp
+    Integer sslIlosc
+    String sslCena
 
     String sslPPTyp
     Integer sslPPIlosc
-    BigDecimal sslPPCena
+    String sslPPCena
 
-	String gprsTyp
-	Integer gprsIlosc
-	BigDecimal gprsCena
+    String gprsTyp
+    Integer gprsIlosc
+    String gprsCena
 
     String gprsPPTyp
     Integer gprsPPIlosc
-    BigDecimal gprsPPCena
+    String gprsPPCena
 
     String gprsTypPortable
     Integer gprsIloscPortable
     BigDecimal gprsCenaPortable
 
-	String wifiTypPortable
-	Integer wifiIloscPortable
-	BigDecimal wifiCenaPortable
+    String wifiTypPortable
+    Integer wifiIloscPortable
+    String wifiCenaPortable
 
     String pinPadTyp
     Integer pinPadIlosc
-    BigDecimal pinPadCena
+    String pinPadCena
 
     BigDecimal minCenaNajmu //injected during validation
 
     Integer bazaIlosc
-	
-	String zamkniecieDniaOd
-	String zamkniecieDniaDo
-	Date planowanaDataInstalacji
-	String uwagiDodatkowe
-	
-	Boolean brakFunkcjiZwrotu
-	Boolean zwrotNaHaslo
-	Boolean analizaZbioru
-	Boolean integracjaZSysKas
-	Boolean zwrotyIKO
 
-	Boolean integracjaRs
-	Boolean integracjaUsb
-	Boolean integracjaEth
-	String dostawcaSystemuKasowego
+    String zamkniecieDniaOd
+    String zamkniecieDniaDo
+    Date planowanaDataInstalacji
+    String uwagiDodatkowe
 
-	Boolean logowaniePrzedKazdaTransakcja
-	Boolean logowanieZmianowe
-	
-	Boolean napiwek1
-	Boolean telePompka
-	Boolean teleKodzik
-	
-	Boolean kartaPodarunkowa
-	
-	// polskie nazwy
+    Boolean brakFunkcjiZwrotu
+    Boolean zwrotNaHaslo
+    Boolean analizaZbioru
+    Boolean integracjaZSysKas
+    Boolean zwrotyIKO
+
+    Boolean integracjaRs
+    Boolean integracjaUsb
+    Boolean integracjaEth
+    String dostawcaSystemuKasowego
+
+    Boolean logowaniePrzedKazdaTransakcja
+    Boolean logowanieZmianowe
+
+    Boolean napiwek1
+    Boolean telePompka
+    Boolean teleKodzik
+
+    Boolean kartaPodarunkowa
+
+    // polskie nazwy
     String kartaSimTyp
     BigDecimal kartaSimCena
     Integer kartaSimIlosc
-	String routerTyp
-	Integer routerIlosc
-	BigDecimal routerCena
-	String czytnikKartTyp
-	BigDecimal czytnikKartCena
-	
-	String inneWyposazenie
-	Boolean inneWyposazenieSsl
-	Boolean inneWyposazenieGprs
-	String inneWyposazenieTyp
-	Integer inneWyposazenieIlosc
-	BigDecimal inneWyposazenieCena
-	
-	String maska
-	String bramka
-	String adresIp
-	String tytulInformatykStatyczna
-	String kontaktInformatykStatyczna
-	String imieInformatykStatyczna
-	String nazwiskoInformatykStatyczna
-	
-	Boolean takSamoDlaWszystkichPunktow
-	Boolean zestawPosTakSamoDlaWszystkichPunktow
-	Boolean wydrukJakDlaMerchanta
-	Boolean wydrukJakPowyzej
-	Boolean dodatkoweWyposazenieTakSamoDlaWszystkichPunktow
-	Boolean funkcjeTerminalaTakSamoDlaWszystkichPunktow
-	Boolean informacjeTechniczneTakSamoDlaWszystkichPunktow
-	Boolean kontaktWPunkcieJakDlaMerchanta
-	Boolean korespondencjaJakDlaMerchantaLubWydruku
+    String routerTyp
+    Integer routerIlosc
+    BigDecimal routerCena
+    String czytnikKartTyp
+    BigDecimal czytnikKartCena
+
+    String inneWyposazenie
+    Boolean inneWyposazenieSsl
+    Boolean inneWyposazenieGprs
+    String inneWyposazenieTyp
+    Integer inneWyposazenieIlosc
+    BigDecimal inneWyposazenieCena
+
+    String maska
+    String bramka
+    String adresIp
+    String tytulInformatykStatyczna
+    String kontaktInformatykStatyczna
+    String imieInformatykStatyczna
+    String nazwiskoInformatykStatyczna
+
+    Boolean takSamoDlaWszystkichPunktow
+    Boolean zestawPosTakSamoDlaWszystkichPunktow
+    Boolean wydrukJakDlaMerchanta
+    Boolean wydrukJakPowyzej
+    Boolean dodatkoweWyposazenieTakSamoDlaWszystkichPunktow
+    Boolean funkcjeTerminalaTakSamoDlaWszystkichPunktow
+    Boolean informacjeTechniczneTakSamoDlaWszystkichPunktow
+    Boolean kontaktWPunkcieJakDlaMerchanta
+    Boolean korespondencjaJakDlaMerchantaLubWydruku
 
     Boolean hasDodaniePrepaid
     Boolean hasTelefonKontaktowy
@@ -178,7 +178,7 @@ class PointCommand implements Serializable {
 	def isLocal() {
 		return czyLokalny
 	}
-	
+
 	static constraints = {
 		phPozysk(nullable:true, blank:false, shared: "alphanumeric")
 		opiekaBiznesowa(nullable:true, blank:false, shared: "alphanumeric")
@@ -197,8 +197,8 @@ class PointCommand implements Serializable {
 		nazwaDoWyszukiwarki(nullable:true)
 		wydrukUlicaTytul(nullable:true)
 		wydrukUlica(nullable:true, blank:false, shared:"alphanumeric")
-		wydrukNrDomu(nullable:true, blank:false, shared: "alphanumeric")
-		wydrukNrLokalu(nullable:true, blank:false, shared: "alphanumeric")
+		wydrukNrDomu(nullable:true, blank:false)
+		wydrukNrLokalu(nullable:true, blank:false)
 		wydrukMiasto(nullable:true, blank:false, shared: "alphanumericWithBrackets")
 		wydrukKodPocztowy(nullable:true, blank:false, shared: "postalCodeValidator")
 		wydrukPoczta(nullable:true, blank:true, shared: "alphanumeric")
@@ -206,8 +206,8 @@ class PointCommand implements Serializable {
 		wydrukLinia2(nullable:true, blank:true)
 		korespondencjaUlicaTytul(nullable:true)
 		korespondencjaUlica(nullable:true, blank:false, shared: "alphanumeric")
-		korespondencjaNrDomu(nullable:true, blank:false, shared: "alphanumeric")
-		korespondencjaNrLokalu(nullable:true, blank:false, shared: "alphanumeric")
+		korespondencjaNrDomu(nullable:true, blank:false)
+		korespondencjaNrLokalu(nullable:true, blank:false)
 		korespondencjaMiasto(nullable:true, blank:false, shared: "alphanumericWithBrackets")
 		korespondencjaKodPocztowy(nullable:true, blank:false, shared: "postalCodeValidator")
 		korespondencjaPoczta(nullable:true, blank:true, shared:"alphanumeric")
@@ -227,8 +227,8 @@ class PointCommand implements Serializable {
             return true
         })
 
-        hasTelefonKontaktowy(nullable: true, validator: {value, cmd, errors ->
-            if(value && !(cmd.kontaktWPunkcieTelKomorkowy || cmd.kontaktWPunkcieTelStacjonarny)){
+        hasTelefonKontaktowy(nullable: true, validator: { value, cmd, errors ->
+            if (value && !(cmd.kontaktWPunkcieTelKomorkowy || cmd.kontaktWPunkcieTelStacjonarny)) {
                 errors.rejectValue("hasTelefonKontaktowy", "default.atLeastOne.phoneNumber")
                 return false
             }
@@ -236,7 +236,7 @@ class PointCommand implements Serializable {
         })
 
 		bankId(nullable:true)
-		
+
 		dialupTyp(nullable:true)
 		dialupIlosc(nullable:true,  shared: "natural")
 		dialupCena(nullable:true, shared: "number", validator: { value, cmd, errors ->
@@ -253,7 +253,7 @@ class PointCommand implements Serializable {
         dialupPPIlosc(nullable:true,  shared: "natural")
         dialupPPCena(nullable:true, shared: "number", validator: { value, cmd, errors ->
             if(!cmd.dialupPPTyp) return true
-            
+
             if(cmd.minCenaNajmu) {
                 return ConditionValidator.atLeastMinValue(value, cmd, errors, propertyName, cmd.minCenaNajmu)
             }
@@ -265,7 +265,7 @@ class PointCommand implements Serializable {
 		vpnIlosc(nullable:true,  shared: "natural")
 		vpnCena(nullable:true, shared: "number", validator: { value, cmd, errors ->
             if(!cmd.vpnTyp) return true
-            
+
             if(cmd.minCenaNajmu) {
                 return ConditionValidator.atLeastMinValue(value, cmd, errors, propertyName, cmd.minCenaNajmu)
             }
@@ -273,147 +273,148 @@ class PointCommand implements Serializable {
 			return ConditionValidator.atLeastCalcValue(value, cmd, errors, propertyName, "TYP_VPN_TERM_CENA")
 		})
 
-        vpnPPTyp(nullable:true)
-        vpnPPIlosc(nullable:true,  shared: "natural")
-        vpnPPCena(nullable:true, shared: "number", validator: { value, cmd, errors ->
-            if(!cmd.vpnPPTyp) return true
-            
-            if(cmd.minCenaNajmu) {
+        vpnPPTyp(nullable: true)
+        vpnPPIlosc(nullable: true, shared: "natural")
+        vpnPPCena(nullable: true, validator: { value, cmd, errors ->
+            if (!cmd.vpnPPTyp) return true
+
+            if (cmd.minCenaNajmu) {
                 return ConditionValidator.atLeastMinValue(value, cmd, errors, propertyName, cmd.minCenaNajmu)
             }
 
             return ConditionValidator.atLeastCalcValue(value, cmd, errors, propertyName, "TYP_VPN_PP_CENA")
         })
 
-		sslTyp(nullable:true)
-		sslIlosc(nullable:true,  shared: "natural")
-		sslCena(nullable:true, shared: "number", validator: { value, cmd, errors ->
-            if(!cmd.sslTyp) return true
-            
-            if(cmd.minCenaNajmu) {
+        sslTyp(nullable: true)
+        sslIlosc(nullable: true, shared: "natural")
+        sslCena(nullable: true, validator: { value, cmd, errors ->
+            if (!cmd.sslTyp) return true
+
+            if (cmd.minCenaNajmu) {
                 return ConditionValidator.atLeastMinValue(value, cmd, errors, propertyName, cmd.minCenaNajmu)
             }
 
-			return ConditionValidator.atLeastCalcValue(value, cmd, errors, propertyName, "TYP_SSL_TERM_CENA")
-		})
+            return ConditionValidator.atLeastCalcValue(value, cmd, errors, propertyName, "TYP_SSL_TERM_CENA")
+        })
 
-        sslPPTyp(nullable:true)
-        sslPPIlosc(nullable:true,  shared: "natural")
-        sslPPCena(nullable:true, shared: "number", validator: { value, cmd, errors ->
-            if(!cmd.sslPPTyp) return true
-            
-            if(cmd.minCenaNajmu) {
+        sslPPTyp(nullable: true)
+        sslPPIlosc(nullable: true, shared: "natural")
+        sslPPCena(nullable: true, validator: { value, cmd, errors ->
+            if (!cmd.sslPPTyp) return true
+
+            if (cmd.minCenaNajmu) {
                 return ConditionValidator.atLeastMinValue(value, cmd, errors, propertyName, cmd.minCenaNajmu)
             }
 
             return ConditionValidator.atLeastCalcValue(value, cmd, errors, propertyName, "TYP_SSL_PP_CENA")
         })
 
-		gprsTyp(nullable:true)
-		gprsIlosc(nullable:true,  shared: "natural")
-		gprsCena(nullable:true, shared: "number", validator: { value, cmd, errors ->
-            if(!cmd.gprsTyp) return true
-            
-            if(cmd.minCenaNajmu) {
-                return ConditionValidator.atLeastMinValue(value, cmd, errors, propertyName, cmd.minCenaNajmu)
-            }
+        gprsTyp(nullable: true)
+        gprsIlosc(nullable: true, shared: "natural")
+        gprsCena(nullable: true, validator: { value, cmd, errors ->
+            if (!cmd.gprsTyp) return true
 
-			return ConditionValidator.atLeastCalcValue(value, cmd, errors, propertyName, "TYP_GPRS_TERM_CENA")
-		})
-
-        gprsPPTyp(nullable:true)
-        gprsPPIlosc(nullable:true,  shared: "natural")
-        gprsPPCena(nullable:true, shared: "number", validator: { value, cmd, errors ->
-            if(!cmd.gprsPPTyp) return true
-            
-            if(cmd.minCenaNajmu) {
-                return ConditionValidator.atLeastMinValue(value, cmd, errors, propertyName, cmd.minCenaNajmu)
-            }
-
-            return ConditionValidator.atLeastCalcValue(value, cmd, errors, propertyName, "TYP_GPRS_PP_CENA")
-        })
-
-        gprsTypPortable(nullable:true)
-        gprsIloscPortable(nullable:true,  shared: "natural")
-        gprsCenaPortable(nullable:true, shared: "number", validator: { value, cmd, errors ->
-            if(!cmd.gprsTypPortable) return true
-            
-            if(cmd.minCenaNajmu) {
+            if (cmd.minCenaNajmu) {
                 return ConditionValidator.atLeastMinValue(value, cmd, errors, propertyName, cmd.minCenaNajmu)
             }
 
             return ConditionValidator.atLeastCalcValue(value, cmd, errors, propertyName, "TYP_GPRS_TERM_CENA")
         })
 
-		wifiTypPortable(nullable:true)
-		wifiIloscPortable(nullable:true,  shared: "natural")
-		wifiCenaPortable(nullable:true, shared: "number", validator: { value, cmd, errors ->
-			if(!cmd.wifiTypPortable) return true
+        gprsPPTyp(nullable: true)
+        gprsPPIlosc(nullable: true, shared: "natural")
+        gprsPPCena(nullable: true, shared: "number", validator: { value, cmd, errors ->
+            if (!cmd.gprsPPTyp) return true
 
-			if(cmd.minCenaNajmu) {
-				return ConditionValidator.atLeastMinValue(value, cmd, errors, propertyName, cmd.minCenaNajmu)
-			}
+            if (cmd.minCenaNajmu) {
+                return ConditionValidator.atLeastMinValue(value, cmd, errors, propertyName, cmd.minCenaNajmu)
+            }
 
-			return ConditionValidator.atLeastCalcValue(value, cmd, errors, propertyName, "TYP_WIFI_TERM_CENA")
-		})
+            return ConditionValidator.atLeastCalcValue(value, cmd, errors, propertyName, "TYP_GPRS_PP_CENA")
+        })
 
-		pinPadTyp(nullable:true)
-		pinPadIlosc(nullable:true,  shared: "natural")
-		pinPadCena(nullable:true,  shared: "number")
+        gprsTypPortable(nullable: true)
+        gprsIloscPortable(nullable: true, shared: "natural")
+        gprsCenaPortable(nullable: true, shared: "number", validator: { value, cmd, errors ->
+            if (!cmd.gprsTypPortable) return true
 
-		bazaIlosc(nullable:true,  shared: "number")
-		uwagiDodatkowe(nullable:true)
-		brakFunkcjiZwrotu(nullable:true)
-		zwrotNaHaslo(nullable:true)
-		analizaZbioru(nullable:true)
-		integracjaZSysKas(nullable:true)
-		zwrotyIKO(nullable:true)
+            if (cmd.minCenaNajmu) {
+                return ConditionValidator.atLeastMinValue(value, cmd, errors, propertyName, cmd.minCenaNajmu)
+            }
 
-		integracjaRs(nullable:true)
-		integracjaUsb(nullable:true)
-		integracjaEth(nullable: true)
-		dostawcaSystemuKasowego(nullable:true, validator: { value, cmd, errors ->
-			if (cmd.integracjaRs || cmd.integracjaUsb || cmd.integracjaEth) {
-				return value != null
-			}
+            return ConditionValidator.atLeastCalcValue(value, cmd, errors, propertyName, "TYP_GPRS_TERM_CENA")
+        })
 
-			return true
-		})
+        wifiTypPortable(nullable: true)
+        wifiIloscPortable(nullable: true, shared: "natural")
+        wifiCenaPortable(nullable: true, shared: "number", validator: { value, cmd, errors ->
+            if (!cmd.wifiTypPortable) return true
 
-		logowaniePrzedKazdaTransakcja(nullable:true)
-		logowanieZmianowe(nullable:true)
-		napiwek1(nullable:true)
-		telePompka(nullable:true)
-		teleKodzik(nullable:true)
-		kartaPodarunkowa(nullable:true)
-        kartaSimTyp(nullable:true)
+            if (cmd.minCenaNajmu) {
+                return ConditionValidator.atLeastMinValue(value, cmd, errors, propertyName, cmd.minCenaNajmu)
+            }
+
+            return ConditionValidator.atLeastCalcValue(value, cmd, errors, propertyName, "TYP_WIFI_TERM_CENA")
+        })
+
+        pinPadTyp(nullable: true)
+        pinPadIlosc(nullable: true, shared: "natural")
+        pinPadCena(nullable: true, shared: "number")
+
+        bazaIlosc(nullable: true, shared: "number")
+        uwagiDodatkowe(nullable: true)
+        brakFunkcjiZwrotu(nullable: true)
+        zwrotNaHaslo(nullable: true)
+        analizaZbioru(nullable: true)
+        integracjaZSysKas(nullable: true)
+        zwrotyIKO(nullable: true)
+
+        integracjaRs(nullable: true)
+        integracjaUsb(nullable: true)
+        integracjaEth(nullable: true)
+        dostawcaSystemuKasowego(nullable: true, validator: { value, cmd, errors ->
+            if (cmd.integracjaRs || cmd.integracjaUsb || cmd.integracjaEth) {
+                return value != null
+            }
+
+            return true
+        })
+
+        logowaniePrzedKazdaTransakcja(nullable: true)
+        logowanieZmianowe(nullable: true)
+        napiwek1(nullable: true)
+        telePompka(nullable: true)
+        teleKodzik(nullable: true)
+        kartaPodarunkowa(nullable: true)
+        kartaSimTyp(nullable: true)
         kartaSimCena(nullable: true, shared: "number")
         kartaSimIlosc(nullable: true, shared: "natural")
-		routerTyp(nullable:true)
-		routerIlosc(nullable:true,  shared: "natural")
-		routerCena(nullable:true,  shared: "number")
-		czytnikKartTyp(nullable:true)
-		czytnikKartCena(nullable:true,  shared: "number")
-		inneWyposazenie(nullable:true, blank:true)
-		inneWyposazenieSsl(nullable:true)
-		inneWyposazenieGprs(nullable:true)
-		inneWyposazenieTyp(nullable:true, blank:true)
-		inneWyposazenieIlosc(nullable:true, shared: "natural")
-		inneWyposazenieCena(nullable:true, shared: "number")
-		maska(nullable:true, blank:false)
-		bramka(nullable:true, blank:false)
-		adresIp(nullable:true, blank:false)
-		kontaktInformatykStatyczna(nullable:true, blank:false)
-        tytulInformatykStatyczna(nullable:true, blank:false)
-        imieInformatykStatyczna(nullable:true, blank:false, shared: "lettersOnly")
-		nazwiskoInformatykStatyczna(nullable:true, blank:false, shared: "lettersOnly")
-		
-		parentPosId(nullable:true)
-	}
-	
-	def isChildCopy() {
-		return parentPosId != null
-	}
+        routerTyp(nullable: true)
+        routerIlosc(nullable: true, shared: "natural")
+        routerCena(nullable: true, shared: "number")
+        czytnikKartTyp(nullable: true)
+        czytnikKartCena(nullable: true, shared: "number")
+        inneWyposazenie(nullable: true, blank: true)
+        inneWyposazenieSsl(nullable: true)
+        inneWyposazenieGprs(nullable: true)
+        inneWyposazenieTyp(nullable: true, blank: true)
+        inneWyposazenieTyp(nullable: true, blank: true)
+        inneWyposazenieIlosc(nullable: true, shared: "natural")
+        inneWyposazenieCena(nullable: true, shared: "number")
+        maska(nullable: true, blank: false)
+        bramka(nullable: true, blank: false)
+        adresIp(nullable: true, blank: false)
+        kontaktInformatykStatyczna(nullable: true, blank: false)
+        tytulInformatykStatyczna(nullable: true, blank: false)
+        imieInformatykStatyczna(nullable: true, blank: false, shared: "lettersOnly")
+        nazwiskoInformatykStatyczna(nullable: true, blank: false, shared: "lettersOnly")
+
+        parentPosId(nullable: true)
+    }
+
+    def isChildCopy() {
+        return parentPosId != null
+    }
 
     boolean hasStationaryTypeChosen() {
         return dialupTyp || dialupPPTyp || vpnTyp || vpnPPTyp || sslTyp || sslPPTyp || gprsTyp || gprsPPTyp
