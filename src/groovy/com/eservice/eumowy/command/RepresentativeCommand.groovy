@@ -130,12 +130,12 @@ class RepresentativeCommand implements Serializable{
                     propertyName, "representative.street.required")
         })
 
-        houseNumber(nullable: true, maxSize: 6, shared: 'alphanumericWithSlash', validator: { value, cmd, errors ->
+        houseNumber(nullable: true, maxSize: 6, validator: { value, cmd, errors ->
             CustomValidator.validateRequired(value, errors, cmd.processCommand.isPersonForm() && cmd.processCommand.hasNewUmowa,
                     propertyName, "representative.houseNumber.required")
         })
 
-        flatNumber(nullable: true, maxSize: 4, shared: 'alphanumericWithSlash')
+        flatNumber(nullable: true, maxSize: 4)
 
         city(nullable: true, maxSize: 33, shared: "alphanumericWithBrackets", validator: { value, cmd, errors ->
             CustomValidator.validateRequired(value, errors, cmd.processCommand.isPersonForm() && cmd.processCommand.hasNewUmowa,

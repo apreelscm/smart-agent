@@ -686,8 +686,8 @@ class ProcessCommand implements Serializable {
         wydrukUlica(nullable: false, blank: false, validator: { value, cmd, errors ->
             MaxLengthValidator.validate(value, cmd, errors, 40, propertyName)
         })
-        wydrukNrDomu(nullable: false, blank: false, shared: "alphanumeric")
-        wydrukNrMieszkania(nullable: true, blank: false, shared: "alphanumeric")
+        wydrukNrDomu(nullable: false, blank: false)
+        wydrukNrMieszkania(nullable: true, blank: false)
         wydrukMiasto(nullable: false, blank: false, shared: "alphanumericWithBrackets", validator: { value, cmd, errors ->
             MaxLengthValidator.validate(value, cmd, errors, 33, propertyName)
         })
@@ -1173,8 +1173,8 @@ class ProcessCommand implements Serializable {
             SkipAddressValidator.validate(value, cmd, errors, propertyName) &&
             MaxLengthValidator.validate(value, cmd, errors, 40, propertyName)
         })
-        akceptantNrDomu(nullable:false, shared: 'alphanumericWithSlash')
-        akceptantNrMieszkania(nullable: true, shared: 'alphanumericWithSlash')
+        akceptantNrDomu(nullable: false)
+        akceptantNrMieszkania(nullable: true)
         akceptantMiasto(nullable: false, shared: "alphanumericWithBrackets", validator: { value, cmd, errors ->
             SkipAddressValidator.validate(value, cmd, errors, propertyName) &&
             MaxLengthValidator.validate(value, cmd, errors, 33, propertyName)

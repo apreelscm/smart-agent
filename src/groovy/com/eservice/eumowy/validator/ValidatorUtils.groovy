@@ -12,22 +12,22 @@ class ValidatorUtils {
 
         pointCommands.each { pos ->
             if (pos != null) {
-                normalPriceGroups.add(getGroupValue(pos.dialupCena))
-                normalPriceGroups.add(getGroupValue(pos.dialupPPCena))
+                normalPriceGroups.add(getGroupValue(pos.dialupPPCena?.toBigDecimal()))
+                normalPriceGroups.add(getGroupValue(pos.dialupPPCena?.toBigDecimal()))
 
-                normalPriceGroups.add(getGroupValue(pos.vpnCena))
-                normalPriceGroups.add(getGroupValue(pos.vpnPPCena))
+                normalPriceGroups.add(getGroupValue(pos.vpnCena?.toBigDecimal()))
+                normalPriceGroups.add(getGroupValue(pos.vpnPPCena?.toBigDecimal()))
 
-                normalPriceGroups.add(getGroupValue(pos.sslCena))
-                normalPriceGroups.add(getGroupValue(pos.sslPPCena))
+                normalPriceGroups.add(getGroupValue(pos.sslCena?.toBigDecimal()))
+                normalPriceGroups.add(getGroupValue(pos.sslPPCena?.toBigDecimal()))
 
-                normalPriceGroups.add(getGroupValue(pos.gprsCena))
-                normalPriceGroups.add(getGroupValue(pos.gprsPPCena))
-                normalPriceGroups.add(getGroupValue(pos.gprsCenaPortable))
+                normalPriceGroups.add(getGroupValue(pos.gprsCena?.toBigDecimal()))
+                normalPriceGroups.add(getGroupValue(pos.gprsPPCena?.toBigDecimal()))
+                normalPriceGroups.add(getGroupValue(pos.gprsCenaPortable?.toBigDecimal()))
 
-                normalPriceGroups.add(getGroupValue(pos.wifiCenaPortable))
+                normalPriceGroups.add(getGroupValue(pos.wifiCenaPortable?.toBigDecimal()))
 
-                normalPriceGroups.add(getGroupValue(pos.pinPadCena))
+                normalPriceGroups.add(getGroupValue(pos.pinPadCena?.toBigDecimal()))
             }
         }
 
@@ -88,5 +88,4 @@ class ValidatorUtils {
 
         return hasNotFilledField
     }
-
 }

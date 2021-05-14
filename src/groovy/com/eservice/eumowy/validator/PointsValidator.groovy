@@ -12,24 +12,27 @@ public class PointsValidator {
     public static def validate = { value, cmd, errors ->
         boolean hasPointErrors = false
 
-        value.each { ptCmd ->
-            if (ptCmd != null) {
-                ptCmd?.calculatorService = cmd.calculatorService
-                ptCmd?.calc = cmd.calc
-                ptCmd?.minCenaNajmu = cmd.minCenaNajmu ? new BigDecimal(cmd.minCenaNajmu) : null
-                ptCmd?.validate()
-                if (ptCmd?.hasErrors()) {
-                    ptCmd.errors.each { error ->
-                        error.fieldErrors.each { fieldError ->
-                            if (!fieldError.getField().equals("hasDodaniePrepaid")) { //eUmowy_ext-557
-                                errors.reject(fieldError.code, fieldError.arguments, fieldError.defaultMessage)
-                                hasPointErrors = true
-                            }
+            value.each { ptCmd ->
+                if (ptCmd != null) {
+                    ptCmd?.calculatorService = cmd.calculatorService
+                    ptCmd?.calc = cmd.calc
+                    ptCmd?.minCenaNajmu = cmd.minCenaNajmu ? new BigDecimal(cmd.minCenaNajmu) : null
+                    ptCmd?.validate()
+                    if (ptCmd?.hasErrors()) {
+                        log.info(ptCmd.errors)
+                        ptCmd.errors.each {
+                            error ->
+                                log.info(error)
+                                error.fieldErrors.each { fieldError ->
+                                    if (!fieldError.getField().equals("hasDodaniePrepaid")) { //eUmowy_ext-557
+                                        errors.reject(fieldError.code, fieldError.arguments, fieldError.defaultMessage)
+                                        hasPointErrors = true
+                                    }
+                                }
                         }
                     }
                 }
             }
-        }
 
         if (cmd.points?.size() > 0 && ValidatorUtils.hasMorePriceGroups(MAX_PRICE_GROUP_SIZE, cmd.points)) {
             errors.reject("default.tooMany.groups")
