@@ -360,8 +360,8 @@ class ProcessService {
     Map getRepresentative(Process process, Integer index) {
         Representative representative = process.representatives.findAll{Representative.Type.REPRESENTATIVE.equals(it.type)}[index]
 
-        if(representative) {
-            return [name: representative?.name, surname: representative?.surname]
+        if (representative) {
+            return [name: representative?.name, surname: representative?.surname, hasSignedContract: representative.hasSignedContract]
         }
 
         return null

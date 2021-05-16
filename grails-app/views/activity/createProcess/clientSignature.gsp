@@ -187,7 +187,7 @@
             <fieldset id="clientSignaturePersons" class="subpanel-fieldset">
                 <legend><g:message code="clientSignature.signing.people"/></legend>
                 <ul class="table-list">
-                    <g:if test="${representative1}">
+                    <g:if test="${representative1 && representative1.hasSignedContract}">
                         <li>
                             <span>
                                 <a class="big-link" id="subscribe-REPRESENTATIVE1" data-type="ACCEPTANT1"
@@ -199,7 +199,7 @@
                         </li>
                     </g:if>
 
-                    <g:if test="${representative2}">
+                    <g:if test="${representative2 && representative2.hasSignedContract}">
                         <li>
                             <span>
                                 <a class="big-link" id="subscribe-REPRESENTATIVE2" data-type="ACCEPTANT2"
@@ -212,7 +212,7 @@
                     </g:if>
 
 
-                    <g:if test="${representative3}">
+                    <g:if test="${representative3 && representative3.hasSignedContract}">
                         <li>
                             <span>
                                 <a class="big-link" id="subscribe-REPRESENTATIVE3" data-type="ACCEPTANT3"
@@ -225,7 +225,7 @@
                     </g:if>
 
 
-                    <g:if test="${representative4}">
+                    <g:if test="${representative4 && representative4.hasSignedContract}">
                         <li>
                             <span>
                                 <a class="big-link" id="subscribe-REPRESENTATIVE4" data-type="ACCEPTANT4"
