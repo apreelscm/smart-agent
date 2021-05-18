@@ -7,11 +7,11 @@
         <span><g:message code="person.signed.contract"/></span>
 
         <g:radio name="${prefix}[${seqNo}].hasSignedContract" value="true"
-                 checked="${data.isPersonForm() && representative?.hasSignedContract == true}"/>
+                 checked="${representative?.hasSignedContract == true}"/>
         <label for="${prefix}[${seqNo}].hasSignedContract"><g:message code="yes"/></label>
 
         <g:radio name="${prefix}[${seqNo}].hasSignedContract" value="false"
-                 checked="${data.isPersonForm() && representative?.hasSignedContract == false}"/>
+                 checked="${representative?.hasSignedContract == false}"/>
         <label for="${prefix}[${seqNo}].hasSignedContract"><g:message code="no"/></label>
 
         <script type="text/javascript">

@@ -110,11 +110,11 @@
 
         <div class="phone-container-${prefix}-${seqNo} phone-container-company" style="${data.isPersonForm() && representative?.hasSignedContract != true ? 'display: none;' : ''}">
             <g:radio class="telephone-type" name="${prefix}[${seqNo}].telephoneType" value="${TelephoneType.LANDLINE.name()}"
-                     checked="${data.isPersonForm() && representative?.telephoneType == TelephoneType.LANDLINE}"/>
+                     checked="${representative?.telephoneType == TelephoneType.LANDLINE}"/>
             <label for="${prefix}[${seqNo}].telephoneType"><g:message code="panel.landline.phone.number"/></label>
 
             <g:radio class="telephone-type" name="${prefix}[${seqNo}].telephoneType" value="${TelephoneType.MOBILE.name()}"
-                     checked="${data.isPersonForm() && representative?.telephoneType == TelephoneType.MOBILE}"/>
+                     checked="${representative?.telephoneType == TelephoneType.MOBILE}"/>
             <label for="${prefix}[${seqNo}].telephoneType"><g:message code="panel.mobile.phone.number"/></label>
 
             <label style="margin-left: 10px" for="${prefix}[${seqNo}].phoneNumber"><g:message code="panel.number"/>: </label>
