@@ -64,13 +64,13 @@ class PointCommand implements Serializable {
 
 	Integer cbdId
 
-	String dialupTyp
-	Integer dialupIlosc
-	BigDecimal dialupCena
+    String dialupTyp
+    Integer dialupIlosc
+    String dialupCena
 
     String dialupPPTyp
     Integer dialupPPIlosc
-    BigDecimal dialupPPCena
+    String dialupPPCena
 
     String vpnTyp
     Integer vpnIlosc
@@ -98,7 +98,7 @@ class PointCommand implements Serializable {
 
     String gprsTypPortable
     Integer gprsIloscPortable
-    BigDecimal gprsCenaPortable
+    String gprsCenaPortable
 
     String wifiTypPortable
     Integer wifiIloscPortable
@@ -275,7 +275,7 @@ class PointCommand implements Serializable {
 
         vpnPPTyp(nullable: true)
         vpnPPIlosc(nullable: true, shared: "natural")
-        vpnPPCena(nullable: true, validator: { value, cmd, errors ->
+        vpnPPCena(nullable: true, shared: "number", validator: { value, cmd, errors ->
             if (!cmd.vpnPPTyp) return true
 
             if (cmd.minCenaNajmu) {
@@ -287,7 +287,7 @@ class PointCommand implements Serializable {
 
         sslTyp(nullable: true)
         sslIlosc(nullable: true, shared: "natural")
-        sslCena(nullable: true, validator: { value, cmd, errors ->
+        sslCena(nullable: true, shared: "number", validator: { value, cmd, errors ->
             if (!cmd.sslTyp) return true
 
             if (cmd.minCenaNajmu) {
@@ -299,7 +299,7 @@ class PointCommand implements Serializable {
 
         sslPPTyp(nullable: true)
         sslPPIlosc(nullable: true, shared: "natural")
-        sslPPCena(nullable: true, validator: { value, cmd, errors ->
+        sslPPCena(nullable: true, shared: "number", validator: { value, cmd, errors ->
             if (!cmd.sslPPTyp) return true
 
             if (cmd.minCenaNajmu) {
@@ -311,7 +311,7 @@ class PointCommand implements Serializable {
 
         gprsTyp(nullable: true)
         gprsIlosc(nullable: true, shared: "natural")
-        gprsCena(nullable: true, validator: { value, cmd, errors ->
+        gprsCena(nullable: true, shared: "number", validator: { value, cmd, errors ->
             if (!cmd.gprsTyp) return true
 
             if (cmd.minCenaNajmu) {

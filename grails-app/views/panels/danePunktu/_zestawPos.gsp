@@ -43,6 +43,7 @@
                 <td><g:textField name="${panelType}[${id}].dialupCena"
                                  class="decimal-number"
                                  id="${panelType}[${id}].dialupPrice"
+                                 maxlength="6"
                                  value="${pointData?.dialupCena}"/></td>
             </tr>
             <tr>
@@ -62,6 +63,7 @@
                 <td><g:textField name="${panelType}[${id}].dialupPPCena"
                                  class="decimal-number"
                                  id="${panelType}[${id}].dialupPPPrice"
+                                 maxlength="6"
                                  value="${pointData?.dialupPPCena}"/></td>
             </tr>
 
@@ -83,6 +85,7 @@
                 <td><g:textField name="${panelType}[${id}].vpnCena"
                                  class="decimal-number"
                                  id="${panelType}[${id}].vpnPrice"
+                                 maxlength="6"
                                  value="${pointData?.vpnCena}"/></td>
             </tr>
 
@@ -103,6 +106,7 @@
                 <td><g:textField name="${panelType}[${id}].vpnPPCena"
                                  class="decimal-number"
                                  id="${panelType}[${id}].vpnPPPrice"
+                                 maxlength="6"
                                  value="${pointData?.vpnPPCena}"/></td>
             </tr>
 
@@ -123,6 +127,7 @@
                 <td><g:textField name="${panelType}[${id}].sslCena"
                                  class="decimal-number"
                                  id="${panelType}[${id}].sslPrice"
+                                 maxlength="6"
                                  value="${pointData?.sslCena}"/></td>
             </tr>
 
@@ -143,6 +148,7 @@
                 <td><g:textField name="${panelType}[${id}].sslPPCena"
                                  class="decimal-number"
                                  id="${panelType}[${id}].sslPPPrice"
+                                 maxlength="6"
                                  value="${pointData?.sslPPCena}"/></td>
             </tr>
 
@@ -164,6 +170,7 @@
                 <td><g:textField name="${panelType}[${id}].gprsCena"
                                  class="decimal-number"
                                  id="${panelType}[${id}].gprsPrice"
+                                 maxlength="6"
                                  value="${pointData?.gprsCena}"/></td>
             </tr>
 
@@ -185,6 +192,7 @@
                 <td><g:textField name="${panelType}[${id}].gprsPPCena"
                                  class="decimal-number"
                                  id="${panelType}[${id}].gprsPPPrice"
+                                 maxlength="6"
                                  value="${pointData?.gprsPPCena}"/></td>
             </tr>
 
@@ -210,6 +218,7 @@
                 <td><g:textField name="${panelType}[${id}].gprsCenaPortable"
                                  class="decimal-number"
                                  id="${panelType}[${id}].gprsPricePortable"
+                                 maxlength="6"
                                  value="${pointData?.gprsCenaPortable}"/></td>
             </tr>
 
@@ -230,6 +239,7 @@
                 <td><g:textField name="${panelType}[${id}].wifiCenaPortable"
                                  class="decimal-number"
                                  id="${panelType}[${id}].wifiPricePortable"
+                                 maxlength="6"
                                  value="${pointData?.wifiCenaPortable}"/></td>
             </tr>
 
@@ -254,6 +264,7 @@
                 <td><g:textField name="${panelType}[${id}].pinPadCena"
                                  class="decimal-number"
                                  id="${panelType}[${id}].pinpadPrice"
+                                 maxlength="6"
                                  value="${pointData?.pinPadCena}"/></td>
             </tr>
             </tbody>
