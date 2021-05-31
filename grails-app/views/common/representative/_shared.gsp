@@ -19,8 +19,8 @@
             var val = jQuery('input[name="${prefix}[${seqNo}].hasSignedContract"]:checked').val();
             if (val === undefined || val === 'false') {
                 jQuery('.phone-container-${prefix}-${seqNo}').hide();
-                jQuery('.phone-container-${prefix}-${seqNo} .telephone-type').attr('checked', false);
-                jQuery('.phone-container-${prefix}-${seqNo} .phone-number').val(null);
+                jQuery('.phone-container-${prefix}-${seqNo} input[type=radio].telephone-type:checked').attr('checked', false);
+                jQuery('.phone-container-${prefix}-${seqNo} input.phone-number').val(null);
                 jQuery('.email-container-${prefix}-${seqNo}').hide();
                 jQuery('.email-container-${prefix}-${seqNo} input').val(null);
             } else {
@@ -32,8 +32,8 @@
                 var val = jQuery(this).val();
                 if (val === 'false') {
                     jQuery('.phone-container-${prefix}-${seqNo}').hide();
-                    jQuery('.phone-container-${prefix}-${seqNo} .telephone-type').attr('checked', false);
-                    jQuery('.phone-container-${prefix}-${seqNo} .phone-number').val(null);
+                    jQuery('.phone-container-${prefix}-${seqNo} input[type=radio].telephone-type:checked').attr('checked', false);
+                    jQuery('.phone-container-${prefix}-${seqNo} input.phone-number').val(null);
                     jQuery('.email-container-${prefix}-${seqNo}').hide();
                     jQuery('.email-container-${prefix}-${seqNo} input').val(null);
                 } else {

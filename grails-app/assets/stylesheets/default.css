@@ -1666,6 +1666,6 @@ td.flat-price-col, td.percent-number-col {
     text-align: center;
 }
 
-.phone-container-company {
+.phone-container-company, .phone-container-person {
     display: inline-block;
 }

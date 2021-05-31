@@ -108,12 +108,12 @@
 
     <div class="${hasErrors(bean: representative, field: 'country', 'errorSpan')} ${hasErrors(bean: representative, field: 'phoneNumber', 'errorSpan')}">
 
-        <div class="phone-container-${prefix}-${seqNo} phone-container-company" style="${data.isPersonForm() && representative?.hasSignedContract != true ? 'display: none;' : ''}">
-            <g:radio class="telephone-type" name="${prefix}[${seqNo}].telephoneType" value="${TelephoneType.LANDLINE.name()}"
+        <div class="phone-container-${prefix}-${seqNo} phone-container-person" style="${data.isPersonForm() && representative?.hasSignedContract != true ? 'display: none;' : ''}">
+            <g:radio class="telephone-type" name="${prefix}[${seqNo}].telephoneType${data.isPersonForm() == false ? '-disabled' : ''}" value="${TelephoneType.LANDLINE.name()}"
                      checked="${representative?.telephoneType == TelephoneType.LANDLINE}"/>
             <label for="${prefix}[${seqNo}].telephoneType"><g:message code="panel.landline.phone.number"/></label>
 
-            <g:radio class="telephone-type" name="${prefix}[${seqNo}].telephoneType" value="${TelephoneType.MOBILE.name()}"
+            <g:radio class="telephone-type" name="${prefix}[${seqNo}].telephoneType${data.isPersonForm() == false ? '-disabled' : ''}" value="${TelephoneType.MOBILE.name()}"
                      checked="${representative?.telephoneType == TelephoneType.MOBILE}"/>
             <label for="${prefix}[${seqNo}].telephoneType"><g:message code="panel.mobile.phone.number"/></label>
 

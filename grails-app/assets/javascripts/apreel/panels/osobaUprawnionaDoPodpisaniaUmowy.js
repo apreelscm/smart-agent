@@ -5,7 +5,7 @@
         $bisnodeRepresentatives = jQuery("#acceptorsPanel #bisnodeRepresentatives"),
         $customRepresentatives = jQuery("#acceptorsPanel #customRepresentatives"),
         $representativesChangedManually = jQuery("#acceptorsPanel #isRepresentativesChangedManually"),
-        $representativeTelephoneType = jQuery("#representativesContainer input[type=radio][name$='telephoneType']"),
+        $representativeTelephoneType = jQuery("#representativesContainer input[type=radio].telephone-type"),
         $representativeDocumentType = jQuery("#representativesContainer input[type=radio][name$='documentType']"),
         $representativeIsPolitician = jQuery("#representativesContainer input[type=radio][name$='isPolitician']"),
         $representativeVerification = jQuery("#representativesContainer input[type=radio][name$='verification']"),
@@ -96,6 +96,21 @@
             disableFields($companyData);
             clearFields($companyData);
             enableFields($personData);
+            $personData.find('input[type="radio"][id$="telephoneType-disabled"]').each(function(idx) {
+                var $elem = jQuery(this);
+                var nameAttr = $elem.attr("name");
+                if (nameAttr.endsWith("-disabled")) {
+                    $elem.attr("name", nameAttr.substr(0, nameAttr.length - 9));
+                }
+            });
+
+            $companyData.find('input[type="radio"][id$="telephoneType"]').each(function(idx) {
+                var $elem = jQuery(this);
+                var nameAttr = $elem.attr("name");
+                if (!nameAttr.endsWith("-disabled")) {
+                    $elem.attr("name", nameAttr + "-disabled");
+                }
+            });
             jQuery("input#akceptantNieMaBeneficjenta").prop('checked', true);
         } else {
             $personData.addClass('hidden');
@@ -104,6 +119,22 @@
             disableFields($personData);
             clearFields($personData);
             enableFields($companyData);
+
+            $companyData.find('input[type="radio"][id$="telephoneType-disabled"]').each(function(idx) {
+                var $elem = jQuery(this);
+                var nameAttr = $elem.attr("name");
+                if (nameAttr.endsWith("-disabled")) {
+                    $elem.attr("name", nameAttr.substr(0, nameAttr.length - 9));
+                }
+            });
+
+            $personData.find('input[type="radio"][id$="telephoneType"]').each(function(idx) {
+                var $elem = jQuery(this);
+                var nameAttr = $elem.attr("name");
+                if (!nameAttr.endsWith("-disabled")) {
+                    $elem.attr("name", nameAttr + "-disabled");
+                }
+            });
         }
 
         $representativesContainer.find('div.acceptor').each(function (_, value) {
@@ -174,6 +205,22 @@
         disableFields($representativesContainer.find('div.acceptor.hidden'));
         disableFields($representativesContainer.find('div.companyData.hidden'));
         disableFields($representativesContainer.find('div.personData.hidden'));
+
+        $representativesContainer.find('div.companyData.hidden input[type="radio"][id$="telephoneType"]').each(function(idx) {
+            var $elem = jQuery(this);
+            var nameAttr = $elem.attr("name");
+            if (!nameAttr.endsWith("-disabled")) {
+                $elem.attr("name", nameAttr + "-disabled");
+            }
+        });
+
+        $representativesContainer.find('div.personData.hidden input[type="radio"][id$="telephoneType"]').each(function(idx) {
+            var $elem = jQuery(this);
+            var nameAttr = $elem.attr("name");
+            if (!nameAttr.endsWith("-disabled")) {
+                $elem.attr("name", nameAttr + "-disabled");
+            }
+        });
     }
 
     function phoneTypeChanged(){
