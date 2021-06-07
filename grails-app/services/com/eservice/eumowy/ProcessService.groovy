@@ -1210,6 +1210,7 @@ class ProcessService {
                     posDataDetails.setSslCenaPosData(pc.getSslCena()?.toString()?.toBigDecimal())
                     posDataDetails.setSslPPCenaPosData(pc.getSslPPCena()?.toString()?.toBigDecimal())
                     posDataDetails.setGprsPPCenaPosData(pc.getGprsPPCena()?.toString()?.toBigDecimal())
+                    posDataDetails.setGprsCenaPosData(pc.getGprsCena()?.toString()?.toBigDecimal())
                     posDataDetails.setGprsCenaPortablePosData(pc.getGprsCenaPortable()?.toString()?.toBigDecimal())
                     posDataDetails.setWifiCenaPortablePosData(pc.getWifiCenaPortable()?.toString()?.toBigDecimal())
                     posDataDetails.setPinPadCenaPosData(pc.getPinPadCena()?.toString()?.toBigDecimal())
