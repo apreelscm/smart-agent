@@ -37,7 +37,7 @@ public class ConditionValidator {
     }
 
     public static def atLeastMinValue = { currentValue, cmd, errors, propertyName, minValue ->
-        if (currentValue.compareTo(minValue) == -1) {
+        if (getBigDecimalValue(currentValue).compareTo(minValue) == -1) {
             errors.rejectValue(propertyName, "default.atLeast.minValue",
                     [ValidatorUtils.getMessage(cmd, propertyName), minValue] as Object[], "default.atLeast.minValue")
             return false

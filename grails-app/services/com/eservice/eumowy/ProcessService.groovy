@@ -1189,6 +1189,17 @@ class ProcessService {
 
                 posData = new PosData()
                 posDataDetails = new PosDataDetails()
+                posDataDetails.setDialupCenaPosData(pc.getDialupCena()?.toString()?.toBigDecimal())
+                posDataDetails.setDialupPPCenaPosData(pc.getDialupPPCena()?.toString()?.toBigDecimal())
+                posDataDetails.setVpnCenaPosData(pc.getVpnCena()?.toString()?.toBigDecimal())
+                posDataDetails.setVpnPPCenaPosData(pc.getVpnPPCena()?.toString()?.toBigDecimal())
+                posDataDetails.setSslCenaPosData(pc.getSslCena()?.toString()?.toBigDecimal())
+                posDataDetails.setSslPPCenaPosData(pc.getSslPPCena()?.toString()?.toBigDecimal())
+                posDataDetails.setGprsPPCenaPosData(pc.getGprsPPCena()?.toString()?.toBigDecimal())
+                posDataDetails.setGprsCenaPosData(pc.getGprsCena()?.toString()?.toBigDecimal())
+                posDataDetails.setGprsCenaPortablePosData(pc.getGprsCenaPortable()?.toString()?.toBigDecimal())
+                posDataDetails.setWifiCenaPortablePosData(pc.getWifiCenaPortable()?.toString()?.toBigDecimal())
+                posDataDetails.setPinPadCenaPosData(pc.getPinPadCena()?.toString()?.toBigDecimal())
 
 				pointData.czyLokalny = true
             }
