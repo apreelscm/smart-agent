@@ -160,15 +160,15 @@ class PdfPosMapper extends AbstractPdfMapper{
 	private mapDialupIloscPosDataDetails(def data, def posesData, def key, def value){
 		if(value !=null && !ZERO_VALUES.contains(value)){
 			data.put(key, [value] as String[]);
-			data.put("dialupCena", [(getFromPosDataDetails(posesData, 'dialupCena'))] as String[])
+			data.put("dialupCena", [(getFromPosDataDetails(posesData, 'dialupCenaPosData'))] as String[])
 			data.put("dialupTyp", [(getFromPosDataDetails(posesData, 'dialupTyp'))] as String[])
 		}
 	}
-	
-	private mapDialupIloscPPPosDataDetails(def data, def posesData, def key, def value){
+
+	private mapDialupPPIloscPosDataDetails(def data, def posesData, def key, def value){
 		if(value !=null && !ZERO_VALUES.contains(value)){
 			data.put(key, [value] as String[]);
-			data.put("dialupPPCena", [(getFromPosDataDetails(posesData, 'dialupPPCena'))] as String[])
+			data.put("dialupPPCena", [(getFromPosDataDetails(posesData, 'dialupPPCenaPosData'))] as String[])
 			data.put("dialupPPTyp", [(getFromPosDataDetails(posesData, 'dialupPPTyp'))] as String[])
 		}
 	}
@@ -176,15 +176,15 @@ class PdfPosMapper extends AbstractPdfMapper{
 	private mapVpnIloscPosDataDetails(def data, def posesData, def key, def value){
 		if(value !=null && !ZERO_VALUES.contains(value)){
 			data.put(key, [value] as String[]);
-			data.put("vpnCena", [(getFromPosDataDetails(posesData, 'vpnCena'))] as String[])
+			data.put("vpnCena", [(getFromPosDataDetails(posesData, 'vpnCenaPosData'))] as String[])
 			data.put("vpnTyp", [(getFromPosDataDetails(posesData, 'vpnTyp'))] as String[])
 		}
 	}
 	
-	private mapVpnIloscPPPosDataDetails(def data, def posesData, def key, def value){
+	private mapVpnPPIloscPosDataDetails(def data, def posesData, def key, def value){
 		if(value !=null && !ZERO_VALUES.contains(value)){
 			data.put(key, [value] as String[]);
-			data.put("vpnPPCena", [(getFromPosDataDetails(posesData, 'vpnPPCena'))] as String[])
+			data.put("vpnPPCena", [(getFromPosDataDetails(posesData, 'vpnPPCenaPosData'))] as String[])
 			data.put("vpnPPTyp", [(getFromPosDataDetails(posesData, 'vpnPPTyp'))] as String[])
 		}
 	}
@@ -192,15 +192,15 @@ class PdfPosMapper extends AbstractPdfMapper{
 	private mapSslIloscPosDataDetails(def data, def posesData, def key, def value){
 		if(value !=null && !ZERO_VALUES.contains(value)){
 			data.put(key, [value] as String[]);
-			data.put("sslCena", [(getFromPosDataDetails(posesData, 'sslCena'))] as String[])
+			data.put("sslCena", [(getFromPosDataDetails(posesData, 'sslCenaPosData'))] as String[])
 			data.put("sslTyp", [(getFromPosDataDetails(posesData, 'sslTyp'))] as String[])
 		}
 	}
 	
-	private mapSslIloscPPPosDataDetails(def data, def posesData, def key, def value){
+	private mapSslPPIloscPosDataDetails(def data, def posesData, def key, def value){
 		if(value !=null && !ZERO_VALUES.contains(value)){
 			data.put(key, [value] as String[]);
-			data.put("sslPPCena", [(getFromPosDataDetails(posesData, 'sslPPCena'))] as String[])
+			data.put("sslPPCena", [(getFromPosDataDetails(posesData, 'sslPPCenaPosData'))] as String[])
 			data.put("sslPPTyp", [(getFromPosDataDetails(posesData, 'sslPPTyp'))] as String[])
 		}
 	}
@@ -208,15 +208,15 @@ class PdfPosMapper extends AbstractPdfMapper{
 	private mapGprsIloscPosDataDetails(def data, def posesData, def key, def value){
 		if(value !=null && !ZERO_VALUES.contains(value)){
 			data.put(key, [value] as String[]);
-			data.put("gprsCena", [(getFromPosDataDetails(posesData, 'gprsCena'))] as String[])
+			data.put("gprsCena", [(getFromPosDataDetails(posesData, 'gprsCenaPosData'))] as String[])
 			data.put("gprsTyp", [(getFromPosDataDetails(posesData, 'gprsTyp'))] as String[])
 		}
 	}
 	
-	private mapGprsIloscPPPosDataDetails(def data, def posesData, def key, def value){
+	private mapGprsPPIloscPosDataDetails(def data, def posesData, def key, def value){
 		if(value !=null && !ZERO_VALUES.contains(value)){
 			data.put(key, [value] as String[]);
-			data.put("gprsPPCena", [(getFromPosDataDetails(posesData, 'gprsPPCena'))] as String[])
+			data.put("gprsPPCena", [(getFromPosDataDetails(posesData, 'gprsPPCenaPosData'))] as String[])
 			data.put("gprsPPTyp", [(getFromPosDataDetails(posesData, 'gprsPPTyp'))] as String[])
 		}
 	}
@@ -224,7 +224,7 @@ class PdfPosMapper extends AbstractPdfMapper{
     private mapGprsIloscPortablePosDataDetails(def data, def posesData, def key, def value){
         if(value !=null && !ZERO_VALUES.contains(value)){
             data.put(key, [value] as String[]);
-            data.put("gprsCenaPortable", [(getFromPosDataDetails(posesData, 'gprsCenaPortable'))] as String[])
+            data.put("gprsCenaPortable", [(getFromPosDataDetails(posesData, 'gprsCenaPortablePosData'))] as String[])
             data.put("gprsTypPortable", [(getFromPosDataDetails(posesData, 'gprsTypPortable'))] as String[])
         }
     }
@@ -232,11 +232,19 @@ class PdfPosMapper extends AbstractPdfMapper{
     private mapWifiIloscPortablePosDataDetails(def data, def posesData, def key, def value){
         if(value !=null && !ZERO_VALUES.contains(value)){
             data.put(key, [value] as String[]);
-            data.put("wifiCenaPortable", [(getFromPosDataDetails(posesData, 'wifiCenaPortable'))] as String[])
+            data.put("wifiCenaPortable", [(getFromPosDataDetails(posesData, 'wifiCenaPortablePosData'))] as String[])
             data.put("wifiTypPortable", [(getFromPosDataDetails(posesData, 'wifiTypPortable'))] as String[])
         }
     }
-	
+
+    private mapPinPadIloscPosDataDetails(def data, def posesData, def key, def value){
+        if(value !=null && !ZERO_VALUES.contains(value)){
+            data.put(key, [value] as String[]);
+            data.put("pinPadCena", [(getFromPosDataDetails(posesData, 'pinPadCenaPosData'))] as String[])
+            data.put("pinPadTyp", [(getFromPosDataDetails(posesData, 'pinPadTyp'))] as String[])
+        }
+    }
+
 	private mapBazaIloscPosDataDetails(def data, def posesData, def key, def value){
 		if(value !=null && !ZERO_VALUES.contains(value)){
 			data.put(key, [value] as String[]);
