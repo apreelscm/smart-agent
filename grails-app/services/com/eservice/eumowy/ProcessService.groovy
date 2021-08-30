@@ -20,6 +20,7 @@ import static com.eservice.eumowy.ActivityHelper.DODANIE_DCC
 import static com.eservice.eumowy.ActivityHelper.ZMIANA_WARUNKOW_DCC
 import static com.google.common.collect.Lists.newArrayList
 import static java.lang.Integer.parseInt
+import static java.lang.Integer.valueOf
 
 class ProcessService {
     def messageSource
@@ -759,9 +760,9 @@ class ProcessService {
             if (payment != null && payment?.toString().isNumber()){
                 hpc.setCurrentTermPayment(payment.toString().toInteger())
             }
-            def hirePayment = calculatorService.getCalcProperty(calc,"CENA_NAJMU")
-            if (hirePayment && hirePayment.toString()?.isNumber()){
-                hpc.setNewTermPayment(hirePayment.toString().toInteger())
+            def hirePayment = calculatorService.getCalcProperty(calc, "CENA_NAJMU")
+            if (hirePayment && hirePayment.toString()?.isNumber()) {
+                hpc.setNewTermPayment(hirePayment)
             }
             hpc.setIsChoosen(false)
 
@@ -790,9 +791,9 @@ class ProcessService {
             if (payment != null && payment?.toString().isNumber()){
                 hpc.setCurrentTermPayment(payment.toString().toInteger())
             }
-            def hirePayment = calculatorService.getCalcProperty(calc,"CENA_NAJMU")
-            if (hirePayment && hirePayment.toString()?.isNumber()){
-                hpc.setNewTermPayment(hirePayment.toString().toInteger())
+            def hirePayment = calculatorService.getCalcProperty(calc, "CENA_NAJMU")
+            if (hirePayment && hirePayment.toString()?.isNumber()) {
+                hpc.setNewTermPayment(hirePayment)
             }
             hpc.setIsChoosen(false)
 
