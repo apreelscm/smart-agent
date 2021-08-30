@@ -26,8 +26,8 @@ class HirePaymentCommand implements Serializable{
     Integer ppCount
     Integer currentTermPayment
     Integer currentPpPayment
-    Integer newTermPayment
-    Integer newPpPayment
+    String newTermPayment
+    String newPpPayment
     Boolean isChoosen
 
     static constraints = {
