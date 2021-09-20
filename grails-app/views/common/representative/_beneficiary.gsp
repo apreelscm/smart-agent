@@ -17,8 +17,8 @@
 
 <div style="margin-top: 15px">
     <label for="${prefix}[${seqNo}].citizenship"><g:message code="citizenship.label"/></label>
-    <eumowy:textField name="${prefix}[${seqNo}].citizenship" value="${representative?.citizenship}" maxlength="30"
-                      validatable="${representative}" validateField="citizenship" required="required"/>
+    <dict:countrySelect name="${prefix}[${seqNo}].citizenship" value="${representative?.citizenship}"
+                        validatable="${representative}" validateField="citizenship" required="required"/>
 </div>
 
 <div class="acceptorPESELCountryWrapper ${hasErrors(bean: representative, field: 'verification', 'errorSpan')}">
