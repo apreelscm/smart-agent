@@ -564,6 +564,12 @@ class ProcessService {
                 if (PointCommand.metaClass.respondsTo(PointCommand, "set"+key.capitalize())) {
                     pc."set${key.capitalize()}"(value)
                 }
+
+                if (["dialupCenaPosData", "dialupPPCenaPosData", "vpnCenaPosData", "vpnPPCenaPosData", "sslCenaPosData",
+                     "sslPPCenaPosData", "wifiCenaPosData", "wifiPPCenaPosData", "gprsCenaPosData", "gprsPPCenaPosData",
+                     "gprsCenaPortablePosData", "wifiCenaPortablePosData", "pinPadCenaPosData"].contains(key) && value != null){
+                    pc."set${key.capitalize().replace("PosData", "")}"(value?.toString())
+                }
             }
 
             localPoints.add(pc)
