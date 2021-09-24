@@ -179,7 +179,7 @@ class RepresentativeCommand implements Serializable{
 
         email(nullable: true, blank: true, validator: { value, cmd, errors ->
             /*Sets.newHashSet(LegalForm.PARTNERSHIP_COMPANY.name(), LegalForm.PERSON.name()).contains(cmd.processCommand.dzialalnoscForma) && cmd.hasSignedContract*/
-            if (!CustomValidator.validateRequired(value != null, errors, cmd.hasSignedContract,
+            if (!CustomValidator.validateRequired(value != null, errors, cmd.hasSignedContract && cmd.processCommand.hasNewUmowa,
                     "email", "representative.email.required")) {
                 return false
             }
@@ -195,14 +195,14 @@ class RepresentativeCommand implements Serializable{
         })
 
         phoneNumber(nullable: true, maxSize: 20, validator: { value, cmd, errors ->
-            if (!CustomValidator.validateRequired(value != null, errors, cmd.hasSignedContract,
+            if (!CustomValidator.validateRequired(value != null, errors, cmd.hasSignedContract && cmd.processCommand.hasNewUmowa,
                     "phoneNumber", "representative.phoneNumber.required")) {
                 return false
             }
         })
         
         telephoneType(nullable: true, validator: { value, cmd, errors ->
-            if (!CustomValidator.validateRequired(value != null, errors, cmd.hasSignedContract,
+            if (!CustomValidator.validateRequired(value != null, errors, cmd.hasSignedContract && cmd.processCommand.hasNewUmowa,
                     "telephoneType", "representative.telephoneType.required")) {
                 return false
             }
