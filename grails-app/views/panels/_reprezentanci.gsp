@@ -3,7 +3,13 @@
         <div class="basicRepresentativeData">
             <g:render template="/common/representative/basicData" model="[prefix: 'representatives', seqNo: it, dropdowns: hasDropdowns,
                     representative: data.representatives[it]]"/>
+
         </div>
+
+        <g:if test="${!czyNowaUmowa}">
+             <g:render template="/common/representative/shared" model="[prefix: 'representatives', seqNo: it,
+                                                                       representative: data.representatives[it]]"/>
+        </g:if>
 
         <g:if test="${czyNowaUmowa}">
             <g:render template="/common/representative/company" model="[prefix: 'representatives', seqNo: it,
@@ -13,7 +19,7 @@
                     additionalClass: (data.isPersonForm() == true) ? '' : 'hidden', representative: data.representatives[it]]"/>
 
             <g:render template="/common/representative/shared" model="[prefix: 'representatives', seqNo: it,
-                    representative: data.representatives[it]]"/>
+                                                                       representative: data.representatives[it]]"/>
         </g:if>
     </div>
 </g:each>
