@@ -173,7 +173,7 @@ class RepresentativeCommand implements Serializable{
         hasSignedContract(nullable: true, validator: {value, cmd, errors ->
             if (!cmd.validateHasSignedContract) return
 
-            CustomValidator.validateRequired(value != null, errors, cmd.processCommand.hasNewUmowa,
+            CustomValidator.validateRequired(value != null, errors, true,
                     "hasSignedContract", "representative.hasSignedContract.required")
         })
 
