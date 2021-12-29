@@ -19,6 +19,21 @@ class PosExchangeValidator {
             return false
         }
 
+        if (posExchanges?.size() > 0 && priceLessThanCalcValue(posExchanges, cmd, errors, propertyName)) {
+            errors.reject("posExchange.priceLessThanRequired")
+            return false
+        }
+
         return true
+    }
+
+    private static boolean priceLessThanCalcValue(List<PosExchangeCommand> posExchangeCommands, cmd, errors, propertyName) {
+        List booleans = []
+
+        posExchangeCommands.findAll({ it -> it.isChoosen })
+            .collect({ it ->
+                booleans.add(ConditionValidator.getBigDecimalValue(it.newTermPayment).compareTo(it.currentPrice) == -1)}
+            )
+        return booleans.contains(false)
     }
 }

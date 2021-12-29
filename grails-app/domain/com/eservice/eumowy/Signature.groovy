@@ -13,6 +13,7 @@ class Signature implements Serializable {
     Boolean sendToClient = true
     Boolean showOnPreview = true
     Boolean showOnZRD = true
+    Boolean shouldBeMerged = true
 
     static hasMany = [
             calcFieldsSignature: CalcFieldSignature,
@@ -35,6 +36,7 @@ class Signature implements Serializable {
         sendToClient column: "SEND_TO_CLIENT"
         showOnPreview column: "SHOW_ON_PREVIEW"
         showOnZRD column: "SHOW_ON_ZRD"
+        shouldBeMerged column: "SHOULD_BE_MERGED"
     }
 
     String toString(){

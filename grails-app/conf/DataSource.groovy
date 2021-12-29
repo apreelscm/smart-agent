@@ -32,9 +32,11 @@ environments {
             driverClassName = "oracle.jdbc.driver.OracleDriver"
             dialect = "org.hibernate.dialect.Oracle10gDialect"
             username = "EUMOWY_APP"
+//            password = 'Eservice11[]'  //haslo do bazy cbd_s
             password = 'Ahfopcvy$aU3'
             dbCreate = ""
             url = "jdbc:oracle:thin:@10.9.192.59:1521:cbd_dev"
+//            url = "jdbc:oracle:thin:@10.9.192.59:1521/cbd_s" //podlaczenie sie do bazy cbd_s
             properties {
                 maxActive = -1
                 initialSize = 1

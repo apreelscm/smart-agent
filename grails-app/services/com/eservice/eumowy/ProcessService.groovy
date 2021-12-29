@@ -1080,6 +1080,7 @@ class ProcessService {
             pe.setNewModel(pec.newModel)
             pe.setSimType(pec.simType)
             pe.setCurrentPrice(pec.currentPrice)
+            pe.setNewTermPayment(pec.newTermPayment)
             pe.setIsChoosen(pec.isChoosen)
             pe.setIntegrationWithCashSystem(pec.integrationWithCashSystem)
             pe.setIntegrationType(pec.integrationType)

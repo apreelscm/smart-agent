@@ -15,6 +15,7 @@
                         <td class="align-center">Opłata</td>
                         <td class="align-center">Nowy typ</td>
                         <td class="align-center">Nowy model</td>
+                        <td class="align-center">Nowa opłata</td>
                         <td class="align-center">Karta sim</td>
                         <td class="align-center"><g:message code="panel.label.choosen" /></td>
                         <td class="align-center"><g:message code="panel.label.integration" /></td>
@@ -42,6 +43,7 @@
                         <g:else>
                             <td class="align-center"><select class="selectModel" data-index="${i}" id="selectModel_${i}" name="posExchanges[${i}].newModel" style="width: 120px"></select></td>
                         </g:else>
+                        <td class="align-center"><eumowy:textField name="posExchanges[${i}].newTermPayment" style="width: 40px" value="${data.odpUzyTermMies}" class="float-number" validatable="${data}"/></td>
                         <td class="align-center"><dict:simCardSelect name="posExchanges[${i}].simType" id="selectSim_${i}" value="${pe.simType}" style="width: 70px;" disabled="true"/></td>
                         <td class="align-center"><g:checkBox class="acceptModel" data-index="${i}" id="acceptModel_${i}" name="posExchanges[${i}].isChoosen" checked="${pe.isChoosen}"/></td>
 

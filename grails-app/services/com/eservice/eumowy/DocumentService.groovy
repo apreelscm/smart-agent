@@ -6,6 +6,8 @@ import com.google.common.collect.Lists
 import com.lowagie.text.pdf.PdfReader
 import org.apache.commons.lang.StringUtils
 import org.apache.log4j.Logger
+import org.apache.pdfbox.pdmodel.PDDocument
+import org.apache.pdfbox.util.PDFMergerUtility
 import pdfgenerator.PdfGenerator
 import pdfgenerator.PdfGenerator.FontType
 
@@ -15,6 +17,7 @@ import static com.eservice.eumowy.ActivityHelper.NOWA_UMOWA
 import static com.eservice.eumowy.ActivityHelper.WYMIANA_UMOWY_NAJMU_NA_UMOWE_WSPOLPRACY
 import static com.eservice.eumowy.ActivityHelper.WYMIANA_UMOWY_PLATNICZEJ
 import static com.eservice.eumowy.ActivityHelper.hasAtLeastOne
+import static com.eservice.eumowy.ActivityHelper.isNewAgreement
 import static com.eservice.eumowy.SignatureDetail.SignaturePurpose.ADDITIONAL_POINTS
 
 class DocumentService {
@@ -72,7 +75,9 @@ class DocumentService {
 //        documents.addAll(pointsDocuments)
 
         addNewDocumentsToProcess(documents, processInstance)
-
+        if (isNewAgreement(processInstance)) {
+            documents.add(addMergedFile(processInstance))
+        }
         removeObsoleteDocuments(processInstance)
 
         processInstance.save(flush: true)
@@ -314,6 +319,67 @@ class DocumentService {
             }
         }
     }
+
+    private DocumentFile addMergedFile(Process process) {
+        String pdfTemplatePath = "/opt/eumowy/pdf_templates/";
+        String documentName = String.format("NIP_%s_Nowy Klient.pdf", process.client.nip)
+        List<DocumentFile> documentsToMerge = process.documents?.findAll { it.signature.shouldBeMerged }
+            ?.sort(false) { a, b -> a.signature.signatureOrder.compareTo(b.signature.signatureOrder) }
+
+        PDFMergerUtility pdm = new PDFMergerUtility();
+        pdm.setDestinationFileName(pdfTemplatePath + documentName)
+        PDDocument mergedDoc = new PDDocument()
+
+        for (int i = 0; i < documentsToMerge.size(); i++) {
+            ByteArrayInputStream bais = new ByteArrayInputStream(documentsToMerge[i].getContent().getContent())
+            PDDocument document = PDDocument.load(bais)
+            pdm.appendDocument(mergedDoc, document)
+            document.close()
+        }
+
+        DocumentFile documentFile = DocumentFile.findByNameAndProcess(documentName, process)
+
+        if (!documentFile) {
+            documentFile = DocumentFile.findByNameAndProcess(documentName, process)
+        }
+        if (documentFile) {
+            log.info(String.format("Updating existing document file %s", documentFile.id))
+            documentFile.content.setContent(getBytesContent(mergedDoc))
+            documentFile.lastUpdated = new Date()
+            documentFile.save(flush: true)
+        } else {
+            documentFile = new DocumentFile(name: documentName, clientName: documentName, dateCreated: new Date(),
+                lastUpdated: new Date(), pagesCount: mergedDoc.getNumberOfPages(), signature: 3)
+            documentFile.setContent(new DocumentContent(content: getBytesContent(mergedDoc)))
+            documentFile.save(flush: true)
+            log.info(String.format("New document file created %s for process %s", documentFile.id, process.id))
+            mergedDoc.close()
+        }
+        if (!isDocumentExistsInProcess(documentFile, process)) {
+            return documentFile
+        }
+    }
+
+    private static byte[] getBytesContent(PDDocument pdDocument) throws IOException {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        try {
+            pdDocument.save(out);
+            pdDocument.close();
+        } catch (Exception ex) {
+            LOG.error(ex);
+        }
+        finally {
+            if (out != null) {
+                try {
+                    out.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return out.toByteArray();
+            }
+        }
+    }
+
 
     int getPreviewDocumentsPageCount(Set<DocumentFile> documents) {
         int totalPageCount = 0
