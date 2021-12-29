@@ -18,6 +18,9 @@
 <g:render template="../panels/danePunktu/daneDoWydruku"/>
 <g:render template="../panels/danePunktu/adresDoKorespondencjiPunktu" />
 <g:render template="../panels/danePunktu/osobaDoKontaktuWPunkcie" />
+<g:render template="../panels/danePunktu/scoring" />
+
+<asset:javascript src="apreel/panels/scoring.js"/>
 
 <g:if test="${data.isBundleActivity}">
     <g:render template="../panels/danePunktu/zestawPosPakiet"/>

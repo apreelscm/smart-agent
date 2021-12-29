@@ -175,9 +175,21 @@ class PointCommand implements Serializable {
     Boolean hasDodaniePrepaid
     Boolean hasTelefonKontaktowy
 
-	def isLocal() {
-		return czyLokalny
-	}
+    Boolean isAcceptedCardTransactions
+    Boolean isPrivateApartment
+    Boolean isAcceptedPrepayments
+    BigDecimal monthlyCashTurnover
+    BigDecimal monthlyTurnoverInInstitution
+    BigDecimal averageBill
+    BigDecimal highestCashTransaction
+    String numberOfDailyTransactions
+    Integer percentageOfPrepayments
+    Integer averageDeliveryTime
+    Integer maximumDeliveryTime
+
+    def isLocal() {
+        return czyLokalny
+    }
 
 	static constraints = {
 		phPozysk(nullable:true, blank:false, shared: "alphanumeric")
@@ -408,6 +420,35 @@ class PointCommand implements Serializable {
         tytulInformatykStatyczna(nullable: true, blank: false)
         imieInformatykStatyczna(nullable: true, blank: false, shared: "lettersOnly")
         nazwiskoInformatykStatyczna(nullable: true, blank: false, shared: "lettersOnly")
+        monthlyCashTurnover(nullable: true, shared: "number")
+        monthlyTurnoverInInstitution(nullable: true, shared: "number")
+        averageBill(nullable: true, shared: "number")
+        highestCashTransaction(nullable: true, shared: "number")
+        numberOfDailyTransactions(nullable: true)
+        percentageOfPrepayments(nullable: true, shared: "natural")
+        averageDeliveryTime(nullable: true, shared: "natural")
+        maximumDeliveryTime(nullable: true, shared: "natural")
+        isAcceptedCardTransactions(nullable: true, validator: { value, cmd, errors ->
+            if (value == null) {
+                errors.rejectValue(propertyName, "scoring.atLeastOne.scoring")
+                return false
+            }
+            return true
+        })
+        isAcceptedPrepayments(nullable: true, validator: { value, cmd, errors ->
+            if (value == null) {
+                errors.rejectValue(propertyName, "scoring.atLeastOne.scoring")
+                return false
+            }
+            return true
+        })
+        isPrivateApartment(nullable: true, validator: { value, cmd, errors ->
+            if (value == null) {
+                errors.rejectValue(propertyName, "scoring.atLeastOne.scoring")
+                return false
+            }
+            return true
+        })
 
         parentPosId(nullable: true)
     }
