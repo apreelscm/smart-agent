@@ -64,13 +64,11 @@ class PdfService {
 
         Map<Integer, Representative> representativesToSignDocuments = [:]
 
-        if (hasNewAgreement) {
-            process.allRepresentatives.eachWithIndex { representative, index ->
-                if (Boolean.TRUE == representative.hasSignedContract) {
-                    representativesToSignDocuments.put(index, representative)
+        process.allRepresentatives.eachWithIndex { representative, index ->
+               if (Boolean.TRUE == representative?.hasSignedContract) {
+                   representativesToSignDocuments.put(index, representative)
                 }
             }
-        }
 
         subscriptionsData.putAll(getSubscriptions(document.signature, subscriptions, Subscription.PersonRole.ACCEPTANT1, [Subscription.PersonRole.ACCEPTANT1, Subscription.PersonRole.ACCEPTANT1_1], representativesToSignDocuments.containsKey(0)))
         subscriptionsData.putAll(getSubscriptions(document.signature, subscriptions, Subscription.PersonRole.ACCEPTANT2, [Subscription.PersonRole.ACCEPTANT2, Subscription.PersonRole.ACCEPTANT2_1], representativesToSignDocuments.containsKey(1)))

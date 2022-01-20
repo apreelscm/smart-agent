@@ -823,8 +823,8 @@ class ProcessService {
             hpc.setPpCount(hp.ppCount)
             hpc.setCurrentTermPayment(hp.currentTermPayment?.toInteger())
             hpc.setCurrentPpPayment(hp.currentPpPayment?.toInteger())
-            hpc.setNewTermPayment(hp.newTermPayment?.toInteger())
-            hpc.setNewPpPayment(hp.newPpPayment?.toInteger())
+            hpc.setNewTermPayment(hp.newTermPayment?.toString())
+            hpc.setNewPpPayment(hp.newPpPayment?.toString())
             hpc.setIsChoosen(hp.isChoosen)
 
             result.add(hpc)
@@ -1025,8 +1025,8 @@ class ProcessService {
             hp.setPpCount(hpc.ppCount)
             hp.setCurrentTermPayment(hpc.currentTermPayment)
             hp.setCurrentPpPayment(hpc.currentPpPayment)
-            hp.setNewTermPayment(hpc.newTermPayment)
-            hp.setNewPpPayment(hpc.newPpPayment)
+            hp.setNewTermPayment(hpc.newTermPayment?.toBigDecimal())
+            hp.setNewPpPayment(hpc.newPpPayment?.toBigDecimal())
             hp.setIsChoosen(hpc.isChoosen)
             hp.setIsVisible(choosen)
 
