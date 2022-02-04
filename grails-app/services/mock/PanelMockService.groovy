@@ -374,9 +374,56 @@ class PanelMockService {
         cmd.bankKlienta = "3"
     }
 
-//    def getScoring(ProcessCommand cmd) {
-//
-//    }
+    def getScoring(ProcessCommand cmd) {
+
+        cmd.scoringDzialalnosc = "uslugi"
+        cmd.scoringSzczegolyDzialalnosci = "Handel zywym towarem"
+
+        cmd.scoringIloscTransakcji = "5-10"
+
+        cmd.scoringCzestoscTransakcji = "kilka_tygodniowo"
+
+        cmd.scoringOtwartyZamkniety = "nieczynne"
+        cmd.scoringStanZadbany = "true"
+
+        cmd.scoringWielkoscMiejscowosci = "100-500"
+
+        cmd.scoringLokalizacjaPunktu = "centrum_miasta"
+        cmd.scoringTypPunktu = "centrum_handlowe"
+        cmd.scoringTypPunktuInny = "butik"
+
+        cmd.scoringWielkoscPunktu = "400<"
+
+        cmd.scoringAkceptacja = "true"
+
+        cmd.scoringMonitoring = "false"
+
+        cmd.scoringDzialalnoscCzas = "5<"
+
+        cmd.scoringCharakterystyka = "inny"
+        cmd.scoringCharakterystykaInna = "kwiaciarnia"
+
+        cmd.scoringKoncesja = "true"
+        cmd.rodzajZezwolenia = "Produkcja bimbru"
+
+        cmd.scoringWlasnosc = "wlasnosc"
+
+        cmd.scoringDzialalnoscCzas = "<1"
+
+        cmd.scoringSprzedazTowarowEkskluzywnych = "true"
+        cmd.scoringPonad50ProcentObrotowWNocy = "false"
+        cmd.scoringRuchTurystycznyPrzygraniczny = "true"
+        cmd.scoringUslugiPlatneZGory = "false"
+
+        cmd.scoringDochodowosc = "500"
+
+        cmd.scoringDeklaracjaFinansowa = "w"
+        cmd.scoringDeklaracjaFinansowaObrotOgolem = "23.50"
+        cmd.scoringDeklaracjaFinansowaObrotNaKarty = "12.45"
+        cmd.scoringDeklaracjaFinansowaSredniObrot = "10.45"
+        cmd.scoringDeklaracjaFinansowaSredniaTransakcja = "3.45"
+
+    }
 
     def getSerwis(ProcessCommand cmd) {
         cmd.obslugaTyp = "economic"
