@@ -195,37 +195,7 @@ class PdfPointMapper extends AbstractPdfMapper{
         data.put("imieINazwisko", [value + " " + getFromPointDataDetails(pointData, 'kontaktWPunkcieNazwisko')] as String[]);
     }
 
-    private mapScoring(def data, def pointData, def key, def value) {
-        data.put(key, [value] as String[]);
-        data.put("monthlyCashTurnover", [getFromPointDataDetails(pointData, 'monthlyCashTurnover')] as String[])
-        data.put("monthlyTurnoverInInstitution", [getFromPointDataDetails(pointData, 'monthlyTurnoverInInstitution')] as String[])
-        data.put("averageBill", [getFromPointDataDetails(pointData, 'averageBill')] as String[])
-        data.put("highestCashTransaction", [getFromPointDataDetails(pointData, 'highestCashTransaction')] as String[])
-        data.put("percentageOfPrepayments", [getFromPointDataDetails(pointData, 'percentageOfPrepayments')] as String[])
-    }
-
-    private mapNumberOfDailyTransactionsPointDataDetails(def data, def pd, def key, def value) {
-        addCheckboxes(data, ["od0do4": "04", "od5do10": "5-10", "powyzej10": "powyżej 10"], value)
-    }
-
-    private mapPrivateApartmentPointDataDetails(def data, def pd, def key, def value) {
-        def StringValue = (value == true) ? "true" : "false";
-        addCheckboxes(data, ["isPrivateApartmentYes": "true", "isPrivateApartmentNo": "false"], StringValue)
-    }
-
-    private mapIsAcceptedCardTransactionsPointDataDetails(def data, def pd, def key, def value) {
-        def StringValue = (value == true) ? "true" : "false";
-        addCheckboxes(data, ["isAcceptedCardTransactionsYes": "true", "isAcceptedCardTransactionsNo": "false"], StringValue)
-    }
-
-    private mapIsAcceptedPrepaymentsPointDataDetails(def data, def pd, def key, def value) {
-        def StringValue = (value == true) ? "true" : "false";
-
-        data.put(key, [value] as String[]);
-        addCheckboxes(data, ["isAcceptedPrepaymentsYes": "true", "isAcceptedPrepaymentsNo": "false"], StringValue)
-    }
-
-    private mapKontaktWPunkcieTytulPointDataDetails(def data, def pointData, def key, def value) {
+    private mapKontaktWPunkcieTytulPointDataDetails(def data, def pointData, def key, def value){
         data.put(key, [value] as String[]);
         addCheckboxes(data, ["pan": "Pan", "pani": "Pani"], value)
     }

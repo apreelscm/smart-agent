@@ -518,10 +518,47 @@ class PanelService {
     }
 
     def getScoring(ProcessCommand cmd, def calc ) {
+        cmd.scoringDzialalnosc = nullify(cmd.scoringDzialalnosc)
 
         //scoringMcc pobierany jest globalnie w metodzie init()
         def result = cmd.scoringMcc ? cbdService.getRodzajDzialalnosciByMCC(cmd.scoringMcc) : null
+        cmd.scoringSzczegolyDzialalnosci = result?.slm_nazwa ?: ""
+
+        cmd.scoringIloscTransakcji = nullify(cmd.scoringIloscTransakcji)
+        cmd.scoringCzestoscTransakcji = nullify(cmd.scoringCzestoscTransakcji)
+        cmd.scoringOtwartyZamkniety = nullify(cmd.scoringOtwartyZamkniety)
+        cmd.scoringStanZadbany = nullify(cmd.scoringStanZadbany)
+        cmd.scoringWielkoscMiejscowosci = nullify(cmd.scoringWielkoscMiejscowosci)
+        cmd.scoringLokalizacjaPunktu = nullify(cmd.scoringLokalizacjaPunktu)
+        cmd.scoringTypPunktu = nullify(cmd.scoringTypPunktu)
+        cmd.scoringTypPunktuInny = nullify(cmd.scoringTypPunktuInny)
+        cmd.scoringWielkoscPunktu = nullify(cmd.scoringWielkoscPunktu)
+        cmd.scoringAkceptacja = nullify(cmd.scoringAkceptacja)
+        cmd.scoringMonitoring = nullify(cmd.scoringMonitoring)
+        cmd.scoringCharakterystyka = nullify(cmd.scoringCharakterystyka)
+        cmd.scoringCharakterystykaInna = nullify(cmd.scoringCharakterystykaInna)
+        cmd.scoringKoncesja = nullify(cmd.scoringKoncesja)
+        cmd.rodzajZezwolenia = nullify(cmd.rodzajZezwolenia)
+        cmd.scoringWlasnosc = nullify(cmd.scoringWlasnosc)
+        cmd.scoringDzialalnoscCzas = nullify(cmd.scoringDzialalnoscCzas)
+        cmd.scoringSprzedazTowarowEkskluzywnych = nullify(cmd.scoringSprzedazTowarowEkskluzywnych)
+        cmd.scoringPonad50ProcentObrotowWNocy = nullify(cmd.scoringPonad50ProcentObrotowWNocy)
+        cmd.scoringRuchTurystycznyPrzygraniczny = nullify(cmd.scoringRuchTurystycznyPrzygraniczny)
+        cmd.scoringUslugiPlatneZGory = nullify(cmd.scoringUslugiPlatneZGory)
+
+        cmd.scoringDeklaracjaFinansowa = nullify(cmd.scoringDeklaracjaFinansowa)
+
+        cmd.scoringDochodowosc = calculatorService.getCalcProperty(calc,"DOCHODOWOSC") ?: 0;
+        cmd.scoringDeklaracjaFinansowaObrotOgolem = calculatorService.getCalcProperty(calc,"OBROT_OGOLEM") ?: 0;
+        cmd.scoringDeklaracjaFinansowaObrotNaKarty = calculatorService.getCalcProperty(calc,"OBROT_MIESIECZNY") ?: 0;
+        cmd.scoringDeklaracjaFinansowaSredniaTransakcja = calculatorService.getCalcProperty(calc,"WARTOSC_SREDNIA") ?: 0;
+
+        cmd.progrnozaMiesieczna =  calculatorService.getCalcProperty(calc,"PROGNOZA_MIESIECZNA") ?: 0;
+        cmd.liczbaPtkCbd = calculatorService.getCalcProperty(calc,"LICZBA_PUNKTOW_CBD") ?: 0;
+
 		log.info "Liczba punktow z CBD: " + cmd.liczbaPtkCbd
+//        cmd.scoringDeklaracjaFinansowaSredniObrot = Double.valueOf(progrnozaMies) / (Double.valueOf(liczbaPtkCbd) + 0)
+
 
         //PROGNOZA_MIESIECZNA/(LICZBA_PUNKTOW_CBD + N)
     }
