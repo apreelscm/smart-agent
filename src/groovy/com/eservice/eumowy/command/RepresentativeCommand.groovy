@@ -98,11 +98,11 @@ class RepresentativeCommand implements Serializable{
         })
 
         documentType(nullable: true, validator: {value, cmd, errors ->
-            CustomValidator.validateRequired(value, errors, cmd.processCommand.isPersonForm() || cmd.procuratorPosition, "documentType",
+            CustomValidator.validateRequired(value, errors, cmd.processCommand.hasNewUmowa == true && (cmd.processCommand.isPersonForm() || cmd.procuratorPosition), "documentType",
                     "representative.typDokumentu.required")
         })
         documentNumber(nullable: true, maxSize: 20, shared: "alphanumeric", validator: {value, cmd, errors ->
-            CustomValidator.validateRequired(value, errors, cmd.processCommand.isPersonForm() || cmd.procuratorPosition,
+            CustomValidator.validateRequired(value, errors, cmd.processCommand.hasNewUmowa == true && ( cmd.processCommand.isPersonForm() || cmd.procuratorPosition),
                     "documentNumber", "representative.seriaNrDokumentu.required")
         })
         documentIssueDate(nullable: true, validator: {value, cmd, errors ->

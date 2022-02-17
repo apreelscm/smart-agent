@@ -21,9 +21,9 @@ class BeneficiariesMapper extends AbstractPdfMapper implements Mapper {
             beneficiariesData.put(getFieldName(i, "Nazwa"), [beneficiary.fullName] as String[])
             beneficiariesData.put(getFieldName(i, "Obywatelstwo"), [beneficiary.citizenship] as String[])
 
-            beneficiariesData.put(getFieldName(i, "PosiadaAkceptanta"), getCheckedCheckbox(beneficiary.ownsAcceptor))
-            beneficiariesData.put(getFieldName(i, "KontrolujeAkceptanta"), getCheckedCheckbox(beneficiary.controlsAcceptor))
-            beneficiariesData.put(getFieldName(i, "ZnaczaceUdzialy"), getCheckedCheckbox(beneficiary.overQuarterOfVotes))
+            beneficiariesData.put(getFieldName(i, "PosiadaAkceptanta"), getCheckedCheckbox(beneficiary.ownsAcceptor == null ? false : beneficiary.ownsAcceptor))
+            beneficiariesData.put(getFieldName(i, "KontrolujeAkceptanta"), getCheckedCheckbox(beneficiary.controlsAcceptor  == null ? false : beneficiary.controlsAcceptor))
+            beneficiariesData.put(getFieldName(i, "ZnaczaceUdzialy"), getCheckedCheckbox(beneficiary.overQuarterOfVotes == null ? false : beneficiary.overQuarterOfVotes))
             beneficiariesData.put(getFieldName(i, "ProcentUdzialow"), [beneficiary.votesPercentage] as String[])
         }
 
