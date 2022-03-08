@@ -18,20 +18,22 @@ class AttachmentsValidator {
         return validateProcurators(processCmd, processId)
     }
 
-    private boolean validateProcurators(ProcessCommand processCmd, processId){
-        if (processCmd.procurators.size() > 0) {
-            boolean hasProcuratorAttachment
-            List<AttachmentFile> attachmentsFiles = attachmentService.getListByProcessId(processId)
-            attachmentsFiles.each { it ->
-                String name = it.name?.toLowerCase()
-                if (name.contains("pełnomocni") || name.contains("pelnomocni")) {
-                    hasProcuratorAttachment = true
+    private boolean validateProcurators(ProcessCommand processCmd, processId) {
+        if (processCmd.hasNewUmowa) {
+            if (processCmd.procurators.size() > 0) {
+                boolean hasProcuratorAttachment
+                List<AttachmentFile> attachmentsFiles = attachmentService.getListByProcessId(processId)
+                attachmentsFiles.each { it ->
+                    String name = it.name?.toLowerCase()
+                    if (name.contains("pełnomocni") || name.contains("pelnomocni")) {
+                        hasProcuratorAttachment = true
+                    }
                 }
-            }
 
-            if (!hasProcuratorAttachment) {
-                processCmd.errors.reject("process.procurator.attachment.required")
-                return false
+                if (!hasProcuratorAttachment) {
+                    processCmd.errors.reject("process.procurator.attachment.required")
+                    return false
+                }
             }
         }
         return true

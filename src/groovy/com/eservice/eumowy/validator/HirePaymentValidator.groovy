@@ -38,7 +38,7 @@ class HirePaymentValidator {
 
         hirePaymentCommands.each { HirePaymentCommand hpc ->
             if (hpc.isChoosen){
-                normalPriceGroups.add(ValidatorUtils.getGroupValue(hpc.newTermPayment, hpc.newPpPayment))
+                normalPriceGroups.add(ValidatorUtils.getGroupValue(hpc.newTermPayment?.toInteger(), hpc.newPpPayment?.toInteger()))
             } else {
                 normalPriceGroups.add(ValidatorUtils.getGroupValue(hpc.currentTermPayment, hpc.currentPpPayment))
             }

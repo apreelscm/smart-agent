@@ -7,7 +7,7 @@
               validatable="${representative}" validateField="salutation" required="required"/>
 
     <label style="margin-left: 10px" for="${prefix}[${seqNo}].name"><g:message code="panel.first.name"/>:</label>
-    <eumowy:textField name="${prefix}[${seqNo}].name" value="${representative?.name}" maxlength ="13"
+    <eumowy:textField name="${prefix}[${seqNo}].name" value="${representative?.name}" maxlength ="25"
                       validatable="${representative}" validateField="name" required="required"/>
 
     <label for="${prefix}[${seqNo}].surname"><g:message code="panel.last.name"/>:</label>
