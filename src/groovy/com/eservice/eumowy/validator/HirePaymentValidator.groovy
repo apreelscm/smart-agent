@@ -34,17 +34,17 @@ class HirePaymentValidator {
     }
 
     private static boolean hasMoreThanPriceGroups(int maxSize, List<HirePaymentCommand> hirePaymentCommands){
-        Set<Integer> normalPriceGroups = new HashSet<Integer>()
+        Set<BigDecimal> normalPriceGroups = new HashSet<BigDecimal>()
 
         hirePaymentCommands.each { HirePaymentCommand hpc ->
             if (hpc.isChoosen){
-                normalPriceGroups.add(ValidatorUtils.getGroupValue(hpc.newTermPayment?.toInteger(), hpc.newPpPayment?.toInteger()))
+                normalPriceGroups.add(ValidatorUtils.getGroupValue(hpc.newTermPayment?.toBigDecimal(), hpc.newPpPayment?.toBigDecimal()))
             } else {
                 normalPriceGroups.add(ValidatorUtils.getGroupValue(hpc.currentTermPayment, hpc.currentPpPayment))
             }
         }
 
-        normalPriceGroups.removeAll(Collections.singleton(0)) //jesli obie ceny sa nullem to dostajemy 0
+        normalPriceGroups.removeAll(Collections.singleton(BigDecimal.ZERO)) //jesli obie ceny sa nullem to dostajemy 0
 
         normalPriceGroups.size() > maxSize;
     }

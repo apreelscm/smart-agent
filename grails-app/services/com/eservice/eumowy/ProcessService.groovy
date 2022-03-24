@@ -747,7 +747,7 @@ class ProcessService {
             }
             def payment = row.get("top");
             if (payment != null && payment?.toString()?.isNumber()){
-                hpc.setCurrentTermPayment(payment.toString().toInteger())
+                hpc.setCurrentTermPayment(payment.toString().toBigDecimal())
             }
             hpcResult.add(hpc)
         }
