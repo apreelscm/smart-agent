@@ -24,8 +24,8 @@ class HirePaymentCommand implements Serializable{
     String type
     Integer termCount
     Integer ppCount
-    Integer currentTermPayment
-    Integer currentPpPayment
+    BigDecimal currentTermPayment
+    BigDecimal currentPpPayment
     String newTermPayment
     String newPpPayment
     Boolean isChoosen
