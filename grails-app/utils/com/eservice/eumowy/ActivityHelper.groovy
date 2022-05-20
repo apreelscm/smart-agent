@@ -15,6 +15,7 @@ class ActivityHelper {
     public static final String WYMIANA_UMOWY_PLATNICZEJ = "wymianaUmowyZaplaty"
     public static final String DODANIE_DCC = "dodanieDcc"
     public static final String ZMIANA_WARUNKOW_DCC = "zmianaWarunkowDcc"
+    public static final String ANEKS = "aneks"
 
     static boolean isNewAgreement(Process process) {
         return contains(process, NOWA_UMOWA)
@@ -77,8 +78,9 @@ class ActivityHelper {
         List<String> activitiesWithoutCalculator = [WYMIANA_TERMINALA, PAKIET_START, PAKIET_START_PLUS,
                 PAKIET_MOBILNY, DODATKOWY_PUNKT, DODATKOWY_POS]
         List<String> pointAndPosCombo = Lists.newArrayList(DODATKOWY_PUNKT, DODATKOWY_POS)
+        List<String> aneksAndWymianaTerminalaCombo = Lists.newArrayList(ANEKS, WYMIANA_TERMINALA)
 
-        return activitiesWithoutCalculator.any{isOnlyActivity(process, it)} || containsOnly(process, pointAndPosCombo)
+        return activitiesWithoutCalculator.any{isOnlyActivity(process, it)} || containsOnly(process, pointAndPosCombo)  || containsOnly(process, aneksAndWymianaTerminalaCombo)
     }
 
     static boolean isClientRedundant(Process process) {

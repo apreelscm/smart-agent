@@ -43,16 +43,16 @@
         restrictionsMap["dodatkowyPunktCB"] = ["nowaUmowa", "pakiet","poprawDane","odrzucDokumenty", "uzupelnijPodpisy", "wymianaTerminalaCB"];
         restrictionsMap["dodatkowyPosCB"] =  ["nowaUmowa","pakiet","poprawDane","odrzucDokumenty", "uzupelnijPodpisy", "wymianaTerminalaCB"];
 
-        restrictionsMap["zmianaProwizjiCB"] =  ["nowaUmowa","pakiet","poprawDane","odrzucDokumenty", "uzupelnijPodpisy", "wymianaTerminalaCB"];
-        restrictionsMap["zmianaWarunkowDccCB"] =  ["nowaUmowa","pakiet","poprawDane","odrzucDokumenty", "uzupelnijPodpisy", "wymianaTerminalaCB", "dodanieDccCB"];
-        restrictionsMap["wymianaUmowyNajmuCB"] =  ["nowaUmowa","pakiet","poprawDane","odrzucDokumenty", "uzupelnijPodpisy", "wymianaTerminalaCB"];
-        restrictionsMap["dodanieAneksuKosztyPlusCB"] = ["nowaUmowa","pakiet","poprawDane","odrzucDokumenty", "uzupelnijPodpisy", "wymianaTerminalaCB"];
-        restrictionsMap["aneksCB"] =  ["nowaUmowa","poprawDane","pakiet","odrzucDokumenty", "uzupelnijPodpisy", "wymianaTerminalaCB"];
-        restrictionsMap["wymianaUmowyZaplatyCB"] =  ["nowaUmowa","pakiet","poprawDane","odrzucDokumenty", "uzupelnijPodpisy", "wymianaTerminalaCB"];
-        restrictionsMap["zmianaWarunkowPrepaidCB"] =  ["nowaUmowa","pakiet","poprawDane","odrzucDokumenty", "uzupelnijPodpisy", "wymianaTerminalaCB"];
-        restrictionsMap["odnowienieLojalnosciCB"] =  ["nowaUmowa","pakiet","poprawDane","odrzucDokumenty", "uzupelnijPodpisy", "wymianaTerminalaCB"];
-        restrictionsMap["zmianaWarunkowCashbackCB"] =  ["nowaUmowa","pakiet","poprawDane","odrzucDokumenty", "uzupelnijPodpisy", "wymianaTerminalaCB", "dodanieCashBackCB"];
-        restrictionsMap["promocyjneObnizenieNajmuCB"] =  ["nowaUmowa","pakiet","poprawDane","odrzucDokumenty", "uzupelnijPodpisy", "wymianaTerminalaCB"];
+        restrictionsMap["zmianaProwizjiCB"] =  ["nowaUmowa", "pakiet", "poprawDane", "odrzucDokumenty", "uzupelnijPodpisy", "wymianaTerminalaCB"];
+        restrictionsMap["zmianaWarunkowDccCB"] =  ["nowaUmowa", "pakiet", "poprawDane", "odrzucDokumenty", "uzupelnijPodpisy", "wymianaTerminalaCB", "dodanieDccCB"];
+        restrictionsMap["wymianaUmowyNajmuCB"] =  ["nowaUmowa", "pakiet", "poprawDane", "odrzucDokumenty", "uzupelnijPodpisy"];
+        restrictionsMap["dodanieAneksuKosztyPlusCB"] = ["nowaUmowa", "pakiet", "poprawDane", "odrzucDokumenty", "uzupelnijPodpisy", "wymianaTerminalaCB"];
+        restrictionsMap["aneksCB"] =  ["nowaUmowa", "poprawDane", "pakiet", "odrzucDokumenty", "uzupelnijPodpisy"];
+        restrictionsMap["wymianaUmowyZaplatyCB"] =  ["nowaUmowa", "pakiet", "poprawDane", "odrzucDokumenty", "uzupelnijPodpisy", "wymianaTerminalaCB"];
+        restrictionsMap["zmianaWarunkowPrepaidCB"] =  ["nowaUmowa", "pakiet", "poprawDane", "odrzucDokumenty", "uzupelnijPodpisy", "wymianaTerminalaCB"];
+        restrictionsMap["odnowienieLojalnosciCB"] =  ["nowaUmowa", "pakiet", "poprawDane", "odrzucDokumenty", "uzupelnijPodpisy", "wymianaTerminalaCB"];
+        restrictionsMap["zmianaWarunkowCashbackCB"] =  ["nowaUmowa", "pakiet", "poprawDane", "odrzucDokumenty", "uzupelnijPodpisy", "wymianaTerminalaCB", "dodanieCashBackCB"];
+        restrictionsMap["promocyjneObnizenieNajmuCB"] =  ["nowaUmowa", "pakiet", "poprawDane", "odrzucDokumenty", "uzupelnijPodpisy", "wymianaTerminalaCB"];
 
         restrictionsMap["dodaniePrepaidCB"] =  ["poprawDane","pakiet","odrzucDokumenty", "uzupelnijPodpisy", "wymianaTerminalaCB"];
         restrictionsMap["dodanieDccCB"] =  ["poprawDane","pakiet","odrzucDokumenty", "uzupelnijPodpisy", "wymianaTerminalaCB", "zmianaWarunkowDccCB"];
@@ -67,7 +67,8 @@
         restrictionsMap["odrzucDokumentyCB"] = ["nowaUmowa","pakiet","rozszerzenie", "zmianaWarunkow", "poprawDane", "pakietSerwisowy","uzupelnijPodpisy", "dodatkoweFuncjonalnosci", "wymianaTerminalaCB"];
         restrictionsMap["uzupelnijPodpisyCB"] = ["nowaUmowa","pakiet","rozszerzenie", "zmianaWarunkow", "poprawDane","odrzucDokumenty", "pakietSerwisowy", "dodatkoweFuncjonalnosci", "wymianaTerminalaCB"];
 
-        restrictionsMap["wymianaTerminalaCB"] = ["nowaUmowa","pakiet","rozszerzenie", "zmianaWarunkow", "dodatkoweFuncjonalnosci", "poprawDane","odrzucDokumenty", "uzupelnijPodpisy"];
+        restrictionsMap["wymianaTerminalaCB"] = ["nowaUmowa", "pakiet", "rozszerzenie", "dodatkoweFuncjonalnosci", "poprawDane", "odrzucDokumenty", "uzupelnijPodpisy", "dodanieAneksuKosztyPlusCB", "zmianaWarunkowDccCB",
+            "zmianaWarunkowPrepaidCB", "zmianaWarunkowCashbackCB", "promocyjneObnizenieNajmuCB", "wymianaUmowyZaplatyCB", "zmianaProwizjiCB"];
 
         restrictionsMap["pakietStartCB"] = ["nowaUmowa", "rozszerzenie", "zmianaWarunkow", "dodatkoweFuncjonalnosci", "poprawDane", "odrzucDokumenty",
             "uzupelnijPodpisy", "wymianaTerminalaCB", "pakietStartPlusCB", "pakietMobilnyCB"];
@@ -349,7 +350,7 @@
             $('#poprawDane').change(changeActivityEvent);
             $('#odrzucDokumenty').change(changeActivityEvent);
             $('#uzupelnijPodpisyCB').change(changeActivityEvent);
-            $('#wymianaTerminalaCB').change(changeActivityEvent);
+            $('#wymianaTerminalaCB').change(changeActivityEventForWymianaTerminalaCB);
 
             $('input:checkbox[data-selected="true"]').each(function( index ) {
                 $(this).attr('checked', true);
@@ -369,6 +370,20 @@
             that.toggle(expanderTmp, targets1)
         }
 
+        function changeActivityEventForWymianaTerminalaCB(e) {
+            changeActivityForWymianaTerminalaCB(e.target);
+            changeActivity( e.target);
+        }
+
+        function changeActivityForWymianaTerminalaCB(target) {
+            var aneksCB = jQuery('div.activityTree').find("#zmianaWarunkow > div > div:nth-child(4) > div > div:nth-child(2)").find('#aneksCB');
+
+            if (target.checked) {
+                aneksCB.prop('checked', true);
+            } else {
+                aneksCB.attr('checked', false);
+            }
+        }
 
         function changeActivityEvent (e) {
             changeActivity( e.target);

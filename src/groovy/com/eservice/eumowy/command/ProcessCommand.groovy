@@ -308,37 +308,6 @@ class ProcessCommand implements Serializable {
 //    scoring
 
     String scoringMcc = DEFAULT_VALUE
-    String scoringDzialalnosc = DEFAULT_VALUE
-    String scoringSzczegolyDzialalnosci = DEFAULT_VALUE
-    String scoringWlasnosc = DEFAULT_VALUE
-    String scoringDzialalnoscCzas = DEFAULT_VALUE
-    String scoringKoncesja = DEFAULT_VALUE
-    String rodzajZezwolenia = DEFAULT_VALUE
-    String scoringCharakterystyka = DEFAULT_VALUE
-    String scoringCharakterystykaInna = DEFAULT_VALUE
-    String scoringWielkoscPunktu = DEFAULT_VALUE
-    String scoringAkceptacja = DEFAULT_VALUE
-    String scoringMonitoring = DEFAULT_VALUE
-    String scoringLokalizacjaPunktu = DEFAULT_VALUE
-    String scoringTypPunktu = DEFAULT_VALUE
-    String scoringTypPunktuInny = DEFAULT_VALUE
-    String scoringWielkoscMiejscowosci = DEFAULT_VALUE
-    String scoringOtwartyZamkniety = DEFAULT_VALUE
-
-    Boolean scoringStanZadbany
-    Boolean scoringSprzedazTowarowEkskluzywnych
-    Boolean scoringPonad50ProcentObrotowWNocy
-    Boolean scoringRuchTurystycznyPrzygraniczny
-    Boolean scoringUslugiPlatneZGory
-
-    String scoringCzestoscTransakcji = DEFAULT_VALUE
-    String scoringIloscTransakcji = DEFAULT_VALUE
-    String scoringDochodowosc = DEFAULT_VALUE
-    String scoringDeklaracjaFinansowa = DEFAULT_VALUE
-    String scoringDeklaracjaFinansowaObrotOgolem = DEFAULT_VALUE
-    String scoringDeklaracjaFinansowaObrotNaKarty = DEFAULT_VALUE
-    String scoringDeklaracjaFinansowaSredniObrot = DEFAULT_VALUE
-    String scoringDeklaracjaFinansowaSredniaTransakcja = DEFAULT_VALUE
 
     //used only for calculation
     String progrnozaMiesieczna = DEFAULT_VALUE
@@ -461,37 +430,6 @@ class ProcessCommand implements Serializable {
     String hasUmowaCzas
 
     @Omit
-    String hasScoringDzialalnosc
-    @Omit
-    String hasScoringWlasnosc
-    @Omit
-    String hasScoringDzialalnoscCzas
-    @Omit
-    String hasScoringKoncesja
-    @Omit
-    String hasScoringCharakterystyka
-    @Omit
-    String hasScoringWielkoscPunktu
-    @Omit
-    String hasScoringAkceptacja
-    @Omit
-    String hasScoringMonitoring
-    @Omit
-    String hasScoringLokalizacjaPunktu
-    @Omit
-    String hasScoringTypPunktu
-    @Omit
-    String hasScoringWielkoscMiejscowosci
-    @Omit
-    String hasScoringOtwartyZamkniety
-    @Omit
-    String hasScoringCzestoscTransakcji
-    @Omit
-    String hasScoringIloscTransakcji
-    @Omit
-    String hasScoringDeklaracjaFinansowa
-
-    @Omit
     String hasKontaktTel
     @Omit
     String hasDoladowania
@@ -591,67 +529,6 @@ class ProcessCommand implements Serializable {
                 return false
             }
             return true
-        })
-
-        //TODO REFACTORING - wrzucic to do jednego 'hasScoring' i walidowac wszystkie pola scoringowe od razu
-        hasScoringDzialalnosc(nullable: true, validator: { value, cmd, errors ->
-            ScoringValidator.validate(value, cmd, errors, propertyName, "scoringDzialalnosc", cmd.scoringDzialalnosc)
-        })
-
-        hasScoringWlasnosc(nullable: true, validator: { value, cmd, errors ->
-            ScoringValidator.validate(value, cmd, errors, propertyName, "scoringWlasnosc", cmd.scoringWlasnosc)
-        })
-
-        hasScoringDzialalnoscCzas(nullable: true, validator: { value, cmd, errors ->
-            ScoringValidator.validate(value, cmd, errors, propertyName, "scoringDzialalnoscCzas", cmd.scoringDzialalnoscCzas)
-        })
-
-        hasScoringKoncesja(nullable: true, validator: { value, cmd, errors ->
-            ScoringValidator.validate(value, cmd, errors, propertyName, "scoringKoncesja", cmd.scoringKoncesja)
-        })
-
-        hasScoringCharakterystyka(nullable: true, validator: { value, cmd, errors ->
-            ScoringValidator.validate(value, cmd, errors, propertyName, "scoringCharakterystyka", cmd.scoringCharakterystyka)
-        })
-
-        hasScoringWielkoscPunktu(nullable: true, validator: { value, cmd, errors ->
-            ScoringValidator.validate(value, cmd, errors, propertyName, "scoringWielkoscPunktu", cmd.scoringWielkoscPunktu)
-        })
-
-        hasScoringAkceptacja(nullable: true, validator: { value, cmd, errors ->
-            ScoringValidator.validate(value, cmd, errors, propertyName, "scoringAkceptacja", cmd.scoringAkceptacja)
-        })
-
-        hasScoringMonitoring(nullable: true, validator: { value, cmd, errors ->
-            ScoringValidator.validate(value, cmd, errors, propertyName, "scoringMonitoring", cmd.scoringMonitoring)
-        })
-
-        hasScoringLokalizacjaPunktu(nullable: true, validator: { value, cmd, errors ->
-            ScoringValidator.validate(value, cmd, errors, propertyName, "scoringLokalizacjaPunktu", cmd.scoringLokalizacjaPunktu)
-        })
-
-        hasScoringTypPunktu(nullable: true, validator: { value, cmd, errors ->
-            ScoringValidator.validate(value, cmd, errors, propertyName, "scoringTypPunktu", cmd.scoringTypPunktu)
-        })
-
-        hasScoringWielkoscMiejscowosci(nullable: true, validator: { value, cmd, errors ->
-            ScoringValidator.validate(value, cmd, errors, propertyName, "scoringWielkoscMiejscowosci", cmd.scoringWielkoscMiejscowosci)
-        })
-
-        hasScoringOtwartyZamkniety(nullable: true, validator: { value, cmd, errors ->
-            ScoringValidator.validate(value, cmd, errors, propertyName, "scoringOtwartyZamkniety", cmd.scoringOtwartyZamkniety)
-        })
-
-        hasScoringCzestoscTransakcji(nullable: true, validator: { value, cmd, errors ->
-            ScoringValidator.validate(value, cmd, errors, propertyName, "scoringCzestoscTransakcji", cmd.scoringCzestoscTransakcji)
-        })
-
-        hasScoringIloscTransakcji(nullable: true, validator: { value, cmd, errors ->
-            ScoringValidator.validate(value, cmd, errors, propertyName, "scoringIloscTransakcji", cmd.scoringIloscTransakcji)
-        })
-
-        hasScoringDeklaracjaFinansowa(nullable: true, validator: { value, cmd, errors ->
-            ScoringValidator.validate(value, cmd, errors, propertyName, "scoringDeklaracjaFinansowa", cmd.scoringDeklaracjaFinansowa)
         })
 
 //END REFACTORING
@@ -1139,35 +1016,6 @@ class ProcessCommand implements Serializable {
             CustomValidator.validate(value, cmd, errors, propertyName, "~|[0-9]{4}")
         })
 
-        scoringDzialalnosc(nullable: false, blank: false)
-        scoringSzczegolyDzialalnosci(nullable: true, blank: true)
-        scoringWlasnosc(nullable: false, blank: false)
-        scoringDzialalnoscCzas(nullable: false, blank: false)
-        scoringKoncesja(nullable: false, blank: false)
-        rodzajZezwolenia(nullable: true, blank: true)
-        scoringCharakterystyka(nullable: false, blank: false)
-        scoringCharakterystykaInna(nullable: true, blank: true)
-        scoringWielkoscPunktu(nullable: false, blank: false)
-        scoringAkceptacja(nullable: false, blank: false)
-        scoringMonitoring(nullable: false, blank: false)
-        scoringLokalizacjaPunktu(nullable: false, blank: false)
-        scoringTypPunktu(nullable: false, blank: false)
-        scoringTypPunktuInny(nullable: true, blank: true)
-        scoringWielkoscMiejscowosci(nullable: false, blank: false)
-        scoringOtwartyZamkniety(nullable: false, blank: false)
-        scoringStanZadbany(nullable: true)
-        scoringSprzedazTowarowEkskluzywnych(nullable: true) //Boolean
-        scoringPonad50ProcentObrotowWNocy(nullable: true) //Boolean
-        scoringRuchTurystycznyPrzygraniczny(nullable: true)//Boolean
-        scoringUslugiPlatneZGory(nullable: true)//Boolean
-        scoringCzestoscTransakcji(nullable: false, blank: false)
-        scoringIloscTransakcji(nullable: false, blank: false)
-        scoringDochodowosc(nullable: true, blank: true)
-        scoringDeklaracjaFinansowa(nullable: false, blank: false)
-        scoringDeklaracjaFinansowaObrotOgolem(nullable: true, blank: true)
-        scoringDeklaracjaFinansowaObrotNaKarty(nullable: true, blank: true)
-        scoringDeklaracjaFinansowaSredniObrot(nullable: true, blank: true)
-        scoringDeklaracjaFinansowaSredniaTransakcja(nullable: true, blank: true)
         akceptantUlicaTytul(nullable: true, blank: true)
         akceptantUlica(nullable: false, blank: false, shared: "alphanumeric", validator: { value, cmd, errors ->
             SkipAddressValidator.validate(value, cmd, errors, propertyName) &&

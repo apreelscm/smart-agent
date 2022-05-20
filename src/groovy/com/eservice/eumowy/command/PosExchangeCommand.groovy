@@ -28,6 +28,7 @@ class PosExchangeCommand implements Serializable{
     String simType
 
     BigDecimal currentPrice
+    BigDecimal newTermPayment
 
     Boolean isChoosen
 

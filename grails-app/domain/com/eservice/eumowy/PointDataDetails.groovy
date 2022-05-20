@@ -14,163 +14,196 @@ class PointDataDetails implements Serializable {
 	String rodzProwadzDzialalWPraktyce
 	String numerRachunkuBankowego
     String bank
-	Integer bankId
-	
-	String nazwaDoWydrukuZTerminalaPos
-	String nazwaDoWyszukiwarki
-	String idPartnerISV
-	 
-	String wydrukUlicaTytul
-	String wydrukUlica
-	String wydrukNrDomu
-	String wydrukNrLokalu
-	String wydrukMiasto
-	String wydrukKodPocztowy
-	String wydrukPoczta
-	 
-	String wydrukLinia1
-	String wydrukLinia2
-	
-	String korespondencjaUlicaTytul
-	String korespondencjaUlica
-	String korespondencjaNrDomu
-	String korespondencjaNrLokalu
-	String korespondencjaMiasto
-	String korespondencjaKodPocztowy
-	String korespondencjaPoczta
-	
-	String kontaktWPunkcieTytul
-	String kontaktWPunkcieImie
-	String kontaktWPunkcieNazwisko
-	String kontaktWPunkcieFax //property removed in eUmowy_ext-605
-	String kontaktWPunkcieTelStacjonarny
-	String kontaktWPunkcieTelKomorkowy
-	String kontaktWPunkcieEmail
-	
-	Integer terminalIlosc //property removed in eUmowy_ext-605
-	
-	Boolean takSamoDlaWszystkichPunktow
-	Boolean zestawPosTakSamoDlaWszystkichPunktow
-	Boolean wydrukJakDlaMerchanta
-	Boolean wydrukJakPowyzej
-	Boolean dodatkoweWyposazenieTakSamoDlaWszystkichPunktow
-	Boolean funkcjeTerminalaTakSamoDlaWszystkichPunktow
-	Boolean informacjeTechniczneTakSamoDlaWszystkichPunktow
-	Boolean kontaktWPunkcieJakDlaMerchanta
-	Boolean korespondencjaJakDlaMerchantaLubWydruku
-	
-	static belongsTo = [point: PointData]
-	
-	static mapping = {
-		table name: "POINT_DETAILS", schema:DomainConsts.SHEMA_NAME
-		id generator:'sequence', params:[sequence:DomainConsts.SHEMA_NAME+'.POINT_DETAILS_SEQ']
-		phPozysk column: "ph_gain"
-		opiekaBiznesowa column: "business_care"
-		opiekaSerwisowaI column: "service_care1"
-		opiekaSerwisowaII column: "service_care2"
-		opiekaSerwisowaIII column: "service_care3"
-		nipPunktu column: "nip"
-		ryzyko column: "risk", enumType: 'string'
-		kodMCC column: "mcc_code"
-		rodzProwadzDzialalWPraktyce column: "bussiness_type_in_practice"
-		numerRachunkuBankowego column: "bank_account_number"
-		bank column: "bank_name"
-		bankId column: "bank_id"
-		nazwaDoWydrukuZTerminalaPos column: "name_print_posterminal"
-		nazwaDoWyszukiwarki column: "name_search_engine"
-		idPartnerISV column: "id_partner_ISV"
-		wydrukUlicaTytul column: "print_addressstreet_type"
-		wydrukUlica column: "print_addr_street"
-		wydrukNrDomu column: "print_addr_home_number"
-		wydrukNrLokalu column: "print_addr_flat_number"
-		wydrukMiasto column: "print_addr_city"
-		wydrukKodPocztowy column: "print_addr_postal_code"
-		wydrukPoczta column: "print_addr_post_office"
-		wydrukLinia1 column: "print_otherdata_terminal1"
-		wydrukLinia2 column: "print_otherdata_terminal2"
-		korespondencjaUlicaTytul column: "contact_addr_streettype"
-		korespondencjaUlica column: "contact_addr_street"
-		korespondencjaNrDomu column: "contact_addr_home_number"
-		korespondencjaNrLokalu column: "contact_addr_flat_number"
-		korespondencjaMiasto column: "contact_addr_city"
-		korespondencjaKodPocztowy column: "contact_addr_postalcode"
-		korespondencjaPoczta column: "contact_addr_post_office"
-		kontaktWPunkcieTytul column: "contact_at_point_title"
-		kontaktWPunkcieImie column: "contact_at_point_firstname"
-		kontaktWPunkcieNazwisko column: "contact_at_point_lastname"
-		kontaktWPunkcieFax column: "contact_at_point_fax"
-		kontaktWPunkcieTelStacjonarny column: "contact_at_point_phone"
-		kontaktWPunkcieTelKomorkowy column: "contact_at_point_mobilephone"
-		kontaktWPunkcieEmail column: "contact_at_point_email"
-		terminalIlosc column: "terminal_count"
-		takSamoDlaWszystkichPunktow column: "same_every_point"
-		zestawPosTakSamoDlaWszystkichPunktow column: "pos_sep"
-		wydrukJakDlaMerchanta column: "print_as_merchant"
-		wydrukJakPowyzej column: "print_as_above"
-		dodatkoweWyposazenieTakSamoDlaWszystkichPunktow column: "adddevice_sep"
-		funkcjeTerminalaTakSamoDlaWszystkichPunktow column: "terminalfun_sep"
-		informacjeTechniczneTakSamoDlaWszystkichPunktow column: "tecinf_sep"
-		kontaktWPunkcieJakDlaMerchanta column: "contactpoint_as_merchant"
-		korespondencjaJakDlaMerchantaLubWydruku column: "contact_as_merch_or_print"
+    Integer bankId
 
-	}
-	
-	static constraints = {
-		point(nullable:true)
-		phPozysk(nullable:true)
-		opiekaBiznesowa(nullable:true)
-		opiekaSerwisowaI(nullable:true)
-		opiekaSerwisowaII(nullable:true)
-		opiekaSerwisowaIII(nullable:true)
-		nipPunktu(nullable:true)
-		ryzyko(nullable:true)
-		kodMCC(nullable:true)
-		rodzProwadzDzialalWPraktyce(nullable:true)
-		numerRachunkuBankowego(nullable:true)
-		bank(nullable:true)
-		nazwaDoWydrukuZTerminalaPos(nullable:true)
-		nazwaDoWyszukiwarki(nullable:true)
-		idPartnerISV(nullable:true)
-		wydrukUlicaTytul(nullable:true)
-		wydrukUlica(nullable:true)
-		wydrukNrDomu(nullable:true)
-		wydrukNrLokalu(nullable:true)
-		wydrukMiasto(nullable:true)
-		wydrukKodPocztowy(nullable:true)
-		wydrukPoczta(nullable:true)
-		wydrukLinia1(nullable:true)
-		wydrukLinia2(nullable:true)
-		korespondencjaUlicaTytul(nullable:true)
-		korespondencjaUlica(nullable:true)
-		korespondencjaNrDomu(nullable:true)
-		korespondencjaNrLokalu(nullable:true)
-		korespondencjaMiasto(nullable:true)
-		korespondencjaKodPocztowy(nullable:true)
-		korespondencjaPoczta(nullable:true)
-		kontaktWPunkcieTytul(nullable:true)
-		kontaktWPunkcieImie(nullable:true)
-		kontaktWPunkcieNazwisko(nullable:true)
-		kontaktWPunkcieFax(nullable:true)
-		kontaktWPunkcieTelStacjonarny(nullable:true)
-		kontaktWPunkcieTelKomorkowy(nullable:true)
-		kontaktWPunkcieEmail(nullable:true)
-		terminalIlosc(nullable:true)
-		bankId(nullable:true)
-		takSamoDlaWszystkichPunktow(nullable:true)
-		zestawPosTakSamoDlaWszystkichPunktow(nullable:true)
-		wydrukJakDlaMerchanta(nullable:true)
-		wydrukJakPowyzej(nullable:true)
-		dodatkoweWyposazenieTakSamoDlaWszystkichPunktow(nullable:true)
-		funkcjeTerminalaTakSamoDlaWszystkichPunktow(nullable:true)
-		informacjeTechniczneTakSamoDlaWszystkichPunktow(nullable:true)
-		kontaktWPunkcieJakDlaMerchanta(nullable:true)
-		korespondencjaJakDlaMerchantaLubWydruku(nullable:true)
-	}
+    String nazwaDoWydrukuZTerminalaPos
+    String nazwaDoWyszukiwarki
+    String idPartnerISV
+
+    String wydrukUlicaTytul
+    String wydrukUlica
+    String wydrukNrDomu
+    String wydrukNrLokalu
+    String wydrukMiasto
+    String wydrukKodPocztowy
+    String wydrukPoczta
+
+    String wydrukLinia1
+    String wydrukLinia2
+
+    String korespondencjaUlicaTytul
+    String korespondencjaUlica
+    String korespondencjaNrDomu
+    String korespondencjaNrLokalu
+    String korespondencjaMiasto
+    String korespondencjaKodPocztowy
+    String korespondencjaPoczta
+
+    String kontaktWPunkcieTytul
+    String kontaktWPunkcieImie
+    String kontaktWPunkcieNazwisko
+    String kontaktWPunkcieFax //property removed in eUmowy_ext-605
+    String kontaktWPunkcieTelStacjonarny
+    String kontaktWPunkcieTelKomorkowy
+    String kontaktWPunkcieEmail
+
+    Integer terminalIlosc //property removed in eUmowy_ext-605
+
+    Boolean takSamoDlaWszystkichPunktow
+    Boolean zestawPosTakSamoDlaWszystkichPunktow
+    Boolean wydrukJakDlaMerchanta
+    Boolean wydrukJakPowyzej
+    Boolean dodatkoweWyposazenieTakSamoDlaWszystkichPunktow
+    Boolean funkcjeTerminalaTakSamoDlaWszystkichPunktow
+    Boolean informacjeTechniczneTakSamoDlaWszystkichPunktow
+    Boolean kontaktWPunkcieJakDlaMerchanta
+    Boolean korespondencjaJakDlaMerchantaLubWydruku
+
+    Boolean isAcceptedCardTransactions
+    Boolean isPrivateApartment
+    Boolean isAcceptedPrepayments
+    BigDecimal monthlyCashTurnover
+    BigDecimal monthlyTurnoverInInstitution
+    BigDecimal averageBill
+    BigDecimal highestCashTransaction
+    String numberOfDailyTransactions
+    Integer percentageOfPrepayments
+    Integer averageDeliveryTime
+    Integer maximumDeliveryTime
+
+    static belongsTo = [point: PointData]
+
+    static mapping = {
+        table name: "POINT_DETAILS", schema: DomainConsts.SHEMA_NAME
+        id generator: 'sequence', params: [sequence: DomainConsts.SHEMA_NAME + '.POINT_DETAILS_SEQ']
+        phPozysk column: "ph_gain"
+        opiekaBiznesowa column: "business_care"
+        opiekaSerwisowaI column: "service_care1"
+        opiekaSerwisowaII column: "service_care2"
+        opiekaSerwisowaIII column: "service_care3"
+        nipPunktu column: "nip"
+        ryzyko column: "risk", enumType: 'string'
+        kodMCC column: "mcc_code"
+        rodzProwadzDzialalWPraktyce column: "bussiness_type_in_practice"
+        numerRachunkuBankowego column: "bank_account_number"
+        bank column: "bank_name"
+        bankId column: "bank_id"
+        nazwaDoWydrukuZTerminalaPos column: "name_print_posterminal"
+        nazwaDoWyszukiwarki column: "name_search_engine"
+        idPartnerISV column: "id_partner_ISV"
+        wydrukUlicaTytul column: "print_addressstreet_type"
+        wydrukUlica column: "print_addr_street"
+        wydrukNrDomu column: "print_addr_home_number"
+        wydrukNrLokalu column: "print_addr_flat_number"
+        wydrukMiasto column: "print_addr_city"
+        wydrukKodPocztowy column: "print_addr_postal_code"
+        wydrukPoczta column: "print_addr_post_office"
+        wydrukLinia1 column: "print_otherdata_terminal1"
+        wydrukLinia2 column: "print_otherdata_terminal2"
+        korespondencjaUlicaTytul column: "contact_addr_streettype"
+        korespondencjaUlica column: "contact_addr_street"
+        korespondencjaNrDomu column: "contact_addr_home_number"
+        korespondencjaNrLokalu column: "contact_addr_flat_number"
+        korespondencjaMiasto column: "contact_addr_city"
+        korespondencjaKodPocztowy column: "contact_addr_postalcode"
+        korespondencjaPoczta column: "contact_addr_post_office"
+        kontaktWPunkcieTytul column: "contact_at_point_title"
+        kontaktWPunkcieImie column: "contact_at_point_firstname"
+        kontaktWPunkcieNazwisko column: "contact_at_point_lastname"
+        kontaktWPunkcieFax column: "contact_at_point_fax"
+        kontaktWPunkcieTelStacjonarny column: "contact_at_point_phone"
+        kontaktWPunkcieTelKomorkowy column: "contact_at_point_mobilephone"
+        kontaktWPunkcieEmail column: "contact_at_point_email"
+        terminalIlosc column: "terminal_count"
+        takSamoDlaWszystkichPunktow column: "same_every_point"
+        zestawPosTakSamoDlaWszystkichPunktow column: "pos_sep"
+        wydrukJakDlaMerchanta column: "print_as_merchant"
+        wydrukJakPowyzej column: "print_as_above"
+        dodatkoweWyposazenieTakSamoDlaWszystkichPunktow column: "adddevice_sep"
+        funkcjeTerminalaTakSamoDlaWszystkichPunktow column: "terminalfun_sep"
+        informacjeTechniczneTakSamoDlaWszystkichPunktow column: "tecinf_sep"
+        kontaktWPunkcieJakDlaMerchanta column: "contactpoint_as_merchant"
+        korespondencjaJakDlaMerchantaLubWydruku column: "contact_as_merch_or_print"
+        isAcceptedCardTransactions column: "is_accepted_card_transactions"
+        isPrivateApartment column: "is_private_apartment"
+        isAcceptedPrepayments column: "is_accepted_prepayments"
+        monthlyCashTurnover column: "monthly_cash_turnover"
+        monthlyTurnoverInInstitution column: "monthly_turnover_institution"
+        averageBill column: "average_bill"
+        highestCashTransaction column: "highest_cash_transaction"
+        numberOfDailyTransactions column: "number_of_daily_transactions"
+        percentageOfPrepayments column: "percentage_of_prepayments"
+        averageDeliveryTime column: "average_delivery_time"
+        maximumDeliveryTime column: "maximum_delivery_time"
+    }
+
+    static constraints = {
+        point(nullable: true)
+        phPozysk(nullable: true)
+        opiekaBiznesowa(nullable: true)
+        opiekaSerwisowaI(nullable: true)
+        opiekaSerwisowaII(nullable: true)
+        opiekaSerwisowaIII(nullable: true)
+        nipPunktu(nullable: true)
+        ryzyko(nullable: true)
+        kodMCC(nullable: true)
+        rodzProwadzDzialalWPraktyce(nullable: true)
+        numerRachunkuBankowego(nullable: true)
+        bank(nullable: true)
+        nazwaDoWydrukuZTerminalaPos(nullable: true)
+        nazwaDoWyszukiwarki(nullable: true)
+        idPartnerISV(nullable: true)
+        wydrukUlicaTytul(nullable: true)
+        wydrukUlica(nullable: true)
+        wydrukNrDomu(nullable: true)
+        wydrukNrLokalu(nullable: true)
+        wydrukMiasto(nullable: true)
+        wydrukKodPocztowy(nullable: true)
+        wydrukPoczta(nullable: true)
+        wydrukLinia1(nullable: true)
+        wydrukLinia2(nullable: true)
+        korespondencjaUlicaTytul(nullable: true)
+        korespondencjaUlica(nullable: true)
+        korespondencjaNrDomu(nullable: true)
+        korespondencjaNrLokalu(nullable: true)
+        korespondencjaMiasto(nullable: true)
+        korespondencjaKodPocztowy(nullable: true)
+        korespondencjaPoczta(nullable: true)
+        kontaktWPunkcieTytul(nullable: true)
+        kontaktWPunkcieImie(nullable: true)
+        kontaktWPunkcieNazwisko(nullable: true)
+        kontaktWPunkcieFax(nullable: true)
+        kontaktWPunkcieTelStacjonarny(nullable: true)
+        kontaktWPunkcieTelKomorkowy(nullable: true)
+        kontaktWPunkcieEmail(nullable: true)
+        terminalIlosc(nullable: true)
+        bankId(nullable: true)
+        takSamoDlaWszystkichPunktow(nullable: true)
+        zestawPosTakSamoDlaWszystkichPunktow(nullable: true)
+        wydrukJakDlaMerchanta(nullable: true)
+        wydrukJakPowyzej(nullable: true)
+        dodatkoweWyposazenieTakSamoDlaWszystkichPunktow(nullable: true)
+        funkcjeTerminalaTakSamoDlaWszystkichPunktow(nullable: true)
+        informacjeTechniczneTakSamoDlaWszystkichPunktow(nullable: true)
+        kontaktWPunkcieJakDlaMerchanta(nullable: true)
+        korespondencjaJakDlaMerchantaLubWydruku(nullable: true)
+        isAcceptedCardTransactions(nullable: true)
+        isPrivateApartment(nullable: true)
+        isAcceptedPrepayments(nullable: true)
+        monthlyCashTurnover(nullable: true)
+        monthlyTurnoverInInstitution(nullable: true)
+        averageBill(nullable: true)
+        highestCashTransaction(nullable: true)
+        numberOfDailyTransactions(nullable: true)
+        percentageOfPrepayments(nullable: true)
+        averageDeliveryTime(nullable: true)
+        maximumDeliveryTime(nullable: true)
+    }
 
 	enum Risk {
 		LOW,
 		HIGH
 	}
-	
+
 }
 

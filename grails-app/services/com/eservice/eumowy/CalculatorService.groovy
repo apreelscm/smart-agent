@@ -9,7 +9,7 @@ class CalculatorService implements Serializable {
 
     static final BRAK_LABEL = "BRAK"
 	static final FALSE_LABEL = "NIE"
-	
+
 	def cbdService
 
     def isCalcValid(def calcExt, def calcId, Process process) {
@@ -17,10 +17,10 @@ class CalculatorService implements Serializable {
 
 		boolean isCalculatorSignaturesValid = isCalValidBySignatures(calcExt, process.signatures)
 		boolean isCalculaotrActivitiesValid = isCalValidExtendedValidation(calcId, process.activities, process.signatures)
-        
+
 		return isCalculatorSignaturesValid && isCalculaotrActivitiesValid
     }
-	
+
 	def isCalValidBySignatures(def calcExt, def signatures) {
 		Set signaturesCalcNames = []
 		signatures.each{signature ->
@@ -44,7 +44,7 @@ class CalculatorService implements Serializable {
 
 		return isCalcNotMissingKeys
 	}
-	
+
 	def isCalValidExtendedValidation(def calcId, def activities, def signatures) {
 		def activityString = ""
 		activities.eachWithIndex { activity, idx  ->
@@ -63,9 +63,9 @@ class CalculatorService implements Serializable {
         }
 
 		log.info "isCalcValidByActivities activities [${activityString}], signatures [${signaturesString}]  "
-		
+
 		def result = cbdService.checkActivities(activityString, calcId, signaturesString)
-		
+
 		return result
 	}
 
@@ -98,6 +98,13 @@ class CalculatorService implements Serializable {
     def getCalculator(Process process, Client client) {
         boolean isCalculatorNeeded = !ActivityHelper.isCalculatorRedundant(process)
         List calculator = []
+        boolean isCalculatorOptional = process.activities?.any{it.code.equals("wymianaTerminala")}
+
+        if (isCalculatorOptional){
+            calculator = cbdService.findCalculatorByNip(client.nip)
+
+            return calculator != null ? calculator : null
+        }
 
         if (isCalculatorNeeded) {
             calculator = cbdService.findCalculatorByNip(client.nip)

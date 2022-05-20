@@ -54,7 +54,7 @@ public class ConditionValidator {
         return true
     }
 
-    private static BigDecimal getBigDecimalValue(def value) {
+    public static BigDecimal getBigDecimalValue(def value) {
         return value?.toString()?.isNumber() ? value.toString().toBigDecimal() : BigDecimal.ZERO
     }
 }

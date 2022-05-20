@@ -21,6 +21,7 @@ class PosExchange implements Serializable{
     String simType
 
     BigDecimal currentPrice
+    BigDecimal newTermPayment
 
     Boolean isChoosen
 
@@ -45,6 +46,7 @@ class PosExchange implements Serializable{
         newModel column: "NEW_MODEL"
         simType column: "SIM_TYPE"
         currentPrice column: "CURRENT_PRICE"
+        newTermPayment column: "NEW_TERM_PAYMENT"
         isChoosen column: "IS_CHOOSEN"
 
         integrationWithCashSystem column: "CASH_SYSTEM_INTEGRATION"
@@ -63,6 +65,7 @@ class PosExchange implements Serializable{
         newModel(nullable: true)
         simType(nullable: true)
         currentPrice(nullable: true)
+        newTermPayment(nullable: true)
         isChoosen(nullable: true)
         integrationWithCashSystem (nullable: true)
         integrationType (nullable: true)

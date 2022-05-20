@@ -113,7 +113,7 @@ class EumowyFieldTagLib {
 
         StringBuilder sb = new StringBuilder()
         if (attrs.class?.indexOf("error") != -1) {
-			sb.append("<div style=\"padding-right: 2em; display: inline;\">")
+			sb.append("<div style=\"padding-right: 15em; display: inline;\">")
         }
 		sb.append(g.field(attrs))
 

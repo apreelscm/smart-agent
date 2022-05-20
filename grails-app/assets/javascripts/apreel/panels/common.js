@@ -64,3 +64,26 @@ function clearVerificationDetail() {
             acceptor.find("input[type=text][name$='pesel']").val('');
     }
 }
+
+function onScoringChange() {
+    var $this = jQuery(this),
+        isAcceptedPrep = $this.parents("div.subpanel-fieldset-centercontent-scoring")
+            .find('#percentageOfPrepaymentsTr'),
+        maximumDeliveryTime1 = $this.parents("div.subpanel-fieldset-centercontent-scoring")
+            .find('#maximumDeliveryTime'),
+        averageDeliveryTime = $this.parents("div.subpanel-fieldset-centercontent-scoring")
+            .find('#averageDeliveryTime');
+
+    clearFields(isAcceptedPrep);
+    clearFields(maximumDeliveryTime1);
+
+    if (this.value === 'false' || this.value == null) {
+        isAcceptedPrep.addClass('hidden');
+        maximumDeliveryTime1.addClass('hidden');
+        averageDeliveryTime.addClass('hidden');
+    } else {
+        isAcceptedPrep.removeClass('hidden');
+        maximumDeliveryTime1.removeClass('hidden');
+        averageDeliveryTime.removeClass('hidden');
+    }
+}
