@@ -1,0 +1,31 @@
+SELECT m.KLN_NIP,
+       cbv.MID,
+       cbv.TYP,
+       cbv.prefix,
+       cbv.imie,
+       cbv.nazwisko,
+       cbv.stanowisko,
+       cbv.pesel,
+       cbv.data_urodzenia          AS "dataUrodzenia",
+       cbv.obywatelstwo,
+       cbv.kraj_urodzenia          AS "krajUrodzenia",
+       cbv.dokument_tozsamosci     AS "dokumentTozsamosci",
+       cbv.data_waznosci_dokumentu AS "dataWaznosciDokumentu",
+       cbv.data_wydania_dokumentu  AS "dataWydaniaDokumetu",
+       cbv.telefon,
+       cbv.email,
+       cbv.telefon_stac            as "telefonStac",
+       cbv.nr_domu                 AS "numerDomu",
+       cbv.nr_lokalu               AS "numerLokalu",
+       cbv.kod_pocztowy            as "kodPocztowy",
+       cbv.miasto,
+       cbv.poczta,
+       cbv.kraj,
+       cbv.czy_os_podpisala_umowe  as "czyPodpisalaUmowe",
+       cbv.ulica_typ               AS "ulicaTyp",
+       cbv.ulica_nazwa             AS "ulica",
+       m.KLN_SFP_ID                AS "formaPrawnaID"
+FROM CBV_DANE_REPREZENTANCI cbv
+         JOIN CBD_ADM.cbt_klienci m
+              ON m.KLN_MID = cbv.mid
+WHERE m.KLN_NIP = :nip

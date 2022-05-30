@@ -29,6 +29,7 @@ class ProcessService {
     def cbdService
     def panelMockService
     def calculatorService
+    def representativeService
 
     void invalidateCaches() {
         cbdService.invalidateCaches()
@@ -269,6 +270,7 @@ class ProcessService {
             representativeProperties.remove("description")
             representativeProperties.remove("countryCode")
             representativeProperties.remove("locationType")
+            representativeProperties.remove("representativeCBDId")
 
             if(Representative.Type.REPRESENTATIVE.equals(type)) {
                 representativeProperties.remove("ownsAcceptor")
@@ -1059,12 +1061,12 @@ class ProcessService {
         process
     }
 
-    private def fillPosExchange(def cmd, def process){
+    private def fillPosExchange(def cmd, def process) {
         cmd.posExchanges.each { PosExchangeCommand pec ->
             log.info "Saving PosExchange with id: " + pec.id + " and tpsId: " + pec.tpsId
 
             PosExchange pe = PosExchange.findById(pec.id)
-            if (!pe){
+            if (!pe) {
                 log.info "Not found!! Creating new PosExchange!!"
                 pe = new PosExchange()
                 pe.setId(pec.id)
@@ -1101,7 +1103,7 @@ class ProcessService {
 
     private void updateRepresentatives(Process process, List<RepresentativeCommand> representatives, Representative.Type type) {
         representatives.each { representativeCmd ->
-             Representative representative = Representative.findById(representativeCmd.properties.id)
+            Representative representative = Representative.findById(representativeCmd.properties.id)
 
             if (representative && !representativeCmd.name && !representativeCmd.surname) {
                 log.info(String.format("Removing %s %s - empty name", type, representative.id))
@@ -1130,10 +1132,47 @@ class ProcessService {
         representativeCmd.properties.remove("id")
         representative.properties = representativeCmd.properties
 
-        return representative.save(flush: true)
+        def representativeCbdData = mapDataFromCBd(representativeCmd, representative)
+        representative.save()
+
+        representativeCbdData.save()
+
+        return representative
     }
 
-    private def addCurrentDate(def processDataList){
+    private RepresentativeCbdData mapDataFromCBd(RepresentativeCommand representativeCommand, Representative representative) {
+        RepresentativeCbdData representativeCbdData = new RepresentativeCbdData();
+
+        representativeCbdData.setLandlinePhone(representativeCommand.getLandlinePhone())
+        representativeCbdData.setSalutation(representativeCommand.getSalutationCBD())
+        representativeCbdData.setName(representativeCommand.getNameCBD())
+        representativeCbdData.setSurname(representativeCommand.getSurnameCBD())
+        representativeCbdData.setPosition(representativeCommand.getPositionCBD())
+        representativeCbdData.setPesel(representativeCommand.getPeselCBD())
+        representativeCbdData.setBirthCountryCode(representativeCommand.getBirthCountryCBD())
+        representativeCbdData.setBirthDate(representativeCommand.getBirthDateCBD())
+        representativeCbdData.setDocumentNumber(representativeCommand.getDocumentNumberCBD())
+        representativeCbdData.setDocumentExpirationDate(representativeCommand.getDocumentExpirationDateCBD())
+        representativeCbdData.setDocumentIssueDate(representativeCommand.getDocumentIssueDateCBD())
+        representativeCbdData.setCitizenship(representativeCommand.getCitizenshipCBD())
+        representativeCbdData.setStreetTitle(representativeCommand.getStreetTitleCBD())
+        representativeCbdData.setStreet(representativeCommand.getStreetCBD())
+        representativeCbdData.setHouseNumber(representativeCommand.getHouseNumberCBD())
+        representativeCbdData.setFlatNumber(representativeCommand.getFlatNumberCBD())
+        representativeCbdData.setCity(representativeCommand.getCityCBD())
+        representativeCbdData.setPostalCode(representativeCommand.getPostalCodeCBD())
+        representativeCbdData.setPostOffice(representativeCommand.getPostOfficeCBD())
+        representativeCbdData.setCountry(representativeCommand.getCountryCBD())
+        representativeCbdData.setHasSignedContract(representativeCommand.getHasSignedContractCBD())
+        representativeCbdData.setEmail(representativeCommand.getEmailCBD())
+        representativeCbdData.setMobilePhone(representativeCommand.getMobilePhoneCBD())
+        representativeCbdData.setLandlinePhone(representativeCommand.getLandlinePhoneCBD())
+        representativeCbdData.setRepresentative(representative)
+
+        return representativeCbdData
+    }
+
+    private def addCurrentDate(def processDataList) {
         processDataList.add(new ProcessData([name: 'dataUmowy', value: DateUtils.formatWithTimezone(DateUtils.getCurrentDate())]))
     }
 
@@ -1859,6 +1898,10 @@ class ProcessService {
         command.akceptantFax = merchantDetailsDTO.akceptantFax
 
         MerchantDetailsDTOToBeneficiaryCommandMapper.map(merchantDetailsDTO.beneficiaries, command.beneficiaries)
+    }
 
+    public void saveRepresentativesDataFromCBD(ProcessCommand command) {
+        def x = representativeService.getRepresentativesFromCBD(command.nip)
+        command.representatives = x
     }
 }

@@ -1,6 +1,7 @@
 <asset:javascript src="apreel/panels/dokumentyWeryfikacyjne.js"/>
+<div class="dokumentyWeryfikacyjne ${(!czyNowaUmowa) ? 'hidden' : ''}">
+    <fieldset>
 
-<fieldset>
     <header class="belka-glowna"><g:message code="panel.verifications.documents.title"/></header>
 
     <section id="verificationDocuments">
@@ -37,5 +38,10 @@
             <label><g:message code="beneficiary.verification.schema.label"/></label>
         </div>
 
+        <div>
+            <g:checkBox name="beneficjentWeryfikacjaRejestr" checked="${data.beneficjentWeryfikacjaRejestr}"/>
+            <label><g:message code="beneficiary.verification.register.label"/></label>
+        </div>
     </section>
 </fieldset>
+</div>

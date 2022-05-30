@@ -42,7 +42,6 @@
     </fieldset>
 </div>
 
-<g:if test="${czyNowaUmowa}">
     <div id="acceptorsAdditionalPanels">
         <g:render template="/panels/beneficjenciRzeczywisci"/>
         <g:render template="/panels/dokumentyWeryfikacyjne"/>
@@ -50,7 +49,6 @@
 
     <asset:javascript src="apreel/panels/beneficjenciRzeczywisci.js"/>
     <asset:javascript src="apreel/panels/osobaUprawnionaDoPodpisaniaUmowy.js"/>
-</g:if>
 
 <g:if test="${data.isFromBisnode}">
     <script type="text/javascript">

@@ -1,5 +1,6 @@
 package com.eservice.eumowy.command
 
+import com.eservice.eumowy.RepresentativeCbdData
 import com.eservice.eumowy.enums.options.AcceptorVerification
 import com.eservice.eumowy.enums.options.IdentityDocumentType
 import com.eservice.eumowy.enums.options.LegalForm
@@ -9,6 +10,7 @@ import com.eservice.eumowy.validator.NumberValidator
 import com.google.common.collect.Sets
 import grails.validation.Validateable
 import org.apache.commons.validator.routines.EmailValidator
+import org.yaml.snakeyaml.representer.Represent
 
 @Validateable(nullable = true)
 class RepresentativeCommand implements Serializable{
@@ -51,10 +53,38 @@ class RepresentativeCommand implements Serializable{
     Boolean isDirectPep
     Boolean hasSignedContract
     boolean validateHasSignedContract = true
+    Boolean isCBDDataChangedManually = Boolean.FALSE
 
     String email
     String phoneNumber
     TelephoneType telephoneType
+
+    // dane z CBD
+    String legalFormCBD
+    String salutationCBD
+    String nameCBD
+    String surnameCBD
+    String positionCBD
+    String peselCBD
+    Date birthDateCBD
+    String birthCountryCBD
+    String documentNumberCBD
+    Date documentIssueDateCBD
+    Date documentExpirationDateCBD
+    String citizenshipCBD
+    String streetTitleCBD
+    String streetCBD
+    String houseNumberCBD
+    String flatNumberCBD
+    String cityCBD
+    String postalCodeCBD
+    String postOfficeCBD
+    String countryCBD
+    Boolean hasSignedContractCBD
+    String emailCBD
+    String mobilePhoneCBD
+    String landlinePhoneCBD
+    RepresentativeCbdData representativeCBD
 
     String getMobilePhone(){
         return TelephoneType.MOBILE == telephoneType ? phoneNumber : null
@@ -207,5 +237,6 @@ class RepresentativeCommand implements Serializable{
                 return false
             }
         })
+        isCBDDataChangedManually(nullable: true)
     }
 }

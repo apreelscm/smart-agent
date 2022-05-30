@@ -1,11 +1,12 @@
-
 package com.eservice.eumowy
 
 import com.eservice.eumowy.auth.EServiceUserDetails
 import com.eservice.eumowy.command.ProcessCommand
+import com.eservice.eumowy.command.RepresentativeCommand
 import com.eservice.eumowy.dto.MerchantDetailsDTO
 import com.eservice.eumowy.dto.MerchantSearchStatus
 import com.eservice.eumowy.exception.CalculatorException
+import com.eservice.eumowy.pdfmapper.representative.LegalFormMapper
 import com.eservice.eumowy.process.DefineActivityCommand
 import com.eservice.eumowy.util.DateUtils
 import com.eservice.eumowy.validator.AttachmentsValidator
@@ -41,7 +42,7 @@ class ActivityController {
     def processService
     def calculatorService
     def pdfService
-	def documentService
+    def documentService
     def dictionaryService
     def microBisnodeService
     def mailBodyCreatorService
@@ -242,7 +243,7 @@ class ActivityController {
                 Process processInstance = flow.processInstance
 
                 setRepresentatives(flow)
-                
+
                 flow.requiredNumberOfSubscriptions = subscriptionService.getRequiredSubscriptionsCount(processInstance)
 
                 if (!flow.skipDocumentGeneration && !flow.isUzupelnijPodpisy) {
@@ -254,15 +255,15 @@ class ActivityController {
                 flow.rejectedDocumentsMessage = message(code: 'process.reject', args:[flow.processInstance.client.nip])
             }
             render(view: "../createProcess/clientSignature", model: [
-                    processInstance: flow.processInstance,
-                    totalPagesCount: flow.totalPagesCount,
-                    representative1: flow.representative1,
-                    representative2: flow.representative2,
-                    representative3: flow.representative3,
-                    representative4: flow.representative4,
-                    requiredNumberOfSubscriptions: flow.requiredNumberOfSubscriptions,
-                    clientNip: flow.rejectedDocumentsMessage,
-                    isUzupelnijPodpisy: flow.isUzupelnijPodpisy
+                processInstance: flow.processInstance,
+                totalPagesCount: flow.totalPagesCount,
+                representative1: flow.representative1,
+                representative2: flow.representative2,
+                representative3: flow.representative3,
+                representative4: flow.representative4,
+                requiredNumberOfSubscriptions: flow.requiredNumberOfSubscriptions,
+                clientNip: flow.rejectedDocumentsMessage,
+                isUzupelnijPodpisy: flow.isUzupelnijPodpisy
             ])
             on("back"){
                 flow.newProcessFlow = false
@@ -392,8 +393,8 @@ class ActivityController {
         restartFlow()
     }
 /**
-     * DEFAULT FULL SUBFLOW
-     * */
+ * DEFAULT FULL SUBFLOW
+ * */
     def normalFlow = {
         input {
             processInstance(required: true)
@@ -594,6 +595,10 @@ class ActivityController {
                         processService.fillCommandWithBisnodeData(processCommand, flow.bisnodeMerchantDetails)
                     }
 
+                    if (!flow.czyNowaUmowa) {
+//                        processService.saveRepresentativesDataFromCBD(processCommand)
+                    }
+
                     //inicjacyjne zapisanie danych pobranych z cbd i calc
                     processInstance = processService.populateProcessWithData(processInstance, processCommand, conversation.calc)
 
@@ -663,46 +668,46 @@ class ActivityController {
                 flow.data = processCommand
                 flow.processInstance = processInstance
             }.to "selectedPanels"
-			on("deletePos") {
-				Process processInstance = flow.processInstance
-				ProcessCommand processCommand = flow.data
-				PosData pos = PosData.get(Integer.valueOf(params.posId))
+            on("deletePos") {
+                Process processInstance = flow.processInstance
+                ProcessCommand processCommand = flow.data
+                PosData pos = PosData.get(Integer.valueOf(params.posId))
 
-				if (pos) {
-					log.info "DeletePos - Usuwam pos o id: " + params.posId
-					PointData point = pos.point
-					//pos.removeFromPoint(point)
-					
-					if (point == null) {
-						point = PointData.find {
-							process == processInstance &&
-							posDatas { id == pos.id }
-						}
-					}
-					
-					if (point) {
-						point.posDatas?.each {
-							if (it?.parentPosId == pos?.id) {
-								it.delete()
-							}
-						}
-						point.posDatas?.removeAll { it == null || it?.id == pos?.id || it?.parentPosId == pos?.id }
-						//point.removeFromPosDatas(pos)
-						pos.delete()
-						if (point.posDatas != null) {
-							point.liczbaPos = point.posDatas.size()
-						}
-						point.save()
-						processInstance.save(flush: true)
-					}
-	
-					processCommand?.poses?.removeAll { it == null || it.id == pos.id }
-				} else {
-					log.info "DeletePos - Nie znalazłem pos o id: " + params.posId
-				}
-				flow.data = processCommand
-				flow.processInstance = processInstance
-			}.to "selectedPanels"
+                if (pos) {
+                    log.info "DeletePos - Usuwam pos o id: " + params.posId
+                    PointData point = pos.point
+                    //pos.removeFromPoint(point)
+
+                    if (point == null) {
+                        point = PointData.find {
+                            process == processInstance &&
+                                posDatas { id == pos.id }
+                        }
+                    }
+
+                    if (point) {
+                        point.posDatas?.each {
+                            if (it?.parentPosId == pos?.id) {
+                                it.delete()
+                            }
+                        }
+                        point.posDatas?.removeAll { it == null || it?.id == pos?.id || it?.parentPosId == pos?.id }
+                        //point.removeFromPosDatas(pos)
+                        pos.delete()
+                        if (point.posDatas != null) {
+                            point.liczbaPos = point.posDatas.size()
+                        }
+                        point.save()
+                        processInstance.save(flush: true)
+                    }
+
+                    processCommand?.poses?.removeAll { it == null || it.id == pos.id }
+                } else {
+                    log.info "DeletePos - Nie znalazłem pos o id: " + params.posId
+                }
+                flow.data = processCommand
+                flow.processInstance = processInstance
+            }.to "selectedPanels"
             on("saveOnly"){ ProcessCommand processCommand ->
                 log.info params
                 log.info params.get('allPoses[0]')
@@ -833,7 +838,7 @@ class ActivityController {
                 Process processInstance = flow.savedProcess
 
                 log.info(format("POPRAW DANE - wczytanie procesu - nip = %s, processId = %s, status = %s. USER AGENT: %s",
-                        ${flow.nip}, ${processInstance?.id}, ${processInstance?.status}, request?.getHeader("user-agent")))
+                    ${flow.nip}, ${processInstance?.id}, ${processInstance?.status}, request?.getHeader("user-agent")))
 
                 processService.setPhDetailsFromUser(processInstance, springSecurityService.principal)
 
@@ -862,7 +867,7 @@ class ActivityController {
                 Process lastProcess = processService.getLastProcessForClient(params.nip)
 
                 log.info(format("POPRAW DANE - znaleziono proces - nip = %s, processId = %s, status = %s. USER AGENT: %s",
-                        ${flow.nip}, ${lastProcess?.id}, ${lastProcess?.status}, request?.getHeader("user-agent")))
+                    ${flow.nip}, ${lastProcess?.id}, ${lastProcess?.status}, request?.getHeader("user-agent")))
 
                 if(!client?.cbdId){
                     /** sprawdzanie, czy to nie jest nowa umowa */
@@ -969,45 +974,45 @@ class ActivityController {
                 flow.data = processCommand
                 flow.processInstance = processInstance
             }.to "selectedPanels"
-			on("deletePos") {
-				Process processInstance = flow.processInstance
-				ProcessCommand processCommand = flow.data
-				PosData pos = PosData.get(Integer.valueOf(params.posId))
+            on("deletePos") {
+                Process processInstance = flow.processInstance
+                ProcessCommand processCommand = flow.data
+                PosData pos = PosData.get(Integer.valueOf(params.posId))
 
-				if (pos) {
-					log.info "DeletePos - Usuwam pos o id: " + params.posId
-					PointData point = pos.point
-					if (point) {
-						point = PointData.find {
-							process == processInstance &&
-							posDatas { id == pos.id }
-						}
-					}
-					
-					if (point) {
-						point.posDatas?.each {
-							if (it?.parentPosId == pos?.id) {
-								it.delete()
-							}
-						}
-						point.posDatas?.removeAll { it == null || it?.id == pos?.id || it?.parentPosId == pos?.id }
-						pos.delete()
-						if (point.posDatas != null) {
-							point.liczbaPos = point.posDatas.size()
-						}
-						
-						point.save()
-						processInstance.save(flush: true)
-					}
+                if (pos) {
+                    log.info "DeletePos - Usuwam pos o id: " + params.posId
+                    PointData point = pos.point
+                    if (point) {
+                        point = PointData.find {
+                            process == processInstance &&
+                                posDatas { id == pos.id }
+                        }
+                    }
+
+                    if (point) {
+                        point.posDatas?.each {
+                            if (it?.parentPosId == pos?.id) {
+                                it.delete()
+                            }
+                        }
+                        point.posDatas?.removeAll { it == null || it?.id == pos?.id || it?.parentPosId == pos?.id }
+                        pos.delete()
+                        if (point.posDatas != null) {
+                            point.liczbaPos = point.posDatas.size()
+                        }
+
+                        point.save()
+                        processInstance.save(flush: true)
+                    }
 
                     processCommand?.poses?.removeAll { it == null || it.id == pos.id }
-				}
-				else {
-					log.info "DeletePos - Nie znalazłem pos o id: " + params.posId
-				}
-				flow.data = processCommand
-				flow.processInstance = processInstance
-			}.to "selectedPanels"
+                }
+                else {
+                    log.info "DeletePos - Nie znalazłem pos o id: " + params.posId
+                }
+                flow.data = processCommand
+                flow.processInstance = processInstance
+            }.to "selectedPanels"
             on("saveOnly"){ ProcessCommand cmd ->
                 Process processInstance = processService.populateProcessWithData(flow.processInstance, cmd, conversation.calc)
 
@@ -1022,17 +1027,17 @@ class ActivityController {
                         foundApc?.id = point.id
                     }
                 }
-				
-				processInstance.points?.each { point ->
-					point.posDatas?.each { pos ->
-						if (pos?.tpsId != null) {
-							def foundApc = cmd.allPoses?.find { apc -> apc?.tpsId == pos.tpsId }
-							if (foundApc != null) {
-								foundApc.id = pos.id
-							}
-						}
-					}
-				}
+
+                processInstance.points?.each { point ->
+                    point.posDatas?.each { pos ->
+                        if (pos?.tpsId != null) {
+                            def foundApc = cmd.allPoses?.find { apc -> apc?.tpsId == pos.tpsId }
+                            if (foundApc != null) {
+                                foundApc.id = pos.id
+                            }
+                        }
+                    }
+                }
 
                 flow.processInstance = processInstance
                 //  flow.data = cmd
@@ -1352,8 +1357,8 @@ class ActivityController {
     def getDocumentPage() {
         def process = Process.get(Integer.valueOf(params.processId));
         String path = pdfService.getImageFromPDFDocumentFile(process.documents,
-                params.processId as String,
-                Integer.valueOf(params.pageNumber));
+            params.processId as String,
+            Integer.valueOf(params.pageNumber));
         render(text: path)
     }
 
@@ -1369,6 +1374,87 @@ class ActivityController {
             render(text: data.toString())
         }
         render(text: '')
+    }
+
+    def getReprezentantData() {
+        String id = params.id
+        def result = cbdService.getReprezentantData(id)
+
+        RepresentativeCommand representative = new RepresentativeCommand()
+
+        String name = result?.NAME ?: ""
+        String surname = result?.SURNAME ?: ""
+        String position = result?.POSITION ?: ""
+        String salutation = result?.SALUTATION ?: ""
+        String email = result?.EMAIL ?: ""
+        String telefonStacjonarny = result?.LANDLINE_PHONE ?: ""
+        String telefonKomorkowy = result?.MOBILE_PHONE ?: ""
+        String ulica = result?.STREET ?: ""
+        String kraj = result?.COUNTRY ?: ""
+        String typUlicy = result?.STREET_TITLE ?: ""
+        String numerDomu = result?.HOUSE_NUMBER ?: ""
+        String numerLokalu = result?.FLAT_NUMBER ?: ""
+        String kodPocztowy = result?.POSTAL_CODE ?: ""
+        String miasto = result?.CITY ?: ""
+        String poczta = result?.POST_OFFICE ?: ""
+        String pesel = result?.PESEL ?: ""
+        def dataUrodzenia = result?.BIRTH_DATE ?: ""
+        String obywatelstwo = result?.CITIZENSHIP ?: ""
+        String krajUrodzenia = result?.BIRTH_COUNTRY ?: ""
+        String dokumentTozsamosci = result?.ID_NUMBER ?: ""
+        def dataWaznosciDokumentu = result?.ID_ISSUE_DATE ?: ""
+        def dataWydaniaDokumetu = result?.ID_EXPIRATION_DATE ?: ""
+
+//        representative.setName(name)
+//        representative.setSurname(surname)
+//        representative.setPosition(mapperService.mapPositionFromCBD(position))
+//        representative.setSalutation(salutation)
+//        representative.setEmail(email)
+//        representative.setLandlinePhone(telefonStacjonarny)
+//        representative.setMobilePhone(telefonKomorkowy)
+//        representative.setStreet(ulica)
+//        representative.setStreetTitle(typUlicy)
+//        representative.setCountry(kraj)
+//        representative.setHouseNumber(numerDomu)
+//        representative.setFlatNumber(numerLokalu)
+//        representative.setPostalCode(kodPocztowy)
+//        representative.setCity(miasto)
+//        representative.setPostOffice(poczta)
+//        representative.setIsCBDDataChangedManually(representative?.isCBDDataChangedManually != null ? representative?.isCBDDataChangedManually : true)
+//        representative.setPesel(pesel)
+//        representative.setBirthDate(dataUrodzenia)
+//        representative.setCitizenship(obywatelstwo)
+//        representative.setBirthCountry(krajUrodzenia)
+//        representative.setDocumentNumber(dokumentTozsamosci)
+//        representative.setDocumentExpirationDate(dataWaznosciDokumentu)
+//        representative.setDocumentIssueDate(dataWydaniaDokumetu)
+//        representative.setHasSignedContract(czyPodpisalaUmowe)
+//        representative.setLegalFormCBD(LegalFormMapper.mapLegalFormFromCBD(legalFormCode))
+        representative.setNameCBD(name)
+        representative.setSurnameCBD(surname)
+//        representative.setPositionCBD(mapperService.mapPositionFromCBD(position))
+        representative.setSalutationCBD(salutation)
+        representative.setEmailCBD(email)
+        representative.setLandlinePhoneCBD(telefonStacjonarny)
+        representative.setMobilePhoneCBD(telefonKomorkowy)
+        representative.setStreetCBD(ulica)
+        representative.setStreetTitleCBD(typUlicy)
+        representative.setCountryCBD(kraj)
+        representative.setHouseNumberCBD(numerDomu)
+        representative.setFlatNumberCBD(numerLokalu)
+        representative.setPostalCodeCBD(kodPocztowy)
+        representative.setCityCBD(miasto)
+        representative.setPostOfficeCBD(poczta)
+        representative.setPeselCBD(pesel)
+//        representative.setBirthDateCBD(dataUrodzenia)
+        representative.setCitizenshipCBD(obywatelstwo)
+        representative.setBirthCountryCBD(krajUrodzenia)
+        representative.setDocumentNumberCBD(dokumentTozsamosci)
+//        representative.setDocumentExpirationDateCBD(dataWaznosciDokumentu)
+//        representative.setDocumentIssueDateCBD(dataWydaniaDokumetu)
+//        representative.setHasSignedContractCBD(czyPodpisalaUmowe)
+//
+        render representative as JSON
     }
 
     def getCity() {
@@ -1419,26 +1505,26 @@ class ActivityController {
         render dictionaryService.getCalculatorDevicesTypes(params.type) as JSON
     }
 
-	def downloadDoc(){
-		log.info( "downloadDoc = " +  params.id);
-		DocumentFile file = documentService.download(params.id)
+    def downloadDoc(){
+        log.info( "downloadDoc = " +  params.id);
+        DocumentFile file = documentService.download(params.id)
 
-		if(!(file?.content?.content)){
-			redirect(action: "show")
-		}
+        if(!(file?.content?.content)){
+            redirect(action: "show")
+        }
 
-		response.setContentType("application/pdf")
-		response.setHeader("Content-disposition", "${params.contentDisposition}; filename=\"${file.name}\"")
+        response.setContentType("application/pdf")
+        response.setHeader("Content-disposition", "${params.contentDisposition}; filename=\"${file.name}\"")
         response.setStatus(200)
         response.flushBuffer()
 
         try {
-		    response.outputStream << PdfGenerator.getClosedContent(file.content.content)
+            response.outputStream << PdfGenerator.getClosedContent(file.content.content)
         } catch(ClientAbortException e) {
             log.info("Application on android device tried to download document and triggered 2 download requests " +
-                    "(one from browser, second from download manager). This is common bug, nothing to worry about - document was download.")
+                "(one from browser, second from download manager). This is common bug, nothing to worry about - document was download.")
         }
-	}
+    }
 
 
 //--------------
@@ -1447,7 +1533,7 @@ class ActivityController {
 
     def  _getActivePanels(def signatures) {
         def orderComparator = [
-                compare: { Panel a, Panel b -> a.orderNo <=> b.orderNo }
+            compare: { Panel a, Panel b -> a.orderNo <=> b.orderNo }
         ] as Comparator
 
         def activePanels = new TreeSet(orderComparator)
@@ -1535,16 +1621,16 @@ class ActivityController {
                 emailService.sendDocumentsPaperVersion(process.documents, mailBodyParams)
             }
         } else if (TEMPLATES.equals(requestVersion)) {
-			List<DocumentFile> documentFilesWithBlackFaksymileList = new ArrayList<DocumentFile>()
-			process.documents.findAll{it.signature?.sendToClient}?.each { DocumentFile doc ->
+            List<DocumentFile> documentFilesWithBlackFaksymileList = new ArrayList<DocumentFile>()
+            process.documents.findAll{it.signature?.sendToClient}?.each { DocumentFile doc ->
                 pdfService.updateDataUmowyOnDocument(doc, process)
 
-				DocumentFile dfwbf = new DocumentFile(name: doc.name, clientName: doc.clientName , dateCreated: doc.dateCreated, lastUpdated: doc.lastUpdated, pagesCount: doc.pagesCount)
-				byte[] newContent = pdfService.addBlackFaksymileToDocument(doc.content.content, doc.signature.id)
-				dfwbf.setContent(new DocumentContent(content: newContent))
-				dfwbf.discard()
-				documentFilesWithBlackFaksymileList.add(dfwbf)
-			}
+                DocumentFile dfwbf = new DocumentFile(name: doc.name, clientName: doc.clientName , dateCreated: doc.dateCreated, lastUpdated: doc.lastUpdated, pagesCount: doc.pagesCount)
+                byte[] newContent = pdfService.addBlackFaksymileToDocument(doc.content.content, doc.signature.id)
+                dfwbf.setContent(new DocumentContent(content: newContent))
+                dfwbf.discard()
+                documentFilesWithBlackFaksymileList.add(dfwbf)
+            }
 
             log.info "TEMPLATE VERSION for process" + process.id
 
@@ -1566,7 +1652,7 @@ class ActivityController {
             if (recipient){
                 emailService.sendDocumentsTemplateVersion(recipient, documentFilesWithBlackFaksymileList, mailBodyParams)
             }
-    	}
+        }
     }
 
     def _getNewProcessStatus(def params, def requiredNumberOfSubscriptions) {

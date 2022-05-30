@@ -29,6 +29,8 @@ class CbdService {
     private static final String GET_NUMER_RACHUNKU_BANKOWEGO = "getNumerRachunkuBankowego"
     private static final String GET_OSOBA1_UPRAWNIONA_DO_PODPISANIA_UMOWY = "getOsoba1UprawnionaDoPodpisaniaUmowy"
     private static final String GET_OSOBA2_UPRAWNIONA_DO_PODPISANIA_UMOWY = "getOsoba2UprawnionaDoPodpisaniaUmowy"
+    private static final String GET_REPREZENTANCI = "getReprezentanci"
+    private static final String GET_REPREZENTANT_BY_ID = "getReprezentantById"
     private static final String GET_OSOBA_DO_KONTAKTU = "getOsobaDoKontaktu"
     private static final String GET_OSOBA_KTORA_POZYSKALA_AKCEPTANTA = "getOsobaKtoraPozyskalaAkceptanta"
     private static final String GET_PROMOCYJNE_OBINZENIE_OPLAT_GRID = "getPromocyjneObinzenieOplatGrid"
@@ -61,6 +63,8 @@ class CbdService {
     private static final String CZY_TERMINAL_DCC = "cbd_validation/czyTerminalDCC"
     private static final String GET_RODZAJ_UMOWY = "cbd_validation/getRodzajUmowy"
     private static final String GET_UMW_TYP = "cbd_validation/getUmwTyp"
+    private static final String GET_BENEFICJENCI = "getBeneficjenci"
+    private static final String GET_COUNTRY_BY_COUNTRY_CODE = "getCountryByCountryCode"
 
     def logggger = Logger.getLogger("calcAppender")
 
@@ -136,6 +140,30 @@ class CbdService {
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
     def getOsoba2UprawnionaDoPodpisaniaUmowy(def clientNip) {
         return cbdDAO.selectOne(GET_OSOBA2_UPRAWNIONA_DO_PODPISANIA_UMOWY,[nip:clientNip])
+    }
+
+    @Cacheable(value="eumowyCacheShort", key = "'getReprezentanci_'.concat(#clientNip)")
+    @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
+    def getReprezentanciFromCbd(def clientNip) {
+        return cbdDAO.selectMany(GET_REPREZENTANCI,[nip:clientNip])
+    }
+
+    @Cacheable(value="eumowyCacheShort", key = "'getReprezentantById_'.concat(#id)")
+    @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
+    def getReprezentantData(def id) {
+        return  cbdDAO.selectOne(GET_REPREZENTANT_BY_ID,[id:id])
+    }
+
+    @Cacheable(value="eumowyCacheShort", key = "'getCountryByCountryCode_'.concat(#code)")
+    @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
+    def getCountryByCountryCode(def code) {
+        return cbdDAO.selectOne(GET_COUNTRY_BY_COUNTRY_CODE,[code:code])
+    }
+
+    @Cacheable(value="eumowyCacheShort", key = "'getBeneficjenci_'.concat(#clientNip)")
+    @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
+    def getBeneficjenci(def clientNip) {
+        return cbdDAO.selectMany(GET_BENEFICJENCI,[nip:clientNip])
     }
 
     @Cacheable(value="eumowyCacheShort", key = "'getOsobaDoKontaktu_'.concat(#clientNip)")
