@@ -202,7 +202,13 @@ class Process implements Serializable {
     }
 
     public List<DocumentFile> getDocumentsForPreview() {
-      return documents?.findAll { it.signature.showOnPreview }?.sort(false) { a, b -> a.signature.signatureOrder.compareTo(b.signature.signatureOrder) }
+        if (activities?.any { it.code.equals("nowaUmowa") }) {
+            return documents?.findAll { it -> isMergedDocument(it.name) }
+        } else return documents?.findAll { it.signature.showOnPreview }?.sort(false) { a, b -> a.signature.signatureOrder.compareTo(b.signature.signatureOrder) }
+    }
+
+    private boolean isMergedDocument(String input) {
+        return input.indexOf("Nowy Klient") != -1;
     }
 
     public List<Representative> getAllRepresentatives() {
