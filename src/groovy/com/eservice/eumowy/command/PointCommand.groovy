@@ -428,27 +428,6 @@ class PointCommand implements Serializable {
         percentageOfPrepayments(nullable: true, shared: "natural")
         averageDeliveryTime(nullable: true, shared: "natural")
         maximumDeliveryTime(nullable: true, shared: "natural")
-        isAcceptedCardTransactions(nullable: true, validator: { value, cmd, errors ->
-            if (value == null) {
-                errors.rejectValue(propertyName, "scoring.atLeastOne.scoring")
-                return false
-            }
-            return true
-        })
-        isAcceptedPrepayments(nullable: true, validator: { value, cmd, errors ->
-            if (value == null) {
-                errors.rejectValue(propertyName, "scoring.atLeastOne.scoring")
-                return false
-            }
-            return true
-        })
-        isPrivateApartment(nullable: true, validator: { value, cmd, errors ->
-            if (value == null) {
-                errors.rejectValue(propertyName, "scoring.atLeastOne.scoring")
-                return false
-            }
-            return true
-        })
 
         parentPosId(nullable: true)
     }

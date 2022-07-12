@@ -74,10 +74,11 @@ class DocumentService {
 //        Set<DocumentFile> pointsDocuments = getAdditionalPointsDocuments(processInstance)
 //        documents.addAll(pointsDocuments)
 
-        addNewDocumentsToProcess(documents, processInstance)
         if (isNewAgreement(processInstance)) {
-            documents.add(addMergedFile(processInstance))
+            Set<DocumentFile> mergedFiles = addMergedFile(processInstance)
+            documents.addAll(mergedFiles)
         }
+        addNewDocumentsToProcess(documents, processInstance)
         removeObsoleteDocuments(processInstance)
 
         processInstance.save(flush: true)
@@ -124,8 +125,8 @@ class DocumentService {
 
         int localPointsCount = localPoints.size()
         List<PointData> points = localPoints
-                .sort { it.nazwa }
-                .subList(POINTS_COUNT_ON_DOCUMENT, localPointsCount)
+            .sort { it.nazwa }
+            .subList(POINTS_COUNT_ON_DOCUMENT, localPointsCount)
 
         Set<DocumentFile> documents = []
 
@@ -263,7 +264,7 @@ class DocumentService {
             documentFile.save(flush: true)
         } else {
             documentFile = new DocumentFile(name: nameWithNip, clientName: nameWithNip, dateCreated: new Date(),
-                    lastUpdated: new Date(), pagesCount: getDocumentPageCount(documentData), signature: sig)
+                lastUpdated: new Date(), pagesCount: getDocumentPageCount(documentData), signature: sig)
             documentFile.setContent(new DocumentContent(content: documentData))
             documentFile.save(flush: true)
 
@@ -285,9 +286,9 @@ class DocumentService {
         }
 
         signature.subscriptionDefinitions.findAll { (it.role == Subscription.PersonRole.ZARZAD1 || it.role == Subscription.PersonRole.ZARZAD2) && it.subscriptionPageNumber != null && it.subscriptionPageNumber > -1}
-                .eachWithIndex{ SubscriptionDefinition it, int i ->
-            dataMap.put(it.role.name() + i, [new File(subscriptionsPath + File.separator + it.fileName).toURI().toURL(), "", "signature", it.subscriptionPageNumber.toString(), (it.subscriptionX).toString(), it.subscriptionY.toString(), it.scaleX, it.scaleY] as String[])
-        }
+            .eachWithIndex{ SubscriptionDefinition it, int i ->
+                dataMap.put(it.role.name() + i, [new File(subscriptionsPath + File.separator + it.fileName).toURI().toURL(), "", "signature", it.subscriptionPageNumber.toString(), (it.subscriptionX).toString(), it.subscriptionY.toString(), it.scaleX, it.scaleY] as String[])
+            }
 
         if (panelData) {
             dataMap.putAll(panelData)
@@ -320,9 +321,10 @@ class DocumentService {
         }
     }
 
-    private DocumentFile addMergedFile(Process process) {
+    private Set<DocumentFile> addMergedFile(Process process) {
+        Set<DocumentFile> documents = []
         String pdfTemplatePath = "/opt/eumowy/pdf_templates/";
-        String documentName = String.format("NIP_%s_Nowy Klient.pdf", process.client.nip)
+        String documentName = String.format("NIP_%s_Nowy Klient_%s.pdf", process.client.nip, process?.signatures?.find({ it -> it?.name?.indexOf("Umowa") != -1 }))
         List<DocumentFile> documentsToMerge = process.documents?.findAll { it.signature.shouldBeMerged }
             ?.sort(false) { a, b -> a.signature.signatureOrder.compareTo(b.signature.signatureOrder) }
 
@@ -355,9 +357,10 @@ class DocumentService {
             log.info(String.format("New document file created %s for process %s", documentFile.id, process.id))
             mergedDoc.close()
         }
-        if (!isDocumentExistsInProcess(documentFile, process)) {
-            return documentFile
+        if(documentFile && !isDocumentExistsInProcess(documentFile, process)) {
+            documents.add(documentFile)
         }
+        return documents;
     }
 
     private static byte[] getBytesContent(PDDocument pdDocument) throws IOException {

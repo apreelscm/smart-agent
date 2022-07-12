@@ -8,11 +8,11 @@
             <td class="isAcceptedCardTransactions"><g:message code="scoring.isAcceptedCardTransactions.label"/>
             </td>
             <td>
-                <g:radio name="${panelType}[${id}].isAcceptedCardTransactions" value="true"
+                <g:radio name="${panelType}[${id}].isAcceptedCardTransactions" value="true" required="required"
                          checked="${pointData?.isAcceptedCardTransactions == true}"/>
                 <label for="${panelType}[${id}].isAcceptedCardTransactions"><g:message code="yes"/></label>
 
-                <g:radio name="${panelType}[${id}].isAcceptedCardTransactions" value="false"
+                <g:radio name="${panelType}[${id}].isAcceptedCardTransactions" value="false" required="required"
                          checked="${pointData?.isAcceptedCardTransactions == false}"/>
                 <label for="${panelType}[${id}].isAcceptedCardTransactions"><g:message code="no"/></label>
             </td>
@@ -22,11 +22,11 @@
             <td class="isPrivateApartment"><g:message code="scoring.isPrivateApartment.label"/>
             </td>
             <td>
-                <g:radio name="${panelType}[${id}].isPrivateApartment" value="true"
+                <g:radio name="${panelType}[${id}].isPrivateApartment" value="true" required="required"
                          checked="${pointData?.isPrivateApartment == true}"/>
                 <label for="${panelType}[${id}].isPrivateApartment"><g:message code="yes"/></label>
 
-                <g:radio name="${panelType}[${id}].isPrivateApartment" value="false"
+                <g:radio name="${panelType}[${id}].isPrivateApartment" value="false" required="required"
                          checked="${pointData?.isPrivateApartment == false}"/>
                 <label for="${panelType}[${id}].isPrivateApartment"><g:message code="no"/></label>
             </td>
@@ -36,11 +36,11 @@
             <td class="isAcceptedPrepayments"><g:message code="scoring.isAcceptedPrepayments.label"/>
             </td>
             <td>
-                <g:radio name="${panelType}[${id}].isAcceptedPrepayments" value="true"
+                <g:radio name="${panelType}[${id}].isAcceptedPrepayments" value="true" required="required"
                          checked="${pointData?.isAcceptedPrepayments == true}"/>
                 <label for="${panelType}[${id}].isAcceptedPrepayments"><g:message code="yes"/></label>
 
-                <g:radio name="${panelType}[${id}].isAcceptedPrepayments" value="false"
+                <g:radio name="${panelType}[${id}].isAcceptedPrepayments" value="false" required="required"
                          checked="${pointData?.isAcceptedPrepayments == false}"/>
                 <label for="${panelType}[${id}].isAcceptedPrepayments"><g:message code="no"/></label>
             </td>
