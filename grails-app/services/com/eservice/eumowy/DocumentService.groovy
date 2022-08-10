@@ -74,6 +74,7 @@ class DocumentService {
 //        Set<DocumentFile> pointsDocuments = getAdditionalPointsDocuments(processInstance)
 //        documents.addAll(pointsDocuments)
 
+        addNewDocumentsToProcess(documents, processInstance)
         if (isNewAgreement(processInstance)) {
             Set<DocumentFile> mergedFiles = addMergedFile(processInstance)
             documents.addAll(mergedFiles)
@@ -332,7 +333,7 @@ class DocumentService {
         pdm.setDestinationFileName(pdfTemplatePath + documentName)
         PDDocument mergedDoc = new PDDocument()
 
-        for (int i = 0; i < documentsToMerge.size(); i++) {
+        for (int i = 0; i < documentsToMerge?.size(); i++) {
             ByteArrayInputStream bais = new ByteArrayInputStream(documentsToMerge[i].getContent().getContent())
             PDDocument document = PDDocument.load(bais)
             pdm.appendDocument(mergedDoc, document)
