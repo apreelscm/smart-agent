@@ -770,7 +770,7 @@ class ProcessService {
             }
             def payment = row.get("oplata_za_pos");
             if (payment != null && payment?.toString().isNumber()){
-                hpc.setCurrentTermPayment(payment.toString().toInteger())
+                hpc.setCurrentTermPayment(payment.toString().toBigDecimal())
             }
             def hirePayment = calculatorService.getCalcProperty(calc, "CENA_NAJMU")
             if (hirePayment && hirePayment.toString()?.isNumber()) {
@@ -800,8 +800,8 @@ class ProcessService {
                 hpc.setTermCount(Integer.valueOf(count.toString()))
             }
             def payment = row.get("oplata_za_pos");
-            if (payment != null && payment?.toString().isNumber()){
-                hpc.setCurrentTermPayment(payment.toString().toInteger())
+            if (payment != null && payment?.toString()?.isNumber()){
+                hpc.setCurrentTermPayment(payment.toString().toBigDecimal())
             }
             def hirePayment = calculatorService.getCalcProperty(calc, "CENA_NAJMU")
             if (hirePayment && hirePayment.toString()?.isNumber()) {
@@ -827,7 +827,7 @@ class ProcessService {
             hpc.setType(hp.type)
             hpc.setTermCount(hp.termCount)
             hpc.setPpCount(hp.ppCount)
-            hpc.setCurrentTermPayment(hp.currentTermPayment?.toInteger())
+            hpc.setCurrentTermPayment(hp.currentTermPayment?.toBigDecimal())
             hpc.setCurrentPpPayment(hp.currentPpPayment?.toInteger())
             hpc.setNewTermPayment(hp.newTermPayment?.toString())
             hpc.setNewPpPayment(hp.newPpPayment?.toString())
