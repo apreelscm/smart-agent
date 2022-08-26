@@ -2,15 +2,15 @@ dataSource {
     pooled = true
     formatSql = false
     dialect = "org.hibernate.dialect.Oracle10gDialect"
-   // hibernate.default_schema = "CBD_UMOWY"
+    // hibernate.default_schema = "CBD_UMOWY"
 
 }
 
 hibernate {
-	generate_statistics=true
+    generate_statistics=true
     cache.use_second_level_cache = true
     cache.use_query_cache = true
-	cache.provider_class='org.hibernate.cache.EhCacheProvider'
+    cache.provider_class='org.hibernate.cache.EhCacheProvider'
 }
 
 // environment specific settings

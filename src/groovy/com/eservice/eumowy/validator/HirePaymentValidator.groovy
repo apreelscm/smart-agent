@@ -40,7 +40,7 @@ class HirePaymentValidator {
             if (hpc.isChoosen){
                 normalPriceGroups.add(ValidatorUtils.getGroupValue(hpc.newTermPayment?.toBigDecimal(), hpc.newPpPayment?.toBigDecimal()))
             } else {
-                normalPriceGroups.add(ValidatorUtils.getGroupValue(hpc.currentTermPayment, hpc.currentPpPayment))
+                normalPriceGroups.add(ValidatorUtils.getGroupValue(hpc.currentTermPayment?.toBigDecimal(), hpc.currentPpPayment?.toBigDecimal()))
             }
         }
 
