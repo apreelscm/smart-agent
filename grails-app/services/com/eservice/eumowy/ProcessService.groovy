@@ -747,7 +747,7 @@ class ProcessService {
             }
             def payment = row.get("top");
             if (payment != null && payment?.toString()?.isNumber()){
-                hpc.setCurrentTermPayment(payment.toString().toBigDecimal())
+                hpc.setCurrentTermPayment(payment.toString())
             }
             hpcResult.add(hpc)
         }
@@ -770,7 +770,7 @@ class ProcessService {
             }
             def payment = row.get("oplata_za_pos");
             if (payment != null && payment?.toString().isNumber()){
-                hpc.setCurrentTermPayment(payment.toString().toBigDecimal())
+                hpc.setCurrentTermPayment(payment.toString())
             }
             def hirePayment = calculatorService.getCalcProperty(calc, "CENA_NAJMU")
             if (hirePayment && hirePayment.toString()?.isNumber()) {
@@ -801,7 +801,7 @@ class ProcessService {
             }
             def payment = row.get("oplata_za_pos");
             if (payment != null && payment?.toString()?.isNumber()){
-                hpc.setCurrentTermPayment(payment.toString().toBigDecimal())
+                hpc.setCurrentTermPayment(payment.toString())
             }
             def hirePayment = calculatorService.getCalcProperty(calc, "CENA_NAJMU")
             if (hirePayment && hirePayment.toString()?.isNumber()) {
@@ -827,8 +827,8 @@ class ProcessService {
             hpc.setType(hp.type)
             hpc.setTermCount(hp.termCount)
             hpc.setPpCount(hp.ppCount)
-            hpc.setCurrentTermPayment(hp.currentTermPayment?.toBigDecimal())
-            hpc.setCurrentPpPayment(hp.currentPpPayment?.toInteger())
+            hpc.setCurrentTermPayment(hp.currentTermPayment.toString())
+            hpc.setCurrentPpPayment(hp.currentPpPayment?.toString())
             hpc.setNewTermPayment(hp.newTermPayment?.toString())
             hpc.setNewPpPayment(hp.newPpPayment?.toString())
             hpc.setIsChoosen(hp.isChoosen)
@@ -1029,8 +1029,8 @@ class ProcessService {
             hp.setType(hpc.type)
             hp.setTermCount(hpc.termCount)
             hp.setPpCount(hpc.ppCount)
-            hp.setCurrentTermPayment(hpc.currentTermPayment)
-            hp.setCurrentPpPayment(hpc.currentPpPayment)
+            hp.setCurrentTermPayment(hpc.currentTermPayment?.toBigDecimal())
+            hp.setCurrentPpPayment(hpc.currentPpPayment?.toBigDecimal())
             hp.setNewTermPayment(hpc.newTermPayment?.toBigDecimal())
             hp.setNewPpPayment(hpc.newPpPayment?.toBigDecimal())
             hp.setIsChoosen(hpc.isChoosen)

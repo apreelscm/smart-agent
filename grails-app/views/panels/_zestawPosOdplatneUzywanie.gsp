@@ -24,8 +24,8 @@
                 <g:each status="i" var="hp" in="${data.hirePaymentsCurrent}">
                     <li>
                         <span><g:field name="hirePaymentsCurrent[${i}].termCount" type="text" class="integer-number" value="${hp.termCount}" style="width: 70px" readonly="true"/></span>
-                        <span><g:field name="hirePaymentsCurrent[${i}].currentTermPayment" type="text" class="integer-number" value="${hp.currentTermPayment}" style="width: 70px" readonly="true"/></span>
-                        <span><g:field name="hirePaymentsCurrent[${i}].currentPpPayment" type="text" class="integer-number" value="${hp.currentPpPayment}" style="width: 70px" readonly="true"/></span>
+                        <span><g:field name="hirePaymentsCurrent[${i}].currentTermPayment" type="text" class="decimal-number" value="${hp.currentTermPayment}" style="width: 70px" readonly="true"/></span>
+                        <span><g:field name="hirePaymentsCurrent[${i}].currentPpPayment" type="text" class="decimal-number" value="${hp.currentPpPayment}" style="width: 70px" readonly="true"/></span>
                     </li>
                 </g:each>
             </ul>
@@ -45,8 +45,8 @@
                     <tr>
                         <td class="align-center"><g:field name="odpUzyTermSzt" type="text" class="integer-number" value="${data.odpUzyTermSzt}" readonly="true"/></td>
                         <td class="align-center"><g:field name="odpUzyPpSzt" type="text" class="integer-number" value="${data.odpUzyPpSzt}" readonly="true"/></td>
-                        <td class="align-center"><eumowy:textField name="odpUzyTermMies" type="text" class="float-number" value="${data.odpUzyTermMies}" validatable="${data}"/></td>
-                        <td class="align-center"><g:field name="odpUzyPpMies" type="text" class="float-number" value="${data.odpUzyPpMies}" readonly="true"/></td>
+                        <td class="align-center"><eumowy:textField name="odpUzyTermMies" type="text" class="decimal-number" value="${data.odpUzyTermMies}" validatable="${data}"/></td>
+                        <td class="align-center"><g:field name="odpUzyPpMies" type="text" class="decimal-number" value="${data.odpUzyPpMies}" readonly="true"/></td>
                     </tr>
                 </tbody>
             </table>
@@ -73,16 +73,16 @@
                     <tr>
                         <td>${hp.name}
                             <g:hiddenField name="hirePaymentsByPoint[${i}].cbdId" value="${hp.cbdId}" />
-                            <g:hiddenField name="hirePaymentsByPoint[${i}].name" value="${hp.name}" />
+                            <g:hiddenField name="hirePaymentsByPoint[${i}].name" value="${hp.name}" style="width: 40px"/>
                         </td>
                         <td>${hp.address} <g:hiddenField name="hirePaymentsByPoint[${i}].address" value="${hp.address}" /></td>
                         <td class="align-center">${hp.type} <g:hiddenField name="hirePaymentsByPoint[${i}].type" value="${hp.type}" /></td>
                         <td class="align-center"><g:field name="hirePaymentsByPoint[${i}].termCount" type="text" class="float-number" value="${hp.termCount}" style="width: 40px" readonly="true"/></td>
                         <td class="align-center"><g:field name="hirePaymentsByPoint[${i}].ppCount" type="text" class="float-number" value="${hp.ppCount}" style="width: 40px" readonly="true"/></td>
-                        <td class="align-center"><g:field name="hirePaymentsByPoint[${i}].currentTermPayment" type="text" class="float-number" value="${hp.currentTermPayment}" style="width: 40px" readonly="true"/></td>
-                        <td class="align-center"><g:field name="hirePaymentsByPoint[${i}].currentPpPayment" type="text" class="float-number" value="${hp.currentPpPayment}" style="width: 40px" readonly="true"/></td>
-                        <td class="align-center"><eumowy:textField name="hirePaymentsByPoint[${i}].newTermPayment" style="width: 40px" value="${hp.newTermPayment}" class="float-number" validatable="${hp}" validateField="newTermPayment"/></td>
-                        <td class="align-center"><g:field name="hirePaymentsByPoint[${i}].newPpPayment" type="text" class="float-number" value="${hp.newPpPayment}" style="width: 40px" readonly="true"/></td>
+                        <td class="align-center"><g:field name="hirePaymentsByPoint[${i}].currentTermPayment" type="text" class="decimal-number" value="${hp.currentTermPayment}" style="width: 40px" readonly="true"/></td>
+                        <td class="align-center"><g:field name="hirePaymentsByPoint[${i}].currentPpPayment" type="text" class="decimal-number" value="${hp.currentPpPayment}" style="width: 40px" readonly="true"/></td>
+                        <td class="align-center"><eumowy:textField name="hirePaymentsByPoint[${i}].newTermPayment" style="width: 40px" value="${hp.newTermPayment}" class="decimal-number" validatable="${hp}" validateField="newTermPayment"/></td>
+                        <td class="align-center"><g:field name="hirePaymentsByPoint[${i}].newPpPayment" type="text" class="decimal-number" value="${hp.newPpPayment}" style="width: 40px" readonly="true"/></td>
                         <td class="align-center"><g:checkBox name="hirePaymentsByPoint[${i}].isChoosen" checked="${hp.isChoosen}"/></td>
                     </tr>
                 </g:each>
@@ -112,17 +112,17 @@
                         <td>${hp.name}
                             <g:hiddenField name="hirePaymentsByPos[${i}].tpsId" value="${hp.tpsId}" />
                             <g:hiddenField name="hirePaymentsByPos[${i}].cbdId" value="${hp.cbdId}" />
-                            <g:hiddenField name="hirePaymentsByPos[${i}].name" value="${hp.name}" />
+                            <g:hiddenField name="hirePaymentsByPos[${i}].name" value="${hp.name}" style="width: 40px"/>
                         </td>
                         <td>${hp.address} <g:hiddenField name="hirePaymentsByPos[${i}].address" value="${hp.address}" /></td>
                         <td class="align-center">${hp.posNumber} <g:hiddenField name="hirePaymentsByPos[${i}].posNumber" value="${hp.posNumber}" /></td>
                         <td class="align-center">${hp.type} <g:hiddenField name="hirePaymentsByPos[${i}].type" value="${hp.type}" /></td>
                         <td class="align-center"><g:field name="hirePaymentsByPos[${i}].termCount" type="text" class="integer-number" value="${hp.termCount}" style="width: 40px" readonly="true"/></td>
                         <td class="align-center"><g:field name="hirePaymentsByPos[${i}].ppCount" type="text" class="integer-number" value="${hp.ppCount}" style="width: 40px" readonly="true"/></td>
-                        <td class="align-center"><g:field name="hirePaymentsByPos[${i}].currentTermPayment" type="text" class="integer-number" value="${hp.currentTermPayment}" style="width: 40px" readonly="true"/></td>
-                        <td class="align-center"><g:field name="hirePaymentsByPos[${i}].currentPpPayment" type="text" class="integer-number" value="${hp.currentPpPayment}" style="width: 40px" readonly="true"/></td>
-                        <td class="align-center"><eumowy:textField name="hirePaymentsByPos[${i}].newTermPayment" style="width: 40px" value="${hp.newTermPayment}" class="float-number" validatable="${hp}" validateField="newTermPayment"/></td>
-                        <td class="align-center"><g:field name="hirePaymentsByPos[${i}].newPpPayment" type="text" class="float-number" value="${hp.newPpPayment}" style="width: 40px" readonly="true"/></td>
+                        <td class="align-center"><g:field name="hirePaymentsByPos[${i}].currentTermPayment" type="text" class="decimal-number" value="${hp.currentTermPayment}" style="width: 40px" readonly="true"/></td>
+                        <td class="align-center"><g:field name="hirePaymentsByPos[${i}].currentPpPayment" type="text" class="decimal-number" value="${hp.currentPpPayment}" style="width: 40px" readonly="true"/></td>
+                        <td class="align-center"><eumowy:textField name="hirePaymentsByPos[${i}].newTermPayment" style="width: 40px" value="${hp.newTermPayment}" class="decimal-number" validatable="${hp}" validateField="newTermPayment"/></td>
+                        <td class="align-center"><g:field name="hirePaymentsByPos[${i}].newPpPayment" type="text" class="decimal-number" value="${hp.newPpPayment}" style="width: 40px" readonly="true"/></td>
                         <td class="align-center"><g:checkBox name="hirePaymentsByPos[${i}].isChoosen" checked="${hp.isChoosen}"/></td>
                     </tr>
                 </g:each>
