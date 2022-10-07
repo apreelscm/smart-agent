@@ -47,11 +47,15 @@ class DefineActivityCommand {
     static constraints = {
         notes size: 1..250, blank: true,nullable: true
         selectedActivities nullable: false, validator: {val,obj ->
-            def tmpList = obj.properties.findResults { it.value == "on" ? it.key : null };
-            obj.selectedActivities = tmpList;
+            def tmpList = obj.properties.findResults { it.value == "on" ? it.key : null }
+            obj.selectedActivities = tmpList
 
-            if(tmpList.size() == 0 && !obj.notes){
+            if (tmpList.size() == 0 && !obj.notes) {
                 return 'DefineActivityCommand.selectedActivities.validator.invalid'
+            }
+
+            if (tmpList.contains("wymianaTerminala") && !tmpList.contains("aneks")) {
+                return 'DefineActivityCommand.selectedActivities.validator.posReplacement.missingAnnex'
             }
         }
     }

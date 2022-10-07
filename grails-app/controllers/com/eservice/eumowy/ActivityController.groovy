@@ -103,8 +103,8 @@ class ActivityController {
             }
             on("continue") { DefineActivityCommand cmd ->
                 def processInstance = flow.processInstance
-                if(cmd?.hasErrors()){
-                    flash.errorMessage= message(code: cmd.errors?.getFieldError("selectedActivities")?.code);
+                if (cmd?.hasErrors()) {
+                    flash.errorMessage = message(code: cmd.errors?.getFieldError("selectedActivities")?.code);
                     return error();
                 }
 

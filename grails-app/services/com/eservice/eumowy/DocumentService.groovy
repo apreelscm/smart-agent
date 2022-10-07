@@ -1,20 +1,20 @@
 package com.eservice.eumowy
 
-import com.eservice.eumowy.enums.options.AcceptorLocation
-import com.eservice.eumowy.pdfmapper.PEPdeclarationMapper
+import com.google.common.base.Optional
 import com.google.common.collect.Lists
 import com.lowagie.text.pdf.PdfReader
 import org.apache.commons.lang.StringUtils
 import org.apache.log4j.Logger
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.util.PDFMergerUtility
+import org.springframework.context.MessageSourceResolvable
+import org.springframework.context.i18n.LocaleContextHolder
 import pdfgenerator.PdfGenerator
 import pdfgenerator.PdfGenerator.FontType
 
 import static com.eservice.eumowy.ActivityHelper.DODATKOWY_POS
 import static com.eservice.eumowy.ActivityHelper.DODATKOWY_PUNKT
 import static com.eservice.eumowy.ActivityHelper.NOWA_UMOWA
-import static com.eservice.eumowy.ActivityHelper.WYMIANA_UMOWY_NAJMU_NA_UMOWE_WSPOLPRACY
 import static com.eservice.eumowy.ActivityHelper.WYMIANA_UMOWY_PLATNICZEJ
 import static com.eservice.eumowy.ActivityHelper.hasAtLeastOne
 import static com.eservice.eumowy.ActivityHelper.isNewAgreement
@@ -26,6 +26,7 @@ class DocumentService {
 
     def mapperService
     def appParametersService
+    def messageSource
 
     private static final int POSES_COUNT_ON_RENT_REDUCTION = 20
     private static final int POINTS_COUNT_ON_DOCUMENT = 30
@@ -34,7 +35,7 @@ class DocumentService {
 
         log.info "Download document id=[${id}]"
 
-        DocumentFile file =  DocumentFile.get(id)
+        DocumentFile file = DocumentFile.get(id)
 
         if (!file) {
             throw new NoSuchElementException()
@@ -88,14 +89,14 @@ class DocumentService {
     }
 
     private Set<DocumentFile> getRentReductionDocuments(Process processInstance, Map dataFromProcess) {
-        Signature signature = processInstance.signatures.find{ sig -> sig.hasPurpose(SignatureDetail.SignaturePurpose.RENT_REDUCTION)}
+        Signature signature = processInstance.signatures.find { sig -> sig.hasPurpose(SignatureDetail.SignaturePurpose.RENT_REDUCTION) }
         Set<DocumentFile> documents = []
 
-        if(!signature) return documents
+        if (!signature) return documents
 
         List<PosData> chosenPoses = processInstance.getChosenPoses()
 
-        if(chosenPoses.size() > POSES_COUNT_ON_RENT_REDUCTION) {
+        if (chosenPoses.size() > POSES_COUNT_ON_RENT_REDUCTION) {
             log.info(String.format("Pos exchange count is larger than %s for process %s", POSES_COUNT_ON_RENT_REDUCTION, processInstance.id))
         }
 
@@ -113,7 +114,7 @@ class DocumentService {
     }
 
     private Set<DocumentFile> getAdditionalPointsDocuments(Process process) {
-        List<PointData> localPoints = process.points.findAll {it.czyLokalny || it.hasLocalPoses() || it.czyWybranyWymianaUmowy}.toList()
+        List<PointData> localPoints = process.points.findAll { it.czyLokalny || it.hasLocalPoses() || it.czyWybranyWymianaUmowy }.toList()
 
         if (localPoints.size() <= POINTS_COUNT_ON_DOCUMENT || !hasAtLeastOne(process, [NOWA_UMOWA, WYMIANA_UMOWY_PLATNICZEJ])) {
             return []
@@ -121,7 +122,7 @@ class DocumentService {
 
         log.info(String.format("Points count is larger than %s for process %s", POINTS_COUNT_ON_DOCUMENT, process.id))
 
-        Signature signature = Signature.findAll().find {it.hasPurpose(ADDITIONAL_POINTS)}
+        Signature signature = Signature.findAll().find { it.hasPurpose(ADDITIONAL_POINTS) }
         String[] listNumbers = ["a", "b", "c", "d", "e", "f"]
 
         int localPointsCount = localPoints.size()
@@ -146,16 +147,16 @@ class DocumentService {
     }
 
     private Set<DocumentFile> getDocumentsWithoutPurpose(Process processInstance, Map dataFromProcess) {
-        Set signaturesWithoutPurpose = processInstance.signatures.findAll{ sig -> !sig.hasDetails()}
+        Set signaturesWithoutPurpose = processInstance.signatures.findAll { sig -> !sig.hasDetails() }
         Set<DocumentFile> documents = []
 
-        if(signaturesWithoutPurpose.size() == 0) return documents
+        if (signaturesWithoutPurpose.size() == 0) return documents
 
         signaturesWithoutPurpose.each { Signature signature ->
             log.info(String.format("New single document from signature %s.", signature.name))
             DocumentFile documentFile = getDocumentFile(processInstance, signature, dataFromProcess)
 
-            if(documentFile) {
+            if (documentFile) {
                 documents.add(documentFile)
             }
         }
@@ -164,13 +165,12 @@ class DocumentService {
     }
 
     private Set<DocumentFile> getPosExchangeDocuments(Process processInstance) {
-        Signature posSignature = processInstance.signatures.find{ sig -> sig.hasPurpose(SignatureDetail.SignaturePurpose.POS)}
+        Signature posSignature = processInstance.signatures.find { sig -> sig.hasPurpose(SignatureDetail.SignaturePurpose.POS) }
         Set<DocumentFile> documents = []
 
-        if(!posSignature) return documents
+        if (!posSignature) return documents
 
-
-        processInstance.posExchanges.findAll{it.isChoosen}.each {
+        processInstance.posExchanges.findAll { it.isChoosen }.each {
             PointData point = PointData.findByCbdIdAndProcess(it.cbdId, processInstance)
 
             Map data = [:]
@@ -190,7 +190,7 @@ class DocumentService {
             log.info(String.format("New Pos Exchange document %s from signature %s.", documentClientName, posSignature.name))
 
             DocumentFile documentFile = getDocumentFile(processInstance, posSignature, data, documentName, documentClientName)
-            if(documentFile) {
+            if (documentFile) {
                 documents.add(documentFile)
             }
         }
@@ -200,12 +200,12 @@ class DocumentService {
 
     private Set<DocumentFile> getPointDocuments(Process processInstance, Map dataFromProcess) {
         Set<DocumentFile> documents = []
-        Set<Signature> pointSignatures = processInstance.signatures.findAll{ sig -> sig.hasPurpose(SignatureDetail.SignaturePurpose.POINT)}
+        Set<Signature> pointSignatures = processInstance.signatures.findAll { sig -> sig.hasPurpose(SignatureDetail.SignaturePurpose.POINT) }
 
-        if(pointSignatures.size() == 0) return documents
+        if (pointSignatures.size() == 0) return documents
 
         if (ActivityHelper.containsAll(processInstance, Lists.newArrayList(DODATKOWY_POS, DODATKOWY_PUNKT))) {
-            pointSignatures.remove(pointSignatures.find {sig -> sig.name.equals("virtualPos")})
+            pointSignatures.remove(pointSignatures.find { sig -> sig.name.equals("virtualPos") })
         }
 
         processInstance.points.each { PointData point ->
@@ -230,7 +230,7 @@ class DocumentService {
                     log.info(String.format("New Point document %s from signature %s.", documentClientName, signature.name))
 
                     DocumentFile documentFile = getDocumentFile(processInstance, signature, data, documentName, documentClientName)
-                    if(documentFile) {
+                    if (documentFile) {
                         documents.add(documentFile)
                     }
                 }
@@ -247,7 +247,7 @@ class DocumentService {
     private DocumentFile getDocumentFile(Process processInstance, Signature sig, Map data, String documentName, String documentClientName) {
         byte[] documentData = getDocumentContent(sig.id, data)
 
-        if(!documentData) {
+        if (!documentData) {
             return null
         }
 
@@ -275,19 +275,19 @@ class DocumentService {
         return documentFile
     }
 
-    byte[] getDocumentContent(Long sigId, Map<String,String[]> panelData) {
+    byte[] getDocumentContent(Long sigId, Map<String, String[]> panelData) {
         String subscriptionsPath = appParametersService.getSubscriptionsPath()
         Signature signature = Signature.findById(sigId)
 
-        Map<String,String[]> dataMap = new HashMap<String, String[]>()
+        Map<String, String[]> dataMap = new HashMap<String, String[]>()
 
-        if (!signature.templatePath){
+        if (!signature.templatePath) {
             log.debug(String.format("Signature %s is virtual signature. Skipping...", signature.name))
             return
         }
 
-        signature.subscriptionDefinitions.findAll { (it.role == Subscription.PersonRole.ZARZAD1 || it.role == Subscription.PersonRole.ZARZAD2) && it.subscriptionPageNumber != null && it.subscriptionPageNumber > -1}
-            .eachWithIndex{ SubscriptionDefinition it, int i ->
+        signature.subscriptionDefinitions.findAll { (it.role == Subscription.PersonRole.ZARZAD1 || it.role == Subscription.PersonRole.ZARZAD2) && it.subscriptionPageNumber != null && it.subscriptionPageNumber > -1 }
+            .eachWithIndex { SubscriptionDefinition it, int i ->
                 dataMap.put(it.role.name() + i, [new File(subscriptionsPath + File.separator + it.fileName).toURI().toURL(), "", "signature", it.subscriptionPageNumber.toString(), (it.subscriptionX).toString(), it.subscriptionY.toString(), it.scaleX, it.scaleY] as String[])
             }
 
@@ -316,7 +316,7 @@ class DocumentService {
 
     private void addNewDocumentsToProcess(Set<DocumentFile> documents, Process process) {
         documents.each { DocumentFile file ->
-            if(file != null && !isDocumentExistsInProcess(file, process)) {
+            if (file != null && !isDocumentExistsInProcess(file, process)) {
                 process.addToDocuments(file)
             }
         }
@@ -325,9 +325,18 @@ class DocumentService {
     private Set<DocumentFile> addMergedFile(Process process) {
         Set<DocumentFile> documents = []
         String pdfTemplatePath = "/opt/eumowy/pdf_templates/";
-        String documentName = String.format("NIP_%s_Nowy Klient_%s.pdf", process.client.nip, process?.signatures?.find({ it -> it?.name?.indexOf("Umowa") != -1 }))
         List<DocumentFile> documentsToMerge = process.documents?.findAll { it.signature.shouldBeMerged }
             ?.sort(false) { a, b -> a.signature.signatureOrder.compareTo(b.signature.signatureOrder) }
+        String documentName = messageSource.getMessage('document.merged.base.name' as String,
+            [process.client?.nip, this._getUPZTDocumentModelName(documentsToMerge)] as Object[],
+            LocaleContextHolder.locale as Locale)
+
+        def legalFormType = process.processData.find({ it -> it?.name == "dzialalnoscForma" });
+        def expectedOzwuFormTypes = Arrays.asList("PARTNERSHIP_COMPANY", "PERSON")
+
+        if (!expectedOzwuFormTypes.contains(legalFormType?.value)) {
+            documentsToMerge.removeAll { it -> it?.name?.contains("OŻWU")}
+        }
 
         PDFMergerUtility pdm = new PDFMergerUtility();
         pdm.setDestinationFileName(pdfTemplatePath + documentName)
@@ -358,7 +367,7 @@ class DocumentService {
             log.info(String.format("New document file created %s for process %s", documentFile.id, process.id))
             mergedDoc.close()
         }
-        if(documentFile && !isDocumentExistsInProcess(documentFile, process)) {
+        if (documentFile && !isDocumentExistsInProcess(documentFile, process)) {
             documents.add(documentFile)
         }
         return documents;
@@ -482,16 +491,16 @@ class DocumentService {
         Set<DocumentFile> documents = processInstance.documents.findAll { it.signature.hasPurpose(SignatureDetail.SignaturePurpose.RENT_REDUCTION) }
         Set<DocumentFile> obsoleteDocuments = []
 
-        if(!documents) return obsoleteDocuments
+        if (!documents) return obsoleteDocuments
 
         List<PosData> chosenPoses = processInstance.getChosenPoses()
         int maxDocumentOrdinalNumber = Math.floor((chosenPoses.size() - 1) / POSES_COUNT_ON_RENT_REDUCTION) as int
 
         //if chosePoses.size() > 100 then this will fail
-        documents.findAll {StringUtils.isNumeric(it.name[0])}.each { DocumentFile file ->
+        documents.findAll { StringUtils.isNumeric(it.name[0]) }.each { DocumentFile file ->
             int ordinal = file.name[0] as int
 
-            if(ordinal > maxDocumentOrdinalNumber) obsoleteDocuments.add(file)
+            if (ordinal > maxDocumentOrdinalNumber) obsoleteDocuments.add(file)
         }
 
         return obsoleteDocuments
@@ -500,7 +509,7 @@ class DocumentService {
     private Set<DocumentFile> getObsoleteAdditionalPointsDocuments(Process process) {
         Set<DocumentFile> documents = process.documents.findAll { it.signature.hasPurpose(ADDITIONAL_POINTS) }
         Set<DocumentFile> obsoleteDocuments = []
-        int localPointsCount = process.points.findAll {it.czyLokalny || it.hasLocalPoses() || it.czyWybranyWymianaUmowy}.size()
+        int localPointsCount = process.points.findAll { it.czyLokalny || it.hasLocalPoses() || it.czyWybranyWymianaUmowy }.size()
 
         if (!documents) {
             return obsoleteDocuments
@@ -510,7 +519,7 @@ class DocumentService {
 
         int listsCount = Math.ceil((localPointsCount - POINTS_COUNT_ON_DOCUMENT) / POINTS_COUNT_ON_DOCUMENT) as int
 
-        documents.eachWithIndex{ DocumentFile doc, int i ->
+        documents.eachWithIndex { DocumentFile doc, int i ->
             if (i + 1 > listsCount) {
                 obsoleteDocuments.add(doc)
             }
@@ -519,11 +528,11 @@ class DocumentService {
         return obsoleteDocuments
     }
 
-    private long fetchPointIdFromName(String name){
+    private long fetchPointIdFromName(String name) {
         long result = -1l;
 
         try {
-            result = Long.valueOf(name.substring(name.lastIndexOf('_')+1, name.lastIndexOf(".pdf")));
+            result = Long.valueOf(name.substring(name.lastIndexOf('_') + 1, name.lastIndexOf(".pdf")));
         } catch (Exception e) {
             log.info('Nie udalo sie pobrac ID Punktu z nazwy: ' + name)
         }
@@ -531,15 +540,26 @@ class DocumentService {
         return result;
     }
 
-    private long fetchPosExchangeIdFromName(String name){
+    private long fetchPosExchangeIdFromName(String name) {
         long result = -1l;
 
         try {
-            result = Long.valueOf(name.substring(name.lastIndexOf('_')+1, name.lastIndexOf("-p.pdf")));
+            result = Long.valueOf(name.substring(name.lastIndexOf('_') + 1, name.lastIndexOf("-p.pdf")));
         } catch (Exception e) {
             log.info('Nie udalo sie pobrac ID PosExchange z nazwy: ' + name)
         }
 
         return result;
+    }
+
+    private String _getUPZTDocumentModelName(List<DocumentFile> documentFiles) {
+        def upztFile = documentFiles?.find { it?.signature?.name?.contains("UPZT") }
+        if (Optional.of(upztFile?.name).isPresent()) {
+            def modelNameRegex = upztFile.name =~/\([model T\d*)]+\)/
+            if (modelNameRegex.size() > 0) {
+                return modelNameRegex[0]
+            }
+        }
+        return '';
     }
 }

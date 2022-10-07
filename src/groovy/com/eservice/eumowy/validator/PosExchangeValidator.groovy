@@ -2,13 +2,12 @@ package com.eservice.eumowy.validator
 
 import com.eservice.eumowy.command.PosExchangeCommand
 
-
 class PosExchangeValidator {
-    public static def validate = {posExchanges, cmd, errors ->
+    public static def validate = { posExchanges, cmd, errors ->
         Boolean hasChosenPosExchange = false
 
-        for(PosExchangeCommand posExchange : posExchanges) {
-            if(posExchange.isChoosen) {
+        for (PosExchangeCommand posExchange : posExchanges) {
+            if (posExchange.isChoosen) {
                 hasChosenPosExchange = true
                 break
             }
@@ -19,7 +18,7 @@ class PosExchangeValidator {
             return false
         }
 
-        if (posExchanges?.size() > 0 && priceLessThanCalcValue(posExchanges, cmd, errors, propertyName)) {
+        if (posExchanges?.size() > 0 && anyPosExchangePriceIsLessThanCalcValue(posExchanges as List<PosExchangeCommand>)) {
             errors.reject("posExchange.priceLessThanRequired")
             return false
         }
@@ -27,13 +26,16 @@ class PosExchangeValidator {
         return true
     }
 
-    private static boolean priceLessThanCalcValue(List<PosExchangeCommand> posExchangeCommands, cmd, errors, propertyName) {
-        List booleans = []
+    private static boolean anyPosExchangePriceIsLessThanCalcValue(List<PosExchangeCommand> posExchangeCommands) {
+        def posExchangesWithInvalidPrices = posExchangeCommands
+            .findAll({ it -> it.isChoosen })
+            .findAll({ it ->
+                def currentPrice = it.currentPrice == null ? BigDecimal.ZERO : it.currentPrice
+                def newPrice = it.newTermPayment == null ? BigDecimal.ZERO : it.newTermPayment
 
-        posExchangeCommands.findAll({ it -> it.isChoosen })
-            .collect({ it ->
-                booleans.add(ConditionValidator.getBigDecimalValue(it.newTermPayment).compareTo(it.currentPrice) == -1)}
-            )
-        return booleans.contains(false)
+                return newPrice.compareTo(currentPrice) < 0
+            })
+
+        return !posExchangesWithInvalidPrices.isEmpty()
     }
 }

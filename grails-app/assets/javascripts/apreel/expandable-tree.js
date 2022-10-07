@@ -378,10 +378,11 @@
         function changeActivityForWymianaTerminalaCB(target) {
             var aneksCB = jQuery('div.activityTree').find("#zmianaWarunkow > div > div:nth-child(4) > div > div:nth-child(2)").find('#aneksCB');
 
-            if (target.checked) {
-                aneksCB.prop('checked', true);
-            } else {
-                aneksCB.attr('checked', false);
+            if (target.checked && !aneksCB[0].checked) {
+                aneksCB.click();
+            }
+            if (!target.checked && aneksCB[0].checked) {
+                aneksCB.click();
             }
         }
 

@@ -4,7 +4,7 @@
         <div class="belka-glowna"><g:message code="panel.pos.exchange.title"/></div>
         <g:hiddenField name="isWymianaTermianlaShown" value="tak"/>
         <br/>
-        <div id='other_for_selected_terminals' style="text-align: center; width: 950px" class="centre">
+        <div id='other_for_selected_terminals' style="text-align: center; width: 950px; overflow-x: auto" class="centre">
             <table class="t">
                 <thead>
                     <tr>
