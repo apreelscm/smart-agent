@@ -31,7 +31,7 @@
                                       value="${data.dzialalnoscDokument}"
                                       style="width: 200px;"
                                       disabled="true"/>
-                            <g:hiddenField name="dzialalnoscDokument" value="${data.dzialalnoscDokument}"/>
+                            <g:hiddenField name="dzialalnoscDokument" value="$f{data.dzialalnoscDokument}"/>
                         </span>
                         <span><g:message code="panel.other"/></span>
                         <span class="align-right"><g:textField name="dzialalnoscDokumentInny" value="${data.dzialalnoscDokumentInny}" readonly="${data.dzialalnoscDokument != 'inne' && data.dzialalnoscDokument != ''}" style="width: 140px;"/></span>

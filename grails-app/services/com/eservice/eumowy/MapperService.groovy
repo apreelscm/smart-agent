@@ -10,6 +10,7 @@ import com.eservice.eumowy.pdfmapper.PdfProcessMapper
 import com.eservice.eumowy.pdfmapper.ServiceStartRequestMapper
 import com.eservice.eumowy.pdfmapper.representative.RepresentativesNamesMapper
 import com.eservice.eumowy.util.DateUtils
+import org.springframework.security.access.AccessDecisionVoter
 
 class MapperService {
 
@@ -17,14 +18,14 @@ class MapperService {
     def cbdService
     def messageSource
 
-    def mapOnlyPointData(PointData point){
+    def mapOnlyPointData(PointData point) {
         def data = [:]
         data.putAll(new PdfPointMapper().mapPointDataToPDFData(point))
         data.putAll(new PdfPosMapper(messageSource).mapPosesDataToPDFData(point.posDatas))
         data
     }
 
-    def mapOnlyProcessData(Process processInstance, def calc){
+    def mapOnlyProcessData(Process processInstance, def calc) {
         PdfProcessMapper processMapper = new PdfProcessMapper(processInstance, calculatorService, calc)
         def data = [:]
 
@@ -37,18 +38,18 @@ class MapperService {
             data.putAll(new PEPdeclarationMapper(processInstance).getDataForMapping())
         }
 
-        if(ActivityHelper.isBundleActivity(processInstance)) {
+        if (ActivityHelper.isBundleActivity(processInstance)) {
             data.putAll(new FacilitiesMapper(processInstance).getDataForMapping())
         }
 
         data
     }
 
-    def mapOnlyPosExchangeData(PosExchange posExchange){
+    def mapOnlyPosExchangeData(PosExchange posExchange) {
         new PdfPosExchangeMapper().mapOnlySelectedPosExchanges(posExchange)
     }
 
-    def mapOnlyPointAddress(def point){
+    def mapOnlyPointAddress(def point) {
         def data = [:]
         data.putAll(new PdfPointMapper().mapPointAddresDataToPDFData(point))
 
@@ -65,7 +66,7 @@ class MapperService {
             data.put("dataPoczatkuUzywaniaPOZ", [DateUtils.getFormattedDate(poses[0].dataOd, DateUtils.DD_MM_YYYY)] as String[])
             data.put("dataKoncaUzywaniaPOZ", [DateUtils.getFormattedDate(poses[0].dataDo, DateUtils.DD_MM_YYYY)] as String[])
 
-            poses.eachWithIndex{ pos, i ->
+            poses.eachWithIndex { pos, i ->
                 data.put("numerPOS" + i, [pos.numerZestawuPos] as String[])
                 data.put("oplataPOS" + i, [pos.wysokoscOplaty] as String[])
             }
@@ -79,7 +80,7 @@ class MapperService {
 
         Map data = [:]
 
-        points.eachWithIndex{ point, i ->
+        points.eachWithIndex { point, i ->
             data.put("punktAkceptacjaKart" + i, [point.nazwa] as String[])
             data.put("adresAkceptacjaKart" + i, [point.getAddress()] as String[])
         }
@@ -87,4 +88,93 @@ class MapperService {
         return data
     }
 
+    public String mapPositionFromCBD(String positionCbD) {
+        switch (positionCbD) {
+            case "AGT":
+                "Agent"
+                break
+            case "BUR":
+                "Burmistrz"
+                break
+            case "CZZ":
+                "Członek Zarządu"
+                break
+            case "DYG":
+                "Dyrektor generalny"
+                break
+            case "DYN":
+                "Dyrektor naczelny"
+                break
+            case "DYR":
+                "Dyrektor zarządzający"
+                break
+            case "GLK":
+                "Główna Księgowa"
+                break
+            case "KAN":
+                "Kanclerz"
+                break
+            case "KIE":
+                "Kierownik"
+                break
+            case "KOM":
+                "Komandytariusz"
+                break
+            case "KOP":
+                "Komplementariusz"
+                break
+            case "NAD":
+                "Nadleśniczy"
+                break
+            case "OSU":
+                "Os. Upoważniona"
+                break
+            case "PAR":
+                "Partner"
+                break
+            case "PEL":
+                "Pełnomocnik"
+                break
+            case "PRA":
+                "Prokura"
+                break
+            case "PRO":
+                "Prokurent"
+                break
+            case "PRS":
+                "Prokurent Samodzielny"
+                break
+            case "PRZ":
+                "Prezes Zarządu"
+                break
+            case "PSA":
+                "Prokurent Samoistny"
+                break
+            case "PZA":
+                "Przewodniczący Zarządu"
+                break
+            case "SEK":
+                "Sekretarz"
+                break
+            case "WLA":
+                "Właściciel"
+                break
+            case "WSP":
+                "Wspólnik"
+                break
+            case "WSW":
+                "Współwłaściciel"
+                break
+            case "WZA":
+                "Wiceprezes Zarządu"
+                break
+            case "ZAD":
+                "Zastępca Dyrektora"
+                break
+            case "ZPZ":
+                "Zastępca Prezesa Zarządu"
+                break
+            default: null
+        }
+    }
 }

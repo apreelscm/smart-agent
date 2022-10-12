@@ -13,7 +13,8 @@
         $additionalInfoSelect = jQuery("div#additionalInformationPanel select[name='dzialalnoscForma']"),
         $addAnotherAcceptorButton = jQuery("button#addAnotherAcceptor"),
         $companyData = jQuery("div#acceptorsPanel div.companyData"),
-        $personData = jQuery("div#acceptorsPanel div.personData");
+        $personData = jQuery("div#acceptorsPanel div.personData"),
+        $representativeIsCBDDataChangedManually = jQuery("#representativesContainer input[type=radio][name$='isCBDDataChangedManually']");
 
     attachDatepickers();
     attachTooltips();
@@ -27,6 +28,7 @@
     $representativePosition.change(onPositionChange);
     $representativeDocumentType.change(onDocumentTypeChange);
     $representativeIsPolitician.change(onIsPoliticianChange);
+    $representativeIsCBDDataChangedManually.change(onCBDDataChange);
     $representativeVerification.change(clearVerificationDetail);
     $representativeTelephoneType.change(phoneTypeChanged);
     $addAnotherAcceptorButton.click(showNextAcceptor);
@@ -71,6 +73,9 @@
                 acceptorIdDates.removeClass('hidden');
                 break;
             case 'PASSPORT':
+                acceptorIdDates.addClass('hidden');
+                break;
+            case 'RESIDENCE_CARD':
                 acceptorIdDates.addClass('hidden');
                 break;
         }

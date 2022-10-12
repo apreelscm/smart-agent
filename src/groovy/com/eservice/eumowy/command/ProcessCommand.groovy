@@ -381,6 +381,7 @@ class ProcessCommand implements Serializable {
     Boolean beneficjentWeryfikacjaSpolka
     Boolean beneficjentWeryfikacjaKsiega
     Boolean beneficjentWeryfikacjaSchemat
+    Boolean beneficjentWeryfikacjaRejestr
 
 //    liczbaMiesiecyZwolnieniaZNajm
 

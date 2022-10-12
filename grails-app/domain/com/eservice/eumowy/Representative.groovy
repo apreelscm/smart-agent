@@ -56,12 +56,14 @@ class Representative implements Serializable {
     Boolean isPolitician
     Boolean isDirectPep
     Boolean hasSignedContract
+    Boolean isCBDDataChangedManually
 
     String email
     String mobilePhone
     String landlinePhone
 
     static belongsTo = [Process]
+    static hasOne = [representativeCBD: RepresentativeCbdData]
 
     static mapping = {
         sort "ID"
@@ -109,6 +111,7 @@ class Representative implements Serializable {
         isPolitician column: "POLITICAL_POSITION"
         isDirectPep column: "DIRECT_PEP"
         hasSignedContract column: "CONTRACT_SIGNED"
+        isCBDDataChangedManually column: "IS_CBD_DATA_CHANGED_MANUALLY"
 
         email column : "EMAIL"
         landlinePhone column : "LANDLINE_PHONE"
@@ -151,6 +154,8 @@ class Representative implements Serializable {
        email(nullable: true)
        landlinePhone(nullable: true)
        mobilePhone(nullable: true)
+       representativeCBD(nullable:true)
+       isCBDDataChangedManually(nullable: true)
     }
 
    String getAddress(){
