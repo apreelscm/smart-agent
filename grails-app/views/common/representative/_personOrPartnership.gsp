@@ -37,12 +37,12 @@
                 <g:textField id="${prefix}[${seqNo}].personDocumentExpirationDate"
                              name="${prefix}[${seqNo}].documentExpirationDate"
                              readonly="${!czyNowaUmowa && !representative?.isCBDDataChangedManually}"
-                             value="${formatDate(format: 'yyyy-MM-dd', date: representative?.documentExpirationDateCBD)}"
+                             value="${formatDate(format: 'yyyy-MM-dd', date: representative?.documentExpirationDate)}"
                              maxlength="10" class="date-field date-future" required="required"/>
 
                 <label for="${prefix}[${seqNo}].personDocumentIssueDate"><g:message code="document.issue.label"/></label>
                 <g:textField id="${prefix}[${seqNo}].personDocumentIssueDate" name="${prefix}[${seqNo}].documentIssueDate"
-                             value="${formatDate(format: 'yyyy-MM-dd', date: representative?.documentIssueDateCBD)}"
+                             value="${formatDate(format: 'yyyy-MM-dd', date: representative?.documentIssueDate)}"
                              readonly="${!czyNowaUmowa && !representative?.isCBDDataChangedManually}"
                              maxlength="10" class="date-field date-past" required="required"/>
             </div>
@@ -56,7 +56,7 @@
                          checked="${data.isPersonForm() && representative?.verification?.name() == "PESEL"}"/>
                 <div class="label"><g:message code="pesel.label"/></div>
 
-                <eumowy:textField name="${prefix}[${seqNo}].pesel" value="${representative?.peselCBD}"
+                <eumowy:textField name="${prefix}[${seqNo}].pesel" value="${representative?.pesel}"
                                   maxlength="11" class="pesel-field display-inline-block"
                                   readonly="${!czyNowaUmowa && !representative?.isCBDDataChangedManually}"
                                   validatable="${representative}" validateField="pesel"/>
@@ -70,14 +70,14 @@
                 <label for="${prefix}[${seqNo}].personBirthDate"><g:message code="birth.date.country.label"/></label>
                 <g:textField id="${prefix}[${seqNo}].personBirthDate" name="${prefix}[${seqNo}].birthDate"
                              readonly="${!czyNowaUmowa && !representative?.isCBDDataChangedManually}"
-                             value="${formatDate(format: 'yyyy-MM-dd', date: representative?.birthDateCBD)}" maxlength="10"
+                             value="${formatDate(format: 'yyyy-MM-dd', date: representative?.birthDate)}" maxlength="10"
                              class="date-field date-past"/>
             </div>
         </div>
 
         <div class="acceptorBirthCountryAndCity ${hasErrors(bean: representative, field: 'birthCountry', 'errorSpan')} ">
             <label for="${prefix}[${seqNo}].birthCountry"><g:message code="birth.country.label"/></label>
-            <dict:countrySelect name="${prefix}[${seqNo}].birthCountry" value="${representative?.birthCountryCBD}"
+            <dict:countrySelect name="${prefix}[${seqNo}].birthCountry" value="${representative?.birthCountry}"
                                 required="required"
                                 disabled="${!czyNowaUmowa && !representative?.isCBDDataChangedManually}"
                                 validatable="${representative}" validateField="birthCountry"/>
@@ -90,17 +90,17 @@
                     <span>
                         <span><label for="${prefix}[${seqNo}].street"><g:message code="panel.street" /></label></span>
                         <span>
-                            <dict:streetSelect class="streetTitle" name="${prefix}[${seqNo}].streetTitle" value="${representative?.streetTitleCBD}" default="UL"
+                            <dict:streetSelect class="streetTitle" name="${prefix}[${seqNo}].streetTitle" value="${representative?.streetTitle}" default="UL"
                                                disabled="${!czyNowaUmowa && !representative?.isCBDDataChangedManually}"/>
-                            <eumowy:textField name="${prefix}[${seqNo}].street" style="width: 200px" value="${representative?.streetCBD}" validatable="${representative}"
+                            <eumowy:textField name="${prefix}[${seqNo}].street" style="width: 200px" value="${representative?.street}" validatable="${representative}"
                                               readonly="${!czyNowaUmowa && !representative?.isCBDDataChangedManually}" validateField="street" required="true"/>
                         </span>
                         <span>
                             <span><label for="${prefix}[${seqNo}].houseNumber"><g:message code="panel.house.number" /></label></span>
-                            <span><eumowy:textField name="${prefix}[${seqNo}].houseNumber" value="${representative?.houseNumberCBD}" validatable="${representative}" validateField="houseNumber" style="width: 50px" maxlength ="6" required="true"
+                            <span><eumowy:textField name="${prefix}[${seqNo}].houseNumber" value="${representative?.houseNumber}" validatable="${representative}" validateField="houseNumber" style="width: 50px" maxlength ="6" required="true"
                                                     readonly="${!czyNowaUmowa && !representative?.isCBDDataChangedManually}"/></span>
                             <span><label for="${prefix}[${seqNo}].flatNumber"><g:message code="panel.flat.number" /></label></span>
-                            <span><eumowy:textField name="${prefix}[${seqNo}].flatNumber" value="${representative?.flatNumberCBD}" validatable="${representative}"
+                            <span><eumowy:textField name="${prefix}[${seqNo}].flatNumber" value="${representative?.flatNumber}" validatable="${representative}"
                                                     readonly="${!czyNowaUmowa && !representative?.isCBDDataChangedManually}" validateField="flatNumber" style="width: 50px" maxlength ="4"/></span>
                         </span>
                     </span>
@@ -109,11 +109,11 @@
                 <li>
                     <span>
                         <span><label for="${prefix}[${seqNo}].postalCode"><g:message code="panel.postal.code" /></label></span>
-                        <span><eumowy:textField class="postal-code" name="${prefix}[${seqNo}].postalCode" value="${representative?.postalCodeCBD}" validatable="${representative}" validateField="postalCode" style="width: 50px" maxlength ="6"
+                        <span><eumowy:textField class="postal-code" name="${prefix}[${seqNo}].postalCode" value="${representative?.postalCode}" validatable="${representative}" validateField="postalCode" style="width: 50px" maxlength ="6"
                                                 readonly="${!czyNowaUmowa && !representative?.isCBDDataChangedManually}" required="true"/></span>
                         <span><label for="${prefix}[${seqNo}].city"><g:message code="panel.city" /></label></span>
                         <span> <g:select name="${prefix}[${seqNo}].city"
-                                         value="${representative?.cityCBD}"
+                                         value="${representative?.city}"
                                          disabled="${!czyNowaUmowa && !representative?.isCBDDataChangedManually}"
                                          from="[representative?.city ?: '']"
                                          style="width: 280px;" required="required"/></span>
@@ -123,7 +123,7 @@
                 <li>
                     <span>
                         <span><label for="${prefix}[${seqNo}].postOffice"><g:message code="panel.postal" /></label></span>
-                        <span><eumowy:textField name="${prefix}[${seqNo}].postOffice" value="${representative?.postOfficeCBD}" validatable="${representative}"
+                        <span><eumowy:textField name="${prefix}[${seqNo}].postOffice" value="${representative?.postOffice}" validatable="${representative}"
                                                 readonly="${!czyNowaUmowa && !representative?.isCBDDataChangedManually}" validateField="postOffice" style="width: 280px;" /></span>
                     </span>
                 </li>
@@ -143,18 +143,18 @@
                 <label for="${prefix}[${seqNo}].telephoneType"><g:message code="panel.mobile.phone.number"/></label>
 
                 <label style="margin-left: 10px" for="${prefix}[${seqNo}].phoneNumber"><g:message code="panel.number"/>: </label>
-                <eumowy:textField name="${prefix}[${seqNo}].phoneNumber" value="${representative?.mobilePhoneCBD}" maxlength="20" style="width: 150px"
+                <eumowy:textField name="${prefix}[${seqNo}].phoneNumber" value="${representative?.mobilePhone}" maxlength="20" style="width: 150px"
                                   validatable="${representative}" validateField="phoneNumber" class="phone-number ${representative?.telephoneType == TelephoneType.LANDLINE ? 'phone' : 'mobile-phone' }"/>
             </div>
             <label style="margin-left: 20px" for="${prefix}[${seqNo}].country"><g:message code="country.name.label"/></label>
-            <dict:countrySelect name="${prefix}[${seqNo}].country" value="${representative?.countryCBD}" required="required"
+            <dict:countrySelect name="${prefix}[${seqNo}].country" value="${representative?.country}" required="required"
                                 disabled="${!czyNowaUmowa && !representative?.isCBDDataChangedManually}"
                                 validatable="${representative}" validateField="country"/>
         </div>
 
         <div class="email-container-${prefix}-${seqNo}" style="${data.isPersonForm() && representative?.hasSignedContract != true ? 'display: none;' : ''}">
             <span>
-                <g:message code="panel.email"/>: <eumowy:textField name="${prefix}[${seqNo}].email" value="${representative?.emailCBD}" validatable="${representative}" validateField="email" style="width: 150px" email="true"/>
+                <g:message code="panel.email"/>: <eumowy:textField name="${prefix}[${seqNo}].email" value="${representative?.email}" validatable="${representative}" validateField="email" style="width: 150px" email="true"/>
             </span>
         </div>
 

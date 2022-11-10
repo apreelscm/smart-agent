@@ -30,7 +30,6 @@ class CbdService {
     private static final String GET_OSOBA1_UPRAWNIONA_DO_PODPISANIA_UMOWY = "getOsoba1UprawnionaDoPodpisaniaUmowy"
     private static final String GET_OSOBA2_UPRAWNIONA_DO_PODPISANIA_UMOWY = "getOsoba2UprawnionaDoPodpisaniaUmowy"
     private static final String GET_REPREZENTANCI = "getReprezentanci"
-    private static final String GET_REPREZENTANT_BY_ID = "getReprezentantById"
     private static final String GET_OSOBA_DO_KONTAKTU = "getOsobaDoKontaktu"
     private static final String GET_OSOBA_KTORA_POZYSKALA_AKCEPTANTA = "getOsobaKtoraPozyskalaAkceptanta"
     private static final String GET_PROMOCYJNE_OBINZENIE_OPLAT_GRID = "getPromocyjneObinzenieOplatGrid"
@@ -146,12 +145,6 @@ class CbdService {
     @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
     def getReprezentanciFromCbd(def clientNip) {
         return cbdDAO.selectMany(GET_REPREZENTANCI,[nip:clientNip])
-    }
-
-    @Cacheable(value="eumowyCacheShort", key = "'getReprezentantById_'.concat(#id)")
-    @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
-    def getReprezentantData(def id) {
-        return  cbdDAO.selectOne(GET_REPREZENTANT_BY_ID,[id:id])
     }
 
     @Cacheable(value="eumowyCacheShort", key = "'getCountryByCountryCode_'.concat(#code)")

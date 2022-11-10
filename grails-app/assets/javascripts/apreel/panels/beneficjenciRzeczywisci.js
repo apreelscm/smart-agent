@@ -12,7 +12,6 @@
         actualBeneficiaryData.find(".date-field").datepicker({dateFormat: 'yy-mm-dd', maxDate: new Date()});
         actualBeneficiaryData.find(".percent-short").mask(PERCENT_SHORT_FORMAT);
         actualBeneficiaryData.find("input[type=radio][name$='isPolitician']").change(onIsPoliticianChange);
-        actualBeneficiaryData.find("input[type=radio][name$='isCBDDataChangedManually']").change(onCBDDataChange);
         actualBeneficiaryData.find("input[type=radio][name$='verification']").change(clearVerificationDetail);
         disableHiddenBeneficiaryFields();
     });
@@ -48,6 +47,13 @@
         if (representativeField.disabled) return false;
 
         var fieldName, fieldType, beneficiary, beneficiaryField, value;
+
+        var isAnyRepresentativeDataAutomatic = jQuery("#representativesContainer input[type=radio][name$='isCBDDataChangedManually'][value=false]:checked");
+        var isAnyBeneficiaryDataAutomatic = jQuery("#acceptorsPanel input[type=radio][name$='isCBDDataChangedManually'][value=false]:checked");
+
+        if (isAnyRepresentativeDataAutomatic.length > 0 || isAnyBeneficiaryDataAutomatic.length > 0) {
+            return false;
+        }
 
         fieldName = representativeField.name.split(".")[1];
         fieldType = representativeField.type;

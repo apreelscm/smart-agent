@@ -54,7 +54,8 @@ class DocumentService {
 
     public Set<DocumentFile> getSavedDocumentsInProcess(Process processInstance, def calc) {
         Set<DocumentFile> documents = []
-        Map dataFromProcess = mapperService.mapOnlyProcessData(processInstance, calc)
+        def isRepOrBenDataChanged = this.isAnyRepresentativeOrBeneficiaryDataChanged(processInstance)
+        Map dataFromProcess = mapperService.mapOnlyProcessData(processInstance, calc, isRepOrBenDataChanged)
 
         dataFromProcess.each { key, value ->
             LOG.info "Mapping < " + key + " : " + value + " >"
@@ -72,15 +73,23 @@ class DocumentService {
         Set<DocumentFile> posExchangeDocuments = getPosExchangeDocuments(processInstance)
         documents.addAll(posExchangeDocuments)
 
+        if (isNewAgreement(processInstance) || isRepOrBenDataChanged) {
+            Signature pabrPebSignature = Signature.findAll().find { it?.name?.contains("PABR+PEP") }
+            if (pabrPebSignature != null && pabrPebSignature.active) {
+                documents.add(getDocumentFile(processInstance, pabrPebSignature, dataFromProcess))
+            }
+        }
+
 //        Set<DocumentFile> pointsDocuments = getAdditionalPointsDocuments(processInstance)
 //        documents.addAll(pointsDocuments)
 
         addNewDocumentsToProcess(documents, processInstance)
+
         if (isNewAgreement(processInstance)) {
             Set<DocumentFile> mergedFiles = addMergedFile(processInstance)
             documents.addAll(mergedFiles)
         }
-        addNewDocumentsToProcess(documents, processInstance)
+
         removeObsoleteDocuments(processInstance)
 
         processInstance.save(flush: true)
@@ -561,5 +570,9 @@ class DocumentService {
             }
         }
         return '';
+    }
+
+    private boolean isAnyRepresentativeOrBeneficiaryDataChanged(Process process) {
+        return process.representatives.any { (Representative.Type.REPRESENTATIVE.equals(it.type) && it.isCBDDataChangedManually) || Representative.Type.BENEFICIARY.equals(it.type) && it.isCBDDataChangedManually }
     }
 }

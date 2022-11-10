@@ -420,7 +420,11 @@ class ProcessCommand implements Serializable {
     @Omit(inPopulate = true)
     List<RepresentativeCommand> representatives = ListUtils.lazyList([], FactoryUtils.instantiateFactory(RepresentativeCommand))
     @Omit(inPopulate = true)
+    List<RepresentativeCommand> cbdRepresentatives = ListUtils.lazyList([], FactoryUtils.instantiateFactory(RepresentativeCommand))
+    @Omit(inPopulate = true)
     List<BeneficiaryCommand> beneficiaries = ListUtils.lazyList([], FactoryUtils.instantiateFactory(BeneficiaryCommand))
+    @Omit(inPopulate = true)
+    List<BeneficiaryCommand> cbdBeneficiaries = ListUtils.lazyList([], FactoryUtils.instantiateFactory(BeneficiaryCommand))
 
     @Omit
     transient Integer pointsAndPosesWithoutFormaDoladowania //eUmowy_ext-557

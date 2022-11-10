@@ -1,7 +1,7 @@
 package com.eservice.eumowy
 
 import com.eservice.eumowy.pdfmapper.FacilitiesMapper
-import com.eservice.eumowy.pdfmapper.PABRformMapper
+import com.eservice.eumowy.pdfmapper.PABRPEBformMapper
 import com.eservice.eumowy.pdfmapper.PEPdeclarationMapper
 import com.eservice.eumowy.pdfmapper.PdfPointMapper
 import com.eservice.eumowy.pdfmapper.PdfPosExchangeMapper
@@ -10,7 +10,6 @@ import com.eservice.eumowy.pdfmapper.PdfProcessMapper
 import com.eservice.eumowy.pdfmapper.ServiceStartRequestMapper
 import com.eservice.eumowy.pdfmapper.representative.RepresentativesNamesMapper
 import com.eservice.eumowy.util.DateUtils
-import org.springframework.security.access.AccessDecisionVoter
 
 class MapperService {
 
@@ -25,16 +24,19 @@ class MapperService {
         data
     }
 
-    def mapOnlyProcessData(Process processInstance, def calc) {
+    def mapOnlyProcessData(Process processInstance, def calc, boolean isRepOrBenDataChanged) {
         PdfProcessMapper processMapper = new PdfProcessMapper(processInstance, calculatorService, calc)
         def data = [:]
 
         data.putAll(processMapper.mapOnlyProcessData())
         data.putAll(new RepresentativesNamesMapper(processInstance).getDataForMapping())
 
+        if (ActivityHelper.isNewAgreement(processInstance) || isRepOrBenDataChanged) {
+            data.putAll(new PABRPEBformMapper(processInstance).getDataForMapping())
+        }
+
         if (ActivityHelper.isNewAgreement(processInstance)) {
             data.putAll(new ServiceStartRequestMapper(processInstance).getDataForMapping())
-            data.putAll(new PABRformMapper(processInstance).getDataForMapping())
             data.putAll(new PEPdeclarationMapper(processInstance).getDataForMapping())
         }
 
@@ -176,5 +178,9 @@ class MapperService {
                 break
             default: null
         }
+    }
+
+    private boolean isAnyRepresentativeOrBeneficiaryDataChanged(Process process) {
+        return process.representatives.any { (Representative.Type.REPRESENTATIVE.equals(it.type) && it.isCBDDataChangedManually) || Representative.Type.BENEFICIARY.equals(it.type) && it.isCBDDataChangedManually }
     }
 }

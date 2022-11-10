@@ -37,14 +37,14 @@
                 <g:textField id="${prefix}[${seqNo}].companyDocumentExpirationDate"
                              name="${prefix}[${seqNo}].documentExpirationDate"
                              readonly="${!czyNowaUmowa && !representative?.isCBDDataChangedManually}"
-                             value="${formatDate(format: 'yyyy-MM-dd', date: representative?.documentExpirationDateCBD)}"
+                             value="${formatDate(format: 'yyyy-MM-dd', date: representative?.documentExpirationDate)}"
                              maxlength="10" class="date-field date-future" required="required"/>
 
                 <label for="${prefix}[${seqNo}].companyDocumentIssueDate"><g:message
                         code="document.issue.label"/></label>
                 <g:textField id="${prefix}[${seqNo}].companyDocumentIssueDate"
                              name="${prefix}[${seqNo}].documentIssueDate"
-                             value="${formatDate(format: 'yyyy-MM-dd', date: representative?.documentIssueDateCBD)}"
+                             value="${formatDate(format: 'yyyy-MM-dd', date: representative?.documentIssueDate)}"
                              readonly="${!czyNowaUmowa && !representative?.isCBDDataChangedManually}"
                              maxlength="10" class="date-field date-past" required="required"/>
             </div>
@@ -60,7 +60,7 @@
                          checked="${(!data.dzialalnoscForma || data.isCompanyForm()) && representative?.verification?.name() == "PESEL"}"/>
                 <div class="label"><g:message code="pesel.label"/></div>
 
-                <eumowy:textField name="${prefix}[${seqNo}].pesel" value="${representative?.peselCBD}"
+                <eumowy:textField name="${prefix}[${seqNo}].pesel" value="${representative?.pesel}"
                                   maxlength="11" class="pesel-field display-inline-block"
                                   validatable="${representative}" validateField="pesel"/>
             </div>
@@ -73,14 +73,14 @@
                 <label for="${prefix}[${seqNo}].companyBirthDate"><g:message code="birth.date.country.label"/></label>
                 <g:textField id="${prefix}[${seqNo}].companyBirthDate" name="${prefix}[${seqNo}].birthDate"
                              readonly="${!czyNowaUmowa && !representative?.isCBDDataChangedManually}"
-                             value="${formatDate(format: 'yyyy-MM-dd', date: representative?.birthDateCBD)}" maxlength="10"
+                             value="${formatDate(format: 'yyyy-MM-dd', date: representative?.birthDate)}" maxlength="10"
                              class="date-field date-past"/>
             </div>
         </div>
 
         <div class="acceptorBirthCountryAndCity ${hasErrors(bean: representative, field: 'birthCountry', 'errorSpan')} ">
             <label for="${prefix}[${seqNo}].birthCountry"><g:message code="birth.country.label"/></label>
-            <dict:countrySelect name="${prefix}[${seqNo}].birthCountry" value="${representative?.birthCountryCBD}"
+            <dict:countrySelect name="${prefix}[${seqNo}].birthCountry" value="${representative?.birthCountry}"
                                 required="required"
                                 readonly="${!czyNowaUmowa && !representative?.isCBDDataChangedManually}"
                                 validatable="${representative}" validateField="birthCountry"/>
@@ -103,7 +103,7 @@
 
             <label style="margin-left: 10px" for="${prefix}[${seqNo}].phoneNumber"><g:message
                     code="panel.number"/>:</label>
-            <eumowy:textField name="${prefix}[${seqNo}].phoneNumber" value="${representative?.mobilePhoneCBD}"
+            <eumowy:textField name="${prefix}[${seqNo}].phoneNumber" value="${representative?.mobilePhone}"
                               maxlength="20" style="width: 150px"
                               validatable="${representative}" validateField="phoneNumber"
                               class="phone-number ${representative?.telephoneType == TelephoneType.LANDLINE ? 'phone' : 'mobile-phone'}"/>
@@ -113,7 +113,7 @@
              style="${data.isPersonForm() && representative?.hasSignedContract != true ? 'display: none;' : ''}">
             <span>
                 <g:message code="panel.email"/>: <eumowy:textField name="${prefix}[${seqNo}].email"
-                                                                   value="${representative?.emailCBD}"
+                                                                   value="${representative?.email}"
                                                                    validatable="${representative}" validateField="email"
                                                                    style="width: 150px" email="true"/>
             </span>

@@ -1,8 +1,10 @@
 <%@ page import="com.eservice.eumowy.enums.options.AcceptorLocation; com.eservice.eumowy.enums.options.IdentityDocumentType" %>
 
 <g:hiddenField name="${prefix}[${seqNo}].id" value="${representative?.id}"/>
+<g:hiddenField name="mid" value="${representative?.midCBD}"/>
+<g:hiddenField name="index" value="${seqNo}"/>
 
-<g:if test="${!czyNowaUmowa}">
+<g:if test="${!czyNowaUmowa && representative?.midCBD != null}">
 <div class="isCBDDataChangedManually ${hasErrors(bean: representative, field: 'isCBDDataChangedManually', 'errorSpan')}">
     <g:hasErrors bean="${representative}" field="isCBDDataChangedManually">
         <p class="error-message"><g:message code="representative.option.required"/></p>

@@ -63,7 +63,6 @@ class Representative implements Serializable {
     String landlinePhone
 
     static belongsTo = [Process]
-    static hasOne = [representativeCBD: RepresentativeCbdData]
 
     static mapping = {
         sort "ID"
@@ -154,7 +153,6 @@ class Representative implements Serializable {
        email(nullable: true)
        landlinePhone(nullable: true)
        mobilePhone(nullable: true)
-       representativeCBD(nullable:true)
        isCBDDataChangedManually(nullable: true)
     }
 

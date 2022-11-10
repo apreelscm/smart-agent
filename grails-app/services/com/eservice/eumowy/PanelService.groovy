@@ -18,6 +18,7 @@ class PanelService {
     def calculatorService
     def springSecurityService
     def mapperService
+    def representativeService
 
     def init(ProcessCommand cmd, def calc) {
         cmd.scoringMcc = calculatorService.getCalcProperty(calc, "MCC")
@@ -36,7 +37,7 @@ class PanelService {
         cmd.hasNewUmowaAndPrepaid = isNewAgreement(cmd.process) && cmd.hasDodaniePrepaid
         cmd.isBundleActivity = isBundleActivity(cmd.process)
         cmd.promObjNaj1 = calculatorService.getCalcProperty(calc, "E_PROM_OBN_NAJ_1")
-        cmd.beneficiaries = getDaneBeneficjentaRzeczywistego(cmd)
+        cmd.beneficjentKRS = nullify(cmd.beneficjentKRS)
 
         if (SignatureHelper.containsAtLeastOne(cmd.process, newArrayList(SignatureName.APUW.currentVersion)) &&
             !contains(cmd.process, WYMIANA_UMOWY_NAJMU_NA_UMOWE_WSPOLPRACY)) {
@@ -453,42 +454,6 @@ class PanelService {
 //            representativeCommands.add(representative)
 //        }
 //        cmd.representatives.addAll(representativeCommands)
-    }
-
-    List<BeneficiaryCommand> getDaneBeneficjentaRzeczywistego(ProcessCommand cmd) {
-        cmd.beneficjentKRS = nullify(cmd.beneficjentKRS)
-        List<BeneficiaryCommand> beneficiaresCommand = []
-        def representatives = []
-
-        def beneficiaryList = cbdService.getBeneficjenci(cmd.nip)
-
-        if (beneficiaryList.size > 0) {
-            representatives.add(beneficiaryList)
-        }
-
-        representatives?.each { result ->
-
-            BeneficiaryCommand representative = new BeneficiaryCommand()
-
-            String name = result?.imie ?: ""
-            String surname = result?.nazwisko ?: ""
-            String salutation = result?.prefix ?: ""
-            String pesel = result?.pesel ?: ""
-            def dataUrodzenia = result?.dataUrodzenia ?: ""
-            String obywatelstwo =  mapCountryByCode(result?.obywatelstwo)
-
-            representative.setName(name)
-            representative.setSurname(surname)
-            representative.setSalutation(salutation)
-            representative.setPesel(pesel)
-            representative.setBirthDate(dataUrodzenia)
-            representative.setCitizenship(obywatelstwo)
-            representative.setIsCBDDataChangedManually(representative?.isCBDDataChangedManually != null ? representative?.isCBDDataChangedManually : true)
-
-            beneficiaresCommand.add(representative)
-        }
-
-        return beneficiaresCommand
     }
 
     private mapCountryByCode(String countryCode) {
