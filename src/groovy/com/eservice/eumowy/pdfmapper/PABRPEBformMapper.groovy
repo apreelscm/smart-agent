@@ -6,10 +6,10 @@ import com.eservice.eumowy.pdfmapper.representative.LegalFormMapper
 import com.eservice.eumowy.pdfmapper.representative.RepresentativesDetailsMapper
 import com.eservice.eumowy.Process
 
-class PABRformMapper implements Mapper {
+class PABRPEBformMapper implements Mapper {
     private Process process
 
-    public PABRformMapper(Process process) {
+    public PABRPEBformMapper(Process process) {
         this.process = process
     }
 

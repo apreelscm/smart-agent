@@ -1,8 +1,10 @@
 <g:hiddenField name="${prefix}[${seqNo}].id" value="${representative?.id}"/>
+<g:hiddenField name="mid" value="${representative?.midCBD}"/>
+<g:hiddenField name="index" value="${seqNo}"/>
 
 <g:if test="${dropdowns}">
     <div>
-        <g:if test="${!czyNowaUmowa}">
+        <g:if test="${!czyNowaUmowa && representative?.midCBD != null}">
             <g:radio class="isCBDDataChangedManually" name="${prefix}[${seqNo}].isCBDDataChangedManually"
                      checked="${representative?.isCBDDataChangedManually == true}"
                      value="${representative?.isCBDDataChangedManually}"/>
@@ -10,8 +12,8 @@
                     code="com.eservice.eumowy.command.RepresentativeCommand.isCBDDataChangedManuallyTrue"/></label>
 
             <g:radio class="isCBDDataChangedManually" name="${prefix}[${seqNo}].isCBDDataChangedManually"
-                     checked="${representative?.isCBDDataChangedManually == true}"
-                     value="${representative?.isCBDDataChangedManually}"/>
+                     checked="${representative?.isCBDDataChangedManually == false}"
+                     value="${!representative?.isCBDDataChangedManually}"/>
             <label for="${prefix}[${seqNo}].isCBDDataChangedManually"><g:message
                     code="com.eservice.eumowy.command.RepresentativeCommand.isCBDDataChangedManuallyFalse"/></label>
         </g:if>
@@ -39,7 +41,7 @@
     </div>
 </g:if>
 <g:else>
-    <g:if test="${!czyNowaUmowa}">
+    <g:if test="${!czyNowaUmowa && representative?.midCBD != null}">
     <div class="isCBDDataChangedManually">
         <g:hasErrors bean="${representative}" field="isCBDDataChangedManually">
             <p class="error-message"><g:message code="representative.option.required"/></p>
@@ -59,17 +61,17 @@
 
     <div class="representativeCBDBasicData" id="representativeCBDBasicData">
         <g:select name="${prefix}[${seqNo}].salutation" from="['Pan', 'Pani']" valueMessagePrefix="person.title"
-                  value="${representative?.salutationCBD}"
+                  value="${representative?.salutation}"
                   disabled="${!czyNowaUmowa && !representative?.isCBDDataChangedManually}"
                   validatable="${representative}" validateField="salutation"/>
 
         <label for="${prefix}[${seqNo}].name"><g:message code="panel.first.name"/>:</label>
-        <eumowy:textField name="${prefix}[${seqNo}].name" value="${representative?.nameCBD}" maxlength="25"
+        <eumowy:textField name="${prefix}[${seqNo}].name" value="${representative?.name}" maxlength="25"
                           readonly="${!czyNowaUmowa && !representative?.isCBDDataChangedManually}"
                           validatable="${representative}" validateField="name"/>
 
         <label for="${prefix}[${seqNo}].surname"><g:message code="panel.last.name"/>:</label>
-        <eumowy:textField name="${prefix}[${seqNo}].surname" value="${representative?.surnameCBD}" maxlength="35"
+        <eumowy:textField name="${prefix}[${seqNo}].surname" value="${representative?.surname}" maxlength="35"
                           class="surnameField"
                           readonly="${!czyNowaUmowa && !representative?.isCBDDataChangedManually}"
                           validatable="${representative}" validateField="surname"/>
@@ -78,6 +80,6 @@
         <dict:positionSelect class="positionField" medium="${representative?.position}" data-index="${seqNo}"
                              disabled="${!czyNowaUmowa && !representative?.isCBDDataChangedManually}"
                              id="${prefix}[${seqNo}].position" name="${prefix}[${seqNo}].position" from="[]"
-                             valueMessagePrefix="" value="${representative?.positionCBD}"/>
+                             valueMessagePrefix="" value="${representative?.position}"/>
     </div>
 </g:else>

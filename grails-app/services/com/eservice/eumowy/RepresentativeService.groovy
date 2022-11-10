@@ -1,5 +1,7 @@
 package com.eservice.eumowy
 
+import com.eservice.eumowy.command.BeneficiaryCommand
+import com.eservice.eumowy.command.ProcessCommand
 import com.eservice.eumowy.command.RepresentativeCommand
 import com.eservice.eumowy.pdfmapper.representative.LegalFormMapper
 
@@ -16,7 +18,6 @@ class RepresentativeService {
 
         if (representativesList.size > 0) {
             representatives.addAll(representativesList)
-
 
             representatives?.each { result ->
                 RepresentativeCommand representative = new RepresentativeCommand()
@@ -42,9 +43,22 @@ class RepresentativeService {
                 String krajUrodzenia = mapCountryByCode(result?.krajUrodzenia)
                 String dokumentTozsamosci = result?.dokumentTozsamosci ?: ""
                 def dataWaznosciDokumentu = result?.dataWaznosciDokumentu ?: ""
-                def dataWydaniaDokumetu = result?.dataWydaniaDokumetu ?: ""
+                def dataWydaniaDokumentu = result?.dataWydaniaDokumetu ?: ""
                 def czyPodpisalaUmowe = mapHasSignedContract(result?.czyPodpisalaUmowe)
                 int legalFormCode = result?.formaPrawnaID ?: ""
+                String mid = result?.mid ?: ""
+
+                if (dataWaznosciDokumentu != null && dataWaznosciDokumentu != "") {
+                    dataWaznosciDokumentu = Date.parse("YYYY-mm-dd", dataWaznosciDokumentu.toString())
+                }
+
+                if (dataWydaniaDokumentu != null && dataWydaniaDokumentu != "") {
+                    dataWydaniaDokumentu = Date.parse("YYYY-mm-dd", dataWydaniaDokumentu.toString())
+                }
+
+                if (dataUrodzenia != null && dataUrodzenia != "") {
+                    dataUrodzenia = Date.parse("YYYY-mm-dd", dataUrodzenia.toString()) as Date
+                }
 
                 representative.setName(name)
                 representative.setSurname(surname)
@@ -68,38 +82,51 @@ class RepresentativeService {
                 representative.setBirthCountry(krajUrodzenia)
                 representative.setDocumentNumber(dokumentTozsamosci)
                 representative.setDocumentExpirationDate(dataWaznosciDokumentu)
-                representative.setDocumentIssueDate(dataWydaniaDokumetu)
+                representative.setDocumentIssueDate(dataWydaniaDokumentu)
                 representative.setHasSignedContract(czyPodpisalaUmowe)
                 representative.setLegalFormCBD(LegalFormMapper.mapLegalFormFromCBD(legalFormCode))
-                representative.setNameCBD(name)
-                representative.setSurnameCBD(surname)
-                representative.setPositionCBD(mapperService.mapPositionFromCBD(position))
-                representative.setSalutationCBD(salutation)
-                representative.setEmailCBD(email)
-                representative.setLandlinePhoneCBD(telefonStacjonarny)
-                representative.setMobilePhoneCBD(telefonKomorkowy)
-                representative.setStreetCBD(ulica)
-                representative.setStreetTitleCBD(typUlicy)
-                representative.setCountryCBD(kraj)
-                representative.setHouseNumberCBD(numerDomu)
-                representative.setFlatNumberCBD(numerLokalu)
-                representative.setPostalCodeCBD(kodPocztowy)
-                representative.setCityCBD(miasto)
-                representative.setPostOfficeCBD(poczta)
-                representative.setIsCBDDataChangedManually(representative?.isCBDDataChangedManually != null ? representative?.isCBDDataChangedManually : true)
-                representative.setPeselCBD(pesel)
-                representative.setBirthDateCBD(dataUrodzenia)
-                representative.setCitizenshipCBD(obywatelstwo)
-                representative.setBirthCountryCBD(krajUrodzenia)
-                representative.setDocumentNumberCBD(dokumentTozsamosci)
-                representative.setDocumentExpirationDateCBD(dataWaznosciDokumentu)
-                representative.setDocumentIssueDateCBD(dataWydaniaDokumetu)
-                representative.setHasSignedContractCBD(czyPodpisalaUmowe)
+                representative.setMidCBD(mid as String)
 
                 representativeCommands.add(representative)
             }
         }
         return representativeCommands
+    }
+
+    List<BeneficiaryCommand> getDaneBeneficjentaRzeczywistego(String nip) {
+        List<BeneficiaryCommand> beneficiaresCommand = []
+
+        def beneficiaryList = cbdService.getBeneficjenci(nip)
+
+        beneficiaryList?.each { result ->
+            BeneficiaryCommand representative = new BeneficiaryCommand()
+
+            String name = result?.imie ?: ""
+            String surname = result?.nazwisko ?: ""
+            String salutation = result?.prefix ?: ""
+            String pesel = result?.pesel ?: ""
+            def dataUrodzenia = result?.dataUrodzenia ?: ""
+            String obywatelstwo =  mapCountryByCode(result?.obywatelstwo as String)
+
+            if (dataUrodzenia != null && dataUrodzenia != "") {
+                dataUrodzenia = Date.parse("YYYY-mm-dd", dataUrodzenia.toString())
+            }
+
+            representative.setName(name)
+            representative.setSurname(surname)
+            representative.setSalutation(salutation)
+            representative.setPesel(pesel)
+            if (dataUrodzenia != null && dataUrodzenia != "") {
+                representative.setBirthDate(dataUrodzenia as Date)
+            }
+            representative.setCitizenship(obywatelstwo)
+            representative.setIsCBDDataChangedManually(representative?.isCBDDataChangedManually != null ? representative?.isCBDDataChangedManually : true)
+            representative.setMidCBD(result?.mid as String)
+
+            beneficiaresCommand.add(representative)
+        }
+
+        return beneficiaresCommand
     }
 
     private mapCountryByCode(String countryCode) {

@@ -14,7 +14,8 @@
         $addAnotherAcceptorButton = jQuery("button#addAnotherAcceptor"),
         $companyData = jQuery("div#acceptorsPanel div.companyData"),
         $personData = jQuery("div#acceptorsPanel div.personData"),
-        $representativeIsCBDDataChangedManually = jQuery("#representativesContainer input[type=radio][name$='isCBDDataChangedManually']");
+        $representativeIsCBDDataChangedManually = jQuery("#representativesContainer input[type=radio][name$='isCBDDataChangedManually']"),
+        $acceptantsIsCBDDataChangedManually = jQuery("#acceptorsAdditionalPanels input[type=radio][name$='isCBDDataChangedManually']");
 
     attachDatepickers();
     attachTooltips();
@@ -28,7 +29,8 @@
     $representativePosition.change(onPositionChange);
     $representativeDocumentType.change(onDocumentTypeChange);
     $representativeIsPolitician.change(onIsPoliticianChange);
-    $representativeIsCBDDataChangedManually.change(onCBDDataChange);
+    $representativeIsCBDDataChangedManually.change(onRepresentativeCBDDataChange);
+    $acceptantsIsCBDDataChangedManually.change(onAcceptantCBDDataChange);
     $representativeVerification.change(clearVerificationDetail);
     $representativeTelephoneType.change(phoneTypeChanged);
     $addAnotherAcceptorButton.click(showNextAcceptor);

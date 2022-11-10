@@ -6,7 +6,6 @@ import com.eservice.eumowy.command.RepresentativeCommand
 import com.eservice.eumowy.dto.MerchantDetailsDTO
 import com.eservice.eumowy.dto.MerchantSearchStatus
 import com.eservice.eumowy.exception.CalculatorException
-import com.eservice.eumowy.pdfmapper.representative.LegalFormMapper
 import com.eservice.eumowy.process.DefineActivityCommand
 import com.eservice.eumowy.util.DateUtils
 import com.eservice.eumowy.validator.AttachmentsValidator
@@ -49,6 +48,7 @@ class ActivityController {
     def sessionFactory
     def signatureService
     def subscriptionService
+    def representativeService
 
     def springSecurityService
 
@@ -591,12 +591,8 @@ class ActivityController {
                     processInstance.panels = processService.filterExcludedPanels(processInstance, beforeExclusionPanels.toList())
                     processCommand = processService.getNewProcessCommand(processInstance, flow.calcNumber, conversation.calc)
 
-                    if(flow.bisnodeMerchantDetails) {
+                    if (flow.bisnodeMerchantDetails) {
                         processService.fillCommandWithBisnodeData(processCommand, flow.bisnodeMerchantDetails)
-                    }
-
-                    if (!flow.czyNowaUmowa) {
-//                        processService.saveRepresentativesDataFromCBD(processCommand)
                     }
 
                     //inicjacyjne zapisanie danych pobranych z cbd i calc
@@ -623,6 +619,10 @@ class ActivityController {
                     }
 
                     processCommand.nip = processInstance.client.nip
+                }
+
+                if (!flow.czyNowaUmowa) {
+                    processService.fillCommandWithCBDData(processCommand)
                 }
 
                 processCommand.liczbaPosZCbd = processCommand.getPosCountFromCBD()
@@ -948,6 +948,10 @@ class ActivityController {
 
                 flow.data = processCmd
                 flow.czyNowaUmowa = processService.isProcessHasActivity(processInstance, "nowaUmowa")
+
+                if (!flow.czyNowaUmowa) {
+                    processService.fillCommandWithCBDData(processCmd)
+                }
             }
             render(view: "../createProcess/selectedPanels")
             on("back").to "chooseCalc"
@@ -1376,85 +1380,22 @@ class ActivityController {
         render(text: '')
     }
 
-    def getReprezentantData() {
-        String id = params.id
-        def result = cbdService.getReprezentantData(id)
+    def getCbdReprezentantData() {
+        String nip = params.nip
+        String representativeId = params.representativeCbdMidId
+        def cbdRepresentatives = representativeService.getRepresentativesFromCBD(nip)
+        def result = cbdRepresentatives.find({ it -> it.midCBD == representativeId })
 
-        RepresentativeCommand representative = new RepresentativeCommand()
+        render result as JSON
+    }
 
-        String name = result?.NAME ?: ""
-        String surname = result?.SURNAME ?: ""
-        String position = result?.POSITION ?: ""
-        String salutation = result?.SALUTATION ?: ""
-        String email = result?.EMAIL ?: ""
-        String telefonStacjonarny = result?.LANDLINE_PHONE ?: ""
-        String telefonKomorkowy = result?.MOBILE_PHONE ?: ""
-        String ulica = result?.STREET ?: ""
-        String kraj = result?.COUNTRY ?: ""
-        String typUlicy = result?.STREET_TITLE ?: ""
-        String numerDomu = result?.HOUSE_NUMBER ?: ""
-        String numerLokalu = result?.FLAT_NUMBER ?: ""
-        String kodPocztowy = result?.POSTAL_CODE ?: ""
-        String miasto = result?.CITY ?: ""
-        String poczta = result?.POST_OFFICE ?: ""
-        String pesel = result?.PESEL ?: ""
-        def dataUrodzenia = result?.BIRTH_DATE ?: ""
-        String obywatelstwo = result?.CITIZENSHIP ?: ""
-        String krajUrodzenia = result?.BIRTH_COUNTRY ?: ""
-        String dokumentTozsamosci = result?.ID_NUMBER ?: ""
-        def dataWaznosciDokumentu = result?.ID_ISSUE_DATE ?: ""
-        def dataWydaniaDokumetu = result?.ID_EXPIRATION_DATE ?: ""
+    def getCbdAcceptantData() {
+        String nip = params.nip
+        String representativeId = params.acceptantCbdMidId
+        def cbdAcceptants = representativeService.getDaneBeneficjentaRzeczywistego(nip)
+        def result = cbdAcceptants.find({ it -> it.midCBD == representativeId })
 
-//        representative.setName(name)
-//        representative.setSurname(surname)
-//        representative.setPosition(mapperService.mapPositionFromCBD(position))
-//        representative.setSalutation(salutation)
-//        representative.setEmail(email)
-//        representative.setLandlinePhone(telefonStacjonarny)
-//        representative.setMobilePhone(telefonKomorkowy)
-//        representative.setStreet(ulica)
-//        representative.setStreetTitle(typUlicy)
-//        representative.setCountry(kraj)
-//        representative.setHouseNumber(numerDomu)
-//        representative.setFlatNumber(numerLokalu)
-//        representative.setPostalCode(kodPocztowy)
-//        representative.setCity(miasto)
-//        representative.setPostOffice(poczta)
-//        representative.setIsCBDDataChangedManually(representative?.isCBDDataChangedManually != null ? representative?.isCBDDataChangedManually : true)
-//        representative.setPesel(pesel)
-//        representative.setBirthDate(dataUrodzenia)
-//        representative.setCitizenship(obywatelstwo)
-//        representative.setBirthCountry(krajUrodzenia)
-//        representative.setDocumentNumber(dokumentTozsamosci)
-//        representative.setDocumentExpirationDate(dataWaznosciDokumentu)
-//        representative.setDocumentIssueDate(dataWydaniaDokumetu)
-//        representative.setHasSignedContract(czyPodpisalaUmowe)
-//        representative.setLegalFormCBD(LegalFormMapper.mapLegalFormFromCBD(legalFormCode))
-        representative.setNameCBD(name)
-        representative.setSurnameCBD(surname)
-//        representative.setPositionCBD(mapperService.mapPositionFromCBD(position))
-        representative.setSalutationCBD(salutation)
-        representative.setEmailCBD(email)
-        representative.setLandlinePhoneCBD(telefonStacjonarny)
-        representative.setMobilePhoneCBD(telefonKomorkowy)
-        representative.setStreetCBD(ulica)
-        representative.setStreetTitleCBD(typUlicy)
-        representative.setCountryCBD(kraj)
-        representative.setHouseNumberCBD(numerDomu)
-        representative.setFlatNumberCBD(numerLokalu)
-        representative.setPostalCodeCBD(kodPocztowy)
-        representative.setCityCBD(miasto)
-        representative.setPostOfficeCBD(poczta)
-        representative.setPeselCBD(pesel)
-//        representative.setBirthDateCBD(dataUrodzenia)
-        representative.setCitizenshipCBD(obywatelstwo)
-        representative.setBirthCountryCBD(krajUrodzenia)
-        representative.setDocumentNumberCBD(dokumentTozsamosci)
-//        representative.setDocumentExpirationDateCBD(dataWaznosciDokumentu)
-//        representative.setDocumentIssueDateCBD(dataWydaniaDokumetu)
-//        representative.setHasSignedContractCBD(czyPodpisalaUmowe)
-//
-        render representative as JSON
+        render result as JSON
     }
 
     def getCity() {

@@ -1132,44 +1132,9 @@ class ProcessService {
         representativeCmd.properties.remove("id")
         representative.properties = representativeCmd.properties
 
-        def representativeCbdData = mapDataFromCBd(representativeCmd, representative)
         representative.save()
 
-        representativeCbdData.save()
-
         return representative
-    }
-
-    private RepresentativeCbdData mapDataFromCBd(RepresentativeCommand representativeCommand, Representative representative) {
-        RepresentativeCbdData representativeCbdData = new RepresentativeCbdData();
-
-        representativeCbdData.setLandlinePhone(representativeCommand.getLandlinePhone())
-        representativeCbdData.setSalutation(representativeCommand.getSalutationCBD())
-        representativeCbdData.setName(representativeCommand.getNameCBD())
-        representativeCbdData.setSurname(representativeCommand.getSurnameCBD())
-        representativeCbdData.setPosition(representativeCommand.getPositionCBD())
-        representativeCbdData.setPesel(representativeCommand.getPeselCBD())
-        representativeCbdData.setBirthCountryCode(representativeCommand.getBirthCountryCBD())
-        representativeCbdData.setBirthDate(representativeCommand.getBirthDateCBD())
-        representativeCbdData.setDocumentNumber(representativeCommand.getDocumentNumberCBD())
-        representativeCbdData.setDocumentExpirationDate(representativeCommand.getDocumentExpirationDateCBD())
-        representativeCbdData.setDocumentIssueDate(representativeCommand.getDocumentIssueDateCBD())
-        representativeCbdData.setCitizenship(representativeCommand.getCitizenshipCBD())
-        representativeCbdData.setStreetTitle(representativeCommand.getStreetTitleCBD())
-        representativeCbdData.setStreet(representativeCommand.getStreetCBD())
-        representativeCbdData.setHouseNumber(representativeCommand.getHouseNumberCBD())
-        representativeCbdData.setFlatNumber(representativeCommand.getFlatNumberCBD())
-        representativeCbdData.setCity(representativeCommand.getCityCBD())
-        representativeCbdData.setPostalCode(representativeCommand.getPostalCodeCBD())
-        representativeCbdData.setPostOffice(representativeCommand.getPostOfficeCBD())
-        representativeCbdData.setCountry(representativeCommand.getCountryCBD())
-        representativeCbdData.setHasSignedContract(representativeCommand.getHasSignedContractCBD())
-        representativeCbdData.setEmail(representativeCommand.getEmailCBD())
-        representativeCbdData.setMobilePhone(representativeCommand.getMobilePhoneCBD())
-        representativeCbdData.setLandlinePhone(representativeCommand.getLandlinePhoneCBD())
-        representativeCbdData.setRepresentative(representative)
-
-        return representativeCbdData
     }
 
     private def addCurrentDate(def processDataList) {
@@ -1882,7 +1847,7 @@ class ProcessService {
         return cbdService.findCalculatorByNip(process.client.nip)
     }
 
-    public void fillCommandWithBisnodeData(ProcessCommand command, MerchantDetailsDTO merchantDetailsDTO) {
+    void fillCommandWithBisnodeData(ProcessCommand command, MerchantDetailsDTO merchantDetailsDTO) {
         command.isFromBisnode = true
         command.dzialalnoscForma = merchantDetailsDTO.formaPrawna?.name()
         command.akceptantNazwaOficjalna = merchantDetailsDTO.akceptantNazwaOficjalna
@@ -1900,8 +1865,15 @@ class ProcessService {
         MerchantDetailsDTOToBeneficiaryCommandMapper.map(merchantDetailsDTO.beneficiaries, command.beneficiaries)
     }
 
-    public void saveRepresentativesDataFromCBD(ProcessCommand command) {
-        def x = representativeService.getRepresentativesFromCBD(command.nip)
-        command.representatives = x
+    void fillCommandWithCBDData(ProcessCommand command) {
+        command.cbdRepresentatives = representativeService.getRepresentativesFromCBD(command.nip)
+        command.cbdBeneficiaries = representativeService.getDaneBeneficjentaRzeczywistego(command.nip as String)
+
+        if (command.representatives == null || command.representatives.isEmpty() && command.cbdRepresentatives.size() > 0) {
+            command.representatives = command.cbdRepresentatives
+        }
+        if (command.beneficiaries == null || command.beneficiaries.isEmpty() && command.cbdBeneficiaries.size() > 0) {
+            command.beneficiaries = command.cbdBeneficiaries
+        }
     }
 }
