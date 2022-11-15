@@ -7,7 +7,6 @@ import org.apache.commons.lang.StringUtils
 import org.apache.log4j.Logger
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.util.PDFMergerUtility
-import org.springframework.context.MessageSourceResolvable
 import org.springframework.context.i18n.LocaleContextHolder
 import pdfgenerator.PdfGenerator
 import pdfgenerator.PdfGenerator.FontType
@@ -30,6 +29,7 @@ class DocumentService {
 
     private static final int POSES_COUNT_ON_RENT_REDUCTION = 20
     private static final int POINTS_COUNT_ON_DOCUMENT = 30
+    private static final String PABR_PEP_DOCUMENT_NAME_CONTAINS = "PABR+PEP";
 
     def download(def id) {
 
@@ -73,25 +73,22 @@ class DocumentService {
         Set<DocumentFile> posExchangeDocuments = getPosExchangeDocuments(processInstance)
         documents.addAll(posExchangeDocuments)
 
-        if (isNewAgreement(processInstance) || isRepOrBenDataChanged) {
-            Signature pabrPebSignature = Signature.findAll().find { it?.name?.contains("PABR+PEP") }
-            if (pabrPebSignature != null && pabrPebSignature.active) {
-                documents.add(getDocumentFile(processInstance, pabrPebSignature, dataFromProcess))
-            }
+        Signature pabrPebSignature = Signature.findAll().find { it?.name?.contains(PABR_PEP_DOCUMENT_NAME_CONTAINS) }
+
+        if (isNewAgreement(processInstance) || isRepOrBenDataChanged && (pabrPebSignature != null && pabrPebSignature.active)) {
+            documents.add(getDocumentFile(processInstance, pabrPebSignature, dataFromProcess))
         }
 
 //        Set<DocumentFile> pointsDocuments = getAdditionalPointsDocuments(processInstance)
 //        documents.addAll(pointsDocuments)
-
-        addNewDocumentsToProcess(documents, processInstance)
 
         if (isNewAgreement(processInstance)) {
             Set<DocumentFile> mergedFiles = addMergedFile(processInstance)
             documents.addAll(mergedFiles)
         }
 
+        addNewDocumentsToProcess(documents, processInstance)
         removeObsoleteDocuments(processInstance)
-
         processInstance.save(flush: true)
 
         return documents
@@ -334,7 +331,7 @@ class DocumentService {
     private Set<DocumentFile> addMergedFile(Process process) {
         Set<DocumentFile> documents = []
         String pdfTemplatePath = "/opt/eumowy/pdf_templates/";
-        List<DocumentFile> documentsToMerge = process.documents?.findAll { it.signature.shouldBeMerged }
+        List<DocumentFile> documentsToMerge = process.documents?.findAll { it.signature.shouldBeMerged ||  it?.name?.contains(PABR_PEP_DOCUMENT_NAME_CONTAINS) }
             ?.sort(false) { a, b -> a.signature.signatureOrder.compareTo(b.signature.signatureOrder) }
         String documentName = messageSource.getMessage('document.merged.base.name' as String,
             [process.client?.nip, this._getUPZTDocumentModelName(documentsToMerge)] as Object[],
