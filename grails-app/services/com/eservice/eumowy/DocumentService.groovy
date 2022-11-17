@@ -29,7 +29,7 @@ class DocumentService {
 
     private static final int POSES_COUNT_ON_RENT_REDUCTION = 20
     private static final int POINTS_COUNT_ON_DOCUMENT = 30
-    private static final String PABR_PEP_DOCUMENT_NAME_CONTAINS = "PABR+PEP";
+    private static final String PABR_PEP_DOCUMENT_NAME_CONTAINS = "PABR+PEP"
 
     def download(def id) {
 
@@ -560,10 +560,10 @@ class DocumentService {
 
     private String _getUPZTDocumentModelName(List<DocumentFile> documentFiles) {
         def upztFile = documentFiles?.find { it?.signature?.name?.contains("UPZT") }
-        if (Optional.of(upztFile?.name).isPresent()) {
+        if (upztFile?.name != null) {
             def modelNameRegex = upztFile.name =~/\([model T\d*)]+\)/
             if (modelNameRegex.size() > 0) {
-                return modelNameRegex[0]
+                return ' ' + modelNameRegex[0]
             }
         }
         return '';
