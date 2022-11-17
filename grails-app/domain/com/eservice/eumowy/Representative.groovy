@@ -10,7 +10,7 @@ import static java.lang.String.format
 class Representative implements Serializable {
     private static final LOG = LogFactory.getLog(Representative.class)
 
-    public enum Type{
+    public enum Type {
         REPRESENTATIVE, BENEFICIARY
     }
 
@@ -62,12 +62,14 @@ class Representative implements Serializable {
     String mobilePhone
     String landlinePhone
 
+    String midCBD
+
     static belongsTo = [Process]
 
     static mapping = {
         sort "ID"
-        table name: "REPRESENTATIVE", schema:DomainConsts.SHEMA_NAME
-        id generator:'sequence', params:[sequence:DomainConsts.SHEMA_NAME+'.REPRESENTATIVE_SEQ']
+        table name: "REPRESENTATIVE", schema: DomainConsts.SHEMA_NAME
+        id generator: 'sequence', params: [sequence: DomainConsts.SHEMA_NAME + '.REPRESENTATIVE_SEQ']
 
         type column: "TYPE"
 
@@ -112,64 +114,67 @@ class Representative implements Serializable {
         hasSignedContract column: "CONTRACT_SIGNED"
         isCBDDataChangedManually column: "IS_CBD_DATA_CHANGED_MANUALLY"
 
-        email column : "EMAIL"
-        landlinePhone column : "LANDLINE_PHONE"
-        mobilePhone column : "MOBILE_PHONE"
+        email column: "EMAIL"
+        landlinePhone column: "LANDLINE_PHONE"
+        mobilePhone column: "MOBILE_PHONE"
+
+        midCBD column: "MID_CBD"
     }
 
     static constraints = {
-       salutation(nullable: true)
-       name(nullable: false)
-       surname(nullable: false)
-       position(nullable: true)
-       verification(nullable: true)
-       locationType(nullable: true)
-       pesel(nullable: true)
-       countryCode(nullable: true)
-       documentType(nullable: true)
-       documentNumber(nullable: true)
-       documentIssueDate(nullable: true)
-       documentExpirationDate(nullable: true)
-       birthDate(nullable: true)
-       birthCountry(nullable: true)
-       birthCity(nullable: true)
-       citizenship(nullable: true)
-       address(nullable: true)
-       streetTitle(nullable: true)
-       street(nullable: true)
-       houseNumber(nullable: true)
-       flatNumber(nullable: true)
-       city(nullable: true)
-       postalCode(nullable: true)
-       postOffice(nullable: true)
-       country(nullable: true)
-       ownsAcceptor(nullable: true)
-       controlsAcceptor(nullable: true)
-       overQuarterOfVotes(nullable: true)
-       votesPercentage(nullable: true)
-       isPolitician(nullable: true)
-       isDirectPep(nullable: true)
-       hasSignedContract(nullable: true)
-       email(nullable: true)
-       landlinePhone(nullable: true)
-       mobilePhone(nullable: true)
-       isCBDDataChangedManually(nullable: true)
+        salutation(nullable: true)
+        name(nullable: false)
+        surname(nullable: false)
+        position(nullable: true)
+        verification(nullable: true)
+        locationType(nullable: true)
+        pesel(nullable: true)
+        countryCode(nullable: true)
+        documentType(nullable: true)
+        documentNumber(nullable: true)
+        documentIssueDate(nullable: true)
+        documentExpirationDate(nullable: true)
+        birthDate(nullable: true)
+        birthCountry(nullable: true)
+        birthCity(nullable: true)
+        citizenship(nullable: true)
+        address(nullable: true)
+        streetTitle(nullable: true)
+        street(nullable: true)
+        houseNumber(nullable: true)
+        flatNumber(nullable: true)
+        city(nullable: true)
+        postalCode(nullable: true)
+        postOffice(nullable: true)
+        country(nullable: true)
+        ownsAcceptor(nullable: true)
+        controlsAcceptor(nullable: true)
+        overQuarterOfVotes(nullable: true)
+        votesPercentage(nullable: true)
+        isPolitician(nullable: true)
+        isDirectPep(nullable: true)
+        hasSignedContract(nullable: true)
+        email(nullable: true)
+        landlinePhone(nullable: true)
+        mobilePhone(nullable: true)
+        isCBDDataChangedManually(nullable: true)
+        midCBD(nullable: true)
     }
 
-   String getAddress(){
-        if (isOldAddress()){
+    String getAddress() {
+        if (isOldAddress()) {
             return address
         }
-        StringBuilder sb= new StringBuilder(format("%s. %s %s", streetTitle?.toLowerCase(), street, houseNumber))
-        if (flatNumber){
+        StringBuilder sb = new StringBuilder(format("%s. %s %s", streetTitle?.toLowerCase(), street, houseNumber))
+        if (flatNumber) {
             sb.append(" m. ").append(flatNumber)
         }
         sb.append(format(", %s %s", postalCode, city))
         return sb.toString()
     }
 
-    def isOldAddress(){
-        return address && ! (city && street)
+    def isOldAddress() {
+        return address && !(city && street)
     }
 
     public String getFullNameWithSalutation() {

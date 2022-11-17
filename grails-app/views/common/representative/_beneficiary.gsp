@@ -1,8 +1,9 @@
 <%@ page import="com.eservice.eumowy.enums.options.AcceptorLocation; com.eservice.eumowy.enums.options.IdentityDocumentType" %>
 
 <g:hiddenField name="${prefix}[${seqNo}].id" value="${representative?.id}"/>
-<g:hiddenField name="mid" value="${representative?.midCBD}"/>
+<g:hiddenField name="${prefix}[${seqNo}].midCBD" value="${representative?.midCBD}"/>
 <g:hiddenField name="index" value="${seqNo}"/>
+<g:hiddenField name="prefix" value="${prefix}"/>
 
 <g:if test="${!czyNowaUmowa && representative?.midCBD != null}">
 <div class="isCBDDataChangedManually ${hasErrors(bean: representative, field: 'isCBDDataChangedManually', 'errorSpan')}">

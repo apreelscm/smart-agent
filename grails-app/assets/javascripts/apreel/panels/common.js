@@ -32,10 +32,13 @@ function onRepresentativeCBDDataChange() {
         readOnlyFields = $this.parents("div.acceptor").find('input, textarea, select, textField'),
         disabledFields = $this.parents("div.acceptor").find('textarea, select, text, textField, checkbox, input'),
         representativesDataChanged = jQuery("#representativesContainer input[type=radio][name$='isCBDDataChangedManually']"),
-        representativeId = $this.parents("div.acceptor").children('div.basicRepresentativeData').children('input[name=mid]')[0].value,
         nip = jQuery("#akceptantNip")[0].value,
         verificationDocumentsContainer = jQuery("#dokumentyWeryfikacyjne"),
-        index = $this.parents("div.acceptor").children('div.basicRepresentativeData').children('input[name=index]')[0].value;
+        index = $this.parents("div.acceptor").children('div.basicRepresentativeData').children('input[name="index"]')[0].value,
+        prefix = $this.parents("div.acceptor").children('div.basicRepresentativeData').children('input[name="prefix"]')[0].value;
+
+    var midName = `${prefix}[${index}].midCBD`;
+    var representativeId = $this.parents("div.acceptor").children('div.basicRepresentativeData').children(`input[name="${midName}"]`)[0].value;
 
     var isAnyDataManual = jQuery("#acceptorsPanel input[type=radio][name$='isCBDDataChangedManually'][value=true]:checked")?.length > 0;
 
@@ -75,10 +78,13 @@ function onAcceptantCBDDataChange() {
         readOnlyFields = $this.parents("div.acceptor").find('input, textarea, select, textField'),
         disabledFields = $this.parents("div.acceptor").find('textarea, select, text, textField, checkbox, input'),
         beneficiaryDataChanged = jQuery("#acceptorsAdditionalPanels input[type=radio][name$='isCBDDataChangedManually']"),
-        acceptantId = $this.parents("div.acceptor").children('input[name=mid]')[0].value,
         nip = jQuery("#akceptantNip")[0].value,
         verificationDocumentsContainer = jQuery("#dokumentyWeryfikacyjne"),
-        index = $this.parents("div.acceptor").children('input[name=index]')[0].value;
+        index = $this.parents("div.acceptor").children('input[name="index"]')[0].value,
+        prefix = $this.parents("div.acceptor").children('input[name="prefix"]')[0].value;
+
+    var midName = `${prefix}[${index}].midCBD`;
+    var acceptantId = $this.parents("div.acceptor").children(`input[name="${midName}"]`)[0].value;
 
     var isAnyDataManual = jQuery("#acceptorsPanel input[type=radio][name$='isCBDDataChangedManually'][value=true]:checked")?.length > 0;
 
