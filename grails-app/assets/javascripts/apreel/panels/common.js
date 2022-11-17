@@ -34,11 +34,15 @@ function onRepresentativeCBDDataChange() {
         representativesDataChanged = jQuery("#representativesContainer input[type=radio][name$='isCBDDataChangedManually']"),
         representativeId = $this.parents("div.acceptor").children('div.basicRepresentativeData').children('input[name=mid]')[0].value,
         nip = jQuery("#akceptantNip")[0].value,
+        verificationDocumentsContainer = jQuery("#dokumentyWeryfikacyjne"),
         index = $this.parents("div.acceptor").children('div.basicRepresentativeData').children('input[name=index]')[0].value;
+
+    var isAnyDataManual = jQuery("#acceptorsPanel input[type=radio][name$='isCBDDataChangedManually'][value=true]:checked")?.length > 0;
 
     if (this.value === 'true') {
         disabledFields.removeAttr("disabled");
         readOnlyFields.removeAttr("readonly");
+        verificationDocumentsContainer.removeClass("hidden");
     } else {
         jQuery("#confirm-submit-without-subscription-dialog").dialog({
             resizable: true,
@@ -52,6 +56,9 @@ function onRepresentativeCBDDataChange() {
                         disabledFields.attr('disabled', 'disabled');
                         representativesDataChanged.removeAttr("disabled");
                         setRepresentativesDataFromCBD(index, nip, representativeId);
+                        if (!isAnyDataManual) {
+                            verificationDocumentsContainer.addClass("hidden");
+                        }
                         jQuery(this).dialog("close");
                     },
                     "Nie": function () {
@@ -70,11 +77,15 @@ function onAcceptantCBDDataChange() {
         beneficiaryDataChanged = jQuery("#acceptorsAdditionalPanels input[type=radio][name$='isCBDDataChangedManually']"),
         acceptantId = $this.parents("div.acceptor").children('input[name=mid]')[0].value,
         nip = jQuery("#akceptantNip")[0].value,
+        verificationDocumentsContainer = jQuery("#dokumentyWeryfikacyjne"),
         index = $this.parents("div.acceptor").children('input[name=index]')[0].value;
+
+    var isAnyDataManual = jQuery("#acceptorsPanel input[type=radio][name$='isCBDDataChangedManually'][value=true]:checked")?.length > 0;
 
     if (this.value === 'true') {
         disabledFields.removeAttr("disabled");
         readOnlyFields.removeAttr("readonly");
+        verificationDocumentsContainer.removeClass("hidden");
     } else {
         jQuery("#confirm-submit-without-subscription-dialog").dialog({
             resizable: true,
@@ -88,6 +99,9 @@ function onAcceptantCBDDataChange() {
                         disabledFields.attr('disabled', 'disabled');
                         beneficiaryDataChanged.removeAttr("disabled");
                         setAcceptantDataFromCBD(index, nip, acceptantId);
+                        if (!isAnyDataManual) {
+                            verificationDocumentsContainer.addClass("hidden");
+                        }
                         jQuery(this).dialog("close");
                     },
                     "Nie": function () {

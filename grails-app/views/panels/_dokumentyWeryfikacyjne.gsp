@@ -1,5 +1,5 @@
 <asset:javascript src="apreel/panels/dokumentyWeryfikacyjne.js"/>
-<div class="dokumentyWeryfikacyjne ${(!czyNowaUmowa) ? 'hidden' : ''}">
+<div id="dokumentyWeryfikacyjne" class="dokumentyWeryfikacyjne ${(!czyNowaUmowa) ? 'hidden' : ''}">
     <fieldset>
 
     <header class="belka-glowna"><g:message code="panel.verifications.documents.title"/></header>
