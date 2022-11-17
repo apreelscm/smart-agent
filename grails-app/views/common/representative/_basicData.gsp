@@ -1,6 +1,7 @@
 <g:hiddenField name="${prefix}[${seqNo}].id" value="${representative?.id}"/>
-<g:hiddenField name="mid" value="${representative?.midCBD}"/>
+<g:hiddenField name="${prefix}[${seqNo}].midCBD" value="${representative?.midCBD}"/>
 <g:hiddenField name="index" value="${seqNo}"/>
+<g:hiddenField name="prefix" value="${prefix}"/>
 
 <g:if test="${dropdowns}">
     <div>
