@@ -122,24 +122,22 @@
 
         <div>
             <g:checkBox name="beneficiaries[${seqNo}].ownsAcceptor"
-                        disabled="${!czyNowaUmowa && !representative?.isCBDDataChangedManually}" checked="${representative?.ownsAcceptor}"/>
+                        checked="${representative?.ownsAcceptor}"/>
             <label for="beneficiaries[${seqNo}].ownsAcceptor"><g:message code="beneficiary.owns.acceptor.label"/></label>
         </div>
 
         <div>
             <g:checkBox name="beneficiaries[${seqNo}].controlsAcceptor"
-                        disabled="${!czyNowaUmowa && !representative?.isCBDDataChangedManually}" checked="${representative?.controlsAcceptor}"/>
+                        checked="${representative?.controlsAcceptor}"/>
             <label for="beneficiaries[${seqNo}].controlsAcceptor"><g:message code="beneficiary.controls.acceptor.label"/></label>
         </div>
 
         <div>
             <g:checkBox name="beneficiaries[${seqNo}].overQuarterOfVotes"
-                        disabled="${!czyNowaUmowa && !representative?.isCBDDataChangedManually}"
                         checked="${representative?.overQuarterOfVotes}"/>
             <label for="beneficiaries[${seqNo}].overQuarterOfVotes"><g:message code="beneficiary.majority.acceptor.label"/></label>
 
             <eumowy:textField name="beneficiaries[${seqNo}].votesPercentage" class="percent-short"
-                              readonly="${!czyNowaUmowa && !representative?.isCBDDataChangedManually}"
                               value="${representative?.overQuarterOfVotes ? representative?.votesPercentage : ""}"
                               validatable="${representative}" validateField="votesPercentage"/>
             <g:message code="beneficiary.majority.acceptor.closing.label"/>
