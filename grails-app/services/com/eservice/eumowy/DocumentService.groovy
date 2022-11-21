@@ -79,16 +79,18 @@ class DocumentService {
             documents.add(getDocumentFile(processInstance, pabrPebSignature, dataFromProcess))
         }
 
+        addNewDocumentsToProcess(documents, processInstance)
+        removeObsoleteDocuments(processInstance)
+
 //        Set<DocumentFile> pointsDocuments = getAdditionalPointsDocuments(processInstance)
 //        documents.addAll(pointsDocuments)
 
         if (isNewAgreement(processInstance)) {
             Set<DocumentFile> mergedFiles = addMergedFile(processInstance)
             documents.addAll(mergedFiles)
+            addNewDocumentsToProcess(documents, processInstance)
         }
 
-        addNewDocumentsToProcess(documents, processInstance)
-        removeObsoleteDocuments(processInstance)
         processInstance.save(flush: true)
 
         return documents
@@ -332,7 +334,7 @@ class DocumentService {
         Set<DocumentFile> documents = []
         String pdfTemplatePath = "/opt/eumowy/pdf_templates/";
         List<DocumentFile> documentsToMerge = process.documents?.findAll { it.signature.shouldBeMerged ||  it?.name?.contains(PABR_PEP_DOCUMENT_NAME_CONTAINS) }
-            ?.sort(false) { a, b -> a.signature.signatureOrder.compareTo(b.signature.signatureOrder) }
+            ?.sort(false) { a, b -> (a.signature.signatureOrder <=> b.signature.signatureOrder) }
         String documentName = messageSource.getMessage('document.merged.base.name' as String,
             [process.client?.nip, this._getUPZTDocumentModelName(documentsToMerge)] as Object[],
             LocaleContextHolder.locale as Locale)
