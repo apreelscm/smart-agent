@@ -22,9 +22,16 @@
 </g:if>
 
 <div>
-    <g:select name="${prefix}[${seqNo}].salutation" from="['Pan','Pani']" valueMessagePrefix="person.title" value="${representative?.salutation}"
+    <g:select name="${prefix}[${seqNo}].salutation"
+              from="['Pan','Pani']"
+              valueMessagePrefix="person.title"
+              value="${representative?.salutation}"
               disabled="${!czyNowaUmowa && !representative?.isCBDDataChangedManually}"
               validatable="${representative}" validateField="salutation" required="required"/>
+    <g:hiddenField name="${prefix}[${seqNo}].salutation"
+                   disabled="${czyNowaUmowa || representative?.isCBDDataChangedManually}"
+                   cbdDataHiddenField="cbdDataHiddenField"
+                   value="${representative?.salutation}"/>
 
     <label style="margin-left: 10px" for="${prefix}[${seqNo}].name"><g:message code="panel.first.name"/>:</label>
     <eumowy:textField name="${prefix}[${seqNo}].name" value="${representative?.name}" maxlength ="25"
@@ -32,16 +39,27 @@
                       validatable="${representative}" validateField="name" required="required"/>
 
     <label for="${prefix}[${seqNo}].surname"><g:message code="panel.last.name"/>:</label>
-    <eumowy:textField name="${prefix}[${seqNo}].surname" value="${representative?.surname}" maxlength ="35" class="surnameField"
+    <eumowy:textField name="${prefix}[${seqNo}].surname"
+                      value="${representative?.surname}"
+                      maxlength ="35"
+                      class="surnameField"
                       readonly="${!czyNowaUmowa && !representative?.isCBDDataChangedManually}"
-                      validatable="${representative}" validateField="surname" required="required"/>
+                      validatable="${representative}"
+                      validateField="surname"
+                      required="required"/>
 </div>
 
 <div style="margin-top: 15px">
     <label for="${prefix}[${seqNo}].citizenship"><g:message code="citizenship.label"/></label>
-    <dict:countrySelect name="${prefix}[${seqNo}].citizenship" value="${representative?.citizenship}"
+    <dict:countrySelect name="${prefix}[${seqNo}].citizenship"
+                        value="${representative?.citizenship}"
                         disabled="${!czyNowaUmowa && !representative?.isCBDDataChangedManually}"
-                        validatable="${representative}" validateField="citizenship" required="required"/>
+                        validatable="${representative}"
+                        validateField="citizenship" required="required"/>
+    <g:hiddenField name="${prefix}[${seqNo}].citizenship"
+                   disabled="${czyNowaUmowa || representative?.isCBDDataChangedManually}"
+                   cbdDataHiddenField="cbdDataHiddenField"
+                   value="${representative?.citizenship}"/>
 </div>
 
 <div class="acceptorPESELCountryWrapper ${hasErrors(bean: representative, field: 'verification', 'errorSpan')}">
@@ -49,6 +67,10 @@
         <g:radio name="${prefix}[${seqNo}].verification" value="PESEL"
                  disabled="${!czyNowaUmowa && !representative?.isCBDDataChangedManually}"
                  checked="${representative?.verification?.name() == "PESEL"}"/>
+        <g:hiddenField name="${prefix}[${seqNo}].verification"
+                       disabled="${czyNowaUmowa || representative?.isCBDDataChangedManually}"
+                       cbdDataHiddenField="cbdDataHiddenField"
+                       value="${representative?.verification}"/>
         <div class="label"><g:message code="pesel.label"/></div>
 
         <eumowy:textField name="${prefix}[${seqNo}].pesel" value="${representative?.pesel}"
@@ -56,16 +78,18 @@
                           readonly="${!czyNowaUmowa && !representative?.isCBDDataChangedManually}"
                           validatable="${representative}" validateField="pesel"/>
     </div>
-
     <div class="acceptorRadioWrapper">
-        <g:radio name="${prefix}[${seqNo}].verification" value="BIRTH_DATE"
+        <g:radio name="${prefix}[${seqNo}].verification"
+                 value="BIRTH_DATE"
                  disabled="${!czyNowaUmowa && !representative?.isCBDDataChangedManually}"
                  checked="${representative?.verification?.name() == "BIRTH_DATE"}"/>
 
         <label for="${prefix}[${seqNo}].personBirthDate"><g:message code="birth.date.country.label"/></label>
-        <g:textField id="${prefix}[${seqNo}].personBirthDate" name="${prefix}[${seqNo}].birthDate"
-                     disabled="${!czyNowaUmowa && !representative?.isCBDDataChangedManually}"
-                     value="${formatDate(format: 'yyyy-MM-dd', date: representative?.birthDate)}" maxlength="10"
+        <g:textField id="${prefix}[${seqNo}].personBirthDate"
+                     name="${prefix}[${seqNo}].birthDate"
+                     readonly="${!czyNowaUmowa && !representative?.isCBDDataChangedManually}"
+                     value="${formatDate(format: 'yyyy-MM-dd', date: representative?.birthDate)}"
+                     maxlength="10"
                      class="date-field date-past"/>
     </div>
 </div>
@@ -77,13 +101,12 @@
 
     <span><g:message code="is.political.position.label"/></span>
 
-    <g:radio name="${prefix}[${seqNo}].isPolitician" value="true"
-             disabled="${!czyNowaUmowa && !representative?.isCBDDataChangedManually}"
+    <g:radio name="${prefix}[${seqNo}].isPolitician"
+             value="true"
              checked="${representative?.isPolitician == true}"/>
     <label for="${prefix}[${seqNo}].isPolitician"><g:message code="yes"/></label>
 
     <g:radio name="${prefix}[${seqNo}].isPolitician" value="false"
-             disabled="${!czyNowaUmowa && !representative?.isCBDDataChangedManually}"
              checked="${representative?.isPolitician == false}"/>
     <label for="${prefix}[${seqNo}].isPolitician"><g:message code="no"/></label>
 </div>
@@ -93,16 +116,18 @@
         <p class="error-message"><g:message code="representative.option.required"/></p>
     </g:hasErrors>
 
-    <g:radio name="${prefix}[${seqNo}].isDirectPep" value="true" required="required"
-             disabled="${!czyNowaUmowa && !representative?.isCBDDataChangedManually}"
+    <g:radio name="${prefix}[${seqNo}].isDirectPep"
+             value="true"
+             required="required"
              checked="${representative?.isDirectPep == true}"/>
     <label for="${prefix}[${seqNo}].isDirectPep">
         <g:message code="representative.pep.direct"/>
         <strong class="tooltip" title="${g.message(code: 'representative.pep.direct.description')}"><g:message code="representative.pep.description"/></strong>
     </label>
 
-    <g:radio name="${prefix}[${seqNo}].isDirectPep" value="false" required="required"
-             disabled="${!czyNowaUmowa && !representative?.isCBDDataChangedManually}"
+    <g:radio name="${prefix}[${seqNo}].isDirectPep"
+             value="false"
+             required="required"
              checked="${representative?.isDirectPep == false}"/>
     <label for="${prefix}[${seqNo}].isDirectPep">
         <g:message code="representative.pep.related"/>

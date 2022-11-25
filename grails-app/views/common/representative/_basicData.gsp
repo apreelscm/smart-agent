@@ -6,13 +6,15 @@
 <g:if test="${dropdowns}">
     <div>
         <g:if test="${!czyNowaUmowa && representative?.midCBD != null}">
-            <g:radio class="isCBDDataChangedManually" name="${prefix}[${seqNo}].isCBDDataChangedManually"
+            <g:radio class="isCBDDataChangedManually"
+                     name="${prefix}[${seqNo}].isCBDDataChangedManually"
                      checked="${representative?.isCBDDataChangedManually == true}"
                      value="${representative?.isCBDDataChangedManually}"/>
             <label for="${prefix}[${seqNo}].isCBDDataChangedManually"><g:message
                     code="com.eservice.eumowy.command.RepresentativeCommand.isCBDDataChangedManuallyTrue"/></label>
 
-            <g:radio class="isCBDDataChangedManually" name="${prefix}[${seqNo}].isCBDDataChangedManually"
+            <g:radio class="isCBDDataChangedManually"
+                     name="${prefix}[${seqNo}].isCBDDataChangedManually"
                      checked="${representative?.isCBDDataChangedManually == false}"
                      value="${!representative?.isCBDDataChangedManually}"/>
             <label for="${prefix}[${seqNo}].isCBDDataChangedManually"><g:message
@@ -48,12 +50,14 @@
             <p class="error-message"><g:message code="representative.option.required"/></p>
         </g:hasErrors>
 
-        <g:radio name="${prefix}[${seqNo}].isCBDDataChangedManually" value="true"
+        <g:radio name="${prefix}[${seqNo}].isCBDDataChangedManually"
+                 value="true"
                  checked="${representative?.isCBDDataChangedManually == true}"/>
         <label for="${prefix}[${seqNo}].isCBDDataChangedManually"><g:message
                 code="com.eservice.eumowy.command.RepresentativeCommand.isCBDDataChangedManuallyTrue"/></label>
 
-        <g:radio name="${prefix}[${seqNo}].isCBDDataChangedManually" value="false"
+        <g:radio name="${prefix}[${seqNo}].isCBDDataChangedManually"
+                 value="false"
                  checked="${representative?.isCBDDataChangedManually == false}"/>
         <label for="${prefix}[${seqNo}].isCBDDataChangedManually"><g:message
                 code="com.eservice.eumowy.command.RepresentativeCommand.isCBDDataChangedManuallyFalse"/></label>
@@ -65,6 +69,10 @@
                   value="${representative?.salutation}"
                   disabled="${!czyNowaUmowa && !representative?.isCBDDataChangedManually}"
                   validatable="${representative}" validateField="salutation"/>
+        <g:hiddenField name="${prefix}[${seqNo}].salutation"
+                       disabled="${czyNowaUmowa || representative?.isCBDDataChangedManually}"
+                       cbdDataHiddenField="cbdDataHiddenField"
+                       value="${representative?.salutation}"/>
 
         <label for="${prefix}[${seqNo}].name"><g:message code="panel.first.name"/>:</label>
         <eumowy:textField name="${prefix}[${seqNo}].name" value="${representative?.name}" maxlength="25"
@@ -78,9 +86,17 @@
                           validatable="${representative}" validateField="surname"/>
 
         <label for="${prefix}[${seqNo}].position"><g:message code="panel.position"/>:</label>
-        <dict:positionSelect class="positionField" medium="${representative?.position}" data-index="${seqNo}"
+        <dict:positionSelect class="positionField"
+                             medium="${representative?.position}"
+                             data-index="${seqNo}"
                              disabled="${!czyNowaUmowa && !representative?.isCBDDataChangedManually}"
-                             id="${prefix}[${seqNo}].position" name="${prefix}[${seqNo}].position" from="[]"
-                             valueMessagePrefix="" value="${representative?.position}"/>
+                             id="${prefix}[${seqNo}].position"
+                             name="${prefix}[${seqNo}].position" from="[]"
+                             valueMessagePrefix=""
+                             value="${representative?.position}"/>
+        <g:hiddenField name="${prefix}[${seqNo}].position"
+                       disabled="${czyNowaUmowa || representative?.isCBDDataChangedManually}"
+                       cbdDataHiddenField="cbdDataHiddenField"
+                       value="${representative?.position}"/>
     </div>
 </g:else>

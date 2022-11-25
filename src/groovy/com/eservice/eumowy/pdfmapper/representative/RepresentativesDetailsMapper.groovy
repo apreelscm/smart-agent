@@ -1,25 +1,25 @@
 package com.eservice.eumowy.pdfmapper.representative
 
-
-import com.eservice.eumowy.enums.options.IdentityDocumentType
+import com.eservice.eumowy.Process
 import com.eservice.eumowy.pdfmapper.AbstractPdfMapper
 import com.eservice.eumowy.pdfmapper.Mapper
-import com.eservice.eumowy.Process
+import org.springframework.context.MessageSource
 
 import java.text.SimpleDateFormat
 
 import static com.google.common.base.Strings.isNullOrEmpty
-
 
 class RepresentativesDetailsMapper extends AbstractPdfMapper implements Mapper {
 
     private static final SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat("yyyy-MM-dd")
     private Process process
     private String prefix
+    private MessageSource messageSource
 
-    public RepresentativesDetailsMapper(Process process) {
+    public RepresentativesDetailsMapper(Process process, MessageSource messageSource) {
         this.process = process
         prefix = getPrefix()
+        this.messageSource = messageSource
     }
 
     @Override
@@ -33,10 +33,13 @@ class RepresentativesDetailsMapper extends AbstractPdfMapper implements Mapper {
             representativesData.put(getFieldName(i, "Pesel"), [representative.pesel] as String[])
             representativesData.put(getFieldName(i, "CzyDataUrodzenia"), getCheckedCheckbox(representative.birthDate != null))
             representativesData.put(getFieldName(i, "PanstwoUrodzenia"), [representative.birthCountry] as String[])
-            representativesData.put(getFieldName(i, "DowOsob"), getCheckedCheckbox(IdentityDocumentType.IDENTITY_CARD.equals(representative.documentType)))
-            representativesData.put(getFieldName(i, "Paszport"), getCheckedCheckbox(IdentityDocumentType.PASSPORT.equals(representative.documentType)))
             representativesData.put(getFieldName(i, "SeriaNrDokumentu"), [representative.documentNumber] as String[])
             representativesData.put(getFieldName(i, "Obywatelstwo"), [representative.citizenship] as String[])
+            if (representative?.documentType != null && representative?.documentType?.toString() != "") {
+                def message = "identity.kind." + representative?.documentType;
+                def representativeDocumentType = messageSource.getMessage(message, null, Locale.getDefault());
+                representativesData.put(getFieldName(i, "WeryfikacjaPo"), [representativeDocumentType] as String[])
+            }
 
             if (representative.birthDate) {
                 representativesData.put(getFieldName(i, "DataUrodzenia"), [DATE_FORMATTER.format(representative.birthDate)] as String[])

@@ -691,6 +691,24 @@ class PdfIntegrTests extends ControllerUnitTestMixin {
         process("APFZMP3.00016-10-11.pdf", "APFZMP3.00016-10-11_out.pdf", data);
     }
 
+    @Test
+    void NEW_PABR_PEB() { //APAGFPABRPEP1.00521-01-14.pdf
+        def data = [:]
+        def subscriptions = [
+            ["ACCEPTANT1", 2, 375, 400, 20, 22],
+            ["ACCEPTANT2", 2, 375, 412, 20, 22],
+            ["ACCEPTANT3", 2, 375, 424, 20, 22],
+            ["ACCEPTANT4", 2, 375, 446, 20, 22],
+            ["PH", 2, 460, 328, 40, 22],
+            ["PH", 2, 460, 185, 40, 22],
+        ]
+
+        data.putAll(akceptantIReprezentanciFields())
+        data.putAll(PdfHelper.insertSignatures(subscriptions))
+        processRaw("C:\\opt\\eumowy\\pdf_templates\\APAGFPABRPEP1.00521-01-14.pdf",
+            "C:\\opt\\eumowy\\pdf_templates\\test.pdf", data);
+    }
+
     void process(templateName, outName, data) {
         byte[] pdf = service.fillPdfFormFromURI(PdfHelper.fileTemplatePath + templateName, data, PdfGenerator.FontType.ARIAL)
 
@@ -703,6 +721,18 @@ class PdfIntegrTests extends ControllerUnitTestMixin {
         }
 
         println 'Writing pdf to: ' + PdfHelper.fileTemplateOutPath + outName
+    }
+
+    void processRaw(inPath, outName, data) {
+        byte[] pdf = service.fillPdfFormFromURI(inPath, data, PdfGenerator.FontType.ARIAL)
+
+        assert pdf != null
+
+        new File(outName).withOutputStream {
+            it.write pdf
+        }
+
+        println 'Writing pdf to: ' + outName
     }
 
     void process(templateName, nestedOutputFolder, outName, data) {
