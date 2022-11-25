@@ -3,6 +3,8 @@ package com.eservice.eumowy
 import com.eservice.eumowy.command.BeneficiaryCommand
 import com.eservice.eumowy.command.ProcessCommand
 import com.eservice.eumowy.command.RepresentativeCommand
+import com.eservice.eumowy.enums.options.AcceptorVerification
+import com.eservice.eumowy.enums.options.TelephoneType
 import com.eservice.eumowy.pdfmapper.representative.LegalFormMapper
 
 class RepresentativeService {
@@ -48,25 +50,11 @@ class RepresentativeService {
                 int legalFormCode = result?.formaPrawnaID ?: ""
                 String mid = result?.mid ?: ""
 
-                if (dataWaznosciDokumentu != null && dataWaznosciDokumentu != "") {
-                    dataWaznosciDokumentu = Date.parse("YYYY-mm-dd", dataWaznosciDokumentu.toString())
-                }
-
-                if (dataWydaniaDokumentu != null && dataWydaniaDokumentu != "") {
-                    dataWydaniaDokumentu = Date.parse("YYYY-mm-dd", dataWydaniaDokumentu.toString())
-                }
-
-                if (dataUrodzenia != null && dataUrodzenia != "") {
-                    dataUrodzenia = Date.parse("YYYY-mm-dd", dataUrodzenia.toString()) as Date
-                }
-
                 representative.setName(name)
                 representative.setSurname(surname)
                 representative.setPosition(mapperService.mapPositionFromCBD(position))
                 representative.setSalutation(salutation)
                 representative.setEmail(email)
-                representative.setLandlinePhone(telefonStacjonarny)
-                representative.setMobilePhone(telefonKomorkowy)
                 representative.setStreet(ulica)
                 representative.setStreetTitle(typUlicy)
                 representative.setCountry(kraj)
@@ -86,6 +74,52 @@ class RepresentativeService {
                 representative.setHasSignedContract(czyPodpisalaUmowe)
                 representative.setLegalFormCBD(LegalFormMapper.mapLegalFormFromCBD(legalFormCode))
                 representative.setMidCBD(mid as String)
+
+                if (pesel?.length() > 0) {
+                    representative.setVerification(AcceptorVerification.PESEL)
+                } else if (dataUrodzenia?.length() > 0) {
+                    representative.setVerification(AcceptorVerification.BIRTH_DATE)
+                }
+
+                if (telefonKomorkowy?.length() > 0 || telefonStacjonarny.length() > 0) {
+                    if (telefonKomorkowy) {
+                        if (!telefonKomorkowy.contains("-")) {
+                            def maskedPhoneNumber = "";
+                            for (int i = 0; i < telefonKomorkowy.length(); i++) {
+                                if (i == 3 || i == 6) {
+                                    maskedPhoneNumber += "-"
+                                }
+                                maskedPhoneNumber += telefonKomorkowy.charAt(i)
+                            }
+                            representative.setMobilePhone(maskedPhoneNumber)
+                        } else {
+                            representative.setMobilePhone(telefonKomorkowy)
+                        }
+                        representative.setTelephoneType(TelephoneType.MOBILE)
+                    } else if (telefonStacjonarny) {
+                        if (!telefonStacjonarny.contains("-") && telefonStacjonarny.length() == 9) {
+                            def maskedPhoneNumber = "(";
+                            for (int i = 0; i < telefonKomorkowy.length(); i++) {
+                                if (i == 2) {
+                                    maskedPhoneNumber += ") "
+                                }
+                                if (i == 6 || i == 8) {
+                                    maskedPhoneNumber += "-"
+                                }
+                                maskedPhoneNumber += telefonKomorkowy.charAt(i)
+                            }
+                            representative.setLandlinePhone(maskedPhoneNumber)
+                        } else {
+                            representative.setLandlinePhone(telefonStacjonarny)
+                        }
+                        representative.setTelephoneType(TelephoneType.LANDLINE)
+                    } else {
+                        representative.setMobilePhone(null)
+                        representative.setLandlinePhone(null)
+                        representative.setPhoneNumber(null)
+                        representative.setTelephoneType(null)
+                    }
+                }
 
                 representativeCommands.add(representative)
             }

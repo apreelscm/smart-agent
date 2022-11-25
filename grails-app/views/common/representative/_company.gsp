@@ -12,15 +12,17 @@
 
                 <label for="${prefix}[${seqNo}].documentType"><g:message code="panel.identity"/>:</label>
 
-                <eumowy:select noSelection="${['': '']}"
-                               values="${IdentityDocumentType.values()}"
-                               medium="${representative?.documentType}"
-                               data-index="${seqNo}" style="min-width: 150px"
-                               id="${prefix}[${seqNo}].documentType" name="${prefix}[${seqNo}].documentType"
-                               from="${IdentityDocumentType.values()}" valueMessagePrefix="identity.kind"
-                               value="${representative?.documentType}"
-                               required="required"/>
-
+                <g:select id="${prefix}[${seqNo}].documentType"
+                          name="${prefix}[${seqNo}].documentType"
+                          from="${IdentityDocumentType.values()}"
+                          valueMessagePrefix="identity.kind"
+                          value="${representative?.documentType}"
+                          required="required"
+                          style="min-width: 150px"/>
+                <g:hiddenField name="${prefix}[${seqNo}].documentType"
+                               disabled="${czyNowaUmowa || representative?.isCBDDataChangedManually}"
+                               cbdDataHiddenField="cbdDataHiddenField"
+                               value="${representative?.documentType}"/>
             </div>
 
             <div>
@@ -56,8 +58,15 @@
             </g:hasErrors>
 
             <div class="acceptorRadioWrapper">
-                <g:radio name="${prefix}[${seqNo}].verification" value="PESEL" class="pesel-verification"
+                <g:radio name="${prefix}[${seqNo}].verification"
+                         value="PESEL"
+                         class="pesel-verification"
+                         disabled="${!czyNowaUmowa && !representative?.isCBDDataChangedManually}"
                          checked="${(!data.dzialalnoscForma || data.isCompanyForm()) && representative?.verification?.name() == "PESEL"}"/>
+                <g:hiddenField name="${prefix}[${seqNo}].verification"
+                               disabled="${czyNowaUmowa || representative?.isCBDDataChangedManually}"
+                               cbdDataHiddenField="cbdDataHiddenField"
+                               value="${representative?.verification}"/>
                 <div class="label"><g:message code="pesel.label"/></div>
 
                 <eumowy:textField name="${prefix}[${seqNo}].pesel" value="${representative?.pesel}"
@@ -80,11 +89,15 @@
 
         <div class="acceptorBirthCountryAndCity ${hasErrors(bean: representative, field: 'birthCountry', 'errorSpan')} ">
             <label for="${prefix}[${seqNo}].birthCountry"><g:message code="birth.country.label"/></label>
-            <dict:countrySelect name="${prefix}[${seqNo}].birthCountry" value="${representative?.birthCountry}"
+            <dict:countrySelect name="${prefix}[${seqNo}].birthCountry"
+                                value="${representative?.birthCountry}"
                                 required="required"
-                                readonly="${!czyNowaUmowa && !representative?.isCBDDataChangedManually}"
+                                disabled="${!czyNowaUmowa && !representative?.isCBDDataChangedManually}"
                                 validatable="${representative}" validateField="birthCountry"/>
-
+            <g:hiddenField name="${prefix}[${seqNo}].birthCountry"
+                           disabled="${czyNowaUmowa || representative?.isCBDDataChangedManually}"
+                           cbdDataHiddenField="cbdDataHiddenField"
+                           value="${representative?.birthCountry}"/>
         </div>
 
         <div class="phone-container-${prefix}-${seqNo} phone-container-company"
@@ -99,6 +112,10 @@
                      name="${prefix}[${seqNo}].telephoneType${data.isPersonForm() == true ? '-disabled' : ''}"
                      value="${TelephoneType.MOBILE.name()}"
                      checked="${representative?.telephoneType == TelephoneType.MOBILE}"/>
+            <g:hiddenField name="${prefix}[${seqNo}].telephoneType"
+                           disabled="${czyNowaUmowa || representative?.isCBDDataChangedManually}"
+                           cbdDataHiddenField="cbdDataHiddenField"
+                           value="${representative?.telephoneType}"/>
             <label for="${prefix}[${seqNo}].telephoneType"><g:message code="panel.mobile.phone.number"/></label>
 
             <label style="margin-left: 10px" for="${prefix}[${seqNo}].phoneNumber"><g:message
@@ -126,11 +143,15 @@
 
             <span><g:message code="is.political.position.label"/></span>
 
-            <g:radio name="${prefix}[${seqNo}].isPolitician" value="true" required="required"
+            <g:radio name="${prefix}[${seqNo}].isPolitician"
+                     value="true"
+                     required="required"
                      checked="${(!data.dzialalnoscForma || data.isCompanyForm()) && representative?.isPolitician == true}"/>
             <label for="${prefix}[${seqNo}].isPolitician"><g:message code="yes"/></label>
 
-            <g:radio name="${prefix}[${seqNo}].isPolitician" value="false" required="required"
+            <g:radio name="${prefix}[${seqNo}].isPolitician"
+                     value="false"
+                     required="required"
                      checked="${(!data.dzialalnoscForma || data.isCompanyForm()) && representative?.isPolitician == false}"/>
             <label for="${prefix}[${seqNo}].isPolitician"><g:message code="no"/></label>
         </div>
