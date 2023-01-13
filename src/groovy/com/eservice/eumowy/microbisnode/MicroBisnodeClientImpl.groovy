@@ -34,6 +34,7 @@ class MicroBisnodeClientImpl implements MicroBisnodeClient {
         URI url = new URI(microBisnodeServiceURI +
                 "organizations?countryISOAlpha2Code=PL&organizationIdentificationNumber=" +
                 identifierNumber)
+        log.info("Will be trying to call bisnode at url: " + url);
         try {
             return this.restTemplate.getForObject(url, Organization)
         } catch(HttpClientErrorException e){
