@@ -85,8 +85,8 @@
 
     function legalFormChanged() {
         var representativeDataAutomaticList = jQuery("#representativesContainer input[type=radio][name$='isCBDDataChangedManually'][value=false]:checked");
-        if (representativeDataAutomaticList?.length > 0) {
-            jQuery("#representativesContainer input[type=radio][name$='isCBDDataChangedManually'][value=true]").click()
+        if (representativeDataAutomaticList.length) {
+            jQuery("#representativesContainer input[type=radio][name$='isCBDDataChangedManually']").val(true);
         }
         if (this.value === "") {
             $personData.addClass('hidden');
@@ -151,8 +151,7 @@
         $representativesContainer.find('div.acceptor').each(function (_, value) {
             manageVisibilityOfDocumentInfo(jQuery(value));
         });
-        if (jQuery("#representativesContainer input[type=radio][name$='isCBDDataChangedManually']")?.length === 0) {
-            console.log('test');
+        if (jQuery("#representativesContainer input[type=radio][name$='isCBDDataChangedManually']").length === 0) {
             $representativesContainer.find('*[cbdDataHiddenField="cbdDataHiddenField"]').attr('disabled', 'disabled');
         }
     }

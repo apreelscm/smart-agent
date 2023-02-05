@@ -36,20 +36,21 @@ function onRepresentativeCBDDataChange() {
         verificationDocumentsContainer = jQuery("#dokumentyWeryfikacyjne"),
         isPolitician = $this.parents("div.acceptor").find('div.isPolitician'),
         isCompanyData = $this.parents("div.acceptor").children('div.companyData'),
-        index = $this.parents("div.acceptor").children('div.basicRepresentativeData').children('input[name="index"]')[0].value,
-        prefix = $this.parents("div.acceptor").children('div.basicRepresentativeData').children('input[name="prefix"]')[0].value;
+        $basicRepresentativeData = $this.parents("div.acceptor").children('div.basicRepresentativeData'),
+        index = $basicRepresentativeData.children('input[name="index"]')[0].value,
+        prefix = $basicRepresentativeData.children('input[name="prefix"]')[0].value;
 
-    var midName = `${prefix}[${index}].midCBD`;
-    var representativeId = $this.parents("div.acceptor").children('div.basicRepresentativeData').children(`input[name="${midName}"]`)[0].value;
+    var midName = prefix + '[' + index + '].midCBD';
+    var representativeId = $basicRepresentativeData.children('input[name="' + midName + '"]')[0].value;
 
-    var cityName = `${prefix}[${index}].city`;
-    var citySelect = jQuery(`select[name="${cityName}"]`);
-    var cityInput = jQuery(`input[name="${cityName}"]`);
+    var cityName = prefix + '[' + index + '].city';
+    var citySelect = jQuery('select[name="' + cityName + '"]');
+    var cityInput = jQuery('input[name="' + cityName + '"]');
 
-    var documentTypeName = `${prefix}[${index}].documentType`;
-    var documentTypeInput = jQuery(`select[name="${documentTypeName}"]`);
+    var documentTypeName = prefix + '[' + index + '].documentType';
+    var documentTypeInput = jQuery('select[name="' + documentTypeName + '"]');
 
-    var isAnyDataManual = jQuery("#acceptorsPanel input[type=radio][name$='isCBDDataChangedManually'][value=true]:checked")?.length > 0;
+    var isAnyDataManual = jQuery("#acceptorsPanel input[type=radio][name$='isCBDDataChangedManually'][value=true]:checked").length;
 
     if (this.value === 'true') {
         disabledFields.removeAttr("disabled");
@@ -100,7 +101,7 @@ function onRepresentativeCBDDataChange() {
                         jQuery(this).dialog("close");
                     },
                     "Nie": function () {
-                        jQuery(`#representatives\\[${index}\\]\\.isCBDDataChangedManually`)[0].click()
+                        jQuery('#representatives\\[' + index + '\\]\\.isCBDDataChangedManually')[0].click();
                         jQuery(this).dialog("close");
                     }
                 }
@@ -110,20 +111,22 @@ function onRepresentativeCBDDataChange() {
 
 function onAcceptantCBDDataChange() {
     var $this = jQuery(this),
-        readOnlyFields = $this.parents("div.acceptor").find('input, textarea, textField'),
-        disabledFields = $this.parents("div.acceptor").find('select, checkbox, input[type="radio"]'),
-        hiddenFields = $this.parents("div.acceptor").find('*[cbdDataHiddenField="cbdDataHiddenField"]'),
+        $acceptor = $this.parents("div.acceptor"),
+        readOnlyFields = $acceptor.find('input, textarea, textField'),
+        disabledFields = $acceptor.find('select, checkbox, input[type="radio"]'),
+        hiddenFields = $acceptor.find('*[cbdDataHiddenField="cbdDataHiddenField"]'),
         beneficiaryDataChanged = jQuery("#acceptorsAdditionalPanels input[type=radio][name$='isCBDDataChangedManually']"),
         nip = jQuery("#akceptantNip")[0].value,
         verificationDocumentsContainer = jQuery("#dokumentyWeryfikacyjne"),
-        isPolitician = $this.parents("div.acceptor").find('div.isPolitician'),
-        index = $this.parents("div.acceptor").children('input[name="index"]')[0].value,
-        prefix = $this.parents("div.acceptor").children('input[name="prefix"]')[0].value;
+        isPolitician = $acceptor.find('div.isPolitician'),
+        index = $acceptor.children('input[name="index"]')[0].value,
+        prefix = $acceptor.children('input[name="prefix"]')[0].value;
 
-    var midName = `${prefix}[${index}].midCBD`;
-    var acceptantId = $this.parents("div.acceptor").children(`input[name="${midName}"]`)[0].value;
+    var midName = prefix + '[' + index + '].midCBD';
+    var acceptantId = $acceptor.children('input[name="' + midName + '"]')[0].value;
 
-    var isAnyDataManual = jQuery("#acceptorsPanel input[type=radio][name$='isCBDDataChangedManually'][value=true]:checked")?.length > 0;
+    var $isCBDDataChangedManually = jQuery("#acceptorsPanel input[type=radio][name$='isCBDDataChangedManually'][value=true]:checked");
+    var isAnyDataManual = $isCBDDataChangedManually.length;
 
     if (this.value === 'true') {
         disabledFields.removeAttr("disabled");
@@ -151,7 +154,7 @@ function onAcceptantCBDDataChange() {
                         jQuery(this).dialog("close");
                     },
                     "Nie": function () {
-                        jQuery(`#beneficiaries\\[${index}\\]\\.isCBDDataChangedManually`)[0].click()
+                        jQuery('#beneficiaries\\[' + index + '\\]\\.isCBDDataChangedManually')[0].click();
                         jQuery(this).dialog("close");
                     }
                 }
@@ -160,97 +163,97 @@ function onAcceptantCBDDataChange() {
 }
 
 function setRepresentativesDataFromCBD(index, nip, representativeCbdMidId) {
-    const name = jQuery(`#representatives\\[${index}\\]\\.name`);
-    const surname = jQuery(`#representatives\\[${index}\\]\\.surname`);
-    const position = jQuery(`#representatives\\[${index}\\]\\.position`);
-    const salutation = jQuery(`#representatives\\[${index}\\]\\.salutation`);
-    const documentNumber = jQuery(`#representatives\\[${index}\\]\\.documentNumber`);
-    const documentExpirationDate = jQuery(`#representatives\\[${index}\\]\\.personDocumentExpirationDate`);
-    const documentIssueDate = jQuery(`#representatives\\[${index}\\]\\.personDocumentIssueDate`);
-    const birthDate = jQuery(`#representatives\\[${index}\\]\\.birthDate`);
-    const pesel = jQuery(`#representatives\\[${index}\\]\\.pesel`);
-    const birthCountry = jQuery(`#representatives\\[${index}\\]\\.birthCountry`);
-    const street = jQuery(`#representatives\\[${index}\\]\\.street`);
-    const houseNumber = jQuery(`#representatives\\[${index}\\]\\.houseNumber`);
-    const flatNumber = jQuery(`#representatives\\[${index}\\]\\.flatNumber`);
-    const postalCode = jQuery(`#representatives\\[${index}\\]\\.postalCode`);
-    const city = jQuery(`#representatives\\[${index}\\]\\.city`);
-    const postOffice = jQuery(`#representatives\\[${index}\\]\\.postOffice`);
-    const country = jQuery(`#representatives\\[${index}\\]\\.country`);
-    const citizenship = jQuery(`#representatives\\[${index}\\]\\.citizenship`);
-    const phoneNumber = jQuery(`#representatives\\[${index}\\]\\.phoneNumber`);
-    const email = jQuery(`#representatives\\[${index}\\]\\.email`);
-    const streetType = jQuery(`#representatives\\[${index}\\]\\.streetType`);
-    const phoneType = jQuery(`#representatives\\[${index}\\]\\.phoneType`);
-    const documentType = jQuery(`#representatives\\[${index}\\]\\.documentType`);
-    const verification = jQuery(`#representatives\\[${index}\\]\\.verification`);
+    var name = jQuery('#representatives\\[' + index + '\\]\\.name');
+    var surname = jQuery('#representatives\\[' + index + '\\]\\.surname');
+    var position = jQuery('#representatives\\[' + index + '\\]\\.position');
+    var salutation = jQuery('#representatives\\[' + index + '\\]\\.salutation');
+    var documentNumber = jQuery('#representatives\\[' + index + '\\]\\.documentNumber');
+    var documentExpirationDate = jQuery('#representatives\\[' + index + '\\]\\.personDocumentExpirationDate');
+    var documentIssueDate = jQuery('#representatives\\[' + index + '\\]\\.personDocumentIssueDate');
+    var birthDate = jQuery('#representatives\\[' + index + '\\]\\.birthDate');
+    var pesel = jQuery('#representatives\\[' + index + '\\]\\.pesel');
+    var birthCountry = jQuery('#representatives\\[' + index + '\\]\\.birthCountry');
+    var street = jQuery('#representatives\\[' + index + '\\]\\.street');
+    var houseNumber = jQuery('#representatives\\[' + index + '\\]\\.houseNumber');
+    var flatNumber = jQuery('#representatives\\[' + index + '\\]\\.flatNumber');
+    var postalCode = jQuery('#representatives\\[' + index + '\\]\\.postalCode');
+    var city = jQuery('#representatives\\[' + index + '\\]\\.city');
+    var postOffice = jQuery('#representatives\\[' + index + '\\]\\.postOffice');
+    var country = jQuery('#representatives\\[' + index + '\\]\\.country');
+    var citizenship = jQuery('#representatives\\[' + index + '\\]\\.citizenship');
+    var phoneNumber = jQuery('#representatives\\[' + index + '\\]\\.phoneNumber');
+    var email = jQuery('#representatives\\[' + index + '\\]\\.email');
+    var streetType = jQuery('#representatives\\[' + index + '\\]\\.streetType');
+    var phoneType = jQuery('#representatives\\[' + index + '\\]\\.phoneType');
+    var documentType = jQuery('#representatives\\[' + index + '\\]\\.documentType');
+    var verification = jQuery('#representatives\\[' + index + '\\]\\.verification');
 
-    jQuery.get("/eumowy/activity/getCbdReprezentantData", {nip, representativeCbdMidId}, function (data) {
+    jQuery.get("/eumowy/activity/getCbdReprezentantData", {nip: nip, representativeCbdMidId: representativeCbdMidId}, function (data) {
         if (data != null) {
-            name.val(data?.name);
-            surname.val(data?.surname);
-            position.val(data?.position);
-            salutation.val(data?.salutation);
-            documentNumber.val(data?.documentNumber);
-            documentExpirationDate.val(convertStringToDate(data?.documentExpirationDate));
-            documentIssueDate.val(convertStringToDate(data?.documentIssueDate));
-            birthDate.val(convertStringToDate(data?.birthDate));
-            pesel.val(data?.pesel);
-            birthCountry.val(data?.birthCountry);
-            street.val(data?.street);
-            flatNumber.val(data?.flatNumber);
-            houseNumber.val(data?.houseNumber);
-            postalCode.val(data?.postalCode);
-            city.val(data?.city);
-            postOffice.val(data?.postOffice);
-            citizenship.val(data?.citizenship);
-            phoneNumber.val(data?.mobilePhone);
-            country.val(data?.country);
-            email.val(data?.email);
-            streetType.val(data?.streetTitle);
-            phoneType.val(data?.phoneType?.name);
-            documentType.val(data?.documentType);
-            verification.val(data?.verification?.name);
+            name.val(data.name);
+            surname.val(data.surname);
+            position.val(data.position);
+            salutation.val(data.salutation);
+            documentNumber.val(data.documentNumber);
+            documentExpirationDate.val(convertStringToDate(data.documentExpirationDate));
+            documentIssueDate.val(convertStringToDate(data.documentIssueDate));
+            birthDate.val(convertStringToDate(data.birthDate));
+            pesel.val(data.pesel);
+            birthCountry.val(data.birthCountry);
+            street.val(data.street);
+            flatNumber.val(data.flatNumber);
+            houseNumber.val(data.houseNumber);
+            postalCode.val(data.postalCode);
+            city.val(data.city);
+            postOffice.val(data.postOffice);
+            citizenship.val(data.citizenship);
+            phoneNumber.val(data.mobilePhone);
+            country.val(data.country);
+            email.val(data.email);
+            streetType.val(data.streetTitle);
+            phoneType.val(data.phoneType ? data.phoneType.name : null);
+            documentType.val(data.documentType);
+            verification.val(data.verification ? data.verification.name : null);
         }
     });
 }
 
 function convertStringToDate(dateString) {
-    if (dateString != null && dateString.length > 0) {
-        const date = new Date(dateString);
-        let year = date.getFullYear();
-        let month = date.getMonth() + 1;
-        let day = date.getDate();
+    if (dateString != null && dateString.length) {
+        var date = new Date(dateString);
+        var year = date.getFullYear();
+        var month = date.getMonth() + 1;
+        var day = date.getDate();
         if (month < 10) {
-            month = `0${month}`
+            month = '0' + month;
         }
         if (day < 10) {
-            day = `0${day}`
+            day = '0' + day;
         }
-        return `${year}-${month}-${day}`
+        return year + '-' + month + '-' + day;
     } else {
         return null
     }
 }
 
 function setAcceptantDataFromCBD(index, nip, acceptantCbdMidId) {
-    const name = jQuery(`#beneficiaries\\[${index}\\]\\.name`);
-    const surname = jQuery(`#beneficiaries\\[${index}\\]\\.surname`);
-    const position = jQuery(`#beneficiaries\\[${index}\\]\\.position`);
-    const salutation = jQuery(`#beneficiaries\\[${index}\\]\\.salutation`);
-    const birthDate = jQuery(`#beneficiaries\\[${index}\\]\\.personBirthDate`);
-    const pesel = jQuery(`#beneficiaries\\[${index}\\]\\.pesel`);
-    const citizenship = jQuery(`#beneficiaries\\[${index}\\]\\.citizenship`);
+    var name = jQuery('#beneficiaries\\[' + index + '\\]\\.name');
+    var surname = jQuery('#beneficiaries\\[' + index + '\\]\\.surname');
+    var position = jQuery('#beneficiaries\\[' + index + '\\]\\.position');
+    var salutation = jQuery('#beneficiaries\\[' + index + '\\]\\.salutation');
+    var birthDate = jQuery('#beneficiaries\\[' + index + '\\]\\.personBirthDate');
+    var pesel = jQuery('#beneficiaries\\[' + index + '\\]\\.pesel');
+    var citizenship = jQuery('#beneficiaries\\[' + index + '\\]\\.citizenship');
 
-    jQuery.get("/eumowy/activity/getCbdAcceptantData", {nip, acceptantCbdMidId}, function (data) {
+    jQuery.get("/eumowy/activity/getCbdAcceptantData", {nip: nip, acceptantCbdMidId: acceptantCbdMidId}, function (data) {
         if (data != null) {
-            name.val(data?.name);
-            surname.val(data?.surname);
-            position.val(data?.position);
-            salutation.val(data?.salutation);
-            birthDate.val(convertStringToDate(data?.birthDate));
-            pesel.val(data?.pesel);
-            citizenship.val(data?.citizenship?.toString());
+            name.val(data.name);
+            surname.val(data.surname);
+            position.val(data.position);
+            salutation.val(data.salutation);
+            birthDate.val(convertStringToDate(data.birthDate));
+            pesel.val(data.pesel);
+            citizenship.val(data.citizenship ? data.citizenship.toString() : null);
         }
     });
 }

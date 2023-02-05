@@ -138,7 +138,6 @@ var $j = jQuery.noConflict();
 
         jQuery("#representativesContainer").each(function (representativeIndex, value) {
             jQuery(this).find("input.postal-code").each(function () {
-                //console.log("parent " + jQuery(this).parent().parent());
                 var representativeCityElement = jQuery(this).parent().parent().find("select[name$='city']");
                 refreshCityField(jQuery(this).val(), representativeCityElement);
             });
@@ -156,17 +155,20 @@ function refreshCityField(code, select, spinner) {
     if (select[0]) {
         var $this = jQuery(select[0]),
             selectValue = $this.val(),
-            index = $this.parents("div.acceptor").children('div.basicRepresentativeData').children('input[name="index"]')[0]?.value,
-            prefix = $this.parents("div.acceptor").children('div.basicRepresentativeData').children('input[name="prefix"]')[0]?.value;
+            $acceptor = $this.parents("div.acceptor");
 
-        if ($this.parents("div.acceptor") && !$this.parents("div.acceptor").hasClass('hidden')) {
+        if ($acceptor.length && !$acceptor.hasClass('hidden')) {
+            var $basicRepresentativeData = $acceptor.children('div.basicRepresentativeData'),
+                index = $basicRepresentativeData.children('input[name="index"]')[0].value,
+                prefix = $basicRepresentativeData.children('input[name="prefix"]')[0].value;
+
             if (index != null) {
-                var cityName = `${prefix}[${index}].city`;
-                var citySelect = jQuery(`select[name="${cityName}"]`);
-                var cityInput = jQuery(`input[name="${cityName}"]`);
-                var isRepresentativeDataAutomatic = jQuery(`input[name="${prefix}[${index}].isCBDDataChangedManually"][value=false][checked=checked]`)
+                var cityName = prefix + '[' + index + ']';
+                var citySelect = jQuery('select[name="' + cityName + '"]');
+                var cityInput = jQuery('input[name="' + cityName + '"]');
+                var isRepresentativeDataAutomatic = jQuery('input[name="' + prefix + '[' + index + ']' + '.isCBDDataChangedManually"][value=false][checked=checked]')
 
-                if (isRepresentativeDataAutomatic?.length > 0) {
+                if (isRepresentativeDataAutomatic.length) {
                     citySelect.attr("disabled", "disabled");
                     cityInput.removeAttr("disabled");
                 } else {
@@ -180,7 +182,7 @@ function refreshCityField(code, select, spinner) {
                     spinner.removeClass('visibility-hidden');
                 }
                 $j.get("/eumowy/activity/getCity", {code: code.replace(/\s+/g, '')}, function (cities) {
-                    if (cities.length > 0) {
+                    if (cities.length) {
                         $this.empty();
                         $j.each(cities, function (city) {
                             $this.append('<option value="' + cities[city] + '">' + cities[city] + '</option>')

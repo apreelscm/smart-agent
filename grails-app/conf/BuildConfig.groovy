@@ -31,16 +31,17 @@ grails.project.dependency.resolution = {
         grailsCentral()
 
         mavenLocal()
-        // mavenCentral()
+//        mavenCentral()
         mavenRepo "https://repo1.maven.org/maven2/"
         mavenRepo "https://repo.grails.org/grails/core"
         mavenRepo "https://repository.apache.org/content/repositories/snapshots/"
 
         // uncomment these (or add new ones) to enable remote dependency resolution from public Maven repositories
-        //mavenRepo "http://snapshots.repository.codehaus.org"
-        //mavenRepo "http://repository.codehaus.org"
-        //mavenRepo "http://download.java.net/maven/2/"
-        //mavenRepo "http://repository.jboss.com/maven2/"
+        mavenRepo "https://grails.jfrog.io/grails/plugins"
+//        mavenRepo "http://snapshots.repository.codehaus.org"
+//        mavenRepo "http://repository.codehaus.org"
+//        mavenRepo "http://download.java.net/maven/2/"
+//        mavenRepo "http://repository.jboss.com/maven2/"
     }
 
     dependencies {
