@@ -152,62 +152,63 @@ var $j = jQuery.noConflict();
 
 
 function refreshCityField(code, select, spinner) {
-    if (select[0]) {
-        var $this = jQuery(select[0]),
-            selectValue = $this.val(),
-            $acceptor = $this.parents("div.acceptor");
+    if (!!select[0] === false) return;
 
-        if ($acceptor.length && !$acceptor.hasClass('hidden')) {
-            var $basicRepresentativeData = $acceptor.children('div.basicRepresentativeData'),
-                index = $basicRepresentativeData.children('input[name="index"]')[0].value,
-                prefix = $basicRepresentativeData.children('input[name="prefix"]')[0].value;
+    var $this = jQuery(select[0]),
+        selectValue = $this.val(),
+        $acceptor = $this.parents("div.acceptor");
 
-            if (index != null) {
-                var cityName = prefix + '[' + index + ']';
-                var citySelect = jQuery('select[name="' + cityName + '"]');
-                var cityInput = jQuery('input[name="' + cityName + '"]');
-                var isRepresentativeDataAutomatic = jQuery('input[name="' + prefix + '[' + index + ']' + '.isCBDDataChangedManually"][value=false][checked=checked]')
+    select.empty();
 
-                if (isRepresentativeDataAutomatic.length) {
-                    citySelect.attr("disabled", "disabled");
-                    cityInput.removeAttr("disabled");
-                } else {
-                    citySelect.removeAttr("disabled")
-                    cityInput.attr("disabled", "disabled");
-                }
-            }
+    if ($acceptor.length && !$acceptor.hasClass('hidden')) {
+        var $basicRepresentativeData = $acceptor.children('div.basicRepresentativeData'),
+            index = $basicRepresentativeData.children('input[name="index"]')[0].value,
+            prefix = $basicRepresentativeData.children('input[name="prefix"]')[0].value;
 
-            if (code && code.length === 6) {
-                if (spinner) {
-                    spinner.removeClass('visibility-hidden');
-                }
-                $j.get("/eumowy/activity/getCity", {code: code.replace(/\s+/g, '')}, function (cities) {
-                    if (cities.length) {
-                        $this.empty();
-                        $j.each(cities, function (city) {
-                            $this.append('<option value="' + cities[city] + '">' + cities[city] + '</option>')
-                        });
-                    } else {
-                        showNoCitiesDialog(this);
-                    }
-                    if ($this.attr("disabled")) {
-                        citySelect.removeAttr("disabled")
-                        $this.val(selectValue);
-                        citySelect.attr("disabled", "disabled");
-                    } else {
-                        $this.val(selectValue)
-                        $this.removeClass("error")
-                    }
-                    if (spinner) {
-                        spinner.addClass('visibility-hidden');
-                    }
-                });
+        if (index != null) {
+            var cityName = prefix + '[' + index + ']';
+            var citySelect = jQuery('select[name="' + cityName + '"]');
+            var cityInput = jQuery('input[name="' + cityName + '"]');
+            var isRepresentativeDataAutomatic = jQuery('input[name="' + prefix + '[' + index + ']' + '.isCBDDataChangedManually"][value=false][checked=checked]')
+
+            if (isRepresentativeDataAutomatic.length) {
+                citySelect.attr("disabled", "disabled");
+                cityInput.removeAttr("disabled");
             } else {
-                if (!$this.hidden) {
-                    $this.val('')
-                }
+                citySelect.removeAttr("disabled")
+                cityInput.attr("disabled", "disabled");
             }
         }
+    }
+
+    if (code && code.length === 6) {
+        if (spinner) {
+            spinner.removeClass('visibility-hidden');
+        }
+        $j.get("/eumowy/activity/getCity", {code: code.replace(/\s+/g, '')}, function (cities) {
+            if (cities.length) {
+                $j.each(cities, function (city) {
+                    $this.append('<option value="' + cities[city] + '">' + cities[city] + '</option>')
+                });
+            } else {
+                showNoCitiesDialog(this);
+            }
+
+            if ($this.attr("disabled")) {
+                citySelect.removeAttr("disabled")
+                $this.val(selectValue);
+                citySelect.attr("disabled", "disabled");
+            } else {
+                $this.val(selectValue)
+                $this.removeClass("error")
+            }
+
+            if (spinner) {
+                spinner.addClass('visibility-hidden');
+            }
+        });
+    } else {
+        $this.val('');
     }
 }
 
