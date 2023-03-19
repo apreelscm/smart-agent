@@ -35,10 +35,10 @@ Hasło: `Ahfopcvy$aU3`
 
 ## Konta użytkowników
 
-| Login        | Hasło            | Rola     |
-| -----------  | ---------------- | -------- |
-| askonieczny  | StyczenLuty2023# | PH       |
-| mmelissa     | QQww123@456@789  | Admin    |
+| Login        | Hasło                 | Rola     |
+| -----------  | --------------------- | -------- |
+| askonieczny  | CzerwiecSierpien2023% | PH       |
+| mmelissa     | QQww123@456@789       | Admin    |
 
 ## Przydatne zapytania SQL
 
