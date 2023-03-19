@@ -158,6 +158,7 @@
 
     function manageVisibilityOfDocumentInfo($acceptor) {
         var documentInfo = $acceptor.find('div.acceptorDocumentInfoWrapper'),
+            acceptorIdDates = $acceptor.find('div.acceptorIdDatesWrapper'),
             position = $acceptor.find("select[name$='position']").val();
 
         clearFields(documentInfo);
@@ -166,8 +167,10 @@
 
         if (position === 'Pełnomocnik' || isPerson) {
             documentInfo.removeClass('hidden');
+            acceptorIdDates.removeClass('hidden');
         } else {
             documentInfo.addClass('hidden');
+            acceptorIdDates.addClass('hidden');
         }
     }
 

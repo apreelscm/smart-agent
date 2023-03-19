@@ -106,15 +106,15 @@ class RepresentativeCommand implements Serializable{
                     "representative.typDokumentu.required")
         })
         documentNumber(nullable: true, maxSize: 20, shared: "alphanumeric", validator: {value, cmd, errors ->
-            CustomValidator.validateRequired(value, errors, cmd.processCommand.hasNewUmowa == true && ( cmd.processCommand.isPersonForm() || cmd.procuratorPosition),
+            CustomValidator.validateRequired(value, errors, cmd.processCommand.hasNewUmowa == true && (cmd.processCommand.isPersonForm() || cmd.procuratorPosition),
                     "documentNumber", "representative.seriaNrDokumentu.required")
         })
         documentIssueDate(nullable: true, validator: {value, cmd, errors ->
-            CustomValidator.validateRequired(value, errors, cmd.documentType == IdentityDocumentType.IDENTITY_CARD,
+            CustomValidator.validateRequired(value, errors, cmd.documentType == IdentityDocumentType.IDENTITY_CARD || (cmd.processCommand.hasNewUmowa == true && (cmd.processCommand.isPersonForm() || cmd.procuratorPosition)),
                     "documentIssueDate", "representative.dataWydaniaDokumentu.required")
         })
         documentExpirationDate(nullable: true, validator: {value, cmd, errors ->
-            CustomValidator.validateRequired(value, errors, cmd.documentType == IdentityDocumentType.IDENTITY_CARD,
+            CustomValidator.validateRequired(value, errors, cmd.documentType == IdentityDocumentType.IDENTITY_CARD || (cmd.processCommand.hasNewUmowa == true && (cmd.processCommand.isPersonForm() || cmd.procuratorPosition)),
                     "documentExpirationDate", "representative.dataWaznosciDokumentu.required")
         })
 
