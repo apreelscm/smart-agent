@@ -180,10 +180,11 @@
 
         <div class="citizenShipDiv ${representative?.isProcuratorPosition() ?: 'hidden'}">
             <label for="${prefix}[${seqNo}].citizenship"><g:message code="citizenship.label"/></label>
-            <eumowy:textField class="citizenship" name="${prefix}[${seqNo}].citizenship"
-                              value="${representative?.citizenship}" maxlength="30"
-                              required="required"
-                              validatable="${representative}" validateField="citizenship"/>
+            <dict:countrySelect name="${prefix}[${seqNo}].citizenship"
+                                value="${representative?.citizenship}"
+                                validatable="${representative}"
+                                validateField="citizenship"
+                                required="required"/>
         </div>
     </div>
 </div>
