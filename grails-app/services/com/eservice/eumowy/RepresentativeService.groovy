@@ -9,6 +9,8 @@ import com.eservice.eumowy.pdfmapper.representative.LegalFormMapper
 import com.google.common.base.Strings
 import groovy.sql.GroovyRowResult
 
+import java.sql.Timestamp
+
 import static com.google.common.base.Strings.isNullOrEmpty
 
 class RepresentativeService {
@@ -120,5 +122,11 @@ class RepresentativeService {
         if (isNullOrEmpty(dateAsString)) return null
 
         return Date.parse("YYYY-mm-dd", dateAsString)
+    }
+
+    private Date getDate(Timestamp timestamp) {
+        if (timestamp == null) return null
+
+        return new Date(timestamp.time)
     }
 }
