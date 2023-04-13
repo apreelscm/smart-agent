@@ -8,16 +8,13 @@
 
         <g:radio name="${prefix}[${seqNo}].hasSignedContract"
                  value="true"
-                 disabled="${!czyNowaUmowa && !representative?.isCBDDataChangedManually}"
                  checked="${representative?.hasSignedContract == true}"/>
         <label for="${prefix}[${seqNo}].hasSignedContract"><g:message code="yes"/></label>
 
         <g:radio name="${prefix}[${seqNo}].hasSignedContract"
                  value="false"
-                 disabled="${!czyNowaUmowa && !representative?.isCBDDataChangedManually}"
                  checked="${representative?.hasSignedContract == false}"/>
         <g:hiddenField name="${prefix}[${seqNo}].hasSignedContract"
-                       disabled="${czyNowaUmowa || representative?.isCBDDataChangedManually}"
                        cbdDataHiddenField="cbdDataHiddenField"
                        value="${representative?.hasSignedContract}"/>
         <label for="${prefix}[${seqNo}].hasSignedContract"><g:message code="no"/></label>
