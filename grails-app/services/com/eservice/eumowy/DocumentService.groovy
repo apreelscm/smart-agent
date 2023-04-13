@@ -1,6 +1,6 @@
 package com.eservice.eumowy
 
-import com.google.common.base.Optional
+
 import com.google.common.collect.Lists
 import com.lowagie.text.pdf.PdfReader
 import org.apache.commons.lang.StringUtils
@@ -80,8 +80,8 @@ class DocumentService {
         }
 
         if (isNewAgreement(processInstance)) {
-            Set<DocumentFile> mergedFiles = addMergedFile(processInstance)
-            documents.addAll(mergedFiles)
+            DocumentFile mergedFile = getMergedDocument(processInstance, documents)
+            documents.addAll(mergedFile)
         }
 
         addNewDocumentsToProcess(documents, processInstance)
@@ -326,10 +326,9 @@ class DocumentService {
         }
     }
 
-    private Set<DocumentFile> addMergedFile(Process process) {
-        Set<DocumentFile> documents = []
+    private DocumentFile getMergedDocument(Process process, Set<DocumentFile> processDocuments) {
         String pdfTemplatePath = "/opt/eumowy/pdf_templates/";
-        List<DocumentFile> documentsToMerge = process.documents?.findAll {
+        List<DocumentFile> documentsToMerge = processDocuments.findAll {
             it.signature.shouldBeMerged || it.signature.name.contains(PABR_PEP_DOCUMENT_NAME_CONTAINS)
         }?.sort(false) { a, b -> (a.signature.signatureOrder <=> b.signature.signatureOrder) }
         String documentName = messageSource.getMessage('document.merged.base.name' as String,
@@ -372,10 +371,8 @@ class DocumentService {
             log.info(String.format("New document file created %s for process %s", documentFile.id, process.id))
             mergedDoc.close()
         }
-        if (documentFile && !isDocumentExistsInProcess(documentFile, process)) {
-            documents.add(documentFile)
-        }
-        return documents;
+
+        return documentFile
     }
 
     private static byte[] getBytesContent(PDDocument pdDocument) throws IOException {
