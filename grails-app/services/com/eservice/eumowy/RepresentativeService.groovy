@@ -17,6 +17,7 @@ class RepresentativeService {
 
     def cbdService
     def mapperService
+    def dictionaryService
 
     List<RepresentativeCommand> getRepresentativesFromCBD(String nip) {
         List<GroovyRowResult> representatives = cbdService.getReprezentanciFromCbd(nip)
@@ -105,17 +106,19 @@ class RepresentativeService {
             beneficiary.setSalutation(result.prefix)
             beneficiary.setPesel(result.pesel)
             beneficiary.setBirthDate(getDate(result.dataUrodzenia))
-            beneficiary.setCitizenship(mapCountryByCode(result.obywatelstwo))
+            beneficiary.setCitizenship(getCountryOrNull(result.obywatelstwo))
             beneficiary.setMidCBD(result.mid)
 
             return beneficiary
         }
     }
 
-    private mapCountryByCode(String countryCode) {
-        if (countryCode == null) return null
+    private String getCountryOrNull(String text) {
+        if (text == null) return null
 
-        return cbdService.getCountryByCountryCode(countryCode)?.SKR_NAZWA
+        return dictionaryService.getCountries()
+                .find { it.value == text }
+                ?.value
     }
 
     private Date getDate(String dateAsString) {

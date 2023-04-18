@@ -53,11 +53,11 @@
     <label for="${prefix}[${seqNo}].citizenship"><g:message code="citizenship.label"/></label>
     <dict:countrySelect name="${prefix}[${seqNo}].citizenship"
                         value="${representative?.citizenship}"
-                        disabled="${!czyNowaUmowa && !representative?.isCBDDataChangedManually}"
+                        disabled="${(!czyNowaUmowa && !representative?.isCBDDataChangedManually && representative?.citizenship != null)}"
                         validatable="${representative}"
                         validateField="citizenship" required="required"/>
     <g:hiddenField name="${prefix}[${seqNo}].citizenship"
-                   disabled="${czyNowaUmowa || representative?.isCBDDataChangedManually}"
+                   disabled="${czyNowaUmowa || representative?.isCBDDataChangedManually || representative?.citizenship == null }"
                    cbdDataHiddenField="cbdDataHiddenField"
                    value="${representative?.citizenship}"/>
 </div>
