@@ -4,6 +4,7 @@ import com.eservice.eumowy.command.BeneficiaryCommand
 import com.eservice.eumowy.command.ProcessCommand
 import com.eservice.eumowy.command.RepresentativeCommand
 import com.eservice.eumowy.enums.options.AcceptorVerification
+import com.eservice.eumowy.enums.options.IdentityDocumentType
 import com.eservice.eumowy.enums.options.TelephoneType
 import com.eservice.eumowy.pdfmapper.representative.LegalFormMapper
 import com.google.common.base.Strings
@@ -42,6 +43,7 @@ class RepresentativeService {
             representative.setBirthDate(getDate(result.dataUrodzenia))
             representative.setCitizenship(result.obywatelstwo)
             representative.setBirthCountry(result.krajUrodzenia)
+            representative.setDocumentType(getDocumentType(result.typDokumentu))
             representative.setDocumentNumber(result.dokumentTozsamosci)
             representative.setDocumentExpirationDate(getDate(result.dataWaznosciDokumentu))
             representative.setDocumentIssueDate(getDate(result.dataWydaniaDokumetu))
@@ -113,11 +115,11 @@ class RepresentativeService {
         }
     }
 
-    private String getCountryOrNull(String text) {
-        if (text == null) return null
+    private String getCountryOrNull(String value) {
+        if (value == null) return null
 
         return dictionaryService.getCountries()
-                .find { it.value == text }
+                .find { it.value == value }
                 ?.value
     }
 
@@ -131,5 +133,22 @@ class RepresentativeService {
         if (timestamp == null) return null
 
         return new Date(timestamp.time)
+    }
+
+    IdentityDocumentType getDocumentType(String value) {
+        if (value == null) return null
+
+        switch (value) {
+            case "DOOS":
+                return IdentityDocumentType.IDENTITY_CARD
+                break
+            case "KAPO":
+                return IdentityDocumentType.RESIDENCE_CARD
+                break
+            case "PASS":
+                return IdentityDocumentType.PASSPORT
+                break
+            default: null
+        }
     }
 }
