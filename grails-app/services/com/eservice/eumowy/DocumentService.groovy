@@ -342,11 +342,12 @@ class DocumentService {
             documentsToMerge.removeAll { it -> it?.name?.contains("OŻWU")}
         }
 
-        PDFMergerUtility pdm = new PDFMergerUtility();
+        PDFMergerUtility pdm = new PDFMergerUtility()
         pdm.setDestinationFileName(pdfTemplatePath + documentName)
         PDDocument mergedDoc = new PDDocument()
 
         for (int i = 0; i < documentsToMerge?.size(); i++) {
+            log.info(String.format("Merging document %s", documentsToMerge[i].name))
             ByteArrayInputStream bais = new ByteArrayInputStream(documentsToMerge[i].getContent().getContent())
             PDDocument document = PDDocument.load(bais)
             pdm.appendDocument(mergedDoc, document)
@@ -355,9 +356,6 @@ class DocumentService {
 
         DocumentFile documentFile = DocumentFile.findByNameAndProcess(documentName, process)
 
-        if (!documentFile) {
-            documentFile = DocumentFile.findByNameAndProcess(documentName, process)
-        }
         if (documentFile) {
             log.info(String.format("Updating existing document file %s", documentFile.id))
             documentFile.content.setContent(getBytesContent(mergedDoc))

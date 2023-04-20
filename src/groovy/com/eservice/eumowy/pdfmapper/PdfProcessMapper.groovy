@@ -151,11 +151,18 @@ class PdfProcessMapper extends AbstractPdfMapper{
     }
 
     private void setFirstAttachmentCheckbox() {
-        if(hasAtLeastOne(processInstance, ["dodatkowyPunkt", "dodatkowyPos"])) {
+        boolean isPersonOrPartnershipCompany = Arrays.asList(LegalForm.PARTNERSHIP_COMPANY.name(), LegalForm.PERSON.name())
+                .contains(processInstance.getData("dzialalnoscForma"))
+
+        if (isPersonOrPartnershipCompany) {
+            dataMap.put("czyOswiadczenieZadaniaRozpoczeciaWykonaniaUslugi", checkedCheckbox)
+        }
+
+        if (hasAtLeastOne(processInstance, ["dodatkowyPunkt", "dodatkowyPos"])) {
             dataMap.put("dodatkowyZalacznik1", checkedCheckbox)
         }
 
-        if(contains(processInstance, "aneks")) {
+        if (contains(processInstance, "aneks")) {
             dataMap.put("nowyZalacznik1", checkedCheckbox)
         }
     }
