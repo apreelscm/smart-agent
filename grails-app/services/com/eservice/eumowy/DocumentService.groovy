@@ -1,6 +1,6 @@
 package com.eservice.eumowy
 
-
+import com.eservice.eumowy.enums.options.LegalForm
 import com.google.common.collect.Lists
 import com.lowagie.text.pdf.PdfReader
 import org.apache.commons.lang.StringUtils
@@ -73,10 +73,11 @@ class DocumentService {
         Set<DocumentFile> posExchangeDocuments = getPosExchangeDocuments(processInstance)
         documents.addAll(posExchangeDocuments)
 
-        Signature pabrPebSignature = Signature.findAll().find { it?.name?.contains(PABR_PEP_DOCUMENT_NAME_CONTAINS) }
+        ProcessData legalFormType = processInstance.getProcessData("dzialalnoscForma")
+        List<String> expectedOzwuFormTypes = Arrays.asList(LegalForm.PARTNERSHIP_COMPANY.name(), LegalForm.PERSON.name())
 
-        if (isNewAgreement(processInstance) || isRepOrBenDataChanged && (pabrPebSignature?.active)) {
-            documents.add(getDocumentFile(processInstance, pabrPebSignature, dataFromProcess))
+        if (!expectedOzwuFormTypes.contains(legalFormType?.value)) {
+            documents.removeAll() { it -> it?.signature?.name?.contains("OŻWU")}
         }
 
         if (isNewAgreement(processInstance)) {
@@ -112,39 +113,6 @@ class DocumentService {
             posData.putAll(dataFromProcess)
 
             documents.add(getDocumentFile(processInstance, signature, posData, name, clientName))
-        }
-
-        return documents
-    }
-
-    private Set<DocumentFile> getAdditionalPointsDocuments(Process process) {
-        List<PointData> localPoints = process.points.findAll { it.czyLokalny || it.hasLocalPoses() || it.czyWybranyWymianaUmowy }.toList()
-
-        if (localPoints.size() <= POINTS_COUNT_ON_DOCUMENT || !hasAtLeastOne(process, [NOWA_UMOWA, WYMIANA_UMOWY_PLATNICZEJ])) {
-            return []
-        }
-
-        log.info(String.format("Points count is larger than %s for process %s", POINTS_COUNT_ON_DOCUMENT, process.id))
-
-        Signature signature = Signature.findAll().find { it.hasPurpose(ADDITIONAL_POINTS) }
-        String[] listNumbers = ["a", "b", "c", "d", "e", "f"]
-
-        int localPointsCount = localPoints.size()
-        List<PointData> points = localPoints
-            .sort { it.nazwa }
-            .subList(POINTS_COUNT_ON_DOCUMENT, localPointsCount)
-
-        Set<DocumentFile> documents = []
-
-        Lists.partition(points, POINTS_COUNT_ON_DOCUMENT).eachWithIndex { List<PointData> data, int i ->
-            Map pointData = mapperService.mapPointData(points)
-
-            pointData.put("numerListy", [listNumbers[i]] as String[])
-
-            String name = String.format("%s_%s", listNumbers[i], signature.templatePath)
-            String clientName = signature.filename.split('\\.')[0] + listNumbers[i] + ".pdf"
-
-            documents.add(getDocumentFile(process, signature, pointData, name, clientName))
         }
 
         return documents
@@ -334,13 +302,6 @@ class DocumentService {
         String documentName = messageSource.getMessage('document.merged.base.name' as String,
             [process.client?.nip, this._getUPZTDocumentModelName(documentsToMerge)] as Object[],
             LocaleContextHolder.locale as Locale)
-
-        def legalFormType = process.processData.find({ it -> it?.name == "dzialalnoscForma" });
-        def expectedOzwuFormTypes = Arrays.asList("PARTNERSHIP_COMPANY", "PERSON")
-
-        if (!expectedOzwuFormTypes.contains(legalFormType?.value)) {
-            documentsToMerge.removeAll { it -> it?.name?.contains("OŻWU")}
-        }
 
         PDFMergerUtility pdm = new PDFMergerUtility()
         pdm.setDestinationFileName(pdfTemplatePath + documentName)
