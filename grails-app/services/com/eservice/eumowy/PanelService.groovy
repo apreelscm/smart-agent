@@ -296,8 +296,6 @@ class PanelService {
     }
 
     def getInformacjeDodatkowe(ProcessCommand cmd, def calc) {
-
-        cmd.dzialalnoscForma = LegalForm.PERSON; // TODO na chwilę
         cmd.dzialalnoscForma = nullify(cmd.dzialalnoscForma)
         cmd.dzialalnoscFormaInna = nullify(cmd.dzialalnoscFormaInna)
         cmd.dzialalnoscDokument = nullify(cmd.dzialalnoscDokument)
