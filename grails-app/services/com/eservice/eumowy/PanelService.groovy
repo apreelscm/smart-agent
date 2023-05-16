@@ -91,7 +91,7 @@ class PanelService {
     }
 
     def getDaneAkceptanta(ProcessCommand cmd, def calc) {
-        def result = cbdService.getDaneAkceptanta(cmd.nip);
+        def result = cbdService.getDaneAkceptanta(cmd.nip)
 
         cmd.isAcceptorDataChanged = nullify(cmd.isAcceptorDataChanged, false)
 
@@ -102,6 +102,9 @@ class PanelService {
         cmd.akceptantNazwaOficjalnaCbd = cmd.akceptantNazwaOficjalna
         cmd.akceptantNazwaSieciowaCbd = cmd.akceptantNazwaSieciowa
         cmd.akceptantRegonCbd = cmd.akceptantRegon
+
+        String legalForm = result.formaPrawnaId ? LegalFormMapper.mapLegalFormFromCBD(String.valueOf(result.formaPrawnaId)) : ""
+        cmd.dzialalnoscForma = nullify(cmd.dzialalnoscForma, legalForm)
     }
 
     def getDaneDoWydruku(ProcessCommand cmd, def calc) {

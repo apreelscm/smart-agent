@@ -48,7 +48,6 @@ class RepresentativeService {
             representative.setDocumentExpirationDate(getDate(result.dataWaznosciDokumentu))
             representative.setDocumentIssueDate(getDate(result.dataWydaniaDokumetu))
             representative.setHasSignedContract(result.czyPodpisalaUmowe ? result.czyPodpisalaUmowe == "T" : null)
-            representative.setLegalFormCBD(result.formaPrawnaID ? LegalFormMapper.mapLegalFormFromCBD(result.formaPrawnaID) : null)
             representative.setMidCBD(result.mid)
 
             if (representative.pesel) {

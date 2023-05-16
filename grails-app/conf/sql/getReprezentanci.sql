@@ -24,8 +24,7 @@ SELECT m.KLN_NIP,
        cbv.kraj,
        cbv.czy_os_podpisala_umowe  as "czyPodpisalaUmowe",
        cbv.ulica_typ               AS "ulicaTyp",
-       cbv.ulica_nazwa             AS "ulica",
-       m.KLN_SFP_ID                AS "formaPrawnaID"
+       cbv.ulica_nazwa             AS "ulica"
 FROM CBV_DANE_REPREZENTANCI cbv
          JOIN CBD_ADM.cbt_klienci m
               ON m.KLN_MID = cbv.mid

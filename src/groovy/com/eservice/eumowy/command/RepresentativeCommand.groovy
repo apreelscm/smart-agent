@@ -58,7 +58,6 @@ class RepresentativeCommand implements Serializable{
 
     // dane z CBD
     String midCBD
-    String legalFormCBD
 
     String getMobilePhone(){
         return TelephoneType.MOBILE == telephoneType ? phoneNumber : null
