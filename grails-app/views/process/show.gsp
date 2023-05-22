@@ -97,9 +97,7 @@
             <g:if test="${isWaitingForSubscriptionProcess}">
                 <div id="contractDate">
                     <label><g:message code="fill.aggrement.date"/></label>
-                    <input type="text" name="dataUmowy" id="dataUmowy" value=""
-                        ${isWaitingForSubscriptionProcess ? 'required="true"' : '' }
-                           readonly = "true"/>
+                    <input type="text" name="dataUmowy" id="dataUmowy" value="" required="required"/>
                 </div>
             </g:if>
 
