@@ -42,7 +42,7 @@ class RepresentativeService {
             representative.setPesel(result.pesel)
             representative.setBirthDate(getDate(result.dataUrodzenia))
             representative.setCitizenship(result.obywatelstwo)
-            representative.setBirthCountry(result.krajUrodzenia)
+            representative.setBirthCountry(getCountryOrNull(result.krajUrodzenia))
             representative.setDocumentType(getDocumentType(result.typDokumentu))
             representative.setDocumentNumber(result.dokumentTozsamosci)
             representative.setDocumentExpirationDate(getDate(result.dataWaznosciDokumentu))
@@ -107,18 +107,18 @@ class RepresentativeService {
             beneficiary.setSalutation(result.prefix)
             beneficiary.setPesel(result.pesel)
             beneficiary.setBirthDate(getDate(result.dataUrodzenia))
-            beneficiary.setCitizenship(getCountryOrNull(result.obywatelstwo))
+            beneficiary.setCitizenship(result.obywatelstwo)
             beneficiary.setMidCBD(result.mid)
 
             return beneficiary
         }
     }
 
-    private String getCountryOrNull(String value) {
-        if (value == null) return null
+    private String getCountryOrNull(String countryCode) {
+        if (countryCode == null) return null
 
         return dictionaryService.getCountries()
-                .find { it.value == value }
+                .find { it.code == countryCode }
                 ?.value
     }
 
