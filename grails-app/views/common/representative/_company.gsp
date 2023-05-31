@@ -12,11 +12,12 @@
 
                 <label for="${prefix}[${seqNo}].documentType"><g:message code="panel.identity"/>:</label>
 
-                <g:select id="${prefix}[${seqNo}].documentType"
+                <g:select id="${prefix}[${seqNo}].companyDocumentType"
                           name="${prefix}[${seqNo}].documentType"
                           from="${IdentityDocumentType.values()}"
                           valueMessagePrefix="identity.kind"
                           value="${representative?.documentType}"
+                          disabled="${!czyNowaUmowa && !representative?.isCBDDataChangedManually}"
                           required="required"
                           style="min-width: 150px"/>
                 <g:hiddenField name="${prefix}[${seqNo}].documentType"

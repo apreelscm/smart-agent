@@ -96,7 +96,6 @@ function onRepresentativeCBDDataChange() {
                         if (!isAnyDataManual) {
                             verificationDocumentsContainer.addClass("hidden");
                         }
-                        documentTypeInput.removeAttr('disabled');
                         enableFields(isPolitician);
                         jQuery(this).dialog("close");
                     },
