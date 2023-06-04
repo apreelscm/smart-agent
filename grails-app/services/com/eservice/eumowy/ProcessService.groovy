@@ -728,7 +728,7 @@ class ProcessService {
             apc.setCzyCbd(true)
 			apc.setCbdId(Integer.valueOf(row.get("cbd_id").toString()))
             apc.setTpsId(Integer.valueOf(row.get("tps_id").toString()))
-            apc.setNumerZestawuPos(Integer.valueOf(row.get("numer_logiczny").toString()))
+            apc.setNumerZestawuPos(row.get("numer_logiczny").toString())
             /* TODO The rest data should be loaded from calculator here! */
 
             posesList.add(apc)
@@ -847,7 +847,7 @@ class ProcessService {
         result.each { GroovyRowResult row ->
             PosExchangeCommand pe = new PosExchangeCommand()
             pe.setTpsId(Integer.valueOf(row.get("pos_id").toString()))
-            pe.setPosNumber(Integer.valueOf(row.get("tid").toString()))
+            pe.setPosNumber(row.get("tid").toString())
             pe.setCbdId(Integer.valueOf(row.get("point_id").toString()))
             pe.setName(row.get("nazwa_punktu").toString())
             pe.setAddress(row.get("adres_posadowienia").toString())

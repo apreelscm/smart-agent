@@ -13,7 +13,7 @@ class AllPosCommand implements Serializable {
     Boolean czyCbd
 	Integer cbdId
     Integer tpsId
-	Integer numerZestawuPos
+	String numerZestawuPos
 	Date dataOd
 	Date dataDo
 	BigDecimal wysokoscOplaty

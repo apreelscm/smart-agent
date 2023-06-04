@@ -4,7 +4,7 @@ class PosData implements Serializable {
 	
 	Long parentPosId
 	Integer tpsId
-    Integer numerZestawuPos
+    String numerZestawuPos
     Date dataOd
 	Date dataDo
 	BigDecimal wysokoscOplaty

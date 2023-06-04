@@ -8,7 +8,7 @@ class PosExchange implements Serializable{
     Integer cbdId
     Integer tpsId
 
-    Integer posNumber;
+    String posNumber
 
     String name
     String address
