@@ -31,7 +31,7 @@ class MapperService {
         data.putAll(processMapper.mapOnlyProcessData())
         data.putAll(new RepresentativesNamesMapper(processInstance).getDataForMapping())
 
-        if (ActivityHelper.isNewAgreement(processInstance) || isRepOrBenDataChanged) {
+        if (isRepOrBenDataChanged) {
             data.putAll(new PABRPEBformMapper(processInstance, messageSource).getDataForMapping())
         }
 

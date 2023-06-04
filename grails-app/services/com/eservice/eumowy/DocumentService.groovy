@@ -54,7 +54,7 @@ class DocumentService {
 
     public Set<DocumentFile> getSavedDocumentsInProcess(Process processInstance, def calc) {
         Set<DocumentFile> documents = []
-        def isRepOrBenDataChanged = this.isAnyRepresentativeOrBeneficiaryDataChanged(processInstance)
+        boolean isRepOrBenDataChanged = isAnyRepresentativeOrBeneficiaryDataChanged(processInstance)
         Map dataFromProcess = mapperService.mapOnlyProcessData(processInstance, calc, isRepOrBenDataChanged)
 
         dataFromProcess.each { key, value ->
@@ -77,12 +77,20 @@ class DocumentService {
         List<String> expectedOzwuFormTypes = Arrays.asList(LegalForm.PARTNERSHIP_COMPANY.name(), LegalForm.PERSON.name())
 
         if (!expectedOzwuFormTypes.contains(legalFormType?.value)) {
-            documents.removeAll() { it -> it?.signature?.name?.contains("OŻWU")}
+            documents.removeAll() { it -> it.signature.name.contains("OŻWU")}
         }
 
         if (isNewAgreement(processInstance)) {
             DocumentFile mergedFile = getMergedDocument(processInstance, documents)
             documents.addAll(mergedFile)
+        } else { // PABR is always included in new agreement activity
+            if (isRepOrBenDataChanged) {
+                Signature pabrSignature = Signature.findByNameLikeAndActive(PABR_PEP_DOCUMENT_NAME_CONTAINS, true)
+                DocumentFile pabrDocument = getDocumentFile(processInstance, pabrSignature, dataFromProcess)
+                documents.add(pabrDocument)
+            } else {
+                documents.removeAll() { it -> it.signature.name.contains(PABR_PEP_DOCUMENT_NAME_CONTAINS)}
+            }
         }
 
         addNewDocumentsToProcess(documents, processInstance)
@@ -524,6 +532,8 @@ class DocumentService {
     }
 
     private boolean isAnyRepresentativeOrBeneficiaryDataChanged(Process process) {
-        return process.representatives.any { (Representative.Type.REPRESENTATIVE.equals(it.type) && it.isCBDDataChangedManually) || Representative.Type.BENEFICIARY.equals(it.type) && it.isCBDDataChangedManually }
+        return process.representatives
+                .any { (Representative.Type.REPRESENTATIVE == it.type && it.isCBDDataChangedManually) ||
+                        Representative.Type.BENEFICIARY == it.type && it.isCBDDataChangedManually }
     }
 }
