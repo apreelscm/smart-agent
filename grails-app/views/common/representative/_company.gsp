@@ -71,6 +71,7 @@
                 <div class="label"><g:message code="pesel.label"/></div>
 
                 <eumowy:textField name="${prefix}[${seqNo}].pesel" value="${representative?.pesel}"
+                                  readonly="${!czyNowaUmowa && !representative?.isCBDDataChangedManually}"
                                   maxlength="11" class="pesel-field display-inline-block"
                                   validatable="${representative}" validateField="pesel"/>
             </div>
