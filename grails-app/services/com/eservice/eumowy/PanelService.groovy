@@ -103,7 +103,7 @@ class PanelService {
         cmd.akceptantNazwaSieciowaCbd = cmd.akceptantNazwaSieciowa
         cmd.akceptantRegonCbd = cmd.akceptantRegon
 
-        String legalForm = result.formaPrawnaId ? LegalFormMapper.mapLegalFormFromCBD(String.valueOf(result.formaPrawnaId)) : ""
+        String legalForm = result?.formaPrawnaId ? LegalFormMapper.mapLegalFormFromCBD(String.valueOf(result.formaPrawnaId)) : ""
         cmd.dzialalnoscForma = nullify(cmd.dzialalnoscForma, legalForm)
     }
 
