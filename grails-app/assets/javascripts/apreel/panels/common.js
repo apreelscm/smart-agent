@@ -27,7 +27,7 @@ function onIsPoliticianChange() {
     }
 }
 
-function onRepresentativeCBDDataChange() {
+function onRepresentativeCBDDataChange(showDialog) {
     var $this = jQuery(this),
         readOnlyFields = $this.parents("div.acceptor").find('input, textarea, textField'),
         disabledFields = $this.parents("div.acceptor").find('select, checkbox, input[type="radio"]'),
@@ -47,10 +47,28 @@ function onRepresentativeCBDDataChange() {
     var citySelect = jQuery('select[name="' + cityName + '"]');
     var cityInput = jQuery('input[name="' + cityName + '"]');
 
-    var documentTypeName = prefix + '[' + index + '].documentType';
-    var documentTypeInput = jQuery('select[name="' + documentTypeName + '"]');
-
     var isAnyDataManual = jQuery("#acceptorsPanel input[type=radio][name$='isCBDDataChangedManually'][value=true]:checked").length;
+
+    function changeFieldsAvailabilityForActualCbdData() {
+        cityInput.show();
+        setRepresentativesDataFromCBD(index, nip, representativeId);
+        readOnlyFields.attr("readonly", true);
+        disabledFields.attr('disabled', 'disabled');
+        representativesDataChanged.removeAttr("disabled");
+        $this.parents("div.acceptor").children('div.basicRepresentativeData').find('*[cbdDataHiddenField="cbdDataHiddenField"]').removeAttr("disabled");
+        $this.parents("div.acceptor").children('div.sharedRepresentativeData').find('*[cbdDataHiddenField="cbdDataHiddenField"]').removeAttr("disabled");
+        if (isCompanyData.hasClass('hidden')) {
+            $this.parents("div.acceptor").children('div.personData').find('*[cbdDataHiddenField="cbdDataHiddenField"]').removeAttr("disabled");
+            $this.parents("div.acceptor").children('div.companyData').find('*[cbdDataHiddenField="cbdDataHiddenField"]').attr("disabled");
+        } else {
+            $this.parents("div.acceptor").children('div.personData').find('*[cbdDataHiddenField="cbdDataHiddenField"]').attr("disabled");
+            $this.parents("div.acceptor").children('div.companyData').find('*[cbdDataHiddenField="cbdDataHiddenField"]').removeAttr("disabled");
+        }
+        if (!isAnyDataManual) {
+            verificationDocumentsContainer.addClass("hidden");
+        }
+        enableFields(isPolitician);
+    }
 
     if (this.value === 'true') {
         disabledFields.removeAttr("disabled");
@@ -71,40 +89,27 @@ function onRepresentativeCBDDataChange() {
             $this.parents("div.acceptor").children('div.companyData').find('*[cbdDataHiddenField="cbdDataHiddenField"]').attr('disabled', 'disabled');
         }
     } else {
-        jQuery("#confirm-submit-without-subscription-dialog").dialog({
-            resizable: true,
-            height: 200,
-            width: 450,
-            modal: true,
-            buttons:
-                {
-                    "Tak": function () {
-                        cityInput.show();
-                        setRepresentativesDataFromCBD(index, nip, representativeId);
-                        readOnlyFields.attr("readonly", true);
-                        disabledFields.attr('disabled', 'disabled');
-                        representativesDataChanged.removeAttr("disabled");
-                        $this.parents("div.acceptor").children('div.basicRepresentativeData').find('*[cbdDataHiddenField="cbdDataHiddenField"]').removeAttr("disabled");
-                        $this.parents("div.acceptor").children('div.sharedRepresentativeData').find('*[cbdDataHiddenField="cbdDataHiddenField"]').removeAttr("disabled");
-                        if (isCompanyData.hasClass('hidden')) {
-                            $this.parents("div.acceptor").children('div.personData').find('*[cbdDataHiddenField="cbdDataHiddenField"]').removeAttr("disabled");
-                            $this.parents("div.acceptor").children('div.companyData').find('*[cbdDataHiddenField="cbdDataHiddenField"]').attr("disabled");
-                        } else {
-                            $this.parents("div.acceptor").children('div.personData').find('*[cbdDataHiddenField="cbdDataHiddenField"]').attr("disabled");
-                            $this.parents("div.acceptor").children('div.companyData').find('*[cbdDataHiddenField="cbdDataHiddenField"]').removeAttr("disabled");
+        if (showDialog === false) {
+            changeFieldsAvailabilityForActualCbdData();
+        } else {
+            jQuery("#confirm-submit-without-subscription-dialog").dialog({
+                resizable: true,
+                height: 200,
+                width: 450,
+                modal: true,
+                buttons:
+                    {
+                        "Tak": function () {
+                            changeFieldsAvailabilityForActualCbdData();
+                            jQuery(this).dialog("close");
+                        },
+                        "Nie": function () {
+                            jQuery('#representatives\\[' + index + '\\]\\.isCBDDataChangedManually')[0].click();
+                            jQuery(this).dialog("close");
                         }
-                        if (!isAnyDataManual) {
-                            verificationDocumentsContainer.addClass("hidden");
-                        }
-                        enableFields(isPolitician);
-                        jQuery(this).dialog("close");
-                    },
-                    "Nie": function () {
-                        jQuery('#representatives\\[' + index + '\\]\\.isCBDDataChangedManually')[0].click();
-                        jQuery(this).dialog("close");
                     }
-                }
-        });
+            });
+        }
     }
 }
 

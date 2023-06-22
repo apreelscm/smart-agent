@@ -84,10 +84,8 @@
     }
 
     function legalFormChanged() {
-        var representativeDataAutomaticList = jQuery("#representativesContainer input[type=radio][name$='isCBDDataChangedManually'][value=false]:checked");
-        if (representativeDataAutomaticList.length) {
-            jQuery("#representativesContainer input[type=radio][name$='isCBDDataChangedManually']").val(true);
-        }
+        var dataChangedManuallyElements = jQuery("#representativesContainer input[type=radio][name$='isCBDDataChangedManually']:checked");
+
         if (this.value === "") {
             $personData.addClass('hidden');
             $companyData.addClass('hidden');
@@ -151,9 +149,14 @@
         $representativesContainer.find('div.acceptor').each(function (_, value) {
             manageVisibilityOfDocumentInfo(jQuery(value));
         });
+
         if (jQuery("#representativesContainer input[type=radio][name$='isCBDDataChangedManually']").length === 0) {
             $representativesContainer.find('*[cbdDataHiddenField="cbdDataHiddenField"]').attr('disabled', 'disabled');
         }
+
+        dataChangedManuallyElements.each((idx, element) => {
+            onRepresentativeCBDDataChange.call(element, false);
+        });
     }
 
     function manageVisibilityOfDocumentInfo($acceptor) {
