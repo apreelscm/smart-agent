@@ -85,7 +85,7 @@ class DocumentService {
             documents.addAll(mergedFile)
         } else { // PABR is always included in new agreement activity
             if (isRepOrBenDataChanged) {
-                Signature pabrSignature = Signature.findByNameLikeAndActive(PABR_PEP_DOCUMENT_NAME_CONTAINS, true)
+                Signature pabrSignature = Signature.findByNameLikeAndActive("%${PABR_PEP_DOCUMENT_NAME_CONTAINS}%", true)
                 DocumentFile pabrDocument = getDocumentFile(processInstance, pabrSignature, dataFromProcess)
                 documents.add(pabrDocument)
             } else {
