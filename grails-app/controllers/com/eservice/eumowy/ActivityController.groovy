@@ -630,6 +630,8 @@ class ActivityController {
                 flow.data = processCommand
                 flow.processInstance = processInstance
                 flow.czyNowaUmowa = processService.isProcessHasActivity(processInstance, "nowaUmowa")
+                flow.czyDaneReprezentatowLubBeneficjentowZmienione = processInstance.isAnyRepresentativeOrBeneficiaryDataChanged()
+
             }
             render(view: "../createProcess/selectedPanels")
             on("reject"){
@@ -948,6 +950,7 @@ class ActivityController {
 
                 flow.data = processCmd
                 flow.czyNowaUmowa = processService.isProcessHasActivity(processInstance, "nowaUmowa")
+                flow.czyDaneReprezentatowLubBeneficjentowZmienione = processInstance.isAnyRepresentativeOrBeneficiaryDataChanged()
 
                 if (!flow.czyNowaUmowa) {
                     processService.fillCommandWithCBDData(processCmd)

@@ -54,7 +54,7 @@ class DocumentService {
 
     public Set<DocumentFile> getSavedDocumentsInProcess(Process processInstance, def calc) {
         Set<DocumentFile> documents = []
-        boolean isRepOrBenDataChanged = isAnyRepresentativeOrBeneficiaryDataChanged(processInstance)
+        boolean isRepOrBenDataChanged = processInstance.isAnyRepresentativeOrBeneficiaryDataChanged()
         Map dataFromProcess = mapperService.mapOnlyProcessData(processInstance, calc, isRepOrBenDataChanged)
 
         dataFromProcess.each { key, value ->
@@ -529,11 +529,5 @@ class DocumentService {
             }
         }
         return '';
-    }
-
-    private boolean isAnyRepresentativeOrBeneficiaryDataChanged(Process process) {
-        return process.representatives
-                .any { (Representative.Type.REPRESENTATIVE == it.type && it.isCBDDataChangedManually) ||
-                        Representative.Type.BENEFICIARY == it.type && it.isCBDDataChangedManually }
     }
 }

@@ -238,4 +238,11 @@ class Process implements Serializable {
 
         return chosenPoses
     }
+
+    boolean isAnyRepresentativeOrBeneficiaryDataChanged() {
+        return representatives.any {
+            (Representative.Type.REPRESENTATIVE == it.type && it.isCBDDataChangedManually) ||
+                    Representative.Type.BENEFICIARY == it.type && it.isCBDDataChangedManually
+        }
+    }
 }
