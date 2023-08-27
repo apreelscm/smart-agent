@@ -1,7 +1,7 @@
 package com.eservice.eumowy
 
 import com.eservice.eumowy.pdfmapper.FacilitiesMapper
-import com.eservice.eumowy.pdfmapper.PABRPEBformMapper
+import com.eservice.eumowy.pdfmapper.PABR_PEP_formMapper
 import com.eservice.eumowy.pdfmapper.PEPdeclarationMapper
 import com.eservice.eumowy.pdfmapper.PdfPointMapper
 import com.eservice.eumowy.pdfmapper.PdfPosExchangeMapper
@@ -32,7 +32,7 @@ class MapperService {
         data.putAll(new RepresentativesNamesMapper(processInstance).getDataForMapping())
 
         if (isRepOrBenDataChanged) {
-            data.putAll(new PABRPEBformMapper(processInstance, messageSource).getDataForMapping())
+            data.putAll(new PABR_PEP_formMapper(processInstance, messageSource).getDataForMapping())
         }
 
         if (ActivityHelper.isNewAgreement(processInstance)) {

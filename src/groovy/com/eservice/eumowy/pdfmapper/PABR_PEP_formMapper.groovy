@@ -7,11 +7,11 @@ import com.eservice.eumowy.pdfmapper.representative.RepresentativesDetailsMapper
 import com.eservice.eumowy.Process
 import org.springframework.context.MessageSource
 
-class PABRPEBformMapper implements Mapper {
+class PABR_PEP_formMapper implements Mapper {
     private Process process
     private MessageSource messageSource;
 
-    public PABRPEBformMapper(Process process, MessageSource messageSource) {
+    public PABR_PEP_formMapper(Process process, MessageSource messageSource) {
         this.process = process
         this.messageSource = messageSource
     }
@@ -24,6 +24,7 @@ class PABRPEBformMapper implements Mapper {
         data.putAll(new RepresentativesDetailsMapper(process, messageSource).getDataForMapping())
         data.putAll(new BeneficiariesMapper(process).getDataForMapping())
         data.putAll(new EmployeeAnnotationsMapper(process).getDataForMapping())
+        data.putAll(new PEPdeclarationMapper(process).getDataForMapping())
 
         return data
     }

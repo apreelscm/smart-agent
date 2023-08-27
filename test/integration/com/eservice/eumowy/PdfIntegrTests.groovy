@@ -5,7 +5,7 @@ import com.eservice.eumowy.enums.options.IdentityDocumentType
 import com.eservice.eumowy.enums.options.LegalForm
 import com.eservice.eumowy.helpers.CommandHelper
 import com.eservice.eumowy.helpers.PdfHelper
-import com.eservice.eumowy.pdfmapper.PABRPEBformMapper
+import com.eservice.eumowy.pdfmapper.PABR_PEP_formMapper
 import com.eservice.eumowy.pdfmapper.PEPdeclarationMapper
 import grails.test.mixin.TestFor
 import grails.test.mixin.web.ControllerUnitTestMixin
@@ -594,7 +594,7 @@ class PdfIntegrTests extends ControllerUnitTestMixin {
         CommandHelper.setProperties(representative, representativeProperties)
         CommandHelper.setProperties(beneficiary, beneficiaryProperties)
 
-        data.putAll(new PABRPEBformMapper(process).getDataForMapping())
+        data.putAll(new PABR_PEP_formMapper(process).getDataForMapping())
         data.putAll(akceptantIReprezentanciFields())
         data.putAll(PdfHelper.insertSignatures(subscriptions))
 
