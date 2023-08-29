@@ -110,11 +110,11 @@ class RepresentativeCommand implements Serializable{
                     "documentNumber", "representative.seriaNrDokumentu.required")
         })
         documentIssueDate(nullable: true, validator: {value, cmd, errors ->
-            CustomValidator.validateRequired(value, errors, cmd.documentType == IdentityDocumentType.IDENTITY_CARD || (cmd.processCommand.hasNewUmowa == true && (cmd.processCommand.isPersonForm() || cmd.procuratorPosition)),
+            CustomValidator.validateRequired(value, errors, cmd.documentType == IdentityDocumentType.IDENTITY_CARD && (cmd.processCommand.hasNewUmowa == true && (cmd.processCommand.isPersonForm() || cmd.procuratorPosition)),
                     "documentIssueDate", "representative.dataWydaniaDokumentu.required")
         })
         documentExpirationDate(nullable: true, validator: {value, cmd, errors ->
-            CustomValidator.validateRequired(value, errors, cmd.documentType == IdentityDocumentType.IDENTITY_CARD || (cmd.processCommand.hasNewUmowa == true && (cmd.processCommand.isPersonForm() || cmd.procuratorPosition)),
+            CustomValidator.validateRequired(value, errors, cmd.documentType == IdentityDocumentType.IDENTITY_CARD && (cmd.processCommand.hasNewUmowa == true && (cmd.processCommand.isPersonForm() || cmd.procuratorPosition)),
                     "documentExpirationDate", "representative.dataWaznosciDokumentu.required")
         })
 
