@@ -5,21 +5,19 @@
 
 <g:if test="${dropdowns}">
     <div>
-        <g:if test="${!czyNowaUmowa && representative?.midCBD != null}">
-            <g:radio class="isCBDDataChangedManually"
-                     name="${prefix}[${seqNo}].isCBDDataChangedManually"
-                     checked="${representative?.isCBDDataChangedManually == true}"
-                     value="${representative?.isCBDDataChangedManually}"/>
-            <label for="${prefix}[${seqNo}].isCBDDataChangedManually"><g:message
-                    code="com.eservice.eumowy.command.RepresentativeCommand.isCBDDataChangedManuallyTrue"/></label>
+        <g:radio class="isCBDDataChangedManually"
+                 name="${prefix}[${seqNo}].isCBDDataChangedManually"
+                 checked="${representative?.isCBDDataChangedManually == true}"
+                 value="${representative?.isCBDDataChangedManually}"/>
+        <label for="${prefix}[${seqNo}].isCBDDataChangedManually"><g:message
+                code="com.eservice.eumowy.command.RepresentativeCommand.isCBDDataChangedManuallyTrue"/></label>
 
-            <g:radio class="isCBDDataChangedManually"
-                     name="${prefix}[${seqNo}].isCBDDataChangedManually"
-                     checked="${representative?.isCBDDataChangedManually == false}"
-                     value="${!representative?.isCBDDataChangedManually}"/>
-            <label for="${prefix}[${seqNo}].isCBDDataChangedManually"><g:message
-                    code="com.eservice.eumowy.command.RepresentativeCommand.isCBDDataChangedManuallyFalse"/></label>
-        </g:if>
+        <g:radio class="isCBDDataChangedManually"
+                 name="${prefix}[${seqNo}].isCBDDataChangedManually"
+                 checked="${representative?.isCBDDataChangedManually == false}"
+                 value="${!representative?.isCBDDataChangedManually}"/>
+        <label for="${prefix}[${seqNo}].isCBDDataChangedManually"><g:message
+                code="com.eservice.eumowy.command.RepresentativeCommand.isCBDDataChangedManuallyFalse"/></label>
 
         <div>
             <eumowy:textField name="${prefix}[${seqNo}].salutation" value="${representative?.salutation}"
@@ -44,7 +42,6 @@
     </div>
 </g:if>
 <g:else>
-    <g:if test="${!czyNowaUmowa && representative?.midCBD != null}">
     <div class="isCBDDataChangedManually">
         <g:hasErrors bean="${representative}" field="isCBDDataChangedManually">
             <p class="error-message"><g:message code="representative.option.required"/></p>
@@ -62,7 +59,6 @@
         <label for="${prefix}[${seqNo}].isCBDDataChangedManually"><g:message
                 code="com.eservice.eumowy.command.RepresentativeCommand.isCBDDataChangedManuallyFalse"/></label>
     </div>
-    </g:if>
 
     <div class="representativeCBDBasicData" id="representativeCBDBasicData">
         <g:select name="${prefix}[${seqNo}].salutation" from="['Pan', 'Pani']" valueMessagePrefix="person.title"
