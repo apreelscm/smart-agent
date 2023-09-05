@@ -5,7 +5,6 @@
 <g:hiddenField name="index" value="${seqNo}"/>
 <g:hiddenField name="prefix" value="${prefix}"/>
 
-<g:if test="${!czyNowaUmowa && representative?.midCBD != null}">
 <div class="isCBDDataChangedManually ${hasErrors(bean: representative, field: 'isCBDDataChangedManually', 'errorSpan')}">
     <g:hasErrors bean="${representative}" field="isCBDDataChangedManually">
         <p class="error-message"><g:message code="representative.option.required"/></p>
@@ -19,7 +18,6 @@
              checked="${representative?.isCBDDataChangedManually == false}"/>
     <label for="${prefix}[${seqNo}].isCBDDataChangedManually"><g:message code="com.eservice.eumowy.command.RepresentativeCommand.isCBDDataChangedManuallyFalse"/></label>
 </div>
-</g:if>
 
 <div>
     <g:select name="${prefix}[${seqNo}].salutation"
