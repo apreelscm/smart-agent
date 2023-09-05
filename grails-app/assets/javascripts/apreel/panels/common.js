@@ -40,9 +40,6 @@ function onRepresentativeCBDDataChange(showDialog) {
         index = $basicRepresentativeData.children('input[name="index"]')[0].value,
         prefix = $basicRepresentativeData.children('input[name="prefix"]')[0].value;
 
-    var midName = prefix + '[' + index + '].midCBD';
-    var representativeId = $basicRepresentativeData.children('input[name="' + midName + '"]')[0].value;
-
     var cityName = prefix + '[' + index + '].city';
     var citySelect = jQuery('select[name="' + cityName + '"]');
     var cityInput = jQuery('input[name="' + cityName + '"]');
@@ -51,7 +48,7 @@ function onRepresentativeCBDDataChange(showDialog) {
 
     function changeFieldsAvailabilityForActualCbdData() {
         cityInput.show();
-        setRepresentativesDataFromCBD(index, nip, representativeId);
+        setRepresentativesDataFromCBD(index, nip);
         readOnlyFields.attr("readonly", true);
         disabledFields.attr('disabled', 'disabled');
         representativesDataChanged.removeAttr("disabled");
@@ -123,11 +120,7 @@ function onAcceptantCBDDataChange() {
         nip = jQuery("#akceptantNip")[0].value,
         verificationDocumentsContainer = jQuery("#dokumentyWeryfikacyjne"),
         isPolitician = $acceptor.find('div.isPolitician'),
-        index = $acceptor.children('input[name="index"]')[0].value,
-        prefix = $acceptor.children('input[name="prefix"]')[0].value;
-
-    var midName = prefix + '[' + index + '].midCBD';
-    var acceptantId = $acceptor.children('input[name="' + midName + '"]')[0].value;
+        index = $acceptor.children('input[name="index"]')[0].value;
 
     var $isCBDDataChangedManually = jQuery("#acceptorsPanel input[type=radio][name$='isCBDDataChangedManually'][value=true]:checked");
     var isAnyDataManual = $isCBDDataChangedManually.length;
@@ -149,7 +142,7 @@ function onAcceptantCBDDataChange() {
                         readOnlyFields.attr("readonly", true);
                         disabledFields.attr('disabled', 'disabled');
                         beneficiaryDataChanged.removeAttr("disabled");
-                        setAcceptantDataFromCBD(index, nip, acceptantId);
+                        setAcceptantDataFromCBD(index, nip);
                         hiddenFields.removeAttr('disabled');
                         if (!isAnyDataManual) {
                             verificationDocumentsContainer.addClass("hidden");
@@ -166,7 +159,7 @@ function onAcceptantCBDDataChange() {
     }
 }
 
-function setRepresentativesDataFromCBD(index, nip, representativeCbdMidId) {
+function setRepresentativesDataFromCBD(index, nip) {
     var name = jQuery('#representatives\\[' + index + '\\]\\.name');
     var surname = jQuery('#representatives\\[' + index + '\\]\\.surname');
     var position = jQuery('#representatives\\[' + index + '\\]\\.position');
@@ -192,7 +185,7 @@ function setRepresentativesDataFromCBD(index, nip, representativeCbdMidId) {
     var documentType = jQuery('#representatives\\[' + index + '\\]\\.documentType');
     var verification = jQuery('#representatives\\[' + index + '\\]\\.verification');
 
-    jQuery.get("/eumowy/activity/getCbdReprezentantData", {nip: nip, representativeCbdMidId: representativeCbdMidId}, function (data) {
+    jQuery.get("/eumowy/activity/getCbdReprezentantData", {nip: nip, index: index}, function (data) {
         if (data != null) {
             name.val(data.name);
             surname.val(data.surname);
@@ -240,7 +233,7 @@ function convertStringToDate(dateString) {
     }
 }
 
-function setAcceptantDataFromCBD(index, nip, acceptantCbdMidId) {
+function setAcceptantDataFromCBD(index, nip) {
     var name = jQuery('#beneficiaries\\[' + index + '\\]\\.name');
     var surname = jQuery('#beneficiaries\\[' + index + '\\]\\.surname');
     var position = jQuery('#beneficiaries\\[' + index + '\\]\\.position');
@@ -249,7 +242,7 @@ function setAcceptantDataFromCBD(index, nip, acceptantCbdMidId) {
     var pesel = jQuery('#beneficiaries\\[' + index + '\\]\\.pesel');
     var citizenship = jQuery('#beneficiaries\\[' + index + '\\]\\.citizenship');
 
-    jQuery.get("/eumowy/activity/getCbdAcceptantData", {nip: nip, acceptantCbdMidId: acceptantCbdMidId}, function (data) {
+    jQuery.get("/eumowy/activity/getCbdAcceptantData", {nip: nip, index: index}, function (data) {
         if (data != null) {
             name.val(data.name);
             surname.val(data.surname);

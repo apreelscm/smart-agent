@@ -1,6 +1,7 @@
 package com.eservice.eumowy
 
 import com.eservice.eumowy.auth.EServiceUserDetails
+import com.eservice.eumowy.command.BeneficiaryCommand
 import com.eservice.eumowy.command.ProcessCommand
 import com.eservice.eumowy.command.RepresentativeCommand
 import com.eservice.eumowy.dto.MerchantDetailsDTO
@@ -1385,18 +1386,18 @@ class ActivityController {
 
     def getCbdReprezentantData() {
         String nip = params.nip
-        String representativeId = params.representativeCbdMidId
-        def cbdRepresentatives = representativeService.getRepresentativesFromCBD(nip)
-        def result = cbdRepresentatives.find({ it -> it.midCBD == representativeId })
+        int index = params.index as int
+        List<RepresentativeCommand> cbdRepresentatives = representativeService.getRepresentativesFromCBD(nip)
+        RepresentativeCommand result = cbdRepresentatives.get(index)
 
         render result as JSON
     }
 
     def getCbdAcceptantData() {
         String nip = params.nip
-        String representativeId = params.acceptantCbdMidId
-        def cbdAcceptants = representativeService.getDaneBeneficjentaRzeczywistego(nip)
-        def result = cbdAcceptants.find({ it -> it.midCBD == representativeId })
+        int index = params.index as int
+        List<BeneficiaryCommand> cbdAcceptants = representativeService.getDaneBeneficjentaRzeczywistego(nip)
+        BeneficiaryCommand result = cbdAcceptants.get(index)
 
         render result as JSON
     }
