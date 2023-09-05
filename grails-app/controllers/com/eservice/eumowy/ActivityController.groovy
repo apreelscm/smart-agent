@@ -1388,18 +1388,18 @@ class ActivityController {
         String nip = params.nip
         int index = params.index as int
         List<RepresentativeCommand> cbdRepresentatives = representativeService.getRepresentativesFromCBD(nip)
-        RepresentativeCommand result = cbdRepresentatives.get(index)
+        RepresentativeCommand result = cbdRepresentatives[index]
 
-        render result as JSON
+        render (result ?: "") as JSON
     }
 
     def getCbdAcceptantData() {
         String nip = params.nip
         int index = params.index as int
         List<BeneficiaryCommand> cbdAcceptants = representativeService.getDaneBeneficjentaRzeczywistego(nip)
-        BeneficiaryCommand result = cbdAcceptants.get(index)
+        BeneficiaryCommand result = cbdAcceptants[index]
 
-        render result as JSON
+        render (result ?: "") as JSON
     }
 
     def getCity() {
