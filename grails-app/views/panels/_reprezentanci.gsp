@@ -17,9 +17,6 @@
     </div>
 </g:each>
 
-<g:if test="${czyNowaUmowa}">
-    <div class="text-center" style="margin-bottom: 15px">
-        <button type="button" id="addAnotherAcceptor" class="button submit"><g:message code="add.acceptor.button"/></button>
-    </div>
-</g:if>
-
+<div class="text-center" style="margin-bottom: 15px">
+    <button type="button" id="addAnotherAcceptor" class="button submit"><g:message code="add.acceptor.button"/></button>
+</div>
