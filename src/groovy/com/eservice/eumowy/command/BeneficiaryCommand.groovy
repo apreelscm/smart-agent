@@ -21,22 +21,22 @@ class BeneficiaryCommand extends RepresentativeCommand implements Serializable {
         importFrom RepresentativeCommand
 
         salutation(nullable: true, validator: {value, cmd, errors ->
-            CustomValidator.validateRequired(value, errors, cmd.processCommand.hasNewUmowa,
+            CustomValidator.validateRequired(value, errors, true,
                     "salutation", "beneficiary.salutation.required")
         })
 
         name(nullable: true, shared: "lettersOnly", validator: {value, cmd, errors ->
-            CustomValidator.validateRequired(value, errors, cmd.processCommand.hasNewUmowa,
+            CustomValidator.validateRequired(value, errors, true,
                     "name", "beneficiary.name.required")
         })
 
         surname(nullable: true, shared: "lettersOnly", validator: {value, cmd, errors ->
-            CustomValidator.validateRequired(value, errors, cmd.processCommand.hasNewUmowa,
+            CustomValidator.validateRequired(value, errors, true,
                     "surname", "beneficiary.surname.required")
         })
 
         citizenship(nullable: true, maxSize: 30, validator: {value, cmd, errors ->
-            CustomValidator.validateRequired(value, errors, cmd.processCommand.hasNewUmowa,
+            CustomValidator.validateRequired(value, errors, true,
                     "citizenship", "representative.obywatelstwo.required")
         })
 
@@ -48,7 +48,7 @@ class BeneficiaryCommand extends RepresentativeCommand implements Serializable {
 
         position(nullable: true, validator: { return true })
         verification(nullable: true, validator: { value, cmd, errors ->
-            return CustomValidator.validateRequired(value, errors, cmd.processCommand.hasNewUmowa, "verification",
+            return CustomValidator.validateRequired(value, errors, true, "verification",
                     "representative.option.required")
         })
         pesel(nullable: true, validator: {value, cmd, errors ->
@@ -72,7 +72,7 @@ class BeneficiaryCommand extends RepresentativeCommand implements Serializable {
         postOffice(nullable: true, validator: { return true })
         country(nullable: true, validator: { return true })
         isPolitician(nullable: true, validator: {value, cmd, errors ->
-            CustomValidator.validateRequired(value != null, errors, cmd.processCommand.hasNewUmowa,
+            CustomValidator.validateRequired(value != null, errors, true,
                     "isPolitician", "beneficiary.czyStanowiskoPolityczne.required")
         })
         isDirectPep(nullable: true, validator: {value, cmd, errors ->

@@ -63,35 +63,35 @@
     <div class="representativeCBDBasicData" id="representativeCBDBasicData">
         <g:select name="${prefix}[${seqNo}].salutation" from="['Pan', 'Pani']" valueMessagePrefix="person.title"
                   value="${representative?.salutation}"
-                  disabled="${!czyNowaUmowa && !representative?.isCBDDataChangedManually}"
+                  disabled="${!representative?.isCBDDataChangedManually}"
                   validatable="${representative}" validateField="salutation"/>
         <g:hiddenField name="${prefix}[${seqNo}].salutation"
-                       disabled="${czyNowaUmowa || representative?.isCBDDataChangedManually}"
+                       disabled="${representative?.isCBDDataChangedManually}"
                        cbdDataHiddenField="cbdDataHiddenField"
                        value="${representative?.salutation}"/>
 
         <label for="${prefix}[${seqNo}].name"><g:message code="panel.first.name"/>:</label>
         <eumowy:textField name="${prefix}[${seqNo}].name" value="${representative?.name}" maxlength="25"
-                          readonly="${!czyNowaUmowa && !representative?.isCBDDataChangedManually}"
+                          readonly="${!representative?.isCBDDataChangedManually}"
                           validatable="${representative}" validateField="name"/>
 
         <label for="${prefix}[${seqNo}].surname"><g:message code="panel.last.name"/>:</label>
         <eumowy:textField name="${prefix}[${seqNo}].surname" value="${representative?.surname}" maxlength="35"
                           class="surnameField"
-                          readonly="${!czyNowaUmowa && !representative?.isCBDDataChangedManually}"
+                          readonly="${!representative?.isCBDDataChangedManually}"
                           validatable="${representative}" validateField="surname"/>
 
         <label for="${prefix}[${seqNo}].position"><g:message code="panel.position"/>:</label>
         <dict:positionSelect class="positionField"
                              medium="${representative?.position}"
                              data-index="${seqNo}"
-                             disabled="${!czyNowaUmowa && !representative?.isCBDDataChangedManually}"
+                             disabled="${!representative?.isCBDDataChangedManually}"
                              id="${prefix}[${seqNo}].position"
                              name="${prefix}[${seqNo}].position" from="[]"
                              valueMessagePrefix=""
                              value="${representative?.position}"/>
         <g:hiddenField name="${prefix}[${seqNo}].position"
-                       disabled="${czyNowaUmowa || representative?.isCBDDataChangedManually}"
+                       disabled="${representative?.isCBDDataChangedManually}"
                        cbdDataHiddenField="cbdDataHiddenField"
                        value="${representative?.position}"/>
     </div>

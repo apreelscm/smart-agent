@@ -24,16 +24,16 @@
               from="['Pan','Pani']"
               valueMessagePrefix="person.title"
               value="${representative?.salutation}"
-              disabled="${!czyNowaUmowa && !representative?.isCBDDataChangedManually}"
+              disabled="${!representative?.isCBDDataChangedManually}"
               validatable="${representative}" validateField="salutation" required="required"/>
     <g:hiddenField name="${prefix}[${seqNo}].salutation"
-                   disabled="${czyNowaUmowa || representative?.isCBDDataChangedManually}"
+                   disabled="${representative?.isCBDDataChangedManually}"
                    cbdDataHiddenField="cbdDataHiddenField"
                    value="${representative?.salutation}"/>
 
     <label style="margin-left: 10px" for="${prefix}[${seqNo}].name"><g:message code="panel.first.name"/>:</label>
     <eumowy:textField name="${prefix}[${seqNo}].name" value="${representative?.name}" maxlength ="25"
-                      readonly="${!czyNowaUmowa && !representative?.isCBDDataChangedManually}"
+                      readonly="${!representative?.isCBDDataChangedManually}"
                       validatable="${representative}" validateField="name" required="required"/>
 
     <label for="${prefix}[${seqNo}].surname"><g:message code="panel.last.name"/>:</label>
@@ -41,7 +41,7 @@
                       value="${representative?.surname}"
                       maxlength ="35"
                       class="surnameField"
-                      readonly="${!czyNowaUmowa && !representative?.isCBDDataChangedManually}"
+                      readonly="${!representative?.isCBDDataChangedManually}"
                       validatable="${representative}"
                       validateField="surname"
                       required="required"/>
@@ -51,11 +51,11 @@
     <label for="${prefix}[${seqNo}].citizenship"><g:message code="citizenship.label"/></label>
     <dict:countrySelect name="${prefix}[${seqNo}].citizenship"
                         value="${representative?.citizenship}"
-                        disabled="${(!czyNowaUmowa && !representative?.isCBDDataChangedManually && representative?.citizenship != null)}"
+                        disabled="${(!representative?.isCBDDataChangedManually && representative?.citizenship != null)}"
                         validatable="${representative}"
                         validateField="citizenship" required="required"/>
     <g:hiddenField name="${prefix}[${seqNo}].citizenship"
-                   disabled="${czyNowaUmowa || representative?.isCBDDataChangedManually || representative?.citizenship == null }"
+                   disabled="${representative?.isCBDDataChangedManually || representative?.citizenship == null }"
                    cbdDataHiddenField="cbdDataHiddenField"
                    value="${representative?.citizenship}"/>
 </div>
@@ -63,29 +63,29 @@
 <div class="acceptorPESELCountryWrapper ${hasErrors(bean: representative, field: 'verification', 'errorSpan')}">
     <div class="acceptorRadioWrapper">
         <g:radio name="${prefix}[${seqNo}].verification" value="PESEL"
-                 disabled="${!czyNowaUmowa && !representative?.isCBDDataChangedManually}"
+                 disabled="${!representative?.isCBDDataChangedManually}"
                  checked="${representative?.verification?.name() == "PESEL"}"/>
         <g:hiddenField name="${prefix}[${seqNo}].verification"
-                       disabled="${czyNowaUmowa || representative?.isCBDDataChangedManually}"
+                       disabled="${representative?.isCBDDataChangedManually}"
                        cbdDataHiddenField="cbdDataHiddenField"
                        value="${representative?.verification}"/>
         <div class="label"><g:message code="pesel.label"/></div>
 
         <eumowy:textField name="${prefix}[${seqNo}].pesel" value="${representative?.pesel}"
                           maxlength="11" class="pesel-field display-inline-block"
-                          readonly="${!czyNowaUmowa && !representative?.isCBDDataChangedManually}"
+                          readonly="${!representative?.isCBDDataChangedManually}"
                           validatable="${representative}" validateField="pesel"/>
     </div>
     <div class="acceptorRadioWrapper">
         <g:radio name="${prefix}[${seqNo}].verification"
                  value="BIRTH_DATE"
-                 disabled="${!czyNowaUmowa && !representative?.isCBDDataChangedManually}"
+                 disabled="${!representative?.isCBDDataChangedManually}"
                  checked="${representative?.verification?.name() == "BIRTH_DATE"}"/>
 
         <label for="${prefix}[${seqNo}].personBirthDate"><g:message code="birth.date.country.label"/></label>
         <g:textField id="${prefix}[${seqNo}].personBirthDate"
                      name="${prefix}[${seqNo}].birthDate"
-                     readonly="${!czyNowaUmowa && !representative?.isCBDDataChangedManually}"
+                     readonly="${!representative?.isCBDDataChangedManually}"
                      value="${formatDate(format: 'yyyy-MM-dd', date: representative?.birthDate)}"
                      maxlength="10"
                      class="date-field date-past"/>

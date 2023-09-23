@@ -102,19 +102,19 @@ class RepresentativeCommand implements Serializable{
         })
 
         documentType(nullable: true, validator: {value, cmd, errors ->
-            CustomValidator.validateRequired(value, errors, cmd.processCommand.hasNewUmowa == true && (cmd.processCommand.isPersonForm() || cmd.procuratorPosition), "documentType",
+            CustomValidator.validateRequired(value, errors, cmd.processCommand.isPersonForm() || cmd.procuratorPosition, "documentType",
                     "representative.typDokumentu.required")
         })
         documentNumber(nullable: true, maxSize: 20, shared: "alphanumeric", validator: {value, cmd, errors ->
-            CustomValidator.validateRequired(value, errors, cmd.processCommand.hasNewUmowa == true && (cmd.processCommand.isPersonForm() || cmd.procuratorPosition),
+            CustomValidator.validateRequired(value, errors, cmd.processCommand.isPersonForm() || cmd.procuratorPosition,
                     "documentNumber", "representative.seriaNrDokumentu.required")
         })
         documentIssueDate(nullable: true, validator: {value, cmd, errors ->
-            CustomValidator.validateRequired(value, errors, cmd.documentType == IdentityDocumentType.IDENTITY_CARD && (cmd.processCommand.hasNewUmowa == true && (cmd.processCommand.isPersonForm() || cmd.procuratorPosition)),
+            CustomValidator.validateRequired(value, errors, cmd.documentType == IdentityDocumentType.IDENTITY_CARD && (cmd.processCommand.isPersonForm() || cmd.procuratorPosition),
                     "documentIssueDate", "representative.dataWydaniaDokumentu.required")
         })
         documentExpirationDate(nullable: true, validator: {value, cmd, errors ->
-            CustomValidator.validateRequired(value, errors, cmd.documentType == IdentityDocumentType.IDENTITY_CARD && (cmd.processCommand.hasNewUmowa == true && (cmd.processCommand.isPersonForm() || cmd.procuratorPosition)),
+            CustomValidator.validateRequired(value, errors, cmd.documentType == IdentityDocumentType.IDENTITY_CARD && (cmd.processCommand.isPersonForm() || cmd.procuratorPosition),
                     "documentExpirationDate", "representative.dataWaznosciDokumentu.required")
         })
 
@@ -123,43 +123,42 @@ class RepresentativeCommand implements Serializable{
                     "birthDate", "representative.dataUrodzenia.required")
         })
         birthCountry(nullable: true, validator: { value, cmd, errors ->
-            CustomValidator.validateRequired(value, errors, cmd.processCommand.hasNewUmowa,
-                    "birthCountry", "representative.krajUrodzenia.required")
+            CustomValidator.validateRequired(value, errors, true, "birthCountry", "representative.krajUrodzenia.required")
         })
 
         streetTitle(nullable: true, maxSize: 4, blank: true);
 
         street(nullable: true, maxSize: 40, shared: "alphanumeric", validator: { value, cmd, errors ->
-            CustomValidator.validateRequired(value, errors, cmd.processCommand.isPersonForm() && cmd.processCommand.hasNewUmowa,
+            CustomValidator.validateRequired(value, errors, cmd.processCommand.isPersonForm(),
                     propertyName, "representative.street.required")
         })
 
         houseNumber(nullable: true, maxSize: 6, validator: { value, cmd, errors ->
-            CustomValidator.validateRequired(value, errors, cmd.processCommand.isPersonForm() && cmd.processCommand.hasNewUmowa,
+            CustomValidator.validateRequired(value, errors, cmd.processCommand.isPersonForm(),
                     propertyName, "representative.houseNumber.required")
         })
 
         flatNumber(nullable: true, maxSize: 4)
 
         city(nullable: true, maxSize: 33, shared: "alphanumericWithBrackets", validator: { value, cmd, errors ->
-            CustomValidator.validateRequired(value, errors, cmd.processCommand.isPersonForm() && cmd.processCommand.hasNewUmowa,
+            CustomValidator.validateRequired(value, errors, cmd.processCommand.isPersonForm(),
                     propertyName, "representative.city.required")
         })
 
         postalCode(nullable: true, maxSize: 6, shared: "postalCodeValidator", validator: { value, cmd, errors ->
-            CustomValidator.validateRequired(value, errors, cmd.processCommand.isPersonForm() && cmd.processCommand.hasNewUmowa,
+            CustomValidator.validateRequired(value, errors, cmd.processCommand.isPersonForm(),
                     propertyName, "representative.postalCode.required")
         })
 
         postOffice(nullable: true, maxSize: 33, shared: "alphanumeric")
 
         country(nullable: true, validator: { value, cmd, errors ->
-            CustomValidator.validateRequired(value, errors, cmd.processCommand.isPersonForm() && cmd.processCommand.hasNewUmowa,
+            CustomValidator.validateRequired(value, errors, cmd.processCommand.isPersonForm(),
                     propertyName, "representative.kraj.required")
         })
 
         isPolitician(nullable: true, validator: {value, cmd, errors ->
-            CustomValidator.validateRequired(value != null, errors, cmd.processCommand.hasNewUmowa,
+            CustomValidator.validateRequired(value != null, errors, true,
                     propertyName, "representative.czyStanowiskoPolityczne.required")
         })
 
@@ -169,8 +168,8 @@ class RepresentativeCommand implements Serializable{
         })
 
         citizenship(nullable: true, maxSize: 30, validator: {value, cmd, errors ->
-            CustomValidator.validateRequired(value, errors, cmd.processCommand.hasNewUmowa &&
-                    (cmd.processCommand.isPersonForm() || (cmd.processCommand.isCompanyForm() && cmd.isProcuratorPosition())),
+            CustomValidator.validateRequired(value, errors, cmd.processCommand.isPersonForm() ||
+                    (cmd.processCommand.isCompanyForm() && cmd.isProcuratorPosition()),
                     "citizenship", "representative.obywatelstwo.required")
         })
 
@@ -183,7 +182,7 @@ class RepresentativeCommand implements Serializable{
 
         email(nullable: true, blank: true, validator: { value, cmd, errors ->
             /*Sets.newHashSet(LegalForm.PARTNERSHIP_COMPANY.name(), LegalForm.PERSON.name()).contains(cmd.processCommand.dzialalnoscForma) && cmd.hasSignedContract*/
-            if (!CustomValidator.validateRequired(value != null, errors, cmd.hasSignedContract && cmd.processCommand.hasNewUmowa,
+            if (!CustomValidator.validateRequired(value != null, errors, cmd.hasSignedContract,
                     "email", "representative.email.required")) {
                 return false
             }
@@ -199,14 +198,14 @@ class RepresentativeCommand implements Serializable{
         })
 
         phoneNumber(nullable: true, maxSize: 20, validator: { value, cmd, errors ->
-            if (!CustomValidator.validateRequired(value != null, errors, cmd.hasSignedContract && cmd.processCommand.hasNewUmowa,
+            if (!CustomValidator.validateRequired(value != null, errors, cmd.hasSignedContract,
                     "phoneNumber", "representative.phoneNumber.required")) {
                 return false
             }
         })
         
         telephoneType(nullable: true, validator: { value, cmd, errors ->
-            if (!CustomValidator.validateRequired(value != null, errors, cmd.hasSignedContract && cmd.processCommand.hasNewUmowa,
+            if (!CustomValidator.validateRequired(value != null, errors, cmd.hasSignedContract,
                     "telephoneType", "representative.telephoneType.required")) {
                 return false
             }
