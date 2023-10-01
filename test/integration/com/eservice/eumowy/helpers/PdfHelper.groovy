@@ -14,6 +14,7 @@ class PdfHelper {
     static String JULY_1_DAY_2018_DOCUMENTS_PATH = "01_07_2018/"
     static String JULY_18TH_2020_DOCUMENTS_PATH = "18_07_2020/"
     static String DOCUMENTS_PATH_21_01_01 = "21-01-01/"
+    static String DOCUMENTS_PATH_22_09_01 = "22-09-01/"
 
     static HashMap<String, String[]> insertSignatures(def signatures) {
         HashMap<String, String[]> result = new HashMap<String, String[]>();
