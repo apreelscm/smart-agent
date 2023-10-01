@@ -89,7 +89,9 @@
                              id="${prefix}[${seqNo}].position"
                              name="${prefix}[${seqNo}].position" from="[]"
                              valueMessagePrefix=""
-                             value="${representative?.position}"/>
+                             value="${representative?.position}"
+                             validatable="${representative}"
+                             validateField="position"/>
         <g:hiddenField name="${prefix}[${seqNo}].position"
                        disabled="${representative?.isCBDDataChangedManually}"
                        cbdDataHiddenField="cbdDataHiddenField"
