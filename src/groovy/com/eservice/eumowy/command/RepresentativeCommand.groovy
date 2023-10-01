@@ -93,7 +93,7 @@ class RepresentativeCommand implements Serializable{
         position(nullable: true)
 
         verification(nullable: true, validator: { value, cmd, errors ->
-            return CustomValidator.validateRequired(value, errors, cmd.processCommand.hasNewUmowa, "verification",
+            return CustomValidator.validateRequired(value, errors, true, "verification",
                     "representative.option.required")
         })
 
