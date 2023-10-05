@@ -15,7 +15,7 @@
                 <g:select id="${prefix}[${seqNo}].companyDocumentType"
                           name="${prefix}[${seqNo}].documentType"
                           from="${IdentityDocumentType.values()}"
-                          noSelection="[null: '']"
+                          noSelection="['': '']"
                           valueMessagePrefix="identity.kind"
                           value="${representative?.documentType}"
                           disabled="${!representative?.isCBDDataChangedManually}"
