@@ -1386,18 +1386,26 @@ class ActivityController {
 
     def getCbdReprezentantData() {
         String nip = params.nip
+        int index = params.index as int
         String representativeId = params.representativeCbdMidId
-        List<RepresentativeCommand> cbdRepresentatives = representativeService.getRepresentativesFromCBD(nip)
-        RepresentativeCommand result = cbdRepresentatives.find({ it -> it.midCBD == representativeId })
+        List<RepresentativeCommand> representativesByNip = representativeService.getRepresentativesFromCBD(nip)
+        RepresentativeCommand representativeByIndex = representativesByNip.get(index)
+        RepresentativeCommand result = representativesByNip
+                .findAll { it -> it.midCBD == representativeId }
+                .find { it == representativeByIndex }
 
         render result as JSON
     }
 
     def getCbdAcceptantData() {
         String nip = params.nip
+        int index = params.index as int
         String representativeId = params.acceptantCbdMidId
-        List<BeneficiaryCommand> cbdAcceptants = representativeService.getDaneBeneficjentaRzeczywistego(nip)
-        BeneficiaryCommand result = cbdAcceptants.find({ it -> it.midCBD == representativeId })
+        List<BeneficiaryCommand> beneficiariesByNip = representativeService.getDaneBeneficjentaRzeczywistego(nip)
+        BeneficiaryCommand beneficiaryByIndex = beneficiariesByNip.get(index)
+        BeneficiaryCommand result = beneficiariesByNip
+                .findAll { it -> it.midCBD == representativeId }
+                .find { it == beneficiaryByIndex }
 
         render result as JSON
     }

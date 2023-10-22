@@ -192,7 +192,7 @@ function setRepresentativesDataFromCBD(index, nip, representativeCbdMidId) {
     var documentType = jQuery('#representatives\\[' + index + '\\]\\.documentType');
     var verification = jQuery('#representatives\\[' + index + '\\]\\.verification');
 
-    jQuery.get("/eumowy/activity/getCbdReprezentantData", {nip: nip, representativeCbdMidId: representativeCbdMidId}, function (data) {
+    jQuery.get("/eumowy/activity/getCbdReprezentantData", {index: index, nip: nip, representativeCbdMidId: representativeCbdMidId}, function (data) {
         if (data != null) {
             name.val(data.name);
             surname.val(data.surname);
@@ -249,7 +249,7 @@ function setAcceptantDataFromCBD(index, nip, acceptantCbdMidId) {
     var pesel = jQuery('#beneficiaries\\[' + index + '\\]\\.pesel');
     var citizenship = jQuery('#beneficiaries\\[' + index + '\\]\\.citizenship');
 
-    jQuery.get("/eumowy/activity/getCbdAcceptantData", {nip: nip, acceptantCbdMidId: acceptantCbdMidId}, function (data) {
+    jQuery.get("/eumowy/activity/getCbdAcceptantData", {index: index, nip: nip, acceptantCbdMidId: acceptantCbdMidId}, function (data) {
         if (data != null) {
             name.val(data.name);
             surname.val(data.surname);
