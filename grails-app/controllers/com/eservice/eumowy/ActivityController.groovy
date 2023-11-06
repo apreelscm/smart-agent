@@ -730,6 +730,7 @@ class ActivityController {
             }to "selectedPanels"
             on("continue"){
                 ProcessCommand processCommand = crateProcessCommand(params, conversation.calc)
+                processCommand.process = flow.processInstance
                 processCommand.validate()
                 flow.data = processCommand
                 Process processInstance = flow.processInstance
@@ -1053,6 +1054,7 @@ class ActivityController {
             }to "selectedPanels"
             on("continue"){
                 ProcessCommand processCommand = crateProcessCommand(params, conversation.calc)
+                processCommand.process = flow.processInstance
                 processCommand.validate()
                 flow.data = processCommand
                 Process processInstance = flow.processInstance

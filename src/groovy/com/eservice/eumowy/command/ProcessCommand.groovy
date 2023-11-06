@@ -12,6 +12,7 @@ import org.apache.commons.collections.FactoryUtils
 import org.apache.commons.collections.ListUtils
 import org.apache.commons.validator.routines.EmailValidator
 
+import static com.eservice.eumowy.ActivityHelper.isNewAgreement
 import static com.google.common.base.Strings.isNullOrEmpty
 
 @Validateable(nullable = true)
@@ -456,6 +457,8 @@ class ProcessCommand implements Serializable {
     Boolean hasNewUmowaAndPrepaid
     @Omit
     Boolean hasNewUmowa
+    @Omit
+    Boolean hasActivitiesThatRequiresAtLeastOneRepresentativeToSignContract
     @Omit
     boolean isBundleActivity
 
@@ -1115,10 +1118,10 @@ class ProcessCommand implements Serializable {
         })
 
         representatives(nullable: true, validator: {value, cmd, errors ->
-            return RepresentativesValidator.validate(value, cmd, errors, propertyName)
+            return RepresentativesValidator.validate(value, cmd, errors)
         })
         beneficiaries(nullable: true, validator: {value, cmd, errors ->
-            return RepresentativesValidator.validate(value, cmd, errors, propertyName)
+            return BeneficiariesValidator.validate(value, cmd, errors)
         })
 
         allPoints(nullable:true)
@@ -1151,16 +1154,12 @@ class ProcessCommand implements Serializable {
         return (this.metaClass.hasProperty(this, cbdName) && this."$cbdName"?.trim())
     }
 
-    private boolean checkIfClientFromCbd(){
-        return this.checkIfFromCbd("akceptantNazwaOficjalna")
-    }
-
-    public String getMessageForProperty(String property){
+    String getMessageForProperty(String property){
         //metoda musi zostac, jest uzywana m. in. w validatorach
         return messageSource.getMessage("com.eservice.eumowy.command.ProcessCommand." + property + ".label", [] as Object[], property, Locale.getDefault())
     }
 
-    public Integer getPosCountFromCBD() {
+    Integer getPosCountFromCBD() {
         Integer counter = 0
 
         allPoints?.each { allPoint ->
@@ -1172,15 +1171,19 @@ class ProcessCommand implements Serializable {
         return counter
     }
 
-    public boolean isPersonForm() {
+    boolean isPersonForm() {
         return dzialalnoscForma && !DEFAULT_VALUE.equals(dzialalnoscForma) ? LegalForm.valueOf(dzialalnoscForma).isPerson() : null
     }
 
-    public boolean isCompanyForm() {
+    boolean isCompanyForm() {
         return dzialalnoscForma && !DEFAULT_VALUE.equals(dzialalnoscForma) ? LegalForm.valueOf(dzialalnoscForma).isCompany() : null
     }
 
     List<RepresentativeCommand> getProcurators(){
         representatives?.findAll{ RepresentativeCommand it -> it.isProcuratorPosition() }
+    }
+
+    private boolean checkIfClientFromCbd(){
+        return this.checkIfFromCbd("akceptantNazwaOficjalna")
     }
 }

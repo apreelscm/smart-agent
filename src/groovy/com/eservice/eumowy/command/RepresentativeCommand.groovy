@@ -9,8 +9,11 @@ import com.eservice.eumowy.validator.NumberValidator
 import grails.validation.Validateable
 import org.apache.commons.validator.routines.EmailValidator
 
+import static com.eservice.eumowy.ActivityHelper.*
+
 @Validateable(nullable = true)
-class RepresentativeCommand implements Serializable{
+class RepresentativeCommand implements Serializable {
+
     transient ProcessCommand processCommand
 
     public static final String PROCURATOR_POSITION = "Pełnomocnik"
@@ -49,7 +52,6 @@ class RepresentativeCommand implements Serializable{
     Boolean isPolitician = Boolean.FALSE
     Boolean isDirectPep
     Boolean hasSignedContract
-    boolean validateHasSignedContract = true
     Boolean isCBDDataChangedManually = Boolean.FALSE
 
     String email
@@ -174,9 +176,10 @@ class RepresentativeCommand implements Serializable{
         })
 
         hasSignedContract(nullable: true, validator: {value, cmd, errors ->
-            if (!cmd.validateHasSignedContract) return
+            boolean hasAtLeastOneRepresentativeWithChangedData = cmd.processCommand.representatives.any { it.isCBDDataChangedManually == Boolean.TRUE }
+            boolean isRequired = cmd.processCommand.hasActivitiesThatRequiresAtLeastOneRepresentativeToSignContract || hasAtLeastOneRepresentativeWithChangedData
 
-            CustomValidator.validateRequired(value != null, errors, true,
+            CustomValidator.validateRequired(value != null, errors, isRequired,
                     "hasSignedContract", "representative.hasSignedContract.required")
         })
 

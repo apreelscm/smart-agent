@@ -8,6 +8,7 @@ import com.eservice.eumowy.command.RepresentativeCommand
 import com.eservice.eumowy.enums.options.LegalForm
 import com.eservice.eumowy.pdfmapper.representative.LegalFormMapper
 import com.eservice.eumowy.util.DateUtils
+import com.eservice.eumowy.validator.RepresentativesValidator
 
 import static com.eservice.eumowy.ActivityHelper.*
 import static com.google.common.collect.Lists.newArrayList
@@ -34,6 +35,8 @@ class PanelService {
         cmd.hasPrepaid = cbdService.getPrepaidEvoucher(cmd.nip) || cbdService.getPrepaidTopup(cmd.nip)
         cmd.hasDodaniePrepaid = contains(cmd.process, 'dodaniePrepaid')
         cmd.hasNewUmowa = isNewAgreement(cmd.process)
+        cmd.hasActivitiesThatRequiresAtLeastOneRepresentativeToSignContract = cmd.process.activities
+                .any { RepresentativesValidator.ACTIVITIES_THAT_REQUIRES_AT_LEAST_ONE_REPRESENTATIVE_TO_SIGN_CONTRACT.contains(it.code) }
         cmd.hasNewUmowaAndPrepaid = isNewAgreement(cmd.process) && cmd.hasDodaniePrepaid
         cmd.isBundleActivity = isBundleActivity(cmd.process)
         cmd.promObjNaj1 = calculatorService.getCalcProperty(calc, "E_PROM_OBN_NAJ_1")

@@ -20,30 +20,46 @@
         <label for="${prefix}[${seqNo}].hasSignedContract"><g:message code="no"/></label>
 
         <script type="text/javascript">
+            var val = jQuery('input[name="${prefix}[${seqNo}].hasSignedContract"]:checked').val(),
+                $phoneContainer = jQuery('.phone-container-${prefix}-${seqNo}'),
+                $emailContainer = jQuery('.email-container-${prefix}-${seqNo}'),
+                $hasSignedContract = jQuery(".hasSignedContract"),
+                $acceptorsPanel = jQuery("#acceptorsPanel"),
+                isAnyDataManual = $acceptorsPanel.find("input[type=radio][name$='isCBDDataChangedManually'][value=true]:checked").length > 0,
+                hasActivitiesThatRequiresAtLeastOneRepresentativeToSignContract = jQuery("#hasActivitiesThatRequiresAtLeastOneRepresentativeToSignContract").val() === 'true';
 
-            var val = jQuery('input[name="${prefix}[${seqNo}].hasSignedContract"]:checked').val();
-            if (val === undefined || val === 'false') {
-                jQuery('.phone-container-${prefix}-${seqNo}').hide();
-                jQuery('.phone-container-${prefix}-${seqNo} input[type=radio].telephone-type:checked').attr('checked', false);
-                jQuery('.phone-container-${prefix}-${seqNo} input.phone-number').val(null);
-                jQuery('.email-container-${prefix}-${seqNo}').hide();
-                jQuery('.email-container-${prefix}-${seqNo} input').val(null);
+            if (!hasActivitiesThatRequiresAtLeastOneRepresentativeToSignContract && !isAnyDataManual) {
+                $hasSignedContract.addClass("hidden")
+                $hasSignedContract.find('*[cbdDataHiddenField="cbdDataHiddenField"]').removeAttr("disabled");
+                $hasSignedContract.find('input').attr('disabled', 'disabled');
             } else {
-                jQuery('.phone-container-${prefix}-${seqNo}').show();
-                jQuery('.email-container-${prefix}-${seqNo}').show();
+                $hasSignedContract.removeClass("hidden");
+                $hasSignedContract.find('*[cbdDataHiddenField="cbdDataHiddenField"]').attr("disabled");
+                $hasSignedContract.find('input').removeAttr('disabled');
+            }
+
+            if (val === undefined || val === 'false') {
+                $phoneContainer.hide();
+                $phoneContainer.find('input[type=radio].telephone-type:checked').attr('checked', false);
+                $phoneContainer.find('input.phone-number').val(null);
+                $emailContainer.hide();
+                $emailContainer.find('input').val(null);
+            } else {
+                $phoneContainer.show();
+                $emailContainer.show();
             }
 
             jQuery('input[name="${prefix}[${seqNo}].hasSignedContract"]').change(function(e) {
                 var val = jQuery(this).val();
                 if (val === 'false') {
-                    jQuery('.phone-container-${prefix}-${seqNo}').hide();
-                    jQuery('.phone-container-${prefix}-${seqNo} input[type=radio].telephone-type:checked').attr('checked', false);
-                    jQuery('.phone-container-${prefix}-${seqNo} input.phone-number').val(null);
-                    jQuery('.email-container-${prefix}-${seqNo}').hide();
-                    jQuery('.email-container-${prefix}-${seqNo} input').val(null);
+                    $phoneContainer.hide();
+                    $phoneContainer.find('input[type=radio].telephone-type:checked').attr('checked', false);
+                    $phoneContainer.find('input.phone-number').val(null);
+                    $emailContainer.hide();
+                    $emailContainer.find('input').val(null);
                 } else {
-                    jQuery('.phone-container-${prefix}-${seqNo}').show();
-                    jQuery('.email-container-${prefix}-${seqNo}').show();
+                    $phoneContainer.show();
+                    $emailContainer.show();
                 }
             });
         </script>

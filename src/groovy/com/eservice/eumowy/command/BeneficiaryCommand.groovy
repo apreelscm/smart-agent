@@ -13,10 +13,6 @@ class BeneficiaryCommand extends RepresentativeCommand implements Serializable {
     Boolean overQuarterOfVotes
     Integer votesPercentage
 
-    BeneficiaryCommand() {
-        validateHasSignedContract = false
-    }
-
     static constraints = {
         importFrom RepresentativeCommand
 
@@ -79,5 +75,7 @@ class BeneficiaryCommand extends RepresentativeCommand implements Serializable {
             CustomValidator.validateRequired(value != null, errors, cmd.isPolitician,
                     propertyName, "representative.czyPepBezposredni.required")
         })
+
+        hasSignedContract(nullable: true, validator: { return true })
     }
 }

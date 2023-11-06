@@ -1,3 +1,6 @@
+<g:hiddenField name="hasActivitiesThatRequiresAtLeastOneRepresentativeToSignContract"
+               value="${data.hasActivitiesThatRequiresAtLeastOneRepresentativeToSignContract}"/>
+
 <g:each in="${0..3}">
     <div class="acceptor ${it != 0 && (it >= data.representatives.size()) ? 'hidden' : ''}">
         <div class="basicRepresentativeData">

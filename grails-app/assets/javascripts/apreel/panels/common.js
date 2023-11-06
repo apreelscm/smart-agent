@@ -29,16 +29,21 @@ function onIsPoliticianChange() {
 
 function onRepresentativeCBDDataChange(showDialog) {
     var $this = jQuery(this),
-        readOnlyFields = $this.parents("div.acceptor").find('input, textarea, textField'),
-        disabledFields = $this.parents("div.acceptor").find('select, checkbox, input[type="radio"]'),
-        representativesDataChanged = jQuery("#representativesContainer input[type=radio][name$='isCBDDataChangedManually']"),
-        nip = jQuery("#akceptantNip")[0].value,
-        verificationDocumentsContainer = jQuery("#dokumentyWeryfikacyjne"),
-        isPolitician = $this.parents("div.acceptor").find('div.isPolitician'),
-        isCompanyData = $this.parents("div.acceptor").children('div.companyData'),
-        $basicRepresentativeData = $this.parents("div.acceptor").children('div.basicRepresentativeData'),
+        $acceptor = $this.parents("div.acceptor"),
+        $readOnlyFields = $acceptor.find('input, textarea, textField'),
+        $disabledFields = $acceptor.find('select, checkbox, input[type="radio"]'),
+        $representativesDataChanged = jQuery("#representativesContainer input[type=radio][name$='isCBDDataChangedManually']"),
+        $verificationDocumentsContainer = jQuery("#dokumentyWeryfikacyjne"),
+        $isPolitician = $acceptor.find('div.isPolitician'),
+        $personData = $acceptor.children('div.personData'),
+        $companyData = $acceptor.children('div.companyData'),
+        $basicRepresentativeData = $acceptor.children('div.basicRepresentativeData'),
+        $sharedRepresentativeData = $acceptor.children('div.sharedRepresentativeData'),
+        $hasSignedContract = jQuery(".hasSignedContract"),
         index = $basicRepresentativeData.children('input[name="index"]')[0].value,
-        prefix = $basicRepresentativeData.children('input[name="prefix"]')[0].value;
+        prefix = $basicRepresentativeData.children('input[name="prefix"]')[0].value,
+        nip = jQuery("#akceptantNip")[0].value,
+        hasActivitiesThatRequiresAtLeastOneRepresentativeToSignContract = jQuery("#hasActivitiesThatRequiresAtLeastOneRepresentativeToSignContract").val() === 'true';
 
     var midName = prefix + '[' + index + '].midCBD';
     var representativeId = $basicRepresentativeData.children('input[name="' + midName + '"]')[0].value;
@@ -47,47 +52,69 @@ function onRepresentativeCBDDataChange(showDialog) {
     var citySelect = jQuery('select[name="' + cityName + '"]');
     var cityInput = jQuery('input[name="' + cityName + '"]');
 
-    var isAnyDataManual = jQuery("#acceptorsPanel input[type=radio][name$='isCBDDataChangedManually'][value=true]:checked").length;
+    var $acceptorsPanel = jQuery("#acceptorsPanel"),
+        isAnyDataManual = $acceptorsPanel.find("input[type=radio][name$='isCBDDataChangedManually'][value=true]:checked").length > 0;
 
     function changeFieldsAvailabilityForActualCbdData() {
         cityInput.show();
         setRepresentativesDataFromCBD(index, nip, representativeId);
-        readOnlyFields.attr("readonly", true);
-        disabledFields.attr('disabled', 'disabled');
-        representativesDataChanged.removeAttr("disabled");
-        $this.parents("div.acceptor").children('div.basicRepresentativeData').find('*[cbdDataHiddenField="cbdDataHiddenField"]').removeAttr("disabled");
-        $this.parents("div.acceptor").children('div.sharedRepresentativeData').find('*[cbdDataHiddenField="cbdDataHiddenField"]').removeAttr("disabled");
-        if (isCompanyData.hasClass('hidden')) {
-            $this.parents("div.acceptor").children('div.personData').find('*[cbdDataHiddenField="cbdDataHiddenField"]').removeAttr("disabled");
-            $this.parents("div.acceptor").children('div.companyData').find('*[cbdDataHiddenField="cbdDataHiddenField"]').attr("disabled");
+        $readOnlyFields.attr("readonly", true);
+        $disabledFields.attr('disabled', 'disabled');
+        $representativesDataChanged.removeAttr("disabled");
+        $basicRepresentativeData.find('*[cbdDataHiddenField="cbdDataHiddenField"]').removeAttr("disabled");
+        $sharedRepresentativeData.find('*[cbdDataHiddenField="cbdDataHiddenField"]').removeAttr("disabled");
+
+        if ($companyData.hasClass('hidden')) {
+            $personData.find('*[cbdDataHiddenField="cbdDataHiddenField"]').removeAttr("disabled");
+            $companyData.find('*[cbdDataHiddenField="cbdDataHiddenField"]').attr("disabled");
         } else {
-            $this.parents("div.acceptor").children('div.personData').find('*[cbdDataHiddenField="cbdDataHiddenField"]').attr("disabled");
-            $this.parents("div.acceptor").children('div.companyData').find('*[cbdDataHiddenField="cbdDataHiddenField"]').removeAttr("disabled");
+            $personData.find('*[cbdDataHiddenField="cbdDataHiddenField"]').attr("disabled");
+            $companyData.find('*[cbdDataHiddenField="cbdDataHiddenField"]').removeAttr("disabled");
         }
+
         if (!isAnyDataManual) {
-            verificationDocumentsContainer.addClass("hidden");
+            $verificationDocumentsContainer.addClass("hidden");
         }
-        enableFields(isPolitician);
+
+        if (!hasActivitiesThatRequiresAtLeastOneRepresentativeToSignContract && !isAnyDataManual) {
+            $hasSignedContract.addClass("hidden")
+            $hasSignedContract.find('*[cbdDataHiddenField="cbdDataHiddenField"]').removeAttr("disabled");
+            $hasSignedContract.find('input').attr('disabled', 'disabled');
+        }
+
+        if (isAnyDataManual) {
+            $hasSignedContract.removeClass("hidden");
+            $hasSignedContract.find('*[cbdDataHiddenField="cbdDataHiddenField"]').attr("disabled");
+            $hasSignedContract.find('input').removeAttr('disabled');
+        }
+
+        enableFields($isPolitician);
     }
 
     if (this.value === 'true') {
-        disabledFields.removeAttr("disabled");
-        readOnlyFields.removeAttr("readonly");
-        verificationDocumentsContainer.removeClass("hidden");
-        $this.parents("div.acceptor").children('div.basicRepresentativeData').find('*[cbdDataHiddenField="cbdDataHiddenField"]').attr('disabled', 'disabled');
-        $this.parents("div.acceptor").children('div.sharedRepresentativeData').find('*[cbdDataHiddenField="cbdDataHiddenField"]').attr('disabled', 'disabled');
-        if (isCompanyData.hasClass('hidden')) {
-            $this.parents("div.acceptor").children('div.companyData')
+        $disabledFields.removeAttr("disabled");
+        $readOnlyFields.removeAttr("readonly");
+        $verificationDocumentsContainer.removeClass("hidden");
+        $basicRepresentativeData.find('*[cbdDataHiddenField="cbdDataHiddenField"]').attr('disabled', 'disabled');
+        $sharedRepresentativeData.find('*[cbdDataHiddenField="cbdDataHiddenField"]').attr('disabled', 'disabled');
+
+        if ($companyData.hasClass('hidden')) {
+            $companyData
                 .find('input, textarea, textField, select, checkbox, input[type="radio"], *[cbdDataHiddenField="cbdDataHiddenField"]').attr('disabled', 'disabled');
-            $this.parents("div.acceptor").children('div.personData').find('*[cbdDataHiddenField="cbdDataHiddenField"]').attr('disabled', 'disabled');
+            $personData.find('*[cbdDataHiddenField="cbdDataHiddenField"]').attr('disabled', 'disabled');
             citySelect.show();
             cityInput.hide();
         }
-        if ($this.parents("div.acceptor").children('div.personData').hasClass('hidden')) {
-            $this.parents("div.acceptor").children('div.personData')
+
+        if ($personData.hasClass('hidden')) {
+            $personData
                 .find('input, textarea, textField, select, checkbox, input[type="radio"], *[cbdDataHiddenField="cbdDataHiddenField"]').attr('disabled', 'disabled');
-            $this.parents("div.acceptor").children('div.companyData').find('*[cbdDataHiddenField="cbdDataHiddenField"]').attr('disabled', 'disabled');
+            $companyData.find('*[cbdDataHiddenField="cbdDataHiddenField"]').attr('disabled', 'disabled');
         }
+
+        $hasSignedContract.removeClass("hidden");
+        $hasSignedContract.find('*[cbdDataHiddenField="cbdDataHiddenField"]').attr("disabled");
+        $hasSignedContract.find('input').removeAttr('disabled');
     } else {
         if (showDialog === false) {
             changeFieldsAvailabilityForActualCbdData();

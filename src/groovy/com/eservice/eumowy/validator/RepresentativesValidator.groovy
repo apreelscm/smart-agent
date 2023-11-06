@@ -1,37 +1,55 @@
 package com.eservice.eumowy.validator
 
+import com.eservice.eumowy.command.ProcessCommand
 import com.eservice.eumowy.command.RepresentativeCommand
+import org.springframework.validation.Errors
+
+import static com.eservice.eumowy.ActivityHelper.DODATKOWY_PUNKT
+import static com.eservice.eumowy.ActivityHelper.NOWA_UMOWA
+import static com.eservice.eumowy.ActivityHelper.WYMIANA_UMOWY_NAJMU_NA_UMOWE_WSPOLPRACY
+import static com.eservice.eumowy.ActivityHelper.WYMIANA_UMOWY_PLATNICZEJ
+import static com.eservice.eumowy.ActivityHelper.isNewAgreement
 
 
 class RepresentativesValidator {
-    public static def validate = { value, cmd, errors, prefix ->
-        boolean representativesHasErrors = false
+
+    public static Set<String> ACTIVITIES_THAT_REQUIRES_AT_LEAST_ONE_REPRESENTATIVE_TO_SIGN_CONTRACT =
+            [NOWA_UMOWA, DODATKOWY_PUNKT, WYMIANA_UMOWY_NAJMU_NA_UMOWE_WSPOLPRACY, WYMIANA_UMOWY_PLATNICZEJ]
+
+    public static def validate = { List<RepresentativeCommand> value, ProcessCommand cmd, Errors errors ->
+        boolean hasErrors = false
 
         value.each { representativeCommand ->
-            if(representativeCommand.name && representativeCommand.surname) {
+            if (representativeCommand.name && representativeCommand.surname) {
                 representativeCommand.processCommand = cmd
                 representativeCommand.validate()
 
-                if(representativeCommand.hasErrors()) {
-                    representativesHasErrors = true
+                if (representativeCommand.hasErrors()) {
+                    errors.reject("representatives.has.errors")
+                    hasErrors = true
                 }
             }
         }
 
-        if(value.size() > 0) {
+        if (value.size() > 0) {
             RepresentativeCommand firstRepresentative = value[0]
 
-            if(!(firstRepresentative.name && firstRepresentative.surname)) {
-                errors.reject(String.format("%s.atleast.one.required", prefix))
-                return false
+            if (!(firstRepresentative.name && firstRepresentative.surname)) {
+                errors.reject("representatives.atleast.one.required")
+                hasErrors = true
             }
         }
 
-        if(representativesHasErrors) {
-            errors.reject(String.format("%s.has.errors", prefix))
-            return false
+        boolean hasAtLeastOneRepresentativeSigningContract = value.any { it.hasSignedContract == Boolean.TRUE }
+        boolean hasAtLeastOneRepresentativeWithChangedData = value.any { it.isCBDDataChangedManually == Boolean.TRUE }
+
+        boolean isSigningContractByAtLeastOneRepresentativeRequired = cmd.hasActivitiesThatRequiresAtLeastOneRepresentativeToSignContract || hasAtLeastOneRepresentativeWithChangedData
+
+        if (isSigningContractByAtLeastOneRepresentativeRequired && !hasAtLeastOneRepresentativeSigningContract) {
+            errors.reject("representatives.atleast.one.signingContract.required")
+            hasErrors = true
         }
 
-        return true
+        return !hasErrors
     }
 }
