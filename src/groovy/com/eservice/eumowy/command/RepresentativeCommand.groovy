@@ -37,16 +37,25 @@ class RepresentativeCommand implements Serializable {
     Date documentIssueDate
     Date documentExpirationDate
 
+    String citizenship
+
     @Deprecated
     String address
-    String citizenship
+    @Deprecated
     String streetTitle
+    @Deprecated
     String street
+    @Deprecated
     String houseNumber
+    @Deprecated
     String flatNumber
+    @Deprecated
     String city
+    @Deprecated
     String postalCode
+    @Deprecated
     String postOffice
+    @Deprecated
     String country
 
     Boolean isPolitician = Boolean.FALSE
@@ -126,37 +135,6 @@ class RepresentativeCommand implements Serializable {
         })
         birthCountry(nullable: true, validator: { value, cmd, errors ->
             CustomValidator.validateRequired(value, errors, true, "birthCountry", "representative.krajUrodzenia.required")
-        })
-
-        streetTitle(nullable: true, maxSize: 4, blank: true);
-
-        street(nullable: true, maxSize: 40, shared: "alphanumeric", validator: { value, cmd, errors ->
-            CustomValidator.validateRequired(value, errors, cmd.processCommand.isPersonForm(),
-                    propertyName, "representative.street.required")
-        })
-
-        houseNumber(nullable: true, maxSize: 6, validator: { value, cmd, errors ->
-            CustomValidator.validateRequired(value, errors, cmd.processCommand.isPersonForm(),
-                    propertyName, "representative.houseNumber.required")
-        })
-
-        flatNumber(nullable: true, maxSize: 4)
-
-        city(nullable: true, maxSize: 33, shared: "alphanumericWithBrackets", validator: { value, cmd, errors ->
-            CustomValidator.validateRequired(value, errors, cmd.processCommand.isPersonForm(),
-                    propertyName, "representative.city.required")
-        })
-
-        postalCode(nullable: true, maxSize: 6, shared: "postalCodeValidator", validator: { value, cmd, errors ->
-            CustomValidator.validateRequired(value, errors, cmd.processCommand.isPersonForm(),
-                    propertyName, "representative.postalCode.required")
-        })
-
-        postOffice(nullable: true, maxSize: 33, shared: "alphanumeric")
-
-        country(nullable: true, validator: { value, cmd, errors ->
-            CustomValidator.validateRequired(value, errors, cmd.processCommand.isPersonForm(),
-                    propertyName, "representative.kraj.required")
         })
 
         isPolitician(nullable: true, validator: {value, cmd, errors ->

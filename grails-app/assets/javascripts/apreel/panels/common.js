@@ -48,15 +48,10 @@ function onRepresentativeCBDDataChange(showDialog) {
     var midName = prefix + '[' + index + '].midCBD';
     var representativeId = $basicRepresentativeData.children('input[name="' + midName + '"]')[0].value;
 
-    var cityName = prefix + '[' + index + '].city';
-    var citySelect = jQuery('select[name="' + cityName + '"]');
-    var cityInput = jQuery('input[name="' + cityName + '"]');
-
     var $acceptorsPanel = jQuery("#acceptorsPanel"),
         isAnyDataManual = $acceptorsPanel.find("input[type=radio][name$='isCBDDataChangedManually'][value=true]:checked").length > 0;
 
     function changeFieldsAvailabilityForActualCbdData() {
-        cityInput.show();
         setRepresentativesDataFromCBD(index, nip, representativeId);
         $readOnlyFields.attr("readonly", true);
         $disabledFields.attr('disabled', 'disabled');
@@ -102,8 +97,6 @@ function onRepresentativeCBDDataChange(showDialog) {
             $companyData
                 .find('input, textarea, textField, select, checkbox, input[type="radio"], *[cbdDataHiddenField="cbdDataHiddenField"]').attr('disabled', 'disabled');
             $personData.find('*[cbdDataHiddenField="cbdDataHiddenField"]').attr('disabled', 'disabled');
-            citySelect.show();
-            cityInput.hide();
         }
 
         if ($personData.hasClass('hidden')) {
@@ -204,17 +197,9 @@ function setRepresentativesDataFromCBD(index, nip, representativeCbdMidId) {
     var birthDate = jQuery('#representatives\\[' + index + '\\]\\.birthDate');
     var pesel = jQuery('#representatives\\[' + index + '\\]\\.pesel');
     var birthCountry = jQuery('#representatives\\[' + index + '\\]\\.birthCountry');
-    var street = jQuery('#representatives\\[' + index + '\\]\\.street');
-    var houseNumber = jQuery('#representatives\\[' + index + '\\]\\.houseNumber');
-    var flatNumber = jQuery('#representatives\\[' + index + '\\]\\.flatNumber');
-    var postalCode = jQuery('#representatives\\[' + index + '\\]\\.postalCode');
-    var city = jQuery('#representatives\\[' + index + '\\]\\.city');
-    var postOffice = jQuery('#representatives\\[' + index + '\\]\\.postOffice');
-    var country = jQuery('#representatives\\[' + index + '\\]\\.country');
     var citizenship = jQuery('#representatives\\[' + index + '\\]\\.citizenship');
     var phoneNumber = jQuery('#representatives\\[' + index + '\\]\\.phoneNumber');
     var email = jQuery('#representatives\\[' + index + '\\]\\.email');
-    var streetType = jQuery('#representatives\\[' + index + '\\]\\.streetType');
     var phoneType = jQuery('#representatives\\[' + index + '\\]\\.phoneType');
     var documentType = jQuery('#representatives\\[' + index + '\\]\\.documentType');
     var verification = jQuery('#representatives\\[' + index + '\\]\\.verification');
@@ -231,17 +216,9 @@ function setRepresentativesDataFromCBD(index, nip, representativeCbdMidId) {
             birthDate.val(convertStringToDate(data.birthDate));
             pesel.val(data.pesel);
             birthCountry.val(data.birthCountry);
-            street.val(data.street);
-            flatNumber.val(data.flatNumber);
-            houseNumber.val(data.houseNumber);
-            postalCode.val(data.postalCode);
-            city.val(data.city);
-            postOffice.val(data.postOffice);
             citizenship.val(data.citizenship);
             phoneNumber.val(data.mobilePhone);
-            country.val(data.country);
             email.val(data.email);
-            streetType.val(data.streetTitle);
             phoneType.val(data.phoneType ? data.phoneType.name : null);
             documentType.val(data.documentType);
             verification.val(data.verification ? data.verification.name : null);

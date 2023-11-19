@@ -59,14 +59,6 @@ class BeneficiaryCommand extends RepresentativeCommand implements Serializable {
                     "birthDate", "beneficiary.dataUrodzenia.required")
         })
         birthCountry(nullable: true, validator: { return true })
-        streetTitle(nullable: true, validator: { return true })
-        street(nullable: true, validator: { return true })
-        houseNumber(nullable: true, validator: { return true })
-        flatNumber(nullable: true, validator: { return true })
-        city(nullable: true, validator: { return true })
-        postalCode(nullable: true, validator: { return true })
-        postOffice(nullable: true, validator: { return true })
-        country(nullable: true, validator: { return true })
         isPolitician(nullable: true, validator: {value, cmd, errors ->
             CustomValidator.validateRequired(value != null, errors, true,
                     "isPolitician", "beneficiary.czyStanowiskoPolityczne.required")

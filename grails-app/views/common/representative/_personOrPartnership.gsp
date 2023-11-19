@@ -103,71 +103,7 @@
                            value="${representative?.birthCountry}"/>
         </div>
 
-        <div>
-            <ul class="table-list-rep">
-                <li>
-                    <span>
-                        <span><label for="${prefix}[${seqNo}].street"><g:message code="panel.street" /></label></span>
-                        <span>
-                            <dict:streetSelect class="streetTitle" name="${prefix}[${seqNo}].streetTitle" value="${representative?.streetTitle}" default="UL"
-                                               readonly="${!representative?.isCBDDataChangedManually}"/>
-                            <eumowy:textField name="${prefix}[${seqNo}].street" style="width: 200px" value="${representative?.street}" validatable="${representative}"
-                                              readonly="${!representative?.isCBDDataChangedManually}" validateField="street" required="true"/>
-                        </span>
-                        <span>
-                            <span><label for="${prefix}[${seqNo}].houseNumber"><g:message code="panel.house.number" /></label></span>
-                            <span><eumowy:textField name="${prefix}[${seqNo}].houseNumber" value="${representative?.houseNumber}" validatable="${representative}" validateField="houseNumber" style="width: 50px" maxlength ="6" required="true"
-                                                    readonly="${!representative?.isCBDDataChangedManually}"/></span>
-                            <span><label for="${prefix}[${seqNo}].flatNumber"><g:message code="panel.flat.number" /></label></span>
-                            <span><eumowy:textField name="${prefix}[${seqNo}].flatNumber" value="${representative?.flatNumber}" validatable="${representative}"
-                                                    readonly="${!representative?.isCBDDataChangedManually}" validateField="flatNumber" style="width: 50px" maxlength ="4"/></span>
-                        </span>
-                    </span>
-                </li>
-
-                <li>
-                    <span>
-                        <span><label for="${prefix}[${seqNo}].postalCode"><g:message code="panel.postal.code" /></label></span>
-                        <span><eumowy:textField class="postal-code"
-                                                name="${prefix}[${seqNo}].postalCode"
-                                                value="${representative?.postalCode}"
-                                                validatable="${representative}"
-                                                validateField="postalCode" style="width: 50px" maxlength ="6"
-                                                readonly="${!representative?.isCBDDataChangedManually}"
-                                                required="true"/></span>
-                        <span><label for="${prefix}[${seqNo}].city"><g:message code="panel.city" /></label></span>
-                        <span>
-                            <g:select name="${prefix}[${seqNo}].city"
-                                      value="${representative?.city}"
-                                      from="[representative?.city ?: '']"
-                                      disabled="${!representative?.isCBDDataChangedManually}"
-                                      style="width: 280px;" required="required"/>
-                            <g:hiddenField name="${prefix}[${seqNo}].city"
-                                           disabled="${representative?.isCBDDataChangedManually}"
-                                           cbdDataHiddenField="cbdDataHiddenField"
-                                           value="${representative?.city}"/>
-                        </span>
-                    </span>
-                </li>
-
-                <li>
-                    <span>
-                        <span><label for="${prefix}[${seqNo}].postOffice"><g:message code="panel.postal" /></label></span>
-                        <span><eumowy:textField name="${prefix}[${seqNo}].postOffice"
-                                                value="${representative?.postOffice}"
-                                                validatable="${representative}"
-                                                readonly="${!representative?.isCBDDataChangedManually}"
-                                                validateField="postOffice"
-                                                style="width: 280px;" />
-                        </span>
-                    </span>
-                </li>
-            </ul>
-
-        </div>
-
-        <div class="${hasErrors(bean: representative, field: 'country', 'errorSpan')} ${hasErrors(bean: representative, field: 'phoneNumber', 'errorSpan')}">
-
+        <div class="${hasErrors(bean: representative, field: 'phoneNumber', 'errorSpan')}">
             <div class="phone-container-${prefix}-${seqNo} phone-container-person" style="${data.isPersonForm() && representative?.hasSignedContract != true ? 'display: none;' : ''}">
                 <g:radio class="telephone-type"
                          name="${prefix}[${seqNo}].telephoneType${data.isPersonForm() == false ? '-disabled' : ''}"
@@ -197,17 +133,6 @@
                                   validateField="phoneNumber"
                                   class="phone-number ${representative?.telephoneType == TelephoneType.LANDLINE ? 'phone' : 'mobile-phone' }"/>
             </div>
-            <label style="margin-left: 20px" for="${prefix}[${seqNo}].country"><g:message code="country.name.label"/></label>
-            <dict:countrySelect name="${prefix}[${seqNo}].country"
-                                value="${representative?.country}"
-                                required="required"
-                                disabled="${!representative?.isCBDDataChangedManually}"
-                                validatable="${representative}"
-                                validateField="country"/>
-            <g:hiddenField name="${prefix}[${seqNo}].country"
-                           disabled="${representative?.isCBDDataChangedManually}"
-                           cbdDataHiddenField="cbdDataHiddenField"
-                           value="${representative?.country}"/>
         </div>
 
         <div class="email-container-${prefix}-${seqNo}" style="${data.isPersonForm() && representative?.hasSignedContract != true ? 'display: none;' : ''}">
