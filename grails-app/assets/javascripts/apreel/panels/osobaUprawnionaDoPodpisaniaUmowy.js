@@ -154,7 +154,7 @@
             $representativesContainer.find('*[cbdDataHiddenField="cbdDataHiddenField"]').attr('disabled', 'disabled');
         }
 
-        dataChangedManuallyElements.each((idx, element) => {
+        dataChangedManuallyElements.each(function (_, element) {
             onRepresentativeCBDDataChange.call(element, false);
         });
     }
