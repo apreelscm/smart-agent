@@ -43,21 +43,13 @@ class BeneficiaryCommand extends RepresentativeCommand implements Serializable {
         })
 
         position(nullable: true, validator: { return true })
-        verification(nullable: true, validator: { value, cmd, errors ->
-            return CustomValidator.validateRequired(value, errors, true, "verification",
-                    "representative.option.required")
-        })
-        pesel(nullable: true, validator: {value, cmd, errors ->
-            return AcceptorVerification.PESEL.equals(cmd.verification) ? NumberValidator.validatePesel(value, cmd, errors, "pesel") : true
-        })
+        verification(nullable: true, validator: { return true })
+        pesel(nullable: true, validator: { return true })
         documentType(nullable: true, validator: { return true })
         documentNumber(nullable: true, validator: { return true })
         documentIssueDate(nullable: true, validator: { return true })
         documentExpirationDate(nullable: true, validator: { return true })
-        birthDate(nullable: true, validator: { value, cmd, errors ->
-            CustomValidator.validateRequired(value, errors, AcceptorVerification.BIRTH_DATE.equals(cmd.verification),
-                    "birthDate", "beneficiary.dataUrodzenia.required")
-        })
+        birthDate(nullable: true, validator: { return true })
         birthCountry(nullable: true, validator: { return true })
         isPolitician(nullable: true, validator: {value, cmd, errors ->
             CustomValidator.validateRequired(value != null, errors, true,

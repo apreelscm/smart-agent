@@ -97,8 +97,6 @@ class RepresentativeService {
             beneficiary.setName(result.imie)
             beneficiary.setSurname(result.nazwisko)
             beneficiary.setSalutation(result.prefix)
-            beneficiary.setPesel(result.pesel)
-            beneficiary.setBirthDate(getDate(result.dataUrodzenia))
             beneficiary.setCitizenship(result.obywatelstwo)
             beneficiary.setMidCBD(result.mid)
 

@@ -60,38 +60,6 @@
                    value="${representative?.citizenship}"/>
 </div>
 
-<div class="acceptorPESELCountryWrapper ${hasErrors(bean: representative, field: 'verification', 'errorSpan')}">
-    <div class="acceptorRadioWrapper">
-        <g:radio name="${prefix}[${seqNo}].verification" value="PESEL"
-                 disabled="${!representative?.isCBDDataChangedManually}"
-                 checked="${representative?.verification?.name() == "PESEL"}"/>
-        <g:hiddenField name="${prefix}[${seqNo}].verification"
-                       disabled="${representative?.isCBDDataChangedManually}"
-                       cbdDataHiddenField="cbdDataHiddenField"
-                       value="${representative?.verification}"/>
-        <div class="label"><g:message code="pesel.label"/></div>
-
-        <eumowy:textField name="${prefix}[${seqNo}].pesel" value="${representative?.pesel}"
-                          maxlength="11" class="pesel-field display-inline-block"
-                          readonly="${!representative?.isCBDDataChangedManually}"
-                          validatable="${representative}" validateField="pesel"/>
-    </div>
-    <div class="acceptorRadioWrapper">
-        <g:radio name="${prefix}[${seqNo}].verification"
-                 value="BIRTH_DATE"
-                 disabled="${!representative?.isCBDDataChangedManually}"
-                 checked="${representative?.verification?.name() == "BIRTH_DATE"}"/>
-
-        <label for="${prefix}[${seqNo}].personBirthDate"><g:message code="birth.date.country.label"/></label>
-        <g:textField id="${prefix}[${seqNo}].personBirthDate"
-                     name="${prefix}[${seqNo}].birthDate"
-                     readonly="${!representative?.isCBDDataChangedManually}"
-                     value="${formatDate(format: 'yyyy-MM-dd', date: representative?.birthDate)}"
-                     maxlength="10"
-                     class="date-field date-past"/>
-    </div>
-</div>
-
 <div class="isPolitician ${hasErrors(bean: representative, field: 'isPolitician', 'errorSpan')}">
     <g:hasErrors bean="${representative}" field="isPolitician">
         <p class="error-message"><g:message code="representative.option.required"/></p>
