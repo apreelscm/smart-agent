@@ -104,7 +104,7 @@
         </div>
 
         <div class="${hasErrors(bean: representative, field: 'phoneNumber', 'errorSpan')}">
-            <div class="phone-container-${prefix}-${seqNo} phone-container-person" style="${data.isPersonForm() && representative?.hasSignedContract != true ? 'display: none;' : ''}">
+            <div class="phone-container phone-container-${prefix}-${seqNo} phone-container-person" style="${data.isPersonForm() && representative?.hasSignedContract != true ? 'display: none;' : ''}">
                 <g:radio class="telephone-type"
                          name="${prefix}[${seqNo}].telephoneType${data.isPersonForm() == false ? '-disabled' : ''}"
                          value="${TelephoneType.LANDLINE.name()}"
@@ -135,7 +135,7 @@
             </div>
         </div>
 
-        <div class="email-container-${prefix}-${seqNo}" style="${data.isPersonForm() && representative?.hasSignedContract != true ? 'display: none;' : ''}">
+        <div class="email-container email-container-${prefix}-${seqNo}" style="${data.isPersonForm() && representative?.hasSignedContract != true ? 'display: none;' : ''}">
             <span>
                 <g:message code="panel.email"/>: <eumowy:textField name="${prefix}[${seqNo}].email"
                                                                    value="${representative?.email}"

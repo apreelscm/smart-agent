@@ -103,7 +103,7 @@
                            value="${representative?.birthCountry}"/>
         </div>
 
-        <div class="phone-container-${prefix}-${seqNo} phone-container-company"
+        <div class="phone-container phone-container-${prefix}-${seqNo} phone-container-company"
              style="${data.isPersonForm() && representative?.hasSignedContract != true ? 'display: none;' : ''}">
             <g:radio class="telephone-type"
                      name="${prefix}[${seqNo}].telephoneType${data.isPersonForm() == true ? '-disabled' : ''}"
@@ -129,7 +129,7 @@
                               class="phone-number ${representative?.telephoneType == TelephoneType.LANDLINE ? 'phone' : 'mobile-phone'}"/>
         </div>
 
-        <div class="email-container-${prefix}-${seqNo}"
+        <div class="email-container email-container-${prefix}-${seqNo}"
              style="${data.isPersonForm() && representative?.hasSignedContract != true ? 'display: none;' : ''}">
             <span>
                 <g:message code="panel.email"/>: <eumowy:textField name="${prefix}[${seqNo}].email"

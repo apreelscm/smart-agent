@@ -50,7 +50,12 @@
             }
 
             jQuery('input[name="${prefix}[${seqNo}].hasSignedContract"]').change(function(e) {
-                var val = jQuery(this).val();
+                var $this = jQuery(this),
+                    val = $this.val(),
+                    $acceptor = $this.parents("div.acceptor"),
+                    $phoneContainer = $acceptor.find('.phone-container'),
+                    $emailContainer = $acceptor.find('.email-container');
+
                 if (val === 'false') {
                     $phoneContainer.hide();
                     $phoneContainer.find('input[type=radio].telephone-type:checked').attr('checked', false);
