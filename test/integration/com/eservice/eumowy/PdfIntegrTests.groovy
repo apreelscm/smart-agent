@@ -671,6 +671,22 @@ class PdfIntegrTests extends ControllerUnitTestMixin {
     }
 
     @Test
+    void AP_FDP() { //AP/FDP/2.001/21-07-26
+        def data = [:]
+        def subscriptions = [
+                ["ACCEPTANT1", 1, 405, 225, 54, 24],
+                ["ACCEPTANT2", 1, 460, 210, 54, 24],
+                ["ACCEPTANT3", 1, 405, 187, 54, 24],
+                ["ACCEPTANT4", 1, 460, 165, 54, 24],
+                ["PH", 1, 280, 115, 59, 28]
+        ]
+
+        data.putAll(akceptantIReprezentanciFields())
+        data.putAll(PdfHelper.insertSignatures(subscriptions))
+        process("APFDP2.00121-07-26.pdf", "","APFDP2.00121-07-26_out.pdf", data);
+    }
+
+    @Test
     void AP_F_DS() {
         HashMap<String, String[]> data = prepareScoringData()
         def subscriptions = [
