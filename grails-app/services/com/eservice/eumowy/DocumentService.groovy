@@ -28,7 +28,6 @@ class DocumentService {
     def messageSource
 
     private static final int POSES_COUNT_ON_RENT_REDUCTION = 20
-    private static final int POINTS_COUNT_ON_DOCUMENT = 30
     private static final String PABR_PEP_DOCUMENT_NAME_CONTAINS = "PABR+PEP"
 
     def download(def id) {
@@ -469,28 +468,6 @@ class DocumentService {
             int ordinal = file.name[0] as int
 
             if (ordinal > maxDocumentOrdinalNumber) obsoleteDocuments.add(file)
-        }
-
-        return obsoleteDocuments
-    }
-
-    private Set<DocumentFile> getObsoleteAdditionalPointsDocuments(Process process) {
-        Set<DocumentFile> documents = process.documents.findAll { it.signature.hasPurpose(ADDITIONAL_POINTS) }
-        Set<DocumentFile> obsoleteDocuments = []
-        int localPointsCount = process.points.findAll { it.czyLokalny || it.hasLocalPoses() || it.czyWybranyWymianaUmowy }.size()
-
-        if (!documents) {
-            return obsoleteDocuments
-        } else if (localPointsCount <= POINTS_COUNT_ON_DOCUMENT) {
-            return documents
-        }
-
-        int listsCount = Math.ceil((localPointsCount - POINTS_COUNT_ON_DOCUMENT) / POINTS_COUNT_ON_DOCUMENT) as int
-
-        documents.eachWithIndex { DocumentFile doc, int i ->
-            if (i + 1 > listsCount) {
-                obsoleteDocuments.add(doc)
-            }
         }
 
         return obsoleteDocuments
