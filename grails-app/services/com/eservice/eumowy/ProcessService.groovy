@@ -5,6 +5,7 @@ import com.eservice.eumowy.annotation.Omit
 import com.eservice.eumowy.auth.EServiceUserDetails
 import com.eservice.eumowy.command.*
 import com.eservice.eumowy.dto.MerchantDetailsDTO
+import com.eservice.eumowy.enums.options.AcceptorRelation
 import com.eservice.eumowy.enums.options.LegalForm
 import com.eservice.eumowy.enums.options.TelephoneType
 import com.eservice.eumowy.factory.ProcessCommandDefaultValuesFactory
@@ -271,16 +272,22 @@ class ProcessService {
             representativeProperties.remove("countryCode")
             representativeProperties.remove("locationType")
             representativeProperties.remove("representativeCBDId")
+            representativeProperties.remove("ownsAcceptor")
+            representativeProperties.remove("controlsAcceptor")
+            representativeProperties.remove("overQuarterOfVotes")
 
             if(Representative.Type.REPRESENTATIVE.equals(type)) {
-                representativeProperties.remove("ownsAcceptor")
-                representativeProperties.remove("controlsAcceptor")
-                representativeProperties.remove("overQuarterOfVotes")
                 representativeProperties.remove("votesPercentage")
 
                 result.add(new RepresentativeCommand(representativeProperties))
             } else {
-                result.add(new BeneficiaryCommand(representativeProperties))
+                BeneficiaryCommand beneficiary = new BeneficiaryCommand(representativeProperties)
+
+                if (it.ownsAcceptor) beneficiary.acceptorRelation = AcceptorRelation.OWNS_ACCEPTOR
+                if (it.controlsAcceptor) beneficiary.acceptorRelation = AcceptorRelation.CONTROLS_ACCEPTOR
+                if (it.overQuarterOfVotes) beneficiary.acceptorRelation = AcceptorRelation.HAS_OVER_QUARTER_OF_VOTES
+
+                result.add(beneficiary)
             }
 
             representativeProperties = null
@@ -1130,7 +1137,19 @@ class ProcessService {
         }
 
         representativeCmd.properties.remove("id")
-        representative.properties = representativeCmd.properties
+
+        if (representativeCmd instanceof BeneficiaryCommand) {
+            AcceptorRelation relation = representativeCmd.acceptorRelation
+
+            representativeCmd.properties.remove("acceptorRelation")
+            representative.properties = representativeCmd.properties
+
+            representative.ownsAcceptor = relation == AcceptorRelation.OWNS_ACCEPTOR
+            representative.controlsAcceptor = relation == AcceptorRelation.CONTROLS_ACCEPTOR
+            representative.overQuarterOfVotes = relation == AcceptorRelation.HAS_OVER_QUARTER_OF_VOTES
+        } else {
+            representative.properties = representativeCmd.properties
+        }
 
         representative.save()
 

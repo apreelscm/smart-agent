@@ -1,6 +1,7 @@
 package com.eservice.eumowy.command
 
 import com.eservice.eumowy.dto.MerchantBeneficiaryDTO
+import com.eservice.eumowy.enums.options.AcceptorRelation
 import com.eservice.eumowy.enums.options.AcceptorVerification
 
 class MerchantDetailsDTOToBeneficiaryCommandMapper {
@@ -16,8 +17,12 @@ class MerchantDetailsDTOToBeneficiaryCommandMapper {
                 beneficiaryCommand.citizenship = it.nationality
                 beneficiaryCommand.name = it.firstName
                 beneficiaryCommand.surname = it.lastName
-                beneficiaryCommand.votesPercentage = it.ownershipPercentage
-                beneficiaryCommand.overQuarterOfVotes = it.ownershipPercentage >= 25
+
+                if (it.ownershipPercentage) {
+                    beneficiaryCommand.votesPercentage = it.ownershipPercentage
+                    beneficiaryCommand.acceptorRelation = AcceptorRelation.HAS_OVER_QUARTER_OF_VOTES
+                }
+
                 targetBeneficiaries.add(beneficiaryCommand)
             }
         }

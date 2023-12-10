@@ -46,14 +46,6 @@ public class ConditionValidator {
         return true
     }
 
-    public static def atLeastOneBeneficiaryOption = { value, cmd, errors ->
-        if(!value && !cmd.controlsAcceptor && !cmd.overQuarterOfVotes) {
-            errors.rejectValue("ownsAcceptor", "atleast.one.relation.required")
-            return false
-        }
-        return true
-    }
-
     public static BigDecimal getBigDecimalValue(def value) {
         return value?.toString()?.isNumber() ? value.toString().toBigDecimal() : BigDecimal.ZERO
     }

@@ -1,4 +1,4 @@
-<%@ page import="com.eservice.eumowy.enums.options.AcceptorLocation; com.eservice.eumowy.enums.options.IdentityDocumentType" %>
+<%@ page import="com.eservice.eumowy.enums.options.AcceptorRelation; com.eservice.eumowy.enums.options.AcceptorLocation; com.eservice.eumowy.enums.options.IdentityDocumentType" %>
 
 <g:hiddenField name="${prefix}[${seqNo}].id" value="${representative?.id}"/>
 <g:hiddenField name="${prefix}[${seqNo}].midCBD" value="${representative?.midCBD}"/>
@@ -104,35 +104,31 @@
 <div style="margin-top: 15px">
     <p><g:message code="beneficiary.relation.with.acceptor.label"/></p>
 
-    <div class="${hasErrors(bean: representative, field: 'ownsAcceptor', 'errorSpan')}">
-        <g:hasErrors bean="${representative}" field="ownsAcceptor">
-            <g:eachError bean="${representative}" field="ownsAcceptor">
+    <div class="${hasErrors(bean: representative, field: 'acceptorRelation', 'errorSpan')}">
+        <g:hasErrors bean="${representative}" field="acceptorRelation">
+            <g:eachError bean="${representative}" field="acceptorRelation">
                 <p class="error-message"><g:message error="${it}"/></p>
             </g:eachError>
         </g:hasErrors>
 
-        <div>
-            <g:checkBox name="beneficiaries[${seqNo}].ownsAcceptor"
-                        checked="${representative?.ownsAcceptor}"/>
-            <label for="beneficiaries[${seqNo}].ownsAcceptor"><g:message code="beneficiary.owns.acceptor.label"/></label>
-        </div>
-
-        <div>
-            <g:checkBox name="beneficiaries[${seqNo}].controlsAcceptor"
-                        checked="${representative?.controlsAcceptor}"/>
-            <label for="beneficiaries[${seqNo}].controlsAcceptor"><g:message code="beneficiary.controls.acceptor.label"/></label>
-        </div>
-
-        <div>
-            <g:checkBox name="beneficiaries[${seqNo}].overQuarterOfVotes"
-                        checked="${representative?.overQuarterOfVotes}"/>
-            <label for="beneficiaries[${seqNo}].overQuarterOfVotes"><g:message code="beneficiary.majority.acceptor.label"/></label>
-
-            <eumowy:textField name="beneficiaries[${seqNo}].votesPercentage" class="percent-short"
-                              value="${representative?.overQuarterOfVotes ? representative?.votesPercentage : ""}"
-                              validatable="${representative}" validateField="votesPercentage"/>
-            <g:message code="beneficiary.majority.acceptor.closing.label"/>
-        </div>
+        <g:radioGroup name="beneficiaries[${seqNo}].acceptorRelation"
+                      labels="${AcceptorRelation.values()*.messageCode}"
+                      values="${AcceptorRelation.values()}"
+                      disabled="${!representative?.isCBDDataChangedManually}"
+                      value="${representative?.acceptorRelation}">
+            <div>
+                <label>${it.radio} <g:message code="${it.label}"/></label>
+                <g:if test="${it.label == AcceptorRelation.HAS_OVER_QUARTER_OF_VOTES.messageCode}">
+                    <eumowy:textField name="beneficiaries[${seqNo}].votesPercentage" class="percent-short"
+                                      min="25" max="100"
+                                      value="${representative?.acceptorRelation == AcceptorRelation.HAS_OVER_QUARTER_OF_VOTES
+                                              ? representative?.votesPercentage : ""}"
+                                      readonly="${!representative?.isCBDDataChangedManually}"
+                                      validatable="${representative}" validateField="votesPercentage"/>
+                    <g:message code="beneficiary.majority.acceptor.closing.label"/>
+                </g:if>
+            </div>
+        </g:radioGroup>
     </div>
 
     <div id="confirm-submit-without-subscription-dialog" style="display: none;">

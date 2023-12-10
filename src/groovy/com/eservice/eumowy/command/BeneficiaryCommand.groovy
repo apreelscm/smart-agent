@@ -1,5 +1,6 @@
 package com.eservice.eumowy.command
 
+import com.eservice.eumowy.enums.options.AcceptorRelation
 import com.eservice.eumowy.enums.options.AcceptorVerification
 import com.eservice.eumowy.validator.ConditionValidator
 import com.eservice.eumowy.validator.CustomValidator
@@ -12,6 +13,7 @@ class BeneficiaryCommand extends RepresentativeCommand implements Serializable {
     Boolean controlsAcceptor
     Boolean overQuarterOfVotes
     Integer votesPercentage
+    AcceptorRelation acceptorRelation
 
     static constraints = {
         importFrom RepresentativeCommand
@@ -36,10 +38,14 @@ class BeneficiaryCommand extends RepresentativeCommand implements Serializable {
                     "citizenship", "representative.obywatelstwo.required")
         })
 
-        ownsAcceptor(nullable: true, validator: ConditionValidator.atLeastOneBeneficiaryOption)
+        votesPercentage(nullable: true, min: 25, max: 100, shared: "percentage", validator: {value, cmd, errors ->
+            CustomValidator.validateRequired(value, errors, cmd.acceptorRelation == AcceptorRelation.HAS_OVER_QUARTER_OF_VOTES,
+                    "votesPercentage", "beneficiary.percentOfVotes.required")
+        })
 
-        votesPercentage(nullable: true, min: 26, shared: "percentage", validator: {value, cmd, errors ->
-            CustomValidator.validateRequired(value, errors, cmd.overQuarterOfVotes, "votesPercentage", "beneficiary.percentOfVotes.required")
+        acceptorRelation(nullable: true, validator: {value, cmd, errors ->
+            CustomValidator.validateRequired(value, errors, cmd.isCBDDataChangedManually,
+                    "acceptorRelation", "beneficiary.acceptorRelation.required")
         })
 
         position(nullable: true, validator: { return true })
