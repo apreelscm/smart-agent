@@ -1140,13 +1140,19 @@ class ProcessService {
 
         if (representativeCmd instanceof BeneficiaryCommand) {
             AcceptorRelation relation = representativeCmd.acceptorRelation
+            Integer votesPercentage = representativeCmd.votesPercentage
 
             representativeCmd.properties.remove("acceptorRelation")
+            representativeCmd.properties.remove("votesPercentage")
             representative.properties = representativeCmd.properties
 
             representative.ownsAcceptor = relation == AcceptorRelation.OWNS_ACCEPTOR
             representative.controlsAcceptor = relation == AcceptorRelation.CONTROLS_ACCEPTOR
             representative.overQuarterOfVotes = relation == AcceptorRelation.HAS_OVER_QUARTER_OF_VOTES
+
+            if (relation == AcceptorRelation.HAS_OVER_QUARTER_OF_VOTES) {
+                representative.votesPercentage = votesPercentage
+            }
         } else {
             representative.properties = representativeCmd.properties
         }
