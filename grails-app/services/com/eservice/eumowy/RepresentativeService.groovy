@@ -9,6 +9,7 @@ import com.eservice.eumowy.enums.options.TelephoneType
 import com.eservice.eumowy.pdfmapper.representative.LegalFormMapper
 import com.google.common.base.Strings
 import groovy.sql.GroovyRowResult
+import org.apache.log4j.Logger
 
 import java.sql.Timestamp
 
@@ -16,14 +17,21 @@ import static com.google.common.base.Strings.isNullOrEmpty
 
 class RepresentativeService {
 
+    def log = Logger.getLogger(RepresentativeService.class)
+
     def cbdService
     def mapperService
     def dictionaryService
 
     List<RepresentativeCommand> getRepresentativesFromCBD(String nip) {
+        log.info("Fetching representatives from CBD for nip ${nip}")
         List<GroovyRowResult> representatives = cbdService.getReprezentanciFromCbd(nip)
 
+        log.info("Found ${representatives.size()} representatives for nip ${nip}")
+
         return representatives.collect { result ->
+            log.info("Creating representative for result '${result}'")
+
             RepresentativeCommand representative = new RepresentativeCommand()
 
             representative.setName(result.imie)
@@ -89,9 +97,15 @@ class RepresentativeService {
     }
 
     List<BeneficiaryCommand> getDaneBeneficjentaRzeczywistego(String nip) {
+        log.info("Fetching beneficiaries from CBD for nip ${nip}")
+
         List<GroovyRowResult> beneficiaries = cbdService.getBeneficjenci(nip)
 
+        log.info("Found ${beneficiaries.size()} beneficiaries for nip ${nip}")
+
         return beneficiaries.collect { result ->
+            log.info("Creating beneficiary for result '${result}'")
+
             BeneficiaryCommand beneficiary = new BeneficiaryCommand()
 
             beneficiary.setName(result.imie)
