@@ -84,8 +84,6 @@
     }
 
     function legalFormChanged() {
-        var dataChangedManuallyElements = jQuery("#representativesContainer input[type=radio][name$='isCBDDataChangedManually']:checked");
-
         if (this.value === "") {
             $personData.addClass('hidden');
             $companyData.addClass('hidden');
@@ -154,7 +152,7 @@
             $representativesContainer.find('*[cbdDataHiddenField="cbdDataHiddenField"]').attr('disabled', 'disabled');
         }
 
-        dataChangedManuallyElements.each(function (_, element) {
+        jQuery("#representativesContainer input[type=radio][name$='isCBDDataChangedManually']:checked").each(function (_, element) {
             onRepresentativeCBDDataChange.call(element, false);
         });
     }
