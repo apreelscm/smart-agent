@@ -45,12 +45,12 @@
             <div class="display-inline-block" style="margin-left: .4em">
                 <div>
                     <label for="filterDateFromDF"><g:message code="process.dateFrom.label"/></label>
-                    <g:textField id="filterDateFromDF" name="filterDateFrom" class="dateFromDatepicker" readonly="true" style="width: 70px;" value="${filterDateFrom}"/>
+                    <g:textField id="filterDateFromDF" name="filterDateFrom" class="dateFromDatepicker" style="width: 70px;" value="${filterDateFrom}"/>
                 </div>
 
                 <div style="margin-top: .2em">
                     <label for="filterDateToDF"><g:message code="process.dateTo.label"/></label>
-                    <g:textField id="filterDateToDF" name="filterDateTo" class="dateToDatepicker" readonly="true" style="width: 70px;" value="${filterDateTo}"/>
+                    <g:textField id="filterDateToDF" name="filterDateTo" class="dateToDatepicker" style="width: 70px;" value="${filterDateTo}"/>
                 </div>
             </div>
 
