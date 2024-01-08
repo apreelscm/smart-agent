@@ -187,7 +187,7 @@ class DocumentService {
             pointSignatures.remove(pointSignatures.find { sig -> sig.name.equals("virtualPos") })
         }
 
-        processInstance.points.each { PointData point ->
+        processInstance.localPoints.each { PointData point ->
             if ((point?.isLocal()) || point?.hasLocalPoses()) {
                 Map dataFromPoint = mapperService.mapOnlyPointData(point)
 
@@ -392,7 +392,7 @@ class DocumentService {
 
             if (idFromName != -1) {
                 boolean toDelete = true
-                for (PointData pd : processInstance.points) {
+                for (PointData pd : processInstance.localPoints) {
                     if (idFromName == pd.id) {
                         toDelete = false
                         break;
