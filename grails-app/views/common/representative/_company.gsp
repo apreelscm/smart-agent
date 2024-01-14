@@ -18,11 +18,11 @@
                           noSelection="['': '']"
                           valueMessagePrefix="identity.kind"
                           value="${representative?.documentType}"
-                          disabled="${!representative?.isCBDDataChangedManually}"
+                          disabled="${!representative?.isCBDDataChangedManually && !representative?.additionalData}"
                           required="required"
                           style="min-width: 150px"/>
                 <g:hiddenField name="${prefix}[${seqNo}].documentType"
-                               disabled="${representative?.isCBDDataChangedManually}"
+                               disabled="${representative?.isCBDDataChangedManually || representative?.additionalData}"
                                cbdDataHiddenField="cbdDataHiddenField"
                                value="${representative?.documentType}"/>
             </div>
@@ -30,7 +30,7 @@
             <div>
                 <label for="${prefix}[${seqNo}].documentNumber"><g:message code="identity.card.details"/></label>
                 <eumowy:textField name="${prefix}[${seqNo}].documentNumber" value="${representative?.documentNumber}"
-                                  readonly="${!representative?.isCBDDataChangedManually}"
+                                  readonly="${!representative?.isCBDDataChangedManually && !representative?.additionalData}"
                                   maxlength="20"
                                   validatable="${representative}" validateField="documentNumber"/>
             </div>
@@ -40,7 +40,7 @@
                         code="document.expiration.label"/></label>
                 <g:textField id="${prefix}[${seqNo}].companyDocumentExpirationDate"
                              name="${prefix}[${seqNo}].documentExpirationDate"
-                             readonly="${!representative?.isCBDDataChangedManually}"
+                             readonly="${!representative?.isCBDDataChangedManually && !representative?.additionalData}"
                              value="${formatDate(format: 'yyyy-MM-dd', date: representative?.documentExpirationDate)}"
                              maxlength="10" class="date-field date-future" required="required"/>
 
@@ -49,7 +49,7 @@
                 <g:textField id="${prefix}[${seqNo}].companyDocumentIssueDate"
                              name="${prefix}[${seqNo}].documentIssueDate"
                              value="${formatDate(format: 'yyyy-MM-dd', date: representative?.documentIssueDate)}"
-                             readonly="${!representative?.isCBDDataChangedManually}"
+                             readonly="${!representative?.isCBDDataChangedManually && !representative?.additionalData}"
                              maxlength="10" class="date-field date-past" required="required"/>
             </div>
         </div>
@@ -63,28 +63,28 @@
                 <g:radio name="${prefix}[${seqNo}].verification"
                          value="PESEL"
                          class="pesel-verification"
-                         disabled="${!representative?.isCBDDataChangedManually}"
+                         disabled="${!representative?.isCBDDataChangedManually && !representative?.additionalData}"
                          checked="${(!data.dzialalnoscForma || data.isCompanyForm()) && representative?.verification?.name() == "PESEL"}"/>
                 <g:hiddenField name="${prefix}[${seqNo}].verification"
-                               disabled="${representative?.isCBDDataChangedManually}"
+                               disabled="${representative?.isCBDDataChangedManually || representative?.additionalData}"
                                cbdDataHiddenField="cbdDataHiddenField"
                                value="${representative?.verification}"/>
                 <div class="label"><g:message code="pesel.label"/></div>
 
                 <eumowy:textField name="${prefix}[${seqNo}].pesel" value="${representative?.pesel}"
-                                  readonly="${!representative?.isCBDDataChangedManually}"
+                                  readonly="${!representative?.isCBDDataChangedManually && !representative?.additionalData}"
                                   maxlength="11" class="pesel-field display-inline-block"
                                   validatable="${representative}" validateField="pesel"/>
             </div>
 
             <div class="acceptorRadioWrapper">
                 <g:radio name="${prefix}[${seqNo}].verification" value="BIRTH_DATE"
-                         readonly="${!representative?.isCBDDataChangedManually}"
+                         readonly="${!representative?.isCBDDataChangedManually && !representative?.additionalData}"
                          checked="${(!data.dzialalnoscForma || data.isCompanyForm()) && representative?.verification?.name() == "BIRTH_DATE"}"/>
 
                 <label for="${prefix}[${seqNo}].companyBirthDate"><g:message code="birth.date.country.label"/></label>
                 <g:textField id="${prefix}[${seqNo}].companyBirthDate" name="${prefix}[${seqNo}].birthDate"
-                             readonly="${!representative?.isCBDDataChangedManually}"
+                             readonly="${!representative?.isCBDDataChangedManually && !representative?.additionalData}"
                              value="${formatDate(format: 'yyyy-MM-dd', date: representative?.birthDate)}" maxlength="10"
                              class="date-field date-past"/>
             </div>
@@ -95,10 +95,10 @@
             <dict:countrySelect name="${prefix}[${seqNo}].birthCountry"
                                 value="${representative?.birthCountry}"
                                 required="required"
-                                disabled="${!representative?.isCBDDataChangedManually}"
+                                disabled="${!representative?.isCBDDataChangedManually && !representative?.additionalData}"
                                 validatable="${representative}" validateField="birthCountry"/>
             <g:hiddenField name="${prefix}[${seqNo}].birthCountry"
-                           disabled="${representative?.isCBDDataChangedManually}"
+                           disabled="${representative?.isCBDDataChangedManually || representative?.additionalData}"
                            cbdDataHiddenField="cbdDataHiddenField"
                            value="${representative?.birthCountry}"/>
         </div>
@@ -116,7 +116,7 @@
                      value="${TelephoneType.MOBILE.name()}"
                      checked="${representative?.telephoneType == TelephoneType.MOBILE}"/>
             <g:hiddenField name="${prefix}[${seqNo}].telephoneType"
-                           disabled="${representative?.isCBDDataChangedManually}"
+                           disabled="${representative?.isCBDDataChangedManually || representative?.additionalData}"
                            cbdDataHiddenField="cbdDataHiddenField"
                            value="${representative?.telephoneType}"/>
             <label for="${prefix}[${seqNo}].telephoneType"><g:message code="panel.mobile.phone.number"/></label>

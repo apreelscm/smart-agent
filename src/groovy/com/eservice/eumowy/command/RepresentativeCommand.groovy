@@ -62,6 +62,7 @@ class RepresentativeCommand implements Serializable {
     Boolean isDirectPep
     Boolean hasSignedContract
     Boolean isCBDDataChangedManually = Boolean.FALSE
+    Boolean additionalData = Boolean.FALSE
 
     String email
     String phoneNumber
@@ -192,6 +193,7 @@ class RepresentativeCommand implements Serializable {
             }
         })
         isCBDDataChangedManually(nullable: true)
+        additionalData(nullable: true)
         midCBD(nullable: true)
     }
 }

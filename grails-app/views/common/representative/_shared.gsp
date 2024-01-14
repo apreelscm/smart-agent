@@ -45,6 +45,9 @@
                 $emailContainer.hide();
                 $emailContainer.find('input').val(null);
             } else {
+                enableFields($phoneContainer);
+                enableFields($emailContainer);
+
                 $phoneContainer.show();
                 $emailContainer.show();
             }
@@ -63,6 +66,9 @@
                     $emailContainer.hide();
                     $emailContainer.find('input').val(null);
                 } else {
+                    enableFields($phoneContainer);
+                    enableFields($emailContainer);
+
                     $phoneContainer.show();
                     $emailContainer.show();
                 }

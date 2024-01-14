@@ -57,6 +57,7 @@ class Representative implements Serializable {
     Boolean isDirectPep
     Boolean hasSignedContract
     Boolean isCBDDataChangedManually
+    Boolean additionalData
 
     String email
     String mobilePhone

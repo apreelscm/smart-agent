@@ -3,6 +3,7 @@ package com.eservice.eumowy
 import com.eservice.eumowy.command.BeneficiaryCommand
 import com.eservice.eumowy.command.ProcessCommand
 import com.eservice.eumowy.command.RepresentativeCommand
+import com.eservice.eumowy.dto.MerchantRepresentativeDTO
 import com.eservice.eumowy.enums.options.AcceptorVerification
 import com.eservice.eumowy.enums.options.IdentityDocumentType
 import com.eservice.eumowy.enums.options.TelephoneType
@@ -115,6 +116,27 @@ class RepresentativeService {
             beneficiary.setMidCBD(result.mid)
 
             return beneficiary
+        }
+    }
+
+    List<RepresentativeCommand> getRepresentativesFromBisnode(List<MerchantRepresentativeDTO> representatives) {
+        return representatives.collect {
+            log.info("Creating representative from bisnode representative '${it}'")
+
+            RepresentativeCommand representative = new RepresentativeCommand()
+            representative.salutation = it.title
+            representative.name = it.firstName
+            representative.surname = it.lastName
+            representative.position = it.position
+            representative.pesel = it.pesel
+
+            if (!isNullOrEmpty(it.pesel)) {
+                representative.verification = AcceptorVerification.PESEL
+            }
+
+            representative.birthCountry = it.nationality
+
+            return representative
         }
     }
 

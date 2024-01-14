@@ -2,7 +2,9 @@ package com.eservice.eumowy.microbisnode
 
 import com.eservice.eumowy.dto.MerchantDetailsDTO
 import com.eservice.eumowy.dto.MerchantRepresentativeDTO
+import com.eservice.eumowy.enums.options.LegalForm
 import com.eservice.eumowy.microbisnode.model.Organization
+import com.google.common.collect.Lists
 import org.springframework.context.MessageSource
 
 class MicroBisnodeService {
@@ -22,7 +24,6 @@ class MicroBisnodeService {
     }
 
     MerchantDetailsDTO getMerchantDetailsByIdentifier(String identifier) {
-
         Organization organization
         try {
             organization = microBisnodeClient.getOrganizationByIdentifier(identifier)

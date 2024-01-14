@@ -19,11 +19,84 @@ function onIsPoliticianChange() {
         isDirectPep = $this.parents("div.acceptor").find('div.isDirectPep');
 
     clearFields(isDirectPep);
+    enableFields(isDirectPep);
 
     if (this.value === 'true') {
         isDirectPep.removeClass('hidden');
     } else {
         isDirectPep.addClass('hidden');
+    }
+}
+
+function additionalDataChanged() {
+    var $this = jQuery(this),
+        checked = $this.is(':checked'),
+        $acceptor = $this.parents("div.acceptor"),
+        $documentType = $acceptor.find('select[id$="personDocumentType"]'),
+        $documentNumber = $acceptor.find('input[id$="documentNumber"]'),
+        $personDocumentExpirationDate = $acceptor.find('input[id$="personDocumentExpirationDate"]'),
+        $personDocumentIssueDate = $acceptor.find('input[id$="personDocumentIssueDate"]'),
+        $verification = $acceptor.find('input[type="radio"][id$="verification"]:visible'),
+        $pesel = $acceptor.find('input[id$="pesel"]'),
+        $birthDate = $acceptor.find('input[id$="birthDate"]'),
+        $birthCountry = $acceptor.find('select[id$="birthCountry"]'),
+        $citizenship = $acceptor.find('select[id$="citizenship"]'),
+        isVerificationChecked = $verification.is(':checked');
+
+    if (checked) {
+        if ($documentType.is(':visible')) {
+            $documentType.removeAttr('disabled');
+            $documentNumber.removeAttr('readonly');
+            $personDocumentExpirationDate.removeAttr('readonly');
+            $personDocumentIssueDate.removeAttr('readonly');
+        }
+
+        $birthCountry.removeAttr('disabled');
+
+        if ($citizenship.is(':visible')) {
+            $citizenship.removeAttr('disabled');
+        }
+
+        if (!isVerificationChecked) {
+            $verification.removeAttr('disabled');
+            $pesel.removeAttr('readonly');
+            $birthDate.removeAttr('readonly');
+        }
+    } else {
+        if ($documentType.is(':visible')) {
+            $documentType.attr('disabled', 'disabled');
+            $documentType.val(null);
+
+            $documentNumber.attr('readonly', true);
+            $documentNumber.val(null);
+
+            $personDocumentExpirationDate.attr('readonly', true);
+            $personDocumentExpirationDate.val(null);
+
+            $personDocumentIssueDate.attr('readonly', true);
+            $personDocumentIssueDate.val(null);
+        }
+
+        $birthCountry.attr('disabled', 'disabled');
+        $birthCountry.val(null);
+
+        if ($citizenship.is(':visible')) {
+            $citizenship.attr('disabled', 'disabled');
+            $citizenship.val(null);
+        }
+
+        var isVerificationEnabled = $verification.attr('disabled') !== 'disabled';
+
+        if (isVerificationEnabled) {
+            $verification.attr('disabled', 'disabled');
+            $verification.attr('checked', false);
+
+            $pesel.attr('readonly', true);
+            $pesel.val(null);
+
+            $birthDate.attr('readonly', true);
+            $birthDate.val(null);
+        }
     }
 }
 
@@ -35,14 +108,21 @@ function onRepresentativeCBDDataChange(showDialog) {
         $representativesDataChanged = jQuery("#representativesContainer input[type=radio][name$='isCBDDataChangedManually']"),
         $verificationDocumentsContainer = jQuery("#dokumentyWeryfikacyjne"),
         $isPolitician = $acceptor.find('div.isPolitician'),
+        $isPep = $acceptor.find('div.isDirectPep'),
+        $acceptorHasSignedContract = $acceptor.find('div.hasSignedContract'),
+        $phoneContainer = $acceptor.find('.phone-container'),
+        $emailContainer = $acceptor.find('.email-container'),
         $personData = $acceptor.children('div.personData'),
         $companyData = $acceptor.children('div.companyData'),
         $basicRepresentativeData = $acceptor.children('div.basicRepresentativeData'),
         $sharedRepresentativeData = $acceptor.children('div.sharedRepresentativeData'),
+        $additionalData = $acceptor.find("input[type=checkbox][name$='additionalData']"),
         $hasSignedContract = jQuery(".hasSignedContract"),
         index = $basicRepresentativeData.children('input[name="index"]')[0].value,
         prefix = $basicRepresentativeData.children('input[name="prefix"]')[0].value,
         nip = jQuery("#akceptantNip")[0].value,
+        isFromBisnode = jQuery("#isFromBisnode").val(),
+        regon = jQuery("#akceptantRegon").val(),
         hasActivitiesThatRequiresAtLeastOneRepresentativeToSignContract = jQuery("#hasActivitiesThatRequiresAtLeastOneRepresentativeToSignContract").val() === 'true';
 
     var midName = prefix + '[' + index + '].midCBD';
@@ -52,10 +132,17 @@ function onRepresentativeCBDDataChange(showDialog) {
         isAnyDataManual = $acceptorsPanel.find("input[type=radio][name$='isCBDDataChangedManually'][value=true]:checked").length > 0;
 
     function changeFieldsAvailabilityForActualCbdData() {
-        setRepresentativesDataFromCBD(index, nip, representativeId);
+        if (isFromBisnode) {
+            setRepresentativesDataFromBisnode(index, nip, regon);
+        } else {
+            setRepresentativesDataFromCBD(index, nip, representativeId);
+        }
+
         $readOnlyFields.attr("readonly", true);
         $disabledFields.attr('disabled', 'disabled');
         $representativesDataChanged.removeAttr("disabled");
+        $additionalData.removeAttr('disabled');
+        $additionalData.removeAttr("checked");
         $basicRepresentativeData.find('*[cbdDataHiddenField="cbdDataHiddenField"]').removeAttr("disabled");
         $sharedRepresentativeData.find('*[cbdDataHiddenField="cbdDataHiddenField"]').removeAttr("disabled");
 
@@ -84,9 +171,24 @@ function onRepresentativeCBDDataChange(showDialog) {
         }
 
         enableFields($isPolitician);
+        enableFields($acceptorHasSignedContract);
+
+        var isPolitician = $isPolitician.find('input').val();
+        var hasSignedContract = $acceptorHasSignedContract.find('input').val();
+
+        if (isPolitician) {
+            enableFields($isPep);
+        }
+
+        if (hasSignedContract) {
+            enableFields($phoneContainer);
+            enableFields($emailContainer);
+        }
     }
 
     if (this.value === 'true') {
+        $additionalData.attr('disabled', 'disabled');
+        $additionalData.removeAttr("checked");
         $disabledFields.removeAttr("disabled");
         $readOnlyFields.removeAttr("readonly");
         $verificationDocumentsContainer.removeClass("hidden");
@@ -184,6 +286,41 @@ function onAcceptantCBDDataChange() {
                 }
         });
     }
+}
+
+function setRepresentativesDataFromBisnode(index, nip, regon) {
+    var name = jQuery('#representatives\\[' + index + '\\]\\.name');
+    var surname = jQuery('#representatives\\[' + index + '\\]\\.surname');
+    var position = jQuery('#representatives\\[' + index + '\\]\\.position');
+    var salutation = jQuery('#representatives\\[' + index + '\\]\\.salutation');
+    var documentNumber = jQuery('#representatives\\[' + index + '\\]\\.documentNumber');
+    var documentExpirationDate = jQuery('#representatives\\[' + index + '\\]\\.personDocumentExpirationDate');
+    var documentIssueDate = jQuery('#representatives\\[' + index + '\\]\\.personDocumentIssueDate');
+    var birthDate = jQuery('#representatives\\[' + index + '\\]\\.birthDate');
+    var pesel = jQuery('#representatives\\[' + index + '\\]\\.pesel');
+    var birthCountry = jQuery('#representatives\\[' + index + '\\]\\.birthCountry');
+    var citizenship = jQuery('#representatives\\[' + index + '\\]\\.citizenship');
+    var documentType = jQuery('#representatives\\[' + index + '\\]\\.personDocumentType');
+    var verification = jQuery('#representatives\\[' + index + '\\]\\.verification');
+
+    jQuery.get("/eumowy/activity/getBisnodeReprezentantData", {index: index, nip: nip, regon: regon}, function (data) {
+        if (data != null) {
+            name.val(data.name);
+            surname.val(data.surname);
+            position.val(data.position);
+            salutation.val(data.salutation);
+            pesel.val(data.pesel);
+            birthCountry.val(data.birthCountry);
+            verification.val(data.verification ? data.verification.name : null);
+
+            documentType.val(null);
+            documentNumber.val(null);
+            documentExpirationDate.val(null);
+            documentIssueDate.val(null);
+            birthDate.val(null);
+            citizenship.val(null);
+        }
+    });
 }
 
 function setRepresentativesDataFromCBD(index, nip, representativeCbdMidId) {

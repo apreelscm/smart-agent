@@ -2,9 +2,6 @@
     'use strict';
 
     var $representativesContainer = jQuery("#acceptorsPanel #representativesContainer"),
-        $bisnodeRepresentatives = jQuery("#acceptorsPanel #bisnodeRepresentatives"),
-        $customRepresentatives = jQuery("#acceptorsPanel #customRepresentatives"),
-        $representativesChangedManually = jQuery("#acceptorsPanel #isRepresentativesChangedManually"),
         $representativeTelephoneType = jQuery("#representativesContainer input[type=radio].telephone-type"),
         $representativeDocumentType = jQuery("#representativesContainer input[type=radio][name$='documentType']"),
         $representativeIsPolitician = jQuery("#representativesContainer input[type=radio][name$='isPolitician']"),
@@ -15,16 +12,14 @@
         $companyData = jQuery("div#acceptorsPanel div.companyData"),
         $personData = jQuery("div#acceptorsPanel div.personData"),
         $representativeIsCBDDataChangedManually = jQuery("#representativesContainer input[type=radio][name$='isCBDDataChangedManually']"),
-        $acceptantsIsCBDDataChangedManually = jQuery("#acceptorsAdditionalPanels input[type=radio][name$='isCBDDataChangedManually']");
+        $acceptantsIsCBDDataChangedManually = jQuery("#acceptorsAdditionalPanels input[type=radio][name$='isCBDDataChangedManually']"),
+        $representativeIsAdditionalData = jQuery("#representativesContainer input[type=checkbox][name$='additionalData']");
 
     attachDatepickers();
     attachTooltips();
 
-    disableFields($bisnodeRepresentatives);
-    disableFields($customRepresentatives);
     disableHiddenRepresentativesFields();
 
-    $representativesChangedManually.change(setRepresentativesView);
     $additionalInfoSelect.change(legalFormChanged);
     $representativePosition.change(onPositionChange);
     $representativeDocumentType.change(onDocumentTypeChange);
@@ -34,29 +29,7 @@
     $representativeVerification.change(clearVerificationDetail);
     $representativeTelephoneType.change(phoneTypeChanged);
     $addAnotherAcceptorButton.click(showNextAcceptor);
-
-    function setRepresentativesView() {
-        var isChecked = $representativesChangedManually.is(":checked"),
-            basicData = $representativesContainer.find('div.basicRepresentativeData'),
-            template = isChecked ? $customRepresentatives.html() : $bisnodeRepresentatives.html();
-
-        basicData.each(function (index, value) {
-            var acceptorBasicData = jQuery(value),
-                isAcceptorActive = !acceptorBasicData.parent().hasClass('hidden');
-
-            if (isAcceptorActive) {
-                var id = acceptorBasicData.find('input[name$=id]').val(),
-                    name = acceptorBasicData.find('input').first().attr('name').split('.')[0],
-                    newTemplate = jQuery(template.replace(/representative\[null]/g, name));
-
-                newTemplate[0].value = id;
-
-                acceptorBasicData.html(newTemplate);
-                enableFields(acceptorBasicData);
-                attachBisnodeNameChangeEvent();
-            }
-        });
-    }
+    $representativeIsAdditionalData.change(additionalDataChanged);
 
     function onPositionChange() {
         var $acceptor = jQuery(this).parents("div.acceptor");

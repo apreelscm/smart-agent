@@ -5,6 +5,7 @@ import com.eservice.eumowy.command.BeneficiaryCommand
 import com.eservice.eumowy.command.ProcessCommand
 import com.eservice.eumowy.command.RepresentativeCommand
 import com.eservice.eumowy.dto.MerchantDetailsDTO
+import com.eservice.eumowy.dto.MerchantRepresentativeDTO
 import com.eservice.eumowy.dto.MerchantSearchStatus
 import com.eservice.eumowy.exception.CalculatorException
 import com.eservice.eumowy.process.DefineActivityCommand
@@ -1391,10 +1392,38 @@ class ActivityController {
         int index = params.index as int
         String representativeId = params.representativeCbdMidId
         List<RepresentativeCommand> representativesByNip = representativeService.getRepresentativesFromCBD(nip)
+
+        if (index >= representativesByNip.size()) {
+            render JSONObject.NULL
+            return
+        }
+
         RepresentativeCommand representativeByIndex = representativesByNip.get(index)
         RepresentativeCommand result = representativesByNip
                 .findAll { it -> it.midCBD == representativeId }
                 .find { it == representativeByIndex }
+
+        render result as JSON
+    }
+
+    def getBisnodeReprezentantData() {
+        String nip = params.nip
+        String regon = params.regon
+        int index = params.index as int
+
+        MerchantDetailsDTO merchantDetails = microBisnodeService.getMerchantDetailsByIdentifier(nip)
+        if (!merchantDetails?.isValid() && params.regon) {
+            merchantDetails = microBisnodeService.getMerchantDetailsByIdentifier(regon)
+        }
+
+        List<RepresentativeCommand> representatives = representativeService.getRepresentativesFromBisnode(merchantDetails.representatives)
+
+        if (index >= representatives.size()) {
+            render JSONObject.NULL
+            return
+        }
+
+        RepresentativeCommand result = representatives.get(index)
 
         render result as JSON
     }
@@ -1404,6 +1433,12 @@ class ActivityController {
         int index = params.index as int
         String representativeId = params.acceptantCbdMidId
         List<BeneficiaryCommand> beneficiariesByNip = representativeService.getDaneBeneficjentaRzeczywistego(nip)
+
+        if (index >= beneficiariesByNip.size()) {
+            render JSONObject.NULL
+            return
+        }
+
         BeneficiaryCommand beneficiaryByIndex = beneficiariesByNip.get(index)
         BeneficiaryCommand result = beneficiariesByNip
                 .findAll { it -> it.midCBD == representativeId }

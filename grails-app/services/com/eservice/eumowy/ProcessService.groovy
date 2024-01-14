@@ -1887,6 +1887,10 @@ class ProcessService {
         command.akceptantTelKomorkowy = merchantDetailsDTO.akceptantTelKomorkowy
         command.akceptantFax = merchantDetailsDTO.akceptantFax
 
+        if (command.representatives == null || command.representatives.isEmpty()) {
+            command.representatives = representativeService.getRepresentativesFromBisnode(merchantDetailsDTO.representatives)
+        }
+
         MerchantDetailsDTOToBeneficiaryCommandMapper.map(merchantDetailsDTO.beneficiaries, command.beneficiaries)
     }
 
