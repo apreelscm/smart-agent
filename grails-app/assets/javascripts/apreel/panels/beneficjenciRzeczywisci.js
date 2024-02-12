@@ -45,22 +45,13 @@
     function setBeneficiaryFieldValue(beneficiaryIndex, representativeField) {
         if (representativeField.disabled) return false;
 
-        var fieldName, fieldType, beneficiary, beneficiaryField, value;
+        var fieldName = representativeField.name.split(".")[1],
+            fieldType = representativeField.type,
+            beneficiary = jQuery(beneficiaries[beneficiaryIndex]),
+            beneficiaryField = beneficiary.find("[name$=" + fieldName + "]").not("input[type=hidden]"),
+            value = representativeField.value;
 
-        var isAnyRepresentativeDataAutomatic = jQuery("#representativesContainer input[type=radio][name$='isCBDDataChangedManually'][value=false]:checked");
-        var isAnyBeneficiaryDataAutomatic = jQuery("#acceptorsPanel input[type=radio][name$='isCBDDataChangedManually'][value=false]:checked");
-
-        if (isAnyRepresentativeDataAutomatic.length > 0 || isAnyBeneficiaryDataAutomatic.length > 0) {
-            return false;
-        }
-
-        fieldName = representativeField.name.split(".")[1];
-        fieldType = representativeField.type;
-
-        beneficiary = jQuery(beneficiaries[beneficiaryIndex]);
-        beneficiaryField = beneficiary.find("[name$=" + fieldName + "]").not("input[type=hidden]");
-
-        if (!!beneficiaryField.attr('disabled')) {
+        if (beneficiaryField.length === 0 || !!beneficiaryField.attr('disabled')) {
             return false;
         }
 

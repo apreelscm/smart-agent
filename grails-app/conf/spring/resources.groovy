@@ -53,7 +53,7 @@ beans = {
     switch (Environment.getCurrent().getName()) {
         case Environment.DEVELOPMENT.name:
             websWebServiceClient(WebsClientMock){}
-            microBisnodeClient(MicroBisnodeClientMock, "/opt/settings/mock/microbisnode/"){}
+            microBisnodeClient(MicroBisnodeClientMock, "/opt/eumowy/mock/microbisnode/"){}
             break;
         default:
             microBisnodeClient(MicroBisnodeClientImpl, '${microBisnode.service.uri}'){}
