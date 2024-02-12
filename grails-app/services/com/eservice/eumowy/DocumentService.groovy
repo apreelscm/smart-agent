@@ -2,6 +2,7 @@ package com.eservice.eumowy
 
 import com.eservice.eumowy.enums.options.LegalForm
 import com.google.common.collect.Lists
+import com.google.common.collect.Sets
 import com.lowagie.text.pdf.PdfReader
 import org.apache.commons.lang.StringUtils
 import org.apache.log4j.Logger
@@ -126,7 +127,9 @@ class DocumentService {
     }
 
     private Set<DocumentFile> getDocumentsWithoutPurpose(Process processInstance, Map dataFromProcess) {
-        Set signaturesWithoutPurpose = processInstance.signatures.findAll { sig -> !sig.hasDetails() }
+        Set signaturesWithoutPurpose = processInstance.signatures.findAll {
+            sig -> !sig.hasDetails() && sig.forPos != true && sig.forPoint != true
+        }
         Set<DocumentFile> documents = []
 
         if (signaturesWithoutPurpose.size() == 0) return documents
@@ -178,40 +181,63 @@ class DocumentService {
     }
 
     private Set<DocumentFile> getPointDocuments(Process processInstance, Map dataFromProcess) {
-        Set<DocumentFile> documents = []
+        return getLocalPointDocuments(processInstance, dataFromProcess) +
+                getNotLocalPointDocuments(processInstance, dataFromProcess)
+    }
+
+    private Set<DocumentFile> getLocalPointDocuments(Process processInstance, Map dataFromProcess) {
         Set<Signature> pointSignatures = processInstance.signatures.findAll { sig -> sig.hasPurpose(SignatureDetail.SignaturePurpose.POINT) }
 
-        if (pointSignatures.size() == 0) return documents
+        if (pointSignatures.size() == 0) return []
 
         if (ActivityHelper.containsAll(processInstance, Lists.newArrayList(DODATKOWY_POS, DODATKOWY_PUNKT))) {
-            pointSignatures.remove(pointSignatures.find { sig -> sig.name.equals("virtualPos") })
+            pointSignatures.remove(pointSignatures.find { sig -> sig.name == "virtualPos" })
         }
 
-        processInstance.localPoints.each { PointData point ->
-            if ((point?.isLocal()) || point?.hasLocalPoses()) {
-                Map dataFromPoint = mapperService.mapOnlyPointData(point)
+        Set<PointData> points = processInstance.localPoints.findAll {it?.isLocal() || it?.hasLocalPoses() }
 
-                final Map<String, String> data = new HashMap<String, String>();
-                data.putAll(dataFromProcess)
-                data.putAll(dataFromPoint)
+        return getPointDocuments(processInstance, dataFromProcess, points, pointSignatures)
+    }
 
-                pointSignatures.each { Signature signature ->
-                    String path = signature.templatePath
-                    String begin = path.substring(0, path.lastIndexOf('.'));
-                    String end = path.substring(path.lastIndexOf('.'));
-                    String documentName = begin + "_" + point.id + end
+    private Set<DocumentFile> getNotLocalPointDocuments(Process processInstance, Map dataFromProcess) {
+        Signature virtualPointSignature = processInstance.signatures.find { sig -> sig.name == "virtualPoint" }
 
-                    String pathClient = signature.filename
-                    String beginClient = pathClient.substring(0, pathClient.lastIndexOf('.'));
-                    String endClient = pathClient.substring(pathClient.lastIndexOf('.'));
-                    String documentClientName = beginClient + "_" + point.id + endClient
+        if (virtualPointSignature == null) return []
 
-                    log.info(String.format("New Point document %s from signature %s.", documentClientName, signature.name))
+        Set<PointData> points = processInstance.points.findAll { !it.local }
 
-                    DocumentFile documentFile = getDocumentFile(processInstance, signature, data, documentName, documentClientName)
-                    if (documentFile) {
-                        documents.add(documentFile)
-                    }
+        return getPointDocuments(processInstance, dataFromProcess, points, Sets.newHashSet(virtualPointSignature))
+    }
+
+    private Set<DocumentFile> getPointDocuments(Process processInstance, Map dataFromProcess,
+                                                Set<PointData> points, Set<Signature> signatures) {
+        Set<DocumentFile> documents = []
+
+        if (signatures.size() == 0) return documents
+
+        points.each { PointData point ->
+            Map dataFromPoint = mapperService.mapOnlyPointData(point)
+
+            final Map<String, String> data = new HashMap<String, String>();
+            data.putAll(dataFromProcess)
+            data.putAll(dataFromPoint)
+
+            signatures.each { Signature signature ->
+                String path = signature.templatePath
+                String begin = path.substring(0, path.lastIndexOf('.'));
+                String end = path.substring(path.lastIndexOf('.'));
+                String documentName = begin + "_" + point.id + end
+
+                String pathClient = signature.filename
+                String beginClient = pathClient.substring(0, pathClient.lastIndexOf('.'));
+                String endClient = pathClient.substring(pathClient.lastIndexOf('.'));
+                String documentClientName = beginClient + "_" + point.id + endClient
+
+                log.info(String.format("New Point document %s from signature %s.", documentClientName, signature.name))
+
+                DocumentFile documentFile = getDocumentFile(processInstance, signature, data, documentName, documentClientName)
+                if (documentFile) {
+                    documents.add(documentFile)
                 }
             }
         }
@@ -386,6 +412,24 @@ class DocumentService {
 
     private Set<DocumentFile> getObsoletePointDocuments(Process processInstance) {
         Set<DocumentFile> documents = []
+
+        processInstance.documents.findAll { it.signature.name == "virtualPoint" }.each {
+            long idFromName = fetchPointIdFromName(it.clientName)
+
+            if (idFromName != -1) {
+                boolean toDelete = true
+                for (PointData pd : processInstance.points.findAll { !it.local }) {
+                    if (idFromName == pd.id) {
+                        toDelete = false
+                        break;
+                    }
+                }
+
+                if (toDelete) {
+                    documents.add(it)
+                }
+            }
+        }
 
         processInstance.documents.findAll { it.signature.hasPurpose(SignatureDetail.SignaturePurpose.POINT) }.each {
             long idFromName = fetchPointIdFromName(it.clientName)
