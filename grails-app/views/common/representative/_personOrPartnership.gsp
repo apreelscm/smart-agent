@@ -58,7 +58,8 @@
                 <g:radio name="${prefix}[${seqNo}].verification"
                          value="PESEL"
                          class="pesel-verification"
-                         disabled="${!representative?.isCBDDataChangedManually}"
+                         disabled="${!representative?.isCBDDataChangedManually &&
+                                 !(representative?.additionalData && !representative?.pesel && !representative?.verification)}"
                          checked="${data.isPersonForm() &&
                                  (representative?.verification?.name() == "PESEL" || (data.isFromBisnode && representative?.pesel))}"/>
                 <g:hiddenField name="${prefix}[${seqNo}].verification"
@@ -71,7 +72,8 @@
                                   value="${representative?.pesel}"
                                   maxlength="11"
                                   class="pesel-field display-inline-block"
-                                  readonly="${!representative?.isCBDDataChangedManually}"
+                                  readonly="${!representative?.isCBDDataChangedManually &&
+                                          !(representative?.additionalData && !representative?.pesel && !representative?.verification)}"
                                   validatable="${representative}"
                                   validateField="pesel"/>
             </div>
@@ -79,12 +81,14 @@
             <div class="acceptorRadioWrapper">
                 <g:radio name="${prefix}[${seqNo}].verification"
                          value="BIRTH_DATE"
-                         disabled="${!representative?.isCBDDataChangedManually}"
+                         disabled="${!representative?.isCBDDataChangedManually &&
+                                 !(representative?.additionalData && !representative?.birthDate && !representative?.verification)}"
                          checked="${data.isPersonForm() && representative?.verification?.name() == "BIRTH_DATE"}"/>
 
                 <label for="${prefix}[${seqNo}].birthDate"><g:message code="birth.date.country.label"/></label>
                 <g:textField id="${prefix}[${seqNo}].birthDate" name="${prefix}[${seqNo}].birthDate"
-                             readonly="${!representative?.isCBDDataChangedManually}"
+                             readonly="${!representative?.isCBDDataChangedManually &&
+                                     !(representative?.additionalData && !representative?.birthDate && !representative?.verification)}"
                              value="${formatDate(format: 'yyyy-MM-dd', date: representative?.birthDate)}" maxlength="10"
                              class="date-field date-past"/>
             </div>
