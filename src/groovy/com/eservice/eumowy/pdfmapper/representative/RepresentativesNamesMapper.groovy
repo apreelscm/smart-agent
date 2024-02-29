@@ -22,12 +22,12 @@ class RepresentativesNamesMapper implements Mapper{
         Map<Integer, Representative> representativesToSignDocuments = [:]
 
         boolean hasNewAgreement = ActivityHelper.isNewAgreement(process)
-        boolean hasPABRDocument = process.documents?.any {it.signature.name.contains("PABR") }
-        boolean hasAPUPZorAPUW = process.documents?.any {it.signature.name.contains("AP/UPZT") || it.name.contains("AP/UW") }
+        boolean isRepOrBenDataChanged = process.isAnyRepresentativeOrBeneficiaryDataChanged()
+        boolean hasAPUPZorAPUW = process.signatures.any {it.name.contains("AP/UPZT") || it.name.contains("AP/UW") }
 
         int index = 0 //TODO Replace i -> index, to skip empty rows in document, but then you need to adjust subscriptions positions and that requires bigger refactoring
         process.allRepresentatives.eachWithIndex { representative, i ->
-            if (hasPABRDocument || hasNewAgreement || hasAPUPZorAPUW) {
+            if (hasNewAgreement || isRepOrBenDataChanged ||hasAPUPZorAPUW) {
                 if (Boolean.TRUE == representative.hasSignedContract) {
                     representativesData.put(format("reprezentant%dSalutation", (i + 1)), [representative.fullNameWithSalutation] as String[])
                     representativesData.put(format("reprezentant%d", (i + 1)), [representative.fullName] as String[])
