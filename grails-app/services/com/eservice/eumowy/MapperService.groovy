@@ -108,7 +108,7 @@ class MapperService {
                 "Dyrektor naczelny"
                 break
             case "DYR":
-                "Dyrektor zarządzający"
+                "Dyrektor"
                 break
             case "GLK":
                 "Główna Księgowa"
