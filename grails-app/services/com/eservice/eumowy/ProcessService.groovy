@@ -1120,6 +1120,7 @@ class ProcessService {
                 if (representative != null && !process.representatives?.contains(representative)) {
                     log.info(String.format("Saved new representative: %s", representative.fullName))
                     process.addToRepresentatives(representative)
+                    representativeCmd.id = representative.id
                 }
             }
         }
@@ -1157,9 +1158,7 @@ class ProcessService {
             representative.properties = representativeCmd.properties
         }
 
-        representative.save()
-
-        return representative
+        return representative.save()
     }
 
     private def addCurrentDate(def processDataList) {

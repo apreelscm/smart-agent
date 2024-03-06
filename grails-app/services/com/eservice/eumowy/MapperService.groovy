@@ -179,8 +179,4 @@ class MapperService {
             default: null
         }
     }
-
-    private boolean isAnyRepresentativeOrBeneficiaryDataChanged(Process process) {
-        return process.representatives.any { (Representative.Type.REPRESENTATIVE.equals(it.type) && it.isCBDDataChangedManually) || Representative.Type.BENEFICIARY.equals(it.type) && it.isCBDDataChangedManually }
-    }
 }
