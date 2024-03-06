@@ -27,9 +27,9 @@ class MicroBisnodeService {
         Organization organization
         try {
             organization = microBisnodeClient.getOrganizationByIdentifier(identifier)
-            log.debug(String.format("Client with identifier %s found in MicroBisnode", identifier))
+            log.info(String.format("Client with identifier %s found in MicroBisnode", identifier))
             MerchantDetailsDTO merchantDetailsDTO = new OrganizationToMerchantDetailsDTOMapper(messageSource).map(organization)
-            log.debug(merchantDetailsDTO)
+            log.info(merchantDetailsDTO)
             return merchantDetailsDTO
         } catch (OrganizationNotFoundException e){
             log.info(String.format("Client with identifier %s not found in MicroBisnode", identifier))
