@@ -132,6 +132,10 @@ class DocumentService {
         }
         Set<DocumentFile> documents = []
 
+        if (ActivityHelper.containsAll(processInstance, Lists.newArrayList(DODATKOWY_POS, DODATKOWY_PUNKT))) {
+            signaturesWithoutPurpose.remove(signaturesWithoutPurpose.find { sig -> sig.name == "virtualPos" })
+        }
+
         if (signaturesWithoutPurpose.size() == 0) return documents
 
         signaturesWithoutPurpose.each { Signature signature ->
@@ -189,10 +193,6 @@ class DocumentService {
         Set<Signature> pointSignatures = processInstance.signatures.findAll { sig -> sig.hasPurpose(SignatureDetail.SignaturePurpose.POINT) }
 
         if (pointSignatures.size() == 0) return []
-
-        if (ActivityHelper.containsAll(processInstance, Lists.newArrayList(DODATKOWY_POS, DODATKOWY_PUNKT))) {
-            pointSignatures.remove(pointSignatures.find { sig -> sig.name == "virtualPos" })
-        }
 
         Set<PointData> points = processInstance.localPoints.findAll {it?.isLocal() || it?.hasLocalPoses() }
 
