@@ -132,10 +132,6 @@ class DocumentService {
         }
         Set<DocumentFile> documents = []
 
-        if (ActivityHelper.containsAll(processInstance, Lists.newArrayList(DODATKOWY_POS, DODATKOWY_PUNKT))) {
-            signaturesWithoutPurpose.remove(signaturesWithoutPurpose.find { sig -> sig.name == "virtualPos" })
-        }
-
         if (signaturesWithoutPurpose.size() == 0) return documents
 
         signaturesWithoutPurpose.each { Signature signature ->
@@ -190,7 +186,9 @@ class DocumentService {
     }
 
     private Set<DocumentFile> getLocalPointDocuments(Process processInstance, Map dataFromProcess) {
-        Set<Signature> pointSignatures = processInstance.signatures.findAll { sig -> sig.hasPurpose(SignatureDetail.SignaturePurpose.POINT) }
+        Set<Signature> pointSignatures = processInstance.signatures.findAll {
+            sig -> sig.hasPurpose(SignatureDetail.SignaturePurpose.POINT)
+        }
 
         if (pointSignatures.size() == 0) return []
 
@@ -200,13 +198,19 @@ class DocumentService {
     }
 
     private Set<DocumentFile> getNotLocalPointDocuments(Process processInstance, Map dataFromProcess) {
-        Signature virtualPointSignature = processInstance.signatures.find { sig -> sig.name == "virtualPoint" }
+        Set<Signature> virtualPointSignatures = processInstance.signatures.findAll() {
+            sig -> sig.name == "virtualPoint" || sig.name == "virtualPos"
+        }
 
-        if (virtualPointSignature == null) return []
+        if (ActivityHelper.containsAll(processInstance, Lists.newArrayList(DODATKOWY_POS, DODATKOWY_PUNKT))) {
+            virtualPointSignatures.remove(virtualPointSignatures.find { sig -> sig.name == "virtualPos" })
+        }
+
+        if (virtualPointSignatures.size() == 0) return []
 
         Set<PointData> points = processInstance.points.findAll { !it.local }
 
-        return getPointDocuments(processInstance, dataFromProcess, points, Sets.newHashSet(virtualPointSignature))
+        return getPointDocuments(processInstance, dataFromProcess, points, virtualPointSignatures)
     }
 
     private Set<DocumentFile> getPointDocuments(Process processInstance, Map dataFromProcess,
@@ -413,7 +417,9 @@ class DocumentService {
     private Set<DocumentFile> getObsoletePointDocuments(Process processInstance) {
         Set<DocumentFile> documents = []
 
-        processInstance.documents.findAll { it.signature.name == "virtualPoint" }.each {
+        processInstance.documents.findAll {
+            it.signature.name == "virtualPoint" || it.signature.name == "virtualPos"
+        }.each {
             long idFromName = fetchPointIdFromName(it.clientName)
 
             if (idFromName != -1) {
@@ -431,7 +437,9 @@ class DocumentService {
             }
         }
 
-        processInstance.documents.findAll { it.signature.hasPurpose(SignatureDetail.SignaturePurpose.POINT) }.each {
+        processInstance.documents.findAll {
+            it.signature.hasPurpose(SignatureDetail.SignaturePurpose.POINT)
+        }.each {
             long idFromName = fetchPointIdFromName(it.clientName)
 
             if (idFromName != -1) {
