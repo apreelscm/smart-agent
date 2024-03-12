@@ -202,13 +202,9 @@ class DocumentService {
             sig -> sig.name == "virtualPoint" || sig.name == "virtualPos"
         }
 
-        if (ActivityHelper.containsAll(processInstance, Lists.newArrayList(DODATKOWY_POS, DODATKOWY_PUNKT))) {
-            virtualPointSignatures.remove(virtualPointSignatures.find { sig -> sig.name == "virtualPos" })
-        }
-
         if (virtualPointSignatures.size() == 0) return []
 
-        Set<PointData> points = processInstance.points.findAll { !it.local }
+        Set<PointData> points = processInstance.points.findAll { !it.local && it.pointDetails != null }
 
         return getPointDocuments(processInstance, dataFromProcess, points, virtualPointSignatures)
     }
@@ -424,7 +420,7 @@ class DocumentService {
 
             if (idFromName != -1) {
                 boolean toDelete = true
-                for (PointData pd : processInstance.points.findAll { !it.local }) {
+                for (PointData pd : processInstance.points.findAll { !it.local && it.pointDetails != null }) {
                     if (idFromName == pd.id) {
                         toDelete = false
                         break;
