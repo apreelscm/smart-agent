@@ -544,7 +544,7 @@ class ActivityController {
                     return error()
                 }
 
-                if(hasNowaUmowa) {
+                if (hasNowaUmowa) {
                     MerchantDetailsDTO merchantDetails = microBisnodeService.getMerchantDetailsByIdentifier(flow.nip)
                     if (!merchantDetails?.isValid() && params.regon) {
                         merchantDetails = microBisnodeService.getMerchantDetailsByIdentifier((String) params.regon)
@@ -615,7 +615,7 @@ class ActivityController {
                     flow.skipPanelsInit = false
                     processCommand = processService.getSavedProcessCommand(processInstance, processInstance.calcNumber, conversation.calc, flow.newProcessFlow)
 
-                    if(processCommand.isFromBisnode && !flow.representativesBisnode) {
+                    if (ActivityHelper.isNewAgreement(processInstance) && processCommand.isFromBisnode && !flow.representativesBisnode) {
                         log.info(format("Process with ID %s and NIP %s is from BISNODE. Filling flow with representatives from BISNODE.", processInstance.id, processCommand.nip))
                         flow.representativesBisnode = microBisnodeService.getRepresentatives(processCommand.nip)
                     }
@@ -944,7 +944,7 @@ class ActivityController {
                 Process processInstance = flow.processInstance;
                 ProcessCommand processCmd = processService.getSavedProcessCommand(processInstance, flow.calcNumber, conversation.calc, flow.newProcessFlow)
 
-                if(processCmd.isFromBisnode && !flow.representativesBisnode) {
+                if (ActivityHelper.isNewAgreement(processInstance) && processCmd.isFromBisnode && !flow.representativesBisnode) {
                     log.info(format("Process with ID %s and NIP %s is from BISNODE. Filling flow with representatives from BISNODE.", processInstance.id, processCmd.nip))
                     flow.representativesBisnode = microBisnodeService.getRepresentatives(processCmd.nip)
                 }
