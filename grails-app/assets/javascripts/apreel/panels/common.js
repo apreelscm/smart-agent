@@ -132,7 +132,7 @@ function onRepresentativeCBDDataChange(showDialog) {
         isAnyDataManual = $acceptorsPanel.find("input[type=radio][name$='isCBDDataChangedManually'][value=true]:checked").length > 0;
 
     function changeFieldsAvailabilityForActualCbdData() {
-        if (isFromBisnode) {
+        if (isFromBisnode === 'true') {
             setRepresentativesDataFromBisnode(index, nip, regon);
         } else {
             setRepresentativesDataFromCBD(index, nip, representativeId);
