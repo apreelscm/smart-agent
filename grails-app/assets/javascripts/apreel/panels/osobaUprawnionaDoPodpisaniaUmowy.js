@@ -135,14 +135,13 @@
             acceptorIdDates = $acceptor.find('div.acceptorIdDatesWrapper'),
             position = $acceptor.find("select[name$='position']").val();
 
-        clearFields(documentInfo);
-
         var isPerson = isLegalFormPerson($additionalInfoSelect.val());
 
         if (position === 'Pełnomocnik' || isPerson) {
             documentInfo.removeClass('hidden');
             acceptorIdDates.removeClass('hidden');
         } else {
+            clearFields(documentInfo);
             documentInfo.addClass('hidden');
             acceptorIdDates.addClass('hidden');
         }
