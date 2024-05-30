@@ -1,5 +1,5 @@
 <div class="sharedRepresentativeData">
-    <div class="hasSignedContract ${hasErrors(bean: representative, field: 'hasSignedContract', 'errorSpan')}">
+    <div id="hasSignedContract-${prefix}-${seqNo}" class="hasSignedContract ${hasErrors(bean: representative, field: 'hasSignedContract', 'errorSpan')}">
         <g:hasErrors bean="${representative}" field="hasSignedContract">
             <p class="error-message"><g:message code="representative.option.required"/></p>
         </g:hasErrors>
@@ -14,43 +14,49 @@
         <g:radio name="${prefix}[${seqNo}].hasSignedContract"
                  value="false"
                  checked="${representative?.hasSignedContract == false}"/>
-        <g:hiddenField name="${prefix}[${seqNo}].hasSignedContract"
-                       cbdDataHiddenField="cbdDataHiddenField"
-                       value="${representative?.hasSignedContract}"/>
         <label for="${prefix}[${seqNo}].hasSignedContract"><g:message code="no"/></label>
 
+        <g:hiddenField name="${prefix}[${seqNo}].hasSignedContract"
+                       cbdDataHiddenField="cbdDataHiddenField"
+                       disabled="${representative?.isCBDDataChangedManually}"
+                       value="${representative?.hasSignedContract}"/>
+
         <script type="text/javascript">
-            var val = jQuery('input[name="${prefix}[${seqNo}].hasSignedContract"]:checked').val(),
-                $phoneContainer = jQuery('.phone-container-${prefix}-${seqNo}'),
-                $emailContainer = jQuery('.email-container-${prefix}-${seqNo}'),
-                $hasSignedContract = jQuery(".hasSignedContract"),
-                $acceptorsPanel = jQuery("#acceptorsPanel"),
+            // This script gets repeated for each panel, we need to make sure global variables that target specific panel
+            // have unique names, otherwise variable values might be overwritten with data from last panel
+            var ${prefix}Form${seqNo} = {
+                isSignedContractChecked: jQuery('input[name="${prefix}[${seqNo}].hasSignedContract"]:checked').val(),
+                $phoneContainer: jQuery('.phone-container-${prefix}-${seqNo}'),
+                $emailContainer: jQuery('.email-container-${prefix}-${seqNo}'),
+                $hasSignedContract: jQuery('#hasSignedContract-${prefix}-${seqNo}')
+            };
+            var $acceptorsPanel = jQuery("#acceptorsPanel"),
                 isAnyDataManual = $acceptorsPanel.find("input[type=radio][name$='isCBDDataChangedManually'][value=true]:checked").length > 0,
                 hasActivitiesThatRequiresAtLeastOneRepresentativeToSignContract = jQuery("#hasActivitiesThatRequiresAtLeastOneRepresentativeToSignContract").val() === 'true',
                 additionalData = jQuery('input[name="${prefix}[${seqNo}].additionalData"]').is(':checked');
 
-            if (hasActivitiesThatRequiresAtLeastOneRepresentativeToSignContract || isAnyDataManual) {
-                $hasSignedContract.removeClass("hidden");
-                $hasSignedContract.find('*[cbdDataHiddenField="cbdDataHiddenField"]').attr("disabled");
-                $hasSignedContract.find('input').removeAttr('disabled');
+            if (!hasActivitiesThatRequiresAtLeastOneRepresentativeToSignContract && !isAnyDataManual) {
+                ${prefix}Form${seqNo}.$hasSignedContract.addClass("hidden")
+                ${prefix}Form${seqNo}.$hasSignedContract.find('*[cbdDataHiddenField="cbdDataHiddenField"]').removeAttr("disabled");
+                ${prefix}Form${seqNo}.$hasSignedContract.find('input:not([type="hidden"])').attr('disabled', 'disabled');
             } else {
-                $hasSignedContract.addClass("hidden")
-                $hasSignedContract.find('*[cbdDataHiddenField="cbdDataHiddenField"]').removeAttr("disabled");
-                $hasSignedContract.find('input').attr('disabled', 'disabled');
+                ${prefix}Form${seqNo}.$hasSignedContract.removeClass("hidden");
+                ${prefix}Form${seqNo}.$hasSignedContract.find('*[cbdDataHiddenField="cbdDataHiddenField"]').attr("disabled");
+                ${prefix}Form${seqNo}.$hasSignedContract.find('input:not([type="hidden"])').removeAttr('disabled');
             }
 
-            if (val === undefined || val === 'false') {
-                $phoneContainer.hide();
-                $phoneContainer.find('input[type=radio].telephone-type:checked').attr('checked', false);
-                $phoneContainer.find('input.phone-number').val(null);
-                $emailContainer.hide();
-                $emailContainer.find('input').val(null);
+            if (${prefix}Form${seqNo}.isSignedContractChecked === undefined || ${prefix}Form${seqNo}.isSignedContractChecked === 'false') {
+                ${prefix}Form${seqNo}.$phoneContainer.hide();
+                ${prefix}Form${seqNo}.$phoneContainer.find('input[type=radio].telephone-type:checked').attr('checked', false);
+                ${prefix}Form${seqNo}.$phoneContainer.find('input.phone-number').val(null);
+                ${prefix}Form${seqNo}.$emailContainer.hide();
+                ${prefix}Form${seqNo}.$emailContainer.find('input').val(null);
             } else {
-                enableFields($phoneContainer);
-                enableFields($emailContainer);
+                enableFields(${prefix}Form${seqNo}.$phoneContainer);
+                enableFields(${prefix}Form${seqNo}.$emailContainer);
 
-                $phoneContainer.show();
-                $emailContainer.show();
+                ${prefix}Form${seqNo}.$phoneContainer.show();
+                ${prefix}Form${seqNo}.$emailContainer.show();
             }
 
             jQuery('input[name="${prefix}[${seqNo}].hasSignedContract"]').change(function(e) {

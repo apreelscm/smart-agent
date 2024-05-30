@@ -10,7 +10,7 @@ function disableFields(fieldsContainer) {
 }
 
 function enableFields(fieldsContainer) {
-    fieldsContainer.find("input, select").removeAttr('disabled');
+    fieldsContainer.find("input:not([cbdDataHiddenField=\"cbdDataHiddenField\"]), select").removeAttr('disabled');
     fieldsContainer.find("input, select").removeAttr('readonly');
 }
 
@@ -161,13 +161,13 @@ function onRepresentativeCBDDataChange(showDialog) {
         if (!hasActivitiesThatRequiresAtLeastOneRepresentativeToSignContract && !isAnyDataManual) {
             $hasSignedContract.addClass("hidden")
             $hasSignedContract.find('*[cbdDataHiddenField="cbdDataHiddenField"]').removeAttr("disabled");
-            $hasSignedContract.find('input').attr('disabled', 'disabled');
+            $hasSignedContract.find('input:not([type="hidden"])').attr('disabled', 'disabled');
         }
 
         if (isAnyDataManual) {
             $hasSignedContract.removeClass("hidden");
             $hasSignedContract.find('*[cbdDataHiddenField="cbdDataHiddenField"]').attr("disabled");
-            $hasSignedContract.find('input').removeAttr('disabled');
+            $hasSignedContract.find('input:not([type="hidden"])').removeAttr('disabled');
         }
 
         enableFields($isPolitician);
@@ -209,7 +209,7 @@ function onRepresentativeCBDDataChange(showDialog) {
 
         $hasSignedContract.removeClass("hidden");
         $hasSignedContract.find('*[cbdDataHiddenField="cbdDataHiddenField"]').attr("disabled");
-        $hasSignedContract.find('input').removeAttr('disabled');
+        $hasSignedContract.find('input:not([type="hidden"])').removeAttr('disabled');
     } else {
         if (showDialog === false) {
             changeFieldsAvailabilityForActualCbdData();
