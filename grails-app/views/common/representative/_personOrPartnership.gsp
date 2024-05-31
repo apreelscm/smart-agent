@@ -19,7 +19,6 @@
                           valueMessagePrefix="identity.kind"
                           value="${representative?.documentType}"
                           disabled="${!representative?.isCBDDataChangedManually && !representative?.additionalData}"
-                          required="required"
                           style="min-width: 150px"/>
                 <g:hiddenField name="${prefix}[${seqNo}].documentType"
                                disabled="${representative?.isCBDDataChangedManually || representative?.additionalData}"
@@ -203,7 +202,7 @@
                                 disabled="${!representative?.isCBDDataChangedManually && !representative?.additionalData}"
                                 validatable="${representative}"
                                 validateField="citizenship"
-                                required="required"/>
+            />
             <g:hiddenField name="${prefix}[${seqNo}].citizenship"
                            disabled="${representative?.isCBDDataChangedManually || representative?.additionalData}"
                            cbdDataHiddenField="cbdDataHiddenField"

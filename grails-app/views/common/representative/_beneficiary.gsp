@@ -53,7 +53,8 @@
                         value="${representative?.citizenship}"
                         disabled="${(!representative?.isCBDDataChangedManually && representative?.citizenship != null)}"
                         validatable="${representative}"
-                        validateField="citizenship" required="required"/>
+                        validateField="citizenship"
+    />
     <g:hiddenField name="${prefix}[${seqNo}].citizenship"
                    disabled="${representative?.isCBDDataChangedManually || representative?.citizenship == null }"
                    cbdDataHiddenField="cbdDataHiddenField"

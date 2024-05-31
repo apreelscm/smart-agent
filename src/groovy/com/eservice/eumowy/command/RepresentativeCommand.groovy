@@ -102,7 +102,10 @@ class RepresentativeCommand implements Serializable {
         salutation(nullable: true)
         name(nullable: true, shared: "lettersOnly")
         surname(nullable: true, shared: "lettersOnly")
-        position(nullable: true)
+        position(nullable: true, validator: { value, cmd, errors ->
+            return CustomValidator.validateRequired(value, errors, cmd.isCBDDataChangedManually, "position",
+                    "representative.stanowisko.required")
+        })
 
         verification(nullable: true, validator: { value, cmd, errors ->
             return CustomValidator.validateRequired(value, errors, true, "verification",
@@ -114,7 +117,7 @@ class RepresentativeCommand implements Serializable {
         })
 
         documentType(nullable: true, validator: {value, cmd, errors ->
-            CustomValidator.validateRequired(value, errors, cmd.processCommand.isPersonForm() || cmd.procuratorPosition, "documentType",
+            CustomValidator.validateRequired(value, errors, cmd.isCBDDataChangedManually && (cmd.processCommand.isPersonForm() || cmd.procuratorPosition), "documentType",
                     "representative.typDokumentu.required")
         })
         documentNumber(nullable: true, maxSize: 20, shared: "alphanumeric", validator: {value, cmd, errors ->
@@ -149,8 +152,8 @@ class RepresentativeCommand implements Serializable {
         })
 
         citizenship(nullable: true, maxSize: 30, validator: {value, cmd, errors ->
-            CustomValidator.validateRequired(value, errors, cmd.processCommand.isPersonForm() ||
-                    (cmd.processCommand.isCompanyForm() && cmd.isProcuratorPosition()),
+            CustomValidator.validateRequired(value, errors, cmd.isCBDDataChangedManually && (cmd.processCommand.isPersonForm() ||
+                    (cmd.processCommand.isCompanyForm() && cmd.isProcuratorPosition())),
                     "citizenship", "representative.obywatelstwo.required")
         })
 

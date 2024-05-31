@@ -655,11 +655,11 @@ class ProcessCommand implements Serializable {
         ifJCB(nullable:false, blank:false)
         ifUPI(nullable:false, blank:false)
         dzialalnoscForma(nullable:true, blank:true, validator: {value, cmd, errors ->
-            CustomValidator.validateRequired(value, errors, cmd.hasNewUmowa && !cmd.dzialalnoscFormaInna && !errors.hasFieldErrors("dzialalnoscForma")
+            CustomValidator.validateRequired(value, errors, !cmd.dzialalnoscFormaInna && !errors.hasFieldErrors("dzialalnoscForma")
                     , "dzialalnoscForma", "dzialanoscForma.required")
         })
         dzialalnoscFormaInna(nullable:true, blank:true, shared: "alphanumeric", validator: {value, cmd, errors ->
-            CustomValidator.validateRequired(value, errors, cmd.hasNewUmowa && !cmd.dzialalnoscForma && !errors.hasFieldErrors("dzialalnoscForma"),
+            CustomValidator.validateRequired(value, errors, !cmd.dzialalnoscForma && !errors.hasFieldErrors("dzialalnoscForma"),
                     "dzialalnoscForma", "dzialanoscForma.required")
         })
         dzialalnoscDokument(nullable:true, blank:true)

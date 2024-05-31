@@ -34,7 +34,7 @@ class BeneficiaryCommand extends RepresentativeCommand implements Serializable {
         })
 
         citizenship(nullable: true, maxSize: 30, validator: {value, cmd, errors ->
-            CustomValidator.validateRequired(value, errors, true,
+            CustomValidator.validateRequired(value, errors, cmd.isCBDDataChangedManually,
                     "citizenship", "representative.obywatelstwo.required")
         })
 
