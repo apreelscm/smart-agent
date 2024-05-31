@@ -18,7 +18,7 @@
 
         <g:hiddenField name="${prefix}[${seqNo}].hasSignedContract"
                        cbdDataHiddenField="cbdDataHiddenField"
-                       disabled="${representative?.isCBDDataChangedManually}"
+                       disabled="${representative == null || representative?.isCBDDataChangedManually}"
                        value="${representative?.hasSignedContract}"/>
 
         <script type="text/javascript">

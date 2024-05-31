@@ -43,7 +43,7 @@
               disabled="${!representative?.isCBDDataChangedManually}"
               validatable="${representative}" validateField="salutation"/>
     <g:hiddenField name="${prefix}[${seqNo}].salutation"
-                   disabled="${representative?.isCBDDataChangedManually || representative?.additionalData}"
+                   disabled="${representative == null || representative?.isCBDDataChangedManually || representative?.additionalData}"
                    cbdDataHiddenField="cbdDataHiddenField"
                    value="${representative?.salutation}"/>
 
@@ -70,7 +70,7 @@
                          validatable="${representative}"
                          validateField="position"/>
     <g:hiddenField name="${prefix}[${seqNo}].position"
-                   disabled="${representative?.isCBDDataChangedManually || representative?.additionalData}"
+                   disabled="${representative == null || representative?.isCBDDataChangedManually || representative?.additionalData}"
                    cbdDataHiddenField="cbdDataHiddenField"
                    value="${representative?.position}"/>
 </div>

@@ -128,6 +128,8 @@
         jQuery("#representativesContainer input[type=radio][name$='isCBDDataChangedManually']:checked").each(function (_, element) {
             onRepresentativeCBDDataChange.call(element, false);
         });
+
+        disableHiddenRepresentativesFields();
     }
 
     function manageVisibilityOfDocumentInfo($acceptor) {

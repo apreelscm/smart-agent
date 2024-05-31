@@ -21,7 +21,7 @@
                           disabled="${!representative?.isCBDDataChangedManually && !representative?.additionalData}"
                           style="min-width: 150px"/>
                 <g:hiddenField name="${prefix}[${seqNo}].documentType"
-                               disabled="${representative?.isCBDDataChangedManually || representative?.additionalData}"
+                               disabled="${representative == null || representative?.isCBDDataChangedManually || representative?.additionalData}"
                                cbdDataHiddenField="cbdDataHiddenField"
                                value="${representative?.documentType}"/>
             </div>
@@ -62,7 +62,7 @@
                          checked="${data.isPersonForm() &&
                                  (representative?.verification?.name() == "PESEL" || (data.isFromBisnode && representative?.pesel))}"/>
                 <g:hiddenField name="${prefix}[${seqNo}].verification"
-                               disabled="${representative?.isCBDDataChangedManually && !(data.isFromBisnode && representative?.pesel)}"
+                               disabled="${representative == null || representative?.isCBDDataChangedManually && !(data.isFromBisnode && representative?.pesel)}"
                                cbdDataHiddenField="cbdDataHiddenField"
                                value="${representative?.verification}"/>
                 <div class="label"><g:message code="pesel.label"/></div>
@@ -102,7 +102,7 @@
                                 validatable="${representative}"
                                 validateField="birthCountry"/>
             <g:hiddenField name="${prefix}[${seqNo}].birthCountry"
-                           disabled="${representative?.isCBDDataChangedManually || representative?.additionalData}"
+                           disabled="${representative == null || representative?.isCBDDataChangedManually || representative?.additionalData}"
                            cbdDataHiddenField="cbdDataHiddenField"
                            value="${representative?.birthCountry}"/>
         </div>
@@ -122,7 +122,7 @@
                          checked="${representative?.telephoneType == TelephoneType.MOBILE}"
                          disabled="${!representative?.isCBDDataChangedManually && !representative?.additionalData}"/>
                 <g:hiddenField name="${prefix}[${seqNo}].telephoneType"
-                               disabled="${representative?.isCBDDataChangedManually || representative?.additionalData}"
+                               disabled="${representative == null || representative?.isCBDDataChangedManually || representative?.additionalData}"
                                cbdDataHiddenField="cbdDataHiddenField"
                                value="${representative?.telephoneType}"/>
                 <label for="${prefix}[${seqNo}].telephoneType"><g:message code="panel.mobile.phone.number"/></label>
@@ -204,7 +204,7 @@
                                 validateField="citizenship"
             />
             <g:hiddenField name="${prefix}[${seqNo}].citizenship"
-                           disabled="${representative?.isCBDDataChangedManually || representative?.additionalData}"
+                           disabled="${representative == null || representative?.isCBDDataChangedManually || representative?.additionalData}"
                            cbdDataHiddenField="cbdDataHiddenField"
                            value="${representative?.citizenship}"/>
         </div>

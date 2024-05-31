@@ -27,7 +27,7 @@
               disabled="${!representative?.isCBDDataChangedManually}"
               validatable="${representative}" validateField="salutation" required="required"/>
     <g:hiddenField name="${prefix}[${seqNo}].salutation"
-                   disabled="${representative?.isCBDDataChangedManually}"
+                   disabled="${representative == null || representative?.isCBDDataChangedManually}"
                    cbdDataHiddenField="cbdDataHiddenField"
                    value="${representative?.salutation}"/>
 
@@ -56,7 +56,7 @@
                         validateField="citizenship"
     />
     <g:hiddenField name="${prefix}[${seqNo}].citizenship"
-                   disabled="${representative?.isCBDDataChangedManually || representative?.citizenship == null }"
+                   disabled="${representative == null || representative?.isCBDDataChangedManually || representative?.citizenship == null }"
                    cbdDataHiddenField="cbdDataHiddenField"
                    value="${representative?.citizenship}"/>
 </div>

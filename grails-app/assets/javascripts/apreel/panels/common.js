@@ -10,7 +10,7 @@ function disableFields(fieldsContainer) {
 }
 
 function enableFields(fieldsContainer) {
-    fieldsContainer.find("input:not([cbdDataHiddenField=\"cbdDataHiddenField\"]), select").removeAttr('disabled');
+    fieldsContainer.find('input:not([cbdDataHiddenField="cbdDataHiddenField"]), select').removeAttr('disabled');
     fieldsContainer.find("input, select").removeAttr('readonly');
 }
 
