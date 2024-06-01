@@ -725,6 +725,25 @@ class PdfIntegrTests extends ControllerUnitTestMixin {
             "C:\\opt\\eumowy\\pdf_templates\\test.pdf", data);
     }
 
+    @Test
+    void APUW_OZWU() {
+        given:
+        data.putAll(akceptantIReprezentanciFields())
+        data.putAll(umowaOznaczonaFields())
+        data.putAll(listaPlacowekAkceptujacychFields())
+        data.putAll(poziomOplatIWarunkiPlatnosciFields())
+        data.putAll(specyfikacjaPoziomuOplatIWarunkowPlatnosciFields())
+        data.putAll(wykazTerminaliPOSFields())
+        data.putAll(markedDeliveryType())
+        data.putAll(uslugiDodatkoweFields())
+        data.put("ssr_true", ["true", "", "checkbox"] as String[])
+        data.put("akceptantKodPocztowy1", ["00"] as String[])
+        data.put("akceptantKodPocztowy2", ["660"] as String[])
+
+        then:
+        process("APUW_OZWU1.00021-07-26.pdf", "APUW_OZWU1.00021-07-26_out.pdf", data)
+    }
+
     void process(templateName, outName, data) {
         byte[] pdf = service.fillPdfFormFromURI(PdfHelper.fileTemplatePath + templateName, data, PdfGenerator.FontType.ARIAL)
 
