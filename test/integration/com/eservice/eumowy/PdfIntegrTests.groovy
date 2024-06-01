@@ -210,6 +210,8 @@ class PdfIntegrTests extends ControllerUnitTestMixin {
         data.putAll(poziomOplatIWarunkiPlatnosciFields())
         data.putAll(specyfikacjaPoziomuOplatIWarunkowPlatnosciFields())
         data.putAll(PdfHelper.insertSignatures(subscriptions))
+        data.put("dccTransaction", ["true", "", "checkbox"] as String[]);
+        data.put("cashbackTransaction", ["true", "", "checkbox"] as String[]);
 
         then:
             process(PdfHelper.DOCUMENTS_PATH_22_09_01 + "APUPZT41.00922-09-01.pdf",
