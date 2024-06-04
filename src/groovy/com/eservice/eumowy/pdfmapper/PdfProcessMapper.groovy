@@ -106,7 +106,7 @@ class PdfProcessMapper extends AbstractPdfMapper{
             dataMap.put("crossNew", ['_____'] as String[])
         }
 
-        if (SignatureHelper.containsAtLeastOne(processInstance, newArrayList(SignatureName.APUW.currentVersion)) &&
+        if (SignatureHelper.containsAtLeastOne(processInstance, newArrayList(SignatureName.APUW)) &&
                 contains(processInstance, WYMIANA_UMOWY_NAJMU_NA_UMOWE_WSPOLPRACY)) {
             dataMap.put("promObjNaj1", [""] as String[])
         }

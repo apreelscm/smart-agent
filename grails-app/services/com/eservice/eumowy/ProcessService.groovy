@@ -1168,7 +1168,7 @@ class ProcessService {
     private def addLiczbaMiesZwolNaj1ProcessData(Process process, def processDataList, def calc){
         def liczbaMiesZwolNaj1 = calculatorService.getCalcProperty(calc,"E_LICZBA_MIES_ZWOL_NAJ_1")
 
-        if (SignatureHelper.contains(process, SignatureName.APUW.currentVersion)) {
+        if (SignatureHelper.contains(process, SignatureName.APUW)) {
             liczbaMiesZwolNaj1 = liczbaMiesZwolNaj1 ? (parseInt(liczbaMiesZwolNaj1.trim()) + 1) : liczbaMiesZwolNaj1
         }
 

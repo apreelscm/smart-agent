@@ -42,7 +42,7 @@ class PanelService {
         cmd.promObjNaj1 = calculatorService.getCalcProperty(calc, "E_PROM_OBN_NAJ_1")
         cmd.beneficjentKRS = nullify(cmd.beneficjentKRS)
 
-        if (SignatureHelper.containsAtLeastOne(cmd.process, newArrayList(SignatureName.APUW.currentVersion)) &&
+        if (SignatureHelper.containsAtLeastOne(cmd.process, newArrayList(SignatureName.APUW)) &&
             !contains(cmd.process, WYMIANA_UMOWY_NAJMU_NA_UMOWE_WSPOLPRACY)) {
             def val = calculatorService.getCalcProperty(calc, "E_MIES_NAL_OPL_NAJ")
             cmd.promObjNaj1 = val ? val : 1

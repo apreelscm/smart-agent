@@ -3,10 +3,10 @@ package com.eservice.eumowy
 
 class SignatureHelper {
 
-    static boolean containsAtLeastOne(Process process, List<String> signatures) {
+    static boolean containsAtLeastOne(Process process, List<SignatureName> signatures) {
         boolean hasAtLeastOneSignature = false
 
-        for(String signature : signatures) {
+        for(SignatureName signature : signatures) {
             if(contains(process, signature)) {
                 hasAtLeastOneSignature = true
                 break
@@ -16,7 +16,7 @@ class SignatureHelper {
         return hasAtLeastOneSignature
     }
 
-    static boolean contains(Process process, String signatureName) {
-        return process.signatures?.any { it.name.equals(signatureName) }
+    static boolean contains(Process process, SignatureName signatureName) {
+        return process.signatures?.any { signatureName.matches(it.name) }
     }
 }

@@ -1,11 +1,18 @@
 package com.eservice.eumowy
 
+
+import java.util.regex.Pattern
+
 enum SignatureName {
-    APUW("AP/UW/1.008/21-01-01")
+    APUW("AP/UW/.*")
 
-    final String currentVersion
+    private final Pattern pattern
 
-    private SignatureName(final String currentVersion) {
-        this.currentVersion = currentVersion
+    private SignatureName(final String pattern) {
+        this.pattern = Pattern.compile(pattern)
+    }
+
+    boolean matches(String pattern) {
+        return this.pattern.matcher(pattern).find();
     }
 }
