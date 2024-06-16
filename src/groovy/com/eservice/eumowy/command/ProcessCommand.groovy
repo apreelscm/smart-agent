@@ -1171,6 +1171,10 @@ class ProcessCommand implements Serializable {
         return counter
     }
 
+    boolean isBusinessLegalFormSelected() {
+        return dzialalnoscForma && !DEFAULT_VALUE.equals(dzialalnoscForma)
+    }
+
     boolean isPersonForm() {
         return dzialalnoscForma && !DEFAULT_VALUE.equals(dzialalnoscForma) ? LegalForm.valueOf(dzialalnoscForma).isPerson() : null
     }

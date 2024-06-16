@@ -30,15 +30,15 @@
             function getPhoneContainer() {
                 return isCompany()
                     ? jQuery('.phone-container-${prefix}-${seqNo}.phone-container-company')
-                    : jQuery('.phone-container-${prefix}-${seqNo}');
+                    : jQuery('.phone-container-${prefix}-${seqNo}.phone-container-person');
             }
             function getEmailContainer() {
                 return isCompany()
                     ? jQuery('.email-container-${prefix}-${seqNo}.email-container-company')
-                    : jQuery('.email-container-${prefix}-${seqNo}');
+                    : jQuery('.email-container-${prefix}-${seqNo}.email-container-person');
             }
             var ${prefix}Form${seqNo} = {
-                isSignedContractChecked: jQuery('input[name="${prefix}[${seqNo}].hasSignedContract"]:checked').val(),
+                isSignedContractChecked: jQuery('input[name="${prefix}[${seqNo}].hasSignedContract"]:checked').val()?.toLowerCase() === 'true',
                 isCompany: isCompany(),
                 $hasSignedContract: jQuery('#hasSignedContract-${prefix}-${seqNo}'),
                 $phoneContainer: getPhoneContainer(),
@@ -59,7 +59,7 @@
                 ${prefix}Form${seqNo}.$hasSignedContract.find('input:not([type="hidden"])').removeAttr('disabled');
             }
 
-            if (${prefix}Form${seqNo}.isSignedContractChecked === undefined || ${prefix}Form${seqNo}.isSignedContractChecked === 'false') {
+            if (!${prefix}Form${seqNo}.isSignedContractChecked) {
                 ${prefix}Form${seqNo}.$phoneContainer.hide();
                 ${prefix}Form${seqNo}.$phoneContainer.find('input[type=radio].telephone-type:checked').attr('checked', false);
                 ${prefix}Form${seqNo}.$phoneContainer.find('input.phone-number').val(null);
