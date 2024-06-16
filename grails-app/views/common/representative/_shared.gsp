@@ -24,11 +24,25 @@
         <script type="text/javascript">
             // This script gets repeated for each panel, we need to make sure global variables that target specific panel
             // have unique names, otherwise variable values might be overwritten with data from last panel
+            function isCompany() {
+                return jQuery('#panel-${prefix}-${seqNo}').children('div.companyData').is(':visible') === true;
+            }
+            function getPhoneContainer() {
+                return isCompany()
+                    ? jQuery('.phone-container-${prefix}-${seqNo}.phone-container-company')
+                    : jQuery('.phone-container-${prefix}-${seqNo}');
+            }
+            function getEmailContainer() {
+                return isCompany()
+                    ? jQuery('.email-container-${prefix}-${seqNo}.email-container-company')
+                    : jQuery('.email-container-${prefix}-${seqNo}');
+            }
             var ${prefix}Form${seqNo} = {
                 isSignedContractChecked: jQuery('input[name="${prefix}[${seqNo}].hasSignedContract"]:checked').val(),
-                $phoneContainer: jQuery('.phone-container-${prefix}-${seqNo}'),
-                $emailContainer: jQuery('.email-container-${prefix}-${seqNo}'),
-                $hasSignedContract: jQuery('#hasSignedContract-${prefix}-${seqNo}')
+                isCompany: isCompany(),
+                $hasSignedContract: jQuery('#hasSignedContract-${prefix}-${seqNo}'),
+                $phoneContainer: getPhoneContainer(),
+                $emailContainer: getEmailContainer(),
             };
             var $acceptorsPanel = jQuery("#acceptorsPanel"),
                 isAnyDataManual = $acceptorsPanel.find("input[type=radio][name$='isCBDDataChangedManually'][value=true]:checked").length > 0,

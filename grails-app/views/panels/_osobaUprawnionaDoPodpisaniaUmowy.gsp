@@ -10,7 +10,7 @@
 
             <div id="representativesContainer">
                 <g:each in="${0..3}">
-                    <div class="acceptor ${it != 0 && (it >= data.representatives.size()) ? 'hidden' : ''}">
+                    <div id="panel-representatives-${it}" class="acceptor ${it != 0 && (it >= data.representatives.size()) ? 'hidden' : ''}">
                         <div class="basicRepresentativeData">
                             <g:render template="/common/representative/basicData" model="[prefix: 'representatives', seqNo: it,
                                                                                           representative: data.representatives[it]]"/>

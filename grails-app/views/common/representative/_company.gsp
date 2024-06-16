@@ -129,7 +129,7 @@
                               class="phone-number ${representative?.telephoneType == TelephoneType.LANDLINE ? 'phone' : 'mobile-phone'}"/>
         </div>
 
-        <div class="email-container email-container-${prefix}-${seqNo}"
+        <div class="email-container email-container-${prefix}-${seqNo} email-container-company"
              style="${data.isPersonForm() && representative?.hasSignedContract != true ? 'display: none;' : ''}">
             <span>
                 <g:message code="panel.email"/>: <eumowy:textField name="${prefix}[${seqNo}].email"
