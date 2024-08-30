@@ -5,3 +5,6 @@ out
 logs
 *.iml
 /.slcache/*.bytes
+
+# TODO Add to ignored files once we have nodejs support in build pipelines
+# grails-app/assets/javascripts/eumowy-lib.js

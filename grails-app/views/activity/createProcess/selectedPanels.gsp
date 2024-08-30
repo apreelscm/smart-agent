@@ -1,4 +1,4 @@
-<%@ page import="com.eservice.eumowy.Activity" %>
+<%@ page import="com.eservice.eumowy.ActivityHelper; com.eservice.eumowy.Activity" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -225,7 +225,7 @@
         <p><g:message code="noCityFound"/></p>
     </div>
 
-    <g:form class="panelsForm">
+    <g:form class="panelsForm" id="panelsForm">
         %{--eUmowy_ext-364--}%
         <g:submitButton id="hackishSubmit" name="hackishSubmit" style="visibility: hidden"/>
 
@@ -268,7 +268,13 @@
             </g:if>
         </g:each>
         <g:render template="/panels/uwagi"/>
+        <g:if test="${ActivityHelper.isNewAgreement(processInstance)}">
+            <g:render template="/panels/zgodyMarketingowe"/>
+        </g:if>
     </g:form>
+    <script>
+        jQuery('form.panelsForm').attr('id', 'panelsForm')
+    </script>
 
     <g:render template="/panels/zalaczniki"/>
 

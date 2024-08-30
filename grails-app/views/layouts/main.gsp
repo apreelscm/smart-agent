@@ -19,6 +19,7 @@
     </g:else>
 
     <asset:javascript src="application.js"/>
+    <asset:javascript src="eumowy-lib.js" type="module"/>
 
     <g:if test="${params.controller != 'login' && grails.util.Environment.getCurrentEnvironment() != grails.util.Environment.DEVELOPMENT}">
         <asset:javascript src="apreel/session_utils.js"/>

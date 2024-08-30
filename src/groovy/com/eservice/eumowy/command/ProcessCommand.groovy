@@ -490,6 +490,13 @@ class ProcessCommand implements Serializable {
     @Omit
     def defaultPosData
 
+    Boolean consentsChannelAll
+    Boolean consentsChannelClientPortal
+    Boolean consentsChannelEmail
+    Boolean consentsChannelSMS
+    Boolean consentsChannelPhone
+    Boolean consentsChannelNone
+
     @Omit
     static constraints = {
         oplataZaDzienneZestawienieTransakcji(nullable: false, blank: false,  validator: { value, cmd, errors -> NumberValidator.validate(value, cmd, errors, propertyName)})
@@ -1147,6 +1154,13 @@ class ProcessCommand implements Serializable {
 
             return true
         })
+
+        consentsChannelAll(nullable:true, validator: ConsentsValidator.validate)
+        consentsChannelClientPortal(nullable:true, validator: ConsentsValidator.validate)
+        consentsChannelEmail(nullable:true, validator: ConsentsValidator.validate)
+        consentsChannelSMS(nullable:true, validator: ConsentsValidator.validate)
+        consentsChannelPhone(nullable:true, validator: ConsentsValidator.validate)
+        consentsChannelNone(nullable:true, validator: ConsentsValidator.validate)
     }
 
     def checkIfFromCbd(def property) {

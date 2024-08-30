@@ -55,6 +55,15 @@ class Process implements Serializable {
         return String.format("%s - %s %s", phNumber, phFirstName, phSurname)
     }
 
+    void addOrReplaceProcessData(ProcessData data) {
+        ProcessData existing = processData.find { it.name == data.name }
+        if (existing == null) {
+            addToProcessData(data)
+        } else if (existing.value != data.value) {
+            existing.value = data.value
+        }
+    }
+
     static transients = ['stringId']
 
     static hasMany = [

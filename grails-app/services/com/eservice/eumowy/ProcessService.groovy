@@ -19,6 +19,7 @@ import serializationutils.SerializationUtils
 
 import static com.eservice.eumowy.ActivityHelper.DODANIE_DCC
 import static com.eservice.eumowy.ActivityHelper.ZMIANA_WARUNKOW_DCC
+import static com.eservice.eumowy.ActivityHelper.isBundleActivity
 import static com.google.common.collect.Lists.newArrayList
 import static java.lang.Integer.parseInt
 import static java.lang.Integer.valueOf
@@ -493,13 +494,15 @@ class ProcessService {
     def loadProcessData(def process, def cmd) {
         process.processData?.each {ProcessData data ->
             if (!cmd.hasProperty(data.name)){
-                log.warn('NoSuchField in ProcessComand for : ' + data.name)
+                log.warn('NoSuchField in ProcessCommand for : ' + data.name)
                 return
             } else if (["errors", "class"].contains(data.name) || (hasAnnotation(cmd, data.name, Omit) && getAnnotation(cmd, data.name, Omit).inPopulate())){
                 return
             } else if (hasAnnotation(cmd, data.name, DateField)){
                 cmd[data.name] = data.value?.trim()? DateUtils.getFormattedDate(DateUtils.parseWithTimezone(data.value), DateUtils.YYYY_MM_DD) : "";
                 return;
+            } else if (isBoolProperty(cmd, data.name)) {
+                cmd[data.name] = data.value != null ? Boolean.valueOf(data.value) : null
             } else {
                 cmd[data.name] = data.value ?: ""
             }
@@ -969,29 +972,22 @@ class ProcessService {
     }
 
     /** save data */
-    def populateProcessWithData(Process process, def cmd, def calc){
-        def processDataList = getDataFromPanels(cmd)
+    def populateProcessWithData(Process process, ProcessCommand cmd, def calc){
+        List<ProcessData> processDataList = getDataFromPanels(cmd)
 
         addCurrentDate(processDataList)
         addLiczbaMiesZwolNaj1ProcessData(process, processDataList, calc)
 
-        processDataList.each { ProcessData data ->
-            def foundData = process.processData.find { it.name == data.name }
-            if(!foundData){
-                process.addToProcessData(data)
-            }else if(data.value != foundData.value){
-                foundData.value = data.value
-            }
-        }
+        processDataList.each { ProcessData data -> process.addOrReplaceProcessData(data) }
 
-        def pointDataList = getPointCommandsToPointDataList(cmd)
+        List<PointData> pointDataList = getPointCommandsToPointDataList(cmd)
 
         pointDataList?.each { PointData point ->
             point.save(flush: true)
             process.addToPoints(point)
         }
 
-		def posDataList = getPointCommandsToPosDataList(cmd, process)
+        List<PointData> posDataList = getPointCommandsToPosDataList(cmd, process)
 
 		posDataList?.each { PointData point ->
             point.save(flush: true)
@@ -1006,7 +1002,18 @@ class ProcessService {
 
         process.notesToCoa = cmd.notes //notesToCOA
 
+        fillConsents(cmd, process)
+
         process
+    }
+
+    private void fillConsents(ProcessCommand cmd, Process process) {
+        process.addOrReplaceProcessData(new ProcessData(name: 'consentsChannelAll', value: cmd.consentsChannelAll))
+        process.addOrReplaceProcessData(new ProcessData(name: 'consentsChannelClientPortal', value: cmd.consentsChannelClientPortal))
+        process.addOrReplaceProcessData(new ProcessData(name: 'consentsChannelEmail', value: cmd.consentsChannelEmail))
+        process.addOrReplaceProcessData(new ProcessData(name: 'consentsChannelSMS', value: cmd.consentsChannelSMS))
+        process.addOrReplaceProcessData(new ProcessData(name: 'consentsChannelPhone', value: cmd.consentsChannelPhone))
+        process.addOrReplaceProcessData(new ProcessData(name: 'consentsChannelNone', value: cmd.consentsChannelNone))
     }
 
     private def fillPaymentUsage(def cmd, def process){
@@ -1193,8 +1200,12 @@ class ProcessService {
         obj.getClass().declaredFields.find { it -> it.name == property }.getAnnotation(annotClass);
     }
 
-    def getDataFromPanels(def cmd) {
-        def processDataList = [];
+    private boolean isBoolProperty(Object obj, String property) {
+        obj.getClass().declaredFields.find { it.name == property }.getType() == Boolean.class
+    }
+
+    List<ProcessData> getDataFromPanels(ProcessCommand cmd) {
+        List<ProcessData> processDataList = [];
         def dataToSave = findAllPropertiesToSave(cmd, Omit);
         dataToSave.findAll { it.value != ProcessCommand.DEFAULT_VALUE && !["class", "errors"].contains(it.key) }.each { key, value ->
             if (hasAnnotation(cmd, key, DateField) || "dataUmowy".equals(key)){
@@ -1208,8 +1219,8 @@ class ProcessService {
         processDataList
     }
 
-    def getPointCommandsToPointDataList(def cmd) {
-        def pointsList = []
+    List<PointData> getPointCommandsToPointDataList(ProcessCommand cmd) {
+        List<PointData> pointsList = []
 
         cmd.points?.each { PointCommand pc ->
             if (pc == null) {
@@ -1426,8 +1437,8 @@ class ProcessService {
         return pointsList
     }
 
-    def getPointCommandsToPosDataList(def cmd, def process) {
-        def pointsList = []
+    List<PointData> getPointCommandsToPosDataList(def cmd, def process) {
+        List<PointData> pointsList = []
         cmd.poses?.each { PointCommand pc ->
             boolean isNew = false
             if (pc == null) {
