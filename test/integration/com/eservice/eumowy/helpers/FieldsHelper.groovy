@@ -233,6 +233,7 @@ class FieldsHelper {
         data.put("oplataAutoryzacyjnaNr", ["5"] as String[]);
         data.put("ifOplataPKOPB", ["5"] as String[]);
         data.put("ifOplataPKOBPPr", ["5"] as String[]);
+        data.put("paymentForKASReporting", ["5"] as String[]);
 
         return data
     }

@@ -671,6 +671,12 @@ class PanelService {
         cmd.cashbackUpust = calcCashbackUpust == "0" ? "-" : calcCashbackUpust
     }
 
+    def getOplataZaRaportowanieKAS(ProcessCommand cmd, def calc) {
+        String paymentForKASReporting = calculatorService.getCalcProperty(calc, "E_OPLATA_ZA_RAP_KAS")
+        Boolean isPaymentForKASReportingNotRequired = calculatorService.hasCalcProperty("SELECT_OPLATA_ZA_RAP_KAS", "NIE", calc)
+        cmd.paymentForKASReporting = (paymentForKASReporting == "0" || isPaymentForKASReportingNotRequired) ? "n/d" : paymentForKASReporting
+    }
+
     def getPoziomOplatIWarunkiPlatnosci(ProcessCommand cmd, def calc) {
         cmd.oplatyIPlatnosciDo = "5"
         cmd.oplatyIPlatnosciPowyzej = "10"

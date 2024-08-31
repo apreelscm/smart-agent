@@ -134,7 +134,7 @@ class EumowyFieldTagLib {
                 sb.append("""</div>""")
             }
             else {
-                sb.append("""${postfix}""")
+                sb.append("""&nbsp${postfix}""")
             }
         }
 

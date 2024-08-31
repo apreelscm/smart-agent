@@ -76,6 +76,9 @@ class ProcessCommand implements Serializable {
     String cashbackAbonament = DEFAULT_VALUE
     Boolean isCashbackUpustEditable
 
+    //oplataZaRaportowanieKAS
+    String paymentForKASReporting = DEFAULT_VALUE
+
     //poziomOplatIWarunkiPlatnosci
     String oplatyIPlatnosciDo = DEFAULT_VALUE
     String oplatyIPlatnosciPowyzej = DEFAULT_VALUE
@@ -697,6 +700,10 @@ class ProcessCommand implements Serializable {
 
         oplataDeinstalacyjna(nullable: true, blank: true, validator: { value, cmd, errors ->
             return ConditionValidator.atLeastCalcValue(value, cmd, errors, propertyName, "OPLATA_DEINST_WARTOSC")
+        })
+
+        paymentForKASReporting(nullable: true, blank: true, validator: { value, cmd, errors ->
+            return ConditionValidator.atLeastCalcValue(value, cmd, errors, propertyName, "E_OPLATA_ZA_RAP_KAS")
         })
 
         hasKontaktTel(nullable: true, validator: { value, process, errors ->
