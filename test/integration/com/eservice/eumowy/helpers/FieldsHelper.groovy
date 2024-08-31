@@ -348,6 +348,15 @@ class FieldsHelper {
 
         data.put("dinersClubPr", ["5%"] as String[]);
 
+        data.put("tokenizedVisaCardsInPLAndEUPr", ["1%"] as String[])
+        data.put("tokenizedVisaCardsInPLAndEUSt", ["4zł"] as String[])
+        data.put("tokenizedVisaCardsOutOfEUPr", ["1%"] as String[])
+        data.put("tokenizedVisaCardsOutOfEUSt", ["4zł"] as String[])
+        data.put("tokenizedMastercardCardsInPLAndEUPr", ["1%"] as String[])
+        data.put("tokenizedMastercardCardsInPLAndEUSt", ["4zł"] as String[])
+        data.put("tokenizedMastercardCardsOutOfEUPr", ["1%"] as String[])
+        data.put("tokenizedMastercardCardsOutOfEUSt", ["4zł"] as String[])
+
         return data;
     }
 

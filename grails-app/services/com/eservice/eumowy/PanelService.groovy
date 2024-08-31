@@ -515,6 +515,16 @@ class PanelService {
         // 10b
         cmd.blikPr = calculatorService.getCalcProperty(calc, "E_PKO_6")
 
+        // 17
+        cmd.tokenizedVisaCardsInPLAndEUPr = setAtLeastAs(cmd.tokenizedVisaCardsInPLAndEUPr, calculatorService.getCalcProperty(calc, "OPLATA_MSC_843_ZL"))
+        cmd.tokenizedVisaCardsInPLAndEUSt = setAtLeastAs(cmd.tokenizedVisaCardsInPLAndEUSt, calculatorService.getCalcProperty(calc, "OPLATA_MSC_843_ZL"))
+        cmd.tokenizedVisaCardsOutOfEUPr = setAtLeastAs(cmd.tokenizedVisaCardsOutOfEUPr, calculatorService.getCalcProperty(calc, "OPLATA_MSC_843_ZL"))
+        cmd.tokenizedVisaCardsOutOfEUSt = setAtLeastAs(cmd.tokenizedVisaCardsOutOfEUSt, calculatorService.getCalcProperty(calc, "OPLATA_MSC_843_ZL"))
+        cmd.tokenizedMastercardCardsInPLAndEUPr = setAtLeastAs(cmd.tokenizedMastercardCardsInPLAndEUPr, calculatorService.getCalcProperty(calc, "OPLATA_MSC_843_ZL"))
+        cmd.tokenizedMastercardCardsInPLAndEUSt = setAtLeastAs(cmd.tokenizedMastercardCardsInPLAndEUSt, calculatorService.getCalcProperty(calc, "OPLATA_MSC_843_ZL"))
+        cmd.tokenizedMastercardCardsOutOfEUPr = setAtLeastAs(cmd.tokenizedMastercardCardsOutOfEUPr, calculatorService.getCalcProperty(calc, "OPLATA_MSC_843_ZL"))
+        cmd.tokenizedMastercardCardsOutOfEUSt = setAtLeastAs(cmd.tokenizedMastercardCardsOutOfEUSt, calculatorService.getCalcProperty(calc, "OPLATA_MSC_843_ZL"))
+
         cmd.jcbPr = calculatorService.getCalcProperty(calc, "E_JCB")
         cmd.upiPr = calculatorService.getCalcProperty(calc, "E_UPI")
         cmd.oplataAutoryzacyjnaSt = calculatorService.getCalcProperty(calc, "E_OPLATA_ZA_AUTORYZACJE")

@@ -59,7 +59,7 @@ class ValidatorUtils {
     }
 
     public static def getMessage(def cmd, def propertyName){
-        return cmd.metaClass.respondsTo(cmd, MESSAGE_PROPERTY_NAME)? cmd."${MESSAGE_PROPERTY_NAME}"(propertyName) : propertyName;
+        return cmd.metaClass.respondsTo(cmd, MESSAGE_PROPERTY_NAME) ? cmd."${MESSAGE_PROPERTY_NAME}"(propertyName) : propertyName;
     }
 
     public static int pointsWithoutFormaDoladowania(List<PointCommand> points) {

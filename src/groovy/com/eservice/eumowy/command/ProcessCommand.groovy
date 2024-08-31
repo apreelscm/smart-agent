@@ -289,6 +289,15 @@ class ProcessCommand implements Serializable {
     String cardsInEUNotInPL = DEFAULT_VALUE
     String cardsInPL = DEFAULT_VALUE
 
+    String tokenizedVisaCardsInPLAndEUPr = DEFAULT_VALUE
+    String tokenizedVisaCardsInPLAndEUSt = DEFAULT_VALUE
+    String tokenizedVisaCardsOutOfEUPr = DEFAULT_VALUE
+    String tokenizedVisaCardsOutOfEUSt = DEFAULT_VALUE
+    String tokenizedMastercardCardsInPLAndEUPr = DEFAULT_VALUE
+    String tokenizedMastercardCardsInPLAndEUSt = DEFAULT_VALUE
+    String tokenizedMastercardCardsOutOfEUPr = DEFAULT_VALUE
+    String tokenizedMastercardCardsOutOfEUSt = DEFAULT_VALUE
+
 //    poziomOplatIWarunkiPlatnosciPP - 
     String pp_orange_tk = DEFAULT_VALUE
     String pp_orange_tp = DEFAULT_VALUE
@@ -970,6 +979,27 @@ class ProcessCommand implements Serializable {
             ConditionValidator.atLeastCalcValue(value, cmd, errors, propertyName, "OPLATA_MSC_843_ZL")
         })
 
+        tokenizedVisaCardsInPLAndEUPr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> ConditionValidator.atLeastCalcValue(value, cmd, errors, propertyName, "OPLATA_MSC_843_PROCENT")})
+        tokenizedVisaCardsInPLAndEUSt(nullable: false, blank: false, validator: { value, cmd, errors ->
+            NumberValidator.validate(value, cmd, errors, propertyName) &&
+                    ConditionValidator.atLeastCalcValue(value, cmd, errors, propertyName, "OPLATA_MSC_843_ZL")
+        })
+        tokenizedVisaCardsOutOfEUPr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> ConditionValidator.atLeastCalcValue(value, cmd, errors, propertyName, "OPLATA_MSC_843_PROCENT")})
+        tokenizedVisaCardsOutOfEUSt(nullable: false, blank: false, validator: { value, cmd, errors ->
+            NumberValidator.validate(value, cmd, errors, propertyName) &&
+                    ConditionValidator.atLeastCalcValue(value, cmd, errors, propertyName, "OPLATA_MSC_843_ZL")
+        })
+        tokenizedMastercardCardsInPLAndEUPr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> ConditionValidator.atLeastCalcValue(value, cmd, errors, propertyName, "OPLATA_MSC_843_PROCENT")})
+        tokenizedMastercardCardsInPLAndEUSt(nullable: false, blank: false, validator: { value, cmd, errors ->
+            NumberValidator.validate(value, cmd, errors, propertyName) &&
+                    ConditionValidator.atLeastCalcValue(value, cmd, errors, propertyName, "OPLATA_MSC_843_ZL")
+        })
+        tokenizedMastercardCardsOutOfEUPr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> ConditionValidator.atLeastCalcValue(value, cmd, errors, propertyName, "OPLATA_MSC_843_PROCENT")})
+        tokenizedMastercardCardsOutOfEUSt(nullable: false, blank: false, validator: { value, cmd, errors ->
+            NumberValidator.validate(value, cmd, errors, propertyName) &&
+                    ConditionValidator.atLeastCalcValue(value, cmd, errors, propertyName, "OPLATA_MSC_843_ZL")
+        })
+
 
         pp_orange_tk(nullable: true, blank: true,  validator: { value, cmd, errors ->
             PercentageValidator.validate(value, cmd, errors, propertyName) &&
@@ -1170,7 +1200,9 @@ class ProcessCommand implements Serializable {
 
     String getMessageForProperty(String property){
         //metoda musi zostac, jest uzywana m. in. w validatorach
-        return messageSource.getMessage("com.eservice.eumowy.command.ProcessCommand." + property + ".label", [] as Object[], property, Locale.getDefault())
+        return '"' +
+                messageSource.getMessage("com.eservice.eumowy.command.ProcessCommand." + property + ".label", [] as Object[], property, Locale.getDefault())
+        + '"'
     }
 
     Integer getPosCountFromCBD() {

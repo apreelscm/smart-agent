@@ -334,6 +334,15 @@ class PanelMockService {
         cmd.mastercardPKOBPM3St = "2.30"
         cmd.dinersClubPr = "0.02"
         cmd.ikoSt = "0.02"
+
+        cmd.tokenizedVisaCardsInPLAndEUPr = "1"
+        cmd.tokenizedVisaCardsInPLAndEUSt = "4"
+        cmd.tokenizedVisaCardsOutOfEUPr = "1"
+        cmd.tokenizedVisaCardsOutOfEUSt = "4"
+        cmd.tokenizedMastercardCardsInPLAndEUPr = "1"
+        cmd.tokenizedMastercardCardsInPLAndEUSt = "4"
+        cmd.tokenizedMastercardCardsOutOfEUPr = "1"
+        cmd.tokenizedMastercardCardsOutOfEUSt = "4"
     }
 
     def getPromocyjneObnizenieOplatyZaZestawPos(ProcessCommand cmd) {

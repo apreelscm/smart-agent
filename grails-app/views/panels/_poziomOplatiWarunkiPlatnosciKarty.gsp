@@ -307,6 +307,30 @@
                         <td><eumowy:textField name="cardsInPL" readonly="true" value="${data.cardsInPL}" validatable="${data}"/></td>
                         <td></td>
                     </tr>
+                    <tr>
+                        <td class="cardPaymentPanel-padding">17 <g:message code="panel.payment.tokenized"/></td>
+                        <td colspan="2"></td>
+                    </tr>
+                <tr>
+                    <td class="cardPaymentPanel-padding-2">17.1 <g:message code="panel.payment.tokenized.for.visaCardsInPLAndEU"/></td>
+                    <td class="percent-number-col"><eumowy:percentageField class="percent-number" validatable="${data}"  name="tokenizedVisaCardsInPLAndEUPr" value="${data.tokenizedVisaCardsInPLAndEUPr}"/> </td>
+                    <td class="flat-price-col"><eumowy:flatPriceField class="flat-price" validatable="${data}"  name="tokenizedVisaCardsInPLAndEUSt" value="${data.tokenizedVisaCardsInPLAndEUSt}"/> </td>
+                </tr>
+                <tr>
+                    <td class="cardPaymentPanel-padding-2">17.2 <g:message code="panel.payment.tokenized.for.visaCardsOutOfEU"/></td>
+                    <td class="percent-number-col"><eumowy:percentageField class="percent-number" validatable="${data}"  name="tokenizedVisaCardsOutOfEUPr" value="${data.tokenizedVisaCardsOutOfEUPr}"/> </td>
+                    <td class="flat-price-col"><eumowy:flatPriceField class="flat-price" validatable="${data}"  name="tokenizedVisaCardsOutOfEUSt" value="${data.tokenizedVisaCardsOutOfEUSt}"/> </td>
+                </tr>
+                <tr>
+                    <td class="cardPaymentPanel-padding-2">17.3 <g:message code="panel.payment.tokenized.for.mastercardCardsInPLAndEU"/></td>
+                    <td class="percent-number-col"><eumowy:percentageField class="percent-number" validatable="${data}"  name="tokenizedMastercardCardsInPLAndEUPr" value="${data.tokenizedMastercardCardsInPLAndEUPr}"/> </td>
+                    <td class="flat-price-col"><eumowy:flatPriceField class="flat-price" validatable="${data}"  name="tokenizedMastercardCardsInPLAndEUSt" value="${data.tokenizedMastercardCardsInPLAndEUSt}"/> </td>
+                </tr>
+                <tr>
+                    <td class="cardPaymentPanel-padding-2">17.4 <g:message code="panel.payment.tokenized.for.mastercardCardsOutOfEU"/></td>
+                    <td class="percent-number-col"><eumowy:percentageField class="percent-number" validatable="${data}"  name="tokenizedMastercardCardsOutOfEUPr" value="${data.tokenizedMastercardCardsOutOfEUPr}"/> </td>
+                    <td class="flat-price-col"><eumowy:flatPriceField class="flat-price" validatable="${data}"  name="tokenizedMastercardCardsOutOfEUSt" value="${data.tokenizedMastercardCardsOutOfEUSt}"/> </td>
+                </tr>
                 </tbody>
             </table>
         </div>
