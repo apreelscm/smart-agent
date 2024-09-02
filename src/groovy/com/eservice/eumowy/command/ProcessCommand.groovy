@@ -979,25 +979,33 @@ class ProcessCommand implements Serializable {
             ConditionValidator.atLeastCalcValue(value, cmd, errors, propertyName, "OPLATA_MSC_843_ZL")
         })
 
-        tokenizedVisaCardsInPLAndEUPr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> ConditionValidator.atLeastCalcValue(value, cmd, errors, propertyName, "OPLATA_MSC_843_PROCENT")})
+        tokenizedVisaCardsInPLAndEUPr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors ->
+            ConditionValidator.atLeastCalcValue(value, cmd, errors, propertyName, "E_VISA_OPLATA_TOKEN_1")
+        })
         tokenizedVisaCardsInPLAndEUSt(nullable: false, blank: false, validator: { value, cmd, errors ->
             NumberValidator.validate(value, cmd, errors, propertyName) &&
-                    ConditionValidator.atLeastCalcValue(value, cmd, errors, propertyName, "OPLATA_MSC_843_ZL")
+                    ConditionValidator.atLeastCalcValue(value, cmd, errors, propertyName, "E_VISA_OPLATA_TOKEN_1_1")
         })
-        tokenizedVisaCardsOutOfEUPr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> ConditionValidator.atLeastCalcValue(value, cmd, errors, propertyName, "OPLATA_MSC_843_PROCENT")})
+        tokenizedVisaCardsOutOfEUPr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors ->
+            ConditionValidator.atLeastCalcValue(value, cmd, errors, propertyName, "E_VISA_OPLATA_TOKEN_2")
+        })
         tokenizedVisaCardsOutOfEUSt(nullable: false, blank: false, validator: { value, cmd, errors ->
             NumberValidator.validate(value, cmd, errors, propertyName) &&
-                    ConditionValidator.atLeastCalcValue(value, cmd, errors, propertyName, "OPLATA_MSC_843_ZL")
+                    ConditionValidator.atLeastCalcValue(value, cmd, errors, propertyName, "E_VISA_OPLATA_TOKEN_2_1")
         })
-        tokenizedMastercardCardsInPLAndEUPr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> ConditionValidator.atLeastCalcValue(value, cmd, errors, propertyName, "OPLATA_MSC_843_PROCENT")})
+        tokenizedMastercardCardsInPLAndEUPr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors ->
+            ConditionValidator.atLeastCalcValue(value, cmd, errors, propertyName, "E_MASTERCARD_OPLATA_TOKEN_1")
+        })
         tokenizedMastercardCardsInPLAndEUSt(nullable: false, blank: false, validator: { value, cmd, errors ->
             NumberValidator.validate(value, cmd, errors, propertyName) &&
-                    ConditionValidator.atLeastCalcValue(value, cmd, errors, propertyName, "OPLATA_MSC_843_ZL")
+                    ConditionValidator.atLeastCalcValue(value, cmd, errors, propertyName, "E_MASTERCARD_OPLATA_TOKEN_1_1")
         })
-        tokenizedMastercardCardsOutOfEUPr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors -> ConditionValidator.atLeastCalcValue(value, cmd, errors, propertyName, "OPLATA_MSC_843_PROCENT")})
+        tokenizedMastercardCardsOutOfEUPr(nullable: false, blank: false, shared: "number3Precision", validator: {value, cmd, errors ->
+            ConditionValidator.atLeastCalcValue(value, cmd, errors, propertyName, "E_MASTERCARD_OPLATA_TOKEN_2")
+        })
         tokenizedMastercardCardsOutOfEUSt(nullable: false, blank: false, validator: { value, cmd, errors ->
             NumberValidator.validate(value, cmd, errors, propertyName) &&
-                    ConditionValidator.atLeastCalcValue(value, cmd, errors, propertyName, "OPLATA_MSC_843_ZL")
+                    ConditionValidator.atLeastCalcValue(value, cmd, errors, propertyName, "E_MASTERCARD_OPLATA_TOKEN_2_1")
         })
 
 
