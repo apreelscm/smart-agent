@@ -2,6 +2,7 @@ package com.eservice.eumowy.auth
 
 import com.eservice.eumowy.CbdService
 import com.eservice.eumowy.DomainUserDetailsService
+import com.eservice.eumowy.auth.Authenticator
 import com.eservice.eumowy.auth.microldap.AuthResponse
 import com.eservice.eumowy.auth.microldap.MicroLDAPClient
 import com.eservice.eumowy.auth.microldap.User
