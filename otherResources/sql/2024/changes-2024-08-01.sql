@@ -550,11 +550,8 @@ update eumowy.signature set active = 0 where name = v_syg_source;
 
 DELETE FROM eumowy.subscription_definition WHERE signature_id = (SELECT id FROM eumowy.signature WHERE name = v_syg_dest);
 
-v_syg_source := 'virtualPoint';
-v_syg_dest := 'AP/FDP/2.003/24-08-01';
-v_ind := EUMOWY.EUM_HELPER.fkopiuj_sygnature(v_syg_source,v_syg_dest);
+v_syg_dest := 'virtualPoint';
 update eumowy.signature set TEMPLATE_PATH = 'APFDP2.00324-08-01_bez_podpisu_Akceptanta.pdf' where name = v_syg_dest;
-update eumowy.signature set active = 0 where name = v_syg_source;
 
 DELETE FROM eumowy.subscription_definition WHERE signature_id = (SELECT id FROM eumowy.signature WHERE name = v_syg_dest);
 
