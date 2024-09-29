@@ -5,6 +5,7 @@
 * [Grails v2.4.2](https://grails.github.io/grails2-doc/2.4.2/guide/single.html)
 * [Java 1.7](https://www.oracle.com/pl/java/technologies/javase/javase7-archive-downloads.html)
 * [Oracle Database](https://www.oracle.com/pl/database/)
+* NodeJS + NPM
 
 # 2. Uruchamianie projektu
 
@@ -18,6 +19,15 @@
 7. Przekopiowac katalog `otherResources/pdf_templates` do lokalizacji `/opt/eumowy`
 8. Uruchomić projekt z argumentami `-Dgrails.env=development -Dgrails.reload.enabled=true run-app`
    ![Run Config](./readme/run_config.png)
+
+# 4. Budowanie kodu frontendowego
+
+Do projektu został wprowadzony dodatkowy katalog `js-src`. Zawiera kod frontendowy, który następnie jest wpinany do
+frontendów pisanych w GSP (Grails Server Pages).
+
+Kod pisany jest z użyciem TypeScript i budowany przy użyciu Vite.
+Po wprowadzeniu zmian, należy wywołać polecenie `npm run build` z poziomu katalogu `js-src`. Spowoduje to skopiowanie
+zbudowanego kodu do katalogu, z którego Grailsy zaczytują assety frontendowe.
 
 # 3. Linki
 
@@ -106,3 +116,36 @@ Jako targetSystem podajemy środowisko UAT, a w `releaseVersion` wpisujemy paczk
 
 Po zakończeniu zadań należy napisać maila do [Mariusza Adwenta](Mariusz.Adwent@eservice.com.pl) i [Małgorzaty Melissy](malgorzata.melissa@eservice.com.pl) 
 z informacją o tym, że nowa paczka znajduje się na ich serwerze.
+
+# Road to refactoring
+
+1. Change documentation to english
+2. All new code (variables etc.) uses english language
+3. All existing code should slowly be changed to english
+3. Rename "signatures" to "document number" within "document template"
+   - Right now, word "signature" confuses people with signatures people put on documents
+   - Rename "subscriptions" to "signatures"
+4. Document templates should be configured using config file in a well known format (for example YAML)
+   - Currently, they are configured using a database, which makes it harder to have a reproducible setup between environments
+   - Having the configuration in a database makes it harder to test and validate/review changes
+   - Business doesn't edit that configuration themselves
+5. Each document template should be versioned and have it's dedicated mapper class
+   - Right now mapping form data to documents happens using conventions which are hard to follow, remember and maintain
+   - It also makes it harder to test mappings
+6. Each panel should have its own command class encapsulating data gathered from given panel]
+   - Right now a lot of state lives in a big ProcessCommand
+7. Each panel should have its own Panel JS component encapsulating its frontend logic
+   - This will make it easier to migrate that logic to some frontend library in the future (like React or Angular)
+   - Easier to test and isolate changes, faster to find and fix bugs + this gives us better separation between GSP and JS
+8. Move all custom JS code from GSP files to `js-src` project
+9. Reintroduce types gradually to make refactorings and code editing safer and let compiler be our friend in catching bugs
+10. Write code in Java whenever possible. Rewrite Groovy code into Java code when possible.
+   - Follow ideas from hexagonal/ports & adapters architecture, where most of the business code is written in typed Java
+     and it is plugged into the Grails framework
+   - This should make it easier to migrate out of Grails framework to something else in the future and make the code less
+     dependent on the framework infrastructure.
+11. Introduce Flyway to manage DB schema and migrations
+12. Introduce more value objects to represent business concepts and make the source code more type safe
+13. Improve local development experience:
+    - add docker compose with dev database
+    - add fakes & mocks for external services
