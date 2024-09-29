@@ -1,0 +1,16 @@
+# Example
+# documents:
+#   - name: "AP/UW/PON/1.002/18-07-20"
+#     order: 19
+#     active: false
+#     templateFileName: "APUWPON1.00218-07-20.pdf"
+#     fileName: "Załącznik do Umowy Współpracy - Promocyjna obniżka ceny najmu.pdf"
+#     description: "OPIS 181"
+#     isForPoint: false
+#     isForPos: false
+#     sendToClient: true
+#     showOnPreview: true
+#     showOnZrd: true
+#     merge: false
+documents:
+

@@ -7,6 +7,7 @@ import com.eservice.eumowy.auth.FakeAuthenticator
 import com.eservice.eumowy.auth.LdapAuthenticator
 import com.eservice.eumowy.auth.microldap.MicroLDAPClientImpl
 import com.eservice.eumowy.dao.CbdDAO
+import com.eservice.eumowy.documents.DocumentDefinitionsConfiguration
 import com.eservice.eumowy.microbisnode.MicroBisnodeClientImpl
 import com.eservice.eumowy.mocks.MicroBisnodeClientMock
 import com.eservice.eumowy.mocks.WebsClientMock
@@ -117,5 +118,6 @@ beans = {
         dataSource = ref('dataSource')
     }
 
+    documentTemplatesConfiguration(DocumentDefinitionsConfiguration)
 
 }
