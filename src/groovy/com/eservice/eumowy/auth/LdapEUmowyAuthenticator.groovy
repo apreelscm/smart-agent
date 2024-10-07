@@ -2,7 +2,6 @@ package com.eservice.eumowy.auth
 
 import com.eservice.eumowy.CbdService
 import com.eservice.eumowy.DomainUserDetailsService
-import com.eservice.eumowy.auth.Authenticator
 import com.eservice.eumowy.auth.microldap.AuthResponse
 import com.eservice.eumowy.auth.microldap.MicroLDAPClient
 import com.eservice.eumowy.auth.microldap.User
@@ -14,7 +13,7 @@ import org.springframework.context.MessageSource
 import static com.eservice.eumowy.auth.AuthRoles.EUM_PH_BZOS
 import static com.eservice.eumowy.auth.AuthRoles.EUM_ZRD
 
-public class LdapAuthenticator implements Authenticator {
+public class LdapEUmowyAuthenticator implements EUmowyAuthenticator {
     private static final Log log = LogFactory.getLog("audit");
     private static final Object[] EMPTY_ARRAY = new Object[0];
     MicroLDAPClient ldapClient;

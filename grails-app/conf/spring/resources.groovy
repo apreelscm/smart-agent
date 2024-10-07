@@ -3,8 +3,8 @@ import com.eservice.eumowy.CustomDateEditorRegistrar
 import com.eservice.eumowy.auth.AuthRoles
 import com.eservice.eumowy.auth.AuthUser
 import com.eservice.eumowy.auth.DomainAuthenticationProvider
-import com.eservice.eumowy.auth.FakeAuthenticator
-import com.eservice.eumowy.auth.LdapAuthenticator
+import com.eservice.eumowy.auth.FakeEUmowyAuthenticator
+import com.eservice.eumowy.auth.LdapEUmowyAuthenticator
 import com.eservice.eumowy.auth.microldap.MicroLDAPClientImpl
 import com.eservice.eumowy.dao.CbdDAO
 import com.eservice.eumowy.documents.DocumentDefinitionsConfiguration
@@ -84,14 +84,14 @@ beans = {
     customPropertyEditorRegistrar(CustomPropertyEditorRegistrar) {}
     customDateEditorRegistrar(CustomDateEditorRegistrar)
 
-    authenticator(LdapAuthenticator) {
+    ldapAuthenticator(LdapEUmowyAuthenticator) {
         ldapClient = ref('microLDAPClient')
         userDetailsService = ref('domainUserDetailsService')
         cbd = ref('cbdService')
         messageSource = ref('messageSource')
     }
 
-    fakeAuthenticator(FakeAuthenticator) {
+    fakeAuthenticator(FakeEUmowyAuthenticator) {
         users = asList(
                 user(
                         "askonieczny",
@@ -110,7 +110,7 @@ beans = {
     daoAuthenticationProvider(DomainAuthenticationProvider) {
         preAuthenticationChecks = ref('preAuthenticationChecks')
         postAuthenticationChecks = ref('postAuthenticationChecks')
-        authenticator = ref('authenticator')
+        authenticator = ref('ldapAuthenticator')
         // authenticator = ref('fakeAuthenticator')
     }
 

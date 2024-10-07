@@ -20,7 +20,7 @@ class DomainAuthenticationProvider implements AuthenticationProvider {
 
     private static final log = LogFactory.getLog("audit");
 
-    Authenticator authenticator
+    EUmowyAuthenticator authenticator
     UserDetailsChecker preAuthenticationChecks
     UserDetailsChecker postAuthenticationChecks
 

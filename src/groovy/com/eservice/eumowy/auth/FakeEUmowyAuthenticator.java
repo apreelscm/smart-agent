@@ -3,7 +3,7 @@ package com.eservice.eumowy.auth;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FakeAuthenticator implements Authenticator {
+public class FakeEUmowyAuthenticator implements EUmowyAuthenticator {
     private List<AuthUser> users = new ArrayList<AuthUser>();
 
     @Override
