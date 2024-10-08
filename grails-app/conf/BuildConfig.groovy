@@ -58,6 +58,8 @@ grails.project.dependency.resolution = {
 
         //compile "org.apache.httpcomponents:httpclient:4.5.12" when detailed logging needed
 
+        compile 'org.yaml:snakeyaml:1.8'
+
         runtime 'com.google.code.gson:gson:2.2.4'
         runtime 'joda-time:joda-time:2.3'
         runtime 'com.lowagie:itext:2.1.7'
