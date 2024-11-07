@@ -340,12 +340,13 @@ class DocumentService {
         pdm.setDestinationFileName(pdfTemplatePath + documentName)
         PDDocument mergedDoc = new PDDocument()
 
+        List<PDDocument> toClose = new ArrayList()
         for (int i = 0; i < documentsToMerge?.size(); i++) {
             log.info(String.format("Merging document %s", documentsToMerge[i].name))
             ByteArrayInputStream bais = new ByteArrayInputStream(documentsToMerge[i].getContent().getContent())
             PDDocument document = PDDocument.load(bais)
             pdm.appendDocument(mergedDoc, document)
-            document.close()
+            toClose.add(document)
         }
 
         DocumentFile documentFile = DocumentFile.findByNameAndProcess(documentName, process)
@@ -361,8 +362,10 @@ class DocumentService {
             documentFile.setContent(new DocumentContent(content: getBytesContent(mergedDoc)))
             documentFile.save(flush: true)
             log.info(String.format("New document file created %s for process %s", documentFile.id, process.id))
-            mergedDoc.close()
         }
+
+        mergedDoc.close()
+        toClose.each { PDDocument d -> d.close() }
 
         return documentFile
     }
