@@ -77,14 +77,14 @@ class RepresentativeService {
             } else if (telefonStacjonarny) {
                 if (!telefonStacjonarny.contains("-") && telefonStacjonarny.length() == 9) {
                     def maskedPhoneNumber = "(";
-                    for (int i = 0; i < telefonKomorkowy.length(); i++) {
+                    for (int i = 0; i < telefonStacjonarny.length(); i++) {
                         if (i == 2) {
                             maskedPhoneNumber += ") "
                         }
                         if (i == 6 || i == 8) {
                             maskedPhoneNumber += "-"
                         }
-                        maskedPhoneNumber += telefonKomorkowy.charAt(i)
+                        maskedPhoneNumber += telefonStacjonarny.charAt(i)
                     }
                     representative.setLandlinePhone(maskedPhoneNumber)
                 } else {
