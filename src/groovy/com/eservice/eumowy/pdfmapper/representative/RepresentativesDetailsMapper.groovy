@@ -33,6 +33,10 @@ class RepresentativesDetailsMapper extends AbstractPdfMapper implements Mapper {
             representativesData.put(getFieldName(i, "Pesel"), [representative.pesel] as String[])
             representativesData.put(getFieldName(i, "CzyDataUrodzenia"), getCheckedCheckbox(representative.birthDate != null))
             representativesData.put(getFieldName(i, "PanstwoUrodzenia"), [representative.birthCountry] as String[])
+
+            representativesData.put(getFieldName(i, "Adreszamieszkania"), [representative.getAddress()] as String[])
+            representativesData.put(getFieldName(i, "Panstwozamieszkania"), [representative.getCountry()] as String[])
+
             representativesData.put(getFieldName(i, "SeriaNrDokumentu"), [representative.documentNumber] as String[])
             representativesData.put(getFieldName(i, "Obywatelstwo"), [representative.citizenship] as String[])
             if (representative?.documentType != null && representative?.documentType?.toString() != "") {

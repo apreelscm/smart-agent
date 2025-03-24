@@ -37,12 +37,18 @@
                     ? jQuery('.email-container-${prefix}-${seqNo}.email-container-company')
                     : jQuery('.email-container-${prefix}-${seqNo}.email-container-person');
             }
+            function getAddressContainer() {
+                return isCompany()
+                    ? jQuery('.address-container-${prefix}-${seqNo}.address-container-company')
+                    : jQuery('.address-container-${prefix}-${seqNo}.address-container-person');
+            }
             var ${prefix}Form${seqNo} = {
                 isSignedContractChecked: jQuery('input[name="${prefix}[${seqNo}].hasSignedContract"]:checked').val()?.toLowerCase() === 'true',
                 isCompany: isCompany(),
                 $hasSignedContract: jQuery('#hasSignedContract-${prefix}-${seqNo}'),
                 $phoneContainer: getPhoneContainer(),
                 $emailContainer: getEmailContainer(),
+                $addressContainer: getAddressContainer(),
             };
             var $acceptorsPanel = jQuery("#acceptorsPanel"),
                 isAnyDataManual = $acceptorsPanel.find("input[type=radio][name$='isCBDDataChangedManually'][value=true]:checked").length > 0,
@@ -65,12 +71,16 @@
                 ${prefix}Form${seqNo}.$phoneContainer.find('input.phone-number').val(null);
                 ${prefix}Form${seqNo}.$emailContainer.hide();
                 ${prefix}Form${seqNo}.$emailContainer.find('input').val(null);
+                ${prefix}Form${seqNo}.$addressContainer.hide();
+                ${prefix}Form${seqNo}.$addressContainer.find('input').val(null);
             } else {
                 enableFields(${prefix}Form${seqNo}.$phoneContainer);
                 enableFields(${prefix}Form${seqNo}.$emailContainer);
+                enableFields(${prefix}Form${seqNo}.$addressContainer);
 
                 ${prefix}Form${seqNo}.$phoneContainer.show();
                 ${prefix}Form${seqNo}.$emailContainer.show();
+                ${prefix}Form${seqNo}.$addressContainer.show();
             }
 
             jQuery('input[name="${prefix}[${seqNo}].hasSignedContract"]').change(function(e) {
@@ -80,14 +90,18 @@
                     $personData = $acceptor.children('div.personData'),
                     $companyData = $acceptor.children('div.companyData'),
                     $phoneContainer,
-                    $emailContainer;
+                    $emailContainer,
+                    $addressContainer;
+
 
                 if ($personData.is(':visible')) {
                     $phoneContainer = $personData.find('.phone-container');
                     $emailContainer = $personData.find('.email-container');
+                    $addressContainer = $personData.find('.address-container');
                 } else {
                     $phoneContainer = $companyData.find('.phone-container');
                     $emailContainer = $companyData.find('.email-container');
+                    $addressContainer = $companyData.find('.address-container');
                 }
 
                 if (val === 'false') {
@@ -97,12 +111,16 @@
 
                     $emailContainer.hide();
                     $emailContainer.find('input').val(null);
+                    $addressContainer.hide();
+                    $addressContainer.find('input').val(null);
                 } else {
                     enableFields($phoneContainer);
                     enableFields($emailContainer);
+                    enableFields($addressContainer);
 
                     $phoneContainer.show();
                     $emailContainer.show();
+                    $addressContainer.show();
                 }
             });
         </script>

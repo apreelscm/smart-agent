@@ -166,7 +166,7 @@ class Representative implements Serializable {
         if (isOldAddress()) {
             return address
         }
-        StringBuilder sb = new StringBuilder(format("%s. %s %s", streetTitle?.toLowerCase(), street, houseNumber))
+        StringBuilder sb = new StringBuilder(format("%s. %s %s", streetTitle?.toLowerCase() ?: "", street ?: "", houseNumber ?: ""))
         if (flatNumber) {
             sb.append(" m. ").append(flatNumber)
         }

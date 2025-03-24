@@ -103,6 +103,37 @@
                            value="${representative?.birthCountry}"/>
         </div>
 
+        <div class="address-container address-container-${prefix}-${seqNo} address-container-company"
+             style="${!data.isBusinessLegalFormSelected() || (data.isPersonForm() && representative?.hasSignedContract != true) ? 'display: none;' : ''}">
+            <div class="${hasErrors(bean: representative, field: 'address', 'errorSpan')}">
+                <label for="${prefix}[${seqNo}].address"><g:message code="address.label"/></label>
+                <eumowy:textField
+                        name="${prefix}[${seqNo}].address"
+                        value="${representative?.address}"
+                        maxlength="100"
+                        style="width: 750px"
+                        validatable="${representative}"
+                        validateField="address"
+                        readonly="${!representative?.isCBDDataChangedManually && !representative?.additionalData}"
+                />
+            </div>
+
+            <div class="${hasErrors(bean: representative, field: 'country', 'errorSpan')}">
+                <label for="${prefix}[${seqNo}].country"><g:message code="residence.country.label"/></label>
+                <dict:countrySelect
+                        name="${prefix}[${seqNo}].country"
+                        value="${representative?.country}"
+                        validatable="${representative}"
+                        validateField="country"
+                        disabled="${!representative?.isCBDDataChangedManually && !representative?.additionalData}"
+                />
+                <g:hiddenField name="${prefix}[${seqNo}].country"
+                               disabled="${representative == null || representative?.isCBDDataChangedManually || representative?.additionalData}"
+                               cbdDataHiddenField="cbdDataHiddenField"
+                               value="${representative?.country}"/>
+            </div>
+        </div>
+
         <div class="phone-container phone-container-${prefix}-${seqNo} phone-container-company"
              style="${data.isPersonForm() && representative?.hasSignedContract != true ? 'display: none;' : ''}">
             <g:radio class="telephone-type"

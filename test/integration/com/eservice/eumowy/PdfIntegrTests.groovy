@@ -186,6 +186,34 @@ class PdfIntegrTests extends ControllerUnitTestMixin {
     }
 
     @Test
+    void AP_UPZT1_25_03_01() {
+        given:
+        def subscriptions = [
+                ['ACCEPTANT1', 5, 195, 255, 30, 14],
+                ['ACCEPTANT2', 5, 195, 235, 30, 14],
+                ['ACCEPTANT3', 5, 195, 215, 30, 14],
+                ['ACCEPTANT4', 5, 195, 195, 30, 14],
+                ['PH', 5, 380, 50, 59, 28]
+        ]
+
+        when:
+        data.putAll(akceptantIReprezentanciFields())
+        data.putAll(umowaOznaczonaFields())
+        data.putAll(markedDeliveryType())
+        data.putAll(listaPlacowekAkceptujacychFields())
+        data.putAll(platnoscZaTypKarty())
+        data.putAll(poziomOplatIWarunkiPlatnosciFields())
+        data.putAll(specyfikacjaPoziomuOplatIWarunkowPlatnosciFields())
+        data.putAll(PdfHelper.insertSignatures(subscriptions))
+
+        then:
+        process("APUPZT11.01125-03-01.pdf",
+                "",
+                "APUPZT11.01125-03-01.pdf",
+                data)
+    }
+
+    @Test
     void AP_UPZT2() {
         given:
         def subscriptions = [
@@ -236,6 +264,33 @@ class PdfIntegrTests extends ControllerUnitTestMixin {
         process("APUPZT21.01024-08-01.pdf",
                 "",
                 "APUPZT21.01024-08-01.pdf",
+                data)
+    }
+
+    @Test
+    void AP_UPZT2_25_03_01() {
+        given:
+        def subscriptions = [
+                ['ACCEPTANT1', 5, 195, 260, 30, 14],
+                ['ACCEPTANT2', 5, 195, 240, 30, 14],
+                ['ACCEPTANT3', 5, 195, 220, 30, 14],
+                ['ACCEPTANT4', 5, 195, 200, 30, 14],
+                ['PH', 5, 380, 55, 59, 28]
+        ]
+
+        when:
+        data.putAll(akceptantIReprezentanciFields())
+        data.putAll(umowaOznaczonaFields())
+        data.putAll(markedDeliveryType())
+        data.putAll(listaPlacowekAkceptujacychFields())
+        data.putAll(poziomOplatIWarunkiPlatnosciFields())
+        data.putAll(specyfikacjaPoziomuOplatIWarunkowPlatnosciFields())
+        data.putAll(PdfHelper.insertSignatures(subscriptions))
+
+        then:
+        process("APUPZT21.01125-03-01.pdf",
+                "",
+                "APUPZT21.01125-03-01.pdf",
                 data)
     }
 
@@ -296,6 +351,34 @@ class PdfIntegrTests extends ControllerUnitTestMixin {
     }
 
     @Test
+    void AP_UPZT3_25_03_01() {
+        given:
+        def subscriptions = [
+                ['ACCEPTANT1', 5, 195, 255, 30, 14],
+                ['ACCEPTANT2', 5, 195, 235, 30, 14],
+                ['ACCEPTANT3', 5, 195, 215, 30, 14],
+                ['ACCEPTANT4', 5, 195, 195, 30, 14],
+                ['PH', 5, 380, 55, 59, 28]
+        ]
+
+        when:
+        data.putAll(akceptantIReprezentanciFields())
+        data.putAll(umowaOznaczonaFields())
+        data.putAll(markedDeliveryType())
+        data.putAll(listaPlacowekAkceptujacychFields())
+        data.putAll(platnoscZaTypKarty())
+        data.putAll(poziomOplatIWarunkiPlatnosciFields())
+        data.putAll(specyfikacjaPoziomuOplatIWarunkowPlatnosciFields())
+        data.putAll(PdfHelper.insertSignatures(subscriptions))
+
+        then:
+        process("APUPZT31.01125-03-01.pdf",
+                "",
+                "APUPZT31.01125-03-01.pdf",
+                data)
+    }
+
+    @Test
     void AP_UPZT4() {
         given:
         def subscriptions = [
@@ -348,6 +431,34 @@ class PdfIntegrTests extends ControllerUnitTestMixin {
         then:
         process("APUPZT41.01024-08-01.pdf",
                 "", "APUPZT41.01024-08-01.pdf",
+                data)
+    }
+
+    @Test
+    void AP_UPZT4_25_03_01() {
+        given:
+        def subscriptions = [
+                ['ACCEPTANT1', 5, 195, 260, 30, 14],
+                ['ACCEPTANT2', 5, 195, 240, 30, 14],
+                ['ACCEPTANT3', 5, 195, 220, 30, 14],
+                ['ACCEPTANT4', 5, 195, 200, 30, 14],
+                ['PH', 5, 380, 55, 59, 28]
+        ]
+
+        when:
+        data.putAll(akceptantIReprezentanciFields())
+        data.putAll(umowaOznaczonaFields())
+        data.putAll(markedDeliveryType())
+        data.putAll(listaPlacowekAkceptujacychFields())
+        data.putAll(poziomOplatIWarunkiPlatnosciFields())
+        data.putAll(specyfikacjaPoziomuOplatIWarunkowPlatnosciFields())
+        data.putAll(PdfHelper.insertSignatures(subscriptions))
+        data.put("dccTransaction", ["true", "", "checkbox"] as String[]);
+        data.put("cashbackTransaction", ["true", "", "checkbox"] as String[]);
+
+        then:
+        process("APUPZT41.01125-03-01.pdf",
+                "", "APUPZT41.01125-03-01.pdf",
                 data)
     }
 
@@ -428,6 +539,26 @@ class PdfIntegrTests extends ControllerUnitTestMixin {
         then:
         process("APUPZZSNT21.00724-08-01.pdf",
                 "", "APUPZZSNT21.00724-08-01.pdf",
+                data)
+    }
+
+    @Test
+    void AP_UPZ_ZSNT2_25_03_01() {
+        given:
+        def subscriptions = [
+                ['PH', 1, 385, 150, 59, 28]
+        ]
+
+        when:
+        data.putAll(umowaOznaczonaFields())
+        data.putAll(markedDeliveryType())
+        data.putAll(poziomOplatIWarunkiPlatnosciFields())
+        data.putAll(specyfikacjaPoziomuOplatIWarunkowPlatnosciFields())
+        data.putAll(PdfHelper.insertSignatures(subscriptions))
+
+        then:
+        process("APUPZZSNT21.00724-08-01_final.pdf",
+                "", "APUPZZSNT21.00724-08-01_final.pdf",
                 data)
     }
 
@@ -520,6 +651,28 @@ class PdfIntegrTests extends ControllerUnitTestMixin {
     }
 
     @Test
+    void AP_UPZ_ZSNT4_25_03_01() {
+        given:
+        def subscriptions = [
+                ['PH', 1, 385, 160, 59, 28]
+        ]
+
+        when:
+        data.putAll(akceptantIReprezentanciFields())
+        data.putAll(umowaOznaczonaFields())
+        data.putAll(listaPlacowekAkceptujacychFields())
+        data.putAll(markedDeliveryType())
+        data.putAll(poziomOplatIWarunkiPlatnosciFields())
+        data.putAll(specyfikacjaPoziomuOplatIWarunkowPlatnosciFields())
+        data.putAll(PdfHelper.insertSignatures(subscriptions))
+
+        then:
+        process("APUPZZSNT41.00624-08-01_final.pdf",
+                "", "APUPZZSNT41.00624-08-01_final.pdf",
+                data)
+    }
+
+    @Test
     void AP_UW() {
         given:
         def subscriptions = [
@@ -596,6 +749,44 @@ class PdfIntegrTests extends ControllerUnitTestMixin {
         then:
         process("APUW1.01024-08-01.pdf",
                 "", "APUW1.01024-08-01.pdf",
+                data)
+    }
+
+    @Test
+    void AP_UW_25_03_01() {
+        given:
+        def subscriptions = [
+                ['ACCEPTANT1', 4, 190, 360, 59, 28],
+                ['ACCEPTANT2', 4, 190, 325, 59, 28],
+                ['ACCEPTANT3', 4, 190, 290, 59, 28],
+                ['ACCEPTANT4', 4, 190, 250, 59, 28],
+                ['PH', 4, 375, 85, 59, 28]
+        ]
+
+        when:
+        data.putAll(akceptantIReprezentanciFields())
+        data.putAll(umowaOznaczonaFields())
+        data.putAll(listaPlacowekAkceptujacychFields())
+        data.putAll(poziomOplatIWarunkiPlatnosciFields())
+        data.putAll(specyfikacjaPoziomuOplatIWarunkowPlatnosciFields())
+        data.putAll(wykazTerminaliPOSFields())
+        data.putAll(markedDeliveryType())
+        data.putAll(uslugiDodatkoweFields())
+        data.put("umowaNieOzn", ["true", "", "checkbox"] as String[]);
+        data.put("czyUslugaLogo", ["true", "", "checkbox"] as String[]);
+        data.put("czyUslugaLogo", ["true", "", "checkbox"] as String[]);
+        data.put("czyUslugaKalkulator", ["true", "", "checkbox"] as String[]);
+        data.put("czyUslugaDcc", ["true", "", "checkbox"] as String[]);
+        data.put("czyUslugaMUD", ["true", "", "checkbox"] as String[]);
+        data.put("obslugaPrestiz", ["true", "", "checkbox"] as String[]);
+        data.put("obslugaKomfort", ["true", "", "checkbox"] as String[]);
+        data.put("obslugaEkonomiczny", ["true", "", "checkbox"] as String[]);
+        data.put("ssr_true", ["true", "", "checkbox"] as String[]);
+        data.putAll(PdfHelper.insertSignatures(subscriptions))
+
+        then:
+        process("APUW1.01125-03-01.pdf",
+                "", "APUW1.01125-03-01.pdf",
                 data)
     }
 
@@ -893,6 +1084,25 @@ class PdfIntegrTests extends ControllerUnitTestMixin {
     }
 
     @Test
+    void KI_RODO_25_02_01() {
+        //given
+        def subscriptions = [
+                ['ACCEPTANT1', 2, 210, 170, 59, 28],
+                ['ACCEPTANT2', 2, 210, 130, 59, 28],
+                ['ACCEPTANT3', 2, 210, 95, 59, 28],
+                ['ACCEPTANT4', 2, 210, 55, 59, 28],
+        ]
+
+        //when
+        data.putAll(akceptantIReprezentanciFields())
+        data.putAll(PdfHelper.insertSignatures(subscriptions))
+
+        //then
+        process("Kl_RODO25-02-01.pdf",
+                "","KI_RODO25-02-01_out.pdf", data)
+    }
+
+    @Test
     void AP_AGF_DF() {
         //given
         def subscriptions = [
@@ -1142,6 +1352,23 @@ class PdfIntegrTests extends ControllerUnitTestMixin {
         data.putAll(PdfHelper.insertSignatures(subscriptions))
         processRaw("C:\\opt\\eumowy\\pdf_templates\\APAGFPABRPEP1.00521-01-14.pdf",
             "C:\\opt\\eumowy\\pdf_templates\\test.pdf", data);
+    }
+
+    @Test
+    void PABR_PEP_25_03_01() {
+        def data = [:]
+        def subscriptions = [
+                ["ACCEPTANT1", 2, 375, 570, 20, 22],
+                ["ACCEPTANT2", 2, 375, 590, 20, 22],
+                ["ACCEPTANT3", 2, 375, 610, 20, 22],
+                ["ACCEPTANT4", 2, 375, 630, 20, 22],
+                ["PH2", 2, 465, 435, 40, 22],
+                ["PH1", 2, 115, 435, 40, 22],
+        ]
+
+        data.putAll(akceptantIReprezentanciFields())
+        data.putAll(PdfHelper.insertSignatures(subscriptions))
+        process("PABR_PEP25.0303.pdf", "PABR_PEP25.0303.pdf", data)
     }
 
     @Test
