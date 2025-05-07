@@ -25,7 +25,7 @@ class MapperService {
     }
 
     def mapOnlyProcessData(Process processInstance, def calc, boolean isRepOrBenDataChanged) {
-        PdfProcessMapper processMapper = new PdfProcessMapper(processInstance, calculatorService, calc)
+        PdfProcessMapper processMapper = new PdfProcessMapper(processInstance, calculatorService, calc, messageSource)
         def data = [:]
 
         data.putAll(processMapper.mapOnlyProcessData())

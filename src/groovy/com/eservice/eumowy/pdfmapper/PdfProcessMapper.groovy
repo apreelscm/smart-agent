@@ -19,6 +19,7 @@ class PdfProcessMapper extends AbstractPdfMapper{
 
     def calculatorService
     def calc
+    def messageSource
     PdfPointMapper pointMapper
     PdfPosMapper posMapper
     Process processInstance
@@ -26,9 +27,10 @@ class PdfProcessMapper extends AbstractPdfMapper{
 	
 	private static final EMPTY_VALUES = ["", "-"]
 
-    public PdfProcessMapper (Process processInstance, def calculatorService, def calc){
+    public PdfProcessMapper (Process processInstance, def calculatorService, def calc, def messageSource){
         this.calculatorService = calculatorService
         this.calc = calc
+        this.messageSource = messageSource
         this.processInstance = processInstance
 
         pointMapper = new PdfPointMapper()
@@ -702,6 +704,11 @@ class PdfProcessMapper extends AbstractPdfMapper{
                 "samorzadGospodarczy": LegalForm.ECONOMIC_SELF_GOVERNMENT.name(),
         ].each {
             data.put(it.key, getUncheckedCheckbox(it.value != value))
+        }
+        LegalForm lf = LegalForm.values().find { it.name() == value }
+        if (lf != null) {
+            String name = messageSource.getMessage(lf.getMessageCode(), null, Locale.getDefault())
+            data.put("FormaPrawna", [name] as String[])
         }
     }
 

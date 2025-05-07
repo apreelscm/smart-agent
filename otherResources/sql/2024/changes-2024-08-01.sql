@@ -11,6 +11,7 @@ v_syg_dest := 'RODO/24-08-01';
 v_ind := EUMOWY.EUM_HELPER.fkopiuj_sygnature(v_syg_source,v_syg_dest);
 update eumowy.signature set TEMPLATE_PATH = 'KI_RODO24-08-01.pdf' where name = v_syg_dest;
 update eumowy.signature set active = 0 where name = v_syg_source;
+update eumowy.signature set active = 1 where name = v_syg_dest;
 
 DELETE FROM eumowy.subscription_definition WHERE signature_id = (SELECT id FROM eumowy.signature WHERE name = v_syg_dest);
 INSERT INTO eumowy.subscription_definition (ID, VERSION, SIGNATURE_ID, FILE_NAME, ROLE, SUBSCRIPTION_PAGE_NUMBER, SUBSCRIPTIONX, SUBSCRIPTIONY, SCALEX, SCALEY)
@@ -51,6 +52,7 @@ v_syg_dest := 'AP/UW/UD/1.005/24-08-01';
 v_ind := EUMOWY.EUM_HELPER.fkopiuj_sygnature(v_syg_source,v_syg_dest);
 update eumowy.signature set TEMPLATE_PATH = 'APUWUD1.00524-08-01.pdf' where name = v_syg_dest;
 update eumowy.signature set active = 0 where name = v_syg_source;
+update eumowy.signature set active = 1 where name = v_syg_dest;
 
 DELETE FROM eumowy.subscription_definition WHERE signature_id = (SELECT id FROM eumowy.signature WHERE name = v_syg_dest);
 INSERT INTO eumowy.subscription_definition (ID, VERSION, SIGNATURE_ID, FILE_NAME, ROLE, SUBSCRIPTION_PAGE_NUMBER, SUBSCRIPTIONX, SUBSCRIPTIONY, SCALEX, SCALEY)
@@ -67,6 +69,7 @@ v_syg_dest := 'AP/UW/RWT/1.006/24-08-01';
 v_ind := EUMOWY.EUM_HELPER.fkopiuj_sygnature(v_syg_source,v_syg_dest);
 update eumowy.signature set TEMPLATE_PATH = 'APUWRWT1.00624-08-01.pdf' where name = v_syg_dest;
 update eumowy.signature set active = 0 where name = v_syg_source;
+update eumowy.signature set active = 1 where name = v_syg_dest;
 
 DELETE FROM eumowy.subscription_definition WHERE signature_id = (SELECT id FROM eumowy.signature WHERE name = v_syg_dest);
 INSERT INTO eumowy.subscription_definition (ID, VERSION, SIGNATURE_ID, FILE_NAME, ROLE, SUBSCRIPTION_PAGE_NUMBER, SUBSCRIPTIONX, SUBSCRIPTIONY, SCALEX, SCALEY)
@@ -83,6 +86,7 @@ v_syg_dest := 'AP/UW/PON/1.005/24-08-01';
 v_ind := EUMOWY.EUM_HELPER.fkopiuj_sygnature(v_syg_source,v_syg_dest);
 update eumowy.signature set TEMPLATE_PATH = 'APUWPON1.00524-08-01.pdf' where name = v_syg_dest;
 update eumowy.signature set active = 0 where name = v_syg_source;
+update eumowy.signature set active = 1 where name = v_syg_dest;
 
 DELETE FROM eumowy.subscription_definition WHERE signature_id = (SELECT id FROM eumowy.signature WHERE name = v_syg_dest);
 INSERT INTO eumowy.subscription_definition (ID, VERSION, SIGNATURE_ID, FILE_NAME, ROLE, SUBSCRIPTION_PAGE_NUMBER, SUBSCRIPTIONX, SUBSCRIPTIONY, SCALEX, SCALEY)
@@ -99,6 +103,7 @@ v_syg_dest := 'AP/UW/DED/1.003/24-08-01';
 v_ind := EUMOWY.EUM_HELPER.fkopiuj_sygnature(v_syg_source,v_syg_dest);
 update eumowy.signature set TEMPLATE_PATH = 'APUWDED1.00324-08-01.pdf' where name = v_syg_dest;
 update eumowy.signature set active = 0 where name = v_syg_source;
+update eumowy.signature set active = 1 where name = v_syg_dest;
 
 DELETE FROM eumowy.subscription_definition WHERE signature_id = (SELECT id FROM eumowy.signature WHERE name = v_syg_dest);
 INSERT INTO eumowy.subscription_definition (ID, VERSION, SIGNATURE_ID, FILE_NAME, ROLE, SUBSCRIPTION_PAGE_NUMBER, SUBSCRIPTIONX, SUBSCRIPTIONY, SCALEX, SCALEY)
@@ -115,6 +120,7 @@ v_syg_dest := 'AP/UW/AWU/1.001/24-08-01';
 v_ind := EUMOWY.EUM_HELPER.fkopiuj_sygnature(v_syg_source,v_syg_dest);
 update eumowy.signature set TEMPLATE_PATH = 'APUWAWU1.00124-08-01.pdf' where name = v_syg_dest;
 update eumowy.signature set active = 0 where name = v_syg_source;
+update eumowy.signature set active = 1 where name = v_syg_dest;
 
 DELETE FROM eumowy.subscription_definition WHERE signature_id = (SELECT id FROM eumowy.signature WHERE name = v_syg_dest);
 INSERT INTO eumowy.subscription_definition (ID, VERSION, SIGNATURE_ID, FILE_NAME, ROLE, SUBSCRIPTION_PAGE_NUMBER, SUBSCRIPTIONX, SUBSCRIPTIONY, SCALEX, SCALEY)
@@ -203,6 +209,7 @@ v_syg_dest := 'AP/UW/1.010/24-08-01';
 v_ind := EUMOWY.EUM_HELPER.fkopiuj_sygnature(v_syg_source,v_syg_dest);
 update eumowy.signature set TEMPLATE_PATH = 'APUW1.01024-08-01.pdf' where name = v_syg_dest;
 update eumowy.signature set active = 0 where name = v_syg_source;
+update eumowy.signature set active = 1 where name = v_syg_dest;
 
 DELETE FROM eumowy.subscription_definition WHERE signature_id = (SELECT id FROM eumowy.signature WHERE name = v_syg_dest);
 INSERT INTO eumowy.subscription_definition (ID, VERSION, SIGNATURE_ID, FILE_NAME, ROLE, SUBSCRIPTION_PAGE_NUMBER, SUBSCRIPTIONX, SUBSCRIPTIONY, SCALEX, SCALEY)
@@ -251,6 +258,7 @@ v_syg_dest := 'AP/UW_OZWU/1.001/24-08-01';
 v_ind := EUMOWY.EUM_HELPER.fkopiuj_sygnature(v_syg_source,v_syg_dest);
 update eumowy.signature set TEMPLATE_PATH = 'APUW_OZWU1.00124-08-01.pdf' where name = v_syg_dest;
 update eumowy.signature set active = 0 where name = v_syg_source;
+update eumowy.signature set active = 1 where name = v_syg_dest;
 
 DELETE FROM eumowy.subscription_definition WHERE signature_id = (SELECT id FROM eumowy.signature WHERE name = v_syg_dest);
 
@@ -259,6 +267,7 @@ v_syg_dest := 'AP/UPZT4/1.010/24-08-01';
 v_ind := EUMOWY.EUM_HELPER.fkopiuj_sygnature(v_syg_source,v_syg_dest);
 update eumowy.signature set TEMPLATE_PATH = 'APUPZT41.01024-08-01.pdf' where name = v_syg_dest;
 update eumowy.signature set active = 0 where name = v_syg_source;
+update eumowy.signature set active = 1 where name = v_syg_dest;
 
 DELETE FROM eumowy.subscription_definition WHERE signature_id = (SELECT id FROM eumowy.signature WHERE name = v_syg_dest);
 INSERT INTO eumowy.subscription_definition (ID, VERSION, SIGNATURE_ID, FILE_NAME, ROLE, SUBSCRIPTION_PAGE_NUMBER, SUBSCRIPTIONX, SUBSCRIPTIONY, SCALEX, SCALEY)
@@ -307,6 +316,7 @@ v_syg_dest := 'AP/UPZT3/1.010/24-08-01';
 v_ind := EUMOWY.EUM_HELPER.fkopiuj_sygnature(v_syg_source,v_syg_dest);
 update eumowy.signature set TEMPLATE_PATH = 'APUPZT31.01024-08-01.pdf' where name = v_syg_dest;
 update eumowy.signature set active = 0 where name = v_syg_source;
+update eumowy.signature set active = 1 where name = v_syg_dest;
 
 DELETE FROM eumowy.subscription_definition WHERE signature_id = (SELECT id FROM eumowy.signature WHERE name = v_syg_dest);
 INSERT INTO eumowy.subscription_definition (ID, VERSION, SIGNATURE_ID, FILE_NAME, ROLE, SUBSCRIPTION_PAGE_NUMBER, SUBSCRIPTIONX, SUBSCRIPTIONY, SCALEX, SCALEY)
@@ -355,6 +365,7 @@ v_syg_dest := 'AP/UPZT2/1.010/24-08-01';
 v_ind := EUMOWY.EUM_HELPER.fkopiuj_sygnature(v_syg_source,v_syg_dest);
 update eumowy.signature set TEMPLATE_PATH = 'APUPZT21.01024-08-01.pdf' where name = v_syg_dest;
 update eumowy.signature set active = 0 where name = v_syg_source;
+update eumowy.signature set active = 1 where name = v_syg_dest;
 
 DELETE FROM eumowy.subscription_definition WHERE signature_id = (SELECT id FROM eumowy.signature WHERE name = v_syg_dest);
 INSERT INTO eumowy.subscription_definition (ID, VERSION, SIGNATURE_ID, FILE_NAME, ROLE, SUBSCRIPTION_PAGE_NUMBER, SUBSCRIPTIONX, SUBSCRIPTIONY, SCALEX, SCALEY)
@@ -403,6 +414,7 @@ v_syg_dest := 'AP/UPZT1/1.010/24-08-01';
 v_ind := EUMOWY.EUM_HELPER.fkopiuj_sygnature(v_syg_source,v_syg_dest);
 update eumowy.signature set TEMPLATE_PATH = 'APUPZT11.01024-08-01.pdf' where name = v_syg_dest;
 update eumowy.signature set active = 0 where name = v_syg_source;
+update eumowy.signature set active = 1 where name = v_syg_dest;
 
 DELETE FROM eumowy.subscription_definition WHERE signature_id = (SELECT id FROM eumowy.signature WHERE name = v_syg_dest);
 INSERT INTO eumowy.subscription_definition (ID, VERSION, SIGNATURE_ID, FILE_NAME, ROLE, SUBSCRIPTION_PAGE_NUMBER, SUBSCRIPTIONX, SUBSCRIPTIONY, SCALEX, SCALEY)
@@ -451,6 +463,7 @@ v_syg_dest := 'AP/UPZ/ZSNT4/1.006/24-08-01';
 v_ind := EUMOWY.EUM_HELPER.fkopiuj_sygnature(v_syg_source,v_syg_dest);
 update eumowy.signature set TEMPLATE_PATH = 'APUPZZSNT41.00624-08-01.pdf' where name = v_syg_dest;
 update eumowy.signature set active = 0 where name = v_syg_source;
+update eumowy.signature set active = 1 where name = v_syg_dest;
 
 DELETE FROM eumowy.subscription_definition WHERE signature_id = (SELECT id FROM eumowy.signature WHERE name = v_syg_dest);
 INSERT INTO eumowy.subscription_definition (ID, VERSION, SIGNATURE_ID, FILE_NAME, ROLE, SUBSCRIPTION_PAGE_NUMBER, SUBSCRIPTIONX, SUBSCRIPTIONY, SCALEX, SCALEY)
@@ -467,6 +480,7 @@ v_syg_dest := 'AP/UPZ/ZSNT3/1.006/24-08-01';
 v_ind := EUMOWY.EUM_HELPER.fkopiuj_sygnature(v_syg_source,v_syg_dest);
 update eumowy.signature set TEMPLATE_PATH = 'APUPZZSNT31.00624-08-01.pdf' where name = v_syg_dest;
 update eumowy.signature set active = 0 where name = v_syg_source;
+update eumowy.signature set active = 1 where name = v_syg_dest;
 
 DELETE FROM eumowy.subscription_definition WHERE signature_id = (SELECT id FROM eumowy.signature WHERE name = v_syg_dest);
 INSERT INTO eumowy.subscription_definition (ID, VERSION, SIGNATURE_ID, FILE_NAME, ROLE, SUBSCRIPTION_PAGE_NUMBER, SUBSCRIPTIONX, SUBSCRIPTIONY, SCALEX, SCALEY)
@@ -483,6 +497,7 @@ v_syg_dest := 'AP/UPZ/ZSNT2/1.007/24-08-01';
 v_ind := EUMOWY.EUM_HELPER.fkopiuj_sygnature(v_syg_source,v_syg_dest);
 update eumowy.signature set TEMPLATE_PATH = 'APUPZZSNT21.00724-08-01.pdf' where name = v_syg_dest;
 update eumowy.signature set active = 0 where name = v_syg_source;
+update eumowy.signature set active = 1 where name = v_syg_dest;
 
 DELETE FROM eumowy.subscription_definition WHERE signature_id = (SELECT id FROM eumowy.signature WHERE name = v_syg_dest);
 INSERT INTO eumowy.subscription_definition (ID, VERSION, SIGNATURE_ID, FILE_NAME, ROLE, SUBSCRIPTION_PAGE_NUMBER, SUBSCRIPTIONX, SUBSCRIPTIONY, SCALEX, SCALEY)
@@ -499,6 +514,7 @@ v_syg_dest := 'AP/UPZ/ZSNT1/1.007/24-08-01';
 v_ind := EUMOWY.EUM_HELPER.fkopiuj_sygnature(v_syg_source,v_syg_dest);
 update eumowy.signature set TEMPLATE_PATH = 'APUPZZSNT11.00724-08-01.pdf' where name = v_syg_dest;
 update eumowy.signature set active = 0 where name = v_syg_source;
+update eumowy.signature set active = 1 where name = v_syg_dest;
 
 DELETE FROM eumowy.subscription_definition WHERE signature_id = (SELECT id FROM eumowy.signature WHERE name = v_syg_dest);
 INSERT INTO eumowy.subscription_definition (ID, VERSION, SIGNATURE_ID, FILE_NAME, ROLE, SUBSCRIPTION_PAGE_NUMBER, SUBSCRIPTIONX, SUBSCRIPTIONY, SCALEX, SCALEY)
@@ -515,6 +531,7 @@ v_syg_dest := 'AP/UPZ/RWP/1.004/24-08-01';
 v_ind := EUMOWY.EUM_HELPER.fkopiuj_sygnature(v_syg_source,v_syg_dest);
 update eumowy.signature set TEMPLATE_PATH = 'APUPZRWP1.00424-08-01.pdf' where name = v_syg_dest;
 update eumowy.signature set active = 0 where name = v_syg_source;
+update eumowy.signature set active = 1 where name = v_syg_dest;
 
 DELETE FROM eumowy.subscription_definition WHERE signature_id = (SELECT id FROM eumowy.signature WHERE name = v_syg_dest);
 INSERT INTO eumowy.subscription_definition (ID, VERSION, SIGNATURE_ID, FILE_NAME, ROLE, SUBSCRIPTION_PAGE_NUMBER, SUBSCRIPTIONX, SUBSCRIPTIONY, SCALEX, SCALEY)
@@ -531,6 +548,7 @@ v_syg_dest := 'AP/FDS/2.004/24-08-01';
 v_ind := EUMOWY.EUM_HELPER.fkopiuj_sygnature(v_syg_source,v_syg_dest);
 update eumowy.signature set TEMPLATE_PATH = 'APFDS2.00424-08-01.pdf' where name = v_syg_dest;
 update eumowy.signature set active = 0 where name = v_syg_source;
+update eumowy.signature set active = 1 where name = v_syg_dest;
 
 DELETE FROM eumowy.subscription_definition WHERE signature_id = (SELECT id FROM eumowy.signature WHERE name = v_syg_dest);
 
@@ -539,6 +557,7 @@ v_syg_dest := 'AP/FA/2.001/24-08-01';
 v_ind := EUMOWY.EUM_HELPER.fkopiuj_sygnature(v_syg_source,v_syg_dest);
 update eumowy.signature set TEMPLATE_PATH = 'APFA2.00124-08-01.pdf' where name = v_syg_dest;
 update eumowy.signature set active = 0 where name = v_syg_source;
+update eumowy.signature set active = 1 where name = v_syg_dest;
 
 DELETE FROM eumowy.subscription_definition WHERE signature_id = (SELECT id FROM eumowy.signature WHERE name = v_syg_dest);
 
@@ -547,6 +566,7 @@ v_syg_dest := 'AP/FDP/2.003/24-08-01';
 v_ind := EUMOWY.EUM_HELPER.fkopiuj_sygnature(v_syg_source,v_syg_dest);
 update eumowy.signature set TEMPLATE_PATH = 'APFDP2.00324-08-01_bez_podpisu_Akceptanta.pdf' where name = v_syg_dest;
 update eumowy.signature set active = 0 where name = v_syg_source;
+update eumowy.signature set active = 1 where name = v_syg_dest;
 
 DELETE FROM eumowy.subscription_definition WHERE signature_id = (SELECT id FROM eumowy.signature WHERE name = v_syg_dest);
 
@@ -560,6 +580,7 @@ v_syg_dest := 'AP/FDP/2.002/24-08-01';
 v_ind := EUMOWY.EUM_HELPER.fkopiuj_sygnature(v_syg_source,v_syg_dest);
 update eumowy.signature set TEMPLATE_PATH = 'APFDP2.00224-08-01_z_podpisem_Akceptanta.pdf' where name = v_syg_dest;
 update eumowy.signature set active = 0 where name = v_syg_source;
+update eumowy.signature set active = 1 where name = v_syg_dest;
 
 DELETE FROM eumowy.subscription_definition WHERE signature_id = (SELECT id FROM eumowy.signature WHERE name = v_syg_dest);
 INSERT INTO eumowy.subscription_definition (ID, VERSION, SIGNATURE_ID, FILE_NAME, ROLE, SUBSCRIPTION_PAGE_NUMBER, SUBSCRIPTIONX, SUBSCRIPTIONY, SCALEX, SCALEY)

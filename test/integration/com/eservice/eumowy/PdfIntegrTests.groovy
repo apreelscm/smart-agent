@@ -1372,6 +1372,24 @@ class PdfIntegrTests extends ControllerUnitTestMixin {
     }
 
     @Test
+    void APFA_24_08_01() { //APFA2.00124-08-01.pdf
+        def data = [:]
+        def subscriptions = [
+                ["ACCEPTANT1", 2, 375, 400, 20, 22],
+                ["ACCEPTANT2", 2, 375, 412, 20, 22],
+                ["ACCEPTANT3", 2, 375, 424, 20, 22],
+                ["ACCEPTANT4", 2, 375, 446, 20, 22],
+                ["PH", 2, 460, 328, 40, 22],
+                ["PH", 2, 460, 185, 40, 22],
+        ]
+        data.put("FormaPrawna", ["WarszawaTest"] as String[])
+
+        data.putAll(akceptantIReprezentanciFields())
+        data.putAll(PdfHelper.insertSignatures(subscriptions))
+        process("APFA2.00124-08-01.pdf", "APFA2.00124-08-01.pdf", data)
+    }
+
+    @Test
     void APUW_OZWU() {
         given:
         data.putAll(akceptantIReprezentanciFields())
