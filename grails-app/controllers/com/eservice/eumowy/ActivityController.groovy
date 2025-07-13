@@ -16,6 +16,7 @@ import com.google.common.collect.Lists
 import grails.converters.JSON
 import groovy.sql.GroovyRowResult
 import org.apache.catalina.connector.ClientAbortException
+import org.apache.commons.lang.StringUtils
 import org.codehaus.groovy.grails.web.json.JSONObject
 import org.hibernate.HibernateException
 import org.hibernate.NonUniqueObjectException
@@ -26,6 +27,7 @@ import pdfgenerator.PdfGenerator
 
 import static com.eservice.eumowy.SignatureDetail.SignaturePurpose.REPRESENTATIVE
 import static java.lang.String.format
+import static org.apache.commons.lang.StringUtils.isBlank
 
 class ActivityController {
 
@@ -51,6 +53,7 @@ class ActivityController {
     def signatureService
     def subscriptionService
     def representativeService
+    def documentsSigningService
 
     def springSecurityService
 
@@ -243,7 +246,9 @@ class ActivityController {
         clientSignature {
             onEntry {
                 Process processInstance = flow.processInstance
-
+                if (!flow.skipDocumentSigningCodesGeneration) {
+                    documentsSigningService.generateSigningCodes(processInstance)
+                }
                 setRepresentatives(flow)
 
                 flow.requiredNumberOfSubscriptions = subscriptionService.getRequiredSubscriptionsCount(processInstance)
@@ -252,6 +257,7 @@ class ActivityController {
                     Set<DocumentFile> documents = documentService.getSavedDocumentsInProcess(processInstance, conversation.calc)
                     flow.totalPagesCount = documentService.getPreviewDocumentsPageCount(documents)
                 }
+                flow.skipDocumentSigningCodesGeneration = false
                 flow.skipDocumentGeneration = false
                 flow.processInstance = processInstance
                 flow.rejectedDocumentsMessage = message(code: 'process.reject', args:[flow.processInstance.client.nip])
@@ -269,9 +275,10 @@ class ActivityController {
             ])
             on("back"){
                 flow.newProcessFlow = false
+                flow.skipDocumentSigningCodesGeneration = false
             }to "chooseSubFlow"
             on("subscribe").to "clientSignature"
-            on("updateProcessStatus") {
+            on("updateProcessStatus") { // TODO MK Remove: No longer used state, since we use codes for signing
                 log.info params
                 Process processInstance = flow.processInstance
                 if (params.processStatus.equals("WAIT_FOR_SUBSCRIPTION")) {
@@ -320,6 +327,42 @@ class ActivityController {
                 }
 
                 flow.skipDocumentGeneration = true
+                flow.processInstance = processInstance
+            }.to "clientSignature"
+            on("refreshProcessStatus") {
+                Process processInstance = flow.processInstance
+
+                processInstance.refresh()
+
+                if (processInstance.subscriptions?.isEmpty()) {
+                    return
+                }
+
+                processInstance.signingDate = new Date()
+
+                int signed = processInstance.subscriptions?.findAll { StringUtils.isNotBlank(it.signingCode) }.size()
+
+                if (signed == flow.requiredNumberOfSubscriptions) {
+                    processInstance.status = Process.ProcessStatus.SUBSCRIPTIONS_DONE
+                    String currentDate = DateUtils.formatWithTimezone(DateUtils.getCurrentDate());
+                    log.info 'Zapisuje formatowana dateUmowy: ' + currentDate
+
+                    ProcessData savedAgreementDate = processInstance.getProcessData("dataUmowy")
+
+                    if (savedAgreementDate) {
+                        savedAgreementDate.value = currentDate
+                    } else {
+                        ProcessData actualDataUmowy = new ProcessData(name: "dataUmowy", value: currentDate)
+
+                        processInstance.addToProcessData(actualDataUmowy)
+                    }
+                } else if (signed > 0) {
+                    processInstance.status = Process.ProcessStatus.WAIT_FOR_SUBSCRIPTION
+                }
+
+                processInstance.save(flush: true)
+                flow.skipDocumentGeneration = true
+                flow.skipDocumentSigningCodesGeneration = true
                 flow.processInstance = processInstance
             }.to "clientSignature"
             on("noaccept") {
@@ -450,6 +493,14 @@ class ActivityController {
                 processInstance.calcNumber = flow.calcNumber
                 cbdService.setKalkulatorUsed(flow.calcNumber)
 
+                EServiceUserDetails user = (EServiceUserDetails) springSecurityService.principal
+                processService.setPhDetailsFromUser(processInstance, user)
+
+                if (isBlank(processInstance.phMobilePhone)) {
+                    flash.calcErrors = Collections.singletonList('phMobilePhone.validator.empty')
+                    return error();
+                }
+
                 Client client = flow.client
 
                 log.info(format("Found client: ", client))
@@ -458,8 +509,6 @@ class ActivityController {
                     client.errors.each { log.error(it) }
                     return "error"
                 }
-
-                processService.setPhDetailsFromUser(processInstance, springSecurityService.principal)
 
                 processInstance.client =  client
                 processInstance.status = Process.ProcessStatus.NEW
@@ -728,7 +777,7 @@ class ActivityController {
 
                 flow.processInstance = processInstance
                 flow.skipPanelsInit = true;
-            }to "selectedPanels"
+            } to "selectedPanels"
             on("continue"){
                 ProcessCommand processCommand = crateProcessCommand(params, conversation.calc)
                 processCommand.process = flow.processInstance
@@ -846,6 +895,11 @@ class ActivityController {
                     ${flow.nip}, ${processInstance?.id}, ${processInstance?.status}, request?.getHeader("user-agent")))
 
                 processService.setPhDetailsFromUser(processInstance, springSecurityService.principal)
+
+                if (isBlank(processInstance.phMobilePhone)) {
+                    flash.calcErrors = Collections.singletonList('phMobilePhone.validator.empty')
+                    return error();
+                }
 
                 processInstance.calcNumber =  flow.calcNumber
                 cbdService.setKalkulatorUsed(flow.calcNumber)

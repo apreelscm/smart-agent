@@ -6,6 +6,7 @@ class Subscription implements Serializable {
 
     private static final auditLogger = LogFactory.getLog("audit")
 
+	String signingCode
     String content
 	String name
 	String surname
@@ -13,7 +14,7 @@ class Subscription implements Serializable {
 	PersonRole personRole
     String uniqueKey
 	
-	public enum PersonRole {
+	public static enum PersonRole {
 		ACCEPTANT1("ACCEPTANT1"),
 		ACCEPTANT2("ACCEPTANT2"),
 		ACCEPTANT3("ACCEPTANT3"),
@@ -49,6 +50,7 @@ class Subscription implements Serializable {
     static constraints = {
         process(nullable:true)
 		content(blank:false, maxSize: 100000)
+		signingCode(blank:false, maxSize: 8)
         name(blank: false)
         surname(blank: false)
 		//personType(nullable:true)
@@ -67,11 +69,11 @@ class Subscription implements Serializable {
 	}
 
     def afterInsert() {
-        auditLogger.info("Zapisano podpis [id:${id}, role: ${personRole.text}, signDate: ${signDate}, uniqueKey: ${uniqueKey}, name: ${name}, lastName: ${surname}]")
+        auditLogger.info("Zapisano podpis [id:${id}, role: ${personRole.text}, signDate: ${signDate}, uniqueKey: ${uniqueKey}, name: ${name}, lastName: ${surname}, signingCode: ${signingCode}]")
     }
 
     def afterUpdate() {
-        auditLogger.info("Aktualizacja podpisu [id:${id}, role: ${personRole.text}, signDate: ${signDate}, uniqueKey: ${uniqueKey}, name: ${name}, lastName: ${surname}]")
+        auditLogger.info("Aktualizacja podpisu [id:${id}, role: ${personRole.text}, signDate: ${signDate}, uniqueKey: ${uniqueKey}, name: ${name}, lastName: ${surname}, signingCode: ${signingCode}]")
     }
 	
 }

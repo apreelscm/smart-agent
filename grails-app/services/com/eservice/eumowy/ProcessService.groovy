@@ -4,6 +4,7 @@ import com.eservice.eumowy.annotation.DateField
 import com.eservice.eumowy.annotation.Omit
 import com.eservice.eumowy.auth.EServiceUserDetails
 import com.eservice.eumowy.command.*
+import com.eservice.eumowy.documents.DocumentSigningCode
 import com.eservice.eumowy.dto.MerchantDetailsDTO
 import com.eservice.eumowy.enums.options.AcceptorRelation
 import com.eservice.eumowy.enums.options.LegalForm
@@ -366,13 +367,15 @@ class ProcessService {
         process.phFirstName = user.imie
         process.phSurname = user.nazwisko
         process.phEmail = user.email
+        process.phMobilePhone = cbdService.getMobilePhoneNumberOfPH(user.nr)
+        process.phDocsSigningCode = null
     }
 
     Map getRepresentative(Process process, Integer index) {
         Representative representative = process.representatives.findAll{Representative.Type.REPRESENTATIVE.equals(it.type)}[index]
 
         if (representative) {
-            return [name: representative?.name, surname: representative?.surname, hasSignedContract: representative.hasSignedContract]
+            return [name: representative?.name, surname: representative?.surname, hasSignedContract: representative.hasSignedContract, mobilePhone: representative.mobilePhone]
         }
 
         return null

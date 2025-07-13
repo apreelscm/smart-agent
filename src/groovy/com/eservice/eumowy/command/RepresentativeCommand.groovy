@@ -36,6 +36,7 @@ class RepresentativeCommand implements Serializable {
     String documentNumber
     Date documentIssueDate
     Date documentExpirationDate
+    String documentsSigningCode
 
     String citizenship
 
@@ -190,8 +191,8 @@ class RepresentativeCommand implements Serializable {
         })
         
         telephoneType(nullable: true, validator: { value, cmd, errors ->
-            if (!CustomValidator.validateRequired(value != null, errors, cmd.hasSignedContract,
-                    "telephoneType", "representative.telephoneType.required")) {
+            if (!CustomValidator.validateRequired(value == TelephoneType.MOBILE, errors, cmd.hasSignedContract,
+                    "telephoneType", "representative.mobileTelephoneType.required")) {
                 return false
             }
         })

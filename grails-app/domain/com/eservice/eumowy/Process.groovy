@@ -23,6 +23,8 @@ class Process implements Serializable {
     String phFirstName
     String phSurname
     String phEmail
+    String phMobilePhone
+    String phDocsSigningCode
     String calcNumber
     String saleSection
     String notesToCoa
@@ -88,6 +90,8 @@ class Process implements Serializable {
         phFirstName(blank:false)
         phSurname(blank:false)
         phEmail(blank: false)
+        phMobilePhone(nullable: true)
+        phDocsSigningCode(nullable: true)
         calcNumber(blank:false)
         saleSection(nullable: true)
         observed()

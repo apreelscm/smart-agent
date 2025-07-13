@@ -1172,7 +1172,7 @@ input[disabled] {
     pointer-events: none;
 }
 
-a.disabled {
+button.disabled, a.disabled {
 	pointer-events: none;
 	color: #FEF4E9;
 	background: #CCCCCC;
@@ -1380,7 +1380,7 @@ a.submit{
 #clientSignatureBackButton {
 }
 
-#clientSignaturePersons {
+#documentsSigningPanel {
 	float: left;
 	margin-left: 1em;
 	margin-right: 1em;
@@ -1672,4 +1672,15 @@ td.flat-price-col, td.percent-number-col {
 
 .phone-container-company, .phone-container-person {
     display: inline-block;
+}
+
+.signatory {
+    font-size: 1.2em;
+    font-weight: bold;
+    width: 40%;
+    padding-right: 10px;
+}
+
+.disabled .signatory {
+    text-decoration-line: line-through;
 }

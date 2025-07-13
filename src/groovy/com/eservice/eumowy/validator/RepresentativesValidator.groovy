@@ -1,5 +1,6 @@
 package com.eservice.eumowy.validator
 
+import com.eservice.eumowy.MobilePhoneNumber
 import com.eservice.eumowy.command.ProcessCommand
 import com.eservice.eumowy.command.RepresentativeCommand
 import org.springframework.validation.Errors
@@ -50,6 +51,20 @@ class RepresentativesValidator {
             hasErrors = true
         }
 
+        if (cmd.process != null && hasDuplicatedPhoneNumbers(value, cmd.process.phMobilePhone)) {
+            errors.reject("representatives.mobilePhoneNumbers.duplicates")
+            hasErrors = true
+        }
+
         return !hasErrors
+    }
+
+    private static boolean hasDuplicatedPhoneNumbers(List<RepresentativeCommand> reps, String phMobilePhone) {
+        List<RepresentativeCommand> repsSigningDocs = reps.findAll { Boolean.TRUE.equals(it.hasSignedContract) }
+        Set<MobilePhoneNumber> phones = new HashSet<>()
+        phones.add(MobilePhoneNumber.of(phMobilePhone))
+        repsSigningDocs.each { phones.add(MobilePhoneNumber.of(it.mobilePhone)) }
+
+        return phones.size() < repsSigningDocs.size() + 1 // include ph phone too
     }
 }

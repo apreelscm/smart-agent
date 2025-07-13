@@ -12,6 +12,8 @@ import com.eservice.eumowy.microbisnode.MicroBisnodeClientImpl
 import com.eservice.eumowy.mocks.MicroBisnodeClientMock
 import com.eservice.eumowy.mocks.WebsClientMock
 import com.eservice.eumowy.propEditors.CustomPropertyEditorRegistrar
+import com.eservice.eumowy.sms.DefaultSmsClient
+import com.eservice.eumowy.sms.FakeSmsClient
 import com.eservice.eumowy.util.EumowyCustomEnvironment
 import com.eservice.service.security.ECbdRoleService
 import com.eservice.service.security.NoRoleService
@@ -23,6 +25,7 @@ import org.jasypt.salt.RandomSaltGenerator
 import org.jasypt.util.password.ConfigurablePasswordEncryptor
 
 import static com.eservice.eumowy.auth.AuthRoles.EUM_PH_BZOS
+import static com.eservice.eumowy.auth.AuthRoles.EUM_ZRD
 import static com.eservice.eumowy.auth.AuthUser.user
 import static java.util.Arrays.asList
 
@@ -71,6 +74,10 @@ beans = {
     microLDAPClient(MicroLDAPClientImpl, '${microLDAP.service.uri}', '${microLDAP.service.domain}',
             '${microLDAP.service.groups}', '${microLDAP.service.department}') {}
 
+    //TODO MK
+    smsClient(DefaultSmsClient, '${smsClient.uri}', '${smsClient.sender}', '${smsClient.source}', '${smsClient.partner}')
+//    smsClient(FakeSmsClient)
+
     userService(UserService) {
         roleService = ref('roleService')
         userDAO = ref('userDAO')
@@ -102,6 +109,7 @@ beans = {
                         2L,
                         "R3101",
                         EUM_PH_BZOS
+//                        EUM_ZRD
                 )
         )
     }
@@ -110,8 +118,8 @@ beans = {
     daoAuthenticationProvider(DomainAuthenticationProvider) {
         preAuthenticationChecks = ref('preAuthenticationChecks')
         postAuthenticationChecks = ref('postAuthenticationChecks')
-        authenticator = ref('ldapAuthenticator')
-        // authenticator = ref('fakeAuthenticator')
+//        authenticator = ref('ldapAuthenticator')
+         authenticator = ref('fakeAuthenticator')
     }
 
     cbdDAO(CbdDAO) {

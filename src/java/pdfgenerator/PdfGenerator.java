@@ -44,6 +44,9 @@ public class PdfGenerator {
 			stamp = new PdfStamper(templateReader, baos);
 
 			for(Map.Entry<String, Object[]> dataEntry : imageMap.entrySet()) {
+				if (dataEntry.getKey().startsWith("signatory")) {
+					continue;
+				}
 				try {
 					Integer pageNo = (Integer)dataEntry.getValue()[1];
 					Integer x = (Integer)dataEntry.getValue()[2];
@@ -244,6 +247,7 @@ public class PdfGenerator {
             AcroFields form = stamp.getAcroFields();
             for (String field: fieldsToUpdate){
                 form.setField(field, value);
+				LOG.info("Updated field " + field + " to " + value);
             }
         } catch (IOException e){
             LOG.error(e);

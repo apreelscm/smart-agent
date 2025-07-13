@@ -34,10 +34,10 @@ environments {
             username = "EUMOWY_APP"
             dbCreate = ""
             //cbd_s - QA1, cbd_t - QA2
-            url = "jdbc:oracle:thin:@10.9.192.59:1521/cbd_t" //podlaczenie sie do bazy cbd_t
-            password = 'pw4foh$PDJK' //haslo do bazy cbd_t
-//            url = "jdbc:oracle:thin:@10.9.192.59:1521/cbd_s" //podlaczenie sie do bazy cbd_s
-//            password = 'Eservice11[]' //haslo do bazy cbd_s
+//            url = "jdbc:oracle:thin:@10.9.192.59:1521/cbd_t" //podlaczenie sie do bazy cbd_t
+//            password = 'pw4foh$PDJK' //haslo do bazy cbd_t
+            url = "jdbc:oracle:thin:@10.9.192.59:1521/cbd_s" //podlaczenie sie do bazy cbd_s
+            password = 'Eservice11[]' //haslo do bazy cbd_s
 //            url = "jdbc:oracle:thin:@10.9.192.59:1521:cbd_dev"
 //            password = 'Ahfopcvy$aU3'
             properties {

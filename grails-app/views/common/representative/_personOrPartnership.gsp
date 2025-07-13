@@ -138,7 +138,12 @@
             </div>
         </div>
 
-        <div class="${hasErrors(bean: representative, field: 'phoneNumber', 'errorSpan')}">
+        <div class="${hasErrors(bean: representative, field: 'telephoneType', 'errorSpan')} ${hasErrors(bean: representative, field: 'phoneNumber', 'errorSpan')}">
+            <g:hasErrors bean="${representative}" field="telephoneType">
+                <g:eachError bean="${representative}" field="telephoneType">
+                    <p class="error-message"><g:message error="${it}"/></p>
+                </g:eachError>
+            </g:hasErrors>
             <div class="phone-container phone-container-${prefix}-${seqNo} phone-container-person" style="${!data.isBusinessLegalFormSelected() || (data.isPersonForm() && representative?.hasSignedContract != true) ? 'display: none;' : ''}">
                 <g:radio class="telephone-type"
                          name="${prefix}[${seqNo}].telephoneType${data.isPersonForm() == false ? '-disabled' : ''}"

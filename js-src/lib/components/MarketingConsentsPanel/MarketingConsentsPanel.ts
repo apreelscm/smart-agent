@@ -16,11 +16,11 @@ interface ConsentCheckboxes {
     }
 }
 
-export class MarketingConsentsPanel extends Panel<EVENTS> {
+export class MarketingConsentsPanel extends Panel<EVENTS, never> {
     private checkboxes: ConsentCheckboxes
 
-    constructor(eventBus: EventBus<EVENTS>, rootSelector: string) {
-        super(eventBus, rootSelector);
+    constructor(eventBus: EventBus<EVENTS>, props: never, rootSelector: string) {
+        super(eventBus, props, rootSelector);
         this.checkboxes = {
             global: {
                 channelAll: this.$root.find('#consentsChannelAll'),

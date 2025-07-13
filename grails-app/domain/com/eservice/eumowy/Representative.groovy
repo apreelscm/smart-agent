@@ -65,6 +65,8 @@ class Representative implements Serializable {
 
     String midCBD
 
+     String documentsSigningCode
+
     static belongsTo = [Process]
 
     static mapping = {
@@ -120,6 +122,8 @@ class Representative implements Serializable {
         mobilePhone column: "MOBILE_PHONE"
 
         midCBD column: "MID_CBD"
+
+        documentsSigningCode column: "DOCS_SIGNING_CODE"
     }
 
     static constraints = {
@@ -160,6 +164,7 @@ class Representative implements Serializable {
         mobilePhone(nullable: true)
         isCBDDataChangedManually(nullable: true)
         midCBD(nullable: true)
+        documentsSigningCode(nullable: true)
     }
 
     String getAddress() {

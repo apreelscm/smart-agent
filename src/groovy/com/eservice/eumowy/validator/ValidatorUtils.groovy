@@ -66,7 +66,7 @@ class ValidatorUtils {
         int count = 0;
 
         points.each { point ->
-            point.errors?.each { ValidationErrors error ->
+            point?.errors?.each { ValidationErrors error ->
                 if (error.getAt("hasDodaniePrepaid")) {
                     count++;
                 }

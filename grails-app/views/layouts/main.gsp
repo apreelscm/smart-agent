@@ -17,6 +17,7 @@
     <g:else>
         <asset:stylesheet src="default.css"/>
     </g:else>
+    <asset:stylesheet src="icons.css"/>
 
     <asset:javascript src="application.js"/>
     <asset:javascript src="eumowy-lib.js" type="module"/>

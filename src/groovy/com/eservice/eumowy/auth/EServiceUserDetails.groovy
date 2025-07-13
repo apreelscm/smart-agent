@@ -10,6 +10,7 @@ public class EServiceUserDetails extends GrailsUser {
     final String nazwisko;
     final String nr;
     final String email;
+    final String mobilePhone;
     final Long auwId
 
     EServiceUserDetails(String username,

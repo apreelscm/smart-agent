@@ -36,14 +36,14 @@
                     "ACCEPTANT3": "${message(code:'subscription.agreement')}",
                     "ACCEPTANT4": "${message(code:'subscription.agreement')}"
                 },
-                createProcessRejectLink = '<g:createLink controller="activity" action="createProcess" params="[message: rejectedDocumentsMessage]"/>',
-                createProcessPrevActivityMessage = '<g:createLink controller="activity" action="createProcess" params="[message: prevActivityMessage]"/>',
+                //createProcessRejectLink = '<g:createLink controller="activity" action="createProcess" params="[message: rejectedDocumentsMessage]"/>',
+                //createProcessPrevActivityMessage = '<g:createLink controller="activity" action="createProcess" params="[message: prevActivityMessage]"/>',
                 refreshSubscriptionLink = '${createLink(controller: 'subscription', action: 'refreshSubscription')}',
                 processId = '${processInstance.id}',
-                kontaktEmail = "${processInstance.getData("kontaktEmail")}",
-                emailDoWysylkiDokumentu = "${processInstance.getData("emailDoWysylkiDokumentu")}",
-                sendingEmailsErrorMsg = "${message(code: "process.subscriptions.sendingEmails.error")}",
-                sendingEmailsMsg = "${message(code: "process.subscriptions.sendingEmails")}",
+                //kontaktEmail = "${processInstance.getData("kontaktEmail")}",
+                //emailDoWysylkiDokumentu = "${processInstance.getData("emailDoWysylkiDokumentu")}",
+                //sendingEmailsErrorMsg = "${message(code: "process.subscriptions.sendingEmails.error")}",
+                //sendingEmailsMsg = "${message(code: "process.subscriptions.sendingEmails")}",
                 refreshSubscriptionUrl = '${createLink(controller: 'subscription', action: 'refreshSubscription')}';
 
         function getDocuments(scale) {
@@ -56,49 +56,49 @@
             return documents
         }
 
-        function setSubscriptions() {
-            <g:each in="${processInstance.subscriptions}">
-            if (jQuery("#subscribe-REPRESENTATIVE1").attr("data-type") == "${it.personRole}") {
-                jQuery("#subscribe-REPRESENTATIVE1").parent().addClass("disabled");
-                jQuery("#sgnRep1").removeClass('action').addClass('action_visited');
-                updateSubscriptionStatusCount++;
-                jQuery("#clientSignatureBackButton").addClass("disabled");
-                isSubscriptionDone["subscribe-REPRESENTATIVE1"] = true;
-            }
+        %{--function setSubscriptions() {--}%
+        %{--    <g:each in="${processInstance.subscriptions}">--}%
+        %{--    if (jQuery("#subscribe-REPRESENTATIVE1").attr("data-type") == "${it.personRole}") {--}%
+        %{--        jQuery("#subscribe-REPRESENTATIVE1").parent().addClass("disabled");--}%
+        %{--        jQuery("#sgnRep1").removeClass('action').addClass('action_visited');--}%
+        %{--        updateSubscriptionStatusCount++;--}%
+        %{--        jQuery("#clientSignatureBackButton").addClass("disabled");--}%
+        %{--        isSubscriptionDone["subscribe-REPRESENTATIVE1"] = true;--}%
+        %{--    }--}%
 
-            if (jQuery("#subscribe-REPRESENTATIVE2").attr("data-type") == "${it.personRole}") {
-                jQuery("#subscribe-REPRESENTATIVE2").parent().addClass("disabled");
-                jQuery("#sgnRep2").removeClass('action').addClass('action_visited');
-                updateSubscriptionStatusCount++;
-                jQuery("#clientSignatureBackButton").addClass("disabled");
-                isSubscriptionDone["subscribe-REPRESENTATIVE2"] = true;
-            }
+        %{--    if (jQuery("#subscribe-REPRESENTATIVE2").attr("data-type") == "${it.personRole}") {--}%
+        %{--        jQuery("#subscribe-REPRESENTATIVE2").parent().addClass("disabled");--}%
+        %{--        jQuery("#sgnRep2").removeClass('action').addClass('action_visited');--}%
+        %{--        updateSubscriptionStatusCount++;--}%
+        %{--        jQuery("#clientSignatureBackButton").addClass("disabled");--}%
+        %{--        isSubscriptionDone["subscribe-REPRESENTATIVE2"] = true;--}%
+        %{--    }--}%
 
-            if (jQuery("#subscribe-REPRESENTATIVE3").attr("data-type") == "${it.personRole}") {
-                jQuery("#subscribe-REPRESENTATIVE3").parent().addClass("disabled");
-                jQuery("#sgnRep3").removeClass('action').addClass('action_visited');
-                updateSubscriptionStatusCount++;
-                jQuery("#clientSignatureBackButton").addClass("disabled");
-                isSubscriptionDone["subscribe-REPRESENTATIVE3"] = true;
-            }
+        %{--    if (jQuery("#subscribe-REPRESENTATIVE3").attr("data-type") == "${it.personRole}") {--}%
+        %{--        jQuery("#subscribe-REPRESENTATIVE3").parent().addClass("disabled");--}%
+        %{--        jQuery("#sgnRep3").removeClass('action').addClass('action_visited');--}%
+        %{--        updateSubscriptionStatusCount++;--}%
+        %{--        jQuery("#clientSignatureBackButton").addClass("disabled");--}%
+        %{--        isSubscriptionDone["subscribe-REPRESENTATIVE3"] = true;--}%
+        %{--    }--}%
 
-            if (jQuery("#subscribe-REPRESENTATIVE4").attr("data-type") == "${it.personRole}") {
-                jQuery("#subscribe-REPRESENTATIVE4").parent().addClass("disabled");
-                jQuery("#sgnRep4").removeClass('action').addClass('action_visited');
-                updateSubscriptionStatusCount++;
-                jQuery("#clientSignatureBackButton").addClass("disabled");
-                isSubscriptionDone["subscribe-REPRESENTATIVE4"] = true;
-            }
+        %{--    if (jQuery("#subscribe-REPRESENTATIVE4").attr("data-type") == "${it.personRole}") {--}%
+        %{--        jQuery("#subscribe-REPRESENTATIVE4").parent().addClass("disabled");--}%
+        %{--        jQuery("#sgnRep4").removeClass('action').addClass('action_visited');--}%
+        %{--        updateSubscriptionStatusCount++;--}%
+        %{--        jQuery("#clientSignatureBackButton").addClass("disabled");--}%
+        %{--        isSubscriptionDone["subscribe-REPRESENTATIVE4"] = true;--}%
+        %{--    }--}%
 
-            if (jQuery("#subscribe-PH").attr("data-type") == "${it.personRole}") {
-                jQuery("#subscribe-PH").parent().addClass("disabled");
-                jQuery("#sgnPh").removeClass('action').addClass('action_visited');
-                updateSubscriptionStatusCount++;
-                jQuery("#clientSignatureBackButton").addClass("disabled");
-                isSubscriptionDone["subscribe-PH"] = true;
-            }
-            </g:each>
-        }
+        %{--    if (jQuery("#subscribe-PH").attr("data-type") == "${it.personRole}") {--}%
+        %{--        jQuery("#subscribe-PH").parent().addClass("disabled");--}%
+        %{--        jQuery("#sgnPh").removeClass('action').addClass('action_visited');--}%
+        %{--        updateSubscriptionStatusCount++;--}%
+        %{--        jQuery("#clientSignatureBackButton").addClass("disabled");--}%
+        %{--        isSubscriptionDone["subscribe-PH"] = true;--}%
+        %{--    }--}%
+        %{--    </g:each>--}%
+        %{--}--}%
 
 
     </script>
@@ -184,72 +184,107 @@
     </div>
     <nav>
         <g:form>
-            <fieldset id="clientSignaturePersons" class="subpanel-fieldset">
+            <fieldset id="documentsSigningPanel" class="subpanel-fieldset">
                 <legend><g:message code="clientSignature.signing.people"/></legend>
-                <ul class="table-list">
+                <ul class="table-list" style="width: 99%;">
                     <g:if test="${representative1 && representative1.hasSignedContract}">
-                        <li>
-                            <span>
-                                <a class="big-link" id="subscribe-REPRESENTATIVE1" data-type="ACCEPTANT1"
-                                   href="eumowysig://data/${representative1.name.encodeAsURL()}/${representative1.surname.encodeAsURL()}/ACCEPTANT1/${message(code: 'subscription.agreement').encodeAsURL()}/${processInstance.id}/${session.id}/${createLink(controller: "subscriptionEx", action: "saveSubscription", absolute: true).encodeAsURL()}">${representative1.name} ${representative1.surname} - Reprezentant</a>
+                        <li id="representative1SignatureContainer" data-personRole="ACCEPTANT1">
+                            <span class="signatory">
+                                ${representative1.name} ${representative1.surname} - Reprezentant
                             </span>
                             <span>
-                                <a href="" id="sgnRep1" class="button action"><g:message code="subscription.refresh"/></a>
+                                <p>${representative1.mobilePhone}</p>
+                            </span>
+                            <span>
+                                <input placeholder="Kod SMS" type='text' style="width: 70px;" name='representative1SigningCode' id='representative1SigningCode'/>
+                            </span>
+                            <span>
+                                <button id="representative1SignDocuments" class="button action"><g:message code="subscription.sign"/></button>
+                            </span>
+                            <span>
+                                <button id="representative1RefreshSigningCode" class="button action"><i class="icon-refresh"></i></button>
                             </span>
                         </li>
                     </g:if>
 
                     <g:if test="${representative2 && representative2.hasSignedContract}">
-                        <li>
-                            <span>
-                                <a class="big-link" id="subscribe-REPRESENTATIVE2" data-type="ACCEPTANT2"
-                                   href="eumowysig://data/${representative2.name.encodeAsURL()}/${representative2.surname.encodeAsURL()}/ACCEPTANT2/${message(code: 'subscription.agreement').encodeAsURL()}/${processInstance.id}/${session.id}/${createLink(controller: "subscriptionEx", action: "saveSubscription", absolute: true).encodeAsURL()}">${representative2.name} ${representative2.surname} - Reprezentant</a>
+                        <li id="representative2SignatureContainer" data-personRole="ACCEPTANT2">
+                            <span class="signatory">
+                                ${representative2.name} ${representative2.surname} - Reprezentant
                             </span>
                             <span>
-                                <a href="" id="sgnRep2" class="button action"><g:message code="subscription.refresh"/></a>
+                                <p>${representative2.mobilePhone}</p>
+                            </span>
+                            <span>
+                                <input placeholder="Kod SMS" type='text' style="width: 70px;" name='representative2SigningCode' id='representative2SigningCode'/>
+                            </span>
+                            <span>
+                                <button id="representative2SignDocuments" class="button action"><g:message code="subscription.sign"/></button>
+                            </span>
+                            <span>
+                                <button id="representative2RefreshSigningCode" class="button action"><i class="icon-refresh"></i></button>
                             </span>
                         </li>
                     </g:if>
 
 
                     <g:if test="${representative3 && representative3.hasSignedContract}">
-                        <li>
-                            <span>
-                                <a class="big-link" id="subscribe-REPRESENTATIVE3" data-type="ACCEPTANT3"
-                                   href="eumowysig://data/${representative3.name.encodeAsURL()}/${representative3.surname.encodeAsURL()}/ACCEPTANT3/${message(code: 'subscription.agreement').encodeAsURL()}/${processInstance.id}/${session.id}/${createLink(controller: "subscriptionEx", action: "saveSubscription", absolute: true).encodeAsURL()}">${representative3.name} ${representative3.surname} - Reprezentant</a>
+                        <li id="representative3SignatureContainer" data-personRole="ACCEPTANT3">
+                            <span class="signatory">
+                                ${representative3.name} ${representative3.surname} - Reprezentant
                             </span>
                             <span>
-                                <a href="" id="sgnRep3" class="button action"><g:message code="subscription.refresh"/></a>
+                                <p>${representative3.mobilePhone}</p>
+                            </span>
+                            <span>
+                                <input placeholder="Kod SMS" type='text' style="width: 70px;" name='representative3SigningCode' id='representative3SigningCode'/>
+                            </span>
+                            <span>
+                                <button id="representative3SignDocuments" class="button action"><g:message code="subscription.sign"/></button>
+                            </span>
+                            <span>
+                                <button id="representative3RefreshSigningCode" class="button action"><i class="icon-refresh"></i></button>
                             </span>
                         </li>
                     </g:if>
 
 
                     <g:if test="${representative4 && representative4.hasSignedContract}">
-                        <li>
-                            <span>
-                                <a class="big-link" id="subscribe-REPRESENTATIVE4" data-type="ACCEPTANT4"
-                                   href="eumowysig://data/${representative4.name.encodeAsURL()}/${representative4.surname.encodeAsURL()}/ACCEPTANT4/${message(code: 'subscription.agreement').encodeAsURL()}/${processInstance.id}/${session.id}/${createLink(controller: "subscriptionEx", action: "saveSubscription", absolute: true).encodeAsURL()}">${representative4.name} ${representative4.surname} - Reprezentant</a>
+                        <li id="representative4SignatureContainer" data-personRole="ACCEPTANT4">
+                            <span class="signatory">
+                                ${representative4.name} ${representative4.surname} - Reprezentant
                             </span>
                             <span>
-                                <a href="" id="sgnRep4" class="button action"><g:message code="subscription.refresh"/></a>
+                                <p>${representative4.mobilePhone}</p>
+                            </span>
+                            <span>
+                                <input placeholder="Kod SMS" type='text' style="width: 70px;" name='representative4SigningCode' id='representative4SigningCode'/>
+                            </span>
+                            <span>
+                                <button id="representative4SignDocuments" class="button action"><g:message code="subscription.sign"/></button>
+                            </span>
+                            <span>
+                                <button id="representative4RefreshSigningCode" class="button action"><i class="icon-refresh"></i></button>
                             </span>
                         </li>
                     </g:if>
 
-                    <li>
-                        <span>
-                            <a class="big-link" id="subscribe-PH" data-type="PH"
-                                 href="eumowysig://data/${processInstance.phFirstName.encodeAsURL()}/${processInstance.phSurname.encodeAsURL()}/PH/${message(code: 'subscription.agreement.ph').encodeAsURL()}/${processInstance.id}/${session.id}/${createLink(controller: "subscriptionEx", action: "saveSubscription", absolute: true).encodeAsURL()}">${processInstance.phFirstName} ${processInstance.phSurname} - Pracownik eService</a>
+                    <li id="phSignatureContainer" data-personRole="PH">
+                        <span class="signatory">
+                            ${processInstance.phFirstName} ${processInstance.phSurname} - Pracownik eService
                         </span>
                         <span>
-                            <a href="" id="sgnPh" class="button action"><g:message code="subscription.refresh"/></a>
+                            <p>${processInstance.phMobilePhone}</p>
                         </span>
-                    </li>
-
-                    <li>
-                        <a href="<g:createLink controller="file" action="get"
-                                               params="[root: 'mobileAppPath', path: 'eumowy-mobile.apk']"/>">${message(code: 'subscription.download.mobileApp')}</a>
+                        <span>
+                            <input placeholder="Kod SMS" type='text' style="width: 70px;" name='phSigningCode' id='phSigningCode'/>
+                        </span>
+                        <span>
+                            <button id="phSignDocuments" class="button action"><g:message code="subscription.sign"/></button>
+                        </span>
+                        <span>
+                            <button id="phRefreshSigningCode" class="button action"><i class="icon-refresh"></i></button>
+                        </span>
                     </li>
                 </ul>
             </fieldset>
@@ -307,6 +342,147 @@
     </nav>
 
 </section>
+<script>
+    function isEmpty(s) {
+        return s === undefined || s === null || s === "";
+    }
 
+    // GSP variables
+    let contactEmail = "${processInstance.getData("kontaktEmail")}";
+    let emailForDocuments = "${processInstance.getData("emailDoWysylkiDokumentu")}";
+
+    let createProcessRejectLink = '<g:createLink controller="activity" action="createProcess" params="[message: rejectedDocumentsMessage]"/>';
+    let createProcessPrevActivityMessage = '<g:createLink controller="activity" action="createProcess" params="[message: prevActivityMessage]"/>';
+
+    let sendingEmailsErrorMsg = "${message(code: "process.subscriptions.sendingEmails.error")}";
+    let sendingEmailsMsg = "${message(code: "process.subscriptions.sendingEmails")}";
+
+    let signatures = [];
+    <g:each in="${processInstance.subscriptions}">
+    signatures.push({
+        personRole: "${it.personRole}",
+    });
+    </g:each>
+
+    let requiredSignatures = [{
+        personRole: "PH",
+    }];
+    <g:if test="${representative1 && representative1.hasSignedContract}">
+    requiredSignatures.push({
+        personRole: "ACCEPTANT1",
+    });
+    </g:if>
+    <g:if test="${representative2 && representative2.hasSignedContract}">
+    requiredSignatures.push({
+        personRole: "ACCEPTANT2",
+    });
+    </g:if>
+    <g:if test="${representative3 && representative3.hasSignedContract}">
+    requiredSignatures.push({
+        personRole: "ACCEPTANT3",
+    });
+    </g:if>
+    <g:if test="${representative4 && representative4.hasSignedContract}">
+    requiredSignatures.push({
+        personRole: "ACCEPTANT4",
+    });
+    </g:if>
+
+    // Panels
+    let panels = [
+        EUMOWY.Panels.DocumentsSigningPanel('#documentsSigningPanel', {
+            processId: ${processInstance.id},
+            signatures: signatures,
+            signUrl: '${createLink(controller: "documentsSigningRest", action: "signDocuments", absolute: true)}',
+            refreshSigningCodeUrl: '${createLink(controller: "documentsSigningRest", action: "refreshSigningCode", absolute: true)}',
+        }),
+        EUMOWY.Panels.DocumentsFormatPanel('#clientSignatureDocType', {
+            contactEmail: contactEmail,
+            emailForDocuments: emailForDocuments,
+        }),
+        EUMOWY.Panels.DocumentsControlPanel('#signatureNavTable', {
+            documentsFormat: !isEmpty(contactEmail) || !isEmpty(emailForDocuments) ? "ELECTRONIC" : "PAPER",
+            requiredSignatures: requiredSignatures,
+            signatures: signatures,
+            prevUrl: createProcessPrevActivityMessage,
+            rejectUrl: createProcessRejectLink,
+            inProgressMsg: sendingEmailsMsg,
+            errorMsg: sendingEmailsErrorMsg,
+        }),
+    ];
+    // Mount panels once all of them are initialized.
+    // This ensures that all panels have setup their event handlers
+    panels.forEach(panel => panel.mount());
+
+    // Dialog functions using jQuery that won't work inside modules
+    // because jQuery UI requires global state
+    const $ = jQuery
+    function showNoAcceptDialog(yesCallback) {
+        $("#confirm-noaccept-dialog").dialog({
+            resizable: true,
+            height: 200,
+            width: 450,
+            modal: true,
+            buttons: {
+                "Tak": function () {
+                    $(this).dialog("close");
+                    const url = $(window.location).attr('href');
+                    yesCallback(url);
+                },
+                "Nie": function () {
+                    $(this).dialog("close");
+                }
+            }
+        });
+    }
+
+    function showSubmitWithoutSigningDialog(callback) {
+        $("#confirm-submit-without-subscription-dialog").dialog({
+            resizable: true,
+            height: 200,
+            width: 450,
+            modal: true,
+            buttons: {
+                "Tak": function () {
+                    $(this).dialog("close");
+                    self.showLoadingDialog(inProgressMsg);
+
+                    callback();
+
+                    result = true;
+                },
+                "Nie": function () {
+                    $(this).dialog("close");
+                }
+            }
+        });
+    }
+
+    function showLoadingDialog(msg) {
+        $('#confirm-pleasewait h2').text(msg);
+        $('#confirm-pleasewait img').show();
+        $('#confirm-pleasewait').dialog({
+            resizable: true,
+            height: 200,
+            width: 450,
+            modal: true
+        });
+    }
+
+    function showErrorDialog(msg) {
+        $("#confirm-pleasewait h2").text(msg);
+        $("#confirm-pleasewait img").hide();
+    }
+
+    function closeDialog() {
+        $('#confirm-pleasewait').dialog("close");
+    }
+
+    window.showNoAcceptDialog = showNoAcceptDialog;
+    window.showSubmitWithoutSigningDialog = showSubmitWithoutSigningDialog;
+    window.showLoadingDialog = showLoadingDialog;
+    window.showLoadingDialog = showLoadingDialog;
+    window.closeDialog = closeDialog;
+</script>
 </body>
 </html>

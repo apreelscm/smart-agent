@@ -7,6 +7,7 @@ export interface EventBus<T extends Events> {
     emit<E extends keyof T>(event: E, ...args: Parameters<T[E]>): void
 }
 
+// TODO Add events stream, so on subscription, you get all historical events
 export function createEventBus<T extends Events>(): EventBus<T> {
     const listeners = {} as Record<keyof T, Set<EventListener>>
 

@@ -4,6 +4,7 @@ import com.eservice.eumowy.util.DateUtils
 import com.lowagie.text.Document
 import com.lowagie.text.pdf.PdfCopy
 import com.lowagie.text.pdf.PdfReader
+import org.apache.commons.lang.StringUtils
 import pdfgenerator.PdfGenerator
 import pdfgenerator.PdfGenerator.FontType
 import signaturepad.SignatureToImage
@@ -24,7 +25,7 @@ class PdfService {
 		def data = getDocumentAndPageCountFromGlobalPageNumber(documents, pageNumber)
 		if (data.document != null) {
 			File f = new File(appParametersService.getPdfImagePath(data.document.id+"-"+processId+"-"+data.page+".png"))
-			while(f.exists() == false) {}
+			while (!f.exists()) {}
 			result = appParametersService.getPdfImageUri(data.document.id+"-"+processId+"-"+data.page+".png")
 		}else {
 			log.warn "generateImageFromPDFDocumentFile - document == null"
@@ -45,7 +46,10 @@ class PdfService {
 
         process.documents.each { DocumentFile document ->
             if(document.signature.hasPurpose(SignatureDetail.SignaturePurpose.REPRESENTATIVE)) {
-                newContent = getDocumentWithSubscription(document, getRepresentativeSubscriptionFromDocument(document))
+                String representativeId = documentService.getRepresentativeIdFromDocumentName(document.name)
+                Representative representative = document.process.representatives.find{representativeId?.equals(it.id.toString())}
+
+                newContent = getDocumentWithSubscription(document, getRepresentativeSubscriptionFromDocument(document), representative)
             } else {
                 newContent = getDocumentWithSubscriptions(process, document)
             }
@@ -70,26 +74,35 @@ class PdfService {
                 }
             }
 
-        subscriptionsData.putAll(getSubscriptions(document.signature, subscriptions, Subscription.PersonRole.ACCEPTANT1, [Subscription.PersonRole.ACCEPTANT1, Subscription.PersonRole.ACCEPTANT1_1], representativesToSignDocuments.containsKey(0)))
-        subscriptionsData.putAll(getSubscriptions(document.signature, subscriptions, Subscription.PersonRole.ACCEPTANT2, [Subscription.PersonRole.ACCEPTANT2, Subscription.PersonRole.ACCEPTANT2_1], representativesToSignDocuments.containsKey(1)))
-        subscriptionsData.putAll(getSubscriptions(document.signature, subscriptions, Subscription.PersonRole.ACCEPTANT3, [Subscription.PersonRole.ACCEPTANT3, Subscription.PersonRole.ACCEPTANT3_1], representativesToSignDocuments.containsKey(2)))
-        subscriptionsData.putAll(getSubscriptions(document.signature, subscriptions, Subscription.PersonRole.ACCEPTANT4, [Subscription.PersonRole.ACCEPTANT4, Subscription.PersonRole.ACCEPTANT4_1], representativesToSignDocuments.containsKey(3)))
-        subscriptionsData.putAll(getSubscriptions(document.signature, subscriptions, Subscription.PersonRole.PH, [Subscription.PersonRole.PH, Subscription.PersonRole.PH_1], true))
+        subscriptionsData.putAll(getSubscriptions(document.signature, subscriptions, Subscription.PersonRole.ACCEPTANT1, [Subscription.PersonRole.ACCEPTANT1, Subscription.PersonRole.ACCEPTANT1_1], representativesToSignDocuments.containsKey(0), signatoryPhone(representativesToSignDocuments.get(0))))
+        subscriptionsData.putAll(getSubscriptions(document.signature, subscriptions, Subscription.PersonRole.ACCEPTANT2, [Subscription.PersonRole.ACCEPTANT2, Subscription.PersonRole.ACCEPTANT2_1], representativesToSignDocuments.containsKey(1), signatoryPhone(representativesToSignDocuments.get(1))))
+        subscriptionsData.putAll(getSubscriptions(document.signature, subscriptions, Subscription.PersonRole.ACCEPTANT3, [Subscription.PersonRole.ACCEPTANT3, Subscription.PersonRole.ACCEPTANT3_1], representativesToSignDocuments.containsKey(2), signatoryPhone(representativesToSignDocuments.get(2))))
+        subscriptionsData.putAll(getSubscriptions(document.signature, subscriptions, Subscription.PersonRole.ACCEPTANT4, [Subscription.PersonRole.ACCEPTANT4, Subscription.PersonRole.ACCEPTANT4_1], representativesToSignDocuments.containsKey(3), signatoryPhone(representativesToSignDocuments.get(3))))
+        subscriptionsData.putAll(getSubscriptions(document.signature, subscriptions, Subscription.PersonRole.PH, [Subscription.PersonRole.PH, Subscription.PersonRole.PH_1], true, process.phMobilePhone))
 
         if (hasNewAgreement && process.isAkceptantOsobaFizyczna()) {
-            subscriptionsData.putAll(getSubscriptions(document.signature, subscriptions, Subscription.PersonRole.ACCEPTANT1, [Subscription.PersonRole.ACCEPTANT1_APUW_ZAL4], representativesToSignDocuments.containsKey(0)))
-            subscriptionsData.putAll(getSubscriptions(document.signature, subscriptions, Subscription.PersonRole.ACCEPTANT2, [Subscription.PersonRole.ACCEPTANT2_APUW_ZAL4], representativesToSignDocuments.containsKey(1)))
-            subscriptionsData.putAll(getSubscriptions(document.signature, subscriptions, Subscription.PersonRole.ACCEPTANT3, [Subscription.PersonRole.ACCEPTANT3_APUW_ZAL4], representativesToSignDocuments.containsKey(2)))
-            subscriptionsData.putAll(getSubscriptions(document.signature, subscriptions, Subscription.PersonRole.ACCEPTANT4, [Subscription.PersonRole.ACCEPTANT4_APUW_ZAL4], representativesToSignDocuments.containsKey(3)))
+            subscriptionsData.putAll(getSubscriptions(document.signature, subscriptions, Subscription.PersonRole.ACCEPTANT1, [Subscription.PersonRole.ACCEPTANT1_APUW_ZAL4], representativesToSignDocuments.containsKey(0), signatoryPhone(representativesToSignDocuments.get(0))))
+            subscriptionsData.putAll(getSubscriptions(document.signature, subscriptions, Subscription.PersonRole.ACCEPTANT2, [Subscription.PersonRole.ACCEPTANT2_APUW_ZAL4], representativesToSignDocuments.containsKey(1), signatoryPhone(representativesToSignDocuments.get(1))))
+            subscriptionsData.putAll(getSubscriptions(document.signature, subscriptions, Subscription.PersonRole.ACCEPTANT3, [Subscription.PersonRole.ACCEPTANT3_APUW_ZAL4], representativesToSignDocuments.containsKey(2), signatoryPhone(representativesToSignDocuments.get(2))))
+            subscriptionsData.putAll(getSubscriptions(document.signature, subscriptions, Subscription.PersonRole.ACCEPTANT4, [Subscription.PersonRole.ACCEPTANT4_APUW_ZAL4], representativesToSignDocuments.containsKey(3), signatoryPhone(representativesToSignDocuments.get(3))))
         }
 
         if (subscriptionsData.isEmpty()) {
             log.info("There is no subscription definitions for signature: " + signature.name)
         } else {
+            subscriptionsData.each {
+                if (it.key.startsWith("signatory")) {
+                    PdfGenerator.updateValuesContent(document.content, [it.key], it.value[0] as String)
+                }
+            }
             return PdfGenerator.addImageToPdfContent(signature.templatePath, document.content.content, subscriptionsData)
         }
 
         return document.content.content
+    }
+
+    private static String signatoryPhone(Representative representativeOpt) {
+        return representativeOpt != null ? representativeOpt.mobilePhone : ""
     }
 
     void addSubscriptionsToRepresentativeDocuments(Process process) {
@@ -97,9 +110,11 @@ class PdfService {
             updateDataUmowyOnDocument(document, process)
 
             Subscription representativeSubscription = getRepresentativeSubscriptionFromDocument(document)
+            String representativeId = documentService.getRepresentativeIdFromDocumentName(document.name)
+            Representative representative = document.process.representatives.find{representativeId?.equals(it.id.toString())}
 
             if(representativeSubscription) {
-                byte[] newContent = getDocumentWithSubscription(document, representativeSubscription)
+                byte[] newContent = getDocumentWithSubscription(document, representativeSubscription, representative)
                 document.content.content = newContent
                 document.content.discard()
             } else {
@@ -202,14 +217,19 @@ class PdfService {
         document.save(flush: true)
     }
 
-    private byte[] getDocumentWithSubscription(DocumentFile document, Subscription subscription) {
+    private byte[] getDocumentWithSubscription(DocumentFile document, Subscription subscription, Representative representative) {
         Map<String,Object[]> subscriptionsData = new HashMap<String, Object[]>()
 
-        subscriptionsData.putAll(getSubscriptions(document.signature, subscription, [subscription?.personRole]))
+        subscriptionsData.putAll(getSubscriptions(document.signature, subscription, [subscription?.personRole], representative.mobilePhone))
 
         if (subscriptionsData.isEmpty()) {
             log.info("There is no subscription definitions for signature: " + document.signature.name)
         } else {
+            subscriptionsData.each {
+                if (it.key.startsWith("signatory")) {
+                    PdfGenerator.updateValuesContent(document.content, [it.key], it.value[0] as String)
+                }
+            }
             return PdfGenerator.addImageToPdfContent(document.signature.templatePath, document.content.content, subscriptionsData)
         }
 
@@ -219,7 +239,7 @@ class PdfService {
     private Map getSubscriptions(
             Signature signature, Set<Subscription> subscriptions,
                                  Subscription.PersonRole subscriptionRole, List<Subscription.PersonRole> subscriptionDefinitionRoles,
-            boolean shouldSignDocument
+            boolean shouldSignDocument, String signatoryPhone
     ) {
         Subscription subscription = subscriptions.find { it.personRole == subscriptionRole }
 
@@ -234,12 +254,12 @@ class PdfService {
             return [:]
         }
 
-        return getSubscriptions(signature, subscription, subscriptionDefinitionRoles)
+        return getSubscriptions(signature, subscription, subscriptionRole, subscriptionDefinitionRoles, signatoryPhone)
     }
 
-    private Map getSubscriptions(Signature signature, Subscription subscription,
-                                 List<Subscription.PersonRole> subscriptionDefinitionRoles) {
-        Map result = [:]
+    private static Map<String,Object[]> getSubscriptions(Signature signature, Subscription subscription, Subscription.PersonRole subscriptionRole,
+                                        List<Subscription.PersonRole> subscriptionDefinitionRoles, String signatoryPhone) {
+        Map<String,Object[]> result = [:]
 
         Set<SubscriptionDefinition> definitions = signature.subscriptionDefinitions.findAll {
             it.role in subscriptionDefinitionRoles && it?.subscriptionPageNumber > -1
@@ -249,13 +269,24 @@ class PdfService {
             return result
         }
 
-        BufferedImage img = SignatureToImage.convertDataToImage(subscription.content)
+        if (isSignedWithCode(subscription)) {
+            result.put("signatory_" + subscriptionRole.name().toLowerCase() + "_signphone", [signatoryPhone] as Object[])
+            result.put("signatory_" + subscriptionRole.name().toLowerCase() + "_signdate", [subscription.signDate.format("yyyy-MM-dd HH:mm:ss")] as Object[])
+            result.put("signatory_" + subscriptionRole.name().toLowerCase() + "_signcode", [subscription.signingCode] as Object[])
+            return result
+        }
+
+        BufferedImage img = SignatureToImage.convertDataToImage(subscription)
 
         definitions.each{
             result.put("subscriber_"+it.id, [img, it.subscriptionPageNumber, it.subscriptionX, it.subscriptionY, it.scaleX, it.scaleY] as Object[])
         }
 
         return result
+    }
+
+    private static boolean isSignedWithCode(Subscription signature) {
+        return StringUtils.isNotBlank(signature.signingCode)
     }
 
     private String getBeneficiaryPDFfilepath(Process process) {
@@ -277,7 +308,7 @@ class PdfService {
         def docs = documents.sort(false) {it.signature.signatureOrder}
         def filteredDocs = docs.findAll{it.signature?.showOnPreview}
 
-        if (filteredDocs.size>0){
+        if (filteredDocs.size() > 0) {
             Integer pagesCount = 0
             for(DocumentFile doc : filteredDocs) {
                 log.info "Document: " + doc + " PageCount: " + doc.pagesCount + " Signature_order: " + doc.signature.signatureOrder
