@@ -118,8 +118,8 @@ beans = {
     daoAuthenticationProvider(DomainAuthenticationProvider) {
         preAuthenticationChecks = ref('preAuthenticationChecks')
         postAuthenticationChecks = ref('postAuthenticationChecks')
-//        authenticator = ref('ldapAuthenticator')
-         authenticator = ref('fakeAuthenticator')
+        authenticator = ref('ldapAuthenticator')
+//         authenticator = ref('fakeAuthenticator')
     }
 
     cbdDAO(CbdDAO) {
