@@ -332,35 +332,36 @@ class ActivityController {
             on("refreshProcessStatus") {
                 Process processInstance = flow.processInstance
 
-                processInstance.refresh()
+//                processInstance.refresh()
+//
+//                if (processInstance.subscriptions?.isEmpty()) {
+//                    return
+//                }
+//
+//                processInstance.signingDate = new Date()
+//
+//                int signed = processInstance.subscriptions?.findAll { StringUtils.isNotBlank(it.signingCode) }.size()
+//
+//                if (signed == flow.requiredNumberOfSubscriptions) {
+//                    processInstance.status = Process.ProcessStatus.SUBSCRIPTIONS_DONE
+//                    String currentDate = DateUtils.formatWithTimezone(DateUtils.getCurrentDate());
+//                    log.info 'Zapisuje formatowana dateUmowy: ' + currentDate
+//
+//                    ProcessData savedAgreementDate = processInstance.getProcessData("dataUmowy")
+//
+//                    if (savedAgreementDate) {
+//                        savedAgreementDate.value = currentDate
+//                    } else {
+//                        ProcessData actualDataUmowy = new ProcessData(name: "dataUmowy", value: currentDate)
+//
+//                        processInstance.addToProcessData(actualDataUmowy)
+//                    }
+//                } else if (signed > 0) {
+//                    processInstance.status = Process.ProcessStatus.WAIT_FOR_SUBSCRIPTION
+//                }
+//
+//                processInstance.save(flush: true)
 
-                if (processInstance.subscriptions?.isEmpty()) {
-                    return
-                }
-
-                processInstance.signingDate = new Date()
-
-                int signed = processInstance.subscriptions?.findAll { StringUtils.isNotBlank(it.signingCode) }.size()
-
-                if (signed == flow.requiredNumberOfSubscriptions) {
-                    processInstance.status = Process.ProcessStatus.SUBSCRIPTIONS_DONE
-                    String currentDate = DateUtils.formatWithTimezone(DateUtils.getCurrentDate());
-                    log.info 'Zapisuje formatowana dateUmowy: ' + currentDate
-
-                    ProcessData savedAgreementDate = processInstance.getProcessData("dataUmowy")
-
-                    if (savedAgreementDate) {
-                        savedAgreementDate.value = currentDate
-                    } else {
-                        ProcessData actualDataUmowy = new ProcessData(name: "dataUmowy", value: currentDate)
-
-                        processInstance.addToProcessData(actualDataUmowy)
-                    }
-                } else if (signed > 0) {
-                    processInstance.status = Process.ProcessStatus.WAIT_FOR_SUBSCRIPTION
-                }
-
-                processInstance.save(flush: true)
                 flow.skipDocumentGeneration = true
                 flow.skipDocumentSigningCodesGeneration = true
                 flow.processInstance = processInstance
@@ -381,6 +382,8 @@ class ActivityController {
             on("submit") {
                 log.info "PARAMS: " + params
                 Process processInstance = flow.processInstance
+                processInstance.refresh()
+
                 _processDocumentCreation(processInstance, params.requestVersion, flow.requiredNumberOfSubscriptions)
                 processInstance.status = _getNewProcessStatus(params, flow.requiredNumberOfSubscriptions)
                 processInstance.signingDate = new Date()

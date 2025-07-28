@@ -445,7 +445,7 @@
             buttons: {
                 "Tak": function () {
                     $(this).dialog("close");
-                    self.showLoadingDialog(inProgressMsg);
+                    self.showLoadingDialog(sendingEmailsMsg);
 
                     callback();
 
