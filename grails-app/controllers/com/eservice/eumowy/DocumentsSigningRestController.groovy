@@ -9,7 +9,7 @@ class DocumentsSigningRestController {
             render(status: 400)
             return
         }
-        render(status: 200)
+        render(text: "{\"signatureId\": " + result.signatureId() + "}")
     }
 
     def refreshSigningCode(ResetSigningCodeCommand cmd) {

@@ -90,6 +90,7 @@ class PdfService {
         if (subscriptionsData.isEmpty()) {
             log.info("There is no subscription definitions for signature: " + signature.name)
         } else {
+            log.info("!!! There are subscription definitions for signature: " + signature.name)
             subscriptionsData.each {
                 if (it.key.startsWith("signatory")) {
                     PdfGenerator.updateValuesContent(document.content, [it.key], it.value[0] as String)
@@ -106,7 +107,9 @@ class PdfService {
     }
 
     void addSubscriptionsToRepresentativeDocuments(Process process) {
-        process.documents.findAll{it.signature.hasPurpose(SignatureDetail.SignaturePurpose.REPRESENTATIVE)}.each { document ->
+        process.documents.findAll{
+            it.signature.hasPurpose(SignatureDetail.SignaturePurpose.REPRESENTATIVE)
+        }.each { document ->
             updateDataUmowyOnDocument(document, process)
 
             Subscription representativeSubscription = getRepresentativeSubscriptionFromDocument(document)
@@ -220,11 +223,12 @@ class PdfService {
     private byte[] getDocumentWithSubscription(DocumentFile document, Subscription subscription, Representative representative) {
         Map<String,Object[]> subscriptionsData = new HashMap<String, Object[]>()
 
-        subscriptionsData.putAll(getSubscriptions(document.signature, subscription, [subscription?.personRole], representative.mobilePhone))
+        subscriptionsData.putAll(getSubscriptions(document.signature, subscription, subscription?.personRole, [subscription?.personRole], representative.mobilePhone))
 
         if (subscriptionsData.isEmpty()) {
             log.info("There is no subscription definitions for signature: " + document.signature.name)
         } else {
+            log.info("!!! There are subscription definitions for signature: " + signature.name)
             subscriptionsData.each {
                 if (it.key.startsWith("signatory")) {
                     PdfGenerator.updateValuesContent(document.content, [it.key], it.value[0] as String)

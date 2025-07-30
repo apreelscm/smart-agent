@@ -24,21 +24,27 @@ class ResetSigningCodeCommand {
 
 class SignDocumentsResult {
     private final boolean error;
+    private final Long signatureId;
 
-    private SignDocumentsResult(boolean error) {
+    private SignDocumentsResult(boolean error, Long signatureId) {
         this.error = error
+        this.signatureId = signatureId
     }
 
     static SignDocumentsResult error() {
-        return new SignDocumentsResult(true);
+        return new SignDocumentsResult(true, null);
     }
 
-    static SignDocumentsResult success() {
-        return new SignDocumentsResult(false);
+    static SignDocumentsResult success(long signatureId) {
+        return new SignDocumentsResult(false, signatureId);
     }
 
     boolean isError() {
         return error;
+    }
+
+    Long signatureId() {
+        return signatureId;
     }
 }
 class RefreshSigningCodeResult {
@@ -125,7 +131,7 @@ class DocumentsSigningService {
                     signDate: signDate,
                     uniqueKey: cmd.processId + cmd.personRole.name(),
                     signingCode: signatory.docsSigningCode,
-                    process: p,
+                    //process: p,
             ])
             log.info "Saving subscription for role " + s.personRole.toString()
         } else {
@@ -144,11 +150,15 @@ class DocumentsSigningService {
             log.error "Error during saving subscription with id ${s.id}"
         }
 
-        return SignDocumentsResult.success()
+        return SignDocumentsResult.success(s.id)
     }
 
     RefreshSigningCodeResult refreshSigningCode(ResetSigningCodeCommand cmd) {
         Process p = Process.findById(cmd.processId)
+        return refreshSigningCode(cmd, p)
+    }
+
+    RefreshSigningCodeResult refreshSigningCode(ResetSigningCodeCommand cmd, Process p) {
         if (p == null) {
             log.info("Wrong process id")
             return RefreshSigningCodeResult.error()

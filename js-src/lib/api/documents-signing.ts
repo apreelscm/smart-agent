@@ -11,11 +11,15 @@ export type ResetSigningCodeCmd = {
     personRole: string;
 }
 
+export type DocumentSignature = {
+    signatureId: string;
+}
+
 export class DocumentsSigningApi {
     constructor(private confirmUrl: string, private refreshUrl: string) {
     }
 
-    signDocuments(cmd: SignDocumentsCmd): Promise<void> {
+    signDocuments(cmd: SignDocumentsCmd): Promise<DocumentSignature> {
         return restClient.post(this.confirmUrl, cmd);
     }
 

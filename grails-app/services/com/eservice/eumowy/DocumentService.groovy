@@ -52,6 +52,15 @@ class DocumentService {
         return name.substring(name.lastIndexOf('_') + 1, name.lastIndexOf('.pdf'))
     }
 
+    public void refreshMergedDocument(Process process) {
+        if (isNewAgreement(process)) {
+            DocumentFile mergedFile = getMergedDocument(process, process.documents.toSet())
+            if (mergedFile != null && !isDocumentExistsInProcess(mergedFile, process)) {
+                process.addToDocuments(mergedFile)
+            }
+        }
+    }
+
     public Set<DocumentFile> getSavedDocumentsInProcess(Process processInstance, def calc) {
         Set<DocumentFile> documents = []
         boolean isRepOrBenDataChanged = processInstance.isAnyRepresentativeOrBeneficiaryDataChanged()
@@ -341,33 +350,36 @@ class DocumentService {
         PDDocument mergedDoc = new PDDocument()
 
         List<PDDocument> toClose = new ArrayList()
-        for (int i = 0; i < documentsToMerge?.size(); i++) {
-            log.info(String.format("Merging document %s", documentsToMerge[i].name))
-            ByteArrayInputStream bais = new ByteArrayInputStream(documentsToMerge[i].getContent().getContent())
-            PDDocument document = PDDocument.load(bais)
-            pdm.appendDocument(mergedDoc, document)
-            toClose.add(document)
+
+        try {
+            for (int i = 0; i < documentsToMerge?.size(); i++) {
+                log.info(String.format("Merging document %s", documentsToMerge[i].name))
+                ByteArrayInputStream bais = new ByteArrayInputStream(documentsToMerge[i].getContent().getContent())
+                PDDocument document = PDDocument.load(bais)
+                pdm.appendDocument(mergedDoc, document)
+                toClose.add(document)
+            }
+
+            DocumentFile documentFile = DocumentFile.findByNameAndProcess(documentName, process)
+
+            if (documentFile) {
+                log.info(String.format("Updating existing document file %s", documentFile.id))
+                documentFile.content.setContent(getBytesContent(mergedDoc))
+                documentFile.lastUpdated = new Date()
+                documentFile.save(flush: true)
+            } else {
+                documentFile = new DocumentFile(name: documentName, clientName: documentName, dateCreated: new Date(),
+                        lastUpdated: new Date(), pagesCount: mergedDoc.getNumberOfPages(), signature: documentsToMerge[0].signature)
+                documentFile.setContent(new DocumentContent(content: getBytesContent(mergedDoc)))
+                documentFile.save(flush: true)
+                log.info(String.format("New document file created %s for process %s", documentFile.id, process.id))
+            }
+
+            return documentFile
+        } finally {
+            mergedDoc.close()
+            toClose.each { PDDocument d -> d.close() }
         }
-
-        DocumentFile documentFile = DocumentFile.findByNameAndProcess(documentName, process)
-
-        if (documentFile) {
-            log.info(String.format("Updating existing document file %s", documentFile.id))
-            documentFile.content.setContent(getBytesContent(mergedDoc))
-            documentFile.lastUpdated = new Date()
-            documentFile.save(flush: true)
-        } else {
-            documentFile = new DocumentFile(name: documentName, clientName: documentName, dateCreated: new Date(),
-                lastUpdated: new Date(), pagesCount: mergedDoc.getNumberOfPages(), signature: 3)
-            documentFile.setContent(new DocumentContent(content: getBytesContent(mergedDoc)))
-            documentFile.save(flush: true)
-            log.info(String.format("New document file created %s for process %s", documentFile.id, process.id))
-        }
-
-        mergedDoc.close()
-        toClose.each { PDDocument d -> d.close() }
-
-        return documentFile
     }
 
     private static byte[] getBytesContent(PDDocument pdDocument) throws IOException {

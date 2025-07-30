@@ -332,6 +332,24 @@ class ActivityController {
             on("refreshProcessStatus") {
                 Process processInstance = flow.processInstance
 
+                Subscription subscription = Subscription.get(params.signatureId)
+
+                if (!subscription) {
+                    log.error format("Nie znaleziono podpisu o id %s dla procesu %s", params.signatureId, processInstance.id)
+                } else {
+                    log.info format("!!! Znaleziono podpis o id %s dla procesu %s", params.signatureId, processInstance.id)
+                }
+
+                processInstance.addToSubscriptions(subscription)
+                subscription.save(flush: true)
+
+                if (!processInstance.save(flush: true)) {
+                    processInstance.errors.each {
+                        log.error(it)
+                    }
+                    return error();
+                }
+
 //                processInstance.refresh()
 //
 //                if (processInstance.subscriptions?.isEmpty()) {
@@ -366,6 +384,22 @@ class ActivityController {
                 flow.skipDocumentSigningCodesGeneration = true
                 flow.processInstance = processInstance
             }.to "clientSignature"
+            on("refreshPin") {
+                Process processInstance = flow.processInstance
+                ResetSigningCodeCommand cmd =  new ResetSigningCodeCommand(
+                        processId: processInstance.id,
+                        personRole: Subscription.PersonRole.valueOf(params.personRole)
+                )
+                RefreshSigningCodeResult result = documentsSigningService.refreshSigningCode(cmd, processInstance)
+
+                flow.skipDocumentGeneration = true
+                flow.skipDocumentSigningCodesGeneration = true
+                flow.processInstance = processInstance
+
+                if (result.isError()) {
+                    return error()
+                }
+            }.to "clientSignature"
             on("noaccept") {
                 Process processInstance = flow.processInstance
 
@@ -382,7 +416,7 @@ class ActivityController {
             on("submit") {
                 log.info "PARAMS: " + params
                 Process processInstance = flow.processInstance
-                processInstance.refresh()
+                //TODO MK processInstance.refresh()
 
                 _processDocumentCreation(processInstance, params.requestVersion, flow.requiredNumberOfSubscriptions)
                 processInstance.status = _getNewProcessStatus(params, flow.requiredNumberOfSubscriptions)
@@ -1599,7 +1633,9 @@ class ActivityController {
                     throw new IllegalStateException("Cannot find subscriptions for process " + process.id)
                 }
 
-                process.documents.findAll{!it.signature.hasPurpose(REPRESENTATIVE)}.each { DocumentFile doc ->
+                process.documents.findAll{
+                    !it.signature.hasPurpose(REPRESENTATIVE)
+                }.each { DocumentFile doc ->
                     pdfService.updateDataUmowyOnDocument(doc, process)
 
                     byte[] newContent = pdfService.getDocumentWithSubscriptions(process, doc)
@@ -1611,6 +1647,7 @@ class ActivityController {
                 pdfService.addSubscriptionsToRepresentativeDocuments(process)
 
                 log.info "ELECTRONICAL VERSION for process " + process.id
+                documentService.refreshMergedDocument(process)
 
                 Map mailBodyParams = processService.createMailParametersForElectronicalVersion(process)
                 String recipient = mailBodyParams.recipient

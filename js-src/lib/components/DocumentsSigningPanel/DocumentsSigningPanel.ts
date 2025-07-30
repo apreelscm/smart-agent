@@ -1,7 +1,7 @@
 import {Panel} from "../panels.ts";
 import {EVENTS} from "../../events/events.ts";
 import {EventBus} from "../../events/event-bus.ts";
-import {DocumentsSigningApi} from "../../api/documents-signing.ts";
+import {DocumentSignature, DocumentsSigningApi} from "../../api/documents-signing.ts";
 import {DocumentsFormat} from "../DocumentsFormatPanel/DocumentsFormatPanel.ts";
 import $ from 'jquery';
 
@@ -94,8 +94,8 @@ export class DocumentsSigningPanel extends Panel<EVENTS, DocumentsSigningPanelPr
             processId: this.props.processId,
             personRole: personRole,
             code: ctrl.input.val() as string
-        }).then(() => {
-            this.refreshProcessStatus()
+        }).then(docSignature => {
+            this.refreshProcessStatus(docSignature)
                 .then(() => {
                     this.documentsSigned(personRole);
                     this.disableControls(ctrl);
@@ -117,12 +117,16 @@ export class DocumentsSigningPanel extends Panel<EVENTS, DocumentsSigningPanelPr
             return;
         }
         this.disableButton(ctrl.refreshSigningCodeBtn);
-        this.api.refreshSigningCode({
-            processId: this.props.processId,
-            personRole: personRole,
-        }).then(() => {
-            setTimeout(() => this.enableButton(ctrl.refreshSigningCodeBtn), 15 * 1000);
-        }).catch(() => this.enableButton(ctrl.refreshSigningCodeBtn));
+        this.refreshSigningCode(personRole)
+            .then(() => {
+                setTimeout(() => this.enableButton(ctrl.refreshSigningCodeBtn), 15 * 1000);
+            }).catch(() => this.enableButton(ctrl.refreshSigningCodeBtn));
+        // this.api.refreshSigningCode({
+        //     processId: this.props.processId,
+        //     personRole: personRole,
+        // }).then(() => {
+        //     setTimeout(() => this.enableButton(ctrl.refreshSigningCodeBtn), 15 * 1000);
+        // }).catch(() => this.enableButton(ctrl.refreshSigningCodeBtn));
     }
 
     private documentsSigned(role: string): void {
@@ -228,16 +232,29 @@ export class DocumentsSigningPanel extends Panel<EVENTS, DocumentsSigningPanelPr
         btn.removeClass("disabled");
     }
 
-    private refreshProcessStatus(): Promise<void> {
+    private refreshProcessStatus(docSignature: DocumentSignature): Promise<void> {
         return new Promise((resolve, reject) => {
             const url = $(window.location).attr('href')!!;
-            $.post(url, {_eventId_refreshProcessStatus: ""})
+            $.post(url, {_eventId_refreshProcessStatus: "", signatureId: docSignature.signatureId})
                 .done(function() {
                     resolve();
                 })
                 .fail(function() {
                     reject('Wystąpił błąd podczas zapisywania podpisu. Sprawdź swoje połączenie internetowe i spróbuj ponownie później.');
                 });
+        });
+    }
+
+    private refreshSigningCode(personRole: string): Promise<void> {
+        return new Promise((resolve, reject) => {
+           const url = $(window.location).attr('href')!!;
+           $.post(url, {_eventId_refreshPin: "", personRole: personRole})
+               .done(function() {
+                   resolve();
+               })
+               .fail(function() {
+                  reject('Wystąpił błąd podczas odnawiania kodu do podpisu. Sprawdź swoje połączenie internetowe i spróbuj ponownie później.');
+               });
         });
     }
 }
