@@ -393,8 +393,8 @@
         EUMOWY.Panels.DocumentsSigningPanel('#documentsSigningPanel', {
             processId: ${processInstance.id},
             signatures: signatures,
-            signUrl: '${createLink(controller: "documentsSigningRest", action: "signDocuments", absolute: true)}',
-            refreshSigningCodeUrl: '${createLink(controller: "documentsSigningRest", action: "refreshSigningCode", absolute: true)}',
+            signUrl: '${createLink(controller: "documentsSigningRest", action: "signDocuments", absolute: false)}',
+            refreshSigningCodeUrl: '${createLink(controller: "documentsSigningRest", action: "refreshSigningCode", absolute: false)}',
         }),
         EUMOWY.Panels.DocumentsFormatPanel('#clientSignatureDocType', {
             contactEmail: contactEmail,
