@@ -351,8 +351,8 @@
     let contactEmail = "${processInstance.getData("kontaktEmail")}";
     let emailForDocuments = "${processInstance.getData("emailDoWysylkiDokumentu")}";
 
-    let createProcessRejectLink = '<g:createLink controller="activity" action="createProcess" params="[message: rejectedDocumentsMessage]"/>';
-    let createProcessPrevActivityMessage = '<g:createLink controller="activity" action="createProcess" params="[message: prevActivityMessage]"/>';
+    let createProcessRejectLink = '${createLink(controller: "activity", action: "createProcess", absolute: false, params: [message: rejectedDocumentsMessage])}';
+    let createProcessPrevActivityMessage = '${createLink(controller: "activity", action: "createProcess", absolute: false, params: [message: prevActivityMessage])}';
 
     let sendingEmailsErrorMsg = "${message(code: "process.subscriptions.sendingEmails.error")}";
     let sendingEmailsMsg = "${message(code: "process.subscriptions.sendingEmails")}";
