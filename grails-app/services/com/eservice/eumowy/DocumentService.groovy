@@ -368,8 +368,31 @@ class DocumentService {
                 documentFile.lastUpdated = new Date()
                 documentFile.save(flush: true)
             } else {
-                documentFile = new DocumentFile(name: documentName, clientName: documentName, dateCreated: new Date(),
-                        lastUpdated: new Date(), pagesCount: mergedDoc.getNumberOfPages(), signature: documentsToMerge[0].signature)
+                //Signature s = Signature.findByName('BUNDLE')
+                documentFile = new DocumentFile(
+                        name: documentName,
+                        clientName: documentName,
+                        dateCreated: new Date(),
+                        lastUpdated: new Date(),
+                        pagesCount: mergedDoc.getNumberOfPages(),
+//                        signature: new Signature(
+//                            name: 'BUNDLE',
+//                            active: true,
+//                            templatePath: '',
+//                            forPoint: false,
+//                            forPos: false,
+//                            description: 'Bundle of documents',
+//                            filename: 'bundle-of-documents',
+//                            sendToClient: true,
+//                            showOnPreview: true,
+//                            showOnZRD: true,
+//                            shouldBeMerged: false,
+//                            signatureOrder: 0,
+//                        )
+                        // TODO This is broken, but due to Groovy dynamic nature makes other parts of the
+                        // code work. Ideally merged documents don't need any "signatures" aka document templates.
+                        signature: 3
+                )
                 documentFile.setContent(new DocumentContent(content: getBytesContent(mergedDoc)))
                 documentFile.save(flush: true)
                 log.info(String.format("New document file created %s for process %s", documentFile.id, process.id))
