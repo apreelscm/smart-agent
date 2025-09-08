@@ -50,6 +50,10 @@ export class DocumentsControlPanel extends Panel<EVENTS, DocumentsControlPanelPr
     }
 
     mount(): void {
+        if (this.documentsFormat == 'NONE') {
+            this.disable(this.continueButton);
+        }
+
         this.noAcceptButton.on("click", this.handleNoAcceptClicked.bind(this));
         this.continueButton.on("click", this.handleContinueClicked.bind(this));
     }
@@ -109,6 +113,9 @@ export class DocumentsControlPanel extends Panel<EVENTS, DocumentsControlPanelPr
 
     private handleDocumentsFormatSelected(documentsFormat: DocumentsFormat): void {
         this.documentsFormat = documentsFormat;
+        if (this.documentsFormat != 'NONE') {
+            this.enable(this.continueButton);
+        }
     }
 
     private handleDocumentsSigned(ev: DocumentsSignedEvent): void {
@@ -118,6 +125,14 @@ export class DocumentsControlPanel extends Panel<EVENTS, DocumentsControlPanelPr
     private isAllSignaturesDone(): boolean {
         return this.requiredSignatures.length === this.signaturesDone.length &&
             this.requiredSignatures.every(sig => this.signaturesDone.some(s => s.personRole === sig.personRole));
+    }
+
+    private disable(btn: JQuery): void {
+        btn.attr("disabled","disabled");
+    }
+
+    private enable(btn: JQuery): void {
+        btn.removeAttr("disabled");
     }
 
 }

@@ -37,6 +37,7 @@ export class DocumentsSigningPanel extends Panel<EVENTS, DocumentsSigningPanelPr
     private readonly api: DocumentsSigningApi;
     private signatureControls: SignatureControls[] = [];
     private rolesThatSigned: string[] = [];
+    private documentsFormat: string = "";
 
     constructor(eventBus: EventBus<EVENTS>, props: DocumentsSigningPanelProps, rootSelector: string) {
         super(eventBus, props, rootSelector);
@@ -47,6 +48,8 @@ export class DocumentsSigningPanel extends Panel<EVENTS, DocumentsSigningPanelPr
         this.querySignatureControls("representative3");
         this.querySignatureControls("representative4");
         this.querySignatureControls("ph");
+
+        this.disableSigning();
 
         this.events.on('DOCUMENTS_FORMAT_SELECTED', this.handleDocumentsFormatSelected.bind(this));
         this.events.on('ONLY_PAPER_DOCUMENTS_FORMAT_ALLOWED', () => this.disableSigning());
@@ -70,9 +73,11 @@ export class DocumentsSigningPanel extends Panel<EVENTS, DocumentsSigningPanelPr
     }
 
     private handleDocumentsFormatSelected(documentsFormat: DocumentsFormat): void {
-        if (documentsFormat == 'TEMPLATES') {
+        this.documentsFormat = documentsFormat;
+
+        if (documentsFormat == 'NONE' || documentsFormat == 'TEMPLATES') {
             this.disableSigning();
-        } else {
+        } else if (documentsFormat == 'ELECTRONIC' || documentsFormat == 'PAPER') {
             this.enableSigning();
         }
     }

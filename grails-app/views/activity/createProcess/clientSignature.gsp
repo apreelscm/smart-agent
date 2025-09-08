@@ -202,7 +202,7 @@
                                 <button id="representative1SignDocuments" class="button action"><g:message code="subscription.sign"/></button>
                             </span>
                             <span>
-                                <button id="representative1RefreshSigningCode" class="button action"><i class="icon-refresh"></i></button>
+                                <button id="representative1RefreshSigningCode" class="button action"><g:message code="subscription.refreshCode"/></button>
                             </span>
                         </li>
                     </g:if>
@@ -222,7 +222,7 @@
                                 <button id="representative2SignDocuments" class="button action"><g:message code="subscription.sign"/></button>
                             </span>
                             <span>
-                                <button id="representative2RefreshSigningCode" class="button action"><i class="icon-refresh"></i></button>
+                                <button id="representative2RefreshSigningCode" class="button action"><g:message code="subscription.refreshCode"/></button>
                             </span>
                         </li>
                     </g:if>
@@ -243,7 +243,7 @@
                                 <button id="representative3SignDocuments" class="button action"><g:message code="subscription.sign"/></button>
                             </span>
                             <span>
-                                <button id="representative3RefreshSigningCode" class="button action"><i class="icon-refresh"></i></button>
+                                <button id="representative3RefreshSigningCode" class="button action"><g:message code="subscription.refreshCode"/></button>
                             </span>
                         </li>
                     </g:if>
@@ -264,7 +264,7 @@
                                 <button id="representative4SignDocuments" class="button action"><g:message code="subscription.sign"/></button>
                             </span>
                             <span>
-                                <button id="representative4RefreshSigningCode" class="button action"><i class="icon-refresh"></i></button>
+                                <button id="representative4RefreshSigningCode" class="button action"><g:message code="subscription.refreshCode"/></button>
                             </span>
                         </li>
                     </g:if>
@@ -283,7 +283,7 @@
                             <button id="phSignDocuments" class="button action"><g:message code="subscription.sign"/></button>
                         </span>
                         <span>
-                            <button id="phRefreshSigningCode" class="button action"><i class="icon-refresh"></i></button>
+                            <button id="phRefreshSigningCode" class="button action"><g:message code="subscription.refreshCode"/></button>
                         </span>
                     </li>
                 </ul>
@@ -397,11 +397,12 @@
             refreshSigningCodeUrl: '${createLink(controller: "documentsSigningRest", action: "refreshSigningCode", absolute: false)}',
         }),
         EUMOWY.Panels.DocumentsFormatPanel('#clientSignatureDocType', {
+            documentsFormat: '${documentsFormat != null ? documentsFormat : "NONE"}',
             contactEmail: contactEmail,
             emailForDocuments: emailForDocuments,
         }),
         EUMOWY.Panels.DocumentsControlPanel('#signatureNavTable', {
-            documentsFormat: !isEmpty(contactEmail) || !isEmpty(emailForDocuments) ? "ELECTRONIC" : "PAPER",
+            documentsFormat: '${documentsFormat != null ? documentsFormat : "NONE"}',
             requiredSignatures: requiredSignatures,
             signatures: signatures,
             prevUrl: createProcessPrevActivityMessage,

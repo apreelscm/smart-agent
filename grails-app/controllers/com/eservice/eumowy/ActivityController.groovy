@@ -246,9 +246,10 @@ class ActivityController {
         clientSignature {
             onEntry {
                 Process processInstance = flow.processInstance
-                if (!flow.skipDocumentSigningCodesGeneration) {
-                    documentsSigningService.generateSigningCodes(processInstance)
-                }
+                //TODO Remove
+//                if (!flow.skipDocumentSigningCodesGeneration) {
+//                    documentsSigningService.generateSigningCodes(processInstance)
+//                }
                 setRepresentatives(flow)
 
                 flow.requiredNumberOfSubscriptions = subscriptionService.getRequiredSubscriptionsCount(processInstance)
@@ -257,7 +258,8 @@ class ActivityController {
                     Set<DocumentFile> documents = documentService.getSavedDocumentsInProcess(processInstance, conversation.calc)
                     flow.totalPagesCount = documentService.getPreviewDocumentsPageCount(documents)
                 }
-                flow.skipDocumentSigningCodesGeneration = false
+                // flow.skipDocumentSigningCodesGeneration = false
+                flow.documentsFormat = null
                 flow.skipDocumentGeneration = false
                 flow.processInstance = processInstance
                 flow.rejectedDocumentsMessage = message(code: 'process.reject', args:[flow.processInstance.client.nip])
@@ -275,7 +277,7 @@ class ActivityController {
             ])
             on("back"){
                 flow.newProcessFlow = false
-                flow.skipDocumentSigningCodesGeneration = false
+                //flow.skipDocumentSigningCodesGeneration = false
             }to "chooseSubFlow"
             on("subscribe").to "clientSignature"
             on("updateProcessStatus") { // TODO MK Remove: No longer used state, since we use codes for signing
@@ -381,7 +383,13 @@ class ActivityController {
 //                processInstance.save(flush: true)
 
                 flow.skipDocumentGeneration = true
-                flow.skipDocumentSigningCodesGeneration = true
+                //flow.skipDocumentSigningCodesGeneration = true
+                flow.processInstance = processInstance
+            }.to "clientSignature"
+            on("saveDocumentsFormat") {
+                Process processInstance = flow.processInstance
+                flow.skipDocumentGeneration = true
+                flow.documentsFormat = params.documentsFormat
                 flow.processInstance = processInstance
             }.to "clientSignature"
             on("refreshPin") {
@@ -393,7 +401,7 @@ class ActivityController {
                 RefreshSigningCodeResult result = documentsSigningService.refreshSigningCode(cmd, processInstance)
 
                 flow.skipDocumentGeneration = true
-                flow.skipDocumentSigningCodesGeneration = true
+                //flow.skipDocumentSigningCodesGeneration = true
                 flow.processInstance = processInstance
 
                 if (result.isError()) {
