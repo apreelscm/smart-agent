@@ -1385,7 +1385,7 @@ a.submit{
 	margin-left: 1em;
 	margin-right: 1em;
 	height: 200px;
-	width: 70%;
+	width: 72%;
     overflow: auto;
 }
 
@@ -1393,7 +1393,7 @@ a.submit{
 	float: left;
 	margin-right: 1em;
 	height: 200px;
-	width: 25%;
+	width: 23%;
 }
 
 .no-close .ui-dialog-titlebar {
