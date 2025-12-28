@@ -17,9 +17,9 @@ function maskFields(element){
     element.find(".nip").mask('0000000000');
     element.find(".regon").mask('000000000');
     element.find(".postal-code").mask('00-000');
-    element.find(".phone").mask(LANDLINE_PHONE_FORMAT);
-    element.find(".mobile-phone").mask(MOBILE_PHONE_FORMAT);
-    element.find(".fax").mask('(00) 000-00-00');
+    // element.find(".phone").mask(LANDLINE_PHONE_FORMAT);
+    // element.find(".mobile-phone").mask(MOBILE_PHONE_FORMAT);
+    // element.find(".fax").mask('(00) 000-00-00');
     element.find(".ip").mask('099.099.099.099');
     element.find(".ph-number").mask('S9999');
     element.find(".integer-number").mask('099999');
@@ -35,9 +35,9 @@ jQuery(document).ready(function() {
     jQuery(".nip").mask('0000000000');
     jQuery(".regon").mask('000000000');
     jQuery(".postal-code").mask('00-000');
-    jQuery(".phone").mask(LANDLINE_PHONE_FORMAT);
-    jQuery(".mobile-phone").mask(MOBILE_PHONE_FORMAT);
-    jQuery(".fax").mask('(00) 000-00-00');
+    // jQuery(".phone").mask(LANDLINE_PHONE_FORMAT);
+    // jQuery(".mobile-phone").mask(MOBILE_PHONE_FORMAT);
+    // jQuery(".fax").mask('(00) 000-00-00');
     jQuery(".ip").mask('099.099.099.099');
     jQuery(".ph-number").mask('S9999');
     jQuery(".integer-number").mask('099999');

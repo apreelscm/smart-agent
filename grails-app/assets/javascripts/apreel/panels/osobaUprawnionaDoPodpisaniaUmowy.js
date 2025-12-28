@@ -220,11 +220,11 @@
         if (this.value === 'LANDLINE') {
             phoneNumberSelector.removeClass('mobile-phone');
             phoneNumberSelector.addClass('phone');
-            phoneNumberSelector.mask(LANDLINE_PHONE_FORMAT);
+            // phoneNumberSelector.mask(LANDLINE_PHONE_FORMAT);
         } else {
             phoneNumberSelector.removeClass('phone');
             phoneNumberSelector.addClass('mobile-phone');
-            phoneNumberSelector.mask(MOBILE_PHONE_FORMAT);
+            // phoneNumberSelector.mask(MOBILE_PHONE_FORMAT);
         }
     }
 

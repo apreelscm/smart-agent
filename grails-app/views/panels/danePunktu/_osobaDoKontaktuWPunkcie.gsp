@@ -18,12 +18,12 @@
 
                 <span><g:message code="panel.landline.phone.number" />:</span>
                 <span class="${hasErrors(bean:pointData, field:'hasTelefonKontaktowy','errorSpan')}">
-                    <eumowy:textField class="phone" name="${panelType}[${id}].kontaktWPunkcieTelStacjonarny" id="${panelType}[${id}].contactAtPointPhone" value="${pointData?.kontaktWPunkcieTelStacjonarny}" style="width: 120px" maxlength="9"/>
+                    <eumowy:textField class="phone" name="${panelType}[${id}].kontaktWPunkcieTelStacjonarny" id="${panelType}[${id}].contactAtPointPhone" value="${pointData?.kontaktWPunkcieTelStacjonarny}" style="width: 120px" maxlength="9" pattern="\\d{9,9}"/>
                 </span>
 
                 <span><g:message code="panel.mobile.phone.number" />:</span>
                 <span class="${hasErrors(bean:pointData, field:'hasTelefonKontaktowy','errorSpan')}">
-                    <eumowy:textField class="mobile-phone" name="${panelType}[${id}].kontaktWPunkcieTelKomorkowy" id="${panelType}[${id}].contactAtPointMobilePhone" value="${pointData?.kontaktWPunkcieTelKomorkowy}" style="width: 120px" maxlength="9"/>
+                    <eumowy:textField class="mobile-phone" name="${panelType}[${id}].kontaktWPunkcieTelKomorkowy" id="${panelType}[${id}].contactAtPointMobilePhone" value="${pointData?.kontaktWPunkcieTelKomorkowy}" style="width: 120px" maxlength="9" pattern="\\d{9,9}"/>
                 </span>
 
 				<span style="white-space:nowrap"><g:message code="panel.email" />:</span>
