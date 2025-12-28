@@ -21,8 +21,8 @@
                     <span style="width: 800px;">
                         <g:hiddenField name="hasKontaktTel" value="true"/>
                         <div class="${hasErrors(bean:data,field:'hasKontaktTel','errorSpan')} float-left">
-                            <span><g:message code="panel.landline.phone.number"/>: <eumowy:textField class="phone" name="kontaktTelStacjonarny" value="${data.kontaktTelStacjonarny}" validatable="${data}"  maxlength="9"/> </span>
-                            <span><g:message code="panel.mobile.phone.number"/>: <eumowy:textField class="mobile-phone" name="kontaktTelKomorkowy" value="${data.kontaktTelKomorkowy}" validatable="${data}"  maxlength="9"/> </span>
+                            <span><g:message code="panel.landline.phone.number"/>: <eumowy:textField class="phone" name="kontaktTelStacjonarny" value="${data.kontaktTelStacjonarny}" validatable="${data}"  maxlength="9" pattern="\\d{9,9}"/> </span>
+                            <span><g:message code="panel.mobile.phone.number"/>: <eumowy:textField class="mobile-phone" name="kontaktTelKomorkowy" value="${data.kontaktTelKomorkowy}" validatable="${data}"  maxlength="9" pattern="\\d{9,9}"/> </span>
                         </div>
                         <span>
                             <g:message code="panel.email"/>: <g:textField id="kontaktEmail" class="kontaktEmail" name="kontaktEmail" value="${data.kontaktEmail}" validatable="${data}" style="width: 150px" email="true"/>

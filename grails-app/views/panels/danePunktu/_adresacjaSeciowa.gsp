@@ -28,6 +28,7 @@
                 <span class="align-right"><g:message code="panel.techniciancontact"/></span>
                 <span>
                     <eumowy:textField class="mobile-phone" name="${panelType}[${id}].kontaktInformatykStatyczna"
+                                      pattern="\\d{9,9}"
                                       id="${panelType}[${id}].staticDeviceSupportContact"
                                       value="${pointData?.kontaktInformatykStatyczna}"/>
                 </span>

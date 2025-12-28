@@ -86,12 +86,12 @@
                         <g:hiddenField name="akceptantFaxCbd" value="${data.akceptantFaxCbd}"/>
 
                         <span class="${hasErrors(bean:data,field:'hasAkceptantTel','errorSpan')}">
-                            <div style="display: inline"><g:message code="panel.landline.phone.number"/> <eumowy:textField class="phone" name="akceptantTelStacjonarny" value="${data.akceptantTelStacjonarny}" validatable="${data}" readonly="${data.checkIfFromCbd('akceptantTelStacjonarny')}" style="width: 100px;" maxlength="9"/></div>
-                            <div style="display: inline; margin-left: 5px"><g:message code="panel.mobile.phone.number"/> <eumowy:textField class="mobile-phone" name="akceptantTelKomorkowy" value="${data.akceptantTelKomorkowy}" validatable="${data}" readonly="${data.checkIfFromCbd('akceptantTelKomorkowy')}" style="width: 100px" maxlength="9"/></div>
+                            <div style="display: inline"><g:message code="panel.landline.phone.number"/> <eumowy:textField class="phone" name="akceptantTelStacjonarny" value="${data.akceptantTelStacjonarny}" validatable="${data}" readonly="${data.checkIfFromCbd('akceptantTelStacjonarny')}" style="width: 100px;" maxlength="9" pattern="\\d{9,9}"/></div>
+                            <div style="display: inline; margin-left: 5px"><g:message code="panel.mobile.phone.number"/> <eumowy:textField class="mobile-phone" name="akceptantTelKomorkowy" value="${data.akceptantTelKomorkowy}" validatable="${data}" readonly="${data.checkIfFromCbd('akceptantTelKomorkowy')}" style="width: 100px" maxlength="9" pattern="\\d{9,9}"/></div>
                         </span>
 
                         <span>
-                            <g:message code="panel.fax"/> <g:textField class="fax" name="akceptantFax" value="${data.akceptantFax}" readonly="${data.checkIfFromCbd('akceptantFax')}" style="width: 100px" maxlength="9"/>
+                            <g:message code="panel.fax"/> <g:textField class="fax" name="akceptantFax" value="${data.akceptantFax}" readonly="${data.checkIfFromCbd('akceptantFax')}" style="width: 100px" maxlength="9" pattern="\\d{9,9}"/>
                         </span>
                     </span>
                 </li>

@@ -175,16 +175,19 @@ class PdfPointMapper extends AbstractPdfMapper{
 
     private mapKontaktWPunkcieTelKomorkowyPointDataDetails(def data, def pointData, def key, def value){
         data.put(key, [value] as String[]);
+        data.put("komorka", [value] as String[]);
         mapWithPattern(data, value, ~/\d{3}-\d{3}-\d{3}/, "-", "komorka");
     }
 
     private mapKontaktWPunkcieTelStacjonarnyPointDataDetails(def data, def pointData, def key, def value){
         data.put(key, [value] as String[]);
+        data.put("stacjonarny", [value] as String[]);
         mapFaxOrPhone(key, data, value, "kierunkowy1", "stacjonarny");
     }
 
     private mapKontaktWPunkcieFaxPointDataDetails(def data, def pointData, def key, def value){
         data.put(key, [value] as String[]);
+        data.put("nrFaksu", [value] as String[]);
         mapFaxOrPhone(key, data, value, "kierunkowy2", "nrFaksu");
     }
 

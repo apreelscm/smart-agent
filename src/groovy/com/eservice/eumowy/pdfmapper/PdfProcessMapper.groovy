@@ -411,26 +411,31 @@ class PdfProcessMapper extends AbstractPdfMapper{
 
     private mapAkceptantTelKomorkowyProcess(def data, def pd, def key, def value){
         data.put(key, [value] as String[]);
+        data.put("telKomorkowy", [value] as String[]);
         mapWithPattern(data, value, ~/\d{3}-\d{3}-\d{3}/, "-", "telKomorkowy");
     }
 
     private mapAkceptantTelStacjonarnyProcess(def data, def pd, def key, def value){
         data.put(key, [value] as String[]);
+        data.put("telStacjonarny", [value] as String[]);
         mapFaxOrPhone(key, data, value, "kierunkowyStacjonarny", "telStacjonarny");
     }
 
     private mapKontaktTelStacjonarnyProcess(def data, def pd, def key, def value){
         data.put(key, [value] as String[]);
+        data.put("telStacjonarnyDoKontaktu", [value] as String[]);
         mapFaxOrPhone(key, data, value, "kierunkowyStacjonarnyDoKontaktu", "telStacjonarnyDoKontaktu");
     }
 
     private mapAkceptantFaxProcess(def data, def pd, def key, def value){
         data.put(key, [value] as String[]);
+        data.put("faks", [value] as String[]);
         mapFaxOrPhone(key, data, value, "kierunkowyFaks", "faks");
     }
 
     private mapKontaktTelKomorkowyProcess(def data, def pd, def key, def value){
         data.put(key, [value] as String[]);
+        data.put("telKomorkowyDoKontaktu", [value] as String[]);
         mapWithPattern(data, value, ~/\d{3}-\d{3}-\d{3}/, "-", "telKomorkowyDoKontaktu");
     }
 
