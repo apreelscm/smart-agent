@@ -1,6 +1,6 @@
 package com.eservice.eumowy.command
 
-
+import com.eservice.eumowy.commons.CustomEmailValidator
 import com.eservice.eumowy.enums.options.AcceptorVerification
 import com.eservice.eumowy.enums.options.IdentityDocumentType
 import com.eservice.eumowy.enums.options.TelephoneType
@@ -175,7 +175,7 @@ class RepresentativeCommand implements Serializable {
 
             if (value == null || value.size() == 0) return true
 
-            if (!EmailValidator.instance.isValid(value)) {
+            if (!CustomEmailValidator.instance.isValid(value)) {
                 errors.rejectValue("email", "email.invalid", [value] as Object[], "")
                 return false
             }

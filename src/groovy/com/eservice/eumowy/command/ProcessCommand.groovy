@@ -4,6 +4,7 @@ import com.eservice.eumowy.PointDataDetails
 import com.eservice.eumowy.Process
 import com.eservice.eumowy.annotation.DateField
 import com.eservice.eumowy.annotation.Omit
+import com.eservice.eumowy.commons.CustomEmailValidator
 import com.eservice.eumowy.enums.options.LegalForm
 import com.eservice.eumowy.validator.*
 import grails.util.Holders
@@ -723,7 +724,7 @@ class ProcessCommand implements Serializable {
         kontaktEmail(nullable: true, blank: true, validator: { value, cmd, errors ->
             if (value == DEFAULT_VALUE || isNullOrEmpty(value)) return true
 
-            if (!EmailValidator.instance.isValid(value)) {
+            if (!CustomEmailValidator.instance.isValid(value)) {
                 errors.rejectValue(propertyName, "email.invalid", [value] as Object[], "")
                 return false
             }
@@ -736,7 +737,7 @@ class ProcessCommand implements Serializable {
         emailDoWysylkiDokumentu(nullable: true, blank: true, validator: { value, cmd, errors ->
             if (value == DEFAULT_VALUE || isNullOrEmpty(value)) return true
 
-            if (!EmailValidator.instance.isValid(value)) {
+            if (!CustomEmailValidator.instance.isValid(value)) {
                 errors.rejectValue(propertyName, "email.invalid", [value] as Object[], "")
                 return false
             }
