@@ -366,7 +366,7 @@ class ProcessService {
         process.phNumber = user.nr
         process.phFirstName = user.imie
         process.phSurname = user.nazwisko
-        process.phEmail = user.email
+        process.phEmail = cbdService.getEmailOfPH(user.nr)
         process.phMobilePhone = cbdService.getMobilePhoneNumberOfPH(user.nr)
         process.phDocsSigningCode = null
     }

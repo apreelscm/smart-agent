@@ -39,25 +39,6 @@ class EmailService {
         sendMailWithTryCatch(emailTemplate, emailTemplate.recipients , null, bodyParams, null)
     }
 
-	def sendDocumentsPaperVersion(List<DocumentFile> documents, def bodyParams) {
-        def emailTemplate = getEmailTemplatesByName(DOCUMENTS_PAPER_VERSION)
-
-        String mailAddress = grailsApplication.config.eumowyCOAEmail ? grailsApplication.config.eumowyCOAEmail : COA_DEFAULT_MAIL
-        EServiceUserDetails user = springSecurityService.principal
-        Process process = documents?.size() > 0 ? documents.get(0).process : null
-
-        if ((StringUtils.startsWith(user.nr, "98") || StringUtils.startsWith(user.nr, "999")) && process) {
-            if(user.email) {
-                mailAddress = user.email
-            } else {
-                log.info(String.format("Sales number of user %s starts with 98 and process has new agreement but user " +
-                        "has no email. Sending email to coa@eservice.com.pl...", user.fullName));
-            }
-        }
-
-        sendMailWithTryCatch(emailTemplate, mailAddress, null, bodyParams, documents)
-	}
-
     def sendDocumentsPaperVersion(def recipient, List<DocumentFile> documents, def bodyParams) {
         def emailTemplate = getEmailTemplatesByName(DOCUMENTS_PAPER_VERSION)
         sendMailWithTryCatch(emailTemplate, recipient, null, bodyParams, documents)

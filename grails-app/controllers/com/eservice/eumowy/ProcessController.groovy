@@ -399,7 +399,7 @@ class ProcessController {
 
         Map mailParametersForPaperVersion = processService.createMailParametersForPaperVersion(processInstance)
         List documents = processInstance.documents
-        emailService.sendDocumentsPaperVersion(documents, mailParametersForPaperVersion)
+        emailService.sendDocumentsPaperVersion(processInstance.phEmail, documents, mailParametersForPaperVersion)
 
         flash.message = g.message(code: 'resendEmails.success')
         redirect(action: "show", params: params)

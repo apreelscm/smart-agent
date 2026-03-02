@@ -1700,18 +1700,7 @@ class ActivityController {
 
             Map mailBodyParams = processService.createMailParametersForPaperVersion(process)
             List<DocumentFile> documents = process.documents?.findAll{it.signature?.sendToClient}
-
-            def isWymianaTerminala = processService.isProcessHasActivity(process, "wymianaTerminala")
-            if (isWymianaTerminala){
-                def user = springSecurityService.principal
-                if (user.email) {
-                    emailService.sendDocumentsPaperVersion(user.email, documents, mailBodyParams)
-                } else {
-                    log.info 'Brak emaila dla zalogowanego usera.'
-                }
-            } else {
-                emailService.sendDocumentsPaperVersion(process.documents, mailBodyParams)
-            }
+            emailService.sendDocumentsPaperVersion(process.phEmail, process.documents, mailBodyParams)
         } else if (TEMPLATES.equals(requestVersion)) {
             List<DocumentFile> documentFilesWithBlackFaksymileList = new ArrayList<DocumentFile>()
             process.documents.findAll{it.signature?.sendToClient}?.each { DocumentFile doc ->

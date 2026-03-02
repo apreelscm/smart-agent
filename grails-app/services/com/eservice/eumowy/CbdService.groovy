@@ -44,6 +44,7 @@ class CbdService {
     private static final String SPRAWDZ_DZIALANIE = "sprawdzDzialanie"
     private static final String GET_NUMER_SPRZEDAZOWY = "getNumerSprzedazowy"
     private static final String GET_PH_MOBILE_PHONE = "getPhMobilePhone"
+    private static final String GET_PH_EMAIL = "getPhEmail"
     private static final String CZY_GIFT = "czyGift"
     private static final String SET_KALKULATOR_ACCEPTED = "setKalkulatorAccepted"
     private static final String SET_KALKULATOR_USED = "setKalkulatorUsed"
@@ -271,8 +272,14 @@ class CbdService {
         // TODO MK
         def rowResult = cbdDAO.selectOne(GET_PH_MOBILE_PHONE, [phNumber: phNumber])
         return rowResult.get("numer")
-//        return "123 123 123"
-//        return ""
+    }
+
+    @Cacheable(value="eumowyCacheShort", key = "'getEmailOfPH'.concat(#phNumber)")
+    @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, readOnly = true)
+    String getEmailOfPH(def phNumber) {
+        // TODO MK
+        def rowResult = cbdDAO.selectOne(GET_PH_EMAIL, [phNumber: phNumber])
+        return rowResult.get("mail")
     }
 
     @Cacheable(value="eumowyCacheShort", key = "'czyGift_'.concat(#nip)")
