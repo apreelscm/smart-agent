@@ -170,11 +170,14 @@ class PdfService {
         try {
             String outputFilename = getBeneficiaryPDFfilepath(process)
 
-            PdfCopy copy = new PdfCopy(mergedDocument, new FileOutputStream(outputFilename))
+            log.info(String.format("Trying to create merged beneficiary document in location %s for process %s", outputFilename, process.id))
+
+            File outputFile = new File(outputFilename)
+            outputFile.createNewFile()
+            FileOutputStream fos = new FileOutputStream(outputFile, false)
+            PdfCopy copy = new PdfCopy(mergedDocument, fos)
 
             mergedDocument.open()
-
-            log.info(String.format("Trying to create merged beneficiary document in location %s for process %s", outputFilename, process.id))
 
             PdfReader reader
             int numberOfPages
