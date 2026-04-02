@@ -155,7 +155,7 @@
             <label style="margin-left: 10px" for="${prefix}[${seqNo}].phoneNumber"><g:message
                     code="panel.number"/>:</label>
             <eumowy:textField name="${prefix}[${seqNo}].phoneNumber" value="${representative?.mobilePhone}"
-                              maxlength="9" pattern="\\d{9,9}" style="width: 150px"
+                              maxlength="16" style="width: 150px"
                               validatable="${representative}" validateField="phoneNumber"
                               class="phone-number ${representative?.telephoneType == TelephoneType.LANDLINE ? 'phone' : 'mobile-phone'}"/>
         </div>

@@ -166,8 +166,7 @@
                 <label style="margin-left: 10px" for="${prefix}[${seqNo}].phoneNumber"><g:message code="panel.number"/>: </label>
                 <eumowy:textField name="${prefix}[${seqNo}].phoneNumber"
                                   value="${representative?.phoneNumber}"
-                                  maxlength="9"
-                                  pattern="\\d{9,9}"
+                                  maxlength="16"
                                   readonly="${!representative?.isCBDDataChangedManually && !representative?.additionalData}"
                                   style="width: 150px"
                                   validatable="${representative}"
