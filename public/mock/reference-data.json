@@ -1,0 +1,39 @@
+{
+  "offerStatuses": [
+    { "code": "DRAFT", "label": "Draft" },
+    { "code": "CALCULATION", "label": "Kalkulacja" },
+    { "code": "ISSUED", "label": "Oferta wystawiona" },
+    { "code": "ACCEPTED", "label": "Oferta zaakceptowana" },
+    { "code": "POLICY", "label": "Polisa" },
+    { "code": "REJECTED", "label": "Oferta odrzucona" },
+    { "code": "CANCELED", "label": "Oferta anulowana" }
+  ],
+  "policyLines": [
+    { "code": "OC", "label": "OC komunikacyjne" },
+    { "code": "AC", "label": "Autocasco" },
+    { "code": "ASSISTANCE", "label": "Assistance" },
+    { "code": "NNW", "label": "NNW" },
+    { "code": "NNW_FAMILY", "label": "NNW Bezpieczna Rodzina" },
+    { "code": "GLASS", "label": "Szyby" },
+    { "code": "GREEN_CARD", "label": "Zielona karta" },
+    { "code": "TYRE_ASSISTANCE", "label": "Opony" }
+  ],
+  "salesChannels": [
+    { "code": "AGENCY", "label": "Agencja" },
+    { "code": "DIRECT", "label": "Kanał direct" },
+    { "code": "DEALER", "label": "Dealer" },
+    { "code": "PARTNER", "label": "Partner" }
+  ],
+  "vehicleUsages": [
+    { "code": "PRIVATE", "label": "Prywatnie" },
+    { "code": "BUSINESS", "label": "Firmowo" },
+    { "code": "MIXED", "label": "Mieszanie" },
+    { "code": "TAXI", "label": "Taxi" },
+    { "code": "DELIVERY", "label": "Dostawczy" }
+  ],
+  "vehicleFinancing": [
+    { "code": "OWNED", "label": "Własność" },
+    { "code": "CREDIT", "label": "Kredyt" },
+    { "code": "LEASING", "label": "Leasing" }
+  ]
+}

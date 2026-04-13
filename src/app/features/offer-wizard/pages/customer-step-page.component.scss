@@ -1,0 +1,146 @@
+:host {
+  display: block;
+}
+
+.wizard-form,
+.wizard-form__section,
+.wizard-form__section-header,
+.field-block {
+  display: grid;
+}
+
+.wizard-form {
+  gap: 1rem;
+}
+
+.wizard-form__section {
+  gap: 0.9rem;
+  padding: 1rem;
+  border: 1px solid var(--app-border);
+  border-radius: 0.55rem;
+  background: var(--app-surface-raised);
+}
+
+.wizard-form__section-header {
+  gap: 0.15rem;
+}
+
+.wizard-form__section-header h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.wizard-form__section-header span,
+.field-block span {
+  color: var(--app-text-muted);
+}
+
+.form-grid {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.form-grid--two {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.form-grid--four {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.form-grid--address {
+  grid-template-columns: minmax(8rem, 0.7fr) minmax(12rem, 1.2fr) minmax(6rem, 0.5fr) minmax(9rem, 0.8fr);
+}
+
+.field-block {
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+.field-block span {
+  font-size: 0.84rem;
+  font-weight: 600;
+}
+
+.toggle-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 1.5rem;
+}
+
+.toggle-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.payment-method {
+  display: inline-flex;
+}
+
+.attachments-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.7rem 0.8rem;
+  border: 1px dashed var(--app-border);
+  border-radius: 0.45rem;
+  color: var(--app-text-muted);
+}
+
+.consents-list {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.consent-row {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: start;
+  gap: 0.6rem;
+  padding: 0.55rem 0.65rem;
+  border: 1px solid var(--app-border);
+  border-radius: 0.45rem;
+  background: #fff;
+}
+
+.consent-row span {
+  color: var(--app-text-muted);
+  font-size: 0.84rem;
+  line-height: 1.35;
+}
+
+input,
+textarea,
+select {
+  width: 100%;
+}
+
+:host ::ng-deep .field-block .p-autocomplete,
+:host ::ng-deep .field-block .p-autocomplete-input {
+  width: 100%;
+}
+
+@media (width <= 1320px) {
+  .form-grid--four {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .form-grid--address {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (width <= 980px) {
+  .form-grid--two,
+  .form-grid--four,
+  .form-grid--address {
+    grid-template-columns: 1fr;
+  }
+
+  .attachments-placeholder {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}

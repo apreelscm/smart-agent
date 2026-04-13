@@ -1,0 +1,29 @@
+:host {
+  display: block;
+}
+
+.stat-tile {
+  display: grid;
+  gap: 0.3rem;
+  padding: 1rem;
+  border: 1px solid var(--app-border);
+  border-radius: var(--app-radius-md);
+  background: var(--app-surface-raised);
+}
+
+.stat-tile__label,
+.stat-tile__note {
+  color: var(--app-text-muted);
+}
+
+.stat-tile__label {
+  font-size: 0.82rem;
+}
+
+.stat-tile__value {
+  font-size: 1.15rem;
+}
+
+.stat-tile__note {
+  font-size: 0.82rem;
+}

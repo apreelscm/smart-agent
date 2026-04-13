@@ -1,0 +1,146 @@
+:host {
+  display: block;
+}
+
+.customers-page {
+  display: grid;
+  gap: 1rem;
+}
+
+.customers-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.customers-toolbar__search {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-width: 20rem;
+  padding: 0.36rem 0.55rem;
+  border: 1px solid var(--app-border);
+  border-radius: 0.5rem;
+  background: #fff;
+}
+
+.customers-toolbar__search i {
+  color: #64748b;
+}
+
+.customers-toolbar__search input {
+  border: 0;
+  outline: none;
+  width: 100%;
+}
+
+.customers-toolbar__count {
+  color: #64748b;
+  font-size: 0.86rem;
+  font-weight: 700;
+}
+
+.customers-table,
+.items-table {
+  display: grid;
+  border: 1px solid var(--app-border);
+  border-radius: 0.6rem;
+  overflow: hidden;
+}
+
+.customers-table__head,
+.customers-table__row {
+  display: grid;
+  grid-template-columns: minmax(13rem, 1.7fr) minmax(9rem, 0.8fr) minmax(10rem, 1.4fr) auto;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.62rem 0.75rem;
+}
+
+.items-table__head,
+.items-table__row {
+  display: grid;
+  grid-template-columns: 0.6fr 1fr 1fr 1.1fr 0.9fr 0.8fr 0.7fr auto;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.58rem 0.68rem;
+}
+
+.customers-table__head,
+.items-table__head {
+  background: #f8fafc;
+  color: #64748b;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.customers-table__row,
+.items-table__row {
+  border-top: 1px solid var(--app-border);
+  background: #fff;
+}
+
+.customers-table__customer {
+  display: grid;
+  gap: 0.12rem;
+}
+
+.customers-table__customer strong,
+.items-table__row strong {
+  font-size: 0.88rem;
+}
+
+.customers-table__customer span,
+.customers-table__row span,
+.items-table__row span {
+  color: #64748b;
+  font-size: 0.8rem;
+}
+
+.customers-table__row--empty,
+.items-table__row--empty {
+  grid-template-columns: 1fr;
+}
+
+.customer-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: -0.4rem;
+}
+
+.customer-breadcrumb span {
+  color: #64748b;
+}
+
+.customer-summary {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.customer-summary span {
+  color: #334155;
+  font-size: 0.9rem;
+}
+
+@media (width <= 1200px) {
+  .customers-table__head,
+  .customers-table__row,
+  .items-table__head,
+  .items-table__row {
+    grid-template-columns: 1fr;
+  }
+
+  .customers-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .customers-toolbar__search {
+    min-width: 0;
+  }
+}
+

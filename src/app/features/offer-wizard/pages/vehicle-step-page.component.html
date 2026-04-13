@@ -1,0 +1,420 @@
+<app-section-card title="Dane do kalkulacji">
+  <form [formGroup]="vehicleForm" class="wizard-form wizard-form--calculation" (ngSubmit)="saveVehicle()">
+    <section class="wizard-form__section wizard-form__section--tight">
+      <div class="wizard-form__section-header">
+        <h3>Wybór produktu</h3>
+      </div>
+
+      <div class="product-grid">
+        @for (product of productOptions; track product.code) {
+          <label class="product-box" [class.product-box--selected]="vehicleForm.value.productCode === product.code">
+            <input type="radio" formControlName="productCode" [value]="product.code" />
+            <span class="product-box__content">
+              <strong>{{ product.label }}</strong>
+            </span>
+          </label>
+        }
+      </div>
+    </section>
+
+    <section class="wizard-form__section wizard-form__section--compact">
+      <div class="wizard-form__section-header">
+        <h3>Analiza potrzeb klienta</h3>
+      </div>
+
+      <div class="inline-choice">
+        <span class="inline-choice__label">APK poza systemem</span>
+        <p-selectbutton
+          formControlName="analysisNeeded"
+          [options]="yesNoSelectOptions"
+          optionLabel="label"
+          optionValue="value"
+          [allowEmpty]="false"
+        />
+      </div>
+    </section>
+
+    <section class="wizard-form__section wizard-form__section--compact">
+      <div class="wizard-form__section-header">
+        <h3>Szybkie wprowadzanie</h3>
+      </div>
+
+      <div class="form-grid form-grid--two">
+        <label class="field-block">
+          <span>PESEL / REGON</span>
+          <input pInputText formControlName="quickPesel" />
+        </label>
+        <label class="field-block">
+          <span>Numer rejestracyjny</span>
+          <input pInputText formControlName="quickRegistrationNumber" />
+        </label>
+      </div>
+
+      <div class="quick-input-actions">
+        <button pButton type="button" label="Sprawdź i prewypełnij" severity="secondary" outlined (click)="applyQuickInput()"></button>
+        <div class="quick-input-hints">
+          <span>Przykłady:</span>
+          <ul>
+            @for (hint of quickPrefillHints; track hint) {
+              <li>{{ hint }}</li>
+            }
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="wizard-form__section">
+      <div class="wizard-form__section-header">
+        <h3>Pojazd</h3>
+      </div>
+
+      <div class="form-grid form-grid--three">
+        <label class="field-block">
+          <span>Numer rejestracyjny</span>
+          <input pInputText formControlName="registrationNumber" />
+        </label>
+        <label class="field-block">
+          <span>Pojazd jest leasingowany / w kredycie</span>
+          <p-select
+            formControlName="financing"
+            [options]="financingOptions"
+            optionLabel="label"
+            optionValue="code"
+            appendTo="body"
+          />
+        </label>
+        <label class="field-block">
+          <span>Rodzaj użytkowania</span>
+          <p-select
+            formControlName="usage"
+            [options]="usageOptions"
+            optionLabel="label"
+            optionValue="code"
+            appendTo="body"
+          />
+        </label>
+      </div>
+
+      <div class="special-usage">
+        <span class="field-block__inline-label">Specjalne użytkowanie</span>
+        <div class="special-usage__grid">
+          <label class="toggle-row">
+            <p-checkbox formControlName="specialUsageRental" binary="true" inputId="specialUsageRental" />
+            <span>Wynajem</span>
+          </label>
+          <label class="toggle-row">
+            <p-checkbox formControlName="specialUsageTaxi" binary="true" inputId="specialUsageTaxi" />
+            <span>Taksi</span>
+          </label>
+          <label class="toggle-row">
+            <p-checkbox formControlName="specialUsageDrivingSchool" binary="true" inputId="specialUsageDrivingSchool" />
+            <span>Nauka jazdy</span>
+          </label>
+          <label class="toggle-row">
+            <p-checkbox formControlName="specialUsageDealerVehicle" binary="true" inputId="specialUsageDealerVehicle" />
+            <span>Pojazd dealera</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="form-grid form-grid--three">
+        <label class="field-block">
+          <span>VIN</span>
+          <input pInputText formControlName="vin" />
+        </label>
+        <label class="field-block">
+          <span>Data pierwszej rejestracji</span>
+          <input pInputText type="date" formControlName="firstRegistrationDate" />
+        </label>
+        <label class="field-block">
+          <span>Rok produkcji</span>
+          <input pInputText type="number" formControlName="productionYear" />
+        </label>
+      </div>
+
+      <div class="form-grid form-grid--three">
+        <div class="field-block">
+          <span>Marka</span>
+          <p-autocomplete
+            formControlName="make"
+            [suggestions]="filteredMakeOptions"
+            placeholder="Wybierz lub wpisz markę"
+            [dropdown]="true"
+            [showClear]="true"
+            [forceSelection]="false"
+            [minQueryLength]="0"
+            appendTo="body"
+            (completeMethod)="filterMakes($event)"
+          />
+        </div>
+        <div class="field-block">
+          <span>Model</span>
+          <p-autocomplete
+            formControlName="model"
+            [suggestions]="filteredModelOptions"
+            placeholder="Wybierz lub wpisz model"
+            [dropdown]="true"
+            [showClear]="true"
+            [forceSelection]="false"
+            [minQueryLength]="0"
+            appendTo="body"
+            (completeMethod)="filterModels($event)"
+          />
+        </div>
+        <div class="field-block">
+          <span>Wersja / typ</span>
+          <p-autocomplete
+            formControlName="version"
+            [suggestions]="filteredVersionOptions"
+            placeholder="Wybierz lub wpisz wersję"
+            [dropdown]="true"
+            [showClear]="true"
+            [forceSelection]="false"
+            [minQueryLength]="0"
+            appendTo="body"
+            (completeMethod)="filterVersions($event)"
+          />
+        </div>
+      </div>
+
+      <div class="form-grid form-grid--vehicle-specs">
+        <label class="field-block">
+          <span>Paliwo</span>
+          <p-select
+            formControlName="fuelType"
+            [options]="fuelOptions"
+            optionLabel="label"
+            optionValue="code"
+            appendTo="body"
+          />
+        </label>
+        <label class="field-block">
+          <span>Pojemność (cm3)</span>
+          <input pInputText type="number" formControlName="displacementCc" class="field-input field-input--compact" />
+        </label>
+        <label class="field-block">
+          <span>Moc (KM)</span>
+          <input pInputText type="number" formControlName="powerHp" class="field-input field-input--compact" />
+        </label>
+        <label class="field-block">
+          <span>Przebieg roczny</span>
+          <input pInputText type="number" formControlName="annualMileageKm" class="field-input field-input--compact" />
+        </label>
+        <label class="field-block">
+          <span>DMC (kg)</span>
+          <input pInputText type="number" formControlName="grossVehicleWeightKg" class="field-input field-input--compact" />
+        </label>
+      </div>
+
+    </section>
+
+    <section class="wizard-form__section">
+      <div class="wizard-form__section-header">
+        <h3>Wprowadź klientów do taryfikacji</h3>
+      </div>
+
+      <div class="client-card">
+        <div class="client-card__header">
+          <strong>Klient nr 1</strong>
+          <span>Docelowo: 1 ubezpieczający + wielu ubezpieczonych / współwłaścicieli</span>
+        </div>
+
+        <div class="client-card__role">
+          <span class="field-block__inline-label">Rola klienta</span>
+          <p-selectbutton
+            [options]="roleOptions"
+            [formControl]="clientRoleControl"
+            optionLabel="label"
+            optionValue="value"
+            optionDisabled="disabled"
+            [allowEmpty]="false"
+          />
+        </div>
+
+        <div class="form-grid form-grid--three">
+          <label class="field-block">
+            <span>Rodzaj klienta</span>
+            <p-select
+              formControlName="customerType"
+              [options]="customerTypeOptions"
+              optionLabel="label"
+              optionValue="code"
+              appendTo="body"
+            />
+          </label>
+          <label class="field-block">
+            <span>Kraj obywatelstwa</span>
+            <p-select
+              formControlName="citizenshipCountryCode"
+              [options]="citizenshipOptions"
+              optionLabel="label"
+              optionValue="code"
+              appendTo="body"
+            />
+          </label>
+          <label class="field-block">
+            <span>PESEL / REGON</span>
+            <input pInputText formControlName="customerPesel" />
+          </label>
+        </div>
+
+        <div class="form-grid form-grid--three">
+          <div class="field-block">
+            <span>Imię</span>
+            <p-autocomplete
+              formControlName="customerFirstName"
+              [suggestions]="filteredFirstNameOptions"
+              placeholder="Wybierz lub wpisz imię"
+              [forceSelection]="false"
+              [minQueryLength]="0"
+              [delay]="0"
+              appendTo="body"
+              (completeMethod)="filterFirstNames($event)"
+            />
+          </div>
+          <div class="field-block">
+            <span>Nazwisko</span>
+            <p-autocomplete
+              formControlName="customerLastName"
+              [suggestions]="filteredLastNameOptions"
+              placeholder="Wybierz lub wpisz nazwisko"
+              [forceSelection]="false"
+              [minQueryLength]="0"
+              [delay]="0"
+              appendTo="body"
+              (completeMethod)="filterLastNames($event)"
+            />
+          </div>
+          <div class="field-block">
+            <span>Nazwisko rodowe</span>
+            <p-autocomplete
+              formControlName="previousLastName"
+              [suggestions]="filteredPreviousLastNameOptions"
+              placeholder="Wybierz lub wpisz nazwisko rodowe"
+              [forceSelection]="false"
+              [minQueryLength]="0"
+              [delay]="0"
+              appendTo="body"
+              (completeMethod)="filterPreviousLastNames($event)"
+            />
+          </div>
+        </div>
+
+        <div class="form-grid form-grid--one">
+          <label class="field-block field-block--date">
+            <span>Data urodzenia</span>
+            <input pInputText type="date" formControlName="customerBirthDate" />
+          </label>
+        </div>
+
+        <div class="form-grid form-grid--two">
+          <label class="field-block">
+            <span>Kod pocztowy</span>
+            <input pInputText formControlName="customerPostalCode" />
+          </label>
+          <label class="toggle-row">
+            <p-checkbox formControlName="isVip" binary="true" inputId="isVip" />
+            <span>Klient VIP / Premium</span>
+          </label>
+        </div>
+
+        <div class="client-card__actions">
+          <button
+            pButton
+            type="button"
+            [label]="editingClientId() ? 'Zapisz zmiany klienta' : 'Dodaj kolejnego klienta'"
+            severity="secondary"
+            outlined
+            (click)="addOrUpdateTariffClient()"
+          ></button>
+        </div>
+      </div>
+
+      @if (tariffClients().length) {
+        <div class="client-list">
+          <div class="client-list__header">
+            <strong>Lista klientów do taryfikacji</strong>
+            <span>Jeden klient może być ubezpieczającym, pozostali są ubezpieczeni.</span>
+          </div>
+
+          <div class="client-table">
+            <div class="client-table__row client-table__row--head">
+              <span>Rola</span>
+              <span>Klient</span>
+              <span>PESEL / REGON</span>
+              <span>Kod</span>
+              <span>Akcje</span>
+            </div>
+
+            @for (client of tariffClients(); track client.id) {
+              <div class="client-table__row">
+                <span>{{ getRoleLabel(client.role) }}</span>
+                <span>{{ client.firstName }} {{ client.lastName }}</span>
+                <span>{{ client.pesel || 'brak' }}</span>
+                <span>{{ client.postalCode || 'brak' }}</span>
+                <span class="client-table__actions">
+                  <button pButton type="button" label="Edytuj" severity="secondary" outlined size="small" (click)="editTariffClient(client.id)"></button>
+                  <button pButton type="button" label="Usuń" severity="danger" text size="small" (click)="removeTariffClient(client.id)"></button>
+                </span>
+              </div>
+            }
+          </div>
+        </div>
+      }
+    </section>
+
+    <section class="wizard-form__section wizard-form__section--compact">
+      <div class="wizard-form__section-header">
+        <h3>Szkodowość i historia z UFG</h3>
+      </div>
+
+      <div class="info-table">
+        <table class="info-table__table">
+          <thead>
+            <tr>
+              <th>Klient</th>
+              <th>Rola</th>
+              <th>Okres</th>
+              <th>Szkody</th>
+            </tr>
+          </thead>
+          <tbody>
+            @if (tariffClients().length) {
+              @for (client of tariffClients(); track client.id) {
+                @for (claimRow of getClaimRows(client); track claimRow.periodLabel; let idx = $index) {
+                  <tr>
+                    @if (idx === 0) {
+                      <td [attr.rowspan]="3">{{ client.firstName }} {{ client.lastName }}</td>
+                      <td [attr.rowspan]="3">{{ getRoleLabel(client.role) }}</td>
+                    }
+                    <td>{{ claimRow.periodLabel }}</td>
+                    <td>{{ claimRow.claimsCount }}</td>
+                  </tr>
+                }
+              }
+            } @else {
+              @for (claimRow of getFallbackClaimRows(); track claimRow.periodLabel; let idx = $index) {
+                <tr>
+                  @if (idx === 0) {
+                    <td [attr.rowspan]="3">{{ vehicleForm.value.customerFirstName || 'Klient' }} {{ vehicleForm.value.customerLastName || 'główny' }}</td>
+                    <td [attr.rowspan]="3">Ubezpieczający</td>
+                  }
+                  <td>{{ claimRow.periodLabel }}</td>
+                  <td>{{ claimRow.claimsCount }}</td>
+                </tr>
+              }
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <div class="toggle-grid">
+        <label class="toggle-row">
+          <p-checkbox formControlName="ufgConsent" binary="true" inputId="ufgConsent" />
+          <span>Klient wyraża zgodę na wynik weryfikacji UFG</span>
+        </label>
+      </div>
+    </section>
+
+  </form>
+</app-section-card>

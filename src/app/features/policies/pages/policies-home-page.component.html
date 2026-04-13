@@ -1,0 +1,294 @@
+<main class="policies-home-page">
+  <app-page-header eyebrow="Portfel polis" title="Wystawione polisy" />
+
+  <section class="policies-home-page__stats">
+    <button
+      type="button"
+      class="policy-filter-tile"
+      [class.policy-filter-tile--active]="isFilterSelected('RENEWALS')"
+      (click)="setFilter('RENEWALS')"
+    >
+      <span class="policy-filter-tile__label">Wznowienia</span>
+      <strong class="policy-filter-tile__value">{{ renewalsCount() }}</strong>
+      <span class="policy-filter-tile__note">kliknij, aby filtrować</span>
+    </button>
+
+    <button
+      type="button"
+      class="policy-filter-tile"
+      [class.policy-filter-tile--active]="isFilterSelected('TO_PAY')"
+      (click)="setFilter('TO_PAY')"
+    >
+      <span class="policy-filter-tile__label">Do opłaty</span>
+      <strong class="policy-filter-tile__value">{{ toPayCount() }}</strong>
+      <span class="policy-filter-tile__note">kliknij, aby filtrować</span>
+    </button>
+
+    <button
+      type="button"
+      class="policy-filter-tile"
+      [class.policy-filter-tile--active]="isFilterSelected('ALL')"
+      (click)="setFilter('ALL')"
+    >
+      <span class="policy-filter-tile__label">Wszystkie polisy</span>
+      <strong class="policy-filter-tile__value">{{ paidPoliciesPremiumTotal() | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</strong>
+      <span class="policy-filter-tile__note">suma składek polis opłaconych</span>
+    </button>
+  </section>
+
+  <app-section-card title="Lista polis">
+    <div class="toolbar">
+      <div class="toolbar__filters">
+        <span class="field-shell">
+          <i class="pi pi-search"></i>
+          <input
+            pInputText
+            [ngModel]="searchTerm()"
+            (ngModelChange)="searchTerm.set($event)"
+            placeholder="Szukaj: numer polisy, klient, pojazd, rejestracja"
+          />
+        </span>
+
+        <p-select
+          [ngModel]="selectedSortField()"
+          (ngModelChange)="selectedSortField.set($event)"
+          [options]="sortFieldOptions"
+          optionLabel="label"
+          optionValue="code"
+          placeholder="Sortuj po"
+          appendTo="body"
+          class="toolbar__select toolbar__select--sort"
+        />
+
+        <button
+          pButton
+          type="button"
+          [icon]="sortDirectionIcon()"
+          severity="secondary"
+          outlined
+          [attr.aria-label]="sortDirectionLabel()"
+          class="toolbar__sort-direction"
+          (click)="toggleSortDirection()"
+        ></button>
+      </div>
+
+      <div class="toolbar__actions">
+        <button pButton type="button" label="Wyczyść" severity="secondary" outlined (click)="clearFilters()"></button>
+      </div>
+    </div>
+
+    <div class="results-meta">
+      <span>{{ totalVisiblePolicies() }} polis(y) na liście</span>
+    </div>
+
+    <div class="policy-list">
+      @for (policy of filteredPolicies(); track policy.id) {
+        <article class="policy-row">
+          <div class="policy-row__main">
+            <div class="policy-row__headline">
+              <div>
+                <strong>{{ policy.policyNumber }}</strong>
+                <span class="policy-row__subline">{{ policy.customerName }} · {{ policy.vehicleLabel }}</span>
+              </div>
+
+              <div class="policy-row__tags">
+                <p-tag
+                  [value]="getPolicyStatusPresentation(policy.status).label"
+                  [severity]="getPolicyStatusPresentation(policy.status).severity"
+                />
+                <p-tag
+                  [value]="getPaymentStatusPresentation(policy.paymentStatus).label"
+                  [severity]="getPaymentStatusPresentation(policy.paymentStatus).severity"
+                />
+              </div>
+            </div>
+
+            <div class="policy-row__meta-grid">
+              <div>
+                <span class="policy-row__meta-label">Rejestracja</span>
+                <strong>{{ policy.registrationNumber }}</strong>
+                <span>{{ policy.productName }}</span>
+              </div>
+
+              <div>
+                <span class="policy-row__meta-label">Data wystawienia</span>
+                <strong>{{ policy.issueDate | date: 'dd.MM.yyyy' }}</strong>
+                <span>{{ policy.agentName }}</span>
+              </div>
+
+              <div>
+                <span class="policy-row__meta-label">Data zawarcia</span>
+                <strong>{{ policy.conclusionDate | date: 'dd.MM.yyyy' }}</strong>
+                <span>{{ policy.status === 'RENEWAL' ? 'wznowienie' : 'nowa umowa' }}</span>
+              </div>
+
+              <div>
+                <span class="policy-row__meta-label">Koniec ubezpieczenia</span>
+                <strong>{{ policy.coverageEndDate | date: 'dd.MM.yyyy' }}</strong>
+                <span>{{ policy.paymentStatus === 'TO_PAY' ? 'do opłaty' : 'opłacona' }}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="policy-row__summary">
+            <div class="premium-box">
+              <span class="policy-row__meta-label">Składka</span>
+              <strong>{{ policy.annualPremium | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</strong>
+              <span>{{ policy.monthlyPremium | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }} miesięcznie</span>
+            </div>
+
+            <div class="policy-row__actions">
+              <p-splitbutton
+                label="Szczegóły"
+                icon="pi pi-arrow-right"
+                size="small"
+                styleClass="policy-row__split-action"
+                [model]="policyMenuModels()[policy.id] ?? []"
+                (onClick)="goToPolicyFlow(policy)"
+                (onDropdownClick)="onPolicySplitDropdownClick(policy)"
+              />
+            </div>
+          </div>
+        </article>
+      } @empty {
+        <div class="empty-state">
+          <i class="pi pi-folder-open"></i>
+          <strong>Brak polis dla podanych filtrów</strong>
+          <span>Zmień kryteria wyszukiwania albo wyczyść filtry.</span>
+        </div>
+      }
+    </div>
+  </app-section-card>
+
+  <p-dialog
+    [visible]="cancellationDialogVisible()"
+    [modal]="true"
+    [draggable]="false"
+    [resizable]="false"
+    [closable]="true"
+    [style]="{ width: '32rem', maxWidth: '94vw' }"
+    header="Anulowanie polisy"
+    (visibleChange)="cancellationDialogVisible.set($event)"
+    (onHide)="closeCancellationDialog()"
+  >
+    @if (pendingCancellation(); as policy) {
+      <div class="policy-cancel-dialog">
+        <p class="policy-cancel-dialog__description">
+          Anulowanie polisy to nietypowa operacja. Potwierdź, że chcesz kontynuować dla wskazanej polisy.
+        </p>
+
+        <div class="policy-cancel-dialog__summary">
+          <div>
+            <span>Numer polisy</span>
+            <strong>{{ policy.policyNumber }}</strong>
+          </div>
+          <div>
+            <span>Klient</span>
+            <strong>{{ policy.customerName }}</strong>
+          </div>
+          <div>
+            <span>Pojazd</span>
+            <strong>{{ policy.vehicleLabel }}</strong>
+          </div>
+          <div>
+            <span>Status po operacji</span>
+            <strong>Anulowana</strong>
+          </div>
+        </div>
+      </div>
+    }
+
+    <div class="policy-cancel-dialog__footer">
+      <button pButton type="button" label="Zamknij" severity="secondary" outlined (click)="closeCancellationDialog()"></button>
+      <button pButton type="button" label="Potwierdź anulowanie" severity="danger" (click)="confirmCancellation()"></button>
+    </div>
+  </p-dialog>
+
+  <p-dialog
+    [visible]="renewalDialogVisible()"
+    [modal]="true"
+    [draggable]="false"
+    [resizable]="false"
+    [closable]="true"
+    [style]="{ width: '32rem', maxWidth: '94vw' }"
+    header="Wznowienie jako nowa oferta"
+    (visibleChange)="renewalDialogVisible.set($event)"
+    (onHide)="closeRenewalDialog()"
+  >
+    @if (pendingRenewal(); as policy) {
+      <div class="policy-cancel-dialog">
+        <p class="policy-cancel-dialog__description">
+          Potwierdź utworzenie nowej oferty na podstawie danych tej polisy.
+        </p>
+
+        <div class="policy-cancel-dialog__summary">
+          <div>
+            <span>Numer polisy</span>
+            <strong>{{ policy.policyNumber }}</strong>
+          </div>
+          <div>
+            <span>Klient</span>
+            <strong>{{ policy.customerName }}</strong>
+          </div>
+          <div>
+            <span>Pojazd</span>
+            <strong>{{ policy.vehicleLabel }}</strong>
+          </div>
+          <div>
+            <span>Tryb</span>
+            <strong>Wznowienie</strong>
+          </div>
+        </div>
+      </div>
+    }
+
+    <div class="policy-cancel-dialog__footer">
+      <button pButton type="button" label="Zamknij" severity="secondary" outlined (click)="closeRenewalDialog()"></button>
+      <button pButton type="button" label="Potwierdź wznowienie" (click)="confirmRenewal()"></button>
+    </div>
+  </p-dialog>
+
+  <p-dialog
+    [visible]="paymentDialogVisible()"
+    [modal]="true"
+    [draggable]="false"
+    [resizable]="false"
+    [closable]="true"
+    [style]="{ width: '32rem', maxWidth: '94vw' }"
+    header="Przyjęcie składki"
+    (visibleChange)="paymentDialogVisible.set($event)"
+    (onHide)="closePaymentDialog()"
+  >
+    @if (pendingPayment(); as policy) {
+      <div class="policy-cancel-dialog">
+        <p class="policy-cancel-dialog__description">
+          Potwierdź przyjęcie składki dla tej polisy. Po zatwierdzeniu status płatności zmieni się na „Opłacona”.
+        </p>
+
+        <div class="policy-cancel-dialog__summary">
+          <div>
+            <span>Numer polisy</span>
+            <strong>{{ policy.policyNumber }}</strong>
+          </div>
+          <div>
+            <span>Klient</span>
+            <strong>{{ policy.customerName }}</strong>
+          </div>
+          <div>
+            <span>Składka roczna</span>
+            <strong>{{ policy.annualPremium | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</strong>
+          </div>
+          <div>
+            <span>Status po operacji</span>
+            <strong>Opłacona</strong>
+          </div>
+        </div>
+      </div>
+    }
+
+    <div class="policy-cancel-dialog__footer">
+      <button pButton type="button" label="Zamknij" severity="secondary" outlined (click)="closePaymentDialog()"></button>
+      <button pButton type="button" label="Potwierdź opłacenie" (click)="confirmPayment()"></button>
+    </div>
+  </p-dialog>
+</main>

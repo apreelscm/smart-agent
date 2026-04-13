@@ -1,0 +1,214 @@
+<main class="wizard-shell-page">
+  <section class="wizard-layout" [class.wizard-layout--summary]="isSummaryStep()">
+    <nav class="wizard-progress" aria-label="Postęp kreatora">
+      @for (step of stepLinks(); track step.route; let i = $index) {
+        <a
+          [routerLink]="step.commands"
+          [queryParams]="readonlyMode() ? { readonly: '1' } : null"
+          class="wizard-progress__step"
+          [class.wizard-progress__step--active]="i === currentStepIndex()"
+          [class.wizard-progress__step--done]="i < currentStepIndex()"
+          [class.wizard-progress__step--has-next]="i < stepLinks().length - 1"
+        >
+          <span class="wizard-progress__index">
+            @if (i < currentStepIndex()) {
+              ✓
+            } @else {
+              {{ i + 1 }}
+            }
+          </span>
+          <span class="wizard-progress__label">{{ step.label }}</span>
+        </a>
+      }
+    </nav>
+
+    <div class="wizard-layout__main">
+      <div class="wizard-step-content" [class.wizard-step-content--readonly]="readonlyMode()">
+        <router-outlet />
+      </div>
+
+      <div class="wizard-navigation">
+        <div class="wizard-navigation__side">
+          @if (previousStepLink(); as previousLink) {
+            <a pButton [routerLink]="previousLink" [queryParams]="readonlyMode() ? { readonly: '1' } : null" severity="secondary" outlined>
+              Wstecz
+            </a>
+          }
+        </div>
+        <div class="wizard-navigation__side wizard-navigation__side--right">
+          @if (nextStepLink(); as nextLink) {
+            <a pButton [routerLink]="nextLink" [queryParams]="readonlyMode() ? { readonly: '1' } : null">Dalej</a>
+          } @else {
+            @if (selectedOffer(); as offer) {
+              <div class="wizard-navigation__summary-actions">
+                @for (action of actionsForStatus(offer.status); track action.targetStatus) {
+                  <button
+                    pButton
+                    type="button"
+                    [label]="action.actionLabel"
+                    [disabled]="!canExecuteStatusActions(offer)"
+                    (click)="openTransitionDialog(action)"
+                  ></button>
+                }
+                @if (showPrintButton(offer.status)) {
+                  <button
+                    pButton
+                    type="button"
+                    label="Wydruk"
+                    severity="secondary"
+                    outlined
+                    [disabled]="!canExecuteStatusActions(offer)"
+                    (click)="printPlaceholder()"
+                  ></button>
+                }
+              </div>
+            }
+          }
+        </div>
+      </div>
+    </div>
+
+    @if (!isSummaryStep()) {
+      <aside class="wizard-layout__aside">
+        <app-section-card title="Podsumowanie oferty">
+          @if (selectedOffer(); as offer) {
+            <div class="summary-card">
+              @if (offer.renewalContext; as renewalContext) {
+                <div class="renewal-notice">
+                  <span class="renewal-notice__label">Wznowienie</span>
+                  <strong>Oferta tworzona jako wznowienie polisy</strong>
+                  <a
+                    [routerLink]="['/offers/new/vehicle']"
+                    [queryParams]="{ readonly: '1', sourcePolicyId: renewalContext.sourcePolicyId, mode: 'preview' }"
+                  >
+                    {{ renewalContext.sourcePolicyNumber }}
+                  </a>
+                </div>
+              }
+
+              <div class="summary-card__group">
+                <span class="summary-card__label">Klient</span>
+                <strong>
+                  @if (offer.customer.identity.type === 'NATURAL_PERSON') {
+                    @if (offer.customer.identity.personName.firstName || offer.customer.identity.personName.lastName) {
+                      {{ offer.customer.identity.personName.firstName }} {{ offer.customer.identity.personName.lastName }}
+                    } @else {
+                      Brak danych
+                    }
+                  } @else if (offer.customer.identity.type === 'SOLE_PROPRIETOR') {
+                    {{ offer.customer.identity.companyName || 'Brak danych' }}
+                  } @else {
+                    {{ offer.customer.identity.companyName || 'Brak danych' }}
+                  }
+                </strong>
+              </div>
+
+              <div class="summary-card__group">
+                <span class="summary-card__label">Pojazd</span>
+                <strong>
+                  @if (offer.vehicle.make || offer.vehicle.model) {
+                    {{ offer.vehicle.make }} {{ offer.vehicle.model }}
+                  } @else {
+                    Brak danych
+                  }
+                </strong>
+                <span>
+                  @if (offer.vehicle.registration?.registrationNumber) {
+                    {{ offer.vehicle.registration?.registrationNumber }} · {{ offer.vehicle.productionYear }}
+                  } @else {
+                    Brak rejestracji
+                  }
+                </span>
+              </div>
+
+              @if (selectedVariant(); as variant) {
+                <div class="summary-card__group summary-card__group--accent">
+                  <div class="summary-card__row">
+                    <span class="summary-card__label">Wybrany wariant</span>
+                    @if (variant.recommended) {
+                      <p-tag value="Polecany" severity="success" />
+                    }
+                  </div>
+                  <strong>{{ variant.name }}</strong>
+                  <span class="summary-card__premium">
+                    {{ discountedAmount() | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}
+                  </span>
+                </div>
+              }
+
+              <div class="summary-card__group">
+                <span class="summary-card__label">Linie ochrony</span>
+                @if (selectedVariant()?.policyLines?.length) {
+                  <ul class="line-list">
+                    @for (line of selectedVariant()?.policyLines ?? []; track line.id) {
+                      <li>
+                        <span>{{ line.label }}</span>
+                        <strong>{{ line.premium.amount | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</strong>
+                      </li>
+                    }
+                  </ul>
+                } @else {
+                  <span>Brak wybranego wariantu</span>
+                }
+              </div>
+
+              <div class="summary-card__actions">
+                <button
+                  pButton
+                  type="button"
+                  label="Zapisz"
+                  class="summary-card__save-button"
+                  [disabled]="readonlyMode()"
+                  (click)="saveDraft()"
+                ></button>
+              </div>
+            </div>
+          }
+        </app-section-card>
+      </aside>
+    }
+  </section>
+
+  <p-dialog
+    [visible]="transitionDialogVisible()"
+    [modal]="true"
+    [draggable]="false"
+    [resizable]="false"
+    [closable]="true"
+    [style]="{ width: '34rem', maxWidth: '94vw' }"
+    [header]="transitionTitle()"
+    (visibleChange)="transitionDialogVisible.set($event)"
+    (onHide)="closeTransitionDialog()"
+  >
+    @if (pendingTransition(); as pending) {
+      <div class="transition-dialog">
+        <p class="transition-dialog__description">{{ pending.transition.description }}</p>
+
+        <div class="transition-dialog__summary">
+          <div>
+            <span>Numer oferty</span>
+            <strong>{{ pending.offer.offerNumber }}</strong>
+          </div>
+          <div>
+            <span>Pojazd</span>
+            <strong>{{ pending.offer.vehicle.make }} {{ pending.offer.vehicle.model }}</strong>
+          </div>
+          <div>
+            <span>Składka</span>
+            <strong>{{ (selectedVariant()?.totalPremium?.amount ?? 0) | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</strong>
+          </div>
+        </div>
+      </div>
+    }
+
+    <div class="transition-dialog__footer">
+      <button pButton type="button" label="Anuluj" severity="secondary" outlined (click)="closeTransitionDialog()"></button>
+      <button
+        pButton
+        type="button"
+        [label]="pendingTransition()?.transition?.actionLabel ?? 'Potwierdź'"
+        (click)="confirmTransition()"
+      ></button>
+    </div>
+  </p-dialog>
+</main>

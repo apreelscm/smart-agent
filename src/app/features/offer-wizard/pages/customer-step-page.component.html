@@ -1,0 +1,153 @@
+<app-section-card title="Dane do umowy">
+  <form [formGroup]="customerForm" class="wizard-form" (ngSubmit)="saveCustomer()">
+    <section class="wizard-form__section wizard-form__section--compact">
+      <div class="wizard-form__section-header">
+        <h3>Okres ochrony</h3>
+      </div>
+
+      <div class="form-grid form-grid--two">
+        <label class="field-block">
+          <span>Data rozpoczęcia</span>
+          <input pInputText type="date" formControlName="coverageStartDate" />
+        </label>
+        <label class="field-block">
+          <span>Data zakończenia</span>
+          <input pInputText type="date" formControlName="coverageEndDate" />
+        </label>
+      </div>
+    </section>
+
+    <section class="wizard-form__section wizard-form__section--compact">
+      <div class="wizard-form__section-header">
+        <h3>Sposób płatności</h3>
+      </div>
+
+      <div class="payment-method">
+        <p-selectbutton
+          formControlName="paymentMethod"
+          [options]="paymentMethodOptions"
+          optionLabel="label"
+          optionValue="value"
+          [allowEmpty]="false"
+        />
+      </div>
+    </section>
+
+    <section class="wizard-form__section">
+      <div class="wizard-form__section-header">
+        <h3>Ubezpieczający</h3>
+        <span>{{ customerKindLabel() }}</span>
+      </div>
+
+      <div class="form-grid form-grid--four">
+        <label class="field-block">
+          <span>Imię</span>
+          <input pInputText formControlName="firstName" />
+        </label>
+        <label class="field-block">
+          <span>Nazwisko</span>
+          <input pInputText formControlName="lastName" />
+        </label>
+        <label class="field-block">
+          <span>PESEL</span>
+          <input pInputText formControlName="pesel" />
+        </label>
+        <label class="field-block">
+          <span>Data urodzenia</span>
+          <input pInputText type="date" formControlName="birthDate" />
+        </label>
+      </div>
+
+      <div class="form-grid form-grid--two">
+        <label class="field-block">
+          <span>E-mail</span>
+          <input pInputText formControlName="email" />
+        </label>
+        <label class="field-block">
+          <span>Telefon</span>
+          <input pInputText formControlName="phoneNumber" />
+        </label>
+      </div>
+
+      <div class="form-grid form-grid--address">
+        <div class="field-block">
+          <span>Kod pocztowy</span>
+          <p-autocomplete
+            formControlName="postalCode"
+            [suggestions]="filteredPostalCodes"
+            placeholder="np. 03-143"
+            [dropdown]="true"
+            [showClear]="true"
+            [forceSelection]="false"
+            [minQueryLength]="0"
+            appendTo="body"
+            (completeMethod)="filterPostalCodes($event)"
+          />
+        </div>
+        <div class="field-block">
+          <span>Ulica</span>
+          <p-autocomplete
+            formControlName="street"
+            [suggestions]="filteredStreetOptions"
+            placeholder="Wybierz lub wpisz ulicę"
+            [dropdown]="true"
+            [showClear]="true"
+            [forceSelection]="false"
+            [minQueryLength]="0"
+            appendTo="body"
+            (completeMethod)="filterStreets($event)"
+          />
+        </div>
+        <label class="field-block">
+          <span>Nr budynku</span>
+          <input pInputText formControlName="buildingNumber" />
+        </label>
+        <label class="field-block">
+          <span>Miejscowość</span>
+          <input pInputText formControlName="city" />
+        </label>
+      </div>
+    </section>
+
+    <section class="wizard-form__section wizard-form__section--compact">
+      <div class="wizard-form__section-header">
+        <h3>Załączniki</h3>
+      </div>
+
+      <div class="attachments-placeholder">
+        <span>Brak dodanych załączników</span>
+        <button pButton type="button" label="Dodaj załącznik" severity="secondary" outlined (click)="addAttachmentPlaceholder()"></button>
+      </div>
+    </section>
+
+    <section class="wizard-form__section wizard-form__section--compact">
+      <div class="wizard-form__section-header">
+        <h3>Zgody marketingowe</h3>
+      </div>
+
+      <div class="consents-list">
+        <label class="consent-row">
+          <p-checkbox formControlName="marketingConsentEmail" binary="true" inputId="marketingConsentEmail" />
+          <span>
+            Wyrażam zgodę na użycie moich danych osobowych przez TUiR Warta S.A. w celach marketingowych związanych z
+            prezentacją produktów i usług ubezpieczeniowych.
+          </span>
+        </label>
+        <label class="consent-row">
+          <p-checkbox formControlName="marketingConsentSms" binary="true" inputId="marketingConsentSms" />
+          <span>
+            Wyrażam zgodę na otrzymywanie informacji handlowych drogą elektroniczną (e-mail / SMS), w tym ofert i
+            materiałów promocyjnych.
+          </span>
+        </label>
+        <label class="consent-row">
+          <p-checkbox formControlName="marketingConsentPhone" binary="true" inputId="marketingConsentPhone" />
+          <span>
+            Wyrażam zgodę na kontakt telefoniczny w celach marketingowych i obsługi posprzedażowej dotyczącej oferty
+            ubezpieczeniowej.
+          </span>
+        </label>
+      </div>
+    </section>
+  </form>
+</app-section-card>

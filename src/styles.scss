@@ -1,0 +1,52 @@
+/* You can add global styles to this file, and also import other style files */
+@use './styles/tokens';
+@import 'primeicons/primeicons.css';
+
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  color: var(--app-ink);
+  font-family: var(--app-font-sans);
+  background:
+    radial-gradient(circle at top left, var(--app-bg-radial), transparent 28%),
+    linear-gradient(180deg, #f7f9fc, var(--app-bg));
+}
+
+* {
+  box-sizing: border-box;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+h1,
+h2,
+h3,
+h4,
+p,
+ol,
+ul {
+  margin-block-start: 0;
+}
+
+main {
+  width: min(calc(100% - 2rem), var(--app-shell-width));
+  margin: 0 auto;
+  padding: 2rem 0 3rem;
+}
+
+a.p-button,
+a.p-button:hover,
+a.p-button:focus,
+a.p-button:active,
+a.p-button:visited {
+  text-decoration: none;
+}

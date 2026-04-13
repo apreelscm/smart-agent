@@ -1,0 +1,218 @@
+<app-section-card title="Konfiguracja wariantu">
+  <div class="variant-compare-shell" [style.--variant-count]="variantsByRank().length">
+    <div class="variant-compare">
+      <div class="compare-cell compare-cell--corner">
+        <span class="compare-eyebrow">Zakres oferty</span>
+      </div>
+
+      @for (variant of variantsByRank(); track variant.id) {
+        <header
+          class="compare-cell compare-cell--variant-header"
+          [class.compare-cell--selected]="selectedVariantId() === variant.id"
+          role="button"
+          tabindex="0"
+          (click)="selectVariant(variant.id)"
+          (keydown.enter)="selectVariant(variant.id)"
+          (keydown.space)="selectVariant(variant.id); $event.preventDefault()"
+        >
+          <div class="compare-cell__variant-title">
+            <strong>{{ variant.name }}</strong>
+            <span>{{ discountedAmount(variant) | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</span>
+          </div>
+
+          <div class="compare-cell__badges">
+            @if (variant.recommended) {
+              <p-tag value="Polecany" severity="success" />
+            }
+            @if (selectedVariantId() === variant.id) {
+              <p-tag value="Wybrany" severity="info" />
+            }
+          </div>
+        </header>
+      }
+
+      @for (lineCode of policyLineCodes(); track lineCode) {
+        <div class="compare-cell compare-cell--line-name">
+          <strong>{{ getLineLabel(lineCode) }}</strong>
+        </div>
+
+        @for (variant of variantsByRank(); track variant.id) {
+          <section class="compare-cell compare-cell--line-value" [class.compare-cell--selected]="selectedVariantId() === variant.id">
+            @if (getLine(variant, lineCode); as line) {
+              <header class="line-head">
+                <span>{{ line.premium.amount | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</span>
+                @if (line.isRecommended) {
+                  <p-tag value="Rekomendowane" severity="contrast" />
+                }
+              </header>
+
+              <div class="cover-list">
+                @for (coverCode of getLineCoverCodes(lineCode); track coverCode) {
+                  @if (getCoverByCode(variant, lineCode, coverCode); as cover) {
+                    <article class="cover-item">
+                      <div class="cover-item__top">
+                        @if (cover.description || cover.label !== getLineLabel(lineCode)) {
+                          <span class="cover-label">{{ cover.description || cover.label }}</span>
+                        }
+                      </div>
+                      @if (cover.premiumDelta?.amount) {
+                        <span class="cover-premium">+{{ cover.premiumDelta?.amount | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</span>
+                      }
+                      @if (cover.terms.length > 0) {
+                        <ul>
+                          @for (term of cover.terms; track term.id) {
+                            <li class="term-row" [class.term-row--editable]="isEditableTerm(term)">
+                              <span>{{ term.label }}</span>
+                              @if (isEditableTerm(term)) {
+                                <span class="term-editor">
+                                  @if (isSelectTerm(term)) {
+                                    <select
+                                      [value]="term.value"
+                                      (change)="updateCoverTermValue(variant.id, lineCode, cover.code, term.id, $any($event.target).value)"
+                                    >
+                                      @for (option of term.options ?? []; track option) {
+                                        <option [value]="option">{{ termOptionLabel(option, term) }}</option>
+                                      }
+                                    </select>
+                                  } @else {
+                                    <input
+                                      type="number"
+                                      [value]="term.value"
+                                      (change)="updateCoverTermValue(variant.id, lineCode, cover.code, term.id, $any($event.target).value)"
+                                    />
+                                  }
+                                  @if (term.unit) {
+                                    <strong>{{ localizedUnit(term.unit) }}</strong>
+                                  }
+                                </span>
+                              } @else {
+                                <strong class="term-value">{{ termValueLabel(term) }}</strong>
+                              }
+                            </li>
+                          }
+                        </ul>
+                      }
+                    </article>
+                  } @else {
+                    <article class="cover-item cover-item--empty">
+                      <span>Brak w tym wariancie</span>
+                    </article>
+                  }
+                }
+              </div>
+            } @else {
+              <div class="line-missing">Brak linii</div>
+            }
+          </section>
+        }
+      }
+
+      <div class="compare-cell compare-cell--action-label">
+        <span class="compare-eyebrow compare-eyebrow--muted">Wybór wariantu</span>
+      </div>
+
+      @for (variant of variantsByRank(); track variant.id) {
+        <footer class="compare-cell compare-cell--actions" [class.compare-cell--selected]="selectedVariantId() === variant.id">
+          <button
+            pButton
+            type="button"
+            [label]="selectedVariantId() === variant.id ? 'Wybrany wariant' : 'Wybierz wariant'"
+            [severity]="selectedVariantId() === variant.id ? 'secondary' : undefined"
+            [outlined]="selectedVariantId() === variant.id"
+            (click)="selectVariant(variant.id)"
+          ></button>
+        </footer>
+      }
+    </div>
+  </div>
+
+  <section class="addons-section">
+    <span class="addons-section__title">Dodatki</span>
+    <div class="addons-grid">
+      @for (addon of addons; track addon.coverCode) {
+        <button
+          type="button"
+          class="addon-box"
+          [class.addon-box--selected]="isAddonSelected(addon)"
+          (click)="setAddonSelection(addon, !isAddonSelected(addon))"
+        >
+          <span class="addon-box__content">
+            <strong>{{ addon.label }}</strong>
+          </span>
+        </button>
+      }
+    </div>
+  </section>
+
+  <section class="payment-section">
+    <span class="payment-section__title">Sposób płatności</span>
+
+    <section class="discount-section">
+      <span class="discount-section__title">Budżet zniżek</span>
+
+      <div class="discount-section__line">
+        <article class="discount-stat">
+          <span>Twój budżet</span>
+          <strong>{{ customerDiscountBudget | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</strong>
+        </article>
+        <article class="discount-stat">
+          <span>Zniżka maksymalna ({{ discountBusinessLine }})</span>
+          <strong>{{ maxDiscountAmount() | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</strong>
+        </article>
+        <div class="discount-section__field">
+          <span class="discount-section__field-label">Zniżka kwotowa ({{ discountBusinessLine }})</span>
+          <input
+            type="number"
+            min="0"
+            [max]="maxDiscountAmount()"
+            step="1"
+            [value]="discountInput()"
+            (input)="onDiscountInput($any($event.target).value)"
+            (blur)="onDiscountBlur()"
+            aria-label="Budżet zniżek w PLN"
+          />
+          <span>PLN</span>
+        </div>
+      </div>
+      @if (discountError(); as discountErrorMessage) {
+        <p class="discount-section__error">{{ discountErrorMessage }}</p>
+      }
+    </section>
+
+    @if (paymentPlanRows().length > 0) {
+      <div class="payment-table">
+        <div class="payment-table__head">
+          <span>Okres</span>
+          <span>Liczba rat</span>
+          <span>1. rata</span>
+          <span>Pozostałe raty</span>
+          <span>Suma</span>
+        </div>
+
+        @for (paymentRow of paymentPlanRows(); track paymentRow.plan.frequency) {
+          <button
+            type="button"
+            class="payment-table__row"
+            [class.payment-table__row--selected]="isPaymentPlanSelected(paymentRow.plan)"
+            (click)="selectPaymentPlan(paymentRow.plan.frequency)"
+          >
+            <span>{{ paymentPeriodLabel(paymentRow.plan) }}</span>
+            <strong>{{ paymentRow.installmentsCount }}</strong>
+            <strong>{{ paymentRow.firstInstallmentAmount | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</strong>
+            <strong>
+              @if (paymentRow.remainingInstallmentAmount !== null) {
+                @let remainingAmount = paymentRow.remainingInstallmentAmount;
+                {{ remainingAmount | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}
+              } @else {
+                —
+              }
+            </strong>
+            <strong>{{ paymentRow.totalAmount | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</strong>
+          </button>
+        }
+      </div>
+    } @else {
+      <div class="payment-section__empty">Brak dostępnych planów ratalnych.</div>
+    }
+  </section>
+</app-section-card>

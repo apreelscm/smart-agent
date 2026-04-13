@@ -1,0 +1,364 @@
+:host {
+  display: block;
+}
+
+.wizard-shell-page {
+  display: block;
+}
+
+.wizard-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) 22rem;
+  grid-template-areas:
+    "progress progress"
+    "main aside";
+  column-gap: 1.25rem;
+  row-gap: 0.7rem;
+  align-items: start;
+  margin-top: -1.5rem; /* Pull the entire wizard up closer to the header */
+}
+
+.wizard-layout--summary {
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas:
+    "progress"
+    "main";
+}
+
+.wizard-progress {
+  grid-area: progress;
+  display: flex;
+  padding: 0;
+  border: none;
+  border-radius: 0.5rem;
+  background: transparent;
+  filter: drop-shadow(0 4px 3px rgb(0 0 0 / 0.07)) drop-shadow(0 2px 2px rgb(0 0 0 / 0.06));
+  overflow: hidden; /* Ensures rounded corners on the container clip the first/last steps */
+}
+
+.wizard-progress__step {
+  $arrow-size: 1.2rem;
+  $step-bg: #f8fafc;
+  $step-color: #64748b;
+  $active-bg: #3b82f6;
+  $active-color: #ffffff;
+  $done-bg: #ecfdf5;
+  $done-color: #047857;
+
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 0.75rem calc(#{$arrow-size} + 0.5rem) 0.75rem calc(#{$arrow-size} + 1rem);
+  background: $step-bg;
+  color: $step-color;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  clip-path: polygon(
+    0% 0%, 
+    calc(100% - #{$arrow-size}) 0%, 
+    100% 50%, 
+    calc(100% - #{$arrow-size}) 100%, 
+    0% 100%, 
+    #{$arrow-size} 50%
+  );
+  margin-right: calc(#{$arrow-size} * -1); /* Overlap to interlock */
+  
+  /* Hover state for inactive steps */
+  &:not(.wizard-progress__step--active):hover {
+    background: darken($step-bg, 3%);
+  }
+
+  /* Active State */
+  &.wizard-progress__step--active {
+    background: $active-bg;
+    color: $active-color;
+    z-index: 2; /* Bring active step forward if needed, though clip-path handles shape */
+  }
+
+  /* Done State */
+  &.wizard-progress__step--done {
+    background: $done-bg;
+    color: $done-color;
+  }
+
+  /* First Step: Flat start */
+  &:first-child {
+    padding-left: 1.5rem;
+    clip-path: polygon(
+      0% 0%, 
+      calc(100% - #{$arrow-size}) 0%, 
+      100% 50%, 
+      calc(100% - #{$arrow-size}) 100%, 
+      0% 100%
+    );
+  }
+
+  /* Last Step: Flat end */
+  &:last-child {
+    margin-right: 0;
+    padding-right: 1.5rem;
+    clip-path: polygon(
+      0% 0%, 
+      100% 0%, 
+      100% 100%, 
+      0% 100%, 
+      #{$arrow-size} 50%
+    );
+  }
+}
+
+.wizard-progress__index {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+  font-size: 0.85rem;
+  font-weight: 700;
+  flex-shrink: 0;
+  
+  /* Contextual styles for index */
+  .wizard-progress__step--active & {
+    background: rgba(255, 255, 255, 0.25);
+    color: #fff;
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.3);
+  }
+
+  .wizard-progress__step--done & {
+    background: rgba(16, 185, 129, 0.2);
+    color: #047857;
+  }
+}
+
+.wizard-progress__label {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 0.95rem;
+}
+
+.wizard-layout__main {
+  grid-area: main;
+  display: grid;
+  gap: 0.85rem;
+  align-self: start;
+  margin-top: 0;
+}
+
+.wizard-navigation__summary-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+.wizard-step-content {
+  display: block;
+}
+
+.wizard-step-content--readonly {
+  pointer-events: none;
+}
+
+.wizard-layout__aside {
+  grid-area: aside;
+  align-self: start;
+  margin-top: 0;
+}
+
+.summary-card,
+.summary-card__group,
+.summary-card__actions {
+  display: grid;
+}
+
+.summary-card {
+  gap: 1rem;
+}
+
+.renewal-notice {
+  display: grid;
+  gap: 0.3rem;
+  padding: 0.75rem 0.8rem;
+  border: 1px solid rgba(217, 119, 6, 0.28);
+  border-radius: 0.55rem;
+  background: #fffbeb;
+}
+
+.renewal-notice__label {
+  color: #9a3412;
+  font-size: 0.74rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.renewal-notice strong {
+  color: #7c2d12;
+  font-size: 0.9rem;
+}
+
+.renewal-notice a {
+  width: fit-content;
+  color: #b45309;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.renewal-notice a:hover {
+  text-decoration: underline;
+}
+
+.summary-card__label {
+  display: block;
+  margin-bottom: 0.22rem;
+  color: var(--app-text-subtle);
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.summary-card__group {
+  gap: 0.18rem;
+}
+
+.summary-card__group--accent {
+  padding: 0.85rem 0.9rem;
+  border: 1px solid rgba(29, 78, 216, 0.15);
+  border-radius: 0.55rem;
+  background: #f5f9ff;
+}
+
+.summary-card__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.summary-card__premium {
+  margin-top: 0.15rem;
+  color: #163b8c;
+  font-size: 1.2rem;
+  font-weight: 800;
+}
+
+.line-list {
+  display: grid;
+  gap: 0.55rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.line-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.55rem 0.65rem;
+  border: 1px solid var(--app-border);
+  border-radius: 0.45rem;
+  background: var(--app-surface-raised);
+}
+
+.summary-card__actions {
+  gap: 0.5rem;
+}
+
+:host ::ng-deep .summary-card__save-button.p-button {
+  width: 100%;
+  background: #0f766e;
+  border-color: #0f766e;
+}
+
+:host ::ng-deep .summary-card__save-button.p-button:hover {
+  background: #0d665f;
+  border-color: #0d665f;
+}
+
+.transition-dialog {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.transition-dialog__description {
+  margin: 0;
+  color: var(--app-text-muted);
+}
+
+.transition-dialog__summary {
+  display: grid;
+  gap: 0.55rem;
+  padding: 0.75rem;
+  border: 1px solid var(--app-border);
+  border-radius: 0.55rem;
+  background: var(--app-surface-raised);
+}
+
+.transition-dialog__summary div {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.8rem;
+}
+
+.transition-dialog__summary span {
+  color: var(--app-text-muted);
+  font-size: 0.84rem;
+}
+
+.transition-dialog__footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.wizard-navigation {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.85rem 0;
+}
+
+.wizard-navigation__side {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.wizard-navigation__side--right {
+  margin-left: auto;
+}
+
+@media (width <= 1120px) {
+  .wizard-layout,
+  .wizard-progress {
+    grid-template-columns: 1fr;
+  }
+
+  .wizard-layout {
+    grid-template-areas:
+      "progress"
+      "main"
+      "aside";
+    row-gap: 0.8rem;
+  }
+
+  .wizard-navigation {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .wizard-navigation__side,
+  .wizard-navigation__side--right {
+    margin-left: 0;
+  }
+}

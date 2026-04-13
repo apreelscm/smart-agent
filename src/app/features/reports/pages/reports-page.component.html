@@ -1,0 +1,101 @@
+<main class="reports-page">
+  <app-page-header
+    eyebrow="Analityka sprzedaży"
+    title="Raporty"
+    subtitle="Kokpit oparty o dane ofert i polis, gotowy do rozmowy sprzedażowej i operacyjnej."
+  />
+
+  <app-section-card title="Zakres raportu">
+    <div class="date-range date-range--inline">
+      <label>
+        <span>Od</span>
+        <input type="date" [value]="dateFrom()" (input)="dateFrom.set($any($event.target).value)" />
+      </label>
+      <label>
+        <span>Do</span>
+        <input type="date" [value]="dateTo()" (input)="dateTo.set($any($event.target).value)" />
+      </label>
+    </div>
+  </app-section-card>
+
+  <section class="reports-page__kpis">
+    @for (kpi of kpis(); track kpi.label) {
+      <app-stat-tile [label]="kpi.label" [value]="kpi.value" [note]="kpi.note" />
+    }
+  </section>
+
+  <section class="reports-page__grid">
+    <app-section-card title="Lejek ofert">
+      <div class="funnel">
+        @for (row of funnel(); track row.label) {
+          <article class="funnel__row">
+            <div class="funnel__header">
+              <span>{{ row.label }}</span>
+              <strong>{{ row.count }}</strong>
+            </div>
+            <div class="funnel__track">
+              <div class="funnel__fill" [style.width.%]="row.ratio * 100"></div>
+            </div>
+          </article>
+        }
+      </div>
+    </app-section-card>
+
+    <app-section-card title="Trend składki (6 miesięcy)" subtitle="Suma składki rocznej z polis wg daty wystawienia.">
+      <div class="trend-card">
+        <svg viewBox="0 0 100 44" preserveAspectRatio="none" class="trend-card__chart" aria-label="Trend składki">
+          <polyline [attr.points]="trendPolyline()" />
+        </svg>
+        <div class="trend-card__labels">
+          @for (point of monthlyTrend(); track point.label) {
+            <div>
+              <span>{{ point.label }}</span>
+              <strong>{{ point.amount | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</strong>
+            </div>
+          }
+        </div>
+      </div>
+    </app-section-card>
+
+    <app-section-card title="Struktura linii biznesowych">
+      <div class="lines-list">
+        @for (line of businessLines(); track line.label) {
+          <article class="lines-list__row">
+            <div class="lines-list__meta">
+              <strong>{{ line.label }}</strong>
+              <span>{{ line.amount | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</span>
+            </div>
+            <div class="lines-list__track">
+              <div class="lines-list__fill" [style.width.%]="line.ratio * 100"></div>
+            </div>
+          </article>
+        } @empty {
+          <span class="empty-note">Brak danych o liniach biznesowych.</span>
+        }
+      </div>
+    </app-section-card>
+
+    <app-section-card title="Płatności polis">
+      <div class="payment-card">
+        <div class="payment-card__ring" [style.background]="paymentRingBackground()">
+          <div class="payment-card__ring-inner">
+            <strong>{{ paymentStats().paidRatio | percent: '1.0-0' }}</strong>
+            <span>opłacone</span>
+          </div>
+        </div>
+
+        <div class="payment-card__legend">
+          <div>
+            <span>Opłacone</span>
+            <strong>{{ paymentStats().paid }}</strong>
+          </div>
+          <div>
+            <span>Do opłaty</span>
+            <strong>{{ paymentStats().toPay }}</strong>
+          </div>
+        </div>
+      </div>
+    </app-section-card>
+  </section>
+
+</main>

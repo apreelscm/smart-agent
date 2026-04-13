@@ -1,0 +1,131 @@
+:host {
+  display: block;
+}
+
+.app-shell {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.app-shell__header {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--app-border);
+  border-radius: 0;
+  background: rgba(255, 255, 255, 0.97);
+  box-shadow: none;
+}
+
+.app-shell__body {
+  display: block;
+}
+
+.brand-block {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.brand-block__mark {
+  display: grid;
+  place-items: center;
+  width: 2.3rem;
+  height: 2.3rem;
+  border-radius: 0.45rem;
+  background: linear-gradient(180deg, #1d4ed8, #173ea7);
+  color: white;
+  font-weight: 800;
+  font-size: 0.82rem;
+  letter-spacing: 0.04em;
+}
+
+.brand-block__copy {
+  display: grid;
+  gap: 0.05rem;
+  line-height: 1.2;
+}
+
+.brand-block__copy span,
+.profile-chip__eyebrow,
+.profile-chip__meta {
+  color: var(--app-text-muted);
+  font-size: 0.76rem;
+}
+
+.primary-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+}
+
+.primary-nav__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.58rem 0.78rem;
+  border: 1px solid transparent;
+  border-radius: 0.45rem;
+  color: var(--app-text-muted);
+  font-size: 0.92rem;
+  text-decoration: none;
+  transition:
+    color 0.18s ease,
+    border-color 0.18s ease,
+    background-color 0.18s ease;
+}
+
+.primary-nav__link:hover {
+  border-color: var(--app-border);
+  color: var(--app-ink);
+  background: #f7faff;
+}
+
+.primary-nav__link--active {
+  border-color: rgba(29, 78, 216, 0.18);
+  color: #163b8c;
+  background: #eef4ff;
+}
+
+.profile-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.55rem 0.75rem;
+  min-width: 8.75rem;
+  border: 1px solid var(--app-border);
+  border-radius: 0.45rem;
+  background: #fbfcff;
+  white-space: nowrap;
+}
+
+.profile-chip strong {
+  font-size: 0.92rem;
+  font-weight: 700;
+}
+
+.profile-chip__eyebrow::after,
+.profile-chip__meta::before {
+  content: '·';
+  margin-inline: 0.15rem 0.2rem;
+  color: var(--app-text-subtle);
+}
+
+.profile-chip__eyebrow::after {
+  margin-right: 0.35rem;
+}
+
+@media (width <= 1080px) {
+  .app-shell__header {
+    grid-template-columns: 1fr;
+    justify-items: start;
+  }
+
+  .primary-nav {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+}

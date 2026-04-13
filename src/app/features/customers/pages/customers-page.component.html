@@ -1,0 +1,91 @@
+<main class="customers-page">
+  @if (selectedCustomer(); as customer) {
+    <app-page-header eyebrow="Klienci" title="{{ customer.displayName }}" subtitle="Oferty i polisy klienta" />
+
+    <div class="customer-breadcrumb">
+      <button pButton type="button" label="Klienci" severity="secondary" text (click)="backToCustomersList()"></button>
+      <span>/</span>
+      <strong>{{ customer.displayName }}</strong>
+    </div>
+
+    <app-section-card title="Podsumowanie klienta">
+      <div class="customer-summary">
+        <span><strong>Przypis całkowity:</strong> {{ selectedCustomerAssignedPremium() | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</span>
+        <span><strong>Produkty:</strong> {{ selectedCustomerProducts().join(', ') || '—' }}</span>
+      </div>
+    </app-section-card>
+
+    <app-section-card title="Oferty i polisy">
+      <div class="items-table">
+        <div class="items-table__head">
+          <span>Typ</span>
+          <span>Numer</span>
+          <span>Produkt</span>
+          <span>Pojazd</span>
+          <span>Status</span>
+          <span>Składka</span>
+          <span>Data</span>
+          <span>Akcja</span>
+        </div>
+        @for (item of selectedCustomerItems(); track item.type + item.number) {
+          <div class="items-table__row">
+            <span>{{ item.type }}</span>
+            <strong>{{ item.number }}</strong>
+            <span>{{ item.product }}</span>
+            <span>{{ item.vehicle }}</span>
+            <p-tag [value]="item.statusLabel" [severity]="item.statusSeverity" />
+            <strong>{{ item.premium | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</strong>
+            <span>{{ item.date | date: 'dd.MM.yyyy' }}</span>
+            <button pButton type="button" label="Podgląd" size="small" severity="secondary" outlined (click)="item.open()"></button>
+          </div>
+        } @empty {
+          <div class="items-table__row items-table__row--empty">
+            <span>Brak pozycji</span>
+          </div>
+        }
+      </div>
+    </app-section-card>
+  } @else {
+    <app-page-header eyebrow="CRM" title="Klienci" subtitle="Lista klientów z przypisem i produktami" />
+
+    <app-section-card title="Klienci">
+      <div class="customers-toolbar">
+        <span class="customers-toolbar__search">
+          <i class="pi pi-search"></i>
+          <input
+            pInputText
+            [ngModel]="searchTerm()"
+            (ngModelChange)="searchTerm.set($event)"
+            placeholder="Szukaj: klient, telefon, e-mail"
+          />
+        </span>
+        <span class="customers-toolbar__count">{{ totalCustomers() }} klientów</span>
+      </div>
+
+      <div class="customers-table">
+        <div class="customers-table__head">
+          <span>Dane klienta</span>
+          <span>Przypis całkowity</span>
+          <span>Produkty</span>
+          <span>Link</span>
+        </div>
+        @for (customer of filteredCustomers(); track customer.key) {
+          <div class="customers-table__row">
+            <div class="customers-table__customer">
+              <strong>{{ customer.displayName }}</strong>
+              <span>{{ customer.phone || 'brak telefonu' }} · {{ customer.email || 'brak e-maila' }}</span>
+            </div>
+            <strong>{{ customerAssignedPremium(customer) | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</strong>
+            <span>{{ customerProducts(customer) }}</span>
+            <button pButton type="button" label="Oferty i polisy" size="small" severity="secondary" outlined (click)="openCustomerDetails(customer)"></button>
+          </div>
+        } @empty {
+          <div class="customers-table__row customers-table__row--empty">
+            <span>Brak klientów dla podanych filtrów.</span>
+          </div>
+        }
+      </div>
+    </app-section-card>
+  }
+</main>
+
