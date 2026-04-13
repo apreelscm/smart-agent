@@ -1,0 +1,59 @@
+# Angular / TypeScript build output
+/dist/
+/tmp/
+/out-tsc/
+/bazel-out/
+/coverage/
+
+# Angular cache
+/.angular/cache/
+
+# Dependencies
+/node_modules/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+testem.log
+build.log
+
+# Optional npm cache
+.npm/
+
+# IDEs and editors
+.idea/
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+*.sublime-project
+
+# VS Code (keep shareable workspace config)
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# Misc
+.history/
+.sass-cache/
+/connect.lock
+/libpeerconnection.log
+/typings
+__screenshots__/
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# System files
+.DS_Store
+Thumbs.db
