@@ -48,14 +48,14 @@ The project is an Angular 20 application using signals for reactive state manage
 
 The clear filters button will be added to the existing toolbar in the offers home page HTML template. Its enabled state will be bound to a computed signal that checks if any filter or sorting differs from default values. Clicking the button calls a new method `clearFilters()` that resets all signals to defaults.
 
-This approach follows the existing reactive pattern and UI conventions seen in `offers-home-page.component.ts` and `.html`. The button will use PrimeNG's `pButton` directive consistent with other toolbar buttons.
+This approach follows the existing reactive pattern and UI conventions seen in `offers-home-page.component.ts` and `.html`. The button will use PrimeNG's `pButton` directive consistent with other toolbar buttons. The button's color will be set to a bright/light blue to meet the reviewer’s request for a clearly light blue button.
 
 ### Task Breakdown
 
 #### Phase 1: Add Clear Filters Button UI and Logic
 | #   | Task                                  | Files                                         | Description                                                                                      |
 |-----|-------------------------------------|-----------------------------------------------|------------------------------------------------------------------------------------------------|
-| 1.1 | Add "Wyczyść filtry" button to toolbar | `src/app/features/offers/pages/offers-home-page.component.html` | Insert a button in the toolbar actions area with label "Wyczyść filtry" and PrimeNG styling.    |
+| 1.1 | Add "Wyczyść filtry" button to toolbar | `src/app/features/offers/pages/offers-home-page.component.html` | Insert a button in the toolbar actions area with label "Wyczyść filtry" and PrimeNG styling. The button color will be explicitly set to a light blue shade.    |
 | 1.2 | Add computed signal for button enabled state | `src/app/features/offers/pages/offers-home-page.component.ts`    | Create a computed signal that returns true if any filter or sorting differs from default.       |
 | 1.3 | Implement `clearFilters()` method to reset filters | `src/app/features/offers/pages/offers-home-page.component.ts`    | Set all filter and sorting signals to their default values as specified in the Jira description.|
 | 1.4 | Bind button disabled state to computed signal | `src/app/features/offers/pages/offers-home-page.component.html` | Bind `[disabled]` property of the button to the negation of the computed enabled signal.        |
@@ -69,7 +69,7 @@ This approach follows the existing reactive pattern and UI conventions seen in `
 ### File Change Summary
 | File                                                        | Action | Description                                               |
 |-------------------------------------------------------------|--------|-----------------------------------------------------------|
-| `src/app/features/offers/pages/offers-home-page.component.html` | MODIFY | Add "Wyczyść filtry" button in the toolbar actions area.  |
+| `src/app/features/offers/pages/offers-home-page.component.html` | MODIFY | Add "Wyczyść filtry" button in the toolbar actions area with explicit light blue styling.  |
 | `src/app/features/offers/pages/offers-home-page.component.ts`   | MODIFY | Add computed signal for button enabled state and implement `clearFilters()` method. Bind button disabled state. |
 | `src/app/features/offers/pages/offers-home-page.component.spec.ts` | MODIFY | Add unit tests for new button and filter reset logic.     |
 
@@ -82,3 +82,8 @@ This approach follows the existing reactive pattern and UI conventions seen in `
 6. [ ] Clicking button resets all filters and sorting to defaults.
 7. [ ] Offers list and count update immediately after clearing filters, no page reload.
 8. [ ] Existing filter and offer actions continue to work as before.
+
+## Revision History
+| Revision | Reviewer    | Summary of Changes                             |
+|----------|-------------|-----------------------------------------------|
+| 1        | matlipinski | Updated button styling to be clearly light blue per reviewer comment |
