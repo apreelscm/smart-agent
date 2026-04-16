@@ -48,7 +48,7 @@ This task delivers a "Clear Filters" button on the "Prepared Offers" screen that
 ### Technical Approach
 The project is an Angular 20 application using signals and computed properties for reactive UI state. The offers list component is `OffersHomePageComponent` (`src/app/features/offers/pages/offers-home-page.component.ts`) with filters as signals: `searchTerm`, `selectedStatus`, `selectedProduct`, `selectedSortField`, and `selectedSortDirection`. The offers list is filtered reactively via a computed property `filteredOffers`.
 
-The toolbar with filters is defined in the component's HTML template (`offers-home-page.component.html`). The "Clear Filters" button will be added next to existing filters in the toolbar.
+The toolbar with filters is defined in the component's HTML template (`offers-home-page.component.html`). The "Clear Filters" button will be added next to existing filters in the toolbar as a green button to meet the reviewer’s request.
 
 The button's enabled state will be computed by comparing current filter signals to their default values. On click, a new method `clearAllFilters()` will reset all filter signals to their defaults, triggering reactive updates to the offers list and count.
 
@@ -59,7 +59,7 @@ This approach follows existing code patterns, uses Angular signals and computed 
 #### Phase 1: Add Clear Filters Button and Logic
 | #   | Task                                  | Files                                           | Description                                                                                   |
 |-----|-------------------------------------|------------------------------------------------|-----------------------------------------------------------------------------------------------|
-| 1.1 | Add "Clear Filters" button to toolbar | `src/app/features/offers/pages/offers-home-page.component.html` | Add a button with label/icon in the toolbar next to filters.                                  |
+| 1.1 | Add green "Clear Filters" button to toolbar | `src/app/features/offers/pages/offers-home-page.component.html` | Add a green button with label/icon in the toolbar next to filters.                            |
 | 1.2 | Add computed signal for button enabled state | `src/app/features/offers/pages/offers-home-page.component.ts` | Create a computed signal that returns true if any filter or sort differs from default.        |
 | 1.3 | Implement `clearAllFilters()` method | `src/app/features/offers/pages/offers-home-page.component.ts` | Reset all filter signals to default values on button click.                                   |
 | 1.4 | Bind button enabled state and click handler | `src/app/features/offers/pages/offers-home-page.component.html` | Bind button's `[disabled]` and `(click)` to the computed signal and clear method.             |
@@ -69,13 +69,13 @@ This approach follows existing code patterns, uses Angular signals and computed 
 ### File Change Summary
 | File                                                      | Action | Description                                         |
 |-----------------------------------------------------------|--------|-----------------------------------------------------|
-| `src/app/features/offers/pages/offers-home-page.component.html` | MODIFY | Add "Clear Filters" button to toolbar with bindings |
+| `src/app/features/offers/pages/offers-home-page.component.html` | MODIFY | Add green "Clear Filters" button to toolbar with bindings |
 | `src/app/features/offers/pages/offers-home-page.component.ts`   | MODIFY | Add computed signal for button enabled state, implement clearAllFilters method |
 | `src/app/features/offers/pages/offers-home-page.component.spec.ts` (if exists) | MODIFY/CREATE | Add tests for clear filters button and functionality |
 
 ### Verification Steps
 1. [ ] Build succeeds without errors.
-2. [ ] "Clear Filters" button is visible on the offers home page toolbar.
+2. [ ] Green "Clear Filters" button is visible on the offers home page toolbar.
 3. [ ] Button is disabled when no filters or sorting are changed.
 4. [ ] Button is enabled when any filter or sorting differs from default.
 5. [ ] Clicking the button resets all filters and sorting to default values.
@@ -83,3 +83,8 @@ This approach follows existing code patterns, uses Angular signals and computed 
 7. [ ] No page reload occurs on clearing filters.
 8. [ ] Existing filter and sorting functionality remains unchanged.
 9. [ ] Automated tests cover the new button's visibility, enabled state, and clearing behavior.
+
+## Revision History
+| Revision | Reviewer     | Summary of changes                         |
+|----------|--------------|--------------------------------------------|
+| 1        | matlipinski  | Changed "Clear Filters" button to be green per reviewer comment |
