@@ -50,6 +50,8 @@ The "Clear Filters" button will be added to the existing toolbar in the offers-h
 
 Clicking the button will trigger a new method in the component that resets all signals to default values, causing the filtered offers list and count to update reactively without page reload.
 
+The button will be styled with a bright blue color to ensure it is clearly visible and distinct, as requested.
+
 This approach follows existing patterns of signals and computed properties in the component and integrates seamlessly with the current UI and reactive data flow.
 
 ### Task Breakdown
@@ -57,7 +59,7 @@ This approach follows existing patterns of signals and computed properties in th
 #### Phase 1: Add Clear Filters Button and Logic
 | #   | Task                                | Files                                      | Description                                                                                  |
 |-----|-----------------------------------|--------------------------------------------|----------------------------------------------------------------------------------------------|
-| 1.1 | Add "Wyczyść filtry" button       | `src/app/features/offers/pages/offers-home-page.component.html` | Add button in toolbar next to existing filter controls with binding for click and disabled state. |
+| 1.1 | Add "Wyczyść filtry" button       | `src/app/features/offers/pages/offers-home-page.component.html` | Add button in toolbar next to existing filter controls with binding for click and disabled state. Style the button with a bright blue color for clear visibility. |
 | 1.2 | Implement computed property to enable/disable button | `src/app/features/offers/pages/offers-home-page.component.ts` | Add computed signal that checks if any filter or sorting differs from default values.         |
 | 1.3 | Implement method to clear filters | `src/app/features/offers/pages/offers-home-page.component.ts` | Add method to reset all filter and sort signals to default values.                            |
 | 1.4 | Bind button disabled state and click handler | `offers-home-page.component.html` and `.ts` | Connect button disabled property to computed and click event to clear filters method.        |
@@ -66,12 +68,12 @@ This approach follows existing patterns of signals and computed properties in th
 ### File Change Summary
 | File                                                        | Action | Description                                |
 |-------------------------------------------------------------|--------|--------------------------------------------|
-| `src/app/features/offers/pages/offers-home-page.component.html` | MODIFY | Add "Wyczyść filtry" button to toolbar UI |
+| `src/app/features/offers/pages/offers-home-page.component.html` | MODIFY | Add "Wyczyść filtry" button to toolbar UI with bright blue styling |
 | `src/app/features/offers/pages/offers-home-page.component.ts`   | MODIFY | Add computed signal for button enabled state and method to reset filters |
 
 ### Verification Steps
 1. [ ] Build succeeds without errors.
-2. [ ] "Wyczyść filtry" button appears on offers list toolbar.
+2. [ ] "Wyczyść filtry" button appears on offers list toolbar with bright blue color.
 3. [ ] Button is disabled when filters and sorting are at default values.
 4. [ ] Button is enabled when any filter or sorting differs from default.
 5. [ ] Clicking button resets all filters and sorting to defaults.
@@ -79,3 +81,8 @@ This approach follows existing patterns of signals and computed properties in th
 7. [ ] No page reload occurs on clearing filters.
 8. [ ] Existing filter and sorting functionality remains unchanged.
 9. [ ] Manual and automated tests verify the above behaviors.
+
+## Revision History
+| Revision | Reviewer    | Summary of changes made                         |
+|----------|-------------|------------------------------------------------|
+| 1        | matlipinski | Added requirement for the "Wyczyść filtry" button to be styled with a bright blue color for clear visibility |
