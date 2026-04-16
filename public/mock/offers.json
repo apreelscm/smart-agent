@@ -4631,5 +4631,794 @@
       ],
       "paymentMethod": "PRZELEW"
     }
+  },
+  {
+    "id": "offer-crop-2001",
+    "product": "CROP",
+    "offerNumber": "OF/CROP/2026/000201",
+    "status": "ISSUED",
+    "createdAt": "2026-04-04T08:20:00Z",
+    "updatedAt": "2026-04-08T10:35:00Z",
+    "validTo": "2026-05-04T22:59:59Z",
+    "salesChannel": "AGENCY",
+    "agent": {
+      "id": "agent-krk-01",
+      "fullName": "Anna Kowalska",
+      "agencyCode": "KRK-1204",
+      "salesChannel": "Agencja własna"
+    },
+    "customer": {
+      "id": "customer-crop-2001",
+      "kind": "NATURAL_PERSON",
+      "identity": {
+        "type": "NATURAL_PERSON",
+        "personName": {
+          "firstName": "Paweł",
+          "lastName": "Majewski"
+        },
+        "pesel": "84051214567",
+        "birthDate": "1984-05-12"
+      },
+      "contact": {
+        "email": "pawel.majewski@rolnik.pl",
+        "phoneNumber": "+48 603 214 556"
+      },
+      "residenceAddress": {
+        "street": "Lipowa",
+        "buildingNumber": "14",
+        "postalCode": "09-500",
+        "city": "Gostynin",
+        "countryCode": "PL"
+      },
+      "isVatPayer": true,
+      "isForeignClient": false
+    },
+    "vehicle": {
+      "id": "vehicle-crop-2001",
+      "make": "Uprawy",
+      "model": "Pakiet rolny",
+      "version": "Wiosna 2026",
+      "productionYear": 2026,
+      "vin": "",
+      "usage": "PRIVATE",
+      "financing": "OWNED",
+      "marketValue": 100000,
+      "annualMileageKm": 0,
+      "registration": {
+        "registrationNumber": "CROP-2001",
+        "firstRegistrationDate": "2026-04-01",
+        "countryCode": "PL"
+      },
+      "engine": {
+        "fuelType": "PETROL",
+        "displacementCc": 0,
+        "powerKw": 0,
+        "powerHp": 0
+      },
+      "grossVehicleWeightKg": 0,
+      "specialUsages": []
+    },
+    "insuredObject": {
+      "id": "insured-object-crop-2001",
+      "type": "VEHICLE",
+      "label": "Gospodarstwo Majewski",
+      "vehicleId": "vehicle-crop-2001",
+      "ownerCustomerId": "customer-crop-2001",
+      "primaryDriverCustomerId": "customer-crop-2001"
+    },
+    "variants": [
+      {
+        "id": "crop-2001-var-basic",
+        "name": "Podstawowy wariant",
+        "rank": 1,
+        "recommended": false,
+        "selected": false,
+        "totalPremium": { "amount": 4380, "currency": "PLN" },
+        "monthlyPremium": { "amount": 365, "currency": "PLN" },
+        "paymentPlans": [
+          {
+            "frequency": "ANNUAL",
+            "totalPremium": { "amount": 4380, "currency": "PLN" },
+            "installments": [{ "sequence": 1, "dueDate": "2026-05-04", "amount": { "amount": 4380, "currency": "PLN" } }],
+            "firstInstallment": 4380,
+            "nextInstallment": 4380
+          }
+        ],
+        "policyLines": []
+      },
+      {
+        "id": "crop-2001-var-recommended",
+        "name": "Rekomendowany",
+        "rank": 2,
+        "recommended": true,
+        "selected": true,
+        "totalPremium": { "amount": 5620, "currency": "PLN" },
+        "monthlyPremium": { "amount": 468.33, "currency": "PLN" },
+        "paymentPlans": [
+          {
+            "frequency": "ANNUAL",
+            "totalPremium": { "amount": 5620, "currency": "PLN" },
+            "installments": [{ "sequence": 1, "dueDate": "2026-05-04", "amount": { "amount": 5620, "currency": "PLN" } }],
+            "firstInstallment": 5620,
+            "nextInstallment": 5620
+          }
+        ],
+        "policyLines": []
+      },
+      {
+        "id": "crop-2001-var-full",
+        "name": "Pełny",
+        "rank": 3,
+        "recommended": false,
+        "selected": false,
+        "totalPremium": { "amount": 6890, "currency": "PLN" },
+        "monthlyPremium": { "amount": 574.16, "currency": "PLN" },
+        "paymentPlans": [
+          {
+            "frequency": "ANNUAL",
+            "totalPremium": { "amount": 6890, "currency": "PLN" },
+            "installments": [{ "sequence": 1, "dueDate": "2026-05-04", "amount": { "amount": 6890, "currency": "PLN" } }],
+            "firstInstallment": 6890,
+            "nextInstallment": 6890
+          }
+        ],
+        "policyLines": []
+      }
+    ],
+    "selectedVariantId": "crop-2001-var-recommended",
+    "selectedPaymentPlan": {
+      "frequency": "ANNUAL",
+      "totalPremium": { "amount": 5620, "currency": "PLN" },
+      "installments": [{ "sequence": 1, "dueDate": "2026-05-04", "amount": { "amount": 5620, "currency": "PLN" } }],
+      "firstInstallment": 5620,
+      "nextInstallment": 5620
+    },
+    "contractData": {
+      "coverageStartDate": "2026-05-05",
+      "coverageEndDate": "2027-05-04",
+      "correspondenceAddress": {
+        "street": "Lipowa",
+        "buildingNumber": "14",
+        "postalCode": "09-500",
+        "city": "Gostynin",
+        "countryCode": "PL"
+      },
+      "marketingConsents": { "email": true, "sms": true, "phone": false },
+      "attachments": [],
+      "paymentMethod": "PRZELEW"
+    },
+    "cropData": {
+      "crops": [
+        {
+          "id": "crop-2001-1",
+          "species": "PSZENICA",
+          "yieldPerHa": 6.1,
+          "pricePerUnit": 920,
+          "totalAreaHa": 14.4,
+          "dominantSoilClassCode": "III",
+          "parcels": [
+            {
+              "id": "crop-2001-p1",
+              "voivodeship": "MAZOWIECKIE",
+              "county": "Gostyniński",
+              "locality": "Leśniewice",
+              "precinctNumber": "0011",
+              "fieldNumber": "Pole A-12",
+              "cadastralPlotNumber": "55/3",
+              "parcelAreaHa": 7.5,
+              "cropAreaHa": 7.2,
+              "soilClassCode": "III"
+            },
+            {
+              "id": "crop-2001-p2",
+              "voivodeship": "MAZOWIECKIE",
+              "county": "Gostyniński",
+              "locality": "Leśniewice",
+              "precinctNumber": "0013",
+              "fieldNumber": "Pole B-04",
+              "cadastralPlotNumber": "61/2",
+              "parcelAreaHa": 7.4,
+              "cropAreaHa": 7.2,
+              "soilClassCode": "IV"
+            }
+          ]
+        }
+      ],
+      "variantConfigs": [
+        {
+          "variantId": "BASIC",
+          "parcelConfigurations": [
+            {
+              "parcelId": "crop-2001-p1",
+              "selectedCovers": {
+                "HAIL": true,
+                "HEAVY_RAIN_HURRICANE": true,
+                "SPRING_FROST": false,
+                "FLOOD": false,
+                "WATER_STAGNATION": false,
+                "FIRE": false
+              },
+              "deductiblePercent": 20
+            },
+            {
+              "parcelId": "crop-2001-p2",
+              "selectedCovers": {
+                "HAIL": true,
+                "HEAVY_RAIN_HURRICANE": true,
+                "SPRING_FROST": false,
+                "FLOOD": false,
+                "WATER_STAGNATION": false,
+                "FIRE": false
+              },
+              "deductiblePercent": 20
+            }
+          ]
+        },
+        {
+          "variantId": "RECOMMENDED",
+          "parcelConfigurations": [
+            {
+              "parcelId": "crop-2001-p1",
+              "selectedCovers": {
+                "HAIL": true,
+                "HEAVY_RAIN_HURRICANE": true,
+                "SPRING_FROST": true,
+                "FLOOD": true,
+                "WATER_STAGNATION": false,
+                "FIRE": true
+              },
+              "deductiblePercent": 10
+            },
+            {
+              "parcelId": "crop-2001-p2",
+              "selectedCovers": {
+                "HAIL": true,
+                "HEAVY_RAIN_HURRICANE": true,
+                "SPRING_FROST": true,
+                "FLOOD": true,
+                "WATER_STAGNATION": false,
+                "FIRE": true
+              },
+              "deductiblePercent": 10
+            }
+          ]
+        },
+        {
+          "variantId": "FULL",
+          "parcelConfigurations": [
+            {
+              "parcelId": "crop-2001-p1",
+              "selectedCovers": {
+                "HAIL": true,
+                "HEAVY_RAIN_HURRICANE": true,
+                "SPRING_FROST": true,
+                "FLOOD": true,
+                "WATER_STAGNATION": true,
+                "FIRE": true
+              },
+              "deductiblePercent": 5
+            },
+            {
+              "parcelId": "crop-2001-p2",
+              "selectedCovers": {
+                "HAIL": true,
+                "HEAVY_RAIN_HURRICANE": true,
+                "SPRING_FROST": true,
+                "FLOOD": true,
+                "WATER_STAGNATION": true,
+                "FIRE": true
+              },
+              "deductiblePercent": 5
+            }
+          ]
+        }
+      ],
+      "selectedVariantId": "RECOMMENDED",
+      "discountAmount": 200,
+      "selectedPaymentFrequency": "SEMI_ANNUAL",
+      "transportMainPlanEnabled": true
+    }
+  },
+  {
+    "id": "offer-crop-2002",
+    "product": "CROP",
+    "offerNumber": "OF/CROP/2026/000202",
+    "status": "CALCULATION",
+    "createdAt": "2026-04-06T11:10:00Z",
+    "updatedAt": "2026-04-09T07:55:00Z",
+    "validTo": "2026-05-06T22:59:59Z",
+    "salesChannel": "AGENCY",
+    "agent": {
+      "id": "agent-waw-02",
+      "fullName": "Krzysztof Błaszczyk",
+      "agencyCode": "WAW-2208",
+      "salesChannel": "Agencja partnerska"
+    },
+    "customer": {
+      "id": "customer-crop-2002",
+      "kind": "NATURAL_PERSON",
+      "identity": {
+        "type": "NATURAL_PERSON",
+        "personName": {
+          "firstName": "Joanna",
+          "lastName": "Ratajczak"
+        },
+        "pesel": "87092322458",
+        "birthDate": "1987-09-23"
+      },
+      "contact": {
+        "email": "joanna.ratajczak@agromail.pl",
+        "phoneNumber": "+48 507 883 912"
+      },
+      "residenceAddress": {
+        "street": "Słoneczna",
+        "buildingNumber": "7",
+        "postalCode": "62-300",
+        "city": "Września",
+        "countryCode": "PL"
+      },
+      "isVatPayer": true,
+      "isForeignClient": false
+    },
+    "vehicle": {
+      "id": "vehicle-crop-2002",
+      "make": "Uprawy",
+      "model": "Pakiet wielopolowy",
+      "version": "Sezon 2026",
+      "productionYear": 2026,
+      "vin": "",
+      "usage": "PRIVATE",
+      "financing": "OWNED",
+      "marketValue": 140000,
+      "annualMileageKm": 0,
+      "registration": {
+        "registrationNumber": "CROP-2002",
+        "firstRegistrationDate": "2026-04-01",
+        "countryCode": "PL"
+      },
+      "engine": {
+        "fuelType": "PETROL",
+        "displacementCc": 0,
+        "powerKw": 0,
+        "powerHp": 0
+      },
+      "grossVehicleWeightKg": 0,
+      "specialUsages": []
+    },
+    "insuredObject": {
+      "id": "insured-object-crop-2002",
+      "type": "VEHICLE",
+      "label": "Gospodarstwo Ratajczak",
+      "vehicleId": "vehicle-crop-2002",
+      "ownerCustomerId": "customer-crop-2002",
+      "primaryDriverCustomerId": "customer-crop-2002"
+    },
+    "variants": [
+      {
+        "id": "crop-2002-var-basic",
+        "name": "Podstawowy wariant",
+        "rank": 1,
+        "recommended": false,
+        "selected": false,
+        "totalPremium": { "amount": 5120, "currency": "PLN" },
+        "monthlyPremium": { "amount": 426.67, "currency": "PLN" },
+        "paymentPlans": [
+          {
+            "frequency": "ANNUAL",
+            "totalPremium": { "amount": 5120, "currency": "PLN" },
+            "installments": [{ "sequence": 1, "dueDate": "2026-05-06", "amount": { "amount": 5120, "currency": "PLN" } }],
+            "firstInstallment": 5120,
+            "nextInstallment": 5120
+          }
+        ],
+        "policyLines": []
+      },
+      {
+        "id": "crop-2002-var-recommended",
+        "name": "Rekomendowany",
+        "rank": 2,
+        "recommended": true,
+        "selected": true,
+        "totalPremium": { "amount": 6480, "currency": "PLN" },
+        "monthlyPremium": { "amount": 540, "currency": "PLN" },
+        "paymentPlans": [
+          {
+            "frequency": "ANNUAL",
+            "totalPremium": { "amount": 6480, "currency": "PLN" },
+            "installments": [{ "sequence": 1, "dueDate": "2026-05-06", "amount": { "amount": 6480, "currency": "PLN" } }],
+            "firstInstallment": 6480,
+            "nextInstallment": 6480
+          }
+        ],
+        "policyLines": []
+      },
+      {
+        "id": "crop-2002-var-full",
+        "name": "Pełny",
+        "rank": 3,
+        "recommended": false,
+        "selected": false,
+        "totalPremium": { "amount": 7920, "currency": "PLN" },
+        "monthlyPremium": { "amount": 660, "currency": "PLN" },
+        "paymentPlans": [
+          {
+            "frequency": "ANNUAL",
+            "totalPremium": { "amount": 7920, "currency": "PLN" },
+            "installments": [{ "sequence": 1, "dueDate": "2026-05-06", "amount": { "amount": 7920, "currency": "PLN" } }],
+            "firstInstallment": 7920,
+            "nextInstallment": 7920
+          }
+        ],
+        "policyLines": []
+      }
+    ],
+    "selectedVariantId": "crop-2002-var-recommended",
+    "selectedPaymentPlan": {
+      "frequency": "ANNUAL",
+      "totalPremium": { "amount": 6480, "currency": "PLN" },
+      "installments": [{ "sequence": 1, "dueDate": "2026-05-06", "amount": { "amount": 6480, "currency": "PLN" } }],
+      "firstInstallment": 6480,
+      "nextInstallment": 6480
+    },
+    "contractData": {
+      "coverageStartDate": "2026-05-07",
+      "coverageEndDate": "2027-05-06",
+      "correspondenceAddress": {
+        "street": "Słoneczna",
+        "buildingNumber": "7",
+        "postalCode": "62-300",
+        "city": "Września",
+        "countryCode": "PL"
+      },
+      "marketingConsents": { "email": true, "sms": false, "phone": true },
+      "attachments": [],
+      "paymentMethod": "PRZELEW"
+    },
+    "cropData": {
+      "crops": [
+        {
+          "id": "crop-2002-1",
+          "species": "RZEPAK",
+          "yieldPerHa": 3.9,
+          "pricePerUnit": 2050,
+          "totalAreaHa": 11.4,
+          "dominantSoilClassCode": "III",
+          "parcels": [
+            {
+              "id": "crop-2002-p1",
+              "voivodeship": "WIELKOPOLSKIE",
+              "county": "Wrzesiński",
+              "locality": "Gutowo Wielkie",
+              "precinctNumber": "0008",
+              "fieldNumber": "Pole R-1",
+              "cadastralPlotNumber": "31/6",
+              "parcelAreaHa": 6.1,
+              "cropAreaHa": 5.8,
+              "soilClassCode": "III"
+            },
+            {
+              "id": "crop-2002-p2",
+              "voivodeship": "WIELKOPOLSKIE",
+              "county": "Wrzesiński",
+              "locality": "Gutowo Wielkie",
+              "precinctNumber": "0010",
+              "fieldNumber": "Pole R-2",
+              "cadastralPlotNumber": "42/1",
+              "parcelAreaHa": 5.7,
+              "cropAreaHa": 5.6,
+              "soilClassCode": "IV"
+            }
+          ]
+        },
+        {
+          "id": "crop-2002-2",
+          "species": "KUKURYDZA",
+          "yieldPerHa": 8.5,
+          "pricePerUnit": 830,
+          "totalAreaHa": 4.2,
+          "dominantSoilClassCode": "IV",
+          "parcels": [
+            {
+              "id": "crop-2002-p3",
+              "voivodeship": "WIELKOPOLSKIE",
+              "county": "Wrzesiński",
+              "locality": "Nowy Folwark",
+              "precinctNumber": "0005",
+              "fieldNumber": "Pole K-1",
+              "cadastralPlotNumber": "19/8",
+              "parcelAreaHa": 4.3,
+              "cropAreaHa": 4.2,
+              "soilClassCode": "IV"
+            }
+          ]
+        }
+      ],
+      "variantConfigs": [
+        {
+          "variantId": "BASIC",
+          "parcelConfigurations": [
+            { "parcelId": "crop-2002-p1", "selectedCovers": { "HAIL": true, "HEAVY_RAIN_HURRICANE": true, "SPRING_FROST": false, "FLOOD": false, "WATER_STAGNATION": false, "FIRE": false }, "deductiblePercent": 20 },
+            { "parcelId": "crop-2002-p2", "selectedCovers": { "HAIL": true, "HEAVY_RAIN_HURRICANE": true, "SPRING_FROST": false, "FLOOD": false, "WATER_STAGNATION": false, "FIRE": false }, "deductiblePercent": 20 },
+            { "parcelId": "crop-2002-p3", "selectedCovers": { "HAIL": true, "HEAVY_RAIN_HURRICANE": true, "SPRING_FROST": false, "FLOOD": false, "WATER_STAGNATION": false, "FIRE": false }, "deductiblePercent": 20 }
+          ]
+        },
+        {
+          "variantId": "RECOMMENDED",
+          "parcelConfigurations": [
+            { "parcelId": "crop-2002-p1", "selectedCovers": { "HAIL": true, "HEAVY_RAIN_HURRICANE": true, "SPRING_FROST": true, "FLOOD": true, "WATER_STAGNATION": false, "FIRE": true }, "deductiblePercent": 10 },
+            { "parcelId": "crop-2002-p2", "selectedCovers": { "HAIL": true, "HEAVY_RAIN_HURRICANE": true, "SPRING_FROST": true, "FLOOD": true, "WATER_STAGNATION": false, "FIRE": true }, "deductiblePercent": 10 },
+            { "parcelId": "crop-2002-p3", "selectedCovers": { "HAIL": true, "HEAVY_RAIN_HURRICANE": true, "SPRING_FROST": true, "FLOOD": true, "WATER_STAGNATION": false, "FIRE": true }, "deductiblePercent": 10 }
+          ]
+        },
+        {
+          "variantId": "FULL",
+          "parcelConfigurations": [
+            { "parcelId": "crop-2002-p1", "selectedCovers": { "HAIL": true, "HEAVY_RAIN_HURRICANE": true, "SPRING_FROST": true, "FLOOD": true, "WATER_STAGNATION": true, "FIRE": true }, "deductiblePercent": 5 },
+            { "parcelId": "crop-2002-p2", "selectedCovers": { "HAIL": true, "HEAVY_RAIN_HURRICANE": true, "SPRING_FROST": true, "FLOOD": true, "WATER_STAGNATION": true, "FIRE": true }, "deductiblePercent": 5 },
+            { "parcelId": "crop-2002-p3", "selectedCovers": { "HAIL": true, "HEAVY_RAIN_HURRICANE": true, "SPRING_FROST": true, "FLOOD": true, "WATER_STAGNATION": true, "FIRE": true }, "deductiblePercent": 5 }
+          ]
+        }
+      ],
+      "selectedVariantId": "RECOMMENDED",
+      "discountAmount": 350,
+      "selectedPaymentFrequency": "QUARTERLY",
+      "transportMainPlanEnabled": false
+    }
+  },
+  {
+    "id": "offer-crop-2003",
+    "product": "CROP",
+    "offerNumber": "OF/CROP/2026/000203",
+    "status": "DRAFT",
+    "createdAt": "2026-04-10T09:40:00Z",
+    "updatedAt": "2026-04-12T14:15:00Z",
+    "validTo": "2026-05-10T22:59:59Z",
+    "salesChannel": "AGENCY",
+    "agent": {
+      "id": "agent-lub-03",
+      "fullName": "Marcin Cieślak",
+      "agencyCode": "LUB-3310",
+      "salesChannel": "Agencja własna"
+    },
+    "customer": {
+      "id": "customer-crop-2003",
+      "kind": "NATURAL_PERSON",
+      "identity": {
+        "type": "NATURAL_PERSON",
+        "personName": {
+          "firstName": "Tomasz",
+          "lastName": "Kozłowski"
+        },
+        "pesel": "79030419876",
+        "birthDate": "1979-03-04"
+      },
+      "contact": {
+        "email": "t.kozlowski@agroonet.pl",
+        "phoneNumber": "+48 691 550 224"
+      },
+      "residenceAddress": {
+        "street": "Polna",
+        "buildingNumber": "21A",
+        "postalCode": "22-100",
+        "city": "Chełm",
+        "countryCode": "PL"
+      },
+      "isVatPayer": false,
+      "isForeignClient": false
+    },
+    "vehicle": {
+      "id": "vehicle-crop-2003",
+      "make": "Uprawy",
+      "model": "Pakiet mieszany",
+      "version": "Sezon 2026",
+      "productionYear": 2026,
+      "vin": "",
+      "usage": "PRIVATE",
+      "financing": "OWNED",
+      "marketValue": 155000,
+      "annualMileageKm": 0,
+      "registration": {
+        "registrationNumber": "CROP-2003",
+        "firstRegistrationDate": "2026-04-01",
+        "countryCode": "PL"
+      },
+      "engine": {
+        "fuelType": "PETROL",
+        "displacementCc": 0,
+        "powerKw": 0,
+        "powerHp": 0
+      },
+      "grossVehicleWeightKg": 0,
+      "specialUsages": []
+    },
+    "insuredObject": {
+      "id": "insured-object-crop-2003",
+      "type": "VEHICLE",
+      "label": "Gospodarstwo Kozłowski",
+      "vehicleId": "vehicle-crop-2003",
+      "ownerCustomerId": "customer-crop-2003",
+      "primaryDriverCustomerId": "customer-crop-2003"
+    },
+    "variants": [
+      {
+        "id": "crop-2003-var-basic",
+        "name": "Podstawowy wariant",
+        "rank": 1,
+        "recommended": false,
+        "selected": true,
+        "totalPremium": { "amount": 5980, "currency": "PLN" },
+        "monthlyPremium": { "amount": 498.33, "currency": "PLN" },
+        "paymentPlans": [
+          {
+            "frequency": "ANNUAL",
+            "totalPremium": { "amount": 5980, "currency": "PLN" },
+            "installments": [{ "sequence": 1, "dueDate": "2026-05-10", "amount": { "amount": 5980, "currency": "PLN" } }],
+            "firstInstallment": 5980,
+            "nextInstallment": 5980
+          }
+        ],
+        "policyLines": []
+      },
+      {
+        "id": "crop-2003-var-recommended",
+        "name": "Rekomendowany",
+        "rank": 2,
+        "recommended": true,
+        "selected": false,
+        "totalPremium": { "amount": 7410, "currency": "PLN" },
+        "monthlyPremium": { "amount": 617.5, "currency": "PLN" },
+        "paymentPlans": [
+          {
+            "frequency": "ANNUAL",
+            "totalPremium": { "amount": 7410, "currency": "PLN" },
+            "installments": [{ "sequence": 1, "dueDate": "2026-05-10", "amount": { "amount": 7410, "currency": "PLN" } }],
+            "firstInstallment": 7410,
+            "nextInstallment": 7410
+          }
+        ],
+        "policyLines": []
+      },
+      {
+        "id": "crop-2003-var-full",
+        "name": "Pełny",
+        "rank": 3,
+        "recommended": false,
+        "selected": false,
+        "totalPremium": { "amount": 8830, "currency": "PLN" },
+        "monthlyPremium": { "amount": 735.83, "currency": "PLN" },
+        "paymentPlans": [
+          {
+            "frequency": "ANNUAL",
+            "totalPremium": { "amount": 8830, "currency": "PLN" },
+            "installments": [{ "sequence": 1, "dueDate": "2026-05-10", "amount": { "amount": 8830, "currency": "PLN" } }],
+            "firstInstallment": 8830,
+            "nextInstallment": 8830
+          }
+        ],
+        "policyLines": []
+      }
+    ],
+    "selectedVariantId": "crop-2003-var-basic",
+    "selectedPaymentPlan": {
+      "frequency": "ANNUAL",
+      "totalPremium": { "amount": 5980, "currency": "PLN" },
+      "installments": [{ "sequence": 1, "dueDate": "2026-05-10", "amount": { "amount": 5980, "currency": "PLN" } }],
+      "firstInstallment": 5980,
+      "nextInstallment": 5980
+    },
+    "contractData": {
+      "coverageStartDate": "2026-05-11",
+      "coverageEndDate": "2027-05-10",
+      "correspondenceAddress": {
+        "street": "Polna",
+        "buildingNumber": "21A",
+        "postalCode": "22-100",
+        "city": "Chełm",
+        "countryCode": "PL"
+      },
+      "marketingConsents": { "email": false, "sms": true, "phone": true },
+      "attachments": [],
+      "paymentMethod": "PRZELEW"
+    },
+    "cropData": {
+      "crops": [
+        {
+          "id": "crop-2003-1",
+          "species": "PSZENICA",
+          "yieldPerHa": 5.8,
+          "pricePerUnit": 900,
+          "totalAreaHa": 5.1,
+          "dominantSoilClassCode": "III",
+          "parcels": [
+            {
+              "id": "crop-2003-p1",
+              "voivodeship": "LUBELSKIE",
+              "county": "Chełmski",
+              "locality": "Srebrzyszcze",
+              "precinctNumber": "0014",
+              "fieldNumber": "Pole P-1",
+              "cadastralPlotNumber": "71/2",
+              "parcelAreaHa": 5.2,
+              "cropAreaHa": 5.1,
+              "soilClassCode": "III"
+            }
+          ]
+        },
+        {
+          "id": "crop-2003-2",
+          "species": "KUKURYDZA",
+          "yieldPerHa": 8.1,
+          "pricePerUnit": 820,
+          "totalAreaHa": 4.4,
+          "dominantSoilClassCode": "IV",
+          "parcels": [
+            {
+              "id": "crop-2003-p2",
+              "voivodeship": "LUBELSKIE",
+              "county": "Chełmski",
+              "locality": "Okszów",
+              "precinctNumber": "0007",
+              "fieldNumber": "Pole K-3",
+              "cadastralPlotNumber": "44/11",
+              "parcelAreaHa": 4.5,
+              "cropAreaHa": 4.4,
+              "soilClassCode": "IV"
+            }
+          ]
+        },
+        {
+          "id": "crop-2003-3",
+          "species": "BURAK_CUKROWY",
+          "yieldPerHa": 50.5,
+          "pricePerUnit": 220,
+          "totalAreaHa": 3.6,
+          "dominantSoilClassCode": "III",
+          "parcels": [
+            {
+              "id": "crop-2003-p3",
+              "voivodeship": "LUBELSKIE",
+              "county": "Chełmski",
+              "locality": "Pokrówka",
+              "precinctNumber": "0003",
+              "fieldNumber": "Pole B-2",
+              "cadastralPlotNumber": "16/9",
+              "parcelAreaHa": 3.8,
+              "cropAreaHa": 3.6,
+              "soilClassCode": "III"
+            }
+          ]
+        }
+      ],
+      "variantConfigs": [
+        {
+          "variantId": "BASIC",
+          "parcelConfigurations": [
+            { "parcelId": "crop-2003-p1", "selectedCovers": { "HAIL": true, "HEAVY_RAIN_HURRICANE": true, "SPRING_FROST": false, "FLOOD": false, "WATER_STAGNATION": false, "FIRE": false }, "deductiblePercent": 20 },
+            { "parcelId": "crop-2003-p2", "selectedCovers": { "HAIL": true, "HEAVY_RAIN_HURRICANE": true, "SPRING_FROST": false, "FLOOD": false, "WATER_STAGNATION": false, "FIRE": false }, "deductiblePercent": 20 },
+            { "parcelId": "crop-2003-p3", "selectedCovers": { "HAIL": true, "HEAVY_RAIN_HURRICANE": true, "SPRING_FROST": false, "FLOOD": false, "WATER_STAGNATION": false, "FIRE": false }, "deductiblePercent": 20 }
+          ]
+        },
+        {
+          "variantId": "RECOMMENDED",
+          "parcelConfigurations": [
+            { "parcelId": "crop-2003-p1", "selectedCovers": { "HAIL": true, "HEAVY_RAIN_HURRICANE": true, "SPRING_FROST": true, "FLOOD": true, "WATER_STAGNATION": false, "FIRE": true }, "deductiblePercent": 10 },
+            { "parcelId": "crop-2003-p2", "selectedCovers": { "HAIL": true, "HEAVY_RAIN_HURRICANE": true, "SPRING_FROST": true, "FLOOD": true, "WATER_STAGNATION": false, "FIRE": true }, "deductiblePercent": 10 },
+            { "parcelId": "crop-2003-p3", "selectedCovers": { "HAIL": true, "HEAVY_RAIN_HURRICANE": true, "SPRING_FROST": true, "FLOOD": true, "WATER_STAGNATION": false, "FIRE": true }, "deductiblePercent": 10 }
+          ]
+        },
+        {
+          "variantId": "FULL",
+          "parcelConfigurations": [
+            { "parcelId": "crop-2003-p1", "selectedCovers": { "HAIL": true, "HEAVY_RAIN_HURRICANE": true, "SPRING_FROST": true, "FLOOD": true, "WATER_STAGNATION": true, "FIRE": true }, "deductiblePercent": 5 },
+            { "parcelId": "crop-2003-p2", "selectedCovers": { "HAIL": true, "HEAVY_RAIN_HURRICANE": true, "SPRING_FROST": true, "FLOOD": true, "WATER_STAGNATION": true, "FIRE": true }, "deductiblePercent": 5 },
+            { "parcelId": "crop-2003-p3", "selectedCovers": { "HAIL": true, "HEAVY_RAIN_HURRICANE": true, "SPRING_FROST": true, "FLOOD": true, "WATER_STAGNATION": true, "FIRE": true }, "deductiblePercent": 5 }
+          ]
+        }
+      ],
+      "selectedVariantId": "BASIC",
+      "discountAmount": 0,
+      "selectedPaymentFrequency": "ANNUAL",
+      "transportMainPlanEnabled": true
+    }
   }
 ]

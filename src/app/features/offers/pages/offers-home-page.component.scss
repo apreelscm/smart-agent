@@ -113,10 +113,31 @@
   font-size: 0.98rem;
 }
 
+.offer-row__number {
+  display: flex !important;
+  align-items: center;
+  gap: 0.45rem;
+  margin-bottom: 0.16rem;
+  line-height: 1.25;
+}
+
+.offer-row__number i {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.35rem;
+  height: 1.35rem;
+  border-radius: 999px;
+  background: #eaf1ff;
+  color: #1d4ed8;
+  font-size: 0.78rem;
+}
+
 .offer-row__subline {
-  display: inline-block;
-  margin-top: 0.18rem;
+  display: block;
+  margin-top: 0.28rem;
   font-size: 0.9rem;
+  line-height: 1.35;
 }
 
 .offer-row__status-tags {

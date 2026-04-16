@@ -1,0 +1,143 @@
+{
+  "id": "offer-crop-template",
+  "product": "CROP",
+  "offerNumber": "OF/CROP/TEMPLATE",
+  "status": "DRAFT",
+  "createdAt": "2026-04-13T00:00:00.000Z",
+  "updatedAt": "2026-04-13T00:00:00.000Z",
+  "salesChannel": "AGENCY",
+  "agent": {
+    "id": "agent-01",
+    "code": "AGT-001",
+    "fullName": "Agent Demo"
+  },
+  "customer": {
+    "id": "customer-template",
+    "kind": "INDIVIDUAL",
+    "identity": {
+      "type": "NATURAL_PERSON",
+      "personName": {
+        "firstName": "",
+        "lastName": ""
+      },
+      "pesel": "",
+      "birthDate": ""
+    },
+    "contact": {
+      "email": "",
+      "phoneNumber": ""
+    },
+    "residenceAddress": {
+      "street": "",
+      "buildingNumber": "",
+      "postalCode": "",
+      "city": "",
+      "countryCode": "PL"
+    },
+    "isVatPayer": false,
+    "isForeignClient": false
+  },
+  "vehicle": {
+    "id": "vehicle-template",
+    "vin": "",
+    "make": "",
+    "model": "",
+    "version": "",
+    "productionYear": 2026,
+    "usage": "PRIVATE",
+    "financing": "OWNED",
+    "marketValue": null,
+    "annualMileageKm": null,
+    "registration": {
+      "registrationNumber": "",
+      "firstRegistrationDate": "",
+      "countryCode": "PL"
+    },
+    "engine": {
+      "fuelType": "PETROL",
+      "displacementCc": null,
+      "powerKw": null,
+      "powerHp": null
+    },
+    "grossVehicleWeightKg": null,
+    "specialUsages": []
+  },
+  "insuredObject": {
+    "id": "insured-object-crop-template",
+    "type": "VEHICLE",
+    "label": "Gospodarstwo rolne",
+    "vehicleId": "vehicle-template",
+    "ownerCustomerId": "customer-template",
+    "primaryDriverCustomerId": "customer-template"
+  },
+  "variants": [
+    {
+      "id": "crop-variant-base",
+      "name": "Uprawy Start",
+      "rank": 1,
+      "recommended": true,
+      "selected": true,
+      "totalPremium": {
+        "amount": 0,
+        "currency": "PLN"
+      },
+      "monthlyPremium": {
+        "amount": 0,
+        "currency": "PLN"
+      },
+      "paymentPlans": [
+        {
+          "frequency": "ANNUAL",
+          "totalPremium": {
+            "amount": 0,
+            "currency": "PLN"
+          },
+          "installments": [
+            {
+              "sequence": 1,
+              "dueDate": "2026-06-01",
+              "amount": {
+                "amount": 0,
+                "currency": "PLN"
+              }
+            }
+          ],
+          "firstInstallment": 0,
+          "nextInstallment": 0
+        }
+      ],
+      "policyLines": []
+    }
+  ],
+  "selectedVariantId": "crop-variant-base",
+  "selectedPaymentPlan": {
+    "frequency": "ANNUAL",
+    "totalPremium": {
+      "amount": 0,
+      "currency": "PLN"
+    },
+    "installments": [
+      {
+        "sequence": 1,
+        "dueDate": "2026-06-01",
+        "amount": {
+          "amount": 0,
+          "currency": "PLN"
+        }
+      }
+    ],
+    "firstInstallment": 0,
+    "nextInstallment": 0
+  },
+  "contractData": {
+    "productCode": "DEALER",
+    "paymentMethod": "PRZELEW",
+    "marketingConsents": {
+      "email": false,
+      "sms": false,
+      "phone": false
+    },
+    "attachments": []
+  },
+  "notes": []
+}

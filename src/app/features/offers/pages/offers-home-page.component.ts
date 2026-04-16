@@ -26,6 +26,7 @@ type FilterOption = {
 type SortDirection = 'ASC' | 'DESC';
 
 type OfferSortField = 'ISSUE_DATE' | 'VALID_TO';
+type OfferProductFilter = 'ALL' | 'MOTOR' | 'CROP';
 
 type StatusPresentation = {
   label: string;
@@ -42,6 +43,14 @@ type TransitionDefinition = {
 type PendingTransition = {
   offer: Offer;
   transition: TransitionDefinition;
+};
+
+type CropOfferPayload = {
+  cropData?: {
+    crops?: Array<{
+      parcels?: unknown[];
+    }>;
+  };
 };
 
 @Component({
@@ -71,6 +80,7 @@ export class OffersHomePageComponent {
 
   protected readonly searchTerm = signal('');
   protected readonly selectedStatus = signal<string | null>(null);
+  protected readonly selectedProduct = signal<OfferProductFilter>('ALL');
   protected readonly selectedSortField = signal<OfferSortField>('ISSUE_DATE');
   protected readonly selectedSortDirection = signal<SortDirection>('DESC');
   protected readonly statusOverrides = signal<Record<string, OfferStatus>>({});
@@ -111,21 +121,30 @@ export class OffersHomePageComponent {
     { code: 'ISSUE_DATE', label: 'Data wystawienia' },
     { code: 'VALID_TO', label: 'Data ważności' }
   ];
+  protected readonly productOptions: FilterOption[] = [
+    { code: 'ALL', label: 'Wszystkie produkty' },
+    { code: 'MOTOR', label: 'Komunikacyjne' },
+    { code: 'CROP', label: 'Uprawy' }
+  ];
 
   protected readonly filteredOffers = computed(() => {
     const normalizedSearch = this.searchTerm().trim().toLowerCase();
     const selectedStatus = this.selectedStatus();
+    const selectedProduct = this.selectedProduct();
 
     const filtered = this.offersWithRuntimeStatus().filter((offer) => {
       const matchesStatus = !selectedStatus || selectedStatus === 'ALL' || offer.status === selectedStatus;
+      const offerProduct = offer.product ?? 'MOTOR';
+      const matchesProduct = selectedProduct === 'ALL' || offerProduct === selectedProduct;
       const matchesSearch =
         normalizedSearch.length === 0 ||
         offer.offerNumber.toLowerCase().includes(normalizedSearch) ||
         this.getCustomerDisplayName(offer).toLowerCase().includes(normalizedSearch) ||
+        this.getOfferHeadlineSubject(offer).toLowerCase().includes(normalizedSearch) ||
         `${offer.vehicle.make} ${offer.vehicle.model}`.toLowerCase().includes(normalizedSearch) ||
         (offer.vehicle.registration?.registrationNumber ?? '').toLowerCase().includes(normalizedSearch);
 
-      return matchesStatus && matchesSearch;
+      return matchesStatus && matchesProduct && matchesSearch;
     });
 
     return [...filtered].sort((left, right) => this.compareOffers(left, right));
@@ -221,6 +240,37 @@ export class OffersHomePageComponent {
     return selected?.name ?? 'Brak wyboru';
   }
 
+  protected isCropOffer(offer: Offer): boolean {
+    return offer.product === 'CROP';
+  }
+
+  protected getOfferHeadlineSubject(offer: Offer): string {
+    if (!this.isCropOffer(offer)) {
+      return `${offer.vehicle.make} ${offer.vehicle.model}`.trim();
+    }
+
+    const { cropsCount, parcelsCount } = this.getCropCounts(offer);
+    return `${cropsCount} upraw${cropsCount === 1 ? 'a' : ''} · ${parcelsCount} dział${parcelsCount === 1 ? 'ka' : 'ki'}`;
+  }
+
+  protected getCropMetaPrimaryLine(offer: Offer): string {
+    const { cropsCount, parcelsCount } = this.getCropCounts(offer);
+    return `${cropsCount} upraw${cropsCount === 1 ? 'a' : ''} · ${parcelsCount} dział${parcelsCount === 1 ? 'ka' : 'ki'}`;
+  }
+
+  protected getCropMetaSecondaryLine(offer: Offer): string {
+    const city = offer.customer.residenceAddress?.city ?? '—';
+    const identity = offer.customer.identity;
+    const owner =
+      identity.type === 'NATURAL_PERSON'
+        ? identity.personName.lastName
+        : identity.type === 'SOLE_PROPRIETOR' || identity.type === 'LEGAL_ENTITY'
+          ? identity.companyName
+          : 'gospodarstwo';
+
+    return `${city} · ${owner}`;
+  }
+
   protected isRenewalOffer(offer: Offer): boolean {
     return !!offer.renewalContext && offer.renewalContext.mode === 'RENEW';
   }
@@ -267,6 +317,7 @@ export class OffersHomePageComponent {
   protected clearFilters(): void {
     this.searchTerm.set('');
     this.selectedStatus.set('ALL');
+    this.selectedProduct.set('ALL');
   }
 
   protected toggleSortDirection(): void {
@@ -274,6 +325,13 @@ export class OffersHomePageComponent {
   }
 
   protected goToOffer(offerId: string): void {
+    const offer = this.offersWithRuntimeStatus().find((item) => item.id === offerId);
+
+    if (offer?.product === 'CROP') {
+      void this.router.navigate(['/offers', offerId, 'crop', 'crop']);
+      return;
+    }
+
     void this.router.navigate(['/offers', offerId, 'vehicle']);
   }
 
@@ -303,8 +361,24 @@ export class OffersHomePageComponent {
     return status ? this.getStatusPresentation(status).label : '';
   }
 
+  protected transitionSubjectLabel(offer: Offer): string {
+    return this.isCropOffer(offer) ? 'Przedmiot' : 'Pojazd';
+  }
+
+  protected transitionSubjectValue(offer: Offer): string {
+    return this.isCropOffer(offer) ? this.getCropMetaPrimaryLine(offer) : `${offer.vehicle.make} ${offer.vehicle.model}`.trim();
+  }
+
+  protected offerProductIcon(offer: Offer): string {
+    return this.isCropOffer(offer) ? 'pi pi-leaf' : 'pi pi-car';
+  }
+
+  protected offerProductLabel(offer: Offer): string {
+    return this.isCropOffer(offer) ? 'Oferta upraw' : 'Oferta komunikacyjna';
+  }
+
   private copyOffer(offerId: string): void {
-    void this.router.navigate(['/offers/new/vehicle'], { queryParams: { copyFrom: offerId } });
+    void this.router.navigate(['/offers/new/motor/vehicle'], { queryParams: { copyFrom: offerId } });
   }
 
   private getAvailableTransitions(status: OfferStatus): TransitionDefinition[] {
@@ -415,5 +489,16 @@ export class OffersHomePageComponent {
 
     const naturalOrder = leftTime > rightTime ? 1 : -1;
     return this.selectedSortDirection() === 'ASC' ? naturalOrder : -naturalOrder;
+  }
+
+  private getCropCounts(offer: Offer): { cropsCount: number; parcelsCount: number } {
+    const payload = offer as Offer & CropOfferPayload;
+    const crops = payload.cropData?.crops ?? [];
+    const parcelsCount = crops.reduce((sum, crop) => sum + (crop.parcels?.length ?? 0), 0);
+
+    return {
+      cropsCount: crops.length,
+      parcelsCount
+    };
   }
 }

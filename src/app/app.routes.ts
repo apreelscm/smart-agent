@@ -1,7 +1,10 @@
 import { Routes } from '@angular/router';
 import { OffersHomePageComponent } from './features/offers/pages/offers-home-page.component';
+import { CropStepPageComponent } from './features/offer-wizard/pages/crop-step-page.component';
+import { CropVariantsStepPageComponent } from './features/offer-wizard/pages/crop-variants-step-page.component';
 import { CustomerStepPageComponent } from './features/offer-wizard/pages/customer-step-page.component';
 import { NewOfferWizardShellComponent } from './features/offer-wizard/pages/new-offer-wizard-shell.component';
+import { OfferProductSelectPageComponent } from './features/offer-wizard/pages/offer-product-select-page.component';
 import { SummaryStepPageComponent } from './features/offer-wizard/pages/summary-step-page.component';
 import { VariantsStepPageComponent } from './features/offer-wizard/pages/variants-step-page.component';
 import { VehicleStepPageComponent } from './features/offer-wizard/pages/vehicle-step-page.component';
@@ -28,7 +31,15 @@ export const routes: Routes = [
       },
       {
         path: 'offers/new',
+        component: OfferProductSelectPageComponent,
+        title: 'smart-agent | Nowa oferta | Wybór produktu'
+      },
+      {
+        path: 'offers/new/motor',
         component: NewOfferWizardShellComponent,
+        data: {
+          product: 'MOTOR'
+        },
         children: [
           {
             path: '',
@@ -58,8 +69,61 @@ export const routes: Routes = [
         ]
       },
       {
+        path: 'offers/new/crop',
+        component: NewOfferWizardShellComponent,
+        data: {
+          product: 'CROP'
+        },
+        children: [
+          {
+            path: '',
+            pathMatch: 'full',
+            redirectTo: 'crop'
+          },
+          {
+            path: 'crop',
+            component: CropStepPageComponent,
+            title: 'smart-agent | Nowa oferta | Uprawy'
+          },
+          {
+            path: 'variants',
+            component: CropVariantsStepPageComponent,
+            title: 'smart-agent | Nowa oferta | Konfiguracja wariantu'
+          },
+          {
+            path: 'customer',
+            component: CustomerStepPageComponent,
+            title: 'smart-agent | Nowa oferta | Dane do umowy'
+          },
+          {
+            path: 'summary',
+            component: SummaryStepPageComponent,
+            title: 'smart-agent | Nowa oferta | Podsumowanie'
+          }
+        ]
+      },
+      {
+        path: 'offers/new/vehicle',
+        redirectTo: 'offers/new/motor/vehicle'
+      },
+      {
+        path: 'offers/new/variants',
+        redirectTo: 'offers/new/motor/variants'
+      },
+      {
+        path: 'offers/new/customer',
+        redirectTo: 'offers/new/motor/customer'
+      },
+      {
+        path: 'offers/new/summary',
+        redirectTo: 'offers/new/motor/summary'
+      },
+      {
         path: 'offers/:offerId',
         component: NewOfferWizardShellComponent,
+        data: {
+          product: 'MOTOR'
+        },
         children: [
           {
             path: '',
@@ -85,6 +149,40 @@ export const routes: Routes = [
             path: 'summary',
             component: SummaryStepPageComponent,
             title: 'smart-agent | Kontynuacja oferty | Podsumowanie'
+          }
+        ]
+      },
+      {
+        path: 'offers/:offerId/crop',
+        component: NewOfferWizardShellComponent,
+        data: {
+          product: 'CROP'
+        },
+        children: [
+          {
+            path: '',
+            pathMatch: 'full',
+            redirectTo: 'crop'
+          },
+          {
+            path: 'crop',
+            component: CropStepPageComponent,
+            title: 'smart-agent | Kontynuacja oferty crop | Dane do kalkulacji'
+          },
+          {
+            path: 'variants',
+            component: CropVariantsStepPageComponent,
+            title: 'smart-agent | Kontynuacja oferty crop | Konfiguracja wariantu'
+          },
+          {
+            path: 'customer',
+            component: CustomerStepPageComponent,
+            title: 'smart-agent | Kontynuacja oferty crop | Dane do umowy'
+          },
+          {
+            path: 'summary',
+            component: SummaryStepPageComponent,
+            title: 'smart-agent | Kontynuacja oferty crop | Podsumowanie'
           }
         ]
       },

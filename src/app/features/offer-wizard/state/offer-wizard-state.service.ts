@@ -2,10 +2,19 @@ import { Injectable, computed, inject, signal } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { Customer, Offer, OfferStatus, OfferVariant, Policy, PolicyLineCode, Vehicle } from '../../../core/models';
 import { PaymentPlan } from '../../../core/models/payment/payment-plan.model';
-import { OffersRepository } from '../../../core/repositories/offers.repository';
+import { OfferProduct, OffersRepository } from '../../../core/repositories/offers.repository';
 import { SalesFlowRuntimeRepository } from '../../../core/repositories/sales-flow-runtime.repository';
+import { CropMaster, CropVariantConfig, CropVariantId } from '../models/crop-offer.model';
 
 type OfferProductCode = 'DEALER' | 'OC' | 'SHORT_TERM_OC' | 'BORDER_OC' | 'GREEN_CARD';
+type CropPersistedPayload = {
+  crops?: CropMaster[];
+  variantConfigs?: CropVariantConfig[];
+  selectedVariantId?: CropVariantId;
+  discountAmount?: number;
+  selectedPaymentFrequency?: PaymentPlan['frequency'];
+  transportMainPlanEnabled?: boolean;
+};
 
 @Injectable({
   providedIn: 'root'
@@ -19,18 +28,30 @@ export class OfferWizardStateService {
   private readonly sourceOfferIdState = signal<string | null>(null);
   private readonly discountAmountState = signal<number>(0);
   private readonly readonlyModeState = signal<boolean>(false);
+  private readonly cropDraftState = signal<CropMaster[]>([]);
+  private readonly cropVariantConfigsState = signal<CropVariantConfig[]>([]);
+  private readonly cropSelectedVariantIdState = signal<CropVariantId>('RECOMMENDED');
+  private readonly cropDiscountAmountState = signal<number>(0);
+  private readonly cropSelectedPaymentFrequencyState = signal<PaymentPlan['frequency']>('ANNUAL');
+  private readonly cropTransportMainPlanEnabledState = signal<boolean>(false);
 
   readonly draftOffer = computed(() => this.draftOfferState());
   readonly mode = computed(() => this.modeState());
   readonly sourceOfferId = computed(() => this.sourceOfferIdState());
   readonly discountAmount = computed(() => this.discountAmountState());
   readonly readonlyMode = computed(() => this.readonlyModeState());
+  readonly cropDraft = computed(() => this.cropDraftState());
+  readonly cropVariantConfigs = computed(() => this.cropVariantConfigsState());
+  readonly cropSelectedVariantId = computed(() => this.cropSelectedVariantIdState());
+  readonly cropDiscountAmount = computed(() => this.cropDiscountAmountState());
+  readonly cropSelectedPaymentFrequency = computed(() => this.cropSelectedPaymentFrequencyState());
+  readonly cropTransportMainPlanEnabled = computed(() => this.cropTransportMainPlanEnabledState());
   readonly selectedVariant = computed<OfferVariant | undefined>(() =>
     this.draftOffer()?.variants.find((variant) => variant.id === this.draftOffer()?.selectedVariantId)
   );
 
-  async initializeNewDraft(): Promise<void> {
-    const templateOffer = await firstValueFrom(this.offersRepository.getTemplateOffer());
+  async initializeNewDraft(product: OfferProduct = 'MOTOR'): Promise<void> {
+    const templateOffer = await firstValueFrom(this.offersRepository.getTemplateOffer(product));
 
     if (!templateOffer) {
       return;
@@ -39,7 +60,17 @@ export class OfferWizardStateService {
     this.modeState.set('new');
     this.sourceOfferIdState.set(null);
     this.discountAmountState.set(0);
-    this.draftOfferState.set(this.withSelectedVariantFlag(this.ensureAddonLines(this.createEmptyOffer(templateOffer))));
+    const emptyOffer = this.createEmptyOffer(templateOffer, product);
+    const normalizedOffer = product === 'MOTOR' ? this.ensureAddonLines(emptyOffer) : emptyOffer;
+    this.draftOfferState.set(this.withSelectedVariantFlag(normalizedOffer));
+    if (product === 'CROP') {
+      this.cropDraftState.set([]);
+      this.cropVariantConfigsState.set([]);
+      this.cropSelectedVariantIdState.set('RECOMMENDED');
+      this.cropDiscountAmountState.set(0);
+      this.cropSelectedPaymentFrequencyState.set('ANNUAL');
+      this.cropTransportMainPlanEnabledState.set(false);
+    }
   }
 
   async initializeFromOffer(offerId: string): Promise<void> {
@@ -53,7 +84,10 @@ export class OfferWizardStateService {
     this.modeState.set('continue');
     this.sourceOfferIdState.set(offerId);
     this.discountAmountState.set(0);
-    this.draftOfferState.set(this.withSelectedVariantFlag(this.ensureAddonLines(structuredClone(offer))));
+    const product = offer.product ?? 'MOTOR';
+    const normalizedOffer = product === 'MOTOR' ? this.ensureAddonLines(structuredClone(offer)) : structuredClone(offer);
+    this.draftOfferState.set(this.withSelectedVariantFlag(normalizedOffer));
+    this.restoreCropStateFromOffer(offer);
   }
 
   async initializeCopyFromOffer(offerId: string): Promise<void> {
@@ -69,9 +103,19 @@ export class OfferWizardStateService {
     this.modeState.set('new');
     this.sourceOfferIdState.set(null);
     this.discountAmountState.set(0);
+    const product = source.product ?? 'MOTOR';
     this.draftOfferState.set(
       this.withSelectedVariantFlag(
-        this.ensureAddonLines({
+        (product === 'MOTOR' ? this.ensureAddonLines({
+          ...source,
+          id: 'draft-new-offer',
+          offerNumber: 'NOWA / kopia',
+          status: 'DRAFT',
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+          validTo: undefined,
+          renewalContext: undefined
+        }) : {
           ...source,
           id: 'draft-new-offer',
           offerNumber: 'NOWA / kopia',
@@ -83,6 +127,31 @@ export class OfferWizardStateService {
         })
       )
     );
+    this.restoreCropStateFromOffer(source);
+  }
+
+  setCropDraft(crops: CropMaster[]): void {
+    this.cropDraftState.set(structuredClone(crops));
+  }
+
+  setCropVariantConfigs(configs: CropVariantConfig[]): void {
+    this.cropVariantConfigsState.set(structuredClone(configs));
+  }
+
+  setCropSelectedVariantId(variantId: CropVariantId): void {
+    this.cropSelectedVariantIdState.set(variantId);
+  }
+
+  setCropDiscountAmount(amount: number): void {
+    this.cropDiscountAmountState.set(Math.max(0, Math.round(amount)));
+  }
+
+  setCropSelectedPaymentFrequency(frequency: PaymentPlan['frequency']): void {
+    this.cropSelectedPaymentFrequencyState.set(frequency);
+  }
+
+  setCropTransportMainPlanEnabled(enabled: boolean): void {
+    this.cropTransportMainPlanEnabledState.set(enabled);
   }
 
   updateVehicle(vehicle: Vehicle): void {
@@ -407,11 +476,12 @@ export class OfferWizardStateService {
     this.draftOfferState.set(projector(offer));
   }
 
-  private createEmptyOffer(templateOffer: Offer): Offer {
+  private createEmptyOffer(templateOffer: Offer, product: OfferProduct): Offer {
     const clonedTemplate = structuredClone(templateOffer);
 
     return {
       ...clonedTemplate,
+      product,
       id: 'draft-new-offer',
       offerNumber: 'NOWA / robocza',
       status: 'DRAFT',
@@ -492,6 +562,27 @@ export class OfferWizardStateService {
         attachments: []
       }
     };
+  }
+
+  private restoreCropStateFromOffer(offer: Offer): void {
+    if ((offer.product ?? 'MOTOR') !== 'CROP') {
+      this.cropDraftState.set([]);
+      this.cropVariantConfigsState.set([]);
+      this.cropSelectedVariantIdState.set('RECOMMENDED');
+      this.cropDiscountAmountState.set(0);
+      this.cropSelectedPaymentFrequencyState.set('ANNUAL');
+      this.cropTransportMainPlanEnabledState.set(false);
+      return;
+    }
+
+    const payload = (offer as Offer & { cropData?: CropPersistedPayload }).cropData;
+
+    this.cropDraftState.set(payload?.crops ? structuredClone(payload.crops) : []);
+    this.cropVariantConfigsState.set(payload?.variantConfigs ? structuredClone(payload.variantConfigs) : []);
+    this.cropSelectedVariantIdState.set(payload?.selectedVariantId ?? 'RECOMMENDED');
+    this.cropDiscountAmountState.set(Math.max(0, Math.round(payload?.discountAmount ?? 0)));
+    this.cropSelectedPaymentFrequencyState.set(payload?.selectedPaymentFrequency ?? 'ANNUAL');
+    this.cropTransportMainPlanEnabledState.set(payload?.transportMainPlanEnabled === true);
   }
 
   private withSelectedVariantFlag(offer: Offer): Offer {

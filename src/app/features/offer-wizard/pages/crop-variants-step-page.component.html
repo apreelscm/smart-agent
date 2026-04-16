@@ -1,0 +1,202 @@
+<app-section-card title="Konfiguracja wariantu">
+  @if (parcelViews().length === 0) {
+    <div class="empty-state">Brak działek do konfiguracji. Uzupełnij krok „Dane do kalkulacji”.</div>
+  } @else {
+    <div class="variant-compare-shell" [style.--variant-count]="lanes.length">
+      <div class="variant-compare">
+        <div class="compare-cell compare-cell--corner">
+          <span class="compare-eyebrow">Zakres oferty</span>
+        </div>
+
+        @for (lane of lanes; track lane.id) {
+          <header class="compare-cell compare-cell--variant-header" [class.compare-cell--selected]="selectedVariantId() === lane.id">
+            <div class="compare-cell__variant-title">
+              <strong>{{ lane.title }}</strong>
+              <span>{{ lanePrice(lane.id) | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</span>
+            </div>
+            <div class="compare-cell__badges">
+              @if (lane.recommended) {
+                <span class="lane-badge">Polecany</span>
+              }
+            </div>
+          </header>
+        }
+
+        @for (parcelView of parcelViews(); track parcelView.parcel.id) {
+          <div class="compare-cell compare-cell--line-name compare-cell--parcel-header">
+            <strong>Uprawa {{ parcelView.cropIndex + 1 }} ({{ cropLabel(parcelView.cropSpecies) }}) · Działka {{ parcelView.parcelIndex + 1 }}</strong>
+            <span>
+              {{ parcelView.parcel.county || '—' }}, {{ parcelView.parcel.locality || '—' }}, obręb {{ parcelView.parcel.precinctNumber || '—' }},
+              pole {{ parcelView.parcel.fieldNumber || '—' }}
+            </span>
+            <span>SU: {{ insuranceSumForParcel(parcelView.parcel) | number: '1.0-0' : 'pl-PL' }} PLN</span>
+          </div>
+
+          @for (lane of lanes; track lane.id) {
+            <section class="compare-cell compare-cell--line-value compare-cell--parcel-summary" [class.compare-cell--selected]="selectedVariantId() === lane.id">
+              <span>Składka działki</span>
+              <strong>{{ parcelPrice(lane.id, parcelView.parcel.id) | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</strong>
+            </section>
+          }
+
+          @for (cover of covers; track cover.code) {
+            <div class="compare-cell compare-cell--line-name compare-cell--cover-name">
+              <strong>{{ cover.label }}</strong>
+            </div>
+
+            @for (lane of lanes; track lane.id) {
+              <section class="compare-cell compare-cell--line-value" [class.compare-cell--selected]="selectedVariantId() === lane.id">
+                <label class="cover-toggle">
+                  <input
+                    type="checkbox"
+                    [checked]="isCoverSelected(lane.id, parcelView.parcel.id, cover.code)"
+                    (change)="toggleCover(lane.id, parcelView.parcel.id, cover.code)"
+                  />
+                </label>
+              </section>
+            }
+          }
+
+          <div class="compare-cell compare-cell--line-name">
+            <strong>Franszyza integralna</strong>
+          </div>
+
+          @for (lane of lanes; track lane.id) {
+            <section class="compare-cell compare-cell--line-value" [class.compare-cell--selected]="selectedVariantId() === lane.id">
+              <select
+                [value]="deductiblePercent(lane.id, parcelView.parcel.id)"
+                (change)="updateDeductible(lane.id, parcelView.parcel.id, $any($event.target).value)"
+              >
+                <option [value]="5">5%</option>
+                <option [value]="10">10%</option>
+                <option [value]="20">20%</option>
+              </select>
+            </section>
+          }
+        }
+
+        @if (transportMainPlanEnabled()) {
+          <div class="compare-cell compare-cell--line-name compare-cell--parcel-header compare-cell--addon-row-header">
+            <strong>{{ transportMainPlanLabel }}</strong>
+            <span>Suma ubezpieczenia: {{ transportMainPlanInsuranceSum | number: '1.0-0' : 'pl-PL' }} PLN</span>
+          </div>
+
+          @for (lane of lanes; track lane.id) {
+            <section class="compare-cell compare-cell--line-value compare-cell--parcel-summary" [class.compare-cell--selected]="selectedVariantId() === lane.id">
+              <span>Składka dodatku</span>
+              <strong>+{{ transportMainPlanPremium | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</strong>
+            </section>
+          }
+        }
+
+        <div class="compare-cell compare-cell--action-label">
+          <span class="compare-eyebrow">Wybór wariantu</span>
+        </div>
+
+        @for (lane of lanes; track lane.id) {
+          <footer class="compare-cell compare-cell--actions" [class.compare-cell--selected]="selectedVariantId() === lane.id">
+            <button
+              pButton
+              type="button"
+              [label]="selectedVariantId() === lane.id ? 'Wybrany wariant' : 'Wybierz wariant'"
+              [severity]="selectedVariantId() === lane.id ? 'secondary' : undefined"
+              [outlined]="selectedVariantId() === lane.id"
+              (click)="selectVariant(lane.id)"
+            ></button>
+          </footer>
+        }
+      </div>
+    </div>
+
+    <section class="payment-section">
+      <section class="addons-section">
+        <span class="addons-section__title">Dodatki</span>
+        <div class="addons-grid">
+          <button
+            type="button"
+            class="addon-box"
+            [class.addon-box--selected]="transportMainPlanEnabled()"
+            (click)="toggleTransportMainPlan(!transportMainPlanEnabled())"
+          >
+            <span class="addon-box__content">
+              <strong>{{ transportMainPlanLabel }}</strong>
+              <small>Suma ubezpieczenia: {{ transportMainPlanInsuranceSum | number: '1.0-0' : 'pl-PL' }} PLN</small>
+            </span>
+            <span class="addon-box__price">
+              +{{ transportMainPlanPremium | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}
+            </span>
+          </button>
+        </div>
+      </section>
+
+      <span class="payment-section__title">Zniżki i raty</span>
+
+      <section class="discount-section">
+        <span class="discount-section__title">Budżet zniżek</span>
+
+        <div class="discount-section__line">
+          <article class="discount-stat">
+            <span>Twój budżet</span>
+            <strong>{{ customerDiscountBudget | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</strong>
+          </article>
+          <article class="discount-stat">
+            <span>Zniżka maksymalna ({{ discountBusinessLine }})</span>
+            <strong>{{ maxDiscountAmount() | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</strong>
+          </article>
+          <div class="discount-section__field">
+            <span class="discount-section__field-label">Zniżka kwotowa ({{ discountBusinessLine }})</span>
+            <input
+              type="number"
+              min="0"
+              [max]="maxDiscountAmount()"
+              step="1"
+              [value]="discountInput()"
+              (input)="onDiscountInput($any($event.target).value)"
+              (blur)="onDiscountBlur()"
+              aria-label="Budżet zniżek w PLN"
+            />
+            <span>PLN</span>
+          </div>
+        </div>
+        @if (discountError(); as discountErrorMessage) {
+          <p class="discount-section__error">{{ discountErrorMessage }}</p>
+        }
+      </section>
+
+      @if (paymentRows().length > 0) {
+        <div class="payment-table">
+          <div class="payment-table__head">
+            <span>Okres</span>
+            <span>Liczba rat</span>
+            <span>1. rata</span>
+            <span>Pozostałe raty</span>
+            <span>Suma</span>
+          </div>
+
+          @for (row of paymentRows(); track row.frequency) {
+            <button
+              type="button"
+              class="payment-table__row"
+              [class.payment-table__row--selected]="isPaymentRowSelected(row)"
+              (click)="selectPaymentFrequency(row.frequency)"
+            >
+              <span>{{ paymentPeriodLabel(row) }}</span>
+              <strong>{{ row.installmentsCount }}</strong>
+              <strong>{{ row.firstInstallmentAmount | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</strong>
+              <strong>
+                @if (row.remainingInstallmentAmount !== null) {
+                  {{ row.remainingInstallmentAmount | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}
+                } @else {
+                  —
+                }
+              </strong>
+              <strong>{{ row.totalAmount | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</strong>
+            </button>
+          }
+        </div>
+      } @else {
+        <div class="payment-section__empty">Brak dostępnych planów ratalnych.</div>
+      }
+    </section>
+  }
+</app-section-card>

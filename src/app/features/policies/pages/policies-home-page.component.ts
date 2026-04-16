@@ -206,7 +206,7 @@ export class PoliciesHomePageComponent {
     }
 
     this.debug('navigate: new offer readonly from policy', { policyId: policy.id });
-    void this.router.navigate(['/offers/new/vehicle'], {
+    void this.router.navigate(['/offers/new/motor/vehicle'], {
       queryParams: { readonly: '1', sourcePolicyId: policy.id, mode: 'preview' }
     });
   }
@@ -364,14 +364,14 @@ export class PoliciesHomePageComponent {
 
   private copyPolicyToOffer(policyId: string): void {
     this.debug('navigate: copy policy -> offer', { policyId });
-    void this.router.navigate(['/offers/new/vehicle'], {
+    void this.router.navigate(['/offers/new/motor/vehicle'], {
       queryParams: { sourcePolicyId: policyId, mode: 'copy' }
     });
   }
 
   private renewPolicyAsOffer(policyId: string): void {
     this.debug('navigate: renew policy -> offer', { policyId });
-    void this.router.navigate(['/offers/new/vehicle'], {
+    void this.router.navigate(['/offers/new/motor/vehicle'], {
       queryParams: { sourcePolicyId: policyId, mode: 'renew' }
     });
   }

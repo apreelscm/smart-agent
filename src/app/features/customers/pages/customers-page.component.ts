@@ -203,7 +203,7 @@ export class CustomersPageComponent {
       return;
     }
 
-    void this.router.navigate(['/offers/new/vehicle'], {
+    void this.router.navigate(['/offers/new/motor/vehicle'], {
       queryParams: { readonly: '1', sourcePolicyId: policy.id, mode: 'preview' }
     });
   }

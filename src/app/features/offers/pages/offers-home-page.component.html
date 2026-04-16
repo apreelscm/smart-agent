@@ -16,7 +16,7 @@
             pInputText
             [ngModel]="searchTerm()"
             (ngModelChange)="searchTerm.set($event)"
-            placeholder="Szukaj: numer oferty, klient, pojazd, rejestracja"
+            placeholder="Szukaj: numer oferty, klient, pojazd/uprawy, rejestracja"
           />
         </span>
 
@@ -27,6 +27,17 @@
           optionLabel="label"
           optionValue="code"
           placeholder="Status"
+          appendTo="body"
+          class="toolbar__select"
+        />
+
+        <p-select
+          [ngModel]="selectedProduct()"
+          (ngModelChange)="selectedProduct.set($event)"
+          [options]="productOptions"
+          optionLabel="label"
+          optionValue="code"
+          placeholder="Produkt"
           appendTo="body"
           class="toolbar__select"
         />
@@ -55,7 +66,7 @@
       </div>
 
       <div class="toolbar__actions">
-        <a pButton [routerLink]="['/offers/new/vehicle']" icon="pi pi-plus" iconPos="right">Nowa oferta</a>
+        <a pButton [routerLink]="['/offers/new']" icon="pi pi-plus" [attr.aria-label]="'Nowa oferta'"></a>
       </div>
     </div>
 
@@ -69,9 +80,12 @@
           <div class="offer-row__main">
             <div class="offer-row__headline">
               <div>
-                <strong>{{ offer.offerNumber }}</strong>
+                <strong class="offer-row__number">
+                  <i [class]="offerProductIcon(offer)" [attr.aria-label]="offerProductLabel(offer)"></i>
+                  <span>{{ offer.offerNumber }}</span>
+                </strong>
                 <span class="offer-row__subline">
-                  {{ getCustomerDisplayName(offer) }} · {{ offer.vehicle.make }} {{ offer.vehicle.model }}
+                  {{ getCustomerDisplayName(offer) }} · {{ getOfferHeadlineSubject(offer) }}
                 </span>
               </div>
 
@@ -88,9 +102,14 @@
 
             <div class="offer-row__meta-grid">
               <div>
-                <span class="offer-row__meta-label">Pojazd</span>
-                <strong>{{ offer.vehicle.registration?.registrationNumber || 'brak rej.' }}</strong>
-                <span>{{ offer.vehicle.productionYear }} · {{ offer.vehicle.engine.fuelType }}</span>
+                <span class="offer-row__meta-label">{{ isCropOffer(offer) ? 'Uprawy' : 'Pojazd' }}</span>
+                @if (isCropOffer(offer)) {
+                  <strong>{{ getCropMetaPrimaryLine(offer) }}</strong>
+                  <span>{{ getCropMetaSecondaryLine(offer) }}</span>
+                } @else {
+                  <strong>{{ offer.vehicle.registration?.registrationNumber || 'brak rej.' }}</strong>
+                  <span>{{ offer.vehicle.productionYear }} · {{ offer.vehicle.engine.fuelType }}</span>
+                }
               </div>
 
               <div>
@@ -104,7 +123,7 @@
                 <strong>{{ getSelectedVariantName(offer) }}</strong>
                 @if (offer.renewalContext; as renewalContext) {
                   <a
-                    [routerLink]="['/offers/new/vehicle']"
+                    [routerLink]="['/offers/new/motor/vehicle']"
                     [queryParams]="{ readonly: '1', sourcePolicyId: renewalContext.sourcePolicyId, mode: 'preview' }"
                   >
                     {{ renewalContext.sourcePolicyNumber }}
@@ -176,8 +195,8 @@
             <strong>{{ getCustomerDisplayName(pending.offer) }}</strong>
           </div>
           <div>
-            <span>Pojazd</span>
-            <strong>{{ pending.offer.vehicle.make }} {{ pending.offer.vehicle.model }}</strong>
+            <span>{{ transitionSubjectLabel(pending.offer) }}</span>
+            <strong>{{ transitionSubjectValue(pending.offer) }}</strong>
           </div>
           <div>
             <span>Składka</span>

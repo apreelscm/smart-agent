@@ -8,8 +8,11 @@ import { OfferStatus } from './offer-status.model';
 import { OfferVariant } from './offer-variant.model';
 import { SalesChannel } from './sales-channel.model';
 
+export type OfferProduct = 'MOTOR' | 'CROP';
+
 export interface Offer {
   id: string;
+  product?: OfferProduct;
   offerNumber: string;
   status: OfferStatus;
   createdAt: string;
