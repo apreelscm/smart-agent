@@ -48,6 +48,8 @@ The project is an Angular 20 application using signals for reactive state manage
 
 The "Clear Filters" button will be added to the existing toolbar in the offers list HTML template. Its enabled state will be computed by comparing current filter/sort signals to their default values. The button's click handler will reset these signals to their defaults.
 
+The button color should be green, and the enabled state should reflect when filters or sorting differ from defaults. The button background color when enabled should be a light green shade exactly, consistent with the UI design system. This ensures clear visual feedback to the user.
+
 This approach follows existing reactive patterns and leverages Angular signals for state management, ensuring immediate UI updates without page reload.
 
 ### Task Breakdown
@@ -55,7 +57,7 @@ This approach follows existing reactive patterns and leverages Angular signals f
 #### Phase 1: Add Clear Filters Button UI and Logic
 | #   | Task                                  | Files                                            | Description                                                                                   |
 |-----|-------------------------------------|-------------------------------------------------|-----------------------------------------------------------------------------------------------|
-| 1.1 | Add "Wyczyść filtry" button to toolbar | `src/app/features/offers/pages/offers-home-page.component.html` | Insert a button in the toolbar with label "Wyczyść filtry" and bind click event to clear filters. |
+| 1.1 | Add "Wyczyść filtry" button to toolbar | `src/app/features/offers/pages/offers-home-page.component.html` | Insert a button in the toolbar with label "Wyczyść filtry", styled with green background, and bind click event to clear filters. |
 | 1.2 | Add computed signal for button enabled state | `src/app/features/offers/pages/offers-home-page.component.ts` | Create a computed signal that returns true if any filter or sorting differs from defaults.     |
 | 1.3 | Implement clearFilters() method to reset filters | `src/app/features/offers/pages/offers-home-page.component.ts` | Extend existing `clearFilters()` method to reset all filters and sorting signals to defaults. |
 | 1.4 | Bind button disabled state to computed signal | `src/app/features/offers/pages/offers-home-page.component.html` | Disable the button when filters are at default values.                                        |
@@ -64,7 +66,7 @@ This approach follows existing reactive patterns and leverages Angular signals f
 ### File Change Summary
 | File                                                      | Action | Description                                      |
 |-----------------------------------------------------------|--------|--------------------------------------------------|
-| `src/app/features/offers/pages/offers-home-page.component.html` | MODIFY | Add "Wyczyść filtry" button to toolbar UI.       |
+| `src/app/features/offers/pages/offers-home-page.component.html` | MODIFY | Add "Wyczyść filtry" button to toolbar UI with green background color.       |
 | `src/app/features/offers/pages/offers-home-page.component.ts`   | MODIFY | Add computed signal for button enabled state; implement filter reset logic in `clearFilters()`. |
 
 ### Verification Steps
@@ -72,15 +74,16 @@ This approach follows existing reactive patterns and leverages Angular signals f
 2. [ ] "Wyczyść filtry" button is visible on the offers list toolbar.
 3. [ ] Button is disabled when no filters or sorting are changed.
 4. [ ] Button is enabled when any filter or sorting differs from defaults.
-5. [ ] Clicking the button resets filters and sorting to defaults.
-6. [ ] Offers list and offer count update immediately after clearing.
-7. [ ] No page reload occurs.
-8. [ ] Existing filter and sorting functionality remains unchanged.
-9. [ ] Automated tests (if any) pass or add tests to cover the new button behavior.
+5. [ ] Button background color is light green exactly when enabled.
+6. [ ] Clicking the button resets filters and sorting to defaults.
+7. [ ] Offers list and offer count update immediately after clearing.
+8. [ ] No page reload occurs.
+9. [ ] Existing filter and sorting functionality remains unchanged.
+10. [ ] Automated tests (if any) pass or add tests to cover the new button behavior.
 
 This plan is scoped strictly to adding the "Clear Filters" button and its behavior on the offers list page, following the existing Angular signal-based state management patterns.
 
 ## Revision History
 | Revision | Reviewer     | Summary of changes made                   |
 |----------|--------------|------------------------------------------|
-| 1        | matlipinski  | No changes requested; plan confirmed as is |
+| 1        | matlipinski  | Updated button color to green with light green background when enabled; corrected enabled state logic and UI description per review comments |
