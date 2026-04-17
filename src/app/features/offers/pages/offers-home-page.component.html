@@ -66,6 +66,15 @@
       </div>
 
       <div class="toolbar__actions">
+        <button
+          pButton
+          type="button"
+          label="Wyczyść wszystkie filtry"
+          class="clear-filters-button"
+          [disabled]="!filtersChanged()"
+          (click)="clearAllFilters()"
+          style="background-color: #cce5ff; color: #004085; border-color: #b8daff;"
+        ></button>
         <a pButton [routerLink]="['/offers/new']" icon="pi pi-plus" [attr.aria-label]="'Nowa oferta'"></a>
       </div>
     </div>
