@@ -49,6 +49,8 @@ The project is an Angular 20 application using signals and computed properties f
 
 We will add a "Wyczyść filtry" button in the toolbar next to existing filter controls. The button's enabled state will be computed by comparing current filter/sort signals to their default values. Clicking the button will call a method to reset all filter and sort signals to defaults, triggering reactive updates to the offers list and count automatically.
 
+The button will be styled with a green color to meet the reviewer's request for a green button. This can be done by applying a CSS class or inline style consistent with the existing UI styling approach.
+
 This approach follows existing patterns in `offers-home-page.component.ts` and the UI uses PrimeNG components and Angular templates.
 
 ### Task Breakdown
@@ -56,7 +58,7 @@ This approach follows existing patterns in `offers-home-page.component.ts` and t
 #### Phase 1: Add Clear Filters Button and Logic
 | #   | Task                               | Files                                      | Description                                                                                   |
 |-----|----------------------------------|--------------------------------------------|-----------------------------------------------------------------------------------------------|
-| 1.1 | Add "Wyczyść filtry" button in toolbar | `src/app/features/offers/pages/offers-home-page.component.html` | Insert a button in the toolbar filters section, styled consistent with existing buttons.      |
+| 1.1 | Add "Wyczyść filtry" button in toolbar | `src/app/features/offers/pages/offers-home-page.component.html` | Insert a green-colored button in the toolbar filters section, styled consistent with existing buttons but with green color.      |
 | 1.2 | Add computed signal for button enabled state | `src/app/features/offers/pages/offers-home-page.component.ts` | Implement a computed property that returns true if any filter or sort differs from default.   |
 | 1.3 | Implement clearFilters() method to reset filters | `src/app/features/offers/pages/offers-home-page.component.ts` | Reset all filter and sort signals to their default values as specified in the Jira description. |
 | 1.4 | Bind button enabled state and click handler | `src/app/features/offers/pages/offers-home-page.component.html` and `.ts` | Bind button disabled/enabled state to computed signal and click event to clearFilters().      |
@@ -65,7 +67,7 @@ This approach follows existing patterns in `offers-home-page.component.ts` and t
 ### File Change Summary
 | File                                                        | Action | Description                                  |
 |-------------------------------------------------------------|--------|----------------------------------------------|
-| `src/app/features/offers/pages/offers-home-page.component.html` | MODIFY | Add "Wyczyść filtry" button in toolbar UI.  |
+| `src/app/features/offers/pages/offers-home-page.component.html` | MODIFY | Add green "Wyczyść filtry" button in toolbar UI.  |
 | `src/app/features/offers/pages/offers-home-page.component.ts`   | MODIFY | Add computed signal for button enabled state and implement clearFilters() method. |
 
 ### Verification Steps
@@ -78,3 +80,8 @@ This approach follows existing patterns in `offers-home-page.component.ts` and t
 7. [ ] No page reload occurs during the operation.
 8. [ ] Existing filter and sorting functionality remains unchanged.
 9. [ ] Automated unit tests (if present) pass or add tests for the new button behavior.
+
+## Revision History
+| Revision | Reviewer    | Summary of changes                          |
+|----------|-------------|---------------------------------------------|
+| 1        | matlipinski | Added requirement for green color on button |
