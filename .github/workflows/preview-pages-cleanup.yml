@@ -1,0 +1,46 @@
+name: Cleanup PR preview from GitHub Pages
+
+on:
+  pull_request:
+    types: [closed]
+    branches: [main]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: gh-pages-branch
+  cancel-in-progress: false
+
+jobs:
+  cleanup:
+    if: startsWith(github.head_ref, 'feature/PZU-')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout gh-pages (if exists)
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          fetch-depth: 1
+        continue-on-error: true
+        id: checkout
+
+      - name: Remove preview folder
+        if: steps.checkout.outcome == 'success'
+        run: |
+          set -e
+          PR_DIR="preview/pr-${{ github.event.pull_request.number }}"
+          if [ -d "$PR_DIR" ]; then
+            rm -rf "$PR_DIR"
+            git config user.name  'github-actions[bot]'
+            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+            git add -A
+            if git diff --cached --quiet; then
+              echo "No staged changes after rm (already clean)"
+            else
+              git commit -m "chore(preview): cleanup PR #${{ github.event.pull_request.number }}"
+              git push origin gh-pages
+            fi
+          else
+            echo "Preview folder $PR_DIR not present on gh-pages; nothing to clean up"
+          fi
