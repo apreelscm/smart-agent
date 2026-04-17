@@ -10,9 +10,9 @@ export type OfferProduct = 'MOTOR' | 'CROP';
 })
 export class OffersRepository {
   private readonly httpClient = inject(HttpClient);
-  private readonly offersUrl = '/mock/offers.json';
+  private readonly offersUrl = 'mock/offers.json';
   private readonly motorTemplateOfferId = 'offer-1001';
-  private readonly cropTemplateUrl = '/mock/offers-crop-template.json';
+  private readonly cropTemplateUrl = 'mock/offers-crop-template.json';
 
   getOffers(): Observable<Offer[]> {
     return this.httpClient.get<Offer[]>(this.offersUrl);
