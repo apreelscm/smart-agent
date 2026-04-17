@@ -63,6 +63,15 @@
           class="toolbar__sort-direction"
           (click)="toggleSortDirection()"
         ></button>
+
+        <button
+          pButton
+          type="button"
+          label="Wyczyść filtry"
+          class="p-button-success toolbar__clear-filters"
+          [disabled]="!clearFiltersEnabled()"
+          (click)="clearFilters()"
+        ></button>
       </div>
 
       <div class="toolbar__actions">
