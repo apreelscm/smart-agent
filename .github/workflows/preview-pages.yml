@@ -1,0 +1,50 @@
+name: Deploy PR preview to GitHub Pages
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    branches: [main]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: gh-pages-branch
+  cancel-in-progress: false
+
+jobs:
+  preview:
+    if: startsWith(github.head_ref, 'feature/PZU-')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - run: npm ci
+
+      - name: Build (preview base-href)
+        run: npm run build -- --base-href=/smart-agent/preview/pr-${{ github.event.pull_request.number }}/
+
+      - name: SPA fallback (copy index.html -> 404.html)
+        run: cp dist/smart-agent/browser/index.html dist/smart-agent/browser/404.html
+
+      - name: Disable Jekyll
+        run: touch dist/smart-agent/browser/.nojekyll
+
+      - name: Deploy preview to gh-pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: dist/smart-agent/browser
+          publish_branch: gh-pages
+          destination_dir: preview/pr-${{ github.event.pull_request.number }}
+          keep_files: true
+          commit_message: "chore(preview): deploy PR #${{ github.event.pull_request.number }} @ ${{ github.event.pull_request.head.sha }}"
+          user_name: 'github-actions[bot]'
+          user_email: '41898282+github-actions[bot]@users.noreply.github.com'
