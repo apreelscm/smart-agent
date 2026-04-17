@@ -34,30 +34,39 @@ This task requires changing the label of the button currently named “Wyczyść
 ### Technical Approach
 The application is an Angular 20 project using PrimeNG UI components. The offers home page component is `OffersHomePageComponent` located in `src/app/features/offers/pages/`. The button in question is in the template file `offers-home-page.component.html`. The label is currently set as a static string on the button’s `label` attribute.
 
-The change involves modifying the button’s `label` attribute from `"Wyczyść wszystkie filtry"` to `"Wyczyść"` in the HTML template. No changes are needed in the TypeScript component logic or styles.
+The change involves modifying the button’s `label` attribute from `"Wyczyść wszystkie filtry"` to `"Wyczyść"` in the HTML template. Additionally, the button color should be changed to a slightly darker shade to improve visibility and meet the reviewer's request.
 
-This approach follows the existing codebase pattern of static button labels in the template.
+No changes are needed in the TypeScript component logic.
+
+This approach follows the existing codebase pattern of static button labels in the template and minimal style adjustment.
 
 ### Task Breakdown
 
-#### Phase 1: Update Button Label
+#### Phase 1: Update Button Label and Color
 | #   | Task                        | Files                                  | Description                                  |
 |-----|-----------------------------|---------------------------------------|----------------------------------------------|
 | 1.1 | Modify button label          | `src/app/features/offers/pages/offers-home-page.component.html` | Change the label attribute of the clear filters button from "Wyczyść wszystkie filtry" to "Wyczyść". |
+| 1.2 | Adjust button color          | `src/app/features/offers/pages/offers-home-page.component.html` and/or related styles | Change the button color to a slightly darker shade as per reviewer feedback. |
 
 #### Phase 2: Verification
 | #   | Task                        | Files                                  | Description                                  |
 |-----|-----------------------------|---------------------------------------|----------------------------------------------|
 | 2.1 | Build and test              | N/A                                   | Build the project and run existing tests to ensure no regressions. |
-| 2.2 | Manual UI verification      | N/A                                   | Verify in the running app that the button label is updated and functionality unchanged. |
+| 2.2 | Manual UI verification      | N/A                                   | Verify in the running app that the button label is updated, color is darker, and functionality unchanged. |
 
 ### File Change Summary
 | File                                                      | Action | Description                          |
 |-----------------------------------------------------------|--------|------------------------------------|
-| `src/app/features/offers/pages/offers-home-page.component.html` | MODIFY | Change clear filters button label to “Wyczyść” |
+| `src/app/features/offers/pages/offers-home-page.component.html` | MODIFY | Change clear filters button label to “Wyczyść” and adjust button color to a slightly darker shade |
 
 ### Verification Steps
 1. [ ] Build succeeds without errors.
 2. [ ] Existing unit tests pass.
 3. [ ] Manual verification confirms the button label is “Wyczyść”.
-4. [ ] Manual verification confirms the button clears filters as before.
+4. [ ] Manual verification confirms the button color is slightly darker.
+5. [ ] Manual verification confirms the button clears filters as before.
+
+## Revision History
+| Revision | Reviewer     | Summary of changes                        |
+|----------|--------------|------------------------------------------|
+| 1        | matlipinski  | Changed button label and adjusted button color to a slightly darker shade per review comments |
