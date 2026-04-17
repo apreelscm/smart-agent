@@ -26,6 +26,7 @@ type FilterOption = {
 type SortDirection = 'ASC' | 'DESC';
 
 type OfferSortField = 'ISSUE_DATE' | 'VALID_TO';
+
 type OfferProductFilter = 'ALL' | 'MOTOR' | 'CROP';
 
 type StatusPresentation = {
