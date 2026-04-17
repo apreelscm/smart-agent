@@ -318,7 +318,19 @@ export class OffersHomePageComponent {
     this.searchTerm.set('');
     this.selectedStatus.set('ALL');
     this.selectedProduct.set('ALL');
+    this.selectedSortField.set('ISSUE_DATE');
+    this.selectedSortDirection.set('DESC');
   }
+
+  protected readonly clearFiltersEnabled = computed(() => {
+    return (
+      this.searchTerm() !== '' ||
+      this.selectedStatus() !== 'ALL' ||
+      this.selectedProduct() !== 'ALL' ||
+      this.selectedSortField() !== 'ISSUE_DATE' ||
+      this.selectedSortDirection() !== 'DESC'
+    );
+  });
 
   protected toggleSortDirection(): void {
     this.selectedSortDirection.update((direction) => (direction === 'DESC' ? 'ASC' : 'DESC'));
