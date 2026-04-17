@@ -203,6 +203,17 @@ export class OffersHomePageComponent {
 
   protected readonly totalVisibleOffers = computed(() => this.filteredOffers().length);
 
+  // New computed signal to detect if any filter or sorting differs from default values
+  protected readonly filtersChanged = computed(() => {
+    return (
+      this.searchTerm() !== '' ||
+      this.selectedStatus() !== 'ALL' ||
+      this.selectedProduct() !== 'ALL' ||
+      this.selectedSortField() !== 'ISSUE_DATE' ||
+      this.selectedSortDirection() !== 'DESC'
+    );
+  });
+
   protected getCustomerDisplayName(offer: Offer): string {
     const identity = offer.customer.identity;
 
@@ -314,10 +325,13 @@ export class OffersHomePageComponent {
     this.closeTransitionDialog();
   }
 
-  protected clearFilters(): void {
+  // New method to clear all filters and sorting to default values
+  protected clearAllFilters(): void {
     this.searchTerm.set('');
     this.selectedStatus.set('ALL');
     this.selectedProduct.set('ALL');
+    this.selectedSortField.set('ISSUE_DATE');
+    this.selectedSortDirection.set('DESC');
   }
 
   protected toggleSortDirection(): void {
