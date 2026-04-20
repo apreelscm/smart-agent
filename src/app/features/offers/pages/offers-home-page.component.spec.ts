@@ -114,11 +114,17 @@ describe('OffersHomePageComponent', () => {
     expect(component['selectedCurrency']()).toBe('EUR');
   });
 
-  it('should render clear filters button with Wyczyść label', () => {
+  it('should render clear filters button with Wyczyść label and green styling', () => {
     const clearFiltersButton: HTMLButtonElement | null = fixture.nativeElement.querySelector('.clear-filters-button');
 
     expect(clearFiltersButton).not.toBeNull();
     expect(clearFiltersButton?.textContent?.trim()).toBe('Wyczyść');
+    expect(clearFiltersButton?.getAttribute('style')).toContain('background-color: #d4edda');
+    expect(clearFiltersButton?.getAttribute('style')).toContain('color: #155724');
+    expect(clearFiltersButton?.getAttribute('style')).toContain('border-color: #c3e6cb');
+    expect(clearFiltersButton?.getAttribute('style')).not.toContain('#cce5ff');
+    expect(clearFiltersButton?.getAttribute('style')).not.toContain('#004085');
+    expect(clearFiltersButton?.getAttribute('style')).not.toContain('#b8daff');
     expect(fixture.nativeElement.textContent).not.toContain('Reset');
   });
 }
