@@ -1,8 +1,10 @@
 import { Injectable, signal } from '@angular/core';
 import { Offer, Policy } from '../models';
+import { CurrencyCode } from '../models/common/money.model';
 
 const POLICIES_STORAGE_KEY = 'smart-agent-promoted-policies';
 const OFFERS_STORAGE_KEY = 'smart-agent-runtime-offers';
+const VIEW_CURRENCY_STORAGE_KEY = 'smart-agent-view-currency';
 
 @Injectable({
   providedIn: 'root'
@@ -10,12 +12,21 @@ const OFFERS_STORAGE_KEY = 'smart-agent-runtime-offers';
 export class SalesFlowRuntimeRepository {
   private readonly promotedPoliciesState = signal<Policy[]>(this.loadPromotedPolicies());
   private readonly runtimeOffersState = signal<Offer[]>(this.loadRuntimeOffers());
+  private readonly viewCurrencyState = signal<CurrencyCode>(this.loadViewCurrency());
 
   readonly promotedPolicies = this.promotedPoliciesState.asReadonly();
   readonly runtimeOffers = this.runtimeOffersState.asReadonly();
+  readonly viewCurrency = this.viewCurrencyState.asReadonly();
 
   getPromotedPolicyById(policyId: string): Policy | undefined {
     return this.promotedPoliciesState().find((policy) => policy.id === policyId);
+  }
+
+  setViewCurrency(currency: CurrencyCode): void {
+    this.viewCurrencyState.set(currency);
+    if (typeof window !== 'undefined') {
+      window.localStorage.setItem(VIEW_CURRENCY_STORAGE_KEY, currency);
+    }
   }
 
   promoteOfferToPolicy(offer: Offer): Policy {
@@ -151,6 +162,16 @@ export class SalesFlowRuntimeRepository {
     }
 
     window.localStorage.setItem(OFFERS_STORAGE_KEY, JSON.stringify(offers));
+  }
+
+  private loadViewCurrency(): CurrencyCode {
+    if (typeof window === 'undefined') {
+      return 'PLN';
+    }
+
+    const stored = window.localStorage.getItem(VIEW_CURRENCY_STORAGE_KEY);
+
+    return stored === 'EUR' || stored === 'USD' ? stored : 'PLN';
   }
 
   private generateOfferId(): string {

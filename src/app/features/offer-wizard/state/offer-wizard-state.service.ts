@@ -4,6 +4,7 @@ import { Customer, Offer, OfferStatus, OfferVariant, Policy, PolicyLineCode, Veh
 import { PaymentPlan } from '../../../core/models/payment/payment-plan.model';
 import { OfferProduct, OffersRepository } from '../../../core/repositories/offers.repository';
 import { SalesFlowRuntimeRepository } from '../../../core/repositories/sales-flow-runtime.repository';
+import { CurrencyCode } from '../../../core/models/common/money.model';
 import { CropMaster, CropVariantConfig, CropVariantId } from '../models/crop-offer.model';
 
 type OfferProductCode = 'DEALER' | 'OC' | 'SHORT_TERM_OC' | 'BORDER_OC' | 'GREEN_CARD';
@@ -34,6 +35,7 @@ export class OfferWizardStateService {
   private readonly cropDiscountAmountState = signal<number>(0);
   private readonly cropSelectedPaymentFrequencyState = signal<PaymentPlan['frequency']>('ANNUAL');
   private readonly cropTransportMainPlanEnabledState = signal<boolean>(false);
+  private readonly viewCurrencyState = signal<CurrencyCode>(this.salesFlowRuntimeRepository.viewCurrency());
 
   readonly draftOffer = computed(() => this.draftOfferState());
   readonly mode = computed(() => this.modeState());
@@ -46,9 +48,15 @@ export class OfferWizardStateService {
   readonly cropDiscountAmount = computed(() => this.cropDiscountAmountState());
   readonly cropSelectedPaymentFrequency = computed(() => this.cropSelectedPaymentFrequencyState());
   readonly cropTransportMainPlanEnabled = computed(() => this.cropTransportMainPlanEnabledState());
+  readonly viewCurrency = computed(() => this.viewCurrencyState());
   readonly selectedVariant = computed<OfferVariant | undefined>(() =>
     this.draftOffer()?.variants.find((variant) => variant.id === this.draftOffer()?.selectedVariantId)
   );
+
+  setViewCurrency(currency: CurrencyCode): void {
+    this.viewCurrencyState.set(currency);
+    this.salesFlowRuntimeRepository.setViewCurrency(currency);
+  }
 
   async initializeNewDraft(product: OfferProduct = 'MOTOR'): Promise<void> {
     const templateOffer = await firstValueFrom(this.offersRepository.getTemplateOffer(product));
