@@ -118,7 +118,9 @@ describe('OffersHomePageComponent', () => {
     const clearFiltersButton: HTMLButtonElement | null = fixture.nativeElement.querySelector('.clear-filters-button');
 
     expect(clearFiltersButton).not.toBeNull();
+    expect(clearFiltersButton?.classList.contains('clear-filters-button')).toBeTrue();
     expect(clearFiltersButton?.textContent?.trim()).toBe('Wyczyść');
+    expect(clearFiltersButton?.getAttribute('style')).toBeNull();
     expect(fixture.nativeElement.textContent).not.toContain('Reset');
   });
 }
