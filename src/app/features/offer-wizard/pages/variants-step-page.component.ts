@@ -29,11 +29,11 @@ type PaymentPlanView = {
   selector: 'app-variants-step-page',
   imports: [CommonModule, SectionCardComponent, CurrencyPipe, Tag, ButtonDirective, CurrencySwitchComponent, CurrencyDisplayPipe],
   templateUrl: './variants-step-page.component.html',
-  styleUrl: './variants-step-page.component.scss'
+  styleUrls: ['./variants-step-page.component.scss']
 })
 export class VariantsStepPageComponent {
   private readonly wizardState = inject(OfferWizardStateService);
-  private readonly currencyService = inject(CurrencyService);
+  protected readonly currencyService = inject(CurrencyService);
 
   protected readonly customerDiscountBudget = 2540;
   protected readonly discountInput = signal<string>('0');

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, output, signal, computed, inject } from '@angular/core';
+import { Component, EventEmitter, Output, signal, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ButtonDirective } from 'primeng/button';
 import { CurrencyService } from '../../../core/services/currency.service';
@@ -62,7 +62,7 @@ import { CurrencyDisplayPipe } from '../../pipes/currency-display.pipe';
 export class CurrencySwitchComponent {
   private readonly currencyService = inject(CurrencyService);
   readonly selected = signal<'PLN' | 'EUR' | 'USD'>('PLN');
-  @output() readonly selectionChange = new EventEmitter<'PLN' | 'EUR' | 'USD'>();
+  @Output() readonly selectionChange = new EventEmitter<'PLN' | 'EUR' | 'USD'>();
 
   select(currency: 'PLN' | 'EUR' | 'USD') {
     if (!this.isCurrencyEnabled(currency)) {
