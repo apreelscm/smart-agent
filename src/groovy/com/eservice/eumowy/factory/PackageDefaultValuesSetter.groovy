@@ -11,7 +11,7 @@ class PackageDefaultValuesSetter implements ProcessCommandDefaultValuesSetter{
         command.mudCena = "0.00"
         command.oplataZaPlatnoscWInnejWalucie = "5"
         command.okresLojalnosciowy = "12"
-        command.liczbaTerminali = "5"
+        command.liczbaTerminali = "10"
         command.dccZakresUruchomienia = "obecne_i_nowe"
     }
 }
