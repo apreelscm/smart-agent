@@ -1,18 +1,5 @@
 import { Injectable, computed, signal } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { map, of, catchError } from 'rxjs';
 import { CurrencyCode, CurrencyExchangeRate, CurrencySelection, Money } from '../models/common/money.model';
-
-type NbpRatesResponse = {
-  table: string;
-  currency: string;
-  code: string;
-  rates: Array<{
-    no: string;
-    effectiveDate: string;
-    mid: number;
-  }>;
-};
 
 const CURRENCY_META: Record<CurrencyCode, { plnRate: number }> = {
   PLN: { plnRate: 1 },
@@ -24,7 +11,6 @@ const CURRENCY_META: Record<CurrencyCode, { plnRate: number }> = {
   providedIn: 'root'
 })
 export class CurrencyExchangeRateService {
-  private readonly httpClient = new HttpClient({} as never);
   private readonly ratesState = signal<Record<CurrencyCode, CurrencyExchangeRate | undefined>>({
     PLN: { code: 'PLN', rateToPln: 1 },
     EUR: undefined,
