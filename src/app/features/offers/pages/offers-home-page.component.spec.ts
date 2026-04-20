@@ -114,11 +114,11 @@ describe('OffersHomePageComponent', () => {
     expect(component['selectedCurrency']()).toBe('EUR');
   });
 
-  it('should render clear filters button with shortened label', () => {
+  it('should render clear filters button with Reset label', () => {
     const clearFiltersButton: HTMLButtonElement | null = fixture.nativeElement.querySelector('.clear-filters-button');
 
     expect(clearFiltersButton).not.toBeNull();
-    expect(clearFiltersButton?.textContent?.trim()).toBe('Wyczyść');
-    expect(fixture.nativeElement.textContent).not.toContain('Wyczyść wszystkie filtry');
+    expect(clearFiltersButton?.textContent?.trim()).toBe('Reset');
+    expect(fixture.nativeElement.textContent).not.toContain('Wyczyść');
   });
 }
