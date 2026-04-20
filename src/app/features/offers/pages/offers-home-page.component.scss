@@ -28,6 +28,11 @@
   gap: 0.75rem;
 }
 
+.toolbar__actions {
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
+
 .field-shell {
   display: inline-flex;
   align-items: center;

@@ -31,7 +31,7 @@
       (click)="setFilter('ALL')"
     >
       <span class="policy-filter-tile__label">Wszystkie polisy</span>
-      <strong class="policy-filter-tile__value">{{ paidPoliciesPremiumTotal() | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</strong>
+      <strong class="policy-filter-tile__value">{{ paidPoliciesPremiumTotal() | moneyDisplay: selectedCurrency() }}</strong>
       <span class="policy-filter-tile__note">suma składek polis opłaconych</span>
     </button>
   </section>
@@ -73,6 +73,13 @@
       </div>
 
       <div class="toolbar__actions">
+        <app-currency-switcher
+          [selectedCurrency]="selectedCurrency()"
+          [foreignCurrencyAvailable]="foreignCurrencyAvailable()"
+          [availabilityMessage]="currencyAvailability().message"
+          [rateLabel]="currentRateLabel()"
+          (currencyChange)="setSelectedCurrency($event)"
+        />
         <button pButton type="button" label="Wyczyść" severity="secondary" outlined (click)="clearFilters()"></button>
       </div>
     </div>
@@ -133,8 +140,8 @@
           <div class="policy-row__summary">
             <div class="premium-box">
               <span class="policy-row__meta-label">Składka</span>
-              <strong>{{ policy.annualPremium | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</strong>
-              <span>{{ policy.monthlyPremium | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }} miesięcznie</span>
+              <strong>{{ policy.annualPremium | moneyDisplay: selectedCurrency() }}</strong>
+              <span>{{ policy.monthlyPremium | moneyDisplay: selectedCurrency() }} miesięcznie</span>
             </div>
 
             <div class="policy-row__actions">
@@ -276,7 +283,7 @@
           </div>
           <div>
             <span>Składka roczna</span>
-            <strong>{{ policy.annualPremium | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</strong>
+            <strong>{{ policy.annualPremium | moneyDisplay: selectedCurrency() }}</strong>
           </div>
           <div>
             <span>Status po operacji</span>

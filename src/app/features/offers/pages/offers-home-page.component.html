@@ -66,6 +66,13 @@
       </div>
 
       <div class="toolbar__actions">
+        <app-currency-switcher
+          [selectedCurrency]="selectedCurrency()"
+          [foreignCurrencyAvailable]="foreignCurrencyAvailable()"
+          [availabilityMessage]="currencyAvailability().message"
+          [rateLabel]="currentRateLabel()"
+          (currencyChange)="setSelectedCurrency($event)"
+        />
         <button
           pButton
           type="button"
@@ -153,7 +160,7 @@
           <div class="offer-row__summary">
             <div class="premium-box">
               <span class="offer-row__meta-label">Składka</span>
-              <strong>{{ getPrimaryPremium(offer) | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</strong>
+              <strong>{{ getPrimaryPremium(offer) | moneyDisplay: selectedCurrency() }}</strong>
               <span>{{ offer.validTo ? ('Ważna do ' + (offer.validTo | date: 'dd.MM.yyyy')) : 'Robocza kalkulacja' }}</span>
             </div>
 
@@ -209,7 +216,7 @@
           </div>
           <div>
             <span>Składka</span>
-            <strong>{{ getPrimaryPremium(pending.offer) | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</strong>
+            <strong>{{ getPrimaryPremium(pending.offer) | moneyDisplay: selectedCurrency() }}</strong>
           </div>
         </div>
 

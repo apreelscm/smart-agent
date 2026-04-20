@@ -7,6 +7,7 @@ import { providePrimeNG } from 'primeng/config';
 import { routes } from './app.routes';
 import { primeNgPolishTranslation } from './core/config/primeng-pl';
 import { SmartAgentPreset } from './core/config/primeng-theme';
+import { CurrencyPipe } from '@angular/common';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -26,6 +27,7 @@ export const appConfig: ApplicationConfig = {
       },
       translation: primeNgPolishTranslation
     }),
+    CurrencyPipe,
     {
       provide: LOCALE_ID,
       useValue: 'pl-PL'

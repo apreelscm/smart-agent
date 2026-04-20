@@ -1,10 +1,13 @@
-import { CommonModule, CurrencyPipe } from '@angular/common';
-import { Component, computed, inject, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import { ButtonDirective } from 'primeng/button';
 import { Tag } from 'primeng/tag';
-import { CoverTerm, OfferVariant, PolicyLineCode } from '../../../core/models';
+import { CoverTerm, OfferVariant, PolicyLineCode, SupportedCurrency } from '../../../core/models';
 import { Cover } from '../../../core/models/cover/cover.model';
 import { PaymentPlan } from '../../../core/models/payment/payment-plan.model';
+import { CurrencyService } from '../../../core/services/currency.service';
+import { MoneyDisplayPipe } from '../../../shared/pipes/money-display.pipe';
+import { CurrencySwitcherComponent } from '../../../shared/ui/currency-switcher/currency-switcher.component';
 import { SectionCardComponent } from '../../../shared/ui/section-card/section-card.component';
 import { OfferWizardStateService } from '../state/offer-wizard-state.service';
 
@@ -24,16 +27,38 @@ type PaymentPlanView = {
 
 @Component({
   selector: 'app-variants-step-page',
-  imports: [CommonModule, SectionCardComponent, CurrencyPipe, Tag, ButtonDirective],
+  imports: [CommonModule, SectionCardComponent, Tag, ButtonDirective, MoneyDisplayPipe, CurrencySwitcherComponent],
   templateUrl: './variants-step-page.component.html',
   styleUrl: './variants-step-page.component.scss'
 })
 export class VariantsStepPageComponent {
   private readonly wizardState = inject(OfferWizardStateService);
+  private readonly currencyService = inject(CurrencyService);
+
   protected readonly customerDiscountBudget = 2540;
   protected readonly discountInput = signal<string>('0');
   protected readonly discountError = signal<string | null>(null);
   protected readonly discountBusinessLine = 'Komunikacyjne OC';
+  protected readonly selectedCurrency = signal<SupportedCurrency>('PLN');
+  protected readonly foreignCurrencyAvailable = this.currencyService.isForeignCurrencyAvailable;
+  protected readonly currencyAvailability = this.currencyService.availability;
+  protected readonly currentRateLabel = computed(() => this.currencyService.rateLabel(this.selectedCurrency()));
+  protected readonly discountHelper = computed(() => {
+    const rawValue = this.discountInput().trim();
+
+    if (this.selectedCurrency() === 'PLN' || rawValue === '') {
+      return null;
+    }
+
+    const parsed = Number(rawValue.replace(',', '.'));
+
+    if (Number.isNaN(parsed) || parsed < 0) {
+      return null;
+    }
+
+    return this.currencyService.helperLabelForForeignInput(parsed, this.selectedCurrency());
+  });
+
   protected readonly addons: AddonDefinition[] = [
     { lineCode: 'NNW', coverCode: 'NNW', label: 'NNW' },
     { lineCode: 'NNW_FAMILY', coverCode: 'NNW_FAMILY', label: 'NNW Bezpieczna Rodzina' },
@@ -46,9 +71,7 @@ export class VariantsStepPageComponent {
   protected readonly variants = computed(() => this.wizardState.draftOffer()?.variants ?? []);
   protected readonly variantsByRank = computed(() => [...this.variants()].sort((left, right) => left.rank - right.rank));
   protected readonly selectedVariantId = computed(() => this.wizardState.draftOffer()?.selectedVariantId);
-  protected readonly selectedVariant = computed(() =>
-    this.variantsByRank().find((variant) => variant.id === this.selectedVariantId())
-  );
+  protected readonly selectedVariant = computed(() => this.variantsByRank().find((variant) => variant.id === this.selectedVariantId()));
   protected readonly selectedPaymentPlan = computed(() => this.wizardState.draftOffer()?.selectedPaymentPlan);
   protected readonly paymentPlans = computed(() =>
     [...(this.selectedVariant()?.paymentPlans ?? [])].sort((left, right) => left.installments.length - right.installments.length)
@@ -91,6 +114,12 @@ export class VariantsStepPageComponent {
   constructor() {
     this.wizardState.ensureDefaultVariantSelection();
     this.discountInput.set(String(this.wizardState.discountAmount()));
+
+    effect(() => {
+      if (!this.foreignCurrencyAvailable() && this.selectedCurrency() !== 'PLN') {
+        this.selectedCurrency.set('PLN');
+      }
+    });
   }
 
   protected readonly policyLineCodes = computed<PolicyLineCode[]>(() => {
@@ -102,6 +131,16 @@ export class VariantsStepPageComponent {
 
     return Array.from(lineCodes).filter((lineCode) => this.isLineVisible(lineCode));
   });
+
+  protected setSelectedCurrency(currency: SupportedCurrency): void {
+    if (currency !== 'PLN' && !this.foreignCurrencyAvailable()) {
+      this.selectedCurrency.set('PLN');
+      return;
+    }
+
+    this.selectedCurrency.set(currency);
+    this.discountInput.set(this.formatDiscountInputFromPersistedValue(this.wizardState.discountAmount(), currency));
+  }
 
   protected getLine(variant: OfferVariant | undefined, lineCode: PolicyLineCode) {
     if (!variant) {
@@ -175,15 +214,28 @@ export class VariantsStepPageComponent {
 
     const parsed = Number(rawValue.replace(',', '.'));
     const maxDiscountAmount = this.maxDiscountAmount();
+    const normalizedMax = this.selectedCurrency() === 'PLN' ? maxDiscountAmount : this.currencyService.convertFromPln(maxDiscountAmount, this.selectedCurrency()).convertedAmount;
 
     if (Number.isNaN(parsed) || parsed < 0) {
-      this.discountError.set(`Podaj poprawną wartość kwotową (0-${maxDiscountAmount} PLN).`);
+      this.discountError.set(
+        `Podaj poprawną wartość kwotową (0-${this.currencyService.formatAmount(normalizedMax, this.selectedCurrency())}).`
+      );
       return;
     }
 
-    if (parsed > maxDiscountAmount) {
-      this.discountError.set(`Maksymalna zniżka dla linii ${this.discountBusinessLine} to ${maxDiscountAmount} PLN.`);
-      return;
+    if (this.selectedCurrency() === 'PLN') {
+      if (parsed > maxDiscountAmount) {
+        this.discountError.set(`Maksymalna zniżka dla linii ${this.discountBusinessLine} to ${maxDiscountAmount} PLN.`);
+        return;
+      }
+    } else {
+      const convertedToPln = this.currencyService.convertToPln(parsed, this.selectedCurrency()).convertedAmount;
+      if (convertedToPln > maxDiscountAmount) {
+        this.discountError.set(
+          `Maksymalna zniżka dla linii ${this.discountBusinessLine} to ${this.currencyService.formatAmount(normalizedMax, this.selectedCurrency())}.`
+        );
+        return;
+      }
     }
 
     this.discountError.set(null);
@@ -196,26 +248,46 @@ export class VariantsStepPageComponent {
     if (rawValue === '') {
       this.discountInput.set('0');
       this.discountError.set(null);
-      this.wizardState.setDiscountAmount(0);
       return;
     }
 
     const parsed = Number(rawValue.replace(',', '.'));
 
     if (Number.isNaN(parsed) || parsed < 0) {
-      this.discountError.set(`Podaj poprawną wartość kwotową (0-${maxDiscountAmount} PLN).`);
+      this.discountError.set(`Podaj poprawną wartość kwotową.`);
       return;
     }
 
-    if (parsed > maxDiscountAmount) {
-      this.discountError.set(`Maksymalna zniżka dla linii ${this.discountBusinessLine} to ${maxDiscountAmount} PLN.`);
+    let amountPln = 0;
+
+    if (this.selectedCurrency() === 'PLN') {
+      amountPln = Math.round(parsed);
+    } else {
+      const converted = this.currencyService.convertToPln(parsed, this.selectedCurrency());
+
+      if (!converted.rate) {
+        this.discountError.set('Kurs waluty jest niedostępny. Wprowadź zniżkę w PLN.');
+        this.selectedCurrency.set('PLN');
+        this.discountInput.set(String(this.wizardState.discountAmount()));
+        return;
+      }
+
+      amountPln = converted.convertedAmount;
+    }
+
+    if (amountPln > maxDiscountAmount) {
+      const normalizedMax =
+        this.selectedCurrency() === 'PLN'
+          ? `${maxDiscountAmount} PLN`
+          : this.currencyService.formatAmount(this.currencyService.convertFromPln(maxDiscountAmount, this.selectedCurrency()).convertedAmount, this.selectedCurrency());
+
+      this.discountError.set(`Maksymalna zniżka dla linii ${this.discountBusinessLine} to ${normalizedMax}.`);
       return;
     }
 
-    const normalized = Math.round(parsed);
     this.discountError.set(null);
-    this.discountInput.set(String(normalized));
-    this.wizardState.setDiscountAmount(normalized);
+    this.wizardState.setDiscountAmount(amountPln);
+    this.discountInput.set(this.formatDiscountInputFromPersistedValue(amountPln, this.selectedCurrency()));
   }
 
   protected isPaymentPlanSelected(plan: PaymentPlan): boolean {
@@ -293,6 +365,15 @@ export class VariantsStepPageComponent {
     const unit = this.localizedUnit(term.unit);
     const raw = unit ? `${option} ${unit}` : `${option}`;
     return this.normalizeUnitSpacing(raw);
+  }
+
+  private formatDiscountInputFromPersistedValue(amountPln: number, currency: SupportedCurrency): string {
+    if (currency === 'PLN') {
+      return String(amountPln);
+    }
+
+    const converted = this.currencyService.convertFromPln(amountPln, currency);
+    return converted.convertedAmount.toFixed(2);
   }
 
   private normalizeUnitSpacing(value: string): string {

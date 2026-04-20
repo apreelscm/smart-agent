@@ -1,4 +1,19 @@
 <app-section-card title="Konfiguracja wariantu">
+  <div class="variant-currency-toolbar">
+    <app-currency-switcher
+      [selectedCurrency]="selectedCurrency()"
+      [foreignCurrencyAvailable]="foreignCurrencyAvailable()"
+      [availabilityMessage]="currencyAvailability().message"
+      [rateLabel]="currentRateLabel()"
+      (currencyChange)="setSelectedCurrency($event)"
+    />
+    @if (selectedCurrency() !== 'PLN') {
+      <p class="variant-currency-toolbar__note">
+        Prezentacja walut obcych opiera się na bieżącym kursie NBP. Po ponownym otwarciu wartości EUR/USD mogą się różnić od wcześniej wpisanych.
+      </p>
+    }
+  </div>
+
   <div class="variant-compare-shell" [style.--variant-count]="variantsByRank().length">
     <div class="variant-compare">
       <div class="compare-cell compare-cell--corner">
@@ -17,7 +32,7 @@
         >
           <div class="compare-cell__variant-title">
             <strong>{{ variant.name }}</strong>
-            <span>{{ discountedAmount(variant) | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</span>
+            <span>{{ discountedAmount(variant) | moneyDisplay: selectedCurrency() }}</span>
           </div>
 
           <div class="compare-cell__badges">
@@ -40,7 +55,7 @@
           <section class="compare-cell compare-cell--line-value" [class.compare-cell--selected]="selectedVariantId() === variant.id">
             @if (getLine(variant, lineCode); as line) {
               <header class="line-head">
-                <span>{{ line.premium.amount | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</span>
+                <span>{{ line.premium.amount | moneyDisplay: selectedCurrency() }}</span>
                 @if (line.isRecommended) {
                   <p-tag value="Rekomendowane" severity="contrast" />
                 }
@@ -56,7 +71,7 @@
                         }
                       </div>
                       @if (cover.premiumDelta?.amount) {
-                        <span class="cover-premium">+{{ cover.premiumDelta?.amount | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</span>
+                        <span class="cover-premium">+{{ cover.premiumDelta?.amount | moneyDisplay: selectedCurrency() }}</span>
                       }
                       @if (cover.terms.length > 0) {
                         <ul>
@@ -153,11 +168,11 @@
       <div class="discount-section__line">
         <article class="discount-stat">
           <span>Twój budżet</span>
-          <strong>{{ customerDiscountBudget | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</strong>
+          <strong>{{ customerDiscountBudget | moneyDisplay: selectedCurrency() }}</strong>
         </article>
         <article class="discount-stat">
           <span>Zniżka maksymalna ({{ discountBusinessLine }})</span>
-          <strong>{{ maxDiscountAmount() | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</strong>
+          <strong>{{ maxDiscountAmount() | moneyDisplay: selectedCurrency() }}</strong>
         </article>
         <div class="discount-section__field">
           <span class="discount-section__field-label">Zniżka kwotowa ({{ discountBusinessLine }})</span>
@@ -165,15 +180,19 @@
             type="number"
             min="0"
             [max]="maxDiscountAmount()"
-            step="1"
+            step="{{ selectedCurrency() === 'PLN' ? '1' : '0.01' }}"
             [value]="discountInput()"
             (input)="onDiscountInput($any($event.target).value)"
             (blur)="onDiscountBlur()"
-            aria-label="Budżet zniżek w PLN"
+            [disabled]="selectedCurrency() !== 'PLN' && !foreignCurrencyAvailable()"
+            aria-label="Budżet zniżek"
           />
-          <span>PLN</span>
+          <span>{{ selectedCurrency() }}</span>
         </div>
       </div>
+      @if (discountHelper(); as discountHelperText) {
+        <p class="discount-section__helper">{{ discountHelperText }}</p>
+      }
       @if (discountError(); as discountErrorMessage) {
         <p class="discount-section__error">{{ discountErrorMessage }}</p>
       }
@@ -198,16 +217,16 @@
           >
             <span>{{ paymentPeriodLabel(paymentRow.plan) }}</span>
             <strong>{{ paymentRow.installmentsCount }}</strong>
-            <strong>{{ paymentRow.firstInstallmentAmount | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</strong>
+            <strong>{{ paymentRow.firstInstallmentAmount | moneyDisplay: selectedCurrency() }}</strong>
             <strong>
               @if (paymentRow.remainingInstallmentAmount !== null) {
                 @let remainingAmount = paymentRow.remainingInstallmentAmount;
-                {{ remainingAmount | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}
+                {{ remainingAmount | moneyDisplay: selectedCurrency() }}
               } @else {
                 —
               }
             </strong>
-            <strong>{{ paymentRow.totalAmount | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</strong>
+            <strong>{{ paymentRow.totalAmount | moneyDisplay: selectedCurrency() }}</strong>
           </button>
         }
       </div>

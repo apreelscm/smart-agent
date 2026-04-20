@@ -1,13 +1,16 @@
-import { CommonModule, CurrencyPipe, PercentPipe } from '@angular/common';
+import { CommonModule, PercentPipe } from '@angular/common';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { Component, computed, inject, signal } from '@angular/core';
-import { Offer, OfferStatus, Policy } from '../../../core/models';
+import { Component, computed, effect, inject, signal } from '@angular/core';
+import { Offer, OfferStatus, Policy, SupportedCurrency } from '../../../core/models';
 import { OffersRepository } from '../../../core/repositories/offers.repository';
 import { PoliciesRepository } from '../../../core/repositories/policies.repository';
 import { SalesFlowRuntimeRepository } from '../../../core/repositories/sales-flow-runtime.repository';
+import { CurrencyService } from '../../../core/services/currency.service';
+import { MoneyDisplayPipe } from '../../../shared/pipes/money-display.pipe';
 import { PageHeaderComponent } from '../../../shared/ui/page-header/page-header.component';
 import { SectionCardComponent } from '../../../shared/ui/section-card/section-card.component';
 import { StatTileComponent } from '../../../shared/ui/stat-tile/stat-tile.component';
+import { CurrencySwitcherComponent } from '../../../shared/ui/currency-switcher/currency-switcher.component';
 
 type FunnelRow = {
   label: string;
@@ -28,7 +31,15 @@ type BusinessLineRow = {
 
 @Component({
   selector: 'app-reports-page',
-  imports: [CommonModule, CurrencyPipe, PercentPipe, PageHeaderComponent, SectionCardComponent, StatTileComponent],
+  imports: [
+    CommonModule,
+    PercentPipe,
+    PageHeaderComponent,
+    SectionCardComponent,
+    StatTileComponent,
+    MoneyDisplayPipe,
+    CurrencySwitcherComponent
+  ],
   templateUrl: './reports-page.component.html',
   styleUrl: './reports-page.component.scss'
 })
@@ -36,11 +47,16 @@ export class ReportsPageComponent {
   private readonly offersRepository = inject(OffersRepository);
   private readonly policiesRepository = inject(PoliciesRepository);
   private readonly runtimeRepository = inject(SalesFlowRuntimeRepository);
+  private readonly currencyService = inject(CurrencyService);
 
   private readonly offersFromMock = toSignal(this.offersRepository.getOffers(), { initialValue: [] as Offer[] });
   private readonly policiesFromMock = toSignal(this.policiesRepository.getPolicies(), { initialValue: [] as Policy[] });
   protected readonly dateFrom = signal(this.defaultDateFrom());
   protected readonly dateTo = signal(this.defaultDateTo());
+  protected readonly selectedCurrency = signal<SupportedCurrency>('PLN');
+  protected readonly foreignCurrencyAvailable = this.currencyService.isForeignCurrencyAvailable;
+  protected readonly currencyAvailability = this.currencyService.availability;
+  protected readonly currentRateLabel = computed(() => this.currencyService.rateLabel(this.selectedCurrency()));
 
   protected readonly offers = computed<Offer[]>(() => {
     const byId = new Map<string, Offer>();
@@ -54,13 +70,9 @@ export class ReportsPageComponent {
     return Array.from(byId.values());
   });
 
-  protected readonly filteredOffers = computed<Offer[]>(() =>
-    this.offers().filter((offer) => this.isInSelectedRange(offer.createdAt))
-  );
+  protected readonly filteredOffers = computed<Offer[]>(() => this.offers().filter((offer) => this.isInSelectedRange(offer.createdAt)));
 
-  protected readonly filteredPolicies = computed<Policy[]>(() =>
-    this.policies().filter((policy) => this.isInSelectedRange(policy.issueDate))
-  );
+  protected readonly filteredPolicies = computed<Policy[]>(() => this.policies().filter((policy) => this.isInSelectedRange(policy.issueDate)));
 
   protected readonly kpis = computed(() => {
     const offers = this.filteredOffers();
@@ -75,7 +87,7 @@ export class ReportsPageComponent {
     return [
       {
         label: 'Składka przypisana',
-        value: assignedPremium.toLocaleString('pl-PL') + ' zł',
+        value: this.formatForView(assignedPremium),
         note: 'polisy opłacone'
       },
       {
@@ -90,7 +102,7 @@ export class ReportsPageComponent {
       },
       {
         label: 'Śr. składka miesięczna',
-        value: monthlyAveragePremium.toLocaleString('pl-PL') + ' zł',
+        value: this.formatForView(monthlyAveragePremium),
         note: 'portfel aktywnych polis'
       },
       {
@@ -133,7 +145,7 @@ export class ReportsPageComponent {
       const date = new Date(now.getFullYear(), now.getMonth() - shift, 1);
       monthKeys.push(`${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`);
     }
-    // Presentation-oriented trend for dashboard readability.
+
     const paidPremium = this.filteredPolicies()
       .filter((policy) => policy.paymentStatus === 'PAID')
       .reduce((sum, policy) => sum + policy.annualPremium, 0);
@@ -207,6 +219,34 @@ export class ReportsPageComponent {
     return `conic-gradient(#0f766e ${paidPercent}%, #dce5f2 ${paidPercent}% 100%)`;
   });
 
+  constructor() {
+    effect(() => {
+      if (!this.foreignCurrencyAvailable() && this.selectedCurrency() !== 'PLN') {
+        this.selectedCurrency.set('PLN');
+      }
+    });
+  }
+
+  protected setSelectedCurrency(currency: SupportedCurrency): void {
+    if (currency !== 'PLN' && !this.foreignCurrencyAvailable()) {
+      this.selectedCurrency.set('PLN');
+      return;
+    }
+
+    this.selectedCurrency.set(currency);
+  }
+
+  private formatForView(amountPln: number): string {
+    const selectedCurrency = this.selectedCurrency();
+
+    if (selectedCurrency === 'PLN') {
+      return this.currencyService.formatAmount(amountPln, 'PLN');
+    }
+
+    const converted = this.currencyService.convertFromPln(amountPln, selectedCurrency);
+    return this.currencyService.formatAmount(converted.convertedAmount, converted.targetCurrency);
+  }
+
   private isInSelectedRange(rawDate: string | undefined): boolean {
     if (!rawDate) {
       return false;
@@ -232,5 +272,4 @@ export class ReportsPageComponent {
     date.setFullYear(date.getFullYear() - 1);
     return date.toISOString().slice(0, 10);
   }
-
 }
