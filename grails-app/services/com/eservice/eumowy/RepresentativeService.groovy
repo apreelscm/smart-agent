@@ -24,7 +24,7 @@ class RepresentativeService {
     def mapperService
     def dictionaryService
 
-    List<RepresentativeCommand> getRepresentativesFromCBD(String nip) {
+    List<RepresentativeCommand> getRepresentativesFromCBD(String nip, ProcessCommand cmdOpt) {
         log.info("Fetching representatives from CBD for nip ${nip}")
         List<GroovyRowResult> representatives = cbdService.getReprezentanciFromCbd(nip)
 
@@ -50,6 +50,10 @@ class RepresentativeService {
             representative.setDocumentIssueDate(getDate(result.dataWydaniaDokumetu))
             representative.setHasSignedContract(result.czyPodpisalaUmowe ? result.czyPodpisalaUmowe == "T" : null)
             representative.setMidCBD(result.mid)
+
+            if (cmdOpt != null && !cmdOpt.hasActivitiesThatRequiresAtLeastOneRepresentativeToSignContract) {
+                representative.setHasSignedContract(null)
+            }
 
             if (representative.pesel) {
                 representative.setVerification(AcceptorVerification.PESEL)

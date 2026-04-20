@@ -1908,7 +1908,7 @@ class ProcessService {
     }
 
     void fillCommandWithCBDData(ProcessCommand command) {
-        command.cbdRepresentatives = representativeService.getRepresentativesFromCBD(command.nip)
+        command.cbdRepresentatives = representativeService.getRepresentativesFromCBD(command.nip, command)
         command.cbdBeneficiaries = representativeService.getDaneBeneficjentaRzeczywistego(command.nip as String)
 
         if (command.representatives == null || command.representatives.isEmpty() && command.cbdRepresentatives.size() > 0) {

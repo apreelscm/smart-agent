@@ -1490,7 +1490,7 @@ class ActivityController {
         String nip = params.nip
         int index = params.index as int
         String representativeId = params.representativeCbdMidId
-        List<RepresentativeCommand> representativesByNip = representativeService.getRepresentativesFromCBD(nip)
+        List<RepresentativeCommand> representativesByNip = representativeService.getRepresentativesFromCBD(nip, null)
 
         if (index >= representativesByNip.size()) {
             render JSONObject.NULL
