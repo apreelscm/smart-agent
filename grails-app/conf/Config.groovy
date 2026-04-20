@@ -68,6 +68,14 @@ grails.databinding.dateFormats = ['yyyy-MM-dd']
 
 
 grails.cache.config = {
+    defaultCache {
+        maxElementsInMemory = 10000
+        eternal = false
+        timeToLiveSeconds = 600
+        overflowToDisk = false
+        memoryStoreEvictionPolicy = 'LRU'
+    }
+
     cache = {
         name = 'eumowyCacheShort'
         maxElementsInMemory = 2000
@@ -80,7 +88,7 @@ grails.cache.config = {
         name = 'eumowyCacheLong'
         maxElementsInMemory = 1000
         eternal = false
-        timeToLiveSeconds = 36000
+        timeToLiveSeconds = 600
         overflowToDisk = false
         memoryStoreEvictionPolicy = 'LRU'
     }
