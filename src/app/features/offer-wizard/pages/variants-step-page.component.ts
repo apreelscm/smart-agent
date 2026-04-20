@@ -7,6 +7,9 @@ import { Cover } from '../../../core/models/cover/cover.model';
 import { PaymentPlan } from '../../../core/models/payment/payment-plan.model';
 import { SectionCardComponent } from '../../../shared/ui/section-card/section-card.component';
 import { OfferWizardStateService } from '../state/offer-wizard-state.service';
+import { CurrencySwitchComponent } from '../../../shared/ui/currency-switch/currency-switch.component';
+import { CurrencyDisplayPipe } from '../../../shared/pipes/currency-display.pipe';
+import { CurrencyService } from '../../../core/services/currency.service';
 
 type AddonDefinition = {
   lineCode: PolicyLineCode;
@@ -24,12 +27,14 @@ type PaymentPlanView = {
 
 @Component({
   selector: 'app-variants-step-page',
-  imports: [CommonModule, SectionCardComponent, CurrencyPipe, Tag, ButtonDirective],
+  imports: [CommonModule, SectionCardComponent, CurrencyPipe, Tag, ButtonDirective, CurrencySwitchComponent, CurrencyDisplayPipe],
   templateUrl: './variants-step-page.component.html',
   styleUrl: './variants-step-page.component.scss'
 })
 export class VariantsStepPageComponent {
   private readonly wizardState = inject(OfferWizardStateService);
+  private readonly currencyService = inject(CurrencyService);
+
   protected readonly customerDiscountBudget = 2540;
   protected readonly discountInput = signal<string>('0');
   protected readonly discountError = signal<string | null>(null);
@@ -58,6 +63,10 @@ export class VariantsStepPageComponent {
     return Math.max(0, Math.min(this.customerDiscountBudget, ocPremium));
   });
   protected readonly appliedDiscountAmount = computed(() => Math.min(this.wizardState.discountAmount(), this.maxDiscountAmount()));
+
+  // Presentation currency selected in this view (view-scoped)
+  protected readonly selectedCurrency = signal<'PLN' | 'EUR' | 'USD'>('PLN');
+
   protected readonly paymentPlanRows = computed<PaymentPlanView[]>(() => {
     const appliedDiscountAmount = this.appliedDiscountAmount();
 
@@ -323,5 +332,29 @@ export class VariantsStepPageComponent {
 
     const addon = this.addons.find((item) => item.lineCode === lineCode && item.coverCode === coverCode);
     return addon ? this.isAddonSelected(addon) : false;
+  }
+
+  // Helpers used by template for presentation:
+
+  /**
+   * Convert a PLN-stored amount to currently selected presentation currency.
+   */
+  protected present(amountPln: number): number {
+    try {
+      return this.currencyService.convert(amountPln, 'PLN', this.selectedCurrency());
+    } catch {
+      // if conversion impossible, fallback to PLN integer
+      return Math.round(amountPln);
+    }
+  }
+
+  protected presentFormatted(amountPln: number): string {
+    // formatted via pipe in template; this helper kept for computed logic if needed
+    return '';
+  }
+
+  protected rateForSelected(): number | null {
+    if (this.selectedCurrency() === 'PLN') return null;
+    return this.currencyService.rateFor(this.selectedCurrency() as 'EUR' | 'USD');
   }
 }

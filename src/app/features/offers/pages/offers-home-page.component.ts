@@ -17,6 +17,9 @@ import { Offer, OfferStatus, ReferenceData } from '../../../core/models';
 import { PageHeaderComponent } from '../../../shared/ui/page-header/page-header.component';
 import { SectionCardComponent } from '../../../shared/ui/section-card/section-card.component';
 import { StatTileComponent } from '../../../shared/ui/stat-tile/stat-tile.component';
+import { CurrencySwitchComponent } from '../../../shared/ui/currency-switch/currency-switch.component';
+import { CurrencyDisplayPipe } from '../../../shared/pipes/currency-display.pipe';
+import { CurrencyService } from '../../../core/services/currency.service';
 
 type FilterOption = {
   code: string;
@@ -68,7 +71,9 @@ type CropOfferPayload = {
     InputText,
     Select,
     SplitButton,
-    Tag
+    Tag,
+    CurrencySwitchComponent,
+    CurrencyDisplayPipe
   ],
   templateUrl: './offers-home-page.component.html',
   styleUrl: './offers-home-page.component.scss'
@@ -78,6 +83,7 @@ export class OffersHomePageComponent {
   private readonly referenceDataRepository = inject(ReferenceDataRepository);
   private readonly salesFlowRuntimeRepository = inject(SalesFlowRuntimeRepository);
   private readonly router = inject(Router);
+  private readonly currencyService = inject(CurrencyService);
 
   protected readonly searchTerm = signal('');
   protected readonly selectedStatus = signal<string | null>(null);
@@ -87,6 +93,9 @@ export class OffersHomePageComponent {
   protected readonly statusOverrides = signal<Record<string, OfferStatus>>({});
   protected readonly pendingTransition = signal<PendingTransition | null>(null);
   protected readonly transitionDialogVisible = signal(false);
+
+  // view local presentation currency
+  protected readonly selectedCurrency = signal<'PLN' | 'EUR' | 'USD'>('PLN');
 
   protected readonly offers = toSignal(this.offersRepository.getOffers(), { initialValue: [] as Offer[] });
   protected readonly referenceData = toSignal(this.referenceDataRepository.getReferenceData(), {
@@ -198,7 +207,7 @@ export class OffersHomePageComponent {
     return [
       { label: 'Oferta wystawiona', value: `${issued}`, note: 'gotowe do decyzji klienta' },
       { label: 'Draft / Kalkulacja', value: `${inProgress}`, note: 'oferty w przygotowaniu' },
-      { label: 'Średnia składka', value: `${averageMonthlyPremium.toLocaleString('pl-PL')} zł`, note: 'w ujęciu miesięcznym' }
+      { label: 'Średnia składka', value: this.formatPrimary(averageMonthlyPremium), note: 'w ujęciu miesięcznym' }
     ];
   });
 
@@ -515,5 +524,22 @@ export class OffersHomePageComponent {
       cropsCount: crops.length,
       parcelsCount
     };
+  }
+
+  protected formatPrimary(amountPln: number): string {
+    try {
+      const converted = this.currencyService.convert(amountPln, 'PLN', this.selectedCurrency());
+      // use pipe via manual formatting to get same visuals as pipe
+      return new (Intl as any).NumberFormat(this.selectedCurrency() === 'USD' ? 'en-US' : 'pl-PL', {
+        style: 'currency',
+        currency: this.selectedCurrency(),
+        minimumFractionDigits: this.selectedCurrency() === 'PLN' ? 0 : 2,
+        maximumFractionDigits: this.selectedCurrency() === 'PLN' ? 0 : 2,
+        currencyDisplay: 'symbol'
+      }).format(converted);
+    } catch {
+      // fallback to PLN display
+      return `${Math.round(amountPln).toLocaleString('pl-PL')} zł`;
+    }
   }
 }

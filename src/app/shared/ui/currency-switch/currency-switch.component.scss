@@ -1,0 +1,12 @@
+.currency-switch {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.currency-button {
+  min-width: 3.25rem;
+}
+.currency-button--active {
+  font-weight: 700;
+}

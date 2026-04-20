@@ -16,6 +16,9 @@ import { PoliciesRepository } from '../../../core/repositories/policies.reposito
 import { SalesFlowRuntimeRepository } from '../../../core/repositories/sales-flow-runtime.repository';
 import { PageHeaderComponent } from '../../../shared/ui/page-header/page-header.component';
 import { SectionCardComponent } from '../../../shared/ui/section-card/section-card.component';
+import { CurrencySwitchComponent } from '../../../shared/ui/currency-switch/currency-switch.component';
+import { CurrencyDisplayPipe } from '../../../shared/pipes/currency-display.pipe';
+import { CurrencyService } from '../../../core/services/currency.service';
 
 type PolicyViewFilter = 'ALL' | 'RENEWALS' | 'TO_PAY';
 
@@ -35,7 +38,7 @@ type PolicyStatusPresentation = {
 
 @Component({
   selector: 'app-policies-home-page',
-  imports: [CommonModule, FormsModule, RouterLink, PageHeaderComponent, SectionCardComponent, ButtonDirective, Dialog, InputText, Select, SplitButton, Tag],
+  imports: [CommonModule, FormsModule, RouterLink, PageHeaderComponent, SectionCardComponent, ButtonDirective, Dialog, InputText, Select, SplitButton, Tag, CurrencySwitchComponent, CurrencyDisplayPipe],
   templateUrl: './policies-home-page.component.html',
   styleUrl: './policies-home-page.component.scss'
 })
@@ -44,6 +47,7 @@ export class PoliciesHomePageComponent {
   private readonly salesFlowRuntimeRepository = inject(SalesFlowRuntimeRepository);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
+  private readonly currencyService = inject(CurrencyService);
 
   protected readonly searchTerm = signal('');
   protected readonly selectedFilter = signal<PolicyViewFilter>('ALL');
@@ -58,6 +62,10 @@ export class PoliciesHomePageComponent {
   protected readonly pendingPayment = signal<Policy | null>(null);
   protected readonly paymentDialogVisible = signal(false);
   protected readonly basePolicies = toSignal(this.policiesRepository.getPolicies(), { initialValue: [] as Policy[] });
+
+  // view local presentation currency
+  protected readonly selectedCurrency = signal<'PLN' | 'EUR' | 'USD'>('PLN');
+
   protected readonly policies = computed<Policy[]>(() => {
     const runtimePolicies = this.salesFlowRuntimeRepository.promotedPolicies();
     const overrides = this.statusOverrides();
@@ -222,7 +230,6 @@ export class PoliciesHomePageComponent {
   }
 
   protected closeCancellationDialog(): void {
-    this.debug('dialog: close cancellation');
     this.cancellationDialogVisible.set(false);
     this.pendingCancellation.set(null);
   }
@@ -234,7 +241,6 @@ export class PoliciesHomePageComponent {
   }
 
   protected closeRenewalDialog(): void {
-    this.debug('dialog: close renewal');
     this.renewalDialogVisible.set(false);
     this.pendingRenewal.set(null);
   }
@@ -258,7 +264,6 @@ export class PoliciesHomePageComponent {
   }
 
   protected closePaymentDialog(): void {
-    this.debug('dialog: close payment');
     this.paymentDialogVisible.set(false);
     this.pendingPayment.set(null);
   }

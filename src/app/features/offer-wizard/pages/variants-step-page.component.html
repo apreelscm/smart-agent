@@ -2,7 +2,10 @@
   <div class="variant-compare-shell" [style.--variant-count]="variantsByRank().length">
     <div class="variant-compare">
       <div class="compare-cell compare-cell--corner">
-        <span class="compare-eyebrow">Zakres oferty</span>
+        <div style="display:flex;align-items:center;gap:0.5rem;">
+          <span class="compare-eyebrow">Zakres oferty</span>
+          <app-currency-switch (selectionChange)="selectedCurrency.set($event)"></app-currency-switch>
+        </div>
       </div>
 
       @for (variant of variantsByRank(); track variant.id) {
@@ -17,7 +20,9 @@
         >
           <div class="compare-cell__variant-title">
             <strong>{{ variant.name }}</strong>
-            <span>{{ discountedAmount(variant) | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</span>
+            <span>
+              {{ present( discountedAmount(variant) ) | currencyDisplay:selectedCurrency() }}
+            </span>
           </div>
 
           <div class="compare-cell__badges">
@@ -28,6 +33,17 @@
               <p-tag value="Wybrany" severity="info" />
             }
           </div>
+
+          @if (selectedCurrency() !== 'PLN') {
+            <small class="variant-rate-info">
+              @let rate = rateForSelected();
+              @if (rate !== null) {
+                <span>≈ {{ discountedAmount(variant) | number:'1.0-0' }} PLN po kursie 1 {{ selectedCurrency() }} = {{ rate }} PLN (z dnia {{ currencyService.ratesDate() }})</span>
+              } @else {
+                <span>Kurs dla {{ selectedCurrency() }} niedostępny — wyświetlane kwoty w PLN</span>
+              }
+            </small>
+          }
         </header>
       }
 
@@ -40,7 +56,7 @@
           <section class="compare-cell compare-cell--line-value" [class.compare-cell--selected]="selectedVariantId() === variant.id">
             @if (getLine(variant, lineCode); as line) {
               <header class="line-head">
-                <span>{{ line.premium.amount | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</span>
+                <span>{{ present(line.premium.amount) | currencyDisplay:selectedCurrency() }}</span>
                 @if (line.isRecommended) {
                   <p-tag value="Rekomendowane" severity="contrast" />
                 }
@@ -56,7 +72,7 @@
                         }
                       </div>
                       @if (cover.premiumDelta?.amount) {
-                        <span class="cover-premium">+{{ cover.premiumDelta?.amount | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</span>
+                        <span class="cover-premium">+{{ present(cover.premiumDelta?.amount ?? 0) | currencyDisplay:selectedCurrency() }}</span>
                       }
                       @if (cover.terms.length > 0) {
                         <ul>
@@ -198,16 +214,16 @@
           >
             <span>{{ paymentPeriodLabel(paymentRow.plan) }}</span>
             <strong>{{ paymentRow.installmentsCount }}</strong>
-            <strong>{{ paymentRow.firstInstallmentAmount | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</strong>
+            <strong>{{ present(paymentRow.firstInstallmentAmount) | currencyDisplay:selectedCurrency() }}</strong>
             <strong>
               @if (paymentRow.remainingInstallmentAmount !== null) {
                 @let remainingAmount = paymentRow.remainingInstallmentAmount;
-                {{ remainingAmount | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}
+                {{ present(remainingAmount) | currencyDisplay:selectedCurrency() }}
               } @else {
                 —
               }
             </strong>
-            <strong>{{ paymentRow.totalAmount | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</strong>
+            <strong>{{ present(paymentRow.totalAmount) | currencyDisplay:selectedCurrency() }}</strong>
           </button>
         }
       </div>
