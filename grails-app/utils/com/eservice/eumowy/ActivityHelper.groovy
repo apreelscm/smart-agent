@@ -16,6 +16,7 @@ class ActivityHelper {
     public static final String DODANIE_DCC = "dodanieDcc"
     public static final String ZMIANA_WARUNKOW_DCC = "zmianaWarunkowDcc"
     public static final String ANEKS = "aneks"
+    public static final String PROMOCYJNE_OBNIZENIE_NAJMU = "promocyjneObnizenieNajmu"
 
     static boolean isNewAgreement(Process process) {
         return contains(process, NOWA_UMOWA)

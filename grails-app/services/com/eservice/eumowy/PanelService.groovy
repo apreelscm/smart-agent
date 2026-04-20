@@ -39,12 +39,12 @@ class PanelService {
                 .any { RepresentativesValidator.ACTIVITIES_THAT_REQUIRES_AT_LEAST_ONE_REPRESENTATIVE_TO_SIGN_CONTRACT.contains(it.code) }
         cmd.hasNewUmowaAndPrepaid = isNewAgreement(cmd.process) && cmd.hasDodaniePrepaid
         cmd.isBundleActivity = isBundleActivity(cmd.process)
-        cmd.promObjNaj1 = calculatorService.getCalcProperty(calc, "E_PROM_OBN_NAJ_1")
         cmd.beneficjentKRS = nullify(cmd.beneficjentKRS)
 
-        if (SignatureHelper.containsAtLeastOne(cmd.process, newArrayList(SignatureName.APUW)) &&
-            !contains(cmd.process, WYMIANA_UMOWY_NAJMU_NA_UMOWE_WSPOLPRACY)) {
-            def val = calculatorService.getCalcProperty(calc, "E_MIES_NAL_OPL_NAJ")
+        cmd.promObjNaj1 = calculatorService.getCalcProperty(calc, "E_MIES_NAL_OPL_NAJ")
+        cmd.promObjNaj1 = cmd.promObjNaj1 ? cmd.promObjNaj1 : 1
+        if (contains(cmd.process, PROMOCYJNE_OBNIZENIE_NAJMU)) {
+            def val = calculatorService.getCalcProperty(calc, "E_PROM_OBN_NAJ_1")
             cmd.promObjNaj1 = val ? val : 1
         }
 
