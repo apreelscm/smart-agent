@@ -114,11 +114,15 @@ describe('OffersHomePageComponent', () => {
     expect(component['selectedCurrency']()).toBe('EUR');
   });
 
-  it('should render clear filters button with Wyczyść label', () => {
+  it('should render clear filters button with Wyczyść label and green styling hook', () => {
     const clearFiltersButton: HTMLButtonElement | null = fixture.nativeElement.querySelector('.clear-filters-button');
+    const newOfferButton: HTMLElement | null = fixture.nativeElement.querySelector('a[pButton]');
 
     expect(clearFiltersButton).not.toBeNull();
     expect(clearFiltersButton?.textContent?.trim()).toBe('Wyczyść');
+    expect(clearFiltersButton?.classList.contains('clear-filters-button')).toBeTrue();
+    expect(clearFiltersButton?.getAttribute('style')).toBeNull();
     expect(fixture.nativeElement.textContent).not.toContain('Reset');
+    expect(newOfferButton?.classList.contains('clear-filters-button')).toBeFalse();
   });
 }
