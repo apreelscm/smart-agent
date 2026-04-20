@@ -73,6 +73,27 @@
   white-space: nowrap;
 }
 
+:host ::ng-deep .clear-filters-button.p-button {
+  background: #1d4ed8;
+  border-color: #1d4ed8;
+  color: #ffffff;
+}
+
+:host ::ng-deep .clear-filters-button.p-button:hover:not(:disabled) {
+  background: #1e40af;
+  border-color: #1e40af;
+}
+
+:host ::ng-deep .clear-filters-button.p-button:focus-visible {
+  box-shadow: 0 0 0 0.2rem rgba(29, 78, 216, 0.2);
+}
+
+:host ::ng-deep .clear-filters-button.p-button:disabled {
+  background: #1d4ed8;
+  border-color: #1d4ed8;
+  color: #ffffff;
+}
+
 .results-meta {
   display: flex;
   justify-content: space-between;
