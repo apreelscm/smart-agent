@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { Router, RouterLink } from '@angular/router';
@@ -13,10 +13,13 @@ import { Tag } from 'primeng/tag';
 import { OffersRepository } from '../../../core/repositories/offers.repository';
 import { ReferenceDataRepository } from '../../../core/repositories/reference-data.repository';
 import { SalesFlowRuntimeRepository } from '../../../core/repositories/sales-flow-runtime.repository';
-import { Offer, OfferStatus, ReferenceData } from '../../../core/models';
+import { Offer, OfferStatus, ReferenceData, SupportedCurrency } from '../../../core/models';
+import { CurrencyService } from '../../../core/services/currency.service';
+import { MoneyDisplayPipe } from '../../../shared/pipes/money-display.pipe';
 import { PageHeaderComponent } from '../../../shared/ui/page-header/page-header.component';
 import { SectionCardComponent } from '../../../shared/ui/section-card/section-card.component';
 import { StatTileComponent } from '../../../shared/ui/stat-tile/stat-tile.component';
+import { CurrencySwitcherComponent } from '../../../shared/ui/currency-switcher/currency-switcher.component';
 
 type FilterOption = {
   code: string;
@@ -68,7 +71,9 @@ type CropOfferPayload = {
     InputText,
     Select,
     SplitButton,
-    Tag
+    Tag,
+    MoneyDisplayPipe,
+    CurrencySwitcherComponent
   ],
   templateUrl: './offers-home-page.component.html',
   styleUrl: './offers-home-page.component.scss'
@@ -77,6 +82,7 @@ export class OffersHomePageComponent {
   private readonly offersRepository = inject(OffersRepository);
   private readonly referenceDataRepository = inject(ReferenceDataRepository);
   private readonly salesFlowRuntimeRepository = inject(SalesFlowRuntimeRepository);
+  private readonly currencyService = inject(CurrencyService);
   private readonly router = inject(Router);
 
   protected readonly searchTerm = signal('');
@@ -87,6 +93,7 @@ export class OffersHomePageComponent {
   protected readonly statusOverrides = signal<Record<string, OfferStatus>>({});
   protected readonly pendingTransition = signal<PendingTransition | null>(null);
   protected readonly transitionDialogVisible = signal(false);
+  protected readonly selectedCurrency = signal<SupportedCurrency>('PLN');
 
   protected readonly offers = toSignal(this.offersRepository.getOffers(), { initialValue: [] as Offer[] });
   protected readonly referenceData = toSignal(this.referenceDataRepository.getReferenceData(), {
@@ -198,13 +205,19 @@ export class OffersHomePageComponent {
     return [
       { label: 'Oferta wystawiona', value: `${issued}`, note: 'gotowe do decyzji klienta' },
       { label: 'Draft / Kalkulacja', value: `${inProgress}`, note: 'oferty w przygotowaniu' },
-      { label: 'Średnia składka', value: `${averageMonthlyPremium.toLocaleString('pl-PL')} zł`, note: 'w ujęciu miesięcznym' }
+      {
+        label: 'Średnia składka',
+        value: this.formatPlnAmountForView(averageMonthlyPremium),
+        note: 'w ujęciu miesięcznym'
+      }
     ];
   });
 
   protected readonly totalVisibleOffers = computed(() => this.filteredOffers().length);
+  protected readonly foreignCurrencyAvailable = this.currencyService.isForeignCurrencyAvailable;
+  protected readonly currencyAvailability = this.currencyService.availability;
+  protected readonly currentRateLabel = computed(() => this.currencyService.rateLabel(this.selectedCurrency()));
 
-  // New computed signal to detect if any filter or sorting differs from default values
   protected readonly filtersChanged = computed(() => {
     return (
       this.searchTerm() !== '' ||
@@ -214,6 +227,23 @@ export class OffersHomePageComponent {
       this.selectedSortDirection() !== 'DESC'
     );
   });
+
+  constructor() {
+    effect(() => {
+      if (!this.foreignCurrencyAvailable() && this.selectedCurrency() !== 'PLN') {
+        this.selectedCurrency.set('PLN');
+      }
+    });
+  }
+
+  protected setSelectedCurrency(currency: SupportedCurrency): void {
+    if (currency !== 'PLN' && !this.foreignCurrencyAvailable()) {
+      this.selectedCurrency.set('PLN');
+      return;
+    }
+
+    this.selectedCurrency.set(currency);
+  }
 
   protected getCustomerDisplayName(offer: Offer): string {
     const identity = offer.customer.identity;
@@ -326,7 +356,6 @@ export class OffersHomePageComponent {
     this.closeTransitionDialog();
   }
 
-  // New method to clear all filters and sorting to default values
   protected clearAllFilters(): void {
     this.searchTerm.set('');
     this.selectedStatus.set('ALL');
@@ -390,6 +419,17 @@ export class OffersHomePageComponent {
 
   protected offerProductLabel(offer: Offer): string {
     return this.isCropOffer(offer) ? 'Oferta upraw' : 'Oferta komunikacyjna';
+  }
+
+  private formatPlnAmountForView(amountPln: number): string {
+    const selectedCurrency = this.selectedCurrency();
+
+    if (selectedCurrency === 'PLN') {
+      return this.currencyService.formatAmount(amountPln, 'PLN');
+    }
+
+    const converted = this.currencyService.convertFromPln(amountPln, selectedCurrency);
+    return this.currencyService.formatAmount(converted.convertedAmount, converted.targetCurrency);
   }
 
   private copyOffer(offerId: string): void {
@@ -468,7 +508,6 @@ export class OffersHomePageComponent {
   }
 
   private printPlaceholder(offer: Offer): void {
-    // Placeholder action for future document generation integration.
     console.log('[Offers] Print placeholder action triggered for offer', offer.id);
   }
 

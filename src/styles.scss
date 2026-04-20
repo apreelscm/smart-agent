@@ -50,3 +50,17 @@ a.p-button:active,
 a.p-button:visited {
   text-decoration: none;
 }
+
+.currency-info {
+  color: #64748b;
+  font-size: 0.8rem;
+}
+
+.currency-notice {
+  padding: 0.55rem 0.7rem;
+  border: 1px solid rgba(29, 78, 216, 0.16);
+  border-radius: 0.5rem;
+  background: #f4f8ff;
+  color: #36506b;
+  font-size: 0.82rem;
+}

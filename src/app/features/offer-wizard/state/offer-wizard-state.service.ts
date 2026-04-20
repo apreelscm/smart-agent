@@ -106,25 +106,27 @@ export class OfferWizardStateService {
     const product = source.product ?? 'MOTOR';
     this.draftOfferState.set(
       this.withSelectedVariantFlag(
-        (product === 'MOTOR' ? this.ensureAddonLines({
-          ...source,
-          id: 'draft-new-offer',
-          offerNumber: 'NOWA / kopia',
-          status: 'DRAFT',
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
-          validTo: undefined,
-          renewalContext: undefined
-        }) : {
-          ...source,
-          id: 'draft-new-offer',
-          offerNumber: 'NOWA / kopia',
-          status: 'DRAFT',
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
-          validTo: undefined,
-          renewalContext: undefined
-        })
+        (product === 'MOTOR'
+          ? this.ensureAddonLines({
+              ...source,
+              id: 'draft-new-offer',
+              offerNumber: 'NOWA / kopia',
+              status: 'DRAFT',
+              createdAt: new Date().toISOString(),
+              updatedAt: new Date().toISOString(),
+              validTo: undefined,
+              renewalContext: undefined
+            })
+          : {
+              ...source,
+              id: 'draft-new-offer',
+              offerNumber: 'NOWA / kopia',
+              status: 'DRAFT',
+              createdAt: new Date().toISOString(),
+              updatedAt: new Date().toISOString(),
+              validTo: undefined,
+              renewalContext: undefined
+            })
       )
     );
     this.restoreCropStateFromOffer(source);
@@ -277,7 +279,7 @@ export class OfferWizardStateService {
       return;
     }
 
-    this.discountAmountState.set(amount);
+    this.discountAmountState.set(Math.max(0, Math.round(amount)));
   }
 
   setReadonlyMode(readonlyMode: boolean): void {
@@ -493,17 +495,18 @@ export class OfferWizardStateService {
       notes: [],
       customer: {
         ...clonedTemplate.customer,
-        identity: clonedTemplate.customer.identity.type === 'NATURAL_PERSON'
-          ? {
-              ...clonedTemplate.customer.identity,
-              personName: {
-                firstName: '',
-                lastName: ''
-              },
-              pesel: '',
-              birthDate: ''
-            }
-          : clonedTemplate.customer.identity,
+        identity:
+          clonedTemplate.customer.identity.type === 'NATURAL_PERSON'
+            ? {
+                ...clonedTemplate.customer.identity,
+                personName: {
+                  firstName: '',
+                  lastName: ''
+                },
+                pesel: '',
+                birthDate: ''
+              }
+            : clonedTemplate.customer.identity,
         contact: {
           email: '',
           phoneNumber: ''
@@ -719,9 +722,9 @@ export class OfferWizardStateService {
     };
   }
 
-  private recalculateLine<T extends { basePremium?: { amount: number }; premium: { amount: number; currency: 'PLN' }; covers: Array<{ enabled: boolean; selectable?: boolean; premiumDelta?: { amount: number } }> }>(
-    line: T
-  ): T {
+  private recalculateLine<
+    T extends { basePremium?: { amount: number }; premium: { amount: number; currency: 'PLN' | 'EUR' | 'USD' }; covers: Array<{ enabled: boolean; selectable?: boolean; premiumDelta?: { amount: number } }> }
+  >(line: T): T {
     const enabledSelectableDelta = line.covers.reduce((sum, cover) => {
       if (!cover.enabled) {
         return sum;

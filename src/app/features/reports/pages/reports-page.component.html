@@ -15,6 +15,13 @@
         <span>Do</span>
         <input type="date" [value]="dateTo()" (input)="dateTo.set($any($event.target).value)" />
       </label>
+      <app-currency-switcher
+        [selectedCurrency]="selectedCurrency()"
+        [foreignCurrencyAvailable]="foreignCurrencyAvailable()"
+        [availabilityMessage]="currencyAvailability().message"
+        [rateLabel]="currentRateLabel()"
+        (currencyChange)="setSelectedCurrency($event)"
+      />
     </div>
   </app-section-card>
 
@@ -50,7 +57,7 @@
           @for (point of monthlyTrend(); track point.label) {
             <div>
               <span>{{ point.label }}</span>
-              <strong>{{ point.amount | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</strong>
+              <strong>{{ point.amount | moneyDisplay: selectedCurrency() }}</strong>
             </div>
           }
         </div>
@@ -63,7 +70,7 @@
           <article class="lines-list__row">
             <div class="lines-list__meta">
               <strong>{{ line.label }}</strong>
-              <span>{{ line.amount | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</span>
+              <span>{{ line.amount | moneyDisplay: selectedCurrency() }}</span>
             </div>
             <div class="lines-list__track">
               <div class="lines-list__fill" [style.width.%]="line.ratio * 100"></div>
@@ -97,5 +104,4 @@
       </div>
     </app-section-card>
   </section>
-
 </main>

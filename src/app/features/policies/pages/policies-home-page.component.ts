@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -11,11 +11,14 @@ import { InputText } from 'primeng/inputtext';
 import { Select } from 'primeng/select';
 import { SplitButton } from 'primeng/splitbutton';
 import { Tag } from 'primeng/tag';
-import { Policy, PolicyPaymentStatus, PolicyStatus } from '../../../core/models';
+import { Policy, PolicyPaymentStatus, PolicyStatus, SupportedCurrency } from '../../../core/models';
 import { PoliciesRepository } from '../../../core/repositories/policies.repository';
 import { SalesFlowRuntimeRepository } from '../../../core/repositories/sales-flow-runtime.repository';
+import { CurrencyService } from '../../../core/services/currency.service';
+import { MoneyDisplayPipe } from '../../../shared/pipes/money-display.pipe';
 import { PageHeaderComponent } from '../../../shared/ui/page-header/page-header.component';
 import { SectionCardComponent } from '../../../shared/ui/section-card/section-card.component';
+import { CurrencySwitcherComponent } from '../../../shared/ui/currency-switcher/currency-switcher.component';
 
 type PolicyViewFilter = 'ALL' | 'RENEWALS' | 'TO_PAY';
 
@@ -35,13 +38,28 @@ type PolicyStatusPresentation = {
 
 @Component({
   selector: 'app-policies-home-page',
-  imports: [CommonModule, FormsModule, RouterLink, PageHeaderComponent, SectionCardComponent, ButtonDirective, Dialog, InputText, Select, SplitButton, Tag],
+  imports: [
+    CommonModule,
+    FormsModule,
+    RouterLink,
+    PageHeaderComponent,
+    SectionCardComponent,
+    ButtonDirective,
+    Dialog,
+    InputText,
+    Select,
+    SplitButton,
+    Tag,
+    MoneyDisplayPipe,
+    CurrencySwitcherComponent
+  ],
   templateUrl: './policies-home-page.component.html',
   styleUrl: './policies-home-page.component.scss'
 })
 export class PoliciesHomePageComponent {
   private readonly policiesRepository = inject(PoliciesRepository);
   private readonly salesFlowRuntimeRepository = inject(SalesFlowRuntimeRepository);
+  private readonly currencyService = inject(CurrencyService);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
 
@@ -57,6 +75,11 @@ export class PoliciesHomePageComponent {
   protected readonly renewalDialogVisible = signal(false);
   protected readonly pendingPayment = signal<Policy | null>(null);
   protected readonly paymentDialogVisible = signal(false);
+  protected readonly selectedCurrency = signal<SupportedCurrency>('PLN');
+  protected readonly foreignCurrencyAvailable = this.currencyService.isForeignCurrencyAvailable;
+  protected readonly currencyAvailability = this.currencyService.availability;
+  protected readonly currentRateLabel = computed(() => this.currencyService.rateLabel(this.selectedCurrency()));
+
   protected readonly basePolicies = toSignal(this.policiesRepository.getPolicies(), { initialValue: [] as Policy[] });
   protected readonly policies = computed<Policy[]>(() => {
     const runtimePolicies = this.salesFlowRuntimeRepository.promotedPolicies();
@@ -148,12 +171,8 @@ export class PoliciesHomePageComponent {
     return [...filtered].sort((left, right) => this.comparePolicies(left, right));
   });
 
-  protected readonly renewalsCount = computed(
-    () => this.policies().filter((policy) => policy.status === 'RENEWAL').length
-  );
-  protected readonly toPayCount = computed(
-    () => this.policies().filter((policy) => policy.status !== 'CANCELED' && policy.paymentStatus === 'TO_PAY').length
-  );
+  protected readonly renewalsCount = computed(() => this.policies().filter((policy) => policy.status === 'RENEWAL').length);
+  protected readonly toPayCount = computed(() => this.policies().filter((policy) => policy.status !== 'CANCELED' && policy.paymentStatus === 'TO_PAY').length);
   protected readonly paidPoliciesPremiumTotal = computed(() =>
     this.policies()
       .filter((policy) => policy.paymentStatus === 'PAID')
@@ -163,6 +182,12 @@ export class PoliciesHomePageComponent {
   protected readonly totalVisiblePolicies = computed(() => this.filteredPolicies().length);
 
   constructor() {
+    effect(() => {
+      if (!this.foreignCurrencyAvailable() && this.selectedCurrency() !== 'PLN') {
+        this.selectedCurrency.set('PLN');
+      }
+    });
+
     this.route.queryParamMap.pipe(takeUntilDestroyed()).subscribe((params) => {
       const policyId = params.get('policy');
 
@@ -176,6 +201,15 @@ export class PoliciesHomePageComponent {
         this.searchTerm.set(policy.policyNumber);
       }
     });
+  }
+
+  protected setSelectedCurrency(currency: SupportedCurrency): void {
+    if (currency !== 'PLN' && !this.foreignCurrencyAvailable()) {
+      this.selectedCurrency.set('PLN');
+      return;
+    }
+
+    this.selectedCurrency.set(currency);
   }
 
   protected setFilter(filter: PolicyViewFilter): void {
