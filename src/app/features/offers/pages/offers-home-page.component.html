@@ -153,14 +153,7 @@
           <div class="offer-row__summary">
             <div class="premium-box">
               <span class="offer-row__meta-label">Składka</span>
-              <strong>{{
-                getPrimaryPremium(offer)
-                  | currency
-                    : getPrimaryPremiumMoney(offer).currency
-                    : 'symbol'
-                    : '1.0-0'
-                    : 'pl-PL'
-              }}</strong>
+              <strong>{{ formatMoney(getPrimaryPremiumMoney(offer)) }}</strong>
               <span>{{ offer.validTo ? ('Ważna do ' + (offer.validTo | date: 'dd.MM.yyyy')) : 'Robocza kalkulacja' }}</span>
             </div>
 
@@ -216,14 +209,7 @@
           </div>
           <div>
             <span>Składka</span>
-            <strong>{{
-              getPrimaryPremium(pending.offer)
-                | currency
-                  : getPrimaryPremiumMoney(pending.offer).currency
-                  : 'symbol'
-                  : '1.0-0'
-                  : 'pl-PL'
-            }}</strong>
+            <strong>{{ formatMoney(getPrimaryPremiumMoney(pending.offer)) }}</strong>
           </div>
         </div>
 

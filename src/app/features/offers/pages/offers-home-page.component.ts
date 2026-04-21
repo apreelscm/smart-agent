@@ -254,6 +254,23 @@ export class OffersHomePageComponent {
     return offer.selectedPaymentPlan?.totalPremium ?? offer.variants[0]?.totalPremium ?? { amount: 0, currency: 'PLN' };
   }
 
+  protected formatMoney(money: Money): string {
+    const formattedAmount = money.amount.toLocaleString('pl-PL', {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0
+    });
+
+    if (money.currency === 'EUR') {
+      return `${formattedAmount} €`;
+    }
+
+    if (money.currency === 'USD') {
+      return `${formattedAmount} USD`;
+    }
+
+    return `${formattedAmount} zł`;
+  }
+
   protected getSelectedVariantName(offer: Offer): string {
     const selected = offer.variants.find((variant) => variant.id === offer.selectedVariantId);
     return selected?.name ?? 'Brak wyboru';
