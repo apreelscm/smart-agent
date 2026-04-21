@@ -19,6 +19,13 @@ function normalizeText(value: string | null): string {
   return (value ?? '').replace(/\s+/g, ' ').trim();
 }
 
+async function navigateWithinSpa(page: Parameters<typeof test>[0]['page'], path: string): Promise<void> {
+  await page.evaluate((targetPath) => {
+    window.history.pushState({}, '', targetPath);
+    window.dispatchEvent(new PopStateEvent('popstate', { state: window.history.state }));
+  }, path);
+}
+
 test('switches offers list amounts between PLN, EUR, and USD', async ({ page }, testInfo) => {
   await page.route(nbpUrl, async (route) => {
     await route.fulfill({
@@ -29,7 +36,7 @@ test('switches offers list amounts between PLN, EUR, and USD', async ({ page }, 
   });
 
   await page.goto('/');
-  await page.goto('/offers');
+  await navigateWithinSpa(page, '/offers');
 
   await expect(page).toHaveURL(/\/offers$/);
   await expect(page.getByRole('heading', { name: 'Przygotowane oferty' })).toBeVisible();
@@ -99,7 +106,7 @@ test('keeps PLN usable and disables foreign currencies when NBP is unavailable',
   });
 
   await page.goto('/');
-  await page.goto('/offers');
+  await navigateWithinSpa(page, '/offers');
 
   await expect(page).toHaveURL(/\/offers$/);
   await expect(page.getByRole('heading', { name: 'Przygotowane oferty' })).toBeVisible();
@@ -139,7 +146,7 @@ test('resets the currency switcher to PLN after leaving and re-entering offers',
   const firstPremium = page.locator('.premium-box strong').first();
 
   await page.goto('/');
-  await page.goto('/offers');
+  await navigateWithinSpa(page, '/offers');
 
   await expect(page.getByRole('heading', { name: 'Przygotowane oferty' })).toBeVisible();
 
@@ -148,8 +155,8 @@ test('resets the currency switcher to PLN after leaving and re-entering offers',
   await expect(rateLabel).toContainText('kurs 4,00 PLN/EUR z 20.04.2026');
   await captureStep(page, testInfo, 'offers-before-leaving-eur');
 
-  await page.goto('/policies');
-  await page.goto('/offers');
+  await navigateWithinSpa(page, '/policies');
+  await navigateWithinSpa(page, '/offers');
 
   await expect(page).toHaveURL(/\/offers$/);
   await expect(page.getByRole('heading', { name: 'Przygotowane oferty' })).toBeVisible();
