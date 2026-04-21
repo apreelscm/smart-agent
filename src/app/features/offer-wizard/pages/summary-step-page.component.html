@@ -18,7 +18,9 @@
       </div>
       <div class="summary-hero__premium">
         <span>Składka ubezpieczenia</span>
-        <strong>{{ discountedPremiumAmount() | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</strong>
+        <strong>{{
+          discountedPremiumAmount() | currency: discountedPremiumMoney().currency : 'symbol-narrow' : '1.0-0' : 'pl-PL'
+        }}</strong>
       </div>
     </div>
 
@@ -51,7 +53,7 @@
       @for (line of selectedVariant()?.policyLines ?? []; track line.id) {
         <div class="premium-lines__row">
           <strong>{{ line.label }}</strong>
-          <span>{{ line.premium.amount | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</span>
+          <span>{{ line.premium.amount | currency: line.premium.currency : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</span>
         </div>
       } @empty {
         <div class="premium-lines__row premium-lines__row--empty">

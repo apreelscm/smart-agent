@@ -10,10 +10,10 @@ import { InputText } from 'primeng/inputtext';
 import { Select } from 'primeng/select';
 import { SplitButton } from 'primeng/splitbutton';
 import { Tag } from 'primeng/tag';
+import { Money, Offer, OfferStatus, ReferenceData } from '../../../core/models';
 import { OffersRepository } from '../../../core/repositories/offers.repository';
 import { ReferenceDataRepository } from '../../../core/repositories/reference-data.repository';
 import { SalesFlowRuntimeRepository } from '../../../core/repositories/sales-flow-runtime.repository';
-import { Offer, OfferStatus, ReferenceData } from '../../../core/models';
 import { PageHeaderComponent } from '../../../shared/ui/page-header/page-header.component';
 import { SectionCardComponent } from '../../../shared/ui/section-card/section-card.component';
 import { StatTileComponent } from '../../../shared/ui/stat-tile/stat-tile.component';
@@ -186,25 +186,28 @@ export class OffersHomePageComponent {
     const offers = this.filteredOffers();
     const issued = offers.filter((offer) => offer.status === 'ISSUED').length;
     const inProgress = offers.filter((offer) => ['DRAFT', 'CALCULATION'].includes(offer.status)).length;
+    const plnOffers = offers.filter((offer) => this.getPrimaryPremiumMoney(offer).currency === 'PLN');
     const averageMonthlyPremium =
-      offers.length > 0
-        ? Math.round(
-            offers.reduce((sum, offer) => sum + (offer.selectedPaymentPlan?.totalPremium.amount ?? offer.variants[0]?.totalPremium.amount ?? 0), 0) /
-              offers.length /
-              12
-          )
+      plnOffers.length > 0
+        ? Math.round(plnOffers.reduce((sum, offer) => sum + this.getPrimaryPremiumMoney(offer).amount, 0) / plnOffers.length / 12)
         : 0;
 
     return [
       { label: 'Oferta wystawiona', value: `${issued}`, note: 'gotowe do decyzji klienta' },
       { label: 'Draft / Kalkulacja', value: `${inProgress}`, note: 'oferty w przygotowaniu' },
-      { label: 'Średnia składka', value: `${averageMonthlyPremium.toLocaleString('pl-PL')} zł`, note: 'w ujęciu miesięcznym' }
+      {
+        label: 'Średnia składka',
+        value: `${averageMonthlyPremium.toLocaleString('pl-PL')} zł`,
+        note:
+          plnOffers.length === offers.length
+            ? 'w ujęciu miesięcznym'
+            : 'w ujęciu miesięcznym, tylko dla ofert PLN'
+      }
     ];
   });
 
   protected readonly totalVisibleOffers = computed(() => this.filteredOffers().length);
 
-  // New computed signal to detect if any filter or sorting differs from default values
   protected readonly filtersChanged = computed(() => {
     return (
       this.searchTerm() !== '' ||
@@ -244,7 +247,11 @@ export class OffersHomePageComponent {
   }
 
   protected getPrimaryPremium(offer: Offer): number {
-    return offer.selectedPaymentPlan?.totalPremium.amount ?? offer.variants[0]?.totalPremium.amount ?? 0;
+    return this.getPrimaryPremiumMoney(offer).amount;
+  }
+
+  protected getPrimaryPremiumMoney(offer: Offer): Money {
+    return offer.selectedPaymentPlan?.totalPremium ?? offer.variants[0]?.totalPremium ?? { amount: 0, currency: 'PLN' };
   }
 
   protected getSelectedVariantName(offer: Offer): string {
@@ -326,7 +333,6 @@ export class OffersHomePageComponent {
     this.closeTransitionDialog();
   }
 
-  // New method to clear all filters and sorting to default values
   protected clearAllFilters(): void {
     this.searchTerm.set('');
     this.selectedStatus.set('ALL');
@@ -468,7 +474,6 @@ export class OffersHomePageComponent {
   }
 
   private printPlaceholder(offer: Offer): void {
-    // Placeholder action for future document generation integration.
     console.log('[Offers] Print placeholder action triggered for offer', offer.id);
   }
 

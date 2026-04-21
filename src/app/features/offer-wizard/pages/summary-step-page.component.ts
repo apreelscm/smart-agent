@@ -1,8 +1,8 @@
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { Component, computed, inject } from '@angular/core';
-import { Tag } from 'primeng/tag';
-import { OfferStatus } from '../../../core/models';
+import { Money, OfferStatus } from '../../../core/models';
 import { SectionCardComponent } from '../../../shared/ui/section-card/section-card.component';
+import { Tag } from 'primeng/tag';
 import { OfferWizardStateService } from '../state/offer-wizard-state.service';
 
 @Component({
@@ -49,15 +49,23 @@ export class SummaryStepPageComponent {
   }
 
   protected discountedPremiumAmount(): number {
+    return this.discountedPremiumMoney().amount;
+  }
+
+  protected discountedPremiumMoney(): Money {
     const variant = this.selectedVariant();
 
     if (!variant) {
-      return 0;
+      return { amount: 0, currency: 'PLN' };
     }
 
     const ocPremium = variant.policyLines.find((line) => line.code === 'OC')?.premium.amount ?? 0;
     const appliedDiscount = Math.min(this.discountAmount(), ocPremium);
-    return Math.max(0, Math.round(variant.totalPremium.amount - appliedDiscount));
+
+    return {
+      ...variant.totalPremium,
+      amount: Math.max(0, Math.round(variant.totalPremium.amount - appliedDiscount))
+    };
   }
 
   protected offerStatusLabel(status: OfferStatus): string {
