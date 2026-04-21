@@ -20,3 +20,84 @@ jobs:
           cache: 'npm'
       - run: npm ci
       - run: npm run build
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist-browser
+          path: dist/smart-agent/browser
+          retention-days: 1
+          if-no-files-found: error
+
+  e2e:
+    needs: build
+    if: ${{ needs.build.result == 'success' && hashFiles('tests/e2e/**/*.spec.ts') != '' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+      - run: npm ci
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: dist-browser
+          path: dist/smart-agent/browser
+      - name: Start static server
+        run: |
+          npx http-server dist/smart-agent/browser -p 4200 -s &
+          echo "HTTP_SERVER_PID=$!" >> $GITHUB_ENV
+      - name: Wait for server
+        run: npx wait-on http://localhost:4200 --timeout 60000
+      - name: Run Playwright tests
+        run: npx playwright test
+        env:
+          BASE_URL: http://localhost:4200
+      - name: Build screenshots manifest
+        if: always()
+        run: |
+          node -e "
+          const fs = require('fs');
+          const path = require('path');
+          const root = 'test-results';
+          const out = [];
+          function walk(dir) {
+            if (!fs.existsSync(dir)) return;
+            for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+              const full = path.join(dir, entry.name);
+              if (entry.isDirectory()) walk(full);
+              else if (entry.isFile() && entry.name.toLowerCase().endsWith('.png')) {
+                const buf = fs.readFileSync(full);
+                out.push({ name: path.relative(root, full), base64: buf.toString('base64') });
+              }
+            }
+          }
+          walk(root);
+          out.sort((a, b) => a.name.localeCompare(b.name));
+          const capped = out.slice(0, 12);
+          fs.writeFileSync('screenshots-manifest.json', JSON.stringify({ screenshots: capped, total: out.length }));
+          console.log('manifest entries:', capped.length, '/', out.length);
+          "
+      - name: Upload Playwright report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report
+          retention-days: 7
+      - name: Upload screenshots manifest
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenshots-manifest
+          path: screenshots-manifest.json
+          retention-days: 7
+      - name: Stop static server
+        if: always()
+        run: |
+          if [ -n "$HTTP_SERVER_PID" ]; then
+            kill $HTTP_SERVER_PID || true
+          fi
