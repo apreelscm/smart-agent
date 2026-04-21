@@ -2,6 +2,19 @@
   @if (selectedCustomer(); as customer) {
     <app-page-header eyebrow="Klienci" title="{{ customer.displayName }}" subtitle="Oferty i polisy klienta" />
 
+    <section class="currency-toolbar">
+      <app-currency-switcher
+        [selectedCurrency]="selectedCurrency()"
+        [foreignCurrencyAvailable]="foreignCurrencyAvailable()"
+        (currencyChange)="onCurrencyChange($event)"
+      />
+      <app-currency-rate-note
+        [selectedCurrency]="selectedCurrency()"
+        [snapshot]="exchangeRateState().snapshot"
+        [message]="exchangeRateState().error"
+      />
+    </section>
+
     <div class="customer-breadcrumb">
       <button pButton type="button" label="Klienci" severity="secondary" text (click)="backToCustomersList()"></button>
       <span>/</span>
@@ -10,7 +23,10 @@
 
     <app-section-card title="Podsumowanie klienta">
       <div class="customer-summary">
-        <span><strong>Przypis całkowity:</strong> {{ selectedCustomerAssignedPremium() | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</span>
+        <span>
+          <strong>Przypis całkowity:</strong>
+          {{ selectedCustomerAssignedPremium() | displayMoney : selectedCurrency() : exchangeRateState().snapshot }}
+        </span>
         <span><strong>Produkty:</strong> {{ selectedCustomerProducts().join(', ') || '—' }}</span>
       </div>
     </app-section-card>
@@ -34,7 +50,7 @@
             <span>{{ item.product }}</span>
             <span>{{ item.vehicle }}</span>
             <p-tag [value]="item.statusLabel" [severity]="item.statusSeverity" />
-            <strong>{{ item.premium | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</strong>
+            <strong>{{ item.premium | displayMoney : selectedCurrency() : exchangeRateState().snapshot }}</strong>
             <span>{{ item.date | date: 'dd.MM.yyyy' }}</span>
             <button pButton type="button" label="Podgląd" size="small" severity="secondary" outlined (click)="item.open()"></button>
           </div>
@@ -47,6 +63,19 @@
     </app-section-card>
   } @else {
     <app-page-header eyebrow="CRM" title="Klienci" subtitle="Lista klientów z przypisem i produktami" />
+
+    <section class="currency-toolbar">
+      <app-currency-switcher
+        [selectedCurrency]="selectedCurrency()"
+        [foreignCurrencyAvailable]="foreignCurrencyAvailable()"
+        (currencyChange)="onCurrencyChange($event)"
+      />
+      <app-currency-rate-note
+        [selectedCurrency]="selectedCurrency()"
+        [snapshot]="exchangeRateState().snapshot"
+        [message]="exchangeRateState().error"
+      />
+    </section>
 
     <app-section-card title="Klienci">
       <div class="customers-toolbar">
@@ -75,7 +104,7 @@
               <strong>{{ customer.displayName }}</strong>
               <span>{{ customer.phone || 'brak telefonu' }} · {{ customer.email || 'brak e-maila' }}</span>
             </div>
-            <strong>{{ customerAssignedPremium(customer) | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</strong>
+            <strong>{{ customerAssignedPremium(customer) | displayMoney : selectedCurrency() : exchangeRateState().snapshot }}</strong>
             <span>{{ customerProducts(customer) }}</span>
             <button pButton type="button" label="Oferty i polisy" size="small" severity="secondary" outlined (click)="openCustomerDetails(customer)"></button>
           </div>
@@ -88,4 +117,3 @@
     </app-section-card>
   }
 </main>
-

@@ -1,6 +1,19 @@
 <main class="offers-home-page">
   <app-page-header eyebrow="Kokpit sprzedaży" title="Przygotowane oferty" />
 
+  <section class="currency-toolbar">
+    <app-currency-switcher
+      [selectedCurrency]="selectedCurrency()"
+      [foreignCurrencyAvailable]="foreignCurrencyAvailable()"
+      (currencyChange)="onCurrencyChange($event)"
+    />
+    <app-currency-rate-note
+      [selectedCurrency]="selectedCurrency()"
+      [snapshot]="exchangeRateState().snapshot"
+      [message]="exchangeRateState().error"
+    />
+  </section>
+
   <section class="offers-home-page__stats">
     @for (tile of summaryTiles(); track tile.label) {
       <app-stat-tile [label]="tile.label" [value]="tile.value" [note]="tile.note" />
@@ -153,7 +166,7 @@
           <div class="offer-row__summary">
             <div class="premium-box">
               <span class="offer-row__meta-label">Składka</span>
-              <strong>{{ getPrimaryPremium(offer) | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</strong>
+              <strong>{{ getPrimaryPremium(offer) | displayMoney : selectedCurrency() : exchangeRateState().snapshot }}</strong>
               <span>{{ offer.validTo ? ('Ważna do ' + (offer.validTo | date: 'dd.MM.yyyy')) : 'Robocza kalkulacja' }}</span>
             </div>
 
@@ -209,7 +222,7 @@
           </div>
           <div>
             <span>Składka</span>
-            <strong>{{ getPrimaryPremium(pending.offer) | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</strong>
+            <strong>{{ getPrimaryPremium(pending.offer) | displayMoney : selectedCurrency() : exchangeRateState().snapshot }}</strong>
           </div>
         </div>
 

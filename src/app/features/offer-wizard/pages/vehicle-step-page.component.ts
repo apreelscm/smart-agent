@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, inject, signal } from '@angular/core';
-import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AutoCompleteCompleteEvent, AutoCompleteModule } from 'primeng/autocomplete';
 import { ButtonDirective } from 'primeng/button';
@@ -10,6 +10,8 @@ import { SelectButton } from 'primeng/selectbutton';
 import { Select } from 'primeng/select';
 import { debounceTime, distinctUntilChanged, filter } from 'rxjs';
 import { Offer, VehicleSpecialUsage } from '../../../core/models';
+import { CurrencyService } from '../../../core/services/currency.service';
+import { CurrencyAmountInputComponent } from '../../../shared/ui/currency-amount-input/currency-amount-input.component';
 import { SectionCardComponent } from '../../../shared/ui/section-card/section-card.component';
 import { OfferWizardStateService } from '../state/offer-wizard-state.service';
 
@@ -47,7 +49,8 @@ type TariffClient = {
     Checkbox,
     SelectButton,
     ButtonDirective,
-    AutoCompleteModule
+    AutoCompleteModule,
+    CurrencyAmountInputComponent
   ],
   templateUrl: './vehicle-step-page.component.html',
   styleUrl: './vehicle-step-page.component.scss'
@@ -55,6 +58,8 @@ type TariffClient = {
 export class VehicleStepPageComponent implements OnDestroy {
   private readonly formBuilder = inject(FormBuilder);
   private readonly wizardState = inject(OfferWizardStateService);
+  private readonly currencyService = inject(CurrencyService);
+
   private readonly vehicleCatalog: Record<string, Record<string, string[]>> = {
     Skoda: {
       Octavia: ['Selection 1.5 TSI', 'Style 1.5 TSI DSG', 'Sportline 2.0 TDI DSG'],
@@ -180,6 +185,11 @@ export class VehicleStepPageComponent implements OnDestroy {
   protected readonly tariffClients = signal<TariffClient[]>([]);
   protected readonly editingClientId = signal<string | null>(null);
   protected readonly clientRoleControl = this.formBuilder.control<TariffClientRole>('POLICY_HOLDER', { nonNullable: true });
+  protected readonly marketValueError = signal<string | null>(null);
+  protected readonly exchangeRateState = toSignal(this.currencyService.ensureRatesLoaded(), {
+    initialValue: this.currencyService.state()
+  });
+
   protected roleOptions = [
     {
       label: 'Ubezpieczający',
@@ -471,6 +481,19 @@ export class VehicleStepPageComponent implements OnDestroy {
       });
   }
 
+  protected foreignCurrencyAvailable(): boolean {
+    return this.currencyService.hasForeignCurrencyRates(this.exchangeRateState());
+  }
+
+  protected onMarketValueChange(amount: number): void {
+    this.marketValueError.set(null);
+    this.vehicleForm.controls.marketValue.setValue(amount);
+  }
+
+  protected onMarketValueValidationChange(message: string | null): void {
+    this.marketValueError.set(message);
+  }
+
   private hydrateFormFromOffer(offer: Offer): void {
     const quickPeselControl = this.vehicleForm.controls.quickPesel;
     const quickRegistrationControl = this.vehicleForm.controls.quickRegistrationNumber;
@@ -487,9 +510,7 @@ export class VehicleStepPageComponent implements OnDestroy {
         quickRegistrationNumber: quickRegistrationValue,
         isPolicyHolderClient: 'YES',
         customerType: offer.customer.kind,
-        citizenshipCountryCode: offer.customer.identity.type === 'NATURAL_PERSON'
-          ? (offer.customer.identity.citizenshipCountryCode ?? 'PL')
-          : 'PL',
+        citizenshipCountryCode: offer.customer.identity.type === 'NATURAL_PERSON' ? (offer.customer.identity.citizenshipCountryCode ?? 'PL') : 'PL',
         customerFirstName: offer.customer.identity.type !== 'LEGAL_ENTITY' ? offer.customer.identity.personName.firstName : '',
         customerLastName: offer.customer.identity.type !== 'LEGAL_ENTITY' ? offer.customer.identity.personName.lastName : '',
         customerPesel:
@@ -534,9 +555,8 @@ export class VehicleStepPageComponent implements OnDestroy {
       offer.customer.identity.type === 'NATURAL_PERSON' &&
       (offer.customer.identity.personName.firstName || offer.customer.identity.personName.lastName || offer.customer.identity.pesel)
     ) {
-      const initialClaims = offer.id === 'offer-1003'
-        ? { last12Months: 0, last36Months: 1, last5Years: 2 }
-        : this.createZeroClaims();
+      const initialClaims =
+        offer.id === 'offer-1003' ? { last12Months: 0, last36Months: 1, last5Years: 2 } : this.createZeroClaims();
 
       this.tariffClients.set([
         {

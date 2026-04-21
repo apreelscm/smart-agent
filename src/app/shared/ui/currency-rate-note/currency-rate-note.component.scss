@@ -1,0 +1,11 @@
+.currency-rate-note {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  color: #0f172a;
+  font-size: 0.95rem;
+}
+
+.currency-rate-note--warning {
+  color: #9a3412;
+}

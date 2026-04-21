@@ -1,0 +1,35 @@
+<div class="currency-amount-input">
+  <div class="currency-amount-input__switcher">
+    @for (currency of ['PLN', 'EUR', 'USD']; track currency) {
+      <button
+        type="button"
+        class="currency-amount-input__currency"
+        [class.currency-amount-input__currency--selected]="selectedCurrency() === currency"
+        [disabled]="isDisabled(currency)"
+        (click)="selectCurrency($any(currency))"
+      >
+        {{ currency }}
+      </button>
+    }
+  </div>
+
+  <div class="currency-amount-input__field">
+    <input
+      type="number"
+      [value]="rawValue()"
+      [disabled]="disabled()"
+      [step]="selectedCurrency() === 'PLN' ? '1' : '0.01'"
+      (input)="onInput($any($event.target).value)"
+      (blur)="onBlur()"
+    />
+    <span>{{ selectedCurrency() }}</span>
+  </div>
+
+  @if (approximatePln() && rateHint()) {
+    <small class="currency-amount-input__hint">≈ {{ approximatePln() }} · {{ rateHint() }}</small>
+  }
+
+  @if (validationMessage()) {
+    <small class="currency-amount-input__error">{{ validationMessage() }}</small>
+  }
+</div>

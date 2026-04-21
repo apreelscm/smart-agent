@@ -5,6 +5,19 @@
     subtitle="Kokpit oparty o dane ofert i polis, gotowy do rozmowy sprzedażowej i operacyjnej."
   />
 
+  <section class="currency-toolbar">
+    <app-currency-switcher
+      [selectedCurrency]="selectedCurrency()"
+      [foreignCurrencyAvailable]="foreignCurrencyAvailable()"
+      (currencyChange)="onCurrencyChange($event)"
+    />
+    <app-currency-rate-note
+      [selectedCurrency]="selectedCurrency()"
+      [snapshot]="exchangeRateState().snapshot"
+      [message]="exchangeRateState().error"
+    />
+  </section>
+
   <app-section-card title="Zakres raportu">
     <div class="date-range date-range--inline">
       <label>
@@ -50,7 +63,7 @@
           @for (point of monthlyTrend(); track point.label) {
             <div>
               <span>{{ point.label }}</span>
-              <strong>{{ point.amount | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</strong>
+              <strong>{{ point.amount | displayMoney : selectedCurrency() : exchangeRateState().snapshot }}</strong>
             </div>
           }
         </div>
@@ -63,7 +76,7 @@
           <article class="lines-list__row">
             <div class="lines-list__meta">
               <strong>{{ line.label }}</strong>
-              <span>{{ line.amount | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</span>
+              <span>{{ line.amount | displayMoney : selectedCurrency() : exchangeRateState().snapshot }}</span>
             </div>
             <div class="lines-list__track">
               <div class="lines-list__fill" [style.width.%]="line.ratio * 100"></div>
@@ -97,5 +110,4 @@
       </div>
     </app-section-card>
   </section>
-
 </main>

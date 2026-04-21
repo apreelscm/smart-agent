@@ -1,6 +1,19 @@
 <main class="policies-home-page">
   <app-page-header eyebrow="Portfel polis" title="Wystawione polisy" />
 
+  <section class="currency-toolbar">
+    <app-currency-switcher
+      [selectedCurrency]="selectedCurrency()"
+      [foreignCurrencyAvailable]="foreignCurrencyAvailable()"
+      (currencyChange)="onCurrencyChange($event)"
+    />
+    <app-currency-rate-note
+      [selectedCurrency]="selectedCurrency()"
+      [snapshot]="exchangeRateState().snapshot"
+      [message]="exchangeRateState().error"
+    />
+  </section>
+
   <section class="policies-home-page__stats">
     <button
       type="button"
@@ -31,7 +44,9 @@
       (click)="setFilter('ALL')"
     >
       <span class="policy-filter-tile__label">Wszystkie polisy</span>
-      <strong class="policy-filter-tile__value">{{ paidPoliciesPremiumTotal() | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</strong>
+      <strong class="policy-filter-tile__value">
+        {{ paidPoliciesPremiumTotal() | displayMoney : selectedCurrency() : exchangeRateState().snapshot }}
+      </strong>
       <span class="policy-filter-tile__note">suma składek polis opłaconych</span>
     </button>
   </section>
@@ -133,8 +148,8 @@
           <div class="policy-row__summary">
             <div class="premium-box">
               <span class="policy-row__meta-label">Składka</span>
-              <strong>{{ policy.annualPremium | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</strong>
-              <span>{{ policy.monthlyPremium | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }} miesięcznie</span>
+              <strong>{{ policy.annualPremium | displayMoney : selectedCurrency() : exchangeRateState().snapshot }}</strong>
+              <span>{{ policy.monthlyPremium | displayMoney : selectedCurrency() : exchangeRateState().snapshot }} miesięcznie</span>
             </div>
 
             <div class="policy-row__actions">
@@ -276,7 +291,7 @@
           </div>
           <div>
             <span>Składka roczna</span>
-            <strong>{{ policy.annualPremium | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</strong>
+            <strong>{{ policy.annualPremium | displayMoney : selectedCurrency() : exchangeRateState().snapshot }}</strong>
           </div>
           <div>
             <span>Status po operacji</span>

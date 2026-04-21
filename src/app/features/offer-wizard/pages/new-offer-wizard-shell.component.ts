@@ -1,18 +1,22 @@
-import { CommonModule, CurrencyPipe } from '@angular/common';
-import { Component, computed, inject, signal } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { CommonModule } from '@angular/common';
+import { Component, computed, effect, inject, signal } from '@angular/core';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, NavigationEnd, Router, RouterLink, RouterOutlet } from '@angular/router';
-import { firstValueFrom } from 'rxjs';
-import { filter } from 'rxjs';
+import { firstValueFrom, filter } from 'rxjs';
 import { ButtonDirective } from 'primeng/button';
 import { Dialog } from 'primeng/dialog';
 import { Tag } from 'primeng/tag';
-import { SectionCardComponent } from '../../../shared/ui/section-card/section-card.component';
-import { PoliciesRepository } from '../../../core/repositories/policies.repository';
-import { SalesFlowRuntimeRepository } from '../../../core/repositories/sales-flow-runtime.repository';
-import { Offer, OfferStatus } from '../../../core/models';
+import { DisplayCurrency, Offer, OfferStatus } from '../../../core/models';
 import { PaymentPlan } from '../../../core/models/payment/payment-plan.model';
+import { PoliciesRepository } from '../../../core/repositories/policies.repository';
 import { OfferProduct } from '../../../core/repositories/offers.repository';
+import { SalesFlowRuntimeRepository } from '../../../core/repositories/sales-flow-runtime.repository';
+import { CurrencyService } from '../../../core/services/currency.service';
+import { CurrencyViewStore } from '../../../core/services/currency-view.store';
+import { DisplayMoneyPipe } from '../../../shared/pipes/display-money.pipe';
+import { CurrencyRateNoteComponent } from '../../../shared/ui/currency-rate-note/currency-rate-note.component';
+import { CurrencySwitcherComponent } from '../../../shared/ui/currency-switcher/currency-switcher.component';
+import { SectionCardComponent } from '../../../shared/ui/section-card/section-card.component';
 import { CropCoverCode, CropParcel, CropVariantId } from '../models/crop-offer.model';
 import { OfferWizardStateService } from '../state/offer-wizard-state.service';
 
@@ -42,9 +46,12 @@ type PendingTransition = {
     ButtonDirective,
     Dialog,
     Tag,
-    CurrencyPipe,
-    SectionCardComponent
+    SectionCardComponent,
+    CurrencySwitcherComponent,
+    CurrencyRateNoteComponent,
+    DisplayMoneyPipe
   ],
+  providers: [CurrencyViewStore],
   templateUrl: './new-offer-wizard-shell.component.html',
   styleUrl: './new-offer-wizard-shell.component.scss'
 })
@@ -54,8 +61,16 @@ export class NewOfferWizardShellComponent {
   private readonly salesFlowRuntimeRepository = inject(SalesFlowRuntimeRepository);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
+  private readonly currencyService = inject(CurrencyService);
+  protected readonly currencyStore = inject(CurrencyViewStore);
+
   private readonly currentUrl = signal(this.router.url);
   private readonly productState = signal<OfferProduct>('MOTOR');
+
+  protected readonly exchangeRateState = toSignal(this.currencyService.ensureRatesLoaded(), {
+    initialValue: this.currencyService.state()
+  });
+  protected readonly viewCurrency = computed(() => this.currencyStore.currency());
 
   protected readonly steps = computed<WizardStep[]>(() =>
     this.productState() === 'CROP'
@@ -86,21 +101,15 @@ export class NewOfferWizardShellComponent {
   protected readonly cropTransportMainPlanEnabled = computed(() => this.wizardState.cropTransportMainPlanEnabled());
   protected readonly cropTransportMainPlanPremium = 180;
   protected readonly cropCount = computed(() => this.cropDraft().length);
-  protected readonly cropParcelsCount = computed(() =>
-    this.cropDraft().reduce((sum, crop) => sum + crop.parcels.length, 0)
-  );
+  protected readonly cropParcelsCount = computed(() => this.cropDraft().reduce((sum, crop) => sum + crop.parcels.length, 0));
   protected readonly cropTotalInsuranceSum = computed(() =>
     this.cropDraft()
       .flatMap((crop) => crop.parcels)
       .reduce((sum, parcel) => sum + this.cropInsuranceSumForParcel(parcel), 0)
   );
   protected readonly cropSelectedVariantBasePremium = computed(() => this.cropVariantPremium(this.cropSelectedVariantId()));
-  protected readonly cropAppliedDiscount = computed(() =>
-    Math.min(this.cropDiscountAmount(), this.cropSelectedVariantBasePremium())
-  );
-  protected readonly cropDiscountedPremium = computed(() =>
-    Math.max(0, this.cropSelectedVariantBasePremium() - this.cropAppliedDiscount())
-  );
+  protected readonly cropAppliedDiscount = computed(() => Math.min(this.cropDiscountAmount(), this.cropSelectedVariantBasePremium()));
+  protected readonly cropDiscountedPremium = computed(() => Math.max(0, this.cropSelectedVariantBasePremium() - this.cropAppliedDiscount()));
   protected readonly cropPaymentRows = computed(() => {
     const totalAmount = Math.max(0, Math.round(this.cropDiscountedPremium()));
     const plans: Array<{ frequency: PaymentPlan['frequency']; installmentsCount: number }> = [
@@ -132,8 +141,8 @@ export class NewOfferWizardShellComponent {
       };
     });
   });
-  protected readonly cropSelectedPaymentRow = computed(() =>
-    this.cropPaymentRows().find((row) => row.frequency === this.cropSelectedPaymentFrequency()) ?? this.cropPaymentRows()[0]
+  protected readonly cropSelectedPaymentRow = computed(
+    () => this.cropPaymentRows().find((row) => row.frequency === this.cropSelectedPaymentFrequency()) ?? this.cropPaymentRows()[0]
   );
   protected readonly pendingTransition = signal<PendingTransition | null>(null);
   protected readonly transitionDialogVisible = signal(false);
@@ -221,6 +230,27 @@ export class NewOfferWizardShellComponent {
         const readonly = this.resolveReadonlyMode(this.router.url);
         this.wizardState.setReadonlyMode(readonly);
       });
+
+    effect(() => {
+      const state = this.exchangeRateState();
+
+      if (!this.currencyService.hasForeignCurrencyRates(state) && this.viewCurrency() !== 'PLN') {
+        this.currencyStore.forcePln();
+      }
+    });
+  }
+
+  protected onCurrencyChange(currency: DisplayCurrency): void {
+    if (currency !== 'PLN' && !this.currencyService.hasForeignCurrencyRates(this.exchangeRateState())) {
+      this.currencyStore.forcePln();
+      return;
+    }
+
+    this.currencyStore.select(currency);
+  }
+
+  protected foreignCurrencyAvailable(): boolean {
+    return this.currencyService.hasForeignCurrencyRates(this.exchangeRateState());
   }
 
   private resolveProductFromRoute(rawProduct: unknown): OfferProduct {

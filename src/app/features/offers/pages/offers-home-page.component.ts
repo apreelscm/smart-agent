@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { Router, RouterLink } from '@angular/router';
@@ -10,10 +10,15 @@ import { InputText } from 'primeng/inputtext';
 import { Select } from 'primeng/select';
 import { SplitButton } from 'primeng/splitbutton';
 import { Tag } from 'primeng/tag';
+import { DisplayCurrency, Offer, OfferStatus, ReferenceData } from '../../../core/models';
 import { OffersRepository } from '../../../core/repositories/offers.repository';
 import { ReferenceDataRepository } from '../../../core/repositories/reference-data.repository';
 import { SalesFlowRuntimeRepository } from '../../../core/repositories/sales-flow-runtime.repository';
-import { Offer, OfferStatus, ReferenceData } from '../../../core/models';
+import { CurrencyService } from '../../../core/services/currency.service';
+import { CurrencyViewStore } from '../../../core/services/currency-view.store';
+import { DisplayMoneyPipe } from '../../../shared/pipes/display-money.pipe';
+import { CurrencyRateNoteComponent } from '../../../shared/ui/currency-rate-note/currency-rate-note.component';
+import { CurrencySwitcherComponent } from '../../../shared/ui/currency-switcher/currency-switcher.component';
 import { PageHeaderComponent } from '../../../shared/ui/page-header/page-header.component';
 import { SectionCardComponent } from '../../../shared/ui/section-card/section-card.component';
 import { StatTileComponent } from '../../../shared/ui/stat-tile/stat-tile.component';
@@ -68,8 +73,12 @@ type CropOfferPayload = {
     InputText,
     Select,
     SplitButton,
-    Tag
+    Tag,
+    CurrencySwitcherComponent,
+    CurrencyRateNoteComponent,
+    DisplayMoneyPipe
   ],
+  providers: [CurrencyViewStore],
   templateUrl: './offers-home-page.component.html',
   styleUrl: './offers-home-page.component.scss'
 })
@@ -78,6 +87,8 @@ export class OffersHomePageComponent {
   private readonly referenceDataRepository = inject(ReferenceDataRepository);
   private readonly salesFlowRuntimeRepository = inject(SalesFlowRuntimeRepository);
   private readonly router = inject(Router);
+  private readonly currencyService = inject(CurrencyService);
+  protected readonly currencyStore = inject(CurrencyViewStore);
 
   protected readonly searchTerm = signal('');
   protected readonly selectedStatus = signal<string | null>(null);
@@ -98,6 +109,10 @@ export class OffersHomePageComponent {
       vehicleFinancing: []
     } as ReferenceData
   });
+  protected readonly exchangeRateState = toSignal(this.currencyService.ensureRatesLoaded(), {
+    initialValue: this.currencyService.state()
+  });
+  protected readonly selectedCurrency = computed(() => this.currencyStore.currency());
 
   protected readonly statusOptions = computed<FilterOption[]>(() => [
     { code: 'ALL', label: 'Wszystkie statusy' },
@@ -198,13 +213,16 @@ export class OffersHomePageComponent {
     return [
       { label: 'Oferta wystawiona', value: `${issued}`, note: 'gotowe do decyzji klienta' },
       { label: 'Draft / Kalkulacja', value: `${inProgress}`, note: 'oferty w przygotowaniu' },
-      { label: 'Średnia składka', value: `${averageMonthlyPremium.toLocaleString('pl-PL')} zł`, note: 'w ujęciu miesięcznym' }
+      {
+        label: 'Średnia składka',
+        value: this.currencyService.formatAmount(averageMonthlyPremium, this.selectedCurrency(), this.exchangeRateState().snapshot),
+        note: 'w ujęciu miesięcznym'
+      }
     ];
   });
 
   protected readonly totalVisibleOffers = computed(() => this.filteredOffers().length);
 
-  // New computed signal to detect if any filter or sorting differs from default values
   protected readonly filtersChanged = computed(() => {
     return (
       this.searchTerm() !== '' ||
@@ -214,6 +232,29 @@ export class OffersHomePageComponent {
       this.selectedSortDirection() !== 'DESC'
     );
   });
+
+  constructor() {
+    effect(() => {
+      const state = this.exchangeRateState();
+
+      if (!this.currencyService.hasForeignCurrencyRates(state) && this.selectedCurrency() !== 'PLN') {
+        this.currencyStore.forcePln();
+      }
+    });
+  }
+
+  protected onCurrencyChange(currency: DisplayCurrency): void {
+    if (currency !== 'PLN' && !this.currencyService.hasForeignCurrencyRates(this.exchangeRateState())) {
+      this.currencyStore.forcePln();
+      return;
+    }
+
+    this.currencyStore.select(currency);
+  }
+
+  protected foreignCurrencyAvailable(): boolean {
+    return this.currencyService.hasForeignCurrencyRates(this.exchangeRateState());
+  }
 
   protected getCustomerDisplayName(offer: Offer): string {
     const identity = offer.customer.identity;
@@ -326,7 +367,6 @@ export class OffersHomePageComponent {
     this.closeTransitionDialog();
   }
 
-  // New method to clear all filters and sorting to default values
   protected clearAllFilters(): void {
     this.searchTerm.set('');
     this.selectedStatus.set('ALL');
@@ -468,7 +508,6 @@ export class OffersHomePageComponent {
   }
 
   private printPlaceholder(offer: Offer): void {
-    // Placeholder action for future document generation integration.
     console.log('[Offers] Print placeholder action triggered for offer', offer.id);
   }
 

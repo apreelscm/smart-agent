@@ -1,0 +1,10 @@
+@if (message()) {
+  <div class="currency-rate-note currency-rate-note--warning" role="status">
+    {{ message() }}
+  </div>
+} @else if (foreignCurrency() && snapshot(); as activeSnapshot) {
+  <div class="currency-rate-note" role="status">
+    <span>Kurs NBP: {{ rateLabel() }}</span>
+    <span>Data obowiązywania: {{ activeSnapshot.effectiveDate | date: 'dd.MM.yyyy' }}</span>
+  </div>
+}

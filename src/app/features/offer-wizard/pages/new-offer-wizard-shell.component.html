@@ -23,6 +23,19 @@
     </nav>
 
     <div class="wizard-layout__main">
+      <section class="currency-toolbar">
+        <app-currency-switcher
+          [selectedCurrency]="viewCurrency()"
+          [foreignCurrencyAvailable]="foreignCurrencyAvailable()"
+          (currencyChange)="onCurrencyChange($event)"
+        />
+        <app-currency-rate-note
+          [selectedCurrency]="viewCurrency()"
+          [snapshot]="exchangeRateState().snapshot"
+          [message]="exchangeRateState().error"
+        />
+      </section>
+
       <div class="wizard-step-content" [class.wizard-step-content--readonly]="readonlyMode()">
         <router-outlet />
       </div>
@@ -125,7 +138,7 @@
                 <div class="summary-card__group">
                   <span class="summary-card__label">Przedmiot ubezpieczenia</span>
                   <strong>{{ cropCount() }} upraw · {{ cropParcelsCount() }} działek</strong>
-                  <span>Suma ubezpieczenia: {{ cropTotalInsuranceSum() | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</span>
+                  <span>Suma ubezpieczenia: {{ cropTotalInsuranceSum() | displayMoney : viewCurrency() : exchangeRateState().snapshot }}</span>
                 </div>
               }
 
@@ -139,7 +152,7 @@
                   </div>
                   <strong>{{ variant.name }}</strong>
                   <span class="summary-card__premium">
-                    {{ discountedAmount() | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}
+                    {{ discountedAmount() | displayMoney : viewCurrency() : exchangeRateState().snapshot }}
                   </span>
                 </div>
               }
@@ -152,7 +165,7 @@
                       @for (line of selectedVariant()?.policyLines ?? []; track line.id) {
                         <li>
                           <span>{{ line.label }}</span>
-                          <strong>{{ line.premium.amount | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</strong>
+                          <strong>{{ line.premium.amount | displayMoney : viewCurrency() : exchangeRateState().snapshot }}</strong>
                         </li>
                       }
                     </ul>
@@ -170,10 +183,10 @@
                   </div>
                   <strong>{{ cropVariantLabel(cropSelectedVariantId()) }}</strong>
                   <span class="summary-card__premium">
-                    {{ cropDiscountedPremium() | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}
+                    {{ cropDiscountedPremium() | displayMoney : viewCurrency() : exchangeRateState().snapshot }}
                   </span>
                   @if (cropAppliedDiscount() > 0) {
-                    <span>Zniżka: -{{ cropAppliedDiscount() | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</span>
+                    <span>Zniżka: -{{ cropAppliedDiscount() | displayMoney : viewCurrency() : exchangeRateState().snapshot }}</span>
                   }
                 </div>
 
@@ -182,10 +195,10 @@
                   @if (cropSelectedPaymentRow(); as paymentRow) {
                     <strong>{{ cropPaymentFrequencyLabel(paymentRow.frequency) }}</strong>
                     <span>
-                      1. rata: {{ paymentRow.firstInstallmentAmount | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}
+                      1. rata: {{ paymentRow.firstInstallmentAmount | displayMoney : viewCurrency() : exchangeRateState().snapshot }}
                     </span>
                     @if (paymentRow.remainingInstallmentAmount !== null) {
-                      <span>Pozostałe: {{ paymentRow.remainingInstallmentAmount | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</span>
+                      <span>Pozostałe: {{ paymentRow.remainingInstallmentAmount | displayMoney : viewCurrency() : exchangeRateState().snapshot }}</span>
                     }
                   } @else {
                     <span>Brak danych o płatności.</span>
@@ -196,7 +209,7 @@
                   <span class="summary-card__label">Dodatki</span>
                   @if (cropTransportMainPlanEnabled()) {
                     <strong>Plon główny w transporcie</strong>
-                    <span>+{{ cropTransportMainPlanPremium | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</span>
+                    <span>+{{ cropTransportMainPlanPremium | displayMoney : viewCurrency() : exchangeRateState().snapshot }}</span>
                   } @else {
                     <span>Brak wybranych dodatków.</span>
                   }
@@ -249,7 +262,7 @@
             <strong>
               {{
                 (product() === 'MOTOR' ? (selectedVariant()?.totalPremium?.amount ?? 0) : cropDiscountedPremium())
-                  | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL'
+                  | displayMoney : viewCurrency() : exchangeRateState().snapshot
               }}
             </strong>
           </div>

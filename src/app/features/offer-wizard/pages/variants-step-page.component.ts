@@ -1,11 +1,16 @@
-import { CommonModule, CurrencyPipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { Component, computed, inject, signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { ButtonDirective } from 'primeng/button';
 import { Tag } from 'primeng/tag';
 import { CoverTerm, OfferVariant, PolicyLineCode } from '../../../core/models';
 import { Cover } from '../../../core/models/cover/cover.model';
 import { PaymentPlan } from '../../../core/models/payment/payment-plan.model';
+import { CurrencyService } from '../../../core/services/currency.service';
+import { DisplayMoneyPipe } from '../../../shared/pipes/display-money.pipe';
+import { CurrencyAmountInputComponent } from '../../../shared/ui/currency-amount-input/currency-amount-input.component';
 import { SectionCardComponent } from '../../../shared/ui/section-card/section-card.component';
+import { CurrencyViewStore } from '../../../core/services/currency-view.store';
 import { OfferWizardStateService } from '../state/offer-wizard-state.service';
 
 type AddonDefinition = {
@@ -24,14 +29,16 @@ type PaymentPlanView = {
 
 @Component({
   selector: 'app-variants-step-page',
-  imports: [CommonModule, SectionCardComponent, CurrencyPipe, Tag, ButtonDirective],
+  imports: [CommonModule, SectionCardComponent, Tag, ButtonDirective, DisplayMoneyPipe, CurrencyAmountInputComponent],
   templateUrl: './variants-step-page.component.html',
   styleUrl: './variants-step-page.component.scss'
 })
 export class VariantsStepPageComponent {
   private readonly wizardState = inject(OfferWizardStateService);
+  private readonly currencyService = inject(CurrencyService);
+  protected readonly currencyStore = inject(CurrencyViewStore);
+
   protected readonly customerDiscountBudget = 2540;
-  protected readonly discountInput = signal<string>('0');
   protected readonly discountError = signal<string | null>(null);
   protected readonly discountBusinessLine = 'Komunikacyjne OC';
   protected readonly addons: AddonDefinition[] = [
@@ -46,13 +53,15 @@ export class VariantsStepPageComponent {
   protected readonly variants = computed(() => this.wizardState.draftOffer()?.variants ?? []);
   protected readonly variantsByRank = computed(() => [...this.variants()].sort((left, right) => left.rank - right.rank));
   protected readonly selectedVariantId = computed(() => this.wizardState.draftOffer()?.selectedVariantId);
-  protected readonly selectedVariant = computed(() =>
-    this.variantsByRank().find((variant) => variant.id === this.selectedVariantId())
-  );
+  protected readonly selectedVariant = computed(() => this.variantsByRank().find((variant) => variant.id === this.selectedVariantId()));
   protected readonly selectedPaymentPlan = computed(() => this.wizardState.draftOffer()?.selectedPaymentPlan);
   protected readonly paymentPlans = computed(() =>
     [...(this.selectedVariant()?.paymentPlans ?? [])].sort((left, right) => left.installments.length - right.installments.length)
   );
+  protected readonly exchangeRateState = toSignal(this.currencyService.ensureRatesLoaded(), {
+    initialValue: this.currencyService.state()
+  });
+  protected readonly viewCurrency = computed(() => this.currencyStore.currency());
   protected readonly maxDiscountAmount = computed(() => {
     const ocPremium = this.getLine(this.selectedVariant(), 'OC')?.premium.amount ?? 0;
     return Math.max(0, Math.min(this.customerDiscountBudget, ocPremium));
@@ -90,7 +99,6 @@ export class VariantsStepPageComponent {
 
   constructor() {
     this.wizardState.ensureDefaultVariantSelection();
-    this.discountInput.set(String(this.wizardState.discountAmount()));
   }
 
   protected readonly policyLineCodes = computed<PolicyLineCode[]>(() => {
@@ -102,6 +110,19 @@ export class VariantsStepPageComponent {
 
     return Array.from(lineCodes).filter((lineCode) => this.isLineVisible(lineCode));
   });
+
+  protected foreignCurrencyAvailable(): boolean {
+    return this.currencyService.hasForeignCurrencyRates(this.exchangeRateState());
+  }
+
+  protected onDiscountAmountChange(amount: number): void {
+    this.discountError.set(null);
+    this.wizardState.setDiscountAmount(amount);
+  }
+
+  protected onDiscountValidationChange(message: string | null): void {
+    this.discountError.set(message);
+  }
 
   protected getLine(variant: OfferVariant | undefined, lineCode: PolicyLineCode) {
     if (!variant) {
@@ -163,59 +184,6 @@ export class VariantsStepPageComponent {
 
   protected selectPaymentPlan(frequency: PaymentPlan['frequency']): void {
     this.wizardState.updateSelectedPaymentPlan(frequency);
-  }
-
-  protected onDiscountInput(rawValue: string): void {
-    this.discountInput.set(rawValue);
-
-    if (rawValue.trim() === '') {
-      this.discountError.set(null);
-      return;
-    }
-
-    const parsed = Number(rawValue.replace(',', '.'));
-    const maxDiscountAmount = this.maxDiscountAmount();
-
-    if (Number.isNaN(parsed) || parsed < 0) {
-      this.discountError.set(`Podaj poprawną wartość kwotową (0-${maxDiscountAmount} PLN).`);
-      return;
-    }
-
-    if (parsed > maxDiscountAmount) {
-      this.discountError.set(`Maksymalna zniżka dla linii ${this.discountBusinessLine} to ${maxDiscountAmount} PLN.`);
-      return;
-    }
-
-    this.discountError.set(null);
-  }
-
-  protected onDiscountBlur(): void {
-    const rawValue = this.discountInput().trim();
-    const maxDiscountAmount = this.maxDiscountAmount();
-
-    if (rawValue === '') {
-      this.discountInput.set('0');
-      this.discountError.set(null);
-      this.wizardState.setDiscountAmount(0);
-      return;
-    }
-
-    const parsed = Number(rawValue.replace(',', '.'));
-
-    if (Number.isNaN(parsed) || parsed < 0) {
-      this.discountError.set(`Podaj poprawną wartość kwotową (0-${maxDiscountAmount} PLN).`);
-      return;
-    }
-
-    if (parsed > maxDiscountAmount) {
-      this.discountError.set(`Maksymalna zniżka dla linii ${this.discountBusinessLine} to ${maxDiscountAmount} PLN.`);
-      return;
-    }
-
-    const normalized = Math.round(parsed);
-    this.discountError.set(null);
-    this.discountInput.set(String(normalized));
-    this.wizardState.setDiscountAmount(normalized);
   }
 
   protected isPaymentPlanSelected(plan: PaymentPlan): boolean {

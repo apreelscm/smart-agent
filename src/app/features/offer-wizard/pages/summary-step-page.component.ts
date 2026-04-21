@@ -1,22 +1,32 @@
-import { CommonModule, CurrencyPipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { Component, computed, inject } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { Tag } from 'primeng/tag';
 import { OfferStatus } from '../../../core/models';
+import { CurrencyService } from '../../../core/services/currency.service';
+import { CurrencyViewStore } from '../../../core/services/currency-view.store';
+import { DisplayMoneyPipe } from '../../../shared/pipes/display-money.pipe';
 import { SectionCardComponent } from '../../../shared/ui/section-card/section-card.component';
 import { OfferWizardStateService } from '../state/offer-wizard-state.service';
 
 @Component({
   selector: 'app-summary-step-page',
-  imports: [CommonModule, CurrencyPipe, SectionCardComponent, Tag],
+  imports: [CommonModule, SectionCardComponent, Tag, DisplayMoneyPipe],
   templateUrl: './summary-step-page.component.html',
   styleUrl: './summary-step-page.component.scss'
 })
 export class SummaryStepPageComponent {
   private readonly wizardState = inject(OfferWizardStateService);
+  private readonly currencyService = inject(CurrencyService);
+  protected readonly currencyStore = inject(CurrencyViewStore);
 
   protected readonly offer = computed(() => this.wizardState.draftOffer());
   protected readonly selectedVariant = computed(() => this.wizardState.selectedVariant());
   protected readonly discountAmount = computed(() => this.wizardState.discountAmount());
+  protected readonly exchangeRateState = toSignal(this.currencyService.ensureRatesLoaded(), {
+    initialValue: this.currencyService.state()
+  });
+  protected readonly selectedCurrency = computed(() => this.currencyStore.currency());
 
   protected customerDisplayName(): string {
     const customer = this.offer()?.customer;

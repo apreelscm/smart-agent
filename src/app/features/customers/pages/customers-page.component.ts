@@ -1,15 +1,20 @@
 import { CommonModule } from '@angular/common';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ButtonDirective } from 'primeng/button';
 import { InputText } from 'primeng/inputtext';
 import { Tag } from 'primeng/tag';
-import { Offer, OfferStatus, Policy } from '../../../core/models';
+import { DisplayCurrency, Offer, OfferStatus, Policy } from '../../../core/models';
 import { OffersRepository } from '../../../core/repositories/offers.repository';
 import { PoliciesRepository } from '../../../core/repositories/policies.repository';
 import { SalesFlowRuntimeRepository } from '../../../core/repositories/sales-flow-runtime.repository';
+import { CurrencyService } from '../../../core/services/currency.service';
+import { CurrencyViewStore } from '../../../core/services/currency-view.store';
+import { DisplayMoneyPipe } from '../../../shared/pipes/display-money.pipe';
+import { CurrencyRateNoteComponent } from '../../../shared/ui/currency-rate-note/currency-rate-note.component';
+import { CurrencySwitcherComponent } from '../../../shared/ui/currency-switcher/currency-switcher.component';
 import { PageHeaderComponent } from '../../../shared/ui/page-header/page-header.component';
 import { SectionCardComponent } from '../../../shared/ui/section-card/section-card.component';
 
@@ -28,7 +33,20 @@ type CustomerRecord = {
 
 @Component({
   selector: 'app-customers-page',
-  imports: [CommonModule, FormsModule, RouterLink, PageHeaderComponent, SectionCardComponent, InputText, Tag, ButtonDirective],
+  imports: [
+    CommonModule,
+    FormsModule,
+    RouterLink,
+    PageHeaderComponent,
+    SectionCardComponent,
+    InputText,
+    Tag,
+    ButtonDirective,
+    CurrencySwitcherComponent,
+    CurrencyRateNoteComponent,
+    DisplayMoneyPipe
+  ],
+  providers: [CurrencyViewStore],
   templateUrl: './customers-page.component.html',
   styleUrl: './customers-page.component.scss'
 })
@@ -38,6 +56,8 @@ export class CustomersPageComponent {
   private readonly runtimeRepository = inject(SalesFlowRuntimeRepository);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
+  private readonly currencyService = inject(CurrencyService);
+  protected readonly currencyStore = inject(CurrencyViewStore);
 
   protected readonly searchTerm = signal('');
   private readonly offersFromMock = toSignal(this.offersRepository.getOffers(), { initialValue: [] as Offer[] });
@@ -45,6 +65,10 @@ export class CustomersPageComponent {
   private readonly routeCustomerKey = toSignal(this.route.paramMap, {
     initialValue: this.route.snapshot.paramMap
   });
+  protected readonly exchangeRateState = toSignal(this.currencyService.ensureRatesLoaded(), {
+    initialValue: this.currencyService.state()
+  });
+  protected readonly selectedCurrency = computed(() => this.currencyStore.currency());
 
   protected readonly offers = computed<Offer[]>(() => {
     const byId = new Map<string, Offer>();
@@ -192,6 +216,29 @@ export class CustomersPageComponent {
 
     return [...offerItems, ...policyItems].sort((a, b) => this.compareDatesDesc(a.date, b.date));
   });
+
+  constructor() {
+    effect(() => {
+      const state = this.exchangeRateState();
+
+      if (!this.currencyService.hasForeignCurrencyRates(state) && this.selectedCurrency() !== 'PLN') {
+        this.currencyStore.forcePln();
+      }
+    });
+  }
+
+  protected onCurrencyChange(currency: DisplayCurrency): void {
+    if (currency !== 'PLN' && !this.currencyService.hasForeignCurrencyRates(this.exchangeRateState())) {
+      this.currencyStore.forcePln();
+      return;
+    }
+
+    this.currencyStore.select(currency);
+  }
+
+  protected foreignCurrencyAvailable(): boolean {
+    return this.currencyService.hasForeignCurrencyRates(this.exchangeRateState());
+  }
 
   protected goToOffer(offerId: string): void {
     void this.router.navigate(['/offers', offerId, 'vehicle'], { queryParams: { readonly: '1' } });

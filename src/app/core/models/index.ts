@@ -1,4 +1,5 @@
 export * from './common/address.model';
+export * from './common/display-currency.model';
 export * from './common/money.model';
 export * from './common/person-name.model';
 export * from './cover/cover-term.model';
@@ -6,6 +7,7 @@ export * from './cover/cover.model';
 export * from './customer/customer-identity.model';
 export * from './customer/customer-kind.model';
 export * from './customer/customer.model';
+export * from './exchange-rate/exchange-rate.model';
 export * from './insured-object/insured-object.model';
 export * from './offer/agent-ref.model';
 export * from './offer/offer-status.model';

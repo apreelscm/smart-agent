@@ -1,0 +1,27 @@
+.currency-switcher {
+  display: inline-flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.currency-switcher__button {
+  min-width: 4.5rem;
+  padding: 0.55rem 0.9rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 999px;
+  background: #fff;
+  color: #1e293b;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.currency-switcher__button--selected {
+  background: #1d4ed8;
+  border-color: #1d4ed8;
+  color: #fff;
+}
+
+.currency-switcher__button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}

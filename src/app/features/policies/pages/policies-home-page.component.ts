@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -11,9 +11,14 @@ import { InputText } from 'primeng/inputtext';
 import { Select } from 'primeng/select';
 import { SplitButton } from 'primeng/splitbutton';
 import { Tag } from 'primeng/tag';
-import { Policy, PolicyPaymentStatus, PolicyStatus } from '../../../core/models';
+import { DisplayCurrency, Policy, PolicyPaymentStatus, PolicyStatus } from '../../../core/models';
 import { PoliciesRepository } from '../../../core/repositories/policies.repository';
 import { SalesFlowRuntimeRepository } from '../../../core/repositories/sales-flow-runtime.repository';
+import { CurrencyService } from '../../../core/services/currency.service';
+import { CurrencyViewStore } from '../../../core/services/currency-view.store';
+import { DisplayMoneyPipe } from '../../../shared/pipes/display-money.pipe';
+import { CurrencyRateNoteComponent } from '../../../shared/ui/currency-rate-note/currency-rate-note.component';
+import { CurrencySwitcherComponent } from '../../../shared/ui/currency-switcher/currency-switcher.component';
 import { PageHeaderComponent } from '../../../shared/ui/page-header/page-header.component';
 import { SectionCardComponent } from '../../../shared/ui/section-card/section-card.component';
 
@@ -35,7 +40,23 @@ type PolicyStatusPresentation = {
 
 @Component({
   selector: 'app-policies-home-page',
-  imports: [CommonModule, FormsModule, RouterLink, PageHeaderComponent, SectionCardComponent, ButtonDirective, Dialog, InputText, Select, SplitButton, Tag],
+  imports: [
+    CommonModule,
+    FormsModule,
+    RouterLink,
+    PageHeaderComponent,
+    SectionCardComponent,
+    ButtonDirective,
+    Dialog,
+    InputText,
+    Select,
+    SplitButton,
+    Tag,
+    CurrencySwitcherComponent,
+    CurrencyRateNoteComponent,
+    DisplayMoneyPipe
+  ],
+  providers: [CurrencyViewStore],
   templateUrl: './policies-home-page.component.html',
   styleUrl: './policies-home-page.component.scss'
 })
@@ -44,6 +65,8 @@ export class PoliciesHomePageComponent {
   private readonly salesFlowRuntimeRepository = inject(SalesFlowRuntimeRepository);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
+  private readonly currencyService = inject(CurrencyService);
+  protected readonly currencyStore = inject(CurrencyViewStore);
 
   protected readonly searchTerm = signal('');
   protected readonly selectedFilter = signal<PolicyViewFilter>('ALL');
@@ -58,6 +81,10 @@ export class PoliciesHomePageComponent {
   protected readonly pendingPayment = signal<Policy | null>(null);
   protected readonly paymentDialogVisible = signal(false);
   protected readonly basePolicies = toSignal(this.policiesRepository.getPolicies(), { initialValue: [] as Policy[] });
+  protected readonly exchangeRateState = toSignal(this.currencyService.ensureRatesLoaded(), {
+    initialValue: this.currencyService.state()
+  });
+  protected readonly selectedCurrency = computed(() => this.currencyStore.currency());
   protected readonly policies = computed<Policy[]>(() => {
     const runtimePolicies = this.salesFlowRuntimeRepository.promotedPolicies();
     const overrides = this.statusOverrides();
@@ -148,9 +175,7 @@ export class PoliciesHomePageComponent {
     return [...filtered].sort((left, right) => this.comparePolicies(left, right));
   });
 
-  protected readonly renewalsCount = computed(
-    () => this.policies().filter((policy) => policy.status === 'RENEWAL').length
-  );
+  protected readonly renewalsCount = computed(() => this.policies().filter((policy) => policy.status === 'RENEWAL').length);
   protected readonly toPayCount = computed(
     () => this.policies().filter((policy) => policy.status !== 'CANCELED' && policy.paymentStatus === 'TO_PAY').length
   );
@@ -176,6 +201,27 @@ export class PoliciesHomePageComponent {
         this.searchTerm.set(policy.policyNumber);
       }
     });
+
+    effect(() => {
+      const state = this.exchangeRateState();
+
+      if (!this.currencyService.hasForeignCurrencyRates(state) && this.selectedCurrency() !== 'PLN') {
+        this.currencyStore.forcePln();
+      }
+    });
+  }
+
+  protected onCurrencyChange(currency: DisplayCurrency): void {
+    if (currency !== 'PLN' && !this.currencyService.hasForeignCurrencyRates(this.exchangeRateState())) {
+      this.currencyStore.forcePln();
+      return;
+    }
+
+    this.currencyStore.select(currency);
+  }
+
+  protected foreignCurrencyAvailable(): boolean {
+    return this.currencyService.hasForeignCurrencyRates(this.exchangeRateState());
   }
 
   protected setFilter(filter: PolicyViewFilter): void {
