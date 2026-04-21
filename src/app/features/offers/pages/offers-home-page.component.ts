@@ -80,7 +80,7 @@ export class OffersHomePageComponent {
   private readonly router = inject(Router);
 
   protected readonly searchTerm = signal('');
-  protected readonly selectedStatus = signal<string | null>(null);
+  protected readonly selectedStatus = signal<string>('ALL');
   protected readonly selectedProduct = signal<OfferProductFilter>('ALL');
   protected readonly selectedSortField = signal<OfferSortField>('ISSUE_DATE');
   protected readonly selectedSortDirection = signal<SortDirection>('DESC');
@@ -134,7 +134,7 @@ export class OffersHomePageComponent {
     const selectedProduct = this.selectedProduct();
 
     const filtered = this.offersWithRuntimeStatus().filter((offer) => {
-      const matchesStatus = !selectedStatus || selectedStatus === 'ALL' || offer.status === selectedStatus;
+      const matchesStatus = selectedStatus === 'ALL' || offer.status === selectedStatus;
       const offerProduct = offer.product ?? 'MOTOR';
       const matchesProduct = selectedProduct === 'ALL' || offerProduct === selectedProduct;
       const matchesSearch =
@@ -204,7 +204,6 @@ export class OffersHomePageComponent {
 
   protected readonly totalVisibleOffers = computed(() => this.filteredOffers().length);
 
-  // New computed signal to detect if any filter or sorting differs from default values
   protected readonly filtersChanged = computed(() => {
     return (
       this.searchTerm() !== '' ||
@@ -326,7 +325,6 @@ export class OffersHomePageComponent {
     this.closeTransitionDialog();
   }
 
-  // New method to clear all filters and sorting to default values
   protected clearAllFilters(): void {
     this.searchTerm.set('');
     this.selectedStatus.set('ALL');
@@ -468,7 +466,6 @@ export class OffersHomePageComponent {
   }
 
   private printPlaceholder(offer: Offer): void {
-    // Placeholder action for future document generation integration.
     console.log('[Offers] Print placeholder action triggered for offer', offer.id);
   }
 
