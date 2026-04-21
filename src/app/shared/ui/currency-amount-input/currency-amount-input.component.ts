@@ -93,9 +93,10 @@ export class CurrencyAmountInputComponent {
     }
 
     const plnAmount = this.currencyService.convertToPln(parsed, this.selectedCurrency(), this.snapshot());
+    const maxPlnAmount = this.maxPlnAmount();
 
-    if (this.maxPlnAmount() !== null && plnAmount > this.maxPlnAmount()) {
-      this.setValidationMessage(`Maksymalna dopuszczalna wartość to ${this.currencyService.formatAmount(this.maxPlnAmount(), 'PLN', this.snapshot())}.`);
+    if (maxPlnAmount !== null && plnAmount > maxPlnAmount) {
+      this.setValidationMessage(`Maksymalna dopuszczalna wartość to ${this.currencyService.formatAmount(maxPlnAmount, 'PLN', this.snapshot())}.`);
       return;
     }
 

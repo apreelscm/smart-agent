@@ -158,7 +158,7 @@
                 icon="pi pi-arrow-right"
                 size="small"
                 styleClass="policy-row__split-action"
-                [model]="policyMenuModels()[policy.id] ?? []"
+                [model]="policyMenuModels()[policy.id]"
                 (onClick)="goToPolicyFlow(policy)"
                 (onDropdownClick)="onPolicySplitDropdownClick(policy)"
               />
