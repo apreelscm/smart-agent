@@ -165,8 +165,8 @@ export class OffersHomePageComponent {
         offer.offerNumber.toLowerCase().includes(normalizedSearch) ||
         this.getCustomerDisplayName(offer).toLowerCase().includes(normalizedSearch) ||
         this.getOfferHeadlineSubject(offer).toLowerCase().includes(normalizedSearch) ||
-        `${offer.vehicle.make} ${offer.vehicle.model}`.toLowerCase().includes(normalizedSearch) ||
-        (offer.vehicle.registration?.registrationNumber ?? '').toLowerCase().includes(normalizedSearch);
+        this.getVehicleSearchText(offer).toLowerCase().includes(normalizedSearch) ||
+        this.getVehicleRegistrationSearchText(offer).toLowerCase().includes(normalizedSearch);
 
       return matchesStatus && matchesProduct && matchesSearch;
     });
@@ -582,6 +582,25 @@ export class OffersHomePageComponent {
       cropsCount: crops.length,
       parcelsCount
     };
+  }
+
+  private getVehicleSearchText(offer: Offer): string {
+    if (this.isCropOffer(offer)) {
+      return '';
+    }
+
+    const make = offer.vehicle?.make ?? '';
+    const model = offer.vehicle?.model ?? '';
+
+    return `${make} ${model}`.trim();
+  }
+
+  private getVehicleRegistrationSearchText(offer: Offer): string {
+    if (this.isCropOffer(offer)) {
+      return '';
+    }
+
+    return offer.vehicle?.registration?.registrationNumber ?? '';
   }
 
   private isForeignCurrencyAvailable(currency: SupportedForeignCurrency): boolean {
