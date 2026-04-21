@@ -15,7 +15,7 @@
   padding: 0.75rem 1rem;
   border: 1px solid var(--app-border);
   border-radius: 0;
-  background: rgba(255, 255, 255, 0.97);
+  background: var(--app-surface);
   box-shadow: none;
 }
 
@@ -35,7 +35,7 @@
   width: 2.3rem;
   height: 2.3rem;
   border-radius: 0.45rem;
-  background: linear-gradient(180deg, #1d4ed8, #173ea7);
+  background: linear-gradient(180deg, var(--app-brand-primary), var(--app-brand-primary-hover));
   color: white;
   font-weight: 800;
   font-size: 0.82rem;
@@ -81,13 +81,13 @@
 .primary-nav__link:hover {
   border-color: var(--app-border);
   color: var(--app-ink);
-  background: #f7faff;
+  background: var(--app-surface-subtle);
 }
 
 .primary-nav__link--active {
-  border-color: rgba(29, 78, 216, 0.18);
-  color: #163b8c;
-  background: #eef4ff;
+  border-color: rgba(0, 90, 146, 0.18);
+  color: var(--app-brand-heading);
+  background: var(--app-brand-accent-soft);
 }
 
 .profile-chip {
@@ -98,7 +98,7 @@
   min-width: 8.75rem;
   border: 1px solid var(--app-border);
   border-radius: 0.45rem;
-  background: #fbfcff;
+  background: var(--app-surface-subtle);
   white-space: nowrap;
 }
 

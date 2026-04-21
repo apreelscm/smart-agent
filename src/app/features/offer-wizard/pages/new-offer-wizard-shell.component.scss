@@ -38,12 +38,12 @@
 
 .wizard-progress__step {
   $arrow-size: 1.2rem;
-  $step-bg: #f8fafc;
-  $step-color: #64748b;
-  $active-bg: #3b82f6;
+  $step-bg: var(--app-surface-subtle);
+  $step-color: var(--app-text-muted);
+  $active-bg: var(--app-brand-primary);
   $active-color: #ffffff;
-  $done-bg: #ecfdf5;
-  $done-color: #047857;
+  $done-bg: var(--app-success-soft);
+  $done-color: var(--app-success);
 
   position: relative;
   flex: 1;
@@ -69,7 +69,7 @@
   
   /* Hover state for inactive steps */
   &:not(.wizard-progress__step--active):hover {
-    background: darken($step-bg, 3%);
+    background: var(--app-brand-accent-soft);
   }
 
   /* Active State */
@@ -126,13 +126,13 @@
   /* Contextual styles for index */
   .wizard-progress__step--active & {
     background: rgba(255, 255, 255, 0.25);
-    color: #fff;
+    color: #ffffff;
     box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.3);
   }
 
   .wizard-progress__step--done & {
     background: rgba(16, 185, 129, 0.2);
-    color: #047857;
+    color: var(--app-success);
   }
 }
 
@@ -188,7 +188,7 @@
   padding: 0.75rem 0.8rem;
   border: 1px solid rgba(217, 119, 6, 0.28);
   border-radius: 0.55rem;
-  background: #fffbeb;
+  background: var(--app-warning-soft);
 }
 
 .renewal-notice__label {
@@ -231,9 +231,9 @@
 
 .summary-card__group--accent {
   padding: 0.85rem 0.9rem;
-  border: 1px solid rgba(29, 78, 216, 0.15);
+  border: 1px solid rgba(0, 90, 146, 0.15);
   border-radius: 0.55rem;
-  background: #f5f9ff;
+  background: var(--app-surface-subtle);
 }
 
 .summary-card__row {
@@ -245,7 +245,7 @@
 
 .summary-card__premium {
   margin-top: 0.15rem;
-  color: #163b8c;
+  color: var(--app-brand-heading);
   font-size: 1.2rem;
   font-weight: 800;
 }
@@ -275,13 +275,13 @@
 
 :host ::ng-deep .summary-card__save-button.p-button {
   width: 100%;
-  background: #0f766e;
-  border-color: #0f766e;
+  background: var(--app-success);
+  border-color: var(--app-success);
 }
 
 :host ::ng-deep .summary-card__save-button.p-button:hover {
-  background: #0d665f;
-  border-color: #0d665f;
+  background: var(--app-success);
+  border-color: var(--app-success);
 }
 
 .transition-dialog {

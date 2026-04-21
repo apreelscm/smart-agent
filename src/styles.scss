@@ -50,3 +50,16 @@ a.p-button:active,
 a.p-button:visited {
   text-decoration: none;
 }
+
+.p-button {
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  font-weight: 600;
+  border-radius: var(--app-radius-sm);
+}
+
+.p-button.p-button-text,
+.p-button.p-button-link {
+  text-transform: none;
+  letter-spacing: normal;
+}

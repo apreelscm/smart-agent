@@ -22,11 +22,11 @@
   padding: 0.36rem 0.55rem;
   border: 1px solid var(--app-border);
   border-radius: 0.5rem;
-  background: #fff;
+  background: var(--app-surface);
 }
 
 .customers-toolbar__search i {
-  color: #64748b;
+  color: var(--app-text-muted);
 }
 
 .customers-toolbar__search input {
@@ -36,7 +36,7 @@
 }
 
 .customers-toolbar__count {
-  color: #64748b;
+  color: var(--app-text-muted);
   font-size: 0.86rem;
   font-weight: 700;
 }
@@ -69,8 +69,8 @@
 
 .customers-table__head,
 .items-table__head {
-  background: #f8fafc;
-  color: #64748b;
+  background: var(--app-surface-subtle);
+  color: var(--app-text-muted);
   font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.04em;
@@ -80,7 +80,7 @@
 .customers-table__row,
 .items-table__row {
   border-top: 1px solid var(--app-border);
-  background: #fff;
+  background: var(--app-surface);
 }
 
 .customers-table__customer {
@@ -96,7 +96,7 @@
 .customers-table__customer span,
 .customers-table__row span,
 .items-table__row span {
-  color: #64748b;
+  color: var(--app-text-muted);
   font-size: 0.8rem;
 }
 
@@ -113,7 +113,7 @@
 }
 
 .customer-breadcrumb span {
-  color: #64748b;
+  color: var(--app-text-muted);
 }
 
 .customer-summary {
@@ -122,7 +122,7 @@
 }
 
 .customer-summary span {
-  color: #334155;
+  color: var(--app-text-muted);
   font-size: 0.9rem;
 }
 

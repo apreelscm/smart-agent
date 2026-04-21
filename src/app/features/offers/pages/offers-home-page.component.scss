@@ -36,17 +36,25 @@
   padding: 0.2rem 0.8rem;
   border: 1px solid var(--app-border);
   border-radius: 0.45rem;
-  background: #fcfdff;
+  background: var(--app-surface-subtle);
 }
 
 .field-shell i,
 .results-meta,
-.offer-row__meta-label,
 .offer-row__subline,
 .offer-row__meta-grid span,
 .premium-box span,
 .empty-state span {
   color: var(--app-text-muted);
+}
+
+.offer-row__meta-label {
+  color: var(--app-text-subtle);
+}
+
+.offer-row__meta-grid strong {
+  color: var(--app-brand-heading);
+  font-weight: 600;
 }
 
 .field-shell input[pInputText] {
@@ -111,6 +119,8 @@
 .offer-row__headline strong {
   display: block;
   font-size: 0.98rem;
+  font-weight: 600;
+  color: var(--app-brand-primary);
 }
 
 .offer-row__number {
@@ -128,8 +138,8 @@
   width: 1.35rem;
   height: 1.35rem;
   border-radius: 999px;
-  background: #eaf1ff;
-  color: #1d4ed8;
+  background: var(--app-brand-accent-soft);
+  color: var(--app-brand-primary);
   font-size: 0.78rem;
 }
 
@@ -157,7 +167,7 @@
 
 .offer-row__meta-grid a {
   width: fit-content;
-  color: #1d4ed8;
+  color: var(--app-brand-primary);
   font-weight: 600;
   text-decoration: none;
 }
@@ -182,14 +192,14 @@
 .premium-box {
   gap: 0.25rem;
   padding: 0.7rem 0.8rem;
-  border: 1px solid rgba(29, 78, 216, 0.15);
+  border: 1px solid rgba(0, 90, 146, 0.15);
   border-radius: 0.55rem;
-  background: #f4f8ff;
+  background: var(--app-surface-subtle);
 }
 
 .premium-box strong {
   font-size: 1.08rem;
-  color: #163b8c;
+  color: var(--app-brand-heading);
 }
 
 .offer-row__actions {
@@ -230,7 +240,7 @@ a[pButton]:visited {
 
 .transition-dialog__description {
   margin: 0;
-  color: #334155;
+  color: var(--app-text-muted);
   line-height: 1.45;
 }
 
@@ -239,9 +249,9 @@ a[pButton]:visited {
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0.65rem;
   padding: 0.75rem;
-  border: 1px solid rgba(23, 32, 51, 0.12);
+  border: 1px solid rgba(35, 70, 120, 0.12);
   border-radius: 0.55rem;
-  background: #f8fbff;
+  background: var(--app-surface-subtle);
 }
 
 .transition-dialog__summary div {
@@ -250,12 +260,12 @@ a[pButton]:visited {
 }
 
 .transition-dialog__summary span {
-  color: #64748b;
+  color: var(--app-text-muted);
   font-size: 0.75rem;
 }
 
 .transition-dialog__summary strong {
-  color: #0f172a;
+  color: var(--app-ink);
   font-size: 0.92rem;
 }
 
@@ -266,8 +276,8 @@ a[pButton]:visited {
   width: fit-content;
   padding: 0.42rem 0.62rem;
   border-radius: 999px;
-  background: #eef4ff;
-  color: #1e3a8a;
+  background: var(--app-brand-accent-soft);
+  color: var(--app-brand-primary-active);
   font-weight: 600;
 }
 

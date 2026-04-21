@@ -26,26 +26,34 @@
 }
 
 .policy-filter-tile:hover {
-  border-color: rgba(29, 78, 216, 0.28);
+  border-color: rgba(0, 90, 146, 0.28);
   box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
 }
 
 .policy-filter-tile--active {
-  border-color: rgba(29, 78, 216, 0.5);
-  background: #ecf4ff;
-  box-shadow: inset 0 0 0 1px rgba(29, 78, 216, 0.2);
+  border-color: rgba(0, 90, 146, 0.5);
+  background: var(--app-brand-accent-soft);
+  box-shadow: inset 0 0 0 1px rgba(0, 90, 146, 0.2);
 }
 
 .policy-filter-tile__label,
 .policy-filter-tile__note,
 .field-shell i,
 .results-meta,
-.policy-row__meta-label,
 .policy-row__subline,
 .policy-row__meta-grid span,
 .premium-box span,
 .empty-state span {
   color: var(--app-text-muted);
+}
+
+.policy-row__meta-label {
+  color: var(--app-text-subtle);
+}
+
+.policy-row__meta-grid strong {
+  color: var(--app-brand-heading);
+  font-weight: 600;
 }
 
 .policy-filter-tile__label {
@@ -54,7 +62,7 @@
 
 .policy-filter-tile__value {
   font-size: 1.15rem;
-  color: #163b8c;
+  color: var(--app-brand-heading);
 }
 
 .policy-filter-tile__note {
@@ -84,7 +92,7 @@
   padding: 0.2rem 0.8rem;
   border: 1px solid var(--app-border);
   border-radius: 0.45rem;
-  background: #fcfdff;
+  background: var(--app-surface-subtle);
 }
 
 .field-shell input[pInputText] {
@@ -149,6 +157,8 @@
 .policy-row__headline strong {
   display: block;
   font-size: 0.98rem;
+  font-weight: 600;
+  color: var(--app-brand-primary);
 }
 
 .policy-row__subline {
@@ -188,14 +198,14 @@
 .premium-box {
   gap: 0.25rem;
   padding: 0.7rem 0.8rem;
-  border: 1px solid rgba(29, 78, 216, 0.15);
+  border: 1px solid rgba(0, 90, 146, 0.15);
   border-radius: 0.55rem;
-  background: #f4f8ff;
+  background: var(--app-surface-subtle);
 }
 
 .premium-box strong {
   font-size: 1.08rem;
-  color: #163b8c;
+  color: var(--app-brand-heading);
 }
 
 .policy-row__actions {
@@ -229,7 +239,7 @@
 
 .policy-cancel-dialog__description {
   margin: 0;
-  color: #334155;
+  color: var(--app-text-muted);
   line-height: 1.45;
 }
 
@@ -238,9 +248,9 @@
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0.6rem;
   padding: 0.75rem;
-  border: 1px solid rgba(23, 32, 51, 0.12);
+  border: 1px solid rgba(35, 70, 120, 0.12);
   border-radius: 0.55rem;
-  background: #fff7f7;
+  background: var(--app-danger-soft);
 }
 
 .policy-cancel-dialog__summary div {
@@ -249,12 +259,12 @@
 }
 
 .policy-cancel-dialog__summary span {
-  color: #64748b;
+  color: var(--app-text-muted);
   font-size: 0.75rem;
 }
 
 .policy-cancel-dialog__summary strong {
-  color: #0f172a;
+  color: var(--app-ink);
   font-size: 0.92rem;
 }
 
