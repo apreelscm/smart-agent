@@ -6,16 +6,33 @@
   />
 
   <section class="currency-toolbar">
-    <app-currency-switcher
-      [selectedCurrency]="selectedCurrency()"
-      [foreignCurrencyAvailable]="foreignCurrencyAvailable()"
-      (currencyChange)="onCurrencyChange($event)"
-    />
-    <app-currency-rate-note
-      [selectedCurrency]="selectedCurrency()"
-      [snapshot]="exchangeRateState().snapshot"
-      [message]="exchangeRateState().error"
-    />
+    <div class="currency-switcher" role="group" aria-label="Przełącznik waluty">
+      @for (currency of ['PLN', 'EUR', 'USD']; track currency) {
+        <button
+          type="button"
+          class="currency-switcher__button"
+          [class.currency-switcher__button--selected]="selectedCurrency() === currency"
+          [disabled]="currency !== 'PLN' && !foreignCurrencyAvailable()"
+          [attr.aria-label]="currency"
+          (click)="onCurrencyChange($any(currency))"
+        >
+          {{ currency }}
+        </button>
+      }
+    </div>
+
+    @if (exchangeRateState().error; as errorMessage) {
+      <div class="currency-rate-note currency-rate-note--warning" role="status">
+        {{ errorMessage }}
+      </div>
+    } @else {
+      @if (selectedCurrency() !== 'PLN' && exchangeRateState().snapshot; as activeSnapshot) {
+        <div class="currency-rate-note" role="status">
+          <span>Kurs NBP dla {{ selectedCurrency() }}</span>
+          <span>Data obowiązywania: {{ activeSnapshot.effectiveDate | date: 'dd.MM.yyyy' }}</span>
+        </div>
+      }
+    }
   </section>
 
   <app-section-card title="Zakres raportu">

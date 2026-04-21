@@ -237,14 +237,14 @@ export class OffersHomePageComponent {
     effect(() => {
       const state = this.exchangeRateState();
 
-      if (!this.currencyService.hasForeignCurrencyRates(state) && this.selectedCurrency() !== 'PLN') {
+      if (!state.loading && !this.currencyService.hasForeignCurrencyRates(state) && this.selectedCurrency() !== 'PLN') {
         this.currencyStore.forcePln();
       }
     });
   }
 
   protected onCurrencyChange(currency: DisplayCurrency): void {
-    if (currency !== 'PLN' && !this.currencyService.hasForeignCurrencyRates(this.exchangeRateState())) {
+    if (currency !== 'PLN' && this.exchangeRateState().error) {
       this.currencyStore.forcePln();
       return;
     }
@@ -253,7 +253,8 @@ export class OffersHomePageComponent {
   }
 
   protected foreignCurrencyAvailable(): boolean {
-    return this.currencyService.hasForeignCurrencyRates(this.exchangeRateState());
+    const state = this.exchangeRateState();
+    return state.loading || this.currencyService.hasForeignCurrencyRates(state);
   }
 
   protected getCustomerDisplayName(offer: Offer): string {
