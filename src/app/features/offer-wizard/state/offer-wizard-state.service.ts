@@ -36,7 +36,7 @@ export class OfferWizardStateService {
   private readonly offersRepository = inject(OffersRepository);
   private readonly salesFlowRuntimeRepository = inject(SalesFlowRuntimeRepository);
 
-  private readonly draftOfferState = signal<Offer | undefined>(undefined);
+  private readonly draftOfferState = signal<CropOffer | undefined>(undefined);
   private readonly modeState = signal<'new' | 'continue'>('new');
   private readonly sourceOfferIdState = signal<string | null>(null);
   private readonly discountAmountState = signal<number>(0);
@@ -48,7 +48,7 @@ export class OfferWizardStateService {
   private readonly cropSelectedPaymentFrequencyState = signal<PaymentPlan['frequency']>('ANNUAL');
   private readonly cropTransportMainPlanEnabledState = signal<boolean>(false);
 
-  readonly draftOffer = computed(() => this.draftOfferState());
+  readonly draftOffer = computed<Offer | undefined>(() => this.draftOfferState());
   readonly mode = computed(() => this.modeState());
   readonly sourceOfferId = computed(() => this.sourceOfferIdState());
   readonly discountAmount = computed(() => this.discountAmountState());
