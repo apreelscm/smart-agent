@@ -81,9 +81,8 @@ export class PoliciesHomePageComponent {
   protected readonly ratesError = signal(false);
 
   protected readonly basePolicies = toSignal(this.policiesRepository.getPolicies(), { initialValue: [] as Policy[] });
-  protected readonly exchangeRates = toSignal(this.exchangeRatesRepository.getCurrentRates(), {
-    initialValue: null as ExchangeRateSnapshot | null,
-    rejectErrors: true
+  protected readonly exchangeRates = toSignal<ExchangeRateSnapshot | null>(this.exchangeRatesRepository.getCurrentRates(), {
+    initialValue: null
   });
   protected readonly availability = computed(() =>
     this.currencyConversionService.getAvailability(this.exchangeRates(), this.ratesError())
@@ -211,13 +210,6 @@ export class PoliciesHomePageComponent {
         this.searchTerm.set(policy.policyNumber);
       }
     });
-
-    try {
-      this.exchangeRates();
-    } catch {
-      this.ratesError.set(true);
-      this.selectedCurrency.set('PLN');
-    }
   }
 
   protected changeCurrency(currency: CurrencyCode): void {

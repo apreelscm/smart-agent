@@ -1,6 +1,6 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
-import { Customer, CurrencyCode, Offer, OfferStatus, OfferVariant, Policy, PolicyLineCode, Vehicle } from '../../../core/models';
+import { Customer, CurrencyCode, Money, Offer, OfferStatus, OfferVariant, Policy, PolicyLine, PolicyLineCode, Vehicle } from '../../../core/models';
 import { CurrencyConversionService } from '../../../core/services/currency-conversion.service';
 import { PaymentPlan } from '../../../core/models/payment/payment-plan.model';
 import { OfferProduct, OffersRepository } from '../../../core/repositories/offers.repository';
@@ -15,6 +15,18 @@ type CropPersistedPayload = {
   discountAmount?: number;
   selectedPaymentFrequency?: PaymentPlan['frequency'];
   transportMainPlanEnabled?: boolean;
+};
+
+type RecalculableCover = {
+  enabled: boolean;
+  selectable?: boolean;
+  premiumDelta?: Money;
+};
+
+type RecalculableLine = {
+  basePremium?: Money;
+  premium: Money;
+  covers: RecalculableCover[];
 };
 
 @Injectable({
@@ -653,40 +665,39 @@ export class OfferWizardStateService {
         };
       }
 
-      return {
-        ...variant,
-        policyLines: [
-          ...variant.policyLines,
+      const newLine: PolicyLine = {
+        id: `${variant.id}-line-${lineCode.toLowerCase()}`,
+        code: lineCode,
+        label,
+        included: true,
+        premium: {
+          amount: 0,
+          currency: 'PLN'
+        },
+        basePremium: {
+          amount: 0,
+          currency: 'PLN'
+        },
+        covers: [
           {
-            id: `${variant.id}-line-${lineCode.toLowerCase()}`,
-            code: lineCode,
+            id: `${variant.id}-cover-${coverCode.toLowerCase()}`,
+            code: coverCode,
             label,
-            included: true,
-            premium: {
-              amount: 0,
+            description: label,
+            enabled: false,
+            selectable: true,
+            premiumDelta: {
+              amount: premiumDeltaAmount,
               currency: 'PLN'
             },
-            basePremium: {
-              amount: 0,
-              currency: 'PLN'
-            },
-            covers: [
-              {
-                id: `${variant.id}-cover-${coverCode.toLowerCase()}`,
-                code: coverCode,
-                label,
-                description: label,
-                enabled: false,
-                selectable: true,
-                premiumDelta: {
-                  amount: premiumDeltaAmount,
-                  currency: 'PLN'
-                },
-                terms: []
-              }
-            ]
+            terms: []
           }
         ]
+      };
+
+      return {
+        ...variant,
+        policyLines: [...variant.policyLines, newLine]
       };
     };
 
@@ -729,9 +740,7 @@ export class OfferWizardStateService {
     };
   }
 
-  private recalculateLine<T extends { basePremium?: { amount: number }; premium: { amount: number; currency: 'PLN' }; covers: Array<{ enabled: boolean; selectable?: boolean; premiumDelta?: { amount: number } }> }>(
-    line: T
-  ): T {
+  private recalculateLine<T extends RecalculableLine>(line: T): T {
     const enabledSelectableDelta = line.covers.reduce((sum, cover) => {
       if (!cover.enabled) {
         return sum;

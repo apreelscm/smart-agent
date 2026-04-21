@@ -44,9 +44,8 @@ export class VariantsStepPageComponent {
   protected readonly discountBusinessLine = 'Komunikacyjne OC';
   protected readonly selectedInputCurrency = signal<CurrencyCode>('PLN');
   protected readonly ratesError = signal(false);
-  protected readonly exchangeRates = toSignal(this.exchangeRatesRepository.getCurrentRates(), {
-    initialValue: null as ExchangeRateSnapshot | null,
-    rejectErrors: true
+  protected readonly exchangeRates = toSignal<ExchangeRateSnapshot | null>(this.exchangeRatesRepository.getCurrentRates(), {
+    initialValue: null
   });
   protected readonly availability = computed(() =>
     this.currencyConversionService.getAvailability(this.exchangeRates(), this.ratesError())
@@ -119,13 +118,6 @@ export class VariantsStepPageComponent {
   constructor() {
     this.wizardState.ensureDefaultVariantSelection();
     this.discountInput.set(String(this.wizardState.discountAmount()));
-
-    try {
-      this.exchangeRates();
-    } catch {
-      this.ratesError.set(true);
-      this.selectedInputCurrency.set('PLN');
-    }
   }
 
   protected readonly policyLineCodes = computed<PolicyLineCode[]>(() => {

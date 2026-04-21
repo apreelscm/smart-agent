@@ -57,9 +57,8 @@ export class ReportsPageComponent {
   protected readonly dateTo = signal(this.defaultDateTo());
   protected readonly selectedCurrency = signal<CurrencyCode>('PLN');
   protected readonly ratesError = signal(false);
-  protected readonly exchangeRates = toSignal(this.exchangeRatesRepository.getCurrentRates(), {
-    initialValue: null as ExchangeRateSnapshot | null,
-    rejectErrors: true
+  protected readonly exchangeRates = toSignal<ExchangeRateSnapshot | null>(this.exchangeRatesRepository.getCurrentRates(), {
+    initialValue: null
   });
   protected readonly availability = computed(() =>
     this.currencyConversionService.getAvailability(this.exchangeRates(), this.ratesError())
@@ -234,14 +233,7 @@ export class ReportsPageComponent {
     return `conic-gradient(#0f766e ${paidPercent}%, #dce5f2 ${paidPercent}% 100%)`;
   });
 
-  constructor() {
-    try {
-      this.exchangeRates();
-    } catch {
-      this.ratesError.set(true);
-      this.selectedCurrency.set('PLN');
-    }
-  }
+  constructor() {}
 
   protected changeCurrency(currency: CurrencyCode): void {
     if (this.disabledCurrencies().includes(currency)) {

@@ -114,9 +114,8 @@ export class OffersHomePageComponent {
       vehicleFinancing: []
     } as ReferenceData
   });
-  protected readonly exchangeRates = toSignal(this.exchangeRatesRepository.getCurrentRates(), {
-    initialValue: null as ExchangeRateSnapshot | null,
-    rejectErrors: true
+  protected readonly exchangeRates = toSignal<ExchangeRateSnapshot | null>(this.exchangeRatesRepository.getCurrentRates(), {
+    initialValue: null
   });
 
   protected readonly availability = computed(() =>
@@ -246,14 +245,7 @@ export class OffersHomePageComponent {
     );
   });
 
-  constructor() {
-    try {
-      this.exchangeRates();
-    } catch {
-      this.ratesError.set(true);
-      this.selectedCurrency.set('PLN');
-    }
-  }
+  constructor() {}
 
   protected changeCurrency(currency: CurrencyCode): void {
     if (this.disabledCurrencies().includes(currency)) {
