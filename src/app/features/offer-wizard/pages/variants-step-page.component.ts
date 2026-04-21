@@ -3,7 +3,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { Component, computed, inject, signal } from '@angular/core';
 import { ButtonDirective } from 'primeng/button';
 import { Tag } from 'primeng/tag';
-import { CoverTerm, CurrencyCode, ExchangeRateSnapshot, OfferVariant, PolicyLineCode } from '../../../core/models';
+import { CoverTerm, CurrencyCode, ExchangeRateSnapshot, OfferVariant, PolicyLine, PolicyLineCode } from '../../../core/models';
 import { Cover } from '../../../core/models/cover/cover.model';
 import { PaymentPlan } from '../../../core/models/payment/payment-plan.model';
 import { ExchangeRatesRepository } from '../../../core/repositories/exchange-rates.repository';
@@ -147,7 +147,7 @@ export class VariantsStepPageComponent {
     this.selectedInputCurrency.set(currency);
   }
 
-  protected getLine(variant: OfferVariant | undefined, lineCode: PolicyLineCode) {
+  protected getLine(variant: OfferVariant | undefined, lineCode: PolicyLineCode): PolicyLine | undefined {
     if (!variant) {
       return undefined;
     }
