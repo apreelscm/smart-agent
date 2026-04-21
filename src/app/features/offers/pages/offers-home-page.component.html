@@ -157,7 +157,7 @@
                 getPrimaryPremium(offer)
                   | currency
                     : getPrimaryPremiumMoney(offer).currency
-                    : getPrimaryPremiumMoney(offer).currency === 'EUR' ? 'symbol-narrow' : 'symbol'
+                    : 'symbol'
                     : '1.0-0'
                     : 'pl-PL'
               }}</strong>
@@ -220,7 +220,7 @@
               getPrimaryPremium(pending.offer)
                 | currency
                   : getPrimaryPremiumMoney(pending.offer).currency
-                  : getPrimaryPremiumMoney(pending.offer).currency === 'EUR' ? 'symbol-narrow' : 'symbol'
+                  : 'symbol'
                   : '1.0-0'
                   : 'pl-PL'
             }}</strong>
