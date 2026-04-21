@@ -10,6 +10,23 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  detect:
+    runs-on: ubuntu-latest
+    outputs:
+      has_e2e: ${{ steps.check.outputs.has_e2e }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: check
+        shell: bash
+        run: |
+          shopt -s globstar nullglob
+          files=(tests/e2e/**/*.spec.ts)
+          if (( ${#files[@]} > 0 )); then
+            echo "has_e2e=true"  >> "$GITHUB_OUTPUT"
+          else
+            echo "has_e2e=false" >> "$GITHUB_OUTPUT"
+          fi
+
   build:
     runs-on: ubuntu-latest
     steps:
@@ -29,8 +46,8 @@ jobs:
           if-no-files-found: error
 
   e2e:
-    needs: build
-    if: ${{ needs.build.result == 'success' && hashFiles('tests/e2e/**/*.spec.ts') != '' }}
+    needs: [detect, build]
+    if: ${{ needs.build.result == 'success' && needs.detect.outputs.has_e2e == 'true' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
