@@ -251,7 +251,9 @@ export class OffersHomePageComponent {
   }
 
   protected getPrimaryPremiumMoney(offer: Offer): Money {
-    return offer.selectedPaymentPlan?.totalPremium ?? offer.variants[0]?.totalPremium ?? { amount: 0, currency: 'PLN' };
+    const selectedVariant = offer.variants.find((variant) => variant.id === offer.selectedVariantId);
+
+    return offer.selectedPaymentPlan?.totalPremium ?? selectedVariant?.totalPremium ?? offer.variants[0]?.totalPremium ?? { amount: 0, currency: 'PLN' };
   }
 
   protected formatMoney(money: Money): string {
