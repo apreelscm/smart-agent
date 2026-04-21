@@ -28,6 +28,11 @@
   gap: 0.75rem;
 }
 
+.toolbar__actions {
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
+
 .field-shell {
   display: inline-flex;
   align-items: center;
@@ -76,11 +81,80 @@
   white-space: nowrap;
 }
 
+.currency-panel {
+  display: grid;
+  gap: 0.32rem;
+}
+
+.currency-panel__label {
+  color: var(--app-text-subtle);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.currency-switcher {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem;
+  border: 1px solid var(--app-border);
+  border-radius: 999px;
+  background: var(--app-surface-subtle);
+}
+
+.currency-switcher__option {
+  border: 0;
+  background: transparent;
+  color: var(--app-brand-primary);
+  padding: 0.36rem 0.78rem;
+  border-radius: 999px;
+  font-size: 0.92rem;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  transition:
+    background-color 160ms ease,
+    color 160ms ease,
+    opacity 160ms ease;
+}
+
+.currency-switcher__option:hover:not(:disabled) {
+  background: rgba(0, 90, 146, 0.08);
+}
+
+.currency-switcher__option--active {
+  background: var(--app-brand-primary);
+  color: #fff;
+}
+
+.currency-switcher__option:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+  color: var(--app-text-muted);
+}
+
 .results-meta {
   display: flex;
   justify-content: space-between;
   gap: 1rem;
   font-size: 0.84rem;
+}
+
+.results-meta__fx {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+}
+
+.results-meta__fx-caption {
+  color: var(--app-brand-primary-active);
+  font-weight: 600;
+}
+
+.results-meta__fx-message {
+  color: var(--app-text-muted);
 }
 
 .offer-list {
@@ -324,6 +398,23 @@ a[pButton]:visited {
 
   .toolbar__sort-direction {
     width: 100%;
+  }
+
+  .currency-switcher {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .currency-switcher__option {
+    flex: 1 1 0;
+  }
+
+  .results-meta {
+    flex-direction: column;
+  }
+
+  .results-meta__fx {
+    justify-content: flex-start;
   }
 
   .offer-row__summary {

@@ -66,6 +66,26 @@
       </div>
 
       <div class="toolbar__actions">
+        <div class="currency-panel">
+          <span class="currency-panel__label">Waluta prezentacji</span>
+
+          <div class="currency-switcher" role="group" aria-label="Waluta prezentacji">
+            @for (currency of currencyOptions; track currency) {
+              <button
+                type="button"
+                class="currency-switcher__option"
+                [class.currency-switcher__option--active]="selectedCurrency() === currency"
+                [disabled]="currencyDisabled(currency)"
+                [attr.aria-pressed]="selectedCurrency() === currency"
+                [attr.data-currency]="currency"
+                (click)="selectCurrency(currency)"
+              >
+                {{ currency }}
+              </button>
+            }
+          </div>
+        </div>
+
         <button
           pButton
           type="button"
@@ -81,6 +101,16 @@
 
     <div class="results-meta">
       <span>{{ totalVisibleOffers() }} ofert(y) na liście</span>
+
+      <div class="results-meta__fx">
+        @if (rateCaption(); as caption) {
+          <span class="results-meta__fx-caption">{{ caption }}</span>
+        }
+
+        @if (fxAvailabilityMessage(); as message) {
+          <span class="results-meta__fx-message">{{ message }}</span>
+        }
+      </div>
     </div>
 
     <div class="offer-list">
@@ -153,7 +183,7 @@
           <div class="offer-row__summary">
             <div class="premium-box">
               <span class="offer-row__meta-label">Składka</span>
-              <strong>{{ getPrimaryPremium(offer) | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</strong>
+              <strong>{{ formatAmount(getPrimaryPremium(offer)) }}</strong>
               <span>{{ offer.validTo ? ('Ważna do ' + (offer.validTo | date: 'dd.MM.yyyy')) : 'Robocza kalkulacja' }}</span>
             </div>
 
@@ -209,7 +239,7 @@
           </div>
           <div>
             <span>Składka</span>
-            <strong>{{ getPrimaryPremium(pending.offer) | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</strong>
+            <strong>{{ formatAmount(getPrimaryPremium(pending.offer)) }}</strong>
           </div>
         </div>
 
