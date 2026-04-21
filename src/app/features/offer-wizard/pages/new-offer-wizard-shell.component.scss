@@ -6,6 +6,12 @@
   display: block;
 }
 
+.wizard-header {
+  display: flex;
+  justify-content: flex-end;
+  margin: -1.1rem 0 0.75rem;
+}
+
 .wizard-layout {
   display: grid;
   grid-template-columns: minmax(0, 1.3fr) 22rem;
@@ -15,7 +21,6 @@
   column-gap: 1.25rem;
   row-gap: 0.7rem;
   align-items: start;
-  margin-top: -1.5rem; /* Pull the entire wizard up closer to the header */
 }
 
 .wizard-layout--summary {
@@ -33,82 +38,50 @@
   border-radius: 0.5rem;
   background: transparent;
   filter: drop-shadow(0 4px 3px rgb(0 0 0 / 0.07)) drop-shadow(0 2px 2px rgb(0 0 0 / 0.06));
-  overflow: hidden; /* Ensures rounded corners on the container clip the first/last steps */
+  overflow: hidden;
 }
 
 .wizard-progress__step {
-  $arrow-size: 1.2rem;
-  $step-bg: #f8fafc;
-  $step-color: #64748b;
-  $active-bg: #3b82f6;
-  $active-color: #ffffff;
-  $done-bg: #ecfdf5;
-  $done-color: #047857;
-
   position: relative;
   flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.75rem;
-  padding: 0.75rem calc(#{$arrow-size} + 0.5rem) 0.75rem calc(#{$arrow-size} + 1rem);
-  background: $step-bg;
-  color: $step-color;
+  padding: 0.75rem 1.7rem 0.75rem 2.2rem;
+  background: #f8fafc;
+  color: #64748b;
   text-decoration: none;
   font-weight: 500;
   transition: all 0.2s ease;
-  clip-path: polygon(
-    0% 0%, 
-    calc(100% - #{$arrow-size}) 0%, 
-    100% 50%, 
-    calc(100% - #{$arrow-size}) 100%, 
-    0% 100%, 
-    #{$arrow-size} 50%
-  );
-  margin-right: calc(#{$arrow-size} * -1); /* Overlap to interlock */
-  
-  /* Hover state for inactive steps */
-  &:not(.wizard-progress__step--active):hover {
-    background: darken($step-bg, 3%);
-  }
+  clip-path: polygon(0% 0%, calc(100% - 1.2rem) 0%, 100% 50%, calc(100% - 1.2rem) 100%, 0% 100%, 1.2rem 50%);
+  margin-right: -1.2rem;
+}
 
-  /* Active State */
-  &.wizard-progress__step--active {
-    background: $active-bg;
-    color: $active-color;
-    z-index: 2; /* Bring active step forward if needed, though clip-path handles shape */
-  }
+.wizard-progress__step:not(.wizard-progress__step--active):hover {
+  background: #eef2f7;
+}
 
-  /* Done State */
-  &.wizard-progress__step--done {
-    background: $done-bg;
-    color: $done-color;
-  }
+.wizard-progress__step--active {
+  background: #3b82f6;
+  color: #ffffff;
+  z-index: 2;
+}
 
-  /* First Step: Flat start */
-  &:first-child {
-    padding-left: 1.5rem;
-    clip-path: polygon(
-      0% 0%, 
-      calc(100% - #{$arrow-size}) 0%, 
-      100% 50%, 
-      calc(100% - #{$arrow-size}) 100%, 
-      0% 100%
-    );
-  }
+.wizard-progress__step--done {
+  background: #ecfdf5;
+  color: #047857;
+}
 
-  /* Last Step: Flat end */
-  &:last-child {
-    margin-right: 0;
-    padding-right: 1.5rem;
-    clip-path: polygon(
-      0% 0%, 
-      100% 0%, 
-      100% 100%, 
-      0% 100%, 
-      #{$arrow-size} 50%
-    );
-  }
+.wizard-progress__step:first-child {
+  padding-left: 1.5rem;
+  clip-path: polygon(0% 0%, calc(100% - 1.2rem) 0%, 100% 50%, calc(100% - 1.2rem) 100%, 0% 100%);
+}
+
+.wizard-progress__step:last-child {
+  margin-right: 0;
+  padding-right: 1.5rem;
+  clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%, 1.2rem 50%);
 }
 
 .wizard-progress__index {
@@ -122,18 +95,17 @@
   font-size: 0.85rem;
   font-weight: 700;
   flex-shrink: 0;
-  
-  /* Contextual styles for index */
-  .wizard-progress__step--active & {
-    background: rgba(255, 255, 255, 0.25);
-    color: #fff;
-    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.3);
-  }
+}
 
-  .wizard-progress__step--done & {
-    background: rgba(16, 185, 129, 0.2);
-    color: #047857;
-  }
+.wizard-progress__step--active .wizard-progress__index {
+  background: rgba(255, 255, 255, 0.25);
+  color: #fff;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.3);
+}
+
+.wizard-progress__step--done .wizard-progress__index {
+  background: rgba(16, 185, 129, 0.2);
+  color: #047857;
 }
 
 .wizard-progress__label {
@@ -339,22 +311,19 @@
 }
 
 @media (width <= 1120px) {
-  .wizard-layout,
-  .wizard-progress {
-    grid-template-columns: 1fr;
+  .wizard-header,
+  .wizard-navigation {
+    flex-direction: column;
+    align-items: stretch;
   }
 
   .wizard-layout {
+    grid-template-columns: 1fr;
     grid-template-areas:
       "progress"
       "main"
       "aside";
     row-gap: 0.8rem;
-  }
-
-  .wizard-navigation {
-    flex-direction: column;
-    align-items: stretch;
   }
 
   .wizard-navigation__side,

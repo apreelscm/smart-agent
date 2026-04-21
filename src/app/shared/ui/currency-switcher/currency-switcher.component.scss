@@ -1,0 +1,35 @@
+:host {
+  display: block;
+}
+
+.currency-switcher {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.currency-switcher__buttons {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.currency-switcher__button {
+  min-width: 4.2rem;
+}
+
+.currency-switcher__button--selected {
+  font-weight: 700;
+}
+
+.currency-switcher__meta {
+  color: var(--app-text-muted);
+  font-size: 0.8rem;
+}
+
+.currency-switcher__meta strong {
+  color: #0f172a;
+}
+
+.currency-switcher__meta--error {
+  color: #b91c1c;
+}

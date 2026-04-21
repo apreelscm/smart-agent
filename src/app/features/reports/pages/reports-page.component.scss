@@ -7,6 +7,12 @@
   gap: 1rem;
 }
 
+.reports-page__currency {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: -0.35rem;
+}
+
 .date-range {
   display: flex;
   gap: 1rem;
@@ -239,7 +245,8 @@
     grid-template-columns: 1fr;
   }
 
-  .date-range--inline {
+  .date-range--inline,
+  .reports-page__currency {
     flex-wrap: wrap;
   }
 

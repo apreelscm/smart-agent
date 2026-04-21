@@ -1,0 +1,59 @@
+:host {
+  display: block;
+}
+
+.currency-amount-input {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.currency-amount-input__switcher {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.currency-amount-input__field {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: stretch;
+}
+
+.currency-amount-input__field input {
+  width: 100%;
+  min-width: 0;
+  padding: 0.6rem 0.7rem;
+  border: 1px solid var(--app-border);
+  border-right: 0;
+  border-top-left-radius: 0.45rem;
+  border-bottom-left-radius: 0.45rem;
+  font: inherit;
+  background: #fff;
+}
+
+.currency-amount-input__field input:disabled {
+  background: #f8fafc;
+  color: #64748b;
+}
+
+.currency-amount-input__suffix {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 0.7rem;
+  border: 1px solid var(--app-border);
+  border-top-right-radius: 0.45rem;
+  border-bottom-right-radius: 0.45rem;
+  background: #f8fafc;
+  color: #475569;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.currency-amount-input__hint {
+  color: var(--app-text-muted);
+  font-size: 0.78rem;
+}
+
+.currency-amount-input__hint--error {
+  color: #b91c1c;
+}

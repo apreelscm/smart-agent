@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ButtonDirective } from 'primeng/button';
 import { Checkbox } from 'primeng/checkbox';
@@ -7,6 +8,8 @@ import { InputText } from 'primeng/inputtext';
 import { Select } from 'primeng/select';
 import { SelectButton } from 'primeng/selectbutton';
 import { Offer } from '../../../core/models';
+import { PresentAmountPipe } from '../../../shared/pipes/present-amount.pipe';
+import { CurrencyAmountInputComponent } from '../../../shared/ui/currency-amount-input/currency-amount-input.component';
 import { SectionCardComponent } from '../../../shared/ui/section-card/section-card.component';
 import { CropMaster, CropParcel } from '../models/crop-offer.model';
 import { OfferWizardStateService } from '../state/offer-wizard-state.service';
@@ -38,15 +41,39 @@ type SoilClassOption = {
   factor: number;
 };
 
+type CropOfferPayload = {
+  cropData?: {
+    tariffClients?: TariffClient[];
+    claimHistory?: {
+      previousYear: number;
+      twoYearsAgo: number;
+      threeYearsAgo: number;
+    };
+  };
+};
+
 @Component({
   selector: 'app-crop-step-page',
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, SectionCardComponent, SelectButton, InputText, Select, Checkbox, ButtonDirective],
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    SectionCardComponent,
+    SelectButton,
+    InputText,
+    Select,
+    Checkbox,
+    ButtonDirective,
+    PresentAmountPipe,
+    CurrencyAmountInputComponent
+  ],
   templateUrl: './crop-step-page.component.html',
   styleUrl: './crop-step-page.component.scss'
 })
 export class CropStepPageComponent {
   private readonly formBuilder = inject(FormBuilder);
   private readonly wizardState = inject(OfferWizardStateService);
+
   protected readonly currentYear = new Date().getFullYear();
   protected readonly expandedCrops = signal<Record<string, boolean>>({ 'crop-1': true });
   protected readonly expandedParcels = signal<Record<string, boolean>>({});
@@ -118,9 +145,9 @@ export class CropStepPageComponent {
     isVip: this.formBuilder.control(false)
   });
   protected readonly claimHistoryForm = this.formBuilder.group({
-    previousYear: this.formBuilder.control(0),
-    twoYearsAgo: this.formBuilder.control(0),
-    threeYearsAgo: this.formBuilder.control(0)
+    previousYear: this.formBuilder.control(0, { nonNullable: true }),
+    twoYearsAgo: this.formBuilder.control(0, { nonNullable: true }),
+    threeYearsAgo: this.formBuilder.control(0, { nonNullable: true })
   });
 
   protected analysisNeeded = true;
@@ -131,6 +158,17 @@ export class CropStepPageComponent {
     this.crops.set(draftCrops.length > 0 ? structuredClone(draftCrops) : this.createInitialCrops());
     this.wizardState.setCropDraft(this.crops());
     this.initializeTariffClientsFromOffer();
+    this.initializeClaimHistoryFromOffer();
+
+    this.claimHistoryForm.valueChanges.pipe(takeUntilDestroyed()).subscribe((value) => {
+      this.wizardState.setCropAuxiliaryData({
+        claimHistory: {
+          previousYear: Number(value.previousYear ?? 0),
+          twoYearsAgo: Number(value.twoYearsAgo ?? 0),
+          threeYearsAgo: Number(value.threeYearsAgo ?? 0)
+        }
+      });
+    });
   }
 
   protected addCrop(): void {
@@ -232,12 +270,7 @@ export class CropStepPageComponent {
     this.syncCropsDraft();
   }
 
-  protected updateParcel(
-    cropId: string,
-    parcelId: string,
-    field: keyof Omit<CropParcel, 'id'>,
-    value: string | number
-  ): void {
+  protected updateParcel(cropId: string, parcelId: string, field: keyof Omit<CropParcel, 'id'>, value: string | number): void {
     this.crops.update((items) =>
       items.map((crop) => {
         if (crop.id !== cropId) {
@@ -296,6 +329,7 @@ export class CropStepPageComponent {
       );
 
     this.tariffClients.set([...updatedClients, client]);
+    this.persistTariffClients();
     this.editingClientId.set(null);
     this.clientRoleControl.setValue(this.tariffClients().some((entry) => entry.role === 'POLICY_HOLDER') ? 'INSURED' : 'POLICY_HOLDER', {
       emitEvent: false
@@ -332,6 +366,7 @@ export class CropStepPageComponent {
 
   protected removeTariffClient(clientId: string): void {
     this.tariffClients.set(this.tariffClients().filter((entry) => entry.id !== clientId));
+    this.persistTariffClients();
 
     if (this.editingClientId() === clientId) {
       this.editingClientId.set(null);
@@ -422,13 +457,7 @@ export class CropStepPageComponent {
       return;
     }
 
-    const persistedTariffClients = (
-      offer as Offer & {
-        cropData?: {
-          tariffClients?: TariffClient[];
-        };
-      }
-    ).cropData?.tariffClients;
+    const persistedTariffClients = (offer as Offer & CropOfferPayload).cropData?.tariffClients;
 
     if (persistedTariffClients?.length) {
       this.tariffClients.set(structuredClone(persistedTariffClients));
@@ -463,8 +492,33 @@ export class CropStepPageComponent {
         isVip: false
       }
     ]);
+    this.persistTariffClients();
     this.clientRoleControl.setValue('INSURED', { emitEvent: false });
     this.updateRoleOptions();
+  }
+
+  private initializeClaimHistoryFromOffer(): void {
+    const offer = this.wizardState.draftOffer();
+    const claimHistory = (offer as Offer & CropOfferPayload | undefined)?.cropData?.claimHistory;
+
+    if (!claimHistory) {
+      return;
+    }
+
+    this.claimHistoryForm.patchValue(
+      {
+        previousYear: claimHistory.previousYear ?? 0,
+        twoYearsAgo: claimHistory.twoYearsAgo ?? 0,
+        threeYearsAgo: claimHistory.threeYearsAgo ?? 0
+      },
+      { emitEvent: false }
+    );
+  }
+
+  private persistTariffClients(): void {
+    this.wizardState.setCropAuxiliaryData({
+      tariffClients: structuredClone(this.tariffClients())
+    });
   }
 
   private hasExistingPolicyHolderBesidesEditedClient(): boolean {

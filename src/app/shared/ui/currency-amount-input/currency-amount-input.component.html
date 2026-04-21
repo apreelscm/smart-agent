@@ -1,0 +1,41 @@
+<div class="currency-amount-input">
+  @if (showCurrencySelector()) {
+    <div class="currency-amount-input__switcher" role="group" aria-label="Waluta wejściowa">
+      @for (currency of ['PLN', 'EUR', 'USD']; track currency) {
+        <button
+          pButton
+          type="button"
+          severity="secondary"
+          [outlined]="selectedCurrency() !== currency"
+          [disabled]="disabledState() || (currency !== 'PLN' && !currencyPresentation.canUseCurrency(currency))"
+          (click)="selectCurrency($any(currency))"
+        >
+          {{ currency }}
+        </button>
+      }
+    </div>
+  }
+
+  <div class="currency-amount-input__field">
+    <input
+      type="number"
+      [value]="displayValueState()"
+      [step]="step()"
+      [attr.min]="displayMin()"
+      [attr.max]="displayMax()"
+      [attr.aria-label]="ariaLabel()"
+      [placeholder]="placeholder()"
+      [disabled]="disabledState()"
+      (focus)="onFocus()"
+      (input)="onInput($any($event.target).value)"
+      (blur)="onBlur()"
+    />
+    <span class="currency-amount-input__suffix">{{ selectedCurrency() }}</span>
+  </div>
+
+  @if (helperText(); as helperText) {
+    <span class="currency-amount-input__hint">{{ helperText }}</span>
+  } @else if (showCurrencySelector() && availabilityMessage(); as availabilityMessage) {
+    <span class="currency-amount-input__hint currency-amount-input__hint--error">{{ availabilityMessage }}</span>
+  }
+</div>

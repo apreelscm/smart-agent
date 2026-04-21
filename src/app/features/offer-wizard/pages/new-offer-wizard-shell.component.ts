@@ -1,4 +1,4 @@
-import { CommonModule, CurrencyPipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { Component, computed, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, NavigationEnd, Router, RouterLink, RouterOutlet } from '@angular/router';
@@ -7,12 +7,15 @@ import { filter } from 'rxjs';
 import { ButtonDirective } from 'primeng/button';
 import { Dialog } from 'primeng/dialog';
 import { Tag } from 'primeng/tag';
-import { SectionCardComponent } from '../../../shared/ui/section-card/section-card.component';
-import { PoliciesRepository } from '../../../core/repositories/policies.repository';
-import { SalesFlowRuntimeRepository } from '../../../core/repositories/sales-flow-runtime.repository';
 import { Offer, OfferStatus } from '../../../core/models';
 import { PaymentPlan } from '../../../core/models/payment/payment-plan.model';
 import { OfferProduct } from '../../../core/repositories/offers.repository';
+import { PoliciesRepository } from '../../../core/repositories/policies.repository';
+import { SalesFlowRuntimeRepository } from '../../../core/repositories/sales-flow-runtime.repository';
+import { CurrencyPresentationService } from '../../../core/services/currency-presentation.service';
+import { PresentAmountPipe } from '../../../shared/pipes/present-amount.pipe';
+import { CurrencySwitcherComponent } from '../../../shared/ui/currency-switcher/currency-switcher.component';
+import { SectionCardComponent } from '../../../shared/ui/section-card/section-card.component';
 import { CropCoverCode, CropParcel, CropVariantId } from '../models/crop-offer.model';
 import { OfferWizardStateService } from '../state/offer-wizard-state.service';
 
@@ -42,11 +45,13 @@ type PendingTransition = {
     ButtonDirective,
     Dialog,
     Tag,
-    CurrencyPipe,
-    SectionCardComponent
+    SectionCardComponent,
+    PresentAmountPipe,
+    CurrencySwitcherComponent
   ],
   templateUrl: './new-offer-wizard-shell.component.html',
-  styleUrl: './new-offer-wizard-shell.component.scss'
+  styleUrl: './new-offer-wizard-shell.component.scss',
+  providers: [CurrencyPresentationService]
 })
 export class NewOfferWizardShellComponent {
   private readonly wizardState = inject(OfferWizardStateService);
@@ -54,6 +59,8 @@ export class NewOfferWizardShellComponent {
   private readonly salesFlowRuntimeRepository = inject(SalesFlowRuntimeRepository);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
+  protected readonly currencyPresentation = inject(CurrencyPresentationService);
+
   private readonly currentUrl = signal(this.router.url);
   private readonly productState = signal<OfferProduct>('MOTOR');
 
@@ -86,18 +93,14 @@ export class NewOfferWizardShellComponent {
   protected readonly cropTransportMainPlanEnabled = computed(() => this.wizardState.cropTransportMainPlanEnabled());
   protected readonly cropTransportMainPlanPremium = 180;
   protected readonly cropCount = computed(() => this.cropDraft().length);
-  protected readonly cropParcelsCount = computed(() =>
-    this.cropDraft().reduce((sum, crop) => sum + crop.parcels.length, 0)
-  );
+  protected readonly cropParcelsCount = computed(() => this.cropDraft().reduce((sum, crop) => sum + crop.parcels.length, 0));
   protected readonly cropTotalInsuranceSum = computed(() =>
     this.cropDraft()
       .flatMap((crop) => crop.parcels)
       .reduce((sum, parcel) => sum + this.cropInsuranceSumForParcel(parcel), 0)
   );
   protected readonly cropSelectedVariantBasePremium = computed(() => this.cropVariantPremium(this.cropSelectedVariantId()));
-  protected readonly cropAppliedDiscount = computed(() =>
-    Math.min(this.cropDiscountAmount(), this.cropSelectedVariantBasePremium())
-  );
+  protected readonly cropAppliedDiscount = computed(() => Math.min(this.cropDiscountAmount(), this.cropSelectedVariantBasePremium()));
   protected readonly cropDiscountedPremium = computed(() =>
     Math.max(0, this.cropSelectedVariantBasePremium() - this.cropAppliedDiscount())
   );
@@ -132,8 +135,8 @@ export class NewOfferWizardShellComponent {
       };
     });
   });
-  protected readonly cropSelectedPaymentRow = computed(() =>
-    this.cropPaymentRows().find((row) => row.frequency === this.cropSelectedPaymentFrequency()) ?? this.cropPaymentRows()[0]
+  protected readonly cropSelectedPaymentRow = computed(
+    () => this.cropPaymentRows().find((row) => row.frequency === this.cropSelectedPaymentFrequency()) ?? this.cropPaymentRows()[0]
   );
   protected readonly pendingTransition = signal<PendingTransition | null>(null);
   protected readonly transitionDialogVisible = signal(false);

@@ -52,29 +52,6 @@ input[type='number']::-webkit-outer-spin-button {
   color: var(--app-text-muted);
 }
 
-.product-box {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.6rem;
-  padding: 0.55rem 0.8rem;
-  border-radius: 0.55rem;
-  border: 1px solid rgba(23, 32, 51, 0.2);
-  width: fit-content;
-  background: linear-gradient(180deg, #f9fbff 0%, #f3f8ff 100%);
-}
-
-.product-box--selected {
-  border-color: rgba(29, 78, 216, 0.45);
-  background: linear-gradient(180deg, #e9f2ff 0%, #dceaff 100%);
-  box-shadow: inset 0 0 0 1px rgba(29, 78, 216, 0.16);
-}
-
-.product-box__content strong {
-  color: #1e293b;
-  font-size: 0.98rem;
-  font-weight: 700;
-}
-
 .inline-choice {
   display: flex;
   align-items: center;
@@ -84,26 +61,6 @@ input[type='number']::-webkit-outer-spin-button {
 
 .inline-choice__label {
   font-weight: 600;
-}
-
-.plots-table {
-  display: grid;
-  gap: 0.45rem;
-}
-
-.plots-table__head,
-.plots-table__row {
-  display: grid;
-  grid-template-columns: 1fr 1fr 0.8fr auto;
-  gap: 0.55rem;
-  align-items: center;
-}
-
-.plots-table__head {
-  color: #64748b;
-  font-size: 0.8rem;
-  text-transform: uppercase;
-  letter-spacing: 0.02em;
 }
 
 .plots-actions {
@@ -289,14 +246,6 @@ input[type='number']::-webkit-outer-spin-button {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
-.form-grid--four {
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-}
-
-.form-grid--five {
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-}
-
 .form-grid--crop-master {
   grid-template-columns: repeat(3, minmax(12rem, 1fr));
 }
@@ -354,11 +303,6 @@ input[type='number']::-webkit-outer-spin-button {
 .field-block--readonly strong {
   font-size: 0.98rem;
   color: #0c4a6e;
-}
-
-.field-block--readonly small {
-  font-size: 0.74rem;
-  color: #475569;
 }
 
 .toggle-row {
@@ -423,41 +367,19 @@ input[type='number']::-webkit-outer-spin-button {
 }
 
 .claim-amount-cell {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
+  display: block;
 }
 
-.claim-amount-cell input {
-  max-width: 10rem;
-}
-
-.claim-amount-cell span {
-  color: var(--app-text-muted);
-  font-size: 0.82rem;
-  font-weight: 600;
+.claim-amount-cell app-currency-amount-input {
+  width: 100%;
 }
 
 @media (width <= 980px) {
-  .plots-table__head,
-  .plots-table__row,
   .form-grid--three,
-  .form-grid--four,
-  .form-grid--five,
   .form-grid--crop-master,
   .form-grid--parcel-metrics,
   .client-table__row {
     grid-template-columns: 1fr;
-  }
-
-  .plots-table__head {
-    display: none;
-  }
-
-  .plots-table__row {
-    padding: 0.65rem;
-    border: 1px solid #e2e8f0;
-    border-radius: 0.55rem;
   }
 
   .inline-choice {

@@ -1,10 +1,13 @@
-import { CommonModule, CurrencyPipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { Component, computed, inject, signal } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { ButtonDirective } from 'primeng/button';
 import { Tag } from 'primeng/tag';
 import { CoverTerm, OfferVariant, PolicyLineCode } from '../../../core/models';
 import { Cover } from '../../../core/models/cover/cover.model';
 import { PaymentPlan } from '../../../core/models/payment/payment-plan.model';
+import { PresentAmountPipe } from '../../../shared/pipes/present-amount.pipe';
+import { CurrencyAmountInputComponent } from '../../../shared/ui/currency-amount-input/currency-amount-input.component';
 import { SectionCardComponent } from '../../../shared/ui/section-card/section-card.component';
 import { OfferWizardStateService } from '../state/offer-wizard-state.service';
 
@@ -24,14 +27,14 @@ type PaymentPlanView = {
 
 @Component({
   selector: 'app-variants-step-page',
-  imports: [CommonModule, SectionCardComponent, CurrencyPipe, Tag, ButtonDirective],
+  imports: [CommonModule, FormsModule, SectionCardComponent, Tag, ButtonDirective, PresentAmountPipe, CurrencyAmountInputComponent],
   templateUrl: './variants-step-page.component.html',
   styleUrl: './variants-step-page.component.scss'
 })
 export class VariantsStepPageComponent {
   private readonly wizardState = inject(OfferWizardStateService);
+
   protected readonly customerDiscountBudget = 2540;
-  protected readonly discountInput = signal<string>('0');
   protected readonly discountError = signal<string | null>(null);
   protected readonly discountBusinessLine = 'Komunikacyjne OC';
   protected readonly addons: AddonDefinition[] = [
@@ -46,10 +49,9 @@ export class VariantsStepPageComponent {
   protected readonly variants = computed(() => this.wizardState.draftOffer()?.variants ?? []);
   protected readonly variantsByRank = computed(() => [...this.variants()].sort((left, right) => left.rank - right.rank));
   protected readonly selectedVariantId = computed(() => this.wizardState.draftOffer()?.selectedVariantId);
-  protected readonly selectedVariant = computed(() =>
-    this.variantsByRank().find((variant) => variant.id === this.selectedVariantId())
-  );
+  protected readonly selectedVariant = computed(() => this.variantsByRank().find((variant) => variant.id === this.selectedVariantId()));
   protected readonly selectedPaymentPlan = computed(() => this.wizardState.draftOffer()?.selectedPaymentPlan);
+  protected readonly discountAmount = computed(() => this.wizardState.discountAmount());
   protected readonly paymentPlans = computed(() =>
     [...(this.selectedVariant()?.paymentPlans ?? [])].sort((left, right) => left.installments.length - right.installments.length)
   );
@@ -90,7 +92,6 @@ export class VariantsStepPageComponent {
 
   constructor() {
     this.wizardState.ensureDefaultVariantSelection();
-    this.discountInput.set(String(this.wizardState.discountAmount()));
   }
 
   protected readonly policyLineCodes = computed<PolicyLineCode[]>(() => {
@@ -134,11 +135,7 @@ export class VariantsStepPageComponent {
   }
 
   protected getLineLabel(lineCode: PolicyLineCode): string {
-    return (
-      this.variantsByRank()
-        .flatMap((variant) => variant.policyLines)
-        .find((line) => line.code === lineCode)?.label ?? lineCode
-    );
+    return this.variantsByRank().flatMap((variant) => variant.policyLines).find((line) => line.code === lineCode)?.label ?? lineCode;
   }
 
   protected selectVariant(variantId: string): void {
@@ -165,57 +162,22 @@ export class VariantsStepPageComponent {
     this.wizardState.updateSelectedPaymentPlan(frequency);
   }
 
-  protected onDiscountInput(rawValue: string): void {
-    this.discountInput.set(rawValue);
-
-    if (rawValue.trim() === '') {
-      this.discountError.set(null);
-      return;
-    }
-
-    const parsed = Number(rawValue.replace(',', '.'));
+  protected onDiscountAmountChange(value: number | null): void {
+    const normalizedValue = Number(value ?? 0);
     const maxDiscountAmount = this.maxDiscountAmount();
 
-    if (Number.isNaN(parsed) || parsed < 0) {
+    if (Number.isNaN(normalizedValue) || normalizedValue < 0) {
       this.discountError.set(`Podaj poprawną wartość kwotową (0-${maxDiscountAmount} PLN).`);
       return;
     }
 
-    if (parsed > maxDiscountAmount) {
+    if (normalizedValue > maxDiscountAmount) {
       this.discountError.set(`Maksymalna zniżka dla linii ${this.discountBusinessLine} to ${maxDiscountAmount} PLN.`);
       return;
     }
 
     this.discountError.set(null);
-  }
-
-  protected onDiscountBlur(): void {
-    const rawValue = this.discountInput().trim();
-    const maxDiscountAmount = this.maxDiscountAmount();
-
-    if (rawValue === '') {
-      this.discountInput.set('0');
-      this.discountError.set(null);
-      this.wizardState.setDiscountAmount(0);
-      return;
-    }
-
-    const parsed = Number(rawValue.replace(',', '.'));
-
-    if (Number.isNaN(parsed) || parsed < 0) {
-      this.discountError.set(`Podaj poprawną wartość kwotową (0-${maxDiscountAmount} PLN).`);
-      return;
-    }
-
-    if (parsed > maxDiscountAmount) {
-      this.discountError.set(`Maksymalna zniżka dla linii ${this.discountBusinessLine} to ${maxDiscountAmount} PLN.`);
-      return;
-    }
-
-    const normalized = Math.round(parsed);
-    this.discountError.set(null);
-    this.discountInput.set(String(normalized));
-    this.wizardState.setDiscountAmount(normalized);
+    this.wizardState.setDiscountAmount(normalizedValue);
   }
 
   protected isPaymentPlanSelected(plan: PaymentPlan): boolean {

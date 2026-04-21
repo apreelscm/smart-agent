@@ -12,7 +12,7 @@
           <header class="compare-cell compare-cell--variant-header" [class.compare-cell--selected]="selectedVariantId() === lane.id">
             <div class="compare-cell__variant-title">
               <strong>{{ lane.title }}</strong>
-              <span>{{ lanePrice(lane.id) | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</span>
+              <span>{{ lanePrice(lane.id) | presentAmount }}</span>
             </div>
             <div class="compare-cell__badges">
               @if (lane.recommended) {
@@ -29,13 +29,13 @@
               {{ parcelView.parcel.county || '—' }}, {{ parcelView.parcel.locality || '—' }}, obręb {{ parcelView.parcel.precinctNumber || '—' }},
               pole {{ parcelView.parcel.fieldNumber || '—' }}
             </span>
-            <span>SU: {{ insuranceSumForParcel(parcelView.parcel) | number: '1.0-0' : 'pl-PL' }} PLN</span>
+            <span>SU: {{ insuranceSumForParcel(parcelView.parcel) | presentAmount }}</span>
           </div>
 
           @for (lane of lanes; track lane.id) {
             <section class="compare-cell compare-cell--line-value compare-cell--parcel-summary" [class.compare-cell--selected]="selectedVariantId() === lane.id">
               <span>Składka działki</span>
-              <strong>{{ parcelPrice(lane.id, parcelView.parcel.id) | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</strong>
+              <strong>{{ parcelPrice(lane.id, parcelView.parcel.id) | presentAmount }}</strong>
             </section>
           }
 
@@ -78,13 +78,13 @@
         @if (transportMainPlanEnabled()) {
           <div class="compare-cell compare-cell--line-name compare-cell--parcel-header compare-cell--addon-row-header">
             <strong>{{ transportMainPlanLabel }}</strong>
-            <span>Suma ubezpieczenia: {{ transportMainPlanInsuranceSum | number: '1.0-0' : 'pl-PL' }} PLN</span>
+            <span>Suma ubezpieczenia: {{ transportMainPlanInsuranceSum | presentAmount: 'PLN' }}</span>
           </div>
 
           @for (lane of lanes; track lane.id) {
             <section class="compare-cell compare-cell--line-value compare-cell--parcel-summary" [class.compare-cell--selected]="selectedVariantId() === lane.id">
               <span>Składka dodatku</span>
-              <strong>+{{ transportMainPlanPremium | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</strong>
+              <strong>+{{ transportMainPlanPremium | presentAmount }}</strong>
             </section>
           }
         }
@@ -120,11 +120,9 @@
           >
             <span class="addon-box__content">
               <strong>{{ transportMainPlanLabel }}</strong>
-              <small>Suma ubezpieczenia: {{ transportMainPlanInsuranceSum | number: '1.0-0' : 'pl-PL' }} PLN</small>
+              <small>Suma ubezpieczenia: {{ transportMainPlanInsuranceSum | presentAmount: 'PLN' }}</small>
             </span>
-            <span class="addon-box__price">
-              +{{ transportMainPlanPremium | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}
-            </span>
+            <span class="addon-box__price">+{{ transportMainPlanPremium | presentAmount }}</span>
           </button>
         </div>
       </section>
@@ -137,25 +135,21 @@
         <div class="discount-section__line">
           <article class="discount-stat">
             <span>Twój budżet</span>
-            <strong>{{ customerDiscountBudget | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</strong>
+            <strong>{{ customerDiscountBudget | presentAmount: 'PLN' }}</strong>
           </article>
           <article class="discount-stat">
             <span>Zniżka maksymalna ({{ discountBusinessLine }})</span>
-            <strong>{{ maxDiscountAmount() | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</strong>
+            <strong>{{ maxDiscountAmount() | presentAmount: 'PLN' }}</strong>
           </article>
           <div class="discount-section__field">
             <span class="discount-section__field-label">Zniżka kwotowa ({{ discountBusinessLine }})</span>
-            <input
-              type="number"
-              min="0"
+            <app-currency-amount-input
+              [ngModel]="cropDiscountAmount()"
+              (ngModelChange)="onDiscountAmountChange($event)"
+              [showCurrencySelector]="false"
               [max]="maxDiscountAmount()"
-              step="1"
-              [value]="discountInput()"
-              (input)="onDiscountInput($any($event.target).value)"
-              (blur)="onDiscountBlur()"
-              aria-label="Budżet zniżek w PLN"
+              ariaLabel="Budżet zniżek upraw"
             />
-            <span>PLN</span>
           </div>
         </div>
         @if (discountError(); as discountErrorMessage) {
@@ -182,15 +176,15 @@
             >
               <span>{{ paymentPeriodLabel(row) }}</span>
               <strong>{{ row.installmentsCount }}</strong>
-              <strong>{{ row.firstInstallmentAmount | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</strong>
+              <strong>{{ row.firstInstallmentAmount | presentAmount }}</strong>
               <strong>
                 @if (row.remainingInstallmentAmount !== null) {
-                  {{ row.remainingInstallmentAmount | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}
+                  {{ row.remainingInstallmentAmount | presentAmount }}
                 } @else {
                   —
                 }
               </strong>
-              <strong>{{ row.totalAmount | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</strong>
+              <strong>{{ row.totalAmount | presentAmount }}</strong>
             </button>
           }
         </div>

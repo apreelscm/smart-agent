@@ -7,6 +7,13 @@ import { SalesFlowRuntimeRepository } from '../../../core/repositories/sales-flo
 import { CropMaster, CropVariantConfig, CropVariantId } from '../models/crop-offer.model';
 
 type OfferProductCode = 'DEALER' | 'OC' | 'SHORT_TERM_OC' | 'BORDER_OC' | 'GREEN_CARD';
+
+type CropClaimHistory = {
+  previousYear: number;
+  twoYearsAgo: number;
+  threeYearsAgo: number;
+};
+
 type CropPersistedPayload = {
   crops?: CropMaster[];
   variantConfigs?: CropVariantConfig[];
@@ -14,6 +21,8 @@ type CropPersistedPayload = {
   discountAmount?: number;
   selectedPaymentFrequency?: PaymentPlan['frequency'];
   transportMainPlanEnabled?: boolean;
+  tariffClients?: Array<Record<string, unknown>>;
+  claimHistory?: CropClaimHistory;
 };
 
 @Injectable({
@@ -63,6 +72,7 @@ export class OfferWizardStateService {
     const emptyOffer = this.createEmptyOffer(templateOffer, product);
     const normalizedOffer = product === 'MOTOR' ? this.ensureAddonLines(emptyOffer) : emptyOffer;
     this.draftOfferState.set(this.withSelectedVariantFlag(normalizedOffer));
+
     if (product === 'CROP') {
       this.cropDraftState.set([]);
       this.cropVariantConfigsState.set([]);
@@ -70,6 +80,7 @@ export class OfferWizardStateService {
       this.cropDiscountAmountState.set(0);
       this.cropSelectedPaymentFrequencyState.set('ANNUAL');
       this.cropTransportMainPlanEnabledState.set(false);
+      this.syncCropOfferState();
     }
   }
 
@@ -99,32 +110,34 @@ export class OfferWizardStateService {
     }
 
     const source = structuredClone(offer);
+    const product = source.product ?? 'MOTOR';
 
     this.modeState.set('new');
     this.sourceOfferIdState.set(null);
     this.discountAmountState.set(0);
-    const product = source.product ?? 'MOTOR';
     this.draftOfferState.set(
       this.withSelectedVariantFlag(
-        (product === 'MOTOR' ? this.ensureAddonLines({
-          ...source,
-          id: 'draft-new-offer',
-          offerNumber: 'NOWA / kopia',
-          status: 'DRAFT',
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
-          validTo: undefined,
-          renewalContext: undefined
-        }) : {
-          ...source,
-          id: 'draft-new-offer',
-          offerNumber: 'NOWA / kopia',
-          status: 'DRAFT',
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
-          validTo: undefined,
-          renewalContext: undefined
-        })
+        product === 'MOTOR'
+          ? this.ensureAddonLines({
+              ...source,
+              id: 'draft-new-offer',
+              offerNumber: 'NOWA / kopia',
+              status: 'DRAFT',
+              createdAt: new Date().toISOString(),
+              updatedAt: new Date().toISOString(),
+              validTo: undefined,
+              renewalContext: undefined
+            })
+          : {
+              ...source,
+              id: 'draft-new-offer',
+              offerNumber: 'NOWA / kopia',
+              status: 'DRAFT',
+              createdAt: new Date().toISOString(),
+              updatedAt: new Date().toISOString(),
+              validTo: undefined,
+              renewalContext: undefined
+            }
       )
     );
     this.restoreCropStateFromOffer(source);
@@ -132,26 +145,54 @@ export class OfferWizardStateService {
 
   setCropDraft(crops: CropMaster[]): void {
     this.cropDraftState.set(structuredClone(crops));
+    this.syncCropOfferState();
   }
 
   setCropVariantConfigs(configs: CropVariantConfig[]): void {
     this.cropVariantConfigsState.set(structuredClone(configs));
+    this.syncCropOfferState();
   }
 
   setCropSelectedVariantId(variantId: CropVariantId): void {
     this.cropSelectedVariantIdState.set(variantId);
+    this.syncCropOfferState();
   }
 
   setCropDiscountAmount(amount: number): void {
     this.cropDiscountAmountState.set(Math.max(0, Math.round(amount)));
+    this.syncCropOfferState();
   }
 
   setCropSelectedPaymentFrequency(frequency: PaymentPlan['frequency']): void {
     this.cropSelectedPaymentFrequencyState.set(frequency);
+    this.syncCropOfferState();
   }
 
   setCropTransportMainPlanEnabled(enabled: boolean): void {
     this.cropTransportMainPlanEnabledState.set(enabled);
+    this.syncCropOfferState();
+  }
+
+  setCropAuxiliaryData(patch: Partial<Pick<CropPersistedPayload, 'tariffClients' | 'claimHistory'>>): void {
+    if (this.readonlyModeState()) {
+      return;
+    }
+
+    const offer = this.draftOfferState();
+
+    if (!offer || (offer.product ?? 'MOTOR') !== 'CROP') {
+      return;
+    }
+
+    const currentPayload = (offer as Offer & { cropData?: CropPersistedPayload }).cropData ?? {};
+
+    this.draftOfferState.set({
+      ...offer,
+      cropData: {
+        ...currentPayload,
+        ...structuredClone(patch)
+      } as Offer['cropData']
+    } as Offer);
   }
 
   updateVehicle(vehicle: Vehicle): void {
@@ -277,7 +318,7 @@ export class OfferWizardStateService {
       return;
     }
 
-    this.discountAmountState.set(amount);
+    this.discountAmountState.set(Math.max(0, Math.round(amount)));
   }
 
   setReadonlyMode(readonlyMode: boolean): void {
@@ -476,6 +517,33 @@ export class OfferWizardStateService {
     this.draftOfferState.set(projector(offer));
   }
 
+  private syncCropOfferState(): void {
+    if (this.readonlyModeState()) {
+      return;
+    }
+
+    const offer = this.draftOfferState();
+
+    if (!offer || (offer.product ?? 'MOTOR') !== 'CROP') {
+      return;
+    }
+
+    const currentPayload = (offer as Offer & { cropData?: CropPersistedPayload }).cropData ?? {};
+
+    this.draftOfferState.set({
+      ...offer,
+      cropData: {
+        ...currentPayload,
+        crops: structuredClone(this.cropDraftState()),
+        variantConfigs: structuredClone(this.cropVariantConfigsState()),
+        selectedVariantId: this.cropSelectedVariantIdState(),
+        discountAmount: this.cropDiscountAmountState(),
+        selectedPaymentFrequency: this.cropSelectedPaymentFrequencyState(),
+        transportMainPlanEnabled: this.cropTransportMainPlanEnabledState()
+      } as Offer['cropData']
+    } as Offer);
+  }
+
   private createEmptyOffer(templateOffer: Offer, product: OfferProduct): Offer {
     const clonedTemplate = structuredClone(templateOffer);
 
@@ -493,17 +561,18 @@ export class OfferWizardStateService {
       notes: [],
       customer: {
         ...clonedTemplate.customer,
-        identity: clonedTemplate.customer.identity.type === 'NATURAL_PERSON'
-          ? {
-              ...clonedTemplate.customer.identity,
-              personName: {
-                firstName: '',
-                lastName: ''
-              },
-              pesel: '',
-              birthDate: ''
-            }
-          : clonedTemplate.customer.identity,
+        identity:
+          clonedTemplate.customer.identity.type === 'NATURAL_PERSON'
+            ? {
+                ...clonedTemplate.customer.identity,
+                personName: {
+                  firstName: '',
+                  lastName: ''
+                },
+                pesel: '',
+                birthDate: ''
+              }
+            : clonedTemplate.customer.identity,
         contact: {
           email: '',
           phoneNumber: ''
@@ -543,7 +612,7 @@ export class OfferWizardStateService {
       },
       insuredObject: {
         ...clonedTemplate.insuredObject,
-        label: 'Nowy pojazd',
+        label: product === 'CROP' ? 'Nowa uprawa' : 'Nowy pojazd',
         vehicleId: 'vehicle-new',
         ownerCustomerId: clonedTemplate.customer.id,
         primaryDriverCustomerId: clonedTemplate.customer.id
@@ -719,9 +788,13 @@ export class OfferWizardStateService {
     };
   }
 
-  private recalculateLine<T extends { basePremium?: { amount: number }; premium: { amount: number; currency: 'PLN' }; covers: Array<{ enabled: boolean; selectable?: boolean; premiumDelta?: { amount: number } }> }>(
-    line: T
-  ): T {
+  private recalculateLine<
+    T extends {
+      basePremium?: { amount: number };
+      premium: { amount: number; currency: 'PLN' };
+      covers: Array<{ enabled: boolean; selectable?: boolean; premiumDelta?: { amount: number } }>;
+    }
+  >(line: T): T {
     const enabledSelectableDelta = line.covers.reduce((sum, cover) => {
       if (!cover.enabled) {
         return sum;

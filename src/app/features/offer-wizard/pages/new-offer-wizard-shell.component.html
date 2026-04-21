@@ -1,4 +1,8 @@
 <main class="wizard-shell-page">
+  <div class="wizard-header">
+    <app-currency-switcher />
+  </div>
+
   <section class="wizard-layout" [class.wizard-layout--summary]="isSummaryStep()">
     <nav class="wizard-progress" aria-label="Postęp kreatora">
       @for (step of stepLinks(); track step.route; let i = $index) {
@@ -125,7 +129,7 @@
                 <div class="summary-card__group">
                   <span class="summary-card__label">Przedmiot ubezpieczenia</span>
                   <strong>{{ cropCount() }} upraw · {{ cropParcelsCount() }} działek</strong>
-                  <span>Suma ubezpieczenia: {{ cropTotalInsuranceSum() | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</span>
+                  <span>Suma ubezpieczenia: {{ cropTotalInsuranceSum() | presentAmount }}</span>
                 </div>
               }
 
@@ -138,9 +142,7 @@
                     }
                   </div>
                   <strong>{{ variant.name }}</strong>
-                  <span class="summary-card__premium">
-                    {{ discountedAmount() | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}
-                  </span>
+                  <span class="summary-card__premium">{{ discountedAmount() | presentAmount }}</span>
                 </div>
               }
 
@@ -152,7 +154,7 @@
                       @for (line of selectedVariant()?.policyLines ?? []; track line.id) {
                         <li>
                           <span>{{ line.label }}</span>
-                          <strong>{{ line.premium.amount | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</strong>
+                          <strong>{{ line.premium.amount | presentAmount }}</strong>
                         </li>
                       }
                     </ul>
@@ -169,11 +171,9 @@
                     }
                   </div>
                   <strong>{{ cropVariantLabel(cropSelectedVariantId()) }}</strong>
-                  <span class="summary-card__premium">
-                    {{ cropDiscountedPremium() | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}
-                  </span>
+                  <span class="summary-card__premium">{{ cropDiscountedPremium() | presentAmount }}</span>
                   @if (cropAppliedDiscount() > 0) {
-                    <span>Zniżka: -{{ cropAppliedDiscount() | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</span>
+                    <span>Zniżka: -{{ cropAppliedDiscount() | presentAmount }}</span>
                   }
                 </div>
 
@@ -181,11 +181,9 @@
                   <span class="summary-card__label">Płatność</span>
                   @if (cropSelectedPaymentRow(); as paymentRow) {
                     <strong>{{ cropPaymentFrequencyLabel(paymentRow.frequency) }}</strong>
-                    <span>
-                      1. rata: {{ paymentRow.firstInstallmentAmount | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}
-                    </span>
+                    <span>1. rata: {{ paymentRow.firstInstallmentAmount | presentAmount }}</span>
                     @if (paymentRow.remainingInstallmentAmount !== null) {
-                      <span>Pozostałe: {{ paymentRow.remainingInstallmentAmount | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</span>
+                      <span>Pozostałe: {{ paymentRow.remainingInstallmentAmount | presentAmount }}</span>
                     }
                   } @else {
                     <span>Brak danych o płatności.</span>
@@ -196,7 +194,7 @@
                   <span class="summary-card__label">Dodatki</span>
                   @if (cropTransportMainPlanEnabled()) {
                     <strong>Plon główny w transporcie</strong>
-                    <span>+{{ cropTransportMainPlanPremium | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</span>
+                    <span>+{{ cropTransportMainPlanPremium | presentAmount }}</span>
                   } @else {
                     <span>Brak wybranych dodatków.</span>
                   }
@@ -246,12 +244,7 @@
           </div>
           <div>
             <span>Składka</span>
-            <strong>
-              {{
-                (product() === 'MOTOR' ? (selectedVariant()?.totalPremium?.amount ?? 0) : cropDiscountedPremium())
-                  | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL'
-              }}
-            </strong>
+            <strong>{{ (product() === 'MOTOR' ? (selectedVariant()?.totalPremium?.amount ?? 0) : cropDiscountedPremium()) | presentAmount }}</strong>
           </div>
         </div>
       </div>

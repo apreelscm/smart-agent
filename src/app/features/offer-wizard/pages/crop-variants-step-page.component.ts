@@ -1,7 +1,11 @@
-import { CommonModule, CurrencyPipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { Component, computed, inject, signal } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { ButtonDirective } from 'primeng/button';
 import { PaymentPlan } from '../../../core/models/payment/payment-plan.model';
+import { PresentAmountPipe } from '../../../shared/pipes/present-amount.pipe';
+import { CurrencyAmountInputComponent } from '../../../shared/ui/currency-amount-input/currency-amount-input.component';
+import { SectionCardComponent } from '../../../shared/ui/section-card/section-card.component';
 import {
   CropCoverCode,
   CropCoverSelection,
@@ -11,7 +15,6 @@ import {
   CropVariantConfig,
   CropVariantId
 } from '../models/crop-offer.model';
-import { SectionCardComponent } from '../../../shared/ui/section-card/section-card.component';
 import { OfferWizardStateService } from '../state/offer-wizard-state.service';
 
 type LaneDefinition = {
@@ -45,18 +48,18 @@ type CropPaymentRow = {
 
 @Component({
   selector: 'app-crop-variants-step-page',
-  imports: [CommonModule, SectionCardComponent, CurrencyPipe, ButtonDirective],
+  imports: [CommonModule, FormsModule, SectionCardComponent, ButtonDirective, PresentAmountPipe, CurrencyAmountInputComponent],
   templateUrl: './crop-variants-step-page.component.html',
   styleUrl: './crop-variants-step-page.component.scss'
 })
 export class CropVariantsStepPageComponent {
   private readonly wizardState = inject(OfferWizardStateService);
+
   protected readonly customerDiscountBudget = 2540;
   protected readonly discountBusinessLine = 'Ubezpieczenie upraw';
   protected readonly transportMainPlanLabel = 'Plon główny w transporcie';
   protected readonly transportMainPlanPremium = 180;
   protected readonly transportMainPlanInsuranceSum = 100000;
-  protected readonly discountInput = signal<string>('0');
   protected readonly discountError = signal<string | null>(null);
 
   protected readonly lanes: LaneDefinition[] = [
@@ -93,6 +96,7 @@ export class CropVariantsStepPageComponent {
   protected readonly selectedVariantId = computed<CropVariantId>(() => this.wizardState.cropSelectedVariantId());
   protected readonly selectedPaymentFrequency = computed<PaymentPlan['frequency']>(() => this.wizardState.cropSelectedPaymentFrequency());
   protected readonly transportMainPlanEnabled = computed(() => this.wizardState.cropTransportMainPlanEnabled());
+  protected readonly cropDiscountAmount = computed(() => this.wizardState.cropDiscountAmount());
   protected readonly parcelViews = computed<ParcelView[]>(() =>
     this.crops().flatMap((crop, cropIndex) =>
       crop.parcels.map((parcel, parcelIndex) => ({
@@ -144,7 +148,6 @@ export class CropVariantsStepPageComponent {
   constructor() {
     this.variantConfigs.set(this.buildInitialConfigs());
     this.persistConfigs();
-    this.discountInput.set(String(this.wizardState.cropDiscountAmount()));
   }
 
   protected cropLabel(code: string): string {
@@ -186,7 +189,6 @@ export class CropVariantsStepPageComponent {
     const maxDiscountAmount = Math.max(0, Math.min(this.customerDiscountBudget, this.lanePrice(variantId)));
     if (this.wizardState.cropDiscountAmount() > maxDiscountAmount) {
       this.wizardState.setCropDiscountAmount(maxDiscountAmount);
-      this.discountInput.set(String(maxDiscountAmount));
     }
     this.discountError.set(null);
   }
@@ -196,62 +198,26 @@ export class CropVariantsStepPageComponent {
     const maxDiscountAmount = this.maxDiscountAmount();
     if (this.wizardState.cropDiscountAmount() > maxDiscountAmount) {
       this.wizardState.setCropDiscountAmount(maxDiscountAmount);
-      this.discountInput.set(String(maxDiscountAmount));
     }
     this.discountError.set(null);
   }
 
-  protected onDiscountInput(rawValue: string): void {
-    this.discountInput.set(rawValue);
-
-    if (rawValue.trim() === '') {
-      this.discountError.set(null);
-      return;
-    }
-
-    const parsed = Number(rawValue.replace(',', '.'));
+  protected onDiscountAmountChange(value: number | null): void {
+    const normalizedValue = Number(value ?? 0);
     const maxDiscountAmount = this.maxDiscountAmount();
 
-    if (Number.isNaN(parsed) || parsed < 0) {
+    if (Number.isNaN(normalizedValue) || normalizedValue < 0) {
       this.discountError.set(`Podaj poprawną wartość kwotową (0-${maxDiscountAmount} PLN).`);
       return;
     }
 
-    if (parsed > maxDiscountAmount) {
+    if (normalizedValue > maxDiscountAmount) {
       this.discountError.set(`Maksymalna zniżka dla linii ${this.discountBusinessLine} to ${maxDiscountAmount} PLN.`);
       return;
     }
 
     this.discountError.set(null);
-  }
-
-  protected onDiscountBlur(): void {
-    const rawValue = this.discountInput().trim();
-    const maxDiscountAmount = this.maxDiscountAmount();
-
-    if (rawValue === '') {
-      this.discountInput.set('0');
-      this.discountError.set(null);
-      this.wizardState.setCropDiscountAmount(0);
-      return;
-    }
-
-    const parsed = Number(rawValue.replace(',', '.'));
-
-    if (Number.isNaN(parsed) || parsed < 0) {
-      this.discountError.set(`Podaj poprawną wartość kwotową (0-${maxDiscountAmount} PLN).`);
-      return;
-    }
-
-    if (parsed > maxDiscountAmount) {
-      this.discountError.set(`Maksymalna zniżka dla linii ${this.discountBusinessLine} to ${maxDiscountAmount} PLN.`);
-      return;
-    }
-
-    const normalized = Math.round(parsed);
-    this.discountError.set(null);
-    this.discountInput.set(String(normalized));
-    this.wizardState.setCropDiscountAmount(normalized);
+    this.wizardState.setCropDiscountAmount(normalizedValue);
   }
 
   protected selectPaymentFrequency(frequency: PaymentPlan['frequency']): void {
@@ -352,10 +318,7 @@ export class CropVariantsStepPageComponent {
       return 0;
     }
 
-    const selectedRate = this.covers.reduce(
-      (sum, cover) => sum + (config.selectedCovers[cover.code] ? cover.ratePerHa : 0),
-      0
-    );
+    const selectedRate = this.covers.reduce((sum, cover) => sum + (config.selectedCovers[cover.code] ? cover.ratePerHa : 0), 0);
 
     const deductibleFactor = this.deductibleFactor(config.deductiblePercent);
     return Math.round(Math.max(0, parcel.cropAreaHa) * selectedRate * deductibleFactor);

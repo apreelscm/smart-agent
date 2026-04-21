@@ -7,6 +7,12 @@
   gap: 1.5rem;
 }
 
+.offers-home-page__currency {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: -0.5rem;
+}
+
 .offers-home-page__stats {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -301,7 +307,8 @@ a[pButton]:visited {
 
   .toolbar,
   .toolbar__filters,
-  .toolbar__actions {
+  .toolbar__actions,
+  .offers-home-page__currency {
     align-items: stretch;
     flex-direction: column;
   }

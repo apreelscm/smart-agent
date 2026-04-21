@@ -10,6 +10,9 @@ import { Offer, OfferStatus, Policy } from '../../../core/models';
 import { OffersRepository } from '../../../core/repositories/offers.repository';
 import { PoliciesRepository } from '../../../core/repositories/policies.repository';
 import { SalesFlowRuntimeRepository } from '../../../core/repositories/sales-flow-runtime.repository';
+import { CurrencyPresentationService } from '../../../core/services/currency-presentation.service';
+import { PresentAmountPipe } from '../../../shared/pipes/present-amount.pipe';
+import { CurrencySwitcherComponent } from '../../../shared/ui/currency-switcher/currency-switcher.component';
 import { PageHeaderComponent } from '../../../shared/ui/page-header/page-header.component';
 import { SectionCardComponent } from '../../../shared/ui/section-card/section-card.component';
 
@@ -28,9 +31,21 @@ type CustomerRecord = {
 
 @Component({
   selector: 'app-customers-page',
-  imports: [CommonModule, FormsModule, RouterLink, PageHeaderComponent, SectionCardComponent, InputText, Tag, ButtonDirective],
+  imports: [
+    CommonModule,
+    FormsModule,
+    RouterLink,
+    PageHeaderComponent,
+    SectionCardComponent,
+    InputText,
+    Tag,
+    ButtonDirective,
+    PresentAmountPipe,
+    CurrencySwitcherComponent
+  ],
   templateUrl: './customers-page.component.html',
-  styleUrl: './customers-page.component.scss'
+  styleUrl: './customers-page.component.scss',
+  providers: [CurrencyPresentationService]
 })
 export class CustomersPageComponent {
   private readonly offersRepository = inject(OffersRepository);
@@ -38,6 +53,7 @@ export class CustomersPageComponent {
   private readonly runtimeRepository = inject(SalesFlowRuntimeRepository);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
+  protected readonly currencyPresentation = inject(CurrencyPresentationService);
 
   protected readonly searchTerm = signal('');
   private readonly offersFromMock = toSignal(this.offersRepository.getOffers(), { initialValue: [] as Offer[] });

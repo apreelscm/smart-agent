@@ -10,10 +10,13 @@ import { InputText } from 'primeng/inputtext';
 import { Select } from 'primeng/select';
 import { SplitButton } from 'primeng/splitbutton';
 import { Tag } from 'primeng/tag';
+import { Offer, OfferStatus, ReferenceData } from '../../../core/models';
 import { OffersRepository } from '../../../core/repositories/offers.repository';
 import { ReferenceDataRepository } from '../../../core/repositories/reference-data.repository';
 import { SalesFlowRuntimeRepository } from '../../../core/repositories/sales-flow-runtime.repository';
-import { Offer, OfferStatus, ReferenceData } from '../../../core/models';
+import { CurrencyPresentationService } from '../../../core/services/currency-presentation.service';
+import { PresentAmountPipe } from '../../../shared/pipes/present-amount.pipe';
+import { CurrencySwitcherComponent } from '../../../shared/ui/currency-switcher/currency-switcher.component';
 import { PageHeaderComponent } from '../../../shared/ui/page-header/page-header.component';
 import { SectionCardComponent } from '../../../shared/ui/section-card/section-card.component';
 import { StatTileComponent } from '../../../shared/ui/stat-tile/stat-tile.component';
@@ -68,16 +71,20 @@ type CropOfferPayload = {
     InputText,
     Select,
     SplitButton,
-    Tag
+    Tag,
+    PresentAmountPipe,
+    CurrencySwitcherComponent
   ],
   templateUrl: './offers-home-page.component.html',
-  styleUrl: './offers-home-page.component.scss'
+  styleUrl: './offers-home-page.component.scss',
+  providers: [CurrencyPresentationService]
 })
 export class OffersHomePageComponent {
   private readonly offersRepository = inject(OffersRepository);
   private readonly referenceDataRepository = inject(ReferenceDataRepository);
   private readonly salesFlowRuntimeRepository = inject(SalesFlowRuntimeRepository);
   private readonly router = inject(Router);
+  protected readonly currencyPresentation = inject(CurrencyPresentationService);
 
   protected readonly searchTerm = signal('');
   protected readonly selectedStatus = signal<string | null>(null);
@@ -198,22 +205,23 @@ export class OffersHomePageComponent {
     return [
       { label: 'Oferta wystawiona', value: `${issued}`, note: 'gotowe do decyzji klienta' },
       { label: 'Draft / Kalkulacja', value: `${inProgress}`, note: 'oferty w przygotowaniu' },
-      { label: 'Średnia składka', value: `${averageMonthlyPremium.toLocaleString('pl-PL')} zł`, note: 'w ujęciu miesięcznym' }
+      {
+        label: 'Średnia składka',
+        value: this.currencyPresentation.formatAmount(averageMonthlyPremium),
+        note: 'w ujęciu miesięcznym'
+      }
     ];
   });
 
   protected readonly totalVisibleOffers = computed(() => this.filteredOffers().length);
-
-  // New computed signal to detect if any filter or sorting differs from default values
-  protected readonly filtersChanged = computed(() => {
-    return (
+  protected readonly filtersChanged = computed(
+    () =>
       this.searchTerm() !== '' ||
       this.selectedStatus() !== 'ALL' ||
       this.selectedProduct() !== 'ALL' ||
       this.selectedSortField() !== 'ISSUE_DATE' ||
       this.selectedSortDirection() !== 'DESC'
-    );
-  });
+  );
 
   protected getCustomerDisplayName(offer: Offer): string {
     const identity = offer.customer.identity;
@@ -326,7 +334,6 @@ export class OffersHomePageComponent {
     this.closeTransitionDialog();
   }
 
-  // New method to clear all filters and sorting to default values
   protected clearAllFilters(): void {
     this.searchTerm.set('');
     this.selectedStatus.set('ALL');
@@ -468,7 +475,6 @@ export class OffersHomePageComponent {
   }
 
   private printPlaceholder(offer: Offer): void {
-    // Placeholder action for future document generation integration.
     console.log('[Offers] Print placeholder action triggered for offer', offer.id);
   }
 

@@ -1,13 +1,14 @@
-import { CommonModule, CurrencyPipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { Component, computed, inject } from '@angular/core';
 import { Tag } from 'primeng/tag';
 import { OfferStatus } from '../../../core/models';
+import { PresentAmountPipe } from '../../../shared/pipes/present-amount.pipe';
 import { SectionCardComponent } from '../../../shared/ui/section-card/section-card.component';
 import { OfferWizardStateService } from '../state/offer-wizard-state.service';
 
 @Component({
   selector: 'app-summary-step-page',
-  imports: [CommonModule, CurrencyPipe, SectionCardComponent, Tag],
+  imports: [CommonModule, SectionCardComponent, Tag, PresentAmountPipe],
   templateUrl: './summary-step-page.component.html',
   styleUrl: './summary-step-page.component.scss'
 })

@@ -7,6 +7,12 @@
   gap: 1rem;
 }
 
+.customers-page__currency {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: -0.35rem;
+}
+
 .customers-toolbar {
   display: flex;
   align-items: center;
@@ -134,7 +140,8 @@
     grid-template-columns: 1fr;
   }
 
-  .customers-toolbar {
+  .customers-toolbar,
+  .customers-page__currency {
     flex-direction: column;
     align-items: stretch;
   }
@@ -143,4 +150,3 @@
     min-width: 0;
   }
 }
-

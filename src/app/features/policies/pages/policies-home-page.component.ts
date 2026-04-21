@@ -14,6 +14,9 @@ import { Tag } from 'primeng/tag';
 import { Policy, PolicyPaymentStatus, PolicyStatus } from '../../../core/models';
 import { PoliciesRepository } from '../../../core/repositories/policies.repository';
 import { SalesFlowRuntimeRepository } from '../../../core/repositories/sales-flow-runtime.repository';
+import { CurrencyPresentationService } from '../../../core/services/currency-presentation.service';
+import { PresentAmountPipe } from '../../../shared/pipes/present-amount.pipe';
+import { CurrencySwitcherComponent } from '../../../shared/ui/currency-switcher/currency-switcher.component';
 import { PageHeaderComponent } from '../../../shared/ui/page-header/page-header.component';
 import { SectionCardComponent } from '../../../shared/ui/section-card/section-card.component';
 
@@ -35,15 +38,31 @@ type PolicyStatusPresentation = {
 
 @Component({
   selector: 'app-policies-home-page',
-  imports: [CommonModule, FormsModule, RouterLink, PageHeaderComponent, SectionCardComponent, ButtonDirective, Dialog, InputText, Select, SplitButton, Tag],
+  imports: [
+    CommonModule,
+    FormsModule,
+    RouterLink,
+    PageHeaderComponent,
+    SectionCardComponent,
+    ButtonDirective,
+    Dialog,
+    InputText,
+    Select,
+    SplitButton,
+    Tag,
+    PresentAmountPipe,
+    CurrencySwitcherComponent
+  ],
   templateUrl: './policies-home-page.component.html',
-  styleUrl: './policies-home-page.component.scss'
+  styleUrl: './policies-home-page.component.scss',
+  providers: [CurrencyPresentationService]
 })
 export class PoliciesHomePageComponent {
   private readonly policiesRepository = inject(PoliciesRepository);
   private readonly salesFlowRuntimeRepository = inject(SalesFlowRuntimeRepository);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
+  protected readonly currencyPresentation = inject(CurrencyPresentationService);
 
   protected readonly searchTerm = signal('');
   protected readonly selectedFilter = signal<PolicyViewFilter>('ALL');
@@ -148,9 +167,7 @@ export class PoliciesHomePageComponent {
     return [...filtered].sort((left, right) => this.comparePolicies(left, right));
   });
 
-  protected readonly renewalsCount = computed(
-    () => this.policies().filter((policy) => policy.status === 'RENEWAL').length
-  );
+  protected readonly renewalsCount = computed(() => this.policies().filter((policy) => policy.status === 'RENEWAL').length);
   protected readonly toPayCount = computed(
     () => this.policies().filter((policy) => policy.status !== 'CANCELED' && policy.paymentStatus === 'TO_PAY').length
   );

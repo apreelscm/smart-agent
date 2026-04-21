@@ -17,7 +17,7 @@
         >
           <div class="compare-cell__variant-title">
             <strong>{{ variant.name }}</strong>
-            <span>{{ discountedAmount(variant) | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</span>
+            <span>{{ discountedAmount(variant) | presentAmount }}</span>
           </div>
 
           <div class="compare-cell__badges">
@@ -40,7 +40,7 @@
           <section class="compare-cell compare-cell--line-value" [class.compare-cell--selected]="selectedVariantId() === variant.id">
             @if (getLine(variant, lineCode); as line) {
               <header class="line-head">
-                <span>{{ line.premium.amount | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</span>
+                <span>{{ line.premium.amount | presentAmount }}</span>
                 @if (line.isRecommended) {
                   <p-tag value="Rekomendowane" severity="contrast" />
                 }
@@ -56,7 +56,7 @@
                         }
                       </div>
                       @if (cover.premiumDelta?.amount) {
-                        <span class="cover-premium">+{{ cover.premiumDelta?.amount | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</span>
+                        <span class="cover-premium">+{{ cover.premiumDelta?.amount | presentAmount }}</span>
                       }
                       @if (cover.terms.length > 0) {
                         <ul>
@@ -153,25 +153,21 @@
       <div class="discount-section__line">
         <article class="discount-stat">
           <span>Twój budżet</span>
-          <strong>{{ customerDiscountBudget | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</strong>
+          <strong>{{ customerDiscountBudget | presentAmount: 'PLN' }}</strong>
         </article>
         <article class="discount-stat">
           <span>Zniżka maksymalna ({{ discountBusinessLine }})</span>
-          <strong>{{ maxDiscountAmount() | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</strong>
+          <strong>{{ maxDiscountAmount() | presentAmount: 'PLN' }}</strong>
         </article>
         <div class="discount-section__field">
           <span class="discount-section__field-label">Zniżka kwotowa ({{ discountBusinessLine }})</span>
-          <input
-            type="number"
-            min="0"
+          <app-currency-amount-input
+            [ngModel]="discountAmount()"
+            (ngModelChange)="onDiscountAmountChange($event)"
+            [showCurrencySelector]="false"
             [max]="maxDiscountAmount()"
-            step="1"
-            [value]="discountInput()"
-            (input)="onDiscountInput($any($event.target).value)"
-            (blur)="onDiscountBlur()"
-            aria-label="Budżet zniżek w PLN"
+            ariaLabel="Budżet zniżek"
           />
-          <span>PLN</span>
         </div>
       </div>
       @if (discountError(); as discountErrorMessage) {
@@ -198,16 +194,16 @@
           >
             <span>{{ paymentPeriodLabel(paymentRow.plan) }}</span>
             <strong>{{ paymentRow.installmentsCount }}</strong>
-            <strong>{{ paymentRow.firstInstallmentAmount | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</strong>
+            <strong>{{ paymentRow.firstInstallmentAmount | presentAmount }}</strong>
             <strong>
               @if (paymentRow.remainingInstallmentAmount !== null) {
                 @let remainingAmount = paymentRow.remainingInstallmentAmount;
-                {{ remainingAmount | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}
+                {{ remainingAmount | presentAmount }}
               } @else {
                 —
               }
             </strong>
-            <strong>{{ paymentRow.totalAmount | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</strong>
+            <strong>{{ paymentRow.totalAmount | presentAmount }}</strong>
           </button>
         }
       </div>
