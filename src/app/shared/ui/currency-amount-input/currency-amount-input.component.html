@@ -1,12 +1,12 @@
 <div class="currency-amount-input">
   <div class="currency-amount-input__switcher">
-    @for (currency of ['PLN', 'EUR', 'USD']; track currency) {
+    @for (currency of currencies; track currency) {
       <button
         type="button"
         class="currency-amount-input__currency"
         [class.currency-amount-input__currency--selected]="selectedCurrency() === currency"
         [disabled]="isDisabled(currency)"
-        (click)="selectCurrency($any(currency))"
+        (click)="selectCurrency(currency)"
       >
         {{ currency }}
       </button>

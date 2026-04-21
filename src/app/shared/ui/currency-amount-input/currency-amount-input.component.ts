@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, effect, input, output, signal } from '@angular/core';
+import { Component, computed, effect, inject, input, output, signal } from '@angular/core';
 import { DisplayCurrency, ExchangeRateSnapshot } from '../../../core/models';
 import { CurrencyService } from '../../../core/services/currency.service';
 
@@ -10,7 +10,7 @@ import { CurrencyService } from '../../../core/services/currency.service';
   styleUrl: './currency-amount-input.component.scss'
 })
 export class CurrencyAmountInputComponent {
-  private readonly currencyService = new CurrencyService();
+  private readonly currencyService = inject(CurrencyService);
 
   readonly label = input<string>('Kwota');
   readonly basePlnAmount = input<number>(0);
@@ -22,6 +22,7 @@ export class CurrencyAmountInputComponent {
   readonly plnAmountChange = output<number>();
   readonly validationMessageChange = output<string | null>();
 
+  protected readonly currencies: DisplayCurrency[] = ['PLN', 'EUR', 'USD'];
   protected readonly selectedCurrency = signal<DisplayCurrency>('PLN');
   protected readonly rawValue = signal('0');
   protected readonly validationMessage = signal<string | null>(null);
@@ -93,7 +94,7 @@ export class CurrencyAmountInputComponent {
 
     const plnAmount = this.currencyService.convertToPln(parsed, this.selectedCurrency(), this.snapshot());
 
-    if (this.maxPlnAmount() !== null && plnAmount > (this.maxPlnAmount() ?? 0)) {
+    if (this.maxPlnAmount() !== null && plnAmount > this.maxPlnAmount()) {
       this.setValidationMessage(`Maksymalna dopuszczalna wartość to ${this.currencyService.formatAmount(this.maxPlnAmount(), 'PLN', this.snapshot())}.`);
       return;
     }

@@ -34,7 +34,7 @@ type PaymentPlanView = {
   styleUrl: './variants-step-page.component.scss'
 })
 export class VariantsStepPageComponent {
-  private readonly wizardState = inject(OfferWizardStateService);
+  protected readonly wizardState = inject(OfferWizardStateService);
   private readonly currencyService = inject(CurrencyService);
   protected readonly currencyStore = inject(CurrencyViewStore);
 
