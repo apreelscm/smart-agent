@@ -1,5 +1,15 @@
 <app-section-card title="Konfiguracja wariantu">
   <div class="variant-compare-shell" [style.--variant-count]="variantsByRank().length">
+    <div class="compare-cell" style="margin-bottom: 1rem;">
+      <app-currency-switcher
+        [selectedCurrency]="selectedInputCurrency()"
+        [disabledCurrencies]="disabledCurrencies()"
+        [rateNote]="currentRateNote()"
+        [fallbackMessage]="availability().fallbackMessage"
+        (currencySelected)="changeInputCurrency($event)"
+      />
+    </div>
+
     <div class="variant-compare">
       <div class="compare-cell compare-cell--corner">
         <span class="compare-eyebrow">Zakres oferty</span>
@@ -17,7 +27,7 @@
         >
           <div class="compare-cell__variant-title">
             <strong>{{ variant.name }}</strong>
-            <span>{{ discountedAmount(variant) | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</span>
+            <span>{{ discountedAmount(variant) | presentedMoney: selectedInputCurrency() : exchangeRates()?.rates }}</span>
           </div>
 
           <div class="compare-cell__badges">
@@ -40,7 +50,7 @@
           <section class="compare-cell compare-cell--line-value" [class.compare-cell--selected]="selectedVariantId() === variant.id">
             @if (getLine(variant, lineCode); as line) {
               <header class="line-head">
-                <span>{{ line.premium.amount | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</span>
+                <span>{{ line.premium.amount | presentedMoney: selectedInputCurrency() : exchangeRates()?.rates }}</span>
                 @if (line.isRecommended) {
                   <p-tag value="Rekomendowane" severity="contrast" />
                 }
@@ -56,7 +66,7 @@
                         }
                       </div>
                       @if (cover.premiumDelta?.amount) {
-                        <span class="cover-premium">+{{ cover.premiumDelta?.amount | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</span>
+                        <span class="cover-premium">+{{ cover.premiumDelta?.amount | presentedMoney: selectedInputCurrency() : exchangeRates()?.rates }}</span>
                       }
                       @if (cover.terms.length > 0) {
                         <ul>
@@ -153,27 +163,29 @@
       <div class="discount-section__line">
         <article class="discount-stat">
           <span>Twój budżet</span>
-          <strong>{{ customerDiscountBudget | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</strong>
+          <strong>{{ customerDiscountBudget | presentedMoney: 'PLN' : exchangeRates()?.rates }}</strong>
         </article>
         <article class="discount-stat">
           <span>Zniżka maksymalna ({{ discountBusinessLine }})</span>
-          <strong>{{ maxDiscountAmount() | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</strong>
+          <strong>{{ maxDiscountAmount() | presentedMoney: 'PLN' : exchangeRates()?.rates }}</strong>
         </article>
         <div class="discount-section__field">
           <span class="discount-section__field-label">Zniżka kwotowa ({{ discountBusinessLine }})</span>
           <input
             type="number"
             min="0"
-            [max]="maxDiscountAmount()"
-            step="1"
+            step="0.01"
             [value]="discountInput()"
             (input)="onDiscountInput($any($event.target).value)"
             (blur)="onDiscountBlur()"
-            aria-label="Budżet zniżek w PLN"
+            aria-label="Budżet zniżek w wybranej walucie"
           />
-          <span>PLN</span>
+          <span>{{ selectedInputCurrency() }}</span>
         </div>
       </div>
+      @if (discountHelperNote(); as helperNote) {
+        <p class="discount-section__helper">{{ helperNote }}</p>
+      }
       @if (discountError(); as discountErrorMessage) {
         <p class="discount-section__error">{{ discountErrorMessage }}</p>
       }
@@ -198,16 +210,16 @@
           >
             <span>{{ paymentPeriodLabel(paymentRow.plan) }}</span>
             <strong>{{ paymentRow.installmentsCount }}</strong>
-            <strong>{{ paymentRow.firstInstallmentAmount | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</strong>
+            <strong>{{ paymentRow.firstInstallmentAmount | presentedMoney: selectedInputCurrency() : exchangeRates()?.rates }}</strong>
             <strong>
               @if (paymentRow.remainingInstallmentAmount !== null) {
                 @let remainingAmount = paymentRow.remainingInstallmentAmount;
-                {{ remainingAmount | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}
+                {{ remainingAmount | presentedMoney: selectedInputCurrency() : exchangeRates()?.rates }}
               } @else {
                 —
               }
             </strong>
-            <strong>{{ paymentRow.totalAmount | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</strong>
+            <strong>{{ paymentRow.totalAmount | presentedMoney: selectedInputCurrency() : exchangeRates()?.rates }}</strong>
           </button>
         }
       </div>

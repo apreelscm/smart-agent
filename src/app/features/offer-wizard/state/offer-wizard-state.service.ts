@@ -1,6 +1,7 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
-import { Customer, Offer, OfferStatus, OfferVariant, Policy, PolicyLineCode, Vehicle } from '../../../core/models';
+import { Customer, CurrencyCode, Offer, OfferStatus, OfferVariant, Policy, PolicyLineCode, Vehicle } from '../../../core/models';
+import { CurrencyConversionService } from '../../../core/services/currency-conversion.service';
 import { PaymentPlan } from '../../../core/models/payment/payment-plan.model';
 import { OfferProduct, OffersRepository } from '../../../core/repositories/offers.repository';
 import { SalesFlowRuntimeRepository } from '../../../core/repositories/sales-flow-runtime.repository';
@@ -22,6 +23,7 @@ type CropPersistedPayload = {
 export class OfferWizardStateService {
   private readonly offersRepository = inject(OffersRepository);
   private readonly salesFlowRuntimeRepository = inject(SalesFlowRuntimeRepository);
+  private readonly currencyConversionService = inject(CurrencyConversionService);
 
   private readonly draftOfferState = signal<Offer | undefined>(undefined);
   private readonly modeState = signal<'new' | 'continue'>('new');
@@ -278,6 +280,14 @@ export class OfferWizardStateService {
     }
 
     this.discountAmountState.set(amount);
+  }
+
+  setDiscountAmountFromCurrency(amount: number, currency: CurrencyCode, rates?: { EUR?: number; USD?: number }): void {
+    if (this.readonlyModeState()) {
+      return;
+    }
+
+    this.discountAmountState.set(this.currencyConversionService.toPersistedPln(amount, currency, rates));
   }
 
   setReadonlyMode(readonlyMode: boolean): void {

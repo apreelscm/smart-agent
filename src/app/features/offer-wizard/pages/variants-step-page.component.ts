@@ -1,10 +1,16 @@
-import { CommonModule, CurrencyPipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { Component, computed, inject, signal } from '@angular/core';
 import { ButtonDirective } from 'primeng/button';
+import { Select } from 'primeng/select';
 import { Tag } from 'primeng/tag';
-import { CoverTerm, OfferVariant, PolicyLineCode } from '../../../core/models';
+import { CoverTerm, CurrencyCode, ExchangeRateSnapshot, OfferVariant, PolicyLineCode } from '../../../core/models';
 import { Cover } from '../../../core/models/cover/cover.model';
 import { PaymentPlan } from '../../../core/models/payment/payment-plan.model';
+import { ExchangeRatesRepository } from '../../../core/repositories/exchange-rates.repository';
+import { CurrencyConversionService } from '../../../core/services/currency-conversion.service';
+import { PresentedMoneyPipe } from '../../../shared/pipes/presented-money.pipe';
+import { CurrencySwitcherComponent } from '../../../shared/ui/currency-switcher/currency-switcher.component';
 import { SectionCardComponent } from '../../../shared/ui/section-card/section-card.component';
 import { OfferWizardStateService } from '../state/offer-wizard-state.service';
 
@@ -24,16 +30,39 @@ type PaymentPlanView = {
 
 @Component({
   selector: 'app-variants-step-page',
-  imports: [CommonModule, SectionCardComponent, CurrencyPipe, Tag, ButtonDirective],
+  imports: [CommonModule, SectionCardComponent, Tag, ButtonDirective, CurrencySwitcherComponent, PresentedMoneyPipe, Select],
   templateUrl: './variants-step-page.component.html',
   styleUrl: './variants-step-page.component.scss'
 })
 export class VariantsStepPageComponent {
   private readonly wizardState = inject(OfferWizardStateService);
+  private readonly exchangeRatesRepository = inject(ExchangeRatesRepository);
+  private readonly currencyConversionService = inject(CurrencyConversionService);
+
   protected readonly customerDiscountBudget = 2540;
   protected readonly discountInput = signal<string>('0');
   protected readonly discountError = signal<string | null>(null);
   protected readonly discountBusinessLine = 'Komunikacyjne OC';
+  protected readonly selectedInputCurrency = signal<CurrencyCode>('PLN');
+  protected readonly ratesError = signal(false);
+  protected readonly exchangeRates = toSignal(this.exchangeRatesRepository.getCurrentRates(), {
+    initialValue: null as ExchangeRateSnapshot | null,
+    rejectErrors: true
+  });
+  protected readonly availability = computed(() =>
+    this.currencyConversionService.getAvailability(this.exchangeRates(), this.ratesError())
+  );
+  protected readonly disabledCurrencies = computed<CurrencyCode[]>(() => this.availability().unavailableCurrencies);
+  protected readonly currentRateNote = computed(() =>
+    this.currencyConversionService.rateNote(this.selectedInputCurrency(), this.exchangeRates())
+  );
+  protected readonly discountHelperNote = computed(() => {
+    const parsed = Number(this.discountInput().replace(',', '.'));
+    return Number.isNaN(parsed)
+      ? null
+      : this.currencyConversionService.helperPlnNote(parsed, this.selectedInputCurrency(), this.exchangeRates());
+  });
+
   protected readonly addons: AddonDefinition[] = [
     { lineCode: 'NNW', coverCode: 'NNW', label: 'NNW' },
     { lineCode: 'NNW_FAMILY', coverCode: 'NNW_FAMILY', label: 'NNW Bezpieczna Rodzina' },
@@ -91,6 +120,13 @@ export class VariantsStepPageComponent {
   constructor() {
     this.wizardState.ensureDefaultVariantSelection();
     this.discountInput.set(String(this.wizardState.discountAmount()));
+
+    try {
+      this.exchangeRates();
+    } catch {
+      this.ratesError.set(true);
+      this.selectedInputCurrency.set('PLN');
+    }
   }
 
   protected readonly policyLineCodes = computed<PolicyLineCode[]>(() => {
@@ -102,6 +138,15 @@ export class VariantsStepPageComponent {
 
     return Array.from(lineCodes).filter((lineCode) => this.isLineVisible(lineCode));
   });
+
+  protected changeInputCurrency(currency: CurrencyCode): void {
+    if (this.disabledCurrencies().includes(currency)) {
+      this.selectedInputCurrency.set('PLN');
+      return;
+    }
+
+    this.selectedInputCurrency.set(currency);
+  }
 
   protected getLine(variant: OfferVariant | undefined, lineCode: PolicyLineCode) {
     if (!variant) {
@@ -177,12 +222,16 @@ export class VariantsStepPageComponent {
     const maxDiscountAmount = this.maxDiscountAmount();
 
     if (Number.isNaN(parsed) || parsed < 0) {
-      this.discountError.set(`Podaj poprawną wartość kwotową (0-${maxDiscountAmount} PLN).`);
+      this.discountError.set(`Podaj poprawną wartość kwotową.`);
       return;
     }
 
-    if (parsed > maxDiscountAmount) {
-      this.discountError.set(`Maksymalna zniżka dla linii ${this.discountBusinessLine} to ${maxDiscountAmount} PLN.`);
+    const normalizedLimit = this.selectedInputCurrency() === 'PLN'
+      ? maxDiscountAmount
+      : this.currencyConversionService.toDisplayAmount(maxDiscountAmount, this.selectedInputCurrency(), this.exchangeRates()?.rates);
+
+    if (parsed > normalizedLimit) {
+      this.discountError.set(`Maksymalna zniżka dla linii ${this.discountBusinessLine} została przekroczona.`);
       return;
     }
 
@@ -203,19 +252,20 @@ export class VariantsStepPageComponent {
     const parsed = Number(rawValue.replace(',', '.'));
 
     if (Number.isNaN(parsed) || parsed < 0) {
-      this.discountError.set(`Podaj poprawną wartość kwotową (0-${maxDiscountAmount} PLN).`);
+      this.discountError.set(`Podaj poprawną wartość kwotową.`);
       return;
     }
 
-    if (parsed > maxDiscountAmount) {
+    const persistedPln = this.currencyConversionService.toPersistedPln(parsed, this.selectedInputCurrency(), this.exchangeRates()?.rates);
+
+    if (persistedPln > maxDiscountAmount) {
       this.discountError.set(`Maksymalna zniżka dla linii ${this.discountBusinessLine} to ${maxDiscountAmount} PLN.`);
       return;
     }
 
-    const normalized = Math.round(parsed);
     this.discountError.set(null);
-    this.discountInput.set(String(normalized));
-    this.wizardState.setDiscountAmount(normalized);
+    this.discountInput.set(this.selectedInputCurrency() === 'PLN' ? String(persistedPln) : parsed.toFixed(2));
+    this.wizardState.setDiscountAmountFromCurrency(parsed, this.selectedInputCurrency(), this.exchangeRates()?.rates);
   }
 
   protected isPaymentPlanSelected(plan: PaymentPlan): boolean {

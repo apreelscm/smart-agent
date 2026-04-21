@@ -11,9 +11,13 @@ import { InputText } from 'primeng/inputtext';
 import { Select } from 'primeng/select';
 import { SplitButton } from 'primeng/splitbutton';
 import { Tag } from 'primeng/tag';
-import { Policy, PolicyPaymentStatus, PolicyStatus } from '../../../core/models';
+import { CurrencyCode, ExchangeRateSnapshot, Policy, PolicyPaymentStatus, PolicyStatus } from '../../../core/models';
+import { ExchangeRatesRepository } from '../../../core/repositories/exchange-rates.repository';
 import { PoliciesRepository } from '../../../core/repositories/policies.repository';
 import { SalesFlowRuntimeRepository } from '../../../core/repositories/sales-flow-runtime.repository';
+import { CurrencyConversionService } from '../../../core/services/currency-conversion.service';
+import { PresentedMoneyPipe } from '../../../shared/pipes/presented-money.pipe';
+import { CurrencySwitcherComponent } from '../../../shared/ui/currency-switcher/currency-switcher.component';
 import { PageHeaderComponent } from '../../../shared/ui/page-header/page-header.component';
 import { SectionCardComponent } from '../../../shared/ui/section-card/section-card.component';
 
@@ -35,13 +39,29 @@ type PolicyStatusPresentation = {
 
 @Component({
   selector: 'app-policies-home-page',
-  imports: [CommonModule, FormsModule, RouterLink, PageHeaderComponent, SectionCardComponent, ButtonDirective, Dialog, InputText, Select, SplitButton, Tag],
+  imports: [
+    CommonModule,
+    FormsModule,
+    RouterLink,
+    PageHeaderComponent,
+    SectionCardComponent,
+    ButtonDirective,
+    Dialog,
+    InputText,
+    Select,
+    SplitButton,
+    Tag,
+    CurrencySwitcherComponent,
+    PresentedMoneyPipe
+  ],
   templateUrl: './policies-home-page.component.html',
   styleUrl: './policies-home-page.component.scss'
 })
 export class PoliciesHomePageComponent {
   private readonly policiesRepository = inject(PoliciesRepository);
   private readonly salesFlowRuntimeRepository = inject(SalesFlowRuntimeRepository);
+  private readonly exchangeRatesRepository = inject(ExchangeRatesRepository);
+  private readonly currencyConversionService = inject(CurrencyConversionService);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
 
@@ -57,7 +77,22 @@ export class PoliciesHomePageComponent {
   protected readonly renewalDialogVisible = signal(false);
   protected readonly pendingPayment = signal<Policy | null>(null);
   protected readonly paymentDialogVisible = signal(false);
+  protected readonly selectedCurrency = signal<CurrencyCode>('PLN');
+  protected readonly ratesError = signal(false);
+
   protected readonly basePolicies = toSignal(this.policiesRepository.getPolicies(), { initialValue: [] as Policy[] });
+  protected readonly exchangeRates = toSignal(this.exchangeRatesRepository.getCurrentRates(), {
+    initialValue: null as ExchangeRateSnapshot | null,
+    rejectErrors: true
+  });
+  protected readonly availability = computed(() =>
+    this.currencyConversionService.getAvailability(this.exchangeRates(), this.ratesError())
+  );
+  protected readonly disabledCurrencies = computed<CurrencyCode[]>(() => this.availability().unavailableCurrencies);
+  protected readonly currentRateNote = computed(() =>
+    this.currencyConversionService.rateNote(this.selectedCurrency(), this.exchangeRates())
+  );
+
   protected readonly policies = computed<Policy[]>(() => {
     const runtimePolicies = this.salesFlowRuntimeRepository.promotedPolicies();
     const overrides = this.statusOverrides();
@@ -176,6 +211,22 @@ export class PoliciesHomePageComponent {
         this.searchTerm.set(policy.policyNumber);
       }
     });
+
+    try {
+      this.exchangeRates();
+    } catch {
+      this.ratesError.set(true);
+      this.selectedCurrency.set('PLN');
+    }
+  }
+
+  protected changeCurrency(currency: CurrencyCode): void {
+    if (this.disabledCurrencies().includes(currency)) {
+      this.selectedCurrency.set('PLN');
+      return;
+    }
+
+    this.selectedCurrency.set(currency);
   }
 
   protected setFilter(filter: PolicyViewFilter): void {

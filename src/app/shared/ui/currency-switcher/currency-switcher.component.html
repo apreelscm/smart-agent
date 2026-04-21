@@ -1,0 +1,23 @@
+<div class="currency-switcher">
+  <div class="currency-switcher__buttons" role="group" aria-label="Wybór waluty">
+    @for (currency of currencies; track currency) {
+      <button
+        pButton
+        type="button"
+        [label]="currency"
+        [severity]="selectedCurrency() === currency ? undefined : 'secondary'"
+        [outlined]="selectedCurrency() !== currency"
+        [disabled]="isDisabled(currency)"
+        (click)="selectCurrency(currency)"
+      ></button>
+    }
+  </div>
+
+  @if (rateNote()) {
+    <p class="currency-switcher__note">{{ rateNote() }}</p>
+  }
+
+  @if (fallbackMessage()) {
+    <p class="currency-switcher__message">{{ fallbackMessage() }}</p>
+  }
+</div>

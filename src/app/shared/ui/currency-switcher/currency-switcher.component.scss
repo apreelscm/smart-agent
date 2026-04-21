@@ -1,0 +1,21 @@
+.currency-switcher {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.currency-switcher__buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.currency-switcher__note,
+.currency-switcher__message {
+  margin: 0;
+  font-size: 0.875rem;
+  color: #526071;
+}
+
+.currency-switcher__message {
+  color: #9a3412;
+}
