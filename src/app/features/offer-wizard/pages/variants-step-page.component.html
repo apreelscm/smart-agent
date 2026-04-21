@@ -65,8 +65,8 @@
                           <span class="cover-label">{{ cover.description || cover.label }}</span>
                         }
                       </div>
-                      @if (cover.premiumDelta?.amount) {
-                        <span class="cover-premium">+{{ cover.premiumDelta?.amount | presentedMoney: selectedInputCurrency() : exchangeRates()?.rates }}</span>
+                      @if (cover.premiumDelta; as premiumDelta) {
+                        <span class="cover-premium">+{{ premiumDelta.amount | presentedMoney: selectedInputCurrency() : exchangeRates()?.rates }}</span>
                       }
                       @if (cover.terms.length > 0) {
                         <ul>

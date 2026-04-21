@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { Component, computed, inject, signal } from '@angular/core';
 import { ButtonDirective } from 'primeng/button';
-import { Select } from 'primeng/select';
 import { Tag } from 'primeng/tag';
 import { CoverTerm, CurrencyCode, ExchangeRateSnapshot, OfferVariant, PolicyLineCode } from '../../../core/models';
 import { Cover } from '../../../core/models/cover/cover.model';
@@ -30,7 +29,7 @@ type PaymentPlanView = {
 
 @Component({
   selector: 'app-variants-step-page',
-  imports: [CommonModule, SectionCardComponent, Tag, ButtonDirective, CurrencySwitcherComponent, PresentedMoneyPipe, Select],
+  imports: [CommonModule, SectionCardComponent, Tag, ButtonDirective, CurrencySwitcherComponent, PresentedMoneyPipe],
   templateUrl: './variants-step-page.component.html',
   styleUrl: './variants-step-page.component.scss'
 })

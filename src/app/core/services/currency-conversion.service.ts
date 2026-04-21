@@ -83,7 +83,7 @@ export class CurrencyConversionService {
     }).format(amount);
   }
 
-  getAvailability(snapshot: ExchangeRateSnapshot | null, error: boolean): ExchangeRateAvailability {
+  getAvailability(snapshot: ExchangeRateSnapshot | null | undefined, error: boolean): ExchangeRateAvailability {
     const availableForeignCurrencies = this.currencyOptions.filter(
       (currency): currency is SupportedForeignCurrencyCode => currency !== 'PLN' && !!snapshot?.rates[currency]
     );
@@ -102,20 +102,20 @@ export class CurrencyConversionService {
     };
   }
 
-  rateNote(currency: CurrencyCode, snapshot: ExchangeRateSnapshot | null): string | null {
+  rateNote(currency: CurrencyCode, snapshot: ExchangeRateSnapshot | null | undefined): string | null {
     if (currency === 'PLN' || !snapshot?.rates[currency]) {
       return null;
     }
 
-    return `Kurs NBP ${currency}: ${snapshot.rates[currency]?.toFixed(4)} z dnia ${snapshot.publishedAt}`;
+    return `Kurs NBP ${currency}: ${snapshot.rates[currency].toFixed(4)} z dnia ${snapshot.publishedAt}`;
   }
 
-  helperPlnNote(amount: number | null, currency: CurrencyCode, snapshot: ExchangeRateSnapshot | null): string | null {
+  helperPlnNote(amount: number | null, currency: CurrencyCode, snapshot: ExchangeRateSnapshot | null | undefined): string | null {
     if (amount === null || currency === 'PLN' || !snapshot?.rates[currency]) {
       return null;
     }
 
     const plnAmount = this.toPersistedPln(amount, currency, snapshot.rates);
-    return `≈ ${this.formatEnteredAmount(plnAmount, 'PLN')} po kursie ${snapshot.rates[currency]?.toFixed(4)} z dnia ${snapshot.publishedAt}`;
+    return `≈ ${this.formatEnteredAmount(plnAmount, 'PLN')} po kursie ${snapshot.rates[currency].toFixed(4)} z dnia ${snapshot.publishedAt}`;
   }
 }
