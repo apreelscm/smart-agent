@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, computed, effect, forwardRef, inject, input, signal } from '@angular/core';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { ButtonDirective } from 'primeng/button';
+import { CurrencyCode, SUPPORTED_CURRENCIES } from '../../../core/models';
 import { CurrencyPresentationService } from '../../../core/services/currency-presentation.service';
 
 @Component({
@@ -18,7 +19,8 @@ import { CurrencyPresentationService } from '../../../core/services/currency-pre
   ]
 })
 export class CurrencyAmountInputComponent implements ControlValueAccessor {
-  private readonly currencyPresentation = inject(CurrencyPresentationService);
+  protected readonly currencyPresentation = inject(CurrencyPresentationService);
+  protected readonly supportedCurrencies = SUPPORTED_CURRENCIES;
 
   readonly step = input<number>(1);
   readonly min = input<number | undefined>(undefined);
@@ -92,7 +94,7 @@ export class CurrencyAmountInputComponent implements ControlValueAccessor {
     this.disabledState.set(isDisabled);
   }
 
-  protected selectCurrency(currency: 'PLN' | 'EUR' | 'USD'): void {
+  protected selectCurrency(currency: CurrencyCode): void {
     this.currencyPresentation.selectCurrency(currency);
   }
 

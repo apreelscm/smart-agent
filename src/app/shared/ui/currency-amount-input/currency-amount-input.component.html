@@ -1,14 +1,14 @@
 <div class="currency-amount-input">
   @if (showCurrencySelector()) {
     <div class="currency-amount-input__switcher" role="group" aria-label="Waluta wejściowa">
-      @for (currency of ['PLN', 'EUR', 'USD']; track currency) {
+      @for (currency of supportedCurrencies; track currency) {
         <button
           pButton
           type="button"
           severity="secondary"
           [outlined]="selectedCurrency() !== currency"
           [disabled]="disabledState() || (currency !== 'PLN' && !currencyPresentation.canUseCurrency(currency))"
-          (click)="selectCurrency($any(currency))"
+          (click)="selectCurrency(currency)"
         >
           {{ currency }}
         </button>

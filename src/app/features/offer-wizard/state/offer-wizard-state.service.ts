@@ -25,6 +25,10 @@ type CropPersistedPayload = {
   claimHistory?: CropClaimHistory;
 };
 
+type CropOffer = Offer & {
+  cropData?: CropPersistedPayload;
+};
+
 @Injectable({
   providedIn: 'root'
 })
@@ -184,15 +188,16 @@ export class OfferWizardStateService {
       return;
     }
 
-    const currentPayload = (offer as Offer & { cropData?: CropPersistedPayload }).cropData ?? {};
+    const cropOffer = offer as CropOffer;
+    const currentPayload = cropOffer.cropData ?? {};
 
     this.draftOfferState.set({
-      ...offer,
+      ...cropOffer,
       cropData: {
         ...currentPayload,
         ...structuredClone(patch)
-      } as Offer['cropData']
-    } as Offer);
+      }
+    });
   }
 
   updateVehicle(vehicle: Vehicle): void {
@@ -528,10 +533,11 @@ export class OfferWizardStateService {
       return;
     }
 
-    const currentPayload = (offer as Offer & { cropData?: CropPersistedPayload }).cropData ?? {};
+    const cropOffer = offer as CropOffer;
+    const currentPayload = cropOffer.cropData ?? {};
 
     this.draftOfferState.set({
-      ...offer,
+      ...cropOffer,
       cropData: {
         ...currentPayload,
         crops: structuredClone(this.cropDraftState()),
@@ -540,8 +546,8 @@ export class OfferWizardStateService {
         discountAmount: this.cropDiscountAmountState(),
         selectedPaymentFrequency: this.cropSelectedPaymentFrequencyState(),
         transportMainPlanEnabled: this.cropTransportMainPlanEnabledState()
-      } as Offer['cropData']
-    } as Offer);
+      }
+    });
   }
 
   private createEmptyOffer(templateOffer: Offer, product: OfferProduct): Offer {
@@ -644,7 +650,7 @@ export class OfferWizardStateService {
       return;
     }
 
-    const payload = (offer as Offer & { cropData?: CropPersistedPayload }).cropData;
+    const payload = (offer as CropOffer).cropData;
 
     this.cropDraftState.set(payload?.crops ? structuredClone(payload.crops) : []);
     this.cropVariantConfigsState.set(payload?.variantConfigs ? structuredClone(payload.variantConfigs) : []);
