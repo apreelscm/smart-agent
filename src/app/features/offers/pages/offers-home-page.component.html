@@ -66,6 +66,26 @@
       </div>
 
       <div class="toolbar__actions">
+        <div class="toolbar__currency">
+          <span class="toolbar__currency-label">Waluta listy</span>
+
+          <div class="currency-switcher" role="group" aria-label="Przełącznik waluty listy ofert">
+            @for (option of currencyOptions(); track option.code) {
+              <button
+                pButton
+                type="button"
+                [label]="option.label"
+                severity="secondary"
+                class="currency-switcher__button"
+                [class.currency-switcher__button--active]="isCurrencySelected(option.code)"
+                [disabled]="option.disabled"
+                [attr.aria-pressed]="isCurrencySelected(option.code)"
+                (click)="selectCurrency(option.code)"
+              ></button>
+            }
+          </div>
+        </div>
+
         <button
           pButton
           type="button"
@@ -78,6 +98,20 @@
         <a pButton [routerLink]="['/offers/new']" icon="pi pi-plus" [attr.aria-label]="'Nowa oferta'"></a>
       </div>
     </div>
+
+    @if (exchangeRatesUnavailableMessage(); as message) {
+      <div class="currency-feedback currency-feedback--warning" role="status">
+        <i class="pi pi-info-circle"></i>
+        <span>{{ message }}</span>
+      </div>
+    }
+
+    @if (activeRateLabel(); as rateLabel) {
+      <div class="currency-feedback currency-feedback--rate">
+        <i class="pi pi-chart-line"></i>
+        <span>{{ rateLabel }}</span>
+      </div>
+    }
 
     <div class="results-meta">
       <span>{{ totalVisibleOffers() }} ofert(y) na liście</span>
@@ -153,7 +187,7 @@
           <div class="offer-row__summary">
             <div class="premium-box">
               <span class="offer-row__meta-label">Składka</span>
-              <strong>{{ getPrimaryPremium(offer) | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</strong>
+              <strong>{{ formatPrimaryPremium(offer) }}</strong>
               <span>{{ offer.validTo ? ('Ważna do ' + (offer.validTo | date: 'dd.MM.yyyy')) : 'Robocza kalkulacja' }}</span>
             </div>
 
