@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, DestroyRef, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { Router, RouterLink } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { ButtonDirective } from 'primeng/button';
@@ -10,10 +10,18 @@ import { InputText } from 'primeng/inputtext';
 import { Select } from 'primeng/select';
 import { SplitButton } from 'primeng/splitbutton';
 import { Tag } from 'primeng/tag';
+import {
+  CurrencyCode,
+  ExchangeRateQuote,
+  ForeignCurrencyCode,
+  Offer,
+  OfferStatus,
+  ReferenceData
+} from '../../../core/models';
+import { ExchangeRatesRepository } from '../../../core/repositories/exchange-rates.repository';
 import { OffersRepository } from '../../../core/repositories/offers.repository';
 import { ReferenceDataRepository } from '../../../core/repositories/reference-data.repository';
 import { SalesFlowRuntimeRepository } from '../../../core/repositories/sales-flow-runtime.repository';
-import { Offer, OfferStatus, ReferenceData } from '../../../core/models';
 import { PageHeaderComponent } from '../../../shared/ui/page-header/page-header.component';
 import { SectionCardComponent } from '../../../shared/ui/section-card/section-card.component';
 import { StatTileComponent } from '../../../shared/ui/stat-tile/stat-tile.component';
@@ -21,6 +29,12 @@ import { StatTileComponent } from '../../../shared/ui/stat-tile/stat-tile.compon
 type FilterOption = {
   code: string;
   label: string;
+};
+
+type CurrencyOption = {
+  code: CurrencyCode;
+  label: string;
+  disabled?: boolean;
 };
 
 type SortDirection = 'ASC' | 'DESC';
@@ -54,6 +68,12 @@ type CropOfferPayload = {
   };
 };
 
+type CurrencyStatusPresentation = {
+  kind: 'info' | 'success' | 'loading' | 'error';
+  icon: string;
+  message: string;
+};
+
 @Component({
   selector: 'app-offers-home-page',
   imports: [
@@ -76,8 +96,13 @@ type CropOfferPayload = {
 export class OffersHomePageComponent {
   private readonly offersRepository = inject(OffersRepository);
   private readonly referenceDataRepository = inject(ReferenceDataRepository);
+  private readonly exchangeRatesRepository = inject(ExchangeRatesRepository);
   private readonly salesFlowRuntimeRepository = inject(SalesFlowRuntimeRepository);
   private readonly router = inject(Router);
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly supportedForeignCurrencies: ForeignCurrencyCode[] = ['EUR', 'USD'];
+
+  private exchangeRateRequestId = 0;
 
   protected readonly searchTerm = signal('');
   protected readonly selectedStatus = signal<string | null>(null);
@@ -87,6 +112,11 @@ export class OffersHomePageComponent {
   protected readonly statusOverrides = signal<Record<string, OfferStatus>>({});
   protected readonly pendingTransition = signal<PendingTransition | null>(null);
   protected readonly transitionDialogVisible = signal(false);
+  protected readonly selectedDisplayCurrency = signal<CurrencyCode>('PLN');
+  protected readonly pendingDisplayCurrency = signal<ForeignCurrencyCode | null>(null);
+  protected readonly exchangeRateQuotes = signal<Partial<Record<ForeignCurrencyCode, ExchangeRateQuote>>>({});
+  protected readonly unavailableDisplayCurrencies = signal<Partial<Record<ForeignCurrencyCode, true>>>({});
+  protected readonly displayCurrencyMessage = signal<string | null>(null);
 
   protected readonly offers = toSignal(this.offersRepository.getOffers(), { initialValue: [] as Offer[] });
   protected readonly referenceData = toSignal(this.referenceDataRepository.getReferenceData(), {
@@ -116,6 +146,67 @@ export class OffersHomePageComponent {
       ...offer,
       status: overrides[offer.id] ?? offer.status
     }));
+  });
+  protected readonly displayCurrencyOptions = computed<CurrencyOption[]>(() => {
+    const unavailableCurrencies = this.unavailableDisplayCurrencies();
+    const quotes = this.exchangeRateQuotes();
+
+    return [
+      { code: 'PLN', label: 'PLN' },
+      ...this.supportedForeignCurrencies.map((code) => ({
+        code,
+        label: code,
+        disabled: !!unavailableCurrencies[code] && !quotes[code]
+      }))
+    ];
+  });
+  protected readonly activeExchangeRate = computed<ExchangeRateQuote | null>(() => {
+    const displayCurrency = this.selectedDisplayCurrency();
+
+    if (displayCurrency === 'PLN') {
+      return null;
+    }
+
+    return this.exchangeRateQuotes()[displayCurrency] ?? null;
+  });
+  protected readonly displayCurrencyStatus = computed<CurrencyStatusPresentation>(() => {
+    const pendingCurrency = this.pendingDisplayCurrency();
+    const activeCurrency = this.selectedDisplayCurrency();
+    const message = this.displayCurrencyMessage();
+
+    if (pendingCurrency) {
+      return {
+        kind: 'loading',
+        icon: 'pi pi-spin pi-spinner',
+        message: `Pobieranie kursu NBP dla ${pendingCurrency}. Aktywna waluta pozostaje ${activeCurrency}.`
+      };
+    }
+
+    if (message) {
+      return {
+        kind: 'error',
+        icon: 'pi pi-exclamation-triangle',
+        message
+      };
+    }
+
+    if (activeCurrency === 'PLN') {
+      return {
+        kind: 'info',
+        icon: 'pi pi-money-bill',
+        message: 'Aktywna waluta: PLN · kwoty źródłowe bez przeliczenia'
+      };
+    }
+
+    const rate = this.activeExchangeRate();
+
+    return {
+      kind: 'success',
+      icon: 'pi pi-check-circle',
+      message: rate
+        ? `Aktywna waluta: ${activeCurrency} · kurs NBP z ${this.formatDateLabel(rate.effectiveDate)}`
+        : `Aktywna waluta: ${activeCurrency}`
+    };
   });
 
   protected readonly sortFieldOptions: FilterOption[] = [
@@ -186,25 +277,18 @@ export class OffersHomePageComponent {
     const offers = this.filteredOffers();
     const issued = offers.filter((offer) => offer.status === 'ISSUED').length;
     const inProgress = offers.filter((offer) => ['DRAFT', 'CALCULATION'].includes(offer.status)).length;
-    const averageMonthlyPremium =
-      offers.length > 0
-        ? Math.round(
-            offers.reduce((sum, offer) => sum + (offer.selectedPaymentPlan?.totalPremium.amount ?? offer.variants[0]?.totalPremium.amount ?? 0), 0) /
-              offers.length /
-              12
-          )
-        : 0;
+    const averageMonthlyPremiumInPln =
+      offers.length > 0 ? offers.reduce((sum, offer) => sum + this.getBasePremiumAmount(offer), 0) / offers.length / 12 : 0;
 
     return [
       { label: 'Oferta wystawiona', value: `${issued}`, note: 'gotowe do decyzji klienta' },
       { label: 'Draft / Kalkulacja', value: `${inProgress}`, note: 'oferty w przygotowaniu' },
-      { label: 'Średnia składka', value: `${averageMonthlyPremium.toLocaleString('pl-PL')} zł`, note: 'w ujęciu miesięcznym' }
+      { label: 'Średnia składka', value: this.formatDisplayAmount(this.convertAmountFromPln(averageMonthlyPremiumInPln)), note: 'w ujęciu miesięcznym' }
     ];
   });
 
   protected readonly totalVisibleOffers = computed(() => this.filteredOffers().length);
 
-  // New computed signal to detect if any filter or sorting differs from default values
   protected readonly filtersChanged = computed(() => {
     return (
       this.searchTerm() !== '' ||
@@ -243,8 +327,12 @@ export class OffersHomePageComponent {
     return statusMap[status];
   }
 
-  protected getPrimaryPremium(offer: Offer): number {
+  protected getBasePremiumAmount(offer: Offer): number {
     return offer.selectedPaymentPlan?.totalPremium.amount ?? offer.variants[0]?.totalPremium.amount ?? 0;
+  }
+
+  protected getDisplayPremium(offer: Offer): string {
+    return this.formatDisplayAmount(this.convertAmountFromPln(this.getBasePremiumAmount(offer)));
   }
 
   protected getSelectedVariantName(offer: Offer): string {
@@ -287,6 +375,80 @@ export class OffersHomePageComponent {
     return !!offer.renewalContext && offer.renewalContext.mode === 'RENEW';
   }
 
+  protected selectDisplayCurrency(nextCurrency: CurrencyCode): void {
+    if (nextCurrency === this.pendingDisplayCurrency()) {
+      return;
+    }
+
+    if (nextCurrency === this.selectedDisplayCurrency()) {
+      this.displayCurrencyMessage.set(null);
+      return;
+    }
+
+    if (nextCurrency === 'PLN') {
+      this.exchangeRateRequestId += 1;
+      this.pendingDisplayCurrency.set(null);
+      this.displayCurrencyMessage.set(null);
+      this.selectedDisplayCurrency.set('PLN');
+      return;
+    }
+
+    const cachedQuote = this.exchangeRateQuotes()[nextCurrency];
+
+    if (cachedQuote) {
+      this.exchangeRateRequestId += 1;
+      this.pendingDisplayCurrency.set(null);
+      this.displayCurrencyMessage.set(null);
+      this.selectedDisplayCurrency.set(nextCurrency);
+      this.markCurrencyAvailable(nextCurrency);
+      return;
+    }
+
+    if (this.unavailableDisplayCurrencies()[nextCurrency]) {
+      this.displayCurrencyMessage.set(`Waluta ${nextCurrency} jest obecnie niedostępna. Aktywna waluta pozostaje ${this.selectedDisplayCurrency()}.`);
+      return;
+    }
+
+    this.displayCurrencyMessage.set(null);
+    this.pendingDisplayCurrency.set(nextCurrency);
+
+    const requestId = ++this.exchangeRateRequestId;
+
+    this.exchangeRatesRepository
+      .getExchangeRate(nextCurrency)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (quote) => {
+          if (requestId !== this.exchangeRateRequestId) {
+            return;
+          }
+
+          this.exchangeRateQuotes.update((quotes) => ({
+            ...quotes,
+            [nextCurrency]: quote
+          }));
+          this.markCurrencyAvailable(nextCurrency);
+          this.selectedDisplayCurrency.set(nextCurrency);
+          this.pendingDisplayCurrency.set(null);
+          this.displayCurrencyMessage.set(null);
+        },
+        error: () => {
+          if (requestId !== this.exchangeRateRequestId) {
+            return;
+          }
+
+          this.unavailableDisplayCurrencies.update((unavailable) => ({
+            ...unavailable,
+            [nextCurrency]: true
+          }));
+          this.pendingDisplayCurrency.set(null);
+          this.displayCurrencyMessage.set(
+            `Nie udało się pobrać kursu NBP dla ${nextCurrency}. Pozostawiono ${this.selectedDisplayCurrency()} jako aktywną walutę.`
+          );
+        }
+      });
+  }
+
   protected openTransitionDialog(offer: Offer, transition: TransitionDefinition): void {
     this.pendingTransition.set({ offer, transition });
     this.transitionDialogVisible.set(true);
@@ -326,7 +488,6 @@ export class OffersHomePageComponent {
     this.closeTransitionDialog();
   }
 
-  // New method to clear all filters and sorting to default values
   protected clearAllFilters(): void {
     this.searchTerm.set('');
     this.selectedStatus.set('ALL');
@@ -390,6 +551,57 @@ export class OffersHomePageComponent {
 
   protected offerProductLabel(offer: Offer): string {
     return this.isCropOffer(offer) ? 'Oferta upraw' : 'Oferta komunikacyjna';
+  }
+
+  private convertAmountFromPln(amountInPln: number): number {
+    const displayCurrency = this.selectedDisplayCurrency();
+
+    if (displayCurrency === 'PLN') {
+      return amountInPln;
+    }
+
+    const quote = this.exchangeRateQuotes()[displayCurrency];
+
+    if (!quote) {
+      return amountInPln;
+    }
+
+    return amountInPln / quote.mid;
+  }
+
+  private formatDisplayAmount(amount: number): string {
+    const displayCurrency = this.selectedDisplayCurrency();
+    const fractionDigits = this.getCurrencyFractionDigits(displayCurrency);
+
+    return new Intl.NumberFormat('pl-PL', {
+      style: 'currency',
+      currency: displayCurrency,
+      currencyDisplay: 'narrowSymbol',
+      minimumFractionDigits: fractionDigits,
+      maximumFractionDigits: fractionDigits
+    }).format(amount);
+  }
+
+  private getCurrencyFractionDigits(currency: CurrencyCode): number {
+    return currency === 'PLN' ? 0 : 2;
+  }
+
+  private formatDateLabel(date: string): string {
+    const [year, month, day] = date.split('-');
+
+    if (!year || !month || !day) {
+      return date;
+    }
+
+    return `${day}.${month}.${year}`;
+  }
+
+  private markCurrencyAvailable(code: ForeignCurrencyCode): void {
+    this.unavailableDisplayCurrencies.update((unavailable) => {
+      const nextState = { ...unavailable };
+      delete nextState[code];
+      return nextState;
+    });
   }
 
   private copyOffer(offerId: string): void {
@@ -468,7 +680,6 @@ export class OffersHomePageComponent {
   }
 
   private printPlaceholder(offer: Offer): void {
-    // Placeholder action for future document generation integration.
     console.log('[Offers] Print placeholder action triggered for offer', offer.id);
   }
 
