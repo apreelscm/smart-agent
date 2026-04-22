@@ -9,73 +9,102 @@
 
   <app-section-card title="Portfel ofert">
     <div class="toolbar">
-      <div class="toolbar__filters">
-        <span class="field-shell">
-          <i class="pi pi-search"></i>
-          <input
-            pInputText
-            [ngModel]="searchTerm()"
-            (ngModelChange)="searchTerm.set($event)"
-            placeholder="Szukaj: numer oferty, klient, pojazd/uprawy, rejestracja"
+      <div class="toolbar__primary-row">
+        <div class="toolbar__filters">
+          <span class="field-shell">
+            <i class="pi pi-search"></i>
+            <input
+              pInputText
+              [ngModel]="searchTerm()"
+              (ngModelChange)="searchTerm.set($event)"
+              placeholder="Szukaj: numer oferty, klient, pojazd/uprawy, rejestracja"
+            />
+          </span>
+
+          <p-select
+            [ngModel]="selectedStatus()"
+            (ngModelChange)="selectedStatus.set($event)"
+            [options]="statusOptions()"
+            optionLabel="label"
+            optionValue="code"
+            placeholder="Status"
+            appendTo="body"
+            class="toolbar__select"
           />
-        </span>
 
-        <p-select
-          [ngModel]="selectedStatus()"
-          (ngModelChange)="selectedStatus.set($event)"
-          [options]="statusOptions()"
-          optionLabel="label"
-          optionValue="code"
-          placeholder="Status"
-          appendTo="body"
-          class="toolbar__select"
-        />
+          <p-select
+            [ngModel]="selectedProduct()"
+            (ngModelChange)="selectedProduct.set($event)"
+            [options]="productOptions"
+            optionLabel="label"
+            optionValue="code"
+            placeholder="Produkt"
+            appendTo="body"
+            class="toolbar__select"
+          />
 
-        <p-select
-          [ngModel]="selectedProduct()"
-          (ngModelChange)="selectedProduct.set($event)"
-          [options]="productOptions"
-          optionLabel="label"
-          optionValue="code"
-          placeholder="Produkt"
-          appendTo="body"
-          class="toolbar__select"
-        />
+          <p-select
+            [ngModel]="selectedSortField()"
+            (ngModelChange)="selectedSortField.set($event)"
+            [options]="sortFieldOptions"
+            optionLabel="label"
+            optionValue="code"
+            placeholder="Sortuj po"
+            appendTo="body"
+            class="toolbar__select toolbar__select--sort"
+          />
 
-        <p-select
-          [ngModel]="selectedSortField()"
-          (ngModelChange)="selectedSortField.set($event)"
-          [options]="sortFieldOptions"
-          optionLabel="label"
-          optionValue="code"
-          placeholder="Sortuj po"
-          appendTo="body"
-          class="toolbar__select toolbar__select--sort"
-        />
+          <button
+            pButton
+            type="button"
+            [icon]="sortDirectionIcon()"
+            severity="secondary"
+            outlined
+            [attr.aria-label]="sortDirectionLabel()"
+            class="toolbar__sort-direction"
+            (click)="toggleSortDirection()"
+          ></button>
+        </div>
 
-        <button
-          pButton
-          type="button"
-          [icon]="sortDirectionIcon()"
-          severity="secondary"
-          outlined
-          [attr.aria-label]="sortDirectionLabel()"
-          class="toolbar__sort-direction"
-          (click)="toggleSortDirection()"
-        ></button>
+        <div class="toolbar__actions">
+          <button
+            pButton
+            type="button"
+            label="Wyczyść wszystkie filtry"
+            class="clear-filters-button"
+            [disabled]="!filtersChanged()"
+            (click)="clearAllFilters()"
+            style="background-color: #cce5ff; color: #004085; border-color: #b8daff;"
+          ></button>
+          <a pButton [routerLink]="['/offers/new']" icon="pi pi-plus" [attr.aria-label]="'Nowa oferta'"></a>
+        </div>
       </div>
 
-      <div class="toolbar__actions">
-        <button
-          pButton
-          type="button"
-          label="Wyczyść wszystkie filtry"
-          class="clear-filters-button"
-          [disabled]="!filtersChanged()"
-          (click)="clearAllFilters()"
-          style="background-color: #cce5ff; color: #004085; border-color: #b8daff;"
-        ></button>
-        <a pButton [routerLink]="['/offers/new']" icon="pi pi-plus" [attr.aria-label]="'Nowa oferta'"></a>
+      <div class="toolbar__currency-row">
+        <div class="toolbar__currency-control">
+          <span class="toolbar__currency-label">Waluta prezentacji składki</span>
+          <p-select
+            [ngModel]="selectedPresentationCurrency()"
+            (ngModelChange)="selectedPresentationCurrency.set($event)"
+            [options]="presentationCurrencyOptions"
+            optionLabel="label"
+            optionValue="code"
+            placeholder="PLN (domyślnie)"
+            appendTo="body"
+            [showClear]="true"
+            class="toolbar__select toolbar__select--currency"
+          />
+        </div>
+
+        @if (currencyRatesState().loading) {
+          <small class="toolbar__currency-message toolbar__currency-message--info" aria-live="polite">
+            Pobieranie kursów NBP dla EUR i USD…
+          </small>
+        } @else if (currencyErrorMessage(); as currencyErrorMessage) {
+          <small class="toolbar__currency-message toolbar__currency-message--error" aria-live="polite">
+            {{ currencyErrorMessage }}
+          </small>
+        }
       </div>
     </div>
 
@@ -153,7 +182,7 @@
           <div class="offer-row__summary">
             <div class="premium-box">
               <span class="offer-row__meta-label">Składka</span>
-              <strong>{{ getPrimaryPremium(offer) | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</strong>
+              <strong>{{ formatPremiumAmount(getPrimaryPremium(offer)) }}</strong>
               <span>{{ offer.validTo ? ('Ważna do ' + (offer.validTo | date: 'dd.MM.yyyy')) : 'Robocza kalkulacja' }}</span>
             </div>
 
@@ -209,7 +238,7 @@
           </div>
           <div>
             <span>Składka</span>
-            <strong>{{ getPrimaryPremium(pending.offer) | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</strong>
+            <strong>{{ formatPremiumAmount(getPrimaryPremium(pending.offer)) }}</strong>
           </div>
         </div>
 

@@ -14,11 +14,16 @@
 }
 
 .toolbar {
+  display: grid;
+  gap: 0.9rem;
+  padding-bottom: 0.25rem;
+}
+
+.toolbar__primary-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  padding-bottom: 0.25rem;
 }
 
 .toolbar__filters,
@@ -26,6 +31,45 @@
   display: flex;
   align-items: center;
   gap: 0.75rem;
+}
+
+.toolbar__currency-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 1rem;
+  padding-top: 0.25rem;
+  border-top: 1px solid rgba(0, 90, 146, 0.08);
+}
+
+.toolbar__currency-control {
+  display: grid;
+  gap: 0.35rem;
+  min-width: 14rem;
+}
+
+.toolbar__currency-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--app-text-subtle);
+}
+
+.toolbar__currency-message {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  font-size: 0.83rem;
+  line-height: 1.35;
+}
+
+.toolbar__currency-message--info {
+  color: var(--app-text-muted);
+}
+
+.toolbar__currency-message--error {
+  color: #b45309;
 }
 
 .field-shell {
@@ -70,6 +114,10 @@
 
 .toolbar__select--sort {
   min-width: 13rem;
+}
+
+.toolbar__select--currency {
+  min-width: 12rem;
 }
 
 .toolbar__sort-direction {
@@ -304,26 +352,34 @@ a[pButton]:visited {
 }
 
 @media (width <= 1180px) {
-  .offer-row,
-  .toolbar {
-    grid-template-columns: 1fr;
-  }
-
-  .toolbar,
+  .toolbar__primary-row,
   .toolbar__filters,
   .toolbar__actions {
     align-items: stretch;
     flex-direction: column;
   }
 
+  .toolbar__currency-row {
+    align-items: stretch;
+  }
+
+  .offer-row {
+    grid-template-columns: 1fr;
+  }
+
   .field-shell,
-  .toolbar__select {
+  .toolbar__select,
+  .toolbar__currency-control {
     min-width: 0;
     width: 100%;
   }
 
   .toolbar__sort-direction {
     width: 100%;
+  }
+
+  .toolbar__currency-message {
+    min-height: 0;
   }
 
   .offer-row__summary {
