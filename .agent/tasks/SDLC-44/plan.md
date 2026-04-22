@@ -124,7 +124,7 @@ This implementation should follow those existing patterns:
 | 2.1 | Add presentation-currency state | `src/app/features/offers/pages/offers-home-page.component.ts` | Add signal/computed state for selected currency, rates loading/error state, and selected-rate lookup. |
 | 2.2 | Add conversion helpers | `src/app/features/offers/pages/offers-home-page.component.ts` | Implement helper logic to resolve base premium, convert from PLN using NBP `mid` rate, and return display-ready values. |
 | 2.3 | Update summary tile calculation | `src/app/features/offers/pages/offers-home-page.component.ts` | Replace the current hardcoded `zł` string in `summaryTiles` with currency-aware formatting based on the selected presentation currency. |
-| 2.4 | Add currency selector UI | `src/app/features/offers/pages/offers-home-page.component.html` | Insert a new `p-select` control in the toolbar for EUR/USD selection, following the existing filter control structure. |
+| 2.4 | Add currency selector UI | `src/app/features/offers/pages/offers-home-page.component.html` | Insert a new `p-select` control in the toolbar for EUR/USD selection.<br>Follow the existing filter control structure. |
 | 2.5 | Replace hardcoded PLN rendering | `src/app/features/offers/pages/offers-home-page.component.html` | Update the offer-row premium box and transition dialog premium to use selected-currency display instead of the current `currency: 'PLN'` pipe usage. |
 | 2.6 | Add rate-state messaging | `src/app/features/offers/pages/offers-home-page.component.html` | Show lightweight loading/error helper text near the selector when rates are being fetched or unavailable. |
 | 2.7 | Style new controls | `src/app/features/offers/pages/offers-home-page.component.scss` | Add selector sizing/alignment and helper-text styling so the new control fits the existing toolbar layout and responsive rules. |
@@ -154,3 +154,8 @@ This implementation should follow those existing patterns:
 6. [ ] Selecting USD updates row premiums, summary premium, and dialog premium to USD
 7. [ ] Network inspection confirms the page uses the documented NBP runtime endpoint, not a mock JSON file
 8. [ ] Existing filtering, sorting, navigation, and status transitions on the offers page still work
+
+## Revision History
+- Revision 1
+  - Reviewer: matlipinski
+  - Summary of changes made: split task 2.4 description into a new line in the Phase 2 table.
