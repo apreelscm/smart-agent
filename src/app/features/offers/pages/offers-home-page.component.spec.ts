@@ -27,6 +27,15 @@ describe('OffersHomePageComponent', () => {
     expect(nativeElement.querySelectorAll('.toolbar__currency-row p-select').length).toBe(1);
   });
 
+  it('should expose the clear filters button label as "Wyczyść"', async () => {
+    const { nativeElement } = await setup();
+
+    const clearFiltersButton = nativeElement.querySelector('.clear-filters-button');
+
+    expect(clearFiltersButton).not.toBeNull();
+    expect(clearFiltersButton?.getAttribute('label')).toBe('Wyczyść');
+  });
+
   it('should convert visible premiums and dialog premium for EUR and USD', async () => {
     const baseOffer = buildOffer({
       id: 'offer-1',
