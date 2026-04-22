@@ -719,9 +719,13 @@ export class OfferWizardStateService {
     };
   }
 
-  private recalculateLine<T extends { basePremium?: { amount: number }; premium: { amount: number; currency: 'PLN' }; covers: Array<{ enabled: boolean; selectable?: boolean; premiumDelta?: { amount: number } }> }>(
-    line: T
-  ): T {
+  private recalculateLine<
+    T extends {
+      basePremium?: { amount: number };
+      premium: { amount: number; currency: string };
+      covers: Array<{ enabled: boolean; selectable?: boolean; premiumDelta?: { amount: number } }>;
+    }
+  >(line: T): T {
     const enabledSelectableDelta = line.covers.reduce((sum, cover) => {
       if (!cover.enabled) {
         return sum;
