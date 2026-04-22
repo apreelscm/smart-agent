@@ -65,7 +65,7 @@ jobs:
           path: dist/smart-agent/browser
       - name: Start static server
         run: |
-          npx http-server dist/smart-agent/browser -p 4200 -s &
+          npx http-server dist/smart-agent/browser -p 4200 -s --proxy http://localhost:4200? &
           echo "HTTP_SERVER_PID=$!" >> $GITHUB_ENV
       - name: Wait for server
         run: npx wait-on http://localhost:4200 --timeout 60000
