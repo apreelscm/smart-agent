@@ -68,6 +68,10 @@
   min-width: 14rem;
 }
 
+.toolbar__select--currency {
+  min-width: 8rem;
+}
+
 .toolbar__select--sort {
   min-width: 13rem;
 }
@@ -78,9 +82,37 @@
 
 .results-meta {
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  gap: 1rem;
+  flex-wrap: wrap;
+  gap: 0.75rem 1rem;
   font-size: 0.84rem;
+}
+
+.results-meta__count {
+  white-space: nowrap;
+}
+
+.rate-info {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.45rem 0.7rem;
+  padding: 0.45rem 0.7rem;
+  border: 1px solid rgba(0, 90, 146, 0.14);
+  border-radius: 999px;
+  background: rgba(0, 90, 146, 0.06);
+}
+
+.rate-info__label {
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--app-brand-primary);
+}
+
+.rate-info strong {
+  color: var(--app-brand-heading);
 }
 
 .offer-list {
@@ -322,7 +354,8 @@ a[pButton]:visited {
     width: 100%;
   }
 
-  .toolbar__sort-direction {
+  .toolbar__sort-direction,
+  .rate-info {
     width: 100%;
   }
 

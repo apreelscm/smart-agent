@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { Router, RouterLink } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { ButtonDirective } from 'primeng/button';
@@ -10,10 +10,16 @@ import { InputText } from 'primeng/inputtext';
 import { Select } from 'primeng/select';
 import { SplitButton } from 'primeng/splitbutton';
 import { Tag } from 'primeng/tag';
+import { distinctUntilChanged, of, startWith, switchMap } from 'rxjs';
+import { Offer, OfferStatus, ReferenceData } from '../../../core/models';
+import {
+  CurrencyRateQuote,
+  CurrencyRatesRepository,
+  DisplayCurrency
+} from '../../../core/repositories/currency-rates.repository';
 import { OffersRepository } from '../../../core/repositories/offers.repository';
 import { ReferenceDataRepository } from '../../../core/repositories/reference-data.repository';
 import { SalesFlowRuntimeRepository } from '../../../core/repositories/sales-flow-runtime.repository';
-import { Offer, OfferStatus, ReferenceData } from '../../../core/models';
 import { PageHeaderComponent } from '../../../shared/ui/page-header/page-header.component';
 import { SectionCardComponent } from '../../../shared/ui/section-card/section-card.component';
 import { StatTileComponent } from '../../../shared/ui/stat-tile/stat-tile.component';
@@ -21,6 +27,11 @@ import { StatTileComponent } from '../../../shared/ui/stat-tile/stat-tile.compon
 type FilterOption = {
   code: string;
   label: string;
+};
+
+type CurrencyOption = {
+  code: DisplayCurrency;
+  label: DisplayCurrency;
 };
 
 type SortDirection = 'ASC' | 'DESC';
@@ -77,6 +88,7 @@ export class OffersHomePageComponent {
   private readonly offersRepository = inject(OffersRepository);
   private readonly referenceDataRepository = inject(ReferenceDataRepository);
   private readonly salesFlowRuntimeRepository = inject(SalesFlowRuntimeRepository);
+  private readonly currencyRatesRepository = inject(CurrencyRatesRepository);
   private readonly router = inject(Router);
 
   protected readonly searchTerm = signal('');
@@ -84,6 +96,7 @@ export class OffersHomePageComponent {
   protected readonly selectedProduct = signal<OfferProductFilter>('ALL');
   protected readonly selectedSortField = signal<OfferSortField>('ISSUE_DATE');
   protected readonly selectedSortDirection = signal<SortDirection>('DESC');
+  protected readonly selectedCurrency = signal<DisplayCurrency>('PLN');
   protected readonly statusOverrides = signal<Record<string, OfferStatus>>({});
   protected readonly pendingTransition = signal<PendingTransition | null>(null);
   protected readonly transitionDialogVisible = signal(false);
@@ -99,17 +112,32 @@ export class OffersHomePageComponent {
     } as ReferenceData
   });
 
+  private readonly activeQuoteObservable = toObservable(this.selectedCurrency).pipe(
+    distinctUntilChanged(),
+    switchMap((currency) =>
+      currency === 'PLN' ? of(null) : this.currencyRatesRepository.getQuote(currency).pipe(startWith(null))
+    )
+  );
+  protected readonly activeQuote = toSignal(this.activeQuoteObservable, {
+    initialValue: null as CurrencyRateQuote | null
+  });
+
   protected readonly statusOptions = computed<FilterOption[]>(() => [
     { code: 'ALL', label: 'Wszystkie statusy' },
     ...this.referenceData().offerStatuses
   ]);
+  protected readonly currencyOptions: CurrencyOption[] = [
+    { code: 'PLN', label: 'PLN' },
+    { code: 'EUR', label: 'EUR' },
+    { code: 'USD', label: 'USD' }
+  ];
   protected readonly allOffers = computed<Offer[]>(() => {
     const byId = new Map<string, Offer>();
 
     [...this.offers(), ...this.salesFlowRuntimeRepository.runtimeOffers()].forEach((offer) => byId.set(offer.id, offer));
     return Array.from(byId.values());
   });
-  protected readonly offersWithRuntimeStatus = computed(() => {
+  protected readonly offersWithRuntimeStatus = computed<Offer[]>(() => {
     const overrides = this.statusOverrides();
 
     return this.allOffers().map((offer) => ({
@@ -127,6 +155,15 @@ export class OffersHomePageComponent {
     { code: 'MOTOR', label: 'Komunikacyjne' },
     { code: 'CROP', label: 'Uprawy' }
   ];
+  protected readonly displayCurrencyCode = computed<DisplayCurrency>(() => {
+    if (this.selectedCurrency() === 'PLN') {
+      return 'PLN';
+    }
+
+    return this.activeQuote()?.currency ?? 'PLN';
+  });
+  protected readonly premiumDigitsInfo = computed(() => (this.displayCurrencyCode() === 'PLN' ? '1.0-0' : '1.2-2'));
+  protected readonly showRateInfo = computed(() => this.selectedCurrency() !== 'PLN' && this.activeQuote() !== null);
 
   protected readonly filteredOffers = computed(() => {
     const normalizedSearch = this.searchTerm().trim().toLowerCase();
@@ -186,25 +223,22 @@ export class OffersHomePageComponent {
     const offers = this.filteredOffers();
     const issued = offers.filter((offer) => offer.status === 'ISSUED').length;
     const inProgress = offers.filter((offer) => ['DRAFT', 'CALCULATION'].includes(offer.status)).length;
-    const averageMonthlyPremium =
-      offers.length > 0
-        ? Math.round(
-            offers.reduce((sum, offer) => sum + (offer.selectedPaymentPlan?.totalPremium.amount ?? offer.variants[0]?.totalPremium.amount ?? 0), 0) /
-              offers.length /
-              12
-          )
-        : 0;
+    const averageMonthlyPremiumPln =
+      offers.length > 0 ? offers.reduce((sum, offer) => sum + this.getPrimaryPremium(offer), 0) / offers.length / 12 : 0;
 
     return [
       { label: 'Oferta wystawiona', value: `${issued}`, note: 'gotowe do decyzji klienta' },
       { label: 'Draft / Kalkulacja', value: `${inProgress}`, note: 'oferty w przygotowaniu' },
-      { label: 'Średnia składka', value: `${averageMonthlyPremium.toLocaleString('pl-PL')} zł`, note: 'w ujęciu miesięcznym' }
+      {
+        label: 'Średnia składka',
+        value: this.formatDisplayMoney(this.convertAmountFromPln(averageMonthlyPremiumPln)),
+        note: 'w ujęciu miesięcznym'
+      }
     ];
   });
 
   protected readonly totalVisibleOffers = computed(() => this.filteredOffers().length);
 
-  // New computed signal to detect if any filter or sorting differs from default values
   protected readonly filtersChanged = computed(() => {
     return (
       this.searchTerm() !== '' ||
@@ -245,6 +279,10 @@ export class OffersHomePageComponent {
 
   protected getPrimaryPremium(offer: Offer): number {
     return offer.selectedPaymentPlan?.totalPremium.amount ?? offer.variants[0]?.totalPremium.amount ?? 0;
+  }
+
+  protected getDisplayPremium(offer: Offer): number {
+    return this.convertAmountFromPln(this.getPrimaryPremium(offer));
   }
 
   protected getSelectedVariantName(offer: Offer): string {
@@ -326,7 +364,6 @@ export class OffersHomePageComponent {
     this.closeTransitionDialog();
   }
 
-  // New method to clear all filters and sorting to default values
   protected clearAllFilters(): void {
     this.searchTerm.set('');
     this.selectedStatus.set('ALL');
@@ -390,6 +427,35 @@ export class OffersHomePageComponent {
 
   protected offerProductLabel(offer: Offer): string {
     return this.isCropOffer(offer) ? 'Oferta upraw' : 'Oferta komunikacyjna';
+  }
+
+  protected formatRateValue(rate: number): string {
+    return new Intl.NumberFormat('pl-PL', {
+      minimumFractionDigits: 1,
+      maximumFractionDigits: 4
+    }).format(rate);
+  }
+
+  private convertAmountFromPln(amount: number): number {
+    const quote = this.activeQuote();
+
+    if (this.selectedCurrency() === 'PLN' || !quote) {
+      return amount;
+    }
+
+    return amount / quote.rate;
+  }
+
+  private formatDisplayMoney(amount: number): string {
+    const currency = this.displayCurrencyCode();
+    const fractionDigits = currency === 'PLN' ? 0 : 2;
+
+    return new Intl.NumberFormat('pl-PL', {
+      style: 'currency',
+      currency,
+      minimumFractionDigits: fractionDigits,
+      maximumFractionDigits: fractionDigits
+    }).format(amount);
   }
 
   private copyOffer(offerId: string): void {
@@ -468,7 +534,6 @@ export class OffersHomePageComponent {
   }
 
   private printPlaceholder(offer: Offer): void {
-    // Placeholder action for future document generation integration.
     console.log('[Offers] Print placeholder action triggered for offer', offer.id);
   }
 
