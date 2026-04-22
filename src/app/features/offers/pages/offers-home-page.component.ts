@@ -280,7 +280,7 @@ export class OffersHomePageComponent {
       { label: 'Draft / Kalkulacja', value: `${inProgress}`, note: 'oferty w przygotowaniu' },
       {
         label: 'Średnia składka',
-        value: this.formatPremiumAmount(averageMonthlyPremiumInPln),
+        value: this.formatAveragePremiumAmount(averageMonthlyPremiumInPln),
         note: 'w ujęciu miesięcznym'
       }
     ];
@@ -339,6 +339,18 @@ export class OffersHomePageComponent {
       currency,
       minimumFractionDigits: currency === 'PLN' ? 0 : 2,
       maximumFractionDigits: currency === 'PLN' ? 0 : 2
+    }).format(presentationAmount);
+  }
+
+  protected formatAveragePremiumAmount(amountInPln: number): string {
+    const currency = this.activePresentationCurrency();
+    const presentationAmount = this.convertPresentationAmount(amountInPln);
+
+    return new Intl.NumberFormat('pl-PL', {
+      style: 'currency',
+      currency,
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
     }).format(presentationAmount);
   }
 

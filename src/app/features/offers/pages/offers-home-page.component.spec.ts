@@ -93,6 +93,49 @@ describe('OffersHomePageComponent', () => {
     expect(normalizeText(dialogPremiumInUsd)).toBe('480,00 USD');
   });
 
+  it('should keep fractional average precision visible in PLN and after conversion', async () => {
+    const firstOffer = buildOffer({
+      id: 'offer-fractional-1',
+      offerNumber: 'OFR/FRACTIONAL/001',
+      createdAt: '2026-04-10T10:00:00.000Z',
+      updatedAt: '2026-04-10T10:00:00.000Z',
+      selectedPaymentPlan: {
+        totalPremium: {
+          amount: 6000,
+          currency: 'PLN'
+        }
+      } as never
+    });
+    const secondOffer = buildOffer({
+      id: 'offer-fractional-2',
+      offerNumber: 'OFR/FRACTIONAL/002',
+      createdAt: '2026-04-11T10:00:00.000Z',
+      updatedAt: '2026-04-11T10:00:00.000Z',
+      selectedPaymentPlan: {
+        totalPremium: {
+          amount: 6342,
+          currency: 'PLN'
+        }
+      } as never
+    });
+
+    const { component, fixture } = await setup({
+      offers: [firstOffer, secondOffer]
+    });
+
+    expect(component['summaryTiles']()[2].value).toBe('514,25 zł');
+
+    component['selectedPresentationCurrency'].set('EUR');
+    fixture.detectChanges();
+
+    expect(component['summaryTiles']()[2].value).toBe('128,56 €');
+
+    component['selectedPresentationCurrency'].set('USD');
+    fixture.detectChanges();
+
+    expect(component['summaryTiles']()[2].value).toBe('102,85 USD');
+  });
+
   it('should fall back to the first variant premium when selected payment plan is missing', async () => {
     const variantFallbackOffer = buildOffer({
       id: 'offer-variant-fallback',
