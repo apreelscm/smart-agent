@@ -10,10 +10,16 @@ import { InputText } from 'primeng/inputtext';
 import { Select } from 'primeng/select';
 import { SplitButton } from 'primeng/splitbutton';
 import { Tag } from 'primeng/tag';
+import { catchError, map, of } from 'rxjs';
+import { Offer, OfferStatus, ReferenceData } from '../../../core/models';
+import {
+  CurrencyRatesRepository,
+  SUPPORTED_PRESENTATION_CURRENCIES,
+  SupportedPresentationCurrency
+} from '../../../core/repositories/currency-rates.repository';
 import { OffersRepository } from '../../../core/repositories/offers.repository';
 import { ReferenceDataRepository } from '../../../core/repositories/reference-data.repository';
 import { SalesFlowRuntimeRepository } from '../../../core/repositories/sales-flow-runtime.repository';
-import { Offer, OfferStatus, ReferenceData } from '../../../core/models';
 import { PageHeaderComponent } from '../../../shared/ui/page-header/page-header.component';
 import { SectionCardComponent } from '../../../shared/ui/section-card/section-card.component';
 import { StatTileComponent } from '../../../shared/ui/stat-tile/stat-tile.component';
@@ -54,6 +60,15 @@ type CropOfferPayload = {
   };
 };
 
+type CurrencyRatesState = {
+  loading: boolean;
+  error: boolean;
+  rates: Partial<Record<SupportedPresentationCurrency, number>>;
+  effectiveDate: string | null;
+};
+
+type PresentationCurrency = 'PLN' | SupportedPresentationCurrency;
+
 @Component({
   selector: 'app-offers-home-page',
   imports: [
@@ -77,6 +92,7 @@ export class OffersHomePageComponent {
   private readonly offersRepository = inject(OffersRepository);
   private readonly referenceDataRepository = inject(ReferenceDataRepository);
   private readonly salesFlowRuntimeRepository = inject(SalesFlowRuntimeRepository);
+  private readonly currencyRatesRepository = inject(CurrencyRatesRepository);
   private readonly router = inject(Router);
 
   protected readonly searchTerm = signal('');
@@ -84,6 +100,7 @@ export class OffersHomePageComponent {
   protected readonly selectedProduct = signal<OfferProductFilter>('ALL');
   protected readonly selectedSortField = signal<OfferSortField>('ISSUE_DATE');
   protected readonly selectedSortDirection = signal<SortDirection>('DESC');
+  protected readonly selectedPresentationCurrency = signal<SupportedPresentationCurrency | null>(null);
   protected readonly statusOverrides = signal<Record<string, OfferStatus>>({});
   protected readonly pendingTransition = signal<PendingTransition | null>(null);
   protected readonly transitionDialogVisible = signal(false);
@@ -98,11 +115,43 @@ export class OffersHomePageComponent {
       vehicleFinancing: []
     } as ReferenceData
   });
+  protected readonly currencyRatesState = toSignal(
+    this.currencyRatesRepository.getRates().pipe(
+      map(
+        (response): CurrencyRatesState => ({
+          loading: false,
+          error: false,
+          rates: response.rates,
+          effectiveDate: response.publicationDate
+        })
+      ),
+      catchError(() =>
+        of<CurrencyRatesState>({
+          loading: false,
+          error: true,
+          rates: {},
+          effectiveDate: null
+        })
+      )
+    ),
+    {
+      initialValue: {
+        loading: true,
+        error: false,
+        rates: {},
+        effectiveDate: null
+      } as CurrencyRatesState
+    }
+  );
 
   protected readonly statusOptions = computed<FilterOption[]>(() => [
     { code: 'ALL', label: 'Wszystkie statusy' },
     ...this.referenceData().offerStatuses
   ]);
+  protected readonly presentationCurrencyOptions: FilterOption[] = SUPPORTED_PRESENTATION_CURRENCIES.map((currencyCode) => ({
+    code: currencyCode,
+    label: currencyCode
+  }));
   protected readonly allOffers = computed<Offer[]>(() => {
     const byId = new Map<string, Offer>();
 
@@ -116,6 +165,43 @@ export class OffersHomePageComponent {
       ...offer,
       status: overrides[offer.id] ?? offer.status
     }));
+  });
+  protected readonly selectedPresentationRate = computed<number | null>(() => {
+    const selectedCurrency = this.selectedPresentationCurrency();
+
+    if (!selectedCurrency) {
+      return null;
+    }
+
+    return this.currencyRatesState().rates[selectedCurrency] ?? null;
+  });
+  protected readonly activePresentationCurrency = computed<PresentationCurrency>(() => {
+    const selectedCurrency = this.selectedPresentationCurrency();
+
+    if (selectedCurrency && this.selectedPresentationRate() !== null) {
+      return selectedCurrency;
+    }
+
+    return 'PLN';
+  });
+  protected readonly currencyErrorMessage = computed(() => {
+    const state = this.currencyRatesState();
+
+    if (state.loading) {
+      return null;
+    }
+
+    if (state.error) {
+      return 'Kursy walut są obecnie niedostępne. Wyświetlamy składki w PLN.';
+    }
+
+    const selectedCurrency = this.selectedPresentationCurrency();
+
+    if (selectedCurrency && this.selectedPresentationRate() === null) {
+      return `Kurs ${selectedCurrency} jest obecnie niedostępny. Wyświetlamy składki w PLN.`;
+    }
+
+    return null;
   });
 
   protected readonly sortFieldOptions: FilterOption[] = [
@@ -186,25 +272,22 @@ export class OffersHomePageComponent {
     const offers = this.filteredOffers();
     const issued = offers.filter((offer) => offer.status === 'ISSUED').length;
     const inProgress = offers.filter((offer) => ['DRAFT', 'CALCULATION'].includes(offer.status)).length;
-    const averageMonthlyPremium =
-      offers.length > 0
-        ? Math.round(
-            offers.reduce((sum, offer) => sum + (offer.selectedPaymentPlan?.totalPremium.amount ?? offer.variants[0]?.totalPremium.amount ?? 0), 0) /
-              offers.length /
-              12
-          )
-        : 0;
+    const averageMonthlyPremiumInPln =
+      offers.length > 0 ? offers.reduce((sum, offer) => sum + this.getPrimaryPremium(offer), 0) / offers.length / 12 : 0;
 
     return [
       { label: 'Oferta wystawiona', value: `${issued}`, note: 'gotowe do decyzji klienta' },
       { label: 'Draft / Kalkulacja', value: `${inProgress}`, note: 'oferty w przygotowaniu' },
-      { label: 'Średnia składka', value: `${averageMonthlyPremium.toLocaleString('pl-PL')} zł`, note: 'w ujęciu miesięcznym' }
+      {
+        label: 'Średnia składka',
+        value: this.formatAveragePremiumAmount(averageMonthlyPremiumInPln),
+        note: 'w ujęciu miesięcznym'
+      }
     ];
   });
 
   protected readonly totalVisibleOffers = computed(() => this.filteredOffers().length);
 
-  // New computed signal to detect if any filter or sorting differs from default values
   protected readonly filtersChanged = computed(() => {
     return (
       this.searchTerm() !== '' ||
@@ -245,6 +328,30 @@ export class OffersHomePageComponent {
 
   protected getPrimaryPremium(offer: Offer): number {
     return offer.selectedPaymentPlan?.totalPremium.amount ?? offer.variants[0]?.totalPremium.amount ?? 0;
+  }
+
+  protected formatPremiumAmount(amountInPln: number): string {
+    const currency = this.activePresentationCurrency();
+    const presentationAmount = this.convertPresentationAmount(amountInPln);
+
+    return new Intl.NumberFormat('pl-PL', {
+      style: 'currency',
+      currency,
+      minimumFractionDigits: currency === 'PLN' ? 0 : 2,
+      maximumFractionDigits: currency === 'PLN' ? 0 : 2
+    }).format(presentationAmount);
+  }
+
+  protected formatAveragePremiumAmount(amountInPln: number): string {
+    const currency = this.activePresentationCurrency();
+    const presentationAmount = this.convertPresentationAmount(amountInPln);
+
+    return new Intl.NumberFormat('pl-PL', {
+      style: 'currency',
+      currency,
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    }).format(presentationAmount);
   }
 
   protected getSelectedVariantName(offer: Offer): string {
@@ -326,7 +433,6 @@ export class OffersHomePageComponent {
     this.closeTransitionDialog();
   }
 
-  // New method to clear all filters and sorting to default values
   protected clearAllFilters(): void {
     this.searchTerm.set('');
     this.selectedStatus.set('ALL');
@@ -390,6 +496,16 @@ export class OffersHomePageComponent {
 
   protected offerProductLabel(offer: Offer): string {
     return this.isCropOffer(offer) ? 'Oferta upraw' : 'Oferta komunikacyjna';
+  }
+
+  private convertPresentationAmount(amountInPln: number): number {
+    const selectedRate = this.selectedPresentationRate();
+
+    if (selectedRate === null) {
+      return amountInPln;
+    }
+
+    return amountInPln / selectedRate;
   }
 
   private copyOffer(offerId: string): void {
