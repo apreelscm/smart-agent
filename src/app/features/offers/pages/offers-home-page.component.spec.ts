@@ -36,6 +36,15 @@ describe('OffersHomePageComponent', () => {
     expect(clearFiltersButton?.getAttribute('label')).toBe('Wyczyść');
   });
 
+  it('should keep the clear filters button disabled on initial render', async () => {
+    const { nativeElement } = await setup();
+
+    const clearFiltersButton = nativeElement.querySelector('.clear-filters-button') as HTMLButtonElement | null;
+
+    expect(clearFiltersButton).not.toBeNull();
+    expect(clearFiltersButton?.disabled).toBeTrue();
+  });
+
   it('should convert visible premiums and dialog premium for EUR and USD', async () => {
     const baseOffer = buildOffer({
       id: 'offer-1',

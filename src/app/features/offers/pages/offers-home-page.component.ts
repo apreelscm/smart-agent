@@ -289,9 +289,11 @@ export class OffersHomePageComponent {
   protected readonly totalVisibleOffers = computed(() => this.filteredOffers().length);
 
   protected readonly filtersChanged = computed(() => {
+    const statusChanged = this.selectedStatus() !== null && this.selectedStatus() !== 'ALL';
+
     return (
       this.searchTerm() !== '' ||
-      this.selectedStatus() !== 'ALL' ||
+      statusChanged ||
       this.selectedProduct() !== 'ALL' ||
       this.selectedSortField() !== 'ISSUE_DATE' ||
       this.selectedSortDirection() !== 'DESC'
