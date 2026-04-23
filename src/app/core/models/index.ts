@@ -1,4 +1,5 @@
 export * from './common/address.model';
+export * from './common/exchange-rate.model';
 export * from './common/money.model';
 export * from './common/person-name.model';
 export * from './cover/cover-term.model';

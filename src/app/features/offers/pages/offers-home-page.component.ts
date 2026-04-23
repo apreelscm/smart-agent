@@ -1,8 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, DestroyRef, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { Router, RouterLink } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { MenuItem } from 'primeng/api';
 import { ButtonDirective } from 'primeng/button';
 import { Dialog } from 'primeng/dialog';
@@ -10,10 +11,11 @@ import { InputText } from 'primeng/inputtext';
 import { Select } from 'primeng/select';
 import { SplitButton } from 'primeng/splitbutton';
 import { Tag } from 'primeng/tag';
+import { CurrencyRatesRepository } from '../../../core/repositories/currency-rates.repository';
 import { OffersRepository } from '../../../core/repositories/offers.repository';
 import { ReferenceDataRepository } from '../../../core/repositories/reference-data.repository';
 import { SalesFlowRuntimeRepository } from '../../../core/repositories/sales-flow-runtime.repository';
-import { Offer, OfferStatus, ReferenceData } from '../../../core/models';
+import { AppliedExchangeRate, ExchangeRateCurrencyCode, Offer, OfferStatus, ReferenceData } from '../../../core/models';
 import { PageHeaderComponent } from '../../../shared/ui/page-header/page-header.component';
 import { SectionCardComponent } from '../../../shared/ui/section-card/section-card.component';
 import { StatTileComponent } from '../../../shared/ui/stat-tile/stat-tile.component';
@@ -54,6 +56,16 @@ type CropOfferPayload = {
   };
 };
 
+type PresentationCurrencyOption = {
+  code: ExchangeRateCurrencyCode;
+  label: string;
+};
+
+type DisplayedPremium = {
+  amount: number;
+  currencyCode: 'PLN' | ExchangeRateCurrencyCode;
+};
+
 @Component({
   selector: 'app-offers-home-page',
   imports: [
@@ -74,10 +86,15 @@ type CropOfferPayload = {
   styleUrl: './offers-home-page.component.scss'
 })
 export class OffersHomePageComponent {
+  private readonly currencyRatesRepository = inject(CurrencyRatesRepository);
   private readonly offersRepository = inject(OffersRepository);
   private readonly referenceDataRepository = inject(ReferenceDataRepository);
   private readonly salesFlowRuntimeRepository = inject(SalesFlowRuntimeRepository);
   private readonly router = inject(Router);
+  private readonly destroyRef = inject(DestroyRef);
+
+  private currentExchangeRateRequestId = 0;
+  private exchangeRateRequestSubscription: Subscription | null = null;
 
   protected readonly searchTerm = signal('');
   protected readonly selectedStatus = signal<string | null>(null);
@@ -87,6 +104,10 @@ export class OffersHomePageComponent {
   protected readonly statusOverrides = signal<Record<string, OfferStatus>>({});
   protected readonly pendingTransition = signal<PendingTransition | null>(null);
   protected readonly transitionDialogVisible = signal(false);
+  protected readonly selectedPresentationCurrency = signal<ExchangeRateCurrencyCode | null>(null);
+  protected readonly isPresentationCurrencyLoading = signal(false);
+  protected readonly appliedExchangeRate = signal<AppliedExchangeRate | null>(null);
+  protected readonly presentationCurrencyError = signal<string | null>(null);
 
   protected readonly offers = toSignal(this.offersRepository.getOffers(), { initialValue: [] as Offer[] });
   protected readonly referenceData = toSignal(this.referenceDataRepository.getReferenceData(), {
@@ -126,6 +147,10 @@ export class OffersHomePageComponent {
     { code: 'ALL', label: 'Wszystkie produkty' },
     { code: 'MOTOR', label: 'Komunikacyjne' },
     { code: 'CROP', label: 'Uprawy' }
+  ];
+  protected readonly presentationCurrencyOptions: PresentationCurrencyOption[] = [
+    { code: 'EUR', label: 'EUR' },
+    { code: 'USD', label: 'USD' }
   ];
 
   protected readonly filteredOffers = computed(() => {
@@ -204,7 +229,6 @@ export class OffersHomePageComponent {
 
   protected readonly totalVisibleOffers = computed(() => this.filteredOffers().length);
 
-  // New computed signal to detect if any filter or sorting differs from default values
   protected readonly filtersChanged = computed(() => {
     return (
       this.searchTerm() !== '' ||
@@ -214,6 +238,10 @@ export class OffersHomePageComponent {
       this.selectedSortDirection() !== 'DESC'
     );
   });
+
+  constructor() {
+    this.destroyRef.onDestroy(() => this.exchangeRateRequestSubscription?.unsubscribe());
+  }
 
   protected getCustomerDisplayName(offer: Offer): string {
     const identity = offer.customer.identity;
@@ -245,6 +273,74 @@ export class OffersHomePageComponent {
 
   protected getPrimaryPremium(offer: Offer): number {
     return offer.selectedPaymentPlan?.totalPremium.amount ?? offer.variants[0]?.totalPremium.amount ?? 0;
+  }
+
+  protected onPresentationCurrencyChange(currencyCode: ExchangeRateCurrencyCode | null): void {
+    this.selectedPresentationCurrency.set(currencyCode);
+    this.presentationCurrencyError.set(null);
+    this.appliedExchangeRate.set(null);
+    this.currentExchangeRateRequestId += 1;
+    this.exchangeRateRequestSubscription?.unsubscribe();
+
+    if (!currencyCode) {
+      this.isPresentationCurrencyLoading.set(false);
+      return;
+    }
+
+    const requestId = this.currentExchangeRateRequestId;
+    this.isPresentationCurrencyLoading.set(true);
+
+    this.exchangeRateRequestSubscription = this.currencyRatesRepository.getCurrentRate(currencyCode).subscribe({
+      next: (rate) => {
+        if (requestId !== this.currentExchangeRateRequestId || this.selectedPresentationCurrency() !== currencyCode) {
+          return;
+        }
+
+        this.appliedExchangeRate.set(rate);
+        this.presentationCurrencyError.set(null);
+        this.isPresentationCurrencyLoading.set(false);
+      },
+      error: () => {
+        if (requestId !== this.currentExchangeRateRequestId || this.selectedPresentationCurrency() !== currencyCode) {
+          return;
+        }
+
+        this.appliedExchangeRate.set(null);
+        this.presentationCurrencyError.set(`Nie udało się pobrać kursu ${currencyCode}. Wyświetlamy składki w PLN.`);
+        this.isPresentationCurrencyLoading.set(false);
+      }
+    });
+  }
+
+  protected isConvertedView(): boolean {
+    return this.selectedPresentationCurrency() !== null && this.appliedExchangeRate() !== null;
+  }
+
+  protected getDisplayedPremium(offer: Offer): DisplayedPremium {
+    const baseAmount = this.getPrimaryPremium(offer);
+    const exchangeRate = this.appliedExchangeRate();
+
+    if (!exchangeRate || this.selectedPresentationCurrency() !== exchangeRate.code) {
+      return {
+        amount: baseAmount,
+        currencyCode: 'PLN'
+      };
+    }
+
+    return {
+      amount: Math.round(baseAmount / exchangeRate.midRate),
+      currencyCode: exchangeRate.code
+    };
+  }
+
+  protected ratePresentation(): AppliedExchangeRate | null {
+    const exchangeRate = this.appliedExchangeRate();
+
+    if (!exchangeRate || this.selectedPresentationCurrency() !== exchangeRate.code) {
+      return null;
+    }
+
+    return exchangeRate;
   }
 
   protected getSelectedVariantName(offer: Offer): string {
@@ -326,7 +422,6 @@ export class OffersHomePageComponent {
     this.closeTransitionDialog();
   }
 
-  // New method to clear all filters and sorting to default values
   protected clearAllFilters(): void {
     this.searchTerm.set('');
     this.selectedStatus.set('ALL');
@@ -468,7 +563,6 @@ export class OffersHomePageComponent {
   }
 
   private printPlaceholder(offer: Offer): void {
-    // Placeholder action for future document generation integration.
     console.log('[Offers] Print placeholder action triggered for offer', offer.id);
   }
 

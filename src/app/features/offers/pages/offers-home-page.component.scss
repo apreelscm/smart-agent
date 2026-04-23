@@ -14,11 +14,16 @@
 }
 
 .toolbar {
+  display: grid;
+  gap: 0.9rem;
+  padding-bottom: 0.25rem;
+}
+
+.toolbar__primary-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  padding-bottom: 0.25rem;
 }
 
 .toolbar__filters,
@@ -26,6 +31,33 @@
   display: flex;
   align-items: center;
   gap: 0.75rem;
+}
+
+.toolbar__currency-row {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-top: 0.15rem;
+}
+
+.toolbar__currency-control {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.toolbar__currency-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--app-text-subtle);
+}
+
+.toolbar__currency-hint,
+.toolbar__currency-status {
+  font-size: 0.84rem;
+  color: var(--app-text-muted);
 }
 
 .field-shell {
@@ -72,8 +104,27 @@
   min-width: 13rem;
 }
 
+.toolbar__select--currency {
+  min-width: 12rem;
+}
+
 .toolbar__sort-direction {
   white-space: nowrap;
+}
+
+.currency-error-banner {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.8rem 0.9rem;
+  border: 1px solid rgba(189, 70, 61, 0.2);
+  border-radius: 0.55rem;
+  background: rgba(255, 242, 240, 0.92);
+  color: #a61b1b;
+}
+
+.currency-error-banner i {
+  font-size: 1rem;
 }
 
 .results-meta {
@@ -81,6 +132,11 @@
   justify-content: space-between;
   gap: 1rem;
   font-size: 0.84rem;
+}
+
+.results-meta__rate {
+  font-weight: 600;
+  color: var(--app-brand-primary);
 }
 
 .offer-list {
@@ -304,12 +360,12 @@ a[pButton]:visited {
 }
 
 @media (width <= 1180px) {
-  .offer-row,
-  .toolbar {
+  .offer-row {
     grid-template-columns: 1fr;
   }
 
-  .toolbar,
+  .toolbar__primary-row,
+  .toolbar__currency-row,
   .toolbar__filters,
   .toolbar__actions {
     align-items: stretch;
@@ -333,15 +389,17 @@ a[pButton]:visited {
 
 @media (width <= 980px) {
   .offers-home-page__stats,
-  .offer-row__meta-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .offer-row__headline {
-    grid-template-columns: 1fr;
-  }
-
+  .offer-row__meta-grid,
   .transition-dialog__summary {
     grid-template-columns: 1fr;
+  }
+
+  .offer-row__headline,
+  .results-meta {
+    grid-template-columns: 1fr;
+  }
+
+  .results-meta {
+    display: grid;
   }
 }
