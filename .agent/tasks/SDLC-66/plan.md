@@ -16,7 +16,7 @@ Dodanie na ekranie listy ofert (`Przygotowane oferty`) kontrolki wyboru waluty p
   - Given the exchange-rate API is unavailable or returns invalid data / When I select EUR or USD / Then no conversion is applied and an error message is shown.
 
 ### Functional Requirements
-- FR-001: Add a presentation-currency control to `src/app/features/offers/pages/offers-home-page.component.html` with selectable options `EUR` and `USD`.
+- FR-001: Add a presentation-currency control to `src/app/features/offers/pages/offers-home-page.component.html` with selectable options `EUR` and `USD`, placed in a separate row below the filters.
 - FR-002: Keep the initial list presentation in PLN, matching current behavior in `OffersHomePageComponent`; selecting EUR/USD changes only rendered values.
 - FR-003: Fetch the runtime exchange rate from the documented Confluence integration pages:
   - https://apreel.atlassian.net/wiki/spaces/Services/pages/157777921/Kursy+walut
@@ -47,7 +47,7 @@ Dodanie na ekranie listy ofert (`Przygotowane oferty`) kontrolki wyboru waluty p
 - EC-007: Existing persisted runtime offers in `SalesFlowRuntimeRepository` must remain unchanged in storage.
 
 ### Success Criteria
-- [ ] The offers page shows a currency control with EUR and USD options.
+- [ ] The offers page shows a currency control with EUR and USD options in a row below the filters.
 - [ ] Initial page load still shows premiums in PLN.
 - [ ] Selecting EUR converts all visible premiums from PLN using one fetched rate and rounds to whole amounts.
 - [ ] Selecting USD converts all visible premiums from PLN using one fetched rate and rounds to whole amounts.
@@ -80,6 +80,7 @@ Implementation decisions aligned to current codebase:
 - Add a new repository under `src/app/core/repositories/`, matching existing patterns such as `offers.repository.ts` and `reference-data.repository.ts`.
 - Keep conversion state local to `OffersHomePageComponent` using signals, similar to existing `searchTerm`, `selectedStatus`, `pendingTransition`, and computed row helpers.
 - Render converted values via helper/computed methods instead of rewriting `filteredOffers()`.
+- Place the currency selector in a dedicated row below the existing filters, while keeping the current filter row layout unchanged.
 - Use the documented NBP runtime endpoint directly:
   - `GET https://api.nbp.pl/api/exchangerates/rates/a/EUR/?format=json`
   - `GET https://api.nbp.pl/api/exchangerates/rates/a/USD/?format=json`
@@ -110,11 +111,11 @@ Implementation decisions aligned to current codebase:
 #### Phase 3: Update the offers page UI
 | # | Task | Files | Description |
 |---|------|-------|-------------|
-| 3.1 | Add currency selector to toolbar | `src/app/features/offers/pages/offers-home-page.component.html` | Add a new `p-select` (or equivalent PrimeNG control already used on the page) in the toolbar with EUR/USD options and clear-to-PLN behavior. |
+| 3.1 | Add currency selector below filters | `src/app/features/offers/pages/offers-home-page.component.html` | Add a new `p-select` (or equivalent PrimeNG control already used on the page) in a dedicated row below the existing filters, with EUR/USD options and clear-to-PLN behavior. |
 | 3.2 | Show rate metadata | `src/app/features/offers/pages/offers-home-page.component.html` | Add a small info line near `.results-meta` describing the applied rate and effective date when conversion is active. |
 | 3.3 | Show error state | `src/app/features/offers/pages/offers-home-page.component.html` | Add an inline error banner/message when the rate request fails and no conversion is applied. |
 | 3.4 | Render converted premiums | `src/app/features/offers/pages/offers-home-page.component.html` | Replace direct `currency:'PLN'` rendering in the premium box and transition dialog only where required by the task, using the display helper result. |
-| 3.5 | Add styles for new UI elements | `src/app/features/offers/pages/offers-home-page.component.scss` | Extend the existing toolbar/meta styles with classes for the currency control, rate badge/info block, and error banner without disturbing the current responsive layout. |
+| 3.5 | Add styles for new UI elements | `src/app/features/offers/pages/offers-home-page.component.scss` | Extend the existing filter/layout styles with classes for the new row containing the currency control, rate badge/info block, and error banner without disturbing the current responsive layout. |
 
 #### Phase 4: Add component-level tests
 | # | Task | Files | Description |
@@ -143,8 +144,14 @@ Implementation decisions aligned to current codebase:
 3. [ ] New tests cover requirements
 4. [ ] Launch the app and open `/offers`
 5. [ ] Confirm initial premium rendering remains PLN
-6. [ ] Select EUR and verify all visible offers show whole-number EUR values plus the applied rate/effective date
-7. [ ] Select USD and verify all visible offers show whole-number USD values plus the applied rate/effective date
-8. [ ] Force the NBP request to fail in tests and verify the UI shows an error while keeping PLN values
-9. [ ] Verify filtering/sorting after conversion still updates visible rows using the active rate
-10. [ ] Verify offer transition dialogs/navigation still function after the change
+6. [ ] Confirm the currency selector is rendered in a row below the filters
+7. [ ] Select EUR and verify all visible offers show whole-number EUR values plus the applied rate/effective date
+8. [ ] Select USD and verify all visible offers show whole-number USD values plus the applied rate/effective date
+9. [ ] Force the NBP request to fail in tests and verify the UI shows an error while keeping PLN values
+10. [ ] Verify filtering/sorting after conversion still updates visible rows using the active rate
+11. [ ] Verify offer transition dialogs/navigation still function after the change
+
+## Revision History
+- Revision 1
+  - Reviewer: matlipinski
+  - Summary of changes made: Updated the plan to place the currency selector in a dedicated row below the existing filters, including requirements, implementation tasks, styling notes, and verification steps.
