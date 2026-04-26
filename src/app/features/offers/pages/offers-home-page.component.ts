@@ -107,6 +107,7 @@ export class OffersHomePageComponent {
   protected readonly activeExchangeRate = signal<ExchangeRateQuote | null>(null);
   protected readonly presentationCurrencyLoading = signal(false);
   protected readonly presentationCurrencyError = signal<string | null>(null);
+  protected readonly presentationCurrencyMenuOpen = signal(false);
 
   protected readonly offers = toSignal(this.offersRepository.getOffers(), { initialValue: [] as Offer[] });
   protected readonly referenceData = toSignal(this.referenceDataRepository.getReferenceData(), {
@@ -245,6 +246,19 @@ export class OffersHomePageComponent {
       this.selectedSortDirection() !== 'DESC'
     );
   });
+
+  protected togglePresentationCurrencyMenu(): void {
+    if (this.presentationCurrencyLoading()) {
+      return;
+    }
+
+    this.presentationCurrencyMenuOpen.update((open) => !open);
+  }
+
+  protected selectPresentationCurrency(currency: PresentationCurrency): void {
+    this.presentationCurrencyMenuOpen.set(false);
+    this.onPresentationCurrencyChange(currency);
+  }
 
   protected onPresentationCurrencyChange(currency: PresentationCurrency | null): void {
     if (!currency || this.presentationCurrencyLoading()) {

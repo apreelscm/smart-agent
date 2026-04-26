@@ -42,18 +42,41 @@
           class="toolbar__select"
         />
 
-        <p-select
-          [ngModel]="selectedPresentationCurrency()"
-          (ngModelChange)="onPresentationCurrencyChange($event)"
-          [options]="presentationCurrencyOptions"
-          optionLabel="label"
-          optionValue="code"
-          placeholder="Waluta"
-          appendTo="body"
-          class="toolbar__select toolbar__select--currency"
-          [disabled]="presentationCurrencyLoading()"
-          [loading]="presentationCurrencyLoading()"
-        />
+        <div class="toolbar__currency-switcher">
+          <button
+            type="button"
+            class="toolbar__select toolbar__select--currency toolbar__currency-trigger"
+            [disabled]="presentationCurrencyLoading()"
+            [attr.aria-expanded]="presentationCurrencyMenuOpen()"
+            aria-haspopup="listbox"
+            aria-label="Waluta prezentacji"
+            (click)="togglePresentationCurrencyMenu()"
+          >
+            <span>{{ selectedPresentationCurrency() }}</span>
+            @if (presentationCurrencyLoading()) {
+              <i class="pi pi-spinner pi-spin"></i>
+            } @else {
+              <i class="pi pi-chevron-down"></i>
+            }
+          </button>
+
+          @if (presentationCurrencyMenuOpen()) {
+            <div class="toolbar__currency-menu" role="listbox" aria-label="Waluta prezentacji">
+              @for (currencyOption of presentationCurrencyOptions; track currencyOption.code) {
+                <button
+                  type="button"
+                  role="option"
+                  class="toolbar__currency-option"
+                  [class.toolbar__currency-option--selected]="selectedPresentationCurrency() === currencyOption.code"
+                  [attr.aria-selected]="selectedPresentationCurrency() === currencyOption.code"
+                  (click)="selectPresentationCurrency(currencyOption.code)"
+                >
+                  {{ currencyOption.label }}
+                </button>
+              }
+            </div>
+          }
+        </div>
 
         <p-select
           [ngModel]="selectedSortField()"

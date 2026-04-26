@@ -80,6 +80,76 @@
   min-width: 13rem;
 }
 
+.toolbar__currency-switcher {
+  position: relative;
+  min-width: 8rem;
+}
+
+.toolbar__currency-trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.72rem 0.85rem;
+  border: 1px solid var(--app-border);
+  border-radius: 0.45rem;
+  background: var(--app-surface-raised);
+  color: var(--app-ink);
+  cursor: pointer;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease,
+    background-color 0.15s ease;
+}
+
+.toolbar__currency-trigger:hover:not(:disabled) {
+  border-color: var(--app-brand-primary);
+}
+
+.toolbar__currency-trigger:focus-visible {
+  outline: none;
+  border-color: var(--app-brand-primary);
+  box-shadow: 0 0 0 0.15rem rgba(0, 90, 146, 0.16);
+}
+
+.toolbar__currency-trigger:disabled {
+  opacity: 0.7;
+  cursor: wait;
+}
+
+.toolbar__currency-menu {
+  position: absolute;
+  top: calc(100% + 0.35rem);
+  left: 0;
+  z-index: 20;
+  display: grid;
+  min-width: 100%;
+  padding: 0.3rem;
+  border: 1px solid var(--app-border);
+  border-radius: 0.55rem;
+  background: var(--app-surface-raised);
+  box-shadow: 0 14px 30px rgba(15, 23, 42, 0.16);
+}
+
+.toolbar__currency-option {
+  padding: 0.6rem 0.75rem;
+  border: 0;
+  border-radius: 0.4rem;
+  background: transparent;
+  color: var(--app-ink);
+  text-align: left;
+  cursor: pointer;
+}
+
+.toolbar__currency-option:hover,
+.toolbar__currency-option:focus-visible,
+.toolbar__currency-option--selected {
+  outline: none;
+  background: var(--app-brand-accent-soft);
+  color: var(--app-brand-primary-active);
+}
+
 .toolbar__sort-direction {
   white-space: nowrap;
 }
@@ -342,7 +412,8 @@ a[pButton]:visited {
   }
 
   .field-shell,
-  .toolbar__select {
+  .toolbar__select,
+  .toolbar__currency-switcher {
     min-width: 0;
     width: 100%;
   }
