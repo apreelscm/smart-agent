@@ -171,7 +171,7 @@ describe('OffersHomePageComponent', () => {
     jasmine.clock().uninstall();
   });
 
-  it('renders the Okres ochrony field for every offer row using the current day', () => {
+  it('renders Okres ochrony before Aktualizacja for every offer row using the current day', () => {
     const fixture = TestBed.createComponent(OffersHomePageComponent);
     fixture.detectChanges();
 
@@ -181,12 +181,19 @@ describe('OffersHomePageComponent', () => {
     expect(rows.length).toBe(2);
 
     rows.forEach((row) => {
-      const protectionPeriodCell = Array.from(row.querySelectorAll('.offer-row__meta-grid > div')).find(
-        (cell) => cell.querySelector('.offer-row__meta-label')?.textContent?.trim() === 'Okres ochrony'
+      const metaCells = Array.from(row.querySelectorAll('.offer-row__meta-grid > div'));
+      const metaLabels = metaCells.map(
+        (cell) => cell.querySelector('.offer-row__meta-label')?.textContent?.trim() ?? ''
       );
 
-      expect(protectionPeriodCell).toBeDefined();
-      expect(protectionPeriodCell?.querySelector('strong')?.textContent?.trim()).toBe(expectedProtectionPeriod);
+      const protectionPeriodIndex = metaLabels.indexOf('Okres ochrony');
+      const updatedAtIndex = metaLabels.indexOf('Aktualizacja');
+      const protectionPeriodCell = metaCells[protectionPeriodIndex];
+
+      expect(protectionPeriodIndex).toBeGreaterThan(-1);
+      expect(updatedAtIndex).toBeGreaterThan(-1);
+      expect(protectionPeriodIndex).toBeLessThan(updatedAtIndex);
+      expect(protectionPeriodCell.querySelector('strong')?.textContent?.trim()).toBe(expectedProtectionPeriod);
     });
 
     expect(element.textContent).not.toContain('2030-01-01');
