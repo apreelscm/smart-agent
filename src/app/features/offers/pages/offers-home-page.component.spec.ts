@@ -171,7 +171,7 @@ describe('OffersHomePageComponent', () => {
     jasmine.clock().uninstall();
   });
 
-  it('renders the Okres ochrony field for every offer row using the current day', () => {
+  it('renders the Okres ochrony field before Aktualizacja for every offer row using the current day', () => {
     const fixture = TestBed.createComponent(OffersHomePageComponent);
     fixture.detectChanges();
 
@@ -181,7 +181,16 @@ describe('OffersHomePageComponent', () => {
     expect(rows.length).toBe(2);
 
     rows.forEach((row) => {
-      const protectionPeriodCell = Array.from(row.querySelectorAll('.offer-row__meta-grid > div')).find(
+      const metaCells = Array.from(row.querySelectorAll('.offer-row__meta-grid > div'));
+      const metaLabels = metaCells
+        .map((cell) => cell.querySelector('.offer-row__meta-label')?.textContent?.trim())
+        .filter((label): label is string => !!label);
+
+      expect(metaLabels.length).toBe(5);
+      expect(metaLabels[0]).toMatch(/^(Pojazd|Uprawy)$/);
+      expect(metaLabels.slice(1)).toEqual(['Kanał', 'Wariant', 'Okres ochrony', 'Aktualizacja']);
+
+      const protectionPeriodCell = metaCells.find(
         (cell) => cell.querySelector('.offer-row__meta-label')?.textContent?.trim() === 'Okres ochrony'
       );
 
