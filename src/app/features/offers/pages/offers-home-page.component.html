@@ -110,7 +110,7 @@
             </div>
 
             <div class="offer-row__meta-grid">
-              <div>
+              <div class="offer-row__meta-item">
                 <span class="offer-row__meta-label">{{ isCropOffer(offer) ? 'Uprawy' : 'Pojazd' }}</span>
                 @if (isCropOffer(offer)) {
                   <strong>{{ getCropMetaPrimaryLine(offer) }}</strong>
@@ -121,13 +121,13 @@
                 }
               </div>
 
-              <div>
+              <div class="offer-row__meta-item">
                 <span class="offer-row__meta-label">Kanał</span>
                 <strong>{{ offer.agent.salesChannel }}</strong>
                 <span>{{ offer.agent.fullName }}</span>
               </div>
 
-              <div>
+              <div class="offer-row__meta-item">
                 <span class="offer-row__meta-label">Wariant</span>
                 <strong>{{ getSelectedVariantName(offer) }}</strong>
                 @if (offer.renewalContext; as renewalContext) {
@@ -142,10 +142,16 @@
                 }
               </div>
 
-              <div>
+              <div class="offer-row__meta-item">
                 <span class="offer-row__meta-label">Aktualizacja</span>
                 <strong>{{ offer.updatedAt | date: 'dd.MM.yyyy' }}</strong>
                 <span>{{ offer.updatedAt | date: 'HH:mm' }}</span>
+              </div>
+
+              <div class="offer-row__meta-item offer-row__meta-item--protection-period">
+                <span class="offer-row__meta-label">Okres ochrony</span>
+                <strong>{{ protectionPeriodLabel() }}</strong>
+                <span>Bieżący dzień biznesowy (CET)</span>
               </div>
             </div>
           </div>

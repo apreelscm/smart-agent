@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, DestroyRef, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { Router, RouterLink } from '@angular/router';
@@ -17,6 +17,10 @@ import { Offer, OfferStatus, ReferenceData } from '../../../core/models';
 import { PageHeaderComponent } from '../../../shared/ui/page-header/page-header.component';
 import { SectionCardComponent } from '../../../shared/ui/section-card/section-card.component';
 import { StatTileComponent } from '../../../shared/ui/stat-tile/stat-tile.component';
+import {
+  buildOfferProtectionPeriodLabel,
+  getMillisecondsUntilNextOfferProtectionPeriodRefresh
+} from '../utils/offer-protection-period.util';
 
 type FilterOption = {
   code: string;
@@ -78,6 +82,10 @@ export class OffersHomePageComponent {
   private readonly referenceDataRepository = inject(ReferenceDataRepository);
   private readonly salesFlowRuntimeRepository = inject(SalesFlowRuntimeRepository);
   private readonly router = inject(Router);
+  private readonly destroyRef = inject(DestroyRef);
+
+  private readonly protectionPeriodClock = signal(new Date());
+  private protectionPeriodRefreshTimer: ReturnType<typeof setTimeout> | null = null;
 
   protected readonly searchTerm = signal('');
   protected readonly selectedStatus = signal<string | null>(null);
@@ -98,6 +106,8 @@ export class OffersHomePageComponent {
       vehicleFinancing: []
     } as ReferenceData
   });
+
+  protected readonly protectionPeriodLabel = computed(() => buildOfferProtectionPeriodLabel(this.protectionPeriodClock()));
 
   protected readonly statusOptions = computed<FilterOption[]>(() => [
     { code: 'ALL', label: 'Wszystkie statusy' },
@@ -204,7 +214,6 @@ export class OffersHomePageComponent {
 
   protected readonly totalVisibleOffers = computed(() => this.filteredOffers().length);
 
-  // New computed signal to detect if any filter or sorting differs from default values
   protected readonly filtersChanged = computed(() => {
     return (
       this.searchTerm() !== '' ||
@@ -214,6 +223,11 @@ export class OffersHomePageComponent {
       this.selectedSortDirection() !== 'DESC'
     );
   });
+
+  constructor() {
+    this.scheduleProtectionPeriodRefresh();
+    this.destroyRef.onDestroy(() => this.clearProtectionPeriodRefreshTimer());
+  }
 
   protected getCustomerDisplayName(offer: Offer): string {
     const identity = offer.customer.identity;
@@ -326,7 +340,6 @@ export class OffersHomePageComponent {
     this.closeTransitionDialog();
   }
 
-  // New method to clear all filters and sorting to default values
   protected clearAllFilters(): void {
     this.searchTerm.set('');
     this.selectedStatus.set('ALL');
@@ -468,7 +481,6 @@ export class OffersHomePageComponent {
   }
 
   private printPlaceholder(offer: Offer): void {
-    // Placeholder action for future document generation integration.
     console.log('[Offers] Print placeholder action triggered for offer', offer.id);
   }
 
@@ -515,5 +527,23 @@ export class OffersHomePageComponent {
       cropsCount: crops.length,
       parcelsCount
     };
+  }
+
+  private scheduleProtectionPeriodRefresh(): void {
+    this.clearProtectionPeriodRefreshTimer();
+
+    this.protectionPeriodRefreshTimer = globalThis.setTimeout(() => {
+      this.protectionPeriodClock.set(new Date());
+      this.scheduleProtectionPeriodRefresh();
+    }, getMillisecondsUntilNextOfferProtectionPeriodRefresh(this.protectionPeriodClock()));
+  }
+
+  private clearProtectionPeriodRefreshTimer(): void {
+    if (this.protectionPeriodRefreshTimer === null) {
+      return;
+    }
+
+    clearTimeout(this.protectionPeriodRefreshTimer);
+    this.protectionPeriodRefreshTimer = null;
   }
 }
