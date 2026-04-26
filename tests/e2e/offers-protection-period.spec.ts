@@ -47,7 +47,7 @@ test('shows the same protection period for every offer row', async ({ page }, te
     .first()
     .locator('.offer-row__meta-grid > div')
     .filter({
-      has: offerRows.first().locator('.offer-row__meta-label', { hasText: 'Okres ochrony' }),
+      has: page.locator('.offer-row__meta-label', { hasText: 'Okres ochrony' }),
     });
 
   await expect(firstProtectionPeriodCell).toHaveCount(1);
@@ -59,7 +59,7 @@ test('shows the same protection period for every offer row', async ({ page }, te
   for (let index = 0; index < offerRowCount; index += 1) {
     const row = offerRows.nth(index);
     const protectionPeriodCell = row.locator('.offer-row__meta-grid > div').filter({
-      has: row.locator('.offer-row__meta-label', { hasText: 'Okres ochrony' }),
+      has: page.locator('.offer-row__meta-label', { hasText: 'Okres ochrony' }),
     });
 
     await expect(protectionPeriodCell).toHaveCount(1);
