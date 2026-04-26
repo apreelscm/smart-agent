@@ -196,11 +196,20 @@ describe('OffersHomePageComponent', () => {
       const protectionItems = Array.from(host.querySelectorAll('.offer-row__meta-item--protection'));
       const labels = protectionItems.map((item) => item.querySelector('.offer-row__meta-label')?.textContent?.trim());
       const values = protectionItems.map((item) => item.querySelector('strong')?.textContent?.trim());
+      const firstRow = host.querySelector('.offer-row');
+      const firstRowMetaLabels = Array.from(
+        firstRow?.querySelectorAll('.offer-row__meta-grid .offer-row__meta-label') ?? []
+      ).map((label) => label.textContent?.trim() ?? '');
+      const protectionLabelIndex = firstRowMetaLabels.indexOf('Okres ochrony');
+      const updatedAtLabelIndex = firstRowMetaLabels.indexOf('Aktualizacja');
 
       expect(protectionItems.length).toBe(2);
       expect(labels).toEqual(['Okres ochrony', 'Okres ochrony']);
       expect(values).toEqual(['2025/05/10 00:00 - 2026/05/09 23:59', '2025/05/10 00:00 - 2026/05/09 23:59']);
       expect(values.every((value) => !!value)).toBeTrue();
+      expect(protectionLabelIndex).toBeGreaterThan(-1);
+      expect(updatedAtLabelIndex).toBeGreaterThan(-1);
+      expect(protectionLabelIndex).toBeLessThan(updatedAtLabelIndex);
     } finally {
       jasmine.clock().uninstall();
     }

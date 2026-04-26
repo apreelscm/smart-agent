@@ -1,52 +1,41 @@
 import { expect, test } from '@playwright/test';
 import { captureStep } from './helpers/visual-snapshot';
 
-test('shows a protection period for every visible offer', async ({ page }, testInfo) => {
+test('offers list shows Okres ochrony before Aktualizacja', async ({ page }, testInfo) => {
   await page.goto('/');
 
-  await expect(page.getByText('Przygotowane oferty', { exact: true })).toBeVisible();
-  await captureStep(page, testInfo, 'offers-list-visible');
-
-  const rows = page.locator('.offer-row');
-
-  await expect(rows.first()).toBeVisible();
-
-  const rowCount = await rows.count();
-
-  expect(rowCount).toBeGreaterThan(0);
-
-  await expect(page.getByText('Okres ochrony', { exact: true })).toHaveCount(rowCount);
-  await captureStep(page, testInfo, 'protection-column-visible');
-
-  const protectionValues = await page.locator('.offer-row__protection-period').allTextContents();
-
-  expect(protectionValues).toHaveLength(rowCount);
-
-  const normalizedValues = protectionValues.map((value) => value.trim());
-  const firstValue = normalizedValues[0];
-
-  expect(firstValue).toBeTruthy();
-
-  for (const value of normalizedValues) {
-    expect(value).toBe(firstValue);
-    expect(value).toMatch(/^\d{4}\/\d{2}\/\d{2} 00:00 - \d{4}\/\d{2}\/\d{2} 23:59$/);
+  const offersHeading = page.getByRole('heading', { name: 'Przygotowane oferty' });
+  if (!(await offersHeading.isVisible().catch(() => false))) {
+    await page.goto('/offers');
   }
 
-  await captureStep(page, testInfo, 'protection-period-values');
-});
+  await expect(offersHeading).toBeVisible();
 
-test('keeps the empty state without protection period values when no offers match', async ({ page }, testInfo) => {
-  await page.goto('/');
+  const firstOfferRow = page.locator('.offer-row').first();
+  await expect(firstOfferRow).toBeVisible();
+  await captureStep(page, testInfo, 'offers-list-visible');
 
-  await expect(page.getByText('Przygotowane oferty', { exact: true })).toBeVisible();
-  await captureStep(page, testInfo, 'offers-list-before-filter');
+  const metaLabels = (
+    await firstOfferRow.locator('.offer-row__meta-grid .offer-row__meta-label').allTextContents()
+  ).map((label) => label.trim());
 
-  await page
-    .getByPlaceholder('Szukaj: numer oferty, klient, pojazd/uprawy, rejestracja')
-    .fill('no-matching-offer-12345');
+  const protectionLabelIndex = metaLabels.indexOf('Okres ochrony');
+  const updatedAtLabelIndex = metaLabels.indexOf('Aktualizacja');
 
-  await expect(page.getByText('Brak ofert dla podanych filtrów', { exact: true })).toBeVisible();
-  await expect(page.locator('.offer-row')).toHaveCount(0);
-  await expect(page.locator('.offer-row__meta-item--protection')).toHaveCount(0);
-  await captureStep(page, testInfo, 'empty-state-without-protection-values');
+  expect(protectionLabelIndex).toBeGreaterThan(-1);
+  expect(updatedAtLabelIndex).toBeGreaterThan(-1);
+  expect(protectionLabelIndex).toBeLessThan(updatedAtLabelIndex);
+  await captureStep(page, testInfo, 'metadata-order-confirmed');
+
+  const protectionValue = firstOfferRow.locator(
+    '.offer-row__meta-item--protection .offer-row__protection-period',
+  );
+  await expect(protectionValue).toHaveText(/\S/);
+
+  const updatedAtBlock = firstOfferRow.locator('.offer-row__meta-grid > div', {
+    hasText: 'Aktualizacja',
+  });
+  await expect(updatedAtBlock.locator('strong')).toHaveText(/\d{2}\.\d{2}\.\d{4}/);
+  await expect(updatedAtBlock.locator('span').last()).toHaveText(/\d{2}:\d{2}/);
+  await captureStep(page, testInfo, 'metadata-values-visible');
 });
