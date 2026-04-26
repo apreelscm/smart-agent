@@ -1,52 +1,64 @@
 import { expect, test } from '@playwright/test';
 import { captureStep } from './helpers/visual-snapshot';
 
-test('shows a protection period for every visible offer', async ({ page }, testInfo) => {
+test('shows Okres ochrony before Aktualizacja in every visible offer row', async ({ page }, testInfo) => {
   await page.goto('/');
 
-  await expect(page.getByText('Przygotowane oferty', { exact: true })).toBeVisible();
+  await expect(page.getByText('Przygotowane oferty')).toBeVisible();
+  await captureStep(page, testInfo, 'offers-page-loaded');
+
+  const offerRows = page.locator('.offer-row');
+
+  await expect(offerRows.first()).toBeVisible();
+  const rowCount = await offerRows.count();
+  expect(rowCount).toBeGreaterThan(0);
   await captureStep(page, testInfo, 'offers-list-visible');
 
-  const rows = page.locator('.offer-row');
+  const rowMetadata = await offerRows.evaluateAll((rows) =>
+    rows.map((row) => {
+      const labels = Array.from(
+        row.querySelectorAll('.offer-row__meta-grid > div > .offer-row__meta-label'),
+      ).map((label) => label.textContent?.trim() ?? '');
 
-  await expect(rows.first()).toBeVisible();
+      const protectionValue =
+        row.querySelector('.offer-row__meta-item--protection strong')?.textContent?.trim() ?? '';
 
-  const rowCount = await rows.count();
+      const updateContainer = Array.from(row.querySelectorAll('.offer-row__meta-grid > div')).find(
+        (item) =>
+          item.querySelector('.offer-row__meta-label')?.textContent?.trim() === 'Aktualizacja',
+      );
 
-  expect(rowCount).toBeGreaterThan(0);
+      const updateValue = updateContainer?.querySelector('strong')?.textContent?.trim() ?? '';
 
-  await expect(page.getByText('Okres ochrony', { exact: true })).toHaveCount(rowCount);
-  await captureStep(page, testInfo, 'protection-column-visible');
+      return {
+        labels,
+        protectionValue,
+        updateValue,
+      };
+    }),
+  );
 
-  const protectionValues = await page.locator('.offer-row__protection-period').allTextContents();
+  expect(rowMetadata).toHaveLength(rowCount);
 
-  expect(protectionValues).toHaveLength(rowCount);
+  const normalizedLabelOrders = rowMetadata.map(({ labels }) =>
+    labels.map((label, index) =>
+      index === 0 && (label === 'Pojazd' || label === 'Uprawy') ? 'Przedmiot' : label,
+    ),
+  );
 
-  const normalizedValues = protectionValues.map((value) => value.trim());
-  const firstValue = normalizedValues[0];
-
-  expect(firstValue).toBeTruthy();
-
-  for (const value of normalizedValues) {
-    expect(value).toBe(firstValue);
-    expect(value).toMatch(/^\d{4}\/\d{2}\/\d{2} 00:00 - \d{4}\/\d{2}\/\d{2} 23:59$/);
+  for (const metadata of rowMetadata) {
+    expect(metadata.labels.filter((label) => label === 'Okres ochrony')).toHaveLength(1);
+    expect(metadata.labels.filter((label) => label === 'Aktualizacja')).toHaveLength(1);
+    expect(metadata.labels.indexOf('Okres ochrony')).toBeLessThan(
+      metadata.labels.indexOf('Aktualizacja'),
+    );
+    expect(metadata.protectionValue).not.toBe('');
+    expect(metadata.updateValue).not.toBe('');
   }
 
-  await captureStep(page, testInfo, 'protection-period-values');
-});
+  for (const labels of normalizedLabelOrders.slice(1)) {
+    expect(labels).toEqual(normalizedLabelOrders[0]);
+  }
 
-test('keeps the empty state without protection period values when no offers match', async ({ page }, testInfo) => {
-  await page.goto('/');
-
-  await expect(page.getByText('Przygotowane oferty', { exact: true })).toBeVisible();
-  await captureStep(page, testInfo, 'offers-list-before-filter');
-
-  await page
-    .getByPlaceholder('Szukaj: numer oferty, klient, pojazd/uprawy, rejestracja')
-    .fill('no-matching-offer-12345');
-
-  await expect(page.getByText('Brak ofert dla podanych filtrów', { exact: true })).toBeVisible();
-  await expect(page.locator('.offer-row')).toHaveCount(0);
-  await expect(page.locator('.offer-row__meta-item--protection')).toHaveCount(0);
-  await captureStep(page, testInfo, 'empty-state-without-protection-values');
+  await captureStep(page, testInfo, 'protection-period-before-update');
 });

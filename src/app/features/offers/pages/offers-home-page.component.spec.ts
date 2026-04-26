@@ -145,7 +145,7 @@ describe('OffersHomePageComponent', () => {
       ...overrides
     }) as Offer;
 
-  it('renders the Okres ochrony field with a non-empty value for each visible offer', async () => {
+  it('renders the Okres ochrony field with a non-empty value before Aktualizacja for each visible offer', async () => {
     const runtimeOffersState = signal<Offer[]>([]);
 
     await TestBed.configureTestingModule({
@@ -193,9 +193,21 @@ describe('OffersHomePageComponent', () => {
       fixture.detectChanges();
 
       const host = fixture.nativeElement as HTMLElement;
+      const offerRows = Array.from(host.querySelectorAll<HTMLElement>('.offer-row'));
       const protectionItems = Array.from(host.querySelectorAll('.offer-row__meta-item--protection'));
       const labels = protectionItems.map((item) => item.querySelector('.offer-row__meta-label')?.textContent?.trim());
       const values = protectionItems.map((item) => item.querySelector('strong')?.textContent?.trim());
+      const metaLabelOrders = offerRows.map((row) =>
+        Array.from(row.querySelectorAll('.offer-row__meta-grid > div > .offer-row__meta-label')).map((label) =>
+          label.textContent?.trim()
+        )
+      );
+
+      expect(offerRows.length).toBe(2);
+      expect(metaLabelOrders).toEqual([
+        ['Pojazd', 'Kanał', 'Wariant', 'Okres ochrony', 'Aktualizacja'],
+        ['Pojazd', 'Kanał', 'Wariant', 'Okres ochrony', 'Aktualizacja']
+      ]);
 
       expect(protectionItems.length).toBe(2);
       expect(labels).toEqual(['Okres ochrony', 'Okres ochrony']);
