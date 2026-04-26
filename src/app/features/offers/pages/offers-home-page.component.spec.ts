@@ -65,6 +65,26 @@ describe('OffersHomePageComponent', () => {
     expect(coverageLabel).toBe('Okres ochrony')
     expect(coverageValue).toBe('2025/05/10 00:00 - 2026/05/09 23:59')
   })
+
+  it('renders the protection period metadata before the update metadata', async () => {
+    const fixture = TestBed.createComponent(OffersHomePageComponent)
+
+    fixture.detectChanges()
+    await fixture.whenStable()
+    fixture.detectChanges()
+
+    const compiled = fixture.nativeElement as HTMLElement
+    const metaLabels = Array.from(compiled.querySelectorAll('.offer-row__meta-grid > div .offer-row__meta-label'))
+      .map((element) => element.textContent?.trim())
+      .filter((label): label is string => Boolean(label))
+
+    const coverageIndex = metaLabels.indexOf('Okres ochrony')
+    const updateIndex = metaLabels.indexOf('Aktualizacja')
+
+    expect(coverageIndex).toBeGreaterThan(-1)
+    expect(updateIndex).toBeGreaterThan(-1)
+    expect(coverageIndex).toBeLessThan(updateIndex)
+  })
 })
 
 function createOffer(): Offer {
