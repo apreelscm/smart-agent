@@ -63,6 +63,21 @@
           class="toolbar__sort-direction"
           (click)="toggleSortDirection()"
         ></button>
+
+        <div class="toolbar__currency">
+          <span class="toolbar__currency-label">Waluta składki</span>
+          <p-select
+            [ngModel]="presentationCurrencySelection()"
+            (ngModelChange)="onPresentationCurrencyChange($event)"
+            [options]="presentationCurrencyOptions"
+            optionLabel="label"
+            optionValue="code"
+            appendTo="body"
+            class="toolbar__select toolbar__select--currency"
+            [disabled]="exchangeRateLoading()"
+            [attr.aria-label]="'Waluta składki'"
+          />
+        </div>
       </div>
 
       <div class="toolbar__actions">
@@ -80,7 +95,21 @@
     </div>
 
     <div class="results-meta">
-      <span>{{ totalVisibleOffers() }} ofert(y) na liście</span>
+      <div class="results-meta__primary">
+        <span>{{ totalVisibleOffers() }} ofert(y) na liście</span>
+
+        @if (exchangeRateLoading()) {
+          <span class="results-meta__loading" aria-live="polite">Pobieranie kursu {{ presentationCurrencySelection() }}...</span>
+        }
+
+        @if (exchangeRateLabel(); as rateLabel) {
+          <span class="results-meta__rate">{{ rateLabel }}</span>
+        }
+      </div>
+
+      @if (exchangeRateError(); as errorMessage) {
+        <p class="results-meta__error" role="alert">{{ errorMessage }}</p>
+      }
     </div>
 
     <div class="offer-list">
@@ -153,7 +182,7 @@
           <div class="offer-row__summary">
             <div class="premium-box">
               <span class="offer-row__meta-label">Składka</span>
-              <strong>{{ getPrimaryPremium(offer) | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</strong>
+              <strong>{{ getDisplayedPremiumAmount(offer) | currency: getDisplayedPremiumCurrency() : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</strong>
               <span>{{ offer.validTo ? ('Ważna do ' + (offer.validTo | date: 'dd.MM.yyyy')) : 'Robocza kalkulacja' }}</span>
             </div>
 

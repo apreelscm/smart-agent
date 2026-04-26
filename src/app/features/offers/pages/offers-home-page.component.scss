@@ -28,6 +28,19 @@
   gap: 0.75rem;
 }
 
+.toolbar__currency {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.toolbar__currency-label {
+  color: var(--app-text-subtle);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
 .field-shell {
   display: inline-flex;
   align-items: center;
@@ -72,15 +85,51 @@
   min-width: 13rem;
 }
 
+.toolbar__select--currency {
+  min-width: 10rem;
+}
+
 .toolbar__sort-direction {
   white-space: nowrap;
 }
 
 .results-meta {
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
+  display: grid;
+  gap: 0.45rem;
   font-size: 0.84rem;
+}
+
+.results-meta__primary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.results-meta__loading,
+.results-meta__rate {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.28rem 0.6rem;
+  border-radius: 999px;
+  background: var(--app-surface-subtle);
+  color: var(--app-brand-primary-active);
+  font-weight: 600;
+}
+
+.results-meta__loading {
+  border: 1px solid rgba(0, 90, 146, 0.12);
+}
+
+.results-meta__rate {
+  border: 1px solid rgba(0, 90, 146, 0.16);
+}
+
+.results-meta__error {
+  margin: 0;
+  color: #b42318;
+  font-weight: 600;
 }
 
 .offer-list {
@@ -317,8 +366,13 @@ a[pButton]:visited {
   }
 
   .field-shell,
-  .toolbar__select {
+  .toolbar__select,
+  .toolbar__select--currency {
     min-width: 0;
+    width: 100%;
+  }
+
+  .toolbar__currency {
     width: 100%;
   }
 
@@ -328,6 +382,11 @@ a[pButton]:visited {
 
   .offer-row__summary {
     min-width: 0;
+  }
+
+  .results-meta__primary {
+    align-items: flex-start;
+    flex-direction: column;
   }
 }
 
