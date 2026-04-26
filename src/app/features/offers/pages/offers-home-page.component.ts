@@ -103,6 +103,7 @@ export class OffersHomePageComponent {
   protected readonly pendingTransition = signal<PendingTransition | null>(null);
   protected readonly transitionDialogVisible = signal(false);
   protected readonly activePresentationCurrency = signal<PresentationCurrency>('PLN');
+  protected readonly selectedPresentationCurrency = signal<PresentationCurrency>('PLN');
   protected readonly activeExchangeRate = signal<ExchangeRateQuote | null>(null);
   protected readonly presentationCurrencyLoading = signal(false);
   protected readonly presentationCurrencyError = signal<string | null>(null);
@@ -250,7 +251,10 @@ export class OffersHomePageComponent {
       return;
     }
 
-    if (currency === this.activePresentationCurrency()) {
+    const currentCurrency = this.activePresentationCurrency();
+
+    if (currency === currentCurrency) {
+      this.selectedPresentationCurrency.set(currentCurrency);
       this.presentationCurrencyError.set(null);
       return;
     }
@@ -258,12 +262,14 @@ export class OffersHomePageComponent {
     this.presentationCurrencyError.set(null);
 
     if (currency === 'PLN') {
+      this.selectedPresentationCurrency.set('PLN');
       this.activePresentationCurrency.set('PLN');
       this.activeExchangeRate.set(null);
       return;
     }
 
     const targetCurrency: ExchangeRateCurrency = currency;
+    this.selectedPresentationCurrency.set(targetCurrency);
     this.presentationCurrencyLoading.set(true);
 
     this.exchangeRatesRepository
@@ -272,9 +278,11 @@ export class OffersHomePageComponent {
       .subscribe({
         next: (quote) => {
           this.activePresentationCurrency.set(targetCurrency);
+          this.selectedPresentationCurrency.set(targetCurrency);
           this.activeExchangeRate.set(quote);
         },
         error: () => {
+          this.selectedPresentationCurrency.set(currentCurrency);
           this.presentationCurrencyError.set(
             `Nie udało się pobrać kursu ${targetCurrency}. Wyświetlane wartości pozostają bez zmian.`
           );

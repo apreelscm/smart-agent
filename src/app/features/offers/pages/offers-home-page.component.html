@@ -43,7 +43,7 @@
         />
 
         <p-select
-          [ngModel]="activePresentationCurrency()"
+          [ngModel]="selectedPresentationCurrency()"
           (ngModelChange)="onPresentationCurrencyChange($event)"
           [options]="presentationCurrencyOptions"
           optionLabel="label"
