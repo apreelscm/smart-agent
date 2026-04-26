@@ -145,7 +145,7 @@ describe('OffersHomePageComponent', () => {
       ...overrides
     }) as Offer;
 
-  it('renders the Okres ochrony field with a non-empty value for each visible offer', async () => {
+  it('renders Okres ochrony before Aktualizacja with a non-empty value for each visible offer', async () => {
     const runtimeOffersState = signal<Offer[]>([]);
 
     await TestBed.configureTestingModule({
@@ -193,14 +193,27 @@ describe('OffersHomePageComponent', () => {
       fixture.detectChanges();
 
       const host = fixture.nativeElement as HTMLElement;
+      const offerRows = Array.from(host.querySelectorAll('.offer-row'));
       const protectionItems = Array.from(host.querySelectorAll('.offer-row__meta-item--protection'));
       const labels = protectionItems.map((item) => item.querySelector('.offer-row__meta-label')?.textContent?.trim());
       const values = protectionItems.map((item) => item.querySelector('strong')?.textContent?.trim());
 
+      expect(offerRows.length).toBe(2);
       expect(protectionItems.length).toBe(2);
       expect(labels).toEqual(['Okres ochrony', 'Okres ochrony']);
       expect(values).toEqual(['2025/05/10 00:00 - 2026/05/09 23:59', '2025/05/10 00:00 - 2026/05/09 23:59']);
       expect(values.every((value) => !!value)).toBeTrue();
+
+      offerRows.forEach((row) => {
+        const metaGrid = row.querySelector('.offer-row__meta-grid') as HTMLElement;
+        const metaLabels = Array.from(metaGrid.children).map(
+          (item) => item.querySelector('.offer-row__meta-label')?.textContent?.trim() ?? ''
+        );
+
+        expect(metaLabels).toContain('Okres ochrony');
+        expect(metaLabels).toContain('Aktualizacja');
+        expect(metaLabels.indexOf('Okres ochrony')).toBeLessThan(metaLabels.indexOf('Aktualizacja'));
+      });
     } finally {
       jasmine.clock().uninstall();
     }
