@@ -43,6 +43,19 @@
         />
 
         <p-select
+          [ngModel]="activePresentationCurrency()"
+          (ngModelChange)="onPresentationCurrencyChange($event)"
+          [options]="presentationCurrencyOptions"
+          optionLabel="label"
+          optionValue="code"
+          placeholder="Waluta"
+          appendTo="body"
+          class="toolbar__select toolbar__select--currency"
+          [disabled]="presentationCurrencyLoading()"
+          [loading]="presentationCurrencyLoading()"
+        />
+
+        <p-select
           [ngModel]="selectedSortField()"
           (ngModelChange)="selectedSortField.set($event)"
           [options]="sortFieldOptions"
@@ -80,7 +93,20 @@
     </div>
 
     <div class="results-meta">
-      <span>{{ totalVisibleOffers() }} ofert(y) na liście</span>
+      <div class="results-meta__summary">
+        <span>{{ totalVisibleOffers() }} ofert(y) na liście</span>
+
+        @if (appliedExchangeRate(); as exchangeRate) {
+          <span class="results-meta__rate">
+            Kurs {{ exchangeRate.code }}: 1 {{ exchangeRate.code }} = {{ exchangeRate.mid | number: '1.4-4' : 'pl-PL' }} PLN ·
+            data publikacji {{ exchangeRate.effectiveDate | date: 'dd.MM.yyyy' }}
+          </span>
+        }
+      </div>
+
+      @if (presentationCurrencyError(); as presentationCurrencyError) {
+        <span class="results-meta__error" role="alert">{{ presentationCurrencyError }}</span>
+      }
     </div>
 
     <div class="offer-list">
@@ -153,7 +179,7 @@
           <div class="offer-row__summary">
             <div class="premium-box">
               <span class="offer-row__meta-label">Składka</span>
-              <strong>{{ getPrimaryPremium(offer) | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</strong>
+              <strong>{{ getDisplayedPremiumAmount(offer) | currency: getDisplayedPremiumCurrency() : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</strong>
               <span>{{ offer.validTo ? ('Ważna do ' + (offer.validTo | date: 'dd.MM.yyyy')) : 'Robocza kalkulacja' }}</span>
             </div>
 

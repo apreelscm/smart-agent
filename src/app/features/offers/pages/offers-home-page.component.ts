@@ -1,8 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed, inject, signal } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
+import { finalize } from 'rxjs';
 import { MenuItem } from 'primeng/api';
 import { ButtonDirective } from 'primeng/button';
 import { Dialog } from 'primeng/dialog';
@@ -10,10 +11,18 @@ import { InputText } from 'primeng/inputtext';
 import { Select } from 'primeng/select';
 import { SplitButton } from 'primeng/splitbutton';
 import { Tag } from 'primeng/tag';
+import {
+  ExchangeRateCurrency,
+  ExchangeRateQuote,
+  Offer,
+  OfferStatus,
+  PresentationCurrency,
+  ReferenceData
+} from '../../../core/models';
+import { ExchangeRatesRepository } from '../../../core/repositories/exchange-rates.repository';
 import { OffersRepository } from '../../../core/repositories/offers.repository';
 import { ReferenceDataRepository } from '../../../core/repositories/reference-data.repository';
 import { SalesFlowRuntimeRepository } from '../../../core/repositories/sales-flow-runtime.repository';
-import { Offer, OfferStatus, ReferenceData } from '../../../core/models';
 import { PageHeaderComponent } from '../../../shared/ui/page-header/page-header.component';
 import { SectionCardComponent } from '../../../shared/ui/section-card/section-card.component';
 import { StatTileComponent } from '../../../shared/ui/stat-tile/stat-tile.component';
@@ -21,6 +30,11 @@ import { StatTileComponent } from '../../../shared/ui/stat-tile/stat-tile.compon
 type FilterOption = {
   code: string;
   label: string;
+};
+
+type CurrencyOption = {
+  code: PresentationCurrency;
+  label: PresentationCurrency;
 };
 
 type SortDirection = 'ASC' | 'DESC';
@@ -77,6 +91,7 @@ export class OffersHomePageComponent {
   private readonly offersRepository = inject(OffersRepository);
   private readonly referenceDataRepository = inject(ReferenceDataRepository);
   private readonly salesFlowRuntimeRepository = inject(SalesFlowRuntimeRepository);
+  private readonly exchangeRatesRepository = inject(ExchangeRatesRepository);
   private readonly router = inject(Router);
 
   protected readonly searchTerm = signal('');
@@ -87,6 +102,10 @@ export class OffersHomePageComponent {
   protected readonly statusOverrides = signal<Record<string, OfferStatus>>({});
   protected readonly pendingTransition = signal<PendingTransition | null>(null);
   protected readonly transitionDialogVisible = signal(false);
+  protected readonly activePresentationCurrency = signal<PresentationCurrency>('PLN');
+  protected readonly activeExchangeRate = signal<ExchangeRateQuote | null>(null);
+  protected readonly presentationCurrencyLoading = signal(false);
+  protected readonly presentationCurrencyError = signal<string | null>(null);
 
   protected readonly offers = toSignal(this.offersRepository.getOffers(), { initialValue: [] as Offer[] });
   protected readonly referenceData = toSignal(this.referenceDataRepository.getReferenceData(), {
@@ -117,6 +136,13 @@ export class OffersHomePageComponent {
       status: overrides[offer.id] ?? offer.status
     }));
   });
+  protected readonly appliedExchangeRate = computed(() => {
+    if (this.activePresentationCurrency() === 'PLN') {
+      return null;
+    }
+
+    return this.activeExchangeRate();
+  });
 
   protected readonly sortFieldOptions: FilterOption[] = [
     { code: 'ISSUE_DATE', label: 'Data wystawienia' },
@@ -126,6 +152,11 @@ export class OffersHomePageComponent {
     { code: 'ALL', label: 'Wszystkie produkty' },
     { code: 'MOTOR', label: 'Komunikacyjne' },
     { code: 'CROP', label: 'Uprawy' }
+  ];
+  protected readonly presentationCurrencyOptions: CurrencyOption[] = [
+    { code: 'PLN', label: 'PLN' },
+    { code: 'EUR', label: 'EUR' },
+    { code: 'USD', label: 'USD' }
   ];
 
   protected readonly filteredOffers = computed(() => {
@@ -204,7 +235,6 @@ export class OffersHomePageComponent {
 
   protected readonly totalVisibleOffers = computed(() => this.filteredOffers().length);
 
-  // New computed signal to detect if any filter or sorting differs from default values
   protected readonly filtersChanged = computed(() => {
     return (
       this.searchTerm() !== '' ||
@@ -214,6 +244,43 @@ export class OffersHomePageComponent {
       this.selectedSortDirection() !== 'DESC'
     );
   });
+
+  protected onPresentationCurrencyChange(currency: PresentationCurrency | null): void {
+    if (!currency || this.presentationCurrencyLoading()) {
+      return;
+    }
+
+    if (currency === this.activePresentationCurrency()) {
+      this.presentationCurrencyError.set(null);
+      return;
+    }
+
+    this.presentationCurrencyError.set(null);
+
+    if (currency === 'PLN') {
+      this.activePresentationCurrency.set('PLN');
+      this.activeExchangeRate.set(null);
+      return;
+    }
+
+    const targetCurrency: ExchangeRateCurrency = currency;
+    this.presentationCurrencyLoading.set(true);
+
+    this.exchangeRatesRepository
+      .getCurrentRate(targetCurrency)
+      .pipe(finalize(() => this.presentationCurrencyLoading.set(false)))
+      .subscribe({
+        next: (quote) => {
+          this.activePresentationCurrency.set(targetCurrency);
+          this.activeExchangeRate.set(quote);
+        },
+        error: () => {
+          this.presentationCurrencyError.set(
+            `Nie udało się pobrać kursu ${targetCurrency}. Wyświetlane wartości pozostają bez zmian.`
+          );
+        }
+      });
+  }
 
   protected getCustomerDisplayName(offer: Offer): string {
     const identity = offer.customer.identity;
@@ -245,6 +312,21 @@ export class OffersHomePageComponent {
 
   protected getPrimaryPremium(offer: Offer): number {
     return offer.selectedPaymentPlan?.totalPremium.amount ?? offer.variants[0]?.totalPremium.amount ?? 0;
+  }
+
+  protected getDisplayedPremiumAmount(offer: Offer): number {
+    const sourcePremium = this.getPrimaryPremium(offer);
+    const exchangeRate = this.appliedExchangeRate();
+
+    if (!exchangeRate) {
+      return sourcePremium;
+    }
+
+    return Math.round(sourcePremium / exchangeRate.mid);
+  }
+
+  protected getDisplayedPremiumCurrency(): PresentationCurrency {
+    return this.activePresentationCurrency();
   }
 
   protected getSelectedVariantName(offer: Offer): string {
@@ -326,7 +408,6 @@ export class OffersHomePageComponent {
     this.closeTransitionDialog();
   }
 
-  // New method to clear all filters and sorting to default values
   protected clearAllFilters(): void {
     this.searchTerm.set('');
     this.selectedStatus.set('ALL');
@@ -468,7 +549,6 @@ export class OffersHomePageComponent {
   }
 
   private printPlaceholder(offer: Offer): void {
-    // Placeholder action for future document generation integration.
     console.log('[Offers] Print placeholder action triggered for offer', offer.id);
   }
 
