@@ -192,4 +192,27 @@ describe('OffersHomePageComponent', () => {
     expect(element.textContent).not.toContain('2030-01-01');
     expect(element.textContent).not.toContain('2040-03-15');
   });
+
+  it('renders Okres ochrony before Aktualizacja in every offer row', () => {
+    const fixture = TestBed.createComponent(OffersHomePageComponent);
+    fixture.detectChanges();
+
+    const element = fixture.nativeElement as HTMLElement;
+    const rows = Array.from(element.querySelectorAll('.offer-row'));
+
+    expect(rows.length).toBe(2);
+
+    rows.forEach((row) => {
+      const metaLabels = Array.from(row.querySelectorAll('.offer-row__meta-grid > div .offer-row__meta-label')).map(
+        (label) => label.textContent?.trim() ?? ''
+      );
+
+      const protectionPeriodIndex = metaLabels.indexOf('Okres ochrony');
+      const updatedAtIndex = metaLabels.indexOf('Aktualizacja');
+
+      expect(protectionPeriodIndex).toBeGreaterThanOrEqual(0);
+      expect(updatedAtIndex).toBeGreaterThanOrEqual(0);
+      expect(protectionPeriodIndex).toBeLessThan(updatedAtIndex);
+    });
+  });
 });
