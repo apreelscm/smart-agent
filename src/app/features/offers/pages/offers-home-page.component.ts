@@ -1,61 +1,65 @@
-import { CommonModule } from '@angular/common';
-import { Component, computed, inject, signal } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { Router, RouterLink } from '@angular/router';
-import { MenuItem } from 'primeng/api';
-import { ButtonDirective } from 'primeng/button';
-import { Dialog } from 'primeng/dialog';
-import { InputText } from 'primeng/inputtext';
-import { Select } from 'primeng/select';
-import { SplitButton } from 'primeng/splitbutton';
-import { Tag } from 'primeng/tag';
-import { OffersRepository } from '../../../core/repositories/offers.repository';
-import { ReferenceDataRepository } from '../../../core/repositories/reference-data.repository';
-import { SalesFlowRuntimeRepository } from '../../../core/repositories/sales-flow-runtime.repository';
-import { Offer, OfferStatus, ReferenceData } from '../../../core/models';
-import { PageHeaderComponent } from '../../../shared/ui/page-header/page-header.component';
-import { SectionCardComponent } from '../../../shared/ui/section-card/section-card.component';
-import { StatTileComponent } from '../../../shared/ui/stat-tile/stat-tile.component';
+import { CommonModule } from '@angular/common'
+import { Component, computed, inject, signal } from '@angular/core'
+import { toSignal } from '@angular/core/rxjs-interop'
+import { FormsModule } from '@angular/forms'
+import { Router, RouterLink } from '@angular/router'
+import { MenuItem } from 'primeng/api'
+import { ButtonDirective } from 'primeng/button'
+import { Dialog } from 'primeng/dialog'
+import { InputText } from 'primeng/inputtext'
+import { Select } from 'primeng/select'
+import { SplitButton } from 'primeng/splitbutton'
+import { Tag } from 'primeng/tag'
+import { Offer, OfferStatus, ReferenceData } from '../../../core/models'
+import { OffersRepository } from '../../../core/repositories/offers.repository'
+import { ReferenceDataRepository } from '../../../core/repositories/reference-data.repository'
+import { SalesFlowRuntimeRepository } from '../../../core/repositories/sales-flow-runtime.repository'
+import { PageHeaderComponent } from '../../../shared/ui/page-header/page-header.component'
+import { SectionCardComponent } from '../../../shared/ui/section-card/section-card.component'
+import { StatTileComponent } from '../../../shared/ui/stat-tile/stat-tile.component'
+import { getCoveragePeriodLabel } from '../utils/coverage-period.util'
 
 type FilterOption = {
-  code: string;
-  label: string;
-};
+  code: string
+  label: string
+}
 
-type SortDirection = 'ASC' | 'DESC';
+type SortDirection = 'ASC' | 'DESC'
 
-type OfferSortField = 'ISSUE_DATE' | 'VALID_TO';
+type OfferSortField = 'ISSUE_DATE' | 'VALID_TO'
 
-type OfferProductFilter = 'ALL' | 'MOTOR' | 'CROP';
+type OfferProductFilter = 'ALL' | 'MOTOR' | 'CROP'
+
+type OfferStatusFilter = 'ALL' | OfferStatus
 
 type StatusPresentation = {
-  label: string;
-  severity: 'success' | 'secondary' | 'info' | 'warn' | 'danger' | 'contrast';
-};
+  label: string
+  severity: 'success' | 'secondary' | 'info' | 'warn' | 'danger' | 'contrast'
+}
 
 type TransitionDefinition = {
-  actionLabel: string;
-  title: string;
-  description: string;
-  targetStatus: OfferStatus;
-};
+  actionLabel: string
+  title: string
+  description: string
+  targetStatus: OfferStatus
+}
 
 type PendingTransition = {
-  offer: Offer;
-  transition: TransitionDefinition;
-};
+  offer: Offer
+  transition: TransitionDefinition
+}
 
 type CropOfferPayload = {
   cropData?: {
     crops?: Array<{
-      parcels?: unknown[];
-    }>;
-  };
-};
+      parcels?: unknown[]
+    }>
+  }
+}
 
 @Component({
   selector: 'app-offers-home-page',
+  standalone: true,
   imports: [
     CommonModule,
     FormsModule,
@@ -71,25 +75,25 @@ type CropOfferPayload = {
     Tag
   ],
   templateUrl: './offers-home-page.component.html',
-  styleUrl: './offers-home-page.component.scss'
+  styleUrls: ['./offers-home-page.component.scss']
 })
 export class OffersHomePageComponent {
-  private readonly offersRepository = inject(OffersRepository);
-  private readonly referenceDataRepository = inject(ReferenceDataRepository);
-  private readonly salesFlowRuntimeRepository = inject(SalesFlowRuntimeRepository);
-  private readonly router = inject(Router);
+  private readonly offersRepository = inject(OffersRepository)
+  private readonly referenceDataRepository = inject(ReferenceDataRepository)
+  private readonly salesFlowRuntimeRepository = inject(SalesFlowRuntimeRepository)
+  private readonly router = inject(Router)
 
-  protected readonly searchTerm = signal('');
-  protected readonly selectedStatus = signal<string | null>(null);
-  protected readonly selectedProduct = signal<OfferProductFilter>('ALL');
-  protected readonly selectedSortField = signal<OfferSortField>('ISSUE_DATE');
-  protected readonly selectedSortDirection = signal<SortDirection>('DESC');
-  protected readonly statusOverrides = signal<Record<string, OfferStatus>>({});
-  protected readonly pendingTransition = signal<PendingTransition | null>(null);
-  protected readonly transitionDialogVisible = signal(false);
+  readonly searchTerm = signal('')
+  readonly selectedStatus = signal<OfferStatusFilter>('ALL')
+  readonly selectedProduct = signal<OfferProductFilter>('ALL')
+  readonly selectedSortField = signal<OfferSortField>('ISSUE_DATE')
+  readonly selectedSortDirection = signal<SortDirection>('DESC')
+  readonly statusOverrides = signal<Record<string, OfferStatus>>({})
+  readonly pendingTransition = signal<PendingTransition | null>(null)
+  readonly transitionDialogVisible = signal(false)
 
-  protected readonly offers = toSignal(this.offersRepository.getOffers(), { initialValue: [] as Offer[] });
-  protected readonly referenceData = toSignal(this.referenceDataRepository.getReferenceData(), {
+  readonly offers = toSignal(this.offersRepository.getOffers(), { initialValue: [] as Offer[] })
+  readonly referenceData = toSignal(this.referenceDataRepository.getReferenceData(), {
     initialValue: {
       offerStatuses: [],
       policyLines: [],
@@ -97,139 +101,143 @@ export class OffersHomePageComponent {
       vehicleUsages: [],
       vehicleFinancing: []
     } as ReferenceData
-  });
+  })
+  readonly coveragePeriodLabel = computed(() => getCoveragePeriodLabel())
 
-  protected readonly statusOptions = computed<FilterOption[]>(() => [
+  readonly statusOptions = computed<FilterOption[]>(() => [
     { code: 'ALL', label: 'Wszystkie statusy' },
     ...this.referenceData().offerStatuses
-  ]);
-  protected readonly allOffers = computed<Offer[]>(() => {
-    const byId = new Map<string, Offer>();
+  ])
 
-    [...this.offers(), ...this.salesFlowRuntimeRepository.runtimeOffers()].forEach((offer) => byId.set(offer.id, offer));
-    return Array.from(byId.values());
-  });
-  protected readonly offersWithRuntimeStatus = computed(() => {
-    const overrides = this.statusOverrides();
+  readonly sortFieldOptions: FilterOption[] = [
+    { code: 'ISSUE_DATE', label: 'Data wystawienia' },
+    { code: 'VALID_TO', label: 'Data ważności' }
+  ]
+
+  readonly productOptions: FilterOption[] = [
+    { code: 'ALL', label: 'Wszystkie produkty' },
+    { code: 'MOTOR', label: 'Komunikacyjne' },
+    { code: 'CROP', label: 'Uprawy' }
+  ]
+
+  readonly allOffers = computed<Offer[]>(() => {
+    const byId = new Map<string, Offer>()
+
+    for (const offer of [...this.offers(), ...this.salesFlowRuntimeRepository.runtimeOffers()]) {
+      byId.set(offer.id, offer)
+    }
+
+    return Array.from(byId.values())
+  })
+
+  readonly offersWithRuntimeStatus = computed<Offer[]>(() => {
+    const overrides = this.statusOverrides()
 
     return this.allOffers().map((offer) => ({
       ...offer,
       status: overrides[offer.id] ?? offer.status
-    }));
-  });
+    }))
+  })
 
-  protected readonly sortFieldOptions: FilterOption[] = [
-    { code: 'ISSUE_DATE', label: 'Data wystawienia' },
-    { code: 'VALID_TO', label: 'Data ważności' }
-  ];
-  protected readonly productOptions: FilterOption[] = [
-    { code: 'ALL', label: 'Wszystkie produkty' },
-    { code: 'MOTOR', label: 'Komunikacyjne' },
-    { code: 'CROP', label: 'Uprawy' }
-  ];
-
-  protected readonly filteredOffers = computed(() => {
-    const normalizedSearch = this.searchTerm().trim().toLowerCase();
-    const selectedStatus = this.selectedStatus();
-    const selectedProduct = this.selectedProduct();
+  readonly filteredOffers = computed<Offer[]>(() => {
+    const normalizedSearch = this.searchTerm().trim().toLowerCase()
+    const selectedStatus = this.selectedStatus()
+    const selectedProduct = this.selectedProduct()
 
     const filtered = this.offersWithRuntimeStatus().filter((offer) => {
-      const matchesStatus = !selectedStatus || selectedStatus === 'ALL' || offer.status === selectedStatus;
-      const offerProduct = offer.product ?? 'MOTOR';
-      const matchesProduct = selectedProduct === 'ALL' || offerProduct === selectedProduct;
+      const matchesStatus = selectedStatus === 'ALL' || offer.status === selectedStatus
+      const offerProduct = offer.product ?? 'MOTOR'
+      const matchesProduct = selectedProduct === 'ALL' || offerProduct === selectedProduct
       const matchesSearch =
         normalizedSearch.length === 0 ||
         offer.offerNumber.toLowerCase().includes(normalizedSearch) ||
         this.getCustomerDisplayName(offer).toLowerCase().includes(normalizedSearch) ||
         this.getOfferHeadlineSubject(offer).toLowerCase().includes(normalizedSearch) ||
         `${offer.vehicle.make} ${offer.vehicle.model}`.toLowerCase().includes(normalizedSearch) ||
-        (offer.vehicle.registration?.registrationNumber ?? '').toLowerCase().includes(normalizedSearch);
+        (offer.vehicle.registration?.registrationNumber ?? '').toLowerCase().includes(normalizedSearch)
 
-      return matchesStatus && matchesProduct && matchesSearch;
-    });
+      return matchesStatus && matchesProduct && matchesSearch
+    })
 
-    return [...filtered].sort((left, right) => this.compareOffers(left, right));
-  });
-  protected readonly offerMenuModels = computed<Record<string, MenuItem[]>>(() => {
-    const result: Record<string, MenuItem[]> = {};
+    return [...filtered].sort((left, right) => this.compareOffers(left, right))
+  })
 
-    this.filteredOffers().forEach((offer) => {
+  readonly offerMenuModels = computed<Record<string, MenuItem[]>>(() => {
+    const result: Record<string, MenuItem[]> = {}
+
+    for (const offer of this.filteredOffers()) {
       const transitions = this.getAvailableTransitions(offer.status).map((transition) => ({
         label: transition.actionLabel,
         icon: this.transitionIcon(transition.targetStatus),
         command: () => this.openTransitionDialog(offer, transition)
-      }));
+      }))
 
-      const utilityItems: MenuItem[] = [];
+      const utilityItems: MenuItem[] = []
 
       if (this.supportsPrint(offer.status)) {
         utilityItems.push({
           label: 'Wydruk',
           icon: 'pi pi-print',
           command: () => this.printPlaceholder(offer)
-        });
+        })
       }
 
       utilityItems.push({
         label: 'Kopiuj',
         icon: 'pi pi-copy',
         command: () => this.copyOffer(offer.id)
-      });
+      })
 
-      result[offer.id] = [...transitions, ...(transitions.length > 0 ? [{ separator: true } as MenuItem] : []), ...utilityItems];
-    });
+      result[offer.id] = [
+        ...transitions,
+        ...(transitions.length > 0 ? ([{ separator: true }] as MenuItem[]) : []),
+        ...utilityItems
+      ]
+    }
 
-    return result;
-  });
+    return result
+  })
 
-  protected readonly summaryTiles = computed(() => {
-    const offers = this.filteredOffers();
-    const issued = offers.filter((offer) => offer.status === 'ISSUED').length;
-    const inProgress = offers.filter((offer) => ['DRAFT', 'CALCULATION'].includes(offer.status)).length;
-    const averageMonthlyPremium =
-      offers.length > 0
-        ? Math.round(
-            offers.reduce((sum, offer) => sum + (offer.selectedPaymentPlan?.totalPremium.amount ?? offer.variants[0]?.totalPremium.amount ?? 0), 0) /
-              offers.length /
-              12
-          )
-        : 0;
+  readonly summaryTiles = computed(() => {
+    const offers = this.filteredOffers()
+    const issued = offers.filter((offer) => offer.status === 'ISSUED').length
+    const inProgress = offers.filter((offer) => ['DRAFT', 'CALCULATION'].includes(offer.status)).length
+    const totalPremium = offers.reduce(
+      (sum, offer) => sum + (offer.selectedPaymentPlan?.totalPremium.amount ?? offer.variants[0]?.totalPremium.amount ?? 0),
+      0
+    )
+    const averageMonthlyPremium = offers.length > 0 ? Math.round(totalPremium / offers.length / 12) : 0
 
     return [
       { label: 'Oferta wystawiona', value: `${issued}`, note: 'gotowe do decyzji klienta' },
       { label: 'Draft / Kalkulacja', value: `${inProgress}`, note: 'oferty w przygotowaniu' },
       { label: 'Średnia składka', value: `${averageMonthlyPremium.toLocaleString('pl-PL')} zł`, note: 'w ujęciu miesięcznym' }
-    ];
-  });
+    ]
+  })
 
-  protected readonly totalVisibleOffers = computed(() => this.filteredOffers().length);
+  readonly totalVisibleOffers = computed(() => this.filteredOffers().length)
 
-  // New computed signal to detect if any filter or sorting differs from default values
-  protected readonly filtersChanged = computed(() => {
+  readonly filtersChanged = computed(() => {
     return (
       this.searchTerm() !== '' ||
       this.selectedStatus() !== 'ALL' ||
       this.selectedProduct() !== 'ALL' ||
       this.selectedSortField() !== 'ISSUE_DATE' ||
       this.selectedSortDirection() !== 'DESC'
-    );
-  });
+    )
+  })
 
-  protected getCustomerDisplayName(offer: Offer): string {
-    const identity = offer.customer.identity;
+  getCustomerDisplayName(offer: Offer): string {
+    const identity = offer.customer.identity
 
-    if (identity.type === 'LEGAL_ENTITY') {
-      return identity.companyName;
+    if (identity.type === 'LEGAL_ENTITY' || identity.type === 'SOLE_PROPRIETOR') {
+      return identity.companyName
     }
 
-    if (identity.type === 'SOLE_PROPRIETOR') {
-      return identity.companyName;
-    }
-
-    return `${identity.personName.firstName} ${identity.personName.lastName}`;
+    return `${identity.personName.firstName} ${identity.personName.lastName}`.trim()
   }
 
-  protected getStatusPresentation(status: OfferStatus): StatusPresentation {
+  getStatusPresentation(status: OfferStatus): StatusPresentation {
     const statusMap: Record<OfferStatus, StatusPresentation> = {
       DRAFT: { label: 'Draft', severity: 'secondary' },
       CALCULATION: { label: 'Kalkulacja', severity: 'info' },
@@ -238,166 +246,164 @@ export class OffersHomePageComponent {
       POLICY: { label: 'Polisa', severity: 'success' },
       REJECTED: { label: 'Oferta odrzucona', severity: 'danger' },
       CANCELED: { label: 'Oferta anulowana', severity: 'warn' }
-    };
-
-    return statusMap[status];
-  }
-
-  protected getPrimaryPremium(offer: Offer): number {
-    return offer.selectedPaymentPlan?.totalPremium.amount ?? offer.variants[0]?.totalPremium.amount ?? 0;
-  }
-
-  protected getSelectedVariantName(offer: Offer): string {
-    const selected = offer.variants.find((variant) => variant.id === offer.selectedVariantId);
-    return selected?.name ?? 'Brak wyboru';
-  }
-
-  protected isCropOffer(offer: Offer): boolean {
-    return offer.product === 'CROP';
-  }
-
-  protected getOfferHeadlineSubject(offer: Offer): string {
-    if (!this.isCropOffer(offer)) {
-      return `${offer.vehicle.make} ${offer.vehicle.model}`.trim();
     }
 
-    const { cropsCount, parcelsCount } = this.getCropCounts(offer);
-    return `${cropsCount} upraw${cropsCount === 1 ? 'a' : ''} · ${parcelsCount} dział${parcelsCount === 1 ? 'ka' : 'ki'}`;
+    return statusMap[status]
   }
 
-  protected getCropMetaPrimaryLine(offer: Offer): string {
-    const { cropsCount, parcelsCount } = this.getCropCounts(offer);
-    return `${cropsCount} upraw${cropsCount === 1 ? 'a' : ''} · ${parcelsCount} dział${parcelsCount === 1 ? 'ka' : 'ki'}`;
+  getPrimaryPremium(offer: Offer): number {
+    return offer.selectedPaymentPlan?.totalPremium.amount ?? offer.variants[0]?.totalPremium.amount ?? 0
   }
 
-  protected getCropMetaSecondaryLine(offer: Offer): string {
-    const city = offer.customer.residenceAddress?.city ?? '—';
-    const identity = offer.customer.identity;
+  getSelectedVariantName(offer: Offer): string {
+    const selected = offer.variants.find((variant) => variant.id === offer.selectedVariantId)
+    return selected?.name ?? 'Brak wyboru'
+  }
+
+  isCropOffer(offer: Offer): boolean {
+    return offer.product === 'CROP'
+  }
+
+  getOfferHeadlineSubject(offer: Offer): string {
+    if (!this.isCropOffer(offer)) {
+      return `${offer.vehicle.make} ${offer.vehicle.model}`.trim()
+    }
+
+    const { cropsCount, parcelsCount } = this.getCropCounts(offer)
+    return `${cropsCount} upraw${cropsCount === 1 ? 'a' : ''} · ${parcelsCount} dział${parcelsCount === 1 ? 'ka' : 'ki'}`
+  }
+
+  getCropMetaPrimaryLine(offer: Offer): string {
+    const { cropsCount, parcelsCount } = this.getCropCounts(offer)
+    return `${cropsCount} upraw${cropsCount === 1 ? 'a' : ''} · ${parcelsCount} dział${parcelsCount === 1 ? 'ka' : 'ki'}`
+  }
+
+  getCropMetaSecondaryLine(offer: Offer): string {
+    const city = offer.customer.residenceAddress?.city ?? '—'
+    const identity = offer.customer.identity
     const owner =
       identity.type === 'NATURAL_PERSON'
         ? identity.personName.lastName
-        : identity.type === 'SOLE_PROPRIETOR' || identity.type === 'LEGAL_ENTITY'
-          ? identity.companyName
-          : 'gospodarstwo';
+        : identity.companyName
 
-    return `${city} · ${owner}`;
+    return `${city} · ${owner}`
   }
 
-  protected isRenewalOffer(offer: Offer): boolean {
-    return !!offer.renewalContext && offer.renewalContext.mode === 'RENEW';
+  isRenewalOffer(offer: Offer): boolean {
+    return offer.renewalContext?.mode === 'RENEW'
   }
 
-  protected openTransitionDialog(offer: Offer, transition: TransitionDefinition): void {
-    this.pendingTransition.set({ offer, transition });
-    this.transitionDialogVisible.set(true);
+  openTransitionDialog(offer: Offer, transition: TransitionDefinition): void {
+    this.pendingTransition.set({ offer, transition })
+    this.transitionDialogVisible.set(true)
   }
 
-  protected closeTransitionDialog(): void {
-    this.transitionDialogVisible.set(false);
-    this.pendingTransition.set(null);
+  closeTransitionDialog(): void {
+    this.transitionDialogVisible.set(false)
+    this.pendingTransition.set(null)
   }
 
-  protected confirmTransition(): void {
-    const pending = this.pendingTransition();
+  confirmTransition(): void {
+    const pending = this.pendingTransition()
 
     if (!pending) {
-      return;
+      return
     }
 
     this.statusOverrides.update((overrides) => ({
       ...overrides,
       [pending.offer.id]: pending.transition.targetStatus
-    }));
+    }))
 
     const transitionedOffer: Offer = {
       ...pending.offer,
       status: pending.transition.targetStatus,
       updatedAt: new Date().toISOString()
-    };
-    this.salesFlowRuntimeRepository.saveDraftOffer(transitionedOffer);
+    }
+
+    this.salesFlowRuntimeRepository.saveDraftOffer(transitionedOffer)
 
     if (pending.transition.targetStatus === 'POLICY') {
-      this.salesFlowRuntimeRepository.promoteOfferToPolicy(transitionedOffer);
-      this.closeTransitionDialog();
-      void this.router.navigate(['/policies']);
-      return;
+      this.salesFlowRuntimeRepository.promoteOfferToPolicy(transitionedOffer)
+      this.closeTransitionDialog()
+      void this.router.navigate(['/policies'])
+      return
     }
 
-    this.closeTransitionDialog();
+    this.closeTransitionDialog()
   }
 
-  // New method to clear all filters and sorting to default values
-  protected clearAllFilters(): void {
-    this.searchTerm.set('');
-    this.selectedStatus.set('ALL');
-    this.selectedProduct.set('ALL');
-    this.selectedSortField.set('ISSUE_DATE');
-    this.selectedSortDirection.set('DESC');
+  clearAllFilters(): void {
+    this.searchTerm.set('')
+    this.selectedStatus.set('ALL')
+    this.selectedProduct.set('ALL')
+    this.selectedSortField.set('ISSUE_DATE')
+    this.selectedSortDirection.set('DESC')
   }
 
-  protected toggleSortDirection(): void {
-    this.selectedSortDirection.update((direction) => (direction === 'DESC' ? 'ASC' : 'DESC'));
+  toggleSortDirection(): void {
+    this.selectedSortDirection.update((direction) => (direction === 'DESC' ? 'ASC' : 'DESC'))
   }
 
-  protected goToOffer(offerId: string): void {
-    const offer = this.offersWithRuntimeStatus().find((item) => item.id === offerId);
+  goToOffer(offerId: string): void {
+    const offer = this.offersWithRuntimeStatus().find((item) => item.id === offerId)
 
     if (offer?.product === 'CROP') {
-      void this.router.navigate(['/offers', offerId, 'crop', 'crop']);
-      return;
+      void this.router.navigate(['/offers', offerId, 'crop', 'crop'])
+      return
     }
 
-    void this.router.navigate(['/offers', offerId, 'vehicle']);
+    void this.router.navigate(['/offers', offerId, 'vehicle'])
   }
 
-  protected sortDirectionLabel(): string {
-    return this.selectedSortDirection() === 'DESC' ? 'Malejąco' : 'Rosnąco';
+  sortDirectionLabel(): string {
+    return this.selectedSortDirection() === 'DESC' ? 'Malejąco' : 'Rosnąco'
   }
 
-  protected sortDirectionIcon(): string {
-    return this.selectedSortDirection() === 'DESC' ? 'pi pi-sort-amount-down' : 'pi pi-sort-amount-up-alt';
+  sortDirectionIcon(): string {
+    return this.selectedSortDirection() === 'DESC' ? 'pi pi-sort-amount-down' : 'pi pi-sort-amount-up-alt'
   }
 
-  protected transitionTitle(): string {
-    return this.pendingTransition()?.transition.title ?? '';
+  transitionTitle(): string {
+    return this.pendingTransition()?.transition.title ?? ''
   }
 
-  protected transitionDescription(): string {
-    return this.pendingTransition()?.transition.description ?? '';
+  transitionDescription(): string {
+    return this.pendingTransition()?.transition.description ?? ''
   }
 
-  protected transitionFromStatusLabel(): string {
-    const status = this.pendingTransition()?.offer.status;
-    return status ? this.getStatusPresentation(status).label : '';
+  transitionFromStatusLabel(): string {
+    const status = this.pendingTransition()?.offer.status
+    return status ? this.getStatusPresentation(status).label : ''
   }
 
-  protected transitionToStatusLabel(): string {
-    const status = this.pendingTransition()?.transition.targetStatus;
-    return status ? this.getStatusPresentation(status).label : '';
+  transitionToStatusLabel(): string {
+    const status = this.pendingTransition()?.transition.targetStatus
+    return status ? this.getStatusPresentation(status).label : ''
   }
 
-  protected transitionSubjectLabel(offer: Offer): string {
-    return this.isCropOffer(offer) ? 'Przedmiot' : 'Pojazd';
+  transitionSubjectLabel(offer: Offer): string {
+    return this.isCropOffer(offer) ? 'Przedmiot' : 'Pojazd'
   }
 
-  protected transitionSubjectValue(offer: Offer): string {
-    return this.isCropOffer(offer) ? this.getCropMetaPrimaryLine(offer) : `${offer.vehicle.make} ${offer.vehicle.model}`.trim();
+  transitionSubjectValue(offer: Offer): string {
+    return this.isCropOffer(offer) ? this.getCropMetaPrimaryLine(offer) : `${offer.vehicle.make} ${offer.vehicle.model}`.trim()
   }
 
-  protected offerProductIcon(offer: Offer): string {
-    return this.isCropOffer(offer) ? 'pi pi-leaf' : 'pi pi-car';
+  offerProductIcon(offer: Offer): string {
+    return this.isCropOffer(offer) ? 'pi pi-leaf' : 'pi pi-car'
   }
 
-  protected offerProductLabel(offer: Offer): string {
-    return this.isCropOffer(offer) ? 'Oferta upraw' : 'Oferta komunikacyjna';
+  offerProductLabel(offer: Offer): string {
+    return this.isCropOffer(offer) ? 'Oferta upraw' : 'Oferta komunikacyjna'
   }
 
   private copyOffer(offerId: string): void {
-    void this.router.navigate(['/offers/new/motor/vehicle'], { queryParams: { copyFrom: offerId } });
+    void this.router.navigate(['/offers/new/motor/vehicle'], { queryParams: { copyFrom: offerId } })
   }
 
   private getAvailableTransitions(status: OfferStatus): TransitionDefinition[] {
-    const transitions: TransitionDefinition[] = [];
+    const transitions: TransitionDefinition[] = []
 
     switch (status) {
       case 'CALCULATION':
@@ -406,32 +412,32 @@ export class OffersHomePageComponent {
           title: 'Wystawienie oferty',
           description: 'Czy na pewno chcesz wystawić ofertę na podstawie tej kalkulacji?',
           targetStatus: 'ISSUED'
-        });
-        break;
+        })
+        break
       case 'ISSUED':
         transitions.push({
           actionLabel: 'Akceptuj',
           title: 'Akceptacja oferty',
           description: 'Czy potwierdzasz akceptację tej oferty?',
           targetStatus: 'ACCEPTED'
-        });
+        })
         transitions.push({
           actionLabel: 'Odrzuć',
           title: 'Odrzucenie oferty',
           description: 'Czy na pewno chcesz oznaczyć ofertę jako odrzuconą?',
           targetStatus: 'REJECTED'
-        });
-        break;
+        })
+        break
       case 'ACCEPTED':
         transitions.push({
           actionLabel: 'Polisuj',
           title: 'Polisowanie oferty',
           description: 'Czy chcesz przejść z zaakceptowanej oferty do statusu polisa?',
           targetStatus: 'POLICY'
-        });
-        break;
+        })
+        break
       default:
-        break;
+        break
     }
 
     if (status !== 'CANCELED' && status !== 'POLICY') {
@@ -440,80 +446,77 @@ export class OffersHomePageComponent {
         title: 'Anulowanie oferty',
         description: 'Czy na pewno chcesz anulować tę ofertę?',
         targetStatus: 'CANCELED'
-      });
+      })
     }
 
-    return transitions;
+    return transitions
   }
 
   private transitionIcon(targetStatus: OfferStatus): string {
     switch (targetStatus) {
       case 'ISSUED':
-        return 'pi pi-send';
+        return 'pi pi-send'
       case 'ACCEPTED':
-        return 'pi pi-check';
+        return 'pi pi-check'
       case 'REJECTED':
-        return 'pi pi-times';
+        return 'pi pi-times'
       case 'POLICY':
-        return 'pi pi-file';
+        return 'pi pi-file'
       case 'CANCELED':
-        return 'pi pi-ban';
+        return 'pi pi-ban'
       default:
-        return 'pi pi-angle-right';
+        return 'pi pi-angle-right'
     }
   }
 
   private supportsPrint(status: OfferStatus): boolean {
-    return status === 'ISSUED' || status === 'ACCEPTED';
+    return status === 'ISSUED' || status === 'ACCEPTED'
   }
 
   private printPlaceholder(offer: Offer): void {
-    // Placeholder action for future document generation integration.
-    console.log('[Offers] Print placeholder action triggered for offer', offer.id);
+    console.log('[Offers] Print placeholder action triggered for offer', offer.id)
   }
 
   private compareOffers(left: Offer, right: Offer): number {
-    const sortField = this.selectedSortField();
+    const naturalOrder =
+      this.selectedSortField() === 'VALID_TO'
+        ? this.compareNullableDates(left.validTo, right.validTo)
+        : this.compareNullableDates(left.createdAt, right.createdAt)
 
-    if (sortField === 'VALID_TO') {
-      return this.compareNullableDates(left.validTo, right.validTo);
-    }
-
-    return this.compareNullableDates(left.createdAt, right.createdAt);
+    return this.selectedSortDirection() === 'ASC' ? naturalOrder : -naturalOrder
   }
 
   private compareNullableDates(left?: string, right?: string): number {
     if (!left && !right) {
-      return 0;
+      return 0
     }
 
     if (!left) {
-      return 1;
+      return 1
     }
 
     if (!right) {
-      return -1;
+      return -1
     }
 
-    const leftTime = new Date(left).getTime();
-    const rightTime = new Date(right).getTime();
+    const leftTime = new Date(left).getTime()
+    const rightTime = new Date(right).getTime()
 
     if (leftTime === rightTime) {
-      return 0;
+      return 0
     }
 
-    const naturalOrder = leftTime > rightTime ? 1 : -1;
-    return this.selectedSortDirection() === 'ASC' ? naturalOrder : -naturalOrder;
+    return leftTime > rightTime ? 1 : -1
   }
 
   private getCropCounts(offer: Offer): { cropsCount: number; parcelsCount: number } {
-    const payload = offer as Offer & CropOfferPayload;
-    const crops = payload.cropData?.crops ?? [];
-    const parcelsCount = crops.reduce((sum, crop) => sum + (crop.parcels?.length ?? 0), 0);
+    const payload = offer as Offer & CropOfferPayload
+    const crops = payload.cropData?.crops ?? []
+    const parcelsCount = crops.reduce((sum, crop) => sum + (crop.parcels?.length ?? 0), 0)
 
     return {
       cropsCount: crops.length,
       parcelsCount
-    };
+    }
   }
 }
