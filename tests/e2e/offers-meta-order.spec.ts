@@ -3,7 +3,9 @@ import { captureStep } from './helpers/visual-snapshot';
 
 test('renders Okres ochrony before Aktualizacja in every visible offer row', async ({ page }, testInfo) => {
   await page.goto('/');
+  await page.goto('/offers');
 
+  await expect(page).toHaveURL(/\/offers$/);
   await expect(page.getByText('Przygotowane oferty')).toBeVisible();
   await captureStep(page, testInfo, 'offers-page-open');
 
@@ -16,9 +18,9 @@ test('renders Okres ochrony before Aktualizacja in every visible offer row', asy
 
   for (let index = 0; index < offerCount; index += 1) {
     const row = offerRows.nth(index);
-    const metaLabels = (
-      await row.locator('.offer-row__meta-grid .offer-row__meta-label').allInnerTexts()
-    ).map((label) => label.trim());
+    const metaLabels = await row.locator('.offer-row__meta-grid .offer-row__meta-label').evaluateAll((labels) =>
+      labels.map((label) => label.textContent?.trim() ?? '')
+    );
 
     const protectionPeriodIndex = metaLabels.indexOf('Okres ochrony');
     const updatedAtIndex = metaLabels.indexOf('Aktualizacja');
