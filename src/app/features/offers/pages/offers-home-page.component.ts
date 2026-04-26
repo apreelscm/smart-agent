@@ -95,7 +95,7 @@ export class OffersHomePageComponent {
   private readonly router = inject(Router);
 
   protected readonly searchTerm = signal('');
-  protected readonly selectedStatus = signal<string | null>(null);
+  protected readonly selectedStatus = signal<string | null>('ALL');
   protected readonly selectedProduct = signal<OfferProductFilter>('ALL');
   protected readonly selectedSortField = signal<OfferSortField>('ISSUE_DATE');
   protected readonly selectedSortDirection = signal<SortDirection>('DESC');
