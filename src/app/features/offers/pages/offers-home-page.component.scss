@@ -156,13 +156,21 @@
 }
 
 .offer-row__meta-grid {
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
   gap: 0.75rem;
 }
 
 .offer-row__meta-grid div {
   display: grid;
   gap: 0.12rem;
+  min-width: 0;
+}
+
+.offer-row__meta-grid strong,
+.offer-row__meta-grid span,
+.offer-row__meta-grid a {
+  line-height: 1.35;
+  overflow-wrap: anywhere;
 }
 
 .offer-row__meta-grid a {
