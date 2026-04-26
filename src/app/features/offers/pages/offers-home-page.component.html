@@ -142,6 +142,11 @@
                 }
               </div>
 
+              <div class="offer-row__meta-item--coverage">
+                <span class="offer-row__meta-label">Okres ochrony</span>
+                <strong class="offer-row__coverage-value">{{ coveragePeriodLabel() }}</strong>
+              </div>
+
               <div>
                 <span class="offer-row__meta-label">Aktualizacja</span>
                 <strong>{{ offer.updatedAt | date: 'dd.MM.yyyy' }}</strong>
