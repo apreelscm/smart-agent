@@ -107,6 +107,7 @@ export class OffersHomePageComponent {
   protected readonly activeExchangeRate = signal<ExchangeRate | null>(null);
   protected readonly exchangeRateLoading = signal(false);
   protected readonly exchangeRateError = signal<string | null>(null);
+  protected readonly protectionPeriod = this.buildProtectionPeriod(new Date());
 
   protected readonly offers = toSignal(this.offersRepository.getOffers(), { initialValue: [] as Offer[] });
   protected readonly referenceData = toSignal(this.referenceDataRepository.getReferenceData(), {
@@ -603,5 +604,24 @@ export class OffersHomePageComponent {
       cropsCount: crops.length,
       parcelsCount
     };
+  }
+
+  private buildProtectionPeriod(systemDate: Date): string {
+    const protectionEndDate = this.addCalendarYear(systemDate);
+    return `${this.formatProtectionDate(systemDate)} - ${this.formatProtectionDate(protectionEndDate)}`;
+  }
+
+  private addCalendarYear(date: Date): Date {
+    const nextYearDate = new Date(date);
+    nextYearDate.setFullYear(nextYearDate.getFullYear() + 1);
+    return nextYearDate;
+  }
+
+  private formatProtectionDate(date: Date): string {
+    const year = date.getFullYear();
+    const month = `${date.getMonth() + 1}`.padStart(2, '0');
+    const day = `${date.getDate()}`.padStart(2, '0');
+
+    return `${year}/${month}/${day}`;
   }
 }

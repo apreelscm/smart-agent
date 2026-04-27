@@ -216,8 +216,8 @@
 }
 
 .offer-row__meta-grid {
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 0.75rem;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) minmax(15rem, 1.3fr);
+  gap: 0.75rem 1rem;
 }
 
 .offer-row__meta-grid div {
@@ -241,6 +241,14 @@
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+}
+
+.offer-row__protection-period {
+  min-width: 0;
+}
+
+.offer-row__protection-period-value {
+  white-space: nowrap;
 }
 
 .offer-row__summary {
@@ -400,6 +408,10 @@ a[pButton]:visited {
 
   .offer-row__headline {
     grid-template-columns: 1fr;
+  }
+
+  .offer-row__protection-period-value {
+    white-space: normal;
   }
 
   .transition-dialog__summary {
