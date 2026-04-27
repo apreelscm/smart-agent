@@ -128,6 +128,11 @@
               </div>
 
               <div>
+                <span class="offer-row__meta-label">Okres ochrony</span>
+                <strong>{{ protectionPeriodLabel }}</strong>
+              </div>
+
+              <div>
                 <span class="offer-row__meta-label">Wariant</span>
                 <strong>{{ getSelectedVariantName(offer) }}</strong>
                 @if (offer.renewalContext; as renewalContext) {
@@ -140,11 +145,6 @@
                 } @else {
                   <span>Wybrany wariant</span>
                 }
-              </div>
-
-              <div>
-                <span class="offer-row__meta-label">Okres ochrony</span>
-                <strong>{{ protectionPeriodLabel }}</strong>
               </div>
 
               <div>

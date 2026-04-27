@@ -85,6 +85,23 @@ describe('OffersHomePageComponent', () => {
     expect(metaGrid?.textContent).toContain('Okres ochrony');
     expect(metaGrid?.textContent).toContain('2024/02/29 - 2025/02/28');
   });
+
+  it('renders the protection period metadata before the variant metadata', () => {
+    jasmine.clock().mockDate(new Date(2025, 0, 15, 10, 0, 0));
+
+    const fixture = TestBed.createComponent(OffersHomePageComponent);
+    fixture.detectChanges();
+
+    const compiled = fixture.nativeElement as HTMLElement;
+    const metaGrid = compiled.querySelector('.offer-row__meta-grid') as HTMLElement | null;
+    const labels = Array.from(metaGrid?.querySelectorAll('.offer-row__meta-label') ?? [])
+      .map((label) => label.textContent?.trim())
+      .filter((label): label is string => !!label);
+
+    expect(labels).toContain('Okres ochrony');
+    expect(labels).toContain('Wariant');
+    expect(labels.indexOf('Okres ochrony')).toBeLessThan(labels.indexOf('Wariant'));
+  });
 });
 
 function buildOffer(): Offer {
