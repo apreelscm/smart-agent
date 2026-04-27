@@ -156,7 +156,7 @@
 }
 
 .offer-row__meta-grid {
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 0.75rem;
 }
 
@@ -301,6 +301,12 @@ a[pButton]:visited {
 .empty-state i {
   font-size: 1.4rem;
   color: var(--app-text-subtle);
+}
+
+@media (width <= 1320px) {
+  .offer-row__meta-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 }
 
 @media (width <= 1180px) {
