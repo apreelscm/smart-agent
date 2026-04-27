@@ -94,7 +94,7 @@ describe('OffersHomePageComponent', () => {
     });
   });
 
-  it('renders the protection period metadata before the variant metadata for each row', () => {
+  it('renders the variant metadata before the protection period metadata for each row', () => {
     jasmine.clock().mockDate(new Date(2025, 0, 15, 10, 0, 0));
 
     const fixture = TestBed.createComponent(OffersHomePageComponent);
@@ -112,7 +112,7 @@ describe('OffersHomePageComponent', () => {
 
       expect(labels).toContain('Okres ochrony');
       expect(labels).toContain('Wariant');
-      expect(labels.indexOf('Okres ochrony')).toBeLessThan(labels.indexOf('Wariant'));
+      expect(labels.indexOf('Wariant')).toBeLessThan(labels.indexOf('Okres ochrony'));
     });
   });
 });
