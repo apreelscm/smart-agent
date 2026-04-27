@@ -66,6 +66,17 @@
       </div>
 
       <div class="toolbar__actions">
+        <p-select
+          [ngModel]="presentationCurrency()"
+          (ngModelChange)="onPresentationCurrencyChange($event)"
+          [options]="presentationCurrencyOptions"
+          optionLabel="label"
+          optionValue="code"
+          appendTo="body"
+          [loading]="currencyChangeInProgress()"
+          class="toolbar__select toolbar__select--currency"
+        />
+
         <button
           pButton
           type="button"
@@ -78,6 +89,30 @@
         <a pButton [routerLink]="['/offers/new']" icon="pi pi-plus" [attr.aria-label]="'Nowa oferta'"></a>
       </div>
     </div>
+
+    @if (exchangeRateRowState(); as state) {
+      <div
+        class="currency-state-row"
+        [class.currency-state-row--error]="state.variant === 'error'"
+        [class.currency-state-row--loading]="state.variant === 'loading'"
+        [attr.role]="state.variant === 'error' ? 'alert' : 'status'"
+        aria-live="polite"
+      >
+        @switch (state.variant) {
+          @case ('loading') {
+            <i class="pi pi-spinner pi-spin" aria-hidden="true"></i>
+          }
+          @case ('error') {
+            <i class="pi pi-exclamation-triangle" aria-hidden="true"></i>
+          }
+          @default {
+            <i class="pi pi-info-circle" aria-hidden="true"></i>
+          }
+        }
+
+        <span>{{ state.message }}</span>
+      </div>
+    }
 
     <div class="results-meta">
       <span>{{ totalVisibleOffers() }} ofert(y) na liście</span>
@@ -153,7 +188,7 @@
           <div class="offer-row__summary">
             <div class="premium-box">
               <span class="offer-row__meta-label">Składka</span>
-              <strong>{{ getPrimaryPremium(offer) | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</strong>
+              <strong>{{ getDisplayedPremium(offer) | currency: presentationCurrency() : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</strong>
               <span>{{ offer.validTo ? ('Ważna do ' + (offer.validTo | date: 'dd.MM.yyyy')) : 'Robocza kalkulacja' }}</span>
             </div>
 
@@ -209,7 +244,7 @@
           </div>
           <div>
             <span>Składka</span>
-            <strong>{{ getPrimaryPremium(pending.offer) | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</strong>
+            <strong>{{ getDisplayedPremium(pending.offer) | currency: presentationCurrency() : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</strong>
           </div>
         </div>
 
