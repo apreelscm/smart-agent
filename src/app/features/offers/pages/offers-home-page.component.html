@@ -143,14 +143,14 @@
               </div>
 
               <div>
-                <span class="offer-row__meta-label">Aktualizacja</span>
-                <strong>{{ offer.updatedAt | date: 'dd.MM.yyyy' }}</strong>
-                <span>{{ offer.updatedAt | date: 'HH:mm' }}</span>
+                <span class="offer-row__meta-label">Okres ochrony</span>
+                <strong class="offer-row__protection-period">{{ protectionPeriodLabel }}</strong>
               </div>
 
               <div>
-                <span class="offer-row__meta-label">Okres ochrony</span>
-                <strong class="offer-row__protection-period">{{ protectionPeriodLabel }}</strong>
+                <span class="offer-row__meta-label">Aktualizacja</span>
+                <strong>{{ offer.updatedAt | date: 'dd.MM.yyyy' }}</strong>
+                <span>{{ offer.updatedAt | date: 'HH:mm' }}</span>
               </div>
             </div>
           </div>

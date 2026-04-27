@@ -151,6 +151,19 @@ describe('OffersHomePageComponent', () => {
     expect(fixture.componentInstance['protectionPeriodLabel']).toBe('2024/02/29 - 2025/02/28');
   });
 
+  it('should render protection period before update in the metadata grid', () => {
+    const fixture = TestBed.createComponent(OffersHomePageComponent);
+    fixture.detectChanges();
+
+    const compiled = fixture.nativeElement as HTMLElement;
+    const firstMetaGrid = compiled.querySelector('.offer-row__meta-grid') as HTMLElement;
+    const metaLabels = Array.from(firstMetaGrid.children).map((element) =>
+      element.querySelector('.offer-row__meta-label')?.textContent?.trim()
+    );
+
+    expect(metaLabels).toEqual(['Pojazd', 'Kanał', 'Wariant', 'Okres ochrony', 'Aktualizacja']);
+  });
+
   it('should render protection period for every visible offer', () => {
     const fixture = TestBed.createComponent(OffersHomePageComponent);
     fixture.detectChanges();
