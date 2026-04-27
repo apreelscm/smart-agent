@@ -156,7 +156,7 @@
 }
 
 .offer-row__meta-grid {
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 0.75rem;
 }
 
@@ -181,6 +181,11 @@
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+}
+
+.offer-row__protection-period {
+  line-height: 1.35;
+  overflow-wrap: anywhere;
 }
 
 .offer-row__summary {
@@ -324,6 +329,10 @@ a[pButton]:visited {
 
   .toolbar__sort-direction {
     width: 100%;
+  }
+
+  .offer-row__meta-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   .offer-row__summary {

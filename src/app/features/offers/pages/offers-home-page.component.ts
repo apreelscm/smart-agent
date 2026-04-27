@@ -1,8 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed, inject, signal } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
+import { map, interval, startWith } from 'rxjs';
 import { MenuItem } from 'primeng/api';
 import { ButtonDirective } from 'primeng/button';
 import { Dialog } from 'primeng/dialog';
@@ -10,13 +11,14 @@ import { InputText } from 'primeng/inputtext';
 import { Select } from 'primeng/select';
 import { SplitButton } from 'primeng/splitbutton';
 import { Tag } from 'primeng/tag';
+import { Offer, OfferStatus, ReferenceData } from '../../../core/models';
 import { OffersRepository } from '../../../core/repositories/offers.repository';
 import { ReferenceDataRepository } from '../../../core/repositories/reference-data.repository';
 import { SalesFlowRuntimeRepository } from '../../../core/repositories/sales-flow-runtime.repository';
-import { Offer, OfferStatus, ReferenceData } from '../../../core/models';
 import { PageHeaderComponent } from '../../../shared/ui/page-header/page-header.component';
 import { SectionCardComponent } from '../../../shared/ui/section-card/section-card.component';
 import { StatTileComponent } from '../../../shared/ui/stat-tile/stat-tile.component';
+import { formatOfferProtectionPeriod } from '../utils/offer-protection-period.util';
 
 type FilterOption = {
   code: string;
@@ -98,6 +100,9 @@ export class OffersHomePageComponent {
       vehicleFinancing: []
     } as ReferenceData
   });
+  protected readonly currentTimeTick = toSignal(interval(60_000).pipe(startWith(0), map(() => new Date())), {
+    initialValue: new Date()
+  });
 
   protected readonly statusOptions = computed<FilterOption[]>(() => [
     { code: 'ALL', label: 'Wszystkie statusy' },
@@ -117,6 +122,7 @@ export class OffersHomePageComponent {
       status: overrides[offer.id] ?? offer.status
     }));
   });
+  protected readonly protectionPeriodLabel = computed(() => formatOfferProtectionPeriod(this.currentTimeTick()));
 
   protected readonly sortFieldOptions: FilterOption[] = [
     { code: 'ISSUE_DATE', label: 'Data wystawienia' },
