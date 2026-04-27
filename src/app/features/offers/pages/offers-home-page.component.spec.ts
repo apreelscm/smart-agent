@@ -27,7 +27,7 @@ describe('OffersHomePageComponent', () => {
     runtimeOffersState = signal<Offer[]>([]);
 
     offersRepositoryStub = {
-      getOffers: jasmine.createSpy('getOffers').and.returnValue(of([buildOffer()]))
+      getOffers: jasmine.createSpy('getOffers').and.returnValue(of([buildMotorOffer(), buildCropOffer()]))
     };
 
     referenceDataRepositoryStub = {
@@ -60,17 +60,21 @@ describe('OffersHomePageComponent', () => {
     jasmine.clock().uninstall();
   });
 
-  it('renders the protection period for the current system date', () => {
+  it('renders the protection period for every visible offer row using the current system date', () => {
     jasmine.clock().mockDate(new Date(2025, 0, 15, 10, 0, 0));
 
     const fixture = TestBed.createComponent(OffersHomePageComponent);
     fixture.detectChanges();
 
     const compiled = fixture.nativeElement as HTMLElement;
-    const metaGrid = compiled.querySelector('.offer-row__meta-grid');
+    const metaGrids = Array.from(compiled.querySelectorAll('.offer-row__meta-grid'));
 
-    expect(metaGrid?.textContent).toContain('Okres ochrony');
-    expect(metaGrid?.textContent).toContain('2025/01/15 - 2026/01/15');
+    expect(metaGrids.length).toBe(2);
+
+    metaGrids.forEach((metaGrid) => {
+      expect(metaGrid.textContent).toContain('Okres ochrony');
+      expect(metaGrid.textContent).toContain('2025/01/15 - 2026/01/15');
+    });
   });
 
   it('renders a valid one-calendar-year protection period for leap day', () => {
@@ -80,31 +84,40 @@ describe('OffersHomePageComponent', () => {
     fixture.detectChanges();
 
     const compiled = fixture.nativeElement as HTMLElement;
-    const metaGrid = compiled.querySelector('.offer-row__meta-grid');
+    const metaGrids = Array.from(compiled.querySelectorAll('.offer-row__meta-grid'));
 
-    expect(metaGrid?.textContent).toContain('Okres ochrony');
-    expect(metaGrid?.textContent).toContain('2024/02/29 - 2025/02/28');
+    expect(metaGrids.length).toBe(2);
+
+    metaGrids.forEach((metaGrid) => {
+      expect(metaGrid.textContent).toContain('Okres ochrony');
+      expect(metaGrid.textContent).toContain('2024/02/29 - 2025/02/28');
+    });
   });
 
-  it('renders the protection period metadata before the variant metadata', () => {
+  it('renders the protection period metadata before the variant metadata for each row', () => {
     jasmine.clock().mockDate(new Date(2025, 0, 15, 10, 0, 0));
 
     const fixture = TestBed.createComponent(OffersHomePageComponent);
     fixture.detectChanges();
 
     const compiled = fixture.nativeElement as HTMLElement;
-    const metaGrid = compiled.querySelector('.offer-row__meta-grid') as HTMLElement | null;
-    const labels = Array.from(metaGrid?.querySelectorAll('.offer-row__meta-label') ?? [])
-      .map((label) => label.textContent?.trim())
-      .filter((label): label is string => !!label);
+    const metaGrids = Array.from(compiled.querySelectorAll('.offer-row__meta-grid'));
 
-    expect(labels).toContain('Okres ochrony');
-    expect(labels).toContain('Wariant');
-    expect(labels.indexOf('Okres ochrony')).toBeLessThan(labels.indexOf('Wariant'));
+    expect(metaGrids.length).toBe(2);
+
+    metaGrids.forEach((metaGrid) => {
+      const labels = Array.from(metaGrid.querySelectorAll('.offer-row__meta-label'))
+        .map((label) => label.textContent?.trim())
+        .filter((label): label is string => !!label);
+
+      expect(labels).toContain('Okres ochrony');
+      expect(labels).toContain('Wariant');
+      expect(labels.indexOf('Okres ochrony')).toBeLessThan(labels.indexOf('Wariant'));
+    });
   });
 });
 
-function buildOffer(): Offer {
+function buildMotorOffer(): Offer {
   return {
     id: 'offer-1',
     product: 'MOTOR',
@@ -167,5 +180,82 @@ function buildOffer(): Offer {
       }
     ],
     selectedVariantId: 'variant-1'
+  } as Offer;
+}
+
+function buildCropOffer(): Offer {
+  return {
+    id: 'offer-2',
+    product: 'CROP',
+    offerNumber: 'OFR/2025/0002',
+    status: 'ISSUED',
+    createdAt: '2025-01-11T09:00:00.000Z',
+    updatedAt: '2025-01-15T13:30:00.000Z',
+    validTo: '2025-02-20T00:00:00.000Z',
+    salesChannel: 'AGENT',
+    agent: {
+      id: 'agent-1',
+      fullName: 'Jan Kowalski',
+      salesChannel: 'AGENT'
+    },
+    customer: {
+      id: 'customer-2',
+      kind: 'SOLE_PROPRIETOR',
+      identity: {
+        type: 'SOLE_PROPRIETOR',
+        companyName: 'Gospodarstwo Rolne Nowak',
+        taxId: '1234567890',
+        personName: {
+          firstName: 'Piotr',
+          lastName: 'Nowak'
+        }
+      },
+      residenceAddress: {
+        street: 'Polna',
+        houseNumber: '7',
+        postalCode: '12-345',
+        city: 'Płock',
+        country: 'PL'
+      }
+    },
+    vehicle: {
+      type: 'PASSENGER_CAR',
+      make: '—',
+      model: '—',
+      registration: {
+        registrationNumber: ''
+      },
+      productionYear: 2020,
+      engine: {
+        fuelType: 'DIESEL',
+        horsepower: 100,
+        capacity: 1998
+      }
+    },
+    insuredObject: {
+      type: 'CROP'
+    },
+    variants: [
+      {
+        id: 'variant-2',
+        name: 'Agro Premium',
+        totalPremium: {
+          amount: 3200,
+          currency: 'PLN'
+        },
+        covers: []
+      }
+    ],
+    selectedVariantId: 'variant-2',
+    cropData: {
+      crops: [
+        {
+          parcels: [{ id: 'parcel-1' }, { id: 'parcel-2' }]
+        },
+        {
+          parcels: [{ id: 'parcel-3' }]
+        }
+      ]
+    }
   } as Offer;
 }
