@@ -1,6 +1,6 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
-import { Customer, Offer, OfferStatus, OfferVariant, Policy, PolicyLineCode, Vehicle } from '../../../core/models';
+import { Customer, Money, Offer, OfferStatus, OfferVariant, Policy, PolicyLineCode, Vehicle } from '../../../core/models';
 import { PaymentPlan } from '../../../core/models/payment/payment-plan.model';
 import { OfferProduct, OffersRepository } from '../../../core/repositories/offers.repository';
 import { SalesFlowRuntimeRepository } from '../../../core/repositories/sales-flow-runtime.repository';
@@ -14,6 +14,16 @@ type CropPersistedPayload = {
   discountAmount?: number;
   selectedPaymentFrequency?: PaymentPlan['frequency'];
   transportMainPlanEnabled?: boolean;
+};
+
+type RecalculableLine = {
+  basePremium?: Money;
+  premium: Money;
+  covers: Array<{
+    enabled: boolean;
+    selectable?: boolean;
+    premiumDelta?: Money;
+  }>;
 };
 
 @Injectable({
@@ -106,25 +116,27 @@ export class OfferWizardStateService {
     const product = source.product ?? 'MOTOR';
     this.draftOfferState.set(
       this.withSelectedVariantFlag(
-        (product === 'MOTOR' ? this.ensureAddonLines({
-          ...source,
-          id: 'draft-new-offer',
-          offerNumber: 'NOWA / kopia',
-          status: 'DRAFT',
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
-          validTo: undefined,
-          renewalContext: undefined
-        }) : {
-          ...source,
-          id: 'draft-new-offer',
-          offerNumber: 'NOWA / kopia',
-          status: 'DRAFT',
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
-          validTo: undefined,
-          renewalContext: undefined
-        })
+        (product === 'MOTOR'
+          ? this.ensureAddonLines({
+              ...source,
+              id: 'draft-new-offer',
+              offerNumber: 'NOWA / kopia',
+              status: 'DRAFT',
+              createdAt: new Date().toISOString(),
+              updatedAt: new Date().toISOString(),
+              validTo: undefined,
+              renewalContext: undefined
+            })
+          : {
+              ...source,
+              id: 'draft-new-offer',
+              offerNumber: 'NOWA / kopia',
+              status: 'DRAFT',
+              createdAt: new Date().toISOString(),
+              updatedAt: new Date().toISOString(),
+              validTo: undefined,
+              renewalContext: undefined
+            })
       )
     );
     this.restoreCropStateFromOffer(source);
@@ -493,17 +505,18 @@ export class OfferWizardStateService {
       notes: [],
       customer: {
         ...clonedTemplate.customer,
-        identity: clonedTemplate.customer.identity.type === 'NATURAL_PERSON'
-          ? {
-              ...clonedTemplate.customer.identity,
-              personName: {
-                firstName: '',
-                lastName: ''
-              },
-              pesel: '',
-              birthDate: ''
-            }
-          : clonedTemplate.customer.identity,
+        identity:
+          clonedTemplate.customer.identity.type === 'NATURAL_PERSON'
+            ? {
+                ...clonedTemplate.customer.identity,
+                personName: {
+                  firstName: '',
+                  lastName: ''
+                },
+                pesel: '',
+                birthDate: ''
+              }
+            : clonedTemplate.customer.identity,
         contact: {
           email: '',
           phoneNumber: ''
@@ -713,15 +726,17 @@ export class OfferWizardStateService {
           ...plan.totalPremium,
           amount: totalPremiumAmount
         },
-        installments: this.recalculateInstallments(totalPremiumAmount, plan.installments.length, plan.installments.map((installment) => installment.dueDate))
+        installments: this.recalculateInstallments(
+          totalPremiumAmount,
+          plan.installments.length,
+          plan.installments.map((installment) => installment.dueDate)
+        )
       })),
       policyLines: recalculatedPolicyLines
     };
   }
 
-  private recalculateLine<T extends { basePremium?: { amount: number }; premium: { amount: number; currency: 'PLN' }; covers: Array<{ enabled: boolean; selectable?: boolean; premiumDelta?: { amount: number } }> }>(
-    line: T
-  ): T {
+  private recalculateLine<T extends RecalculableLine>(line: T): T {
     const enabledSelectableDelta = line.covers.reduce((sum, cover) => {
       if (!cover.enabled) {
         return sum;
