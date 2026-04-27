@@ -66,6 +66,22 @@
       </div>
 
       <div class="toolbar__actions">
+        <div class="toolbar__presentation">
+          <label for="presentation-currency" class="toolbar__presentation-label">Waluta prezentacji</label>
+          <p-select
+            inputId="presentation-currency"
+            [ngModel]="selectedPresentationTargetCurrency()"
+            (ngModelChange)="changePresentationCurrency($event)"
+            [options]="presentationCurrencyOptions"
+            optionLabel="label"
+            optionValue="code"
+            placeholder="PLN (domyślnie)"
+            appendTo="body"
+            [disabled]="exchangeRateLoading()"
+            class="toolbar__select toolbar__select--currency"
+          />
+        </div>
+
         <button
           pButton
           type="button"
@@ -77,6 +93,33 @@
         ></button>
         <a pButton [routerLink]="['/offers/new']" icon="pi pi-plus" [attr.aria-label]="'Nowa oferta'"></a>
       </div>
+    </div>
+
+    <div class="presentation-meta">
+      @if (activeExchangeRate(); as rate) {
+        <div class="presentation-meta__rate" role="status">
+          <i class="pi pi-chart-line" aria-hidden="true"></i>
+          <span class="presentation-meta__label">Kurs prezentacji</span>
+          <span class="presentation-meta__value">
+            1 {{ rate.currencyCode }} = {{ rate.midRate | number: '1.2-4' : 'pl-PL' }} PLN
+          </span>
+          <span class="presentation-meta__value">data kursu: {{ rate.publicationDate | date: 'dd.MM.yyyy' }}</span>
+        </div>
+      }
+
+      @if (exchangeRateLoading()) {
+        <div class="presentation-meta__loading" role="status">
+          <i class="pi pi-spin pi-spinner" aria-hidden="true"></i>
+          <span>Pobieranie kursu {{ requestedPresentationTargetCurrency() }} z NBP…</span>
+        </div>
+      }
+
+      @if (exchangeRateError(); as error) {
+        <div class="presentation-meta__error" role="alert">
+          <i class="pi pi-exclamation-triangle" aria-hidden="true"></i>
+          <span>{{ error }}</span>
+        </div>
+      }
     </div>
 
     <div class="results-meta">
@@ -153,7 +196,9 @@
           <div class="offer-row__summary">
             <div class="premium-box">
               <span class="offer-row__meta-label">Składka</span>
-              <strong>{{ getPrimaryPremium(offer) | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</strong>
+              <strong>
+                {{ getPresentedPremium(offer) | currency: getPresentationCurrencyCode() : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}
+              </strong>
               <span>{{ offer.validTo ? ('Ważna do ' + (offer.validTo | date: 'dd.MM.yyyy')) : 'Robocza kalkulacja' }}</span>
             </div>
 
@@ -209,7 +254,11 @@
           </div>
           <div>
             <span>Składka</span>
-            <strong>{{ getPrimaryPremium(pending.offer) | currency: 'PLN' : 'symbol-narrow' : '1.0-0' : 'pl-PL' }}</strong>
+            <strong>
+              {{
+                getPresentedPremium(pending.offer) | currency: getPresentationCurrencyCode() : 'symbol-narrow' : '1.0-0' : 'pl-PL'
+              }}
+            </strong>
           </div>
         </div>
 
