@@ -1,9 +1,9 @@
-import { expect, test } from '@playwright/test';
+import { expect, test, type Page } from '@playwright/test';
 import { captureStep } from './helpers/visual-snapshot';
 
 const mockDateStorageKey = 'e2e-mock-now';
 
-test('shows the same protection period for each offer on the offers list', async ({ page }, testInfo) => {
+async function installMockDate(page: Page): Promise<void> {
   await page.addInitScript((storageKey: string) => {
     window.eval(`
       (() => {
@@ -38,16 +38,37 @@ test('shows the same protection period for each offer on the offers list', async
       })();
     `);
   }, mockDateStorageKey);
+}
 
+async function seedInitialMockDate(page: Page, value: string): Promise<void> {
   await page.addInitScript(
-    ({ storageKey, value }: { storageKey: string; value: string }) => {
-      window.localStorage.setItem(storageKey, value);
+    ({ storageKey, value: initialValue }: { storageKey: string; value: string }) => {
+      if (!window.localStorage.getItem(storageKey)) {
+        window.localStorage.setItem(storageKey, initialValue);
+      }
     },
     {
       storageKey: mockDateStorageKey,
-      value: '2025-05-10T12:00:00',
+      value,
     },
   );
+}
+
+async function updateMockDate(page: Page, value: string): Promise<void> {
+  await page.evaluate(
+    ({ storageKey, value: nextValue }: { storageKey: string; value: string }) => {
+      window.localStorage.setItem(storageKey, nextValue);
+    },
+    {
+      storageKey: mockDateStorageKey,
+      value,
+    },
+  );
+}
+
+test('shows the same protection period for each offer on the offers list', async ({ page }, testInfo) => {
+  await installMockDate(page);
+  await seedInitialMockDate(page, '2025-05-10T12:00:00');
 
   await page.goto('/offers');
 
@@ -75,50 +96,8 @@ test('shows the same protection period for each offer on the offers list', async
 });
 
 test('recalculates the protection period after opening offers on another day', async ({ page }, testInfo) => {
-  await page.addInitScript((storageKey: string) => {
-    window.eval(`
-      (() => {
-        const OriginalDate = Date;
-        const getMockNow = () => {
-          const storedValue = window.localStorage.getItem(${JSON.stringify(storageKey)});
-          return storedValue ? new OriginalDate(storedValue).getTime() : OriginalDate.now();
-        };
-
-        const MockDate = function (...args) {
-          if (new.target) {
-            if (args.length === 0) {
-              return new OriginalDate(getMockNow());
-            }
-
-            return new OriginalDate(...args);
-          }
-
-          return new OriginalDate(getMockNow()).toString();
-        };
-
-        MockDate.now = () => getMockNow();
-        MockDate.parse = OriginalDate.parse;
-        MockDate.UTC = OriginalDate.UTC;
-        MockDate.prototype = OriginalDate.prototype;
-
-        Object.defineProperty(window, 'Date', {
-          configurable: true,
-          writable: true,
-          value: MockDate,
-        });
-      })();
-    `);
-  }, mockDateStorageKey);
-
-  await page.addInitScript(
-    ({ storageKey, value }: { storageKey: string; value: string }) => {
-      window.localStorage.setItem(storageKey, value);
-    },
-    {
-      storageKey: mockDateStorageKey,
-      value: '2025-05-10T12:00:00',
-    },
-  );
+  await installMockDate(page);
+  await seedInitialMockDate(page, '2025-05-10T12:00:00');
 
   await page.goto('/offers');
 
@@ -127,15 +106,7 @@ test('recalculates the protection period after opening offers on another day', a
   await expect(firstProtectionPeriodValue).toHaveText('2025/05/10 - 2026/05/10');
   await captureStep(page, testInfo, 'protection-period-first-day');
 
-  await page.evaluate(
-    ({ storageKey, value }: { storageKey: string; value: string }) => {
-      window.localStorage.setItem(storageKey, value);
-    },
-    {
-      storageKey: mockDateStorageKey,
-      value: '2025-05-11T12:00:00',
-    },
-  );
+  await updateMockDate(page, '2025-05-11T12:00:00');
 
   await page.goto('/offers');
 
