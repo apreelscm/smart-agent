@@ -67,7 +67,7 @@
 
       <div class="toolbar__actions">
         <p-select
-          [ngModel]="presentationCurrency()"
+          [ngModel]="currencySelectValue()"
           (ngModelChange)="onPresentationCurrencyChange($event)"
           [options]="presentationCurrencyOptions"
           optionLabel="label"

@@ -108,6 +108,7 @@ export class OffersHomePageComponent {
   protected readonly pendingTransition = signal<PendingTransition | null>(null);
   protected readonly transitionDialogVisible = signal(false);
   protected readonly presentationCurrency = signal<PresentationCurrency>('PLN');
+  protected readonly currencySelectValue = signal<PresentationCurrency>('PLN');
   protected readonly activeExchangeRate = signal<NbpExchangeRateQuote | null>(null);
   protected readonly currencyChangeError = signal<string | null>(null);
   protected readonly currencyChangeInProgress = signal(false);
@@ -292,13 +293,16 @@ export class OffersHomePageComponent {
   });
 
   protected onPresentationCurrencyChange(nextCurrency: PresentationCurrency | null | undefined): void {
-    const currency = nextCurrency ?? this.presentationCurrency();
+    const currentCurrency = this.presentationCurrency();
+    const currency = nextCurrency ?? currentCurrency;
 
-    if (currency === this.presentationCurrency()) {
+    if (currency === currentCurrency) {
+      this.currencySelectValue.set(currentCurrency);
       return;
     }
 
     this.currencyChangeError.set(null);
+    this.currencySelectValue.set(currency);
 
     if (currency === 'PLN') {
       this.latestCurrencyRequestId += 1;
@@ -306,6 +310,7 @@ export class OffersHomePageComponent {
       this.pendingCurrency.set(null);
       this.activeExchangeRate.set(null);
       this.presentationCurrency.set('PLN');
+      this.currencySelectValue.set('PLN');
       return;
     }
 
@@ -321,6 +326,7 @@ export class OffersHomePageComponent {
         }
 
         this.presentationCurrency.set(currency);
+        this.currencySelectValue.set(currency);
         this.activeExchangeRate.set(quote);
         this.currencyChangeError.set(null);
         this.currencyChangeInProgress.set(false);
@@ -331,6 +337,7 @@ export class OffersHomePageComponent {
           return;
         }
 
+        this.currencySelectValue.set(currentCurrency);
         this.currencyChangeError.set('Nie udało się pobrać aktualnego kursu NBP. Wyświetlane wartości pozostają bez zmian.');
         this.currencyChangeInProgress.set(false);
         this.pendingCurrency.set(null);
