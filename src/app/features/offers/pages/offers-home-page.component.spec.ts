@@ -4,10 +4,7 @@ import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { provideRouter } from '@angular/router';
 import { of, throwError } from 'rxjs';
 import { Offer } from '../../../core/models';
-import {
-  ExchangeRate,
-  ExchangeRatesRepository
-} from '../../../core/repositories/exchange-rates.repository';
+import { ExchangeRate, ExchangeRatesRepository } from '../../../core/repositories/exchange-rates.repository';
 import { OffersRepository } from '../../../core/repositories/offers.repository';
 import { ReferenceDataRepository } from '../../../core/repositories/reference-data.repository';
 import { SalesFlowRuntimeRepository } from '../../../core/repositories/sales-flow-runtime.repository';
@@ -17,6 +14,7 @@ describe('OffersHomePageComponent', () => {
   let fixture: ComponentFixture<OffersHomePageComponent>;
   let component: OffersHomePageComponent;
   let exchangeRatesRepository: jasmine.SpyObj<ExchangeRatesRepository>;
+  let isClockInstalled = false;
 
   const eurRate: ExchangeRate = {
     tableType: 'A',
@@ -72,9 +70,7 @@ describe('OffersHomePageComponent', () => {
   ];
 
   beforeEach(async () => {
-    exchangeRatesRepository = jasmine.createSpyObj<ExchangeRatesRepository>('ExchangeRatesRepository', [
-      'getCurrentRate'
-    ]);
+    exchangeRatesRepository = jasmine.createSpyObj<ExchangeRatesRepository>('ExchangeRatesRepository', ['getCurrentRate']);
 
     await TestBed.configureTestingModule({
       imports: [OffersHomePageComponent],
@@ -107,13 +103,20 @@ describe('OffersHomePageComponent', () => {
         }
       ]
     }).compileComponents();
+  });
 
-    fixture = TestBed.createComponent(OffersHomePageComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+  afterEach(() => {
+    if (isClockInstalled) {
+      jasmine.clock().uninstall();
+      isClockInstalled = false;
+    }
+
+    fixture?.destroy();
   });
 
   it('should render offers with default PLN presentation', () => {
+    createComponent();
+
     const nativeElement = fixture.nativeElement as HTMLElement;
     const premiumText = nativeElement.querySelector('.premium-box strong')?.textContent ?? '';
 
@@ -122,7 +125,49 @@ describe('OffersHomePageComponent', () => {
     expect(nativeElement.querySelector('.presentation-meta__rate')).toBeNull();
   });
 
+  it('should render protection period for every offer with mocked system date', () => {
+    mockSystemDate(2025, 4, 10);
+    createComponent();
+
+    const nativeElement = fixture.nativeElement as HTMLElement;
+    const labels = Array.from(nativeElement.querySelectorAll('.offer-row__protection-period .offer-row__meta-label')).map((element) =>
+      element.textContent?.trim()
+    );
+    const values = getProtectionPeriodValues(nativeElement);
+
+    expect(labels).toEqual(['Okres ochrony', 'Okres ochrony']);
+    expect(values).toEqual(['2025/05/10 - 2026/05/10', '2025/05/10 - 2026/05/10']);
+  });
+
+  it('should render the same protection period value for all visible offers', () => {
+    mockSystemDate(2025, 4, 10);
+    createComponent();
+
+    const protectionPeriodValues = getProtectionPeriodValues(fixture.nativeElement as HTMLElement);
+
+    expect(protectionPeriodValues.length).toBe(mockOffers.length);
+    expect(new Set(protectionPeriodValues).size).toBe(1);
+    expect(protectionPeriodValues[0]).toBe('2025/05/10 - 2026/05/10');
+  });
+
+  it('should update protection period after recreating the component on another day', () => {
+    mockSystemDate(2025, 4, 10);
+    createComponent();
+
+    const firstRenderValues = getProtectionPeriodValues(fixture.nativeElement as HTMLElement);
+    fixture.destroy();
+
+    jasmine.clock().mockDate(new Date(2025, 4, 11, 12, 0, 0));
+    createComponent();
+
+    const secondRenderValues = getProtectionPeriodValues(fixture.nativeElement as HTMLElement);
+
+    expect(firstRenderValues[0]).toBe('2025/05/10 - 2026/05/10');
+    expect(secondRenderValues[0]).toBe('2025/05/11 - 2026/05/11');
+  });
+
   it('should convert visible premiums after selecting EUR and display applied rate', () => {
+    createComponent();
     exchangeRatesRepository.getCurrentRate.and.returnValue(of(eurRate));
 
     (component as any).changePresentationCurrency('EUR');
@@ -140,6 +185,7 @@ describe('OffersHomePageComponent', () => {
   });
 
   it('should convert visible premiums after selecting USD', () => {
+    createComponent();
     exchangeRatesRepository.getCurrentRate.and.returnValue(of(usdRate));
 
     (component as any).changePresentationCurrency('USD');
@@ -152,6 +198,7 @@ describe('OffersHomePageComponent', () => {
   });
 
   it('should keep previous presentation and show error when next rate request fails', () => {
+    createComponent();
     exchangeRatesRepository.getCurrentRate.and.returnValues(
       of(eurRate),
       throwError(() => new Error('NBP unavailable'))
@@ -171,6 +218,24 @@ describe('OffersHomePageComponent', () => {
     expect((component as any).getPresentedPremium(mockOffers[0])).toBe(300);
     expect(alertText).toContain('Nie udało się pobrać kursu USD');
   });
+
+  function createComponent(): void {
+    fixture = TestBed.createComponent(OffersHomePageComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  }
+
+  function mockSystemDate(year: number, monthIndex: number, day: number): void {
+    jasmine.clock().install();
+    jasmine.clock().mockDate(new Date(year, monthIndex, day, 12, 0, 0));
+    isClockInstalled = true;
+  }
+
+  function getProtectionPeriodValues(nativeElement: HTMLElement): string[] {
+    return Array.from(nativeElement.querySelectorAll('.offer-row__protection-period-value')).map(
+      (element) => element.textContent?.trim() ?? ''
+    );
+  }
 
   function createOffer(overrides: Partial<Offer> = {}): Offer {
     return {
