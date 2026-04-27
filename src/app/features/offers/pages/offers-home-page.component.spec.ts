@@ -125,6 +125,17 @@ describe('OffersHomePageComponent', () => {
     expect(nativeElement.querySelector('.presentation-meta__rate')).toBeNull();
   });
 
+  it('should render offer metadata in the expected order', () => {
+    createComponent();
+
+    const firstMetaGrid = (fixture.nativeElement as HTMLElement).querySelector('.offer-row__meta-grid');
+    const labels = Array.from(firstMetaGrid?.children ?? []).map((element) =>
+      element.querySelector('.offer-row__meta-label')?.textContent?.trim() ?? ''
+    );
+
+    expect(labels).toEqual(['Pojazd', 'Kanał', 'Wariant', 'Okres ochrony', 'Aktualizacja']);
+  });
+
   it('should render protection period for every offer with mocked system date', () => {
     mockSystemDate(2025, 4, 10);
     createComponent();

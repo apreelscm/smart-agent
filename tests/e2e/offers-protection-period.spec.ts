@@ -1,116 +1,51 @@
-import { expect, test, type Page } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 import { captureStep } from './helpers/visual-snapshot';
 
-const mockDateStorageKey = 'e2e-mock-now';
+const expectedMetaLabels = [/Pojazd|Uprawy/, 'Kanał', 'Wariant', 'Okres ochrony', 'Aktualizacja'];
 
-async function installMockDate(page: Page): Promise<void> {
-  await page.addInitScript((storageKey: string) => {
-    window.eval(`
-      (() => {
-        const OriginalDate = Date;
-        const getMockNow = () => {
-          const storedValue = window.localStorage.getItem(${JSON.stringify(storageKey)});
-          return storedValue ? new OriginalDate(storedValue).getTime() : OriginalDate.now();
-        };
+test('shows protection period before update date for visible offers', async ({ page }, testInfo) => {
+  await openOffersPage(page);
 
-        const MockDate = function (...args) {
-          if (new.target) {
-            if (args.length === 0) {
-              return new OriginalDate(getMockNow());
-            }
+  await expect(page.getByRole('heading', { name: 'Przygotowane oferty' })).toBeVisible();
+  await captureStep(page, testInfo, 'offers-page-loaded');
 
-            return new OriginalDate(...args);
-          }
+  const offerRows = page.locator('.offer-list .offer-row');
+  await expect(offerRows.first()).toBeVisible();
+  await captureStep(page, testInfo, 'offer-list-visible');
 
-          return new OriginalDate(getMockNow()).toString();
-        };
+  const firstRowLabels = offerRows.first().locator('.offer-row__meta-grid .offer-row__meta-label');
+  await expect(firstRowLabels).toHaveText(expectedMetaLabels);
+  await captureStep(page, testInfo, 'first-offer-meta-order');
 
-        MockDate.now = () => getMockNow();
-        MockDate.parse = OriginalDate.parse;
-        MockDate.UTC = OriginalDate.UTC;
-        MockDate.prototype = OriginalDate.prototype;
+  const offerCount = await offerRows.count();
 
-        Object.defineProperty(window, 'Date', {
-          configurable: true,
-          writable: true,
-          value: MockDate,
-        });
-      })();
-    `);
-  }, mockDateStorageKey);
-}
+  for (let index = 0; index < offerCount; index += 1) {
+    await expect(
+      offerRows.nth(index).locator('.offer-row__meta-grid .offer-row__meta-label'),
+    ).toHaveText(expectedMetaLabels);
+  }
 
-async function seedInitialMockDate(page: Page, value: string): Promise<void> {
-  await page.addInitScript(
-    ({ storageKey, value: initialValue }: { storageKey: string; value: string }) => {
-      if (!window.localStorage.getItem(storageKey)) {
-        window.localStorage.setItem(storageKey, initialValue);
-      }
-    },
-    {
-      storageKey: mockDateStorageKey,
-      value,
-    },
-  );
-}
+  await captureStep(page, testInfo, 'all-offers-meta-order');
+});
 
-async function updateMockDate(page: Page, value: string): Promise<void> {
-  await page.evaluate(
-    ({ storageKey, value: nextValue }: { storageKey: string; value: string }) => {
-      window.localStorage.setItem(storageKey, nextValue);
-    },
-    {
-      storageKey: mockDateStorageKey,
-      value,
-    },
-  );
-}
+test('keeps the new metadata order on mobile layout', async ({ page }, testInfo) => {
+  await page.setViewportSize({ width: 900, height: 900 });
+  await openOffersPage(page);
 
-test('shows the same protection period for each offer on the offers list', async ({ page }, testInfo) => {
-  await installMockDate(page);
-  await seedInitialMockDate(page, '2025-05-10T12:00:00');
+  await expect(page.getByRole('heading', { name: 'Przygotowane oferty' })).toBeVisible();
+  await captureStep(page, testInfo, 'offers-page-mobile-loaded');
 
+  const firstRowLabels = page
+    .locator('.offer-list .offer-row')
+    .first()
+    .locator('.offer-row__meta-grid .offer-row__meta-label');
+
+  await expect(firstRowLabels).toHaveText(expectedMetaLabels);
+  await captureStep(page, testInfo, 'mobile-meta-order');
+});
+
+async function openOffersPage(page: Parameters<typeof test>[0]['page']) {
+  await page.goto('/');
   await page.goto('/offers');
-
   await expect(page).toHaveURL(/\/offers$/);
-  await expect(page.getByRole('heading', { name: 'Przygotowane oferty' })).toBeVisible();
-  await expect(page.locator('.offer-row').first()).toBeVisible();
-  await captureStep(page, testInfo, 'offers-list-loaded');
-
-  const protectionPeriodBlocks = page.locator('.offer-row__protection-period');
-  const protectionPeriodValues = page.locator('.offer-row__protection-period-value');
-
-  await expect(protectionPeriodBlocks.first()).toContainText('Okres ochrony');
-  await expect(protectionPeriodValues.first()).toHaveText('2025/05/10 - 2026/05/10');
-  await captureStep(page, testInfo, 'protection-period-visible');
-
-  const rowCount = await page.locator('.offer-row').count();
-  const protectionPeriodCount = await protectionPeriodBlocks.count();
-  const visibleValues = (await protectionPeriodValues.allTextContents()).map((value) => value.trim());
-
-  expect(rowCount).toBeGreaterThan(0);
-  expect(protectionPeriodCount).toBe(rowCount);
-  expect(new Set(visibleValues).size).toBe(1);
-  expect(visibleValues[0]).toBe('2025/05/10 - 2026/05/10');
-  await captureStep(page, testInfo, 'protection-period-shared-across-offers');
-});
-
-test('recalculates the protection period after opening offers on another day', async ({ page }, testInfo) => {
-  await installMockDate(page);
-  await seedInitialMockDate(page, '2025-05-10T12:00:00');
-
-  await page.goto('/offers');
-
-  const firstProtectionPeriodValue = page.locator('.offer-row__protection-period-value').first();
-
-  await expect(firstProtectionPeriodValue).toHaveText('2025/05/10 - 2026/05/10');
-  await captureStep(page, testInfo, 'protection-period-first-day');
-
-  await updateMockDate(page, '2025-05-11T12:00:00');
-
-  await page.goto('/offers');
-
-  await expect(page.getByRole('heading', { name: 'Przygotowane oferty' })).toBeVisible();
-  await expect(firstProtectionPeriodValue).toHaveText('2025/05/11 - 2026/05/11');
-  await captureStep(page, testInfo, 'protection-period-second-day');
-});
+}
