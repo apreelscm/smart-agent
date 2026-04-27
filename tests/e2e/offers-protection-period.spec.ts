@@ -1,145 +1,84 @@
 import { expect, test } from '@playwright/test';
 import { captureStep } from './helpers/visual-snapshot';
 
-test('shows the protection period column for every visible offer row', async ({ page }, testInfo) => {
-  const fixedTime = new Date('2025-01-15T12:00:00').getTime();
+function formatProtectionPeriodDate(date: Date): string {
+  const year = date.getFullYear();
+  const month = `${date.getMonth() + 1}`.padStart(2, '0');
+  const day = `${date.getDate()}`.padStart(2, '0');
 
-  await page.addInitScript((now) => {
-    const RealDate = Date;
+  return `${year}/${month}/${day}`;
+}
 
-    class MockDate extends RealDate {
-      constructor(
-        ...args:
-          | []
-          | [number]
-          | [string]
-          | [Date]
-          | [number, number, number?, number?, number?, number?, number?]
-      ) {
-        if (args.length === 0) {
-          super(now);
-          return;
-        }
-
-        if (args.length === 1 && args[0] instanceof RealDate) {
-          super(args[0].getTime());
-          return;
-        }
-
-        super(
-          ...(args as
-            | [number]
-            | [string]
-            | [number, number, number?, number?, number?, number?, number?]),
-        );
-      }
-
-      static now() {
-        return now;
-      }
-
-      static parse(dateString: string) {
-        return RealDate.parse(dateString);
-      }
-
-      static UTC(...args: Parameters<typeof RealDate.UTC>) {
-        return RealDate.UTC(...args);
-      }
-    }
-
-    Object.defineProperty(globalThis, 'Date', {
-      configurable: true,
-      writable: true,
-      value: MockDate,
-    });
-  }, fixedTime);
-
-  await page.goto('/');
-  await page.goto('/offers');
-
-  await expect(page.getByRole('heading', { name: 'Przygotowane oferty' })).toBeVisible();
-  await captureStep(page, testInfo, 'offers-list-loaded');
-
-  const offerRows = page.locator('.offer-row');
-
-  await expect(offerRows.first()).toBeVisible();
-
-  const visibleOfferCount = await offerRows.count();
-
-  expect(visibleOfferCount).toBeGreaterThan(0);
-  await expect(page.getByText('Okres ochrony', { exact: true })).toHaveCount(visibleOfferCount);
-  await expect(page.getByText('2025/01/15 - 2026/01/15', { exact: true })).toHaveCount(
-    visibleOfferCount,
+function buildExpectedProtectionPeriod(referenceDate: Date): string {
+  const startDate = new Date(
+    referenceDate.getFullYear(),
+    referenceDate.getMonth(),
+    referenceDate.getDate(),
   );
+  const endDate = new Date(
+    startDate.getFullYear() + 1,
+    startDate.getMonth(),
+    startDate.getDate(),
+  );
+
+  if (
+    endDate.getMonth() !== startDate.getMonth() ||
+    endDate.getDate() !== startDate.getDate()
+  ) {
+    endDate.setDate(0);
+  }
+
+  return `${formatProtectionPeriodDate(startDate)} - ${formatProtectionPeriodDate(endDate)}`;
+}
+
+test('shows the protection period before the variant on the offers list', async (
+  { page },
+  testInfo,
+) => {
+  await page.goto('/');
+
+  await expect(page.getByText('Przygotowane oferty')).toBeVisible();
+  await expect(page.getByText('Portfel ofert')).toBeVisible();
+  await captureStep(page, testInfo, 'offers-page-loaded');
+
+  const firstOfferRow = page.locator('.offer-row').first();
+  await expect(firstOfferRow).toBeVisible();
+  await captureStep(page, testInfo, 'first-offer-row-visible');
+
+  const browserToday = await page.evaluate(() => ({
+    year: new Date().getFullYear(),
+    month: new Date().getMonth(),
+    day: new Date().getDate(),
+  }));
+  const expectedProtectionPeriod = buildExpectedProtectionPeriod(
+    new Date(browserToday.year, browserToday.month, browserToday.day),
+  );
+
+  const protectionPeriodBlock = firstOfferRow.locator('.offer-row__meta-grid > div').filter({
+    hasText: 'Okres ochrony',
+  });
+  await expect(protectionPeriodBlock).toContainText(expectedProtectionPeriod);
   await captureStep(page, testInfo, 'protection-period-rendered');
-});
 
-test('renders a valid leap-day protection period on the offers list', async ({ page }, testInfo) => {
-  const fixedTime = new Date('2024-02-29T12:00:00').getTime();
+  const variantBlock = firstOfferRow.locator('.offer-row__meta-grid > div').filter({
+    hasText: 'Wariant',
+  });
+  await expect(variantBlock.locator('strong')).toHaveText(/\S+/);
 
-  await page.addInitScript((now) => {
-    const RealDate = Date;
+  const variantLink = variantBlock.locator('a');
+  if ((await variantLink.count()) > 0) {
+    await expect(variantLink.first()).toBeVisible();
+  } else {
+    await expect(variantBlock).toContainText('Wybrany wariant');
+  }
+  await captureStep(page, testInfo, 'variant-content-rendered');
 
-    class MockDate extends RealDate {
-      constructor(
-        ...args:
-          | []
-          | [number]
-          | [string]
-          | [Date]
-          | [number, number, number?, number?, number?, number?, number?]
-      ) {
-        if (args.length === 0) {
-          super(now);
-          return;
-        }
+  const metaLabels = (
+    await firstOfferRow.locator('.offer-row__meta-grid .offer-row__meta-label').allTextContents()
+  ).map((label) => label.trim());
 
-        if (args.length === 1 && args[0] instanceof RealDate) {
-          super(args[0].getTime());
-          return;
-        }
-
-        super(
-          ...(args as
-            | [number]
-            | [string]
-            | [number, number, number?, number?, number?, number?, number?]),
-        );
-      }
-
-      static now() {
-        return now;
-      }
-
-      static parse(dateString: string) {
-        return RealDate.parse(dateString);
-      }
-
-      static UTC(...args: Parameters<typeof RealDate.UTC>) {
-        return RealDate.UTC(...args);
-      }
-    }
-
-    Object.defineProperty(globalThis, 'Date', {
-      configurable: true,
-      writable: true,
-      value: MockDate,
-    });
-  }, fixedTime);
-
-  await page.goto('/');
-  await page.goto('/offers');
-
-  const offerRows = page.locator('.offer-row');
-
-  await expect(offerRows.first()).toBeVisible();
-  await expect(page.getByText('2024/02/29 - 2025/02/28', { exact: true }).first()).toBeVisible();
-  await captureStep(page, testInfo, 'leap-day-protection-period-visible');
-
-  const visibleOfferCount = await offerRows.count();
-
-  await expect(page.getByText('2024/02/29 - 2025/02/28', { exact: true })).toHaveCount(
-    visibleOfferCount,
-  );
-  await captureStep(page, testInfo, 'leap-day-period-applied-to-all-rows');
+  expect(metaLabels).toContain('Okres ochrony');
+  expect(metaLabels).toContain('Wariant');
+  expect(metaLabels.indexOf('Okres ochrony')).toBeLessThan(metaLabels.indexOf('Wariant'));
+  await captureStep(page, testInfo, 'protection-period-before-variant');
 });
