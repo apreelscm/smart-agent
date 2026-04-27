@@ -79,6 +79,12 @@ export class OffersHomePageComponent {
   private readonly salesFlowRuntimeRepository = inject(SalesFlowRuntimeRepository);
   private readonly router = inject(Router);
 
+  private readonly protectionPeriodStart = this.normalizeCurrentDate(new Date());
+  private readonly protectionPeriodEnd = this.addCalendarYears(this.protectionPeriodStart, 1);
+
+  protected readonly protectionPeriodLabel = `${this.formatProtectionDate(this.protectionPeriodStart)} - ${this.formatProtectionDate(
+    this.protectionPeriodEnd
+  )}`;
   protected readonly searchTerm = signal('');
   protected readonly selectedStatus = signal<string>('ALL');
   protected readonly selectedProduct = signal<OfferProductFilter>('ALL');
@@ -204,7 +210,6 @@ export class OffersHomePageComponent {
 
   protected readonly totalVisibleOffers = computed(() => this.filteredOffers().length);
 
-  // New computed signal to detect if any filter or sorting differs from default values
   protected readonly filtersChanged = computed(() => {
     return (
       this.searchTerm() !== '' ||
@@ -326,7 +331,6 @@ export class OffersHomePageComponent {
     this.closeTransitionDialog();
   }
 
-  // New method to clear all filters and sorting to default values
   protected clearAllFilters(): void {
     this.searchTerm.set('');
     this.selectedStatus.set('ALL');
@@ -515,5 +519,25 @@ export class OffersHomePageComponent {
       cropsCount: crops.length,
       parcelsCount
     };
+  }
+
+  private normalizeCurrentDate(date: Date): Date {
+    return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  }
+
+  private addCalendarYears(date: Date, yearsToAdd: number): Date {
+    const targetYear = date.getFullYear() + yearsToAdd;
+    const targetMonth = date.getMonth();
+    const targetDay = Math.min(date.getDate(), new Date(targetYear, targetMonth + 1, 0).getDate());
+
+    return new Date(targetYear, targetMonth, targetDay);
+  }
+
+  private formatProtectionDate(date: Date): string {
+    const year = date.getFullYear();
+    const month = `${date.getMonth() + 1}`.padStart(2, '0');
+    const day = `${date.getDate()}`.padStart(2, '0');
+
+    return `${year}/${month}/${day}`;
   }
 }
