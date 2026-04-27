@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { toSignal } from '@angular/core/rxjs-interop';
 import { Router, RouterLink } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { ButtonDirective } from 'primeng/button';
@@ -10,10 +10,10 @@ import { InputText } from 'primeng/inputtext';
 import { Select } from 'primeng/select';
 import { SplitButton } from 'primeng/splitbutton';
 import { Tag } from 'primeng/tag';
+import { Offer, OfferStatus, ReferenceData } from '../../../core/models';
 import { OffersRepository } from '../../../core/repositories/offers.repository';
 import { ReferenceDataRepository } from '../../../core/repositories/reference-data.repository';
 import { SalesFlowRuntimeRepository } from '../../../core/repositories/sales-flow-runtime.repository';
-import { Offer, OfferStatus, ReferenceData } from '../../../core/models';
 import { PageHeaderComponent } from '../../../shared/ui/page-header/page-header.component';
 import { SectionCardComponent } from '../../../shared/ui/section-card/section-card.component';
 import { StatTileComponent } from '../../../shared/ui/stat-tile/stat-tile.component';
@@ -87,6 +87,7 @@ export class OffersHomePageComponent {
   protected readonly statusOverrides = signal<Record<string, OfferStatus>>({});
   protected readonly pendingTransition = signal<PendingTransition | null>(null);
   protected readonly transitionDialogVisible = signal(false);
+  protected readonly protectionPeriodLabel = this.getProtectionPeriodLabel();
 
   protected readonly offers = toSignal(this.offersRepository.getOffers(), { initialValue: [] as Offer[] });
   protected readonly referenceData = toSignal(this.referenceDataRepository.getReferenceData(), {
@@ -204,7 +205,6 @@ export class OffersHomePageComponent {
 
   protected readonly totalVisibleOffers = computed(() => this.filteredOffers().length);
 
-  // New computed signal to detect if any filter or sorting differs from default values
   protected readonly filtersChanged = computed(() => {
     return (
       this.searchTerm() !== '' ||
@@ -250,6 +250,13 @@ export class OffersHomePageComponent {
   protected getSelectedVariantName(offer: Offer): string {
     const selected = offer.variants.find((variant) => variant.id === offer.selectedVariantId);
     return selected?.name ?? 'Brak wyboru';
+  }
+
+  protected getProtectionPeriodLabel(): string {
+    const startDate = new Date();
+    const endDate = this.addOneCalendarYear(startDate);
+
+    return `${this.formatDate(startDate)} - ${this.formatDate(endDate)}`;
   }
 
   protected isCropOffer(offer: Offer): boolean {
@@ -326,7 +333,6 @@ export class OffersHomePageComponent {
     this.closeTransitionDialog();
   }
 
-  // New method to clear all filters and sorting to default values
   protected clearAllFilters(): void {
     this.searchTerm.set('');
     this.selectedStatus.set('ALL');
@@ -468,7 +474,6 @@ export class OffersHomePageComponent {
   }
 
   private printPlaceholder(offer: Offer): void {
-    // Placeholder action for future document generation integration.
     console.log('[Offers] Print placeholder action triggered for offer', offer.id);
   }
 
@@ -504,6 +509,27 @@ export class OffersHomePageComponent {
 
     const naturalOrder = leftTime > rightTime ? 1 : -1;
     return this.selectedSortDirection() === 'ASC' ? naturalOrder : -naturalOrder;
+  }
+
+  private addOneCalendarYear(date: Date): Date {
+    const nextYearDate = new Date(date);
+    const expectedMonth = nextYearDate.getMonth();
+
+    nextYearDate.setFullYear(nextYearDate.getFullYear() + 1);
+
+    if (nextYearDate.getMonth() !== expectedMonth) {
+      nextYearDate.setDate(0);
+    }
+
+    return nextYearDate;
+  }
+
+  private formatDate(date: Date): string {
+    const year = date.getFullYear();
+    const month = `${date.getMonth() + 1}`.padStart(2, '0');
+    const day = `${date.getDate()}`.padStart(2, '0');
+
+    return `${year}/${month}/${day}`;
   }
 
   private getCropCounts(offer: Offer): { cropsCount: number; parcelsCount: number } {
