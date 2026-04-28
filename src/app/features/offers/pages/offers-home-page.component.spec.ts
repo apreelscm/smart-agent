@@ -129,6 +129,7 @@ describe('OffersHomePageComponent', () => {
 
   beforeEach(async () => {
     localStorage.clear();
+    jasmine.clock().install();
 
     await TestBed.configureTestingModule({
       imports: [OffersHomePageComponent],
@@ -136,19 +137,41 @@ describe('OffersHomePageComponent', () => {
     }).compileComponents();
 
     httpMock = TestBed.inject(HttpTestingController);
-    fixture = TestBed.createComponent(OffersHomePageComponent);
-    component = fixture.componentInstance as any;
-
-    flushInitialRequests();
-    fixture.detectChanges();
   });
 
   afterEach(() => {
     httpMock.verify();
     localStorage.clear();
+    jasmine.clock().uninstall();
+  });
+
+  it('renders a protection period for every offer row using the current page date snapshot', () => {
+    createComponent(new Date(2026, 2, 9, 10, 30, 0));
+
+    expect(component.coveragePeriodLabel()).toBe('2026/03/09 - 2027/03/08');
+
+    const offerRows = Array.from(fixture.nativeElement.querySelectorAll('.offer-row')) as HTMLElement[];
+
+    expect(offerRows.length).toBe(2);
+
+    offerRows.forEach((row) => {
+      const rowText = normalizeText(row.textContent ?? '');
+
+      expect(rowText).toContain('Okres ochrony');
+      expect(rowText).toContain('2026/03/09 - 2027/03/08');
+    });
+  });
+
+  it('handles leap-day protection period rendering without shifting the day', () => {
+    createComponent(new Date(2024, 1, 29, 8, 15, 0));
+
+    expect(component.coveragePeriodLabel()).toBe('2024/02/29 - 2025/02/28');
+    expect(normalizeText(fixture.nativeElement.textContent)).toContain('2024/02/29 - 2025/02/28');
   });
 
   it('defaults to PLN presentation without calling NBP', () => {
+    createComponent();
+
     expect(component.presentationCurrency()).toBe('PLN');
     expect(component.activeExchangeRate()).toBeNull();
     expect(component.getDisplayedPremium(OFFERS_FIXTURE[0])).toBe(6244);
@@ -162,6 +185,8 @@ describe('OffersHomePageComponent', () => {
   });
 
   it('converts visible premiums to EUR using the current NBP rate', () => {
+    createComponent(new Date(2026, 2, 9, 10, 30, 0));
+
     component.onPresentationCurrencyChange('EUR');
 
     const request = httpMock.expectOne('https://api.nbp.pl/api/exchangerates/rates/A/EUR/?format=json');
@@ -189,6 +214,7 @@ describe('OffersHomePageComponent', () => {
     expect(normalizeText(fixture.nativeElement.textContent)).toContain(
       'Kurs NBP: 1 EUR = 4,0000 PLN (2026-04-17, tabela A, nr 074/A/NBP/2026)'
     );
+    expect(normalizeText(fixture.nativeElement.textContent)).toContain('2026/03/09 - 2027/03/08');
 
     component.onPresentationCurrencyChange('EUR');
 
@@ -196,6 +222,8 @@ describe('OffersHomePageComponent', () => {
   });
 
   it('converts visible premiums to USD using the current NBP rate', () => {
+    createComponent();
+
     component.onPresentationCurrencyChange('USD');
 
     const request = httpMock.expectOne('https://api.nbp.pl/api/exchangerates/rates/A/USD/?format=json');
@@ -225,6 +253,8 @@ describe('OffersHomePageComponent', () => {
   });
 
   it('restores PLN amounts without sending an NBP request when PLN is selected', () => {
+    createComponent();
+
     component.onPresentationCurrencyChange('EUR');
 
     const eurRequest = httpMock.expectOne('https://api.nbp.pl/api/exchangerates/rates/A/EUR/?format=json');
@@ -254,6 +284,8 @@ describe('OffersHomePageComponent', () => {
   });
 
   it('shows an error and preserves the last valid currency presentation when NBP fails', () => {
+    createComponent();
+
     component.onPresentationCurrencyChange('EUR');
 
     const eurRequest = httpMock.expectOne('https://api.nbp.pl/api/exchangerates/rates/A/EUR/?format=json');
@@ -286,6 +318,16 @@ describe('OffersHomePageComponent', () => {
       'Nie udało się pobrać aktualnego kursu NBP. Wyświetlane wartości pozostają bez zmian.'
     );
   });
+
+  function createComponent(mockDate: Date = new Date(2026, 2, 9, 10, 30, 0)): void {
+    jasmine.clock().mockDate(mockDate);
+
+    fixture = TestBed.createComponent(OffersHomePageComponent);
+    component = fixture.componentInstance as any;
+
+    flushInitialRequests();
+    fixture.detectChanges();
+  }
 
   function flushInitialRequests(): void {
     httpMock.expectOne('mock/offers.json').flush(OFFERS_FIXTURE);

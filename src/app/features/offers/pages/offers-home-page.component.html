@@ -182,6 +182,12 @@
                 <strong>{{ offer.updatedAt | date: 'dd.MM.yyyy' }}</strong>
                 <span>{{ offer.updatedAt | date: 'HH:mm' }}</span>
               </div>
+
+              <div>
+                <span class="offer-row__meta-label">Okres ochrony</span>
+                <strong>{{ coveragePeriodLabel() }}</strong>
+                <span>Wyliczony na moment otwarcia listy</span>
+              </div>
             </div>
           </div>
 
