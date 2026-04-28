@@ -113,6 +113,7 @@ export class OffersHomePageComponent {
   protected readonly currencyChangeError = signal<string | null>(null);
   protected readonly currencyChangeInProgress = signal(false);
   protected readonly pendingCurrency = signal<NbpSupportedCurrency | null>(null);
+  protected readonly coveragePeriodSnapshot = signal(this.normalizeToLocalCalendarDay(new Date()));
 
   protected readonly offers = toSignal(this.offersRepository.getOffers(), { initialValue: [] as Offer[] });
   protected readonly referenceData = toSignal(this.referenceDataRepository.getReferenceData(), {
@@ -189,6 +190,13 @@ export class OffersHomePageComponent {
       variant: 'info',
       message: infoMessage
     };
+  });
+
+  protected readonly coveragePeriodLabel = computed(() => {
+    const startDate = this.coveragePeriodSnapshot();
+    const endDate = this.getProtectionPeriodEndDate(startDate);
+
+    return `${this.formatCoverageDate(startDate)} - ${this.formatCoverageDate(endDate)}`;
   });
 
   protected readonly sortFieldOptions: FilterOption[] = [
@@ -647,6 +655,25 @@ export class OffersHomePageComponent {
       cropsCount: crops.length,
       parcelsCount
     };
+  }
+
+  private normalizeToLocalCalendarDay(date: Date): Date {
+    return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  }
+
+  private getProtectionPeriodEndDate(startDate: Date): Date {
+    const anniversary = new Date(startDate.getFullYear() + 1, startDate.getMonth(), startDate.getDate());
+    anniversary.setDate(anniversary.getDate() - 1);
+
+    return this.normalizeToLocalCalendarDay(anniversary);
+  }
+
+  private formatCoverageDate(date: Date): string {
+    const year = `${date.getFullYear()}`;
+    const month = `${date.getMonth() + 1}`.padStart(2, '0');
+    const day = `${date.getDate()}`.padStart(2, '0');
+
+    return `${year}/${month}/${day}`;
   }
 
   private convertPlnAmount(amount: number): number {
