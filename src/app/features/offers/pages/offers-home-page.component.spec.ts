@@ -162,6 +162,17 @@ describe('OffersHomePageComponent', () => {
     });
   });
 
+  it('renders metadata labels with protection period directly before update', () => {
+    createComponent(new Date(2026, 2, 9, 10, 30, 0));
+
+    const firstMetaGrid = fixture.nativeElement.querySelector('.offer-row__meta-grid') as HTMLElement;
+    const metaLabels = Array.from(firstMetaGrid.querySelectorAll('.offer-row__meta-label')).map((label) =>
+      normalizeText(label.textContent ?? '')
+    );
+
+    expect(metaLabels).toEqual(['Pojazd', 'Kanał', 'Wariant', 'Okres ochrony', 'Aktualizacja']);
+  });
+
   it('handles leap-day protection period rendering without shifting the day', () => {
     createComponent(new Date(2024, 1, 29, 8, 15, 0));
 
