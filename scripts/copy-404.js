@@ -28,8 +28,23 @@ async function findIndexHtml(dir) {
   return null;
 }
 
+async function copyDirRecursive(src, dest) {
+  await fs.mkdir(dest, { recursive: true });
+  const entries = await fs.readdir(src, { withFileTypes: true });
+  for (const entry of entries) {
+    const srcPath = path.join(src, entry.name);
+    const destPath = path.join(dest, entry.name);
+    if (entry.isDirectory()) {
+      await copyDirRecursive(srcPath, destPath);
+    } else if (entry.isFile()) {
+      await fs.copyFile(srcPath, destPath);
+    }
+  }
+}
+
 (async () => {
-  const distDir = path.join(process.cwd(), 'dist');
+  const cwd = process.cwd();
+  const distDir = path.join(cwd, 'dist');
   const indexPath = await findIndexHtml(distDir);
   if (!indexPath) {
     console.log('No index.html found in dist/ - nothing to copy');
@@ -41,10 +56,51 @@ async function findIndexHtml(dir) {
   try {
     await fs.copyFile(indexPath, destPath);
     console.log(`Copied ${indexPath} -> ${destPath}`);
-    process.exit(0);
   } catch (err) {
     console.error('Failed to copy index.html to 404.html:', err);
     process.exit(2);
   }
-})();
 
+  // Ensure compatibility with pipelines that expect dist/smart-agent/browser/index.html
+  try {
+    const aliasBrowserIndex = path.join(distDir, 'smart-agent', 'browser', 'index.html');
+    // if alias exists, nothing to do
+    try {
+      await fs.access(aliasBrowserIndex);
+      console.log('Alias path dist/smart-agent/browser/index.html already exists - nothing to do');
+    } catch (e) {
+      // alias missing - attempt to locate a generated browser dir (parent of indexPath if named 'browser')
+      const srcBrowserDir = path.basename(path.dirname(indexPath)).toLowerCase() === 'browser'
+        ? path.dirname(indexPath)
+        : null;
+
+      if (srcBrowserDir) {
+        const destBrowserDir = path.join(distDir, 'smart-agent', 'browser');
+        console.log(`Creating alias browser dir: ${destBrowserDir} from ${srcBrowserDir}`);
+        await copyDirRecursive(srcBrowserDir, destBrowserDir);
+        console.log(`Copied browser output to ${destBrowserDir}`);
+      } else {
+        // if we can't identify a browser dir, try to copy the whole project folder that contains index
+        const projectRoot = path.relative(distDir, indexPath).split(path.sep)[0];
+        if (projectRoot) {
+          const srcProjectBrowser = path.join(distDir, projectRoot, 'browser');
+          try {
+            await fs.access(srcProjectBrowser);
+            const destBrowserDir = path.join(distDir, 'smart-agent', 'browser');
+            console.log(`Creating alias browser dir: ${destBrowserDir} from ${srcProjectBrowser}`);
+            await copyDirRecursive(srcProjectBrowser, destBrowserDir);
+            console.log(`Copied browser output to ${destBrowserDir}`);
+          } catch (err) {
+            // nothing more we can do safely
+            console.log('No explicit browser directory found to create alias for dist/smart-agent - skipping alias creation');
+          }
+        }
+      }
+    }
+  } catch (err) {
+    console.error('Error while ensuring dist/smart-agent/browser alias:', err);
+    // don't fail the whole build for alias creation
+  }
+
+  process.exit(0);
+})();
