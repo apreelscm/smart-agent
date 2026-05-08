@@ -8,9 +8,9 @@
   align-items: stretch;
   gap: 1rem;
   padding: 1rem 1.1rem;
-  border: 1px solid rgba(23, 32, 51, 0.1);
+  border: 1px solid rgba(35, 70, 120, 0.1);
   border-radius: 0.75rem;
-  background: linear-gradient(135deg, #f8fbff 0%, #eef5ff 45%, #e8f0ff 100%);
+  background: linear-gradient(135deg, var(--app-surface-subtle) 0%, var(--app-brand-accent-soft) 45%, var(--app-brand-accent-soft) 100%);
 }
 
 .summary-hero__main {
@@ -19,7 +19,7 @@
 }
 
 .summary-hero__eyebrow {
-  color: #475569;
+  color: var(--app-text-muted);
   font-size: 0.76rem;
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -28,7 +28,7 @@
 
 .summary-hero__main h2 {
   margin: 0;
-  color: #0f172a;
+  color: var(--app-ink);
   font-size: 1.35rem;
   line-height: 1.2;
   display: flex;
@@ -38,7 +38,7 @@
 }
 
 .summary-hero__period {
-  color: #1e3a8a;
+  color: var(--app-brand-primary-active);
   font-size: 0.85rem;
   font-weight: 700;
   letter-spacing: 0.01em;
@@ -46,7 +46,7 @@
 
 .summary-hero__main p {
   margin: 0;
-  color: #334155;
+  color: var(--app-text-muted);
   font-size: 0.95rem;
 }
 
@@ -57,13 +57,13 @@
   gap: 0.2rem;
   min-width: 14rem;
   padding: 0.7rem 0.9rem;
-  border: 1px solid rgba(23, 32, 51, 0.12);
+  border: 1px solid rgba(35, 70, 120, 0.12);
   border-radius: 0.65rem;
-  background: #fff;
+  background: var(--app-surface);
 }
 
 .summary-hero__premium span {
-  color: #64748b;
+  color: var(--app-text-muted);
   font-size: 0.78rem;
   font-weight: 700;
   text-transform: uppercase;
@@ -71,7 +71,7 @@
 }
 
 .summary-hero__premium strong {
-  color: #0f3a7a;
+  color: var(--app-brand-heading);
   font-size: 1.6rem;
   font-weight: 800;
 }
@@ -89,11 +89,11 @@
   padding: 0.85rem 0.95rem;
   border: 1px solid var(--app-border);
   border-radius: 0.6rem;
-  background: #fff;
+  background: var(--app-surface);
 }
 
 .summary-card__label {
-  color: #64748b;
+  color: var(--app-text-muted);
   font-size: 0.74rem;
   font-weight: 700;
   text-transform: uppercase;
@@ -101,12 +101,12 @@
 }
 
 .summary-card strong {
-  color: #0f172a;
+  color: var(--app-ink);
   font-size: 1rem;
 }
 
 .summary-card span {
-  color: #475569;
+  color: var(--app-text-muted);
   font-size: 0.84rem;
 }
 
@@ -128,8 +128,8 @@
 }
 
 .premium-lines__head {
-  background: #f8fafc;
-  color: #64748b;
+  background: var(--app-surface-subtle);
+  color: var(--app-text-muted);
   font-size: 0.75rem;
   font-weight: 700;
   text-transform: uppercase;
@@ -138,21 +138,21 @@
 
 .premium-lines__row {
   border-top: 1px solid var(--app-border);
-  background: #fff;
+  background: var(--app-surface);
 }
 
 .premium-lines__row strong {
-  color: #0f172a;
+  color: var(--app-ink);
   font-size: 0.92rem;
 }
 
 .premium-lines__row span {
-  color: #1e3a8a;
+  color: var(--app-brand-primary-active);
   font-weight: 700;
 }
 
 .premium-lines__row--empty span {
-  color: #64748b;
+  color: var(--app-text-muted);
   font-weight: 600;
 }
 

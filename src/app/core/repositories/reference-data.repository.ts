@@ -8,7 +8,7 @@ import { ReferenceData } from '../models/reference-data/reference-data.model';
 })
 export class ReferenceDataRepository {
   private readonly httpClient = inject(HttpClient);
-  private readonly referenceDataUrl = '/mock/reference-data.json';
+  private readonly referenceDataUrl = 'mock/reference-data.json';
 
   getReferenceData(): Observable<ReferenceData> {
     return this.httpClient.get<ReferenceData>(this.referenceDataUrl);

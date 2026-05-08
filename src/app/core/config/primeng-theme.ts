@@ -4,39 +4,39 @@ import Aura from '@primeuix/themes/aura';
 export const SmartAgentPreset = definePreset(Aura, {
   semantic: {
     primary: {
-      50: '{blue.50}',
-      100: '{blue.100}',
-      200: '{blue.200}',
-      300: '{blue.300}',
-      400: '{blue.400}',
-      500: '{blue.500}',
-      600: '{blue.600}',
-      700: '{blue.700}',
-      800: '{blue.800}',
-      900: '{blue.900}',
-      950: '{blue.950}'
+      50: '#e6f8fd',
+      100: '#b3eaf8',
+      200: '#80dcf3',
+      300: '#4dcdee',
+      400: '#26bdea',
+      500: '#009dde',
+      600: '#0088c4',
+      700: '#0078ae',
+      800: '#005a92',
+      900: '#004875',
+      950: '#003a60'
     },
     colorScheme: {
       light: {
         primary: {
-          color: '#1d4ed8',
-          contrastColor: '#f8fbff',
-          hoverColor: '#1e40af',
-          activeColor: '#1e3a8a'
+          color: '#009dde',
+          contrastColor: '#ffffff',
+          hoverColor: '#0088c4',
+          activeColor: '#0078ae'
         },
         highlight: {
-          background: '#eaf2ff',
-          focusBackground: '#d8e7ff',
-          color: '#163b8c',
-          focusColor: '#102e6f'
+          background: '#e6f6ff',
+          focusBackground: '#cceefb',
+          color: '#005a92',
+          focusColor: '#003a60'
         },
         formField: {
-          background: '#fcfdff',
+          background: '#ffffff',
           borderColor: '#cfd7e6',
-          hoverBorderColor: '#aeb9ce',
-          focusBorderColor: '#1d4ed8',
-          color: '#172033',
-          placeholderColor: '#66728a'
+          hoverBorderColor: '#9daabd',
+          focusBorderColor: '#009dde',
+          color: '#234678',
+          placeholderColor: '#9daabd'
         }
       }
     }

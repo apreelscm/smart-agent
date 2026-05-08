@@ -60,9 +60,9 @@ input[type='number']::-webkit-outer-spin-button {
   display: grid;
   gap: 0.9rem;
   padding: 0.95rem;
-  border: 1px solid rgba(23, 32, 51, 0.08);
+  border: 1px solid rgba(35, 70, 120, 0.08);
   border-radius: 0.45rem;
-  background: #fff;
+  background: var(--app-surface);
 }
 
 .client-card__header {
@@ -132,7 +132,7 @@ input[type='number']::-webkit-outer-spin-button {
 }
 
 .client-table__row--head {
-  background: #f3f6fb;
+  background: var(--app-surface-subtle);
   font-weight: 700;
 }
 
@@ -156,9 +156,9 @@ input[type='number']::-webkit-outer-spin-button {
   width: 100%;
   min-height: 6.2rem;
   padding: 0.85rem 0.9rem;
-  border: 1px solid rgba(23, 32, 51, 0.2);
+  border: 1px solid rgba(35, 70, 120, 0.2);
   border-radius: 0.7rem;
-  background: linear-gradient(180deg, #f9fbff 0%, #f3f8ff 100%);
+  background: linear-gradient(180deg, var(--app-surface-subtle) 0%, var(--app-surface-subtle) 100%);
   cursor: pointer;
   transition: transform 0.12s ease, border-color 0.16s ease, box-shadow 0.16s ease, background 0.16s ease;
   text-align: left;
@@ -171,15 +171,15 @@ input[type='number']::-webkit-outer-spin-button {
 }
 
 .product-box:hover {
-  border-color: rgba(29, 78, 216, 0.28);
-  box-shadow: 0 6px 12px rgba(29, 78, 216, 0.08);
+  border-color: rgba(0, 90, 146, 0.28);
+  box-shadow: 0 6px 12px rgba(0, 90, 146, 0.08);
   transform: translateY(-1px);
 }
 
 .product-box--selected {
-  border-color: rgba(29, 78, 216, 0.45);
-  background: linear-gradient(180deg, #e9f2ff 0%, #dceaff 100%);
-  box-shadow: inset 0 0 0 1px rgba(29, 78, 216, 0.16);
+  border-color: rgba(0, 90, 146, 0.45);
+  background: linear-gradient(180deg, var(--app-brand-accent-soft) 0%, var(--app-brand-accent-soft) 100%);
+  box-shadow: inset 0 0 0 1px rgba(0, 90, 146, 0.16);
 }
 
 .product-box__content {
@@ -190,7 +190,7 @@ input[type='number']::-webkit-outer-spin-button {
 }
 
 .product-box__content strong {
-  color: #1e293b;
+  color: var(--app-ink);
   font-size: 0.98rem;
   font-weight: 700;
   line-height: 1.2;
@@ -216,7 +216,7 @@ input[type='number']::-webkit-outer-spin-button {
   padding: 0.8rem 0.9rem;
   border: 1px solid var(--app-border);
   border-radius: 0.45rem;
-  background: #fff;
+  background: var(--app-surface);
   cursor: pointer;
 }
 
@@ -227,9 +227,9 @@ input[type='number']::-webkit-outer-spin-button {
 }
 
 .toggle-segment--active {
-  border-color: rgba(29, 78, 216, 0.24);
-  background: #eef4ff;
-  color: #163b8c;
+  border-color: rgba(0, 90, 146, 0.24);
+  background: var(--app-brand-accent-soft);
+  color: var(--app-brand-heading);
 }
 
 .toggle-row {
@@ -333,7 +333,7 @@ input[type='number']::-webkit-outer-spin-button {
   border: 1px solid var(--app-border);
   border-radius: 0.45rem;
   overflow: hidden;
-  background: #fff;
+  background: var(--app-surface);
 }
 
 .info-table__table {
@@ -343,7 +343,7 @@ input[type='number']::-webkit-outer-spin-button {
 }
 
 .info-table__table thead {
-  background: #f3f6fb;
+  background: var(--app-surface-subtle);
 }
 
 .info-table__table th,

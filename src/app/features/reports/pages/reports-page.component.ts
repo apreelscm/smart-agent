@@ -204,7 +204,7 @@ export class ReportsPageComponent {
 
   protected readonly paymentRingBackground = computed(() => {
     const paidPercent = Math.round(this.paymentStats().paidRatio * 100);
-    return `conic-gradient(#0f766e ${paidPercent}%, #dce5f2 ${paidPercent}% 100%)`;
+    return `conic-gradient(#009dde ${paidPercent}%, #dce5f2 ${paidPercent}% 100%)`;
   });
 
   private isInSelectedRange(rawDate: string | undefined): boolean {

@@ -10,6 +10,11 @@ import { InputText } from 'primeng/inputtext';
 import { Select } from 'primeng/select';
 import { SplitButton } from 'primeng/splitbutton';
 import { Tag } from 'primeng/tag';
+import {
+  NbpExchangeRateQuote,
+  NbpExchangeRatesRepository,
+  NbpSupportedCurrency
+} from '../../../core/repositories/nbp-exchange-rates.repository';
 import { OffersRepository } from '../../../core/repositories/offers.repository';
 import { ReferenceDataRepository } from '../../../core/repositories/reference-data.repository';
 import { SalesFlowRuntimeRepository } from '../../../core/repositories/sales-flow-runtime.repository';
@@ -26,7 +31,15 @@ type FilterOption = {
 type SortDirection = 'ASC' | 'DESC';
 
 type OfferSortField = 'ISSUE_DATE' | 'VALID_TO';
+
 type OfferProductFilter = 'ALL' | 'MOTOR' | 'CROP';
+
+type PresentationCurrency = 'PLN' | NbpSupportedCurrency;
+
+type PresentationCurrencyOption = {
+  code: PresentationCurrency;
+  label: PresentationCurrency;
+};
 
 type StatusPresentation = {
   label: string;
@@ -53,6 +66,11 @@ type CropOfferPayload = {
   };
 };
 
+type CurrencyStateRow = {
+  variant: 'info' | 'error' | 'loading';
+  message: string;
+};
+
 @Component({
   selector: 'app-offers-home-page',
   imports: [
@@ -76,16 +94,26 @@ export class OffersHomePageComponent {
   private readonly offersRepository = inject(OffersRepository);
   private readonly referenceDataRepository = inject(ReferenceDataRepository);
   private readonly salesFlowRuntimeRepository = inject(SalesFlowRuntimeRepository);
+  private readonly nbpExchangeRatesRepository = inject(NbpExchangeRatesRepository);
   private readonly router = inject(Router);
 
+  private latestCurrencyRequestId = 0;
+
   protected readonly searchTerm = signal('');
-  protected readonly selectedStatus = signal<string | null>(null);
+  protected readonly selectedStatus = signal<string>('ALL');
   protected readonly selectedProduct = signal<OfferProductFilter>('ALL');
   protected readonly selectedSortField = signal<OfferSortField>('ISSUE_DATE');
   protected readonly selectedSortDirection = signal<SortDirection>('DESC');
   protected readonly statusOverrides = signal<Record<string, OfferStatus>>({});
   protected readonly pendingTransition = signal<PendingTransition | null>(null);
   protected readonly transitionDialogVisible = signal(false);
+  protected readonly presentationCurrency = signal<PresentationCurrency>('PLN');
+  protected readonly currencySelectValue = signal<PresentationCurrency>('PLN');
+  protected readonly activeExchangeRate = signal<NbpExchangeRateQuote | null>(null);
+  protected readonly currencyChangeError = signal<string | null>(null);
+  protected readonly currencyChangeInProgress = signal(false);
+  protected readonly pendingCurrency = signal<NbpSupportedCurrency | null>(null);
+  protected readonly coveragePeriodSnapshot = signal(this.normalizeToLocalCalendarDay(new Date()));
 
   protected readonly offers = toSignal(this.offersRepository.getOffers(), { initialValue: [] as Offer[] });
   protected readonly referenceData = toSignal(this.referenceDataRepository.getReferenceData(), {
@@ -97,6 +125,12 @@ export class OffersHomePageComponent {
       vehicleFinancing: []
     } as ReferenceData
   });
+
+  protected readonly presentationCurrencyOptions: PresentationCurrencyOption[] = [
+    { code: 'PLN', label: 'PLN' },
+    { code: 'EUR', label: 'EUR' },
+    { code: 'USD', label: 'USD' }
+  ];
 
   protected readonly statusOptions = computed<FilterOption[]>(() => [
     { code: 'ALL', label: 'Wszystkie statusy' },
@@ -115,6 +149,54 @@ export class OffersHomePageComponent {
       ...offer,
       status: overrides[offer.id] ?? offer.status
     }));
+  });
+
+  protected readonly currentExchangeRateMessage = computed<string | null>(() => {
+    const quote = this.activeExchangeRate();
+
+    if (!quote || this.presentationCurrency() === 'PLN') {
+      return null;
+    }
+
+    return `Kurs NBP: 1 ${quote.currencyCode} = ${this.formatExchangeRate(quote.midRate)} PLN (${quote.effectiveDate}, tabela ${quote.table}, nr ${quote.sourceTableNo})`;
+  });
+
+  protected readonly exchangeRateRowState = computed<CurrencyStateRow | null>(() => {
+    const error = this.currencyChangeError();
+
+    if (error) {
+      return {
+        variant: 'error',
+        message: error
+      };
+    }
+
+    const pendingCurrency = this.pendingCurrency();
+
+    if (this.currencyChangeInProgress() && pendingCurrency) {
+      return {
+        variant: 'loading',
+        message: `Pobieranie kursu NBP dla ${pendingCurrency}...`
+      };
+    }
+
+    const infoMessage = this.currentExchangeRateMessage();
+
+    if (!infoMessage) {
+      return null;
+    }
+
+    return {
+      variant: 'info',
+      message: infoMessage
+    };
+  });
+
+  protected readonly coveragePeriodLabel = computed(() => {
+    const startDate = this.coveragePeriodSnapshot();
+    const endDate = this.getProtectionPeriodEndDate(startDate);
+
+    return `${this.formatCoverageDate(startDate)} - ${this.formatCoverageDate(endDate)}`;
   });
 
   protected readonly sortFieldOptions: FilterOption[] = [
@@ -185,7 +267,7 @@ export class OffersHomePageComponent {
     const offers = this.filteredOffers();
     const issued = offers.filter((offer) => offer.status === 'ISSUED').length;
     const inProgress = offers.filter((offer) => ['DRAFT', 'CALCULATION'].includes(offer.status)).length;
-    const averageMonthlyPremium =
+    const averageMonthlyPremiumPln =
       offers.length > 0
         ? Math.round(
             offers.reduce((sum, offer) => sum + (offer.selectedPaymentPlan?.totalPremium.amount ?? offer.variants[0]?.totalPremium.amount ?? 0), 0) /
@@ -193,15 +275,83 @@ export class OffersHomePageComponent {
               12
           )
         : 0;
+    const averageMonthlyPremium = this.convertPlnAmount(averageMonthlyPremiumPln);
 
     return [
       { label: 'Oferta wystawiona', value: `${issued}`, note: 'gotowe do decyzji klienta' },
       { label: 'Draft / Kalkulacja', value: `${inProgress}`, note: 'oferty w przygotowaniu' },
-      { label: 'Średnia składka', value: `${averageMonthlyPremium.toLocaleString('pl-PL')} zł`, note: 'w ujęciu miesięcznym' }
+      {
+        label: 'Średnia składka',
+        value: this.formatPremiumAmount(averageMonthlyPremium, this.presentationCurrency()),
+        note: 'w ujęciu miesięcznym'
+      }
     ];
   });
 
   protected readonly totalVisibleOffers = computed(() => this.filteredOffers().length);
+
+  protected readonly filtersChanged = computed(() => {
+    return (
+      this.searchTerm() !== '' ||
+      this.selectedStatus() !== 'ALL' ||
+      this.selectedProduct() !== 'ALL' ||
+      this.selectedSortField() !== 'ISSUE_DATE' ||
+      this.selectedSortDirection() !== 'DESC'
+    );
+  });
+
+  protected onPresentationCurrencyChange(nextCurrency: PresentationCurrency | null | undefined): void {
+    const currentCurrency = this.presentationCurrency();
+    const currency = nextCurrency ?? currentCurrency;
+
+    if (currency === currentCurrency) {
+      this.currencySelectValue.set(currentCurrency);
+      return;
+    }
+
+    this.currencyChangeError.set(null);
+    this.currencySelectValue.set(currency);
+
+    if (currency === 'PLN') {
+      this.latestCurrencyRequestId += 1;
+      this.currencyChangeInProgress.set(false);
+      this.pendingCurrency.set(null);
+      this.activeExchangeRate.set(null);
+      this.presentationCurrency.set('PLN');
+      this.currencySelectValue.set('PLN');
+      return;
+    }
+
+    const requestId = ++this.latestCurrencyRequestId;
+
+    this.pendingCurrency.set(currency);
+    this.currencyChangeInProgress.set(true);
+
+    this.nbpExchangeRatesRepository.getCurrentRate(currency).subscribe({
+      next: (quote) => {
+        if (requestId !== this.latestCurrencyRequestId) {
+          return;
+        }
+
+        this.presentationCurrency.set(currency);
+        this.currencySelectValue.set(currency);
+        this.activeExchangeRate.set(quote);
+        this.currencyChangeError.set(null);
+        this.currencyChangeInProgress.set(false);
+        this.pendingCurrency.set(null);
+      },
+      error: () => {
+        if (requestId !== this.latestCurrencyRequestId) {
+          return;
+        }
+
+        this.currencySelectValue.set(currentCurrency);
+        this.currencyChangeError.set('Nie udało się pobrać aktualnego kursu NBP. Wyświetlane wartości pozostają bez zmian.');
+        this.currencyChangeInProgress.set(false);
+        this.pendingCurrency.set(null);
+      }
+    });
+  }
 
   protected getCustomerDisplayName(offer: Offer): string {
     const identity = offer.customer.identity;
@@ -233,6 +383,10 @@ export class OffersHomePageComponent {
 
   protected getPrimaryPremium(offer: Offer): number {
     return offer.selectedPaymentPlan?.totalPremium.amount ?? offer.variants[0]?.totalPremium.amount ?? 0;
+  }
+
+  protected getDisplayedPremium(offer: Offer): number {
+    return this.convertPlnAmount(this.getPrimaryPremium(offer));
   }
 
   protected getSelectedVariantName(offer: Offer): string {
@@ -314,10 +468,12 @@ export class OffersHomePageComponent {
     this.closeTransitionDialog();
   }
 
-  protected clearFilters(): void {
+  protected clearAllFilters(): void {
     this.searchTerm.set('');
     this.selectedStatus.set('ALL');
     this.selectedProduct.set('ALL');
+    this.selectedSortField.set('ISSUE_DATE');
+    this.selectedSortDirection.set('DESC');
   }
 
   protected toggleSortDirection(): void {
@@ -453,7 +609,6 @@ export class OffersHomePageComponent {
   }
 
   private printPlaceholder(offer: Offer): void {
-    // Placeholder action for future document generation integration.
     console.log('[Offers] Print placeholder action triggered for offer', offer.id);
   }
 
@@ -500,5 +655,52 @@ export class OffersHomePageComponent {
       cropsCount: crops.length,
       parcelsCount
     };
+  }
+
+  private normalizeToLocalCalendarDay(date: Date): Date {
+    return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  }
+
+  private getProtectionPeriodEndDate(startDate: Date): Date {
+    const anniversary = new Date(startDate.getFullYear() + 1, startDate.getMonth(), startDate.getDate());
+    anniversary.setDate(anniversary.getDate() - 1);
+
+    return this.normalizeToLocalCalendarDay(anniversary);
+  }
+
+  private formatCoverageDate(date: Date): string {
+    const year = `${date.getFullYear()}`;
+    const month = `${date.getMonth() + 1}`.padStart(2, '0');
+    const day = `${date.getDate()}`.padStart(2, '0');
+
+    return `${year}/${month}/${day}`;
+  }
+
+  private convertPlnAmount(amount: number): number {
+    const currency = this.presentationCurrency();
+    const quote = this.activeExchangeRate();
+
+    if (currency === 'PLN' || !quote) {
+      return amount;
+    }
+
+    return Math.round(amount / quote.midRate);
+  }
+
+  private formatPremiumAmount(amount: number, currency: PresentationCurrency): string {
+    return new Intl.NumberFormat('pl-PL', {
+      style: 'currency',
+      currency,
+      currencyDisplay: 'narrowSymbol',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0
+    }).format(amount);
+  }
+
+  private formatExchangeRate(rate: number): string {
+    return new Intl.NumberFormat('pl-PL', {
+      minimumFractionDigits: 4,
+      maximumFractionDigits: 4
+    }).format(rate);
   }
 }

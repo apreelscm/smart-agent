@@ -17,7 +17,7 @@ export const appConfig: ApplicationConfig = {
     provideAnimationsAsync(),
     providePrimeNG({
       ripple: true,
-      inputVariant: 'filled',
+      inputVariant: 'outlined',
       theme: {
         preset: SmartAgentPreset,
         options: {

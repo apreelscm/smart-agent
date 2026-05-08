@@ -8,7 +8,7 @@ import { Policy } from '../models';
 })
 export class PoliciesRepository {
   private readonly httpClient = inject(HttpClient);
-  private readonly policiesUrl = '/mock/policies.json';
+  private readonly policiesUrl = 'mock/policies.json';
 
   getPolicies(): Observable<Policy[]> {
     return this.httpClient.get<Policy[]>(this.policiesUrl);
