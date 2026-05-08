@@ -7,7 +7,7 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "direct-demo": {
+    "smart-agent": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -87,10 +87,10 @@
           },
           "configurations": {
             "production": {
-              "buildTarget": "direct-demo:build:production"
+              "buildTarget": "smart-agent:build:production"
             },
             "development": {
-              "buildTarget": "direct-demo:build:development"
+              "buildTarget": "smart-agent:build:development"
             }
           },
           "defaultConfiguration": "development"

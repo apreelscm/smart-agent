@@ -102,5 +102,3 @@ async function copyDirRecursive(src, dest) {
     // don't fail the whole build for alias creation
   }
 
-  process.exit(0);
-})();
