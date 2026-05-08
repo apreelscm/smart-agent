@@ -27,7 +27,7 @@ export class VehicleDataService {
   private http = inject(HttpClient);
 
   private data$: Observable<VehicleBrand[]> = this.http
-    .get<VehicleBrand[]>('/smart-agent/data/vehicles.json')
+    .get<VehicleBrand[]>('/data/vehicles.json')
     .pipe(shareReplay(1));
 
   getBrands(): Observable<VehicleBrand[]> {
