@@ -1,211 +1,34 @@
 import { Routes } from '@angular/router';
-import { OffersHomePageComponent } from './features/offers/pages/offers-home-page.component';
-import { CropStepPageComponent } from './features/offer-wizard/pages/crop-step-page.component';
-import { CropVariantsStepPageComponent } from './features/offer-wizard/pages/crop-variants-step-page.component';
-import { CustomerStepPageComponent } from './features/offer-wizard/pages/customer-step-page.component';
-import { NewOfferWizardShellComponent } from './features/offer-wizard/pages/new-offer-wizard-shell.component';
-import { OfferProductSelectPageComponent } from './features/offer-wizard/pages/offer-product-select-page.component';
-import { SummaryStepPageComponent } from './features/offer-wizard/pages/summary-step-page.component';
-import { VariantsStepPageComponent } from './features/offer-wizard/pages/variants-step-page.component';
-import { VehicleStepPageComponent } from './features/offer-wizard/pages/vehicle-step-page.component';
-import { PoliciesHomePageComponent } from './features/policies/pages/policies-home-page.component';
-import { ReportsPageComponent } from './features/reports/pages/reports-page.component';
-import { CustomersPageComponent } from './features/customers/pages/customers-page.component';
-import { FoundationPageComponent } from './features/foundation/pages/foundation-page.component';
-import { AppShellComponent } from './layout/app-shell/app-shell.component';
 
 export const routes: Routes = [
+  { path: '', redirectTo: 'kalkulator/start', pathMatch: 'full' },
   {
-    path: '',
-    pathMatch: 'full',
-    redirectTo: 'offers'
-  },
-  {
-    path: '',
-    component: AppShellComponent,
+    path: 'kalkulator',
     children: [
-      {
-        path: 'offers',
-        component: OffersHomePageComponent,
-        title: 'smart-agent | Oferty'
-      },
-      {
-        path: 'offers/new',
-        component: OfferProductSelectPageComponent,
-        title: 'smart-agent | Nowa oferta | Wybór produktu'
-      },
-      {
-        path: 'offers/new/motor',
-        component: NewOfferWizardShellComponent,
-        data: {
-          product: 'MOTOR'
-        },
-        children: [
-          {
-            path: '',
-            pathMatch: 'full',
-            redirectTo: 'vehicle'
-          },
-          {
-            path: 'vehicle',
-            component: VehicleStepPageComponent,
-            title: 'smart-agent | Nowa oferta | Pojazd'
-          },
-          {
-            path: 'variants',
-            component: VariantsStepPageComponent,
-            title: 'smart-agent | Nowa oferta | Warianty'
-          },
-          {
-            path: 'customer',
-            component: CustomerStepPageComponent,
-            title: 'smart-agent | Nowa oferta | Dane do umowy'
-          },
-          {
-            path: 'summary',
-            component: SummaryStepPageComponent,
-            title: 'smart-agent | Nowa oferta | Podsumowanie'
-          }
-        ]
-      },
-      {
-        path: 'offers/new/crop',
-        component: NewOfferWizardShellComponent,
-        data: {
-          product: 'CROP'
-        },
-        children: [
-          {
-            path: '',
-            pathMatch: 'full',
-            redirectTo: 'crop'
-          },
-          {
-            path: 'crop',
-            component: CropStepPageComponent,
-            title: 'smart-agent | Nowa oferta | Uprawy'
-          },
-          {
-            path: 'variants',
-            component: CropVariantsStepPageComponent,
-            title: 'smart-agent | Nowa oferta | Konfiguracja wariantu'
-          },
-          {
-            path: 'customer',
-            component: CustomerStepPageComponent,
-            title: 'smart-agent | Nowa oferta | Dane do umowy'
-          },
-          {
-            path: 'summary',
-            component: SummaryStepPageComponent,
-            title: 'smart-agent | Nowa oferta | Podsumowanie'
-          }
-        ]
-      },
-      {
-        path: 'offers/new/vehicle',
-        redirectTo: 'offers/new/motor/vehicle'
-      },
-      {
-        path: 'offers/new/variants',
-        redirectTo: 'offers/new/motor/variants'
-      },
-      {
-        path: 'offers/new/customer',
-        redirectTo: 'offers/new/motor/customer'
-      },
-      {
-        path: 'offers/new/summary',
-        redirectTo: 'offers/new/motor/summary'
-      },
-      {
-        path: 'offers/:offerId',
-        component: NewOfferWizardShellComponent,
-        data: {
-          product: 'MOTOR'
-        },
-        children: [
-          {
-            path: '',
-            pathMatch: 'full',
-            redirectTo: 'vehicle'
-          },
-          {
-            path: 'vehicle',
-            component: VehicleStepPageComponent,
-            title: 'smart-agent | Kontynuacja oferty | Dane do kalkulacji'
-          },
-          {
-            path: 'variants',
-            component: VariantsStepPageComponent,
-            title: 'smart-agent | Kontynuacja oferty | Konfiguracja wariantu'
-          },
-          {
-            path: 'customer',
-            component: CustomerStepPageComponent,
-            title: 'smart-agent | Kontynuacja oferty | Dane do umowy'
-          },
-          {
-            path: 'summary',
-            component: SummaryStepPageComponent,
-            title: 'smart-agent | Kontynuacja oferty | Podsumowanie'
-          }
-        ]
-      },
-      {
-        path: 'offers/:offerId/crop',
-        component: NewOfferWizardShellComponent,
-        data: {
-          product: 'CROP'
-        },
-        children: [
-          {
-            path: '',
-            pathMatch: 'full',
-            redirectTo: 'crop'
-          },
-          {
-            path: 'crop',
-            component: CropStepPageComponent,
-            title: 'smart-agent | Kontynuacja oferty crop | Dane do kalkulacji'
-          },
-          {
-            path: 'variants',
-            component: CropVariantsStepPageComponent,
-            title: 'smart-agent | Kontynuacja oferty crop | Konfiguracja wariantu'
-          },
-          {
-            path: 'customer',
-            component: CustomerStepPageComponent,
-            title: 'smart-agent | Kontynuacja oferty crop | Dane do umowy'
-          },
-          {
-            path: 'summary',
-            component: SummaryStepPageComponent,
-            title: 'smart-agent | Kontynuacja oferty crop | Podsumowanie'
-          }
-        ]
-      },
-      {
-        path: 'policies',
-        component: PoliciesHomePageComponent,
-        title: 'smart-agent | Polisy'
-      },
-      {
-        path: 'customers',
-        component: CustomersPageComponent,
-        title: 'smart-agent | Klienci'
-      },
-      {
-        path: 'customers/:customerKey',
-        component: CustomersPageComponent,
-        title: 'smart-agent | Klient'
-      },
-      {
-        path: 'reports',
-        component: ReportsPageComponent,
-        title: 'smart-agent | Raporty'
-      }
-    ]
-  }
+      { path: 'start',         loadComponent: () => import('./features/wizard/steps/step-01-welcome/step-01-welcome.component').then(m => m.Step01WelcomeComponent) },
+      { path: 'kto-ty',        loadComponent: () => import('./features/wizard/steps/step-02-personal-info/step-02-personal-info.component').then(m => m.Step02PersonalInfoComponent) },
+      { path: 'rejestracja',   loadComponent: () => import('./features/wizard/steps/step-03-registration/step-03-registration.component').then(m => m.Step03RegistrationComponent) },
+      { path: 'typ-pojazdu',   loadComponent: () => import('./features/wizard/steps/step-04-vehicle-type/step-04-vehicle-type.component').then(m => m.Step04VehicleTypeComponent) },
+      { path: 'rok',           loadComponent: () => import('./features/wizard/steps/step-05-year/step-05-year.component').then(m => m.Step05YearComponent) },
+      { path: 'marka',         loadComponent: () => import('./features/wizard/steps/step-06-make/step-06-make.component').then(m => m.Step06MakeComponent) },
+      { path: 'model',         loadComponent: () => import('./features/wizard/steps/step-07-model/step-07-model.component').then(m => m.Step07ModelComponent) },
+      { path: 'paliwo',        loadComponent: () => import('./features/wizard/steps/step-08-fuel/step-08-fuel.component').then(m => m.Step08FuelComponent) },
+      { path: 'pojemnosc',     loadComponent: () => import('./features/wizard/steps/step-09-engine-cc/step-09-engine-cc.component').then(m => m.Step09EngineCcComponent) },
+      { path: 'moc',           loadComponent: () => import('./features/wizard/steps/step-10-engine-km/step-10-engine-km.component').then(m => m.Step10EngineKmComponent) },
+      { path: 'wersja',        loadComponent: () => import('./features/wizard/steps/step-11-version/step-11-version.component').then(m => m.Step11VersionComponent) },
+      { path: 'wyposazenie',   loadComponent: () => import('./features/wizard/steps/step-12-equipment/step-12-equipment.component').then(m => m.Step12EquipmentComponent) },
+      { path: 'przeznaczenie', loadComponent: () => import('./features/wizard/steps/step-13-usage/step-13-usage.component').then(m => m.Step13UsageComponent) },
+      { path: 'prawo-jazdy',   loadComponent: () => import('./features/wizard/steps/step-14-license-zip/step-14-license-zip.component').then(m => m.Step14LicenseZipComponent) },
+      { path: 'zakres',        loadComponent: () => import('./features/wizard/steps/step-15-coverage/step-15-coverage.component').then(m => m.Step15CoverageComponent) },
+      { path: 'casco',         loadComponent: () => import('./features/wizard/steps/step-16-casco/step-16-casco.component').then(m => m.Step16CascoComponent) },
+      { path: 'assistance',    loadComponent: () => import('./features/wizard/steps/step-17-assistance/step-17-assistance.component').then(m => m.Step17AssistanceComponent) },
+      { path: 'nnw',           loadComponent: () => import('./features/wizard/steps/step-18-nnw/step-18-nnw.component').then(m => m.Step18NnwComponent) },
+      { path: 'szyby',         loadComponent: () => import('./features/wizard/steps/step-18b-szyby/step-18b-szyby.component').then(m => m.Step18bSzybyComponent) },
+      { path: 'dane-polisowe', loadComponent: () => import('./features/wizard/steps/step-19-policy-data/step-19-policy-data.component').then(m => m.Step19PolicyDataComponent) },
+      { path: 'sprawdz-dane',  loadComponent: () => import('./features/wizard/steps/step-21-review/step-21-review.component').then(m => m.Step21ReviewComponent) },
+      { path: 'platnosc',      loadComponent: () => import('./features/wizard/steps/step-22-payment/step-22-payment.component').then(m => m.Step22PaymentComponent) },
+      { path: 'sukces',        loadComponent: () => import('./features/wizard/steps/step-23-success/step-23-success.component').then(m => m.Step23SuccessComponent) },
+      { path: '', redirectTo: 'start', pathMatch: 'full' },
+    ],
+  },
 ];

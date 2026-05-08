@@ -1,0 +1,57 @@
+.check-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 12px 0;
+  font-size: 14px;
+  cursor: pointer;
+  input[type=checkbox] { accent-color: var(--eh-red); width: 16px; height: 16px; cursor: pointer; }
+}
+
+.btn-co-owner {
+  display: block;
+  width: 100%;
+  margin-top: 20px;
+  padding: 14px;
+  border: 2px dashed var(--eh-border);
+  border-radius: var(--radius-btn);
+  background: none;
+  color: var(--eh-red);
+  font-family: var(--font-sans);
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.15s;
+  &:hover { border-color: var(--eh-red); }
+}
+
+.dialog-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding-top: 8px;
+}
+
+.btn-outline {
+  padding: 10px 20px;
+  border: 1.5px solid var(--eh-border);
+  border-radius: var(--radius-btn);
+  background: white;
+  cursor: pointer;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  &:hover { border-color: var(--eh-red); color: var(--eh-red); }
+}
+
+.btn-primary-sm {
+  padding: 10px 24px;
+  background: var(--eh-red);
+  color: white;
+  border: none;
+  border-radius: var(--radius-btn);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  &:hover { background: var(--eh-red-dark); }
+}

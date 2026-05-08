@@ -1,0 +1,14 @@
+<app-wizard-card [showChips]="true" [nextDisabled]="!selected()" (nextClick)="next()">
+  <h2>Model pojazdu</h2>
+
+  <div class="form-group">
+    <input type="text" [ngModel]="search()" (ngModelChange)="search.set($event)" placeholder="Wyszukaj model" />
+  </div>
+
+  @for (model of filtered(); track model.name) {
+    <div class="radio-option" [class.selected]="selected() === model.name" (click)="selected.set(model.name)">
+      <span class="radio-dot"></span>
+      <span>{{ model.name }}</span>
+    </div>
+  }
+</app-wizard-card>

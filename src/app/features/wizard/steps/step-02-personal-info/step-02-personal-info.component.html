@@ -1,0 +1,20 @@
+<app-wizard-card [nextDisabled]="!valid" (nextClick)="next()">
+  <h2>Kilka informacji o Tobie</h2>
+  <p class="subtitle">Potrzebujemy ich, aby przygotować dla Ciebie idealne ubezpieczenie.</p>
+
+  <div class="form-row">
+    <div class="form-group">
+      <label>Imię</label>
+      <input type="text" [(ngModel)]="firstName" placeholder="Anna" />
+    </div>
+    <div class="form-group">
+      <label>Nazwisko</label>
+      <input type="text" [(ngModel)]="lastName" placeholder="Kowalska" />
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label>Podaj swoją datę urodzenia</label>
+    <input type="date" [(ngModel)]="dateOfBirth" />
+  </div>
+</app-wizard-card>

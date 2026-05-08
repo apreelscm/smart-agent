@@ -1,0 +1,9 @@
+<app-wizard-card [showChips]="true" [nextDisabled]="!selected" (nextClick)="next()">
+  <h2>Pojemność silnika</h2>
+  @for (cc of options(); track cc) {
+    <div class="radio-option" [class.selected]="selected === cc" (click)="selected = cc">
+      <span class="radio-dot"></span>
+      <span>{{ cc === 0 ? 'elektryczny (brak silnika spalinowego)' : cc + ' cm³' }}</span>
+    </div>
+  }
+</app-wizard-card>

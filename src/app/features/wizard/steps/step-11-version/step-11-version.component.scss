@@ -1,0 +1,26 @@
+.version-option .radio-dot { flex-shrink: 0; }
+
+.version-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex: 1;
+  min-width: 0;
+}
+
+.version-name {
+  font-size: 15px;
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.version-price {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--eh-text);
+  white-space: nowrap;
+  flex-shrink: 0;
+}

@@ -1,0 +1,10 @@
+<app-wizard-card [showChips]="true" (nextClick)="next()">
+  <h2>Rok produkcji pojazdu</h2>
+
+  @for (year of years; track year) {
+    <div class="radio-option" [class.selected]="selected === year" (click)="selected = year">
+      <span class="radio-dot"></span>
+      <span>{{ year }}</span>
+    </div>
+  }
+</app-wizard-card>

@@ -1,0 +1,69 @@
+<app-wizard-card [showChips]="true" [showNext]="false">
+  <h2>Casco</h2>
+  <p class="subtitle">Zakres ubezpieczenia</p>
+
+  <div class="detail-section">
+    <p class="detail-section-title">AC KRADZIEŻ</p>
+    <div class="radio-option" [class.selected]="ac.theftScope==='total'" (click)="ac.theftScope='total'">
+      <span class="radio-dot"></span><span>Szkoda całkowita</span><span class="info-icon">ⓘ</span>
+    </div>
+    <div class="radio-option" [class.selected]="ac.theftScope==='total_partial'" (click)="ac.theftScope='total_partial'">
+      <span class="radio-dot"></span><span>Szkoda całkowita i częściowa</span><span class="info-icon">ⓘ</span>
+    </div>
+  </div>
+
+  <div class="detail-section">
+    <p class="detail-section-title">AC USZKODZENIA</p>
+    <div class="radio-option" [class.selected]="ac.damageScope==='total'" (click)="ac.damageScope='total'">
+      <span class="radio-dot"></span><span>Szkoda całkowita</span><span class="info-icon">ⓘ</span>
+    </div>
+    <div class="radio-option" [class.selected]="ac.damageScope==='total_partial'" (click)="ac.damageScope='total_partial'">
+      <span class="radio-dot"></span><span>Szkoda całkowita i częściowa</span><span class="info-icon">ⓘ</span>
+    </div>
+  </div>
+
+  <div class="detail-section">
+    <p class="detail-section-title">Rozliczenie szkody</p>
+    @for (opt of [{v:'kosztorys',l:'Kosztorys'},{v:'siec',l:'Sieć partnerska'},{v:'aso',l:'ASO'}]; track opt.v) {
+      <div class="radio-option" [class.selected]="ac.claimSettlement===opt.v" (click)="ac.claimSettlement = $any(opt.v)">
+        <span class="radio-dot"></span><span>{{ opt.l }}</span><span class="info-icon">ⓘ</span>
+      </div>
+    }
+  </div>
+
+  <div class="detail-section">
+    <p class="detail-section-title">Ochrona części eksploatacyjnych</p>
+    <div class="radio-option" [class.selected]="ac.partsProtection==='all'" (click)="ac.partsProtection='all'">
+      <span class="radio-dot"></span><span>Bez potrąceń – wszystkie części</span><span class="info-icon">ⓘ</span>
+    </div>
+    <div class="radio-option" [class.selected]="ac.partsProtection==='exploitable'" (click)="ac.partsProtection='exploitable'">
+      <span class="radio-dot"></span><span>Bez potrąceń – części eksploatacyjne</span><span class="info-icon">ⓘ</span>
+    </div>
+  </div>
+
+  <div class="detail-section">
+    <p class="detail-section-title">Udział własny</p>
+    @for (opt of [0,500,1000,3000]; track opt) {
+      <div class="radio-option" [class.selected]="ac.deductible===opt" (click)="ac.deductible=$any(opt)">
+        <span class="radio-dot"></span><span>{{ opt === 0 ? '0 zł' : (opt | number:'1.0-0') + ' zł' }}</span><span class="info-icon">ⓘ</span>
+      </div>
+    }
+  </div>
+
+  <div class="detail-section">
+    <p class="detail-section-title">Ochrona stałej wartości pojazdu</p>
+    <div class="radio-option" [class.selected]="ac.fixedValue===true" (click)="ac.fixedValue=true">
+      <span class="radio-dot"></span><span>tak</span><span class="info-icon">ⓘ</span>
+    </div>
+    <div class="radio-option" [class.selected]="ac.fixedValue===false" (click)="ac.fixedValue=false">
+      <span class="radio-dot"></span><span>nie</span><span class="info-icon">ⓘ</span>
+    </div>
+  </div>
+
+  <div class="coverage-actions">
+    <button class="btn-cancel" (click)="cancel()">✕</button>
+    <div class="price-confirm">{{ price }} zł</div>
+    <button class="btn-confirm" (click)="confirm()">✓</button>
+  </div>
+  <p class="cov-price-label">cena Casco</p>
+</app-wizard-card>

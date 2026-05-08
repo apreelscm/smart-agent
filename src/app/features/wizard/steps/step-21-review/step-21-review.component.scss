@@ -1,0 +1,131 @@
+.summary-section {
+  border: 1.5px solid var(--eh-border);
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.summary-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.summary-title {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--eh-muted);
+}
+
+.edit-link {
+  background: none;
+  border: none;
+  padding: 2px 4px;
+  cursor: pointer;
+  color: var(--eh-text);
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  transition: color 0.12s;
+
+  &:hover { color: var(--eh-red); }
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  padding: 5px 0;
+  border-bottom: 1px solid var(--eh-border);
+  &:last-child { border-bottom: none; }
+  span:first-child { color: var(--eh-muted); }
+  span:last-child { font-weight: 600; }
+}
+
+.installment-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.installment-card {
+  border: 1.5px solid var(--eh-border);
+  border-radius: 8px;
+  padding: 12px 8px;
+  text-align: center;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  position: relative;
+  transition: background 0.12s, border-color 0.12s;
+
+  &.selected {
+    background: var(--eh-cream);
+    border-color: var(--eh-red);
+  }
+}
+
+.inst-n { font-size: 12px; color: var(--eh-muted); }
+.inst-price { font-family: var(--font-serif); font-size: 18px; font-weight: 700; }
+.inst-badge {
+  position: absolute;
+  top: -8px;
+  right: 6px;
+  background: var(--eh-red);
+  color: white;
+  font-size: 9px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.doc-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 0;
+  font-size: 14px;
+  border-bottom: 1px solid var(--eh-border);
+  &:last-child { border-bottom: none; }
+  cursor: pointer;
+  &:hover { color: var(--eh-red); }
+}
+.doc-icon { font-size: 18px; }
+
+.consents-section { margin-bottom: 16px; }
+
+.check-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 8px 0;
+  font-size: 14px;
+  &.main { font-weight: 700; font-size: 15px; }
+  &.sub { padding-left: 12px; color: var(--eh-muted); font-size: 13px; }
+  input[type=checkbox] { accent-color: var(--eh-red); margin-top: 2px; flex-shrink: 0; }
+}
+
+.total-price-bar {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px 0 4px;
+  border-top: 1px solid var(--eh-border);
+}
+
+.total-price-amount {
+  font-family: var(--font-serif);
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.total-price-label {
+  font-size: 13px;
+  color: var(--eh-muted);
+}

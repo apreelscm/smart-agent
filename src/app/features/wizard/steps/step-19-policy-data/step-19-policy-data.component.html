@@ -1,0 +1,65 @@
+<app-wizard-card [showChips]="true" [nextDisabled]="!valid" (nextClick)="next()">
+  <h2>Dane polisowe</h2>
+
+  <p class="section-heading">Kto opłaca polisę?</p>
+
+  <div class="form-row">
+    <div class="form-group"><label>Imię</label><input type="text" [(ngModel)]="ph.firstName" placeholder="Anna" /></div>
+    <div class="form-group"><label>Nazwisko</label><input type="text" [(ngModel)]="ph.lastName" placeholder="Kowalska" /></div>
+  </div>
+  <div class="form-group"><label>PESEL</label><input type="text" [(ngModel)]="ph.pesel" placeholder="77841204512" /></div>
+  <div class="form-group"><label>Adres e-mail</label><input type="email" [(ngModel)]="ph.email" placeholder="anna@przykład.pl" /></div>
+  <div class="form-group"><label>Numer telefonu</label><input type="tel" [(ngModel)]="ph.phone" placeholder="+48 123 456 789" /></div>
+
+  <p class="section-heading">Adres zamieszkania</p>
+  <div class="form-row">
+    <div class="form-group"><label>Kod pocztowy</label><input type="text" [(ngModel)]="ph.address.zipCode" placeholder="00-713" /></div>
+    <div class="form-group"><label>Miejscowość</label><input type="text" [(ngModel)]="ph.address.city" placeholder="Warszawa" /></div>
+  </div>
+  <div class="form-group"><label>Ulica</label><input type="text" [(ngModel)]="ph.address.street" placeholder="ul. Lubomirska" /></div>
+  <div class="form-row">
+    <div class="form-group"><label>Numer domu</label><input type="text" [(ngModel)]="ph.address.houseNumber" /></div>
+    <div class="form-group"><label>Numer lokalu</label><input type="text" [(ngModel)]="ph.address.flatNumber" /></div>
+  </div>
+
+  <div class="check-row">
+    <input type="checkbox" id="insSame" [checked]="insuredSameAsPh()" (change)="insuredSameAsPh.set(!insuredSameAsPh()); copyPhToIns()" />
+    <label for="insSame">Ubezpieczony taki sam jak ubezpieczający</label>
+  </div>
+
+  @if (!insuredSameAsPh()) {
+    <p class="section-heading" style="margin-top:20px">Dane ubezpieczonego</p>
+    <div class="form-row">
+      <div class="form-group"><label>Imię</label><input type="text" [(ngModel)]="ins.firstName" /></div>
+      <div class="form-group"><label>Nazwisko</label><input type="text" [(ngModel)]="ins.lastName" /></div>
+    </div>
+    <div class="form-group"><label>PESEL</label><input type="text" [(ngModel)]="ins.pesel" /></div>
+    <div class="form-group"><label>Adres e-mail</label><input type="email" [(ngModel)]="ins.email" /></div>
+  }
+
+  <button class="btn-co-owner" (click)="openCoOwner()">+ Dodaj współwłaściciela</button>
+</app-wizard-card>
+
+<p-dialog
+  header="Dodaj współwłaściciela"
+  [visible]="coOwnerDialogVisible()"
+  (visibleChange)="coOwnerDialogVisible.set($event)"
+  [modal]="true"
+  [style]="{width:'520px'}"
+  [closable]="true">
+
+  <div class="form-row">
+    <div class="form-group"><label>Imię</label><input type="text" [(ngModel)]="coOwner.firstName" /></div>
+    <div class="form-group"><label>Nazwisko</label><input type="text" [(ngModel)]="coOwner.lastName" /></div>
+  </div>
+  <div class="form-group"><label>PESEL</label><input type="text" [(ngModel)]="coOwner.pesel" /></div>
+  <div class="form-group"><label>Adres e-mail</label><input type="email" [(ngModel)]="coOwner.email" /></div>
+  <div class="form-group"><label>Numer telefonu</label><input type="tel" [(ngModel)]="coOwner.phone" /></div>
+
+  <ng-template pTemplate="footer">
+    <div class="dialog-footer">
+      <button class="btn-outline" (click)="closeCoOwner()">Anuluj</button>
+      <button class="btn-primary-sm" (click)="saveCoOwner()">Zapisz</button>
+    </div>
+  </ng-template>
+</p-dialog>

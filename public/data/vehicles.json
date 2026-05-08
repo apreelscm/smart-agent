@@ -1,0 +1,253 @@
+[
+  {
+    "name": "Volkswagen",
+    "popular": true,
+    "models": [
+      {
+        "name": "T-ROC 17-21",
+        "yearRange": "2017-2021",
+        "fuelTypes": ["benzyna", "diesel"],
+        "versions": [
+          { "name": "T-ROC 1.0 TSI Style", "eurotaxValue": 112358, "engineCC": [999], "engineKM": [115] },
+          { "name": "T-ROC 1.5 TSI ACT Style", "eurotaxValue": 125790, "engineCC": [1498], "engineKM": [150] },
+          { "name": "T-ROC 1.5 TSI ACT Premium", "eurotaxValue": 135790, "engineCC": [1498], "engineKM": [150] },
+          { "name": "T-ROC 2.0 TDI Style", "eurotaxValue": 131200, "engineCC": [1968], "engineKM": [150] },
+          { "name": "Premium DSG Troc MMDLSII", "eurotaxValue": 149000, "engineCC": [1968], "engineKM": [190] },
+          { "name": "T-ROC 1.5 TSI ACT Advance DSG", "eurotaxValue": 148026, "engineCC": [1498], "engineKM": [150] }
+        ]
+      },
+      {
+        "name": "Golf VII 12-17",
+        "yearRange": "2012-2017",
+        "fuelTypes": ["benzyna", "diesel", "elektryczny"],
+        "versions": [
+          { "name": "Golf 1.0 TSI Trendline", "eurotaxValue": 72500, "engineCC": [999], "engineKM": [115] },
+          { "name": "Golf 1.4 TSI Comfortline", "eurotaxValue": 84200, "engineCC": [1395], "engineKM": [125] },
+          { "name": "Golf 2.0 TDI Highline", "eurotaxValue": 98700, "engineCC": [1968], "engineKM": [150] },
+          { "name": "Golf GTI 2.0 TSI", "eurotaxValue": 112000, "engineCC": [1984], "engineKM": [220] }
+        ]
+      },
+      {
+        "name": "Passat 15-19",
+        "yearRange": "2015-2019",
+        "fuelTypes": ["benzyna", "diesel"],
+        "versions": [
+          { "name": "Passat 1.4 TSI Comfortline", "eurotaxValue": 95000, "engineCC": [1395], "engineKM": [125] },
+          { "name": "Passat 2.0 TDI Highline", "eurotaxValue": 115000, "engineCC": [1968], "engineKM": [150] },
+          { "name": "Passat 2.0 TDI R-Line", "eurotaxValue": 128000, "engineCC": [1968], "engineKM": [190] }
+        ]
+      },
+      {
+        "name": "Polo 17-21",
+        "yearRange": "2017-2021",
+        "fuelTypes": ["benzyna"],
+        "versions": [
+          { "name": "Polo 1.0 MPI Trendline", "eurotaxValue": 58000, "engineCC": [999], "engineKM": [65] },
+          { "name": "Polo 1.0 TSI Comfortline", "eurotaxValue": 68000, "engineCC": [999], "engineKM": [95] },
+          { "name": "Polo 1.0 TSI Highline", "eurotaxValue": 76000, "engineCC": [999], "engineKM": [115] }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Toyota",
+    "popular": true,
+    "models": [
+      {
+        "name": "Corolla 19-23",
+        "yearRange": "2019-2023",
+        "fuelTypes": ["benzyna", "elektryczny"],
+        "versions": [
+          { "name": "Corolla 1.8 Hybrid Active", "eurotaxValue": 98000, "engineCC": [1798], "engineKM": [122] },
+          { "name": "Corolla 1.8 Hybrid Comfort", "eurotaxValue": 108000, "engineCC": [1798], "engineKM": [122] },
+          { "name": "Corolla 2.0 Hybrid Prestige", "eurotaxValue": 128000, "engineCC": [1987], "engineKM": [184] }
+        ]
+      },
+      {
+        "name": "RAV4 19-23",
+        "yearRange": "2019-2023",
+        "fuelTypes": ["benzyna", "elektryczny"],
+        "versions": [
+          { "name": "RAV4 2.0 Active", "eurotaxValue": 138000, "engineCC": [1987], "engineKM": [175] },
+          { "name": "RAV4 2.5 Hybrid Comfort", "eurotaxValue": 158000, "engineCC": [2487], "engineKM": [222] },
+          { "name": "RAV4 2.5 Hybrid Prestige", "eurotaxValue": 178000, "engineCC": [2487], "engineKM": [222] }
+        ]
+      },
+      {
+        "name": "Yaris 17-22",
+        "yearRange": "2017-2022",
+        "fuelTypes": ["benzyna", "elektryczny"],
+        "versions": [
+          { "name": "Yaris 1.0 Active", "eurotaxValue": 62000, "engineCC": [998], "engineKM": [72] },
+          { "name": "Yaris 1.5 Hybrid Active", "eurotaxValue": 78000, "engineCC": [1490], "engineKM": [116] },
+          { "name": "Yaris 1.5 Hybrid Comfort", "eurotaxValue": 88000, "engineCC": [1490], "engineKM": [116] }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Skoda",
+    "popular": true,
+    "models": [
+      {
+        "name": "Octavia 17-21",
+        "yearRange": "2017-2021",
+        "fuelTypes": ["benzyna", "diesel"],
+        "versions": [
+          { "name": "Octavia 1.0 TSI Ambition", "eurotaxValue": 88000, "engineCC": [999], "engineKM": [115] },
+          { "name": "Octavia 1.5 TSI Style", "eurotaxValue": 105000, "engineCC": [1498], "engineKM": [150] },
+          { "name": "Octavia 2.0 TDI Scout", "eurotaxValue": 125000, "engineCC": [1968], "engineKM": [150] }
+        ]
+      },
+      {
+        "name": "Fabia 15-21",
+        "yearRange": "2015-2021",
+        "fuelTypes": ["benzyna"],
+        "versions": [
+          { "name": "Fabia 1.0 MPI Active", "eurotaxValue": 55000, "engineCC": [999], "engineKM": [65] },
+          { "name": "Fabia 1.0 TSI Ambition", "eurotaxValue": 65000, "engineCC": [999], "engineKM": [95] },
+          { "name": "Fabia 1.2 TSI Style", "eurotaxValue": 72000, "engineCC": [1197], "engineKM": [110] }
+        ]
+      },
+      {
+        "name": "Kodiaq 17-22",
+        "yearRange": "2017-2022",
+        "fuelTypes": ["benzyna", "diesel"],
+        "versions": [
+          { "name": "Kodiaq 1.5 TSI Ambition", "eurotaxValue": 138000, "engineCC": [1498], "engineKM": [150] },
+          { "name": "Kodiaq 2.0 TDI Style", "eurotaxValue": 158000, "engineCC": [1968], "engineKM": [150] },
+          { "name": "Kodiaq 2.0 TSI Sportline", "eurotaxValue": 175000, "engineCC": [1984], "engineKM": [190] }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "BMW",
+    "popular": true,
+    "models": [
+      {
+        "name": "3 Series 18-22",
+        "yearRange": "2018-2022",
+        "fuelTypes": ["benzyna", "diesel"],
+        "versions": [
+          { "name": "320i Sport Line", "eurotaxValue": 178000, "engineCC": [1998], "engineKM": [184] },
+          { "name": "330i xDrive M Sport", "eurotaxValue": 218000, "engineCC": [2998], "engineKM": [258] },
+          { "name": "320d Sport Line", "eurotaxValue": 188000, "engineCC": [1995], "engineKM": [190] }
+        ]
+      },
+      {
+        "name": "X3 18-22",
+        "yearRange": "2018-2022",
+        "fuelTypes": ["benzyna", "diesel"],
+        "versions": [
+          { "name": "X3 xDrive20i", "eurotaxValue": 218000, "engineCC": [1998], "engineKM": [184] },
+          { "name": "X3 xDrive30i M Sport", "eurotaxValue": 258000, "engineCC": [2998], "engineKM": [252] },
+          { "name": "X3 xDrive20d", "eurotaxValue": 228000, "engineCC": [1995], "engineKM": [190] }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Mercedes",
+    "popular": true,
+    "models": [
+      {
+        "name": "C-Class 18-22",
+        "yearRange": "2018-2022",
+        "fuelTypes": ["benzyna", "diesel"],
+        "versions": [
+          { "name": "C 200 Avantgarde", "eurotaxValue": 198000, "engineCC": [1991], "engineKM": [184] },
+          { "name": "C 220d AMG Line", "eurotaxValue": 215000, "engineCC": [1950], "engineKM": [194] },
+          { "name": "C 300 AMG Line", "eurotaxValue": 248000, "engineCC": [1991], "engineKM": [258] }
+        ]
+      },
+      {
+        "name": "GLC 16-22",
+        "yearRange": "2016-2022",
+        "fuelTypes": ["benzyna", "diesel"],
+        "versions": [
+          { "name": "GLC 200 Progressive", "eurotaxValue": 235000, "engineCC": [1991], "engineKM": [197] },
+          { "name": "GLC 300 AMG Line 4MATIC", "eurotaxValue": 278000, "engineCC": [1991], "engineKM": [258] },
+          { "name": "GLC 220d 4MATIC", "eurotaxValue": 248000, "engineCC": [1950], "engineKM": [194] }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Tesla",
+    "popular": true,
+    "models": [
+      {
+        "name": "Model 3 19-23",
+        "yearRange": "2019-2023",
+        "fuelTypes": ["elektryczny"],
+        "versions": [
+          { "name": "Model 3 Standard Range", "eurotaxValue": 195000, "engineCC": [0], "engineKM": [283] },
+          { "name": "Model 3 Long Range AWD", "eurotaxValue": 235000, "engineCC": [0], "engineKM": [450] },
+          { "name": "Model 3 Performance", "eurotaxValue": 265000, "engineCC": [0], "engineKM": [513] }
+        ]
+      },
+      {
+        "name": "Model Y 20-23",
+        "yearRange": "2020-2023",
+        "fuelTypes": ["elektryczny"],
+        "versions": [
+          { "name": "Model Y Long Range AWD", "eurotaxValue": 255000, "engineCC": [0], "engineKM": [450] },
+          { "name": "Model Y Performance", "eurotaxValue": 285000, "engineCC": [0], "engineKM": [534] }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Audi",
+    "popular": true,
+    "models": [
+      {
+        "name": "A4 16-22",
+        "yearRange": "2016-2022",
+        "fuelTypes": ["benzyna", "diesel"],
+        "versions": [
+          { "name": "A4 35 TFSI S tronic", "eurotaxValue": 168000, "engineCC": [1395], "engineKM": [150] },
+          { "name": "A4 40 TFSI S tronic", "eurotaxValue": 192000, "engineCC": [1984], "engineKM": [190] },
+          { "name": "A4 35 TDI S tronic", "eurotaxValue": 175000, "engineCC": [1968], "engineKM": [163] }
+        ]
+      },
+      {
+        "name": "Q5 17-22",
+        "yearRange": "2017-2022",
+        "fuelTypes": ["benzyna", "diesel"],
+        "versions": [
+          { "name": "Q5 40 TDI quattro", "eurotaxValue": 228000, "engineCC": [1968], "engineKM": [190] },
+          { "name": "Q5 45 TFSI quattro", "eurotaxValue": 245000, "engineCC": [1984], "engineKM": [245] },
+          { "name": "Q5 55 TFSI e quattro", "eurotaxValue": 278000, "engineCC": [1984], "engineKM": [367] }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Ford",
+    "popular": false,
+    "models": [
+      {
+        "name": "Focus 15-22",
+        "yearRange": "2015-2022",
+        "fuelTypes": ["benzyna", "diesel"],
+        "versions": [
+          { "name": "Focus 1.0 EcoBoost Trend", "eurotaxValue": 72000, "engineCC": [999], "engineKM": [100] },
+          { "name": "Focus 1.5 EcoBoost ST-Line", "eurotaxValue": 88000, "engineCC": [1498], "engineKM": [150] },
+          { "name": "Focus 2.0 TDCi ST-Line", "eurotaxValue": 98000, "engineCC": [1997], "engineKM": [150] }
+        ]
+      },
+      {
+        "name": "Kuga 17-22",
+        "yearRange": "2017-2022",
+        "fuelTypes": ["benzyna", "diesel"],
+        "versions": [
+          { "name": "Kuga 1.5 EcoBoost Trend", "eurotaxValue": 108000, "engineCC": [1498], "engineKM": [150] },
+          { "name": "Kuga 2.0 TDCi ST-Line", "eurotaxValue": 128000, "engineCC": [1997], "engineKM": [150] },
+          { "name": "Kuga PHEV Titanium", "eurotaxValue": 152000, "engineCC": [2498], "engineKM": [225] }
+        ]
+      }
+    ]
+  }
+]

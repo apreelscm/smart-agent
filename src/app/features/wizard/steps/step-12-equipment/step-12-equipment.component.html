@@ -1,0 +1,23 @@
+<app-wizard-card [showChips]="true" (nextClick)="next()">
+  <p class="step-label">Rodzaj polisy</p>
+  <h2>{{ versionName }}</h2>
+
+  <p class="subtitle">Wyposażenie dodatkowe</p>
+  <p class="subtitle-small">np. niestandardowe felgi lub radio o wysokiej wartości.</p>
+
+  <div class="eq-value-row">
+    <span class="slider-value-display">{{ additionalValue | number:'1.0-0' }} zł</span>
+  </div>
+
+  <input type="range" class="eh-range" [(ngModel)]="additionalValue" min="0" max="20000" step="500" [style.--pct]="sliderPct" />
+
+  <div class="range-labels">
+    <span>0 zł</span>
+    <span>20 000 zł</span>
+  </div>
+
+  <div class="total-row">
+    <p class="total-label">Całkowita wartość pojazdu</p>
+    <p class="total-value">{{ total | number:'1.0-0' }} zł</p>
+  </div>
+</app-wizard-card>

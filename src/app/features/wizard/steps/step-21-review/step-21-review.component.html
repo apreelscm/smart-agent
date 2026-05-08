@@ -1,0 +1,93 @@
+<app-wizard-card [showChips]="true" (nextClick)="next()">
+  <h2>Sprawdź dane</h2>
+
+  <!-- Vehicle -->
+  <div class="summary-section">
+    <div class="summary-header">
+      <span class="summary-title">Dane pojazdu</span>
+      <button class="edit-link" (click)="editSection('/kalkulator/marka')"><i class="pi pi-pencil"></i></button>
+    </div>
+    <div class="summary-row"><span>Marka i model</span><span>{{ draft.vehicle.make }} {{ draft.vehicle.model }}</span></div>
+    <div class="summary-row"><span>Wersja</span><span>{{ draft.vehicle.version }}</span></div>
+    <div class="summary-row"><span>Rok produkcji</span><span>{{ draft.vehicle.year }}</span></div>
+    <div class="summary-row"><span>Paliwo</span><span>{{ draft.vehicle.fuelType }}</span></div>
+  </div>
+
+  <!-- Policyholder -->
+  <div class="summary-section">
+    <div class="summary-header">
+      <span class="summary-title">Dane ubezpieczającego</span>
+      <button class="edit-link" (click)="editSection('/kalkulator/dane-polisowe')"><i class="pi pi-pencil"></i></button>
+    </div>
+    <div class="summary-row"><span>Imię i nazwisko</span><span>{{ draft.policyholder.firstName }} {{ draft.policyholder.lastName }}</span></div>
+    <div class="summary-row"><span>PESEL</span><span>{{ draft.policyholder.pesel }}</span></div>
+    <div class="summary-row"><span>Adres e-mail</span><span>{{ draft.policyholder.email }}</span></div>
+  </div>
+
+  <!-- Coverages -->
+  <div class="summary-section">
+    <div class="summary-header">
+      <span class="summary-title">Zakres ochrony</span>
+      <button class="edit-link" (click)="editSection('/kalkulator/zakres')"><i class="pi pi-pencil"></i></button>
+    </div>
+    @if (draft.coverages.oc) { <div class="summary-row"><span>OC</span><span>289 zł</span></div> }
+    @if (draft.coverages.ac) { <div class="summary-row"><span>AC</span><span>389 zł</span></div> }
+    @if (draft.coverages.assistance) { <div class="summary-row"><span>Assistance</span><span>89 zł</span></div> }
+    @if (draft.coverages.nnwKip) { <div class="summary-row"><span>NNW KiP</span><span>129 zł</span></div> }
+    @if (draft.coverages.szyby) { <div class="summary-row"><span>Szyby</span><span>150 zł</span></div> }
+    @if (draft.coverages.bagaz) { <div class="summary-row"><span>Bagaż</span><span>89 zł</span></div> }
+    @if (draft.coverages.opony) { <div class="summary-row"><span>Opony</span><span>89 zł</span></div> }
+  </div>
+
+  <!-- Payment frequency -->
+  <p class="section-heading">Wybierz jak chcesz płacić</p>
+  <div class="installment-grid">
+    @for (n of installmentOptions; track n) {
+      <div class="installment-card" [class.selected]="selectedInstallments === n" (click)="selectedInstallments = n">
+        <span class="inst-n">{{ n }}-rata</span>
+        <span class="inst-price">{{ (draft.coverages.totalPremium / n) | number:'1.0-0' }} zł</span>
+        @if (n === 1) { <span class="inst-badge">NISKA</span> }
+      </div>
+    }
+  </div>
+
+  <!-- Period -->
+  <div class="summary-section">
+    <div class="summary-row"><span>Rozpoczęcie ochrony</span><span>{{ startDate | date:'dd.MM.yyyy' }}</span></div>
+    <div class="summary-row"><span>Zakończenie ochrony</span><span>{{ endDate | date:'dd.MM.yyyy' }}</span></div>
+  </div>
+
+  <!-- Documents -->
+  <div class="summary-section">
+    <div class="summary-header"><span class="summary-title">Dokumenty do pobrania</span></div>
+    <div class="doc-row"><span class="doc-icon">📄</span><span>Ogólne Warunki Ubezpieczenia</span></div>
+    <div class="doc-row"><span class="doc-icon">📄</span><span>Karta Produktu (KID)</span></div>
+    <div class="doc-row"><span class="doc-icon">📄</span><span>Karta Produktu — Assistance</span></div>
+  </div>
+
+  <!-- Consents -->
+  <div class="consents-section">
+    <p class="section-heading">Zaakceptuj regulamin i zgody</p>
+    <div class="check-row main">
+      <input type="checkbox" id="allConsents" [checked]="consentsAll" (change)="toggleAll(!consentsAll)" />
+      <label for="allConsents">Wyrażam wszystkie zgody</label>
+    </div>
+    <div class="check-row sub">
+      <input type="checkbox" [(ngModel)]="draft.consents.owu" />
+      <label>OWU — Ogólne Warunki Ubezpieczenia</label>
+    </div>
+    <div class="check-row sub">
+      <input type="checkbox" [(ngModel)]="draft.consents.kid" />
+      <label>KID — Karta Informacyjna Dokumentu</label>
+    </div>
+    <div class="check-row sub">
+      <input type="checkbox" [(ngModel)]="draft.consents.marketing" />
+      <label>Zgoda marketingowa (opcjonalna)</label>
+    </div>
+  </div>
+
+  <div class="total-price-bar">
+    <span class="total-price-amount">{{ draft.coverages.totalPremium | number:'1.0-0' }} zł</span>
+    <span class="total-price-label">cena ubezpieczenia</span>
+  </div>
+</app-wizard-card>

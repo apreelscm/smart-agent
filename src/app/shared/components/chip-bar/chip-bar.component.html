@@ -1,0 +1,10 @@
+@if (chips().length > 0) {
+  <div class="chip-bar">
+    @for (chip of chips(); track chip.route) {
+      <span class="chip" (click)="navigate(chip.route)">
+        {{ chip.label }}
+        <span class="chip-x">×</span>
+      </span>
+    }
+  </div>
+}

@@ -1,65 +1,418 @@
-/* You can add global styles to this file, and also import other style files */
-@use './styles/tokens';
+@import url('https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&family=Source+Sans+3:ital,wght@0,300;0,400;0,600;1,400&display=swap');
 @import 'primeicons/primeicons.css';
 
-html,
-body {
+// ── Design tokens ────────────────────────────────────────────────
+:root {
+  --eh-red:         #C8102E;
+  --eh-red-dark:    #A50D25;
+  --eh-cream:       #F5EDD6;
+  --eh-bg:          #D8D3CC;
+  --eh-text:        #2C2C2C;
+  --eh-muted:       #6B6B6B;
+  --eh-white:       #FFFFFF;
+  --eh-border:      #D4D0CA;
+  --eh-input-bg:    #FFFFFF;
+
+  // Hero: swap this one variable to add a real image later
+  --eh-hero-bg:     linear-gradient(135deg, #7DC8E8 0%, #5BB8E0 35%, #A8DFF5 70%, #C5EDF8 100%);
+
+  --font-serif:     'Lora', Georgia, serif;
+  --font-sans:      'Source Sans 3', 'Helvetica Neue', Arial, sans-serif;
+
+  --card-max-width: 1100px;
+  --content-width:  640px;
+  --radius-card:    8px;
+  --radius-btn:     6px;
+  --radius-input:   6px;
+}
+
+// ── Reset & base ─────────────────────────────────────────────────
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
   min-height: 100%;
+  font-family: var(--font-sans);
+  font-size: 16px;
+  background: var(--eh-bg);
+  color: var(--eh-text);
+  -webkit-font-smoothing: antialiased;
 }
 
-body {
-  margin: 0;
-  color: var(--app-ink);
-  font-family: var(--app-font-sans);
-  background:
-    radial-gradient(circle at top left, var(--app-bg-radial), transparent 28%),
-    linear-gradient(180deg, #f7f9fc, var(--app-bg));
+// ── Wizard shell ─────────────────────────────────────────────────
+.wizard-shell {
+  min-height: 100vh;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 48px 32px 72px;
+  background: var(--eh-bg);
 }
 
-* {
-  box-sizing: border-box;
+// ── Wizard card ──────────────────────────────────────────────────
+.wizard-card {
+  width: 100%;
+  max-width: var(--card-max-width);
+  background: var(--eh-white);
+  border-radius: var(--radius-card);
+  box-shadow: 0 8px 40px rgba(0,0,0,0.22);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
-button,
-input,
-select,
-textarea {
-  font: inherit;
+// ── Card header (logo bar) ───────────────────────────────────────
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 28px 14px;
+  background: var(--eh-white);
+
+  .logo-img {
+    height: 72px;
+    width: auto;
+  }
+
+  .tagline {
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--eh-red);
+    letter-spacing: 0.01em;
+  }
 }
 
-h1,
-h2,
-h3,
-h4,
-p,
-ol,
-ul {
-  margin-block-start: 0;
+// ── Hero banner ──────────────────────────────────────────────────
+.hero-wrap {
+  position: relative;
+  width: 100%;
+  flex-shrink: 0;
+  overflow: hidden;
+
+  .hero-img {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 340px;
+  }
+
+  // Chip bar anchored to bottom of hero image
+  .chip-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: transparent;
+    padding: 12px 28px;
+  }
 }
 
-main {
-  width: min(calc(100% - 2rem), var(--app-shell-width));
-  margin: 0 auto;
-  padding: 2rem 0 3rem;
+// ── Card content ─────────────────────────────────────────────────
+.card-content {
+  padding: 40px 28px 8px;
+
+  // Inner wrapper centers & constrains the form
+  .content-inner {
+    max-width: var(--content-width);
+    margin: 0 auto;
+  }
+
+  h1, h2 {
+    font-family: var(--font-serif);
+    font-weight: 700;
+    font-size: 28px;
+    line-height: 1.2;
+    color: var(--eh-text);
+    text-align: center;
+    margin-bottom: 8px;
+  }
+
+  .subtitle {
+    font-size: 14px;
+    color: var(--eh-muted);
+    line-height: 1.6;
+    text-align: center;
+    margin-bottom: 28px;
+  }
 }
 
-a.p-button,
-a.p-button:hover,
-a.p-button:focus,
-a.p-button:active,
-a.p-button:visited {
-  text-decoration: none;
+// ── Card content background variants ─────────────────────────────
+.card-content.cream { background: var(--eh-cream); }
+
+// ── Form elements ────────────────────────────────────────────────
+.form-group {
+  margin-bottom: 18px;
+
+  label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--eh-text);
+    margin-bottom: 6px;
+  }
+
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"],
+  input[type="date"] {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1.5px solid var(--eh-border);
+    border-radius: var(--radius-input);
+    font-family: var(--font-sans);
+    font-size: 15px;
+    color: var(--eh-text);
+    background: var(--eh-input-bg);
+    outline: none;
+    transition: border-color 0.15s;
+
+    &::placeholder { color: #ABABAB; }
+    &:focus { border-color: var(--eh-red); }
+  }
 }
 
-.p-button {
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+// ── Primary CTA button ───────────────────────────────────────────
+.btn-primary {
+  display: block;
+  width: 100%;
+  max-width: var(--content-width);
+  margin: 24px auto 32px;
+  padding: 16px;
+  background: var(--eh-red);
+  color: var(--eh-white);
+  font-family: var(--font-sans);
+  font-size: 16px;
   font-weight: 600;
-  border-radius: var(--app-radius-sm);
+  text-align: center;
+  border: none;
+  border-radius: var(--radius-btn);
+  cursor: pointer;
+  transition: background 0.15s;
+  letter-spacing: 0.02em;
+
+  &:hover  { background: var(--eh-red-dark); }
+  &:active { transform: scale(0.995); }
 }
 
-.p-button.p-button-text,
-.p-button.p-button-link {
-  text-transform: none;
-  letter-spacing: normal;
+// ── Radio option rows ────────────────────────────────────────────
+.radio-option {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  padding: 14px 16px;
+  border: 1.5px solid var(--eh-border);
+  border-radius: 8px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  background: var(--eh-white);
+  transition: background 0.12s, border-color 0.12s;
+  font-size: 15px;
+  color: var(--eh-text);
+
+  &.selected {
+    background: var(--eh-cream);
+    border-color: #E0D3AC;
+  }
+
+  .radio-dot {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid var(--eh-border);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color 0.12s;
+
+    &::after {
+      content: '';
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: transparent;
+      transition: background 0.12s;
+    }
+  }
+
+  &.selected .radio-dot {
+    border-color: var(--eh-red);
+    &::after { background: var(--eh-red); }
+  }
+
+  .info-icon {
+    margin-left: auto;
+    color: var(--eh-red);
+    opacity: 0.65;
+    flex-shrink: 0;
+  }
+}
+
+// ── Chip tags (vehicle breadcrumb bar) ───────────────────────────
+.chip-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 10px 28px 0;
+  background: var(--eh-white);
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    background: #3D3D3D;
+    color: #fff;
+    border-radius: 16px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.15s, opacity 0.15s;
+
+    &:hover { background: #555; }
+
+    .chip-x {
+      opacity: 0.6;
+      line-height: 1;
+      &:hover { opacity: 1; }
+    }
+  }
+}
+
+// ── Section heading inside form ───────────────────────────────────
+.section-heading {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--eh-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  text-align: center;
+  margin: 24px 0 16px;
+}
+
+// ── Slider value display ─────────────────────────────────────────
+.slider-value-display {
+  font-family: var(--font-serif);
+  font-size: 30px;
+  font-weight: 700;
+  color: var(--eh-text);
+  margin-bottom: 4px;
+}
+
+// ── Price navigator ──────────────────────────────────────────────
+.price-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 4px;
+  padding: 16px 28px 20px;
+  border-top: 1px solid var(--eh-border);
+
+  .price-nav-row {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .price-nav-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1.5px solid var(--eh-border);
+    background: var(--eh-white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--eh-text);
+    &:hover { background: var(--eh-cream); }
+  }
+
+  .price-amount {
+    font-family: var(--font-serif);
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--eh-text);
+  }
+
+  .price-label {
+    font-size: 12px;
+    color: var(--eh-muted);
+    text-align: center;
+  }
+}
+
+// ── Skip link ────────────────────────────────────────────────────
+.skip-link {
+  font-size: 14px;
+  color: var(--eh-red);
+  text-decoration: underline;
+  cursor: pointer;
+  text-align: center;
+  margin-top: 8px;
+  &:hover { color: var(--eh-red-dark); }
+}
+
+// ── Make grid (2-column brand picker) ────────────────────────────
+.make-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+// ── Coverage confirm/cancel row ──────────────────────────────────
+.coverage-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 16px 0 8px;
+
+  .btn-cancel {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    border: 1.5px solid var(--eh-border);
+    background: var(--eh-white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--eh-muted);
+    font-size: 18px;
+    &:hover { border-color: var(--eh-red); color: var(--eh-red); }
+  }
+
+  .price-confirm {
+    font-family: var(--font-serif);
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--eh-text);
+    flex: 1;
+    text-align: center;
+  }
+
+  .btn-confirm {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    border: none;
+    background: var(--eh-red);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: white;
+    font-size: 20px;
+    &:hover { background: var(--eh-red-dark); }
+  }
 }
