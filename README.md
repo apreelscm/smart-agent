@@ -37,6 +37,21 @@ ng build
 
 This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
 
+## Build and generate 404
+
+After running `npm run build`, the project will generate the production files under `dist/`.
+A small helper script is included to copy the generated `index.html` to `404.html` next to it (useful for static hosting that needs a 404 fallback).
+
+Make the script executable and run the build:
+
+```bash
+chmod +x ./scripts/copy-404.sh
+npm run build
+```
+
+This will automatically run the copy script (via the `postbuild` script) and produce `404.html` next to the built `index.html`.
+
+
 ## Running unit tests
 
 To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
