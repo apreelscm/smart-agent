@@ -1,10 +1,12 @@
 import { Component, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProcessListService } from '../process-list/process-list.service';
 
 @Component({
   selector: 'app-process-detail',
   standalone: true,
+  imports: [CommonModule],
   template: `
     <div class="card">
       <div class="card-body">
