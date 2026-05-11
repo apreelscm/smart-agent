@@ -8,7 +8,9 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "e2e": "playwright test",
-    "e2e:serve": "http-server dist/smart-agent/browser -p 4200 -s"
+    "e2e:serve": "http-server dist/smart-agent/browser -p 4200 -s",
+    "e2e:ci": "npm run build && npx http-server dist/smart-agent/browser -p 4200 -s & npx playwright test",
+    "postinstall": "npx playwright install"
   },
   "private": true,
   "dependencies": {
@@ -37,6 +39,7 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
     "@playwright/test": "^1.48.0",
+    "http-server": "^14.1.1",
     "typescript": "~5.4.2"
   }
 }

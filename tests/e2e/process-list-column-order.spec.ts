@@ -1,7 +1,21 @@
 import { expect, test } from '@playwright/test';
 import { captureStep } from './helpers/visual-snapshot';
 
+const DEMO_USER = {
+    username: 'admin',
+    name: 'Administrator',
+    role: 'EUM_ADMINISTRATOR',
+    email: 'admin@eumowy.local',
+    phone: '',
+    auwId: 1,
+};
+
 test('renders the process list with PH immediately before Email PH', async ({ page }, testInfo) => {
+    // Ensure the demo auth state is present in localStorage before the app boots
+    await page.addInitScript((user) => {
+        localStorage.setItem('auth.currentUser', JSON.stringify(user));
+    }, DEMO_USER);
+
     await page.goto('/processes');
 
     await expect(page.getByRole('heading', { name: 'Lista procesów' })).toBeVisible();
@@ -57,6 +71,11 @@ test('keeps sorting, filtering, pagination and detail navigation working', async
     { page },
     testInfo,
 ) => {
+    // Seed demo auth state for this test as well
+    await page.addInitScript((user) => {
+        localStorage.setItem('auth.currentUser', JSON.stringify(user));
+    }, DEMO_USER);
+
     await page.goto('/processes');
 
     await expect(page.getByRole('heading', { name: 'Lista procesów' })).toBeVisible();
