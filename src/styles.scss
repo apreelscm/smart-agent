@@ -9,3 +9,26 @@ $warning: #ffa726;
 body {
   min-height: 100vh;
 }
+
+/* Defensive styles: avoid accidental overflow: hidden on layout elements hiding children */
+.app-root,
+.container,
+.card,
+.card-body {
+  overflow: visible !important;
+}
+
+/* Utility wrapper (useful if component-level styles are ignored in CI):
+   Wrap the process table with <div class="processes-table-wrapper"> to enable horizontal scroll
+*/
+.processes-table-wrapper {
+  overflow-x: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+/* Ensure tables inside the wrapper have enough min-width so columns do not collapse */
+.processes-table-wrapper table {
+  min-width: 1400px !important;
+  table-layout: auto !important;
+  white-space: nowrap !important;
+}
