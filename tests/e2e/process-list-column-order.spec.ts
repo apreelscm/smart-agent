@@ -1,12 +1,22 @@
-import { expect, test } from '@playwright/test';
+import { expect, test, type Page } from '@playwright/test';
 import { captureStep } from './helpers/visual-snapshot';
 
-test.beforeEach(async ({ page }) => {
-  await page.goto('/');
+async function openProcessList(page: Page): Promise<void> {
+  await page.goto('/processes');
 
-  if (!page.url().includes('/processes')) {
-    await page.goto('/processes');
+  const loginHeading = page.getByRole('heading', { name: 'eUmowy' });
+
+  if (await loginHeading.isVisible().catch(() => false)) {
+    await page.getByLabel('Login').fill('admin');
+    await page.getByLabel('Hasło').fill('admin');
+    await page.getByRole('button', { name: 'Zaloguj' }).click();
   }
+
+  await expect(page).toHaveURL(/\/processes$/);
+}
+
+test.beforeEach(async ({ page }) => {
+  await openProcessList(page);
 });
 
 test('renders PH directly before Email PH and keeps row data aligned', async (
