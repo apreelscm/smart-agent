@@ -20,6 +20,15 @@ const expectedHeaders = [
   'Akcje',
 ];
 
+const authenticatedUser = {
+  username: 'admin',
+  name: 'Administrator',
+  role: 'EUM_ADMINISTRATOR',
+  email: 'admin@eumowy.local',
+  phone: '',
+  auwId: 1,
+} as const;
+
 const phEmailHeaderIndex = expectedHeaders.indexOf('Email PH');
 const phHeaderIndex = expectedHeaders.indexOf('PH');
 
@@ -30,18 +39,20 @@ function normalizeText(value: string | null | undefined): string {
     .trim();
 }
 
-test.beforeEach(async ({ page }) => {
-  await page.goto('/');
+async function openProcessList(page: Parameters<typeof test.beforeEach>[0]['page']): Promise<void> {
+  await page.addInitScript((user) => {
+    window.localStorage.setItem('auth.currentUser', JSON.stringify(user));
+  }, authenticatedUser);
+
+  await page.goto('/processes');
+
   await expect(page.locator('app-root')).toBeVisible();
-
-  const processListHeading = page.getByRole('heading', { name: 'Lista procesów' });
-
-  if (!(await processListHeading.isVisible())) {
-    await page.goto('/processes');
-  }
-
-  await expect(processListHeading).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Lista procesów' })).toBeVisible();
   await expect(page.locator('table')).toBeVisible();
+}
+
+test.beforeEach(async ({ page }) => {
+  await openProcessList(page);
 });
 
 test('renders Email PH immediately before PH in the process list table', async (
