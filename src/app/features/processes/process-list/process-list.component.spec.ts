@@ -77,32 +77,32 @@ describe('ProcessListComponent', () => {
     expect(fixture.nativeElement.textContent).toContain('Lista procesów');
   });
 
-  it('renders the PH header immediately after the Email PH header', async () => {
+  it('renders the PH header immediately before the Email PH header', async () => {
     await renderComponent();
 
     const headers = queryHeaderTexts();
-    const phEmailHeaderIndex = headers.indexOf('Email PH');
     const phHeaderIndex = headers.indexOf('PH');
+    const phEmailHeaderIndex = headers.indexOf('Email PH');
 
-    expect(phEmailHeaderIndex).toBeGreaterThan(-1);
     expect(phHeaderIndex).toBeGreaterThan(-1);
-    expect(phHeaderIndex).toBe(phEmailHeaderIndex + 1);
+    expect(phEmailHeaderIndex).toBeGreaterThan(-1);
+    expect(phEmailHeaderIndex).toBe(phHeaderIndex + 1);
   });
 
-  it('renders phName immediately after phEmail in each process row', async () => {
+  it('renders phName immediately before phEmail in each process row', async () => {
     await renderComponent();
 
     const firstRow = queryRows()[0];
     const firstItem = component.items[0];
     const rowValues = Array.from(firstRow.cells).map((cell) => cell.textContent?.trim() ?? '');
-    const phEmailIndex = rowValues.indexOf(firstItem.phEmail);
     const phNameIndex = rowValues.indexOf(firstItem.phName);
+    const phEmailIndex = rowValues.indexOf(firstItem.phEmail);
 
-    expect(phEmailIndex).toBeGreaterThan(-1);
     expect(phNameIndex).toBeGreaterThan(-1);
-    expect(phNameIndex).toBe(phEmailIndex + 1);
-    expect(rowValues[phEmailIndex]).toBe(firstItem.phEmail);
+    expect(phEmailIndex).toBeGreaterThan(-1);
+    expect(phEmailIndex).toBe(phNameIndex + 1);
     expect(rowValues[phNameIndex]).toBe(firstItem.phName);
+    expect(rowValues[phEmailIndex]).toBe(firstItem.phEmail);
   });
 
   it('applies filters and narrows results with AND logic', async () => {

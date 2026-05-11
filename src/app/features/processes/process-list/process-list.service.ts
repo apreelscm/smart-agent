@@ -58,6 +58,42 @@ export class ProcessListService {
     };
   }
 
+  /**
+   * Return a single process by id from the mock dataset.
+   */
+  async getProcess(id: number | string): Promise<ProcessListItem> {
+    await Promise.resolve();
+
+    const numericId = typeof id === 'string' ? Number(id) : id;
+    const item = MOCK_PROCESS_LIST_ITEMS.find((i) => i.id === numericId);
+
+    if (!item) {
+      throw new Error(`Proces o id ${id} nie został znaleziony.`);
+    }
+
+    // Return a shallow clone so callers don't accidentally mutate the internal mock
+    return { ...item };
+  }
+
+  /**
+   * Mock accept/reject operations that update the in-memory mock and return when done.
+   */
+  async acceptProcess(id: number | string): Promise<void> {
+    await Promise.resolve();
+    const numericId = typeof id === 'string' ? Number(id) : id;
+    const item = MOCK_PROCESS_LIST_ITEMS.find((i) => i.id === numericId);
+    if (!item) throw new Error('Nie znaleziono procesu do akceptacji');
+    item.status = 'ACCEPTED';
+  }
+
+  async rejectProcess(id: number | string): Promise<void> {
+    await Promise.resolve();
+    const numericId = typeof id === 'string' ? Number(id) : id;
+    const item = MOCK_PROCESS_LIST_ITEMS.find((i) => i.id === numericId);
+    if (!item) throw new Error('Nie znaleziono procesu do odrzucenia');
+    item.status = 'REJECTED';
+  }
+
   private normalizeQuery(query: Partial<ProcessListQuery>): ProcessListQuery {
     const defaults = buildDefaultProcessListQuery();
 

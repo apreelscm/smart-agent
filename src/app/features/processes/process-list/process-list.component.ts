@@ -193,7 +193,7 @@ import {
               Nie znaleziono procesów spełniających podane kryteria.
             </div>
           } @else if (!errorMessage) {
-            <div class="table-responsive">
+            <div class="table-responsive processes-table-wrapper">
               <table class="table table-striped table-hover align-middle mb-0">
                 <thead class="table-light">
                   <tr>
@@ -230,8 +230,8 @@ import {
                     <th scope="col">Nazwa klienta</th>
                     <th scope="col">Aktywność</th>
                     <th scope="col">Segment</th>
-                    <th scope="col">Email PH</th>
                     <th scope="col">PH</th>
+                    <th scope="col">Email PH</th>
                     <th scope="col">
                       <button
                         data-testid="sort-status"
@@ -278,8 +278,8 @@ import {
                       <td>{{ item.clientName }}</td>
                       <td>{{ item.activity }}</td>
                       <td>{{ item.salesSegment }}</td>
-                      <td>{{ item.phEmail }}</td>
                       <td>{{ item.phName }}</td>
+                      <td>{{ item.phEmail }}</td>
                       <td>
                         <span class="badge" [class]="statusBadgeClass(item.status)">
                           {{ statusLabel(item.status) }}
@@ -370,6 +370,49 @@ import {
       </div>
     </div>
   `,
+  styles: [
+    `:host {
+      overflow: visible;
+      display: block;
+    }
+
+    /* Stronger selector: ensure card/container allows visible overflow */
+    :host .card,
+    :host .card-body {
+      overflow: visible !important;
+    }
+
+    /* Force horizontal scrolling on the responsive wrapper inside the card body */
+    :host .card-body .table-responsive {
+      overflow-x: auto !important;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    /* Ensure the table has sufficient min-width so columns don't collapse; make selector specific */
+    :host .card-body .table-responsive > table,
+    :host .card-body .table-responsive .table {
+      min-width: 1400px !important;
+      table-layout: auto !important;
+      white-space: nowrap !important;
+    }
+
+    /* Prevent automatic text wrapping in cells and show ellipsis for overflow */
+    :host .card-body .table-responsive th,
+    :host .card-body .table-responsive td {
+      white-space: nowrap !important;
+      overflow: hidden !important;
+      text-overflow: ellipsis !important;
+    }
+
+    /* Slightly smaller min-width for small screens */
+    @media (max-width: 768px) {
+      :host .card-body .table-responsive > table,
+      :host .card-body .table-responsive .table {
+        min-width: 1200px !important;
+      }
+    }
+    `,
+  ],
 })
 export class ProcessListComponent implements OnInit {
   private readonly processListService = inject(ProcessListService);
