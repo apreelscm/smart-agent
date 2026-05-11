@@ -197,7 +197,7 @@ import {
               <table class="table table-striped table-hover align-middle mb-0">
                 <thead class="table-light">
                   <tr>
-                    <th scope="col">
+                    <th scope="col" class="col-id" style="width:3%">
                       <button
                         data-testid="sort-id"
                         type="button"
@@ -207,7 +207,7 @@ import {
                         ID {{ sortIndicator('id') }}
                       </button>
                     </th>
-                    <th scope="col">
+                    <th scope="col" class="col-phNumber" style="width:8%">
                       <button
                         data-testid="sort-phNumber"
                         type="button"
@@ -217,7 +217,7 @@ import {
                         Numer PH {{ sortIndicator('phNumber') }}
                       </button>
                     </th>
-                    <th scope="col">
+                    <th scope="col" class="col-nip" style="width:6%">
                       <button
                         data-testid="sort-nip"
                         type="button"
@@ -227,12 +227,12 @@ import {
                         NIP {{ sortIndicator('nip') }}
                       </button>
                     </th>
-                    <th scope="col">Nazwa klienta</th>
-                    <th scope="col">Aktywność</th>
-                    <th scope="col">Segment</th>
-                    <th scope="col">PH</th>
-                    <th scope="col">Email PH</th>
-                    <th scope="col">
+                    <th scope="col" class="col-client" style="width:10%">Nazwa klienta</th>
+                    <th scope="col" class="col-activity" style="width:7%">Aktywność</th>
+                    <th scope="col" class="col-segment" style="width:6%">Segment</th>
+                    <th scope="col" class="col-phName" style="width:7%">PH</th>
+                    <th scope="col" class="col-phEmail" style="width:10%">Email PH</th>
+                    <th scope="col" class="col-status" style="width:5%">
                       <button
                         data-testid="sort-status"
                         type="button"
@@ -242,7 +242,7 @@ import {
                         Status {{ sortIndicator('status') }}
                       </button>
                     </th>
-                    <th scope="col">
+                    <th scope="col" class="col-lastUpdated" style="width:7%">
                       <button
                         data-testid="sort-lastUpdated"
                         type="button"
@@ -252,7 +252,7 @@ import {
                         Ostatnia zmiana {{ sortIndicator('lastUpdated') }}
                       </button>
                     </th>
-                    <th scope="col">
+                    <th scope="col" class="col-dateCreated" style="width:6%">
                       <button
                         data-testid="sort-dateCreated"
                         type="button"
@@ -262,35 +262,35 @@ import {
                         Data utworzenia {{ sortIndicator('dateCreated') }}
                       </button>
                     </th>
-                    <th scope="col">Format dokumentów</th>
-                    <th scope="col">Uwagi COA</th>
-                    <th scope="col">Uwagi ZRD</th>
-                    <th scope="col">Obserwowane</th>
-                    <th scope="col" class="text-end">Akcje</th>
+                    <th scope="col" class="col-docformat" style="width:5%">Format dokumentów</th>
+                    <th scope="col" class="col-notes-coa" style="width:6%">Uwagi COA</th>
+                    <th scope="col" class="col-notes-zrd" style="width:6%">Uwagi ZRD</th>
+                    <th scope="col" class="col-observed" style="width:3%">Obserwowane</th>
+                    <th scope="col" class="col-actions text-end" style="width:5%">Akcje</th>
                   </tr>
                 </thead>
                 <tbody>
                   @for (item of items; track item.id) {
                     <tr>
-                      <td>{{ item.id }}</td>
-                      <td>{{ item.phNumber }}</td>
-                      <td>{{ item.nip }}</td>
-                      <td>{{ item.clientName }}</td>
-                      <td>{{ item.activity }}</td>
-                      <td>{{ item.salesSegment }}</td>
-                      <td>{{ item.phName }}</td>
-                      <td>{{ item.phEmail }}</td>
-                      <td>
+                      <td class="col-id">{{ item.id }}</td>
+                      <td class="col-phNumber">{{ item.phNumber }}</td>
+                      <td class="col-nip">{{ item.nip }}</td>
+                      <td class="col-client">{{ item.clientName }}</td>
+                      <td class="col-activity">{{ item.activity }}</td>
+                      <td class="col-segment">{{ item.salesSegment }}</td>
+                      <td class="col-phName">{{ item.phName }}</td>
+                      <td class="col-phEmail">{{ item.phEmail }}</td>
+                      <td class="col-status">
                         <span class="badge" [class]="statusBadgeClass(item.status)">
                           {{ statusLabel(item.status) }}
                         </span>
                       </td>
-                      <td>{{ item.lastUpdated }}</td>
-                      <td>{{ item.dateCreated }}</td>
-                      <td>{{ formatDocuments(item.documentsFormat) }}</td>
-                      <td [title]="item.notesFromCoa">{{ truncate(item.notesFromCoa) }}</td>
-                      <td [title]="item.notesFromZrd">{{ truncate(item.notesFromZrd) }}</td>
-                      <td class="text-center">
+                      <td class="col-lastUpdated">{{ item.lastUpdated }}</td>
+                      <td class="col-dateCreated">{{ item.dateCreated }}</td>
+                      <td class="col-docformat">{{ formatDocuments(item.documentsFormat) }}</td>
+                      <td class="col-notes-coa" [title]="item.notesFromCoa">{{ truncate(item.notesFromCoa) }}</td>
+                      <td class="col-notes-zrd" [title]="item.notesFromZrd">{{ truncate(item.notesFromZrd) }}</td>
+                      <td class="col-observed text-center">
                         <span
                           class="fw-bold"
                           [class.text-warning]="item.observed"
@@ -300,7 +300,7 @@ import {
                           {{ item.observed ? '★' : '—' }}
                         </span>
                       </td>
-                      <td class="text-end">
+                      <td class="col-actions text-end">
                         <a
                           [routerLink]="['/processes', item.id]"
                           class="btn btn-outline-primary btn-sm"
@@ -388,28 +388,138 @@ import {
       -webkit-overflow-scrolling: touch;
     }
 
-    /* Ensure the table has sufficient min-width so columns don't collapse; make selector specific */
+    /* Use percent-based column widths: make table full width and use fixed layout to honor column % widths */
     :host .card-body .table-responsive > table,
     :host .card-body .table-responsive .table {
-      min-width: 1400px !important;
-      table-layout: auto !important;
+      width: 100% !important;
+      table-layout: fixed !important;
+      /* prevent wrapping so percent widths are respected; truncate overflowing content */
+      white-space: nowrap !important;
+      box-sizing: border-box !important;
+      border-collapse: collapse !important;
+      font-size: 12px !important; /* reduce overall font size for denser layout */
+    }
+
+    /* Ensure cells and all children can shrink and do not force table expansion */
+    :host .card-body .table-responsive th,
+    :host .card-body .table-responsive td {
+      box-sizing: border-box !important;
+      min-width: 0 !important;
+      padding: 0.08rem 0.24rem !important; /* further reduced padding */
+      vertical-align: middle !important;
+      border-top: 1px solid rgba(0,0,0,0.04) !important;
+      line-height: 1.1 !important;
+      overflow: hidden !important;
+      text-overflow: ellipsis !important;
       white-space: nowrap !important;
     }
 
-    /* Prevent automatic text wrapping in cells and show ellipsis for overflow */
-    :host .card-body .table-responsive th,
-    :host .card-body .table-responsive td {
+    /* Ensure inline elements inside cells do not expand columns and are truncated */
+    :host .card-body .table-responsive td > a,
+    :host .card-body .table-responsive td span,
+    :host .card-body .table-responsive td .btn,
+    :host .card-body .table-responsive td .badge {
+      display: inline-block !important;
+      max-width: 100% !important;
       white-space: nowrap !important;
       overflow: hidden !important;
       text-overflow: ellipsis !important;
+      min-width: 0 !important;
+      font-size: 11px !important;
+      padding: 0.06rem 0.12rem !important;
     }
 
-    /* Slightly smaller min-width for small screens */
-    @media (max-width: 768px) {
-      :host .card-body .table-responsive > table,
-      :host .card-body .table-responsive .table {
-        min-width: 1200px !important;
+    /* Remove bootstrap min-width on badges/buttons that can force column expansion */
+    :host .card-body .table-responsive .badge,
+    :host .card-body .table-responsive .btn {
+      min-width: 0 !important;
+    }
+
+    /* Reduce padding for action buttons so they fit into small % column */
+    :host .card-body .table-responsive td .btn {
+      padding: 0.06rem 0.12rem !important;
+      font-size: 0.72rem !important;
+    }
+
+    /* For table headers ensure text is truncated if too long */
+    :host .card-body .table-responsive th {
+      overflow: hidden !important;
+      text-overflow: ellipsis !important;
+      white-space: nowrap !important;
+      font-weight: 600 !important;
+      font-size: 12px !important;
+    }
+
+    /* Slightly reduce constraints on very small screens */
+    @media (max-width: 1200px) {
+      /* hide very wide / low-priority columns */
+      :host .card-body .table-responsive th.col-docformat,
+      :host .card-body .table-responsive td.col-docformat,
+      :host .card-body .table-responsive th.col-notes-coa,
+      :host .card-body .table-responsive td.col-notes-coa,
+      :host .card-body .table-responsive th.col-notes-zrd,
+      :host .card-body .table-responsive td.col-notes-zrd {
+        display: none !important;
       }
+
+      /* redistribute widths for remaining columns */
+      :host .card-body .table-responsive th.col-client,
+      :host .card-body .table-responsive td.col-client { width: 22% !important; }
+      :host .card-body .table-responsive th.col-phEmail,
+      :host .card-body .table-responsive td.col-phEmail { width: 14% !important; }
+      :host .card-body .table-responsive th.col-lastUpdated,
+      :host .card-body .table-responsive td.col-lastUpdated { width: 8% !important; }
+    }
+
+    @media (max-width: 992px) {
+      /* hide medium-priority columns */
+      :host .card-body .table-responsive th.col-segment,
+      :host .card-body .table-responsive td.col-segment,
+      :host .card-body .table-responsive th.col-activity,
+      :host .card-body .table-responsive td.col-activity {
+        display: none !important;
+      }
+
+      /* redistribute widths for remaining columns */
+      :host .card-body .table-responsive th.col-client,
+      :host .card-body .table-responsive td.col-client { width: 28% !important; }
+      :host .card-body .table-responsive th.col-phEmail,
+      :host .card-body .table-responsive td.col-phEmail { width: 18% !important; }
+      :host .card-body .table-responsive th.col-lastUpdated,
+      :host .card-body .table-responsive td.col-lastUpdated { width: 8% !important; }
+    }
+
+    @media (max-width: 768px) {
+      /* mobile: keep only essential columns visible */
+      :host .card-body .table-responsive th.col-client,
+      :host .card-body .table-responsive td.col-client,
+      :host .card-body .table-responsive th.col-lastUpdated,
+      :host .card-body .table-responsive td.col-lastUpdated,
+      :host .card-body .table-responsive th.col-dateCreated,
+      :host .card-body .table-responsive td.col-dateCreated,
+      :host .card-body .table-responsive th.col-nip,
+      :host .card-body .table-responsive td.col-nip,
+      :host .card-body .table-responsive th.col-docformat,
+      :host .card-body .table-responsive td.col-docformat {
+        display: none !important;
+      }
+
+      /* essential columns: ID, Numer PH, PH, Email PH, Status, Akcje */
+      :host .card-body .table-responsive th.col-id,
+      :host .card-body .table-responsive td.col-id { width: 6% !important; }
+      :host .card-body .table-responsive th.col-phNumber,
+      :host .card-body .table-responsive td.col-phNumber { width: 26% !important; }
+      :host .card-body .table-responsive th.col-phName,
+      :host .card-body .table-responsive td.col-phName { width: 20% !important; }
+      :host .card-body .table-responsive th.col-phEmail,
+      :host .card-body .table-responsive td.col-phEmail { width: 28% !important; }
+      :host .card-body .table-responsive th.col-status,
+      :host .card-body .table-responsive td.col-status { width: 8% !important; }
+      :host .card-body .table-responsive th.col-actions,
+      :host .card-body .table-responsive td.col-actions { width: 6% !important; }
+
+      /* reduce font for very small screens */
+      :host .card-body .table-responsive { font-size: 11px !important; }
     }
     `,
   ],
