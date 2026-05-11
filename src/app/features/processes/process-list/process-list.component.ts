@@ -376,31 +376,39 @@ import {
       display: block;
     }
 
-    /* Make the table horizontally scrollable if it overflows the viewport */
-    :host .table-responsive {
-      overflow-x: auto;
+    /* Stronger selector: ensure card/container allows visible overflow */
+    :host .card,
+    :host .card-body {
+      overflow: visible !important;
+    }
+
+    /* Force horizontal scrolling on the responsive wrapper inside the card body */
+    :host .card-body .table-responsive {
+      overflow-x: auto !important;
       -webkit-overflow-scrolling: touch;
     }
 
-    /* Ensure the table doesn't collapse columns - set reasonable min-width */
-    :host .table-responsive .table {
-      min-width: 1200px;
-      table-layout: auto;
-      white-space: nowrap;
+    /* Ensure the table has sufficient min-width so columns don't collapse; make selector specific */
+    :host .card-body .table-responsive > table,
+    :host .card-body .table-responsive .table {
+      min-width: 1400px !important;
+      table-layout: auto !important;
+      white-space: nowrap !important;
     }
 
     /* Prevent automatic text wrapping in cells and show ellipsis for overflow */
-    :host .table-responsive th,
-    :host .table-responsive td {
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+    :host .card-body .table-responsive th,
+    :host .card-body .table-responsive td {
+      white-space: nowrap !important;
+      overflow: hidden !important;
+      text-overflow: ellipsis !important;
     }
 
     /* Slightly smaller min-width for small screens */
     @media (max-width: 768px) {
-      :host .table-responsive .table {
-        min-width: 1000px;
+      :host .card-body .table-responsive > table,
+      :host .card-body .table-responsive .table {
+        min-width: 1200px !important;
       }
     }
     `,
