@@ -370,6 +370,41 @@ import {
       </div>
     </div>
   `,
+  styles: [
+    `:host {
+      overflow: visible;
+      display: block;
+    }
+
+    /* Make the table horizontally scrollable if it overflows the viewport */
+    :host .table-responsive {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    /* Ensure the table doesn't collapse columns - set reasonable min-width */
+    :host .table-responsive .table {
+      min-width: 1200px;
+      table-layout: auto;
+      white-space: nowrap;
+    }
+
+    /* Prevent automatic text wrapping in cells and show ellipsis for overflow */
+    :host .table-responsive th,
+    :host .table-responsive td {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Slightly smaller min-width for small screens */
+    @media (max-width: 768px) {
+      :host .table-responsive .table {
+        min-width: 1000px;
+      }
+    }
+    `,
+  ],
 })
 export class ProcessListComponent implements OnInit {
   private readonly processListService = inject(ProcessListService);
