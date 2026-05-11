@@ -2,124 +2,159 @@ import { expect, test } from '@playwright/test';
 import { captureStep } from './helpers/visual-snapshot';
 
 const DEMO_USER = {
-    username: 'admin',
-    name: 'Administrator',
-    role: 'EUM_ADMINISTRATOR',
-    email: 'admin@eumowy.local',
-    phone: '',
-    auwId: 1,
+  username: 'admin',
+  name: 'Administrator',
+  role: 'EUM_ADMINISTRATOR',
+  email: 'admin@eumowy.local',
+  phone: '',
+  auwId: 1,
 };
 
-test('renders the process list with PH immediately before Email PH', async ({ page }, testInfo) => {
-    // Ensure the demo auth state is present in localStorage before the app boots
-    await page.addInitScript((user) => {
-        localStorage.setItem('auth.currentUser', JSON.stringify(user));
-    }, DEMO_USER);
+function normalizeText(value: string | null | undefined): string {
+  return value?.replace(/\s+/g, ' ').trim() ?? '';
+}
 
-    await page.goto('/processes');
+function normalizeHeaderText(value: string): string {
+  return normalizeText(value).replace(/[↑↓]/g, '').trim();
+}
 
-    await expect(page.getByRole('heading', { name: 'Lista procesów' })).toBeVisible();
-    await expect(page.locator('tbody tr').first()).toBeVisible();
-    await captureStep(page, testInfo, 'process-list-loaded');
+test('renders Email PH directly before PH in the process list table', async (
+  { page },
+  testInfo,
+) => {
+  await page.addInitScript((user) => {
+    localStorage.setItem('auth.currentUser', JSON.stringify(user));
+  }, DEMO_USER);
 
-    const headers = (await page.locator('thead th').allInnerTexts()).map((text) =>
-        text.replace(/[↑↓]/g, '').replace(/\s+/g, ' ').trim(),
-    );
+  await page.goto('/');
 
-    expect(headers).toEqual([
-        'ID',
-        'Numer PH',
-        'NIP',
-        'Nazwa klienta',
-        'Aktywność',
-        'Segment',
-        'PH',
-        'Email PH',
-        'Status',
-        'Ostatnia zmiana',
-        'Data utworzenia',
-        'Format dokumentów',
-        'Uwagi COA',
-        'Uwagi ZRD',
-        'Obserwowane',
-        'Akcje',
-    ]);
-    await captureStep(page, testInfo, 'column-order-verified');
+  await expect(page.getByRole('heading', { name: 'Lista procesów' })).toBeVisible();
+  await expect(page.locator('tbody tr')).toHaveCount(10);
+  await captureStep(page, testInfo, 'process-list-loaded');
 
-    const phColumnIndex = headers.indexOf('PH');
-    const phEmailColumnIndex = headers.indexOf('Email PH');
-    const firstRowCells = (await page
-        .locator('tbody tr')
-        .first()
-        .locator('td')
-        .allInnerTexts()).map((text) => text.replace(/\s+/g, ' ').trim());
+  const headers = (await page.locator('thead th').allTextContents()).map(normalizeHeaderText);
 
-    expect(phColumnIndex).toBeGreaterThan(-1);
-    expect(phEmailColumnIndex).toBe(phColumnIndex + 1);
+  expect(headers).toEqual([
+    'ID',
+    'Numer PH',
+    'NIP',
+    'Nazwa klienta',
+    'Aktywność',
+    'Segment',
+    'Email PH',
+    'PH',
+    'Status',
+    'Ostatnia zmiana',
+    'Data utworzenia',
+    'Format dokumentów',
+    'Uwagi COA',
+    'Uwagi ZRD',
+    'Obserwowane',
+    'Akcje',
+  ]);
+  await captureStep(page, testInfo, 'headers-in-new-order');
 
-    const phCell = firstRowCells[phColumnIndex];
-    const phEmailCell = firstRowCells[phEmailColumnIndex];
+  const rowCount = await page.locator('tbody tr').count();
+  const rowsToCheck = Math.min(rowCount, 3);
 
-    expect(phCell).toBeTruthy();
-    expect(phCell).not.toContain('@');
-    expect(phEmailCell).toContain('@');
-    expect(phEmailCell).not.toBe(phCell);
-    await captureStep(page, testInfo, 'row-values-verified');
+  expect(rowsToCheck).toBeGreaterThan(0);
+
+  for (let rowIndex = 0; rowIndex < rowsToCheck; rowIndex += 1) {
+    const row = page.locator('tbody tr').nth(rowIndex);
+    const emailText = normalizeText(await row.locator('td.col-phEmail').textContent());
+    const phText = normalizeText(await row.locator('td.col-phName').textContent());
+
+    expect(emailText).toContain('@');
+    expect(phText.length).toBeGreaterThan(0);
+    await expect(row.locator('td').nth(6)).toHaveText(emailText);
+    await expect(row.locator('td').nth(7)).toHaveText(phText);
+  }
+
+  await captureStep(page, testInfo, 'row-values-stay-aligned');
 });
 
-test('keeps sorting, filtering, pagination and detail navigation working', async (
-    { page },
-    testInfo,
+test('keeps Email PH before PH when both columns stay visible on a narrow screen', async (
+  { page },
+  testInfo,
 ) => {
-    // Seed demo auth state for this test as well
-    await page.addInitScript((user) => {
-        localStorage.setItem('auth.currentUser', JSON.stringify(user));
-    }, DEMO_USER);
+  await page.setViewportSize({ width: 768, height: 900 });
 
-    await page.goto('/processes');
+  await page.addInitScript((user) => {
+    localStorage.setItem('auth.currentUser', JSON.stringify(user));
+  }, DEMO_USER);
 
-    await expect(page.getByRole('heading', { name: 'Lista procesów' })).toBeVisible();
-    await expect(page.locator('tbody tr').first()).toBeVisible();
+  await page.goto('/');
 
-    const initialFirstIdText = await page.locator('tbody tr').first().locator('td').first().textContent();
-    expect(initialFirstIdText).not.toBeNull();
+  await expect(page.getByRole('heading', { name: 'Lista procesów' })).toBeVisible();
+  await expect(page.locator('tbody tr').first()).toBeVisible();
+  await captureStep(page, testInfo, 'responsive-process-list-loaded');
 
-    const initialFirstId = Number(initialFirstIdText?.trim());
+  const visibleHeaders = (await page.locator('thead th:visible').allTextContents()).map(
+    normalizeHeaderText,
+  );
+  const phEmailHeaderIndex = visibleHeaders.indexOf('Email PH');
+  const phHeaderIndex = visibleHeaders.indexOf('PH');
 
-    await page.getByTestId('sort-id').click();
+  expect(phEmailHeaderIndex).toBeGreaterThan(-1);
+  expect(phHeaderIndex).toBe(phEmailHeaderIndex + 1);
+  await captureStep(page, testInfo, 'responsive-column-order');
+});
 
-    const updatedFirstIdText = await page.locator('tbody tr').first().locator('td').first().textContent();
-    expect(updatedFirstIdText).not.toBeNull();
+test('keeps filtering, sorting, pagination, and detail navigation working', async (
+  { page },
+  testInfo,
+) => {
+  await page.addInitScript((user) => {
+    localStorage.setItem('auth.currentUser', JSON.stringify(user));
+  }, DEMO_USER);
 
-    const updatedFirstId = Number(updatedFirstIdText?.trim());
+  await page.goto('/');
 
-    expect(updatedFirstId).toBeLessThan(initialFirstId);
-    await captureStep(page, testInfo, 'sorting-verified');
+  await expect(page.getByRole('heading', { name: 'Lista procesów' })).toBeVisible();
+  await expect(page.locator('tbody tr')).toHaveCount(10);
 
-    await page.goto('/processes');
+  const initialFirstId = Number(
+    normalizeText(await page.locator('tbody tr').first().locator('td').first().textContent()),
+  );
 
-    await page.getByTestId('nip-filter').fill('1234567890');
-    await page.getByTestId('observed-filter').check();
-    await page.getByTestId('apply-filters-button').click();
+  expect(initialFirstId).toBeGreaterThan(0);
 
-    await expect(page.locator('tbody tr')).toHaveCount(1);
-    await expect(page.getByText('Firma Helios Sp. z o.o.')).toBeVisible();
-    await captureStep(page, testInfo, 'filtered-results');
+  await page.getByTestId('nip-filter').fill('1234567890');
+  await page.getByTestId('observed-filter').check();
+  await page.getByTestId('apply-filters-button').click();
 
-    await page.getByTestId('clear-filters-button').click();
+  await expect(page.locator('tbody tr')).toHaveCount(1);
+  await expect(page.locator('tbody tr').first()).toContainText('Firma Helios Sp. z o.o.');
+  await captureStep(page, testInfo, 'filtered-results');
 
-    await expect(page.locator('tbody tr')).toHaveCount(10);
-    await expect(page.getByTestId('page-2')).toBeVisible();
-    await captureStep(page, testInfo, 'filters-cleared');
+  await page.getByTestId('clear-filters-button').click();
 
-    await page.getByTestId('page-2').click();
+  await expect(page.locator('tbody tr')).toHaveCount(10);
+  await expect(page.getByText(/Wyświetlanie \d+–\d+ z \d+ procesów/)).toBeVisible();
+  await captureStep(page, testInfo, 'filters-cleared');
 
-    await expect(page.locator('tbody tr')).toHaveCount(4);
-    await expect(page.locator('tbody tr').first().locator('td').first()).toHaveText('1008');
-    await captureStep(page, testInfo, 'pagination-verified');
+  await page.getByTestId('page-2').click();
 
-    await page.getByTestId('detail-link-1008').click();
+  await expect(page.getByText('Strona 2 z 2')).toBeVisible();
+  await expect(page.locator('tbody tr').first().locator('td').first()).toHaveText('1008');
+  await captureStep(page, testInfo, 'pagination-still-works');
 
-    await expect(page).toHaveURL(/\/processes\/1008$/);
-    await captureStep(page, testInfo, 'detail-navigation-verified');
+  await page.getByTestId('page-1').click();
+  await expect(page.getByText('Strona 1 z 2')).toBeVisible();
+
+  await page.getByTestId('sort-id').click();
+
+  const firstSortedRow = page.locator('tbody tr').first();
+  const sortedFirstId = Number(
+    normalizeText(await firstSortedRow.locator('td').first().textContent()),
+  );
+
+  await expect(page.getByText(/Sortowanie: ID \(rosnąco\)/)).toBeVisible();
+  expect(sortedFirstId).toBeLessThan(initialFirstId);
+  await captureStep(page, testInfo, 'sorting-still-works');
+
+  await firstSortedRow.getByRole('link', { name: 'Szczegóły' }).click();
+
+  await expect(page).toHaveURL(new RegExp(`/processes/${sortedFirstId}$`));
+  await captureStep(page, testInfo, 'detail-navigation-still-works');
 });
