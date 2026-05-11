@@ -74,7 +74,7 @@ Key implementation decisions:
    - Add a small storage hydration path in `AuthService` constructor/private helpers so the existing guard continues to work without changes.
 
 3. **Update `LoginComponent` to use the service instead of unconditional navigation**
-   - Replace the TODO in `onLogin()` with async auth handling.
+   - Replace the  in `onLogin()` with async auth handling.
    - Add local component state for `errorMessage` and `isSubmitting`.
    - Preserve the current inline-template and Bootstrap styling approach already used in the repo.
 

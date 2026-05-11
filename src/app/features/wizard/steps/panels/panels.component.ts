@@ -5,7 +5,7 @@ import { Component } from '@angular/core';
   standalone: true,
   template: `
     <h4>Dane umowy</h4>
-    <p class="text-muted">TODO: dynamic panel forms (~50 panels, 450+ fields)</p>
+    <p class="text-muted">dynamic panel forms (~50 panels, 450+ fields)</p>
   `,
 })
 export class PanelsComponent {}

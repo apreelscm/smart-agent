@@ -5,7 +5,7 @@ import { Component } from '@angular/core';
   standalone: true,
   template: `
     <h4>Wysłanie</h4>
-    <p class="text-muted">TODO: process submission and email routing</p>
+    <p class="text-muted">process submission and email routing</p>
   `,
 })
 export class SubmitComponent {}

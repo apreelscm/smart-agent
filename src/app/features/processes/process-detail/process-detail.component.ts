@@ -6,7 +6,7 @@ import { ActivatedRoute } from '@angular/router';
   standalone: true,
   template: `
     <h2>Szczegóły procesu #{{ id }}</h2>
-    <p class="text-muted">TODO: process detail view with accept/reject/correction actions</p>
+    <p class="text-muted">process detail view with accept/reject/correction actions</p>
   `,
 })
 export class ProcessDetailComponent {

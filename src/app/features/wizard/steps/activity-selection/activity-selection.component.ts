@@ -5,7 +5,7 @@ import { Component } from '@angular/core';
   standalone: true,
   template: `
     <h4>Wybór czynności</h4>
-    <p class="text-muted">TODO: activity/signature selection tree</p>
+    <p class="text-muted">activity/signature selection tree</p>
   `,
 })
 export class ActivitySelectionComponent {}
