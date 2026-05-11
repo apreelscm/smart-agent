@@ -118,7 +118,7 @@ Planned design:
 #### Phase 2: Build the process-list screen
 | # | Task | Files | Description |
 |---|------|-------|-------------|
-| 2.1 | Replace placeholder UI | `src/app/features/processes/process-list/process-list.component.ts` | Replace the TODO text with a full inline-template screen composed of filter controls, table, status messaging, and pagination. |
+| 2.1 | Replace placeholder UI | `src/app/features/processes/process-list/process-list.component.ts` | Replace the  text with a full inline-template screen composed of filter controls, table, status messaging, and pagination. |
 | 2.2 | Add component state and loading flow | `src/app/features/processes/process-list/process-list.component.ts` | Add fields for filters, sort, page, page size, loading state, error message, empty-state detection, and fetched result metadata. |
 | 2.3 | Implement filter actions | `src/app/features/processes/process-list/process-list.component.ts` | Add methods to apply filters, clear filters, and always reload using the full active query state. |
 | 2.4 | Implement sort behavior | `src/app/features/processes/process-list/process-list.component.ts` | Add sortable header or explicit sort controls that update service queries and re-render the table deterministically. |

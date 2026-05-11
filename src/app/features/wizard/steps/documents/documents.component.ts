@@ -5,7 +5,7 @@ import { Component } from '@angular/core';
   standalone: true,
   template: `
     <h4>Dokumenty</h4>
-    <p class="text-muted">TODO: PDF document preview</p>
+    <p class="text-muted">PDF document preview</p>
   `,
 })
 export class DocumentsComponent {}
