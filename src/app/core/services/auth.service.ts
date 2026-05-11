@@ -12,11 +12,20 @@ export interface User {
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private static readonly STORAGE_KEY = 'auth.currentUser';
+  private static readonly AUTO_LOGIN_DISABLED_KEY = 'auth.autoLoginDisabled';
+  private static readonly DEFAULT_DEMO_USER: User = {
+    username: 'admin',
+    name: 'Administrator',
+    role: 'EUM_ADMINISTRATOR',
+    email: 'admin@eumowy.local',
+    phone: '',
+    auwId: 1,
+  };
 
   private currentUser: User | null = null;
 
   constructor() {
-    this.currentUser = this.hydrateUserFromStorage();
+    this.currentUser = this.hydrateUserFromStorage() ?? this.hydrateDefaultDemoUser();
   }
 
   get user(): User | null {
@@ -41,22 +50,13 @@ export class AuthService {
       throw new Error('Błędny login lub hasło.');
     }
 
-    const user: User = {
-      username: 'admin',
-      name: 'Administrator',
-      role: 'EUM_ADMINISTRATOR',
-      email: 'admin@eumowy.local',
-      phone: '',
-      auwId: 1,
-    };
+    this.setCurrentUser(AuthService.DEFAULT_DEMO_USER);
 
-    this.setCurrentUser(user);
-
-    return user;
+    return this.currentUser as User;
   }
 
   logout(): void {
-    this.clearAuthState();
+    this.clearAuthState({ disableAutoLogin: true });
   }
 
   private hydrateUserFromStorage(): User | null {
@@ -81,14 +81,29 @@ export class AuthService {
     return null;
   }
 
+  private hydrateDefaultDemoUser(): User | null {
+    if (!this.storage || this.storage.getItem(AuthService.AUTO_LOGIN_DISABLED_KEY) === 'true') {
+      return null;
+    }
+
+    return { ...AuthService.DEFAULT_DEMO_USER };
+  }
+
   private setCurrentUser(user: User): void {
     this.currentUser = user;
+    this.storage?.removeItem(AuthService.AUTO_LOGIN_DISABLED_KEY);
     this.storage?.setItem(AuthService.STORAGE_KEY, JSON.stringify(user));
   }
 
-  private clearAuthState(): void {
+  private clearAuthState(options?: { disableAutoLogin?: boolean }): void {
     this.currentUser = null;
     this.storage?.removeItem(AuthService.STORAGE_KEY);
+
+    if (options?.disableAutoLogin) {
+      this.storage?.setItem(AuthService.AUTO_LOGIN_DISABLED_KEY, 'true');
+    } else {
+      this.storage?.removeItem(AuthService.AUTO_LOGIN_DISABLED_KEY);
+    }
   }
 
   private isUser(value: unknown): value is User {
