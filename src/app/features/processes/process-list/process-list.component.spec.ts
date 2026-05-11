@@ -77,32 +77,33 @@ describe('ProcessListComponent', () => {
     expect(fixture.nativeElement.textContent).toContain('Lista procesów');
   });
 
-  it('renders the PH header immediately before the Email PH header', async () => {
+  it('renders the PH header immediately after the Email PH header', async () => {
     await renderComponent();
 
     const headers = queryHeaderTexts();
-    const phHeaderIndex = headers.indexOf('PH');
     const phEmailHeaderIndex = headers.indexOf('Email PH');
+    const phHeaderIndex = headers.indexOf('PH');
 
-    expect(phHeaderIndex).toBeGreaterThan(-1);
     expect(phEmailHeaderIndex).toBeGreaterThan(-1);
-    expect(phEmailHeaderIndex).toBe(phHeaderIndex + 1);
+    expect(phHeaderIndex).toBeGreaterThan(-1);
+    expect(phHeaderIndex).toBe(phEmailHeaderIndex + 1);
   });
 
-  it('renders phName immediately before phEmail in each process row', async () => {
+  it('renders phName immediately after phEmail in each process row', async () => {
     await renderComponent();
 
-    const firstRow = queryRows()[0];
-    const firstItem = component.items[0];
-    const rowValues = Array.from(firstRow.cells).map((cell) => cell.textContent?.trim() ?? '');
-    const phNameIndex = rowValues.indexOf(firstItem.phName);
-    const phEmailIndex = rowValues.indexOf(firstItem.phEmail);
+    queryRows().forEach((row, index) => {
+      const item = component.items[index];
+      const rowValues = Array.from(row.cells).map((cell) => cell.textContent?.trim() ?? '');
+      const phEmailIndex = rowValues.indexOf(item.phEmail);
+      const phNameIndex = rowValues.indexOf(item.phName);
 
-    expect(phNameIndex).toBeGreaterThan(-1);
-    expect(phEmailIndex).toBeGreaterThan(-1);
-    expect(phEmailIndex).toBe(phNameIndex + 1);
-    expect(rowValues[phNameIndex]).toBe(firstItem.phName);
-    expect(rowValues[phEmailIndex]).toBe(firstItem.phEmail);
+      expect(phEmailIndex).toBeGreaterThan(-1);
+      expect(phNameIndex).toBeGreaterThan(-1);
+      expect(phNameIndex).toBe(phEmailIndex + 1);
+      expect(rowValues[phEmailIndex]).toBe(item.phEmail);
+      expect(rowValues[phNameIndex]).toBe(item.phName);
+    });
   });
 
   it('applies filters and narrows results with AND logic', async () => {
@@ -150,7 +151,9 @@ describe('ProcessListComponent', () => {
 
     const initialFirstRowId = Number(queryRows()[0].cells[0].textContent?.trim());
 
-    const sortButton: HTMLButtonElement = fixture.nativeElement.querySelector('[data-testid="sort-id"]');
+    const sortButton: HTMLButtonElement = fixture.nativeElement.querySelector(
+      '[data-testid="sort-id"]',
+    );
     sortButton.click();
     fixture.detectChanges();
     await fixture.whenStable();
@@ -166,7 +169,9 @@ describe('ProcessListComponent', () => {
   it('moves to another page while keeping the current query context', async () => {
     await renderComponent();
 
-    const pageButton: HTMLButtonElement = fixture.nativeElement.querySelector('[data-testid="page-2"]');
+    const pageButton: HTMLButtonElement = fixture.nativeElement.querySelector(
+      '[data-testid="page-2"]',
+    );
     pageButton.click();
     fixture.detectChanges();
     await fixture.whenStable();
@@ -204,7 +209,9 @@ describe('ProcessListComponent', () => {
     const errorAlert: HTMLElement | null = fixture.nativeElement.querySelector(
       '[data-testid="error-alert"]',
     );
-    const nipInput: HTMLInputElement = fixture.nativeElement.querySelector('[data-testid="nip-filter"]');
+    const nipInput: HTMLInputElement = fixture.nativeElement.querySelector(
+      '[data-testid="nip-filter"]',
+    );
 
     expect(errorAlert?.textContent).toContain('Nie udało się wczytać listy procesów');
     expect(nipInput.value).toBe('1234567890');

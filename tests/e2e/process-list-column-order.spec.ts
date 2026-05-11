@@ -10,93 +10,76 @@ const DEMO_USER = {
     auwId: 1,
 };
 
-test('renders the process list with PH immediately before Email PH', async ({ page }, testInfo) => {
-    // Ensure the demo auth state is present in localStorage before the app boots
+const EXPECTED_HEADERS = [
+    'ID',
+    'Numer PH',
+    'NIP',
+    'Nazwa klienta',
+    'Aktywność',
+    'Segment',
+    'Email PH',
+    'PH',
+    'Status',
+    'Ostatnia zmiana',
+    'Data utworzenia',
+    'Format dokumentów',
+    'Uwagi COA',
+    'Uwagi ZRD',
+    'Obserwowane',
+    'Akcje',
+];
+
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+function normalizeText(value: string): string {
+    return value.replace(/[↑↓]/g, '').replace(/\s+/g, ' ').trim();
+}
+
+test.beforeEach(async ({ page }) => {
     await page.addInitScript((user) => {
         localStorage.setItem('auth.currentUser', JSON.stringify(user));
     }, DEMO_USER);
+});
 
-    await page.goto('/processes');
+test('renders Email PH directly before PH on the process list', async ({ page }, testInfo) => {
+    await page.goto('/');
 
     await expect(page.getByRole('heading', { name: 'Lista procesów' })).toBeVisible();
     await expect(page.locator('tbody tr').first()).toBeVisible();
     await captureStep(page, testInfo, 'process-list-loaded');
 
-    const headers = (await page.locator('thead th').allInnerTexts()).map((text) =>
-        text.replace(/[↑↓]/g, '').replace(/\s+/g, ' ').trim(),
+    const headers = (await page.locator('thead th').allTextContents()).map(normalizeText);
+
+    expect(headers).toEqual(EXPECTED_HEADERS);
+    await captureStep(page, testInfo, 'desktop-header-order');
+
+    const firstRowCells = await page.locator('tbody tr').first().locator('td').evaluateAll((cells) =>
+        cells.map((cell) => ({
+            text: (cell.textContent ?? '').replace(/\s+/g, ' ').trim(),
+            className: cell.className,
+        })),
     );
 
-    expect(headers).toEqual([
-        'ID',
-        'Numer PH',
-        'NIP',
-        'Nazwa klienta',
-        'Aktywność',
-        'Segment',
-        'PH',
-        'Email PH',
-        'Status',
-        'Ostatnia zmiana',
-        'Data utworzenia',
-        'Format dokumentów',
-        'Uwagi COA',
-        'Uwagi ZRD',
-        'Obserwowane',
-        'Akcje',
-    ]);
-    await captureStep(page, testInfo, 'column-order-verified');
+    const phEmailIndex = firstRowCells.findIndex((cell) => cell.className.includes('col-phEmail'));
+    const phNameIndex = firstRowCells.findIndex((cell) => cell.className.includes('col-phName'));
 
-    const phColumnIndex = headers.indexOf('PH');
-    const phEmailColumnIndex = headers.indexOf('Email PH');
-    const firstRowCells = (await page
-        .locator('tbody tr')
-        .first()
-        .locator('td')
-        .allInnerTexts()).map((text) => text.replace(/\s+/g, ' ').trim());
-
-    expect(phColumnIndex).toBeGreaterThan(-1);
-    expect(phEmailColumnIndex).toBe(phColumnIndex + 1);
-
-    const phCell = firstRowCells[phColumnIndex];
-    const phEmailCell = firstRowCells[phEmailColumnIndex];
-
-    expect(phCell).toBeTruthy();
-    expect(phCell).not.toContain('@');
-    expect(phEmailCell).toContain('@');
-    expect(phEmailCell).not.toBe(phCell);
-    await captureStep(page, testInfo, 'row-values-verified');
+    expect(phEmailIndex).toBeGreaterThan(-1);
+    expect(phNameIndex).toBeGreaterThan(-1);
+    expect(phNameIndex).toBe(phEmailIndex + 1);
+    expect(firstRowCells[phEmailIndex]?.text).toMatch(EMAIL_PATTERN);
+    expect(firstRowCells[phNameIndex]?.text).not.toBe('');
+    expect(firstRowCells[phNameIndex]?.text).not.toBe(firstRowCells[phEmailIndex]?.text);
+    await captureStep(page, testInfo, 'desktop-row-order');
 });
 
-test('keeps sorting, filtering, pagination and detail navigation working', async (
+test('keeps filtering, sorting, pagination, and details navigation working', async (
     { page },
     testInfo,
 ) => {
-    // Seed demo auth state for this test as well
-    await page.addInitScript((user) => {
-        localStorage.setItem('auth.currentUser', JSON.stringify(user));
-    }, DEMO_USER);
-
-    await page.goto('/processes');
+    await page.goto('/');
 
     await expect(page.getByRole('heading', { name: 'Lista procesów' })).toBeVisible();
-    await expect(page.locator('tbody tr').first()).toBeVisible();
-
-    const initialFirstIdText = await page.locator('tbody tr').first().locator('td').first().textContent();
-    expect(initialFirstIdText).not.toBeNull();
-
-    const initialFirstId = Number(initialFirstIdText?.trim());
-
-    await page.getByTestId('sort-id').click();
-
-    const updatedFirstIdText = await page.locator('tbody tr').first().locator('td').first().textContent();
-    expect(updatedFirstIdText).not.toBeNull();
-
-    const updatedFirstId = Number(updatedFirstIdText?.trim());
-
-    expect(updatedFirstId).toBeLessThan(initialFirstId);
-    await captureStep(page, testInfo, 'sorting-verified');
-
-    await page.goto('/processes');
+    await expect(page.locator('tbody tr')).toHaveCount(10);
 
     await page.getByTestId('nip-filter').fill('1234567890');
     await page.getByTestId('observed-filter').check();
@@ -104,22 +87,77 @@ test('keeps sorting, filtering, pagination and detail navigation working', async
 
     await expect(page.locator('tbody tr')).toHaveCount(1);
     await expect(page.getByText('Firma Helios Sp. z o.o.')).toBeVisible();
-    await captureStep(page, testInfo, 'filtered-results');
+    await captureStep(page, testInfo, 'filtered-single-result');
 
     await page.getByTestId('clear-filters-button').click();
-
     await expect(page.locator('tbody tr')).toHaveCount(10);
-    await expect(page.getByTestId('page-2')).toBeVisible();
-    await captureStep(page, testInfo, 'filters-cleared');
+
+    const initialFirstId = Number(
+        normalizeText((await page.locator('tbody tr').first().locator('td.col-id').textContent()) ?? '0'),
+    );
+
+    await page.getByTestId('sort-id').click();
+    await expect(page.getByText('Sortowanie: ID (rosnąco)')).toBeVisible();
+
+    const sortedFirstId = Number(
+        normalizeText((await page.locator('tbody tr').first().locator('td.col-id').textContent()) ?? '0'),
+    );
+
+    expect(sortedFirstId).toBeLessThan(initialFirstId);
+    await captureStep(page, testInfo, 'sorted-by-id-asc');
+
+    await page.getByTestId('sort-id').click();
+    await expect(page.getByText('Sortowanie: ID (malejąco)')).toBeVisible();
 
     await page.getByTestId('page-2').click();
-
     await expect(page.locator('tbody tr')).toHaveCount(4);
-    await expect(page.locator('tbody tr').first().locator('td').first()).toHaveText('1008');
-    await captureStep(page, testInfo, 'pagination-verified');
+    await expect(page.locator('tbody tr').first().locator('td.col-id')).toHaveText('1008');
+    await captureStep(page, testInfo, 'second-page');
 
     await page.getByTestId('detail-link-1008').click();
-
     await expect(page).toHaveURL(/\/processes\/1008$/);
-    await captureStep(page, testInfo, 'detail-navigation-verified');
+    await captureStep(page, testInfo, 'process-detail');
+});
+
+test('keeps Email PH and PH visible next to each other on mobile', async ({ page }, testInfo) => {
+    await page.setViewportSize({ width: 760, height: 900 });
+    await page.goto('/');
+
+    await expect(page.getByRole('heading', { name: 'Lista procesów' })).toBeVisible();
+    await expect(page.locator('tbody tr').first()).toBeVisible();
+
+    await expect(page.locator('thead th.col-phEmail')).toBeVisible();
+    await expect(page.locator('thead th.col-phName')).toBeVisible();
+
+    const visibleHeaders = await page.locator('thead th').evaluateAll((headers) =>
+        headers
+            .filter((header) => getComputedStyle(header).display !== 'none')
+            .map((header) => (header.textContent ?? '').replace(/[↑↓]/g, '').replace(/\s+/g, ' ').trim()),
+    );
+
+    const phEmailHeaderIndex = visibleHeaders.indexOf('Email PH');
+    const phHeaderIndex = visibleHeaders.indexOf('PH');
+
+    expect(phEmailHeaderIndex).toBeGreaterThan(-1);
+    expect(phHeaderIndex).toBeGreaterThan(-1);
+    expect(phHeaderIndex).toBe(phEmailHeaderIndex + 1);
+
+    const visibleRowCells = await page.locator('tbody tr').first().locator('td').evaluateAll((cells) =>
+        cells
+            .filter((cell) => getComputedStyle(cell).display !== 'none')
+            .map((cell) => ({
+                text: (cell.textContent ?? '').replace(/\s+/g, ' ').trim(),
+                className: cell.className,
+            })),
+    );
+
+    const phEmailCellIndex = visibleRowCells.findIndex((cell) => cell.className.includes('col-phEmail'));
+    const phCellIndex = visibleRowCells.findIndex((cell) => cell.className.includes('col-phName'));
+
+    expect(phEmailCellIndex).toBeGreaterThan(-1);
+    expect(phCellIndex).toBeGreaterThan(-1);
+    expect(phCellIndex).toBe(phEmailCellIndex + 1);
+    expect(visibleRowCells[phEmailCellIndex]?.text).toMatch(EMAIL_PATTERN);
+    expect(visibleRowCells[phCellIndex]?.text).not.toBe('');
+    await captureStep(page, testInfo, 'mobile-adjacent-columns');
 });

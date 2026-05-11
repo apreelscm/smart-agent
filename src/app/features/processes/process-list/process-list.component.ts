@@ -230,8 +230,8 @@ import {
                     <th scope="col" class="col-client" style="width:10%">Nazwa klienta</th>
                     <th scope="col" class="col-activity" style="width:7%">Aktywność</th>
                     <th scope="col" class="col-segment" style="width:6%">Segment</th>
-                    <th scope="col" class="col-phName" style="width:7%">PH</th>
                     <th scope="col" class="col-phEmail" style="width:10%">Email PH</th>
+                    <th scope="col" class="col-phName" style="width:7%">PH</th>
                     <th scope="col" class="col-status" style="width:5%">
                       <button
                         data-testid="sort-status"
@@ -278,8 +278,8 @@ import {
                       <td class="col-client">{{ item.clientName }}</td>
                       <td class="col-activity">{{ item.activity }}</td>
                       <td class="col-segment">{{ item.salesSegment }}</td>
-                      <td class="col-phName">{{ item.phName }}</td>
                       <td class="col-phEmail">{{ item.phEmail }}</td>
+                      <td class="col-phName">{{ item.phName }}</td>
                       <td class="col-status">
                         <span class="badge" [class]="statusBadgeClass(item.status)">
                           {{ statusLabel(item.status) }}
@@ -504,7 +504,7 @@ import {
         display: none !important;
       }
 
-      /* essential columns: ID, Numer PH, PH, Email PH, Status, Akcje */
+      /* essential columns: ID, Numer PH, Email PH, PH, Status, Akcje */
       :host .card-body .table-responsive th.col-id,
       :host .card-body .table-responsive td.col-id { width: 6% !important; }
       :host .card-body .table-responsive th.col-phNumber,
