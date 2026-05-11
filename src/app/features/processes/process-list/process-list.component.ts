@@ -230,8 +230,8 @@ import {
                     <th scope="col">Nazwa klienta</th>
                     <th scope="col">Aktywność</th>
                     <th scope="col">Segment</th>
-                    <th scope="col">Email PH</th>
                     <th scope="col">PH</th>
+                    <th scope="col">Email PH</th>
                     <th scope="col">
                       <button
                         data-testid="sort-status"
@@ -278,8 +278,8 @@ import {
                       <td>{{ item.clientName }}</td>
                       <td>{{ item.activity }}</td>
                       <td>{{ item.salesSegment }}</td>
-                      <td>{{ item.phEmail }}</td>
                       <td>{{ item.phName }}</td>
+                      <td>{{ item.phEmail }}</td>
                       <td>
                         <span class="badge" [class]="statusBadgeClass(item.status)">
                           {{ statusLabel(item.status) }}
