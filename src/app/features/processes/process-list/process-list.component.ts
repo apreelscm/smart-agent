@@ -193,7 +193,7 @@ import {
               Nie znaleziono procesów spełniających podane kryteria.
             </div>
           } @else if (!errorMessage) {
-            <div class="table-responsive">
+            <div class="table-responsive processes-table-wrapper">
               <table class="table table-striped table-hover align-middle mb-0">
                 <thead class="table-light">
                   <tr>
