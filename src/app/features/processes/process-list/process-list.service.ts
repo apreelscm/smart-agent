@@ -6,7 +6,6 @@ import {
   ProcessListResponse,
   ProcessSortField,
   ProcessStatus,
-  ProcessObservedFilter,
   buildDefaultProcessListQuery,
   isProcessSortField,
   isProcessStatus,
@@ -84,7 +83,7 @@ export class ProcessListService {
 
   private normalizeStatus(
     value: ProcessListQuery['status'] | undefined,
-    defaultStatus: ProcessStatus,
+    defaultStatus: ProcessStatus | '',
   ): ProcessStatus | '' {
     if (value === '') {
       return '';
