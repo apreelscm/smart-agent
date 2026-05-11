@@ -77,7 +77,7 @@ describe('ProcessListComponent', () => {
     expect(fixture.nativeElement.textContent).toContain('Lista procesów');
   });
 
-  it('renders the PH header immediately before the Email PH header', async () => {
+  it('renders the PH header immediately after the Email PH header', async () => {
     await renderComponent();
 
     const headers = queryHeaderTexts();
@@ -86,10 +86,10 @@ describe('ProcessListComponent', () => {
 
     expect(phHeaderIndex).toBeGreaterThan(-1);
     expect(phEmailHeaderIndex).toBeGreaterThan(-1);
-    expect(phEmailHeaderIndex).toBe(phHeaderIndex + 1);
+    expect(phHeaderIndex).toBe(phEmailHeaderIndex + 1);
   });
 
-  it('renders phName immediately before phEmail in each process row', async () => {
+  it('renders phName immediately after phEmail in each process row', async () => {
     await renderComponent();
 
     const firstRow = queryRows()[0];
@@ -100,9 +100,9 @@ describe('ProcessListComponent', () => {
 
     expect(phNameIndex).toBeGreaterThan(-1);
     expect(phEmailIndex).toBeGreaterThan(-1);
-    expect(phEmailIndex).toBe(phNameIndex + 1);
-    expect(rowValues[phNameIndex]).toBe(firstItem.phName);
+    expect(phNameIndex).toBe(phEmailIndex + 1);
     expect(rowValues[phEmailIndex]).toBe(firstItem.phEmail);
+    expect(rowValues[phNameIndex]).toBe(firstItem.phName);
   });
 
   it('applies filters and narrows results with AND logic', async () => {
@@ -150,7 +150,9 @@ describe('ProcessListComponent', () => {
 
     const initialFirstRowId = Number(queryRows()[0].cells[0].textContent?.trim());
 
-    const sortButton: HTMLButtonElement = fixture.nativeElement.querySelector('[data-testid="sort-id"]');
+    const sortButton: HTMLButtonElement = fixture.nativeElement.querySelector(
+      '[data-testid="sort-id"]',
+    );
     sortButton.click();
     fixture.detectChanges();
     await fixture.whenStable();
@@ -166,7 +168,9 @@ describe('ProcessListComponent', () => {
   it('moves to another page while keeping the current query context', async () => {
     await renderComponent();
 
-    const pageButton: HTMLButtonElement = fixture.nativeElement.querySelector('[data-testid="page-2"]');
+    const pageButton: HTMLButtonElement = fixture.nativeElement.querySelector(
+      '[data-testid="page-2"]',
+    );
     pageButton.click();
     fixture.detectChanges();
     await fixture.whenStable();
@@ -204,7 +208,9 @@ describe('ProcessListComponent', () => {
     const errorAlert: HTMLElement | null = fixture.nativeElement.querySelector(
       '[data-testid="error-alert"]',
     );
-    const nipInput: HTMLInputElement = fixture.nativeElement.querySelector('[data-testid="nip-filter"]');
+    const nipInput: HTMLInputElement = fixture.nativeElement.querySelector(
+      '[data-testid="nip-filter"]',
+    );
 
     expect(errorAlert?.textContent).toContain('Nie udało się wczytać listy procesów');
     expect(nipInput.value).toBe('1234567890');

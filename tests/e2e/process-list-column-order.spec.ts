@@ -10,20 +10,28 @@ const DEMO_USER = {
     auwId: 1,
 };
 
-test('renders the process list with PH immediately before Email PH', async ({ page }, testInfo) => {
-    // Ensure the demo auth state is present in localStorage before the app boots
+function normalizeText(value: string): string {
+    return value.replace(/\s+/g, ' ').trim();
+}
+
+function normalizeHeader(value: string): string {
+    return normalizeText(value).replace(/[↑↓]/g, '').trim();
+}
+
+test('renders Email PH immediately before PH on the process list', async ({ page }, testInfo) => {
     await page.addInitScript((user) => {
         localStorage.setItem('auth.currentUser', JSON.stringify(user));
     }, DEMO_USER);
 
-    await page.goto('/processes');
+    await page.goto('/');
 
     await expect(page.getByRole('heading', { name: 'Lista procesów' })).toBeVisible();
+    await expect(page).toHaveURL(/\/processes(?:\/)?(?:\?.*)?$/);
     await expect(page.locator('tbody tr').first()).toBeVisible();
     await captureStep(page, testInfo, 'process-list-loaded');
 
-    const headers = (await page.locator('thead th').allInnerTexts()).map((text) =>
-        text.replace(/[↑↓]/g, '').replace(/\s+/g, ' ').trim(),
+    const headers = (await page.locator('thead th').allInnerTexts()).map((value) =>
+        normalizeHeader(value),
     );
 
     expect(headers).toEqual([
@@ -33,8 +41,8 @@ test('renders the process list with PH immediately before Email PH', async ({ pa
         'Nazwa klienta',
         'Aktywność',
         'Segment',
-        'PH',
         'Email PH',
+        'PH',
         'Status',
         'Ostatnia zmiana',
         'Data utworzenia',
@@ -44,59 +52,57 @@ test('renders the process list with PH immediately before Email PH', async ({ pa
         'Obserwowane',
         'Akcje',
     ]);
-    await captureStep(page, testInfo, 'column-order-verified');
+    await captureStep(page, testInfo, 'headers-visible');
 
-    const phColumnIndex = headers.indexOf('PH');
-    const phEmailColumnIndex = headers.indexOf('Email PH');
-    const firstRowCells = (await page
-        .locator('tbody tr')
-        .first()
-        .locator('td')
-        .allInnerTexts()).map((text) => text.replace(/\s+/g, ' ').trim());
+    const segmentIndex = headers.indexOf('Segment');
+    const emailPhIndex = headers.indexOf('Email PH');
+    const phIndex = headers.indexOf('PH');
+    const statusIndex = headers.indexOf('Status');
 
-    expect(phColumnIndex).toBeGreaterThan(-1);
-    expect(phEmailColumnIndex).toBe(phColumnIndex + 1);
+    expect(emailPhIndex).toBe(segmentIndex + 1);
+    expect(phIndex).toBe(emailPhIndex + 1);
+    expect(statusIndex).toBe(phIndex + 1);
+    await captureStep(page, testInfo, 'header-order-verified');
 
-    const phCell = firstRowCells[phColumnIndex];
-    const phEmailCell = firstRowCells[phEmailColumnIndex];
+    const firstRowCells = page.locator('tbody tr').first().locator('td');
+    const firstRowValues = (await firstRowCells.allInnerTexts()).map((value) =>
+        normalizeText(value),
+    );
 
-    expect(phCell).toBeTruthy();
-    expect(phCell).not.toContain('@');
-    expect(phEmailCell).toContain('@');
-    expect(phEmailCell).not.toBe(phCell);
-    await captureStep(page, testInfo, 'row-values-verified');
+    expect(firstRowValues[emailPhIndex]).toContain('@');
+    expect(firstRowValues[phIndex]).not.toContain('@');
+    expect(firstRowValues[phIndex]).not.toBe('');
+    expect(firstRowValues[statusIndex]).not.toBe('');
+    await captureStep(page, testInfo, 'first-row-email-ph-before-ph');
 });
 
-test('keeps sorting, filtering, pagination and detail navigation working', async (
+test('keeps sorting, filtering, pagination and details navigation working', async (
     { page },
     testInfo,
 ) => {
-    // Seed demo auth state for this test as well
     await page.addInitScript((user) => {
         localStorage.setItem('auth.currentUser', JSON.stringify(user));
     }, DEMO_USER);
 
-    await page.goto('/processes');
+    await page.goto('/');
 
     await expect(page.getByRole('heading', { name: 'Lista procesów' })).toBeVisible();
     await expect(page.locator('tbody tr').first()).toBeVisible();
+    await captureStep(page, testInfo, 'default-list-visible');
 
-    const initialFirstIdText = await page.locator('tbody tr').first().locator('td').first().textContent();
-    expect(initialFirstIdText).not.toBeNull();
-
-    const initialFirstId = Number(initialFirstIdText?.trim());
+    const initialFirstRowId = Number(
+        normalizeText(await page.locator('tbody tr').first().locator('td').first().innerText()),
+    );
 
     await page.getByTestId('sort-id').click();
+    await expect(page.getByText(/Sortowanie:\s*ID\s*\(rosnąco\)/)).toBeVisible();
 
-    const updatedFirstIdText = await page.locator('tbody tr').first().locator('td').first().textContent();
-    expect(updatedFirstIdText).not.toBeNull();
+    const sortedFirstRowId = Number(
+        normalizeText(await page.locator('tbody tr').first().locator('td').first().innerText()),
+    );
 
-    const updatedFirstId = Number(updatedFirstIdText?.trim());
-
-    expect(updatedFirstId).toBeLessThan(initialFirstId);
-    await captureStep(page, testInfo, 'sorting-verified');
-
-    await page.goto('/processes');
+    expect(sortedFirstRowId).toBeLessThan(initialFirstRowId);
+    await captureStep(page, testInfo, 'sorted-by-id');
 
     await page.getByTestId('nip-filter').fill('1234567890');
     await page.getByTestId('observed-filter').check();
@@ -109,17 +115,20 @@ test('keeps sorting, filtering, pagination and detail navigation working', async
     await page.getByTestId('clear-filters-button').click();
 
     await expect(page.locator('tbody tr')).toHaveCount(10);
-    await expect(page.getByTestId('page-2')).toBeVisible();
+    await expect(page.getByText(/Sortowanie:\s*ID\s*\(malejąco\)/)).toBeVisible();
     await captureStep(page, testInfo, 'filters-cleared');
 
     await page.getByTestId('page-2').click();
+    await expect(page.getByText(/Strona 2 z \d+/)).toBeVisible();
 
-    await expect(page.locator('tbody tr')).toHaveCount(4);
-    await expect(page.locator('tbody tr').first().locator('td').first()).toHaveText('1008');
-    await captureStep(page, testInfo, 'pagination-verified');
+    const secondPageFirstRowId = normalizeText(
+        await page.locator('tbody tr').first().locator('td').first().innerText(),
+    );
+
+    expect(secondPageFirstRowId).toBe('1008');
+    await captureStep(page, testInfo, 'second-page-visible');
 
     await page.getByTestId('detail-link-1008').click();
-
     await expect(page).toHaveURL(/\/processes\/1008$/);
-    await captureStep(page, testInfo, 'detail-navigation-verified');
+    await captureStep(page, testInfo, 'process-details-opened');
 });
