@@ -35,15 +35,90 @@
 // ── Filters ───────────────────────────────────────────────────────────
 .filters {
   display: flex;
-  align-items: center;
-  gap: 6px;
+  align-items: flex-start;
+  gap: 12px;
   flex-wrap: wrap;
   margin-bottom: 8px;
+
+  &__left {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+    flex: 1 1 680px;
+    min-width: 0;
+  }
+
+  &__right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 6px;
+    margin-left: auto;
+    flex: 0 0 auto;
+  }
 
   &__sep {
     width: 1px; height: 22px;
     background: #dde1e8;
     margin: 0 4px;
+  }
+}
+
+.currency-switcher {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 5px 8px 5px 14px;
+  background: white;
+  border: 1px solid #c8cdd6;
+  border-radius: 20px;
+  font-family: 'Inter', sans-serif;
+
+  &__label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #5a6577;
+    white-space: nowrap;
+  }
+
+  &__select {
+    border: none;
+    background: transparent;
+    color: #1a2332;
+    font-size: 12.5px;
+    font-weight: 600;
+    font-family: inherit;
+    padding: 4px 20px 4px 6px;
+    outline: none;
+    cursor: pointer;
+  }
+}
+
+.exchange-rate {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 7px 12px;
+  background: #f8faff;
+  border: 1px solid #c5d4f0;
+  border-radius: 14px;
+  color: #2059a7;
+  font-size: 12px;
+  font-family: 'Inter', sans-serif;
+  text-align: right;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  max-width: 100%;
+
+  &__label { font-weight: 700; }
+
+  &--loading {
+    background: white;
+    border-color: #dde1e8;
+    color: #5a6577;
+  }
+
+  &--error {
+    background: #fff5f5;
+    border-color: #ef9a9a;
+    color: #c62828;
   }
 }
 
@@ -273,3 +348,27 @@
 .action-edit { color: #9aa3b0 !important; &:hover { color: #2059a7 !important; } }
 .action-pdf  { color: #9aa3b0 !important; &:hover { color: #e53935 !important; } }
 .action-menu { color: #9aa3b0 !important; &:hover { color: #1a2332 !important; } }
+
+@media (max-width: 1280px) {
+  .page { width: 100%; }
+}
+
+@media (max-width: 960px) {
+  .filters {
+    &__right {
+      width: 100%;
+      margin-left: 0;
+      align-items: flex-start;
+    }
+  }
+
+  .currency-switcher {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .exchange-rate {
+    text-align: left;
+    justify-content: flex-start;
+  }
+}

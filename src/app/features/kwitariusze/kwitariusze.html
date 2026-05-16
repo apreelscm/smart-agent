@@ -13,57 +13,94 @@
     </a>
   </div>
 
-  <!-- Filters row -->
   <div class="filters">
+    <div class="filters__left">
 
-    <!-- Quick: Ostatnie 30 dni -->
-    <button class="filter-quick" [class.filter-quick--active]="last30Active" (click)="toggle30Days()">
-      <mat-icon>schedule</mat-icon>
-      Ostatnie 30 dni
-    </button>
-
-    <div class="filters__sep"></div>
-
-    <!-- Typ -->
-    <button class="filter-type" [class.filter-type--active]="activeType === 'rata-odsetki'"
-            (click)="setType('rata-odsetki')">
-      <mat-icon>payments</mat-icon>
-      Rata + odsetki
-    </button>
-    <button class="filter-type" [class.filter-type--active]="activeType === 'rekalkulacja-odsetki'"
-            (click)="setType('rekalkulacja-odsetki')">
-      <mat-icon>sync_alt</mat-icon>
-      Rekalkulacja + odsetki
-    </button>
-
-    <!-- Numer polisy chip -->
-    <button class="filter-chip" [class.filter-chip--active]="!!policySearch || expandedFilter() === 'policy'"
-            (click)="toggleFilter('policy')">
-      <mat-icon class="filter-chip__icon">policy</mat-icon>
-      <span>{{ policySearch || 'Numer polisy' }}</span>
-      <mat-icon class="filter-chip__arrow">{{ expandedFilter() === 'policy' ? 'expand_less' : 'keyboard_arrow_down' }}</mat-icon>
-    </button>
-
-    <!-- Ubezpieczający chip -->
-    <button class="filter-chip" [class.filter-chip--active]="!!insuredSearch || expandedFilter() === 'insured'"
-            (click)="toggleFilter('insured')">
-      <mat-icon class="filter-chip__icon">person_search</mat-icon>
-      <span>{{ insuredSearch || 'Ubezpieczający' }}</span>
-      <mat-icon class="filter-chip__arrow">{{ expandedFilter() === 'insured' ? 'expand_less' : 'keyboard_arrow_down' }}</mat-icon>
-    </button>
-
-    <!-- Search -->
-    <button class="filter-search">
-      <mat-icon>search</mat-icon>
-    </button>
-
-    <!-- Reset -->
-    @if (hasAnyFilter) {
-      <button class="filter-reset" (click)="clearFilters()">
-        <mat-icon>refresh</mat-icon>
-        Zresetuj
+      <!-- Quick: Ostatnie 30 dni -->
+      <button class="filter-quick" [class.filter-quick--active]="last30Active" (click)="toggle30Days()">
+        <mat-icon>schedule</mat-icon>
+        Ostatnie 30 dni
       </button>
-    }
+
+      <div class="filters__sep"></div>
+
+      <!-- Typ -->
+      <button class="filter-type" [class.filter-type--active]="activeType === 'rata-odsetki'"
+              (click)="setType('rata-odsetki')">
+        <mat-icon>payments</mat-icon>
+        Rata + odsetki
+      </button>
+      <button class="filter-type" [class.filter-type--active]="activeType === 'rekalkulacja-odsetki'"
+              (click)="setType('rekalkulacja-odsetki')">
+        <mat-icon>sync_alt</mat-icon>
+        Rekalkulacja + odsetki
+      </button>
+
+      <!-- Numer polisy chip -->
+      <button class="filter-chip" [class.filter-chip--active]="!!policySearch || expandedFilter() === 'policy'"
+              (click)="toggleFilter('policy')">
+        <mat-icon class="filter-chip__icon">policy</mat-icon>
+        <span>{{ policySearch || 'Numer polisy' }}</span>
+        <mat-icon class="filter-chip__arrow">{{ expandedFilter() === 'policy' ? 'expand_less' : 'keyboard_arrow_down' }}</mat-icon>
+      </button>
+
+      <!-- Ubezpieczający chip -->
+      <button class="filter-chip" [class.filter-chip--active]="!!insuredSearch || expandedFilter() === 'insured'"
+              (click)="toggleFilter('insured')">
+        <mat-icon class="filter-chip__icon">person_search</mat-icon>
+        <span>{{ insuredSearch || 'Ubezpieczający' }}</span>
+        <mat-icon class="filter-chip__arrow">{{ expandedFilter() === 'insured' ? 'expand_less' : 'keyboard_arrow_down' }}</mat-icon>
+      </button>
+
+      <!-- Search -->
+      <button class="filter-search">
+        <mat-icon>search</mat-icon>
+      </button>
+
+      <!-- Reset -->
+      @if (hasAnyFilter) {
+        <button class="filter-reset" (click)="clearFilters()">
+          <mat-icon>refresh</mat-icon>
+          Zresetuj
+        </button>
+      }
+    </div>
+
+    <div class="filters__right">
+      <label class="currency-switcher">
+        <span class="currency-switcher__label">Waluta</span>
+        <select
+          class="currency-switcher__select"
+          aria-label="Waluta prezentacji kwot"
+          [ngModel]="selectedCurrency()"
+          (ngModelChange)="changeCurrency($event)">
+          @for (currency of currencyOptions; track currency) {
+            <option [value]="currency">{{ currency }}</option>
+          }
+        </select>
+      </label>
+
+      @if (isRateLoading()) {
+        <div class="exchange-rate exchange-rate--loading">
+          Ładowanie kursu {{ selectedCurrency() }} z NBP…
+        </div>
+      }
+
+      @if (currentAppliedRate(); as rate) {
+        <div class="exchange-rate">
+          <span class="exchange-rate__label">Kurs {{ rate.currencyCode }}:</span>
+          <span>{{ formatRate(rate.midRate) }}</span>
+          <span>z dnia {{ rate.effectiveDate }}</span>
+          <span>· źródło: {{ rate.source }}</span>
+        </div>
+      }
+
+      @if (rateError()) {
+        <div class="exchange-rate exchange-rate--error">
+          {{ rateError() }}
+        </div>
+      }
+    </div>
   </div>
 
   <!-- Expandable filter inputs -->
@@ -158,8 +195,8 @@
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Kwota (z odsetkami)</th>
         <td mat-cell *matCellDef="let row">
           <div class="cell-amount">
-            <span class="cell-amount__total">{{ formatAmount(totalAmount(row)) }}</span>
-            <span class="cell-amount__interest">odsetki: {{ formatAmount(row.interest) }}</span>
+            <span class="cell-amount__total">{{ displayAmount(totalAmount(row)) }}</span>
+            <span class="cell-amount__interest">odsetki: {{ displayAmount(row.interest) }}</span>
           </div>
         </td>
       </ng-container>
