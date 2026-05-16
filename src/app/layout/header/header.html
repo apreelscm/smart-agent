@@ -1,0 +1,28 @@
+<header class="header">
+  <div class="header__left"></div>
+
+  <nav class="header__nav">
+    <a class="header__link" href="#" (click)="$event.preventDefault()">
+      <mat-icon class="header__link-icon">monitor</mat-icon>
+      <span>Szkolenia</span>
+      <mat-icon class="header__link-ext">open_in_new</mat-icon>
+    </a>
+
+    <a class="header__link" href="#" (click)="$event.preventDefault()">
+      <mat-icon class="header__link-icon">description</mat-icon>
+      <span>Aneksy</span>
+      <mat-icon class="header__link-ext">open_in_new</mat-icon>
+    </a>
+
+    <a class="header__link" href="#" (click)="$event.preventDefault()">
+      <span>iPortal 1.0</span>
+      <mat-icon class="header__link-ext">open_in_new</mat-icon>
+    </a>
+
+    <div class="header__user">
+      <mat-icon class="header__user-icon">account_circle</mat-icon>
+      <span class="header__username">{{ agentService.currentAgent().username }}</span>
+      <span class="header__company">{{ agentService.currentAgent().company }}</span>
+    </div>
+  </nav>
+</header>

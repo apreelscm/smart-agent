@@ -1,0 +1,229 @@
+.page {
+  padding-bottom: 40px;
+  width: 85%;
+
+  &__title-wrap { margin-bottom: 20px; }
+
+  &__title {
+    font-size: 26px;
+    font-weight: 700;
+    color: #1a2332;
+    margin: 0 0 6px;
+  }
+
+  &__title-accent {
+    width: 36px;
+    height: 3px;
+    background: #ff2e17;
+    border-radius: 2px;
+  }
+}
+
+// ── Filters ───────────────────────────────────────────────────────────
+.filters {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+// Filled product buttons
+.filter-product {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  background: white;
+  color: #3d4a5c;
+  border: 1px solid #c8cdd6;
+  border-radius: 20px;
+  font-size: 12.5px;
+  font-weight: 500;
+  font-family: 'Inter', sans-serif;
+  cursor: pointer;
+  transition: all 0.15s;
+
+  &:hover { border-color: #2059a7; color: #2059a7; }
+
+  &--active {
+    background: #2059a7;
+    color: white;
+    border-color: #2059a7;
+  }
+
+  mat-icon { font-size: 15px; width: 15px; height: 15px; }
+}
+
+// Dropdown chips
+.filter-dropdown {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 12px;
+  background: white;
+  border: 1px solid #c8cdd6;
+  border-radius: 20px;
+  font-size: 12.5px;
+  font-family: 'Inter', sans-serif;
+  color: #3d4a5c;
+  cursor: pointer;
+  transition: all 0.15s;
+
+  &:hover { border-color: #2059a7; }
+
+  &--active {
+    border-color: #2059a7;
+    color: #2059a7;
+    background: #f0f5ff;
+  }
+
+  &__indicator {
+    font-size: 14px;
+    width: 14px;
+    height: 14px;
+    color: #2059a7;
+  }
+
+  &__arrow {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+    color: #6b7687;
+  }
+}
+
+// Round search button
+.filter-search {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #2059a7;
+  color: white;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s;
+
+  &:hover { background: #174d96; }
+
+  mat-icon { font-size: 18px; width: 18px; height: 18px; }
+}
+
+// Reset link
+.filter-reset {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: none;
+  border: none;
+  color: #3d4a5c;
+  font-size: 13px;
+  font-family: 'Inter', sans-serif;
+  cursor: pointer;
+  padding: 6px 8px;
+  border-radius: 6px;
+
+  &:hover { color: #2059a7; background: #f0f4ff; }
+
+  mat-icon { font-size: 16px; width: 16px; height: 16px; }
+}
+
+.results-count {
+  font-size: 12px;
+  color: #6b7687;
+  margin-bottom: 12px;
+}
+
+// ── Table ─────────────────────────────────────────────────────────────
+.table-wrap {
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #dde1e8;
+  overflow: hidden;
+}
+
+.data-table {
+  width: 100%;
+
+  th {
+    font-size: 12px;
+    font-weight: 600;
+    color: #6b7687;
+    background: white;
+    border-bottom: 1px solid #dde1e8;
+    padding: 10px 16px;
+    white-space: nowrap;
+  }
+
+  td {
+    font-size: 13px;
+    color: #1a2332;
+    padding: 10px 16px;
+    border-bottom: 1px solid #f0f2f5;
+    vertical-align: middle;
+  }
+
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #f8faff; }
+}
+
+.header-grid-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+  color: #9aa3b0;
+  vertical-align: middle;
+}
+
+// Policy number
+.cell-policy {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  &__number {
+    color: #2059a7;
+    font-size: 12.5px;
+    font-weight: 500;
+  }
+}
+
+.cell-copy {
+  font-size: 14px;
+  width: 14px;
+  height: 14px;
+  color: #9aa3b0;
+  cursor: pointer;
+  &:hover { color: #2059a7; }
+}
+
+// Insured
+.cell-insured {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  &__icon {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+    color: #9aa3b0;
+    flex-shrink: 0;
+  }
+}
+
+.cell-date {
+  font-size: 12.5px;
+  color: #6b7687;
+}
+
+.cell-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.action-menu { color: #9aa3b0 !important; }

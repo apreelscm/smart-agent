@@ -1,84 +1,77 @@
 import { Routes } from '@angular/router';
-import { authGuard } from './core/guards/auth.guard';
+import { ShellComponent } from './layout/shell/shell';
 
 export const routes: Routes = [
   {
-    path: 'login',
-    loadComponent: () => import('./features/login/login.component').then((m) => m.LoginComponent),
-  },
-  {
     path: '',
-    loadComponent: () => import('./core/layout/layout.component').then((m) => m.LayoutComponent),
-    canActivate: [authGuard],
+    component: ShellComponent,
     children: [
+      { path: '', redirectTo: 'kokpit', pathMatch: 'full' },
       {
-        path: 'processes',
-        loadComponent: () =>
-          import('./features/processes/process-list/process-list.component').then(
-            (m) => m.ProcessListComponent,
-          ),
+        path: 'kokpit',
+        loadComponent: () => import('./features/dashboard/dashboard').then(m => m.DashboardComponent),
       },
       {
-        path: 'processes/:id',
-        loadComponent: () =>
-          import('./features/processes/process-detail/process-detail.component').then(
-            (m) => m.ProcessDetailComponent,
-          ),
+        path: 'zdjecia-do-polisy',
+        loadComponent: () => import('./features/policy-photos/policy-photos').then(m => m.PolicyPhotosComponent),
       },
       {
-        path: 'wizard',
-        loadComponent: () =>
-          import('./features/wizard/wizard-shell/wizard-shell.component').then(
-            (m) => m.WizardShellComponent,
-          ),
-        children: [
-          {
-            path: 'activity-selection',
-            loadComponent: () =>
-              import('./features/wizard/steps/activity-selection/activity-selection.component').then(
-                (m) => m.ActivitySelectionComponent,
-              ),
-          },
-          {
-            path: 'calculator',
-            loadComponent: () =>
-              import('./features/wizard/steps/calculator/calculator.component').then(
-                (m) => m.CalculatorComponent,
-              ),
-          },
-          {
-            path: 'panels',
-            loadComponent: () =>
-              import('./features/wizard/steps/panels/panels.component').then(
-                (m) => m.PanelsComponent,
-              ),
-          },
-          {
-            path: 'documents',
-            loadComponent: () =>
-              import('./features/wizard/steps/documents/documents.component').then(
-                (m) => m.DocumentsComponent,
-              ),
-          },
-          {
-            path: 'signing',
-            loadComponent: () =>
-              import('./features/wizard/steps/signing/signing.component').then(
-                (m) => m.SigningComponent,
-              ),
-          },
-          {
-            path: 'submit',
-            loadComponent: () =>
-              import('./features/wizard/steps/submit/submit.component').then(
-                (m) => m.SubmitComponent,
-              ),
-          },
-          { path: '', redirectTo: 'activity-selection', pathMatch: 'full' },
-        ],
+        path: 'polisy-do-wznowienia',
+        loadComponent: () => import('./features/policy-renewals/policy-renewals').then(m => m.PolicyRenewalsComponent),
       },
-      { path: '', redirectTo: 'processes', pathMatch: 'full' },
+      {
+        path: 'polisy/:id',
+        loadComponent: () => import('./features/polisy/polisa-detail/polisa-detail').then(m => m.PolisaDetailComponent),
+      },
+      {
+        path: 'polisy',
+        loadComponent: () => import('./features/polisy/polisy').then(m => m.PolisyComponent),
+      },
+      {
+        path: 'oferty',
+        loadComponent: () => import('./features/oferty/oferty').then(m => m.OfertyComponent),
+      },
+      {
+        path: 'rozliczenia/noty-prowizyjne/:id/metryczka',
+        loadComponent: () => import('./features/noty-prowizyjne/nota-metryczka/nota-metryczka').then(m => m.NotaMetryczkaComponent),
+      },
+      {
+        path: 'rozliczenia/noty-prowizyjne/:id',
+        loadComponent: () => import('./features/noty-prowizyjne/nota-detail/nota-detail').then(m => m.NotaDetailComponent),
+      },
+      {
+        path: 'rozliczenia/noty-prowizyjne',
+        loadComponent: () => import('./features/noty-prowizyjne/noty-prowizyjne').then(m => m.NotyProwizyjneComponent),
+      },
+      {
+        path: 'rozliczenia/wykazy/nowy',
+        loadComponent: () => import('./features/wykazy/new-wykaz/new-wykaz').then(m => m.NewWykazComponent),
+      },
+      {
+        path: 'rozliczenia/wykazy/:id',
+        loadComponent: () => import('./features/wykazy/wykaz-detail/wykaz-detail').then(m => m.WykazDetailComponent),
+      },
+      {
+        path: 'rozliczenia/wykazy',
+        loadComponent: () => import('./features/wykazy/wykazy').then(m => m.WykazyComponent),
+      },
+      {
+        path: 'rozliczenia/kwitariusze/nowy',
+        loadComponent: () => import('./features/kwitariusze/new-kwitariusz/new-kwitariusz').then(m => m.NewKwitariuszComponent),
+      },
+      {
+        path: 'rozliczenia/kwitariusze',
+        loadComponent: () => import('./features/kwitariusze/kwitariusze').then(m => m.KwitariuszeComponent),
+      },
+      {
+        path: 'rozliczenia/kwitariusze/:id',
+        loadComponent: () => import('./features/kwitariusze/kwitariusz-detail/kwitariusz-detail').then(m => m.KwitariuszDetailComponent),
+      },
+      {
+        path: 'rozliczenia/kwitariusze/:id/edytuj',
+        loadComponent: () => import('./features/kwitariusze/kwitariusz-edit/kwitariusz-edit').then(m => m.KwitariuszEditComponent),
+      },
     ],
   },
-  { path: '**', redirectTo: 'login' },
+  { path: '**', redirectTo: '' },
 ];

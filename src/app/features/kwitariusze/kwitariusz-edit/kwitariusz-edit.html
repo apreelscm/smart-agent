@@ -1,0 +1,187 @@
+@if (!notFound()) {
+<div class="page">
+
+  <div class="page__header">
+    <div>
+      <a class="page__back" [routerLink]="['/rozliczenia/kwitariusze', id()]">
+        <mat-icon>arrow_back</mat-icon>Powrót do podglądu
+      </a>
+      <div class="page__title-wrap">
+        <h1 class="page__title">Edycja kwitariusza</h1>
+        <div class="page__title-accent"></div>
+      </div>
+      <p class="page__subtitle">{{ id() }}</p>
+    </div>
+  </div>
+
+  <div class="form-layout">
+
+    <!-- Typ + status -->
+    <div class="card">
+      <h2 class="card__title">Typ i status</h2>
+      <div class="type-grid">
+        <button class="type-card" [class.type-card--selected]="type() === 'rata-odsetki'" (click)="type.set('rata-odsetki')">
+          <mat-icon>receipt</mat-icon><span>Rata składki + odsetki</span>
+          @if (type() === 'rata-odsetki') { <mat-icon class="type-card__check">check_circle</mat-icon> }
+        </button>
+        <button class="type-card" [class.type-card--selected]="type() === 'rekalkulacja-odsetki'" (click)="type.set('rekalkulacja-odsetki')">
+          <mat-icon>sync_alt</mat-icon><span>Rekalkulacja + odsetki</span>
+          @if (type() === 'rekalkulacja-odsetki') { <mat-icon class="type-card__check">check_circle</mat-icon> }
+        </button>
+      </div>
+      <div class="fields-grid" style="margin-top:14px">
+        <div class="input-group">
+          <label class="input-label">Status</label>
+          <select class="input input--select" [ngModel]="status()" (ngModelChange)="status.set($event)">
+            @for (s of statuses; track s.value) { <option [value]="s.value">{{ s.label }}</option> }
+          </select>
+        </div>
+        <div class="input-group">
+          <label class="input-label">Data wystawienia</label>
+          <input class="input" type="date" [ngModel]="issueDate()" (ngModelChange)="issueDate.set($event)" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Dane polisy -->
+    <div class="card">
+      <h2 class="card__title">Dane polisy</h2>
+      <div class="fields-grid">
+        <div class="input-group">
+          <label class="input-label">Numer polisy</label>
+          <input class="input" [ngModel]="policyNumber()" (ngModelChange)="policyNumber.set($event)" />
+        </div>
+        <div class="input-group">
+          <label class="input-label">Ubezpieczający (polisa)</label>
+          <input class="input" [ngModel]="insuredName()" (ngModelChange)="insuredName.set($event)" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Dane płatnika -->
+    <div class="card">
+      <h2 class="card__title">Dane płatnika</h2>
+      <div class="fields-grid fields-grid--3">
+        <div class="input-group col-wide">
+          <label class="input-label">Ubezpieczający *</label>
+          <input class="input" [ngModel]="payerName()" (ngModelChange)="payerName.set($event)" />
+        </div>
+        <div class="input-group">
+          <label class="input-label">PESEL / NIP</label>
+          <input class="input" [ngModel]="payerPeselNip()" (ngModelChange)="payerPeselNip.set($event)" />
+        </div>
+        <div class="input-group">
+          <label class="input-label">Typ klienta</label>
+          <select class="input input--select" [ngModel]="payerClientType()" (ngModelChange)="payerClientType.set($event)">
+            @for (ct of clientTypes; track ct.value) { <option [value]="ct.value">{{ ct.label }}</option> }
+          </select>
+        </div>
+        <div class="input-group col-wide">
+          <label class="input-label">Adres</label>
+          <input class="input" [ngModel]="payerAddress()" (ngModelChange)="payerAddress.set($event)" />
+        </div>
+        <div class="input-group">
+          <label class="input-label">Email</label>
+          <input class="input" type="email" [ngModel]="payerEmail()" (ngModelChange)="payerEmail.set($event)" />
+        </div>
+        <div class="input-group">
+          <label class="input-label">Telefon</label>
+          <input class="input" type="tel" [ngModel]="payerPhone()" (ngModelChange)="payerPhone.set($event)" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Rekalkulacja -->
+    @if (type() === 'rekalkulacja-odsetki') {
+      <div class="card">
+        <h2 class="card__title">Szczegóły rekalkulacji</h2>
+        <div class="fields-grid fields-grid--3">
+          <div class="input-group col-wide">
+            <label class="input-label">Przyczyna rekalkulacji</label>
+            <select class="input input--select" [ngModel]="rekalkReason()" (ngModelChange)="rekalkReason.set($event)">
+              <option value="">— Wybierz —</option>
+              @for (r of rekalkReasons; track r) { <option [value]="r">{{ r }}</option> }
+            </select>
+          </div>
+          <div class="input-group">
+            <label class="input-label">Data rekalkulacji</label>
+            <input class="input" type="date" [ngModel]="rekalkDate()" (ngModelChange)="rekalkDate.set($event)" />
+          </div>
+          <div class="input-group">
+            <label class="input-label">Kwota przed (zł)</label>
+            <input class="input" type="number" min="0" [ngModel]="rekalkAmountBefore()" (ngModelChange)="rekalkAmountBefore.set(+$event)" />
+          </div>
+          <div class="input-group">
+            <label class="input-label">Kwota po (zł)</label>
+            <input class="input" type="number" min="0" [ngModel]="rekalkAmountAfter()" (ngModelChange)="rekalkAmountAfter.set(+$event)" />
+          </div>
+          <div class="input-group">
+            <label class="input-label">Dopłata / zwrot</label>
+            <div class="input-diff" [class.input-diff--positive]="rekalkDiff() > 0" [class.input-diff--negative]="rekalkDiff() < 0">
+              <mat-icon>{{ rekalkDiff() > 0 ? 'arrow_upward' : rekalkDiff() < 0 ? 'arrow_downward' : 'remove' }}</mat-icon>
+              <span>{{ rekalkDiff() > 0 ? 'Dopłata' : rekalkDiff() < 0 ? 'Zwrot' : '—' }}</span>
+              @if (rekalkDiff() !== 0) { <strong>{{ formatAmount(rekalkDiff() < 0 ? -rekalkDiff() : rekalkDiff()) }}</strong> }
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+
+    <!-- Dane finansowe -->
+    <div class="card">
+      <h2 class="card__title">Dane finansowe</h2>
+      <div class="fields-grid fields-grid--3">
+        <div class="input-group">
+          <label class="input-label">Kwota bazowa (zł)</label>
+          <input class="input" type="number" min="0" [ngModel]="baseAmount()" (ngModelChange)="baseAmount.set(+$event)" />
+        </div>
+        <div class="input-group">
+          <label class="input-label">Odsetki (zł)</label>
+          <input class="input" type="number" min="0" [ngModel]="interest()" (ngModelChange)="interest.set(+$event)" />
+        </div>
+        <div class="input-group">
+          <label class="input-label">Waluta</label>
+          <select class="input input--select" [ngModel]="finCurrency()" (ngModelChange)="finCurrency.set($event)">
+            @for (c of currencies; track c) { <option [value]="c">{{ c }}</option> }
+          </select>
+        </div>
+        <div class="input-group col-wide">
+          <label class="input-label">Łączna kwota do zapłaty</label>
+          <div class="input-total">{{ formatAmount(total()) }}</div>
+        </div>
+        <div class="input-group">
+          <label class="input-label">Termin płatności</label>
+          <input class="input" type="date" [ngModel]="finPaymentDeadline()" (ngModelChange)="finPaymentDeadline.set($event)" />
+        </div>
+        <div class="input-group">
+          <label class="input-label">Data naliczenia odsetek</label>
+          <input class="input" type="date" [ngModel]="finInterestDate()" (ngModelChange)="finInterestDate.set($event)" />
+        </div>
+        <div class="input-group">
+          <label class="input-label">Stopa odsetek (%)</label>
+          <input class="input" type="number" min="0" step="0.01" [ngModel]="finInterestRate()" (ngModelChange)="finInterestRate.set(+$event)" />
+        </div>
+        <div class="input-group">
+          <label class="input-label">Dni opóźnienia</label>
+          <input class="input" type="number" min="0" [ngModel]="finDaysOverdue()" (ngModelChange)="finDaysOverdue.set(+$event)" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Akcje -->
+    <div class="form-actions">
+      <a class="btn-cancel" [routerLink]="['/rozliczenia/kwitariusze', id()]">Anuluj</a>
+      <button class="btn-save" (click)="save()">
+        <mat-icon>save</mat-icon>Zapisz zmiany
+      </button>
+    </div>
+
+  </div>
+</div>
+} @else {
+<div class="not-found">
+  <mat-icon>search_off</mat-icon>
+  <p>Kwitariusz nie został znaleziony.</p>
+  <a routerLink="/rozliczenia/kwitariusze">Wróć do listy</a>
+</div>
+}

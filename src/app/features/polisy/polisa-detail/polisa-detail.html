@@ -1,0 +1,144 @@
+@if (polisa(); as p) {
+<div class="page">
+
+  <div class="page__header">
+    <div>
+      <a class="page__back" routerLink="/polisy">
+        <mat-icon>arrow_back</mat-icon>Powrót do listy
+      </a>
+      <div class="page__title-wrap">
+        <h1 class="page__title">{{ p.policyNumber }}</h1>
+        <div class="page__title-accent"></div>
+      </div>
+      <div class="page__subtitle">{{ p.productLabel }}</div>
+    </div>
+    <div class="page__actions">
+      <button class="btn-outline"><mat-icon>picture_as_pdf</mat-icon>Pobierz PDF</button>
+      <button class="btn-outline"><mat-icon>autorenew</mat-icon>Wznów</button>
+      <button class="btn-primary"><mat-icon>add_photo_alternate</mat-icon>Dodaj zdjęcia</button>
+    </div>
+  </div>
+
+  <div class="detail-layout">
+
+    <!-- Meta row -->
+    <div class="card card--meta">
+      <div class="meta-item">
+        <span class="meta-item__label">Produkt</span>
+        <div class="meta-product">
+          <app-product-icon [productType]="p.productType" />
+          <span>{{ p.productLabel }}</span>
+        </div>
+      </div>
+      <div class="meta-sep"></div>
+      <div class="meta-item">
+        <span class="meta-item__label">Status</span>
+        <span class="status-badge status-badge--{{ p.status }}">{{ statusLabel(p.status) }}</span>
+      </div>
+      <div class="meta-sep"></div>
+      <div class="meta-item">
+        <span class="meta-item__label">System BE</span>
+        <span class="badge-be">{{ p.source }}</span>
+      </div>
+      <div class="meta-sep"></div>
+      <div class="meta-item">
+        <span class="meta-item__label">Data wystawienia</span>
+        <span class="meta-item__value">{{ p.issueDate }}</span>
+      </div>
+      <div class="meta-sep"></div>
+      <div class="meta-item">
+        <span class="meta-item__label">Okres ochrony</span>
+        <span class="meta-item__value">{{ p.startDate }} → {{ p.endDate }}</span>
+      </div>
+    </div>
+
+    <!-- 2-col layout -->
+    <div class="cards-row">
+
+      <!-- Dane ubezpieczającego -->
+      <div class="card card--fields">
+        <div class="section-label">Ubezpieczający / Ubezpieczony</div>
+        <div class="field">
+          <span class="field__label">Ubezpieczający</span>
+          <div class="field__value">
+            <mat-icon class="field__icon">account_circle</mat-icon>
+            {{ p.insurantName }}
+          </div>
+        </div>
+        <div class="field">
+          <span class="field__label">Ubezpieczony</span>
+          <div class="field__value">
+            <mat-icon class="field__icon">person</mat-icon>
+            {{ p.insuredName }}
+          </div>
+        </div>
+        @if (p.vehicleReg) {
+          <div class="field">
+            <span class="field__label">Nr rejestracyjny</span>
+            <div class="field__value field__value--code">{{ p.vehicleReg }}</div>
+          </div>
+        }
+        @if (p.address) {
+          <div class="field">
+            <span class="field__label">Adres ryzyka</span>
+            <div class="field__value">{{ p.address }}</div>
+          </div>
+        }
+        <div class="field">
+          <span class="field__label">Agent</span>
+          <div class="field__value">{{ p.agentName }} ({{ p.agentCode }})</div>
+        </div>
+      </div>
+
+      <!-- Składka -->
+      <div class="card card--amounts">
+        <div class="section-label">Rozliczenie finansowe</div>
+        <div class="amount-row">
+          <span>Składka roczna</span>
+          <strong>{{ service.formatAmount(p.premium) }}</strong>
+        </div>
+        <div class="amount-row">
+          <span>Inkaso</span>
+          <strong class="amount-inkaso">{{ service.formatAmount(p.inkaso) }}</strong>
+        </div>
+        <div class="amount-divider"></div>
+        <div class="amount-row amount-diff">
+          <span>Do zapłaty</span>
+          <strong>{{ service.formatAmount(p.premium - p.inkaso) }}</strong>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Ryzyka -->
+    <div class="card">
+      <div class="section-label">Ryzyka polisowe</div>
+      <table class="risks-table">
+        <thead>
+          <tr>
+            <th>Ryzyko</th>
+            <th>Suma ubezpieczenia</th>
+            <th>Składka</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (risk of p.risks; track risk.name) {
+            <tr>
+              <td><span class="risk-tag">{{ risk.name }}</span></td>
+              <td>{{ risk.sum > 0 ? service.formatAmount(risk.sum) : '—' }}</td>
+              <td class="fw600">{{ service.formatAmount(risk.premium) }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>
+} @else {
+<div class="not-found">
+  <mat-icon>search_off</mat-icon>
+  <p>Polisa nie została znaleziona.</p>
+  <a routerLink="/polisy">Wróć do listy</a>
+</div>
+}

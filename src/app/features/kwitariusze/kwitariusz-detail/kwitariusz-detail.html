@@ -1,0 +1,235 @@
+@if (kwitariusz(); as k) {
+<div class="page">
+
+  <div class="page__header">
+    <div>
+      <a class="page__back" routerLink="/rozliczenia/kwitariusze">
+        <mat-icon>arrow_back</mat-icon>Powrót do listy
+      </a>
+      <div class="page__title-wrap">
+        <h1 class="page__title">{{ k.number }}</h1>
+        <div class="page__title-accent"></div>
+      </div>
+    </div>
+    <div class="page__actions">
+      <button class="btn-pdf"><mat-icon>picture_as_pdf</mat-icon>Pobierz PDF</button>
+      <a class="btn-edit" [routerLink]="['/rozliczenia/kwitariusze', k.id, 'edytuj']">
+        <mat-icon>edit</mat-icon>Edytuj
+      </a>
+    </div>
+  </div>
+
+  <div class="detail-layout">
+
+    <!-- Meta row -->
+    <div class="card card--row">
+      <div class="meta-item">
+        <span class="meta-item__label">Status</span>
+        <span class="status-badge status-badge--{{ k.status }}">{{ k.status }}</span>
+      </div>
+      <div class="meta-sep"></div>
+      <div class="meta-item">
+        <span class="meta-item__label">Typ</span>
+        <div class="type-cell" [class.type-cell--rekalkulacja]="k.type === 'rekalkulacja-odsetki'">
+          <mat-icon>{{ typeIcon(k.type) }}</mat-icon>
+          <span>{{ typeLabel(k.type) }}</span>
+        </div>
+      </div>
+      <div class="meta-sep"></div>
+      <div class="meta-item">
+        <span class="meta-item__label">System BE</span>
+        <span class="meta-item__value meta-item__value--badge">{{ k.source }}</span>
+      </div>
+      <div class="meta-sep"></div>
+      <div class="meta-item">
+        <span class="meta-item__label">Data wystawienia</span>
+        <span class="meta-item__value">{{ k.issueDate }}</span>
+      </div>
+    </div>
+
+    <!-- Dane polisy -->
+    <div class="section-title">Dane polisy</div>
+    <div class="card card--fields">
+      <div class="field">
+        <span class="field__label">Numer polisy</span>
+        <div class="field__value field__value--link">
+          <span>{{ k.policyNumber }}</span>
+          <mat-icon class="field__copy">content_copy</mat-icon>
+        </div>
+      </div>
+      <div class="field">
+        <span class="field__label">Ubezpieczający</span>
+        <div class="field__value">
+          <mat-icon class="field__person">account_circle</mat-icon>
+          <span>{{ k.insuredName }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dane płatnika -->
+    @if (k.payerName) {
+      <div class="section-title">Dane płatnika</div>
+      <div class="card card--fields-grid">
+        <div class="field">
+          <span class="field__label">Ubezpieczający</span>
+          <div class="field__value"><mat-icon class="field__person">account_circle</mat-icon>{{ k.payerName }}</div>
+        </div>
+        @if (k.payerPeselNip) {
+          <div class="field">
+            <span class="field__label">PESEL / NIP</span>
+            <div class="field__value field__value--code">{{ k.payerPeselNip }}</div>
+          </div>
+        }
+        @if (k.payerClientType) {
+          <div class="field">
+            <span class="field__label">Typ klienta</span>
+            <div class="field__value">{{ clientTypeLabel(k.payerClientType) }}</div>
+          </div>
+        }
+        @if (k.payerAddress) {
+          <div class="field field--wide">
+            <span class="field__label">Adres</span>
+            <div class="field__value"><mat-icon class="field__person">location_on</mat-icon>{{ k.payerAddress }}</div>
+          </div>
+        }
+        @if (k.payerEmail) {
+          <div class="field">
+            <span class="field__label">Email</span>
+            <div class="field__value"><mat-icon class="field__person">email</mat-icon>{{ k.payerEmail }}</div>
+          </div>
+        }
+        @if (k.payerPhone) {
+          <div class="field">
+            <span class="field__label">Telefon</span>
+            <div class="field__value"><mat-icon class="field__person">phone</mat-icon>{{ k.payerPhone }}</div>
+          </div>
+        }
+      </div>
+    }
+
+    <!-- Szczegóły rekalkulacji -->
+    @if (k.type === 'rekalkulacja-odsetki' && k.rekalkReason) {
+      <div class="section-title">Szczegóły rekalkulacji</div>
+      <div class="card card--fields-grid">
+        <div class="field field--wide">
+          <span class="field__label">Przyczyna rekalkulacji</span>
+          <div class="field__value">{{ k.rekalkReason }}</div>
+        </div>
+        <div class="field">
+          <span class="field__label">Data rekalkulacji</span>
+          <div class="field__value">{{ k.rekalkDate }}</div>
+        </div>
+        <div class="field">
+          <span class="field__label">Kwota przed rekalkulacją</span>
+          <div class="field__value fw600">{{ formatAmount(k.rekalkAmountBefore ?? 0) }}</div>
+        </div>
+        <div class="field">
+          <span class="field__label">Kwota po rekalkulacji</span>
+          <div class="field__value fw600">{{ formatAmount(k.rekalkAmountAfter ?? 0) }}</div>
+        </div>
+        <div class="field">
+          <span class="field__label">Kwota dopłaty / zwrotu</span>
+          <div class="field__value" [class.diff--positive]="rekalkDiff(k) > 0" [class.diff--negative]="rekalkDiff(k) < 0">
+            <mat-icon>{{ rekalkDiff(k) > 0 ? 'arrow_upward' : rekalkDiff(k) < 0 ? 'arrow_downward' : 'remove' }}</mat-icon>
+            {{ rekalkDiff(k) > 0 ? 'Dopłata: ' : rekalkDiff(k) < 0 ? 'Zwrot: ' : '—' }}
+            @if (rekalkDiff(k) !== 0) { <strong>{{ formatAmount(Math.abs(rekalkDiff(k))) }}</strong> }
+          </div>
+        </div>
+      </div>
+    }
+
+    <!-- Dane finansowe -->
+    <div class="section-title">Dane finansowe</div>
+    <div class="card card--amounts-detail">
+      <div class="fin-row">
+        <span>Kwota bazowa</span>
+        <span class="fw600">{{ formatAmount(k.baseAmount) }}</span>
+      </div>
+      <div class="fin-row">
+        <span>Naliczone odsetki</span>
+        <span class="fw600 color-interest">{{ formatAmount(k.interest) }}</span>
+      </div>
+      <div class="fin-divider"></div>
+      <div class="fin-row fin-row--total">
+        <span>Łączna kwota do zapłaty</span>
+        <strong class="color-primary">{{ formatAmount(total) }}</strong>
+      </div>
+      @if (k.finCurrency) {
+        <div class="fin-divider"></div>
+        <div class="fin-meta-grid">
+          <div class="field">
+            <span class="field__label">Waluta</span>
+            <div class="field__value field__value--badge">{{ k.finCurrency }}</div>
+          </div>
+          @if (k.finPaymentDeadline) {
+            <div class="field">
+              <span class="field__label">Termin płatności</span>
+              <div class="field__value">{{ k.finPaymentDeadline }}</div>
+            </div>
+          }
+          @if (k.finInterestDate) {
+            <div class="field">
+              <span class="field__label">Data naliczenia odsetek</span>
+              <div class="field__value">{{ k.finInterestDate }}</div>
+            </div>
+          }
+          @if (k.finInterestRate !== undefined) {
+            <div class="field">
+              <span class="field__label">Stopa odsetek</span>
+              <div class="field__value">{{ k.finInterestRate }}%</div>
+            </div>
+          }
+          @if (k.finDaysOverdue !== undefined) {
+            <div class="field">
+              <span class="field__label">Dni opóźnienia</span>
+              <div class="field__value" [class.color-warning]="(k.finDaysOverdue ?? 0) > 0">
+                {{ k.finDaysOverdue }}
+              </div>
+            </div>
+          }
+        </div>
+      }
+    </div>
+
+    <!-- Plan rat -->
+    @if (k.type === 'rata-odsetki' && k.installmentPlan?.length) {
+      <div class="section-title">Plan płatności rat</div>
+      <div class="card">
+        <table class="inst-view-table">
+          <thead>
+            <tr>
+              <th>Nr raty</th><th>Termin płatności</th><th>Kwota raty</th><th>Status</th><th>Data wpłaty</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (inst of k.installmentPlan!; track inst.number) {
+              <tr [class.row--paid]="inst.paid" [class.row--overdue]="!inst.paid && inst.dueDate < today">
+                <td class="inst-num">{{ inst.number }}</td>
+                <td>{{ inst.dueDate }}</td>
+                <td class="fw600">{{ formatAmount(inst.amount) }}</td>
+                <td>
+                  @if (inst.paid) {
+                    <span class="inst-badge inst-badge--paid"><mat-icon>check_circle</mat-icon>Opłacona</span>
+                  } @else if (inst.dueDate < today) {
+                    <span class="inst-badge inst-badge--overdue"><mat-icon>warning</mat-icon>Zaległa</span>
+                  } @else {
+                    <span class="inst-badge inst-badge--pending"><mat-icon>schedule</mat-icon>Oczekująca</span>
+                  }
+                </td>
+                <td class="text-muted">{{ inst.paidDate ?? '—' }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+
+  </div>
+</div>
+} @else {
+<div class="not-found">
+  <mat-icon>search_off</mat-icon>
+  <p>Kwitariusz nie został znaleziony.</p>
+  <a routerLink="/rozliczenia/kwitariusze">Wróć do listy</a>
+</div>
+}

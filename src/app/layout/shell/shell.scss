@@ -1,0 +1,32 @@
+.shell {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+
+  &__sidebar {
+    flex-shrink: 0;
+    width: 230px;
+    border-right: 1px solid var(--border);
+    overflow: hidden;
+    transition: width 0.25s cubic-bezier(.4, 0, .2, 1);
+  }
+
+  &--collapsed &__sidebar {
+    width: 64px;
+  }
+
+  &__body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    min-width: 0;
+  }
+
+  &__main {
+    flex: 1;
+    overflow-y: auto;
+    padding: 28px 32px;
+    background: var(--bg);
+  }
+}

@@ -1,0 +1,142 @@
+<div class="page">
+
+  <div class="page__title-wrap">
+    <h1 class="page__title">Zdjęcia do polis</h1>
+    <div class="page__title-accent"></div>
+  </div>
+
+  <!-- Filters -->
+  <div class="filters">
+    <!-- Product type chips -->
+    <button class="filter-product" [class.filter-product--active]="activeProductFilter === 'car'"
+            (click)="setProductFilter('car')">
+      <mat-icon>directions_car</mat-icon>
+      Pakiet Auto+
+    </button>
+    <button class="filter-product" [class.filter-product--active]="activeProductFilter === 'home'"
+            (click)="setProductFilter('home')">
+      <mat-icon>home</mat-icon>
+      Pakiet Dom
+    </button>
+    <button class="filter-product" [class.filter-product--active]="activeProductFilter === 'health'"
+            (click)="setProductFilter('health')">
+      <mat-icon>monitor_heart</mat-icon>
+      Zdrowie
+    </button>
+
+    <!-- Status dropdown chips -->
+    <button class="filter-dropdown" [class.filter-dropdown--active]="activeStatusFilter === 'do-blisko'"
+            (click)="setStatusFilter('do-blisko')">
+      <mat-icon class="filter-dropdown__indicator">radio_button_unchecked</mat-icon>
+      <span>Do blisko</span>
+    </button>
+
+    <button class="filter-dropdown" [class.filter-dropdown--active]="activeStatusFilter === 'w-werifikacja'"
+            (click)="setStatusFilter('w-werifikacja')">
+      <mat-icon class="filter-dropdown__indicator">radio_button_unchecked</mat-icon>
+      <span>W Weryfikacja</span>
+    </button>
+
+    <button class="filter-dropdown">
+      <mat-icon class="filter-dropdown__indicator">radio_button_unchecked</mat-icon>
+      <span>Ubezpieczony</span>
+      <mat-icon class="filter-dropdown__arrow">keyboard_arrow_down</mat-icon>
+    </button>
+
+    <button class="filter-search">
+      <mat-icon>search</mat-icon>
+    </button>
+
+    @if (activeStatusFilter || activeProductFilter) {
+      <button class="filter-reset" (click)="clearFilters()">
+        <mat-icon>refresh</mat-icon>
+        Zresetuj
+      </button>
+    }
+  </div>
+
+  <div class="results-count">Wyników: {{ service.resultCount() }}</div>
+
+  <!-- Table -->
+  <div class="table-wrap">
+    <table mat-table [dataSource]="dataSource" matSort class="data-table">
+
+      <ng-container matColumnDef="product">
+        <th mat-header-cell *matHeaderCellDef>Produkt</th>
+        <td mat-cell *matCellDef="let row">
+          <app-product-icon [productType]="row.productType" />
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="policyNumber">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Numer polisy</th>
+        <td mat-cell *matCellDef="let row">
+          <div class="cell-policy">
+            <span class="cell-policy__number">{{ row.policyNumber }}</span>
+            <mat-icon class="cell-copy">content_copy</mat-icon>
+          </div>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef>Status</th>
+        <td mat-cell *matCellDef="let row">
+          <app-status-badge [status]="row.status" />
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="branchNumber">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Numer wydziału</th>
+        <td mat-cell *matCellDef="let row">{{ row.branchNumber }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="insuredName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Ubezpieczony</th>
+        <td mat-cell *matCellDef="let row">
+          <div class="cell-insured">
+            <mat-icon class="cell-insured__icon">account_circle</mat-icon>
+            <span>{{ row.insuredName }}</span>
+          </div>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="expiryDate">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Data ważności</th>
+        <td mat-cell *matCellDef="let row">
+          <span class="cell-date">{{ row.expiryDate }}</span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>
+          <mat-icon class="header-grid-icon">grid_view</mat-icon>
+        </th>
+        <td mat-cell *matCellDef="let row">
+          <div class="cell-actions">
+            <button mat-icon-button [matMenuTriggerFor]="rowMenu" class="action-menu">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #rowMenu="matMenu" panelClass="kw-context-menu">
+              <button mat-menu-item class="kw-menu-item">
+                <span class="kw-menu-item__icon kw-menu-item__icon--view"><mat-icon>visibility</mat-icon></span>
+                <span>Podgląd</span>
+              </button>
+              <button mat-menu-item class="kw-menu-item">
+                <span class="kw-menu-item__icon kw-menu-item__icon--edit"><mat-icon>add_photo_alternate</mat-icon></span>
+                <span>Dodaj zdjęcia</span>
+              </button>
+              <div class="kw-menu-divider"></div>
+              <button mat-menu-item class="kw-menu-item kw-menu-item--danger">
+                <span class="kw-menu-item__icon kw-menu-item__icon--danger"><mat-icon>delete_outline</mat-icon></span>
+                <span>Usuń</span>
+              </button>
+            </mat-menu>
+          </div>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>
+</div>

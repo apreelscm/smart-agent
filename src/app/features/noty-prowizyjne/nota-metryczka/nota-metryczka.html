@@ -1,0 +1,90 @@
+@if (nota(); as n) {
+<div class="page">
+  <div class="page__header">
+    <div>
+      <a class="page__back" routerLink="/rozliczenia/noty-prowizyjne">
+        <mat-icon>arrow_back</mat-icon>Powrót do listy
+      </a>
+      <div class="page__title-wrap">
+        <h1 class="page__title">Metryczka noty {{ n.number }}</h1>
+        <div class="page__title-accent"></div>
+      </div>
+    </div>
+    <a class="btn-detail" [routerLink]="['/rozliczenia/noty-prowizyjne', n.id]">
+      <mat-icon>open_in_full</mat-icon>Widok szczegółowy
+    </a>
+  </div>
+
+  <div class="metryczka-layout">
+
+    <!-- Settings -->
+    <div class="card">
+      <div class="section-label">Wyznaczenie stawek (przypis, szkodowość)</div>
+      <div class="settings-list">
+        @for (s of n.rateSettings; track s) {
+          <span class="settings-item"><mat-icon>location_on</mat-icon>{{ s }}</span>
+        }
+      </div>
+    </div>
+
+    <!-- Categories -->
+    @for (cat of n.categories; track cat.name) {
+      <div class="card card--category">
+        <div class="cat-header">
+          <mat-icon class="cat-header__icon">{{ cat.name === 'dobrowolne' ? 'shield' : 'gavel' }}</mat-icon>
+          <strong>Ryzyka z kategorii: {{ cat.name }}</strong>
+        </div>
+
+        <div class="cat-rows">
+          <div class="cat-row">
+            <span class="cat-row__label">Szkody wypł. + zmiana stanu rezerw:</span>
+            <span class="cat-row__value" [class.cat-row__value--neg]="cat.damages < 0">
+              {{ service.formatAmount(cat.damages) }}
+            </span>
+          </div>
+          <div class="cat-row">
+            <span class="cat-row__label">Inkaso w okresie od 01.07.2024 do 30.06.2025:</span>
+            <span class="cat-row__value">{{ service.formatAmount(cat.inkasAmount) }}</span>
+          </div>
+          <div class="cat-row cat-row--highlight" [class.loss--high]="cat.lossRatio > cat.lossRatioThreshold" [class.loss--ok]="cat.lossRatio <= cat.lossRatioThreshold">
+            <span class="cat-row__label">Wskaźnik szkodowości prostej:</span>
+            <span class="cat-row__value">
+              {{ cat.lossRatio.toFixed(2) }}%,
+              {{ cat.lossRatio > cat.lossRatioThreshold ? 'większy' : 'nie większy' }} niż {{ cat.lossRatioThreshold.toFixed(2) }}%
+            </span>
+          </div>
+          <div class="cat-row">
+            <span class="cat-row__label">Procent prowizji:</span>
+            <span class="cat-row__value cat-row__value--pct">{{ cat.commissionRate.toFixed(2) }}%</span>
+          </div>
+          @if (cat.commissionBase > 0) {
+            <div class="cat-row">
+              <span class="cat-row__label">Inkaso w okresie:</span>
+              <span class="cat-row__value">{{ service.formatAmount(cat.commissionBase) }}</span>
+            </div>
+          }
+          <div class="cat-row cat-row--total">
+            <span class="cat-row__label">Prowizja należna ({{ cat.name }}):</span>
+            <span class="cat-row__value cat-row__value--commission">{{ service.formatAmount(cat.commissionAmount) }}</span>
+          </div>
+        </div>
+      </div>
+    }
+
+    <!-- Total -->
+    <div class="card card--total">
+      <div class="total-row">
+        <span class="total-row__label">Prowizja należna:</span>
+        <strong class="total-row__value">{{ service.formatAmount(n.totalCommission) }}</strong>
+      </div>
+    </div>
+
+  </div>
+</div>
+} @else {
+<div class="not-found">
+  <mat-icon>search_off</mat-icon>
+  <p>Nota nie została znaleziona.</p>
+  <a routerLink="/rozliczenia/noty-prowizyjne">Wróć do listy</a>
+</div>
+}

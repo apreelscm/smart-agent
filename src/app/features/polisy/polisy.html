@@ -1,0 +1,203 @@
+<div class="page">
+
+  <div class="page__title-wrap">
+    <h1 class="page__title">Polisy</h1>
+    <div class="page__title-accent"></div>
+  </div>
+
+  <!-- Filters -->
+  <div class="filters">
+    <button class="filter-quick" [class.filter-quick--active]="service.filterLast30()" (click)="toggleLast30()">
+      <mat-icon>schedule</mat-icon>Ostatnie 30 dni
+    </button>
+
+    <div class="filters__sep"></div>
+
+    <button class="filter-product" [class.filter-product--active]="fp === 'car'" (click)="setProduct('car')">
+      <mat-icon>directions_car</mat-icon>Pakiet Auto+
+    </button>
+    <button class="filter-product" [class.filter-product--active]="fp === 'home'" (click)="setProduct('home')">
+      <mat-icon>home</mat-icon>Pakiet Mieszkanie+
+    </button>
+    <button class="filter-product" [class.filter-product--active]="fp === 'health'" (click)="setProduct('health')">
+      <mat-icon>monitor_heart</mat-icon>Zdrowie
+    </button>
+    <button class="filter-product" [class.filter-product--active]="fp === 'other'" (click)="setProduct('other')">
+      <mat-icon>description</mat-icon>Inne
+    </button>
+
+    <div class="filters__sep"></div>
+
+    <!-- Status chips -->
+    <button class="filter-chip" [class.filter-chip--active]="fs === 'aktywna'" (click)="setStatus('aktywna')">
+      <mat-icon class="filter-chip__icon">check_circle_outline</mat-icon>Aktywna
+    </button>
+    <button class="filter-chip" [class.filter-chip--active]="fs === 'w-trakcie'" (click)="setStatus('w-trakcie')">
+      <mat-icon class="filter-chip__icon">timelapse</mat-icon>W trakcie
+    </button>
+    <button class="filter-chip" [class.filter-chip--active]="fs === 'wygasla'" (click)="setStatus('wygasla')">
+      <mat-icon class="filter-chip__icon">cancel</mat-icon>Wygasła
+    </button>
+
+    <div class="filters__sep"></div>
+
+    <!-- Expandable: numer polisy -->
+    <button class="filter-dropdown" [class.filter-dropdown--active]="!!fq || expandedFilter() === 'search'"
+            (click)="toggleFilter('search')">
+      <mat-icon class="filter-dropdown__icon">policy</mat-icon>
+      <span>{{ fq || 'Numer polisy / Klient' }}</span>
+      <mat-icon class="filter-dropdown__arrow">{{ expandedFilter() === 'search' ? 'expand_less' : 'keyboard_arrow_down' }}</mat-icon>
+    </button>
+
+    <button class="filter-search"><mat-icon>search</mat-icon></button>
+
+    @if (hasFilter) {
+      <button class="filter-reset" (click)="clearFilters()">
+        <mat-icon>refresh</mat-icon>Zresetuj
+      </button>
+    }
+  </div>
+
+  @if (expandedFilter() === 'search') {
+    <div class="filter-expand">
+      <mat-icon class="filter-expand__icon">policy</mat-icon>
+      <input class="filter-expand__input" placeholder="Wpisz numer polisy lub nazwisko klienta…" autofocus
+             [ngModel]="fq" (ngModelChange)="service.filterSearch.set($event)" />
+      @if (fq) {
+        <button class="filter-expand__clear" (click)="service.filterSearch.set('')">
+          <mat-icon>close</mat-icon>
+        </button>
+      }
+    </div>
+  }
+
+  <div class="results-count">Wyników: {{ service.resultCount() }}</div>
+
+  <!-- Table -->
+  <div class="table-wrap">
+    <table mat-table [dataSource]="dataSource" matSort class="data-table">
+
+      <!-- Produkt -->
+      <ng-container matColumnDef="product">
+        <th mat-header-cell *matHeaderCellDef>Produkt</th>
+        <td mat-cell *matCellDef="let row">
+          <app-product-icon [productType]="row.productType" />
+        </td>
+      </ng-container>
+
+      <!-- Numer polisy -->
+      <ng-container matColumnDef="policyNumber">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Numer polisy</th>
+        <td mat-cell *matCellDef="let row">
+          <div class="cell-policy">
+            <a class="cell-policy__number" [routerLink]="['/polisy', row.id]">{{ row.policyNumber }}</a>
+            <mat-icon class="cell-copy">content_copy</mat-icon>
+          </div>
+          <div class="cell-sub">{{ row.productLabel }}</div>
+        </td>
+      </ng-container>
+
+      <!-- Ubezpieczający / Ubezpieczony -->
+      <ng-container matColumnDef="insured">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Ubezpieczający</th>
+        <td mat-cell *matCellDef="let row">
+          <div class="cell-insured">
+            <mat-icon class="cell-insured__icon">account_circle</mat-icon>
+            <div>
+              <div>{{ row.insurantName }}</div>
+              @if (row.vehicleReg) {
+                <div class="cell-sub">{{ row.vehicleReg }}</div>
+              }
+              @if (row.address) {
+                <div class="cell-sub">{{ row.address }}</div>
+              }
+            </div>
+          </div>
+        </td>
+      </ng-container>
+
+      <!-- Daty -->
+      <ng-container matColumnDef="dates">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Okres ochrony</th>
+        <td mat-cell *matCellDef="let row">
+          <div class="cell-dates">
+            <span>{{ row.startDate }}</span>
+            <span class="cell-dates__sep">→</span>
+            <span>{{ row.endDate }}</span>
+          </div>
+        </td>
+      </ng-container>
+
+      <!-- Składka -->
+      <ng-container matColumnDef="premium">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Składka / Inkaso</th>
+        <td mat-cell *matCellDef="let row">
+          <div class="cell-amounts">
+            <span class="cell-amounts__premium">{{ service.formatAmount(row.premium) }}</span>
+            <span class="cell-amounts__inkaso">inkaso: {{ service.formatAmount(row.inkaso) }}</span>
+          </div>
+        </td>
+      </ng-container>
+
+      <!-- Status -->
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef>Status</th>
+        <td mat-cell *matCellDef="let row">
+          <span class="status-badge status-badge--{{ row.status }}">{{ statusLabel(row.status) }}</span>
+        </td>
+      </ng-container>
+
+      <!-- Agent -->
+      <ng-container matColumnDef="agent">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Agent</th>
+        <td mat-cell *matCellDef="let row">
+          <div class="cell-agent">{{ row.agentName }}</div>
+          <div class="cell-sub">{{ row.agentCode }}</div>
+        </td>
+      </ng-container>
+
+      <!-- Actions -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>
+          <mat-icon class="header-grid-icon">grid_view</mat-icon>
+        </th>
+        <td mat-cell *matCellDef="let row">
+          <div class="cell-actions">
+            <a mat-icon-button [routerLink]="['/polisy', row.id]" matTooltip="Szczegóły" class="action-btn">
+              <mat-icon>visibility</mat-icon>
+            </a>
+            <button mat-icon-button [matMenuTriggerFor]="rowMenu" class="action-menu">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #rowMenu="matMenu" panelClass="kw-context-menu">
+              <a mat-menu-item class="kw-menu-item" [routerLink]="['/polisy', row.id]">
+                <span class="kw-menu-item__icon kw-menu-item__icon--view"><mat-icon>visibility</mat-icon></span>
+                <span>Szczegóły polisy</span>
+              </a>
+              <button mat-menu-item class="kw-menu-item">
+                <span class="kw-menu-item__icon kw-menu-item__icon--edit"><mat-icon>edit</mat-icon></span>
+                <span>Edytuj</span>
+              </button>
+              <button mat-menu-item class="kw-menu-item">
+                <span class="kw-menu-item__icon kw-menu-item__icon--pdf"><mat-icon>picture_as_pdf</mat-icon></span>
+                <span>Pobierz PDF</span>
+              </button>
+              <button mat-menu-item class="kw-menu-item">
+                <span class="kw-menu-item__icon kw-menu-item__icon--copy"><mat-icon>autorenew</mat-icon></span>
+                <span>Wznów polisę</span>
+              </button>
+              <div class="kw-menu-divider"></div>
+              <button mat-menu-item class="kw-menu-item kw-menu-item--danger">
+                <span class="kw-menu-item__icon kw-menu-item__icon--danger"><mat-icon>cancel</mat-icon></span>
+                <span>Anuluj polisę</span>
+              </button>
+            </mat-menu>
+          </div>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>
+</div>

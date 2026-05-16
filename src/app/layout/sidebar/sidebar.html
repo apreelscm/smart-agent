@@ -1,0 +1,118 @@
+<nav class="sidebar" [class.sidebar--collapsed]="collapsed">
+
+  <!-- Logo area -->
+  <div class="sidebar__logo-area">
+    @if (!collapsed) {
+      <img src="logo2.svg" alt="InterRisk" class="logo__img" />
+    } @else {
+      <div class="logo__icon-clip">
+        <img src="logo2.svg" alt="InterRisk" class="logo__img logo__img--icon" />
+      </div>
+    }
+    <button class="sidebar__toggle" (click)="toggle()"
+            [matTooltip]="collapsed ? 'Rozwiń menu' : ''"
+            matTooltipPosition="right">
+      <mat-icon>{{ collapsed ? 'chevron_right' : 'chevron_left' }}</mat-icon>
+    </button>
+  </div>
+
+  <!-- SPRZEDAŻ section -->
+  <div class="nav-section">
+    @if (!collapsed) {
+      <span class="nav-section__label">SPRZEDAŻ</span>
+    }
+    <ul class="nav-list">
+      @for (item of agentService.sprzedazItems; track item.route) {
+        <li>
+          <!-- Item with children: toggle expand instead of navigate -->
+          @if (item.children?.length) {
+            <button class="nav-item nav-item--expandable"
+                    [class.nav-item--expanded]="isExpanded(item.route)"
+                    [matTooltip]="collapsed ? item.label : ''"
+                    matTooltipPosition="right"
+                    (click)="toggleExpand(item.route)">
+              <mat-icon class="nav-item__icon">{{ item.icon }}</mat-icon>
+              @if (!collapsed) {
+                <span class="nav-item__label">{{ item.label }}</span>
+                <mat-icon class="nav-item__chevron">
+                  {{ isExpanded(item.route) ? 'expand_less' : 'expand_more' }}
+                </mat-icon>
+              }
+            </button>
+
+            <!-- Submenu -->
+            @if (!collapsed && isExpanded(item.route)) {
+              <ul class="nav-submenu">
+                @for (child of item.children; track child.route) {
+                  <li>
+                    <a class="nav-subitem"
+                       [routerLink]="child.route"
+                       routerLinkActive="nav-subitem--active">
+                      @if (child.icon) {
+                        <mat-icon class="nav-subitem__icon">{{ child.icon }}</mat-icon>
+                      } @else {
+                        <span class="nav-subitem__dot"></span>
+                      }
+                      <span>{{ child.label }}</span>
+                    </a>
+                  </li>
+                }
+              </ul>
+            }
+          } @else {
+            <!-- Regular item -->
+            <a class="nav-item"
+               [routerLink]="item.route"
+               routerLinkActive="nav-item--active"
+               [routerLinkActiveOptions]="{exact: item.route === '/kokpit'}"
+               [matTooltip]="collapsed ? item.label : ''"
+               matTooltipPosition="right">
+              <mat-icon class="nav-item__icon">{{ item.icon }}</mat-icon>
+              @if (!collapsed) {
+                <span class="nav-item__label">{{ item.label }}</span>
+              }
+            </a>
+          }
+        </li>
+      }
+    </ul>
+  </div>
+
+  <!-- WKRÓTCE WŁĄCZYMY FUNKCJE section -->
+  <div class="nav-section">
+    @if (!collapsed) {
+      <span class="nav-section__label">WKRÓTCE WŁĄCZYMY FUNKCJE</span>
+    }
+    <ul class="nav-list">
+      @for (item of agentService.wkrotceItems; track item.route) {
+        <li>
+          <span class="nav-item nav-item--disabled"
+                [matTooltip]="collapsed ? item.label : 'Wkrótce dostępne'"
+                matTooltipPosition="right">
+            <mat-icon class="nav-item__icon">{{ item.icon }}</mat-icon>
+            @if (!collapsed) {
+              <span class="nav-item__label">{{ item.label }}</span>
+            }
+          </span>
+        </li>
+      }
+    </ul>
+  </div>
+
+  <!-- Info card -->
+  @if (!collapsed) {
+    <div class="sidebar__info-card">
+      <div class="info-card__icon">
+        <mat-icon>info_outline</mat-icon>
+      </div>
+      <div class="info-card__body">
+        <strong class="info-card__title">{{ agentService.currentAgent().packageName }}</strong>
+        <p class="info-card__text">
+          Dla mieszkań w zabudowie szeregowej rozszerzyliśmy zakres o odpowiedzialność
+          za części wspólne zgodnie z aktem notarialnym
+        </p>
+      </div>
+    </div>
+  }
+
+</nav>

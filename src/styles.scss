@@ -1,34 +1,120 @@
-// Custom Bootstrap theme: orange & blue
-$primary: #1565c0;
-$secondary: #f57c00;
-$info: #42a5f5;
-$warning: #ffa726;
+@use '@angular/material' as mat;
 
-@import 'bootstrap/scss/bootstrap';
+@include mat.core();
 
-body {
-  min-height: 100vh;
+$theme: mat.define-theme((
+  color: (
+    theme-type: light,
+    primary: mat.$azure-palette,
+  ),
+  typography: (
+    brand-family: 'Inter, sans-serif',
+    plain-family: 'Inter, sans-serif',
+  ),
+  density: (scale: 0),
+));
+
+:root {
+  @include mat.all-component-themes($theme);
+  --mat-menu-container-color: #ffffff;
 }
 
-/* Defensive styles: avoid accidental overflow: hidden on layout elements hiding children */
-.app-root,
-.container,
-.card,
-.card-body {
-  overflow: visible !important;
+:root {
+  --primary: #1a3c6e;
+  --primary-dark: #0d2b54;
+  --accent-red: #e53935;
+  --accent-green: #43a047;
+  --accent-blue: #1565c0;
+  --sidebar-width: 230px;
+  --header-height: 56px;
+  --bg: #f3f5f8;
+  --border: #e0e4ea;
+  --text-primary: #1a2332;
+  --text-secondary: #5a6577;
 }
 
-/* Utility wrapper (useful if component-level styles are ignored in CI):
-   Wrap the process table with <div class="processes-table-wrapper"> to enable horizontal scroll
-*/
-.processes-table-wrapper {
-  overflow-x: auto !important;
-  -webkit-overflow-scrolling: touch !important;
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  color: var(--text-primary);
+  background: var(--bg);
 }
 
-/* Ensure tables inside the wrapper have enough min-width so columns do not collapse */
-.processes-table-wrapper table {
-  min-width: 1400px !important;
-  table-layout: auto !important;
-  white-space: nowrap !important;
+* {
+  box-sizing: border-box;
+}
+
+.mat-mdc-card {
+  border-radius: 8px !important;
+}
+
+.mat-mdc-table {
+  background: white !important;
+}
+
+.mdc-data-table__row:hover {
+  background: #f0f4ff !important;
+}
+
+/* Kwitariusze context menu */
+.kw-context-menu .mat-mdc-menu-panel {
+  --mat-menu-container-color: #ffffff;
+  --mat-sys-surface-container: #ffffff;
+  border-radius: 6px !important;
+  box-shadow: 0 2px 8px rgba(32, 89, 167, .12) !important;
+  border: 1.5px solid #2059a7 !important;
+  min-width: 180px !important;
+  background-color: #ffffff !important;
+  overflow: hidden;
+}
+.kw-context-menu .mdc-menu-surface,
+.kw-context-menu .mat-mdc-menu-content {
+  background-color: #ffffff !important;
+}
+
+.kw-menu-item {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  font-size: 13px !important;
+  font-family: 'Inter', sans-serif !important;
+  padding: 8px 14px !important;
+  color: #3d4a5c !important;
+  min-height: 36px !important;
+
+  &:hover { background: #f5f7fa !important; }
+
+  &--danger {
+    color: #c62828 !important;
+    &:hover { background: #fdecea !important; }
+  }
+
+  &__icon {
+    display: inline-flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    mat-icon { font-size: 16px; width: 16px; height: 16px; }
+    &--view   { color: #2059a7; }
+    &--edit   { color: #2059a7; }
+    &--pdf    { color: #2059a7; }
+    &--copy   { color: #2059a7; }
+    &--danger { color: #c62828; }
+  }
+}
+
+.kw-menu-divider {
+  height: 1px; background: #edf0f4; margin: 3px 0;
+}
+
+/* Gradient icons on dashboard quick-action active cards.
+   Global rule bypasses Angular ViewEncapsulation so it applies
+   reliably to every mat-icon regardless of which icon glyph is used. */
+.qa-card__circle--active mat-icon {
+  display: inline-block;
+  background: conic-gradient(from 270deg, #ff2e17 0%, #0155ae 50%, #ff2e17 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
 }

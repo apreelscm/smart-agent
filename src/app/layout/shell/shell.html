@@ -1,0 +1,11 @@
+<div class="shell" [class.shell--collapsed]="layoutService.sidebarCollapsed()">
+  <div class="shell__sidebar">
+    <app-sidebar />
+  </div>
+  <div class="shell__body">
+    <app-header />
+    <main class="shell__main">
+      <router-outlet />
+    </main>
+  </div>
+</div>

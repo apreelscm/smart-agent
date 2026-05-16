@@ -1,0 +1,142 @@
+<div class="page">
+  <div class="page__header">
+    <div>
+      <a class="page__back" routerLink="/rozliczenia/wykazy">
+        <mat-icon>arrow_back</mat-icon>Powrót do listy
+      </a>
+      <div class="page__title-wrap">
+        <h1 class="page__title">Nowy wykaz</h1>
+        <div class="page__title-accent"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-layout">
+
+    <!-- Krok 1: Wybór pośredników -->
+    <div class="card">
+      <div class="card__step">1</div>
+      <h2 class="card__title">Wybierz pośredników</h2>
+      <p class="card__subtitle">Wykaz obejmie wszystkie polisy/aneksy/kwitariusze od ostatniego wykazu, dla których pośrednik przyjął płatność gotówkową.</p>
+      <div class="agents-grid">
+        @for (agent of agents; track agent.number) {
+          <button class="agent-card" [class.agent-card--selected]="selectedAgents().includes(agent.number)"
+                  (click)="toggleAgent(agent.number)">
+            <mat-icon class="agent-card__icon">account_circle</mat-icon>
+            <div>
+              <div class="agent-card__name">{{ agent.name }}</div>
+              <div class="agent-card__code">{{ agent.number }}</div>
+            </div>
+            @if (selectedAgents().includes(agent.number)) {
+              <mat-icon class="agent-card__check">check_circle</mat-icon>
+            }
+          </button>
+        }
+      </div>
+    </div>
+
+    <!-- Krok 2: Pozycje wykazu -->
+    <div class="card" [class.card--disabled]="selectedAgents().length === 0">
+      <div class="card__step">2</div>
+      <div class="items-header">
+        <h2 class="card__title" style="margin:0">Pozycje wykazu ({{ items().length }})</h2>
+        <div class="items-header-actions">
+          <button class="btn-import" (click)="showAddForm.update(v => v === 'csv' ? null : 'csv')">
+            <mat-icon>upload_file</mat-icon>Import CSV
+          </button>
+          <button class="btn-add-item" (click)="showAddForm.update(v => v === 'policy' ? null : 'policy')">
+            <mat-icon>add</mat-icon>Dodaj pozycję
+          </button>
+        </div>
+      </div>
+
+      <!-- Import CSV panel -->
+      @if (showAddForm() === 'csv') {
+        <div class="csv-panel">
+          <mat-icon>upload_file</mat-icon>
+          <div class="csv-panel__text">
+            <strong>Import z pliku CSV</strong>
+            <span>Przeciągnij plik lub kliknij aby wybrać. Kolumny: typ, numer, ubezpieczający, kwota, inkaso, data.</span>
+          </div>
+          <button class="btn-outline-sm">Wybierz plik…</button>
+        </div>
+      }
+
+      <!-- Add item form -->
+      @if (showAddForm() === 'policy') {
+        <div class="add-form">
+          @if (addError()) { <div class="add-error"><mat-icon>error_outline</mat-icon>{{ addError() }}</div> }
+          <div class="add-form__fields">
+            <div class="input-group">
+              <label class="input-label">Typ dokumentu</label>
+              <select class="input input--select" [ngModel]="newItemType()" (ngModelChange)="newItemType.set($event)">
+                @for (dt of docTypes; track dt) { <option [value]="dt">{{ dt }}</option> }
+              </select>
+            </div>
+            <div class="input-group">
+              <label class="input-label">Numer dokumentu *</label>
+              <input class="input" placeholder="np. KM-I/P0123456" [ngModel]="newItemNum()" (ngModelChange)="newItemNum.set($event)" />
+            </div>
+            <div class="input-group">
+              <label class="input-label">Ubezpieczający</label>
+              <input class="input" placeholder="Imię i nazwisko" [ngModel]="newItemName()" (ngModelChange)="newItemName.set($event)" />
+            </div>
+            <div class="input-group">
+              <label class="input-label">Kwota (zł)</label>
+              <input class="input" type="number" min="0" [ngModel]="newItemAmt()" (ngModelChange)="newItemAmt.set(+$event)" />
+            </div>
+          </div>
+          <div class="add-form__actions">
+            <button class="btn-outline-sm" (click)="showAddForm.set(null)">Anuluj</button>
+            <button class="btn-primary-sm" (click)="addItem()">
+              <mat-icon>add</mat-icon>Dodaj do wykazu
+            </button>
+          </div>
+        </div>
+      }
+
+      <!-- Items table -->
+      <div class="items-table">
+        <div class="items-table__header">
+          <span>Typ</span><span>Numer</span><span>Ubezpieczający</span>
+          <span>Kwota</span><span>Inkaso</span><span>Data</span><span></span>
+        </div>
+        @for (item of items(); track item.id) {
+          <div class="items-table__row" [class.items-table__row--custom]="item.isCustom">
+            <span class="type-label type-label--{{ item.type }}">{{ item.type }}</span>
+            <span class="cell-link">{{ item.number }}</span>
+            <span>{{ item.insuredName }}</span>
+            <span class="fw600">{{ service.formatAmount(item.amount) }}</span>
+            <span>{{ service.formatAmount(item.inkasAmount) }}</span>
+            <span class="text-muted">{{ item.date }}</span>
+            <span class="row-actions">
+              <button class="item-pdf-btn" matTooltip="Pobierz PDF"><mat-icon>picture_as_pdf</mat-icon></button>
+              <button class="item-del-btn" matTooltip="Usuń z wykazu" (click)="removeItem(item.id)"><mat-icon>delete_outline</mat-icon></button>
+            </span>
+          </div>
+        }
+        @if (items().length === 0) {
+          <div class="items-empty">Brak pozycji. Dodaj polisy, kwitariusze lub importuj z pliku CSV.</div>
+        }
+      </div>
+
+      <!-- Summary -->
+      <div class="summary-row">
+        <span>Łączna kwota przypisu:</span>
+        <strong>{{ service.formatAmount(totalAmount) }}</strong>
+        <span class="summary-sep">·</span>
+        <span>Wartość inkaso:</span>
+        <strong class="summary-inkaso">{{ service.formatAmount(totalInkas) }}</strong>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="form-actions">
+      <a class="btn-cancel" routerLink="/rozliczenia/wykazy">Anuluj</a>
+      <button class="btn-submit" [disabled]="selectedAgents().length === 0 || items().length === 0" (click)="submit()">
+        <mat-icon>task_alt</mat-icon>Generuj wykaz
+      </button>
+    </div>
+
+  </div>
+</div>

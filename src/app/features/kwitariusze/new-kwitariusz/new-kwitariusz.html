@@ -1,0 +1,343 @@
+<div class="page">
+
+  <!-- Header -->
+  <div class="page__header">
+    <div>
+      <div class="page__title-wrap">
+        <h1 class="page__title">Nowy kwitariusz</h1>
+        <div class="page__title-accent"></div>
+      </div>
+      <a class="page__back" routerLink="/rozliczenia/kwitariusze">
+        <mat-icon>arrow_back</mat-icon>
+        Powrót do listy
+      </a>
+    </div>
+  </div>
+
+  <div class="form-layout">
+
+    <!-- KROK 1: Typ kwitariusza -->
+    <div class="card">
+      <div class="card__step">1</div>
+      <h2 class="card__title">Wybierz typ kwitariusza</h2>
+
+      <div class="type-grid">
+        <button class="type-card" [class.type-card--selected]="selectedType() === 'rata-odsetki'"
+                (click)="selectType('rata-odsetki')">
+          <mat-icon class="type-card__icon">receipt</mat-icon>
+          <span class="type-card__label">Rata składki + odsetki</span>
+          <span class="type-card__desc">Kwitariusz dla raty składki ubezpieczeniowej wraz z naliczonymi odsetkami za zwłokę</span>
+          @if (selectedType() === 'rata-odsetki') {
+            <mat-icon class="type-card__check">check_circle</mat-icon>
+          }
+        </button>
+
+        <button class="type-card" [class.type-card--selected]="selectedType() === 'rekalkulacja-odsetki'"
+                (click)="selectType('rekalkulacja-odsetki')">
+          <mat-icon class="type-card__icon">calculate</mat-icon>
+          <span class="type-card__label">Rekalkulacja + odsetki</span>
+          <span class="type-card__desc">Kwitariusz dla rekalkulowanej składki wraz z naliczonymi odsetkami za zwłokę</span>
+          @if (selectedType() === 'rekalkulacja-odsetki') {
+            <mat-icon class="type-card__check">check_circle</mat-icon>
+          }
+        </button>
+      </div>
+    </div>
+
+    <!-- KROK 2: Wyszukiwanie polisy -->
+    <div class="card" [class.card--disabled]="!selectedType()">
+      <div class="card__step">2</div>
+      <h2 class="card__title">Wyszukaj polisę</h2>
+      <p class="card__subtitle">Podaj serię i numer polisy, aby powiązać kwitariusz. Możesz kontynuować bez polisy.</p>
+
+      <div class="search-row">
+        <div class="input-group">
+          <label class="input-label">Seria polisy</label>
+          <input class="input" placeholder="np. KM-I"
+                 [ngModel]="policySeries()"
+                 (ngModelChange)="policySeries.set($event)"
+                 [disabled]="!selectedType()" />
+        </div>
+        <div class="input-group">
+          <label class="input-label">Numer polisy</label>
+          <input class="input" placeholder="np. P0647405"
+                 [ngModel]="policyNumber()"
+                 (ngModelChange)="policyNumber.set($event)"
+                 [disabled]="!selectedType()" />
+        </div>
+        <button class="btn-search" (click)="searchPolicy()" [disabled]="!selectedType() || !policySeries() || !policyNumber()">
+          <mat-icon>search</mat-icon>
+          Szukaj
+        </button>
+        <button class="btn-secondary" (click)="searchDone.set(true)" [disabled]="!selectedType()">
+          Kontynuuj bez polisy
+        </button>
+      </div>
+
+      <!-- Policy found -->
+      @if (searchDone() && foundPolicy()) {
+        <div class="policy-result">
+          <mat-icon class="policy-result__icon">verified</mat-icon>
+          <div>
+            <div class="policy-result__name">{{ foundPolicy()!.insuredName }}</div>
+            <div class="policy-result__number">{{ policySeries() }}/{{ policyNumber() }}</div>
+          </div>
+        </div>
+      }
+
+      <!-- Policy not found -->
+      @if (searchDone() && policyNotFound()) {
+        <div class="alert alert--info">
+          <mat-icon>info_outline</mat-icon>
+          <span>Polisa nie została odnaleziona. Możesz kontynuować rejestrację kwitariusza bez powiązania z polisą.</span>
+        </div>
+      }
+
+      <!-- Status warnings -->
+      @if (warning()) {
+        <div class="alert" [class.alert--warning]="warning()!.type === 'warning'"
+             [class.alert--error]="warning()!.type === 'error'">
+          <mat-icon>{{ warning()!.type === 'error' ? 'cancel' : 'warning_amber' }}</mat-icon>
+          <span>{{ warning()!.message }}</span>
+        </div>
+      }
+    </div>
+
+    <!-- KROK 3: Dane płatnika -->
+    <div class="card" [class.card--disabled]="!searchDone() || isBlocked()">
+      <div class="card__step">3</div>
+      <h2 class="card__title">Dane płatnika</h2>
+      <p class="card__subtitle">Dane zostaną uzupełnione automatycznie po odnalezieniu polisy. Możesz je edytować ręcznie.</p>
+
+      <div class="payer-grid">
+        <div class="input-group input-group--wide">
+          <label class="input-label">Ubezpieczający *</label>
+          <input class="input" placeholder="Imię i nazwisko / Nazwa firmy"
+                 [ngModel]="payerName()" (ngModelChange)="payerName.set($event)"
+                 [disabled]="!searchDone() || isBlocked()" />
+        </div>
+        <div class="input-group">
+          <label class="input-label">PESEL / NIP</label>
+          <input class="input" placeholder="np. 80010112345"
+                 [ngModel]="payerPeselNip()" (ngModelChange)="payerPeselNip.set($event)"
+                 [disabled]="!searchDone() || isBlocked()" />
+        </div>
+        <div class="input-group">
+          <label class="input-label">Typ klienta</label>
+          <select class="input input--select"
+                  [ngModel]="payerClientType()" (ngModelChange)="payerClientType.set($event)"
+                  [disabled]="!searchDone() || isBlocked()">
+            @for (ct of clientTypes; track ct.value) {
+              <option [value]="ct.value">{{ ct.label }}</option>
+            }
+          </select>
+        </div>
+        <div class="input-group input-group--wide">
+          <label class="input-label">Adres</label>
+          <input class="input" placeholder="ul. Przykładowa 1, 00-001 Warszawa"
+                 [ngModel]="payerAddress()" (ngModelChange)="payerAddress.set($event)"
+                 [disabled]="!searchDone() || isBlocked()" />
+        </div>
+        <div class="input-group">
+          <label class="input-label">Email</label>
+          <input class="input" type="email" placeholder="adres@email.pl"
+                 [ngModel]="payerEmail()" (ngModelChange)="payerEmail.set($event)"
+                 [disabled]="!searchDone() || isBlocked()" />
+        </div>
+        <div class="input-group">
+          <label class="input-label">Telefon</label>
+          <input class="input" type="tel" placeholder="600 000 000"
+                 [ngModel]="payerPhone()" (ngModelChange)="payerPhone.set($event)"
+                 [disabled]="!searchDone() || isBlocked()" />
+        </div>
+      </div>
+    </div>
+
+    <!-- KROK 4: Dane finansowe -->
+    <div class="card" [class.card--disabled]="!searchDone() || isBlocked()">
+      <div class="card__step">4</div>
+      <h2 class="card__title">Dane finansowe</h2>
+
+      <!-- Sekcja rekalkulacji (tylko dla Rekalkulacja + odsetki) -->
+      @if (selectedType() === 'rekalkulacja-odsetki') {
+        <div class="rekalk-section">
+          <div class="rekalk-section__title">
+            <mat-icon>sync_alt</mat-icon>
+            Szczegóły rekalkulacji
+          </div>
+          <div class="rekalk-grid">
+            <div class="input-group input-group--wide">
+              <label class="input-label">Przyczyna rekalkulacji *</label>
+              <select class="input input--select"
+                      [ngModel]="rekalkReason()" (ngModelChange)="rekalkReason.set($event)"
+                      [disabled]="!searchDone() || isBlocked()">
+                <option value="">— Wybierz przyczynę —</option>
+                @for (r of rekalkReasons; track r) {
+                  <option [value]="r">{{ r }}</option>
+                }
+              </select>
+            </div>
+            <div class="input-group">
+              <label class="input-label">Data rekalkulacji</label>
+              <input class="input" type="date"
+                     [ngModel]="rekalkDate()" (ngModelChange)="rekalkDate.set($event)"
+                     [disabled]="!searchDone() || isBlocked()" />
+            </div>
+            <div class="input-group">
+              <label class="input-label">Kwota przed rekalkulacją (zł)</label>
+              <input class="input" type="number" min="0" placeholder="0,00"
+                     [ngModel]="rekalkAmountBefore()" (ngModelChange)="rekalkAmountBefore.set(+$event)"
+                     [disabled]="!searchDone() || isBlocked()" />
+            </div>
+            <div class="input-group">
+              <label class="input-label">Kwota po rekalkulacji (zł)</label>
+              <input class="input" type="number" min="0" placeholder="0,00"
+                     [ngModel]="rekalkAmountAfter()" (ngModelChange)="rekalkAmountAfter.set(+$event)"
+                     [disabled]="!searchDone() || isBlocked()" />
+            </div>
+            <div class="input-group">
+              <label class="input-label">Kwota dopłaty / zwrotu</label>
+              <div class="input-diff"
+                   [class.input-diff--positive]="rekalkDiff() > 0"
+                   [class.input-diff--negative]="rekalkDiff() < 0">
+                <mat-icon>{{ rekalkDiff() > 0 ? 'arrow_upward' : rekalkDiff() < 0 ? 'arrow_downward' : 'remove' }}</mat-icon>
+                <span>{{ rekalkDiff() > 0 ? 'Dopłata: ' : rekalkDiff() < 0 ? 'Zwrot: ' : '—' }}</span>
+                @if (rekalkDiff() !== 0) {
+                  <strong>{{ formatAmount(rekalkDiff() < 0 ? -rekalkDiff() : rekalkDiff()) }}</strong>
+                }
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+
+      <!-- Plan płatności rat -->
+      @if (showInstallmentPlan()) {
+        <div class="installment-plan">
+          <div class="installment-plan__header">
+            <mat-icon>event_repeat</mat-icon>
+            <strong>Plan płatności rat</strong>
+            <span class="installment-plan__badge">{{ installmentPlan().length }} rat</span>
+          </div>
+          <p class="installment-hint">
+            <mat-icon>touch_app</mat-icon>
+            Kliknij nieopłaconą ratę aby automatycznie wypełnić kalkulator odsetek.
+          </p>
+          <table class="installment-table">
+            <thead>
+              <tr>
+                <th></th>
+                <th>Nr raty</th>
+                <th>Termin płatności</th>
+                <th>Kwota raty</th>
+                <th>Status</th>
+                <th>Data wpłaty</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (inst of installmentPlan(); track inst.number) {
+                <tr [class.installment-table__row--paid]="inst.paid"
+                    [class.installment-table__row--overdue]="!inst.paid && inst.dueDate < today"
+                    [class.installment-table__row--selected]="selectedInstallmentNumber() === inst.number"
+                    [class.installment-table__row--clickable]="!inst.paid"
+                    (click)="selectInstallment(inst)">
+                  <td class="inst-select-col">
+                    @if (!inst.paid) {
+                      <mat-icon class="inst-select-icon"
+                                [class.inst-select-icon--active]="selectedInstallmentNumber() === inst.number">
+                        {{ selectedInstallmentNumber() === inst.number ? 'radio_button_checked' : 'radio_button_unchecked' }}
+                      </mat-icon>
+                    }
+                  </td>
+                  <td class="inst-number">{{ inst.number }}</td>
+                  <td>{{ inst.dueDate }}</td>
+                  <td class="inst-amount">{{ formatAmount(inst.amount) }}</td>
+                  <td>
+                    @if (inst.paid) {
+                      <span class="inst-badge inst-badge--paid">
+                        <mat-icon>check_circle</mat-icon>Opłacona
+                      </span>
+                    } @else if (inst.dueDate < today) {
+                      <span class="inst-badge inst-badge--overdue">
+                        <mat-icon>warning</mat-icon>Zaległa
+                      </span>
+                    } @else {
+                      <span class="inst-badge inst-badge--pending">
+                        <mat-icon>schedule</mat-icon>Oczekująca
+                      </span>
+                    }
+                  </td>
+                  <td class="inst-paid-date">{{ inst.paidDate ?? '—' }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+
+    </div>
+
+    <!-- KROK 5: Kalkulator odsetek -->
+    <div class="card" [class.card--disabled]="!searchDone() || isBlocked()">
+      <div class="card__step">5</div>
+      <h2 class="card__title">Kalkulator odsetek</h2>
+
+      <div class="amounts-grid">
+        <div class="input-group">
+          <label class="input-label">Kwota bazowa (zł)</label>
+          <input class="input" type="number" min="0" placeholder="0,00"
+                 [ngModel]="baseAmount()"
+                 (ngModelChange)="baseAmount.set(+$event)"
+                 [disabled]="!searchDone() || isBlocked()" />
+        </div>
+        <div class="input-group">
+          <label class="input-label">Dni opóźnienia</label>
+          <input class="input" type="number" min="0" placeholder="0"
+                 [ngModel]="daysOverdue()"
+                 (ngModelChange)="daysOverdue.set(+$event)"
+                 [disabled]="!searchDone() || isBlocked()" />
+        </div>
+        <div class="input-group">
+          <label class="input-label">Stopa odsetek (%)</label>
+          <input class="input" type="number" min="0"
+                 [ngModel]="interestRate()"
+                 (ngModelChange)="interestRate.set(+$event)"
+                 [disabled]="!searchDone() || isBlocked()" />
+        </div>
+      </div>
+
+      <button class="btn-calc" (click)="calcInterest()"
+              [disabled]="!searchDone() || isBlocked() || baseAmount() <= 0">
+        <mat-icon>percent</mat-icon>
+        Nalicz odsetki
+      </button>
+
+      @if (interestCalculated()) {
+        <div class="calc-result">
+          <div class="calc-result__row">
+            <span class="calc-result__label">Kwota bazowa:</span>
+            <span class="calc-result__value">{{ formatAmount(baseAmount()) }}</span>
+          </div>
+          <div class="calc-result__row">
+            <span class="calc-result__label">Naliczone odsetki:</span>
+            <span class="calc-result__value calc-result__value--interest">{{ formatAmount(calculatedInterest()) }}</span>
+          </div>
+          <div class="calc-result__row calc-result__row--total">
+            <span class="calc-result__label">Łączna kwota do zapłaty:</span>
+            <span class="calc-result__value calc-result__value--total">{{ formatAmount(totalAmount()) }}</span>
+          </div>
+        </div>
+      }
+    </div>
+
+    <!-- Akcje -->
+    <div class="form-actions">
+      <a class="btn-secondary" routerLink="/rozliczenia/kwitariusze">Anuluj</a>
+      <button class="btn-submit" [disabled]="!canSubmit()" (click)="submit()">
+        <mat-icon>task_alt</mat-icon>
+        Wystaw kwitariusz
+      </button>
+    </div>
+
+  </div>
+</div>

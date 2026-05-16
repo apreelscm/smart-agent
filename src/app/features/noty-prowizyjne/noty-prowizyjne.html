@@ -1,0 +1,229 @@
+<div class="page">
+
+  <div class="page__header">
+    <div>
+      <div class="page__title-wrap">
+        <h1 class="page__title">Noty prowizyjne</h1>
+        <div class="page__title-accent"></div>
+      </div>
+    </div>
+    <div class="page__header-actions">
+      <button class="btn-toggle" [class.btn-toggle--active]="f.showCommission" (click)="toggleShowCommission()">
+        <mat-icon>{{ f.showCommission ? 'visibility' : 'visibility_off' }}</mat-icon>
+        {{ f.showCommission ? 'Ukryj prowizję' : 'Pokaż prowizję' }}
+      </button>
+      <button class="btn-outline-action">
+        <mat-icon>download</mat-icon>Eksportuj CSV
+      </button>
+    </div>
+  </div>
+
+  <!-- Filters -->
+  <div class="filters">
+    <button class="filter-quick" [class.filter-quick--active]="f.last30Days" (click)="toggleLast30()">
+      <mat-icon>schedule</mat-icon>Ostatnie 30 dni
+    </button>
+
+    <div class="filters__sep"></div>
+
+    <button class="filter-chip" [class.filter-chip--active]="f.type === 'podstawowa'"
+            (click)="setFilter('type', f.type === 'podstawowa' ? '' : 'podstawowa')">
+      <mat-icon class="filter-chip__icon">receipt_long</mat-icon>Podstawowa
+    </button>
+    <button class="filter-chip" [class.filter-chip--active]="f.type === 'dodatkowa'"
+            (click)="setFilter('type', f.type === 'dodatkowa' ? '' : 'dodatkowa')">
+      <mat-icon class="filter-chip__icon">add_circle_outline</mat-icon>Dodatkowa
+    </button>
+
+    <div class="filters__sep"></div>
+
+    <button class="filter-dropdown" [class.filter-dropdown--active]="!!f.notaNumber || expandedFilter() === 'nota'"
+            (click)="toggleFilter('nota')">
+      <mat-icon class="filter-dropdown__icon">tag</mat-icon>
+      <span>{{ f.notaNumber || 'Numer noty' }}</span>
+      <mat-icon class="filter-dropdown__arrow">{{ expandedFilter() === 'nota' ? 'expand_less' : 'keyboard_arrow_down' }}</mat-icon>
+    </button>
+
+    <button class="filter-dropdown" [class.filter-dropdown--active]="!!f.agencyOwner || expandedFilter() === 'agencja'"
+            (click)="toggleFilter('agencja')">
+      <mat-icon class="filter-dropdown__icon">business</mat-icon>
+      <span>{{ f.agencyOwner || 'Właściciel agencji' }}</span>
+      <mat-icon class="filter-dropdown__arrow">{{ expandedFilter() === 'agencja' ? 'expand_less' : 'keyboard_arrow_down' }}</mat-icon>
+    </button>
+
+    <button class="filter-dropdown" [class.filter-dropdown--active]="!!f.policyNumber || expandedFilter() === 'polisa'"
+            (click)="toggleFilter('polisa')">
+      <mat-icon class="filter-dropdown__icon">policy</mat-icon>
+      <span>{{ f.policyNumber || 'Seria/numer polisy' }}</span>
+      <mat-icon class="filter-dropdown__arrow">{{ expandedFilter() === 'polisa' ? 'expand_less' : 'keyboard_arrow_down' }}</mat-icon>
+    </button>
+
+    <button class="filter-advanced-toggle" (click)="showAdvanced.update(v => !v)">
+      <mat-icon>tune</mat-icon>Więcej filtrów
+      <mat-icon>{{ showAdvanced() ? 'expand_less' : 'expand_more' }}</mat-icon>
+    </button>
+
+    <button class="filter-search"><mat-icon>search</mat-icon></button>
+
+    @if (hasFilter) {
+      <button class="filter-reset" (click)="clearFilters()">
+        <mat-icon>refresh</mat-icon>Zresetuj
+      </button>
+    }
+  </div>
+
+  <!-- Expanded inputs -->
+  @if (expandedFilter() === 'nota') {
+    <div class="filter-expand">
+      <mat-icon class="filter-expand__icon">tag</mat-icon>
+      <input class="filter-expand__input" placeholder="Wpisz numer noty…" autofocus [ngModel]="f.notaNumber" (ngModelChange)="setFilter('notaNumber', $event)" />
+      @if (f.notaNumber) { <button class="filter-expand__clear" (click)="setFilter('notaNumber', '')"><mat-icon>close</mat-icon></button> }
+    </div>
+  }
+  @if (expandedFilter() === 'agencja') {
+    <div class="filter-expand">
+      <mat-icon class="filter-expand__icon">business</mat-icon>
+      <input class="filter-expand__input" placeholder="Właściciel agencji…" autofocus [ngModel]="f.agencyOwner" (ngModelChange)="setFilter('agencyOwner', $event)" />
+      @if (f.agencyOwner) { <button class="filter-expand__clear" (click)="setFilter('agencyOwner', '')"><mat-icon>close</mat-icon></button> }
+    </div>
+  }
+  @if (expandedFilter() === 'polisa') {
+    <div class="filter-expand">
+      <mat-icon class="filter-expand__icon">policy</mat-icon>
+      <input class="filter-expand__input" placeholder="Seria lub numer polisy…" autofocus [ngModel]="f.policyNumber" (ngModelChange)="setFilter('policyNumber', $event)" />
+      @if (f.policyNumber) { <button class="filter-expand__clear" (click)="setFilter('policyNumber', '')"><mat-icon>close</mat-icon></button> }
+    </div>
+  }
+
+  <!-- Advanced -->
+  @if (showAdvanced()) {
+    <div class="advanced-filters">
+      <div class="adv-group">
+        <label class="adv-label">Kwota od (zł)</label>
+        <input class="adv-input" type="number" placeholder="0" [ngModel]="f.amountFrom" (ngModelChange)="setFilter('amountFrom', $event)" />
+      </div>
+      <div class="adv-group">
+        <label class="adv-label">Kwota do (zł)</label>
+        <input class="adv-input" type="number" [ngModel]="f.amountTo" (ngModelChange)="setFilter('amountTo', $event)" />
+      </div>
+      <div class="adv-group">
+        <label class="adv-label">Data wystawienia od</label>
+        <input class="adv-input" type="date" [ngModel]="f.dateFrom" (ngModelChange)="setFilter('dateFrom', $event)" />
+      </div>
+      <div class="adv-group">
+        <label class="adv-label">Data wystawienia do</label>
+        <input class="adv-input" type="date" [ngModel]="f.dateTo" (ngModelChange)="setFilter('dateTo', $event)" />
+      </div>
+    </div>
+  }
+
+  <div class="results-count">Wyników: {{ service.resultCount() }}</div>
+
+  <div class="table-wrap">
+    <table mat-table [dataSource]="dataSource" matSort class="data-table">
+
+      <ng-container matColumnDef="number">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Numer noty</th>
+        <td mat-cell *matCellDef="let row">
+          <div class="cell-link">
+            <span>{{ row.number }}</span>
+            <mat-icon class="cell-copy">content_copy</mat-icon>
+          </div>
+          <div class="cell-branches">{{ row.branchCodes.join(' · ') }}</div>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="agent">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Agent / Agencja</th>
+        <td mat-cell *matCellDef="let row">
+          <div class="cell-agent">
+            <mat-icon class="cell-agent__icon">account_circle</mat-icon>
+            <div>
+              <div class="cell-agent__name">{{ row.agentName }}</div>
+              <div class="cell-agent__code">{{ row.agentNumber }} · {{ row.agencyOwner }}</div>
+            </div>
+          </div>
+          @if (row.isDebtor) { <span class="debtor-badge" matTooltip="Pośrednik ma status dłużnika"><mat-icon>warning</mat-icon>Dłużnik</span> }
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="issueDate">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Data wystawienia</th>
+        <td mat-cell *matCellDef="let row">{{ row.issueDate }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="type">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Typ</th>
+        <td mat-cell *matCellDef="let row">
+          <span class="type-badge" [class.type-badge--dodatkowa]="row.type === 'dodatkowa'">
+            <mat-icon>{{ row.type === 'podstawowa' ? 'receipt_long' : 'add_circle_outline' }}</mat-icon>
+            {{ typeLabel(row.type) }}
+          </span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+        <td mat-cell *matCellDef="let row">
+          <span class="status-badge status-badge--{{ row.status }}">{{ statusLabel(row.status) }}</span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="commission">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Prowizja do wypłaty</th>
+        <td mat-cell *matCellDef="let row">
+          <span class="commission-value" [class.commission-value--zero]="row.totalCommission === 0">
+            {{ service.formatAmount(row.totalCommission) }}
+          </span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>
+          <mat-icon class="header-grid-icon">grid_view</mat-icon>
+        </th>
+        <td mat-cell *matCellDef="let row">
+          <div class="cell-actions">
+            <a mat-icon-button [routerLink]="['/rozliczenia/noty-prowizyjne', row.id, 'metryczka']"
+               matTooltip="Metryczka" class="action-btn">
+              <mat-icon>info_outline</mat-icon>
+            </a>
+            <a mat-icon-button [routerLink]="['/rozliczenia/noty-prowizyjne', row.id]"
+               matTooltip="Widok szczegółowy" class="action-btn">
+              <mat-icon>visibility</mat-icon>
+            </a>
+            <button mat-icon-button [matMenuTriggerFor]="rowMenu" class="action-menu">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #rowMenu="matMenu" panelClass="kw-context-menu">
+              <a mat-menu-item class="kw-menu-item" [routerLink]="['/rozliczenia/noty-prowizyjne', row.id, 'metryczka']">
+                <span class="kw-menu-item__icon kw-menu-item__icon--view"><mat-icon>info_outline</mat-icon></span>
+                <span>Metryczka noty</span>
+              </a>
+              <a mat-menu-item class="kw-menu-item" [routerLink]="['/rozliczenia/noty-prowizyjne', row.id]">
+                <span class="kw-menu-item__icon kw-menu-item__icon--view"><mat-icon>visibility</mat-icon></span>
+                <span>Widok szczegółowy</span>
+              </a>
+              <button mat-menu-item class="kw-menu-item">
+                <span class="kw-menu-item__icon kw-menu-item__icon--pdf"><mat-icon>picture_as_pdf</mat-icon></span>
+                <span>Eksportuj PDF</span>
+              </button>
+              <button mat-menu-item class="kw-menu-item">
+                <span class="kw-menu-item__icon kw-menu-item__icon--copy"><mat-icon>download</mat-icon></span>
+                <span>Eksportuj CSV</span>
+              </button>
+              <div class="kw-menu-divider"></div>
+              <button mat-menu-item class="kw-menu-item" [disabled]="row.isDebtor">
+                <span class="kw-menu-item__icon kw-menu-item__icon--edit"><mat-icon>payments</mat-icon></span>
+                <span>Wypłać na żądanie</span>
+              </button>
+            </mat-menu>
+          </div>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="cols; sticky: true"></tr>
+      <tr mat-row *matRowDef="let row; columns: cols;"></tr>
+    </table>
+  </div>
+</div>

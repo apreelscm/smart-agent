@@ -1,0 +1,198 @@
+@if (wykaz(); as w) {
+<div class="page">
+
+  <!-- Header -->
+  <div class="page__header">
+    <div>
+      <a class="page__back" routerLink="/rozliczenia/wykazy">
+        <mat-icon>arrow_back</mat-icon>Powrót do listy
+      </a>
+      <div class="page__title-wrap">
+        <h1 class="page__title">{{ w.number }}</h1>
+        <div class="page__title-accent"></div>
+      </div>
+    </div>
+    <div class="page__actions">
+      <button class="btn-outline">
+        <mat-icon>print</mat-icon>Blankiet przelewu
+      </button>
+      <button class="btn-outline">
+        <mat-icon>download</mat-icon>Eksportuj CSV
+      </button>
+      @if (hasPayuAccess()) {
+        <button class="btn-payu">
+          <mat-icon>payment</mat-icon>Opłać online (PayU)
+        </button>
+      }
+    </div>
+  </div>
+
+  <div class="detail-layout">
+
+    <!-- Meta row -->
+    <div class="card card--meta">
+      <div class="meta-item">
+        <span class="meta-item__label">Status płatności</span>
+        <span class="payment-badge payment-badge--{{ w.paymentStatus }}">
+          {{ {oplacony:'Opłacony', nieoplacony:'Nieopłacony', 'oplacony-czesciowo':'Częściowo'}[w.paymentStatus] }}
+        </span>
+      </div>
+      <div class="meta-sep"></div>
+      <div class="meta-item">
+        <span class="meta-item__label">Status CR</span>
+        <span class="process-badge process-badge--{{ w.statusCR }}">
+          {{ {zatwierdzony:'Zatwierdzony', oczekujacy:'Oczekujący', odrzucony:'Odrzucony'}[w.statusCR] }}
+        </span>
+      </div>
+      <div class="meta-sep"></div>
+      <div class="meta-item">
+        <span class="meta-item__label">Status Oddziału</span>
+        <span class="process-badge process-badge--{{ w.statusOddzial }}">
+          {{ {zatwierdzony:'Zatwierdzony', oczekujacy:'Oczekujący', odrzucony:'Odrzucony'}[w.statusOddzial] }}
+        </span>
+      </div>
+      <div class="meta-sep"></div>
+      <div class="meta-item">
+        <span class="meta-item__label">System BE</span>
+        <span class="badge-be">{{ w.source }}</span>
+      </div>
+      <div class="meta-sep"></div>
+      <div class="meta-item">
+        <span class="meta-item__label">Data wpr.</span>
+        <span class="meta-item__value">{{ w.issueDate }}</span>
+      </div>
+      <div class="meta-sep"></div>
+      <div class="meta-item">
+        <span class="meta-item__label">Modyfikacja</span>
+        <span class="meta-item__value">{{ w.modifiedDate }} · {{ w.modifiedBy }}</span>
+      </div>
+    </div>
+
+    <!-- Pośrednik + kwoty -->
+    <div class="cards-row">
+      <div class="card card--fields">
+        <div class="section-label">Pośrednik</div>
+        <div class="field">
+          <span class="field__label">Numer pośrednika</span>
+          <span class="field__value field__value--code">{{ w.agentNumber }}</span>
+        </div>
+        <div class="field">
+          <span class="field__label">Nazwa</span>
+          <div class="field__value">
+            <mat-icon class="field__icon">account_circle</mat-icon>
+            {{ w.agentName }}
+          </div>
+        </div>
+      </div>
+      <div class="card card--amounts">
+        <div class="section-label">Rozliczenie finansowe</div>
+        <div class="amount-row">
+          <span>Kwota przypisu</span>
+          <strong>{{ service.formatAmount(w.totalAmount) }}</strong>
+        </div>
+        <div class="amount-row">
+          <span>Wartość inkaso</span>
+          <strong class="amount-row__inkaso">{{ service.formatAmount(w.inkasAmount) }}</strong>
+        </div>
+        <div class="amount-divider"></div>
+        <div class="amount-row amount-row--diff">
+          <span>Różnica</span>
+          <strong>{{ service.formatAmount(w.totalAmount - w.inkasAmount) }}</strong>
+        </div>
+      </div>
+    </div>
+
+    <!-- Messages -->
+    @if (w.messages.length > 0) {
+      <div class="card card--messages">
+        <div class="section-label">Wiadomości obsługowe</div>
+        @for (msg of w.messages; track msg) {
+          <div class="message-item">
+            <mat-icon>info_outline</mat-icon>
+            <span>{{ msg }}</span>
+          </div>
+        }
+      </div>
+    }
+
+    <!-- Items / Zakres danych -->
+    <div class="card">
+      <div class="items-header">
+        <div class="section-label">Pozycje wykazu ({{ w.items.length }})</div>
+        <button class="btn-add-item">
+          <mat-icon>add</mat-icon>Dodaj pozycję
+        </button>
+      </div>
+      <div class="items-table">
+        <div class="items-table__header">
+          <span>Typ</span><span>Numer</span><span>Ubezpieczający</span><span>Kwota</span><span>Inkaso</span><span>Data</span><span></span>
+        </div>
+        @for (item of w.items; track item.id) {
+          <div class="items-table__row">
+            <span>
+              <div class="item-type-badge">
+                <mat-icon>{{ itemTypeIcon(item.type) }}</mat-icon>
+                {{ itemTypeLabel(item.type) }}
+              </div>
+            </span>
+            <span class="cell-link">{{ item.number }}</span>
+            <span>{{ item.insuredName }}</span>
+            <span class="fw600">{{ service.formatAmount(item.amount) }}</span>
+            <span>{{ service.formatAmount(item.inkasAmount) }}</span>
+            <span class="text-muted">{{ item.date }}</span>
+            <span>
+              <button class="item-pdf-btn" matTooltip="Pobierz PDF"><mat-icon>picture_as_pdf</mat-icon></button>
+              @if (item.canDelete) {
+                <button class="item-del-btn" matTooltip="Usuń" (click)="removeItem(item.id)"><mat-icon>delete_outline</mat-icon></button>
+              }
+            </span>
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Notes -->
+    <div class="card">
+      <div class="items-header">
+        <div class="section-label">Notatki ({{ w.notes.length }})</div>
+        <button class="btn-add-item" (click)="showNoteForm.update(v => !v)">
+          <mat-icon>{{ showNoteForm() ? 'close' : 'add' }}</mat-icon>
+          {{ showNoteForm() ? 'Anuluj' : 'Dodaj notatkę' }}
+        </button>
+      </div>
+
+      @if (showNoteForm()) {
+        <div class="note-form">
+          <textarea class="note-form__input" rows="3" placeholder="Treść notatki widocznej dla wszystkich użytkowników…"
+                    [ngModel]="newNote()" (ngModelChange)="newNote.set($event)"></textarea>
+          <button class="note-form__submit" (click)="addNote()" [disabled]="!newNote().trim()">
+            <mat-icon>save</mat-icon>Zapisz notatkę
+          </button>
+        </div>
+      }
+
+      @if (w.notes.length === 0 && !showNoteForm()) {
+        <p class="notes-empty">Brak notatek. Kliknij „Dodaj notatkę" aby dodać pierwszą.</p>
+      }
+
+      @for (note of w.notes; track note.id) {
+        <div class="note-item">
+          <div class="note-item__header">
+            <mat-icon>account_circle</mat-icon>
+            <strong>{{ note.author }}</strong>
+            <span class="note-item__date">{{ note.date }}</span>
+          </div>
+          <p class="note-item__content">{{ note.content }}</p>
+        </div>
+      }
+    </div>
+
+  </div>
+</div>
+} @else {
+<div class="not-found">
+  <mat-icon>search_off</mat-icon>
+  <p>Wykaz nie został znaleziony.</p>
+  <a routerLink="/rozliczenia/wykazy">Wróć do listy</a>
+</div>
+}

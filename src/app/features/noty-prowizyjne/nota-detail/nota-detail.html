@@ -1,0 +1,263 @@
+@if (nota(); as n) {
+<div class="page">
+
+  <!-- Header -->
+  <div class="page__header">
+    <div>
+      <a class="page__back" routerLink="/rozliczenia/noty-prowizyjne">
+        <mat-icon>arrow_back</mat-icon>Powrót do listy
+      </a>
+      <div class="page__title-wrap">
+        <h1 class="page__title">Nota prowizyjna {{ n.number }}</h1>
+        <div class="page__title-accent"></div>
+      </div>
+    </div>
+    <div class="page__actions">
+      <button class="btn-outline" (click)="showComm.update(v => !v)">
+        <mat-icon>{{ showComm() ? 'visibility_off' : 'visibility' }}</mat-icon>
+        {{ showComm() ? 'Ukryj prowizję' : 'Pokaż prowizję' }}
+      </button>
+      <button class="btn-outline"><mat-icon>picture_as_pdf</mat-icon>Eksportuj PDF</button>
+      <button class="btn-outline"><mat-icon>download</mat-icon>Eksportuj CSV</button>
+      <button class="btn-primary" [disabled]="n.isDebtor" [matTooltip]="n.isDebtor ? 'Blokada: pośrednik jest dłużnikiem' : ''">
+        <mat-icon>payments</mat-icon>Wypłać na żądanie
+      </button>
+    </div>
+  </div>
+
+  <!-- Meta row -->
+  <div class="card card--meta">
+    <div class="meta-item">
+      <span class="meta-item__label">Status</span>
+      <span class="status-badge status-badge--{{ n.status }}">{{ {wyplacona:'Wypłacona', oczekujaca:'Oczekująca', zablokowana:'Zablokowana'}[n.status] }}</span>
+    </div>
+    <div class="meta-sep"></div>
+    <div class="meta-item">
+      <span class="meta-item__label">Typ</span>
+      <span class="type-badge" [class.type-badge--dodatkowa]="n.type === 'dodatkowa'">{{ n.type === 'podstawowa' ? 'Podstawowa' : 'Dodatkowa' }}</span>
+    </div>
+    <div class="meta-sep"></div>
+    <div class="meta-item">
+      <span class="meta-item__label">Data wystawienia</span>
+      <span class="meta-item__value">{{ n.issueDate }}</span>
+    </div>
+    <div class="meta-sep"></div>
+    <div class="meta-item">
+      <span class="meta-item__label">Agent</span>
+      <span class="meta-item__value">{{ n.agentName }} ({{ n.agentNumber }})</span>
+    </div>
+    @if (showComm()) {
+      <div class="meta-sep"></div>
+      <div class="meta-item">
+        <span class="meta-item__label">Prowizja należna</span>
+        <span class="meta-item__value meta-item__value--commission">{{ service.formatAmount(n.totalCommission) }}</span>
+      </div>
+    }
+    @if (n.isDebtor) {
+      <div class="meta-sep"></div>
+      <div class="meta-item">
+        <span class="debtor-badge"><mat-icon>warning</mat-icon>Status dłużnika — wypłata zablokowana</span>
+      </div>
+    }
+  </div>
+
+  <!-- View mode tabs -->
+  <div class="view-tabs">
+    <button class="view-tab" [class.view-tab--active]="viewMode() === 'domyslny'" (click)="viewMode.set('domyslny')">
+      <mat-icon>table_rows</mat-icon>Widok domyślny
+    </button>
+    <button class="view-tab" [class.view-tab--active]="viewMode() === 'na-zadanie'" (click)="viewMode.set('na-zadanie')">
+      <mat-icon>tune</mat-icon>Generowanie na żądanie
+    </button>
+    <button class="view-tab" [class.view-tab--active]="viewMode() === 'uproszczony'" (click)="viewMode.set('uproszczony')">
+      <mat-icon>compress</mat-icon>Widok uproszczony
+    </button>
+  </div>
+
+  <!-- ── WIDOK DOMYŚLNY ─────────────────────────────────────────────── -->
+  @if (viewMode() === 'domyslny') {
+    @for (agency of agencies; track agency) {
+      <div class="card">
+        <div class="agency-header">
+          <mat-icon>business</mat-icon>
+          <strong>Agencja: {{ agency }}</strong>
+        </div>
+        <table class="items-table">
+          <thead>
+            <tr>
+              <th>Seria/numer polisy</th>
+              <th>Data wyst.</th>
+              <th>Ubezpieczający</th>
+              <th>Przypis</th>
+              <th>Inkaso</th>
+              <th>Ryzyko</th>
+              @if (showComm()) { <th>Prowizja</th> }
+              <th>Pośrednik</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (item of itemsByAgency(agency); track item.id) {
+              <tr>
+                <td class="cell-link">{{ item.policyNumber }}</td>
+                <td class="text-muted">{{ item.issueDate }}</td>
+                <td>{{ item.insuredName }}</td>
+                <td class="fw600">{{ service.formatAmount(item.baseAmount) }}</td>
+                <td>{{ service.formatAmount(item.inkasAmount) }}</td>
+                <td>
+                  <span class="risk-tag">{{ item.risk }}</span>
+                  @if (item.risk === 'AC') { <mat-icon class="ac-lock-icon" matTooltip="Zdjęcia inspekcji wymagane — prowizja może być zablokowana">lock</mat-icon> }
+                </td>
+                @if (showComm()) {
+                  <td class="commission-cell">
+                    <span>{{ item.commissionRate.toFixed(1) }}%</span>
+                    <strong>{{ service.formatAmount(item.commissionAmount) }}</strong>
+                  </td>
+                }
+                <td class="text-muted">{{ item.ofwcName }}</td>
+              </tr>
+            }
+          </tbody>
+          @if (showComm()) {
+            <tfoot>
+              <tr class="summary-row">
+                <td colspan="6">Suma agencji {{ agency }}</td>
+                <td class="summary-commission">{{ service.formatAmount(agencyTotal(agency)) }}</td>
+                <td></td>
+              </tr>
+            </tfoot>
+          }
+        </table>
+      </div>
+    }
+  }
+
+  <!-- ── WIDOK NA ŻĄDANIE ───────────────────────────────────────────── -->
+  @if (viewMode() === 'na-zadanie') {
+    <div class="card">
+      <div class="section-label">Wybierz kolumny zestawienia</div>
+      <div class="col-selector">
+        <div class="col-selector__required">
+          <span class="col-chip col-chip--required"><mat-icon>lock</mat-icon>Seria/numer polisy</span>
+          <span class="col-chip col-chip--required"><mat-icon>lock</mat-icon>Prowizja PLN</span>
+        </div>
+        <div class="col-selector__optional">
+          @for (col of optionalCols; track col.key) {
+            <button class="col-chip" [class.col-chip--selected]="hasCol(col.key)"
+                    (click)="toggleCol(col.key)">
+              <mat-icon>{{ hasCol(col.key) ? 'check_box' : 'check_box_outline_blank' }}</mat-icon>
+              {{ col.label }}
+            </button>
+          }
+        </div>
+      </div>
+    </div>
+
+    @for (agency of agencies; track agency) {
+      <div class="card">
+        <div class="agency-header"><mat-icon>business</mat-icon><strong>Agencja: {{ agency }}</strong></div>
+        <table class="items-table">
+          <thead>
+            <tr>
+              <th>Seria/numer polisy</th>
+              @if (hasCol('issueDate'))   { <th>Data wyst.</th> }
+              @if (hasCol('insuredName')) { <th>Ubezpieczający</th> }
+              @if (hasCol('risk'))        { <th>Ryzyko</th> }
+              @if (hasCol('riskCode'))    { <th>Kod ryzyka</th> }
+              @if (hasCol('commRate'))    { <th>Stawka %</th> }
+              @if (hasCol('baseAmount'))  { <th>Podstawa PLN</th> }
+              @if (hasCol('ofwcName'))    { <th>OFWC</th> }
+              @if (hasCol('ofwcNumber'))  { <th>Nr OFWC</th> }
+              <th>Prowizja PLN</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (item of itemsByAgency(agency); track item.id) {
+              <tr>
+                <td class="cell-link">{{ item.policyNumber }}</td>
+                @if (hasCol('issueDate'))   { <td class="text-muted">{{ item.issueDate }}</td> }
+                @if (hasCol('insuredName')) { <td>{{ item.insuredName }}</td> }
+                @if (hasCol('risk'))        { <td><span class="risk-tag">{{ item.risk }}</span></td> }
+                @if (hasCol('riskCode'))    { <td class="text-muted">{{ item.riskCode }}</td> }
+                @if (hasCol('commRate'))    { <td>{{ item.commissionRate.toFixed(1) }}%</td> }
+                @if (hasCol('baseAmount'))  { <td>{{ service.formatAmount(item.baseAmount) }}</td> }
+                @if (hasCol('ofwcName'))    { <td class="text-muted">{{ item.ofwcName }}</td> }
+                @if (hasCol('ofwcNumber'))  { <td class="text-muted">{{ item.ofwcNumber }}</td> }
+                <td class="fw600 commission-cell-value">{{ service.formatAmount(item.commissionAmount) }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  }
+
+  <!-- ── WIDOK UPROSZCZONY ──────────────────────────────────────────── -->
+  @if (viewMode() === 'uproszczony') {
+    <div class="card">
+      <div class="section-label">Zestawienie uproszczone per pośrednik</div>
+      @for (agency of agencies; track agency) {
+        <div class="simplified-group">
+          <div class="simplified-group__header">
+            <mat-icon>business</mat-icon>
+            <strong>{{ agency }}</strong>
+          </div>
+          <div class="simplified-rows">
+            <div class="simplified-row">
+              <span>Pośrednik:</span>
+              <span class="fw600">{{ n.agentName }} ({{ n.agentNumber }})</span>
+            </div>
+            @for (cat of n.categories; track cat.name) {
+              <div class="simplified-row">
+                <span>Stawka prowizyjna ({{ cat.name }}):</span>
+                <span class="fw600">{{ cat.commissionRate.toFixed(2) }}%</span>
+              </div>
+            }
+            @if (showComm()) {
+              <div class="simplified-row simplified-row--total">
+                <span>Prowizja łączna:</span>
+                <strong class="commission-total">{{ service.formatAmount(agencyTotal(agency)) }}</strong>
+              </div>
+            }
+          </div>
+        </div>
+      }
+    </div>
+
+    <!-- Prowizje dodatkowe / progi -->
+    <div class="card card--thresholds">
+      <div class="section-label">Prowizje dodatkowe — progi do osiągnięcia</div>
+      <div class="threshold-info">
+        <mat-icon>trending_up</mat-icon>
+        <div>
+          <div class="threshold-current">Aktualnie wypracowana stawka: <strong>{{ n.categories[0]?.commissionRate ?? 0 }}%</strong></div>
+          <div class="threshold-targets">
+            <div class="threshold-target">Prog 2%: brakuje <strong>15 polis</strong> lub <strong>18 000 zł inkaso</strong></div>
+            <div class="threshold-target">Prog 3%: brakuje <strong>40 polis</strong> lub <strong>50 000 zł inkaso</strong></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Podgląd na dany dzień -->
+    <div class="card">
+      <div class="section-label">Podgląd stanu prowizji na dany dzień</div>
+      <div class="day-preview">
+        <div class="input-group">
+          <label class="input-label">Wybierz dzień</label>
+          <input class="input" type="date" [ngModel]="previewDay()" (ngModelChange)="previewDay.set($event)" />
+        </div>
+        <div class="day-preview__result">
+          <span>Prowizja za bieżący miesiąc do dnia {{ previewDay() }}:</span>
+          <strong class="commission-total">{{ service.formatAmount(n.totalCommission * 0.6) }}</strong>
+        </div>
+      </div>
+    </div>
+  }
+
+</div>
+} @else {
+<div class="not-found">
+  <mat-icon>search_off</mat-icon><p>Nota nie została znaleziona.</p>
+  <a routerLink="/rozliczenia/noty-prowizyjne">Wróć do listy</a>
+</div>
+}

@@ -1,0 +1,73 @@
+<div class="dashboard">
+
+  <!-- Title -->
+  <div class="dashboard__title-wrap">
+    <h1 class="dashboard__title">Twój kokpit</h1>
+    <div class="dashboard__title-accent"></div>
+  </div>
+
+  <!-- Rozpocznij sprzedaż -->
+  <section class="dashboard__section">
+    <div class="section-header">
+      <mat-icon class="section-header__icon">check_box_outline_blank</mat-icon>
+      <span>Rozpocznij sprzedaż</span>
+    </div>
+
+    <div class="qa-grid">
+      @for (action of dashboardService.quickActions(); track action.id) {
+        <button class="qa-card" [class.qa-card--locked]="action.locked">
+          <div class="qa-card__circle" [class.qa-card__circle--active]="!action.locked">
+            <mat-icon>{{ action.icon }}</mat-icon>
+          </div>
+          <span class="qa-card__label">{{ action.label }}</span>
+          @if (!action.locked) {
+            <span class="qa-card__plus">+</span>
+          } @else {
+            <mat-icon class="qa-card__lock">lock</mat-icon>
+          }
+        </button>
+      }
+    </div>
+  </section>
+
+  <!-- Bądź na bieżąco -->
+  <section class="dashboard__section">
+    <div class="section-header">
+      <mat-icon class="section-header__icon">notifications_none</mat-icon>
+      <span>Bądź na bieżąco z zadaniami</span>
+    </div>
+
+    <div class="kpi-grid">
+      @for (kpi of dashboardService.kpiCards(); track kpi.id) {
+        <div class="kpi-card">
+          <div class="kpi-card__inner">
+            <div class="kpi-card__label">{{ kpi.title }}</div>
+
+            @if (kpi.count !== undefined) {
+              <div class="kpi-card__count">{{ kpi.count }}</div>
+              <div class="kpi-card__desc">{{ kpi.description }}</div>
+              @if (kpi.subTextPrefix || kpi.subTextSuffix) {
+                <p class="kpi-card__sub">
+                  @if (kpi.subTextPrefix) {
+                    <a class="kpi-card__sub-link">{{ kpi.subTextPrefix }}</a>
+                  }
+                  {{ kpi.subTextSuffix }}
+                </p>
+              }
+            } @else {
+              <div class="kpi-card__empty">
+                <a class="kpi-card__empty-link">{{ kpi.emptyText }}</a>
+              </div>
+            }
+          </div>
+
+          <a class="kpi-card__btn" [routerLink]="kpi.actionRoute">
+            <span>{{ kpi.actionLabel }}</span>
+            <mat-icon>chevron_right</mat-icon>
+          </a>
+        </div>
+      }
+    </div>
+  </section>
+
+</div>
