@@ -1,5 +1,11 @@
-import { Injectable, computed, signal } from '@angular/core';
-import { Kwitariusz, KwitariuszType, MockPolicy, PolicyStatus } from '../models/kwitariusz.model';
+import { Injectable, computed, effect, signal } from '@angular/core';
+import {
+  Kwitariusz,
+  KwitariuszStatus,
+  KwitariuszType,
+  MockPolicy,
+  PolicyStatus,
+} from '../models/kwitariusz.model';
 
 const MOCK_KWITARIUSZE: Kwitariusz[] = [
   {
@@ -12,8 +18,8 @@ const MOCK_KWITARIUSZE: Kwitariusz[] = [
     finCurrency:'PLN', finPaymentDeadline:'2025-07-15', finInterestDate:'2025-04-01',
     finInterestRate:7, finDaysOverdue:29,
     installmentPlan:[
-      { number:1, dueDate:'2025-01-15', amount:310.00, paid:true,  paidDate:'2025-01-10' },
-      { number:2, dueDate:'2025-04-15', amount:310.00, paid:true,  paidDate:'2025-04-12' },
+      { number:1, dueDate:'2025-01-15', amount:310.00, paid:true, paidDate:'2025-01-10' },
+      { number:2, dueDate:'2025-04-15', amount:310.00, paid:true, paidDate:'2025-04-12' },
       { number:3, dueDate:'2025-07-15', amount:310.00, paid:false },
       { number:4, dueDate:'2025-10-15', amount:310.00, paid:false },
     ],
@@ -41,8 +47,8 @@ const MOCK_KWITARIUSZE: Kwitariusz[] = [
     finCurrency:'PLN', finPaymentDeadline:'2025-09-20', finInterestDate:'2025-04-05',
     finInterestRate:7, finDaysOverdue:46,
     installmentPlan:[
-      { number:1, dueDate:'2025-01-20', amount:700.00, paid:true,  paidDate:'2025-01-18' },
-      { number:2, dueDate:'2025-05-20', amount:700.00, paid:true,  paidDate:'2025-05-19' },
+      { number:1, dueDate:'2025-01-20', amount:700.00, paid:true, paidDate:'2025-01-18' },
+      { number:2, dueDate:'2025-05-20', amount:700.00, paid:true, paidDate:'2025-05-19' },
       { number:3, dueDate:'2025-09-20', amount:700.00, paid:false },
     ],
   },
@@ -76,8 +82,8 @@ const MOCK_KWITARIUSZE: Kwitariusz[] = [
     finCurrency:'PLN', finPaymentDeadline:'2025-05-10', finInterestDate:'2025-04-11',
     finInterestRate:7, finDaysOverdue:16,
     installmentPlan:[
-      { number:1, dueDate:'2024-11-10', amount:330.00, paid:true,  paidDate:'2024-11-08' },
-      { number:2, dueDate:'2025-02-10', amount:330.00, paid:true,  paidDate:'2025-02-09' },
+      { number:1, dueDate:'2024-11-10', amount:330.00, paid:true, paidDate:'2024-11-08' },
+      { number:2, dueDate:'2025-02-10', amount:330.00, paid:true, paidDate:'2025-02-09' },
       { number:3, dueDate:'2025-05-10', amount:330.00, paid:false },
     ],
   },
@@ -91,7 +97,7 @@ const MOCK_KWITARIUSZE: Kwitariusz[] = [
     finCurrency:'PLN', finPaymentDeadline:'2025-06-01', finInterestDate:'2025-04-14',
     finInterestRate:7, finDaysOverdue:22,
     installmentPlan:[
-      { number:1, dueDate:'2025-03-01', amount:362.50, paid:true,  paidDate:'2025-02-28' },
+      { number:1, dueDate:'2025-03-01', amount:362.50, paid:true, paidDate:'2025-02-28' },
       { number:2, dueDate:'2025-06-01', amount:362.50, paid:false },
       { number:3, dueDate:'2025-09-01', amount:362.50, paid:false },
       { number:4, dueDate:'2025-12-01', amount:362.50, paid:false },
@@ -136,8 +142,8 @@ const MOCK_POLICIES: MockPolicy[] = [
   {
     series:'KM-I', number:'P0647405', insuredName:'STANISŁAW PAWŁOWSKI', status:'aktywna', baseAmount:1240.00,
     installmentPlan: [
-      { number:1, dueDate:'2025-01-15', amount:310.00, paid:true,  paidDate:'2025-01-10' },
-      { number:2, dueDate:'2025-04-15', amount:310.00, paid:true,  paidDate:'2025-04-12' },
+      { number:1, dueDate:'2025-01-15', amount:310.00, paid:true, paidDate:'2025-01-10' },
+      { number:2, dueDate:'2025-04-15', amount:310.00, paid:true, paidDate:'2025-04-12' },
       { number:3, dueDate:'2025-07-15', amount:310.00, paid:false },
       { number:4, dueDate:'2025-10-15', amount:310.00, paid:false },
     ],
@@ -145,32 +151,32 @@ const MOCK_POLICIES: MockPolicy[] = [
   {
     series:'KM-I', number:'P0631516', insuredName:'JURAND GRABOWSKI', status:'oplacona', baseAmount:876.00,
     installmentPlan: [
-      { number:1, dueDate:'2025-02-01', amount:438.00, paid:true,  paidDate:'2025-01-28' },
-      { number:2, dueDate:'2025-08-01', amount:438.00, paid:true,  paidDate:'2025-07-30' },
+      { number:1, dueDate:'2025-02-01', amount:438.00, paid:true, paidDate:'2025-01-28' },
+      { number:2, dueDate:'2025-08-01', amount:438.00, paid:true, paidDate:'2025-07-30' },
     ],
   },
   {
     series:'KM-I', number:'P0645576', insuredName:'AGNIESZKA GÓRA', status:'rozliczona', baseAmount:2100.00,
     installmentPlan: [
-      { number:1, dueDate:'2025-01-20', amount:700.00, paid:true,  paidDate:'2025-01-18' },
-      { number:2, dueDate:'2025-05-20', amount:700.00, paid:true,  paidDate:'2025-05-19' },
+      { number:1, dueDate:'2025-01-20', amount:700.00, paid:true, paidDate:'2025-01-18' },
+      { number:2, dueDate:'2025-05-20', amount:700.00, paid:true, paidDate:'2025-05-19' },
       { number:3, dueDate:'2025-09-20', amount:700.00, paid:false },
     ],
   },
-  { series:'KM-H', number:'P1149860-K3', insuredName:'KRZYSZTOF LITWIN',      status:'anulowana',         baseAmount:560.00  },
-  { series:'VKPA-A', number:'S0032336',  insuredName:'TADEUSZ PRZESTRZELSKI', status:'rozwiazana',        baseAmount:3200.00 },
+  { series:'KM-H', number:'P1149860-K3', insuredName:'KRZYSZTOF LITWIN', status:'anulowana', baseAmount:560.00 },
+  { series:'VKPA-A', number:'S0032336', insuredName:'TADEUSZ PRZESTRZELSKI', status:'rozwiazana', baseAmount:3200.00 },
   {
     series:'KM-I', number:'P0635780', insuredName:'MAŁGORZATA DĄBROWSKA', status:'ochrona-skonczona', baseAmount:990.00,
     installmentPlan: [
-      { number:1, dueDate:'2024-11-10', amount:330.00, paid:true,  paidDate:'2024-11-08' },
-      { number:2, dueDate:'2025-02-10', amount:330.00, paid:true,  paidDate:'2025-02-09' },
+      { number:1, dueDate:'2024-11-10', amount:330.00, paid:true, paidDate:'2024-11-08' },
+      { number:2, dueDate:'2025-02-10', amount:330.00, paid:true, paidDate:'2025-02-09' },
       { number:3, dueDate:'2025-05-10', amount:330.00, paid:false },
     ],
   },
   {
     series:'KE-F', number:'P0055142', insuredName:'ANNA BEDNAREK', status:'aktywna', baseAmount:1450.00,
     installmentPlan: [
-      { number:1, dueDate:'2025-03-01', amount:362.50, paid:true,  paidDate:'2025-02-28' },
+      { number:1, dueDate:'2025-03-01', amount:362.50, paid:true, paidDate:'2025-02-28' },
       { number:2, dueDate:'2025-06-01', amount:362.50, paid:false },
       { number:3, dueDate:'2025-09-01', amount:362.50, paid:false },
       { number:4, dueDate:'2025-12-01', amount:362.50, paid:false },
@@ -179,32 +185,33 @@ const MOCK_POLICIES: MockPolicy[] = [
 ];
 
 export const POLICY_STATUS_WARNINGS: Partial<Record<PolicyStatus, { type: 'warning' | 'error'; message: string }>> = {
-  rozliczona:        { type:'warning', message:'Uwaga: polisa jest już rozliczona. Rejestracja kwitariusza jest możliwa, ale wymaga potwierdzenia.' },
-  rozwiazana:        { type:'warning', message:'Uwaga: polisa jest rozwiązana. Rejestracja kwitariusza jest możliwa, ale wymaga potwierdzenia.' },
-  oplacona:          { type:'warning', message:'Uwaga: polisa jest już opłacona. Sprawdź poprawność danych przed wystawieniem kwitariusza.' },
-  'ochrona-skonczona':{ type:'warning', message:'Uwaga: okres ochrony tej polisy już się skończył. Rejestracja kwitariusza jest możliwa, ale wymaga potwierdzenia.' },
-  anulowana:         { type:'error',   message:'Polisa została anulowana. Rejestracja nowego kwitariusza dla tej polisy jest niemożliwa.' },
+  rozliczona: { type:'warning', message:'Uwaga: polisa jest już rozliczona. Rejestracja kwitariusza jest możliwa, ale wymaga potwierdzenia.' },
+  rozwiazana: { type:'warning', message:'Uwaga: polisa jest rozwiązana. Rejestracja kwitariusza jest możliwa, ale wymaga potwierdzenia.' },
+  oplacona: { type:'warning', message:'Uwaga: polisa jest już opłacona. Sprawdź poprawność danych przed wystawieniem kwitariusza.' },
+  'ochrona-skonczona': { type:'warning', message:'Uwaga: okres ochrony tej polisy już się skończył. Rejestracja kwitariusza jest możliwa, ale wymaga potwierdzenia.' },
+  anulowana: { type:'error', message:'Polisa została anulowana. Rejestracja nowego kwitariusza dla tej polisy jest niemożliwa.' },
 };
 
 @Injectable({ providedIn: 'root' })
 export class KwitariuszService {
   readonly kwitariusze = signal<Kwitariusz[]>(MOCK_KWITARIUSZE);
 
-  readonly filterType        = signal('');
-  readonly filterLast30Days  = signal(false);
-  readonly filterPolicySearch   = signal('');
-  readonly filterInsuredSearch  = signal('');
+  readonly filterType = signal('');
+  readonly filterLast30Days = signal(false);
+  readonly filterPolicySearch = signal('');
+  readonly filterInsuredSearch = signal('');
+  readonly filterStatuses = signal<KwitariuszStatus[]>([]);
 
-  readonly filtered = computed(() => {
-    const t    = this.filterType();
-    const d30  = this.filterLast30Days();
-    const pol  = this.filterPolicySearch().toLowerCase();
-    const ins  = this.filterInsuredSearch().toLowerCase();
+  readonly baseFiltered = computed(() => {
+    const t = this.filterType();
+    const d30 = this.filterLast30Days();
+    const pol = this.filterPolicySearch().toLowerCase();
+    const ins = this.filterInsuredSearch().toLowerCase();
     const cutoff = new Date();
     cutoff.setDate(cutoff.getDate() - 30);
 
     return this.kwitariusze().filter(k => {
-      if (t   && k.type !== t) return false;
+      if (t && k.type !== t) return false;
       if (d30 && new Date(k.issueDate) < cutoff) return false;
       if (pol && !k.policyNumber.toLowerCase().includes(pol)) return false;
       if (ins && !k.insuredName.toLowerCase().includes(ins)) return false;
@@ -212,13 +219,41 @@ export class KwitariuszService {
     });
   });
 
+  readonly availableStatuses = computed(() => {
+    const statuses = this.baseFiltered().map(kwitariusz => kwitariusz.status);
+    return Array.from(new Set(statuses));
+  });
+
+  readonly filtered = computed(() => {
+    const selectedStatuses = this.filterStatuses();
+
+    if (!selectedStatuses.length) {
+      return this.baseFiltered();
+    }
+
+    const selectedSet = new Set(selectedStatuses);
+    return this.baseFiltered().filter(kwitariusz => selectedSet.has(kwitariusz.status));
+  });
+
   readonly resultCount = computed(() => this.filtered().length);
+
+  constructor() {
+    effect(() => {
+      const selectedStatuses = this.filterStatuses();
+      const availableStatuses = new Set(this.availableStatuses());
+      const reconciledStatuses = selectedStatuses.filter(status => availableStatuses.has(status));
+
+      if (reconciledStatuses.length !== selectedStatuses.length) {
+        this.filterStatuses.set(reconciledStatuses);
+      }
+    });
+  }
 
   searchPolicy(series: string, number: string): MockPolicy | null {
     const s = series.trim().toUpperCase();
     const n = number.trim().toUpperCase();
     return MOCK_POLICIES.find(p =>
-      p.series.toUpperCase() === s && p.number.toUpperCase() === n
+      p.series.toUpperCase() === s && p.number.toUpperCase() === n,
     ) ?? null;
   }
 
@@ -233,8 +268,20 @@ export class KwitariuszService {
 
   updateKwitariusz(id: string, changes: Partial<Omit<Kwitariusz, 'id'>>): void {
     this.kwitariusze.update(list =>
-      list.map(k => k.id === id ? { ...k, ...changes } : k)
+      list.map(k => k.id === id ? { ...k, ...changes } : k),
     );
+  }
+
+  toggleStatus(status: KwitariuszStatus): void {
+    this.filterStatuses.update(selectedStatuses =>
+      selectedStatuses.includes(status)
+        ? selectedStatuses.filter(selectedStatus => selectedStatus !== status)
+        : [...selectedStatuses, status],
+    );
+  }
+
+  clearStatusFilter(): void {
+    this.filterStatuses.set([]);
   }
 
   clearFilters(): void {
@@ -242,5 +289,6 @@ export class KwitariuszService {
     this.filterLast30Days.set(false);
     this.filterPolicySearch.set('');
     this.filterInsuredSearch.set('');
+    this.clearStatusFilter();
   }
 }

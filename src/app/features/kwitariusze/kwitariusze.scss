@@ -32,7 +32,6 @@
   mat-icon { font-size: 18px; width: 18px; height: 18px; }
 }
 
-// ── Filters ───────────────────────────────────────────────────────────
 .filters {
   display: flex;
   align-items: center;
@@ -47,7 +46,6 @@
   }
 }
 
-// Quick filter (Ostatnie 30 dni)
 .filter-quick {
   display: inline-flex; align-items: center; gap: 5px;
   padding: 6px 12px;
@@ -66,7 +64,6 @@
   mat-icon { font-size: 14px; width: 14px; height: 14px; }
 }
 
-// Type toggle buttons
 .filter-type {
   display: inline-flex; align-items: center; gap: 5px;
   padding: 6px 13px;
@@ -85,7 +82,6 @@
   mat-icon { font-size: 15px; width: 15px; height: 15px; }
 }
 
-// Dropdown chips (Numer polisy, Ubezpieczający)
 .filter-chip {
   display: inline-flex; align-items: center; gap: 5px;
   padding: 6px 10px 6px 12px;
@@ -112,7 +108,6 @@
   &__arrow { font-size: 16px; width: 16px; height: 16px; color: #9aa3b0; flex-shrink: 0; }
 }
 
-// Round search button
 .filter-search {
   width: 34px; height: 34px; border-radius: 50%;
   background: #2059a7; color: white;
@@ -191,7 +186,6 @@
   mat-icon { font-size: 16px; width: 16px; height: 16px; }
 }
 
-// ── Expandable filter input ───────────────────────────────────────────
 .filter-expand {
   display: flex; align-items: center; gap: 8px;
   padding: 8px 14px;
@@ -219,6 +213,87 @@
 
     &:hover { background: #e0e7ff; color: #2059a7; }
     mat-icon { font-size: 16px; width: 16px; height: 16px; }
+  }
+
+  &--status {
+    display: block;
+    padding: 12px 14px;
+  }
+
+  &__status-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+
+  &__status-title {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #1a2332;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: 'Inter', sans-serif;
+  }
+
+  &__clear-all {
+    border: none;
+    background: transparent;
+    color: #2059a7;
+    font-size: 12.5px;
+    font-weight: 600;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    padding: 4px 0;
+
+    &:hover {
+      color: #174d96;
+      text-decoration: underline;
+    }
+  }
+}
+
+.status-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+
+  &__empty {
+    font-size: 12.5px;
+    color: #6b7687;
+    font-family: 'Inter', sans-serif;
+  }
+}
+
+.status-option {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border: 1px solid #d6dbe4;
+  border-radius: 20px;
+  background: white;
+  cursor: pointer;
+  transition: all 0.15s;
+
+  &:hover {
+    border-color: #2059a7;
+    background: #f5f8ff;
+  }
+
+  &--selected {
+    border-color: #2059a7;
+    background: #e8f0fd;
+    box-shadow: inset 0 0 0 1px rgba(32, 89, 167, 0.06);
+  }
+
+  mat-icon {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+    color: #2059a7;
   }
 }
 
@@ -251,7 +326,6 @@
   }
 }
 
-// ── Table ─────────────────────────────────────────────────────────────
 .table-wrap {
   background: white;
   border-radius: 8px;
@@ -280,12 +354,19 @@
   tr:hover td { background: #f8faff; }
 }
 
+.no-data-row {
+  text-align: center;
+  padding: 24px 16px !important;
+  color: #6b7687 !important;
+  font-size: 13px !important;
+  background: #fbfcfe;
+}
+
 .header-grid-icon {
   font-size: 18px; width: 18px; height: 18px;
   color: #9aa3b0; vertical-align: middle;
 }
 
-// ── Type cell ─────────────────────────────────────────────────────────
 .type-cell {
   display: inline-flex; align-items: center; justify-content: center;
   width: 32px; height: 32px;
@@ -304,7 +385,6 @@
   }
 }
 
-// ── Status badge (transparent fill, border only) ──────────────────────
 .status-badge {
   display: inline-block;
   padding: 3px 10px;
@@ -313,13 +393,12 @@
   white-space: nowrap;
   background: transparent;
 
-  &--wystawiony  { color: #1565c0; border: 1px solid #90caf9; }
-  &--oplacony    { color: #2e7d32; border: 1px solid #a5d6a7; }
-  &--anulowany   { color: #c62828; border: 1px solid #ef9a9a; }
-  &--oczekujacy  { color: #e65100; border: 1px solid #ffcc02; }
+  &--wystawiony { color: #1565c0; border: 1px solid #90caf9; }
+  &--oplacony { color: #2e7d32; border: 1px solid #a5d6a7; }
+  &--anulowany { color: #c62828; border: 1px solid #ef9a9a; }
+  &--oczekujacy { color: #e65100; border: 1px solid #ffcc02; }
 }
 
-// ── Link cells ────────────────────────────────────────────────────────
 .cell-link {
   display: flex; align-items: center; gap: 6px;
   color: #2059a7; font-size: 12.5px; font-weight: 500;
@@ -353,5 +432,5 @@
 
 .action-view { color: #9aa3b0 !important; &:hover { color: #2059a7 !important; } }
 .action-edit { color: #9aa3b0 !important; &:hover { color: #2059a7 !important; } }
-.action-pdf  { color: #9aa3b0 !important; &:hover { color: #e53935 !important; } }
+.action-pdf { color: #9aa3b0 !important; &:hover { color: #e53935 !important; } }
 .action-menu { color: #9aa3b0 !important; &:hover { color: #1a2332 !important; } }

@@ -23,7 +23,7 @@ import {
   DisplayCurrency,
   ForeignCurrency,
 } from '../../core/models/currency.model';
-import { Kwitariusz, KwitariuszType } from '../../core/models/kwitariusz.model';
+import { Kwitariusz, KwitariuszStatus, KwitariuszType } from '../../core/models/kwitariusz.model';
 import { KwitariuszService } from '../../core/services/kwitariusz.service';
 import { NbpExchangeRateService } from '../../core/services/nbp-exchange-rate.service';
 
@@ -60,7 +60,7 @@ export class KwitariuszeComponent implements AfterViewInit {
     'actions',
   ];
 
-  readonly expandedFilter = signal<'policy' | 'insured' | null>(null);
+  readonly expandedFilter = signal<'policy' | 'insured' | 'status' | null>(null);
   readonly selectedCurrency = signal<DisplayCurrency>('PLN');
   readonly isRateLoading = signal(false);
   readonly currencyError = signal<string | null>(null);
@@ -99,6 +99,8 @@ export class KwitariuszeComponent implements AfterViewInit {
   private displayCurrencySelect?: ElementRef<HTMLSelectElement>;
 
   constructor() {
+    this.service.clearStatusFilter();
+
     effect(() => {
       this.dataSource.data = this.service.filtered();
     });
@@ -124,8 +126,21 @@ export class KwitariuszeComponent implements AfterViewInit {
     return this.service.filterInsuredSearch();
   }
 
+  get activeStatusCount() {
+    return this.service.filterStatuses().length;
+  }
+
+  get statusTriggerLabel() {
+    const activeStatusCount = this.activeStatusCount;
+    return activeStatusCount ? `Status (${activeStatusCount})` : 'Status';
+  }
+
   get hasAnyFilter() {
-    return !!this.activeType || this.last30Active || !!this.policySearch || !!this.insuredSearch;
+    return !!this.activeType
+      || this.last30Active
+      || !!this.policySearch
+      || !!this.insuredSearch
+      || this.activeStatusCount > 0;
   }
 
   setType(t: string) {
@@ -136,8 +151,20 @@ export class KwitariuszeComponent implements AfterViewInit {
     this.service.filterLast30Days.update((v) => !v);
   }
 
-  toggleFilter(f: 'policy' | 'insured'): void {
+  toggleFilter(f: 'policy' | 'insured' | 'status'): void {
     this.expandedFilter.update((v) => (v === f ? null : f));
+  }
+
+  toggleStatus(status: KwitariuszStatus): void {
+    this.service.toggleStatus(status);
+  }
+
+  isStatusSelected(status: KwitariuszStatus): boolean {
+    return this.service.filterStatuses().includes(status);
+  }
+
+  clearStatusFilter(): void {
+    this.service.clearStatusFilter();
   }
 
   clearFilters(): void {
