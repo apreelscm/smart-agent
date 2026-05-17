@@ -17,7 +17,7 @@ export class NbpExchangeRateService {
     return this.http
       .get<NbpExchangeRateApiResponse>(`${this.baseUrl}/${code}/today/?format=json`)
       .pipe(
-        map(response => {
+        map((response): ExchangeRate => {
           const currentRate = response.rates[0];
 
           if (!currentRate || typeof currentRate.mid !== 'number' || !currentRate.effectiveDate || !currentRate.no) {
@@ -25,7 +25,7 @@ export class NbpExchangeRateService {
           }
 
           return {
-            tableType: 'A',
+            tableType: response.table,
             currencyCode: response.code,
             currencyName: response.currency,
             effectiveDate: currentRate.effectiveDate,
