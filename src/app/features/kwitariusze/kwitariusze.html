@@ -57,6 +57,27 @@
       <mat-icon>search</mat-icon>
     </button>
 
+    <div class="currency-filter">
+      <label class="currency-filter__label" for="displayCurrency">Waluta</label>
+      <div class="currency-filter__field">
+        <select
+          id="displayCurrency"
+          class="currency-filter__select"
+          [value]="selectedCurrency()"
+          (change)="changeCurrency($any($event.target).value)"
+          [disabled]="isRateLoading()"
+        >
+          @for (currency of displayCurrencies; track currency.value) {
+            <option [value]="currency.value">{{ currency.label }}</option>
+          }
+        </select>
+
+        @if (isRateLoading()) {
+          <span class="currency-filter__status">Pobieranie kursu NBP…</span>
+        }
+      </div>
+    </div>
+
     <!-- Reset -->
     @if (hasAnyFilter) {
       <button class="filter-reset" (click)="clearFilters()">
@@ -98,6 +119,13 @@
   }
 
   <div class="results-count">Wyników: {{ service.resultCount() }}</div>
+
+  @if (currencyError()) {
+    <div class="alert alert--error" role="alert">
+      <mat-icon>error_outline</mat-icon>
+      <span>{{ currencyError() }}</span>
+    </div>
+  }
 
   <!-- Table -->
   <div class="table-wrap">
