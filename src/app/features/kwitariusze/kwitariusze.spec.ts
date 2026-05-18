@@ -1,11 +1,23 @@
 import { TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { of, throwError } from 'rxjs';
+import { ExchangeRateQuote } from '../../core/models/exchange-rate.model';
 import { AgentService } from '../../core/services/agent.service';
+import { NbpExchangeRateError, NbpExchangeRateService } from '../../core/services/nbp-exchange-rate.service';
 import { KwitariuszService } from '../../core/services/kwitariusz.service';
 import { KwitariuszeComponent } from './kwitariusze';
 
 describe('KwitariuszeComponent', () => {
   const storageKey = (userKey: string) => `kwitariusze.status-filter.${userKey}`;
+  const usdQuote: ExchangeRateQuote = {
+    table: 'A',
+    currencyCode: 'USD',
+    tableNo: '074/A/NBP/2026',
+    effectiveDate: '2026-04-17',
+    mid: 4,
+  };
+
+  let nbpExchangeRateService: jasmine.SpyObj<NbpExchangeRateService>;
 
   const setAuthCurrentUser = (user: unknown): void => {
     localStorage.setItem('auth.currentUser', JSON.stringify(user));
@@ -17,11 +29,17 @@ describe('KwitariuszeComponent', () => {
     return fixture;
   };
 
+  const textContent = (element: Element | null): string => (element?.textContent ?? '').replace(/\s+/g, ' ').trim();
+
   beforeEach(async () => {
     localStorage.clear();
+    nbpExchangeRateService = jasmine.createSpyObj<NbpExchangeRateService>('NbpExchangeRateService', ['getLatestOrPreviousRate']);
 
     await TestBed.configureTestingModule({
       imports: [KwitariuszeComponent, NoopAnimationsModule],
+      providers: [
+        { provide: NbpExchangeRateService, useValue: nbpExchangeRateService },
+      ],
     }).compileComponents();
   });
 
@@ -123,5 +141,87 @@ describe('KwitariuszeComponent', () => {
 
     expect(localStorage.getItem(storageKey('agent-two'))).toBe(JSON.stringify(['wystawiony']));
     expect(localStorage.getItem(storageKey('user-one'))).toBe(JSON.stringify(['oplacony']));
+  });
+
+  it('starts in PLN, hides rate metadata, and does not fetch rates on init', () => {
+    const fixture = createComponent();
+    const component = fixture.componentInstance;
+
+    expect(component.selectedCurrency()).toBe('PLN');
+    expect(component.rateInfo()).toBeNull();
+    expect(nbpExchangeRateService.getLatestOrPreviousRate).not.toHaveBeenCalled();
+    expect(fixture.nativeElement.querySelector('.currency-banner--info')).toBeNull();
+  });
+
+  it('converts visible totals and interest amounts after a successful USD selection', () => {
+    nbpExchangeRateService.getLatestOrPreviousRate.and.returnValue(of(usdQuote));
+
+    const fixture = createComponent();
+    const component = fixture.componentInstance;
+    const service = TestBed.inject(KwitariuszService);
+
+    service.filterType.set('rata-odsetki');
+    fixture.detectChanges();
+
+    const resultCountBeforeChange = service.resultCount();
+
+    component.changeCurrency('USD');
+    fixture.detectChanges();
+
+    const nativeElement = fixture.nativeElement as HTMLElement;
+
+    expect(nbpExchangeRateService.getLatestOrPreviousRate).toHaveBeenCalledOnceWith('USD');
+    expect(component.selectedCurrency()).toBe('USD');
+    expect(component.rateInfo()).toEqual(usdQuote);
+    expect(service.filterType()).toBe('rata-odsetki');
+    expect(service.resultCount()).toBe(resultCountBeforeChange);
+    expect(textContent(nativeElement.querySelector('.cell-amount__total'))).toContain('82,13 USD');
+    expect(textContent(nativeElement.querySelector('.cell-amount__interest'))).toContain('odsetki: 4,63 USD');
+    expect(textContent(nativeElement.querySelector('.currency-banner--info'))).toContain('1 USD = 4,0000 PLN');
+    expect(textContent(nativeElement.querySelector('.currency-banner--info'))).toContain('074/A/NBP/2026');
+    expect(textContent(nativeElement.querySelector('.currency-banner--info'))).toContain('2026-04-17');
+  });
+
+  it('keeps the last committed presentation and shows an error when a new quote lookup fails', () => {
+    nbpExchangeRateService.getLatestOrPreviousRate.and.returnValues(
+      of(usdQuote),
+      throwError(() => new NbpExchangeRateError('EUR', 'lookup-failed', 'failed')),
+    );
+
+    const fixture = createComponent();
+    const component = fixture.componentInstance;
+    const nativeElement = fixture.nativeElement as HTMLElement;
+
+    component.changeCurrency('USD');
+    fixture.detectChanges();
+    expect(textContent(nativeElement.querySelector('.cell-amount__total'))).toContain('82,13 USD');
+
+    component.changeCurrency('EUR');
+    fixture.detectChanges();
+
+    expect(component.selectedCurrency()).toBe('USD');
+    expect(component.rateInfo()).toEqual(usdQuote);
+    expect(textContent(nativeElement.querySelector('.cell-amount__total'))).toContain('82,13 USD');
+    expect(textContent(nativeElement.querySelector('.currency-banner--error'))).toContain('Nie udało się pobrać kursu NBP dla EUR');
+  });
+
+  it('switches back to PLN without another rate request and clears metadata', () => {
+    nbpExchangeRateService.getLatestOrPreviousRate.and.returnValue(of(usdQuote));
+
+    const fixture = createComponent();
+    const component = fixture.componentInstance;
+    const nativeElement = fixture.nativeElement as HTMLElement;
+
+    component.changeCurrency('USD');
+    fixture.detectChanges();
+
+    component.changeCurrency('PLN');
+    fixture.detectChanges();
+
+    expect(nbpExchangeRateService.getLatestOrPreviousRate).toHaveBeenCalledTimes(1);
+    expect(component.selectedCurrency()).toBe('PLN');
+    expect(component.rateInfo()).toBeNull();
+    expect(textContent(nativeElement.querySelector('.cell-amount__total'))).toContain('328,50 PLN');
+    expect(nativeElement.querySelector('.currency-banner--info')).toBeNull();
   });
 });
