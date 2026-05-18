@@ -23,7 +23,7 @@ import { Kwitariusz, KwitariuszType } from '../../core/models/kwitariusz.model';
 export class KwitariuszeComponent implements AfterViewInit {
   readonly service = inject(KwitariuszService);
   readonly dataSource = new MatTableDataSource<Kwitariusz>();
-  readonly displayedColumns = ['type', 'number', 'policyNumber', 'insuredName', 'issueDate', 'amount', 'status', 'actions'];
+  readonly displayedColumns = ['type', 'number', 'policyNumber', 'insuredName', 'issueDate', 'status', 'amount', 'actions'];
 
   readonly expandedFilter = signal<'policy' | 'insured' | null>(null);
 
