@@ -31,6 +31,37 @@ describe('KwitariuszeComponent', () => {
 
   const textContent = (element: Element | null): string => (element?.textContent ?? '').replace(/\s+/g, ' ').trim();
 
+  const renderedColumnName = (element: Element): string | null => {
+    const className = Array.from(element.classList).find(name =>
+      name.startsWith('mat-column-') || name.startsWith('cdk-column-'),
+    );
+
+    if (!className) {
+      return null;
+    }
+
+    return className.replace(/^mat-column-/, '').replace(/^cdk-column-/, '');
+  };
+
+  const getHeaderCells = (fixture: ReturnType<typeof createComponent>): HTMLTableCellElement[] =>
+    Array.from(fixture.nativeElement.querySelectorAll('tr.mat-mdc-header-row th'));
+
+  const getHeaderColumnOrder = (fixture: ReturnType<typeof createComponent>): string[] =>
+    getHeaderCells(fixture)
+      .map(cell => renderedColumnName(cell))
+      .filter((column): column is string => column !== null);
+
+  const getFirstRowCells = (fixture: ReturnType<typeof createComponent>): HTMLTableCellElement[] => {
+    const firstRow = fixture.nativeElement.querySelector('tr.mat-mdc-row');
+
+    return firstRow ? Array.from(firstRow.querySelectorAll('td')) : [];
+  };
+
+  const getFirstRowColumnOrder = (fixture: ReturnType<typeof createComponent>): string[] =>
+    getFirstRowCells(fixture)
+      .map(cell => renderedColumnName(cell))
+      .filter((column): column is string => column !== null);
+
   beforeEach(async () => {
     localStorage.clear();
     nbpExchangeRateService = jasmine.createSpyObj<NbpExchangeRateService>('NbpExchangeRateService', ['getLatestOrPreviousRate']);
@@ -141,6 +172,35 @@ describe('KwitariuszeComponent', () => {
 
     expect(localStorage.getItem(storageKey('agent-two'))).toBe(JSON.stringify(['wystawiony']));
     expect(localStorage.getItem(storageKey('user-one'))).toBe(JSON.stringify(['oplacony']));
+  });
+
+  it('renders the header with status directly before amount', () => {
+    const fixture = createComponent();
+    const headerCells = getHeaderCells(fixture);
+    const expectedOrder = ['type', 'number', 'policyNumber', 'insuredName', 'issueDate', 'status', 'amount', 'actions'];
+
+    expect(getHeaderColumnOrder(fixture)).toEqual(expectedOrder);
+
+    const statusHeader = headerCells.find(cell => renderedColumnName(cell) === 'status') ?? null;
+    const amountHeader = headerCells.find(cell => renderedColumnName(cell) === 'amount') ?? null;
+
+    expect(textContent(statusHeader)).toBe('Status');
+    expect(textContent(amountHeader)).toBe('Kwota (z odsetkami)');
+  });
+
+  it('renders each row with the status cell directly before the amount cell', () => {
+    const fixture = createComponent();
+    const rowCells = getFirstRowCells(fixture);
+    const expectedOrder = ['type', 'number', 'policyNumber', 'insuredName', 'issueDate', 'status', 'amount', 'actions'];
+
+    expect(getFirstRowColumnOrder(fixture)).toEqual(expectedOrder);
+
+    const statusCell = rowCells.find(cell => renderedColumnName(cell) === 'status') ?? null;
+    const amountCell = rowCells.find(cell => renderedColumnName(cell) === 'amount') ?? null;
+
+    expect(statusCell?.querySelector('.status-badge')).not.toBeNull();
+    expect(amountCell?.querySelector('.cell-amount__total')).not.toBeNull();
+    expect(amountCell?.querySelector('.cell-amount__interest')).not.toBeNull();
   });
 
   it('starts in PLN, hides rate metadata, and does not fetch rates on init', () => {
