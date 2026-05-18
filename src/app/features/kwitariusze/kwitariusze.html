@@ -13,10 +13,8 @@
     </a>
   </div>
 
-  <!-- Filters row -->
   <div class="filters">
 
-    <!-- Quick: Ostatnie 30 dni -->
     <button class="filter-quick" [class.filter-quick--active]="last30Active" (click)="toggle30Days()">
       <mat-icon>schedule</mat-icon>
       Ostatnie 30 dni
@@ -24,7 +22,6 @@
 
     <div class="filters__sep"></div>
 
-    <!-- Typ -->
     <button class="filter-type" [class.filter-type--active]="activeType === 'rata-odsetki'"
             (click)="setType('rata-odsetki')">
       <mat-icon>payments</mat-icon>
@@ -36,7 +33,6 @@
       Rekalkulacja + odsetki
     </button>
 
-    <!-- Numer polisy chip -->
     <button class="filter-chip" [class.filter-chip--active]="!!policySearch || expandedFilter() === 'policy'"
             (click)="toggleFilter('policy')">
       <mat-icon class="filter-chip__icon">policy</mat-icon>
@@ -44,7 +40,6 @@
       <mat-icon class="filter-chip__arrow">{{ expandedFilter() === 'policy' ? 'expand_less' : 'keyboard_arrow_down' }}</mat-icon>
     </button>
 
-    <!-- Ubezpieczający chip -->
     <button class="filter-chip" [class.filter-chip--active]="!!insuredSearch || expandedFilter() === 'insured'"
             (click)="toggleFilter('insured')">
       <mat-icon class="filter-chip__icon">person_search</mat-icon>
@@ -52,12 +47,23 @@
       <mat-icon class="filter-chip__arrow">{{ expandedFilter() === 'insured' ? 'expand_less' : 'keyboard_arrow_down' }}</mat-icon>
     </button>
 
-    <!-- Search -->
+    <div class="filter-currency">
+      <label class="filter-currency__label" for="presentationCurrency">Lista</label>
+      <select
+        id="presentationCurrency"
+        class="filter-currency__select"
+        [ngModel]="selectedCurrency()"
+        (ngModelChange)="onCurrencyChange($event)">
+        <option value="PLN">PLN</option>
+        <option value="USD">USD</option>
+        <option value="EUR">EUR</option>
+      </select>
+    </div>
+
     <button class="filter-search">
       <mat-icon>search</mat-icon>
     </button>
 
-    <!-- Reset -->
     @if (hasAnyFilter) {
       <button class="filter-reset" (click)="clearFilters()">
         <mat-icon>refresh</mat-icon>
@@ -66,7 +72,6 @@
     }
   </div>
 
-  <!-- Expandable filter inputs -->
   @if (expandedFilter() === 'policy') {
     <div class="filter-expand">
       <mat-icon class="filter-expand__icon">policy</mat-icon>
@@ -97,13 +102,40 @@
     </div>
   }
 
+  @if (selectedCurrency() !== 'PLN') {
+    <div class="currency-panel">
+      @if (isRateLoading()) {
+        <div class="currency-panel__message">
+          Pobieranie kursu NBP dla {{ selectedCurrency() }}…
+        </div>
+      } @else if (rateError()) {
+        <div class="currency-panel__message currency-panel__message--error">
+          {{ rateError() }}
+        </div>
+      } @else if (rateMeta(); as rate) {
+        <div class="currency-panel__content">
+          <div class="currency-panel__item">
+            <span class="currency-panel__label">Kurs średni</span>
+            <span class="currency-panel__value">1 {{ rate.currencyCode }} = {{ formatRateMid(rate.mid) }} PLN</span>
+          </div>
+          <div class="currency-panel__item">
+            <span class="currency-panel__label">Tabela NBP</span>
+            <span class="currency-panel__value">{{ rate.table }} / {{ rate.tableNo }}</span>
+          </div>
+          <div class="currency-panel__item">
+            <span class="currency-panel__label">Data kursu</span>
+            <span class="currency-panel__value">{{ rate.effectiveDate }}</span>
+          </div>
+        </div>
+      }
+    </div>
+  }
+
   <div class="results-count">Wyników: {{ service.resultCount() }}</div>
 
-  <!-- Table -->
   <div class="table-wrap">
     <table mat-table [dataSource]="dataSource" matSort class="data-table">
 
-      <!-- Typ -->
       <ng-container matColumnDef="type">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Typ</th>
         <td mat-cell *matCellDef="let row">
@@ -114,7 +146,6 @@
         </td>
       </ng-container>
 
-      <!-- Numer kwitariusza -->
       <ng-container matColumnDef="number">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Numer kwitariusza</th>
         <td mat-cell *matCellDef="let row">
@@ -125,7 +156,6 @@
         </td>
       </ng-container>
 
-      <!-- Numer polisy -->
       <ng-container matColumnDef="policyNumber">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Numer polisy</th>
         <td mat-cell *matCellDef="let row">
@@ -136,7 +166,6 @@
         </td>
       </ng-container>
 
-      <!-- Ubezpieczający -->
       <ng-container matColumnDef="insuredName">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Ubezpieczający</th>
         <td mat-cell *matCellDef="let row">
@@ -147,24 +176,21 @@
         </td>
       </ng-container>
 
-      <!-- Data wystawienia -->
       <ng-container matColumnDef="issueDate">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Data wystawienia</th>
         <td mat-cell *matCellDef="let row">{{ row.issueDate }}</td>
       </ng-container>
 
-      <!-- Kwota -->
       <ng-container matColumnDef="amount">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Kwota (z odsetkami)</th>
         <td mat-cell *matCellDef="let row">
           <div class="cell-amount">
-            <span class="cell-amount__total">{{ formatAmount(totalAmount(row)) }}</span>
-            <span class="cell-amount__interest">odsetki: {{ formatAmount(row.interest) }}</span>
+            <span class="cell-amount__total">{{ displayTotalAmount(row) }}</span>
+            <span class="cell-amount__interest">odsetki: {{ displayInterestAmount(row) }}</span>
           </div>
         </td>
       </ng-container>
 
-      <!-- Status -->
       <ng-container matColumnDef="status">
         <th mat-header-cell *matHeaderCellDef>Status</th>
         <td mat-cell *matCellDef="let row">
@@ -172,7 +198,6 @@
         </td>
       </ng-container>
 
-      <!-- Actions -->
       <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef>
           <mat-icon class="header-grid-icon">grid_view</mat-icon>

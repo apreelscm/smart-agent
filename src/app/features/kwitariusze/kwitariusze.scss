@@ -32,7 +32,6 @@
   mat-icon { font-size: 18px; width: 18px; height: 18px; }
 }
 
-// ── Filters ───────────────────────────────────────────────────────────
 .filters {
   display: flex;
   align-items: center;
@@ -47,7 +46,6 @@
   }
 }
 
-// Quick filter (Ostatnie 30 dni)
 .filter-quick {
   display: inline-flex; align-items: center; gap: 5px;
   padding: 6px 12px;
@@ -66,7 +64,6 @@
   mat-icon { font-size: 14px; width: 14px; height: 14px; }
 }
 
-// Type toggle buttons
 .filter-type {
   display: inline-flex; align-items: center; gap: 5px;
   padding: 6px 13px;
@@ -85,7 +82,6 @@
   mat-icon { font-size: 15px; width: 15px; height: 15px; }
 }
 
-// Dropdown chips (Numer polisy, Ubezpieczający)
 .filter-chip {
   display: inline-flex; align-items: center; gap: 5px;
   padding: 6px 10px 6px 12px;
@@ -112,7 +108,36 @@
   &__arrow { font-size: 16px; width: 16px; height: 16px; color: #9aa3b0; flex-shrink: 0; }
 }
 
-// Round search button
+.filter-currency {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 12px;
+  background: white;
+  border: 1px solid #c8cdd6;
+  border-radius: 20px;
+  min-height: 34px;
+
+  &__label {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: #3d4a5c;
+    font-family: 'Inter', sans-serif;
+  }
+
+  &__select {
+    border: none;
+    background: transparent;
+    color: #2059a7;
+    font-size: 12.5px;
+    font-weight: 600;
+    font-family: 'Inter', sans-serif;
+    outline: none;
+    cursor: pointer;
+    padding-right: 4px;
+  }
+}
+
 .filter-search {
   width: 34px; height: 34px; border-radius: 50%;
   background: #2059a7; color: white;
@@ -134,7 +159,6 @@
   mat-icon { font-size: 16px; width: 16px; height: 16px; }
 }
 
-// ── Expandable filter input ───────────────────────────────────────────
 .filter-expand {
   display: flex; align-items: center; gap: 8px;
   padding: 8px 14px;
@@ -165,11 +189,52 @@
   }
 }
 
+.currency-panel {
+  margin-bottom: 12px;
+  padding: 10px 14px;
+  background: #f8faff;
+  border: 1px solid #c5d4f0;
+  border-radius: 8px;
+
+  &__content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+  }
+
+  &__item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  &__label {
+    font-size: 11px;
+    color: #6b7687;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+  }
+
+  &__value {
+    font-size: 13px;
+    color: #1a2332;
+    font-weight: 600;
+  }
+
+  &__message {
+    font-size: 13px;
+    color: #2059a7;
+
+    &--error {
+      color: #c62828;
+    }
+  }
+}
+
 .results-count {
   font-size: 12px; color: #6b7687; margin-bottom: 12px;
 }
 
-// ── Table ─────────────────────────────────────────────────────────────
 .table-wrap {
   background: white;
   border-radius: 8px;
@@ -203,7 +268,6 @@
   color: #9aa3b0; vertical-align: middle;
 }
 
-// ── Type cell ─────────────────────────────────────────────────────────
 .type-cell {
   display: inline-flex; align-items: center; justify-content: center;
   width: 32px; height: 32px;
@@ -222,7 +286,6 @@
   }
 }
 
-// ── Status badge (transparent fill, border only) ──────────────────────
 .status-badge {
   display: inline-block;
   padding: 3px 10px;
@@ -237,7 +300,6 @@
   &--oczekujacy  { color: #e65100; border: 1px solid #ffcc02; }
 }
 
-// ── Link cells ────────────────────────────────────────────────────────
 .cell-link {
   display: flex; align-items: center; gap: 6px;
   color: #2059a7; font-size: 12.5px; font-weight: 500;
