@@ -127,10 +127,10 @@ export class KwitariuszeComponent implements AfterViewInit {
           return;
         }
 
-        this.pendingCurrency.set(null);
         this.selectedCurrency.set(currency);
         this.rateInfo.set(quote);
         this.currencyError.set(null);
+        this.pendingCurrency.set(null);
       },
       error: () => {
         if (requestId !== this.currencyRequestId) {

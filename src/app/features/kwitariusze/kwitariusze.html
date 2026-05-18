@@ -64,7 +64,7 @@
       <span class="currency-filter__label">Lista</span>
       <select id="list-currency"
               class="currency-filter__select"
-              [ngModel]="selectedCurrency()"
+              [ngModel]="pendingCurrency() ?? selectedCurrency()"
               (ngModelChange)="changeCurrency($event)">
         @for (currency of currencyOptions; track currency) {
           <option [value]="currency">{{ currency }}</option>
