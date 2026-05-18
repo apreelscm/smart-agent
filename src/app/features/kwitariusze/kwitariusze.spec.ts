@@ -153,6 +153,31 @@ describe('KwitariuszeComponent', () => {
     expect(fixture.nativeElement.querySelector('.currency-banner--info')).toBeNull();
   });
 
+  it('renders Status immediately before Kwota (z odsetkami) in the standard table', () => {
+    const fixture = createComponent();
+    const nativeElement = fixture.nativeElement as HTMLElement;
+    const headerCells = Array.from(nativeElement.querySelectorAll('tr.mat-mdc-header-row th.mat-mdc-header-cell'));
+
+    const columnOrder = headerCells.map(cell => {
+      const columnClass = Array.from(cell.classList).find(className => className.startsWith('mat-column-'));
+      return columnClass?.replace('mat-column-', '') ?? '';
+    });
+
+    const statusHeader = nativeElement.querySelector('th.mat-column-status');
+    const amountHeader = nativeElement.querySelector('th.mat-column-amount');
+    const firstRowStatus = nativeElement.querySelector('td.mat-column-status .status-badge');
+    const firstRowAmountTotal = nativeElement.querySelector('td.mat-column-amount .cell-amount__total');
+    const firstRowAmountInterest = nativeElement.querySelector('td.mat-column-amount .cell-amount__interest');
+
+    expect(columnOrder).toEqual(['type', 'number', 'policyNumber', 'insuredName', 'issueDate', 'status', 'amount', 'actions']);
+    expect(columnOrder.indexOf('status')).toBe(columnOrder.indexOf('amount') - 1);
+    expect(textContent(statusHeader)).toBe('Status');
+    expect(textContent(amountHeader)).toContain('Kwota (z odsetkami)');
+    expect(textContent(firstRowStatus)).not.toBe('');
+    expect(textContent(firstRowAmountTotal)).toContain('PLN');
+    expect(textContent(firstRowAmountInterest)).toContain('odsetki:');
+  });
+
   it('converts visible totals and interest amounts after a successful USD selection', () => {
     nbpExchangeRateService.getLatestOrPreviousRate.and.returnValue(of(usdQuote));
 

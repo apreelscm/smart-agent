@@ -27,7 +27,7 @@ export class KwitariuszeComponent implements AfterViewInit {
   private readonly nbpExchangeRateService = inject(NbpExchangeRateService);
 
   readonly dataSource = new MatTableDataSource<Kwitariusz>();
-  readonly displayedColumns = ['type', 'number', 'policyNumber', 'insuredName', 'issueDate', 'amount', 'status', 'actions'];
+  readonly displayedColumns = ['type', 'number', 'policyNumber', 'insuredName', 'issueDate', 'status', 'amount', 'actions'];
   readonly expandedFilter = signal<'policy' | 'insured' | 'status' | null>(null);
   readonly currencyOptions: readonly SupportedCurrency[] = ['PLN', 'USD', 'EUR'];
   readonly selectedCurrency = signal<SupportedCurrency>('PLN');
