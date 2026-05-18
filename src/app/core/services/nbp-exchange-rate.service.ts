@@ -16,9 +16,9 @@ export class NbpExchangeRateError extends Error {
     readonly currency: ForeignCurrency,
     readonly reason: 'lookup-failed' | 'invalid-payload',
     message: string,
-    readonly cause?: unknown,
+    cause?: unknown,
   ) {
-    super(message);
+    super(message, { cause });
     this.name = 'NbpExchangeRateError';
   }
 }
