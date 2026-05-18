@@ -1,5 +1,13 @@
-import { Injectable, computed, signal } from '@angular/core';
-import { Kwitariusz, KwitariuszType, MockPolicy, PolicyStatus } from '../models/kwitariusz.model';
+import { Injectable, computed, effect, inject, signal } from '@angular/core';
+import {
+  KWITARIUSZ_STATUS_VALUES,
+  Kwitariusz,
+  KwitariuszStatus,
+  KwitariuszType,
+  MockPolicy,
+  PolicyStatus,
+} from '../models/kwitariusz.model';
+import { AgentService } from './agent.service';
 
 const MOCK_KWITARIUSZE: Kwitariusz[] = [
   {
@@ -188,31 +196,68 @@ export const POLICY_STATUS_WARNINGS: Partial<Record<PolicyStatus, { type: 'warni
 
 @Injectable({ providedIn: 'root' })
 export class KwitariuszService {
+  private readonly agentService = inject(AgentService);
+  private readonly statusStorageKeyPrefix = 'kwitariusze.status-filter.';
+
   readonly kwitariusze = signal<Kwitariusz[]>(MOCK_KWITARIUSZE);
 
-  readonly filterType        = signal('');
-  readonly filterLast30Days  = signal(false);
-  readonly filterPolicySearch   = signal('');
-  readonly filterInsuredSearch  = signal('');
+  readonly filterType = signal('');
+  readonly filterLast30Days = signal(false);
+  readonly filterPolicySearch = signal('');
+  readonly filterInsuredSearch = signal('');
+  readonly filterStatuses = signal<KwitariuszStatus[]>([]);
 
-  readonly filtered = computed(() => {
-    const t    = this.filterType();
-    const d30  = this.filterLast30Days();
-    const pol  = this.filterPolicySearch().toLowerCase();
-    const ins  = this.filterInsuredSearch().toLowerCase();
+  readonly baseFiltered = computed(() => {
+    const type = this.filterType();
+    const last30Days = this.filterLast30Days();
+    const policySearch = this.filterPolicySearch().toLowerCase();
+    const insuredSearch = this.filterInsuredSearch().toLowerCase();
     const cutoff = new Date();
     cutoff.setDate(cutoff.getDate() - 30);
 
     return this.kwitariusze().filter(k => {
-      if (t   && k.type !== t) return false;
-      if (d30 && new Date(k.issueDate) < cutoff) return false;
-      if (pol && !k.policyNumber.toLowerCase().includes(pol)) return false;
-      if (ins && !k.insuredName.toLowerCase().includes(ins)) return false;
+      if (type && k.type !== type) return false;
+      if (last30Days && new Date(k.issueDate) < cutoff) return false;
+      if (policySearch && !k.policyNumber.toLowerCase().includes(policySearch)) return false;
+      if (insuredSearch && !k.insuredName.toLowerCase().includes(insuredSearch)) return false;
       return true;
     });
   });
 
+  readonly availableStatuses = computed(() => {
+    const available = new Set(this.baseFiltered().map(k => k.status));
+    return KWITARIUSZ_STATUS_VALUES.filter(status => available.has(status));
+  });
+
+  readonly filtered = computed(() => {
+    const selectedStatuses = this.filterStatuses();
+
+    if (!selectedStatuses.length) {
+      return this.baseFiltered();
+    }
+
+    const selected = new Set(selectedStatuses);
+    return this.baseFiltered().filter(k => selected.has(k.status));
+  });
+
   readonly resultCount = computed(() => this.filtered().length);
+
+  constructor() {
+    effect(() => {
+      const selectedStatuses = this.filterStatuses();
+
+      if (!selectedStatuses.length) {
+        return;
+      }
+
+      const availableStatuses = new Set(this.availableStatuses());
+      const reconciledStatuses = selectedStatuses.filter(status => availableStatuses.has(status));
+
+      if (!this.areStatusesEqual(selectedStatuses, reconciledStatuses)) {
+        this.updateStatusFilter(reconciledStatuses);
+      }
+    });
+  }
 
   searchPolicy(series: string, number: string): MockPolicy | null {
     const s = series.trim().toUpperCase();
@@ -237,10 +282,151 @@ export class KwitariuszService {
     );
   }
 
+  toggleStatusFilter(status: KwitariuszStatus): void {
+    const current = this.filterStatuses();
+    const next = current.includes(status)
+      ? current.filter(selectedStatus => selectedStatus !== status)
+      : [...current, status];
+
+    this.updateStatusFilter(next);
+  }
+
+  clearStatusFilter(): void {
+    this.updateStatusFilter([]);
+  }
+
+  restorePersistedStatusFilter(): void {
+    this.updateStatusFilter(this.readPersistedStatusFilter());
+  }
+
   clearFilters(): void {
     this.filterType.set('');
     this.filterLast30Days.set(false);
     this.filterPolicySearch.set('');
     this.filterInsuredSearch.set('');
+    this.clearStatusFilter();
+  }
+
+  private updateStatusFilter(statuses: readonly unknown[]): void {
+    const normalizedStatuses = this.normalizeStatuses(statuses);
+
+    if (!this.areStatusesEqual(this.filterStatuses(), normalizedStatuses)) {
+      this.filterStatuses.set(normalizedStatuses);
+    }
+
+    this.persistStatusFilter(normalizedStatuses);
+  }
+
+  private readPersistedStatusFilter(): KwitariuszStatus[] {
+    const storage = this.getStorage();
+
+    if (!storage) {
+      return [];
+    }
+
+    const rawValue = storage.getItem(this.getStatusFilterStorageKey());
+
+    if (!rawValue) {
+      return [];
+    }
+
+    try {
+      const parsedValue: unknown = JSON.parse(rawValue);
+
+      if (!Array.isArray(parsedValue)) {
+        return [];
+      }
+
+      return this.normalizeStatuses(parsedValue);
+    } catch {
+      return [];
+    }
+  }
+
+  private persistStatusFilter(statuses: readonly KwitariuszStatus[]): void {
+    const storage = this.getStorage();
+
+    if (!storage) {
+      return;
+    }
+
+    const storageKey = this.getStatusFilterStorageKey();
+
+    if (!statuses.length) {
+      storage.removeItem(storageKey);
+      return;
+    }
+
+    storage.setItem(storageKey, JSON.stringify(statuses));
+  }
+
+  private getStatusFilterStorageKey(): string {
+    return `${this.statusStorageKeyPrefix}${this.resolveCurrentUserKey()}`;
+  }
+
+  private resolveCurrentUserKey(): string {
+    const currentUser = this.readCurrentUserFromStorage();
+    const userKey =
+      this.asNonEmptyString(currentUser?.['auwId']) ??
+      this.asNonEmptyString(currentUser?.['username']) ??
+      this.asNonEmptyString(this.agentService.currentAgent().username);
+
+    return userKey ?? 'anonymous';
+  }
+
+  private readCurrentUserFromStorage(): Record<string, unknown> | null {
+    const storage = this.getStorage();
+
+    if (!storage) {
+      return null;
+    }
+
+    const rawValue = storage.getItem('auth.currentUser');
+
+    if (!rawValue) {
+      return null;
+    }
+
+    try {
+      const parsedValue: unknown = JSON.parse(rawValue);
+
+      if (!parsedValue || typeof parsedValue !== 'object' || Array.isArray(parsedValue)) {
+        return null;
+      }
+
+      return parsedValue as Record<string, unknown>;
+    } catch {
+      return null;
+    }
+  }
+
+  private normalizeStatuses(statuses: readonly unknown[]): KwitariuszStatus[] {
+    const uniqueStatuses = new Set<KwitariuszStatus>();
+
+    for (const status of statuses) {
+      if (this.isKwitariuszStatus(status)) {
+        uniqueStatuses.add(status);
+      }
+    }
+
+    return [...uniqueStatuses].sort(
+      (left, right) => KWITARIUSZ_STATUS_VALUES.indexOf(left) - KWITARIUSZ_STATUS_VALUES.indexOf(right),
+    );
+  }
+
+  private isKwitariuszStatus(value: unknown): value is KwitariuszStatus {
+    return typeof value === 'string' && KWITARIUSZ_STATUS_VALUES.includes(value as KwitariuszStatus);
+  }
+
+  private areStatusesEqual(left: readonly KwitariuszStatus[], right: readonly KwitariuszStatus[]): boolean {
+    return left.length === right.length && left.every((status, index) => status === right[index]);
+  }
+
+  private asNonEmptyString(value: unknown): string | null {
+    return typeof value === 'string' && value.trim() ? value.trim() : null;
+  }
+
+  private getStorage(): Storage | null {
+    return typeof localStorage === 'undefined' ? null : localStorage;
   }
 }

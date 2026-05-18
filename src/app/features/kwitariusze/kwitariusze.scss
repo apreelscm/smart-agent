@@ -85,7 +85,7 @@
   mat-icon { font-size: 15px; width: 15px; height: 15px; }
 }
 
-// Dropdown chips (Numer polisy, Ubezpieczający)
+// Dropdown chips (Numer polisy, Ubezpieczający, Status)
 .filter-chip {
   display: inline-flex; align-items: center; gap: 5px;
   padding: 6px 10px 6px 12px;
@@ -143,6 +143,11 @@
   border-radius: 8px;
   margin-bottom: 10px;
 
+  &--status {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
   &__icon { font-size: 18px; width: 18px; height: 18px; color: #2059a7; flex-shrink: 0; }
 
   &__input {
@@ -162,6 +167,29 @@
 
     &:hover { background: #e0e7ff; color: #2059a7; }
     mat-icon { font-size: 16px; width: 16px; height: 16px; }
+  }
+
+  &__empty {
+    font-size: 12px;
+    color: #6b7687;
+  }
+}
+
+.filter-status-option {
+  display: inline-flex;
+  align-items: center;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  border-radius: 12px;
+
+  &:hover .status-badge {
+    background: #f0f4ff;
+  }
+
+  &--active .status-badge {
+    background: #f0f4ff;
   }
 }
 
