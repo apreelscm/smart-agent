@@ -19,13 +19,23 @@ const USER_TWO = {
   auwId: 'agent-two',
 };
 
-test('restores selected status after page reload', async ({ page }, testInfo) => {
-  await page.addInitScript((user) => {
-    localStorage.clear();
-    localStorage.setItem('auth.currentUser', JSON.stringify(user));
-  }, USER_ONE);
-
+async function seedCurrentUser(page: Parameters<typeof test>[0]['page'], user: typeof USER_ONE): Promise<void> {
   await page.goto('/');
+  await page.evaluate((currentUser) => {
+    localStorage.clear();
+    localStorage.setItem('auth.currentUser', JSON.stringify(currentUser));
+  }, user);
+}
+
+async function switchCurrentUser(page: Parameters<typeof test>[0]['page'], user: typeof USER_ONE): Promise<void> {
+  await page.goto('/');
+  await page.evaluate((currentUser) => {
+    localStorage.setItem('auth.currentUser', JSON.stringify(currentUser));
+  }, user);
+}
+
+test('restores selected status after page reload', async ({ page }, testInfo) => {
+  await seedCurrentUser(page, USER_ONE);
   await page.goto('/rozliczenia/kwitariusze');
 
   await expect(page.getByRole('heading', { name: 'Kwitariusze' })).toBeVisible();
@@ -61,12 +71,7 @@ test('restores the filter after leaving the screen and clears it via reset', asy
   { page },
   testInfo,
 ) => {
-  await page.addInitScript((user) => {
-    localStorage.clear();
-    localStorage.setItem('auth.currentUser', JSON.stringify(user));
-  }, USER_ONE);
-
-  await page.goto('/');
+  await seedCurrentUser(page, USER_ONE);
   await page.goto('/rozliczenia/kwitariusze');
 
   const statusChip = page.locator('.filter-chip').filter({ hasText: 'Status' }).first();
@@ -114,12 +119,7 @@ test('restores the filter after leaving the screen and clears it via reset', asy
 });
 
 test('keeps remembered status selections isolated per user', async ({ page }, testInfo) => {
-  await page.addInitScript((user) => {
-    localStorage.clear();
-    localStorage.setItem('auth.currentUser', JSON.stringify(user));
-  }, USER_ONE);
-
-  await page.goto('/');
+  await seedCurrentUser(page, USER_ONE);
   await page.goto('/rozliczenia/kwitariusze');
 
   const statusChip = page.locator('.filter-chip').filter({ hasText: 'Status' }).first();
@@ -136,11 +136,7 @@ test('keeps remembered status selections isolated per user', async ({ page }, te
   await expect(page.getByRole('link', { name: 'KW/2025/001' })).toHaveCount(0);
   await captureStep(page, testInfo, 'user-one-filter-saved');
 
-  await page.evaluate((user) => {
-    localStorage.setItem('auth.currentUser', JSON.stringify(user));
-  }, USER_TWO);
-
-  await page.goto('/');
+  await switchCurrentUser(page, USER_TWO);
   await page.goto('/rozliczenia/kwitariusze');
 
   await expect(page.getByRole('heading', { name: 'Kwitariusze' })).toBeVisible();
@@ -151,11 +147,7 @@ test('keeps remembered status selections isolated per user', async ({ page }, te
   await expect(page.getByRole('link', { name: 'KW/2025/002' })).toBeVisible();
   await captureStep(page, testInfo, 'user-two-sees-default-state');
 
-  await page.evaluate((user) => {
-    localStorage.setItem('auth.currentUser', JSON.stringify(user));
-  }, USER_ONE);
-
-  await page.goto('/');
+  await switchCurrentUser(page, USER_ONE);
   await page.goto('/rozliczenia/kwitariusze');
 
   await expect(page.getByRole('heading', { name: 'Kwitariusze' })).toBeVisible();
