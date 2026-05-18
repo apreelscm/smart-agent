@@ -1,5 +1,11 @@
 export type KwitariuszType = 'rata-odsetki' | 'rekalkulacja-odsetki';
 export type KwitariuszStatus = 'wystawiony' | 'oplacony' | 'anulowany' | 'oczekujacy';
+export const KWITARIUSZ_STATUS_VALUES: readonly KwitariuszStatus[] = [
+  'wystawiony',
+  'oplacony',
+  'anulowany',
+  'oczekujacy',
+];
 export type PolicyStatus = 'aktywna' | 'rozliczona' | 'rozwiazana' | 'oplacona' | 'ochrona-skonczona' | 'anulowana';
 export type BeSystem = 'SITU' | 'VERSIS';
 

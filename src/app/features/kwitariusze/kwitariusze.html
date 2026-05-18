@@ -36,6 +36,14 @@
       Rekalkulacja + odsetki
     </button>
 
+    <!-- Status chip -->
+    <button class="filter-chip" [class.filter-chip--active]="selectedStatusCount > 0 || expandedFilter() === 'status'"
+            (click)="toggleFilter('status')">
+      <mat-icon class="filter-chip__icon">tune</mat-icon>
+      <span>{{ statusFilterLabel }}</span>
+      <mat-icon class="filter-chip__arrow">{{ expandedFilter() === 'status' ? 'expand_less' : 'keyboard_arrow_down' }}</mat-icon>
+    </button>
+
     <!-- Numer polisy chip -->
     <button class="filter-chip" [class.filter-chip--active]="!!policySearch || expandedFilter() === 'policy'"
             (click)="toggleFilter('policy')">
@@ -67,6 +75,29 @@
   </div>
 
   <!-- Expandable filter inputs -->
+  @if (expandedFilter() === 'status') {
+    <div class="filter-expand filter-expand--status">
+      @if (availableStatuses.length) {
+        @for (status of availableStatuses; track status) {
+          <button class="filter-status-option"
+                  [class.filter-status-option--active]="selectedStatuses.includes(status)"
+                  (click)="toggleStatus(status)">
+            <span class="status-badge status-badge--{{ status }}">{{ status | titlecase }}</span>
+          </button>
+        }
+      } @else {
+        <span class="filter-expand__empty">Brak dostępnych statusów</span>
+      }
+
+      @if (selectedStatusCount) {
+        <button class="filter-reset" (click)="clearStatusFilter()">
+          <mat-icon>close</mat-icon>
+          Wyczyść status
+        </button>
+      }
+    </div>
+  }
+
   @if (expandedFilter() === 'policy') {
     <div class="filter-expand">
       <mat-icon class="filter-expand__icon">policy</mat-icon>
