@@ -60,6 +60,21 @@
       <mat-icon class="filter-chip__arrow">{{ expandedFilter() === 'insured' ? 'expand_less' : 'keyboard_arrow_down' }}</mat-icon>
     </button>
 
+    <label class="currency-filter" for="list-currency">
+      <span class="currency-filter__label">Lista</span>
+      <select id="list-currency"
+              class="currency-filter__select"
+              [ngModel]="pendingCurrency() ?? selectedCurrency()"
+              (ngModelChange)="changeCurrency($event)">
+        @for (currency of currencyOptions; track currency) {
+          <option [value]="currency">{{ currency }}</option>
+        }
+      </select>
+      @if (pendingCurrency()) {
+        <span class="currency-filter__loading">Pobieranie kursu…</span>
+      }
+    </label>
+
     <!-- Search -->
     <button class="filter-search">
       <mat-icon>search</mat-icon>
@@ -128,6 +143,26 @@
     </div>
   }
 
+  @if (currencyError()) {
+    <div class="currency-banner currency-banner--error">
+      <mat-icon class="currency-banner__icon">error_outline</mat-icon>
+      <span>{{ currencyError() }}</span>
+    </div>
+  }
+
+  @if (selectedCurrency() !== 'PLN') {
+    @if (rateInfo(); as rate) {
+      <div class="currency-banner currency-banner--info">
+        <mat-icon class="currency-banner__icon">info</mat-icon>
+        <span>
+          Kurs NBP: 1 {{ rate.currencyCode }} = {{ formatMidRate(rate.mid) }} PLN ·
+          tabela {{ rate.table }} · {{ rate.tableNo }} ·
+          data obowiązywania: {{ rate.effectiveDate }}
+        </span>
+      </div>
+    }
+  }
+
   <div class="results-count">Wyników: {{ service.resultCount() }}</div>
 
   <!-- Table -->
@@ -189,8 +224,8 @@
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Kwota (z odsetkami)</th>
         <td mat-cell *matCellDef="let row">
           <div class="cell-amount">
-            <span class="cell-amount__total">{{ formatAmount(totalAmount(row)) }}</span>
-            <span class="cell-amount__interest">odsetki: {{ formatAmount(row.interest) }}</span>
+            <span class="cell-amount__total">{{ formatAmount(presentedTotalAmount(row)) }}</span>
+            <span class="cell-amount__interest">odsetki: {{ formatAmount(presentedInterestAmount(row)) }}</span>
           </div>
         </td>
       </ng-container>
