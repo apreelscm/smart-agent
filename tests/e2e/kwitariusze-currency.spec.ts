@@ -162,6 +162,6 @@ test('shows an error and hides converted amounts when NBP rate loading fails', a
         }),
     ).toBeVisible();
     await expect(page.getByText('—', { exact: true }).first()).toBeVisible();
-    await expect(page.getByText('odsetki: —', { exact: true })).toBeVisible();
+    await expect(page.getByText('odsetki: —', { exact: true }).first()).toBeVisible();
     await captureStep(page, testInfo, 'kwitariusze-rate-error');
 });
