@@ -17,11 +17,10 @@ test('shows Status directly before Kwota (z odsetkami) on the kwitariusze list',
     localStorage.setItem('auth.currentUser', JSON.stringify(user));
   }, DEMO_USER);
 
-  await page.goto('/');
+  await page.goto('/rozliczenia/kwitariusze');
   await expect(page.locator('app-root')).toBeVisible();
-
-  await page.getByRole('link', { name: /kwitariusze/i }).first().click();
   await expect(page).toHaveURL(/\/rozliczenia\/kwitariusze$/);
+  await expect(page.getByRole('heading', { name: 'Kwitariusze' })).toBeVisible();
   await captureStep(page, testInfo, 'kwitariusze-list-open');
 
   const table = page.locator('table').first();
