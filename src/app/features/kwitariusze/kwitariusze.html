@@ -69,7 +69,7 @@
     @if (hasAnyFilter) {
       <button class="filter-reset" (click)="clearFilters()">
         <mat-icon>refresh</mat-icon>
-        Zresetuj
+        <span>Zresetuj</span>
       </button>
     }
   </div>
@@ -92,7 +92,7 @@
       @if (selectedStatusCount) {
         <button class="filter-reset" (click)="clearStatusFilter()">
           <mat-icon>close</mat-icon>
-          Wyczyść status
+          <span>Wyczyść status</span>
         </button>
       }
     </div>
