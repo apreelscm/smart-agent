@@ -4,17 +4,66 @@
 
   <div class="form-row">
     <div class="form-group">
-      <label>Imię</label>
-      <input type="text" [(ngModel)]="firstName" placeholder="Anna" />
+      <label for="firstName">Imię</label>
+      <input id="firstName" type="text" [(ngModel)]="firstName" placeholder="Anna" />
     </div>
     <div class="form-group">
-      <label>Nazwisko</label>
-      <input type="text" [(ngModel)]="lastName" placeholder="Kowalska" />
+      <label for="lastName">Nazwisko</label>
+      <input id="lastName" type="text" [(ngModel)]="lastName" placeholder="Kowalska" />
     </div>
   </div>
 
   <div class="form-group">
-    <label>Podaj swoją datę urodzenia</label>
-    <input type="date" [(ngModel)]="dateOfBirth" />
+    <label>Sposób podania daty urodzenia</label>
+    <div class="input-mode-toggle" role="group" aria-label="Sposób podania daty urodzenia">
+      <button
+        type="button"
+        class="toggle-option"
+        [class.active]="birthDateInputMode === 'date'"
+        (click)="setBirthDateInputMode('date')">
+        Data urodzenia
+      </button>
+      <button
+        type="button"
+        class="toggle-option"
+        [class.active]="birthDateInputMode === 'pesel'"
+        (click)="setBirthDateInputMode('pesel')">
+        PESEL
+      </button>
+    </div>
+  </div>
+
+  @if (isPeselMode) {
+    <div class="form-group" [class.has-error]="!!peselError">
+      <label for="pesel">Numer PESEL</label>
+      <input
+        id="pesel"
+        type="text"
+        [ngModel]="pesel"
+        (ngModelChange)="onPeselChange($event)"
+        maxlength="11"
+        inputmode="numeric"
+        placeholder="82030312345" />
+      @if (peselError) {
+        <p class="error-text">{{ peselError }}</p>
+      }
+    </div>
+  }
+
+  <div class="form-group">
+    <label for="dateOfBirth">Podaj swoją datę urodzenia</label>
+    <input
+      id="dateOfBirth"
+      type="date"
+      [(ngModel)]="dateOfBirth"
+      [readonly]="isPeselMode"
+      [class.birth-date-readonly]="isPeselMode"
+      [attr.aria-readonly]="isPeselMode"
+      [attr.tabindex]="isPeselMode ? -1 : null" />
+    @if (isPeselMode) {
+      <p class="helper-text">
+        Data urodzenia jest uzupełniana automatycznie na podstawie poprawnego numeru PESEL.
+      </p>
+    }
   </div>
 </app-wizard-card>

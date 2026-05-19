@@ -1,0 +1,59 @@
+:host {
+  display: block;
+}
+
+.input-mode-toggle {
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  border: 1.5px solid var(--eh-border);
+  border-radius: 8px;
+  background: #f7f4ee;
+}
+
+.toggle-option {
+  flex: 1;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--eh-text);
+  padding: 12px 14px;
+  font-family: var(--font-sans);
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.toggle-option.active {
+  background: var(--eh-red);
+  color: var(--eh-white);
+  box-shadow: 0 2px 8px rgba(200, 16, 46, 0.2);
+}
+
+.form-group.has-error input {
+  border-color: var(--eh-red);
+}
+
+.birth-date-readonly {
+  background: #f3f1ed !important;
+  color: var(--eh-muted) !important;
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+.helper-text,
+.error-text {
+  margin-top: 6px;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.helper-text {
+  color: var(--eh-muted);
+}
+
+.error-text {
+  color: var(--eh-red);
+  font-weight: 600;
+}

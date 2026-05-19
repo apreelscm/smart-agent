@@ -3,6 +3,7 @@ export type FuelType = 'benzyna' | 'diesel' | 'elektryczny' | 'gaz';
 export type LicenseYears = 'more3' | '1to3' | 'less1';
 export type VehiclePurpose = 'prywatny' | 'firmowy';
 export type PaymentMethod = 'przelew' | 'karta' | 'applepay' | 'googlepay' | 'odroczona';
+export type BirthDateInputMode = 'date' | 'pesel';
 
 export interface Address {
   zipCode: string;
@@ -52,6 +53,8 @@ export interface PolicyDraft {
     firstName: string;
     lastName: string;
     dateOfBirth: string;
+    pesel: string;
+    birthDateInputMode: BirthDateInputMode;
   };
   vehicle: {
     plateNumber: string;
@@ -112,7 +115,13 @@ export function emptyPerson(): Person {
 
 export function emptyDraft(): PolicyDraft {
   return {
-    personalInfo: { firstName: '', lastName: '', dateOfBirth: '' },
+    personalInfo: {
+      firstName: '',
+      lastName: '',
+      dateOfBirth: '',
+      pesel: '',
+      birthDateInputMode: 'date',
+    },
     vehicle: {
       plateNumber: '', type: 'osobowy', year: 0, make: '', model: '',
       fuelType: 'benzyna', engineCC: 0, engineKM: 0, version: '',
@@ -145,7 +154,13 @@ export function seedDraft(): PolicyDraft {
     address: { zipCode: '00-713', city: 'Warszawa', street: 'ul. Lubomirska', houseNumber: '4', flatNumber: '32' },
   };
   return {
-    personalInfo: { firstName: 'Anna', lastName: 'Kowalska', dateOfBirth: '1982-03-03' },
+    personalInfo: {
+      firstName: 'Anna',
+      lastName: 'Kowalska',
+      dateOfBirth: '1982-03-03',
+      pesel: '',
+      birthDateInputMode: 'date',
+    },
     vehicle: {
       plateNumber: 'WI 12345',
       type: 'osobowy',
