@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { WizardCardComponent } from '../../../../shared/components/wizard-card/wizard-card.component';
@@ -31,6 +31,7 @@ interface CoverageOption {
 export class Step15CoverageComponent {
   private readonly draft = inject(PolicyDraftService);
   private readonly router = inject(Router);
+  private readonly changeDetectorRef = inject(ChangeDetectorRef);
   private readonly nbpExchangeRateService = inject(NbpExchangeRateService);
 
   private readonly amountFormatter = new Intl.NumberFormat('pl-PL', {
@@ -176,6 +177,7 @@ export class Step15CoverageComponent {
         this.exchangeRateInfo = rate;
         this.conversionError = '';
         this.loading = false;
+        this.changeDetectorRef.detectChanges();
       },
       error: () => {
         if (requestId !== this.currencyRequestId) {
@@ -185,6 +187,7 @@ export class Step15CoverageComponent {
         this.selectedCurrency = this.activeCurrency;
         this.conversionError = this.conversionErrorMessage;
         this.loading = false;
+        this.changeDetectorRef.detectChanges();
       },
     });
   }
