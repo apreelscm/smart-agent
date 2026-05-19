@@ -1,3 +1,92 @@
+.currency-panel {
+  margin: 20px 0 24px;
+  padding: 16px;
+  border: 1.5px solid var(--eh-border);
+  border-radius: 8px;
+  background: #faf8f5;
+}
+
+.currency-control {
+  margin-bottom: 0;
+}
+
+.currency-select {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1.5px solid var(--eh-border);
+  border-radius: var(--radius-input);
+  background: var(--eh-white);
+  color: var(--eh-text);
+  font-family: var(--font-sans);
+  font-size: 15px;
+  outline: none;
+  transition: border-color 0.15s;
+  appearance: none;
+  cursor: pointer;
+
+  &:focus {
+    border-color: var(--eh-red);
+  }
+}
+
+.currency-feedback {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.currency-loading,
+.currency-error {
+  font-size: 13px;
+  border-radius: 6px;
+  padding: 10px 12px;
+}
+
+.currency-loading {
+  color: var(--eh-text);
+  background: #f0eeeb;
+  border: 1px solid var(--eh-border);
+}
+
+.currency-error {
+  color: var(--eh-red);
+  background: rgba(200, 16, 46, 0.08);
+  border: 1px solid rgba(200, 16, 46, 0.18);
+}
+
+.exchange-rate-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid var(--eh-border);
+  background: var(--eh-white);
+}
+
+.exchange-rate-title {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--eh-muted);
+}
+
+.exchange-rate-value {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--eh-text);
+}
+
+.exchange-rate-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  font-size: 13px;
+  color: var(--eh-muted);
+}
+
 .cov-card {
   display: flex;
   align-items: center;
@@ -96,7 +185,17 @@
   align-items: center;
   transition: color 0.12s;
 
-  &:hover { color: var(--eh-red); }
+  &:hover {
+    color: var(--eh-red);
+  }
+}
+
+.section-heading-addons {
+  margin-top: 24px;
+}
+
+.promo-group {
+  margin-top: 20px;
 }
 
 .price-summary {
@@ -117,4 +216,20 @@
 .price-label {
   font-size: 13px;
   color: var(--eh-muted);
+}
+
+@media (max-width: 640px) {
+  .cov-card {
+    align-items: flex-start;
+  }
+
+  .cov-right {
+    flex-direction: column;
+    align-items: flex-end;
+  }
+
+  .exchange-rate-meta {
+    flex-direction: column;
+    gap: 4px;
+  }
 }

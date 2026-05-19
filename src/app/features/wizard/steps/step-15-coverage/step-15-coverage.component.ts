@@ -3,6 +3,23 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { WizardCardComponent } from '../../../../shared/components/wizard-card/wizard-card.component';
 import { PolicyDraftService } from '../../../../core/services/policy-draft.service';
+import {
+  ForeignCurrencyCode,
+  NbpExchangeRate,
+  NbpExchangeRateService,
+} from '../../../../core/services/nbp-exchange-rate.service';
+
+type SupportedCurrency = 'PLN' | ForeignCurrencyCode;
+type CoverageKey = 'oc' | 'ac' | 'assistance' | 'nnwKip' | 'szyby' | 'bagaz' | 'opony';
+
+interface CoverageOption {
+  key: CoverageKey;
+  label: string;
+  desc: string;
+  pricePln: number;
+  route: string | null;
+  required?: boolean;
+}
 
 @Component({
   selector: 'app-step-15-coverage',
@@ -12,51 +29,212 @@ import { PolicyDraftService } from '../../../../core/services/policy-draft.servi
   styleUrl: './step-15-coverage.component.scss',
 })
 export class Step15CoverageComponent {
-  private draft = inject(PolicyDraftService);
-  private router = inject(Router);
+  private readonly draft = inject(PolicyDraftService);
+  private readonly router = inject(Router);
+  private readonly nbpExchangeRateService = inject(NbpExchangeRateService);
 
-  cov = { ...this.draft.draft().coverages };
+  private readonly amountFormatter = new Intl.NumberFormat('pl-PL', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
 
-  mainCoverages = [
-    { key: 'oc',         label: 'OC',         desc: 'Obowiązkowe ubezpieczenie odpowiedzialności cywilnej', price: 289, route: null, required: true },
-    { key: 'ac',         label: 'AC',         desc: 'Pełny zakres casco',                                   price: 389, route: '/kalkulator/casco',      required: false },
-    { key: 'assistance', label: 'Assistance', desc: 'Pomoc na terenie Europy',                              price:  89, route: '/kalkulator/assistance', required: false },
-    { key: 'nnwKip',     label: 'NNW KiP',    desc: 'Suma ubezpieczenia do 50 000 zł',                     price: 129, route: '/kalkulator/nnw',        required: false },
+  private readonly rateFormatter = new Intl.NumberFormat('pl-PL', {
+    minimumFractionDigits: 4,
+    maximumFractionDigits: 4,
+  });
+
+  private currencyRequestId = 0;
+
+  readonly currencies: SupportedCurrency[] = ['PLN', 'USD', 'EUR'];
+  readonly conversionErrorMessage =
+    'Nie udało się pobrać kursu waluty. Pozostawiono poprzednio wyświetlane kwoty.';
+
+  cov = { ...this.draft.draft().coverages, oc: true };
+
+  mainCoverages: CoverageOption[] = [
+    {
+      key: 'oc',
+      label: 'OC',
+      desc: 'Obowiązkowe ubezpieczenie odpowiedzialności cywilnej',
+      pricePln: 289,
+      route: null,
+      required: true,
+    },
+    {
+      key: 'ac',
+      label: 'AC',
+      desc: 'Pełny zakres casco',
+      pricePln: 389,
+      route: '/kalkulator/casco',
+      required: false,
+    },
+    {
+      key: 'assistance',
+      label: 'Assistance',
+      desc: 'Pomoc na terenie Europy',
+      pricePln: 89,
+      route: '/kalkulator/assistance',
+      required: false,
+    },
+    {
+      key: 'nnwKip',
+      label: 'NNW KiP',
+      desc: 'Suma ubezpieczenia do 50 000 zł',
+      pricePln: 129,
+      route: '/kalkulator/nnw',
+      required: false,
+    },
   ];
 
-  addons = [
-    { key: 'szyby',  label: 'Szyby',  desc: 'Uszkodzenie, połknięcie lub wymiana szyb',               price: 150, route: '/kalkulator/szyby' },
-    { key: 'bagaz',  label: 'Bagaż',  desc: 'Uszkodzenie lub kradzież przewożonego bagażu',            price:  89, route: null },
-    { key: 'opony',  label: 'Opony',  desc: 'Pokrycie kosztów naprawy lub wymiany opon',               price:  89, route: null },
+  addons: CoverageOption[] = [
+    {
+      key: 'szyby',
+      label: 'Szyby',
+      desc: 'Uszkodzenie, połknięcie lub wymiana szyb',
+      pricePln: 150,
+      route: '/kalkulator/szyby',
+    },
+    {
+      key: 'bagaz',
+      label: 'Bagaż',
+      desc: 'Uszkodzenie lub kradzież przewożonego bagażu',
+      pricePln: 89,
+      route: null,
+    },
+    {
+      key: 'opony',
+      label: 'Opony',
+      desc: 'Pokrycie kosztów naprawy lub wymiany opon',
+      pricePln: 89,
+      route: null,
+    },
   ];
 
   promoCode = this.cov.promoCode;
 
-  get total() {
-    let sum = 289; // OC always
-    if (this.cov.ac)         sum += 389;
-    if (this.cov.assistance) sum += 89;
-    if (this.cov.nnwKip)     sum += 129;
-    if (this.cov.szyby)      sum += 150;
-    if (this.cov.bagaz)      sum += 89;
-    if (this.cov.opony)      sum += 89;
-    return sum;
+  activeCurrency: SupportedCurrency = 'PLN';
+  selectedCurrency: SupportedCurrency = 'PLN';
+  loading = false;
+  exchangeRateInfo: NbpExchangeRate | null = null;
+  conversionError = '';
+
+  get totalPln(): number {
+    return this.getSelectedItems().reduce((sum, item) => sum + item.pricePln, 0);
   }
 
-  toggle(key: string) {
-    (this.cov as any)[key] = !(this.cov as any)[key];
+  get totalDisplayed(): number {
+    const totalMinor = this.getSelectedItems().reduce(
+      (sum, item) => sum + this.toMinorUnits(this.getDisplayedAmount(item.pricePln)),
+      0
+    );
+
+    return this.fromMinorUnits(totalMinor);
   }
 
-  isOn(key: string): boolean {
-    return !!(this.cov as any)[key];
+  toggle(key: CoverageKey) {
+    if (key === 'oc') {
+      return;
+    }
+
+    this.cov[key] = !this.cov[key];
+  }
+
+  isOn(key: CoverageKey): boolean {
+    return this.cov[key];
+  }
+
+  onCurrencyChange(currency: SupportedCurrency): void {
+    if (currency === this.activeCurrency) {
+      this.selectedCurrency = this.activeCurrency;
+      return;
+    }
+
+    this.conversionError = '';
+
+    if (currency === 'PLN') {
+      this.currencyRequestId++;
+      this.loading = false;
+      this.activeCurrency = 'PLN';
+      this.selectedCurrency = 'PLN';
+      this.exchangeRateInfo = null;
+      return;
+    }
+
+    this.selectedCurrency = currency;
+    this.loading = true;
+
+    const requestId = ++this.currencyRequestId;
+
+    this.nbpExchangeRateService.getRate(currency).subscribe({
+      next: rate => {
+        if (requestId !== this.currencyRequestId) {
+          return;
+        }
+
+        this.activeCurrency = currency;
+        this.selectedCurrency = currency;
+        this.exchangeRateInfo = rate;
+        this.conversionError = '';
+        this.loading = false;
+      },
+      error: () => {
+        if (requestId !== this.currencyRequestId) {
+          return;
+        }
+
+        this.selectedCurrency = this.activeCurrency;
+        this.conversionError = this.conversionErrorMessage;
+        this.loading = false;
+      },
+    });
+  }
+
+  formatAmount(amount: number, currency: SupportedCurrency = this.activeCurrency): string {
+    return `${this.amountFormatter.format(amount)} ${currency}`;
+  }
+
+  formatRate(mid: number): string {
+    return this.rateFormatter.format(mid);
+  }
+
+  getDisplayedAmount(amountPln: number): number {
+    if (this.activeCurrency === 'PLN' || !this.exchangeRateInfo) {
+      return this.fromMinorUnits(this.toMinorUnits(amountPln));
+    }
+
+    const convertedAmount = this.nbpExchangeRateService.convertFromPln(
+      amountPln,
+      this.exchangeRateInfo.mid
+    );
+
+    return this.fromMinorUnits(this.toMinorUnits(convertedAmount));
   }
 
   openDetail(route: string | null) {
-    if (route) this.router.navigate([route]);
+    if (route) {
+      this.router.navigate([route]);
+    }
   }
 
   next() {
-    this.draft.patchCoverages({ ...this.cov, promoCode: this.promoCode, totalPremium: this.total });
+    this.draft.patchCoverages({
+      ...this.cov,
+      oc: true,
+      promoCode: this.promoCode,
+      totalPremium: this.totalPln,
+    });
     this.router.navigate(['/kalkulator/dane-polisowe']);
+  }
+
+  private getSelectedItems(): CoverageOption[] {
+    return [...this.mainCoverages, ...this.addons].filter(item => this.isOn(item.key));
+  }
+
+  private toMinorUnits(amount: number): number {
+    return Math.round((amount + Number.EPSILON) * 100);
+  }
+
+  private fromMinorUnits(amount: number): number {
+    return amount / 100;
   }
 }
