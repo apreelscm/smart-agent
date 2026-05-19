@@ -1,3 +1,72 @@
+.currency-panel {
+  margin: 20px 0 24px;
+  padding: 16px;
+  border: 1.5px solid var(--eh-border);
+  border-radius: 8px;
+  background: #faf8f4;
+}
+
+.currency-group {
+  margin-bottom: 0;
+}
+
+.currency-select {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1.5px solid var(--eh-border);
+  border-radius: var(--radius-input);
+  font-family: var(--font-sans);
+  font-size: 15px;
+  color: var(--eh-text);
+  background: var(--eh-input-bg);
+  outline: none;
+  transition: border-color 0.15s;
+
+  &:focus {
+    border-color: var(--eh-red);
+  }
+}
+
+.currency-status {
+  margin-top: 12px;
+  font-size: 13px;
+  color: var(--eh-muted);
+  line-height: 1.4;
+
+  &.error {
+    color: var(--eh-red);
+    font-weight: 600;
+  }
+}
+
+.currency-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--eh-border);
+}
+
+.currency-meta-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.currency-meta-label {
+  font-size: 13px;
+  color: var(--eh-muted);
+}
+
+.currency-meta-value {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--eh-text);
+  text-align: right;
+}
+
 .cov-card {
   display: flex;
   align-items: center;
@@ -96,7 +165,9 @@
   align-items: center;
   transition: color 0.12s;
 
-  &:hover { color: var(--eh-red); }
+  &:hover {
+    color: var(--eh-red);
+  }
 }
 
 .price-summary {
@@ -117,4 +188,25 @@
 .price-label {
   font-size: 13px;
   color: var(--eh-muted);
+}
+
+@media (max-width: 640px) {
+  .currency-meta-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+  }
+
+  .currency-meta-value {
+    text-align: left;
+  }
+
+  .cov-card {
+    align-items: flex-start;
+  }
+
+  .cov-right {
+    flex-direction: column;
+    align-items: flex-end;
+  }
 }

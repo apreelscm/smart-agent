@@ -1,6 +1,51 @@
 <app-wizard-card [showChips]="true" (nextClick)="next()">
   <h2>Wybierz zakres</h2>
 
+  <div class="currency-panel">
+    <div class="form-group currency-group">
+      <label for="coverage-currency">Waluta</label>
+      <select
+        id="coverage-currency"
+        class="currency-select"
+        [ngModel]="appliedCurrency"
+        (ngModelChange)="onCurrencySelected($event)"
+      >
+        @for (currency of supportedCurrencies; track currency) {
+          <option [value]="currency">{{ currency }}</option>
+        }
+      </select>
+    </div>
+
+    @if (isCurrencyLoading && pendingCurrency !== 'PLN') {
+      <p class="currency-status">Pobieranie kursu {{ pendingCurrency }}...</p>
+    }
+
+    @if (currencyError) {
+      <p class="currency-status error" role="alert">{{ currencyError }}</p>
+    }
+
+    @if (showRateMetadata && rateInfo) {
+      <div class="currency-meta">
+        <div class="currency-meta-row">
+          <span class="currency-meta-label">Wyświetlana waluta</span>
+          <span class="currency-meta-value">{{ appliedCurrency }}</span>
+        </div>
+        <div class="currency-meta-row">
+          <span class="currency-meta-label">Kurs NBP</span>
+          <span class="currency-meta-value">1 {{ appliedCurrency }} = {{ formatRate(rateInfo.mid) }} PLN</span>
+        </div>
+        <div class="currency-meta-row">
+          <span class="currency-meta-label">Tabela</span>
+          <span class="currency-meta-value">{{ rateInfo.table }} / {{ rateInfo.no }}</span>
+        </div>
+        <div class="currency-meta-row">
+          <span class="currency-meta-label">Data kursu</span>
+          <span class="currency-meta-value">{{ rateInfo.effectiveDate }}</span>
+        </div>
+      </div>
+    }
+  </div>
+
   @for (item of mainCoverages; track item.key) {
     <div class="cov-card" [class.active]="isOn(item.key)" (click)="item.required || toggle(item.key)">
       <div class="cov-check" [class.on]="isOn(item.key)">
@@ -15,7 +60,7 @@
         <span class="cov-desc">{{ item.desc }}</span>
       </div>
       <div class="cov-right" (click)="$event.stopPropagation()">
-        <span class="cov-price" [class.active]="isOn(item.key)">{{ item.price }} zł</span>
+        <span class="cov-price" [class.active]="isOn(item.key)">{{ formatAmount(item.basePricePln) }}</span>
         @if (item.route && isOn(item.key)) {
           <span class="cov-pipe">|</span>
           <button class="edit-btn" (click)="openDetail(item.route)">
@@ -42,7 +87,7 @@
         <span class="cov-desc">{{ item.desc }}</span>
       </div>
       <div class="cov-right" (click)="$event.stopPropagation()">
-        <span class="cov-price" [class.active]="isOn(item.key)">{{ item.price }} zł</span>
+        <span class="cov-price" [class.active]="isOn(item.key)">{{ formatAmount(item.basePricePln) }}</span>
         @if (item.route && isOn(item.key)) {
           <span class="cov-pipe">|</span>
           <button class="edit-btn" (click)="openDetail(item.route)">
@@ -59,7 +104,7 @@
   </div>
 
   <div class="price-summary">
-    <span class="price-total">{{ total }} zł</span>
+    <span class="price-total">{{ formatAmount(totalPln) }}</span>
     <span class="price-label">cena ubezpieczenia</span>
   </div>
 </app-wizard-card>
