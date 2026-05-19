@@ -6,7 +6,12 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "e2e": "playwright test",
+    "e2e:serve": "npx http-server@14.1.1 dist/smart-agent/browser -p 4200 -s",
+    "e2e:ci": "npm run build && npx http-server@14.1.1 dist/smart-agent/browser -p 4200 -s & npx playwright test",
+    "postinstall": "npx playwright install",
+    "n-install": "npm install"
   },
   "private": true,
   "packageManager": "npm@10.8.2",
