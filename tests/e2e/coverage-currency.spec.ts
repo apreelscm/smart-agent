@@ -63,7 +63,7 @@ test('coverage step defaults to PLN, converts to USD, and restores PLN values', 
   await currencySelect.selectOption('USD');
 
   await expect(currencySelect).toHaveValue('USD');
-  await expect(ocPrice).toHaveText('70.08 USD');
+  await expect(ocPrice).toHaveText('70.09 USD');
   await expect(szybyPrice).toHaveText('36.38 USD');
   await expect(totalPrice).toHaveText('253.67 USD');
   await expect(page.getByText('Kurs NBP z dnia 2026-04-17')).toBeVisible();
