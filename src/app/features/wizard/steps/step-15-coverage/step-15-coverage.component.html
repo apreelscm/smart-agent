@@ -6,8 +6,9 @@
       <label for="coverage-currency">Waluta prezentacji</label>
       <select
         id="coverage-currency"
-        [ngModel]="selectedCurrency"
-        (ngModelChange)="onCurrencyChange($event)"
+        name="coverage-currency"
+        [(ngModel)]="selectedCurrency"
+        (change)="onCurrencyChange(selectedCurrency)"
       >
         @for (currency of currencies; track currency) {
           <option [value]="currency">{{ currency }}</option>

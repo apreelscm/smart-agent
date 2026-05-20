@@ -38,7 +38,7 @@ export class Step15CoverageComponent {
   mainCoverages: CoverageItem[] = [
     { key: 'oc',         label: 'OC',         desc: 'Obowiązkowe ubezpieczenie odpowiedzialności cywilnej', price: 289, route: null, required: true },
     { key: 'ac',         label: 'AC',         desc: 'Pełny zakres casco',                                   price: 389, route: '/kalkulator/casco',      required: false },
-    { key: 'assistance', label: 'Assistance', desc: 'Pomoc na terenie Europy',                              price:  89, route: '/kalkulator/assistance', required: false },
+    { key: 'assistance', label: 'Assistance', desc: 'Wsparcie na terenie Europy',                           price:  89, route: '/kalkulator/assistance', required: false },
     { key: 'nnwKip',     label: 'NNW KiP',    desc: 'Suma ubezpieczenia do 50 000 zł',                     price: 129, route: '/kalkulator/nnw',        required: false },
   ];
 
