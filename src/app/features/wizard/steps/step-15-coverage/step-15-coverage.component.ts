@@ -1,8 +1,12 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { PolicyDraft } from '../../../../core/models/policy-draft.model';
-import { CurrencyRatesData, CurrencyRatesService, SupportedCurrencyCode } from '../../../../core/services/currency-rates.service';
+import {
+  CurrencyRatesData,
+  CurrencyRatesService,
+  SupportedCurrencyCode,
+} from '../../../../core/services/currency-rates.service';
 import { PolicyDraftService } from '../../../../core/services/policy-draft.service';
 import { WizardCardComponent } from '../../../../shared/components/wizard-card/wizard-card.component';
 
@@ -28,6 +32,7 @@ export class Step15CoverageComponent implements OnInit {
   private draft = inject(PolicyDraftService);
   private router = inject(Router);
   private currencyRatesService = inject(CurrencyRatesService);
+  private changeDetectorRef = inject(ChangeDetectorRef);
 
   readonly supportedCurrencies: SupportedCurrencyCode[] = ['PLN', 'USD', 'EUR'];
   readonly technicalRatesMessage =
@@ -106,12 +111,14 @@ export class Step15CoverageComponent implements OnInit {
         this.rates = rates;
         this.ratesLoading = false;
         this.ratesError = false;
+        this.changeDetectorRef.detectChanges();
       },
       error: () => {
         this.rates = null;
         this.selectedCurrency = 'PLN';
         this.ratesLoading = false;
         this.ratesError = true;
+        this.changeDetectorRef.detectChanges();
       },
     });
   }
