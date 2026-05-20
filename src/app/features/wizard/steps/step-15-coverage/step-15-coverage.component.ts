@@ -190,12 +190,7 @@ export class Step15CoverageComponent implements OnInit {
   }
 
   formatAmount(amount: number, currency: SupportedCurrencyCode): string {
-    const formattedAmount = new Intl.NumberFormat('pl-PL', {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    }).format(amount);
-
-    return `${formattedAmount} ${currency}`;
+    return `${this.formatDecimalNumber(amount, 2)} ${currency}`;
   }
 
   displayRate(currency: SupportedCurrencyCode = this.selectedCurrency): number {
@@ -207,10 +202,7 @@ export class Step15CoverageComponent implements OnInit {
   }
 
   formatRate(rate: number): string {
-    return new Intl.NumberFormat('pl-PL', {
-      minimumFractionDigits: 4,
-      maximumFractionDigits: 4,
-    }).format(rate);
+    return this.formatDecimalNumber(rate, 4);
   }
 
   formatEffectiveDate(date: string): string {
@@ -237,5 +229,14 @@ export class Step15CoverageComponent implements OnInit {
     });
 
     void this.router.navigate(['/kalkulator/dane-polisowe']);
+  }
+
+  private formatDecimalNumber(value: number, fractionDigits: number): string {
+    const normalizedValue = Number.isFinite(value) ? value : 0;
+    const sign = normalizedValue < 0 ? '-' : '';
+    const [integerPart, decimalPart] = Math.abs(normalizedValue).toFixed(fractionDigits).split('.');
+    const groupedIntegerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+
+    return `${sign}${groupedIntegerPart},${decimalPart}`;
   }
 }
