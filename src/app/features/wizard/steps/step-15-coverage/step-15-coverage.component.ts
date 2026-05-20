@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { PolicyDraftService } from '../../../../core/services/policy-draft.service';
@@ -28,6 +28,7 @@ export class Step15CoverageComponent {
   private draft = inject(PolicyDraftService);
   private router = inject(Router);
   private exchangeRateService = inject(ExchangeRateService);
+  private changeDetectorRef = inject(ChangeDetectorRef);
 
   private currencyRequestId = 0;
 
@@ -105,12 +106,14 @@ export class Step15CoverageComponent {
 
     if (currency === 'PLN') {
       this.resetRateState();
+      this.changeDetectorRef.detectChanges();
       return;
     }
 
     this.currentRate = 1;
     this.rateEffectiveDate = null;
     this.isRateLoading = true;
+    this.changeDetectorRef.detectChanges();
 
     this.exchangeRateService.getRate(currency).subscribe({
       next: result => {
@@ -122,6 +125,7 @@ export class Step15CoverageComponent {
         this.rateEffectiveDate = result.effectiveDate;
         this.isRateLoading = false;
         this.rateError = null;
+        this.changeDetectorRef.detectChanges();
       },
       error: () => {
         if (requestId !== this.currencyRequestId) {
@@ -131,6 +135,7 @@ export class Step15CoverageComponent {
         this.resetRateState();
         this.selectedCurrency = 'PLN';
         this.rateError = 'Nie udało się pobrać kursu waluty. Wyświetlamy kwoty w PLN.';
+        this.changeDetectorRef.detectChanges();
       },
     });
   }
