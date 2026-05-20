@@ -19,7 +19,7 @@
       </select>
     </div>
 
-    @if (hasRates) {
+    @if (showExchangeMeta) {
       <div class="currency-meta">
         <div class="meta-item">
           <span class="meta-label">Wybrana waluta</span>
@@ -28,13 +28,7 @@
 
         <div class="meta-item">
           <span class="meta-label">Zastosowany kurs vs PLN</span>
-          <span class="meta-value">
-            @if (selectedCurrency === 'PLN') {
-              1 PLN = {{ formatRate(displayRate()) }} PLN
-            } @else {
-              1 {{ selectedCurrency }} = {{ formatRate(displayRate()) }} PLN
-            }
-          </span>
+          <span class="meta-value">1 {{ selectedCurrency }} = {{ formatRate(displayRate()) }} PLN</span>
         </div>
 
         <div class="meta-item">

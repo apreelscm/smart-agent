@@ -127,6 +127,10 @@ export class Step15CoverageComponent implements OnInit {
     return !!this.rates;
   }
 
+  get showExchangeMeta(): boolean {
+    return this.hasRates && this.selectedCurrency !== 'PLN';
+  }
+
   get baseTotal(): number {
     let sum = 0;
 
