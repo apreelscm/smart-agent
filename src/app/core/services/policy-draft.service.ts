@@ -1,9 +1,9 @@
 import { Injectable, signal, computed } from '@angular/core';
-import { PolicyDraft, emptyDraft, seedDraft } from '../models/policy-draft.model';
+import { PolicyDraft, emptyDraft } from '../models/policy-draft.model';
 
 @Injectable({ providedIn: 'root' })
 export class PolicyDraftService {
-  private _draft = signal<PolicyDraft>(seedDraft());
+  private _draft = signal<PolicyDraft>(emptyDraft());
 
   readonly draft = this._draft.asReadonly();
 

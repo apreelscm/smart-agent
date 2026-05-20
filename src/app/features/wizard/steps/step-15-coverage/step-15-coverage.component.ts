@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { firstValueFrom } from 'rxjs';
 import {
   ExchangeRateQuote,
   ForeignCurrencyCode,
@@ -119,7 +120,7 @@ export class Step15CoverageComponent {
     return sum;
   }
 
-  selectCurrency(code: SupportedCurrencyCode): void {
+  async selectCurrency(code: SupportedCurrencyCode): Promise<void> {
     if (code === 'PLN') {
       this.resetCurrencyToPln();
       return;
@@ -140,26 +141,27 @@ export class Step15CoverageComponent {
     this.pendingCurrency = code;
     this.currencyErrorMessage = '';
 
-    this.exchangeRateService.getQuote(code).subscribe({
-      next: quote => {
-        this.quoteCache.set(code, quote);
+    try {
+      const quote = await firstValueFrom(this.exchangeRateService.getQuote(code));
+      this.quoteCache.set(code, quote);
 
-        if (requestId !== this.selectionRequestId) {
-          return;
-        }
+      if (requestId !== this.selectionRequestId) {
+        return;
+      }
 
-        this.applyQuote(quote);
-      },
-      error: () => {
-        if (requestId !== this.selectionRequestId) {
-          return;
-        }
+      this.applyQuote(quote);
+    } catch {
+      if (requestId !== this.selectionRequestId) {
+        return;
+      }
 
+      this.blockedCurrencies.add(code);
+      this.currencyErrorMessage = `Waluta ${code} jest chwilowo niedostępna. Nie udało się pobrać bieżącego ani poprzedniego kursu NBP.`;
+    } finally {
+      if (requestId === this.selectionRequestId && this.pendingCurrency === code) {
         this.pendingCurrency = null;
-        this.blockedCurrencies.add(code);
-        this.currencyErrorMessage = `Waluta ${code} jest chwilowo niedostępna. Nie udało się pobrać bieżącego ani poprzedniego kursu NBP.`;
-      },
-    });
+      }
+    }
   }
 
   toggle(key: CoverageKey) {
@@ -218,7 +220,6 @@ export class Step15CoverageComponent {
   }
 
   private applyQuote(quote: ExchangeRateQuote): void {
-    this.pendingCurrency = null;
     this.selectedCurrency = quote.code;
     this.appliedQuote = quote;
     this.currencyErrorMessage = '';
