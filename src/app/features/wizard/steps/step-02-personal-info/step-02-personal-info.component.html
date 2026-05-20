@@ -4,17 +4,86 @@
 
   <div class="form-row">
     <div class="form-group">
-      <label>Imię</label>
-      <input type="text" [(ngModel)]="firstName" placeholder="Anna" />
+      <label for="firstName">Imię</label>
+      <input id="firstName" name="firstName" type="text" [(ngModel)]="firstName" placeholder="Anna" />
     </div>
     <div class="form-group">
-      <label>Nazwisko</label>
-      <input type="text" [(ngModel)]="lastName" placeholder="Kowalska" />
+      <label for="lastName">Nazwisko</label>
+      <input id="lastName" name="lastName" type="text" [(ngModel)]="lastName" placeholder="Kowalska" />
     </div>
   </div>
 
   <div class="form-group">
-    <label>Podaj swoją datę urodzenia</label>
-    <input type="date" [(ngModel)]="dateOfBirth" />
+    <label>Sposób podania daty urodzenia</label>
+
+    <div class="birth-mode-selector">
+      <button
+        type="button"
+        class="radio-option birth-mode-option"
+        [class.selected]="isPeselMode"
+        [attr.aria-pressed]="isPeselMode"
+        (click)="setBirthInputMode('pesel')"
+      >
+        <span class="radio-dot" aria-hidden="true"></span>
+        <span class="mode-copy">
+          <span class="mode-title">PESEL</span>
+          <span class="mode-description">Podaj 11 cyfr, a data urodzenia uzupełni się automatycznie.</span>
+        </span>
+        <i class="pi pi-id-card info-icon" aria-hidden="true"></i>
+      </button>
+
+      <button
+        type="button"
+        class="radio-option birth-mode-option"
+        [class.selected]="!isPeselMode"
+        [attr.aria-pressed]="!isPeselMode"
+        (click)="setBirthInputMode('dateOfBirth')"
+      >
+        <span class="radio-dot" aria-hidden="true"></span>
+        <span class="mode-copy">
+          <span class="mode-title">Data urodzenia</span>
+          <span class="mode-description">Wpisz datę ręcznie w dotychczasowym formacie pola daty.</span>
+        </span>
+        <i class="pi pi-calendar info-icon" aria-hidden="true"></i>
+      </button>
+    </div>
+
+    <p class="field-hint">Możesz użyć tylko jednego sposobu podania danych naraz.</p>
+  </div>
+
+  <div *ngIf="isPeselMode" class="form-group" [class.has-error]="showPeselValidationMessage">
+    <label for="pesel">Podaj numer PESEL</label>
+    <input
+      id="pesel"
+      name="pesel"
+      type="text"
+      inputmode="numeric"
+      maxlength="11"
+      autocomplete="off"
+      placeholder="44051401359"
+      [ngModel]="pesel"
+      (ngModelChange)="onPeselChange($event)"
+    />
+    <p class="field-hint">Wpisz 11 cyfr. Dla poprawnego PESEL data urodzenia uzupełni się automatycznie.</p>
+    <p *ngIf="showPeselValidationMessage" class="error-text" aria-live="polite">
+      {{ peselValidationMessage }}
+    </p>
+  </div>
+
+  <div class="form-group">
+    <label for="dateOfBirth">Podaj swoją datę urodzenia</label>
+    <input
+      id="dateOfBirth"
+      name="dateOfBirth"
+      type="date"
+      [ngModel]="dateOfBirth"
+      (ngModelChange)="onManualDateChange($event)"
+      [readOnly]="isPeselMode"
+      [class.readonly-field]="isPeselMode"
+      [attr.aria-readonly]="isPeselMode"
+    />
+    <p *ngIf="isPeselMode" class="field-hint">
+      Pole jest tylko do odczytu i pokazuje datę urodzenia odczytaną z poprawnego numeru PESEL.
+    </p>
   </div>
 </app-wizard-card>
