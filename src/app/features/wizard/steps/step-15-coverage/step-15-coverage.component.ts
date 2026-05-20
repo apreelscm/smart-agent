@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
@@ -33,6 +33,7 @@ export class Step15CoverageComponent {
   private draft = inject(PolicyDraftService);
   private router = inject(Router);
   private exchangeRateService = inject(ExchangeRateService);
+  private changeDetectorRef = inject(ChangeDetectorRef);
 
   readonly currencyOptions: SupportedCurrencyCode[] = ['PLN', 'USD', 'EUR'];
 
@@ -157,9 +158,11 @@ export class Step15CoverageComponent {
 
       this.blockedCurrencies.add(code);
       this.currencyErrorMessage = `Waluta ${code} jest chwilowo niedostępna. Nie udało się pobrać bieżącego ani poprzedniego kursu NBP.`;
+      this.changeDetectorRef.detectChanges();
     } finally {
       if (requestId === this.selectionRequestId && this.pendingCurrency === code) {
         this.pendingCurrency = null;
+        this.changeDetectorRef.detectChanges();
       }
     }
   }
@@ -217,12 +220,14 @@ export class Step15CoverageComponent {
     this.selectedCurrency = 'PLN';
     this.appliedQuote = null;
     this.currencyErrorMessage = '';
+    this.changeDetectorRef.detectChanges();
   }
 
   private applyQuote(quote: ExchangeRateQuote): void {
     this.selectedCurrency = quote.code;
     this.appliedQuote = quote;
     this.currencyErrorMessage = '';
+    this.changeDetectorRef.detectChanges();
   }
 
   private convertFromPln(amountPln: number): number {
