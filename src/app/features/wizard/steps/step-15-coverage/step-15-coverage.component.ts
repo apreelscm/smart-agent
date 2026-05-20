@@ -87,6 +87,16 @@ export class Step15CoverageComponent {
     return !!(this.cov as any)[key];
   }
 
+  onCurrencySelectChange(event: Event) {
+    const value = (event.target as HTMLSelectElement | null)?.value;
+
+    if (!value || !this.isPresentationCurrency(value)) {
+      return;
+    }
+
+    this.onCurrencyChange(value);
+  }
+
   onCurrencyChange(currency: PresentationCurrency) {
     this.selectedCurrency = currency;
     this.rateError = null;
@@ -157,5 +167,9 @@ export class Step15CoverageComponent {
 
   private roundToTwoDecimals(value: number): number {
     return Math.round((value + Number.EPSILON) * 100) / 100;
+  }
+
+  private isPresentationCurrency(value: string): value is PresentationCurrency {
+    return this.currencies.includes(value as PresentationCurrency);
   }
 }

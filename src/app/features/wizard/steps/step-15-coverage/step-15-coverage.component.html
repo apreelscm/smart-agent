@@ -7,8 +7,8 @@
       <select
         id="coverage-currency"
         name="coverage-currency"
-        [(ngModel)]="selectedCurrency"
-        (ngModelChange)="onCurrencyChange($event)"
+        [ngModel]="selectedCurrency"
+        (change)="onCurrencySelectChange($event)"
       >
         @for (currency of currencies; track currency) {
           <option [value]="currency">{{ currency }}</option>
