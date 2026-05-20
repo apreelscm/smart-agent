@@ -1,6 +1,63 @@
 <app-wizard-card [showChips]="true" (nextClick)="next()">
   <h2>Wybierz zakres</h2>
 
+  <div class="currency-panel">
+    <div class="currency-selector">
+      <label for="presentationCurrency">Waluta prezentacji składek</label>
+      <select
+        id="presentationCurrency"
+        class="currency-select"
+        [ngModel]="selectedCurrency"
+        (ngModelChange)="onCurrencyChange($event)">
+        @for (currency of supportedCurrencies; track currency) {
+          <option
+            [value]="currency"
+            [disabled]="currency !== 'PLN' && !canUseForeignCurrency(currency)">
+            {{ currency }}
+          </option>
+        }
+      </select>
+    </div>
+
+    @if (hasRates) {
+      <div class="currency-meta">
+        <div class="meta-item">
+          <span class="meta-label">Wybrana waluta</span>
+          <span class="meta-value">{{ selectedCurrency }}</span>
+        </div>
+
+        <div class="meta-item">
+          <span class="meta-label">Zastosowany kurs vs PLN</span>
+          <span class="meta-value">
+            @if (selectedCurrency === 'PLN') {
+              1 PLN = {{ formatRate(displayRate()) }} PLN
+            } @else {
+              1 {{ selectedCurrency }} = {{ formatRate(displayRate()) }} PLN
+            }
+          </span>
+        </div>
+
+        <div class="meta-item">
+          <span class="meta-label">Tabela NBP</span>
+          <span class="meta-value">{{ rates?.table }} / {{ rates?.tableNumber }}</span>
+        </div>
+
+        <div class="meta-item">
+          <span class="meta-label">Data obowiązywania</span>
+          <span class="meta-value">{{ formatEffectiveDate(rates?.effectiveDate ?? '') }}</span>
+        </div>
+      </div>
+    }
+
+    @if (ratesLoading) {
+      <p class="currency-hint">Pobieramy aktualne kursy NBP...</p>
+    }
+
+    @if (ratesError) {
+      <p class="currency-error">{{ technicalRatesMessage }}</p>
+    }
+  </div>
+
   @for (item of mainCoverages; track item.key) {
     <div class="cov-card" [class.active]="isOn(item.key)" (click)="item.required || toggle(item.key)">
       <div class="cov-check" [class.on]="isOn(item.key)">
@@ -15,7 +72,9 @@
         <span class="cov-desc">{{ item.desc }}</span>
       </div>
       <div class="cov-right" (click)="$event.stopPropagation()">
-        <span class="cov-price" [class.active]="isOn(item.key)">{{ item.price }} zł</span>
+        <span class="cov-price" [class.active]="isOn(item.key)">
+          {{ formatAmount(displayAmount(item.pricePln), selectedCurrency) }}
+        </span>
         @if (item.route && isOn(item.key)) {
           <span class="cov-pipe">|</span>
           <button class="edit-btn" (click)="openDetail(item.route)">
@@ -42,7 +101,9 @@
         <span class="cov-desc">{{ item.desc }}</span>
       </div>
       <div class="cov-right" (click)="$event.stopPropagation()">
-        <span class="cov-price" [class.active]="isOn(item.key)">{{ item.price }} zł</span>
+        <span class="cov-price" [class.active]="isOn(item.key)">
+          {{ formatAmount(displayAmount(item.pricePln), selectedCurrency) }}
+        </span>
         @if (item.route && isOn(item.key)) {
           <span class="cov-pipe">|</span>
           <button class="edit-btn" (click)="openDetail(item.route)">
@@ -59,7 +120,7 @@
   </div>
 
   <div class="price-summary">
-    <span class="price-total">{{ total }} zł</span>
+    <span class="price-total">{{ formatAmount(displayTotal, selectedCurrency) }}</span>
     <span class="price-label">cena ubezpieczenia</span>
   </div>
 </app-wizard-card>
