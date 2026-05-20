@@ -13,8 +13,47 @@
     </div>
   </div>
 
+  <div class="input-method-group">
+    <p class="field-label">Jak chcesz podać datę urodzenia?</p>
+
+    @for (method of inputMethodOptions; track method.value) {
+      <div
+        class="radio-option"
+        [class.selected]="inputMethod === method.value"
+        (click)="selectInputMethod(method.value)">
+        <span class="radio-dot"></span>
+        <span>{{ method.label }}</span>
+      </div>
+    }
+  </div>
+
+  @if (inputMethod === 'pesel') {
+    <div class="form-group">
+      <label>Podaj numer PESEL</label>
+      <input
+        type="text"
+        [ngModel]="pesel"
+        (ngModelChange)="onPeselChange($event)"
+        inputmode="numeric"
+        maxlength="11"
+        placeholder="82030312340" />
+
+      @if (peselError) {
+        <p class="error-text">{{ peselError }}</p>
+      }
+    </div>
+  }
+
   <div class="form-group">
     <label>Podaj swoją datę urodzenia</label>
-    <input type="date" [(ngModel)]="dateOfBirth" />
+    <input
+      type="date"
+      [(ngModel)]="dateOfBirth"
+      [readOnly]="inputMethod === 'pesel'"
+      [class.readonly-input]="inputMethod === 'pesel'" />
+
+    @if (inputMethod === 'pesel') {
+      <p class="readonly-text">Data urodzenia została odczytana z numeru PESEL.</p>
+    }
   </div>
 </app-wizard-card>

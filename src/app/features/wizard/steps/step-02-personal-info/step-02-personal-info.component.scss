@@ -1,0 +1,32 @@
+.input-method-group {
+  margin: 24px 0;
+}
+
+.input-method-group .field-label {
+  margin-bottom: 12px;
+}
+
+.input-method-group .radio-option + .radio-option {
+  margin-top: 12px;
+}
+
+.readonly-input {
+  background: #f4f6f8;
+  color: #617086;
+  cursor: default;
+  pointer-events: none;
+}
+
+.readonly-text,
+.error-text {
+  margin: 8px 0 0;
+  font-size: 14px;
+}
+
+.readonly-text {
+  color: #617086;
+}
+
+.error-text {
+  color: #c62828;
+}
