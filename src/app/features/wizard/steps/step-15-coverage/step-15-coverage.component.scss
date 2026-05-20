@@ -1,3 +1,69 @@
+.currency-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px 20px;
+  margin: 18px 0 16px;
+}
+
+.currency-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 180px;
+
+  label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--eh-muted);
+  }
+
+  select {
+    min-height: 42px;
+    padding: 10px 12px;
+    border: 1.5px solid var(--eh-border);
+    border-radius: 8px;
+    background: var(--eh-white);
+    color: var(--eh-text);
+    font-size: 14px;
+    font-weight: 600;
+  }
+}
+
+.currency-meta {
+  min-height: 18px;
+  display: flex;
+  align-items: center;
+}
+
+.rate-feedback,
+.rate-info {
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.rate-feedback {
+  color: var(--eh-muted);
+
+  &.error {
+    margin: -4px 0 16px;
+    color: var(--eh-red);
+  }
+}
+
+.rate-info {
+  color: var(--eh-muted);
+}
+
+.section-heading--addons {
+  margin-top: 24px;
+}
+
+.promo-field {
+  margin-top: 20px;
+}
+
 .cov-card {
   display: flex;
   align-items: center;

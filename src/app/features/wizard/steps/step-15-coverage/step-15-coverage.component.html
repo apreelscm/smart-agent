@@ -1,6 +1,33 @@
 <app-wizard-card [showChips]="true" (nextClick)="next()">
   <h2>Wybierz zakres</h2>
 
+  <div class="currency-toolbar">
+    <div class="currency-field">
+      <label for="coverage-currency">Waluta prezentacji</label>
+      <select
+        id="coverage-currency"
+        [ngModel]="selectedCurrency"
+        (ngModelChange)="onCurrencyChange($event)"
+      >
+        @for (currency of currencies; track currency) {
+          <option [value]="currency">{{ currency }}</option>
+        }
+      </select>
+    </div>
+
+    <div class="currency-meta" aria-live="polite">
+      @if (isRateLoading) {
+        <span class="rate-feedback">Pobieramy kurs NBP...</span>
+      } @else if (showRateDate) {
+        <span class="rate-info">Kurs NBP z dnia {{ rateEffectiveDate }}</span>
+      }
+    </div>
+  </div>
+
+  @if (rateError) {
+    <p class="rate-feedback error" aria-live="polite">{{ rateError }}</p>
+  }
+
   @for (item of mainCoverages; track item.key) {
     <div class="cov-card" [class.active]="isOn(item.key)" (click)="item.required || toggle(item.key)">
       <div class="cov-check" [class.on]="isOn(item.key)">
@@ -15,7 +42,7 @@
         <span class="cov-desc">{{ item.desc }}</span>
       </div>
       <div class="cov-right" (click)="$event.stopPropagation()">
-        <span class="cov-price" [class.active]="isOn(item.key)">{{ item.price }} zł</span>
+        <span class="cov-price" [class.active]="isOn(item.key)">{{ formatPrice(item.price) }}</span>
         @if (item.route && isOn(item.key)) {
           <span class="cov-pipe">|</span>
           <button class="edit-btn" (click)="openDetail(item.route)">
@@ -26,7 +53,7 @@
     </div>
   }
 
-  <p class="section-heading" style="margin-top:24px">Wybierz dodatki</p>
+  <p class="section-heading section-heading--addons">Wybierz dodatki</p>
 
   @for (item of addons; track item.key) {
     <div class="cov-card" [class.active]="isOn(item.key)" (click)="toggle(item.key)">
@@ -42,7 +69,7 @@
         <span class="cov-desc">{{ item.desc }}</span>
       </div>
       <div class="cov-right" (click)="$event.stopPropagation()">
-        <span class="cov-price" [class.active]="isOn(item.key)">{{ item.price }} zł</span>
+        <span class="cov-price" [class.active]="isOn(item.key)">{{ formatPrice(item.price) }}</span>
         @if (item.route && isOn(item.key)) {
           <span class="cov-pipe">|</span>
           <button class="edit-btn" (click)="openDetail(item.route)">
@@ -53,13 +80,13 @@
     </div>
   }
 
-  <div class="form-group" style="margin-top:20px">
+  <div class="form-group promo-field">
     <label>Mam kod rabatowy</label>
     <input type="text" [(ngModel)]="promoCode" placeholder="Wpisz łaskawy kod" />
   </div>
 
   <div class="price-summary">
-    <span class="price-total">{{ total }} zł</span>
+    <span class="price-total">{{ formatPrice(total) }}</span>
     <span class="price-label">cena ubezpieczenia</span>
   </div>
 </app-wizard-card>
