@@ -1,6 +1,43 @@
 <app-wizard-card [showChips]="true" (nextClick)="next()">
   <h2>Wybierz zakres</h2>
 
+  <div class="currency-panel">
+    <div class="currency-header">
+      <span class="currency-label">Waluta prezentacji</span>
+
+      <div class="currency-buttons">
+        @for (code of currencyOptions; track code) {
+          <button
+            type="button"
+            class="currency-btn"
+            [class.active]="isCurrencyActive(code)"
+            [class.loading]="isCurrencyLoading(code)"
+            [disabled]="isCurrencyDisabled(code) || isCurrencyLoading(code)"
+            (click)="selectCurrency(code)"
+          >
+            {{ code }}
+          </button>
+        }
+      </div>
+    </div>
+
+    @if (pendingCurrency) {
+      <p class="currency-loading">Pobieranie kursu NBP dla {{ pendingCurrency }}…</p>
+    }
+
+    @if (selectedCurrency !== 'PLN' && appliedQuote) {
+      <div class="rate-info">
+        <span>Kurs NBP: 1 {{ appliedQuote.code }} = {{ formatRate(appliedQuote.mid) }} PLN</span>
+        <span>tabela {{ appliedQuote.tableNo }}</span>
+        <span>data {{ appliedQuote.effectiveDate }}</span>
+      </div>
+    }
+
+    @if (currencyErrorMessage) {
+      <p class="currency-error">{{ currencyErrorMessage }}</p>
+    }
+  </div>
+
   @for (item of mainCoverages; track item.key) {
     <div class="cov-card" [class.active]="isOn(item.key)" (click)="item.required || toggle(item.key)">
       <div class="cov-check" [class.on]="isOn(item.key)">
@@ -15,7 +52,7 @@
         <span class="cov-desc">{{ item.desc }}</span>
       </div>
       <div class="cov-right" (click)="$event.stopPropagation()">
-        <span class="cov-price" [class.active]="isOn(item.key)">{{ item.price }} zł</span>
+        <span class="cov-price" [class.active]="isOn(item.key)">{{ getDisplayPrice(item.price) }}</span>
         @if (item.route && isOn(item.key)) {
           <span class="cov-pipe">|</span>
           <button class="edit-btn" (click)="openDetail(item.route)">
@@ -26,7 +63,7 @@
     </div>
   }
 
-  <p class="section-heading" style="margin-top:24px">Wybierz dodatki</p>
+  <p class="section-heading">Wybierz dodatki</p>
 
   @for (item of addons; track item.key) {
     <div class="cov-card" [class.active]="isOn(item.key)" (click)="toggle(item.key)">
@@ -42,7 +79,7 @@
         <span class="cov-desc">{{ item.desc }}</span>
       </div>
       <div class="cov-right" (click)="$event.stopPropagation()">
-        <span class="cov-price" [class.active]="isOn(item.key)">{{ item.price }} zł</span>
+        <span class="cov-price" [class.active]="isOn(item.key)">{{ getDisplayPrice(item.price) }}</span>
         @if (item.route && isOn(item.key)) {
           <span class="cov-pipe">|</span>
           <button class="edit-btn" (click)="openDetail(item.route)">
@@ -59,7 +96,7 @@
   </div>
 
   <div class="price-summary">
-    <span class="price-total">{{ total }} zł</span>
+    <span class="price-total">{{ getDisplayTotal() }}</span>
     <span class="price-label">cena ubezpieczenia</span>
   </div>
 </app-wizard-card>
