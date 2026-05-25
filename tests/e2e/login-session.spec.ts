@@ -16,22 +16,23 @@ test(
         await page.getByTestId('login-submit-button').click();
 
         await expect(page).toHaveURL(/\/empty$/);
-        await expect(page.getByRole('heading', { name: '/empty' })).toBeVisible();
-        await expect(page.getByText('Logowanie zakończyło się powodzeniem.')).toBeVisible();
+        await expect(page.getByTestId('empty-start-view')).toBeVisible();
+        await expect(page.locator('.empty-stage')).toBeVisible();
+        await expect(page.locator('.hero-wrap')).toHaveCount(0);
         await captureStep(page, testInfo, 'login-success');
 
         await page.reload();
 
         await expect(page).toHaveURL(/\/empty$/);
-        await expect(page.getByRole('heading', { name: '/empty' })).toBeVisible();
+        await expect(page.getByTestId('empty-start-view')).toBeVisible();
+        await expect(page.locator('.hero-wrap')).toHaveCount(0);
         await captureStep(page, testInfo, 'session-restored-after-refresh');
 
         await page.goto('/login');
 
         await expect(page).toHaveURL(/\/empty$/);
-        await expect(
-            page.getByText('To jest docelowa strona po zalogowaniu w tym zadaniu.'),
-        ).toBeVisible();
+        await expect(page.getByTestId('empty-start-view')).toBeVisible();
+        await expect(page.locator('body')).not.toContainText('Pusta strona');
         await captureStep(page, testInfo, 'authenticated-user-redirected-from-login');
     },
 );

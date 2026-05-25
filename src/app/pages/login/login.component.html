@@ -1,62 +1,85 @@
 <app-wizard-card [contentBg]="'cream'" [showNext]="false">
-  <section class="login-page">
-    <h1>Logowanie</h1>
+  <section class="login-page" aria-labelledby="login-title">
+    <div class="login-intro">
+      <p class="login-kicker">eUmowy</p>
+      <h1 id="login-title">Zaloguj się do systemu</h1>
+      <p class="login-lead">
+        Znajomy układ logowania prowadzi bezpośrednio do pustego ekranu startowego i zachowuje
+        dotychczasowe działanie aplikacji.
+      </p>
 
-    @if (authError()) {
-      <div class="login-alert" data-testid="login-error-message" role="alert" aria-live="polite">
-        {{ authError() }}
-      </div>
-    }
+      <ul class="login-highlights" aria-label="Najważniejsze informacje o logowaniu">
+        <li>Użyj swojego aktualnego loginu i hasła.</li>
+        <li>Po zalogowaniu od razu przejdziesz do ekranu startowego.</li>
+        <li>Układ został dopasowany do pracy na komputerze i telefonie.</li>
+      </ul>
+    </div>
 
-    <form
-      class="login-form"
-      [formGroup]="loginForm"
-      (ngSubmit)="onSubmit()"
-      data-testid="login-form"
-      aria-label="Formularz logowania"
-      novalidate>
-      <div class="form-group">
-        <label for="username">Login</label>
-        <input
-          id="username"
-          type="text"
-          formControlName="username"
-          autocomplete="username"
-          data-testid="login-username-input"
-          [class.field-invalid]="isControlInvalid('username')" />
+    <div class="login-panel">
+      <p class="login-panel-label">Dane dostępowe</p>
 
-        @if (isControlInvalid('username')) {
-          <p class="field-error">Podaj login.</p>
-        }
-      </div>
+      @if (authError()) {
+        <div class="login-alert" data-testid="login-error-message" role="alert" aria-live="polite">
+          {{ authError() }}
+        </div>
+      }
 
-      <div class="form-group">
-        <label for="password">Hasło</label>
-        <input
-          id="password"
-          type="password"
-          formControlName="password"
-          autocomplete="current-password"
-          data-testid="login-password-input"
-          [class.field-invalid]="isControlInvalid('password')" />
+      <form
+        class="login-form"
+        [formGroup]="loginForm"
+        (ngSubmit)="onSubmit()"
+        data-testid="login-form"
+        aria-label="Formularz logowania"
+        novalidate>
+        <div class="form-group">
+          <label for="username">Login</label>
+          <input
+            id="username"
+            type="text"
+            formControlName="username"
+            autocomplete="username"
+            placeholder="Wpisz login"
+            data-testid="login-username-input"
+            [class.field-invalid]="isControlInvalid('username')" />
 
-        @if (isControlInvalid('password')) {
-          <p class="field-error">Podaj hasło.</p>
-        }
-      </div>
+          @if (isControlInvalid('username')) {
+            <p class="field-error">Podaj login.</p>
+          }
+        </div>
 
-      <button
-        type="submit"
-        class="btn-primary"
-        [disabled]="isSubmitting()"
-        [class.disabled]="isSubmitting()"
-        data-testid="login-submit-button">
-        @if (isSubmitting()) {
-          Trwa logowanie...
-        } @else {
-          Zaloguj się
-        }
-      </button>
-    </form>
+        <div class="form-group">
+          <label for="password">Hasło</label>
+          <input
+            id="password"
+            type="password"
+            formControlName="password"
+            autocomplete="current-password"
+            placeholder="Wpisz hasło"
+            data-testid="login-password-input"
+            [class.field-invalid]="isControlInvalid('password')" />
+
+          @if (isControlInvalid('password')) {
+            <p class="field-error">Podaj hasło.</p>
+          }
+        </div>
+
+        <div class="form-actions">
+          <button
+            type="submit"
+            class="btn-primary login-submit"
+            [disabled]="isSubmitting()"
+            [class.disabled]="isSubmitting()"
+            data-testid="login-submit-button">
+            @if (isSubmitting()) {
+              Trwa logowanie...
+            } @else {
+              Zaloguj się
+            }
+          </button>
+
+          <p class="login-support-note">Wpisz login i hasło do eUmowy.</p>
+        </div>
+      </form>
+    </div>
   </section>
 </app-wizard-card>

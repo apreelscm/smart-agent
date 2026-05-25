@@ -1,9 +1,12 @@
-<app-wizard-card [showNext]="false">
-  <section class="empty-page">
-    <h1>/empty</h1>
-    <h2>Pusta strona</h2>
-    <p class="subtitle">Logowanie zakończyło się powodzeniem.</p>
-    <p class="subtitle">Użytkownik został zalogowany.</p>
-    <p class="empty-note">To jest docelowa strona po zalogowaniu w tym zadaniu.</p>
+<app-wizard-card [showNext]="false" [showHero]="false">
+  <section
+    class="empty-page"
+    data-testid="empty-start-view"
+    aria-labelledby="empty-start-title">
+    <h1 id="empty-start-title" class="sr-only">Ekran startowy</h1>
+
+    <div class="empty-stage" aria-hidden="true">
+      <span class="empty-stage__line"></span>
+    </div>
   </section>
 </app-wizard-card>
