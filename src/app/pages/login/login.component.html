@@ -1,5 +1,7 @@
 <app-wizard-card [contentBg]="'cream'" [showNext]="false">
   <section class="login-page">
+    <h1>Logowanie</h1>
+
     @if (authError()) {
       <div class="login-alert" data-testid="login-error-message" role="alert" aria-live="polite">
         {{ authError() }}
