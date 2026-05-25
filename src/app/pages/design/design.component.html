@@ -1,0 +1,296 @@
+<div class="design-page">
+  <div class="design-header">
+    <h1>Design System</h1>
+    <p>
+      Component showcase for the eUmowy application by eService. All reusable UI primitives and
+      patterns used in the agreement drafting and signing flow are documented below.
+    </p>
+  </div>
+
+  <!-- Colors -->
+  <div class="section">
+    <h2>Colors</h2>
+    <p class="section-desc">Design tokens defined as CSS custom properties.</p>
+    <div class="token-grid">
+      <div class="color-swatch">
+        <div class="swatch" style="background: var(--eh-red)"></div>
+        <span class="swatch-label">Red</span>
+        <span class="swatch-value">--eh-red</span>
+      </div>
+      <div class="color-swatch">
+        <div class="swatch" style="background: var(--eh-red-dark)"></div>
+        <span class="swatch-label">Red Dark</span>
+        <span class="swatch-value">--eh-red-dark</span>
+      </div>
+      <div class="color-swatch">
+        <div class="swatch" style="background: var(--eh-cream)"></div>
+        <span class="swatch-label">Cream</span>
+        <span class="swatch-value">--eh-cream</span>
+      </div>
+      <div class="color-swatch">
+        <div class="swatch" style="background: var(--eh-bg)"></div>
+        <span class="swatch-label">Background</span>
+        <span class="swatch-value">--eh-bg</span>
+      </div>
+      <div class="color-swatch">
+        <div class="swatch" style="background: var(--eh-text)"></div>
+        <span class="swatch-label">Text</span>
+        <span class="swatch-value">--eh-text</span>
+      </div>
+      <div class="color-swatch">
+        <div class="swatch" style="background: var(--eh-muted)"></div>
+        <span class="swatch-label">Muted</span>
+        <span class="swatch-value">--eh-muted</span>
+      </div>
+      <div class="color-swatch">
+        <div class="swatch" style="background: var(--eh-white)"></div>
+        <span class="swatch-label">White</span>
+        <span class="swatch-value">--eh-white</span>
+      </div>
+      <div class="color-swatch">
+        <div class="swatch" style="background: var(--eh-border)"></div>
+        <span class="swatch-label">Border</span>
+        <span class="swatch-value">--eh-border</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Typography -->
+  <div class="section">
+    <h2>Typography</h2>
+    <p class="section-desc">
+      Two font families: Lora (serif, for headings) and Source Sans 3 (sans-serif, for body).
+    </p>
+
+    <div class="type-sample">
+      <div class="type-label">Heading (Lora 700, 28px)</div>
+      <h2 class="font-serif" style="border: none; padding: 0; margin: 0; font-size: 28px">
+        Nowa umowa terminala
+      </h2>
+    </div>
+    <div class="type-sample">
+      <div class="type-label">Subtitle (Source Sans 3, 14px, muted)</div>
+      <p class="subtitle" style="text-align: left; margin: 0">
+        Wypełnij dane kontrahenta, wybierz terminal i podpisz umowę online.
+      </p>
+    </div>
+    <div class="type-sample">
+      <div class="type-label">Section Heading (uppercase, 13px, muted)</div>
+      <div class="section-heading" style="text-align: left; margin: 0">Dane kontrahenta</div>
+    </div>
+    <div class="type-sample">
+      <div class="type-label">Body Text (Source Sans 3, 16px)</div>
+      <p class="font-sans">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut
+        labore et dolore magna aliqua.
+      </p>
+    </div>
+    <div class="type-sample">
+      <div class="type-label">Slider Value (Lora 700, 30px)</div>
+      <div class="slider-value-display">36 miesięcy</div>
+    </div>
+  </div>
+
+  <!-- Buttons -->
+  <div class="section">
+    <h2>Buttons</h2>
+    <p class="section-desc">Primary, secondary, and outline button variants.</p>
+
+    <div class="button-row">
+      <button
+        class="btn-primary"
+        style="width: auto; max-width: none; margin: 0; padding: 14px 32px"
+      >
+        Primary Button
+      </button>
+      <button class="btn-secondary">Secondary Button</button>
+      <button class="btn-outline">Outline Button</button>
+    </div>
+
+    <div class="button-row">
+      <button
+        class="btn-primary disabled"
+        disabled
+        style="width: auto; max-width: none; margin: 0; padding: 14px 32px"
+      >
+        Disabled Primary
+      </button>
+    </div>
+
+    <div class="button-row">
+      <a class="skip-link">Skip link style</a>
+    </div>
+  </div>
+
+  <!-- Form Inputs -->
+  <div class="section">
+    <h2>Form Inputs</h2>
+    <p class="section-desc">Text, email, telephone, and date inputs with labels.</p>
+
+    <div class="demo-form">
+      <div class="form-group">
+        <label>Imię i nazwisko</label>
+        <input type="text" placeholder="Jan Kowalski" />
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" placeholder="jan@example.com" />
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Telefon</label>
+          <input type="tel" placeholder="+48 123 456 789" />
+        </div>
+        <div class="form-group">
+          <label>Data urodzenia</label>
+          <input type="date" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Radio Options -->
+  <div class="section">
+    <h2>Radio Options</h2>
+    <p class="section-desc">Custom styled radio option cards with selection state.</p>
+
+    <div class="demo-radios">
+      <div
+        class="radio-option"
+        [class.selected]="selectedRadio === 'option-1'"
+        (click)="selectRadio('option-1')"
+      >
+        <span class="radio-dot"></span>
+        Terminal stacjonarny
+        <i class="pi pi-info-circle info-icon"></i>
+      </div>
+      <div
+        class="radio-option"
+        [class.selected]="selectedRadio === 'option-2'"
+        (click)="selectRadio('option-2')"
+      >
+        <span class="radio-dot"></span>
+        Terminal przenośny
+        <i class="pi pi-info-circle info-icon"></i>
+      </div>
+      <div
+        class="radio-option"
+        [class.selected]="selectedRadio === 'option-3'"
+        (click)="selectRadio('option-3')"
+      >
+        <span class="radio-dot"></span>
+        Terminal mobilny (mPOS)
+        <i class="pi pi-info-circle info-icon"></i>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chips -->
+  <div class="section">
+    <h2>Chip Bar</h2>
+    <p class="section-desc">
+      Tag-style chips used for displaying selected values. Click the X to remove.
+    </p>
+
+    <div class="demo-chips">
+      <app-chip-bar [chips]="sampleChips" />
+    </div>
+  </div>
+
+  <!-- Wizard Card -->
+  <div class="section">
+    <h2>Wizard Card</h2>
+    <p class="section-desc">
+      The main layout component wrapping content in a card with header, hero area, and action
+      button.
+    </p>
+
+    <div class="card-demo">
+      <app-wizard-card
+        [showNext]="true"
+        [nextLabel]="'Dalej'"
+        [nextDisabled]="false"
+        [contentBg]="'cream'"
+      >
+        <h2>Dane punktu handlowego</h2>
+        <p class="subtitle">
+          Podaj informacje o lokalizacji, w której zostanie zainstalowany terminal.
+        </p>
+        <div class="form-group">
+          <label>NIP kontrahenta</label>
+          <input type="text" placeholder="123-456-78-90" />
+        </div>
+      </app-wizard-card>
+    </div>
+  </div>
+
+  <!-- Price Navigator -->
+  <div class="section">
+    <h2>Fee Navigator</h2>
+    <p class="section-desc">
+      A navigable fee display with increment/decrement controls for monthly terminal charges.
+    </p>
+
+    <div class="price-nav">
+      <div class="price-nav-row">
+        <button class="price-nav-btn"><i class="pi pi-chevron-left"></i></button>
+        <span class="price-amount">89 zł</span>
+        <button class="price-nav-btn"><i class="pi pi-chevron-right"></i></button>
+      </div>
+      <span class="price-label">opłata miesięczna netto</span>
+    </div>
+  </div>
+
+  <!-- Coverage Actions -->
+  <div class="section">
+    <h2>Agreement Actions</h2>
+    <p class="section-desc">Confirm/cancel action row used in agreement signing flows.</p>
+
+    <div class="coverage-actions">
+      <button class="btn-cancel"><i class="pi pi-times"></i></button>
+      <span class="price-confirm">Podpisz umowę</span>
+      <button class="btn-confirm"><i class="pi pi-check"></i></button>
+    </div>
+  </div>
+
+  <!-- Grid Layout -->
+  <div class="section">
+    <h2>Grid Layout (Option Grid)</h2>
+    <p class="section-desc">Two-column grid used for terminal model or service package pickers.</p>
+
+    <div class="make-grid">
+      <div
+        class="radio-option"
+        (click)="selectRadio('grid-1')"
+        [class.selected]="selectedRadio === 'grid-1'"
+      >
+        <span class="radio-dot"></span>
+        Ingenico Move 5000
+      </div>
+      <div
+        class="radio-option"
+        (click)="selectRadio('grid-2')"
+        [class.selected]="selectedRadio === 'grid-2'"
+      >
+        <span class="radio-dot"></span>
+        Verifone V240m
+      </div>
+      <div
+        class="radio-option"
+        (click)="selectRadio('grid-3')"
+        [class.selected]="selectedRadio === 'grid-3'"
+      >
+        <span class="radio-dot"></span>
+        PAX A920 Pro
+      </div>
+      <div
+        class="radio-option"
+        (click)="selectRadio('grid-4')"
+        [class.selected]="selectedRadio === 'grid-4'"
+      >
+        <span class="radio-dot"></span>
+        Sunmi P2
+      </div>
+    </div>
+  </div>
+</div>

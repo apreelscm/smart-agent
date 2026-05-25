@@ -1,7 +1,7 @@
-@if (chips().length > 0) {
+@if (chips.length > 0) {
   <div class="chip-bar">
-    @for (chip of chips(); track chip.route) {
-      <span class="chip" (click)="navigate(chip.route)">
+    @for (chip of chips; track chip.label) {
+      <span class="chip" (click)="removeChip($index)">
         {{ chip.label }}
         <span class="chip-x">×</span>
       </span>

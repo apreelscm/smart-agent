@@ -1,9 +1,0 @@
-<app-wizard-card [showChips]="true" (nextClick)="next()">
-  <h2>Rodzaj paliwa</h2>
-  @for (opt of options; track opt) {
-    <div class="radio-option" [class.selected]="selected === opt" (click)="selected = opt">
-      <span class="radio-dot"></span>
-      <span>{{ opt }}</span>
-    </div>
-  }
-</app-wizard-card>

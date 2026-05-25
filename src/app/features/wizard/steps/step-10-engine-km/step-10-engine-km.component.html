@@ -1,9 +1,0 @@
-<app-wizard-card [showChips]="true" [nextDisabled]="!selected" (nextClick)="next()">
-  <h2>Moc silnika</h2>
-  @for (km of options(); track km) {
-    <div class="radio-option" [class.selected]="selected === km" (click)="selected = km">
-      <span class="radio-dot"></span>
-      <span>{{ km }} KM</span>
-    </div>
-  }
-</app-wizard-card>
