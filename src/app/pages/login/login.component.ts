@@ -7,8 +7,11 @@ import { finalize } from 'rxjs';
 import { AuthService } from '../../core/auth/auth.service';
 import { WizardCardComponent } from '../../shared/components/wizard-card/wizard-card.component';
 
+const EMPTY_ROUTE = '/empty';
 const INVALID_CREDENTIALS_MESSAGE = 'Nieprawidłowy login lub hasło.';
 const GENERIC_SIGN_IN_FAILURE_MESSAGE = 'Nie udało się zalogować. Spróbuj ponownie później.';
+
+type LoginFormControlName = 'username' | 'password';
 
 export function trimmedRequiredValidator(control: AbstractControl): ValidationErrors | null {
   const value = typeof control.value === 'string' ? control.value.trim() : '';
@@ -50,6 +53,7 @@ export class LoginComponent {
     }
 
     if (this.loginForm.invalid) {
+      this.authError.set(null);
       this.loginForm.markAllAsTouched();
       return;
     }
@@ -67,7 +71,7 @@ export class LoginComponent {
       .pipe(finalize(() => this.isSubmitting.set(false)))
       .subscribe({
         next: () => {
-          void this.router.navigateByUrl('/empty');
+          void this.router.navigateByUrl(EMPTY_ROUTE);
         },
         error: (error: unknown) => {
           if (error instanceof HttpErrorResponse && error.status === 401) {
@@ -80,7 +84,7 @@ export class LoginComponent {
       });
   }
 
-  isControlInvalid(controlName: 'username' | 'password'): boolean {
+  isControlInvalid(controlName: LoginFormControlName): boolean {
     const control = this.loginForm.controls[controlName];
     return control.invalid && control.touched;
   }

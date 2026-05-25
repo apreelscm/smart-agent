@@ -1,9 +1,15 @@
 .empty-page {
-  min-height: 160px;
+  min-height: 200px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 8px;
   text-align: center;
-  padding-bottom: 16px;
+  padding: 24px 0 32px;
+}
+
+.empty-note {
+  font-size: 14px;
+  color: var(--eh-muted);
 }

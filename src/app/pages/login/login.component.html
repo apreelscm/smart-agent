@@ -1,7 +1,6 @@
 <app-wizard-card [contentBg]="'cream'" [showNext]="false">
   <section class="login-page">
     <h1>Logowanie</h1>
-    <p class="subtitle">Zaloguj się, aby przejść dalej.</p>
 
     @if (authError()) {
       <div class="login-alert" data-testid="login-error-message" role="alert" aria-live="polite">
@@ -14,6 +13,7 @@
       [formGroup]="loginForm"
       (ngSubmit)="onSubmit()"
       data-testid="login-form"
+      aria-label="Formularz logowania"
       novalidate>
       <div class="form-group">
         <label for="username">Login</label>

@@ -1,9 +1,12 @@
 .login-page {
-  padding-bottom: 8px;
+  max-width: 420px;
+  margin: 0 auto;
+  padding: 8px 0 16px;
 }
 
 .login-form {
-  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
 }
 
 .login-form input[type='text'],
@@ -31,6 +34,7 @@
 
 .field-invalid {
   border-color: var(--eh-red) !important;
+  box-shadow: 0 0 0 1px rgba(200, 16, 46, 0.08);
 }
 
 .field-error {
@@ -50,7 +54,12 @@
   line-height: 1.4;
 }
 
+.btn-primary {
+  margin-top: 8px;
+}
+
 .btn-primary[disabled] {
   opacity: 0.55;
   cursor: not-allowed;
+  pointer-events: none;
 }
