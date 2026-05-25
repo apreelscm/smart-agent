@@ -37,19 +37,32 @@ describe('LoginComponent', () => {
     fixture.detectChanges();
   });
 
-  it('renders the redesigned login layout with heading, intro copy and form controls', () => {
+  it('renders only the login form controls without wizard or intro content', () => {
     const nativeElement = fixture.nativeElement as HTMLElement;
     const loginForm = nativeElement.querySelector('[data-testid="login-form"]') as HTMLFormElement;
-    const highlights = nativeElement.querySelectorAll('.login-highlights li');
+    const usernameInput = nativeElement.querySelector(
+      '[data-testid="login-username-input"]',
+    ) as HTMLInputElement;
+    const passwordInput = nativeElement.querySelector(
+      '[data-testid="login-password-input"]',
+    ) as HTMLInputElement;
+    const submitButton = nativeElement.querySelector(
+      '[data-testid="login-submit-button"]',
+    ) as HTMLButtonElement;
 
-    expect(nativeElement.querySelector('.login-intro')).not.toBeNull();
-    expect(nativeElement.querySelector('h1')?.textContent).toContain('Zaloguj się do systemu');
-    expect(nativeElement.textContent).toContain('Dane dostępowe');
-    expect(nativeElement.textContent).toContain('Po zalogowaniu od razu przejdziesz do ekranu startowego.');
-    expect(highlights.length).toBe(3);
+    expect(nativeElement.querySelector('app-wizard-card')).toBeNull();
+    expect(nativeElement.querySelector('.login-intro')).toBeNull();
+    expect(nativeElement.querySelector('h1')).toBeNull();
+    expect(nativeElement.textContent).not.toContain('Zaloguj się do systemu');
+    expect(nativeElement.textContent).not.toContain('Dane dostępowe');
+    expect(nativeElement.textContent).not.toContain(
+      'Po zalogowaniu od razu przejdziesz do ekranu startowego.',
+    );
     expect(loginForm).not.toBeNull();
-    expect(loginForm.querySelectorAll('input').length).toBe(2);
-    expect(nativeElement.querySelector('[data-testid="login-submit-button"]')).not.toBeNull();
+    expect(loginForm.getAttribute('aria-label')).toBe('Formularz logowania');
+    expect(usernameInput).not.toBeNull();
+    expect(passwordInput).not.toBeNull();
+    expect(submitButton).not.toBeNull();
     expect(nativeElement.querySelector('[data-testid="login-error-message"]')).toBeNull();
   });
 
