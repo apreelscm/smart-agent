@@ -10,6 +10,39 @@ interface MockAuthUserRecord {
 const AUTH_LOGIN_ENDPOINT = '/api/auth/login';
 const AUTH_LOGOUT_ENDPOINT = '/api/auth/logout';
 
+const MMELISSA_MOCK_AUTH_USER: MockAuthUserRecord = {
+  password: 'QQww123@456@789',
+  response: {
+    token: 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtbWVsaXNzYSIsInJvbGVzIjpbIkVVTV9aUkQiXSwiZXhwIjoxNzE2NjUwMDAwfQ.fake',
+    refreshToken: 'rt_xyz789',
+    user: {
+      username: 'mmelissa',
+      firstName: 'Małgorzata',
+      lastName: 'Melissa',
+      email: 'malgorzata.melissa@eservice.com.pl',
+      sellerNumber: null,
+      auwId: 67890,
+      roles: ['EUM_ZRD'],
+    },
+  },
+};
+
+const ADMIN_MOCK_AUTH_USER: MockAuthUserRecord = {
+  password: 'admin',
+  response: {
+    ...MMELISSA_MOCK_AUTH_USER.response,
+    token: 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGVzIjpbIkVVTV9aUkQiXSwiZXhwIjoxNzE2NjUwMDAwfQ.fake',
+    refreshToken: 'rt_admin789',
+    user: {
+      ...MMELISSA_MOCK_AUTH_USER.response.user,
+      username: 'admin',
+      firstName: 'Admin',
+      lastName: 'Administrator',
+      email: 'admin@eservice.com.pl',
+    },
+  },
+};
+
 const MOCK_AUTH_USERS: Record<string, MockAuthUserRecord> = {
   askonieczny: {
     password: 'CzerwiecSierpien2023%',
@@ -28,22 +61,8 @@ const MOCK_AUTH_USERS: Record<string, MockAuthUserRecord> = {
       },
     },
   },
-  mmelissa: {
-    password: 'QQww123@456@789',
-    response: {
-      token: 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtbWVsaXNzYSIsInJvbGVzIjpbIkVVTV9aUkQiXSwiZXhwIjoxNzE2NjUwMDAwfQ.fake',
-      refreshToken: 'rt_xyz789',
-      user: {
-        username: 'mmelissa',
-        firstName: 'Małgorzata',
-        lastName: 'Melissa',
-        email: 'malgorzata.melissa@eservice.com.pl',
-        sellerNumber: null,
-        auwId: 67890,
-        roles: ['EUM_ZRD'],
-      },
-    },
-  },
+  mmelissa: MMELISSA_MOCK_AUTH_USER,
+  admin: ADMIN_MOCK_AUTH_USER,
 };
 
 export const authMockInterceptor: HttpInterceptorFn = (req, next) => {
