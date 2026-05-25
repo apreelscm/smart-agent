@@ -6,20 +6,27 @@ const VALID_CREDENTIALS = {
   password: 'CzerwiecSierpien2023%',
 };
 
-test('redirects guests to the redesigned login screen and protects app routes', async (
+test('redirects guests to the simplified login screen and protects app routes', async (
   { page },
   testInfo,
 ) => {
   await page.goto('/');
   await expect(page).toHaveURL(/\/login$/);
-  await expect(page.getByRole('heading', { name: 'Zaloguj się do systemu' })).toBeVisible();
   await expect(page.getByTestId('login-form')).toBeVisible();
+  await expect(page.getByTestId('login-form')).toHaveAttribute('aria-label', 'Formularz logowania');
+  await expect(page.locator('app-wizard-card')).toHaveCount(0);
+  await expect(page.getByRole('heading', { name: 'Zaloguj się do systemu' })).toHaveCount(0);
+  await expect(page.getByText('Dane dostępowe', { exact: true })).toHaveCount(0);
+  await expect(
+    page.getByText('Użyj swojego aktualnego loginu i hasła.', { exact: true }),
+  ).toHaveCount(0);
   await expect(page.getByTestId('login-password-input')).toHaveAttribute('type', 'password');
   await captureStep(page, testInfo, 'root-redirects-to-login');
 
   await page.goto('/design');
   await expect(page).toHaveURL(/\/login$/);
   await expect(page.getByTestId('login-submit-button')).toBeVisible();
+  await expect(page.locator('app-wizard-card')).toHaveCount(0);
   await captureStep(page, testInfo, 'protected-route-redirects-to-login');
 });
 

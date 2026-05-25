@@ -5,7 +5,6 @@ import { AbstractControl, FormBuilder, ReactiveFormsModule, ValidationErrors } f
 import { Router } from '@angular/router';
 import { finalize } from 'rxjs';
 import { AuthService } from '../../core/auth/auth.service';
-import { WizardCardComponent } from '../../shared/components/wizard-card/wizard-card.component';
 
 const EMPTY_ROUTE = '/empty';
 const INVALID_CREDENTIALS_MESSAGE = 'Nieprawidłowy login lub hasło.';
@@ -21,7 +20,7 @@ export function trimmedRequiredValidator(control: AbstractControl): ValidationEr
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ReactiveFormsModule, WizardCardComponent],
+  imports: [ReactiveFormsModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })
