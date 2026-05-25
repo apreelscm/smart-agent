@@ -43,7 +43,7 @@ Repozytorium zawiera już działający szkielet tego flow (`src/app/core/auth/`,
 - FR-013: On non-401 failures, the app shall remain on `/login` and show a generic technical error message.
 - FR-014: An already authenticated user opening `/login` shall be redirected to `/empty`.
 - FR-015: Persisted authenticated state shall be restored after refresh using the existing localStorage-based mechanism in `AuthService`.
-- FR-016: No runtime mock JSON file, interceptor-based fake backend, or other mock runtime fallback shall be introduced for authentication; mocks are allowed only in unit/e2e tests.
+- FR-016: A temporary runtime mock backend shall be introduced for authentication so the frontend can work without the real backend for now; the mock shall preserve the `/api/auth/login` and `/api/auth/logout` contract and be easy to replace with the live backend later.
 
 ### Edge Cases
 - EC-001: User submits spaces in both fields.
@@ -99,16 +99,18 @@ Existing service reuse from Confluence:
 - [F01 — Authentication & Session Management](https://apreel.atlassian.net/wiki/spaces/Services/pages/174555137/F01+Authentication+Session+Management)
 - [F01 — Authentication & Session — Test Scenarios](https://apreel.atlassian.net/wiki/spaces/Services/pages/174653441/F01+Authentication+Session+Test+Scenarios)
 
-These pages confirm that eUmowy should reuse the platform authentication/session capability, backed by MicroLDAP and HTTP session lifecycle management. The implementation plan should therefore keep the real runtime integration already encoded in the repo:
+These pages confirm that eUmowy should reuse the platform authentication/session capability, backed by MicroLDAP and HTTP session lifecycle management. The implementation plan should therefore preserve the existing auth contract already encoded in the repo:
 
 - runtime login endpoint: `POST /api/auth/login`
 - runtime logout endpoint: `POST /api/auth/logout`
 - login request body: `{ username, password }`
 - handled success payload: `{ token, refreshToken?, user }`
 
-This is the runtime default. **Do not add a fake backend, mock interceptor, or JSON-file fallback in production code.** Test doubles remain acceptable only in:
+This is the contract the frontend must preserve. Because the backend is not yet available for this story, the plan should introduce a temporary mock HTTP backend for authentication that intercepts `/api/auth/login` and `/api/auth/logout`, returns contract-compatible success and error responses, and keeps `AuthService` plus the login screen working end to end without a live backend dependency.
+
+The mock should be isolated behind app-level HTTP configuration so it can be removed or disabled once the real backend is ready. Test doubles remain acceptable in:
 - `src/app/core/auth/auth.service.spec.ts` via `HttpTestingController`
-- `tests/e2e/login.spec.ts` via Playwright route mocking
+- `tests/e2e/login.spec.ts` via Playwright route mocking when scenario-specific overrides are needed
 
 Repository observations that drive the plan:
 - `src/app/app.routes.ts` already redirects `/` to `/login` and guards `/empty` and `/design`.
@@ -119,7 +121,7 @@ Repository observations that drive the plan:
 No relevant domain guidance was found in the configured `SDLC` Confluence space, so the plan relies on repo conventions plus the existing Services-space auth documentation above.
 
 Deployment/config note:
-- The deployed frontend must route `/api/auth/*` to the real platform backend or same-origin API.
+- Until the real backend is available, the frontend should serve `/api/auth/*` from the temporary auth mock backend; once backend routing exists, the same contract should point to the real platform backend or same-origin API without changing consuming code.
 - No application-level auth secret is required in the frontend for this story; end-user credentials are supplied interactively at login time.
 
 ### Task Breakdown
@@ -127,7 +129,7 @@ Deployment/config note:
 #### Phase 1: Align auth core with platform login flow
 | # | Task | Files | Description |
 |---|------|-------|-------------|
-| 1.1 | Preserve real auth API contract | `src/app/core/auth/auth.service.ts` | Keep `POST /api/auth/login` and `POST /api/auth/logout` as the runtime paths, preserve the existing `{ username, password }` request contract, and ensure no production mock/fallback path is introduced. |
+| 1.1 | Preserve auth API contract behind a temporary mock backend | `src/app/core/auth/auth.service.ts`, `src/app/core/auth/auth.mock.interceptor.ts`, `src/app/app.config.ts` | Keep `POST /api/auth/login` and `POST /api/auth/logout` as the consumed paths, preserve the existing `{ username, password }` request contract, and introduce a removable mock HTTP backend so the frontend works without the real backend for now. |
 | 1.2 | Verify user-state normalization and persistence | `src/app/core/auth/auth.service.ts` | Confirm the service keeps successful auth state only after valid responses, restores persisted state on refresh, and clears malformed storage values safely. |
 | 1.3 | Confirm route protection behavior | `src/app/app.routes.ts`, `src/app/core/auth/auth.guard.ts`, `src/app/core/auth/guest.guard.ts` | Retain guest-only access to `/login`, authenticated access to `/empty` and `/design`, and root redirect behavior. |
 | 1.4 | Strengthen auth unit coverage | `src/app/core/auth/auth.service.spec.ts`, `src/app/core/auth/auth.guard.spec.ts`, `src/app/core/auth/guest.guard.spec.ts` | Add or refine tests for restore-from-storage, failed-login non-persistence, guest redirect, authenticated redirect away from `/login`, and logout cleanup. |
@@ -145,13 +147,15 @@ Deployment/config note:
 | # | Task | Files | Description |
 |---|------|-------|-------------|
 | 3.1 | Complete login component tests | `src/app/pages/login/login.component.spec.ts` | Verify rendering, password masking, whitespace rejection, trimmed submit payload, 401 handling, generic error handling, and duplicate-submit blocking. |
-| 3.2 | Keep e2e auth tests as test-only mocks | `tests/e2e/login.spec.ts` | Validate root redirect, guarded-route protection, successful login, refresh persistence, redirect away from `/login` after auth, and invalid-credentials flow using Playwright route stubs only in the test layer. |
+| 3.2 | Keep e2e auth tests aligned with the temporary mock backend | `tests/e2e/login.spec.ts` | Validate root redirect, guarded-route protection, successful login, refresh persistence, redirect away from `/login` after auth, and invalid-credentials flow against the temporary mock backend, using Playwright route stubs only when a scenario needs explicit response overriding. |
 | 3.3 | Stabilize smoke coverage for authenticated startup | `tests/e2e/smoke.spec.ts` | Seed a valid stored user shape and confirm the app loads correctly when auth state already exists. |
 
 ### File Change Summary
 | File | Action | Description |
 |------|--------|-------------|
-| `src/app/core/auth/auth.service.ts` | MODIFY | Lock in the runtime auth contract, state persistence, and storage normalization behavior |
+| `src/app/core/auth/auth.service.ts` | MODIFY | Keep the auth contract stable while consuming mock-backed `/api/auth/*` calls and preserving state persistence/normalization behavior |
+| `src/app/core/auth/auth.mock.interceptor.ts` | CREATE | Add a temporary mock backend for `/api/auth/login` and `/api/auth/logout` that returns contract-compatible success and error responses |
+| `src/app/app.config.ts` | MODIFY | Register the temporary auth mock HTTP backend in the application HTTP provider chain |
 | `src/app/core/auth/auth.service.spec.ts` | MODIFY | Expand service tests for success, failure, restore, and logout cleanup |
 | `src/app/core/auth/auth.guard.spec.ts` | MODIFY | Verify protected-route redirect behavior |
 | `src/app/core/auth/guest.guard.spec.ts` | MODIFY | Verify redirect-away behavior for authenticated users opening `/login` |
@@ -161,7 +165,7 @@ Deployment/config note:
 | `src/app/pages/login/login.component.spec.ts` | MODIFY | Cover login UI behavior end to end at component level |
 | `src/app/pages/empty/empty.component.html` | MODIFY | Preserve `/empty` as the explicit success target after login |
 | `src/app/pages/empty/empty.component.scss` | MODIFY | Maintain simple success-page presentation for post-login state |
-| `tests/e2e/login.spec.ts` | MODIFY | Cover guest redirects, success, invalid login, and persistence scenarios |
+| `tests/e2e/login.spec.ts` | MODIFY | Cover guest redirects, success, invalid login, and persistence scenarios against the temporary auth mock backend |
 | `tests/e2e/smoke.spec.ts` | MODIFY | Ensure authenticated startup remains stable in browser automation |
 
 ### Verification Steps
@@ -171,8 +175,13 @@ Deployment/config note:
 4. [ ] Navigating to `/` as a guest lands on `/login`
 5. [ ] Navigating to `/empty` as a guest redirects to `/login`
 6. [ ] Submitting whitespace-only values shows validation and sends no login request
-7. [ ] Submitting valid credentials sends `POST /api/auth/login` with trimmed `{ username, password }`
+7. [ ] Submitting valid credentials sends `POST /api/auth/login` with trimmed `{ username, password }` through the temporary mock backend
 8. [ ] Successful login navigates to `/empty`
 9. [ ] Invalid credentials keep the user on `/login` with a generic auth error
 10. [ ] Refresh after successful login preserves authenticated access
 11. [ ] Visiting `/login` while authenticated redirects to `/empty`
+
+## Revision History
+| Revision | Reviewer | Summary of changes |
+|---|---|---|
+| 1 | razorapid | Updated the plan to introduce a temporary mock HTTP auth backend for `/api/auth/login` and `/api/auth/logout`, adjusted tasks and file changes, and aligned e2e/verification steps so the frontend can work without the real backend for now. |
