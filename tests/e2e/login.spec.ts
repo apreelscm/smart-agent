@@ -6,13 +6,13 @@ const VALID_CREDENTIALS = {
   password: 'CzerwiecSierpien2023%',
 };
 
-test('redirects guests to the login screen and protects app routes', async (
+test('redirects guests to the redesigned login screen and protects app routes', async (
   { page },
   testInfo,
 ) => {
   await page.goto('/');
   await expect(page).toHaveURL(/\/login$/);
-  await expect(page.getByRole('heading', { name: 'Logowanie' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Zaloguj się do systemu' })).toBeVisible();
   await expect(page.getByTestId('login-form')).toBeVisible();
   await expect(page.getByTestId('login-password-input')).toHaveAttribute('type', 'password');
   await captureStep(page, testInfo, 'root-redirects-to-login');
@@ -23,7 +23,7 @@ test('redirects guests to the login screen and protects app routes', async (
   await captureStep(page, testInfo, 'protected-route-redirects-to-login');
 });
 
-test('logs in with the default admin account and keeps authenticated users on /empty', async (
+test('logs in with a valid account and keeps authenticated users on /empty', async (
   { page },
   testInfo,
 ) => {
@@ -33,20 +33,21 @@ test('logs in with the default admin account and keeps authenticated users on /e
   await page.getByTestId('login-submit-button').click();
 
   await expect(page).toHaveURL(/\/empty$/);
-  await expect(page.getByRole('heading', { name: '/empty' })).toBeVisible();
-  await expect(page.getByRole('heading', { name: 'Pusta strona' })).toBeVisible();
-  await expect(page.getByText('Logowanie zakończyło się powodzeniem.')).toBeVisible();
-  await expect(page.getByText('Użytkownik został zalogowany.')).toBeVisible();
+  await expect(page.getByTestId('empty-start-view')).toBeVisible();
+  await expect(page.locator('.empty-stage')).toBeVisible();
+  await expect(page.locator('.hero-wrap')).toHaveCount(0);
+  await expect(page.locator('body')).not.toContainText('Pusta strona');
   await captureStep(page, testInfo, 'successful-login-redirects-to-empty');
 
   await page.reload();
   await expect(page).toHaveURL(/\/empty$/);
-  await expect(page.getByRole('heading', { name: '/empty' })).toBeVisible();
+  await expect(page.getByTestId('empty-start-view')).toBeVisible();
+  await expect(page.locator('.hero-wrap')).toHaveCount(0);
   await captureStep(page, testInfo, 'authenticated-refresh-stays-on-empty');
 
   await page.goto('/login');
   await expect(page).toHaveURL(/\/empty$/);
-  await expect(page.getByRole('heading', { name: '/empty' })).toBeVisible();
+  await expect(page.getByTestId('empty-start-view')).toBeVisible();
   await captureStep(page, testInfo, 'authenticated-user-is-redirected-away-from-login');
 });
 
