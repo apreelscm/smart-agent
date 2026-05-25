@@ -3,33 +3,56 @@
 
 // ── Design tokens ────────────────────────────────────────────────
 :root {
-  --eh-red:         #C8102E;
-  --eh-red-dark:    #A50D25;
-  --eh-cream:       #F5EDD6;
-  --eh-bg:          #D8D3CC;
-  --eh-text:        #2C2C2C;
-  --eh-muted:       #6B6B6B;
-  --eh-white:       #FFFFFF;
-  --eh-border:      #D4D0CA;
-  --eh-input-bg:    #FFFFFF;
+  --eh-red: #c8102e;
+  --eh-red-dark: #a50d25;
+  --eh-cream: #f5edd6;
+  --eh-bg: #d8d3cc;
+  --eh-text: #2c2c2c;
+  --eh-muted: #6b6b6b;
+  --eh-white: #ffffff;
+  --eh-border: #d4d0ca;
+  --eh-input-bg: #ffffff;
 
-  // Hero: swap this one variable to add a real image later
-  --eh-hero-bg:     linear-gradient(135deg, #7DC8E8 0%, #5BB8E0 35%, #A8DFF5 70%, #C5EDF8 100%);
+  --eh-hero-bg: linear-gradient(135deg, #7dc8e8 0%, #5bb8e0 35%, #a8dff5 70%, #c5edf8 100%);
 
-  --font-serif:     'Lora', Georgia, serif;
-  --font-sans:      'Source Sans 3', 'Helvetica Neue', Arial, sans-serif;
+  --font-serif: 'Lora', Georgia, serif;
+  --font-sans: 'Source Sans 3', 'Helvetica Neue', Arial, sans-serif;
 
   --card-max-width: 1100px;
-  --content-width:  640px;
-  --radius-card:    8px;
-  --radius-btn:     6px;
-  --radius-input:   6px;
+  --content-width: 640px;
+  --radius-card: 8px;
+  --radius-btn: 6px;
+  --radius-input: 6px;
+  --card-shadow: 0 8px 40px rgba(0, 0, 0, 0.22);
+  --page-pad-inline: 20px;
+  --page-pad-top: 24px;
+  --page-pad-bottom: 48px;
+  --card-pad-inline: 20px;
+  --card-content-pad-top: 28px;
+  --card-content-pad-bottom: 8px;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --page-pad-inline: 32px;
+    --page-pad-top: 48px;
+    --page-pad-bottom: 72px;
+    --card-pad-inline: 28px;
+    --card-content-pad-top: 40px;
+  }
 }
 
 // ── Reset & base ─────────────────────────────────────────────────
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
-html, body {
+html,
+body {
   min-height: 100%;
   font-family: var(--font-sans);
   font-size: 16px;
@@ -41,10 +64,11 @@ html, body {
 // ── Wizard shell ─────────────────────────────────────────────────
 .wizard-shell {
   min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  padding: 48px 32px 72px;
+  padding: var(--page-pad-top) var(--page-pad-inline) var(--page-pad-bottom);
   background: var(--eh-bg);
 }
 
@@ -54,7 +78,7 @@ html, body {
   max-width: var(--card-max-width);
   background: var(--eh-white);
   border-radius: var(--radius-card);
-  box-shadow: 0 8px 40px rgba(0,0,0,0.22);
+  box-shadow: var(--card-shadow);
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -65,11 +89,13 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 18px 28px 14px;
+  gap: 12px 20px;
+  flex-wrap: wrap;
+  padding: 18px var(--card-pad-inline) 14px;
   background: var(--eh-white);
 
   .logo-img {
-    height: 72px;
+    height: clamp(48px, 12vw, 72px);
     width: auto;
   }
 
@@ -79,6 +105,7 @@ html, body {
     font-weight: 400;
     color: var(--eh-red);
     letter-spacing: 0.01em;
+    text-align: right;
   }
 }
 
@@ -88,39 +115,38 @@ html, body {
   width: 100%;
   flex-shrink: 0;
   overflow: hidden;
+  background: var(--eh-hero-bg);
 
   .hero-img {
     display: block;
     width: 100%;
     height: auto;
-    max-height: 340px;
+    max-height: clamp(180px, 32vw, 340px);
+    object-fit: cover;
   }
 
-  // Chip bar anchored to bottom of hero image
   .chip-bar {
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
+    inset: 0 0 auto;
     background: transparent;
-    padding: 12px 28px;
+    padding: 12px var(--card-pad-inline);
   }
 }
 
 // ── Card content ─────────────────────────────────────────────────
 .card-content {
-  padding: 40px 28px 8px;
+  padding: var(--card-content-pad-top) var(--card-pad-inline) var(--card-content-pad-bottom);
 
-  // Inner wrapper centers & constrains the form
   .content-inner {
-    max-width: var(--content-width);
+    max-width: min(100%, var(--content-width));
     margin: 0 auto;
   }
 
-  h1, h2 {
+  h1,
+  h2 {
     font-family: var(--font-serif);
     font-weight: 700;
-    font-size: 28px;
+    font-size: clamp(28px, 5vw, 36px);
     line-height: 1.2;
     color: var(--eh-text);
     text-align: center;
@@ -136,8 +162,9 @@ html, body {
   }
 }
 
-// ── Card content background variants ─────────────────────────────
-.card-content.cream { background: var(--eh-cream); }
+.card-content.cream {
+  background: var(--eh-cream);
+}
 
 // ── Form elements ────────────────────────────────────────────────
 .form-group {
@@ -151,10 +178,11 @@ html, body {
     margin-bottom: 6px;
   }
 
-  input[type="text"],
-  input[type="email"],
-  input[type="tel"],
-  input[type="date"] {
+  input[type='text'],
+  input[type='email'],
+  input[type='tel'],
+  input[type='date'],
+  input[type='password'] {
     width: 100%;
     padding: 12px 14px;
     border: 1.5px solid var(--eh-border);
@@ -164,17 +192,31 @@ html, body {
     color: var(--eh-text);
     background: var(--eh-input-bg);
     outline: none;
-    transition: border-color 0.15s;
+    transition:
+      border-color 0.15s,
+      box-shadow 0.15s;
 
-    &::placeholder { color: #ABABAB; }
-    &:focus { border-color: var(--eh-red); }
+    &::placeholder {
+      color: #ababab;
+    }
+
+    &:focus {
+      border-color: var(--eh-red);
+      box-shadow: 0 0 0 3px rgba(200, 16, 46, 0.08);
+    }
   }
 }
 
 .form-row {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   gap: 16px;
+}
+
+@media (min-width: 768px) {
+  .form-row {
+    grid-template-columns: 1fr 1fr;
+  }
 }
 
 // ── Primary CTA button ───────────────────────────────────────────
@@ -193,11 +235,25 @@ html, body {
   border: none;
   border-radius: var(--radius-btn);
   cursor: pointer;
-  transition: background 0.15s;
+  transition:
+    background 0.15s,
+    transform 0.15s;
   letter-spacing: 0.02em;
 
-  &:hover  { background: var(--eh-red-dark); }
-  &:active { transform: scale(0.995); }
+  &:hover {
+    background: var(--eh-red-dark);
+  }
+
+  &:active {
+    transform: translateY(1px);
+  }
+
+  &:disabled,
+  &.disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
 }
 
 // ── Radio option rows ────────────────────────────────────────────
@@ -212,13 +268,15 @@ html, body {
   margin-bottom: 10px;
   cursor: pointer;
   background: var(--eh-white);
-  transition: background 0.12s, border-color 0.12s;
+  transition:
+    background 0.12s,
+    border-color 0.12s;
   font-size: 15px;
   color: var(--eh-text);
 
   &.selected {
     background: var(--eh-cream);
-    border-color: #E0D3AC;
+    border-color: #e0d3ac;
   }
 
   .radio-dot {
@@ -244,7 +302,10 @@ html, body {
 
   &.selected .radio-dot {
     border-color: var(--eh-red);
-    &::after { background: var(--eh-red); }
+
+    &::after {
+      background: var(--eh-red);
+    }
   }
 
   .info-icon {
@@ -260,7 +321,7 @@ html, body {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
-  padding: 10px 28px 0;
+  padding: 10px var(--card-pad-inline) 0;
   background: var(--eh-white);
 
   .chip {
@@ -268,20 +329,27 @@ html, body {
     align-items: center;
     gap: 6px;
     padding: 6px 14px;
-    background: #3D3D3D;
+    background: #3d3d3d;
     color: #fff;
     border-radius: 16px;
     font-size: 13px;
     font-weight: 500;
     cursor: pointer;
-    transition: background 0.15s, opacity 0.15s;
+    transition:
+      background 0.15s,
+      opacity 0.15s;
 
-    &:hover { background: #555; }
+    &:hover {
+      background: #555;
+    }
 
     .chip-x {
       opacity: 0.6;
       line-height: 1;
-      &:hover { opacity: 1; }
+
+      &:hover {
+        opacity: 1;
+      }
     }
   }
 }
@@ -313,7 +381,7 @@ html, body {
   justify-content: center;
   flex-direction: column;
   gap: 4px;
-  padding: 16px 28px 20px;
+  padding: 16px var(--card-pad-inline) 20px;
   border-top: 1px solid var(--eh-border);
 
   .price-nav-row {
@@ -333,7 +401,10 @@ html, body {
     justify-content: center;
     cursor: pointer;
     color: var(--eh-text);
-    &:hover { background: var(--eh-cream); }
+
+    &:hover {
+      background: var(--eh-cream);
+    }
   }
 
   .price-amount {
@@ -358,15 +429,24 @@ html, body {
   cursor: pointer;
   text-align: center;
   margin-top: 8px;
-  &:hover { color: var(--eh-red-dark); }
+
+  &:hover {
+    color: var(--eh-red-dark);
+  }
 }
 
 // ── Make grid (2-column brand picker) ────────────────────────────
 .make-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   gap: 8px;
   margin-bottom: 8px;
+}
+
+@media (min-width: 768px) {
+  .make-grid {
+    grid-template-columns: 1fr 1fr;
+  }
 }
 
 // ── Coverage confirm/cancel row ──────────────────────────────────
@@ -389,7 +469,11 @@ html, body {
     cursor: pointer;
     color: var(--eh-muted);
     font-size: 18px;
-    &:hover { border-color: var(--eh-red); color: var(--eh-red); }
+
+    &:hover {
+      border-color: var(--eh-red);
+      color: var(--eh-red);
+    }
   }
 
   .price-confirm {
@@ -413,6 +497,22 @@ html, body {
     cursor: pointer;
     color: white;
     font-size: 20px;
-    &:hover { background: var(--eh-red-dark); }
+
+    &:hover {
+      background: var(--eh-red-dark);
+    }
   }
+}
+
+// ── Accessibility helpers ────────────────────────────────────────
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  white-space: nowrap;
+  clip-path: inset(50%);
+  border: 0;
 }

@@ -1,19 +1,33 @@
 <div class="wizard-shell">
-  <div class="wizard-card">
+  <div
+    class="wizard-card"
+    [class.wizard-card--header-hidden]="!showHeader"
+    [class.wizard-card--hero-hidden]="!showHero"
+  >
+    @if (showHeader) {
+      <div class="card-header">
+        <img src="eg_logo.jpg" alt="Ergo Hestia" class="logo-img" />
+        <span class="tagline">Proste, bo najważniejsze.</span>
+      </div>
+    }
 
-    <div class="card-header">
-      <img src="eg_logo.jpg" alt="Ergo Hestia" class="logo-img" />
-      <span class="tagline">Proste, bo najważniejsze.</span>
-    </div>
+    @if (showHero) {
+      <div class="hero-wrap">
+        <img src="eg_car.png" alt="" class="hero-img" />
+        @if (showChips) {
+          <app-chip-bar />
+        }
+      </div>
+    }
 
-    <div class="hero-wrap">
-      <img src="eg_car.png" alt="" class="hero-img" />
-      @if (showChips) {
-        <app-chip-bar />
-      }
-    </div>
-
-    <div class="card-content" [ngClass]="contentBg">
+    <div
+      class="card-content"
+      [ngClass]="{
+        cream: contentBg === 'cream',
+        'card-content--header-hidden': !showHeader,
+        'card-content--hero-hidden': !showHero,
+      }"
+    >
       <div class="content-inner">
         <ng-content />
       </div>
@@ -28,6 +42,5 @@
         {{ nextLabel }}
       </button>
     }
-
   </div>
 </div>

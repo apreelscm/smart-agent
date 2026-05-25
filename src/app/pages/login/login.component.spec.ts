@@ -37,16 +37,19 @@ describe('LoginComponent', () => {
     fixture.detectChanges();
   });
 
-  it('renders only login, password and submit controls on the form', () => {
+  it('renders the redesigned login layout with heading, intro copy and form controls', () => {
     const nativeElement = fixture.nativeElement as HTMLElement;
     const loginForm = nativeElement.querySelector('[data-testid="login-form"]') as HTMLFormElement;
+    const highlights = nativeElement.querySelectorAll('.login-highlights li');
 
+    expect(nativeElement.querySelector('.login-intro')).not.toBeNull();
+    expect(nativeElement.querySelector('h1')?.textContent).toContain('Zaloguj się do systemu');
+    expect(nativeElement.textContent).toContain('Dane dostępowe');
+    expect(nativeElement.textContent).toContain('Po zalogowaniu od razu przejdziesz do ekranu startowego.');
+    expect(highlights.length).toBe(3);
     expect(loginForm).not.toBeNull();
     expect(loginForm.querySelectorAll('input').length).toBe(2);
-    expect(loginForm.querySelectorAll('button').length).toBe(1);
-    expect(loginForm.querySelectorAll('a').length).toBe(0);
-    expect(nativeElement.querySelector('h1')).toBeNull();
-    expect(nativeElement.querySelector('.subtitle')).toBeNull();
+    expect(nativeElement.querySelector('[data-testid="login-submit-button"]')).not.toBeNull();
     expect(nativeElement.querySelector('[data-testid="login-error-message"]')).toBeNull();
   });
 
@@ -96,7 +99,7 @@ describe('LoginComponent', () => {
     expect(router.navigateByUrl).toHaveBeenCalledWith('/empty');
   });
 
-  it('shows a generic invalid credentials error when the backend returns 401', () => {
+  it('shows the invalid credentials error when the backend returns 401', () => {
     spyOn(router, 'navigateByUrl').and.returnValue(Promise.resolve(true));
     authService.login.and.returnValue(
       throwError(() => new HttpErrorResponse({ status: 401, statusText: 'Unauthorized' })),
@@ -110,9 +113,11 @@ describe('LoginComponent', () => {
     component.onSubmit();
     fixture.detectChanges();
 
-    expect((fixture.nativeElement as HTMLElement).textContent).toContain(
-      'Nieprawidłowy login lub hasło.',
+    const errorMessage = (fixture.nativeElement as HTMLElement).querySelector(
+      '[data-testid="login-error-message"]',
     );
+
+    expect(errorMessage?.textContent).toContain('Nieprawidłowy login lub hasło.');
     expect(router.navigateByUrl).not.toHaveBeenCalled();
   });
 
@@ -158,6 +163,7 @@ describe('LoginComponent', () => {
     expect(authService.login).toHaveBeenCalledTimes(1);
     expect(component.isSubmitting()).toBeTrue();
     expect(submitButton.disabled).toBeTrue();
+    expect(submitButton.textContent).toContain('Trwa logowanie...');
 
     pendingResponse.next(currentUser);
     pendingResponse.complete();

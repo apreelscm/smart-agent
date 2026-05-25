@@ -1,4 +1,19 @@
-.btn-primary.disabled {
-  opacity: 0.55;
-  cursor: not-allowed;
+:host {
+  display: block;
+}
+
+.card-content--hero-hidden {
+  padding-top: 28px;
+}
+
+.card-content--hero-hidden .content-inner {
+  max-width: min(100%, 720px);
+}
+
+.card-content--header-hidden.card-content--hero-hidden {
+  padding-top: 40px;
+}
+
+.wizard-card--hero-hidden .btn-primary {
+  margin-top: 20px;
 }

@@ -11,6 +11,8 @@ import { ChipBarComponent } from '../chip-bar/chip-bar.component';
 })
 export class WizardCardComponent {
   @Input() contentBg: 'cream' | 'white' = 'white';
+  @Input() showHeader = true;
+  @Input() showHero = true;
   @Input() showChips = false;
   @Input() nextLabel = 'Dalej';
   @Input() nextDisabled = false;
