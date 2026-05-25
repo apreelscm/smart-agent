@@ -45,11 +45,11 @@ describe('AuthService', () => {
     localStorage.setItem(
       'auth.currentUser',
       JSON.stringify({
-        username: 'admin',
-        name: 'Administrator',
-        role: 'EUM_ADMINISTRATOR',
-        email: 'admin@eumowy.local',
-        phone: '',
+        username: ' admin ',
+        name: ' Administrator ',
+        role: ' EUM_ADMINISTRATOR ',
+        email: ' admin@eumowy.local ',
+        phone: ' ',
         auwId: 1,
       }),
     );
@@ -66,6 +66,16 @@ describe('AuthService', () => {
       sellerNumber: null,
       roles: ['EUM_ADMINISTRATOR'],
     });
+  });
+
+  it('clears malformed stored auth state safely', () => {
+    localStorage.setItem('auth.currentUser', '{"username":');
+
+    const service = TestBed.inject(AuthService);
+
+    expect(service.isAuthenticated()).toBeFalse();
+    expect(service.getCurrentUser()).toBeNull();
+    expect(localStorage.getItem('auth.currentUser')).toBeNull();
   });
 
   it('posts credentials to the login endpoint and stores the normalized user', () => {
@@ -87,13 +97,13 @@ describe('AuthService', () => {
     request.flush({
       token: 'jwt-token',
       user: {
-        username: 'admin',
-        firstName: 'Admin',
-        lastName: 'Administrator',
-        email: 'admin@eumowy.local',
-        sellerNumber: 'ADM001',
+        username: ' admin ',
+        firstName: ' Admin ',
+        lastName: ' Administrator ',
+        email: ' admin@eumowy.local ',
+        sellerNumber: ' ADM001 ',
         auwId: 1,
-        roles: ['EUM_ADMINISTRATOR'],
+        roles: [' EUM_ADMINISTRATOR '],
       },
     });
 
@@ -137,7 +147,31 @@ describe('AuthService', () => {
     expect(localStorage.getItem('auth.currentUser')).toBeNull();
   });
 
-  it('clears auth state on logout', () => {
+  it('does not persist auth state when the login response shape is invalid', () => {
+    const service = TestBed.inject(AuthService);
+    let receivedError: unknown;
+
+    service.login({ username: 'admin', password: 'admin' }).subscribe({
+      next: () => fail('Expected login to fail for malformed response'),
+      error: (error) => {
+        receivedError = error;
+      },
+    });
+
+    const request = httpTestingController.expectOne('/api/auth/login');
+    request.flush({
+      token: '',
+      user: {
+        firstName: 'Admin',
+      },
+    });
+
+    expect(receivedError).toEqual(jasmine.any(Error));
+    expect(service.isAuthenticated()).toBeFalse();
+    expect(localStorage.getItem('auth.currentUser')).toBeNull();
+  });
+
+  it('clears auth state on successful logout', () => {
     localStorage.setItem(
       'auth.currentUser',
       JSON.stringify({
@@ -164,6 +198,45 @@ describe('AuthService', () => {
       statusText: 'No Content',
     });
 
+    expect(service.isAuthenticated()).toBeFalse();
+    expect(localStorage.getItem('auth.currentUser')).toBeNull();
+  });
+
+  it('clears auth state even when logout fails', () => {
+    localStorage.setItem(
+      'auth.currentUser',
+      JSON.stringify({
+        username: 'admin',
+        name: 'Administrator',
+        role: 'EUM_ADMINISTRATOR',
+        email: 'admin@eumowy.local',
+        phone: '',
+        auwId: 1,
+        sellerNumber: null,
+        roles: ['EUM_ADMINISTRATOR'],
+      }),
+    );
+
+    const service = TestBed.inject(AuthService);
+    let receivedStatus: number | undefined;
+
+    service.logout().subscribe({
+      next: () => fail('Expected logout to fail'),
+      error: (error) => {
+        receivedStatus = error.status;
+      },
+    });
+
+    const request = httpTestingController.expectOne('/api/auth/logout');
+    request.flush(
+      { error: 'AUTH_LOGOUT_FAILED' },
+      {
+        status: 503,
+        statusText: 'Service Unavailable',
+      },
+    );
+
+    expect(receivedStatus).toBe(503);
     expect(service.isAuthenticated()).toBeFalse();
     expect(localStorage.getItem('auth.currentUser')).toBeNull();
   });

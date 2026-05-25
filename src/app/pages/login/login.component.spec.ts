@@ -37,17 +37,27 @@ describe('LoginComponent', () => {
     fixture.detectChanges();
   });
 
-  it('renders the login form with username and masked password fields', () => {
+  it('renders only login, password and submit controls on the form', () => {
+    const nativeElement = fixture.nativeElement as HTMLElement;
+    const loginForm = nativeElement.querySelector('[data-testid="login-form"]') as HTMLFormElement;
+
+    expect(loginForm).not.toBeNull();
+    expect(loginForm.querySelectorAll('input').length).toBe(2);
+    expect(loginForm.querySelectorAll('button').length).toBe(1);
+    expect(loginForm.querySelectorAll('a').length).toBe(0);
+    expect(nativeElement.querySelector('h1')).toBeNull();
+    expect(nativeElement.querySelector('.subtitle')).toBeNull();
+    expect(nativeElement.querySelector('[data-testid="login-error-message"]')).toBeNull();
+  });
+
+  it('renders a masked password field', () => {
     const nativeElement = fixture.nativeElement as HTMLElement;
     const passwordInput = nativeElement.querySelector(
       '[data-testid="login-password-input"]',
     ) as HTMLInputElement;
 
-    expect(nativeElement.querySelector('[data-testid="login-form"]')).not.toBeNull();
-    expect(nativeElement.querySelector('[data-testid="login-username-input"]')).not.toBeNull();
     expect(passwordInput).not.toBeNull();
     expect(passwordInput.type).toBe('password');
-    expect(nativeElement.querySelector('[data-testid="login-submit-button"]')).not.toBeNull();
   });
 
   it('shows validation feedback and does not submit whitespace-only values', () => {
@@ -86,7 +96,8 @@ describe('LoginComponent', () => {
     expect(router.navigateByUrl).toHaveBeenCalledWith('/empty');
   });
 
-  it('shows an invalid credentials error when the backend returns 401', () => {
+  it('shows a generic invalid credentials error when the backend returns 401', () => {
+    spyOn(router, 'navigateByUrl').and.returnValue(Promise.resolve(true));
     authService.login.and.returnValue(
       throwError(() => new HttpErrorResponse({ status: 401, statusText: 'Unauthorized' })),
     );
@@ -102,9 +113,11 @@ describe('LoginComponent', () => {
     expect((fixture.nativeElement as HTMLElement).textContent).toContain(
       'Nieprawidłowy login lub hasło.',
     );
+    expect(router.navigateByUrl).not.toHaveBeenCalled();
   });
 
-  it('shows a generic sign-in error for non-401 failures', () => {
+  it('shows a generic technical error for non-401 failures', () => {
+    spyOn(router, 'navigateByUrl').and.returnValue(Promise.resolve(true));
     authService.login.and.returnValue(
       throwError(() => new HttpErrorResponse({ status: 503, statusText: 'Service Unavailable' })),
     );
@@ -120,10 +133,17 @@ describe('LoginComponent', () => {
     expect((fixture.nativeElement as HTMLElement).textContent).toContain(
       'Nie udało się zalogować. Spróbuj ponownie później.',
     );
+    expect(router.navigateByUrl).not.toHaveBeenCalled();
   });
 
   it('blocks duplicate submissions while a login request is in flight', () => {
     const pendingResponse = new Subject<AuthCurrentUser>();
+    const nativeElement = fixture.nativeElement as HTMLElement;
+    const submitButton = nativeElement.querySelector(
+      '[data-testid="login-submit-button"]',
+    ) as HTMLButtonElement;
+
+    spyOn(router, 'navigateByUrl').and.returnValue(Promise.resolve(true));
     authService.login.and.returnValue(pendingResponse.asObservable());
 
     component.loginForm.setValue({
@@ -132,11 +152,17 @@ describe('LoginComponent', () => {
     });
 
     component.onSubmit();
+    fixture.detectChanges();
     component.onSubmit();
 
     expect(authService.login).toHaveBeenCalledTimes(1);
+    expect(component.isSubmitting()).toBeTrue();
+    expect(submitButton.disabled).toBeTrue();
 
     pendingResponse.next(currentUser);
     pendingResponse.complete();
+    fixture.detectChanges();
+
+    expect(component.isSubmitting()).toBeFalse();
   });
 });

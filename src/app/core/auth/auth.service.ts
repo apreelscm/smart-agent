@@ -49,7 +49,15 @@ export class AuthService {
 
   login(credentials: AuthLoginRequest): Observable<AuthCurrentUser> {
     return this.http.post<AuthLoginResponse>(AUTH_LOGIN_ENDPOINT, credentials).pipe(
-      map((response) => this.mapApiUserToCurrentUser(response.user)),
+      map((response) => {
+        const user = this.normalizeLoginResponse(response);
+
+        if (!user) {
+          throw new Error('Invalid auth response');
+        }
+
+        return user;
+      }),
       tap((user) => this.storeUser(user)),
     );
   }
@@ -117,55 +125,89 @@ export class AuthService {
     }
   }
 
-  private normalizeStoredUser(
-    candidate: Partial<AuthCurrentUser> & { role?: string | null },
-  ): AuthCurrentUser | null {
-    if (typeof candidate.username !== 'string' || candidate.username.trim().length === 0) {
+  private normalizeLoginResponse(response: AuthLoginResponse | null | undefined): AuthCurrentUser | null {
+    if (!response || typeof response.token !== 'string' || response.token.trim().length === 0) {
       return null;
     }
 
-    const roles = Array.isArray(candidate.roles)
-      ? candidate.roles.filter((role): role is string => typeof role === 'string' && role.trim().length > 0)
-      : typeof candidate.role === 'string' && candidate.role.trim().length > 0
-        ? [candidate.role]
-        : [];
+    return this.mapApiUserToCurrentUser(response.user);
+  }
+
+  private normalizeStoredUser(
+    candidate: Partial<AuthCurrentUser> & { role?: string | null },
+  ): AuthCurrentUser | null {
+    const username = this.normalizeRequiredString(candidate.username);
+
+    if (!username) {
+      return null;
+    }
+
+    const roles = this.normalizeRoles(candidate.roles);
+    const legacyRole = this.normalizeOptionalString(candidate.role);
+    const normalizedRoles = roles.length > 0 ? roles : legacyRole ? [legacyRole] : [];
 
     return {
-      username: candidate.username,
-      name:
-        typeof candidate.name === 'string' && candidate.name.trim().length > 0
-          ? candidate.name
-          : candidate.username,
-      role:
-        typeof candidate.role === 'string' && candidate.role.trim().length > 0
-          ? candidate.role
-          : roles[0] ?? null,
-      email: typeof candidate.email === 'string' ? candidate.email : null,
-      phone: typeof candidate.phone === 'string' ? candidate.phone : '',
-      auwId: typeof candidate.auwId === 'number' ? candidate.auwId : null,
-      sellerNumber:
-        typeof candidate.sellerNumber === 'string' || candidate.sellerNumber === null
-          ? candidate.sellerNumber ?? null
-          : null,
+      username,
+      name: this.normalizeOptionalString(candidate.name) ?? username,
+      role: legacyRole ?? normalizedRoles[0] ?? null,
+      email: this.normalizeOptionalString(candidate.email),
+      phone: this.normalizeOptionalString(candidate.phone) ?? '',
+      auwId: typeof candidate.auwId === 'number' && Number.isFinite(candidate.auwId) ? candidate.auwId : null,
+      sellerNumber: this.normalizeOptionalString(candidate.sellerNumber),
+      roles: normalizedRoles,
+    };
+  }
+
+  private mapApiUserToCurrentUser(user: AuthApiUser | null | undefined): AuthCurrentUser | null {
+    const username = this.normalizeRequiredString(user?.username);
+
+    if (!username) {
+      return null;
+    }
+
+    const firstName = this.normalizeOptionalString(user?.firstName) ?? '';
+    const lastName = this.normalizeOptionalString(user?.lastName) ?? '';
+    const fullName = [firstName, lastName].filter(Boolean).join(' ').trim();
+    const roles = this.normalizeRoles(user?.roles);
+
+    return {
+      username,
+      name: fullName || username,
+      role: roles[0] ?? null,
+      email: this.normalizeOptionalString(user?.email),
+      phone: '',
+      auwId: typeof user?.auwId === 'number' && Number.isFinite(user.auwId) ? user.auwId : null,
+      sellerNumber: this.normalizeOptionalString(user?.sellerNumber),
       roles,
     };
   }
 
-  private mapApiUserToCurrentUser(user: AuthApiUser): AuthCurrentUser {
-    const firstName = typeof user.firstName === 'string' ? user.firstName.trim() : '';
-    const lastName = typeof user.lastName === 'string' ? user.lastName.trim() : '';
-    const fullName = [firstName, lastName].filter(Boolean).join(' ').trim();
-    const roles = Array.isArray(user.roles) ? user.roles : [];
+  private normalizeRequiredString(value: unknown): string | null {
+    if (typeof value !== 'string') {
+      return null;
+    }
 
-    return {
-      username: user.username,
-      name: fullName || user.username,
-      role: roles[0] ?? null,
-      email: user.email ?? null,
-      phone: '',
-      auwId: user.auwId ?? null,
-      sellerNumber: user.sellerNumber ?? null,
-      roles,
-    };
+    const normalizedValue = value.trim();
+    return normalizedValue.length > 0 ? normalizedValue : null;
+  }
+
+  private normalizeOptionalString(value: unknown): string | null {
+    if (typeof value !== 'string') {
+      return null;
+    }
+
+    const normalizedValue = value.trim();
+    return normalizedValue.length > 0 ? normalizedValue : null;
+  }
+
+  private normalizeRoles(roles: unknown): string[] {
+    if (!Array.isArray(roles)) {
+      return [];
+    }
+
+    return roles
+      .filter((role): role is string => typeof role === 'string')
+      .map((role) => role.trim())
+      .filter((role) => role.length > 0);
   }
 }

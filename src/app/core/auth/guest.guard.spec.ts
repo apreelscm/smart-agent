@@ -23,22 +23,24 @@ describe('guestGuard', () => {
     router = TestBed.inject(Router);
   });
 
+  function runGuard(url: string): boolean | UrlTree {
+    return TestBed.runInInjectionContext(() =>
+      guestGuard({} as ActivatedRouteSnapshot, { url } as RouterStateSnapshot),
+    );
+  }
+
   it('allows navigation for guests', () => {
     authService.isAuthenticated.and.returnValue(false);
 
-    const result = TestBed.runInInjectionContext(() =>
-      guestGuard({} as ActivatedRouteSnapshot, { url: '/login' } as RouterStateSnapshot),
-    );
+    const result = runGuard('/login');
 
     expect(result).toBeTrue();
   });
 
-  it('redirects authenticated users to /empty', () => {
+  it('redirects authenticated users opening /login to /empty', () => {
     authService.isAuthenticated.and.returnValue(true);
 
-    const result = TestBed.runInInjectionContext(() =>
-      guestGuard({} as ActivatedRouteSnapshot, { url: '/login' } as RouterStateSnapshot),
-    );
+    const result = runGuard('/login');
 
     expect(router.serializeUrl(result as UrlTree)).toBe('/empty');
   });

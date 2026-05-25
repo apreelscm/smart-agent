@@ -23,22 +23,32 @@ describe('authGuard', () => {
     router = TestBed.inject(Router);
   });
 
+  function runGuard(url: string): boolean | UrlTree {
+    return TestBed.runInInjectionContext(() =>
+      authGuard({} as ActivatedRouteSnapshot, { url } as RouterStateSnapshot),
+    );
+  }
+
   it('allows navigation for authenticated users', () => {
     authService.isAuthenticated.and.returnValue(true);
 
-    const result = TestBed.runInInjectionContext(() =>
-      authGuard({} as ActivatedRouteSnapshot, { url: '/empty' } as RouterStateSnapshot),
-    );
+    const result = runGuard('/empty');
 
     expect(result).toBeTrue();
   });
 
-  it('redirects unauthenticated users to /login', () => {
+  it('redirects unauthenticated users from /empty to /login', () => {
     authService.isAuthenticated.and.returnValue(false);
 
-    const result = TestBed.runInInjectionContext(() =>
-      authGuard({} as ActivatedRouteSnapshot, { url: '/design' } as RouterStateSnapshot),
-    );
+    const result = runGuard('/empty');
+
+    expect(router.serializeUrl(result as UrlTree)).toBe('/login');
+  });
+
+  it('redirects unauthenticated users from other guarded routes to /login', () => {
+    authService.isAuthenticated.and.returnValue(false);
+
+    const result = runGuard('/design');
 
     expect(router.serializeUrl(result as UrlTree)).toBe('/login');
   });
