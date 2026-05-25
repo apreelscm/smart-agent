@@ -1,19 +1,26 @@
 import { expect, test } from '@playwright/test';
 import { captureStep } from './helpers/visual-snapshot';
 
-test('login page renders the redesigned layout and validates whitespace-only input', async ({ page }, testInfo) => {
+test('login page renders the simplified layout and validates whitespace-only input', async (
+  { page },
+  testInfo,
+) => {
   await page.goto('/login');
 
-  await expect(page.getByRole('heading', { name: 'Zaloguj się do systemu' })).toBeVisible();
-  await expect(page.getByText('Dane dostępowe')).toBeVisible();
+  await expect(page).toHaveURL(/\/login$/);
   await expect(page.getByTestId('login-form')).toBeVisible();
-  await captureStep(page, testInfo, 'login-redesigned-layout');
-
-  await expect(page.getByText('Użyj swojego aktualnego loginu i hasła.')).toBeVisible();
+  await expect(page.getByTestId('login-form')).toHaveAttribute('aria-label', 'Formularz logowania');
+  await expect(page.locator('app-wizard-card')).toHaveCount(0);
+  await expect(page.getByRole('heading', { name: 'Zaloguj się do systemu' })).toHaveCount(0);
+  await expect(page.getByText('Dane dostępowe', { exact: true })).toHaveCount(0);
+  await expect(
+    page.getByText('Użyj swojego aktualnego loginu i hasła.', { exact: true }),
+  ).toHaveCount(0);
   await expect(page.getByTestId('login-username-input')).toBeVisible();
   await expect(page.getByTestId('login-password-input')).toBeVisible();
+  await expect(page.getByTestId('login-password-input')).toHaveAttribute('type', 'password');
   await expect(page.getByTestId('login-submit-button')).toHaveText('Zaloguj się');
-  await captureStep(page, testInfo, 'login-form-controls');
+  await captureStep(page, testInfo, 'login-simplified-layout');
 
   await page.getByTestId('login-username-input').fill('   ');
   await page.getByTestId('login-password-input').fill('   ');
@@ -25,7 +32,10 @@ test('login page renders the redesigned layout and validates whitespace-only inp
   await captureStep(page, testInfo, 'login-validation-errors');
 });
 
-test('successful login redirects to the sparse empty start view without a banner', async ({ page }, testInfo) => {
+test('successful login redirects to the sparse empty start view without a banner', async (
+  { page },
+  testInfo,
+) => {
   await page.goto('/login');
 
   await page.getByTestId('login-username-input').fill('admin');
