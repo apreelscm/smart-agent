@@ -3,7 +3,13 @@ import { authGuard } from './core/auth/auth.guard';
 import { guestGuard } from './core/auth/guest.guard';
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  // Root (index.html) uruchamia od razu portal makiet — najstabilniejszy punkt wejścia na GitHub Pages.
+  {
+    path: '',
+    pathMatch: 'full',
+    loadComponent: () =>
+      import('./pages/portal/pulpit/pulpit.component').then((m) => m.PulpitComponent),
+  },
   {
     path: 'login',
     canActivate: [guestGuard],

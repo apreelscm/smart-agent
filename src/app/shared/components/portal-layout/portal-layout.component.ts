@@ -26,7 +26,7 @@ export class PortalLayoutComponent {
   @Input() breadcrumb: string | null = null;
 
   readonly navItems: PortalNavItem[] = [
-    { key: 'pulpit', label: 'Pulpit', route: '/portal/pulpit' },
+    { key: 'pulpit', label: 'Pulpit', route: '/' },
     { key: 'produkty', label: 'Moje produkty' },
     { key: 'oferta', label: 'Oferta', route: '/portal/oferta' },
     { key: 'opieka', label: 'Opieka medyczna', route: '/portal/opieka' },
