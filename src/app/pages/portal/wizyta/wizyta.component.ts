@@ -58,9 +58,8 @@ export class WizytaComponent implements OnDestroy {
 
     const visit = this.visit();
 
-    if (!this.hasMappableFacilityContext(visit)) {
+    if (!visit || !this.hasMappableFacilityContext(visit)) {
       this.mapError.set(MAP_LOOKUP_ERROR_MESSAGE);
-
       return;
     }
 
@@ -90,6 +89,6 @@ export class WizytaComponent implements OnDestroy {
   }
 
   private hasMappableFacilityContext(visit: Visit | undefined): boolean {
-    return !!visit?.facility.trim() && !!visit.address.trim();
+    return !!visit?.facility.trim() && !!visit?.address.trim();
   }
 }
