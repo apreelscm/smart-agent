@@ -167,6 +167,18 @@
   margin-top: 2px;
 }
 
+.map-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  font-size: 14px;
+
+  i {
+    color: var(--sz-green);
+  }
+}
+
 // ── Przygotowanie ─────────────────────────────────────────────────
 .prepare-list {
   list-style: none;
@@ -229,6 +241,105 @@
   color: var(--sz-muted);
 }
 
+// ── Modal mapy ────────────────────────────────────────────────────
+.map-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+}
+
+.map-backdrop {
+  position: absolute;
+  inset: 0;
+  border: none;
+  background: rgba(23, 41, 31, 0.48);
+  cursor: pointer;
+}
+
+.map-dialog {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 860px);
+  max-height: calc(100dvh - 32px);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.map-dialog-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 22px 24px 18px;
+  border-bottom: 1px solid var(--sz-border);
+}
+
+.map-dialog-eyebrow {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--sz-muted);
+  margin-bottom: 6px;
+}
+
+.map-dialog-title {
+  font-family: var(--font-serif);
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--sz-heading);
+  margin-bottom: 4px;
+}
+
+.map-dialog-subtitle {
+  font-size: 14px;
+  color: var(--sz-muted);
+  line-height: 1.4;
+}
+
+.map-close-btn {
+  flex-shrink: 0;
+}
+
+.map-frame-wrap {
+  background: var(--sz-green-lighter);
+  min-height: 320px;
+}
+
+.map-frame-wrap iframe {
+  display: block;
+  width: 100%;
+  height: min(70dvh, 520px);
+  border: 0;
+}
+
+.map-state {
+  min-height: 320px;
+  display: grid;
+  place-items: center;
+  gap: 10px;
+  padding: 28px;
+  text-align: center;
+  color: var(--sz-green-dark);
+
+  i {
+    font-size: 26px;
+  }
+
+  p {
+    max-width: 340px;
+    line-height: 1.5;
+  }
+}
+
+.map-state-error {
+  color: var(--sz-muted);
+}
+
 // ── Brak wizyty ───────────────────────────────────────────────────
 .not-found {
   text-align: center;
@@ -249,5 +360,42 @@
 @media (min-width: 860px) {
   .detail-grid {
     grid-template-columns: minmax(0, 1fr) 300px;
+  }
+}
+
+@media (max-width: 640px) {
+  .detail-hero {
+    padding: 22px 20px;
+  }
+
+  .hero-when {
+    align-items: flex-start;
+    padding-left: 0;
+    border-left: none;
+    border-top: 2px solid var(--sz-green-light);
+    padding-top: 14px;
+    width: 100%;
+  }
+
+  .map-modal {
+    padding: 12px;
+  }
+
+  .map-dialog-header {
+    flex-direction: column;
+    padding: 18px 18px 16px;
+  }
+
+  .map-close-btn {
+    width: 100%;
+  }
+
+  .map-frame-wrap,
+  .map-state {
+    min-height: 260px;
+  }
+
+  .map-frame-wrap iframe {
+    height: 58dvh;
   }
 }

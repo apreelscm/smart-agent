@@ -1,6 +1,11 @@
 export type VisitState = 'planned' | 'cancelled';
 export type VisitStatusKind = 'upcoming' | 'done' | 'cancelled';
 
+export interface VisitCoordinates {
+  lat: number;
+  lon: number;
+}
+
 export interface Visit {
   id: string;
   service: string;
@@ -17,6 +22,7 @@ export interface Visit {
   group: VisitState;
   price: string;
   prepare: string[];
+  coordinates?: VisitCoordinates;
 }
 
 /** Dane demonstracyjne wizyt (makieta — bez danych rzeczywistych). */
@@ -41,6 +47,10 @@ export const VISITS: Visit[] = [
       'Przyjdź 10 minut przed wizytą do recepcji.',
       'Weź wyniki wcześniejszych badań, jeśli je posiadasz.',
     ],
+    coordinates: {
+      lat: 52.23028,
+      lon: 20.96313,
+    },
   },
   {
     id: 'w2',
@@ -82,6 +92,10 @@ export const VISITS: Visit[] = [
       'Badanie wykonaj na czczo (min. 8 godzin bez posiłku).',
       'Wypij szklankę wody przed pobraniem.',
     ],
+    coordinates: {
+      lat: 52.23642,
+      lon: 21.00451,
+    },
   },
   {
     id: 'w4',
@@ -99,6 +113,10 @@ export const VISITS: Visit[] = [
     group: 'cancelled',
     price: 'W cenie pakietu',
     prepare: [],
+    coordinates: {
+      lat: 52.23028,
+      lon: 20.96313,
+    },
   },
 ];
 

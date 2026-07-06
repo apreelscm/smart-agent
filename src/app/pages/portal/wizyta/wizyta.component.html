@@ -44,6 +44,16 @@
                 <p class="info-label">{{ isTelemedicine() ? 'Forma wizyty' : 'Placówka' }}</p>
                 <p class="info-value">{{ v.facility }}</p>
                 <p class="info-sub">{{ v.address }}</p>
+                @if (canShowMapAction()) {
+                  <button
+                    class="sz-link map-link"
+                    data-testid="visit-map-action"
+                    type="button"
+                    (click)="openMap()"
+                  >
+                    <i class="pi pi-map"></i> Pokaż na mapie
+                  </button>
+                }
               </div>
             </div>
             <div class="info-item">
@@ -108,6 +118,63 @@
         </aside>
       </div>
     </div>
+
+    @if (isMapOpen()) {
+      <div aria-labelledby="visit-map-title" aria-modal="true" class="map-modal" data-testid="visit-map-modal" role="dialog">
+        <button
+          aria-label="Zamknij okno mapy"
+          class="map-backdrop"
+          type="button"
+          (click)="closeMap()"
+        ></button>
+
+        <div class="sz-card map-dialog">
+          <div class="map-dialog-header">
+            <div>
+              <p class="map-dialog-eyebrow">Lokalizacja placówki</p>
+              <h2 class="map-dialog-title" id="visit-map-title">{{ v.facility }}</h2>
+              <p class="map-dialog-subtitle">{{ v.address }}</p>
+            </div>
+
+            <button
+              class="sz-btn-outline map-close-btn"
+              data-testid="visit-map-close"
+              type="button"
+              (click)="closeMap()"
+            >
+              <i class="pi pi-times"></i> Zamknij
+            </button>
+          </div>
+
+          <div class="map-frame-wrap">
+            @if (isMapLoading()) {
+              <div class="map-state" data-testid="visit-map-loading">
+                <i class="pi pi-spin pi-spinner"></i>
+                <p>Ładowanie mapy placówki…</p>
+              </div>
+            } @else if (mapEmbedUrl(); as url) {
+              <iframe
+                [src]="url"
+                data-testid="visit-map-frame"
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"
+                title="Mapa placówki"
+              ></iframe>
+            } @else if (mapError(); as error) {
+              <div class="map-state map-state-error" data-testid="visit-map-error">
+                <i class="pi pi-map-marker"></i>
+                <p>{{ error }}</p>
+              </div>
+            } @else {
+              <div class="map-state map-state-error" data-testid="visit-map-error">
+                <i class="pi pi-map-marker"></i>
+                <p>Mapa tej placówki jest obecnie niedostępna.</p>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+    }
   } @else {
     <div class="not-found">
       <span class="empty-icon"><i class="pi pi-exclamation-circle"></i></span>
