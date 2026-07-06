@@ -102,7 +102,7 @@ test('shows a user-friendly error state when geocoding returns no result', async
 test('hides the map action for telemedicine visits', async ({ page }, testInfo) => {
     await page.goto('/portal/wizyta/w2');
 
-    await expect(page.getByText('telemedyczna', { exact: false })).toBeVisible();
+    await expect(page.getByText('Konsultacja telemedyczna', { exact: true })).toBeVisible();
     await expect(page.getByTestId('visit-map-open')).toHaveCount(0);
     await captureStep(page, testInfo, 'telemedicine-visit-without-map-action');
 });
