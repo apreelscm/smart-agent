@@ -1,0 +1,336 @@
+:host {
+  display: block;
+}
+
+.wizard {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+// ── Stepper ───────────────────────────────────────────────────────
+.stepper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  list-style: none;
+  margin: 8px 0 20px;
+}
+
+.step-dot {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid var(--sz-border-strong);
+  background: var(--sz-surface);
+  flex-shrink: 0;
+
+  &.current {
+    border-color: var(--sz-green);
+    box-shadow: inset 0 0 0 3px var(--sz-green);
+  }
+  &.done {
+    border-color: var(--sz-green);
+    background: var(--sz-green);
+  }
+}
+
+.step-line {
+  width: 120px;
+  max-width: 22vw;
+  height: 2px;
+  background: var(--sz-border-strong);
+
+  &.done {
+    background: var(--sz-green);
+  }
+}
+
+.wizard-title {
+  font-family: var(--font-serif);
+  font-size: 26px;
+  font-weight: 700;
+  text-align: center;
+  color: var(--sz-heading);
+  margin-bottom: 28px;
+}
+
+// ── Formularz kroku 1 ─────────────────────────────────────────────
+.wizard-form {
+  max-width: 460px;
+  margin: 0 auto;
+}
+
+.service-chip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 18px;
+  margin-bottom: 28px;
+  box-shadow: 0 4px 16px rgba(20, 60, 40, 0.1);
+}
+
+.service-name {
+  font-weight: 600;
+  color: var(--sz-heading);
+}
+
+.service-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.date-field {
+  position: relative;
+
+  i {
+    position: absolute;
+    right: 4px;
+    top: 8px;
+    color: var(--sz-green);
+  }
+}
+
+.wizard-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 12px;
+
+  &.center {
+    margin-top: 28px;
+  }
+}
+
+// ── Krok 2: nagłówek usługi ───────────────────────────────────────
+.service-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 14px 0;
+  border-top: 1px solid var(--sz-border);
+  border-bottom: 1px solid var(--sz-border);
+  font-weight: 600;
+  color: var(--sz-heading);
+  margin-bottom: 16px;
+}
+
+.summary-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px 22px;
+  font-size: 14px;
+  color: var(--sz-muted);
+  margin-bottom: 20px;
+
+  strong {
+    color: var(--sz-text);
+  }
+}
+
+.filter-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+// ── Karta podpowiedzi ─────────────────────────────────────────────
+.hint-card {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 18px 20px;
+  margin-bottom: 18px;
+  font-size: 13px;
+  color: var(--sz-muted);
+}
+
+.hint-left {
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  flex: 1;
+}
+
+.hint-divider {
+  width: 1px;
+  align-self: stretch;
+  background: var(--sz-border);
+}
+
+.hint-right {
+  flex: 1;
+}
+
+// ── Placówka ──────────────────────────────────────────────────────
+.facility {
+  padding: 18px 20px;
+  margin-bottom: 18px;
+}
+
+.facility-top {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.facility-note {
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: var(--sz-green-dark);
+}
+
+.facility-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+  padding-bottom: 12px;
+}
+
+.facility-name {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--sz-heading);
+}
+
+.facility-address {
+  font-size: 13px;
+  color: var(--sz-muted);
+  margin: 2px 0 6px;
+}
+
+.no-slots {
+  font-size: 14px;
+  color: var(--sz-muted);
+  text-align: center;
+  padding: 14px 0 4px;
+  border-top: 1px solid var(--sz-border);
+}
+
+.facility-doctor {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--sz-text);
+  border-top: 1px solid var(--sz-border);
+  padding-top: 12px;
+  margin-bottom: 10px;
+}
+
+// ── Siatka terminów ───────────────────────────────────────────────
+.slot-scroll {
+  overflow-x: auto;
+}
+
+.slot-grid {
+  width: 100%;
+  min-width: 560px;
+  border-collapse: collapse;
+  font-size: 12px;
+
+  th,
+  td {
+    border: 1px solid var(--sz-border);
+    text-align: center;
+    padding: 6px 4px;
+  }
+
+  thead th {
+    background: var(--sz-green-lighter);
+    color: var(--sz-heading);
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  .slot-corner {
+    background: var(--sz-surface);
+    border: none;
+  }
+
+  .slot-time {
+    background: var(--sz-nav-bg);
+    color: var(--sz-muted);
+    font-weight: 500;
+    white-space: nowrap;
+    text-align: left;
+    padding-inline: 8px;
+  }
+
+  td {
+    height: 34px;
+  }
+}
+
+.slot-free {
+  width: 100%;
+  padding: 6px 4px;
+  border: 1px solid var(--sz-green);
+  border-radius: 6px;
+  background: var(--sz-green-light);
+  color: var(--sz-green-dark);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+
+  &:hover {
+    background: var(--sz-green);
+    color: #fff;
+  }
+}
+
+// ── Krok 3: potwierdzenie ─────────────────────────────────────────
+.confirm {
+  text-align: center;
+  max-width: 460px;
+  margin: 0 auto;
+}
+
+.confirm-icon {
+  font-size: 56px;
+  color: var(--sz-green);
+}
+
+.confirm-title {
+  font-family: var(--font-serif);
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--sz-heading);
+  margin: 12px 0 6px;
+}
+
+.confirm-sub {
+  font-size: 14px;
+  color: var(--sz-muted);
+  margin-bottom: 24px;
+}
+
+.confirm-details {
+  padding: 8px 20px;
+  text-align: left;
+}
+
+.confirm-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--sz-border);
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  span {
+    font-size: 13px;
+    color: var(--sz-muted);
+  }
+  strong {
+    color: var(--sz-text);
+    text-align: right;
+  }
+}

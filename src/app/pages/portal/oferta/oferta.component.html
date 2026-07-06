@@ -1,0 +1,44 @@
+<app-portal-layout active="oferta" breadcrumb="Oferta medyczna">
+  <!-- Kup pojedynczą wizytę -->
+  <h2 class="sz-section-title">Kup pojedynczą wizytę</h2>
+  <div class="single-grid">
+    @for (item of singleVisits; track item.title) {
+      <article class="sz-card single-card">
+        <div class="single-head">
+          <h3>{{ item.title }}</h3>
+          <span class="single-illustration" aria-hidden="true"><i class="pi {{ item.icon }}"></i></span>
+        </div>
+        <p class="single-text">{{ item.text }}</p>
+        <div class="single-footer">
+          @if (item.route) {
+            <a class="sz-btn" [routerLink]="item.route">Kup teraz</a>
+          } @else {
+            <button class="sz-btn" type="button">Kup teraz</button>
+          }
+          <span class="single-price">{{ item.price }}</span>
+        </div>
+      </article>
+    }
+  </div>
+
+  <!-- Pakiety medyczne -->
+  <p class="sz-eyebrow packages-eyebrow">Pakiety medyczne</p>
+  <div class="packages-grid">
+    @for (pkg of packages; track pkg.title) {
+      <article class="sz-card package-card">
+        <div class="package-image" aria-hidden="true"><i class="pi pi-users"></i></div>
+        <div class="package-body">
+          <h3>{{ pkg.title }}</h3>
+          <p class="package-text">{{ pkg.text }}</p>
+          <ul class="package-bullets">
+            @for (bullet of pkg.bullets; track bullet) {
+              <li>{{ bullet }}</li>
+            }
+          </ul>
+          <p class="package-price">{{ pkg.price }}</p>
+          <button class="sz-btn package-cta" type="button">Sprawdź</button>
+        </div>
+      </article>
+    }
+  </div>
+</app-portal-layout>

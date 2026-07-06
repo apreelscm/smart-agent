@@ -1,0 +1,128 @@
+<app-portal-layout active="opieka" breadcrumb="Wizyty i badania">
+  <!-- Kafle umawiania -->
+  <div class="booking-cards">
+    <article class="sz-card booking-card">
+      <div class="booking-head">
+        <h3>Umów wizytę stacjonarną</h3>
+        <span class="booking-illustration" aria-hidden="true"><i class="pi pi-building"></i></span>
+      </div>
+      <p>Wybierz, jeśli chcesz umówić się na wizytę w jednej z naszych placówek.</p>
+      <a class="sz-btn" routerLink="/portal/umow-wizyte">Umów wizytę</a>
+    </article>
+
+    <article class="sz-card booking-card">
+      <div class="booking-head">
+        <h3>Umów konsultację telemedyczną</h3>
+        <span class="booking-illustration" aria-hidden="true"><i class="pi pi-desktop"></i></span>
+      </div>
+      <p>Wybierz, jeśli potrzebujesz recepty, skierowania lub szybkiej konsultacji.</p>
+      <button class="sz-btn" type="button">Umów konsultację</button>
+    </article>
+
+    <article class="sz-card booking-card">
+      <div class="booking-head">
+        <h3>Umów badanie, szczepienie</h3>
+        <span class="booking-illustration" aria-hidden="true"><i class="pi pi-heart"></i></span>
+      </div>
+      <p>Wybierz, jeśli chcesz umówić się na badanie, szczepienie lub zabieg ambulatoryjny.</p>
+      <button class="sz-btn" type="button">Umów usługę</button>
+    </article>
+  </div>
+
+  <!-- Lista wizyt -->
+  <div class="list-header">
+    <h2 class="sz-section-title">Lista wizyt i badań</h2>
+    <button class="sz-link filters-toggle" type="button" (click)="toggleFilters()">
+      <i class="pi" [class.pi-eye-slash]="filtersVisible()" [class.pi-eye]="!filtersVisible()"></i>
+      {{ filtersVisible() ? 'Ukryj filtry' : 'Pokaż filtry' }}
+    </button>
+  </div>
+
+  <div class="tabs">
+    <button
+      class="tab"
+      type="button"
+      [class.active]="activeTab() === 'planned'"
+      (click)="setTab('planned')">
+      Umówiona / Zrealizowana
+    </button>
+    <button
+      class="tab"
+      type="button"
+      [class.active]="activeTab() === 'cancelled'"
+      (click)="setTab('cancelled')">
+      Odwołana
+    </button>
+  </div>
+
+  @if (filtersVisible()) {
+    <div class="filters">
+      <div class="sz-field filter">
+        <label class="sz-field-label">Pacjent</label>
+        <div class="sz-select-wrap">
+          <select class="sz-field-control">
+            <option>Wszyscy</option>
+          </select>
+        </div>
+      </div>
+      <div class="sz-field filter">
+        <label class="sz-field-label">Usługa</label>
+        <div class="sz-select-wrap">
+          <select class="sz-field-control">
+            <option>Wszystkie</option>
+          </select>
+        </div>
+      </div>
+      <div class="sz-field filter">
+        <label class="sz-field-label">Status</label>
+        <div class="sz-select-wrap">
+          <select class="sz-field-control">
+            <option>Wszystkie</option>
+          </select>
+        </div>
+      </div>
+      <div class="sz-field filter">
+        <label class="sz-field-label">Zakres dat</label>
+        <input class="sz-field-control" type="text" value="ostatnie 30 dni" readonly />
+      </div>
+      <div class="filter-actions">
+        <button class="sz-link" type="button">Wyczyść filtr</button>
+        <button class="sz-btn-outline" type="button">Szukaj</button>
+      </div>
+    </div>
+  }
+
+  @if (visibleVisits().length > 0) {
+    <ul class="visit-list">
+      @for (visit of visibleVisits(); track visit.id) {
+        <li class="sz-card visit-card">
+          <div class="visit-date">
+            <span class="visit-day">{{ visit.date }}</span>
+            <span class="visit-time">{{ visit.time }}</span>
+          </div>
+          <div class="visit-body">
+            <p class="visit-service">{{ visit.service }}</p>
+            <p class="visit-meta"><i class="pi pi-user"></i> {{ visit.doctor }}</p>
+            <p class="visit-meta"><i class="pi pi-map-marker"></i> {{ visit.facility }}</p>
+            <p class="visit-meta"><i class="pi pi-users"></i> Pacjent: {{ visit.patient }}</p>
+          </div>
+          <div class="visit-side">
+            <span class="visit-status" [attr.data-kind]="visit.statusKind">{{ visit.status }}</span>
+            <a class="sz-link" [routerLink]="['/portal/wizyta', visit.id]">
+              Szczegóły <i class="pi pi-angle-right"></i>
+            </a>
+          </div>
+        </li>
+      }
+    </ul>
+  } @else {
+    <div class="empty-state">
+      <span class="empty-icon" aria-hidden="true"><i class="pi pi-inbox"></i></span>
+      <p class="empty-title">Nie znaleźliśmy żadnych wizyt</p>
+      <p class="empty-sub">
+        Jeżeli chcesz zobaczyć wizyty i badania z innego okresu lub innej osoby, zmień ustawienia
+        filtra.
+      </p>
+    </div>
+  }
+</app-portal-layout>

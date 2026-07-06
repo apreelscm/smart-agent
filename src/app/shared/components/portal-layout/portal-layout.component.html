@@ -1,0 +1,101 @@
+<div class="sz-page portal">
+  <!-- Górny pasek: logo + skrzynka + profil -->
+  <header class="portal-topbar">
+    <div class="sz-container topbar-inner">
+      <a class="brand" routerLink="/portal/pulpit" aria-label="Świat Zdrowia — pulpit">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 40 40" width="38" height="38">
+            <rect x="1" y="1" width="38" height="38" rx="11" fill="var(--sz-green)" />
+            <path
+              d="M20 9v22M9 20h22"
+              stroke="#fff"
+              stroke-width="5.2"
+              stroke-linecap="round" />
+          </svg>
+        </span>
+        <span class="brand-text">
+          <span class="brand-name">ŚWIAT ZDROWIA</span>
+          <span class="brand-tag">Twój opiekun medyczny</span>
+        </span>
+      </a>
+
+      <div class="topbar-right">
+        <button class="icon-btn" type="button" aria-label="Wiadomości">
+          <i class="pi pi-envelope"></i>
+          <span class="icon-badge">3</span>
+        </button>
+        <span class="topbar-divider" aria-hidden="true"></span>
+        <button class="profile" type="button">
+          <span class="profile-labels">
+            <span class="profile-eyebrow">PACJENT</span>
+            <span class="profile-name">Mój profil <i class="pi pi-angle-down"></i></span>
+          </span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Nawigacja główna -->
+  <nav class="portal-nav" aria-label="Nawigacja główna">
+    <div class="sz-container nav-inner">
+      @for (item of navItems; track item.key) {
+        @if (item.route) {
+          <a
+            class="nav-item"
+            [class.active]="item.key === active"
+            [routerLink]="item.route">
+            {{ item.label }}
+            <i class="pi pi-angle-down nav-caret"></i>
+          </a>
+        } @else {
+          <span class="nav-item" [class.active]="item.key === active">
+            {{ item.label }}
+            <i class="pi pi-angle-down nav-caret"></i>
+          </span>
+        }
+      }
+    </div>
+  </nav>
+
+  @if (breadcrumb) {
+    <div class="sz-container">
+      <p class="portal-breadcrumb">{{ breadcrumb }}</p>
+    </div>
+  }
+
+  <!-- Treść strony -->
+  <main class="portal-main">
+    <div class="sz-container">
+      <ng-content />
+    </div>
+  </main>
+
+  <!-- Stopka -->
+  <footer class="portal-footer">
+    <div class="sz-container footer-inner">
+      <div class="footer-col">
+        <h4>KONTAKT</h4>
+        <p>Napisz: <a href="#">kontakt&#64;swiatzdrowia.pl</a></p>
+        <p>Zadzwoń: 800 000 000</p>
+        <p class="footer-muted">(opłata zgodna z taryfą operatora)</p>
+        <p class="footer-muted">Infolinia czynna pon.–pt. 8:00–19:00</p>
+      </div>
+      <div class="footer-col">
+        <h4>INFORMACJE</h4>
+        <p><a href="#">Regulamin</a></p>
+        <p><a href="#">Praca z nami</a></p>
+        <p><a href="#">Dostępność cyfrowa</a></p>
+      </div>
+      <div class="footer-col">
+        <h4>APLIKACJE</h4>
+        <p><i class="pi pi-android"></i> Android</p>
+        <p><i class="pi pi-apple"></i> iOS</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Pływający przycisk kontaktu -->
+  <button class="portal-fab" type="button" aria-label="Zadzwoń">
+    <i class="pi pi-phone"></i>
+  </button>
+</div>

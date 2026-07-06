@@ -1,0 +1,193 @@
+<app-portal-layout active="opieka" breadcrumb="Umów wizytę stacjonarną">
+  <div class="wizard">
+    <!-- Pasek kroków -->
+    <ol class="stepper" aria-label="Kroki rezerwacji">
+      <li class="step-dot" [class.done]="step() > 1" [class.current]="step() === 1"></li>
+      <li class="step-line" [class.done]="step() > 1"></li>
+      <li class="step-dot" [class.done]="step() > 2" [class.current]="step() === 2"></li>
+      <li class="step-line" [class.done]="step() > 2"></li>
+      <li class="step-dot" [class.current]="step() === 3"></li>
+    </ol>
+
+    <h1 class="wizard-title">Umów wizytę stacjonarną</h1>
+
+    <!-- ─────────────── KROK 1: dane wizyty ─────────────── -->
+    @if (step() === 1) {
+      <div class="wizard-form">
+        <div class="sz-field">
+          <label class="sz-field-label" for="patient">Wybierz pacjenta</label>
+          <div class="sz-select-wrap">
+            <select
+              id="patient"
+              class="sz-field-control"
+              [value]="patient()"
+              (change)="onPatientChange($any($event.target).value)">
+              <option value="" disabled selected>Wybierz pacjenta</option>
+              <option value="Jan Kowalski">Jan Kowalski</option>
+              <option value="Anna Kowalska">Anna Kowalska</option>
+            </select>
+          </div>
+        </div>
+
+        @if (!consultation()) {
+          <div class="sz-field">
+            <label class="sz-field-label" for="consultation">Wybierz rodzaj konsultacji</label>
+            <div class="sz-select-wrap">
+              <select
+                id="consultation"
+                class="sz-field-control"
+                (change)="onConsultationChange($any($event.target).value)">
+                <option value="" disabled selected>Wybierz rodzaj konsultacji</option>
+                @for (type of consultationTypes; track type) {
+                  <option [value]="type">{{ type }}</option>
+                }
+              </select>
+            </div>
+          </div>
+        } @else {
+          <div class="sz-card service-chip">
+            <span class="service-name">{{ consultation() }}</span>
+            <span class="service-actions">
+              <span class="sz-status">W cenie</span>
+              <button class="sz-link" type="button" (click)="clearConsultation()">Usuń</button>
+            </span>
+          </div>
+        }
+
+        <div class="sz-field">
+          <label class="sz-field-label" for="city">Wpisz miejscowość, w której chcesz umówić usługę</label>
+          <input
+            id="city"
+            class="sz-field-control"
+            type="text"
+            placeholder="np. Warszawa"
+            [value]="city()"
+            (input)="onCityChange($any($event.target).value)" />
+        </div>
+
+        <div class="sz-field">
+          <label class="sz-field-label" for="range">Wybierz zakres dat</label>
+          <div class="date-field">
+            <input id="range" class="sz-field-control" type="text" [value]="dateRange()" readonly />
+            <i class="pi pi-calendar"></i>
+          </div>
+        </div>
+
+        <div class="wizard-actions">
+          <button class="sz-btn" type="button" [disabled]="!canProceed()" (click)="goToStep2()">
+            Dalej
+          </button>
+        </div>
+      </div>
+    }
+
+    <!-- ─────────────── KROK 2: wybór terminu ─────────────── -->
+    @if (step() === 2) {
+      <div class="service-header">
+        <span>{{ consultation() }}</span>
+        <span class="sz-status">W CENIE</span>
+      </div>
+
+      <div class="summary-row">
+        <p>Pacjent: <strong>{{ patient() }}</strong></p>
+        <p>Termin: <strong>{{ dateRange() }}</strong></p>
+        <p>Miasto: <strong>{{ city() }}</strong></p>
+        <button class="sz-link filter-link" type="button">
+          <i class="pi pi-filter"></i> Filtruj
+        </button>
+      </div>
+
+      <div class="sz-card hint-card">
+        <span class="hint-left">Szybka konsultacja, omówienie wyników, skierowania, recepty</span>
+        <span class="hint-divider"></span>
+        <span class="hint-right">
+          Nie możesz znaleźć pasującego terminu?
+          <button class="sz-link" type="button">Sprawdź usługi telemedyczne.</button>
+        </span>
+      </div>
+
+      @for (facility of facilities; track facility.name) {
+        <div class="sz-card facility">
+          <div class="facility-top">
+            <span class="sz-badge">Premium</span>
+            <span class="facility-note">
+              Jeśli umówisz wizytę tutaj — lekarz będzie miał dostęp do Twojej dokumentacji
+              medycznej z placówek Świat Zdrowia.
+            </span>
+          </div>
+
+          <div class="facility-head">
+            <div>
+              <h3 class="facility-name">{{ facility.name }}</h3>
+              <p class="facility-address">{{ facility.address }}</p>
+              <button class="sz-link" type="button"><i class="pi pi-map-marker"></i> Pokaż na mapie</button>
+            </div>
+            <button class="sz-link" type="button">Wybierz termin <i class="pi pi-calendar"></i></button>
+          </div>
+
+          @if (!facility.hasSlots) {
+            <p class="no-slots">
+              W tym czasie nie ma dostępnych wizyt w wybranej przez Ciebie placówce. Podaj inną datę.
+            </p>
+          } @else {
+            <p class="facility-doctor">{{ facility.doctor }}</p>
+            <div class="slot-scroll">
+              <table class="slot-grid">
+                <thead>
+                  <tr>
+                    <th class="slot-corner"></th>
+                    @for (day of weekDays; track day) {
+                      <th>{{ day }}</th>
+                    }
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (row of facility.rows; track row.time) {
+                    <tr>
+                      <th class="slot-time">{{ row.time }}</th>
+                      @for (day of weekDays; track day; let i = $index) {
+                        <td>
+                          @if (row.freeDay === i) {
+                            <button class="slot-free" type="button" (click)="selectSlot(facility, i)">
+                              Wolny termin
+                            </button>
+                          }
+                        </td>
+                      }
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          }
+        </div>
+      }
+
+      <div class="wizard-actions">
+        <button class="sz-btn-outline" type="button" (click)="backToStep1()">
+          <i class="pi pi-angle-left"></i> Wstecz
+        </button>
+      </div>
+    }
+
+    <!-- ─────────────── KROK 3: potwierdzenie ─────────────── -->
+    @if (step() === 3) {
+      <div class="confirm">
+        <span class="confirm-icon" aria-hidden="true"><i class="pi pi-check-circle"></i></span>
+        <h2 class="confirm-title">Wizyta zarezerwowana</h2>
+        <p class="confirm-sub">Wysłaliśmy potwierdzenie na Twój adres e-mail.</p>
+
+        <div class="sz-card confirm-details">
+          <div class="confirm-row"><span>Usługa</span><strong>{{ consultation() }}</strong></div>
+          <div class="confirm-row"><span>Pacjent</span><strong>{{ patient() }}</strong></div>
+          <div class="confirm-row"><span>Placówka</span><strong>{{ bookedFacility() }}</strong></div>
+          <div class="confirm-row"><span>Termin</span><strong>{{ bookedSlot() }}</strong></div>
+        </div>
+
+        <div class="wizard-actions center">
+          <button class="sz-btn" type="button" (click)="restart()">Umów kolejną wizytę</button>
+        </div>
+      </div>
+    }
+  </div>
+</app-portal-layout>

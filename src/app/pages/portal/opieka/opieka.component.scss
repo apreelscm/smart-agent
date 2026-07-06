@@ -1,0 +1,257 @@
+:host {
+  display: block;
+}
+
+// ── Kafle umawiania ───────────────────────────────────────────────
+.booking-cards {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 18px;
+  margin-bottom: 40px;
+}
+
+.booking-card {
+  display: flex;
+  flex-direction: column;
+  padding: 22px;
+}
+
+.booking-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.booking-card h3 {
+  font-family: var(--font-serif);
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--sz-heading);
+}
+
+.booking-illustration {
+  color: var(--sz-green-mid);
+  font-size: 30px;
+  flex-shrink: 0;
+}
+
+.booking-card p {
+  flex: 1;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--sz-muted);
+  margin-bottom: 18px;
+}
+
+.booking-card .sz-btn {
+  align-self: flex-start;
+  text-decoration: none;
+}
+
+// ── Nagłówek listy ────────────────────────────────────────────────
+.list-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border-bottom: 1px solid var(--sz-border);
+  padding-bottom: 12px;
+  margin-bottom: 20px;
+}
+
+.filters-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+// ── Zakładki ──────────────────────────────────────────────────────
+.tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.tab {
+  padding: 9px 20px;
+  border: 1.5px solid var(--sz-border-strong);
+  border-radius: 999px;
+  background: var(--sz-surface);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--sz-text);
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    color 0.15s,
+    border-color 0.15s;
+
+  &.active {
+    background: var(--sz-green-darker);
+    border-color: var(--sz-green-darker);
+    color: #fff;
+  }
+}
+
+// ── Filtry ────────────────────────────────────────────────────────
+.filters {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 4px 24px;
+  align-items: end;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--sz-border);
+  margin-bottom: 32px;
+}
+
+.filter {
+  margin-bottom: 12px;
+}
+
+.filter-actions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding-bottom: 14px;
+}
+
+// ── Lista wizyt ───────────────────────────────────────────────────
+.visit-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.visit-card {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: 18px;
+  padding: 18px 20px;
+}
+
+.visit-date {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 96px;
+  padding-right: 18px;
+  border-right: 1px solid var(--sz-border);
+}
+
+.visit-day {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--sz-heading);
+}
+
+.visit-time {
+  font-size: 14px;
+  color: var(--sz-green-dark);
+  font-weight: 600;
+}
+
+.visit-body {
+  flex: 1;
+  min-width: 200px;
+}
+
+.visit-service {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--sz-heading);
+  margin-bottom: 8px;
+}
+
+.visit-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13.5px;
+  color: var(--sz-muted);
+  margin-bottom: 3px;
+
+  i {
+    color: var(--sz-green-mid);
+    width: 14px;
+  }
+}
+
+.visit-side {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.visit-status {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+
+  &[data-kind='upcoming'] {
+    background: var(--sz-green-light);
+    color: var(--sz-green-dark);
+  }
+  &[data-kind='done'] {
+    background: #eef2f0;
+    color: var(--sz-muted);
+  }
+  &[data-kind='cancelled'] {
+    background: #fbeaea;
+    color: #b23b3b;
+  }
+}
+
+// ── Pusty stan ────────────────────────────────────────────────────
+.empty-state {
+  text-align: center;
+  padding: 40px 20px 20px;
+}
+
+.empty-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 44px;
+  color: var(--sz-green-mid);
+  margin-bottom: 16px;
+}
+
+.empty-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--sz-green-dark);
+  margin-bottom: 8px;
+}
+
+.empty-sub {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--sz-muted);
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+@media (min-width: 680px) {
+  .booking-cards {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .filters {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1000px) {
+  .filters {
+    grid-template-columns: repeat(4, 1fr) auto;
+  }
+}

@@ -516,3 +516,231 @@ body {
   clip-path: inset(50%);
   border: 0;
 }
+
+// ═════════════════════════════════════════════════════════════════
+//  Świat Zdrowia — portal mockups
+//  Kolorystyka wg swiatzdrowia.pl (zieleń). Współdzielone tokeny
+//  i komponenty portalu pacjenta. Brak danych PZU.
+// ═════════════════════════════════════════════════════════════════
+:root {
+  --sz-green: #2f9e4d;
+  --sz-green-dark: #237a3c;
+  --sz-green-darker: #14532d;
+  --sz-green-mid: #45b062;
+  --sz-green-light: #eaf6ee;
+  --sz-green-lighter: #f3faf5;
+  --sz-price: #1e8a4a;
+
+  --sz-page-bg: #f5f7f6;
+  --sz-nav-bg: #eef2f0;
+  --sz-surface: #ffffff;
+  --sz-text: #2c3330;
+  --sz-heading: #1f3a2b;
+  --sz-muted: #6b7671;
+  --sz-border: #e2e7e3;
+  --sz-border-strong: #cdd6d0;
+
+  --sz-radius: 10px;
+  --sz-radius-lg: 14px;
+  --sz-shadow-card: 0 1px 3px rgba(20, 60, 40, 0.06), 0 6px 20px rgba(20, 60, 40, 0.05);
+}
+
+.sz-page {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background: var(--sz-page-bg);
+  color: var(--sz-text);
+  font-family: var(--font-sans);
+}
+
+.sz-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-inline: 20px;
+}
+
+// ── Cards ─────────────────────────────────────────────────────────
+.sz-card {
+  background: var(--sz-surface);
+  border: 1px solid var(--sz-border);
+  border-radius: var(--sz-radius-lg);
+  box-shadow: var(--sz-shadow-card);
+}
+
+.sz-section-title {
+  font-family: var(--font-serif);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--sz-heading);
+  margin-bottom: 14px;
+}
+
+.sz-eyebrow {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--sz-muted);
+}
+
+// ── Buttons ───────────────────────────────────────────────────────
+.sz-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 22px;
+  border: none;
+  border-radius: 999px;
+  background: var(--sz-green);
+  color: #fff;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    transform 0.1s;
+
+  &:hover {
+    background: var(--sz-green-dark);
+  }
+  &:active {
+    transform: translateY(1px);
+  }
+  &:disabled,
+  &.disabled {
+    background: var(--sz-border-strong);
+    color: #fff;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+}
+
+.sz-btn-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 11px 22px;
+  border: 1.5px solid var(--sz-green);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--sz-green-dark);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    color 0.15s;
+
+  &:hover {
+    background: var(--sz-green-light);
+  }
+}
+
+.sz-link {
+  color: var(--sz-green-dark);
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  background: none;
+  border: none;
+  font-size: inherit;
+  font-family: inherit;
+  padding: 0;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+// ── Underline-style inputs (booking wizard) ───────────────────────
+.sz-field {
+  display: block;
+  margin-bottom: 28px;
+
+  .sz-field-label {
+    display: block;
+    font-size: 13px;
+    color: var(--sz-muted);
+    margin-bottom: 4px;
+  }
+
+  input,
+  select,
+  .sz-field-control {
+    width: 100%;
+    padding: 8px 2px;
+    border: none;
+    border-bottom: 1.5px solid var(--sz-border-strong);
+    background: transparent;
+    font-family: var(--font-sans);
+    font-size: 16px;
+    color: var(--sz-text);
+    outline: none;
+    appearance: none;
+    transition: border-color 0.15s;
+
+    &::placeholder {
+      color: #9aa5a0;
+    }
+    &:focus {
+      border-bottom-color: var(--sz-green);
+    }
+  }
+
+  .sz-select-wrap {
+    position: relative;
+
+    &::after {
+      content: '';
+      position: absolute;
+      right: 4px;
+      top: 50%;
+      width: 9px;
+      height: 9px;
+      border-right: 2px solid var(--sz-muted);
+      border-bottom: 2px solid var(--sz-muted);
+      transform: translateY(-70%) rotate(45deg);
+      pointer-events: none;
+    }
+  }
+}
+
+// ── Status pill ───────────────────────────────────────────────────
+.sz-status {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--sz-price);
+}
+
+.sz-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  background: var(--sz-green);
+  color: #fff;
+}
+
+.sz-badge-outline {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border: 1px solid var(--sz-border-strong);
+  color: var(--sz-muted);
+}

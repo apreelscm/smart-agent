@@ -1,0 +1,123 @@
+<app-portal-layout active="opieka" breadcrumb="Szczegóły wizyty">
+  @if (visit(); as v) {
+    <div class="detail">
+      <a class="back-link sz-link" routerLink="/portal/opieka">
+        <i class="pi pi-angle-left"></i> Wróć do listy wizyt
+      </a>
+
+      <!-- Nagłówek wizyty -->
+      <div class="sz-card detail-hero">
+        <div class="hero-main">
+          <span class="visit-status" [attr.data-kind]="v.statusKind">{{ v.status }}</span>
+          <h1 class="hero-title">{{ v.service }}</h1>
+          <p class="hero-type"><i class="pi pi-briefcase"></i> {{ v.type }}</p>
+        </div>
+        <div class="hero-when">
+          <span class="when-date">{{ v.date }}</span>
+          <span class="when-time">godz. {{ v.time }}</span>
+          <span class="when-duration">czas trwania: {{ v.duration }}</span>
+        </div>
+      </div>
+
+      <div class="detail-grid">
+        <!-- Informacje -->
+        <div class="detail-col">
+          <div class="sz-card info-panel">
+            <h2 class="panel-title">Informacje o wizycie</h2>
+            <div class="info-item">
+              <span class="info-icon"><i class="pi pi-user"></i></span>
+              <div>
+                <p class="info-label">Lekarz</p>
+                <p class="info-value">{{ v.doctor }}</p>
+              </div>
+            </div>
+            <div class="info-item">
+              <span class="info-icon"><i class="pi pi-users"></i></span>
+              <div>
+                <p class="info-label">Pacjent</p>
+                <p class="info-value">{{ v.patient }}</p>
+              </div>
+            </div>
+            <div class="info-item">
+              <span class="info-icon"><i class="pi pi-map-marker"></i></span>
+              <div>
+                <p class="info-label">{{ isTelemedicine() ? 'Forma wizyty' : 'Placówka' }}</p>
+                <p class="info-value">{{ v.facility }}</p>
+                <p class="info-sub">{{ v.address }}</p>
+                @if (!isTelemedicine()) {
+                  <button class="sz-link" type="button">
+                    <i class="pi pi-map"></i> Pokaż na mapie
+                  </button>
+                }
+              </div>
+            </div>
+            <div class="info-item">
+              <span class="info-icon"><i class="pi pi-wallet"></i></span>
+              <div>
+                <p class="info-label">Płatność</p>
+                <p class="info-value sz-status">{{ v.price }}</p>
+              </div>
+            </div>
+          </div>
+
+          @if (v.prepare.length > 0) {
+            <div class="sz-card info-panel">
+              <h2 class="panel-title">Jak się przygotować</h2>
+              <ul class="prepare-list">
+                @for (tip of v.prepare; track tip) {
+                  <li><i class="pi pi-check"></i> {{ tip }}</li>
+                }
+              </ul>
+            </div>
+          }
+        </div>
+
+        <!-- Akcje -->
+        <aside class="detail-side">
+          <div class="sz-card actions-panel">
+            <h2 class="panel-title">Zarządzaj wizytą</h2>
+            @if (v.statusKind === 'upcoming') {
+              @if (isTelemedicine()) {
+                <button class="sz-btn action-btn" type="button">
+                  <i class="pi pi-video"></i> Dołącz do konsultacji
+                </button>
+              }
+              <button class="sz-btn-outline action-btn" type="button">
+                <i class="pi pi-calendar-plus"></i> Dodaj do kalendarza
+              </button>
+              <button class="sz-btn-outline action-btn" type="button">
+                <i class="pi pi-sync"></i> Zmień termin
+              </button>
+              <button class="sz-link danger-link" type="button">
+                <i class="pi pi-times-circle"></i> Odwołaj wizytę
+              </button>
+            } @else if (v.statusKind === 'done') {
+              <button class="sz-btn action-btn" type="button">
+                <i class="pi pi-file"></i> Zobacz dokumentację
+              </button>
+              <button class="sz-btn-outline action-btn" type="button">
+                <i class="pi pi-refresh"></i> Umów ponownie
+              </button>
+            } @else {
+              <p class="cancelled-note">Ta wizyta została odwołana.</p>
+              <a class="sz-btn action-btn" routerLink="/portal/umow-wizyte">
+                <i class="pi pi-calendar-plus"></i> Umów nową wizytę
+              </a>
+            }
+          </div>
+
+          <div class="sz-card help-panel">
+            <p class="help-title">Potrzebujesz pomocy?</p>
+            <p class="help-text">Zadzwoń na infolinię 800 000 000 (pon.–pt. 8:00–19:00).</p>
+          </div>
+        </aside>
+      </div>
+    </div>
+  } @else {
+    <div class="not-found">
+      <span class="empty-icon"><i class="pi pi-exclamation-circle"></i></span>
+      <p class="empty-title">Nie znaleźliśmy tej wizyty</p>
+      <a class="sz-btn" routerLink="/portal/opieka">Wróć do listy wizyt</a>
+    </div>
+  }
+</app-portal-layout>

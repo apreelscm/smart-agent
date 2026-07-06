@@ -1,0 +1,253 @@
+:host {
+  display: block;
+}
+
+.detail {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 18px;
+}
+
+// ── Nagłówek ──────────────────────────────────────────────────────
+.detail-hero {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 24px 26px;
+  margin-bottom: 22px;
+}
+
+.hero-title {
+  font-family: var(--font-serif);
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--sz-heading);
+  margin: 10px 0 6px;
+}
+
+.hero-type {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: var(--sz-muted);
+
+  i {
+    color: var(--sz-green-mid);
+  }
+}
+
+.hero-when {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  padding-left: 20px;
+  border-left: 2px solid var(--sz-green-light);
+}
+
+.when-date {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--sz-heading);
+}
+
+.when-time {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--sz-green-dark);
+}
+
+.when-duration {
+  font-size: 12px;
+  color: var(--sz-muted);
+  margin-top: 4px;
+}
+
+// ── Status pill (współdzielony wygląd) ────────────────────────────
+.visit-status {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+
+  &[data-kind='upcoming'] {
+    background: var(--sz-green-light);
+    color: var(--sz-green-dark);
+  }
+  &[data-kind='done'] {
+    background: #eef2f0;
+    color: var(--sz-muted);
+  }
+  &[data-kind='cancelled'] {
+    background: #fbeaea;
+    color: #b23b3b;
+  }
+}
+
+// ── Układ dwukolumnowy ────────────────────────────────────────────
+.detail-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 22px;
+  align-items: start;
+}
+
+.detail-col {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.info-panel,
+.actions-panel,
+.help-panel {
+  padding: 22px 24px;
+}
+
+.panel-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--sz-heading);
+  margin-bottom: 18px;
+}
+
+.info-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--sz-border);
+
+  &:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+}
+
+.info-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--sz-green-light);
+  color: var(--sz-green-dark);
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.info-label {
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--sz-muted);
+}
+
+.info-value {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--sz-text);
+  margin-top: 2px;
+}
+
+.info-sub {
+  font-size: 13px;
+  color: var(--sz-muted);
+  margin-top: 2px;
+}
+
+// ── Przygotowanie ─────────────────────────────────────────────────
+.prepare-list {
+  list-style: none;
+
+  li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--sz-text);
+    margin-bottom: 10px;
+
+    i {
+      color: var(--sz-green);
+      margin-top: 3px;
+    }
+  }
+}
+
+// ── Panel akcji ───────────────────────────────────────────────────
+.action-btn {
+  width: 100%;
+  margin-bottom: 12px;
+  text-decoration: none;
+}
+
+.danger-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #b23b3b;
+  margin-top: 4px;
+
+  &:hover {
+    color: #8f2d2d;
+  }
+}
+
+.cancelled-note {
+  font-size: 14px;
+  color: var(--sz-muted);
+  margin-bottom: 16px;
+}
+
+.help-panel {
+  background: var(--sz-green-lighter);
+  border-color: var(--sz-green-mid);
+}
+
+.help-title {
+  font-weight: 700;
+  color: var(--sz-heading);
+  margin-bottom: 6px;
+}
+
+.help-text {
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--sz-muted);
+}
+
+// ── Brak wizyty ───────────────────────────────────────────────────
+.not-found {
+  text-align: center;
+  padding: 60px 20px;
+
+  .empty-icon {
+    font-size: 46px;
+    color: var(--sz-green-mid);
+  }
+  .empty-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--sz-green-dark);
+    margin: 14px 0 20px;
+  }
+}
+
+@media (min-width: 860px) {
+  .detail-grid {
+    grid-template-columns: minmax(0, 1fr) 300px;
+  }
+}

@@ -1,0 +1,88 @@
+<app-portal-layout active="pulpit">
+  <div class="pulpit-grid">
+    <!-- Skróty -->
+    <aside class="shortcuts" aria-label="Moje skróty">
+      <p class="sz-eyebrow shortcuts-title">Moje skróty</p>
+      <ul class="shortcuts-list">
+        @for (item of shortcuts; track item.label) {
+          <li>
+            @if (item.route) {
+              <a class="shortcut" [routerLink]="item.route">
+                <span class="shortcut-icon"><i class="pi {{ item.icon }}"></i></span>
+                <span class="shortcut-label">{{ item.label }}</span>
+              </a>
+            } @else {
+              <button class="shortcut" type="button">
+                <span class="shortcut-icon"><i class="pi {{ item.icon }}"></i></span>
+                <span class="shortcut-label">{{ item.label }}</span>
+              </button>
+            }
+          </li>
+        }
+        <li>
+          <button class="shortcut" type="button">
+            <span class="shortcut-icon shortcut-icon--dashed"><i class="pi pi-ellipsis-h"></i></span>
+            <span class="shortcut-label">Edytuj skróty</span>
+          </button>
+        </li>
+      </ul>
+    </aside>
+
+    <!-- Kolumna centralna -->
+    <section class="main-col">
+      <h2 class="sz-section-title">Moje sprawy</h2>
+      <div class="sz-card info-box">
+        <span class="sz-badge-outline">Informacja</span>
+        <div>
+          <p class="info-title">Obecnie nie masz żadnych spraw</p>
+          <p class="info-sub">
+            W tym miejscu zobaczysz np. najbliższą wizytę, status sprawy lub informację o
+            płatnościach.
+          </p>
+        </div>
+      </div>
+
+      <h2 class="sz-section-title mt">Moje nowe oferty</h2>
+      <div class="sz-card offer-strip">
+        <span class="offer-avatar" aria-hidden="true"><i class="pi pi-users"></i></span>
+        <p class="offer-text">Poznaj naszą ofertę pakietów i badań profilaktycznych</p>
+        <button class="sz-btn" type="button">Sprawdź</button>
+      </div>
+
+      <h2 class="sz-section-title mt">Moje pakiety medyczne</h2>
+      <div class="sz-card product-card">
+        <span class="product-icon" aria-hidden="true"><i class="pi pi-heart-fill"></i></span>
+        <div class="product-main">
+          <p class="product-eyebrow">Pakiet</p>
+          <p class="product-name">Opieka Medyczna Plus</p>
+          <div class="product-meta">
+            <span><span class="meta-label">Nr pakietu</span><br />•••• •••</span>
+            <span><span class="meta-label">Obowiązuje</span><br />od dnia zawarcia</span>
+          </div>
+        </div>
+        <div class="product-status">
+          <p class="product-eyebrow">Status</p>
+          <p class="sz-status">AKTYWNA</p>
+        </div>
+        <i class="pi pi-angle-right product-arrow"></i>
+      </div>
+    </section>
+
+    <!-- Promo -->
+    <aside class="promo">
+      <div class="promo-card sz-card">
+        <div class="promo-image" aria-hidden="true">
+          <i class="pi pi-heart-fill"></i>
+        </div>
+        <div class="promo-body">
+          <h3 class="promo-title">Przegląd zdrowia w ramach NFZ</h3>
+          <p class="promo-text">
+            Skorzystaj z programu profilaktycznego. Wystarczy, że złożysz e-deklarację przystąpienia
+            do POZ i umówisz się na wizytę w wybranej placówce.
+          </p>
+          <button class="sz-btn promo-cta" type="button">Złóż e-deklarację</button>
+        </div>
+      </div>
+    </aside>
+  </div>
+</app-portal-layout>

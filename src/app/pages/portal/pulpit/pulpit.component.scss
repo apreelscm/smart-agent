@@ -1,0 +1,253 @@
+:host {
+  display: block;
+}
+
+.pulpit-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 28px;
+  align-items: start;
+}
+
+// ── Skróty ────────────────────────────────────────────────────────
+.shortcuts-title {
+  margin-bottom: 14px;
+}
+
+.shortcuts-list {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 8px 4px;
+}
+
+.shortcut {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 10px 6px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  text-decoration: none;
+  text-align: center;
+
+  &:hover .shortcut-icon {
+    background: var(--sz-green-light);
+    border-color: var(--sz-green-mid);
+  }
+}
+
+.shortcut-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: 1.5px solid var(--sz-border-strong);
+  background: var(--sz-surface);
+  color: var(--sz-green);
+  font-size: 21px;
+  transition:
+    background 0.15s,
+    border-color 0.15s;
+
+  &--dashed {
+    border-style: dashed;
+  }
+}
+
+.shortcut-label {
+  font-size: 13px;
+  line-height: 1.3;
+  color: var(--sz-text);
+}
+
+// ── Sprawy / oferty / produkt ─────────────────────────────────────
+.mt {
+  margin-top: 34px;
+}
+
+.info-box {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 20px;
+}
+
+.info-title {
+  font-weight: 700;
+  color: var(--sz-heading);
+  margin-bottom: 4px;
+}
+
+.info-sub {
+  font-size: 14px;
+  color: var(--sz-muted);
+  line-height: 1.5;
+}
+
+.offer-strip {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 20px;
+  background: var(--sz-green-lighter);
+  border-color: var(--sz-green-mid);
+}
+
+.offer-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: var(--sz-green-light);
+  color: var(--sz-green-dark);
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.offer-text {
+  flex: 1;
+  font-size: 15px;
+  color: var(--sz-text);
+}
+
+.product-card {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 20px;
+}
+
+.product-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: var(--sz-green-light);
+  color: var(--sz-green);
+  font-size: 22px;
+  flex-shrink: 0;
+}
+
+.product-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.product-eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--sz-muted);
+}
+
+.product-name {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--sz-heading);
+  margin: 2px 0 10px;
+}
+
+.product-meta {
+  display: flex;
+  gap: 40px;
+  font-size: 14px;
+  color: var(--sz-text);
+}
+
+.meta-label {
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--sz-muted);
+}
+
+.product-status {
+  text-align: right;
+}
+
+.product-arrow {
+  color: var(--sz-green);
+  font-size: 20px;
+}
+
+// ── Promo ─────────────────────────────────────────────────────────
+.promo-card {
+  overflow: hidden;
+}
+
+.promo-image {
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--sz-green-mid) 0%, var(--sz-green-dark) 100%);
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 46px;
+}
+
+.promo-body {
+  padding: 20px;
+}
+
+.promo-title {
+  font-family: var(--font-serif);
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--sz-heading);
+  margin-bottom: 10px;
+}
+
+.promo-text {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--sz-muted);
+  margin-bottom: 18px;
+}
+
+.promo-cta {
+  width: 100%;
+}
+
+// ── Układ desktop ─────────────────────────────────────────────────
+@media (min-width: 900px) {
+  .pulpit-grid {
+    grid-template-columns: 200px minmax(0, 1fr);
+  }
+  .promo {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (min-width: 1100px) {
+  .pulpit-grid {
+    grid-template-columns: 200px minmax(0, 1fr) 300px;
+  }
+  .promo {
+    grid-column: auto;
+  }
+  .shortcuts-list {
+    grid-template-columns: 1fr;
+    gap: 2px;
+  }
+  .shortcut {
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+    text-align: left;
+  }
+  .shortcut-icon {
+    width: 44px;
+    height: 44px;
+    font-size: 18px;
+  }
+}

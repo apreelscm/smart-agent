@@ -19,4 +19,33 @@ export const routes: Routes = [
     canActivate: [authGuard],
     loadComponent: () => import('./pages/design/design.component').then((m) => m.DesignComponent),
   },
+  // Klikalne makiety portalu pacjenta Świat Zdrowia (dostępne bez logowania — do przeglądu).
+  { path: 'portal', redirectTo: 'portal/pulpit', pathMatch: 'full' },
+  {
+    path: 'portal/pulpit',
+    loadComponent: () =>
+      import('./pages/portal/pulpit/pulpit.component').then((m) => m.PulpitComponent),
+  },
+  {
+    path: 'portal/opieka',
+    loadComponent: () =>
+      import('./pages/portal/opieka/opieka.component').then((m) => m.OpiekaComponent),
+  },
+  {
+    path: 'portal/oferta',
+    loadComponent: () =>
+      import('./pages/portal/oferta/oferta.component').then((m) => m.OfertaComponent),
+  },
+  {
+    path: 'portal/umow-wizyte',
+    loadComponent: () =>
+      import('./pages/portal/umow-wizyte/umow-wizyte.component').then(
+        (m) => m.UmowWizyteComponent,
+      ),
+  },
+  {
+    path: 'portal/wizyta/:id',
+    loadComponent: () =>
+      import('./pages/portal/wizyta/wizyta.component').then((m) => m.WizytaComponent),
+  },
 ];

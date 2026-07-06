@@ -1,0 +1,238 @@
+:host {
+  display: block;
+}
+
+// ── Górny pasek ───────────────────────────────────────────────────
+.portal-topbar {
+  background: var(--sz-surface);
+  border-bottom: 1px solid var(--sz-border);
+}
+
+.topbar-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 72px;
+  padding-block: 12px;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+}
+
+.brand-mark {
+  display: inline-flex;
+  flex-shrink: 0;
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+
+.brand-name {
+  font-family: var(--font-serif);
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--sz-green-dark);
+}
+
+.brand-tag {
+  font-size: 11px;
+  font-style: italic;
+  color: var(--sz-muted);
+}
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.icon-btn {
+  position: relative;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: var(--sz-green-dark);
+  font-size: 22px;
+  padding: 4px;
+}
+
+.icon-badge {
+  position: absolute;
+  top: -4px;
+  right: -6px;
+  min-width: 17px;
+  height: 17px;
+  padding: 0 4px;
+  border-radius: 999px;
+  background: #d13b3b;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.topbar-divider {
+  width: 1px;
+  height: 32px;
+  background: var(--sz-border-strong);
+}
+
+.profile {
+  border: none;
+  background: none;
+  cursor: pointer;
+  text-align: right;
+}
+
+.profile-labels {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.profile-eyebrow {
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--sz-muted);
+}
+
+.profile-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--sz-green-dark);
+}
+
+// ── Nawigacja ─────────────────────────────────────────────────────
+.portal-nav {
+  background: var(--sz-nav-bg);
+  border-bottom: 1px solid var(--sz-border);
+}
+
+.nav-inner {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 26px;
+  padding-block: 0;
+}
+
+.nav-item {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 16px 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--sz-text);
+  text-decoration: none;
+  cursor: pointer;
+  white-space: nowrap;
+  border-bottom: 3px solid transparent;
+  transition: color 0.15s;
+
+  &:hover {
+    color: var(--sz-green-dark);
+  }
+
+  &.active {
+    color: var(--sz-green-dark);
+    border-bottom-color: var(--sz-green);
+  }
+}
+
+.nav-caret {
+  font-size: 11px;
+  opacity: 0.7;
+}
+
+// ── Breadcrumb ────────────────────────────────────────────────────
+.portal-breadcrumb {
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--sz-muted);
+  padding-top: 16px;
+}
+
+// ── Treść ─────────────────────────────────────────────────────────
+.portal-main {
+  flex: 1;
+  padding-block: 28px 56px;
+}
+
+// ── Stopka ────────────────────────────────────────────────────────
+.portal-footer {
+  background: var(--sz-green-darker);
+  color: #dbeadf;
+}
+
+.footer-inner {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 28px;
+  padding-block: 40px;
+}
+
+.footer-col h4 {
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  color: #fff;
+  margin-bottom: 14px;
+}
+
+.footer-col p {
+  font-size: 14px;
+  margin-bottom: 8px;
+  color: #cfe3d6;
+}
+
+.footer-col a {
+  color: #eaf6ee;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.footer-muted {
+  font-size: 12px !important;
+  color: #9dbfa8 !important;
+}
+
+// ── FAB ───────────────────────────────────────────────────────────
+.portal-fab {
+  position: fixed;
+  right: 28px;
+  bottom: 28px;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  border: none;
+  background: var(--sz-green);
+  color: #fff;
+  font-size: 22px;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(20, 60, 40, 0.28);
+
+  &:hover {
+    background: var(--sz-green-dark);
+  }
+}
+
+@media (min-width: 640px) {
+  .footer-inner {
+    grid-template-columns: 1.4fr 1fr 1fr;
+  }
+}
