@@ -28,8 +28,7 @@ jobs:
       - run: npm ci
 
       - name: Build (production, base-href for Project Page)
-        run: npm run build
-        #run: npm run build -- --base-href=/smart-agent/
+        run: npm run build -- --base-href=/smart-agent/
 
       - name: SPA fallback (copy index.html -> 404.html)
         run: cp dist/smart-agent/browser/index.html dist/smart-agent/browser/404.html
