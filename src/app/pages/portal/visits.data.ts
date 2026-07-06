@@ -1,6 +1,12 @@
 export type VisitState = 'planned' | 'cancelled';
 export type VisitStatusKind = 'upcoming' | 'done' | 'cancelled';
 
+/** Współrzędne placówki (WGS84) — mapa embedowana z gotowych koordynatów, bez geokodowania. */
+export interface VisitCoordinates {
+  lat: number;
+  lon: number;
+}
+
 export interface Visit {
   id: string;
   service: string;
@@ -17,6 +23,8 @@ export interface Visit {
   group: VisitState;
   price: string;
   prepare: string[];
+  /** Współrzędne placówki; brak dla wizyt zdalnych (telemedycyna). */
+  coordinates?: VisitCoordinates;
 }
 
 /** Dane demonstracyjne wizyt (makieta — bez danych rzeczywistych). */
@@ -41,6 +49,7 @@ export const VISITS: Visit[] = [
       'Przyjdź 10 minut przed wizytą do recepcji.',
       'Weź wyniki wcześniejszych badań, jeśli je posiadasz.',
     ],
+    coordinates: { lat: 52.2307, lon: 20.9583 },
   },
   {
     id: 'w2',
@@ -82,6 +91,7 @@ export const VISITS: Visit[] = [
       'Badanie wykonaj na czczo (min. 8 godzin bez posiłku).',
       'Wypij szklankę wody przed pobraniem.',
     ],
+    coordinates: { lat: 52.2337, lon: 21.0033 },
   },
   {
     id: 'w4',
@@ -99,6 +109,7 @@ export const VISITS: Visit[] = [
     group: 'cancelled',
     price: 'W cenie pakietu',
     prepare: [],
+    coordinates: { lat: 52.2307, lon: 20.9583 },
   },
 ];
 
