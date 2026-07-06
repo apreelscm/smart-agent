@@ -38,14 +38,24 @@
                 <p class="info-value">{{ v.patient }}</p>
               </div>
             </div>
-            <div class="info-item">
-              <span class="info-icon"><i class="pi pi-map-marker"></i></span>
-              <div>
-                <p class="info-label">{{ isTelemedicine() ? 'Forma wizyty' : 'Placówka' }}</p>
-                <p class="info-value">{{ v.facility }}</p>
-                <p class="info-sub">{{ v.address }}</p>
+            @if (hasCoordinates()) {
+              <div class="info-item" data-testid="visit-facility-block">
+                <span class="info-icon"><i class="pi pi-map-marker"></i></span>
+                <div>
+                  <p class="info-label">Placówka</p>
+                  <p class="info-value">{{ v.facility }}</p>
+                  <p class="info-sub">{{ v.address }}</p>
+                  <button
+                    class="sz-link map-trigger"
+                    type="button"
+                    data-testid="visit-map-trigger"
+                    (click)="openMap()">
+                    <i class="pi pi-map"></i>
+                    <span>Pokaż na mapie</span>
+                  </button>
+                </div>
               </div>
-            </div>
+            }
             <div class="info-item">
               <span class="info-icon"><i class="pi pi-wallet"></i></span>
               <div>
@@ -108,6 +118,45 @@
         </aside>
       </div>
     </div>
+
+    @if (isMapOpen()) {
+      @if (mapUrl(); as url) {
+        <div class="map-modal-overlay" (click)="closeMap()">
+          <div
+            class="sz-card map-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="visit-map-title"
+            data-testid="visit-map-dialog"
+            (click)="$event.stopPropagation()">
+            <div class="map-modal-header">
+              <div class="map-modal-copy">
+                <p class="map-modal-eyebrow">Lokalizacja wizyty</p>
+                <h2 id="visit-map-title" class="map-modal-title">{{ v.facility }}</h2>
+                <p class="map-modal-address">{{ v.address }}</p>
+              </div>
+              <button
+                class="map-modal-close"
+                type="button"
+                aria-label="Zamknij mapę"
+                (click)="closeMap()">
+                <i class="pi pi-times"></i>
+              </button>
+            </div>
+
+            <div class="map-frame-wrap">
+              <iframe
+                class="map-frame"
+                title="Mapa placówki"
+                [src]="url"
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"
+                data-testid="visit-map-iframe"></iframe>
+            </div>
+          </div>
+        </div>
+      }
+    }
   } @else {
     <div class="not-found">
       <span class="empty-icon"><i class="pi pi-exclamation-circle"></i></span>
