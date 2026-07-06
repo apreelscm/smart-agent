@@ -44,11 +44,6 @@
                 <p class="info-label">{{ isTelemedicine() ? 'Forma wizyty' : 'Placówka' }}</p>
                 <p class="info-value">{{ v.facility }}</p>
                 <p class="info-sub">{{ v.address }}</p>
-                @if (!isTelemedicine()) {
-                  <button class="sz-link" type="button">
-                    <i class="pi pi-map"></i> Pokaż na mapie
-                  </button>
-                }
               </div>
             </div>
             <div class="info-item">
